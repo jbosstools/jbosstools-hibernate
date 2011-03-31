@@ -10,14 +10,14 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.java;
 
-import org.eclipse.jpt.core.context.java.JavaBasicMapping;
-import org.eclipse.jpt.core.context.java.JavaEntity;
-import org.eclipse.jpt.core.context.java.JavaIdMapping;
-import org.eclipse.jpt.core.context.orm.OrmEntity;
-import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.details.java.BaseJavaUiFactory;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
+import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
+import org.eclipse.jpt.jpa.core.context.java.JavaIdMapping;
+import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
+import org.eclipse.jpt.jpa.ui.details.JpaComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.java.BaseJavaUiFactory;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaIdMapping;

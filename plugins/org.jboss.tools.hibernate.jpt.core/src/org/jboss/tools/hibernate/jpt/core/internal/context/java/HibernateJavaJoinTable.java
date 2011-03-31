@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.core.context.java.JavaJoinTable;
+import org.eclipse.jpt.jpa.core.context.java.JavaJoinTable;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateTable;
 
 /**

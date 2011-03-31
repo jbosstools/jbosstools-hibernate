@@ -12,8 +12,8 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.basic;
 
 import java.util.Map;
 
-import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceUnitProperties;
+import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnitProperties;
 
 /**
  * @author Dmitry Geraskov

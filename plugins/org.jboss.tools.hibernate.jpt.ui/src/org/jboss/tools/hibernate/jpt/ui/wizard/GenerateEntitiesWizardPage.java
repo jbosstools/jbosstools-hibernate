@@ -17,7 +17,7 @@ import org.eclipse.jdt.internal.corext.util.JavaConventionsUtil;
 import org.eclipse.jdt.internal.corext.util.Messages;
 import org.eclipse.jdt.internal.ui.wizards.NewWizardMessages;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.StringDialogField;
-import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.swt.widgets.Composite;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.launch.PathHelper;

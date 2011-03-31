@@ -13,23 +13,23 @@ package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.eclipse.jpt.core.context.BaseColumn;
-import org.eclipse.jpt.core.context.Column;
-import org.eclipse.jpt.core.context.NamedColumn;
-import org.eclipse.jpt.db.Table;
-import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.BasicMappingComposite;
-import org.eclipse.jpt.ui.internal.details.IdMappingComposite;
-import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
-import org.eclipse.jpt.ui.internal.details.VersionMappingComposite;
-import org.eclipse.jpt.ui.internal.widgets.IntegerCombo;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
-import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.BaseColumn;
+import org.eclipse.jpt.jpa.core.context.Column;
+import org.eclipse.jpt.jpa.core.context.NamedColumn;
+import org.eclipse.jpt.jpa.db.Table;
+import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
+import org.eclipse.jpt.jpa.ui.internal.details.BasicMappingComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.IdMappingComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.internal.details.VersionMappingComposite;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -265,8 +265,8 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 				if ((getSubject() != null) && (value == null)) {
 					boolean defaultValue = getSubject().isDefaultInsertable();
 
-					String defaultStringValue = defaultValue ? JptUiDetailsMessages.Boolean_True :
-						                                       JptUiDetailsMessages.Boolean_False;
+					String defaultStringValue = defaultValue ? JptUiDetailsMessages.OptionalComposite_true :
+						                                       JptUiDetailsMessages.OptionalComposite_false;
 
 					return NLS.bind(
 						JptUiDetailsMessages.ColumnComposite_insertableWithDefault,
@@ -302,7 +302,7 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 			@Override
 			protected String transform(Boolean value) {
 				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptUiDetailsMessages.Boolean_True : JptUiDetailsMessages.Boolean_False;
+					String defaultStringValue = value.booleanValue() ? JptUiDetailsMessages.OptionalComposite_true : JptUiDetailsMessages.OptionalComposite_false;
 					return NLS.bind(JptUiDetailsMessages.ColumnComposite_nullableWithDefault, defaultStringValue);
 				}
 				return JptUiDetailsMessages.ColumnComposite_nullable;
@@ -424,7 +424,7 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 			@Override
 			protected String transform(Boolean value) {
 				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptUiDetailsMessages.Boolean_True : JptUiDetailsMessages.Boolean_False;
+					String defaultStringValue = value.booleanValue() ? JptUiDetailsMessages.OptionalComposite_true : JptUiDetailsMessages.OptionalComposite_false;
 					return NLS.bind(JptUiDetailsMessages.ColumnComposite_uniqueWithDefault, defaultStringValue);
 				}
 				return JptUiDetailsMessages.ColumnComposite_unique;
@@ -473,7 +473,7 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 			@Override
 			protected String transform(Boolean value) {
 				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptUiDetailsMessages.Boolean_True : JptUiDetailsMessages.Boolean_False;
+					String defaultStringValue = value.booleanValue() ? JptUiDetailsMessages.OptionalComposite_true : JptUiDetailsMessages.OptionalComposite_false;
 					return NLS.bind(JptUiDetailsMessages.ColumnComposite_updatableWithDefault, defaultStringValue);
 				}
 				return JptUiDetailsMessages.ColumnComposite_updatable;

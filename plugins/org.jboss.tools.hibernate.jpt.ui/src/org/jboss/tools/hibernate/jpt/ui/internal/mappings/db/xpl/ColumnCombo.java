@@ -9,12 +9,11 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.mappings.db.xpl;
 
-import org.eclipse.jpt.core.JpaNode;
-import org.eclipse.jpt.db.Table;
-import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
-import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.JpaNode;
+import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.swt.widgets.Composite;
 
 /**

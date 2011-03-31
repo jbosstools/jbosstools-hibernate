@@ -1,14 +1,23 @@
+/*******************************************************************************
+ * Copyright (c) 2011 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.java.AbstractJavaOneToOneMapping;
-import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaOneToOneMapping;
+import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
@@ -16,8 +25,11 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.ForeignKey;
 import org.jboss.tools.hibernate.jpt.core.internal.context.ForeignKeyHolder;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
-import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
-
+/**
+ *
+ * @author Dmitry Geraskov (geraskov@gmail.com)
+ *
+ */
 public abstract class AbstractHibernateJavaOneToOneMapping extends
 		AbstractJavaOneToOneMapping implements ForeignKeyHolder {
 
@@ -27,11 +39,11 @@ public abstract class AbstractHibernateJavaOneToOneMapping extends
 		super(parent);
 	}
 
-	@Override
+	/*@Override
 	protected void addSupportingAnnotationNamesTo(Vector<String> names) {
 		super.addSupportingAnnotationNamesTo(names);
 		names.add(Hibernate.FOREIGN_KEY);
-	}
+	}*/
 
 	@Override
 	protected HibernateAbstractJpaFactory getJpaFactory() {
@@ -39,13 +51,13 @@ public abstract class AbstractHibernateJavaOneToOneMapping extends
 	}
 
 	@Override
-	protected void initialize() {
-		super.initialize();
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
 		this.initializeForeignKey();
 	}
 
 	@Override
-	protected void update() {
+	public void update() {
 		super.update();
 		this.updateForeignKey();
 	}
@@ -133,16 +145,16 @@ public abstract class AbstractHibernateJavaOneToOneMapping extends
 	protected void validateForeignKey(List<IMessage> messages,
 			CompilationUnit astRoot) {
 		Table table = getTypeMapping().getPrimaryDbTable();
-		if (!shouldValidateAgainstDatabase() || foreignKey == null
+		if (!validatesAgainstDatabase() || this.foreignKey == null
 				|| table == null) {
 			return;
 		}
-		Iterator<org.eclipse.jpt.db.ForeignKey> fks = table.getForeignKeys()
+		Iterator<org.eclipse.jpt.jpa.db.ForeignKey> fks = table.getForeignKeys()
 				.iterator();
 		while (fks.hasNext()) {
-			org.eclipse.jpt.db.ForeignKey fk = (org.eclipse.jpt.db.ForeignKey) fks
+			org.eclipse.jpt.jpa.db.ForeignKey fk = fks
 					.next();
-			if (foreignKey.getName().equals(fk.getIdentifier())) {
+			if (this.foreignKey.getName().equals(fk.getIdentifier())) {
 				return;
 			}
 		}
@@ -150,7 +162,7 @@ public abstract class AbstractHibernateJavaOneToOneMapping extends
 				astRoot);
 		IMessage message = new LocalMessage(IMessage.HIGH_SEVERITY,
 				Messages.UNRESOLVED_FOREIGN_KEY_NAME, new String[] {
-						foreignKey.getName(),
+						this.foreignKey.getName(),
 						getTypeMapping().getPrimaryTableName() },
 				this.foreignKey);
 		message.setLineNo(textRange.getLineNumber());

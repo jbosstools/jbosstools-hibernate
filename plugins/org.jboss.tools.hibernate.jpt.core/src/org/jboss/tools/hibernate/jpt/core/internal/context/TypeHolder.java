@@ -11,7 +11,7 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
-import org.eclipse.jpt.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaType;
 
 /**

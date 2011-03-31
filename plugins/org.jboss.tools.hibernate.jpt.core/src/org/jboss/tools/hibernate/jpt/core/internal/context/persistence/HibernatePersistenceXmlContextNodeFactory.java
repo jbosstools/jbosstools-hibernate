@@ -10,10 +10,10 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.persistence;
 
-import org.eclipse.jpt.core.context.persistence.Persistence;
-import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceXmlContextNodeFactory;
-import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
+import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
+import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.jpa.core.internal.context.persistence.GenericPersistenceXmlContextNodeFactory;
+import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.HibernatePersistenceUnitProperties;
 

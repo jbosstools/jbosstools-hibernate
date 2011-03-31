@@ -11,10 +11,11 @@
 package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.core.resource.java.Annotation;
-import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
-import org.eclipse.jpt.core.utility.jdt.Member;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
+import org.eclipse.jpt.common.core.utility.jdt.Member;
+import org.eclipse.jpt.jpa.core.resource.java.Annotation;
+import org.eclipse.jpt.jpa.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.jpa.core.resource.java.JavaResourceAnnotatedElement;
 
 /**
  * @author Dmitry Geraskov
@@ -39,15 +40,16 @@ public class HibernateNamedQueriesAnnotationDefinition implements AnnotationDefi
 		super();
 	}
 
-	public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-		return new HibernateSourceNamedQueriesAnnotation(parent, member);
+	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent,
+			AnnotatedElement annotatedElement) {
+		return new HibernateSourceNamedQueriesAnnotation(parent, (Member) annotatedElement);
 	}
 
-	public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {
+	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
 		throw new UnsupportedOperationException();
 	}
 
-	public Annotation buildAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
+	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		throw new UnsupportedOperationException();
 	}
 

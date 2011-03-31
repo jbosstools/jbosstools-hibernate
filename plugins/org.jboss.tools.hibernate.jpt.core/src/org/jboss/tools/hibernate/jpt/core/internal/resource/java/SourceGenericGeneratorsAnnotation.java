@@ -14,17 +14,19 @@ import java.util.Vector;
 
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.resource.java.source.AnnotationContainerTools;
-import org.eclipse.jpt.core.internal.resource.java.source.SourceAnnotation;
-import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.resource.java.Annotation;
-import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
-import org.eclipse.jpt.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
-import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.utility.jdt.Member;
-import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
+import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
+import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.Member;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
+import org.eclipse.jpt.jpa.core.internal.resource.java.source.AnnotationContainerTools;
+import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.Annotation;
+import org.eclipse.jpt.jpa.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.jpa.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.jpa.core.resource.java.NestableAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 
 /**
@@ -56,16 +58,17 @@ public class SourceGenericGeneratorsAnnotation extends SourceAnnotation<Member> 
 	}
 
 	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				this.genericGenerators.isEmpty();
+	}
+
+	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.genericGenerators);
 	}
-	
+
 	// ********** AnnotationContainer implementation **********
-
-	public String getContainerAnnotationName() {
-		return this.getAnnotationName();
-	}
-
 	public String getElementName() {
 		return Hibernate.GENERIC_GENERATORS__VALUE;
 	}
@@ -81,17 +84,33 @@ public class SourceGenericGeneratorsAnnotation extends SourceAnnotation<Member> 
 	public int getNestedAnnotationsSize() {
 		return this.genericGenerators.size();
 	}
-	
+
+	public void nestStandAloneAnnotation(NestableAnnotation standAloneAnnotation) {
+		this.nestStandAloneAnnotation(standAloneAnnotation, this.genericGenerators.size());
+	}
+
+	private void nestStandAloneAnnotation(NestableAnnotation standAloneAnnotation, int index) {
+		standAloneAnnotation.convertToNested(this, this.daa, index);
+	}
+
+	public void addNestedAnnotation(int index, NestableAnnotation annotation) {
+		this.genericGenerators.add(index, (GenericGeneratorAnnotation) annotation);
+	}
+
+	public void convertLastNestedAnnotationToStandAlone() {
+		this.genericGenerators.remove(0).convertToStandAlone();
+	}
+
 	public GenericGeneratorAnnotation addNestedAnnotation() {
 		return this.addNestedAnnotation(this.genericGenerators.size());
 	}
-	
+
 	private GenericGeneratorAnnotation addNestedAnnotation(int index) {
 		GenericGeneratorAnnotation genericGenerator = this.buildGenericGenerator(index);
 		this.genericGenerators.add(genericGenerator);
 		return genericGenerator;
 	}
-	
+
 	public void syncAddNestedAnnotation(org.eclipse.jdt.core.dom.Annotation astAnnotation) {
 		int index = this.genericGenerators.size();
 		GenericGeneratorAnnotation genericGenerator = this.addNestedAnnotation(index);
@@ -100,9 +119,9 @@ public class SourceGenericGeneratorsAnnotation extends SourceAnnotation<Member> 
 	}
 
 	private GenericGeneratorAnnotation buildGenericGenerator(int index) {
-		return GenericGeneratorAnnotationImpl.createNestedGenericGenerator(this, member, index, this.daa);
+		return GenericGeneratorAnnotationImpl.createNestedGenericGenerator(this, this.annotatedElement, index, this.daa);
 	}
-	
+
 	public GenericGeneratorAnnotation moveNestedAnnotation(int targetIndex, int sourceIndex) {
 		return CollectionTools.move(this.genericGenerators, targetIndex, sourceIndex).get(targetIndex);
 	}
@@ -110,11 +129,11 @@ public class SourceGenericGeneratorsAnnotation extends SourceAnnotation<Member> 
 	public GenericGeneratorAnnotation removeNestedAnnotation(int index) {
 		return this.genericGenerators.remove(index);
 	}
-	
+
 	public void syncRemoveNestedAnnotations(int index) {
 		this.removeItemsFromList(index, this.genericGenerators, GENERIC_GENERATORS_LIST);
 	}
-	
+
 	public static class GenericGeneratorsAnnotationDefinition implements AnnotationDefinition {
 
 		// singleton
@@ -134,15 +153,15 @@ public class SourceGenericGeneratorsAnnotation extends SourceAnnotation<Member> 
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-			return new SourceGenericGeneratorsAnnotation(parent, member);
+		public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
+			return new SourceGenericGeneratorsAnnotation(parent, (Member) annotatedElement);
 		}
 
-		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {
+		public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
 			throw new UnsupportedOperationException();
 		}
 
-		public Annotation buildAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
+		public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 			throw new UnsupportedOperationException();
 		}
 

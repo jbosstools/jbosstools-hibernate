@@ -15,65 +15,65 @@ import java.util.Vector;
 
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.resource.java.source.AnnotationContainerTools;
-import org.eclipse.jpt.core.internal.resource.java.source.SourceAnnotation;
-import org.eclipse.jpt.core.internal.utility.jdt.ASTTools;
-import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberIndexedAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
-import org.eclipse.jpt.core.resource.java.Annotation;
-import org.eclipse.jpt.core.resource.java.AnnotationContainer;
-import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
-import org.eclipse.jpt.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
-import org.eclipse.jpt.core.resource.java.NestableAnnotation;
-import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.core.utility.jdt.AnnotationAdapter;
-import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
-import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.utility.jdt.ExpressionConverter;
-import org.eclipse.jpt.core.utility.jdt.IndexedAnnotationAdapter;
-import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.utility.jdt.Member;
-import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
+import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
+import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.core.internal.utility.jdt.ElementAnnotationAdapter;
+import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
+import org.eclipse.jpt.common.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
+import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
+import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotationAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
+import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.Member;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.jpa.core.internal.resource.java.source.AnnotationContainerTools;
+import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.Annotation;
+import org.eclipse.jpt.jpa.core.resource.java.AnnotationContainer;
+import org.eclipse.jpt.jpa.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.jpa.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public class TypeDefAnnotationImpl extends SourceAnnotation<Member> 
+public class TypeDefAnnotationImpl extends SourceAnnotation<Member>
 					implements TypeDefAnnotation {
-	
+
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 	private final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
 	private final AnnotationElementAdapter<String> nameAdapter;
 	private String name;
-	
+
 	private static final DeclarationAnnotationElementAdapter<String> TYPE_CLASS_ADAPTER = buildTypeClassAdapter();
 	private final AnnotationElementAdapter<String> typeClassAdapter;
 	private String typeClass;
 
 	String fullyQualifiedTypeClassName;
-	
+
 	private static final DeclarationAnnotationElementAdapter<String> DEF_FOR_TYPE_ADAPTER = buildDefForTypeAdapter();
 	private final AnnotationElementAdapter<String> defaultForTypeAdapter;
 	private String defaultForType;
 
 	String fullyQualifiedDefaultForTypeClassName;
-	
+
 	final Vector<NestableParameterAnnotation> parameters = new Vector<NestableParameterAnnotation>();
 	final ParametersAnnotationContainer parametersContainer = new ParametersAnnotationContainer();
-	
+
 	/**
 	 * @param parent
 	 * @param member
@@ -82,11 +82,11 @@ public class TypeDefAnnotationImpl extends SourceAnnotation<Member>
 			DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
 		this.nameDeclarationAdapter = this.buildNameAdapter(daa);
-		this.nameAdapter = new ShortCircuitAnnotationElementAdapter<String>(member, nameDeclarationAdapter);
-		this.typeClassAdapter = new MemberAnnotationElementAdapter<String>(member, TYPE_CLASS_ADAPTER);
-		this.defaultForTypeAdapter = new MemberAnnotationElementAdapter<String>(member, DEF_FOR_TYPE_ADAPTER);
+		this.nameAdapter = new ShortCircuitAnnotationElementAdapter<String>(member, this.nameDeclarationAdapter);
+		this.typeClassAdapter = new AnnotatedElementAnnotationElementAdapter<String>(member, TYPE_CLASS_ADAPTER);
+		this.defaultForTypeAdapter = new AnnotatedElementAnnotationElementAdapter<String>(member, DEF_FOR_TYPE_ADAPTER);
 	}
-	
+
 	public void initialize(CompilationUnit astRoot) {
 		this.name = this.buildName(astRoot);
 		this.typeClass = this.buildTypeClass(astRoot);
@@ -95,7 +95,7 @@ public class TypeDefAnnotationImpl extends SourceAnnotation<Member>
 		this.fullyQualifiedDefaultForTypeClassName = this.buildFullyQualifiedDefaultForTypeClassName(astRoot);
 		AnnotationContainerTools.initialize(this.parametersContainer, astRoot);
 	}
-	
+
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncName(this.buildName(astRoot));
 		this.syncTypeClass(this.buildTypeClass(astRoot));
@@ -104,11 +104,11 @@ public class TypeDefAnnotationImpl extends SourceAnnotation<Member>
 		this.syncFullyQualifiedDefaultForTypeClassName(this.buildFullyQualifiedDefaultForTypeClassName(astRoot));
 		AnnotationContainerTools.synchronize(this.parametersContainer, astRoot);
 	}
-	
+
 	// ********** TypeDefAnnotation implementation **********
-	
+
 	// ***** name
-	
+
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
 	}
@@ -116,28 +116,28 @@ public class TypeDefAnnotationImpl extends SourceAnnotation<Member>
 	public String getName() {
 		return this.name;
 	}
-	
+
 	public void setName(String name) {
 		if (this.attributeValueHasChanged(this.name, name)) {
 			this.name = name;
 			this.nameAdapter.setValue(name);
 		}
 	}
-	
+
 	private void syncName(String astName) {
 		String old = this.name;
 		this.name = astName;
 		this.firePropertyChanged(NAME_PROPERTY, old, astName);
 	}
-	
+
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(nameDeclarationAdapter, astRoot);
+		return this.getElementTextRange(this.nameDeclarationAdapter, astRoot);
 	}
 
 	protected String buildName(CompilationUnit astRoot) {
 		return this.nameAdapter.getValue(astRoot);
-	}	
-	
+	}
+
 	// ***** type class
 	public String getTypeClass() {
 		return this.typeClass;
@@ -220,31 +220,31 @@ public class TypeDefAnnotationImpl extends SourceAnnotation<Member>
 		return (this.defaultForType == null) ? null : ASTTools.resolveFullyQualifiedName(this.defaultForTypeAdapter.getExpression(astRoot));
 	}
 	//************************ parameters ***********************
-	
+
 	public NestableParameterAnnotation addParameter(int index) {
 		return (NestableParameterAnnotation) AnnotationContainerTools.addNestedAnnotation(index, this.parametersContainer);
 	}
-	
+
 	NestableParameterAnnotation addParameter_() {
 		NestableParameterAnnotation parameter = this.buildParameter(this.parameters.size());
 		this.parameters.add(parameter);
 		return parameter;
 	}
-	
+
 	NestableParameterAnnotation buildParameter(int index) {
-		return SourceParameterAnnotation.createParameter(this, this.member, this.daa, Hibernate.TYPE_DEF__PARAMETERS, index);
+		return SourceParameterAnnotation.createParameter(this, this.annotatedElement, this.daa, Hibernate.TYPE_DEF__PARAMETERS, index);
 	}
-	
+
 	Iterable<NestableParameterAnnotation> nestableParameters() {
 		return this.parameters;
 	}
-	
+
 	void syncAddParameterAnnotation(org.eclipse.jdt.core.dom.Annotation nestedAnnotation) {
 		NestableParameterAnnotation parameter = this.addParameter_();
 		parameter.initialize((CompilationUnit) nestedAnnotation.getRoot());
 		this.fireItemAdded(PARAMETERS_LIST, parametersSize() - 1, parameter);
 	}
-	
+
 	NestableParameterAnnotation moveParameter_(int targetIndex, int sourceIndex) {
 		return CollectionTools.move(this.parameters, targetIndex, sourceIndex).get(targetIndex);
 	}
@@ -270,13 +270,13 @@ public class TypeDefAnnotationImpl extends SourceAnnotation<Member>
 	}
 
 	public int parametersSize() {
-		return parameters.size();
+		return this.parameters.size();
 	}
 
 	public void removeParameter(int index) {
-		AnnotationContainerTools.removeNestedAnnotation(index, this.parametersContainer);	
+		AnnotationContainerTools.removeNestedAnnotation(index, this.parametersContainer);
 	}
-	
+
 	NestableParameterAnnotation removeParameter_(int index) {
 		return this.parameters.remove(index);
 	}
@@ -284,20 +284,8 @@ public class TypeDefAnnotationImpl extends SourceAnnotation<Member>
 	void parameterRemoved(int index) {
 		this.removeItemsFromList(index, this.parameters, PARAMETERS_LIST);
 	}
-	
+
 	// ********** NestableAnnotation implementation **********
-	public void initializeFrom(NestableAnnotation oldAnnotation) {
-		TypeDefAnnotation oldTypeDef = (TypeDefAnnotation) oldAnnotation;
-		this.setName(oldTypeDef.getName());
-		this.setTypeClass(oldTypeDef.getTypeClass());
-
-		for (ParameterAnnotation oldParameter : CollectionTools.iterable(oldTypeDef.parameters())) {
-			NestableParameterAnnotation newParameter = this.addParameter(oldTypeDef.indexOfParameter(oldParameter));
-			newParameter.initializeFrom((NestableParameterAnnotation) oldParameter);
-		}
-	}
-	
-
 	/**
 	 * convenience implementation of method from NestableAnnotation interface
 	 * for subclasses
@@ -306,20 +294,21 @@ public class TypeDefAnnotationImpl extends SourceAnnotation<Member>
 		this.getIndexedAnnotationAdapter().moveAnnotation(newIndex);
 	}
 
-	private IndexedAnnotationAdapter getIndexedAnnotationAdapter() {
+	@Override
+	public IndexedAnnotationAdapter getIndexedAnnotationAdapter() {
 		return (IndexedAnnotationAdapter) this.annotationAdapter;
 	}
-	
+
 	@Override
 	public void toString(StringBuilder sb) {
 		super.toString(sb);
-		sb.append(name);
+		sb.append(this.name);
 	}
-	
+
 	private DeclarationAnnotationElementAdapter<String> buildNameAdapter(DeclarationAnnotationAdapter daa) {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, Hibernate.TYPE_DEF__NAME, false);
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, Hibernate.TYPE_DEF__NAME);
 	}
-	
+
 	/**
 	 * adapt the AnnotationContainer interface to the override's join columns
 	 */
@@ -381,31 +370,31 @@ public class TypeDefAnnotationImpl extends SourceAnnotation<Member>
 			JavaResourceNode parent, Member member,
 			int index, DeclarationAnnotationAdapter attributeOverridesAdapter) {
 		IndexedDeclarationAnnotationAdapter idaa = buildNestedHibernateDeclarationAnnotationAdapter(index, attributeOverridesAdapter);
-		IndexedAnnotationAdapter annotationAdapter = new MemberIndexedAnnotationAdapter(member, idaa);
+		IndexedAnnotationAdapter annotationAdapter = new ElementIndexedAnnotationAdapter(member, idaa);
 		return new TypeDefAnnotationImpl(parent, member, idaa, annotationAdapter);
 	}
-	
+
 	private static IndexedDeclarationAnnotationAdapter buildNestedHibernateDeclarationAnnotationAdapter(int index, DeclarationAnnotationAdapter hibernateTypeDefsAdapter) {
 		return new NestedIndexedDeclarationAnnotationAdapter(hibernateTypeDefsAdapter, index, Hibernate.TYPE_DEF);
 	}
-	
+
 	// ********** static methods **********
-	
+
 	private static DeclarationAnnotationElementAdapter<String> buildTypeClassAdapter() {
 		return buildTypeClassAdapter(DECLARATION_ANNOTATION_ADAPTER, Hibernate.TYPE_DEF__TYPE_CLASS);
 	}
-	
+
 	private static DeclarationAnnotationElementAdapter<String> buildDefForTypeAdapter() {
 		return buildTypeClassAdapter(DECLARATION_ANNOTATION_ADAPTER, Hibernate.TYPE_DEF__DEF_FOR_TYPE);
 	}
-	
+
 	private static DeclarationAnnotationElementAdapter<String> buildTypeClassAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
 		// TODO what about QualifiedType?
 		return buildAnnotationElementAdapter(annotationAdapter, elementName, SimpleTypeStringExpressionConverter.instance());
 	}
 
 	private static DeclarationAnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, ExpressionConverter<String> converter) {
-		return new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, false, converter);
+		return new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, converter);
 	}
 
 	public static class TypeDefAnnotationDefinition implements AnnotationDefinition
@@ -427,21 +416,21 @@ public class TypeDefAnnotationImpl extends SourceAnnotation<Member>
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-			return new TypeDefAnnotationImpl(parent, member,
-				DECLARATION_ANNOTATION_ADAPTER, new MemberAnnotationAdapter(member, DECLARATION_ANNOTATION_ADAPTER));
+		public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
+			return new TypeDefAnnotationImpl(parent, (Member) annotatedElement,
+				DECLARATION_ANNOTATION_ADAPTER, new ElementAnnotationAdapter(annotatedElement, DECLARATION_ANNOTATION_ADAPTER));
 		}
-		
+
 		public String getAnnotationName() {
 			return TypeDefAnnotation.ANNOTATION_NAME;
 		}
 
-		public Annotation buildAnnotation(JavaResourcePersistentMember arg0,
+		public Annotation buildAnnotation(JavaResourceAnnotatedElement arg0,
 				IAnnotation arg1) {
 			throw new UnsupportedOperationException();
 		}
 
-		public Annotation buildNullAnnotation(JavaResourcePersistentMember arg0) {
+		public Annotation buildNullAnnotation(JavaResourceAnnotatedElement arg0) {
 			throw new UnsupportedOperationException();
 		}
 	}

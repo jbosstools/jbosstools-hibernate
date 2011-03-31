@@ -10,13 +10,13 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
 
-import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
-import org.eclipse.jpt.ui.internal.widgets.ClassChooserPane;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
-import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserPane;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedNativeQuery;
 
@@ -24,9 +24,9 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedNativeQ
  * @author Dmitry Geraskov
  *
  */
-public class HibernateNamedNativeQueryPropertyComposite extends 
+public class HibernateNamedNativeQueryPropertyComposite extends
 	HibernateQueryPropertyComposite<HibernateNamedNativeQuery> {
-	
+
 	private ClassChooserPane<HibernateNamedNativeQuery> resultClassChooserPane;
 
 	/**
@@ -73,15 +73,15 @@ public class HibernateNamedNativeQueryPropertyComposite extends
 			}
 
 			@Override
-			protected JpaProject getJpaProject() {
-				return getSubject().getJpaProject();
+			protected IJavaProject getJavaProject() {
+				return getSubject().getJpaProject().getJavaProject();
 			}
-			
+
 			@Override
 			protected void setClassName(String className) {
 				getSubject().setResultClass(className);
 			}
-			
+
 			@Override
 			protected char getEnclosingTypeSeparator() {
 				return getSubject().getResultClassEnclosingTypeSeparator();
@@ -98,7 +98,7 @@ public class HibernateNamedNativeQueryPropertyComposite extends
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		
+
 		super.initializeLayout(container);
 
 		// Result class chooser

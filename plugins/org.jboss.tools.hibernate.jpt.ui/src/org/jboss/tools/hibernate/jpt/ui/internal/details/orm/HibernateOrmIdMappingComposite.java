@@ -10,11 +10,11 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.details.orm;
 
-import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.details.AbstractIdMappingComposite;
-import org.eclipse.jpt.ui.internal.details.orm.OrmMappingNameChooser;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.ui.details.JpaComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.AbstractIdMappingComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmMappingNameChooser;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateColumn;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmIdMapping;

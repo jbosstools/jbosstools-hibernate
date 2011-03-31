@@ -1,20 +1,20 @@
 /*******************************************************************************
-  * Copyright (c) 2008-2009 Red Hat, Inc.
-  * Distributed under license by Red Hat, Inc. All rights reserved.
-  * This program is made available under the terms of the
-  * Eclipse Public License v1.0 which accompanies this distribution,
-  * and is available at http://www.eclipse.org/legal/epl-v10.html
-  *
-  * Contributor:
-  *     Red Hat, Inc. - initial API and implementation
-  ******************************************************************************/
+ * Copyright (c) 2008-2009 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal;
 
-import java.util.List;
+import java.util.ArrayList;
 
-import org.eclipse.jpt.core.JpaAnnotationDefinitionProvider;
-import org.eclipse.jpt.core.internal.AbstractJpaAnnotationDefintionProvider;
-import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.jpa.core.JpaAnnotationDefinitionProvider;
+import org.eclipse.jpt.jpa.core.internal.AbstractJpaAnnotationDefinitionProvider;
+import org.eclipse.jpt.jpa.core.resource.java.AnnotationDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.DiscriminatorFormulaAnnotationImpl.DiscriminatorFormulaAnnotationDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.ForeignKeyAnnotationImpl.ForeignKeyAnnotationDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.GeneratedAnnotationImpl.GeneratedAnnotationDefinition;
@@ -33,8 +33,8 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeDefsAnnotat
  * @author Dmitry Geraskov
  *
  */
-public class HibernateJpaAnnotationDefinitionProvider extends AbstractJpaAnnotationDefintionProvider
-{	
+public class HibernateJpaAnnotationDefinitionProvider extends AbstractJpaAnnotationDefinitionProvider
+{
 	// singleton
 	private static final JpaAnnotationDefinitionProvider INSTANCE = new HibernateJpaAnnotationDefinitionProvider();
 
@@ -53,7 +53,7 @@ public class HibernateJpaAnnotationDefinitionProvider extends AbstractJpaAnnotat
 	}
 
 	@Override
-	protected void addTypeAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
+	protected void addTypeAnnotationDefinitionsTo(ArrayList<AnnotationDefinition> definitions) {
 		definitions.add(GenericGeneratorAnnotationDefinition.instance());
 		definitions.add(GenericGeneratorsAnnotationDefinition.instance());
 		definitions.add(TypeDefAnnotationDefinition.instance());
@@ -65,9 +65,9 @@ public class HibernateJpaAnnotationDefinitionProvider extends AbstractJpaAnnotat
 		definitions.add(DiscriminatorFormulaAnnotationDefinition.instance());
 		definitions.add(ForeignKeyAnnotationDefinition.instance());
 	}
-	
+
 	@Override
-	protected void addAttributeAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
+	protected void addAttributeAnnotationDefinitionsTo(ArrayList<AnnotationDefinition> definitions) {
 		definitions.add(GenericGeneratorAnnotationDefinition.instance());
 		definitions.add(GeneratedAnnotationDefinition.instance());
 		definitions.add(TypeDefAnnotationDefinition.instance());
@@ -75,5 +75,17 @@ public class HibernateJpaAnnotationDefinitionProvider extends AbstractJpaAnnotat
 		definitions.add(IndexAnnotationDefinition.instance());
 		definitions.add(TypeAnnotationDefinition.instance());
 		definitions.add(ForeignKeyAnnotationDefinition.instance());
+	}
+
+	@Override
+	protected void addTypeMappingAnnotationDefinitionsTo(
+			ArrayList<AnnotationDefinition> definitions) {
+	}
+
+	@Override
+	protected void addPackageAnnotationDefinitionsTo(
+			ArrayList<AnnotationDefinition> definitions) {
+		// TODO Auto-generated method stub
+
 	}
 }

@@ -14,17 +14,26 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Vector;
 
-import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.core.context.java.JavaNamedNativeQuery;
-import org.eclipse.jpt.core.context.java.JavaNamedQuery;
-import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaQueryContainer;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
-import org.eclipse.jpt.core.resource.java.NamedNativeQueryAnnotation;
-import org.eclipse.jpt.core.resource.java.NamedQueryAnnotation;
-import org.eclipse.jpt.core.resource.java.NestableAnnotation;
-import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SubIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.iterators.CompositeIterator;
+import org.eclipse.jpt.jpa.core.context.Query;
+import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.context.java.JavaQuery;
+import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaQueryContainer;
+import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.resource.java.NestableAnnotation;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedNativeQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedQuery;
@@ -34,220 +43,333 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedQ
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedQueryAnnotation;
 
 /**
- * 
+ *
  * @author Dmitry Geraskov
  *
  */
 public class HibernateJavaQueryContainerImpl extends GenericJavaQueryContainer
 implements HibernateJavaQueryContainer{
-	
-	protected final List<HibernateNamedQuery> hibernateNamedQueries;
 
-	protected final List<HibernateNamedNativeQuery> hibernateNamedNativeQueries;
+	protected final Vector<HibernateJavaNamedQuery> hibernateNamedQueries = new Vector<HibernateJavaNamedQuery>();
+	protected HibernateNamedQueryContainerAdapter hibernateNamedQueryContainerAdapter = new HibernateNamedQueryContainerAdapter();
 
-	public HibernateJavaQueryContainerImpl(JavaJpaContextNode parent) {
-		super(parent);
-		this.hibernateNamedQueries = new ArrayList<HibernateNamedQuery>();
-		this.hibernateNamedNativeQueries = new ArrayList<HibernateNamedNativeQuery>();
-	}
-	
-	public HibernateAbstractJpaFactory getJpaFactory(){
-		return (HibernateAbstractJpaFactory)super.getJpaFactory();
-	}
-	
-	public void initialize(JavaResourcePersistentMember jrpm) {
-		super.initialize(jrpm);
-		initializeHibernateNamedQueries();
-		initializeHibernateNamedNativeQueries();
-	}
-	
-	public void update(JavaResourcePersistentMember jrpm) {
-		super.update(jrpm);
-		this.updateHibernateNamedQueries();
-		this.updateHibernateNamedNativeQueries();
-	}
-	
-	// *********** Named Queries
+	protected final Vector<HibernateJavaNamedNativeQuery> hibernateNamedNativeQueries = new Vector<HibernateJavaNamedNativeQuery>();
+	protected HibernateNamedNativeQueryContainerAdapter hibernateNamedNativeQueryContainerAdapter = new HibernateNamedNativeQueryContainerAdapter();
 
-	protected void initializeHibernateNamedQueries() {
-		for (Iterator<NestableAnnotation> stream = this.javaResourcePersistentMember.
-					annotations(
-						HibernateNamedQueryAnnotation.ANNOTATION_NAME, 
-						HibernateNamedQueriesAnnotation.ANNOTATION_NAME); 
-					stream.hasNext(); ) {
-			this.hibernateNamedQueries.add(buildHibernateNamedQuery((NamedQueryAnnotation) stream.next()));
-		}
+
+	public HibernateJavaQueryContainerImpl(JavaJpaContextNode parent, Owner owner) {
+		super(parent, owner);
+		this.initializeHibernateNamedQueries();
+		this.initializeHibernateNamedNativeQueries();
 	}
-	
-	protected void updateHibernateNamedQueries() {
-		ListIterator<HibernateNamedQuery> queries = hibernateNamedQueries();
-		Iterator<NestableAnnotation> resourceNamedQueries = 
-				this.javaResourcePersistentMember.annotations(
-						HibernateNamedQueryAnnotation.ANNOTATION_NAME, 
-						HibernateNamedQueriesAnnotation.ANNOTATION_NAME);
-		
-		while (queries.hasNext()) {
-			HibernateNamedQuery namedQuery = queries.next();
-			if (resourceNamedQueries.hasNext()) {
-				namedQuery.update((NamedQueryAnnotation) resourceNamedQueries.next());
-			}
-			else {
-				removeHibernateNamedQuery_(namedQuery);
-			}
-		}
-		
-		while (resourceNamedQueries.hasNext()) {
-			addHibernateNamedQuery(buildHibernateNamedQuery((NamedQueryAnnotation) resourceNamedQueries.next()));
-		}
-	}	
-	
-	public HibernateNamedQuery addHibernateNamedQuery(int index) {
-		HibernateNamedQuery namedQuery = getJpaFactory().buildHibernateJavaNamedQuery(this);
-		this.hibernateNamedQueries.add(index, namedQuery);
-		NamedQueryAnnotation namedQueryAnnotation = 
-				(NamedQueryAnnotation) this.javaResourcePersistentMember.
-					addAnnotation(
-						index, HibernateNamedQueryAnnotation.ANNOTATION_NAME, 
-						HibernateNamedQueriesAnnotation.ANNOTATION_NAME);
-		namedQuery.initialize(namedQueryAnnotation);
-		fireItemAdded(HIBERNATE_NAMED_QUERIES_LIST, index, namedQuery);
-		return namedQuery;
+
+	@Override
+	protected HibernateAbstractJpaFactory getJpaFactory() {
+		return (HibernateAbstractJpaFactory) super.getJpaFactory();
 	}
-	
-	public ListIterator<HibernateNamedQuery> hibernateNamedQueries() {
-		return new CloneListIterator<HibernateNamedQuery>(this.hibernateNamedQueries);
+
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.syncHibernateNamedQueries();
+		this.syncHibernateNamedNativeQueries();
+	}
+
+	@Override
+	public void update() {
+		super.update();
+		this.updateNodes(this.getHibernateNamedQueries());
+		this.updateNodes(this.getHibernateNamedNativeQueries());
+	}
+
+
+	// ********** hibernateNamed queries **********
+
+	public ListIterator<HibernateJavaNamedQuery> hibernateNamedQueries() {
+		return this.getHibernateNamedQueries().iterator();
+	}
+
+	protected ListIterable<HibernateJavaNamedQuery> getHibernateNamedQueries() {
+		return new LiveCloneListIterable<HibernateJavaNamedQuery>(this.hibernateNamedQueries);
 	}
 
 	public int hibernateNamedQueriesSize() {
 		return this.hibernateNamedQueries.size();
 	}
 
-	public void removeHibernateNamedQuery(int index) {
-		JavaNamedQuery removedNamedQuery = this.hibernateNamedQueries.remove(index);
-		this.javaResourcePersistentMember.removeAnnotation(
-				index, HibernateNamedQueryAnnotation.ANNOTATION_NAME, HibernateNamedQueriesAnnotation.ANNOTATION_NAME);
-		fireItemRemoved(HIBERNATE_NAMED_QUERIES_LIST, index, removedNamedQuery);
+	public HibernateNamedQuery addHibernateNamedQuery() {
+		return this.addHibernateNamedQuery(this.hibernateNamedQueries.size());
 	}
 
-	public void removeHibernateNamedQuery(HibernateNamedQuery namedQuery) {
-		removeHibernateNamedQuery(this.hibernateNamedQueries.indexOf(namedQuery));
+	public HibernateJavaNamedQuery addHibernateNamedQuery(int index) {
+		HibernateNamedQueryAnnotation annotation = this.buildHibernateNamedQueryAnnotation(index);
+		return this.addHibernateNamedQuery_(index, annotation);
 	}
-	
-	protected void removeHibernateNamedQuery_(HibernateNamedQuery namedQuery) {
-		removeItemFromList(namedQuery, this.hibernateNamedQueries, HIBERNATE_NAMED_QUERIES_LIST);
+
+	protected HibernateNamedQueryAnnotation buildHibernateNamedQueryAnnotation(int index) {
+		return (HibernateNamedQueryAnnotation) this.owner.getResourceAnnotatedElement().addAnnotation(index, HibernateNamedQueryAnnotation.ANNOTATION_NAME, HibernateNamedQueriesAnnotation.ANNOTATION_NAME);
+	}
+
+	public void removeHibernateNamedQuery(HibernateNamedQuery hibernateNamedQuery) {
+		this.removeHibernateNamedQuery(this.hibernateNamedQueries.indexOf(hibernateNamedQuery));
+	}
+
+	public void removeHibernateNamedQuery(int index) {
+		this.owner.getResourceAnnotatedElement().removeAnnotation(index, HibernateNamedQueryAnnotation.ANNOTATION_NAME, HibernateNamedQueriesAnnotation.ANNOTATION_NAME);
+		this.removeHibernateNamedQuery_(index);
+	}
+
+	protected void removeHibernateNamedQuery_(int index) {
+		this.removeItemFromList(index, this.hibernateNamedQueries, NAMED_QUERIES_LIST);
 	}
 
 	public void moveHibernateNamedQuery(int targetIndex, int sourceIndex) {
-		CollectionTools.move(this.hibernateNamedQueries, targetIndex, sourceIndex);
-		this.javaResourcePersistentMember.moveAnnotation(
-				targetIndex, sourceIndex, HibernateNamedQueriesAnnotation.ANNOTATION_NAME);
-		fireItemMoved(HIBERNATE_NAMED_QUERIES_LIST, targetIndex, sourceIndex);
+		this.owner.getResourceAnnotatedElement().moveAnnotation(targetIndex, sourceIndex, HibernateNamedQueriesAnnotation.ANNOTATION_NAME);
+		this.moveItemInList(targetIndex, sourceIndex, this.hibernateNamedQueries, NAMED_QUERIES_LIST);
 	}
-	
-	protected void addHibernateNamedQuery(int index, HibernateNamedQuery hibernateNamedQuery) {
-		addItemToList(index, hibernateNamedQuery, this.hibernateNamedQueries, HIBERNATE_NAMED_QUERIES_LIST);
+
+	protected void initializeHibernateNamedQueries() {
+		for (HibernateNamedQueryAnnotation annotation : this.getHibernateNamedQueryAnnotations()) {
+			this.hibernateNamedQueries.add(this.buildHibernateNamedQuery(annotation));
+		}
 	}
-	
-	protected void addHibernateNamedQuery(HibernateNamedQuery hibernateNamedQuery) {
-		this.addHibernateNamedQuery(this.hibernateNamedQueries.size(), hibernateNamedQuery);
+
+	protected HibernateJavaNamedQuery buildHibernateNamedQuery(HibernateNamedQueryAnnotation hibernateNamedQueryAnnotation) {
+		return this.getJpaFactory().buildHibernateJavaNamedQuery(this, hibernateNamedQueryAnnotation);
 	}
-	
-	protected HibernateNamedQuery buildHibernateNamedQuery(NamedQueryAnnotation namedQueryResource) {
-		HibernateNamedQuery namedQuery = getJpaFactory().buildHibernateJavaNamedQuery(this);
-		namedQuery.initialize(namedQueryResource);
-		return namedQuery;
+
+	protected void syncHibernateNamedQueries() {
+		ContextContainerTools.synchronizeWithResourceModel(this.hibernateNamedQueryContainerAdapter);
+	}
+
+	protected Iterable<HibernateNamedQueryAnnotation> getHibernateNamedQueryAnnotations() {
+		return new SubIterableWrapper<NestableAnnotation, HibernateNamedQueryAnnotation>(
+				CollectionTools.iterable(this.hibernateNamedQueryAnnotations())
+			);
+	}
+
+	protected Iterator<NestableAnnotation> hibernateNamedQueryAnnotations() {
+		return this.owner.getResourceAnnotatedElement().annotations(HibernateNamedQueryAnnotation.ANNOTATION_NAME, HibernateNamedQueriesAnnotation.ANNOTATION_NAME);
+	}
+
+	protected void moveHibernateNamedQuery_(int index, HibernateJavaNamedQuery hibernateNamedQuery) {
+		this.moveItemInList(index, hibernateNamedQuery, this.hibernateNamedQueries, NAMED_QUERIES_LIST);
+	}
+
+	protected HibernateJavaNamedQuery addHibernateNamedQuery_(int index, HibernateNamedQueryAnnotation hibernateNamedQueryAnnotation) {
+		HibernateJavaNamedQuery query = this.buildHibernateNamedQuery(hibernateNamedQueryAnnotation);
+		this.addItemToList(index, query, this.hibernateNamedQueries, NAMED_QUERIES_LIST);
+		return query;
+	}
+
+	protected void removeHibernateNamedQuery_(HibernateNamedQuery hibernateNamedQuery) {
+		this.removeHibernateNamedQuery_(this.hibernateNamedQueries.indexOf(hibernateNamedQuery));
+	}
+
+	/**
+	 * hibernateNamed query container adapter
+	 */
+	protected class HibernateNamedQueryContainerAdapter
+		implements ContextContainerTools.Adapter<HibernateJavaNamedQuery, HibernateNamedQueryAnnotation>
+	{
+		public Iterable<HibernateJavaNamedQuery> getContextElements() {
+			return HibernateJavaQueryContainerImpl.this.getHibernateNamedQueries();
+		}
+		public Iterable<HibernateNamedQueryAnnotation> getResourceElements() {
+			return HibernateJavaQueryContainerImpl.this.getHibernateNamedQueryAnnotations();
+		}
+		public HibernateNamedQueryAnnotation getResourceElement(HibernateJavaNamedQuery contextElement) {
+			return contextElement.getQueryAnnotation();
+		}
+		public void moveContextElement(int index, HibernateJavaNamedQuery element) {
+			HibernateJavaQueryContainerImpl.this.moveHibernateNamedQuery_(index, element);
+		}
+		public void addContextElement(int index, HibernateNamedQueryAnnotation resourceElement) {
+			HibernateJavaQueryContainerImpl.this.addHibernateNamedQuery_(index, resourceElement);
+		}
+		public void removeContextElement(HibernateJavaNamedQuery element) {
+			HibernateJavaQueryContainerImpl.this.removeHibernateNamedQuery_(element);
+		}
 	}
 
 
-	// *********** Native Queries
-	
-	protected void initializeHibernateNamedNativeQueries() {
-		for (Iterator<NestableAnnotation> stream = this.javaResourcePersistentMember.
-					annotations(
-						HibernateNamedNativeQueryAnnotation.ANNOTATION_NAME, 
-						HibernateNamedNativeQueriesAnnotation.ANNOTATION_NAME); 
-					stream.hasNext(); ) {
-			this.hibernateNamedNativeQueries.add(buildHibernateNamedNativeQuery((NamedNativeQueryAnnotation) stream.next()));
-		}
-	}
-	
-	protected void updateHibernateNamedNativeQueries() {
-		ListIterator<HibernateNamedNativeQuery> queries = hibernateNamedNativeQueries();
-		Iterator<NestableAnnotation> resourceNamedNativeQueries = 
-				this.javaResourcePersistentMember.annotations(
-						HibernateNamedNativeQueryAnnotation.ANNOTATION_NAME, 
-						HibernateNamedNativeQueriesAnnotation.ANNOTATION_NAME);
-		
-		while (queries.hasNext()) {
-			HibernateNamedNativeQuery namedQuery = queries.next();
-			if (resourceNamedNativeQueries.hasNext()) {
-				namedQuery.update((NamedNativeQueryAnnotation) resourceNamedNativeQueries.next());
-			}
-			else {
-				removeHibernateNamedNativeQuery_(namedQuery);
-			}
-		}
-		
-		while (resourceNamedNativeQueries.hasNext()) {
-			addHibernateNamedNativeQuery(buildHibernateNamedNativeQuery((HibernateNamedNativeQueryAnnotation) resourceNamedNativeQueries.next()));
-		}
-	}
-	
-	protected HibernateNamedNativeQuery buildHibernateNamedNativeQuery(NamedNativeQueryAnnotation namedNativeQueryResource) {
-		HibernateNamedNativeQuery namedNativeQuery = getJpaFactory().buildHibernateJavaNamedNativeQuery(this);
-		namedNativeQuery.initialize(namedNativeQueryResource);
-		return namedNativeQuery;
-	}
-	
-	public HibernateNamedNativeQuery addHibernateNamedNativeQuery(int index) {
-		HibernateNamedNativeQuery namedNativeQuery = getJpaFactory().buildHibernateJavaNamedNativeQuery(this);
-		this.hibernateNamedNativeQueries.add(index, namedNativeQuery);
-		NamedNativeQueryAnnotation namedNativeQueryAnnotation = 
-				(NamedNativeQueryAnnotation) this.javaResourcePersistentMember.
-					addAnnotation(
-						index, HibernateNamedNativeQueryAnnotation.ANNOTATION_NAME, 
-						HibernateNamedNativeQueriesAnnotation.ANNOTATION_NAME);
-		namedNativeQuery.initialize(namedNativeQueryAnnotation);		
-		fireItemAdded(HIBERNATE_NAMED_NATIVE_QUERIES_LIST, index, namedNativeQuery);
-		return namedNativeQuery;
-	}
-	
-	protected void addHibernateNamedNativeQuery(int index, HibernateNamedNativeQuery namedNativeQuery) {
-		addItemToList(index, namedNativeQuery, this.hibernateNamedNativeQueries, HIBERNATE_NAMED_NATIVE_QUERIES_LIST);
-	}
-	
-	protected void addHibernateNamedNativeQuery(HibernateNamedNativeQuery namedNativeQuery) {
-		this.addHibernateNamedNativeQuery(this.hibernateNamedNativeQueries.size(), namedNativeQuery);
+	// ********** hibernateNamed native queries **********
+
+	public ListIterator<HibernateJavaNamedNativeQuery> hibernateNamedNativeQueries() {
+		return this.getHibernateNamedNativeQueries().iterator();
 	}
 
-	public ListIterator<HibernateNamedNativeQuery> hibernateNamedNativeQueries() {
-		return new CloneListIterator<HibernateNamedNativeQuery>(this.hibernateNamedNativeQueries);
+	protected ListIterable<HibernateJavaNamedNativeQuery> getHibernateNamedNativeQueries() {
+		return new LiveCloneListIterable<HibernateJavaNamedNativeQuery>(this.hibernateNamedNativeQueries);
 	}
 
 	public int hibernateNamedNativeQueriesSize() {
 		return this.hibernateNamedNativeQueries.size();
 	}
 
-	public void removeHibernateNamedNativeQuery(int index) {
-		JavaNamedNativeQuery removedNamedQuery = this.hibernateNamedNativeQueries.remove(index);
-		this.javaResourcePersistentMember.removeAnnotation(
-				index, HibernateNamedNativeQueryAnnotation.ANNOTATION_NAME, HibernateNamedNativeQueriesAnnotation.ANNOTATION_NAME);
-		fireItemRemoved(HIBERNATE_NAMED_NATIVE_QUERIES_LIST, index, removedNamedQuery);
+	public HibernateNamedNativeQuery addHibernateNamedNativeQuery() {
+		return this.addHibernateNamedNativeQuery(this.hibernateNamedNativeQueries.size());
 	}
 
-	public void removeHibernateNamedNativeQuery(HibernateNamedNativeQuery namedQuery) {
-		removeHibernateNamedNativeQuery(this.hibernateNamedNativeQueries.indexOf(namedQuery));
+	public HibernateJavaNamedNativeQuery addHibernateNamedNativeQuery(int index) {
+		HibernateNamedNativeQueryAnnotation annotation = this.buildHibernateNamedNativeQueryAnnotation(index);
+		return this.addHibernateNamedNativeQuery_(index, annotation);
 	}
-	
-	protected void removeHibernateNamedNativeQuery_(HibernateNamedNativeQuery namedQuery) {
-		removeItemFromList(namedQuery, this.hibernateNamedNativeQueries, HIBERNATE_NAMED_NATIVE_QUERIES_LIST);
+
+	protected HibernateNamedNativeQueryAnnotation buildHibernateNamedNativeQueryAnnotation(int index) {
+		return (HibernateNamedNativeQueryAnnotation) this.owner.getResourceAnnotatedElement().addAnnotation(index, HibernateNamedNativeQueryAnnotation.ANNOTATION_NAME, HibernateNamedNativeQueriesAnnotation.ANNOTATION_NAME);
+	}
+
+	public void removeHibernateNamedNativeQuery(HibernateNamedNativeQuery hibernateNamedNativeQuery) {
+		this.removeHibernateNamedNativeQuery(this.hibernateNamedNativeQueries.indexOf(hibernateNamedNativeQuery));
+	}
+
+	public void removeHibernateNamedNativeQuery(int index) {
+		this.owner.getResourceAnnotatedElement().removeAnnotation(index, HibernateNamedNativeQueryAnnotation.ANNOTATION_NAME, HibernateNamedNativeQueriesAnnotation.ANNOTATION_NAME);
+		this.removeHibernateNamedNativeQuery_(index);
+	}
+
+	protected void removeHibernateNamedNativeQuery_(int index) {
+		this.removeItemFromList(index, this.hibernateNamedNativeQueries, NAMED_NATIVE_QUERIES_LIST);
 	}
 
 	public void moveHibernateNamedNativeQuery(int targetIndex, int sourceIndex) {
-		CollectionTools.move(this.hibernateNamedNativeQueries, targetIndex, sourceIndex);
-		this.javaResourcePersistentMember.moveAnnotation(
-				targetIndex, sourceIndex, HibernateNamedNativeQueriesAnnotation.ANNOTATION_NAME);
-		fireItemMoved(HIBERNATE_NAMED_NATIVE_QUERIES_LIST, targetIndex, sourceIndex);
+		this.owner.getResourceAnnotatedElement().moveAnnotation(targetIndex, sourceIndex, HibernateNamedNativeQueriesAnnotation.ANNOTATION_NAME);
+		this.moveItemInList(targetIndex, sourceIndex, this.hibernateNamedNativeQueries, NAMED_NATIVE_QUERIES_LIST);
 	}
 
+	protected void initializeHibernateNamedNativeQueries() {
+		for (HibernateNamedNativeQueryAnnotation annotation : this.getHibernateNamedNativeQueryAnnotations()) {
+			this.hibernateNamedNativeQueries.add(this.buildHibernateNamedNativeQuery(annotation));
+		}
+	}
+
+	protected HibernateJavaNamedNativeQuery buildHibernateNamedNativeQuery(HibernateNamedNativeQueryAnnotation hibernateNamedNativeQueryAnnotation) {
+		return this.getJpaFactory().buildHibernateJavaNamedNativeQuery(this, hibernateNamedNativeQueryAnnotation);
+	}
+
+	protected void syncHibernateNamedNativeQueries() {
+		ContextContainerTools.synchronizeWithResourceModel(this.hibernateNamedNativeQueryContainerAdapter);
+	}
+
+	protected Iterable<HibernateNamedNativeQueryAnnotation> getHibernateNamedNativeQueryAnnotations() {
+		return new SubIterableWrapper<NestableAnnotation, HibernateNamedNativeQueryAnnotation>(
+				CollectionTools.iterable(this.hibernateNamedNativeQueryAnnotations())
+			);
+	}
+
+	protected Iterator<NestableAnnotation> hibernateNamedNativeQueryAnnotations() {
+		return this.owner.getResourceAnnotatedElement().annotations(HibernateNamedNativeQueryAnnotation.ANNOTATION_NAME, HibernateNamedNativeQueriesAnnotation.ANNOTATION_NAME);
+	}
+
+	protected void moveHibernateNamedNativeQuery_(int index, HibernateJavaNamedNativeQuery hibernateNamedNativeQuery) {
+		this.moveItemInList(index, hibernateNamedNativeQuery, this.hibernateNamedNativeQueries, NAMED_NATIVE_QUERIES_LIST);
+	}
+
+	protected HibernateJavaNamedNativeQuery addHibernateNamedNativeQuery_(int index, HibernateNamedNativeQueryAnnotation hibernateNamedNativeQueryAnnotation) {
+		HibernateJavaNamedNativeQuery query = this.buildHibernateNamedNativeQuery(hibernateNamedNativeQueryAnnotation);
+		this.addItemToList(index, query, this.hibernateNamedNativeQueries, NAMED_NATIVE_QUERIES_LIST);
+		return query;
+	}
+
+	protected void removeHibernateNamedNativeQuery_(HibernateNamedNativeQuery hibernateNamedNativeQuery) {
+		this.removeHibernateNamedNativeQuery_(this.hibernateNamedNativeQueries.indexOf(hibernateNamedNativeQuery));
+	}
+
+	/**
+	 * hibernateNamed native query container adapter
+	 */
+	protected class HibernateNamedNativeQueryContainerAdapter
+		implements ContextContainerTools.Adapter<HibernateJavaNamedNativeQuery, HibernateNamedNativeQueryAnnotation>
+	{
+		public Iterable<HibernateJavaNamedNativeQuery> getContextElements() {
+			return HibernateJavaQueryContainerImpl.this.getHibernateNamedNativeQueries();
+		}
+		public Iterable<HibernateNamedNativeQueryAnnotation> getResourceElements() {
+			return HibernateJavaQueryContainerImpl.this.getHibernateNamedNativeQueryAnnotations();
+		}
+		public HibernateNamedNativeQueryAnnotation getResourceElement(HibernateJavaNamedNativeQuery contextElement) {
+			return contextElement.getQueryAnnotation();
+		}
+		public void moveContextElement(int index, HibernateJavaNamedNativeQuery element) {
+			HibernateJavaQueryContainerImpl.this.moveHibernateNamedNativeQuery_(index, element);
+		}
+		public void addContextElement(int index, HibernateNamedNativeQueryAnnotation resourceElement) {
+			HibernateJavaQueryContainerImpl.this.addHibernateNamedNativeQuery_(index, resourceElement);
+		}
+		public void removeContextElement(HibernateJavaNamedNativeQuery element) {
+			HibernateJavaQueryContainerImpl.this.removeHibernateNamedNativeQuery_(element);
+		}
+	}
+
+
+	// ********** validation **********
+
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		this.validateQueries(messages, astRoot);
+	}
+
+	@Override
+	protected void validateQueries(List<IMessage> messages, CompilationUnit astRoot) {
+		for (Iterator<JavaQuery> localQueries = this.queries(); localQueries.hasNext(); ) {
+			JavaQuery localQuery = localQueries.next();
+			String name = localQuery.getName();
+			if (StringTools.stringIsEmpty(name)){
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.QUERY_NAME_UNDEFINED,
+							new String[] {},
+							localQuery,
+							localQuery.getNameTextRange(astRoot)
+						)
+					);
+			} else {
+				List<String> reportedNames = new ArrayList<String>();
+				for (Iterator<Query> globalQueries = this.getPersistenceUnit().queries(); globalQueries.hasNext(); ) {
+					if (localQuery.duplicates(globalQueries.next()) && !reportedNames.contains(name)) {
+						messages.add(
+							DefaultJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JpaValidationMessages.QUERY_DUPLICATE_NAME,
+								new String[] {name},
+								localQuery,
+								localQuery.getNameTextRange(astRoot)
+							)
+						);
+						reportedNames.add(name);
+					}
+				}
+			}
+			String query = localQuery.getQuery();
+			if (StringTools.stringIsEmpty(query)){
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JpaValidationMessages.QUERY_STATEMENT_UNDEFINED,
+								new String[] {name},
+								localQuery,
+								localQuery.getNameTextRange(astRoot)
+						)
+				);
+			}
+		}
+	}
+
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public Iterator<JavaQuery> queries() {
+		return new CompositeIterator<JavaQuery>(this.hibernateNamedNativeQueries(), this.hibernateNamedQueries());
+	}
+
+	@Override
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+		return this.owner.getResourceAnnotatedElement().getTextRange(astRoot);
+	}
 }

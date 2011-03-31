@@ -10,18 +10,17 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
-import org.eclipse.jpt.core.context.java.JavaNamedQuery;
+import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedQueryAnnotation;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public interface HibernateNamedQuery extends JavaNamedQuery, HibernateQuery {
-	
-	String HIBERNATE_NAMED_QUERY="hibernateNamedQuery"; //$NON-NLS-1$
-		
-	void initialize(HibernateNamedQueryAnnotation resourceNamedQuery);
+public interface HibernateNamedQuery extends NamedQuery, HibernateQuery {
 
-	void update(HibernateNamedQueryAnnotation resourceNamedQuery);
+	String HIBERNATE_NAMED_QUERY="hibernateNamedQuery"; //$NON-NLS-1$
+
+	HibernateNamedQueryAnnotation getQueryAnnotation();
+
 }

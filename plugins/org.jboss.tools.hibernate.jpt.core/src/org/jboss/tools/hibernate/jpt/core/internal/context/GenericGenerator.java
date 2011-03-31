@@ -12,7 +12,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context;
 
 import java.util.ListIterator;
 
-import org.eclipse.jpt.core.context.Generator;
+import org.eclipse.jpt.jpa.core.context.Generator;
 
 /**
  * @author Dmitry Geraskov

@@ -1,14 +1,23 @@
+/*******************************************************************************
+ * Copyright (c) 2011 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.java.AbstractJavaManyToOneMapping;
-import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaManyToOneMapping;
+import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
@@ -16,10 +25,14 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.ForeignKey;
 import org.jboss.tools.hibernate.jpt.core.internal.context.ForeignKeyHolder;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
-import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 
+/**
+ *
+ * @author Dmitry Geraskov (geraskov@gmail.com)
+ *
+ */
 public abstract class AbstractHibernateJavaManyToOneMapping extends
-		AbstractJavaManyToOneMapping implements ForeignKeyHolder {
+AbstractJavaManyToOneMapping implements ForeignKeyHolder {
 
 	protected ForeignKey foreignKey;
 
@@ -27,11 +40,11 @@ public abstract class AbstractHibernateJavaManyToOneMapping extends
 		super(parent);
 	}
 
-	@Override
+	/*@Override
 	protected void addSupportingAnnotationNamesTo(Vector<String> names) {
 		super.addSupportingAnnotationNamesTo(names);
 		names.add(Hibernate.FOREIGN_KEY);
-	}
+	}*/
 
 	@Override
 	protected HibernateAbstractJpaFactory getJpaFactory() {
@@ -39,13 +52,13 @@ public abstract class AbstractHibernateJavaManyToOneMapping extends
 	}
 
 	@Override
-	protected void initialize() {
-		super.initialize();
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
 		this.initializeForeignKey();
 	}
 
 	@Override
-	protected void update() {
+	public void update() {
 		super.update();
 		this.updateForeignKey();
 	}
@@ -80,7 +93,7 @@ public abstract class AbstractHibernateJavaManyToOneMapping extends
 		}
 		this.foreignKey = getJpaFactory().buildForeignKey(this);
 		ForeignKeyAnnotation foreignKeyResource = (ForeignKeyAnnotation) getResourcePersistentAttribute()
-				.addAnnotation(ForeignKeyAnnotation.ANNOTATION_NAME);
+		.addAnnotation(ForeignKeyAnnotation.ANNOTATION_NAME);
 		this.foreignKey.initialize(foreignKeyResource);
 		firePropertyChanged(FOREIGN_KEY_PROPERTY, null, this.foreignKey);
 		return this.foreignKey;
@@ -99,7 +112,7 @@ public abstract class AbstractHibernateJavaManyToOneMapping extends
 	public void removeForeignKey() {
 		if (getForeignKey() == null) {
 			throw new IllegalStateException(
-					"foreignKey does not exist, cannot be removed"); //$NON-NLS-1$
+			"foreignKey does not exist, cannot be removed"); //$NON-NLS-1$
 		}
 		ForeignKey oldForeignKey = this.foreignKey;
 		this.foreignKey = null;
@@ -116,7 +129,7 @@ public abstract class AbstractHibernateJavaManyToOneMapping extends
 
 	protected ForeignKeyAnnotation getResourceForeignKey() {
 		return (ForeignKeyAnnotation) this.getResourcePersistentAttribute()
-				.getAnnotation(ForeignKeyAnnotation.ANNOTATION_NAME);
+		.getAnnotation(ForeignKeyAnnotation.ANNOTATION_NAME);
 	}
 
 	public Table getForeignKeyDbTable() {
@@ -133,16 +146,16 @@ public abstract class AbstractHibernateJavaManyToOneMapping extends
 	protected void validateForeignKey(List<IMessage> messages,
 			CompilationUnit astRoot) {
 		Table table = getTypeMapping().getPrimaryDbTable();
-		if (!shouldValidateAgainstDatabase() || foreignKey == null
+		if (!validatesAgainstDatabase() || this.foreignKey == null
 				|| table == null) {
 			return;
 		}
-		Iterator<org.eclipse.jpt.db.ForeignKey> fks = table.getForeignKeys()
-				.iterator();
+		Iterator<org.eclipse.jpt.jpa.db.ForeignKey> fks = table.getForeignKeys()
+		.iterator();
 		while (fks.hasNext()) {
-			org.eclipse.jpt.db.ForeignKey fk = (org.eclipse.jpt.db.ForeignKey) fks
-					.next();
-			if (foreignKey.getName().equals(fk.getIdentifier())) {
+			org.eclipse.jpt.jpa.db.ForeignKey fk = fks
+			.next();
+			if (this.foreignKey.getName().equals(fk.getIdentifier())) {
 				return;
 			}
 		}
@@ -150,8 +163,8 @@ public abstract class AbstractHibernateJavaManyToOneMapping extends
 				astRoot);
 		IMessage message = new LocalMessage(IMessage.HIGH_SEVERITY,
 				Messages.UNRESOLVED_FOREIGN_KEY_NAME, new String[] {
-						foreignKey.getName(),
-						getTypeMapping().getPrimaryTableName() },
+				this.foreignKey.getName(),
+				getTypeMapping().getPrimaryTableName() },
 				this.foreignKey);
 		message.setLineNo(textRange.getLineNumber());
 		message.setOffset(textRange.getOffset());

@@ -10,16 +10,33 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
-import org.eclipse.jpt.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.TypeMapping;
+import org.eclipse.jpt.jpa.db.Table;
 
 /**
  * @author Dmitry Geraskov
  *
  */
 public interface DiscriminatorFormula extends JpaContextNode {
-	
+
 	String getValue();
 	void setValue(String value);
 		String VALUE_PROPERTY = "value"; //$NON-NLS-1$
+
+		/**
+		 * interface allowing columns to be used in multiple places
+		 */
+		interface Owner
+		{
+
+			Table resolveDbTable(String tableName);
+
+			TypeMapping getTypeMapping();
+
+			String getDefaultTableName();
+
+			//JptValidator buildFormulaValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver);
+		}
 
 }

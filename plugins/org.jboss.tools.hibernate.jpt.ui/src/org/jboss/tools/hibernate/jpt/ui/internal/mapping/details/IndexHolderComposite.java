@@ -11,9 +11,9 @@
 
 package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
 
-import org.eclipse.jpt.ui.internal.widgets.Pane;
-import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.IndexHolder;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaIndex;

@@ -14,13 +14,15 @@ import java.util.Vector;
 
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.resource.java.source.AnnotationContainerTools;
-import org.eclipse.jpt.core.internal.resource.java.source.SourceAnnotation;
-import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.utility.jdt.Member;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.Member;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
+import org.eclipse.jpt.jpa.core.internal.resource.java.source.AnnotationContainerTools;
+import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.jpa.core.resource.java.NestableAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 
 /**
@@ -52,54 +54,68 @@ public class HibernateSourceNamedQueriesAnnotation extends SourceAnnotation<Memb
 	}
 
 	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				this.hibernateNamedQueries.isEmpty();
+	}
+
+	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.hibernateNamedQueries);
 	}
-	
+
 	// ********** AnnotationContainer implementation **********
 	public String getElementName() {
 		return Hibernate.NAMED_QUERIES__VALUE;
 	}
-	
+
 	public String getNestedAnnotationName() {
 		return HibernateNamedQueryAnnotation.ANNOTATION_NAME;
-	}	
+	}
 
-	public String getContainerAnnotationName() {
-		return this.getAnnotationName();
-	}
-	
 	public Iterable<HibernateNamedQueryAnnotation> getNestedAnnotations() {
-		return this.hibernateNamedQueries;
+		return new LiveCloneIterable<HibernateNamedQueryAnnotation>(this.hibernateNamedQueries);
 	}
-	
+
 	public int getNestedAnnotationsSize() {
 		return this.hibernateNamedQueries.size();
 	}
-	
+
+	public void nestStandAloneAnnotation(NestableAnnotation standAloneAnnotation) {
+		this.nestStandAloneAnnotation(standAloneAnnotation, this.hibernateNamedQueries.size());
+	}
+
+	private void nestStandAloneAnnotation(NestableAnnotation standAloneAnnotation, int index) {
+		standAloneAnnotation.convertToNested(this, this.daa, index);
+	}
+
+	public void addNestedAnnotation(int index, NestableAnnotation annotation) {
+		this.hibernateNamedQueries.add(index, (HibernateNamedQueryAnnotation) annotation);
+	}
+
+	public void convertLastNestedAnnotationToStandAlone() {
+		this.hibernateNamedQueries.remove(0).convertToStandAlone();
+	}
+
 	public HibernateNamedQueryAnnotation addNestedAnnotation() {
 		return this.addNestedAnnotation(this.hibernateNamedQueries.size());
 	}
-	
+
 	private HibernateNamedQueryAnnotation addNestedAnnotation(int index) {
 		HibernateNamedQueryAnnotation namedQuery = this.buildHibernateNamedQuery(index);
 		this.hibernateNamedQueries.add(namedQuery);
 		return namedQuery;
 	}
-	
+
 	public void syncAddNestedAnnotation(Annotation astAnnotation) {
 		int index = this.hibernateNamedQueries.size();
 		HibernateNamedQueryAnnotation namedQuery = this.addNestedAnnotation(index);
 		namedQuery.initialize((CompilationUnit) astAnnotation.getRoot());
 		this.fireItemAdded(HIBERNATE_NAMED_QUERIES_LIST, index, namedQuery);
 	}
-	
-	private HibernateNamedQueryAnnotation buildHibernateNamedQuery(int index) {
-		return HibernateSourceNamedQueryAnnotation.createNestedHibernateNamedQuery(this, member, index, this.daa);
-	}
 
-	public org.eclipse.jdt.core.dom.Annotation getContainerJdtAnnotation(CompilationUnit astRoot) {
-		return this.getAstAnnotation(astRoot);
+	private HibernateNamedQueryAnnotation buildHibernateNamedQuery(int index) {
+		return HibernateSourceNamedQueryAnnotation.createNestedHibernateNamedQuery(this.parent, this.annotatedElement, index, this.daa);
 	}
 
 	public HibernateNamedQueryAnnotation moveNestedAnnotation(int targetIndex, int sourceIndex) {

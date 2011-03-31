@@ -13,19 +13,18 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 import java.util.List;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.java.JavaEntity;
-import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaTable;
-import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
-import org.eclipse.jpt.db.Schema;
+import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaTable;
+import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.hibernate.cfg.NamingStrategy;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
-import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
+import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 
 /**
  * @author Dmitry Geraskov
@@ -35,19 +34,19 @@ public class HibernateJavaTableImpl extends GenericJavaTable implements Hibernat
 
 	protected String defaultDBTableName;
 
-	public HibernateJavaTableImpl(JavaEntity parent) {
-		super(parent);
+	public HibernateJavaTableImpl(JavaEntity parent, Owner owner) {
+		super(parent, owner);
 	}
 
 	@Override
-	public void initialize(JavaResourcePersistentMember pr) {
-		super.initialize(pr);
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
 		this.defaultDBTableName = buildDefaultDBTableName();
 	}
 
 	@Override
-	public void update(JavaResourcePersistentMember jrpm) {
-		super.update(jrpm);
+	public void update() {
+		super.update();
 		setDefaultDBTableName(buildDefaultDBTableName());
 	}
 
@@ -57,16 +56,18 @@ public class HibernateJavaTableImpl extends GenericJavaTable implements Hibernat
 	}
 
 	@Override
-	public org.eclipse.jpt.db.Table getDbTable() {
+	public org.eclipse.jpt.jpa.db.Table getDbTable() {
 		Schema dbSchema = this.getDbSchema();
 		return (dbSchema == null) ? null : dbSchema.getTableForIdentifier(getDBTableName());
 	}
 
+	@Override
 	public String getDBTableName(){
 		return getSpecifiedDBTableName() != null ? getSpecifiedDBTableName()
 				: getDefaultDBTableName();
 	}
 
+	@Override
 	public String getSpecifiedDBTableName() {
 		if (getSpecifiedName() == null) return null;
 		NamingStrategy ns = getJpaProject().getNamingStrategy();
@@ -97,6 +98,7 @@ public class HibernateJavaTableImpl extends GenericJavaTable implements Hibernat
 		return this.getDefaultName();
 	}
 
+	@Override
 	public String getDefaultDBTableName() {
 		return this.defaultDBTableName;
 	}
@@ -107,42 +109,43 @@ public class HibernateJavaTableImpl extends GenericJavaTable implements Hibernat
 		this.firePropertyChanged(DEFAULT_DB_NAME_PROPERTY, old, name);
 	}
 
+	//@Override
 	protected void validateAgainstDatabase(List<IMessage> messages, CompilationUnit astRoot) {
-		if ( ! this.hasResolvedCatalog()) {
+		if ( ! this.catalogIsResolved()) {
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.TABLE_UNRESOLVED_CATALOG,
-					new String[] {this.getCatalog(), this.getDBTableName()}, 
-					this, 
-					this.getCatalogTextRange(astRoot)
-				)
+					DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.TABLE_UNRESOLVED_CATALOG,
+							new String[] {this.getCatalog(), this.getDBTableName()},
+							this,
+							this.getCatalogTextRange(astRoot)
+					)
 			);
 			return;
 		}
-		
-		if ( ! this.hasResolvedSchema()) {
+
+		if ( ! this.schemaIsResolved()) {
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.TABLE_UNRESOLVED_SCHEMA,
-					new String[] {this.getSchema(), this.getDBTableName()}, 
-					this, 
-					this.getSchemaTextRange(astRoot)
-				)
+					DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.TABLE_UNRESOLVED_SCHEMA,
+							new String[] {this.getSchema(), this.getDBTableName()},
+							this,
+							this.getSchemaTextRange(astRoot)
+					)
 			);
 			return;
 		}
-		
+
 		if ( ! this.isResolved()) {
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.TABLE_UNRESOLVED_NAME,
-					new String[] {this.getDBTableName()}, 
-					this, 
-					this.getNameTextRange(astRoot)
-				)
+					DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.TABLE_UNRESOLVED_NAME,
+							new String[] {this.getDBTableName()},
+							this,
+							this.getNameTextRange(astRoot)
+					)
 			);
 		}
 	}

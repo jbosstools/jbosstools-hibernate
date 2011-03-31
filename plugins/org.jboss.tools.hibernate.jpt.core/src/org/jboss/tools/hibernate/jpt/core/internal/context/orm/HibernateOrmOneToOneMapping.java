@@ -11,26 +11,24 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
-import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.context.orm.OrmRelationshipReference;
-import org.eclipse.jpt.core.internal.context.orm.AbstractOrmOneToOneMapping;
-import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
+import org.eclipse.jpt.jpa.core.context.orm.OrmMappingRelationship;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmOneToOneMapping;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlOneToOne;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public class HibernateOrmOneToOneMapping<T extends XmlOneToOne> extends
-AbstractOrmOneToOneMapping<T> {
+public class HibernateOrmOneToOneMapping extends AbstractOrmOneToOneMapping<XmlOneToOne> {
 
-	public HibernateOrmOneToOneMapping(OrmPersistentAttribute parent,
-			T resourceMapping) {
-		super(parent, resourceMapping);
+	public HibernateOrmOneToOneMapping(OrmPersistentAttribute parent, XmlOneToOne xmlMapping) {
+		super(parent, xmlMapping);
 	}
 
 	@Override
-	protected OrmRelationshipReference buildRelationshipReference() {
-		return new HibernateOrmOneToOneRelationshipReference(this, this.resourceAttributeMapping);
+	protected OrmMappingRelationship buildRelationship() {
+		return new HibernateOrmOneToOneRelationshipReference(this);
 	}
 
 }

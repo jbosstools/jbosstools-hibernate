@@ -12,17 +12,17 @@ package org.jboss.tools.hibernate.jpt.ui.internal.details;
 
 import java.util.Collection;
 
-import org.eclipse.jpt.db.Schema;
-import org.eclipse.jpt.db.SchemaContainer;
-import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
-import org.eclipse.jpt.ui.internal.details.db.CatalogCombo;
-import org.eclipse.jpt.ui.internal.details.db.SchemaCombo;
-import org.eclipse.jpt.ui.internal.util.PaneEnabler;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
-import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.ui.internal.util.PaneEnabler;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.jpa.db.Schema;
+import org.eclipse.jpt.jpa.db.SchemaContainer;
+import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
+import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.internal.details.db.CatalogCombo;
+import org.eclipse.jpt.jpa.ui.internal.details.db.SchemaCombo;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.widgets.Composite;

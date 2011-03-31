@@ -11,25 +11,24 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
-import org.eclipse.jpt.core.context.orm.OrmJoinColumnJoiningStrategy;
-import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmOneToOneRelationshipReference;
-import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
+import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumnRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.orm.OrmOneToOneMapping;
+import org.eclipse.jpt.jpa.core.internal.context.orm.GenericOrmOneToOneRelationship;
 
 /**
  * @author Dmitry Geraskov
  *
  */
 public class HibernateOrmOneToOneRelationshipReference extends
-		GenericOrmOneToOneRelationshipReference {
+		GenericOrmOneToOneRelationship {
 
-	public HibernateOrmOneToOneRelationshipReference(OrmOneToOneMapping parent,
-			XmlOneToOne resource) {
-		super(parent, resource);
+	public HibernateOrmOneToOneRelationshipReference(OrmOneToOneMapping parent) {
+		super(parent);
 	}
-	
-	protected OrmJoinColumnJoiningStrategy buildJoinColumnJoiningStrategy() {
-		return new HibernateOrmJoinColumnJoiningStrategy(this, getResourceMapping());
+
+	@Override
+	protected OrmJoinColumnRelationshipStrategy buildJoinColumnStrategy(){
+		return new HibernateOrmJoinColumnJoiningStrategy(this);
 	}
 
 }

@@ -11,11 +11,8 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.orm.jpa2;
 
-import org.eclipse.jpt.core.context.orm.OrmJoinColumnJoiningStrategy;
-import org.eclipse.jpt.core.context.orm.OrmJoinTableJoiningStrategy;
-import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmOneToOneRelationshipReference2_0;
-import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
+import org.eclipse.jpt.jpa.core.context.orm.OrmOneToOneMapping;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlOneToOne;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmJoinColumnJoiningStrategy;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmJoinTableJoiningStrategy;
 

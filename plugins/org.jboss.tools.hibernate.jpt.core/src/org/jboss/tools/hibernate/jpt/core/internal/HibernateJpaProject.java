@@ -15,8 +15,8 @@ import java.util.List;
 
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.preferences.IScopeContext;
-import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.internal.AbstractJpaProject;
+import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.internal.AbstractJpaProject;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.hibernate.cfg.Configuration;
@@ -33,8 +33,8 @@ import org.osgi.service.prefs.Preferences;
  *
  */
 public class HibernateJpaProject extends AbstractJpaProject {
-	
-	private Boolean cachedNamingStrategyEnable;	
+
+	private Boolean cachedNamingStrategyEnable;
 
 	public HibernateJpaProject(JpaProject.Config config){
 		super(config);
@@ -62,22 +62,22 @@ public class HibernateJpaProject extends AbstractJpaProject {
 		}
 		return null;
 	}
-	
+
 	public boolean isNamingStrategyEnabled(){
 		// as this flag cannot be changed without cleaning up and
 		// rebuilding ( == creating new instance) of jpa project we cache it
-		if (cachedNamingStrategyEnable == null){
+		if (this.cachedNamingStrategyEnable == null){
 			IScopeContext scope = new ProjectScope(getProject());
 			Preferences node = scope.getNode(HibernatePropertiesConstants.HIBERNATE_CONSOLE_NODE);
 			if(node!=null) {
-				cachedNamingStrategyEnable = node.getBoolean(HibernatePropertiesConstants.NAMING_STRATEGY_ENABLED, true );
+				this.cachedNamingStrategyEnable = node.getBoolean(HibernatePropertiesConstants.NAMING_STRATEGY_ENABLED, true );
 			} else {
-				cachedNamingStrategyEnable = true;
-			}			
+				this.cachedNamingStrategyEnable = true;
+			}
 		}
-		return cachedNamingStrategyEnable;
+		return this.cachedNamingStrategyEnable;
 	}
-	
+
 	@Override
 	protected void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
@@ -89,9 +89,9 @@ public class HibernateJpaProject extends AbstractJpaProject {
 	 */
 	protected void validateConsoleConfiguration(List<IMessage> messages) {
 		if (KnownConfigurations.getInstance().find(getDefaultConsoleConfigurationName()) == null){
-			IMessage message = new LocalMessage(IMessage.HIGH_SEVERITY, 
+			IMessage message = new LocalMessage(IMessage.HIGH_SEVERITY,
 					Messages.CC_NOT_EXISTS, new String[]{getDefaultConsoleConfigurationName()}, getResource());
-        	messages.add(message);
+			messages.add(message);
 		}
 	}
 

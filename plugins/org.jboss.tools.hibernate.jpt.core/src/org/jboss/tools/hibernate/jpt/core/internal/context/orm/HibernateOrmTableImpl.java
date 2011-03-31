@@ -14,14 +14,13 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.jpt.core.context.Table;
-import org.eclipse.jpt.core.context.orm.OrmEntity;
-import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmTable;
-import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.orm.XmlEntity;
-import org.eclipse.jpt.db.Schema;
-import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.common.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.jpa.core.context.Table;
+import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmTable;
+import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.hibernate.cfg.NamingStrategy;
@@ -39,40 +38,40 @@ public class HibernateOrmTableImpl extends GenericOrmTable implements HibernateO
 
 	protected String defaultDBTableName;
 
-	public HibernateOrmTableImpl(OrmEntity parent) {
-		super(parent);
+	public HibernateOrmTableImpl(OrmEntity parent, Owner owner) {
+		super(parent, owner);
 	}
 
 	@Override
 	public HibernateJpaProject getJpaProject() {
 		return (HibernateJpaProject) super.getJpaProject();
 	}
-	
+
 
 	@Override
-	public void initialize(XmlEntity xmlEntity) {
-		super.initialize(xmlEntity);
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
 		this.defaultDBTableName = buildDefaultDBTableName();
 	}
 
 	@Override
-	public void update(XmlEntity xmlEntity) {
-		super.update(xmlEntity);
+	public void update() {
+		super.update();
 		setDefaultDBTableName(buildDefaultDBTableName());
 	}
-	
+
 	@Override
-	public org.eclipse.jpt.db.Table getDbTable() {
+	public org.eclipse.jpt.jpa.db.Table getDbTable() {
 		Schema dbSchema = this.getDbSchema();
 		return (dbSchema == null) ? null : dbSchema.getTableForIdentifier(getDBTableName());
 	}
-	
+
 	protected void setDefaultDBTableName(String name) {
 		String old = this.defaultDBTableName;
 		this.defaultDBTableName = name;
 		this.firePropertyChanged(DEFAULT_DB_NAME_PROPERTY, old, name);
 	}
-	
+
 	protected String buildDefaultDBTableName(){
 		NamingStrategy ns = getJpaProject().getNamingStrategy();
 		if (getJpaProject().isNamingStrategyEnabled() && ns != null) {
@@ -87,15 +86,18 @@ public class HibernateOrmTableImpl extends GenericOrmTable implements HibernateO
 		return this.getDefaultName();
 	}
 
+	@Override
 	public String getDBTableName() {
 		return getSpecifiedDBTableName() != null ? getSpecifiedDBTableName()
 				: getDefaultDBTableName();
 	}
 
+	@Override
 	public String getDefaultDBTableName() {
 		return this.defaultDBTableName;
 	}
 
+	@Override
 	public String getSpecifiedDBTableName() {
 		if (getSpecifiedName() == null) return null;
 		NamingStrategy ns = getJpaProject().getNamingStrategy();
@@ -111,7 +113,7 @@ public class HibernateOrmTableImpl extends GenericOrmTable implements HibernateO
 		return this.getName();
 	}
 
-	
+
 	/**
 	 * Convert Table to it's DB name.
 	 */
@@ -120,51 +122,51 @@ public class HibernateOrmTableImpl extends GenericOrmTable implements HibernateO
 			@Override
 			protected String transform(Table t) {
 				if (t instanceof HibernateTable) {
-					return ((HibernateTable)t).getDBTableName();					
+					return ((HibernateTable)t).getDBTableName();
 				} else {
 					return t.getName();//What is this???
-				}				
+				}
 			}
 		};
 	}
-	
-	@Override
+
+	//@Override
 	protected void validateAgainstDatabase(List<IMessage> messages) {
-		if ( ! this.hasResolvedCatalog()) {
+		if ( ! this.catalogIsResolved()) {
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.TABLE_UNRESOLVED_CATALOG,
-					new String[] {this.getCatalog(), this.getDBTableName()}, 
-					this,
-					this.getCatalogTextRange()
-				)
+					DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.TABLE_UNRESOLVED_CATALOG,
+							new String[] {this.getCatalog(), this.getDBTableName()},
+							this,
+							this.getCatalogTextRange()
+					)
 			);
 			return;
 		}
-		
-		if ( ! this.hasResolvedSchema()) {
+
+		if ( ! this.schemaIsResolved()) {
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.TABLE_UNRESOLVED_SCHEMA,
-					new String[] {this.getSchema(), this.getDBTableName()}, 
-					this,
-					this.getSchemaTextRange()
-				)
+					DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.TABLE_UNRESOLVED_SCHEMA,
+							new String[] {this.getSchema(), this.getDBTableName()},
+							this,
+							this.getSchemaTextRange()
+					)
 			);
 			return;
 		}
-		
+
 		if ( ! this.isResolved()) {
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.TABLE_UNRESOLVED_NAME,
-					new String[] {this.getDBTableName()}, 
-					this, 
-					this.getNameTextRange()
-				)
+					DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.TABLE_UNRESOLVED_NAME,
+							new String[] {this.getDBTableName()},
+							this,
+							this.getNameTextRange()
+					)
 			);
 			return;
 		}

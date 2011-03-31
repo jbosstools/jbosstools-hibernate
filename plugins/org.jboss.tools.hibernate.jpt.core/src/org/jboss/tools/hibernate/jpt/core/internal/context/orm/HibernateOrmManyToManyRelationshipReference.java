@@ -10,30 +10,28 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
-import org.eclipse.jpt.core.context.orm.OrmJoinTableJoiningStrategy;
-import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmManyToManyRelationshipReference;
-import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
+import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.orm.OrmManyToManyMapping;
+import org.eclipse.jpt.jpa.core.internal.context.orm.GenericOrmManyToManyRelationship;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public class HibernateOrmManyToManyRelationshipReference extends
-		GenericOrmManyToManyRelationshipReference {
+public class HibernateOrmManyToManyRelationshipReference extends GenericOrmManyToManyRelationship {
 
 	/**
 	 * @param parent
 	 * @param resource
 	 */
 	public HibernateOrmManyToManyRelationshipReference(
-			OrmManyToManyMapping parent, XmlManyToMany resource) {
-		super(parent, resource);
+			OrmManyToManyMapping parent) {
+		super(parent);
 	}
-	
+
 	@Override
-	protected OrmJoinTableJoiningStrategy buildJoinTableJoiningStrategy() {
-		return 	new HibernateOrmJoinTableJoiningStrategy(this, getResourceMapping());
+	protected OrmJoinTableRelationshipStrategy buildJoinTableStrategy() {
+		return 	new HibernateOrmJoinTableJoiningStrategy(this);
 	}
 
 }

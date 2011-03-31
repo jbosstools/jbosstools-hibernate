@@ -11,23 +11,23 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
-import org.eclipse.jpt.core.context.orm.OrmJoinColumnEnabledRelationshipReference;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmJoinColumnJoiningStrategy;
-import org.eclipse.jpt.core.resource.orm.XmlJoinColumnsMapping;
+import org.eclipse.jpt.jpa.core.context.orm.OrmMappingJoinColumnRelationship;
+import org.eclipse.jpt.jpa.core.internal.context.orm.GenericOrmMappingJoinColumnRelationshipStrategy;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public class HibernateOrmJoinColumnJoiningStrategy extends
-		GenericOrmJoinColumnJoiningStrategy {
+public class HibernateOrmJoinColumnJoiningStrategy extends GenericOrmMappingJoinColumnRelationshipStrategy {
 
-	public HibernateOrmJoinColumnJoiningStrategy(
-			OrmJoinColumnEnabledRelationshipReference parent,
-			XmlJoinColumnsMapping resource) {
-		super(parent, resource);
+	public HibernateOrmJoinColumnJoiningStrategy(OrmMappingJoinColumnRelationship parent) {
+		this(parent, false);
 	}
-	
+
+	public HibernateOrmJoinColumnJoiningStrategy(OrmMappingJoinColumnRelationship parent, boolean targetForeignKey) {
+		super(parent, targetForeignKey);
+	}
+
 	/*@Override
 	protected void validateJoinColumnName(OrmJoinColumn joinColumn,
 			List<IMessage> messages) {
@@ -38,8 +38,8 @@ public class HibernateOrmJoinColumnJoiningStrategy extends
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
 							JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_NAME,
-							new String[] {getRelationshipMapping().getName(), ((HibernateJoinColumn)joinColumn).getDBColumnName()}, 
-							joinColumn, 
+							new String[] {getRelationshipMapping().getName(), ((HibernateJoinColumn)joinColumn).getDBColumnName()},
+							joinColumn,
 							joinColumn.getNameTextRange()
 						)
 					);
@@ -48,8 +48,8 @@ public class HibernateOrmJoinColumnJoiningStrategy extends
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
 							JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
-							new String[] {((HibernateJoinColumn)joinColumn).getDBColumnName()}, 
-							joinColumn, 
+							new String[] {((HibernateJoinColumn)joinColumn).getDBColumnName()},
+							joinColumn,
 							joinColumn.getNameTextRange()
 						)
 					);
@@ -61,7 +61,7 @@ public class HibernateOrmJoinColumnJoiningStrategy extends
 							DefaultJpaValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
 								JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_NAME_MULTIPLE_JOIN_COLUMNS,
-								new String[] {getRelationshipMapping().getName()}, 
+								new String[] {getRelationshipMapping().getName()},
 								joinColumn,
 								joinColumn.getNameTextRange()
 							)
@@ -80,7 +80,7 @@ public class HibernateOrmJoinColumnJoiningStrategy extends
 			}
 		}
 	}
-	
+
 	@Override
 	protected void validationJoinColumnReferencedColumnName(
 			OrmJoinColumn joinColumn, List<IMessage> messages) {
@@ -93,8 +93,8 @@ public class HibernateOrmJoinColumnJoiningStrategy extends
 							JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
 							new String[] {getRelationshipMapping().getName(),
 									((HibernateJoinColumn)joinColumn).getReferencedDBColumnName(),
-									((HibernateJoinColumn)joinColumn).getDBColumnName()}, 
-							joinColumn, 
+									((HibernateJoinColumn)joinColumn).getDBColumnName()},
+							joinColumn,
 							joinColumn.getReferencedColumnNameTextRange()
 						)
 					);
@@ -104,8 +104,8 @@ public class HibernateOrmJoinColumnJoiningStrategy extends
 							IMessage.HIGH_SEVERITY,
 							JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
 							new String[] {((HibernateJoinColumn)joinColumn).getReferencedDBColumnName(),
-									((HibernateJoinColumn)joinColumn).getDBColumnName()}, 
-							joinColumn, 
+									((HibernateJoinColumn)joinColumn).getDBColumnName()},
+							joinColumn,
 							joinColumn.getReferencedColumnNameTextRange()
 						)
 					);
@@ -118,11 +118,11 @@ public class HibernateOrmJoinColumnJoiningStrategy extends
 								IMessage.HIGH_SEVERITY,
 								JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME_MULTIPLE_JOIN_COLUMNS,
 								new String[] {((HibernateJoinColumn)joinColumn).getReferencedDBColumnName(),
-										((HibernateJoinColumn)joinColumn).getDBColumnName()},  
+										((HibernateJoinColumn)joinColumn).getDBColumnName()},
 								joinColumn,
 								joinColumn.getReferencedColumnNameTextRange()
 							)
-						);					
+						);
 				}
 				else {
 					messages.add(
@@ -134,7 +134,7 @@ public class HibernateOrmJoinColumnJoiningStrategy extends
 							)
 						);
 				}
-			}			
+			}
 		}
 	}*/
 

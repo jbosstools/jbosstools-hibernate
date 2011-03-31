@@ -10,15 +10,15 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.java.details;
 
-import org.eclipse.jpt.core.context.GeneratorContainer;
-import org.eclipse.jpt.core.context.QueryContainer;
-import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.internal.details.AbstractEntityComposite;
-import org.eclipse.jpt.ui.internal.details.EntityNameComposite;
-import org.eclipse.jpt.ui.internal.details.IdClassComposite;
-import org.eclipse.jpt.ui.internal.details.java.JavaSecondaryTablesComposite;
-import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
+import org.eclipse.jpt.jpa.core.context.QueryContainer;
+import org.eclipse.jpt.jpa.ui.internal.details.AbstractEntityComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.EntityNameComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.IdClassComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.java.JavaSecondaryTablesComposite;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateGeneratorContainer;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;

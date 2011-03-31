@@ -10,9 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java.jpa2;
 
-import org.eclipse.jpt.core.context.java.JavaJoinTableJoiningStrategy;
-import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
-import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaOneToManyRelationshipReference2_0;
+import org.eclipse.jpt.jpa.core.context.java.JavaOneToManyMapping;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaJoinTableJoiningStrategy;
 
 /**

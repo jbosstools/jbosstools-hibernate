@@ -11,19 +11,21 @@
 package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.jpa.core.resource.java.NestableAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.QueryAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.context.CacheModeType;
 import org.jboss.tools.hibernate.jpt.core.internal.context.FlushModeType;
 
 /**
  * @author Dmitry Geraskov
- * 
+ *
  * Interface contains Hibernate specific attributes.
  */
-public interface HibernateQueryAnnotation {
-	
+public interface HibernateQueryAnnotation extends NestableAnnotation, QueryAnnotation{
+
 	//************************ flushMode *********************************
-	
+
 	/**
 	 * Corresponds to the 'flushMode' element of the *NamedQuery annotation.
 	 * Return null if the element does not exist in Java.
@@ -36,20 +38,20 @@ public interface HibernateQueryAnnotation {
 	 * Set to null to remove the element.
 	 */
 	void setFlushMode(FlushModeType flushMode);
-	
+
 	/**
 	 * Return the {@link TextRange} for the 'flushMode' element. If element
 	 * does not exist return the {@link TextRange} for the *NamedQuery annotation.
 	 */
 	TextRange getFlushModeTextRange(CompilationUnit astRoot);
-	
+
 	//************************ cacheMode *********************************
-	
+
 	/**
 	 * Corresponds to the 'cacheMode' element of the *NamedQuery annotation.
 	 * Return null if the element does not exist in Java.
 	 */
-	CacheModeType getCacheMode();	
+	CacheModeType getCacheMode();
 		String CACHE_MODE_PROPERTY = "cacheMode"; //$NON-NLS-1$
 
 	/**
@@ -57,30 +59,30 @@ public interface HibernateQueryAnnotation {
 	 * Set to null to remove the element.
 	 */
 	void setCacheMode(CacheModeType cacheMode);
-	
+
 	/**
 	 * Return the {@link TextRange} for the 'cacheMode' element. If element
 	 * does not exist return the {@link TextRange} for the *NamedQuery annotation.
 	 */
 	TextRange getCacheModeTextRange(CompilationUnit astRoot);
-	
-	//************************ cacheable *********************************	
+
+	//************************ cacheable *********************************
 	Boolean isCacheable();
 	void setCacheable(Boolean value);
 		String CACHEABLE_PROPERTY = "cacheable"; //$NON-NLS-1$
-	
+
 	//************************ cacheRegion *********************************
 	String getCacheRegion();
 	void setCacheRegion(String value);
 		String CACHE_REGION_PROPERTY = "cacheRegion"; //$NON-NLS-1$
-		
+
 	//************************ fetchSize *********************************
 	Integer getFetchSize();
 	void setFetchSize(Integer value);
 		String FETCH_SIZE_PROPERTY = "fetchSize"; //$NON-NLS-1$
-		
+
 	//************************ timeout *********************************
-	Integer getTimeout();	
+	Integer getTimeout();
 	void setTimeout(Integer value);
 		String TIMEOUT_PROPERTY = "timeout"; //$NON-NLS-1$
 
@@ -88,8 +90,8 @@ public interface HibernateQueryAnnotation {
 	String getComment();
 	void setComment(String value);
 		String COMMENT_PROPERTY = "comment"; //$NON-NLS-1$
-	
-	//************************ readOnly *********************************	
+
+	//************************ readOnly *********************************
 	Boolean isReadOnly();
 	void setReadOnly(Boolean value);
 		String READ_ONLY_PROPERTY = "readOnly"; //$NON-NLS-1$

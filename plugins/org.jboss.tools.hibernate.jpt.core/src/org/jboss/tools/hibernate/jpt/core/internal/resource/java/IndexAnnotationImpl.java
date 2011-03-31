@@ -13,42 +13,42 @@ package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.resource.java.source.SourceAnnotation;
-import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitArrayAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.StringArrayExpressionConverter;
-import org.eclipse.jpt.core.internal.utility.jdt.StringExpressionConverter;
-import org.eclipse.jpt.core.resource.java.Annotation;
-import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
-import org.eclipse.jpt.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
-import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
-import org.eclipse.jpt.core.utility.jdt.Attribute;
-import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.utility.jdt.Member;
+import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
+import org.eclipse.jpt.common.core.internal.utility.jdt.ShortCircuitArrayAnnotationElementAdapter;
+import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.internal.utility.jdt.StringArrayExpressionConverter;
+import org.eclipse.jpt.common.core.internal.utility.jdt.StringExpressionConverter;
+import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.Member;
+import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.Annotation;
+import org.eclipse.jpt.jpa.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.jpa.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public class IndexAnnotationImpl extends SourceAnnotation<Attribute>
+public class IndexAnnotationImpl extends SourceAnnotation<Member>
 implements IndexAnnotation{
-	
+
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 	private static final DeclarationAnnotationElementAdapter<String> NAME_ADAPTER = buildNameAdapter(DECLARATION_ANNOTATION_ADAPTER);
 	private final AnnotationElementAdapter<String> nameAdapter;
 	private String name;
-	
+
 	private static DeclarationAnnotationElementAdapter<String[]> COLUMN_NAMES_ADAPTER = buildColumnNamesAdapter(DECLARATION_ANNOTATION_ADAPTER);
 	private AnnotationElementAdapter<String[]> columnNamesAdapter;
 	private String[] columnNames;
 
-	protected IndexAnnotationImpl(JavaResourceNode parent, Attribute member) {
+	protected IndexAnnotationImpl(JavaResourceNode parent, Member member) {
 		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
 		this.nameAdapter = this.buildNameAdapter(NAME_ADAPTER);
 		this.columnNamesAdapter = this.buildColumnNamesAdapter(COLUMN_NAMES_ADAPTER);
@@ -69,72 +69,72 @@ implements IndexAnnotation{
 	}
 
 	public String[] getColumnNames() {
-		return columnNames;
+		return this.columnNames;
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
-	
+
 	public void setName(String newName) {
 		if (this.attributeValueHasChanged(this.name, newName)) {
 			this.name = newName;
 			this.nameAdapter.setValue(newName);
 		}
 	}
-	
+
 	private void syncName(String astName) {
 		String old = this.name;
 		this.name = astName;
 		this.firePropertyChanged(NAME_PROPERTY, old, astName);
 	}
-	
+
 	public void setColumnNames(String[] newColumnNames) {
 		if (this.attributeValueHasChanged(this.columnNames, newColumnNames)) {
 			this.columnNames = newColumnNames;
 			this.columnNamesAdapter.setValue(newColumnNames);
 		}
 	}
-	
+
 	private void syncColumnNames(String[] columnNames) {
 		String[] old = this.columnNames;
 		this.columnNames = columnNames;
 		this.firePropertyChanged(COLUMN_NAMES_PROPERTY, old, columnNames);
 	}
-	
+
 	private String buildName(CompilationUnit astRoot) {
 		return this.nameAdapter.getValue(astRoot);
 	}
-	
+
 	private String[] buildColumnNames(CompilationUnit astRoot) {
 		return this.columnNamesAdapter.getValue(astRoot);
 	}
-	
+
 	private static DeclarationAnnotationElementAdapter<String> buildNameAdapter(DeclarationAnnotationAdapter adapter) {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(adapter, NAME_PROPERTY, true);
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(adapter, NAME_PROPERTY);
 	}
-	
+
 	AnnotationElementAdapter<String> buildNameAdapter(DeclarationAnnotationElementAdapter<String> daea) {
-		return new ShortCircuitAnnotationElementAdapter<String>(this.member, daea);
+		return new ShortCircuitAnnotationElementAdapter<String>(this.annotatedElement, daea);
 	}
-	
+
 	private static DeclarationAnnotationElementAdapter<String[]> buildColumnNamesAdapter(DeclarationAnnotationAdapter adapter) {
-		return new ConversionDeclarationAnnotationElementAdapter<String[]>(adapter, COLUMN_NAMES_PROPERTY, false,
+		return new ConversionDeclarationAnnotationElementAdapter<String[]>(adapter, COLUMN_NAMES_PROPERTY,
 				new StringArrayExpressionConverter(StringExpressionConverter.instance()));
 	}
-	
+
 	AnnotationElementAdapter<String[]> buildColumnNamesAdapter(DeclarationAnnotationElementAdapter<String[]> daea) {
-		return new ShortCircuitArrayAnnotationElementAdapter<String>(this.member, daea);
+		return new ShortCircuitArrayAnnotationElementAdapter<String>(this.annotatedElement, daea);
 	}
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(NAME_ADAPTER, astRoot);
 	}
-	
+
 	public TextRange getColumnNamesTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(COLUMN_NAMES_ADAPTER, astRoot);
 	}
-	
+
 	public static class IndexAnnotationDefinition implements AnnotationDefinition
 	{
 		// singleton
@@ -154,20 +154,20 @@ implements IndexAnnotation{
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member attribute) {
-			return new IndexAnnotationImpl(parent, (Attribute) attribute);
+		public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
+			return new IndexAnnotationImpl(parent, (Member) annotatedElement);
 		}
-		
+
 		public String getAnnotationName() {
 			return IndexAnnotation.ANNOTATION_NAME;
 		}
 
-		public Annotation buildAnnotation(JavaResourcePersistentMember arg0,
+		public Annotation buildAnnotation(JavaResourceAnnotatedElement arg0,
 				IAnnotation arg1) {
 			throw new UnsupportedOperationException();
 		}
 
-		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {
+		public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
 			throw new UnsupportedOperationException();
 		}
 

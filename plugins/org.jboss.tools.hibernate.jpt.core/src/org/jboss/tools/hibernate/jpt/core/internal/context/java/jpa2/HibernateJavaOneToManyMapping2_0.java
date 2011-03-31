@@ -10,9 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java.jpa2;
 
-import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.context.java.JavaRelationshipReference;
-import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaOneToManyMapping2_0;
+import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 
 /**
  * @author Dmitry Geraskov

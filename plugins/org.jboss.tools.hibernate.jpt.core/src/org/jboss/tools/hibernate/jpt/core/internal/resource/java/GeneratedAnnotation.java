@@ -11,8 +11,8 @@
 package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.resource.java.Annotation;
-import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.jpa.core.resource.java.Annotation;
 import org.jboss.tools.hibernate.jpt.core.internal.context.GenerationTime;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 

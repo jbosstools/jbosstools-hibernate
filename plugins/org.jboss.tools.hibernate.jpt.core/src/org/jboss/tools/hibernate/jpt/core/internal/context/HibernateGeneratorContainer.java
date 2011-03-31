@@ -2,7 +2,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context;
 
 import java.util.ListIterator;
 
-import org.eclipse.jpt.core.context.GeneratorContainer;
+import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
 
 public interface HibernateGeneratorContainer extends GeneratorContainer {
 	

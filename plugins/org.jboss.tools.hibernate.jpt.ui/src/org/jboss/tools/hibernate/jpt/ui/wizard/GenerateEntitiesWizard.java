@@ -15,7 +15,7 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.jpt.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;

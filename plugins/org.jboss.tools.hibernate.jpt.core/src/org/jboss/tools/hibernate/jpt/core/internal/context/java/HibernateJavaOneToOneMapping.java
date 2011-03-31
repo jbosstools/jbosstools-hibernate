@@ -11,9 +11,9 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.java.GenericJavaOneToOneRelationshipReference;
-import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneRelationshipReference2_0;
+import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.internal.context.java.GenericJavaOneToOneRelationship;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOneToOneRelationship2_0;
 
 /**
  * @author Dmitry Geraskov
@@ -26,8 +26,8 @@ public class HibernateJavaOneToOneMapping extends AbstractHibernateJavaOneToOneM
 	}
 
 	@Override
-	protected JavaOneToOneRelationshipReference2_0 buildRelationshipReference() {
-		return new GenericJavaOneToOneRelationshipReference(this);
+	protected JavaOneToOneRelationship2_0 buildRelationship() {
+		return new GenericJavaOneToOneRelationship(this);
 	}
 
 

@@ -11,8 +11,7 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.java.jpa2;
 
-import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneRelationshipReference2_0;
+import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.AbstractHibernateJavaOneToOneMapping;
 
 /**

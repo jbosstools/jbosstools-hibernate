@@ -11,20 +11,20 @@
 package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.resource.java.source.SourceAnnotation;
-import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberIndexedAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
-import org.eclipse.jpt.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.core.resource.java.NestableAnnotation;
-import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
-import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.utility.jdt.IndexedAnnotationAdapter;
-import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.utility.jdt.Member;
+import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
+import org.eclipse.jpt.common.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
+import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.Member;
+import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.jpa.core.resource.java.NestableAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 
 /**
@@ -44,7 +44,7 @@ public class SourceParameterAnnotation extends SourceAnnotation<Member> implemen
 
 
 	public SourceParameterAnnotation(JavaResourceNode parent, Member member, IndexedDeclarationAnnotationAdapter idaa) {
-		super(parent, member, idaa, new MemberIndexedAnnotationAdapter(member, idaa));
+		super(parent, member, idaa, new ElementIndexedAnnotationAdapter(member, idaa));
 		this.nameDeclarationAdapter = this.buildNameAdapter(idaa);
 		this.nameAdapter = this.buildAdapter(this.nameDeclarationAdapter);
 		this.valueDeclarationAdapter = this.buildValueAdapter(idaa);
@@ -56,7 +56,7 @@ public class SourceParameterAnnotation extends SourceAnnotation<Member> implemen
 	}
 
 	private AnnotationElementAdapter<String> buildAdapter(DeclarationAnnotationElementAdapter<String> daea) {
-		return new ShortCircuitAnnotationElementAdapter<String>(this.member, daea);
+		return new ShortCircuitAnnotationElementAdapter<String>(this.annotatedElement, daea);
 	}
 
 	private DeclarationAnnotationElementAdapter<String> buildNameAdapter(DeclarationAnnotationAdapter adapter) {
@@ -77,6 +77,7 @@ public class SourceParameterAnnotation extends SourceAnnotation<Member> implemen
 		this.syncValue(this.buildValue(astRoot));
 	}
 
+	@Override
 	public IndexedAnnotationAdapter getIndexedAnnotationAdapter() {
 		return (IndexedAnnotationAdapter) this.annotationAdapter;
 	}
@@ -100,7 +101,7 @@ public class SourceParameterAnnotation extends SourceAnnotation<Member> implemen
 			this.nameAdapter.setValue(name);
 		}
 	}
-	
+
 	private void syncName(String astName) {
 		String old = this.name;
 		this.name = astName;
@@ -126,7 +127,7 @@ public class SourceParameterAnnotation extends SourceAnnotation<Member> implemen
 			this.valueAdapter.setValue(value);
 		}
 	}
-	
+
 	private void syncValue(String value) {
 		String old = this.value;
 		this.value = value;

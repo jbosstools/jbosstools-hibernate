@@ -11,8 +11,8 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
-import org.eclipse.jpt.core.context.JpaContextNode;
-import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.db.Table;
 
 /**
  * @author Dmitry Geraskov

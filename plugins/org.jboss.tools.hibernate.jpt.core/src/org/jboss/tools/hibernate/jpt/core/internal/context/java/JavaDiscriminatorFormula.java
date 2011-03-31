@@ -18,12 +18,22 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.DiscriminatorFo
  *
  */
 public interface JavaDiscriminatorFormula extends DiscriminatorFormula {
-	
+
+
 	void initialize(DiscriminatorFormulaAnnotation dfResource);
-	
+
 	/**
-	 * Update the JavaDiscriminatorFormula context model object to match the DiscriminatorFormulaAnnotation 
+	 * Update the JavaDiscriminatorFormula context model object to match the DiscriminatorFormulaAnnotation
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */
 	void update(DiscriminatorFormulaAnnotation dfResource);
+
+	/**
+	 * interface allowing formulas to be used in multiple places
+	 */
+	interface Owner
+		extends /*JavaNamedColumn.Owner,*/ DiscriminatorFormula.Owner
+	{
+
+	}
 }

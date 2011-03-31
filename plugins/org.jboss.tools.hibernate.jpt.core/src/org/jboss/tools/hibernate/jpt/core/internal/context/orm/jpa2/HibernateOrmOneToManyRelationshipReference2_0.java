@@ -10,10 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.orm.jpa2;
 
-import org.eclipse.jpt.core.context.orm.OrmJoinTableJoiningStrategy;
-import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmOneToManyRelationshipReference2_0;
-import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
+import org.eclipse.jpt.jpa.core.context.orm.OrmOneToManyMapping;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlOneToMany;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmJoinTableJoiningStrategy;
 
 /**

@@ -15,9 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
-import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.IndexAnnotation;
 
 /**

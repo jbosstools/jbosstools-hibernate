@@ -10,9 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
-import org.eclipse.jpt.core.context.orm.OrmJoinTableEnabledRelationshipReference;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmJoinTableJoiningStrategy;
-import org.eclipse.jpt.core.resource.orm.XmlJoinTableMapping;
+import org.eclipse.jpt.jpa.core.context.orm.OrmMappingJoinTableRelationship;
+import org.eclipse.jpt.jpa.core.internal.context.orm.GenericOrmMappingJoinTableRelationshipStrategy;
 import org.jboss.tools.hibernate.jpt.core.internal.context.NamingStrategyMappingTools;
 
 /**
@@ -20,21 +19,21 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.NamingStrategyMapping
  *
  */
 public class HibernateOrmJoinTableJoiningStrategy extends
-		GenericOrmJoinTableJoiningStrategy {
+		GenericOrmMappingJoinTableRelationshipStrategy {
 
 	/**
 	 * @param parent
 	 * @param resource
 	 */
 	public HibernateOrmJoinTableJoiningStrategy(
-			OrmJoinTableEnabledRelationshipReference parent,
-			XmlJoinTableMapping resource) {
-		super(parent, resource);
+			OrmMappingJoinTableRelationship parent) {
+		super(parent);
 	}
-	
+
 	@Override
 	public String getJoinTableDefaultName() {
-		return NamingStrategyMappingTools.buildJoinTableDefaultName(getRelationshipReference());
+		return NamingStrategyMappingTools
+				.buildJoinTableDefaultName(getRelationship());
 	}
 
 }

@@ -12,30 +12,30 @@ package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.orm;
 
 import java.util.List;
 
-import org.eclipse.jpt.core.JpaResourceType;
-import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.context.AttributeMapping;
-import org.eclipse.jpt.core.context.TypeMapping;
-import org.eclipse.jpt.ui.ResourceUiDefinition;
-import org.eclipse.jpt.ui.details.orm.OrmAttributeMappingUiDefinition;
-import org.eclipse.jpt.ui.details.orm.OrmTypeMappingUiDefinition;
-import org.eclipse.jpt.ui.details.orm.OrmXmlUiFactory;
-import org.eclipse.jpt.ui.internal.details.orm.AbstractOrmXmlResourceUiDefinition;
-import org.eclipse.jpt.ui.internal.details.orm.OrmBasicMappingUiDefinition;
-import org.eclipse.jpt.ui.internal.details.orm.OrmEmbeddableUiDefinition;
-import org.eclipse.jpt.ui.internal.details.orm.OrmEmbeddedIdMappingUiDefinition;
-import org.eclipse.jpt.ui.internal.details.orm.OrmEmbeddedMappingUiDefinition;
-import org.eclipse.jpt.ui.internal.details.orm.OrmEntityUiDefinition;
-import org.eclipse.jpt.ui.internal.details.orm.OrmIdMappingUiDefinition;
-import org.eclipse.jpt.ui.internal.details.orm.OrmManyToManyMappingUiDefinition;
-import org.eclipse.jpt.ui.internal.details.orm.OrmManyToOneMappingUiDefinition;
-import org.eclipse.jpt.ui.internal.details.orm.OrmMappedSuperclassUiDefinition;
-import org.eclipse.jpt.ui.internal.details.orm.OrmOneToManyMappingUiDefinition;
-import org.eclipse.jpt.ui.internal.details.orm.OrmOneToOneMappingUiDefinition;
-import org.eclipse.jpt.ui.internal.details.orm.OrmTransientMappingUiDefinition;
-import org.eclipse.jpt.ui.internal.details.orm.OrmVersionMappingUiDefinition;
-import org.eclipse.jpt.ui.internal.structure.OrmResourceModelStructureProvider;
-import org.eclipse.jpt.ui.structure.JpaStructureProvider;
+import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.context.AttributeMapping;
+import org.eclipse.jpt.jpa.core.context.TypeMapping;
+import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
+import org.eclipse.jpt.jpa.ui.details.orm.OrmAttributeMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.details.orm.OrmTypeMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.details.orm.OrmXmlUiFactory;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.AbstractOrmXmlResourceUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmBasicMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmEmbeddableUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmEmbeddedIdMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmEmbeddedMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmEntityUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmIdMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmManyToManyMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmManyToOneMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmMappedSuperclassUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmOneToManyMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmOneToOneMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmTransientMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmVersionMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.structure.OrmResourceModelStructureProvider;
+import org.eclipse.jpt.jpa.ui.structure.JpaStructureProvider;
 
 
 /**
@@ -69,8 +69,8 @@ public class HibernateOrmXmlUiDefinition extends AbstractOrmXmlResourceUiDefinit
 		return new HibernateOrmXmlUiFactory();
 	}
 	
-	public boolean providesUi(JpaResourceType resourceType) {
-		return resourceType.equals(JptCorePlugin.ORM_XML_1_0_RESOURCE_TYPE);
+	public boolean providesUi(JptResourceType resourceType) {
+		return resourceType.equals(JptJpaCorePlugin.ORM_XML_1_0_RESOURCE_TYPE);
 	}
 	
 	public JpaStructureProvider getStructureProvider() {

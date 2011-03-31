@@ -11,21 +11,24 @@
 package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.jpt.core.context.Query;
-import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
-import org.eclipse.jpt.ui.internal.widgets.DialogPane;
-import org.eclipse.jpt.ui.internal.widgets.ValidatingDialog;
-import org.eclipse.jpt.utility.internal.StringConverter;
-import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.StaticListValueModel;
-import org.eclipse.jpt.utility.internal.node.AbstractNode;
-import org.eclipse.jpt.utility.internal.node.Node;
-import org.eclipse.jpt.utility.internal.node.Problem;
-import org.eclipse.jpt.utility.model.value.ListValueModel;
-import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;
+import org.eclipse.jpt.common.ui.internal.widgets.ValidatingDialog;
+import org.eclipse.jpt.common.utility.internal.StringConverter;
+import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.StaticListValueModel;
+import org.eclipse.jpt.common.utility.internal.node.AbstractNode;
+import org.eclipse.jpt.common.utility.internal.node.Node;
+import org.eclipse.jpt.common.utility.internal.node.Problem;
+import org.eclipse.jpt.common.utility.model.value.ListValueModel;
+import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.Query;
+import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -37,19 +40,28 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedQuery;
  *
  */
 public class HibernateAddQueryDialog extends ValidatingDialog<AddQueryStateObject> {
-	
+
+	public static final String NAMED_QUERY = "namedQuery"; //$NON-NLS-1$
+	public static final String NAMED_NATIVE_QUERY = "namedNativeQuery"; //$NON-NLS-1$
+
+
+	/**
+	 * The associated persistence unit
+	 */
+	private PersistenceUnit pUnit;
 	// ********** constructors **********
 
 	/**
 	 * Use this constructor to edit an existing conversion value
 	 */
-	public HibernateAddQueryDialog(Shell parent) {
+	public HibernateAddQueryDialog(Shell parent, PersistenceUnit pUnit) {
 		super(parent);
+		this.pUnit = pUnit;
 	}
 
 	@Override
 	protected AddQueryStateObject buildStateObject() {
-		return new AddQueryStateObject();
+		return new AddQueryStateObject(this.pUnit);
 	}
 
 	// ********** open **********
@@ -69,17 +81,17 @@ public class HibernateAddQueryDialog extends ValidatingDialog<AddQueryStateObjec
 	protected String getDescriptionTitle() {
 		return JptUiDetailsMessages.AddQueryDialog_descriptionTitle;
 	}
-	
+
 	@Override
 	protected String getDescription() {
 		return JptUiDetailsMessages.AddQueryDialog_description;
 	}
-	
+
 	@Override
 	protected DialogPane<AddQueryStateObject> buildLayout(Composite container) {
 		return new QueryDialogPane(container);
 	}
-	
+
 	@Override
 	public void create() {
 		super.create();
@@ -106,7 +118,7 @@ public class HibernateAddQueryDialog extends ValidatingDialog<AddQueryStateObjec
 	public String getQueryType() {
 		return getSubject().getQueryType();
 	}
-	
+
 	private class QueryDialogPane extends DialogPane<AddQueryStateObject> {
 
 		private Text nameText;
@@ -122,32 +134,33 @@ public class HibernateAddQueryDialog extends ValidatingDialog<AddQueryStateObjec
 				JptUiDetailsMessages.AddQueryDialog_name,
 				buildNameHolder()
 			);
-			
+
 			addLabeledCombo(
-				container, 
-				JptUiDetailsMessages.AddQueryDialog_queryType, 
-				buildQueryTypeListHolder(), 
-				buildQueryTypeHolder(), 
+				container,
+				JptUiDetailsMessages.AddQueryDialog_queryType,
+				buildQueryTypeListHolder(),
+				buildQueryTypeHolder(),
 				buildStringConverter(),
 				null);
 		}
 
 		protected ListValueModel<String> buildQueryTypeListHolder() {
 			List<String> queryTypes = new ArrayList<String>();
-			queryTypes.add(Query.NAMED_QUERY);
-			queryTypes.add(Query.NAMED_NATIVE_QUERY);
+			queryTypes.add(NAMED_QUERY);
+			queryTypes.add(NAMED_NATIVE_QUERY);
 			queryTypes.add(HibernateNamedQuery.HIBERNATE_NAMED_QUERY);
-			queryTypes.add(HibernateNamedNativeQuery.HIBERNATE_NAMED_NATIVE_QUERY);			
+			queryTypes.add(HibernateNamedNativeQuery.HIBERNATE_NAMED_NATIVE_QUERY);
 			return new StaticListValueModel<String>(queryTypes);
 		}
-		
+
 		private StringConverter<String> buildStringConverter() {
 			return new StringConverter<String>() {
+				@Override
 				public String convertToString(String value) {
-					if (value == Query.NAMED_QUERY) {
+					if (value == NAMED_QUERY) {
 						return JptUiDetailsMessages.AddQueryDialog_namedQuery;
 					}
-					if (value == Query.NAMED_NATIVE_QUERY) {
+					if (value == NAMED_NATIVE_QUERY) {
 						return JptUiDetailsMessages.AddQueryDialog_namedNativeQuery;
 					}
 					if (value == HibernateNamedQuery.HIBERNATE_NAMED_QUERY) {
@@ -160,7 +173,7 @@ public class HibernateAddQueryDialog extends ValidatingDialog<AddQueryStateObjec
 				}
 			};
 		}
-		
+
 		private WritablePropertyValueModel<String> buildNameHolder() {
 			return new PropertyAspectAdapter<AddQueryStateObject, String>(getSubjectHolder(), AddQueryStateObject.NAME_PROPERTY) {
 				@Override
@@ -213,10 +226,15 @@ final class AddQueryStateObject extends AbstractNode
 	private Validator validator;
 
 	/**
+	 * The associated persistence unit
+	 */
+	private PersistenceUnit pUnit;
+
+	/**
 	 * Notifies a change in the data value property.
 	 */
 	static final String NAME_PROPERTY = "nameProperty"; //$NON-NLS-1$
-	
+
 	/**
 	 * Notifies a change in the query type property.
 	 */
@@ -230,20 +248,23 @@ final class AddQueryStateObject extends AbstractNode
 	 * @param names The collection of names that can't be used or an empty
 	 * collection if none are available
 	 */
-	AddQueryStateObject() {
+	AddQueryStateObject(PersistenceUnit pUnit) {
 		super(null);
-
+		this.pUnit = this.pUnit;
 	}
 
 	private void addNameProblemsTo(List<Problem> currentProblems) {
 		if (StringTools.stringIsEmpty(this.name)) {
-			currentProblems.add(buildProblem(JptUiDetailsMessages.QueryStateObject_nameMustBeSpecified));
+			currentProblems.add(buildProblem(JptUiDetailsMessages.QueryStateObject_nameMustBeSpecified, IMessageProvider.ERROR));
+		}
+		else if (names().contains(this.name)){
+			currentProblems.add(buildProblem(JptUiDetailsMessages.AddQueryDialog_nameExists, IMessageProvider.WARNING));
 		}
 	}
 
 	private void addQueryTypeProblemsTo(List<Problem> currentProblems) {
 		if (StringTools.stringIsEmpty(this.queryType)) {
-			currentProblems.add(buildProblem(JptUiDetailsMessages.QueryStateObject_typeMustBeSpecified));
+			currentProblems.add(buildProblem(JptUiDetailsMessages.QueryStateObject_typeMustBeSpecified, IMessageProvider.ERROR));
 		}
 	}
 
@@ -254,11 +275,21 @@ final class AddQueryStateObject extends AbstractNode
 		addQueryTypeProblemsTo(currentProblems);
 	}
 
+	private List<String> names(){
+		List<String> names = new ArrayList<String>();
+		for (Iterator<Query> queries = this.pUnit.queries(); queries.hasNext();){
+			String name = queries.next().getName();
+			names.add(name);
+		}
+		return names;
+}
+
 	@Override
 	protected void checkParent(Node parentNode) {
 		//no parent
 	}
 
+	@Override
 	public String displayString() {
 		return null;
 	}

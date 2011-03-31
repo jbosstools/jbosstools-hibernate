@@ -13,14 +13,14 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
 
-import org.eclipse.jpt.core.context.Entity;
-import org.eclipse.jpt.core.context.PersistentAttribute;
-import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
-import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmJoinColumn;
-import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
-import org.eclipse.jpt.db.Column;
-import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.jpa.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.XmlContextNode;
+import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumn;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmJoinColumn;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlJoinColumn;
+import org.eclipse.jpt.jpa.db.Column;
+import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.hibernate.cfg.NamingStrategy;
@@ -41,17 +41,17 @@ public class HibernateOrmJoinColumnImpl extends GenericOrmJoinColumn implements
 			XmlJoinColumn resourceJoinColumn) {
 		super(parent, owner, resourceJoinColumn);
 	}
-	
+
 	@Override
 	protected String buildDefaultName() {
-		return NamingStrategyMappingTools.buildJoinColumnDefaultName(this, getOwner());
+		return NamingStrategyMappingTools.buildJoinColumnDefaultName(this, this.owner);
 	}
-	
+
 	@Override
 	public HibernateJpaProject getJpaProject() {
 		return (HibernateJpaProject) super.getJpaProject();
 	}
-	
+
 
 	@Override
 	public Column getDbColumn() {
@@ -59,15 +59,18 @@ public class HibernateOrmJoinColumnImpl extends GenericOrmJoinColumn implements
 		return (table == null) ? null : table.getColumnForIdentifier(this.getDBColumnName());
 	}
 
+	@Override
 	public String getDBColumnName() {
 		return getSpecifiedDBColumnName() != null ? getSpecifiedDBColumnName()
 				: getDefaultDBColumnName();
 	}
 
+	@Override
 	public String getDefaultDBColumnName() {
 		return getDefaultName();
 	}
-	
+
+	@Override
 	public String getSpecifiedDBColumnName() {
 		if (getSpecifiedName() == null) return null;
 		NamingStrategy ns = getJpaProject().getNamingStrategy();
@@ -82,49 +85,52 @@ public class HibernateOrmJoinColumnImpl extends GenericOrmJoinColumn implements
 		}
 		return this.getSpecifiedName();
 	}
-	
+
 	@Override
 	public Column getReferencedDbColumn() {
 		Table table = this.getReferencedColumnDbTable();
 		return (table == null) ? null : table.getColumnForIdentifier(this.getReferencedDBColumnName());
 	}
 
+	@Override
 	public String getReferencedDBColumnName() {
 		return getReferencedSpecifiedDBColumnName() != null ? getReferencedSpecifiedDBColumnName()
 				: getReferencedDefaultDBColumnName();
 	}
 
+	@Override
 	public String getReferencedDefaultDBColumnName() {
-		return defaultReferencedColumnName;
+		return this.defaultReferencedColumnName;
 	}
 
+	@Override
 	public String getReferencedSpecifiedDBColumnName() {
-		if (specifiedReferencedColumnName == null) return null;
+		if (this.specifiedReferencedColumnName == null) return null;
 		NamingStrategy ns = getJpaProject().getNamingStrategy();
 		if (getJpaProject().isNamingStrategyEnabled() && ns != null){
 			try {
-				return ns.columnName(specifiedReferencedColumnName);
+				return ns.columnName(this.specifiedReferencedColumnName);
 			} catch (Exception e) {
 				Message m = new LocalMessage(IMessage.HIGH_SEVERITY,
 						Messages.NAMING_STRATEGY_EXCEPTION, new String[0], null);
 				HibernateJptPlugin.logException(m.getText(), e);
 			}
 		}
-		return specifiedReferencedColumnName;
+		return this.specifiedReferencedColumnName;
 	}
-	
-	public PersistentAttribute getReferencedPersistentAttribute() {
-		if (this.getOwner().joinColumnsSize() != 1) {
+
+	public ReadOnlyPersistentAttribute getReferencedPersistentAttribute() {
+		if (this.owner.joinColumnsSize() != 1) {
 			return null;
 		}
-		Entity targetEntity = this.getOwner().getRelationshipTarget();
+		Entity targetEntity = this.owner.getRelationshipTarget();
 		if (targetEntity == null) {
 			return null;
 		}
-		PersistentAttribute pAttr = null;
-		Iterator<PersistentAttribute> attributes = targetEntity.getPersistentType().allAttributes();
-		for (Iterator<PersistentAttribute> stream = attributes; stream.hasNext();) {
-			PersistentAttribute attribute = stream.next();
+		ReadOnlyPersistentAttribute pAttr = null;
+		Iterator<ReadOnlyPersistentAttribute> attributes = targetEntity.getPersistentType().allAttributes();
+		for (Iterator<ReadOnlyPersistentAttribute> stream = attributes; stream.hasNext();) {
+			ReadOnlyPersistentAttribute attribute = stream.next();
 			String name = attribute.getPrimaryKeyColumnName();
 			if (name != null) {
 				if (pAttr == null){
@@ -132,7 +138,7 @@ public class HibernateOrmJoinColumnImpl extends GenericOrmJoinColumn implements
 				} else {
 					return null;
 				}
-			}			
+			}
 		}
 		return pAttr;
 	}

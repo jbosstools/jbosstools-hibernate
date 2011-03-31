@@ -10,10 +10,10 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
-import org.eclipse.jpt.core.context.AccessType;
-import org.eclipse.jpt.core.context.orm.EntityMappings;
-import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmPersistentType;
-import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
+import org.eclipse.jpt.jpa.core.context.AccessType;
+import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmPersistentType;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
 
 /**
  * @author Dmitry Geraskov

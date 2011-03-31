@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.core.context.java.JavaColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateColumn;
 
 /**

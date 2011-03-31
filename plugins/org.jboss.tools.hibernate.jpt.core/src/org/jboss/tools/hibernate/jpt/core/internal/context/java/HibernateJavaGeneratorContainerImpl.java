@@ -1,29 +1,30 @@
 /*******************************************************************************
-  * Copyright (c) 2010 Red Hat, Inc.
-  * Distributed under license by Red Hat, Inc. All rights reserved.
-  * This program is made available under the terms of the
-  * Eclipse Public License v1.0 which accompanies this distribution,
-  * and is available at http://www.eclipse.org/legal/epl-v10.html
-  *
-  * Contributor:
-  *     Red Hat, Inc. - initial API and implementation
-  ******************************************************************************/
+ * Copyright (c) 2010 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Vector;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.java.JavaGenerator;
-import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaGeneratorContainer;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
-import org.eclipse.jpt.core.resource.java.NestableAnnotation;
-import org.eclipse.jpt.utility.Filter;
-import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.common.utility.Filter;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SubIterableWrapper;
+import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaGeneratorContainer;
+import org.eclipse.jpt.jpa.core.resource.java.NestableAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
@@ -35,126 +36,167 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.GenericGenerato
  * @author Dmitry Geraskov
  *
  */
+@SuppressWarnings("restriction")
 public class HibernateJavaGeneratorContainerImpl extends
-		GenericJavaGeneratorContainer implements
-		HibernateJavaGeneratorContainer {
-	
-	protected final List<JavaGenericGenerator> genericGenerators;
+	GenericJavaGeneratorContainer implements
+	HibernateJavaGeneratorContainer {
 
-	public HibernateJavaGeneratorContainerImpl(JavaJpaContextNode parent) {
-		super(parent);
-		this.genericGenerators = new ArrayList<JavaGenericGenerator>();
+	protected final Vector<JavaGenericGenerator> genericGenerators = new Vector<JavaGenericGenerator>();
+	protected GenericGeneratorContainerAdapter genericGeneratorsContainerAdapter = new GenericGeneratorContainerAdapter();
+
+	public HibernateJavaGeneratorContainerImpl(JavaJpaContextNode parent, Owner owner) {
+		super(parent, owner);
+		this.initializeGenericGenerators();
 	}
-	
+
+	@Override
 	public HibernateAbstractJpaFactory getJpaFactory(){
 		return (HibernateAbstractJpaFactory)super.getJpaFactory();
 	}
-	
+
 	@Override
-	public void initialize(JavaResourcePersistentMember jrpm) {
-		super.initialize(jrpm);
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
 		this.initializeGenericGenerators();
 	}
-	
+
 	@Override
-	public void update(JavaResourcePersistentMember jrpm) {
-		super.update(jrpm);
-		this.updateGenericGenerators();
+	public void update() {
+		super.update();
+		this.updateNodes(this.getGenericGenerators());
 	}
 
-	public JavaGenericGenerator addGenericGenerator(int index) {
-		JavaGenericGenerator newGenericGenerator = getJpaFactory().buildJavaGenericGenerator(this);
-		this.genericGenerators.add(index, newGenericGenerator);
-		GenericGeneratorAnnotation genericGeneratorAnnotation = (GenericGeneratorAnnotation)this.javaResourcePersistentMember
-			.addAnnotation(index, GenericGeneratorAnnotation.ANNOTATION_NAME, GenericGeneratorsAnnotation.ANNOTATION_NAME);
-		newGenericGenerator.initialize(genericGeneratorAnnotation);
-		fireItemAdded(GENERIC_GENERATORS_LIST, index, newGenericGenerator);
-		return newGenericGenerator;
-	}
-	
-	protected void addGenericGenerator(JavaGenericGenerator genericGenerator) {
-		this.addGenericGenerator(genericGeneratorsSize(), genericGenerator);
-	}
-	
-	protected void addGenericGenerator(int index, JavaGenericGenerator genericGenerator) {
-		addItemToList(index, genericGenerator, this.genericGenerators, GENERIC_GENERATORS_LIST);
-	}
+	// ******************* Generic Generators ****************
 
+	@Override
 	public ListIterator<JavaGenericGenerator> genericGenerators() {
-		return new CloneListIterator<JavaGenericGenerator>(genericGenerators);
+		return this.getGenericGenerators().iterator();
 	}
 
+	protected ListIterable<JavaGenericGenerator> getGenericGenerators() {
+		return new LiveCloneListIterable<JavaGenericGenerator>(this.genericGenerators);
+	}
+
+	@Override
 	public int genericGeneratorsSize() {
 		return this.genericGenerators.size();
 	}
 
-	public void moveGenericGenerator(int targetIndex, int sourceIndex) {
-		CollectionTools.move(this.genericGenerators, targetIndex, sourceIndex);
-		this.javaResourcePersistentMember.moveAnnotation(targetIndex, sourceIndex, GenericGeneratorsAnnotation.ANNOTATION_NAME);
-		fireItemMoved(GENERIC_GENERATORS_LIST, targetIndex, sourceIndex);		
+
+	public JavaGenericGenerator addGenericGenerator() {
+		return this.addGenericGenerator(this.genericGenerators.size());
 	}
 
-	public void removeGenericGenerator(int index) {
-		JavaGenericGenerator removedGenericGenerator = this.genericGenerators.remove(index);
-		this.javaResourcePersistentMember.removeAnnotation(index, GenericGeneratorAnnotation.ANNOTATION_NAME, GenericGeneratorsAnnotation.ANNOTATION_NAME);
-		fireItemRemoved(GENERIC_GENERATORS_LIST, index, removedGenericGenerator);
+	@Override
+	public JavaGenericGenerator addGenericGenerator(int index) {
+		GenericGeneratorAnnotation annotation = this.buildGenericGeneratorAnnotation(index);
+		return this.addGenericGenerator_(index, annotation);
 	}
 
+	protected GenericGeneratorAnnotation buildGenericGeneratorAnnotation(int index) {
+		return (GenericGeneratorAnnotation) this.owner.getResourceAnnotatedElement().addAnnotation(index, GenericGeneratorAnnotation.ANNOTATION_NAME, GenericGeneratorsAnnotation.ANNOTATION_NAME);
+	}
+
+	@Override
 	public void removeGenericGenerator(GenericGenerator generator) {
-		removeGenericGenerator(this.genericGenerators.indexOf(generator));		
+		removeGenericGenerator(this.genericGenerators.indexOf(generator));
 	}
 
-	protected void removeGenericGenerator_(JavaGenericGenerator generator) {
-		removeItemFromList(generator, this.genericGenerators, GENERIC_GENERATORS_LIST);
+	@Override
+	public void removeGenericGenerator(int index) {
+		this.owner.getResourceAnnotatedElement().removeAnnotation(index, GenericGeneratorAnnotation.ANNOTATION_NAME, GenericGeneratorsAnnotation.ANNOTATION_NAME);
+		this.removeGenericGenerator_(index);
 	}
+
+	/**
+	 * @param index
+	 */
+	protected void removeGenericGenerator_(int index) {
+		this.removeItemFromList(index, this.genericGenerators, GENERIC_GENERATORS_LIST);
+	}
+
+	@Override
+	public void moveGenericGenerator(int targetIndex, int sourceIndex) {
+		this.owner.getResourceAnnotatedElement().moveAnnotation(targetIndex, sourceIndex, GenericGeneratorsAnnotation.ANNOTATION_NAME);
+		this.moveItemInList(targetIndex, sourceIndex, this.genericGenerators, GENERIC_GENERATORS_LIST);
+	}
+
 
 	protected void initializeGenericGenerators() {
-		for (Iterator<NestableAnnotation> stream = this.javaResourcePersistentMember.annotations(
-				GenericGeneratorAnnotation.ANNOTATION_NAME,
-				GenericGeneratorsAnnotation.ANNOTATION_NAME);
-		stream.hasNext(); ) {
-			this.genericGenerators.add(buildGenericGenerator((GenericGeneratorAnnotation) stream.next()));
+		for (GenericGeneratorAnnotation annotation : this.getGenericGeneratorAnnotations()) {
+			this.genericGenerators.add(this.buildGenericGenerator(annotation));
 		}
 	}
-	
-	protected JavaGenericGenerator buildGenericGenerator(GenericGeneratorAnnotation genericGeneratorResource) {
-		JavaGenericGenerator generator = getJpaFactory().buildJavaGenericGenerator(this);
-		generator.initialize(genericGeneratorResource);
-		return generator;
-	}
-	
-	@Override
-	protected void addGeneratorsTo(ArrayList<JavaGenerator> generators) {
-		super.addGeneratorsTo(generators);
-		for (JavaGenericGenerator genericGenerator : genericGenerators) {
-			generators.add(genericGenerator);
-		}
-	}
-	
-	protected void updateGenericGenerators() {
-		ListIterator<JavaGenericGenerator> genericGenerators = genericGenerators();
-		Iterator<NestableAnnotation> resourceGenericGenerators =
-			this.javaResourcePersistentMember.annotations(
-					GenericGeneratorAnnotation.ANNOTATION_NAME,
-					GenericGeneratorsAnnotation.ANNOTATION_NAME);
 
-		while (genericGenerators.hasNext()) {
-			JavaGenericGenerator genericGenerator = genericGenerators.next();
-			if (resourceGenericGenerators.hasNext()) {
-				genericGenerator.update((GenericGeneratorAnnotation) resourceGenericGenerators.next());
-			}
-			else {
-				removeGenericGenerator_(genericGenerator);
-			}
-		}
+	protected JavaGenericGenerator buildGenericGenerator(GenericGeneratorAnnotation genericGeneratorAnnotation) {
+		return this.getJpaFactory().buildJavaGenericGenerator(this, genericGeneratorAnnotation);
+	}
 
-		while (resourceGenericGenerators.hasNext()) {
-			addGenericGenerator(buildGenericGenerator((GenericGeneratorAnnotation) resourceGenericGenerators.next()));
+	protected void syncGenericGenerators() {
+		ContextContainerTools.synchronizeWithResourceModel(this.genericGeneratorsContainerAdapter);
+	}
+
+
+	protected Iterable<GenericGeneratorAnnotation> getGenericGeneratorAnnotations() {
+		return new SubIterableWrapper<NestableAnnotation, GenericGeneratorAnnotation>(
+				CollectionTools.iterable(this.genericGeneratorAnnotations())
+			);
+	}
+
+	protected Iterator<NestableAnnotation> genericGeneratorAnnotations() {
+		return this.owner.getResourceAnnotatedElement().annotations(GenericGeneratorAnnotation.ANNOTATION_NAME, GenericGeneratorsAnnotation.ANNOTATION_NAME);
+	}
+
+
+	protected void moveNamedQuery_(int index, JavaGenericGenerator genericGenerator) {
+		this.moveItemInList(index, genericGenerator, this.genericGenerators, GENERIC_GENERATORS_LIST);
+	}
+
+	protected JavaGenericGenerator addGenericGenerator_(int index, GenericGeneratorAnnotation ggAnnotation) {
+		JavaGenericGenerator query = this.buildGenericGenerator(ggAnnotation);
+		this.addItemToList(index, query, this.genericGenerators, GENERIC_GENERATORS_LIST);
+		return query;
+	}
+
+	protected void removeGenericGenerator_(JavaGenericGenerator rgenericGenerator) {
+		this.removeGenericGenerator_(this.genericGenerators.indexOf(rgenericGenerator));
+	}
+
+
+	/**
+	 * generic generator container adapter
+	 */
+	protected class GenericGeneratorContainerAdapter
+		implements ContextContainerTools.Adapter<JavaGenericGenerator, GenericGeneratorAnnotation>
+	{
+		@Override
+		public Iterable<JavaGenericGenerator> getContextElements() {
+			return HibernateJavaGeneratorContainerImpl.this.getGenericGenerators();
+		}
+		@Override
+		public Iterable<GenericGeneratorAnnotation> getResourceElements() {
+			return HibernateJavaGeneratorContainerImpl.this.getGenericGeneratorAnnotations();
+		}
+		@Override
+		public GenericGeneratorAnnotation getResourceElement(JavaGenericGenerator contextElement) {
+			return contextElement.getGeneratorAnnotation();
+		}
+		@Override
+		public void moveContextElement(int index, JavaGenericGenerator element) {
+			HibernateJavaGeneratorContainerImpl.this.moveNamedQuery_(index, element);
+		}
+		@Override
+		public void addContextElement(int index, GenericGeneratorAnnotation resourceElement) {
+			HibernateJavaGeneratorContainerImpl.this.addGenericGenerator_(index, resourceElement);
+		}
+		@Override
+		public void removeContextElement(JavaGenericGenerator element) {
+			HibernateJavaGeneratorContainerImpl.this.removeGenericGenerator_(element);
 		}
 	}
-	
+
 	/* (non-Javadoc)
-	 * @see org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaGeneratorContainer#validate(java.util.List, org.eclipse.wst.validation.internal.provisional.core.IReporter, org.eclipse.jdt.core.dom.CompilationUnit)
+	 * @see org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaGeneratorContainer#validate(java.util.List, org.eclipse.wst.validation.internal.provisional.core.IReporter, org.eclipse.jdt.core.dom.CompilationUnit)
 	 */
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter,
@@ -168,11 +210,11 @@ public class HibernateJavaGeneratorContainerImpl extends
 		ListIterator<JavaGenericGenerator> genericGenerators = genericGenerators();
 		while (genericGenerators.hasNext()) {
 			genericGenerators.next().validate(messages, reporter, astRoot);
-		}	
+		}
 	}
-	
+
 	/* (non-Javadoc)
-	 * @see org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaGeneratorContainer#javaCompletionProposals(int, org.eclipse.jpt.utility.Filter, org.eclipse.jdt.core.dom.CompilationUnit)
+	 * @see org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaGeneratorContainer#javaCompletionProposals(int, org.eclipse.jpt.common.utility.Filter, org.eclipse.jdt.core.dom.CompilationUnit)
 	 */
 	@Override
 	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter,
@@ -184,7 +226,7 @@ public class HibernateJavaGeneratorContainerImpl extends
 		ListIterator<JavaGenericGenerator> genericGenerators = genericGenerators();
 		while (genericGenerators.hasNext()) {
 			result = genericGenerators.next()
-				.javaCompletionProposals(pos, filter, astRoot);
+			.javaCompletionProposals(pos, filter, astRoot);
 			if (result != null) {
 				return result;
 			}

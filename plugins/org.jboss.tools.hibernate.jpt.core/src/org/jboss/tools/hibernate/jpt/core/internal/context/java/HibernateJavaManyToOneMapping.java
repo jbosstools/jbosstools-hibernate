@@ -11,9 +11,9 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.java.GenericJavaManyToOneRelationshipReference;
-import org.eclipse.jpt.core.jpa2.context.java.JavaManyToOneRelationshipReference2_0;
+import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.internal.context.java.GenericJavaManyToOneRelationship;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaManyToOneRelationship2_0;
 
 /**
  * @author Dmitry Geraskov
@@ -26,8 +26,8 @@ public class HibernateJavaManyToOneMapping extends AbstractHibernateJavaManyToOn
 	}
 	
 	@Override
-	protected JavaManyToOneRelationshipReference2_0 buildRelationshipReference() {
-		return new GenericJavaManyToOneRelationshipReference(this);
+	protected JavaManyToOneRelationship2_0 buildRelationship() {
+		return new GenericJavaManyToOneRelationship(this);
 	}	
 
 }

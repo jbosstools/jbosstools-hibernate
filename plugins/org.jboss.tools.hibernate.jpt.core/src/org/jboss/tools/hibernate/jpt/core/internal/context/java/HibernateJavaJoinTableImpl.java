@@ -13,11 +13,11 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 import java.util.List;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.java.JavaJoinTableJoiningStrategy;
-import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaJoinTable;
-import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.db.Schema;
+import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaJoinTable;
+import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -32,28 +32,31 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
  *
  */
 public class HibernateJavaJoinTableImpl extends GenericJavaJoinTable
-implements HibernateJavaJoinTable {
+	implements HibernateJavaJoinTable {
 
-	public HibernateJavaJoinTableImpl(JavaJoinTableJoiningStrategy parent) {
-		super(parent);
+	public HibernateJavaJoinTableImpl(JavaJoinTableRelationshipStrategy parent,
+			Owner owner) {
+		super(parent, owner);
 	}
 
 	@Override
 	public HibernateJpaProject getJpaProject() {
 		return (HibernateJpaProject) super.getJpaProject();
 	}
-	
+
 	@Override
-	public org.eclipse.jpt.db.Table getDbTable() {
+	public org.eclipse.jpt.jpa.db.Table getDbTable() {
 		Schema dbSchema = this.getDbSchema();
 		return (dbSchema == null) ? null : dbSchema.getTableForIdentifier(getDBTableName());
 	}
 
+	@Override
 	public String getDBTableName(){
 		return getSpecifiedDBTableName() != null ? getSpecifiedDBTableName()
-				: getDefaultDBTableName();	
+				: getDefaultDBTableName();
 	}
-	
+
+	@Override
 	public String getSpecifiedDBTableName() {
 		if (getSpecifiedName() == null) return null;
 		NamingStrategy ns = getJpaProject().getNamingStrategy();
@@ -69,47 +72,49 @@ implements HibernateJavaJoinTable {
 		return this.getName();
 	}
 
+	@Override
 	public String getDefaultDBTableName() {
 		return getDefaultName();
 	}
-	
+
+	//@Override
 	protected boolean validateAgainstDatabase(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		if ( ! this.hasResolvedCatalog()) {
+		if ( ! this.catalogIsResolved()) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.JOIN_TABLE_UNRESOLVED_CATALOG,
-					new String[] {this.getCatalog(), this.getDBTableName()}, 
-					this, 
+					new String[] {this.getCatalog(), this.getDBTableName()},
+					this,
 					this.getCatalogTextRange(astRoot)
 				)
 			);
 			return false;
 		}
-		
-		if ( ! this.hasResolvedSchema()) {
+
+		if ( ! this.schemaIsResolved()) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.JOIN_TABLE_UNRESOLVED_SCHEMA,
-					new String[] {this.getSchema(), this.getDBTableName()}, 
-					this, 
+					new String[] {this.getSchema(), this.getDBTableName()},
+					this,
 					this.getSchemaTextRange(astRoot)
 				)
 			);
 			return false;
 		}
-		
+
 		if ( ! this.isResolved()) {
 			if (getName() != null) { //if name is null, the validation will be handled elsewhere, such as the target entity is not defined
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
 							JpaValidationMessages.JOIN_TABLE_UNRESOLVED_NAME,
-							new String[] {this.getDBTableName()}, 
-							this, 
+							new String[] {this.getDBTableName()},
+							this,
 							this.getNameTextRange(astRoot))
-					);				
+					);
 			}
 			return false;
 		}

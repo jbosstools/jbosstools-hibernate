@@ -10,7 +10,7 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.basic;
 
-import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
+import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 
 /**
  * @author Dmitry Geraskov

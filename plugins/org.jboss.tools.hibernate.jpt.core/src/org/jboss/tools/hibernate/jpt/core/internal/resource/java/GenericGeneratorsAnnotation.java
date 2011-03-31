@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
-import org.eclipse.jpt.core.resource.java.ContainerAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.ContainerAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 
 /**

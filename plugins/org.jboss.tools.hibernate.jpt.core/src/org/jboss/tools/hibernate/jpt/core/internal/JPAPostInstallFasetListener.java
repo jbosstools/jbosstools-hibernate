@@ -1,13 +1,13 @@
 /*******************************************************************************
-  * Copyright (c) 2008-2009 Red Hat, Inc.
-  * Distributed under license by Red Hat, Inc. All rights reserved.
-  * This program is made available under the terms of the
-  * Eclipse Public License v1.0 which accompanies this distribution,
-  * and is available at http://www.eclipse.org/legal/epl-v10.html
-  *
-  * Contributor:
-  *     Red Hat, Inc. - initial API and implementation
-  ******************************************************************************/
+ * Copyright (c) 2008-2009 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal;
 
 import java.util.ArrayList;
@@ -26,7 +26,8 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.internal.core.LaunchConfiguration;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
-import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.jpa.core.JpaFacet;
+import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectEvent;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectEvent.Type;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectListener;
@@ -46,16 +47,16 @@ public class JPAPostInstallFasetListener implements IFacetedProjectListener {
 		if (event.getType() == Type.POST_INSTALL){
 			IProject project = event.getProject().getProject();
 			IProjectFacetActionEvent pEvent = (IProjectFacetActionEvent)event;
-			if (pEvent.getProjectFacet().getId().equals(JptCorePlugin.FACET_ID)
-					&& (HibernateJpaPlatform.HIBERNATE_PLATFORM_ID.equals(JptCorePlugin.getJpaPlatformId(project))
-							|| HibernateJpaPlatform.HIBERNATE2_0_PLATFORM_ID.equals(JptCorePlugin.getJpaPlatformId(project)))){
+			if (pEvent.getProjectFacet().getId().equals(JpaFacet.ID)
+					&& (HibernateJpaPlatform.HIBERNATE_PLATFORM_ID.equals(JptJpaCorePlugin.getJpaPlatformId(project))
+							|| HibernateJpaPlatform.HIBERNATE2_0_PLATFORM_ID.equals(JptJpaCorePlugin.getJpaPlatformId(project)))){
 				if (checkPreConditions(project)){
 					buildConsoleConfiguration(project);
-				}				
+				}
 			}
-		}		
+		}
 	}
-	
+
 	/**
 	 * 
 	 * @param project
@@ -67,33 +68,33 @@ public class JPAPostInstallFasetListener implements IFacetedProjectListener {
 			if (lc != null && lc.exists()){
 				ProjectUtils.toggleHibernateOnProject(project, true, lc.getName());
 				return false;
-			}				
+			}
 		} catch (CoreException e) {
 			HibernateJptPlugin.logException(e);
 		}
 		return true;
 	}
-	
+
 	private ILaunchConfiguration getLaunchConfiguration(IProject project) throws CoreException{
 		List<ILaunchConfiguration> configs = new ArrayList<ILaunchConfiguration>();
 		ILaunchConfiguration[] lcs = LaunchHelper.findHibernateLaunchConfigs();
 		for (int i = 0; i < lcs.length; i++){
 			ILaunchConfiguration lc = lcs[i];
 			if (project.getName().equals(
-					lc.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, (String)null))){//lc uses this project					 //$NON-NLS-1$
+					lc.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, (String)null))){//lc uses this project
 				if (project.getName().equals(lc.getName())) return lc;
-				configs.add(lc);				
+				configs.add(lc);
 			}
 		}
 		//select best launch configuration "projectName (1)"
 		Pattern p = Pattern.compile(project.getName() + " \\(\\d+\\)"); //$NON-NLS-1$
 		for (int i = 0; i < configs.size(); i++) {
 			ILaunchConfiguration lc = configs.get(i);
-			if (p.matcher(lc.getName()).matches()) return lc; 
+			if (p.matcher(lc.getName()).matches()) return lc;
 		}
 		return configs.size() > 0 ? configs.get(0) : null;
 	}
-	
+
 	protected void buildConsoleConfiguration(IProject project){
 		ILaunchManager lm = DebugPlugin.getDefault().getLaunchManager();
 		ILaunchConfigurationType lct = LaunchHelper.getHibernateLaunchConfigsType();
@@ -109,12 +110,12 @@ public class JPAPostInstallFasetListener implements IFacetedProjectListener {
 			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, true );
 			wc.setAttribute(IConsoleConfigurationLaunchConstants.FILE_MAPPINGS, (List<String>)null);
 			wc.setAttribute(IConsoleConfigurationLaunchConstants.USE_JPA_PROJECT_PROFILE, Boolean.toString(true));
-			
+
 			wc.doSave();
 			ProjectUtils.toggleHibernateOnProject(project, true, launchName);
 		} catch (CoreException e) {
 			HibernateJptPlugin.logException(e);
-		}		
+		}
 	}
 
 }

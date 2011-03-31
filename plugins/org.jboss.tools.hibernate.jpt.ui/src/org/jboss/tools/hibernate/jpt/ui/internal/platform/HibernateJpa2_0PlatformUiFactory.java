@@ -10,9 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.platform;
 
-import org.eclipse.jpt.ui.JpaPlatformUi;
-import org.eclipse.jpt.ui.JpaPlatformUiFactory;
-import org.eclipse.jpt.ui.internal.platform.generic.GenericNavigatorProvider;
+import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
+import org.eclipse.jpt.jpa.ui.JpaPlatformUiFactory;
+import org.eclipse.jpt.jpa.ui.internal.platform.generic.GenericNavigatorProvider;
 import org.jboss.tools.hibernate.jpt.ui.internal.HibernateJpa2_0PlatformUiProvider;
 
 /**

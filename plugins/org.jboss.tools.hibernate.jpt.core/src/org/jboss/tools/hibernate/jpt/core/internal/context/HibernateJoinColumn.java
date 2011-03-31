@@ -11,24 +11,24 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
-import org.eclipse.jpt.core.context.JoinColumn;
-import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 
 /**
  * @author Dmitry Geraskov
  *
  */
 public interface HibernateJoinColumn extends JoinColumn, HibernateNamedColumn {
-	
+
 	//**** referenced column
-	
+
 	String getReferencedDBColumnName();
 
 	String getReferencedSpecifiedDBColumnName();
 
 	String getReferencedDefaultDBColumnName();
-	
+
 	// ******** required for NamingStrategy
-	PersistentAttribute getReferencedPersistentAttribute();
+	ReadOnlyPersistentAttribute getReferencedPersistentAttribute();
 
 }

@@ -10,13 +10,13 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.persistence.details;
 
-import org.eclipse.jpt.core.JpaResourceType;
-import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.ui.ResourceUiDefinition;
-import org.eclipse.jpt.ui.internal.persistence.details.AbstractPersistenceXmlResourceUiDefinition;
-import org.eclipse.jpt.ui.internal.persistence.details.PersistenceXmlUiFactory;
-import org.eclipse.jpt.ui.internal.structure.PersistenceResourceModelStructureProvider;
-import org.eclipse.jpt.ui.structure.JpaStructureProvider;
+import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.persistence.details.AbstractPersistenceXmlResourceUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.persistence.details.PersistenceXmlUiFactory;
+import org.eclipse.jpt.jpa.ui.internal.structure.PersistenceResourceModelStructureProvider;
+import org.eclipse.jpt.jpa.ui.structure.JpaStructureProvider;
 
 /**
  * @author Dmitry Geraskov
@@ -49,8 +49,8 @@ public class HibernatePersistenceXmlUiDefinition extends
 		return new HibernatePersistenceXmlUiFactory();
 	}
 	
-	public boolean providesUi(JpaResourceType resourceType) {
-		return resourceType.equals(JptCorePlugin.PERSISTENCE_XML_1_0_RESOURCE_TYPE);
+	public boolean providesUi(JptResourceType resourceType) {
+		return resourceType.equals(JptJpaCorePlugin.PERSISTENCE_XML_1_0_RESOURCE_TYPE);
 	}
 	
 	public JpaStructureProvider getStructureProvider() {

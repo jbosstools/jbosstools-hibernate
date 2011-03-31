@@ -11,9 +11,7 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.core.context.java.JavaJoinColumnJoiningStrategy;
-import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
-import org.eclipse.jpt.core.internal.context.java.GenericJavaManyToOneRelationshipReference;
+import org.eclipse.jpt.jpa.core.context.java.JavaManyToOneMapping;
 
 /**
  * @author Dmitry Geraskov

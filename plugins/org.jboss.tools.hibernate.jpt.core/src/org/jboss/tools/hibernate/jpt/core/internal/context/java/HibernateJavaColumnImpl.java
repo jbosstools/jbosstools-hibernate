@@ -10,12 +10,11 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.core.context.java.JavaBaseColumn;
-import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaColumn;
-import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
-import org.eclipse.jpt.db.Column;
-import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaColumn;
+import org.eclipse.jpt.jpa.db.Column;
+import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.hibernate.cfg.NamingStrategy;
@@ -29,8 +28,8 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
  *
  */
 public class HibernateJavaColumnImpl extends GenericJavaColumn implements HibernateJavaColumn {
-	
-	public HibernateJavaColumnImpl(JavaJpaContextNode parent, JavaBaseColumn.Owner owner) {
+
+	public HibernateJavaColumnImpl(JavaJpaContextNode parent, JavaColumn.Owner owner) {
 		super(parent, owner);
 	}
 
@@ -38,13 +37,12 @@ public class HibernateJavaColumnImpl extends GenericJavaColumn implements Hibern
 	public HibernateJpaProject getJpaProject() {
 		return (HibernateJpaProject) super.getJpaProject();
 	}
-	
+
 	@Override
-	public void initialize(ColumnAnnotation column) {
-		super.initialize(column);
-		//this.initializGenerated();
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
 	}
-	
+
 	//********* DB Column name ******************
 
 	@Override
@@ -72,11 +70,11 @@ public class HibernateJavaColumnImpl extends GenericJavaColumn implements Hibern
 		}
 		return this.getSpecifiedName();
 	}
-	
+
 	public String getDefaultDBColumnName() {
 		return getDefaultName();
 	}
-		
+
 	@Override
 	protected String buildDefaultName() {
 		NamingStrategy ns = getJpaProject().getNamingStrategy();
@@ -84,14 +82,14 @@ public class HibernateJavaColumnImpl extends GenericJavaColumn implements Hibern
 			try {
 				return ns.propertyToColumnName(super.buildDefaultName());
 			} catch (Exception e) {
-				Message m = new LocalMessage(IMessage.HIGH_SEVERITY, 
+				Message m = new LocalMessage(IMessage.HIGH_SEVERITY,
 						Messages.NAMING_STRATEGY_EXCEPTION, new String[0], null);
 				HibernateJptPlugin.logException(m.getText(), e);
 			}
 		}
 		return super.buildDefaultName();
 	}
-	
+
 	//************ DB Table name ***********
 
 	public String getDBTableName() {
@@ -117,7 +115,7 @@ public class HibernateJavaColumnImpl extends GenericJavaColumn implements Hibern
 		}
 		return this.getSpecifiedTable();
 	}
-	
+
 	//********** Generated ************
 	/*private void initializGenerated() {
 		GeneratedAnnotation generatedResource = getGeneratedResource();
@@ -125,7 +123,7 @@ public class HibernateJavaColumnImpl extends GenericJavaColumn implements Hibern
 			this.generated = buildGenerated(generatedResource);
 		}
 	}
-	
+
 	public GeneratedAnnotation getGeneratedResource() {
 		return (GeneratedAnnotation) this.javaResourcePersistentType.getSupportingAnnotation(GeneratedAnnotation.ANNOTATION_NAME);
 	}
@@ -142,7 +140,7 @@ public class HibernateJavaColumnImpl extends GenericJavaColumn implements Hibern
 
 	public void removeGenerated() {
 		// TODO Auto-generated method stub
-		
+
 	}*/
-	
+
 }

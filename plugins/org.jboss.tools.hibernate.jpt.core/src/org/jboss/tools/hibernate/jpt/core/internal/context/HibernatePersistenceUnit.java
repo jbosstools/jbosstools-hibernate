@@ -1,13 +1,13 @@
 /*******************************************************************************
-  * Copyright (c) 2008-2009 Red Hat, Inc.
-  * Distributed under license by Red Hat, Inc. All rights reserved.
-  * This program is made available under the terms of the
-  * Eclipse Public License v1.0 which accompanies this distribution,
-  * and is available at http://www.eclipse.org/legal/epl-v10.html
-  *
-  * Contributor:
-  *     Red Hat, Inc. - initial API and implementation
-  ******************************************************************************/
+ * Copyright (c) 2008-2009 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
 import java.io.File;
@@ -26,10 +26,10 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jpt.core.context.persistence.Persistence;
-import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceUnit;
-import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
-import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
+import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnit;
+import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -44,13 +44,13 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.persistence.Hibernate
  * @author Dmitry Geraskov
  *
  */
-public class HibernatePersistenceUnit extends AbstractPersistenceUnit 
-	implements Messages, Hibernate {
-	
+public class HibernatePersistenceUnit extends AbstractPersistenceUnit
+implements Messages, Hibernate {
+
 	public String TYPE_DEF_LIST = "typeDefs"; //$NON-NLS-1$
-	
+
 	private HibernatePersistenceUnitProperties hibernateProperties;
-	
+
 	/* global type def definitions, defined elsewhere in model */
 	protected final Vector<JavaTypeDef> typeDefs = new Vector<JavaTypeDef>();
 
@@ -62,32 +62,33 @@ public class HibernatePersistenceUnit extends AbstractPersistenceUnit
 			XmlPersistenceUnit persistenceUnit) {
 		super(parent, persistenceUnit);
 	}
-	
+
+	@Override
 	protected void addNonUpdateAspectNamesTo(Set<String> nonUpdateAspectNames) {
 		super.addNonUpdateAspectNamesTo(nonUpdateAspectNames);
-		nonUpdateAspectNames.add(TYPE_DEF_LIST);
+		nonUpdateAspectNames.add(this.TYPE_DEF_LIST);
 	}
-	
+
 	@Override
-	public void update(XmlPersistenceUnit xpu) {
+	public void update() {
 		this.typeDefs.clear();
-		super.update(xpu);
-		this.fireListChanged(TYPE_DEF_LIST, this.typeDefs);
+		super.update();
+		this.fireListChanged(this.TYPE_DEF_LIST, this.typeDefs);
 	}
-	
+
 	@Override
 	protected void initializeProperties() {
 		super.initializeProperties();
 		this.hibernateProperties = ((HibernatePersistenceUnitPropertiesBuilder)this.getContextNodeFactory())
-			.buildHibernatePersistenceUnitProperties(this);
+		.buildHibernatePersistenceUnitProperties(this);
 	}
-	
+
 	@Override
 	public void propertyRemoved(String propertyName) {
 		super.propertyRemoved(propertyName);
 		this.hibernateProperties.propertyRemoved(propertyName);
 	}
-	
+
 	@Override
 	public void propertyValueChanged(String propertyName, String newValue) {
 		super.propertyValueChanged(propertyName, newValue);
@@ -98,7 +99,7 @@ public class HibernatePersistenceUnit extends AbstractPersistenceUnit
 	public HibernatePersistenceUnitProperties getHibernatePersistenceUnitProperties() {
 		return this.hibernateProperties;
 	}
-	
+
 	// ******** Type Def *********
 
 	public ListIterator<JavaTypeDef> typeDefs() {
@@ -118,7 +119,7 @@ public class HibernatePersistenceUnit extends AbstractPersistenceUnit
 		this.addNonNullTypeDefNamesTo(names);
 		return names.toArray(new String[names.size()]);
 	}
-	
+
 	public boolean hasTypeDef(String name) {
 		for (Iterator<JavaTypeDef> stream = this.typeDefs(); stream.hasNext(); ) {
 			String typeDefName = stream.next().getName();
@@ -146,12 +147,12 @@ public class HibernatePersistenceUnit extends AbstractPersistenceUnit
 	}
 
 	protected void validateHibernateConfigurationFileExists(List<IMessage> messages, IReporter reporter) {
-		String configFile = hibernateProperties.getConfigurationFile();
+		String configFile = this.hibernateProperties.getConfigurationFile();
 		if (configFile != null && configFile.length() > 0){
 			IPath path = new Path(configFile);
-				
+
 			if (new File(path.toOSString()).exists()) return;
-			
+
 			try {
 				IJavaProject jp = getJpaProject().getJavaProject();
 				IPackageFragmentRoot[] pfrs = jp.getPackageFragmentRoots();
@@ -165,23 +166,23 @@ public class HibernatePersistenceUnit extends AbstractPersistenceUnit
 				HibernateJptPlugin.logException(e);
 			}
 
-		    IResource res= ResourcesPlugin.getWorkspace().getRoot().findMember(path);
-		    if (res != null) {
-		        int resType= res.getType();
-		        if (resType != IResource.FILE) {
-		        	Property prop = getProperty(BasicHibernateProperties.HIBERNATE_CONFIG_FILE);
-	            	IMessage message = new LocalMessage(IMessage.HIGH_SEVERITY, 
-	            			NOT_A_FILE, new String[]{configFile}, getResource());
-	            	message.setLineNo(prop.getValidationTextRange().getLineNumber());
-	            	messages.add(message);					
-		        }
-		    } else {
-		    	Property prop = getProperty(BasicHibernateProperties.HIBERNATE_CONFIG_FILE);
-	        	IMessage message = new LocalMessage(IMessage.HIGH_SEVERITY, 
-            			CONFIG_FILE_NOT_FOUND, new String[]{configFile}, getResource());
-	        	message.setLineNo(prop.getValidationTextRange().getLineNumber());
-            	messages.add(message);	
-		    }
+			IResource res= ResourcesPlugin.getWorkspace().getRoot().findMember(path);
+			if (res != null) {
+				int resType= res.getType();
+				if (resType != IResource.FILE) {
+					Property prop = getProperty(BasicHibernateProperties.HIBERNATE_CONFIG_FILE);
+					IMessage message = new LocalMessage(IMessage.HIGH_SEVERITY,
+							NOT_A_FILE, new String[]{configFile}, getResource());
+					message.setLineNo(prop.getValidationTextRange().getLineNumber());
+					messages.add(message);
+				}
+			} else {
+				Property prop = getProperty(BasicHibernateProperties.HIBERNATE_CONFIG_FILE);
+				IMessage message = new LocalMessage(IMessage.HIGH_SEVERITY,
+						CONFIG_FILE_NOT_FOUND, new String[]{configFile}, getResource());
+				message.setLineNo(prop.getValidationTextRange().getLineNumber());
+				messages.add(message);
+			}
 		}
 	}
 
@@ -198,5 +199,5 @@ public class HibernatePersistenceUnit extends AbstractPersistenceUnit
 			super(Messages.class.getName(), severity, message, strings, resource);
 		}
 	}
-	
+
 }

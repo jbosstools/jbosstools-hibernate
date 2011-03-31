@@ -11,25 +11,25 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
-import java.util.Iterator;
 import java.util.ListIterator;
 
-import org.eclipse.jpt.core.context.BaseJoinColumn;
-import org.eclipse.jpt.core.context.Entity;
-import org.eclipse.jpt.core.context.NamedColumn;
-import org.eclipse.jpt.core.context.Table;
-import org.eclipse.jpt.core.context.TypeMapping;
-import org.eclipse.jpt.core.context.orm.OrmBaseJoinColumn;
-import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.internal.context.orm.AbstractOrmEntity;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.NullOrmCacheable2_0;
-import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
-import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheable2_0;
-import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
-import org.eclipse.jpt.core.resource.orm.XmlEntity;
-import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
-import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterators.EmptyListIterator;
+import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.NamedColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
+import org.eclipse.jpt.jpa.core.context.TypeMapping;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmEntity;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.NullOrmCacheable2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.CacheableHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCacheable2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlEntity;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlCacheable_2_0;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.hibernate.cfg.NamingStrategy;
@@ -46,128 +46,164 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
  * @author Dmitry Geraskov
  *
  */
-public class HibernateOrmEntityImpl extends AbstractOrmEntity
+public class HibernateOrmEntityImpl extends AbstractOrmEntity<XmlEntity>
 implements HibernateOrmEntity {
-	
-	protected OrmCacheable2_0 cachable;
+
+	protected OrmCacheable2_0 cacheable;
 
 	public HibernateOrmEntityImpl(OrmPersistentType parent,
 			XmlEntity resourceMapping) {
 		super(parent, resourceMapping);
-		this.cachable = buildOrmCachable();
-	}
-	
-	protected OrmCacheable2_0 buildOrmCachable() {
-		return new NullOrmCacheable2_0(this);
-	}
-	
-	public OrmCacheable2_0 getCacheable() {
-		return cachable;
+		this.cacheable = this.buildCacheable();
 	}
 
-	public boolean calculateDefaultCacheable() {
-		if (!isMetadataComplete()) {
-			CacheableHolder2_0 javaEntity = (CacheableHolder2_0) getJavaEntity();
-			if (javaEntity != null) {
-				return javaEntity.getCacheable().isCacheable();
-			}
-		}
-		
-		CacheableHolder2_0 parentEntity = (CacheableHolder2_0) getParentEntity();
-		if (parentEntity != null) {
-			return parentEntity.getCacheable().isCacheable();
-		}
-		return ((PersistenceUnit2_0) getPersistenceUnit()).calculateDefaultCacheable();
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.cacheable.synchronizeWithResourceModel();
+	}
+
+	@Override
+	public void update() {
+		super.update();
+		this.cacheable.update();
 	}
 
 	@Override
 	public HibernateJpaProject getJpaProject() {
 		return (HibernateJpaProject) super.getJpaProject();
 	}
-	
+
+	// ********** cacheable **********
+
+	@Override
+	public OrmCacheable2_0 getCacheable() {
+		return this.cacheable;
+	}
+
+	protected OrmCacheable2_0 buildCacheable() {
+		return this.isJpa2_0Compatible() ?
+				this.getContextNodeFactory2_0().buildOrmCacheable(this) :
+				new NullOrmCacheable2_0(this);
+	}
+
+	@Override
+	public boolean calculateDefaultCacheable() {
+		CacheableHolder2_0 javaEntity = (CacheableHolder2_0) this.getJavaTypeMappingForDefaults();
+		if (javaEntity != null) {
+			return javaEntity.getCacheable().isCacheable();
+		}
+
+		Cacheable2_0 parentCacheable = this.getParentCacheable();
+		return (parentCacheable != null) ?
+				parentCacheable.isCacheable() :
+				((PersistenceUnit2_0) this.getPersistenceUnit()).calculateDefaultCacheable();
+	}
+
+	protected Cacheable2_0 getParentCacheable() {
+		CacheableHolder2_0 parentEntity = (CacheableHolder2_0) this.getParentEntity();
+		return (parentEntity == null) ? null : parentEntity.getCacheable();
+	}
+
+	@Override
+	public XmlCacheable_2_0 getXmlCacheable() {
+		return this.getXmlTypeMapping();
+	}
+
 	@Override
 	public String getPrimaryTableName() {
 		return this.getTable().getDBTableName();
 	}
-	
+
+	@Override
+	protected boolean tableNameIsValid(String tableName) {
+		// TODO Auto-generated method stub
+		return super.tableNameIsValid(tableName);
+	}
+
+
 	/**
 	 * Convert Table to it's DB name.
 	 */
 	@Override
-	protected Iterator<String> tableNames(Iterator<Table> tables) {
-		return new TransformationIterator<Table, String>(tables) {
+	protected Iterable<String> convertToNames_(Iterable<ReadOnlyTable> tables) {
+		return new TransformationIterable<ReadOnlyTable, String>(tables) {
 			@Override
-			protected String transform(Table t) {
+			protected String transform(ReadOnlyTable t) {
 				if (t instanceof HibernateTable) {
-					return ((HibernateTable)t).getDBTableName();					
+					return ((HibernateTable)t).getDBTableName();
 				} else {
 					return t.getName();//What is this???
-				}				
+				}
 			}
 		};
 	}
-	
+
 	@Override
-	protected OrmBaseJoinColumn.Owner createPrimaryKeyJoinColumnOwner() {
+	protected PrimaryKeyJoinColumnOwner buildPrimaryKeyJoinColumnOwner() {
 		return new HibernatePrimaryKeyJoinColumnOwner();
 	}
-	
-	// ********** pk join column owner **********
 
-	class HibernatePrimaryKeyJoinColumnOwner implements OrmBaseJoinColumn.Owner
+	// ********** pk join column owner **********
+//do we need this?
+	class HibernatePrimaryKeyJoinColumnOwner extends PrimaryKeyJoinColumnOwner
 	{
+		@Override
 		public TypeMapping getTypeMapping() {
 			return HibernateOrmEntityImpl.this;
 		}
 
-		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
-			return HibernateOrmEntityImpl.this.getDbTable(tableName);
+		public org.eclipse.jpt.jpa.db.Table getDbTable(String tableName) {
+			return HibernateOrmEntityImpl.this.resolveDbTable(tableName);
 		}
 
-		public org.eclipse.jpt.db.Table getReferencedColumnDbTable() {
+		@Override
+		public org.eclipse.jpt.jpa.db.Table getReferencedColumnDbTable() {
 			Entity parentEntity = HibernateOrmEntityImpl.this.getParentEntity();
 			return (parentEntity == null) ? null : parentEntity.getPrimaryDbTable();
 		}
 
+		@Override
 		public int joinColumnsSize() {
 			return HibernateOrmEntityImpl.this.primaryKeyJoinColumnsSize();
 		}
-		
-		public boolean isVirtual(BaseJoinColumn joinColumn) {
-			return HibernateOrmEntityImpl.this.defaultPrimaryKeyJoinColumns.contains(joinColumn);
-		}
-		
+
+		@Override
 		public String getDefaultColumnName() {
 			if (joinColumnsSize() != 1) {
 				return null;
 			}
 			Entity parentEntity = HibernateOrmEntityImpl.this.getParentEntity();
 			String colName = (parentEntity == null)
-				? getPrimaryKeyColumnName() : parentEntity.getPrimaryKeyColumnName();
+			? getPrimaryKeyColumnName() : parentEntity.getPrimaryKeyColumnName();
 			NamingStrategy ns = HibernateOrmEntityImpl.this.getJpaProject().getNamingStrategy();
-			if (getJpaProject().isNamingStrategyEnabled() && ns != null){				
+			if (getJpaProject().isNamingStrategyEnabled() && ns != null){
 				try {
 					String name = ns.joinKeyColumnName(colName,	(parentEntity == null)
-								? getTable().getName() : parentEntity.getPrimaryTableName());
+							? getTable().getName() : parentEntity.getPrimaryTableName());
 					return name;
 				} catch (Exception e) {
-					Message m = new LocalMessage(IMessage.HIGH_SEVERITY, 
+					Message m = new LocalMessage(IMessage.HIGH_SEVERITY,
 							Messages.NAMING_STRATEGY_EXCEPTION, new String[0], null);
 					HibernateJptPlugin.logException(m.getText(), e);
 				}
 			}
 			return colName;
 		}
-		
+
+		@Override
 		public String getDefaultTableName() {
 			//FIXME: use NamingStrategy here
 			return HibernateOrmEntityImpl.this.getPrimaryTableName();
 		}
-		
+
+		@Override
 		public TextRange getValidationTextRange() {
 			return null;
 		}
-		
+
 		public IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
 			throw new UnsupportedOperationException("validation not supported yet: bug 148262"); //$NON-NLS-1$
 		}
@@ -179,21 +215,21 @@ implements HibernateOrmEntity {
 		public IMessage buildUnspecifiedNameMultipleJoinColumnsMessage(BaseJoinColumn column, TextRange textRange) {
 			throw new UnsupportedOperationException("validation not supported yet: bug 148262"); //$NON-NLS-1$
 		}
-		
+
 		public IMessage buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(BaseJoinColumn column, TextRange textRange) {
 			throw new UnsupportedOperationException("validation not supported yet: bug 148262"); //$NON-NLS-1$
 		}
 	}
-	
+
 	@Override
 	public HibernateOrmTable getTable() {
 		return (HibernateOrmTable) super.getTable();
 	}
-	
+
 	//******** TODO **********
 
 	public void removeDiscriminatorFormula() {
-		// TODO Auto-generated method stub		
+		// TODO Auto-generated method stub
 	}
 
 	public GenericGenerator addGenericGenerator(int index) {
@@ -210,15 +246,15 @@ implements HibernateOrmEntity {
 	}
 
 	public void moveGenericGenerator(int targetIndex, int sourceIndex) {
-		// TODO Auto-generated method stub		
+		// TODO Auto-generated method stub
 	}
 
 	public void removeGenericGenerator(int index) {
-		// TODO Auto-generated method stub		
+		// TODO Auto-generated method stub
 	}
 
 	public void removeGenericGenerator(GenericGenerator generator) {
-		// TODO Auto-generated method stub		
+		// TODO Auto-generated method stub
 	}
 
 	public HibernateNamedNativeQuery addHibernateNamedNativeQuery(int index) {
@@ -250,27 +286,27 @@ implements HibernateOrmEntity {
 
 
 	public void moveHibernateNamedNativeQuery(int targetIndex, int sourceIndex) {
-		// TODO Auto-generated method stub		
+		// TODO Auto-generated method stub
 	}
 
 	public void moveHibernateNamedQuery(int targetIndex, int sourceIndex) {
-		// TODO Auto-generated method stub			
+		// TODO Auto-generated method stub
 	}
 
 	public void removeHibernateNamedNativeQuery(int index) {
-		// TODO Auto-generated method stub		
+		// TODO Auto-generated method stub
 	}
 
 	public void removeHibernateNamedNativeQuery(
 			HibernateNamedNativeQuery namedNativeQuery) {
-		// TODO Auto-generated method stub		
+		// TODO Auto-generated method stub
 	}
 
 	public void removeHibernateNamedQuery(int index) {
-		// TODO Auto-generated method stub		
+		// TODO Auto-generated method stub
 	}
 
 	public void removeHibernateNamedQuery(HibernateNamedQuery namedQuery) {
-		// TODO Auto-generated method stub		
+		// TODO Auto-generated method stub
 	}
 }

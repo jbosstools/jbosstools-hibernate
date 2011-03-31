@@ -10,9 +10,10 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.internal.context.java.AbstractJavaEmbeddable;
+import org.eclipse.jpt.jpa.core.MappingKeys;
+import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaEmbeddable;
+import org.eclipse.jpt.jpa.core.resource.java.EmbeddableAnnotation;
 
 /**
  * @author Dmitry Geraskov
@@ -20,10 +21,10 @@ import org.eclipse.jpt.core.internal.context.java.AbstractJavaEmbeddable;
  */
 public class HibernateJavaEmbeddable extends AbstractJavaEmbeddable
 {
-	public HibernateJavaEmbeddable(JavaPersistentType parent) {
-		super(parent);
+	public HibernateJavaEmbeddable(JavaPersistentType parent, EmbeddableAnnotation mappingAnnotation) {
+		super(parent, mappingAnnotation);
 	}
-	
+
 	@Override
 	public boolean attributeMappingKeyAllowed(String attributeMappingKey) {
 		//hibernate  allows basic, transient and many-to-one within an Embeddable

@@ -19,20 +19,20 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
-import org.eclipse.jpt.ui.internal.swt.ColumnAdapter;
-import org.eclipse.jpt.ui.internal.util.PaneEnabler;
-import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.Adapter;
-import org.eclipse.jpt.ui.internal.widgets.AddRemoveTablePane;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
-import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
-import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionModel;
-import org.eclipse.jpt.utility.model.value.ListValueModel;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.ui.internal.swt.ColumnAdapter;
+import org.eclipse.jpt.common.ui.internal.util.PaneEnabler;
+import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
+import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveTablePane;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.iterators.EmptyListIterator;
+import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
+import org.eclipse.jpt.common.utility.model.value.ListValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
@@ -45,9 +45,9 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.Parameter;
  *
  */
 public class ParametersComposite extends Pane<GenericGenerator> {
-	
+
 	//private WritablePropertyValueModel<GenericGenerator> generatorHolder;
-	
+
 	private WritablePropertyValueModel<Parameter> parameterHolder;
 
 	/**
@@ -74,11 +74,13 @@ public class ParametersComposite extends Pane<GenericGenerator> {
 
 	private Adapter buildParameterAdapter() {
 		return new AddRemoveTablePane.AbstractAdapter() {
+			@Override
 			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
 				Parameter parameter = getSubject().addParameter(getSubject().parametersSize());
-				parameterHolder.setValue(parameter);
+				ParametersComposite.this.parameterHolder.setValue(parameter);
 			}
 
+			@Override
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
 				for (Object item : listSelectionModel.selectedValues()) {
 					getSubject().removeParameter((Parameter) item);
@@ -101,16 +103,16 @@ public class ParametersComposite extends Pane<GenericGenerator> {
 				GenericGenerator.PARAMETERS_LIST) {
 			@Override
 			protected ListIterator<Parameter> listIterator_() {
-				if (subject == null ){
+				if (this.subject == null ){
 					return EmptyListIterator.instance();
 				} else {
-					return subject.parameters();
+					return this.subject.parameters();
 				}
 			}
 
 			@Override
 			protected int size_() {
-				return subject == null ? 0 : subject.parametersSize();
+				return this.subject == null ? 0 : this.subject.parametersSize();
 			}
 		};
 	}
@@ -118,7 +120,7 @@ public class ParametersComposite extends Pane<GenericGenerator> {
 	@Override
 	protected void initialize() {
 		super.initialize();
-		parameterHolder = buildParameterHolder();
+		this.parameterHolder = buildParameterHolder();
 	}
 
 	@Override
@@ -142,12 +144,12 @@ public class ParametersComposite extends Pane<GenericGenerator> {
 			return new PropertyAspectAdapter<Parameter, String>(Parameter.NAME_PROPERTY, subject) {
 				@Override
 				protected String buildValue_() {
-					return subject.getName();
+					return this.subject.getName();
 				}
 
 				@Override
 				protected void setValue_(String value) {
-					subject.setName(value);
+					this.subject.setName(value);
 				}
 			};
 		}
@@ -156,16 +158,17 @@ public class ParametersComposite extends Pane<GenericGenerator> {
 			return new PropertyAspectAdapter<Parameter, String>(Parameter.VALUE_PROPERTY, subject) {
 				@Override
 				protected String buildValue_() {
-					return subject.getValue();
+					return this.subject.getValue();
 				}
 
 				@Override
 				protected void setValue_(String value) {
-					subject.setValue(value);
+					this.subject.setValue(value);
 				}
 			};
 		}
 
+		@Override
 		public WritablePropertyValueModel<?>[] cellModels(Parameter subject) {
 			WritablePropertyValueModel<?>[] models = new WritablePropertyValueModel<?>[COLUMN_COUNT];
 			models[NAME_COLUMN_INDEX]  = buildNameHolder(subject);
@@ -173,10 +176,12 @@ public class ParametersComposite extends Pane<GenericGenerator> {
 			return models;
 		}
 
+		@Override
 		public int columnCount() {
 			return COLUMN_COUNT;
 		}
 
+		@Override
 		public String columnName(int columnIndex) {
 
 			switch (columnIndex) {
@@ -198,10 +203,12 @@ public class ParametersComposite extends Pane<GenericGenerator> {
 	private class TableLabelProvider extends LabelProvider
 	                                 implements ITableLabelProvider {
 
+		@Override
 		public Image getColumnImage(Object element, int columnIndex) {
 			return null;
 		}
 
+		@Override
 		public String getColumnText(Object element, int columnIndex) {
 
 			Parameter parameter = (Parameter) element;
@@ -234,7 +241,7 @@ public class ParametersComposite extends Pane<GenericGenerator> {
 			      parent,
 			      buildParameterAdapter(),
 			      buildParameterListHolder(),
-			      parameterHolder,
+			      ParametersComposite.this.parameterHolder,
 			      buildParameterLabelProvider());
 		}
 
@@ -248,10 +255,12 @@ public class ParametersComposite extends Pane<GenericGenerator> {
 		private ICellModifier buildCellModifier() {
 			return new ICellModifier() {
 
+				@Override
 				public boolean canModify(Object element, String property) {
 					return true;
 				}
 
+				@Override
 				public Object getValue(Object element, String property) {
 					Parameter parameter = (Parameter) element;
 					String value = ""; //$NON-NLS-1$
@@ -270,6 +279,7 @@ public class ParametersComposite extends Pane<GenericGenerator> {
 					return value;
 				}
 
+				@Override
 				public void modify(Object element, String property, Object value) {
 					Parameter parameter;
 

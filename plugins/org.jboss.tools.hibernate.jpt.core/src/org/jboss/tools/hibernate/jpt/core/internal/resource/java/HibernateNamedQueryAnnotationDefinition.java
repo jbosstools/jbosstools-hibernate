@@ -11,10 +11,11 @@
 package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.core.resource.java.Annotation;
-import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
-import org.eclipse.jpt.core.utility.jdt.Member;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
+import org.eclipse.jpt.common.core.utility.jdt.Member;
+import org.eclipse.jpt.jpa.core.resource.java.Annotation;
+import org.eclipse.jpt.jpa.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.jpa.core.resource.java.JavaResourceAnnotatedElement;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 
 
@@ -23,18 +24,18 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
  *
  */
 public class HibernateNamedQueryAnnotationDefinition implements AnnotationDefinition {
-	
+
 	// singleton
 	private static final AnnotationDefinition INSTANCE = new HibernateNamedQueryAnnotationDefinition();
 
-	
+
 	/**
 	 * Ensure single instance.
 	 */
 	private HibernateNamedQueryAnnotationDefinition() {
 		super();
 	}
-	
+
 	/**
 	 * Return the singleton.
 	 */
@@ -42,20 +43,21 @@ public class HibernateNamedQueryAnnotationDefinition implements AnnotationDefini
 		return INSTANCE;
 	}
 
-	public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-		return HibernateSourceNamedQueryAnnotation.createNamedQuery(parent, member);
+	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
+		return HibernateSourceNamedQueryAnnotation.createNamedQuery(parent, (Member) annotatedElement);
 	}
 
-	public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {
+	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent,
+			IAnnotation jdtAnnotation) {
 		throw new UnsupportedOperationException();
 	}
 
-	public Annotation buildAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
-		//TODO return new BinaryNamedQueryAnnotation(parent, jdtAnnotation);
+	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
 		throw new UnsupportedOperationException();
 	}
 
 	public String getAnnotationName() {
 		return Hibernate.NAMED_QUERY;
 	}
+
 }

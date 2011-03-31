@@ -10,8 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
 
-import org.eclipse.jpt.ui.internal.widgets.Pane;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedQuery;
 

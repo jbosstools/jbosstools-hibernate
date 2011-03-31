@@ -2,20 +2,20 @@
 <?eclipse version="3.2"?>
 <plugin>
 	<extension id="org.jboss.tools.hibernate.jpt.core"
-		point="org.eclipse.jpt.core.jpaPlatforms">
+		point="org.eclipse.jpt.jpa.core.jpaPlatforms">
 		<jpaPlatform
-        default="false"
-        factoryClass="org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaPlatformFactory"
-        id="hibernate"
-        jpaFacetVersion="1.0"
-        label="Hibernate (JPA 1.x)">
+	        default="false"
+	        factoryClass="org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaPlatformFactory"
+	        id="hibernate"
+	        jpaFacetVersion="1.0"
+	        label="Hibernate (JPA 1.x)">
 		</jpaPlatform>
 		<jpaPlatform
-        default="false"
-        factoryClass="org.jboss.tools.hibernate.jpt.core.internal.jpa2.HibernateJpa2_0PlatformFactory"
-        id="hibernate2_0"
-        jpaFacetVersion="2.0"
-        label="Hibernate (JPA 2.x)">
+	        default="false"
+	        factoryClass="org.jboss.tools.hibernate.jpt.core.internal.jpa2.HibernateJpa2_0PlatformFactory"
+	        id="hibernate2_0"
+	        jpaFacetVersion="2.0"
+	        label="Hibernate (JPA 2.x)">
 		</jpaPlatform>		
 	</extension>
  <extension

@@ -11,10 +11,9 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.orm.jpa2;
 
-import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.context.orm.OrmRelationshipReference;
-import org.eclipse.jpt.core.internal.context.orm.AbstractOrmManyToOneMapping;
-import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmManyToOneMapping;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlManyToOne;
 
 /**
  * @author Dmitry Geraskov

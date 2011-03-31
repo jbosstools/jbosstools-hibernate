@@ -13,19 +13,20 @@ package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.resource.java.source.SourceAnnotation;
-import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.resource.java.Annotation;
-import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
-import org.eclipse.jpt.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
-import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
-import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.utility.jdt.Member;
+import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
+import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.Member;
+import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.Annotation;
+import org.eclipse.jpt.jpa.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.jpa.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.ForeignKeyAnnotation;
 
 /**
@@ -33,14 +34,14 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.java.ForeignKeyAnnota
  *
  */
 public class ForeignKeyAnnotationImpl extends SourceAnnotation<Member> implements
-		ForeignKeyAnnotation {
-	
+ForeignKeyAnnotation {
+
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 	private static final DeclarationAnnotationElementAdapter<String> NAME_ADAPTER = buildDeclarationAnnotationAdapter(NAME_PROPERTY);
 	private final AnnotationElementAdapter<String> nameAdapter;
 	private String name;
-	
+
 	private static final DeclarationAnnotationElementAdapter<String> INVERSE_NAME_ADAPTER = buildDeclarationAnnotationAdapter(INVERSE_NAME_PROPERTY);
 	private final AnnotationElementAdapter<String> inverseNameAdapter;
 	private String inverseName;
@@ -116,17 +117,17 @@ public class ForeignKeyAnnotationImpl extends SourceAnnotation<Member> implement
 
 	public TextRange getInverseNameTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(INVERSE_NAME_ADAPTER, astRoot);
-	}	
-	
-	private static DeclarationAnnotationElementAdapter<String> buildDeclarationAnnotationAdapter(String property) {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, property, true);
-	}
-	
-	AnnotationElementAdapter<String> buildElementAdapter(DeclarationAnnotationElementAdapter<String> daea) {
-		return new ShortCircuitAnnotationElementAdapter<String>(this.member, daea);
 	}
 
-	
+	private static DeclarationAnnotationElementAdapter<String> buildDeclarationAnnotationAdapter(String property) {
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, property);
+	}
+
+	AnnotationElementAdapter<String> buildElementAdapter(DeclarationAnnotationElementAdapter<String> daea) {
+		return new ShortCircuitAnnotationElementAdapter<String>(this.annotatedElement, daea);
+	}
+
+
 	public static class ForeignKeyAnnotationDefinition implements AnnotationDefinition
 	{
 		// singleton
@@ -146,20 +147,21 @@ public class ForeignKeyAnnotationImpl extends SourceAnnotation<Member> implement
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-			return new ForeignKeyAnnotationImpl(parent, member);
+		public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement member) {
+			return new ForeignKeyAnnotationImpl(parent, (Member) member);
 		}
-		
+
 		public String getAnnotationName() {
 			return ForeignKeyAnnotation.ANNOTATION_NAME;
 		}
 
-		public Annotation buildAnnotation(JavaResourcePersistentMember arg0,
-				IAnnotation arg1) {
+		public Annotation buildAnnotation(JavaResourceAnnotatedElement parent,
+				IAnnotation jdtAnnotation) {
 			throw new UnsupportedOperationException();
 		}
 
-		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {
+		public Annotation buildNullAnnotation(
+				JavaResourceAnnotatedElement parent) {
 			throw new UnsupportedOperationException();
 		}
 

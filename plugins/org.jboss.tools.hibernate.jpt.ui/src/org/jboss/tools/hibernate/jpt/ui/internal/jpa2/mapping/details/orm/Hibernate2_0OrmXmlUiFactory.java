@@ -10,13 +10,13 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.jpa2.mapping.details.orm;
 
-import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
-import org.eclipse.jpt.core.context.orm.OrmEntity;
-import org.eclipse.jpt.core.context.orm.OrmIdMapping;
-import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.jpa2.GenericOrmXml2_0UiFactory;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.orm.OrmBasicMapping;
+import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
+import org.eclipse.jpt.jpa.core.context.orm.OrmIdMapping;
+import org.eclipse.jpt.jpa.ui.details.JpaComposite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.GenericOrmXml2_0UiFactory;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmEntity;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmIdMapping;

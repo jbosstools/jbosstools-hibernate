@@ -11,9 +11,9 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.JpaContextNode;
-import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
-import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.jboss.tools.hibernate.jpt.core.internal.context.DiscriminatorFormula;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.DiscriminatorFormulaAnnotation;
 
@@ -26,21 +26,24 @@ public class JavaDiscriminatorFormulaImpl extends AbstractJavaJpaContextNode imp
 	protected String value;
 
 	protected DiscriminatorFormulaAnnotation dfResource;
-	
-	public JavaDiscriminatorFormulaImpl(JpaContextNode parent) {
+
+	protected JavaDiscriminatorFormula.Owner owner;
+
+	public JavaDiscriminatorFormulaImpl(JpaContextNode parent, JavaDiscriminatorFormula.Owner owner) {
 		super(parent);
+		this.owner = owner;
 	}
-	
+
 	public void initialize(DiscriminatorFormulaAnnotation dfResource) {
 		this.dfResource = dfResource;
-		this.value = dfResource.getValue();		
+		this.value = dfResource.getValue();
 	}
 
 	public void update(DiscriminatorFormulaAnnotation dfResource) {
 		this.dfResource = dfResource;
-		this.setValue(dfResource.getValue());		
+		this.setValue(dfResource.getValue());
 	}
-	
+
 	//******************* value *********************
 	public String getValue() {
 		return this.value;
@@ -53,7 +56,7 @@ public class JavaDiscriminatorFormulaImpl extends AbstractJavaJpaContextNode imp
 		firePropertyChanged(DiscriminatorFormula.VALUE_PROPERTY, oldValue, newValue);
 	}
 
-	
+
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		return this.dfResource.getTextRange(astRoot);
 	}

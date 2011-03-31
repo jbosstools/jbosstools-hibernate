@@ -10,10 +10,10 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
-import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.context.orm.OrmRelationshipReference;
-import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmOneToManyMapping;
-import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmOneToManyMapping;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOneToManyRelationship2_0;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlOneToMany;
 
 /**
  * @author Dmitry Geraskov
@@ -29,10 +29,10 @@ public class HibernateOrmOneToManyMapping extends GenericOrmOneToManyMapping {
 			XmlOneToMany resourceMapping) {
 		super(parent, resourceMapping);
 	}
-	
+
 	@Override
-	protected OrmRelationshipReference buildRelationshipReference() {
-		return new HibernateOrmOneToManyRelationshipReference(this, this.resourceAttributeMapping);
+	protected OrmOneToManyRelationship2_0 buildRelationship() {
+		return new HibernateOrmOneToManyRelationshipReference(this, this.isJpa2_0Compatible());
 	}
 
 }

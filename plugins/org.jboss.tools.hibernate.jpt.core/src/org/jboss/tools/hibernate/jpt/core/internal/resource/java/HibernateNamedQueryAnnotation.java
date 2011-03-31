@@ -10,7 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
-import org.eclipse.jpt.core.resource.java.NamedQueryAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.NamedQueryAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.NestableNamedQueryAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 
 /**
@@ -19,8 +20,8 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
  * Corresponds to the Hibernate annotation
  * org.hibernate.annotations.NamedQuery
  */
-public interface HibernateNamedQueryAnnotation extends NamedQueryAnnotation,
-HibernateQueryAnnotation {	
+public interface HibernateNamedQueryAnnotation extends NestableNamedQueryAnnotation, HibernateQueryAnnotation, NamedQueryAnnotation {
 	//replace with Hibernate annotation
 	String ANNOTATION_NAME = Hibernate.NAMED_QUERY;
 }
+

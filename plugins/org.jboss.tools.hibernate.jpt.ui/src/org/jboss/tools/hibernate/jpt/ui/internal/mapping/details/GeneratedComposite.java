@@ -13,8 +13,8 @@ package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
 
 import java.util.Collection;
 
-import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Generated;
 import org.jboss.tools.hibernate.jpt.core.internal.context.GenerationTime;

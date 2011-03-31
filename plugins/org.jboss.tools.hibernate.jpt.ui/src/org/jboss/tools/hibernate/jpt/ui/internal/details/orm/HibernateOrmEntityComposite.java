@@ -11,19 +11,19 @@
 
 package org.jboss.tools.hibernate.jpt.ui.internal.details.orm;
 
-import org.eclipse.jpt.core.context.AccessHolder;
-import org.eclipse.jpt.core.context.orm.OrmEntity;
-import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.internal.details.AbstractEntityComposite;
-import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
-import org.eclipse.jpt.ui.internal.details.EntityNameComposite;
-import org.eclipse.jpt.ui.internal.details.IdClassComposite;
-import org.eclipse.jpt.ui.internal.details.orm.MetadataCompleteComposite;
-import org.eclipse.jpt.ui.internal.details.orm.OrmInheritanceComposite;
-import org.eclipse.jpt.ui.internal.details.orm.OrmJavaClassChooser;
-import org.eclipse.jpt.ui.internal.details.orm.OrmSecondaryTablesComposite;
-import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.AccessHolder;
+import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
+import org.eclipse.jpt.jpa.ui.internal.details.AbstractEntityComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.EntityNameComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.IdClassComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.MetadataCompleteComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmInheritanceComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmJavaClassChooser;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmSecondaryTablesComposite;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmEntity;
 import org.jboss.tools.hibernate.jpt.ui.internal.details.HibernateTableComposite;

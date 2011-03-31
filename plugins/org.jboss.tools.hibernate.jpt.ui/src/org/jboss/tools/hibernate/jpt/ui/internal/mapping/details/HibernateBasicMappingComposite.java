@@ -10,17 +10,17 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
 
-import org.eclipse.jpt.core.context.BasicMapping;
-import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.details.AbstractBasicMappingComposite;
-import org.eclipse.jpt.ui.internal.details.ColumnComposite;
-import org.eclipse.jpt.ui.internal.details.EnumTypeComposite;
-import org.eclipse.jpt.ui.internal.details.FetchTypeComposite;
-import org.eclipse.jpt.ui.internal.details.OptionalComposite;
-import org.eclipse.jpt.ui.internal.details.TemporalTypeComposite;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.BasicMapping;
+import org.eclipse.jpt.jpa.ui.details.JpaComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.AbstractBasicMappingComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.ColumnComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.EnumTypeComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.OptionalComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.TemporalTypeComposite;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Generated;

@@ -17,12 +17,12 @@ import java.util.List;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
-import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.utility.Filter;
-import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.Filter;
+import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit;
@@ -101,8 +101,8 @@ public class TypeImpl extends AbstractJavaJpaContextNode implements JavaType, Me
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode
-	 * #javaCompletionProposals(int, org.eclipse.jpt.utility.Filter,
+	 * org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode
+	 * #javaCompletionProposals(int, org.eclipse.jpt.common.utility.Filter,
 	 * org.eclipse.jdt.core.dom.CompilationUnit)
 	 */
 	@Override

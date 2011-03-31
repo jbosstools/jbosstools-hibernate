@@ -10,9 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.context.java.JavaRelationshipReference;
-import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaOneToManyMapping;
+import org.eclipse.jpt.jpa.core.context.java.JavaMappingRelationship;
+import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaOneToManyMapping;
 
 /**
  * @author Dmitry Geraskov
@@ -26,10 +26,10 @@ public class HibernateJavaOneToManyMapping extends GenericJavaOneToManyMapping {
 	public HibernateJavaOneToManyMapping(JavaPersistentAttribute parent) {
 		super(parent);
 	}
-	
+
 	@Override
-	protected JavaRelationshipReference buildRelationshipReference() {
-		return new HibernateJavaOneToManyRelationshipReference(this);
+	protected JavaMappingRelationship buildRelationship() {
+		return new HibernateJavaOneToManyRelationship(this, this.isJpa2_0Compatible());
 	}
 
 }

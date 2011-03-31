@@ -12,21 +12,22 @@ package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
 
 import java.util.Collection;
 
-import org.eclipse.jpt.core.context.Entity;
-import org.eclipse.jpt.core.context.InheritanceType;
-import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.AbstractEntityComposite;
-import org.eclipse.jpt.ui.internal.details.AbstractInheritanceComposite;
-import org.eclipse.jpt.ui.internal.details.DiscriminatorColumnComposite;
-import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
-import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
-import org.eclipse.jpt.utility.internal.StringConverter;
-import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
-import org.eclipse.jpt.utility.model.value.ListValueModel;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
+import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.StringConverter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
+import org.eclipse.jpt.common.utility.model.value.ListValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.InheritanceType;
+import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
+import org.eclipse.jpt.jpa.ui.internal.details.AbstractEntityComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.AbstractInheritanceComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.DiscriminatorColumnComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -90,7 +91,7 @@ public abstract class HibernateAbstractInheritanceComposite<T extends HibernateE
 	 * model.
 	 */
 	protected static String DEFAULT_KEY = "?!#!?#?#?default?#?!#?!#?";
-	
+
 	protected static String NONE_KEY = "?!#!?#?#?none?#?!#?!#?";
 
 	/**
@@ -133,7 +134,7 @@ public abstract class HibernateAbstractInheritanceComposite<T extends HibernateE
 			dvEnabled
 		);
 		Label discriminatorValueLabel = addLabel(
-			subPane, 
+			subPane,
 			JptUiDetailsMessages.InheritanceComposite_discriminatorValue,
 			dvEnabled
 		);
@@ -144,17 +145,17 @@ public abstract class HibernateAbstractInheritanceComposite<T extends HibernateE
 			null,
 			JpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_VALUE
 		);
-	
+
 		if (getSubject() instanceof HibernateJavaEntity) {
-			new HibernateDiscriminatorColumnComposite((Pane<? extends HibernateJavaEntity>) this, container);			
+			new HibernateDiscriminatorColumnComposite((Pane<? extends HibernateJavaEntity>) this, container);
 		} else {
 			new DiscriminatorColumnComposite<Entity>(this, container);
-		}		
+		}
 
 		// Primary Key Join Columns widgets
 		addPrimaryKeyJoinColumnsComposite(addSubPane(container, 5));
 	}
-	
+
 	protected WritablePropertyValueModel<Boolean> buildDiscriminatorValueEnabledHolder() {
 		return new PropertyAspectAdapter<Entity, Boolean>(getSubjectHolder(), Entity.SPECIFIED_DISCRIMINATOR_VALUE_IS_ALLOWED_PROPERTY) {
 			@Override
@@ -193,6 +194,7 @@ public abstract class HibernateAbstractInheritanceComposite<T extends HibernateE
 
 	private StringConverter<String> buildDiscriminatorValueConverter() {
 		return new StringConverter<String>() {
+			@Override
 			public String convertToString(String value) {
 
 				if (getSubject() == null) {
@@ -205,9 +207,9 @@ public abstract class HibernateAbstractInheritanceComposite<T extends HibernateE
 						value = NONE_KEY;
 					}
 					else {
-						value = (value != null) ? 
+						value = (value != null) ?
 								DEFAULT_KEY + value
-							: 
+							:
 								DEFAULT_KEY;
 					}
 				}
@@ -216,7 +218,7 @@ public abstract class HibernateAbstractInheritanceComposite<T extends HibernateE
 
 					if (defaultName.length() > 0) {
 						value = NLS.bind(
-							JptUiDetailsMessages.DefaultWithOneParam,
+								JptCommonUiMessages.DefaultWithOneParam,
 							defaultName
 						);
 					}
@@ -225,7 +227,7 @@ public abstract class HibernateAbstractInheritanceComposite<T extends HibernateE
 					}
 				}
 				if (value.startsWith(NONE_KEY)) {
-					value = JptUiDetailsMessages.NoneSelected;
+					value = JptCommonUiMessages.NoneSelected;
 				}
 				return value;
 			}

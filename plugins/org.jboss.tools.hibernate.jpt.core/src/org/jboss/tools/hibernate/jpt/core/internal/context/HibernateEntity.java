@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
-import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.Entity;
 
 /**
  * @author Dmitry Geraskov

@@ -11,7 +11,7 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.IndexAnnotation;
 
 /**

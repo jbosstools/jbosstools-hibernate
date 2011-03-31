@@ -12,25 +12,26 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.ListIterator;
 
-import org.eclipse.jpt.core.context.java.JavaQueryContainer;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedNativeQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedQuery;
 
 /**
- * 
+ *
  * @author Dmitry Geraskov
  *
  */
 public interface HibernateJavaQueryContainer extends JavaQueryContainer {
 
-	//********** Hibernate Named Queries **************	
-	ListIterator<HibernateNamedQuery> hibernateNamedQueries();
-	
+	//********** Hibernate Named Queries **************
+	ListIterator<HibernateJavaNamedQuery> hibernateNamedQueries();
+
 	int hibernateNamedQueriesSize();
 
 	HibernateNamedQuery addHibernateNamedQuery(int index);
-	
+
+	HibernateNamedQuery addHibernateNamedQuery();
+
 	void removeHibernateNamedQuery(int index);
 
 	void removeHibernateNamedQuery(HibernateNamedQuery namedQuery);
@@ -38,15 +39,15 @@ public interface HibernateJavaQueryContainer extends JavaQueryContainer {
 	void moveHibernateNamedQuery(int targetIndex, int sourceIndex);
 
 	String HIBERNATE_NAMED_QUERIES_LIST = "hibernateNamedQueries"; //$NON-NLS-1$
-	
+
 	//********** Hibernate Named Native Queries **************;
 
-	ListIterator<HibernateNamedNativeQuery> hibernateNamedNativeQueries();
-	
+	ListIterator<HibernateJavaNamedNativeQuery> hibernateNamedNativeQueries();
+
 	int hibernateNamedNativeQueriesSize();
 
-	HibernateNamedNativeQuery addHibernateNamedNativeQuery(int index);
-	
+	HibernateJavaNamedNativeQuery addHibernateNamedNativeQuery(int index);
+
 	void removeHibernateNamedNativeQuery(int index);
 
 	void removeHibernateNamedNativeQuery(HibernateNamedNativeQuery namedQuery);
@@ -54,15 +55,5 @@ public interface HibernateJavaQueryContainer extends JavaQueryContainer {
 	void moveHibernateNamedNativeQuery(int targetIndex, int sourceIndex);
 
 	String HIBERNATE_NAMED_NATIVE_QUERIES_LIST = "hibernateNamedNativeQueries"; //$NON-NLS-1$
-	
-	
-	void initialize(JavaResourcePersistentMember jrpm);
-	
-	/**
-	 * Update the JavaGeneratorContainer context model object to match the JavaResourcePersistentMember 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(JavaResourcePersistentMember jrpm);
-
 
 }

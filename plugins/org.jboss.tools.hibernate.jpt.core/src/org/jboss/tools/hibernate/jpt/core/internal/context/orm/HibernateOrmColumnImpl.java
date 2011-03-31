@@ -11,11 +11,11 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
-import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.core.context.orm.OrmColumn;
-import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmColumn;
-import org.eclipse.jpt.db.Column;
-import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.jpa.core.context.XmlContextNode;
+import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmColumn;
+import org.eclipse.jpt.jpa.db.Column;
+import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.hibernate.cfg.NamingStrategy;
@@ -34,23 +34,25 @@ implements HibernateOrmColumn {
 	public HibernateOrmColumnImpl(XmlContextNode parent, OrmColumn.Owner owner) {
 		super(parent, owner);
 	}
-	
+
 	@Override
 	public HibernateJpaProject getJpaProject() {
 		return (HibernateJpaProject) super.getJpaProject();
 	}
-	
+
 	@Override
 	public Column getDbColumn() {
 		Table table = this.getDbTable();
 		return (table == null) ? null : table.getColumnForIdentifier(this.getDBColumnName());
 	}
 
+	@Override
 	public String getDBColumnName() {
 		return getSpecifiedDBColumnName() != null ? getSpecifiedDBColumnName()
 				: getDefaultDBColumnName();
 	}
-	
+
+	@Override
 	public String getSpecifiedDBColumnName() {
 		if (getSpecifiedName() == null) return null;
 		NamingStrategy ns = getJpaProject().getNamingStrategy();
@@ -66,23 +68,28 @@ implements HibernateOrmColumn {
 		return this.getSpecifiedName();
 	}
 
+	@Override
 	public String getDefaultDBColumnName() {
 		return getDefaultName();
 	}
-	
+
+	@Override
 	public Table getDbTable() {
-		return getOwner().getDbTable(this.getDBTableName());
+		return this.owner.resolveDbTable(this.getDBTableName());
 	}
-	
+
+	@Override
 	public String getDBTableName() {
 		return getSpecifiedDBTableName() != null ? getSpecifiedDBTableName()
 				: getDefaultDBTableName();
 	}
 
+	@Override
 	public String getDefaultDBTableName() {
 		return getDefaultTable();
 	}
 
+	@Override
 	public String getSpecifiedDBTableName() {
 		if (getSpecifiedTable() == null) return null;
 		NamingStrategy ns = getJpaProject().getNamingStrategy();

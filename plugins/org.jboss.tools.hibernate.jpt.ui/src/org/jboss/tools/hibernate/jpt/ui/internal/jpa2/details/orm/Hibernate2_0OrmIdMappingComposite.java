@@ -10,17 +10,17 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.jpa2.details.orm;
 
-import org.eclipse.jpt.core.context.AccessHolder;
-import org.eclipse.jpt.core.context.orm.OrmIdMapping;
-import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.details.AbstractIdMappingComposite;
-import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
-import org.eclipse.jpt.ui.internal.details.orm.OrmMappingNameChooser;
-import org.eclipse.jpt.ui.internal.jpa2.details.IdMapping2_0MappedByRelationshipPane;
-import org.eclipse.jpt.ui.internal.jpa2.details.IdMappingGeneration2_0Composite;
-import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.AccessHolder;
+import org.eclipse.jpt.jpa.core.context.orm.OrmIdMapping;
+import org.eclipse.jpt.jpa.ui.details.JpaComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.AbstractIdMappingComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmMappingNameChooser;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.IdMapping2_0MappedByRelationshipPane;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.IdMappingGeneration2_0Composite;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateColumn;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmIdMapping;

@@ -10,8 +10,6 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.core.context.java.JavaJoinTableEnabledRelationshipReference;
-import org.eclipse.jpt.core.internal.context.java.GenericJavaJoinTableJoiningStrategy;
 import org.jboss.tools.hibernate.jpt.core.internal.context.NamingStrategyMappingTools;
 
 /**

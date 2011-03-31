@@ -12,16 +12,17 @@ package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
 
 import java.util.Collection;
 
-import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
-import org.eclipse.jpt.ui.internal.util.LabeledControlUpdater;
-import org.eclipse.jpt.ui.internal.util.LabeledLabel;
-import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
-import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
+import org.eclipse.jpt.common.ui.internal.util.LabeledControlUpdater;
+import org.eclipse.jpt.common.ui.internal.util.LabeledLabel;
+import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
+import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -45,13 +46,13 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 
 		super(parentPane, subjectHolder, parent);
 	}
-	
+
 	@Override
 	protected void initializeLayout(Composite container) {
-		
+
 		addLabeledText(
-			container, 
-			JptUiDetailsMessages.NamedQueryComposite_nameTextLabel, 
+			container,
+			JptUiDetailsMessages.NamedQueryComposite_nameTextLabel,
 			buildNameTextHolder());
 
 		// Query text area
@@ -62,7 +63,7 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 			4,
 			null
 		);
-		
+
 		// ReadOnly tri-state check box
 		addTriStateCheckBoxWithDefault(
 			container,
@@ -71,7 +72,7 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 			buildReadOnlyStringHolder(),
 			null//TODO help
 		);
-		
+
 		//Flush Mode combobox
 		addLabeledComposite(
 			container,
@@ -79,7 +80,7 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 			addFlushModeTypeCombo(container),
 			null//TODO help
 		);
-		
+
 		// Cacheable tri-state check box
 		addTriStateCheckBoxWithDefault(
 			container,
@@ -88,7 +89,7 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 			buildCacheableStringHolder(),
 			null//TODO help
 		);
-		
+
 		//Cache Mode combobox
 		addLabeledComposite(
 			container,
@@ -96,12 +97,12 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 			addCacheModeTypeCombo(container),
 			null//TODO help
 		);
-		
+
 		addLabeledText(
-			container, 
-			HibernateUIMappingMessages.NamedQueryPropertyComposite_cacheRegion, 
-			buildCacheRegionTextHolder());		
-		
+			container,
+			HibernateUIMappingMessages.NamedQueryPropertyComposite_cacheRegion,
+			buildCacheRegionTextHolder());
+
 		// Fetch size widgets
 		Spinner fetchSizeSpinner = addLabeledSpinner(
 			container,
@@ -113,9 +114,9 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 			addDefaultFetchSizeLabel(container),
 			JpaHelpContextIds.MAPPING_COLUMN_LENGTH
 		);
-		
+
 		updateGridData(container, fetchSizeSpinner);
-		
+
 		// Timeout size widgets
 		Spinner timeoutSpinner = addLabeledSpinner(
 			container,
@@ -127,16 +128,16 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 			addDefaultFetchSizeLabel(container),
 			JpaHelpContextIds.MAPPING_COLUMN_LENGTH
 		);
-		
+
 		updateGridData(container, timeoutSpinner);
-		
+
 	}
-	
+
 	private Control addDefaultFetchSizeLabel(Composite container) {
 
 		Label label = addLabel(
 			container,
-			JptUiDetailsMessages.DefaultEmpty
+			JptCommonUiMessages.DefaultEmpty
 		);
 
 		new LabeledControlUpdater(
@@ -146,7 +147,7 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 
 		return label;
 	}
-	
+
 	private PropertyValueModel<String> buildDefaultFetchSizeLabelHolder() {
 
 		return new TransformationPropertyValueModel<Integer, String>(buildDefaultFetchSizeHolder()) {
@@ -158,13 +159,13 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 					HibernateNamedQuery.DEFAULT_FETCH_SIZE;
 
 				return NLS.bind(
-					JptUiDetailsMessages.DefaultWithOneParam,
+					JptCommonUiMessages.DefaultWithOneParam,
 					Integer.valueOf(defaultValue)
 				);
 			}
 		};
 	}
-	
+
 	private WritablePropertyValueModel<Integer> buildDefaultFetchSizeHolder() {
 		return new PropertyAspectAdapter<HibernateQuery, Integer>(getSubjectHolder(), HibernateQuery.DEFAULT_FETCH_SIZE_PROPERTY) {
 			@Override
@@ -173,7 +174,7 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 			}
 		};
 	}
-		
+
 	protected WritablePropertyValueModel<String> buildNameTextHolder() {
 		return new PropertyAspectAdapter<HibernateQuery, String>(
 				getSubjectHolder(), HibernateQuery.NAME_PROPERTY) {
@@ -181,7 +182,7 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 			protected String buildValue_() {
 				return this.subject.getName();
 			}
-		
+
 			@Override
 			protected void setValue_(String value) {
 				if (value.length() == 0) {
@@ -190,7 +191,7 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 				this.subject.setName(value);
 			}
 		};
-	}	
+	}
 
 	private WritablePropertyValueModel<String> buildQueryHolder() {
 		return new PropertyAspectAdapter<HibernateQuery, String>(getSubjectHolder(), HibernateQuery.QUERY_PROPERTY) {
@@ -205,7 +206,7 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 			}
 		};
 	}
-	
+
 	private WritablePropertyValueModel<Boolean> buildCacheableHolder() {
 		return new PropertyAspectAdapter<HibernateQuery, Boolean>(
 			getSubjectHolder(),
@@ -234,8 +235,8 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 				if ((getSubject() != null) && (value == null)) {
 					boolean defaultValue = getSubject().isDefaultCacheable();
 
-					String defaultStringValue = defaultValue ? JptUiDetailsMessages.Boolean_True :
-					                                           JptUiDetailsMessages.Boolean_False;
+					String defaultStringValue = defaultValue ? JptUiDetailsMessages.OptionalComposite_true :
+					                                           JptUiDetailsMessages.OptionalComposite_false;
 
 					return NLS.bind(
 						HibernateUIMappingMessages.NamedQueryPropertyComposite_cacheableWithDefault,
@@ -247,7 +248,7 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 			}
 		};
 	}
-	
+
 	private WritablePropertyValueModel<Boolean> buildReadOnlyHolder() {
 		return new PropertyAspectAdapter<HibernateQuery, Boolean>(
 			getSubjectHolder(),
@@ -277,8 +278,8 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 				if ((getSubject() != null) && (value == null)) {
 					boolean defaultValue = getSubject().isDefaultReadOnly();
 
-					String defaultStringValue = defaultValue ? JptUiDetailsMessages.Boolean_True :
-					                                           JptUiDetailsMessages.Boolean_False;
+					String defaultStringValue = defaultValue ? JptUiDetailsMessages.OptionalComposite_true :
+					                                           JptUiDetailsMessages.OptionalComposite_false;
 
 					return NLS.bind(
 						HibernateUIMappingMessages.NamedQueryPropertyComposite_readOnlyWithDefault,
@@ -315,7 +316,7 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 			@Override
 			protected String displayString(FlushModeType value) {
 				return value.toString();
-				
+
 			}
 
 			@Override
@@ -329,7 +330,7 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 			}
 		};
 	}
-	
+
 	private EnumFormComboViewer<HibernateQuery, CacheModeType> addCacheModeTypeCombo(Composite container) {
 
 		return new EnumFormComboViewer<HibernateQuery, CacheModeType>(this, container) {
@@ -354,7 +355,7 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 			@Override
 			protected String displayString(CacheModeType value) {
 				return value.toString();
-				
+
 			}
 
 			@Override
@@ -368,7 +369,7 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 			}
 		};
 	}
-	
+
 	private WritablePropertyValueModel<String> buildCacheRegionTextHolder() {
 		return new PropertyAspectAdapter<HibernateQuery, String>(
 				getSubjectHolder(),
@@ -378,7 +379,7 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 			protected String buildValue_() {
 				return this.subject.getSpecifiedCacheRegion();
 			}
-		
+
 			@Override
 			protected void setValue_(String value) {
 				if (value.length() == 0) {
@@ -388,7 +389,7 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 			}
 		};
 	}
-	
+
 	private WritablePropertyValueModel<Integer> buildFetchSizeHolder() {
 		return new PropertyAspectAdapter<HibernateQuery, Integer>(getSubjectHolder(), HibernateQuery.SPECIFIED_FETCH_SIZE_PROPERTY) {
 			@Override
@@ -405,9 +406,9 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 			}
 		};
 	}
-	
-	
-	
+
+
+
 	private WritablePropertyValueModel<Integer> buildTimeoutHolder() {
 		return new PropertyAspectAdapter<HibernateQuery, Integer>(getSubjectHolder(), HibernateQuery.SPECIFIED_TIMEOUT_PROPERTY) {
 			@Override
@@ -424,7 +425,7 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 			}
 		};
 	}
-	
+
 	protected void updateGridData(Composite container, Spinner spinner) {
 
 		// It is possible the spinner's parent is not the container of the
@@ -446,5 +447,5 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 		controls[2].setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		removeAlignRight(controls[2]);
 	}
-	
+
 }

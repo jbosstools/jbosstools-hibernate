@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Parameter;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.ParameterAnnotation;
 
@@ -24,7 +24,7 @@ public interface JavaParameter extends Parameter, JavaJpaContextNode {
 	
 	/**
 	 * Update the JavaParameter context model object to match the ParameterAnnotation 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 * resource model object. see {@link org.eclipse.jpt.jpa.core.JpaProject#update()}
 	 */
 	void update(ParameterAnnotation parameterResource);
 	

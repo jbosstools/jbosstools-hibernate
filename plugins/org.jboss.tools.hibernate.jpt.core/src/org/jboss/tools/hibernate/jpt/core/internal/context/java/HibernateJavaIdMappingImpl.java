@@ -12,16 +12,14 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.java.AbstractJavaIdMapping;
-import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.common.utility.Filter;
+import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaIdMapping;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
-import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.IndexAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeAnnotation;
 
@@ -29,15 +27,15 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeAnnotation;
  * @author Dmitry Geraskov
  *
  */
-public class HibernateJavaIdMappingImpl extends AbstractJavaIdMapping 
+public class HibernateJavaIdMappingImpl extends AbstractJavaIdMapping
 implements HibernateJavaIdMapping {
-	
+
 	protected final HibernateJavaTypeDefContainer typeDefContainer;
-	
+
 	protected JavaIndex index;
-	
+
 	protected JavaType type;
-	
+
 	/**
 	 * @param parent
 	 */
@@ -45,32 +43,32 @@ implements HibernateJavaIdMapping {
 		super(parent);
 		this.typeDefContainer = getJpaFactory().buildJavaTypeDefContainer(parent);
 	}
-	
+
 	@Override
 	public HibernateJavaGeneratorContainer getGeneratorContainer() {
 		return (HibernateJavaGeneratorContainer)super.getGeneratorContainer();
 	}
-	
-	@Override
+
+	/*@Override
 	protected void addSupportingAnnotationNamesTo(Vector<String> names) {
 		super.addSupportingAnnotationNamesTo(names);
 		names.add(Hibernate.INDEX);
 		names.add(Hibernate.TYPE);
-	}
-	
+	}*/
+
 	@Override
 	protected HibernateAbstractJpaFactory getJpaFactory() {
 		return (HibernateAbstractJpaFactory) super.getJpaFactory();
 	}
-	
+
 	@Override
-	protected void initialize() {
-		super.initialize();
-		this.typeDefContainer.initialize(this.getResourcePersistentAttribute());
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.typeDefContainer.synchronizeWithResourceModel();
 		this.initializeIndex();
 		this.initializeType();
 	}
-	
+
 	@Override
 	public void update() {
 		super.update();
@@ -78,30 +76,30 @@ implements HibernateJavaIdMapping {
 		this.updateIndex();
 		this.updateType();
 	}
-	
+
 	@Override
 	public HibernateJavaColumn getColumn() {
-		return (HibernateJavaColumn) column;
+		return (HibernateJavaColumn) this.column;
 	}
-	
+
 	@Override
 	public String getPrimaryKeyColumnName() {
 		return this.getColumn().getDBColumnName();
 	}
-	
+
 	public HibernateJavaTypeDefContainer getTypeDefContainer() {
 		return this.typeDefContainer;
 	}
-	
+
 	// *** index
-	
+
 	protected void initializeIndex() {
 		IndexAnnotation indexResource = getResourceIndex();
 		if (indexResource != null) {
 			this.index = buildIndex(indexResource);
 		}
 	}
-	
+
 	protected void updateIndex() {
 		IndexAnnotation indexResource = getResourceIndex();
 		if (indexResource == null) {
@@ -118,7 +116,7 @@ implements HibernateJavaIdMapping {
 			}
 		}
 	}
-	
+
 	public JavaIndex addIndex() {
 		if (getIndex() != null) {
 			throw new IllegalStateException("index already exists"); //$NON-NLS-1$
@@ -133,7 +131,7 @@ implements HibernateJavaIdMapping {
 	public JavaIndex getIndex() {
 		return this.index;
 	}
-	
+
 	protected void setIndex(JavaIndex newIndex) {
 		JavaIndex oldIndex = this.index;
 		this.index = newIndex;
@@ -149,26 +147,26 @@ implements HibernateJavaIdMapping {
 		this.getResourcePersistentAttribute().removeAnnotation(IndexAnnotation.ANNOTATION_NAME);
 		firePropertyChanged(INDEX_PROPERTY, oldIndex, null);
 	}
-	
+
 	protected JavaIndex buildIndex(IndexAnnotation indexResource) {
 		JavaIndex index = getJpaFactory().buildIndex(this);
 		index.initialize(indexResource);
 		return index;
 	}
-	
+
 	protected IndexAnnotation getResourceIndex() {
 		return (IndexAnnotation) this.getResourcePersistentAttribute().getAnnotation(IndexAnnotation.ANNOTATION_NAME);
 	}
-	
+
 	// *** type
-	
+
 	protected void initializeType() {
 		TypeAnnotation typeResource = getTypeResource();
 		if (typeResource != null) {
 			this.type = buildType(typeResource);
 		}
 	}
-	
+
 	protected void updateType() {
 		TypeAnnotation typeResource = getTypeResource();
 		if (typeResource == null) {
@@ -185,7 +183,7 @@ implements HibernateJavaIdMapping {
 			}
 		}
 	}
-	
+
 	public JavaType addType() {
 		if (getType() != null) {
 			throw new IllegalStateException("type already exists"); //$NON-NLS-1$
@@ -200,7 +198,7 @@ implements HibernateJavaIdMapping {
 	public JavaType getType() {
 		return this.type;
 	}
-	
+
 	protected void setType(JavaType newType) {
 		JavaType oldType = this.type;
 		this.type = newType;
@@ -216,17 +214,17 @@ implements HibernateJavaIdMapping {
 		this.getResourcePersistentAttribute().removeAnnotation(TypeAnnotation.ANNOTATION_NAME);
 		firePropertyChanged(TYPE_PROPERTY, oldType, null);
 	}
-	
+
 	protected JavaType buildType(TypeAnnotation typeResource) {
 		JavaType type = getJpaFactory().buildType(this);
 		type.initialize(typeResource);
 		return type;
 	}
-	
+
 	protected TypeAnnotation getTypeResource() {
 		return (TypeAnnotation) this.getResourcePersistentAttribute().getAnnotation(TypeAnnotation.ANNOTATION_NAME);
 	}
-	
+
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter,
 			CompilationUnit astRoot) {
@@ -239,9 +237,9 @@ implements HibernateJavaIdMapping {
 			this.type.validate(messages, reporter, astRoot);
 		}
 	}
-	
+
 	/* (non-Javadoc)
-	 * @see org.eclipse.jpt.core.internal.context.java.AbstractJavaIdMapping#javaCompletionProposals(int, org.eclipse.jpt.utility.Filter, org.eclipse.jdt.core.dom.CompilationUnit)
+	 * @see org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaIdMapping#javaCompletionProposals(int, org.eclipse.jpt.common.utility.Filter, org.eclipse.jdt.core.dom.CompilationUnit)
 	 */
 	@Override
 	public Iterator<String> javaCompletionProposals(int pos,

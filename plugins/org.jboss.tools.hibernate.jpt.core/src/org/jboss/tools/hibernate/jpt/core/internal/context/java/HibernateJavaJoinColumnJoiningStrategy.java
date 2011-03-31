@@ -11,9 +11,7 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.core.context.java.JavaJoinColumn;
-import org.eclipse.jpt.core.context.java.JavaJoinColumnEnabledRelationshipReference;
-import org.eclipse.jpt.core.internal.context.java.GenericJavaJoinColumnJoiningStrategy;
+import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
 
 /**
  * @author Dmitry Geraskov

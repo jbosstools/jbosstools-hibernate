@@ -22,17 +22,17 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.details.JpaPageComposite;
-import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
-import org.eclipse.jpt.utility.internal.StringConverter;
-import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.SimpleListValueModel;
-import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
-import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.StringConverter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
+import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.jpa.ui.details.JpaPageComposite;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -51,13 +51,13 @@ import org.jboss.tools.hibernate.jpt.ui.wizard.Messages;
 
 /**
  * @author Dmitry Geraskov
- * 
+ *
  */
 public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties> implements
 		JpaPageComposite {
 
 	private Text cfgFile;
-	
+
 	DriverClassHelpers helper;
 
 	/**
@@ -70,20 +70,21 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 		super(subjectHolder, container, widgetFactory);
 	}
 
-	protected void initializeLayout(Composite container) {		
+	@Override
+	protected void initializeLayout(Composite container) {
 
 		Composite section = addSection(container, Messages.HibernatePropertiesComposite_basic_properties);
-		
-		helper = new DriverClassHelpers();
 
-		final SimpleListValueModel<String> lvmDialect = new SimpleListValueModel<String>(Arrays.asList(helper
+		this.helper = new DriverClassHelpers();
+
+		final SimpleListValueModel<String> lvmDialect = new SimpleListValueModel<String>(Arrays.asList(this.helper
 				.getDialectNames()));
 		PropertyValueModel<BasicHibernateProperties> p = getSubjectHolder();
 		List<String> drivers = new ArrayList<String>();
 		BasicHibernateProperties props = p.getValue();
 		if (props != null) {
-			String dialectClass = helper.getDialectClass(props.getDialect());
-			String[] driverClasses = helper.getDriverClasses(dialectClass);
+			String dialectClass = this.helper.getDialectClass(props.getDialect());
+			String[] driverClasses = this.helper.getDriverClasses(dialectClass);
 			drivers.addAll(Arrays.asList(driverClasses));
 		}
 
@@ -92,7 +93,7 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 		List<String> urls = new ArrayList<String>();
 		if (props != null) {
 			String driverClass = props.getDriver();
-			String[] connectionURLS = helper.getConnectionURLS(driverClass);
+			String[] connectionURLS = this.helper.getConnectionURLS(driverClass);
 			urls.addAll(Arrays.asList(connectionURLS));
 		}
 		final SimpleListValueModel<String> lvmUrl = new SimpleListValueModel<String>(urls);
@@ -102,26 +103,26 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 		final WritablePropertyValueModel<String> urlHolder = buildUrlHolder();
 
 		Button b = addButton(section, HibernateConsoleMessages.CodeGenerationSettingsTab_setup, createSetupAction());
-		cfgFile = addLabeledText(section,
+		this.cfgFile = addLabeledText(section,
 				HibernateConsoleMessages.ConsoleConfigurationPropertySource_config_file + ':', buildConfigFileHolder(),
 				b, null);
 
 		addLabeledEditableCombo(
-				section, 
+				section,
 				HibernateConsoleMessages.NewConfigurationWizardPage_database_dialect,
-				lvmDialect, 
-				dialectHolder, 
+				lvmDialect,
+				dialectHolder,
 				StringConverter.Default.<String>instance(),
 				null);
 
 		addLabeledEditableCombo(
-				section, 
-				HibernateConsoleMessages.NewConfigurationWizardPage_driver_class, 
+				section,
+				HibernateConsoleMessages.NewConfigurationWizardPage_driver_class,
 				lvmDriver,
 				driverHolder,
 				StringConverter.Default.<String>instance(),
 				null);
-		
+
 		addLabeledEditableCombo(
 				section,
 				HibernateConsoleMessages.NewConfigurationWizardPage_connection_url,
@@ -129,16 +130,17 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 				urlHolder,
 				StringConverter.Default.<String>instance(),
 				null);
-				
+
 		dialectHolder.addPropertyChangeListener(PropertyValueModel.VALUE, new SWTPropertyChangeListenerWrapper(
 				new PropertyChangeListener() {
+					@Override
 					public void propertyChanged(PropertyChangeEvent event) {
-						String dialectClass = helper.getDialectClass((String) event.getNewValue());
-						String[] driverClasses = helper.getDriverClasses(dialectClass);
+						String dialectClass = HibernatePropertiesComposite.this.helper.getDialectClass((String) event.getNewValue());
+						String[] driverClasses = HibernatePropertiesComposite.this.helper.getDriverClasses(dialectClass);
 						String driver = driverHolder.getValue();//save value
 						lvmDriver.clear();
-						lvmDriver.addAll(Arrays.asList(driverClasses));							
-						driverHolder.setValue(driver);		//restore value	
+						lvmDriver.addAll(Arrays.asList(driverClasses));
+						driverHolder.setValue(driver);		//restore value
 					}
 				}
 			)
@@ -146,9 +148,10 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 
 		driverHolder.addPropertyChangeListener( PropertyValueModel.VALUE, new SWTPropertyChangeListenerWrapper(
 				new PropertyChangeListener() {
+					@Override
 					public void propertyChanged(PropertyChangeEvent event) {
 						String driverClass = (String) event.getNewValue();
-						String[] connectionURLS = helper.getConnectionURLS(driverClass);
+						String[] connectionURLS = HibernatePropertiesComposite.this.helper.getConnectionURLS(driverClass);
 						String url = urlHolder.getValue();//save value
 						lvmUrl.clear();
 						lvmUrl.addAll(Arrays.asList(connectionURLS));
@@ -158,32 +161,33 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 			) );
 
 		addLabeledText(
-				section, 
+				section,
 				HibernateConsoleMessages.NewConfigurationWizardPage_default_schema,
 				buildSchemaDefaultHolder());
-		
+
 		addLabeledText(
-				section, 
+				section,
 				HibernateConsoleMessages.NewConfigurationWizardPage_default_catalog,
 				buildCatalogDefaultHolder());
-		
+
 		addLabeledText(
-				section, 
-				HibernateConsoleMessages.NewConfigurationWizardPage_user_name, 
+				section,
+				HibernateConsoleMessages.NewConfigurationWizardPage_user_name,
 				buildUsernameHolder());
-		
+
 		addLabeledText(
-				section, 
-				HibernateConsoleMessages.NewConfigurationWizardPage_password, 
+				section,
+				HibernateConsoleMessages.NewConfigurationWizardPage_password,
 				buildPasswordHolder());
 	}
 
 	private IPath getConfigurationFilePath() {
-		return PathHelper.pathOrNull(cfgFile.getText());
+		return PathHelper.pathOrNull(this.cfgFile.getText());
 	}
 
 	private Runnable createSetupAction() {
 		return new Runnable() {
+			@Override
 			public void run() {
 				IPath initialPath = getConfigurationFilePath();
 				int defaultChoice = 0;
@@ -198,7 +202,7 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 					handleConfigurationFileBrowse();
 				}
 			}
-			
+
 			private MessageDialog createSetupDialog(String title, String question, int defaultChoice){
 				return new MessageDialog(getShell(),
 						title,
@@ -208,12 +212,12 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 						new String[] { HibernateConsoleMessages.ConsoleConfigurationMainTab_create_new, HibernateConsoleMessages.ConsoleConfigurationMainTab_use_existing, IDialogConstants.CANCEL_LABEL},
 						defaultChoice);
 			}
-			
+
 			private void handleConfigurationFileBrowse() {
 				IPath initialPath = getConfigurationFilePath();
 				IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(),  initialPath, new IPath[0], HibernateConsoleMessages.ConsoleConfigurationMainTab_select_hibernate_cfg_xml_file, HibernateConsoleMessages.ConsoleConfigurationMainTab_choose_file_to_use_as_hibernate_cfg_xml, new String[] {HibernateConsoleMessages.ConsoleConfigurationMainTab_cfg_xml}, false, false, true);
 				if(paths!=null && paths.length==1) {
-					cfgFile.setText( (paths[0]).toOSString() );
+					HibernatePropertiesComposite.this.cfgFile.setText( (paths[0]).toOSString() );
 				}
 			}
 
@@ -233,7 +237,7 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 					WizardNewFileCreationPage createdFilePath = ((WizardNewFileCreationPage)wizard.getStartingPage());
 					if(createdFilePath!=null) {
 						// createNewFile() does not creates new file if it was created by wizard (OK was pressed)
-						cfgFile.setText(createdFilePath.createNewFile().getFullPath().toOSString());
+						HibernatePropertiesComposite.this.cfgFile.setText(createdFilePath.createNewFile().getFullPath().toOSString());
 					}
 				}
 			}
@@ -245,13 +249,13 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 				BasicHibernateProperties.CONFIG_FILE_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				return subject.getConfigurationFile();
+				return this.subject.getConfigurationFile();
 			}
 
 			@Override
 			protected void setValue_(String value) {
 				if ("".equals(value))value = null;//$NON-NLS-1$
-				subject.setConfigurationFile(value);
+				this.subject.setConfigurationFile(value);
 			}
 		};
 	}
@@ -261,13 +265,13 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 				BasicHibernateProperties.DIALECT_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				return helper.getShortDialectName(subject.getDialect());
+				return HibernatePropertiesComposite.this.helper.getShortDialectName(this.subject.getDialect());
 			}
 
 			@Override
 			protected void setValue_(String value) {
 				if ("".equals(value))value = null; //$NON-NLS-1$
-				subject.setDialect(helper.getDialectClass(value));
+				this.subject.setDialect(HibernatePropertiesComposite.this.helper.getDialectClass(value));
 			}
 		};
 	}
@@ -277,13 +281,13 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 				BasicHibernateProperties.DRIVER_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				return subject.getDriver();
+				return this.subject.getDriver();
 			}
 
 			@Override
 			protected void setValue_(String value) {
 				if ("".equals(value))value = null;//$NON-NLS-1$
-				subject.setDriver(value);
+				this.subject.setDriver(value);
 			}
 		};
 	}
@@ -293,13 +297,13 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 				BasicHibernateProperties.URL_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				return subject.getUrl();
+				return this.subject.getUrl();
 			}
 
 			@Override
 			protected void setValue_(String value) {
 				if ("".equals(value))value = null;//$NON-NLS-1$
-				subject.setUrl(value);
+				this.subject.setUrl(value);
 			}
 		};
 	}
@@ -309,13 +313,13 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 				BasicHibernateProperties.SCHEMA_DEFAULT_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				return subject.getSchemaDefault();
+				return this.subject.getSchemaDefault();
 			}
 
 			@Override
 			protected void setValue_(String value) {
 				if ("".equals(value))value = null;//$NON-NLS-1$
-				subject.setSchemaDefault(value);
+				this.subject.setSchemaDefault(value);
 			}
 		};
 	}
@@ -325,13 +329,13 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 				BasicHibernateProperties.CATALOG_DEFAULT_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				return subject.getCatalogDefault();
+				return this.subject.getCatalogDefault();
 			}
 
 			@Override
 			protected void setValue_(String value) {
 				if ("".equals(value))value = null;//$NON-NLS-1$
-				subject.setCatalogDefault(value);
+				this.subject.setCatalogDefault(value);
 			}
 		};
 	}
@@ -341,15 +345,15 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 				BasicHibernateProperties.USERNAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				return subject.getUsername();
+				return this.subject.getUsername();
 			}
 
 			@Override
 			protected void setValue_(String value) {
 				if ("".equals(value))value = null;//$NON-NLS-1$
-				subject.setUsername(value);
+				this.subject.setUsername(value);
 			}
-			
+
 			@Override
 			protected void propertyChanged() {
 				// TODO Auto-generated method stub
@@ -363,17 +367,18 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 				BasicHibernateProperties.PASSWORD_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				return subject.getPassword();
+				return this.subject.getPassword();
 			}
 
 			@Override
 			protected void setValue_(String value) {
 				if ("".equals(value))value = null;//$NON-NLS-1$
-				subject.setPassword(value);
+				this.subject.setPassword(value);
 			}
 		};
 	}
 
+	@Override
 	public String getHelpID() {
 		// TODO help
 		return null;
@@ -383,10 +388,12 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 		return null;
 	}
 
+	@Override
 	public String getPageText() {
 		return Messages.HibernatePropertiesComposite_hibernate;
 	}
 
+	@Override
 	public ImageDescriptor getPageImageDescriptor() {
 		// TODO hibernate tab in persistence.xml image
 		return null;

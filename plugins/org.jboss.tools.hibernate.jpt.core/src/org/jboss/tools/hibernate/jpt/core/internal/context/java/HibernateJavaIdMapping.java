@@ -11,7 +11,7 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.core.context.java.JavaIdMapping;
+import org.eclipse.jpt.jpa.core.context.java.JavaIdMapping;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateIdMapping;
 import org.jboss.tools.hibernate.jpt.core.internal.context.IndexHolder;
 import org.jboss.tools.hibernate.jpt.core.internal.context.TypeHolder;

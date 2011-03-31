@@ -42,8 +42,8 @@ import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.preference.PreferencePage;
-import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -341,7 +341,7 @@ public class HibernatePropertyPage extends PropertyPage {
 				final IWorkspaceRunnable wr = new IWorkspaceRunnable() {
 					public void run(IProgressMonitor monitor)
 							throws CoreException {
-						JptCorePlugin.rebuildJpaProject(getProject());
+						JptJpaCorePlugin.rebuildJpaProject(getProject());
 						getProject().build(IncrementalProjectBuilder.FULL_BUILD, monitor);
 					}
 				};

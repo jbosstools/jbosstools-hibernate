@@ -13,13 +13,14 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 
-import org.eclipse.jpt.core.context.Entity;
-import org.eclipse.jpt.core.context.PersistentAttribute;
-import org.eclipse.jpt.core.context.java.JavaJoinColumn;
-import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaJoinColumn;
-import org.eclipse.jpt.db.Column;
-import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.jpa.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaJoinColumn;
+import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
+import org.eclipse.jpt.jpa.db.Column;
+import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.hibernate.cfg.NamingStrategy;
@@ -33,35 +34,36 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.NamingStrategyMapping
  * @author Dmitry Geraskov
  *
  */
-public class HibernateJavaJoinColumnImpl extends GenericJavaJoinColumn 
+public class HibernateJavaJoinColumnImpl extends GenericJavaJoinColumn
 implements HibernateJavaJoinColumn {
 
-	public HibernateJavaJoinColumnImpl(JavaJpaContextNode parent, JavaJoinColumn.Owner owner) {
-		super(parent, owner);
+	public HibernateJavaJoinColumnImpl(JavaJpaContextNode parent, JavaJoinColumn.Owner owner, JoinColumnAnnotation columnAnnotation) {
+		super(parent, owner, columnAnnotation);
 	}
-	
+
 	@Override
 	public HibernateJpaProject getJpaProject() {
 		return (HibernateJpaProject) super.getJpaProject();
 	}
-	
+
 	@Override
 	protected String buildDefaultName() {
-		return NamingStrategyMappingTools.buildJoinColumnDefaultName(this, getOwner());
+		return NamingStrategyMappingTools.buildJoinColumnDefaultName(this, this.owner);
 	}
 
-	public PersistentAttribute getReferencedPersistentAttribute() {
-		if (this.getOwner().joinColumnsSize() != 1) {
+	@Override
+	public ReadOnlyPersistentAttribute getReferencedPersistentAttribute() {
+		if (this.owner.joinColumnsSize() != 1) {
 			return null;
 		}
-		Entity targetEntity = this.getOwner().getRelationshipTarget();
+		Entity targetEntity = this.owner.getRelationshipTarget();
 		if (targetEntity == null) {
 			return null;
 		}
-		PersistentAttribute pAttr = null;
-		Iterator<PersistentAttribute> attributes = targetEntity.getPersistentType().allAttributes();
-		for (Iterator<PersistentAttribute> stream = attributes; stream.hasNext();) {
-			PersistentAttribute attribute = stream.next();
+		ReadOnlyPersistentAttribute pAttr = null;
+		Iterator<ReadOnlyPersistentAttribute> attributes = targetEntity.getPersistentType().allAttributes();
+		for (Iterator<ReadOnlyPersistentAttribute> stream = attributes; stream.hasNext();) {
+			ReadOnlyPersistentAttribute attribute = stream.next();
 			String name = attribute.getPrimaryKeyColumnName();
 			if (name != null) {
 				if (pAttr == null){
@@ -69,26 +71,29 @@ implements HibernateJavaJoinColumn {
 				} else {
 					return null;
 				}
-			}			
+			}
 		}
 		return pAttr;
 	}
-	
+
 	@Override
 	public Column getDbColumn() {
 		Table table = this.getDbTable();
 		return (table == null) ? null : table.getColumnForIdentifier(this.getDBColumnName());
 	}
 
+	@Override
 	public String getDBColumnName() {
 		return getSpecifiedDBColumnName() != null ? getSpecifiedDBColumnName()
 				: getDefaultDBColumnName();
 	}
 
+	@Override
 	public String getDefaultDBColumnName() {
 		return getDefaultName();
 	}
-	
+
+	@Override
 	public String getSpecifiedDBColumnName() {
 		if (getSpecifiedName() == null) return null;
 		NamingStrategy ns = getJpaProject().getNamingStrategy();
@@ -103,37 +108,40 @@ implements HibernateJavaJoinColumn {
 		}
 		return this.getSpecifiedName();
 	}
-	
+
 	@Override
 	public Column getReferencedDbColumn() {
 		Table table = this.getReferencedColumnDbTable();
 		return (table == null) ? null : table.getColumnForIdentifier(this.getReferencedDBColumnName());
 	}
 
+	@Override
 	public String getReferencedDBColumnName() {
 		return getReferencedSpecifiedDBColumnName() != null ? getReferencedSpecifiedDBColumnName()
 				: getReferencedDefaultDBColumnName();
 	}
 
+	@Override
 	public String getReferencedDefaultDBColumnName() {
-		return defaultReferencedColumnName;
+		return this.defaultReferencedColumnName;
 	}
 
+	@Override
 	public String getReferencedSpecifiedDBColumnName() {
-		if (specifiedReferencedColumnName == null) return null;
+		if (this.specifiedReferencedColumnName == null) return null;
 		NamingStrategy ns = getJpaProject().getNamingStrategy();
 		if (getJpaProject().isNamingStrategyEnabled() && ns != null){
 			try {
-				return ns.columnName(specifiedReferencedColumnName);
+				return ns.columnName(this.specifiedReferencedColumnName);
 			} catch (Exception e) {
 				Message m = new LocalMessage(IMessage.HIGH_SEVERITY,
 						Messages.NAMING_STRATEGY_EXCEPTION, new String[0], null);
 				HibernateJptPlugin.logException(m.getText(), e);
 			}
 		}
-		return specifiedReferencedColumnName;
+		return this.specifiedReferencedColumnName;
 	}
-	
+
 	/*protected void validateJoinColumnName(List<IMessage> messages, CompilationUnit astRoot) {
 		if ( ! this.isResolved() && getDbTable() != null) {
 			if (getDBColumnName() != null) {
@@ -141,7 +149,7 @@ implements HibernateJavaJoinColumn {
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
-						new String[] {this.getDBColumnName()}, 
+						new String[] {this.getDBColumnName()},
 						this,
 						this.getNameTextRange(astRoot)
 					)
@@ -156,7 +164,7 @@ implements HibernateJavaJoinColumn {
 			// 3. target entity is not an entity
 		}
 	}
-	
+
 	protected void validateReferencedColumnName(List<IMessage> messages, CompilationUnit astRoot) {
 		if ( ! this.isReferencedColumnResolved() && getReferencedColumnDbTable() != null) {
 			if (getReferencedDBColumnName() != null) {
@@ -164,7 +172,7 @@ implements HibernateJavaJoinColumn {
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
-						new String[] {this.getReferencedDBColumnName(), this.getDBColumnName()}, 
+						new String[] {this.getReferencedDBColumnName(), this.getDBColumnName()},
 						this,
 						this.getReferencedColumnNameTextRange(astRoot)
 					)
@@ -189,5 +197,5 @@ implements HibernateJavaJoinColumn {
 
 
 
-	
+
 }

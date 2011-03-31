@@ -14,9 +14,11 @@ Require-Bundle:
  org.eclipse.jdt.core,
  org.eclipse.wst.common.project.facet.core,
  org.eclipse.jst.common.project.facet.core,
- org.eclipse.jpt.utility,
- org.eclipse.jpt.db,
- org.eclipse.jpt.core
+ org.eclipse.jpt.common.utility,
+ org.eclipse.jpt.common.core,
+ org.eclipse.jpt.jpa.db,
+ org.eclipse.jpt.jpa.core,
+ org.eclipse.text;bundle-version="3.5.100"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-Vendor: %Bundle-Vendor.0
 Export-Package: org.jboss.tools.hibernate.jpt.core.internal,

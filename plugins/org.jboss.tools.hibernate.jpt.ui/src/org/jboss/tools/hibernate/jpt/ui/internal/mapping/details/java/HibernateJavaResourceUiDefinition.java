@@ -12,30 +12,30 @@ package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.java;
 
 import java.util.List;
 
-import org.eclipse.jpt.core.context.AttributeMapping;
-import org.eclipse.jpt.core.context.TypeMapping;
-import org.eclipse.jpt.ui.ResourceUiDefinition;
-import org.eclipse.jpt.ui.details.java.DefaultJavaAttributeMappingUiDefinition;
-import org.eclipse.jpt.ui.details.java.JavaAttributeMappingUiDefinition;
-import org.eclipse.jpt.ui.details.java.JavaTypeMappingUiDefinition;
-import org.eclipse.jpt.ui.details.java.JavaUiFactory;
-import org.eclipse.jpt.ui.internal.details.java.AbstractJavaResourceUiDefinition;
-import org.eclipse.jpt.ui.internal.details.java.DefaultBasicMappingUiDefinition;
-import org.eclipse.jpt.ui.internal.details.java.DefaultEmbeddedMappingUiDefinition;
-import org.eclipse.jpt.ui.internal.details.java.JavaBasicMappingUiDefinition;
-import org.eclipse.jpt.ui.internal.details.java.JavaEmbeddableUiDefinition;
-import org.eclipse.jpt.ui.internal.details.java.JavaEmbeddedIdMappingUDefinition;
-import org.eclipse.jpt.ui.internal.details.java.JavaEmbeddedMappingUiDefinition;
-import org.eclipse.jpt.ui.internal.details.java.JavaEntityUiDefinition;
-import org.eclipse.jpt.ui.internal.details.java.JavaIdMappingUiDefinition;
-import org.eclipse.jpt.ui.internal.details.java.JavaManyToManyMappingUiDefinition;
-import org.eclipse.jpt.ui.internal.details.java.JavaManyToOneMappingUiDefinition;
-import org.eclipse.jpt.ui.internal.details.java.JavaMappedSuperclassUiDefinition;
-import org.eclipse.jpt.ui.internal.details.java.JavaOneToManyMappingUiDefinition;
-import org.eclipse.jpt.ui.internal.details.java.JavaOneToOneMappingUiDefinition;
-import org.eclipse.jpt.ui.internal.details.java.JavaTransientMappingUiDefinition;
-import org.eclipse.jpt.ui.internal.details.java.JavaVersionMappingUiDefinition;
-import org.eclipse.jpt.ui.internal.details.java.NullJavaAttributeMappingUiDefinition;
+import org.eclipse.jpt.jpa.core.context.AttributeMapping;
+import org.eclipse.jpt.jpa.core.context.TypeMapping;
+import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
+import org.eclipse.jpt.jpa.ui.details.java.DefaultJavaAttributeMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.details.java.JavaAttributeMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.details.java.JavaTypeMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.details.java.JavaUiFactory;
+import org.eclipse.jpt.jpa.ui.internal.details.java.AbstractJavaResourceUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.java.DefaultBasicMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.java.DefaultEmbeddedMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.java.JavaBasicMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.java.JavaEmbeddableUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.java.JavaEmbeddedIdMappingUDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.java.JavaEmbeddedMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.java.JavaEntityUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.java.JavaIdMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.java.JavaManyToManyMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.java.JavaManyToOneMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.java.JavaMappedSuperclassUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.java.JavaOneToManyMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.java.JavaOneToOneMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.java.JavaTransientMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.java.JavaVersionMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.java.NullJavaAttributeMappingUiDefinition;
 
 /**
  * @author Dmitry Geraskov
