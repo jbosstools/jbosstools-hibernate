@@ -250,7 +250,7 @@ final class AddQueryStateObject extends AbstractNode
 	 */
 	AddQueryStateObject(PersistenceUnit pUnit) {
 		super(null);
-		this.pUnit = this.pUnit;
+		this.pUnit = pUnit;
 	}
 
 	private void addNameProblemsTo(List<Problem> currentProblems) {
