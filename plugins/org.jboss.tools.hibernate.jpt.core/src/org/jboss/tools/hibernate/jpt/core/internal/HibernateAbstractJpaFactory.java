@@ -13,6 +13,7 @@ package org.jboss.tools.hibernate.jpt.core.internal;
 
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.Table.Owner;
 import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaDiscriminatorColumn;
@@ -28,6 +29,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
+import org.eclipse.jpt.jpa.core.context.java.JavaTable;
 import org.eclipse.jpt.jpa.core.internal.AbstractJpaFactory;
 import org.eclipse.jpt.jpa.core.resource.java.EntityAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
@@ -49,6 +51,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaNam
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaParameter;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaQueryContainerImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaSecondaryTableImpl;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaTableImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaTypeDefContainer;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaTypeDefContainerImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateNamedNativeQueryImpl;
@@ -155,6 +158,11 @@ public abstract class HibernateAbstractJpaFactory extends AbstractJpaFactory {
 			JavaJoinTableRelationshipStrategy parent,
 			org.eclipse.jpt.jpa.core.context.Table.Owner owner) {
 		return new HibernateJavaJoinTableImpl(parent, owner);
+	}
+	
+	@Override
+	public JavaTable buildJavaTable(JavaEntity parent, Owner owner) {
+		return new HibernateJavaTableImpl(parent, owner);
 	}
 
 	@Override
