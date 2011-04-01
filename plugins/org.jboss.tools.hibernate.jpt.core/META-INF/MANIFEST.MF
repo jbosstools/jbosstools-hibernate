@@ -19,7 +19,7 @@ Require-Bundle:
  org.eclipse.jpt.jpa.db,
  org.eclipse.jpt.jpa.core,
  org.eclipse.text;bundle-version="3.5.100"
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: %Bundle-Vendor.0
 Export-Package: org.jboss.tools.hibernate.jpt.core.internal,
  org.jboss.tools.hibernate.jpt.core.internal.context,
