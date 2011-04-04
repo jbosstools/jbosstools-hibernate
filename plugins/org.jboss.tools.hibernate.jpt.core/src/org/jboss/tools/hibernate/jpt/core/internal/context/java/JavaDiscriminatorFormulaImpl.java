@@ -25,44 +25,46 @@ public class JavaDiscriminatorFormulaImpl extends AbstractJavaJpaContextNode imp
 
 	protected String value;
 
-	protected DiscriminatorFormulaAnnotation dfResource;
+	protected DiscriminatorFormulaAnnotation annotation;
 
-	protected JavaDiscriminatorFormula.Owner owner;
-
-	public JavaDiscriminatorFormulaImpl(JpaContextNode parent, JavaDiscriminatorFormula.Owner owner) {
+	public JavaDiscriminatorFormulaImpl(JpaContextNode parent, DiscriminatorFormulaAnnotation annotation) {
 		super(parent);
-		this.owner = owner;
+		this.annotation = annotation;
 	}
 
-	public void initialize(DiscriminatorFormulaAnnotation dfResource) {
-		this.dfResource = dfResource;
-		this.value = dfResource.getValue();
-	}
-
-	public void update(DiscriminatorFormulaAnnotation dfResource) {
-		this.dfResource = dfResource;
-		this.setValue(dfResource.getValue());
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setValue_(annotation.getValue());
 	}
 
 	//******************* value *********************
 	public String getValue() {
 		return this.value;
 	}
-
-	public void setValue(String newValue) {
+	
+	public void setValue_(String newValue) {
 		String oldValue = this.value;
 		this.value = newValue;
-		this.dfResource.setValue(newValue);
 		firePropertyChanged(DiscriminatorFormula.VALUE_PROPERTY, oldValue, newValue);
 	}
 
+	public void setValue(String newValue) {
+		this.annotation.setValue(newValue);
+		setValue_(newValue);
+	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.dfResource.getTextRange(astRoot);
+		return this.annotation.getTextRange(astRoot);
 	}
 
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.value);
+	}
+
+	@Override
+	public DiscriminatorFormulaAnnotation getDiscriminatorFormulaAnnotation() {
+		return annotation;
 	}
 }

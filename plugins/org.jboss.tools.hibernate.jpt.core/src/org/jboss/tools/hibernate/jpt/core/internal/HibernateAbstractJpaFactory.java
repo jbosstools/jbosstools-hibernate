@@ -35,6 +35,7 @@ import org.eclipse.jpt.jpa.core.resource.java.EntityAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.SecondaryTableAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.context.ForeignKey;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.ForeignKeyAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.ForeignKeyImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaBasicMappingImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaColumnImpl;
@@ -67,6 +68,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaType;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaTypeDef;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaTypeDefImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.TypeImpl;
+import org.jboss.tools.hibernate.jpt.core.internal.resource.java.DiscriminatorFormulaAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.GenericGeneratorAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedNativeQueryAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedQueryAnnotation;
@@ -123,8 +125,8 @@ public abstract class HibernateAbstractJpaFactory extends AbstractJpaFactory {
 	}
 
 	public JavaDiscriminatorFormula buildJavaDiscriminatorFormula(
-			HibernateJavaEntity hibernateJavaEntity, JavaDiscriminatorFormula.Owner owner) {
-		return new JavaDiscriminatorFormulaImpl(hibernateJavaEntity, owner);
+			HibernateJavaEntity hibernateJavaEntity, DiscriminatorFormulaAnnotation annotation) {
+		return new JavaDiscriminatorFormulaImpl(hibernateJavaEntity, annotation);
 	}
 
 	@Override
@@ -192,8 +194,8 @@ public abstract class HibernateAbstractJpaFactory extends AbstractJpaFactory {
 		return new IndexImpl(parent);
 	}
 
-	public ForeignKey buildForeignKey(JavaJpaContextNode parent) {
-		return new ForeignKeyImpl(parent);
+	public ForeignKey buildForeignKey(JavaJpaContextNode parent, ForeignKeyAnnotation annotation) {
+		return new ForeignKeyImpl(parent, annotation);
 	}
 
 	public JavaType buildType(JavaJpaContextNode parent) {

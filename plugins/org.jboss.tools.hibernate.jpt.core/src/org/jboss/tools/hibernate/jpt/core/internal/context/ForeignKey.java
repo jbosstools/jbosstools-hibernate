@@ -27,9 +27,7 @@ public interface ForeignKey extends JpaContextNode {
 	String getInverseName();
 	void setInverseName(String inverseName);
 		String FOREIGN_KEY_INVERSE_NAME = "inverseName"; //$NON-NLS-1$
-		
-	public void initialize(ForeignKeyAnnotation indexResource);
 
-	public void update(ForeignKeyAnnotation indexResource);
+	ForeignKeyAnnotation getForeignKeyAnnotation();
 
 }

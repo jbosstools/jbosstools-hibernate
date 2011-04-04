@@ -23,30 +23,28 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.ForeignKey;
  */
 public class ForeignKeyImpl extends AbstractJavaJpaContextNode implements ForeignKey {
 
-	private ForeignKeyAnnotation foreignKeyResource;
+	private ForeignKeyAnnotation annotation;
 	
 	private String name;
 	
 	private String inverseName;
 
-	public ForeignKeyImpl(JavaJpaContextNode parent) {
+	public ForeignKeyImpl(JavaJpaContextNode parent, ForeignKeyAnnotation annotation) {
 		super(parent);
+		this.annotation = annotation;
+		this.name = annotation.getName();
+		this.inverseName = annotation.getInverseName();
 	}
 
-	public void initialize(ForeignKeyAnnotation foreignKeyResource) {
-		this.foreignKeyResource = foreignKeyResource;
-		this.name = foreignKeyResource.getName();
-		this.inverseName = foreignKeyResource.getInverseName();
-	}
-	
-	public void update(ForeignKeyAnnotation foreignKeyResource) {
-		this.foreignKeyResource = foreignKeyResource;
-		this.setName_(foreignKeyResource.getName());
-		this.setInverseName_(foreignKeyResource.getInverseName());
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setName_(annotation.getName());
+		this.setInverseName(annotation.getInverseName());
 	}
 	
 	private ForeignKeyAnnotation getResourceForeignKey() {
-		return foreignKeyResource;
+		return annotation;
 	}
 
 	// ***** name
@@ -88,7 +86,12 @@ public class ForeignKeyImpl extends AbstractJavaJpaContextNode implements Foreig
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.foreignKeyResource.getTextRange(astRoot);
+		return this.annotation.getTextRange(astRoot);
+	}
+
+	@Override
+	public ForeignKeyAnnotation getForeignKeyAnnotation() {
+		return annotation;
 	}
 
 }

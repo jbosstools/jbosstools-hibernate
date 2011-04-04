@@ -62,6 +62,7 @@ implements HibernateJavaEntity {
 		super(parent, mappingAnnotation);
 		this.discriminatorFormula = this.buildDiscriminatorFormula();
 		this.typeDefContainer = getJpaFactory().buildJavaTypeDefContainer(parent);
+		this.foreignKey = this.buildForeignKey();
 		this.cacheable = buildJavaCachable();
 	}
 
@@ -76,8 +77,8 @@ implements HibernateJavaEntity {
 		super.synchronizeWithResourceModel();
 		this.cacheable.synchronizeWithResourceModel();
 		this.typeDefContainer.synchronizeWithResourceModel();
-		this.discriminatorFormula.synchronizeWithResourceModel();
-		this.initializeForeignKey();
+		this.syncDiscriminatorFormula();
+		this.syncForeignKey();
 	}
 
 	@Override
@@ -85,8 +86,12 @@ implements HibernateJavaEntity {
 		super.update();
 		this.cacheable.update();
 		this.typeDefContainer.update();
-		this.discriminatorFormula.update();
-		this.updateForeignKey();
+		if (discriminatorFormula != null){
+			this.discriminatorFormula.update();
+		}
+		if (foreignKey != null){
+			this.foreignKey.update();
+		}
 	}
 
 	@Override
@@ -141,11 +146,12 @@ implements HibernateJavaEntity {
 
 
 	protected JavaDiscriminatorFormula buildDiscriminatorFormula() {
-		return this.getJpaFactory().buildJavaDiscriminatorFormula(this, this.buildDiscriminatorFormulaOwner());
+		DiscriminatorFormulaAnnotation annotation = this.getDiscriminatorFormulaAnnotation();
+		return (annotation == null) ? null : this.buildDiscriminatorFormula(annotation);
 	}
 
-	protected JavaDiscriminatorFormula.Owner buildDiscriminatorFormulaOwner() {
-		return new DiscriminatorFormulaOwner();
+	protected DiscriminatorFormulaAnnotation buildDiscriminatorFormulaAnnotation() {
+		return (DiscriminatorFormulaAnnotation) this.getResourcePersistentType().addAnnotation(DiscriminatorFormulaAnnotation.ANNOTATION_NAME);
 	}
 
 	protected void setDiscriminatorFormula(JavaDiscriminatorFormula newDiscriminatorFormula) {
@@ -159,11 +165,10 @@ implements HibernateJavaEntity {
 		if (getDiscriminatorFormula() != null) {
 			throw new IllegalStateException("discriminatorFormula already exists"); //$NON-NLS-1$
 		}
-		this.discriminatorFormula = getJpaFactory().buildJavaDiscriminatorFormula(this, buildDiscriminatorFormulaOwner());
-		DiscriminatorFormulaAnnotation discriminatorFormulaResource = (DiscriminatorFormulaAnnotation) this.getResourcePersistentType().addAnnotation(DiscriminatorFormulaAnnotation.ANNOTATION_NAME);
-		this.discriminatorFormula.initialize(discriminatorFormulaResource);
-		firePropertyChanged(DISCRIMINATOR_FORMULA_PROPERTY, null, this.discriminatorFormula);
-		return this.discriminatorFormula;
+		DiscriminatorFormulaAnnotation annotation = this.buildDiscriminatorFormulaAnnotation();
+		JavaDiscriminatorFormula discriminatorFormula = buildDiscriminatorFormula(annotation);
+		this.setDiscriminatorFormula(discriminatorFormula);
+		return discriminatorFormula;
 	}
 
 	@Override
@@ -171,67 +176,57 @@ implements HibernateJavaEntity {
 		if (getDiscriminatorFormula() == null) {
 			throw new IllegalStateException("discriminatorFormula does not exist, cannot be removed"); //$NON-NLS-1$
 		}
-		JavaDiscriminatorFormula oldDiscriminatorFormula = this.discriminatorFormula;
-		this.discriminatorFormula = null;
 		this.getResourcePersistentType().removeAnnotation(DiscriminatorFormulaAnnotation.ANNOTATION_NAME);
-		firePropertyChanged(DISCRIMINATOR_FORMULA_PROPERTY, oldDiscriminatorFormula,null);
+		this.setDiscriminatorFormula(null);
 	}
 
-	protected void initializeDiscriminatorFormula() {
-		DiscriminatorFormulaAnnotation discriminatorFormulaResource = getDiscriminatorFormulaResource();
-		if (discriminatorFormulaResource != null) {
-			this.discriminatorFormula = buildDiscriminatorFormula(discriminatorFormulaResource);
-		}
-	}
-
-	protected void updateDiscriminatorFormula() {
-		DiscriminatorFormulaAnnotation discriminatorFormulaResource = getDiscriminatorFormulaResource();
-		if (discriminatorFormulaResource == null) {
+	protected void syncDiscriminatorFormula() {
+		DiscriminatorFormulaAnnotation annotation = getDiscriminatorFormulaAnnotation();
+		if (annotation == null) {
 			if (getDiscriminatorFormula() != null) {
 				setDiscriminatorFormula(null);
 			}
 		}
 		else {
 			if (getDiscriminatorFormula() == null) {
-				setDiscriminatorFormula(buildDiscriminatorFormula(discriminatorFormulaResource));
+				setDiscriminatorFormula(buildDiscriminatorFormula(annotation));
 			}
 			else {
-				getDiscriminatorFormula().update(discriminatorFormulaResource);
+				if ((this.discriminatorFormula != null) && (this.discriminatorFormula.getDiscriminatorFormulaAnnotation() == annotation)) {
+					this.discriminatorFormula.synchronizeWithResourceModel();
+				} else {
+					this.setDiscriminatorFormula(this.buildDiscriminatorFormula(annotation));
+				}
 			}
 		}
 	}
 
-	public DiscriminatorFormulaAnnotation getDiscriminatorFormulaResource() {
+	public DiscriminatorFormulaAnnotation getDiscriminatorFormulaAnnotation() {
 		return (DiscriminatorFormulaAnnotation) this.getResourcePersistentType().getAnnotation(DiscriminatorFormulaAnnotation.ANNOTATION_NAME);
 	}
 
-	protected JavaDiscriminatorFormula buildDiscriminatorFormula(DiscriminatorFormulaAnnotation discriminatorFormulaResource) {
-		JavaDiscriminatorFormula discriminatorFormula = getJpaFactory().buildJavaDiscriminatorFormula(this, buildDiscriminatorFormulaOwner());
-		discriminatorFormula.initialize(discriminatorFormulaResource);
-		return discriminatorFormula;
+	protected JavaDiscriminatorFormula buildDiscriminatorFormula(DiscriminatorFormulaAnnotation annotation) {
+		return getJpaFactory().buildJavaDiscriminatorFormula(this, annotation);
 	}
 	// ********************* foreignKey **************
 
-	protected void initializeForeignKey() {
-		ForeignKeyAnnotation foreignKeyResource = getResourceForeignKey();
-		if (foreignKeyResource != null) {
-			this.foreignKey = buildForeignKey(foreignKeyResource);
-		}
-	}
-
-	protected void updateForeignKey() {
-		ForeignKeyAnnotation foreignKeyResource = getResourceForeignKey();
-		if (foreignKeyResource == null) {
+	protected void syncForeignKey() {
+		ForeignKeyAnnotation annotation = getForeignKeyAnnotation();
+		if (annotation == null) {
 			if (getForeignKey() != null) {
 				setForeignKey(null);
 			}
 		}
 		else {
 			if (getForeignKey() == null) {
-				setForeignKey(buildForeignKey(foreignKeyResource));
+				setForeignKey(buildForeignKey(annotation));
 			}
 			else {
-				getForeignKey().update(foreignKeyResource);
+				if ((this.foreignKey != null) && (this.foreignKey.getForeignKeyAnnotation() == annotation)) {
+					this.foreignKey.synchronizeWithResourceModel();
+				} else {
+					this.setForeignKey(this.buildForeignKey(annotation));
+				}
 			}
 		}
 	}
@@ -241,10 +236,9 @@ implements HibernateJavaEntity {
 		if (getForeignKey() != null) {
 			throw new IllegalStateException("foreignKey already exists"); //$NON-NLS-1$
 		}
-		this.foreignKey = getJpaFactory().buildForeignKey(this);
-		ForeignKeyAnnotation foreignKeyResource = (ForeignKeyAnnotation) this.getResourcePersistentType().addAnnotation(ForeignKeyAnnotation.ANNOTATION_NAME);
-		this.foreignKey.initialize(foreignKeyResource);
-		firePropertyChanged(FOREIGN_KEY_PROPERTY, null, this.foreignKey);
+		ForeignKeyAnnotation annotation = (ForeignKeyAnnotation) this.getResourcePersistentType().addAnnotation(ForeignKeyAnnotation.ANNOTATION_NAME);
+		ForeignKey foreignKey = buildForeignKey(annotation);
+		setForeignKey(foreignKey);
 		return this.foreignKey;
 	}
 
@@ -264,19 +258,20 @@ implements HibernateJavaEntity {
 		if (getForeignKey() == null) {
 			throw new IllegalStateException("foreignKey does not exist, cannot be removed"); //$NON-NLS-1$
 		}
-		ForeignKey oldForeignKey = this.foreignKey;
-		this.foreignKey = null;
 		this.getResourcePersistentType().removeAnnotation(ForeignKeyAnnotation.ANNOTATION_NAME);
-		firePropertyChanged(FOREIGN_KEY_PROPERTY, oldForeignKey, null);
+		setForeignKey(null);
+	}
+	
+	protected ForeignKey buildForeignKey() {
+		ForeignKeyAnnotation annotation = this.getForeignKeyAnnotation();
+		return (annotation == null) ? null : this.buildForeignKey(annotation);
 	}
 
-	protected ForeignKey buildForeignKey(ForeignKeyAnnotation foreignKeyResource) {
-		ForeignKey foreignKey = getJpaFactory().buildForeignKey(this);
-		foreignKey.initialize(foreignKeyResource);
-		return foreignKey;
+	protected ForeignKey buildForeignKey(ForeignKeyAnnotation annotation) {
+		return getJpaFactory().buildForeignKey(this, annotation);
 	}
 
-	protected ForeignKeyAnnotation getResourceForeignKey() {
+	protected ForeignKeyAnnotation getForeignKeyAnnotation() {
 		return (ForeignKeyAnnotation) this.getResourcePersistentType().getAnnotation(ForeignKeyAnnotation.ANNOTATION_NAME);
 	}
 
@@ -310,7 +305,7 @@ implements HibernateJavaEntity {
 				return;
 			}
 		}
-		TextRange textRange = this.getResourceForeignKey().getNameTextRange(astRoot);
+		TextRange textRange = this.getForeignKeyAnnotation().getNameTextRange(astRoot);
 		IMessage message = new LocalMessage(IMessage.HIGH_SEVERITY,
 				Messages.UNRESOLVED_FOREIGN_KEY_NAME, new String[] {this.foreignKey.getName(), getPrimaryTableName()},
 				this.foreignKey);

@@ -53,51 +53,52 @@ public abstract class AbstractHibernateJavaOneToOneMapping extends
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.initializeForeignKey();
+		this.syncForeignKey();
 	}
 
 	@Override
 	public void update() {
 		super.update();
-		this.updateForeignKey();
-	}
-
-	// *** foreignKey
-
-	protected void initializeForeignKey() {
-		ForeignKeyAnnotation foreignKeyResource = getResourceForeignKey();
-		if (foreignKeyResource != null) {
-			this.foreignKey = buildForeignKey(foreignKeyResource);
+		if (foreignKey != null){
+			this.foreignKey.update();
 		}
 	}
 
-	protected void updateForeignKey() {
-		ForeignKeyAnnotation foreignKeyResource = getResourceForeignKey();
-		if (foreignKeyResource == null) {
+	// ********************* foreignKey **************
+
+	protected void syncForeignKey() {
+		ForeignKeyAnnotation annotation = getForeignKeyAnnotation();
+		if (annotation == null) {
 			if (getForeignKey() != null) {
 				setForeignKey(null);
 			}
-		} else {
+		}
+		else {
 			if (getForeignKey() == null) {
-				setForeignKey(buildForeignKey(foreignKeyResource));
-			} else {
-				getForeignKey().update(foreignKeyResource);
+				setForeignKey(buildForeignKey(annotation));
+			}
+			else {
+				if ((this.foreignKey != null) && (this.foreignKey.getForeignKeyAnnotation() == annotation)) {
+					this.foreignKey.synchronizeWithResourceModel();
+				} else {
+					this.setForeignKey(this.buildForeignKey(annotation));
+				}
 			}
 		}
 	}
 
+	@Override
 	public ForeignKey addForeignKey() {
 		if (getForeignKey() != null) {
 			throw new IllegalStateException("foreignKey already exists"); //$NON-NLS-1$
 		}
-		this.foreignKey = getJpaFactory().buildForeignKey(this);
-		ForeignKeyAnnotation foreignKeyResource = (ForeignKeyAnnotation) getResourcePersistentAttribute()
-				.addAnnotation(ForeignKeyAnnotation.ANNOTATION_NAME);
-		this.foreignKey.initialize(foreignKeyResource);
-		firePropertyChanged(FOREIGN_KEY_PROPERTY, null, this.foreignKey);
+		ForeignKeyAnnotation annotation = (ForeignKeyAnnotation) this.getResourcePersistentAttribute().addAnnotation(ForeignKeyAnnotation.ANNOTATION_NAME);
+		ForeignKey foreignKey = buildForeignKey(annotation);
+		setForeignKey(foreignKey);
 		return this.foreignKey;
 	}
 
+	@Override
 	public ForeignKey getForeignKey() {
 		return this.foreignKey;
 	}
@@ -108,27 +109,26 @@ public abstract class AbstractHibernateJavaOneToOneMapping extends
 		firePropertyChanged(FOREIGN_KEY_PROPERTY, oldForeignKey, newForeignKey);
 	}
 
+	@Override
 	public void removeForeignKey() {
 		if (getForeignKey() == null) {
-			throw new IllegalStateException(
-					"foreignKey does not exist, cannot be removed"); //$NON-NLS-1$
+			throw new IllegalStateException("foreignKey does not exist, cannot be removed"); //$NON-NLS-1$
 		}
-		ForeignKey oldForeignKey = this.foreignKey;
-		this.foreignKey = null;
-		this.getResourcePersistentAttribute().removeAnnotation(
-				ForeignKeyAnnotation.ANNOTATION_NAME);
-		firePropertyChanged(FOREIGN_KEY_PROPERTY, oldForeignKey, null);
+		this.getResourcePersistentAttribute().removeAnnotation(ForeignKeyAnnotation.ANNOTATION_NAME);
+		setForeignKey(null);
+	}
+	
+	protected ForeignKey buildForeignKey() {
+		ForeignKeyAnnotation annotation = this.getForeignKeyAnnotation();
+		return (annotation == null) ? null : this.buildForeignKey(annotation);
 	}
 
-	protected ForeignKey buildForeignKey(ForeignKeyAnnotation foreignKeyResource) {
-		ForeignKey foreignKey = getJpaFactory().buildForeignKey(this);
-		foreignKey.initialize(foreignKeyResource);
-		return foreignKey;
+	protected ForeignKey buildForeignKey(ForeignKeyAnnotation annotation) {
+		return getJpaFactory().buildForeignKey(this, annotation);
 	}
 
-	protected ForeignKeyAnnotation getResourceForeignKey() {
-		return (ForeignKeyAnnotation) this.getResourcePersistentAttribute()
-				.getAnnotation(ForeignKeyAnnotation.ANNOTATION_NAME);
+	protected ForeignKeyAnnotation getForeignKeyAnnotation() {
+		return (ForeignKeyAnnotation) this.getResourcePersistentAttribute().getAnnotation(ForeignKeyAnnotation.ANNOTATION_NAME);
 	}
 
 	public Table getForeignKeyDbTable() {
@@ -158,7 +158,7 @@ public abstract class AbstractHibernateJavaOneToOneMapping extends
 				return;
 			}
 		}
-		TextRange textRange = this.getResourceForeignKey().getNameTextRange(
+		TextRange textRange = this.getForeignKeyAnnotation().getNameTextRange(
 				astRoot);
 		IMessage message = new LocalMessage(IMessage.HIGH_SEVERITY,
 				Messages.UNRESOLVED_FOREIGN_KEY_NAME, new String[] {
