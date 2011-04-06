@@ -78,7 +78,12 @@ public class IndexHolderComposite extends Pane<IndexHolder> {
 				if ("".equals(value)) {//$NON-NLS-1$
 					value = null;
 				}
-				subject.setName(value);
+				if (value != null){
+					subject.setName(value);
+				} else {
+					getSubjectHolder().getValue().removeIndex();
+				}
+				
 			}
 		};
 	}
