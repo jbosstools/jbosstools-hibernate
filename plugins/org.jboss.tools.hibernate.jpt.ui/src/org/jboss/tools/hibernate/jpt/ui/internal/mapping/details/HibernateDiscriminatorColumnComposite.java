@@ -221,9 +221,13 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 			protected void setValue_(String value) {
 				if ("".equals(value)) {//$NON-NLS-1$
 					value = null;
-				} else {
-					this.subject.setValue(value);
 				}
+				if (value != null){
+					this.subject.setValue(value);
+				} else {
+					getSubjectHolder().getValue().removeDiscriminatorFormula();
+				}
+				
 			}
 		};
 	}
