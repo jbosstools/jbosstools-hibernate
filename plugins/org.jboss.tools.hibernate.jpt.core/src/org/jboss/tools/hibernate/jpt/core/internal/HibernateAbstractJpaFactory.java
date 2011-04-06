@@ -72,6 +72,8 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.DiscriminatorFo
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.GenericGeneratorAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedNativeQueryAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedQueryAnnotation;
+import org.jboss.tools.hibernate.jpt.core.internal.resource.java.IndexAnnotation;
+import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeAnnotation;
 
 /**
  * @author Dmitry Geraskov
@@ -190,16 +192,16 @@ public abstract class HibernateAbstractJpaFactory extends AbstractJpaFactory {
 		return new HibernateJavaTypeDefContainerImpl(parent);
 	}
 
-	public JavaIndex buildIndex(JavaJpaContextNode parent) {
-		return new IndexImpl(parent);
+	public JavaIndex buildIndex(JavaJpaContextNode parent, IndexAnnotation annotation) {
+		return new IndexImpl(parent, annotation);
 	}
 
 	public ForeignKey buildForeignKey(JavaJpaContextNode parent, ForeignKeyAnnotation annotation) {
 		return new ForeignKeyImpl(parent, annotation);
 	}
 
-	public JavaType buildType(JavaJpaContextNode parent) {
-		return new TypeImpl(parent);
+	public JavaType buildType(JavaJpaContextNode parent, TypeAnnotation annotation) {
+		return new TypeImpl(parent, annotation);
 	}
 
 }

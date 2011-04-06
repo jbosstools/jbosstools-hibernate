@@ -30,6 +30,7 @@ public class JavaDiscriminatorFormulaImpl extends AbstractJavaJpaContextNode imp
 	public JavaDiscriminatorFormulaImpl(JpaContextNode parent, DiscriminatorFormulaAnnotation annotation) {
 		super(parent);
 		this.annotation = annotation;
+		this.value = annotation.getValue();
 	}
 
 	@Override

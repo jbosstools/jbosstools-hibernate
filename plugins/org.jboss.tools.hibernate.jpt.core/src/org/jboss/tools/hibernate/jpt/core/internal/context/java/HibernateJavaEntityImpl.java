@@ -63,7 +63,7 @@ implements HibernateJavaEntity {
 		this.discriminatorFormula = this.buildDiscriminatorFormula();
 		this.typeDefContainer = getJpaFactory().buildJavaTypeDefContainer(parent);
 		this.foreignKey = this.buildForeignKey();
-		this.cacheable = buildJavaCachable();
+		this.cacheable = this.buildJavaCachable();
 	}
 
 	protected JavaCacheable2_0 buildJavaCachable() {
@@ -144,22 +144,6 @@ implements HibernateJavaEntity {
 		return this.discriminatorFormula;
 	}
 
-
-	protected JavaDiscriminatorFormula buildDiscriminatorFormula() {
-		DiscriminatorFormulaAnnotation annotation = this.getDiscriminatorFormulaAnnotation();
-		return (annotation == null) ? null : this.buildDiscriminatorFormula(annotation);
-	}
-
-	protected DiscriminatorFormulaAnnotation buildDiscriminatorFormulaAnnotation() {
-		return (DiscriminatorFormulaAnnotation) this.getResourcePersistentType().addAnnotation(DiscriminatorFormulaAnnotation.ANNOTATION_NAME);
-	}
-
-	protected void setDiscriminatorFormula(JavaDiscriminatorFormula newDiscriminatorFormula) {
-		JavaDiscriminatorFormula oldDiscriminatorFormula = this.discriminatorFormula;
-		this.discriminatorFormula = newDiscriminatorFormula;
-		firePropertyChanged(DISCRIMINATOR_FORMULA_PROPERTY, oldDiscriminatorFormula, newDiscriminatorFormula);
-	}
-
 	@Override
 	public JavaDiscriminatorFormula addDiscriminatorFormula() {
 		if (getDiscriminatorFormula() != null) {
@@ -170,7 +154,11 @@ implements HibernateJavaEntity {
 		this.setDiscriminatorFormula(discriminatorFormula);
 		return discriminatorFormula;
 	}
-
+	
+	protected DiscriminatorFormulaAnnotation buildDiscriminatorFormulaAnnotation() {
+		return (DiscriminatorFormulaAnnotation) this.getResourcePersistentType().addAnnotation(DiscriminatorFormulaAnnotation.ANNOTATION_NAME);
+	}
+	
 	@Override
 	public void removeDiscriminatorFormula() {
 		if (getDiscriminatorFormula() == null) {
@@ -178,6 +166,19 @@ implements HibernateJavaEntity {
 		}
 		this.getResourcePersistentType().removeAnnotation(DiscriminatorFormulaAnnotation.ANNOTATION_NAME);
 		this.setDiscriminatorFormula(null);
+	}
+
+	protected JavaDiscriminatorFormula buildDiscriminatorFormula() {
+		DiscriminatorFormulaAnnotation annotation = this.getDiscriminatorFormulaAnnotation();
+		return (annotation == null) ? null : this.buildDiscriminatorFormula(annotation);
+	}
+
+	public DiscriminatorFormulaAnnotation getDiscriminatorFormulaAnnotation() {
+		return (DiscriminatorFormulaAnnotation) this.getResourcePersistentType().getAnnotation(DiscriminatorFormulaAnnotation.ANNOTATION_NAME);
+	}
+
+	protected JavaDiscriminatorFormula buildDiscriminatorFormula(DiscriminatorFormulaAnnotation annotation) {
+		return getJpaFactory().buildJavaDiscriminatorFormula(this, annotation);
 	}
 
 	protected void syncDiscriminatorFormula() {
@@ -188,26 +189,21 @@ implements HibernateJavaEntity {
 			}
 		}
 		else {
-			if (getDiscriminatorFormula() == null) {
-				setDiscriminatorFormula(buildDiscriminatorFormula(annotation));
-			}
-			else {
-				if ((this.discriminatorFormula != null) && (this.discriminatorFormula.getDiscriminatorFormulaAnnotation() == annotation)) {
-					this.discriminatorFormula.synchronizeWithResourceModel();
-				} else {
-					this.setDiscriminatorFormula(this.buildDiscriminatorFormula(annotation));
-				}
+			if ((getDiscriminatorFormula() != null)
+					&& (getDiscriminatorFormula().getDiscriminatorFormulaAnnotation() == annotation)) {
+				this.discriminatorFormula.synchronizeWithResourceModel();
+			} else {
+				this.setDiscriminatorFormula(this.buildDiscriminatorFormula(annotation));
 			}
 		}
 	}
 
-	public DiscriminatorFormulaAnnotation getDiscriminatorFormulaAnnotation() {
-		return (DiscriminatorFormulaAnnotation) this.getResourcePersistentType().getAnnotation(DiscriminatorFormulaAnnotation.ANNOTATION_NAME);
+	protected void setDiscriminatorFormula(JavaDiscriminatorFormula newDiscriminatorFormula) {
+		JavaDiscriminatorFormula oldDiscriminatorFormula = this.discriminatorFormula;
+		this.discriminatorFormula = newDiscriminatorFormula;
+		firePropertyChanged(DISCRIMINATOR_FORMULA_PROPERTY, oldDiscriminatorFormula, newDiscriminatorFormula);
 	}
 
-	protected JavaDiscriminatorFormula buildDiscriminatorFormula(DiscriminatorFormulaAnnotation annotation) {
-		return getJpaFactory().buildJavaDiscriminatorFormula(this, annotation);
-	}
 	// ********************* foreignKey **************
 
 	protected void syncForeignKey() {

@@ -32,6 +32,7 @@ import org.eclipse.jpt.jpa.ui.internal.details.DiscriminatorColumnComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.DiscriminatorFormula;
+import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateEntity;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;
 import org.jboss.tools.hibernate.jpt.ui.internal.mappings.db.xpl.ColumnCombo;
 
@@ -87,7 +88,7 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 	@Override
 	protected void initialize() {
 		super.initialize();
-		this.discriminatorFormulaHolder = new SimplePropertyValueModel<DiscriminatorFormula>(getSubject().getDiscriminatorFormula());
+		this.discriminatorFormulaHolder = buildDiscriminatorFormulaHolder();
 	}
 
 	@Override
@@ -114,7 +115,7 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 		addLabeledText(
 			discriminatorColumnContainer,
 			HibernateUIMappingMessages.HibernateDiscriminatorColumnComposite_formula,
-			buildDiscriminatorFormulaHolder(),
+			buildDiscriminatorFormulaValueHolder(),
 			null//TODO help
 		);
 
@@ -190,7 +191,7 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 		};
 	}
 
-	private WritablePropertyValueModel<String> buildDiscriminatorFormulaHolder() {
+	private WritablePropertyValueModel<String> buildDiscriminatorFormulaValueHolder() {
 		return new PropertyAspectAdapter<DiscriminatorFormula, String>(this.discriminatorFormulaHolder, DiscriminatorFormula.VALUE_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -199,24 +200,27 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 
 			@Override
 			public void setValue(String value) {
-				if (value != null && !"".equals(value)) { //$NON-NLS-1$
+				if (subject != null) {
+					setValue_(value);
+					return;
+				}
+				
+				if ("".equals(value)){ //$NON-NLS-1$
+					return;
+				}
 					DiscriminatorFormula discriminatorFormula = (getSubject().getDiscriminatorFormula() != null
 							? getSubject().getDiscriminatorFormula()
 							: getSubject().addDiscriminatorFormula());
 					discriminatorFormula.setValue(value);
-					HibernateDiscriminatorColumnComposite.this.discriminatorFormulaHolder.setValue(discriminatorFormula);
-				}
-				setValue_(value);
+					//HibernateDiscriminatorColumnComposite.this.discriminatorFormulaHolder.setValue(discriminatorFormula);
+				//}
+				//setValue_(value);
 			}
 
 			@Override
 			protected void setValue_(String value) {
 				if ("".equals(value)) {//$NON-NLS-1$
 					value = null;
-				}
-				if (value == null && this.subject != null){
-					getSubject().removeDiscriminatorFormula();
-					return;
 				} else {
 					this.subject.setValue(value);
 				}
@@ -363,5 +367,14 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 				}
 			};
 		}
+	}
+	
+	private WritablePropertyValueModel<DiscriminatorFormula> buildDiscriminatorFormulaHolder() {
+		return new PropertyAspectAdapter<HibernateJavaEntity, DiscriminatorFormula>(getSubjectHolder(), HibernateEntity.DISCRIMINATOR_FORMULA_PROPERTY) {
+			@Override
+			protected DiscriminatorFormula buildValue_() {
+				return this.subject.getDiscriminatorFormula();
+			}
+		};
 	}
 }
