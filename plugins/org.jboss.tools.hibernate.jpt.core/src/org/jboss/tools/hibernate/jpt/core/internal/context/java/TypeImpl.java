@@ -36,22 +36,18 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeAnnotation;
  */
 public class TypeImpl extends AbstractJavaJpaContextNode implements JavaType, Messages {
 
-	private TypeAnnotation typeResource;
+	private TypeAnnotation annotation;
 	
 	private String type;
 	
-	public TypeImpl(JavaJpaContextNode parent) {
+	public TypeImpl(JavaJpaContextNode parent, TypeAnnotation annotation) {
 		super(parent);
-	}
-
-	public void initialize(TypeAnnotation indexResource) {
-		this.typeResource = indexResource;
-		this.type = indexResource.getType();
+		this.annotation = annotation;
+		this.type = annotation.getType();
 	}
 	
-	public void update(TypeAnnotation indexResource) {
-		this.typeResource = indexResource;
-		this.setType_(indexResource.getType());
+	public void synchronizeWithResourceModel() {
+		this.setType_(annotation.getType());
 	}
 
 	// ***** name
@@ -63,7 +59,7 @@ public class TypeImpl extends AbstractJavaJpaContextNode implements JavaType, Me
 	public void setType(String name) {
 		String old = this.type;
 		this.type = name;
-		this.getTypeResource().setType(name);
+		this.getTypeAnnotation().setType(name);
 		this.firePropertyChanged(TYPE_TYPE, old, name);
 	}
 	
@@ -73,12 +69,12 @@ public class TypeImpl extends AbstractJavaJpaContextNode implements JavaType, Me
 		this.firePropertyChanged(TYPE_TYPE, old, name);
 	}
 	
-	public TypeAnnotation getTypeResource() {
-		return typeResource;
+	public TypeAnnotation getTypeAnnotation() {
+		return annotation;
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.typeResource.getTextRange(astRoot);
+		return this.annotation.getTextRange(astRoot);
 	}
 	
 	@Override
@@ -94,7 +90,7 @@ public class TypeImpl extends AbstractJavaJpaContextNode implements JavaType, Me
 	}
 	
 	public TextRange getTypeTextRange(CompilationUnit astRoot) {
-		return this.typeResource.getTypeTextRange(astRoot);
+		return this.annotation.getTypeTextRange(astRoot);
 	}
 
 	/*

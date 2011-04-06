@@ -25,10 +25,7 @@ public interface JavaType extends JavaJpaContextNode {
 	void setType(String name);
 		String TYPE_TYPE = "type"; //$NON-NLS-1$
 	
-	public void initialize(TypeAnnotation typeResource);
-
-	public void update(TypeAnnotation typeResource);
-	
 	public TextRange getTypeTextRange(CompilationUnit astRoot);
+	TypeAnnotation getTypeAnnotation();
 
 }
