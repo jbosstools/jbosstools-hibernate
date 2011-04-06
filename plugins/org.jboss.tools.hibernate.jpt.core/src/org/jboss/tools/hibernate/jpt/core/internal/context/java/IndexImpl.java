@@ -26,26 +26,23 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.IndexAnnotation
  */
 public class IndexImpl extends AbstractJavaJpaContextNode implements JavaIndex {
 	
-	private IndexAnnotation indexResource;
+	private IndexAnnotation annotation;
 	
 	private String name;
 	
 	private String[] columnNames = new String[0];
 
-	public IndexImpl(JavaJpaContextNode parent) {
+	public IndexImpl(JavaJpaContextNode parent, IndexAnnotation annotation) {
 		super(parent);
+		this.annotation = annotation;
+		this.name = annotation.getName();
+		this.columnNames = annotation.getColumnNames();
 	}
 
-	public void initialize(IndexAnnotation indexResource) {
-		this.indexResource = indexResource;
-		this.name = indexResource.getName();
-		this.columnNames = indexResource.getColumnNames();
-	}
-	
-	public void update(IndexAnnotation indexResource) {
-		this.indexResource = indexResource;
-		this.setName_(indexResource.getName());
-		this.setColumnNames_(indexResource.getColumnNames());
+	@Override
+	public void synchronizeWithResourceModel() {
+		this.setName_(annotation.getName());
+		this.setColumnNames_(annotation.getColumnNames());
 	}
 
 	// ***** name
@@ -57,7 +54,7 @@ public class IndexImpl extends AbstractJavaJpaContextNode implements JavaIndex {
 	public void setName(String name) {
 		String old = this.name;
 		this.name = name;
-		this.getResourceIndex().setName(name);
+		this.getIndexAnnotation().setName(name);
 		this.firePropertyChanged(INDEX_NAME, old, name);
 	}
 	
@@ -77,7 +74,7 @@ public class IndexImpl extends AbstractJavaJpaContextNode implements JavaIndex {
 		if (columnNames == null) columnNames = new String[0];
 		String[] old = this.columnNames;
 		this.columnNames = columnNames;
-		this.getResourceIndex().setColumnNames(columnNames);
+		this.getIndexAnnotation().setColumnNames(columnNames);
 		this.firePropertyChanged(INDEX_COLUMN_NAMES, old, columnNames);
 	}
 	
@@ -87,12 +84,13 @@ public class IndexImpl extends AbstractJavaJpaContextNode implements JavaIndex {
 		this.firePropertyChanged(INDEX_COLUMN_NAMES, old, columnNames);
 	}
 	
-	private IndexAnnotation getResourceIndex() {
-		return indexResource;
+	@Override
+	public IndexAnnotation getIndexAnnotation() {
+		return annotation;
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.indexResource.getTextRange(astRoot);
+		return this.annotation.getTextRange(astRoot);
 	}
 
 	public void addColumn(String columnName) {

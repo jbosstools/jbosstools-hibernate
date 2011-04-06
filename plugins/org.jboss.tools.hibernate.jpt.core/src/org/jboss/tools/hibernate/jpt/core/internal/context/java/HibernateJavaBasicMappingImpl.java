@@ -45,6 +45,8 @@ implements HibernateJavaBasicMapping {
 	public HibernateJavaBasicMappingImpl(JavaPersistentAttribute parent) {
 		super(parent);
 		this.typeDefContainer = getJpaFactory().buildJavaTypeDefContainer(parent);
+		this.index = this.buildIndex();
+		this.type = this.buildType();
 	}
 
 	/*@Override
@@ -64,8 +66,8 @@ implements HibernateJavaBasicMapping {
 		super.synchronizeWithResourceModel();
 		this.typeDefContainer.synchronizeWithResourceModel();
 		this.specifiedGenerationTime = this.getResourceGenerationTime();
-		this.initializeIndex();
-		this.initializeType();
+		this.syncIndex();
+		this.syncType();
 	}
 
 	@Override
@@ -73,28 +75,32 @@ implements HibernateJavaBasicMapping {
 		super.update();
 		this.typeDefContainer.update(this.getResourcePersistentAttribute());
 		this.setGenerationTime_(this.getResourceGenerationTime());
-		this.updateIndex();
-		this.updateType();
+		if (this.index != null){
+			this.index.update();
+		}
+		if (this.type != null){
+			this.type.update();
+		}
 	}
 
 	public HibernateJavaTypeDefContainer getTypeDefContainer() {
 		return this.typeDefContainer;
 	}
 
-	public GeneratedAnnotation getResourceGenerated() {
+	public GeneratedAnnotation getGeneratedAnnotation() {
 		return (GeneratedAnnotation) getResourcePersistentAttribute().getAnnotation(GeneratedAnnotation.ANNOTATION_NAME);
 	}
 
-	public GeneratedAnnotation addResourceGenerated() {
+	public GeneratedAnnotation buildGeneratedAnnotation() {
 		return (GeneratedAnnotation) getResourcePersistentAttribute().addAnnotation(GeneratedAnnotation.ANNOTATION_NAME);
 	}
 
-	public void removeResourceGenerated() {
+	public void removeGeneratedAnnotation() {
 		getResourcePersistentAttribute().removeAnnotation(GeneratedAnnotation.ANNOTATION_NAME);
 	}
 
 	protected GenerationTime getResourceGenerationTime(){
-		GeneratedAnnotation geneatedAnnotation = getResourceGenerated();
+		GeneratedAnnotation geneatedAnnotation = getGeneratedAnnotation();
 		return geneatedAnnotation == null ? null : geneatedAnnotation.getValue();
 	}
 
@@ -106,12 +112,12 @@ implements HibernateJavaBasicMapping {
 		GenerationTime oldValue = this.specifiedGenerationTime;
 		this.specifiedGenerationTime = newValue;
 		if (newValue != null){
-			GeneratedAnnotation annotation = getResourceGenerated() != null
-			? getResourceGenerated()
-					: addResourceGenerated();
+			GeneratedAnnotation annotation = getGeneratedAnnotation() != null
+			? getGeneratedAnnotation()
+					: buildGeneratedAnnotation();
 			annotation.setValue(newValue);
 		} else {
-			removeResourceGenerated();
+			removeGeneratedAnnotation();
 		}
 		firePropertyChanged(Generated.GENERATION_TIME_PROPERTY, oldValue, newValue);
 	}
@@ -122,49 +128,60 @@ implements HibernateJavaBasicMapping {
 		firePropertyChanged(Generated.GENERATION_TIME_PROPERTY, oldValue, newGenerationTime);
 	}
 
-	public void removeResourceIndex() {
-		getResourcePersistentAttribute().removeAnnotation(IndexAnnotation.ANNOTATION_NAME);
-	}
-
 	// *** index
-
-	protected void initializeIndex() {
-		IndexAnnotation indexResource = getResourceIndex();
-		if (indexResource != null) {
-			this.index = buildIndex(indexResource);
+	public JavaIndex getIndex() {
+		return this.index;
+	}
+	
+	public JavaIndex addIndex() {
+		if (getIndex() != null) {
+			throw new IllegalStateException("index already exists"); //$NON-NLS-1$
 		}
+		IndexAnnotation annotation = this.buildIndexAnnotation();
+		JavaIndex index = this.buildIndex(annotation);
+		this.setIndex(index);
+		return index;
+	}
+	
+	protected IndexAnnotation buildIndexAnnotation() {
+		return (IndexAnnotation) this.getResourcePersistentAttribute().addAnnotation(IndexAnnotation.ANNOTATION_NAME);
+	}
+	
+	public void removeIndex() {
+		if (getIndex() == null) {
+			throw new IllegalStateException("index does not exist, cannot be removed"); //$NON-NLS-1$
+		}
+		this.getResourcePersistentAttribute().removeAnnotation(IndexAnnotation.ANNOTATION_NAME);
+		setIndex(null);
 	}
 
-	protected void updateIndex() {
-		IndexAnnotation indexResource = getResourceIndex();
-		if (indexResource == null) {
+	protected JavaIndex buildIndex() {
+		IndexAnnotation annotation = getIndexAnnotation();
+		return (annotation == null) ? null : buildIndex(annotation);
+	}
+	
+	protected IndexAnnotation getIndexAnnotation() {
+		return (IndexAnnotation) this.getResourcePersistentAttribute().getAnnotation(IndexAnnotation.ANNOTATION_NAME);
+	}
+	
+	protected JavaIndex buildIndex(IndexAnnotation annotation) {
+		return this.getJpaFactory().buildIndex(this, annotation);
+	}
+
+	protected void syncIndex() {
+		IndexAnnotation annotation = getIndexAnnotation();
+		if (annotation == null) {
 			if (getIndex() != null) {
 				setIndex(null);
 			}
 		}
 		else {
-			if (getIndex() == null) {
-				setIndex(buildIndex(indexResource));
-			}
-			else {
-				getIndex().update(indexResource);
+			if ((getIndex() != null) && (getIndex().getIndexAnnotation() == annotation)) {
+				this.index.synchronizeWithResourceModel();
+			} else {
+				this.setIndex(this.buildIndex(annotation));
 			}
 		}
-	}
-
-	public JavaIndex addIndex() {
-		if (getIndex() != null) {
-			throw new IllegalStateException("index already exists"); //$NON-NLS-1$
-		}
-		this.index = getJpaFactory().buildIndex(this);
-		IndexAnnotation indexResource = (IndexAnnotation) getResourcePersistentAttribute().addAnnotation(IndexAnnotation.ANNOTATION_NAME);
-		this.index.initialize(indexResource);
-		firePropertyChanged(INDEX_PROPERTY, null, this.index);
-		return this.index;
-	}
-
-	public JavaIndex getIndex() {
-		return this.index;
 	}
 
 	protected void setIndex(JavaIndex newIndex) {
@@ -173,91 +190,68 @@ implements HibernateJavaBasicMapping {
 		firePropertyChanged(INDEX_PROPERTY, oldIndex, newIndex);
 	}
 
-	public void removeIndex() {
-		if (getIndex() == null) {
-			throw new IllegalStateException("index does not exist, cannot be removed"); //$NON-NLS-1$
-		}
-		JavaIndex oldIndex = this.index;
-		this.index = null;
-		this.getResourcePersistentAttribute().removeAnnotation(IndexAnnotation.ANNOTATION_NAME);
-		firePropertyChanged(INDEX_PROPERTY, oldIndex, null);
-	}
 
-	protected JavaIndex buildIndex(IndexAnnotation indexResource) {
-		JavaIndex index = getJpaFactory().buildIndex(this);
-		index.initialize(indexResource);
-		return index;
-	}
-
-	protected IndexAnnotation getResourceIndex() {
-		return (IndexAnnotation) this.getResourcePersistentAttribute().getAnnotation(IndexAnnotation.ANNOTATION_NAME);
-	}
-
-	// *** type
-
-	protected void initializeType() {
-		TypeAnnotation typeResource = getTypeResource();
-		if (typeResource != null) {
-			this.type = buildType(typeResource);
-		}
-	}
-
-	protected void updateType() {
-		TypeAnnotation typeResource = getTypeResource();
-		if (typeResource == null) {
-			if (getType() != null) {
-				setType(null);
-			}
-		}
-		else {
-			if (getType() == null) {
-				setType(buildType(typeResource));
-			}
-			else {
-				getType().update(typeResource);
-			}
-		}
-	}
-
-	public JavaType addType() {
-		if (getType() != null) {
-			throw new IllegalStateException("type already exists"); //$NON-NLS-1$
-		}
-		this.type = getJpaFactory().buildType(this);
-		TypeAnnotation typeResource = (TypeAnnotation) getResourcePersistentAttribute().addAnnotation(TypeAnnotation.ANNOTATION_NAME);
-		this.type.initialize(typeResource);
-		firePropertyChanged(TYPE_PROPERTY, null, this.type);
-		return this.type;
-	}
+	// ********** type **********
 
 	public JavaType getType() {
 		return this.type;
 	}
 
-	protected void setType(JavaType newType) {
-		JavaType oldType = this.type;
-		this.type = newType;
-		firePropertyChanged(TYPE_PROPERTY, oldType, newType);
+	public JavaType addType() {
+		if (this.type != null) {
+			throw new IllegalStateException("type already exists: " + this.type); //$NON-NLS-1$
+		}
+		TypeAnnotation annotation = this.buildTypeAnnotation();
+		JavaType value = this.buildType(annotation);
+		this.setType(value);
+		return value;
+	}
+
+	protected TypeAnnotation buildTypeAnnotation() {
+		return (TypeAnnotation) this.getResourcePersistentAttribute().addAnnotation(TypeAnnotation.ANNOTATION_NAME);
 	}
 
 	public void removeType() {
-		if (getType() == null) {
-			throw new IllegalStateException("type does not exist, cannot be removed"); //$NON-NLS-1$
+		if (this.type == null) {
+			throw new IllegalStateException("generated value does not exist"); //$NON-NLS-1$
 		}
-		JavaType oldType = this.type;
-		this.type = null;
 		this.getResourcePersistentAttribute().removeAnnotation(TypeAnnotation.ANNOTATION_NAME);
-		firePropertyChanged(TYPE_PROPERTY, oldType, null);
+		this.setType(null);
 	}
 
-	protected JavaType buildType(TypeAnnotation typeResource) {
-		JavaType type = getJpaFactory().buildType(this);
-		type.initialize(typeResource);
-		return type;
+	protected JavaType buildType() {
+		TypeAnnotation annotation = this.getTypeAnnotation();
+		return (annotation == null) ? null : this.buildType(annotation);
 	}
 
-	protected TypeAnnotation getTypeResource() {
+	protected TypeAnnotation getTypeAnnotation() {
 		return (TypeAnnotation) this.getResourcePersistentAttribute().getAnnotation(TypeAnnotation.ANNOTATION_NAME);
+	}
+
+	protected JavaType buildType(TypeAnnotation generatedValueAnnotation) {
+		return this.getJpaFactory().buildType(this, generatedValueAnnotation);
+	}
+
+	protected void syncType() {
+		TypeAnnotation annotation = this.getTypeAnnotation();
+		if (annotation == null) {
+			if (this.type != null) {
+				this.setType(null);
+			}
+		}
+		else {
+			if ((this.type != null) && (this.type.getTypeAnnotation() == annotation)) {
+				this.type.synchronizeWithResourceModel();
+			} else {
+				this.setType(this.buildType(annotation));
+			}
+		}
+	}
+
+	protected void setType(JavaType value) {
+		JavaType old = this.type;
+		this.type = value;
+		this.firePropertyChanged(TYPE_PROPERTY, old, value);
 	}
 
 	/*

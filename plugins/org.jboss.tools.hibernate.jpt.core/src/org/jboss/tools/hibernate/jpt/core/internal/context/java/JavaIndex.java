@@ -28,10 +28,6 @@ public interface JavaIndex extends JavaJpaContextNode {
 	void addColumn(String columnName);
 	void removeColumn(String columnName);
 		String INDEX_COLUMN_NAMES = "ColumnNames"; //$NON-NLS-1$
-
-
-	public void initialize(IndexAnnotation indexResource);
-
-	public void update(IndexAnnotation indexResource);
-
+		
+	IndexAnnotation getIndexAnnotation();
 }
