@@ -64,7 +64,7 @@ implements HibernateJavaBasicMapping {
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.typeDefContainer.synchronizeWithResourceModel();
+		this.typeDefContainer.initialize(this.getResourcePersistentAttribute());
 		this.specifiedGenerationTime = this.getResourceGenerationTime();
 		this.syncIndex();
 		this.syncType();

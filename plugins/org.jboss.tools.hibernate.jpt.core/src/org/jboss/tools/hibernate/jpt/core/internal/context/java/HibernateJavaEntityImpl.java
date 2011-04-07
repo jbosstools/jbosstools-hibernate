@@ -76,7 +76,7 @@ implements HibernateJavaEntity {
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 		this.cacheable.synchronizeWithResourceModel();
-		this.typeDefContainer.synchronizeWithResourceModel();
+		this.typeDefContainer.initialize(this.getResourcePersistentType());
 		this.syncDiscriminatorFormula();
 		this.syncForeignKey();
 	}
@@ -85,7 +85,7 @@ implements HibernateJavaEntity {
 	public void update() {
 		super.update();
 		this.cacheable.update();
-		this.typeDefContainer.update();
+		this.typeDefContainer.update(this.getResourcePersistentType());
 		if (discriminatorFormula != null){
 			this.discriminatorFormula.update();
 		}
