@@ -16,10 +16,13 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
-import org.eclipse.jpt.common.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.NotNullFilter;
+import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.Table;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaEntity;
@@ -311,20 +314,6 @@ implements HibernateJavaEntity {
 		messages.add(message);
 	}
 
-	/*protected String getResourceDefaultName() {
-		NamingStrategy ns = getJpaProject().getNamingStrategy();
-		if (getJpaProject().isNamingStrategyEnabled() && ns != null){
-			try {
-				return ns.classToTableName(javaResourcePersistentType.getName());
-			} catch (Exception e) {
-				Message m = new LocalMessage(IMessage.HIGH_SEVERITY,
-						Messages.NAMING_STRATEGY_EXCEPTION, new String[0], null);
-				HibernateJptPlugin.logException(m.getText(), e);
-			}
-		}
-		return javaResourcePersistentType.getName();
-	}*/
-
 	@Override
 	protected PrimaryKeyJoinColumnOwner buildPrimaryKeyJoinColumnOwner() {
 		return new HibernatePrimaryKeyJoinColumnOwner();
@@ -398,26 +387,30 @@ implements HibernateJavaEntity {
 				return getPrimaryKeyColumnName();
 			}
 		}
-
+	}
+	
+	protected boolean tableNameIsValid(String tableName) {
+		return this.tableIsUndefined || CollectionTools.contains(this.getAllAssociatedDBTableNames(), tableName);
+	}
+	
+	public Iterable<String> getAllAssociatedDBTableNames() {
+		return this.convertToDBNames(this.getAllAssociatedTables());
 	}
 
-	@Override
-	public String getPrimaryTableName() {
-		return this.getTable().getDBTableName();
-	}
-
-	@Override
-	public String getDefaultTableName() {
-		return super.getDefaultTableName();
+	/**
+	 * strip out <code>null</code> names
+	 */
+	protected Iterable<String> convertToDBNames(Iterable<ReadOnlyTable> tables) {
+		return new FilteringIterable<String>(this.convertToDBNames_(tables), NotNullFilter.<String>instance());
 	}
 
 	/**
 	 * Convert Table to it's DB name.
 	 */
-	protected Iterator<String> tableNames(Iterator<Table> tables) {
-		return new TransformationIterator<Table, String>(tables) {
+	protected Iterable<String> convertToDBNames_(Iterable<ReadOnlyTable> tables) {
+		return new TransformationIterable<ReadOnlyTable, String>(tables) {
 			@Override
-			protected String transform(Table t) {
+			protected String transform(ReadOnlyTable t) {
 				if (t instanceof HibernateTable) {
 					return ((HibernateTable)t).getDBTableName();
 				} else {
@@ -425,6 +418,11 @@ implements HibernateJavaEntity {
 				}
 			}
 		};
+	}
+
+	@Override
+	public String getPrimaryTableName() {
+		return this.getTable().getDBTableName();
 	}
 
 	// ********** cacheable **********
