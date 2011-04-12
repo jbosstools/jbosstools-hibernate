@@ -14,6 +14,9 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 import java.util.ListIterator;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.NotNullFilter;
+import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
@@ -117,18 +120,25 @@ implements HibernateOrmEntity {
 		return this.getTable().getDBTableName();
 	}
 
-	@Override
 	protected boolean tableNameIsValid(String tableName) {
-		// TODO Auto-generated method stub
-		return super.tableNameIsValid(tableName);
+		return this.tableIsUndefined || CollectionTools.contains(this.getAllAssociatedDBTableNames(), tableName);
+	}
+	
+	public Iterable<String> getAllAssociatedDBTableNames() {
+		return this.convertToDBNames(this.getAllAssociatedTables());
 	}
 
+	/**
+	 * strip out <code>null</code> names
+	 */
+	protected Iterable<String> convertToDBNames(Iterable<ReadOnlyTable> tables) {
+		return new FilteringIterable<String>(this.convertToDBNames_(tables), NotNullFilter.<String>instance());
+	}
 
 	/**
 	 * Convert Table to it's DB name.
 	 */
-	@Override
-	protected Iterable<String> convertToNames_(Iterable<ReadOnlyTable> tables) {
+	protected Iterable<String> convertToDBNames_(Iterable<ReadOnlyTable> tables) {
 		return new TransformationIterable<ReadOnlyTable, String>(tables) {
 			@Override
 			protected String transform(ReadOnlyTable t) {
@@ -140,6 +150,7 @@ implements HibernateOrmEntity {
 			}
 		};
 	}
+
 
 	@Override
 	protected PrimaryKeyJoinColumnOwner buildPrimaryKeyJoinColumnOwner() {
