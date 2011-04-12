@@ -10,6 +10,7 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.jpa2;
 
+
 import org.eclipse.jpt.jpa.core.JpaDataSource;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -44,6 +45,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaOrphanRemo
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaPersistentType2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaSequenceGenerator2_0;
+import org.eclipse.jpt.jpa.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
@@ -72,20 +74,12 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaOne
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaOneToOneMapping;
 
 
+
 /**
  * @author Dmitry Geraskov
  *
  */
-public class HibernateJpaFactory2_0 extends HibernateAbstractJpaFactory {
-
-	// ********** Core Model **********
-	@Override
-	public JpaProject buildJpaProject(JpaProject.Config config){
-		if ( ! (config instanceof JpaProject2_0.Config)) {
-			throw new IllegalArgumentException("config must be 2.0-compatible: " + config); //$NON-NLS-1$
-		}
-		return super.buildJpaProject(config);
-	}
+public class HibernateJpaFactory2_0 extends HibernateAbstractJpaFactory implements JpaFactory2_0 {
 
 	// ********** Hibernate Specific **********
 	@Override
@@ -106,6 +100,16 @@ public class HibernateJpaFactory2_0 extends HibernateAbstractJpaFactory {
 	}
 
 	// ********** From GenericJpa2_0 Model **********
+	// ********** Core Model **********
+
+	@Override
+	public JpaProject buildJpaProject(JpaProject.Config config) {
+		if ( ! (config instanceof JpaProject2_0.Config)) {
+			throw new IllegalArgumentException("config must be 2.0-compatible: " + config); //$NON-NLS-1$
+		}
+		return super.buildJpaProject(config);
+	}
+
 	public MetamodelSourceType.Synchronizer buildMetamodelSynchronizer(MetamodelSourceType sourceType) {
 		return new GenericMetamodelSynchronizer(sourceType);
 	}
