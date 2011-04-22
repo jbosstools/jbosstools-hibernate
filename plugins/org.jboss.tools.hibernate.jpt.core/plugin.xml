@@ -3,10 +3,16 @@
 <plugin>
 	<extension id="org.jboss.tools.hibernate.jpt.core"
 		point="org.eclipse.jpt.jpa.core.jpaPlatforms">
+		
+		<jpaPlatformGroup
+        id="hibernate.group"
+        label="Hibernate"/>
+		
 		<jpaPlatform
 	        default="false"
 	        factoryClass="org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaPlatformFactory"
 	        id="hibernate"
+	        group="hibernate.group"
 	        jpaFacetVersion="1.0"
 	        label="Hibernate (JPA 1.x)">
 		</jpaPlatform>
@@ -14,9 +20,11 @@
 	        default="false"
 	        factoryClass="org.jboss.tools.hibernate.jpt.core.internal.jpa2.HibernateJpa2_0PlatformFactory"
 	        id="hibernate2_0"
+	        group="hibernate.group"
 	        jpaFacetVersion="2.0"
 	        label="Hibernate (JPA 2.x)">
-		</jpaPlatform>		
+		</jpaPlatform>
+
 	</extension>
  <extension
        point="org.eclipse.wst.common.project.facet.core.listeners">
@@ -25,6 +33,26 @@
           eventTypes="POST_INSTALL">
     </listener>
  </extension>
+ 
+	<extension
+		point="org.eclipse.jpt.common.core.libraryValidators">
+		
+		<libraryValidator
+			id="hibernateLibraryValidator"
+			class="org.jboss.tools.hibernate.jpt.core.internal.libval.HibernateUserLibraryValidator">
+			<enablement>
+				<and>
+					<with variable="libraryProvider">
+						<test property="org.eclipse.jpt.common.core.extendsId" value="jpa-user-library-provider"/>
+					</with>
+					<with variable="config">
+						<test property="org.eclipse.jpt.jpa.core.jpaPlatformGroup" value="hibernate.group"/>
+					</with>
+				</and>
+			</enablement>
+		</libraryValidator>
+		
+	</extension>
 
  <!--extension 
 		point="org.eclipse.jst.common.project.facet.core.libraryProviders">
