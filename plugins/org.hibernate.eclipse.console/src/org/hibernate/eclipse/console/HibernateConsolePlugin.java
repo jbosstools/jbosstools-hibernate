@@ -48,7 +48,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentExtension3;
 import org.eclipse.jface.text.IDocumentPartitioner;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.ltk.core.refactoring.CheckConditionsOperation;
 import org.eclipse.ltk.core.refactoring.PerformRefactoringOperation;
 import org.eclipse.ltk.core.refactoring.participants.ProcessorBasedRefactoring;
@@ -273,8 +272,6 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 			KnownConfigurations.getInstance().addConfiguration(
 					new ConsoleConfiguration(new EclipseLaunchConsoleConfigurationPreferences(launchConfigurations[i])), false );
 		}
-		// force to load the plugin before any of console configuration build
-		JptJpaCorePlugin.getJpaProjectManager().getJpaProjects();
 	}
 
 	/**
