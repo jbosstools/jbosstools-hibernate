@@ -186,6 +186,11 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 			this.tmpAttr = tmpAttr;
 		}
 		
+		public MockLaunchConfigWorkingCopy(LaunchConfigurationWorkingCopy parent, Map<String, String> tmpAttr) throws CoreException {
+			super(parent);
+			this.tmpAttr = tmpAttr;
+		}
+		
 		@Override
 		public String getAttribute(String attributeName, String defaultValue) throws CoreException {
 			String res = tmpAttr.get(attributeName);
@@ -198,16 +203,13 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 	
 	public class MockLaunchConfig extends LaunchConfiguration {
 		
-		protected final Map<String, String> tmpAttr = new HashMap<String, String>();
+		protected final Map<String, String> tmpAttr;
 
-		public MockLaunchConfig(ILaunchConfiguration original) throws CoreException {
+		public MockLaunchConfig(ILaunchConfiguration original, Map<String, String> tmpAttr) throws CoreException {
 			super(original.getMemento());
+			this.tmpAttr = tmpAttr;
 		}
 
-		public void setTmpAttribute(String attributeName, String value) {
-			tmpAttr.put(attributeName, value);
-		}
-		
 		@Override
 		public String getAttribute(String attributeName, String defaultValue) throws CoreException {
 			String res = tmpAttr.get(attributeName);
@@ -230,7 +232,7 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 	 * @throws CoreException
 	 */
 	public ILaunchConfiguration updateLaunchConfig(ILaunchConfiguration lc) throws CoreException {
-		MockLaunchConfig mlc = new MockLaunchConfig(lc);
+		Map<String, String> tmpAttributes = new HashMap<String, String>();
 		String fileName = null;
     	try {
 			fileName = getPath2GenBuildXml().toString();
@@ -238,15 +240,19 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 			throw new CoreException(HibernateConsolePlugin.throwableToStatus(e, 666));
 		}
 		// setup location of Ant build.xml file 
-		mlc.setTmpAttribute(IExternalToolConstants.ATTR_LOCATION, fileName);
+		tmpAttributes.put(IExternalToolConstants.ATTR_LOCATION, fileName);
 		// setup Ant runner main type
-		mlc.setTmpAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME, 
+		tmpAttributes.put(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME, 
 			IAntLaunchConstants.MAIN_TYPE_NAME);
 		// setup ant remote process factory
-		mlc.setTmpAttribute(DebugPlugin.ATTR_PROCESS_FACTORY_ID, "org.eclipse.ant.ui.remoteAntProcessFactory"); //$NON-NLS-1$
+		tmpAttributes.put(DebugPlugin.ATTR_PROCESS_FACTORY_ID, "org.eclipse.ant.ui.remoteAntProcessFactory"); //$NON-NLS-1$
 		// refresh whole workspace
-		//mlc.setTmpAttribute(RefreshUtil.ATTR_REFRESH_SCOPE, RefreshUtil.MEMENTO_WORKSPACE);
-		return mlc;
+		//tmpAttributes.put(RefreshUtil.ATTR_REFRESH_SCOPE, RefreshUtil.MEMENTO_WORKSPACE);
+		
+		ILaunchConfiguration mockedConfig = lc.isWorkingCopy()
+				? new MockLaunchConfigWorkingCopy((LaunchConfigurationWorkingCopy)lc, tmpAttributes)
+				: new MockLaunchConfig(lc, tmpAttributes);
+		return mockedConfig;
 	}
 
 	public ILaunch getLaunch(ILaunchConfiguration configuration, String mode)
