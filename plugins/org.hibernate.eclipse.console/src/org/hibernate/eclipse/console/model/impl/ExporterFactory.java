@@ -288,7 +288,7 @@ public class ExporterFactory {
 		if (getExporterDefinitionId().equals("org.hibernate.tools.hbm2ddl")) { //$NON-NLS-1$
 			Hbm2DDLExporter ddlExporter = (Hbm2DDLExporter) exporter;
 			//avoid users to delete their databases with a single click
-			ddlExporter.setExport(Boolean.getBoolean(extract.getProperty(ExporterFactoryStrings.EXPORTTODATABASE)));
+			ddlExporter.setExport(Boolean.parseBoolean(extract.getProperty(ExporterFactoryStrings.EXPORTTODATABASE)));
 		}
 		// special handling for QueryExporter
 		if (getExporterDefinitionId().equals("org.hibernate.tools.query")) { //$NON-NLS-1$
