@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2005-2011, JBoss Inc., and individual contributors as indicated
+ * Copyright 2005, JBoss Inc., and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -26,6 +26,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Constructor;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -58,6 +59,8 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.model.IProcess;
+import org.eclipse.debug.internal.core.LaunchConfiguration;
+import org.eclipse.debug.internal.core.LaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.RefreshTab;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -174,6 +177,53 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 		createFile(externalPropFileName, propFileContentPreSave);
 	}
 	
+	public class MockLaunchConfigWorkingCopy extends LaunchConfigurationWorkingCopy {
+		
+		protected final Map<String, String> tmpAttr;
+
+		public MockLaunchConfigWorkingCopy(LaunchConfiguration original, Map<String, String> tmpAttr) throws CoreException {
+			super(original);
+			this.tmpAttr = tmpAttr;
+		}
+		
+		public MockLaunchConfigWorkingCopy(LaunchConfigurationWorkingCopy parent, Map<String, String> tmpAttr) throws CoreException {
+			super(parent);
+			this.tmpAttr = tmpAttr;
+		}
+		
+		@Override
+		public String getAttribute(String attributeName, String defaultValue) throws CoreException {
+			String res = tmpAttr.get(attributeName);
+			if (res == null) {
+				res = super.getAttribute(attributeName, defaultValue);
+			}
+			return res;
+		}
+	}
+	
+	public class MockLaunchConfig extends LaunchConfiguration {
+		
+		protected final Map<String, String> tmpAttr;
+
+		public MockLaunchConfig(ILaunchConfiguration original, Map<String, String> tmpAttr) throws CoreException {
+			super(original.getMemento());
+			this.tmpAttr = tmpAttr;
+		}
+
+		@Override
+		public String getAttribute(String attributeName, String defaultValue) throws CoreException {
+			String res = tmpAttr.get(attributeName);
+			if (res == null) {
+				res = super.getAttribute(attributeName, defaultValue);
+			}
+			return res;
+		}
+		
+		public ILaunchConfigurationWorkingCopy getWorkingCopy() throws CoreException {
+			return new MockLaunchConfigWorkingCopy(this, tmpAttr);
+		}
+	}
+	
 	/**
 	 * Update launch configuration with attributes required for external process codegen.
 	 * 
@@ -182,7 +232,7 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 	 * @throws CoreException
 	 */
 	public ILaunchConfiguration updateLaunchConfig(ILaunchConfiguration lc) throws CoreException {
-		ILaunchConfigurationWorkingCopy lcwc = lc.getWorkingCopy();
+		Map<String, String> tmpAttributes = new HashMap<String, String>();
 		String fileName = null;
     	try {
 			fileName = getPath2GenBuildXml().toString();
@@ -190,19 +240,25 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 			throw new CoreException(HibernateConsolePlugin.throwableToStatus(e, 666));
 		}
 		// setup location of Ant build.xml file 
-		lcwc.setAttribute(IExternalToolConstants.ATTR_LOCATION, fileName);
+		tmpAttributes.put(IExternalToolConstants.ATTR_LOCATION, fileName);
 		// setup Ant runner main type
-		lcwc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME, 
+		tmpAttributes.put(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME, 
 			IAntLaunchConstants.MAIN_TYPE_NAME);
 		// setup ant remote process factory
-		lcwc.setAttribute(DebugPlugin.ATTR_PROCESS_FACTORY_ID, "org.eclipse.ant.ui.remoteAntProcessFactory"); //$NON-NLS-1$
+		tmpAttributes.put(DebugPlugin.ATTR_PROCESS_FACTORY_ID, "org.eclipse.ant.ui.remoteAntProcessFactory"); //$NON-NLS-1$
 		// refresh whole workspace
-		//lcwc.setAttribute(RefreshUtil.ATTR_REFRESH_SCOPE, RefreshUtil.MEMENTO_WORKSPACE);
+		//tmpAttributes.put(RefreshUtil.ATTR_REFRESH_SCOPE, RefreshUtil.MEMENTO_WORKSPACE);
 		
-		// https://issues.jboss.org/browse/JBIDE-8235
-		throw new IllegalStateException("'Run in External Process' is not fully implemented. Please do not use it"); //$NON-NLS-1$
-		//1. return lcwc(); - this doesn't print output to console
-		//2. return lcwc.doSave();- This works, but we don't want these temp attributes to be saved
+		ILaunchConfiguration mockedConfig = lc.isWorkingCopy()
+				? new MockLaunchConfigWorkingCopy((LaunchConfigurationWorkingCopy)lc, tmpAttributes)
+				: new MockLaunchConfig(lc, tmpAttributes);
+		return mockedConfig;
+	}
+
+	public ILaunch getLaunch(ILaunchConfiguration configuration, String mode)
+			throws CoreException {
+		configuration = updateLaunchConfig(configuration);
+		return super.getLaunch(configuration, mode);
 	}
 
 	public void launch(ILaunchConfiguration configuration, String mode,
