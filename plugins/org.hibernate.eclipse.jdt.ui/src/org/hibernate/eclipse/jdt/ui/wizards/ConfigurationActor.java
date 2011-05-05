@@ -16,9 +16,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
-import java.util.Map.Entry;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jdt.core.ICompilationUnit;
@@ -31,6 +31,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.ParameterizedType;
 import org.eclipse.jdt.core.dom.PrimitiveType;
 import org.eclipse.jdt.core.dom.QualifiedType;
@@ -350,6 +351,11 @@ class ProcessEntityInfo extends ASTVisitor {
 	
 	@SuppressWarnings("unchecked")
 	public boolean visit(FieldDeclaration node) {
+		//do not map static or final fields
+		if ((node.getModifiers() & (Modifier.FINAL | Modifier.STATIC)) != 0){
+			return false;
+		}
+		
 		Type type = node.getType();
 		if (type == null) {
 			return true;
