@@ -12,6 +12,10 @@ package test.annotated.fields;
 
 public class Country {
 	
+	private static int fake_id;
+	
+	private final int fake_id2 = 1;
+	
 	private String name;
 
 	protected Visa visa;

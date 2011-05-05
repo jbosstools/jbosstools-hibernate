@@ -421,6 +421,10 @@ public class CollectEntityInfo extends ASTVisitor {
 	}
 	
 	public boolean visit(FieldDeclaration node) {
+		//do not map static or final fields
+		if ((node.getModifiers() & (Modifier.FINAL | Modifier.STATIC)) != 0){
+			return false;
+		}
 		Type type = node.getType();
 		List<String> list = new ArrayList<String>();
 		Iterator<VariableDeclarationFragment> itVarNames = node.fragments().iterator();

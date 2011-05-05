@@ -12,6 +12,10 @@ package test.annotated.getters;
 
 public class Country {
 	
+	private static int fake_id;
+	
+	private final int fake_id2 = 1;
+	
 	private String name;
 	
 	public Country(String name) {
