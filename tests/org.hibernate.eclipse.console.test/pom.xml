@@ -26,6 +26,9 @@
 						<bundle>org.hibernate.eclipse.console.test</bundle>
 						<bundle>org.hibernate.eclipse</bundle>
 					</explodedBundles>
+					<!-- timeout in seconds; default 1800 -->
+					<surefire.timeout>3600</surefire.timeout>
+					<forkedProcessTimeoutInSeconds>3600</forkedProcessTimeoutInSeconds>
 				</configuration>
 			</plugin>
 		</plugins>
