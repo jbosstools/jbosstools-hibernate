@@ -194,6 +194,10 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 							throw cnfe;
 						}
 					}
+					
+					public URL getResource(String name) {
+					      return super.getResource(name);
+					}
 				};
 			}
 		});
