@@ -305,71 +305,10 @@ implements HibernateJavaQueryContainer{
 		}
 	}
 
-
-	// ********** validation **********
-
-	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.validateQueries(messages, astRoot);
-	}
-
-	@Override
-	protected void validateQueries(List<IMessage> messages, CompilationUnit astRoot) {
-		for (Iterator<JavaQuery> localQueries = this.queries(); localQueries.hasNext(); ) {
-			JavaQuery localQuery = localQueries.next();
-			String name = localQuery.getName();
-			if (StringTools.stringIsEmpty(name)){
-				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.QUERY_NAME_UNDEFINED,
-							new String[] {},
-							localQuery,
-							localQuery.getNameTextRange(astRoot)
-						)
-					);
-			} else {
-				List<String> reportedNames = new ArrayList<String>();
-				for (Iterator<Query> globalQueries = this.getPersistenceUnit().queries(); globalQueries.hasNext(); ) {
-					if (localQuery.duplicates(globalQueries.next()) && !reportedNames.contains(name)) {
-						messages.add(
-							DefaultJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.QUERY_DUPLICATE_NAME,
-								new String[] {name},
-								localQuery,
-								localQuery.getNameTextRange(astRoot)
-							)
-						);
-						reportedNames.add(name);
-					}
-				}
-			}
-			String query = localQuery.getQuery();
-			if (StringTools.stringIsEmpty(query)){
-				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.QUERY_STATEMENT_UNDEFINED,
-								new String[] {name},
-								localQuery,
-								localQuery.getNameTextRange(astRoot)
-						)
-				);
-			}
-		}
-	}
-
-
 	@Override
 	@SuppressWarnings("unchecked")
 	public Iterator<JavaQuery> queries() {
-		return new CompositeIterator<JavaQuery>(this.hibernateNamedNativeQueries(), this.hibernateNamedQueries());
+		return new CompositeIterator<JavaQuery>(queries(), this.hibernateNamedNativeQueries(), this.hibernateNamedQueries());
 	}
 
-	@Override
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.owner.getResourceAnnotatedElement().getTextRange(astRoot);
-	}
 }
