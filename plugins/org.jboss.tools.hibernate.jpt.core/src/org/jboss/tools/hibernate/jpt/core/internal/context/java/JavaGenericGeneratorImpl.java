@@ -101,6 +101,11 @@ implements JavaGenericGenerator, Messages {
 	}
 
 	@Override
+	public TextRange getSelectionTextRange(CompilationUnit astRoot) {
+		return this.generatorAnnotation.getTextRange(astRoot);
+	}
+
+	@Override
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
 		return this.generatorAnnotation.getNameTextRange(astRoot);
 	}

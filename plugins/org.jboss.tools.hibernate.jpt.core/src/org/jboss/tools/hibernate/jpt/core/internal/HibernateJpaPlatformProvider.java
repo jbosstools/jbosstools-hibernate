@@ -28,10 +28,10 @@ import org.eclipse.jpt.jpa.core.internal.JarResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.JavaResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.OrmResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.PersistenceResourceModelProvider;
+import org.eclipse.jpt.jpa.core.internal.context.java.JavaBasicMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaEmbeddableDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaEmbeddedIdMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaEmbeddedMappingDefinition;
-import org.eclipse.jpt.jpa.core.internal.context.java.JavaManyToManyMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaMappedSuperclassDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaOneToManyMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaTransientMappingDefinition;
@@ -39,6 +39,7 @@ import org.eclipse.jpt.jpa.core.internal.context.java.JavaVersionMappingDefiniti
 import org.jboss.tools.hibernate.jpt.core.internal.context.definition.HibernateJavaBasicMappingDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.context.definition.HibernateJavaEntityDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.context.definition.HibernateJavaIdMappingDefinition;
+import org.jboss.tools.hibernate.jpt.core.internal.context.definition.HibernateJavaManyToManyMappingDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.context.definition.HibernateJavaManyToOneMappingDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.context.definition.HibernateJavaOneToOneMappingDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmXmlDefinition;
@@ -132,7 +133,7 @@ public class HibernateJpaPlatformProvider extends AbstractJpaPlatformProvider {
 	// order matches that used by the Reference Implementation (EclipseLink)
 	protected static final DefaultJavaAttributeMappingDefinition[] DEFAULT_JAVA_ATTRIBUTE_MAPPING_DEFINITIONS = new DefaultJavaAttributeMappingDefinition[] {
 		JavaEmbeddedMappingDefinition.instance(),
-		HibernateJavaBasicMappingDefinition.instance()
+		JavaBasicMappingDefinition.instance()
 	};
 
 	@Override
@@ -148,7 +149,7 @@ public class HibernateJpaPlatformProvider extends AbstractJpaPlatformProvider {
 		HibernateJavaBasicMappingDefinition.instance(),
 		JavaEmbeddedMappingDefinition.instance(),
 		JavaEmbeddedIdMappingDefinition.instance(),
-		JavaManyToManyMappingDefinition.instance(),
+		HibernateJavaManyToManyMappingDefinition.instance(),
 		HibernateJavaManyToOneMappingDefinition.instance(),
 		JavaOneToManyMappingDefinition.instance(),
 		HibernateJavaOneToOneMappingDefinition.instance(),

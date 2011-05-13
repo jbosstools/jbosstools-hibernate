@@ -85,7 +85,13 @@ public class HibernateJpaAnnotationDefinitionProvider extends AbstractJpaAnnotat
 	@Override
 	protected void addPackageAnnotationDefinitionsTo(
 			ArrayList<AnnotationDefinition> definitions) {
-		// TODO Auto-generated method stub
-
+		definitions.add(GenericGeneratorAnnotationDefinition.instance());
+		definitions.add(GenericGeneratorsAnnotationDefinition.instance());
+		definitions.add(HibernateNamedQueryAnnotationDefinition.instance());
+		definitions.add(HibernateNamedQueriesAnnotationDefinition.instance());
+		definitions.add(HibernateNamedNativeQueryAnnotationDefinition.instance());
+		definitions.add(HibernateNamedNativeQueriesAnnotationDefinition.instance());
+		definitions.add(TypeDefAnnotationDefinition.instance());
+		definitions.add(TypeDefsAnnotationDefinition.instance());
 	}
 }
