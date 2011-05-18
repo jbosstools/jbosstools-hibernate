@@ -28,24 +28,24 @@ import org.eclipse.jpt.jpa.core.internal.JarResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.JavaResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.OrmResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.PersistenceResourceModelProvider;
-import org.eclipse.jpt.jpa.core.internal.context.java.JavaBasicMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaEmbeddableDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaEmbeddedIdMappingDefinition;
-import org.eclipse.jpt.jpa.core.internal.context.java.JavaEntityDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaMappedSuperclassDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaTransientMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaVersionMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaElementCollectionMappingDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaEmbeddedMappingDefinition2_0;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaIdMappingDefinition2_0;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaManyToManyMappingDefinition2_0;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaManyToOneMappingDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaOneToManyMappingDefinition2_0;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaOneToOneMappingDefinition2_0;
+import org.jboss.tools.hibernate.jpt.core.internal.context.definition.HibernateJavaBasicMappingDefinition;
+import org.jboss.tools.hibernate.jpt.core.internal.context.definition.HibernateJavaEntityDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmXmlDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.jpa2.HibernateOrmXml2_0Definition;
 import org.jboss.tools.hibernate.jpt.core.internal.context.persistence.HibernatePersistenceXmlDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.context.persistence.jpa2.Hibernate2_0PersistenceXmlDefinition;
+import org.jboss.tools.hibernate.jpt.core.internal.jpa2.context.definition.HibernateJavaIdMappingDefinition2_0;
+import org.jboss.tools.hibernate.jpt.core.internal.jpa2.context.definition.HibernateJavaManyToManyMappingDefinition2_0;
+import org.jboss.tools.hibernate.jpt.core.internal.jpa2.context.definition.HibernateJavaManyToOneMappingDefinition2_0;
+import org.jboss.tools.hibernate.jpt.core.internal.jpa2.context.definition.HibernateJavaOneToOneMappingDefinition2_0;
 
 /**
  * @author Dmitry Geraskov
@@ -66,7 +66,6 @@ public class HibernateJpa2_0PlatformProvider extends AbstractJpaPlatformProvider
 	public static JpaPlatformProvider instance() {
 		return INSTANCE;
 	}
-
 
 	/**
 	 * Enforce singleton usage
@@ -119,7 +118,7 @@ public class HibernateJpa2_0PlatformProvider extends AbstractJpaPlatformProvider
 
 	// order matches that used by the Reference Implementation (EclipseLink)
 	protected static final JavaTypeMappingDefinition[] JAVA_TYPE_MAPPING_DEFINITIONS = new JavaTypeMappingDefinition[] {
-		JavaEntityDefinition.instance(),
+		HibernateJavaEntityDefinition.instance(),
 		JavaEmbeddableDefinition.instance(),
 		JavaMappedSuperclassDefinition.instance()
 	};
@@ -135,7 +134,7 @@ public class HibernateJpa2_0PlatformProvider extends AbstractJpaPlatformProvider
 	// order matches that used by the Reference Implementation (EclipseLink)
 	protected static final DefaultJavaAttributeMappingDefinition[] DEFAULT_JAVA_ATTRIBUTE_MAPPING_DEFINITIONS = new DefaultJavaAttributeMappingDefinition[] {
 		JavaEmbeddedMappingDefinition2_0.instance(),
-		JavaBasicMappingDefinition.instance()
+		HibernateJavaBasicMappingDefinition.instance()
 	};
 
 	@Override
@@ -147,15 +146,15 @@ public class HibernateJpa2_0PlatformProvider extends AbstractJpaPlatformProvider
 	protected static final JavaAttributeMappingDefinition[] SPECIFIED_JAVA_ATTRIBUTE_MAPPING_DEFINITIONS = new JavaAttributeMappingDefinition[] {
 		JavaTransientMappingDefinition.instance(),
 		JavaElementCollectionMappingDefinition2_0.instance(),
-		JavaIdMappingDefinition2_0.instance(),
+		HibernateJavaIdMappingDefinition2_0.instance(),
 		JavaVersionMappingDefinition.instance(),
-		JavaBasicMappingDefinition.instance(),
+		HibernateJavaBasicMappingDefinition.instance(),
 		JavaEmbeddedMappingDefinition2_0.instance(),
 		JavaEmbeddedIdMappingDefinition.instance(),
-		JavaManyToManyMappingDefinition2_0.instance(),
-		JavaManyToOneMappingDefinition2_0.instance(),
+		HibernateJavaManyToManyMappingDefinition2_0.instance(),
+		HibernateJavaManyToOneMappingDefinition2_0.instance(),
 		JavaOneToManyMappingDefinition2_0.instance(),
-		JavaOneToOneMappingDefinition2_0.instance()
+		HibernateJavaOneToOneMappingDefinition2_0.instance()
 	};
 
 

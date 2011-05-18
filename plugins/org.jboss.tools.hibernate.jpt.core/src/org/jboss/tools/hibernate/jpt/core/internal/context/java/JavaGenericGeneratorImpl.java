@@ -38,7 +38,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.GenericGenerato
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.ParameterAnnotation;
 
 /**
- * @author Dmitry Geraskov
+ * @author Dmitry Geraskov (geraskov@gmail.com)
  * 
  */
 public class JavaGenericGeneratorImpl extends AbstractJavaGenerator<GenericGeneratorAnnotation>
@@ -98,11 +98,6 @@ implements JavaGenericGenerator, Messages {
 		this.name = name;
 		this.generatorAnnotation.setName(name);
 		this.firePropertyChanged(Generator.NAME_PROPERTY, old, name);
-	}
-
-	@Override
-	public TextRange getSelectionTextRange(CompilationUnit astRoot) {
-		return this.generatorAnnotation.getTextRange(astRoot);
 	}
 
 	@Override

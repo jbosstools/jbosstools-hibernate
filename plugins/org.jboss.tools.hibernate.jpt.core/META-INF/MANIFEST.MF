@@ -17,7 +17,7 @@ Require-Bundle:
  org.eclipse.jpt.common.utility,
  org.eclipse.jpt.common.core,
  org.eclipse.jpt.jpa.db,
- org.eclipse.jpt.jpa.core,
+ org.eclipse.jpt.jpa.core;bundle-version="3.0.0",
  org.eclipse.text;bundle-version="3.5.100",
  org.eclipse.jst.j2ee;bundle-version="1.1.500"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
