@@ -160,9 +160,13 @@ public class ConsoleTest extends HibernateTest {
 	private void expandDatabaseInConsole() {
 		SWTBot viewBot = open.viewOpen(ActionItem.View.HibernateHibernateConfigurations.LABEL).bot();
 		SWTBotTreeItem console = viewBot.tree().expandNode(Project.PROJECT_NAME);
-		bot.sleep(TIME_500MS);
+		bot.sleep(TIME_1S);	
+		// Workaround cause node can't be expanded
 		SWTBotTreeItem db = console.expandNode("Database").select();
-		bot.sleep(TIME_500MS);
+		bot.sleep(TIME_1S);
+		db.contextMenu("Refresh").click();		
+		bot.sleep(TIME_1S);
+		db.expand();
 		SWTBotTreeItem pub = null;
 		try {
 			pub = db.expandNode("public").select();

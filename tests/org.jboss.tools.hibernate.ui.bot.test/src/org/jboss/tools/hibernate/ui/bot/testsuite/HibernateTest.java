@@ -46,7 +46,6 @@ public class HibernateTest extends SWTTestExt {
 	@BeforeClass	
 	public static void prepare() {	
 		log.info("Hibernate All Test Started");
-		jbt.closeReportUsageWindowIfOpened(true);
 		util.waitForNonIgnoredJobs();
 	}
 	
