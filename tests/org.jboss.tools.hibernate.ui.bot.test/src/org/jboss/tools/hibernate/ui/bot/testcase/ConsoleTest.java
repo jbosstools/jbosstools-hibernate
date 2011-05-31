@@ -167,19 +167,11 @@ public class ConsoleTest extends HibernateTest {
 		db.contextMenu("Refresh").click();		
 		bot.sleep(TIME_1S);
 		db.expand();
-		SWTBotTreeItem pub = null;
-		try {
-			pub = db.expandNode("public").select();
-		} 
-		catch (WidgetNotFoundException e) {
-			pub = db.expandNode("PUBLIC").select();
-		}
-		
+
+		SWTBotTreeItem pub = db.getItems()[0];
+		pub.select();	
 		bot.sleep(TIME_500MS);
 		
-		// Workaround, DB content isn't correcly expanded (SWTBot 2.0.3)
-		pub.doubleClick(); 
-		bot.sleep(TIME_500MS);
 		pub.doubleClick();
 		bot.sleep(TIME_500MS);	
 		DataHolder.tables = pub.getNodes();	
