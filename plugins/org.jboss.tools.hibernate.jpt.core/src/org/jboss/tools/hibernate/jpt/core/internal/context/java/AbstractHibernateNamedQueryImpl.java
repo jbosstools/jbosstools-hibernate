@@ -22,7 +22,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateQueryA
  *
  */
 @SuppressWarnings("restriction")
-public class AbstractHibernateNamedQueryImpl<T extends HibernateQueryAnnotation> extends AbstractJavaQuery<T>
+public abstract class AbstractHibernateNamedQueryImpl<T extends HibernateQueryAnnotation> extends AbstractJavaQuery<T>
 	implements HibernateJavaQuery {
 
 	private FlushModeType specifiedFlushMode;

@@ -304,10 +304,4 @@ implements HibernateJavaQueryContainer{
 		}
 	}
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public Iterator<JavaQuery> queries() {
-		return new CompositeIterator<JavaQuery>(queries(), this.hibernateNamedNativeQueries(), this.hibernateNamedQueries());
-	}
-
 }

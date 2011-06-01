@@ -10,7 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
+import java.util.List;
+
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedNativeQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedNativeQueryAnnotation;
 
@@ -110,6 +115,12 @@ public class HibernateNamedNativeQueryImpl extends AbstractHibernateNamedQueryIm
 	public boolean isDefaultCallable(){
 		return HibernateNamedNativeQuery.DEFAULT_CALLABLE;
 	}
+	
+	// ********** validation **********
 
+	@Override
+	protected void validateQuery_(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		// nothing yet
+	}
 
 }
