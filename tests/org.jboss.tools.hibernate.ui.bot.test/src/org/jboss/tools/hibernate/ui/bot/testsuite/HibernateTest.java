@@ -44,8 +44,7 @@ public class HibernateTest extends SWTTestExt {
 	 * Prepare project and classes
 	 */
 	@BeforeClass	
-	public static void prepare() {	
-		log.info("Hibernate All Test Started");
+	public static void prepare() {
 		util.waitForNonIgnoredJobs();
 	}
 	
@@ -81,7 +80,9 @@ public class HibernateTest extends SWTTestExt {
 	 */
 	public static void prepareProject() {
 		
-		if (projectCreated) return;
+		// check if project is created
+		boolean projectExist = eclipse.isProjectInPackageExplorer(Project.PROJECT_NAME);
+		if (projectExist) return;
 		
 		eclipse.openPerspective(PerspectiveType.JAVA);
 		eclipse.showView(ViewType.PACKAGE_EXPLORER);
