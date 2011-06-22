@@ -11,6 +11,7 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -26,7 +27,12 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.jpa.core.context.Generator;
+import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
+import org.eclipse.jpt.jpa.core.context.Query;
+import org.eclipse.jpt.jpa.core.context.QueryContainer;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnit;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
@@ -37,6 +43,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.HibernatePersistenceUnitProperties;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaQueryContainer;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaTypeDef;
 import org.jboss.tools.hibernate.jpt.core.internal.context.persistence.HibernatePersistenceUnitPropertiesBuilder;
 
@@ -136,6 +143,28 @@ implements Messages, Hibernate {
 			if (typeDefName != null) {
 				names.add(typeDefName);
 			}
+		}
+	}
+	
+	@Override
+	protected void addQueriesTo(QueryContainer queryContainer,
+			ArrayList<Query> queryList) {
+		super.addQueriesTo(queryContainer, queryList);
+		if (queryContainer instanceof HibernateJavaQueryContainer) {
+			CollectionTools.addAll(queryList, ((HibernateJavaQueryContainer)queryContainer).hibernateNamedQueries());
+			CollectionTools.addAll(queryList, ((HibernateJavaQueryContainer)queryContainer).hibernateNamedNativeQueries());
+		}
+		
+	}
+	
+	@Override
+	protected void addGeneratorsTo(GeneratorContainer generatorContainer,
+			ArrayList<Generator> generatorList) {
+		super.addGeneratorsTo(generatorContainer, generatorList);
+		//it could be orm generators container
+		//which is not implemented for hibernate platform
+		if (generatorContainer instanceof HibernateGeneratorContainer) {
+			CollectionTools.addAll(generatorList, ((HibernateGeneratorContainer)generatorContainer).genericGenerators());
 		}
 	}
 

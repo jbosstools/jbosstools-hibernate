@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Vector;
 
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
@@ -23,6 +24,8 @@ import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
@@ -46,7 +49,7 @@ implements JavaGenericGenerator, Messages {
 
 	private String strategy;
 
-	protected final List<JavaParameter> parameters;
+	protected final Vector<JavaParameter> parameters = new Vector<JavaParameter>();
 
 	public static List<String> generatorClasses = new ArrayList<String>();
 
@@ -73,23 +76,22 @@ implements JavaGenericGenerator, Messages {
 	 */
 	public JavaGenericGeneratorImpl(JavaJpaContextNode parent, GenericGeneratorAnnotation generatorAnnotation) {
 		super(parent, generatorAnnotation);
-		this.parameters = new ArrayList<JavaParameter>();
+		this.initializeParameters();
 	}
 
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.name = this.generatorAnnotation.getName();
-		this.strategy = this.generatorAnnotation.getStrategy();
-		this.initializeParameters();
+		this.setStrategy_(this.generatorAnnotation.getStrategy());
+		this.updateParameters();
 	}
 
 	@Override
 	public void update() {
+		super.update();
 		this.setName_(this.generatorAnnotation.getName());
-		this.setSpecifiedStrategy_(this.generatorAnnotation.getStrategy());
-		this.updateParameters();
-		this.getPersistenceUnit().addGenerator(this);
+		this.setStrategy_(this.generatorAnnotation.getStrategy());
+		this.updateNodes(this.getParameters());
 	}
 
 	@Override
@@ -110,13 +112,11 @@ implements JavaGenericGenerator, Messages {
 	}
 
 	public void setStrategy(String strategy) {
-		String oldStrategy = this.strategy;
-		this.strategy = strategy;
 		getGeneratorAnnotation().setStrategy(strategy);
-		firePropertyChanged(GENERIC_STRATEGY_PROPERTY, oldStrategy, strategy);
+		setStrategy_(strategy);
 	}
 
-	protected void setSpecifiedStrategy_(String strategy) {
+	protected void setStrategy_(String strategy) {
 		String oldStrategy = this.strategy;
 		this.strategy = strategy;
 		firePropertyChanged(GENERIC_STRATEGY_PROPERTY, oldStrategy, strategy);
@@ -192,7 +192,8 @@ implements JavaGenericGenerator, Messages {
 	public JavaParameter addParameter(int index) {
 		JavaParameter parameter = getJpaFactory().buildJavaParameter(this);
 		this.parameters.add(index, parameter);
-		this.getGeneratorAnnotation().addParameter(index);
+		ParameterAnnotation parameterAnnotation = this.getGeneratorAnnotation().addParameter(index);
+		parameter.initialize(parameterAnnotation);
 		this.fireItemAdded(GenericGenerator.PARAMETERS_LIST, index, parameter);
 		return parameter;
 	}
@@ -223,6 +224,10 @@ implements JavaGenericGenerator, Messages {
 		CollectionTools.move(this.parameters, targetIndex, sourceIndex);
 		this.getGeneratorAnnotation().moveParameter(targetIndex, sourceIndex);
 		fireItemMoved(GenericGenerator.PARAMETERS_LIST, targetIndex, sourceIndex);
+	}
+	
+	public ListIterable<JavaParameter> getParameters() {
+		return new LiveCloneListIterable<JavaParameter>(this.parameters);
 	}
 
 	public ListIterator<JavaParameter> parameters() {

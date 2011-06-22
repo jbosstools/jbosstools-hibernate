@@ -57,7 +57,7 @@ public class HibernateJavaGeneratorContainerImpl extends
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.initializeGenericGenerators();
+		this.syncGenericGenerators();
 	}
 
 	@Override
@@ -192,24 +192,6 @@ public class HibernateJavaGeneratorContainerImpl extends
 		@Override
 		public void removeContextElement(JavaGenericGenerator element) {
 			HibernateJavaGeneratorContainerImpl.this.removeGenericGenerator_(element);
-		}
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaGeneratorContainer#validate(java.util.List, org.eclipse.wst.validation.internal.provisional.core.IReporter, org.eclipse.jdt.core.dom.CompilationUnit)
-	 */
-	@Override
-	public void validate(List<IMessage> messages, IReporter reporter,
-			CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.validateGenericGenerators(messages, reporter, astRoot);
-	}
-
-
-	protected void validateGenericGenerators(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		ListIterator<JavaGenericGenerator> genericGenerators = genericGenerators();
-		while (genericGenerators.hasNext()) {
-			genericGenerators.next().validate(messages, reporter, astRoot);
 		}
 	}
 
