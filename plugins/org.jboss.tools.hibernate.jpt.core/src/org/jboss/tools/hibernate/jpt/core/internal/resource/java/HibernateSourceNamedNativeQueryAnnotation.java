@@ -53,6 +53,7 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation<
 	private final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
 	private final AnnotationElementAdapter<String> nameAdapter;
 	private String name;
+	TextRange nameTextRange;
 
 	private final DeclarationAnnotationElementAdapter<String> queryDeclarationAdapter;
 	private final AnnotationElementAdapter<String> queryAdapter;
@@ -147,6 +148,7 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation<
 	@Override
 	public void initialize(CompilationUnit astRoot) {
 		this.name = this.buildName(astRoot);
+		this.nameTextRange = this.buildNameTextRange(astRoot);
 		this.query = this.buildQuery(astRoot);
 		this.flushMode = this.buildFlushMode(astRoot);
 		this.cacheMode = this.buildCacheMode(astRoot);
@@ -164,6 +166,7 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation<
 	@Override
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncName(this.buildName(astRoot));
+		this.nameTextRange = this.buildNameTextRange(astRoot);
 		this.syncQuery(this.buildQuery(astRoot));
 		this.syncFlushMode(this.buildFlushMode(astRoot));
 		this.syncCacheMode(this.buildCacheMode(astRoot));
@@ -215,6 +218,10 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation<
 
 	@Override
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
+		return this.nameTextRange;
+	}
+
+	private TextRange buildNameTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.nameDeclarationAdapter, astRoot);
 	}
 
