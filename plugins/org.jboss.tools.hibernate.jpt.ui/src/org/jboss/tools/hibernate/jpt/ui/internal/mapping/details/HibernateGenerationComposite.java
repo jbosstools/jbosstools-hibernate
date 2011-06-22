@@ -63,6 +63,7 @@ public class HibernateGenerationComposite extends GenerationComposite {
 		super.doPopulate();
 		this.genericGeneratorExpansionStateHolder .setValue(Boolean.valueOf(getSubject() != null
 				&& getSubject().genericGeneratorsSize() > 0));
+		this.generatorHolder.setValue(getSubject() != null && getSubject().genericGeneratorsSize() > 0 ? getSubject().genericGenerators().next() : null);
 	}
 	
 	@Override
