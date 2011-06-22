@@ -55,10 +55,12 @@ implements GenericGeneratorAnnotation {
 	private DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
 	private AnnotationElementAdapter<String> nameAdapter;
 	private String name;
+	private TextRange nameTextRange;
 
 	private DeclarationAnnotationElementAdapter<String> strategyDeclarationAdapter;
 	private AnnotationElementAdapter<String> strategyAdapter;
 	private String strategy;
+	private TextRange strategyTextRange;
 
 	final Vector<NestableParameterAnnotation> parameters = new Vector<NestableParameterAnnotation>();
 	final ParametersAnnotationContainer parametersContainer = new ParametersAnnotationContainer();
@@ -78,13 +80,17 @@ implements GenericGeneratorAnnotation {
 
 	public void initialize(CompilationUnit astRoot) {
 		this.name = this.buildName(astRoot);
+		this.nameTextRange = this.buildNameTextRange(astRoot);
 		this.strategy = this.buildStrategy(astRoot);
+		this.strategyTextRange = this.buildStrategyTextRange(astRoot);
 		AnnotationContainerTools.initialize(this.parametersContainer, astRoot);
 	}
 
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncName(this.buildName(astRoot));
+		this.nameTextRange = this.buildNameTextRange(astRoot);
 		this.syncStrategy(this.buildStrategy(astRoot));
+		this.strategyTextRange = this.buildStrategyTextRange(astRoot);
 		AnnotationContainerTools.synchronize(this.parametersContainer, astRoot);
 	}
 
@@ -127,10 +133,18 @@ implements GenericGeneratorAnnotation {
 	}
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
+		return this.nameTextRange;
+	}
+
+	private TextRange buildNameTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.nameDeclarationAdapter, astRoot);
 	}
 
 	public TextRange getStrategyTextRange(CompilationUnit astRoot) {
+		return this.strategyTextRange;
+	}
+	
+	private TextRange buildStrategyTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.strategyDeclarationAdapter, astRoot);
 	}
 
