@@ -802,23 +802,6 @@
             name="Hibernate">
       </category>
    </extension>
-   <extension
-         point="org.eclipse.ui.importWizards">
-      <wizard
-            category="org.hibernate.eclipse.console.HibernateToolsImport"
-            class="org.hibernate.eclipse.libsimport.ImportHibernateJarsWizard"
-            icon="icons/images/ant_codegen_export.gif"
-            id="org.hibernate.eclipse.libsimport.ImportHibernateJarsWizard"
-            name="%importHibernateLibsWizardName">
-         <description>
-            %importHibernateLibsWizardDescription
-         </description>
-      </wizard>
-      <category
-            id="org.hibernate.eclipse.console.HibernateToolsImport"
-            name="Hibernate">
-      </category>
-   </extension>
    <!--   <extension
          point="org.eclipse.ui.themes">
       <themeElementCategory

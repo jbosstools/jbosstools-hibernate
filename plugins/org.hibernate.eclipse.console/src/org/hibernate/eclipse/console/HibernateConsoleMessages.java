@@ -530,11 +530,6 @@ public class HibernateConsoleMessages extends NLS {
 	public static String ExportAntCodeGenWizardPage_error_in_hibernate_code_generation_configuration;
 	public static String ExportAntCodeGenWizardPage_warning;
 	
-	public static String ImportHibernateJarsWizard_title;
-	public static String ImportHibernateJarsWizardPage_title;
-	public static String ImportHibernateJarsWizardPage_description;
-	public static String ImportHibernateJarsWizardPage_error_message;
-	
 	public static String QueryParametersPage_add_query_parameter_tooltip;
 	public static String QueryParametersPage_remove_query_parameter_tooltip;
 	public static String QueryParametersPage_enable_disable_parameters_tooltip;
