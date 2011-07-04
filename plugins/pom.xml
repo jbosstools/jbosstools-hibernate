@@ -4,12 +4,12 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	<parent>
 		<groupId>org.jboss.tools</groupId>
 		<artifactId>hibernatetools</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>3.4.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.hibernatetools</groupId>
 	<artifactId>plugins</artifactId>
 	<name>hibernatetools.plugins</name>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>3.4.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<modules>
 		<module>org.hibernate.eclipse</module>
