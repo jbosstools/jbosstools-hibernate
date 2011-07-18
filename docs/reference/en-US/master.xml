@@ -60,12 +60,12 @@
       </imageobject>
     </mediaobject>
 
-<abstract>
+<!--<abstract>
    <title/>
        <para>
            <ulink url="http://download.jboss.org/jbosstools/nightly-docs/en/hibernatetools/pdf/Hibernatetools_Reference_Guide.pdf">PDF version</ulink>
        </para>
-</abstract>
+</abstract>-->
 
   </bookinfo>
   <toc/>
