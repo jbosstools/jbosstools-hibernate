@@ -16,13 +16,15 @@ import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.java.BaseJavaUiFactory;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.java.Generic2_0JavaUiFactory;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaIdMapping;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmEntity;
 import org.jboss.tools.hibernate.jpt.ui.internal.java.details.HibernateJavaEntityComposite;
+import org.jboss.tools.hibernate.jpt.ui.internal.jpa2.details.HibernateElementCollectionMapping2_0Composite;
 import org.jboss.tools.hibernate.jpt.ui.internal.jpa2.details.orm.Hibernate2_0OrmEntityComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateBasicMappingComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateIdMappingComposite;
@@ -31,7 +33,7 @@ import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateIdMapp
  * @author Dmitry Geraskov
  * 
  */
-public class Hibernate2_0JavaUiFactory extends BaseJavaUiFactory {
+public class Hibernate2_0JavaUiFactory extends Generic2_0JavaUiFactory {
 
 
 	@SuppressWarnings("unchecked")
@@ -65,6 +67,11 @@ public class Hibernate2_0JavaUiFactory extends BaseJavaUiFactory {
 		return new HibernateBasicMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 	
-	
+	public JpaComposite createJavaElementCollectionMapping2_0Composite(
+			PropertyValueModel<JavaElementCollectionMapping2_0> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new HibernateElementCollectionMapping2_0Composite(subjectHolder, parent, widgetFactory);
+	}
 
 }

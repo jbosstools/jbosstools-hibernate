@@ -37,7 +37,6 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.GenericMetamodelSynchronizer;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaCacheable2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaCollectionTable2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaDerivedIdentity2_0;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaEmbeddable2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaNamedQuery2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaOrderColumn2_0;
@@ -72,6 +71,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaManyToOneMapping;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaOneToManyMapping;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaOneToOneMapping;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.jpa2.HibernateJavaElementCollectionMapping2_0;
 
 
 
@@ -82,21 +82,8 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaOne
 public class HibernateJpaFactory2_0 extends HibernateAbstractJpaFactory implements JpaFactory2_0 {
 
 	// ********** Hibernate Specific **********
-	@Override
-	public JavaManyToOneMapping buildJavaManyToOneMapping(JavaPersistentAttribute parent) {
-		return new HibernateJavaManyToOneMapping(parent);
-	}
-
-	@Override
-	public JavaOneToOneMapping buildJavaOneToOneMapping(
-			JavaPersistentAttribute parent) {
-		return new HibernateJavaOneToOneMapping(parent);
-	}
-
-	@Override
-	public JavaOneToManyMapping buildJavaOneToManyMapping(
-			JavaPersistentAttribute parent) {
-		return new HibernateJavaOneToManyMapping(parent);
+	public JavaElementCollectionMapping2_0 buildJavaElementCollectionMapping2_0(JavaPersistentAttribute parent) {
+		return new HibernateJavaElementCollectionMapping2_0(parent);
 	}
 
 	// ********** From GenericJpa2_0 Model **********
@@ -148,10 +135,6 @@ public class HibernateJpaFactory2_0 extends HibernateAbstractJpaFactory implemen
 
 	public JavaDerivedIdentity2_0 buildJavaDerivedIdentity(JavaSingleRelationshipMapping2_0 parent) {
 		return new GenericJavaDerivedIdentity2_0(parent);
-	}
-
-	public JavaElementCollectionMapping2_0 buildJavaElementCollectionMapping2_0(JavaPersistentAttribute parent) {
-		return new GenericJavaElementCollectionMapping2_0(parent);
 	}
 
 	public JavaCacheable2_0 buildJavaCacheable(JavaCacheableHolder2_0 parent) {

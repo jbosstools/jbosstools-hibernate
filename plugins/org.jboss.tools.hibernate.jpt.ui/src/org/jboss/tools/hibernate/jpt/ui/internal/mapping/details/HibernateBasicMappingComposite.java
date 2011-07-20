@@ -12,8 +12,10 @@ package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
 
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
+import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractBasicMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.ColumnComposite;
@@ -26,6 +28,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Generated;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateColumn;
 import org.jboss.tools.hibernate.jpt.core.internal.context.IndexHolder;
+import org.jboss.tools.hibernate.jpt.core.internal.context.TypeConverter;
 
 /**
  * Here the layout of this pane:
@@ -107,6 +110,50 @@ public class HibernateBasicMappingComposite extends AbstractBasicMappingComposit
 		new OptionalComposite(this, addSubPane(container, 4));
 	}
 	
+	@Override
+	protected void initializeTypeSection(Composite container) {
+		super.initializeTypeSection(container);
+		
+		PropertyValueModel<Converter> converterHolder = buildConverterHolder();
+
+		addRadioButton(
+				container, 
+				HibernateUIMappingMessages.TypeComposite_type,
+				buildConverterBooleanHolder(TypeConverter.class),
+				null);
+		
+		registerSubPane(new TypeComposite(buildHibernateConverterHolder(converterHolder),
+				container, getWidgetFactory()));
+		
+	}
+	
+	protected PropertyValueModel<TypeConverter> buildHibernateConverterHolder(PropertyValueModel<Converter> converterHolder) {
+		return new TransformationPropertyValueModel<Converter, TypeConverter>(converterHolder) {
+			@Override
+			protected TypeConverter transform_(Converter converter) {
+				return converter.getType() == TypeConverter.class ? (TypeConverter) converter : null;
+			}
+		};
+	}
+	
+	/*protected WritablePropertyValueModel<Boolean> buildHibernateTypeBooleanHolder() {
+		return new PropertyAspectAdapter<BasicMapping, Boolean>(getSubjectHolder(),  TypeHolder.TYPE_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				return Boolean.valueOf(((TypeHolder)subject).getType() != null);
+			}
+
+			@Override
+			protected void setValue_(Boolean value) {
+				if (value.booleanValue() && (((TypeHolder)subject).getType() == null)) {
+					((TypeHolder)subject).addType();
+				} else if (!value.booleanValue() && (((TypeHolder)subject).getType() != null)) {
+					((TypeHolder)subject).removeType();
+				}
+			}
+		};
+	}*/
+
 	protected void initializeIndexCollapsibleSection(Composite container) {
 		if (getSubject() instanceof IndexHolder) {
 			container = addCollapsibleSection(

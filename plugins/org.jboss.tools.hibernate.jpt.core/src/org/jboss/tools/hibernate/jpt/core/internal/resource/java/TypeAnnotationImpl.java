@@ -83,6 +83,7 @@ TypeAnnotation {
 		return ANNOTATION_NAME;
 	}
 
+
 	AnnotationElementAdapter<String> buildTypeAdapter(DeclarationAnnotationElementAdapter<String> daea) {
 		return new ShortCircuitAnnotationElementAdapter<String>(this.annotatedElement, daea);
 	}

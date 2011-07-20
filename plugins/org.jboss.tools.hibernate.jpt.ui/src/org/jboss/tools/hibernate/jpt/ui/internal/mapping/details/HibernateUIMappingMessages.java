@@ -49,6 +49,7 @@ public class HibernateUIMappingMessages extends NLS {
 	public static String Index_section_index;
 	public static String ParametersComposite_nameColumn;
 	public static String ParametersComposite_valueColumn;
+	public static String TypeComposite_type;
 
 	private HibernateUIMappingMessages() {}
 
