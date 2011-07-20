@@ -11,11 +11,9 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappingRelationship;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaManyToManyMapping;
@@ -25,8 +23,6 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.context.ForeignKey;
 import org.jboss.tools.hibernate.jpt.core.internal.context.ForeignKeyHolder;
-import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
-import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 
 /**
  * @author Dmitry Geraskov
@@ -46,12 +42,6 @@ AbstractJavaManyToManyMapping implements ForeignKeyHolder{
 	protected JavaMappingRelationship buildRelationship() {
 		return new HibernateJavaManyToManyRelationship(this);
 	}
-
-	/*@Override
-	protected void addSupportingAnnotationNamesTo(Vector<String> names) {
-		super.addSupportingAnnotationNamesTo(names);
-		names.add(Hibernate.FOREIGN_KEY);
-	}*/
 
 	@Override
 	protected HibernateAbstractJpaFactory getJpaFactory() {
@@ -147,29 +137,13 @@ AbstractJavaManyToManyMapping implements ForeignKeyHolder{
 	public void validate(List<IMessage> messages, IReporter reporter,
 			CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		this.validateForeignKey(messages, astRoot);
+		this.validateForeignKey(messages, reporter, astRoot);
 	}
 
-	protected void validateForeignKey(List<IMessage> messages, CompilationUnit astRoot) {
-		Table table = getTypeMapping().getPrimaryDbTable();
-		if (!validatesAgainstDatabase() || this.foreignKey == null || table == null ){
-			return;
+	protected void validateForeignKey(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		if (foreignKey != null){
+			foreignKey.validate(messages, reporter, astRoot);
 		}
-		Iterator<org.eclipse.jpt.jpa.db.ForeignKey> fks = table.getForeignKeys().iterator();
-		while (fks.hasNext()) {
-			org.eclipse.jpt.jpa.db.ForeignKey fk = fks.next();
-			if (this.foreignKey.getName().equals(fk.getIdentifier())){
-				return;
-			}
-		}
-		TextRange textRange = this.getForeignKeyAnnotation().getNameTextRange(astRoot);
-		IMessage message = new LocalMessage(IMessage.HIGH_SEVERITY,
-				Messages.UNRESOLVED_FOREIGN_KEY_NAME, new String[] {this.foreignKey.getName(), getTypeMapping().getPrimaryTableName()},
-				this.foreignKey);
-		message.setLineNo(textRange.getLineNumber());
-		message.setOffset(textRange.getOffset());
-		message.setLength(textRange.getLength());
-		messages.add(message);
 	}
 
 }

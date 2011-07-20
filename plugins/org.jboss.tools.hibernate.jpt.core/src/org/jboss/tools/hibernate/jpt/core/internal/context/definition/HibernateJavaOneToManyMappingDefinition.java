@@ -17,51 +17,47 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.JoinColumnsAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JoinTableAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.ManyToManyAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.MapKeyAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.OrderByAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.OneToOneAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.PrimaryKeyJoinColumnAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.PrimaryKeyJoinColumnsAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 
 /**
  * @author Dmitry Geraskov (geraskov@gmail.com)
  *
  */
-public class HibernateJavaManyToManyMappingDefinition implements JavaAttributeMappingDefinition
+public class HibernateJavaOneToManyMappingDefinition implements JavaAttributeMappingDefinition
 {
 	// singleton
-	private static final JavaAttributeMappingDefinition INSTANCE = new HibernateJavaManyToManyMappingDefinition();
+	private static final HibernateJavaOneToManyMappingDefinition INSTANCE = new HibernateJavaOneToManyMappingDefinition();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static JavaAttributeMappingDefinition instance() {
+	public static HibernateJavaOneToManyMappingDefinition instance() {
 		return INSTANCE;
 	}
-
 
 	/**
 	 * Enforce singleton usage
 	 */
-	private HibernateJavaManyToManyMappingDefinition() {
+	private HibernateJavaOneToManyMappingDefinition() {
 		super();
 	}
 
 	public String getKey() {
-		return MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY;
+		return MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY;
 	}
 
 	public String getAnnotationName() {
-		return ManyToManyAnnotation.ANNOTATION_NAME;
+		return OneToOneAnnotation.ANNOTATION_NAME;
 	}
 
 	public boolean isSpecified(JavaPersistentAttribute persistentAttribute) {
 		return persistentAttribute.getResourcePersistentAttribute().getAnnotation(this.getAnnotationName()) != null;
-	}
-
-	@Override
-	public Iterable<String> getSupportingAnnotationNames() {
-		return new CompositeIterable<String>(SUPPORTING_ANNOTATION_NAMES, new ArrayIterable<String>(HIBERNATE_ANNOTATION_NAMES_ARRAY));
 	}
 	
 	protected static final String[] HIBERNATE_ANNOTATION_NAMES_ARRAY = new String[] {
@@ -70,17 +66,26 @@ public class HibernateJavaManyToManyMappingDefinition implements JavaAttributeMa
 
 	private static final String[] SUPPORTING_ANNOTATION_NAMES_ARRAY = new String[] {
 		JoinTableAnnotation.ANNOTATION_NAME,
-		MapKeyAnnotation.ANNOTATION_NAME,
-		OrderByAnnotation.ANNOTATION_NAME
+		JoinColumnAnnotation.ANNOTATION_NAME,
+		JoinColumnsAnnotation.ANNOTATION_NAME,
+		PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME,
+		PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME
 	};
 	private static final Iterable<String> SUPPORTING_ANNOTATION_NAMES = new ArrayIterable<String>(SUPPORTING_ANNOTATION_NAMES_ARRAY);
 
+	@Override
+	public Iterable<String> getSupportingAnnotationNames() {
+		return new CompositeIterable<String>(SUPPORTING_ANNOTATION_NAMES, new ArrayIterable<String>(HIBERNATE_ANNOTATION_NAMES_ARRAY));
+	}
+	
 	public JavaAttributeMapping buildMapping(JavaPersistentAttribute persistentAttribute, JpaFactory factory) {
-		return factory.buildJavaManyToManyMapping(persistentAttribute);
+		return factory.buildJavaOneToOneMapping(persistentAttribute);
 	}
 
 	@Override
 	public String toString() {
 		return this.getClass().getSimpleName();
 	}
+
+	
 }

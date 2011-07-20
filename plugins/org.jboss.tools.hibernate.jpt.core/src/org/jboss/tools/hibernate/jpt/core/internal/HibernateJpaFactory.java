@@ -11,16 +11,9 @@
 package org.jboss.tools.hibernate.jpt.core.internal;
 
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddable;
-import org.eclipse.jpt.jpa.core.context.java.JavaManyToOneMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaOneToManyMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaOneToOneMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.resource.java.EmbeddableAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEmbeddable;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaManyToOneMapping;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaOneToManyMapping;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaOneToOneMapping;
 
 
 /**
@@ -34,24 +27,6 @@ public class HibernateJpaFactory extends HibernateAbstractJpaFactory {
 	@Override
 	public JavaEmbeddable buildJavaEmbeddable(JavaPersistentType parent, EmbeddableAnnotation embeddableAnnotation) {
 		return new HibernateJavaEmbeddable(parent, embeddableAnnotation);
-	}
-
-	@Override
-	public JavaManyToOneMapping buildJavaManyToOneMapping(
-			JavaPersistentAttribute parent) {
-		return new HibernateJavaManyToOneMapping(parent);
-	}
-
-	@Override
-	public JavaOneToOneMapping buildJavaOneToOneMapping(
-			JavaPersistentAttribute parent) {
-		return new HibernateJavaOneToOneMapping(parent);
-	}
-
-	@Override
-	public JavaOneToManyMapping buildJavaOneToManyMapping(
-			JavaPersistentAttribute parent) {
-		return new HibernateJavaOneToManyMapping(parent);
 	}
 
 }

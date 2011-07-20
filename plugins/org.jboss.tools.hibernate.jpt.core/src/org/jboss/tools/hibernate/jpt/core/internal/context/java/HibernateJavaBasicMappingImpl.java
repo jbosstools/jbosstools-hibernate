@@ -16,7 +16,11 @@ import java.util.List;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.utility.Filter;
+import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaConverter.Adapter;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaBasicMapping;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -34,6 +38,10 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeAnnotation;
 public class HibernateJavaBasicMappingImpl extends AbstractJavaBasicMapping
 implements HibernateJavaBasicMapping {
 
+	protected static final Iterable<JavaConverter.Adapter> HIBERNATE_CONVERTER_ADAPTERS = 
+			new CompositeIterable<JavaConverter.Adapter>(JavaTypeConverter.Adapter.instance(),
+					new ArrayIterable<JavaConverter.Adapter>(CONVERTER_ADAPTER_ARRAY));
+
 	protected final HibernateJavaTypeDefContainer typeDefContainer;
 
 	protected GenerationTime specifiedGenerationTime;
@@ -49,16 +57,14 @@ implements HibernateJavaBasicMapping {
 		this.type = this.buildType();
 	}
 
-	/*@Override
-	public void addSupportingAnnotationNamesTo(Vector<String> names) {
-		names.add(Hibernate.GENERATED);
-		names.add(Hibernate.INDEX);
-		names.add(Hibernate.TYPE);
-	}*/
-
 	@Override
 	protected HibernateAbstractJpaFactory getJpaFactory() {
 		return (HibernateAbstractJpaFactory) super.getJpaFactory();
+	}
+
+	@Override
+	protected Iterable<Adapter> getConverterAdapters() {
+		return HIBERNATE_CONVERTER_ADAPTERS;
 	}
 
 	@Override

@@ -11,14 +11,14 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.ForeignKeyAnnotation;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public interface ForeignKey extends JpaContextNode {
+public interface ForeignKey extends JavaJpaContextNode {
 	
 	String getName();
 	void setName(String name);

@@ -20,9 +20,9 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnsAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JoinTableAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.OneToOneAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.PrimaryKeyJoinColumnAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.PrimaryKeyJoinColumnsAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.MapKeyAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.OneToManyAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.OrderByAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 
 /**
@@ -49,11 +49,11 @@ public class HibernateJavaOneToOneMappingDefinition implements JavaAttributeMapp
 	}
 
 	public String getKey() {
-		return MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY;
+		return MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}
 
 	public String getAnnotationName() {
-		return OneToOneAnnotation.ANNOTATION_NAME;
+		return OneToManyAnnotation.ANNOTATION_NAME;
 	}
 
 	public boolean isSpecified(JavaPersistentAttribute persistentAttribute) {
@@ -66,10 +66,10 @@ public class HibernateJavaOneToOneMappingDefinition implements JavaAttributeMapp
 
 	private static final String[] SUPPORTING_ANNOTATION_NAMES_ARRAY = new String[] {
 		JoinTableAnnotation.ANNOTATION_NAME,
+		MapKeyAnnotation.ANNOTATION_NAME,
+		OrderByAnnotation.ANNOTATION_NAME,
 		JoinColumnAnnotation.ANNOTATION_NAME,
-		JoinColumnsAnnotation.ANNOTATION_NAME,
-		PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME,
-		PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME
+		JoinColumnsAnnotation.ANNOTATION_NAME
 	};
 	private static final Iterable<String> SUPPORTING_ANNOTATION_NAMES = new ArrayIterable<String>(SUPPORTING_ANNOTATION_NAMES_ARRAY);
 
@@ -79,7 +79,7 @@ public class HibernateJavaOneToOneMappingDefinition implements JavaAttributeMapp
 	}
 	
 	public JavaAttributeMapping buildMapping(JavaPersistentAttribute persistentAttribute, JpaFactory factory) {
-		return factory.buildJavaOneToOneMapping(persistentAttribute);
+		return factory.buildJavaOneToManyMapping(persistentAttribute);
 	}
 
 	@Override

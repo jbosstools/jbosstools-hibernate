@@ -39,7 +39,6 @@ import org.hibernate.cfg.NamingStrategy;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
-import org.jboss.tools.hibernate.jpt.core.internal.context.ForeignKey;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateTable;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
@@ -59,13 +58,10 @@ implements HibernateJavaEntity {
 
 	protected final JavaCacheable2_0 cacheable;
 
-	protected ForeignKey foreignKey;
-
 	public HibernateJavaEntityImpl(JavaPersistentType parent, EntityAnnotation mappingAnnotation) {
 		super(parent, mappingAnnotation);
 		this.discriminatorFormula = this.buildDiscriminatorFormula();
 		this.typeDefContainer = getJpaFactory().buildJavaTypeDefContainer(parent);
-		this.foreignKey = this.buildForeignKey();
 		this.cacheable = this.buildJavaCachable();
 	}
 
@@ -81,7 +77,6 @@ implements HibernateJavaEntity {
 		this.cacheable.synchronizeWithResourceModel();
 		this.typeDefContainer.initialize(this.getResourcePersistentType());
 		this.syncDiscriminatorFormula();
-		this.syncForeignKey();
 	}
 
 	@Override
@@ -91,9 +86,6 @@ implements HibernateJavaEntity {
 		this.typeDefContainer.update(this.getResourcePersistentType());
 		if (discriminatorFormula != null){
 			this.discriminatorFormula.update();
-		}
-		if (foreignKey != null){
-			this.foreignKey.update();
 		}
 	}
 
@@ -112,29 +104,6 @@ implements HibernateJavaEntity {
 		return this.typeDefContainer;
 	}
 
-/*	protected static final String[] SUPPORTING_ANNOTATION_NAMES_ARRAY2 = new String[] {
-		Hibernate.GENERIC_GENERATOR,
-		Hibernate.GENERIC_GENERATORS,
-		Hibernate.TYPE_DEF,
-		Hibernate.TYPE_DEFS,
-		Hibernate.NAMED_QUERY,
-		Hibernate.NAMED_QUERIES,
-		Hibernate.NAMED_NATIVE_QUERY,
-		Hibernate.NAMED_NATIVE_QUERIES,
-		Hibernate.DISCRIMINATOR_FORMULA,
-		Hibernate.FOREIGN_KEY,
-	};
-
-	protected static final Iterable<String> SUPPORTING_ANNOTATION_NAMES2 = new ArrayIterable<String>(SUPPORTING_ANNOTATION_NAMES_ARRAY2);
-
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public Iterable<String> getSupportingAnnotationNames() {
-		return new CompositeIterable<String>(
-				SUPPORTING_ANNOTATION_NAMES2,
-				super.getSupportingAnnotationNames());
-	}*/
 
 	@Override
 	public HibernateJavaTable getTable() {
@@ -207,78 +176,6 @@ implements HibernateJavaEntity {
 		firePropertyChanged(DISCRIMINATOR_FORMULA_PROPERTY, oldDiscriminatorFormula, newDiscriminatorFormula);
 	}
 
-	// ********************* foreignKey **************
-
-	protected void syncForeignKey() {
-		ForeignKeyAnnotation annotation = getForeignKeyAnnotation();
-		if (annotation == null) {
-			if (getForeignKey() != null) {
-				setForeignKey(null);
-			}
-		}
-		else {
-			if (getForeignKey() == null) {
-				setForeignKey(buildForeignKey(annotation));
-			}
-			else {
-				if ((this.foreignKey != null) && (this.foreignKey.getForeignKeyAnnotation() == annotation)) {
-					this.foreignKey.synchronizeWithResourceModel();
-				} else {
-					this.setForeignKey(this.buildForeignKey(annotation));
-				}
-			}
-		}
-	}
-
-	@Override
-	public ForeignKey addForeignKey() {
-		if (getForeignKey() != null) {
-			throw new IllegalStateException("foreignKey already exists"); //$NON-NLS-1$
-		}
-		ForeignKeyAnnotation annotation = (ForeignKeyAnnotation) this.getResourcePersistentType().addAnnotation(ForeignKeyAnnotation.ANNOTATION_NAME);
-		ForeignKey foreignKey = buildForeignKey(annotation);
-		setForeignKey(foreignKey);
-		return this.foreignKey;
-	}
-
-	@Override
-	public ForeignKey getForeignKey() {
-		return this.foreignKey;
-	}
-
-	protected void setForeignKey(ForeignKey newForeignKey) {
-		ForeignKey oldForeignKey = this.foreignKey;
-		this.foreignKey = newForeignKey;
-		firePropertyChanged(FOREIGN_KEY_PROPERTY, oldForeignKey, newForeignKey);
-	}
-
-	@Override
-	public void removeForeignKey() {
-		if (getForeignKey() == null) {
-			throw new IllegalStateException("foreignKey does not exist, cannot be removed"); //$NON-NLS-1$
-		}
-		this.getResourcePersistentType().removeAnnotation(ForeignKeyAnnotation.ANNOTATION_NAME);
-		setForeignKey(null);
-	}
-	
-	protected ForeignKey buildForeignKey() {
-		ForeignKeyAnnotation annotation = this.getForeignKeyAnnotation();
-		return (annotation == null) ? null : this.buildForeignKey(annotation);
-	}
-
-	protected ForeignKey buildForeignKey(ForeignKeyAnnotation annotation) {
-		return getJpaFactory().buildForeignKey(this, annotation);
-	}
-
-	protected ForeignKeyAnnotation getForeignKeyAnnotation() {
-		return (ForeignKeyAnnotation) this.getResourcePersistentType().getAnnotation(ForeignKeyAnnotation.ANNOTATION_NAME);
-	}
-
-	@Override
-	public org.eclipse.jpt.jpa.db.Table getForeignKeyDbTable() {
-		return getPrimaryDbTable();
-	}
-
 	@Override
 	public HibernateJavaGeneratorContainer getGeneratorContainer() {
 		return (HibernateJavaGeneratorContainer)super.getGeneratorContainer();
@@ -289,29 +186,6 @@ implements HibernateJavaEntity {
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		getTypeDefContainer().validate(messages, reporter, astRoot);
-		this.validateForeignKey(messages, astRoot);
-	}
-
-	protected void validateForeignKey(List<IMessage> messages, CompilationUnit astRoot) {
-		org.eclipse.jpt.jpa.db.Table table = getForeignKeyDbTable();
-		if (!validatesAgainstDatabase() || this.foreignKey == null || table == null ){
-			return;
-		}
-		Iterator<org.eclipse.jpt.jpa.db.ForeignKey> fks = table.getForeignKeys().iterator();
-		while (fks.hasNext()) {
-			org.eclipse.jpt.jpa.db.ForeignKey fk = fks.next();
-			if (this.foreignKey.getName().equals(fk.getIdentifier())){
-				return;
-			}
-		}
-		TextRange textRange = this.getForeignKeyAnnotation().getNameTextRange(astRoot);
-		IMessage message = new LocalMessage(IMessage.HIGH_SEVERITY,
-				Messages.UNRESOLVED_FOREIGN_KEY_NAME, new String[] {this.foreignKey.getName(), getPrimaryTableName()},
-				this.foreignKey);
-		message.setLineNo(textRange.getLineNumber());
-		message.setOffset(textRange.getOffset());
-		message.setLength(textRange.getLength());
-		messages.add(message);
 	}
 
 	@Override

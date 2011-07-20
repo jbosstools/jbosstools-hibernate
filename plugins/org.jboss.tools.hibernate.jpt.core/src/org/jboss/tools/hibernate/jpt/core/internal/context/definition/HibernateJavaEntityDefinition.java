@@ -117,7 +117,6 @@ public class HibernateJavaEntityDefinition implements JavaTypeMappingDefinition
 			Hibernate.NAMED_NATIVE_QUERY,
 			Hibernate.NAMED_NATIVE_QUERIES,
 			Hibernate.DISCRIMINATOR_FORMULA,
-			Hibernate.FOREIGN_KEY,
 	};
 	protected static final Iterable<String> SUPPORTING_ANNOTATION_NAMES = new ArrayIterable<String>(SUPPORTING_ANNOTATION_NAMES_ARRAY);
 

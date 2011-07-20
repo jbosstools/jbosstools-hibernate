@@ -38,4 +38,6 @@ public interface Messages {
 	
 	String TYPE_CLASS_NOT_FOUND = "TYPE_CLASS_NOT_FOUND";	 //$NON-NLS-1$
 
+	String NAME_CANT_BE_EMPTY = "NAME_CANT_BE_EMPTY";//$NON-NLS-1$
+
 }
