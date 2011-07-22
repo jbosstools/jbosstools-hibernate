@@ -5,6 +5,10 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -18,6 +22,7 @@ import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.QueryInputModel;
 import org.hibernate.console.QueryPage;
 import org.hibernate.eclipse.console.test.launchcfg.TestConsoleConfigurationPreferences;
+import org.hibernate.eclipse.console.views.QueryPageTabView;
 import org.hibernate.impl.AbstractQueryImpl;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.KeyValue;
@@ -152,6 +157,13 @@ public class ConsoleConfigurationTest extends TestCase {
 		model.addParameter(paramA);
 		model.addParameter(paramB);
 		model.addParameter(paramOrdered);
+		
+		//fix for https://issues.jboss.org/browse/JBIDE-9392
+		//the view calls jdbc connection
+		IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		IViewPart view = activePage.findView(QueryPageTabView.ID);
+		activePage.hideView(view);
+		
 		QueryPage qp = consoleCfg.executeHQLQuery("select count(*) from java.awt.Button where 1 in ( ?, :a, :b )", model); //$NON-NLS-1$
 		assertNotNull(qp);
 		try{
