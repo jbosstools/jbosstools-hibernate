@@ -134,6 +134,9 @@ public class QueryPageTabView extends ViewPart implements ISelectionProvider {
 	
 	public void dispose() {
 		KnownConfigurations.getInstance().getQueryPageModel().removeListDataListener(dataListener);
+		for (int i = 0; i < pageViewers.size(); i++) {
+			pageViewers.get(i).dispose();
+		}
 		super.dispose();
 	}
 	
