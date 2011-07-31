@@ -8,6 +8,6 @@
 	</parent>
 	<groupId>org.jboss.tools.hibernatetools.plugins</groupId>
 	<artifactId>org.hibernate.eclipse.jdt.ui</artifactId> 
-	<version>3.4.0-SNAPSHOT</version>
+	
 	<packaging>eclipse-plugin</packaging>
 </project>

@@ -8,6 +8,6 @@
 	</parent>
 	<groupId>org.jboss.tools.hibernatetools.features</groupId>
 	<artifactId>org.hibernate.eclipse.feature</artifactId> 
-	<version>3.4.0-SNAPSHOT</version>
+	
 	<packaging>eclipse-feature</packaging>
 </project>
