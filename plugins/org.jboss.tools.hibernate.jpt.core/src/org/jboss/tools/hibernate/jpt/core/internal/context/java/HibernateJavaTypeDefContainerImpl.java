@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.jpa.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jpa.core.resource.java.NestableAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -37,7 +37,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeDefsAnnotat
 public class HibernateJavaTypeDefContainerImpl extends
 		AbstractJavaJpaContextNode implements HibernateJavaTypeDefContainer {
 
-	protected JavaResourcePersistentMember javaResourcePersistentMember;
+	protected JavaResourceAnnotatedElement javaResourcePersistentElement;
 	
 	protected final List<JavaTypeDef> typeDefs;
 
@@ -50,20 +50,20 @@ public class HibernateJavaTypeDefContainerImpl extends
 		return (HibernateAbstractJpaFactory)super.getJpaFactory();
 	}
 	
-	public void initialize(JavaResourcePersistentMember jrpm) {
-		this.javaResourcePersistentMember = jrpm;
+	public void initialize(JavaResourceAnnotatedElement jrpe) {
+		this.javaResourcePersistentElement = jrpe;
 		this.initializeTypeDefs();
 	}
 	
-	public void update(JavaResourcePersistentMember jrpm) {
-		this.javaResourcePersistentMember = jrpm;
+	public void update(JavaResourceAnnotatedElement jrpm) {
+		this.javaResourcePersistentElement = jrpm;
 		this.updateTypeDefs();
 	}
 
 	public JavaTypeDef addTypeDef(int index) {
 		JavaTypeDef newTypeDef = getJpaFactory().buildJavaTypeDef(this);
 		this.typeDefs.add(index, newTypeDef);
-		TypeDefAnnotation typeDefAnnotation = (TypeDefAnnotation)this.javaResourcePersistentMember
+		TypeDefAnnotation typeDefAnnotation = (TypeDefAnnotation)this.javaResourcePersistentElement
 			.addAnnotation(index, TypeDefAnnotation.ANNOTATION_NAME, TypeDefsAnnotation.ANNOTATION_NAME);
 		newTypeDef.initialize(typeDefAnnotation);
 		fireItemAdded(TYPE_DEFS_LIST, index, newTypeDef);
@@ -88,13 +88,13 @@ public class HibernateJavaTypeDefContainerImpl extends
 
 	public void moveTypeDef(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.typeDefs, targetIndex, sourceIndex);
-		this.javaResourcePersistentMember.moveAnnotation(targetIndex, sourceIndex, TypeDefsAnnotation.ANNOTATION_NAME);
+		this.javaResourcePersistentElement.moveAnnotation(targetIndex, sourceIndex, TypeDefsAnnotation.ANNOTATION_NAME);
 		fireItemMoved(TYPE_DEFS_LIST, targetIndex, sourceIndex);		
 	}
 
 	public void removeTypeDef(int index) {
 		JavaTypeDef removedTypeDef = this.typeDefs.remove(index);
-		this.javaResourcePersistentMember.removeAnnotation(index, TypeDefAnnotation.ANNOTATION_NAME, TypeDefsAnnotation.ANNOTATION_NAME);
+		this.javaResourcePersistentElement.removeAnnotation(index, TypeDefAnnotation.ANNOTATION_NAME, TypeDefsAnnotation.ANNOTATION_NAME);
 		fireItemRemoved(TYPE_DEFS_LIST, index, removedTypeDef);
 	}
 
@@ -107,7 +107,7 @@ public class HibernateJavaTypeDefContainerImpl extends
 	}
 
 	protected void initializeTypeDefs() {
-		for (Iterator<NestableAnnotation> stream = this.javaResourcePersistentMember.annotations(
+		for (Iterator<NestableAnnotation> stream = this.javaResourcePersistentElement.annotations(
 				TypeDefAnnotation.ANNOTATION_NAME,
 				TypeDefsAnnotation.ANNOTATION_NAME);
 		stream.hasNext(); ) {
@@ -130,7 +130,7 @@ public class HibernateJavaTypeDefContainerImpl extends
 	protected void updateTypeDefs() {
 		ListIterator<JavaTypeDef> typeDefs = typeDefs();
 		Iterator<NestableAnnotation> resourceTypeDefs =
-			this.javaResourcePersistentMember.annotations(
+			this.javaResourcePersistentElement.annotations(
 					TypeDefAnnotation.ANNOTATION_NAME,
 					TypeDefsAnnotation.ANNOTATION_NAME);
 
@@ -183,6 +183,6 @@ public class HibernateJavaTypeDefContainerImpl extends
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.javaResourcePersistentMember.getTextRange(astRoot);
+		return this.javaResourcePersistentElement.getTextRange(astRoot);
 	}
 }

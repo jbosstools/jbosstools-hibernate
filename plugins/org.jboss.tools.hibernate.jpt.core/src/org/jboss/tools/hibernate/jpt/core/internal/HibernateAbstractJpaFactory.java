@@ -37,6 +37,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaTable;
 import org.eclipse.jpt.jpa.core.internal.AbstractJpaFactory;
 import org.eclipse.jpt.jpa.core.resource.java.EntityAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.SecondaryTableAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.context.ForeignKey;
@@ -65,18 +66,21 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaTyp
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaTypeDefContainerImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateNamedNativeQueryImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateNamedQueryImpl;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernatePackageInfoImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.IndexImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaDiscriminatorFormula;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaDiscriminatorFormulaImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaGenericGenerator;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaGenericGeneratorImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaIndex;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaPackageInfo;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaParameter;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaType;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaTypeConverterImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaTypeDef;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaTypeDefImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.TypeImpl;
+import org.jboss.tools.hibernate.jpt.core.internal.context.persistence.HibernateClassRef;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.DiscriminatorFormulaAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.GenericGeneratorAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedNativeQueryAnnotation;
@@ -233,6 +237,11 @@ public abstract class HibernateAbstractJpaFactory extends AbstractJpaFactory {
 	public JavaConverter buildJavaTypeConverter(JavaAttributeMapping parent,
 			TypeAnnotation converterAnnotation) {
 		return new JavaTypeConverterImpl(parent, converterAnnotation);
+	}
+
+	public JavaPackageInfo buildJavaPackageInfo(
+			HibernateClassRef hibernateClassRef, JavaResourcePackage jrpt) {
+		return new HibernatePackageInfoImpl(hibernateClassRef, jrpt);
 	}
 
 }

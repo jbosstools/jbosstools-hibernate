@@ -12,7 +12,6 @@ package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.jpa.core.resource.java.Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourceAnnotatedElement;
@@ -40,8 +39,8 @@ public class HibernateNamedNativeQueriesAnnotationDefinition implements Annotati
 		super();
 	}
 
-	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement member) {
-		return new HibernateSourceNamedNativeQueriesAnnotation(parent, (Member) member);
+	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
+		return new HibernateSourceNamedNativeQueriesAnnotation(parent, annotatedElement);
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent,

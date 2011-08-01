@@ -28,11 +28,15 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.NotNullFilter;
+import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.QueryContainer;
+import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnit;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
@@ -44,7 +48,10 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateP
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.HibernatePersistenceUnitProperties;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaQueryContainer;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernatePackageInfo;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaPackageInfo;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaTypeDef;
+import org.jboss.tools.hibernate.jpt.core.internal.context.persistence.HibernateClassRef;
 import org.jboss.tools.hibernate.jpt.core.internal.context.persistence.HibernatePersistenceUnitPropertiesBuilder;
 
 /**
@@ -146,6 +153,42 @@ implements Messages, Hibernate {
 		}
 	}
 	
+	/**
+	 * Return the non-<code>null</code> class ref package infos,
+	 * both specified and implied.
+	 */
+	protected Iterable<JavaPackageInfo> getClassRefPackageInfos() {
+		return new FilteringIterable<JavaPackageInfo>(
+					this.getClassRefPackageInfos_(),
+					NotNullFilter.<JavaPackageInfo>instance()
+				);
+	}
+	
+	protected Iterable<JavaPackageInfo> getClassRefPackageInfos_() {
+		return new TransformationIterable<ClassRef, JavaPackageInfo>(this.getClassRefs()) {
+			@Override
+			protected JavaPackageInfo transform(ClassRef classRef) {
+				return ((HibernateClassRef)classRef).getJavaPackageInfo();
+			}
+		};
+	}
+	
+	/**
+	 * Need to collect also Queries from package-info.java
+	 */
+	protected void addJavaQueriesTo(ArrayList<Query> queryList) {
+		super.addJavaQueriesTo(queryList);
+		this.addPackageJavaQueriesTo(this.getClassRefPackageInfos(), queryList);
+	}
+
+	protected void addPackageJavaQueriesTo(Iterable<JavaPackageInfo> packageInfos, ArrayList<Query> queryList) {
+		for (JavaPackageInfo packageInfo : packageInfos) {
+			if (packageInfo instanceof HibernatePackageInfo) {
+				this.addQueriesTo(((HibernatePackageInfo) packageInfo).getQueryContainer(), queryList);
+			}
+		}
+	}
+	
 	@Override
 	protected void addQueriesTo(QueryContainer queryContainer,
 			ArrayList<Query> queryList) {
@@ -154,7 +197,22 @@ implements Messages, Hibernate {
 			CollectionTools.addAll(queryList, ((HibernateJavaQueryContainer)queryContainer).hibernateNamedQueries());
 			CollectionTools.addAll(queryList, ((HibernateJavaQueryContainer)queryContainer).hibernateNamedNativeQueries());
 		}
-		
+	}
+	
+	/**
+	 * Include "overridden" Java generators.
+	 */
+	protected void addJavaGeneratorsTo(ArrayList<Generator> generatorList) {
+		super.addJavaGeneratorsTo(generatorList);
+		this.addPackageJavaGeneratorsTo(this.getClassRefPackageInfos(), generatorList);
+	}
+	
+	protected void addPackageJavaGeneratorsTo(Iterable<JavaPackageInfo> pacakgeInfos, ArrayList<Generator> generatorList) {
+		for (JavaPackageInfo packageInfo : pacakgeInfos) {
+			if (packageInfo instanceof HibernatePackageInfo) {
+				this.addGeneratorsTo(((HibernatePackageInfo) packageInfo).getGeneratorContainer(), generatorList);
+			}
+		}
 	}
 	
 	@Override
@@ -228,5 +286,213 @@ implements Messages, Hibernate {
 			super(Messages.class.getName(), severity, message, strings, resource);
 		}
 	}
+//	
+//	// ********** specified package-info refs **********
+//
+//	public ListIterator<PackageInfoRef> specifiedPackageInfoRefs() {
+//		return this.getSpecifiedPackageInfoRefs().iterator();
+//	}
+//
+//	protected ListIterable<PackageInfoRef> getSpecifiedPackageInfoRefs() {
+//		return new LiveCloneListIterable<PackageInfoRef>(this.specifiedPackageInfoRefs);
+//	}
+//
+//	public int specifiedPackageInfoRefsSize() {
+//		return this.specifiedPackageInfoRefs.size();
+//	}
+//
+//	public PackageInfoRef addSpecifiedPackageInfoRef(String packageName) {
+//		return this.addSpecifiedPackageInfoRef(this.specifiedPackageInfoRefs.size(), packageName);
+//	}
+//
+//	public PackageInfoRef addSpecifiedPackageInfoRef(int index, String packageName) {
+//		XmlPackageInfoRef xmlPackageInfoRef = this.buildXmlPackageInfoRef(packageName);
+//		PackageInfoRef classRef = this.addSpecifiedPackageInfoRef_(index, xmlPackageInfoRef);
+//		this.xmlPersistenceUnit.getClasses().add(index, xmlPackageInfoRef);
+//		return classRef;
+//	}
+//
+//	protected XmlPackageInfoRef buildXmlPackageInfoRef(String packageName) {
+//		XmlPackageInfoRef ref = PersistenceFactory.eINSTANCE.createXmlPackageInfoRef();
+//		ref.setJavaClass(packageName);
+//		return ref;
+//	}
+//
+//	protected PackageInfoRef buildPackageInfoRef(XmlPackageInfoRef xmlPackageInfoRef) {
+//		return this.getContextNodeFactory().buildPackageInfoRef(this, xmlPackageInfoRef);
+//	}
+//
+//	public void removeSpecifiedPackageInfoRef(PackageInfoRef classRef) {
+//		this.removeSpecifiedPackageInfoRef(this.specifiedPackageInfoRefs.indexOf(classRef));
+//	}
+//
+//	public void removeSpecifiedPackageInfoRef(int index) {
+//		this.removeSpecifiedPackageInfoRef_(index);
+//		this.xmlPersistenceUnit.getClasses().remove(index);
+//	}
+//
+//	/**
+//	 * dispose the class ref
+//	 */
+//	protected void removeSpecifiedPackageInfoRef_(int index) {
+//		this.removeItemFromList(index, this.specifiedPackageInfoRefs, SPECIFIED_CLASS_REFS_LIST).dispose();
+//	}
+//
+//	protected void initializeSpecifiedPackageInfoRefs() {
+//		for (XmlPackageInfoRef xmlJavaPackageInfoRef : this.getXmlPackageInfoRefs()) {
+//			this.specifiedPackageInfoRefs.add(this.buildPackageInfoRef(xmlJavaPackageInfoRef));
+//		}
+//	}
+//
+//	protected void syncSpecifiedPackageInfoRefs() {
+//		ContextContainerTools.synchronizeWithResourceModel(this.specifiedPackageInfoRefContainerAdapter);
+//	}
+//
+//	protected Iterable<XmlPackageInfoRef> getXmlPackageInfoRefs() {
+//		// clone to reduce chance of concurrency problems
+//		return new LiveCloneIterable<XmlPackageInfoRef>(this.xmlPersistenceUnit.getClasses());
+//	}
+//
+//	protected void moveSpecifiedPackageInfoRef_(int index, PackageInfoRef classRef) {
+//		this.moveItemInList(index, classRef, this.specifiedPackageInfoRefs, SPECIFIED_CLASS_REFS_LIST);
+//	}
+//
+//	protected PackageInfoRef addSpecifiedPackageInfoRef_(int index, XmlPackageInfoRef xmlPackageInfoRef) {
+//		PackageInfoRef classRef = this.buildPackageInfoRef(xmlPackageInfoRef);
+//		this.addItemToList(index, classRef, this.specifiedPackageInfoRefs, SPECIFIED_CLASS_REFS_LIST);
+//		return classRef;
+//	}
+//
+//	protected void removeSpecifiedPackageInfoRef_(PackageInfoRef classRef) {
+//		this.removeSpecifiedPackageInfoRef_(this.specifiedPackageInfoRefs.indexOf(classRef));
+//	}
+//	
+//	/**
+//	 * specified class ref container adapter
+//	 */
+//	protected class SpecifiedPackageInfoRefContainerAdapter
+//		implements ContextContainerTools.Adapter<PackageInfoRef, XmlPackageInfoRef>
+//	{
+//		public Iterable<PackageInfoRef> getContextElements() {
+//			return HibernatePersistenceUnit.this.getSpecifiedPackageInfoRefs();
+//		}
+//		public Iterable<XmlPackageInfoRef> getResourceElements() {
+//			return HibernatePersistenceUnit.this.getXmlPackageInfoRefs();
+//		}
+//		public XmlPackageInfoRef getResourceElement(PackageInfoRef contextElement) {
+//			return contextElement.getXmlPackageInfoRef();
+//		}
+//		public void moveContextElement(int index, PackageInfoRef element) {
+//			HibernatePersistenceUnit.this.moveSpecifiedPackageInfoRef_(index, element);
+//		}
+//		public void addContextElement(int index, XmlPackageInfoRef resourceElement) {
+//			HibernatePersistenceUnit.this.addSpecifiedPackageInfoRef_(index, resourceElement);
+//		}
+//		public void removeContextElement(PackageInfoRef element) {
+//			HibernatePersistenceUnit.this.removeSpecifiedPackageInfoRef_(element);
+//		}
+//	}
+//	
+//	// ********** virtual package-info refs **********
+//
+//	public Iterator<PackageInfoRef> impliedPackageInfoRefs() {
+//		return this.getImpliedPackageInfoRefs().iterator();
+//	}
+//
+//	protected Iterable<PackageInfoRef> getImpliedPackageInfoRefs() {
+//		return new LiveCloneIterable<PackageInfoRef>(this.impliedPackageInfoRefs);
+//	}
+//
+//	public int impliedPackageInfoRefsSize() {
+//		return this.impliedPackageInfoRefs.size();
+//	}
+//
+//	protected PackageInfoRef addImpliedPackageInfoRef(String packageName) {
+//		PackageInfoRef classRef = this.buildPackageInfoRef(packageName);
+//		this.addItemToCollection(classRef, this.impliedPackageInfoRefs, IMPLIED_CLASS_REFS_COLLECTION);
+//		return classRef;
+//	}
+//
+//	protected PackageInfoRef buildPackageInfoRef(String packageName) {
+//		return this.getContextNodeFactory().buildPackageInfoRef(this, packageName);
+//	}
+//
+//	protected void removeImpliedPackageInfoRef(PackageInfoRef classRef) {
+//		this.impliedPackageInfoRefs.remove(classRef);
+//		classRef.dispose();
+//		this.fireItemRemoved(IMPLIED_CLASS_REFS_COLLECTION, classRef);
+//	}
+//
+//	protected void updateImpliedPackageInfoRefs() {
+//		ContextContainerTools.update(this.impliedPackageInfoRefContainerAdapter);
+//	}
+//
+//	protected Iterable<String> getImpliedClassNames() {
+//		return this.excludesUnlistedClasses() ?
+//				EmptyIterable.<String>instance() :
+//				this.getImpliedClassNames_();
+//	}
+//
+//	/**
+//	 * Return the names of all the Java classes in the JPA project that are
+//	 * mapped (i.e. have the appropriate annotation etc.) but not specified
+//	 * in the persistence unit.
+//	 */
+//	protected Iterable<String> getImpliedClassNames_() {
+//		return new FilteringIterable<String>(this.getJpaProject().getMappedJavaSourceClassNames()) {
+//				@Override
+//				protected boolean accept(String mappedClassName) {
+//					return ! HibernatePersistenceUnit.this.specifiesPersistentType(mappedClassName);
+//				}
+//			};
+//	}
+//
+//	/**
+//	 * Virtual class ref container adapter.
+//	 * <p>
+//	 * <strong>NB:</strong> The context class ref is matched with a resource
+//	 * class by name.
+//	 * <p>
+//	 * This is used during <strong>both</strong> <em>sync</em> and
+//	 * <em>update</em> because the list of implied class refs can be modified
+//	 * in either situation. In particular, we cannot simply rely on
+//	 * <em>update</em> because there are situations where a <em>sync</em> is
+//	 * triggered but a follow-up <em>update</em> is not. (Of course, any
+//	 * change discovered here will trigger an <em>update</em>.)
+//	 * <p>
+//	 * The most obvious example is when the JPA project is configured to
+//	 * discover annotated classes and a Java class is annotated for the first
+//	 * time (via code editing, not via the context model). This will trigger
+//	 * a <em>sync</em>; but, since the unannotated class is not yet in the
+//	 * context model and, as a result, the context model's state is untouched,
+//	 * an <em>update</em> will not be triggered.
+//	 * <p>
+//	 * Obviously, other context model changes can change this collection (e.g.
+//	 * setting whether the persistence unit excludes unlisted classes); o the
+//	 * collection must also be synchronized during <em>update</em>.
+//	 */
+//	protected class ImpliedPackageInfoRefContainerAdapter
+//		implements ContextContainerTools.Adapter<PackageInfoRef, String>
+//	{
+//		public Iterable<PackageInfoRef> getContextElements() {
+//			return HibernatePersistenceUnit.this.getImpliedPackageInfoRef();
+//		}
+//		public Iterable<String> getResourceElements() {
+//			return HibernatePersistenceUnit.this.getImpliedPackageInfoNames();
+//		}
+//		public String getResourceElement(PackageInfoRef contextElement) {
+//			return contextElement.getPackageName();
+//		}
+//		public void moveContextElement(int index, PackageInfoRef element) {
+//			// ignore moves - we don't care about the order of the implied package-info refs
+//		}
+//		public void addContextElement(int index, String resourceElement) {
+//			// ignore the index - we don't care about the order of the implied package-info refs
+//			HibernatePersistenceUnit.this.addImpliedPackageInfoRef(resourceElement);
+//		}
+//		public void removeContextElement(PackageInfoRef element) {
+//			HibernatePersistenceUnit.this.removeImpliedPackageInfoRef(element);
+//		}
+//	}
 
 }

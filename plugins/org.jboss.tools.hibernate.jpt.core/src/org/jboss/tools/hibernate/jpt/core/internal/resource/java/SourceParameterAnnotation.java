@@ -16,12 +16,12 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotation
 import org.eclipse.jpt.common.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.jpa.core.resource.java.NestableAnnotation;
@@ -31,7 +31,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
  * @author Dmitry Geraskov
  *
  */
-public class SourceParameterAnnotation extends SourceAnnotation<Member> implements
+public class SourceParameterAnnotation extends SourceAnnotation<AnnotatedElement> implements
 		NestableParameterAnnotation {
 
 	private final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
@@ -43,7 +43,7 @@ public class SourceParameterAnnotation extends SourceAnnotation<Member> implemen
 	private String value;
 
 
-	public SourceParameterAnnotation(JavaResourceNode parent, Member member, IndexedDeclarationAnnotationAdapter idaa) {
+	public SourceParameterAnnotation(JavaResourceNode parent, AnnotatedElement member, IndexedDeclarationAnnotationAdapter idaa) {
 		super(parent, member, idaa, new ElementIndexedAnnotationAdapter(member, idaa));
 		this.nameDeclarationAdapter = this.buildNameAdapter(idaa);
 		this.nameAdapter = this.buildAdapter(this.nameDeclarationAdapter);
@@ -157,7 +157,7 @@ public class SourceParameterAnnotation extends SourceAnnotation<Member> implemen
 
 	// ********** static methods **********
 
-	public static SourceParameterAnnotation createParameter(JavaResourceNode parent, Member member,  DeclarationAnnotationAdapter annotationAdapter, String elementName, int index) {
+	public static SourceParameterAnnotation createParameter(JavaResourceNode parent, AnnotatedElement member,  DeclarationAnnotationAdapter annotationAdapter, String elementName, int index) {
 		return new SourceParameterAnnotation(parent, member, buildParameterAnnotationAdapter(annotationAdapter, elementName, index));
 	}
 

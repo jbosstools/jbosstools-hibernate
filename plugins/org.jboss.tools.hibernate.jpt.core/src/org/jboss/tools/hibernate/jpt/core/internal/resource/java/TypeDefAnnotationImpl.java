@@ -33,7 +33,7 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapt
 import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.Member;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
@@ -50,7 +50,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
  * @author Dmitry Geraskov
  *
  */
-public class TypeDefAnnotationImpl extends SourceAnnotation<Member>
+public class TypeDefAnnotationImpl extends SourceAnnotation<AnnotatedElement>
 					implements TypeDefAnnotation {
 
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
@@ -78,7 +78,7 @@ public class TypeDefAnnotationImpl extends SourceAnnotation<Member>
 	 * @param parent
 	 * @param member
 	 */
-	public TypeDefAnnotationImpl(JavaResourceNode parent, Member member,
+	public TypeDefAnnotationImpl(JavaResourceNode parent, AnnotatedElement member,
 			DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
 		this.nameDeclarationAdapter = this.buildNameAdapter(daa);
@@ -367,7 +367,7 @@ public class TypeDefAnnotationImpl extends SourceAnnotation<Member>
 	}
 
 	public static TypeDefAnnotation createNestedTypeDef(
-			JavaResourceNode parent, Member member,
+			JavaResourceNode parent, AnnotatedElement member,
 			int index, DeclarationAnnotationAdapter attributeOverridesAdapter) {
 		IndexedDeclarationAnnotationAdapter idaa = buildNestedHibernateDeclarationAnnotationAdapter(index, attributeOverridesAdapter);
 		IndexedAnnotationAdapter annotationAdapter = new ElementIndexedAnnotationAdapter(member, idaa);
@@ -417,7 +417,7 @@ public class TypeDefAnnotationImpl extends SourceAnnotation<Member>
 		}
 
 		public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
-			return new TypeDefAnnotationImpl(parent, (Member) annotatedElement,
+			return new TypeDefAnnotationImpl(parent, annotatedElement,
 				DECLARATION_ANNOTATION_ADAPTER, new ElementAnnotationAdapter(annotatedElement, DECLARATION_ANNOTATION_ADAPTER));
 		}
 

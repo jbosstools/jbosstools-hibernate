@@ -25,6 +25,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.AbstractJpaPlatformProvider;
 import org.eclipse.jpt.jpa.core.internal.JarResourceModelProvider;
+import org.eclipse.jpt.jpa.core.internal.JavaPackageInfoResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.JavaResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.OrmResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.PersistenceResourceModelProvider;
@@ -76,7 +77,9 @@ public class HibernateJpaPlatformProvider extends AbstractJpaPlatformProvider {
 	// ********** resource models **********
 
 	public JptResourceType getMostRecentSupportedResourceType(IContentType contentType) {
-		if (contentType.equals(JptCommonCorePlugin.JAVA_SOURCE_CONTENT_TYPE)) {
+		if (contentType.equals(JptCommonCorePlugin.JAVA_SOURCE_PACKAGE_INFO_CONTENT_TYPE)) {
+			return JptCommonCorePlugin.JAVA_SOURCE_PACKAGE_INFO_RESOURCE_TYPE;
+		} else if (contentType.equals(JptCommonCorePlugin.JAVA_SOURCE_CONTENT_TYPE)) {
 			return JptCommonCorePlugin.JAVA_SOURCE_RESOURCE_TYPE;
 		}
 		else if (contentType.equals(JptCommonCorePlugin.JAR_CONTENT_TYPE)) {
@@ -100,6 +103,7 @@ public class HibernateJpaPlatformProvider extends AbstractJpaPlatformProvider {
 
 	// order should not be important here
 	protected static final JpaResourceModelProvider[] RESOURCE_MODEL_PROVIDERS = new JpaResourceModelProvider[] {
+		JavaPackageInfoResourceModelProvider.instance(),
 		JavaResourceModelProvider.instance(),
 		JarResourceModelProvider.instance(),
 		PersistenceResourceModelProvider.instance(),

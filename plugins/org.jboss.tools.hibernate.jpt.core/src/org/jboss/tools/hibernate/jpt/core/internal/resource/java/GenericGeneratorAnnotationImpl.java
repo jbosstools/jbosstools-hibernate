@@ -29,7 +29,6 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
@@ -47,7 +46,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
  * @author Dmitry Geraskov
  *
  */
-public class GenericGeneratorAnnotationImpl extends SourceAnnotation<Member>
+public class GenericGeneratorAnnotationImpl extends SourceAnnotation<AnnotatedElement>
 implements GenericGeneratorAnnotation {
 
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
@@ -69,7 +68,7 @@ implements GenericGeneratorAnnotation {
 	 * @param parent
 	 * @param member
 	 */
-	public GenericGeneratorAnnotationImpl(JavaResourceNode parent, Member member,
+	public GenericGeneratorAnnotationImpl(JavaResourceNode parent, AnnotatedElement member,
 			DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
 		this.nameDeclarationAdapter = this.buildNameDeclarationAdapter();
@@ -363,7 +362,7 @@ implements GenericGeneratorAnnotation {
 	}
 
 	public static GenericGeneratorAnnotation createNestedGenericGenerator(
-			JavaResourceNode parent, Member member,
+			JavaResourceNode parent, AnnotatedElement member,
 			int index, DeclarationAnnotationAdapter attributeOverridesAdapter) {
 		IndexedDeclarationAnnotationAdapter idaa = buildNestedHibernateDeclarationAnnotationAdapter(index, attributeOverridesAdapter);
 		IndexedAnnotationAdapter annotationAdapter = new ElementIndexedAnnotationAdapter(member, idaa);
@@ -394,7 +393,7 @@ implements GenericGeneratorAnnotation {
 		}
 
 		public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement member) {
-			return new GenericGeneratorAnnotationImpl(parent, (Member)member, DECLARATION_ANNOTATION_ADAPTER, new ElementAnnotationAdapter(member, DECLARATION_ANNOTATION_ADAPTER));
+			return new GenericGeneratorAnnotationImpl(parent, member, DECLARATION_ANNOTATION_ADAPTER, new ElementAnnotationAdapter(member, DECLARATION_ANNOTATION_ADAPTER));
 		}
 
 		public String getAnnotationName() {

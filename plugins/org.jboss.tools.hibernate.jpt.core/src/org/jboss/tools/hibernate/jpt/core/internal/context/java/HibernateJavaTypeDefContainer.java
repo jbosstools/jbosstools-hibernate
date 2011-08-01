@@ -13,7 +13,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 import java.util.ListIterator;
 
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.jpa.core.resource.java.JavaResourceAnnotatedElement;
 
 /**
  * @author Dmitry Geraskov
@@ -56,12 +56,12 @@ public interface HibernateJavaTypeDefContainer extends JavaJpaContextNode {
 	 */
 	void moveTypeDef(int targetIndex, int sourceIndex);
 	
-	void initialize(JavaResourcePersistentMember jrpm);
+	void initialize(JavaResourceAnnotatedElement jrpm);
 	
 	/**
 	 * Update the JavaGeneratorContainer context model object to match the JavaResourcePersistentMember 
 	 * resource model object. see {@link org.eclipse.jpt.jpa.core.JpaProject#update()}
 	 */
-	void update(JavaResourcePersistentMember jrpm);
+	void update(JavaResourceAnnotatedElement jrpm);
 	
 }

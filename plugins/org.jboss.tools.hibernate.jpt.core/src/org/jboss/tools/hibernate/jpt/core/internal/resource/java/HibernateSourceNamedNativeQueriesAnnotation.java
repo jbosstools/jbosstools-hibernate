@@ -15,8 +15,8 @@ import java.util.Vector;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.AnnotationContainerTools;
@@ -29,7 +29,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
  * @author Dmitry Geraskov
  *
  */
-public class HibernateSourceNamedNativeQueriesAnnotation extends SourceAnnotation<Member> implements
+public class HibernateSourceNamedNativeQueriesAnnotation extends SourceAnnotation<AnnotatedElement> implements
 		HibernateNamedNativeQueriesAnnotation {
 
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
@@ -37,7 +37,7 @@ public class HibernateSourceNamedNativeQueriesAnnotation extends SourceAnnotatio
 	private final Vector<HibernateNamedNativeQueryAnnotation> hibernateNamedNativeQueries = new Vector<HibernateNamedNativeQueryAnnotation>();
 
 
-	public HibernateSourceNamedNativeQueriesAnnotation(JavaResourceNode parent, Member member) {
+	public HibernateSourceNamedNativeQueriesAnnotation(JavaResourceNode parent, AnnotatedElement member) {
 		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
 	}
 
