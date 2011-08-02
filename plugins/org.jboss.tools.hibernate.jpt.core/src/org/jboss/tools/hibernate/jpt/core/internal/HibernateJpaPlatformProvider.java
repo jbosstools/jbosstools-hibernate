@@ -25,7 +25,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.AbstractJpaPlatformProvider;
 import org.eclipse.jpt.jpa.core.internal.JarResourceModelProvider;
-import org.eclipse.jpt.jpa.core.internal.JavaPackageInfoResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.JavaResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.OrmResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.PersistenceResourceModelProvider;
@@ -103,7 +102,7 @@ public class HibernateJpaPlatformProvider extends AbstractJpaPlatformProvider {
 
 	// order should not be important here
 	protected static final JpaResourceModelProvider[] RESOURCE_MODEL_PROVIDERS = new JpaResourceModelProvider[] {
-		JavaPackageInfoResourceModelProvider.instance(),
+		JavaPackageInfoResourceModelProviderPatched.instance(),//replace with original when NPE will be fixed
 		JavaResourceModelProvider.instance(),
 		JarResourceModelProvider.instance(),
 		PersistenceResourceModelProvider.instance(),

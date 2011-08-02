@@ -25,7 +25,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.AbstractJpaPlatformProvider;
 import org.eclipse.jpt.jpa.core.internal.JarResourceModelProvider;
-import org.eclipse.jpt.jpa.core.internal.JavaPackageInfoResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.JavaResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.OrmResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.PersistenceResourceModelProvider;
@@ -37,6 +36,7 @@ import org.eclipse.jpt.jpa.core.internal.context.java.JavaVersionMappingDefiniti
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaElementCollectionMappingDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaEmbeddedMappingDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaOneToManyMappingDefinition2_0;
+import org.jboss.tools.hibernate.jpt.core.internal.JavaPackageInfoResourceModelProviderPatched;
 import org.jboss.tools.hibernate.jpt.core.internal.context.definition.HibernateJavaBasicMappingDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.context.definition.HibernateJavaEntityDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmXmlDefinition;
@@ -106,7 +106,7 @@ public class HibernateJpa2_0PlatformProvider extends AbstractJpaPlatformProvider
 
 	// order should not be important here
 	protected static final JpaResourceModelProvider[] RESOURCE_MODEL_PROVIDERS = new JpaResourceModelProvider[] {
-		JavaPackageInfoResourceModelProvider.instance(),
+		JavaPackageInfoResourceModelProviderPatched.instance(),//replace with original when NPE will be fixed
 		JavaResourceModelProvider.instance(),
 		JarResourceModelProvider.instance(),
 		PersistenceResourceModelProvider.instance(),
