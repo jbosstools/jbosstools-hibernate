@@ -23,7 +23,8 @@ import org.eclipse.jpt.jpa.core.resource.java.JavaResourceCompilationUnit;
 
 /**
  * @author Dmitry Geraskov
- * 
+ * Remove the class when https://bugs.eclipse.org/bugs/show_bug.cgi?id=353495
+ * will be fixed
  */
 public class JavaPackageInfoResourceModelProviderPatched implements
 		JpaResourceModelProvider {
