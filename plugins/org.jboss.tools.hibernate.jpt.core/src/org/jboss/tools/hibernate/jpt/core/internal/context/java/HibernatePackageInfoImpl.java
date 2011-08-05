@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
@@ -66,6 +67,11 @@ public class HibernatePackageInfoImpl extends AbstractJavaJpaContextNode impleme
 	
 	public HibernateJavaTypeDefContainer getTypeDefContainer() {
 		return this.typeDefContainer;
+	}
+	
+	@Override
+	public IResource getResource() {
+		return resourcePackage.getFile();
 	}
 
 	// ********** synchronize/update **********
