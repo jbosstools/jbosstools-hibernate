@@ -166,8 +166,6 @@ public class ConsoleConfigurationTest extends TestCase {
 		model.addParameter(paramB);
 		model.addParameter(paramOrdered);
 		
-		//activePage.hideView(view);
-		
 		QueryPage qp = consoleCfg.executeHQLQuery("select count(*) from java.awt.Button where 1 in ( ?, :a, :b )", model); //$NON-NLS-1$
 		assertNotNull(qp);
 		try{
