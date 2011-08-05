@@ -7,7 +7,6 @@ import junit.framework.TestCase;
 
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
@@ -123,6 +122,15 @@ public class ConsoleConfigurationTest extends TestCase {
 	}
 	
 	public void testHQLListParameters() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+		//fix for https://issues.jboss.org/browse/JBIDE-9392
+		//the view calls jdbc connection
+		IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		IViewPart view = activePage.findView(QueryPageTabView.ID);
+		if (view != null){
+			activePage.hideView(view);
+			view.dispose();
+		}
+		
 		consoleCfg.build();
 		Configuration c = consoleCfg.getConfiguration();
 		Mappings mappings = c.createMappings();
@@ -158,11 +166,7 @@ public class ConsoleConfigurationTest extends TestCase {
 		model.addParameter(paramB);
 		model.addParameter(paramOrdered);
 		
-		//fix for https://issues.jboss.org/browse/JBIDE-9392
-		//the view calls jdbc connection
-		IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-		IViewPart view = activePage.findView(QueryPageTabView.ID);
-		activePage.hideView(view);
+		//activePage.hideView(view);
 		
 		QueryPage qp = consoleCfg.executeHQLQuery("select count(*) from java.awt.Button where 1 in ( ?, :a, :b )", model); //$NON-NLS-1$
 		assertNotNull(qp);
