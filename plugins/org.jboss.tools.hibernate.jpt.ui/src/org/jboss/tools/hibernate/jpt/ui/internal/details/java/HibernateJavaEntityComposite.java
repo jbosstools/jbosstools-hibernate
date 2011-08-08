@@ -8,7 +8,7 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.jpt.ui.internal.java.details;
+package org.jboss.tools.hibernate.jpt.ui.internal.details.java;
 
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
