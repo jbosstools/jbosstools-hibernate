@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.GenericClassRef;
@@ -26,6 +27,7 @@ import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledExcepti
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
+import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaPackageInfo;
 
 /**
@@ -193,8 +195,17 @@ public class HibernateClassRef extends GenericClassRef implements PackageInfoRef
 			if (validateJavaPersistentType) {
 				this.validateJavaPersistentType(messages, reporter);
 			}
+		} else {
+			validatePackageInfo(messages, reporter);
 		}
-		
+	}
+	
+	protected void validatePackageInfo(List<IMessage> messages, IReporter reporter) {
+		try {
+			this.javaPackageInfo.validate(messages, reporter);
+		} catch (Throwable t) {
+			HibernateJptPlugin.logException(t);
+		}
 	}
 	
 }
