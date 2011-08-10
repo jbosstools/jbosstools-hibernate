@@ -24,8 +24,8 @@ import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.context.ForeignKey;
-import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
+import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValidationMessage;
 
 /**
  * @author Dmitry Geraskov
@@ -50,7 +50,7 @@ public class ForeignKeyImpl extends AbstractJavaJpaContextNode implements Foreig
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 		this.setName_(annotation.getName());
-		this.setInverseName(annotation.getInverseName());
+		this.setInverseName_(annotation.getInverseName());
 	}
 	
 	private ForeignKeyAnnotation getResourceForeignKey() {
@@ -139,7 +139,8 @@ public class ForeignKeyImpl extends AbstractJavaJpaContextNode implements Foreig
 		
 	private void validateForeignKeyName(List<IMessage> messages, String name, TextRange range) {
 		if (name == null || name.trim().length() == 0) {
-			messages.add(creatErrorMessage(Messages.NAME_CANT_BE_EMPTY, range));
+			messages.add(HibernateJpaValidationMessage.buildMessage(IMessage.HIGH_SEVERITY, Messages.NAME_CANT_BE_EMPTY,
+					getResource(), range));
 		} else {
 			AttributeMapping mapping = (AttributeMapping) getParent();
 			Table table = mapping.getTypeMapping().getPrimaryDbTable();
@@ -153,17 +154,8 @@ public class ForeignKeyImpl extends AbstractJavaJpaContextNode implements Foreig
 					return;
 				}
 			}
-			creatErrorMessage(Messages.UNRESOLVED_FOREIGN_KEY_NAME, range);
+			messages.add(HibernateJpaValidationMessage.buildMessage(IMessage.HIGH_SEVERITY, Messages.UNRESOLVED_FOREIGN_KEY_NAME,
+					getResource(), range));
 		}
 	}
-	
-	protected IMessage creatErrorMessage(String strmessage, TextRange range){
-		IMessage message = new LocalMessage(IMessage.HIGH_SEVERITY,
-				strmessage, new String[0], getResource());
-		message.setLineNo(range.getLineNumber());
-		message.setOffset(range.getOffset());
-		message.setLength(range.getLength());
-		return message;
-	}
-
 }

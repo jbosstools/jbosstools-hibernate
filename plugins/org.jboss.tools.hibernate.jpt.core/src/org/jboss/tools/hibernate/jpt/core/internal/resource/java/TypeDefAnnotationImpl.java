@@ -11,6 +11,7 @@
 package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.Vector;
 
 import org.eclipse.jdt.core.IAnnotation;
@@ -55,18 +56,18 @@ public class TypeDefAnnotationImpl extends SourceAnnotation<AnnotatedElement>
 
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
-	private final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
-	private final AnnotationElementAdapter<String> nameAdapter;
+	private DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
+	private AnnotationElementAdapter<String> nameAdapter;
 	private String name;
 
-	private static final DeclarationAnnotationElementAdapter<String> TYPE_CLASS_ADAPTER = buildTypeClassAdapter();
-	private final AnnotationElementAdapter<String> typeClassAdapter;
+	private DeclarationAnnotationElementAdapter<String> typeClassDeclarationAdapter;
+	private AnnotationElementAdapter<String> typeClassAdapter;
 	private String typeClass;
 
 	String fullyQualifiedTypeClassName;
 
-	private static final DeclarationAnnotationElementAdapter<String> DEF_FOR_TYPE_ADAPTER = buildDefForTypeAdapter();
-	private final AnnotationElementAdapter<String> defaultForTypeAdapter;
+	private DeclarationAnnotationElementAdapter<String> defForTypeDeclarationAdapter;
+	private AnnotationElementAdapter<String> defaultForTypeAdapter;
 	private String defaultForType;
 
 	String fullyQualifiedDefaultForTypeClassName;
@@ -81,10 +82,12 @@ public class TypeDefAnnotationImpl extends SourceAnnotation<AnnotatedElement>
 	public TypeDefAnnotationImpl(JavaResourceNode parent, AnnotatedElement member,
 			DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
-		this.nameDeclarationAdapter = this.buildNameAdapter(daa);
-		this.nameAdapter = new ShortCircuitAnnotationElementAdapter<String>(member, this.nameDeclarationAdapter);
-		this.typeClassAdapter = new AnnotatedElementAnnotationElementAdapter<String>(member, TYPE_CLASS_ADAPTER);
-		this.defaultForTypeAdapter = new AnnotatedElementAnnotationElementAdapter<String>(member, DEF_FOR_TYPE_ADAPTER);
+		this.nameDeclarationAdapter = this.buildNameDeclarationAdapter();
+		this.nameAdapter = this.buildNameAdapter();
+		this.typeClassDeclarationAdapter = this.buildTypeClassDeclarationAdapter();
+		this.typeClassAdapter = this.buildTypeClassAdapter();
+		this.defForTypeDeclarationAdapter = this.buildDefForTypeDeclarationAdapter();
+		this.defaultForTypeAdapter = this.buildDefForTypeAdapter();
 	}
 
 	public void initialize(CompilationUnit astRoot) {
@@ -103,6 +106,34 @@ public class TypeDefAnnotationImpl extends SourceAnnotation<AnnotatedElement>
 		this.syncDefaultForType(this.buildDefaultForType(astRoot));
 		this.syncFullyQualifiedDefaultForTypeClassName(this.buildFullyQualifiedDefaultForTypeClassName(astRoot));
 		AnnotationContainerTools.synchronize(this.parametersContainer, astRoot);
+	}
+	
+	// ********** misc **********
+	@Override
+	protected void rebuildAdapters() {
+		super.rebuildAdapters();
+		this.nameDeclarationAdapter = this.buildNameDeclarationAdapter();
+		this.nameAdapter = this.buildNameAdapter();
+		this.typeClassDeclarationAdapter = this.buildTypeClassDeclarationAdapter();
+		this.typeClassAdapter = this.buildTypeClassAdapter();
+		this.defForTypeDeclarationAdapter = this.buildDefForTypeDeclarationAdapter();
+		this.defaultForTypeAdapter = this.buildDefForTypeAdapter();
+	}
+	
+	@Override
+	public void storeOn(Map<String, Object> map) {
+		super.storeOn(map);
+		map.put(TYPE_CLASS_PROPERTY, this.typeClass);
+		this.typeClass = null;
+		map.put(DEF_FOR_TYPE_PROPERTY, this.defaultForType);
+		this.defaultForType = null;
+	}
+
+	@Override
+	public void restoreFrom(Map<String, Object> map) {
+		super.restoreFrom(map);
+		this.setTypeClass((String) map.get(TYPE_CLASS_PROPERTY));
+		this.setDefaultForType((String) map.get(DEF_FOR_TYPE_PROPERTY));
 	}
 
 	// ********** TypeDefAnnotation implementation **********
@@ -161,7 +192,7 @@ public class TypeDefAnnotationImpl extends SourceAnnotation<AnnotatedElement>
 	}
 
 	public TextRange getTypeClassTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(TYPE_CLASS_ADAPTER, astRoot);
+		return this.getElementTextRange(typeClassDeclarationAdapter, astRoot);
 	}
 
 	// ***** fully-qualified type entity class name
@@ -202,7 +233,7 @@ public class TypeDefAnnotationImpl extends SourceAnnotation<AnnotatedElement>
 	}
 
 	public TextRange getDefaultForTypeTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(DEF_FOR_TYPE_ADAPTER, astRoot);
+		return this.getElementTextRange(defForTypeDeclarationAdapter, astRoot);
 	}
 
 	// ***** fully-qualified default for type entity class name
@@ -305,8 +336,12 @@ public class TypeDefAnnotationImpl extends SourceAnnotation<AnnotatedElement>
 		sb.append(this.name);
 	}
 
-	private DeclarationAnnotationElementAdapter<String> buildNameAdapter(DeclarationAnnotationAdapter daa) {
+	private DeclarationAnnotationElementAdapter<String> buildNameDeclarationAdapter() {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, Hibernate.TYPE_DEF__NAME);
+	}
+	
+	private AnnotationElementAdapter<String> buildNameAdapter() {
+		return this.buildStringElementAdapter(this.nameDeclarationAdapter);
 	}
 
 	/**
@@ -378,18 +413,29 @@ public class TypeDefAnnotationImpl extends SourceAnnotation<AnnotatedElement>
 		return new NestedIndexedDeclarationAnnotationAdapter(hibernateTypeDefsAdapter, index, Hibernate.TYPE_DEF);
 	}
 
-	// ********** static methods **********
 
-	private static DeclarationAnnotationElementAdapter<String> buildTypeClassAdapter() {
-		return buildTypeClassAdapter(DECLARATION_ANNOTATION_ADAPTER, Hibernate.TYPE_DEF__TYPE_CLASS);
+
+	private DeclarationAnnotationElementAdapter<String> buildTypeClassDeclarationAdapter() {
+		return new ConversionDeclarationAnnotationElementAdapter<String>(daa,
+				Hibernate.TYPE_DEF__TYPE_CLASS,
+				SimpleTypeStringExpressionConverter.instance());
+	}
+	
+	private AnnotationElementAdapter<String> buildTypeClassAdapter() {
+		return this.buildStringElementAdapter(this.typeClassDeclarationAdapter);
 	}
 
-	private static DeclarationAnnotationElementAdapter<String> buildDefForTypeAdapter() {
-		return buildTypeClassAdapter(DECLARATION_ANNOTATION_ADAPTER, Hibernate.TYPE_DEF__DEF_FOR_TYPE);
+	private DeclarationAnnotationElementAdapter<String> buildDefForTypeDeclarationAdapter() {
+		return new ConversionDeclarationAnnotationElementAdapter<String>(daa,
+				Hibernate.TYPE_DEF__DEF_FOR_TYPE,
+				SimpleTypeStringExpressionConverter.instance());
+	}
+	
+	private AnnotationElementAdapter<String> buildDefForTypeAdapter() {
+		return this.buildStringElementAdapter(this.defForTypeDeclarationAdapter);
 	}
 
 	private static DeclarationAnnotationElementAdapter<String> buildTypeClassAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
-		// TODO what about QualifiedType?
 		return buildAnnotationElementAdapter(annotationAdapter, elementName, SimpleTypeStringExpressionConverter.instance());
 	}
 

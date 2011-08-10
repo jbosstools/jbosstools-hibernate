@@ -16,6 +16,8 @@ import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.jpa.core.JpaFile;
@@ -55,7 +57,7 @@ public class HibernatePackageInfoImpl extends AbstractJavaJpaContextNode impleme
 		super(owner);
 		this.resourcePackage = resourcePackage;
 		this.name = resourcePackage.getName();
-		this.typeDefContainer = getJpaFactory().buildJavaTypeDefContainer(this);
+		this.typeDefContainer = getJpaFactory().buildJavaTypeDefContainer(this, getResourceAnnotatedElement());
 		this.generatorContainer = this.buildGeneratorContainer();
 		this.queryContainer = this.buildQueryContainer();
 	}
@@ -80,7 +82,7 @@ public class HibernatePackageInfoImpl extends AbstractJavaJpaContextNode impleme
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 		this.setName(this.resourcePackage.getName());
-		this.typeDefContainer.initialize(this.getResourcePackage());
+		this.typeDefContainer.synchronizeWithResourceModel();
 		this.generatorContainer.synchronizeWithResourceModel();
 		this.queryContainer.synchronizeWithResourceModel();
 	}
@@ -88,9 +90,23 @@ public class HibernatePackageInfoImpl extends AbstractJavaJpaContextNode impleme
 	@Override
 	public void update() {
 		super.update();
-		this.typeDefContainer.update(this.getResourcePackage());
+		this.typeDefContainer.update();
 		this.generatorContainer.update();
 		this.queryContainer.update();
+		this.registerRootStructureNode();
+	}
+	
+	protected void registerRootStructureNode() {
+		JpaFile jpaFile = this.getJpaFile();
+		// the JPA file can be null if the resource type is "external"
+		if (jpaFile != null) {
+			jpaFile.addRootStructureNode(this.name, this);
+		}
+	}
+	
+	@Override
+	public JptResourceType getResourceType() {
+		return JptCommonCorePlugin.JAVA_SOURCE_PACKAGE_INFO_RESOURCE_TYPE;
 	}
 
 	// ********** name **********

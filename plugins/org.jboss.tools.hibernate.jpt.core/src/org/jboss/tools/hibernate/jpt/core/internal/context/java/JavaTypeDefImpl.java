@@ -10,104 +10,82 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Vector;
 
+import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
-import org.eclipse.jpt.jpa.core.context.Embeddable;
-import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit;
-import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
+import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Parameter;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.ParameterAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeDefAnnotation;
+import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValidationMessage;
 
 /**
  * @author Dmitry Geraskov
  * 
  */
-public class JavaTypeDefImpl extends AbstractJavaJpaContextNode implements JavaTypeDef {
+public class JavaTypeDefImpl extends AbstractJavaJpaContextNode implements JavaTypeDef, Messages {
 	
 	protected TypeDefAnnotation typeDefAnnotation;
 	
 	protected String name;
 	
-	protected String specifiedTypeClass;
-	protected String defaultTypeClass;
-	protected String fullyQualifiedTypeClass;
-	protected PersistentType resolvedTypeType;
+	protected String typeClass;
 	
-	protected String specifiedDefaultForType;
-	protected String defaultDefaultForType;
-	protected String fullyQualifiedDefaultForType;
-	protected PersistentType resolvedTargetType;
+	protected String defaultForTypeClass;
 	
-	protected final List<JavaParameter> parameters;
-	
+	protected final Vector<JavaParameter> parameters = new Vector<JavaParameter>();
 
-	public JavaTypeDefImpl(JavaJpaContextNode parent) {
+	public JavaTypeDefImpl(JavaJpaContextNode parent, TypeDefAnnotation typeDefAnnotation) {
 		super(parent);
-		this.parameters = new ArrayList<JavaParameter>();
+		this.typeDefAnnotation = typeDefAnnotation;
+		this.name = typeDefAnnotation.getName();
+		this.typeClass = typeDefAnnotation.getTypeClass();
+		this.defaultForTypeClass = typeDefAnnotation.getDefaultForType();
+		this.initializeParameters();
 	}
 	
 	public HibernatePersistenceUnit getPersistenceUnit() {
 		return (HibernatePersistenceUnit)this.getParent().getPersistenceUnit();
 	}
 	
-	public void initialize(TypeDefAnnotation typeDefAnnotation) {
-		this.typeDefAnnotation = typeDefAnnotation;
-		
-		this.name = typeDefAnnotation.getName();
-		
-		this.defaultTypeClass = this.buildDefaultTypeClass();
-		this.specifiedTypeClass = this.getResourceTypeClass();
-		this.fullyQualifiedTypeClass = this.buildFullyQualifiedTypeClass();
-		this.resolvedTypeType = this.buildResolvedTypeType();
-		
-		this.defaultDefaultForType = this.buildDefaultDefaultForType();
-		this.specifiedDefaultForType = this.getResourceDefaultForType();
-		this.fullyQualifiedDefaultForType = this.buildFullyQualifiedDefaultForType();
-		this.resolvedTargetType = this.buildResolvedTargetType();
-		
-		this.initializeParameters();
+	@Override
+	public TypeDefAnnotation getTypeDefAnnotation() {
+		return this.typeDefAnnotation;
 	}
 	
-	public void update(TypeDefAnnotation typeDefAnnotation) {
-		this.typeDefAnnotation = typeDefAnnotation;
-		
-		this.setName_(typeDefAnnotation.getName());
-		
-		this.setDefaultTypeClass(this.buildDefaultTypeClass());
-		this.setSpecifiedTypeClass_(this.getResourceTypeClass());
-		this.setFullyQualifiedTypeClass(this.buildFullyQualifiedTypeClass());
-		this.resolvedTypeType = this.buildResolvedTypeType();
-		
-		this.setDefaultDefaultForType(this.buildDefaultDefaultForType());
-		this.setSpecifiedDefaultForType_(this.getResourceDefaultForType());
-		this.setFullyQualifiedDefaultForType(this.buildFullyQualifiedDefaultForType());
-		this.resolvedTargetType = this.buildResolvedTargetType();
-		
+	// ********** synchronize/update **********
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setName_(this.typeDefAnnotation.getName());
+		this.setTypeClass_(typeDefAnnotation.getTypeClass());
+		this.setDefaultForTypeClass_(typeDefAnnotation.getDefaultForType());
 		this.updateParameters();
-		
-		this.getPersistenceUnit().addTypeDef(this);
 	}
 	
-	protected IMessage creatErrorMessage(String strmessage, String[] params, int lineNum){
-		IMessage message = new LocalMessage(IMessage.HIGH_SEVERITY, 
-			strmessage, params, getResource());
-			message.setLineNo(lineNum);
-		return message;
+	@Override
+	public void update() {
+		super.update();
+		this.getPersistenceUnit().addTypeDef(this);
+		this.updateNodes(this.getParameters());
 	}
+		
 	
 	@Override
 	protected HibernateAbstractJpaFactory getJpaFactory() {
@@ -121,10 +99,8 @@ public class JavaTypeDefImpl extends AbstractJavaJpaContextNode implements JavaT
 	}
 
 	public void setName(String name) {
-		String old = this.name;
-		this.name = name;
 		this.typeDefAnnotation.setName(name);
-		this.firePropertyChanged(TYPE_DEF_NAME, old, name);
+		this.setName_(name);
 	}
 
 	protected void setName_(String name) {
@@ -132,166 +108,57 @@ public class JavaTypeDefImpl extends AbstractJavaJpaContextNode implements JavaT
 		this.name = name;
 		this.firePropertyChanged(TYPE_DEF_NAME, old, name);
 	}
-
 	
 	// ********** type class **********
 
 	public String getTypeClass() {
-		return (this.specifiedTypeClass != null) ? this.specifiedTypeClass : this.defaultTypeClass;
+		return this.typeClass;
 	}
 
-	public String getSpecifiedTypeClass() {
-		return this.specifiedTypeClass;
-	}
-
-	public void setSpecifiedTypeClass(String typeClass) {
-		String old = this.specifiedTypeClass;
-		this.specifiedTypeClass = typeClass;
+	public void setTypeClass(String typeClass) {
 		this.typeDefAnnotation.setTypeClass(typeClass);
-		this.firePropertyChanged(SPECIFIED_TYPE_CLASS_PROPERTY, old, typeClass);
+		this.setTypeClass_(typeClass);
 	}
 
-	protected void setSpecifiedTypeClass_(String typeClass) {
-		String old = this.specifiedTypeClass;
-		this.specifiedTypeClass = typeClass;
-		this.firePropertyChanged(SPECIFIED_TYPE_CLASS_PROPERTY, old, typeClass);
+	protected void setTypeClass_(String typeClass) {
+		String old = this.typeClass;
+		this.typeClass = typeClass;
+		this.firePropertyChanged(TYPE_CLASS_PROPERTY, old, typeClass);
 	}
 
 	protected String getResourceTypeClass() {
 		return this.typeDefAnnotation.getTypeClass();
 	}
 
-	public String getDefaultTypeClass() {
-		return this.defaultTypeClass;
-	}
-
-	protected void setDefaultTypeClass(String typeClass) {
-		String old = this.defaultTypeClass;
-		this.defaultTypeClass = typeClass;
-		this.firePropertyChanged(DEFAULT_TYPE_CLASS_PROPERTY, old, typeClass);
-	}
-
-	protected String buildDefaultTypeClass() {
-		return null;
-	}
-
-	public String getFullyQualifiedTypeClass() {
-		return this.fullyQualifiedTypeClass;
-	}
-
-	protected void setFullyQualifiedTypeClass(String typeClass) {
-		String old = this.fullyQualifiedTypeClass;
-		this.fullyQualifiedTypeClass = typeClass;
-		this.firePropertyChanged(FULLY_QUALIFIED_TYPE_CLASS_PROPERTY, old, typeClass);
-	}
-
-	protected String buildFullyQualifiedTypeClass() {
-		return (this.specifiedTypeClass == null) ?
-			this.defaultTypeClass :
-			this.typeDefAnnotation.getFullyQualifiedTypeClassName();
-	}
-
-	public PersistentType getResolvedTypeType() {
-		return this.resolvedTypeType;
-	}
-	
-	protected PersistentType buildResolvedTypeType() {
-		return (this.fullyQualifiedTypeClass == null) ? null : this.getPersistenceUnit().getPersistentType(this.fullyQualifiedTypeClass);
-	}
-
 	public char getTypeClassEnclosingTypeSeparator() {
 		return '.';
 	}
 	
-	
 	// ********** target class **********
-
-	public String getDefaultForType() {
-		return (this.specifiedDefaultForType != null) ? this.specifiedDefaultForType : this.defaultDefaultForType;
+	public String getDefaultForTypeClass() {
+		return this.defaultForTypeClass;
 	}
 
-	public String getSpecifiedDefaultForType() {
-		return this.specifiedDefaultForType;
-	}
-
-	public void setSpecifiedDefaultForType(String defaultForType) {
-		String old = this.specifiedDefaultForType;
-		this.specifiedDefaultForType = defaultForType;
+	public void setDefaultForTypeClass(String defaultForType) {
 		this.typeDefAnnotation.setDefaultForType(defaultForType);
-		this.firePropertyChanged(SPECIFIED_DEF_FOR_TYPE_PROPERTY, old, defaultForType);
+		this.setDefaultForTypeClass_(defaultForType);
 	}
 
-	protected void setSpecifiedDefaultForType_(String defaultForType) {
-		String old = this.specifiedDefaultForType;
-		this.specifiedDefaultForType = defaultForType;
-		this.firePropertyChanged(SPECIFIED_DEF_FOR_TYPE_PROPERTY, old, defaultForType);
+	protected void setDefaultForTypeClass_(String defaultForType) {
+		String old = this.defaultForTypeClass;
+		this.defaultForTypeClass = defaultForType;
+		this.firePropertyChanged(DEF_FOR_TYPE_PROPERTY, old, defaultForType);
 	}
 
-	protected String getResourceDefaultForType() {
-		return this.typeDefAnnotation.getDefaultForType();
-	}
-
-	public String getDefaultDefaultForType() {
-		return this.defaultDefaultForType;
-	}
-
-	protected void setDefaultDefaultForType(String defaultForType) {
-		String old = this.defaultDefaultForType;
-		this.defaultDefaultForType = defaultForType;
-		this.firePropertyChanged(DEFAULT_DEF_FOR_TYPE_PROPERTY, old, defaultForType);
-	}
-
-	protected String buildDefaultDefaultForType() {
-		return void.class.getName();
-	}
-
-	public String getFullyQualifiedDefaultForType() {
-		return this.fullyQualifiedDefaultForType;
-	}
-
-	protected void setFullyQualifiedDefaultForType(String defaultForType) {
-		String old = this.fullyQualifiedDefaultForType;
-		this.fullyQualifiedDefaultForType = defaultForType;
-		this.firePropertyChanged(FULLY_QUALIFIED_DEF_FOR_TYPE_PROPERTY, old, defaultForType);
-	}
-
-	protected String buildFullyQualifiedDefaultForType() {
-		return (this.specifiedDefaultForType == null) ?
-			this.defaultDefaultForType :
-			this.typeDefAnnotation.getFullyQualifiedDefaultForTypeClassName();
-	}
-
-
-	public PersistentType getResolvedTargetType() {
-		return this.resolvedTargetType;
-	}
-	
-	protected PersistentType buildResolvedTargetType() {
-		return (this.fullyQualifiedDefaultForType == null) ? null : this.getPersistenceUnit().getPersistentType(this.fullyQualifiedDefaultForType);
-	}
-
-	protected Embeddable buildResolvedTargetEmbeddable() {
-		if (this.resolvedTargetType == null) {
-			return null;
-		}
-		TypeMapping typeMapping = this.resolvedTargetType.getMapping();
-		return (typeMapping instanceof Embeddable) ? (Embeddable) typeMapping : null;
-	}
-
-	protected Entity buildResolvedTargetEntity() {
-		if (this.resolvedTargetType == null) {
-			return null;
-		}
-		TypeMapping typeMapping = this.resolvedTargetType.getMapping();
-		return (typeMapping instanceof Entity) ? (Entity) typeMapping : null;
-	}
-
-
-	public char getDefaultForTypeEnclosingTypeSeparator() {
+	public char getDefaultForTypeClassEnclosingTypeSeparator() {
 		return '.';
 	}
 	
 	//************************ parameters ***********************
+	
+	public ListIterable<JavaParameter> getParameters() {
+		return new LiveCloneListIterable<JavaParameter>(this.parameters);
+	}
 
 	public JavaParameter addParameter(int index) {
 		JavaParameter parameter = getJpaFactory().buildJavaParameter(this);
@@ -382,6 +249,62 @@ public class JavaTypeDefImpl extends AbstractJavaJpaContextNode implements JavaT
 	
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
 		return this.typeDefAnnotation.getNameTextRange(astRoot);
+	}
+	
+	public TextRange getTypeClassTextRange(CompilationUnit astRoot) {
+		return this.typeDefAnnotation.getTypeClassTextRange(astRoot);
+	}
+	
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter,
+			CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		
+		if (StringTools.stringIsEmpty(this.name)){
+			messages.add(
+					HibernateJpaValidationMessage.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							NAME_CANT_BE_EMPTY,
+							this,
+							this.getNameTextRange(astRoot))
+				
+			);
+		}
+		
+		IType lwType = null;
+		try {
+			lwType = getJpaProject().getJavaProject().findType(typeClass);
+			if (lwType == null || !lwType.isClass()){
+				messages.add(HibernateJpaValidationMessage.buildMessage(
+						IMessage.HIGH_SEVERITY,TYPE_CLASS_NOT_FOUND, new String[]{typeClass}, this, this.getTypeClassTextRange(astRoot)));
+			} else {
+				 if (!JpaUtil.isTypeImplementsInterface(getJpaProject().getJavaProject(), lwType, "org.hibernate.usertype.UserType")){//$NON-NLS-1$
+					messages.add(HibernateJpaValidationMessage.buildMessage(
+							IMessage.HIGH_SEVERITY,USER_TYPE_INTERFACE, new String[]{typeClass}, this, this.getTypeClassTextRange(astRoot)));
+				 }
+			}
+		} catch (JavaModelException e) {
+			// just ignore it!
+		}
+		
+		for (ListIterator<JavaTypeDef> stream = this.getPersistenceUnit().typeDefs(); stream.hasNext(); ) {
+			JavaTypeDef typeDef = stream.next();
+			if (this != typeDef){
+				if (this.name.equals(typeDef.getName())) {
+					messages.add(
+							HibernateJpaValidationMessage.buildMessage(
+									IMessage.HIGH_SEVERITY,
+									TYPE_DEF_DUPLICATE_NAME,
+									new String[]{this.name},
+									this,
+									this.getNameTextRange(astRoot))
+						
+					);
+					break;
+				}
+			}
+		}
+		
 	}
 
 }

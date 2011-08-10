@@ -34,11 +34,11 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.context.GenericGenerator;
-import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Parameter;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.GenericGeneratorAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.ParameterAnnotation;
+import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValidationMessage;
 
 /**
  * @author Dmitry Geraskov (geraskov@gmail.com)
@@ -89,8 +89,6 @@ implements JavaGenericGenerator, Messages {
 	@Override
 	public void update() {
 		super.update();
-		this.setName_(this.generatorAnnotation.getName());
-		this.setStrategy_(this.generatorAnnotation.getStrategy());
 		this.updateNodes(this.getParameters());
 	}
 
@@ -154,16 +152,26 @@ implements JavaGenericGenerator, Messages {
 		if (this.strategy != null) {
 			TextRange range = getStrategyTextRange(astRoot) == null ? TextRange.Empty.instance() : getStrategyTextRange(astRoot);
 			if (this.strategy.trim().length() == 0) {
-				messages.add(creatErrorMessage(STRATEGY_CANT_BE_EMPTY, new String[]{}, range));
+				messages.add(HibernateJpaValidationMessage.buildMessage(IMessage.HIGH_SEVERITY, STRATEGY_CANT_BE_EMPTY, getResource(), range));
 			} else if (!generatorClasses.contains(this.strategy)){
 				IType lwType = null;
 				try {
 					lwType = getJpaProject().getJavaProject().findType(this.strategy);
 					if (lwType == null || !lwType.isClass()){
-						messages.add(creatErrorMessage(STRATEGY_CLASS_NOT_FOUND, new String[]{this.strategy}, range));
+						messages.add(HibernateJpaValidationMessage.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								STRATEGY_CLASS_NOT_FOUND,
+								new String[]{this.strategy},
+								getResource(),
+								range));
 					} else {
 						if (!JpaUtil.isTypeImplementsInterface(getJpaProject().getJavaProject(), lwType, "org.hibernate.id.IdentifierGenerator")){//$NON-NLS-1$
-							messages.add(creatErrorMessage(STRATEGY_INTERFACE, new String[]{this.strategy}, range));
+							messages.add(HibernateJpaValidationMessage.buildMessage(
+									IMessage.HIGH_SEVERITY,
+									STRATEGY_INTERFACE,
+									new String[]{this.strategy},
+									getResource(),
+									range));
 						}
 					}
 				} catch (JavaModelException e) {
@@ -171,15 +179,6 @@ implements JavaGenericGenerator, Messages {
 				}
 			}
 		}
-	}
-
-	protected IMessage creatErrorMessage(String strmessage, String[] params, TextRange range){
-		IMessage message = new LocalMessage(IMessage.HIGH_SEVERITY,
-				strmessage, params, getResource());
-		message.setLineNo(range.getLineNumber());
-		message.setOffset(range.getOffset());
-		message.setLength(range.getLength());
-		return message;
 	}
 
 	@Override

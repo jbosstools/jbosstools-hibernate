@@ -33,7 +33,6 @@ import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlCacheable_2_0;
-import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.hibernate.cfg.NamingStrategy;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
@@ -41,9 +40,9 @@ import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
 import org.jboss.tools.hibernate.jpt.core.internal.context.GenericGenerator;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedNativeQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedQuery;
-import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateTable;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
+import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValidationMessage;
 
 /**
  * @author Dmitry Geraskov
@@ -196,8 +195,9 @@ implements HibernateOrmEntity {
 							? getTable().getName() : parentEntity.getPrimaryTableName());
 					return name;
 				} catch (Exception e) {
-					Message m = new LocalMessage(IMessage.HIGH_SEVERITY,
-							Messages.NAMING_STRATEGY_EXCEPTION, new String[0], null);
+					IMessage m = HibernateJpaValidationMessage.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							Messages.NAMING_STRATEGY_EXCEPTION,null);
 					HibernateJptPlugin.logException(m.getText(), e);
 				}
 			}

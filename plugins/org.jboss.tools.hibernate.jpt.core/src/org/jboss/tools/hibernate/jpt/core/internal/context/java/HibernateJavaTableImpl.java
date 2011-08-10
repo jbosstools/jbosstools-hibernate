@@ -18,13 +18,12 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaTable;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.db.Schema;
-import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.hibernate.cfg.NamingStrategy;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
-import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
+import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValidationMessage;
 
 /**
  * @author Dmitry Geraskov
@@ -75,8 +74,8 @@ public class HibernateJavaTableImpl extends GenericJavaTable implements Hibernat
 			try {
 				return ns.tableName(getSpecifiedName());
 			} catch (Exception e) {
-				Message m = new LocalMessage(IMessage.HIGH_SEVERITY,
-						Messages.NAMING_STRATEGY_EXCEPTION, new String[0], null);
+				IMessage m = HibernateJpaValidationMessage.buildMessage(IMessage.HIGH_SEVERITY,
+						Messages.NAMING_STRATEGY_EXCEPTION, null);
 				HibernateJptPlugin.logException(m.getText(), e);
 			}
 		}
@@ -90,8 +89,8 @@ public class HibernateJavaTableImpl extends GenericJavaTable implements Hibernat
 			try {
 				return ns.classToTableName(getDefaultName());
 			} catch (Exception e) {
-				Message m = new LocalMessage(IMessage.HIGH_SEVERITY,
-						Messages.NAMING_STRATEGY_EXCEPTION, new String[0], null);
+				IMessage m = HibernateJpaValidationMessage.buildMessage(IMessage.HIGH_SEVERITY,
+						Messages.NAMING_STRATEGY_EXCEPTION, null);
 				HibernateJptPlugin.logException(m.getText(), e);
 			}
 		}

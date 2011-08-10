@@ -15,6 +15,7 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.resource.java.NamedNativeQueryAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Parameter;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeDefAnnotation;
 
@@ -30,40 +31,17 @@ public interface JavaTypeDef extends JavaJpaContextNode {
 	
 	// **************** defaultForType class **************************************
 	
-	String getDefaultForType();
+	String getDefaultForTypeClass();
 
-	String getSpecifiedDefaultForType();
-	void setSpecifiedDefaultForType(String value);
-		String SPECIFIED_DEF_FOR_TYPE_PROPERTY = "specifiedDefaultForTypeClass"; //$NON-NLS-1$
+	void setDefaultForTypeClass(String value);
+		String DEF_FOR_TYPE_PROPERTY = "defaultForTypeClass"; //$NON-NLS-1$
 
-	String getDefaultDefaultForType();
-		String DEFAULT_DEF_FOR_TYPE_PROPERTY = "defaultDefaultForTypeClass"; //$NON-NLS-1$
-
-	/**
-	 * If the DefaultForType class is specified, this will return it fully qualified. If not
-	 * specified, it returns the default for type class, which is always fully qualified
-	 */
-	String getFullyQualifiedDefaultForType();
-		String FULLY_QUALIFIED_DEF_FOR_TYPE_PROPERTY = "fullyQualifiedDefaultForTypeClass"; //$NON-NLS-1$
-	
-	
 	// **************** type class **************************************
 	
 	String getTypeClass();
 
-	String getSpecifiedTypeClass();
-	void setSpecifiedTypeClass(String value);
-		String SPECIFIED_TYPE_CLASS_PROPERTY = "specifiedTypeClass"; //$NON-NLS-1$
-
-	String getDefaultTypeClass();
-		String DEFAULT_TYPE_CLASS_PROPERTY = "defaultTypeClass"; //$NON-NLS-1$
-
-	/**
-	 * If the type class is specified, this will return it fully qualified. If not
-	 * specified, it returns the default type class, which is always fully qualified
-	 */
-	String getFullyQualifiedTypeClass();
-		String FULLY_QUALIFIED_TYPE_CLASS_PROPERTY = "fullyQualifiedTypeClass"; //$NON-NLS-1$
+	void setTypeClass(String value);
+		String TYPE_CLASS_PROPERTY = "specifiedTypeClass"; //$NON-NLS-1$
 		
 	//************************ parameters ***********************
 	
@@ -103,8 +81,6 @@ public interface JavaTypeDef extends JavaJpaContextNode {
 	
 	TextRange getNameTextRange(CompilationUnit astRoot);
 	
-	void initialize(TypeDefAnnotation generator);
-	
-	void update(TypeDefAnnotation generator);
+	TypeDefAnnotation getTypeDefAnnotation();
 
 }

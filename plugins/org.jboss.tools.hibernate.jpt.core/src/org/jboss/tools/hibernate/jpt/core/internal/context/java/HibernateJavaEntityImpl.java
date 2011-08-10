@@ -39,10 +39,10 @@ import org.hibernate.cfg.NamingStrategy;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
-import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateTable;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.DiscriminatorFormulaAnnotation;
+import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValidationMessage;
 
 /**
  * @author Dmitry Geraskov
@@ -61,7 +61,7 @@ implements HibernateJavaEntity {
 	public HibernateJavaEntityImpl(JavaPersistentType parent, EntityAnnotation mappingAnnotation) {
 		super(parent, mappingAnnotation);
 		this.discriminatorFormula = this.buildDiscriminatorFormula();
-		this.typeDefContainer = getJpaFactory().buildJavaTypeDefContainer(parent);
+		this.typeDefContainer = getJpaFactory().buildJavaTypeDefContainer(parent, this.getResourcePersistentType());
 		this.cacheable = this.buildJavaCachable();
 	}
 
@@ -75,7 +75,7 @@ implements HibernateJavaEntity {
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 		this.cacheable.synchronizeWithResourceModel();
-		this.typeDefContainer.initialize(this.getResourcePersistentType());
+		this.typeDefContainer.synchronizeWithResourceModel();
 		this.syncDiscriminatorFormula();
 	}
 
@@ -83,7 +83,7 @@ implements HibernateJavaEntity {
 	public void update() {
 		super.update();
 		this.cacheable.update();
-		this.typeDefContainer.update(this.getResourcePersistentType());
+		this.typeDefContainer.update();
 		if (discriminatorFormula != null){
 			this.discriminatorFormula.update();
 		}
@@ -251,8 +251,8 @@ implements HibernateJavaEntity {
 						}
 						return name ;
 					} catch (Exception e) {
-						Message m = new LocalMessage(IMessage.HIGH_SEVERITY,
-								Messages.NAMING_STRATEGY_EXCEPTION, new String[0], null);
+						IMessage m =HibernateJpaValidationMessage.buildMessage(IMessage.HIGH_SEVERITY,
+								Messages.NAMING_STRATEGY_EXCEPTION, null);
 						HibernateJptPlugin.logException(m.getText(), e);
 					}
 				}

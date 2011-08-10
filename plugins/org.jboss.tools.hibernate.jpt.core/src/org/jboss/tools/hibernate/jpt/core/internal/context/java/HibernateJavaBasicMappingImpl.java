@@ -42,8 +42,6 @@ implements HibernateJavaBasicMapping {
 			new CompositeIterable<JavaConverter.Adapter>(JavaTypeConverter.Adapter.instance(),
 					new ArrayIterable<JavaConverter.Adapter>(CONVERTER_ADAPTER_ARRAY));
 
-	protected final HibernateJavaTypeDefContainer typeDefContainer;
-
 	protected GenerationTime specifiedGenerationTime;
 
 	protected JavaIndex index;
@@ -52,7 +50,6 @@ implements HibernateJavaBasicMapping {
 
 	public HibernateJavaBasicMappingImpl(JavaPersistentAttribute parent) {
 		super(parent);
-		this.typeDefContainer = getJpaFactory().buildJavaTypeDefContainer(parent);
 		this.index = this.buildIndex();
 		this.type = this.buildType();
 	}
@@ -70,7 +67,6 @@ implements HibernateJavaBasicMapping {
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.typeDefContainer.initialize(this.getResourcePersistentAttribute());
 		this.specifiedGenerationTime = this.getResourceGenerationTime();
 		this.syncIndex();
 		this.syncType();
@@ -79,7 +75,6 @@ implements HibernateJavaBasicMapping {
 	@Override
 	public void update() {
 		super.update();
-		this.typeDefContainer.update(this.getResourcePersistentAttribute());
 		this.setGenerationTime_(this.getResourceGenerationTime());
 		if (this.index != null){
 			this.index.update();
@@ -87,10 +82,6 @@ implements HibernateJavaBasicMapping {
 		if (this.type != null){
 			this.type.update();
 		}
-	}
-
-	public HibernateJavaTypeDefContainer getTypeDefContainer() {
-		return this.typeDefContainer;
 	}
 
 	public GeneratedAnnotation getGeneratedAnnotation() {
@@ -275,11 +266,6 @@ implements HibernateJavaBasicMapping {
 		if (result != null) {
 			return result;
 		}
-		result = this.getTypeDefContainer().javaCompletionProposals(pos,
-				filter, astRoot);
-		if (result != null) {
-			return result;
-		}
 		if (this.getType() != null) {
 			result = this.getType().javaCompletionProposals(pos, filter,
 					astRoot);
@@ -303,7 +289,6 @@ implements HibernateJavaBasicMapping {
 	public void validate(List<IMessage> messages, IReporter reporter,
 			CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		this.typeDefContainer.validate(messages, reporter, astRoot);
 		if (this.index != null){
 			this.index.validate(messages, reporter, astRoot);
 		}

@@ -30,8 +30,6 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeAnnotation;
 public class HibernateJavaIdMappingImpl extends AbstractJavaIdMapping
 implements HibernateJavaIdMapping {
 
-	protected final HibernateJavaTypeDefContainer typeDefContainer;
-
 	protected JavaIndex index;
 
 	protected JavaType type;
@@ -41,7 +39,6 @@ implements HibernateJavaIdMapping {
 	 */
 	public HibernateJavaIdMappingImpl(JavaPersistentAttribute parent) {
 		super(parent);
-		this.typeDefContainer = getJpaFactory().buildJavaTypeDefContainer(parent);
 		this.index = this.buildIndex();
 		this.type = this.buildType();
 	}
@@ -66,7 +63,6 @@ implements HibernateJavaIdMapping {
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.typeDefContainer.synchronizeWithResourceModel();
 		this.syncIndex();
 		this.syncType();
 	}
@@ -74,7 +70,6 @@ implements HibernateJavaIdMapping {
 	@Override
 	public void update() {
 		super.update();
-		this.typeDefContainer.update(this.getResourcePersistentAttribute());
 		if (this.index != null){
 			this.index.update();
 		}
@@ -92,11 +87,6 @@ implements HibernateJavaIdMapping {
 	public String getPrimaryKeyColumnName() {
 		return this.getColumn().getDBColumnName();
 	}
-
-	public HibernateJavaTypeDefContainer getTypeDefContainer() {
-		return this.typeDefContainer;
-	}
-
 
 	// *** index
 	public JavaIndex getIndex() {
@@ -228,30 +218,12 @@ implements HibernateJavaIdMapping {
 	public void validate(List<IMessage> messages, IReporter reporter,
 			CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		this.typeDefContainer.validate(messages, reporter, astRoot);
 		if (this.index != null){
 			this.index.validate(messages, reporter, astRoot);
 		}
 		if (this.type != null){
 			this.type.validate(messages, reporter, astRoot);
 		}
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaIdMapping#javaCompletionProposals(int, org.eclipse.jpt.common.utility.Filter, org.eclipse.jdt.core.dom.CompilationUnit)
-	 */
-	@Override
-	public Iterator<String> javaCompletionProposals(int pos,
-			Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
-		if (result != null) {
-			return result;
-		}
-		result = this.getTypeDefContainer().javaCompletionProposals(pos, filter, astRoot);
-		if (result != null) {
-			return result;
-		}
-		return null;
 	}
 
 }

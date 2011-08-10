@@ -26,9 +26,9 @@ import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit;
-import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeAnnotation;
+import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValidationMessage;
 
 /**
  * @author Dmitry Geraskov
@@ -138,16 +138,20 @@ public class TypeImpl extends AbstractJavaJpaContextNode implements JavaType, Me
 		if (type != null) {
 			TextRange range = getTypeTextRange(astRoot) == null ? TextRange.Empty.instance() : getTypeTextRange(astRoot);
 			if (type.trim().length() == 0) {
-				messages.add(creatErrorMessage(TYPE_CANT_BE_EMPTY, new String[]{}, range));
+				messages.add(HibernateJpaValidationMessage.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						TYPE_CANT_BE_EMPTY, this, range));
 			} else if (!getPersistenceUnit().hasTypeDef(type))	{
 				IType lwType = null;
 				try {
 					lwType = getJpaProject().getJavaProject().findType(type);
 					if (lwType == null || !lwType.isClass()){
-						messages.add(creatErrorMessage(TYPE_CLASS_NOT_FOUND, new String[]{type}, range));
+						messages.add(HibernateJpaValidationMessage.buildMessage(
+								IMessage.HIGH_SEVERITY,TYPE_CLASS_NOT_FOUND, new String[]{type}, this, range));
 					} else {
 						 if (!JpaUtil.isTypeImplementsInterface(getJpaProject().getJavaProject(), lwType, "org.hibernate.usertype.UserType")){//$NON-NLS-1$
-							messages.add(creatErrorMessage(USER_TYPE_INTERFACE, new String[]{type}, range));
+							messages.add(HibernateJpaValidationMessage.buildMessage(
+									IMessage.HIGH_SEVERITY,USER_TYPE_INTERFACE, new String[]{type}, this, range));
 						 }
 					}
 				} catch (JavaModelException e) {
@@ -155,15 +159,6 @@ public class TypeImpl extends AbstractJavaJpaContextNode implements JavaType, Me
 				}
 			}
 		}
-	}
-	
-	protected IMessage creatErrorMessage(String strmessage, String[] params, TextRange range){
-		IMessage message = new LocalMessage(IMessage.HIGH_SEVERITY, 
-			strmessage, params, getResource());
-		message.setLineNo(range.getLineNumber());
-		message.setOffset(range.getOffset());
-		message.setLength(range.getLength());
-		return message;
 	}
 
 }

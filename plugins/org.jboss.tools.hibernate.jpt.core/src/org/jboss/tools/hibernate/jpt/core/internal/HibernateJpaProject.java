@@ -24,8 +24,8 @@ import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.properties.HibernatePropertiesConstants;
-import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
+import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValidationMessage;
 import org.osgi.service.prefs.Preferences;
 
 /**
@@ -89,7 +89,7 @@ public class HibernateJpaProject extends AbstractJpaProject {
 	 */
 	protected void validateConsoleConfiguration(List<IMessage> messages) {
 		if (KnownConfigurations.getInstance().find(getDefaultConsoleConfigurationName()) == null){
-			IMessage message = new LocalMessage(IMessage.HIGH_SEVERITY,
+			IMessage message = HibernateJpaValidationMessage.buildMessage(IMessage.HIGH_SEVERITY,
 					Messages.CC_NOT_EXISTS, new String[]{getDefaultConsoleConfigurationName()}, getResource());
 			messages.add(message);
 		}

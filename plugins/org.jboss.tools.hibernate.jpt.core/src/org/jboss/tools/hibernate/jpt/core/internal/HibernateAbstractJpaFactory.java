@@ -37,6 +37,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaTable;
 import org.eclipse.jpt.jpa.core.internal.AbstractJpaFactory;
 import org.eclipse.jpt.jpa.core.resource.java.EntityAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.SecondaryTableAnnotation;
@@ -87,6 +88,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedN
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedQueryAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.IndexAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeAnnotation;
+import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeDefAnnotation;
 
 /**
  * @author Dmitry Geraskov
@@ -116,8 +118,8 @@ public abstract class HibernateAbstractJpaFactory extends AbstractJpaFactory {
 		return new JavaGenericGeneratorImpl(parent, annotation);
 	}
 
-	public JavaTypeDef buildJavaTypeDef(JavaJpaContextNode parent) {
-		return new JavaTypeDefImpl(parent);
+	public JavaTypeDef buildJavaTypeDef(JavaJpaContextNode parent, TypeDefAnnotation typeDefResource) {
+		return new JavaTypeDefImpl(parent, typeDefResource);
 	}
 
 	@Override
@@ -218,8 +220,8 @@ public abstract class HibernateAbstractJpaFactory extends AbstractJpaFactory {
 		return new HibernateJavaGeneratorContainerImpl(parent, owner);
 	}
 
-	public HibernateJavaTypeDefContainer buildJavaTypeDefContainer(JavaJpaContextNode parent) {
-		return new HibernateJavaTypeDefContainerImpl(parent);
+	public HibernateJavaTypeDefContainer buildJavaTypeDefContainer(JavaJpaContextNode parent, JavaResourceAnnotatedElement annotatedElement) {
+		return new HibernateJavaTypeDefContainerImpl(parent, annotatedElement);
 	}
 
 	public JavaIndex buildIndex(JavaJpaContextNode parent, IndexAnnotation annotation) {

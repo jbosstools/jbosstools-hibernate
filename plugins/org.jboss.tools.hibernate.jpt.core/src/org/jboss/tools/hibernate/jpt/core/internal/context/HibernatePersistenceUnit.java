@@ -40,7 +40,6 @@ import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnit;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
-import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
@@ -53,6 +52,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaPackageInfo;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaTypeDef;
 import org.jboss.tools.hibernate.jpt.core.internal.context.persistence.HibernateClassRef;
 import org.jboss.tools.hibernate.jpt.core.internal.context.persistence.HibernatePersistenceUnitPropertiesBuilder;
+import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValidationMessage;
 
 /**
  * @author Dmitry Geraskov
@@ -258,14 +258,14 @@ implements Messages, Hibernate {
 				int resType= res.getType();
 				if (resType != IResource.FILE) {
 					Property prop = getProperty(BasicHibernateProperties.HIBERNATE_CONFIG_FILE);
-					IMessage message = new LocalMessage(IMessage.HIGH_SEVERITY,
+					IMessage message = HibernateJpaValidationMessage.buildMessage(IMessage.HIGH_SEVERITY,
 							NOT_A_FILE, new String[]{configFile}, getResource());
 					message.setLineNo(prop.getValidationTextRange().getLineNumber());
 					messages.add(message);
 				}
 			} else {
 				Property prop = getProperty(BasicHibernateProperties.HIBERNATE_CONFIG_FILE);
-				IMessage message = new LocalMessage(IMessage.HIGH_SEVERITY,
+				IMessage message = HibernateJpaValidationMessage.buildMessage(IMessage.HIGH_SEVERITY,
 						CONFIG_FILE_NOT_FOUND, new String[]{configFile}, getResource());
 				message.setLineNo(prop.getValidationTextRange().getLineNumber());
 				messages.add(message);
@@ -273,19 +273,6 @@ implements Messages, Hibernate {
 		}
 	}
 
-	/**
-	 * Hack class needed to make JPA/Validation API pick up our classloader instead of its own.
-	 * 
-	 * @author max
-	 *
-	 */
-	static public class LocalMessage extends Message {
-
-		public LocalMessage(int severity, String message,
-				String[] strings, Object resource) {
-			super(Messages.class.getName(), severity, message, strings, resource);
-		}
-	}
 //	
 //	// ********** specified package-info refs **********
 //
