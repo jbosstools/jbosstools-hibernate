@@ -28,7 +28,7 @@
 					<dependencies>
 						<dependency>
 							<type>p2-installable-unit</type>
-							<artifactId>org.eclipse.jpt.feature.feature.group</artifactId>
+							<artifactId>org.eclipse.jpt.jpa.feature.group</artifactId>
 							<version>0.0.0</version>
 						</dependency>
 					</dependencies>
