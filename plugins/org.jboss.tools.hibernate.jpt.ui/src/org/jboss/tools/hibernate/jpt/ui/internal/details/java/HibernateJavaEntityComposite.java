@@ -23,9 +23,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateGeneratorContainer;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaQueryContainer;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaTypeDefContainer;
 import org.jboss.tools.hibernate.jpt.ui.internal.details.HibernateTableComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateGenerationComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateQueriesComposite;
+import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.TypeDefsComposite;
 
 /**
  * @author Dmitry Geraskov
@@ -43,7 +45,34 @@ public class HibernateJavaEntityComposite extends AbstractEntityComposite<Hibern
 		super(subjectHolder, parent, widgetFactory);
 	}
 	
+	@Override
+	protected void initializeLayout(Composite container) {
+		super.initializeLayout(container);
+		this.initializeTypeDefCollapsibleSection(container);
+	}
 	
+	protected void initializeTypeDefCollapsibleSection(Composite container) {
+		container = addCollapsibleSection(
+				container,
+				"Type Definitions");
+		this.initializeTypeDefsSection(container, buildTypeDefContainerHolder());
+	}
+	
+	protected void initializeTypeDefsSection(
+			Composite container,
+			PropertyValueModel<HibernateJavaTypeDefContainer> typeDefContainerHolder) {
+		new TypeDefsComposite(this, typeDefContainerHolder, container);
+	}
+
+	private PropertyValueModel<HibernateJavaTypeDefContainer> buildTypeDefContainerHolder() {
+		return new PropertyAspectAdapter<HibernateJavaEntity, HibernateJavaTypeDefContainer>(getSubjectHolder()) {
+			@Override
+			protected HibernateJavaTypeDefContainer buildValue_() {
+				return this.subject.getTypeDefContainer();
+			}
+		};
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void initializeQueriesSection(Composite container, PropertyValueModel<QueryContainer> queryContainerHolder) {

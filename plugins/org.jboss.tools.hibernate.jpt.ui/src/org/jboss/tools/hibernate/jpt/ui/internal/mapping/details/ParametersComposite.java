@@ -37,16 +37,14 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
-import org.jboss.tools.hibernate.jpt.core.internal.context.GenericGenerator;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Parameter;
+import org.jboss.tools.hibernate.jpt.core.internal.context.ParametrizedElement;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public class ParametersComposite extends Pane<GenericGenerator> {
-
-	//private WritablePropertyValueModel<GenericGenerator> generatorHolder;
+public class ParametersComposite extends Pane<ParametrizedElement> {
 
 	private WritablePropertyValueModel<Parameter> parameterHolder;
 
@@ -57,17 +55,17 @@ public class ParametersComposite extends Pane<GenericGenerator> {
 	 * @param parent The parent container
 	 */
 	public ParametersComposite(Pane<?> parentPane,
-	      Composite container, PropertyValueModel<GenericGenerator> generatorHolder) {
+	      Composite container, PropertyValueModel<? extends ParametrizedElement> generatorHolder) {
 
 		super(parentPane, generatorHolder, container, false);
 	}
 
 
 	private PropertyValueModel<Boolean> buildPaneEnableHolder() {
-		return new TransformationPropertyValueModel<GenericGenerator, Boolean>(getSubjectHolder()) {
+		return new TransformationPropertyValueModel<ParametrizedElement, Boolean>(getSubjectHolder()) {
 			@Override
-			protected Boolean transform(GenericGenerator generator) {
-				return (generator != null);
+			protected Boolean transform(ParametrizedElement element) {
+				return (element != null);
 			}
 		};
 	}
@@ -76,7 +74,7 @@ public class ParametersComposite extends Pane<GenericGenerator> {
 		return new AddRemoveTablePane.AbstractAdapter() {
 			@Override
 			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
-				Parameter parameter = getSubject().addParameter(getSubject().parametersSize());
+				Parameter parameter = getSubject().addParameter(getSubject().getParametersSize());
 				ParametersComposite.this.parameterHolder.setValue(parameter);
 			}
 
@@ -98,21 +96,21 @@ public class ParametersComposite extends Pane<GenericGenerator> {
 	}
 
 	private ListValueModel<Parameter> buildParameterListHolder() {
-		return new ListAspectAdapter<GenericGenerator, Parameter>(
+		return new ListAspectAdapter<ParametrizedElement, Parameter>(
 				getSubjectHolder(),
-				GenericGenerator.PARAMETERS_LIST) {
+				ParametrizedElement.PARAMETERS_LIST) {
 			@Override
 			protected ListIterator<Parameter> listIterator_() {
 				if (this.subject == null ){
 					return EmptyListIterator.instance();
 				} else {
-					return this.subject.parameters();
+					return this.subject.getParameters().iterator();
 				}
 			}
 
 			@Override
 			protected int size_() {
-				return this.subject == null ? 0 : this.subject.parametersSize();
+				return this.subject == null ? 0 : this.subject.getParametersSize();
 			}
 		};
 	}
@@ -234,7 +232,7 @@ public class ParametersComposite extends Pane<GenericGenerator> {
 		}
 	}
 
-	private class TablePane extends AddRemoveTablePane<GenericGenerator> {
+	private class TablePane extends AddRemoveTablePane<ParametrizedElement> {
 
 		private TablePane(Composite parent) {
 			super(ParametersComposite.this,

@@ -109,7 +109,6 @@ public class TypeImpl extends AbstractJavaJpaContextNode implements JavaType, Me
 		if (result != null) {
 			return result;
 		}
-		System.out.println(getPersistenceUnit().uniqueTypeDefNames());
 		TextRange typeRange = getTypeTextRange(astRoot);
 		if (typeRange != null && typeRange.touches(pos)) {
 			return getJavaCandidateNames(filter).iterator();
@@ -149,9 +148,9 @@ public class TypeImpl extends AbstractJavaJpaContextNode implements JavaType, Me
 						messages.add(HibernateJpaValidationMessage.buildMessage(
 								IMessage.HIGH_SEVERITY,TYPE_CLASS_NOT_FOUND, new String[]{type}, this, range));
 					} else {
-						 if (!JpaUtil.isTypeImplementsInterface(getJpaProject().getJavaProject(), lwType, "org.hibernate.usertype.UserType")){//$NON-NLS-1$
+						 if (!JpaUtil.isTypeImplementsInterface(getJpaProject().getJavaProject(), lwType, JavaTypeDef.USER_TYPE_INTERFACE)){
 							messages.add(HibernateJpaValidationMessage.buildMessage(
-									IMessage.HIGH_SEVERITY,USER_TYPE_INTERFACE, new String[]{type}, this, range));
+									IMessage.HIGH_SEVERITY,IMPLEMENT_USER_TYPE_INTERFACE, new String[]{type}, this, range));
 						 }
 					}
 				} catch (JavaModelException e) {

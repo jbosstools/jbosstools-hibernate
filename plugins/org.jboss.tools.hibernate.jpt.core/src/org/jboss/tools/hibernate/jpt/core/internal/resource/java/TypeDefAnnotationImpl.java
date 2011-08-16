@@ -17,14 +17,13 @@ import java.util.Vector;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
-import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.common.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
+import org.eclipse.jpt.common.core.internal.utility.jdt.TypeStringExpressionConverter;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationAdapter;
@@ -34,7 +33,6 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapt
 import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
@@ -418,7 +416,7 @@ public class TypeDefAnnotationImpl extends SourceAnnotation<AnnotatedElement>
 	private DeclarationAnnotationElementAdapter<String> buildTypeClassDeclarationAdapter() {
 		return new ConversionDeclarationAnnotationElementAdapter<String>(daa,
 				Hibernate.TYPE_DEF__TYPE_CLASS,
-				SimpleTypeStringExpressionConverter.instance());
+				SimpleTypeStringExpressionConverter.instance());//primitives are not allowed!
 	}
 	
 	private AnnotationElementAdapter<String> buildTypeClassAdapter() {
@@ -428,16 +426,13 @@ public class TypeDefAnnotationImpl extends SourceAnnotation<AnnotatedElement>
 	private DeclarationAnnotationElementAdapter<String> buildDefForTypeDeclarationAdapter() {
 		return new ConversionDeclarationAnnotationElementAdapter<String>(daa,
 				Hibernate.TYPE_DEF__DEF_FOR_TYPE,
-				SimpleTypeStringExpressionConverter.instance());
+				TypeStringExpressionConverter.instance());//primitives are allowed!
 	}
 	
 	private AnnotationElementAdapter<String> buildDefForTypeAdapter() {
 		return this.buildStringElementAdapter(this.defForTypeDeclarationAdapter);
 	}
 
-	private static DeclarationAnnotationElementAdapter<String> buildTypeClassAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
-		return buildAnnotationElementAdapter(annotationAdapter, elementName, SimpleTypeStringExpressionConverter.instance());
-	}
 
 	private static DeclarationAnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, ExpressionConverter<String> converter) {
 		return new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, converter);

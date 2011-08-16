@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat, Inc.
+ * Copyright (c) 2009-2011 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -14,7 +14,6 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
-import org.jboss.tools.hibernate.jpt.core.internal.context.Parameter;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.ParameterAnnotation;
 
 /**
@@ -29,46 +28,62 @@ public class HibernateJavaParameter extends AbstractJavaJpaContextNode implement
 
 	protected ParameterAnnotation resourceParameter;
 	
-	public HibernateJavaParameter(JpaContextNode parent) {
+	public HibernateJavaParameter(JpaContextNode parent, ParameterAnnotation resourceParameter) {
 		super(parent);
-	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String newName) {
-		String oldName = this.name;
-		this.name = newName;
-		this.resourceParameter.setName(newName);
-		firePropertyChanged(Parameter.NAME_PROPERTY, oldName, newName);
-	}
-
-	public String getValue() {
-		return this.value;
-	}
-
-	public void setValue(String newValue) {
-		String oldValue = this.value;
-		this.value = newValue;
-		this.resourceParameter.setValue(newValue);
-		firePropertyChanged(Parameter.VALUE_PROPERTY, oldValue, newValue);
-	}
-
-	public void initialize(ParameterAnnotation resourceParameter) {
 		this.resourceParameter = resourceParameter;
 		this.name = resourceParameter.getName();
 		this.value = resourceParameter.getValue();
 	}
 	
-	public void update(ParameterAnnotation resourceParameter) {
-		this.resourceParameter = resourceParameter;
-		this.setName(resourceParameter.getName());
-		this.setValue(resourceParameter.getValue());
+	// ********** synchronize/update **********
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setName_(this.resourceParameter.getName());
+		this.setValue_(this.resourceParameter.getValue());
 	}
 	
+	// ********** name **********
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(String name) {
+		this.resourceParameter.setName(name);
+		this.setName_(name);
+	}
+
+	protected void setName_(String name) {
+		String old = this.name;
+		this.name = name;
+		this.firePropertyChanged(NAME_PROPERTY, old, name);
+	}
+
+	// ********** value **********
+	public String getValue() {
+		return this.value;
+	}
+
+	public void setValue(String value) {
+		this.resourceParameter.setValue(value);
+		this.setValue_(value);
+	}
+
+	protected void setValue_(String value) {
+		String old = this.value;
+		this.value = value;
+		this.firePropertyChanged(VALUE_PROPERTY, old, value);
+	}
+
+	// ********** validation **********
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		return this.resourceParameter.getTextRange(astRoot);
+	}
+	
+	// ********** misc **********
+	@Override
+	public ParameterAnnotation getParameterAnnotation() {
+		return resourceParameter;
 	}
 
 	@Override

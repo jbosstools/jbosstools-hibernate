@@ -58,7 +58,7 @@ public class GenericGeneratorComposite extends GeneratorComposite<GenericGenerat
 				StringConverter.Default.<String>instance(),
 				null);//TODO add help
 			
-		new ParametersComposite(this, container, getSubjectHolder());		
+		new ParametersComposite(this, container, getSubjectHolder());
 	}
 	
 	protected WritablePropertyValueModel<String> buildStrategyHolder() {

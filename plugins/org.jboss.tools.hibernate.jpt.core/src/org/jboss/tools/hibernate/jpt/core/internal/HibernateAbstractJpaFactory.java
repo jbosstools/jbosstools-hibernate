@@ -87,6 +87,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.GenericGenerato
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedNativeQueryAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedQueryAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.IndexAnnotation;
+import org.jboss.tools.hibernate.jpt.core.internal.resource.java.ParameterAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeDefAnnotation;
 
@@ -137,8 +138,8 @@ public abstract class HibernateAbstractJpaFactory extends AbstractJpaFactory {
 		return new HibernateNamedNativeQueryImpl(parent, namedNativeQueryAnnotation);
 	}
 
-	public JavaParameter buildJavaParameter(JpaContextNode parent) {
-		return new HibernateJavaParameter(parent);
+	public JavaParameter buildJavaParameter(JpaContextNode parent, ParameterAnnotation resourceParameter) {
+		return new HibernateJavaParameter(parent, resourceParameter);
 	}
 
 	public JavaDiscriminatorFormula buildJavaDiscriminatorFormula(

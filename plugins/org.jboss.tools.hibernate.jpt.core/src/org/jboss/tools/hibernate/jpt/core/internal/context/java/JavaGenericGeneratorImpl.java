@@ -13,7 +13,6 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Vector;
 
 import org.eclipse.jdt.core.IType;
@@ -26,9 +25,8 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
-import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaGenerator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -50,6 +48,7 @@ implements JavaGenericGenerator, Messages {
 	private String strategy;
 
 	protected final Vector<JavaParameter> parameters = new Vector<JavaParameter>();
+	protected final ParameterContainerAdapter parameterContainerAdapter = new ParameterContainerAdapter();
 
 	public static List<String> generatorClasses = new ArrayList<String>();
 
@@ -76,6 +75,7 @@ implements JavaGenericGenerator, Messages {
 	 */
 	public JavaGenericGeneratorImpl(JavaJpaContextNode parent, GenericGeneratorAnnotation generatorAnnotation) {
 		super(parent, generatorAnnotation);
+		this.strategy = generatorAnnotation.getStrategy();
 		this.initializeParameters();
 	}
 
@@ -83,7 +83,7 @@ implements JavaGenericGenerator, Messages {
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 		this.setStrategy_(this.generatorAnnotation.getStrategy());
-		this.updateParameters();
+		this.syncParameters();
 	}
 
 	@Override
@@ -92,19 +92,7 @@ implements JavaGenericGenerator, Messages {
 		this.updateNodes(this.getParameters());
 	}
 
-	@Override
-	public void setName(String name) {
-		String old = this.name;
-		this.name = name;
-		this.generatorAnnotation.setName(name);
-		this.firePropertyChanged(Generator.NAME_PROPERTY, old, name);
-	}
-
-	@Override
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.generatorAnnotation.getNameTextRange(astRoot);
-	}
-
+	// ********** strategy **********
 	public String getStrategy() {
 		return this.strategy;
 	}
@@ -187,89 +175,99 @@ implements JavaGenericGenerator, Messages {
 	}
 
 	//************************ parameters ***********************
-
-	public JavaParameter addParameter(int index) {
-		JavaParameter parameter = getJpaFactory().buildJavaParameter(this);
-		this.parameters.add(index, parameter);
-		ParameterAnnotation parameterAnnotation = this.getGeneratorAnnotation().addParameter(index);
-		parameter.initialize(parameterAnnotation);
-		this.fireItemAdded(GenericGenerator.PARAMETERS_LIST, index, parameter);
-		return parameter;
-	}
-
-	protected void addParameter(int index, JavaParameter parameter) {
-		addItemToList(index, parameter, this.parameters, GenericGenerator.PARAMETERS_LIST);
-	}
-
-	protected void addParameter(JavaParameter parameter) {
-		addParameter(this.parameters.size(), parameter);
-	}
-
-	public void removeParameter(Parameter parameter) {
-		removeParameter(this.parameters.indexOf(parameter));
-	}
-
-	public void removeParameter(int index) {
-		JavaParameter removedParameter = this.parameters.remove(index);
-		this.getGeneratorAnnotation().removeParameter(index);
-		fireItemRemoved(GenericGenerator.PARAMETERS_LIST, index, removedParameter);
-	}
-
-	protected void removeParameter_(JavaParameter parameter) {
-		removeItemFromList(parameter, this.parameters, GenericGenerator.PARAMETERS_LIST);
-	}
-
-	public void moveParameter(int targetIndex, int sourceIndex) {
-		CollectionTools.move(this.parameters, targetIndex, sourceIndex);
-		this.getGeneratorAnnotation().moveParameter(targetIndex, sourceIndex);
-		fireItemMoved(GenericGenerator.PARAMETERS_LIST, targetIndex, sourceIndex);
-	}
-	
 	public ListIterable<JavaParameter> getParameters() {
 		return new LiveCloneListIterable<JavaParameter>(this.parameters);
 	}
 
-	public ListIterator<JavaParameter> parameters() {
-		return new CloneListIterator<JavaParameter>(this.parameters);
-	}
-
-	public int parametersSize() {
+	public int getParametersSize() {
 		return this.parameters.size();
 	}
 
+	public JavaParameter addParameter() {
+		return this.addParameter(this.parameters.size());
+	}
+
+	public JavaParameter addParameter(int index) {
+		ParameterAnnotation annotation = this.generatorAnnotation.addParameter(index);
+		return this.addParameter_(index, annotation);
+	}
+
+	public void removeParameter(Parameter parameter) {
+		this.removeParameter(this.parameters.indexOf(parameter));
+	}
+
+	public void removeParameter(int index) {
+		this.generatorAnnotation.removeParameter(index);
+		this.removeParameter_(index);
+	}
+
+	protected void removeParameter_(int index) {
+		this.removeItemFromList(index, this.parameters, PARAMETERS_LIST);
+	}
+
+	public void moveParameter(int targetIndex, int sourceIndex) {
+		this.generatorAnnotation.moveParameter(targetIndex, sourceIndex);
+		this.moveItemInList(targetIndex, sourceIndex, this.parameters, PARAMETERS_LIST);
+	}
+
 	protected void initializeParameters() {
-		ListIterator<ParameterAnnotation> resourceParameters = this.generatorAnnotation.parameters();
-
-		while(resourceParameters.hasNext()) {
-			this.parameters.add(createParameter(resourceParameters.next()));
+		for (Iterator<ParameterAnnotation> stream = this.generatorAnnotation.parameters(); stream.hasNext(); ) {
+			this.parameters.add(this.buildParameter(stream.next()));
 		}
 	}
 
-	protected void updateParameters() {
-		ListIterator<JavaParameter> contextParameters = parameters();
-		ListIterator<ParameterAnnotation> resourceParameters = this.generatorAnnotation.parameters();
-
-		while (contextParameters.hasNext()) {
-			JavaParameter parameter = contextParameters.next();
-			if (resourceParameters.hasNext()) {
-				parameter.update(resourceParameters.next());
-			}
-			else {
-				removeParameter_(parameter);
-			}
-		}
-
-		while (resourceParameters.hasNext()) {
-			addParameter(createParameter(resourceParameters.next()));
-		}
+	protected JavaParameter buildParameter(ParameterAnnotation parameterAnnotation) {
+		return this.getJpaFactory().buildJavaParameter(this, parameterAnnotation);
 	}
 
-	protected JavaParameter createParameter(ParameterAnnotation resourceParameter) {
-		JavaParameter parameter =  getJpaFactory().buildJavaParameter(this);
-		parameter.initialize(resourceParameter);
+	protected void syncParameters() {
+		ContextContainerTools.synchronizeWithResourceModel(this.parameterContainerAdapter);
+	}
+
+	protected Iterable<ParameterAnnotation> getParameterAnnotations() {
+		return CollectionTools.iterable(this.generatorAnnotation.parameters());
+	}
+
+	protected void moveParameter_(int index, JavaParameter parameter) {
+		this.moveItemInList(index, parameter, this.parameters, PARAMETERS_LIST);
+	}
+
+	protected JavaParameter addParameter_(int index, ParameterAnnotation parameterAnnotation) {
+		JavaParameter parameter = this.buildParameter(parameterAnnotation);
+		this.addItemToList(index, parameter, this.parameters, PARAMETERS_LIST);
 		return parameter;
 	}
 
+	protected void removeParameter_(JavaParameter parameter) {
+		this.removeParameter_(this.parameters.indexOf(parameter));
+	}
+
+	/**
+	 * parameter container adapter
+	 */
+	protected class ParameterContainerAdapter
+		implements ContextContainerTools.Adapter<JavaParameter, ParameterAnnotation>
+	{
+		public Iterable<JavaParameter> getContextElements() {
+			return JavaGenericGeneratorImpl.this.getParameters();
+		}
+		public Iterable<ParameterAnnotation> getResourceElements() {
+			return JavaGenericGeneratorImpl.this.getParameterAnnotations();
+		}
+		public ParameterAnnotation getResourceElement(JavaParameter contextElement) {
+			return contextElement.getParameterAnnotation();
+		}
+		public void moveContextElement(int index, JavaParameter element) {
+			JavaGenericGeneratorImpl.this.moveParameter_(index, element);
+		}
+		public void addContextElement(int index, ParameterAnnotation resourceElement) {
+			JavaGenericGeneratorImpl.this.addParameter_(index, resourceElement);
+		}
+		public void removeContextElement(JavaParameter element) {
+			JavaGenericGeneratorImpl.this.removeParameter_(element);
+		}
+	}
+	
 	@Override
 	public int buildDefaultInitialValue() {
 		return GenericGenerator.DEFAULT_INITIAL_VALUE;
@@ -299,5 +297,5 @@ implements JavaGenericGenerator, Messages {
 	private Iterable<String> getCandidateNames(Filter<String> filter) {
 		return new FilteringIterable<String>(generatorClasses, filter);
 	}
-
+	
 }

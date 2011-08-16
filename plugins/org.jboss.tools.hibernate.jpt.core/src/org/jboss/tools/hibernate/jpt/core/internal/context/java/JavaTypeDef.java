@@ -10,24 +10,23 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import java.util.ListIterator;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.jpa.core.resource.java.NamedNativeQueryAnnotation;
-import org.jboss.tools.hibernate.jpt.core.internal.context.Parameter;
+import org.jboss.tools.hibernate.jpt.core.internal.context.ParametrizedElement;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeDefAnnotation;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public interface JavaTypeDef extends JavaJpaContextNode {
+public interface JavaTypeDef extends JavaJpaContextNode, ParametrizedElement {
+	
+	String USER_TYPE_INTERFACE = "org.hibernate.usertype.UserType";
 	
 	String getName();
 	void setName(String name);
-		String TYPE_DEF_NAME = "name"; //$NON-NLS-1$
+		String NAME_PROPERTY = "name"; //$NON-NLS-1$
 	
 	// **************** defaultForType class **************************************
 	
@@ -43,40 +42,9 @@ public interface JavaTypeDef extends JavaJpaContextNode {
 	void setTypeClass(String value);
 		String TYPE_CLASS_PROPERTY = "specifiedTypeClass"; //$NON-NLS-1$
 		
-	//************************ parameters ***********************
-	
-	String PARAMETERS_LIST = "parameters"; //$NON-NLS-1$
-	
-	/**
-	 * Return a list iterator of the parameters.  This will not be null.
-	 */
-	<T extends Parameter> ListIterator<T> parameters();
-	
-	/**
-	 * Return the number of parameters.
-	 */
-	int parametersSize();
-	
-	/**
-	 * Add a parameter to the generator and return the object representing it.
-	 */
-	Parameter addParameter(int index);
-	
-	/**
-	 * Remove the parameter from the generator.
-	 */
-	void removeParameter(int index);
-	
-	/**
-	 * Remove the parameter at the index from the query.
-	 */
-	void removeParameter(Parameter queryParameter);
-	
-	/**
-	 * Move the parameter from the source index to the target index.
-	 */
-	void moveParameter(int targetIndex, int sourceIndex);
-	
+	char getTypeClassEnclosingTypeSeparator();
+		
+
 	// **************** validation *********************************************
 	
 	TextRange getNameTextRange(CompilationUnit astRoot);

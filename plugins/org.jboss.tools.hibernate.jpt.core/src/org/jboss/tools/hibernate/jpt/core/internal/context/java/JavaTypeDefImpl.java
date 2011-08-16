@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
@@ -24,6 +25,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -31,6 +33,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Parameter;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaTypeDefImpl.ParameterContainerAdapter;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.ParameterAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeDefAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValidationMessage;
@@ -50,6 +53,7 @@ public class JavaTypeDefImpl extends AbstractJavaJpaContextNode implements JavaT
 	protected String defaultForTypeClass;
 	
 	protected final Vector<JavaParameter> parameters = new Vector<JavaParameter>();
+	protected final ParameterContainerAdapter parameterContainerAdapter = new ParameterContainerAdapter();
 
 	public JavaTypeDefImpl(JavaJpaContextNode parent, TypeDefAnnotation typeDefAnnotation) {
 		super(parent);
@@ -76,7 +80,7 @@ public class JavaTypeDefImpl extends AbstractJavaJpaContextNode implements JavaT
 		this.setName_(this.typeDefAnnotation.getName());
 		this.setTypeClass_(typeDefAnnotation.getTypeClass());
 		this.setDefaultForTypeClass_(typeDefAnnotation.getDefaultForType());
-		this.updateParameters();
+		this.syncParameters();
 	}
 	
 	@Override
@@ -106,7 +110,7 @@ public class JavaTypeDefImpl extends AbstractJavaJpaContextNode implements JavaT
 	protected void setName_(String name) {
 		String old = this.name;
 		this.name = name;
-		this.firePropertyChanged(TYPE_DEF_NAME, old, name);
+		this.firePropertyChanged(NAME_PROPERTY, old, name);
 	}
 	
 	// ********** type class **********
@@ -155,86 +159,98 @@ public class JavaTypeDefImpl extends AbstractJavaJpaContextNode implements JavaT
 	}
 	
 	//************************ parameters ***********************
-	
+	//************************ parameters ***********************
 	public ListIterable<JavaParameter> getParameters() {
 		return new LiveCloneListIterable<JavaParameter>(this.parameters);
 	}
 
+	public int getParametersSize() {
+		return this.parameters.size();
+	}
+
+	public JavaParameter addParameter() {
+		return this.addParameter(this.parameters.size());
+	}
+
 	public JavaParameter addParameter(int index) {
-		JavaParameter parameter = getJpaFactory().buildJavaParameter(this);
-		this.parameters.add(index, parameter);
-		this.typeDefAnnotation.addParameter(index);
-		this.fireItemAdded(JavaTypeDef.PARAMETERS_LIST, index, parameter);
-		return parameter;
+		ParameterAnnotation annotation = this.typeDefAnnotation.addParameter(index);
+		return this.addParameter_(index, annotation);
 	}
-	
-	protected void addParameter(int index, JavaParameter parameter) {
-		addItemToList(index, parameter, this.parameters, JavaTypeDef.PARAMETERS_LIST);
-	}
-	
-	protected void addParameter(JavaParameter parameter) {
-		addParameter(this.parameters.size(), parameter);
-	}
-	
+
 	public void removeParameter(Parameter parameter) {
-		removeParameter(this.parameters.indexOf(parameter));	
+		this.removeParameter(this.parameters.indexOf(parameter));
 	}
-	
+
 	public void removeParameter(int index) {
-		JavaParameter removedParameter = this.parameters.remove(index);
 		this.typeDefAnnotation.removeParameter(index);
-		fireItemRemoved(JavaTypeDef.PARAMETERS_LIST, index, removedParameter);	
+		this.removeParameter_(index);
 	}
-	
-	protected void removeParameter_(JavaParameter parameter) {
-		removeItemFromList(parameter, this.parameters, JavaTypeDef.PARAMETERS_LIST);
-	}	
+
+	protected void removeParameter_(int index) {
+		this.removeItemFromList(index, this.parameters, PARAMETERS_LIST);
+	}
 
 	public void moveParameter(int targetIndex, int sourceIndex) {
-		CollectionTools.move(this.parameters, targetIndex, sourceIndex);
 		this.typeDefAnnotation.moveParameter(targetIndex, sourceIndex);
-		fireItemMoved(JavaTypeDef.PARAMETERS_LIST, targetIndex, sourceIndex);	
+		this.moveItemInList(targetIndex, sourceIndex, this.parameters, PARAMETERS_LIST);
 	}
 
-	public ListIterator<JavaParameter> parameters() {
-		return new CloneListIterator<JavaParameter>(this.parameters);
-	}
-
-	public int parametersSize() {
-		return parameters.size();
-	}	
-	
 	protected void initializeParameters() {
-		ListIterator<ParameterAnnotation> resourceParameters = this.typeDefAnnotation.parameters();
-		
-		while(resourceParameters.hasNext()) {
-			this.parameters.add(createParameter(resourceParameters.next()));
-		}
-	}
-	
-	protected void updateParameters() {
-		ListIterator<JavaParameter> contextParameters = parameters();
-		ListIterator<ParameterAnnotation> resourceParameters = this.typeDefAnnotation.parameters();
-		
-		while (contextParameters.hasNext()) {
-			JavaParameter parameter = contextParameters.next();
-			if (resourceParameters.hasNext()) {
-				parameter.update(resourceParameters.next());
-			}
-			else {
-				removeParameter_(parameter);
-			}
-		}
-		
-		while (resourceParameters.hasNext()) {
-			addParameter(createParameter(resourceParameters.next()));
+		for (Iterator<ParameterAnnotation> stream = this.typeDefAnnotation.parameters(); stream.hasNext(); ) {
+			this.parameters.add(this.buildParameter(stream.next()));
 		}
 	}
 
-	protected JavaParameter createParameter(ParameterAnnotation resourceParameter) {
-		JavaParameter parameter =  getJpaFactory().buildJavaParameter(this);
-		parameter.initialize(resourceParameter);
+	protected JavaParameter buildParameter(ParameterAnnotation parameterAnnotation) {
+		return this.getJpaFactory().buildJavaParameter(this, parameterAnnotation);
+	}
+
+	protected void syncParameters() {
+		ContextContainerTools.synchronizeWithResourceModel(this.parameterContainerAdapter);
+	}
+
+	protected Iterable<ParameterAnnotation> getParameterAnnotations() {
+		return CollectionTools.iterable(this.typeDefAnnotation.parameters());
+	}
+
+	protected void moveParameter_(int index, JavaParameter parameter) {
+		this.moveItemInList(index, parameter, this.parameters, PARAMETERS_LIST);
+	}
+
+	protected JavaParameter addParameter_(int index, ParameterAnnotation parameterAnnotation) {
+		JavaParameter parameter = this.buildParameter(parameterAnnotation);
+		this.addItemToList(index, parameter, this.parameters, PARAMETERS_LIST);
 		return parameter;
+	}
+
+	protected void removeParameter_(JavaParameter parameter) {
+		this.removeParameter_(this.parameters.indexOf(parameter));
+	}
+
+	/**
+	 * parameter container adapter
+	 */
+	protected class ParameterContainerAdapter
+		implements ContextContainerTools.Adapter<JavaParameter, ParameterAnnotation>
+	{
+		public Iterable<JavaParameter> getContextElements() {
+			return JavaTypeDefImpl.this.getParameters();
+		}
+		public Iterable<ParameterAnnotation> getResourceElements() {
+			return JavaTypeDefImpl.this.getParameterAnnotations();
+		}
+		public ParameterAnnotation getResourceElement(JavaParameter contextElement) {
+			return contextElement.getParameterAnnotation();
+		}
+		public void moveContextElement(int index, JavaParameter element) {
+			JavaTypeDefImpl.this.moveParameter_(index, element);
+		}
+		public void addContextElement(int index, ParameterAnnotation resourceElement) {
+			JavaTypeDefImpl.this.addParameter_(index, resourceElement);
+		}
+		public void removeContextElement(JavaParameter element) {
+			JavaTypeDefImpl.this.removeParameter_(element);
+		}
 	}
 	
 	// ********** text ranges **********
@@ -271,21 +287,24 @@ public class JavaTypeDefImpl extends AbstractJavaJpaContextNode implements JavaT
 			);
 		}
 		
-		IType lwType = null;
-		try {
-			lwType = getJpaProject().getJavaProject().findType(typeClass);
-			if (lwType == null || !lwType.isClass()){
-				messages.add(HibernateJpaValidationMessage.buildMessage(
-						IMessage.HIGH_SEVERITY,TYPE_CLASS_NOT_FOUND, new String[]{typeClass}, this, this.getTypeClassTextRange(astRoot)));
-			} else {
-				 if (!JpaUtil.isTypeImplementsInterface(getJpaProject().getJavaProject(), lwType, "org.hibernate.usertype.UserType")){//$NON-NLS-1$
+		if (!StringTools.stringIsEmpty(this.typeClass)){
+			IType lwType = null;
+			try {
+				lwType = getJpaProject().getJavaProject().findType(typeClass);
+				if (lwType == null || !lwType.isClass()){
 					messages.add(HibernateJpaValidationMessage.buildMessage(
-							IMessage.HIGH_SEVERITY,USER_TYPE_INTERFACE, new String[]{typeClass}, this, this.getTypeClassTextRange(astRoot)));
-				 }
+							IMessage.HIGH_SEVERITY,TYPE_CLASS_NOT_FOUND, new String[]{typeClass}, this, this.getTypeClassTextRange(astRoot)));
+				} else {
+					 if (!JpaUtil.isTypeImplementsInterface(getJpaProject().getJavaProject(), lwType, USER_TYPE_INTERFACE)){
+						messages.add(HibernateJpaValidationMessage.buildMessage(
+								IMessage.HIGH_SEVERITY,IMPLEMENT_USER_TYPE_INTERFACE, new String[]{typeClass}, this, this.getTypeClassTextRange(astRoot)));
+					 }
+				}
+			} catch (JavaModelException e) {
+				// just ignore it!
 			}
-		} catch (JavaModelException e) {
-			// just ignore it!
 		}
+		
 		
 		for (ListIterator<JavaTypeDef> stream = this.getPersistenceUnit().typeDefs(); stream.hasNext(); ) {
 			JavaTypeDef typeDef = stream.next();
@@ -298,7 +317,6 @@ public class JavaTypeDefImpl extends AbstractJavaJpaContextNode implements JavaT
 									new String[]{this.name},
 									this,
 									this.getNameTextRange(astRoot))
-						
 					);
 					break;
 				}
