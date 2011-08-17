@@ -60,7 +60,7 @@ public class HibernateQueriesComposite extends Pane<HibernateJavaQueryContainer>
 
 	private AddRemoveListPane<QueryContainer> listPane;
 	private NamedNativeQueryPropertyComposite namedNativeQueryPane;
-	private NamedQueryPropertyComposite<? extends NamedQuery> namedQueryPane;
+	private Pane<? extends NamedQuery> namedQueryPane;
 	private HibernateNamedQueryPropertyComposite hibernateNamedQueryPane;
 	private HibernateNamedNativeQueryPropertyComposite hibernateNamedNativeQueryPane;
 	private WritablePropertyValueModel<Query> queryHolder;
@@ -365,11 +365,7 @@ public class HibernateQueriesComposite extends Pane<HibernateJavaQueryContainer>
 		);
 
 		// Named Query property pane
-		this.namedQueryPane = new NamedQueryPropertyComposite(
-			this,
-			buildNamedQueryHolder(),
-			pageBook
-		);
+		this.namedQueryPane = this.buildNamedQueryPropertyComposite(pageBook);
 
 		// Named Native Query property pane
 		this.namedNativeQueryPane = new NamedNativeQueryPropertyComposite(
@@ -379,6 +375,14 @@ public class HibernateQueriesComposite extends Pane<HibernateJavaQueryContainer>
 		);
 
 		installPaneSwitcher(pageBook);
+	}
+	
+	protected Pane<? extends NamedQuery> buildNamedQueryPropertyComposite(PageBook pageBook) {
+		return new NamedQueryPropertyComposite<NamedQuery>(
+			this,
+			this.buildNamedQueryHolder(),
+			pageBook
+		);
 	}
 
 	private void installPaneSwitcher(PageBook pageBook) {

@@ -23,8 +23,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaIdMapping;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmEntity;
-import org.jboss.tools.hibernate.jpt.ui.internal.details.java.HibernateJavaEntityComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.jpa2.details.HibernateElementCollectionMapping2_0Composite;
+import org.jboss.tools.hibernate.jpt.ui.internal.jpa2.details.java.HibernateJavaEntity2_0Composite;
 import org.jboss.tools.hibernate.jpt.ui.internal.jpa2.details.orm.Hibernate2_0OrmEntityComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateBasicMappingComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateIdMappingComposite;
@@ -49,7 +49,7 @@ public class Hibernate2_0JavaUiFactory extends Generic2_0JavaUiFactory {
 	@Override
 	public JpaComposite createJavaEntityComposite(PropertyValueModel<JavaEntity> subjectHolder,
 			Composite parent, WidgetFactory widgetFactory) {
-		return new HibernateJavaEntityComposite((PropertyValueModel<? extends HibernateJavaEntity>) subjectHolder, parent, widgetFactory);
+		return new HibernateJavaEntity2_0Composite((PropertyValueModel<? extends HibernateJavaEntity>) subjectHolder, parent, widgetFactory);
 	}
 	
 	@SuppressWarnings("unchecked")
