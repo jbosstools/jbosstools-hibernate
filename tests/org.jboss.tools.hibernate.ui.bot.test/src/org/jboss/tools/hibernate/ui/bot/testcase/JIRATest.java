@@ -12,10 +12,10 @@ package org.jboss.tools.hibernate.ui.bot.testcase;
 
 import org.jboss.tools.hibernate.ui.bot.testsuite.HibernateTest;
 import org.jboss.tools.ui.bot.ext.config.Annotations.DB;
-import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.junit.Test;
 
-@SWTBotTestRequires( clearProjects = false,  db=@DB, perspective="Hibernate")
+@Require( clearProjects = false,  db=@DB, perspective="Hibernate")
 public class JIRATest extends HibernateTest {
 
 	/**

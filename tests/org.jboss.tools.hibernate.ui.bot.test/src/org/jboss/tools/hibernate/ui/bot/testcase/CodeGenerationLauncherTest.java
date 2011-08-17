@@ -20,7 +20,7 @@ import org.jboss.tools.hibernate.ui.bot.test.util.DataHolder;
 import org.jboss.tools.hibernate.ui.bot.testsuite.HibernateTest;
 import org.jboss.tools.hibernate.ui.bot.testsuite.Project;
 import org.jboss.tools.ui.bot.ext.config.Annotations.DB;
-import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.PerspectiveType;
@@ -28,7 +28,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-@SWTBotTestRequires( db=@DB, perspective="Hibernate")
+@Require( db=@DB, perspective="Hibernate")
 public class CodeGenerationLauncherTest extends HibernateTest {
 
 	SWTBotShell mainShell = null;

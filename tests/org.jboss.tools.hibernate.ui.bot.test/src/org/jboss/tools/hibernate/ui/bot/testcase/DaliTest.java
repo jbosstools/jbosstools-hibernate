@@ -18,7 +18,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.jboss.tools.hibernate.ui.bot.testsuite.HibernateTest;
 import org.jboss.tools.hibernate.ui.bot.testsuite.Project;
 import org.jboss.tools.ui.bot.ext.config.Annotations.DB;
-import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Server;
 import org.jboss.tools.ui.bot.ext.config.Annotations.ServerState;
 import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
@@ -36,7 +36,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.osgi.framework.Version;
 
-@SWTBotTestRequires( clearProjects = false,  db=@DB, perspective="JPA" , server=@Server(state = ServerState.Present))
+@Require( clearProjects = false,  db=@DB, perspective="JPA" , server=@Server(state = ServerState.Present))
 public class DaliTest extends HibernateTest {
 
 	private static boolean projectCreated = false;

@@ -12,10 +12,10 @@ package org.jboss.tools.hibernate.ui.bot.testcase;
 
 import org.jboss.tools.hibernate.ui.bot.testsuite.HibernateTest;
 import org.jboss.tools.ui.bot.ext.config.Annotations.DB;
-import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.junit.Test;
 
-@SWTBotTestRequires( db=@DB, perspective="Hibernate")
+@Require( db=@DB, perspective="Hibernate")
 public class ViewsTest extends HibernateTest {
 
 	/**

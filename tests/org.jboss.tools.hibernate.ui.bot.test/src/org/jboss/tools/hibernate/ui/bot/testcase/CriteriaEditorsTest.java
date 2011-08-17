@@ -11,10 +11,10 @@
 package org.jboss.tools.hibernate.ui.bot.testcase;
 
 import org.jboss.tools.hibernate.ui.bot.testsuite.HibernateTest;
-import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.junit.Test;
 
-@SWTBotTestRequires(clearProjects = false, perspective="Hibernate")
+@Require(clearProjects = false, perspective="Hibernate")
 public class CriteriaEditorsTest extends HibernateTest {
 
 	/**
