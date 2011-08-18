@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008-2010 Red Hat, Inc.
+ * Copyright (c) 2008-2011 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -54,24 +54,18 @@ public class HibernateUIMappingMessages extends NLS {
 
 
 	public static String TypeDefPropertyComposite_Name;
-
-
 	public static String TypeDefPropertyComposite_TypeClass;
-
-
 	public static String TypeDefsComposite_Description;
-
-
 	public static String TypeDefsComposite_DescriptionTitle;
-
-
 	public static String TypeDefsComposite_dialogTitle;
-
-
 	public static String TypeDefsComposite_displayString;
-
-
 	public static String TypeDefsComposite_Name;
+	
+	public static String GenericGeneratorsComposite_Description;
+	public static String GenericGeneratorsComposite_DescriptionTitle;
+	public static String GenericGeneratorsComposite_dialogTitle;
+	public static String GenericGeneratorsComposite_displayString;
+	public static String GenericGeneratorsComposite_Name;
 
 	private HibernateUIMappingMessages() {}
 

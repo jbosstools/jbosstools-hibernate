@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009-2010 Red Hat, Inc.
+ * Copyright (c) 2009-2011 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -69,7 +69,7 @@ implements JpaComposite{
 	protected void initializeGenerationCollapsibleSection(Composite container) {
 		if (getSubject() instanceof HibernateJavaIdMapping) {
 			// Generic Generator required only for Java.
-			new HibernateGenerationComposite(this, buildGeneratorContainer(), addSubPane(container, 10), false);
+			new HibernateGenerationComposite(this, buildGeneratorContainer(), addSubPane(container, 10));
 		} else {
 			super.initializeGenerationCollapsibleSection(container);
 		}

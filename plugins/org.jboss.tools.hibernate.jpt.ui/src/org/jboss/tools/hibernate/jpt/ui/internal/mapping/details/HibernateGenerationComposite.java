@@ -1,5 +1,5 @@
 /*******************************************************************************
-  * Copyright (c) 2010 Red Hat, Inc.
+  * Copyright (c) 2010-2011 Red Hat, Inc.
   * Distributed under license by Red Hat, Inc. All rights reserved.
   * This program is made available under the terms of the
   * Eclipse Public License v1.0 which accompanies this distribution,
@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
 import org.eclipse.jpt.jpa.ui.internal.details.GenerationComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.GeneratorComposite.GeneratorBuilder;
@@ -33,13 +34,11 @@ public class HibernateGenerationComposite extends GenerationComposite {
 	
 	private WritablePropertyValueModel<Boolean> genericGeneratorExpansionStateHolder;
 	private WritablePropertyValueModel<GenericGenerator> generatorHolder;
-	private boolean allowMany;
 	
 	public HibernateGenerationComposite(Pane<?> parentPane,
 			PropertyValueModel<? extends HibernateGeneratorContainer> subjectHolder,
-			Composite parent, boolean allowMany) {
+			Composite parent) {
 		super(parentPane, subjectHolder, parent);
-		this.allowMany = allowMany;
 	}
 	
 	@Override
@@ -89,18 +88,24 @@ public class HibernateGenerationComposite extends GenerationComposite {
 			null
 		);
 		
-		if (allowMany){
-			//FIXME add table with generators
+		
+		if (getSubjectHolder().getValue().getParent() instanceof AttributeMapping){
+			if (getSubject().genericGeneratorsSize() > 0){
+				generatorHolder.setValue(getSubject().genericGenerators().next());
+			}
+			// Generic Generator pane
+			this.addGenericGeneratorComposite(
+				container, 0,
+				genericGeneratorCheckBox.getBorderWidth() + 16);
+		} else {
+			addGenericGeneratorsComposite(container, 0,
+					genericGeneratorCheckBox.getBorderWidth() + 16);
 		}
-		//FIXME for many generators
-		if (getSubject().genericGeneratorsSize() > 0){
-			generatorHolder.setValue(getSubject().genericGenerators().next());
-		}
-
-		// Generic Generator pane
-		this.addGenericGeneratorComposite(
-			container, 0,
-			genericGeneratorCheckBox.getBorderWidth() + 16);
+	}
+	
+	protected void addGenericGeneratorsComposite(Composite container, int topMargin, int leftMargin) {
+		new GenericGeneratorsComposite(this, (PropertyValueModel<? extends HibernateGeneratorContainer>) getSubjectHolder(),
+				this.addSubPane(container, topMargin, leftMargin));
 	}
 	
 	protected void addGenericGeneratorComposite(Composite container, int topMargin, int leftMargin) {
