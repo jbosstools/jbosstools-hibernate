@@ -11,6 +11,7 @@
 package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
 import java.util.ListIterator;
+import java.util.Map;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
@@ -33,7 +34,6 @@ import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapt
 import org.eclipse.jpt.common.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.jpa.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.NestableQueryHintAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.QueryHintAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.context.CacheModeType;
@@ -602,25 +602,55 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation<
 	}
 	// ********** NestableAnnotation implementation **********
 
-	/**
-	 * convenience implementation of method from NestableAnnotation interface
-	 * for subclasses
-	 */
-	public void initializeFrom(NestableAnnotation oldAnnotation) {
-		HibernateSourceNamedNativeQueryAnnotation oldQuery = (HibernateSourceNamedNativeQueryAnnotation) oldAnnotation;
-		this.setName(oldQuery.getName());
-		this.setQuery(oldQuery.getQuery());
-		this.setFlushMode(oldQuery.getFlushMode());
-		this.setCacheMode(oldQuery.getCacheMode());
-		this.setCacheable(oldQuery.isCacheable());
-		this.setComment(oldQuery.getComment());
-		this.setFetchSize(oldQuery.getFetchSize());
-		this.setTimeout(oldQuery.getTimeout());
-		this.setCacheRegion(oldQuery.getCacheRegion());
-		this.setReadOnly(oldQuery.isReadOnly());
-		this.setCallable(oldQuery.isCallable());
-		this.setResultClass(oldQuery.getResultClass());
-		this.setResultSetMapping(oldQuery.getResultSetMapping());
+	@Override
+	public void storeOn(Map<String, Object> map) {
+		super.storeOn(map);
+
+		map.put(NAME_PROPERTY, this.name);
+		this.name = null;
+		map.put(QUERY_PROPERTY, this.query);
+		this.query = null;
+		map.put(FLUSH_MODE_PROPERTY, this.flushMode);
+		this.flushMode = null;
+		map.put(CACHE_MODE_PROPERTY, this.cacheMode);
+		this.cacheMode = null;
+		map.put(CACHEABLE_PROPERTY, this.cacheable);
+		this.cacheable = null;
+		map.put(CACHE_REGION_PROPERTY, this.cacheRegion);
+		this.cacheRegion = null;
+		map.put(FETCH_SIZE_PROPERTY, this.fetchSize);
+		this.fetchSize = null;
+		map.put(TIMEOUT_PROPERTY, this.timeout);
+		this.timeout = null;
+		map.put(COMMENT_PROPERTY, this.comment);
+		this.comment = null;
+		map.put(READ_ONLY_PROPERTY, this.readOnly);
+		this.readOnly = null;
+		map.put(CALLABLE_PROPERTY, this.callable);
+		this.callable = null;
+		map.put(RESULT_CLASS_PROPERTY, this.resultClass);
+		this.resultClass = null;
+		map.put(RESULT_SET_MAPPING_PROPERTY, this.resultSetMapping);
+		this.resultSetMapping = null;
+	}
+
+	@Override
+	public void restoreFrom(Map<String, Object> map) {
+		super.restoreFrom(map);
+
+		this.setName((String) map.get(NAME_PROPERTY));
+		this.setQuery((String) map.get(QUERY_PROPERTY));
+		this.setFlushMode((FlushModeType) map.get(FLUSH_MODE_PROPERTY));
+		this.setCacheMode((CacheModeType) map.get(CACHE_MODE_PROPERTY));
+		this.setCacheable((Boolean) map.get(CACHEABLE_PROPERTY));
+		this.setCacheRegion((String) map.get(CACHE_REGION_PROPERTY));
+		this.setFetchSize((Integer) map.get(FETCH_SIZE_PROPERTY));
+		this.setTimeout((Integer) map.get(TIMEOUT_PROPERTY));
+		this.setComment((String)map.get(COMMENT_PROPERTY));
+		this.setReadOnly((Boolean) map.get(READ_ONLY_PROPERTY));
+		this.setCallable((Boolean) map.get(CALLABLE_PROPERTY));
+		this.setResultClass((String) map.get(RESULT_CLASS_PROPERTY));
+		this.setResultSetMapping((String) map.get(RESULT_SET_MAPPING_PROPERTY));
 	}
 
 	/**

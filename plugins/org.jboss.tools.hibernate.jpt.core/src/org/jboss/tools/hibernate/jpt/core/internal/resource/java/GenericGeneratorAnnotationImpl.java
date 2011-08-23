@@ -10,7 +10,10 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.Vector;
 
 import org.eclipse.jdt.core.IAnnotation;
@@ -91,6 +94,39 @@ implements GenericGeneratorAnnotation {
 		this.syncStrategy(this.buildStrategy(astRoot));
 		this.strategyTextRange = this.buildStrategyTextRange(astRoot);
 		AnnotationContainerTools.synchronize(this.parametersContainer, astRoot);
+	}
+	
+	@Override
+	public void storeOn(Map<String, Object> map) {
+		super.storeOn(map);
+
+		map.put(NAME_PROPERTY, this.name);
+		this.name = null;
+		map.put(STRATEGY_PROPERTY, this.strategy);
+		this.strategy = null;
+
+		List<Map<String, Object>> paramStaet = this.buildStateList(this.parameters.size());
+		for (NestableParameterAnnotation param : nestableParameters()) {
+			Map<String, Object> hintState = new HashMap<String, Object>();
+			param.storeOn(hintState);
+			paramStaet.add(hintState);
+		}
+		map.put(PARAMETERS_LIST, paramStaet);
+		this.parameters.clear();
+	}
+
+	@Override
+	public void restoreFrom(Map<String, Object> map) {
+		super.restoreFrom(map);
+
+		this.setName((String) map.get(NAME_PROPERTY));
+		this.setStrategy((String) map.get(STRATEGY_PROPERTY));
+
+		@SuppressWarnings("unchecked")
+		List<Map<String, Object>> paramsState = (List<Map<String, Object>>) map.get(PARAMETERS_LIST);
+		for (Map<String, Object> paramState : paramsState) {
+			this.addParameter().restoreFrom(paramState);
+		}
 	}
 
 	public String getAnnotationName() {
@@ -191,6 +227,9 @@ implements GenericGeneratorAnnotation {
 
 
 	//************************ parameters ***********************
+	private NestableParameterAnnotation addParameter() {
+		return this.addParameter(this.parameters.size());
+	}
 
 	public NestableParameterAnnotation addParameter(int index) {
 		return (NestableParameterAnnotation) AnnotationContainerTools.addNestedAnnotation(index, this.parametersContainer);
@@ -362,11 +401,11 @@ implements GenericGeneratorAnnotation {
 	}
 
 	public static GenericGeneratorAnnotation createNestedGenericGenerator(
-			JavaResourceNode parent, AnnotatedElement member,
+			JavaResourceNode parent, AnnotatedElement element,
 			int index, DeclarationAnnotationAdapter attributeOverridesAdapter) {
 		IndexedDeclarationAnnotationAdapter idaa = buildNestedHibernateDeclarationAnnotationAdapter(index, attributeOverridesAdapter);
-		IndexedAnnotationAdapter annotationAdapter = new ElementIndexedAnnotationAdapter(member, idaa);
-		return new GenericGeneratorAnnotationImpl(parent, member, idaa, annotationAdapter);
+		IndexedAnnotationAdapter annotationAdapter = new ElementIndexedAnnotationAdapter(element, idaa);
+		return new GenericGeneratorAnnotationImpl(parent, element, idaa, annotationAdapter);
 	}
 
 	private static IndexedDeclarationAnnotationAdapter buildNestedHibernateDeclarationAnnotationAdapter(int index, DeclarationAnnotationAdapter hibernateGenericGeneratorsAdapter) {

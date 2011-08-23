@@ -10,6 +10,8 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Vector;
@@ -121,17 +123,33 @@ public class TypeDefAnnotationImpl extends SourceAnnotation<AnnotatedElement>
 	@Override
 	public void storeOn(Map<String, Object> map) {
 		super.storeOn(map);
+		map.put(NAME_PROPERTY, this.name);
+		this.name = null;
 		map.put(TYPE_CLASS_PROPERTY, this.typeClass);
 		this.typeClass = null;
 		map.put(DEF_FOR_TYPE_PROPERTY, this.defaultForType);
 		this.defaultForType = null;
+		List<Map<String, Object>> paramStaet = this.buildStateList(this.parameters.size());
+		for (NestableParameterAnnotation param : nestableParameters()) {
+			Map<String, Object> hintState = new HashMap<String, Object>();
+			param.storeOn(hintState);
+			paramStaet.add(hintState);
+		}
+		map.put(PARAMETERS_LIST, paramStaet);
+		this.parameters.clear();
 	}
 
 	@Override
 	public void restoreFrom(Map<String, Object> map) {
 		super.restoreFrom(map);
+		this.setName((String) map.get(NAME_PROPERTY));
 		this.setTypeClass((String) map.get(TYPE_CLASS_PROPERTY));
 		this.setDefaultForType((String) map.get(DEF_FOR_TYPE_PROPERTY));
+		@SuppressWarnings("unchecked")
+		List<Map<String, Object>> paramsState = (List<Map<String, Object>>) map.get(PARAMETERS_LIST);
+		for (Map<String, Object> paramState : paramsState) {
+			this.addParameter().restoreFrom(paramState);
+		}
 	}
 
 	// ********** TypeDefAnnotation implementation **********
@@ -249,7 +267,10 @@ public class TypeDefAnnotationImpl extends SourceAnnotation<AnnotatedElement>
 		return (this.defaultForType == null) ? null : ASTTools.resolveFullyQualifiedName(this.defaultForTypeAdapter.getExpression(astRoot));
 	}
 	//************************ parameters ***********************
-
+	private NestableParameterAnnotation addParameter() {
+		return this.addParameter(this.parameters.size());
+	}
+	
 	public NestableParameterAnnotation addParameter(int index) {
 		return (NestableParameterAnnotation) AnnotationContainerTools.addNestedAnnotation(index, this.parametersContainer);
 	}

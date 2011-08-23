@@ -10,6 +10,10 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
@@ -144,15 +148,24 @@ public class SourceParameterAnnotation extends SourceAnnotation<AnnotatedElement
 
 
 	// ********** NestableAnnotation implementation **********
-
-	public void initializeFrom(NestableAnnotation oldAnnotation) {
-		ParameterAnnotation oldParameter = (ParameterAnnotation) oldAnnotation;
-		this.setName(oldParameter.getName());
-		this.setValue(oldParameter.getValue());
-	}
-
 	public void moveAnnotation(int newIndex) {
 		this.getIndexedAnnotationAdapter().moveAnnotation(newIndex);
+	}
+	
+	@Override
+	public void storeOn(Map<String, Object> map) {
+		super.storeOn(map);
+		map.put(NAME_PROPERTY, this.name);
+		this.name = null;
+		map.put(VALUE_PROPERTY, this.value);
+		this.value = null;
+	}
+
+	@Override
+	public void restoreFrom(Map<String, Object> map) {
+		super.restoreFrom(map);
+		this.setName((String) map.get(NAME_PROPERTY));
+		this.setValue((String) map.get(VALUE_PROPERTY));
 	}
 
 	// ********** static methods **********

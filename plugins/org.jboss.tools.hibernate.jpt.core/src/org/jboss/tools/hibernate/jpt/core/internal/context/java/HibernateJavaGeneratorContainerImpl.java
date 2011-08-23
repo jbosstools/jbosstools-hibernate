@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Red Hat, Inc.
+ * Copyright (c) 2010-2011 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -11,7 +11,6 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
 
@@ -25,8 +24,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaGeneratorContainer;
 import org.eclipse.jpt.jpa.core.resource.java.NestableAnnotation;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.context.GenericGenerator;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.GenericGeneratorAnnotation;
@@ -148,14 +145,14 @@ public class HibernateJavaGeneratorContainerImpl extends
 	}
 
 
-	protected void moveNamedQuery_(int index, JavaGenericGenerator genericGenerator) {
+	protected void moveGenericGenerator_(int index, JavaGenericGenerator genericGenerator) {
 		this.moveItemInList(index, genericGenerator, this.genericGenerators, GENERIC_GENERATORS_LIST);
 	}
 
 	protected JavaGenericGenerator addGenericGenerator_(int index, GenericGeneratorAnnotation ggAnnotation) {
-		JavaGenericGenerator query = this.buildGenericGenerator(ggAnnotation);
-		this.addItemToList(index, query, this.genericGenerators, GENERIC_GENERATORS_LIST);
-		return query;
+		JavaGenericGenerator generator = this.buildGenericGenerator(ggAnnotation);
+		this.addItemToList(index, generator, this.genericGenerators, GENERIC_GENERATORS_LIST);
+		return generator;
 	}
 
 	protected void removeGenericGenerator_(JavaGenericGenerator rgenericGenerator) {
@@ -183,7 +180,7 @@ public class HibernateJavaGeneratorContainerImpl extends
 		}
 		@Override
 		public void moveContextElement(int index, JavaGenericGenerator element) {
-			HibernateJavaGeneratorContainerImpl.this.moveNamedQuery_(index, element);
+			HibernateJavaGeneratorContainerImpl.this.moveGenericGenerator_(index, element);
 		}
 		@Override
 		public void addContextElement(int index, GenericGeneratorAnnotation resourceElement) {
