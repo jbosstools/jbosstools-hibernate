@@ -23,7 +23,9 @@ import org.eclipse.jpt.jpa.ui.internal.details.orm.EntityMappingsDetailsProvider
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmPersistentAttributeDetailsProvider;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmPersistentTypeDetailsProvider;
 import org.eclipse.jpt.jpa.ui.internal.platform.generic.GenericNavigatorProvider;
+import org.jboss.tools.hibernate.jpt.ui.internal.details.java.JavaPackageInfoDetailsProvider;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.java.HibernateJavaResourceUiDefinition;
+import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.java.PackageInfoResourceUIDefinition;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.orm.HibernateOrmXmlUiDefinition;
 import org.jboss.tools.hibernate.jpt.ui.internal.persistence.details.HibernatePersistenceXmlUiDefinition;
 import org.jboss.tools.hibernate.jpt.ui.internal.platform.HibernateJpaPlatformUi;
@@ -64,6 +66,7 @@ public class HibernateJpaPlatformUiProvider extends
 	
 	@Override
 	protected void addDetailsProvidersTo(List<JpaDetailsProvider> providers) {
+		providers.add(JavaPackageInfoDetailsProvider.instance());
 		providers.add(JavaPersistentTypeDetailsProvider.instance());
 		providers.add(JavaPersistentAttributeDetailsProvider.instance());
 		providers.add(EntityMappingsDetailsProvider.instance());
@@ -75,10 +78,11 @@ public class HibernateJpaPlatformUiProvider extends
 	// ********** resource ui definitions **********
 	
 	@Override
-	protected void addResourceUiDefinitionsTo(List<ResourceUiDefinition> defintions) {
-		defintions.add(HibernateJavaResourceUiDefinition.instance());
-		defintions.add(HibernateOrmXmlUiDefinition.instance());
-		defintions.add(HibernatePersistenceXmlUiDefinition.instance());
+	protected void addResourceUiDefinitionsTo(List<ResourceUiDefinition> definitions) {
+		definitions.add(PackageInfoResourceUIDefinition.instance());
+		definitions.add(HibernateJavaResourceUiDefinition.instance());
+		definitions.add(HibernateOrmXmlUiDefinition.instance());
+		definitions.add(HibernatePersistenceXmlUiDefinition.instance());
 	}
 
 }

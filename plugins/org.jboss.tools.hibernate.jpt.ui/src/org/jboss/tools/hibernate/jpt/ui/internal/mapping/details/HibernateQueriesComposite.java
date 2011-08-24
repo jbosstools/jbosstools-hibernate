@@ -51,6 +51,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaNamedNativeQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaNamedQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaQueryContainer;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernatePackageInfo;
 
 /**
  * @author Dmitry Geraskov
@@ -83,7 +84,8 @@ public class HibernateQueriesComposite extends Pane<HibernateJavaQueryContainer>
 	}
 
 	protected HibernateAddQueryDialog buildAddQueryDialog() {
-		return new HibernateAddQueryDialog(getControl().getShell(), this.getSubject().getPersistenceUnit());
+		boolean hibernateOnly = (getSubject().getParent() instanceof HibernatePackageInfo);
+		return new HibernateAddQueryDialog(getControl().getShell(), this.getSubject().getPersistenceUnit(), hibernateOnly);
 	}
 
 	protected void addQueryFromDialog(HibernateAddQueryDialog hibernateAddQueryDialog) {

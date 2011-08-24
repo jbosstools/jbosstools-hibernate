@@ -22,8 +22,10 @@ import org.eclipse.jpt.jpa.ui.internal.details.orm.EntityMappingsDetailsProvider
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmPersistentAttributeDetailsProvider;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmPersistentTypeDetailsProvider;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.EntityMappings2_0DetailsProvider;
+import org.jboss.tools.hibernate.jpt.ui.internal.details.java.JavaPackageInfoDetailsProvider;
 import org.jboss.tools.hibernate.jpt.ui.internal.jpa2.mapping.details.orm.Hibernate2_0OrmXmlUiDefinition;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.java.Hibernate2_0JavaResourceUiDefinition;
+import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.java.PackageInfoResourceUIDefinition;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.orm.HibernateOrmXmlUiDefinition;
 import org.jboss.tools.hibernate.jpt.ui.internal.persistence.details.HibernatePersistenceXmlUiDefinition;
 import org.jboss.tools.hibernate.jpt.ui.internal.persistence.details.jpa2.HibernatePersistenceXml2_0UiDefinition;
@@ -56,6 +58,7 @@ public class HibernateJpa2_0PlatformUiProvider extends
 
 	@Override
 	protected void addDetailsProvidersTo(List<JpaDetailsProvider> providers) {
+		providers.add(JavaPackageInfoDetailsProvider.instance());
 		providers.add(JavaPersistentTypeDetailsProvider.instance());
 		providers.add(JavaPersistentAttributeDetailsProvider.instance());
 		providers.add(EntityMappingsDetailsProvider.instance());
@@ -69,6 +72,7 @@ public class HibernateJpa2_0PlatformUiProvider extends
 	@Override
 	protected void addResourceUiDefinitionsTo(
 			List<ResourceUiDefinition> definitions) {
+		definitions.add(PackageInfoResourceUIDefinition.instance());
 		definitions.add(Hibernate2_0JavaResourceUiDefinition.instance());
 		definitions.add(HibernateOrmXmlUiDefinition.instance());
 		definitions.add(Hibernate2_0OrmXmlUiDefinition.instance());

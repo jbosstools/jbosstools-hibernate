@@ -43,6 +43,8 @@ public class HibernateAddQueryDialog extends ValidatingDialog<AddQueryStateObjec
 
 	public static final String NAMED_QUERY = "namedQuery"; //$NON-NLS-1$
 	public static final String NAMED_NATIVE_QUERY = "namedNativeQuery"; //$NON-NLS-1$
+	
+	private boolean hibernateOnly;
 
 
 	/**
@@ -53,10 +55,14 @@ public class HibernateAddQueryDialog extends ValidatingDialog<AddQueryStateObjec
 
 	/**
 	 * Use this constructor to edit an existing conversion value
+	 * @param hibernateOnly shows that only @org.hibernate.annotations.NamedQuery
+	 * 						and @org.hibernate.annotations.NamedNativeQuery
+	 * 						could be added.
 	 */
-	public HibernateAddQueryDialog(Shell parent, PersistenceUnit pUnit) {
+	public HibernateAddQueryDialog(Shell parent, PersistenceUnit pUnit, boolean hibernateOnly) {
 		super(parent);
 		this.pUnit = pUnit;
+		this.hibernateOnly = hibernateOnly;
 	}
 
 	@Override
@@ -146,8 +152,10 @@ public class HibernateAddQueryDialog extends ValidatingDialog<AddQueryStateObjec
 
 		protected ListValueModel<String> buildQueryTypeListHolder() {
 			List<String> queryTypes = new ArrayList<String>();
-			queryTypes.add(NAMED_QUERY);
-			queryTypes.add(NAMED_NATIVE_QUERY);
+			if (!hibernateOnly){
+				queryTypes.add(NAMED_QUERY);
+				queryTypes.add(NAMED_NATIVE_QUERY);
+			}
 			queryTypes.add(HibernateNamedQuery.HIBERNATE_NAMED_QUERY);
 			queryTypes.add(HibernateNamedNativeQuery.HIBERNATE_NAMED_NATIVE_QUERY);
 			return new StaticListValueModel<String>(queryTypes);
