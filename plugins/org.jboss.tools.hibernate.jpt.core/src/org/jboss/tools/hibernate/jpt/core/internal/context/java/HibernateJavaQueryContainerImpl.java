@@ -111,12 +111,12 @@ implements HibernateJavaQueryContainer{
 	}
 
 	protected void removeHibernateNamedQuery_(int index) {
-		this.removeItemFromList(index, this.hibernateNamedQueries, NAMED_QUERIES_LIST);
+		this.removeItemFromList(index, this.hibernateNamedQueries, HIBERNATE_NAMED_QUERIES_LIST);
 	}
 
 	public void moveHibernateNamedQuery(int targetIndex, int sourceIndex) {
 		this.owner.getResourceAnnotatedElement().moveAnnotation(targetIndex, sourceIndex, HibernateNamedQueriesAnnotation.ANNOTATION_NAME);
-		this.moveItemInList(targetIndex, sourceIndex, this.hibernateNamedQueries, NAMED_QUERIES_LIST);
+		this.moveItemInList(targetIndex, sourceIndex, this.hibernateNamedQueries, HIBERNATE_NAMED_QUERIES_LIST);
 	}
 
 	protected void initializeHibernateNamedQueries() {
@@ -144,12 +144,12 @@ implements HibernateJavaQueryContainer{
 	}
 
 	protected void moveHibernateNamedQuery_(int index, HibernateJavaNamedQuery hibernateNamedQuery) {
-		this.moveItemInList(index, hibernateNamedQuery, this.hibernateNamedQueries, NAMED_QUERIES_LIST);
+		this.moveItemInList(index, hibernateNamedQuery, this.hibernateNamedQueries, HIBERNATE_NAMED_QUERIES_LIST);
 	}
 
 	protected HibernateJavaNamedQuery addHibernateNamedQuery_(int index, HibernateNamedQueryAnnotation hibernateNamedQueryAnnotation) {
 		HibernateJavaNamedQuery query = this.buildHibernateNamedQuery(hibernateNamedQueryAnnotation);
-		this.addItemToList(index, query, this.hibernateNamedQueries, NAMED_QUERIES_LIST);
+		this.addItemToList(index, query, this.hibernateNamedQueries, HIBERNATE_NAMED_QUERIES_LIST);
 		return query;
 	}
 
@@ -220,12 +220,12 @@ implements HibernateJavaQueryContainer{
 	}
 
 	protected void removeHibernateNamedNativeQuery_(int index) {
-		this.removeItemFromList(index, this.hibernateNamedNativeQueries, NAMED_NATIVE_QUERIES_LIST);
+		this.removeItemFromList(index, this.hibernateNamedNativeQueries, HIBERNATE_NAMED_NATIVE_QUERIES_LIST);
 	}
 
 	public void moveHibernateNamedNativeQuery(int targetIndex, int sourceIndex) {
 		this.owner.getResourceAnnotatedElement().moveAnnotation(targetIndex, sourceIndex, HibernateNamedNativeQueriesAnnotation.ANNOTATION_NAME);
-		this.moveItemInList(targetIndex, sourceIndex, this.hibernateNamedNativeQueries, NAMED_NATIVE_QUERIES_LIST);
+		this.moveItemInList(targetIndex, sourceIndex, this.hibernateNamedNativeQueries, HIBERNATE_NAMED_NATIVE_QUERIES_LIST);
 	}
 
 	protected void initializeHibernateNamedNativeQueries() {
@@ -253,12 +253,12 @@ implements HibernateJavaQueryContainer{
 	}
 
 	protected void moveHibernateNamedNativeQuery_(int index, HibernateJavaNamedNativeQuery hibernateNamedNativeQuery) {
-		this.moveItemInList(index, hibernateNamedNativeQuery, this.hibernateNamedNativeQueries, NAMED_NATIVE_QUERIES_LIST);
+		this.moveItemInList(index, hibernateNamedNativeQuery, this.hibernateNamedNativeQueries, HIBERNATE_NAMED_NATIVE_QUERIES_LIST);
 	}
 
 	protected HibernateJavaNamedNativeQuery addHibernateNamedNativeQuery_(int index, HibernateNamedNativeQueryAnnotation hibernateNamedNativeQueryAnnotation) {
 		HibernateJavaNamedNativeQuery query = this.buildHibernateNamedNativeQuery(hibernateNamedNativeQueryAnnotation);
-		this.addItemToList(index, query, this.hibernateNamedNativeQueries, NAMED_NATIVE_QUERIES_LIST);
+		this.addItemToList(index, query, this.hibernateNamedNativeQueries, HIBERNATE_NAMED_NATIVE_QUERIES_LIST);
 		return query;
 	}
 
