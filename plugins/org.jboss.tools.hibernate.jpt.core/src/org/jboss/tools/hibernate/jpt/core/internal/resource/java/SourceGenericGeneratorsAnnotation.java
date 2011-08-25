@@ -17,7 +17,6 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.AnnotationContainerTools;
@@ -33,7 +32,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
  * @author Dmitry Geraskov
  *
  */
-public class SourceGenericGeneratorsAnnotation extends SourceAnnotation<Member> implements
+public class SourceGenericGeneratorsAnnotation extends SourceAnnotation<AnnotatedElement> implements
 		GenericGeneratorsAnnotation {
 
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
@@ -41,8 +40,8 @@ public class SourceGenericGeneratorsAnnotation extends SourceAnnotation<Member> 
 	private final Vector<GenericGeneratorAnnotation> genericGenerators = new Vector<GenericGeneratorAnnotation>();
 
 
-	public SourceGenericGeneratorsAnnotation(JavaResourceNode parent, Member member) {
-		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
+	public SourceGenericGeneratorsAnnotation(JavaResourceNode parent, AnnotatedElement element) {
+		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
 	}
 
 	public String getAnnotationName() {
@@ -154,7 +153,7 @@ public class SourceGenericGeneratorsAnnotation extends SourceAnnotation<Member> 
 		}
 
 		public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
-			return new SourceGenericGeneratorsAnnotation(parent, (Member) annotatedElement);
+			return new SourceGenericGeneratorsAnnotation(parent, annotatedElement);
 		}
 
 		public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
