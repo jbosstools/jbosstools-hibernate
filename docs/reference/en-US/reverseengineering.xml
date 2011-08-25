@@ -1,0 +1,847 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<chapter id="reverseengineering">
+  <title>Controlling reverse engineering</title>
+
+  <para>
+  	When using the <code>&lt;jdbcconfiguration&gt;</code> tag, the Ant task will read the database metadata and then reverse engineer the database schema into a normal Hibernate Configuration. It is from this object (e.g. <code>&lt;hbm2java&gt;</code>) that other artifacts, such as <filename>.java</filename> and <filename>.hbm.xml</filename>, can be generated.
+  </para>
+
+  <para>
+  	To govern this process <productname>Hibernate</productname> uses a reverse engineering strategy. A reverse engineering strategy is mainly called to provide more Java like names for tables, column and foreign keys into classes, properties and associations. It is also used to provide mappings from SQL types to <productname>Hibernate</productname> types.
+  </para>
+  <para>
+  	The strategy can be customized by the user. This can be done by providing a custom reverse engineering strategy should the default strategy does not include the required functionality, or simply define a small component of the strategy and delegate the rest to the default strategy.
+  </para>
+
+  <para>
+  	Further in this chapter we will discuss how you can configure the process of reverse engineering, what the default reverse engineering strategy includes, as well as some custom concepts.
+  </para>
+  
+  <section>
+    <title>Default reverse engineering strategy</title>
+
+    <para>
+    	The default strategy uses a collection of rules for mapping JDBC artifact names to Java artifact names. It also provide basic type mappings from JDBC types to <productname>Hibernate</productname> types. It is the default strategy that uses the <code>packagename</code> attribute to convert a table name into a fully qualified class name.
+    </para>
+  </section>
+
+  <section id="hibernaterevengxmlfile">
+    <title>hibernate.reveng.xml file</title>
+
+    <para>
+    	A <filename>hibernate.reveng.xml</filename> file can provide a finer degree of control of the reverse engineering process. In this file you can specify type mappings and table filtering. This file can be created by hand (it&apos;s just basic XML) or you can use the <ulink url="http://www.hibernate.org/30.html">Hibernate plugins</ulink>, which provides a specialized editor.
+    </para>
+
+    <note>
+      <title>Note:</title>
+      <para>
+      	Many databases have case-sensitive names, so if a table does not match, and you are sure it is not excluded by a <code>&lt;table-filter&gt;</code>,  check that the case matches. Most databases stores table names in upper case.
+      </para>
+    </note>
+
+    <para>Below you can see an example of a <filename>reveng.xml</filename> file.</para>
+
+    <programlisting role="XML"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+
+<type-mapping>
+ <!-- jdbc-type is name for java.sql.Types -->
+ <sql-type jdbc-type="VARCHAR" length='20' hibernate-type="SomeUserType" /> 
+ <sql-type jdbc-type="VARCHAR" length='1' hibernate-type="yes_no" />
+ <!-- length, scale and precision can be used to specify the mapping precisely -->
+ <sql-type jdbc-type="NUMERIC"  precision='1' hibernate-type="boolean" /> 
+ <!-- the type-mappings are ordered. This mapping will be consulted last, 
+  thus overridden by the previous one if precision=1 for the column -->
+ <sql-type jdbc-type="NUMERIC"  hibernate-type="long" /> 
+</type-mapping>
+
+<!-- BIN$ is recycle bin tables in Oracle -->
+<table-filter match-name="BIN$.*" exclude="true" /> 
+
+<!-- Exclude DoNotWantIt from all catalogs/schemas -->
+<table-filter match-name="DoNotWantIt" exclude="true" /> 
+
+<!-- exclude all tables from the schema SCHEMA in catalog BAD. -->
+<table-filter match-catalog="BAD" match-schema="SCHEMA" match-name=".*" exclude="true" /> 
+
+<!-- table allows you to override/define how reverse engineering 
+     is done for a specific table -->
+<table name="ORDERS"> 
+ <primary-key>
+   <!-- setting up a specific id generator for a table -->
+  <generator class="sequence">
+    <param name="table">seq_table</param>
+  </generator>
+   <key-column name="CUSTID"/>
+ </primary-key>
+ <column name="NAME" property="orderName" type="string" />
+ <!-- control many-to-one and set names for a specific named foreign key constraint -->
+ <foreign-key constraint-name="ORDER_CUST">
+   <many-to-one property="customer"/>
+   <set property="orders"/>
+ </foreign-key>
+ <!-- can also control a pure (shared pk) one-to-one  -->
+  <foreign-key constraint-name="ADDRESS_PERSON">
+   <one-to-one exclude="false"/>
+   <inverse-one-to-one exclude="true"/>
+  </foreign-key>
+</table>
+
+</hibernate-reverse-engineering>]]></programlisting>
+
+
+    <section>
+      <title>Schema Selection (&lt;schema-selection&gt;)</title>
+
+      <para>The <code>&lt;schema-selection&gt;</code> tag is used to determine which schemas the reverse engineering will try and process.</para>
+
+      <para>
+      	By default the reverse engineering will read all schemas and then use the <code>&lt;table-filter&gt;</code> tag to decide which tables are reverse engineered and which are not. This makes it easy to get started but can be inefficient on databases with many schemas.
+      </para>
+
+      <para>
+      	With the <code>&lt;schema-selection&gt;</code> tag it is thus possible to limit which schemas are processed, which in turn can significantly speed-up the reverse engineering. The <code>&lt;table-filter&gt;</code> tag is still used to then decide which tables will be included and excluded.
+      </para>
+
+      <note>
+        <title>Note:</title>
+        <para>
+        	If no <code>&lt;schema-selection&gt;</code> tag is specified, the reverse engineering works as if all schemas should be processed. This is equal to: <![CDATA[<schema-selection/>]]>, which in turn is equal to: <![CDATA[<schema-selection match-catalog=".*" match-schema=".*" match-table=".*"/>]]>
+        </para>
+      </note>
+
+      <section>
+        <title>Examples</title>
+
+        <para>The following will process all tables from <code>&quot;MY_SCHEMA&quot;</code>.</para>
+
+        <programlisting role="XML"><![CDATA[<schema-selection match-schema="MY_SCHEMA"/>]]></programlisting>
+
+        <para>
+        	It is possible to have multiple <code>schema-selection</code>'s to support multi-schema reading, or to limit the processing to very specific tables. The following example processes all tables in <code>&quot;MY_SCHEMA&quot;</code>, a specific <code>&quot;CITY&quot;</code> table plus all tables that start with <code>&quot;CODES_&quot;</code> in <code>&quot;COMMON_SCHEMA&quot;</code>.
+        </para>
+
+        <programlisting role="XML"><![CDATA[<schema-selection match-schema="MY_SCHEMA"/>
+<schema-selection match-schema="COMMON_SCHEMA" match-table="CITY"/>
+<schema-selection match-schema="COMMON_SCHEMA" match-table="CODES_.*"/>]]></programlisting>
+      </section>
+    </section>
+
+    <section id="type_map">
+      <title>Type mappings (&lt;type-mapping&gt;)</title>
+
+      <para>
+      	The <code>&lt;type-mapping&gt;</code> section specifies how the JDBC types found in the database should be mapped to Hibernate types. e.g. <code>java.sql.Types.VARCHAR</code> with a length of 1 should be mapped to the Hibernate type <code>yes_no</code>, or <code>java.sql.Types.NUMERIC</code> should generally just be converted to the Hibernate type <code>long</code>.
+      </para>
+
+      <programlisting role="XML"><![CDATA[<type-mapping>
+ <sql-type
+  jdbc-type="integer value or name from java.sql.Types"
+  length="a numeric value"
+  precision="a numeric value"
+  scale="a numeric value"
+  not-null="true|false"  
+  hibernate-type="hibernate type name"  
+ />
+</type-mapping>]]></programlisting>
+
+      <para>
+      	The number of attributes specified and the sequence of the <code>sql-type</code> tags are important. This is because <productname>Hibernate</productname> will search for the most specific first, and if no specific match is found it will seek from top to bottom when trying to resolve a type mapping.
+      </para>
+
+      <section>
+        <title>Example</title>
+
+        <para>The following is an example of a type-mapping which shows the flexibility and importance of the ordering of the type mappings.</para>
+
+        <programlisting role="XML"><![CDATA[<type-mapping>
+ <sql-type jdbc-type="NUMERIC" precision="15" hibernate-type="big_decimal"/>
+ <sql-type jdbc-type="NUMERIC" not-null="true" hibernate-type="long" />
+ <sql-type jdbc-type="NUMERIC" not-null="false" hibernate-type="java.lang.Long" />
+ <sql-type jdbc-type="VARCHAR" length="1" not-null="true" 
+       hibernate-type="java.lang.Character"/>
+ <sql-type jdbc-type="VARCHAR" hibernate-type="your.package.TrimStringUserType"/>
+ <sql-type jdbc-type="VARCHAR" length="1" hibernate-type="char"/>
+ <sql-type jdbc-type="VARCHAR" hibernate-type="string"/>
+</type-mapping>]]></programlisting>
+
+        <para>The following table shows how this affects an example table named <code>CUSTOMER</code>:</para>
+
+        <table frame="topbot">
+          <title>sql-type examples</title>
+
+          <tgroup cols="7">
+            <colspec colwidth="0.4*"/>
+
+            <colspec colwidth="0.4*"/>
+
+            <colspec colwidth="0.2*"/>
+
+            <colspec colwidth="0.3*"/>
+
+            <colspec colwidth="0.2*"/>
+
+            <colspec colwidth="1.0*"/>
+
+            <colspec colwidth="0.7*"/>
+
+            <thead>
+              <row>
+                <entry>Column</entry>
+
+                <entry>jdbc-type</entry>
+
+                <entry>length</entry>
+
+                <entry>precision</entry>
+
+                <entry>not-null</entry>
+
+                <entry>Resulting hibernate-type</entry>
+
+                <entry>Rationale</entry>
+              </row>
+            </thead>
+
+            <tbody>
+              <row>
+                <entry>ID</entry>
+
+                <entry>INTEGER</entry>
+
+                <entry/>
+
+                <entry>10</entry>
+
+                <entry>true</entry>
+
+                <entry>int</entry>
+
+                <entry>Nothing is defined for INTEGER. Falling back to default behavior.</entry>
+              </row>
+
+              <row>
+                <entry>NAME</entry>
+
+                <entry>VARCHAR</entry>
+
+                <entry>30</entry>
+
+                <entry/>
+
+                <entry>false</entry>
+
+                <entry>your.package.TrimStringUserType</entry>
+
+                <entry>
+                	No type-mapping matches <code>length=30</code> and <code>not-null=false</code>, but type-mapping matches the 2 mappings which only specifies <code>VARCHAR</code>. The type-mapping that comes first is chosen.
+                </entry>
+              </row>
+
+              <row>
+                <entry>INITIAL</entry>
+
+                <entry>VARCHAR</entry>
+
+                <entry>1</entry>
+
+                <entry/>
+
+                <entry>false</entry>
+
+                <entry>char</entry>
+
+                <entry>
+                	Even though there is a generic match for <code>VARCHAR</code>, the more specific type-mapping for <code>VARCHAR</code> with <code>not-null="false"</code> is chosen. The first <code>VARCHAR</code> sql-type matches in length but has no value for not-null and thus is not considered.</entry>
+              </row>
+
+              <row>
+                <entry>CODE</entry>
+
+                <entry>VARCHAR</entry>
+
+                <entry>1</entry>
+
+                <entry/>
+
+                <entry>true</entry>
+
+                <entry>java.lang.Character</entry>
+
+                <entry>The most specific <code>VARCHAR</code> with <code>not-null="true"</code> is selected</entry>
+              </row>
+
+              <row>
+                <entry>SALARY</entry>
+
+                <entry>NUMERIC</entry>
+
+                <entry/>
+
+                <entry>15</entry>
+
+                <entry>false</entry>
+
+                <entry>big_decimal</entry>
+
+                <entry>There is a precise match for <code>NUMERIC</code> with precision 15</entry>
+              </row>
+
+              <row>
+                <entry>AGE</entry>
+
+                <entry>NUMERIC</entry>
+
+                <entry/>
+
+                <entry>3</entry>
+
+                <entry>false</entry>
+
+                <entry>java.lang.Long</entry>
+
+                <entry>type-mapping for <code>NUMERIC</code> with <code>not-null="false"</code></entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+
+        <para/>
+      </section>
+    </section>
+
+    <section>
+      <title>Table filters (&lt;table-filter&gt;)</title>
+
+      <para>
+      	The <code>&lt;table-filter&gt;</code> tag lets you specify matching rules for performing general filtering and setup of tables, e.g. let you include or exclude specific tables based on the schema or even a specific prefix.
+      </para>
+
+        <programlisting role="XML"><![CDATA[<table-filter
+ match-catalog="catalog_matching_rule"
+ match-schema="schema_matching_rule"
+ match-name="table_matching_rule"
+ exclude="true|false"
+ package="package.name"
+/>]]></programlisting>
+        
+        <table frame="topbot">
+          <title>Table-filter attributes</title>
+          
+          <tgroup cols="3">
+            
+            <colspec colwidth="0.3*"/>            
+           
+            <colspec colwidth="1.0*"/>
+            
+            <colspec colwidth="0.3*"/>
+            
+            
+            <thead>
+              <row>
+                <entry>Attribute name</entry>
+                
+                <entry>Definition</entry>
+                
+                <entry>Default value</entry>
+              </row>
+            </thead>
+            
+            <tbody>
+              <row>
+                <entry><para>match-catalog</para></entry>
+                
+                <entry><para>Pattern for matching catalog part of the table</para></entry>
+                
+                <entry><para>.*</para></entry>
+              </row>
+              
+              <row>
+                <entry><para>match-schema</para></entry>
+                
+                <entry><para>Pattern for matching schema part of the table</para></entry>
+                
+                <entry><para>.*</para></entry>
+              </row>
+              
+              <row>
+                <entry><para>match-table</para></entry>
+                
+                <entry><para>Pattern for matching table part of the table</para></entry>
+                
+                <entry><para>.*</para></entry>
+              </row>
+              
+              <row>
+                <entry><para>exclude </para></entry>
+                
+                <entry><para>If true the table will not be part of the reverse
+                  engineering</para></entry>
+                
+                <entry><para>false</para></entry>
+              </row>
+              
+              <row>
+                <entry><para>package</para></entry>
+                
+                <entry><para>The default package name to use for classes based on tables
+                  matched by this table-filter</para></entry>
+                
+                <entry><para>""</para></entry>
+              </row>
+            </tbody>
+            
+          </tgroup>
+        </table>
+       
+    </section>
+
+    <section id="tab_and_col">
+      <title>Specific table configuration (&lt;table&gt;)</title>
+
+      <para>
+      	The <code>&lt;table&gt;</code> tag allows you to explicitly define how a table should be reverse engineered. It allows control over the naming of a class for the table, provides a way to specify which identifier generator should be used for the primary key and more.
+      </para>
+
+          <programlisting role="XML"><![CDATA[<table 
+ catalog="catalog_name"
+ schema="schema_name"
+ name="table_name"
+ class="ClassName"
+>
+ <primary-key.../>
+ <column.../>
+ <foreign-key.../>
+ </table>]]></programlisting>
+      
+      <table frame="topbot">
+        <title>Table attributes</title>
+        
+        <tgroup cols="3">
+          
+          <colspec colwidth="0.3*"/>            
+          
+          <colspec colwidth="1.0*"/>
+          
+          <colspec colwidth="0.3*"/>
+          
+          
+          <thead>
+            <row>
+              <entry>Attribute name</entry>
+              
+              <entry>Definition</entry>
+              
+              <entry>Attribute use</entry>
+            </row>
+          </thead>
+          
+          <tbody>
+            <row>
+              <entry><para>catalog</para></entry>
+              
+              <entry>
+              	<para>Catalog name for a table. It has to be specified if you are reverse engineering multiple catalogs or if it is not equal to hiberante.default_catalog.
+              	</para>
+              </entry>
+              
+              <entry><para>Optional</para></entry>
+            </row>
+            
+            <row>
+              <entry><para>schema</para></entry>
+              
+              <entry>
+              	<para>
+              		Schema name for a table. It has to be specified if you are reverse engineering multiple schemas or if it is not equal to hiberante.default_schema.
+              	</para>
+              </entry>
+              
+              <entry><para>Optional</para></entry>
+            </row>
+            
+            <row>
+              <entry><para>name</para></entry>
+              
+              <entry><para>Name for a table.</para></entry>
+              
+              <entry><para>Required</para></entry>
+            </row>
+            
+            <row>
+              <entry><para>class</para></entry>
+              
+              <entry><para>The class name for a table. Default name is a CamelCase version of the table name.</para></entry>
+              
+              <entry><para>Optional</para></entry>
+            </row>
+            
+          </tbody>
+          
+        </tgroup>
+      </table>      
+
+      <section>
+        <title>&lt;primary-key&gt;</title>
+
+        <para>
+        	A <code>&lt;primary-key&gt;</code> tag allows you to define a primary-key for tables that do not have one defined in the database, and more importantly it allows you to define which identifier strategy should be used (even for preexisting primary-key's).
+        </para>
+
+           <programlisting role="XML"><![CDATA[<primary-key
+ <generator class="generatorname">
+   <param name="param_name">parameter value</param>
+ </generator>
+ <key-column...>
+ </primary-key>]]></programlisting>
+        
+        <table frame="topbot">
+          <title>Primary-key attributes</title>
+          
+          <tgroup cols="3">
+            
+            <colspec colwidth="0.3*"/>            
+            
+            <colspec colwidth="1.0*"/>
+            
+            <colspec colwidth="0.3*"/>
+            
+            
+            <thead>
+              <row>
+                <entry>Attribute name</entry>
+                
+                <entry>Definition</entry>
+                
+                <entry>Attribute use</entry>
+              </row>
+            </thead>
+            
+            <tbody>
+              <row>
+                <entry><para>generator/class</para></entry>
+                
+                <entry>
+                	<para>
+                		Defines which identifier generator should be used. The class name is any hibernate short hand name or fully qualified class name for an identifier strategy.
+                	</para>
+                </entry>
+                
+                <entry><para>Optional</para></entry>
+              </row>
+              
+              <row>
+                <entry><para>generator/param</para></entry>
+                
+                <entry><para>Allows to specify which parameter with a name and value should be passed to the identifier generator.</para></entry>
+                
+                <entry><para>Optional</para></entry>
+              </row>
+              
+              <row>
+                <entry><para>key-column</para></entry>
+                
+                <entry>
+                	<para>
+                		Specifies which column(s ) the primary-key consists of. A key-column is same as column, but does not have the exclude property.
+                	</para>
+                </entry>
+                
+                <entry><para>Optional</para></entry>
+              </row>
+              
+            </tbody>
+            
+          </tgroup>
+        </table>      
+
+      </section>
+
+      <section>
+        <title>&lt;column&gt;</title>
+
+        <para>
+        	With a <code>&lt;column&gt;</code> tag it is possible to explicitly name the resulting property for a column, to redefine what JDBC and/or Hibernate type a column should be processed as, and to completely exclude a column from processing.
+        </para>
+        
+        <programlisting role="XML"><![CDATA[<column
+ name="column_name"
+ jdbc-type="java.sql.Types type"
+ type="hibernate_type"
+ property="propertyName"
+ exclude="true|false"
+/>]]></programlisting>
+
+        <table frame="topbot">
+          <title>Column attributes</title>
+          
+          <tgroup cols="3">
+            
+            <colspec colwidth="0.3*"/>            
+            
+            <colspec colwidth="1.0*"/>
+            
+            <colspec colwidth="0.3*"/>
+            
+            
+            <thead>
+              <row>
+                <entry>Attribute name</entry>
+                
+                <entry>Definition</entry>
+                
+                <entry>Attribute use</entry>
+              </row>
+            </thead>
+            
+            <tbody>
+              <row>
+                <entry><para>name</para></entry>
+                
+                <entry><para>Column name</para></entry>
+                
+                <entry><para>Required</para></entry>
+              </row>
+              
+              <row>
+                <entry><para>jdbc-type</para></entry>
+                
+                <entry>
+                	<para>
+                		Which jdbc-type this column should be processed as. A value from <code>java.sql.Types</code>, either numerical (e.g. 93) or the constant name (e.g. <code>TIMESTAMP</code>).
+                	</para>
+                </entry>
+                
+                <entry><para>Optional</para></entry>
+              </row>
+              
+              <row>
+                <entry><para>type</para></entry>
+                
+                <entry><para>Which hibernate-type to use for this specific column</para></entry>
+                
+                <entry><para>Optional</para></entry>
+              </row>
+              
+              
+              <row>
+                <entry><para>property</para></entry>
+                
+                <entry><para>What property name will be generated for this column</para></entry>
+                
+                <entry><para>Optional</para></entry>
+              </row>
+              
+              <row>
+                <entry><para>exclude</para></entry>
+                
+                <entry><para>Set to true if this column should be ignored</para></entry>
+                
+                <entry><para>default: false</para></entry>
+              </row>
+              
+            </tbody>
+            
+          </tgroup>
+        </table>      
+            
+      </section>
+
+      <section>
+        <title>&lt;foreign-key&gt;</title>
+
+        <para>
+        	The <code>&lt;foreign-key&gt;</code> tag has two purposes. The first is to define foreign-keys in databases that does not support them or do not have them defined in their schema. The second is to define the name of the resulting properties (many-to-one, one-to-one and one-to-many's).
+        </para>
+         
+        <programlisting role="XML"><![CDATA[<foreign-key
+  constraint-name="foreignKeyName"
+  foreign-catalog="catalogName"
+  foreign-schema="schemaName"
+  foreign-table="tableName"
+ >
+ <column-ref local-column="columnName" foreign-column="foreignColumnName"/>
+ <many-to-one 
+   property="aPropertyName"
+   exclude="true|false"/>
+ <set 
+   property="aCollectionName"
+   exclude="true|false"
+   
+ <one-to-one 
+   property="aPropertyName"
+   exclude="true|false"/>
+ <inverse-one-to-one
+   property="aPropertyName"
+   exclude="true|false"/>
+   </foreign-key>]]></programlisting>
+        <table frame="topbot">
+          <title>Foreign-key attributes</title>
+          
+          <tgroup cols="3">
+            
+            <colspec colwidth="0.3*"/>            
+            
+            <colspec colwidth="1.0*"/>
+            
+            <colspec colwidth="0.3*"/>
+            
+            
+            <thead>
+              <row>
+                <entry>Attribute name</entry>
+                
+                <entry>Definition</entry>
+                
+                <entry>Attribute use</entry>
+              </row>
+            </thead>
+            
+            <tbody>
+              <row>
+                <entry><para>constraint-name</para></entry>
+                
+                <entry>
+                	<para>
+                		Name of the foreign key constraint. Important when naming many-to-one, one-to-one and set. It is the constraint-name that is used to link the processed foreign-keys with the resulting property names.
+                	</para>
+                </entry>
+                
+                <entry><para>Required</para></entry>
+              </row>
+              
+              <row>
+                <entry><para>foreign-catalog</para></entry>
+                
+                <entry><para>Name of the foreign table's catalog. (Only relevant if you want to explicitly define a foreign key).</para></entry>
+                
+                <entry><para>Optional</para></entry>
+              </row>
+              
+              <row>
+                <entry><para>foreign-schema</para></entry>
+                
+                <entry><para>Name of the foreign table's schema. (Only relevant if you want to explicitly define a foreign key).</para></entry>
+                
+                <entry><para>Optional</para></entry>
+              </row>
+              
+              
+              <row>
+                <entry><para>foreign-table</para></entry>
+                
+                <entry><para>Name of the foreign table. (Only relevant if you want to explicitly define a foreign key).</para></entry>
+                
+                <entry><para>Optional</para></entry>
+              </row>
+              
+              <row>
+                <entry><para>column-ref </para></entry>
+                
+                <entry>
+                	<para>
+                		Defines the foreign-key constraint between a local-column and foreign-column name. (Only relevant if you want to explicitly define a foreign key).
+                	</para>
+                </entry>
+                
+                <entry><para>Optional</para></entry>
+              </row>
+              
+              <row>
+                <entry><para>many-to-one</para></entry>
+                
+                <entry>
+                	<para>
+                		Defines that a many-to-one should be created and the property attribute specifies the name of the resulting property. Exclude can be used to explicitly define that it should be created or not.
+                	</para>
+                </entry>
+                
+                <entry><para>Optional</para></entry>
+              </row>
+              
+              <row>
+                <entry><para>set</para></entry>
+                
+                <entry>
+                	<para>
+                		Defines that a set should be created based on this foreign-key and the property attribute specifies the name of the resulting (set) property. Exclude can be used to explicitly define that it should be created or not.
+                	</para>
+                </entry>
+                
+                <entry><para>Optional</para></entry>
+              </row>
+              
+              <row>
+                <entry><para>one-to-one</para></entry>
+                
+                <entry>
+                	<para>
+                		Defines that a one-to-one should be created and the property attribute specifies the name of the resulting property. Exclude can be used to explicitly define that it should be created or not.
+                	</para>
+                </entry>
+                
+                <entry><para>Optional</para></entry>
+              </row>
+              
+              <row>
+                <entry><para>inverse-one-to-one</para></entry>
+                
+                <entry>
+                	<para>
+                		Defines that an inverse one-to-one should be created based on this foreign-key and the property attribute specifies the name of the resulting property. Exclude can be used to explicitly define that it should be created or not.
+                	</para>
+                </entry>
+                
+                <entry><para>Optional</para></entry>
+              </row>
+            </tbody>
+            
+          </tgroup>
+        </table>   
+        
+      </section>
+    </section>
+  </section>
+
+  <section id="custom-reveng-strategy">
+    <title>Custom strategy</title>
+
+    <para>
+    	It is possible to implement a user strategy. Such a strategy must implement <code>org.hibernate.cfg.reveng.ReverseEngineeringStrategy</code>. It is recommended that you use the <code>DelegatingReverseEngineeringStrategy</code> and provide a public constructor which takes another <code>ReverseEngineeringStrategy</code> as an argument. This will allow you to only implement the relevant methods and provide a fall back strategy. An example is shown below of a custom delegating strategy that converts all column names ending with <code>&quot;PK&quot;</code> into a property named <code>&quot;id&quot;</code>.
+    </para>
+
+    <programlisting role="JAVA"><![CDATA[public class ExampleStrategy extends DelegatingReverseEngineeringStrategy {
+
+ public ExampleStrategy(ReverseEngineeringStrategy delegate) {
+  super(delegate);
+ }
+
+ public String columnToPropertyName(TableIdentifier table, String column) {
+  if(column.endsWith("PK")) {
+   return "id";
+  } else {
+   return super.columnToPropertyName(table, column);
+  }
+ }
+}]]></programlisting>
+  </section>
+
+  <section>
+    <title>Custom Database Metadata</title>
+
+    <para>
+    	By default the reverse engineering is performed using the JDBC database metadata API. This is done via the class <code>org.hibernate.cfg.reveng.dialect.JDBCMetaDataDialect</code>, which is an implementation of <code>org.hibernate.cfg.reveng.dialect.MetaDataDialect</code>.
+    </para>
+
+    <para>
+    	The default implementation can be replaced with an alternative implementation by setting the <code>hibernatetool.metadatadialect</code> property to a fully qualified class name for a class that implements <code>JDBCMetaDataDialect</code>.
+    </para>
+
+    <para>
+    	This can be used to provide database specific optimized metadata reading. If you create an optimized metadata reader for your database it will be a very welcome contribution.
+    </para>
+  </section>
+</chapter>
