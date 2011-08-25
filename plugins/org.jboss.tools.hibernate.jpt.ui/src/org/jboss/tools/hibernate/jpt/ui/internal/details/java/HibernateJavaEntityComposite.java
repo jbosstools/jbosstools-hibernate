@@ -27,6 +27,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaTyp
 import org.jboss.tools.hibernate.jpt.ui.internal.details.HibernateTableComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateGenerationComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateQueriesComposite;
+import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateUIMappingMessages;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.TypeDefsComposite;
 
 /**
@@ -54,7 +55,7 @@ public class HibernateJavaEntityComposite extends AbstractEntityComposite<Hibern
 	protected void initializeTypeDefCollapsibleSection(Composite container) {
 		container = addCollapsibleSection(
 				container,
-				"Type Definitions");
+				HibernateUIMappingMessages.HibernateJavaEntityComposite_TypeDefinitionsSection);
 		this.initializeTypeDefsSection(container, buildTypeDefContainerHolder());
 	}
 	
