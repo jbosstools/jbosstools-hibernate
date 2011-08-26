@@ -148,7 +148,8 @@ public class TypeImpl extends AbstractJavaJpaContextNode implements JavaType, Me
 						messages.add(HibernateJpaValidationMessage.buildMessage(
 								IMessage.HIGH_SEVERITY,TYPE_CLASS_NOT_FOUND, new String[]{type}, this, range));
 					} else {
-						 if (!JpaUtil.isTypeImplementsInterface(getJpaProject().getJavaProject(), lwType, JavaTypeDef.USER_TYPE_INTERFACE)){
+						 if (!JpaUtil.isTypeImplementsOneOfInterfaces(getJpaProject().getJavaProject(), lwType,
+								 JavaTypeDef.POSSIBLE_INTERFACES)){
 							messages.add(HibernateJpaValidationMessage.buildMessage(
 									IMessage.HIGH_SEVERITY,IMPLEMENT_USER_TYPE_INTERFACE, new String[]{type}, this, range));
 						 }

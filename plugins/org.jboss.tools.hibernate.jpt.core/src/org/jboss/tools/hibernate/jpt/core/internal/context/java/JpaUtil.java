@@ -63,5 +63,14 @@ public class JpaUtil {
 		}
 		return false;
 	}
+	
+	public static boolean isTypeImplementsOneOfInterfaces(IJavaProject javaProject, IType type, String... interfacesName) throws JavaModelException{
+		for (String interfaceName : interfacesName) {
+			if (isTypeImplementsInterface(javaProject, type, interfaceName)){
+				return true;
+			}
+		}
+		return false;
+	}
 
 }

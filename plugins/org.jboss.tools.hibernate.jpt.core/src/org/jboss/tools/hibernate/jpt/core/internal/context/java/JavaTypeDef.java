@@ -23,6 +23,16 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeDefAnnotati
 public interface JavaTypeDef extends JavaJpaContextNode, ParametrizedElement {
 	
 	String USER_TYPE_INTERFACE = "org.hibernate.usertype.UserType";
+	String TYPE_INTERFACE = "org.hibernate.type.Type";
+	String COMPOSITE_USER_TYPE_INTERFACE = "org.hibernate.usertype.CompositeUserType";
+	String USER_COLLECTION_USER_TYPE_INTERFACE = "org.hibernate.usertype.UserCollectionType";
+	
+	String[] POSSIBLE_INTERFACES = new String[]{
+			TYPE_INTERFACE,
+			USER_TYPE_INTERFACE,
+			COMPOSITE_USER_TYPE_INTERFACE,
+			USER_COLLECTION_USER_TYPE_INTERFACE
+	};
 	
 	String getName();
 	void setName(String name);
