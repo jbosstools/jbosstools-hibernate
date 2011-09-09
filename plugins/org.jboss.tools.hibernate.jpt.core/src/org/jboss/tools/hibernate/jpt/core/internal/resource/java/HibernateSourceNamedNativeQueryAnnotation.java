@@ -50,54 +50,54 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation<
 
 	public static final SimpleDeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
-	private final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
-	private final AnnotationElementAdapter<String> nameAdapter;
+	private DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
+	private AnnotationElementAdapter<String> nameAdapter;
 	private String name;
 	TextRange nameTextRange;
 
-	private final DeclarationAnnotationElementAdapter<String> queryDeclarationAdapter;
-	private final AnnotationElementAdapter<String> queryAdapter;
+	private DeclarationAnnotationElementAdapter<String> queryDeclarationAdapter;
+	private AnnotationElementAdapter<String> queryAdapter;
 	private String query;
 	TextRange queryTextRange;
 
-	private final DeclarationAnnotationElementAdapter<String> flushModeDeclarationAdapter;
-	private final AnnotationElementAdapter<String> flushModeAdapter;
+	private DeclarationAnnotationElementAdapter<String> flushModeDeclarationAdapter;
+	private AnnotationElementAdapter<String> flushModeAdapter;
 	private FlushModeType flushMode;
 
-	private final DeclarationAnnotationElementAdapter<String> cacheModeDeclarationAdapter;
-	private final AnnotationElementAdapter<String> cacheModeAdapter;
+	private DeclarationAnnotationElementAdapter<String> cacheModeDeclarationAdapter;
+	private AnnotationElementAdapter<String> cacheModeAdapter;
 	private CacheModeType cacheMode;
 
-	private final DeclarationAnnotationElementAdapter<Boolean> cacheableDeclarationAdapter;
-	private final AnnotationElementAdapter<Boolean> cacheableAdapter;
+	private DeclarationAnnotationElementAdapter<Boolean> cacheableDeclarationAdapter;
+	private AnnotationElementAdapter<Boolean> cacheableAdapter;
 	private Boolean cacheable;
 
-	private final DeclarationAnnotationElementAdapter<String> cacheRegionDeclarationAdapter;
-	private final AnnotationElementAdapter<String> cacheRegionAdapter;
+	private DeclarationAnnotationElementAdapter<String> cacheRegionDeclarationAdapter;
+	private AnnotationElementAdapter<String> cacheRegionAdapter;
 	private String cacheRegion;
 
-	private final DeclarationAnnotationElementAdapter<Integer> fetchSizeDeclarationAdapter;
-	private final AnnotationElementAdapter<Integer> fetchSizeAdapter;
+	private DeclarationAnnotationElementAdapter<Integer> fetchSizeDeclarationAdapter;
+	private AnnotationElementAdapter<Integer> fetchSizeAdapter;
 	private Integer fetchSize;
 
-	private final DeclarationAnnotationElementAdapter<Integer> timeoutDeclarationAdapter;
-	private final AnnotationElementAdapter<Integer> timeoutAdapter;
+	private DeclarationAnnotationElementAdapter<Integer> timeoutDeclarationAdapter;
+	private AnnotationElementAdapter<Integer> timeoutAdapter;
 	private Integer timeout;
 
-	private final DeclarationAnnotationElementAdapter<String> commentDeclarationAdapter;
-	private final AnnotationElementAdapter<String> commentAdapter;
+	private DeclarationAnnotationElementAdapter<String> commentDeclarationAdapter;
+	private AnnotationElementAdapter<String> commentAdapter;
 	private String comment;
 
-	private final DeclarationAnnotationElementAdapter<Boolean> readOnlyDeclarationAdapter;
-	private final AnnotationElementAdapter<Boolean> readOnlyAdapter;
+	private DeclarationAnnotationElementAdapter<Boolean> readOnlyDeclarationAdapter;
+	private AnnotationElementAdapter<Boolean> readOnlyAdapter;
 	private Boolean readOnly;
 
-	private final DeclarationAnnotationElementAdapter<Boolean> callableDeclarationAdapter;
-	private final AnnotationElementAdapter<Boolean> callableAdapter;
+	private DeclarationAnnotationElementAdapter<Boolean> callableDeclarationAdapter;
+	private AnnotationElementAdapter<Boolean> callableAdapter;
 	private Boolean callable;
 
-	private final DeclarationAnnotationElementAdapter<String> resultClassDeclarationAdapter;
-	private final AnnotationElementAdapter<String> resultClassAdapter;
+	private DeclarationAnnotationElementAdapter<String> resultClassDeclarationAdapter;
+	private AnnotationElementAdapter<String> resultClassAdapter;
 	private String resultClass;
 
 	/**
@@ -107,34 +107,34 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation<
 	// we need a flag since the f-q name can be null
 	private boolean fqResultClassNameStale = true;
 
-	private final DeclarationAnnotationElementAdapter<String> resultSetMappingDeclarationAdapter;
-	private final AnnotationElementAdapter<String> resultSetMappingAdapter;
+	private DeclarationAnnotationElementAdapter<String> resultSetMappingDeclarationAdapter;
+	private AnnotationElementAdapter<String> resultSetMappingAdapter;
 	private String resultSetMapping;
 
-	HibernateSourceNamedNativeQueryAnnotation(JavaResourceNode parent, AnnotatedElement member,DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
-		super(parent, member, daa, annotationAdapter);
+	HibernateSourceNamedNativeQueryAnnotation(JavaResourceNode parent, AnnotatedElement annotatedElement,DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+		super(parent, annotatedElement, daa, annotationAdapter);
 		this.nameDeclarationAdapter = this.buildNameAdapter(daa);
 		this.nameAdapter = this.buildAdapter(this.nameDeclarationAdapter);
 		this.queryDeclarationAdapter = this.buildQueryAdapter(daa);
 		this.queryAdapter = this.buildAdapter(this.queryDeclarationAdapter);
 		this.flushModeDeclarationAdapter = this.buildFlushModeAdapter(daa);
-		this.flushModeAdapter = new ShortCircuitAnnotationElementAdapter<String>(member, this.flushModeDeclarationAdapter);
+		this.flushModeAdapter = new ShortCircuitAnnotationElementAdapter<String>(annotatedElement, this.flushModeDeclarationAdapter);
 		this.cacheModeDeclarationAdapter = this.buildCacheModeAdapter(daa);
-		this.cacheModeAdapter = new ShortCircuitAnnotationElementAdapter<String>(member, this.cacheModeDeclarationAdapter);
+		this.cacheModeAdapter = new ShortCircuitAnnotationElementAdapter<String>(annotatedElement, this.cacheModeDeclarationAdapter);
 		this.cacheableDeclarationAdapter = this.buildCacheableAdapter(daa);
-		this.cacheableAdapter = new ShortCircuitAnnotationElementAdapter<Boolean>(member, this.cacheableDeclarationAdapter);
+		this.cacheableAdapter = new ShortCircuitAnnotationElementAdapter<Boolean>(annotatedElement, this.cacheableDeclarationAdapter);
 		this.cacheRegionDeclarationAdapter = this.buildCacheRegionAdapter(daa);
 		this.cacheRegionAdapter = this.buildAdapter(this.cacheRegionDeclarationAdapter);
 		this.fetchSizeDeclarationAdapter = this.buildFetchSizeAdapter(daa);
-		this.fetchSizeAdapter = new ShortCircuitAnnotationElementAdapter<Integer>(member, this.fetchSizeDeclarationAdapter);
+		this.fetchSizeAdapter = new ShortCircuitAnnotationElementAdapter<Integer>(annotatedElement, this.fetchSizeDeclarationAdapter);
 		this.timeoutDeclarationAdapter = this.buildTimeoutAdapter(daa);
-		this.timeoutAdapter = new ShortCircuitAnnotationElementAdapter<Integer>(member, this.timeoutDeclarationAdapter);
+		this.timeoutAdapter = new ShortCircuitAnnotationElementAdapter<Integer>(annotatedElement, this.timeoutDeclarationAdapter);
 		this.commentDeclarationAdapter = this.buildCommentAdapter(daa);
-		this.commentAdapter = new ShortCircuitAnnotationElementAdapter<String>(member, this.commentDeclarationAdapter);
+		this.commentAdapter = new ShortCircuitAnnotationElementAdapter<String>(annotatedElement, this.commentDeclarationAdapter);
 		this.readOnlyDeclarationAdapter = this.buildReadOnlyAdapter(daa);
-		this.readOnlyAdapter = new ShortCircuitAnnotationElementAdapter<Boolean>(member, this.readOnlyDeclarationAdapter);
+		this.readOnlyAdapter = new ShortCircuitAnnotationElementAdapter<Boolean>(annotatedElement, this.readOnlyDeclarationAdapter);
 		this.callableDeclarationAdapter = this.buildReadOnlyAdapter(daa);
-		this.callableAdapter = new ShortCircuitAnnotationElementAdapter<Boolean>(member, this.callableDeclarationAdapter);
+		this.callableAdapter = new ShortCircuitAnnotationElementAdapter<Boolean>(annotatedElement, this.callableDeclarationAdapter);
 		this.resultClassDeclarationAdapter = this.buildResultClassAdapter(daa);
 		this.resultClassAdapter = this.buildAdapter(this.resultClassDeclarationAdapter);
 		this.resultSetMappingDeclarationAdapter = this.buildResultSetMappingAdapter(daa);
@@ -651,6 +651,51 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation<
 		this.setCallable((Boolean) map.get(CALLABLE_PROPERTY));
 		this.setResultClass((String) map.get(RESULT_CLASS_PROPERTY));
 		this.setResultSetMapping((String) map.get(RESULT_SET_MAPPING_PROPERTY));
+	}
+	
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.name == null) &&
+				(this.query == null) &&
+				(this.flushMode == null) &&
+				(this.cacheMode == null) &&
+				(this.cacheable == null) &&
+				(this.cacheRegion == null) &&
+				(this.fetchSize == null) &&
+				(this.comment == null) &&
+				(this.readOnly == null);
+	}
+
+	@Override
+	protected void rebuildAdapters() {
+		super.rebuildAdapters();
+		this.nameDeclarationAdapter = this.buildNameAdapter(daa);
+		this.nameAdapter = this.buildAdapter(this.nameDeclarationAdapter);
+		this.queryDeclarationAdapter = this.buildQueryAdapter(daa);
+		this.queryAdapter = this.buildAdapter(this.queryDeclarationAdapter);
+		this.flushModeDeclarationAdapter = this.buildFlushModeAdapter(daa);
+		this.flushModeAdapter = new ShortCircuitAnnotationElementAdapter<String>(this.annotatedElement, this.flushModeDeclarationAdapter);
+		this.cacheModeDeclarationAdapter = this.buildCacheModeAdapter(daa);
+		this.cacheModeAdapter = new ShortCircuitAnnotationElementAdapter<String>(this.annotatedElement, this.cacheModeDeclarationAdapter);
+		this.cacheableDeclarationAdapter = this.buildCacheableAdapter(daa);
+		this.cacheableAdapter = new ShortCircuitAnnotationElementAdapter<Boolean>(this.annotatedElement, this.cacheableDeclarationAdapter);
+		this.cacheRegionDeclarationAdapter = this.buildCacheRegionAdapter(daa);
+		this.cacheRegionAdapter = this.buildAdapter(this.cacheRegionDeclarationAdapter);
+		this.fetchSizeDeclarationAdapter = this.buildFetchSizeAdapter(daa);
+		this.fetchSizeAdapter = new ShortCircuitAnnotationElementAdapter<Integer>(this.annotatedElement, this.fetchSizeDeclarationAdapter);
+		this.timeoutDeclarationAdapter = this.buildTimeoutAdapter(daa);
+		this.timeoutAdapter = new ShortCircuitAnnotationElementAdapter<Integer>(this.annotatedElement, this.timeoutDeclarationAdapter);
+		this.commentDeclarationAdapter = this.buildCommentAdapter(daa);
+		this.commentAdapter = new ShortCircuitAnnotationElementAdapter<String>(this.annotatedElement, this.commentDeclarationAdapter);
+		this.readOnlyDeclarationAdapter = this.buildReadOnlyAdapter(daa);
+		this.readOnlyAdapter = new ShortCircuitAnnotationElementAdapter<Boolean>(this.annotatedElement, this.readOnlyDeclarationAdapter);
+		this.callableDeclarationAdapter = this.buildReadOnlyAdapter(daa);
+		this.callableAdapter = new ShortCircuitAnnotationElementAdapter<Boolean>(this.annotatedElement, this.callableDeclarationAdapter);
+		this.resultClassDeclarationAdapter = this.buildResultClassAdapter(daa);
+		this.resultClassAdapter = this.buildAdapter(this.resultClassDeclarationAdapter);
+		this.resultSetMappingDeclarationAdapter = this.buildResultSetMappingAdapter(daa);
+		this.resultSetMappingAdapter = this.buildAdapter(this.resultSetMappingDeclarationAdapter);
 	}
 
 	/**
