@@ -118,7 +118,7 @@ public class SourceGenericGeneratorsAnnotation extends SourceAnnotation<Annotate
 	}
 
 	private GenericGeneratorAnnotation buildGenericGenerator(int index) {
-		return GenericGeneratorAnnotationImpl.createNestedGenericGenerator(this, this.annotatedElement, index, this.daa);
+		return GenericGeneratorAnnotationImpl.createNestedGenericGenerator(this.parent, this.annotatedElement, index, this.daa);
 	}
 
 	public GenericGeneratorAnnotation moveNestedAnnotation(int targetIndex, int sourceIndex) {

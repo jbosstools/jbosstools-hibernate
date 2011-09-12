@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
+import java.util.HashMap;
 import java.util.ListIterator;
 import java.util.Map;
 
@@ -31,7 +32,9 @@ import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.jpa.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.NestableQueryHintAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.QueryHintAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.context.CacheModeType;
@@ -609,6 +612,23 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation<Annota
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.name);
+	}
+	
+	/*
+	 * This is a workaround fix for https://bugs.eclipse.org/bugs/show_bug.cgi?id=357224
+	 * The exception occurs due to wrong cast in SourceAnnotation
+	 * The method should be removed after the bug fix.
+	 */
+	public void convertToStandAlone() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		this.storeOn(map);
+		this.removeAnnotation();  // this annotation has already been removed from the model
+		this.daa = new SimpleDeclarationAnnotationAdapter(this.getAnnotationName());
+		this.annotationAdapter = new ElementAnnotationAdapter(this.annotatedElement, this.daa);
+		this.rebuildAdapters();
+		((JavaResourceAnnotatedElement)this.parent).addStandAloneAnnotation((NestableAnnotation) this);
+		this.newAnnotation();
+		this.restoreFrom(map);
 	}
 
 	// ********** static methods **********

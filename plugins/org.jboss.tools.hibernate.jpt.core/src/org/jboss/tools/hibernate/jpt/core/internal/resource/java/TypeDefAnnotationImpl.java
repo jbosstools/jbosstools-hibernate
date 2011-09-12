@@ -32,7 +32,6 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
@@ -45,6 +44,7 @@ import org.eclipse.jpt.jpa.core.resource.java.AnnotationContainer;
 import org.eclipse.jpt.jpa.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.jpa.core.resource.java.NestableAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 
 /**
@@ -454,9 +454,21 @@ public class TypeDefAnnotationImpl extends SourceAnnotation<AnnotatedElement>
 		return this.buildStringElementAdapter(this.defForTypeDeclarationAdapter);
 	}
 
-
-	private static DeclarationAnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, ExpressionConverter<String> converter) {
-		return new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, converter);
+	/*
+	 * This is a workaround fix for https://bugs.eclipse.org/bugs/show_bug.cgi?id=357224
+	 * The exception occurs due to wrong cast in SourceAnnotation
+	 * The method should be removed after the bug fix.
+	 */
+	public void convertToStandAlone() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		this.storeOn(map);
+		this.removeAnnotation();  // this annotation has already been removed from the model
+		this.daa = new SimpleDeclarationAnnotationAdapter(this.getAnnotationName());
+		this.annotationAdapter = new ElementAnnotationAdapter(this.annotatedElement, this.daa);
+		this.rebuildAdapters();
+		((JavaResourceAnnotatedElement)this.parent).addStandAloneAnnotation((NestableAnnotation) this);
+		this.newAnnotation();
+		this.restoreFrom(map);
 	}
 
 	public static class TypeDefAnnotationDefinition implements AnnotationDefinition

@@ -118,7 +118,7 @@ public class TypeDefsAnnotationImpl extends SourceAnnotation<AnnotatedElement> i
 	}
 
 	private TypeDefAnnotation buildTypeDef(int index) {
-		return TypeDefAnnotationImpl.createNestedTypeDef(this, this.annotatedElement, index, this.daa);
+		return TypeDefAnnotationImpl.createNestedTypeDef(this.parent, this.annotatedElement, index, this.daa);
 	}
 
 	public TypeDefAnnotation moveNestedAnnotation(int targetIndex, int sourceIndex) {

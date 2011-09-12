@@ -43,6 +43,7 @@ import org.eclipse.jpt.jpa.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.jpa.core.resource.java.NestableAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 
 /**
@@ -410,6 +411,23 @@ implements GenericGeneratorAnnotation {
 
 	private static IndexedDeclarationAnnotationAdapter buildNestedHibernateDeclarationAnnotationAdapter(int index, DeclarationAnnotationAdapter hibernateGenericGeneratorsAdapter) {
 		return new NestedIndexedDeclarationAnnotationAdapter(hibernateGenericGeneratorsAdapter, index, Hibernate.GENERIC_GENERATOR);
+	}
+	
+	/*
+	 * This is a workaround fix for https://bugs.eclipse.org/bugs/show_bug.cgi?id=357224
+	 * The exception occurs due to wrong cast in SourceAnnotation
+	 * The method should be removed after the bug fix.
+	 */
+	public void convertToStandAlone() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		this.storeOn(map);
+		this.removeAnnotation();  // this annotation has already been removed from the model
+		this.daa = new SimpleDeclarationAnnotationAdapter(this.getAnnotationName());
+		this.annotationAdapter = new ElementAnnotationAdapter(this.annotatedElement, this.daa);
+		this.rebuildAdapters();
+		((JavaResourceAnnotatedElement)this.parent).addStandAloneAnnotation((NestableAnnotation) this);
+		this.newAnnotation();
+		this.restoreFrom(map);
 	}
 
 	public static class GenericGeneratorAnnotationDefinition implements AnnotationDefinition
