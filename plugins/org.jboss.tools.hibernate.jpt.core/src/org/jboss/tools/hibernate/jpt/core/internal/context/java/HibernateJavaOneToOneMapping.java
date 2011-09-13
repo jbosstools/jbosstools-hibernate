@@ -33,6 +33,7 @@ public class HibernateJavaOneToOneMapping extends
 
 	public HibernateJavaOneToOneMapping(JavaPersistentAttribute parent) {
 		super(parent);
+		this.foreignKey = buildForeignKey();
 	}
 
 	@Override

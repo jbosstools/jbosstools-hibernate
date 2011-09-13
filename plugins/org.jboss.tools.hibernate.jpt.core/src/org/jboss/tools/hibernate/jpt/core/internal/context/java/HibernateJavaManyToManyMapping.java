@@ -36,6 +36,7 @@ AbstractJavaManyToManyMapping implements ForeignKeyHolder{
 
 	public HibernateJavaManyToManyMapping(JavaPersistentAttribute parent) {
 		super(parent);
+		this.foreignKey = buildForeignKey();
 	}
 
 	@Override

@@ -34,6 +34,7 @@ AbstractJavaManyToOneMapping implements ForeignKeyHolder {
 
 	public HibernateJavaManyToOneMapping(JavaPersistentAttribute parent) {
 		super(parent);
+		this.foreignKey = buildForeignKey();
 	}
 
 	@Override

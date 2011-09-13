@@ -37,6 +37,7 @@ public class HibernateJavaOneToManyMapping extends AbstractJavaOneToManyMapping
 	 */
 	public HibernateJavaOneToManyMapping(JavaPersistentAttribute parent) {
 		super(parent);
+		this.foreignKey = buildForeignKey();
 	}
 
 	@Override
