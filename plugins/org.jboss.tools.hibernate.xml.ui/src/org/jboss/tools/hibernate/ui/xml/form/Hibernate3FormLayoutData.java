@@ -23,12 +23,8 @@ import org.jboss.tools.common.model.ui.forms.FormData;
 import org.jboss.tools.common.model.ui.forms.IFormData;
 import org.jboss.tools.common.model.ui.forms.IFormLayoutData;
 import org.jboss.tools.common.model.ui.forms.ModelFormLayoutData;
-import org.jboss.tools.common.model.util.ClassLoaderUtil;
 
 public class Hibernate3FormLayoutData implements IFormLayoutData {
-	static {
-		ClassLoaderUtil.init();
-	}
 
 	private final static IFormData[] FORM_LAYOUT_DEFINITIONS =
 		new IFormData[] {
