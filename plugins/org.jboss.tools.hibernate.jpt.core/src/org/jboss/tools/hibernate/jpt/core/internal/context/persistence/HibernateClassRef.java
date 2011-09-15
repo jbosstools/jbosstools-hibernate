@@ -15,7 +15,6 @@ import java.util.List;
 
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.GenericClassRef;
@@ -29,6 +28,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaPackageInfo;
+
 
 /**
  * @author Dmitry Geraskov

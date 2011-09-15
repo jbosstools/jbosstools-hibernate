@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<component id="org.jboss.tools.hibernate.jpt.core" version="2">
+    <resource path="src/org/jboss/tools/hibernate/jpt/core/internal/HibernateJpaProject.java" type="org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject">
+        <filter id="576720909">
+            <message_arguments>
+                <message_argument value="AbstractJpaProject"/>
+                <message_argument value="HibernateJpaProject"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/org/jboss/tools/hibernate/jpt/core/internal/context/HibernatePersistenceUnit.java" type="org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit">
+        <filter id="576720909">
+            <message_arguments>
+                <message_argument value="AbstractPersistenceUnit"/>
+                <message_argument value="HibernatePersistenceUnit"/>
+            </message_arguments>
+        </filter>
+    </resource>
+</component>

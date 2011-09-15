@@ -15,8 +15,14 @@ import java.util.List;
 
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.preferences.IScopeContext;
+import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.internal.AbstractJpaProject;
+import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePackage;
+import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePackageInfoCompilationUnit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.hibernate.cfg.Configuration;
@@ -76,6 +82,58 @@ public class HibernateJpaProject extends AbstractJpaProject {
 			}
 		}
 		return this.cachedNamingStrategyEnable;
+	}
+	
+	protected Iterable<JpaFile> getJavaPackageInfoSourceJpaFiles() {
+		return this.getJpaFiles(JptCommonCorePlugin.JAVA_SOURCE_PACKAGE_INFO_CONTENT_TYPE);
+	}
+
+	/**
+	 * Return the JPA project's resource compilation units.
+	 */
+	protected Iterable<JavaResourcePackageInfoCompilationUnit> getInternalJavaResourcePackageInfoCompilationUnits() {
+		return new TransformationIterable<JpaFile, JavaResourcePackageInfoCompilationUnit>(this.getJavaPackageInfoSourceJpaFiles()) {
+			@Override
+			protected JavaResourcePackageInfoCompilationUnit transform(JpaFile jpaFile) {
+				return (JavaResourcePackageInfoCompilationUnit) jpaFile.getResourceModel();
+			}
+		};
+	}
+
+	protected Iterable<JavaResourcePackage> getInternalSourceJavaResourcePackages() {
+		return new TransformationIterable<JavaResourcePackageInfoCompilationUnit, JavaResourcePackage>(this.getInternalJavaResourcePackageInfoCompilationUnits()) {
+			@Override
+			protected JavaResourcePackage transform(final JavaResourcePackageInfoCompilationUnit compilationUnit) {
+				return compilationUnit.getPackage();
+			}
+		};
+	}
+	
+	protected Iterable<JavaResourcePackage> getInternalAnnotatedSourceJavaResourcePacakges() {
+		return new FilteringIterable<JavaResourcePackage>(this.getInternalSourceJavaResourcePackages()) {
+			@Override
+			protected boolean accept(JavaResourcePackage jrpPackage) {
+				return /*jrpPackage.isPersistable() && jrpPackage.isAnnotated()*/true; 
+			}
+		};
+	}
+	
+	/**
+	 * Return only those valid <em>mapped</em> (i.e. has any annotations) Java resource
+	 * persistent packages that are directly part of the JPA project, ignoring
+	 * those in JARs referenced in <code>persistence.xml</code>.
+	 */
+	protected Iterable<JavaResourcePackage> getInternalMappedSourceJavaResourcePackages() {
+		return getInternalAnnotatedSourceJavaResourcePacakges();
+	}
+	
+	public Iterable<String> getMappedJavaSourcePackagesNames() {
+		return new TransformationIterable<JavaResourcePackage, String>(this.getInternalMappedSourceJavaResourcePackages()) {
+			@Override
+			protected String transform(JavaResourcePackage jrpPackage) {
+				return jrpPackage.getName();
+			}
+		};
 	}
 
 	@Override
