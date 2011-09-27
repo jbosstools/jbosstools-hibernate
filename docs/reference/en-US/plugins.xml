@@ -2359,9 +2359,9 @@
 					</figure>
 				</listitem>
 			</itemizedlist>
-			<para>
+		<!--	<para>
 				More information about Hibernate Annotations can be found in the <ulink url="http://docs.jboss.org/hibernate/stable/annotations/reference/en/html/">Hibernate Annotations Reference Guide</ulink>.
-      </para>
+			</para> -->
 		</section>
 		<section>
 			<title>Relevant Resources Links</title>
