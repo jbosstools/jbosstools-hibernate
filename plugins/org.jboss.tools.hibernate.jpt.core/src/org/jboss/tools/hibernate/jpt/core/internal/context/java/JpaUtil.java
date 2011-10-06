@@ -10,6 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
@@ -31,11 +34,13 @@ public class JpaUtil {
 	public static boolean isTypeImplementsInterface(IJavaProject javaProject, IType type, String interfaceName) throws JavaModelException{
 		if (type == null) return false;
 		String[] interfaces = type.getSuperInterfaceNames();
-		for (String interface_ : interfaces) {
-			String[][] resolvedInterfaces = type.resolveType(interface_);
+		List<String> resolvedInterfaceNames = new LinkedList<String>();
+		for (int i = 0; i < interfaces.length; i++) {
+			String[][] resolvedInterfaces = type.resolveType(interfaces[i]);
 			if (resolvedInterfaces != null){
 				for (String[] parts : resolvedInterfaces) {
 					String fullName = parts[0].length() > 0 ? parts[0] + '.' + parts[1] : parts[1];
+					resolvedInterfaceNames.add(fullName);
 					if (interfaceName.equals(fullName))
 						return true;
 				}
@@ -55,7 +60,7 @@ public class JpaUtil {
 				}
 			}
 		}
-		for (String interface_ : interfaces) {
+		for (String interface_ : resolvedInterfaceNames) {
 			IType parentInterface = javaProject.findType(interface_);
 			if (isTypeImplementsInterface(javaProject, parentInterface, interfaceName)){
 				return true;
