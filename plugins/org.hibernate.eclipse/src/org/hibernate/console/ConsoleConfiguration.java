@@ -78,18 +78,26 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	public ConsoleConfigurationPreferences prefs = null;
 
 	/**
-	 * Reset so a new configuration or sessionfactory is needed.
+	 * Reset configuration, session factory, class loader and execution context.
 	 *
 	 */
 	public boolean reset() {
-		boolean res = false;
-		// reseting state
+		boolean resetted = false;
 		if (configuration != null) {
 			configuration = null;
-			res = true;
+			resetted = true;
 		}
-		boolean tmp = closeSessionFactory();
-		res = res || tmp;
+		resetted = resetted | closeSessionFactory() | cleanUpClassLoader();
+
+		if (resetted) {
+			fireConfigurationReset();
+		}
+		executionContext = null;
+		return resetted;
+	}
+
+	protected boolean cleanUpClassLoader() {
+		boolean resetted = false;
 		if (executionContext != null) {
 			executionContext.execute(new Command() {
 				public Object execute() {
@@ -107,59 +115,34 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		}
 		if (fakeDrivers.size() > 0) {
 			fakeDrivers.clear();
-			res = true;
+			resetted = true;
 		}
-		tmp = cleanUpClassLoader();
-		res = res || tmp;
-		if (res) {
-			fireConfigurationReset();
-		}
-		executionContext = null;
-		return res;
-	}
-
-	protected boolean cleanUpClassLoader() {
-		boolean res = false;
 		ClassLoader classLoaderTmp = classLoader;
 		while (classLoaderTmp != null) {
 			if (classLoaderTmp instanceof ConsoleConfigClassLoader) {
 				((ConsoleConfigClassLoader)classLoaderTmp).close();
-				res = true;
+				resetted = true;
 			}
 			classLoaderTmp = classLoaderTmp.getParent();
 		}
 		if (classLoader != null) {
 			classLoader = null;
-			res = true;
+			resetted = true;
 		}
-		return res;
+		return resetted;
 	}
 	
 	/**
 	 * Create class loader - so it uses the original urls list from preferences. 
 	 */
 	protected void reinitClassLoader() {
-		boolean recreateFlag = true;
+		//the class loader caches user's compiled classes
+		//need to rebuild it on every console configuration rebuild to pick up latest versions.
 		final URL[] customClassPathURLs = PreferencesClassPathUtils.getCustomClassPathURLs(prefs);
-		if (classLoader != null) {
-			// check -> do not recreate class loader in case if urls list is the same
-			final URL[] oldURLS = classLoader.getURLs();
-			if (customClassPathURLs.length == oldURLS.length) {
-				int i = 0;
-				for (; i < oldURLS.length; i++) {
-					if (!customClassPathURLs[i].sameFile(oldURLS[i])) {
-						break;
-					}
-				}
-				if (i == oldURLS.length) {
-					recreateFlag = false;
-				}
-			}
-		}
-		if (recreateFlag) {
-			reset();
-			classLoader = createClassLoader(customClassPathURLs);
-		}
+		//we could call cleanUpClassLoader() here if we don't want to release configuration field
+		//but in case user changed java sources it is not in a good state any more, so call reset.
+		reset();
+		classLoader = createClassLoader(customClassPathURLs);
 	}
 
 	public void build() {
@@ -391,21 +374,22 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	}
 
 	public boolean closeSessionFactory() {
-		boolean res = false;
+		boolean resetted = false;
 		if (sessionFactory != null) {
 			fireFactoryClosing(sessionFactory);
 			sessionFactory.close();
 			sessionFactory = null;
-			res = true;
+			resetted = true;
 		}
-		return res;
+		return resetted;
 	}
 
 	public Settings getSettings(final Configuration cfg) {
 		return (Settings) execute(new Command() {
-			public Object execute() {
-				return cfg.buildSettings();
+				public Object execute() {
+					return cfg.buildSettings();
+				}
 			}
-		});
+		);
 	}
 }
