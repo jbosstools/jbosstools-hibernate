@@ -19,7 +19,6 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
-import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
@@ -56,7 +55,6 @@ public class GenerateDdlWizard extends Wizard {
 		ILaunchConfigurationWorkingCopy wc = HibernateJpaPlatformUi.createDefaultLaunchConfig(projectName);
 		if (wc != null) {
 			String concoleConfigurationName = initPage.getConfigurationName();
-			resetConsoleConfiguration(concoleConfigurationName);
 			wc.setAttribute(HibernateLaunchConstants.ATTR_CONSOLE_CONFIGURATION_NAME, concoleConfigurationName);
 			wc.setAttribute(HibernateLaunchConstants.ATTR_OUTPUT_DIR, initPage.getOutputDir());
 
@@ -79,14 +77,5 @@ public class GenerateDdlWizard extends Wizard {
 			}
 		}
 		return true;
-	}
-	
-	protected void resetConsoleConfiguration(String concoleConfigurationName){
-		if (!initPage.isTemporaryConfiguration()){
-			ConsoleConfiguration cc = KnownConfigurations.getInstance().find(concoleConfigurationName);
-			if (cc.hasConfiguration()){
-				cc.reset();
-			}
-		}
 	}
 }
