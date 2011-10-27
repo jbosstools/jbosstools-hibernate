@@ -139,13 +139,12 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		//the class loader caches user's compiled classes
 		//need to rebuild it on every console configuration rebuild to pick up latest versions.
 		final URL[] customClassPathURLs = PreferencesClassPathUtils.getCustomClassPathURLs(prefs);
-		//we could call cleanUpClassLoader() here if we don't want to release configuration field
-		//but in case user changed java sources it is not in a good state any more, so call reset.
-		reset();
+		cleanUpClassLoader();
 		classLoader = createClassLoader(customClassPathURLs);
 	}
 
 	public void build() {
+		reset();
 		configuration = buildWith(null, true);
 		fireConfigurationBuilt();
 	}
