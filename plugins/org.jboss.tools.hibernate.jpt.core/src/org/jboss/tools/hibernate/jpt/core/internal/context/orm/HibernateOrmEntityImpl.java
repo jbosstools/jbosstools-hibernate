@@ -187,18 +187,20 @@ implements HibernateOrmEntity {
 			}
 			Entity parentEntity = HibernateOrmEntityImpl.this.getParentEntity();
 			String colName = (parentEntity == null)
-			? getPrimaryKeyColumnName() : parentEntity.getPrimaryKeyColumnName();
-			NamingStrategy ns = HibernateOrmEntityImpl.this.getJpaProject().getNamingStrategy();
-			if (getJpaProject().isNamingStrategyEnabled() && ns != null){
-				try {
-					String name = ns.joinKeyColumnName(colName,	(parentEntity == null)
-							? getTable().getName() : parentEntity.getPrimaryTableName());
-					return name;
-				} catch (Exception e) {
-					IMessage m = HibernateJpaValidationMessage.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							Messages.NAMING_STRATEGY_EXCEPTION,null);
-					HibernateJptPlugin.logException(m.getText(), e);
+					? getPrimaryKeyColumnName() : parentEntity.getPrimaryKeyColumnName();
+			if (colName != null){
+				NamingStrategy ns = HibernateOrmEntityImpl.this.getJpaProject().getNamingStrategy();
+				if (getJpaProject().isNamingStrategyEnabled() && ns != null){
+					try {
+						String name = ns.joinKeyColumnName(colName,	(parentEntity == null)
+								? getTable().getName() : parentEntity.getPrimaryTableName());
+						return name;
+					} catch (Exception e) {
+						IMessage m = HibernateJpaValidationMessage.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								Messages.NAMING_STRATEGY_EXCEPTION,null);
+						HibernateJptPlugin.logException(m.getText(), e);
+					}
 				}
 			}
 			return colName;

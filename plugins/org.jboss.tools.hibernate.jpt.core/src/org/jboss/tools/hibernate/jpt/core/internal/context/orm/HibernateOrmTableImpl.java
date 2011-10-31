@@ -72,15 +72,17 @@ public class HibernateOrmTableImpl extends GenericOrmTable implements HibernateO
 	}
 
 	protected String buildDefaultDBTableName(){
-		NamingStrategy ns = getJpaProject().getNamingStrategy();
-		if (getJpaProject().isNamingStrategyEnabled() && ns != null) {
-			try {
-				return ns.classToTableName(getDefaultName());
-			} catch (Exception e) {
-				IMessage m = HibernateJpaValidationMessage.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						Messages.NAMING_STRATEGY_EXCEPTION, null);
-				HibernateJptPlugin.logException(m.getText(), e);
+		if (getDefaultName() != null){
+			NamingStrategy ns = getJpaProject().getNamingStrategy();
+			if (getJpaProject().isNamingStrategyEnabled() && ns != null) {
+				try {
+					return ns.classToTableName(getDefaultName());
+				} catch (Exception e) {
+					IMessage m = HibernateJpaValidationMessage.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							Messages.NAMING_STRATEGY_EXCEPTION, this);
+					HibernateJptPlugin.logException(m.getText(), e);
+				}
 			}
 		}
 		return this.getDefaultName();

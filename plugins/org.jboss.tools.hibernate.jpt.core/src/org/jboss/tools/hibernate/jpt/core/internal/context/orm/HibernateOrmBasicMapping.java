@@ -40,15 +40,17 @@ public class HibernateOrmBasicMapping extends AbstractOrmBasicMapping<XmlBasic> 
 
 	@Override
 	public String getDefaultColumnName() {
-		NamingStrategy ns = getJpaProject().getNamingStrategy();
-		if (getJpaProject().isNamingStrategyEnabled() && ns != null) {
-			try {
-				return ns.propertyToColumnName(getName());
-			} catch (Exception e) {
-				IMessage m = HibernateJpaValidationMessage.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						Messages.NAMING_STRATEGY_EXCEPTION, null);
-				HibernateJptPlugin.logException(m.getText(), e);
+		if (getName() != null){
+			NamingStrategy ns = getJpaProject().getNamingStrategy();
+			if (getJpaProject().isNamingStrategyEnabled() && ns != null) {
+				try {
+					return ns.propertyToColumnName(getName());
+				} catch (Exception e) {
+					IMessage m = HibernateJpaValidationMessage.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							Messages.NAMING_STRATEGY_EXCEPTION, null);
+					HibernateJptPlugin.logException(m.getText(), e);
+				}
 			}
 		}
 		return super.getDefaultColumnName();

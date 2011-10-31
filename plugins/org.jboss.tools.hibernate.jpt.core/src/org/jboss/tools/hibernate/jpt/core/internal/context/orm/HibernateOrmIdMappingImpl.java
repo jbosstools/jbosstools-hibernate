@@ -44,15 +44,17 @@ implements HibernateOrmIdMapping {
 
 	@Override
 	public String getDefaultColumnName() {
-		NamingStrategy namingStrategy = getJpaProject().getNamingStrategy();
-		if (getJpaProject().isNamingStrategyEnabled() && namingStrategy != null && getName() != null){
-			try {
-				return namingStrategy.propertyToColumnName(getName());
-			} catch (Exception e) {
-				IMessage m = HibernateJpaValidationMessage.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						Messages.NAMING_STRATEGY_EXCEPTION, null);
-				HibernateJptPlugin.logException(m.getText(), e);
+		if (getName() != null){
+			NamingStrategy namingStrategy = getJpaProject().getNamingStrategy();
+			if (getJpaProject().isNamingStrategyEnabled() && namingStrategy != null){
+				try {
+					return namingStrategy.propertyToColumnName(getName());
+				} catch (Exception e) {
+					IMessage m = HibernateJpaValidationMessage.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							Messages.NAMING_STRATEGY_EXCEPTION, null);
+					HibernateJptPlugin.logException(m.getText(), e);
+				}
 			}
 		}
 		return super.getDefaultColumnName();
