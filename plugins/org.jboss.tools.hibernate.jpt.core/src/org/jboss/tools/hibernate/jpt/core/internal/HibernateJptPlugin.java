@@ -42,9 +42,6 @@ public class HibernateJptPlugin extends Plugin {
 	private static HibernateJptPlugin inst = null;
 
 	public static HibernateJptPlugin getDefault() {
-		if (inst == null) {
-			inst = new HibernateJptPlugin();
-		}
 		return inst;
 	}
 
@@ -95,6 +92,11 @@ public class HibernateJptPlugin extends Plugin {
 	public static void logInfo(String message) {
 		log(IStatus.INFO, message, null);
 	}
+	
+	public HibernateJptPlugin(){
+		if (inst == null)
+			inst = this;//init default plugin
+	}
 
 	@Override
 	public void start(BundleContext context) throws Exception {
@@ -135,6 +137,12 @@ public class HibernateJptPlugin extends Plugin {
 			}
 
 		});
+	}
+	
+	@Override
+	public void stop(BundleContext context) throws Exception {
+		super.stop(context);
+		inst = null;
 	}
 
 	private void rebuildJpaProject(final IProject project){
