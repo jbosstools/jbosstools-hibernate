@@ -7,8 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.beans.support.MutableSortDefinition;
-import org.springframework.beans.support.PropertyComparator;
 
 /**
  * Simple JavaBean business object representing a pet.
@@ -75,7 +73,7 @@ public class Pet extends NamedEntity {
 
 	public List<Visit> getVisits() {
 		List<Visit> sortedVisits = new ArrayList<Visit>(getVisitsInternal());
-		PropertyComparator.sort(sortedVisits, new MutableSortDefinition("date", false, false));
+		//PropertyComparator.sort(sortedVisits, new MutableSortDefinition("date", false, false));
 		return Collections.unmodifiableList(sortedVisits);
 	}
 

@@ -7,9 +7,6 @@ import java.util.List;
 import java.util.Set;
 import javax.xml.bind.annotation.XmlElement;
 
-import org.springframework.beans.support.MutableSortDefinition;
-import org.springframework.beans.support.PropertyComparator;
-
 /**
  * Simple JavaBean domain object representing a veterinarian.
  *
@@ -37,7 +34,7 @@ public class Vet extends Person {
 	@XmlElement
 	public List<Specialty> getSpecialties() {
 		List<Specialty> sortedSpecs = new ArrayList<Specialty>(getSpecialtiesInternal());
-		PropertyComparator.sort(sortedSpecs, new MutableSortDefinition("name", true, true));
+		//PropertyComparator.sort(sortedSpecs, new MutableSortDefinition("name", true, true));
 		return Collections.unmodifiableList(sortedSpecs);
 	}
 

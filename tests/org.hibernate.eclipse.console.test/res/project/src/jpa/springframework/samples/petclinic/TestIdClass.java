@@ -1,24 +1,18 @@
 package jpa.springframework.samples.petclinic;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-@Entity
+@Embeddable
 public class TestIdClass {
 
-	//@Id
-    //protected Integer id;
-    @EmbeddedId
-    protected Object id;
+	@Column
+    protected Integer id;
 
-	//public Integer getId() {
-	public Object getId() {
-		return id;
+	public Integer getId() {
+		return this.id;
 	}
 
-	//public void setId(Integer id) {
-	public void setId(Object id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 }

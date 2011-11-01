@@ -8,15 +8,15 @@ import javax.persistence.MappedSuperclass;
 public class BaseSuperclass {
 
     @EmbeddedId
-    protected Object embeddedId;
+    protected TestIdClass embeddedId;
     //@Id
     //protected Integer simpleId;
 
-	public Object getTestId() {
+	public Object getEmbeddedId() {
 		return embeddedId;
 	}
 
-	public void setTestId(Object embeddedId) {
+	public void setEmbeddedId(TestIdClass embeddedId) {
 		this.embeddedId = embeddedId;
 	}
 

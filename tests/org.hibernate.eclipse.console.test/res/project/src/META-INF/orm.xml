@@ -15,15 +15,15 @@
 
 	<mapped-superclass class="BaseSuperclass" access="FIELD">
 		<attributes>
-			<embedded-id name="embeddedId">
+			<embedded-id name="embeddedId" >
 			</embedded-id>
 			<!-- id name="simpleId">
 				<generated-value strategy="IDENTITY"/>
 			</id-->
 		</attributes>
 	</mapped-superclass>
-
-	<mapped-superclass class="BaseEntity">
+	
+	<mapped-superclass class="BaseEntity" access="FIELD"> 
 		<attributes>
 			<id name="id">
 				<generated-value strategy="IDENTITY"/>
@@ -50,17 +50,7 @@
 			</basic>
 		</attributes>
 	</mapped-superclass>
-
-	<entity class="TestIdClass" access="FIELD">
-		<attributes>
-			<!-- id name="id">
-				<generated-value strategy="IDENTITY"/>
-			</id-->
-			<embedded-id name="id">
-			</embedded-id>
-		</attributes>
-	</entity>
-
+		
 	<entity class="SuperOffspring" access="FIELD">
 		<table name="SUPEROFFSPRING"/>
 		<attributes>
@@ -69,7 +59,7 @@
 			</basic>
 		</attributes>
 	</entity>
-
+	
 	<entity class="Vet">
 		<table name="VETS"/>
 		<attributes>
@@ -147,5 +137,12 @@
 			</many-to-one>
 		</attributes>
 	</entity>
+	
+	
+	<embeddable class="TestIdClass" access="FIELD">
+		<attributes>
+			<basic name="id"/>
+		</attributes>
+	</embeddable>
 
 </entity-mappings>
