@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat, Inc.
+ * Copyright (c) 2009-2011 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -64,7 +64,7 @@ public class HibernateJavaJoinTableImpl extends GenericJavaJoinTable
 				return ns.tableName(getSpecifiedName());
 			} catch (Exception e) {
 				IMessage m = HibernateJpaValidationMessage.buildMessage(IMessage.HIGH_SEVERITY,
-						Messages.NAMING_STRATEGY_EXCEPTION, null);
+						Messages.NAMING_STRATEGY_EXCEPTION, this);
 				HibernateJptPlugin.logException(m.getText(), e);
 			}
 		}
