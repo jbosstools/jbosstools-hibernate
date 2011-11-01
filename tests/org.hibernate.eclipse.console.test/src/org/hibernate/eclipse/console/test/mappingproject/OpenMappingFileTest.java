@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Red Hat, Inc.
+ * Copyright (c) 2007-2011 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -76,6 +76,8 @@ public class OpenMappingFileTest extends BaseTestSetCase {
 			if (!highlighted) {
 				String out = NLS.bind(ConsoleTestMessages.OpenMappingFileTest_highlighted_region_for_property_is_empty_package,
 						new Object[]{compositeProperty.getNodeName(), testPackage.getElementName()});
+				if (Customization.USE_CONSOLE_OUTPUT)
+					System.err.println(out);
 				fail(out);
 			}
 			Object[] compProperties = propertyWorkbenchAdapter.getChildren(compositeProperty);

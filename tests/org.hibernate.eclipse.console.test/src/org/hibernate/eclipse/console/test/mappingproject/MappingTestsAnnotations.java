@@ -73,11 +73,13 @@ public class MappingTestsAnnotations extends MappingTestsBase {
 		assertTrue(useSelRes);
 		testProject.restartTestFolders();
 		executions = 0;
+		int prev_failCount = result.failureCount();
+		int prev_errCount = result.errorCount();
 		allTestsRunForProject();
 		if (Customization.USE_CONSOLE_OUTPUT) {
 			System.out.println("====================================================="); //$NON-NLS-1$
-			System.out.print(result.errorCount() + ConsoleTestMessages.HibernateAllMappingTests_errors + " \t"); //$NON-NLS-1$
-			System.out.print(result.failureCount() + ConsoleTestMessages.HibernateAllMappingTests_fails + "\t");						 //$NON-NLS-1$
+			System.out.print(result.errorCount() - prev_errCount + ConsoleTestMessages.HibernateAllMappingTests_errors + " \t"); //$NON-NLS-1$
+			System.out.print(result.failureCount() - prev_failCount + ConsoleTestMessages.HibernateAllMappingTests_fails + "\t");						 //$NON-NLS-1$
 			System.out.print((System.currentTimeMillis() - start_time) / 1000 + ConsoleTestMessages.HibernateAllMappingTests_seconds + "\t" );	 //$NON-NLS-1$
 			System.out.println(executions + ConsoleTestMessages.HibernateAllMappingTests_packages_tested );
 		}
