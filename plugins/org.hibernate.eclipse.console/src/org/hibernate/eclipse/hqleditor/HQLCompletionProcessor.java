@@ -34,16 +34,13 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
-import org.eclipse.osgi.util.NLS;
-import org.hibernate.HibernateException;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.QueryEditor;
-import org.hibernate.tool.ide.completion.HQLCodeAssist;
-import org.hibernate.tool.ide.completion.IHQLCodeAssist;
+import org.hibernate.eclipse.console.ext.CompletionProposalsResult;
+import org.hibernate.eclipse.console.ext.ConsoleExtension;
+import org.hibernate.eclipse.console.ext.ConsoleExtensionManager;
 
 /**
  * content assist processor for HQL code.
@@ -119,45 +116,23 @@ public class HQLCompletionProcessor implements IContentAssistProcessor {
 					return result;
 				}
 
-				if(consoleConfiguration != null && consoleConfiguration.getConfiguration()==null) {
-					try{
-					 	consoleConfiguration.build();
-					 	consoleConfiguration.execute( new ExecutionContext.Command() {
-					 		public Object execute() {
-					 			if(consoleConfiguration.hasConfiguration()) {
-					 			consoleConfiguration.getConfiguration().buildMappings();
-					 		}
-					 			return consoleConfiguration;
-					 		}
-						});
-					} catch (HibernateException e){
-						String mess = NLS.bind(HibernateConsoleMessages.CompletionHelper_error_could_not_build_cc, consoleConfiguration.getName());
-						HibernateConsolePlugin.getDefault().logErrorMessage(mess, e);
+				if(consoleConfiguration != null) {
+					ConsoleExtension consoleExtension = ConsoleExtensionManager.getConsoleExtension(consoleConfiguration.getHibernateExtension());
+					if (consoleExtension != null){
+						CompletionProposalsResult codeCompletions = consoleExtension.hqlCodeComplete(doc.get(), currentOffset);
+						
+						proposalList.addAll(codeCompletions.getCompletionProposals());
+						errorMessage = codeCompletions.getErrorMessage();//eclipseHQLCompletionCollector.getLastErrorMessage();
+						
+						result = proposalList.toArray(new ICompletionProposal[proposalList.size()]);
+		    			if(result.length==0 && errorMessage==null) {
+		    				errorMessage = HibernateConsoleMessages.HQLCompletionProcessor_no_hql_completions_available;
+		    			}
+					} else {
+						errorMessage = "There is no completion proposal implementation for this hibernate version \'"
+								+ consoleConfiguration.getHibernateExtension().getHibernateVersion() + "\'";
 					}
 				}
-				
-				Configuration configuration = consoleConfiguration!=null?consoleConfiguration.getConfiguration():null;
-				IHQLCodeAssist hqlEval = new HQLCodeAssist(configuration);
-				EclipseHQLCompletionRequestor eclipseHQLCompletionCollector = new EclipseHQLCompletionRequestor();
-				String query = doc.get();
-				// workaround to fix JBIDE-7991
-				query = query.replace('\t', ' ');
-				hqlEval.codeComplete(query, currentOffset, eclipseHQLCompletionCollector);
-				proposalList.addAll(eclipseHQLCompletionCollector.getCompletionProposals());
-				errorMessage = eclipseHQLCompletionCollector.getLastErrorMessage();
-
-				/*if(configuration == null && consoleConfiguration!=null) {
-					proposalList.add(new LoadConsoleCFGCompletionProposal(consoleConfiguration));
-				}*/
-
-    			//findMatchingWords( currentOffset, proposalList, startWord, HQLCodeScanner.getHQLKeywords(), "keyword" );
-    			//findMatchingWords( currentOffset, proposalList, startWord, HQLCodeScanner.getHQLFunctionNames(), "function");
-
-    			result = proposalList.toArray(new ICompletionProposal[proposalList.size()]);
-    			if(result.length==0 && errorMessage==null) {
-    				errorMessage = HibernateConsoleMessages.HQLCompletionProcessor_no_hql_completions_available;
-    			}
-
     		} else {
     			errorMessage = HibernateConsoleMessages.HQLCompletionProcessor_no_start_word_found;
     		}

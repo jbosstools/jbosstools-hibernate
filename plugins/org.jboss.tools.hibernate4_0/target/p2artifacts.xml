@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?artifactRepository version='1.1.0'?>
+<artifacts size='2'>
+  <artifact classifier='osgi.bundle' id='org.jboss.tools.hibernateextension4_0' version='3.4.0.v20111130-1920-M5'>
+    <properties size='6'>
+      <property name='artifact.size' value='8048296'/>
+      <property name='download.size' value='8048296'/>
+      <property name='download.md5' value='5dc83efcb1b270a2a26791f2cf1dfe74'/>
+      <property name='maven-groupId' value='org.jboss.tools.hibernatetools.plugins'/>
+      <property name='maven-artifactId' value='org.jboss.tools.hibernateextension4_0'/>
+      <property name='maven-version' value='3.4.0-SNAPSHOT'/>
+    </properties>
+  </artifact>
+  <artifact classifier='osgi.bundle' id='org.jboss.tools.hibernateextension4_0.source' version='3.4.0.v20111130-1920-M5'>
+    <properties size='7'>
+      <property name='artifact.size' value='33805'/>
+      <property name='download.size' value='33805'/>
+      <property name='download.md5' value='1a4aaeaedc1bae23797fa90308bf6ce3'/>
+      <property name='maven-groupId' value='org.jboss.tools.hibernatetools.plugins'/>
+      <property name='maven-artifactId' value='org.jboss.tools.hibernateextension4_0'/>
+      <property name='maven-version' value='3.4.0-SNAPSHOT'/>
+      <property name='maven-classifier' value='sources'/>
+    </properties>
+  </artifact>
+</artifacts>

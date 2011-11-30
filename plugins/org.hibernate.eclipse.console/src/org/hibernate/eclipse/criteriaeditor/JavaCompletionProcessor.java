@@ -38,7 +38,7 @@ import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.eclipse.hqleditor.CompletionHelper;
-import org.hibernate.util.StringHelper;
+import org.hibernate.util.xpl.StringHelper;
 
 public class JavaCompletionProcessor implements IContentAssistProcessor {
 

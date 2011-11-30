@@ -25,7 +25,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.hibernate.eclipse.hqleditor.CompletionHelper;
 import org.hibernate.eclipse.hqleditor.HibernateResultCollector.Settings;
-import org.hibernate.util.StringHelper;
+import org.hibernate.util.xpl.StringHelper;
 import org.w3c.dom.Node;
 
 public class PackageHandler extends JavaTypeHandler {

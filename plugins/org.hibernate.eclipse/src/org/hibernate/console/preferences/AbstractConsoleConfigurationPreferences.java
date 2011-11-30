@@ -28,7 +28,7 @@ import java.util.Properties;
 
 import org.hibernate.console.ConsoleMessages;
 import org.hibernate.console.HibernateConsoleRuntimeException;
-import org.hibernate.util.StringHelper;
+import org.hibernate.util.xpl.StringHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -55,9 +55,9 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 	private String namingStrategy;
 	private String connectionProfile;
 	private String dialectName;
-	
+	private String hibernateVersion;
 
-	public AbstractConsoleConfigurationPreferences(String name, ConfigurationMode configurationMode,
+	public AbstractConsoleConfigurationPreferences(String name, ConfigurationMode configurationMode, String hibernateVersion,
 			String projectName, boolean useProjectclassPath, String entityResolver,
 			String persistenceUnitName, String namingStrategy,
 			String connectionProfile, String dialectName) {
@@ -310,6 +310,20 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 			n.setAttribute(attribName, attributValue);
 		}
 		return n;
+	}
+
+	/**
+	 * @return the hibernateVersion
+	 */
+	public String getHibernateVersion() {
+		return hibernateVersion;
+	}
+
+	/**
+	 * @param hibernateVersion the hibernateVersion to set
+	 */
+	public void setHibernateVersion(String hibernateVersion) {
+		this.hibernateVersion = hibernateVersion;
 	}
 
 }

@@ -36,7 +36,7 @@ import org.hibernate.type.Type;
  * @author MAX
  *
  */
-public class ClassNode extends BaseNode {
+class ClassNode extends BaseNode {
 
 	ClassMetadata md;
 

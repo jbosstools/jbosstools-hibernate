@@ -48,7 +48,6 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
@@ -65,14 +64,13 @@ import org.eclipse.ui.part.Page;
 import org.hibernate.console.ConsoleQueryParameter;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.QueryInputModel;
-import org.hibernate.console.StringListDialog;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.QueryEditor;
 import org.hibernate.eclipse.console.utils.EclipseImages;
+import org.hibernate.util.xpl.StringHelper;
 import org.hibernate.hql.classic.ParserHelper;
 import org.hibernate.type.NullableType;
 import org.hibernate.type.Type;
-import org.hibernate.util.StringHelper;
 
 public class QueryParametersPage extends Page implements IQueryParametersPage {
 

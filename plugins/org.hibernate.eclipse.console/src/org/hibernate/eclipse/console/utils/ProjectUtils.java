@@ -69,7 +69,7 @@ import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.properties.HibernatePropertiesConstants;
 import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
-import org.hibernate.util.StringHelper;
+import org.hibernate.util.xpl.StringHelper;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 import org.xml.sax.InputSource;

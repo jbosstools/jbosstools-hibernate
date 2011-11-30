@@ -21,15 +21,11 @@
  */
 package org.hibernate.eclipse.console.actions;
 
-import javax.swing.tree.TreeNode;
-
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.node.BaseNode;
-import org.hibernate.console.node.PersistentCollectionNode;
-import org.hibernate.console.node.TypeNode;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
@@ -97,41 +93,7 @@ public class CriteriaEditorAction extends OpenQueryEditorAction {
 				}
 			}
 		} else if (node instanceof BaseNode) {
-			String prName = null;
-			TreeNode treeNodeParent = null;
-			if (node instanceof TypeNode) {
-				TypeNode typeNode = (TypeNode)node;
-				prName = typeNode.getName();
-				treeNodeParent = typeNode.getParent();
-			}
-			else if (node instanceof PersistentCollectionNode) {
-				PersistentCollectionNode persistentCollectionNode = (PersistentCollectionNode)node;
-				prName = persistentCollectionNode.getName();
-				treeNodeParent = persistentCollectionNode.getParent();
-			}
-			else {
-				BaseNode baseNode = (BaseNode)node;
-				enName = baseNode.getName();
-				enName = enName.substring(enName.lastIndexOf('.') + 1);
-			}
-			if (prName != null) {
-				if (treeNodeParent instanceof BaseNode) {
-					BaseNode baseNodeParent = (BaseNode)treeNodeParent;
-					if (baseNodeParent instanceof TypeNode) {
-						TypeNode typeNodeParent = (TypeNode)baseNodeParent;
-						enName = typeNodeParent.getType().getName();
-					}
-					else if (baseNodeParent instanceof PersistentCollectionNode) {
-						PersistentCollectionNode persistentCollectionNodeParent = (PersistentCollectionNode)baseNodeParent;
-						enName = persistentCollectionNodeParent.getType().getName();
-					}
-					else {
-						enName = baseNodeParent.getName();
-					}
-					enName = enName.substring(enName.lastIndexOf('.') + 1);
-					propCriteria = NLS.bind(alias, prName, prName.charAt(0));
-				}
-			}
+			return ((BaseNode)node).getCriteria();
 		}
 		if ("".equals(enName)) { //$NON-NLS-1$
 			return ""; //$NON-NLS-1$

@@ -37,7 +37,9 @@ import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
-import org.hibernate.eclipse.hqleditor.EclipseHQLCompletionRequestor;
+import org.hibernate.eclipse.console.ext.CompletionProposalsResult;
+import org.hibernate.eclipse.console.ext.ConsoleExtension;
+import org.hibernate.eclipse.console.ext.ConsoleExtensionManager;
 import org.hibernate.eclipse.hqleditor.HQLCompletionProcessor;
 import org.hibernate.eclipse.nature.HibernateNature;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
@@ -79,18 +81,24 @@ public class HQLJavaCompletionProposalComputer implements IJavaCompletionProposa
 				 ConsoleConfiguration consoleConfiguration = getConfiguration( ctx.getProject() );
 				 if(consoleConfiguration!=null) {
 					 Configuration configuration = consoleConfiguration.getConfiguration();
-
+					 
+					 
 					 IHQLCodeAssist hqlEval = new HQLCodeAssist(configuration);
 
 					 String query = ""; //$NON-NLS-1$
 					 int stringStart = getStringStart( ctx.getDocument(), ctx.getInvocationOffset() );
 					 int stringEnd = getStringEnd( ctx.getDocument(), ctx.getInvocationOffset() );
 					 query = ctx.getDocument().get(stringStart, stringEnd-stringStart );
-					 EclipseHQLCompletionRequestor eclipseHQLCompletionCollector = new EclipseHQLCompletionRequestor(stringStart);
-					 hqlEval.codeComplete(query, ctx.getInvocationOffset()-stringStart, eclipseHQLCompletionCollector);
-					 errorMessage = eclipseHQLCompletionCollector.getLastErrorMessage();
-
-					 proposals = eclipseHQLCompletionCollector.getCompletionProposals();
+					 ConsoleExtension consoleExtension = ConsoleExtensionManager.getConsoleExtension(consoleConfiguration.getHibernateExtension());
+					 if (consoleExtension != null){
+							CompletionProposalsResult codeCompletions = consoleExtension.hqlCodeComplete(query, ctx.getInvocationOffset()-stringStart);
+					
+							errorMessage = codeCompletions.getErrorMessage();
+							proposals = codeCompletions.getCompletionProposals();
+					} else {
+						errorMessage = "There is no completion proposal implementation for this hibernate version \'"
+								+ consoleConfiguration.getHibernateExtension().getHibernateVersion() + "\'";
+					}
 				 }
 		} catch(RuntimeException re) {
 			HibernateConsolePlugin.getDefault().logErrorMessage( JdtUiMessages.HQLJavaCompletionProposalComputer_errormessage, re );

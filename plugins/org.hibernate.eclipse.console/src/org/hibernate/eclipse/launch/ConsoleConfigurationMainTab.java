@@ -33,15 +33,17 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.hibernate.console.ImageConstants;
+import org.hibernate.console.ext.HibernateExtensionManager;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
@@ -50,7 +52,7 @@ import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.eclipse.console.wizards.NewConfigurationWizard;
 import org.hibernate.eclipse.console.wizards.NewConfigurationWizardPage;
-import org.hibernate.util.StringHelper;
+import org.hibernate.util.xpl.StringHelper;
 
 @SuppressWarnings("restriction")
 public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
@@ -58,6 +60,7 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 	protected boolean configurationFileWillBeCreated = false;
 
 	private Button coreMode;
+	private Combo hibernateVersion;
 	private Button jpaMode;
 	private Button annotationsMode;
 	private Button confbutton;
@@ -108,7 +111,8 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 			
 	private void createConfigurationMode(Composite container) {
 		Group group = createGroup( container, HibernateConsoleMessages.ConsoleConfigurationMainTab_type);
-		group.setLayout( new RowLayout( SWT.HORIZONTAL ) );
+		//group.setLayout( new RowLayout( SWT.HORIZONTAL ) );
+		group.setLayout(new GridLayout(4, false));
 		coreMode = new Button(group, SWT.RADIO);
 		coreMode.setText(HibernateConsoleMessages.ConsoleConfigurationMainTab_core);
 		coreMode.addSelectionListener( getChangeListener() );
@@ -119,6 +123,17 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 		jpaMode = new Button(group, SWT.RADIO);
 		jpaMode.setText(HibernateConsoleMessages.ConsoleConfigurationMainTab_jpa);
 		jpaMode.addSelectionListener( getChangeListener() );
+		new Label(group, SWT.NULL);
+		Composite comp2 = new Composite(group, SWT.NULL);
+		comp2.setLayout(new GridLayout(2, false));
+		comp2.setLayoutData(new GridData(GridData.BEGINNING, -1, false, false, 2, 1));
+		Label hLabel = new Label(comp2, SWT.NULL);
+		hLabel.setText(HibernateConsoleMessages.ConsoleConfigurationMainTab_0);
+		hibernateVersion = new Combo(comp2, SWT.READ_ONLY);
+		hibernateVersion.setItems((String[])HibernateExtensionManager.getHibernateExtensionDefinitionsAsMap().keySet().toArray(new String[0]));
+		hibernateVersion.select(0);
+		hibernateVersion.setLayoutData(new GridData(53, -1));
+		hibernateVersion.addModifyListener(getChangeListener());
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalSpan = 2;
 		group.setLayoutData( gd );
@@ -170,6 +185,7 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		String projectName = nonEmptyTrimOrNull( projectNameText );
 		configuration.setAttribute(IConsoleConfigurationLaunchConstants.CONFIGURATION_FACTORY, getConfigurationMode().toString());
+		configuration.setAttribute(IConsoleConfigurationLaunchConstants.HIBERNATE_VERSION, getHibernateVersion());
 		configuration.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, projectName);
 		if (projectName != null){
 			configuration.setAttribute(LaunchConfiguration.ATTR_MAPPED_RESOURCE_PATHS,
@@ -200,6 +216,7 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 		try {
 			ConfigurationMode cm = ConfigurationMode.parse(configuration.getAttribute( IConsoleConfigurationLaunchConstants.CONFIGURATION_FACTORY, "" )); //$NON-NLS-1$
 			coreMode.setSelection( cm.equals( ConfigurationMode.CORE ) );
+			hibernateVersion.setText(configuration.getAttribute( IConsoleConfigurationLaunchConstants.HIBERNATE_VERSION, "")); //$NON-NLS-1$
 			annotationsMode.setSelection( cm.equals( ConfigurationMode.ANNOTATIONS ) );
 			jpaMode.setSelection( cm.equals( ConfigurationMode.JPA ) );
 
@@ -496,6 +513,10 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 		} else {
 			return ConfigurationMode.CORE;
 		}
+	}
+	
+	public String getHibernateVersion(){
+		return "".equals(hibernateVersion.getText()) ? null : hibernateVersion.getText(); //$NON-NLS-1$
 	}
 
 	String getProjectName() {

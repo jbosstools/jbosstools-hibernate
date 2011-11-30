@@ -25,6 +25,7 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
+import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.jface.text.formatter.ContentFormatter;
 import org.eclipse.jface.text.formatter.IContentFormatter;
@@ -42,7 +43,7 @@ import org.hibernate.eclipse.hqleditor.preferences.HQLPreferenceConstants;
 public class HQLSourceViewerConfiguration extends SourceViewerConfiguration {
 
 	public final static String HQL_PARTITIONING= "__hql_partitioning";   //$NON-NLS-1$
-	private HQLCompletionProcessor completionProcessor;
+	private IContentAssistProcessor completionProcessor;
 	//private HQLEditor hqlEditor;
 	private QueryEditor hqlEditor;
     

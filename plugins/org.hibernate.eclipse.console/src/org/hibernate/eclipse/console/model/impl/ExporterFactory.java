@@ -26,7 +26,7 @@ import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.GenericExporter;
 import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
 import org.hibernate.tool.hbm2x.QueryExporter;
-import org.hibernate.util.StringHelper;
+import org.hibernate.util.xpl.StringHelper;
 
 /**
  * ExporterFactory is used in UI to hold additional configuration for Exporter definitions

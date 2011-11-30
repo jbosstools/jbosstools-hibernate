@@ -1,15 +1,11 @@
 package org.hibernate.eclipse.console.test;
 
-import java.lang.reflect.Field;
-import java.util.Map;
-
 import junit.framework.TestCase;
 
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.hibernate.Hibernate;
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Mappings;
@@ -22,7 +18,6 @@ import org.hibernate.console.QueryInputModel;
 import org.hibernate.console.QueryPage;
 import org.hibernate.eclipse.console.test.launchcfg.TestConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.views.QueryPageTabView;
-import org.hibernate.impl.AbstractQueryImpl;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PrimaryKey;
@@ -173,29 +168,6 @@ public class ConsoleConfigurationTest extends TestCase {
 		} catch (Exception e){
 			//ignore - there is fake mapping
 		}
-		Field qField = qp.getClass().getDeclaredField("query");
-		qField.setAccessible(true);
-		Query query = (Query) qField.get(qp);
-		assertTrue(query.getNamedParameters().length == 2); // a and b
-		Field listParam = AbstractQueryImpl.class.getDeclaredField("namedParameterLists");
-		listParam.setAccessible(true);
-		Map namedParameterLists = (Map) listParam.get(query);
-		assertTrue(namedParameterLists.size() == 1);//"a" added as a list parameter
 	}
 
-	/*public void testCleanup() throws InterruptedException {
-
-		for(int cnt=0;cnt<10000;cnt++) {
-			if(cnt%2==0) {
-
-				System.out.println("Cnt " + cnt + " " + Runtime.getRuntime().freeMemory()/1000);
-				Thread.sleep( 2000 );
-			}
-
-			consoleCfg.build();
-			consoleCfg.buildSessionFactory();
-			consoleCfg.reset();
-		}
-
-	}*/
 }

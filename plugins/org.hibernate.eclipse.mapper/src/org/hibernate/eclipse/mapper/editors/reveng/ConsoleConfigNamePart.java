@@ -35,7 +35,7 @@ import org.hibernate.eclipse.console.utils.LaunchHelper;
 import org.hibernate.eclipse.mapper.MapperMessages;
 import org.hibernate.eclipse.mapper.MapperPlugin;
 import org.hibernate.eclipse.mapper.editors.ReverseEngineeringEditor;
-import org.hibernate.util.StringHelper;
+import org.hibernate.util.xpl.StringHelper;
 
 public class ConsoleConfigNamePart extends RevEngSectionPart {
 

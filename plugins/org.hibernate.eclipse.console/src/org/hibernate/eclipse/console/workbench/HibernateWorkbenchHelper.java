@@ -27,7 +27,7 @@ import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Value;
-import org.hibernate.util.StringHelper;
+import org.hibernate.util.xpl.StringHelper;
 
 public class HibernateWorkbenchHelper {
 

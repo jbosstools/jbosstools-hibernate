@@ -37,6 +37,7 @@ Require-Bundle: org.eclipse.ui,
  org.hibernate.eclipse.console,
  org.eclipse.wst.dtd.core,
  org.eclipse.wst.common.ui,
- org.eclipse.pde.core
+ org.eclipse.pde.core,
+ org.hibernate.eclipse.libs;bundle-version="3.4.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

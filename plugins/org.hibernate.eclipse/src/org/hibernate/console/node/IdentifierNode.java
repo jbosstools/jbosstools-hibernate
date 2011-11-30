@@ -28,7 +28,7 @@ import org.hibernate.metadata.ClassMetadata;
  * @author MAX
  *
  */
-public class IdentifierNode extends TypeNode {
+class IdentifierNode extends TypeNode {
 
 	/**
 	 * @param factory

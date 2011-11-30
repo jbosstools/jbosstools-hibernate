@@ -47,7 +47,7 @@ import org.hibernate.eclipse.console.workbench.TableContainer;
 import org.hibernate.eclipse.console.workbench.xpl.AnyAdaptableLabelProvider;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Table;
-import org.hibernate.util.StringHelper;
+import org.hibernate.util.xpl.StringHelper;
 
 public abstract class TableFilterView extends TreeToTableComposite {
 

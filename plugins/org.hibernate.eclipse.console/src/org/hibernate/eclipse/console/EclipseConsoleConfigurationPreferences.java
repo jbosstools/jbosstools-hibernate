@@ -59,11 +59,12 @@ public class EclipseConsoleConfigurationPreferences extends AbstractConsoleConfi
 	private IPath[] customClasspath = new IPath[0];
 
 	public EclipseConsoleConfigurationPreferences(String configName, 
-			ConfigurationMode cmode, String projectName, boolean useProjectClasspath, 
+			ConfigurationMode cmode, String hibernateVersion, String projectName, boolean useProjectClasspath, 
 			String entityResolver, IPath cfgFile, IPath propertyFilename, 
 			IPath[] mappings, IPath[] classpaths, String persistenceUnitName, String namingStrategy,
 			String connectionProfile, String dialectName) {
-		super(configName, cmode, projectName, useProjectClasspath, entityResolver, persistenceUnitName, namingStrategy, connectionProfile, dialectName);		
+		super(configName, cmode, hibernateVersion, projectName, useProjectClasspath,
+				entityResolver, persistenceUnitName, namingStrategy, connectionProfile, dialectName);		
 		this.cfgFile = cfgFile;
 		this.propertyFilename = propertyFilename;
 		this.mappings = mappings;

@@ -35,6 +35,7 @@ import org.w3c.dom.Element;
  */
 public interface ConsoleConfigurationPreferences {
 
+	static final String HIBERNATE_VERSION = "hibernate-version"; //$NON-NLS-1$
 	static final String PATH_TAG = "path"; //$NON-NLS-1$
 	static final String CLASSPATH_TAG = "classpath"; //$NON-NLS-1$
 	static final String MAPPING_TAG = "mapping"; //$NON-NLS-1$
@@ -114,6 +115,11 @@ public interface ConsoleConfigurationPreferences {
 		}
 	}
 
+	/**
+	 * 
+	 * @return Hibernate version String or null if default should be used
+	 */
+	public abstract String getHibernateVersion();
 
 	public abstract ConfigurationMode getConfigurationMode();
 

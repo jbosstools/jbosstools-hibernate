@@ -64,7 +64,7 @@ import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
-import org.hibernate.util.StringHelper;
+import org.hibernate.util.xpl.StringHelper;
 import org.hibernate.util.XMLHelper;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;

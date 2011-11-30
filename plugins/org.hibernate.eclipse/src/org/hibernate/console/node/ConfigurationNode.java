@@ -31,7 +31,7 @@ import org.hibernate.console.ImageConstants;
  * @author max
  *
  */
-public class ConfigurationNode extends BaseNode {
+class ConfigurationNode extends BaseNode {
 
 	private final ConsoleConfiguration configuration;
 	private boolean childrenCreated;

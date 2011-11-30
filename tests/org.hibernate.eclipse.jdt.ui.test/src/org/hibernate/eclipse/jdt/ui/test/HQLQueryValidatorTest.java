@@ -59,12 +59,18 @@ public class HQLQueryValidatorTest extends HibernateConsoleTest {
 				File ejb3lib= HibernateJDTuiTestPlugin.getDefault().getFileInPlugin(new Path("testresources/ejb3-persistence.jar")); //$NON-NLS-1$
 				assertTrue("ejb3 lib not found", ejb3lib != null && ejb3lib.exists()); //$NON-NLS-1$
 				
+				File databaselib= HibernateJDTuiTestPlugin.getDefault().getFileInPlugin(new Path("testresources/hsqldb.jar")); //$NON-NLS-1$
+				assertTrue("hsqldb lib not found", databaselib != null && databaselib.exists()); //$NON-NLS-1$
+				
 				JavaProjectHelper.addToClasspath(getIJavaProject(), JavaRuntime.getDefaultJREContainerEntry());
 				
 				IPackageFragmentRoot addLibraryWithImport = JavaProjectHelper.addLibraryWithImport(getIJavaProject(), Path.fromOSString(ejb3lib.getPath()), null, null);
 				addLibraryWithImport.hasChildren();
 				
-				assertEquals(3,getIJavaProject().getRawClasspath().length);
+				JavaProjectHelper.addLibraryWithImport(getIJavaProject(), Path.fromOSString(databaselib.getPath()), null, null);
+				
+				
+				assertEquals(4,getIJavaProject().getRawClasspath().length);
 			
 				getIProject().getFolder("src/META-INF").create(true, true, new NullProgressMonitor()); //$NON-NLS-1$
 				getIProject().getFile("src/META-INF/persistence.xml").create( //$NON-NLS-1$
@@ -119,7 +125,7 @@ public class HQLQueryValidatorTest extends HibernateConsoleTest {
 		String prjName = getProject().getIProject().getName();
 		
 		EclipseConsoleConfigurationPreferences preferences = new EclipseConsoleConfigurationPreferences(prjName,
-				ConfigurationMode.JPA, prjName, true, null, null, null, new IPath[0], new IPath[0], null, null, null, null);
+				ConfigurationMode.JPA, null, prjName, true, null, null, null, new IPath[0], new IPath[0], null, null, null, null);
 		
 		ccfg = KnownConfigurations.getInstance().addConfiguration(new EclipseConsoleConfiguration(preferences), false);
 		
@@ -143,7 +149,7 @@ public class HQLQueryValidatorTest extends HibernateConsoleTest {
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().setPerspective(
 				PlatformUI.getWorkbench().getPerspectiveRegistry().findPerspectiveWithId("org.eclipse.ui.resourcePerspective")); //$NON-NLS-1$
 
-		getProject().deleteIProject(false);
+		//getProject().deleteIProject(false);
 		waitForJobs();
 	}
 	public void testHQLDetector() throws JavaModelException {

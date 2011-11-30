@@ -28,6 +28,7 @@ import java.util.List;
 
 import javax.swing.tree.TreeNode;
 
+import org.eclipse.osgi.util.NLS;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.execution.ExecutionContext;
@@ -98,6 +99,14 @@ public abstract class BaseNode implements TreeNode, ExecutionContextHolder {
     }
 
 	public abstract String getHQL();
+	
+	public String getCriteria(){
+		final String criteria = ".createCriteria({0})"; //$NON-NLS-1$
+		final String sess = "session"; //$NON-NLS-1$
+		String enName = getName().substring(getName().lastIndexOf('.') + 1);
+		String enCriteria = NLS.bind(criteria, enName + ".class"); //$NON-NLS-1$
+		return sess + enCriteria;
+	}
 
 	public String getName() {
         return name;

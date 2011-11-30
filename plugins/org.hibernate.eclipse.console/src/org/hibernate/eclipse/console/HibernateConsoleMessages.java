@@ -388,6 +388,8 @@ public class HibernateConsoleMessages extends NLS {
 	public static String CodeGenerationSettingsTab_use_generation_in_external_process;
 	public static String CodeGenerationSettingsTab_script_can_not_be_generated_correctly_without;
 	public static String ConsoleConfigurationLaunchDelegate_direct_launch_not_supported;
+	public static String ConsoleConfigurationMainTab_0;
+
 	public static String ConsoleConfigurationMainTab_annotations;
 	public static String ConsoleConfigurationMainTab_cfg_xml;
 	public static String ConsoleConfigurationMainTab_choose_file_to_use_as_hibernate_cfg_xml;

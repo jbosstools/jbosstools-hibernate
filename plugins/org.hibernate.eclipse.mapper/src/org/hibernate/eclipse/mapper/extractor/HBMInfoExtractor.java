@@ -43,7 +43,7 @@ import org.eclipse.wst.xml.ui.internal.contentassist.XMLRelevanceConstants;
 import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.eclipse.mapper.MapperMessages;
-import org.hibernate.util.StringHelper;
+import org.hibernate.util.xpl.StringHelper;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 

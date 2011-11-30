@@ -58,7 +58,7 @@ import org.hibernate.eclipse.mapper.editors.reveng.RevEngTypeMappingPage;
 import org.hibernate.eclipse.mapper.editors.xpl.XMLFormEditorPart;
 import org.hibernate.eclipse.mapper.model.DOMReverseEngineeringDefinition;
 import org.hibernate.eclipse.nature.HibernateNature;
-import org.hibernate.util.StringHelper;
+import org.hibernate.util.xpl.StringHelper;
 import org.w3c.dom.Document;
 
 public class ReverseEngineeringEditor extends XMLFormEditorPart {

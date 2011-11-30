@@ -18,11 +18,14 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<module>org.hibernate.eclipse.jdt.apt.ui</module>
 		<module>org.hibernate.eclipse.jdt.ui</module>
 		<module>org.hibernate.eclipse.mapper</module>
+		<module>org.hibernate.eclipse.libs</module>
 		<module>org.jboss.tools.hibernate.jpt.core</module>
 		<module>org.jboss.tools.hibernate.jpt.ui</module>
 		<module>org.jboss.tools.hibernate.ui</module>
 		<module>org.jboss.tools.hibernate.xml</module>
 		<module>org.jboss.tools.hibernate.xml.ui</module>
+		<module>org.jboss.tools.hibernate3_5</module>
+		<module>org.jboss.tools.hibernate4_0</module>
 	</modules>
 </project>
 	

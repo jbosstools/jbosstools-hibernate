@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import org.hibernate.util.StringHelper;
+import org.hibernate.util.xpl.StringHelper;
 
 /**
  *  Old formatter from previous Hibernate versions which allowed a bit more control, i.e. we want *less* spaces not more.

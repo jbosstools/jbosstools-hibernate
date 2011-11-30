@@ -77,7 +77,7 @@ public class HibernateErrorsTest2 extends HibernateConsoleTest {
 		                    		"         <property name=\"hibernate.connection.driver_class\" value=\"org.hsqldb.jdbcDriver\"/>\n" +   //$NON-NLS-1$
 		                    		"         <property name=\"hibernate.connection.username\" value=\"sa\"/>\n" +   //$NON-NLS-1$
 		                    		"         <property name=\"hibernate.connection.password\" value=\"\"/>\n" +   //$NON-NLS-1$
-		                    		"         <property name=\"hibernate.connection.url\" value=\"jdbc:hsqldb:.\"/>\n" +  //$NON-NLS-1$
+		                    		"         <proporg.hibernate.eclipse.jdt.ui.testerty name=\"hibernate.connection.url\" value=\"jdbc:hsqldb:.\"/>\n" +  //$NON-NLS-1$
 		                    		"         <property name=\"hibernate.query.startup_check\" value=\"false\"/>\n" +		             //$NON-NLS-1$         		
 		                    		"      </properties>\n" +  //$NON-NLS-1$ 
 		                    		"   </persistence-unit>\n" +   //$NON-NLS-1$
@@ -117,7 +117,7 @@ public class HibernateErrorsTest2 extends HibernateConsoleTest {
 		String prjName = getProject().getIProject().getName();
 		
 		EclipseConsoleConfigurationPreferences preferences = new EclipseConsoleConfigurationPreferences(prjName,
-				ConfigurationMode.JPA, prjName, true, null, null, null, new IPath[0], new IPath[0], null, null, null, null);
+				ConfigurationMode.JPA, null, prjName, true, null, null, null, new IPath[0], new IPath[0], null, null, null, null);
 		
 		ccfg = KnownConfigurations.getInstance().addConfiguration(new EclipseConsoleConfiguration(preferences), false);
 		

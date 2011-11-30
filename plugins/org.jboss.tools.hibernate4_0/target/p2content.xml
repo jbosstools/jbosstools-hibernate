@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<units size='2'>
+  <unit id='org.jboss.tools.hibernateextension4_0' version='3.4.0.v20111130-1920-M5'>
+    <update id='org.jboss.tools.hibernateextension4_0' range='[0.0.0,3.4.0.v20111130-1920-M5)' severity='0'/>
+    <properties size='5'>
+      <property name='org.eclipse.equinox.p2.name' value='HibernateExtension4_0'/>
+      <property name='org.eclipse.equinox.p2.bundle.localization' value='plugin'/>
+      <property name='maven-groupId' value='org.jboss.tools.hibernatetools.plugins'/>
+      <property name='maven-artifactId' value='org.jboss.tools.hibernateextension4_0'/>
+      <property name='maven-version' value='3.4.0-SNAPSHOT'/>
+    </properties>
+    <provides size='3'>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='org.jboss.tools.hibernateextension4_0' version='3.4.0.v20111130-1920-M5'/>
+      <provided namespace='osgi.bundle' name='org.jboss.tools.hibernateextension4_0' version='3.4.0.v20111130-1920-M5'/>
+      <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+    </provides>
+    <requires size='9'>
+      <required namespace='osgi.bundle' name='org.eclipse.ui' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.core.runtime' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.hibernate.eclipse' range='3.4.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.datatools.connectivity' range='1.2.2'/>
+      <required namespace='osgi.bundle' name='org.hibernate.eclipse.console' range='3.4.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.jface.text' range='3.7.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.debug.core' range='3.7.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.core.variables' range='3.2.500'/>
+      <required namespace='osgi.bundle' name='org.eclipse.jdt.core' range='3.7.0'/>
+    </requires>
+    <artifacts size='1'>
+      <artifact classifier='osgi.bundle' id='org.jboss.tools.hibernateextension4_0' version='3.4.0.v20111130-1920-M5'/>
+    </artifacts>
+    <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+    <touchpointData size='1'>
+      <instructions size='1'>
+        <instruction key='manifest'>
+          Bundle-SymbolicName: org.jboss.tools.hibernateextension4_0;singleton:=true&#xA;Bundle-Version: 3.4.0.v20111130-1920-M5&#xA;
+        </instruction>
+      </instructions>
+    </touchpointData>
+  </unit>
+  <unit id='org.jboss.tools.hibernateextension4_0.source' version='3.4.0.v20111130-1920-M5' singleton='false'>
+    <update id='org.jboss.tools.hibernateextension4_0.source' range='[0.0.0,3.4.0.v20111130-1920-M5)' severity='0'/>
+    <properties size='4'>
+      <property name='maven-groupId' value='org.jboss.tools.hibernatetools.plugins'/>
+      <property name='maven-artifactId' value='org.jboss.tools.hibernateextension4_0'/>
+      <property name='maven-version' value='3.4.0-SNAPSHOT'/>
+      <property name='maven-classifier' value='sources'/>
+    </properties>
+    <provides size='3'>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='org.jboss.tools.hibernateextension4_0.source' version='3.4.0.v20111130-1920-M5'/>
+      <provided namespace='osgi.bundle' name='org.jboss.tools.hibernateextension4_0.source' version='3.4.0.v20111130-1920-M5'/>
+      <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='source' version='1.0.0'/>
+    </provides>
+    <artifacts size='1'>
+      <artifact classifier='osgi.bundle' id='org.jboss.tools.hibernateextension4_0.source' version='3.4.0.v20111130-1920-M5'/>
+    </artifacts>
+    <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+    <touchpointData size='1'>
+      <instructions size='1'>
+        <instruction key='manifest'>
+          Bundle-SymbolicName: org.jboss.tools.hibernateextension4_0.source&#xA;Bundle-Version: 3.4.0.v20111130-1920-M5&#xA;
+        </instruction>
+      </instructions>
+    </touchpointData>
+  </unit>
+</units>

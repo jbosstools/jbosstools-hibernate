@@ -35,7 +35,7 @@ import org.hibernate.Session;
  */
 public abstract class AbstractQueryPage implements QueryPage {
 
-	PropertyChangeSupport pcs = new PropertyChangeSupport(this);    
+	protected PropertyChangeSupport pcs = new PropertyChangeSupport(this);    
     private int id;
     private Session session;
 	private final ConsoleConfiguration cfg;

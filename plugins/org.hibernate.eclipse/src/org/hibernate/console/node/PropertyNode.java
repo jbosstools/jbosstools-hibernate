@@ -25,7 +25,7 @@ import org.hibernate.EntityMode;
 import org.hibernate.HibernateException;
 import org.hibernate.metadata.ClassMetadata;
 
-public class PropertyNode extends TypeNode {
+class PropertyNode extends TypeNode {
 
 	ClassMetadata baseMetaData;
 	public PropertyNode(NodeFactory factory, BaseNode parent, int idx, ClassMetadata metadata,Object baseObject, boolean objectGraph) {

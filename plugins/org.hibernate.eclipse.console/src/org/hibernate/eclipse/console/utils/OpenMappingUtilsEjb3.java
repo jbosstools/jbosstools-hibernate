@@ -3,7 +3,9 @@ package org.hibernate.eclipse.console.utils;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +32,6 @@ import org.hibernate.ejb.packaging.NamedInputStream;
 import org.hibernate.ejb.packaging.PackageFilter;
 import org.hibernate.ejb.packaging.PersistenceMetadata;
 import org.hibernate.ejb.packaging.PersistenceXmlLoader;
-import org.hibernate.util.CollectionHelper;
 
 /**
  * Most functions in this utility class are copy of 
@@ -43,6 +44,7 @@ public class OpenMappingUtilsEjb3 {
 	
 	public static final String META_INF_PERS_XML = "META-INF/persistence.xml"; //$NON-NLS-1$
 	public static final String META_INF_ORM_XML = "META-INF/orm.xml"; //$NON-NLS-1$
+	private static final Map EMPTY_MAP = Collections.unmodifiableMap( new HashMap(0) );
 
 	private OpenMappingUtilsEjb3() {}
 	
@@ -72,7 +74,7 @@ public class OpenMappingUtilsEjb3 {
 			List<PersistenceMetadata> metadataFiles = null;
 			try {
 				metadataFiles = PersistenceXmlLoader.deploy(
-						url, CollectionHelper.EMPTY_MAP,
+						url, EMPTY_MAP,
 						consoleConfiguration.getConfiguration().getEntityResolver(),
 						PersistenceUnitTransactionType.RESOURCE_LOCAL);
 			} catch (Exception e1) {
@@ -93,7 +95,7 @@ public class OpenMappingUtilsEjb3 {
 				JarVisitor visitor = null;
 				URL visitorJarURL = null;
 				if (metadata.getName() == null) {
-					visitor = getMainJarVisitor(url, metadata, CollectionHelper.EMPTY_MAP);
+					visitor = getMainJarVisitor(url, metadata, EMPTY_MAP);
 					visitorJarURL = JarVisitorFactory.getJarURLFromURLEntry(url, "/" + META_INF_PERS_XML); //$NON-NLS-1$
 					metadata.setName(visitor.getUnqualifiedJarName());
 				}
@@ -103,7 +105,7 @@ public class OpenMappingUtilsEjb3 {
 			    	break;
 				} else if (persistenceUnitName == null || metadata.getName().equals(persistenceUnitName)) {
 					if (visitor == null) {
-						visitor = getMainJarVisitor(url, metadata, CollectionHelper.EMPTY_MAP);
+						visitor = getMainJarVisitor(url, metadata, EMPTY_MAP);
 						visitorJarURL = JarVisitorFactory.getJarURLFromURLEntry(url, "/" + META_INF_PERS_XML); //$NON-NLS-1$
 					}
 					try {

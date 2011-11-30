@@ -45,8 +45,8 @@ public class StandAloneConsoleConfigurationPreferences extends AbstractConsoleCo
 	private File[] mappings;
 	private File[] customClasspath;
 
-	public StandAloneConsoleConfigurationPreferences(String name, File xmlconfig, File propertiesFile, File[] mappingFiles, File[] customClasspath) {
-		super(name, ConfigurationMode.CORE, null, false, null, null, null, null, null);
+	public StandAloneConsoleConfigurationPreferences(String name, String hibernateVersion, File xmlconfig, File propertiesFile, File[] mappingFiles, File[] customClasspath) {
+		super(name, ConfigurationMode.CORE, hibernateVersion, null, false, null, null, null, null, null);
 		this.cfgFile = xmlconfig;
 		this.propertyFilename = propertiesFile;
 		this.mappings = mappingFiles;
@@ -57,8 +57,8 @@ public class StandAloneConsoleConfigurationPreferences extends AbstractConsoleCo
 		// hidden for others
 	}
 
-	protected StandAloneConsoleConfigurationPreferences(String name) {
-		this(name,null,null,new File[0],new File[0]);
+	protected StandAloneConsoleConfigurationPreferences(String name, String hibernateVersion) {
+		this(name,hibernateVersion,null,null,new File[0],new File[0]);
 	}
 
 	/**

@@ -42,6 +42,9 @@ import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.ILogListener;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Plugin;
+import org.hibernate.console.execution.DefaultExecutionContext;
+import org.hibernate.console.execution.ExecutionContext;
+import org.hibernate.console.execution.ExecutionContext.Command;
 
 /**
  * PluginLogManager
@@ -92,7 +95,7 @@ public class PluginLogManager {
 	 * @param plugin the plug-in object
 	 * @param properties log configuration properties
 	 */
-	public PluginLogManager(Plugin plugin, LoggingHelper helper, URL log4jUrl) {
+	public PluginLogManager(Plugin plugin, LoggingHelper helper, final URL log4jUrl) {
 		this.log = plugin.getLog();  
 		this.stateLocation = plugin.getStateLocation(); 
 		this.hierarchy = new Hierarchy(new RootLogger(Level.DEBUG));
@@ -104,7 +107,14 @@ public class PluginLogManager {
 			}
 		
 		}, "hibernate-tools"); //$NON-NLS-1$
-		OptionConverter.selectAndConfigure(log4jUrl, null, this.hierarchy);
+		ExecutionContext ec = new DefaultExecutionContext("logConfiguration", getClass().getClassLoader()); //$NON-NLS-1$
+		ec.execute(new Command(){
+			@Override
+			public Object execute() {
+				OptionConverter.selectAndConfigure(log4jUrl, null, hierarchy);
+				return null;
+			}});
+		
 		this.helper = helper;
 		helper.addLogManager(this); 
 	}

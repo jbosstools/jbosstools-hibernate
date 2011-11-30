@@ -56,7 +56,7 @@ import org.hibernate.engine.query.HQLQueryPlan;
 import org.hibernate.hql.QueryTranslator;
 import org.hibernate.impl.SessionFactoryImpl;
 import org.hibernate.type.Type;
-import org.hibernate.util.StringHelper;
+import org.hibernate.util.xpl.StringHelper;
 
 public class DynamicSQLPreviewView extends ViewPart {
 

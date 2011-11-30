@@ -47,6 +47,7 @@ Require-Bundle: org.junit,
  org.eclipse.core.runtime,
  org.eclipse.ui.ide,
  org.hibernate.eclipse,
+ org.hibernate.eclipse.libs;bundle-version="3.4.0",
  org.hibernate.eclipse.mapper,
  org.eclipse.jface.text,
  org.hibernate.eclipse.console,
@@ -58,8 +59,9 @@ Require-Bundle: org.junit,
  org.eclipse.datatools.connectivity.ui,
  org.eclipse.datatools.connectivity,
  org.eclipse.ui.workbench.texteditor,
- org.eclipse.ui.editors
+ org.eclipse.ui.editors,
+ org.jboss.tools.hibernateextension3_5;bundle-version="3.4.0"
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.hibernate.eclipse.console.test.HibernateConsoleTestPlugin
 Eclipse-RegisterBuddy: org.hibernate.eclipse
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6

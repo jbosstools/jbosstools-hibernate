@@ -131,14 +131,14 @@
     <extension point = "org.eclipse.wst.xml.core.catalogContributions">
      <catalogContribution>
 	        <public publicId="-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-				uri="jar:platform:/plugin/org.hibernate.eclipse/lib/hibernate/hibernate3.jar!/org/hibernate/hibernate-mapping-3.0.dtd"
+				uri="jar:platform:/plugin/org.hibernate.eclipse.libs/lib/hibernate/hibernate3.jar!/org/hibernate/hibernate-mapping-3.0.dtd"
 				webURL="http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"/>
            <public publicId="-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-               uri="jar:platform:/plugin/org.hibernate.eclipse/lib/hibernate/hibernate3.jar!/org/hibernate/hibernate-configuration-3.0.dtd"
+               uri="jar:platform:/plugin/org.hibernate.eclipse.libs/lib/hibernate/hibernate3.jar!/org/hibernate/hibernate-configuration-3.0.dtd"
                webURL="http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd"/>
            <public
                publicId="-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN"
-               uri="jar:platform:/plugin/org.hibernate.eclipse/lib/tools/hibernate-tools.jar!/org/hibernate/hibernate-reverse-engineering-3.0.dtd"/>
+               uri="jar:platform:/plugin/org.hibernate.eclipse.libs/lib/tools/hibernate-tools.jar!/org/hibernate/hibernate-reverse-engineering-3.0.dtd"/>
      </catalogContribution>
     </extension>   
     

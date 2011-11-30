@@ -125,4 +125,24 @@
          version="0.0.0"
          unpack="false"/>
 
+   <plugin
+         id="org.hibernate.eclipse.libs"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.jboss.tools.hibernateextension3_5"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.jboss.tools.hibernateextension4_0"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
 </feature>

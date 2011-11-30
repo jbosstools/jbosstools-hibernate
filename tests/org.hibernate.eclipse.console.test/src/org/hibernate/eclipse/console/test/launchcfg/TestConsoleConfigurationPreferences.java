@@ -95,4 +95,13 @@ public class TestConsoleConfigurationPreferences implements ConsoleConfiguration
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.hibernate.console.preferences.ConsoleConfigurationPreferences#getHibernateVersion()
+	 */
+	@Override
+	public String getHibernateVersion() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

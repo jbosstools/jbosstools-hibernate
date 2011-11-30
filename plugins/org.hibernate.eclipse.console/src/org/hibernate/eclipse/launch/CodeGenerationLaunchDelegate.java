@@ -27,9 +27,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -58,10 +55,8 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.internal.core.LaunchConfiguration;
 import org.eclipse.debug.internal.core.LaunchConfigurationWorkingCopy;
-import org.eclipse.debug.ui.RefreshTab;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.ToolFactory;
@@ -84,11 +79,13 @@ import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.eclipse.console.ext.ConsoleExtension;
+import org.hibernate.eclipse.console.ext.ConsoleExtensionManager;
 import org.hibernate.eclipse.console.model.impl.ExporterFactory;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Exporter;
-import org.hibernate.util.ReflectHelper;
-import org.hibernate.util.StringHelper;
+import org.hibernate.util.xpl.ReflectHelper;
+import org.hibernate.util.xpl.StringHelper;
 
 @SuppressWarnings("restriction")
 public class CodeGenerationLaunchDelegate extends AntLaunchDelegate { 
@@ -266,6 +263,12 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 		Assert.isNotNull(configuration);
 		Assert.isNotNull(monitor);
 		ExporterAttributes attributes = new ExporterAttributes(configuration);
+		ConsoleConfiguration cc = KnownConfigurations.getInstance().find(attributes.getConsoleConfigurationName());
+		ConsoleExtension consoleExtension = ConsoleExtensionManager.getConsoleExtension(cc.getHibernateExtension());
+		consoleExtension.launchExporters(configuration, mode, launch, monitor);
+		
+		/* The code is moved to consoleExtension and delegated method is called instead.
+		
 		List<ExporterFactory> exporterFactories = attributes.getExporterFactories();
 		for (Iterator<ExporterFactory> iter = exporterFactories.iterator(); iter.hasNext();) {
 			ExporterFactory exFactory = iter.next();
@@ -327,7 +330,7 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 			throw new CoreException(HibernateConsolePlugin.throwableToStatus(new HibernateConsoleRuntimeException(HibernateConsoleMessages.CodeGenerationLaunchDelegate_received_noclassdeffounderror,e), 666));
 		} finally {
 			monitor.done();
-		}
+		}*/
 
 	}
 

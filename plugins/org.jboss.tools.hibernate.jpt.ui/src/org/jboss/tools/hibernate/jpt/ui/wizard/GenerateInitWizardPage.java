@@ -51,7 +51,7 @@ import org.hibernate.eclipse.console.utils.DriverClassHelpers;
 import org.hibernate.eclipse.console.utils.LaunchHelper;
 import org.hibernate.eclipse.launch.PathHelper;
 import org.hibernate.tool.hbm2x.StringUtils;
-import org.hibernate.util.StringHelper;
+import org.hibernate.util.xpl.StringHelper;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
 import org.jboss.tools.hibernate.jpt.ui.HibernateJptUIPlugin;
 
@@ -285,7 +285,7 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 		String dialect = determineDialect();
 		String ccName = launchManager.generateLaunchConfigurationName(HibernateConsoleMessages.AddConfigurationAction_hibernate);
 		ConsoleConfigurationPreferences prefs = new EclipseConsoleConfigurationPreferences(ccName, 
-				ConfigurationMode.JPA, jpaProject.getName(), true, 
+				ConfigurationMode.JPA, null, jpaProject.getName(), true, 
 				null, null, null, 
 				new IPath[0], new IPath[0], null, null,
 				getConnectionProfileName(), dialect);

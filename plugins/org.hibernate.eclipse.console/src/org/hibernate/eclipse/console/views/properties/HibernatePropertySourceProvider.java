@@ -50,13 +50,13 @@ public class HibernatePropertySourceProvider implements IPropertySourceProvider
 		}
 		else {
 			//			 maybe we should be hooked up with the queryview to get this ?
-			Session currentSession = view.getSelectedQueryPage().getSession();
+			/*Session currentSession = view.getSelectedQueryPage().getSession();
 			String consoleConfigName = view.getSelectedQueryPage().getConsoleConfiguration().getName();
 			if((currentSession.isOpen() && currentSession.contains(object)) || hasMetaData( object, currentSession) ) {
 				return new EntityPropertySource(object, currentSession, consoleConfigName);	
-			} else {
+			} else {*/
 				return null;
-			}
+			//}
 			
 		}
 		

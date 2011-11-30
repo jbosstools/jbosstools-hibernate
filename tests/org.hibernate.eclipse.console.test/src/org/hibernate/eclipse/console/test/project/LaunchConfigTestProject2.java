@@ -31,6 +31,7 @@ import org.hibernate.eclipse.HibernatePlugin;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 import org.hibernate.eclipse.console.test.utils.FilesTransfer;
 import org.hibernate.eclipse.console.test.utils.ResourceReadUtils;
+import org.hibernate.eclipse.libs.HibernateLibsPlugin;
 
 /**
  * Test project to execute codegeneration launch configuration.
@@ -65,7 +66,7 @@ public class LaunchConfigTestProject2 extends TestProject {
 	}
 	
 	protected File getHibernatePluginFolder(String path) throws IOException {
-		URL entry = HibernatePlugin.getDefault().getBundle().getEntry(path);
+		URL entry = HibernateLibsPlugin.getDefault().getBundle().getEntry(path);
 		URL resProject = FileLocator.resolve(entry);
 		String resolvePath = FileLocator.resolve(resProject).getFile();
 		File folder = new File(resolvePath);

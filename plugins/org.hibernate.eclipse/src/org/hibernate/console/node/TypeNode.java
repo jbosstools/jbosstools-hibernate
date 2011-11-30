@@ -21,6 +21,7 @@
  */
 package org.hibernate.console.node;
 
+import org.eclipse.osgi.util.NLS;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.type.Type;
 
@@ -28,7 +29,7 @@ import org.hibernate.type.Type;
  * @author MAX
  *
  */
-public class TypeNode extends ClassNode {
+class TypeNode extends ClassNode implements TypedNode{
 
 	Type type;
 	public TypeNode(NodeFactory factory, BaseNode parent, Type type, ClassMetadata metadata, Object baseObject, boolean objectGraph) {
@@ -38,6 +39,32 @@ public class TypeNode extends ClassNode {
 		iconName = factory.getIconNameForType(type);
 	}
 
+	@Override
+	public String getCriteria() {
+		final String criteria = ".createCriteria({0})"; //$NON-NLS-1$
+		final String alias = "\n.createCriteria(\"{0}\", \"{1}\")"; //$NON-NLS-1$
+		final String sess = "session"; //$NON-NLS-1$
+		String enName = "";//$NON-NLS-1$
+		String propCriteria = "";//$NON-NLS-1$
+		if (getName() != null){
+			if (getParent() instanceof BaseNode) {
+				BaseNode baseNodeParent = (BaseNode)getParent();
+				if (baseNodeParent instanceof TypedNode) {
+					TypedNode typedNodeParent = (TypedNode)baseNodeParent;
+					enName = typedNodeParent.getType().getName();
+				} else {
+					enName = baseNodeParent.getName();
+				}
+				enName = enName.substring(enName.lastIndexOf('.') + 1);
+				propCriteria = NLS.bind(alias, getName(), getName().charAt(0));
+			}
+		}
+		if ("".equals(enName)) { //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+		String enCriteria = NLS.bind(criteria, enName + ".class"); //$NON-NLS-1$
+		return sess + enCriteria + propCriteria;
+	}
 	
 	public String renderLabel(boolean b) {
 		return super.renderLabel(b) + " : " + getLabel(type.getReturnedClass().getName(),b); //$NON-NLS-1$

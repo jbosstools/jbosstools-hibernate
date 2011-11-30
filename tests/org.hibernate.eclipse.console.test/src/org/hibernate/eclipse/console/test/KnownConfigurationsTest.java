@@ -135,6 +135,11 @@ public class KnownConfigurationsTest extends TestCase {
 				return null;
 			}
 
+			@Override
+			public String getHibernateVersion() {
+				return null;
+			}
+
 		};
 
 		ConsoleConfigurationPreferences preferences2 = new ConsoleConfigurationPreferences() {
@@ -210,6 +215,12 @@ public class KnownConfigurationsTest extends TestCase {
 			}
 
 			public String getDialectName() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public String getHibernateVersion() {
 				// TODO Auto-generated method stub
 				return null;
 			}

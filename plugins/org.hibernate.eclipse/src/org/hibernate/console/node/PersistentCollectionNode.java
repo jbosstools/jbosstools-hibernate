@@ -26,6 +26,7 @@ import java.util.Iterator;
 
 import javax.swing.tree.TreeNode;
 
+import org.eclipse.osgi.util.NLS;
 import org.hibernate.EntityMode;
 import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleMessages;
@@ -38,7 +39,7 @@ import org.hibernate.type.Type;
  * @author MAX
  *
  */
-public class PersistentCollectionNode extends BaseNode {
+class PersistentCollectionNode extends BaseNode implements TypedNode{
 
 	BaseNode virtualNode;
 	CollectionType type;
@@ -82,6 +83,33 @@ public class PersistentCollectionNode extends BaseNode {
 
 	public String getHQL() {
 		return ""; //$NON-NLS-1$
+	}
+	
+	@Override
+	public String getCriteria() {
+		final String criteria = ".createCriteria({0})"; //$NON-NLS-1$
+		final String alias = "\n.createCriteria(\"{0}\", \"{1}\")"; //$NON-NLS-1$
+		final String sess = "session"; //$NON-NLS-1$
+		String enName = "";//$NON-NLS-1$
+		String propCriteria = "";//$NON-NLS-1$
+		if (getName() != null){
+			if (getParent() instanceof BaseNode) {
+				BaseNode baseNodeParent = (BaseNode)getParent();
+				if (baseNodeParent instanceof TypedNode) {
+					TypedNode typedNodeParent = (TypedNode)baseNodeParent;
+					enName = typedNodeParent.getType().getName();
+				} else {
+					enName = baseNodeParent.getName();
+				}
+				enName = enName.substring(enName.lastIndexOf('.') + 1);
+				propCriteria = NLS.bind(alias, getName(), getName().charAt(0));
+			}
+		}
+		if ("".equals(enName)) { //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+		String enCriteria = NLS.bind(criteria, enName + ".class"); //$NON-NLS-1$
+		return sess + enCriteria + propCriteria;
 	}
 
 	public TreeNode getChildAt(int childIndex) {

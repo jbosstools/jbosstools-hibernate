@@ -26,12 +26,12 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.osgi.util.NLS;
-import org.hibernate.eclipse.HibernatePlugin;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 import org.hibernate.eclipse.console.test.mappingproject.Customization;
 import org.hibernate.eclipse.console.test.mappingproject.MappingTestsAnnotations;
 import org.hibernate.eclipse.console.test.mappingproject.MappingTestsJpa;
 import org.hibernate.eclipse.console.test.utils.FilesTransfer;
+import org.hibernate.eclipse.libs.HibernateLibsPlugin;
 
 /**
  * 
@@ -61,7 +61,7 @@ public class ConfigurableTestProject extends TestProject {
 	   	long startCopyLibs = System.currentTimeMillis();
 		final File libFolder = getFolder(RESOURCE_LIB_PATH);
 		List<IPath> libs = copyLibs(libFolder);
-		final File libFolderHibernatePlugin = getHibernatePluginFolder(HIBERNATE_PLUGIN_LIB_PATH);
+		final File libFolderHibernatePlugin = getHibernateLibsPluginFolder(HIBERNATE_PLUGIN_LIB_PATH);
 		List<IPath> libsHibernatePlugin = copyLibs(libFolderHibernatePlugin);
 		libs.addAll(libsHibernatePlugin);
 	   	long startBuild = System.currentTimeMillis();
@@ -76,8 +76,8 @@ public class ConfigurableTestProject extends TestProject {
 		}
 	}
 	
-	protected File getHibernatePluginFolder(String path) throws IOException {
-		URL entry = HibernatePlugin.getDefault().getBundle().getEntry(path);
+	protected File getHibernateLibsPluginFolder(String path) throws IOException {
+		URL entry = HibernateLibsPlugin.getDefault().getBundle().getEntry(path);
 		URL resProject = FileLocator.resolve(entry);
 		String resolvePath = FileLocator.resolve(resProject).getFile();
 		File folder = new File(resolvePath);

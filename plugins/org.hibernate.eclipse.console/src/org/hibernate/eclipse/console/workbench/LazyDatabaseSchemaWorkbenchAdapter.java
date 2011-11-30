@@ -43,10 +43,10 @@ import org.hibernate.connection.ConnectionProvider;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.execution.ExecutionContext;
+import org.hibernate.console.ext.api.ITable;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
-import org.hibernate.mapping.Table;
 
 public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 	
@@ -66,9 +66,9 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 
 			List<TableContainer> result = new ArrayList<TableContainer>();
 
-			Iterator<Map.Entry<String, List<Table>>> qualifierEntries = db.getQualifierEntries();
+			Iterator<Map.Entry<String, List<ITable>>> qualifierEntries = db.getQualifierEntries();
 			while (qualifierEntries.hasNext()) {
-				Map.Entry<String, List<Table>> entry = qualifierEntries.next();
+				Map.Entry<String, List<ITable>> entry = qualifierEntries.next();
 				result.add(new TableContainer(entry.getKey(), entry.getValue()));
 			}
 			res = toArray(result.iterator(), TableContainer.class, new Comparator<TableContainer>() {
@@ -110,13 +110,13 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 		return getLazyDatabaseSchema(o).getConsoleConfiguration();
 	}
 
-	protected DefaultDatabaseCollector readDatabaseSchema(final IProgressMonitor monitor, ConsoleConfiguration consoleConfiguration, final ReverseEngineeringStrategy strategy) {
+	protected DefaultDatabaseCollector readDatabaseSchema(final IProgressMonitor monitor, final ConsoleConfiguration consoleConfiguration, final ReverseEngineeringStrategy strategy) {
 		final Configuration configuration = consoleConfiguration.buildWith(null, false);
 		return (DefaultDatabaseCollector) consoleConfiguration.execute(new ExecutionContext.Command() {
 
 			public Object execute() {
 				DefaultDatabaseCollector db = null;
-				Settings settings = configuration.buildSettings();
+				Settings settings = consoleConfiguration.getSettings(configuration);
 				ConnectionProvider connectionProvider = null;
 				try {
 					connectionProvider = settings.getConnectionProvider();
