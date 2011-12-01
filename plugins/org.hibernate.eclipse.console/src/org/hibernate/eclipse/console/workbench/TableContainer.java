@@ -23,19 +23,19 @@ package org.hibernate.eclipse.console.workbench;
 
 import java.util.List;
 
-import org.hibernate.console.ext.api.ITable;
+import org.hibernate.mapping.Table;
 
 public class TableContainer {
 
-	private final List<ITable> tables;
+	private final List<Table> tables;
 	private final String name;
 
-	public TableContainer(String name, List<ITable> tables) {
+	public TableContainer(String name, List<Table> tables) {
 		this.tables = tables;
 		this.name = name;
 	}
 
-	public List<ITable> getTables() {
+	public List<Table> getTables() {
 		return tables;
 	}
 
