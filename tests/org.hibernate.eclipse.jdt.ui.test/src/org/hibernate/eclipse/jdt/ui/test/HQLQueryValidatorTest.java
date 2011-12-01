@@ -149,7 +149,7 @@ public class HQLQueryValidatorTest extends HibernateConsoleTest {
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().setPerspective(
 				PlatformUI.getWorkbench().getPerspectiveRegistry().findPerspectiveWithId("org.eclipse.ui.resourcePerspective")); //$NON-NLS-1$
 
-		//getProject().deleteIProject(false);
+		getProject().deleteIProject(false);
 		waitForJobs();
 	}
 	public void testHQLDetector() throws JavaModelException {
