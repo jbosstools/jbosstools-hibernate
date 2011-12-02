@@ -121,6 +121,8 @@ public class OpenMappingFileTest extends BaseTestSetCase {
 			ex = e;
 		} catch (FileNotFoundException e) {
 			ex = e;
+		} catch (Exception e) {
+			ex = e;
 		}
 		if (ex == null ) {
 			ex = Utils.getExceptionIfItOccured(editor);
