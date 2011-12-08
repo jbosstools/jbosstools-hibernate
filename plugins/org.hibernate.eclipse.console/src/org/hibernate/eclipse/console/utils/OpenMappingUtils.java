@@ -396,9 +396,10 @@ public class OpenMappingUtils {
 			List<Throwable> errors = new ArrayList<Throwable>();
 			XMLHelper helper = new XMLHelper();
 			SAXReader saxReader = helper.createSAXReader(configXMLFile.getPath(), errors, entityResolver);
+			saxReader.setValidation(false);
 			doc = saxReader.read(new InputSource( stream));
 			if (errors.size() != 0) {
-    			HibernateConsolePlugin.getDefault().logErrorMessage("invalid configuration", (Throwable)null);	//$NON-NLS-1$
+    			HibernateConsolePlugin.getDefault().logErrorMessage("invalid configuration", (Throwable[])errors.toArray(new Throwable[0]));	//$NON-NLS-1$
 			}
 		}
 		catch (DocumentException e) {

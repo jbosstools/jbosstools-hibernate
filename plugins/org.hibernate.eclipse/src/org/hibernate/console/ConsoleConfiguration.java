@@ -367,7 +367,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		}
 		if (configXMLFile == null) {
 			URL url = null;
-			reinitClassLoader();
+			//reinitClassLoader();
 			if (classLoader != null) {
 				url = classLoader.findResource("hibernate.cfg.xml"); //$NON-NLS-1$
 			}
