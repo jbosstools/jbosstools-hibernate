@@ -130,6 +130,7 @@ public class OpenMappingFileTest extends BaseTestSetCase {
 		if (ex != null) {
 			String out = NLS.bind(ConsoleTestMessages.OpenMappingFileTest_mapping_file_for_not_opened_package,
 					new Object[]{selection, testPackage.getElementName(), ex.getMessage()});
+			ex.printStackTrace();
 			fail(out);
 		}
 	}
