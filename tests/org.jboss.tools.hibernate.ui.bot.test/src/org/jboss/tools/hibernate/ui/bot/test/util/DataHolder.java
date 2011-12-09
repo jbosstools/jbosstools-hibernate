@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Holds data accross between tests
+ * Holds data across the tests
  */
 public class DataHolder {
 	public static List<String> tables = new ArrayList<String>();
