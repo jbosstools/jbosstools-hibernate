@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Libs
+Bundle-Name: JBoss Hibernate 3.5 Libs
 Bundle-SymbolicName: org.hibernate.eclipse.libs
 Bundle-Version: 3.4.0.qualifier
 Bundle-ClassPath: .,
