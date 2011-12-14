@@ -77,6 +77,21 @@
 		<para>
 			To be able to perform reverse engineering, prototype queries, and of course to simply use <property>Hibernate Core</property> a <filename>hibernate.properties</filename> or <filename>hibernate.cfg.xml</filename> file is needed. <property>Hibernate Tools</property> provides a wizard for generating the <filename>hibernate.cfg.xml</filename> file if you do not already have one.
 		</para>
+<!-- Testing video documentaiton -->
+	<figure>
+		<title>Hibernate Configuration File creation video</title>
+		<mediaobject>
+			<videoobject>
+				<videodata fileref="videos/hib-config-file-creation.mp4"/>
+			</videoobject>
+			<textobject>
+				<para>
+					This video illustrates the creation of a Hibernate Configuration File for an existing project
+				</para>
+			</textobject>
+		</mediaobject>
+	</figure>
+<!-- Testing video documentation -->
 		<para>Start the wizard by clicking <menuchoice><guimenuitem>File</guimenuitem><guimenuitem>New</guimenuitem>
 				<guimenuitem>Other</guimenuitem>
 			</menuchoice> (<keycombo><keycap>Ctrl</keycap>
