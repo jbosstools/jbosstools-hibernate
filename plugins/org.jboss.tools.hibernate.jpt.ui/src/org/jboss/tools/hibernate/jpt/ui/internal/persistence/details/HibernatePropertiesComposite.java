@@ -14,7 +14,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -196,11 +204,40 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 		    	}
 				MessageDialog dialog = createSetupDialog(HibernateConsoleMessages.ConsoleConfigurationMainTab_setup_configuration_file, HibernateConsoleMessages.ConsoleConfigurationMainTab_do_you_want_to_create_new_cfgxml, defaultChoice);
 				int answer = dialog.open();
+				IPath cfgFile = null;
 				if(answer==0) { // create new
-					handleConfigurationFileCreate();
+					cfgFile = handleConfigurationFileCreate();
 				} else if (answer==1) { // use existing
-					handleConfigurationFileBrowse();
+					cfgFile = handleConfigurationFileBrowse();
 				}
+				if (cfgFile != null){
+					HibernatePropertiesComposite.this.cfgFile.setText( makeClassPathRelative(cfgFile).toString() );
+				}
+			}
+			
+			protected IPath makeClassPathRelative(IPath cfgFile){
+				IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+				IResource res = root.findMember(cfgFile);
+				if ( res != null && res.exists() && res.getType() == IResource.FILE) {
+					IProject project = res.getProject();
+					IJavaProject jProject = JavaCore.create(project);
+					if (jProject != null){
+						try {
+							IPackageFragmentRoot[] allPackageFragmentRoots = jProject.getAllPackageFragmentRoots();
+							for (IPackageFragmentRoot iPackageFragmentRoot : allPackageFragmentRoots) {
+								if (!iPackageFragmentRoot.isArchive()){
+									if (iPackageFragmentRoot.getResource().getFullPath().isPrefixOf(cfgFile)){
+										cfgFile = cfgFile.removeFirstSegments(iPackageFragmentRoot.getResource().getFullPath().segmentCount());
+										return cfgFile.makeAbsolute();
+									}
+								}
+							}
+						} catch (JavaModelException e) {
+							//ignore
+						}
+					}
+				}
+				return cfgFile;
 			}
 
 			private MessageDialog createSetupDialog(String title, String question, int defaultChoice){
@@ -213,15 +250,16 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 						defaultChoice);
 			}
 
-			private void handleConfigurationFileBrowse() {
+			private IPath handleConfigurationFileBrowse() {
 				IPath initialPath = getConfigurationFilePath();
 				IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(),  initialPath, new IPath[0], HibernateConsoleMessages.ConsoleConfigurationMainTab_select_hibernate_cfg_xml_file, HibernateConsoleMessages.ConsoleConfigurationMainTab_choose_file_to_use_as_hibernate_cfg_xml, new String[] {HibernateConsoleMessages.ConsoleConfigurationMainTab_cfg_xml}, false, false, true);
 				if(paths!=null && paths.length==1) {
-					HibernatePropertiesComposite.this.cfgFile.setText( (paths[0]).toOSString() );
+					return paths[0];
 				}
+				return null;
 			}
 
-			private void handleConfigurationFileCreate() {
+			private IPath handleConfigurationFileCreate() {
 				NewConfigurationWizard wizard = new NewConfigurationWizard();
 				wizard.init(PlatformUI.getWorkbench(), StructuredSelection.EMPTY );
 				IWorkbenchWindow win = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
@@ -237,9 +275,10 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 					WizardNewFileCreationPage createdFilePath = ((WizardNewFileCreationPage)wizard.getStartingPage());
 					if(createdFilePath!=null) {
 						// createNewFile() does not creates new file if it was created by wizard (OK was pressed)
-						HibernatePropertiesComposite.this.cfgFile.setText(createdFilePath.createNewFile().getFullPath().toOSString());
+						return createdFilePath.createNewFile().getFullPath();
 					}
 				}
+				return null;
 			}
 		};
 	}
