@@ -7,7 +7,7 @@
 		<version>3.4.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.hibernatetools.plugins</groupId>
-	<artifactId>org.jboss.tools.hibernateextension3_5</artifactId> 
+	<artifactId>org.jboss.tools.hibernate3_5</artifactId> 
 	
 	<packaging>eclipse-plugin</packaging>
 </project>

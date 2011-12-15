@@ -60,7 +60,7 @@ Require-Bundle: org.junit,
  org.eclipse.datatools.connectivity,
  org.eclipse.ui.workbench.texteditor,
  org.eclipse.ui.editors,
- org.jboss.tools.hibernateextension3_5;bundle-version="3.4.0"
+ org.jboss.tools.hibernate3_5;bundle-version="3.4.0"
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.hibernate.eclipse.console.test.HibernateConsoleTestPlugin
 Eclipse-RegisterBuddy: org.hibernate.eclipse

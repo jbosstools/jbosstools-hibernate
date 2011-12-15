@@ -18,18 +18,18 @@ import org.osgi.framework.BundleContext;
  * @author Dmitry Geraskov
  * The activator class controls the plug-in life cycle
  */
-public class HibernateExtension3_5Plugin extends AbstractUIPlugin {
+public class Hibernate3_5Plugin extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.jboss.tools.hibernateextension3_5"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.jboss.tools.hibernate3_5"; //$NON-NLS-1$
 
 	// The shared instance
-	private static HibernateExtension3_5Plugin plugin;
+	private static Hibernate3_5Plugin plugin;
 	
 	/**
 	 * The constructor
 	 */
-	public HibernateExtension3_5Plugin() {
+	public Hibernate3_5Plugin() {
 	}
 
 	/*
@@ -55,7 +55,7 @@ public class HibernateExtension3_5Plugin extends AbstractUIPlugin {
 	 *
 	 * @return the shared instance
 	 */
-	public static HibernateExtension3_5Plugin getDefault() {
+	public static Hibernate3_5Plugin getDefault() {
 		return plugin;
 	}
 

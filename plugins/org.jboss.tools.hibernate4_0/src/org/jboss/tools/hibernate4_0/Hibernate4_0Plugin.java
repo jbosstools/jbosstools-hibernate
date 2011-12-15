@@ -17,18 +17,18 @@ import org.osgi.framework.BundleContext;
  * @author Dmitry Geraskov
  * The activator class controls the plug-in life cycle
  */
-public class HibernateExtension4_0Plugin extends AbstractUIPlugin {
+public class Hibernate4_0Plugin extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.jboss.tools.hibernateextension4_0"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.jboss.tools.hibernate4_0"; //$NON-NLS-1$
 
 	// The shared instance
-	private static HibernateExtension4_0Plugin plugin;
+	private static Hibernate4_0Plugin plugin;
 	
 	/**
 	 * The constructor
 	 */
-	public HibernateExtension4_0Plugin() {
+	public Hibernate4_0Plugin() {
 	}
 
 	/*
@@ -54,7 +54,7 @@ public class HibernateExtension4_0Plugin extends AbstractUIPlugin {
 	 *
 	 * @return the shared instance
 	 */
-	public static HibernateExtension4_0Plugin getDefault() {
+	public static Hibernate4_0Plugin getDefault() {
 		return plugin;
 	}
 

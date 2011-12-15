@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: HibernateExtension4_0
-Bundle-SymbolicName: org.jboss.tools.hibernateextension4_0;singleton:=true
+Bundle-Name: Hibernate4_0
+Bundle-SymbolicName: org.jboss.tools.hibernate4_0;singleton:=true
 Bundle-Version: 3.4.0.qualifier
-Bundle-Activator: org.jboss.tools.hibernate4_0.HibernateExtension4_0Plugin
+Bundle-Activator: org.jboss.tools.hibernate4_0.Hibernate4_0Plugin
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
