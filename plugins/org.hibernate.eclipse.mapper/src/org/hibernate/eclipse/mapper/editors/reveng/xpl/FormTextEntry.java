@@ -369,6 +369,7 @@ public class FormTextEntry {
 			}
 			last = loc;
 		}
+		gc.dispose();
 		String lastLine = src.substring(saved, last);
 		buff.append(lastLine);
 		return buff.toString();
