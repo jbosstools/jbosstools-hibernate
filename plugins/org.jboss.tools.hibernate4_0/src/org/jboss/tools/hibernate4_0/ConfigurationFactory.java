@@ -238,6 +238,9 @@ public class ConfigurationFactory {
 						persistenceUnit);
 				throw new HibernateConsoleRuntimeException(out);
 			}
+			//in hibernate 4 "buildMappings" is not called in method "configure", so call it manually
+			method = clazz.getMethod("buildMappings", new Class[0]); //$NON-NLS-1$
+			method.invoke(ejb3cfg, new Object[0]);
 			method = clazz.getMethod("getHibernateConfiguration", new Class[0]);//$NON-NLS-1$
 			Configuration invoke = (Configuration) method.invoke(ejb3cfg, (Object[]) null);
 			invoke = configureConnectionProfile(invoke);
