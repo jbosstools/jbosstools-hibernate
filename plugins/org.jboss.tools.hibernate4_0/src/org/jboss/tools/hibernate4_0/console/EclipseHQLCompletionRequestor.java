@@ -28,8 +28,9 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.swt.graphics.Image;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.utils.EclipseImages;
-import org.hibernate.eclipse.console.workbench.HibernateWorkbenchHelper;
 import org.hibernate.internal.util.StringHelper;
+import org.hibernate.mapping.Property;
+import org.hibernate.mapping.Value;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.ide.completion.IHQLCompletionRequestor;
 
@@ -116,8 +117,14 @@ public class EclipseHQLCompletionRequestor implements IHQLCompletionRequestor {
 			key = ImageConstants.MAPPEDCLASS;
 			break;
 		case HQLCompletionProposal.PROPERTY:
-			if(proposal.getProperty()!=null) {
-				return HibernateWorkbenchHelper.getImage( proposal.getProperty() );
+			Property property = proposal.getProperty();
+			if(property!=null) {
+				if(property.getPersistentClass()!=null
+						&& property.getPersistentClass().getIdentifierProperty()==property) {
+						key = ImageConstants.IDPROPERTY;
+				} else {
+					key = getIconNameForValue(property.getValue());
+				}
 			} else {
 				key = ImageConstants.PROPERTY;				
 			}
@@ -146,6 +153,17 @@ public class EclipseHQLCompletionRequestor implements IHQLCompletionRequestor {
 	public void clear() {
 		result.clear();
 		lastErrorMessage = null;
+	}
+	
+	static private String getIconNameForValue(Value value) {
+		String result;
+		
+		result = (String) value.accept(new IconNameValueVisitor());
+		
+		if(result==null) {
+			result = ImageConstants.UNKNOWNPROPERTY;
+		}
+		return result;
 	}
 
 }
