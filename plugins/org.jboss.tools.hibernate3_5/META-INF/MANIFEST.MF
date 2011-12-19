@@ -19,3 +19,4 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.eclipse.debug.core
 Bundle-ClassPath: .
+Bundle-Vendor: JBoss by Red Hat

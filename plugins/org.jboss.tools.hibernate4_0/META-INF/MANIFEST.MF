@@ -37,3 +37,4 @@ Bundle-ClassPath: lib/jpa/hibernate-entitymanager-4.0.0.CR6.jar,
  lib/log4j-1.2.15.jar,
  lib/slf4j-log4j12-1.5.8.jar,
  .
+Bundle-Vendor: JBoss by Red Hat
