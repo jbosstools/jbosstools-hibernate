@@ -276,6 +276,29 @@ public class OpenMappingAction extends SelectionListenerAction {
 		} catch (BadLocationException e) {
 			HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.OpenMappingAction_selection_not_found, e);
 		}
+		if (propRegion == null && parentProperty.isComposite()){
+			String[] componentPatterns = new String[]{
+					OpenMappingUtils.createPattern("embeddable", "class", ((Component)parentProperty.getValue()).getComponentClassName()),
+					OpenMappingUtils.createPattern("embeddable", "class", OpenMappingUtils.getShortClassName(
+							((Component)parentProperty.getValue()).getComponentClassName()))
+			};
+			IRegion componentRegion = null;
+			for (int i = 0; i < componentPatterns.length && componentRegion == null; i++) {
+				try {
+					componentRegion = findAdapter.find(0, componentPatterns[i], true, true, false, true);
+				} catch (BadLocationException e) {
+					//ignore
+				}
+			}
+			if (componentRegion != null){
+				try {
+					propRegion = findAdapter.find(parentRegion.getOffset() + parentRegion.getLength(),
+							OpenMappingUtils.generateOrmEmbeddablePropertyPattern(compositeProperty), true, true, false, true);
+				} catch (BadLocationException e) {
+					//ignore
+				}
+			}
+		}
 		if (propRegion == null) {
 			return false;
 		}

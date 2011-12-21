@@ -64,8 +64,8 @@ import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
-import org.hibernate.util.xpl.StringHelper;
 import org.hibernate.util.XMLHelper;
+import org.hibernate.util.xpl.StringHelper;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 
@@ -1003,6 +1003,10 @@ public class OpenMappingUtils {
 			}
 		}
 		return createPattern(toolTag, HIBERNATE_TAG_NAME, property.getName());
+	}
+	
+	public static String generateOrmEmbeddablePropertyPattern(Property property) {
+		return createPattern("basic", "name", property.getName());
 	}
 
 	/**
