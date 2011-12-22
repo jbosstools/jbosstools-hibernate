@@ -22,11 +22,15 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.console.ConsoleMessages;
 import org.hibernate.console.ConsoleQueryParameter;
+import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.QueryInputModel;
+import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.ext.HibernateException;
+import org.hibernate.console.ext.HibernateExtension;
 import org.hibernate.console.ext.QueryResult;
 import org.hibernate.console.ext.QueryResultImpl;
 import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.internal.util.ReflectHelper;
 import org.hibernate.type.Type;
 
 import bsh.EvalError;
@@ -38,15 +42,23 @@ import bsh.Interpreter;
  */
 public class QueryExecutor {
 	
-	public static QueryResult executeHQLQuery(Session session, String hql,
-			QueryInputModel queryParameters) {
+	public static QueryResult executeHQLQuery(HibernateExtension hibernateExtension, Session session, String hql,
+			final QueryInputModel queryParameters) {
 
-		Query query = session.createQuery(hql);
+		final Query query = session.createQuery(hql);
 		List<Object> list = Collections.emptyList();
 		long queryTime = 0;
 
 		list = new ArrayList<Object>();
-		setupParameters(query, queryParameters);
+		hibernateExtension.execute(new Command() {
+			
+			@Override
+			public Object execute() {
+				setupParameters(query, queryParameters);
+				return null;
+			}
+		});
+		
 		long startTime = System.currentTimeMillis();
 		QueryResultImpl result = new QueryResultImpl(list,
 				queryTime);
@@ -155,20 +167,34 @@ public class QueryExecutor {
 		for (int i = 0; i < qp.length; i++) {
 			ConsoleQueryParameter parameter = qp[i];
 
+			String typeName = parameter.getType().getClass().getName();
 			try {
 				int pos = Integer.parseInt(parameter.getName());
 				//FIXME no method to set positioned list value
-				query2.setParameter(pos, calcValue( parameter ), parameter.getType());
+				query2.setParameter(pos, calcValue( parameter ), convertToType(typeName));
 			} catch(NumberFormatException nfe) {
 				Object value = parameter.getValue();
 				if (value != null && value.getClass().isArray()){
 					Object[] values = (Object[])value;
-					query2.setParameterList(parameter.getName(), Arrays.asList(values), parameter.getType());
+					query2.setParameterList(parameter.getName(), Arrays.asList(values), convertToType(typeName));
 				} else {
-					query2.setParameter(parameter.getName(), calcValue( parameter ), parameter.getType());
+					query2.setParameter(parameter.getName(), calcValue( parameter ), convertToType(typeName));
 				}
 			}
 		}		
+	}
+	
+	/**
+	 * Method converts Hibernate3 to Hibernate4 classes
+	 * @param typeClassName
+	 * @return
+	 */
+	private static Type convertToType(String typeClassName){
+		try {
+			return (Type) ReflectHelper.classForName(typeClassName).newInstance();
+		} catch (Exception e) {
+			throw new HibernateConsoleRuntimeException("Can't instantiate hibernate type " + typeClassName, e);
+		}
 	}
 	
 	private static Object calcValue(ConsoleQueryParameter parameter) {

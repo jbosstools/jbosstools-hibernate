@@ -308,7 +308,7 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 		}
 		CellEditor[] editors = new CellEditor[columnProperties.length];
 		editors[0] = new TextCellEditor( queryParametersTable );
-		editors[1] = new ComboBoxCellEditor( queryParametersTable, valueTypes );
+		editors[1] = new ComboBoxCellEditor( queryParametersTable, valueTypes, SWT.READ_ONLY );
 		editors[2] = new StringArrayDialogCellEditor(queryParametersTable) {
 			
 			private Button b;

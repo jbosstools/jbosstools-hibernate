@@ -76,7 +76,7 @@ public class HibernateExtension4_0 implements HibernateExtension {
 		try {
 			try {
 				session = sessionFactory.openSession();
-				return QueryExecutor.executeHQLQuery(session, hql, queryParameters);
+				return QueryExecutor.executeHQLQuery(this, session, hql, queryParameters);
 			} catch (Throwable e){
 				//Incompatible library versions could throw subclasses of Error, like  AbstractMethodError
 				//may be there is a sense to say to user that the reason is probably a wrong CC version
