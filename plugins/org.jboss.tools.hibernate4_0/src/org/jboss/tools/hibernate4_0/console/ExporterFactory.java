@@ -290,7 +290,14 @@ public class ExporterFactory {
 		if (getExporterDefinitionId().equals("org.hibernate.tools.hbm2ddl")) { //$NON-NLS-1$
 			Hbm2DDLExporter ddlExporter = (Hbm2DDLExporter) exporter;
 			//avoid users to delete their databases with a single click
-			ddlExporter.setExport(Boolean.parseBoolean(extract.getProperty(ExporterFactoryStrings.EXPORTTODATABASE)));
+			boolean exportToDatabse = Boolean.parseBoolean(extract.getProperty(ExporterFactoryStrings.EXPORTTODATABASE));
+			ddlExporter.setExport(exportToDatabse);
+			if (!exportToDatabse && props.containsKey("outputFileName")){
+				//FIXME this is a workaround for https://issues.jboss.org/browse/JBIDE-10558
+				//schema.ddl file is not generated
+				//if exportToDatabse=scriptToConsole=false
+				ddlExporter.getProperties().put("scriptToConsole", "true");
+			}
 		}
 		// special handling for QueryExporter
 		if (getExporterDefinitionId().equals("org.hibernate.tools.query")) { //$NON-NLS-1$
