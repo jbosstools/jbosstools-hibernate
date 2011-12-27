@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry exported="true" kind="lib" path="lib/required/slf4j-api-1.5.8.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jpa/hibernate-entitymanager-4.0.0.CR6.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jpa/hibernate-entitymanager-4.0.0.CR6.jar" sourcepath="C:/Documents and Settings/dgeraskov/.m2/repository/org/hibernate/hibernate-entitymanager/4.0.0.CR6/hibernate-entitymanager-4.0.0.CR6-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/required/antlr-2.7.7.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/required/classmate-0.5.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/required/commons-collections-3.2.1.jar"/>

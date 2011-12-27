@@ -95,28 +95,33 @@ public class HibernateExtension4_0 implements HibernateExtension {
 	}
 
 	@Override
-	public QueryResult executeCriteriaQuery(String criteriaCode,
-			QueryInputModel model) {
-		Session session = null;
-		try {
-			try {
-				session = sessionFactory.openSession();
-				return QueryExecutor.executeCriteriaQuery(session, criteriaCode, model);
-			} catch (Throwable e){
-				//Incompatible library versions could throw subclasses of Error, like  AbstractMethodError
-				//may be there is a sense to say to user that the reason is probably a wrong CC version
-				//(when catch a subclass of Error)
-				return new QueryResultImpl(e);
-			}
-		} finally {
-			if (session != null && session.isOpen()){
+	public QueryResult executeCriteriaQuery(final String criteriaCode,
+			final QueryInputModel model) {
+		return (QueryResult) execute(new Command() {
+			public Object execute() {
+				Session session = null;
 				try {
-					session.close();
-				} catch (HibernateException e) {
-					return new QueryResultImpl(e);
-	    		}
+					try {
+						session = sessionFactory.openSession();
+						return QueryExecutor.executeCriteriaQuery(session, criteriaCode, model);
+					} catch (Throwable e){
+						//Incompatible library versions could throw subclasses of Error, like  AbstractMethodError
+						//may be there is a sense to say to user that the reason is probably a wrong CC version
+						//(when catch a subclass of Error)
+						return new QueryResultImpl(e);
+					}
+				} finally {
+					if (session != null && session.isOpen()){
+						try {
+							session.close();
+						} catch (HibernateException e) {
+							return new QueryResultImpl(e);
+			    		}
+					}
+				}
 			}
-		}
+		});
+		
 	}
 
 	/**
