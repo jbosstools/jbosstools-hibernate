@@ -315,4 +315,9 @@ public class HibernateExtension3_5 implements HibernateExtension {
 			}
 		});
 	}
+
+	@Override
+	public boolean isSessionFactoryCreated() {
+		return sessionFactory != null;
+	}
 }

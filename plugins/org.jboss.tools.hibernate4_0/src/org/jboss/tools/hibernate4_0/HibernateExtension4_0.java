@@ -329,4 +329,8 @@ public class HibernateExtension4_0 implements HibernateExtension {
 		});
 	}
 
+	@Override
+	public boolean isSessionFactoryCreated() {
+		return sessionFactory != null;
+	}
 }

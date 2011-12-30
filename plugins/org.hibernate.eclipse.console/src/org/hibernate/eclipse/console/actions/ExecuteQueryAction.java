@@ -63,9 +63,9 @@ public class ExecuteQueryAction extends Action {
 
 		ConsoleConfiguration cfg = queryEditor.getConsoleConfiguration();
 		if (cfg != null) {
-			if (!cfg.isSessionFactoryCreated()) {
+			if (!cfg.getHibernateExtension().isSessionFactoryCreated()) {
 				if (queryEditor.askUserForConfiguration(cfg.getName())) {
-					if (cfg.getConfiguration() == null) {
+					if (!cfg.getHibernateExtension().hasConfiguration()) {
 	    				try {
 	    					cfg.build();
 	    				} catch (HibernateException he) {
@@ -75,7 +75,7 @@ public class ExecuteQueryAction extends Action {
 	    						' ' + cfg.getName(), he);
 	    				}
 					}
-					if (cfg.getConfiguration() != null) {
+					if (cfg.getHibernateExtension().hasConfiguration()) {
 						cfg.buildSessionFactory();
 						queryEditor.executeQuery(cfg);
 					}
