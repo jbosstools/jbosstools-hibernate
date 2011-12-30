@@ -47,7 +47,7 @@ public interface HibernateExtension {
 	*/
 
 	public Object execute(Command command);
-	
-	
+
+	public boolean isSessionFactoryCreated();
 	
 }
