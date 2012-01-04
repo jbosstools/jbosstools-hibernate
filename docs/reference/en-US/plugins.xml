@@ -178,7 +178,7 @@
 								<para>Description</para>
 							</entry>
 							<entry align="center">
-								<para>Auto detected value</para>
+								<para>Default value</para>
 							</entry>
 						</row>
 					</thead>
@@ -200,11 +200,14 @@
 							</entry>
 							<entry>
 								<para>
-									Choose between &quot;Core&quot;, &quot;Annotations&quot; and &quot;JPA&quot;. Note that the two latter requires running Eclipse IDE with a JDK 5 runtime, otherwise you will get class loading and/or version errors.
+									Choose between &quot;Core&quot;, &quot;Annotations&quot; and &quot;JPA&quot;. Note that the two latter requires running Eclipse IDE with a JDK 5 runtime, otherwise you will get class loading and version errors.
+								</para>
+								<para>
+									You will also need to select the version of Hibernate your application server has. Select a version from the drop-down box labelled <guilabel>Hibernate Version</guilabel>.
 								</para>
 							</entry>
 							<entry>
-								<para>No default value</para>
+								<para><guilabel>Hibernate Version:</guilabel> 3.5</para>
 							</entry>
 						</row>
 						<row>
