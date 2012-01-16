@@ -53,13 +53,8 @@ public abstract class ComboContribution extends ControlContribution {
 		GridData gd = new GridData();
 		gd.grabExcessHorizontalSpace = true;
 		gd.widthHint = getComboWidth();
-		gd.verticalAlignment = GridData.VERTICAL_ALIGN_FILL;
-		gd.horizontalAlignment = GridData.HORIZONTAL_ALIGN_FILL;
-		if(Platform.getOS().equals(Platform.OS_MACOSX)) gd.verticalIndent=-9;
 		comboControl.setLayoutData( gd );
 		
-		
-
 		if(getSelectionAdapter()!=null) {
 			comboControl.addSelectionListener( getSelectionAdapter() );
 		}
