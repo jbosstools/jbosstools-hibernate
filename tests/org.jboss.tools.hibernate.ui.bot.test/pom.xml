@@ -10,6 +10,10 @@
 	<artifactId>org.jboss.tools.hibernate.ui.bot.test</artifactId> 
 
 	<packaging>eclipse-test-plugin</packaging>
+ 
+	<properties>
+		<systemProperties>-Dtest.configurations.dir=./properties/</systemProperties> 
+	</properties>
 
 	<build>
 		<plugins>
@@ -18,7 +22,14 @@
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
 					<useUIThread>false</useUIThread>
-					<skip>true</skip>
+					<skip>${swt.test.skip}</skip>
+					<dependencies combine.children="append">
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.eclipse.datatools.enablement.hsqldb.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+					</dependencies>
 				</configuration>
 			</plugin>
 		</plugins>
