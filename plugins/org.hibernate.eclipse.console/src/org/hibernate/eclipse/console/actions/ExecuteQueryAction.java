@@ -76,7 +76,7 @@ public class ExecuteQueryAction extends Action {
 	    				}
 					}
 					if (cfg.getHibernateExtension().hasConfiguration()) {
-						cfg.buildSessionFactory();
+						cfg.getHibernateExtension().buildSessionFactory();
 						queryEditor.executeQuery(cfg);
 					}
 				}
