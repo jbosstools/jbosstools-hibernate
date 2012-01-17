@@ -11,9 +11,9 @@
 package org.jboss.tools.hibernate.ui.bot.testcase;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.tools.hibernate.helper.ConsoleHelper;
 import org.jboss.tools.hibernate.ui.bot.test.util.DataHolder;
 import org.jboss.tools.hibernate.ui.bot.testsuite.HibernateTest;
 import org.jboss.tools.hibernate.ui.bot.testsuite.Project;
@@ -52,7 +52,7 @@ public class ConsoleTest extends HibernateTest {
 	 */
 	@Test
 	public void createConsole() {
-		if (consoleCreated) return;
+		if (ConsoleHelper.consoleExists(Project.PROJECT_NAME)) return;
 		
 		log.info("HB Console creation STARTED");
 		
@@ -239,4 +239,6 @@ public class ConsoleTest extends HibernateTest {
 		SWTBotTreeItem item = SWTEclipseExt.selectTreeLocation(viewBot, Project.PROJECT_NAME);
 		item.doubleClick();		
 	}
+
+	
 }

@@ -34,7 +34,8 @@ public class MappingsDiagramTest extends HibernateTest {
 		eclipse.closeView(IDELabel.View.WELCOME);
 		
 		prepareProject();
-		prepareConsole();
+		ConsoleTest test = new ConsoleTest();
+		test.createConsole();
 
 		util.waitForNonIgnoredJobs();
 	}

@@ -44,7 +44,9 @@ public class CodeGenerationLauncherTest extends HibernateTest {
 		eclipse.closeView(IDELabel.View.WELCOME);
 		
 		prepareProject();
-		prepareConsole();
+		ConsoleTest consoleTest = new ConsoleTest();
+		consoleTest.createConsole();
+
 		util.waitForNonIgnoredJobs();
 	}
 	
