@@ -139,6 +139,13 @@
          unpack="false"/>
 
    <plugin
+         id="org.jboss.tools.hibernate3_6"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.jboss.tools.hibernate4_0"
          download-size="0"
          install-size="0"
