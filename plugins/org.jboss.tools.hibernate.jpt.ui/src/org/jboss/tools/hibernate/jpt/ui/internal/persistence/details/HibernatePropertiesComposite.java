@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -53,7 +54,6 @@ import org.hibernate.eclipse.console.utils.DialogSelectionHelper;
 import org.hibernate.eclipse.console.utils.DriverClassHelpers;
 import org.hibernate.eclipse.console.wizards.NewConfigurationWizard;
 import org.hibernate.eclipse.console.wizards.NewConfigurationWizardPage;
-import org.hibernate.eclipse.launch.PathHelper;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
 import org.jboss.tools.hibernate.jpt.ui.wizard.Messages;
 
@@ -190,7 +190,31 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 	}
 
 	private IPath getConfigurationFilePath() {
-		return PathHelper.pathOrNull(this.cfgFile.getText());
+		BasicHibernateProperties props = getSubject();
+		String filePath = cfgFile.getText().trim();
+		if (props != null && filePath.length() > 0 ){
+			IProject project = props.getJpaProject().getProject();
+			IJavaProject jProject = JavaCore.create(project);
+			if (jProject != null){
+				try {
+					IPackageFragmentRoot[] allPackageFragmentRoots = jProject.getAllPackageFragmentRoots();
+					for (IPackageFragmentRoot iPackageFragmentRoot : allPackageFragmentRoots) {
+						if (!iPackageFragmentRoot.isArchive()){
+							IResource sourceFolder = iPackageFragmentRoot.getResource();
+							if (sourceFolder instanceof IContainer) {
+								IContainer folder = (IContainer) sourceFolder;
+								if (folder.findMember(filePath) != null){
+									return folder.findMember(filePath).getFullPath();
+								}
+							}
+						}
+					}
+				} catch (JavaModelException e) {
+					//ignore
+				}
+			}
+		}
+		return null;
 	}
 
 	private Runnable createSetupAction() {
@@ -258,7 +282,7 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 				}
 				return null;
 			}
-
+			
 			private IPath handleConfigurationFileCreate() {
 				NewConfigurationWizard wizard = new NewConfigurationWizard();
 				wizard.init(PlatformUI.getWorkbench(), StructuredSelection.EMPTY );
