@@ -10,6 +10,9 @@
  ******************************************************************************/
 package org.hibernate.eclipse.console.ext;
 
+import java.io.File;
+import java.util.Map;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
@@ -26,7 +29,16 @@ public interface ConsoleExtension {
 	
 	public void setHibernateException(HibernateExtension hibernateExtension);
 
-	public void launchExporters(ILaunchConfiguration configuration, String mode,
+	/**
+	 * 
+	 * @param configuration
+	 * @param mode
+	 * @param launch
+	 * @param monitor
+	 * @return the generated files separated by the contents
+	 * @throws CoreException
+	 */
+	public Map<String, File[]> launchExporters(ILaunchConfiguration configuration, String mode,
 			ILaunch launch, IProgressMonitor monitor) throws CoreException;
 	
 }

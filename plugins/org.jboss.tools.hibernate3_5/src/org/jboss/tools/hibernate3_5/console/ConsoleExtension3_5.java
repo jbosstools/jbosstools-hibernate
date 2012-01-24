@@ -12,9 +12,11 @@ package org.jboss.tools.hibernate3_5.console;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -98,8 +100,9 @@ public class ConsoleExtension3_5 implements ConsoleExtension {
 	/* (non-Javadoc)
 	 * @see org.hibernate.eclipse.console.ext.ConsoleExtension#launchExporters(org.hibernate.eclipse.console.ext.ILaunchConfiguration, java.lang.String, org.hibernate.eclipse.console.ext.ILaunch, org.eclipse.core.runtime.IProgressMonitor)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public void launchExporters(ILaunchConfiguration configuration,
+	public Map<String, File[]> launchExporters(ILaunchConfiguration configuration,
 			String mode, ILaunch launch, IProgressMonitor monitor)
 			throws CoreException {
 		Assert.isNotNull(configuration);
@@ -126,10 +129,14 @@ public class ConsoleExtension3_5 implements ConsoleExtension {
 
 			// code formatting needs to happen *after* refresh to make sure eclipse will format the uptodate files!
             if(collector!=null) {
-            	//formatGeneratedCode( monitor, collector );
+            	Map<String, File[]> map = new HashMap<String, File[]>();
+            	Set<String> types = collector.getFileTypes();
+            	for (String type : types) {
+            		File[] files = collector.getFiles(type.toString());
+            		map.put(type, files);
+				}
+            	return map;
 			}
-
-
 		} catch(Exception e) {
 			throw new CoreException(HibernateConsolePlugin.throwableToStatus(e, 666));
 		} catch(NoClassDefFoundError e) {
@@ -137,6 +144,7 @@ public class ConsoleExtension3_5 implements ConsoleExtension {
 		} finally {
 			monitor.done();
 		}
+		return null;
 	}
 
 	private ArtifactCollector runExporters (final ExporterAttributes attributes, final ExporterFactory[] exporterFactories, final Set<String> outputDirectories, final IProgressMonitor monitor)

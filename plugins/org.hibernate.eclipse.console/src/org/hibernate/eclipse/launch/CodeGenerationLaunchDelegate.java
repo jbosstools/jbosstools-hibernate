@@ -265,8 +265,12 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 		ExporterAttributes attributes = new ExporterAttributes(configuration);
 		ConsoleConfiguration cc = KnownConfigurations.getInstance().find(attributes.getConsoleConfigurationName());
 		ConsoleExtension consoleExtension = ConsoleExtensionManager.getConsoleExtension(cc.getHibernateExtension());
-		consoleExtension.launchExporters(configuration, mode, launch, monitor);
-		
+		Map<String, File[]> generatedFiles = consoleExtension.launchExporters(configuration, mode, launch, monitor);
+		// code formatting needs to happen *after* refresh to make sure eclipse will format the uptodate files!
+        if(generatedFiles!=null) {
+        	formatGeneratedCode( monitor, generatedFiles );
+		}
+        
 		/* The code is moved to consoleExtension and delegated method is called instead.
 		
 		List<ExporterFactory> exporterFactories = attributes.getExporterFactories();
@@ -334,10 +338,10 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 
 	}
 
-	private void formatGeneratedCode(IProgressMonitor monitor, ArtifactCollector collector) {
+	private void formatGeneratedCode(IProgressMonitor monitor, Map<String, File[]> generatedFiles) {
 		final TextFileBufferOperation operation = new FormatGeneratedCode( HibernateConsoleMessages.CodeGenerationLaunchDelegate_formate_generated_code );
 
-		File[] javaFiles = collector.getFiles("java"); //$NON-NLS-1$
+		File[] javaFiles = generatedFiles.get("java"); //$NON-NLS-1$
 		if(javaFiles.length>0) {
 
 			IPath[] locations = new IPath[javaFiles.length];
