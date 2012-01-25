@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<p:hibernate-configuration xmlns:p="http://www.hibernate.org/xsd/hibernate-configuration" xmlns="http://www.w3.org/2001/XMLSchema-instance" schemaLocation="http://www.hibernate.org/xsd/hibernate-configuration /home/eskimo/Java/hibernate-release-4.0.0.CR5/project/hibernate-core/src/main/resources/org/hibernate/hibernate-configuration-4.0.xsd" >
+    <p:session-factory>
+        <!-- Database connection settings -->
+        <p:property name="hibernate.connection.driver_class">org.hsqldb.jdbcDriver</p:property>
+        <p:property name="hibernate.connection.url">jdbc:hsqldb:hsql://localhost:1701</p:property>
+        <p:property name="hibernate.connection.username">sa</p:property>
+        <p:property name="hibernate.connection.password"></p:property>
+
+        <!-- JDBC connection pool (use the built-in) -->
+        <p:property name="hibernate.connection.pool_size">1</p:property>
+
+        <!-- SQL dialect -->
+        <p:property name="hibernate.dialect">org.hibernate.dialect.HSQLDialect</p:property>
+
+        <!-- Enable Hibernate's automatic session context management -->
+        <p:property name="hibernate.current_session_context_class">thread</p:property>
+
+        <!-- Disable the second-level cache  -->
+        <p:property name="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</p:property>
+
+        <!-- Echo all executed SQL to stdout -->
+        <p:property name="hibernate.show_sql">true</p:property>
+
+        <!-- Drop and re-create the database schema on startup -->
+        <p:property name="hibernate.hbm2ddl.auto">update</p:property>
+
+        <p:mapping resource="mapping/onetomany/Parent.hbm.xml"/>
+    	    
+    </p:session-factory>
+    
+</p:hibernate-configuration>
