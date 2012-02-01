@@ -22,15 +22,16 @@
 package org.hibernate.eclipse.console.workbench;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.hibernate.cfg.reveng.JDBCToHibernateTypeHelper;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.mapping.Column;
 
-public class ColumnWorkbenchAdapter extends BasicWorkbenchAdapter {
+public class ColumnWorkbenchAdapter implements IWorkbenchAdapter {
 
 	public Object[] getChildren(Object o) {		
-		return NO_CHILDREN;
+		return new Object[0];
 	}
 
 	public ImageDescriptor getImageDescriptor(Object object) {

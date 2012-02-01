@@ -22,7 +22,7 @@
 package org.hibernate.eclipse.console.workbench;
 
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.progress.IDeferredWorkbenchAdapter;
+import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
@@ -41,8 +41,9 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Value;
 import org.hibernate.mapping.ValueVisitor;
 
-public class PropertyWorkbenchAdapter extends BasicWorkbenchAdapter implements
-		IDeferredWorkbenchAdapter {
+public class PropertyWorkbenchAdapter implements IWorkbenchAdapter {
+	
+	final static Object[] NO_CHILDREN = new Object[0];
 
 	public Object[] getChildren(Object o) {
 		Property p = (Property) o;
@@ -57,8 +58,9 @@ public class PropertyWorkbenchAdapter extends BasicWorkbenchAdapter implements
 				return NO_CHILDREN;
 			}
 		
+			@SuppressWarnings("unchecked")
 			public Object accept(Component component) {
-				return toArray(component.getPropertyIterator(), Property.class, null);				
+				return BasicWorkbenchAdapter.toArray(component.getPropertyIterator(), Property.class, null);				
 			}
 		
 			public Object accept(DependantValue value) {

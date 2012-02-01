@@ -22,13 +22,12 @@
 package org.hibernate.eclipse.console.workbench;
 
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.progress.IDeferredWorkbenchAdapter;
+import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 
-public class ValueWorkbenchAdapter extends BasicWorkbenchAdapter implements
-		IDeferredWorkbenchAdapter {
+public class ValueWorkbenchAdapter implements IWorkbenchAdapter {
 
 	public Object[] getChildren(Object o) {
 		return new Object[0];

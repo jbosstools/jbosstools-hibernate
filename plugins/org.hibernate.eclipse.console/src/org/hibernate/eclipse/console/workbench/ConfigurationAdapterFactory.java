@@ -44,42 +44,62 @@ import org.hibernate.mapping.Value;
 public class ConfigurationAdapterFactory implements IAdapterFactory {
 
 	private Class<?>[] classes;
-	private IDeferredWorkbenchAdapter[] adapters;
+	private IWorkbenchAdapter[] adapters;
+	
+	private Class<?>[] deferredClasses;
+	private IDeferredWorkbenchAdapter[] deferredAdapters;
 	
 	
 	public ConfigurationAdapterFactory() {
-		Map<Class<?>, IDeferredWorkbenchAdapter> map = new HashMap<Class<?>, IDeferredWorkbenchAdapter>();
+		Map<Class<?>, IDeferredWorkbenchAdapter> deferredMap = new HashMap<Class<?>, IDeferredWorkbenchAdapter>();
 		
-		map.put(ConsoleConfiguration.class, new ConsoleConfigurationWorkbenchAdapter());
-		map.put(Configuration.class, new ConfigurationWorkbenchAdapter());
-		map.put(KnownConfigurations.class, new KnownConfigurationsWorkbenchAdapter());
+		deferredMap.put(ConsoleConfiguration.class, new ConsoleConfigurationWorkbenchAdapter());
+		deferredMap.put(Configuration.class, new ConfigurationWorkbenchAdapter());
+		deferredMap.put(KnownConfigurations.class, new KnownConfigurationsWorkbenchAdapter());
+		deferredMap.put(LazyDatabaseSchema.class, new LazyDatabaseSchemaWorkbenchAdapter());
+		deferredMap.put( LazySessionFactory.class, new LazySessionFactoryAdapter() );
+					
+		
+		deferredClasses = new Class[deferredMap.size()];
+		deferredAdapters = new IDeferredWorkbenchAdapter[deferredMap.size()];
+		
+		int cnt = 0;
+		for (Map.Entry<Class<?>, IDeferredWorkbenchAdapter> entry : deferredMap.entrySet()) {
+			deferredClasses[cnt] = entry.getKey();
+			deferredAdapters[cnt] = entry.getValue();
+			cnt++;
+		}
+		
+		Map<Class<?>, IWorkbenchAdapter> map = new HashMap<Class<?>, IWorkbenchAdapter>();
+		map.put(TableContainer.class, new TableContainerWorkbenchAdapter());
 		map.put(PersistentClass.class, new PersistentClassWorkbenchAdapter());
 		map.put(Property.class, new PropertyWorkbenchAdapter());
 		map.put(Value.class, new ValueWorkbenchAdapter());
-		map.put(BaseNode.class, new BaseNodeWorkbenchAdapter());
-		map.put(LazyDatabaseSchema.class, new LazyDatabaseSchemaWorkbenchAdapter());
-		map.put( LazySessionFactory.class, new LazySessionFactoryAdapter() );
-		map.put(TableContainer.class, new TableContainerWorkbenchAdapter());
 		map.put(Table.class, new TableWorkbenchAdapter());
 		map.put(PrimaryKey.class, new PrimaryKeyWorkbenchAdapter());
-		map.put(Column.class, new ColumnWorkbenchAdapter());				
+		map.put(Column.class, new ColumnWorkbenchAdapter());
+		map.put(BaseNode.class, new BaseNodeWorkbenchAdapter());
+		
+		
 		
 		classes = new Class[map.size()];
-		adapters = new IDeferredWorkbenchAdapter[map.size()];
-		
-		int cnt = 0;
-		for (Map.Entry<Class<?>, IDeferredWorkbenchAdapter> entry : map.entrySet()) {
+		adapters = new IWorkbenchAdapter[map.size()];
+		cnt = 0;
+		for (Map.Entry<Class<?>, IWorkbenchAdapter> entry : map.entrySet()) {
 			classes[cnt] = entry.getKey();
 			adapters[cnt] = entry.getValue();
 			cnt++;
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public Object getAdapter(Object adaptableObject, Class adapterType) {
-		if((adapterType==IDeferredWorkbenchAdapter.class || adapterType==IWorkbenchAdapter.class)) {
-			return getAdapter( adaptableObject );
-		}		
+		if(adapterType==IDeferredWorkbenchAdapter.class){
+			return getDeferredAdapter( adaptableObject );
+		} else if (adapterType==IWorkbenchAdapter.class){
+			Object adapter = getAdapter( adaptableObject );
+			return adapter != null ? adapter : getDeferredAdapter( adaptableObject );
+		}
 		if(adapterType==IPropertySource2.class || adapterType==IPropertySource.class) {
 			return getPropertySource(adaptableObject);
 		}
@@ -89,6 +109,16 @@ public class ConfigurationAdapterFactory implements IAdapterFactory {
 	
 	private Object getPropertySource(Object adaptableObject) {	
 		return null;//new GenericPropertySource(adaptableObject);		
+	}
+	
+	private Object getDeferredAdapter(Object adaptableObject) {
+		for (int i = 0; i < deferredClasses.length; i++) {
+			Class<?> clazz = deferredClasses[i];
+			if (clazz.isInstance(adaptableObject)) {
+				return deferredAdapters[i];
+			}
+		}		
+		return null;
 	}
 
 	private Object getAdapter(Object adaptableObject) {
@@ -109,7 +139,11 @@ public class ConfigurationAdapterFactory implements IAdapterFactory {
 		for (int i = 0; i < classes.length; i++) {
 			Class<?> clazz = classes[i];
 			adapterManager.registerAdapters(this, clazz);
-		}		
+		}
+		for (int i = 0; i < deferredClasses.length; i++) {
+			Class<?> clazz = deferredClasses[i];
+			adapterManager.registerAdapters(this, clazz);
+		}
 	}
 
 }

@@ -22,16 +22,15 @@
 package org.hibernate.eclipse.console.workbench;
 
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.progress.IDeferredWorkbenchAdapter;
+import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.hibernate.console.node.BaseNode;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 
-public class BaseNodeWorkbenchAdapter extends BasicWorkbenchAdapter implements
-		IDeferredWorkbenchAdapter {
+public class BaseNodeWorkbenchAdapter implements IWorkbenchAdapter {
 
 	public Object[] getChildren(Object o) {
 		BaseNode bn = (BaseNode) o;
-		return toArray(bn.children(),BaseNode.class);
+		return BasicWorkbenchAdapter.toArray(bn.children(),BaseNode.class);
 	}
 	
 	public ImageDescriptor getImageDescriptor(Object object) {

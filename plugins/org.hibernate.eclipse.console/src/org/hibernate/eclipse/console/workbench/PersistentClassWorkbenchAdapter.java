@@ -26,13 +26,14 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.util.JoinedIterator;
 
-public class PersistentClassWorkbenchAdapter extends BasicWorkbenchAdapter {
+public class PersistentClassWorkbenchAdapter implements IWorkbenchAdapter {
 
 	@SuppressWarnings("unchecked")
 	public Object[] getChildren(Object o) {
@@ -45,7 +46,7 @@ public class PersistentClassWorkbenchAdapter extends BasicWorkbenchAdapter {
 		}
 		
 		Iterator<Property> propertyClosureIterator = new JoinedIterator(properties.iterator(), pc.getPropertyClosureIterator());
-		return toArray(propertyClosureIterator, Property.class, null);
+		return BasicWorkbenchAdapter.toArray(propertyClosureIterator, Property.class, null);
 	}
 
 	

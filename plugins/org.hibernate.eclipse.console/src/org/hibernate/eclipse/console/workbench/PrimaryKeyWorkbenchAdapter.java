@@ -22,19 +22,21 @@
 package org.hibernate.eclipse.console.workbench;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
 
-public class PrimaryKeyWorkbenchAdapter extends BasicWorkbenchAdapter {
+public class PrimaryKeyWorkbenchAdapter implements IWorkbenchAdapter {
 
+	@SuppressWarnings("unchecked")
 	public Object[] getChildren(Object o) {
 		PrimaryKey t = getPrimaryKey( o );
 
 		if(t.getColumnSpan()==1) {
-			return NO_CHILDREN;
+			return new Object[0];
 		} else {
 			return t.getColumns().toArray(new Column[0]);
 		}

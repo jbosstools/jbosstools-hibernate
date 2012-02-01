@@ -24,16 +24,17 @@ package org.hibernate.eclipse.console.workbench;
 import java.util.Comparator;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.mapping.Table;
 
-public class TableContainerWorkbenchAdapter extends BasicWorkbenchAdapter {
+public class TableContainerWorkbenchAdapter implements IWorkbenchAdapter {
 
 	public Object[] getChildren(Object o) {
 		TableContainer tc = getTableContainer( o );
-		return toArray(tc.getTables().iterator(), Table.class, new Comparator<Table>() {
+		return BasicWorkbenchAdapter.toArray(tc.getTables().iterator(), Table.class, new Comparator<Table>() {
 
 			public int compare(Table arg0, Table arg1) {
 
@@ -59,6 +60,5 @@ public class TableContainerWorkbenchAdapter extends BasicWorkbenchAdapter {
 	public Object getParent(Object o) {
 		return null;
 	}
-
 
 }
