@@ -27,6 +27,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -541,6 +543,16 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 
 		if(StringHelper.isEmpty(attributes.getOutputPath())) {
 			abort(HibernateConsoleMessages.CodeGenerationLaunchDelegate_output_has_to_be_specified_in + configuration.getName(), null, ICodeGenerationLaunchConstants.ERR_OUTPUT_PATH_NOTFOUND);
+		}
+		
+		List<ExporterFactory> exporterFactories = attributes.getExporterFactories();
+		for (Iterator<ExporterFactory> iter = exporterFactories.iterator(); iter.hasNext();) {
+			ExporterFactory exFactory = iter.next();
+			if (exFactory.isEnabled(configuration) && exFactory.getExporterDefinitionId().equals("org.hibernate.tools.query")) { //$NON-NLS-1$
+				if (!exFactory.getProperties().containsKey("query_string")){ //$NON-NLS-1$
+					abort("Query property should be explicitly set for Query Exporter", null, ICodeGenerationLaunchConstants.ERR_OUTPUT_PATH_NOTFOUND); //$NON-NLS-1$
+				}
+			}
 		}
 
 		return super.preLaunchCheck( configuration, mode, monitor );
