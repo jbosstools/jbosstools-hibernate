@@ -82,15 +82,18 @@ public class ConfigurationFactory {
 	public Configuration createConfiguration(Configuration localCfg, boolean includeMappings) {
 		Properties properties = prefs.getProperties();
 
-		if (properties != null) {
-			// in case the transaction manager is empty then we need to inject a faketm since
-			// hibernate will still try and instantiate it.
-			String str = properties.getProperty(Environment.TRANSACTION_MANAGER_STRATEGY);
-			if (str != null && StringHelper.isEmpty(str)) {
-				properties.setProperty(Environment.TRANSACTION_MANAGER_STRATEGY, FAKE_TM_LOOKUP);
-				// properties.setProperty( "hibernate.transaction.factory_class", "");
-			}
+		//https://issues.jboss.org/browse/JBIDE-10507
+		//overwrite datasource properties
+		if (properties == null) {
+			properties = new Properties();
 		}
+
+		// in case the transaction manager is empty then we need to inject a faketm since
+		// hibernate will still try to instantiate it.
+		properties.setProperty(Environment.TRANSACTION_MANAGER_STRATEGY, FAKE_TM_LOOKUP);
+		properties.put(Environment.DATASOURCE, ""); //$NON-NLS-1$
+		properties.put(Environment.CONNECTION_PROVIDER, "org.hibernate.connection.DriverManagerConnectionProvider"); //$NON-NLS-1$
+		
 		if (localCfg == null) {
 			localCfg = buildConfiguration(properties, includeMappings);
 		} else {
@@ -382,10 +385,6 @@ public class ConfigurationFactory {
 				connProfileName);
 		if (profile != null) {
 			final Properties cpProperties = profile.getProperties(profile.getProviderId());
-			final Properties invokeProperties = localCfg.getProperties();
-			// set this property to null!
-			invokeProperties.remove(Environment.DATASOURCE);
-			localCfg.setProperties(invokeProperties);
 			// seems we should not setup dialect here
 			//String dialect = "org.hibernate.dialect.HSQLDialect";
 			//invoke.setProperty(Environment.DIALECT, dialect);
