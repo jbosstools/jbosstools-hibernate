@@ -40,6 +40,7 @@ import org.hibernate.annotations.common.util.StringHelper;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.NamingStrategy;
+import org.hibernate.connection.DriverManagerConnectionProvider;
 import org.hibernate.console.ConnectionProfileUtil;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ConsoleMessages;
@@ -70,22 +71,30 @@ public class ConfigurationFactory {
 	public ConsoleConfigurationPreferences getPreferences() {
 		return prefs;
 	}
+	
+	private void changeDatasourceProperties(Configuration localCfg){
+		final Properties invokeProperties = localCfg.getProperties();
+		// set this property to null!
+		if (invokeProperties.containsKey(Environment.DATASOURCE)){
+			invokeProperties.setProperty(Environment.TRANSACTION_MANAGER_STRATEGY, FAKE_TM_LOOKUP);
+			invokeProperties.put(Environment.CONNECTION_PROVIDER, DriverManagerConnectionProvider.class.getName());
+			invokeProperties.remove(Environment.DATASOURCE);
+			localCfg.setProperties(invokeProperties);
+		}
+	}
 
 	public Configuration createConfiguration(Configuration localCfg, boolean includeMappings) {
 		Properties properties = prefs.getProperties();
 
-		//https://issues.jboss.org/browse/JBIDE-10507
-		//overwrite datasource properties
-		if (properties == null) {
-			properties = new Properties();
+		if (properties != null) {
+			// in case the transaction manager is empty then we need to inject a faketm since
+			// hibernate will still try and instantiate it.
+			String str = properties.getProperty(Environment.TRANSACTION_MANAGER_STRATEGY);
+			if (str != null && StringHelper.isEmpty(str)) {
+				properties.setProperty(Environment.TRANSACTION_MANAGER_STRATEGY, FAKE_TM_LOOKUP);
+				// properties.setProperty( "hibernate.transaction.factory_class", "");
+			}
 		}
-
-		// in case the transaction manager is empty then we need to inject a faketm since
-		// hibernate will still try to instantiate it.
-		properties.setProperty(Environment.TRANSACTION_MANAGER_STRATEGY, FAKE_TM_LOOKUP);
-		properties.put(Environment.DATASOURCE, ""); //$NON-NLS-1$
-		properties.put(Environment.CONNECTION_PROVIDER, "org.hibernate.connection.DriverManagerConnectionProvider"); //$NON-NLS-1$
-
 		if (localCfg == null) {
 			localCfg = buildConfiguration(properties, includeMappings);
 		} else {
@@ -230,6 +239,7 @@ public class ConfigurationFactory {
 			}
 			method = clazz.getMethod("getHibernateConfiguration", new Class[0]);//$NON-NLS-1$
 			Configuration invoke = (Configuration) method.invoke(ejb3cfg, (Object[]) null);
+			changeDatasourceProperties(invoke);
 			invoke = configureConnectionProfile(invoke);
 			return invoke;
 		} catch (HibernateConsoleRuntimeException he) {
@@ -270,6 +280,7 @@ public class ConfigurationFactory {
 			}
 		}
 		localCfg = loadConfigurationXML(localCfg, includeMappings, entityResolver);
+		changeDatasourceProperties(localCfg);
 		localCfg = configureConnectionProfile(localCfg);
 		// replace dialect if it is set in preferences
 		if (StringHelper.isNotEmpty(prefs.getDialectName())) {
