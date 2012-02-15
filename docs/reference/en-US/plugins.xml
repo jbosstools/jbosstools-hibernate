@@ -200,14 +200,14 @@
 							</entry>
 							<entry>
 								<para>
-									Choose between &quot;Core&quot;, &quot;Annotations&quot; and &quot;JPA&quot;. Note that the two latter requires running Eclipse IDE with a JDK 5 runtime, otherwise you will get class loading and version errors.
+									Choose between &quot;Core&quot;, &quot;Annotations&quot; and &quot;JPA&quot;. Note that the two latter requires running Eclipse IDE with a JDK 5 (or newer) runtime, otherwise you will get class loading and version errors.
 								</para>
 								<para>
-									You will also need to select the version of Hibernate your application server has. Select a version from the drop-down box labelled <guilabel>Hibernate Version</guilabel>.
+									You will also need to select the version of Hibernate your application server has (3.5, 3.6 or 4.0). Select a version from the drop-down box labelled <guilabel>Hibernate Version</guilabel>.
 								</para>
 							</entry>
 							<entry>
-								<para><guilabel>Hibernate Version:</guilabel> 3.5</para>
+								<para><guilabel>Core</guilabel> and <guilabel>Hibernate Version:</guilabel> 3.5</para>
 							</entry>
 						</row>
 						<row>
