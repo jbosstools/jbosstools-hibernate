@@ -102,7 +102,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		return prefs.getName();
 	}
 
-	public Object execute(Command c) {
+	public synchronized Object execute(Command c) {
 		if (executionContext != null) {
 			return executionContext.execute(c);
 		}
@@ -116,7 +116,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	 * Reset configuration, session factory, class loader and execution context.
 	 *
 	 */
-	public boolean reset() {
+	public synchronized boolean reset() {
 		boolean resetted = false;
 		// resetting state
 		if (getHibernateExtension() != null ) {
