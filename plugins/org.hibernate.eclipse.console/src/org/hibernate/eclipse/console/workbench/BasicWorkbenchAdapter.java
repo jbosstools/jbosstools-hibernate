@@ -103,7 +103,10 @@ public abstract class BasicWorkbenchAdapter implements IDeferredWorkbenchAdapter
 	public void fetchDeferredChildren(Object object,
 			IElementCollector collector, IProgressMonitor monitor) {
 		try {
-			collector.add(getChildren(object, monitor), monitor);
+			Object[] children = getChildren(object, monitor);
+			if (!monitor.isCanceled()){
+				collector.add(children, monitor);
+			}
 			collector.done();
 		} catch(Exception e) {
 			handleError(collector,object, e);
