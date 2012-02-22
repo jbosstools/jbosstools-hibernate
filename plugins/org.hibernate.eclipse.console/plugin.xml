@@ -803,6 +803,18 @@
             name="Hibernate">
       </category>
    </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.jboss.tools.common.ui.JBossPerspective">
+         <newWizardShortcut
+               id="org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard">
+         </newWizardShortcut>
+         <perspectiveShortcut
+               id="org.hibernate.eclipse.console.HibernateConsolePerspective">
+         </perspectiveShortcut>
+      </perspectiveExtension>
+   </extension>
    <!--   <extension
          point="org.eclipse.ui.themes">
       <themeElementCategory
