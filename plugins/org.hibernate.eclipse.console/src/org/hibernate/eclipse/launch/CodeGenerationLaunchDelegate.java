@@ -343,30 +343,31 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 	private void formatGeneratedCode(IProgressMonitor monitor, Map<String, File[]> generatedFiles) {
 		final TextFileBufferOperation operation = new FormatGeneratedCode( HibernateConsoleMessages.CodeGenerationLaunchDelegate_formate_generated_code );
 
-		File[] javaFiles = generatedFiles.get("java"); //$NON-NLS-1$
-		if(javaFiles.length>0) {
+		if (generatedFiles != null){
+			File[] javaFiles = generatedFiles.get("java"); //$NON-NLS-1$
+			if(javaFiles != null && javaFiles.length>0) {
 
-			IPath[] locations = new IPath[javaFiles.length];
+				IPath[] locations = new IPath[javaFiles.length];
 
-			for (int i = 0; i < javaFiles.length; i++) {
-				File file = javaFiles[i];
-				locations[i] = new Path(file.getPath());
-			}
+				for (int i = 0; i < javaFiles.length; i++) {
+					File file = javaFiles[i];
+					locations[i] = new Path(file.getPath());
+				}
 
-			FileBufferOperationRunner runner= new FileBufferOperationRunner(FileBuffers.getTextFileBufferManager(), HibernateConsolePlugin.getShell());
-			try {
-				runner.execute(locations, operation, monitor);
-			}
-			catch (OperationCanceledException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.CodeGenerationLaunchDelegate_java_format_cancelled, e);
-			}
-			catch (CoreException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.CodeGenerationLaunchDelegate_exception_during_java_format, e);
-			} catch (Throwable e) { // full guard since the above operation seem to be able to fail with IllegalArugmentException and SWT Invalid thread access while users are editing.
-				HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.CodeGenerationLaunchDelegate_exception_during_java_format, e);
+				FileBufferOperationRunner runner= new FileBufferOperationRunner(FileBuffers.getTextFileBufferManager(), HibernateConsolePlugin.getShell());
+				try {
+					runner.execute(locations, operation, monitor);
+				}
+				catch (OperationCanceledException e) {
+					HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.CodeGenerationLaunchDelegate_java_format_cancelled, e);
+				}
+				catch (CoreException e) {
+					HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.CodeGenerationLaunchDelegate_exception_during_java_format, e);
+				} catch (Throwable e) { // full guard since the above operation seem to be able to fail with IllegalArugmentException and SWT Invalid thread access while users are editing.
+					HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.CodeGenerationLaunchDelegate_exception_during_java_format, e);
+				}
 			}
 		}
-
 	}
 
 	private ArtifactCollector runExporters (final ExporterAttributes attributes, final ExporterFactory[] exporterFactories, final Set<String> outputDirectories, final IProgressMonitor monitor)
