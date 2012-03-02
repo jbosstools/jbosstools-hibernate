@@ -12,7 +12,7 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<emma.filter>org.hibernate.eclipse.jdt.ui*</emma.filter>
+		<coverage.filter>org.hibernate.eclipse.jdt.ui*</coverage.filter>
 		<emma.instrument.bundles>org.hibernate.eclipse.jdt.ui</emma.instrument.bundles>
 	</properties>
 	

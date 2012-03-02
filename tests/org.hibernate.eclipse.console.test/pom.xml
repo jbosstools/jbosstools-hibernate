@@ -12,7 +12,7 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<emma.filter>org.hibernate.eclipse*</emma.filter>
+		<coverage.filter>org.hibernate.eclipse*</coverage.filter>
 		<emma.instrument.bundles>org.hibernate.eclipse.console</emma.instrument.bundles>
 	</properties>
 
