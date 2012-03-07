@@ -813,6 +813,9 @@
          <perspectiveShortcut
                id="org.hibernate.eclipse.console.HibernateConsolePerspective">
          </perspectiveShortcut>
+         <actionSet
+               id="org.hibernate.eclipse.launch.actionset">
+         </actionSet>
       </perspectiveExtension>
    </extension>
    <!--   <extension
