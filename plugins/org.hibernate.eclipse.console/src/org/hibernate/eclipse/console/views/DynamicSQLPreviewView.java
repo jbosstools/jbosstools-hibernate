@@ -46,6 +46,7 @@ import org.eclipse.ui.part.ViewPart;
 import org.hibernate.SessionFactory;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.execution.ExecutionContext;
+import org.hibernate.console.ext.HibernateExtension;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.QLFormatHelper;
 import org.hibernate.eclipse.hqleditor.HQLEditor;
@@ -116,7 +117,10 @@ public class DynamicSQLPreviewView extends ViewPart {
 		}
 	}
 	private void setCurrentEditor(HQLEditor editor) {
-		if(editor==currentEditor) return;
+		if(editor==currentEditor) {
+			updateText(currentEditor);
+			return;
+		}
 		if(currentEditor!=null) {
 			reconciler.uninstall();
 		}
@@ -139,8 +143,9 @@ public class DynamicSQLPreviewView extends ViewPart {
 				if(StringHelper.isEmpty( editor.getQueryString() )) {
 					textViewer.getDocument().set( HibernateConsoleMessages.DynamicSQLPreviewView_empty_hql_query );
 				} else if(consoleConfiguration!=null) {
-					if(consoleConfiguration.isSessionFactoryCreated()) {
-						String generateSQL = generateSQL(consoleConfiguration.getExecutionContext(), consoleConfiguration.getSessionFactory(), editor.getQueryString());
+					HibernateExtension hibernateExtension = consoleConfiguration.getHibernateExtension();
+					if(hibernateExtension.isSessionFactoryCreated()) {
+						String generateSQL = hibernateExtension.generateSQL(editor.getQueryString());
 						if(StringHelper.isEmpty( generateSQL )) {
 							textViewer.getDocument().set( HibernateConsoleMessages.DynamicSQLPreviewView_no_sql_generated );
 						} else {
@@ -156,74 +161,6 @@ public class DynamicSQLPreviewView extends ViewPart {
 				textViewer.getDocument().set(HibernateConsoleMessages.DynamicSQLPreviewView_no_hql_query_editor);
 			}
 		}
-	}
-
-	public String generateSQL(ExecutionContext context, final SessionFactory sf, final String query) {
-
-		if(StringHelper.isEmpty(query)) return ""; //$NON-NLS-1$
-
-		String result;
-
-		result = (String) context.execute(new ExecutionContext.Command() {
-			public Object execute() {
-				try {
-					SessionFactoryImpl sfimpl = (SessionFactoryImpl) sf; // hack - to get to the actual queries..
-					StringBuffer str = new StringBuffer(256);
-					HQLQueryPlan plan = new HQLQueryPlan(query, false, Collections.EMPTY_MAP, sfimpl);
-
-					QueryTranslator[] translators = plan.getTranslators();
-					for (int i = 0; i < translators.length; i++) {
-						QueryTranslator translator = translators[i];
-						if(translator.isManipulationStatement()) {
-							str.append(HibernateConsoleMessages.DynamicSQLPreviewView_manipulation_of + i + ":"); //$NON-NLS-1$
-							Iterator<?> iterator = translator.getQuerySpaces().iterator();
-							while ( iterator.hasNext() ) {
-								Object qspace = iterator.next();
-								str.append(qspace);
-								if(iterator.hasNext()) { str.append(", "); } //$NON-NLS-1$
-							}
-
-						} else {
-							Type[] returnTypes = translator.getReturnTypes();
-							str.append(i +": "); //$NON-NLS-1$
-							for (int j = 0; j < returnTypes.length; j++) {
-								Type returnType = returnTypes[j];
-								str.append(returnType.getName());
-								if(j<returnTypes.length-1) { str.append(", "); }							 //$NON-NLS-1$
-							}
-						}
-						str.append("\n-----------------\n"); //$NON-NLS-1$
-						Iterator<?> sqls = translator.collectSqlStrings().iterator();
-						while ( sqls.hasNext() ) {
-							String sql = (String) sqls.next();
-							str.append(QLFormatHelper.formatForScreen(sql));
-							str.append("\n\n");	 //$NON-NLS-1$
-						}
-					}
-					return str.toString();
-				} catch(Throwable t) {
-					//StringWriter sw = new StringWriter();
-					StringBuffer msgs = new StringBuffer();
-
-					Throwable cause = t;
-					while(cause!=null) {
-						msgs.append(t);
-						if(cause.getCause()==cause) {
-							cause=null;
-						} else {
-							cause = cause.getCause();
-							if(cause!=null) msgs.append(HibernateConsoleMessages.DynamicSQLPreviewView_caused_by);
-						}
-					}
-					//t.printStackTrace(new PrintWriter(sw));
-					//return sw.getBuffer().toString();
-					return msgs.toString();
-				}
-
-			}
-		});
-
-		return result;
 	}
 
 	public void createPartControl(Composite parent) {

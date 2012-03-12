@@ -71,7 +71,7 @@ public class HibernateExtension3_6 implements HibernateExtension {
 		try {
 			try {
 				session = sessionFactory.openSession();
-				return QueryExecutor.executeHQLQuery(this, session, hql, queryParameters);
+				return QueryHelper.executeHQLQuery(this, session, hql, queryParameters);
 			} catch (Throwable e){
 				//Incompatible library versions could throw subclasses of Error, like  AbstractMethodError
 				//may be there is a sense to say to user that the reason is probably a wrong CC version
@@ -98,7 +98,7 @@ public class HibernateExtension3_6 implements HibernateExtension {
 				try {
 					try {
 						session = sessionFactory.openSession();
-						return QueryExecutor.executeCriteriaQuery(session, criteriaCode, model);
+						return QueryHelper.executeCriteriaQuery(session, criteriaCode, model);
 					} catch (Throwable e){
 						//Incompatible library versions could throw subclasses of Error, like  AbstractMethodError
 						//may be there is a sense to say to user that the reason is probably a wrong CC version
@@ -238,6 +238,10 @@ public class HibernateExtension3_6 implements HibernateExtension {
 		return prefs.getName();
 	}
 	
+	public ExecutionContext getExecutionContext() {
+		return executionContext;
+	}
+	
 	public Object execute(Command c) {
 		if (executionContext != null) {
 			return executionContext.execute(c);
@@ -322,5 +326,9 @@ public class HibernateExtension3_6 implements HibernateExtension {
 	@Override
 	public boolean isSessionFactoryCreated() {
 		return sessionFactory != null;
+	}
+	
+	public String generateSQL(final String query) {
+		return QueryHelper.generateSQL(executionContext, sessionFactory, query);
 	}
 }

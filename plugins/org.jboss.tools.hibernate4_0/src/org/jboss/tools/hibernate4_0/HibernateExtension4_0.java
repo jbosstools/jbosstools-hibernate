@@ -15,6 +15,7 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -36,9 +37,16 @@ import org.hibernate.console.ext.QueryResult;
 import org.hibernate.console.ext.QueryResultImpl;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.PreferencesClassPathUtils;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
+import org.hibernate.eclipse.console.utils.QLFormatHelper;
+import org.hibernate.engine.query.spi.HQLQueryPlan;
+import org.hibernate.hql.spi.QueryTranslator;
+import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.service.internal.StandardServiceRegistryImpl;
+import org.hibernate.type.Type;
+import org.hibernate.util.xpl.StringHelper;
 
 /**
  * 
@@ -76,7 +84,7 @@ public class HibernateExtension4_0 implements HibernateExtension {
 		try {
 			try {
 				session = sessionFactory.openSession();
-				return QueryExecutor.executeHQLQuery(this, session, hql, queryParameters);
+				return QueryHelper.executeHQLQuery(this, session, hql, queryParameters);
 			} catch (Throwable e){
 				//Incompatible library versions could throw subclasses of Error, like  AbstractMethodError
 				//may be there is a sense to say to user that the reason is probably a wrong CC version
@@ -103,7 +111,7 @@ public class HibernateExtension4_0 implements HibernateExtension {
 				try {
 					try {
 						session = sessionFactory.openSession();
-						return QueryExecutor.executeCriteriaQuery(session, criteriaCode, model);
+						return QueryHelper.executeCriteriaQuery(session, criteriaCode, model);
 					} catch (Throwable e){
 						//Incompatible library versions could throw subclasses of Error, like  AbstractMethodError
 						//may be there is a sense to say to user that the reason is probably a wrong CC version
@@ -248,6 +256,10 @@ public class HibernateExtension4_0 implements HibernateExtension {
 		return prefs.getName();
 	}
 	
+	public ExecutionContext getExecutionContext() {
+		return executionContext;
+	}
+	
 	public Object execute(Command c) {
 		if (executionContext != null) {
 			return executionContext.execute(c);
@@ -332,5 +344,9 @@ public class HibernateExtension4_0 implements HibernateExtension {
 	@Override
 	public boolean isSessionFactoryCreated() {
 		return sessionFactory != null;
+	}
+	
+	public String generateSQL(final String query) {
+		return QueryHelper.generateSQL(executionContext, sessionFactory, query);
 	}
 }

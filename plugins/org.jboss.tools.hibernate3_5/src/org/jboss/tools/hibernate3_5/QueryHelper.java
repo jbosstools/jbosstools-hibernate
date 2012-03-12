@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Red Hat, Inc.
+ * Copyright (c) 2011 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -8,7 +8,7 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate3_6;
+package org.jboss.tools.hibernate3_5;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,18 +20,22 @@ import java.util.Map;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.console.ConsoleMessages;
 import org.hibernate.console.ConsoleQueryParameter;
-import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.QueryInputModel;
-import org.hibernate.console.execution.ExecutionContext.Command;
+import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.console.ext.HibernateException;
-import org.hibernate.console.ext.HibernateExtension;
 import org.hibernate.console.ext.QueryResult;
 import org.hibernate.console.ext.QueryResultImpl;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
+import org.hibernate.eclipse.console.utils.QLFormatHelper;
 import org.hibernate.engine.SessionImplementor;
+import org.hibernate.engine.query.HQLQueryPlan;
+import org.hibernate.hql.QueryTranslator;
+import org.hibernate.impl.SessionFactoryImpl;
 import org.hibernate.type.Type;
-import org.hibernate.util.ReflectHelper;
+import org.hibernate.util.xpl.StringHelper;
 
 import bsh.EvalError;
 import bsh.Interpreter;
@@ -40,25 +44,17 @@ import bsh.Interpreter;
  * @author Dmitry Geraskov
  *
  */
-public class QueryExecutor {
+public class QueryHelper {
 	
-	public static QueryResult executeHQLQuery(HibernateExtension hibernateExtension, Session session, String hql,
-			final QueryInputModel queryParameters) {
+	public static QueryResult executeHQLQuery(Session session, String hql,
+			QueryInputModel queryParameters) {
 
-		final Query query = session.createQuery(hql);
+		Query query = session.createQuery(hql);
 		List<Object> list = Collections.emptyList();
 		long queryTime = 0;
 
 		list = new ArrayList<Object>();
-		hibernateExtension.execute(new Command() {
-			
-			@Override
-			public Object execute() {
-				setupParameters(query, queryParameters);
-				return null;
-			}
-		});
-		
+		setupParameters(query, queryParameters);
 		long startTime = System.currentTimeMillis();
 		QueryResultImpl result = new QueryResultImpl(list,
 				queryTime);
@@ -167,34 +163,20 @@ public class QueryExecutor {
 		for (int i = 0; i < qp.length; i++) {
 			ConsoleQueryParameter parameter = qp[i];
 
-			String typeName = parameter.getType().getClass().getName();
 			try {
 				int pos = Integer.parseInt(parameter.getName());
 				//FIXME no method to set positioned list value
-				query2.setParameter(pos, calcValue( parameter ), convertToType(typeName));
+				query2.setParameter(pos, calcValue( parameter ), parameter.getType());
 			} catch(NumberFormatException nfe) {
 				Object value = parameter.getValue();
 				if (value != null && value.getClass().isArray()){
 					Object[] values = (Object[])value;
-					query2.setParameterList(parameter.getName(), Arrays.asList(values), convertToType(typeName));
+					query2.setParameterList(parameter.getName(), Arrays.asList(values), parameter.getType());
 				} else {
-					query2.setParameter(parameter.getName(), calcValue( parameter ), convertToType(typeName));
+					query2.setParameter(parameter.getName(), calcValue( parameter ), parameter.getType());
 				}
 			}
 		}		
-	}
-	
-	/**
-	 * Method converts Hibernate3 to Hibernate3_6 classes
-	 * @param typeClassName
-	 * @return
-	 */
-	private static Type convertToType(String typeClassName){
-		try {
-			return (Type) ReflectHelper.classForName(typeClassName).newInstance();
-		} catch (Exception e) {
-			throw new HibernateConsoleRuntimeException("Can't instantiate hibernate type " + typeClassName, e);
-		}
 	}
 	
 	private static Object calcValue(ConsoleQueryParameter parameter) {
@@ -226,5 +208,68 @@ public class QueryExecutor {
 
         return interpreter;
     }
+	
+	static String generateSQL(ExecutionContext executionContext, final SessionFactory sessionFactory, final String query) {
+
+		if(StringHelper.isEmpty(query)) return ""; //$NON-NLS-1$
+
+		String result = (String) executionContext.execute(new ExecutionContext.Command() {
+			public Object execute() {
+				try {
+					SessionFactoryImpl sfimpl = (SessionFactoryImpl) sessionFactory; // hack - to get to the actual queries..
+					StringBuffer str = new StringBuffer(256);
+					HQLQueryPlan plan = new HQLQueryPlan(query, false, Collections.EMPTY_MAP, sfimpl);
+
+					QueryTranslator[] translators = plan.getTranslators();
+					for (int i = 0; i < translators.length; i++) {
+						QueryTranslator translator = translators[i];
+						if(translator.isManipulationStatement()) {
+							str.append(HibernateConsoleMessages.DynamicSQLPreviewView_manipulation_of + i + ":"); //$NON-NLS-1$
+							Iterator<?> iterator = translator.getQuerySpaces().iterator();
+							while ( iterator.hasNext() ) {
+								Object qspace = iterator.next();
+								str.append(qspace);
+								if(iterator.hasNext()) { str.append(", "); } //$NON-NLS-1$
+							}
+
+						} else {
+							Type[] returnTypes = translator.getReturnTypes();
+							str.append(i +": "); //$NON-NLS-1$
+							for (int j = 0; j < returnTypes.length; j++) {
+								Type returnType = returnTypes[j];
+								str.append(returnType.getName());
+								if(j<returnTypes.length-1) { str.append(", "); }							 //$NON-NLS-1$
+							}
+						}
+						str.append("\n-----------------\n"); //$NON-NLS-1$
+						Iterator<?> sqls = translator.collectSqlStrings().iterator();
+						while ( sqls.hasNext() ) {
+							String sql = (String) sqls.next();
+							str.append(QLFormatHelper.formatForScreen(sql));
+							str.append("\n\n");	 //$NON-NLS-1$
+						}
+					}
+					return str.toString();
+				} catch(Throwable t) {
+					StringBuffer msgs = new StringBuffer();
+
+					Throwable cause = t;
+					while(cause!=null) {
+						msgs.append(t);
+						if(cause.getCause()==cause) {
+							cause=null;
+						} else {
+							cause = cause.getCause();
+							if(cause!=null) msgs.append(HibernateConsoleMessages.DynamicSQLPreviewView_caused_by);
+						}
+					}
+					return msgs.toString();
+				}
+
+			}
+		});
+
+		return result;
+	}
 
 }
