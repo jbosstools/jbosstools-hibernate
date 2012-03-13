@@ -10,9 +10,7 @@
  ******************************************************************************/
 package org.hibernate.console.ext;
 
-import org.hibernate.SessionFactory;
 import org.hibernate.console.QueryInputModel;
-import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 
@@ -25,6 +23,8 @@ public interface HibernateExtension {
 	public void setConsoleConfigurationPreferences(ConsoleConfigurationPreferences prefs);
 	
 	public void build();
+	
+	public void buildMappings();
 	
 	public void buildSessionFactory();
 	

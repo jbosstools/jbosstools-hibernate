@@ -77,14 +77,7 @@ public class ConsoleExtension3_5 implements ConsoleExtension {
 		if (!hibernateExtension.hasConfiguration()){
 			try {
 				hibernateExtension.build();
-				hibernateExtension.execute( new ExecutionContext.Command() {
-			 		public Object execute() {
-			 			if(hibernateExtension.hasConfiguration()) {
-			 				hibernateExtension.getConfiguration().buildMappings();
-				 		}
-			 			return null;
-			 		}
-				});
+				hibernateExtension.buildMappings();
 			} catch (HibernateException e){
 				//FIXME
 				//String mess = NLS.bind(HibernateConsoleMessages.CompletionHelper_error_could_not_build_cc, consoleConfiguration.getName());
@@ -269,16 +262,8 @@ public class ConsoleExtension3_5 implements ConsoleExtension {
 			return cfg;
 		} else {
 			cc.build();
-			final Configuration configuration = cc.getConfiguration();
-
-			cc.execute(new Command() {
-				public Object execute() {
-
-					configuration.buildMappings();
-					return configuration;
-				}
-			});
-			return configuration;
+			cc.buildMappings();
+			return cc.getConfiguration();
 		}
 	}
 	

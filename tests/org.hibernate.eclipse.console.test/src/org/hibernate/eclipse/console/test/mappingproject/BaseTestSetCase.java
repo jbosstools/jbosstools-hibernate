@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.hibernate.eclipse.console.test.mappingproject;
 
+import junit.framework.TestCase;
+
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Display;
@@ -20,14 +22,11 @@ import org.hibernate.InvalidMappingException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
-import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 import org.hibernate.eclipse.console.workbench.ConfigurationWorkbenchAdapter;
 import org.hibernate.eclipse.console.workbench.ConsoleConfigurationWorkbenchAdapter;
 import org.hibernate.eclipse.console.workbench.PersistentClassWorkbenchAdapter;
 import org.hibernate.eclipse.console.workbench.PropertyWorkbenchAdapter;
-
-import junit.framework.TestCase;
 
 /**
  * @author vy (vyemialyanchyk@gmail.com)
@@ -72,14 +71,7 @@ public class BaseTestSetCase extends TestCase {
 		}
 		assertTrue(consCFG.hasConfiguration());
 		if (resetCC) {
-			consCFG.execute(new ExecutionContext.Command() {
-				public Object execute() {
-					if (consCFG.hasConfiguration()) {
-						consCFG.getConfiguration().buildMappings();
-					}
-					return consCFG;
-				}
-			});
+			consCFG.buildMappings();
 		}
 		Object[] configs = null;
 		Object[] persClasses = null;

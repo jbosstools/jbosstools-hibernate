@@ -63,7 +63,6 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.QueryPage;
-import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.eclipse.console.AbstractQueryEditor;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
@@ -176,17 +175,10 @@ public class CriteriaEditor extends AbstractQueryEditor {
 
 		final ConsoleConfiguration consoleConfiguration = getConsoleConfiguration();
 
-		if(consoleConfiguration.getConfiguration()==null) {
+		if(!consoleConfiguration.hasConfiguration()) {
 			try {
 			 	consoleConfiguration.build();
-			 	consoleConfiguration.execute( new ExecutionContext.Command() {
-			 		public Object execute() {
-			 			if(consoleConfiguration.hasConfiguration()) {
-			 			consoleConfiguration.getConfiguration().buildMappings();
-			 		}
-			 			return consoleConfiguration;
-			 		}
-				});
+	 			consoleConfiguration.buildMappings();
 			} catch (HibernateException e) {
 				String mess = NLS.bind(HibernateConsoleMessages.CompletionHelper_error_could_not_build_cc, consoleConfiguration.getName());
 				HibernateConsolePlugin.getDefault().logErrorMessage(mess, e);

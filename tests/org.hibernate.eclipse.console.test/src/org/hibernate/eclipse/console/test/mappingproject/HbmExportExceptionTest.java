@@ -24,7 +24,6 @@ import org.eclipse.jdt.internal.core.PackageFragmentRoot;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 import org.hibernate.eclipse.console.test.project.ConfigurableTestProject;
 import org.hibernate.eclipse.console.test.utils.ConsoleConfigUtils;
@@ -95,14 +94,7 @@ public class HbmExportExceptionTest extends BaseTestSetCase {
 					consCFG.reset();
 					consCFG.build();
 					assertTrue(consCFG.hasConfiguration());
-					consCFG.execute(new ExecutionContext.Command() {
-						public Object execute() {
-							if(consCFG.hasConfiguration()) {
-								consCFG.getConfiguration().buildMappings();
-							}
-							return consCFG;
-						}
-					});
+					consCFG.getConfiguration().buildMappings();
 					config = consCFG.getConfiguration();
 				} catch (CoreException e) {
 					String out = NLS.bind(ConsoleTestMessages.UpdateConfigurationTest_error_customising_file_for_package,

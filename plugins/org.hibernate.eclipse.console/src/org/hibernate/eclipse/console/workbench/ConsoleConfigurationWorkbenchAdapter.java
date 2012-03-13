@@ -27,7 +27,6 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.KnownConfigurations;
-import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 
@@ -36,17 +35,9 @@ public class ConsoleConfigurationWorkbenchAdapter extends BasicWorkbenchAdapter 
 	public Object[] getChildren(Object o) {
 		final ConsoleConfiguration ccfg = getConsoleConfiguration( o );
 		//String sfError = null;
-		if(ccfg.getConfiguration()==null) {
+		if(!ccfg.hasConfiguration()) {
 			ccfg.build();
-			ccfg.execute( new ExecutionContext.Command() {
-
-				public Object execute() {
-					if(ccfg.hasConfiguration()) {
-						ccfg.getConfiguration().buildMappings();
-					}
-					return ccfg;
-				}
-			} );
+			ccfg.buildMappings();
 		}
 
 		/*if(ccfg.getSessionFactory()==null) { // initialize later?

@@ -68,24 +68,15 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 	protected Configuration getConfig() {
 		final ConsoleConfiguration consoleConfig = getConsoleConfig();
 		if (consoleConfig != null) {
-			Configuration config = consoleConfig.getConfiguration();
-			if (config == null) {
+			if (!consoleConfig.hasConfiguration()) {
 				try {
     				consoleConfig.build();
+    				consoleConfig.buildMappings();
 				} catch (HibernateException he) {
 					// here just ignore this
 				}
-				consoleConfig.execute(new ExecutionContext.Command() {
-					public Object execute() {
-						if (consoleConfig.hasConfiguration()) {
-							consoleConfig.getConfiguration().buildMappings();
-						}
-						return consoleConfig;
-					}
-				} );
-				config = consoleConfig.getConfiguration();
 			}
-			return config;
+			return consoleConfig.getConfiguration();
 		}
 		return null;
 	}

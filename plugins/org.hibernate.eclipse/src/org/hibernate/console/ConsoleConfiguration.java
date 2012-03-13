@@ -258,6 +258,16 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	public boolean hasConfiguration() {
 		return configuration != null;
 	}
+	
+	public void buildMappings(){
+		execute(new Command() {
+			public Object execute() {
+				getConfiguration().buildMappings();
+				return null;
+			}
+		});
+		getHibernateExtension().buildMappings();
+	}
 
 	public void buildSessionFactory() {
 		execute(new Command() {

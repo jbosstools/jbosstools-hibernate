@@ -15,7 +15,6 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -37,16 +36,9 @@ import org.hibernate.console.ext.QueryResult;
 import org.hibernate.console.ext.QueryResultImpl;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.PreferencesClassPathUtils;
-import org.hibernate.eclipse.console.HibernateConsoleMessages;
-import org.hibernate.eclipse.console.utils.QLFormatHelper;
-import org.hibernate.engine.query.spi.HQLQueryPlan;
-import org.hibernate.hql.spi.QueryTranslator;
-import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.service.internal.StandardServiceRegistryImpl;
-import org.hibernate.type.Type;
-import org.hibernate.util.xpl.StringHelper;
 
 /**
  * 
@@ -348,5 +340,15 @@ public class HibernateExtension4_0 implements HibernateExtension {
 	
 	public String generateSQL(final String query) {
 		return QueryHelper.generateSQL(executionContext, sessionFactory, query);
+	}
+
+	@Override
+	public void buildMappings() {
+		execute(new Command() {
+			public Object execute() {
+				getConfiguration().buildMappings();
+				return null;
+			}
+		});
 	}
 }

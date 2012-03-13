@@ -491,16 +491,8 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 			return cfg;
 		} else {
 			cc.build();
-			final Configuration configuration = cc.getConfiguration();
-
-			cc.execute(new Command() {
-				public Object execute() {
-
-					configuration.buildMappings();
-					return configuration;
-				}
-			});
-			return configuration;
+			cc.buildMappings();
+			return cc.getConfiguration();
 		}
 	}
 

@@ -85,14 +85,9 @@ public class OpenDiagramActionDelegate implements IObjectActionDelegate {
     						DiagramViewerMessages.OpenDiagramActionDelegate_could_not_load_configuration + 
     						' ' + consoleConfig.getName(), he);
     				}
-    				consoleConfig.execute( new ExecutionContext.Command() {
-    					public Object execute() {
-    						if (consoleConfig.hasConfiguration()) {
-    							consoleConfig.getConfiguration().buildMappings();
-    						}
-    						return consoleConfig;
-    					}
-    				} );
+					if (consoleConfig.hasConfiguration()) {
+						consoleConfig.buildMappings();
+					}
     				config = consoleConfig.getConfiguration();
     			}
     			if (config != null) {
