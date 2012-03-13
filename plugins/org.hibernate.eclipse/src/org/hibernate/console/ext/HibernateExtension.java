@@ -10,7 +10,9 @@
  ******************************************************************************/
 package org.hibernate.console.ext;
 
+import org.hibernate.SessionFactory;
 import org.hibernate.console.QueryInputModel;
+import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 
@@ -29,6 +31,9 @@ public interface HibernateExtension {
 	public boolean closeSessionFactory();
 	
 	public boolean reset();
+	
+	public String generateSQL(final String query);
+	
 	//TODO do we really need this?
 	public String getHibernateVersion();
 	
