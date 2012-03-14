@@ -10,5 +10,5 @@
 	<artifactId>hibernatetools.site</artifactId> 
 	<name>hibernatetools.site</name>
 	
-	<packaging>eclipse-update-site</packaging>
+	<packaging>eclipse-repository</packaging>
 </project>
