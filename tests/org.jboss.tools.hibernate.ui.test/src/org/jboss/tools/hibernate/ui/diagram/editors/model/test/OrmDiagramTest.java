@@ -56,6 +56,9 @@ public class OrmDiagramTest extends TestCase {
 				
 				allowing(consoleConfig).getConfiguration();
 				will(returnValue(config));
+				
+				allowing(consoleConfig).hasConfiguration();
+				will(returnValue(true));
 
 				oneOf(ioe).getEntityName();
 				will(returnValue(innerIntricateName));
