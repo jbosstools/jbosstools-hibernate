@@ -312,9 +312,15 @@ public class ProjectUtils {
 		}
 		// insert this in last place
 		updateCollection(projects, findProject(consoleConfiguration));
-		ArrayList<IJavaProject> res = new ArrayList<IJavaProject>();
-		for (Iterator<IProject> it = projects.iterator(); it.hasNext();) {
-			res.add(JavaCore.create(it.next()));
+		List<IJavaProject> res = new ArrayList<IJavaProject>();
+		for (int i = 0; i < projects.size(); i++) {
+			try {
+				if (projects.get(i).hasNature(JavaCore.NATURE_ID)){
+					res.add(JavaCore.create(projects.get(i)));
+				}
+			} catch (CoreException e) {
+				HibernateConsolePlugin.getDefault().log(e);
+			}
 		}
 		return res.toArray(new IJavaProject[0]);
 	}
