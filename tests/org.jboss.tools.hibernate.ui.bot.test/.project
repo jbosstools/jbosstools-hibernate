@@ -37,4 +37,21 @@
 		<nature>org.eclipse.wst.common.project.facet.core.nature</nature>
 		<nature>org.eclipse.pde.api.tools.apiAnalysisNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>lib-org.jboss.tools.common.text.ext_3.3.0.v20111208-2036-H34-M5</name>
+			<type>2</type>
+			<location>/home/jpeterka/ide/test/jbds5m5h62/studio/plugins/org.jboss.tools.common.text.ext_3.3.0.v20111208-2036-H34-M5</location>
+		</link>
+		<link>
+			<name>lib-org.jboss.tools.common.text.xml_3.3.0.v20111208-2036-H34-M5</name>
+			<type>2</type>
+			<location>/home/jpeterka/ide/test/jbds5m5h62/studio/plugins/org.jboss.tools.common.text.xml_3.3.0.v20111208-2036-H34-M5</location>
+		</link>
+		<link>
+			<name>lib-org.jboss.tools.common_3.3.0.v20111208-2036-H34-M5</name>
+			<type>2</type>
+			<location>/home/jpeterka/ide/test/jbds5m5h62/studio/plugins/org.jboss.tools.common_3.3.0.v20111208-2036-H34-M5</location>
+		</link>
+	</linkedResources>
 </projectDescription>
