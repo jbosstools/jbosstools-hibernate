@@ -26,4 +26,3 @@ Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Eclipse-RegisterBuddy: org.apache.log4j
 Import-Package: org.eclipse.jdt.internal.ui
 Export-Package: org.jboss.tools.hibernate.ui.bot.testsuite
-Bundle-ClassPath: lib/hsqldb.jar,.
