@@ -315,7 +315,7 @@ public class ProjectUtils {
 		List<IJavaProject> res = new ArrayList<IJavaProject>();
 		for (int i = 0; i < projects.size(); i++) {
 			try {
-				if (projects.get(i).hasNature(JavaCore.NATURE_ID)){
+				if (projects.get(i).isOpen() && projects.get(i).hasNature(JavaCore.NATURE_ID)){
 					res.add(JavaCore.create(projects.get(i)));
 				}
 			} catch (CoreException e) {
