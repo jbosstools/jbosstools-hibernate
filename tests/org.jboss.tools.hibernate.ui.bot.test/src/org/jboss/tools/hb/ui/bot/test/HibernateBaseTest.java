@@ -8,13 +8,32 @@ import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.helper.FileHelper;
 import org.jboss.tools.ui.bot.ext.helper.ImportHelper;
 import org.jboss.tools.ui.bot.ext.helper.ResourceHelper;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.view.ErrorLogView;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 public class HibernateBaseTest extends SWTTestExt {
 	
+	@BeforeClass
+	public static void hbBaseBeforeClass() {
+		eclipse.closeView(IDELabel.View.WELCOME);
+		eclipse.closeView(IDELabel.View.JBOSS_CENTRAL);
+		eclipse.closeAllEditors();
+		util.waitForAll();
+	}
+	
+	@Test
+	public void emptyTest() {
+		
+	}
+	
 	public void emptyErrorLog() {
 		ErrorLogView el = new ErrorLogView();
-		el.delete();
+		if (el.getRecordCount() > 0) {
+			el.delete();
+		}
 		util.waitForNonIgnoredJobs();
 	}
 	
@@ -43,6 +62,12 @@ public class HibernateBaseTest extends SWTTestExt {
 		}
 		ImportHelper.importAllProjects(wpath);
 		util.waitForNonIgnoredJobs();		
+	}
+	
+	@AfterClass
+	public static void afterClass() {
+		// wait for all jobs
+		util.waitForAll();
 	}
 		
 		 
