@@ -1,4 +1,4 @@
-package org.jboss.tools.hb.ui.bot.test;
+package org.jboss.tools.hb.ui.bot.test.configuration;
 
 import static org.eclipse.swtbot.swt.finder.waits.Conditions.shellCloses;
 
@@ -8,37 +8,25 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.hamcrest.Matcher;
+import org.jboss.tools.hb.ui.bot.common.ConfigurationFile;
 import org.jboss.tools.hb.ui.bot.common.Tree;
+import org.jboss.tools.hb.ui.bot.test.HibernateBaseTest;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.helper.DatabaseHelper;
 import org.jboss.tools.ui.bot.ext.types.EntityType;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * Hibernate configuration ui bot test
+ * Hibernate create configuration ui bot test
+ * 
  * @author jpeterka
- *
+ * 
  */
 @Require
-public class ConfigurationFileTest extends HibernateBaseTest {
-
-	@BeforeClass
-	public static void beforeClass() {
-		eclipse.closeView(IDELabel.View.WELCOME);
-		eclipse.closeView(IDELabel.View.JBOSS_CENTRAL);
-		eclipse.closeAllEditors();
-		util.waitForAll();
-	}
-
-	@Test
-	public void emptyTest() {
-		assertTrue(true);
-	}
+public class CreateConfigurationFileTest extends HibernateBaseTest {
 
 	@Test
 	public void configurationFileTest() {
@@ -89,17 +77,7 @@ public class ConfigurationFileTest extends HibernateBaseTest {
 	}
 
 	private void openHBConfiguration() {
-
-		SWTBotView pv = open
-				.viewOpen(ActionItem.View.GeneralProjectExplorer.LABEL);
-		Tree.select(pv.bot(), "hibernate35", "cfg", "hibernate.cfg.xml");
-		bot.editorByTitle("hibernate.cfg.xml").show();
-
+		ConfigurationFile.open("hibernate35", "cfg", "hibernate.cfg.xml");
 	}
 
-	@AfterClass
-	public static void afterClass() {
-		// wait for all jobs
-		util.waitForAll();
-	}
 }
