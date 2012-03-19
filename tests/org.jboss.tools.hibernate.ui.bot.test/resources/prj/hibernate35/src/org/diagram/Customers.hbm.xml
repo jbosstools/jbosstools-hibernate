@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 19, 2012 8:41:09 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="org.diagram.Customers" table="CUSTOMERS" schema="PUBLIC">
+        <id name="customernumber" type="int">
+            <column name="CUSTOMERNUMBER" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="employees" class="org.diagram.Employees" fetch="select">
+            <column name="SALESREPEMPLOYEENUMBER" />
+        </many-to-one>
+        <property name="addressline1" type="string">
+            <column name="ADDRESSLINE1" length="50" not-null="true" />
+        </property>
+        <property name="addressline2" type="string">
+            <column name="ADDRESSLINE2" length="50" />
+        </property>
+        <property name="city" type="string">
+            <column name="CITY" length="50" not-null="true" />
+        </property>
+        <property name="contactfirstname" type="string">
+            <column name="CONTACTFIRSTNAME" length="50" not-null="true" />
+        </property>
+        <property name="contactlastname" type="string">
+            <column name="CONTACTLASTNAME" length="50" not-null="true" />
+        </property>
+        <property name="country" type="string">
+            <column name="COUNTRY" length="50" not-null="true" />
+        </property>
+        <property name="creditlimit" type="java.lang.Double">
+            <column name="CREDITLIMIT" precision="0" scale="0" />
+        </property>
+        <property name="customername" type="string">
+            <column name="CUSTOMERNAME" length="50" not-null="true" />
+        </property>
+        <property name="phone" type="string">
+            <column name="PHONE" length="50" not-null="true" />
+        </property>
+        <property name="postalcode" type="string">
+            <column name="POSTALCODE" length="15" />
+        </property>
+        <property name="state" type="string">
+            <column name="STATE" length="50" />
+        </property>
+        <set name="orderses" table="ORDERS" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CUSTOMERNUMBER" not-null="true" />
+            </key>
+            <one-to-many class="org.diagram.Orders" />
+        </set>
+        <set name="paymentses" table="PAYMENTS" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CUSTOMERNUMBER" not-null="true" />
+            </key>
+            <one-to-many class="org.diagram.Payments" />
+        </set>
+    </class>
+</hibernate-mapping>

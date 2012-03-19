@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 19, 2012 8:41:09 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="org.diagram.Orderdetails" table="ORDERDETAILS" schema="PUBLIC">
+        <id name="orderdetailnumber" type="java.lang.Integer">
+            <column name="ORDERDETAILNUMBER" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="orders" class="org.diagram.Orders" fetch="select">
+            <column name="ORDERNUMBER" not-null="true" />
+        </many-to-one>
+        <many-to-one name="products" class="org.diagram.Products" fetch="select">
+            <column name="PRODUCTCODE" length="15" not-null="true" />
+        </many-to-one>
+        <property name="orderlinenumber" type="short">
+            <column name="ORDERLINENUMBER" not-null="true" />
+        </property>
+        <property name="priceeach" type="double">
+            <column name="PRICEEACH" precision="0" scale="0" not-null="true" />
+        </property>
+        <property name="quantityordered" type="int">
+            <column name="QUANTITYORDERED" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -10,19 +10,19 @@
 <stringAttribute key="org.hibernate.eclipse.launch.CFG_XML_FILE" value="/hibernatelib/cfg/hibernate.cfg.xml"/>
 <stringAttribute key="org.hibernate.eclipse.launch.CONFIGURATION_FACTORY" value="CORE"/>
 <listAttribute key="org.hibernate.eclipse.launch.FILE_MAPPINGS">
-<listEntry value="/hibernate35/src/org/testday/Customer.hbm.xml"/>
-<listEntry value="/hibernate35/src/org/testday/Customers.hbm.xml"/>
-<listEntry value="/hibernate35/src/org/testday/Dog.hbm.xml"/>
-<listEntry value="/hibernate35/src/org/testday/Employees.hbm.xml"/>
-<listEntry value="/hibernate35/src/org/testday/Kunde.hbm.xml"/>
-<listEntry value="/hibernate35/src/org/testday/Offices.hbm.xml"/>
-<listEntry value="/hibernate35/src/org/testday/Orderdetails.hbm.xml"/>
-<listEntry value="/hibernate35/src/org/testday/Orders.hbm.xml"/>
-<listEntry value="/hibernate35/src/org/testday/Passwordattributes.hbm.xml"/>
-<listEntry value="/hibernate35/src/org/testday/Passwordresourceauditlog.hbm.xml"/>
-<listEntry value="/hibernate35/src/org/testday/Payments.hbm.xml"/>
-<listEntry value="/hibernate35/src/org/testday/Productlines.hbm.xml"/>
-<listEntry value="/hibernate35/src/org/testday/Products.hbm.xml"/>
+<listEntry value="/hibernate35/src/org/diagram/Customer.hbm.xml"/>
+<listEntry value="/hibernate35/src/org/diagram/Customers.hbm.xml"/>
+<listEntry value="/hibernate35/src/org/diagram/Dog.hbm.xml"/>
+<listEntry value="/hibernate35/src/org/diagram/Employees.hbm.xml"/>
+<listEntry value="/hibernate35/src/org/diagram/Kunde.hbm.xml"/>
+<listEntry value="/hibernate35/src/org/diagram/Offices.hbm.xml"/>
+<listEntry value="/hibernate35/src/org/diagram/Orderdetails.hbm.xml"/>
+<listEntry value="/hibernate35/src/org/diagram/Orders.hbm.xml"/>
+<listEntry value="/hibernate35/src/org/diagram/Passwordattributes.hbm.xml"/>
+<listEntry value="/hibernate35/src/org/diagram/Passwordresourceauditlog.hbm.xml"/>
+<listEntry value="/hibernate35/src/org/diagram/Payments.hbm.xml"/>
+<listEntry value="/hibernate35/src/org/diagram/Productlines.hbm.xml"/>
+<listEntry value="/hibernate35/src/org/diagram/Products.hbm.xml"/>
 </listAttribute>
 <stringAttribute key="org.hibernate.eclipse.launch.HIBERNATE_VERSION" value="4.0"/>
 </launchConfiguration>

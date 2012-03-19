@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 19, 2012 8:41:09 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="org.diagram.Payments" table="PAYMENTS" schema="PUBLIC">
+        <id name="paymentnumber" type="java.lang.Integer">
+            <column name="PAYMENTNUMBER" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="customers" class="org.diagram.Customers" fetch="select">
+            <column name="CUSTOMERNUMBER" not-null="true" />
+        </many-to-one>
+        <property name="amount" type="double">
+            <column name="AMOUNT" precision="0" scale="0" not-null="true" />
+        </property>
+        <property name="checknumber" type="string">
+            <column name="CHECKNUMBER" length="50" not-null="true" />
+        </property>
+        <property name="paymentdate" type="date">
+            <column name="PAYMENTDATE" length="0" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>
