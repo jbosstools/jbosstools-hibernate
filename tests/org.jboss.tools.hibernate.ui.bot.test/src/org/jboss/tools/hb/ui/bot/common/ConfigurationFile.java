@@ -35,7 +35,7 @@ public class ConfigurationFile {
 		bot.editorByTitle(path[path.length - 1]).show();
 	}
 	
-	public static void create(String[] path, String cfgName) {
+	public static void create(String[] path, String cfgName, boolean createConsole) {
 		SWTBotExt bot = new SWTBotExt();
 		SWTEclipseExt eclipse = new SWTEclipseExt();
 		SWTOpenExt open = new SWTOpenExt(bot);
@@ -61,14 +61,27 @@ public class ConfigurationFile {
 		bot.comboBoxWithLabel(IDELabel.HBConsoleWizard.CONNECTION_URL).setText(
 				jdbc);
 
+		// Username & password
+		String username = TestConfigurator.currentConfig.getDB().username;
+		bot.textWithLabel("Username:").setText(username);		
+		String password = TestConfigurator.currentConfig.getDB().password;
+		bot.textWithLabel("Password:").setText(password);
+		
 		// Create console configuration
 		Matcher<Button> matcher = WidgetMatcherFactory
 				.withText(IDELabel.HBConsoleWizard.CREATE_CONSOLE_CONFIGURATION);
 		Button button = bot.widget(matcher);
 		SWTBotCheckBox cb = new SWTBotCheckBox(button);
 
-		if (!cb.isChecked())
-			cb.click();
+		// Create hibernate Console during hibernate configuration
+		if (createConsole) {
+			if (!cb.isChecked())			
+				cb.click();
+		}
+		else {
+			if (cb.isChecked())			
+				cb.click();
+		}
 
 		SWTBotShell shell = bot.activeShell();
 		bot.button(IDELabel.Button.FINISH).click();
