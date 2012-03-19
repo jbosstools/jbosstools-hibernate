@@ -2,6 +2,9 @@ package org.jboss.tools.hb.ui.bot.common;
 
 import static org.junit.Assert.fail;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
@@ -81,9 +84,11 @@ public class Tree {
 	
 	
 	private static void expandNode(SWTBotTreeItem item) {
-		item.expand();
 		if (!item.isExpanded()) {
-			fail("Unable to expand " + item.getText());
+			item.expand();
+		}
+		if (!item.isExpanded()) {
+			log.error("Unable to expand:" + item.getText());
 		}
 	}
 	
@@ -104,12 +109,51 @@ public class Tree {
 		
 	}
 	
+	private static boolean hasSubnodes(SWTBotTreeItem item) {
+		return (item.getNodes().size() > 0);
+	}
+	
 	private static void collapseNode(SWTBotTreeItem item) {
 		if (item.isExpanded()) {
 			item.collapse();
 		}
 		if (item.isExpanded()) {
-			fail("Unable to collapse" + item.getText());
+			log.error("Unable to collapse:" + item.getText());
 		}
+	}
+
+	public static List<String> getSubNodes(SWTBot bot, SWTBotTreeItem item) {
+		
+		List<String> ret = new ArrayList<String>();		
+		expandNode(item);
+		
+		final int limit = 5; // 5 cycles max
+		final int sleep = 1000;  // 1s		
+		int counter = 0;
+		// 1st round
+		while (counter < limit) {
+			if (!hasSubnodes(item)) {
+				log.info("no subnodes");
+				bot.sleep(sleep);
+			}
+			else {
+				ret = item.getNodes();
+				break;
+			}
+		}
+		// 2nd round
+		collapseNode(item);
+		expandNode(item);
+		while (counter < limit) {
+			if (!hasSubnodes(item)) {
+				log.info("no subnodes");
+				bot.sleep(sleep);
+			}
+			else {
+				ret = item.getNodes();
+				break;
+			}
+		}
+		return ret;
 	}
 }
