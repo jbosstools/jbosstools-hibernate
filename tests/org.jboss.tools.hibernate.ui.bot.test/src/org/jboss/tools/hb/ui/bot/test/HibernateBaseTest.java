@@ -22,6 +22,7 @@ public class HibernateBaseTest extends SWTTestExt {
 		eclipse.closeView(IDELabel.View.JBOSS_CENTRAL);
 		eclipse.closeAllEditors();
 		util.waitForAll();
+		bot.closeAllShells();
 	}
 	
 	@Test
