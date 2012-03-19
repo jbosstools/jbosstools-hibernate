@@ -24,7 +24,7 @@ public class CreateConfigurationFileTest extends HibernateBaseTest {
 	}
 
 	private void createHBConfiguration() {
-		ConfigurationFile.create(new String[]{"hibernate35", "cfg"}, "hibernate.cfg.xml");
+		ConfigurationFile.create(new String[]{"hibernate35", "cfg"}, "hibernate.cfg.xml",false);
 	}
 
 	private void openHBConfiguration() {
