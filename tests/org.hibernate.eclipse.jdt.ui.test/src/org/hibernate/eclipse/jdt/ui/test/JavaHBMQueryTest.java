@@ -106,6 +106,7 @@ public class JavaHBMQueryTest extends TestCase {
 			HQLJavaCompletionProposalComputer proposalComputer = new HQLJavaCompletionProposalComputer();
 			ContentAssistInvocationContext context = new JavaContentAssistInvocationContext(editor.getViewer(), 125, editor);
 			List<ICompletionProposal> computeCompletionProposals = proposalComputer.computeCompletionProposals(context, null);
+			assertTrue(computeCompletionProposals.size() > 0);
 			for (ICompletionProposal iCompletionProposal : computeCompletionProposals) {
 				Class<? extends ICompletionProposal> class1 = iCompletionProposal.getClass();
 				if (class1.getPackage().getName().indexOf("org.jboss.tools.hibernate") == 0){
