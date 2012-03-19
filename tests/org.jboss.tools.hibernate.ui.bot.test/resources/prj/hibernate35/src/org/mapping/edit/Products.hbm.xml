@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 19, 2012 10:39:54 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="org.mapping.edit.Products" table="PRODUCTS">
+        <id name="productcode" type="java.lang.String">
+            <column name="PRODUCTCODE" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="productlines" class="org.mapping.edit.Productlines" fetch="join">
+            <column name="PRODUCTLINES" />
+        </many-to-one>
+        <property name="buyprice" type="double">
+            <column name="BUYPRICE" />
+        </property>
+        <property name="msrp" type="double">
+            <column name="MSRP" />
+        </property>
+        <property name="productdescription" type="java.lang.String">
+            <column name="PRODUCTDESCRIPTION" />
+        </property>
+        <property name="productname" type="java.lang.String">
+            <column name="PRODUCTNAME" />
+        </property>
+        <property name="productscale" type="java.lang.String">
+            <column name="PRODUCTSCALE" />
+        </property>
+        <property name="productvendor" type="java.lang.String">
+            <column name="PRODUCTVENDOR" />
+        </property>
+        <property name="quantityinstock" type="short">
+            <column name="QUANTITYINSTOCK" />
+        </property>
+        <set name="orderdetailses" table="PRODUCTS" inverse="false" lazy="true">
+            <key>
+                <column name="PRODUCTCODE" />
+            </key>
+            <element type="string">
+                <column name="ORDERDETAILSES" />
+            </element>
+        </set>
+    </class>
+</hibernate-mapping>

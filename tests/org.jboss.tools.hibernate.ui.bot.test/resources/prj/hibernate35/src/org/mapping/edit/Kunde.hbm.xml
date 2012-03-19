@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 19, 2012 10:39:54 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="org.mapping.edit.Kunde" table="KUNDE">
+        <id name="id" type="long">
+            <column name="ID" />
+            <generator class="assigned" />
+        </id>
+        <property name="art" type="java.lang.String">
+            <column name="ART" />
+        </property>
+    </class>
+</hibernate-mapping>

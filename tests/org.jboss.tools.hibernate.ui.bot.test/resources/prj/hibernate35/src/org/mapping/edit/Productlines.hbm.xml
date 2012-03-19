@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 19, 2012 10:39:54 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="org.mapping.edit.Productlines" table="PRODUCTLINES">
+        <id name="productline" type="java.lang.String">
+            <column name="PRODUCTLINE" />
+            <generator class="assigned" />
+        </id>
+        <property name="htmldescription" type="java.lang.String">
+            <column name="HTMLDESCRIPTION" />
+        </property>
+        <property name="textdescription" type="java.lang.String">
+            <column name="TEXTDESCRIPTION" />
+        </property>
+        <set name="productses" table="PRODUCTLINES" inverse="false" lazy="true">
+            <key>
+                <column name="PRODUCTLINE" />
+            </key>
+            <element type="string">
+                <column name="PRODUCTSES" />
+            </element>
+        </set>
+    </class>
+</hibernate-mapping>

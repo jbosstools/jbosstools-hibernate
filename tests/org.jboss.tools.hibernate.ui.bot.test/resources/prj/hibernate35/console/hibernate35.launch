@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.hibernate.eclipse.launch.ConsoleConfigurationLaunchConfigurationType">
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/hibernate35"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="4"/>
+</listAttribute>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="hibernate35"/>
+<stringAttribute key="org.hibernate.eclipse.launch.CFG_XML_FILE" value="/hibernatelib/cfg/hibernate.cfg.xml"/>
+<stringAttribute key="org.hibernate.eclipse.launch.CONFIGURATION_FACTORY" value="CORE"/>
+<listAttribute key="org.hibernate.eclipse.launch.FILE_MAPPINGS">
+<listEntry value="/hibernate35/src/org/testday/Customer.hbm.xml"/>
+<listEntry value="/hibernate35/src/org/testday/Customers.hbm.xml"/>
+<listEntry value="/hibernate35/src/org/testday/Dog.hbm.xml"/>
+<listEntry value="/hibernate35/src/org/testday/Employees.hbm.xml"/>
+<listEntry value="/hibernate35/src/org/testday/Kunde.hbm.xml"/>
+<listEntry value="/hibernate35/src/org/testday/Offices.hbm.xml"/>
+<listEntry value="/hibernate35/src/org/testday/Orderdetails.hbm.xml"/>
+<listEntry value="/hibernate35/src/org/testday/Orders.hbm.xml"/>
+<listEntry value="/hibernate35/src/org/testday/Passwordattributes.hbm.xml"/>
+<listEntry value="/hibernate35/src/org/testday/Passwordresourceauditlog.hbm.xml"/>
+<listEntry value="/hibernate35/src/org/testday/Payments.hbm.xml"/>
+<listEntry value="/hibernate35/src/org/testday/Productlines.hbm.xml"/>
+<listEntry value="/hibernate35/src/org/testday/Products.hbm.xml"/>
+</listAttribute>
+<stringAttribute key="org.hibernate.eclipse.launch.HIBERNATE_VERSION" value="4.0"/>
+</launchConfiguration>

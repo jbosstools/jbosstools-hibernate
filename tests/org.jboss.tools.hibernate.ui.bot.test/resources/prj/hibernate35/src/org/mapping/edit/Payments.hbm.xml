@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 19, 2012 10:39:54 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="org.mapping.edit.Payments" table="PAYMENTS">
+        <id name="paymentnumber" type="java.lang.Integer">
+            <column name="PAYMENTNUMBER" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="customers" class="org.mapping.edit.Customers" fetch="join">
+            <column name="CUSTOMERS" />
+        </many-to-one>
+        <property name="amount" type="double">
+            <column name="AMOUNT" />
+        </property>
+        <property name="checknumber" type="java.lang.String">
+            <column name="CHECKNUMBER" />
+        </property>
+        <property name="paymentdate" type="java.util.Date">
+            <column name="PAYMENTDATE" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 19, 2012 10:39:54 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="org.mapping.edit.Customers" table="CUSTOMERS">
+        <id name="customernumber" type="int">
+            <column name="CUSTOMERNUMBER" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="employees" class="org.mapping.edit.Employees" fetch="join">
+            <column name="EMPLOYEES" />
+        </many-to-one>
+        <property name="addressline1" type="java.lang.String">
+            <column name="ADDRESSLINE1" />
+        </property>
+        <property name="addressline2" type="java.lang.String">
+            <column name="ADDRESSLINE2" />
+        </property>
+        <property name="city" type="java.lang.String">
+            <column name="CITY" />
+        </property>
+        <property name="contactfirstname" type="java.lang.String">
+            <column name="CONTACTFIRSTNAME" />
+        </property>
+        <property name="contactlastname" type="java.lang.String">
+            <column name="CONTACTLASTNAME" />
+        </property>
+        <property name="country" type="java.lang.String">
+            <column name="COUNTRY" />
+        </property>
+        <property name="creditlimit" type="java.lang.Double">
+            <column name="CREDITLIMIT" />
+        </property>
+        <property name="customername" type="java.lang.String">
+            <column name="CUSTOMERNAME" />
+        </property>
+        <property name="phone" type="java.lang.String">
+            <column name="PHONE" />
+        </property>
+        <property name="postalcode" type="java.lang.String">
+            <column name="POSTALCODE" />
+        </property>
+        <property name="state" type="java.lang.String">
+            <column name="STATE" />
+        </property>
+        <set name="orderses" table="CUSTOMERS" inverse="false" lazy="true">
+            <key>
+                <column name="CUSTOMERNUMBER" />
+            </key>
+            <element type="string">
+                <column name="ORDERSES" />
+            </element>
+        </set>
+        <set name="paymentses" table="CUSTOMERS" inverse="false" lazy="true">
+            <key>
+                <column name="CUSTOMERNUMBER" />
+            </key>
+            <element type="string">
+                <column name="PAYMENTSES" />
+            </element>
+        </set>
+    </class>
+</hibernate-mapping>

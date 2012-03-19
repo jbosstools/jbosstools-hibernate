@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 19, 2012 10:39:54 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="org.mapping.edit.Offices" table="OFFICES">
+        <id name="officecode" type="java.lang.String">
+            <column name="OFFICECODE" />
+            <generator class="assigned" />
+        </id>
+        <property name="addressline1" type="java.lang.String">
+            <column name="ADDRESSLINE1" />
+        </property>
+        <property name="addressline2" type="java.lang.String">
+            <column name="ADDRESSLINE2" />
+        </property>
+        <property name="city" type="java.lang.String">
+            <column name="CITY" />
+        </property>
+        <property name="country" type="java.lang.String">
+            <column name="COUNTRY" />
+        </property>
+        <property name="phone" type="java.lang.String">
+            <column name="PHONE" />
+        </property>
+        <property name="postalcode" type="java.lang.String">
+            <column name="POSTALCODE" />
+        </property>
+        <property name="state" type="java.lang.String">
+            <column name="STATE" />
+        </property>
+        <property name="territory" type="java.lang.String">
+            <column name="TERRITORY" />
+        </property>
+    </class>
+</hibernate-mapping>

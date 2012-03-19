@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 19, 2012 10:39:54 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="org.mapping.edit.Orders" table="ORDERS">
+        <id name="ordernumber" type="int">
+            <column name="ORDERNUMBER" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="customers" class="org.mapping.edit.Customers" fetch="join">
+            <column name="CUSTOMERS" />
+        </many-to-one>
+        <property name="comments" type="java.lang.String">
+            <column name="COMMENTS" />
+        </property>
+        <property name="orderdate" type="java.util.Date">
+            <column name="ORDERDATE" />
+        </property>
+        <property name="requireddate" type="java.util.Date">
+            <column name="REQUIREDDATE" />
+        </property>
+        <property name="shippeddate" type="java.util.Date">
+            <column name="SHIPPEDDATE" />
+        </property>
+        <property name="status" type="java.lang.String">
+            <column name="STATUS" />
+        </property>
+        <set name="orderdetailses" table="ORDERS" inverse="false" lazy="true">
+            <key>
+                <column name="ORDERNUMBER" />
+            </key>
+            <element type="string">
+                <column name="ORDERDETAILSES" />
+            </element>
+        </set>
+    </class>
+</hibernate-mapping>

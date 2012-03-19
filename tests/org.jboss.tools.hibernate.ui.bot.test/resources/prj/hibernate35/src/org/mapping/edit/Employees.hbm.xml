@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 19, 2012 10:39:54 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="org.mapping.edit.Employees" table="EMPLOYEES">
+        <id name="employeenumber" type="int">
+            <column name="EMPLOYEENUMBER" />
+            <generator class="assigned" />
+        </id>
+        <property name="email" type="java.lang.String">
+            <column name="EMAIL" />
+        </property>
+        <property name="extension" type="java.lang.String">
+            <column name="EXTENSION" />
+        </property>
+        <property name="firstname" type="java.lang.String">
+            <column name="FIRSTNAME" />
+        </property>
+        <property name="jobtitle" type="java.lang.String">
+            <column name="JOBTITLE" />
+        </property>
+        <property name="lastname" type="java.lang.String">
+            <column name="LASTNAME" />
+        </property>
+        <property name="officecode" type="java.lang.String">
+            <column name="OFFICECODE" />
+        </property>
+        <property name="reportsto" type="java.lang.Integer">
+            <column name="REPORTSTO" />
+        </property>
+        <set name="customerses" table="EMPLOYEES" inverse="false" lazy="true">
+            <key>
+                <column name="EMPLOYEENUMBER" />
+            </key>
+            <element type="string">
+                <column name="CUSTOMERSES" />
+            </element>
+        </set>
+    </class>
+</hibernate-mapping>
