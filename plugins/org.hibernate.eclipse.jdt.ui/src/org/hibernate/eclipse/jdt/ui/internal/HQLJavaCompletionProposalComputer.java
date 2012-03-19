@@ -91,7 +91,7 @@ public class HQLJavaCompletionProposalComputer implements IJavaCompletionProposa
 					 query = ctx.getDocument().get(stringStart, stringEnd-stringStart );
 					 ConsoleExtension consoleExtension = ConsoleExtensionManager.getConsoleExtension(consoleConfiguration.getHibernateExtension());
 					 if (consoleExtension != null){
-							CompletionProposalsResult codeCompletions = consoleExtension.hqlCodeComplete(query, ctx.getInvocationOffset()-stringStart);
+							CompletionProposalsResult codeCompletions = consoleExtension.hqlCodeComplete(query, stringStart, ctx.getInvocationOffset() - stringStart);
 					
 							errorMessage = codeCompletions.getErrorMessage();
 							proposals = codeCompletions.getCompletionProposals();

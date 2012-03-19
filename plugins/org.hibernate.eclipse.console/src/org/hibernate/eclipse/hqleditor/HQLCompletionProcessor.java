@@ -119,7 +119,7 @@ public class HQLCompletionProcessor implements IContentAssistProcessor {
 				if(consoleConfiguration != null) {
 					ConsoleExtension consoleExtension = ConsoleExtensionManager.getConsoleExtension(consoleConfiguration.getHibernateExtension());
 					if (consoleExtension != null){
-						CompletionProposalsResult codeCompletions = consoleExtension.hqlCodeComplete(doc.get(), currentOffset);
+						CompletionProposalsResult codeCompletions = consoleExtension.hqlCodeComplete(doc.get(), startOffset, currentOffset);
 						
 						proposalList.addAll(codeCompletions.getCompletionProposals());
 						errorMessage = codeCompletions.getErrorMessage();//eclipseHQLCompletionCollector.getLastErrorMessage();

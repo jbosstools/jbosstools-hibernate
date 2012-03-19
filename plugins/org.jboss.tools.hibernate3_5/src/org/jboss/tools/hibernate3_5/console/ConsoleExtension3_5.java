@@ -72,8 +72,8 @@ public class ConsoleExtension3_5 implements ConsoleExtension {
 	}
 
 	@Override
-	public CompletionProposalsResult hqlCodeComplete(String query, int currentOffset) {
-		EclipseHQLCompletionRequestor requestor = new EclipseHQLCompletionRequestor();
+	public CompletionProposalsResult hqlCodeComplete(String query, int startPosition, int currentOffset) {
+		EclipseHQLCompletionRequestor requestor = new EclipseHQLCompletionRequestor(startPosition);
 		if (!hibernateExtension.hasConfiguration()){
 			try {
 				hibernateExtension.build();

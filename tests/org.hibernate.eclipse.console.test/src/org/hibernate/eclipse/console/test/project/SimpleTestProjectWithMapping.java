@@ -14,9 +14,15 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 import org.eclipse.core.resources.IncrementalProjectBuilder;
+import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.jdt.core.JavaModelException;
+import org.hibernate.eclipse.console.properties.HibernatePropertiesConstants;
+import org.hibernate.eclipse.console.utils.ProjectUtils;
+import org.osgi.service.prefs.BackingStoreException;
+import org.osgi.service.prefs.Preferences;
 
 public class SimpleTestProjectWithMapping extends SimpleTestProject {
 
@@ -48,5 +54,18 @@ public class SimpleTestProjectWithMapping extends SimpleTestProject {
 		getIProject().findMember(path);
 		getIProject().build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
 	}
+	
+	public void addHibernateNature() throws CoreException{
+		ProjectUtils.addProjectNature(getIProject(), HibernatePropertiesConstants.HIBERNATE_NATURE, new NullProgressMonitor() );
+	}
 
+	public void setDefaultConsoleConfiguration(String ccName) throws BackingStoreException, CoreException{
+		IScopeContext scope = new ProjectScope(getIProject() );
+		Preferences node = scope.getNode(HibernatePropertiesConstants.HIBERNATE_CONSOLE_NODE);
+		
+		node.putBoolean(HibernatePropertiesConstants.HIBERNATE3_ENABLED, true );
+		node.put(HibernatePropertiesConstants.DEFAULT_CONFIGURATION, ccName ); //$NON-NLS-1$
+		node.flush();
+		addHibernateNature();
+	}
 }

@@ -25,7 +25,7 @@ import org.hibernate.console.ext.HibernateExtension;
  */
 public interface ConsoleExtension {
 	
-	public CompletionProposalsResult hqlCodeComplete(String query, int position);
+	public CompletionProposalsResult hqlCodeComplete(String query, int startPosition, int position);
 	
 	public void setHibernateException(HibernateExtension hibernateExtension);
 
