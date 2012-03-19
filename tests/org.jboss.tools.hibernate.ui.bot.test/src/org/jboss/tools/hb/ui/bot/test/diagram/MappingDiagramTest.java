@@ -21,7 +21,9 @@ public class MappingDiagramTest extends HibernateBaseTest {
 	
 	@Test
 	public void showMappingDiagram() {
-		importTestProject("/resources/prj");
+		importTestProject("/resources/prj/hibernatelib");
+		importTestProject("/resources/prj/hibernate35");
+		util.waitForAll();
 		openDiagram();
 	}
 

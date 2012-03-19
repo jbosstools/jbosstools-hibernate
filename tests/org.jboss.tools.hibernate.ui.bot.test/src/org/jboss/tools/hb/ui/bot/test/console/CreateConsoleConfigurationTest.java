@@ -10,6 +10,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.hb.ui.bot.common.ConfigurationFile;
 import org.jboss.tools.hb.ui.bot.common.Tree;
 import org.jboss.tools.hb.ui.bot.test.HibernateBaseTest;
+import org.jboss.tools.ui.bot.ext.config.Annotations.DB;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
@@ -23,7 +24,7 @@ import org.junit.Test;
  * @author jpeterka
  *
  */
-@Require(clearProjects = true)
+@Require(db = @DB, clearProjects = true)
 public class CreateConsoleConfigurationTest extends HibernateBaseTest {
 
 	final String prjName = "configurationtest";
@@ -63,7 +64,7 @@ public class CreateConsoleConfigurationTest extends HibernateBaseTest {
 	
 	private void createMainTab(SWTBotShell shell) {
 		bot.cTabItem(IDELabel.HBConsoleWizard.MAIN_TAB).activate();
-		bot.textWithLabel("Name:").setText(prjName + "-w");
+		bot.textWithLabel("Name:").setText(prjName);
 		bot.textWithLabelInGroup("","Configuration file:").setText(prjName + "/src/hibernate.cfg.xml");						
 	}
 
