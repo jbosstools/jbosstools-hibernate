@@ -18,7 +18,7 @@ import org.junit.Test;
  * @author jpeterka
  * 
  */
-@Require(db = @DB, clearProjects = false, perspective = "Hibernate")
+@Require(db = @DB, clearProjects = true, perspective = "Hibernate")
 public class CreateCodeGenerationConfiguration extends HibernateBaseTest {
 
 	final String prjName = "hibernate35";
@@ -31,8 +31,7 @@ public class CreateCodeGenerationConfiguration extends HibernateBaseTest {
 		fillExportersTab(dlg);
 		fillRefreshTab(dlg);
 		fillCommonTab(dlg);
-		runCodeGeneration();
-		
+		runCodeGeneration();		
 	}
 
 	private SWTBotShell openCodeGenerationDlg() {
