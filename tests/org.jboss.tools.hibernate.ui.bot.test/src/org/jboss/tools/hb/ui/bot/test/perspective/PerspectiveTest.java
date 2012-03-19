@@ -1,7 +1,6 @@
 package org.jboss.tools.hb.ui.bot.test.perspective;
 
 import org.jboss.tools.hb.ui.bot.test.HibernateBaseTest;
-import org.jboss.tools.hibernate.ui.bot.testsuite.HibernateTest;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
