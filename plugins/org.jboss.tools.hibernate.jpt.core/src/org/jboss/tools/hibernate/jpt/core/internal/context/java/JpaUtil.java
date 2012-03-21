@@ -36,6 +36,8 @@ public class JpaUtil {
 		String[] interfaces = type.getSuperInterfaceNames();
 		List<String> resolvedInterfaceNames = new LinkedList<String>();
 		for (int i = 0; i < interfaces.length; i++) {
+			if (interfaceName.equals(interfaces[i]))
+				return true;
 			String[][] resolvedInterfaces = type.resolveType(interfaces[i]);
 			if (resolvedInterfaces != null){
 				for (String[] parts : resolvedInterfaces) {
