@@ -13,7 +13,7 @@ import org.hibernate.annotations.GenericGenerator;
  * Entity implementation class for Entity: GeneratorValidationEntity
  *
  */
-@GenericGenerator(name="mygenerator", strategy = "uuid")
+@GenericGenerator(name="mygen", strategy = "uuid")
 
 @Entity
 public class GeneratorValidationEntity implements Serializable {

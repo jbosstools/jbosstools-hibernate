@@ -40,9 +40,9 @@ public class AnnotationValidationTest extends HibernateBaseTest {
 		
 		SWTBotTreeItem[] items = null;
 		items = ProblemsView.getFilteredErrorsTreeItems(bot, desc, path, resource, type);				
-		assertTrue(items.length == 1);
+		assertTrue(items.length == 0);
 		
-		// fix 
+		// make validation error 
 		SWTBotEditor editor = bot.editorByTitle(resource);
 		editor.show();
 		StringHelper sh = new StringHelper(editor.toTextEditor().getText());
@@ -54,6 +54,6 @@ public class AnnotationValidationTest extends HibernateBaseTest {
 		
 		// check
 		items = ProblemsView.getFilteredErrorsTreeItems(bot, desc, path, resource, type);				
-		assertTrue(items.length == 0);
+		assertTrue(items.length == 1);
 	}
 }
