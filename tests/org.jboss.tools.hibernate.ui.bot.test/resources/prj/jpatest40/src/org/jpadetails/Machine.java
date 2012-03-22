@@ -1,16 +1,15 @@
 package org.jpadetails;
 
 import java.io.Serializable;
-import javax.persistence.*;
 
-import org.hibernate.annotations.NamedNativeQuery;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 /**
  * Entity implementation class for Entity: Dog
  *
  */
 @Entity
-@NamedNativeQuery(name = "query ", query = "SELECT * FROM MACHINE")
 public class Machine implements Serializable {
 
 	@Id
