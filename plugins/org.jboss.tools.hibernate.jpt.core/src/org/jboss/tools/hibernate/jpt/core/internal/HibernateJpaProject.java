@@ -131,7 +131,7 @@ public class HibernateJpaProject extends AbstractJpaProject {
 		return new TransformationIterable<JavaResourcePackage, String>(this.getInternalMappedSourceJavaResourcePackages()) {
 			@Override
 			protected String transform(JavaResourcePackage jrpPackage) {
-				return jrpPackage.getName();
+				return jrpPackage == null ? null :  jrpPackage.getName();
 			}
 		};
 	}
