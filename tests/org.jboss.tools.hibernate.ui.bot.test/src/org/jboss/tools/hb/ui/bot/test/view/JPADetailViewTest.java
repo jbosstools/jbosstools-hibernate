@@ -24,7 +24,7 @@ import org.junit.Test;
  * @author jpeterka
  * 
  */
-@Require(clearProjects = false, perspective = "Hibernate")
+@Require(clearProjects = true, perspective = "Hibernate")
 public class JPADetailViewTest extends HibernateBaseTest {
 		
 
