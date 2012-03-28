@@ -78,7 +78,7 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 	
 	private ComboDialogField dialectName;
 	
-	private Button selectMethod;
+	private Button useConsoleConfiguration;
 	
 	private Group dbGroup;
 
@@ -129,26 +129,26 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 		
 		createChildControls(container);
 		
-		selectMethod = new Button(container, SWT.CHECK);
-		selectMethod.setText(Messages.GenerateInitWizardPage_use_console_configuration);
-		selectMethod.setSelection(true);
-		selectMethod.addSelectionListener(new SelectionListener(){
+		useConsoleConfiguration = new Button(container, SWT.CHECK);
+		useConsoleConfiguration.setText(Messages.GenerateInitWizardPage_use_console_configuration);
+		useConsoleConfiguration.setSelection(true);
+		useConsoleConfiguration.addSelectionListener(new SelectionListener(){
 
 			public void widgetDefaultSelected(SelectionEvent e) {
 				widgetSelected(e);				
 			}
 
 			public void widgetSelected(SelectionEvent e) {
-				consoleConfigurationName.setEnabled(selectMethod.getSelection());
-				hibernateVersion.setEnabled(!selectMethod.getSelection());
-				connectionProfileName.setEnabled(!selectMethod.getSelection());
-				schemaName.setEnabled(!selectMethod.getSelection());
-				dialectName.setEnabled(!selectMethod.getSelection());
+				consoleConfigurationName.setEnabled(useConsoleConfiguration.getSelection());
+				hibernateVersion.setEnabled(!useConsoleConfiguration.getSelection());
+				connectionProfileName.setEnabled(!useConsoleConfiguration.getSelection());
+				schemaName.setEnabled(!useConsoleConfiguration.getSelection());
+				dialectName.setEnabled(!useConsoleConfiguration.getSelection());
 				dialogChanged();		
 			}});
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalSpan = numColumns;
-		selectMethod.setLayoutData(gd);				
+		useConsoleConfiguration.setLayoutData(gd);				
 		
 		consoleConfigurationName = new ComboDialogField(SWT.READ_ONLY);
 		consoleConfigurationName.setLabelText(HibernateConsoleMessages.CodeGenerationSettingsTab_console_configuration);
@@ -214,7 +214,7 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 		}
 		connectionProfileName.doFillIntoGrid(dbGroup, numColumns);
 		connectionProfileName.setDialogFieldListener(fieldlistener);
-		connectionProfileName.setEnabled(!selectMethod.getSelection());
+		connectionProfileName.setEnabled(!useConsoleConfiguration.getSelection());
 		//****************************dialect*****************
 		dialectName = new ComboDialogField(SWT.NONE);
 		dialectName.setLabelText(HibernateConsoleMessages.NewConfigurationWizardPage_database_dialect);
@@ -234,7 +234,11 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 		Control[] controls = schemaName.doFillIntoGrid(dbGroup, numColumns);
 		// Hack to tell the text field to stretch!
 		( (GridData)controls[1].getLayoutData() ).grabExcessHorizontalSpace = true;		
-		schemaName.setEnabled(!selectMethod.getSelection());
+		schemaName.setEnabled(!useConsoleConfiguration.getSelection());
+	}
+	
+	protected boolean isUseConsoleConfiguration(){
+		return useConsoleConfiguration.getSelection();
 	}
 
 	protected String getHibernateVersion(){
@@ -251,12 +255,12 @@ public abstract class GenerateInitWizardPage extends WizardPage {
             return;
         }
 		
-		if (selectMethod.getSelection() && (StringHelper.isEmpty(getConfigurationName()))){
+		if (useConsoleConfiguration.getSelection() && (StringHelper.isEmpty(getConfigurationName()))){
 			setPageComplete(false);
 			setErrorMessage(Messages.GenerateInitWizardPage_err_msg_select_console_configuration);
 			return;
 		}
-		if (!selectMethod.getSelection() && (StringHelper.isEmpty(getConnectionProfileName()))){
+		if (!useConsoleConfiguration.getSelection() && (StringHelper.isEmpty(getConnectionProfileName()))){
 			setPageComplete(false);
 			setErrorMessage(Messages.GenerateInitWizardPage_err_msg_select_connection_profile);
 			return;
@@ -285,7 +289,7 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 	}
 	
 	public String getConfigurationName() {
-		if (selectMethod.getSelection())
+		if (useConsoleConfiguration.getSelection())
 			return consoleConfigurationName.getText();
 		return createConsoleConfiguration();
 	}
@@ -311,7 +315,7 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 	}
 	
 	public boolean isTemporaryConfiguration(){
-		return !selectMethod.getSelection();
+		return !useConsoleConfiguration.getSelection();
 	}
 	
 	public JpaProject getJpaProject(){
@@ -353,7 +357,7 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 		if (!AUTODETECT.equals(dialectName.getText())){
 			return helper.getDialectClass(dialectName.getText());
 		}
-		if (!selectMethod.getSelection()){
+		if (!useConsoleConfiguration.getSelection()){
 			String driver = ConnectionProfileUtil.getDriverClass(getConnectionProfileName());
 			return helper.getDialect(driver);
 		}

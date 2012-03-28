@@ -43,7 +43,7 @@ public class ConsoleExtensionDefinition {
 			try {
 				ConsoleExtension consoleExtension = (ConsoleExtension) element
 						.createExecutableExtension(CLASSNAME);
-				consoleExtension.setHibernateException(hibernateExtension);
+				consoleExtension.setHibernateExtention(hibernateExtension);
 				return consoleExtension;
 			} catch (CoreException e) {
 				e.printStackTrace();

@@ -17,6 +17,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.ui.views.properties.IPropertySource;
+import org.hibernate.console.QueryPage;
 import org.hibernate.console.ext.HibernateExtension;
 
 /**
@@ -27,7 +29,7 @@ public interface ConsoleExtension {
 	
 	public CompletionProposalsResult hqlCodeComplete(String query, int startPosition, int position);
 	
-	public void setHibernateException(HibernateExtension hibernateExtension);
+	public void setHibernateExtention(HibernateExtension hibernateExtension);
 
 	/**
 	 * 
@@ -40,5 +42,7 @@ public interface ConsoleExtension {
 	 */
 	public Map<String, File[]> launchExporters(ILaunchConfiguration configuration, String mode,
 			ILaunch launch, IProgressMonitor monitor) throws CoreException;
+	
+	public IPropertySource getPropertySource(Object object, QueryPage selectedQueryPage);
 	
 }

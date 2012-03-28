@@ -25,6 +25,8 @@ import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.IPropertySourceProvider;
 import org.hibernate.Session;
 import org.hibernate.console.QueryPage;
+import org.hibernate.eclipse.console.ext.ConsoleExtension;
+import org.hibernate.eclipse.console.ext.ConsoleExtensionManager;
 import org.hibernate.eclipse.console.views.QueryPageTabView;
 import org.hibernate.proxy.HibernateProxyHelper;
 
@@ -45,17 +47,21 @@ public class HibernatePropertySourceProvider implements IPropertySourceProvider
 		{
 			return new QueryPagePropertySource( (QueryPage)object);
 		}
-		else if (object instanceof CollectionPropertySource) {
+		else if (object instanceof IPropertySource) {
 			return (IPropertySource) object;
 		}
 		else {
+			QueryPage selectedQueryPage = view.getSelectedQueryPage();
+			ConsoleExtension consoleExtension = ConsoleExtensionManager.getConsoleExtension(selectedQueryPage.getHibernateExtension());
+			return consoleExtension.getPropertySource(object, selectedQueryPage);
+			/*return (IPropertySource) selectedQueryPage.getAdapter(IPropertySource.class);
 			//			 maybe we should be hooked up with the queryview to get this ?
-			/*Session currentSession = view.getSelectedQueryPage().getSession();
+			Session currentSession = .getSession();
 			String consoleConfigName = view.getSelectedQueryPage().getConsoleConfiguration().getName();
 			if((currentSession.isOpen() && currentSession.contains(object)) || hasMetaData( object, currentSession) ) {
 				return new EntityPropertySource(object, currentSession, consoleConfigName);	
 			} else {*/
-				return null;
+				//return null;
 			//}
 			
 		}

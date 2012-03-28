@@ -28,13 +28,12 @@ import org.hibernate.console.ConfigurationFactory;
 import org.hibernate.console.ConsoleConfigClassLoader;
 import org.hibernate.console.ConsoleMessages;
 import org.hibernate.console.QueryInputModel;
+import org.hibernate.console.QueryPage;
 import org.hibernate.console.execution.DefaultExecutionContext;
 import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.ext.HibernateException;
 import org.hibernate.console.ext.HibernateExtension;
-import org.hibernate.console.ext.QueryResult;
-import org.hibernate.console.ext.QueryResultImpl;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.PreferencesClassPathUtils;
 import org.hibernate.eclipse.libs.FakeDelegatingDriver;
@@ -67,53 +66,29 @@ public class HibernateExtension3_5 implements HibernateExtension {
 	}
 
 	@Override
-	public QueryResult executeHQLQuery(String hql,
-			QueryInputModel queryParameters) {
-		Session session = null;
-		try {
-			try {
-				session = sessionFactory.openSession();
-				return QueryHelper.executeHQLQuery(session, hql, queryParameters);
-			} catch (Throwable e){
-				//Incompatible library versions could throw subclasses of Error, like  AbstractMethodError
-				//may be there is a sense to say to user that the reason is probably a wrong CC version
-				//(when catch a subclass of Error)
-				return new QueryResultImpl(e);
+	public QueryPage executeHQLQuery(final String hql,
+			final QueryInputModel queryParameters) {
+		return (QueryPage)execute(new Command() {
+			public Object execute() {
+				Session session = sessionFactory.openSession();
+				QueryPage qp = new HQLQueryPage(HibernateExtension3_5.this, hql,queryParameters);
+				qp.setSession(session);
+				return qp;
 			}
-		} finally {
-			if (session != null && session.isOpen()){
-				try {
-					session.close();
-				} catch (HibernateException e) {
-					return new QueryResultImpl(e);
-	    		}
-			}
-		}
+		});
 	}
 
 	@Override
-	public QueryResult executeCriteriaQuery(String criteriaCode,
-			QueryInputModel model) {
-		Session session = null;
-		try {
-			try {
-				session = sessionFactory.openSession();
-				return QueryHelper.executeCriteriaQuery(session, criteriaCode, model);
-			} catch (Throwable e){
-				//Incompatible library versions could throw subclasses of Error, like  AbstractMethodError
-				//may be there is a sense to say to user that the reason is probably a wrong CC version
-				//(when catch a subclass of Error)
-				return new QueryResultImpl(e);
+	public QueryPage executeCriteriaQuery(final String criteriaCode,
+			final QueryInputModel model) {
+		return (QueryPage)execute(new Command() {
+			public Object execute() {
+				Session session = sessionFactory.openSession();
+				QueryPage qp = new JavaPage(HibernateExtension3_5.this,criteriaCode,model);
+				qp.setSession(session);
+				return qp;
 			}
-		} finally {
-			if (session != null && session.isOpen()){
-				try {
-					session.close();
-				} catch (HibernateException e) {
-					return new QueryResultImpl(e);
-	    		}
-			}
-		}
+		});
 	}
 
 	/**
@@ -333,5 +308,15 @@ public class HibernateExtension3_5 implements HibernateExtension {
 				return null;
 			}
 		});
+	}
+
+	@Override
+	public boolean hasExecutionContext() {
+		return executionContext != null;
+	}
+
+	@Override
+	public String getConsoleConfigurationName() {
+		return prefs.getName();
 	}
 }

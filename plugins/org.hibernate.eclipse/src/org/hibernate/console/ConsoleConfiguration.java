@@ -296,21 +296,17 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	}
 
 	public QueryPage executeHQLQuery(final String hql, final QueryInputModel queryParameters) {
-		QueryPage qp = new org.hibernate.console.ext.HQLQueryPage(ConsoleConfiguration.this,hql,queryParameters);
+		QueryPage qp = getHibernateExtension().executeHQLQuery(hql, queryParameters);
 		qp.setId(++execcount);
 		fireQueryPageCreated(qp);
 		return qp;
 	}
 
 	public QueryPage executeBSHQuery(final String queryString, final QueryInputModel model) {
-		return (QueryPage)execute(new Command() {
-			public Object execute() {
-				QueryPage qp = new org.hibernate.console.ext.JavaPage(ConsoleConfiguration.this,queryString,model);
-				qp.setId(++execcount);
-				fireQueryPageCreated(qp);
-				return qp;
-			}
-		});
+		QueryPage qp = getHibernateExtension().executeCriteriaQuery(queryString, model);
+		qp.setId(++execcount);
+		fireQueryPageCreated(qp);
+		return qp;
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -40,7 +40,6 @@ public class HibernateExtensionDefinition {
 		this.hibernateVersion = hibernateVersion;
 	}
 	
-	//TODO do we need to create new instance every time?
 	public HibernateExtension createHibernateExtensionInstance() {
 		HibernateExtension hiberanteExtension = null;
 

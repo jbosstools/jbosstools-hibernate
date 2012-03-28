@@ -11,6 +11,7 @@
 package org.hibernate.console.ext;
 
 import org.hibernate.console.QueryInputModel;
+import org.hibernate.console.QueryPage;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 
@@ -37,9 +38,9 @@ public interface HibernateExtension {
 	//TODO do we really need this?
 	public String getHibernateVersion();
 	
-	public QueryResult executeHQLQuery(final String hql, final QueryInputModel queryParameters);
+	public QueryPage executeHQLQuery(String hql, QueryInputModel queryParameters);
 	
-	public QueryResult executeCriteriaQuery(final String criteria, final QueryInputModel queryParameters);
+	public QueryPage executeCriteriaQuery(String criteria, QueryInputModel queryParameters);
 
 	//FIXME remove this method
 	public boolean hasConfiguration();
@@ -54,5 +55,9 @@ public interface HibernateExtension {
 	public Object execute(Command command);
 
 	public boolean isSessionFactoryCreated();
+	
+	public boolean hasExecutionContext();
+	
+	public String getConsoleConfigurationName();
 	
 }

@@ -26,8 +26,8 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.console.ext.HibernateExtension;
 
 /**
  * @author MAX
@@ -38,11 +38,11 @@ public abstract class AbstractQueryPage implements QueryPage {
 	protected PropertyChangeSupport pcs = new PropertyChangeSupport(this);    
     private int id;
     private Session session;
-	private final ConsoleConfiguration cfg;
+	private final HibernateExtension extension;
     protected List<Object> list;
     protected long queryTime = -1;				//shows how long query runs
     protected boolean sticky = true;
-    private List<Throwable> exceptions = new ArrayList<Throwable>();
+    protected List<Throwable> exceptions = new ArrayList<Throwable>();
     protected String tabName;
     protected QueryInputModel model;
 
@@ -61,8 +61,8 @@ public abstract class AbstractQueryPage implements QueryPage {
 		}
 	}
 
-	public AbstractQueryPage(ConsoleConfiguration cfg, QueryInputModel model) {
-		this.cfg = cfg;
+	public AbstractQueryPage(HibernateExtension extension, QueryInputModel model) {
+		this.extension = extension;
 		this.model = model;
 	}
     /**
@@ -70,17 +70,6 @@ public abstract class AbstractQueryPage implements QueryPage {
      */
     public List<Throwable> getExceptions() {
     	return exceptions;
-    }
-
-    public void release() {
-    	if (getSession().isOpen() ) {
-    		try {
-    			getSession().close();
-    		} 
-    		catch (HibernateException e) {
-    			exceptions.add(e);
-    		}
-    	}    	
     }
 
     /**
@@ -138,9 +127,10 @@ public abstract class AbstractQueryPage implements QueryPage {
 		release();
 		pcs.firePropertyChange("exceptions", null, exceptions); //$NON-NLS-1$
 	}
-
-	public ConsoleConfiguration getConsoleConfiguration() {
-		return cfg;
+	
+	@Override
+	public HibernateExtension getHibernateExtension() {
+		return extension;
 	}
 	
 	public long getQueryTime(){

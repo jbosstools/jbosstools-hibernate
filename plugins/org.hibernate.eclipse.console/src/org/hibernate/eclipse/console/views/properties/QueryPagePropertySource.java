@@ -101,7 +101,7 @@ public class QueryPagePropertySource implements IPropertySource2
 
 	public Object getPropertyValue(Object id) {
 		if(CONFIGURATION_TEXT.equals(id) ) {
-			return page.getConsoleConfiguration().getName();
+			return page.getHibernateExtension().getConsoleConfigurationName();
 		}
 		if(QUERY_TEXT.equals(id) ) {
 			return page.getQueryString();

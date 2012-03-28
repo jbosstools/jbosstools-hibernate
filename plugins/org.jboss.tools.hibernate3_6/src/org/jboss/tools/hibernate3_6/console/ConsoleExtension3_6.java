@@ -29,6 +29,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.ui.views.properties.IPropertySource;
+import org.hibernate.Session;
 import org.hibernate.annotations.common.util.ReflectHelper;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
@@ -39,6 +41,7 @@ import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
+import org.hibernate.console.QueryPage;
 import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.ext.HibernateException;
@@ -50,6 +53,7 @@ import org.hibernate.eclipse.console.ext.ConsoleExtension;
 import org.hibernate.eclipse.launch.CodeGenerationStrings;
 import org.hibernate.eclipse.launch.CodeGenerationUtils;
 import org.hibernate.eclipse.launch.PathHelper;
+import org.hibernate.proxy.HibernateProxyHelper;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
@@ -66,7 +70,8 @@ public class ConsoleExtension3_6 implements ConsoleExtension {
 	
 	public ConsoleExtension3_6(){}
 	
-	public void setHibernateException(HibernateExtension hibernateExtension){
+	@Override
+	public void setHibernateExtention(HibernateExtension hibernateExtension){
 		this.hibernateExtension = (HibernateExtension3_6) hibernateExtension;
 	}
 
@@ -309,5 +314,19 @@ public class ConsoleExtension3_6 implements ConsoleExtension {
 			throw new HibernateConsoleRuntimeException(out, e);
 		}
     }
+	
+	@Override
+	public IPropertySource getPropertySource(Object object,
+			QueryPage selectedQueryPage) {
+		Session currentSession = selectedQueryPage.getSession();
+		if((currentSession.isOpen() && currentSession.contains(object)) || hasMetaData( object, currentSession) ) {
+			return new EntityPropertySource(object, selectedQueryPage.getSession(), hibernateExtension);
+		}
+		return null;
+	}
+	
+	private boolean hasMetaData(Object object, Session currentSession) {
+		return currentSession.getSessionFactory().getClassMetadata(HibernateProxyHelper.getClassWithoutInitializingProxy(object))!=null;
+	}
 
 }
