@@ -151,27 +151,11 @@ public class HibernateExtension4_0 implements HibernateExtension {
 	 * Create class loader - so it uses the original urls list from preferences. 
 	 */
 	protected void reinitClassLoader() {
-		boolean recreateFlag = true;
+		//the class loader caches user's compiled classes
+		//need to rebuild it on every console configuration rebuild to pick up latest versions.
 		final URL[] customClassPathURLs = PreferencesClassPathUtils.getCustomClassPathURLs(prefs);
-		if (classLoader != null) {
-			// check -> do not recreate class loader in case if urls list is the same
-			final URL[] oldURLS = classLoader.getURLs();
-			if (customClassPathURLs.length == oldURLS.length) {
-				int i = 0;
-				for (; i < oldURLS.length; i++) {
-					if (!customClassPathURLs[i].sameFile(oldURLS[i])) {
-						break;
-					}
-				}
-				if (i == oldURLS.length) {
-					recreateFlag = false;
-				}
-			}
-		}
-		if (recreateFlag) {
-			reset();
-			classLoader = createClassLoader(customClassPathURLs);
-		}
+		cleanUpClassLoader();
+		classLoader = createClassLoader(customClassPathURLs);
 	}
 	
 	protected ConsoleConfigClassLoader createClassLoader(final URL[] customClassPathURLs) {
