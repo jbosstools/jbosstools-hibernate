@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 30, 2012 12:35:45 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="org.pregen.hsqldb.Employees" table="EMPLOYEES" schema="PUBLIC">
+        <id name="employeenumber" type="int">
+            <column name="EMPLOYEENUMBER" />
+            <generator class="assigned" />
+        </id>
+        <property name="email" type="string">
+            <column name="EMAIL" length="100" not-null="true" />
+        </property>
+        <property name="extension" type="string">
+            <column name="EXTENSION" length="10" not-null="true" />
+        </property>
+        <property name="firstname" type="string">
+            <column name="FIRSTNAME" length="50" not-null="true" />
+        </property>
+        <property name="jobtitle" type="string">
+            <column name="JOBTITLE" length="50" not-null="true" />
+        </property>
+        <property name="lastname" type="string">
+            <column name="LASTNAME" length="50" not-null="true" />
+        </property>
+        <property name="officecode" type="string">
+            <column name="OFFICECODE" length="10" not-null="true" />
+        </property>
+        <property name="reportsto" type="java.lang.Integer">
+            <column name="REPORTSTO" />
+        </property>
+        <set name="customerses" table="CUSTOMERS" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="SALESREPEMPLOYEENUMBER" />
+            </key>
+            <one-to-many class="org.pregen.hsqldb.Customers" />
+        </set>
+    </class>
+</hibernate-mapping>

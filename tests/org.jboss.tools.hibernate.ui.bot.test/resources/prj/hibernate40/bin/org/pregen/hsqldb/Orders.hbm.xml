@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 30, 2012 12:35:45 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="org.pregen.hsqldb.Orders" table="ORDERS" schema="PUBLIC">
+        <id name="ordernumber" type="int">
+            <column name="ORDERNUMBER" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="customers" class="org.pregen.hsqldb.Customers" fetch="select">
+            <column name="CUSTOMERNUMBER" not-null="true" />
+        </many-to-one>
+        <property name="comments" type="string">
+            <column name="COMMENTS" />
+        </property>
+        <property name="orderdate" type="date">
+            <column name="ORDERDATE" length="0" not-null="true" />
+        </property>
+        <property name="requireddate" type="date">
+            <column name="REQUIREDDATE" length="0" not-null="true" />
+        </property>
+        <property name="shippeddate" type="date">
+            <column name="SHIPPEDDATE" length="0" />
+        </property>
+        <property name="status" type="string">
+            <column name="STATUS" length="16" not-null="true" />
+        </property>
+        <set name="orderdetailses" table="ORDERDETAILS" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ORDERNUMBER" not-null="true" />
+            </key>
+            <one-to-many class="org.pregen.hsqldb.Orderdetails" />
+        </set>
+    </class>
+</hibernate-mapping>

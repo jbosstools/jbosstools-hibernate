@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 30, 2012 12:35:45 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="org.pregen.hsqldb.Offices" table="OFFICES" schema="PUBLIC">
+        <id name="officecode" type="string">
+            <column name="OFFICECODE" length="10" />
+            <generator class="assigned" />
+        </id>
+        <property name="addressline1" type="string">
+            <column name="ADDRESSLINE1" length="50" not-null="true" />
+        </property>
+        <property name="addressline2" type="string">
+            <column name="ADDRESSLINE2" length="50" />
+        </property>
+        <property name="city" type="string">
+            <column name="CITY" length="50" not-null="true" />
+        </property>
+        <property name="country" type="string">
+            <column name="COUNTRY" length="50" not-null="true" />
+        </property>
+        <property name="phone" type="string">
+            <column name="PHONE" length="50" not-null="true" />
+        </property>
+        <property name="postalcode" type="string">
+            <column name="POSTALCODE" length="15" not-null="true" />
+        </property>
+        <property name="state" type="string">
+            <column name="STATE" length="50" />
+        </property>
+        <property name="territory" type="string">
+            <column name="TERRITORY" length="10" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>
