@@ -16,6 +16,7 @@ import org.jboss.tools.hb.ui.bot.test.perspective.JPAPerspectiveTest;
 import org.jboss.tools.hb.ui.bot.test.perspective.PerspectiveTest;
 import org.jboss.tools.hb.ui.bot.test.validation.AnnotationValidationTest;
 import org.jboss.tools.hb.ui.bot.test.view.JPADetailViewTest;
+import org.jboss.tools.hb.ui.bot.test.view.PackageInfoTest;
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
@@ -46,7 +47,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	/* validation */
 	AnnotationValidationTest.class,
 	/* view */
-	JPADetailViewTest.class
+	JPADetailViewTest.class,
+	PackageInfoTest.class
  	})
 public class HibernateSuite {
 
