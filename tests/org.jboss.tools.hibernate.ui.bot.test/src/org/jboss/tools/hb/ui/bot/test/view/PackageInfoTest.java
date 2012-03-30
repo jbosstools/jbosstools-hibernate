@@ -44,6 +44,7 @@ public class PackageInfoTest extends HibernateBaseTest {
 					
 		String label = "Details are not available for the current selection.";
 		jd.bot().waitWhile(waitForWidget(withLabel(label)));
+		jd.setFocus();
 
 		SWTBotTwistie twistie = bot.twistieByLabel("Generic Generators");
 		while (!twistie.isExpanded()) {
@@ -52,12 +53,12 @@ public class PackageInfoTest extends HibernateBaseTest {
 		
 		final String genname = "myuuidgen";
 		final String strategy = "uuid";
-		SWTBotTable table = jd.bot().table(0);
+		SWTBotTable table = jd.bot().table(1);
 		assertTrue(table.containsItem(genname));
-		table.getTableItem(genname).click();
-
-		assertTrue(bot.textWithLabel("Name:").getText().equals(genname));
-		assertTrue(bot.textWithLabel("Stragegy:").getText().equals(strategy));				
+		table.getTableItem(genname).select();
+		
+		assertTrue(jd.bot().textWithLabel("Name:").getText().equals(genname));
+		assertTrue(jd.bot().comboBoxWithLabel("Strategy:").getText().equals(strategy));
 	}
 	
 }
