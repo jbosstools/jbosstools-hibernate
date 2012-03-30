@@ -25,8 +25,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -391,8 +394,42 @@ public class ProjectUtils {
 		return res;
 	}
 	
-	@SuppressWarnings("unchecked")
-	static public String[] availablePersistenceUnits(IJavaProject javaProject) {
+	/**
+	 * Collects all persistent unit names: available in the project and required projects
+	 * @param javaProject
+	 * @return
+	 */
+	public static String[] availablePersistenceUnits(IJavaProject javaProject) {
+		if (javaProject.isOpen()){
+			Set<IJavaProject> projects = new HashSet<IJavaProject>();
+			projects.add(javaProject);
+			try {
+				String[] requiredProjectNames = javaProject.getRequiredProjectNames();
+				for (String projectName : requiredProjectNames) {
+					IProject project = findProject(projectName);
+					try {
+						if (project != null && project.isAccessible() && project.hasNature(JavaCore.NATURE_ID)){
+							projects.add(JavaCore.create(project));
+						}
+					} catch (CoreException e) {
+						HibernateConsolePlugin.getDefault().log(e);
+					}
+				}
+			} catch (JavaModelException e) {
+				HibernateConsolePlugin.getDefault().log(e);
+			}
+			Set<String> puNames = new TreeSet<String>();
+			for (IJavaProject iJavaProject : projects) {
+				for (String puName : projectPersistenceUnits(iJavaProject)) {
+					puNames.add(puName);
+				}
+			}
+			return puNames.toArray(new String[puNames.size()]);
+		}
+		return new String[0];
+	}
+	
+	private static String[] projectPersistenceUnits(IJavaProject javaProject) {
 		if (javaProject == null || javaProject.getResource() == null) {
 			return new String[0];
 		}
