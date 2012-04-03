@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 30, 2012 12:35:45 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="org.pregen.hsqldb.Products" table="PRODUCTS" schema="PUBLIC">
+        <id name="productcode" type="string">
+            <column name="PRODUCTCODE" length="15" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="productlines" class="org.pregen.hsqldb.Productlines" fetch="select">
+            <column name="PRODUCTLINE" length="50" not-null="true" />
+        </many-to-one>
+        <property name="buyprice" type="double">
+            <column name="BUYPRICE" precision="0" scale="0" not-null="true" />
+        </property>
+        <property name="msrp" type="double">
+            <column name="MSRP" precision="0" scale="0" not-null="true" />
+        </property>
+        <property name="productdescription" type="string">
+            <column name="PRODUCTDESCRIPTION" length="4000" not-null="true" />
+        </property>
+        <property name="productname" type="string">
+            <column name="PRODUCTNAME" length="70" not-null="true" />
+        </property>
+        <property name="productscale" type="string">
+            <column name="PRODUCTSCALE" length="10" not-null="true" />
+        </property>
+        <property name="productvendor" type="string">
+            <column name="PRODUCTVENDOR" length="50" not-null="true" />
+        </property>
+        <property name="quantityinstock" type="short">
+            <column name="QUANTITYINSTOCK" not-null="true" />
+        </property>
+        <set name="orderdetailses" table="ORDERDETAILS" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="PRODUCTCODE" length="15" not-null="true" />
+            </key>
+            <one-to-many class="org.pregen.hsqldb.Orderdetails" />
+        </set>
+    </class>
+</hibernate-mapping>
