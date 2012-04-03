@@ -17,6 +17,11 @@ public class ConsoleConfiguration {
 		Tree.select(view.bot(), consoleName);	
 	}
 	
+	public static void rebuildConfiguration(String consoleName) {
+		SWTBotTreeItem item = selectNode(consoleName);
+		item.contextMenu("Rebuild configuration").click();		
+	}
+	
 	public static SWTBotTreeItem selectNode(String... nodes) {
 		SWTBotExt bot = new SWTBotExt();
 		SWTOpenExt open = new SWTOpenExt(bot);
