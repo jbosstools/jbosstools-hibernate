@@ -31,7 +31,7 @@ public class EditPersistenceXMLTest extends HibernateBaseTest {
 	public void createJPAProject() {
 		importTestProject("/resources/prj/" + prj);
 		openPersistenceXML();
-		editPersistenceHibernatePageXML();
+		editPersistenceXMLHibernatePage();
 		checkCAInConfigurationEditorXML();
 	}
 
@@ -40,7 +40,7 @@ public class EditPersistenceXMLTest extends HibernateBaseTest {
 		Tree.open(pe.bot(), prj,"JPA Content","persistence.xml");
 	}
 
-	private void editPersistenceHibernatePageXML() {
+	private void editPersistenceXMLHibernatePage() {
 		SWTBotEditor editor = 	bot.editorByTitle("persistence.xml");
 		editor.show();
 		SWTBotMultiPageEditor mpe = new SWTBotMultiPageEditor(editor.getReference(), bot);
