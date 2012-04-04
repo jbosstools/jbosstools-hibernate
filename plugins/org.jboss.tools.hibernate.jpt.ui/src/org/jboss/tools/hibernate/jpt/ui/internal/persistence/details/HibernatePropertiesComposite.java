@@ -15,11 +15,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
@@ -41,6 +43,7 @@ import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.ui.details.JpaPageComposite;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
@@ -192,6 +195,13 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 	private IPath getConfigurationFilePath() {
 		BasicHibernateProperties props = getSubject();
 		String filePath = cfgFile.getText().trim();
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		IFile[] files = root.findFilesForLocation(new Path(filePath));
+		IPath path = null;
+		if (files != null && files.length > 0){
+			path = new Path(files[0].getProject().getName()).append(files[0].getProjectRelativePath());
+			filePath = path.toString();
+		}
 		if (props != null && filePath.length() > 0 ){
 			IProject project = props.getJpaProject().getProject();
 			IJavaProject jProject = JavaCore.create(project);
@@ -214,7 +224,7 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 				}
 			}
 		}
-		return null;
+		return path;
 	}
 
 	private Runnable createSetupAction() {
@@ -243,7 +253,8 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 				IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 				IResource res = root.findMember(cfgFile);
 				if ( res != null && res.exists() && res.getType() == IResource.FILE) {
-					IProject project = res.getProject();
+					JpaProject jpaProject = HibernatePropertiesComposite.this.getSubject().getJpaProject();
+					IProject project = jpaProject.getProject();
 					IJavaProject jProject = JavaCore.create(project);
 					if (jProject != null){
 						try {
@@ -252,7 +263,7 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 								if (!iPackageFragmentRoot.isArchive()){
 									if (iPackageFragmentRoot.getResource().getFullPath().isPrefixOf(cfgFile)){
 										cfgFile = cfgFile.removeFirstSegments(iPackageFragmentRoot.getResource().getFullPath().segmentCount());
-										return cfgFile.makeAbsolute();
+										return cfgFile;
 									}
 								}
 							}
@@ -261,7 +272,7 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 						}
 					}
 				}
-				return cfgFile;
+				return res.getLocation();
 			}
 
 			private MessageDialog createSetupDialog(String title, String question, int defaultChoice){
