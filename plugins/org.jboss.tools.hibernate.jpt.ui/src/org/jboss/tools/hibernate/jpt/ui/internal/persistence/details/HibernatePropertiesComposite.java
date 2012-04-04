@@ -254,8 +254,7 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 				IResource res = root.findMember(cfgFile);
 				if ( res != null && res.exists() && res.getType() == IResource.FILE) {
 					JpaProject jpaProject = HibernatePropertiesComposite.this.getSubject().getJpaProject();
-					IProject project = jpaProject.getProject();
-					IJavaProject jProject = JavaCore.create(project);
+					IJavaProject jProject = jpaProject.getJavaProject();
 					if (jProject != null){
 						try {
 							IPackageFragmentRoot[] allPackageFragmentRoots = jProject.getAllPackageFragmentRoots();

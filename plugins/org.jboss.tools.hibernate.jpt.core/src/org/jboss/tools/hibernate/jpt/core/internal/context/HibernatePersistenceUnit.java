@@ -21,7 +21,6 @@ import java.util.Vector;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IJavaProject;
@@ -295,7 +294,26 @@ implements Messages, Hibernate {
 				HibernateJptPlugin.logException(e);
 			}
 
-			IResource res= ResourcesPlugin.getWorkspace().getRoot().findMember(path);
+			IJavaProject jProject = getJpaProject().getJavaProject();
+			IResource res = null;
+			if (jProject != null){
+				try {
+					IPackageFragmentRoot[] allPackageFragmentRoots = jProject.getAllPackageFragmentRoots();
+					for (IPackageFragmentRoot iPackageFragmentRoot : allPackageFragmentRoots) {
+						if (!iPackageFragmentRoot.isArchive()){
+							IResource sourceFolder = iPackageFragmentRoot.getResource();
+							if (sourceFolder instanceof IContainer) {
+								IContainer folder = (IContainer) sourceFolder;
+								if ((res = folder.findMember(path)) != null){
+									break;
+								}
+							}
+						}
+					}
+				} catch (JavaModelException e) {
+					//ignore
+				}
+			}
 			if (res != null) {
 				int resType= res.getType();
 				if (resType != IResource.FILE) {
