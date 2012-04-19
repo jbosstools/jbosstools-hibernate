@@ -152,5 +152,16 @@ public class HibernateJpaProject extends AbstractJpaProject {
 			messages.add(message);
 		}
 	}
+	
+	//replace original method as it has NPE https://issues.jboss.org/browse/JBIDE-11378
+	@Override
+	public JavaResourcePackage getJavaResourcePackage(String packageName) {
+		for (JavaResourcePackage jrp : this.getJavaResourcePackages()) {
+			if (jrp.getName() != null && jrp.getName().equals(packageName)) {
+				return jrp;
+			}
+		}
+		return null;
+	}
 
 }
