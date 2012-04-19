@@ -25,7 +25,9 @@ import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverPropertyInfo;
 import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 public class FakeDelegatingDriver implements Driver {
 	private Driver driver;
@@ -52,4 +54,8 @@ public class FakeDelegatingDriver implements Driver {
 	public boolean jdbcCompliant() {
 		return this.driver.jdbcCompliant();
 	}
+	public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+		return Logger.global;
+	}
+	
 }
