@@ -283,6 +283,23 @@ public class JavaTypeDefImpl extends AbstractJavaJpaContextNode implements JavaT
 							this.getNameTextRange(astRoot))
 				
 			);
+		} else {
+			for (ListIterator<JavaTypeDef> stream = this.getPersistenceUnit().typeDefs(); stream.hasNext(); ) {
+				JavaTypeDef typeDef = stream.next();
+				if (this != typeDef){
+					if (this.name.equals(typeDef.getName())) {
+						messages.add(
+								HibernateJpaValidationMessage.buildMessage(
+										IMessage.HIGH_SEVERITY,
+										TYPE_DEF_DUPLICATE_NAME,
+										new String[]{this.name},
+										this,
+										this.getNameTextRange(astRoot))
+						);
+						break;
+					}
+				}
+			}
 		}
 		
 		if (!StringTools.stringIsEmpty(this.typeClass)){
@@ -303,25 +320,6 @@ public class JavaTypeDefImpl extends AbstractJavaJpaContextNode implements JavaT
 				// just ignore it!
 			}
 		}
-		
-		
-		for (ListIterator<JavaTypeDef> stream = this.getPersistenceUnit().typeDefs(); stream.hasNext(); ) {
-			JavaTypeDef typeDef = stream.next();
-			if (this != typeDef){
-				if (this.name.equals(typeDef.getName())) {
-					messages.add(
-							HibernateJpaValidationMessage.buildMessage(
-									IMessage.HIGH_SEVERITY,
-									TYPE_DEF_DUPLICATE_NAME,
-									new String[]{this.name},
-									this,
-									this.getNameTextRange(astRoot))
-					);
-					break;
-				}
-			}
-		}
-		
 	}
 
 }
