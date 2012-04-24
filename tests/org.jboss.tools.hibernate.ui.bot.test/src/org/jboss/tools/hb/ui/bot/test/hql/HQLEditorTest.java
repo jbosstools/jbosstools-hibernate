@@ -19,7 +19,7 @@ public class HQLEditorTest extends HibernateBaseTest {
 	final String clazz = "Customer";
 	
 	@Test
-	public void jpaDetailsViewTest() {
+	public void hqlEditorTest() {
 		importTestProject("/resources/prj/hibernatelib");
 		importTestProject("/resources/prj/hibernate40");
 		

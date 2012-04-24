@@ -19,7 +19,7 @@ public class JPADDLGenerationTest extends HibernateBaseTest {
 	final String hbcfg = "hibernate.cfg.xml";
 	
 	@Test
-	public void createJPAProject() {
+	public void jpaDDLGenerationTest() {
 		importTestProject("/resources/prj/" + prj);
 		createHBConfigurationAndSetPersistence();
 		generateDDLFromEntities();

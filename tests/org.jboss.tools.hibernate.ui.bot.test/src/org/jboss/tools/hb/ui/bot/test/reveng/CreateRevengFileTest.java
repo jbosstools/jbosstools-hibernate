@@ -1,6 +1,5 @@
 package org.jboss.tools.hb.ui.bot.test.reveng;
 
-import static org.eclipse.swtbot.swt.finder.waits.Conditions.shellIsActive;
 import static org.eclipse.swtbot.swt.finder.waits.Conditions.widgetIsEnabled;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
@@ -19,14 +18,14 @@ import org.junit.Test;
  * @author jpeterka
  * 
  */
-@Require(clearProjects = false)
+@Require(clearProjects = true)
 public class CreateRevengFileTest extends HibernateBaseTest {
 	
 	final String prj = "hibernate35";
 	final String pkg = "org.reveng";
 	
 	@Test
-	public void createMappingFileTest() {
+	public void createRevengFileTest() {
 		importTestProject("/resources/prj/hibernate35");
 		createRevengFilesFromPackage();
 	}
