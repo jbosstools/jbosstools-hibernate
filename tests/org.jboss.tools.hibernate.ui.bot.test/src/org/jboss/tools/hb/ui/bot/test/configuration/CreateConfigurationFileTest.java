@@ -11,7 +11,7 @@ import org.junit.Test;
  * @author jpeterka
  * 
  */
-@Require
+@Require(clearProjects = true)
 public class CreateConfigurationFileTest extends HibernateBaseTest {
 
 	@Test

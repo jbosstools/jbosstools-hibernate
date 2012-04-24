@@ -8,9 +8,12 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.hb.ui.bot.common.ConfigurationFile;
 import org.jboss.tools.hb.ui.bot.common.ConsoleConfiguration;
 import org.jboss.tools.hb.ui.bot.test.HibernateBaseTest;
+import org.jboss.tools.ui.bot.ext.config.Annotations.DB;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.junit.Test;
 
+@Require(db = @DB, clearProjects = true)
 public class HQLEditorTest extends HibernateBaseTest {
 	final String console = "pre-hibernate40";
 	final String clazz = "Customer";

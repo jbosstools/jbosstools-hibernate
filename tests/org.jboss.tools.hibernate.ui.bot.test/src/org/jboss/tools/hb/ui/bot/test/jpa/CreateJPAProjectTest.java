@@ -13,7 +13,7 @@ import org.osgi.framework.Version;
  * @author jpeterka
  * 
  */
-@Require(clearProjects = false, perspective="JPA")
+@Require(clearProjects = true, perspective="JPA")
 public class CreateJPAProjectTest extends HibernateBaseTest {
 	
 	final String prj = "jpa35test";

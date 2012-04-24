@@ -16,7 +16,7 @@ import org.junit.Test;
  * @author jpeterka
  * 
  */
-@Require(clearProjects = false, perspective = "JPA")
+@Require(clearProjects = true, perspective = "JPA")
 public class AnnotationValidationTest extends HibernateBaseTest {
 
 	final String prj = "jpatest40";

@@ -6,6 +6,8 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.jboss.tools.hb.ui.bot.common.JPAEntity;
 import org.jboss.tools.hb.ui.bot.common.Tree;
 import org.jboss.tools.hb.ui.bot.test.HibernateBaseTest;
+import org.jboss.tools.ui.bot.ext.config.Annotations.DB;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.helper.StringHelper;
 import org.junit.Test;
@@ -13,6 +15,7 @@ import org.junit.Test;
 /**
  * Create JPA Entity ui bot test
  */
+@Require(db = @DB, clearProjects = true)
 public class CreateJPAEntityTest extends HibernateBaseTest {
 	
 	final String prj = "jpatest35";

@@ -9,11 +9,13 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.jboss.tools.hb.ui.bot.common.ProjectExplorer;
 import org.jboss.tools.hb.ui.bot.test.HibernateBaseTest;
+import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.helper.StringHelper;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotTwistie;
 import org.junit.Test;
 
+@Require(clearProjects = true, perspective = "JPA")
 public class PackageInfoTest extends HibernateBaseTest {
 	final String prj = "jpatest40";
 	final String pkg = "org.packageinfo";

@@ -35,6 +35,7 @@ public class CreateConsoleConfigurationTest extends HibernateBaseTest {
 		importTestProject("/resources/prj/" + prjName);
 		createConfigurationFile();
 		createHibernateConsole();
+		expandDatabaseInConsole();
 		checkErrorLog();
 	}
 	
@@ -57,9 +58,7 @@ public class CreateConsoleConfigurationTest extends HibernateBaseTest {
 		
 		bot.button(IDELabel.Button.FINISH).click();
 		bot.waitUntil(shellCloses(shell));
-		util.waitForNonIgnoredJobs();
-		
-		expandDatabaseInConsole();		
+		util.waitForNonIgnoredJobs();			
 	}
 	
 	private void createMainTab(SWTBotShell shell) {
