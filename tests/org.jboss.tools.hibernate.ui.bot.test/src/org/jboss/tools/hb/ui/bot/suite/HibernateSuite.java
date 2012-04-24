@@ -4,7 +4,6 @@ import org.jboss.tools.hb.ui.bot.test.ant.ExportAntCodeGenerationTest;
 import org.jboss.tools.hb.ui.bot.test.configuration.CreateConfigurationFileTest;
 import org.jboss.tools.hb.ui.bot.test.configuration.EditConfigurationFileTest;
 import org.jboss.tools.hb.ui.bot.test.console.CreateConsoleConfigurationTest;
-import org.jboss.tools.hb.ui.bot.test.console.EditConsoleConfigurationTest;
 import org.jboss.tools.hb.ui.bot.test.criteria.CriteriaEditorTest;
 import org.jboss.tools.hb.ui.bot.test.diagram.MappingDiagramTest;
 import org.jboss.tools.hb.ui.bot.test.generation.CreateCodeGenerationConfiguration;
@@ -36,7 +35,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	EditConfigurationFileTest.class,
 	/* console */
 	CreateConsoleConfigurationTest.class,
-	EditConsoleConfigurationTest.class,
 	/* criteria */
 	CriteriaEditorTest.class,
 	/* diagram */
