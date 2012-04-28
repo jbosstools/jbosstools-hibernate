@@ -37,7 +37,7 @@ public abstract class AbstractQueryPage implements QueryPage {
 
 	protected PropertyChangeSupport pcs = new PropertyChangeSupport(this);    
     private int id;
-    private Session session;
+    private Object session;
 	private final HibernateExtension extension;
     protected List<Object> list;
     protected long queryTime = -1;				//shows how long query runs
@@ -93,11 +93,11 @@ public abstract class AbstractQueryPage implements QueryPage {
         this.sticky = sticky;
     }
 
-	public Session getSession() {
+	public Object getSession() {
 		return session;
 	}
 
-	public void setSession(Session s) {
+	public void setSession(Object s) {
 		session = s;		
 	}
 

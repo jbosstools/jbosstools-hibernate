@@ -112,10 +112,11 @@ public class HQLQueryPage extends AbstractQueryPage {
 		setTabName(getQueryString().replace('\n', ' ').replace('\r', ' ').replace('\t', ' '));
 	}
 
-	public void setSession(Session s) {
+	@Override
+	public void setSession(Object s) {
 		super.setSession(s);
 		try {			             
-			query = this.getSession().createQuery(getQueryString());
+			query = ((Session)this.getSession()).createQuery(getQueryString());
 		} catch (HibernateException e) {
 			addException(e);			
 		} catch (Exception e) {
@@ -180,9 +181,9 @@ public class HQLQueryPage extends AbstractQueryPage {
     }
 
     public void release() {
-    	if (getSession().isOpen() ) {
+    	if (((Session)getSession()).isOpen() ) {
     		try {
-    			getSession().close();
+    			((Session)getSession()).close();
     		} 
     		catch (HibernateException e) {
     			exceptions.add(e);

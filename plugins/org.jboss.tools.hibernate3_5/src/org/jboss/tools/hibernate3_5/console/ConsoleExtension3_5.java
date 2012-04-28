@@ -299,9 +299,9 @@ public class ConsoleExtension3_5 implements ConsoleExtension {
 	@Override
 	public IPropertySource getPropertySource(Object object,
 			QueryPage selectedQueryPage) {
-		Session currentSession = selectedQueryPage.getSession();
+		Session currentSession = ((Session)selectedQueryPage.getSession());
 		if((currentSession.isOpen() && currentSession.contains(object)) || hasMetaData( object, currentSession) ) {
-			return new EntityPropertySource(object, selectedQueryPage.getSession(), hibernateExtension);
+			return new EntityPropertySource(object, currentSession, hibernateExtension);
 		}
 		return null;
 	}

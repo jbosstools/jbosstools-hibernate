@@ -63,7 +63,8 @@ public class JavaPage extends AbstractQueryPage {
     }
 
     @SuppressWarnings("unchecked")
-	public void setSession(Session s) {
+    @Override
+	public void setSession(Object s) {
 		super.setSession(s);
         try {
         	if(criteriaCode.indexOf( "System.exit" )>=0) { // TODO: externalize run so we don't need this bogus check! //$NON-NLS-1$
@@ -71,7 +72,7 @@ public class JavaPage extends AbstractQueryPage {
         		addException( new IllegalArgumentException(ConsoleMessages.JavaPage_not_allowed) );
         		return;
         	}
-            ip = setupInterpreter(getSession() );
+            ip = setupInterpreter((Session)getSession() );
             Object o =  ip.eval(criteriaCode);
             // ugly! TODO: make un-ugly!
             if(o instanceof Criteria) {
@@ -159,9 +160,9 @@ public class JavaPage extends AbstractQueryPage {
 	}
 
 	 public void release() {
-    	if (getSession().isOpen() ) {
+    	if (((Session)getSession()).isOpen() ) {
     		try {
-    			getSession().close();
+    			((Session)getSession()).close();
     		} 
     		catch (HibernateException e) {
     			exceptions.add(e);

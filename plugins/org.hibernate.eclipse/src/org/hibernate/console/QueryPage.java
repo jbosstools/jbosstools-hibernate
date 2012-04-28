@@ -72,8 +72,8 @@ public interface QueryPage {
      */
     public abstract void setSticky(boolean b);
     
-    public Session getSession();
-    public void setSession(Session session);
+    public Object getSession();
+    public void setSession(Object session);
     
 	public HibernateExtension getHibernateExtension();
 	
