@@ -32,7 +32,7 @@ public class JpaUtil {
 	 * @throws JavaModelException
 	 */
 	public static Boolean isTypeImplementsInterface(IJavaProject javaProject, IType type, String interfaceName) throws JavaModelException{
-		if (type == null) return false;
+		if (type == null) return null;
 		boolean hasInconsistency = false;
 		String[] interfaces = type.getSuperInterfaceNames();
 		List<String> resolvedInterfaceNames = new LinkedList<String>();
@@ -58,10 +58,11 @@ public class JpaUtil {
 				if (interfaceName.equals(fullName))
 					return true;
 				IType parentType = javaProject.findType(fullName);
-				if (parentType != null){
-					if (isTypeImplementsInterface(javaProject, parentType, interfaceName)){
-						return true;
-					}
+				Boolean recursiveResult = isTypeImplementsInterface(javaProject, parentType, interfaceName);
+				if (recursiveResult == null){
+					hasInconsistency = true;
+				} else if (recursiveResult == true){
+					return true;
 				}
 			} else {
 				hasInconsistency = true;
@@ -69,7 +70,10 @@ public class JpaUtil {
 		}
 		for (String interface_ : resolvedInterfaceNames) {
 			IType parentInterface = javaProject.findType(interface_);
-			if (isTypeImplementsInterface(javaProject, parentInterface, interfaceName)){
+			Boolean recursiveResult = isTypeImplementsInterface(javaProject, parentInterface, interfaceName);
+			if (recursiveResult == null){
+				hasInconsistency = true;
+			} else if (recursiveResult == true){
 				return true;
 			}
 		}
