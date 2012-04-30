@@ -28,11 +28,12 @@ public class JpaUtil {
 	 * @param javaProject
 	 * @param type
 	 * @param interfaceName
-	 * @return <code>true</code> if the type implements interface interfaceName.
+	 * @return <code>true</code> if the type implements interface interfaceName. Returns null if class hierarchy is inconsistent.
 	 * @throws JavaModelException
 	 */
-	public static boolean isTypeImplementsInterface(IJavaProject javaProject, IType type, String interfaceName) throws JavaModelException{
+	public static Boolean isTypeImplementsInterface(IJavaProject javaProject, IType type, String interfaceName) throws JavaModelException{
 		if (type == null) return false;
+		boolean hasInconsistency = false;
 		String[] interfaces = type.getSuperInterfaceNames();
 		List<String> resolvedInterfaceNames = new LinkedList<String>();
 		for (int i = 0; i < interfaces.length; i++) {
@@ -46,6 +47,8 @@ public class JpaUtil {
 					if (interfaceName.equals(fullName))
 						return true;
 				}
+			} else {
+				hasInconsistency = true;
 			}
 		}
 		if (type.getSuperclassName() != null){
@@ -60,6 +63,8 @@ public class JpaUtil {
 						return true;
 					}
 				}
+			} else {
+				hasInconsistency = true;
 			}
 		}
 		for (String interface_ : resolvedInterfaceNames) {
@@ -68,16 +73,28 @@ public class JpaUtil {
 				return true;
 			}
 		}
-		return false;
+		return hasInconsistency ? null : false;
 	}
 	
-	public static boolean isTypeImplementsOneOfInterfaces(IJavaProject javaProject, IType type, String... interfacesName) throws JavaModelException{
+	/**
+	 * 
+	 * @param javaProject
+	 * @param type
+	 * @param interfacesName
+	 * @return if the type implements one of the interfaces. Returns null if class hierarchy is inconsistent.
+	 * @throws JavaModelException
+	 */
+	public static Boolean isTypeImplementsOneOfInterfaces(IJavaProject javaProject, IType type, String... interfacesName) throws JavaModelException{
+		boolean hasInconsistency = false;
 		for (String interfaceName : interfacesName) {
-			if (isTypeImplementsInterface(javaProject, type, interfaceName)){
+			Boolean implementsThis = isTypeImplementsInterface(javaProject, type, interfaceName);
+			if (implementsThis == null ){
+				hasInconsistency = true;
+			} else if (implementsThis == true){
 				return true;
 			}
 		}
-		return false;
+		return hasInconsistency ? null : false;
 	}
 
 }

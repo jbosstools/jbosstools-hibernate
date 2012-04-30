@@ -38,6 +38,8 @@ public interface Messages {
 	
 	public static final String IMPLEMENT_USER_TYPE_INTERFACE = "USER_TYPE_INTERFACE";	 //$NON-NLS-1$
 	
+	public static final String INCONSISTENT_TYPE_HIERARCHY = "INCONSISTENT_TYPE_HIERARCHY";	 //$NON-NLS-1$
+	
 	public static final String TYPE_CLASS_NOT_FOUND = "TYPE_CLASS_NOT_FOUND";	 //$NON-NLS-1$
 
 	public static final String NAME_CANT_BE_EMPTY = "NAME_CANT_BE_EMPTY";//$NON-NLS-1$

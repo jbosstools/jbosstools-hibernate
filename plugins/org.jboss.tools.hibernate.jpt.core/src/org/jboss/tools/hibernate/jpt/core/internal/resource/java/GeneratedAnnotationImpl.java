@@ -33,7 +33,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
  * @author Dmitry Geraskov
  *
  */
-public class GeneratedAnnotationImpl extends SourceAnnotation<Attribute> implements
+public class GeneratedAnnotationImpl extends SourceAnnotation implements
 GeneratedAnnotation {
 
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);

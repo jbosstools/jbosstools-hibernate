@@ -310,8 +310,12 @@ public class JavaTypeDefImpl extends AbstractJavaJpaContextNode implements JavaT
 					messages.add(HibernateJpaValidationMessage.buildMessage(
 							IMessage.HIGH_SEVERITY,TYPE_CLASS_NOT_FOUND, new String[]{typeClass}, this, this.getTypeClassTextRange(astRoot)));
 				} else {
-					if (!JpaUtil.isTypeImplementsOneOfInterfaces(getJpaProject().getJavaProject(), lwType,
-							 JavaTypeDef.POSSIBLE_INTERFACES)){
+					Boolean isImplements = JpaUtil.isTypeImplementsOneOfInterfaces(getJpaProject().getJavaProject(), lwType,
+							 JavaTypeDef.POSSIBLE_INTERFACES);
+					if (isImplements == null){
+						messages.add(HibernateJpaValidationMessage.buildMessage(
+								IMessage.HIGH_SEVERITY,INCONSISTENT_TYPE_HIERARCHY, new String[]{typeClass}, this, this.getTypeClassTextRange(astRoot)));
+					} else if (!isImplements){
 						messages.add(HibernateJpaValidationMessage.buildMessage(
 								IMessage.HIGH_SEVERITY,IMPLEMENT_USER_TYPE_INTERFACE, new String[]{typeClass}, this, this.getTypeClassTextRange(astRoot)));
 					 }
