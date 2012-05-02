@@ -76,17 +76,17 @@ public class CreateConsoleConfigurationTest extends HibernateBaseTest {
 	}
 
 	private void createClasspathTab(SWTBotShell shell) {
-		shell.activate();
+		shell.setFocus();
 		bot.cTabItem(IDELabel.HBConsoleWizard.CLASSPATH_TAB).activate();
 	}
 
 	private void createMappingsTab(SWTBotShell shell) {
-		shell.activate();
+		shell.setFocus();
 		bot.cTabItem(IDELabel.HBConsoleWizard.MAPPINGS_TAB).activate();
 	}
 
 	private void createCommonTab(SWTBotShell shell) {
-		shell.activate();
+		shell.setFocus();
 		bot.cTabItem(IDELabel.HBConsoleWizard.COMMON_TAB).activate();
 	}
 
