@@ -28,7 +28,7 @@ public class EditPersistenceXMLTest extends HibernateBaseTest {
 	final String prj = "jpatest35";
 	
 	@Test
-	public void createJPAProject() {
+	public void editPersistenceXMLTest() {
 		importTestProject("/resources/prj/" + prj);
 		openPersistenceXML();
 		editPersistenceXMLHibernatePage();
