@@ -55,7 +55,7 @@ public class CriteriaEditorTest extends HibernateBaseTest {
 	private void checkCriteriaQueryResult() {
 		SWTBotView qr = open.viewOpen(ActionItem.View.HibernateHibernateQueryResult.LABEL);
 		SWTBotTable table = qr.bot().table();
-		assertTrue(table.rowCount() == 0);		
+		assertTrue(table.rowCount() != 0);		
 	}
 
 }
