@@ -19,7 +19,6 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.details.JpaPageComposite;
-import org.eclipse.jpt.jpa.ui.internal.persistence.details.GenericPersistenceUnitGeneralComposite;
 import org.eclipse.jpt.jpa.ui.internal.persistence.details.PersistenceUnitConnectionComposite;
 import org.eclipse.jpt.jpa.ui.internal.persistence.details.PersistenceUnitPropertiesComposite;
 import org.eclipse.jpt.jpa.ui.internal.persistence.details.PersistenceXmlUiFactory;
@@ -39,7 +38,7 @@ public class HibernatePersistenceXmlUiFactory implements
 			Composite parent, WidgetFactory widgetFactory) {
 		List<JpaPageComposite> pages = new ArrayList<JpaPageComposite>(1);
 
-		pages.add(new GenericPersistenceUnitGeneralComposite(subjectHolder, parent, widgetFactory));
+		pages.add(new HibernatePersistenceUnitGeneralComposite(subjectHolder, parent, widgetFactory));
 		pages.add(new PersistenceUnitConnectionComposite(subjectHolder, parent, widgetFactory));
 		pages.add(new PersistenceUnitPropertiesComposite(subjectHolder, parent, widgetFactory));
 		

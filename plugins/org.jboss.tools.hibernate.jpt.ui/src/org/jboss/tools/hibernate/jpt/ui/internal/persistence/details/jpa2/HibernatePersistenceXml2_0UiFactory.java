@@ -23,12 +23,12 @@ import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.JpaOptions2_0;
 import org.eclipse.jpt.jpa.ui.details.JpaPageComposite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.connection.GenericPersistenceUnit2_0ConnectionTab;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.options.GenericPersistenceUnit2_0OptionsTab;
-import org.eclipse.jpt.jpa.ui.internal.persistence.details.GenericPersistenceUnitGeneralComposite;
 import org.eclipse.jpt.jpa.ui.internal.persistence.details.PersistenceUnitPropertiesComposite;
 import org.eclipse.jpt.jpa.ui.internal.persistence.details.PersistenceXmlUiFactory;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
+import org.jboss.tools.hibernate.jpt.ui.internal.persistence.details.HibernatePersistenceUnitGeneralComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.persistence.details.HibernatePropertiesComposite;
 
 /**
@@ -50,7 +50,7 @@ public class HibernatePersistenceXml2_0UiFactory implements
 		PropertyValueModel<JpaOptions2_0> options2_0Holder = this
 				.buildJpaOptions2_0Holder(subjectHolder);
 
-		pages.add(new GenericPersistenceUnitGeneralComposite(subjectHolder,
+		pages.add(new HibernatePersistenceUnitGeneralComposite(subjectHolder,
 				parent, widgetFactory));
 		pages.add(new GenericPersistenceUnit2_0ConnectionTab(
 				connection2_0Holder, parent, widgetFactory));
