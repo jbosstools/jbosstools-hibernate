@@ -31,6 +31,7 @@ import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.QueryEditor;
 import org.hibernate.eclipse.console.utils.EclipseImages;
+import org.hibernate.eclipse.console.workbench.ProjectCompilerVersionChecker;
 
 /**
  * @author max
@@ -65,20 +66,22 @@ public class ExecuteQueryAction extends Action {
 		if (cfg != null) {
 			//keep states of ConsoleConfiguration and HibernateExtension synchronized
 			if (!(cfg.isSessionFactoryCreated() && cfg.getHibernateExtension().isSessionFactoryCreated())) {
-				if (queryEditor.askUserForConfiguration(cfg.getName())) {
-					if (!(cfg.hasConfiguration() && cfg.getHibernateExtension().hasConfiguration())) {
-	    				try {
-	    					cfg.build();
-	    				} catch (HibernateException he) {
-	    					HibernateConsolePlugin.getDefault().showError(
-	    						HibernateConsolePlugin.getShell(), 
-	    						HibernateConsoleMessages.LoadConsoleCFGCompletionProposal_could_not_load_configuration +
-	    						' ' + cfg.getName(), he);
-	    				}
-					}
-					if (cfg.hasConfiguration() && cfg.getHibernateExtension().hasConfiguration()) {
-						cfg.buildSessionFactory();
-						queryEditor.executeQuery(cfg);
+				if (ProjectCompilerVersionChecker.validateProjectComplianceLevel(cfg)){
+					if (queryEditor.askUserForConfiguration(cfg.getName())) {
+						if (!(cfg.hasConfiguration() && cfg.getHibernateExtension().hasConfiguration())) {
+		    				try {
+		    					cfg.build();
+		    				} catch (HibernateException he) {
+		    					HibernateConsolePlugin.getDefault().showError(
+		    						HibernateConsolePlugin.getShell(), 
+		    						HibernateConsoleMessages.LoadConsoleCFGCompletionProposal_could_not_load_configuration +
+		    						' ' + cfg.getName(), he);
+		    				}
+						}
+						if (cfg.hasConfiguration() && cfg.getHibernateExtension().hasConfiguration()) {
+							cfg.buildSessionFactory();
+							queryEditor.executeQuery(cfg);
+						}
 					}
 				}
 			} else {

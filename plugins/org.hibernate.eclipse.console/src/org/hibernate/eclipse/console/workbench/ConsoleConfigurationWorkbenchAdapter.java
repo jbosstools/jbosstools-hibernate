@@ -32,8 +32,11 @@ import org.hibernate.eclipse.console.utils.EclipseImages;
 
 public class ConsoleConfigurationWorkbenchAdapter extends BasicWorkbenchAdapter {
 
-	public Object[] getChildren(Object o) {
+	public Object[] getChildren(Object o) {		
 		final ConsoleConfiguration ccfg = getConsoleConfiguration( o );
+		if (!ProjectCompilerVersionChecker.validateProjectComplianceLevel(ccfg)){
+			return new Object[0];
+		}
 		//String sfError = null;
 		if(!ccfg.hasConfiguration()) {
 			ccfg.build();
