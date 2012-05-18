@@ -40,7 +40,7 @@ public class ProjectCompilerVersionChecker {
 					String eclipseCompilerVersion = System.getProperty("java.specification.version"); //$NON-NLS-1$
 					long projectJdkLevel = CompilerOptions.versionToJdkLevel(projectTarget);
 					long eclipseJdkLevel = CompilerOptions.versionToJdkLevel(eclipseCompilerVersion);
-					if (eclipseJdkLevel <= projectJdkLevel){
+					if (eclipseJdkLevel < projectJdkLevel){
 						Display.getDefault().syncExec(new Runnable(){
 							@Override
 							public void run() {
