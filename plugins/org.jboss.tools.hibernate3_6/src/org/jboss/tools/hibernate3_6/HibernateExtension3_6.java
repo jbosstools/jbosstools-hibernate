@@ -206,15 +206,20 @@ public class HibernateExtension3_6 implements HibernateExtension {
 
 	@Override
 	public boolean reset() {
-		boolean res = false;
+		boolean resetted = false;
 		// reseting state
 		if (configuration != null) {
 			configuration = null;
-			res = true;
+			resetted = true;
 		}
 		
-		boolean tmp = closeSessionFactory();
-		res = res || tmp;
+		resetted = resetted | closeSessionFactory() | cleanUpClassLoader();
+		executionContext = null;
+		return resetted;
+	}
+	
+	protected boolean cleanUpClassLoader() {
+		boolean resetted = false;
 		if (executionContext != null) {
 			executionContext.execute(new Command() {
 				public Object execute() {
@@ -232,29 +237,21 @@ public class HibernateExtension3_6 implements HibernateExtension {
 		}
 		if (fakeDrivers.size() > 0) {
 			fakeDrivers.clear();
-			res = true;
+			resetted = true;
 		}
-		tmp = cleanUpClassLoader();
-		res = res || tmp;
-		executionContext = null;
-		return res;
-	}
-	
-	protected boolean cleanUpClassLoader() {
-		boolean res = false;
 		ClassLoader classLoaderTmp = classLoader;
 		while (classLoaderTmp != null) {
 			if (classLoaderTmp instanceof ConsoleConfigClassLoader) {
 				((ConsoleConfigClassLoader)classLoaderTmp).close();
-				res = true;
+				resetted = true;
 			}
 			classLoaderTmp = classLoaderTmp.getParent();
 		}
 		if (classLoader != null) {
 			classLoader = null;
-			res = true;
+			resetted = true;
 		}
-		return res;
+		return resetted;
 	}
 
 	@Override
