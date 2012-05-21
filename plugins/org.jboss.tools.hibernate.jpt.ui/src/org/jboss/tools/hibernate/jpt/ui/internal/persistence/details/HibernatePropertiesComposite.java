@@ -12,6 +12,7 @@ package org.jboss.tools.hibernate.jpt.ui.internal.persistence.details;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.core.resources.IContainer;
@@ -26,6 +27,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.internal.ui.wizards.TypedElementSelectionValidator;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -43,7 +45,6 @@ import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
-import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.ui.details.JpaPageComposite;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
@@ -51,9 +52,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
+import org.eclipse.ui.model.WorkbenchContentProvider;
+import org.eclipse.ui.model.WorkbenchLabelProvider;
+import org.eclipse.ui.views.navigator.ResourceSorter;
+import org.hibernate.eclipse.console.FileFilter;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
-import org.hibernate.eclipse.console.utils.DialogSelectionHelper;
 import org.hibernate.eclipse.console.utils.DriverClassHelpers;
 import org.hibernate.eclipse.console.wizards.NewConfigurationWizard;
 import org.hibernate.eclipse.console.wizards.NewConfigurationWizardPage;
@@ -202,29 +207,42 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 			path = new Path(files[0].getProject().getName()).append(files[0].getProjectRelativePath());
 			filePath = path.toString();
 		}
-		if (props != null && filePath.length() > 0 ){
+		if (filePath.length() > 0 ){
+			IPackageFragmentRoot[] allPackageFragmentRoots = getSourcePackageFragmentRoots();
+			for (IPackageFragmentRoot iPackageFragmentRoot : allPackageFragmentRoots) {
+				IResource sourceFolder = iPackageFragmentRoot.getResource();
+				if (sourceFolder instanceof IContainer) {
+					IContainer folder = (IContainer) sourceFolder;
+					if (folder.findMember(filePath) != null){
+						return folder.findMember(filePath).getFullPath();
+					}
+				}
+			}
+		}
+		return path;
+	}
+	
+	public IPackageFragmentRoot[] getSourcePackageFragmentRoots(){
+		BasicHibernateProperties props = getSubject();
+		if (props != null){
 			IProject project = props.getJpaProject().getProject();
 			IJavaProject jProject = JavaCore.create(project);
 			if (jProject != null){
 				try {
 					IPackageFragmentRoot[] allPackageFragmentRoots = jProject.getAllPackageFragmentRoots();
+					List<IPackageFragmentRoot> sources = new LinkedList<IPackageFragmentRoot>();
 					for (IPackageFragmentRoot iPackageFragmentRoot : allPackageFragmentRoots) {
-						if (!iPackageFragmentRoot.isArchive()){
-							IResource sourceFolder = iPackageFragmentRoot.getResource();
-							if (sourceFolder instanceof IContainer) {
-								IContainer folder = (IContainer) sourceFolder;
-								if (folder.findMember(filePath) != null){
-									return folder.findMember(filePath).getFullPath();
-								}
-							}
+						if (!iPackageFragmentRoot.isArchive() && iPackageFragmentRoot.isOpen()){
+							sources.add(iPackageFragmentRoot);
 						}
 					}
+					return sources.toArray(new IPackageFragmentRoot[0]);
 				} catch (JavaModelException e) {
 					//ignore
 				}
 			}
 		}
-		return path;
+		return new IPackageFragmentRoot[0];
 	}
 
 	private Runnable createSetupAction() {
@@ -253,21 +271,11 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 				IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 				IResource res = root.findMember(cfgFile);
 				if ( res != null && res.exists() && res.getType() == IResource.FILE) {
-					JpaProject jpaProject = HibernatePropertiesComposite.this.getSubject().getJpaProject();
-					IJavaProject jProject = jpaProject.getJavaProject();
-					if (jProject != null){
-						try {
-							IPackageFragmentRoot[] allPackageFragmentRoots = jProject.getAllPackageFragmentRoots();
-							for (IPackageFragmentRoot iPackageFragmentRoot : allPackageFragmentRoots) {
-								if (!iPackageFragmentRoot.isArchive()){
-									if (iPackageFragmentRoot.getResource().getFullPath().isPrefixOf(cfgFile)){
-										cfgFile = cfgFile.removeFirstSegments(iPackageFragmentRoot.getResource().getFullPath().segmentCount());
-										return cfgFile;
-									}
-								}
-							}
-						} catch (JavaModelException e) {
-							//ignore
+					IPackageFragmentRoot[] allPackageFragmentRoots = getSourcePackageFragmentRoots();
+					for (IPackageFragmentRoot iPackageFragmentRoot : allPackageFragmentRoots) {
+						if (iPackageFragmentRoot.getResource().getFullPath().isPrefixOf(cfgFile)){
+							cfgFile = cfgFile.removeFirstSegments(iPackageFragmentRoot.getResource().getFullPath().segmentCount());
+							return cfgFile;
 						}
 					}
 				}
@@ -285,10 +293,45 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 			}
 
 			private IPath handleConfigurationFileBrowse() {
-				IPath initialPath = getConfigurationFilePath();
-				IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(),  initialPath, new IPath[0], HibernateConsoleMessages.ConsoleConfigurationMainTab_select_hibernate_cfg_xml_file, HibernateConsoleMessages.ConsoleConfigurationMainTab_choose_file_to_use_as_hibernate_cfg_xml, new String[] {HibernateConsoleMessages.ConsoleConfigurationMainTab_cfg_xml}, false, false, true);
+				IPath[] paths = chooseFileEntries();
 				if(paths!=null && paths.length==1) {
 					return paths[0];
+				}
+				return null;
+			}
+			
+			public IPath[] chooseFileEntries() {
+				TypedElementSelectionValidator validator = new TypedElementSelectionValidator(new Class[]{IFile.class}, false);
+				IWorkspaceRoot root= ResourcesPlugin.getWorkspace().getRoot();
+				IResource focus= getConfigurationFilePath() != null ? root.findMember(getConfigurationFilePath()) : null;
+
+				ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(getShell(), new WorkbenchLabelProvider(), new WorkbenchContentProvider(){
+					public Object[] getElements(Object element) {
+						IPackageFragmentRoot[] sourcePackageFragmentRoots = getSourcePackageFragmentRoots();
+						IResource[] ress = new IResource[sourcePackageFragmentRoots.length];
+						for (int i = 0; i < sourcePackageFragmentRoots.length; i++) {
+							ress[i] = sourcePackageFragmentRoots[i].getResource();
+						}
+						return ress;
+					}
+				});
+				dialog.setValidator(validator);
+				dialog.setAllowMultiple(false);
+				dialog.setTitle(HibernateConsoleMessages.ConsoleConfigurationMainTab_select_hibernate_cfg_xml_file);
+				dialog.setMessage(HibernateConsoleMessages.ConsoleConfigurationMainTab_choose_file_to_use_as_hibernate_cfg_xml);
+				dialog.addFilter(new FileFilter(new String[] {HibernateConsoleMessages.ConsoleConfigurationMainTab_cfg_xml}, null, true, false) );
+				dialog.setInput(root);
+				dialog.setSorter(new ResourceSorter(ResourceSorter.NAME) );
+				dialog.setInitialSelection(focus);
+
+				if (dialog.open() == Window.OK) {
+					Object[] elements= dialog.getResult();
+					IPath[] res= new IPath[elements.length];
+					for (int i= 0; i < res.length; i++) {
+						IResource elem= (IResource)elements[i];
+						res[i]= elem.getFullPath();
+					}
+					return res;
 				}
 				return null;
 			}

@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -278,8 +277,6 @@ implements Messages, Hibernate {
 		String configFile = this.hibernateProperties.getConfigurationFile();
 		if (configFile != null && configFile.length() > 0){
 			IPath path = new Path(configFile);
-
-			if (new File(path.toOSString()).exists()) return;
 
 			try {
 				IJavaProject jp = getJpaProject().getJavaProject();
