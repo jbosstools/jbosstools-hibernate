@@ -341,7 +341,8 @@ public class HibernatePropertyPage extends PropertyPage {
 				final IWorkspaceRunnable wr = new IWorkspaceRunnable() {
 					public void run(IProgressMonitor monitor)
 							throws CoreException {
-						JptJpaCorePlugin.rebuildJpaProject(getProject());
+						// FIXME migration to latest JPA version required
+						//JptJpaCorePlugin.rebuildJpaProject(getProject());
 						getProject().build(IncrementalProjectBuilder.FULL_BUILD, monitor);
 					}
 				};
