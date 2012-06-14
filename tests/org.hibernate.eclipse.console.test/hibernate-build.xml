@@ -11,7 +11,7 @@
 	
 	<import file="${hibernate.root}/HibernateExt/common/common-build.xml"/>
 	
-	<target name="update" depends="init">
+	<target name="update">
          
         <delete failonerror="no">
 	     <fileset dir="lib">
