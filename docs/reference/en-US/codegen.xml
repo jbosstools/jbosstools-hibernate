@@ -1,0 +1,551 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="codegen">
+  <title>Controlling POJO code generation</title>
+
+  <para>
+  	When using the <code>&lt;hbm2java&gt;</code> tag or the Eclipse plugin to generate POJO Java code you have the ability to control certain aspects of the code generation process. This is primarily done with the <code>&lt;meta&gt;</code> tag in the mapping files. The following section describes the possible <code>&lt;meta&gt;</code> tags and their use.
+  </para>
+
+  <section>
+    <title>The &lt;meta&gt; attribute</title>
+
+    <para>
+    	The <code>&lt;meta&gt;</code> tag is a simple way of annotating the <filename>hbm.xml</filename> file with information, so tools have a natural place to store and read information that is not directly related to the Hibernate core.
+    </para>
+
+    <para>
+    	As an example, you can use the <code>&lt;meta&gt;</code> tag to tell the <code>&lt;hbm2java&gt;</code> tag to only generate <code>&quot;protected&quot;</code> setters, have classes always implement a certain set of interfaces, have them extend a certain base class and more.
+    </para>
+
+    <para>The following example shows how to use various <code>&lt;meta&gt;</code> attributes and the resulting Java code.</para>
+
+    <programlisting role="XML"><![CDATA[<class name="Person">
+    <meta attribute="class-description">
+        Javadoc for the Person class
+        @author Frodo
+    </meta>
+    <meta attribute="implements">IAuditable</meta>
+    <id name="id" type="long">
+        <meta attribute="scope-set">protected</meta>
+        <generator class="increment"/>
+    </id>
+    <property name="name" type="string">
+        <meta attribute="field-description">The name of the person</meta>
+    </property>
+</class>]]></programlisting>
+
+    <para>
+    	The above <filename>hbm.xml</filename> file will produce something like the following (the code has been abbreviated for clarity). Notice the Javadoc comment and the protected set methods:
+    </para>
+
+    <programlisting role="JAVA"><![CDATA[// default package
+
+import java.io.Serializable;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
+/** 
+ *         Javadoc for the Person class
+ *         @author Frodo
+ */
+public class Person implements Serializable, IAuditable {
+
+    public Long id;
+
+    public String name;
+
+    public Person(java.lang.String name) {
+        this.name = name;
+    }
+
+    public Person() {
+    }
+
+    public java.lang.Long getId() {
+        return this.id;
+    }
+
+    protected void setId(java.lang.Long id) {
+        this.id = id;
+    }
+
+    /** 
+     * The name of the person
+     */
+    public java.lang.String getName() {
+        return this.name;
+    }
+
+    public void setName(java.lang.String name) {
+        this.name = name;
+    }
+
+}]]></programlisting>
+
+    <table frame="topbot">
+      <title>Supported meta tags</title>
+
+      <tgroup cols="2">
+        <colspec colwidth="1.0*"/>
+
+        <colspec colwidth="2*"/>
+
+        <thead>
+          <row>
+            <entry>Attribute</entry>
+
+            <entry>Description</entry>
+          </row>
+        </thead>
+
+        <tbody>
+          <row>
+            <entry>
+              <literal>class-description</literal>
+            </entry>
+
+            <entry>inserted into the Javadoc for classes</entry>
+          </row>
+
+          <row>
+            <entry>
+              <literal>field-description</literal>
+            </entry>
+
+            <entry>inserted into the Javadoc for fields and properties</entry>
+          </row>
+
+          <row>
+            <entry>
+              <literal>interface</literal>
+            </entry>
+
+            <entry>If true, an interface is generated instead of an class.</entry>
+          </row>
+
+          <row>
+            <entry>
+              <literal>implements</literal>
+            </entry>
+
+            <entry>interface the class should implement</entry>
+          </row>
+
+          <row>
+            <entry>
+              <literal>extends</literal>
+            </entry>
+
+            <entry>class that the current class should extend (ignored for subclasses)</entry>
+          </row>
+
+          <row>
+            <entry>
+              <literal>generated-class</literal>
+            </entry>
+
+            <entry>overrule the name of the actual class generated</entry>
+          </row>
+
+          <row>
+            <entry>
+              <literal>scope-class</literal>
+            </entry>
+
+            <entry>scope for class</entry>
+          </row>
+
+          <row>
+            <entry>
+              <literal>scope-set</literal>
+            </entry>
+
+            <entry>scope for setter method</entry>
+          </row>
+
+          <row>
+            <entry>
+              <literal>scope-get</literal>
+            </entry>
+
+            <entry>scope for getter method</entry>
+          </row>
+
+          <row>
+            <entry>
+              <literal>scope-field</literal>
+            </entry>
+
+            <entry>scope for actual field</entry>
+          </row>
+
+          <row>
+            <entry>
+              <literal>default-value</literal>
+            </entry>
+
+            <entry>Default initialization value for a field.</entry>
+          </row>
+
+          <row>
+            <entry>
+              <literal>use-in-tostring</literal>
+            </entry>
+
+            <entry>Include this property in the <code>toString()</code> method.</entry>
+          </row>
+
+          <row>
+            <entry>
+              <literal>use-in-equals</literal>
+            </entry>
+
+            <entry>
+            	Include this property in the <code>equals()</code> and <code>hashCode()</code> methods. If no use-in-equals is specified, no equals or hashcode method will be generated.
+            </entry>
+          </row>
+
+          <row>
+            <entry>
+              <literal>gen-property</literal>
+            </entry>
+
+            <entry>Property will not be generated if false (use with care).</entry>
+          </row>
+
+          <row>
+            <entry>
+              <literal>property-type</literal>
+            </entry>
+
+            <entry>Overrides the default type of property. Use this with any tag's to specify the concrete type instead of just <code>Object</code>.</entry>
+          </row>
+
+          <row>
+            <entry>
+              <literal>class-code</literal>
+            </entry>
+
+            <entry>Extra code that will inserted at the end of the class</entry>
+          </row>
+
+          <row>
+            <entry>
+              <literal>extra-import</literal>
+            </entry>
+
+            <entry>Extra import that will inserted at the end of all other imports</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+
+    <para>
+    	Attributes declared via the <code>&lt;meta&gt;</code> tag <code>&quot;inherited&quot;</code> inside an <code>hbm.xml</code> file by default.
+    </para>
+
+    <para>
+    	What does that mean? As an example if you want to have all your classes implement <code>IAuditable</code> then you just add <code> &lt;meta attribute="implements"&gt;IAuditable&lt;/meta&gt;</code> in the top of the <filename>hbm.xml</filename> file, just after <code>&lt;hibernate-mapping&gt;</code>. Now all classes defined in that <filename>hbm.xml</filename> file will implement <code>IAuditable</code>.
+    </para>
+
+    <note>
+      <title>Note:</title>
+      <para>
+      	This applies to <emphasis>all</emphasis> <code>&lt;meta&gt;</code>-tags. Thus it can also be used to specify that all fields should be declare <code>protected</code>, instead of the default <code>private</code>. This is done by adding <code>&lt;meta attribute="scope-field"&gt;protected&lt;/meta&gt;</code> just under the <code>&lt;class&gt;</code> tag, and all fields of that class will be <code>protected</code>.
+      </para>
+    </note>
+
+    <para>
+    	To avoid having a <code>&lt;meta&gt;</code> tag inherited then you can specify <code> inherit = "false"</code> for the attribute. For example <code> &lt;meta attribute = "scope-class" inherit = "false"&gt;public abstract&lt;/meta&gt;</code> will restrict the <code>&quot;class-scope&quot;</code> to the current class, not the subclasses.
+    </para>
+
+    <section>
+      <title>Recommendations</title>
+
+      <para>The following are some good practices to employ when using <code>&lt;meta&gt;</code> attributes.</para>
+
+      <section>
+        <title>Dangers of a class level <property>use-in-string and use-in-equals</property> meta attributes when using bi-directional associations</title>
+
+        <para>
+        	In the following example we have two entities with a bi-directional association between them and define the <code>use-in-string</code> and <code>use-in-equals</code> meta attributes at the class scope level the meta attributes:
+        </para>
+
+        <programlisting role="XML"><![CDATA[<hibernate-mapping>
+  <class name="Person">
+    <meta attribute="use-in-tostring">true</meta>
+    <meta attribute="use-in-equals">true</meta>
+    ...
+  </class>
+</hibernate-mapping>]]></programlisting>
+
+        <para>Here is the <filename>Event.hbm</filename> file:</para>
+
+        <programlisting role="XML"><![CDATA[<hibernate-mapping>              
+  <class name="events.Event" table="EVENTS">
+    <meta attribute="use-in-tostring">true</meta>
+    <meta attribute="use-in-equals">true</meta>                  
+    <id name="id" column="EVENT_ID">
+        <generator class="native"/>
+    </id>
+    <property name="date" type="timestamp" column="EVENT_DATE"/>
+    <property name="title"/>
+    <set name="participants" table="PERSON_EVENT" inverse="true">
+        <key column="EVENT_ID"/>
+        <many-to-many column="PERSON_ID" class="events.Person"/>
+    </set>                    
+  </class>
+</hibernate-mapping>]]></programlisting>
+
+        <para>
+        	In this situation the <code>&lt;hbm2java&gt;</code> tag will assume you want to include all properties and collections in the <code>toString()</code> and <code>equals()</code> methods. This can result in infinite recursive calls.
+        </para>
+
+        <para>
+        	To remedy this you have to decide which side of the association will include the other part (if at all) in the <code>toString()</code> and <code>equals()</code> methods. Therefore it is not a good practice to define these <code>meta</code> attributes at the class scope, unless you are defining a class without bi-directional associations.
+        </para>
+
+        <para>Instead it is recommended that the <code>meta</code> attributes are defined at the property level, like so:</para>
+
+        <programlisting role="XML"><![CDATA[<hibernate-mapping>             
+  <class name="events.Event" table="EVENTS">                  
+    <id name="id" column="EVENT_ID">
+        <meta attribute="use-in-tostring">true</meta>
+        <generator class="native"/>
+    </id>
+    <property name="date" type="timestamp" column="EVENT_DATE"/>
+    <property name="title">
+      <meta attribute="use-in-tostring">true</meta>
+      <meta attribute="use-in-equals">true</meta>      
+    </property>
+    <set name="participants" table="PERSON_EVENT" inverse="true">
+        <key column="EVENT_ID"/>
+        <many-to-many column="PERSON_ID" class="events.Person"/>
+    </set>                    
+  </class>
+</hibernate-mapping>]]></programlisting>
+
+        <para>and for <code>Person</code>:</para>
+
+        <programlisting role="XML"><![CDATA[<hibernate-mapping>
+    <class name="Person">
+    <meta attribute="class-description">
+        Javadoc for the Person class
+        @author Frodo
+    </meta>
+    <meta attribute="implements">IAuditable</meta>
+    <id name="id" type="long">
+        <meta attribute="scope-set">protected</meta>
+        <meta attribute="use-in-tostring">true</meta>        
+        <generator class="increment"/>
+    </id>
+    <property name="name" type="string">
+        <meta attribute="field-description">The name of the person</meta>
+        <meta attribute="use-in-tostring">true</meta>
+    </property>
+  </class>
+</hibernate-mapping>]]></programlisting>
+      </section>
+
+      <section>
+        <title>Be aware of putting at class scope level &lt;meta&gt; attributeuse-in-equals</title>
+
+        <para>
+        	Only attributes with business meaning (e.g. the name, social security number, etc, but no generated id's) should be referenced when calculating the return value for the <code>equal()</code> and <code>hashCode()</code> methods.
+        </para>
+
+        <para>
+        	This is important because Java's hashbased collections, such as <code>java.util.Set</code>, rely on <code>equals()</code> and <code>hashcode()</code> being correct and not changing for objects in the set; this can be a problem if the id gets assigned for an object after you inserted it into a set.
+        </para>
+
+        <para>
+        	Therefore automatically configuration of the generation of <code>equals()</code> and <code>hashCode()</code> methods specifying the <code>&lt;meta&gt;</code> attribute <code>use-in-equals</code> at class scope level could be a dangerous decision that could produce unexpected side-effects.
+        </para>
+
+        <para>
+        	On <ulink url="http://www.hibernate.org/109.html">www.hibernate.org </ulink> you can find more in-depth explanation on the subject of <code>equals()</code> and <code>hashcode()</code> methods.
+        </para>
+      </section>
+    </section>
+
+    <section>
+      <title>Advanced &lt;meta&gt; attribute examples</title>
+
+      <para>
+      	This section shows an example for using meta attributes (including user specific attributes) together with the code generation features in <productname>Hibernate Tools</productname>.
+      </para>
+
+      <para>The example shown below automatically inserts some pre and post conditions into the getter and setter methods of the generated POJO. </para>
+
+      <section>
+        <title>Generate pre/post-conditions for methods</title>
+
+        <para>
+        	With <code> &lt;meta attribute="class-code"&gt;</code> you can add additional methods on a given class. However, such <code>&lt;meta&gt;</code> attributes can not be used at a property scope level and <property>Hibernate Tools</property> does not provide such <code>&lt;meta&gt;</code> attributes.
+        </para>
+
+        <para>
+        	A possible solution for this is to modify the Freemarker templates responsible for generating the POJOs. If you look inside the <filename>hibernate-tools.jar</filename> archive, you can find the template <filename>pojo/PojoPropertyAccessor.ftl</filename>.
+        </para>
+
+        <para>As its name indicates, this file is used to generate property accessors for POJOs.</para>
+
+        <para>
+        	Extract the <filename>PojoPropertyAccessor.ftl</filename> file into a local folder e.g. <filename>${hbm.template.path}</filename>, respecting the whole path, for example: <filename>${hbm.template.path}/pojo/PojoPropertyAccessor.ftl</filename>.
+        </para>
+
+        <para>The contents of the file will be something like this:</para>
+
+        <programlisting role="XML"><![CDATA[<#foreach property in pojo.getAllPropertiesIterator()>
+    ${pojo.getPropertyGetModifiers(property)} 
+    ${pojo.getJavaTypeName(property, jdk5)} 
+    ${pojo.getGetterSignature(property)}() {
+        return this.${property.name};
+    }
+    
+    ${pojo.getPropertySetModifiers(property)} void set${pojo.getPropertyName(property)}
+        (${pojo.getJavaTypeName(property, jdk5)} ${property.name}) 
+    {
+        this.${property.name} = ${property.name};
+    }
+</#foreach>]]></programlisting>
+
+        <para>
+        	We can add pre and post conditions on our <code>set</code> method generation just by adding a little Freemarker syntax to the above source code:
+        </para>
+
+        <programlisting role="XML"><![CDATA[<#foreach property in pojo.getAllPropertiesIterator()>
+    ${pojo.getPropertyGetModifiers(property)} 
+    ${pojo.getJavaTypeName(property, jdk5)} 
+    ${pojo.getGetterSignature(property)}()
+    {
+        return this.${property.name};
+    }
+    
+    ${pojo.getPropertySetModifiers(property)} void set${pojo.getPropertyName(property)}
+        (${pojo.getJavaTypeName(property, jdk5)} ${property.name}) 
+        {
+      <#if pojo.hasMetaAttribute(property, "pre-cond")> 
+       ${c2j.getMetaAsString(property, "pre-cond","\n")} 
+      </#if>      
+      this.${property.name} = ${property.name};
+      <#if pojo.hasMetaAttribute(property, "post-cond")> 
+       ${c2j.getMetaAsString(property, "post-cond","\n")} 
+      </#if>        
+}
+</#foreach>]]>
+</programlisting>
+
+        <para>
+        	Now if in any <filename>.hbm.xml</filename> file we define the <code>&lt;meta&gt;</code> attributes: <code>pre-cond</code> or <code>post-cond</code>, and their contents will be generated into the body of the relevant <code>set</code> method.
+        </para>
+
+        <para>
+        	As an example let us add a pre-condition for the <code>name</code> property which will prevent the <code>Person</code> class from having an empty name. To achieve this we have to modify the <filename>Person.hbm.xml</filename> file like so:
+        </para>
+
+        <programlisting role="XML"><![CDATA[<hibernate-mapping>
+  <class name="Person">
+  <id name="id" type="long">        
+      <generator class="increment"/>
+  </id>
+  <property name="firstName" type="string">
+      <meta attribute="pre-cond">
+      if ((firstName != null) &amp;&amp; (firstName.length() == 0) ) {
+        throw new IllegalArgumentException("firstName can not be an empty String");
+      }
+      </meta>
+  </property>
+</class>
+</hibernate-mapping>]]></programlisting>
+
+        <note>
+          <title>Note:</title>
+          <para>I) To escape the <code>&amp;</code> symbol we put <code>&amp;</code><code>amp</code><code>;</code>. You could use <code> &lt;![CDATA[]]&gt;</code> instead.</para>
+          <para>
+          	II) Note that we are referring to <code>firstName</code> directly and this is the parameter name not the actual field name. If you want to refer the field you have to use <code>this.firstName</code> instead. 
+          </para>
+        </note>
+
+        <para>
+        	Finally we have to generate the <filename>Person.java</filename> class. For this we can use either Eclipse or Ant, as long as you remember to set or fill in the <code>templatepath</code> setting. For Ant we configure the <code>&lt;hibernatetool&gt;</code> task via the <code>templatepath</code> attribute as in:
+        </para>
+
+        <programlisting role="XML"><![CDATA[
+    <target name="hbm2java">
+        <taskdef name="hibernatetool"
+          classname="org.hibernate.tool.ant.HibernateToolTask"
+          classpathref="lib.classpath"/>
+        <hibernatetool destdir="${hbm2java.dest.dir}"
+          templatepath="${hbm.template.path}">
+          <classpath>
+            <path refid="pojo.classpath"/>
+          </classpath>        
+          <configuration>
+            <fileset dir="${hbm2java.src.dir}">
+              <include name="**/*.hbm.xml"/>
+            </fileset>
+          </configuration>
+          <hbm2java/>
+        </hibernatetool>
+    </target>]]></programlisting>
+
+        <para>
+        	Invoking the target <code>&lt;hbm2java&gt;</code> will generate file <filename>Person.java</filename> in <filename>${hbm2java.dest.dir}</filename>:
+        </para>
+
+        <programlisting role="JAVA"><![CDATA[// default package
+import java.io.Serializable;
+public class Person implements Serializable {
+
+    public Long id;
+
+    public String name;
+
+    public Person(java.lang.String name) {
+        this.name = name;
+    }
+
+    public Person() {
+    }
+
+    public java.lang.Long getId() {
+        return this.id;
+    }
+
+    public void setId(java.lang.Long id) {
+        this.id = id;
+    }
+    
+    public java.lang.String getName() {
+        return this.name;
+    }
+
+    public void setName(java.lang.String name) {
+        if ((name != null) &amp;&amp; (name.length() == 0)) {
+            throw new IllegalArgumentException("name can not be an empty String");
+        }
+        this.name = name;
+    }
+    }]]></programlisting>
+
+        <para>
+        	In conclusion, this document is intended to introduce you to Hibernate plugin specific features related to tools both for the Eclipse and Ant tasks.
+        </para>
+
+        <para>
+        	In <xref linkend="plugins"/> you&apos;ve learned about a set of wizards for creating Mapping files, Configuration files, Console Configurations, become familiar with Mapping and Configuration files editors, tooling for organizing and controlling Reverse Engineering, Hibernate Console and Mapping diagrams.
+        </para>
+
+        <para>The rest chapters have explored the use of the <productname>Hibernate Tools</productname> via Ant tasks.</para>
+
+        <para>
+        	Please visit <ulink url="http://www.jboss.com/index.html?module=bb&amp;op=viewforum&amp;f=201">JBoss Tools Users Forum</ulink> to leave questions or/and suggestions on the topic. Your feedback is always appreciated.
+        </para>
+      </section>
+    </section>
+
+  </section>
+
+</chapter>

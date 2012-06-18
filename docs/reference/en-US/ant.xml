@@ -1,0 +1,1154 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<chapter id="ant">
+  <title>Ant Tools</title>
+
+  <para>This chapter demonstrates how to use Hibernate Tools via Ant tasks.</para>
+
+  <section>
+    <title>Introduction</title>
+
+    <para>
+    	The <filename>hibernate-tools.jar</filename> file, available from <ulink url="http://www.hibernate.org/subprojects/tools.html">tools.hibernate.org</ulink>,  contains the core code for <productname>Hibernate Tools</productname>. It is used as the basis for both the Ant tasks described in this document and the Eclipse plugins available as part of JBoss Developer Studio. The <filename>hibernate-tools.jar</filename> file is located in your Eclipse plugins directory at <filename>/plugins/org.hibernate.eclipse.x.x.x/lib/tools/hibernate-tools.jar</filename>.
+    </para>
+    <para>This jar is 100% independent from the Eclipse platform and can thus be used independently of Eclipse.</para>
+
+    <note>
+      <title>Note:</title>
+      <para>
+      	There may be incompatibilities with respect to the <filename>hibernate3.jar</filename> bundled with the tools and your own JAR. To avoid any confusion it is recommended that you use the <filename>hibernate3.jar</filename> and <filename>hibernate-annotations.jar</filename> files bundled with the tools when you want to use the Ant tasks. Do not worry about using the JAR's from a later version of Hibernate (e.g. Hibernate 3.2) with a project using an earlier version of Hibernate (e.g. a Hibernate 3.1) since the generated output will work with previous Hibernate 3 versions.
+      </para>
+    </note>
+  </section>
+
+  <section>
+    <title>The &lt;hibernatetool&gt; Ant Task</title>
+
+    <para>
+    	To use the Ant tasks you need to have the <code>hibernatetool</code> task defined. That is done in your <filename>build.xml</filename> file by inserting the following XML (assuming the JARs are located in the <filename>lib</filename> directory): 
+    </para>
+
+    <programlisting role="XML"><![CDATA[<path id="toolslib">
+ <path location="lib/hibernate-tools.jar" />
+ <path location="lib/hibernate3.jar" />
+ <path location="lib/freemarker.jar" />
+ <path location="${jdbc.driver.jar}" />
+</path>
+   
+<taskdef name="hibernatetool" 
+         classname="org.hibernate.tool.ant.HibernateToolTask" 
+         classpathref="toolslib" />
+]]></programlisting>
+
+    <para>
+    	This <code>&lt;taskdef&gt;</code> defines an Ant task called <code> hibernatetool </code> which now can be used anywhere in your Ant <filename>build.xml</filename> files. It is important to include all the <productname>Hibernate Tools</productname> dependencies as well as the JDBC driver.
+    </para>
+
+    <para>
+    	Notice that to use the annotation based Configuration you must <ulink url="http://www.hibernate.org/">get a release</ulink>. 
+    </para>
+
+    <para/>
+
+    <para>When using the <code>hibernatetool</code> task you have to specify one or more of the following:</para>
+
+    <programlisting role="XML"><![CDATA[<hibernatetool
+  destdir="defaultDestinationDirectory"
+  templatepath="defaultTemplatePath"
+>
+  <classpath ...>
+  <property key="propertyName" value="value"/>
+  <propertyset ...>
+  (<configuration ...>|<annotationconfiguration ...>|
+   <jpaconfiguration ...>|<jdbcconfiguration ...>)
+  (<hbm2java>,<hbm2cfgxml>,<hbmtemplate>,...)  
+</hibernatetool>]]></programlisting>
+
+    <table frame="topbot">
+      <title>Hibernatetool attributes</title>
+
+      <tgroup cols="3">
+
+        <colspec colwidth="0.3*"/>
+
+        <colspec colwidth="1.0*"/>
+
+        <colspec colwidth="0.3*"/>
+
+
+        <thead>
+          <row>
+            <entry>Attribute name</entry>
+
+            <entry>Definition</entry>
+
+            <entry>Attribute use</entry>
+          </row>
+        </thead>
+
+        <tbody>
+          <row>
+            <entry>
+              <para>destdir</para>
+            </entry>
+
+            <entry>
+              <para>Destination directory for files generated with the exporters</para>
+            </entry>
+
+            <entry>
+              <para>Required</para>
+            </entry>
+          </row>
+
+          <row>
+            <entry>
+              <para>templatepath</para>
+            </entry>
+
+            <entry>
+              <para>A path used for looking up user-edited templates</para>
+            </entry>
+
+            <entry>
+              <para>Optional</para>
+            </entry>
+          </row>
+
+          <row>
+            <entry>
+              <para>classpath</para>
+            </entry>
+
+            <entry>
+              <para>A classpath to be used to resolve resources, such as mappings and user types</para>
+            </entry>
+
+            <entry>
+              <para>Optional, but very often required</para>
+            </entry>
+          </row>
+
+
+          <row>
+            <entry>
+              <para>property (and propertyset)</para>
+            </entry>
+
+            <entry>
+              <para>Used to set properties that control the exporters. Mostly relevant for providing custom properties to user defined templates</para>
+            </entry>
+
+            <entry>
+              <para>Optional</para>
+            </entry>
+          </row>
+
+          <row>
+            <entry>
+              <para>configuration (annotationconfiguration, jpaconfiguration, jdbcconfiguration)</para>
+            </entry>
+
+            <entry>
+              <para>One of four different ways of configuring the Hibernate Meta Model must be specified</para>
+            </entry>
+
+            <entry>
+              <para/>
+            </entry>
+          </row>
+
+          <row>
+            <entry>
+              <para>hbm2java (hbm2cfgxml, hbmtemplate, etc.)</para>
+            </entry>
+
+            <entry>
+              <para>One or more of the exporters must be specified</para>
+            </entry>
+
+            <entry>
+              <para/>
+            </entry>
+          </row>
+
+        </tbody>
+
+      </tgroup>
+    </table>
+
+    <section>
+      <title>Basic examples</title>
+
+      <para>
+      	The following example shows the most basic setup for generating POJOs via <code>&lt;hbm2java&gt;</code> from a normal <filename>hibernate.cfg.xml</filename> file. The output will be placed in the <filename>${build.dir}/generated</filename> directory.
+      </para>
+
+      <programlisting role="XML"><![CDATA[<hibernatetool destdir="${build.dir}/generated">
+ <classpath>
+  <path location="${build.dir}/classes"/>
+ </classpath>
+ 
+ <configuration configurationfile="hibernate.cfg.xml"/>
+ <hbm2java/>
+</hibernatetool>]]></programlisting>
+
+
+      <para>
+      	The following example is similar, but now we are performing multiple exports from the same configuration. We are exporting the schema via <code>&lt;hbm2dll&gt;</code>, generating some DAO code via <code>&lt;hbm2dao&gt;</code>, and finally running some custom code generation via <code>&lt;hbmtemplate&gt;</code>. This is again from a normal <filename>hibernate.cfg.xml</filename> file, and the output is still placed in the <filename>${build.dir}/generated</filename> directory.
+      </para> 
+      	
+      <para>
+      		The example also shows how a classpath is specified, which is useful when you have custom user types or some mappings that are required to be looked up as a classpath resource.
+      </para>
+
+      <programlisting role="XML"><![CDATA[<hibernatetool destdir="${build.dir}/generated">
+ <classpath>
+  <path location="${build.dir}/classes"/>
+ </classpath>
+
+ <configuration configurationfile="hibernate.cfg.xml"/>
+ <hbm2ddl/>
+ <hbm2dao/>
+ <hbmtemplate
+  filepattern="{package-name}/I{class-name}Constants.java"
+  templatepath="${etc.dir}/customtemplates"
+  template="myconstants.vm"  
+ />
+</hibernatetool>]]></programlisting>
+
+    </section>
+  </section>
+
+  <section>
+    <title>Hibernate Configurations</title>
+
+    <para>
+    	<productname>Hibernatetool</productname> supports four different Hibernate configurations: A standard Hibernate configuration (<code>&lt;configuration&gt;</code>),  Annotation based configuration  (<code>&lt;annotationconfiguration&gt;</code>), JPA persistence based configuration (<code>&lt;jpaconfiguration&gt;</code>)  and a JDBC based configuration  (<code>&lt;jdbcconfiguration&gt;</code>) used when reverse engineering.
+    </para>
+
+    <para>
+    	Each can be used to build a Hibernate Configuration object, from which a set of exporters can be run in order to generate various output formats.
+    </para>
+
+    <note>
+      <title>Note:</title>
+      <para>
+      	Output can be anything, e.g. specific files, statements execution against a database, error reporting or anything else that can be done in Java code.
+      </para>
+    </note>
+
+    <para>The following sections describe what the various configurations can do, as well as listing their individual settings.</para>
+
+    <section>
+      <title>Standard Hibernate Configuration (&lt;configuration&gt;)</title>
+
+      <para>
+      	A <code>&lt;configuration&gt;</code> tag is used to define a standard Hibernate configuration. A standard Hibernate configuration reads the mappings from a <filename>cfg.xml</filename> file and/or a fileset.
+      </para>
+
+      <programlisting role="XML"><![CDATA[<configuration
+  configurationfile="hibernate.cfg.xml"
+  propertyfile="hibernate.properties"
+  entityresolver="EntityResolver classname"
+  namingstrategy="NamingStrategy classname"
+>
+  <fileset...>
+  
+  </configuration>]]></programlisting>
+
+      <table frame="topbot">
+        <title>Configuration attributes</title>
+
+        <tgroup cols="3">
+
+          <colspec colwidth="0.3*"/>
+
+          <colspec colwidth="1.0*"/>
+
+          <colspec colwidth="0.3*"/>
+
+
+          <thead>
+            <row>
+              <entry>Attribute name</entry>
+
+              <entry>Definition</entry>
+
+              <entry>Attribute use</entry>
+            </row>
+          </thead>
+
+          <tbody>
+            <row>
+              <entry>
+                <para>configurationfile</para>
+              </entry>
+
+              <entry>
+                <para>The name of a Hibernate configuration file, e.g. <filename>hibernate.cfg.xml</filename>.</para>
+              </entry>
+
+              <entry>
+                <para>Optional</para>
+              </entry>
+            </row>
+
+            <row>
+              <entry>
+                <para>propertyfile</para>
+              </entry>
+
+              <entry>
+                <para>The name of a property file, e.g. <filename>hibernate.properties</filename>.</para>
+              </entry>
+
+              <entry>
+                <para>Optional</para>
+              </entry>
+            </row>
+
+            <row>
+              <entry>
+                <para>entity-resolver</para>
+              </entry>
+
+              <entry>
+                <para>Name of a class that implements <code>org.xml.sax.EntityResolver</code>. Used if the mapping files require custom entity resolver.</para>
+              </entry>
+
+              <entry>
+                <para>Optional</para>
+              </entry>
+            </row>
+
+
+            <row>
+              <entry>
+                <para>namingstrategy</para>
+              </entry>
+
+              <entry>
+                <para>
+                	Name of a class that implements <code>org.hibernate.cfg.NamingStrategy</code>. Used for setting up the naming strategy in Hibernate which controls the automatic naming of tables and columns. In JPA projects naming strategy is supported for default Name/Columns mapping.
+                </para>
+              </entry>
+
+              <entry>
+                <para>Optional</para>
+              </entry>
+            </row>
+
+            <row>
+              <entry>
+                <para>fileset</para>
+              </entry>
+
+              <entry>
+                <para>
+                	A standard Ant fileset. Used to include hibernate mapping files. Remember that if mappings are already specified in the <filename>hibernate.cfg.xml</filename> then it should not be included via the fileset as it will result in duplicate import exceptions.
+                </para>
+              </entry>
+
+              <entry>
+                <para/>
+              </entry>
+            </row>
+
+          </tbody>
+
+        </tgroup>
+      </table>
+
+      <section>
+        <title>Example</title>
+
+        <para>
+        	This example shows an example where no <filename>hibernate.cfg.xml</filename> file exists, and a <filename>hibernate.properties</filename> file and fileset is used instead.
+        </para>
+
+        <note>
+          <title>Note:</title>
+          <para>
+          	Hibernate will still read any global <filename>hibernate.properties</filename> files available in the classpath, but the specified properties file here will override those values for any non-global property.
+          </para>
+        </note>
+
+        <programlisting role="XML"><![CDATA[<hibernatetool destdir="${build.dir}/generated">
+ <configuration propertyfile="{etc.dir}/hibernate.properties">
+   <fileset dir="${src.dir}">
+   <include name="**/*.hbm.xml"/>
+   <exclude name="**/*Test.hbm.xml"/>
+  </fileset>
+ </configuration>
+
+ <!-- list exporters here -->
+
+</hibernatetool>]]></programlisting>
+
+      </section>
+    </section>
+
+    <section>
+      <title>Annotation based Configuration (&lt;annotationconfiguration&gt;)</title>
+
+      <para>An <code>&lt;annotationconfiguration&gt;</code> tag is used when you want to read the metamodel from EJB3 or Hibernate Annotations based POJO's.</para>
+
+      <important>
+        <title>Important:</title>
+        <para>
+        	To use an <code>&lt;annotationconfiguration&gt;</code> tag remember to place the JAR files required to use Hibernate annotations in the classpath of the <code>&lt;taskdef&gt;</code>,  i.e. <filename>hibernate-annotations.jar</filename> and <filename>hibernate-commons-annotations.jar</filename>.
+        </para>
+      </important>
+
+      <para>
+      	The <code>&lt;annotationconfiguration&gt;</code> tag supports the same attributes as the <code>&lt;configuration&gt;</code> tag, with the exception being that the <code>configurationfile</code> attribute is now required as that is where an <emphasis>AnnotationConfiguration</emphasis> gets the list of classes and packages it should load.
+      </para>
+
+      <para>Thus the minimal usage is:</para>
+
+      <programlisting role="XML"><![CDATA[<hibernatetool destdir="${build.dir}/generated">
+ <annotationconfiguration
+  configurationfile="hibernate.cfg.xml"/>
+
+ <!-- list exporters here -->
+
+</hibernatetool>
+]]></programlisting>
+
+    </section>
+
+    <section>
+      <title>JPA based configuration (&lt;jpaconfiguration&gt;)</title>
+
+      <para>
+      	A <code>&lt;jpaconfiguration&gt;</code> tag is used when you want to read the metamodel from JPA or Hibernate Annotation where you want to use the auto-scan configuration as defined in the JPA specification (part of EJB3). In other words, when you do not have a <filename>hibernate.cfg.xml</filename>, but instead have a setup where you use a <filename>persistence.xml</filename> file packaged in a JPA compliant manner.
+      </para>
+
+      <para>
+      	The <code>&lt;jpaconfiguration&gt;</code> tag will try and auto-configure it self based on the available classpath, e.g. look for the <filename>META-INF/persistence.xml</filename> file.
+      </para>
+
+      <para>
+      	The <code>persistenceunit</code> attribute can be used to select a specific persistence unit. If no <code>persistenceunit</code> attribute is specified it will automatically search for one, and if a unique one is found, use it. However, having multiple persistence units will result in an error.
+      </para>
+
+      <para>
+      	To use a <code>&lt;jpaconfiguration&gt;</code> tag you will need to specify some additional JARs from the Hibernate EntityManager in the <code>&lt;taskdef&gt;</code> section of the hibernatetool. The following demonstrates a full setup:
+      </para>
+
+      <programlisting role="XML"><![CDATA[<path id="ejb3toolslib">
+ <path refid="jpatoolslib"/> <!-- ref to previously defined toolslib -->
+ <path location="lib/hibernate-annotations.jar" />
+ <path location="lib/ejb3-persistence.jar" />
+ <path location="lib/hibernate-entitymanager.jar" />
+ <path location="lib/jboss-archive-browsing.jar" />
+ <path location="lib/javaassist.jar" /> 
+</path>
+   
+<taskdef name="hibernatetool" 
+         classname="org.hibernate.tool.ant.HibernateToolTask" 
+         classpathref="jpatoolslib" />
+
+<hibernatetool destdir="${build.dir}">
+ <jpaconfiguration persistenceunit="caveatemptor"/>
+ <classpath>
+  <!-- it is in this classpath you put your classes dir,
+   and/or jpa persistence compliant jar -->
+  <path location="${build.dir}/jpa/classes" />
+ </classpath>
+
+ <!-- list exporters here -->
+
+</hibernatetool>
+]]></programlisting>
+
+
+      <note>
+        <title>Note:</title>
+        <para>
+        	<literal>ejb3configuration</literal> was the name used in previous versions. It still works but will display a warning telling you to use <literal>jpaconfiguration</literal> instead.
+        </para>
+      </note>
+
+    </section>
+
+    <section>
+      <title>JDBC Configuration for reverse engineering (&lt;jdbcconfiguration&gt;)</title>
+
+      <para>A <code>&lt;jdbcconfiguration&gt;</code> tag is used to perform reverse engineering of a database from a JDBC connection.</para>
+
+      <para>
+      	This configuration works by reading the connection properties either from a <filename>hibernate.cfg.xml</filename> file or a <filename>hibernate.properties</filename> file with a fileset.
+      </para>
+
+      <para>
+      	The <code>&lt;jdbcconfiguration&gt;</code> tag has the same attributes as a <code>&lt;configuration&gt;</code> tag, plus the following additional attributes:
+      </para>
+
+      <programlisting role="XML"><![CDATA[<jdbcconfiguration
+  ...
+  packagename="package.name"
+  revengfile="hibernate.reveng.xml"
+  reversestrategy="ReverseEngineeringStrategy classname"
+  detectmanytomany="true|false"
+  detectoptmisticlock="true|false"
+>
+  ...
+  </jdbcconfiguration>]]></programlisting>
+
+      <table frame="topbot">
+        <title>Jdbcconfiguration attributes</title>
+
+        <tgroup cols="3">
+
+          <colspec colwidth="0.3*"/>
+
+          <colspec colwidth="1.0*"/>
+
+          <colspec colwidth="0.3*"/>
+
+
+          <thead>
+            <row>
+              <entry>Attribute name</entry>
+
+              <entry>Definition</entry>
+
+              <entry>Attribute use</entry>
+            </row>
+          </thead>
+
+          <tbody>
+            <row>
+              <entry>
+                <para>packagename</para>
+              </entry>
+
+              <entry>
+                <para>The default package name to use when mappings for classes are created</para>
+              </entry>
+
+              <entry>
+                <para>Optional</para>
+              </entry>
+            </row>
+
+            <row>
+              <entry>
+                <para>revengfile</para>
+              </entry>
+
+              <entry>
+                <para>The name of a property file, e.g. <filename>hibernate.properties</filename></para>
+              </entry>
+
+              <entry>
+                <para>Optional</para>
+              </entry>
+            </row>
+
+            <row>
+              <entry>
+                <para>reversestrategy</para>
+              </entry>
+
+              <entry>
+                <para>
+                	Name of a class that implements <filename>org.hibernate.cfg.reveng.ReverseEngineeringStrategy</filename>. Used for setting up the strategy the tools will use to control the reverse engineering, e.g. naming of properties, which tables to include or exclude etc. Using a class instead of (or as addition to) a <filename>reveng.xml</filename> file gives you full programmatic control of the reverse engineering.
+                </para>
+              </entry>
+
+              <entry>
+                <para>Optional</para>
+              </entry>
+            </row>
+
+
+            <row>
+              <entry>
+                <para>detectManytoMany</para>
+              </entry>
+
+              <entry>
+                <para>
+                	If true, tables which are pure many-to-many link tables will be mapped as such. A pure many-to-many table is one which primary-key contains exactly two foreign-keys pointing to other entity tables and has no other columns.
+                </para>
+              </entry>
+
+              <entry>
+                <para>Default: true</para>
+              </entry>
+            </row>
+
+            <row>
+              <entry>
+                <para>detectOptimisticLock</para>
+              </entry>
+
+              <entry>
+                <para>
+                	If true, columns named VERSION or TIMESTAMP with appropriate types will be mapped with the appropriate optimistic locking corresponding to
+                  <code>&lt;version&gt;</code> or <code>&lt;timestamp&gt;</code>.
+                </para>
+              </entry>
+
+              <entry>
+                <para>Default: true</para>
+              </entry>
+            </row>
+
+          </tbody>
+
+        </tgroup>
+      </table>
+
+      <section>
+        <title>Example</title>
+
+        <para>
+        	Here is an example using a <code>&lt;jdbcconfiguration&gt;</code> tag to generate Hibernate XML mappings via <code>&lt;hbm2hbmxml&gt;</code>. The connection settings used here are read from a <filename>hibernate.properties</filename> file, but they could also have been defined in a  <filename>hibernate.cfg.xml</filename> file.
+        </para>
+
+        <programlisting role="XML"><![CDATA[<hibernatetool>
+ <jdbcconfiguration propertyfile="etc/hibernate.properties" />
+ <hbm2hbmxml destdir="${build.dir}/src" /> 
+</hibernatetool>
+]]></programlisting>
+      </section>
+    </section>
+  </section>
+
+  <section>
+    <title>Exporters</title>
+
+    <para>
+    	Exporters do the actual job of converting the Hibernate metamodel into various artifacts, mainly code. The following section describes the current supported set of exporters in the <productname>Hibernate Tool</productname> distribution. It is also possible to implement user defined exporters, which is done through the <code>&lt;hbmtemplate&gt;</code> exporter.
+    </para>
+
+    <section>
+      <title>Database schema exporter (&lt;hbm2ddl&gt;)</title>
+
+      <para>
+      	<code>&lt;hbm2ddl&gt;</code> lets you run schemaexport and schemaupdate which generates the appropriate SQL DDL and allow you to store the result in a file or export it directly to the database. Remember that if a custom naming strategy is needed it is defined in the configuration element.
+      </para>
+
+      <programlisting role="XML"><![CDATA[<hbm2ddl
+ export="true|false"
+ update="true|false"
+ drop="true|false"
+ create="true|false"
+ outputfilename="filename.ddl"
+ delimiter=";" 
+ format="true|false"
+ haltonerror="true|false"
+ >]]></programlisting>
+
+      <table frame="topbot">
+        <title>Hbm2ddl exporter attributes</title>
+
+        <tgroup cols="3">
+
+          <colspec colwidth="0.3*"/>
+
+          <colspec colwidth="1.0*"/>
+
+          <colspec colwidth="0.3*"/>
+
+
+          <thead>
+            <row>
+              <entry>Attribute name</entry>
+
+              <entry>Definition</entry>
+
+              <entry>Attribute use</entry>
+            </row>
+          </thead>
+
+          <tbody>
+            <row>
+              <entry>
+                <para>export</para>
+              </entry>
+
+              <entry>
+                <para>Executes the generated statements against the database</para>
+              </entry>
+
+              <entry>
+                <para>Default: true</para>
+              </entry>
+            </row>
+
+            <row>
+              <entry>
+                <para>update</para>
+              </entry>
+
+              <entry>
+                <para>
+                	Try and create an update script representing the &quot;delta&quot; that is, between what is in the database and what the mappings specify. Ignores create and update attributes. (<emphasis>Do *not* use against production databases, as there are no guarantees that the proper delta can be generated, nor that the underlying database can actually execute the required operations</emphasis>).
+                </para>
+              </entry>
+
+              <entry>
+                <para>Default: false</para>
+              </entry>
+            </row>
+
+            <row>
+              <entry>
+                <para>drop</para>
+              </entry>
+
+              <entry>
+                <para>Output will contain drop statements for the tables, indices and constraints</para>
+              </entry>
+
+              <entry>
+                <para>Default: false</para>
+              </entry>
+            </row>
+
+
+            <row>
+              <entry>
+                <para>create</para>
+              </entry>
+
+              <entry>
+                <para>Output will contain create statements for the tables, indices and constraints</para>
+              </entry>
+
+              <entry>
+                <para>Default: true</para>
+              </entry>
+            </row>
+
+            <row>
+              <entry>
+                <para>outputfilename</para>
+              </entry>
+
+              <entry>
+                <para>If specified the statements will be dumped to this file</para>
+              </entry>
+
+              <entry>
+                <para>Optional</para>
+              </entry>
+            </row>
+
+            <row>
+              <entry>
+                <para>delimiter</para>
+              </entry>
+
+              <entry>
+                <para>If specified the statements will be dumped to this file</para>
+              </entry>
+
+              <entry>
+                <para>Default: &quot;;&quot;</para>
+              </entry>
+            </row>
+
+            <row>
+              <entry>
+                <para>format</para>
+              </entry>
+
+              <entry>
+                <para>Apply basic formatting to the statements</para>
+              </entry>
+
+              <entry>
+                <para>Default: false</para>
+              </entry>
+            </row>
+
+            <row>
+              <entry>
+                <para>haltonerror</para>
+              </entry>
+
+              <entry>
+                <para>Halt build process if an error occurs</para>
+              </entry>
+
+              <entry>
+                <para>Default: false</para>
+              </entry>
+            </row>
+          </tbody>
+
+        </tgroup>
+      </table>
+
+      <section>
+        <title>Example</title>
+
+        <para>
+        	Below is a basic example of using <code>&lt;hbm2ddl&gt;</code>,  which does not export to the database but simply dumps the SQL to a file named <filename>sql.ddl</filename>.
+        </para>
+
+        <programlisting role="XML"><![CDATA[<hibernatetool destdir="${build.dir}/generated">
+ <configuration configurationfile="hibernate.cfg.xml"/>
+ <hbm2ddl export="false" outputfilename="sql.ddl"/>
+</hibernatetool>]]></programlisting>
+      </section>
+    </section>
+
+    <section>
+      <title>POJO java code exporter (&lt;hbm2java&gt;)</title>
+
+      <para>
+      	<code>&lt;hbm2java&gt;</code> is a Java code generator. Options for controlling whether JDK 5 syntax can be used and whether the POJO should be annotated with EJB3/Hibernate Annotations.
+      </para>
+
+      <programlisting role="XML"><![CDATA[<hbm2java
+ jdk5="true|false"
+ ejb3="true|false"
+>]]></programlisting>
+
+      <table frame="topbot">
+        <title>Hbm2java exporter attributes</title>
+
+        <tgroup cols="3">
+
+          <colspec colwidth="0.3*"/>
+
+          <colspec colwidth="1.0*"/>
+
+          <colspec colwidth="0.3*"/>
+
+
+          <thead>
+            <row>
+              <entry>Attribute name</entry>
+
+              <entry>Definition</entry>
+
+              <entry>Default value</entry>
+            </row>
+          </thead>
+
+          <tbody>
+            <row>
+              <entry>
+                <para>jdk</para>
+              </entry>
+
+              <entry>
+                <para>Code will contain JDK 5 constructs such as generics and static imports</para>
+              </entry>
+
+              <entry>
+                <para>False</para>
+              </entry>
+            </row>
+
+            <row>
+              <entry>
+                <para>ejb3</para>
+              </entry>
+
+              <entry>
+                <para>
+                	Code will contain EJB 3 features, e.g. using annotations from <code>javax.persistence</code> and <code>org.hibernate.annotations</code>
+                </para>
+              </entry>
+
+              <entry>
+                <para>False</para>
+              </entry>
+            </row>
+
+          </tbody>
+
+        </tgroup>
+      </table>
+
+      <section>
+        <title>Example</title>
+
+        <para>Here is a basic example using <code>&lt;hbm2java&gt;</code> to generate POJO's that utilize JDK5 constructs.</para>
+
+        <programlisting role="XML"><![CDATA[<hibernatetool destdir="${build.dir}/generated">
+ <configuration configurationfile="hibernate.cfg.xml"/>
+ <hbm2java jdk5="true"/>
+</hibernatetool>]]></programlisting>
+      </section>
+    </section>
+
+    <section>
+      <title>Hibernate Mapping files exporter (&lt;hbm2hbmxml&gt;)</title>
+
+      <para>
+      	<code>&lt;hbm2hbmxml&gt;</code> generates a set of <filename>.hbm</filename> files. It is intended to be used together with a <code>&lt;jdbcconfiguration&gt;</code> when performing reverse engineering, but can be used with any kind of configuration e.g. to convert from annotation based POJO's to a <filename>hbm.xml</filename> file.
+      </para>
+
+      <note>
+        <title>Note:</title>
+        <para>
+        	Not every possible mapping transformation is possible/implemented (contributions welcome) so some hand editing might be required.
+        </para>
+      </note>
+
+      <programlisting role="XML"><![CDATA[<hbm2hbmxml/>]]></programlisting>
+
+      <section>
+        <title>Example</title>
+
+        <para>Basic usage of <code>&lt;hbm2hbmxml&gt;</code>. </para>
+
+        <programlisting role="XML"><![CDATA[<hibernatetool destdir="${build.dir}/generated">
+ <configuration configurationfile="hibernate.cfg.xml"/>
+ <hbm2hbmxml/>
+</hibernatetool>]]></programlisting>
+
+        <para>
+        	<code>&lt;hbm2hbmxml&gt;</code> is normally used with a <code>&lt;jdbcconfiguration&gt;</code> like in the above example, but any other configuration can also be used to convert between the different ways of performing mappings. Here is an example of that, using an <code>&lt;annotationconfiguration&gt;</code>.
+        </para>
+
+        <note>
+          <title>Note:</title>
+          <para>Not all conversions are implemented (contributions welcome), so some hand editing might be necessary.</para>
+        </note>
+
+        <programlisting role="XML"><![CDATA[<hibernatetool destdir="${build.dir}/generated">
+ <annotationconfiguration configurationfile="hibernate.cfg.xml"/>
+ <hbm2hbmxml/>
+</hibernatetool>]]></programlisting>
+      </section>
+    </section>
+
+    <section>
+      <title>Hibernate Configuration file exporter (&lt;hbm2cfgxml&gt;)</title>
+
+      <para>
+      	<code>&lt;hbm2cfgxml&gt;</code> generates a <filename>hibernate.cfg.xml</filename> file. It is intended to be used together with a <code>&lt;jdbcconfiguration&gt;</code> when performing reverse engineering, but it can be used with any kind of configuration. The <code>&lt;hbm2cfgxml&gt;</code> will contain the properties that are used and adds mapping entries for each mapped class.
+      </para>
+
+      <programlisting role="XML"><![CDATA[<hbm2cfgxml
+  ejb3="true|false"
+/>
+]]></programlisting>
+
+      <table frame="topbot">
+        <title>Hbm2cfgxml exporter attribute</title>
+
+        <tgroup cols="3">
+
+          <colspec colwidth="0.3*"/>
+
+          <colspec colwidth="1.0*"/>
+
+          <colspec colwidth="0.3*"/>
+
+
+          <thead>
+            <row>
+              <entry>Attribute name</entry>
+
+              <entry>Definition</entry>
+
+              <entry>Default value</entry>
+            </row>
+          </thead>
+
+          <tbody>
+
+            <row>
+              <entry>
+                <para>ejb3</para>
+              </entry>
+
+              <entry>
+                <para>
+                	The generated <filename>cfg.xml</filename> will have &lt;mapping class=".."/&gt;, opposed to &lt;mapping resource="..."/&gt; for each mapping.
+                </para>
+              </entry>
+
+              <entry>
+                <para>False</para>
+              </entry>
+            </row>
+
+          </tbody>
+
+        </tgroup>
+      </table>
+
+    </section>
+
+    <section>
+      <title>Documentation exporter (&lt;hbm2doc&gt;)</title>
+
+      <para><code>&lt;hbm2doc&gt;</code> generates HTML documentation similar to Javadoc for the database schema et.al.</para>
+
+      <programlisting role="XML"><![CDATA[<hbm2doc/>]]></programlisting>
+    </section>
+
+    <section>
+      <title>Query exporter (&lt;query&gt;)</title>
+
+      <para>
+      	<code>&lt;query&gt;</code> is used to execute HQL query statements and optionally redirects the output to a file. It can be used for verifying the mappings and for basic data extraction.
+      </para>
+
+      <programlisting role="XML"><![CDATA[<query
+ destfile="filename">
+ <hql>[a HQL query string]</hql>
+</query>
+]]></programlisting>
+
+      <para>
+      	Currently one session is opened and used for all queries, which are executed via the <code>list()</code> method. In the future more options might become available, like executing <code>executeUpdate()</code>, use named queries and etc.
+      </para>
+
+      <para/>
+
+      <section>
+        <title>Examples</title>
+
+        <para>
+        	The simplest usage of <code>&lt;query&gt;</code> will execute the query without dumping to a file. This can be used to verify that queries can be performed successfully.
+        </para>
+
+        <programlisting role="XML"><![CDATA[<hibernatetool>
+ <configuration configurationfile="hibernate.cfg.xml"/>
+ <query>from java.lang.Object</query>
+</hibernatetool>]]></programlisting>
+
+        <para>
+        	Multiple queries can be executed by nested <code>&lt;hql&gt;</code> elements. In this example we also let the output be dumped to the <filename>queryresult.txt</filename> file.
+        </para>
+
+        <note>
+          <title>Note:</title>
+          <para> Currently the dump is performed by calling the <code>toString()</code> function on each element.</para>
+        </note>
+
+        <programlisting role="XML"><![CDATA[<hibernatetool>
+ <configuration configurationfile="hibernate.cfg.xml"/>
+ <query destfile="queryresult.txt">
+   <hql>select c.name from Customer c where c.age > 42</hql>
+   <hql>from Cat</hql>
+</hibernatetool>]]></programlisting>
+
+      </section>
+    </section>
+
+    <section id="hbmtemplate">
+      <title>Generic Hibernate metamodel exporter (&lt;hbmtemplate&gt;)</title>
+
+      <para>Below is an example of a generic exporter that can be controlled by a user provided template or class.</para>
+
+      <programlisting role="XML"><![CDATA[<hbmtemplate
+ filepattern="{package-name}/{class-name}.ftl"
+ template="somename.ftl"
+ exporterclass="Exporter classname"
+/>]]></programlisting>
+
+      <note>
+        <title>Note:</title>
+        <para>Previous versions of the tools used <productname>Velocity</productname>. We are now using <productname>Freemarker</productname>, which provides much better exception and error handling.
+       </para>
+      </note>
+
+      <section>
+        <title>Exporter via &lt;hbmtemplate&gt;</title>
+
+        <para>
+        	The following is an example of reverse engineering via a <code>&lt;jdbcconfiguration&gt;</code> tag and the use of a custom Exporter via the <code>&lt;hbmtemplate&gt;</code> tag.
+        </para>
+
+        <programlisting role="XML"><![CDATA[ <hibernatetool destdir="${destdir}">
+  <jdbcconfiguration 
+     configurationfile="hibernate.cfg.xml" 
+     packagename="my.model"/>   
+  
+  <!-- setup properties -->  
+  <property key="appname" value="Registration"/>
+  <property key="shortname" value="crud"/>
+    
+  <hbmtemplate 
+     exporterclass="my.own.Exporter" 
+     filepattern="."/>
+        
+</hibernatetool>
+]]></programlisting>
+
+      </section>
+      <section>
+        <title>Relevant Resources Links</title>
+
+        <para>
+        	You can read more about <ulink url="http://velocity.apache.org/">Velocity</ulink> and <ulink url="http://freemarker.org/">Freemarker</ulink> to find out why using the latter is better or refer to Max Andersens discussion on the topic in <ulink url="http://in.relation.to/2110.lace;jsessionid=3462F47B17556604C15DF1B96572E940">&quot;A story about FreeMarker and Velocity&quot;</ulink>.
+        </para>
+      </section>
+    </section>
+  </section>
+
+
+
+  <section>
+    <title>Using properties to configure Exporters</title>
+
+    <para>
+    	Exporters can be controlled by user properties. These user properties are specified via a <code>&lt;property&gt;</code> or <code>&lt;propertyset&gt;</code> tag, and each exporter will have access to them directly in the templates and via <code>Exporter.setProperties()</code>.
+    </para>
+
+    <section>
+      <title>&lt;property&gt; and &lt;propertyset&gt;</title>
+
+      <para>
+      	The <code>&lt;property&gt;</code> tag allows you bind a string value to a key. The value will be available in the templates via the <code>$&lt;key&gt;</code> tag. The following example will assign the string value <code>&quot;true&quot;</code> to the variable <code>$descriptors</code>.
+      </para>
+
+      <programlisting role="XML"><![CDATA[<property key="descriptors" value="true"/>]]></programlisting>
+
+      <para>
+      	Usually using the <code>&lt;property&gt;</code> tag is enough when specifying the properties required by the exporters. Still, the Ant tools supports the notion of a <code>&lt;propertyset&gt;</code> which is used for grouping a set of properties. More about the functionality of <code>&lt;propertyset&gt;</code> is can be found in the <ulink url="http://ant.apache.org/manual/">Ant manual</ulink>.
+      </para>
+    </section>
+
+    <section>
+      <title>Getting access to user specific classes</title>
+
+      <para>It is possible for the templates to access user classes by specifying a <code>&quot;toolclass&quot;</code> in the properties.</para>
+
+      <programlisting role="XML"><![CDATA[<property key="hibernatetool.sometool.toolclass" value="x.y.z.NameOfToolClass"/>]]></programlisting>
+
+      <para>
+      	Placing the above <code>&lt;property&gt;</code> tag in the <code>&lt;hibernatetool&gt;</code> tag or inside any exporter will automatically create an instance of <code>x.y.z.NameOfToolClass</code> which will be available in the templates as <code>$sometool</code>. This is useful to delegate logic and code generation to Java code instead of placing such logic in the templates.
+      </para>
+
+      <section>
+        <title>Example</title>
+
+        <para>
+        	Here is an example that uses the <code>&lt;hbmtemplate&gt;</code> tag together with the <code>&lt;property&gt;</code> tag, which will be available to the templates and exporter. 
+        </para>
+        <note>
+          <title>Note:</title>
+          <para> This example actually simulates what the <code>&lt;hbm2java&gt;</code> tag does.</para>
+        </note>
+
+        <programlisting role="XML"><![CDATA[<hibernatetool destdir="${build.dir}/generated">
+<configuration 
+   configurationfile="etc/hibernate.cfg.xml"/>
+ <hbmtemplate 
+   templateprefix="pojo/" 
+   template="pojo/Pojo.ftl" 
+   filepattern="{package-name}/{class-name}.java">
+  <property key="jdk5" value="true" />
+  <property key="ejb3" value="true" />
+ </hbmtemplate>
+</hibernatetool>
+]]></programlisting>
+      </section>
+    </section>
+  </section>
+</chapter>
