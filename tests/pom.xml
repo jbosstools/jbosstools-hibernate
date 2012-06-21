@@ -15,9 +15,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<module>org.hibernate.eclipse.console.test</module>
 		<module>org.hibernate.eclipse.jdt.ui.test</module>
 		<module>org.jboss.tools.hibernate.ui.test</module>
-		<!-- TODO: should these be enabled / built? -->
-		<!-- commented until migration to juno is finished --> 
-		<!--module>org.jboss.tools.hibernate.jpt.core.test</module-->
+		<module>org.jboss.tools.hibernate.jpt.core.test</module>
 		<module>org.jboss.tools.hibernate.ui.bot.test</module>
 	</modules>
 </project>

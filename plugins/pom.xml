@@ -19,9 +19,8 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<module>org.hibernate.eclipse.jdt.ui</module>
 		<module>org.hibernate.eclipse.mapper</module>
 		<module>org.hibernate.eclipse.libs</module>
-		<!-- commented until migration to juno is finished --> 
-		<!-- module>org.jboss.tools.hibernate.jpt.core</module>
-		<module>org.jboss.tools.hibernate.jpt.ui</module -->
+		<module>org.jboss.tools.hibernate.jpt.core</module>
+		<module>org.jboss.tools.hibernate.jpt.ui</module>
 		<module>org.jboss.tools.hibernate.ui</module>
 		<module>org.jboss.tools.hibernate.xml</module>
 		<module>org.jboss.tools.hibernate.xml.ui</module>
