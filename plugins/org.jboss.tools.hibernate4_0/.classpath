@@ -14,7 +14,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/required/jboss-logging-3.1.0.CR1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/required/jboss-transaction-api_1.1_spec-1.0.0.Final.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/tools/freemarker.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/tools/hibernate-tools-3.5.0.Beta.jar" sourcepath="C:/dev/workspaces/RedHat/_Git/dgeraskov/tools4.0/hibernate-tools/src"/>
+	<classpathentry exported="true" kind="lib" path="lib/tools/hibernate-tools-4.0.0.jar" sourcepath="C:/dev/workspaces/RedHat/_Git/dgeraskov/tools4.0/hibernate-tools/src"/>
 	<classpathentry exported="true" kind="lib" path="lib/tools/jtidy-r8-20060801.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/bsh-core-2.0b4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/log4j-1.2.15.jar"/>
