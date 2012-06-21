@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
-import java.util.ArrayList;
+import java.io.File;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -25,19 +25,19 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.jpa.core.context.Generator;
-import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
-import org.eclipse.jpt.jpa.core.context.Query;
-import org.eclipse.jpt.jpa.core.context.QueryContainer;
+import org.eclipse.jpt.jpa.core.context.java.JavaGenerator;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
+import org.eclipse.jpt.jpa.core.internal.GenericJpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnit;
+import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -46,9 +46,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.HibernatePersistenceUnitProperties;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaQueryContainer;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernatePackageInfo;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaPackageInfo;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaTypeDef;
 import org.jboss.tools.hibernate.jpt.core.internal.context.persistence.HibernateClassRef;
 import org.jboss.tools.hibernate.jpt.core.internal.context.persistence.HibernatePersistenceUnitPropertiesBuilder;
@@ -159,121 +157,52 @@ implements Messages, Hibernate {
 	}
 	
 	/**
-	 * Return the non-<code>null</code> class ref package infos,
-	 * both specified and implied.
-	 */
-	protected Iterable<JavaPackageInfo> getClassRefPackageInfos() {
-		return new FilteringIterable<JavaPackageInfo>(
-					this.getClassRefPackageInfos_(),
-					NotNullFilter.<JavaPackageInfo>instance()
-				);
-	}
-	
-	protected Iterable<JavaPackageInfo> getClassRefPackageInfos_() {
-		return new TransformationIterable<ClassRef, JavaPackageInfo>(this.getClassRefs()) {
-			@Override
-			protected JavaPackageInfo transform(ClassRef classRef) {
-				return ((HibernateClassRef)classRef).getJavaPackageInfo();
-			}
-		};
-	}
-	
-	/**
-	 * Need to collect also Queries from package-info.java
-	 */
-	protected void addJavaQueriesTo(ArrayList<Query> queryList) {
-		super.addJavaQueriesTo(queryList);
-		this.addPackageJavaQueriesTo(this.getClassRefPackageInfos(), queryList);
-	}
-
-	protected void addPackageJavaQueriesTo(Iterable<JavaPackageInfo> packageInfos, ArrayList<Query> queryList) {
-		for (JavaPackageInfo packageInfo : packageInfos) {
-			if (packageInfo instanceof HibernatePackageInfo) {
-				this.addQueriesTo(((HibernatePackageInfo) packageInfo).getQueryContainer(), queryList);
-			}
-		}
-	}
-	
-	@Override
-	protected void addQueriesTo(QueryContainer queryContainer,
-			ArrayList<Query> queryList) {
-		super.addQueriesTo(queryContainer, queryList);
-		if (queryContainer instanceof HibernateJavaQueryContainer) {
-			CollectionTools.addAll(queryList, ((HibernateJavaQueryContainer)queryContainer).hibernateNamedQueries());
-			CollectionTools.addAll(queryList, ((HibernateJavaQueryContainer)queryContainer).hibernateNamedNativeQueries());
-		}
-	}
-	
-	/**
-	 * Include "overridden" Java generators.
-	 */
-	protected void addJavaGeneratorsTo(ArrayList<Generator> generatorList) {
-		super.addJavaGeneratorsTo(generatorList);
-		this.addPackageJavaGeneratorsTo(this.getClassRefPackageInfos(), generatorList);
-	}
-	
-	protected void addPackageJavaGeneratorsTo(Iterable<JavaPackageInfo> pacakgeInfos, ArrayList<Generator> generatorList) {
-		for (JavaPackageInfo packageInfo : pacakgeInfos) {
-			if (packageInfo instanceof HibernatePackageInfo) {
-				this.addGeneratorsTo(((HibernatePackageInfo) packageInfo).getGeneratorContainer(), generatorList);
-			}
-		}
-	}
-	
-	@Override
-	protected void addGeneratorsTo(GeneratorContainer generatorContainer,
-			ArrayList<Generator> generatorList) {
-		super.addGeneratorsTo(generatorContainer, generatorList);
-		//it could be orm generators container
-		//which is not implemented for hibernate platform
-		if (generatorContainer instanceof HibernateGeneratorContainer) {
-			CollectionTools.addAll(generatorList, ((HibernateGeneratorContainer)generatorContainer).genericGenerators());
-		}
-	}
-	
-	/**
 	 * Return the names of all the Java classes and packages in the JPA project that are
 	 * mapped (i.e. have the appropriate annotation etc.) but not specified
 	 * in the persistence unit.
 	 */
 	@SuppressWarnings("unchecked")
+	@Override
 	protected Iterable<String> getImpliedClassNames_() {
 		return new CompositeIterable<String>(super.getImpliedClassNames_(),
 				new FilteringIterable<String>(this.getJpaProject().getMappedJavaSourcePackagesNames()) {
 					@Override
 					protected boolean accept(String mappedPackageName) {
-						return !HibernatePersistenceUnit.this.specifiesPackageInfo(mappedPackageName);
+						return !HibernatePersistenceUnit.this.specifiedPackageInfo(mappedPackageName);
 					}
 				}
 		);
-
 	}
+	
+	
 	
 	/**
 	 * Ignore implied class refs and jar files.
 	 */
-	public boolean specifiesPackageInfo(String typeName) {
+	public boolean specifiedPackageInfo(String typeName) {
 		for (ClassRef classRef : this.getSpecifiedClassRefs()) {
 			if (classRef.isFor(typeName)) {
 				return true;
 			}
 		}
-		/*for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
-			if (mappingFileRef.getPersistentType(typeName) != null) {
+		return false;
+	}
+	
+	/**
+	 * Ignore implied class refs and jar files.
+	 */
+	public boolean impliedPackageInfo(String typeName) {
+		for (ClassRef classRef : this.getImpliedClassRefs()) {
+			if (classRef.isFor(typeName)) {
 				return true;
 			}
-		}*/
+		}
 		return false;
 	}
 
 	// ********** Validation ***********************************************
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter) {
-		super.validate(messages, reporter);
-		validateHibernateConfigurationFileExists(messages, reporter);
-	}
-
-	protected void validateHibernateConfigurationFileExists(List<IMessage> messages, IReporter reporter) {
+	protected void validateProperties(List<IMessage> messages, IReporter reporter) {
 		String configFile = this.hibernateProperties.getConfigurationFile();
 		if (configFile != null && configFile.length() > 0){
 			IPath path = new Path(configFile);
@@ -329,7 +258,47 @@ implements Messages, Hibernate {
 			}
 		}
 	}
+	
+	@Override
+	public JpaJpqlQueryHelper createJpqlQueryHelper() {
+		return new GenericJpaJpqlQueryHelper(this.getJpaPlatform().getJpqlGrammar());
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected Iterable<JavaGenerator> getAllJavaGenerators() {
+		return new CompositeIterable<JavaGenerator>(
+				new CompositeIterable<JavaGenerator>(this.getAllJavaTypeMappingGeneratorLists()),
+				new CompositeIterable<JavaGenerator>(this.getAllPackageInfoMappingGeneratorLists()));
+	}
 
+	/**
+	 * @return
+	 */
+	protected Iterable<Iterable<JavaGenerator>>  getAllPackageInfoMappingGeneratorLists() {
+		return new TransformationIterable<HibernatePackageInfo, Iterable<JavaGenerator>>(this.getClassRefPackageInfos_()) {
+			@Override
+			protected Iterable<JavaGenerator> transform(HibernatePackageInfo o) {
+				return new SubIterableWrapper<Generator, JavaGenerator>(this.transform_(o));
+			}
+			protected Iterable<Generator> transform_(HibernatePackageInfo o) {
+				return o.getGeneratorContainer().getGenerators();
+			}
+		};
+	}
 
+	
+	protected Iterable<HibernatePackageInfo> getClassRefPackageInfos_() {
+		return new FilteringIterable<HibernatePackageInfo>(
+				new TransformationIterable<HibernateClassRef, HibernatePackageInfo>(
+						new SubIterableWrapper<ClassRef,HibernateClassRef>(this.getClassRefs())) {
+					@Override
+					protected HibernatePackageInfo transform(HibernateClassRef classRef) {
+						return classRef.getJavaPackageInfo();
+					}
+				},
+				NotNullFilter.<HibernatePackageInfo>instance()
+		);
+	}
+	
 
 }

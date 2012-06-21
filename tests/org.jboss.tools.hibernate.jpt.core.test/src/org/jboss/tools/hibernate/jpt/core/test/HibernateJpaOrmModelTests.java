@@ -73,10 +73,10 @@ public class HibernateJpaOrmModelTests {
 		assertNotNull(jpaProject);
 		JpaRootContextNode rootContextNode = jpaProject.getRootContextNode();
 		Persistence p = rootContextNode.getPersistenceXml().getPersistence();
-		assertTrue(p.persistenceUnits().hasNext());
-		assertTrue(p.persistenceUnits().next() instanceof HibernatePersistenceUnit);
-		HibernatePersistenceUnit hpu = (HibernatePersistenceUnit) p.persistenceUnits().next();
-		List<MappingFileRef> mfrs = CollectionTools.list(hpu.mappingFileRefs());
+		assertTrue(p.getPersistenceUnits().iterator().hasNext());
+		assertTrue(p.getPersistenceUnits().iterator().next() instanceof HibernatePersistenceUnit);
+		HibernatePersistenceUnit hpu = (HibernatePersistenceUnit) p.getPersistenceUnits().iterator().next();
+		List<MappingFileRef> mfrs = CollectionTools.list(hpu.getMappingFileRefs());
 		assertTrue(mfrs.size() == 1);
 		assertTrue(mfrs.get(0).getMappingFile() instanceof GenericOrmXml);
 		GenericOrmXml orm = (GenericOrmXml)mfrs.get(0).getMappingFile();
@@ -99,10 +99,10 @@ public class HibernateJpaOrmModelTests {
 		assertNotNull(jpaProject);
 		JpaRootContextNode rootContextNode = jpaProject.getRootContextNode();
 		Persistence p = rootContextNode.getPersistenceXml().getPersistence();
-		assertTrue(p.persistenceUnits().hasNext());
-		assertTrue(p.persistenceUnits().next() instanceof HibernatePersistenceUnit);
-		HibernatePersistenceUnit hpu = (HibernatePersistenceUnit) p.persistenceUnits().next();
-		List<MappingFileRef> mfrs = CollectionTools.list(hpu.mappingFileRefs());
+		assertTrue(p.getPersistenceUnits().iterator().hasNext());
+		assertTrue(p.getPersistenceUnits().iterator().next() instanceof HibernatePersistenceUnit);
+		HibernatePersistenceUnit hpu = (HibernatePersistenceUnit) p.getPersistenceUnits().iterator().next();
+		List<MappingFileRef> mfrs = CollectionTools.list(hpu.getMappingFileRefs());
 		assertTrue(mfrs.size() == 1);
 		assertTrue(mfrs.get(0).getMappingFile() instanceof GenericOrmXml);
 		GenericOrmXml orm = (GenericOrmXml)mfrs.get(0).getMappingFile();
@@ -118,7 +118,7 @@ public class HibernateJpaOrmModelTests {
 		HibernateOrmTable table = entity.getTable();
 		assertEquals("ManyToMany1", table.getDBTableName());
 
-		ArrayList<OrmReadOnlyPersistentAttribute> attrs = CollectionTools.list(ormPersistentType.attributes());
+		ArrayList<OrmReadOnlyPersistentAttribute> attrs = CollectionTools.list(ormPersistentType.getAttributes());
 		assertTrue(attrs.size() == 3);
 
 		//id
@@ -147,7 +147,7 @@ public class HibernateJpaOrmModelTests {
 		HibernateOrmTable table = entity.getTable();
 		assertEquals("ManyToMany22", table.getDBTableName());
 
-		ArrayList<OrmReadOnlyPersistentAttribute> attrs = CollectionTools.list(ormPersistentType.attributes());
+		ArrayList<OrmReadOnlyPersistentAttribute> attrs = CollectionTools.list(ormPersistentType.getAttributes());
 		assertTrue(attrs.size() == 3);
 
 		//id
@@ -180,7 +180,7 @@ public class HibernateJpaOrmModelTests {
 		HibernateOrmTable table = entity.getTable();
 		assertEquals("ctn_ManyToMany1", table.getDBTableName());
 
-		ArrayList<OrmReadOnlyPersistentAttribute> attrs = CollectionTools.list(ormPersistentType.attributes());
+		ArrayList<OrmReadOnlyPersistentAttribute> attrs = CollectionTools.list(ormPersistentType.getAttributes());
 		assertTrue(attrs.size() == 3);
 
 		//id
@@ -209,7 +209,7 @@ public class HibernateJpaOrmModelTests {
 		HibernateOrmTable table = entity.getTable();
 		assertEquals("tn_ManyToMany22", table.getDBTableName());
 
-		ArrayList<OrmReadOnlyPersistentAttribute> attrs = CollectionTools.list(ormPersistentType.attributes());
+		ArrayList<OrmReadOnlyPersistentAttribute> attrs = CollectionTools.list(ormPersistentType.getAttributes());
 		assertTrue(attrs.size() == 3);
 
 		//id

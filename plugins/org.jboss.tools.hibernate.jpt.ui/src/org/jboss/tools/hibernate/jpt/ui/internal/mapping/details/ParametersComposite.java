@@ -31,8 +31,8 @@ import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueMo
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
@@ -46,7 +46,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.ParametrizedElement;
  */
 public class ParametersComposite extends Pane<ParametrizedElement> {
 
-	private WritablePropertyValueModel<Parameter> parameterHolder;
+	private ModifiablePropertyValueModel<Parameter> parameterHolder;
 
 	/**
 	 * Creates a new <code>ParametersComposite</code>.
@@ -87,7 +87,7 @@ public class ParametersComposite extends Pane<ParametrizedElement> {
 		};
 	}
 
-	private WritablePropertyValueModel<Parameter> buildParameterHolder() {
+	private ModifiablePropertyValueModel<Parameter> buildParameterHolder() {
 		return new SimplePropertyValueModel<Parameter>();
 	};
 
@@ -138,7 +138,7 @@ public class ParametersComposite extends Pane<ParametrizedElement> {
 		static final int NAME_COLUMN_INDEX = 0;
 		static final int VALUE_COLUMN_INDEX = 1;
 
-		private WritablePropertyValueModel<String> buildNameHolder(Parameter subject) {
+		private ModifiablePropertyValueModel<String> buildNameHolder(Parameter subject) {
 			return new PropertyAspectAdapter<Parameter, String>(Parameter.NAME_PROPERTY, subject) {
 				@Override
 				protected String buildValue_() {
@@ -152,7 +152,7 @@ public class ParametersComposite extends Pane<ParametrizedElement> {
 			};
 		}
 
-		private WritablePropertyValueModel<?> buildValueHolder(Parameter subject) {
+		private ModifiablePropertyValueModel<?> buildValueHolder(Parameter subject) {
 			return new PropertyAspectAdapter<Parameter, String>(Parameter.VALUE_PROPERTY, subject) {
 				@Override
 				protected String buildValue_() {
@@ -167,8 +167,8 @@ public class ParametersComposite extends Pane<ParametrizedElement> {
 		}
 
 		@Override
-		public WritablePropertyValueModel<?>[] cellModels(Parameter subject) {
-			WritablePropertyValueModel<?>[] models = new WritablePropertyValueModel<?>[COLUMN_COUNT];
+		public ModifiablePropertyValueModel<?>[] cellModels(Parameter subject) {
+			ModifiablePropertyValueModel<?>[] models = new ModifiablePropertyValueModel<?>[COLUMN_COUNT];
 			models[NAME_COLUMN_INDEX]  = buildNameHolder(subject);
 			models[VALUE_COLUMN_INDEX] = buildValueHolder(subject);
 			return models;
@@ -315,7 +315,7 @@ public class ParametersComposite extends Pane<ParametrizedElement> {
 		protected void initializeMainComposite(Composite container,
 		                                       Adapter adapter,
 		                                       ListValueModel<?> listHolder,
-		                                       WritablePropertyValueModel<?> selectedItemHolder,
+		                                       ModifiablePropertyValueModel<?> selectedItemHolder,
 		                                       IBaseLabelProvider labelProvider,
 		                                       String helpId) {
 

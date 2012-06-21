@@ -16,10 +16,10 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourcePackageInfoCompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaResourceModelProvider;
-import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourcePackageInfoCompilationUnit;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceCompilationUnit;
 
 /**
  * @author Dmitry Geraskov
@@ -58,7 +58,7 @@ public class JavaPackageInfoResourceModelProviderPatched implements
 						cu,
 						jpaProject.getJpaPlatform().getAnnotationProvider(),
 						jpaProject.getJpaPlatform().getAnnotationEditFormatter(),
-						jpaProject.getModifySharedDocumentCommandExecutor());
+						jpaProject.getManager().getModifySharedDocumentCommandExecutor());
 			} else {
 				//ignore package-info placed in default package as
 				//it doesn't have package declaration and can't hold annotations

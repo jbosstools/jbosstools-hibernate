@@ -10,15 +10,17 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal;
 
-import org.eclipse.jpt.jpa.core.JpaAnnotationProvider;
+import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPlatformFactory;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation;
+import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaAnnotationDefinitionProvider;
-import org.eclipse.jpt.jpa.core.internal.GenericJpaAnnotationProvider;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformFactory.SimpleVersion;
+import org.eclipse.jpt.jpa.core.internal.JpaAnnotationProvider;
+import org.eclipse.persistence.jpa.jpql.parser.JPQLGrammar1_0;
 
 /**
  * @author Dmitry Geraskov
@@ -40,7 +42,8 @@ public class HibernateJpaPlatformFactory implements JpaPlatformFactory {
 				buildJpaFactory(),
 				buildJpaAnnotationProvider(),
 				HibernateJpaPlatformProvider.instance(),
-				this.buildJpaPlatformVariation());
+				this.buildJpaPlatformVariation(),
+				JPQLGrammar1_0.instance());
 	}
 
 
@@ -54,8 +57,7 @@ public class HibernateJpaPlatformFactory implements JpaPlatformFactory {
 	}
 
 	protected JpaAnnotationProvider buildJpaAnnotationProvider() {
-		return new GenericJpaAnnotationProvider(
-				GenericJpaAnnotationDefinitionProvider.instance(),
+		return new JpaAnnotationProvider(GenericJpaAnnotationDefinitionProvider.instance(),
 				HibernateJpaAnnotationDefinitionProvider.instance());
 	}
 
@@ -66,6 +68,11 @@ public class HibernateJpaPlatformFactory implements JpaPlatformFactory {
 			}
 			public boolean isJoinTableOverridable() {
 				return false;
+			}
+			@Override
+			public AccessType[] getSupportedAccessTypes(
+					JptResourceType resourceType) {
+				return GENERIC_SUPPORTED_ACCESS_TYPES;
 			}
 		};
 	}

@@ -25,10 +25,11 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.KnownConfigurationsAdapter;
+import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -105,7 +106,8 @@ public class HibernateJptPlugin extends Plugin {
 
 			private void revalidateProjects(ConsoleConfiguration ccfg){
 				//INFO: should revalidate project to calculate correct naming strategy's values
-				Iterator<JpaProject> jpaProjects = JptJpaCorePlugin.getJpaProjectManager().getJpaProjects().iterator();
+				JpaProjectManager manager = (JpaProjectManager) ResourcesPlugin.getWorkspace().getAdapter(JpaProjectManager.class);
+				Iterator<JpaProject> jpaProjects = manager.getJpaProjects().iterator();
 				while (jpaProjects.hasNext()) {
 					JpaProject jpaProject = jpaProjects.next();
 					if (jpaProject instanceof HibernateJpaProject) {
@@ -150,7 +152,12 @@ public class HibernateJptPlugin extends Plugin {
 			final IWorkspaceRunnable wr = new IWorkspaceRunnable() {
 				public void run(IProgressMonitor monitor)
 				throws CoreException {
-					JptJpaCorePlugin.rebuildJpaProject(project);
+					try {
+						((JpaProject.Reference) project.getAdapter(JpaProject.Reference.class)).rebuild();
+					} catch (InterruptedException e) {
+						throw new CoreException(new Status(IStatus.CANCEL, HibernateConsolePlugin.ID, null, e));
+					}
+					//TODO why we need this???
 					project.build(IncrementalProjectBuilder.FULL_BUILD, monitor);
 				}
 			};

@@ -13,6 +13,8 @@ package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.orm;
 import java.util.List;
 
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.ui.internal.jface.SimpleItemTreeStateProviderFactoryProvider;
+import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -34,8 +36,8 @@ import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmOneToManyMappingUiDefiniti
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmOneToOneMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmTransientMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmVersionMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.structure.OrmResourceModelStructureProvider;
-import org.eclipse.jpt.jpa.ui.structure.JpaStructureProvider;
+import org.eclipse.jpt.jpa.ui.internal.structure.OrmStructureItemContentProviderFactory;
+import org.eclipse.jpt.jpa.ui.internal.structure.OrmStructureItemLabelProviderFactory;
 
 
 /**
@@ -73,9 +75,15 @@ public class HibernateOrmXmlUiDefinition extends AbstractOrmXmlResourceUiDefinit
 		return resourceType.equals(JptJpaCorePlugin.ORM_XML_1_0_RESOURCE_TYPE);
 	}
 	
-	public JpaStructureProvider getStructureProvider() {
-		return OrmResourceModelStructureProvider.instance();
+	public ItemTreeStateProviderFactoryProvider getStructureViewFactoryProvider() {
+		return STRUCTURE_VIEW_FACTORY_PROVIDER;
 	}
+	
+	public static final ItemTreeStateProviderFactoryProvider STRUCTURE_VIEW_FACTORY_PROVIDER =
+			new SimpleItemTreeStateProviderFactoryProvider(
+					OrmStructureItemContentProviderFactory.instance(),
+					OrmStructureItemLabelProviderFactory.instance()
+				);
 	
 	@Override
 	protected void addOrmAttributeMappingUiDefinitionsTo(List<OrmAttributeMappingUiDefinition<? extends AttributeMapping>> definitions) {

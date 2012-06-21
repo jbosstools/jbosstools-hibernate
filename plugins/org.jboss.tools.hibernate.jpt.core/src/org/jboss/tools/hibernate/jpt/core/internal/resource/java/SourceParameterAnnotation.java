@@ -10,33 +10,27 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.jpa.core.resource.java.NestableAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public class SourceParameterAnnotation extends SourceAnnotation<AnnotatedElement> implements
-		NestableParameterAnnotation {
+public class SourceParameterAnnotation extends SourceAnnotation implements
+	ParameterAnnotation {
 
 	private final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
 	private final AnnotationElementAdapter<String> nameAdapter;
@@ -79,11 +73,6 @@ public class SourceParameterAnnotation extends SourceAnnotation<AnnotatedElement
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncName(this.buildName(astRoot));
 		this.syncValue(this.buildValue(astRoot));
-	}
-
-	@Override
-	public IndexedAnnotationAdapter getIndexedAnnotationAdapter() {
-		return (IndexedAnnotationAdapter) this.annotationAdapter;
 	}
 
 	@Override
@@ -144,28 +133,6 @@ public class SourceParameterAnnotation extends SourceAnnotation<AnnotatedElement
 
 	public TextRange getValueTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.valueDeclarationAdapter, astRoot);
-	}
-
-
-	// ********** NestableAnnotation implementation **********
-	public void moveAnnotation(int newIndex) {
-		this.getIndexedAnnotationAdapter().moveAnnotation(newIndex);
-	}
-	
-	@Override
-	public void storeOn(Map<String, Object> map) {
-		super.storeOn(map);
-		map.put(NAME_PROPERTY, this.name);
-		this.name = null;
-		map.put(VALUE_PROPERTY, this.value);
-		this.value = null;
-	}
-
-	@Override
-	public void restoreFrom(Map<String, Object> map) {
-		super.restoreFrom(map);
-		this.setName((String) map.get(NAME_PROPERTY));
-		this.setValue((String) map.get(VALUE_PROPERTY));
 	}
 
 	// ********** static methods **********

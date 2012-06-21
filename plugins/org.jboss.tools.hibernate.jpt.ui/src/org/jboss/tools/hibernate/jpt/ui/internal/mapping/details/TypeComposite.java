@@ -14,8 +14,8 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.TypeConverter;
 
@@ -49,7 +49,7 @@ public class TypeComposite extends Pane<TypeConverter> {
 		);
 	}
 
-	private WritablePropertyValueModel<String> buildTypeTypeHolder() {
+	private ModifiablePropertyValueModel<String> buildTypeTypeHolder() {
 		return new PropertyAspectAdapter<TypeConverter, String>(getSubjectHolder(), TypeConverter.TYPE_PROPERTY) {
 			@Override
 			protected String buildValue_() {

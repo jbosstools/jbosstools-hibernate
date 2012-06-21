@@ -15,6 +15,7 @@ import java.util.Iterator;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -25,7 +26,7 @@ import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.structure.JpaStructureProvider;
+import org.eclipse.jpt.jpa.ui.internal.persistence.details.PersistenceXmlUiDefinition;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -35,7 +36,7 @@ import org.eclipse.swt.widgets.Composite;
 public class PackageInfoResourceUIDefinition implements
 		MappingResourceUiDefinition {
 	
-	private static final JpaStructureProvider EMPTY = null;
+	private static final ItemTreeStateProviderFactoryProvider EMPTY = null;
 	
 	// singleton
 	private static final ResourceUiDefinition INSTANCE = new PackageInfoResourceUIDefinition();
@@ -62,11 +63,7 @@ public class PackageInfoResourceUIDefinition implements
 		return resourceType.equals(JptCommonCorePlugin.JAVA_SOURCE_PACKAGE_INFO_RESOURCE_TYPE);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jpt.jpa.ui.ResourceUiDefinition#getStructureProvider()
-	 */
-	@Override
-	public JpaStructureProvider getStructureProvider() {
+	public ItemTreeStateProviderFactoryProvider getStructureViewFactoryProvider() {
 		return EMPTY;
 	}
 

@@ -10,9 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.QueryAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.context.CacheModeType;
 import org.jboss.tools.hibernate.jpt.core.internal.context.FlushModeType;
@@ -22,7 +20,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.FlushModeType;
  *
  * Interface contains Hibernate specific attributes.
  */
-public interface HibernateQueryAnnotation extends NestableAnnotation, QueryAnnotation{
+public interface HibernateQueryAnnotation extends QueryAnnotation{
 
 	//************************ flushMode *********************************
 
@@ -43,7 +41,7 @@ public interface HibernateQueryAnnotation extends NestableAnnotation, QueryAnnot
 	 * Return the {@link TextRange} for the 'flushMode' element. If element
 	 * does not exist return the {@link TextRange} for the *NamedQuery annotation.
 	 */
-	TextRange getFlushModeTextRange(CompilationUnit astRoot);
+	TextRange getFlushModeTextRange();
 
 	//************************ cacheMode *********************************
 
@@ -64,7 +62,7 @@ public interface HibernateQueryAnnotation extends NestableAnnotation, QueryAnnot
 	 * Return the {@link TextRange} for the 'cacheMode' element. If element
 	 * does not exist return the {@link TextRange} for the *NamedQuery annotation.
 	 */
-	TextRange getCacheModeTextRange(CompilationUnit astRoot);
+	TextRange getCacheModeTextRange();
 
 	//************************ cacheable *********************************
 	Boolean isCacheable();

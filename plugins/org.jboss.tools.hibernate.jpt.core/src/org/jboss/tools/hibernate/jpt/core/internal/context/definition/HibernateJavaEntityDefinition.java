@@ -10,31 +10,25 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.definition;
 
+import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
-import org.eclipse.jpt.jpa.core.resource.java.Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.AssociationOverrideAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.AssociationOverridesAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.AttributeOverridesAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.DiscriminatorColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.DiscriminatorValueAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.EntityAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.IdClassAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.InheritanceAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
-import org.eclipse.jpt.jpa.core.resource.java.NamedNativeQueriesAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.NamedNativeQueryAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.NamedQueriesAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.NamedQueryAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.PrimaryKeyJoinColumnAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.PrimaryKeyJoinColumnsAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.SecondaryTableAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.SecondaryTablesAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.SequenceGeneratorAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.TableAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.TableGeneratorAnnotation;
@@ -79,9 +73,9 @@ public class HibernateJavaEntityDefinition implements JavaTypeMappingDefinition
 	protected static final String[] SUPPORTING_ANNOTATION_NAMES_ARRAY = new String[] {
 			TableAnnotation.ANNOTATION_NAME,
 			SecondaryTableAnnotation.ANNOTATION_NAME,
-			SecondaryTablesAnnotation.ANNOTATION_NAME,
+			JPA.SECONDARY_TABLES,
 			PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME,
-			PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME,
+			JPA.PRIMARY_KEY_JOIN_COLUMNS,
 			IdClassAnnotation.ANNOTATION_NAME,
 			InheritanceAnnotation.ANNOTATION_NAME,
 			DiscriminatorValueAnnotation.ANNOTATION_NAME,
@@ -89,9 +83,9 @@ public class HibernateJavaEntityDefinition implements JavaTypeMappingDefinition
 			SequenceGeneratorAnnotation.ANNOTATION_NAME,
 			TableGeneratorAnnotation.ANNOTATION_NAME,
 			NamedQueryAnnotation.ANNOTATION_NAME,
-			NamedQueriesAnnotation.ANNOTATION_NAME,
+			JPA.NAMED_QUERIES,
 			NamedNativeQueryAnnotation.ANNOTATION_NAME,
-			NamedNativeQueriesAnnotation.ANNOTATION_NAME,
+			JPA.NAMED_NATIVE_QUERIES,
 			JPA.SQL_RESULT_SET_MAPPING,
 			JPA.EXCLUDE_DEFAULT_LISTENERS,
 			JPA.EXCLUDE_SUPERCLASS_LISTENERS,
@@ -104,9 +98,9 @@ public class HibernateJavaEntityDefinition implements JavaTypeMappingDefinition
 			JPA.POST_UPDATE,
 			JPA.POST_LOAD,
 			AttributeOverrideAnnotation.ANNOTATION_NAME,
-			AttributeOverridesAnnotation.ANNOTATION_NAME,
+			JPA.ATTRIBUTE_OVERRIDES,
 			AssociationOverrideAnnotation.ANNOTATION_NAME,
-			AssociationOverridesAnnotation.ANNOTATION_NAME,
+			JPA.ASSOCIATION_OVERRIDES,
 			//TODO add Hibernate annotations here
 			Hibernate.GENERIC_GENERATOR,
 			Hibernate.GENERIC_GENERATORS,

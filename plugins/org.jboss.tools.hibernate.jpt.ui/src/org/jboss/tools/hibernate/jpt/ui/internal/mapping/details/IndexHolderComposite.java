@@ -13,7 +13,7 @@ package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.IndexHolder;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaIndex;
@@ -24,7 +24,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaIndex;
  */
 public class IndexHolderComposite extends Pane<IndexHolder> {
 	
-	private WritablePropertyValueModel<JavaIndex> indexHolder;
+	private ModifiablePropertyValueModel<JavaIndex> indexHolder;
 
 	protected IndexHolderComposite(Pane<? extends IndexHolder> parentPane,
 			Composite parent) {
@@ -49,7 +49,7 @@ public class IndexHolderComposite extends Pane<IndexHolder> {
 	}
 
 	
-	protected final WritablePropertyValueModel<String> buildIndexNameHolder() {
+	protected final ModifiablePropertyValueModel<String> buildIndexNameHolder() {
 		return new PropertyAspectAdapter<JavaIndex, String>(this.indexHolder, JavaIndex.INDEX_NAME) {
 			@Override
 			protected String buildValue_() {
@@ -88,7 +88,7 @@ public class IndexHolderComposite extends Pane<IndexHolder> {
 		};
 	}
 	
-	private WritablePropertyValueModel<JavaIndex> buildIndexHolder() {
+	private ModifiablePropertyValueModel<JavaIndex> buildIndexHolder() {
 		return new PropertyAspectAdapter<IndexHolder, JavaIndex>(getSubjectHolder(), IndexHolder.INDEX_PROPERTY) {
 			@Override
 			protected JavaIndex buildValue_() {

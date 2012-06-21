@@ -10,8 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import java.util.ListIterator;
-
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedNativeQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedQuery;
@@ -24,9 +23,9 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedQuery;
 public interface HibernateJavaQueryContainer extends JavaQueryContainer {
 
 	//********** Hibernate Named Queries **************
-	ListIterator<HibernateJavaNamedQuery> hibernateNamedQueries();
+	ListIterable<HibernateJavaNamedQuery> getHibernateNamedQueries();
 
-	int hibernateNamedQueriesSize();
+	int getHibernateNamedQueriesSize();
 
 	HibernateNamedQuery addHibernateNamedQuery(int index);
 
@@ -42,9 +41,9 @@ public interface HibernateJavaQueryContainer extends JavaQueryContainer {
 
 	//********** Hibernate Named Native Queries **************;
 
-	ListIterator<HibernateJavaNamedNativeQuery> hibernateNamedNativeQueries();
+	ListIterable<HibernateJavaNamedNativeQuery> getHibernateNamedNativeQueries();
 
-	int hibernateNamedNativeQueriesSize();
+	int getHibernateNamedNativeQueriesSize();
 
 	HibernateJavaNamedNativeQuery addHibernateNamedNativeQuery(int index);
 

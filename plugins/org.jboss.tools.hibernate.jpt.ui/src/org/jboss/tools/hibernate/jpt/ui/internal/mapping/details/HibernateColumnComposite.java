@@ -19,8 +19,8 @@ import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
@@ -224,7 +224,7 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 		};
 	}
 
-	private WritablePropertyValueModel<String> buildColumnDefinitionHolder() {
+	private ModifiablePropertyValueModel<String> buildColumnDefinitionHolder() {
 		return new PropertyAspectAdapter<Column, String>(getSubjectHolder(), NamedColumn.COLUMN_DEFINITION_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -241,7 +241,7 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 		};
 	}
 	
-	private WritablePropertyValueModel<Boolean> buildInsertableHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildInsertableHolder() {
 		return new PropertyAspectAdapter<Column, Boolean>(getSubjectHolder(), BaseColumn.SPECIFIED_INSERTABLE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -280,7 +280,7 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 	}
 
 
-	private WritablePropertyValueModel<Boolean> buildNullableHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildNullableHolder() {
 		return new PropertyAspectAdapter<Column, Boolean>(
 				getSubjectHolder(),
 				BaseColumn.SPECIFIED_NULLABLE_PROPERTY) {
@@ -390,7 +390,7 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 			}
 			
 			protected Iterator<String> values() {
-				return this.getSubject().candidateTableNames();
+				return this.getSubject().getCandidateTableNames().iterator();
 			}
 			
 			@Override
@@ -400,7 +400,7 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 		};
 	}
 
-	private WritablePropertyValueModel<Boolean> buildUniqueHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildUniqueHolder() {
 		return new PropertyAspectAdapter<Column, Boolean>(
 				getSubjectHolder(),
 				BaseColumn.SPECIFIED_UNIQUE_PROPERTY) {
@@ -448,7 +448,7 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 		};
 	}
 	
-	private WritablePropertyValueModel<Boolean> buildUpdatableHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildUpdatableHolder() {
 		return new PropertyAspectAdapter<Column, Boolean>(
 				getSubjectHolder(),
 				BaseColumn.DEFAULT_UPDATABLE_PROPERTY,
@@ -616,7 +616,7 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 				}
 				
 				@Override
-				protected WritablePropertyValueModel<Integer> buildSelectedItemHolder() {
+				protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
 					return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.SPECIFIED_LENGTH_PROPERTY) {
 						@Override
 						protected Integer buildValue_() {
@@ -656,7 +656,7 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 				}
 				
 				@Override
-				protected WritablePropertyValueModel<Integer> buildSelectedItemHolder() {
+				protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
 					return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.SPECIFIED_PRECISION_PROPERTY) {
 						@Override
 						protected Integer buildValue_() {
@@ -696,7 +696,7 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 				}
 				
 				@Override
-				protected WritablePropertyValueModel<Integer> buildSelectedItemHolder() {
+				protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
 					return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.SPECIFIED_SCALE_PROPERTY) {
 						@Override
 						protected Integer buildValue_() {

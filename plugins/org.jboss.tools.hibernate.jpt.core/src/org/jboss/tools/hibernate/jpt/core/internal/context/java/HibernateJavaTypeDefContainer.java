@@ -10,8 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import java.util.ListIterator;
-
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 
 /**
@@ -28,12 +27,12 @@ public interface HibernateJavaTypeDefContainer extends JavaJpaContextNode {
 	 * Return a list iterator of the typeDefs.
 	 * This will not be null.
 	 */
-	ListIterator<JavaTypeDef> typeDefs();
+	ListIterable<JavaTypeDef> getTypeDefs();
 	
 	/**
 	 * Return the number of typeDefs.
 	 */
-	int typeDefsSize();
+	int getTypeDefsSize();
 
 	/**
 	 * Add a typeDef to the entity return the object representing it.

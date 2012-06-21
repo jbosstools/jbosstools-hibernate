@@ -11,7 +11,6 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
@@ -20,12 +19,11 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaGenerator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -73,7 +71,7 @@ implements JavaGenericGenerator, Messages {
 	/**
 	 * @param parent
 	 */
-	public JavaGenericGeneratorImpl(JavaJpaContextNode parent, GenericGeneratorAnnotation generatorAnnotation) {
+	public JavaGenericGeneratorImpl(HibernateJavaGeneratorContainer parent, GenericGeneratorAnnotation generatorAnnotation) {
 		super(parent, generatorAnnotation);
 		this.strategy = generatorAnnotation.getStrategy();
 		this.initializeParameters();
@@ -90,6 +88,26 @@ implements JavaGenericGenerator, Messages {
 	public void update() {
 		super.update();
 		this.updateNodes(this.getParameters());
+	}
+	
+	// ********** metadata conversion **********
+	@Override
+	public HibernateJavaGeneratorContainer getParent() {
+		return (HibernateJavaGeneratorContainer) super.getParent();
+	}
+	
+	public void convertTo(EntityMappings entityMappings) {
+		//what is this?
+	}
+
+	public void delete() {
+		this.getParent().removeGenericGenerator(this);
+	}
+	
+	// ********** misc **********
+
+	public Class<GenericGenerator> getType() {
+		return GenericGenerator.class;
 	}
 
 	// ********** strategy **********
@@ -211,8 +229,8 @@ implements JavaGenericGenerator, Messages {
 	}
 
 	protected void initializeParameters() {
-		for (Iterator<ParameterAnnotation> stream = this.generatorAnnotation.parameters(); stream.hasNext(); ) {
-			this.parameters.add(this.buildParameter(stream.next()));
+		for (ParameterAnnotation param : this.generatorAnnotation.getParameters()) {
+			this.parameters.add(this.buildParameter(param));
 		}
 	}
 
@@ -225,7 +243,7 @@ implements JavaGenericGenerator, Messages {
 	}
 
 	protected Iterable<ParameterAnnotation> getParameterAnnotations() {
-		return CollectionTools.iterable(this.generatorAnnotation.parameters());
+		return this.generatorAnnotation.getParameters();
 	}
 
 	protected void moveParameter_(int index, JavaParameter parameter) {
@@ -277,14 +295,14 @@ implements JavaGenericGenerator, Messages {
 	 * @see org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode#javaCompletionProposals(int, org.eclipse.jpt.common.utility.Filter, org.eclipse.jdt.core.dom.CompilationUnit)
 	 */
 	@Override
-	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
 		TextRange strategyRange = getStrategyTextRange(astRoot);
 		if (strategyRange != null && strategyRange.touches(pos)) {
-			return getJavaCandidateNames(filter).iterator();
+			return getJavaCandidateNames(filter);
 		}
 		return null;
 	}

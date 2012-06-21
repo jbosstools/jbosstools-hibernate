@@ -19,11 +19,9 @@ import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.iterators.EmptyListIterator;
-import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.NamedColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
-import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmEntity;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.NullOrmCacheable2_0;
@@ -160,10 +158,6 @@ implements HibernateOrmEntity {
 //do we need this?
 	class HibernatePrimaryKeyJoinColumnOwner extends PrimaryKeyJoinColumnOwner
 	{
-		@Override
-		public TypeMapping getTypeMapping() {
-			return HibernateOrmEntityImpl.this;
-		}
 
 		public org.eclipse.jpt.jpa.db.Table getDbTable(String tableName) {
 			return HibernateOrmEntityImpl.this.resolveDbTable(tableName);
@@ -176,13 +170,13 @@ implements HibernateOrmEntity {
 		}
 
 		@Override
-		public int joinColumnsSize() {
-			return HibernateOrmEntityImpl.this.primaryKeyJoinColumnsSize();
+		public int getJoinColumnsSize() {
+			return HibernateOrmEntityImpl.this.getPrimaryKeyJoinColumnsSize();
 		}
 
 		@Override
-		public String getDefaultColumnName() {
-			if (joinColumnsSize() != 1) {
+		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+			if (getJoinColumnsSize() != 1) {
 				return null;
 			}
 			Entity parentEntity = HibernateOrmEntityImpl.this.getParentEntity();
@@ -198,7 +192,7 @@ implements HibernateOrmEntity {
 					} catch (Exception e) {
 						IMessage m = HibernateJpaValidationMessage.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								Messages.NAMING_STRATEGY_EXCEPTION, this);
+								Messages.NAMING_STRATEGY_EXCEPTION, column);
 						HibernateJptPlugin.logException(m.getText(), e);
 					}
 				}
@@ -217,21 +211,6 @@ implements HibernateOrmEntity {
 			return null;
 		}
 
-		public IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
-			throw new UnsupportedOperationException("validation not supported yet: bug 148262"); //$NON-NLS-1$
-		}
-
-		public IMessage buildUnresolvedReferencedColumnNameMessage(BaseJoinColumn column, TextRange textRange) {
-			throw new UnsupportedOperationException("validation not supported yet: bug 148262"); //$NON-NLS-1$
-		}
-
-		public IMessage buildUnspecifiedNameMultipleJoinColumnsMessage(BaseJoinColumn column, TextRange textRange) {
-			throw new UnsupportedOperationException("validation not supported yet: bug 148262"); //$NON-NLS-1$
-		}
-
-		public IMessage buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(BaseJoinColumn column, TextRange textRange) {
-			throw new UnsupportedOperationException("validation not supported yet: bug 148262"); //$NON-NLS-1$
-		}
 	}
 
 	@Override

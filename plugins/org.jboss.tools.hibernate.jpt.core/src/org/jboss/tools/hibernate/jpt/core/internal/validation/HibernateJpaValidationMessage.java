@@ -10,9 +10,11 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.validation;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.jpa.core.JpaNode;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationPreferences;
+import org.eclipse.jpt.jpa.core.prefs.JpaValidationPreferencesManager;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
@@ -28,26 +30,46 @@ public class HibernateJpaValidationMessage {
 	private static TextRange DEFAULT_TEXT_RANGE = TextRange.Empty.instance();
 	
 	public static IMessage buildMessage(
-			int defaultSeverity, String messageId, Object targetObject) {
+			int defaultSeverity, String messageId, JpaNode targetObject) {
 		return buildMessage(defaultSeverity, messageId, DEFAULT_PARMS, targetObject);
 	}
 	
 	public static IMessage buildMessage(
-			int defaultSeverity, String messageId, String[] parms, Object targetObject) {
+			int defaultSeverity, String messageId, String[] parms, JpaNode targetObject) {
 		return buildMessage(defaultSeverity, messageId, parms, targetObject, DEFAULT_TEXT_RANGE);
 	}
 	
 	public static IMessage buildMessage(
-			int defaultSeverity, String messageId, Object targetObject, TextRange textRange) {
+			int defaultSeverity, String messageId, JpaNode targetObject, TextRange textRange) {
 		return buildMessage(defaultSeverity, messageId, DEFAULT_PARMS, targetObject, textRange);
 	}
 	
 	public static IMessage buildMessage(
-			int defaultSeverity, String messageId, String[] parms, Object targetObject, TextRange textRange) {
+			int defaultSeverity, String messageId, String[] parms, JpaNode targetObject, TextRange textRange) {
+		return buildMessage(defaultSeverity, messageId, parms, targetObject.getResource(), DEFAULT_TEXT_RANGE);
+	}
+
+	public static IMessage buildMessage(
+			int defaultSeverity, String messageId, IResource targetObject) {
+		return buildMessage(defaultSeverity, messageId, DEFAULT_PARMS, targetObject);
+	}
+	
+	public static IMessage buildMessage(
+			int defaultSeverity, String messageId, String[] parms, IResource targetObject) {
+		return buildMessage(defaultSeverity, messageId, parms, targetObject, DEFAULT_TEXT_RANGE);
+	}
+	
+	public static IMessage buildMessage(
+			int defaultSeverity, String messageId, IResource targetObject, TextRange textRange) {
+		return buildMessage(defaultSeverity, messageId, DEFAULT_PARMS, targetObject, textRange);
+	}
+	
+	public static IMessage buildMessage(
+			int defaultSeverity, String messageId, String[] parms, IResource targetObject, TextRange textRange) {
 		
 		//determine whether default severity should be overridden
 		int severity = defaultSeverity;
-		int severityPreference = JpaValidationPreferences.getProblemSeverityPreference(targetObject, messageId);
+		int severityPreference = JpaValidationPreferencesManager.getProblemSeverityPreference(targetObject, messageId);
 		if (severityPreference != -1){
 			severity = severityPreference;
 		}

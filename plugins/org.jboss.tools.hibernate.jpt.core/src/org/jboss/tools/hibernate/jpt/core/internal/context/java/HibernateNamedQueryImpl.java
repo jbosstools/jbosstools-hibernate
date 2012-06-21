@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009-2011 Red Hat, Inc.
+ * Copyright (c) 2009-2012 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -12,11 +12,11 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.List;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.jpa.core.internal.jpql.JpaJpqlQueryHelper;
+import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
+import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedQueryAnnotation;
 
 /**
@@ -30,12 +30,22 @@ public class HibernateNamedQueryImpl extends AbstractHibernateNamedQueryImpl<Hib
 		super(parent, queryAnnotation);
 	}
 	
+	// ********** metadata conversion *********
+	@Override
+	public void delete() {
+		this.getParent().removeHibernateNamedQuery(this);
+	}
+	
 	// ********** validation **********
 
 	@Override
-	protected void validateQuery_(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		JpaJpqlQueryHelper helper = new JpaJpqlQueryHelper();
-		helper.validate(this, this.query, this.getQueryAnnotation().getQueryTextRange(astRoot), 1, messages);
+	protected void validateQuery_(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter) {
+		queryHelper.validate(this, this.query, this.queryAnnotation.getQueryTextRange(), 1, messages);
 	}
 
+	// ********** misc **********
+	@Override
+	public Class<HibernateNamedQuery> getType() {
+		return HibernateNamedQuery.class;
+	}
 }

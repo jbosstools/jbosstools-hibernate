@@ -29,8 +29,8 @@ import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -49,7 +49,7 @@ public class TypeDefsComposite extends Pane<HibernateJavaTypeDefContainer> {
 
 	private AddRemoveListPane<HibernateJavaTypeDefContainer> listPane;
 	Pane<? extends JavaTypeDef> typeDefPane;
-	private WritablePropertyValueModel<JavaTypeDef> typeDefHolder;
+	private ModifiablePropertyValueModel<JavaTypeDef> typeDefHolder;
 	private NewNameDialogBuilder dialogBuilder = null;
 
 	public TypeDefsComposite(
@@ -112,12 +112,12 @@ public class TypeDefsComposite extends Pane<HibernateJavaTypeDefContainer> {
 		{
 			@Override
 			protected ListIterator<JavaTypeDef> listIterator_() {
-				return this.subject.typeDefs();
+				return this.subject.getTypeDefs().iterator();
 			}
 
 			@Override
 			protected int size_() {
-				return this.subject.typeDefsSize();
+				return this.subject.getTypeDefsSize();
 			}
 		};
 	}
@@ -162,7 +162,7 @@ public class TypeDefsComposite extends Pane<HibernateJavaTypeDefContainer> {
 				String name = typeDef.getName();
 
 				if (name == null) {
-					int index = CollectionTools.indexOf(getSubject().typeDefs(), typeDef);
+					int index = CollectionTools.indexOf(getSubject().getTypeDefs(), typeDef);
 					name = NLS.bind(HibernateUIMappingMessages.TypeDefsComposite_displayString, Integer.valueOf(index));
 				}
 
@@ -171,7 +171,7 @@ public class TypeDefsComposite extends Pane<HibernateJavaTypeDefContainer> {
 		};
 	}
 
-	private WritablePropertyValueModel<JavaTypeDef> buildTypeDefHolder() {
+	private ModifiablePropertyValueModel<JavaTypeDef> buildTypeDefHolder() {
 		return new SimplePropertyValueModel<JavaTypeDef>();
 	}
 
@@ -215,7 +215,7 @@ public class TypeDefsComposite extends Pane<HibernateJavaTypeDefContainer> {
 		new ControlSwitcher(this.getTypeDefHolder(), this.buildPaneTransformer(), pageBook);
 	}
 	
-	protected WritablePropertyValueModel<JavaTypeDef> getTypeDefHolder() {
+	protected ModifiablePropertyValueModel<JavaTypeDef> getTypeDefHolder() {
 		return typeDefHolder;
 	}
 	

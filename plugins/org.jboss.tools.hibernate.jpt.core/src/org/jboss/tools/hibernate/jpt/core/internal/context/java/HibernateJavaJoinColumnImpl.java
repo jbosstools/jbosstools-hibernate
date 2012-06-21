@@ -15,10 +15,10 @@ import java.util.Iterator;
 
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaJoinColumn;
-import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.CompleteJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -36,8 +36,8 @@ import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValida
 public class HibernateJavaJoinColumnImpl extends GenericJavaJoinColumn
 implements HibernateJavaJoinColumn {
 
-	public HibernateJavaJoinColumnImpl(JavaJpaContextNode parent, JavaJoinColumn.Owner owner, JoinColumnAnnotation columnAnnotation) {
-		super(parent, owner, columnAnnotation);
+	public HibernateJavaJoinColumnImpl(JavaJpaContextNode parent, JavaReadOnlyJoinColumn.Owner owner, CompleteJoinColumnAnnotation joinColumnAnnotation) {
+		super(parent, owner, joinColumnAnnotation);
 	}
 
 	@Override
@@ -52,7 +52,7 @@ implements HibernateJavaJoinColumn {
 
 	@Override
 	public ReadOnlyPersistentAttribute getReferencedPersistentAttribute() {
-		if (this.owner.joinColumnsSize() != 1) {
+		if (this.owner.getJoinColumnsSize() != 1) {
 			return null;
 		}
 		Entity targetEntity = this.owner.getRelationshipTarget();
@@ -60,7 +60,7 @@ implements HibernateJavaJoinColumn {
 			return null;
 		}
 		ReadOnlyPersistentAttribute pAttr = null;
-		Iterator<ReadOnlyPersistentAttribute> attributes = targetEntity.getPersistentType().allAttributes();
+		Iterator<ReadOnlyPersistentAttribute> attributes = targetEntity.getPersistentType().getAllAttributes().iterator();
 		for (Iterator<ReadOnlyPersistentAttribute> stream = attributes; stream.hasNext();) {
 			ReadOnlyPersistentAttribute attribute = stream.next();
 			String name = attribute.getPrimaryKeyColumnName();

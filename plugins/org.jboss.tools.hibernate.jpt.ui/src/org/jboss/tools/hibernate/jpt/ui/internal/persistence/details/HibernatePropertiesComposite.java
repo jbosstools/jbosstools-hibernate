@@ -43,8 +43,8 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.jpa.ui.details.JpaPageComposite;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
@@ -56,7 +56,7 @@ import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
-import org.eclipse.ui.views.navigator.ResourceSorter;
+import org.eclipse.ui.views.navigator.ResourceComparator;
 import org.hibernate.eclipse.console.FileFilter;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.DriverClassHelpers;
@@ -114,9 +114,9 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 		}
 		final SimpleListValueModel<String> lvmUrl = new SimpleListValueModel<String>(urls);
 
-		WritablePropertyValueModel<String> dialectHolder = buildDialectHolder();
-		final WritablePropertyValueModel<String> driverHolder = buildDriverHolder();
-		final WritablePropertyValueModel<String> urlHolder = buildUrlHolder();
+		ModifiablePropertyValueModel<String> dialectHolder = buildDialectHolder();
+		final ModifiablePropertyValueModel<String> driverHolder = buildDriverHolder();
+		final ModifiablePropertyValueModel<String> urlHolder = buildUrlHolder();
 
 		Button b = addButton(section, HibernateConsoleMessages.CodeGenerationSettingsTab_setup, createSetupAction());
 		this.cfgFile = addLabeledText(section,
@@ -198,7 +198,6 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 	}
 
 	private IPath getConfigurationFilePath() {
-		BasicHibernateProperties props = getSubject();
 		String filePath = cfgFile.getText().trim();
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		IFile[] files = root.findFilesForLocation(new Path(filePath));
@@ -321,7 +320,7 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 				dialog.setMessage(HibernateConsoleMessages.ConsoleConfigurationMainTab_choose_file_to_use_as_hibernate_cfg_xml);
 				dialog.addFilter(new FileFilter(new String[] {HibernateConsoleMessages.ConsoleConfigurationMainTab_cfg_xml}, null, true, false) );
 				dialog.setInput(root);
-				dialog.setSorter(new ResourceSorter(ResourceSorter.NAME) );
+				dialog.setComparator(new ResourceComparator(ResourceComparator.NAME));
 				dialog.setInitialSelection(focus);
 
 				if (dialog.open() == Window.OK) {
@@ -360,7 +359,7 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 		};
 	}
 
-	private WritablePropertyValueModel<String> buildConfigFileHolder() {
+	private ModifiablePropertyValueModel<String> buildConfigFileHolder() {
 		return new PropertyAspectAdapter<BasicHibernateProperties, String>(getSubjectHolder(),
 				BasicHibernateProperties.CONFIG_FILE_PROPERTY) {
 			@Override
@@ -376,7 +375,7 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 		};
 	}
 
-	private WritablePropertyValueModel<String> buildDialectHolder() {
+	private ModifiablePropertyValueModel<String> buildDialectHolder() {
 		return new PropertyAspectAdapter<BasicHibernateProperties, String>(getSubjectHolder(),
 				BasicHibernateProperties.DIALECT_PROPERTY) {
 			@Override
@@ -392,7 +391,7 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 		};
 	}
 
-	private WritablePropertyValueModel<String> buildDriverHolder() {
+	private ModifiablePropertyValueModel<String> buildDriverHolder() {
 		return new PropertyAspectAdapter<BasicHibernateProperties, String>(getSubjectHolder(),
 				BasicHibernateProperties.DRIVER_PROPERTY) {
 			@Override
@@ -408,7 +407,7 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 		};
 	}
 
-	private WritablePropertyValueModel<String> buildUrlHolder() {
+	private ModifiablePropertyValueModel<String> buildUrlHolder() {
 		return new PropertyAspectAdapter<BasicHibernateProperties, String>(getSubjectHolder(),
 				BasicHibernateProperties.URL_PROPERTY) {
 			@Override
@@ -424,7 +423,7 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 		};
 	}
 
-	private WritablePropertyValueModel<String> buildSchemaDefaultHolder() {
+	private ModifiablePropertyValueModel<String> buildSchemaDefaultHolder() {
 		return new PropertyAspectAdapter<BasicHibernateProperties, String>(getSubjectHolder(),
 				BasicHibernateProperties.SCHEMA_DEFAULT_PROPERTY) {
 			@Override
@@ -440,7 +439,7 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 		};
 	}
 
-	private WritablePropertyValueModel<String> buildCatalogDefaultHolder() {
+	private ModifiablePropertyValueModel<String> buildCatalogDefaultHolder() {
 		return new PropertyAspectAdapter<BasicHibernateProperties, String>(getSubjectHolder(),
 				BasicHibernateProperties.CATALOG_DEFAULT_PROPERTY) {
 			@Override
@@ -456,7 +455,7 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 		};
 	}
 
-	private WritablePropertyValueModel<String> buildUsernameHolder() {
+	private ModifiablePropertyValueModel<String> buildUsernameHolder() {
 		return new PropertyAspectAdapter<BasicHibernateProperties, String>(getSubjectHolder(),
 				BasicHibernateProperties.USERNAME_PROPERTY) {
 			@Override
@@ -470,15 +469,10 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 				this.subject.setUsername(value);
 			}
 
-			@Override
-			protected void propertyChanged() {
-				// TODO Auto-generated method stub
-				super.propertyChanged();
-			}
 		};
 	}
 
-	private WritablePropertyValueModel<String> buildPasswordHolder() {
+	private ModifiablePropertyValueModel<String> buildPasswordHolder() {
 		return new PropertyAspectAdapter<BasicHibernateProperties, String>(getSubjectHolder(),
 				BasicHibernateProperties.PASSWORD_PROPERTY) {
 			@Override

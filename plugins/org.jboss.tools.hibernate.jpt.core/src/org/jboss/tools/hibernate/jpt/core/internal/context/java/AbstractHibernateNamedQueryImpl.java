@@ -11,6 +11,7 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.CacheModeType;
 import org.jboss.tools.hibernate.jpt.core.internal.context.FlushModeType;
@@ -75,6 +76,16 @@ public abstract class AbstractHibernateNamedQueryImpl<T extends HibernateQueryAn
 
 	private FlushModeType getResourceFlushMode(HibernateQueryAnnotation queryAnnotation) {
 		return FlushModeType.fromJavaAnnotationValue(queryAnnotation);
+	}
+	
+	public void convertTo(OrmQueryContainer queryContainer) {
+		throw new UnsupportedOperationException();
+	}
+
+	
+	@Override
+	public HibernateJavaQueryContainer getParent() {
+		return (HibernateJavaQueryContainer) super.getParent();
 	}
 
 	// ****** flushMode

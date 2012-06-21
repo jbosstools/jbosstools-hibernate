@@ -71,10 +71,10 @@ public class HibernateJpaModelTests {
 		assertNotNull(jpaProject);
 		JpaRootContextNode rootContextNode = jpaProject.getRootContextNode();
 		Persistence p = rootContextNode.getPersistenceXml().getPersistence();
-		assertTrue(p.persistenceUnits().hasNext());
-		assertTrue(p.persistenceUnits().next() instanceof HibernatePersistenceUnit);
-		HibernatePersistenceUnit hpu = (HibernatePersistenceUnit) p.persistenceUnits().next();
-		List<ClassRef> crs = CollectionTools.list(hpu.classRefs());
+		assertTrue(p.getPersistenceUnitsSize() > 0);
+		assertTrue(p.getPersistenceUnits().iterator().next() instanceof HibernatePersistenceUnit);
+		HibernatePersistenceUnit hpu = (HibernatePersistenceUnit) p.getPersistenceUnits().iterator().next();
+		List<ClassRef> crs = CollectionTools.list(hpu.getClassRefs());
 		assertTrue(crs.size() == 2);
 		if (crs.get(0).isFor("entity.ManyToMany1")){
 			checkManyToMany1(crs.get(0));
@@ -98,10 +98,10 @@ public class HibernateJpaModelTests {
 		assertNotNull(jpaProject);
 		JpaRootContextNode rootContextNode = jpaProject.getRootContextNode();
 		Persistence p = rootContextNode.getPersistenceXml().getPersistence();
-		assertTrue(p.persistenceUnits().hasNext());
-		assertTrue(p.persistenceUnits().next() instanceof HibernatePersistenceUnit);
-		HibernatePersistenceUnit hpu = (HibernatePersistenceUnit) p.persistenceUnits().next();
-		List<ClassRef> crs = CollectionTools.list(hpu.classRefs());
+		assertTrue(p.getPersistenceUnits().iterator().hasNext());
+		assertTrue(p.getPersistenceUnits().iterator().next() instanceof HibernatePersistenceUnit);
+		HibernatePersistenceUnit hpu = (HibernatePersistenceUnit) p.getPersistenceUnits().iterator().next();
+		List<ClassRef> crs = CollectionTools.list(hpu.getClassRefs());
 		assertTrue(crs.size() == 2);
 		if (crs.get(0).isFor("entity.ManyToMany1")){
 			checkManyToManyNS1(crs.get(0));
@@ -121,7 +121,7 @@ public class HibernateJpaModelTests {
 		HibernateJavaTable table = entity.getTable();
 		assertEquals("ManyToMany1", table.getDBTableName());
 
-		ArrayList<JavaPersistentAttribute> attrs = CollectionTools.list(javaPersistentType.attributes());
+		ArrayList<JavaPersistentAttribute> attrs = CollectionTools.list(javaPersistentType.getAttributes());
 		assertTrue(attrs.size() == 3);
 
 		//id
@@ -150,7 +150,7 @@ public class HibernateJpaModelTests {
 		HibernateJavaTable table = entity.getTable();
 		assertEquals("ManyToMany22", table.getDBTableName());
 
-		ArrayList<JavaPersistentAttribute> attrs = CollectionTools.list(javaPersistentType.attributes());
+		ArrayList<JavaPersistentAttribute> attrs = CollectionTools.list(javaPersistentType.getAttributes());
 		assertTrue(attrs.size() == 3);
 		//id
 		assertTrue(attrs.get(0).getMapping() instanceof HibernateJavaIdMapping);
@@ -183,7 +183,7 @@ public class HibernateJpaModelTests {
 		HibernateJavaTable table = entity.getTable();
 		assertEquals("ctn_ManyToMany1", table.getDBTableName());
 
-		ArrayList<JavaPersistentAttribute> attrs = CollectionTools.list(javaPersistentType.attributes());
+		ArrayList<JavaPersistentAttribute> attrs = CollectionTools.list(javaPersistentType.getAttributes());
 		assertTrue(attrs.size() == 3);
 
 		//id
@@ -212,7 +212,7 @@ public class HibernateJpaModelTests {
 		HibernateJavaTable table = entity.getTable();
 		assertEquals("tn_ManyToMany22", table.getDBTableName());
 
-		ArrayList<JavaPersistentAttribute> attrs = CollectionTools.list(javaPersistentType.attributes());
+		ArrayList<JavaPersistentAttribute> attrs = CollectionTools.list(javaPersistentType.getAttributes());
 		assertTrue(attrs.size() == 3);
 		//id
 		assertTrue(attrs.get(0).getMapping() instanceof HibernateJavaIdMapping);

@@ -13,8 +13,8 @@ package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
 import org.eclipse.jpt.jpa.ui.internal.details.GenerationComposite;
@@ -32,8 +32,8 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaGenericGener
  */
 public class HibernateGenerationComposite extends GenerationComposite {
 	
-	private WritablePropertyValueModel<Boolean> genericGeneratorExpansionStateHolder;
-	private WritablePropertyValueModel<GenericGenerator> generatorHolder;
+	private ModifiablePropertyValueModel<Boolean> genericGeneratorExpansionStateHolder;
+	private ModifiablePropertyValueModel<GenericGenerator> generatorHolder;
 	
 	public HibernateGenerationComposite(Pane<?> parentPane,
 			PropertyValueModel<? extends HibernateGeneratorContainer> subjectHolder,
@@ -48,7 +48,7 @@ public class HibernateGenerationComposite extends GenerationComposite {
 		this.generatorHolder = buildGeneratorHolder();
 	}
 	
-	private WritablePropertyValueModel<GenericGenerator> buildGeneratorHolder() {
+	private ModifiablePropertyValueModel<GenericGenerator> buildGeneratorHolder() {
 		return new SimplePropertyValueModel<GenericGenerator>();
 	}
 	
@@ -61,8 +61,8 @@ public class HibernateGenerationComposite extends GenerationComposite {
 	protected void doPopulate() {
 		super.doPopulate();
 		this.genericGeneratorExpansionStateHolder .setValue(Boolean.valueOf(getSubject() != null
-				&& getSubject().genericGeneratorsSize() > 0));
-		this.generatorHolder.setValue(getSubject() != null && getSubject().genericGeneratorsSize() > 0 ? getSubject().genericGenerators().next() : null);
+				&& getSubject().getGenericGeneratorsSize() > 0));
+		this.generatorHolder.setValue(getSubject() != null && getSubject().getGenericGeneratorsSize() > 0 ? getSubject().getGenericGenerators().iterator().next() : null);
 	}
 	
 	@Override
@@ -90,8 +90,8 @@ public class HibernateGenerationComposite extends GenerationComposite {
 		
 		
 		if (getSubjectHolder().getValue().getParent() instanceof AttributeMapping){
-			if (getSubject().genericGeneratorsSize() > 0){
-				generatorHolder.setValue(getSubject().genericGenerators().next());
+			if (getSubject().getGenericGeneratorsSize() > 0){
+				generatorHolder.setValue(getSubject().getGenericGenerators().iterator().next());
 			}
 			// Generic Generator pane
 			this.addGenericGeneratorComposite(
@@ -121,7 +121,7 @@ public class HibernateGenerationComposite extends GenerationComposite {
 		return new GeneratorBuilder<GenericGenerator>() {
 			public GenericGenerator addGenerator() {
 				HibernateJavaGeneratorContainer container = (HibernateJavaGeneratorContainer)getSubject();
-				JavaGenericGenerator generator = container.addGenericGenerator(container.genericGeneratorsSize());
+				JavaGenericGenerator generator = container.addGenericGenerator(container.getGenericGeneratorsSize());
 				generatorHolder.setValue(generator);
 				return generator;
 			}
@@ -145,21 +145,21 @@ public class HibernateGenerationComposite extends GenerationComposite {
 		};
 	}*/
 	
-	private WritablePropertyValueModel<Boolean> buildGenericGeneratorBooleanHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildGenericGeneratorBooleanHolder() {
 		return new PropertyAspectAdapter<GeneratorContainer, Boolean>(getSubjectHolder(), HibernateGeneratorContainer.GENERIC_GENERATORS_LIST) {
 			@Override
 			protected Boolean buildValue_() {
-				return Boolean.valueOf(((HibernateJavaGeneratorContainer)subject).genericGeneratorsSize() > 0);
+				return Boolean.valueOf(((HibernateJavaGeneratorContainer)subject).getGenericGeneratorsSize() > 0);
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
 				HibernateJavaGeneratorContainer container = (HibernateJavaGeneratorContainer)subject;
 				if (value.booleanValue()) {
-					JavaGenericGenerator gc = container.addGenericGenerator(container.genericGeneratorsSize());
+					JavaGenericGenerator gc = container.addGenericGenerator(container.getGenericGeneratorsSize());
 					generatorHolder.setValue(gc);
 				} else if (!value.booleanValue()) {
-					for (int i = 0; i < container.genericGeneratorsSize(); i++) {
+					for (int i = 0; i < container.getGenericGeneratorsSize(); i++) {
 						container.removeGenericGenerator(0);
 					}
 					generatorHolder.setValue(null);

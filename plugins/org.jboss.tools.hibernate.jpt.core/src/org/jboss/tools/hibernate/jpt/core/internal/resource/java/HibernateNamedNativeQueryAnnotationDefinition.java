@@ -11,20 +11,20 @@
 package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.jpa.core.resource.java.Annotation;
-import org.eclipse.jpt.jpa.core.resource.java.AnnotationDefinition;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceAnnotatedElement;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public class HibernateNamedNativeQueryAnnotationDefinition implements AnnotationDefinition {
+public class HibernateNamedNativeQueryAnnotationDefinition implements NestableAnnotationDefinition {
 
 	// singleton
-	private static final AnnotationDefinition INSTANCE = new HibernateNamedNativeQueryAnnotationDefinition();
+	private static final NestableAnnotationDefinition INSTANCE = new HibernateNamedNativeQueryAnnotationDefinition();
 
 	/**
 	 * Ensure single instance.
@@ -36,25 +36,36 @@ public class HibernateNamedNativeQueryAnnotationDefinition implements Annotation
 	/**
 	 * Return the singleton.
 	 */
-	public static AnnotationDefinition instance() {
+	public static NestableAnnotationDefinition instance() {
 		return INSTANCE;
 	}
 
-	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent,
-			AnnotatedElement annotatedElement) {
-		return HibernateSourceNamedNativeQueryAnnotation.createNamedNativeQuery(parent, annotatedElement);
+	@Override
+	public NestableAnnotation buildAnnotation(JavaResourceAnnotatedElement parent,
+			AnnotatedElement annotatedElement, int index) {
+		return HibernateSourceNamedNativeQueryAnnotation.buildHibernateSourceNamedNativeQueryAnnotation(parent, annotatedElement, index);
 	}
 
-	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
+	@Override
+	public NestableAnnotation buildAnnotation(
+			JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation,
+			int index) {
 		throw new UnsupportedOperationException();
 	}
-
-	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
-		//TODO return new HibernateBinaryNamedQueryAnnotation(parent, jdtAnnotation);
-		throw new UnsupportedOperationException();
-	}
-
-	public String getAnnotationName() {
+	
+	
+	@Override
+	public String getNestableAnnotationName() {
 		return Hibernate.NAMED_NATIVE_QUERY;
+	}
+	
+	@Override
+	public String getContainerAnnotationName() {
+		return Hibernate.NAMED_NATIVE_QUERIES;
+	}
+	
+	@Override
+	public String getElementName() {
+		return Hibernate.NAMED_NATIVE_QUERIES__VALUE;
 	}
 }

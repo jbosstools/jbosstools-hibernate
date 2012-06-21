@@ -14,6 +14,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.jpa.core.internal.context.orm.GenericOrmOneToOneRelationship;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMappingJoinColumnRelationshipStrategy2_0;
 
 /**
  * @author Dmitry Geraskov
@@ -27,7 +28,7 @@ public class HibernateOrmOneToOneRelationshipReference extends
 	}
 
 	@Override
-	protected OrmJoinColumnRelationshipStrategy buildJoinColumnStrategy(){
+	protected OrmMappingJoinColumnRelationshipStrategy2_0 buildJoinColumnStrategy(){
 		return new HibernateOrmJoinColumnJoiningStrategy(this);
 	}
 

@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -22,6 +21,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -32,7 +32,6 @@ import org.eclipse.jpt.jpa.core.jpa2.context.CacheableHolder2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.resource.java.EntityAnnotation;
-import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.hibernate.cfg.NamingStrategy;
@@ -61,7 +60,7 @@ implements HibernateJavaEntity {
 	public HibernateJavaEntityImpl(JavaPersistentType parent, EntityAnnotation mappingAnnotation) {
 		super(parent, mappingAnnotation);
 		this.discriminatorFormula = this.buildDiscriminatorFormula();
-		this.typeDefContainer = getJpaFactory().buildJavaTypeDefContainer(parent, this.getResourcePersistentType());
+		this.typeDefContainer = getJpaFactory().buildJavaTypeDefContainer(parent, this.getJavaResourceType());
 		this.cacheable = this.buildJavaCachable();
 	}
 
@@ -128,7 +127,7 @@ implements HibernateJavaEntity {
 	}
 	
 	protected DiscriminatorFormulaAnnotation buildDiscriminatorFormulaAnnotation() {
-		return (DiscriminatorFormulaAnnotation) this.getResourcePersistentType().addAnnotation(DiscriminatorFormulaAnnotation.ANNOTATION_NAME);
+		return (DiscriminatorFormulaAnnotation) this.getJavaResourceType().addAnnotation(DiscriminatorFormulaAnnotation.ANNOTATION_NAME);
 	}
 	
 	@Override
@@ -136,7 +135,7 @@ implements HibernateJavaEntity {
 		if (getDiscriminatorFormula() == null) {
 			throw new IllegalStateException("discriminatorFormula does not exist, cannot be removed"); //$NON-NLS-1$
 		}
-		this.getResourcePersistentType().removeAnnotation(DiscriminatorFormulaAnnotation.ANNOTATION_NAME);
+		this.getJavaResourceType().removeAnnotation(DiscriminatorFormulaAnnotation.ANNOTATION_NAME);
 		this.setDiscriminatorFormula(null);
 	}
 
@@ -146,7 +145,7 @@ implements HibernateJavaEntity {
 	}
 
 	public DiscriminatorFormulaAnnotation getDiscriminatorFormulaAnnotation() {
-		return (DiscriminatorFormulaAnnotation) this.getResourcePersistentType().getAnnotation(DiscriminatorFormulaAnnotation.ANNOTATION_NAME);
+		return (DiscriminatorFormulaAnnotation) this.getJavaResourceType().getAnnotation(DiscriminatorFormulaAnnotation.ANNOTATION_NAME);
 	}
 
 	protected JavaDiscriminatorFormula buildDiscriminatorFormula(DiscriminatorFormulaAnnotation annotation) {
@@ -208,11 +207,6 @@ implements HibernateJavaEntity {
 			return HibernateJavaEntityImpl.this.getPrimaryTableName();
 		}
 
-		@Override
-		public TypeMapping getTypeMapping() {
-			return HibernateJavaEntityImpl.this;
-		}
-
 		public org.eclipse.jpt.jpa.db.Table getDbTable(String tableName) {
 			return HibernateJavaEntityImpl.this.resolveDbTable(tableName);
 		}
@@ -224,8 +218,8 @@ implements HibernateJavaEntity {
 		}
 
 		@Override
-		public int joinColumnsSize() {
-			return HibernateJavaEntityImpl.this.primaryKeyJoinColumnsSize();
+		public int getJoinColumnsSize() {
+			return HibernateJavaEntityImpl.this.getPrimaryKeyJoinColumnsSize();
 		}
 
 		public boolean isVirtual(BaseJoinColumn joinColumn) {
@@ -233,8 +227,8 @@ implements HibernateJavaEntity {
 		}
 
 		@Override
-		public String getDefaultColumnName() {
-			if (joinColumnsSize() != 1) {
+		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+			if (getJoinColumnsSize() != 1) {
 				return null;
 			}
 
@@ -252,7 +246,7 @@ implements HibernateJavaEntity {
 						return name ;
 					} catch (Exception e) {
 						IMessage m =HibernateJpaValidationMessage.buildMessage(IMessage.HIGH_SEVERITY,
-								Messages.NAMING_STRATEGY_EXCEPTION, this);
+								Messages.NAMING_STRATEGY_EXCEPTION, column);
 						HibernateJptPlugin.logException(m.getText(), e);
 					}
 				}
@@ -326,13 +320,13 @@ implements HibernateJavaEntity {
 	}
 
 	@Override
-	public Iterator<String> javaCompletionProposals(int pos,
+	public Iterable<String> getJavaCompletionProposals(int pos,
 			Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
-		result = this.getTypeDefContainer().javaCompletionProposals(pos, filter, astRoot);
+		result = this.getTypeDefContainer().getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}

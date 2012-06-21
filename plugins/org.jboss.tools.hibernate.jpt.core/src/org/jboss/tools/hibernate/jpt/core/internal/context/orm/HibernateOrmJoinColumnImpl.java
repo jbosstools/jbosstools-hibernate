@@ -11,12 +11,10 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
-import java.util.Iterator;
-
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
-import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmJoinColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.jpa.db.Column;
@@ -36,7 +34,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValida
 public class HibernateOrmJoinColumnImpl extends GenericOrmJoinColumn implements
 		HibernateOrmJoinColumn {
 
-	public HibernateOrmJoinColumnImpl(XmlContextNode parent, OrmJoinColumn.Owner owner,
+	public HibernateOrmJoinColumnImpl(XmlContextNode parent, OrmReadOnlyJoinColumn.Owner owner,
 			XmlJoinColumn resourceJoinColumn) {
 		super(parent, owner, resourceJoinColumn);
 	}
@@ -121,7 +119,7 @@ public class HibernateOrmJoinColumnImpl extends GenericOrmJoinColumn implements
 	}
 
 	public ReadOnlyPersistentAttribute getReferencedPersistentAttribute() {
-		if (this.owner.joinColumnsSize() != 1) {
+		if (this.owner.getJoinColumnsSize() != 1) {
 			return null;
 		}
 		Entity targetEntity = this.owner.getRelationshipTarget();
@@ -129,9 +127,7 @@ public class HibernateOrmJoinColumnImpl extends GenericOrmJoinColumn implements
 			return null;
 		}
 		ReadOnlyPersistentAttribute pAttr = null;
-		Iterator<ReadOnlyPersistentAttribute> attributes = targetEntity.getPersistentType().allAttributes();
-		for (Iterator<ReadOnlyPersistentAttribute> stream = attributes; stream.hasNext();) {
-			ReadOnlyPersistentAttribute attribute = stream.next();
+		for (ReadOnlyPersistentAttribute attribute : targetEntity.getPersistentType().getAllAttributes()) {
 			String name = attribute.getPrimaryKeyColumnName();
 			if (name != null) {
 				if (pAttr == null){

@@ -10,20 +10,16 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Vector;
-
-import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
+import org.eclipse.jpt.common.core.internal.utility.jdt.CombinationIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.common.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
-import org.eclipse.jpt.common.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationAdapter;
@@ -32,29 +28,19 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
-import org.eclipse.jpt.jpa.core.internal.resource.java.source.AnnotationContainerTools;
-import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.Annotation;
-import org.eclipse.jpt.jpa.core.resource.java.AnnotationContainer;
-import org.eclipse.jpt.jpa.core.resource.java.AnnotationDefinition;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentMember;
-import org.eclipse.jpt.jpa.core.resource.java.NestableAnnotation;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public class GenericGeneratorAnnotationImpl extends SourceAnnotation<AnnotatedElement>
+public class GenericGeneratorAnnotationImpl extends SourceAnnotation
 implements GenericGeneratorAnnotation {
 
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
-
+	private static final DeclarationAnnotationAdapter CONTAINER_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(Hibernate.GENERIC_GENERATORS);
+	
 	private DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
 	private AnnotationElementAdapter<String> nameAdapter;
 	private String name;
@@ -65,7 +51,6 @@ implements GenericGeneratorAnnotation {
 	private String strategy;
 	private TextRange strategyTextRange;
 
-	final Vector<NestableParameterAnnotation> parameters = new Vector<NestableParameterAnnotation>();
 	final ParametersAnnotationContainer parametersContainer = new ParametersAnnotationContainer();
 
 	/**
@@ -81,63 +66,36 @@ implements GenericGeneratorAnnotation {
 		this.strategyAdapter = buildStrategyAdapter();
 	}
 
+	@Override
 	public void initialize(CompilationUnit astRoot) {
 		this.name = this.buildName(astRoot);
 		this.nameTextRange = this.buildNameTextRange(astRoot);
 		this.strategy = this.buildStrategy(astRoot);
 		this.strategyTextRange = this.buildStrategyTextRange(astRoot);
-		AnnotationContainerTools.initialize(this.parametersContainer, astRoot);
+		this.parametersContainer.initializeFromContainerAnnotation(this.getAstAnnotation(astRoot));
 	}
 
+	@Override
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncName(this.buildName(astRoot));
 		this.nameTextRange = this.buildNameTextRange(astRoot);
 		this.syncStrategy(this.buildStrategy(astRoot));
 		this.strategyTextRange = this.buildStrategyTextRange(astRoot);
-		AnnotationContainerTools.synchronize(this.parametersContainer, astRoot);
-	}
-	
-	@Override
-	public void storeOn(Map<String, Object> map) {
-		super.storeOn(map);
-
-		map.put(NAME_PROPERTY, this.name);
-		this.name = null;
-		map.put(STRATEGY_PROPERTY, this.strategy);
-		this.strategy = null;
-
-		List<Map<String, Object>> paramStaet = this.buildStateList(this.parameters.size());
-		for (NestableParameterAnnotation param : nestableParameters()) {
-			Map<String, Object> hintState = new HashMap<String, Object>();
-			param.storeOn(hintState);
-			paramStaet.add(hintState);
-		}
-		map.put(PARAMETERS_LIST, paramStaet);
-		this.parameters.clear();
+		this.parametersContainer.synchronize(this.getAstAnnotation(astRoot));
 	}
 
 	@Override
-	public void restoreFrom(Map<String, Object> map) {
-		super.restoreFrom(map);
-
-		this.setName((String) map.get(NAME_PROPERTY));
-		this.setStrategy((String) map.get(STRATEGY_PROPERTY));
-
-		@SuppressWarnings("unchecked")
-		List<Map<String, Object>> paramsState = (List<Map<String, Object>>) map.get(PARAMETERS_LIST);
-		for (Map<String, Object> paramState : paramsState) {
-			this.addParameter().restoreFrom(paramState);
-		}
-	}
-
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
 	}
 
+	// ***** strategy
+	@Override
 	public String getStrategy() {
 		return this.strategy;
 	}
 
+	@Override
 	public void setStrategy(String newStrategy) {
 		if (attributeValueHasChanged(this.strategy, newStrategy)) {
 			this.strategy = newStrategy;
@@ -150,11 +108,27 @@ implements GenericGeneratorAnnotation {
 		this.strategy = strategy;
 		this.firePropertyChanged(STRATEGY_PROPERTY, old, strategy);
 	}
+	
+	protected String buildStrategy(CompilationUnit astRoot) {
+		return this.strategyAdapter.getValue(astRoot);
+	}
+	
+	@Override
+	public TextRange getStrategyTextRange(CompilationUnit astRoot) {
+		return this.strategyTextRange;
+	}
+	
+	private TextRange buildStrategyTextRange(CompilationUnit astRoot) {
+		return this.getElementTextRange(this.strategyDeclarationAdapter, astRoot);
+	}
 
+	// ***** name
+	@Override
 	public String getName() {
 		return this.name;
 	}
 
+	@Override
 	public void setName(String name) {
 		if (this.attributeValueHasChanged(this.name, name)) {
 			this.name = name;
@@ -167,8 +141,13 @@ implements GenericGeneratorAnnotation {
 		this.name = astName;
 		this.firePropertyChanged(NAME_PROPERTY, old, astName);
 	}
+	
+	protected String buildName(CompilationUnit astRoot) {
+		return this.nameAdapter.getValue(astRoot);
+	}
 
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
+	@Override
+	public TextRange getNameTextRange() {
 		return this.nameTextRange;
 	}
 
@@ -176,38 +155,35 @@ implements GenericGeneratorAnnotation {
 		return this.getElementTextRange(this.nameDeclarationAdapter, astRoot);
 	}
 
-	public TextRange getStrategyTextRange(CompilationUnit astRoot) {
-		return this.strategyTextRange;
-	}
-	
-	private TextRange buildStrategyTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.strategyDeclarationAdapter, astRoot);
-	}
-
+	@Override
 	public Integer getAllocationSize() {
 		return null;
 	}
 
-	public TextRange getAllocationSizeTextRange(CompilationUnit astRoot) {
+	@Override
+	public TextRange getAllocationSizeTextRange() {
 		return null;
 	}
 
+	@Override
 	public Integer getInitialValue() {
 		return null;
 	}
 
-	public TextRange getInitialValueTextRange(CompilationUnit astRoot) {
+	@Override
+	public TextRange getInitialValueTextRange() {
 		return null;
 	}
 
+	@Override
 	public void setAllocationSize(Integer allocationSize) {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public void setInitialValue(Integer initialValue) {
 		throw new UnsupportedOperationException();
 	}
-
 
 	protected ShortCircuitAnnotationElementAdapter<String> buildNameAdapter() {
 		return new ShortCircuitAnnotationElementAdapter<String>(this.annotatedElement, this.nameDeclarationAdapter);
@@ -216,94 +192,39 @@ implements GenericGeneratorAnnotation {
 	protected ShortCircuitAnnotationElementAdapter<String> buildStrategyAdapter() {
 		return new ShortCircuitAnnotationElementAdapter<String>(this.annotatedElement, this.strategyDeclarationAdapter);
 	}
-
-	// ********** java annotations -> persistence model **********
-	protected String buildStrategy(CompilationUnit astRoot) {
-		return this.strategyAdapter.getValue(astRoot);
-	}
-
-	protected String buildName(CompilationUnit astRoot) {
-		return this.nameAdapter.getValue(astRoot);
-	}
-
-
 	//************************ parameters ***********************
-	private NestableParameterAnnotation addParameter() {
-		return this.addParameter(this.parameters.size());
+	@Override
+	public ListIterable<ParameterAnnotation> getParameters() {
+		return this.parametersContainer.getNestedAnnotations();
 	}
 
-	public NestableParameterAnnotation addParameter(int index) {
-		return (NestableParameterAnnotation) AnnotationContainerTools.addNestedAnnotation(index, this.parametersContainer);
+	@Override
+	public int getParametersSize() {
+		return this.parametersContainer.getNestedAnnotationsSize();
 	}
 
-	NestableParameterAnnotation addParameter_() {
-		NestableParameterAnnotation parameter = this.buildParameter(this.parameters.size());
-		this.parameters.add(parameter);
-		return parameter;
-	}
-
-	NestableParameterAnnotation buildParameter(int index) {
-		return SourceParameterAnnotation.createParameter(this, this.annotatedElement, this.daa, Hibernate.GENERIC_GENERATOR__PARAMETERS, index);
-	}
-
-	Iterable<NestableParameterAnnotation> nestableParameters() {
-		return this.parameters;
-	}
-
-	void syncAddParameterAnnotation(org.eclipse.jdt.core.dom.Annotation nestedAnnotation) {
-		NestableParameterAnnotation parameter = this.addParameter_();
-		parameter.initialize((CompilationUnit) nestedAnnotation.getRoot());
-		this.fireItemAdded(PARAMETERS_LIST, parametersSize() - 1, parameter);
-	}
-
-	NestableParameterAnnotation moveParameter_(int targetIndex, int sourceIndex) {
-		return CollectionTools.move(this.parameters, targetIndex, sourceIndex).get(targetIndex);
-	}
-
-	void parameterMoved(int targetIndex, int sourceIndex) {
-		this.fireItemMoved(PARAMETERS_LIST, targetIndex, sourceIndex);
-	}
-
-	public int indexOfParameter(ParameterAnnotation parameter) {
-		return this.parameters.indexOf(parameter);
-	}
-
-	public void moveParameter(int targetIndex, int sourceIndex) {
-		AnnotationContainerTools.moveNestedAnnotation(targetIndex, sourceIndex, this.parametersContainer);
-	}
-
+	@Override
 	public ParameterAnnotation parameterAt(int index) {
-		return this.parameters.get(index);
+		return this.parametersContainer.getNestedAnnotation(index);
 	}
 
-	public ListIterator<ParameterAnnotation> parameters() {
-		return new CloneListIterator<ParameterAnnotation>(this.parameters);
+	@Override
+	public ParameterAnnotation addParameter(int index) {
+		return this.parametersContainer.addNestedAnnotation(index);
 	}
 
-	public int parametersSize() {
-		return this.parameters.size();
+	@Override
+	public void moveParameter(int targetIndex, int sourceIndex) {
+		this.parametersContainer.moveNestedAnnotation(targetIndex, sourceIndex);
 	}
-
+	
+	@Override
 	public void removeParameter(int index) {
-		AnnotationContainerTools.removeNestedAnnotation(index, this.parametersContainer);
+		this.parametersContainer.removeNestedAnnotation(index);
 	}
 
-	NestableParameterAnnotation removeParameter_(int index) {
-		return this.parameters.remove(index);
-	}
-
-	void parameterRemoved(int index) {
-		this.removeItemsFromList(index, this.parameters, PARAMETERS_LIST);
-	}
-
-	// ********** NestableAnnotation implementation **********
-
-	/**
-	 * convenience implementation of method from NestableAnnotation interface
-	 * for subclasses
-	 */
-	public void moveAnnotation(int newIndex) {
-		this.getIndexedAnnotationAdapter().moveAnnotation(newIndex);
+	ParameterAnnotation buildParameter(int index) {
+		return SourceParameterAnnotation.createParameter(this, this.annotatedElement, this.daa, Hibernate.GENERIC_GENERATOR__PARAMETERS, index);
 	}
 
 	// ********** misc **********
@@ -313,21 +234,7 @@ implements GenericGeneratorAnnotation {
 		return super.isUnset() &&
 				(this.name == null) &&
 				(this.strategy == null) &&
-				this.parameters.isEmpty();
-	}
-
-	@Override
-	protected void rebuildAdapters() {
-		super.rebuildAdapters();
-		this.nameDeclarationAdapter = this.buildNameDeclarationAdapter();
-		this.nameAdapter = this.buildNameAdapter();
-		this.strategyDeclarationAdapter = this.buildStrategyDeclarationAdapter();
-		this.strategyAdapter = this.buildStrategyAdapter();
-	}
-
-	@Override
-	public IndexedAnnotationAdapter getIndexedAnnotationAdapter() {
-		return (IndexedAnnotationAdapter) this.annotationAdapter;
+				this.parametersContainer.isEmpty();
 	}
 
 	@Override
@@ -348,134 +255,49 @@ implements GenericGeneratorAnnotation {
 	 * adapt the AnnotationContainer interface to the override's join columns
 	 */
 	class ParametersAnnotationContainer
-	implements AnnotationContainer<NestableParameterAnnotation>
+		extends AnnotationContainer<ParameterAnnotation>
 	{
-		public String getContainerAnnotationName() {
-			return GenericGeneratorAnnotationImpl.this.getAnnotationName();
+		@Override
+		protected String getNestedAnnotationsListName() {
+			return PARAMETERS_LIST;
 		}
-
-		public org.eclipse.jdt.core.dom.Annotation getAstAnnotation(CompilationUnit astRoot) {
-			return GenericGeneratorAnnotationImpl.this.getAstAnnotation(astRoot);
-		}
-
-		public String getElementName() {
+		@Override
+		protected String getElementName() {
 			return Hibernate.GENERIC_GENERATOR__PARAMETERS;
 		}
-
 		public String getNestedAnnotationName() {
 			return ParameterAnnotation.ANNOTATION_NAME;
 		}
-
-		public Iterable<NestableParameterAnnotation> getNestedAnnotations() {
-			return GenericGeneratorAnnotationImpl.this.nestableParameters();
-		}
-
-		public int getNestedAnnotationsSize() {
-			return GenericGeneratorAnnotationImpl.this.parametersSize();
-		}
-
-		public NestableParameterAnnotation addNestedAnnotation() {
-			return GenericGeneratorAnnotationImpl.this.addParameter_();
-		}
-
-		public void syncAddNestedAnnotation(org.eclipse.jdt.core.dom.Annotation nestedAnnotation) {
-			GenericGeneratorAnnotationImpl.this.syncAddParameterAnnotation(nestedAnnotation);
-		}
-
-		public NestableParameterAnnotation moveNestedAnnotation(int targetIndex, int sourceIndex) {
-			return GenericGeneratorAnnotationImpl.this.moveParameter_(targetIndex, sourceIndex);
-		}
-
-		public NestableParameterAnnotation removeNestedAnnotation(int index) {
-			return GenericGeneratorAnnotationImpl.this.removeParameter_(index);
-		}
-
-		public void syncRemoveNestedAnnotations(int index) {
-			GenericGeneratorAnnotationImpl.this.parameterRemoved(index);
-		}
-
 		@Override
-		public String toString() {
-			return StringTools.buildToStringFor(this);
+		protected ParameterAnnotation buildNestedAnnotation(int index) {
+			return GenericGeneratorAnnotationImpl.this.buildParameter(index);
 		}
-
 	}
 
-	public static GenericGeneratorAnnotation createNestedGenericGenerator(
-			JavaResourceNode parent, AnnotatedElement element,
-			int index, DeclarationAnnotationAdapter attributeOverridesAdapter) {
-		IndexedDeclarationAnnotationAdapter idaa = buildNestedHibernateDeclarationAnnotationAdapter(index, attributeOverridesAdapter);
-		IndexedAnnotationAdapter annotationAdapter = new ElementIndexedAnnotationAdapter(element, idaa);
-		return new GenericGeneratorAnnotationImpl(parent, element, idaa, annotationAdapter);
-	}
-
-	private static IndexedDeclarationAnnotationAdapter buildNestedHibernateDeclarationAnnotationAdapter(int index, DeclarationAnnotationAdapter hibernateGenericGeneratorsAdapter) {
-		return new NestedIndexedDeclarationAnnotationAdapter(hibernateGenericGeneratorsAdapter, index, Hibernate.GENERIC_GENERATOR);
+	public static NestableAnnotation buildGenericGeneratorAnnotation(
+			JavaResourceAnnotatedElement parent,
+			AnnotatedElement annotatedElement, int index) {
+		IndexedDeclarationAnnotationAdapter idaa = buildGnericGeneratorDeclarationAnnotationAdapter(index);
+		IndexedAnnotationAdapter iaa = buildGenericGeneratorAnnotationAdapter(annotatedElement, idaa);
+		return new GenericGeneratorAnnotationImpl(
+			parent,
+			annotatedElement,
+			idaa,
+			iaa);
 	}
 	
-	/*
-	 * This is a workaround fix for https://bugs.eclipse.org/bugs/show_bug.cgi?id=357224
-	 * The exception occurs due to wrong cast in SourceAnnotation
-	 * The method should be removed after the bug fix.
-	 */
-	public void convertToStandAlone() {
-		Map<String, Object> map = new HashMap<String, Object>();
-		this.storeOn(map);
-		this.removeAnnotation();  // this annotation has already been removed from the model
-		this.daa = new SimpleDeclarationAnnotationAdapter(this.getAnnotationName());
-		this.annotationAdapter = new ElementAnnotationAdapter(this.annotatedElement, this.daa);
-		this.rebuildAdapters();
-		((JavaResourceAnnotatedElement)this.parent).addStandAloneAnnotation((NestableAnnotation) this);
-		this.newAnnotation();
-		this.restoreFrom(map);
+	protected static IndexedAnnotationAdapter buildGenericGeneratorAnnotationAdapter(AnnotatedElement annotatedElement, IndexedDeclarationAnnotationAdapter idaa) {
+		return new ElementIndexedAnnotationAdapter(annotatedElement, idaa);
 	}
-
-	public static class GenericGeneratorAnnotationDefinition implements AnnotationDefinition
-	{
-		// singleton
-		private static final GenericGeneratorAnnotationDefinition INSTANCE = new GenericGeneratorAnnotationDefinition();
-
-		/**
-		 * Return the singleton.
-		 */
-		public static AnnotationDefinition instance() {
-			return INSTANCE;
-		}
-
-		/**
-		 * Ensure non-instantiability.
-		 */
-		private GenericGeneratorAnnotationDefinition() {
-			super();
-		}
-
-		public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement member) {
-			return new GenericGeneratorAnnotationImpl(parent, member, DECLARATION_ANNOTATION_ADAPTER, new ElementAnnotationAdapter(member, DECLARATION_ANNOTATION_ADAPTER));
-		}
-
-		public String getAnnotationName() {
-			return GenericGeneratorAnnotation.ANNOTATION_NAME;
-		}
-
-		public Annotation buildAnnotation(JavaResourcePersistentMember arg0,
-				IAnnotation arg1) {
-			throw new UnsupportedOperationException();
-		}
-
-		public Annotation buildNullAnnotation(JavaResourcePersistentMember arg0) {
-			throw new UnsupportedOperationException();
-		}
-
-		public Annotation buildAnnotation(JavaResourceAnnotatedElement parent,
-				IAnnotation jdtAnnotation) {
-			throw new UnsupportedOperationException();
-		}
-
-		public Annotation buildNullAnnotation(
-				JavaResourceAnnotatedElement parent) {
-			throw new UnsupportedOperationException();
-		}
+	
+	private static IndexedDeclarationAnnotationAdapter buildGnericGeneratorDeclarationAnnotationAdapter(int index) {
+		IndexedDeclarationAnnotationAdapter idaa =
+				new CombinationIndexedDeclarationAnnotationAdapter(
+						DECLARATION_ANNOTATION_ADAPTER,
+						CONTAINER_DECLARATION_ANNOTATION_ADAPTER,
+						index,
+						ANNOTATION_NAME);
+		return idaa;
 	}
-
 
 }

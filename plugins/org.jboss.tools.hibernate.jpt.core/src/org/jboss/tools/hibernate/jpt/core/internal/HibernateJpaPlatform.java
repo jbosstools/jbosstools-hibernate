@@ -10,13 +10,14 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal;
 
+import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.jpa.core.JpaAnnotationProvider;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.JpaPlatformProvider;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation;
 import org.eclipse.jpt.jpa.core.ResourceDefinition;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatform;
+import org.eclipse.persistence.jpa.jpql.parser.JPQLGrammar;
 
 /**
  * @author Dmitry Geraskov
@@ -38,8 +39,8 @@ public class HibernateJpaPlatform extends GenericJpaPlatform {
 		return super.getResourceDefinition(resourceType);
 	}
 
-	public HibernateJpaPlatform(String id, Version jpaVersion, JpaFactory jpaFactory, JpaAnnotationProvider jpaAnnotationProvider, JpaPlatformProvider platformProvider, JpaPlatformVariation jpaVariation) {
-		super(id, jpaVersion, jpaFactory, jpaAnnotationProvider, platformProvider, jpaVariation);
+	public HibernateJpaPlatform(String id, Version jpaVersion, JpaFactory jpaFactory, AnnotationProvider annotationProvider, JpaPlatformProvider platformProvider, JpaPlatformVariation jpaVariation, JPQLGrammar jpqlGrammar) {
+		super(id, jpaVersion, jpaFactory, annotationProvider, platformProvider, jpaVariation, jpqlGrammar);
 	}
 
 }

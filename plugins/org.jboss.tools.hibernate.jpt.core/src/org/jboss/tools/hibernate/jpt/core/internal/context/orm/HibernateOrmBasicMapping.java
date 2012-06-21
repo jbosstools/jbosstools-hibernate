@@ -11,10 +11,10 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
+import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmBasicMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlBasic;
-import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.hibernate.cfg.NamingStrategy;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
@@ -39,7 +39,7 @@ public class HibernateOrmBasicMapping extends AbstractOrmBasicMapping<XmlBasic> 
 	}
 
 	@Override
-	public String getDefaultColumnName() {
+	public String getDefaultColumnName(ReadOnlyNamedColumn column) {
 		if (getName() != null){
 			NamingStrategy ns = getJpaProject().getNamingStrategy();
 			if (getJpaProject().isNamingStrategyEnabled() && ns != null) {
@@ -53,7 +53,7 @@ public class HibernateOrmBasicMapping extends AbstractOrmBasicMapping<XmlBasic> 
 				}
 			}
 		}
-		return super.getDefaultColumnName();
+		return super.getDefaultColumnName(column);
 	}
 
 }

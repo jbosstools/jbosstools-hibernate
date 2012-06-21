@@ -19,8 +19,8 @@ import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.osgi.util.NLS;
@@ -166,7 +166,7 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 		};
 	}
 
-	private WritablePropertyValueModel<Integer> buildDefaultFetchSizeHolder() {
+	private ModifiablePropertyValueModel<Integer> buildDefaultFetchSizeHolder() {
 		return new PropertyAspectAdapter<HibernateQuery, Integer>(getSubjectHolder(), HibernateQuery.DEFAULT_FETCH_SIZE_PROPERTY) {
 			@Override
 			protected Integer buildValue_() {
@@ -175,7 +175,7 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 		};
 	}
 
-	protected WritablePropertyValueModel<String> buildNameTextHolder() {
+	protected ModifiablePropertyValueModel<String> buildNameTextHolder() {
 		return new PropertyAspectAdapter<HibernateQuery, String>(
 				getSubjectHolder(), HibernateQuery.NAME_PROPERTY) {
 			@Override
@@ -193,7 +193,7 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 		};
 	}
 
-	private WritablePropertyValueModel<String> buildQueryHolder() {
+	private ModifiablePropertyValueModel<String> buildQueryHolder() {
 		return new PropertyAspectAdapter<HibernateQuery, String>(getSubjectHolder(), HibernateQuery.QUERY_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -207,7 +207,7 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 		};
 	}
 
-	private WritablePropertyValueModel<Boolean> buildCacheableHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildCacheableHolder() {
 		return new PropertyAspectAdapter<HibernateQuery, Boolean>(
 			getSubjectHolder(),
 			HibernateQuery.DEFAULT_CACHEABLE_PROPERTY,
@@ -249,7 +249,7 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 		};
 	}
 
-	private WritablePropertyValueModel<Boolean> buildReadOnlyHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildReadOnlyHolder() {
 		return new PropertyAspectAdapter<HibernateQuery, Boolean>(
 			getSubjectHolder(),
 			HibernateQuery.DEFAULT_READ_ONLY_PROPERTY,
@@ -370,7 +370,7 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 		};
 	}
 
-	private WritablePropertyValueModel<String> buildCacheRegionTextHolder() {
+	private ModifiablePropertyValueModel<String> buildCacheRegionTextHolder() {
 		return new PropertyAspectAdapter<HibernateQuery, String>(
 				getSubjectHolder(),
 				HibernateQuery.DEFAULT_CACHE_REGION_PROPERTY,
@@ -390,7 +390,7 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 		};
 	}
 
-	private WritablePropertyValueModel<Integer> buildFetchSizeHolder() {
+	private ModifiablePropertyValueModel<Integer> buildFetchSizeHolder() {
 		return new PropertyAspectAdapter<HibernateQuery, Integer>(getSubjectHolder(), HibernateQuery.SPECIFIED_FETCH_SIZE_PROPERTY) {
 			@Override
 			protected Integer buildValue_() {
@@ -409,7 +409,7 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 
 
 
-	private WritablePropertyValueModel<Integer> buildTimeoutHolder() {
+	private ModifiablePropertyValueModel<Integer> buildTimeoutHolder() {
 		return new PropertyAspectAdapter<HibernateQuery, Integer>(getSubjectHolder(), HibernateQuery.SPECIFIED_TIMEOUT_PROPERTY) {
 			@Override
 			protected Integer buildValue_() {

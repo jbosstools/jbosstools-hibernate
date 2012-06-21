@@ -19,8 +19,8 @@ import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter.Adapter;
+import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaBasicMapping;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -85,15 +85,15 @@ implements HibernateJavaBasicMapping {
 	}
 
 	public GeneratedAnnotation getGeneratedAnnotation() {
-		return (GeneratedAnnotation) getResourcePersistentAttribute().getAnnotation(GeneratedAnnotation.ANNOTATION_NAME);
+		return (GeneratedAnnotation) getResourceAttribute().getAnnotation(GeneratedAnnotation.ANNOTATION_NAME);
 	}
 
 	public GeneratedAnnotation buildGeneratedAnnotation() {
-		return (GeneratedAnnotation) getResourcePersistentAttribute().addAnnotation(GeneratedAnnotation.ANNOTATION_NAME);
+		return (GeneratedAnnotation) getResourceAttribute().addAnnotation(GeneratedAnnotation.ANNOTATION_NAME);
 	}
 
 	public void removeGeneratedAnnotation() {
-		getResourcePersistentAttribute().removeAnnotation(GeneratedAnnotation.ANNOTATION_NAME);
+		getResourceAttribute().removeAnnotation(GeneratedAnnotation.ANNOTATION_NAME);
 	}
 
 	protected GenerationTime getResourceGenerationTime(){
@@ -141,14 +141,14 @@ implements HibernateJavaBasicMapping {
 	}
 	
 	protected IndexAnnotation buildIndexAnnotation() {
-		return (IndexAnnotation) this.getResourcePersistentAttribute().addAnnotation(IndexAnnotation.ANNOTATION_NAME);
+		return (IndexAnnotation) this.getResourceAttribute().addAnnotation(IndexAnnotation.ANNOTATION_NAME);
 	}
 	
 	public void removeIndex() {
 		if (getIndex() == null) {
 			throw new IllegalStateException("index does not exist, cannot be removed"); //$NON-NLS-1$
 		}
-		this.getResourcePersistentAttribute().removeAnnotation(IndexAnnotation.ANNOTATION_NAME);
+		this.getResourceAttribute().removeAnnotation(IndexAnnotation.ANNOTATION_NAME);
 		setIndex(null);
 	}
 
@@ -158,7 +158,7 @@ implements HibernateJavaBasicMapping {
 	}
 	
 	protected IndexAnnotation getIndexAnnotation() {
-		return (IndexAnnotation) this.getResourcePersistentAttribute().getAnnotation(IndexAnnotation.ANNOTATION_NAME);
+		return (IndexAnnotation) this.getResourceAttribute().getAnnotation(IndexAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected JavaIndex buildIndex(IndexAnnotation annotation) {
@@ -205,14 +205,14 @@ implements HibernateJavaBasicMapping {
 	}
 
 	protected TypeAnnotation buildTypeAnnotation() {
-		return (TypeAnnotation) this.getResourcePersistentAttribute().addAnnotation(TypeAnnotation.ANNOTATION_NAME);
+		return (TypeAnnotation) this.getResourceAttribute().addAnnotation(TypeAnnotation.ANNOTATION_NAME);
 	}
 
 	public void removeType() {
 		if (this.type == null) {
 			throw new IllegalStateException("generated value does not exist"); //$NON-NLS-1$
 		}
-		this.getResourcePersistentAttribute().removeAnnotation(TypeAnnotation.ANNOTATION_NAME);
+		this.getResourceAttribute().removeAnnotation(TypeAnnotation.ANNOTATION_NAME);
 		this.setType(null);
 	}
 
@@ -222,7 +222,7 @@ implements HibernateJavaBasicMapping {
 	}
 
 	protected TypeAnnotation getTypeAnnotation() {
-		return (TypeAnnotation) this.getResourcePersistentAttribute().getAnnotation(TypeAnnotation.ANNOTATION_NAME);
+		return (TypeAnnotation) this.getResourceAttribute().getAnnotation(TypeAnnotation.ANNOTATION_NAME);
 	}
 
 	protected JavaType buildType(TypeAnnotation generatedValueAnnotation) {
@@ -259,15 +259,15 @@ implements HibernateJavaBasicMapping {
 	 * org.eclipse.jdt.core.dom.CompilationUnit)
 	 */
 	@Override
-	public Iterator<String> javaCompletionProposals(int pos,
+	public Iterable<String> getJavaCompletionProposals(int pos,
 			Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.javaCompletionProposals(pos, filter,
+		Iterable<String> result = super.getJavaCompletionProposals(pos, filter,
 				astRoot);
 		if (result != null) {
 			return result;
 		}
 		if (this.getType() != null) {
-			result = this.getType().javaCompletionProposals(pos, filter,
+			result = this.getType().getJavaCompletionProposals(pos, filter,
 					astRoot);
 			if (result != null) {
 				return result;

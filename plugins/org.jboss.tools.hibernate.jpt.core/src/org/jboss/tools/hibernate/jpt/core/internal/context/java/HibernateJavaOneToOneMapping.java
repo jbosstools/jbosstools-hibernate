@@ -83,7 +83,7 @@ public class HibernateJavaOneToOneMapping extends
 		if (getForeignKey() != null) {
 			throw new IllegalStateException("foreignKey already exists"); //$NON-NLS-1$
 		}
-		ForeignKeyAnnotation annotation = (ForeignKeyAnnotation) this.getResourcePersistentAttribute().addAnnotation(ForeignKeyAnnotation.ANNOTATION_NAME);
+		ForeignKeyAnnotation annotation = (ForeignKeyAnnotation) this.getResourceAttribute().addAnnotation(ForeignKeyAnnotation.ANNOTATION_NAME);
 		ForeignKey foreignKey = buildForeignKey(annotation);
 		setForeignKey(foreignKey);
 		return this.foreignKey;
@@ -105,7 +105,7 @@ public class HibernateJavaOneToOneMapping extends
 		if (getForeignKey() == null) {
 			throw new IllegalStateException("foreignKey does not exist, cannot be removed"); //$NON-NLS-1$
 		}
-		this.getResourcePersistentAttribute().removeAnnotation(ForeignKeyAnnotation.ANNOTATION_NAME);
+		this.getResourceAttribute().removeAnnotation(ForeignKeyAnnotation.ANNOTATION_NAME);
 		setForeignKey(null);
 	}
 	
@@ -119,7 +119,7 @@ public class HibernateJavaOneToOneMapping extends
 	}
 
 	protected ForeignKeyAnnotation getForeignKeyAnnotation() {
-		return (ForeignKeyAnnotation) this.getResourcePersistentAttribute().getAnnotation(ForeignKeyAnnotation.ANNOTATION_NAME);
+		return (ForeignKeyAnnotation) this.getResourceAttribute().getAnnotation(ForeignKeyAnnotation.ANNOTATION_NAME);
 	}
 
 	public Table getForeignKeyDbTable() {

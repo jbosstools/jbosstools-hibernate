@@ -13,6 +13,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
 import java.util.List;
 
+import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmIdMapping;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
@@ -43,7 +44,7 @@ implements HibernateOrmIdMapping {
 	}
 
 	@Override
-	public String getDefaultColumnName() {
+	public String getDefaultColumnName(ReadOnlyNamedColumn column) {
 		if (getName() != null){
 			NamingStrategy namingStrategy = getJpaProject().getNamingStrategy();
 			if (getJpaProject().isNamingStrategyEnabled() && namingStrategy != null){
@@ -57,7 +58,7 @@ implements HibernateOrmIdMapping {
 				}
 			}
 		}
-		return super.getDefaultColumnName();
+		return super.getDefaultColumnName(column);
 	}
 	
 	@Override

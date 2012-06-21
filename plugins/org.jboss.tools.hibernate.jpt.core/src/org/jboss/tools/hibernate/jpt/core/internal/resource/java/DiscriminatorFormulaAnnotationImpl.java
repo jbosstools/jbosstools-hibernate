@@ -12,27 +12,27 @@ package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.resource.java.Annotation;
+import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.Type;
-import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.Annotation;
-import org.eclipse.jpt.jpa.core.resource.java.AnnotationDefinition;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentMember;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public class DiscriminatorFormulaAnnotationImpl extends SourceAnnotation<Type> implements
+public class DiscriminatorFormulaAnnotationImpl extends SourceAnnotation implements
 DiscriminatorFormulaAnnotation {
 
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
@@ -120,12 +120,12 @@ DiscriminatorFormulaAnnotation {
 			return DiscriminatorFormulaAnnotation.ANNOTATION_NAME;
 		}
 
-		public Annotation buildAnnotation(JavaResourcePersistentMember arg0,
+		public Annotation buildAnnotation(JavaResourceMember arg0,
 				IAnnotation arg1) {
 			throw new UnsupportedOperationException();
 		}
 
-		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {
+		public Annotation buildNullAnnotation(JavaResourceMember parent) {
 			throw new UnsupportedOperationException();
 		}
 

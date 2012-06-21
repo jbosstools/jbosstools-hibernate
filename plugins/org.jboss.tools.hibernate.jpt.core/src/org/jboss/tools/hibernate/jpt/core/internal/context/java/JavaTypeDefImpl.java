@@ -194,8 +194,8 @@ public class JavaTypeDefImpl extends AbstractJavaJpaContextNode implements JavaT
 	}
 
 	protected void initializeParameters() {
-		for (Iterator<ParameterAnnotation> stream = this.typeDefAnnotation.parameters(); stream.hasNext(); ) {
-			this.parameters.add(this.buildParameter(stream.next()));
+		for (ParameterAnnotation param : this.typeDefAnnotation.getParameters()) {
+			this.parameters.add(this.buildParameter(param));
 		}
 	}
 
@@ -208,7 +208,7 @@ public class JavaTypeDefImpl extends AbstractJavaJpaContextNode implements JavaT
 	}
 
 	protected Iterable<ParameterAnnotation> getParameterAnnotations() {
-		return CollectionTools.iterable(this.typeDefAnnotation.parameters());
+		return this.typeDefAnnotation.getParameters();
 	}
 
 	protected void moveParameter_(int index, JavaParameter parameter) {
@@ -310,12 +310,8 @@ public class JavaTypeDefImpl extends AbstractJavaJpaContextNode implements JavaT
 					messages.add(HibernateJpaValidationMessage.buildMessage(
 							IMessage.HIGH_SEVERITY,TYPE_CLASS_NOT_FOUND, new String[]{typeClass}, this, this.getTypeClassTextRange(astRoot)));
 				} else {
-					Boolean isImplements = JpaUtil.isTypeImplementsOneOfInterfaces(getJpaProject().getJavaProject(), lwType,
-							 JavaTypeDef.POSSIBLE_INTERFACES);
-					if (isImplements == null){
-						messages.add(HibernateJpaValidationMessage.buildMessage(
-								IMessage.HIGH_SEVERITY,INCONSISTENT_TYPE_HIERARCHY, new String[]{typeClass}, this, this.getTypeClassTextRange(astRoot)));
-					} else if (!isImplements){
+					if (!JpaUtil.isTypeImplementsOneOfInterfaces(getJpaProject().getJavaProject(), lwType,
+							 JavaTypeDef.POSSIBLE_INTERFACES)){
 						messages.add(HibernateJpaValidationMessage.buildMessage(
 								IMessage.HIGH_SEVERITY,IMPLEMENT_USER_TYPE_INTERFACE, new String[]{typeClass}, this, this.getTypeClassTextRange(astRoot)));
 					 }
@@ -324,6 +320,25 @@ public class JavaTypeDefImpl extends AbstractJavaJpaContextNode implements JavaT
 				// just ignore it!
 			}
 		}
+		
+		
+		for (ListIterator<JavaTypeDef> stream = this.getPersistenceUnit().typeDefs(); stream.hasNext(); ) {
+			JavaTypeDef typeDef = stream.next();
+			if (this != typeDef){
+				if (this.name.equals(typeDef.getName())) {
+					messages.add(
+							HibernateJpaValidationMessage.buildMessage(
+									IMessage.HIGH_SEVERITY,
+									TYPE_DEF_DUPLICATE_NAME,
+									new String[]{this.name},
+									this,
+									this.getNameTextRange(astRoot))
+					);
+					break;
+				}
+			}
+		}
+		
 	}
 
 }

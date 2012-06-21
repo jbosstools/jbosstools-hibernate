@@ -15,7 +15,7 @@ import java.util.Collection;
 import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.common.ui.internal.widgets.ValidatingDialog;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -126,7 +126,7 @@ public class EnterNameDialog extends ValidatingDialog<NameStateObject> {
 			super(EnterNameDialog.this.getSubjectHolder(), parent);
 		}
 
-		private WritablePropertyValueModel<String> buildNameHolder() {
+		private ModifiablePropertyValueModel<String> buildNameHolder() {
 			return new PropertyAspectAdapter<NameStateObject, String>(getSubjectHolder(), NameStateObject.NAME_PROPERTY) {
 				@Override
 				protected String buildValue_() {

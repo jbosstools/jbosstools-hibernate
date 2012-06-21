@@ -11,7 +11,6 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
-import org.jboss.tools.hibernate.jpt.core.internal.context.ForeignKeyHolder;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateEntity;
 
 /**

@@ -31,11 +31,9 @@ import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValue
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
@@ -44,7 +42,6 @@ import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.JpaMappingImageHelper;
 import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
 import org.eclipse.jpt.jpa.ui.internal.persistence.JptUiPersistenceMessages;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -68,7 +65,6 @@ public class HibernatePersistenceUnitClassesComposite extends Pane<PersistenceUn
 	}
 
 	private void addMappedClass(ObjectListSelectionModel listSelectionModel) {
-
 		IType type = chooseType();
 
 		if (type != null) {
@@ -82,7 +78,7 @@ public class HibernatePersistenceUnitClassesComposite extends Pane<PersistenceUn
 	}
 	
 	private boolean classRefExists(String className) {
-		for ( ListIterator<ClassRef> i = getSubject().specifiedClassRefs(); i.hasNext(); ) {
+		for ( ListIterator<ClassRef> i = getSubject().getSpecifiedClassRefs().iterator(); i.hasNext(); ) {
 			ClassRef classRef = i.next();
 			if( classRef.getClassName().equals(className)) {
 				return true;
@@ -129,7 +125,7 @@ public class HibernatePersistenceUnitClassesComposite extends Pane<PersistenceUn
 		};
 	}
 
-	private WritablePropertyValueModel<Boolean> buildExcludeUnlistedMappedClassesHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildExcludeUnlistedMappedClassesHolder() {
 		return new PropertyAspectAdapter<PersistenceUnit, Boolean>(
 			getSubjectHolder(),
 			PersistenceUnit.SPECIFIED_EXCLUDE_UNLISTED_CLASSES_PROPERTY)
@@ -196,17 +192,17 @@ public class HibernatePersistenceUnitClassesComposite extends Pane<PersistenceUn
 		return new ListAspectAdapter<PersistenceUnit, ClassRef>(getSubjectHolder(), PersistenceUnit.SPECIFIED_CLASS_REFS_LIST) {
 			@Override
 			protected ListIterator<ClassRef> listIterator_() {
-				return subject.specifiedClassRefs();
+				return subject.getSpecifiedClassRefs().iterator();
 			}
 
 			@Override
 			protected int size_() {
-				return subject.specifiedClassRefsSize();
+				return subject.getSpecifiedClassRefsSize();
 			}
 		};
 	}
 
-	private WritablePropertyValueModel<ClassRef> buildSelectedItemHolder() {
+	private ModifiablePropertyValueModel<ClassRef> buildSelectedItemHolder() {
 		return new SimplePropertyValueModel<ClassRef>();
 	}
 

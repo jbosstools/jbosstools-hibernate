@@ -12,6 +12,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context;
 
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.db.Table;
@@ -108,8 +109,8 @@ public class NamingStrategyMappingTools {
 		return owningTable.getDatabase().convertNameToIdentifier(name);
 	}
 
-	public static String buildJoinColumnDefaultName(JoinColumn joinColumn, JoinColumn.Owner owner) {
-		if (owner.joinColumnsSize() != 1) {
+	public static String buildJoinColumnDefaultName(JoinColumn joinColumn, ReadOnlyJoinColumn.Owner owner) {
+		if (owner.getJoinColumnsSize() != 1) {
 			return null;
 		}
 		String prefix = owner.getAttributeName();

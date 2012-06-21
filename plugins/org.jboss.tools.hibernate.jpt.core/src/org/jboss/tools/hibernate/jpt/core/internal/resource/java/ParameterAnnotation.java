@@ -11,8 +11,8 @@
 package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.resource.java.Annotation;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 
 /**
@@ -20,7 +20,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
  * org.hibernate.annotations.Parameter
  */
 
-public interface ParameterAnnotation extends Annotation {
+public interface ParameterAnnotation extends NestableAnnotation {
 	String ANNOTATION_NAME = Hibernate.PARAMETER;
 
 	/**

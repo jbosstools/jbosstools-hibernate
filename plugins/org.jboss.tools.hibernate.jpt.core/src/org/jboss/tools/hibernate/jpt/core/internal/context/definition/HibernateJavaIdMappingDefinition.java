@@ -57,7 +57,7 @@ public class HibernateJavaIdMappingDefinition implements JavaAttributeMappingDef
 	}
 
 	public boolean isSpecified(JavaPersistentAttribute persistentAttribute) {
-		return persistentAttribute.getResourcePersistentAttribute().getAnnotation(this.getAnnotationName()) != null;
+		return persistentAttribute.getResourceAttribute().getAnnotation(this.getAnnotationName()) != null;
 	}
 
 	protected static final String[] HIBERNATE_ANNOTATION_NAMES_ARRAY = new String[] {

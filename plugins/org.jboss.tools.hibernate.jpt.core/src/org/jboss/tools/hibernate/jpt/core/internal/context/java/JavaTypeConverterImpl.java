@@ -11,9 +11,11 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.AbstractJavaConverter;
 import org.jboss.tools.hibernate.jpt.core.internal.context.TypeConverter;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeAnnotation;
@@ -29,8 +31,8 @@ public class JavaTypeConverterImpl extends AbstractJavaConverter implements Java
 	
 	protected String type;
 
-	public JavaTypeConverterImpl(JavaAttributeMapping parent, TypeAnnotation typeAnnotation) {
-		super(parent);
+	public JavaTypeConverterImpl(JavaAttributeMapping parent, TypeAnnotation typeAnnotation, JavaConverter.Owner owner) {
+		super(parent, owner);
 		this.typeAnnotation = typeAnnotation;
 		type = buildHibernateType();
 	}
@@ -50,10 +52,10 @@ public class JavaTypeConverterImpl extends AbstractJavaConverter implements Java
 	public Class<? extends Converter> getType() {
 		return TypeConverter.class;
 	}
-
+	
 	@Override
-	protected String getAnnotationName() {
-		return TypeAnnotation.ANNOTATION_NAME;
+	public Annotation getConverterAnnotation() {
+		return typeAnnotation;
 	}
 
 	// ********** type **********

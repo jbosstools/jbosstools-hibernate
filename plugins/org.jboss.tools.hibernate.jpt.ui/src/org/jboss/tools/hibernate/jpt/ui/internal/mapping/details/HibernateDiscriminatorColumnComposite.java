@@ -19,8 +19,8 @@ import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.Entity;
@@ -71,7 +71,7 @@ import org.jboss.tools.hibernate.jpt.ui.internal.mappings.db.xpl.ColumnCombo;
  */
 public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEntity> {
 
-	private WritablePropertyValueModel<DiscriminatorFormula> discriminatorFormulaHolder;
+	private ModifiablePropertyValueModel<DiscriminatorFormula> discriminatorFormulaHolder;
 
 	/**
 	 * Creates a new <code>InheritanceComposite</code>.
@@ -191,7 +191,7 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 		};
 	}
 
-	private WritablePropertyValueModel<String> buildDiscriminatorFormulaValueHolder() {
+	private ModifiablePropertyValueModel<String> buildDiscriminatorFormulaValueHolder() {
 		return new PropertyAspectAdapter<DiscriminatorFormula, String>(this.discriminatorFormulaHolder, DiscriminatorFormula.VALUE_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -260,18 +260,23 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 
 			@Override
 			protected String displayString(DiscriminatorType value) {
-				return buildDisplayString(
-					JptUiDetailsMessages.class,
-					DiscriminatorColumnComposite.class,
-					value
-				);
+				switch (value) {
+					case CHAR :
+						return JptUiDetailsMessages.DiscriminatorColumnComposite_char;
+					case INTEGER :
+						return JptUiDetailsMessages.DiscriminatorColumnComposite_integer;
+					case STRING :
+						return JptUiDetailsMessages.DiscriminatorColumnComposite_string;
+					default :
+						throw new IllegalStateException();
+				}
 			}
-
+			
 			@Override
 			protected String nullDisplayString() {
 				return JptCommonUiMessages.NoneSelected;
 			}
-
+			
 			@Override
 			protected DiscriminatorType getValue() {
 				return getSubject().getSpecifiedDiscriminatorType();
@@ -284,7 +289,7 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 		};
 	}
 
-	protected WritablePropertyValueModel<Boolean> buildDiscriminatorColumnEnabledHolder() {
+	protected ModifiablePropertyValueModel<Boolean> buildDiscriminatorColumnEnabledHolder() {
 		return new PropertyAspectAdapter<Entity, Boolean>(getSubjectHolder(), Entity.SPECIFIED_DISCRIMINATOR_COLUMN_IS_ALLOWED_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -338,7 +343,7 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 				}
 
 				@Override
-				protected WritablePropertyValueModel<Integer> buildSelectedItemHolder() {
+				protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
 					return new PropertyAspectAdapter<DiscriminatorColumn, Integer>(getSubjectHolder(), DiscriminatorColumn.SPECIFIED_LENGTH_PROPERTY) {
 						@Override
 						protected Integer buildValue_() {
@@ -354,7 +359,7 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 			};
 		}
 
-		private WritablePropertyValueModel<String> buildColumnDefinitionHolder(PropertyValueModel<DiscriminatorColumn> discriminatorColumnHolder) {
+		private ModifiablePropertyValueModel<String> buildColumnDefinitionHolder(PropertyValueModel<DiscriminatorColumn> discriminatorColumnHolder) {
 
 			return new PropertyAspectAdapter<DiscriminatorColumn, String>(discriminatorColumnHolder, NamedColumn.COLUMN_DEFINITION_PROPERTY) {
 				@Override
@@ -373,7 +378,7 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 		}
 	}
 	
-	private WritablePropertyValueModel<DiscriminatorFormula> buildDiscriminatorFormulaHolder() {
+	private ModifiablePropertyValueModel<DiscriminatorFormula> buildDiscriminatorFormulaHolder() {
 		return new PropertyAspectAdapter<HibernateJavaEntity, DiscriminatorFormula>(getSubjectHolder(), HibernateEntity.DISCRIMINATOR_FORMULA_PROPERTY) {
 			@Override
 			protected DiscriminatorFormula buildValue_() {

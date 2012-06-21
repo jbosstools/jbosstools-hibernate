@@ -18,8 +18,8 @@ import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaTypeDef;
 
@@ -53,7 +53,7 @@ public class TypeDefPropertyComposite<T extends JavaTypeDef> extends Pane<T> {
 		new ParametersComposite(this, container, getSubjectHolder());
 	}
 	
-	protected WritablePropertyValueModel<String> buildNameTextHolder() {
+	protected ModifiablePropertyValueModel<String> buildNameTextHolder() {
 		return new PropertyAspectAdapter<JavaTypeDef, String>(
 				getSubjectHolder(), JavaTypeDef.NAME_PROPERTY) {
 			@Override
@@ -78,7 +78,7 @@ public class TypeDefPropertyComposite<T extends JavaTypeDef> extends Pane<T> {
 			private List<String> superInterfaces = Collections.singletonList(JavaTypeDef.USER_TYPE_INTERFACE);
 
 			@Override
-			protected WritablePropertyValueModel<String> buildTextHolder() {
+			protected ModifiablePropertyValueModel<String> buildTextHolder() {
 				return new PropertyAspectAdapter<JavaTypeDef, String>(getSubjectHolder(), JavaTypeDef.TYPE_CLASS_PROPERTY) {
 					@Override
 					protected String buildValue_() {
@@ -132,7 +132,7 @@ public class TypeDefPropertyComposite<T extends JavaTypeDef> extends Pane<T> {
 		return new ClassChooserPane<JavaTypeDef>(this, container) {
 
 			@Override
-			protected WritablePropertyValueModel<String> buildTextHolder() {
+			protected ModifiablePropertyValueModel<String> buildTextHolder() {
 				return new PropertyAspectAdapter<JavaTypeDef, String>(getSubjectHolder(), JavaTypeDef.DEF_FOR_TYPE_PROPERTY) {
 					@Override
 					protected String buildValue_() {

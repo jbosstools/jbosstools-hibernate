@@ -10,11 +10,11 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
+import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
-import org.eclipse.jpt.jpa.core.resource.java.Annotation;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.context.TypeConverter;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeAnnotation;
@@ -49,7 +49,7 @@ public interface JavaTypeConverter extends TypeConverter, JavaConverter{
 		}
 
 		public JavaConverter buildConverter(Annotation converterAnnotation, JavaAttributeMapping parent, JpaFactory factory) {
-			return ((HibernateAbstractJpaFactory)factory).buildJavaTypeConverter(parent, (TypeAnnotation) converterAnnotation);
+			return ((HibernateAbstractJpaFactory)factory).buildJavaTypeConverter(parent, (TypeAnnotation) converterAnnotation, this.buildOwner());
 		}
 	}
 }

@@ -10,28 +10,20 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Vector;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.common.utility.internal.iterators.SubIteratorWrapper;
-import org.eclipse.jpt.common.utility.internal.iterators.SuperIteratorWrapper;
+import org.eclipse.jpt.common.utility.internal.iterables.SubListIterableWrapper;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.jpa.core.resource.java.NestableAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeDefAnnotation;
-import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeDefsAnnotation;
 
 /**
  * @author Dmitry Geraskov
@@ -40,16 +32,14 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeDefsAnnotat
 public class HibernateJavaTypeDefContainerImpl extends
 		AbstractJavaJpaContextNode implements HibernateJavaTypeDefContainer {
 
-	protected JavaResourceAnnotatedElement javaResourcePersistentElement;
+	protected JavaResourceAnnotatedElement javaResourceannotatedElement;
 	
-	protected final Vector<JavaTypeDef> typeDefs = new Vector<JavaTypeDef>();
-	protected TypeDefContainerAdapter typeDefContainerAdapter = new TypeDefContainerAdapter();
+	protected final ContextListContainer<JavaTypeDef, TypeDefAnnotation> typeDefContainer;
 
-	
 	public HibernateJavaTypeDefContainerImpl(JavaJpaContextNode parent, JavaResourceAnnotatedElement javaResourcePersistentElement) {
 		super(parent);
-		this.javaResourcePersistentElement = javaResourcePersistentElement;
-		this.initializeTypeDefs();
+		this.javaResourceannotatedElement = javaResourcePersistentElement;
+		this.typeDefContainer = this.buildTypeDefContainer();
 	}
 	
 	public HibernateAbstractJpaFactory getJpaFactory(){
@@ -57,7 +47,7 @@ public class HibernateJavaTypeDefContainerImpl extends
 	}
 
 	protected JavaResourceAnnotatedElement getResourceAnnotatedElement() {
-		return this.javaResourcePersistentElement;
+		return this.javaResourceannotatedElement;
 	}
 	
 	// ********** synchronize/update **********
@@ -75,128 +65,99 @@ public class HibernateJavaTypeDefContainerImpl extends
 	}
 
 	// ********** type defs **********
-
-	public ListIterator<JavaTypeDef> typeDefs() {
-		return this.getTypeDefs().iterator();
+	public ListIterable<JavaTypeDef> getTypeDefs() {
+		return this.typeDefContainer.getContextElements();
 	}
 
-	protected ListIterable<JavaTypeDef> getTypeDefs() {
-		return new LiveCloneListIterable<JavaTypeDef>(this.typeDefs);
-	}
-
-	public int typeDefsSize() {
-		return this.typeDefs.size();
+	public int getTypeDefsSize() {
+		return this.typeDefContainer.getContextElementsSize();
 	}
 
 	public JavaTypeDef addTypeDef() {
-		return this.addTypeDef(this.typeDefs.size());
+		return this.addTypeDef(this.getTypeDefsSize());
 	}
 
 	public JavaTypeDef addTypeDef(int index) {
-		TypeDefAnnotation annotation = this.buildTypeDefAnnotation(index);
-		return this.addTypeDef_(index, annotation);
+		TypeDefAnnotation annotation = this.addTypeDefAnnotation(index);
+		return this.typeDefContainer.addContextElement(index, annotation);
 	}
 
-	protected TypeDefAnnotation buildTypeDefAnnotation(int index) {
-		return (TypeDefAnnotation) this.getResourceAnnotatedElement().addAnnotation(index, TypeDefAnnotation.ANNOTATION_NAME, TypeDefsAnnotation.ANNOTATION_NAME);
+	protected TypeDefAnnotation addTypeDefAnnotation(int index) {
+		return (TypeDefAnnotation) this.javaResourceannotatedElement.addAnnotation(index, TypeDefAnnotation.ANNOTATION_NAME);
 	}
 
-	public void removeTypeDef(JavaTypeDef typeDef) {
-		this.removeTypeDef(this.typeDefs.indexOf(typeDef));
+	public void removeTypeDef(JavaTypeDef namedQuery) {
+		this.removeTypeDef(this.typeDefContainer.indexOfContextElement((JavaTypeDef) namedQuery));
 	}
 
 	public void removeTypeDef(int index) {
-		this.getResourceAnnotatedElement().removeAnnotation(index, TypeDefAnnotation.ANNOTATION_NAME, TypeDefsAnnotation.ANNOTATION_NAME);
-		this.removeTypeDef_(index);
-	}
-
-	protected void removeTypeDef_(int index) {
-		this.removeItemFromList(index, this.typeDefs, TYPE_DEFS_LIST);
+		this.javaResourceannotatedElement.removeAnnotation(index, TypeDefAnnotation.ANNOTATION_NAME);
+		this.typeDefContainer.removeContextElement(index);
 	}
 
 	public void moveTypeDef(int targetIndex, int sourceIndex) {
-		this.getResourceAnnotatedElement().moveAnnotation(targetIndex, sourceIndex, TypeDefsAnnotation.ANNOTATION_NAME);
-		this.moveItemInList(targetIndex, sourceIndex, this.typeDefs, TYPE_DEFS_LIST);
+		this.javaResourceannotatedElement.moveAnnotation(targetIndex, sourceIndex, TypeDefAnnotation.ANNOTATION_NAME);
+		this.typeDefContainer.moveContextElement(targetIndex, sourceIndex);
 	}
 
-	protected void initializeTypeDefs() {
-		for (TypeDefAnnotation annotation : this.getTypeDefAnnotations()) {
-			this.typeDefs.add(this.buildTypeDef(annotation));
-		}
-	}
-
-	protected JavaTypeDef buildTypeDef(TypeDefAnnotation typeDefAnnotation) {
-		return this.getJpaFactory().buildJavaTypeDef(this, typeDefAnnotation);
+	protected JavaTypeDef buildTypeDef(TypeDefAnnotation namedQueryAnnotation) {
+		return this.getJpaFactory().buildJavaTypeDef(this, namedQueryAnnotation);
 	}
 
 	protected void syncTypeDefs() {
-		ContextContainerTools.synchronizeWithResourceModel(this.typeDefContainerAdapter);
+		this.typeDefContainer.synchronizeWithResourceModel();
 	}
 
-	protected Iterable<TypeDefAnnotation> getTypeDefAnnotations() {
-		return CollectionTools.iterable(this.typeDefAnnotations());
+	protected ListIterable<TypeDefAnnotation> getTypeDefAnnotations() {
+		return new SubListIterableWrapper<NestableAnnotation, TypeDefAnnotation>(this.getNestableTypeDefAnnotations_());
 	}
 
-	protected Iterator<TypeDefAnnotation> typeDefAnnotations() {
-		return new SuperIteratorWrapper<TypeDefAnnotation>(this.nestableTypeDefAnnotations());
+	protected ListIterable<NestableAnnotation> getNestableTypeDefAnnotations_() {
+		return this.javaResourceannotatedElement.getAnnotations(TypeDefAnnotation.ANNOTATION_NAME);
 	}
 
-	protected Iterator<TypeDefAnnotation> nestableTypeDefAnnotations() {
-		return new SubIteratorWrapper<NestableAnnotation, TypeDefAnnotation>(this.nestableTypeDefAnnotations_());
+	protected ContextListContainer<JavaTypeDef, TypeDefAnnotation> buildTypeDefContainer() {
+		TypeDefContainer container = new TypeDefContainer();
+		container.initialize();
+		return container;
 	}
 
-	protected Iterator<NestableAnnotation> nestableTypeDefAnnotations_() {
-		return this.getResourceAnnotatedElement().annotations(TypeDefAnnotation.ANNOTATION_NAME, TypeDefsAnnotation.ANNOTATION_NAME);
+	/**
+	 * named query container
+	 */
+	protected class TypeDefContainer
+		extends ContextListContainer<JavaTypeDef, TypeDefAnnotation>
+	{
+		@Override
+		protected String getContextElementsPropertyName() {
+			return TYPE_DEFS_LIST;
+		}
+		@Override
+		protected JavaTypeDef buildContextElement(TypeDefAnnotation resourceElement) {
+			return HibernateJavaTypeDefContainerImpl.this.buildTypeDef(resourceElement);
+		}
+		@Override
+		protected ListIterable<TypeDefAnnotation> getResourceElements() {
+			return HibernateJavaTypeDefContainerImpl.this.getTypeDefAnnotations();
+		}
+		@Override
+		protected TypeDefAnnotation getResourceElement(JavaTypeDef contextElement) {
+			return contextElement.getTypeDefAnnotation();
+		}
 	}
 
-	protected void moveTypeDef_(int index, JavaTypeDef typeDef) {
-		this.moveItemInList(index, typeDef, this.typeDefs, TYPE_DEFS_LIST);
-	}
-
-	protected JavaTypeDef addTypeDef_(int index, TypeDefAnnotation typeDefAnnotation) {
-		JavaTypeDef typeDef = this.buildTypeDef(typeDefAnnotation);
-		this.addItemToList(index, typeDef, this.typeDefs, TYPE_DEFS_LIST);
-		return typeDef;
-	}
-
-	protected void removeTypeDef_(JavaTypeDef typeDef) {
-		this.removeTypeDef_(this.typeDefs.indexOf(typeDef));
-	}
-	
 	// ********** validation **********
 
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		for (JavaTypeDef typeDef : typeDefs) {
+		for (JavaTypeDef typeDef : getTypeDefs()) {
 			typeDef.validate(messages, reporter, astRoot);
 		}
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.javaResourcePersistentElement.getTextRange(astRoot);
+		return this.javaResourceannotatedElement.getTextRange(astRoot);
 	}
-	
-	protected class TypeDefContainerAdapter
-		implements ContextContainerTools.Adapter<JavaTypeDef, TypeDefAnnotation>
-	{
-		public Iterable<JavaTypeDef> getContextElements() {
-			return HibernateJavaTypeDefContainerImpl.this.getTypeDefs();
-		}
-		public Iterable<TypeDefAnnotation> getResourceElements() {
-			return HibernateJavaTypeDefContainerImpl.this.getTypeDefAnnotations();
-		}
-		public TypeDefAnnotation getResourceElement(JavaTypeDef contextElement) {
-			return contextElement.getTypeDefAnnotation();
-		}
-		public void moveContextElement(int index, JavaTypeDef element) {
-			HibernateJavaTypeDefContainerImpl.this.moveTypeDef_(index, element);
-		}
-		public void addContextElement(int index, TypeDefAnnotation resourceElement) {
-			HibernateJavaTypeDefContainerImpl.this.addTypeDef_(index, resourceElement);
-		}
-		public void removeContextElement(JavaTypeDef element) {
-			HibernateJavaTypeDefContainerImpl.this.removeTypeDef_(element);
-		}
-}
+
 }

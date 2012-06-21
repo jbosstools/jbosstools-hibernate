@@ -10,15 +10,17 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.jpa2;
 
-import org.eclipse.jpt.jpa.core.JpaAnnotationProvider;
+import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPlatformFactory;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation;
-import org.eclipse.jpt.jpa.core.internal.GenericJpaAnnotationProvider;
+import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformFactory.SimpleVersion;
+import org.eclipse.jpt.jpa.core.internal.JpaAnnotationProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa2.Generic2_0JpaAnnotationDefinitionProvider;
+import org.eclipse.persistence.jpa.jpql.parser.JPQLGrammar2_0;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaPlatform;
 
 /**
@@ -41,7 +43,8 @@ public class HibernateJpa2_0PlatformFactory implements JpaPlatformFactory {
 			this.buildJpaFactory(), 
 			this.buildJpaAnnotationProvider(), 
 			HibernateJpa2_0PlatformProvider.instance(),
-			this.buildJpaPlatformVariation());
+			this.buildJpaPlatformVariation(),
+			JPQLGrammar2_0.instance());
 	}
 	
 	
@@ -55,7 +58,7 @@ public class HibernateJpa2_0PlatformFactory implements JpaPlatformFactory {
 	}
 	
 	protected JpaAnnotationProvider buildJpaAnnotationProvider() {
-		return new GenericJpaAnnotationProvider(
+		return new JpaAnnotationProvider(
 			Generic2_0JpaAnnotationDefinitionProvider.instance(),
 			HibernateJpa2_0AnnotationDefinitionProvider.instance());
 	}
@@ -68,6 +71,11 @@ public class HibernateJpa2_0PlatformFactory implements JpaPlatformFactory {
 			}
 			public boolean isJoinTableOverridable() {
 				return true;
+			}
+			@Override
+			public AccessType[] getSupportedAccessTypes(
+					JptResourceType resourceType) {
+				return GENERIC_SUPPORTED_ACCESS_TYPES;
 			}
 		};
 	}

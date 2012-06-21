@@ -10,11 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaIdMapping;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -104,14 +102,14 @@ implements HibernateJavaIdMapping {
 	}
 	
 	protected IndexAnnotation buildIndexAnnotation() {
-		return (IndexAnnotation) this.getResourcePersistentAttribute().addAnnotation(IndexAnnotation.ANNOTATION_NAME);
+		return (IndexAnnotation) this.getResourceAttribute().addAnnotation(IndexAnnotation.ANNOTATION_NAME);
 	}
 	
 	public void removeIndex() {
 		if (getIndex() == null) {
 			throw new IllegalStateException("index does not exist, cannot be removed"); //$NON-NLS-1$
 		}
-		this.getResourcePersistentAttribute().removeAnnotation(IndexAnnotation.ANNOTATION_NAME);
+		this.getResourceAttribute().removeAnnotation(IndexAnnotation.ANNOTATION_NAME);
 		setIndex(null);
 	}
 
@@ -121,7 +119,7 @@ implements HibernateJavaIdMapping {
 	}
 	
 	protected IndexAnnotation getIndexAnnotation() {
-		return (IndexAnnotation) this.getResourcePersistentAttribute().getAnnotation(IndexAnnotation.ANNOTATION_NAME);
+		return (IndexAnnotation) this.getResourceAttribute().getAnnotation(IndexAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected JavaIndex buildIndex(IndexAnnotation annotation) {
@@ -168,14 +166,14 @@ implements HibernateJavaIdMapping {
 	}
 
 	protected TypeAnnotation buildTypeAnnotation() {
-		return (TypeAnnotation) this.getResourcePersistentAttribute().addAnnotation(TypeAnnotation.ANNOTATION_NAME);
+		return (TypeAnnotation) this.getResourceAttribute().addAnnotation(TypeAnnotation.ANNOTATION_NAME);
 	}
 
 	public void removeType() {
 		if (this.type == null) {
 			throw new IllegalStateException("generated value does not exist"); //$NON-NLS-1$
 		}
-		this.getResourcePersistentAttribute().removeAnnotation(TypeAnnotation.ANNOTATION_NAME);
+		this.getResourceAttribute().removeAnnotation(TypeAnnotation.ANNOTATION_NAME);
 		this.setType(null);
 	}
 
@@ -185,7 +183,7 @@ implements HibernateJavaIdMapping {
 	}
 
 	protected TypeAnnotation getTypeAnnotation() {
-		return (TypeAnnotation) this.getResourcePersistentAttribute().getAnnotation(TypeAnnotation.ANNOTATION_NAME);
+		return (TypeAnnotation) this.getResourceAttribute().getAnnotation(TypeAnnotation.ANNOTATION_NAME);
 	}
 
 	protected JavaType buildType(TypeAnnotation generatedValueAnnotation) {

@@ -10,23 +10,24 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.persistence;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.GenericClassRef;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernatePackageInfo;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernatePackageInfoImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaPackageInfo;
 
 
@@ -41,7 +42,7 @@ public class HibernateClassRef extends GenericClassRef implements PackageInfoRef
 	 * test.some.pack.package-info.java file it should be included in persistent unit.
 	 * This can be <code>null</code> if the name is invalid.
 	 */
-	protected JavaPackageInfo javaPackageInfo;
+	protected HibernatePackageInfo javaPackageInfo;
 
 	
 	/**
@@ -95,11 +96,11 @@ public class HibernateClassRef extends GenericClassRef implements PackageInfoRef
 	
 	// ********** java persistent type **********
 
-	public JavaPackageInfo getJavaPackageInfo() {
+	public HibernatePackageInfo getJavaPackageInfo() {
 		return this.javaPackageInfo;
 	}
 
-	protected void setJavaPackageInfo(JavaPackageInfo javaPackageInfo) {
+	protected void setJavaPackageInfo(HibernatePackageInfo javaPackageInfo) {
 		JavaPackageInfo old = this.javaPackageInfo;
 		this.javaPackageInfo = javaPackageInfo;
 		this.firePropertyChanged(JAVA_PACKAGE_INFO_PROPERTY, old, javaPackageInfo);
@@ -135,7 +136,7 @@ public class HibernateClassRef extends GenericClassRef implements PackageInfoRef
 		return (javaPackageInfoName == null) ? null : this.getJpaProject().getJavaResourcePackage(javaPackageInfoName);
 	}
 
-	protected JavaPackageInfo buildJavaPackageInfo(JavaResourcePackage jrpt) {
+	protected HibernatePackageInfo buildJavaPackageInfo(JavaResourcePackage jrpt) {
 		return this.getJpaFactory().buildJavaPackageInfo(this, jrpt);
 	}
 	
@@ -178,18 +179,17 @@ public class HibernateClassRef extends GenericClassRef implements PackageInfoRef
 			// i.e. the persistence.xml ref is the only ref - none of the mapping
 			// files reference the same class
 			boolean validateJavaPersistentType = true;
-			for (Iterator<MappingFileRef> stream = this.getPersistenceUnit().mappingFileRefsContaining(this.getJavaClassName()); stream.hasNext(); ) {
+			for (MappingFileRef mappingFileRef : this.getPersistenceUnit().getMappingFileRefsContaining(this.getJavaClassName())) {
 				validateJavaPersistentType = false;
-				MappingFileRef mappingFileRef = stream.next();
 				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.LOW_SEVERITY,
-						JpaValidationMessages.PERSISTENCE_UNIT_REDUNDANT_CLASS,
-						new String[] {this.getJavaClassName(), mappingFileRef.getFileName()},
-						this,
-						this.getValidationTextRange()
-					)
-				);
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.LOW_SEVERITY,
+							JpaValidationMessages.PERSISTENCE_UNIT_REDUNDANT_CLASS,
+							new String[] {this.getJavaClassName(), mappingFileRef.getFileName()},
+							this,
+							this.getValidationTextRange()
+						)
+					);
 			}
 
 			if (validateJavaPersistentType) {

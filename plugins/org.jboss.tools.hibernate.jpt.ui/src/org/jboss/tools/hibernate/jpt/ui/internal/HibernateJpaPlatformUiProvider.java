@@ -12,7 +12,6 @@ package org.jboss.tools.hibernate.jpt.ui.internal;
 
 import java.util.List;
 
-import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUiProvider;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
@@ -22,13 +21,11 @@ import org.eclipse.jpt.jpa.ui.internal.details.java.JavaPersistentTypeDetailsPro
 import org.eclipse.jpt.jpa.ui.internal.details.orm.EntityMappingsDetailsProvider;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmPersistentAttributeDetailsProvider;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmPersistentTypeDetailsProvider;
-import org.eclipse.jpt.jpa.ui.internal.platform.generic.GenericNavigatorProvider;
 import org.jboss.tools.hibernate.jpt.ui.internal.details.java.JavaPackageInfoDetailsProvider;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.java.HibernateJavaResourceUiDefinition;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.java.PackageInfoResourceUIDefinition;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.orm.HibernateOrmXmlUiDefinition;
 import org.jboss.tools.hibernate.jpt.ui.internal.persistence.details.HibernatePersistenceXmlUiDefinition;
-import org.jboss.tools.hibernate.jpt.ui.internal.platform.HibernateJpaPlatformUi;
 
 /**
  * @author Dmitry Geraskov
@@ -53,17 +50,7 @@ public class HibernateJpaPlatformUiProvider extends
 	private HibernateJpaPlatformUiProvider() {
 		super();
 	}
-
-	
-	public JpaPlatformUi buildJpaPlatformUi() {
-		return new HibernateJpaPlatformUi(
-			new GenericNavigatorProvider(),
-			HibernateJpaPlatformUiProvider.instance()
-		);
-	}
-
 	// ********** details providers **********
-	
 	@Override
 	protected void addDetailsProvidersTo(List<JpaDetailsProvider> providers) {
 		providers.add(JavaPackageInfoDetailsProvider.instance());
@@ -73,7 +60,6 @@ public class HibernateJpaPlatformUiProvider extends
 		providers.add(OrmPersistentTypeDetailsProvider.instance());
 		providers.add(OrmPersistentAttributeDetailsProvider.instance());
 	}
-	
 	
 	// ********** resource ui definitions **********
 	

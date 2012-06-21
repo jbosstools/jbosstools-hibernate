@@ -10,11 +10,10 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
-import java.util.ListIterator;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.resource.java.NestableAnnotation;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 
 /**
@@ -116,41 +115,34 @@ public interface TypeDefAnnotation extends NestableAnnotation {
 	String getFullyQualifiedTypeClassName();
 		String FULLY_QUALIFIED_TYPE_CLASS_NAME_PROPERTY = "fullyQualifiedTypeClassName"; //$NON-NLS-1$
 
-	
-	/**
-	 * Return an empty iterator if the element does not exist in Java.
-	 */
-	ListIterator<ParameterAnnotation> parameters();
-		String PARAMETERS_LIST = "parameters"; //$NON-NLS-1$
-	
-	/**
-	 * Corresponds to the 'parameters' element of the *TypeDef annotation.
-	 */
-	int parametersSize();
+		/**
+		 * Return an empty iterator if the element does not exist in Java.
+		 */
+		ListIterable<ParameterAnnotation> getParameters();
+			String PARAMETERS_LIST = "parameters"; //$NON-NLS-1$
+		
+		/**
+		 * Corresponds to the 'parameters' element of the *Generic Generator annotation.
+		 */
+		int getParametersSize();
 
-	/**
-	 * Corresponds to the 'parameters' element of the *TypeDef annotation.
-	 */
-	ParameterAnnotation parameterAt(int index);
-	
-	/**
-	 * Corresponds to the 'parameters' element of the *TypeDef annotation.
-	 */
-	int indexOfParameter(ParameterAnnotation parameter);
-	
-	/**
-	 * Corresponds to the 'parameters' element of the *TypeDef annotation.
-	 */
-	ParameterAnnotation addParameter(int index);
-	
-	/**
-	 * Corresponds to the 'parameters' element of the *TypeDef annotation.
-	 */
-	void moveParameter(int targetIndex, int sourceIndex);
+		/**
+		 * Corresponds to the 'parameters' element of the *Generic Generator annotation.
+		 */
+		ParameterAnnotation parameterAt(int index);
+		
+		/**
+		 * Corresponds to the 'parameters' element of the *Generic Generator annotation.
+		 */
+		ParameterAnnotation addParameter(int index);
+		
+		/**
+		 * Corresponds to the 'parameters' element of the *Generic Generator annotation.
+		 */
+		void moveParameter(int targetIndex, int sourceIndex);
 
-	/**
-	 * Corresponds to the 'parameters' element of the *TypeDef annotation.
-	 */
-	void removeParameter(int index);	
-
+		/**
+		 * Corresponds to the 'parameters' element of the *Generic Generator annotation.
+		 */
+		void removeParameter(int index);
 }

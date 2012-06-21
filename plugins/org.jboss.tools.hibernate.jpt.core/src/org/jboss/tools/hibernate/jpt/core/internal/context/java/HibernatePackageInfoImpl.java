@@ -18,18 +18,19 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
+import org.eclipse.jpt.jpa.core.JpaStructureNode.ContextType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
+import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
-import org.eclipse.jpt.jpa.core.context.java.JavaStructureNodes;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
-import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceNode;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePackage;
 import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -108,7 +109,15 @@ public class HibernatePackageInfoImpl extends AbstractJavaJpaContextNode impleme
 	public JptResourceType getResourceType() {
 		return JptCommonCorePlugin.JAVA_SOURCE_PACKAGE_INFO_RESOURCE_TYPE;
 	}
-
+	@Override
+	public boolean parentSupportsGenerators() {
+		return true;
+	}
+	
+	@Override
+	public ContextType getContextType() {
+		return new ContextType(this);
+	}
 	// ********** name **********
 
 	public String getName() {
@@ -144,7 +153,7 @@ public class HibernatePackageInfoImpl extends AbstractJavaJpaContextNode impleme
 	}
 
 	protected JavaGeneratorContainer buildGeneratorContainer() {
-		return this.getJpaFactory().buildJavaGeneratorContainer(this, this);
+		return this.getJpaFactory().buildJavaGeneratorContainer(this);
 	}
 
 	// ********** query container **********
@@ -181,12 +190,6 @@ public class HibernatePackageInfoImpl extends AbstractJavaJpaContextNode impleme
 		return (fullTextRange == null) ? false : fullTextRange.includes(offset);
 	}
 
-
-	public String getId() {
-		//FIXME check this is correct
-		return JavaStructureNodes.COMPILATION_UNIT_ID;
-	}
-
 	public void dispose() {
 		this.unregisterRootStructureNode();
 	}
@@ -210,8 +213,18 @@ public class HibernatePackageInfoImpl extends AbstractJavaJpaContextNode impleme
 	}
 	
 	@Override
+	public JavaJpaContextNode getGeneratorContainerParent() {
+		return this;  // no adapter
+	}
+	
+	@Override
 	public JavaResourceAnnotatedElement getResourceAnnotatedElement() {
 		return this.resourcePackage;
+	}
+	
+	@Override
+	public Class<? extends JpaStructureNode> getType() {
+		return JavaPackageInfo.class;
 	}
 
 	/* (non-Javadoc)
@@ -249,21 +262,21 @@ public class HibernatePackageInfoImpl extends AbstractJavaJpaContextNode impleme
 	}
 	
 	@Override
-	public Iterator<String> javaCompletionProposals(int pos,
+	public Iterable<String> getJavaCompletionProposals(int pos,
 			Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
-		result = this.typeDefContainer.javaCompletionProposals(pos, filter, astRoot);
+		result = this.typeDefContainer.getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
-		result = this.generatorContainer.javaCompletionProposals(pos, filter, astRoot);
+		result = this.generatorContainer.getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
-		result = this.queryContainer.javaCompletionProposals(pos, filter, astRoot);
+		result = this.queryContainer.getJavaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}

@@ -11,12 +11,12 @@
 package org.jboss.tools.hibernate.jpt.ui.internal.persistence.details;
 
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.persistence.details.AbstractPersistenceXmlResourceUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.persistence.details.PersistenceXmlUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.persistence.details.PersistenceXmlUiFactory;
-import org.eclipse.jpt.jpa.ui.internal.structure.PersistenceResourceModelStructureProvider;
-import org.eclipse.jpt.jpa.ui.structure.JpaStructureProvider;
 
 /**
  * @author Dmitry Geraskov
@@ -53,7 +53,7 @@ public class HibernatePersistenceXmlUiDefinition extends
 		return resourceType.equals(JptJpaCorePlugin.PERSISTENCE_XML_1_0_RESOURCE_TYPE);
 	}
 	
-	public JpaStructureProvider getStructureProvider() {
-		return PersistenceResourceModelStructureProvider.instance();
+	public ItemTreeStateProviderFactoryProvider getStructureViewFactoryProvider() {
+		return PersistenceXmlUiDefinition.STRUCTURE_VIEW_FACTORY_PROVIDER;
 	}
 }

@@ -11,7 +11,6 @@
 package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
 import org.eclipse.jpt.jpa.core.resource.java.NamedNativeQueryAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.NestableNamedNativeQueryAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 
 /**
@@ -21,7 +20,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
  *         org.hibernate.annotations.NamedNativeQuery
  */
 public interface HibernateNamedNativeQueryAnnotation extends
-		NestableNamedNativeQueryAnnotation, HibernateQueryAnnotation, NamedNativeQueryAnnotation {
+		HibernateQueryAnnotation, NamedNativeQueryAnnotation {
 	// replace with Hibernate annotation
 	String ANNOTATION_NAME = Hibernate.NAMED_NATIVE_QUERY;
 

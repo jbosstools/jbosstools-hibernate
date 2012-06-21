@@ -35,6 +35,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
@@ -43,7 +44,6 @@ import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -341,8 +341,11 @@ public class HibernatePropertyPage extends PropertyPage {
 				final IWorkspaceRunnable wr = new IWorkspaceRunnable() {
 					public void run(IProgressMonitor monitor)
 							throws CoreException {
-						// FIXME migration to latest JPA version required
-						//JptJpaCorePlugin.rebuildJpaProject(getProject());
+						try {
+							((JpaProject.Reference) getProject().getAdapter(JpaProject.Reference.class)).rebuild();
+						} catch (InterruptedException e) {
+							throw new CoreException(new Status(IStatus.CANCEL, HibernateConsolePlugin.ID, null, e));
+						}
 						getProject().build(IncrementalProjectBuilder.FULL_BUILD, monitor);
 					}
 				};

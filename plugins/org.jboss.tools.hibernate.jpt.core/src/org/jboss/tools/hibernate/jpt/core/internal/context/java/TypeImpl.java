@@ -11,7 +11,6 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jdt.core.IType;
@@ -25,6 +24,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
+import org.hibernate.type.TypeFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeAnnotation;
@@ -98,20 +98,20 @@ public class TypeImpl extends AbstractJavaJpaContextNode implements JavaType, Me
 	 * 
 	 * @see
 	 * org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode
-	 * #javaCompletionProposals(int, org.eclipse.jpt.common.utility.Filter,
+	 * #getJavaCompletionProposals(int, org.eclipse.jpt.common.utility.Filter,
 	 * org.eclipse.jdt.core.dom.CompilationUnit)
 	 */
 	@Override
-	public Iterator<String> javaCompletionProposals(int pos,
+	public Iterable<String> getJavaCompletionProposals(int pos,
 			Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.javaCompletionProposals(pos, filter,
+		Iterable<String> result = super.getJavaCompletionProposals(pos, filter,
 				astRoot);
 		if (result != null) {
 			return result;
 		}
 		TextRange typeRange = getTypeTextRange(astRoot);
 		if (typeRange != null && typeRange.touches(pos)) {
-			return getJavaCandidateNames(filter).iterator();
+			return getJavaCandidateNames(filter);
 		}
 		return null;
 	}
@@ -140,7 +140,7 @@ public class TypeImpl extends AbstractJavaJpaContextNode implements JavaType, Me
 				messages.add(HibernateJpaValidationMessage.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						TYPE_CANT_BE_EMPTY, this, range));
-			} else if (!getPersistenceUnit().hasTypeDef(type))	{
+			} else if (TypeFactory.basic(type) == null && !getPersistenceUnit().hasTypeDef(type))	{
 				IType lwType = null;
 				try {
 					lwType = getJpaProject().getJavaProject().findType(type);

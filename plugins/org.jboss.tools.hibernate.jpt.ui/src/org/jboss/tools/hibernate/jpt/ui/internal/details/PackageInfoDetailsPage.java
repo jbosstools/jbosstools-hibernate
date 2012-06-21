@@ -13,8 +13,8 @@ package org.jboss.tools.hibernate.jpt.ui.internal.details;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractJpaDetailsPage;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateGeneratorContainer;
@@ -48,7 +48,7 @@ public class PackageInfoDetailsPage extends AbstractJpaDetailsPage<HibernatePack
 		new PaneEnabler(buildWidgetsEnabledHolder(), this);
 	}
 	
-	protected WritablePropertyValueModel<Boolean> buildWidgetsEnabledHolder() {
+	protected ModifiablePropertyValueModel<Boolean> buildWidgetsEnabledHolder() {
 		return new PropertyAspectAdapter<HibernatePackageInfo, Boolean>(getSubjectHolder()) {
 			@Override
 			protected Boolean buildValue_() {

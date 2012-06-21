@@ -10,9 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.jpa.core.internal.context.orm.GenericOrmOneToManyRelationship;
+import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMappingJoinTableRelationshipStrategy2_0;
 
 /**
  * @author Dmitry Geraskov
@@ -30,7 +30,7 @@ public class HibernateOrmOneToManyRelationshipReference extends
 	}
 
 	@Override
-	protected OrmJoinTableRelationshipStrategy buildJoinTableStrategy() {
+	protected OrmMappingJoinTableRelationshipStrategy2_0 buildJoinTableStrategy() {
 		return new HibernateOrmJoinTableJoiningStrategy(this);
 	}
 

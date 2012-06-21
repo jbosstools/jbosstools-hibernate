@@ -12,11 +12,13 @@ package org.jboss.tools.hibernate.jpt.ui.internal.details;
 
 import java.util.Collection;
 
+import javax.persistence.Table;
+
 import org.eclipse.jpt.common.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
@@ -115,7 +117,7 @@ public class HibernateTableComposite extends Pane<HibernateEntity>
 		new PaneEnabler(buildTableEnabledHolder(), this);
 	}
 	
-	protected WritablePropertyValueModel<HibernateTable> buildTableHolder() {
+	protected ModifiablePropertyValueModel<HibernateTable> buildTableHolder() {
 		
 		return new PropertyAspectAdapter<HibernateEntity, HibernateTable>(getSubjectHolder(), HibernateEntity.TABLE_IS_UNDEFINED_PROPERTY) {
 			@Override
@@ -125,7 +127,7 @@ public class HibernateTableComposite extends Pane<HibernateEntity>
 		};
 	}
 	
-	protected WritablePropertyValueModel<Boolean> buildTableEnabledHolder() {
+	protected ModifiablePropertyValueModel<Boolean> buildTableEnabledHolder() {
 		return new PropertyAspectAdapter<HibernateEntity, Boolean>(getSubjectHolder(), HibernateEntity.SPECIFIED_TABLE_IS_ALLOWED_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {

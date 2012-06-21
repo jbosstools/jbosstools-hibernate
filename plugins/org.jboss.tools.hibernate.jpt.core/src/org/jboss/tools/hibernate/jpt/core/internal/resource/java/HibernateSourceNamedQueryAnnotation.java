@@ -10,18 +10,15 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
-import java.util.HashMap;
-import java.util.ListIterator;
-import java.util.Map;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
+import org.eclipse.jpt.common.core.internal.utility.jdt.CombinationIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.common.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.common.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationAdapter;
@@ -30,12 +27,8 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyListIterator;
-import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.jpa.core.resource.java.NestableAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.NestableQueryHintAnnotation;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.resource.java.QueryHintAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.context.CacheModeType;
 import org.jboss.tools.hibernate.jpt.core.internal.context.FlushModeType;
@@ -45,11 +38,12 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
  * @author Dmitry Geraskov
  *
  */
-public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation<AnnotatedElement>
+public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation
 	implements HibernateNamedQueryAnnotation {
 
-	public static final SimpleDeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
-
+	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	private static final DeclarationAnnotationAdapter CONTAINER_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(Hibernate.NAMED_QUERIES);
+	
 	private DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
 	private AnnotationElementAdapter<String> nameAdapter;
 	private String name;
@@ -63,10 +57,12 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation<Annota
 	private DeclarationAnnotationElementAdapter<String> flushModeDeclarationAdapter;
 	private AnnotationElementAdapter<String> flushModeAdapter;
 	private FlushModeType flushMode;
+	TextRange flushModeTextRange;
 
 	private DeclarationAnnotationElementAdapter<String> cacheModeDeclarationAdapter;
 	private AnnotationElementAdapter<String> cacheModeAdapter;
 	private CacheModeType cacheMode;
+	TextRange cacheModeTextRange;
 
 	private DeclarationAnnotationElementAdapter<Boolean> cacheableDeclarationAdapter;
 	private AnnotationElementAdapter<Boolean> cacheableAdapter;
@@ -129,7 +125,9 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation<Annota
 		this.query = this.buildQuery(astRoot);
 		this.queryTextRange = this.buildQueryTextRange(astRoot);
 		this.flushMode = this.buildFlushMode(astRoot);
+		this.flushModeTextRange =  this.buildFlushModeTextRange(astRoot);
 		this.cacheMode = this.buildCacheMode(astRoot);
+		this.cacheModeTextRange = this.buildCacheModeTextRange(astRoot);
 		this.cacheable = this.buildCacheable(astRoot);
 		this.cacheRegion = this.buildCacheRegion(astRoot);
 		this.fetchSize = this.buildFetchSize(astRoot);
@@ -145,7 +143,9 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation<Annota
 		this.syncQuery(this.buildQuery(astRoot));
 		this.queryTextRange = this.buildQueryTextRange(astRoot);
 		this.syncFlushMode(this.buildFlushMode(astRoot));
+		this.flushModeTextRange =  this.buildFlushModeTextRange(astRoot);
 		this.syncCacheMode(this.buildCacheMode(astRoot));
+		this.cacheModeTextRange = this.buildCacheModeTextRange(astRoot);
 		this.syncCacheable(this.buildCacheable(astRoot));
 		this.syncCacheRegion(this.buildCacheRegion(astRoot));
 		this.syncFetchSize(this.buildFetchSize(astRoot));
@@ -188,7 +188,7 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation<Annota
 	}
 	
 	@Override
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
+	public TextRange getNameTextRange() {
 		return this.nameTextRange;
 	}
 
@@ -221,7 +221,7 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation<Annota
 	}
 
 	@Override
-	public TextRange getQueryTextRange(CompilationUnit astRoot) {
+	public TextRange getQueryTextRange() {
 		return this.queryTextRange;
 	}
 	
@@ -231,44 +231,34 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation<Annota
 
 	// ***** hints
 	@Override
-	public ListIterator<QueryHintAnnotation> hints() {
-		return EmptyListIterator.instance();
-	}
-
-	ListIterator<NestableQueryHintAnnotation> nestableHints() {
-		return EmptyListIterator.instance();
+	public ListIterable<QueryHintAnnotation> getHints() {
+		return EmptyListIterable.instance();
 	}
 
 	@Override
-	public int hintsSize() {
+	public int getHintsSize() {
 		return 0;
 	}
 
 	@Override
-	public NestableQueryHintAnnotation hintAt(int index) {
-		throw new UnsupportedOperationException();
+	public QueryHintAnnotation hintAt(int index) {
+		return null;
 	}
 
 	@Override
-	public int indexOfHint(QueryHintAnnotation queryHint) {
-		return -1;
-	}
-
-	@Override
-	public NestableQueryHintAnnotation addHint(int index) {
+	public QueryHintAnnotation addHint(int index) {
 		return null;
 	}
 
 	@Override
 	public void moveHint(int targetIndex, int sourceIndex) {
-		//AnnotationContainerTools.moveNestedAnnotation(targetIndex, sourceIndex, this.hintsContainer);
+		//nothing to do
 	}
 
 	@Override
 	public void removeHint(int index) {
-		//AnnotationContainerTools.removeNestedAnnotation(index, this.hintsContainer);
+		//nothing to do
 	}
-
 	// ******************** HibernateNamedQueryAnnotation implementation *************
 	// ***** flushMode
 
@@ -290,14 +280,18 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation<Annota
 		this.flushMode = flushMode;
 		this.firePropertyChanged(FLUSH_MODE_PROPERTY, old, flushMode);
 	}
-
+	
 	private FlushModeType buildFlushMode(CompilationUnit astRoot) {
 		return FlushModeType.fromJavaAnnotationValue(this.flushModeAdapter.getValue(astRoot));
 	}
 
-	@Override
-	public TextRange getFlushModeTextRange(CompilationUnit astRoot) {
+	protected TextRange buildFlushModeTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.flushModeDeclarationAdapter, astRoot);
+	}
+	
+	@Override
+	public TextRange getFlushModeTextRange() {
+		return this.flushModeTextRange;
 	}
 
 	// ***** caheMode
@@ -325,9 +319,13 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation<Annota
 		return CacheModeType.fromJavaAnnotationValue(this.cacheModeAdapter.getValue(astRoot));
 	}
 
+	protected TextRange buildCacheModeTextRange(CompilationUnit astRoot) {
+		return this.getElementTextRange(this.flushModeDeclarationAdapter, astRoot);
+	}
+	
 	@Override
-	public TextRange getCacheModeTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.cacheModeDeclarationAdapter, astRoot);
+	public TextRange getCacheModeTextRange() {
+		return this.cacheModeTextRange;
 	}
 
 	//************************ cacheable *********************************
@@ -470,49 +468,6 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation<Annota
 	}
 	// ********** NestableAnnotation implementation **********
 	@Override
-	public void storeOn(Map<String, Object> map) {
-		super.storeOn(map);
-
-		map.put(NAME_PROPERTY, this.name);
-		this.name = null;
-		map.put(QUERY_PROPERTY, this.query);
-		this.query = null;
-
-		map.put(FLUSH_MODE_PROPERTY, this.flushMode);
-		this.flushMode = null;
-		map.put(CACHE_MODE_PROPERTY, this.cacheMode);
-		this.cacheMode = null;
-		map.put(CACHEABLE_PROPERTY, this.cacheable);
-		this.cacheable = null;
-		map.put(CACHE_REGION_PROPERTY, this.cacheRegion);
-		this.cacheRegion = null;
-		map.put(FETCH_SIZE_PROPERTY, this.fetchSize);
-		this.fetchSize = null;
-		map.put(TIMEOUT_PROPERTY, this.timeout);
-		this.timeout = null;
-		map.put(COMMENT_PROPERTY, this.comment);
-		this.comment = null;
-		map.put(READ_ONLY_PROPERTY, this.readOnly);
-		this.readOnly = null;
-	}
-
-	@Override
-	public void restoreFrom(Map<String, Object> map) {
-		super.restoreFrom(map);
-
-		this.setName((String) map.get(NAME_PROPERTY));
-		this.setQuery((String) map.get(QUERY_PROPERTY));
-		this.setFlushMode((FlushModeType) map.get(FLUSH_MODE_PROPERTY));
-		this.setCacheMode((CacheModeType) map.get(CACHE_MODE_PROPERTY));
-		this.setCacheable((Boolean) map.get(CACHEABLE_PROPERTY));
-		this.setCacheRegion((String) map.get(CACHE_REGION_PROPERTY));
-		this.setFetchSize((Integer) map.get(FETCH_SIZE_PROPERTY));
-		this.setTimeout((Integer) map.get(TIMEOUT_PROPERTY));
-		this.setComment((String)map.get(COMMENT_PROPERTY));
-		this.setReadOnly((Boolean) map.get(READ_ONLY_PROPERTY));
-	}
-
-	@Override
 	public boolean isUnset() {
 		return super.isUnset() &&
 				(this.name == null) &&
@@ -526,30 +481,6 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation<Annota
 				(this.readOnly == null);
 	}
 
-	@Override
-	protected void rebuildAdapters() {
-		super.rebuildAdapters();
-		this.nameDeclarationAdapter = this.buildNameAdapter(daa);
-		this.nameAdapter = this.buildAdapter(this.nameDeclarationAdapter);
-		this.queryDeclarationAdapter = this.buildQueryAdapter(daa);
-		this.queryAdapter = this.buildAdapter(this.queryDeclarationAdapter);
-		this.flushModeDeclarationAdapter = this.buildFlushModeAdapter(daa);
-		this.flushModeAdapter = new ShortCircuitAnnotationElementAdapter<String>(this.annotatedElement, this.flushModeDeclarationAdapter);
-		this.cacheModeDeclarationAdapter = this.buildCacheModeAdapter(daa);
-		this.cacheModeAdapter = new ShortCircuitAnnotationElementAdapter<String>(this.annotatedElement, this.cacheModeDeclarationAdapter);
-		this.cacheableDeclarationAdapter = this.buildCacheableAdapter(daa);
-		this.cacheableAdapter = new ShortCircuitAnnotationElementAdapter<Boolean>(this.annotatedElement, this.cacheableDeclarationAdapter);
-		this.cacheRegionDeclarationAdapter = this.buildCacheRegionAdapter(daa);
-		this.cacheRegionAdapter = this.buildAdapter(this.cacheRegionDeclarationAdapter);
-		this.fetchSizeDeclarationAdapter = this.buildFetchSizeAdapter(daa);
-		this.fetchSizeAdapter = new ShortCircuitAnnotationElementAdapter<Integer>(this.annotatedElement, this.fetchSizeDeclarationAdapter);
-		this.timeoutDeclarationAdapter = this.buildTimeoutAdapter(daa);
-		this.timeoutAdapter = new ShortCircuitAnnotationElementAdapter<Integer>(this.annotatedElement, this.timeoutDeclarationAdapter);
-		this.commentDeclarationAdapter = this.buildCommentAdapter(daa);
-		this.commentAdapter = new ShortCircuitAnnotationElementAdapter<String>(this.annotatedElement, this.commentDeclarationAdapter);
-		this.readOnlyDeclarationAdapter = this.buildReadOnlyAdapter(daa);
-		this.readOnlyAdapter = new ShortCircuitAnnotationElementAdapter<Boolean>(this.annotatedElement, this.readOnlyDeclarationAdapter);
-	}
 
 	/**
 	 * convenience implementation of method from NestableAnnotation interface
@@ -560,13 +491,18 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation<Annota
 		this.getIndexedAnnotationAdapter().moveAnnotation(newIndex);
 	}
 
-	@Override
-	public IndexedAnnotationAdapter getIndexedAnnotationAdapter() {
+	private IndexedAnnotationAdapter getIndexedAnnotationAdapter() {
 		return (IndexedAnnotationAdapter) this.annotationAdapter;
 	}
 
-	public static HibernateNamedQueryAnnotation createNamedQuery(JavaResourceNode parent, AnnotatedElement member) {
-		return new HibernateSourceNamedQueryAnnotation(parent, member, DECLARATION_ANNOTATION_ADAPTER, new ElementAnnotationAdapter(member, DECLARATION_ANNOTATION_ADAPTER));
+	public static HibernateNamedQueryAnnotation createNamedQuery(JavaResourceNode parent, AnnotatedElement annotatedElement, int index) {
+		IndexedDeclarationAnnotationAdapter idaa = buildNamedQueryDeclarationAnnotationAdapter(index);
+		IndexedAnnotationAdapter iaa = buildNamedQueryAnnotationAdapter(annotatedElement, idaa);
+		return new HibernateSourceNamedQueryAnnotation(
+			parent,
+			annotatedElement,
+			idaa,
+			iaa);
 	}
 
 	protected DeclarationAnnotationElementAdapter<String> buildNameAdapter(DeclarationAnnotationAdapter daAdapter) {
@@ -613,38 +549,20 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation<Annota
 	public void toString(StringBuilder sb) {
 		sb.append(this.name);
 	}
-	
-	/*
-	 * This is a workaround fix for https://bugs.eclipse.org/bugs/show_bug.cgi?id=357224
-	 * The exception occurs due to wrong cast in SourceAnnotation
-	 * The method should be removed after the bug fix.
-	 */
-	public void convertToStandAlone() {
-		Map<String, Object> map = new HashMap<String, Object>();
-		this.storeOn(map);
-		this.removeAnnotation();  // this annotation has already been removed from the model
-		this.daa = new SimpleDeclarationAnnotationAdapter(this.getAnnotationName());
-		this.annotationAdapter = new ElementAnnotationAdapter(this.annotatedElement, this.daa);
-		this.rebuildAdapters();
-		((JavaResourceAnnotatedElement)this.parent).addStandAloneAnnotation((NestableAnnotation) this);
-		this.newAnnotation();
-		this.restoreFrom(map);
-	}
 
 	// ********** static methods **********
-
-	public static HibernateSourceNamedQueryAnnotation createHibernateNamedQuery(JavaResourceNode parent, AnnotatedElement member) {
-		return new HibernateSourceNamedQueryAnnotation(parent, member, DECLARATION_ANNOTATION_ADAPTER, new ElementAnnotationAdapter(member, DECLARATION_ANNOTATION_ADAPTER));
+	protected static IndexedAnnotationAdapter buildNamedQueryAnnotationAdapter(AnnotatedElement annotatedElement, IndexedDeclarationAnnotationAdapter idaa) {
+		return new ElementIndexedAnnotationAdapter(annotatedElement, idaa);
 	}
 
-	public static HibernateSourceNamedQueryAnnotation createNestedHibernateNamedQuery(JavaResourceNode parent, AnnotatedElement member, int index, DeclarationAnnotationAdapter attributeOverridesAdapter) {
-		IndexedDeclarationAnnotationAdapter idaa = buildNestedHibernateDeclarationAnnotationAdapter(index, attributeOverridesAdapter);
-		IndexedAnnotationAdapter annotationAdapter = new ElementIndexedAnnotationAdapter(member, idaa);
-		return new HibernateSourceNamedQueryAnnotation(parent, member, idaa, annotationAdapter);
-	}
-
-	private static IndexedDeclarationAnnotationAdapter buildNestedHibernateDeclarationAnnotationAdapter(int index, DeclarationAnnotationAdapter hibernateNamedQueriesAdapter) {
-		return new NestedIndexedDeclarationAnnotationAdapter(hibernateNamedQueriesAdapter, index, Hibernate.NAMED_QUERY);
+	private static IndexedDeclarationAnnotationAdapter buildNamedQueryDeclarationAnnotationAdapter(int index) {
+		IndexedDeclarationAnnotationAdapter idaa = 
+			new CombinationIndexedDeclarationAnnotationAdapter(
+				DECLARATION_ANNOTATION_ADAPTER,
+				CONTAINER_DECLARATION_ANNOTATION_ADAPTER,
+				index,
+				ANNOTATION_NAME);
+		return idaa;
 	}
 
 }

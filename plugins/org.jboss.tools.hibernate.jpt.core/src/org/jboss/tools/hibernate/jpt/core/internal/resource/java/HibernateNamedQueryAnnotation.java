@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat, Inc.
+ * Copyright (c) 2012 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -11,7 +11,6 @@
 package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
 import org.eclipse.jpt.jpa.core.resource.java.NamedQueryAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.NestableNamedQueryAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 
 /**
@@ -20,7 +19,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
  * Corresponds to the Hibernate annotation
  * org.hibernate.annotations.NamedQuery
  */
-public interface HibernateNamedQueryAnnotation extends NestableNamedQueryAnnotation, HibernateQueryAnnotation, NamedQueryAnnotation {
+public interface HibernateNamedQueryAnnotation extends HibernateQueryAnnotation, NamedQueryAnnotation {
 	//replace with Hibernate annotation
 	String ANNOTATION_NAME = Hibernate.NAMED_QUERY;
 }

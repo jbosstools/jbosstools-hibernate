@@ -10,12 +10,11 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
-import java.util.ListIterator;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.resource.java.GeneratorAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.NestableAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 
 /**
@@ -41,25 +40,26 @@ public interface GenericGeneratorAnnotation extends
 	String STRATEGY_PROPERTY = "strategyProperty";	 //$NON-NLS-1$
 	
 	/**
+	 * Return the {@link TextRange} for the strategy element.  If the strategy element 
+	 * does not exist return the {@link TextRange} for the GenericGenerator annotation.
+	 */
+	TextRange getStrategyTextRange(CompilationUnit astRoot);
+	
+	/**
 	 * Return an empty iterator if the element does not exist in Java.
 	 */
-	ListIterator<ParameterAnnotation> parameters();
+	ListIterable<ParameterAnnotation> getParameters();
 		String PARAMETERS_LIST = "parameters"; //$NON-NLS-1$
 	
 	/**
 	 * Corresponds to the 'parameters' element of the *Generic Generator annotation.
 	 */
-	int parametersSize();
+	int getParametersSize();
 
 	/**
 	 * Corresponds to the 'parameters' element of the *Generic Generator annotation.
 	 */
 	ParameterAnnotation parameterAt(int index);
-	
-	/**
-	 * Corresponds to the 'parameters' element of the *Generic Generator annotation.
-	 */
-	int indexOfParameter(ParameterAnnotation parameter);
 	
 	/**
 	 * Corresponds to the 'parameters' element of the *Generic Generator annotation.
@@ -74,12 +74,5 @@ public interface GenericGeneratorAnnotation extends
 	/**
 	 * Corresponds to the 'parameters' element of the *Generic Generator annotation.
 	 */
-	void removeParameter(int index);	
-
-	/**
-	 * Return the {@link TextRange} for the strategy element.  If the strategy element 
-	 * does not exist return the {@link TextRange} for the GenericGenerator annotation.
-	 */
-	TextRange getStrategyTextRange(CompilationUnit astRoot);
-
+	void removeParameter(int index);
 }

@@ -12,7 +12,7 @@ package org.jboss.tools.hibernate.jpt.ui.internal.platform;
 
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUiFactory;
-import org.eclipse.jpt.jpa.ui.internal.platform.generic.GenericNavigatorProvider;
+import org.eclipse.jpt.jpa.ui.internal.platform.generic.GenericJpaPlatformUiFactory;
 import org.jboss.tools.hibernate.jpt.ui.internal.HibernateJpa2_0PlatformUiProvider;
 
 /**
@@ -27,7 +27,7 @@ public class HibernateJpa2_0PlatformUiFactory implements JpaPlatformUiFactory {
 
 	public JpaPlatformUi buildJpaPlatformUi() {
 		return new HibernateJpaPlatformUi(
-			new GenericNavigatorProvider(),
+			GenericJpaPlatformUiFactory.NAVIGATOR_FACTORY_PROVIDER,
 			HibernateJpa2_0PlatformUiProvider.instance()
 		);
 	}

@@ -11,6 +11,7 @@
 package org.jboss.tools.hibernate.jpt.core.internal.jpa2;
 
 
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jpa.core.JpaDataSource;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -19,15 +20,14 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddable;
+import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.jpa.core.context.java.JavaManyToOneMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaNamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedQuery;
-import org.eclipse.jpt.jpa.core.context.java.JavaOneToManyMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaOrderable;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
+import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaColumn;
@@ -41,13 +41,12 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaEmbeddable
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaNamedQuery2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaOrphanRemoval2_0;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaPersistentType2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaSequenceGenerator2_0;
 import org.eclipse.jpt.jpa.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType;
-import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0.Owner;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheableHolder2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionTable2_0;
@@ -62,15 +61,10 @@ import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSingleRelationshipMapping2
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.NamedQuery2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.SequenceGenerator2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.EmbeddableAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpa.core.resource.java.NamedQueryAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.SequenceGeneratorAnnotation;
 import org.eclipse.jpt.jpa.db.DatabaseIdentifierAdapter;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaManyToOneMapping;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaOneToManyMapping;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaOneToOneMapping;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.jpa2.HibernateJavaElementCollectionMapping2_0;
 
 
@@ -107,24 +101,19 @@ public class HibernateJpaFactory2_0 extends HibernateAbstractJpaFactory implemen
 
 
 	// ********** Java Context Model **********
-
 	@Override
-	public JavaPersistentType buildJavaPersistentType(PersistentType.Owner owner, JavaResourcePersistentType jrpt) {
-		return new GenericJavaPersistentType2_0(owner, jrpt);
+	public JavaPersistentType buildJavaPersistentType(PersistentType.Owner owner,
+			JavaResourceType jrt) {
+		return new GenericJavaPersistentType2_0(owner, jrt);
 	}
-
-	@Override
-	public JavaPersistentAttribute buildJavaPersistentAttribute(PersistentType parent, JavaResourcePersistentAttribute jrpa) {
-		return new GenericJavaPersistentAttribute2_0(parent, jrpa);
-	}
-
+	
 	@Override
 	public JavaEmbeddable buildJavaEmbeddable(JavaPersistentType parent, EmbeddableAnnotation embeddableAnnotation) {
 		return new GenericJavaEmbeddable2_0(parent, embeddableAnnotation);
 	}
 
 	@Override
-	public JavaSequenceGenerator buildJavaSequenceGenerator(JavaJpaContextNode parent, SequenceGeneratorAnnotation annotation) {
+	public JavaSequenceGenerator buildJavaSequenceGenerator(JavaGeneratorContainer parent, SequenceGeneratorAnnotation annotation) {
 		return new GenericJavaSequenceGenerator2_0(parent, (SequenceGenerator2_0Annotation) annotation);
 	}
 
@@ -146,7 +135,7 @@ public class HibernateJpaFactory2_0 extends HibernateAbstractJpaFactory implemen
 	}
 
 	@Override
-	public JavaNamedQuery buildJavaNamedQuery(JavaJpaContextNode parent, NamedQueryAnnotation annotation) {
+	public JavaNamedQuery buildJavaNamedQuery(JavaQueryContainer parent, NamedQueryAnnotation annotation) {
 		return new GenericJavaNamedQuery2_0(parent, (NamedQuery2_0Annotation) annotation);
 	}
 
@@ -154,7 +143,7 @@ public class HibernateJpaFactory2_0 extends HibernateAbstractJpaFactory implemen
 		return new GenericJavaCollectionTable2_0(parent, owner);
 	}
 
-	public JavaOrderColumn2_0 buildJavaOrderColumn(JavaOrderable2_0 parent, JavaNamedColumn.Owner owner) {
+	public JavaOrderColumn2_0 buildJavaOrderColumn(JavaOrderable2_0 parent, JavaReadOnlyNamedColumn.Owner owner) {
 		return new GenericJavaOrderColumn2_0(parent, owner);
 	}
 
@@ -162,7 +151,7 @@ public class HibernateJpaFactory2_0 extends HibernateAbstractJpaFactory implemen
 		return new GenericJavaColumn(parent, owner);
 	}
 
-	public JavaOrderable2_0 buildJavaOrderable(JavaAttributeMapping parent, Orderable2_0.Owner owner) {
+	public JavaOrderable2_0 buildJavaOrderable(JavaAttributeMapping parent, Owner owner) {
 		return new GenericJavaOrderable(parent, owner);
 	}
 

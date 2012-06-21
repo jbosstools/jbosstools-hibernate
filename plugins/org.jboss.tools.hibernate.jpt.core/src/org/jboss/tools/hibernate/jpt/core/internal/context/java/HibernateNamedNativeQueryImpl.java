@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009-2011 Red Hat, Inc.
+ * Copyright (c) 2009-2012 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -12,8 +12,8 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.List;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedNativeQuery;
@@ -27,6 +27,7 @@ public class HibernateNamedNativeQueryImpl extends AbstractHibernateNamedQueryIm
 	implements HibernateJavaNamedNativeQuery {
 
 	protected String resultClass;
+	protected String fullyQualifiedResultClass;
 
 	protected String resultSetMapping;
 
@@ -50,12 +51,23 @@ public class HibernateNamedNativeQueryImpl extends AbstractHibernateNamedQueryIm
 		this.setSpecifiedReadOnly_(this.queryAnnotation.isCallable());
 	}
 
-	// ********** result class **********
+	@Override
+	public void update() {
+		super.update();
+		this.setFullyQualifiedResultClass(this.buildFullyQualifiedResultClass());
+	}
+	// ********** metadata conversion *********
+	@Override
+	public void delete() {
+		this.getParent().removeHibernateNamedNativeQuery(this);
+	}
 
+	// ********** result class **********
+	@Override
 	public String getResultClass() {
 		return this.resultClass;
 	}
-
+	@Override
 	public void setResultClass(String resultClass) {
 		this.queryAnnotation.setResultClass(resultClass);
 		this.setResultClass_(resultClass);
@@ -66,18 +78,31 @@ public class HibernateNamedNativeQueryImpl extends AbstractHibernateNamedQueryIm
 		this.resultClass = resultClass;
 		this.firePropertyChanged(RESULT_CLASS_PROPERTY, old, resultClass);
 	}
-
+	@Override
 	public char getResultClassEnclosingTypeSeparator() {
 		return '.';
 	}
+	@Override
+	public String getFullyQualifiedResultClass() {
+		return this.fullyQualifiedResultClass;
+	}
+	
+	protected void setFullyQualifiedResultClass(String resultClass) {
+		String old = this.fullyQualifiedResultClass;
+		this.fullyQualifiedResultClass = resultClass;
+		this.firePropertyChanged(FULLY_QUALIFIED_RESULT_CLASS_PROPERTY, old, resultClass);
+	}
 
+	protected String buildFullyQualifiedResultClass() {
+		return this.queryAnnotation.getFullyQualifiedResultClassName();
+	}
 
 	// ********** result set mapping **********
-
+	@Override
 	public String getResultSetMapping() {
 		return this.resultSetMapping;
 	}
-
+	@Override
 	public void setResultSetMapping(String resultSetMapping) {
 		this.queryAnnotation.setResultSetMapping(resultSetMapping);
 		this.setResultSetMapping_(resultSetMapping);
@@ -90,15 +115,16 @@ public class HibernateNamedNativeQueryImpl extends AbstractHibernateNamedQueryIm
 	}
 
 	//************************ callable *********************************
+	@Override
 	public boolean isCallable(){
 		return (getSpecifiedCallable() == null ? isDefaultCallable()
 				: getSpecifiedCallable().booleanValue());
 	}
-
+	@Override
 	public Boolean getSpecifiedCallable(){
 		return this.specifiedCallable;
 	}
-
+	@Override
 	public void setSpecifiedCallable(Boolean newSpecifiedCallable){
 		Boolean oldSpecifiedCallable = this.specifiedCallable;
 		this.specifiedCallable = newSpecifiedCallable;
@@ -106,12 +132,13 @@ public class HibernateNamedNativeQueryImpl extends AbstractHibernateNamedQueryIm
 		firePropertyChanged(SPECIFIED_CALLABLE_PROPERTY, oldSpecifiedCallable, newSpecifiedCallable);
 	}
 
-	public void setSpecifiedCallable_(Boolean callable){
+	protected void setSpecifiedCallable_(Boolean callable){
 		Boolean oldSpecifiedCallable = this.specifiedCallable;
 		this.specifiedCallable = callable;
 		firePropertyChanged(SPECIFIED_CALLABLE_PROPERTY, oldSpecifiedCallable, callable);
 	}
 
+	@Override
 	public boolean isDefaultCallable(){
 		return HibernateNamedNativeQuery.DEFAULT_CALLABLE;
 	}
@@ -119,8 +146,14 @@ public class HibernateNamedNativeQueryImpl extends AbstractHibernateNamedQueryIm
 	// ********** validation **********
 
 	@Override
-	protected void validateQuery_(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateQuery_(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter) {
 		// nothing yet
+	}
+	
+	// ********** misc **********
+	@Override
+	public Class<HibernateNamedNativeQuery> getType() {
+		return HibernateNamedNativeQuery.class;
 	}
 
 }

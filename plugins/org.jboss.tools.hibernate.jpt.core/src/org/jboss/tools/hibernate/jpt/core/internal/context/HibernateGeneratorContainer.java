@@ -11,8 +11,7 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
-import java.util.ListIterator;
-
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
 
 /**
@@ -32,12 +31,12 @@ public interface HibernateGeneratorContainer extends GeneratorContainer {
 	 * Return a list iterator of the generic generators.
 	 * This will not be null.
 	 */
-	ListIterator<? extends GenericGenerator> genericGenerators();
+	ListIterable<? extends GenericGenerator> getGenericGenerators();
 	
 	/**
 	 * Return the number of generic generators.
 	 */
-	int genericGeneratorsSize();
+	int getGenericGeneratorsSize();
 
 	/**
 	 * Add a generic generator to the entity return the object representing it.

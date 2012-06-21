@@ -14,15 +14,15 @@ import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaAttributeMappingDefinitionWrapper;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClass2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumerated2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumn2_0Annotation;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumns2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyTemporal2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumn2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.AttributeOverridesAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.jboss.tools.hibernate.jpt.core.internal.context.definition.HibernateJavaManyToManyMappingDefinition;
 
 /**
@@ -64,12 +64,12 @@ public class HibernateJavaManyToManyMappingDefinition2_0 extends JavaAttributeMa
 
 	public static final String[] SUPPORTING_ANNOTATION_NAMES_ARRAY_2_0 = new String[] {
 		AttributeOverrideAnnotation.ANNOTATION_NAME,
-		AttributeOverridesAnnotation.ANNOTATION_NAME,
+		JPA.ATTRIBUTE_OVERRIDES,
 		MapKeyClass2_0Annotation.ANNOTATION_NAME,
 		MapKeyColumn2_0Annotation.ANNOTATION_NAME,
 		MapKeyEnumerated2_0Annotation.ANNOTATION_NAME,
 		MapKeyJoinColumn2_0Annotation.ANNOTATION_NAME,
-		MapKeyJoinColumns2_0Annotation.ANNOTATION_NAME,
+		JPA2_0.MAP_KEY_JOIN_COLUMNS,
 		MapKeyTemporal2_0Annotation.ANNOTATION_NAME,
 		OrderColumn2_0Annotation.ANNOTATION_NAME
 	};

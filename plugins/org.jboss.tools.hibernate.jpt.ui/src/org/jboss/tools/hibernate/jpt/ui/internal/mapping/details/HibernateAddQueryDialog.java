@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.utility.internal.node.AbstractNode;
 import org.eclipse.jpt.common.utility.internal.node.Node;
 import org.eclipse.jpt.common.utility.internal.node.Problem;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
@@ -182,7 +182,7 @@ public class HibernateAddQueryDialog extends ValidatingDialog<AddQueryStateObjec
 			};
 		}
 
-		private WritablePropertyValueModel<String> buildNameHolder() {
+		private ModifiablePropertyValueModel<String> buildNameHolder() {
 			return new PropertyAspectAdapter<AddQueryStateObject, String>(getSubjectHolder(), AddQueryStateObject.NAME_PROPERTY) {
 				@Override
 				protected String buildValue_() {
@@ -196,7 +196,7 @@ public class HibernateAddQueryDialog extends ValidatingDialog<AddQueryStateObjec
 			};
 		}
 
-		private WritablePropertyValueModel<String> buildQueryTypeHolder() {
+		private ModifiablePropertyValueModel<String> buildQueryTypeHolder() {
 			return new PropertyAspectAdapter<AddQueryStateObject, String>(getSubjectHolder(), AddQueryStateObject.QUERY_TYPE_PROPERTY) {
 				@Override
 				protected String buildValue_() {
@@ -285,9 +285,8 @@ final class AddQueryStateObject extends AbstractNode
 
 	private List<String> names(){
 		List<String> names = new ArrayList<String>();
-		for (Iterator<Query> queries = this.pUnit.queries(); queries.hasNext();){
-			String name = queries.next().getName();
-			names.add(name);
+		for (Query query : this.pUnit.getQueries()) {
+			names.add(query.getName());
 		}
 		return names;
 }

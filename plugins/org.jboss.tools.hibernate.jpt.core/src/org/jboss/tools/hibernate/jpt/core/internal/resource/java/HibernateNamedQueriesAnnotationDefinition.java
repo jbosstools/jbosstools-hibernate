@@ -11,10 +11,12 @@
 package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceNamedAnnotation;
+import org.eclipse.jpt.common.core.resource.java.Annotation;
+import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.jpa.core.resource.java.Annotation;
-import org.eclipse.jpt.jpa.core.resource.java.AnnotationDefinition;
-import org.eclipse.jpt.jpa.core.resource.java.JavaResourceAnnotatedElement;
+import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 
 /**
  * @author Dmitry Geraskov
@@ -39,21 +41,24 @@ public class HibernateNamedQueriesAnnotationDefinition implements AnnotationDefi
 		super();
 	}
 
-	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent,
-			AnnotatedElement annotatedElement) {
-		return new HibernateSourceNamedQueriesAnnotation(parent, annotatedElement);
+	@Override
+	public String getAnnotationName() {
+		return Hibernate.NAMED_QUERIES;
 	}
 
+	@Override
+	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
+		return new SourceNamedAnnotation(parent, annotatedElement, getAnnotationName());
+	}
+
+	@Override
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		throw new UnsupportedOperationException();
-	}
-
-	public String getAnnotationName() {
-		return HibernateNamedQueriesAnnotation.ANNOTATION_NAME;
 	}
 
 }

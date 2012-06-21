@@ -30,12 +30,15 @@ import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueMo
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.QueryContainer;
+import org.eclipse.jpt.jpa.core.context.java.JavaNamedNativeQuery;
+import org.eclipse.jpt.jpa.core.context.java.JavaNamedQuery;
+import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.NamedNativeQueryPropertyComposite;
@@ -64,7 +67,7 @@ public class HibernateQueriesComposite extends Pane<HibernateJavaQueryContainer>
 	private Pane<? extends NamedQuery> namedQueryPane;
 	private HibernateNamedQueryPropertyComposite hibernateNamedQueryPane;
 	private HibernateNamedNativeQueryPropertyComposite hibernateNamedNativeQueryPane;
-	private WritablePropertyValueModel<Query> queryHolder;
+	private ModifiablePropertyValueModel<Query> queryHolder;
 
 	/**
 	 * Creates a new <code>QueriesComposite</code>.
@@ -95,16 +98,16 @@ public class HibernateQueriesComposite extends Pane<HibernateJavaQueryContainer>
 		String queryType = hibernateAddQueryDialog.getQueryType();
 		Query query;
 		if (queryType == hibernateAddQueryDialog.NAMED_QUERY) {
-			query = this.getSubject().addNamedQuery(getSubject().namedQueriesSize());
+			query = this.getSubject().addNamedQuery(getSubject().getNamedQueriesSize());
 		}
 		else if (queryType == hibernateAddQueryDialog.NAMED_NATIVE_QUERY) {
-			query = this.getSubject().addNamedNativeQuery(this.getSubject().namedNativeQueriesSize());
+			query = this.getSubject().addNamedNativeQuery(this.getSubject().getNamedNativeQueriesSize());
 		}
 		else if (queryType == HibernateNamedQuery.HIBERNATE_NAMED_QUERY) {
-			query = this.getSubject().addHibernateNamedQuery(this.getSubject().hibernateNamedQueriesSize());
+			query = this.getSubject().addHibernateNamedQuery(this.getSubject().getHibernateNamedQueriesSize());
 		}
 		else if (queryType == HibernateNamedNativeQuery.HIBERNATE_NAMED_NATIVE_QUERY) {
-			query = this.getSubject().addHibernateNamedNativeQuery(this.getSubject().hibernateNamedNativeQueriesSize());
+			query = this.getSubject().addHibernateNamedNativeQuery(this.getSubject().getHibernateNamedNativeQueriesSize());
 		}
 		else {
 			throw new IllegalArgumentException();
@@ -133,19 +136,19 @@ public class HibernateQueriesComposite extends Pane<HibernateJavaQueryContainer>
 		);
 	}
 
-	private ListValueModel<NamedNativeQuery> buildNamedNativeQueriesListHolder() {
-		return new ListAspectAdapter<QueryContainer, NamedNativeQuery>(
+	private ListValueModel<JavaNamedNativeQuery> buildNamedNativeQueriesListHolder() {
+		return new ListAspectAdapter<JavaQueryContainer, JavaNamedNativeQuery>(
 			getSubjectHolder(),
 			QueryContainer.NAMED_NATIVE_QUERIES_LIST)
 		{
 			@Override
-			protected ListIterator<NamedNativeQuery> listIterator_() {
-				return this.subject.namedNativeQueries();
+			protected ListIterator<JavaNamedNativeQuery> listIterator_() {
+				return this.subject.getNamedNativeQueries().iterator();
 			}
 
 			@Override
 			protected int size_() {
-				return this.subject.namedNativeQueriesSize();
+				return this.subject.getNamedNativeQueriesSize();
 			}
 		};
 	}
@@ -160,52 +163,52 @@ public class HibernateQueriesComposite extends Pane<HibernateJavaQueryContainer>
 	}
 
 	private ListValueModel<HibernateJavaNamedQuery> buildHibernateNamedQueriesListHolder() {
-		return new ListAspectAdapter<QueryContainer, HibernateJavaNamedQuery>(
+		return new ListAspectAdapter<HibernateJavaQueryContainer, HibernateJavaNamedQuery>(
 			getSubjectHolder(),
 			HibernateJavaQueryContainer.HIBERNATE_NAMED_QUERIES_LIST)
 		{
 			@Override
 			protected ListIterator<HibernateJavaNamedQuery> listIterator_() {
-				return ((HibernateJavaQueryContainer)this.subject).hibernateNamedQueries();
+				return this.subject.getHibernateNamedQueries().iterator();
 			}
 
 			@Override
 			protected int size_() {
-				return ((HibernateJavaQueryContainer)this.subject).hibernateNamedQueriesSize();
+				return this.subject.getHibernateNamedQueriesSize();
 			}
 		};
 	}
 
 	private ListValueModel<HibernateJavaNamedNativeQuery> buildHibernateNamedNativeQueriesListHolder() {
-		return new ListAspectAdapter<QueryContainer, HibernateJavaNamedNativeQuery>(
+		return new ListAspectAdapter<HibernateJavaQueryContainer, HibernateJavaNamedNativeQuery>(
 			getSubjectHolder(),
 			HibernateJavaQueryContainer.HIBERNATE_NAMED_NATIVE_QUERIES_LIST)
 		{
 			@Override
 			protected ListIterator<HibernateJavaNamedNativeQuery> listIterator_() {
-				return ((HibernateJavaQueryContainer)this.subject).hibernateNamedNativeQueries();
+				return this.subject.getHibernateNamedNativeQueries().iterator();
 			}
 
 			@Override
 			protected int size_() {
-				return ((HibernateJavaQueryContainer)this.subject).hibernateNamedNativeQueriesSize();
+				return this.subject.getHibernateNamedNativeQueriesSize();
 			}
 		};
 	}
 
-	private ListValueModel<NamedQuery> buildNamedQueriesListHolder() {
-		return new ListAspectAdapter<QueryContainer, NamedQuery>(
+	private ListValueModel<JavaNamedQuery> buildNamedQueriesListHolder() {
+		return new ListAspectAdapter<HibernateJavaQueryContainer, JavaNamedQuery>(
 			getSubjectHolder(),
 			QueryContainer.NAMED_QUERIES_LIST)
 		{
 			@Override
-			protected ListIterator<NamedQuery> listIterator_() {
-				return this.subject.namedQueries();
+			protected ListIterator<JavaNamedQuery> listIterator_() {
+				return this.subject.getNamedQueries().iterator();
 			}
 
 			@Override
 			protected int size_() {
-				return this.subject.namedQueriesSize();
+				return this.subject.getNamedQueriesSize();
 			}
 		};
 	}
@@ -309,13 +312,13 @@ public class HibernateQueriesComposite extends Pane<HibernateJavaQueryContainer>
 					int index = -1;
 
 					if (query instanceof HibernateNamedQuery) {
-						index = CollectionTools.indexOf(getSubject().hibernateNamedQueries(), query);
+						index = CollectionTools.indexOf(getSubject().getHibernateNamedQueries(), query);
 					} else if (query instanceof HibernateNamedNativeQuery) {
-						index = CollectionTools.indexOf(getSubject().hibernateNamedNativeQueries(), query);
+						index = CollectionTools.indexOf(getSubject().getHibernateNamedNativeQueries(), query);
 					} else if (query instanceof NamedQuery) {
-						index = CollectionTools.indexOf(getSubject().namedQueries(), query);
+						index = CollectionTools.indexOf(getSubject().getNamedQueries(), query);
 					} else {
-						index = CollectionTools.indexOf(getSubject().namedNativeQueries(), query);
+						index = CollectionTools.indexOf(getSubject().getNamedNativeQueries(), query);
 					}
 
 					name = NLS.bind(JptUiDetailsMessages.QueriesComposite_displayString, index);
@@ -326,7 +329,7 @@ public class HibernateQueriesComposite extends Pane<HibernateJavaQueryContainer>
 		};
 	}
 
-	private WritablePropertyValueModel<Query> buildQueryHolder() {
+	private ModifiablePropertyValueModel<Query> buildQueryHolder() {
 		return new SimplePropertyValueModel<Query>();
 	}
 
@@ -391,7 +394,7 @@ public class HibernateQueriesComposite extends Pane<HibernateJavaQueryContainer>
 		new ControlSwitcher(this.queryHolder, buildPaneTransformer(), pageBook);
 	}
 
-	protected WritablePropertyValueModel<Query> getQueryHolder() {
+	protected ModifiablePropertyValueModel<Query> getQueryHolder() {
 		return this.queryHolder;
 	}
 

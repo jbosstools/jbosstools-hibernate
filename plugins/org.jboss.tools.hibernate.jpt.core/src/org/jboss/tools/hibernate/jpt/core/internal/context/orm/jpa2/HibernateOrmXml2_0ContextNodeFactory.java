@@ -26,6 +26,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTable;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXml2_0ContextNodeFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlBasic;
@@ -90,7 +91,7 @@ public class HibernateOrmXml2_0ContextNodeFactory extends GenericOrmXml2_0Contex
 	}
 
 	@Override
-	public OrmJoinColumn buildOrmJoinColumn(XmlContextNode parent, OrmJoinColumn.Owner owner, XmlJoinColumn xmlJoinColumn) {
+	public OrmJoinColumn buildOrmJoinColumn(XmlContextNode parent, OrmReadOnlyJoinColumn.Owner owner, XmlJoinColumn xmlJoinColumn) {
 		return new HibernateOrmJoinColumnImpl(parent, owner, xmlJoinColumn);
 	}
 
