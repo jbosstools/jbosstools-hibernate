@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Hibernate Tools SWTBot Tests
+Bundle-Name: %pluginName
 Bundle-SymbolicName: org.jboss.tools.hibernate.ui.bot.test
 Bundle-Version: 3.6.0.qualifier
 Bundle-Activator: org.jboss.tools.hibernate.ui.bot.testcase.Activator
@@ -25,3 +25,5 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Eclipse-RegisterBuddy: org.apache.log4j
 Import-Package: org.eclipse.jdt.internal.ui
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
