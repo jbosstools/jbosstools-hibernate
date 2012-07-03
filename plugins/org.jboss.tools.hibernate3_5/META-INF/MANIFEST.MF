@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Hibernate3_5
 Bundle-SymbolicName: org.jboss.tools.hibernate3_5;singleton:=true
-Bundle-Version: 3.4.0.qualifier
+Bundle-Version: 3.5.1
 Bundle-Activator: org.jboss.tools.hibernate3_5.Hibernate3_5Plugin
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
