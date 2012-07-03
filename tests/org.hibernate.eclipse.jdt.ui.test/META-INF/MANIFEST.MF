@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.hibernate.eclipse.jdt.ui.test
-Bundle-Version: 3.4.0.qualifier
+Bundle-Version: 3.6.0
 Require-Bundle: org.hibernate.eclipse.libs;bundle-version="1.0.0",
  org.eclipse.ui,
  org.eclipse.core.runtime,
