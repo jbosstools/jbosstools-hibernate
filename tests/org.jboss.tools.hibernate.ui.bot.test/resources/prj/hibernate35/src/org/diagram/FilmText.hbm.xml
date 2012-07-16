@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 16, 2012 4:06:14 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.diagram.FilmText" table="FILM_TEXT" schema="PUBLIC">
+        <id name="filmId" type="short">
+            <column name="FILM_ID" />
+            <generator class="assigned" />
+        </id>
+        <property name="title" type="string">
+            <column name="TITLE" not-null="true" />
+        </property>
+        <property name="description" type="string">
+            <column name="DESCRIPTION" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -3,9 +3,9 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Jul 16, 2012 4:06:14 PM by Hibernate Tools 4.0.0 -->
 <hibernate-mapping>
-    <class name="org.diagram.Customer" table="CUSTOMER" schema="PUBLIC">
-        <id name="customerId" type="short">
-            <column name="CUSTOMER_ID" />
+    <class name="org.diagram.Staff" table="STAFF" schema="PUBLIC">
+        <id name="staffId" type="byte">
+            <column name="STAFF_ID" />
             <generator class="assigned" />
         </id>
         <many-to-one name="address" class="org.diagram.Address" fetch="select">
@@ -20,29 +20,41 @@
         <property name="lastName" type="string">
             <column name="LAST_NAME" not-null="true" />
         </property>
+        <property name="picture" type="binary">
+            <column name="PICTURE" />
+        </property>
         <property name="email" type="string">
             <column name="EMAIL" />
         </property>
         <property name="active" type="boolean">
             <column name="ACTIVE" not-null="true" />
         </property>
-        <property name="createDate" type="timestamp">
-            <column name="CREATE_DATE" length="6" not-null="true" />
+        <property name="username" type="string">
+            <column name="USERNAME" not-null="true" />
+        </property>
+        <property name="password" type="string">
+            <column name="PASSWORD" />
         </property>
         <property name="lastUpdate" type="timestamp">
             <column name="LAST_UPDATE" length="6" not-null="true" />
         </property>
-        <set name="rentals" table="RENTAL" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="CUSTOMER_ID" not-null="true" />
-            </key>
-            <one-to-many class="org.diagram.Rental" />
-        </set>
         <set name="payments" table="PAYMENT" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="CUSTOMER_ID" not-null="true" />
+                <column name="STAFF_ID" not-null="true" />
             </key>
             <one-to-many class="org.diagram.Payment" />
+        </set>
+        <set name="stores" table="STORE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="MANAGER_STAFF_ID" not-null="true" />
+            </key>
+            <one-to-many class="org.diagram.Store" />
+        </set>
+        <set name="rentals" table="RENTAL" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="STAFF_ID" not-null="true" />
+            </key>
+            <one-to-many class="org.diagram.Rental" />
         </set>
     </class>
 </hibernate-mapping>

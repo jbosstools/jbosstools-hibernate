@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 16, 2012 4:06:14 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.diagram.Inventory" table="INVENTORY" schema="PUBLIC">
+        <id name="inventoryId" type="int">
+            <column name="INVENTORY_ID" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="store" class="org.diagram.Store" fetch="select">
+            <column name="STORE_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="film" class="org.diagram.Film" fetch="select">
+            <column name="FILM_ID" not-null="true" />
+        </many-to-one>
+        <property name="lastUpdate" type="timestamp">
+            <column name="LAST_UPDATE" length="6" not-null="true" />
+        </property>
+        <set name="rentals" table="RENTAL" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="INVENTORY_ID" not-null="true" />
+            </key>
+            <one-to-many class="org.diagram.Rental" />
+        </set>
+    </class>
+</hibernate-mapping>
