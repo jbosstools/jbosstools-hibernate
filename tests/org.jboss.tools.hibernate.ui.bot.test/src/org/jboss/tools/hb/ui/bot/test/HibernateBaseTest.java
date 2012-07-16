@@ -8,6 +8,7 @@ import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.helper.FileHelper;
 import org.jboss.tools.ui.bot.ext.helper.ImportHelper;
 import org.jboss.tools.ui.bot.ext.helper.ResourceHelper;
+import org.jboss.tools.ui.bot.ext.helper.SubversiveHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.view.ErrorLogView;
 import org.junit.AfterClass;
@@ -23,6 +24,7 @@ public class HibernateBaseTest extends SWTTestExt {
 		eclipse.closeAllEditors();
 		util.waitForAll();
 		bot.closeAllShells();
+		SubversiveHelper.disableSVNDecoration();
 	}
 	
 	@Test
