@@ -19,7 +19,7 @@ import org.junit.Test;
 @Require(db = @DB, clearProjects = true)
 public class CriteriaEditorTest extends HibernateBaseTest {
 	final String console = "pre-hibernate40";
-	final String clazz = "Customers";
+	final String clazz = "Actor";
 	
 	@Test
 	public void jpaDetailsViewTest() {
@@ -34,7 +34,7 @@ public class CriteriaEditorTest extends HibernateBaseTest {
 
 	private void executeCriteriaQuery() {
 		String criteria = "session.createCriteria("+ clazz + ".class)" +
-						".setProjection(Property.forName(\"contactlastname\").as(\"contactlastname\"))" +
+						".setProjection(Property.forName(\"firstName\").as(\"firstName\"))" +
 						".setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP)";
 		
 		SWTBotTreeItem item = ConsoleConfiguration.selectNode("pre-hibernate40", "Configuration");
