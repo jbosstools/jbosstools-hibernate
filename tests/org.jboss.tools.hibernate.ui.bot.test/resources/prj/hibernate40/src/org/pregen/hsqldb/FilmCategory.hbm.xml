@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 16, 2012 4:51:41 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.pregen.hsqldb.FilmCategory" table="FILM_CATEGORY" schema="PUBLIC">
+        <composite-id name="id" class="org.pregen.hsqldb.FilmCategoryId">
+            <key-property name="categoryId" type="byte">
+                <column name="CATEGORY_ID" />
+            </key-property>
+            <key-property name="filmId" type="short">
+                <column name="FILM_ID" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="film" class="org.pregen.hsqldb.Film" update="false" insert="false" fetch="select">
+            <column name="FILM_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="category" class="org.pregen.hsqldb.Category" update="false" insert="false" fetch="select">
+            <column name="CATEGORY_ID" not-null="true" />
+        </many-to-one>
+        <property name="lastUpdate" type="timestamp">
+            <column name="LAST_UPDATE" length="6" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

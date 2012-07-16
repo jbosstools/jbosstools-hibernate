@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 16, 2012 4:51:41 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.pregen.hsqldb.Country" table="COUNTRY" schema="PUBLIC">
+        <id name="countryId" type="short">
+            <column name="COUNTRY_ID" />
+            <generator class="assigned" />
+        </id>
+        <property name="country" type="string">
+            <column name="COUNTRY" not-null="true" />
+        </property>
+        <property name="lastUpdate" type="timestamp">
+            <column name="LAST_UPDATE" length="6" not-null="true" />
+        </property>
+        <set name="cities" table="CITY" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="COUNTRY_ID" not-null="true" />
+            </key>
+            <one-to-many class="org.pregen.hsqldb.City" />
+        </set>
+    </class>
+</hibernate-mapping>

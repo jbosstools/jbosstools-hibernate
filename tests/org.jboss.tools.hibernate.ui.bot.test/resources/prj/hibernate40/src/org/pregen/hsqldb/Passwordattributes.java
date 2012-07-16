@@ -1,6 +1,6 @@
 package org.pregen.hsqldb;
 
-// Generated Mar 30, 2012 12:35:44 PM by Hibernate Tools 3.4.0.CR1
+// Generated Jul 16, 2012 4:51:41 PM by Hibernate Tools 4.0.0
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,7 +11,7 @@ import java.util.Set;
 public class Passwordattributes implements java.io.Serializable {
 
 	private String id;
-	private Long version;
+	private long version;
 	private Set passwordresourceauditlogs = new HashSet(0);
 
 	public Passwordattributes() {
@@ -34,11 +34,11 @@ public class Passwordattributes implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public Long getVersion() {
+	public long getVersion() {
 		return this.version;
 	}
 
-	public void setVersion(Long version) {
+	public void setVersion(long version) {
 		this.version = version;
 	}
 

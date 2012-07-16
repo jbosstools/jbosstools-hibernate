@@ -1,6 +1,6 @@
 package org.pregen.hsqldb;
 
-// Generated Mar 30, 2012 12:35:44 PM by Hibernate Tools 3.4.0.CR1
+// Generated Jul 16, 2012 4:51:41 PM by Hibernate Tools 4.0.0
 
 import java.util.Date;
 import java.util.HashSet;

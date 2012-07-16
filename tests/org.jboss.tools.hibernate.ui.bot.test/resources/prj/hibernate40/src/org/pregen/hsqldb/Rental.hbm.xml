@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 16, 2012 4:51:41 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.pregen.hsqldb.Rental" table="RENTAL" schema="PUBLIC">
+        <id name="rentalId" type="int">
+            <column name="RENTAL_ID" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="staff" class="org.pregen.hsqldb.Staff" fetch="select">
+            <column name="STAFF_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="customer" class="org.pregen.hsqldb.Customer" fetch="select">
+            <column name="CUSTOMER_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="inventory" class="org.pregen.hsqldb.Inventory" fetch="select">
+            <column name="INVENTORY_ID" not-null="true" />
+        </many-to-one>
+        <property name="rentalDate" type="timestamp">
+            <column name="RENTAL_DATE" length="6" not-null="true" />
+        </property>
+        <property name="returnDate" type="timestamp">
+            <column name="RETURN_DATE" length="6" />
+        </property>
+        <property name="lastUpdate" type="timestamp">
+            <column name="LAST_UPDATE" length="6" not-null="true" />
+        </property>
+        <set name="payments" table="PAYMENT" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="RENTAL_ID" />
+            </key>
+            <one-to-many class="org.pregen.hsqldb.Payment" />
+        </set>
+    </class>
+</hibernate-mapping>

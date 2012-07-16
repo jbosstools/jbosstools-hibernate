@@ -3,16 +3,16 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Jul 16, 2012 4:51:41 PM by Hibernate Tools 4.0.0 -->
 <hibernate-mapping>
-    <class name="org.pregen.hsqldb.Event" table="EVENT" schema="PUBLIC">
-        <id name="id" type="long">
-            <column name="ID" />
+    <class name="org.pregen.hsqldb.FilmText" table="FILM_TEXT" schema="PUBLIC">
+        <id name="filmId" type="short">
+            <column name="FILM_ID" />
             <generator class="assigned" />
         </id>
-        <property name="date" type="timestamp">
-            <column name="DATE" length="6" />
+        <property name="title" type="string">
+            <column name="TITLE" not-null="true" />
         </property>
-        <property name="desc" type="string">
-            <column name="DESC" />
+        <property name="description" type="string">
+            <column name="DESCRIPTION" />
         </property>
     </class>
 </hibernate-mapping>
