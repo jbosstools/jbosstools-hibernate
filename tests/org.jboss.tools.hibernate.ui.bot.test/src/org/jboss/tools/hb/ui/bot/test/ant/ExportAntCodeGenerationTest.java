@@ -17,7 +17,8 @@ import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.Test;
 
 /**
- * Hibernate export ant code generation ui bot test
+ * Hibernate export ant code generation ui bot test. 
+ * Hibernate code generation configuration is used to be exported as an ant file  
  * 
  * @author jpeterka
  * 
