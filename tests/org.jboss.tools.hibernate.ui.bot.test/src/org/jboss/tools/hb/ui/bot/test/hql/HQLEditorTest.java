@@ -16,7 +16,7 @@ import org.junit.Test;
 @Require(db = @DB, clearProjects = true)
 public class HQLEditorTest extends HibernateBaseTest {
 	final String console = "pre-hibernate40";
-	final String clazz = "Customer";
+	final String clazz = "Actor";
 	
 	@Test
 	public void hqlEditorTest() {
@@ -48,7 +48,7 @@ public class HQLEditorTest extends HibernateBaseTest {
 	private void checkHQLQueryResult() {
 		SWTBotView qr = open.viewOpen(ActionItem.View.HibernateHibernateQueryResult.LABEL);
 		SWTBotTable table = qr.bot().table();
-		assertTrue(table.rowCount() == 0);		
+		assertTrue(table.rowCount() != 0);		
 	}
 
 }
