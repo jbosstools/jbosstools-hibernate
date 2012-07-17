@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.hibernate.eclipse.launch.ConsoleConfigurationLaunchConfigurationType">
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="jpatest40"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="4"/>
+</listAttribute>
+<booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="true"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="jpatest40"/>
+<stringAttribute key="org.hibernate.eclipse.launch.CONFIGURATION_FACTORY" value="JPA"/>
+<listAttribute key="org.hibernate.eclipse.launch.FILE_MAPPINGS"/>
+<stringAttribute key="org.hibernate.eclipse.launch.HIBERNATE_VERSION" value="3.5"/>
+<stringAttribute key="org.hibernate.eclipse.launch.USE_JPA_PROJECT_PROFILE" value="true"/>
+</launchConfiguration>
