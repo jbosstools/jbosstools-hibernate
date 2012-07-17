@@ -306,7 +306,7 @@ public class TypeDefAnnotationImpl extends SourceAnnotation
 			AnnotatedElement annotatedElement, int index) {
 		IndexedDeclarationAnnotationAdapter idaa = buildTypeDefDeclarationAnnotationAdapter(index);
 		IndexedAnnotationAdapter iaa = buildTypeDefAnnotationAdapter(annotatedElement, idaa);
-		return new GenericGeneratorAnnotationImpl(
+		return new TypeDefAnnotationImpl(
 			parent,
 			annotatedElement,
 			idaa,
