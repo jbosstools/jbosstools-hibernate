@@ -10,20 +10,35 @@
 <stringAttribute key="org.hibernate.eclipse.launch.CFG_XML_FILE" value="/hibernatelib/cfg/hibernate.cfg.xml"/>
 <stringAttribute key="org.hibernate.eclipse.launch.CONFIGURATION_FACTORY" value="CORE"/>
 <listAttribute key="org.hibernate.eclipse.launch.FILE_MAPPINGS">
+<listEntry value="/hibernate40/src/org/pregen/hsqldb/Actor.hbm.xml"/>
+<listEntry value="/hibernate40/src/org/pregen/hsqldb/Address.hbm.xml"/>
+<listEntry value="/hibernate40/src/org/pregen/hsqldb/Category.hbm.xml"/>
+<listEntry value="/hibernate40/src/org/pregen/hsqldb/City.hbm.xml"/>
+<listEntry value="/hibernate40/src/org/pregen/hsqldb/Country.hbm.xml"/>
 <listEntry value="/hibernate40/src/org/pregen/hsqldb/Customer.hbm.xml"/>
 <listEntry value="/hibernate40/src/org/pregen/hsqldb/Customers.hbm.xml"/>
 <listEntry value="/hibernate40/src/org/pregen/hsqldb/Dog.hbm.xml"/>
 <listEntry value="/hibernate40/src/org/pregen/hsqldb/Employees.hbm.xml"/>
 <listEntry value="/hibernate40/src/org/pregen/hsqldb/Event.hbm.xml"/>
+<listEntry value="/hibernate40/src/org/pregen/hsqldb/Film.hbm.xml"/>
+<listEntry value="/hibernate40/src/org/pregen/hsqldb/FilmActor.hbm.xml"/>
+<listEntry value="/hibernate40/src/org/pregen/hsqldb/FilmCategory.hbm.xml"/>
+<listEntry value="/hibernate40/src/org/pregen/hsqldb/FilmText.hbm.xml"/>
+<listEntry value="/hibernate40/src/org/pregen/hsqldb/Inventory.hbm.xml"/>
 <listEntry value="/hibernate40/src/org/pregen/hsqldb/Kunde.hbm.xml"/>
+<listEntry value="/hibernate40/src/org/pregen/hsqldb/Language.hbm.xml"/>
 <listEntry value="/hibernate40/src/org/pregen/hsqldb/Offices.hbm.xml"/>
 <listEntry value="/hibernate40/src/org/pregen/hsqldb/Orderdetails.hbm.xml"/>
 <listEntry value="/hibernate40/src/org/pregen/hsqldb/Orders.hbm.xml"/>
 <listEntry value="/hibernate40/src/org/pregen/hsqldb/Passwordattributes.hbm.xml"/>
 <listEntry value="/hibernate40/src/org/pregen/hsqldb/Passwordresourceauditlog.hbm.xml"/>
+<listEntry value="/hibernate40/src/org/pregen/hsqldb/Payment.hbm.xml"/>
 <listEntry value="/hibernate40/src/org/pregen/hsqldb/Payments.hbm.xml"/>
 <listEntry value="/hibernate40/src/org/pregen/hsqldb/Productlines.hbm.xml"/>
 <listEntry value="/hibernate40/src/org/pregen/hsqldb/Products.hbm.xml"/>
+<listEntry value="/hibernate40/src/org/pregen/hsqldb/Rental.hbm.xml"/>
+<listEntry value="/hibernate40/src/org/pregen/hsqldb/Staff.hbm.xml"/>
+<listEntry value="/hibernate40/src/org/pregen/hsqldb/Store.hbm.xml"/>
 </listAttribute>
 <stringAttribute key="org.hibernate.eclipse.launch.HIBERNATE_VERSION" value="4.0"/>
 </launchConfiguration>
