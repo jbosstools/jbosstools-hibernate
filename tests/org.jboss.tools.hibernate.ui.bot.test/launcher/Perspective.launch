@@ -27,7 +27,7 @@
 <stringAttribute key="org.eclipse.jdt.junit.TESTNAME" value=""/>
 <stringAttribute key="org.eclipse.jdt.junit.TEST_KIND" value="org.eclipse.jdt.junit.loader.junit4"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.jboss.tools.hb.ui.bot.suite.PerspectiveSuite"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog -eclipse.password /opt/.eclipse/master"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="org.jboss.tools.hibernate.ui.bot.test"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dosgi.requiredJavaVersion=1.5 -XX:MaxPermSize=256m -Xms40m -Xmx512m -Xmx1024M -XX:PermSize=128M -XX:MaxPermSize=256M -Dusage_reporting_enabled=false -Dtest.configurations.dir=/home/jpeterka/etc/hb"/>
