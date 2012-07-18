@@ -6,7 +6,9 @@ package org.hibernate.eclipse.launch;
 import java.util.Collections;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -432,7 +434,7 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 			}
 
 			if (ConnectionProfileCtrl.JPA_CONNECTIN_NAME.equals(cpName)){
-				JpaProject jpaProject = (JpaProject) findJavaProject.getAdapter(JpaProject.class);
+				JpaProject jpaProject = (JpaProject) findJavaProject.getProject().getAdapter(JpaProject.class);
 				if (jpaProject == null){
 					setErrorMessage(NLS.bind(HibernateConsoleMessages.ConsoleConfigurationMainTab_project_must_be_jpa, getProjectName()));
 					return false;
