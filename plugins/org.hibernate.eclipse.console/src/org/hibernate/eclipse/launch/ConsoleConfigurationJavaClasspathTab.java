@@ -74,7 +74,8 @@ public class ConsoleConfigurationJavaClasspathTab extends JavaClasspathTab {
 				}
 			}
 		} catch (CoreException e) {
-			HibernateConsolePlugin.getDefault().log( e );
+			//Ignore as the exception occurs if the selected project is not java project 
+			//We'll show warning to the user later
 		}
 		if (!resUserClasses) {
 			setErrorMessage(HibernateConsoleMessages.ConsoleConfigurationTabGroup_classpath_must_be_set_or_restored_to_default);

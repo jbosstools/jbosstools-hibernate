@@ -82,7 +82,7 @@ public class BestGuessConsoleConfigurationVisitor implements IResourceProxyVisit
 				return false;
 			}
 		} else if (proxy.getType() == IResource.FOLDER) {
-			if (javaProject != null) {
+			if (javaProject != null && javaProject.exists()) {
 				if (javaProject.getOutputLocation().isPrefixOf(fullPath)) {
 					// classpath.add(fullPath);
 					return false; // skip output locations
