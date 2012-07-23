@@ -213,7 +213,7 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 					while(iterator.hasNext()) {
 						NullableType type = (NullableType) iterator.next();
 						if(i==((Integer)value).intValue()) {
-							if(cqp.getType()!=type) {
+							if(!cqp.getTypeName().equals(type.getName())) {
 								cqp.setType(type);
 								cqp.setNull(); // have to reset to ensure it's working
 							}
@@ -258,10 +258,10 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 				}
 				if ( TYPE_PROPERTY.equals( property ) ) {
 					Iterator<Type> iterator = possibleTypes.iterator();
-					NullableType type = cqp.getType();
+					String type = cqp.getTypeName();
 					int i = 0;
 					while(iterator.hasNext()) {
-						if (type == iterator.next()) {
+						if (type.equals(iterator.next().getName())) {
 							return Integer.valueOf(i);
 						}
 						i++;
@@ -360,7 +360,7 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 				case 0:
 					return cqp.getName();
 				case 1:
-					return cqp.getType().getName();
+					return cqp.getTypeName();
 				case 2:
 					{
 						String label = cqp.getStringValues()[0];

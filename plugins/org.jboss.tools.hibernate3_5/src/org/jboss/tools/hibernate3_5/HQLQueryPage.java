@@ -35,6 +35,7 @@ import org.hibernate.console.ConsoleQueryParameter;
 import org.hibernate.console.QueryInputModel;
 import org.hibernate.console.ext.HibernateExtension;
 import org.hibernate.type.Type;
+import org.hibernate.type.TypeFactory;
 
 
 public class HQLQueryPage extends AbstractQueryPage {
@@ -84,14 +85,17 @@ public class HQLQueryPage extends AbstractQueryPage {
 			try {
 				int pos = Integer.parseInt(parameter.getName());
 				//FIXME no method to set positioned list value
-				query2.setParameter(pos, calcValue( parameter ), parameter.getType());
+				query2.setParameter(pos, calcValue( parameter ),
+						TypeFactory.heuristicType(parameter.getTypeName()));
 			} catch(NumberFormatException nfe) {
 				Object value = parameter.getValue();
 				if (value != null && value.getClass().isArray()){
 					Object[] values = (Object[])value;
-					query2.setParameterList(parameter.getName(), Arrays.asList(values), parameter.getType());
+					query2.setParameterList(parameter.getName(), Arrays.asList(values),
+							TypeFactory.heuristicType(parameter.getTypeName()));
 				} else {
-					query2.setParameter(parameter.getName(), calcValue( parameter ), parameter.getType());
+					query2.setParameter(parameter.getName(), calcValue( parameter ),
+							TypeFactory.heuristicType(parameter.getTypeName()));
 				}
 			}
 		}		

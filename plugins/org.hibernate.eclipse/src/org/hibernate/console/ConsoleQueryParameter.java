@@ -102,8 +102,8 @@ public class ConsoleQueryParameter {
 		this.name = name;
 	}
 	
-	public NullableType getType() {
-		return type;
+	public String getTypeName() {
+		return type.getName();
 	}
 	
 	public void setType(NullableType type) {

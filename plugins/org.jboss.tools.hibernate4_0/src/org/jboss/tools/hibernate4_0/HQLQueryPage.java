@@ -35,6 +35,8 @@ import org.hibernate.console.AbstractQueryPage;
 import org.hibernate.console.ConsoleQueryParameter;
 import org.hibernate.console.QueryInputModel;
 import org.hibernate.console.ext.HibernateExtension;
+import org.hibernate.type.BasicType;
+import org.hibernate.type.BasicTypeRegistry;
 import org.hibernate.type.Type;
 
 
@@ -42,6 +44,7 @@ public class HQLQueryPage extends AbstractQueryPage {
 
 	private Query query;
 	private String queryString;
+	private BasicTypeRegistry defaultBasicTypeRegistry = new BasicTypeRegistry();
 	
 	public List<Object> getList() {
 		if (query==null) return Collections.emptyList();
@@ -85,14 +88,17 @@ public class HQLQueryPage extends AbstractQueryPage {
 			try {
 				int pos = Integer.parseInt(parameter.getName());
 				//FIXME no method to set positioned list value
-				query2.setParameter(pos, calcValue( parameter ), parameter.getType());
+				query2.setParameter(pos, calcValue( parameter ),
+						defaultBasicTypeRegistry.getRegisteredType(parameter.getTypeName()));
 			} catch(NumberFormatException nfe) {
 				Object value = parameter.getValue();
 				if (value != null && value.getClass().isArray()){
 					Object[] values = (Object[])value;
-					query2.setParameterList(parameter.getName(), Arrays.asList(values), parameter.getType());
+					query2.setParameterList(parameter.getName(), Arrays.asList(values),
+							defaultBasicTypeRegistry.getRegisteredType(parameter.getTypeName()));
 				} else {
-					query2.setParameter(parameter.getName(), calcValue( parameter ), parameter.getType());
+					query2.setParameter(parameter.getName(), calcValue( parameter ),
+							defaultBasicTypeRegistry.getRegisteredType(parameter.getTypeName()));
 				}
 			}
 		}		
