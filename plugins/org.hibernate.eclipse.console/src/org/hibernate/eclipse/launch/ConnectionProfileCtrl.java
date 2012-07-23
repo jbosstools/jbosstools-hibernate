@@ -56,6 +56,7 @@ public class ConnectionProfileCtrl {
 	protected ComboViewer comboControl;
 	protected Button buttonNew;
 	protected Button buttonEdit;
+	private boolean useSynteticValues = false;
 	
 	static final String NO_CONNECTIN_NAME = HibernateConsoleMessages.ConnectionProfileCtrl_HibernateConfiguredConnection;
 	static final String JPA_CONNECTIN_NAME = HibernateConsoleMessages.ConnectionProfileCtrl_JPAConfiguredConnection;
@@ -101,6 +102,10 @@ public class ConnectionProfileCtrl {
 	public ConnectionProfileCtrl(Composite comp, int hspan, String defaultValue) {
 		createComboWithTwoButtons(comp, hspan, defaultValue,
 				new NewConnectionProfileAction(), new EditConnectionProfileAction());
+	}
+	
+	public void setUseSynteticValue(boolean value){
+		this.useSynteticValues = value;
 	}
 
 	public class ButtonPressedAction extends Action implements SelectionListener {
@@ -235,7 +240,7 @@ public class ConnectionProfileCtrl {
 	public Composite createComboWithTwoButtons(Composite container, int hspan, 
 			String defaultValue, ButtonPressedAction action1, ButtonPressedAction action2) {
 
-		Composite comp = SWTFactory.createComposite(container, container.getFont(), 3, 1, GridData.FILL_BOTH, 0, 0);
+		Composite comp = SWTFactory.createComposite(container, container.getFont(), 3, 1, GridData.FILL_HORIZONTAL, 0, 0);
 		Combo combo;
 		combo = new Combo(comp, SWT.DROP_DOWN | SWT.READ_ONLY);
 		combo.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
@@ -339,8 +344,10 @@ public class ConnectionProfileCtrl {
 		IConnectionProfile[] profiles = ProfileManager.getInstance()
 				.getProfilesByCategory("org.eclipse.datatools.connectivity.db.category"); //$NON-NLS-1$
 		List<ConnectionWrapper> names = new ArrayList<ConnectionWrapper>();
-		names.add(JPA_CONNECTION_PLACEHOLDER);
-		names.add(NO_CONNECTION_PLACEHOLDER);
+		if (useSynteticValues){
+			names.add(JPA_CONNECTION_PLACEHOLDER);
+			names.add(NO_CONNECTION_PLACEHOLDER);
+		}
 		for (IConnectionProfile connectionProfile : profiles) {
 			names.add(new ConnectionWrapper(connectionProfile.getName(), connectionProfile));
 		}

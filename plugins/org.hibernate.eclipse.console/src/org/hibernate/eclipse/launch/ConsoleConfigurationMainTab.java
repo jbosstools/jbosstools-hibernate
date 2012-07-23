@@ -213,6 +213,12 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 		}
 	}
 	
+	public void selectConnectionProfile(String cpName){
+		if (cpName != null){
+			connectionProfileCtrl.selectValue(cpName);
+		}
+	}
+	
 	public void initializeFrom(ILaunchConfiguration configuration) {
 
 		try {
@@ -376,6 +382,11 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 		IWizardPage configPage = wizard.getPage(HibernateConsoleMessages.ConsoleConfigurationMainTab_wizard_page);
 		if (configPage != null && configPage instanceof NewConfigurationWizardPage){
 			((NewConfigurationWizardPage)configPage).setCreateConsoleConfigurationVisible(false);
+			String cpName = nonEmptyTrimOrNull(connectionProfileCtrl.getSelectedConnectionName());
+			if (cpName != null
+					&& !ConnectionProfileCtrl.JPA_CONNECTIN_NAME.equals(cpName)
+					&& !ConnectionProfileCtrl.NO_CONNECTIN_NAME.equals(cpName))
+				((NewConfigurationWizardPage)configPage).setConnectionProfileName(connectionProfileCtrl.getSelectedConnectionName());
 		}
 		// This opens a dialog
 		if (wdialog.open() == Window.OK){

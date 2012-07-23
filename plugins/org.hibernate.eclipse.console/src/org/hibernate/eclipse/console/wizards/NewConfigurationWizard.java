@@ -36,6 +36,9 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.datatools.connectivity.IConnectionProfile;
+import org.eclipse.datatools.connectivity.ProfileManager;
+import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
@@ -56,6 +59,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.ui.ide.IDE;
 import org.hibernate.cfg.Environment;
+import org.hibernate.console.ConnectionProfileUtil;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
@@ -183,14 +187,23 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 	 */
 	public boolean performFinish() {
 		final Properties props = new Properties();
-        putIfNotNull(props, Environment.SESSION_FACTORY_NAME, connectionInfoPage.getSessionFactoryName() );
-        putIfNotNull(props, Environment.DIALECT, connectionInfoPage.getDialect() );
-        putIfNotNull(props, Environment.DRIVER, connectionInfoPage.getDriver() );
-        putIfNotNull(props, Environment.URL, connectionInfoPage.getConnectionURL() );
-        putIfNotNull(props, Environment.USER, connectionInfoPage.getUsername() );
-        putIfNotNull(props, Environment.PASS, connectionInfoPage.getPassword() );
-        putIfNotNull(props, Environment.DEFAULT_CATALOG, connectionInfoPage.getDefaultCatalog() );
+		putIfNotNull(props, Environment.SESSION_FACTORY_NAME, connectionInfoPage.getSessionFactoryName() );
+		putIfNotNull(props, Environment.DIALECT, connectionInfoPage.getDialect() );
+		putIfNotNull(props, Environment.DEFAULT_CATALOG, connectionInfoPage.getDefaultCatalog() );
         putIfNotNull(props, Environment.DEFAULT_SCHEMA, connectionInfoPage.getDefaultSchema() );
+		if (connectionInfoPage.getConnectionProfileName() != null){
+			String cpName = connectionInfoPage.getConnectionProfileName();
+			IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(cpName);
+			if (profile != null) {
+				props.putAll(ConnectionProfileUtil.getHibernateConnectionProperties(profile));
+			}
+		} else {
+	        putIfNotNull(props, Environment.DRIVER, connectionInfoPage.getDriver() );
+	        putIfNotNull(props, Environment.URL, connectionInfoPage.getConnectionURL() );
+	        putIfNotNull(props, Environment.USER, connectionInfoPage.getUsername() );
+	        putIfNotNull(props, Environment.PASS, connectionInfoPage.getPassword() );
+		}
+		
         final IFile file = cPage.createNewFile();
 
 		IRunnableWithProgress op = new IRunnableWithProgress() {
@@ -353,4 +366,6 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 		}
 		return super.canFinish();
 	}
+	
+	
 }

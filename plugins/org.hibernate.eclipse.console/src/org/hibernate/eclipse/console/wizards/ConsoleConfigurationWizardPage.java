@@ -50,6 +50,7 @@ import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -118,6 +119,8 @@ public class ConsoleConfigurationWizardPage extends WizardPage implements
 	protected ISelection selection;
 
 	private boolean initializingTabs;
+	
+	private boolean firstShow = true;
 	
 	/**
 	 * Constructor for SampleNewWizardPage.
@@ -586,5 +589,24 @@ public class ConsoleConfigurationWizardPage extends WizardPage implements
 		dialogChanged();
 	}
 
+	@Override
+	public void setPreviousPage(IWizardPage page) {
+		if (page != null){
+			if (firstShow && page instanceof NewConfigurationWizardPage) {
+				NewConfigurationWizardPage newCfgFile = (NewConfigurationWizardPage) page;
+				String cpName = newCfgFile.getConnectionProfileName();
+				if (cpName != null){
+					for (ILaunchConfigurationTab tab :  tabGroup.getTabs()) {
+						if (tab instanceof ConsoleConfigurationMainTab) {
+							ConsoleConfigurationMainTab main = (ConsoleConfigurationMainTab) tab;
+							main.selectConnectionProfile(cpName);
+						}
+					}
+				}
+			}
+			firstShow = false;
+		}
+		super.setPreviousPage(page);
+	}
 
 }

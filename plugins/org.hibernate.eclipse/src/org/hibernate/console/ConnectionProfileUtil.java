@@ -21,11 +21,14 @@
  */
 package org.hibernate.console;
 
+import java.util.Properties;
+
 import org.eclipse.datatools.connectivity.ConnectionProfileConstants;
 import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.datatools.connectivity.ProfileManager;
 import org.eclipse.datatools.connectivity.drivers.DriverInstance;
 import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
+import org.hibernate.cfg.Environment;
 
 /**
  * @author Vitali Yemialyanchyk
@@ -70,5 +73,31 @@ public class ConnectionProfileUtil {
 		String driverClass = di != null ? 
 			di.getProperty(IJDBCDriverDefinitionConstants.DRIVER_CLASS_PROP_ID) : ""; //$NON-NLS-1$
 		return driverClass;
+	}
+	
+	/**
+	 * This method extracts connection properties from connection profile and convert them to
+	 * hiberante properties (uses other "keys" for them)
+	 * @param profile
+	 * @return
+	 */
+	public static Properties getHibernateConnectionProperties(IConnectionProfile profile){
+		Properties props = new Properties();
+		if (profile != null) {
+			final Properties cpProperties = profile.getProperties(profile.getProviderId());
+			String driverClass = ConnectionProfileUtil.getDriverClass(profile.getName());
+			props.setProperty(Environment.DRIVER, driverClass);
+			String url = cpProperties.getProperty(IJDBCDriverDefinitionConstants.URL_PROP_ID);
+			props.setProperty(Environment.URL, url);
+			String user = cpProperties.getProperty(IJDBCDriverDefinitionConstants.USERNAME_PROP_ID);
+			if (null != user && user.length() > 0) {
+				props.setProperty(Environment.USER, user);
+			}
+			String pass = cpProperties.getProperty(IJDBCDriverDefinitionConstants.PASSWORD_PROP_ID);
+			if (null != pass && pass.length() > 0) {
+				props.setProperty(Environment.PASS, pass);
+			}
+		}
+		return props;
 	}
 }

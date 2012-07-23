@@ -395,26 +395,7 @@ public class ConfigurationFactory {
 		IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(
 				connProfileName);
 		if (profile != null) {
-			final Properties cpProperties = profile.getProperties(profile.getProviderId());
-			// seems we should not setup dialect here
-			//String dialect = "org.hibernate.dialect.HSQLDialect";
-			//invoke.setProperty(Environment.DIALECT, dialect);
-			String driverClass = ConnectionProfileUtil.getDriverClass(connProfileName);
-			localCfg.setProperty(Environment.DRIVER, driverClass);
-			//String driverJarPath = driverInstance != null ?
-			//	driverInstance.getJarList() : ""; //$NON-NLS-1$
-			String url = cpProperties.getProperty(IJDBCDriverDefinitionConstants.URL_PROP_ID);
-			// url += "/";// +
-			// cpProperties.getProperty(IJDBCDriverDefinitionConstants.DATABASE_NAME_PROP_ID);
-			localCfg.setProperty(Environment.URL, url);
-			String user = cpProperties.getProperty(IJDBCDriverDefinitionConstants.USERNAME_PROP_ID);
-			if (null != user && user.length() > 0) {
-				localCfg.setProperty(Environment.USER, user);
-			}
-			String pass = cpProperties.getProperty(IJDBCDriverDefinitionConstants.PASSWORD_PROP_ID);
-			if (null != pass && pass.length() > 0) {
-				localCfg.setProperty(Environment.PASS, pass);
-			}
+			localCfg.addProperties(ConnectionProfileUtil.getHibernateConnectionProperties(profile));
 		} else {
 			String out = NLS.bind(
 					ConsoleMessages.ConsoleConfiguration_connection_profile_not_found,
