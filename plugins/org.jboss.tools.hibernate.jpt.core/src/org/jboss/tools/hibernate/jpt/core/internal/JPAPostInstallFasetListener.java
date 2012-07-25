@@ -13,12 +13,15 @@ package org.jboss.tools.hibernate.jpt.core.internal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Properties;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.datatools.connectivity.ProfileManager;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
@@ -28,10 +31,17 @@ import org.eclipse.debug.internal.core.LaunchConfiguration;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.internal.resource.persistence.PersistenceXmlResourceProvider;
+import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
+import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
+import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
+import org.eclipse.jpt.jpa.core.resource.persistence.XmlProperty;
+import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectEvent;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectEvent.Type;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectListener;
 import org.eclipse.wst.common.project.facet.core.events.IProjectFacetActionEvent;
+import org.hibernate.console.ConnectionProfileUtil;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
 import org.hibernate.eclipse.console.utils.LaunchHelper;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
@@ -51,10 +61,44 @@ public class JPAPostInstallFasetListener implements IFacetedProjectListener {
 					&& (HibernateJpaPlatform.HIBERNATE_PLATFORM_ID.equals(JptJpaCorePlugin.getJpaPlatformId(project))
 							|| HibernateJpaPlatform.HIBERNATE2_0_PLATFORM_ID.equals(JptJpaCorePlugin.getJpaPlatformId(project)))){
 				if (checkPreConditions(project)){
+					exportConnectionProfilePropertiesToPersistenceXml(project);
 					buildConsoleConfiguration(project);
 				}
 			}
 		}
+	}
+
+	private void exportConnectionProfilePropertiesToPersistenceXml(IProject project) {
+		PersistenceXmlResourceProvider defaultXmlResourceProvider = PersistenceXmlResourceProvider.getDefaultXmlResourceProvider(project);
+		final JpaXmlResource resource = defaultXmlResourceProvider.getXmlResource();
+		Properties propsToAdd = getConnectionProperties(project);
+		if (propsToAdd.isEmpty() || resource == null) return;
+		
+		XmlPersistence persistence = (XmlPersistence) resource.getRootObject();					
+		XmlPersistenceUnit persistenceUnit;
+	
+		if (persistence.getPersistenceUnits().size() > 0) {
+			persistenceUnit = persistence.getPersistenceUnits().get(0);
+			if (persistenceUnit.getProperties() == null) {
+				persistenceUnit.setProperties(PersistenceFactory.eINSTANCE.createXmlProperties());
+				for (Entry<Object, Object> entry : propsToAdd.entrySet()) {
+					XmlProperty prop = PersistenceFactory.eINSTANCE.createXmlProperty();
+					prop.setName((String)entry.getKey());
+					prop.setValue((String)entry.getValue());
+					persistenceUnit.getProperties().getProperties().add(prop);
+				}
+			}
+		}
+		resource.save();
+	}
+	
+	public Properties getConnectionProperties(IProject project){
+		String cpName = JptJpaCorePlugin.getConnectionProfileName(project);
+		if (cpName != null){
+			return ConnectionProfileUtil.getHibernateConnectionProperties(
+					ProfileManager.getInstance().getProfileByName(cpName));
+		}
+		return new Properties();
 	}
 
 	/**
