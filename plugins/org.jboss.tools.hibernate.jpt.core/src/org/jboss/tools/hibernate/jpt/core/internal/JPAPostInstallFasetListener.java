@@ -75,10 +75,9 @@ public class JPAPostInstallFasetListener implements IFacetedProjectListener {
 		if (propsToAdd.isEmpty() || resource == null) return;
 		
 		XmlPersistence persistence = (XmlPersistence) resource.getRootObject();					
-		XmlPersistenceUnit persistenceUnit;
-	
+		
 		if (persistence.getPersistenceUnits().size() > 0) {
-			persistenceUnit = persistence.getPersistenceUnits().get(0);
+			XmlPersistenceUnit persistenceUnit = persistence.getPersistenceUnits().get(0);
 			if (persistenceUnit.getProperties() == null) {
 				persistenceUnit.setProperties(PersistenceFactory.eINSTANCE.createXmlProperties());
 				for (Entry<Object, Object> entry : propsToAdd.entrySet()) {
