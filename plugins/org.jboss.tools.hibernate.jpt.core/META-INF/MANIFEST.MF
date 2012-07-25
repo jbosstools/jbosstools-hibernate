@@ -22,7 +22,8 @@ Require-Bundle:
  org.eclipse.jst.j2ee;bundle-version="1.1.500",
  org.eclipse.persistence.jpa.jpql;bundle-version="1.0.0",
  org.eclipse.jst.j2ee.core;bundle-version="1.2.100",
- org.hibernate.eclipse.libs;bundle-version="3.4.0"
+ org.hibernate.eclipse.libs;bundle-version="3.4.0",
+ org.eclipse.datatools.connectivity;bundle-version="1.2.5"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: %Bundle-Vendor.0
 Export-Package: org.jboss.tools.hibernate.jpt.core.internal,
