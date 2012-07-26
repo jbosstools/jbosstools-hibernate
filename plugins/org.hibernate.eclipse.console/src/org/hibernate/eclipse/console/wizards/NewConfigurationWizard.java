@@ -191,18 +191,11 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 		putIfNotNull(props, Environment.DIALECT, connectionInfoPage.getDialect() );
 		putIfNotNull(props, Environment.DEFAULT_CATALOG, connectionInfoPage.getDefaultCatalog() );
         putIfNotNull(props, Environment.DEFAULT_SCHEMA, connectionInfoPage.getDefaultSchema() );
-		if (connectionInfoPage.getConnectionProfileName() != null){
-			String cpName = connectionInfoPage.getConnectionProfileName();
-			IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(cpName);
-			if (profile != null) {
-				props.putAll(ConnectionProfileUtil.getHibernateConnectionProperties(profile));
-			}
-		} else {
-	        putIfNotNull(props, Environment.DRIVER, connectionInfoPage.getDriver() );
-	        putIfNotNull(props, Environment.URL, connectionInfoPage.getConnectionURL() );
-	        putIfNotNull(props, Environment.USER, connectionInfoPage.getUsername() );
-	        putIfNotNull(props, Environment.PASS, connectionInfoPage.getPassword() );
-		}
+        putIfNotNull(props, Environment.DRIVER, connectionInfoPage.getDriver() );
+        putIfNotNull(props, Environment.URL, connectionInfoPage.getConnectionURL() );
+        putIfNotNull(props, Environment.USER, connectionInfoPage.getUsername() );
+        putIfNotNull(props, Environment.PASS, connectionInfoPage.getPassword() );
+
 		
         final IFile file = cPage.createNewFile();
 

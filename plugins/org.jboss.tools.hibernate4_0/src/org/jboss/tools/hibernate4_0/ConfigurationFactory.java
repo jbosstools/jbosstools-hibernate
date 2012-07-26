@@ -135,25 +135,9 @@ public class ConfigurationFactory {
 	@SuppressWarnings("unused")
 	private void autoConfigureDialect(Configuration localCfg, ServiceRegistry serviceRegistry) {
 		if (localCfg.getProperty(Environment.DIALECT) == null) {
-			String url = localCfg.getProperty(Environment.URL);
-			String user = localCfg.getProperty(Environment.USER);
-			String pass = localCfg.getProperty(Environment.PASS);
-			Connection connection = null;
-			try {
-				connection = DriverManager.getConnection(url, user, pass);
-				// SQL Dialect:
-				JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
-				Dialect dialect = jdbcServices.getDialect();
-				localCfg.setProperty(Environment.DIALECT, dialect.toString());
-			} catch (SQLException e) {
-				// can't determine dialect
-			}
-			if (connection != null) {
-				try {
-					connection.close();
-				} catch (SQLException e) {
-					// ignore
-				}
+			String dialect = ConnectionProfileUtil.autoDetectDialect(localCfg.getProperties());
+			if (dialect != null){
+				localCfg.setProperty(Environment.DIALECT, dialect);
 			}
 		}
 	}

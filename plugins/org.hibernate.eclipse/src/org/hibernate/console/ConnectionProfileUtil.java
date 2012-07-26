@@ -21,6 +21,9 @@
  */
 package org.hibernate.console;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Properties;
 
 import org.eclipse.datatools.connectivity.ConnectionProfileConstants;
@@ -29,6 +32,8 @@ import org.eclipse.datatools.connectivity.ProfileManager;
 import org.eclipse.datatools.connectivity.drivers.DriverInstance;
 import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
 import org.hibernate.cfg.Environment;
+import org.hibernate.dialect.Dialect;
+import org.hibernate.dialect.resolver.DialectFactory;
 
 /**
  * @author Vitali Yemialyanchyk
@@ -99,5 +104,33 @@ public class ConnectionProfileUtil {
 			}
 		}
 		return props;
+	}
+	
+	public static String autoDetectDialect(Properties properties) {
+		if (properties.getProperty(Environment.DIALECT) == null) {
+			String url = properties.getProperty(Environment.URL);
+			String user = properties.getProperty(Environment.USER);
+			String pass = properties.getProperty(Environment.PASS);
+			Connection connection = null;
+			try {
+				connection = DriverManager.getConnection(url, user, pass);
+				// SQL Dialect:
+				Dialect dialect = DialectFactory.buildDialect(properties, connection);
+				return dialect.toString();
+			} catch (SQLException e) {
+				// can't determine dialect
+			} finally {
+				if (connection != null) {
+					try {
+						connection.close();
+					} catch (SQLException e) {
+						// ignore
+					}
+				}
+			}
+			return null;
+		} else {
+			return properties.getProperty(Environment.DIALECT);
+		}
 	}
 }

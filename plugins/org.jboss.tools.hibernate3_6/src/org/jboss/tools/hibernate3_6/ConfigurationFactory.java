@@ -16,7 +16,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
-import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -46,8 +45,6 @@ import org.hibernate.console.ConsoleMessages;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
-import org.hibernate.dialect.Dialect;
-import org.hibernate.dialect.resolver.DialectFactory;
 import org.hibernate.util.ConfigHelper;
 import org.hibernate.util.XMLHelper;
 import org.w3c.dom.Document;
@@ -135,24 +132,9 @@ public class ConfigurationFactory {
 	@SuppressWarnings("unused")
 	private void autoConfigureDialect(Configuration localCfg) {
 		if (localCfg.getProperty(Environment.DIALECT) == null) {
-			String url = localCfg.getProperty(Environment.URL);
-			String user = localCfg.getProperty(Environment.USER);
-			String pass = localCfg.getProperty(Environment.PASS);
-			Connection connection = null;
-			try {
-				connection = DriverManager.getConnection(url, user, pass);
-				// SQL Dialect:
-				Dialect dialect = DialectFactory.buildDialect(localCfg.getProperties(), connection);
-				localCfg.setProperty(Environment.DIALECT, dialect.toString());
-			} catch (SQLException e) {
-				// can't determine dialect
-			}
-			if (connection != null) {
-				try {
-					connection.close();
-				} catch (SQLException e) {
-					// ignore
-				}
+			String dialect = ConnectionProfileUtil.autoDetectDialect(localCfg.getProperties());
+			if (dialect != null){
+				localCfg.setProperty(Environment.DIALECT, dialect);
 			}
 		}
 	}

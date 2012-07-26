@@ -360,7 +360,7 @@ public class ConnectionProfileCtrl {
 		buttonEdit.setEnabled(enabled);
 	}
 
-	public void notifyModifyListeners() {
+	protected void notifyModifyListeners() {
 		for (int i = 0; i < modifyListeners.size(); i++) {
 			modifyListeners.get(i).modifyText(null);
 		}

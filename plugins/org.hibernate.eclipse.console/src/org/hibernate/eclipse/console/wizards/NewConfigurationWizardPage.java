@@ -21,16 +21,22 @@
  */
 package org.hibernate.eclipse.console.wizards;
 
+import java.util.Properties;
+
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.datatools.connectivity.IConnectionProfile;
+import org.eclipse.datatools.connectivity.ProfileManager;
 import org.eclipse.jface.dialogs.IDialogPage;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -38,14 +44,16 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Link;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
+import org.hibernate.cfg.Environment;
+import org.hibernate.console.ConnectionProfileUtil;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.DriverClassHelpers;
-import org.hibernate.eclipse.launch.ConnectionProfileCtrl;
 
 /**
  * Wizard for creating basic hibernate.cfg.xml
@@ -59,12 +67,6 @@ public class NewConfigurationWizardPage extends WizardPage {
     private Label fileText;
 
     private Text sessionFactoryNameText;
-    
-    private Button useDTPConnection;
-    
-    private Label dtpConnection;
-    
-    private ConnectionProfileCtrl connectionProfileCtrl;
 
     private Combo dialectCombo;
 
@@ -87,7 +89,7 @@ public class NewConfigurationWizardPage extends WizardPage {
 
     private boolean beenShown = false;
     
-    private Group driverManagerTabContainer;
+    private String defaultConnectionProfile = null;
 
     /**
      * Constructor for SampleNewWizardPage.
@@ -158,6 +160,24 @@ public class NewConfigurationWizardPage extends WizardPage {
         sessionFactoryNameText.setLayoutData(gd);
         sessionFactoryNameText.addModifyListener(listener);
         
+        Link link = new Link(container, SWT.RIGHT);
+        link.setText(HibernateConsoleMessages.NewConfigurationWizardPage_getValuesFromConnection);
+        link.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+				SelectConnectionProfileDialog dialog = new SelectConnectionProfileDialog(shell);
+				if (defaultConnectionProfile != null) dialog.setDefaultValue(defaultConnectionProfile);
+				if (dialog.open() == Window.OK){
+					defaultConnectionProfile = dialog.getConnectionProfileName();
+					fillPropertiesFromConnectionProfile(defaultConnectionProfile);
+				}
+			}
+		});
+        gd = new GridData(GridData.FILL_HORIZONTAL);
+        gd.grabExcessHorizontalSpace = true;
+        gd.horizontalSpan = 2;
+        link.setLayoutData(gd);
+        
         label = new Label(container, SWT.NULL);
         label.setText(HibernateConsoleMessages.NewConfigurationWizardPage_database_dialect);
         dialectCombo = new Combo(container, SWT.NULL);
@@ -178,41 +198,8 @@ public class NewConfigurationWizardPage extends WizardPage {
         gd.horizontalAlignment = SWT.TOP;
         gd.verticalAlignment = SWT.TOP;
         label.setLayoutData(gd);
-        
-        
-        
-        useDTPConnection = new Button(container, SWT.CHECK);
-        useDTPConnection.setText("Use DTP Connection");
-        useDTPConnection.addSelectionListener(selectionListener);
 
-        GridData gd2 = new GridData(SWT.NULL, SWT.NULL, false, false, 2, 1);
-        useDTPConnection.setLayoutData(gd2);
-        
-        dtpConnection = new Label(container, SWT.NULL);
-        dtpConnection.setText("DTP Connection");
-        dtpConnection.setLayoutData(gd);
-        dtpConnection.setEnabled(false);
-        
-        connectionProfileCtrl = new ConnectionProfileCtrl(container, 1, ""); //$NON-NLS-1$
-		connectionProfileCtrl.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent e) {
-				if (connectionProfileCtrl.hasConnectionProfileSelected()){
-					setPageComplete(connectionProfileCtrl.hasConnectionProfileSelected());
-				}
-			}
-		});
-		connectionProfileCtrl.setEnabled(false);
-
- 
-		driverManagerTabContainer = new Group(container, SWT.NONE);
-		driverManagerTabContainer.setText("Custom");
-		driverManagerTabContainer.setLayout(layout);
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.horizontalSpan = 2;
-		driverManagerTabContainer.setLayoutData(gd);
-		
-        //Composite driverManagerTabContainer = container;
+        Composite driverManagerTabContainer = container;
         label = new Label(driverManagerTabContainer, SWT.NULL);
         label.setText(HibernateConsoleMessages.NewConfigurationWizardPage_driver_class);
         driver_classCombo = new Combo(driverManagerTabContainer, SWT.NULL);
@@ -239,6 +226,20 @@ public class NewConfigurationWizardPage extends WizardPage {
         urlCombo.addModifyListener(listener);
 
         label = new Label(driverManagerTabContainer, SWT.NULL);
+        label.setText(HibernateConsoleMessages.NewConfigurationWizardPage_default_schema);
+        defaultSchemaText = new Text(driverManagerTabContainer, SWT.BORDER | SWT.SINGLE);
+        gd = new GridData(GridData.FILL_HORIZONTAL);
+        defaultSchemaText.setLayoutData(gd);
+        defaultSchemaText.addModifyListener(listener);
+
+        label = new Label(driverManagerTabContainer, SWT.NULL);
+        label.setText(HibernateConsoleMessages.NewConfigurationWizardPage_default_catalog);
+        defaultCatalogText = new Text(driverManagerTabContainer, SWT.BORDER | SWT.SINGLE);
+        gd = new GridData(GridData.FILL_HORIZONTAL);
+        defaultCatalogText.setLayoutData(gd);
+        defaultCatalogText.addModifyListener(listener);
+
+        label = new Label(driverManagerTabContainer, SWT.NULL);
         label.setText(HibernateConsoleMessages.NewConfigurationWizardPage_user_name);
         usernameText = new Text(driverManagerTabContainer, SWT.BORDER | SWT.SINGLE);
         gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -251,23 +252,10 @@ public class NewConfigurationWizardPage extends WizardPage {
         gd = new GridData(GridData.FILL_HORIZONTAL);
         passwordText.setLayoutData(gd);
         passwordText.addModifyListener(listener);
-        
-        label = new Label(container, SWT.NULL);
-        label.setText(HibernateConsoleMessages.NewConfigurationWizardPage_default_schema);
-        defaultSchemaText = new Text(container, SWT.BORDER | SWT.SINGLE);
-        gd = new GridData(GridData.FILL_HORIZONTAL);
-        defaultSchemaText.setLayoutData(gd);
-        defaultSchemaText.addModifyListener(listener);
-
-        label = new Label(container, SWT.NULL);
-        label.setText(HibernateConsoleMessages.NewConfigurationWizardPage_default_catalog);
-        defaultCatalogText = new Text(container, SWT.BORDER | SWT.SINGLE);
-        gd = new GridData(GridData.FILL_HORIZONTAL);
-        defaultCatalogText.setLayoutData(gd);
-        defaultCatalogText.addModifyListener(listener);
 
         fillLabel(container);
         fillLabel(container);
+
         fillLabel(container);
 
         createConsoleConfiguration = new Button(container, SWT.CHECK);
@@ -283,6 +271,7 @@ public class NewConfigurationWizardPage extends WizardPage {
 
         setControl(sc);
     }
+
 
     /**
      * @param urlCombo2
@@ -336,19 +325,6 @@ public class NewConfigurationWizardPage extends WizardPage {
      * Ensures that contents is ok.
      */
     private void dialogChanged() {
-    	dtpConnection.setEnabled(useDTPConnection.getSelection());
-		connectionProfileCtrl.setEnabled(useDTPConnection.getSelection());
-		if (useDTPConnection.getSelection()){
-			setPageComplete(connectionProfileCtrl.hasConnectionProfileSelected());
-		} else {
-			setPageComplete(true);
-		}
-		
-		driverManagerTabContainer.setEnabled(!useDTPConnection.getSelection());
-		for (Control control : driverManagerTabContainer.getChildren()) {
-			control.setEnabled(!useDTPConnection.getSelection());
-		}
-		
         IResource container = ResourcesPlugin.getWorkspace().getRoot()
                 .findMember(new Path(getContainerName() ) );
         String fileName = getFileName();
@@ -481,18 +457,31 @@ public class NewConfigurationWizardPage extends WizardPage {
 	public String getDefaultSchema() {
 		return nullIfEmpty(defaultSchemaText.getText());
 	}
-	
-	public void setConnectionProfileName(String cpName){
-		if (cpName != null){
-			useDTPConnection.setSelection(true);
-			connectionProfileCtrl.selectValue(cpName);
-		}
+
+	public String getConnectionProfileName() {
+		return defaultConnectionProfile;
+	}
+
+	public void setConnectionProfileName(String selectedConnectionName) {
+		this.defaultConnectionProfile = selectedConnectionName;
 	}
 	
-	public String getConnectionProfileName(){
-		if (useDTPConnection.getSelection()){
-			return connectionProfileCtrl.getSelectedConnectionName();
+    
+    private void fillPropertiesFromConnectionProfile(String cpName){
+		IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(cpName);
+		Properties p = ConnectionProfileUtil.getHibernateConnectionProperties(profile);
+		driver_classCombo.setText(p.getProperty(Environment.DRIVER));
+		urlCombo.setText(p.getProperty(Environment.URL));
+		if (p.containsKey(Environment.USER)){
+			 usernameText.setText(p.getProperty(Environment.USER));
 		}
-		return null;
-	}
+		if (p.containsKey(Environment.PASS)){
+			 passwordText.setText(p.getProperty(Environment.PASS));
+		}
+		/*this causes very long timeouts when db is not started
+		String dialect = ConnectionProfileUtil.autoDetectDialect(p);
+		if (dialect != null){
+			dialectCombo.setText(dialect);
+		}*/
+    }
 }
