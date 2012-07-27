@@ -56,7 +56,7 @@ public class ConnectionProfileCtrl {
 	protected ComboViewer comboControl;
 	protected Button buttonNew;
 	protected Button buttonEdit;
-	private boolean useSynteticValues = false;
+	private boolean useSynteticValues = true;
 	
 	static final String NO_CONNECTIN_NAME = HibernateConsoleMessages.ConnectionProfileCtrl_HibernateConfiguredConnection;
 	static final String JPA_CONNECTIN_NAME = HibernateConsoleMessages.ConnectionProfileCtrl_JPAConfiguredConnection;
@@ -106,6 +106,7 @@ public class ConnectionProfileCtrl {
 	
 	public void setUseSynteticValue(boolean value){
 		this.useSynteticValues = value;
+		this.updateInput();
 	}
 
 	public class ButtonPressedAction extends Action implements SelectionListener {

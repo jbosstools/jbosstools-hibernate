@@ -62,6 +62,7 @@ public class SelectConnectionProfileDialog extends Dialog {
 		Label label = new Label(parent, SWT.NULL);
 		label.setText(Messages.ConnectionProfile);
         connectionProfileCtrl = new ConnectionProfileCtrl(parent, 1, ""); //$NON-NLS-1$
+        connectionProfileCtrl.setUseSynteticValue(false);
         if (selectedCP != null){
 			connectionProfileCtrl.selectValue(selectedCP);
 		}
