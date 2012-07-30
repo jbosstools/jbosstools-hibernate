@@ -17,8 +17,8 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
-import org.eclipse.jpt.jpa.core.JpaDataSource;
-import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.JpaFacet;
+import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.console.ConnectionProfileUtil;
 import org.hibernate.console.HibernateConsoleRuntimeException;
@@ -26,6 +26,7 @@ import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.utils.ClassLoaderHelper;
 import org.hibernate.eclipse.console.utils.DriverClassHelpers;
 import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
+import org.hibernate.util.xpl.StringHelper;
 import org.w3c.dom.Element;
 
 public class EclipseLaunchConsoleConfigurationPreferences implements ConsoleConfigurationPreferences {
@@ -142,12 +143,11 @@ public class EclipseLaunchConsoleConfigurationPreferences implements ConsoleConf
 			if (projName != null){
 				IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projName);
 				if (project != null){
-					JpaProject jpaProject = (JpaProject) project.getAdapter(JpaProject.class);
-					if (jpaProject != null) {
-						JpaDataSource ds = jpaProject.getDataSource();
-						if (ds != null)
-							return "".equals(ds.getConnectionProfileName()) ? null : ds.getConnectionProfileName();//$NON-NLS-1$
+					if (!JpaFacet.isInstalled(project)) {
+						return null;
 					}
+					String projectCPName = JptJpaCorePlugin.getConnectionProfileName(project);
+					return StringHelper.isEmpty(projectCPName) ? null : projectCPName;
 				}
 			}
 		}
@@ -225,15 +225,16 @@ public class EclipseLaunchConsoleConfigurationPreferences implements ConsoleConf
 		if (projName != null){
 			IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projName);
 			if (project != null){
-				JpaProject jpaProject = (JpaProject) project.getAdapter(JpaProject.class);
-				if (jpaProject != null) {
-					if (jpaProject.getUserOverrideDefaultCatalog() != null){
-						prop.put("hibernate.default_catalog", jpaProject.getUserOverrideDefaultCatalog()); //$NON-NLS-1$
-					}
-					if (jpaProject.getUserOverrideDefaultSchema() != null){
-						prop.put("hibernate.default_schema", jpaProject.getUserOverrideDefaultSchema()); //$NON-NLS-1$
-					}
-					
+				if (!JpaFacet.isInstalled(project)) {
+					return null;
+				}
+				String defCatalog = JptJpaCorePlugin.getUserOverrideDefaultCatalog(project);
+				String defSchema = JptJpaCorePlugin.getUserOverrideDefaultSchema(project);
+				if (StringHelper.isNotEmpty(defCatalog)){
+					prop.put("hibernate.default_catalog", defCatalog); //$NON-NLS-1$
+				}
+				if (StringHelper.isNotEmpty(defSchema)){
+					prop.put("hibernate.default_schema", defSchema); //$NON-NLS-1$
 				}
 			}
 		}

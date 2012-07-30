@@ -6,9 +6,7 @@ package org.hibernate.eclipse.launch;
 import java.util.Collections;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -25,8 +23,8 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.jpt.jpa.core.JpaDataSource;
-import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.JpaFacet;
+import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -445,13 +443,12 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 			}
 
 			if (ConnectionProfileCtrl.JPA_CONNECTIN_NAME.equals(cpName)){
-				JpaProject jpaProject = (JpaProject) findJavaProject.getProject().getAdapter(JpaProject.class);
-				if (jpaProject == null){
+				if (!JpaFacet.isInstalled(findJavaProject.getProject())) {
 					setErrorMessage(NLS.bind(HibernateConsoleMessages.ConsoleConfigurationMainTab_project_must_be_jpa, getProjectName()));
 					return false;
 				}
-				JpaDataSource ds = jpaProject.getDataSource();
-				if (ds == null || "".equals(ds.getConnectionProfileName())){ //$NON-NLS-1$
+				String projectCPName = JptJpaCorePlugin.getConnectionProfileName(findJavaProject.getProject());
+				if (StringHelper.isEmpty(projectCPName)){
 					setErrorMessage(NLS.bind(HibernateConsoleMessages.ConsoleConfigurationMainTab_cp_not_specified, getProjectName()));
 					return false;
 				}

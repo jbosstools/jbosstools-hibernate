@@ -43,7 +43,9 @@ import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.preference.PreferencePage;
+import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -283,9 +285,13 @@ public class HibernatePropertyPage extends PropertyPage {
 	}
 	
 	private boolean isHibernateJpaProject(){
-		JpaProject jpaProject = (JpaProject) getProject().getAdapter(JpaProject.class);
-		return (jpaProject != null) && ((jpaProject.getJpaPlatform().getId().equals(HibernatePropertiesConstants.HIBERNATE_JPA_PLATFORM_ID))
-				|| (jpaProject.getJpaPlatform().getId().equals(HibernatePropertiesConstants.HIBERNATE_JPA2_0_PLATFORM_ID)));
+		IProject project = getProject();
+		if (!JpaFacet.isInstalled(project)) {
+			return false;
+		}
+		String jpaPlatformId = JptJpaCorePlugin.getJpaPlatformId(project);
+		return HibernatePropertiesConstants.HIBERNATE_JPA_PLATFORM_ID.equals(jpaPlatformId)
+				|| HibernatePropertiesConstants.HIBERNATE_JPA2_0_PLATFORM_ID.equals(jpaPlatformId);
 	}
 
 	private IProject getProject() {
