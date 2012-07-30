@@ -45,5 +45,9 @@ public interface Messages {
 	public static final String NAME_CANT_BE_EMPTY = "NAME_CANT_BE_EMPTY";//$NON-NLS-1$
 	
 	public static final String TYPE_DEF_DUPLICATE_NAME= "TYPE_DEF_DUPLICATE_NAME";//$NON-NLS-1$
+	
+	public static final String SYNC_CLASSES_JOB = "SYNC_CLASSES_JOB";//$NON-NLS-1$
+	
+	public static final String SYNC_CLASSES_TASK = "SYNC_CLASSES_TASK";//$NON-NLS-1$
 
 }
