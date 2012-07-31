@@ -47,7 +47,7 @@ public class AddGeneratedClassesJob extends WorkspaceJob {
 	private List<IResource> javaFilesToAdd;
 		
 	public AddGeneratedClassesJob(JpaProject jpaProject, List<IResource> javaFilesToAdd) {
-		super(Messages.SYNC_CLASSES_JOB);
+		super(UIMessages.SYNC_CLASSES_JOB);
 		IResourceRuleFactory ruleFactory = ResourcesPlugin.getWorkspace().getRuleFactory();
 		setRule(ruleFactory.modifyRule(jpaProject.getProject()));
 		this.jpaProject = jpaProject;
@@ -59,7 +59,7 @@ public class AddGeneratedClassesJob extends WorkspaceJob {
 		if (monitor.isCanceled()) {
 			return Status.CANCEL_STATUS;
 		}
-		final SubMonitor sm = SubMonitor.convert(monitor, Messages.SYNC_CLASSES_TASK, 20);
+		final SubMonitor sm = SubMonitor.convert(monitor, UIMessages.SYNC_CLASSES_TASK, 20);
 		final JpaXmlResource resource = jpaProject.getPersistenceXmlResource();
 		if (resource == null) {
 			//the resource would only be null if the persistence.xml file had an invalid content type
@@ -86,6 +86,7 @@ public class AddGeneratedClassesJob extends WorkspaceJob {
 		IStatus status = addNewClassRefs(sm.newChild(17), jpaProject, persistenceUnit);
 
 		resource.save();
+		sm.done();
 		return status;
 	}
 	
