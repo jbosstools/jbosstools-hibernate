@@ -83,6 +83,12 @@ public class HibernateConsoleMessages extends NLS {
 	public static String OpenSourceAction_open_source_file;
 	public static String OpenSourceAction_source_file_for_class_not_found;
 	public static String RefreshAction_refresh;
+	public static String RenameAction_name;
+	public static String RenameAction_dialog_title;
+	public static String RenameAction_dialog_message;
+	public static String RenameAction_error_title;
+	public static String RenameAction_error_name;
+	public static String RenameAction_existing_name;
 	//
 	public static String ExporterDefinition_problem_creating_exporter_class;
 	public static String ExporterFactory_output_dir_in_does_not_exist;

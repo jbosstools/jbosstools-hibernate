@@ -42,6 +42,7 @@ import org.hibernate.eclipse.console.actions.HQLScratchpadAction;
 import org.hibernate.eclipse.console.actions.OpenMappingAction;
 import org.hibernate.eclipse.console.actions.OpenSourceAction;
 import org.hibernate.eclipse.console.actions.RefreshAction;
+import org.hibernate.eclipse.console.actions.RenameAction;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 
@@ -89,6 +90,7 @@ public class ConfigurationsViewActionGroup extends ActionGroup {
 	private CriteriaEditorAction criteriaEditorAction;
 	private SelectionListenerAction openMappingAction;
 	private SelectionListenerAction openSourceAction;
+	private SelectionListenerAction renameAction;
 
 	public ConfigurationsViewActionGroup(IViewPart part, StructuredViewer selectionProvider) {
 		
@@ -100,10 +102,6 @@ public class ConfigurationsViewActionGroup extends ActionGroup {
 		
 		deleteConfigurationAction = new DeleteConfigurationAction(selectionProvider);
 		selectionProvider.addSelectionChangedListener(deleteConfigurationAction);
-		IActionBars actionBars= part.getViewSite().getActionBars();
-		   actionBars.setGlobalActionHandler(
-		      ActionFactory.DELETE.getId(),
-		      deleteConfigurationAction);
 		   
 		refreshAction = new RefreshAction(selectionProvider);
 		selectionProvider.addSelectionChangedListener(refreshAction);
@@ -134,6 +132,8 @@ public class ConfigurationsViewActionGroup extends ActionGroup {
 		openSourceAction = new OpenSourceAction();
 		selectionProvider.addSelectionChangedListener(openSourceAction);
 		
+		renameAction = new RenameAction(selectionProvider);
+		selectionProvider.addSelectionChangedListener(renameAction);
 	}
 
 	public void dispose() {
@@ -191,6 +191,11 @@ public class ConfigurationsViewActionGroup extends ActionGroup {
 		actionBars.getToolBarManager().add(addConfigurationAction);
 		actionBars.getToolBarManager().add(hqlEditorAction);
 		actionBars.getToolBarManager().add(criteriaEditorAction);
+		
+		actionBars.setGlobalActionHandler(ActionFactory.RENAME.getId(),
+				renameAction);
+		actionBars.setGlobalActionHandler(ActionFactory.DELETE.getId(),
+			      deleteConfigurationAction);
 	}
 	
 	
