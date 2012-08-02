@@ -214,8 +214,10 @@ public class DynamicSQLPreviewView extends ViewPart {
 	public void dispose() {
 		IWorkbenchWindow window = PlatformUI.getWorkbench()
 			.getActiveWorkbenchWindow();
-		IPartService service = window.getPartService();
-		service.removePartListener(partListener);
+		if (window != null){
+			IPartService service = window.getPartService();
+			service.removePartListener(partListener);
+		}
 		docSetupParticipant.unsetup();
 		super.dispose();
 	}
