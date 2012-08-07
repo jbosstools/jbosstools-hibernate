@@ -18,7 +18,7 @@ import org.eclipse.osgi.util.NLS;
  */
 public class UIMessages extends NLS {
 	
-	private static final String BUNDLE_NAME = "org.jboss.tools.hibernate.jpt.core.internal.context.Messages";//$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.jboss.tools.hibernate.jpt.core.internal.context.UIMessages";//$NON-NLS-1$
 
 	public static String SYNC_CLASSES_JOB;
 	
