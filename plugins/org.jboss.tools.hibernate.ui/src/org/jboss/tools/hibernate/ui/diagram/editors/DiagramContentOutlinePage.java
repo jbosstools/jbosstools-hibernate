@@ -50,6 +50,7 @@ import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleShapeExpandSta
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleShapeVisibleStateAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmDiagram;
 import org.jboss.tools.hibernate.ui.diagram.editors.parts.TreePartFactory;
+import org.jboss.tools.hibernate.ui.diagram.editors.popup.PopupMenuProvider;
 
 /**
  *
@@ -178,8 +179,7 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements
 	protected void configureOutlineViewer() {
 		getViewer().setEditDomain(editor.getDefaultEditDomain());
 		getViewer().setEditPartFactory(new TreePartFactory());
-		MenuManager provider = editor.getContextMenu();
-		//MenuManager provider = new PopupMenuProvider(getViewer(), getActionRegistry());
+		MenuManager provider = new PopupMenuProvider(getViewer(), getActionRegistry());
 		//getViewer().setContextMenu(provider);
 		getViewer().setContextMenu(provider);
 		getSite().registerContextMenu(
