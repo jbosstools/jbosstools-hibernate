@@ -14,6 +14,7 @@
 	<properties>
 		<coverage.filter>org.hibernate.eclipse*</coverage.filter>
 		<emma.instrument.bundles>org.hibernate.eclipse.console</emma.instrument.bundles>
+		<surefire.timeout>3600</surefire.timeout>
 	</properties>
 
 	<build>
@@ -27,9 +28,6 @@
 						<bundle>org.hibernate.eclipse</bundle>
 						<bundle>org.hibernate.eclipse.libs</bundle>
 					</explodedBundles>
-					<!-- timeout in seconds; default 1800 -->
-					<surefire.timeout>3600</surefire.timeout>
-					<forkedProcessTimeoutInSeconds>3600</forkedProcessTimeoutInSeconds>
 				</configuration>
 			</plugin>
 		</plugins>
