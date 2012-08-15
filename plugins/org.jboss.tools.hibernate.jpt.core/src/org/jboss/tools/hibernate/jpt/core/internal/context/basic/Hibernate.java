@@ -19,6 +19,7 @@ public interface Hibernate {
 	// Hibernate package
 	String PACKAGE = "org.hibernate.annotations"; //$NON-NLS-1$
 	String PACKAGE_ = PACKAGE + "."; //$NON-NLS-1$
+	String PACKAGE_INFO_JAVA = "pacakge-info.java"; //$NON-NLS-1$
 
 	// ********** API **********
 

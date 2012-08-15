@@ -27,7 +27,6 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernatePackageInfo;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernatePackageInfoImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaPackageInfo;
 
 
@@ -51,6 +50,10 @@ public class HibernateClassRef extends GenericClassRef implements PackageInfoRef
 	 */
 	public HibernateClassRef(PersistenceUnit parent, XmlJavaClassRef xmlJavaClassRef) {
 		super(parent, xmlJavaClassRef, xmlJavaClassRef.getJavaClass());
+		JavaResourcePackage resourcePackage = this.resolveJavaResourcePackage();
+		if (resourcePackage != null){
+			this.javaPackageInfo = this.buildJavaPackageInfo(resourcePackage);
+		}
 	}
 
 	/**
@@ -59,6 +62,10 @@ public class HibernateClassRef extends GenericClassRef implements PackageInfoRef
 	 */
 	public HibernateClassRef(PersistenceUnit parent, String className) {
 		super(parent, null, className);
+		JavaResourcePackage resourcePackage = this.resolveJavaResourcePackage();
+		if (resourcePackage != null){
+			this.javaPackageInfo = this.buildJavaPackageInfo(resourcePackage);
+		}
 	}
 	
 	@Override

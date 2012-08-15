@@ -14,18 +14,22 @@ import java.util.ListIterator;
 
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
+import org.eclipse.jdt.internal.core.PackageFragment;
+import org.eclipse.jdt.internal.ui.JavaPlugin;
+import org.eclipse.jdt.internal.ui.JavaPluginImages;
+import org.eclipse.jdt.internal.ui.dialogs.PackageSelectionDialog;
+import org.eclipse.jdt.internal.ui.util.BusyIndicatorRunnableContext;
 import org.eclipse.jdt.ui.IJavaElementSearchConstants;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
-import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
-import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
@@ -48,8 +52,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.dialogs.FilteredList;
 import org.eclipse.ui.dialogs.SelectionDialog;
 import org.eclipse.ui.progress.IProgressService;
+import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
+import org.jboss.tools.hibernate.jpt.core.internal.context.persistence.PackageInfoRef;
 
 
 /**
@@ -77,6 +84,18 @@ public class HibernatePersistenceUnitClassesComposite extends Pane<PersistenceUn
 		}
 	}
 	
+	private void addMappedPackage(ObjectListSelectionModel listSelectionModel) {
+		IPackageFragment pack = choosePackage();
+
+		if (pack != null) {
+			if(classRefExists(pack.getElementName())) {
+				return;
+			}
+			ClassRef classRef = getSubject().addSpecifiedClassRef(pack.getElementName());
+			listSelectionModel.setSelectedValue(classRef);
+		}
+	}
+	
 	private boolean classRefExists(String className) {
 		for ( ListIterator<ClassRef> i = getSubject().getSpecifiedClassRefs().iterator(); i.hasNext(); ) {
 			ClassRef classRef = i.next();
@@ -87,8 +106,8 @@ public class HibernatePersistenceUnitClassesComposite extends Pane<PersistenceUn
 		return false;
 	}
 
-	private Adapter buildAdapter() {
-		return new AddRemoveListPane.AbstractAdapter() {
+	private ExtendedAdapter buildAdapter() {
+		return new ExtendedAdapter() {
 			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
 				addMappedClass(listSelectionModel);
 			}
@@ -103,16 +122,6 @@ public class HibernatePersistenceUnitClassesComposite extends Pane<PersistenceUn
 			}
 
 			@Override
-			public boolean hasOptionalButton() {
-				return true;
-			}
-
-			@Override
-			public String optionalButtonText() {
-				return JptUiPersistenceMessages.PersistenceUnitClassesComposite_open;
-			}
-
-			@Override
 			public void optionOnSelection(ObjectListSelectionModel listSelectionModel) {
 				openMappedClass((ClassRef) listSelectionModel.selectedValue());
 			}
@@ -121,6 +130,11 @@ public class HibernatePersistenceUnitClassesComposite extends Pane<PersistenceUn
 				for (Object item : listSelectionModel.selectedValues()) {
 					getSubject().removeSpecifiedClassRef((ClassRef) item);
 				}
+			}
+
+			@Override
+			public void addPackage(ObjectListSelectionModel listSelectionModel) {
+				addMappedPackage(listSelectionModel);
 			}
 		};
 	}
@@ -157,6 +171,11 @@ public class HibernatePersistenceUnitClassesComposite extends Pane<PersistenceUn
 
 				if (persistentType != null) {
 					image = JpaMappingImageHelper.imageForTypeMapping(persistentType.getMappingKey());
+				} else if (classRef instanceof PackageInfoRef){
+					PackageInfoRef packageInfoRef = (PackageInfoRef)classRef;
+					if (packageInfoRef.getJavaPackageInfo() != null){
+						image = JavaPlugin.getImageDescriptorRegistry().get(JavaPluginImages.DESC_OBJS_PACKAGE);
+					}
 				}
 
 				if (image != null) {
@@ -226,7 +245,7 @@ public class HibernatePersistenceUnitClassesComposite extends Pane<PersistenceUn
 				scope,
 				IJavaElementSearchConstants.CONSIDER_CLASSES,
 				false,
-				""
+				"" //$NON-NLS-1$
 			);
 		}
 		catch (JavaModelException e) {
@@ -258,6 +277,54 @@ public class HibernatePersistenceUnitClassesComposite extends Pane<PersistenceUn
 
 		return null;
 	}
+	
+	private IPackageFragment choosePackage() {
+		IJavaElement[] elements = new IJavaElement[] { getJavaProject() };
+		BusyIndicatorRunnableContext context = new BusyIndicatorRunnableContext();
+		IJavaSearchScope scope = SearchEngine
+				.createJavaSearchScope(elements, IJavaSearchScope.SOURCES
+						| IJavaSearchScope.REFERENCED_PROJECTS);
+
+		PackageSelectionDialog packageSelectionDialog = new PackageSelectionDialog(
+				getShell(), context,
+				PackageSelectionDialog.F_HIDE_DEFAULT_PACKAGE
+						| PackageSelectionDialog.F_HIDE_EMPTY_INNER, scope) {
+
+			@Override
+			protected FilteredList createFilteredList(Composite parent) {
+				FilteredList list = super.createFilteredList(parent);
+				//filter out packages without package-ifo.java
+				list.setFilterMatcher(new FilteredList.FilterMatcher() {
+
+					@Override
+					public void setFilter(String pattern, boolean ignoreCase,
+							boolean ignoreWildCards) {
+					}
+
+					@Override
+					public boolean match(Object element) {
+						if (element instanceof PackageFragment) {
+							PackageFragment pf = (PackageFragment) element;
+							return pf.getCompilationUnit(Hibernate.PACKAGE_INFO_JAVA).exists();
+
+						}
+						return false;
+					}
+				});
+				return list;
+			}
+		};
+
+		packageSelectionDialog.setTitle(Messages.HibernatePersistenceUnitClassesComposite_PackageSelectionDialog_title);
+		packageSelectionDialog
+				.setMessage(JptCommonUiMessages.ClassChooserPane_dialogMessage);
+
+		if (packageSelectionDialog.open() == Window.OK) {
+			return (IPackageFragment) packageSelectionDialog.getResult()[0];
+		}
+
+		return null;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -268,11 +335,11 @@ public class HibernatePersistenceUnitClassesComposite extends Pane<PersistenceUn
 		// Description
 		addMultiLineLabel(
 			container,
-			JptUiPersistenceMessages.PersistenceUnitClassesComposite_description
+			Messages.HibernatePersistenceUnitClassesComposite_ClassesComposite_message
 		);
 
 		// List pane
-		new AddRemoveListPane<PersistenceUnit>(
+		new AddMappingListPane(
 			this,
 			container,
 			this.buildAdapter(),

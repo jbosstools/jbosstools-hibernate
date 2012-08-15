@@ -13,9 +13,7 @@ package org.jboss.tools.hibernate.jpt.ui.internal.persistence.details;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.ui.internal.persistence.JptUiPersistenceMessages;
 import org.eclipse.jpt.jpa.ui.internal.persistence.details.GenericPersistenceUnitGeneralComposite;
-import org.eclipse.jpt.jpa.ui.internal.persistence.details.PersistenceUnitClassesComposite;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -36,7 +34,7 @@ public class HibernatePersistenceUnitGeneralComposite extends
 
 		container = addCollapsibleSection(
 			container,
-			JptUiPersistenceMessages.PersistenceUnitGeneralComposite_mappedClasses
+			Messages.HibernatePersistenceUnitGeneralComposite_Section_title
 		);
 
 		updateGridData(container);
