@@ -14,6 +14,9 @@ import org.junit.Test;
 @Require(clearProjects = true)
 public class CreateConfigurationFileTest extends HibernateBaseTest {
 
+	/**
+	 * Basic Hibernate Configuration is created
+	 */
 	@Test
 	public void configurationFileTest() {
 		emptyErrorLog();

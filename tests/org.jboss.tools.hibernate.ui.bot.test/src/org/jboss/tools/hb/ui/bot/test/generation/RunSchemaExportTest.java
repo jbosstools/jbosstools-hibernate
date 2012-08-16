@@ -27,7 +27,7 @@ public class RunSchemaExportTest extends HibernateBaseTest {
 	final String hc = "pre-hibernate40";
 	
 	@Test
-	public void showMappingDiagram() {
+	public void runSchemaExportTest() {
 		importTestProject("/resources/prj/hibernatelib");
 		importTestProject("/resources/prj/hibernate40");
 		util.waitForAll();

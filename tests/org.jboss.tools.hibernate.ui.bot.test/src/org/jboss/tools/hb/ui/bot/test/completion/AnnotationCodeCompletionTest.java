@@ -1,12 +1,7 @@
 package org.jboss.tools.hb.ui.bot.test.completion;
 
-import java.util.List;
-
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
-import org.jboss.tools.hb.ui.bot.common.JPAEntity;
 import org.jboss.tools.hb.ui.bot.common.Tree;
 import org.jboss.tools.hb.ui.bot.test.HibernateBaseTest;
 import org.jboss.tools.ui.bot.ext.config.Annotations.DB;
@@ -17,7 +12,7 @@ import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
 import org.junit.Test;
 
 /**
- * Create JPA Entity ui bot test
+ * Hibernate annotation test. Annotation code completion functionality is checked in Entity class
  */
 @Require(db = @DB, clearProjects = true)
 public class AnnotationCodeCompletionTest extends HibernateBaseTest {
