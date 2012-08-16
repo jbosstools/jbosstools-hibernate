@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion> 
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.jboss.tools.hibernatetools</groupId>
 		<artifactId>tests</artifactId>
 		<version>3.6.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.hibernatetools.tests</groupId>
-	<artifactId>org.jboss.tools.hibernate.ui.bot.test</artifactId> 
+	<artifactId>org.jboss.tools.hibernate.ui.bot.test</artifactId>
 
 	<packaging>eclipse-test-plugin</packaging>
- 
+
 	<properties>
-		<systemProperties>-Dtest.configurations.dir=./properties/</systemProperties> 
+		<systemProperties>-Dtest.configurations.dir=/home/jpeterka/etc/hb</systemProperties>
 	</properties>
 
 	<build>
@@ -23,15 +24,42 @@
 				<configuration>
 					<useUIThread>false</useUIThread>
 					<skip>${swtbot.test.skip}</skip>
+					<testSuite>org.jboss.tools.hibernate.ui.bot.test</testSuite>
+					<!-- <testClass>org.jboss.tools.hb.ui.bot.suite.ViewSuite</testClass> --> -->
+					<testClass>${test.suite.class}</testClass>
 					<dependencies combine.children="append">
 						<dependency>
 							<type>p2-installable-unit</type>
 							<artifactId>org.eclipse.datatools.enablement.hsqldb.feature.feature.group</artifactId>
 							<version>0.0.0</version>
 						</dependency>
-					</dependencies>
+						<!-- 
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.eclipse.jpt.jpa.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>-->
+					</dependencies> 
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+		<profile>
+			<id>mvn-debug</id>
+			<properties>
+				<systemProperties>-Xdebug
+					-Xrunjdwp:transport=dt_socket,address=8001,server=y,suspend=y</systemProperties>
+			</properties>
+		</profile>
+		<profile>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<id>jenkins</id>
+			<properties>
+				<test.suite.class>org.jboss.tools.hb.ui.bot.suite.JenkinsSuite</test.suite.class>
+			</properties>
+		</profile>
+	</profiles>
 </project>
