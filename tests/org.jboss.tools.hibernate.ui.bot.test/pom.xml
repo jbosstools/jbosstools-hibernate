@@ -13,7 +13,7 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<systemProperties>-Dtest.configurations.dir=/home/jpeterka/etc/hb</systemProperties>
+		<systemProperties>-Dtest.configurations.dir=${project.basedir}/properties/</systemProperties>
 	</properties>
 
 	<build>
