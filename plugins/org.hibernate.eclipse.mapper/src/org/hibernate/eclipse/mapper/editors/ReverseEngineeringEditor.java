@@ -26,8 +26,11 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.internal.ui.dialogs.OptionalMessageDialog;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.window.Window;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IKeyBindingService;
@@ -222,18 +225,15 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 			tf.setMatchSchema(".*"); //$NON-NLS-1$
 			tf.setMatchName(".*"); //$NON-NLS-1$
 			repository.addTableFilter(tf);
-			if(tableFilters.length==0) {
-				boolean b = MessageDialog.openQuestion(getContainer().getShell(), MapperMessages.ReverseEngineeringEditor_no_filters_defined, MapperMessages.ReverseEngineeringEditor_no_filters_has_been_defined);
-				if(!b) {
+			String dialogId = ReverseEngineeringEditor.class.getName();
+			if(tableFilters.length==0 && OptionalMessageDialog.isDialogEnabled(dialogId)) {
+				int returnCode = OptionalMessageDialog.open(dialogId,getContainer().getShell(),
+						MapperMessages.ReverseEngineeringEditor_no_filters_defined, null,
+						MapperMessages.ReverseEngineeringEditor_no_filters_has_been_defined, MessageDialog.QUESTION,
+						new String[] { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL }, 0);
+				if (returnCode == Window.CANCEL)
 					return null;
-				}
 			}
-			//if(!hasIncludes && tableFilters.length>0) { // not true anymore since it is converted to a include everything...
-				//boolean b = MessageDialog.openQuestion(getContainer().getShell(), "Only exclude filters defined", "Only exclude filters has been defined.\n This will result in no tables being read from the database schema.\n Do you wish to continue reading the database schema ?");
-				//if(!b) {
-				//	return null;
-				//}
-			//}
 
 			LazyDatabaseSchema lazyDatabaseSchema = new LazyDatabaseSchema(configuration, repository.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy()));
 
