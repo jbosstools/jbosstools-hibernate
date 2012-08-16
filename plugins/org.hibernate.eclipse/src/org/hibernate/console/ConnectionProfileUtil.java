@@ -115,6 +115,9 @@ public class ConnectionProfileUtil {
 			try {
 				connection = DriverManager.getConnection(url, user, pass);
 				// SQL Dialect:
+				//note this code potentially could throw class cast exception
+				//see https://issues.jboss.org/browse/JBIDE-8192
+				//probably when not Hiberante3.5 is used
 				Dialect dialect = DialectFactory.buildDialect(properties, connection);
 				return dialect.toString();
 			} catch (SQLException e) {

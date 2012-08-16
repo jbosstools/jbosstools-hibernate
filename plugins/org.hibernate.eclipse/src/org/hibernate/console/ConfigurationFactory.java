@@ -131,6 +131,8 @@ public class ConfigurationFactory {
 	}
 
 	@SuppressWarnings("unused")
+	// autoConfigureDialect(localCfg); Disabled for now since it causes very looong timeouts for
+	// non-running databases + i havent been needed until now...
 	private void autoConfigureDialect(Configuration localCfg) {
 		if (localCfg.getProperty(Environment.DIALECT) == null) {
 			String dialect = ConnectionProfileUtil.autoDetectDialect(localCfg.getProperties());
