@@ -111,6 +111,8 @@ public class HibernateConsoleMessages extends NLS {
 
 	public static String HibernatePropertyPage_details;
 	public static String HibernatePropertyPage_enable_hibernate3_support;
+
+	public static String HibernatePropertyPage_Error_updating_JpaProject;
 	public static String HibernatePropertyPage_open_url;
 	public static String HibernatePropertyPage_unable_open_webbrowser_for_url;
 	public static String HibernatePropertyPage_use_naming_strategy;

@@ -45,6 +45,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.JpaProject.Reference;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -79,6 +80,8 @@ public class HibernatePropertyPage extends PropertyPage {
 	Control[] settings;
 
 	private Button enableHibernate;
+	
+	private String initConsoleConfiguration;
 
 	private Combo selectedConfiguration;
 	
@@ -88,7 +91,7 @@ public class HibernatePropertyPage extends PropertyPage {
 	
 	private Label nsSeparator;
 	
-	private boolean initNamingStrategy;
+	private boolean initNamingStrategy, initEnableHibernate;
 	
 	private static final String NONE = "<None>"; //$NON-NLS-1$
 
@@ -228,16 +231,13 @@ public class HibernatePropertyPage extends PropertyPage {
 			}
 		});
 				
-
-		settings = new Control[] { ownerLabel, selectedConfiguration, details};
-	}
-	
-	private void addThirdSection(Composite parent) {
-		Composite settingsPart = createDefaultComposite(parent,2);
+		Composite settingsPart2 = createDefaultComposite(parent,2);
 		
-		enableNamingStrategy = new Button(settingsPart, SWT.CHECK);
+		enableNamingStrategy = new Button(settingsPart2, SWT.CHECK);
 		enableNamingStrategy.setText(HibernateConsoleMessages.HibernatePropertyPage_use_naming_strategy);
 		enableNamingStrategy.setSelection(initNamingStrategy);
+		
+		settings = new Control[] { ownerLabel, selectedConfiguration, details, enableNamingStrategy};
 	}
 
 	/**
@@ -255,7 +255,6 @@ public class HibernatePropertyPage extends PropertyPage {
 		addSeparator(composite);
 		addSecondSection(composite);		
 		addSeparator(composite);
-		addThirdSection(composite);		
 		nsSeparator = addSeparator(composite);
 		
 		addLogoSection(composite);
@@ -280,8 +279,9 @@ public class HibernatePropertyPage extends PropertyPage {
 	}
 
 	protected void performDefaults() {
-		enableHibernate.setSelection(false);
-		selectedConfiguration.select(0);
+		enableHibernate.setSelection(initEnableHibernate);
+		enableNamingStrategy.setSelection(initNamingStrategy);
+		selectedConfiguration.setText(initConsoleConfiguration);
 	}
 	
 	private boolean isHibernateJpaProject(){
@@ -320,17 +320,58 @@ public class HibernatePropertyPage extends PropertyPage {
 		Preferences node = scope.getNode(HibernatePropertiesConstants.HIBERNATE_CONSOLE_NODE);
 
 		if(node!=null) {
-			enableHibernate.setSelection(node.getBoolean(HibernatePropertiesConstants.HIBERNATE3_ENABLED, false) );
+			initEnableHibernate = node.getBoolean(HibernatePropertiesConstants.HIBERNATE3_ENABLED, false);
+			enableHibernate.setSelection(initEnableHibernate);
 			String cfg = node.get(HibernatePropertiesConstants.DEFAULT_CONFIGURATION, project.getName() );
 			ConsoleConfiguration configuration = KnownConfigurations.getInstance().find(cfg);
 			if(configuration==null) {
 				selectedConfiguration.select(0);
 				details.setEnabled(false);
 			} else {
+				initConsoleConfiguration = cfg;
 				selectedConfiguration.setText(cfg);				
 			}
 			initNamingStrategy = node.getBoolean(HibernatePropertiesConstants.NAMING_STRATEGY_ENABLED, true);
 			enableNamingStrategy.setSelection(initNamingStrategy);
+		}
+	}
+	
+	protected void rebildProjectIfJpa() {
+		if (isHibernateJpaProject()){
+			final JpaProject.Reference reference = (Reference) getProject().getAdapter(Reference.class);
+			
+			final IWorkspaceRunnable wr = new IWorkspaceRunnable() {
+				public void run(IProgressMonitor monitor)
+						throws CoreException {
+					try {
+						reference.rebuild();
+					} catch (InterruptedException e) {
+						throw new CoreException(new Status(IStatus.CANCEL, HibernateConsolePlugin.ID, null, e));
+					}
+					getProject().build(IncrementalProjectBuilder.FULL_BUILD, monitor);
+				}
+			};
+	
+			IRunnableWithProgress op = new IRunnableWithProgress() {
+				public void run(IProgressMonitor monitor) 
+						throws InvocationTargetException, InterruptedException {
+					try {
+						IWorkspace ws = ResourcesPlugin.getWorkspace();
+						ws.run(wr, ws.getRoot(), IWorkspace.AVOID_UPDATE, monitor);
+					}
+					catch(CoreException e) {
+						throw new InvocationTargetException(e);
+					}
+				}
+			};
+			
+			try{
+				new ProgressMonitorDialog(getShell()).run(true, false, op);
+			} catch (InvocationTargetException e) {
+				HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.HibernatePropertyPage_Error_updating_JpaProject, e);
+			} catch (InterruptedException e) {
+				HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.HibernatePropertyPage_Error_updating_JpaProject, e);
+			}
 		}
 	}
 	
@@ -344,58 +385,26 @@ public class HibernatePropertyPage extends PropertyPage {
 			node.putBoolean(HibernatePropertiesConstants.NAMING_STRATEGY_ENABLED, enableNamingStrategy.getSelection() );
 			try {
 				node.flush();
-				final IWorkspaceRunnable wr = new IWorkspaceRunnable() {
-					public void run(IProgressMonitor monitor)
-							throws CoreException {
-						try {
-							((JpaProject.Reference) getProject().getAdapter(JpaProject.Reference.class)).rebuild();
-						} catch (InterruptedException e) {
-							throw new CoreException(new Status(IStatus.CANCEL, HibernateConsolePlugin.ID, null, e));
-						}
-						getProject().build(IncrementalProjectBuilder.FULL_BUILD, monitor);
-					}
-				};
-
-				IRunnableWithProgress op = new IRunnableWithProgress() {
-					public void run(IProgressMonitor monitor) 
-							throws InvocationTargetException, InterruptedException {
-						try {
-							IWorkspace ws = ResourcesPlugin.getWorkspace();
-							ws.run(wr, ws.getRoot(), IWorkspace.AVOID_UPDATE, monitor);
-						}
-						catch(CoreException e) {
-							throw new InvocationTargetException(e);
-						}
-					}
-				};
-
-				try {
-					new ProgressMonitorDialog(getShell()).run(true, false, op);
-				}
-				catch (InterruptedException e) {
-					return false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
-				}
-				catch (InvocationTargetException e) {
-					final Throwable te = e.getTargetException();
-					throw new RuntimeException(te);
-				}
 				return true;
 			} catch (BackingStoreException e) {
 				HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.ProjectUtils_could_not_save_changes_to_preferences, e);
-				return false;
 			}
-		} else {
-			return false;
 		}
+		return false;
+
 	}
 	
 	public boolean performOk() {
 		ProjectUtils.toggleHibernateOnProject( getProject(), enableHibernate.getSelection(),
 				selectedConfiguration.getSelectionIndex() != 0 ? selectedConfiguration.getText() : ""); //$NON-NLS-1$
 		saveNamigStrategyChanges();
+		if (enableHibernate.getSelection() != initEnableHibernate
+				|| initNamingStrategy != enableNamingStrategy.getSelection()
+				|| isConsoleConfigurationChanged()){
+			rebildProjectIfJpa();
+		}
 		return true;
 	}
-
 
 	private void enableSettings(boolean selection) {
 		for (int i = 0; i < settings.length; i++) {
@@ -404,6 +413,14 @@ public class HibernatePropertyPage extends PropertyPage {
 		}
 		if (selection) {
 			details.setEnabled(selectedConfiguration.getSelectionIndex() != 0);
+		}
+	}
+	
+	protected boolean isConsoleConfigurationChanged(){
+		if (initConsoleConfiguration == null ){
+			return selectedConfiguration.getSelectionIndex() == 0;
+		} else {
+			return !initConsoleConfiguration.equals(selectedConfiguration.getText());
 		}
 	}
 
