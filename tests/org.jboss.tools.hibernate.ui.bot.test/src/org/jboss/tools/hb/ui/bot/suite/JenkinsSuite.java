@@ -2,6 +2,7 @@ package org.jboss.tools.hb.ui.bot.suite;
 
 import org.jboss.tools.hb.ui.bot.test.configuration.CreateConfigurationFileTest;
 import org.jboss.tools.hb.ui.bot.test.mappingfile.CreateMappingFileTest;
+import org.jboss.tools.hb.ui.bot.test.mappingfile.EditMappingFileTest;
 import org.jboss.tools.hb.ui.bot.test.perspective.PerspectiveTest;
 import org.jboss.tools.hb.ui.bot.test.reveng.CreateRevengFileTest;
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
@@ -18,9 +19,10 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
 	PerspectiveTest.class,
 	CreateConfigurationFileTest.class,
-	// EditConfigurationFileTest.class - Multipage editor must be fixed
+	// EditConfigurationFileTest.class - Multipage editor must be fixed for Juno
 	CreateRevengFileTest.class,
-	CreateMappingFileTest.class
+	CreateMappingFileTest.class,
+	EditMappingFileTest.class
  	})
 public class JenkinsSuite {
 
