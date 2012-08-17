@@ -5,6 +5,8 @@ import org.jboss.tools.hb.ui.bot.test.mappingfile.CreateMappingFileTest;
 import org.jboss.tools.hb.ui.bot.test.mappingfile.EditMappingFileTest;
 import org.jboss.tools.hb.ui.bot.test.perspective.PerspectiveTest;
 import org.jboss.tools.hb.ui.bot.test.reveng.CreateRevengFileTest;
+import org.jboss.tools.hb.ui.bot.test.view.JPADetailViewTest;
+import org.jboss.tools.hb.ui.bot.test.view.PackageInfoTest;
 import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
@@ -22,7 +24,9 @@ import org.junit.runners.Suite.SuiteClasses;
 	// EditConfigurationFileTest.class - Multipage editor must be fixed for Juno
 	CreateRevengFileTest.class,
 	CreateMappingFileTest.class,
-	EditMappingFileTest.class
+	EditMappingFileTest.class,
+	JPADetailViewTest.class,
+	PackageInfoTest.class
  	})
 public class JenkinsSuite {
 
