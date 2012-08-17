@@ -19,7 +19,7 @@ import org.junit.Test;
  * @author jpeterka
  * 
  */
-@Require(clearProjects = false)
+@Require(clearProjects = true)
 public class CreateMappingFileTest extends HibernateBaseTest {
 	
 	final String prj = "hibernate35";
