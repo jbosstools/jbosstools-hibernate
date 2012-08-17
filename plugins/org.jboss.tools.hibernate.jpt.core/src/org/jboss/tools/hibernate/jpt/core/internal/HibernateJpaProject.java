@@ -12,6 +12,7 @@
 package org.jboss.tools.hibernate.jpt.core.internal;
 
 import java.util.List;
+import java.util.Properties;
 
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.preferences.IScopeContext;
@@ -22,15 +23,21 @@ import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
+import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.AbstractJpaProject;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.properties.HibernatePropertiesConstants;
+import org.hibernate.eclipse.nature.HibernateNature;
+import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
+import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
 import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValidationMessage;
 import org.osgi.service.prefs.Preferences;
 
@@ -45,26 +52,80 @@ public class HibernateJpaProject extends AbstractJpaProject {
 	public HibernateJpaProject(JpaProject.Config config){
 		super(config);
 	}
-
-	public NamingStrategy getNamingStrategy(){
-		String ccName = getDefaultConsoleConfigurationName();
-		if (ccName != null || "".equals(ccName)){//$NON-NLS-1$
-			ConsoleConfiguration cc = KnownConfigurations.getInstance().find(ccName);
-			if (cc != null){
-				if (cc.getConfiguration() != null){
-					Configuration config = cc.getConfiguration();
-					return config.getNamingStrategy();
-				}
-			}
+	
+	public ConsoleConfiguration getDefaultConsoleConfiguration(){
+		HibernateNature nature = HibernateNature.getHibernateNature(getJavaProject());
+		if (nature != null){
+			return nature.getDefaultConsoleConfiguration();
 		}
 		return null;
 	}
 
+	public NamingStrategy getNamingStrategy(){
+		ConsoleConfiguration cc = getDefaultConsoleConfiguration();
+		if (cc != null){
+			if (cc.getConfiguration() != null){
+				Configuration config = cc.getConfiguration();
+				return config.getNamingStrategy();
+			}
+		}
+		return null;
+	}
+	
+	public BasicHibernateProperties getBasicHibernateProperties(){
+		Persistence persistence = getRootContextNode().getPersistenceXml().getPersistence();
+		if (persistence.getPersistenceUnitsSize() > 0){
+			PersistenceUnit persistenceUnit = persistence.getPersistenceUnit(0);
+			if (persistenceUnit instanceof HibernatePersistenceUnit) {
+				return ((HibernatePersistenceUnit) persistenceUnit).getHibernatePersistenceUnitProperties();
+			}
+		}
+		return null;
+	}
+	
+	@Override
+	public String getDefaultSchema() {
+		ConsoleConfiguration cc = getDefaultConsoleConfiguration();
+		if (cc != null){
+			Properties properties = cc.getPreferences().getProperties();
+			if (properties != null && properties.containsKey(Environment.DEFAULT_SCHEMA)){
+				return properties.getProperty(Environment.DEFAULT_SCHEMA);
+			}
+		}
+		String schema = null;
+		BasicHibernateProperties prop = getBasicHibernateProperties();
+		if (getUserOverrideDefaultSchema() != null){
+			schema = getUserOverrideDefaultSchema();
+		} else if (prop != null && prop.getSchemaDefault() != null){
+			schema = prop.getSchemaDefault(); 
+		}
+		
+		return schema != null ? schema : super.getDefaultSchema();
+	}
+	
+	@Override
+	public String getDefaultCatalog() {
+		String catalog = null;
+		BasicHibernateProperties prop = getBasicHibernateProperties();
+		ConsoleConfiguration cc = getDefaultConsoleConfiguration();
+		if (cc != null){
+			Properties properties = cc.getPreferences().getProperties();
+			if (properties != null && properties.containsKey(Environment.DEFAULT_CATALOG)){
+				return properties.getProperty(Environment.DEFAULT_CATALOG);
+			}
+		} else if (getUserOverrideDefaultCatalog() != null){
+			catalog = getUserOverrideDefaultCatalog();
+		} else if (prop != null && prop.getCatalogDefault() != null){
+			catalog = prop.getCatalogDefault(); 
+		}
+		
+		return catalog != null ? catalog : super.getDefaultCatalog();
+	}
+
 	public String getDefaultConsoleConfigurationName(){
-		IScopeContext scope = new ProjectScope(getProject());
-		Preferences node = scope.getNode(HibernatePropertiesConstants.HIBERNATE_CONSOLE_NODE);
-		if(node!=null) {
-			return node.get(HibernatePropertiesConstants.DEFAULT_CONFIGURATION, getName() );
+		HibernateNature nature = HibernateNature.getHibernateNature(getJavaProject());
+		if (nature != null){
+			return nature.getDefaultConsoleConfigurationName();
 		}
 		return null;
 	}

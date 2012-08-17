@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
-import java.io.File;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -113,7 +112,7 @@ implements Messages, Hibernate {
 	}
 
 	// ******** Behavior *********
-	public HibernatePersistenceUnitProperties getHibernatePersistenceUnitProperties() {
+	public BasicHibernateProperties getHibernatePersistenceUnitProperties() {
 		return this.hibernateProperties;
 	}
 
