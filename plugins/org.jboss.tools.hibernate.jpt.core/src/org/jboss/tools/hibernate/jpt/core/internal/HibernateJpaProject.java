@@ -83,40 +83,74 @@ public class HibernateJpaProject extends AbstractJpaProject {
 		return null;
 	}
 	
+	/*
+	 * The sequence is(from biggest priority to lowest):
+	 * 1) Configuration.getProperty() (if cc.hasConfiguration())
+	 * 2) ConsoleConfiguration.getPreference().getProperty()-uses hibernate.properties
+	 * 3) JpaProject user overrides
+	 * 4) persistence.xml
+	 * 5) logic from superclass
+	 */
 	@Override
 	public String getDefaultSchema() {
+		String schema = null;
 		ConsoleConfiguration cc = getDefaultConsoleConfiguration();
 		if (cc != null){
+			if (cc.hasConfiguration()){//was not build yet
+				Configuration configuration = cc.getConfiguration();
+				if (configuration.getProperties().containsKey(Environment.DEFAULT_SCHEMA)){
+					schema = configuration.getProperty(Environment.DEFAULT_SCHEMA);
+				}
+			}
 			Properties properties = cc.getPreferences().getProperties();
 			if (properties != null && properties.containsKey(Environment.DEFAULT_SCHEMA)){
-				return properties.getProperty(Environment.DEFAULT_SCHEMA);
+				schema = properties.getProperty(Environment.DEFAULT_SCHEMA);
 			}
 		}
-		String schema = null;
-		BasicHibernateProperties prop = getBasicHibernateProperties();
-		if (getUserOverrideDefaultSchema() != null){
-			schema = getUserOverrideDefaultSchema();
-		} else if (prop != null && prop.getSchemaDefault() != null){
-			schema = prop.getSchemaDefault(); 
+		if (schema == null){
+			BasicHibernateProperties prop = getBasicHibernateProperties();
+			if (getUserOverrideDefaultSchema() != null){
+				schema = getUserOverrideDefaultSchema();
+			} else if (prop != null && prop.getSchemaDefault() != null){
+				schema = prop.getSchemaDefault(); 
+			}
 		}
 		
 		return schema != null ? schema : super.getDefaultSchema();
 	}
 	
+	/*
+	 * The sequence is(from biggest priority to lowest):
+	 * 1) Configuration.getProperty() (if cc.hasConfiguration())
+	 * 2) ConsoleConfiguration.getPreference().getProperty()-uses hibernate.properties
+	 * 3) JpaProject user overrides
+	 * 4) persistence.xml
+	 * 5) logic from superclass
+	 */
 	@Override
 	public String getDefaultCatalog() {
 		String catalog = null;
 		BasicHibernateProperties prop = getBasicHibernateProperties();
 		ConsoleConfiguration cc = getDefaultConsoleConfiguration();
 		if (cc != null){
+			if (cc.hasConfiguration()){//was not build yet
+				Configuration configuration = cc.getConfiguration();
+				if (configuration.getProperties().containsKey(Environment.DEFAULT_CATALOG)){
+					catalog = configuration.getProperty(Environment.DEFAULT_CATALOG);
+				}
+				
+			}
 			Properties properties = cc.getPreferences().getProperties();
 			if (properties != null && properties.containsKey(Environment.DEFAULT_CATALOG)){
-				return properties.getProperty(Environment.DEFAULT_CATALOG);
+				catalog = properties.getProperty(Environment.DEFAULT_CATALOG);
 			}
-		} else if (getUserOverrideDefaultCatalog() != null){
-			catalog = getUserOverrideDefaultCatalog();
-		} else if (prop != null && prop.getCatalogDefault() != null){
-			catalog = prop.getCatalogDefault(); 
+		}
+		if (catalog == null){
+			if (getUserOverrideDefaultCatalog() != null){
+				catalog = getUserOverrideDefaultCatalog();
+			} else if (prop != null && prop.getCatalogDefault() != null){
+				catalog = prop.getCatalogDefault(); 
+			}
 		}
 		
 		return catalog != null ? catalog : super.getDefaultCatalog();

@@ -122,8 +122,7 @@ public class HibernateJptPlugin extends Plugin {
 
 			@Override
 			public void configurationBuilt(ConsoleConfiguration ccfg) {
-				if (ccfg.getConfiguration() == null
-						|| ccfg.getConfiguration().getNamingStrategy() == null){
+				if (ccfg.getConfiguration() == null){
 					return;
 				}
 				revalidateProjects(ccfg);
