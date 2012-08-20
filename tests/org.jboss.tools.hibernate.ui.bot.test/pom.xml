@@ -57,6 +57,12 @@
 			</properties>
 		</profile>
 		<profile>
+			<id>debug</id>
+			<properties>
+				<test.suite.class>org.jboss.tools.hb.ui.bot.suite.DebugSuite</test.suite.class>
+			</properties>
+		</profile>		
+		<profile>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
