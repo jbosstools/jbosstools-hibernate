@@ -6,7 +6,7 @@ Bundle-Version: 3.6.0.qualifier
 Bundle-Activator: org.jboss.tools.hibernate.ui.bot.testcase.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.junit4,
+ org.junit;bundle-version="4.8.0",
  org.apache.log4j;bundle-version="1.2.13",
  org.jboss.tools.ui.bot.ext,
  org.eclipse.jdt.ui,
