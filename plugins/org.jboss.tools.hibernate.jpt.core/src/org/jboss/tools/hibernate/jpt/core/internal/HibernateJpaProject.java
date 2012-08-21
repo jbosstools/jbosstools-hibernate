@@ -25,6 +25,7 @@ import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.internal.AbstractJpaProject;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -73,11 +74,14 @@ public class HibernateJpaProject extends AbstractJpaProject {
 	}
 	
 	public BasicHibernateProperties getBasicHibernateProperties(){
-		Persistence persistence = getRootContextNode().getPersistenceXml().getPersistence();
-		if (persistence.getPersistenceUnitsSize() > 0){
-			PersistenceUnit persistenceUnit = persistence.getPersistenceUnit(0);
-			if (persistenceUnit instanceof HibernatePersistenceUnit) {
-				return ((HibernatePersistenceUnit) persistenceUnit).getHibernatePersistenceUnitProperties();
+		if (getRootContextNode() != null){
+			PersistenceXml persistenceXml = getRootContextNode().getPersistenceXml();
+			Persistence persistence = persistenceXml.getPersistence();
+			if (persistence.getPersistenceUnitsSize() > 0){
+				PersistenceUnit persistenceUnit = persistence.getPersistenceUnit(0);
+				if (persistenceUnit instanceof HibernatePersistenceUnit) {
+					return ((HibernatePersistenceUnit) persistenceUnit).getHibernatePersistenceUnitProperties();
+				}
 			}
 		}
 		return null;
