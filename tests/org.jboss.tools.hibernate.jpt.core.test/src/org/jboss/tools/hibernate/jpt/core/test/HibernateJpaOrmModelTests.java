@@ -13,6 +13,7 @@ package org.jboss.tools.hibernate.jpt.core.test;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.JpaProject.Reference;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationshipStrategy;
@@ -65,7 +67,7 @@ public class HibernateJpaOrmModelTests {
 		project = ResourcesUtils.importProject(Platform.getBundle("org.jboss.tools.hibernate.jpt.core.test"),
 				PROJECT_PATH, new NullProgressMonitor());
 		project.refreshLocal(IResource.DEPTH_INFINITE, null);
-		jpaProject = (JpaProject) project.getAdapter(JpaProject.class);
+		jpaProject = ((Reference) project.getAdapter(Reference.class)).getValue();
 	}
 
 	@Test
@@ -95,7 +97,11 @@ public class HibernateJpaOrmModelTests {
 		assertNotNull("Naming Strategy not found", cc.getConfiguration().getNamingStrategy());
 		assertEquals("ns.NamingStrategy", cc.getConfiguration().getNamingStrategy().getClass().getName());
 
-		jpaProject = (JpaProject) project.getAdapter(JpaProject.class);
+		try {
+			jpaProject = ((Reference) project.getAdapter(Reference.class)).getValue();
+		} catch (InterruptedException e) {
+			fail(e.getMessage());
+		}
 		assertNotNull(jpaProject);
 		JpaRootContextNode rootContextNode = jpaProject.getRootContextNode();
 		Persistence p = rootContextNode.getPersistenceXml().getPersistence();
