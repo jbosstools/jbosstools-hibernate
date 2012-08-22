@@ -14,11 +14,20 @@ package org.jboss.tools.hibernate.jpt.core.internal;
 import java.util.List;
 import java.util.Properties;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.ProjectScope;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageInfoCompilationUnit;
+import org.eclipse.jpt.common.core.utility.command.JobCommand;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
@@ -27,6 +36,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.internal.AbstractJpaProject;
+import org.eclipse.wst.validation.ValidationFramework;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.hibernate.cfg.Configuration;
@@ -34,6 +44,7 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
+import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.properties.HibernatePropertiesConstants;
 import org.hibernate.eclipse.nature.HibernateNature;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit;
@@ -49,9 +60,12 @@ import org.osgi.service.prefs.Preferences;
 public class HibernateJpaProject extends AbstractJpaProject {
 
 	private Boolean cachedNamingStrategyEnable;
+	
+	private final JobCommand revalidateCommand;
 
 	public HibernateJpaProject(JpaProject.Config config){
 		super(config);
+		revalidateCommand = new RevalidateProjectCommand();
 	}
 	
 	public ConsoleConfiguration getDefaultConsoleConfiguration(){
@@ -234,6 +248,35 @@ public class HibernateJpaProject extends AbstractJpaProject {
 			}
 		};
 	}
+	
+	@Override
+	protected boolean synchronizeJpaFiles(IFile file, int deltaKind) {
+		boolean result = super.synchronizeJpaFiles(file, deltaKind);
+		ConsoleConfiguration cc = getDefaultConsoleConfiguration();
+		if (cc != null){
+			ConsoleConfigurationPreferences preferences = cc.getPreferences();
+			if (file.getLocation().toFile().equals(preferences.getPropertyFile())){
+				switch (deltaKind) {
+					case IResourceDelta.ADDED :
+					case IResourceDelta.REMOVED :
+					case IResourceDelta.CHANGED :
+						stateChanged();
+					revalidate();
+				}
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * I don't know what I do incorrectly but JpaProject isn't validated on the stateChanged().
+	 * This command is a temporary solution.
+	 *
+	 */
+	protected void revalidate() {
+		getManager().execute(revalidateCommand, org.jboss.tools.hibernate.jpt.core.internal.Messages.HibernateJpaProject_Update_Hibernate_properties, this);
+	}
 
 	@Override
 	protected void validate(List<IMessage> messages, IReporter reporter) {
@@ -261,6 +304,19 @@ public class HibernateJpaProject extends AbstractJpaProject {
 			}
 		}
 		return null;
+	}
+	
+	class RevalidateProjectCommand implements JobCommand {
+
+		public IStatus execute(IProgressMonitor monitor) {
+			try {
+				ValidationFramework.getDefault().validate(new IProject[]{HibernateJpaProject.this.getProject()},
+						false, true,  new NullProgressMonitor());
+				return Status.OK_STATUS;
+			} catch (CoreException e) {
+				return new Status(Status.ERROR, HibernateJptPlugin.ID, e.getMessage(), e);
+			}
+		}
 	}
 
 }

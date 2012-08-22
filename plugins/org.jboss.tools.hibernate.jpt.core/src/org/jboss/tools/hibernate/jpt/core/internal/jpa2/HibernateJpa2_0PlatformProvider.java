@@ -36,6 +36,7 @@ import org.eclipse.jpt.jpa.core.internal.context.java.JavaVersionMappingDefiniti
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaElementCollectionMappingDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaEmbeddedMappingDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaOneToManyMappingDefinition2_0;
+import org.jboss.tools.hibernate.jpt.core.internal.HibernatePropertiesResourceModelProvider;
 import org.jboss.tools.hibernate.jpt.core.internal.JavaPackageInfoResourceModelProviderPatched;
 import org.jboss.tools.hibernate.jpt.core.internal.context.definition.HibernateJavaBasicMappingDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.context.definition.HibernateJavaEntityDefinition;
@@ -110,7 +111,8 @@ public class HibernateJpa2_0PlatformProvider extends AbstractJpaPlatformProvider
 		JavaResourceModelProvider.instance(),
 		JarResourceModelProvider.instance(),
 		PersistenceResourceModelProvider.instance(),
-		OrmResourceModelProvider.instance()
+		OrmResourceModelProvider.instance(),
+		HibernatePropertiesResourceModelProvider.instance()
 	};
 
 

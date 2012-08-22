@@ -106,7 +106,8 @@ public class HibernateJpaPlatformProvider extends AbstractJpaPlatformProvider {
 		JavaResourceModelProvider.instance(),
 		JarResourceModelProvider.instance(),
 		PersistenceResourceModelProvider.instance(),
-		OrmResourceModelProvider.instance()
+		OrmResourceModelProvider.instance(),
+		HibernatePropertiesResourceModelProvider.instance()
 	};
 
 

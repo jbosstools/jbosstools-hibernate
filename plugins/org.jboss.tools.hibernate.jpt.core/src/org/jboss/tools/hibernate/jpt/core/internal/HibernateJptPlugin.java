@@ -22,8 +22,10 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.hibernate.console.ConsoleConfiguration;
@@ -41,6 +43,11 @@ public class HibernateJptPlugin extends Plugin {
 	public static final String ID = "org.jboss.tools.hibernate.jpt.core"; //$NON-NLS-1$
 
 	private static HibernateJptPlugin inst = null;
+	
+	private static String JAVA_PROPERTIES_CONTENT_TYPE_NAME = "org.eclipse.jdt.core.javaProperties"; //$NON-NLS-1$
+	
+	public static IContentType JAVA_PROPERTIES_CONTENT_TYPE = Platform.getContentTypeManager()
+			.getContentType(JAVA_PROPERTIES_CONTENT_TYPE_NAME);
 
 	public static HibernateJptPlugin getDefault() {
 		return inst;
