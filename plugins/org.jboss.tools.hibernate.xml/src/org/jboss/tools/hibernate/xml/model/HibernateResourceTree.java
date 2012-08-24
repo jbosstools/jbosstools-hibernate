@@ -23,7 +23,7 @@ public class HibernateResourceTree extends FileSystemResourceTree {
         String pathpart = o.getPathPart();
         String pp = pathpart;
         pp = pp.toLowerCase();
-        return pp.endsWith(".hbm.xml");
+        return pp.endsWith(".hbm.xml"); //$NON-NLS-1$
     }
 
     public void setModel(XModel model) {
@@ -80,7 +80,7 @@ public class HibernateResourceTree extends FileSystemResourceTree {
     }
 
 	public boolean isSelectable(XModelObject object) {
-		return (object != null && (object.getFileType() == XFileObject.FILE || object.getFileType() == XFileObject.FOLDER));
+		return (object != null && (object.getFileType() == XFileObject.FILE));
 	}
 
     public String getPath(XModelObject o) {
@@ -90,18 +90,18 @@ public class HibernateResourceTree extends FileSystemResourceTree {
         if(p == null) return ""; //$NON-NLS-1$
         int b = "FileSystems/".length(), e = p.length() - s.length(); //$NON-NLS-1$
         if(e < b) return ""; //$NON-NLS-1$
-        if(o.getFileType() == XFileObject.FOLDER) s += "/"; //$NON-NLS-1$
-        if(s.startsWith("/")) s = s.substring(1);
+        if(o.getFileType() == XFileObject.FOLDER) s += XModelObjectConstants.SEPARATOR;
+        if(s.startsWith(XModelObjectConstants.SEPARATOR)) s = s.substring(1);
         return s;
     }
 
     public XModelObject find(String value) {
-    	if(value != null && value.endsWith("/")) {
+    	if(value != null && value.endsWith(XModelObjectConstants.SEPARATOR)) {
     		value = value.substring(0, value.length() - 1);
     	}
     	XModelObject result = model.getByPath(value);
-    	if(result == null && value != null && !value.startsWith("/")) { //$NON-NLS-1$
-    		result = model.getByPath("/" + value); //$NON-NLS-1$
+    	if(result == null && value != null && !value.startsWith(XModelObjectConstants.SEPARATOR)) {
+    		result = model.getByPath(XModelObjectConstants.SEPARATOR + value);
     	}
         return result;
     }
