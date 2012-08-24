@@ -23,21 +23,28 @@ package org.hibernate.eclipse.console.utils;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.debug.internal.ui.stringsubstitution.StringVariableLabelProvider;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
+import org.eclipse.jdt.internal.ui.dialogs.PackageSelectionDialog;
+import org.eclipse.jdt.internal.ui.util.BusyIndicatorRunnableContext;
 import org.eclipse.jdt.ui.IJavaElementSearchConstants;
 import org.eclipse.jdt.ui.JavaElementLabelProvider;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.viewers.IFilter;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.window.Window;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
+import org.eclipse.ui.dialogs.FilteredList;
 import org.eclipse.ui.dialogs.SelectionDialog;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 
@@ -129,6 +136,50 @@ public class DialogSelectionHelper extends org.hibernate.eclipse.console.utils.x
 			return type.getFullyQualifiedName('.');
 		}
 		return null;
+	}
+	
+	public static IPackageFragment choosePackage(Shell shell, IJavaElement[] javaProjects, final IFilter filter, String title, String message){
+		BusyIndicatorRunnableContext context = new BusyIndicatorRunnableContext();
+		IJavaSearchScope scope = SearchEngine
+				.createJavaSearchScope(javaProjects, IJavaSearchScope.SOURCES
+						| IJavaSearchScope.REFERENCED_PROJECTS);
+
+		PackageSelectionDialog packageSelectionDialog = new PackageSelectionDialog(
+				shell, context,
+				PackageSelectionDialog.F_HIDE_DEFAULT_PACKAGE
+						| PackageSelectionDialog.F_HIDE_EMPTY_INNER, scope) {
+
+			@Override
+			protected FilteredList createFilteredList(Composite parent) {
+				FilteredList list = super.createFilteredList(parent);
+				if (filter != null){
+					list.setFilterMatcher(new FilteredList.FilterMatcher() {
+
+						@Override
+						public void setFilter(String pattern, boolean ignoreCase,
+								boolean ignoreWildCards) {
+						}
+
+						@Override
+						public boolean match(Object element) {
+							return filter.select(element);
+						}
+					}
+					);
+				}
+				return list;
+			}
+		};
+		
+		packageSelectionDialog.setTitle(title);
+		packageSelectionDialog.setMessage(message);
+
+		if (packageSelectionDialog.open() == Window.OK) {
+			return (IPackageFragment) packageSelectionDialog.getResult()[0];
+		}
+
+		return null;
+
 	}
 
 }

@@ -22,10 +22,9 @@ import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.internal.core.PackageFragment;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
-import org.eclipse.jdt.internal.ui.dialogs.PackageSelectionDialog;
-import org.eclipse.jdt.internal.ui.util.BusyIndicatorRunnableContext;
 import org.eclipse.jdt.ui.IJavaElementSearchConstants;
 import org.eclipse.jdt.ui.JavaUI;
+import org.eclipse.jface.viewers.IFilter;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
@@ -52,9 +51,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.dialogs.FilteredList;
 import org.eclipse.ui.dialogs.SelectionDialog;
 import org.eclipse.ui.progress.IProgressService;
+import org.hibernate.eclipse.console.utils.DialogSelectionHelper;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 import org.jboss.tools.hibernate.jpt.core.internal.context.persistence.PackageInfoRef;
 
@@ -279,51 +278,25 @@ public class HibernatePersistenceUnitClassesComposite extends Pane<PersistenceUn
 	}
 	
 	private IPackageFragment choosePackage() {
-		IJavaElement[] elements = new IJavaElement[] { getJavaProject() };
-		BusyIndicatorRunnableContext context = new BusyIndicatorRunnableContext();
-		IJavaSearchScope scope = SearchEngine
-				.createJavaSearchScope(elements, IJavaSearchScope.SOURCES
-						| IJavaSearchScope.REFERENCED_PROJECTS);
+		return DialogSelectionHelper.choosePackage(getShell(),
+				new IJavaProject[]{getJavaProject()},
+				createPackageFilter(),
+				Messages.HibernatePersistenceUnitClassesComposite_PackageSelectionDialog_title,
+				JptCommonUiMessages.ClassChooserPane_dialogMessage);
+	}
+	
+	protected IFilter createPackageFilter(){
+		return new IFilter() {
+			
+			public boolean select(Object element) {
+				if (element instanceof PackageFragment) {
+					PackageFragment pf = (PackageFragment) element;
+					return pf.getCompilationUnit(Hibernate.PACKAGE_INFO_JAVA).exists();
 
-		PackageSelectionDialog packageSelectionDialog = new PackageSelectionDialog(
-				getShell(), context,
-				PackageSelectionDialog.F_HIDE_DEFAULT_PACKAGE
-						| PackageSelectionDialog.F_HIDE_EMPTY_INNER, scope) {
-
-			@Override
-			protected FilteredList createFilteredList(Composite parent) {
-				FilteredList list = super.createFilteredList(parent);
-				//filter out packages without package-ifo.java
-				list.setFilterMatcher(new FilteredList.FilterMatcher() {
-
-					@Override
-					public void setFilter(String pattern, boolean ignoreCase,
-							boolean ignoreWildCards) {
-					}
-
-					@Override
-					public boolean match(Object element) {
-						if (element instanceof PackageFragment) {
-							PackageFragment pf = (PackageFragment) element;
-							return pf.getCompilationUnit(Hibernate.PACKAGE_INFO_JAVA).exists();
-
-						}
-						return false;
-					}
-				});
-				return list;
+				}
+				return false;
 			}
 		};
-
-		packageSelectionDialog.setTitle(Messages.HibernatePersistenceUnitClassesComposite_PackageSelectionDialog_title);
-		packageSelectionDialog
-				.setMessage(JptCommonUiMessages.ClassChooserPane_dialogMessage);
-
-		if (packageSelectionDialog.open() == Window.OK) {
-			return (IPackageFragment) packageSelectionDialog.getResult()[0];
-		}
-
-		return null;
 	}
 
 	/*
