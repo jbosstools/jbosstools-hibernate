@@ -25,6 +25,8 @@ import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
+import org.hibernate.type.TypeFactory;
+import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeAnnotation;
@@ -140,7 +142,7 @@ public class TypeImpl extends AbstractJavaJpaContextNode implements JavaType, Me
 				messages.add(HibernateJpaValidationMessage.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						TYPE_CANT_BE_EMPTY, this, range));
-			} else if (!getPersistenceUnit().hasTypeDef(type))	{
+			} else if (TypeFactory.basic(type) == null && !getPersistenceUnit().hasTypeDef(type))	{
 				IType lwType = null;
 				try {
 					lwType = getJpaProject().getJavaProject().findType(type);
@@ -159,7 +161,7 @@ public class TypeImpl extends AbstractJavaJpaContextNode implements JavaType, Me
 						 }
 					}
 				} catch (JavaModelException e) {
-					// just ignore it!
+					HibernateJptPlugin.logException(e);
 				}
 			}
 		}
