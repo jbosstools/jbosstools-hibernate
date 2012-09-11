@@ -171,7 +171,6 @@ public class NewConfigurationWizardPage extends WizardPage {
 					defaultConnectionProfile = dialog.getConnectionProfileName();
 					fillPropertiesFromConnectionProfile(defaultConnectionProfile);
 				}
-				shell.dispose();
 			}
 		});
         gd = new GridData(GridData.FILL_HORIZONTAL);
