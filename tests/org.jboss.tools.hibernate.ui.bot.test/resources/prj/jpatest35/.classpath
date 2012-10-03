@@ -14,5 +14,8 @@
 	<classpathentry kind="lib" path="/hibernatelib/hibernate35/jta-1.1.jar"/>
 	<classpathentry kind="lib" path="/hibernatelib/hibernate35/slf4j-api-1.5.8.jar"/>
 	<classpathentry kind="lib" path="/hibernatelib/jpa2/javax.persistence_2.0.0.jar"/>
+	<classpathentry kind="lib" path="/hibernatelib/connector/hsqldb.jar"/>
+	<classpathentry kind="lib" path="/hibernatelib/connector/mysql-connector-java-5.1.13-bin.jar"/>
+	<classpathentry kind="lib" path="/hibernatelib/connector/postgresql-8.4-702.jdbc4.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
