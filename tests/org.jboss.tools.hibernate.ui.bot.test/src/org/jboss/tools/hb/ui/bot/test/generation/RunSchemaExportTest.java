@@ -43,8 +43,10 @@ public class RunSchemaExportTest extends HibernateBaseTest {
 		String title = "Run SchemaExport";
 		bot.waitUntil(shellIsActive(title ));
 		SWTBotShell shell = bot.shell(title);
-		shell.bot().button(IDELabel.Button.YES).click();
-		bot.waitUntil(shellCloses(shell));
+		
+		// temporarily disabled until avoid db harm
+		// shell.bot().button(IDELabel.Button.YES).click();
+		// bot.waitUntil(shellCloses(shell));
 		
 		//SWTBotTreeItem selectNode = ConsoleConfiguration.selectNode(hc,"Configuration","Database","Public");
 		//assertTrue(selectNode.getNodes().size() != 0);

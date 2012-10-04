@@ -36,13 +36,20 @@ public class JPAEntitiesGenerationTest extends HibernateBaseTest {
 		SWTBotTree tree = viewBot.bot().tree().select(prj);
 
 		// JPA Tools -> Generate Tables From Entities
-		ContextMenuHelper.clickContextMenu(tree, "JPA Tools",
-				"Generate Tables from Entities...");
+		// workaround for https://issues.jboss.org/browse/JBIDE-12796
+		try {
+			ContextMenuHelper.clickContextMenu(tree, "JPA Tools",
+				"Generate Entities from Tables...");
+		}
+		catch(Exception e) {
+			ContextMenuHelper.clickContextMenu(tree, "JPA Tools",
+					"Generate Entities from Tables...");
+		}
 
 		// DDL Generation Dialog
 		String outputDir = prj + "/" + out;
 		bot.textWithLabel("Output directory:").setText(outputDir);
-		bot.textWithLabel("File name").setText(out);
+		bot.textWithLabel("Package:").setText("org.gen");
 
 		bot.button(IDELabel.Button.FINISH).click();		
 	}
