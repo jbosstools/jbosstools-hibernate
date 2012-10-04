@@ -7,7 +7,7 @@ import org.junit.Test;
 
 /**
  * Hibernate create configuration ui bot test
- * 
+ * - hibernate configuration file can be created
  * @author jpeterka
  * 
  */
