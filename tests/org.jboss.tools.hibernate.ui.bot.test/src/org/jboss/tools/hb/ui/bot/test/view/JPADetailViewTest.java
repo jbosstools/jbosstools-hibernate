@@ -20,7 +20,7 @@ import org.junit.Test;
 
 /**
  * JPA View ui bot test
- * 
+ * - Hibernate JPA annotation can be edited in JPA Detail view
  * @author jpeterka
  * 
  */

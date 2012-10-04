@@ -12,7 +12,7 @@ import org.junit.Test;
 
 /**
  * Hibernate annotation validation test
- * 
+ * - Hibernate annotation is properly validated in Problems View 
  * @author jpeterka
  * 
  */

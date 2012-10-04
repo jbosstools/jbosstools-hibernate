@@ -18,7 +18,7 @@ import org.junit.Test;
 
 /**
  * Create JPA Project ui bot test
- * 
+ * Hibernate details can be edited in persistene.xml editor
  * @author jpeterka
  * 
  */

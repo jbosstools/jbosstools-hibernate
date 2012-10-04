@@ -15,6 +15,7 @@ import org.junit.Test;
 
 /*
  * Criteria editor hb ui bot test
+ * - Criteria query can be executed in Hibernate Criteria Editor
  */
 @Require(db = @DB, clearProjects = true)
 public class CriteriaEditorTest extends HibernateBaseTest {
@@ -54,8 +55,7 @@ public class CriteriaEditorTest extends HibernateBaseTest {
 	
 	private void checkCriteriaQueryResult() {
 		SWTBotView qr = open.viewOpen(ActionItem.View.HibernateHibernateQueryResult.LABEL);
-		SWTBotTable table = qr.bot().table();
-		assertTrue(table.rowCount() != 0);		
+		SWTBotTable table = qr.bot().table();	
+		assertTrue(table.rowCount() != 0);
 	}
-
 }

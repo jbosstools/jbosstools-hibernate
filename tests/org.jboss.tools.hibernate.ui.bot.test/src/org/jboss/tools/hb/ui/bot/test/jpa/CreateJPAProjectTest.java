@@ -9,6 +9,7 @@ import org.osgi.framework.Version;
 
 /**
  * Create JPA Project ui bot test
+ * - JPA2 project can be created
  * 
  * @author jpeterka
  * 

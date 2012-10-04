@@ -7,6 +7,7 @@ import org.junit.Test;
 
 /**
  * Hibernate perspective ui bot test
+ * - Hibernate perspective and Hibernate views exists
  * 
  * @author jpeterka
  * 
