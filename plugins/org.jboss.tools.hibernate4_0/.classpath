@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/tools/hibernate-tools-4.0.0-CR1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/required/hibernate-commons-annotations-4.0.1.Final.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/required/hibernate-core-4.0.0.Final.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/required/jboss-logging-3.1.0.CR2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jpa/hibernate-entitymanager-4.0.0.Final.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/required/slf4j-api-1.5.8.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jpa/hibernate-entitymanager-4.0.0.CR6.jar" sourcepath="C:/Documents and Settings/dgeraskov/.m2/repository/org/hibernate/hibernate-entitymanager/4.0.0.CR6/hibernate-entitymanager-4.0.0.CR6-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/required/antlr-2.7.7.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/required/classmate-0.5.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/required/commons-collections-3.2.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/required/dom4j-1.6.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/required/hibernate-commons-annotations-4.0.0.Final.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/required/hibernate-core-4.0.0.CR6.jar" sourcepath="C:/dev/Libs/hibernate-release-4.0.0.CR6/project"/>
 	<classpathentry exported="true" kind="lib" path="lib/required/hibernate-jpa-2.0-api-1.0.1.Final.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/required/jandex-1.0.3.Final.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/required/javassist-3.12.1.GA.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/required/jboss-logging-3.1.0.CR1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/required/jboss-transaction-api_1.1_spec-1.0.0.Final.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/tools/freemarker.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/tools/hibernate-tools-4.0.0.jar" sourcepath="C:/dev/workspaces/RedHat/_Git/dgeraskov/tools4.0/hibernate-tools/src"/>
 	<classpathentry exported="true" kind="lib" path="lib/tools/jtidy-r8-20060801.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/bsh-core-2.0b4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/log4j-1.2.15.jar"/>

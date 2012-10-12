@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/tools/hibernate-tools-3.4.0.CR2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
@@ -20,7 +21,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/oscache-2.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/proxool-0.8.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/swarmcache-1.0rc2.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/tools/hibernate-tools.jar" sourcepath="C:/dev/workspaces/RedHat/_Git/hibernate-tools.core/hibernate-tools"/>
 	<classpathentry exported="true" kind="lib" path="lib/tools/freemarker.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/bsh-core-2.0b4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/jgroups-2.2.8.jar"/>

@@ -21,7 +21,6 @@ Bundle-ClassPath: .,
  lib/hibernate/oscache-2.1.jar,
  lib/hibernate/proxool-0.8.3.jar,
  lib/hibernate/swarmcache-1.0rc2.jar,
- lib/tools/hibernate-tools.jar,
  lib/tools/freemarker.jar,
  lib/bsh-core-2.0b4.jar,
  lib/hibernate/jgroups-2.2.8.jar,
@@ -37,7 +36,8 @@ Bundle-ClassPath: .,
  lib/hibernate/commons-collections-3.1.jar,
  lib/hibernate/slf4j-api-1.5.8.jar,
  lib/hibernate/slf4j-log4j12-1.5.8.jar,
- lib/hibernate/commons-collections-3.1.jar
+ lib/hibernate/commons-collections-3.1.jar,
+ lib/tools/hibernate-tools-3.4.0.CR2.jar
 Bundle-Activator: org.hibernate.eclipse.libs.HibernateLibsPlugin
 Require-Bundle: org.eclipse.core.runtime
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
