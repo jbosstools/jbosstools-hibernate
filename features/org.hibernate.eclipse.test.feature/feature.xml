@@ -24,6 +24,5 @@
 	<!-- TODO: should these be enabled / built? -->
 	<!-- commented until migration to juno is finished --> 
 	<!-- plugin id="org.jboss.tools.hibernate.jpt.core.test" download-size="0" install-size="0" version="0.0.0" / -->
-	<plugin id="org.jboss.tools.hibernate.ui.bot.test" download-size="0" install-size="0" version="0.0.0" />
 	
 </feature>
