@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/required/commons-logging-1.1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/tools/hibernate-tools-4.0.0-CR1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/required/hibernate-commons-annotations-4.0.1.Final.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/required/hibernate-core-4.0.0.Final.jar"/>
