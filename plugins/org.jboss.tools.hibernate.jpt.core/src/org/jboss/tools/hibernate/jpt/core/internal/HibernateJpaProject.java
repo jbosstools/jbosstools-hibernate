@@ -248,7 +248,16 @@ public class HibernateJpaProject extends AbstractJpaProject {
 			}
 		};
 	}
-	
+	@Override
+	protected JpaFile addJpaFileMaybe_(IFile file) {
+		Object object = jpaFiles.get(file);
+		if (object != null && object instanceof JpaFile) {
+			return (JpaFile)object;
+		} else {
+			return super.addJpaFileMaybe_(file);
+		}
+	}
+
 	@Override
 	protected boolean synchronizeJpaFiles(IFile file, int deltaKind) {
 		boolean result = super.synchronizeJpaFiles(file, deltaKind);
