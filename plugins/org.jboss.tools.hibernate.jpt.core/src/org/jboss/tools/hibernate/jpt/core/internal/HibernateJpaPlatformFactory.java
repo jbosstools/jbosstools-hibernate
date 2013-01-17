@@ -11,14 +11,14 @@
 package org.jboss.tools.hibernate.jpt.core.internal;
 
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPlatformFactory;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation;
+import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaAnnotationDefinitionProvider;
-import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformFactory.SimpleVersion;
+import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformFactory.GenericJpaPlatformVersion;
 import org.eclipse.jpt.jpa.core.internal.JpaAnnotationProvider;
 import org.eclipse.persistence.jpa.jpql.parser.JPQLGrammar1_0;
 
@@ -27,7 +27,7 @@ import org.eclipse.persistence.jpa.jpql.parser.JPQLGrammar1_0;
  *
  */
 public class HibernateJpaPlatformFactory implements JpaPlatformFactory {
-
+	
 	/**
 	 * zero-argument constructor
 	 */
@@ -49,7 +49,7 @@ public class HibernateJpaPlatformFactory implements JpaPlatformFactory {
 
 
 	private JpaPlatform.Version buildJpaVersion() {
-		return new SimpleVersion(JpaFacet.VERSION_1_0.getVersionString());
+		return new GenericJpaPlatformVersion(JpaProject.FACET_VERSION_STRING);
 	}
 
 	protected JpaFactory buildJpaFactory() {

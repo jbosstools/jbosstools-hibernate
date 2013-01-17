@@ -55,8 +55,8 @@ public class JavaDiscriminatorFormulaImpl extends AbstractJavaJpaContextNode imp
 		setValue_(newValue);
 	}
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.annotation.getTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		return this.annotation.getTextRange();
 	}
 
 	@Override

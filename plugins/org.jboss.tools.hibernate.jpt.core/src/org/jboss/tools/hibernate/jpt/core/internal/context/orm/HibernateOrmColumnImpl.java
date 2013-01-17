@@ -11,7 +11,7 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmColumn;
 import org.eclipse.jpt.jpa.db.Column;
@@ -30,7 +30,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValida
 public class HibernateOrmColumnImpl extends GenericOrmColumn
 implements HibernateOrmColumn {
 
-	public HibernateOrmColumnImpl(XmlContextNode parent, OrmColumn.Owner owner) {
+	public HibernateOrmColumnImpl(JpaContextNode parent, OrmColumn.Owner owner) {
 		super(parent, owner);
 	}
 

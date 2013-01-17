@@ -14,9 +14,9 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 import java.util.Iterator;
 
 import org.eclipse.jpt.jpa.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaJoinColumn;
 import org.eclipse.jpt.jpa.core.resource.java.CompleteJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.db.Column;
@@ -36,7 +36,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValida
 public class HibernateJavaJoinColumnImpl extends GenericJavaJoinColumn
 implements HibernateJavaJoinColumn {
 
-	public HibernateJavaJoinColumnImpl(JavaJpaContextNode parent, JavaReadOnlyJoinColumn.Owner owner, CompleteJoinColumnAnnotation joinColumnAnnotation) {
+	public HibernateJavaJoinColumnImpl(JpaContextNode parent, ReadOnlyJoinColumn.Owner owner, CompleteJoinColumnAnnotation joinColumnAnnotation) {
 		super(parent, owner, joinColumnAnnotation);
 	}
 

@@ -37,6 +37,7 @@ import org.eclipse.jpt.jpa.core.internal.context.orm.OrmOneToOneMappingDefinitio
 import org.eclipse.jpt.jpa.core.internal.context.orm.OrmTransientMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.orm.OrmVersionMappingDefinition;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 
 /**
  *

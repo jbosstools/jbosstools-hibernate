@@ -15,7 +15,6 @@ import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourcePackageInfoCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -46,7 +45,7 @@ public class JavaPackageInfoResourceModelProviderPatched implements
 	}
 
 	public IContentType getContentType() {
-		return JptCommonCorePlugin.JAVA_SOURCE_PACKAGE_INFO_CONTENT_TYPE;
+		return JavaResourceCompilationUnit.PACKAGE_INFO_CONTENT_TYPE;
 	}
 
 	public JavaResourceCompilationUnit buildResourceModel(

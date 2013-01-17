@@ -43,10 +43,8 @@ import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.preference.PreferencePage;
-import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProject.Reference;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -72,6 +70,7 @@ import org.hibernate.eclipse.console.actions.EditConsoleConfiguration;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.console.utils.LaunchHelper;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
+import org.hibernate.eclipse.utils.HibernateEclipseUtils;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
@@ -286,10 +285,14 @@ public class HibernatePropertyPage extends PropertyPage {
 	
 	private boolean isHibernateJpaProject(){
 		IProject project = getProject();
-		if (!JpaFacet.isInstalled(project)) {
+//		if (!JpaFacet.isInstalled(project)) {
+		/* Replaced previous line by next by Koen after Dali API changes */
+		if (!HibernateEclipseUtils.isJpaFacetInstalled(project)) {
 			return false;
 		}
-		String jpaPlatformId = JptJpaCorePlugin.getJpaPlatformId(project);
+//		String jpaPlatformId = JptJpaCorePlugin.getJpaPlatformId(project);
+		/* Replaced previous line by next by Koen after Dali API changes */
+		String jpaPlatformId = HibernateEclipseUtils.getJpaPlatformID(project);
 		return HibernatePropertiesConstants.HIBERNATE_JPA_PLATFORM_ID.equals(jpaPlatformId)
 				|| HibernatePropertiesConstants.HIBERNATE_JPA2_0_PLATFORM_ID.equals(jpaPlatformId);
 	}

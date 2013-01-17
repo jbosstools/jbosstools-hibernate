@@ -17,8 +17,8 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -39,7 +39,7 @@ public class ForeignKeyImpl extends AbstractJavaJpaContextNode implements Foreig
 	
 	private String inverseName;
 
-	public ForeignKeyImpl(JavaJpaContextNode parent, ForeignKeyAnnotation annotation) {
+	public ForeignKeyImpl(JpaContextNode parent, ForeignKeyAnnotation annotation) {
 		super(parent);
 		this.annotation = annotation;
 		this.name = annotation.getName();

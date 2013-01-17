@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.CacheModeType;
@@ -45,7 +45,7 @@ public abstract class AbstractHibernateNamedQueryImpl<T extends HibernateQueryAn
 	/**
 	 * @param parent
 	 */
-	public AbstractHibernateNamedQueryImpl(JavaJpaContextNode parent, T queryAnnotation) {
+	public AbstractHibernateNamedQueryImpl(JpaContextNode parent, T queryAnnotation) {
 		super(parent, queryAnnotation);
 		this.specifiedFlushMode = this.getResourceFlushMode(queryAnnotation);
 		this.specifiedCacheMode = this.getResourceCacheMode(queryAnnotation);

@@ -12,7 +12,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.jboss.tools.hibernate.jpt.core.internal.context.ParametrizedElement;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeDefAnnotation;
 
@@ -20,7 +20,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeDefAnnotati
  * @author Dmitry Geraskov
  *
  */
-public interface JavaTypeDef extends JavaJpaContextNode, ParametrizedElement {
+public interface JavaTypeDef extends JpaContextNode, ParametrizedElement {
 	
 	String USER_TYPE_INTERFACE = "org.hibernate.usertype.UserType";
 	String TYPE_INTERFACE = "org.hibernate.type.Type";

@@ -12,9 +12,9 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmJoinColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.jpa.db.Column;
@@ -34,7 +34,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValida
 public class HibernateOrmJoinColumnImpl extends GenericOrmJoinColumn implements
 		HibernateOrmJoinColumn {
 
-	public HibernateOrmJoinColumnImpl(XmlContextNode parent, OrmReadOnlyJoinColumn.Owner owner,
+	public HibernateOrmJoinColumnImpl(JpaContextNode parent, ReadOnlyJoinColumn.Owner owner,
 			XmlJoinColumn resourceJoinColumn) {
 		super(parent, owner, resourceJoinColumn);
 	}

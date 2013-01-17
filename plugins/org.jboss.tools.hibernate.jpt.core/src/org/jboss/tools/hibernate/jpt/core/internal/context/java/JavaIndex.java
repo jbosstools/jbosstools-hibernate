@@ -11,14 +11,14 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.IndexAnnotation;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public interface JavaIndex extends JavaJpaContextNode {
+public interface JavaIndex extends JpaContextNode {
 	
 	String getName();
 	void setName(String name);

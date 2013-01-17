@@ -12,7 +12,7 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import org.eclipse.jpt.jpa.core.context.java.JavaMappingJoinColumnRelationship;
-import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.context.java.GenericJavaMappingJoinColumnRelationshipStrategy;
 
 /**
@@ -28,7 +28,7 @@ public class HibernateJavaJoinColumnJoiningStrategy extends
 	}
 	
 	@Override
-	protected JavaReadOnlyJoinColumn.Owner buildJoinColumnOwner() {
+	protected ReadOnlyJoinColumn.Owner buildJoinColumnOwner() {
 		return new HibernateJoinColumnOwner();
 	}
 

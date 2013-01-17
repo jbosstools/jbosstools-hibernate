@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
@@ -19,11 +18,10 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -53,7 +51,7 @@ public class JavaTypeDefImpl extends AbstractJavaJpaContextNode implements JavaT
 	protected final Vector<JavaParameter> parameters = new Vector<JavaParameter>();
 	protected final ParameterContainerAdapter parameterContainerAdapter = new ParameterContainerAdapter();
 
-	public JavaTypeDefImpl(JavaJpaContextNode parent, TypeDefAnnotation typeDefAnnotation) {
+	public JavaTypeDefImpl(JpaContextNode parent, TypeDefAnnotation typeDefAnnotation) {
 		super(parent);
 		this.typeDefAnnotation = typeDefAnnotation;
 		this.name = typeDefAnnotation.getName();
@@ -258,11 +256,11 @@ public class JavaTypeDefImpl extends AbstractJavaJpaContextNode implements JavaT
 	}
 
 	public TextRange getSelectionTextRange(CompilationUnit astRoot) {
-		return this.typeDefAnnotation.getTextRange(astRoot);
+		return this.typeDefAnnotation.getTextRange();
 	}
 	
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.typeDefAnnotation.getNameTextRange(astRoot);
+	public TextRange getNameTextRange() {
+		return this.typeDefAnnotation.getNameTextRange();
 	}
 	
 	public TextRange getTypeClassTextRange(CompilationUnit astRoot) {
@@ -270,9 +268,8 @@ public class JavaTypeDefImpl extends AbstractJavaJpaContextNode implements JavaT
 	}
 	
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter,
-			CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		
 		if (StringTools.stringIsEmpty(this.name)){
 			messages.add(
@@ -280,7 +277,7 @@ public class JavaTypeDefImpl extends AbstractJavaJpaContextNode implements JavaT
 							IMessage.HIGH_SEVERITY,
 							NAME_CANT_BE_EMPTY,
 							this,
-							this.getNameTextRange(astRoot))
+							this.getNameTextRange())
 				
 			);
 		} else {
@@ -294,7 +291,7 @@ public class JavaTypeDefImpl extends AbstractJavaJpaContextNode implements JavaT
 										TYPE_DEF_DUPLICATE_NAME,
 										new String[]{this.name},
 										this,
-										this.getNameTextRange(astRoot))
+										this.getNameTextRange())
 						);
 						break;
 					}
@@ -308,12 +305,12 @@ public class JavaTypeDefImpl extends AbstractJavaJpaContextNode implements JavaT
 				lwType = getJpaProject().getJavaProject().findType(typeClass);
 				if (lwType == null || !lwType.isClass()){
 					messages.add(HibernateJpaValidationMessage.buildMessage(
-							IMessage.HIGH_SEVERITY,TYPE_CLASS_NOT_FOUND, new String[]{typeClass}, this, this.getTypeClassTextRange(astRoot)));
+							IMessage.HIGH_SEVERITY,TYPE_CLASS_NOT_FOUND, new String[]{typeClass}, this, this.getTypeClassTextRange()));
 				} else {
 					if (!JpaUtil.isTypeImplementsOneOfInterfaces(getJpaProject().getJavaProject(), lwType,
 							 JavaTypeDef.POSSIBLE_INTERFACES)){
 						messages.add(HibernateJpaValidationMessage.buildMessage(
-								IMessage.HIGH_SEVERITY,IMPLEMENT_USER_TYPE_INTERFACE, new String[]{typeClass}, this, this.getTypeClassTextRange(astRoot)));
+								IMessage.HIGH_SEVERITY,IMPLEMENT_USER_TYPE_INTERFACE, new String[]{typeClass}, this, this.getTypeClassTextRange()));
 					 }
 				}
 			} catch (JavaModelException e) {
@@ -332,7 +329,7 @@ public class JavaTypeDefImpl extends AbstractJavaJpaContextNode implements JavaT
 									TYPE_DEF_DUPLICATE_NAME,
 									new String[]{this.name},
 									this,
-									this.getNameTextRange(astRoot))
+									this.getNameTextRange())
 					);
 					break;
 				}

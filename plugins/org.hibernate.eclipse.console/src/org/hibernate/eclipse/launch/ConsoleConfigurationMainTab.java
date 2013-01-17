@@ -23,8 +23,6 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.jpt.jpa.core.JpaFacet;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -52,6 +50,7 @@ import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.eclipse.console.wizards.NewConfigurationWizard;
 import org.hibernate.eclipse.console.wizards.NewConfigurationWizardPage;
+import org.hibernate.eclipse.utils.HibernateEclipseUtils;
 import org.hibernate.util.xpl.StringHelper;
 
 @SuppressWarnings("restriction")
@@ -443,11 +442,15 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 			}
 
 			if (ConnectionProfileCtrl.JPA_CONNECTIN_NAME.equals(cpName)){
-				if (!JpaFacet.isInstalled(findJavaProject.getProject())) {
+//				if (!JpaFacet.isInstalled(findJavaProject.getProject())) {
+				/* Replaced previous line by next by Koen after Dali API changes */
+				if (!HibernateEclipseUtils.isJpaFacetInstalled(findJavaProject.getProject())) {
 					setErrorMessage(NLS.bind(HibernateConsoleMessages.ConsoleConfigurationMainTab_project_must_be_jpa, getProjectName()));
 					return false;
 				}
-				String projectCPName = JptJpaCorePlugin.getConnectionProfileName(findJavaProject.getProject());
+//				String projectCPName = JptJpaCorePlugin.getConnectionProfileName(findJavaProject.getProject());
+				/* Replaced previous line by next by Koen after Dali API changes */
+				String projectCPName = HibernateEclipseUtils.getConnectionProfileName(findJavaProject.getProject());
 				if (StringHelper.isEmpty(projectCPName)){
 					setErrorMessage(NLS.bind(HibernateConsoleMessages.ConsoleConfigurationMainTab_cp_not_specified, getProjectName()));
 					return false;
@@ -514,7 +517,9 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 
 		return true;
 	}
-
+	
+	
+	
 	private ConfigurationMode getConfigurationMode() {
 		if(annotationsMode.getSelection()) {
 			return ConfigurationMode.ANNOTATIONS;

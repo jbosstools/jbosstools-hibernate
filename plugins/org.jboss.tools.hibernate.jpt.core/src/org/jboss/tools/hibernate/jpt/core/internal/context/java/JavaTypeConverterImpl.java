@@ -61,8 +61,8 @@ public class JavaTypeConverterImpl extends AbstractJavaConverter implements Java
 	// ********** type **********
 
 	@Override
-	protected TextRange getAnnotationTextRange(CompilationUnit astRoot) {
-		return this.typeAnnotation.getTextRange(astRoot);
+	protected TextRange getAnnotationTextRange() {
+		return this.typeAnnotation.getTextRange();
 	}
 
 	@Override

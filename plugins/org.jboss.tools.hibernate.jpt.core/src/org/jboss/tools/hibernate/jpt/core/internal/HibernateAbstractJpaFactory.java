@@ -11,10 +11,13 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal;
 
+
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
@@ -28,7 +31,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToManyMapping;
@@ -36,7 +38,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
-import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaTable;
 import org.eclipse.jpt.jpa.core.internal.AbstractJpaFactory;
@@ -122,22 +123,22 @@ public abstract class HibernateAbstractJpaFactory extends AbstractJpaFactory {
 		return new JavaGenericGeneratorImpl(parent, annotation);
 	}
 
-	public JavaTypeDef buildJavaTypeDef(JavaJpaContextNode parent, TypeDefAnnotation typeDefResource) {
+	public JavaTypeDef buildJavaTypeDef(JpaContextNode parent, TypeDefAnnotation typeDefResource) {
 		return new JavaTypeDefImpl(parent, typeDefResource);
 	}
 
 	@Override
 	public JavaDiscriminatorColumn buildJavaDiscriminatorColumn(
 			JavaEntity parent,
-			org.eclipse.jpt.jpa.core.context.java.JavaDiscriminatorColumn.Owner owner) {
+			ReadOnlyNamedDiscriminatorColumn.Owner owner) {
 		return new HibernateJavaDiscriminatorColumnImpl(parent, owner);
 	}
 
-	public HibernateJavaNamedQuery buildHibernateJavaNamedQuery(JavaJpaContextNode parent, HibernateNamedQueryAnnotation hibernateNamedQueryAnnotation) {
+	public HibernateJavaNamedQuery buildHibernateJavaNamedQuery(JpaContextNode parent, HibernateNamedQueryAnnotation hibernateNamedQueryAnnotation) {
 		return new HibernateNamedQueryImpl(parent, hibernateNamedQueryAnnotation);
 	}
 
-	public HibernateJavaNamedNativeQuery buildHibernateJavaNamedNativeQuery(JavaJpaContextNode parent, HibernateNamedNativeQueryAnnotation namedNativeQueryAnnotation) {
+	public HibernateJavaNamedNativeQuery buildHibernateJavaNamedNativeQuery(JpaContextNode parent, HibernateNamedNativeQueryAnnotation namedNativeQueryAnnotation) {
 		return new HibernateNamedNativeQueryImpl(parent, namedNativeQueryAnnotation);
 	}
 
@@ -151,7 +152,7 @@ public abstract class HibernateAbstractJpaFactory extends AbstractJpaFactory {
 	}
 
 	@Override
-	public JavaColumn buildJavaColumn(JavaJpaContextNode parent, JavaColumn.Owner owner) {
+	public JavaColumn buildJavaColumn(JpaContextNode parent, JavaColumn.Owner owner) {
 		return new HibernateJavaColumnImpl(parent, owner);
 	}
 	
@@ -181,8 +182,8 @@ public abstract class HibernateAbstractJpaFactory extends AbstractJpaFactory {
 
 	@Override
 	public JavaJoinColumn buildJavaJoinColumn(
-			JavaJpaContextNode parent,
-			JavaReadOnlyJoinColumn.Owner owner,
+			JpaContextNode parent,
+			ReadOnlyJoinColumn.Owner owner,
 			CompleteJoinColumnAnnotation joinColumnAnnotation) {
 		return new HibernateJavaJoinColumnImpl(parent, owner, joinColumnAnnotation);
 	}
@@ -213,7 +214,7 @@ public abstract class HibernateAbstractJpaFactory extends AbstractJpaFactory {
 
 	@Override
 	public JavaQueryContainer buildJavaQueryContainer(
-			JavaJpaContextNode parent,
+			JpaContextNode parent,
 			org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer.Owner owner) {
 		return new HibernateJavaQueryContainerImpl(parent, owner);
 	}
@@ -224,19 +225,19 @@ public abstract class HibernateAbstractJpaFactory extends AbstractJpaFactory {
 		return new HibernateJavaGeneratorContainerImpl(parentAdapter);
 	}
 
-	public HibernateJavaTypeDefContainer buildJavaTypeDefContainer(JavaJpaContextNode parent, JavaResourceAnnotatedElement annotatedElement) {
+	public HibernateJavaTypeDefContainer buildJavaTypeDefContainer(JpaContextNode parent, JavaResourceAnnotatedElement annotatedElement) {
 		return new HibernateJavaTypeDefContainerImpl(parent, annotatedElement);
 	}
 
-	public JavaIndex buildIndex(JavaJpaContextNode parent, IndexAnnotation annotation) {
+	public JavaIndex buildIndex(JpaContextNode parent, IndexAnnotation annotation) {
 		return new IndexImpl(parent, annotation);
 	}
 
-	public ForeignKey buildForeignKey(JavaJpaContextNode parent, ForeignKeyAnnotation annotation) {
+	public ForeignKey buildForeignKey(JpaContextNode parent, ForeignKeyAnnotation annotation) {
 		return new ForeignKeyImpl(parent, annotation);
 	}
 
-	public JavaType buildType(JavaJpaContextNode parent, TypeAnnotation annotation) {
+	public JavaType buildType(JpaContextNode parent, TypeAnnotation annotation) {
 		return new TypeImpl(parent, annotation);
 	}
 

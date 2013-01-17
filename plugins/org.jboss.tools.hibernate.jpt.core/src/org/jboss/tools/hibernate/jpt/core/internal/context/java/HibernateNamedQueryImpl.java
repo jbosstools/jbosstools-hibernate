@@ -12,7 +12,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.List;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -25,7 +25,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedQ
  */
 public class HibernateNamedQueryImpl extends AbstractHibernateNamedQueryImpl<HibernateNamedQueryAnnotation> implements HibernateJavaNamedQuery {
 
-	public HibernateNamedQueryImpl(JavaJpaContextNode parent,
+	public HibernateNamedQueryImpl(JpaContextNode parent,
 			HibernateNamedQueryAnnotation queryAnnotation) {
 		super(parent, queryAnnotation);
 	}

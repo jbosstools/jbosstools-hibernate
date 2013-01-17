@@ -17,8 +17,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
-import org.eclipse.jpt.jpa.core.JpaFacet;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.console.ConnectionProfileUtil;
 import org.hibernate.console.HibernateConsoleRuntimeException;
@@ -26,6 +24,7 @@ import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.utils.ClassLoaderHelper;
 import org.hibernate.eclipse.console.utils.DriverClassHelpers;
 import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
+import org.hibernate.eclipse.utils.HibernateEclipseUtils;
 import org.hibernate.util.xpl.StringHelper;
 import org.w3c.dom.Element;
 
@@ -143,10 +142,14 @@ public class EclipseLaunchConsoleConfigurationPreferences implements ConsoleConf
 			if (projName != null){
 				IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projName);
 				if (project != null){
-					if (!JpaFacet.isInstalled(project)) {
+//					if (!JpaFacet.isInstalled(project)) {
+					/* Replaced previous line by next by Koen after Dali API changes */
+					if (!HibernateEclipseUtils.isJpaFacetInstalled(project)) {
 						return null;
 					}
-					String projectCPName = JptJpaCorePlugin.getConnectionProfileName(project);
+//					String projectCPName = JptJpaCorePlugin.getConnectionProfileName(project);
+					/* Replaced previous line by next by Koen after Dali API changes */
+					String projectCPName = HibernateEclipseUtils.getConnectionProfileName(project);
 					return StringHelper.isEmpty(projectCPName) ? null : projectCPName;
 				}
 			}
@@ -225,11 +228,16 @@ public class EclipseLaunchConsoleConfigurationPreferences implements ConsoleConf
 		if (projName != null){
 			IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projName);
 			if (project != null){
-				if (!JpaFacet.isInstalled(project)) {
+//				if (!JpaFacet.isInstalled(project)) {
+				/* Replaced previous line by next by Koen after Dali API changes */
+				if (HibernateEclipseUtils.isJpaFacetInstalled(project)) {
 					return null;
 				}
-				String defCatalog = JptJpaCorePlugin.getUserOverrideDefaultCatalog(project);
-				String defSchema = JptJpaCorePlugin.getUserOverrideDefaultSchema(project);
+//				String defCatalog = JptJpaCorePlugin.getUserOverrideDefaultCatalog(project);
+//				String defSchema = JptJpaCorePlugin.getUserOverrideDefaultSchema(project);
+				/* Replaced previous two line by next by Koen after Dali API changes */
+				String defCatalog = HibernateEclipseUtils.getUserOverrideDefaultCatalog(project);
+				String defSchema = HibernateEclipseUtils.getUserOverrideDefaultSchema(project);
 				if (StringHelper.isNotEmpty(defCatalog)){
 					prop.put("hibernate.default_catalog", defCatalog); //$NON-NLS-1$
 				}

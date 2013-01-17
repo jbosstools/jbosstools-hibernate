@@ -16,9 +16,9 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SubListIterableWrapper;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.common.utility.internal.iterable.SubListIterableWrapper;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -36,7 +36,7 @@ public class HibernateJavaTypeDefContainerImpl extends
 	
 	protected final ContextListContainer<JavaTypeDef, TypeDefAnnotation> typeDefContainer;
 
-	public HibernateJavaTypeDefContainerImpl(JavaJpaContextNode parent, JavaResourceAnnotatedElement javaResourcePersistentElement) {
+	public HibernateJavaTypeDefContainerImpl(JpaContextNode parent, JavaResourceAnnotatedElement javaResourcePersistentElement) {
 		super(parent);
 		this.javaResourceannotatedElement = javaResourcePersistentElement;
 		this.typeDefContainer = this.buildTypeDefContainer();
