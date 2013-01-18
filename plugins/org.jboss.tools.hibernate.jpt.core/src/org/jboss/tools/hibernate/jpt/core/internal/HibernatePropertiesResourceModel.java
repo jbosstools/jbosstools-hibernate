@@ -14,6 +14,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.JptResourceModelListener;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 
 /**
@@ -33,7 +34,7 @@ public class HibernatePropertiesResourceModel implements JptResourceModel {
 	}
 
 	public JptResourceType getResourceType() {
-		return new JptResourceType(HibernateJptPlugin.JAVA_PROPERTIES_CONTENT_TYPE);
+		return PlatformTools.getResourceType(HibernateJptPlugin.JAVA_PROPERTIES_CONTENT_TYPE);
 	}
 
 	public IFile getFile() {

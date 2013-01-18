@@ -45,6 +45,7 @@ ForeignKeyAnnotation {
 	private static final DeclarationAnnotationElementAdapter<String> INVERSE_NAME_ADAPTER = buildDeclarationAnnotationAdapter(INVERSE_NAME_PROPERTY);
 	private final AnnotationElementAdapter<String> inverseNameAdapter;
 	private String inverseName;
+	private CompilationUnit astRoot;
 
 	protected ForeignKeyAnnotationImpl(JavaResourceNode parent, Member member) {
 		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
@@ -58,11 +59,13 @@ ForeignKeyAnnotation {
 	}
 
 	public void initialize(CompilationUnit astRoot) {
+		this.astRoot = astRoot;
 		this.name = this.buildName(astRoot);
 		this.inverseName = this.buildInverseName(astRoot);
 	}
 
 	public void synchronizeWith(CompilationUnit astRoot) {
+		this.astRoot = astRoot;
 		this.syncName(this.buildName(astRoot));
 		this.syncInverseName(this.buildInverseName(astRoot));
 	}
@@ -89,8 +92,8 @@ ForeignKeyAnnotation {
 		return this.nameAdapter.getValue(astRoot);
 	}
 
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(NAME_ADAPTER, astRoot);
+	public TextRange getNameTextRange() {
+		return this.getElementTextRange(NAME_ADAPTER, getAstAnnotation(astRoot));
 	}
 
 	// ***** inverse name
@@ -115,8 +118,8 @@ ForeignKeyAnnotation {
 		return this.inverseNameAdapter.getValue(astRoot);
 	}
 
-	public TextRange getInverseNameTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(INVERSE_NAME_ADAPTER, astRoot);
+	public TextRange getInverseNameTextRange() {
+		return this.getElementTextRange(INVERSE_NAME_ADAPTER, getAstAnnotation(astRoot));
 	}
 
 	private static DeclarationAnnotationElementAdapter<String> buildDeclarationAnnotationAdapter(String property) {

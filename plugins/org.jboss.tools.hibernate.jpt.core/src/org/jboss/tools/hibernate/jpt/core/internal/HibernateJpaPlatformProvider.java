@@ -13,7 +13,6 @@ package org.jboss.tools.hibernate.jpt.core.internal;
 import java.util.ArrayList;
 
 import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
@@ -21,7 +20,6 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jpa.core.JpaPlatformProvider;
 import org.eclipse.jpt.jpa.core.JpaResourceModelProvider;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.ResourceDefinition;
 import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
@@ -31,13 +29,17 @@ import org.eclipse.jpt.jpa.core.internal.JarResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.JavaResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.OrmResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.PersistenceResourceModelProvider;
+import org.eclipse.jpt.jpa.core.internal.context.java.JarDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaEmbeddableDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaEmbeddedIdMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaEmbeddedMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaMappedSuperclassDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaOneToManyMappingDefinition;
+import org.eclipse.jpt.jpa.core.internal.context.java.JavaSourceFileDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaTransientMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaVersionMappingDefinition;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmXmlDefinition;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.GenericPersistenceXmlDefinition;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
 import org.jboss.tools.hibernate.jpt.core.internal.context.definition.HibernateJavaBasicMappingDefinition;
@@ -99,6 +101,19 @@ public class HibernateJpaPlatformProvider extends AbstractJpaPlatformProvider {
 			throw new IllegalArgumentException(contentType.toString());
 		}
 	}
+
+	@Override
+	protected void addMostRecentSupportedResourceTypesTo(ArrayList<JptResourceType> types) {
+		CollectionTools.addAll(types, MOST_RECENT_SUPPORTED_RESOURCE_TYPES);
+	}
+
+	// order should not be important here
+	protected static final JptResourceType[] MOST_RECENT_SUPPORTED_RESOURCE_TYPES = new JptResourceType[] {
+		JavaSourceFileDefinition.instance().getResourceType(),
+		JarDefinition.instance().getResourceType(),
+		GenericPersistenceXmlDefinition.instance().getResourceType(),
+		GenericOrmXmlDefinition.instance().getResourceType()
+	};
 
 	@Override
 	protected void addResourceModelProvidersTo(ArrayList<JpaResourceModelProvider> providers) {

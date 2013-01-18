@@ -11,7 +11,6 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
@@ -32,7 +31,7 @@ public interface ForeignKeyAnnotation extends Annotation {
 	void setInverseName(String name);
 		String INVERSE_NAME_PROPERTY = Hibernate.FOREIGN_KEY__INVERSE_NAME;
 		
-	TextRange getNameTextRange(CompilationUnit astRoot);	
-	TextRange getInverseNameTextRange(CompilationUnit astRoot);
+	TextRange getNameTextRange();	
+	TextRange getInverseNameTextRange();
 
 }

@@ -114,12 +114,12 @@ implements GenericGeneratorAnnotation {
 	}
 	
 	@Override
-	public TextRange getStrategyTextRange(CompilationUnit astRoot) {
+	public TextRange getStrategyTextRange() {
 		return this.strategyTextRange;
 	}
 	
 	private TextRange buildStrategyTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.strategyDeclarationAdapter, astRoot);
+		return this.getElementTextRange(this.strategyDeclarationAdapter, getAstAnnotation(astRoot));
 	}
 
 	// ***** name
@@ -152,38 +152,38 @@ implements GenericGeneratorAnnotation {
 	}
 
 	private TextRange buildNameTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.nameDeclarationAdapter, astRoot);
+		return this.getElementTextRange(this.nameDeclarationAdapter, getAstAnnotation(astRoot));
 	}
 
-	@Override
-	public Integer getAllocationSize() {
-		return null;
-	}
-
-	@Override
-	public TextRange getAllocationSizeTextRange() {
-		return null;
-	}
-
-	@Override
-	public Integer getInitialValue() {
-		return null;
-	}
-
-	@Override
-	public TextRange getInitialValueTextRange() {
-		return null;
-	}
-
-	@Override
-	public void setAllocationSize(Integer allocationSize) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public void setInitialValue(Integer initialValue) {
-		throw new UnsupportedOperationException();
-	}
+//	@Override
+//	public Integer getAllocationSize() {
+//		return null;
+//	}
+//
+//	@Override
+//	public TextRange getAllocationSizeTextRange() {
+//		return null;
+//	}
+//
+//	@Override
+//	public Integer getInitialValue() {
+//		return null;
+//	}
+//
+//	@Override
+//	public TextRange getInitialValueTextRange() {
+//		return null;
+//	}
+//
+//	@Override
+//	public void setAllocationSize(Integer allocationSize) {
+//		throw new UnsupportedOperationException();
+//	}
+//
+//	@Override
+//	public void setInitialValue(Integer initialValue) {
+//		throw new UnsupportedOperationException();
+//	}
 
 	protected ShortCircuitAnnotationElementAdapter<String> buildNameAdapter() {
 		return new ShortCircuitAnnotationElementAdapter<String>(this.annotatedElement, this.nameDeclarationAdapter);

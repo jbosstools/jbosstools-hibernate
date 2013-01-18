@@ -237,7 +237,7 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation 
 	}
 
 	private TextRange buildNameTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.nameDeclarationAdapter, astRoot);
+		return this.getElementTextRange(this.nameDeclarationAdapter, getAstAnnotation(astRoot));
 	}
 
 	// ***** query
@@ -270,7 +270,7 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation 
 	}
 	
 	private TextRange buildQueryTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.queryDeclarationAdapter, astRoot);
+		return this.getElementTextRange(this.queryDeclarationAdapter, getAstAnnotation(astRoot));
 	}
 
 	// ***** hints
@@ -331,7 +331,7 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation 
 	}
 
 	protected TextRange buildFlushModeTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.flushModeDeclarationAdapter, astRoot);
+		return this.getElementTextRange(this.flushModeDeclarationAdapter, getAstAnnotation(astRoot));
 	}
 	
 	@Override
@@ -365,7 +365,7 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation 
 	}
 	
 	protected TextRange buildCacheModeTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.flushModeDeclarationAdapter, astRoot);
+		return this.getElementTextRange(this.flushModeDeclarationAdapter, getAstAnnotation(astRoot));
 	}
 	
 	@Override
@@ -566,7 +566,7 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation 
 	}
 	
 	private TextRange buildResultClassTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.nameDeclarationAdapter, astRoot);
+		return this.getElementTextRange(this.nameDeclarationAdapter, getAstAnnotation(astRoot));
 	}
 
 	// ***** fully-qualified result class name
@@ -617,7 +617,7 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation 
 	}
 
 	private TextRange buildResultSetMappingTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.resultSetMappingDeclarationAdapter, astRoot);
+		return this.getElementTextRange(this.resultSetMappingDeclarationAdapter, getAstAnnotation(astRoot));
 	}
 	// ********** NestableAnnotation implementation **********
 	@Override

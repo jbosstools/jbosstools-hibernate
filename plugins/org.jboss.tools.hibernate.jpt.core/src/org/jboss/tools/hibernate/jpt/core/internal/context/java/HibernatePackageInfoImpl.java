@@ -10,23 +10,20 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceNode;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.core.JpaStructureNode.ContextType;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
@@ -108,7 +105,7 @@ public class HibernatePackageInfoImpl extends AbstractJavaJpaContextNode impleme
 	
 	@Override
 	public JptResourceType getResourceType() {
-		return JptCommonCorePlugin.JAVA_SOURCE_PACKAGE_INFO_RESOURCE_TYPE;
+		return PlatformTools.getResourceType(JavaResourceCompilationUnit.PACKAGE_INFO_CONTENT_TYPE);
 	}
 	@Override
 	public boolean parentSupportsGenerators() {
@@ -132,15 +129,7 @@ public class HibernatePackageInfoImpl extends AbstractJavaJpaContextNode impleme
 	}
 	
 	public TextRange getSelectionTextRange() {
-		return this.getSelectionTextRange(this.buildASTRoot());
-	}
-	
-	protected TextRange getSelectionTextRange(CompilationUnit astRoot) {
-		return this.resourcePackage.getNameTextRange(astRoot);
-	}
-
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.getSelectionTextRange(astRoot);
+		return this.resourcePackage.getNameTextRange();
 	}
 
 	public TextRange getValidationTextRange() {
@@ -176,14 +165,14 @@ public class HibernatePackageInfoImpl extends AbstractJavaJpaContextNode impleme
 	public JpaStructureNode getStructureNode(int offset) {
 		CompilationUnit astRoot = this.buildASTRoot();
 
-		if (this.contains(offset, astRoot)) {
+		if (this.contains(offset)) {
 			return this;
 		}
 		return null;
 	}
 	
-	protected boolean contains(int offset, CompilationUnit astRoot) {
-		TextRange fullTextRange = this.resourcePackage.getTextRange(astRoot);
+	protected boolean contains(int offset) {
+		TextRange fullTextRange = this.resourcePackage.getTextRange();
 		// 'fullTextRange' will be null if the type no longer exists in the java;
 		// the context model can be out of synch with the resource model
 		// when a selection event occurs before the context model has a
@@ -246,38 +235,31 @@ public class HibernatePackageInfoImpl extends AbstractJavaJpaContextNode impleme
 		if ((file != null) && file.getProject().equals(this.getJpaProject().getProject()) &&
 				(this.resourcePackage instanceof SourceNode)) {
 			// build the AST root here to pass down
-			this.validate(messages, reporter, this.buildASTRoot());
+			this.validate(messages, reporter);
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode#validate(java.util.List, org.eclipse.wst.validation.internal.provisional.core.IReporter, org.eclipse.jdt.core.dom.CompilationUnit)
-	 */
-	@Override
-	public void validate(List<IMessage> messages, IReporter reporter,
-			CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.typeDefContainer.validate(messages, reporter, astRoot);
-		this.generatorContainer.validate(messages, reporter, astRoot);
-		this.queryContainer.validate(messages, reporter, astRoot);
+	private void doValidate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.typeDefContainer.validate(messages, reporter);
+		this.generatorContainer.validate(messages, reporter);
+		this.queryContainer.validate(messages, reporter);
 	}
 	
-	@Override
-	public Iterable<String> getJavaCompletionProposals(int pos,
-			Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.typeDefContainer.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.typeDefContainer.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.generatorContainer.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.generatorContainer.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.queryContainer.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.queryContainer.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}

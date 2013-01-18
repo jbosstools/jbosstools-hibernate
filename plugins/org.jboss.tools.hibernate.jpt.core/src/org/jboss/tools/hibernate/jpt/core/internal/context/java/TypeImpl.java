@@ -10,16 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.filter.Filter;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.ArrayListIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -73,15 +69,14 @@ public class TypeImpl extends AbstractJavaJpaContextNode implements JavaType, Me
 		return annotation;
 	}
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.annotation.getTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		return this.annotation.getTextRange();
 	}
 	
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter,
-			CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		validateType(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		validateType(messages, reporter);
 	}
 	
 	@Override
@@ -89,8 +84,8 @@ public class TypeImpl extends AbstractJavaJpaContextNode implements JavaType, Me
 		return (HibernatePersistenceUnit) this.getParent().getPersistenceUnit();
 	}
 	
-	public TextRange getTypeTextRange(CompilationUnit astRoot) {
-		return this.annotation.getTypeTextRange(astRoot);
+	public TextRange getTypeTextRange() {
+		return this.annotation.getTypeTextRange();
 	}
 
 	/*
@@ -102,40 +97,38 @@ public class TypeImpl extends AbstractJavaJpaContextNode implements JavaType, Me
 	 * org.eclipse.jdt.core.dom.CompilationUnit)
 	 */
 	@Override
-	public Iterable<String> getJavaCompletionProposals(int pos,
-			Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter,
-				astRoot);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		TextRange typeRange = getTypeTextRange(astRoot);
+		TextRange typeRange = getTypeTextRange();
 		if (typeRange != null && typeRange.touches(pos)) {
-			return getJavaCandidateNames(filter);
+			return new ArrayListIterable<>(getPersistenceUnit().uniqueTypeDefNames());
+//			return getJavaCandidateNames();
 		}
 		return null;
 	}
 
-	private Iterable<String> getJavaCandidateNames(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this
-				.getCandidateNames(filter));
-	}
-
-	private Iterable<String> getCandidateNames(Filter<String> filter) {
-		return new FilteringIterable<String>(Arrays.asList(getPersistenceUnit()
-				.uniqueTypeDefNames()), filter);
-	}
+//	private Iterable<String> getJavaCandidateNames(Filter<String> filter) {
+//		return StringTools.convertToJavaStringLiterals(this
+//				.getCandidateNames(filter));
+//	}
+//
+//	private Iterable<String> getCandidateNames(Filter<String> filter) {
+//		return new FilteringIterable<String>(Arrays.asList(getPersistenceUnit()
+//				.uniqueTypeDefNames()), filter);
+//	}
 
 	/**
 	 * @param messages
 	 * @param reporter
 	 * @param astRoot
 	 */
-	protected void validateType(List<IMessage> messages, IReporter reporter,
-			CompilationUnit astRoot) {
+	protected void validateType(List<IMessage> messages, IReporter reporter) {
 		//TODO implement TypeDefs package-level support
 		if (type != null) {
-			TextRange range = getTypeTextRange(astRoot) == null ? TextRange.Empty.instance() : getTypeTextRange(astRoot);
+			TextRange range = getTypeTextRange() == null ? TextRange.Empty.instance() : getTypeTextRange();
 			if (type.trim().length() == 0) {
 				messages.add(HibernateJpaValidationMessage.buildMessage(
 						IMessage.HIGH_SEVERITY,

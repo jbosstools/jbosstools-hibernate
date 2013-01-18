@@ -14,7 +14,6 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
@@ -89,8 +88,8 @@ public class IndexImpl extends AbstractJavaJpaContextNode implements JavaIndex {
 		return annotation;
 	}
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.annotation.getTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		return this.annotation.getTextRange();
 	}
 
 	public void addColumn(String columnName) {

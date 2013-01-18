@@ -41,6 +41,7 @@ GeneratedAnnotation {
 	private static final DeclarationAnnotationElementAdapter<String> VALUE_ADAPTER = buildValueAdapter(DECLARATION_ANNOTATION_ADAPTER);
 	private final AnnotationElementAdapter<String> valueAdapter;
 	private GenerationTime value;
+	private CompilationUnit astRoot;
 
 	protected GeneratedAnnotationImpl(JavaResourceNode parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
@@ -48,10 +49,12 @@ GeneratedAnnotation {
 	}
 
 	public void initialize(CompilationUnit astRoot) {
+		this.astRoot = astRoot;
 		this.value = this.buildValue(astRoot);
 	}
 
 	public void synchronizeWith(CompilationUnit astRoot) {
+		this.astRoot = astRoot;
 		this.syncValue(this.buildValue(astRoot));
 	}
 
@@ -77,8 +80,8 @@ GeneratedAnnotation {
 		return GenerationTime.fromJavaAnnotationValue(this.valueAdapter.getValue(astRoot));
 	}
 
-	public TextRange getValueTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(VALUE_ADAPTER, astRoot);
+	public TextRange getValueTextRange() {
+		return this.getElementTextRange(VALUE_ADAPTER, getAstAnnotation(astRoot));
 	}
 
 	public String getAnnotationName() {

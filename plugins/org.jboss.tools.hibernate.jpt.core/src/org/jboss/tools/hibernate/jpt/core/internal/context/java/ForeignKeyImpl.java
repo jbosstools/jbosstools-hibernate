@@ -14,7 +14,6 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
@@ -95,8 +94,8 @@ public class ForeignKeyImpl extends AbstractJavaJpaContextNode implements Foreig
 		this.firePropertyChanged(FOREIGN_KEY_INVERSE_NAME, old, inverseName);
 	}
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.annotation.getTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		return this.annotation.getTextRange();
 	}
 
 	@Override
@@ -105,11 +104,10 @@ public class ForeignKeyImpl extends AbstractJavaJpaContextNode implements Foreig
 	}
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter,
-			CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.validateName(messages, reporter, astRoot);
-		this.validateInverseName(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.validateName(messages, reporter);
+		this.validateInverseName(messages, reporter);
 	}
 
 	/**
@@ -117,9 +115,8 @@ public class ForeignKeyImpl extends AbstractJavaJpaContextNode implements Foreig
 	 * @param reporter
 	 * @param astRoot
 	 */
-	private void validateName(List<IMessage> messages, IReporter reporter,
-			CompilationUnit astRoot) {
-		validateForeignKeyName(messages, this.name, getResourceForeignKey().getNameTextRange(astRoot));
+	private void validateName(List<IMessage> messages, IReporter reporter) {
+		validateForeignKeyName(messages, this.name, getResourceForeignKey().getNameTextRange());
 	}
 	
 	/**
@@ -128,10 +125,10 @@ public class ForeignKeyImpl extends AbstractJavaJpaContextNode implements Foreig
 	 * @param astRoot
 	 */
 	private void validateInverseName(List<IMessage> messages,
-			IReporter reporter, CompilationUnit astRoot) {
+			IReporter reporter) {
 		if (getParent() instanceof ManyToManyMapping
 				&& ((ManyToManyMapping)getParent()).isRelationshipOwner()){
-				validateForeignKeyName(messages, this.inverseName, getResourceForeignKey().getInverseNameTextRange(astRoot));
+				validateForeignKeyName(messages, this.inverseName, getResourceForeignKey().getInverseNameTextRange());
 		} else {
 			//according to @ForeinKey javadoc inverseName ignored in other places
 		}

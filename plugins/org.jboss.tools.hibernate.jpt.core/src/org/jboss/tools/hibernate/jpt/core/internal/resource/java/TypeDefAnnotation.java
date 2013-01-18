@@ -10,10 +10,9 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 
 /**
@@ -42,7 +41,7 @@ public interface TypeDefAnnotation extends NestableAnnotation {
 	 * Return the {@link TextRange} for the 'name' element. If the element 
 	 * does not exist return the {@link TextRange} for the *TypeDef annotation.
 	 */
-	TextRange getNameTextRange(CompilationUnit astRoot);
+	TextRange getNameTextRange();
 
 	/**
 	 * Corresponds to the 'defaultForType' element of the *TypeDef annotation.
@@ -66,7 +65,7 @@ public interface TypeDefAnnotation extends NestableAnnotation {
 	 * Return the {@link TextRange} for the 'defaultForType' element. If the element 
 	 * does not exist return the {@link TextRange} for the element collection annotation.
 	 */
-	TextRange getDefaultForTypeTextRange(CompilationUnit astRoot);
+	TextRange getDefaultForTypeTextRange();
 	
 	/**
 	 * Return the fully-qualified default for type class name as resolved by the AST's bindings.
@@ -101,7 +100,7 @@ public interface TypeDefAnnotation extends NestableAnnotation {
 	 * Return the {@link TextRange} for the 'typeClass' element. If the element 
 	 * does not exist return the {@link TextRange} for the element collection annotation.
 	 */
-	TextRange getTypeClassTextRange(CompilationUnit astRoot);
+	TextRange getTypeClassTextRange();
 	
 
 	/**

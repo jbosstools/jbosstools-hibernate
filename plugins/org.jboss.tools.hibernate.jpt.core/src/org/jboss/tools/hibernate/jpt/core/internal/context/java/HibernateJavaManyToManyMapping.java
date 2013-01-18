@@ -13,7 +13,6 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.List;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappingRelationship;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaManyToManyMapping;
@@ -135,15 +134,14 @@ AbstractJavaManyToManyMapping implements ForeignKeyHolder{
 	}
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter,
-			CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.validateForeignKey(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.validateForeignKey(messages, reporter);
 	}
 
-	protected void validateForeignKey(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateForeignKey(List<IMessage> messages, IReporter reporter) {
 		if (foreignKey != null){
-			foreignKey.validate(messages, reporter, astRoot);
+			foreignKey.validate(messages, reporter);
 		}
 	}
 

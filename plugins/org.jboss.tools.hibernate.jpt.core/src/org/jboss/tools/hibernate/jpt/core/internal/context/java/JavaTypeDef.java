@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.jboss.tools.hibernate.jpt.core.internal.context.ParametrizedElement;
@@ -57,7 +56,7 @@ public interface JavaTypeDef extends JpaContextNode, ParametrizedElement {
 
 	// **************** validation *********************************************
 	
-	TextRange getNameTextRange(CompilationUnit astRoot);
+	TextRange getNameTextRange();
 	
 	TypeDefAnnotation getTypeDefAnnotation();
 

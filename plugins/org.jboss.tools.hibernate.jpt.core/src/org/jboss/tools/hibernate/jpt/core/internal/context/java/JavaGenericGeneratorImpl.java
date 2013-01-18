@@ -16,13 +16,10 @@ import java.util.Vector;
 
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.filter.Filter;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
-import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.ArrayListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaGenerator;
@@ -126,24 +123,24 @@ implements JavaGenericGenerator, Messages {
 		firePropertyChanged(GENERIC_STRATEGY_PROPERTY, oldStrategy, strategy);
 	}
 
-	public TextRange getStrategyTextRange(CompilationUnit astRoot){
-		return this.generatorAnnotation.getStrategyTextRange(astRoot);
+	public TextRange getStrategyTextRange(){
+		return this.generatorAnnotation.getStrategyTextRange();
 	}
 
-	@Override
-	protected String getCatalog() {
-		return null;
-	}
+//	@Override
+//	protected String getCatalog() {
+//		return null;
+//	}
+//
+//	@Override
+//	protected String getSchema() {
+//		return null;
+//	}
 
 	@Override
-	protected String getSchema() {
-		return null;
-	}
-
-	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		validateStrategy(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		validateStrategy(messages, reporter);
 	}
 
 	/**
@@ -154,9 +151,9 @@ implements JavaGenericGenerator, Messages {
 	 * @param reporter
 	 * @param astRoot
 	 */
-	protected void validateStrategy(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot){
+	protected void validateStrategy(List<IMessage> messages, IReporter reporter){
 		if (this.strategy != null) {
-			TextRange range = getStrategyTextRange(astRoot) == null ? TextRange.Empty.instance() : getStrategyTextRange(astRoot);
+			TextRange range = getStrategyTextRange() == null ? TextRange.Empty.instance() : getStrategyTextRange();
 			if (this.strategy.trim().length() == 0) {
 				messages.add(HibernateJpaValidationMessage.buildMessage(IMessage.HIGH_SEVERITY, STRATEGY_CANT_BE_EMPTY, getResource(), range));
 			} else if (!generatorClasses.contains(this.strategy)){
@@ -286,34 +283,34 @@ implements JavaGenericGenerator, Messages {
 		}
 	}
 	
-	@Override
-	public int buildDefaultInitialValue() {
-		return GenericGenerator.DEFAULT_INITIAL_VALUE;
-	}
+//	@Override
+//	public int buildDefaultInitialValue() {
+//		return GenericGenerator.DEFAULT_INITIAL_VALUE;
+//	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode#javaCompletionProposals(int, org.eclipse.jpt.common.utility.Filter, org.eclipse.jdt.core.dom.CompilationUnit)
 	 */
 	@Override
-	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		TextRange strategyRange = getStrategyTextRange(astRoot);
+		TextRange strategyRange = getStrategyTextRange();
 		if (strategyRange != null && strategyRange.touches(pos)) {
-			return getJavaCandidateNames(filter);
+			return new ArrayListIterable<>(generatorClasses.toArray(new String[generatorClasses.size()]));
 		}
 		return null;
 	}
 
-	private Iterable<String> getJavaCandidateNames(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this
-				.getCandidateNames(filter));
-	}
-
-	private Iterable<String> getCandidateNames(Filter<String> filter) {
-		return new FilteringIterable<String>(generatorClasses, filter);
-	}
-	
+//	private Iterable<String> getJavaCandidateNames(Filter<String> filter) {
+//		return StringTools.convertToJavaStringLiterals(this
+//				.getCandidateNames(filter));
+//	}
+//
+//	private Iterable<String> getCandidateNames(Filter<String> filter) {
+//		return new FilteringIterable<String>(generatorClasses, filter);
+//	}
+//	
 }

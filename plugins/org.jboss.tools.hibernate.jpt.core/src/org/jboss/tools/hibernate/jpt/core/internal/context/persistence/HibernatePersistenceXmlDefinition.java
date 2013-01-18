@@ -12,11 +12,13 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.persistence;
 
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlContextNodeFactory;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceXmlDefinition;
+import org.eclipse.jpt.jpa.core.resource.persistence.JPA;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
+import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
 
 /**
  * @author Dmitry Geraskov
@@ -56,7 +58,9 @@ public class HibernatePersistenceXmlDefinition extends
 	}
 	
 	public JptResourceType getResourceType() {
-		return JptJpaCorePlugin.PERSISTENCE_XML_1_0_RESOURCE_TYPE;
+		return PlatformTools.getResourceType(
+				XmlPersistence.CONTENT_TYPE, 
+				JPA.SCHEMA_VERSION);
 	}
 
 }

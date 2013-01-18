@@ -12,7 +12,6 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.List;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaIdMapping;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -213,14 +212,13 @@ implements HibernateJavaIdMapping {
 	}
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter,
-			CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		if (this.index != null){
-			this.index.validate(messages, reporter, astRoot);
+			this.index.validate(messages, reporter);
 		}
 		if (this.type != null){
-			this.type.validate(messages, reporter, astRoot);
+			this.type.validate(messages, reporter);
 		}
 	}
 

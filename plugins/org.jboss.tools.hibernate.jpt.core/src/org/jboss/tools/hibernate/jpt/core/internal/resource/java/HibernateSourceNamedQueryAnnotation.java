@@ -87,6 +87,8 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation
 	private DeclarationAnnotationElementAdapter<Boolean> readOnlyDeclarationAdapter;
 	private AnnotationElementAdapter<Boolean> readOnlyAdapter;
 	private Boolean readOnly;
+	
+	private CompilationUnit astRoot;
 
 
 	HibernateSourceNamedQueryAnnotation(JavaResourceNode parent, AnnotatedElement annotatedElement, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
@@ -120,8 +122,9 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation
 
 	@Override
 	public void initialize(CompilationUnit astRoot) {
+		this.astRoot = astRoot;
 		this.name = this.buildName(astRoot);
-		this.nameTextRange = this.buildNameTextRange(astRoot);
+		this.nameTextRange = this.buildNameTextRange();
 		this.query = this.buildQuery(astRoot);
 		this.queryTextRange = this.buildQueryTextRange(astRoot);
 		this.flushMode = this.buildFlushMode(astRoot);
@@ -138,8 +141,9 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation
 
 	@Override
 	public void synchronizeWith(CompilationUnit astRoot) {
+		this.astRoot = astRoot;
 		this.syncName(this.buildName(astRoot));
-		this.nameTextRange = this.buildNameTextRange(astRoot);
+		this.nameTextRange = this.buildNameTextRange();
 		this.syncQuery(this.buildQuery(astRoot));
 		this.queryTextRange = this.buildQueryTextRange(astRoot);
 		this.syncFlushMode(this.buildFlushMode(astRoot));
@@ -192,8 +196,8 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation
 		return this.nameTextRange;
 	}
 
-	private TextRange buildNameTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.nameDeclarationAdapter, astRoot);
+	private TextRange buildNameTextRange() {
+		return this.getElementTextRange(this.nameDeclarationAdapter, getAstAnnotation(astRoot));
 	}
 	
 	// ***** query
@@ -226,7 +230,7 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation
 	}
 	
 	private TextRange buildQueryTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.queryDeclarationAdapter, astRoot);
+		return this.getElementTextRange(this.queryDeclarationAdapter, getAstAnnotation(astRoot));
 	}
 
 	// ***** hints
@@ -286,7 +290,7 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation
 	}
 
 	protected TextRange buildFlushModeTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.flushModeDeclarationAdapter, astRoot);
+		return this.getElementTextRange(this.flushModeDeclarationAdapter, getAstAnnotation(astRoot));
 	}
 	
 	@Override
@@ -320,7 +324,7 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation
 	}
 
 	protected TextRange buildCacheModeTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.flushModeDeclarationAdapter, astRoot);
+		return this.getElementTextRange(this.flushModeDeclarationAdapter, getAstAnnotation(astRoot));
 	}
 	
 	@Override

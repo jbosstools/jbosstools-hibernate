@@ -11,9 +11,9 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
+import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.GenericJavaManyToOneRelationship;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMappingJoinColumnRelationshipStrategy2_0;
 
 /**
  * @author Dmitry Geraskov
@@ -27,7 +27,7 @@ public class HibernateJavaManyToOneRelationship extends GenericJavaManyToOneRela
 	}
 
 	@Override
-	protected JavaMappingJoinColumnRelationshipStrategy2_0 buildJoinColumnStrategy() {
+	protected JavaJoinColumnRelationshipStrategy buildJoinColumnStrategy() {
 		return new HibernateJavaJoinColumnRelationshipStrategy(this);
 	}
 

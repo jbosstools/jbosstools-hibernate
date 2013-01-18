@@ -12,7 +12,6 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.List;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaJoinTable;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
@@ -77,7 +76,7 @@ public class HibernateJavaJoinTableImpl extends GenericJavaJoinTable
 	}
 
 	//@Override
-	protected boolean validateAgainstDatabase(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected boolean validateAgainstDatabase(List<IMessage> messages, IReporter reporter) {
 		if ( ! this.catalogIsResolved()) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
@@ -85,7 +84,7 @@ public class HibernateJavaJoinTableImpl extends GenericJavaJoinTable
 					JpaValidationMessages.JOIN_TABLE_UNRESOLVED_CATALOG,
 					new String[] {this.getCatalog(), this.getDBTableName()},
 					this,
-					this.getCatalogTextRange(astRoot)
+					this.getCatalogTextRange()
 				)
 			);
 			return false;
@@ -98,7 +97,7 @@ public class HibernateJavaJoinTableImpl extends GenericJavaJoinTable
 					JpaValidationMessages.JOIN_TABLE_UNRESOLVED_SCHEMA,
 					new String[] {this.getSchema(), this.getDBTableName()},
 					this,
-					this.getSchemaTextRange(astRoot)
+					this.getSchemaTextRange()
 				)
 			);
 			return false;
@@ -112,7 +111,7 @@ public class HibernateJavaJoinTableImpl extends GenericJavaJoinTable
 							JpaValidationMessages.JOIN_TABLE_UNRESOLVED_NAME,
 							new String[] {this.getDBTableName()},
 							this,
-							this.getNameTextRange(astRoot))
+							this.getNameTextRange())
 					);
 			}
 			return false;

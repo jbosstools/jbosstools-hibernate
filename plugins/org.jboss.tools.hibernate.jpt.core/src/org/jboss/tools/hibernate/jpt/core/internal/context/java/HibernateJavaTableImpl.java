@@ -12,7 +12,6 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.List;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaTable;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
@@ -109,7 +108,7 @@ public class HibernateJavaTableImpl extends GenericJavaTable implements Hibernat
 	}
 
 	//@Override
-	protected void validateAgainstDatabase(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateAgainstDatabase(List<IMessage> messages) {
 		if ( ! this.catalogIsResolved()) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
@@ -117,7 +116,7 @@ public class HibernateJavaTableImpl extends GenericJavaTable implements Hibernat
 							JpaValidationMessages.TABLE_UNRESOLVED_CATALOG,
 							new String[] {this.getCatalog(), this.getDBTableName()},
 							this,
-							this.getCatalogTextRange(astRoot)
+							this.getCatalogTextRange()
 					)
 			);
 			return;
@@ -130,7 +129,7 @@ public class HibernateJavaTableImpl extends GenericJavaTable implements Hibernat
 							JpaValidationMessages.TABLE_UNRESOLVED_SCHEMA,
 							new String[] {this.getSchema(), this.getDBTableName()},
 							this,
-							this.getSchemaTextRange(astRoot)
+							this.getSchemaTextRange()
 					)
 			);
 			return;
@@ -143,7 +142,7 @@ public class HibernateJavaTableImpl extends GenericJavaTable implements Hibernat
 							JpaValidationMessages.TABLE_UNRESOLVED_NAME,
 							new String[] {this.getDBTableName()},
 							this,
-							this.getNameTextRange(astRoot)
+							this.getNameTextRange()
 					)
 			);
 		}

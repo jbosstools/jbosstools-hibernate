@@ -11,15 +11,15 @@
 package org.jboss.tools.hibernate.jpt.core.internal.jpa2;
 
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPlatformFactory;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation;
 import org.eclipse.jpt.jpa.core.context.AccessType;
-import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformFactory.SimpleVersion;
+import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformFactory.GenericJpaPlatformVersion;
 import org.eclipse.jpt.jpa.core.internal.JpaAnnotationProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa2.Generic2_0JpaAnnotationDefinitionProvider;
+import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.persistence.jpa.jpql.parser.JPQLGrammar2_0;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaPlatform;
 
@@ -50,7 +50,7 @@ public class HibernateJpa2_0PlatformFactory implements JpaPlatformFactory {
 	
 	
 	private JpaPlatform.Version buildJpaVersion() {
-		return new SimpleVersion(JpaFacet.VERSION_2_0.getVersionString());
+		return new GenericJpaPlatformVersion(JpaProject2_0.FACET_VERSION_STRING);
 	}
 	
 	protected JpaFactory buildJpaFactory() {

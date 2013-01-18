@@ -40,7 +40,7 @@ public interface ParameterAnnotation extends NestableAnnotation {
 	 * Return the {@link TextRange} for the 'name' element. If the element 
 	 * does not exist return the {@link TextRange} for the ParameterAnnotation annotation.
 	 */
-	TextRange getNameTextRange(CompilationUnit astRoot);
+	TextRange getNameTextRange();
 
 
 	/**

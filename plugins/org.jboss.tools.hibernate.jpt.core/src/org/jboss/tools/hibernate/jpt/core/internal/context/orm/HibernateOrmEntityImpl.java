@@ -14,10 +14,11 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 import java.util.ListIterator;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
-import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
-import org.eclipse.jpt.common.utility.internal.iterator.EmptyListIterator;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.NotNullFilter;
+import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
@@ -26,7 +27,6 @@ import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmEntity;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.NullOrmCacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.CacheableHolder2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlCacheable_2_0;
@@ -48,7 +48,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValida
 public class HibernateOrmEntityImpl extends AbstractOrmEntity<XmlEntity>
 implements HibernateOrmEntity {
 
-	protected OrmCacheable2_0 cacheable;
+	protected Cacheable2_0 cacheable;
 
 	public HibernateOrmEntityImpl(OrmPersistentType parent,
 			XmlEntity resourceMapping) {
@@ -78,11 +78,11 @@ implements HibernateOrmEntity {
 	// ********** cacheable **********
 
 	@Override
-	public OrmCacheable2_0 getCacheable() {
+	public Cacheable2_0 getCacheable() {
 		return this.cacheable;
 	}
 
-	protected OrmCacheable2_0 buildCacheable() {
+	protected Cacheable2_0 buildCacheable() {
 		return this.isJpa2_0Compatible() ?
 				this.getContextNodeFactory2_0().buildOrmCacheable(this) :
 				new NullOrmCacheable2_0(this);

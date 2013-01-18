@@ -71,7 +71,7 @@ public class HibernateJpaModelTests {
 	public void testDefaultMapping(){
 		assertNotNull(jpaProject);
 		JpaRootContextNode rootContextNode = jpaProject.getRootContextNode();
-		Persistence p = rootContextNode.getPersistenceXml().getPersistence();
+		Persistence p = rootContextNode.getPersistenceXml().getRoot();
 		assertTrue(p.getPersistenceUnitsSize() > 0);
 		assertTrue(p.getPersistenceUnits().iterator().next() instanceof HibernatePersistenceUnit);
 		HibernatePersistenceUnit hpu = (HibernatePersistenceUnit) p.getPersistenceUnits().iterator().next();
@@ -102,7 +102,7 @@ public class HibernateJpaModelTests {
 		}
 		assertNotNull(jpaProject);
 		JpaRootContextNode rootContextNode = jpaProject.getRootContextNode();
-		Persistence p = rootContextNode.getPersistenceXml().getPersistence();
+		Persistence p = rootContextNode.getPersistenceXml().getRoot();
 		assertTrue(p.getPersistenceUnits().iterator().hasNext());
 		assertTrue(p.getPersistenceUnits().iterator().next() instanceof HibernatePersistenceUnit);
 		HibernatePersistenceUnit hpu = (HibernatePersistenceUnit) p.getPersistenceUnits().iterator().next();

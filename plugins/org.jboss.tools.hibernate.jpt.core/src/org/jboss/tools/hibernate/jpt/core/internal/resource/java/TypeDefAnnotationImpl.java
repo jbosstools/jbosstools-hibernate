@@ -32,7 +32,6 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 
 /**
@@ -65,6 +64,8 @@ public class TypeDefAnnotationImpl extends SourceAnnotation
 	final Vector<ParameterAnnotation> parameters = new Vector<ParameterAnnotation>();
 	final ParametersAnnotationContainer parametersContainer = new ParametersAnnotationContainer();
 
+	private CompilationUnit astRoot;
+	
 	/**
 	 * @param parent
 	 * @param member
@@ -81,6 +82,7 @@ public class TypeDefAnnotationImpl extends SourceAnnotation
 	}
 
 	public void initialize(CompilationUnit astRoot) {
+		this.astRoot = astRoot;
 		this.name = this.buildName(astRoot);
 		this.typeClass = this.buildTypeClass(astRoot);
 		this.fullyQualifiedTypeClassName = this.buildFullyQualifiedTypeClassName(astRoot);
@@ -90,6 +92,7 @@ public class TypeDefAnnotationImpl extends SourceAnnotation
 	}
 
 	public void synchronizeWith(CompilationUnit astRoot) {
+		this.astRoot = astRoot;
 		this.syncName(this.buildName(astRoot));
 		this.syncTypeClass(this.buildTypeClass(astRoot));
 		this.syncFullyQualifiedTypeClassName(this.buildFullyQualifiedTypeClassName(astRoot));
@@ -123,8 +126,8 @@ public class TypeDefAnnotationImpl extends SourceAnnotation
 		this.firePropertyChanged(NAME_PROPERTY, old, astName);
 	}
 
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.nameDeclarationAdapter, astRoot);
+	public TextRange getNameTextRange() {
+		return this.getElementTextRange(this.nameDeclarationAdapter, getAstAnnotation(astRoot));
 	}
 
 	protected String buildName(CompilationUnit astRoot) {
@@ -153,8 +156,8 @@ public class TypeDefAnnotationImpl extends SourceAnnotation
 		return this.typeClassAdapter.getValue(astRoot);
 	}
 
-	public TextRange getTypeClassTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(typeClassDeclarationAdapter, astRoot);
+	public TextRange getTypeClassTextRange() {
+		return this.getElementTextRange(typeClassDeclarationAdapter, getAstAnnotation(astRoot));
 	}
 
 	// ***** fully-qualified type entity class name
@@ -194,8 +197,8 @@ public class TypeDefAnnotationImpl extends SourceAnnotation
 		return this.defaultForTypeAdapter.getValue(astRoot);
 	}
 
-	public TextRange getDefaultForTypeTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(defForTypeDeclarationAdapter, astRoot);
+	public TextRange getDefaultForTypeTextRange() {
+		return this.getElementTextRange(defForTypeDeclarationAdapter, getAstAnnotation(astRoot));
 	}
 
 	// ***** fully-qualified default for type entity class name
@@ -214,7 +217,7 @@ public class TypeDefAnnotationImpl extends SourceAnnotation
 	}
 	//************************ parameters ***********************
 	@Override
-	public ListIterable<ParameterAnnotation> getParameters() {
+	public org.eclipse.jpt.common.utility.internal.iterables.ListIterable<ParameterAnnotation> getParameters() {
 		return this.parametersContainer.getNestedAnnotations();
 	}
 

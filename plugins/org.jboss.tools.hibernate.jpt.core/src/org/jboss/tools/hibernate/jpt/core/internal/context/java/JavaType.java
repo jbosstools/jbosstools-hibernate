@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeAnnotation;
@@ -25,7 +24,7 @@ public interface JavaType extends JpaContextNode {
 	void setType(String name);
 		String TYPE_TYPE = "type"; //$NON-NLS-1$
 	
-	public TextRange getTypeTextRange(CompilationUnit astRoot);
+	public TextRange getTypeTextRange();
 	TypeAnnotation getTypeAnnotation();
 
 }

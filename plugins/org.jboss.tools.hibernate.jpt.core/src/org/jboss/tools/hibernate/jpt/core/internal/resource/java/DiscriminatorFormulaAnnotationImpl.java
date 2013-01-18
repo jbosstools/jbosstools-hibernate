@@ -40,6 +40,7 @@ DiscriminatorFormulaAnnotation {
 	private static final DeclarationAnnotationElementAdapter<String> VALUE_ADAPTER = buildValueAdapter(DECLARATION_ANNOTATION_ADAPTER);
 	private final AnnotationElementAdapter<String> valueAdapter;
 	private String value;
+	private CompilationUnit astRoot;
 
 	protected DiscriminatorFormulaAnnotationImpl(JavaResourceNode parent, Type type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
@@ -47,10 +48,12 @@ DiscriminatorFormulaAnnotation {
 	}
 
 	public void initialize(CompilationUnit astRoot) {
+		this.astRoot = astRoot;
 		this.value = this.buildValue(astRoot);
 	}
 
 	public void synchronizeWith(CompilationUnit astRoot) {
+		this.astRoot = astRoot;
 		this.syncValue(this.buildValue(astRoot));
 	}
 
@@ -76,8 +79,8 @@ DiscriminatorFormulaAnnotation {
 		return this.valueAdapter.getValue(astRoot);
 	}
 
-	public TextRange getValueTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(VALUE_ADAPTER, astRoot);
+	public TextRange getValueTextRange() {
+		return this.getElementTextRange(VALUE_ADAPTER, getAstAnnotation(astRoot));
 	}
 
 	public String getAnnotationName() {

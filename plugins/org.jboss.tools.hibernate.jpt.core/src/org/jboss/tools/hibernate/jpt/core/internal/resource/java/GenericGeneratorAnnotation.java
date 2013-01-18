@@ -10,7 +10,6 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
@@ -43,7 +42,7 @@ public interface GenericGeneratorAnnotation extends
 	 * Return the {@link TextRange} for the strategy element.  If the strategy element 
 	 * does not exist return the {@link TextRange} for the GenericGenerator annotation.
 	 */
-	TextRange getStrategyTextRange(CompilationUnit astRoot);
+	TextRange getStrategyTextRange();
 	
 	/**
 	 * Return an empty iterator if the element does not exist in Java.

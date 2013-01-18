@@ -10,9 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
+import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.GenericJavaManyToManyRelationship;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMappingJoinTableRelationshipStrategy2_0;
 
 /**
  * @author Dmitry Geraskov
@@ -29,7 +29,7 @@ public class HibernateJavaManyToManyRelationship extends GenericJavaManyToManyRe
 	}
 
 	@Override
-	protected JavaMappingJoinTableRelationshipStrategy2_0 buildJoinTableStrategy() {
+	protected JavaJoinTableRelationshipStrategy buildJoinTableStrategy() {
 		return new HibernateJavaJoinTableRelationshipStrategy(this);
 	}
 

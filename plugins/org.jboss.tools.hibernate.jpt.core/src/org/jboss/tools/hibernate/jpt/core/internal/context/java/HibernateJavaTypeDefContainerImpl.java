@@ -12,12 +12,11 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.List;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.iterable.SubListIterableWrapper;
-import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SubListIterableWrapper;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -149,15 +148,15 @@ public class HibernateJavaTypeDefContainerImpl extends
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		for (JavaTypeDef typeDef : getTypeDefs()) {
-			typeDef.validate(messages, reporter, astRoot);
+			typeDef.validate(messages, reporter);
 		}
 	}
 	
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.javaResourceannotatedElement.getTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		return this.javaResourceannotatedElement.getTextRange();
 	}
 
 }

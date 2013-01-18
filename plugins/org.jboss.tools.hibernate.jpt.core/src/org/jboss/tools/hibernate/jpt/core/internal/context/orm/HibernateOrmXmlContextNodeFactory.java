@@ -10,8 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.Table;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
@@ -26,7 +27,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTable;
 import org.eclipse.jpt.jpa.core.internal.context.orm.GenericOrmXmlContextNodeFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlBasic;
@@ -74,13 +74,13 @@ public class HibernateOrmXmlContextNodeFactory extends GenericOrmXmlContextNodeF
 	}
 
 	@Override
-	public OrmColumn buildOrmColumn(XmlContextNode parent, OrmColumn.Owner owner) {
+	public OrmColumn buildOrmColumn(JpaContextNode parent, OrmColumn.Owner owner) {
 		return new HibernateOrmColumnImpl(parent, owner);
 	}
 
 	@Override
-	public OrmJoinColumn buildOrmJoinColumn(XmlContextNode parent,
-			OrmReadOnlyJoinColumn.Owner owner,
+	public OrmJoinColumn buildOrmJoinColumn(JpaContextNode parent,
+			ReadOnlyJoinColumn.Owner owner,
 			XmlJoinColumn resourceJoinColumn) {
 		return new HibernateOrmJoinColumnImpl(parent, owner, resourceJoinColumn);
 	}

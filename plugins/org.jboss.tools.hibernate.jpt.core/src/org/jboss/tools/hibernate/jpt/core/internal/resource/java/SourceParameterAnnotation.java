@@ -39,6 +39,7 @@ public class SourceParameterAnnotation extends SourceAnnotation implements
 	private final DeclarationAnnotationElementAdapter<String> valueDeclarationAdapter;
 	private final AnnotationElementAdapter<String> valueAdapter;
 	private String value;
+	private CompilationUnit astRoot;
 
 
 	public SourceParameterAnnotation(JavaResourceNode parent, AnnotatedElement member, IndexedDeclarationAnnotationAdapter idaa) {
@@ -66,11 +67,13 @@ public class SourceParameterAnnotation extends SourceAnnotation implements
 	}
 
 	public void initialize(CompilationUnit astRoot) {
+		this.astRoot = astRoot;
 		this.name = this.buildName(astRoot);
 		this.value = this.buildValue(astRoot);
 	}
 
 	public void synchronizeWith(CompilationUnit astRoot) {
+		this.astRoot = astRoot;
 		this.syncName(this.buildName(astRoot));
 		this.syncValue(this.buildValue(astRoot));
 	}
@@ -105,8 +108,8 @@ public class SourceParameterAnnotation extends SourceAnnotation implements
 		return this.nameAdapter.getValue(astRoot);
 	}
 
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.nameDeclarationAdapter, astRoot);
+	public TextRange getNameTextRange() {
+		return this.getElementTextRange(this.nameDeclarationAdapter, getAstAnnotation(astRoot));
 	}
 
 	// ***** value
@@ -132,7 +135,7 @@ public class SourceParameterAnnotation extends SourceAnnotation implements
 	}
 
 	public TextRange getValueTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.valueDeclarationAdapter, astRoot);
+		return this.getElementTextRange(this.valueDeclarationAdapter, getAstAnnotation(astRoot));
 	}
 
 	// ********** static methods **********

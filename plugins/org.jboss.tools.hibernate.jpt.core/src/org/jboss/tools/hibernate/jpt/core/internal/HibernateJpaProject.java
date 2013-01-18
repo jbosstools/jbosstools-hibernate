@@ -24,7 +24,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.IScopeContext;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageInfoCompilationUnit;
 import org.eclipse.jpt.common.core.utility.command.JobCommand;
@@ -90,7 +90,7 @@ public class HibernateJpaProject extends AbstractJpaProject {
 	public BasicHibernateProperties getBasicHibernateProperties(){
 		if (getRootContextNode() != null){
 			PersistenceXml persistenceXml = getRootContextNode().getPersistenceXml();
-			Persistence persistence = persistenceXml.getPersistence();
+			Persistence persistence = persistenceXml.getRoot();
 			if (persistence.getPersistenceUnitsSize() > 0){
 				PersistenceUnit persistenceUnit = persistence.getPersistenceUnit(0);
 				if (persistenceUnit instanceof HibernatePersistenceUnit) {
@@ -198,7 +198,7 @@ public class HibernateJpaProject extends AbstractJpaProject {
 	}
 	
 	protected Iterable<JpaFile> getJavaPackageInfoSourceJpaFiles() {
-		return this.getJpaFiles(JptCommonCorePlugin.JAVA_SOURCE_PACKAGE_INFO_CONTENT_TYPE);
+		return this.getJpaFiles(JavaResourceCompilationUnit.PACKAGE_INFO_CONTENT_TYPE);
 	}
 
 	/**

@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
@@ -45,5 +44,5 @@ public interface TypeAnnotation extends Annotation {
 	/**
 	 * Return the {@link TextRange} for the 'type' element. 
 	 */
-	TextRange getTypeTextRange(CompilationUnit astRoot);
+	TextRange getTypeTextRange();
 }

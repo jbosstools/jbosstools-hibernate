@@ -14,8 +14,8 @@ import java.util.ArrayList;
 
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.orm.NullOrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMappingDefinition;
@@ -36,6 +36,7 @@ import org.eclipse.jpt.jpa.core.internal.context.orm.OrmOneToManyMappingDefiniti
 import org.eclipse.jpt.jpa.core.internal.context.orm.OrmOneToOneMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.orm.OrmTransientMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.orm.OrmVersionMappingDefinition;
+import org.eclipse.jpt.jpa.core.resource.orm.JPA;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 
@@ -66,7 +67,9 @@ public class HibernateOrmXmlDefinition extends AbstractOrmXmlDefinition {
 	}
 
 	public JptResourceType getResourceType() {
-		return JptJpaCorePlugin.ORM_XML_1_0_RESOURCE_TYPE;
+		return PlatformTools.getResourceType(
+				XmlEntityMappings.CONTENT_TYPE, 
+				JPA.SCHEMA_VERSION);
 	}
 
 	public EFactory getResourceNodeFactory() {

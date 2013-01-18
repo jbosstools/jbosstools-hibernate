@@ -39,6 +39,7 @@ TypeAnnotation {
 	private static final DeclarationAnnotationElementAdapter<String> TYPE_ADAPTER = buildTypeAdapter(DECLARATION_ANNOTATION_ADAPTER);
 	private final AnnotationElementAdapter<String> typeAdapter;
 	private String type;
+	private CompilationUnit astRoot;
 
 	protected TypeAnnotationImpl(JavaResourceNode parent, Member attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
@@ -46,10 +47,12 @@ TypeAnnotation {
 	}
 
 	public void initialize(CompilationUnit astRoot) {
+		this.astRoot = astRoot;
 		this.type = this.buildType(astRoot);
 	}
 
 	public void synchronizeWith(CompilationUnit astRoot) {
+		this.astRoot = astRoot;
 		this.syncType(this.buildType(astRoot));
 	}
 
@@ -75,8 +78,8 @@ TypeAnnotation {
 		return this.typeAdapter.getValue(astRoot);
 	}
 
-	public TextRange getTypeTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(TYPE_ADAPTER, astRoot);
+	public TextRange getTypeTextRange() {
+		return this.getElementTextRange(TYPE_ADAPTER, getAstAnnotation(astRoot));
 	}
 
 	public String getAnnotationName() {

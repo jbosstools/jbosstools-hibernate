@@ -10,11 +10,14 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.validation;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.IScopeContext;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.JpaNode;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
-import org.eclipse.jpt.jpa.core.prefs.JpaValidationPreferencesManager;
+import org.eclipse.jpt.jpa.core.internal.validation.JpaValidator;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
@@ -69,12 +72,12 @@ public class HibernateJpaValidationMessage {
 		
 		//determine whether default severity should be overridden
 		int severity = defaultSeverity;
-		int severityPreference = JpaValidationPreferencesManager.getProblemSeverityPreference(targetObject, messageId);
+		int severityPreference = getProblemSeverityPreference(targetObject, messageId);
 		if (severityPreference != -1){
 			severity = severityPreference;
 		}
 		IMessage message = new LocalMessage(severity, messageId, parms, targetObject);
-		message.setMarkerId(JptJpaCorePlugin.VALIDATION_MARKER_ID);
+		message.setMarkerId(JpaValidator.MARKER_ID);
 		if (textRange == null) {
 			//log an exception and then continue without setting location information
 			//At least the user will still get the validation message and will
@@ -93,7 +96,50 @@ public class HibernateJpaValidationMessage {
 	private HibernateJpaValidationMessage() {
 		super();
 		throw new UnsupportedOperationException();
+	}	
+	
+	/* Start inlined code to deal with getProblemSeverityPreference compilation problem */
+	private static final String ERROR = "error"; //$NON-NLS-1$
+	private static final String WARNING = "warning"; //$NON-NLS-1$
+	private static final String INFO = "info"; //$NON-NLS-1$
+	private static final int NO_SEVERITY_PREFERENCE = -1;
+	private static final String PROBLEM_PREFIX = "problem."; //$NON-NLS-1$
+	public static final String LEGACY_PLUGIN_ID = "org.eclipse.jpt.core";  //$NON-NLS-1$
+	private static String appendProblemPrefix(String messageId) {
+		return PROBLEM_PREFIX + messageId;
 	}
+	private static IEclipsePreferences getLegacyPreferences(IScopeContext context) {
+		return context.getNode(LEGACY_PLUGIN_ID);
+	}
+	private static IEclipsePreferences getLegacyWorkspacePreferences() {
+		return getLegacyPreferences(InstanceScope.INSTANCE);
+	}
+	private static String getLegacyWorkspacePreference(IProject project, String key) {
+		return getLegacyWorkspacePreferences().get(key, null);
+	}
+	private static String getProblemPreference(IResource targetObject, String messageId) {
+		return getLegacyWorkspacePreference(
+				targetObject.getProject(), 
+				appendProblemPrefix(messageId));
+
+	}
+	private static int getProblemSeverityPreference(IResource targetObject, String messageId) {
+		String problemPreference = getProblemPreference(targetObject, messageId);		
+		if(problemPreference == null) {
+			return NO_SEVERITY_PREFERENCE;
+		} 
+		else if (problemPreference.equals(ERROR)) {
+			return IMessage.HIGH_SEVERITY;
+		} 
+		else if (problemPreference.equals(WARNING)) {
+			return IMessage.NORMAL_SEVERITY;
+		} 
+		else if (problemPreference.equals(INFO)) {
+			return IMessage.LOW_SEVERITY;
+		}
+		return NO_SEVERITY_PREFERENCE;
+	}
+	/* End inlined code to deal with getProblemSeverityPreference compilation problem */
 	
 	/**
 	 * Hack class needed to make JPA/Validation API pick up our classloader instead of its own.

@@ -29,14 +29,13 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.internal.core.LaunchConfiguration;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
-import org.eclipse.jpt.jpa.core.JpaFacet;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
+import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.internal.resource.persistence.PersistenceXmlResourceProvider;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlProperty;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectEvent;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectEvent.Type;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectListener;
@@ -46,6 +45,7 @@ import org.hibernate.console.preferences.ConsoleConfigurationPreferences.Configu
 import org.hibernate.eclipse.console.utils.LaunchHelper;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
+import org.hibernate.eclipse.utils.HibernateEclipseUtils;
 
 /**
  * @author Dmitry Geraskov
@@ -57,9 +57,9 @@ public class JPAPostInstallFasetListener implements IFacetedProjectListener {
 		if (event.getType() == Type.POST_INSTALL){
 			IProject project = event.getProject().getProject();
 			IProjectFacetActionEvent pEvent = (IProjectFacetActionEvent)event;
-			if (pEvent.getProjectFacet().getId().equals(JpaFacet.ID)
-					&& (HibernateJpaPlatform.HIBERNATE_PLATFORM_ID.equals(JptJpaCorePlugin.getJpaPlatformId(project))
-							|| HibernateJpaPlatform.HIBERNATE2_0_PLATFORM_ID.equals(JptJpaCorePlugin.getJpaPlatformId(project)))){
+			if (pEvent.getProjectFacet().getId().equals(JpaProject.FACET_ID)
+					&& (HibernateJpaPlatform.HIBERNATE_PLATFORM_ID.equals(HibernateEclipseUtils.getJpaPlatformID(project))
+							|| HibernateJpaPlatform.HIBERNATE2_0_PLATFORM_ID.equals(HibernateEclipseUtils.getJpaPlatformID(project)))){
 				if (checkPreConditions(project)){
 					exportConnectionProfilePropertiesToPersistenceXml(project);
 					buildConsoleConfiguration(project);
@@ -70,7 +70,7 @@ public class JPAPostInstallFasetListener implements IFacetedProjectListener {
 
 	private void exportConnectionProfilePropertiesToPersistenceXml(IProject project) {
 		PersistenceXmlResourceProvider defaultXmlResourceProvider = PersistenceXmlResourceProvider.getDefaultXmlResourceProvider(project);
-		final JpaXmlResource resource = defaultXmlResourceProvider.getXmlResource();
+		final JptXmlResource resource = defaultXmlResourceProvider.getXmlResource();
 		Properties propsToAdd = getConnectionProperties(project);
 		if (propsToAdd.isEmpty() || resource == null) return;
 		
@@ -92,7 +92,7 @@ public class JPAPostInstallFasetListener implements IFacetedProjectListener {
 	}
 	
 	public Properties getConnectionProperties(IProject project){
-		String cpName = JptJpaCorePlugin.getConnectionProfileName(project);
+		String cpName = HibernateEclipseUtils.getConnectionProfileName(project);
 		if (cpName != null){
 			return ConnectionProfileUtil.getHibernateConnectionProperties(
 					ProfileManager.getInstance().getProfileByName(cpName));

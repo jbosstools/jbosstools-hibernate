@@ -11,7 +11,6 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
@@ -32,7 +31,7 @@ public interface IndexAnnotation extends Annotation {
 	void setColumnNames(String[] columnNames);
 		String COLUMN_NAMES_PROPERTY = Hibernate.INDEX__COLUMN_NAMES;
 		
-	TextRange getNameTextRange(CompilationUnit astRoot);	
-	TextRange getColumnNamesTextRange(CompilationUnit astRoot);
+	TextRange getNameTextRange();	
+	TextRange getColumnNamesTextRange();
 
 }

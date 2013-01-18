@@ -16,8 +16,8 @@ import java.util.List;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.utility.Filter;
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter.Adapter;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
@@ -258,23 +258,21 @@ implements HibernateJavaBasicMapping {
 	 * javaCompletionProposals(int, org.eclipse.jpt.common.utility.Filter,
 	 * org.eclipse.jdt.core.dom.CompilationUnit)
 	 */
-	@Override
-	public Iterable<String> getJavaCompletionProposals(int pos,
-			Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter,
-				astRoot);
-		if (result != null) {
-			return result;
-		}
-		if (this.getType() != null) {
-			result = this.getType().getJavaCompletionProposals(pos, filter,
-					astRoot);
-			if (result != null) {
-				return result;
-			}
-		}
-		return null;
-	}
+//	@Override
+//	public Iterable<String> getJavaCompletionProposals(int pos,
+//			Filter<String> filter) {
+//		Iterable<String> result = super.getJavaCompletionProposals(pos, filter);
+//		if (result != null) {
+//			return result;
+//		}
+//		if (this.getType() != null) {
+//			result = this.getType().getJavaCompletionProposals(pos, filter);
+//			if (result != null) {
+//				return result;
+//			}
+//		}
+//		return null;
+//	}
 
 	/*
 	 * (non-Javadoc)
@@ -286,14 +284,13 @@ implements HibernateJavaBasicMapping {
 	 * org.eclipse.jdt.core.dom.CompilationUnit)
 	 */
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter,
-			CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		if (this.index != null){
-			this.index.validate(messages, reporter, astRoot);
+			this.index.validate(messages, reporter);
 		}
 		if (this.type != null){
-			this.type.validate(messages, reporter, astRoot);
+			this.type.validate(messages, reporter);
 		}
 	}
 

@@ -10,9 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.java.JavaGenerator;
 import org.jboss.tools.hibernate.jpt.core.internal.context.GenericGenerator;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.GenericGeneratorAnnotation;
@@ -38,7 +37,7 @@ public interface JavaGenericGenerator extends JavaGenerator, GenericGenerator {
 	@Override
 	TextRange getNameTextRange();
 
-	TextRange getStrategyTextRange(CompilationUnit astRoot);
+	TextRange getStrategyTextRange();
 
 }
 

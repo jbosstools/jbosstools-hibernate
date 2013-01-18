@@ -16,11 +16,10 @@ import java.util.Vector;
 
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
-import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
@@ -251,11 +250,11 @@ public class JavaTypeDefImpl extends AbstractJavaJpaContextNode implements JavaT
 	
 	// ********** text ranges **********
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.getSelectionTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		return this.getSelectionTextRange();
 	}
 
-	public TextRange getSelectionTextRange(CompilationUnit astRoot) {
+	public TextRange getSelectionTextRange() {
 		return this.typeDefAnnotation.getTextRange();
 	}
 	
@@ -263,8 +262,8 @@ public class JavaTypeDefImpl extends AbstractJavaJpaContextNode implements JavaT
 		return this.typeDefAnnotation.getNameTextRange();
 	}
 	
-	public TextRange getTypeClassTextRange(CompilationUnit astRoot) {
-		return this.typeDefAnnotation.getTypeClassTextRange(astRoot);
+	public TextRange getTypeClassTextRange() {
+		return this.typeDefAnnotation.getTypeClassTextRange();
 	}
 	
 	@Override

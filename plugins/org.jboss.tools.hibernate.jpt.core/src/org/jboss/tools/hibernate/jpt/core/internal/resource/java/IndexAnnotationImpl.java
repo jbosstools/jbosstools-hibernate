@@ -47,6 +47,7 @@ implements IndexAnnotation{
 	private static DeclarationAnnotationElementAdapter<String[]> COLUMN_NAMES_ADAPTER = buildColumnNamesAdapter(DECLARATION_ANNOTATION_ADAPTER);
 	private AnnotationElementAdapter<String[]> columnNamesAdapter;
 	private String[] columnNames;
+	private CompilationUnit astRoot;
 
 	protected IndexAnnotationImpl(JavaResourceNode parent, Member member) {
 		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
@@ -59,11 +60,13 @@ implements IndexAnnotation{
 	}
 
 	public void initialize(CompilationUnit astRoot) {
+		this.astRoot = astRoot;
 		this.name = this.buildName(astRoot);
 		this.columnNames = this.buildColumnNames(astRoot);
 	}
 
 	public void synchronizeWith(CompilationUnit astRoot) {
+		this.astRoot = astRoot;
 		this.syncName(this.buildName(astRoot));
 		this.syncColumnNames(this.buildColumnNames(astRoot));
 	}
@@ -127,12 +130,12 @@ implements IndexAnnotation{
 		return new ShortCircuitArrayAnnotationElementAdapter<String>(this.annotatedElement, daea);
 	}
 
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(NAME_ADAPTER, astRoot);
+	public TextRange getNameTextRange() {
+		return this.getElementTextRange(NAME_ADAPTER, getAstAnnotation(astRoot));
 	}
 
-	public TextRange getColumnNamesTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(COLUMN_NAMES_ADAPTER, astRoot);
+	public TextRange getColumnNamesTextRange() {
+		return this.getElementTextRange(COLUMN_NAMES_ADAPTER, getAstAnnotation(astRoot));
 	}
 
 	public static class IndexAnnotationDefinition implements AnnotationDefinition

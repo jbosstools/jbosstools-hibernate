@@ -12,9 +12,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.List;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
@@ -29,7 +27,6 @@ import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaEntity;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.NullJavaCacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.CacheableHolder2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.resource.java.EntityAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -55,7 +52,7 @@ implements HibernateJavaEntity {
 
 	protected JavaDiscriminatorFormula discriminatorFormula;
 
-	protected final JavaCacheable2_0 cacheable;
+	protected final Cacheable2_0 cacheable;
 
 	public HibernateJavaEntityImpl(JavaPersistentType parent, EntityAnnotation mappingAnnotation) {
 		super(parent, mappingAnnotation);
@@ -64,7 +61,7 @@ implements HibernateJavaEntity {
 		this.cacheable = this.buildJavaCachable();
 	}
 
-	protected JavaCacheable2_0 buildJavaCachable() {
+	protected Cacheable2_0 buildJavaCachable() {
 		return this.isJpa2_0Compatible() ?
 				this.getJpaFactory2_0().buildJavaCacheable(this) :
 				new NullJavaCacheable2_0(this);
@@ -182,9 +179,9 @@ implements HibernateJavaEntity {
 
 	// ************************* validation ***********************
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		getTypeDefContainer().validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		getTypeDefContainer().validate(messages, reporter);
 	}
 
 	@Override
@@ -198,8 +195,8 @@ implements HibernateJavaEntity {
 	class HibernatePrimaryKeyJoinColumnOwner extends PrimaryKeyJoinColumnOwner
 	{
 		@Override
-		public TextRange getValidationTextRange(CompilationUnit astRoot) {
-			return HibernateJavaEntityImpl.this.getValidationTextRange(astRoot);
+		public TextRange getValidationTextRange() {
+			return HibernateJavaEntityImpl.this.getValidationTextRange();
 		}
 
 		@Override
@@ -296,11 +293,11 @@ implements HibernateJavaEntity {
 	// ********** cacheable **********
 
 	@Override
-	public JavaCacheable2_0 getCacheable() {
+	public Cacheable2_0 getCacheable() {
 		return this.cacheable;
 	}
 
-	protected JavaCacheable2_0 buildCacheable() {
+	protected Cacheable2_0 buildCacheable() {
 		return this.isJpa2_0Compatible() ?
 				this.getJpaFactory2_0().buildJavaCacheable(this) :
 				new NullJavaCacheable2_0(this);
@@ -319,19 +316,19 @@ implements HibernateJavaEntity {
 		return (parentEntity == null) ? null : parentEntity.getCacheable();
 	}
 
-	@Override
-	public Iterable<String> getJavaCompletionProposals(int pos,
-			Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
-		if (result != null) {
-			return result;
-		}
-		result = this.getTypeDefContainer().getJavaCompletionProposals(pos, filter, astRoot);
-		if (result != null) {
-			return result;
-		}
-		return null;
-	}
+//	@Override
+//	public Iterable<String> getJavaCompletionProposals(int pos,
+//			Filter<String> filter) {
+//		Iterable<String> result = super.getJavaCompletionProposals(pos, filter);
+//		if (result != null) {
+//			return result;
+//		}
+//		result = this.getTypeDefContainer().getJavaCompletionProposals(pos, filter);
+//		if (result != null) {
+//			return result;
+//		}
+//		return null;
+//	}
 
 	// ********** JavaDiscriminatorColumn.Owner implementation **********
 
