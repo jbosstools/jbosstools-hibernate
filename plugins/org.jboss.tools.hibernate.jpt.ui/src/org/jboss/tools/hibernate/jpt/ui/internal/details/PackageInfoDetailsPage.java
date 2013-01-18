@@ -11,7 +11,7 @@
 package org.jboss.tools.hibernate.jpt.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.ui.internal.util.PaneEnabler;
+import org.eclipse.jpt.common.ui.internal.util.PaneVisibilityEnabler;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -45,7 +45,7 @@ public class PackageInfoDetailsPage extends AbstractJpaDetailsPage<HibernatePack
 		this.initializeQueriesCollapsibleSection(container);
 		this.initializeGenericGeneratorsCollapsibleSection(container);
 		this.initializeTypeDefCollapsibleSection(container);
-		new PaneEnabler(buildWidgetsEnabledHolder(), this);
+		new PaneVisibilityEnabler(buildWidgetsEnabledHolder(), this);
 	}
 	
 	protected ModifiablePropertyValueModel<Boolean> buildWidgetsEnabledHolder() {

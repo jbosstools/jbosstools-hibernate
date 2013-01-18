@@ -75,12 +75,10 @@ public class GeneratedComposite extends Pane<Generated> {
 
 	@Override
 	protected void initializeLayout(Composite container) {
+		
+		// Generation time widgets
+		this.addLabel(container, HibernateUIMappingMessages.BasicGeneralSection_generated);
+		this.addGenerationTimeCombo(container);
 
-		addLabeledComposite(
-			container,
-			HibernateUIMappingMessages.BasicGeneralSection_generated,
-			addGenerationTimeCombo(container),
-			null//TODO help
-		);
 	}
 }

@@ -14,7 +14,8 @@ import java.util.Collection;
 
 import javax.persistence.Table;
 
-import org.eclipse.jpt.common.ui.internal.util.PaneEnabler;
+import org.eclipse.jpt.common.ui.internal.util.ControlAligner;
+import org.eclipse.jpt.common.ui.internal.util.PaneVisibilityEnabler;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -66,6 +67,7 @@ import org.jboss.tools.hibernate.jpt.ui.internal.mappings.db.xpl.TableCombo;
  */
 public class HibernateTableComposite extends Pane<HibernateEntity>
 {
+	
 	/**
 	 * Creates a new <code>HibernateTableComposite</code>.
 	 *
@@ -76,9 +78,9 @@ public class HibernateTableComposite extends Pane<HibernateEntity>
 	public HibernateTableComposite(Pane<? extends HibernateEntity> parentPane,
 	                      Composite parent) {
 
-		super(parentPane, parent, false);
+		super(parentPane, parent);
 	}
-
+	
 	@Override
 	protected void initializeLayout(Composite container) {
 
@@ -114,7 +116,7 @@ public class HibernateTableComposite extends Pane<HibernateEntity>
 			JpaHelpContextIds.ENTITY_SCHEMA
 		);
 		
-		new PaneEnabler(buildTableEnabledHolder(), this);
+		new PaneVisibilityEnabler(buildTableEnabledHolder(), this);
 	}
 	
 	protected ModifiablePropertyValueModel<HibernateTable> buildTableHolder() {

@@ -42,21 +42,19 @@ public class GenericGeneratorComposite extends GeneratorComposite<GenericGenerat
 
 	@Override
 	protected void initializeLayout(Composite container) {
+
 		// Name widgets
-		addLabeledText(
-			container,
-			HibernateUIMappingMessages.GenericGeneratorComposite_name,
-			buildGeneratorNameHolder(),
-			null//TODO add help
-		);
-		
-		addLabeledEditableCombo(
-				container,
-				HibernateUIMappingMessages.GenericGeneratorComposite_strategy,
+		this.addLabel(container, HibernateUIMappingMessages.GenericGeneratorComposite_name);
+		this.addText(container, this.buildGeneratorNameHolder(), null);
+
+		// Generic generator widgets
+		this.addLabel(container, HibernateUIMappingMessages.GenericGeneratorComposite_strategy);
+		this.addEditableCombo(container,
 				new SimpleListValueModel<String>(JavaGenericGeneratorImpl.generatorClasses),
 				buildStrategyHolder(),
 				StringConverter.Default.<String>instance(),
-				null);//TODO add help
+				(String)null
+			);
 			
 		new ParametersComposite(this, container, getSubjectHolder());
 	}
