@@ -10,15 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.details.java;
 
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsPageManager;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.EntityMappingsDetailsPage;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernatePackageInfo;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaPackageInfo;
@@ -52,7 +49,7 @@ public class JavaPackageInfoDetailsProvider implements JpaDetailsProvider {
 	@Override
 	public boolean providesDetails(JpaStructureNode structureNode) {
 			return Tools.valuesAreEqual(structureNode.getType(),  JavaPackageInfo.class)
-				&& structureNode.getResourceType().getContentType().equals(JptCommonCorePlugin.JAVA_SOURCE_PACKAGE_INFO_CONTENT_TYPE);
+				&& structureNode.getResourceType().getContentType().equals(JavaResourceCompilationUnit.PACKAGE_INFO_CONTENT_TYPE);
 	}
 	
 	@Override

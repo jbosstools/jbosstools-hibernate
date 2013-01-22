@@ -18,6 +18,7 @@ import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractIdMappingComposite;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateColumn;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateGeneratorContainer;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateIdMapping;
@@ -37,11 +38,13 @@ implements JpaComposite{
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public HibernateIdMappingComposite(PropertyValueModel<? extends HibernateIdMapping> subjectHolder,
-	                          Composite parent,
-	                          WidgetFactory widgetFactory) {
+	public HibernateIdMappingComposite(
+			PropertyValueModel<? extends HibernateIdMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
+	        Composite parent,
+	        WidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	@Override
@@ -52,8 +55,11 @@ implements JpaComposite{
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	protected void initializeIdSection(Composite container) {
-		new HibernateColumnComposite(this, (PropertyValueModel<? extends HibernateColumn>) buildColumnHolder(), container);
+	protected Control initializeIdSection(Composite container) {
+		return new HibernateColumnComposite(
+				this, 
+				(PropertyValueModel<? extends HibernateColumn>) buildColumnHolder(), 
+				container).getControl();
 	}
 	
 	private PropertyValueModel<HibernateGeneratorContainer> buildGeneratorContainer() {

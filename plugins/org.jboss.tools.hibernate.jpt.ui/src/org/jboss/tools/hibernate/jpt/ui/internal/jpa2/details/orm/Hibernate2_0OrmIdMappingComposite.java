@@ -17,11 +17,13 @@ import org.eclipse.jpt.jpa.core.context.AccessHolder;
 import org.eclipse.jpt.jpa.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractIdMappingComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmMappingNameChooser;
+import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmMappingNameText;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.IdMapping2_0MappedByRelationshipPane;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.IdMappingGeneration2_0Composite;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateColumn;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmIdMapping;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateColumnComposite;
@@ -40,19 +42,44 @@ implements JpaComposite{
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	public Hibernate2_0OrmIdMappingComposite(PropertyValueModel<? extends HibernateOrmIdMapping> subjectHolder,
+							  PropertyValueModel<Boolean> enabledModel,
 	                          Composite parent,
 	                          WidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	protected void initializeIdSection(Composite container) {
-		new IdMapping2_0MappedByRelationshipPane(this, getSubjectHolder(), container);
-		new HibernateColumnComposite(this, (PropertyValueModel<? extends HibernateColumn>) buildColumnHolder(), container);
-		new OrmMappingNameChooser(this, getSubjectHolder(), container);
-		new AccessTypeComposite(this, buildAccessHolderHolder(), container);
+	protected Control initializeIdSection(Composite container) {
+		
+//		new IdMapping2_0MappedByRelationshipPane(this, getSubjectHolder(), container);
+//		new HibernateColumnComposite(this, (PropertyValueModel<? extends HibernateColumn>) buildColumnHolder(), container);
+//		new OrmMappingNameChooser(this, getSubjectHolder(), container);
+//		new AccessTypeComposite(this, buildAccessHolderHolder(), container);
+
+		container = this.addSubPane(container, 2, 0, 0, 0, 0);
+
+		IdMapping2_0MappedByRelationshipPane mappedByRelationshipPane = new IdMapping2_0MappedByRelationshipPane(this, getSubjectHolder(), container);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		mappedByRelationshipPane.getControl().setLayoutData(gridData);
+
+		// Column widgets
+		HibernateColumnComposite columnComposite = new HibernateColumnComposite(this, (PropertyValueModel<? extends HibernateColumn>)buildColumnHolder(), container);
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		columnComposite.getControl().setLayoutData(gridData);
+
+		// Name widgets
+//		this.addLabel(container, JptUiDetailsOrmMessages.OrmMappingNameChooser_name);
+		new OrmMappingNameText(this, getSubjectHolder(), container);
+
+		// Access type widgets
+//		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
+		new AccessTypeComboViewer(this, this.buildAccessHolderHolder(), container);
+
+		return container;
 	}
 	
 	@Override

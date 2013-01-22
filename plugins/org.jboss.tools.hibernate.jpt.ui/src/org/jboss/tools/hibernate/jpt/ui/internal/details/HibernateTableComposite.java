@@ -14,7 +14,6 @@ import java.util.Collection;
 
 import javax.persistence.Table;
 
-import org.eclipse.jpt.common.ui.internal.util.ControlAligner;
 import org.eclipse.jpt.common.ui.internal.util.PaneVisibilityEnabler;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
@@ -22,7 +21,6 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
-import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.db.CatalogCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.db.SchemaCombo;
@@ -93,28 +91,34 @@ public class HibernateTableComposite extends Pane<HibernateEntity>
 		PropertyValueModel<HibernateTable> subjectHolder = buildTableHolder();
 		
 		// Table widgets
-		addLabeledComposite(
-				tableGroupPane,
-				JptUiDetailsMessages.TableChooser_label,
-				addTableCombo(subjectHolder, tableGroupPane),
-				JpaHelpContextIds.ENTITY_TABLE
-			);
+		this.addLabel(tableGroupPane, JptUiDetailsMessages.TableChooser_label);
+		this.addTableCombo(subjectHolder, tableGroupPane);		
+//		addLabeledComposite(
+//				tableGroupPane,
+//				JptUiDetailsMessages.TableChooser_label,
+//				addTableCombo(subjectHolder, tableGroupPane),
+//				JpaHelpContextIds.ENTITY_TABLE
+//			);
 		
 		// Catalog widgets
-		addLabeledComposite(
-			tableGroupPane,
-			JptUiDetailsMessages.CatalogChooser_label,
-			addCatalogCombo(subjectHolder, tableGroupPane),
-			JpaHelpContextIds.ENTITY_CATALOG
-		);
+		this.addLabel(tableGroupPane, JptUiDetailsMessages.CatalogChooser_label);
+		this.addTableCombo(subjectHolder, tableGroupPane);
+//		addLabeledComposite(
+//			tableGroupPane,
+//			JptUiDetailsMessages.CatalogChooser_label,
+//			addCatalogCombo(subjectHolder, tableGroupPane),
+//			JpaHelpContextIds.ENTITY_CATALOG
+//		);
 
 		// Schema widgets
-		addLabeledComposite(
-			tableGroupPane,
-			JptUiDetailsMessages.SchemaChooser_label,
-			addSchemaCombo(subjectHolder, tableGroupPane),
-			JpaHelpContextIds.ENTITY_SCHEMA
-		);
+		this.addLabel(tableGroupPane, JptUiDetailsMessages.SchemaChooser_label);
+		this.addTableCombo(subjectHolder, tableGroupPane);
+//		addLabeledComposite(
+//			tableGroupPane,
+//			JptUiDetailsMessages.SchemaChooser_label,
+//			addSchemaCombo(subjectHolder, tableGroupPane),
+//			JpaHelpContextIds.ENTITY_SCHEMA
+//		);
 		
 		new PaneVisibilityEnabler(buildTableEnabledHolder(), this);
 	}

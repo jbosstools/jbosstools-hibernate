@@ -104,7 +104,9 @@ public class HibernateGenerationComposite extends GenerationComposite {
 	}
 	
 	protected void addGenericGeneratorsComposite(Composite container, int topMargin, int leftMargin) {
-		new GenericGeneratorsComposite(this, (PropertyValueModel<? extends HibernateGeneratorContainer>) getSubjectHolder(),
+		new GenericGeneratorsComposite(
+				this, 
+				(PropertyValueModel<? extends HibernateGeneratorContainer>) getSubjectHolder(),
 				this.addSubPane(container, topMargin, leftMargin));
 	}
 	

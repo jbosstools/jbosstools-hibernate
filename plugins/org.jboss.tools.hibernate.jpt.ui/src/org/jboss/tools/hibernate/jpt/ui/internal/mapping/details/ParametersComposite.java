@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
 
+import java.util.Iterator;
 import java.util.ListIterator;
 
 import org.eclipse.jface.viewers.CellEditor;
@@ -20,19 +21,22 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jpt.common.ui.internal.swt.ColumnAdapter;
-import org.eclipse.jpt.common.ui.internal.util.PaneEnabler;
+import org.eclipse.jpt.common.ui.internal.util.PaneVisibilityEnabler;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveTablePane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.iterators.EmptyListIterator;
+import org.eclipse.jpt.common.utility.internal.model.value.CollectionPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
+import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
@@ -46,7 +50,8 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.ParametrizedElement;
  */
 public class ParametersComposite extends Pane<ParametrizedElement> {
 
-	private ModifiablePropertyValueModel<Parameter> parameterHolder;
+	private ModifiableCollectionValueModel<Parameter> selectedParametersModel;
+	private PropertyValueModel<Parameter> selectedParameterModel;
 
 	/**
 	 * Creates a new <code>ParametersComposite</code>.
@@ -57,7 +62,7 @@ public class ParametersComposite extends Pane<ParametrizedElement> {
 	public ParametersComposite(Pane<?> parentPane,
 	      Composite container, PropertyValueModel<? extends ParametrizedElement> generatorHolder) {
 
-		super(parentPane, generatorHolder, container, false);
+		super(parentPane, generatorHolder, container);
 	}
 
 
@@ -70,25 +75,42 @@ public class ParametersComposite extends Pane<ParametrizedElement> {
 		};
 	}
 
-	private Adapter buildParameterAdapter() {
-		return new AddRemoveTablePane.AbstractAdapter() {
+	private Adapter<Parameter> buildParameterAdapter() {
+		return new AddRemoveTablePane.AbstractAdapter<Parameter>() {
+//			@Override
+//			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
+//				Parameter parameter = getSubject().addParameter(getSubject().getParametersSize());
+//				ParametersComposite.this.parameterHolder.setValue(parameter);
+//			}
+//
+//			@Override
+//			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
+//				for (Object item : listSelectionModel.selectedValues()) {
+//					getSubject().removeParameter((Parameter) item);
+//				}
+//			}
+
 			@Override
-			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
+			public Parameter addNewItem() {
 				Parameter parameter = getSubject().addParameter(getSubject().getParametersSize());
-				ParametersComposite.this.parameterHolder.setValue(parameter);
+//				ParametersComposite.this.parameterHolder.setValue(parameter);
+				return parameter;
 			}
 
 			@Override
-			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
-				for (Object item : listSelectionModel.selectedValues()) {
-					getSubject().removeParameter((Parameter) item);
+			public void removeSelectedItems(
+					CollectionValueModel<Parameter> selectedItemsModel) {
+				Iterator<Parameter> iterator = selectedItemsModel.iterator();
+				while (iterator.hasNext()) {
+					Parameter parameter = iterator.next();
+					getSubject().removeParameter(parameter);
 				}
 			}
 		};
 	}
 
-	private ModifiablePropertyValueModel<Parameter> buildParameterHolder() {
-		return new SimplePropertyValueModel<Parameter>();
+	private ModifiableCollectionValueModel<Parameter> buildSelectedParametersModel() {
+		return new SimpleCollectionValueModel<Parameter>();
 	};
 
 	private ITableLabelProvider buildParameterLabelProvider() {
@@ -118,9 +140,26 @@ public class ParametersComposite extends Pane<ParametrizedElement> {
 	@Override
 	protected void initialize() {
 		super.initialize();
-		this.parameterHolder = buildParameterHolder();
+		this.selectedParametersModel = buildSelectedParametersModel();
+		this.selectedParameterModel = buildSelectedParameterModel(selectedParametersModel);
 	}
 
+	private PropertyValueModel<Parameter> buildSelectedParameterModel(CollectionValueModel<Parameter> selectedParametersModel) {
+		return new CollectionPropertyValueModelAdapter<Parameter, Parameter>(selectedParametersModel) {
+			@Override
+			protected Parameter buildValue() {
+				if (this.collectionModel.size() == 1) {
+					return this.collectionModel.iterator().next();
+				}
+				return null;
+			}
+		};
+	}
+
+	protected PropertyValueModel<Parameter> getSelectedParameterModel() {
+		return this.selectedParameterModel;
+	}
+	
 	@Override
 	protected void initializeLayout(Composite container) {
 
@@ -128,8 +167,8 @@ public class ParametersComposite extends Pane<ParametrizedElement> {
 		installPaneEnabler(tablePane);
 	}
 
-	private PaneEnabler installPaneEnabler(TablePane tablePane) {
-		return new PaneEnabler(buildPaneEnableHolder(), tablePane);
+	private PaneVisibilityEnabler installPaneEnabler(TablePane tablePane) {
+		return new PaneVisibilityEnabler(buildPaneEnableHolder(), tablePane);
 	}
 
 	private static class ParameterColumnAdapter implements ColumnAdapter<Parameter> {
@@ -232,14 +271,14 @@ public class ParametersComposite extends Pane<ParametrizedElement> {
 		}
 	}
 
-	private class TablePane extends AddRemoveTablePane<ParametrizedElement> {
+	private class TablePane extends AddRemoveTablePane<ParametrizedElement, Parameter> {
 
 		private TablePane(Composite parent) {
 			super(ParametersComposite.this,
 			      parent,
 			      buildParameterAdapter(),
 			      buildParameterListHolder(),
-			      ParametersComposite.this.parameterHolder,
+			      ParametersComposite.this.selectedParametersModel,
 			      buildParameterLabelProvider());
 		}
 
@@ -300,7 +339,7 @@ public class ParametersComposite extends Pane<ParametrizedElement> {
 		}
 
 		@Override
-		protected ColumnAdapter<?> buildColumnAdapter() {
+		protected ColumnAdapter<Parameter> buildColumnAdapter() {
 			return new ParameterColumnAdapter();
 		}
 
@@ -314,8 +353,8 @@ public class ParametersComposite extends Pane<ParametrizedElement> {
 		@Override
 		protected void initializeMainComposite(Composite container,
 		                                       Adapter adapter,
-		                                       ListValueModel<?> listHolder,
-		                                       ModifiablePropertyValueModel<?> selectedItemHolder,
+		                                       ListValueModel<Parameter> listHolder,
+		                                       ModifiablePropertyValueModel<Parameter> selectedItemHolder,
 		                                       IBaseLabelProvider labelProvider,
 		                                       String helpId) {
 

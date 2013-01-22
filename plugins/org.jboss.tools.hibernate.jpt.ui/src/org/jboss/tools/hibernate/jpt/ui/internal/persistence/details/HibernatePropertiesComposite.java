@@ -45,9 +45,8 @@ import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.ui.details.JpaPageComposite;
+import org.eclipse.jpt.jpa.ui.editors.JpaPageComposite;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -118,34 +117,43 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 		final ModifiablePropertyValueModel<String> driverHolder = buildDriverHolder();
 		final ModifiablePropertyValueModel<String> urlHolder = buildUrlHolder();
 
-		Button b = addButton(section, HibernateConsoleMessages.CodeGenerationSettingsTab_setup, createSetupAction());
-		this.cfgFile = addLabeledText(section,
-				HibernateConsoleMessages.ConsoleConfigurationPropertySource_config_file + ':', buildConfigFileHolder(),
-				b, null);
+		this.addButton(section, HibernateConsoleMessages.CodeGenerationSettingsTab_setup, createSetupAction());
+		this.addLabel(section, HibernateConsoleMessages.ConsoleConfigurationPropertySource_config_file + ':');
+		this.addText(section, buildConfigFileHolder());		
+//		Button b = addButton(section, HibernateConsoleMessages.CodeGenerationSettingsTab_setup, createSetupAction());
+//		this.cfgFile = addLabeledText(section,
+//				HibernateConsoleMessages.ConsoleConfigurationPropertySource_config_file + ':', buildConfigFileHolder(),
+//				b, null);
 
-		addLabeledEditableCombo(
-				section,
-				HibernateConsoleMessages.NewConfigurationWizardPage_database_dialect,
-				lvmDialect,
-				dialectHolder,
-				StringConverter.Default.<String>instance(),
-				null);
+		this.addLabel(section, HibernateConsoleMessages.NewConfigurationWizardPage_database_dialect);
+		this.addEditableCombo(section, lvmDialect, dialectHolder, StringConverter.Default.<String>instance(), (String)null);
+//		addLabeledEditableCombo(
+//				section,
+//				HibernateConsoleMessages.NewConfigurationWizardPage_database_dialect,
+//				lvmDialect,
+//				dialectHolder,
+//				StringConverter.Default.<String>instance(),
+//				null);
 
-		addLabeledEditableCombo(
-				section,
-				HibernateConsoleMessages.NewConfigurationWizardPage_driver_class,
-				lvmDriver,
-				driverHolder,
-				StringConverter.Default.<String>instance(),
-				null);
+		this.addLabel(section, HibernateConsoleMessages.NewConfigurationWizardPage_driver_class);
+		this.addEditableCombo(section, lvmDriver, driverHolder, StringConverter.Default.<String>instance(), (String)null);
+//		addLabeledEditableCombo(
+//				section,
+//				HibernateConsoleMessages.NewConfigurationWizardPage_driver_class,
+//				lvmDriver,
+//				driverHolder,
+//				StringConverter.Default.<String>instance(),
+//				null);
 
-		addLabeledEditableCombo(
-				section,
-				HibernateConsoleMessages.NewConfigurationWizardPage_connection_url,
-				lvmUrl,
-				urlHolder,
-				StringConverter.Default.<String>instance(),
-				null);
+		this.addLabel(section, HibernateConsoleMessages.NewConfigurationWizardPage_connection_url);
+		this.addEditableCombo(section, lvmUrl, urlHolder, StringConverter.Default.<String>instance(), (String)null);
+//		addLabeledEditableCombo(
+//				section,
+//				HibernateConsoleMessages.NewConfigurationWizardPage_connection_url,
+//				lvmUrl,
+//				urlHolder,
+//				StringConverter.Default.<String>instance(),
+//				null);
 
 		dialectHolder.addPropertyChangeListener(PropertyValueModel.VALUE, new SWTPropertyChangeListenerWrapper(
 				new PropertyChangeListener() {
@@ -176,25 +184,33 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 				}
 			) );
 
-		addLabeledText(
-				section,
-				HibernateConsoleMessages.NewConfigurationWizardPage_default_schema,
-				buildSchemaDefaultHolder());
+		this.addLabel(section, HibernateConsoleMessages.NewConfigurationWizardPage_default_schema);
+		this.addText(section, buildSchemaDefaultHolder());
+//		addLabeledText(
+//				section,
+//				HibernateConsoleMessages.NewConfigurationWizardPage_default_schema,
+//				buildSchemaDefaultHolder());
 
-		addLabeledText(
-				section,
-				HibernateConsoleMessages.NewConfigurationWizardPage_default_catalog,
-				buildCatalogDefaultHolder());
+		this.addLabel(section, HibernateConsoleMessages.NewConfigurationWizardPage_default_catalog);
+		this.addText(section, buildCatalogDefaultHolder());
+//		addLabeledText(
+//				section,
+//				HibernateConsoleMessages.NewConfigurationWizardPage_default_catalog,
+//				buildCatalogDefaultHolder());
 
-		addLabeledText(
-				section,
-				HibernateConsoleMessages.NewConfigurationWizardPage_user_name,
-				buildUsernameHolder());
+		this.addLabel(section, HibernateConsoleMessages.NewConfigurationWizardPage_user_name);
+		this.addText(section, buildUsernameHolder());
+//		addLabeledText(
+//				section,
+//				HibernateConsoleMessages.NewConfigurationWizardPage_user_name,
+//				buildUsernameHolder());
 
-		addLabeledText(
-				section,
-				HibernateConsoleMessages.NewConfigurationWizardPage_password,
-				buildPasswordHolder());
+		this.addLabel(section, HibernateConsoleMessages.NewConfigurationWizardPage_password);
+		this.addText(section, buildPasswordHolder());
+//		addLabeledText(
+//				section,
+//				HibernateConsoleMessages.NewConfigurationWizardPage_password,
+//				buildPasswordHolder());
 	}
 
 	private IPath getConfigurationFilePath() {

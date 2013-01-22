@@ -10,14 +10,13 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
-import org.eclipse.jpt.jpa.core.context.DbGenerator;
 import org.eclipse.jpt.jpa.core.context.Generator;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public interface GenericGenerator extends Generator, ParametrizedElement, DbGenerator {
+public interface GenericGenerator extends Generator, ParametrizedElement {
 	
 	Integer DEFAULT_INITIAL_VALUE = Integer.valueOf(1);
 

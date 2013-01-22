@@ -11,7 +11,6 @@
 package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jface.dialogs.IMessageProvider;
@@ -135,19 +134,29 @@ public class HibernateAddQueryDialog extends ValidatingDialog<AddQueryStateObjec
 
 		@Override
 		protected void initializeLayout(Composite container) {
-			this.nameText = addLabeledText(
-				container,
-				JptUiDetailsMessages.AddQueryDialog_name,
-				buildNameHolder()
-			);
+			
+			this.addLabel(container, JptUiDetailsMessages.AddQueryDialog_name);
+			this.addText(container, buildNameHolder());
+//			this.nameText = addLabeledText(
+//				container,
+//				JptUiDetailsMessages.AddQueryDialog_name,
+//				buildNameHolder()
+//			);
 
-			addLabeledCombo(
-				container,
-				JptUiDetailsMessages.AddQueryDialog_queryType,
-				buildQueryTypeListHolder(),
-				buildQueryTypeHolder(),
-				buildStringConverter(),
-				null);
+			this.addLabel(container, JptUiDetailsMessages.AddQueryDialog_queryType);
+			this.addCombo(
+					container,
+					buildQueryTypeListHolder(), 
+					buildQueryTypeHolder(), 
+					buildStringConverter(),
+					(String)null);
+//			addLabeledCombo(
+//				container,
+//				JptUiDetailsMessages.AddQueryDialog_queryType,
+//				buildQueryTypeListHolder(),
+//				buildQueryTypeHolder(),
+//				buildStringConverter(),
+//				null);
 		}
 
 		protected ListValueModel<String> buildQueryTypeListHolder() {

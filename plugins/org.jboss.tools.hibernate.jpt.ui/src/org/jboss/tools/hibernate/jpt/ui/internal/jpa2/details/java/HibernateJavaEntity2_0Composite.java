@@ -14,19 +14,26 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.AccessHolder;
-import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
-import org.eclipse.jpt.jpa.core.context.QueryContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
+import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.CacheableHolder2_0;
+import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractEntityComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.EntityNameComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.IdClassComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
+import org.eclipse.jpt.jpa.ui.internal.details.EntityNameCombo;
+import org.eclipse.jpt.jpa.ui.internal.details.IdClassChooser;
+import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.java.JavaSecondaryTablesComposite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Cacheable2_0Pane;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.JptUiDetailsOrmMessages;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.MetadataCompleteTriStateCheckBox;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmJavaClassChooser;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Cacheable2_0TriStateCheckBox;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Entity2_0OverridesComposite;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateGeneratorContainer;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaQueryContainer;
@@ -82,8 +89,8 @@ public class HibernateJavaEntity2_0Composite extends AbstractEntityComposite<Hib
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected void initializeQueriesSection(Composite container, PropertyValueModel<QueryContainer> queryContainerHolder) {
-		new HibernateQueries2_0Composite(this, (PropertyValueModel<? extends HibernateJavaQueryContainer>) queryContainerHolder, container);
+	protected Control initializeQueriesSection(Composite container) {
+		return new HibernateQueries2_0Composite(this, (PropertyValueModel<? extends HibernateJavaQueryContainer>) buildQueryContainerHolder(), container).getControl();
 	}
 	
 	@SuppressWarnings("unused")
@@ -98,17 +105,58 @@ public class HibernateJavaEntity2_0Composite extends AbstractEntityComposite<Hib
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	protected void initializeGeneratorsSection(Composite container, PropertyValueModel<GeneratorContainer> generatorContainerHolder) {
-		new HibernateGenerationComposite(this, (PropertyValueModel<? extends HibernateGeneratorContainer>) generatorContainerHolder, addSubPane(container, 10));
+	protected Control initializeGeneratorsSection(Composite container) {
+		return new HibernateGenerationComposite(this, (PropertyValueModel<? extends HibernateGeneratorContainer>) buildGeneratorContainerHolder(), addSubPane(container, 10)).getControl();
 	}
 	
 	
-	protected void initializeEntitySection(Composite container) {
-		new HibernateTableComposite(this, container);
-		new EntityNameComposite(this, container);
-		new AccessTypeComposite(this, buildAccessHolder(), container);	
-		new IdClassComposite(this, buildIdClassReferenceHolder(), container);
-		new Cacheable2_0Pane(this, buildCacheableHolder(), container);
+	protected Control initializeEntitySection(Composite container) {
+		
+//		new HibernateTableComposite(this, container);
+//		new EntityNameComposite(this, container);
+//		new AccessTypeComposite(this, buildAccessHolder(), container);	
+//		new IdClassComposite(this, buildIdClassReferenceHolder(), container);
+//		new Cacheable2_0Pane(this, buildCacheableHolder(), container);
+
+		container = this.addSubPane(container, 2, 0, 0, 0, 0);
+
+		// Java class widgets
+		Hyperlink javaClassHyperlink = this.addHyperlink(container, JptUiDetailsOrmMessages.OrmJavaClassChooser_javaClass);
+		new OrmJavaClassChooser(this, (PropertyValueModel<? extends OrmTypeMapping>) getSubjectHolder(), container, javaClassHyperlink);
+
+		// Table widgets
+		HibernateTableComposite tableComposite = new HibernateTableComposite(this, container);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		tableComposite.getControl().setLayoutData(gridData);
+
+		// Entity name widgets
+		this.addLabel(container, JptUiDetailsMessages.EntityNameComposite_name);
+		new EntityNameCombo(this, container);
+
+		// Access type widgets
+		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
+		new AccessTypeComboViewer(this, this.buildAccessHolder(), container);
+
+		// Id class widgets
+		Hyperlink hyperlink = this.addHyperlink(container,JptUiDetailsMessages.IdClassComposite_label);
+		new IdClassChooser(this, this.buildIdClassReferenceHolder(), container, hyperlink);
+
+		// Cacheable widgets
+		Cacheable2_0TriStateCheckBox cacheableCheckBox = new Cacheable2_0TriStateCheckBox(this, buildCacheableHolder(), container);
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		cacheableCheckBox.getControl().setLayoutData(gridData);
+
+		// Metadata complete widgets
+		MetadataCompleteTriStateCheckBox metadataCompleteCheckBox = new MetadataCompleteTriStateCheckBox(this, (PropertyValueModel<? extends OrmTypeMapping>) getSubjectHolder(), container);
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		metadataCompleteCheckBox.getControl().setLayoutData(gridData);
+
+		return container;
+		
+	
 	}
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolder() {
@@ -130,17 +178,17 @@ public class HibernateJavaEntity2_0Composite extends AbstractEntityComposite<Hib
 	}
 	
 	@Override
-	protected void initializeSecondaryTablesSection(Composite container) {
-		new JavaSecondaryTablesComposite(this, container);
+	protected Control initializeSecondaryTablesSection(Composite container) {
+		return new JavaSecondaryTablesComposite(this, container).getControl();
 	}
 
 	@Override
-	protected void initializeInheritanceSection(Composite container) {
-		new HibernateJavaInheritanceComposite(this, container);
+	protected Control initializeInheritanceSection(Composite container) {
+		return new HibernateJavaInheritanceComposite(this, container).getControl();
 	}
 	
 	@Override
-	protected void initializeAttributeOverridesSection(Composite container) {
-		new Entity2_0OverridesComposite(this, container);
+	protected Control initializeAttributeOverridesSection(Composite container) {
+		return new Entity2_0OverridesComposite(this, container).getControl();
 	}
 }

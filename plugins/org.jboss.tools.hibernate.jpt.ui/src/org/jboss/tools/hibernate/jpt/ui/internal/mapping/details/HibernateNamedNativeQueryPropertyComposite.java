@@ -16,7 +16,6 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedNativeQuery;
 
@@ -70,10 +69,10 @@ public class HibernateNamedNativeQueryPropertyComposite extends
 				return getSubject().getResultClass();
 			}
 
-			@Override
-			protected String getLabelText() {
-				return JptUiDetailsMessages.NamedNativeQueryPropertyComposite_resultClass;
-			}
+//			@Override
+//			protected String getLabelText() {
+//				return JptUiDetailsMessages.NamedNativeQueryPropertyComposite_resultClass;
+//			}
 
 			@Override
 			protected IJavaProject getJavaProject() {
@@ -93,11 +92,11 @@ public class HibernateNamedNativeQueryPropertyComposite extends
 	}
 
 
-	@Override
-	public void enableWidgets(boolean enabled) {
-		super.enableWidgets(enabled);
-		this.resultClassChooserPane.enableWidgets(enabled);
-	}
+//	@Override
+//	public void enableWidgets(boolean enabled) {
+//		super.enableWidgets(enabled);
+//		this.resultClassChooserPane.enableWidgets(enabled);
+//	}
 
 	@Override
 	protected void initializeLayout(Composite container) {

@@ -56,6 +56,7 @@ import org.eclipse.ui.progress.IProgressService;
 import org.hibernate.eclipse.console.utils.DialogSelectionHelper;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 import org.jboss.tools.hibernate.jpt.core.internal.context.persistence.PackageInfoRef;
+import org.jboss.tools.hibernate.jpt.ui.HibernateJptUIPlugin;
 
 
 /**
@@ -248,7 +249,7 @@ public class HibernatePersistenceUnitClassesComposite extends Pane<PersistenceUn
 			);
 		}
 		catch (JavaModelException e) {
-			JptJpaUiPlugin.log(e);
+			HibernateJptUIPlugin.logException(e);
 			return null;
 		}
 
@@ -270,7 +271,7 @@ public class HibernatePersistenceUnitClassesComposite extends Pane<PersistenceUn
 				return getSubject().getJpaProject().getJavaProject().findType(className.replace('$', '.'));
 			}
 			catch (JavaModelException e) {
-				JptJpaUiPlugin.log(e);
+				HibernateJptUIPlugin.logException(e);
 			}
 		}
 
@@ -350,10 +351,10 @@ public class HibernatePersistenceUnitClassesComposite extends Pane<PersistenceUn
 				JavaUI.openInEditor(javaElement, true, true);
 			}
 			catch (PartInitException e) {
-				JptJpaUiPlugin.log(e);
+				HibernateJptUIPlugin.logException(e);
 			}
 			catch (JavaModelException e) {
-				JptJpaUiPlugin.log(e);
+				HibernateJptUIPlugin.logException(e);
 			}
 		}
 	}

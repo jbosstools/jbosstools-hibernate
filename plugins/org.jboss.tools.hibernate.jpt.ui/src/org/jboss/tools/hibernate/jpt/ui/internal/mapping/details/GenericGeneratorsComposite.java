@@ -10,13 +10,14 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
 
+import java.util.Iterator;
 import java.util.ListIterator;
 
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.common.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
+import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.AbstractAdapter;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.NewNameDialog;
 import org.eclipse.jpt.common.ui.internal.widgets.NewNameDialogBuilder;
@@ -25,10 +26,11 @@ import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.Transformer;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
+import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
+import org.eclipse.jpt.common.utility.model.Model;
+import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.ui.internal.details.GeneratorComposite.GeneratorBuilder;
 import org.eclipse.osgi.util.NLS;
@@ -48,17 +50,18 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaGenericGener
  *
  */
 public class GenericGeneratorsComposite extends Pane<HibernateGeneratorContainer> {
-
-	private AddRemoveListPane<HibernateGeneratorContainer> listPane;
-	Pane<? extends GenericGenerator> genericGeneratorPane;
-	private ModifiablePropertyValueModel<GenericGenerator> generatorHolder;
+	
+	private AddRemoveListPane<HibernateGeneratorContainer, GenericGenerator> listPane;
+	Pane<?> genericGeneratorPane;
+	private SimpleCollectionValueModel<GenericGenerator> generatorHolder;
 	private NewNameDialogBuilder dialogBuilder = null;
 
 	public GenericGeneratorsComposite(
-		Pane<?> parentPane, 
+		Pane<? extends Model> parentPane, 
 		PropertyValueModel<? extends HibernateGeneratorContainer> subjectHolder,
+		PropertyValueModel<Boolean> enabledModel,
 		Composite parent) {
-		super(parentPane, subjectHolder, parent, false);
+		super((Pane<? extends HibernateGeneratorContainer>) parentPane, parent);
 		dialogBuilder = new NewNameDialogBuilder(getShell());
 		dialogBuilder.setDialogTitle(HibernateUIMappingMessages.GenericGeneratorsComposite_dialogTitle);
 		dialogBuilder.setDescriptionTitle(HibernateUIMappingMessages.GenericGeneratorsComposite_DescriptionTitle);
@@ -66,8 +69,8 @@ public class GenericGeneratorsComposite extends Pane<HibernateGeneratorContainer
 		dialogBuilder.setLabelText(HibernateUIMappingMessages.GenericGeneratorsComposite_Name);		
 	}
 
-	void addGenericGenerator() {
-		addGenericGeneratorFromDialog(buildAddGenericGeneratorDialog());
+	GenericGenerator addGenericGenerator() {
+		return addGenericGeneratorFromDialog(buildAddGenericGeneratorDialog());
 	}
 	
 	protected HibernatePersistenceUnit getPersistenceUnit(){
@@ -79,13 +82,14 @@ public class GenericGeneratorsComposite extends Pane<HibernateGeneratorContainer
 		return dialogBuilder.buildDialog();
 	}
 
-	protected void addGenericGeneratorFromDialog(NewNameDialog dialog) {
+	protected GenericGenerator addGenericGeneratorFromDialog(NewNameDialog dialog) {
 		if (dialog.open() != Window.OK) {
-			return;
+			return null;
 		}
 		GenericGenerator generator = this.getSubject().addGenericGenerator();
 		generator.setName(dialog.getName());
-		this.getGenericGeneratorHolder().setValue(generator);//so that it gets selected in the List for the user to edit
+//		this.getGenericGeneratorHolder().setValue(generator);//so that it gets selected in the List for the user to edit
+		return generator;
 	}
 
 	private ListValueModel<GenericGenerator> buildDisplayableGenericGeneratorsListHolder() {
@@ -95,16 +99,24 @@ public class GenericGeneratorsComposite extends Pane<HibernateGeneratorContainer
 		);
 	}
 	
-	private AddRemoveListPane<HibernateGeneratorContainer> addListPane(Composite container) {
+	private AddRemoveListPane<HibernateGeneratorContainer, GenericGenerator> addListPane(Composite container) {
 
-		return new AddRemoveListPane<HibernateGeneratorContainer>(
-			this,
-			container,
-			buildGenericGeneratorsAdapter(),
-			buildDisplayableGenericGeneratorsListHolder(),
-			this.getGenericGeneratorHolder(),
-			buildGenericGeneratorsListLabelProvider()
-		);
+		return new AddRemoveListPane<HibernateGeneratorContainer, GenericGenerator>(
+				this, 
+				container, 
+				buildGenericGeneratorsAdapter(), 
+				buildDisplayableGenericGeneratorsListHolder(), 
+				this.getGenericGeneratorHolder(), 
+				buildGenericGeneratorsListLabelProvider());
+//		return new AddRemoveListPane<HibernateGeneratorContainer, GenericGenerator>(
+//			this,
+//			container,
+//			buildGenericGeneratorsAdapter(),
+//			buildDisplayableGenericGeneratorsListHolder(),
+//			this.getGenericGeneratorHolder(),
+//			buildGenericGeneratorsListLabelProvider(),
+//			(String)null
+//		);
 	}
 
 	private ListValueModel<GenericGenerator> buildGenericGeneratorsListHolder() {
@@ -137,19 +149,19 @@ public class GenericGeneratorsComposite extends Pane<HibernateGeneratorContainer
 		};
 	}
 	
-	private Adapter buildGenericGeneratorsAdapter() {
+	private Adapter<GenericGenerator> buildGenericGeneratorsAdapter() {
 
-		return new AddRemoveListPane.AbstractAdapter() {
+		return new AbstractAdapter<GenericGenerator>() {
 
-			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
-				addGenericGenerator();
+			public GenericGenerator addNewItem() {
+				return addGenericGenerator();
 			}
 
-			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
-				for (Object item : listSelectionModel.selectedValues()) {
-					if (item instanceof GenericGenerator) {
-						getSubject().removeGenericGenerator((GenericGenerator) item);
-					}
+			public void removeSelectedItems(
+					CollectionValueModel<GenericGenerator> selectedItemsModel) {
+				Iterator<GenericGenerator> iterator = selectedItemsModel.iterator();
+				while (iterator.hasNext()) {
+					getSubject().removeGenericGenerator(iterator.next());
 				}
 			}
 		};
@@ -173,16 +185,16 @@ public class GenericGeneratorsComposite extends Pane<HibernateGeneratorContainer
 		};
 	}
 
-	private ModifiablePropertyValueModel<GenericGenerator> buildGenericGeneratorHolder() {
-		return new SimplePropertyValueModel<GenericGenerator>();
+	private SimpleCollectionValueModel<GenericGenerator> buildGenericGeneratorHolder() {
+		return new SimpleCollectionValueModel<GenericGenerator>();
 	}
 
-	@Override
+/*	@Override
 	public void enableWidgets(boolean enabled) {
 		super.enableWidgets(enabled);
 		this.listPane.enableWidgets(enabled);
 	}
-
+*/
 	@Override
 	protected void initialize() {
 		super.initialize();
@@ -208,7 +220,7 @@ public class GenericGeneratorsComposite extends Pane<HibernateGeneratorContainer
 	protected Pane<? extends GenericGenerator> buildGenericGeneratorComposite(PageBook pageBook) {
 		return new GenericGeneratorComposite(
 			this,
-			this.getGenericGeneratorHolder(),
+			(PropertyValueModel<GenericGenerator>) this.getGenericGeneratorHolder(),
 			pageBook,
 			buildGenericGeneratorBuilder()
 		);
@@ -219,17 +231,17 @@ public class GenericGeneratorsComposite extends Pane<HibernateGeneratorContainer
 			public GenericGenerator addGenerator() {
 				HibernateJavaGeneratorContainer container = (HibernateJavaGeneratorContainer)getSubject();
 				JavaGenericGenerator generator = container.addGenericGenerator(container.getGenericGeneratorsSize());
-				generatorHolder.setValue(generator);
+//				generatorHolder.setValue(generator);
 				return generator;
 			}
 		};
 	}
 
 	private void installPaneSwitcher(PageBook pageBook) {
-		new ControlSwitcher(this.getGenericGeneratorHolder(), this.buildPaneTransformer(), pageBook);
+//		new ControlSwitcher(this.getGenericGeneratorHolder(), this.buildPaneTransformer(), pageBook);
 	}
 	
-	protected ModifiablePropertyValueModel<GenericGenerator> getGenericGeneratorHolder() {
+	protected ModifiableCollectionValueModel<GenericGenerator> getGenericGeneratorHolder() {
 		return generatorHolder;
 	}
 	

@@ -142,12 +142,15 @@ public class EnterNameDialog extends ValidatingDialog<NameStateObject> {
 
 		@Override
 		protected void initializeLayout(Composite container) {
+			
+			this.addLabel(container, labelText);
+			this.addText(container, buildNameHolder(), null);
 
-			text = addLabeledText(
-				container,
-				labelText,
-				buildNameHolder()
-			);
+//			text = addLabeledText(
+//				container,
+//				labelText,
+//				buildNameHolder()
+//			);
 		}
 
 		void selectAll() {

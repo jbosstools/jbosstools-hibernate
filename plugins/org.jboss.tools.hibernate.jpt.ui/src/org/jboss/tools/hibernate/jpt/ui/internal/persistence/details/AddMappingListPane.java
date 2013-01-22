@@ -14,9 +14,9 @@ import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
+import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.internal.persistence.JptUiPersistenceMessages;
 import org.eclipse.swt.widgets.Button;
@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Composite;
  * @author Dmitry Geraskov (geraskov@gmail.com)
  *
  */
-public class AddMappingListPane extends AddRemoveListPane<PersistenceUnit> {
+public class AddMappingListPane<E extends Object> extends AddRemoveListPane<PersistenceUnit, E> {
 	
 	private Button addButton;
 	
@@ -36,19 +36,19 @@ public class AddMappingListPane extends AddRemoveListPane<PersistenceUnit> {
 	
 	public AddMappingListPane(Pane<? extends PersistenceUnit> parentPane,
             Composite parent,
-            ExtendedAdapter adapter,
-            ListValueModel<?> listHolder,
-            ModifiablePropertyValueModel<?> selectedItemHolder,
+            Adapter<E> adapter,
+            ListValueModel<E> listHolder,
+            ModifiableCollectionValueModel<E> selectedItemHolder,
             ILabelProvider labelProvider,
             String helpId) {
-		super(parentPane, parent, adapter, listHolder, selectedItemHolder, labelProvider,  helpId);
+		super(parentPane, parent, adapter, listHolder, selectedItemHolder, labelProvider, helpId);
 	}
 	
 	@Override
 	protected void initialize(
-			org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter adapter,
-			ListValueModel<?> listHolder,
-			ModifiablePropertyValueModel<?> selectedItemHolder,
+			Adapter<E> adapter,
+			ListValueModel<E> listHolder,
+			ModifiableCollectionValueModel<E> selectedItemHolder,
 			IBaseLabelProvider labelProvider) {
 		super.initialize(adapter, listHolder, selectedItemHolder, labelProvider);
 		this.adapter = (ExtendedAdapter) adapter;
@@ -62,20 +62,20 @@ public class AddMappingListPane extends AddRemoveListPane<PersistenceUnit> {
 				adapter.addPackageButtonText(),
 				buildAddPackageItemAction()
 			);
-		addAlignRight(this.addButton);
+//		addAlignRight(this.addButton);
 	}
 
 	private Runnable buildAddPackageItemAction() {
 		return new Runnable() {
 			public void run() {
-				adapter.addPackage(getSelectionModel());
+				adapter.addPackage(getSelectedItemsModel());
 			}
 		};
 	}
 
 }
 
-abstract class ExtendedAdapter extends AddRemoveListPane.AbstractAdapter {
+abstract class ExtendedAdapter extends AddRemoveListPane.AbstractAdapter<ClassRef> {
 	
 	@Override
 	public String addButtonText() {
@@ -96,6 +96,6 @@ abstract class ExtendedAdapter extends AddRemoveListPane.AbstractAdapter {
 		return JptUiPersistenceMessages.PersistenceUnitClassesComposite_open;
 	}
 
-	public abstract void addPackage(ObjectListSelectionModel listSelectionModel);
+	public abstract void addPackage(ModifiableCollectionValueModel<ClassRef> listSelectionModel);
 	
 }

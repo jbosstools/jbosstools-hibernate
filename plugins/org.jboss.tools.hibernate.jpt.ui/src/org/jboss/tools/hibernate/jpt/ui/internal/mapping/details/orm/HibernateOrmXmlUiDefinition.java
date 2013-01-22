@@ -13,11 +13,13 @@ package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.orm;
 import java.util.List;
 
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.ui.internal.jface.SimpleItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
+import org.eclipse.jpt.jpa.core.resource.orm.JPA;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.orm.OrmAttributeMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.orm.OrmTypeMappingUiDefinition;
@@ -72,7 +74,7 @@ public class HibernateOrmXmlUiDefinition extends AbstractOrmXmlResourceUiDefinit
 	}
 	
 	public boolean providesUi(JptResourceType resourceType) {
-		return resourceType.equals(JptJpaCorePlugin.ORM_XML_1_0_RESOURCE_TYPE);
+		return resourceType.equals(PlatformTools.getResourceType(XmlEntityMappings.CONTENT_TYPE, JPA.SCHEMA_VERSION));
 	}
 	
 	public ItemTreeStateProviderFactoryProvider getStructureViewFactoryProvider() {

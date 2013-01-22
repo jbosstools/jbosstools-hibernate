@@ -78,7 +78,7 @@ public class HibernateJavaGeneratorContainerImpl extends
 		GenericGeneratorAnnotation annotation = this.addGenericGeneratorAnnotation(index);
 		return this.genericGeneratorContainer.addContextElement(index, annotation);
 	}
-
+	
 	protected GenericGeneratorAnnotation addGenericGeneratorAnnotation(int index) {
 		return (GenericGeneratorAnnotation) this.parentAdapter.getResourceAnnotatedElement().addAnnotation(index, GenericGeneratorAnnotation.ANNOTATION_NAME);
 	}

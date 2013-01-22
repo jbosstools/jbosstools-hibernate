@@ -40,12 +40,14 @@ public class IndexHolderComposite extends Pane<IndexHolder> {
 	@Override
 	protected void initializeLayout(Composite container) {
 		// Name widgets
-		addLabeledText(
-			container,
-			HibernateUIMappingMessages.IndexHolderComposite_name,
-			buildIndexNameHolder(),
-			null//TODO add help
-		);
+		this.addLabel(container, HibernateUIMappingMessages.IndexHolderComposite_name);
+		this.addText(container, buildIndexNameHolder());
+//		addLabeledText(
+//			container,
+//			HibernateUIMappingMessages.IndexHolderComposite_name,
+//			buildIndexNameHolder(),
+//			null//TODO add help
+//		);
 	}
 
 	

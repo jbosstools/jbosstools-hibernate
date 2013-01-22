@@ -13,6 +13,7 @@ package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
 import java.util.Collection;
 
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
+import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.StringConverter;
@@ -23,15 +24,13 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
-import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractEntityComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.AbstractInheritanceComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.DiscriminatorColumnComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Group;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateEntity;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;
 import org.jboss.tools.hibernate.jpt.ui.internal.mappings.db.xpl.ColumnCombo;
@@ -103,7 +102,7 @@ public abstract class HibernateAbstractInheritanceComposite<T extends HibernateE
 	public HibernateAbstractInheritanceComposite(Pane<? extends T> parentPane,
 	                            Composite parent) {
 
-		super(parentPane, parent, false);
+		super(parentPane, parent);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -117,34 +116,50 @@ public abstract class HibernateAbstractInheritanceComposite<T extends HibernateE
 		);
 
 		// Strategy widgets
-		addLabeledComposite(
-			subPane,
-			JptUiDetailsMessages.InheritanceComposite_strategy,
-			addStrategyCombo(subPane),
-			JpaHelpContextIds.ENTITY_INHERITANCE_STRATEGY
-		);
+		this.addLabel(subPane, JptUiDetailsMessages.InheritanceComposite_strategy);
+		this.addStrategyCombo(container);
+//		addLabeledComposite(
+//			subPane,
+//			JptUiDetailsMessages.InheritanceComposite_strategy,
+//			addStrategyCombo(subPane),
+//			JpaHelpContextIds.ENTITY_INHERITANCE_STRATEGY
+//		);
 
 		// Discriminator Value widgets
 		PropertyValueModel<Boolean> dvEnabled = this.buildDiscriminatorValueEnabledHolder();
-		Combo discriminatorValueCombo = addEditableCombo(
-			subPane,
-			buildDiscriminatorValueListHolder(),
-			buildDiscriminatorValueHolder(),
-			buildDiscriminatorValueConverter(),
-			dvEnabled
-		);
-		Label discriminatorValueLabel = addLabel(
-			subPane,
-			JptUiDetailsMessages.InheritanceComposite_discriminatorValue,
-			dvEnabled
-		);
-		addLabeledComposite(
-			subPane,
-			discriminatorValueLabel,
-			discriminatorValueCombo,
-			null,
-			JpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_VALUE
-		);
+//		Combo discriminatorValueCombo = addEditableCombo(
+//			subPane,
+//			buildDiscriminatorValueListHolder(),
+//			buildDiscriminatorValueHolder(),
+//			buildDiscriminatorValueConverter(),
+//			dvEnabled
+//		);
+//		Label discriminatorValueLabel = addLabel(
+//			subPane,
+//			JptUiDetailsMessages.InheritanceComposite_discriminatorValue,
+//			dvEnabled
+//		);
+		
+		this.addLabel(
+				subPane,
+				JptUiDetailsMessages.InheritanceComposite_discriminatorValue,
+				dvEnabled
+			);
+		this.addEditableCombo(
+				subPane,
+				buildDiscriminatorValueListHolder(),
+				buildDiscriminatorValueHolder(),
+				buildDiscriminatorValueConverter(),
+				dvEnabled
+			);
+		
+//		addLabeledComposite(
+//			subPane,
+//			discriminatorValueLabel,
+//			discriminatorValueCombo,
+//			null,
+//			JpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_VALUE
+//		);
 
 		if (getSubject() instanceof HibernateJavaEntity) {
 			new HibernateDiscriminatorColumnComposite((Pane<? extends HibernateJavaEntity>) this, container);
@@ -305,6 +320,13 @@ public abstract class HibernateAbstractInheritanceComposite<T extends HibernateE
 				getSubject().setSpecifiedInheritanceStrategy(value);
 			}
 		};
+	}
+
+	protected final int getGroupBoxMargin() {
+		Group group = this.getWidgetFactory().createGroup(SWTUtil.getShell(), "");
+		Rectangle clientArea = group.getClientArea();
+		group.dispose();
+		return clientArea.x + 5;
 	}
 
 	protected abstract void addPrimaryKeyJoinColumnsComposite(Composite container);

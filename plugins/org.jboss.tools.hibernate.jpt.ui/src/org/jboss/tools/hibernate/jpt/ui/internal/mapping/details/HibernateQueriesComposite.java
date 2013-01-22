@@ -11,6 +11,7 @@
 package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -29,6 +30,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
+import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -39,6 +41,7 @@ import org.eclipse.jpt.jpa.core.context.QueryContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
+import org.eclipse.jpt.jpa.ui.editors.JpaPageComposite;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.NamedNativeQueryPropertyComposite;
@@ -62,9 +65,9 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernatePackage
  */
 public class HibernateQueriesComposite extends Pane<HibernateJavaQueryContainer> {
 
-	private AddRemoveListPane<QueryContainer> listPane;
+	private AddRemoveListPane<QueryContainer, Query> listPane;
 	private NamedNativeQueryPropertyComposite namedNativeQueryPane;
-	private Pane<? extends NamedQuery> namedQueryPane;
+	private Pane<? extends Query> namedQueryPane;
 	private HibernateNamedQueryPropertyComposite hibernateNamedQueryPane;
 	private HibernateNamedNativeQueryPropertyComposite hibernateNamedNativeQueryPane;
 	private ModifiablePropertyValueModel<Query> queryHolder;
@@ -79,11 +82,11 @@ public class HibernateQueriesComposite extends Pane<HibernateJavaQueryContainer>
 			PropertyValueModel<? extends HibernateJavaQueryContainer> subjectHolder,
 			Composite parent) {
 
-				super(parentPane, subjectHolder, parent, false);
+				super(parentPane, subjectHolder, parent);
 	}
 
-	private void addQuery() {
-		addQueryFromDialog(buildAddQueryDialog());
+	private Query addQuery() {
+		return addQueryFromDialog(buildAddQueryDialog());
 	}
 
 	protected HibernateAddQueryDialog buildAddQueryDialog() {
@@ -91,9 +94,9 @@ public class HibernateQueriesComposite extends Pane<HibernateJavaQueryContainer>
 		return new HibernateAddQueryDialog(getControl().getShell(), this.getSubject().getPersistenceUnit(), hibernateOnly);
 	}
 
-	protected void addQueryFromDialog(HibernateAddQueryDialog hibernateAddQueryDialog) {
+	protected Query addQueryFromDialog(HibernateAddQueryDialog hibernateAddQueryDialog) {
 		if (hibernateAddQueryDialog.open() != Window.OK) {
-			return;
+			return null;
 		}
 		String queryType = hibernateAddQueryDialog.getQueryType();
 		Query query;
@@ -114,6 +117,7 @@ public class HibernateQueriesComposite extends Pane<HibernateJavaQueryContainer>
 		}
 		query.setName(hibernateAddQueryDialog.getName());
 		this.getQueryHolder().setValue(query);//so that it gets selected in the List for the user to edit
+		return query;
 	}
 
 	private ListValueModel<Query> buildDisplayableQueriesListHolder() {
@@ -123,9 +127,9 @@ public class HibernateQueriesComposite extends Pane<HibernateJavaQueryContainer>
 		);
 	}
 
-	private AddRemoveListPane<QueryContainer> addListPane(Composite container) {
+	private AddRemoveListPane<QueryContainer, Query> addListPane(Composite container) {
 
-		return new AddRemoveListPane<QueryContainer>(
+		return new AddRemoveListPane<QueryContainer, Query>(
 			this,
 			container,
 			buildQueriesAdapter(),
@@ -266,18 +270,21 @@ public class HibernateQueriesComposite extends Pane<HibernateJavaQueryContainer>
 		};
 	}
 
-	private Adapter buildQueriesAdapter() {
+	private Adapter<Query> buildQueriesAdapter() {
 
-		return new AddRemoveListPane.AbstractAdapter() {
+		return new AddRemoveListPane.AbstractAdapter<Query>() {
 
 			@Override
-			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
-				addQuery();
+			public Query addNewItem() {
+				return addQuery();
 			}
 
 			@Override
-			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
-				for (Object item : listSelectionModel.selectedValues()) {
+			public void removeSelectedItems(
+					CollectionValueModel<Query> selectedItemsModel) {
+				Iterator<Query> iterator = selectedItemsModel.iterator();
+				while (iterator.hasNext()) {
+					Query item = iterator.next();
 					if (item instanceof HibernateNamedQuery) {
 						getSubject().removeHibernateNamedQuery((HibernateNamedQuery)item);
 					} else if (item instanceof HibernateNamedNativeQuery) {
@@ -333,11 +340,12 @@ public class HibernateQueriesComposite extends Pane<HibernateJavaQueryContainer>
 		return new SimplePropertyValueModel<Query>();
 	}
 
-	@Override
-	public void enableWidgets(boolean enabled) {
-		super.enableWidgets(enabled);
-		this.listPane.enableWidgets(enabled);
-	}
+//	@Override
+//	public void enableWidgets(boolean enabled) {
+//		this.getEnabledModel().set
+//		super.enableWidgets(enabled);
+//		this.listPane.enableWidgets(enabled);
+//	}
 
 	@Override
 	protected void initialize() {

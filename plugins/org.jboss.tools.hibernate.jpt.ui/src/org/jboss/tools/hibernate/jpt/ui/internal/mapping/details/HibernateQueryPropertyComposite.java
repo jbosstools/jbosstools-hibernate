@@ -12,9 +12,6 @@ package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
 
 import java.util.Collection;
 
-import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
-import org.eclipse.jpt.common.ui.internal.util.LabeledControlUpdater;
-import org.eclipse.jpt.common.ui.internal.util.LabeledLabel;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
@@ -27,11 +24,9 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 import org.jboss.tools.hibernate.jpt.core.internal.context.CacheModeType;
 import org.jboss.tools.hibernate.jpt.core.internal.context.FlushModeType;
-import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateQuery;
 
 /**
@@ -50,19 +45,23 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		addLabeledText(
-			container,
-			JptUiDetailsMessages.NamedQueryComposite_nameTextLabel,
-			buildNameTextHolder());
+		this.addLabel(container, JptUiDetailsMessages.NamedQueryComposite_nameTextLabel);
+		this.addText(container, buildNameTextHolder());
+//		addLabeledText(
+//			container,
+//			JptUiDetailsMessages.NamedQueryComposite_nameTextLabel,
+//			buildNameTextHolder());
 
 		// Query text area
-		addLabeledMultiLineText(
-			container,
-			JptUiDetailsMessages.NamedQueryPropertyComposite_query,
-			buildQueryHolder(),
-			4,
-			null
-		);
+		this.addLabel(container, JptUiDetailsMessages.NamedQueryPropertyComposite_query);
+		this.addMultiLineText(container, buildQueryHolder(), 4);
+//		addLabeledMultiLineText(
+//			container,
+//			JptUiDetailsMessages.NamedQueryPropertyComposite_query,
+//			buildQueryHolder(),
+//			4,
+//			null
+//		);
 
 		// ReadOnly tri-state check box
 		addTriStateCheckBoxWithDefault(
@@ -74,12 +73,14 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 		);
 
 		//Flush Mode combobox
-		addLabeledComposite(
-			container,
-			HibernateUIMappingMessages.NamedQueryPropertyComposite_flushMode,
-			addFlushModeTypeCombo(container),
-			null//TODO help
-		);
+		this.addLabel(container, HibernateUIMappingMessages.NamedQueryPropertyComposite_flushMode);
+		this.addFlushModeTypeCombo(container);
+//		addLabeledComposite(
+//			container,
+//			HibernateUIMappingMessages.NamedQueryPropertyComposite_flushMode,
+//			addFlushModeTypeCombo(container),
+//			null//TODO help
+//		);
 
 		// Cacheable tri-state check box
 		addTriStateCheckBoxWithDefault(
@@ -91,89 +92,109 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 		);
 
 		//Cache Mode combobox
-		addLabeledComposite(
-			container,
-			HibernateUIMappingMessages.NamedQueryPropertyComposite_cacheMode,
-			addCacheModeTypeCombo(container),
-			null//TODO help
-		);
+		this.addLabel(container, HibernateUIMappingMessages.NamedQueryPropertyComposite_cacheMode);
+		this.addCacheModeTypeCombo(container);
+//		addLabeledComposite(
+//			container,
+//			HibernateUIMappingMessages.NamedQueryPropertyComposite_cacheMode,
+//			addCacheModeTypeCombo(container),
+//			null//TODO help
+//		);
 
-		addLabeledText(
-			container,
-			HibernateUIMappingMessages.NamedQueryPropertyComposite_cacheRegion,
-			buildCacheRegionTextHolder());
+		this.addLabel(container, HibernateUIMappingMessages.NamedQueryPropertyComposite_cacheRegion);
+		this.addText(container, buildCacheRegionTextHolder());
+//		addLabeledText(
+//			container,
+//			HibernateUIMappingMessages.NamedQueryPropertyComposite_cacheRegion,
+//			buildCacheRegionTextHolder());
 
 		// Fetch size widgets
-		Spinner fetchSizeSpinner = addLabeledSpinner(
-			container,
-			HibernateUIMappingMessages.NamedQueryPropertyComposite_fetchSize,
-			buildFetchSizeHolder(),
-			-1,
-			-1,
-			Integer.MAX_VALUE,
-			addDefaultFetchSizeLabel(container),
-			JpaHelpContextIds.MAPPING_COLUMN_LENGTH
-		);
+		this.addLabel(container, HibernateUIMappingMessages.NamedQueryPropertyComposite_fetchSize);
+		Spinner fetchSizeSpinner = 
+				this.addSpinner(
+						container, 
+						buildFetchSizeHolder(), 
+						-1, 
+						-1, 
+						Integer.MAX_VALUE, 
+						JpaHelpContextIds.MAPPING_COLUMN_LENGTH);
+//		Spinner fetchSizeSpinner = addLabeledSpinner(
+//			container,
+//			HibernateUIMappingMessages.NamedQueryPropertyComposite_fetchSize,
+//			buildFetchSizeHolder(),
+//			-1,
+//			-1,
+//			Integer.MAX_VALUE,
+//			addDefaultFetchSizeLabel(container),
+//			JpaHelpContextIds.MAPPING_COLUMN_LENGTH
+//		);
 
 		updateGridData(container, fetchSizeSpinner);
 
+		this.addLabel(container, HibernateUIMappingMessages.NamedQueryPropertyComposite_timeout);
+		Spinner timeoutSpinner = this.addSpinner(
+				container, 
+				buildTimeoutHolder(), 
+				-1, 
+				-1, 
+				Integer.MAX_VALUE, JpaHelpContextIds.MAPPING_COLUMN_LENGTH);
 		// Timeout size widgets
-		Spinner timeoutSpinner = addLabeledSpinner(
-			container,
-			HibernateUIMappingMessages.NamedQueryPropertyComposite_timeout,
-			buildTimeoutHolder(),
-			-1,
-			-1,
-			Integer.MAX_VALUE,
-			addDefaultFetchSizeLabel(container),
-			JpaHelpContextIds.MAPPING_COLUMN_LENGTH
-		);
+//		Spinner timeoutSpinner = addLabeledSpinner(
+//			container,
+//			HibernateUIMappingMessages.NamedQueryPropertyComposite_timeout,
+//			buildTimeoutHolder(),
+//			-1,
+//			-1,
+//			Integer.MAX_VALUE,
+//			addDefaultFetchSizeLabel(container),
+//			JpaHelpContextIds.MAPPING_COLUMN_LENGTH
+//		);
 
 		updateGridData(container, timeoutSpinner);
 
 	}
 
-	private Control addDefaultFetchSizeLabel(Composite container) {
+//	private Control addDefaultFetchSizeLabel(Composite container) {
+//
+//		Label label = addLabel(
+//			container,
+//			JptCommonUiMessages.DefaultEmpty
+//		);
+//
+//		new LabeledControlUpdater(
+//			new LabeledLabel(label),
+//			buildDefaultFetchSizeLabelHolder()
+//		);
+//
+//		return label;
+//	}
 
-		Label label = addLabel(
-			container,
-			JptCommonUiMessages.DefaultEmpty
-		);
+//	private PropertyValueModel<String> buildDefaultFetchSizeLabelHolder() {
+//
+//		return new TransformationPropertyValueModel<Integer, String>(buildDefaultFetchSizeHolder()) {
+//
+//			@Override
+//			protected String transform(Integer value) {
+//
+//				int defaultValue = (getSubject() != null) ? getSubject().getDefaultFetchSize() :
+//					HibernateNamedQuery.DEFAULT_FETCH_SIZE;
+//
+//				return NLS.bind(
+//					JptCommonUiMessages.DefaultWithOneParam,
+//					Integer.valueOf(defaultValue)
+//				);
+//			}
+//		};
+//	}
 
-		new LabeledControlUpdater(
-			new LabeledLabel(label),
-			buildDefaultFetchSizeLabelHolder()
-		);
-
-		return label;
-	}
-
-	private PropertyValueModel<String> buildDefaultFetchSizeLabelHolder() {
-
-		return new TransformationPropertyValueModel<Integer, String>(buildDefaultFetchSizeHolder()) {
-
-			@Override
-			protected String transform(Integer value) {
-
-				int defaultValue = (getSubject() != null) ? getSubject().getDefaultFetchSize() :
-					HibernateNamedQuery.DEFAULT_FETCH_SIZE;
-
-				return NLS.bind(
-					JptCommonUiMessages.DefaultWithOneParam,
-					Integer.valueOf(defaultValue)
-				);
-			}
-		};
-	}
-
-	private ModifiablePropertyValueModel<Integer> buildDefaultFetchSizeHolder() {
-		return new PropertyAspectAdapter<HibernateQuery, Integer>(getSubjectHolder(), HibernateQuery.DEFAULT_FETCH_SIZE_PROPERTY) {
-			@Override
-			protected Integer buildValue_() {
-				return Integer.valueOf(this.subject.getDefaultFetchSize());
-			}
-		};
-	}
+//	private ModifiablePropertyValueModel<Integer> buildDefaultFetchSizeHolder() {
+//		return new PropertyAspectAdapter<HibernateQuery, Integer>(getSubjectHolder(), HibernateQuery.DEFAULT_FETCH_SIZE_PROPERTY) {
+//			@Override
+//			protected Integer buildValue_() {
+//				return Integer.valueOf(this.subject.getDefaultFetchSize());
+//			}
+//		};
+//	}
 
 	protected ModifiablePropertyValueModel<String> buildNameTextHolder() {
 		return new PropertyAspectAdapter<HibernateQuery, String>(
@@ -445,7 +466,7 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 		controls[1].setLayoutData(gridData);
 
 		controls[2].setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		removeAlignRight(controls[2]);
+//		removeAlignRight(controls[2]);
 	}
 
 }

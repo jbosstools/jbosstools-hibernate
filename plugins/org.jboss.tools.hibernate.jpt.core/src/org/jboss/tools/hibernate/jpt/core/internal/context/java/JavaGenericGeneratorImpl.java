@@ -39,7 +39,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValida
  */
 public class JavaGenericGeneratorImpl extends AbstractJavaGenerator<GenericGeneratorAnnotation>
 implements JavaGenericGenerator, Messages {
-
+	
 	private String strategy;
 
 	protected final Vector<JavaParameter> parameters = new Vector<JavaParameter>();

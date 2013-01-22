@@ -38,9 +38,14 @@ public class HibernateJavaUiFactory extends BaseJavaUiFactory {
 	@Override
 	public JpaComposite createJavaIdMappingComposite(
 			PropertyValueModel<JavaIdMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new HibernateIdMappingComposite((PropertyValueModel<? extends HibernateJavaIdMapping>) subjectHolder, parent, widgetFactory);
+		return new HibernateIdMappingComposite(
+				(PropertyValueModel<? extends HibernateJavaIdMapping>) subjectHolder, 
+				enabledModel,
+				parent, 
+				widgetFactory);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -60,9 +65,14 @@ public class HibernateJavaUiFactory extends BaseJavaUiFactory {
 
 	public JpaComposite createJavaBasicMappingComposite(
 			PropertyValueModel<JavaBasicMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new HibernateBasicMappingComposite(subjectHolder, parent, widgetFactory);
+		return new HibernateBasicMappingComposite(
+				subjectHolder, 
+				enabledModel,
+				parent, 
+				widgetFactory);
 	}
 	
 	

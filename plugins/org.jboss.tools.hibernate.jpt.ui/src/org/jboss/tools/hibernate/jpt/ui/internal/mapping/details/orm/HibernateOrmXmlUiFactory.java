@@ -33,8 +33,12 @@ public class HibernateOrmXmlUiFactory extends BaseOrmXmlUiFactory {
 	@Override
 	public JpaComposite createOrmBasicMappingComposite(
 			PropertyValueModel<OrmBasicMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent, WidgetFactory widgetFactory) {
-		return new HibernateBasicMappingComposite(subjectHolder, parent,
+		return new HibernateBasicMappingComposite(
+				subjectHolder, 
+				enabledModel,
+				parent,
 				widgetFactory);
 	}
 	
@@ -42,9 +46,14 @@ public class HibernateOrmXmlUiFactory extends BaseOrmXmlUiFactory {
 	@Override
 	public JpaComposite createOrmIdMappingComposite(
 			PropertyValueModel<OrmIdMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new HibernateOrmIdMappingComposite((PropertyValueModel<? extends HibernateOrmIdMapping>) subjectHolder, parent, widgetFactory);
+		return new HibernateOrmIdMappingComposite(
+				(PropertyValueModel<? extends HibernateOrmIdMapping>) subjectHolder, 
+				enabledModel,
+				parent, 
+				widgetFactory);
 	}
 	
 	@SuppressWarnings("unchecked")

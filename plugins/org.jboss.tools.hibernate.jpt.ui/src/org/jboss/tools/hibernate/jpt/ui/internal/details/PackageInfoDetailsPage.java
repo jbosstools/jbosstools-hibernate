@@ -17,6 +17,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractJpaDetailsPage;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateGeneratorContainer;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaQueryContainer;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaTypeDefContainer;
@@ -61,7 +62,7 @@ public class PackageInfoDetailsPage extends AbstractJpaDetailsPage<HibernatePack
 		container = addCollapsibleSection(
 				container,
 				Messages.PackageInfoDetailsPage_GenericGeneratorsSection);
-		this.initializeGenericGeneratorsSection(container, buildGeneratorContainerHolder());
+		this.initializeGenericGeneratorsSection(container);
 	}
 	
 	private PropertyValueModel<HibernateGeneratorContainer> buildGeneratorContainerHolder() {
@@ -73,8 +74,12 @@ public class PackageInfoDetailsPage extends AbstractJpaDetailsPage<HibernatePack
 		};
 	}
 	
-	protected void initializeGenericGeneratorsSection(Composite container, PropertyValueModel<HibernateGeneratorContainer> generatorContainerHolder) {
-		new GenericGeneratorsComposite(this, generatorContainerHolder, container);
+	protected Control initializeGenericGeneratorsSection(Composite container) {
+		return new GenericGeneratorsComposite(
+				this, 
+				buildGeneratorContainerHolder(), 
+				this.buildWidgetsEnabledHolder(),
+				container).getControl();
 	}
 	
 	protected void initializeQueriesCollapsibleSection(Composite container) {

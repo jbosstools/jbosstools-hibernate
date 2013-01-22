@@ -12,8 +12,9 @@ package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.java;
 
 import java.util.Iterator;
 
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -26,7 +27,6 @@ import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.persistence.details.PersistenceXmlUiDefinition;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -60,7 +60,8 @@ public class PackageInfoResourceUIDefinition implements
 	 */
 	@Override
 	public boolean providesUi(JptResourceType resourceType) {
-		return resourceType.equals(JptCommonCorePlugin.JAVA_SOURCE_PACKAGE_INFO_RESOURCE_TYPE);
+		JptResourceType pirt = PlatformTools.getResourceType(JavaResourceCompilationUnit.PACKAGE_INFO_CONTENT_TYPE);
+		return resourceType.equals(pirt);
 	}
 
 	public ItemTreeStateProviderFactoryProvider getStructureViewFactoryProvider() {
@@ -73,6 +74,7 @@ public class PackageInfoResourceUIDefinition implements
 	@Override
 	public JpaComposite buildAttributeMappingComposite(String key,
 			PropertyValueModel<AttributeMapping> mappingHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent, WidgetFactory widgetFactory) {
 		return null;
 	}
@@ -81,7 +83,7 @@ public class PackageInfoResourceUIDefinition implements
 	 * @see org.eclipse.jpt.jpa.ui.MappingResourceUiDefinition#attributeMappingUiDefinitions()
 	 */
 	@Override
-	public Iterator<MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping>> attributeMappingUiDefinitions() {
+	public Iterable<MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping>> getAttributeMappingUiDefinitions() {
 		return null;
 	}
 
@@ -108,7 +110,7 @@ public class PackageInfoResourceUIDefinition implements
 	 * @see org.eclipse.jpt.jpa.ui.MappingResourceUiDefinition#typeMappingUiDefinitions()
 	 */
 	@Override
-	public Iterator<MappingUiDefinition<PersistentType, ? extends TypeMapping>> typeMappingUiDefinitions() {
+	public Iterable<MappingUiDefinition<PersistentType, ? extends TypeMapping>> getTypeMappingUiDefinitions() {
 		return null;
 	}
 
@@ -117,6 +119,34 @@ public class PackageInfoResourceUIDefinition implements
 	 */
 	@Override
 	public DefaultMappingUiDefinition<PersistentType, ? extends TypeMapping> getDefaultTypeMappingUiDefinition() {
+		return null;
+	}
+
+	@Override
+	public MappingUiDefinition<PersistentType, ? extends TypeMapping> getTypeMappingUiDefinition(
+			String mappingKey) {
+		Iterable<MappingUiDefinition<PersistentType, ? extends TypeMapping>> iterable = getTypeMappingUiDefinitions();
+		Iterator<MappingUiDefinition<PersistentType, ? extends TypeMapping>> iter = iterable.iterator();
+		while (iter.hasNext()) {
+			MappingUiDefinition<PersistentType, ? extends TypeMapping> mapping = iter.next();
+			if (mapping.getKey().equals(mappingKey)) {
+				return mapping;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping> getAttributeMappingUiDefinition(
+			String mappingKey) {
+		Iterable<MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping>> iterable = getAttributeMappingUiDefinitions();
+		Iterator<MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping>> iter = iterable.iterator();
+		while (iter.hasNext()) {
+			MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping> mapping = iter.next();
+			if (mapping.getKey().equals(mappingKey)) {
+				return mapping;
+			}
+		}
 		return null;
 	}
 

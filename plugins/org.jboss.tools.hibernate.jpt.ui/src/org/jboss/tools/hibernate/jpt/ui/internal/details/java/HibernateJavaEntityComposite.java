@@ -13,13 +13,15 @@ package org.jboss.tools.hibernate.jpt.ui.internal.details.java;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
-import org.eclipse.jpt.jpa.core.context.QueryContainer;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractEntityComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.EntityNameComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.IdClassComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.EntityNameCombo;
+import org.eclipse.jpt.jpa.ui.internal.details.IdClassChooser;
+import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.java.JavaSecondaryTablesComposite;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateGeneratorContainer;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaQueryContainer;
@@ -76,8 +78,11 @@ public class HibernateJavaEntityComposite extends AbstractEntityComposite<Hibern
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected void initializeQueriesSection(Composite container, PropertyValueModel<QueryContainer> queryContainerHolder) {
-		new HibernateQueriesComposite(this, (PropertyValueModel<? extends HibernateJavaQueryContainer>) queryContainerHolder, container);
+	protected Control initializeQueriesSection(Composite container) {
+		return new HibernateQueriesComposite(
+				this, 
+				(PropertyValueModel<? extends HibernateJavaQueryContainer>) buildGeneratorContainerHolder(), 
+				container).getControl();
 	}
 	
 	@SuppressWarnings("unused")
@@ -92,25 +97,45 @@ public class HibernateJavaEntityComposite extends AbstractEntityComposite<Hibern
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	protected void initializeGeneratorsSection(Composite container, PropertyValueModel<GeneratorContainer> generatorContainerHolder) {
-		new HibernateGenerationComposite(this, (PropertyValueModel<? extends HibernateGeneratorContainer>) generatorContainerHolder, addSubPane(container, 10));
+	protected Control initializeGeneratorsSection(Composite container) {
+		return new HibernateGenerationComposite(this, (PropertyValueModel<? extends HibernateGeneratorContainer>) buildGeneratorContainerHolder(), container).getControl();
 	}
 	
 	
-	protected void initializeEntitySection(Composite container) {
-		new HibernateTableComposite(this, container);
-		new EntityNameComposite(this, container);
-		new IdClassComposite(this, buildIdClassReferenceHolder(), container);
+	protected Control initializeEntitySection(Composite container) {
+//		new HibernateTableComposite(this, container);
+//		new EntityNameComposite(this, container);
+//		new IdClassComposite(this, buildIdClassReferenceHolder(), container);
+
+		container = this.addSubPane(container, 2, 0, 0, 0, 0);
+
+		//Table widgets
+		HibernateTableComposite tableComposite = new HibernateTableComposite(this, container);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		tableComposite.getControl().setLayoutData(gridData);
+
+		//Entity name widgets
+		this.addLabel(container, JptUiDetailsMessages.EntityNameComposite_name);
+		new EntityNameCombo(this, container);
+
+		//Id class widgets
+		Hyperlink hyperlink = this.addHyperlink(container, JptUiDetailsMessages.IdClassComposite_label);
+		new IdClassChooser(this, this.buildIdClassReferenceHolder(), container, hyperlink);
+
+		return container;
+		
+		
 	}
 	
 	@Override
-	protected void initializeSecondaryTablesSection(Composite container) {
-		new JavaSecondaryTablesComposite(this, container);
+	protected Control initializeSecondaryTablesSection(Composite container) {
+		return new JavaSecondaryTablesComposite(this, container).getControl();
 	}
 
 	@Override
-	protected void initializeInheritanceSection(Composite container) {
-		new HibernateJavaInheritanceComposite(this, container);
+	protected Control initializeInheritanceSection(Composite container) {
+		return new HibernateJavaInheritanceComposite(this, container).getControl();
 	}
 
 }

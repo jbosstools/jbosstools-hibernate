@@ -18,10 +18,10 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.ui.details.JpaPageComposite;
-import org.eclipse.jpt.jpa.ui.internal.persistence.details.PersistenceUnitConnectionComposite;
-import org.eclipse.jpt.jpa.ui.internal.persistence.details.PersistenceUnitPropertiesComposite;
-import org.eclipse.jpt.jpa.ui.internal.persistence.details.PersistenceXmlUiFactory;
+import org.eclipse.jpt.jpa.ui.editors.JpaPageComposite;
+import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitConnectionTab;
+import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitPropertiesTab;
+import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceXmlUiFactory;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
@@ -39,8 +39,8 @@ public class HibernatePersistenceXmlUiFactory implements
 		List<JpaPageComposite> pages = new ArrayList<JpaPageComposite>(1);
 
 		pages.add(new HibernatePersistenceUnitGeneralComposite(subjectHolder, parent, widgetFactory));
-		pages.add(new PersistenceUnitConnectionComposite(subjectHolder, parent, widgetFactory));
-		pages.add(new PersistenceUnitPropertiesComposite(subjectHolder, parent, widgetFactory));
+		pages.add(new PersistenceUnitConnectionTab(subjectHolder, parent, widgetFactory));
+		pages.add(new PersistenceUnitPropertiesTab(subjectHolder, parent, widgetFactory));
 		
 		// ************Hibernate pages***************
 		PropertyValueModel<BasicHibernateProperties> basicHolder = this.buildBasicHolder(subjectHolder);

@@ -13,7 +13,9 @@ package org.jboss.tools.hibernate.jpt.ui.internal.persistence.details;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.ui.internal.persistence.details.GenericPersistenceUnitGeneralComposite;
+import org.eclipse.jpt.jpa.ui.internal.persistence.GenericPersistenceUnitGeneralTab;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -22,7 +24,7 @@ import org.eclipse.swt.widgets.Composite;
  *
  */
 public class HibernatePersistenceUnitGeneralComposite extends
-		GenericPersistenceUnitGeneralComposite {
+		GenericPersistenceUnitGeneralTab {
 
 	public HibernatePersistenceUnitGeneralComposite(
 			PropertyValueModel<PersistenceUnit> subjectHolder,
@@ -43,4 +45,12 @@ public class HibernatePersistenceUnitGeneralComposite extends
 		new HibernatePersistenceUnitClassesComposite(this, container);
 	}
 
+	protected void updateGridData(Composite container) {
+		GridData gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace   = true;
+		gridData.horizontalAlignment       = SWT.FILL;
+		gridData.verticalAlignment         = SWT.FILL;
+		container.setLayoutData(gridData);
+	}
 }

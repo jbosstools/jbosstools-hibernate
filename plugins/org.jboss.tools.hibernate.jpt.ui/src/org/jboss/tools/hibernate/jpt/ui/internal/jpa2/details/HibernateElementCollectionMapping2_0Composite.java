@@ -43,15 +43,16 @@ public class HibernateElementCollectionMapping2_0Composite extends
 	 */
 	public HibernateElementCollectionMapping2_0Composite(
 			PropertyValueModel<? extends ElementCollectionMapping2_0> subjectHolder,
+					PropertyValueModel<Boolean> enabledModel,
                     Composite parent,
                     WidgetFactory widgetFactory) {
-		super(subjectHolder, parent, widgetFactory);
+		super(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 
 	@Override
-	protected void initializeBasicValueSection(Composite container) {
+	protected Control buildBasicValueSection(Composite container) {
 		List<Control> oldChildren = Arrays.asList(container.getChildren());
-		super.initializeBasicValueSection(container);
+		Control result = super.buildBasicValueSection(container);
 		List<Control> newChildren = Arrays.asList(container.getChildren());
 		newChildren.removeAll(oldChildren);
 		
@@ -66,7 +67,8 @@ public class HibernateElementCollectionMapping2_0Composite extends
 			buildTypeBooleanHolder(), 
 			null);
 		registerSubPane(new TypeComposite(buildTypeConverterHolder(converterHolder), converterSection, getWidgetFactory()));
-		
+
+		return result;
 	}
 	
 	private ModifiablePropertyValueModel<Boolean> buildTypeBooleanHolder() {

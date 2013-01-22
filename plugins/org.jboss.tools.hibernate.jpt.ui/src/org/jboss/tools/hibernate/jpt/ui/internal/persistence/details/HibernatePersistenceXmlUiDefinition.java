@@ -11,12 +11,14 @@
 package org.jboss.tools.hibernate.jpt.ui.internal.persistence.details;
 
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.resource.persistence.JPA;
+import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.persistence.details.AbstractPersistenceXmlResourceUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.persistence.details.PersistenceXmlUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.persistence.details.PersistenceXmlUiFactory;
+import org.eclipse.jpt.jpa.ui.internal.persistence.AbstractPersistenceXmlResourceUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceXmlUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceXmlUiFactory;
 
 /**
  * @author Dmitry Geraskov
@@ -50,9 +52,10 @@ public class HibernatePersistenceXmlUiDefinition extends
 	}
 	
 	public boolean providesUi(JptResourceType resourceType) {
-		return resourceType.equals(JptJpaCorePlugin.PERSISTENCE_XML_1_0_RESOURCE_TYPE);
+		JptResourceType resType = PlatformTools.getResourceType(XmlPersistence.CONTENT_TYPE, JPA.SCHEMA_VERSION);
+		return resourceType.equals(resType);
 	}
-	
+
 	public ItemTreeStateProviderFactoryProvider getStructureViewFactoryProvider() {
 		return PersistenceXmlUiDefinition.STRUCTURE_VIEW_FACTORY_PROVIDER;
 	}

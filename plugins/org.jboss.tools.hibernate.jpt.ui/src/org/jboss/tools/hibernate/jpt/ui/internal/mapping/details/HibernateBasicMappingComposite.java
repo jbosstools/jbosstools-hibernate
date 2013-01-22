@@ -19,12 +19,13 @@ import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractBasicMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.ColumnComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.EnumTypeComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.OptionalComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.TemporalTypeComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComboViewer;
+import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.internal.details.OptionalTriStateCheckBox;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Generated;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateColumn;
 import org.jboss.tools.hibernate.jpt.core.internal.context.IndexHolder;
@@ -88,11 +89,13 @@ public class HibernateBasicMappingComposite extends AbstractBasicMappingComposit
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public HibernateBasicMappingComposite(PropertyValueModel<? extends BasicMapping> subjectHolder,
-	                             Composite parent,
-	                             WidgetFactory widgetFactory) {
+	public HibernateBasicMappingComposite(
+			PropertyValueModel<? extends BasicMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
+	        Composite parent,
+	        WidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 
 	@Override
@@ -101,18 +104,58 @@ public class HibernateBasicMappingComposite extends AbstractBasicMappingComposit
 		this.initializeIndexCollapsibleSection(container);
 	}
 	
-	protected void initializeBasicSection(Composite container) {
-		new HibernateColumnComposite(this, (PropertyValueModel<? extends HibernateColumn>) buildColumnHolder(), container);
+	protected Control initializeBasicSection(Composite container) {
+//		new HibernateColumnComposite(
+//				this, 
+//				(PropertyValueModel<? extends HibernateColumn>) buildColumnHolder(), 
+//				container).getControl();
+//		if (getSubject() instanceof Generated) {
+//			new GeneratedComposite((Pane<? extends Generated>) this, container);
+//		}
+//		new FetchTypeComposite(this, container);
+//		new OptionalComposite(this, addSubPane(container, 4));
+
+		container = this.addSubPane(container, 2, 0, 0, 0, 0);
+
+		// Column widgets
+		HibernateColumnComposite columnComposite = 
+				new HibernateColumnComposite(
+						this, 
+						(PropertyValueModel<? extends HibernateColumn>) buildColumnHolder(), 
+						container);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		columnComposite.getControl().setLayoutData(gridData);
+		
+		// Generated widgets
 		if (getSubject() instanceof Generated) {
-			new GeneratedComposite((Pane<? extends Generated>) this, container);
+			GeneratedComposite generatedComposite = 
+					new GeneratedComposite(
+							(Pane<? extends Generated>)this, 
+							container);
+			gridData = new GridData(GridData.FILL_HORIZONTAL);
+			gridData.horizontalSpan = 2;
+			generatedComposite.getControl().setLayoutData(gridData);
 		}
-		new FetchTypeComposite(this, container);
-		new OptionalComposite(this, addSubPane(container, 4));
+
+		// Fetch type widgets
+		this.addLabel(container, JptUiDetailsMessages.BasicGeneralSection_fetchLabel);
+		new FetchTypeComboViewer(this, container);
+
+		// Optional widgets
+		OptionalTriStateCheckBox optionalCheckBox = new OptionalTriStateCheckBox(this, container);
+		gridData = new GridData();
+		gridData.horizontalSpan = 2;
+		optionalCheckBox.getControl().setLayoutData(gridData);
+
+		return container;
+	
+	
 	}
 	
 	@Override
-	protected void initializeTypeSection(Composite container) {
-		super.initializeTypeSection(container);
+	protected Control initializeTypeSection(Composite container) {
+		Control result = super.initializeTypeSection(container);
 		
 		PropertyValueModel<Converter> converterHolder = buildConverterHolder();
 
@@ -125,6 +168,7 @@ public class HibernateBasicMappingComposite extends AbstractBasicMappingComposit
 		registerSubPane(new TypeComposite(buildHibernateConverterHolder(converterHolder),
 				container, getWidgetFactory()));
 		
+		return result;
 	}
 	
 	protected PropertyValueModel<TypeConverter> buildHibernateConverterHolder(PropertyValueModel<Converter> converterHolder) {

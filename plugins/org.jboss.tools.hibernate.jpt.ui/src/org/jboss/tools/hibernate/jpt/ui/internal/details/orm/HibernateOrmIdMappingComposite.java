@@ -14,8 +14,11 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractIdMappingComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmMappingNameChooser;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.JptUiDetailsOrmMessages;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmMappingNameText;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateColumn;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmIdMapping;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateColumnComposite;
@@ -34,17 +37,32 @@ implements JpaComposite{
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	public HibernateOrmIdMappingComposite(PropertyValueModel<? extends HibernateOrmIdMapping> subjectHolder,
+								PropertyValueModel<Boolean> enabledModel,
 	                          Composite parent,
 	                          WidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected void initializeIdSection(Composite container) {
-		new HibernateColumnComposite(this, (PropertyValueModel<? extends HibernateColumn>) buildColumnHolder(), container);
-		new OrmMappingNameChooser(this, getSubjectHolder(), container);
+	protected Control initializeIdSection(Composite container) {
+//		new HibernateColumnComposite(this, (PropertyValueModel<? extends HibernateColumn>) buildColumnHolder(), container);
+//		new OrmMappingNameChooser(this, getSubjectHolder(), container);
+
+		container = this.addSubPane(container, 2, 0, 0, 0, 0);
+
+		HibernateColumnComposite columnComposite = new HibernateColumnComposite(this, (PropertyValueModel<? extends HibernateColumn>) buildColumnHolder(), container);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		columnComposite.getControl().setLayoutData(gridData);
+
+		// Name widgets
+		this.addLabel(container, JptUiDetailsOrmMessages.OrmMappingNameChooser_name);
+		new OrmMappingNameText(this, getSubjectHolder(), container);
+
+		return container;
+	
 	}	
 
 }
