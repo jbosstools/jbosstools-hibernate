@@ -10,7 +10,7 @@ import org.eclipse.jpt.jpa.core.context.DbGenerator;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.swt.widgets.Composite;
 
-public abstract class GeneratorComposite<T extends Generator> extends Pane<T>
+public abstract class GeneratorComposite<T extends DbGenerator> extends Pane<T>
 {
 
 	protected GeneratorBuilder<T> generatorBuilder;
@@ -68,7 +68,7 @@ public abstract class GeneratorComposite<T extends Generator> extends Pane<T>
 	}
 
 	protected void addAllocationSizeCombo(Composite container) {
-		new IntegerCombo<Generator>(this, getSubjectHolder(), container) {
+		new IntegerCombo<DbGenerator>(this, getSubjectHolder(), container) {
 
 			@Override
 			protected String getHelpId() {
@@ -77,7 +77,7 @@ public abstract class GeneratorComposite<T extends Generator> extends Pane<T>
 
 			@Override
 			protected PropertyValueModel<Integer> buildDefaultHolder() {
-				return new PropertyAspectAdapter<Generator, Integer>(getSubjectHolder(), Generator.DEFAULT_ALLOCATION_SIZE_PROPERTY) {
+				return new PropertyAspectAdapter<DbGenerator, Integer>(getSubjectHolder(), DbGenerator.DEFAULT_ALLOCATION_SIZE_PROPERTY) {
 					@Override
 					protected Integer buildValue_() {
 						return Integer.valueOf(this.subject.getDefaultAllocationSize());
@@ -87,7 +87,7 @@ public abstract class GeneratorComposite<T extends Generator> extends Pane<T>
 			
 			@Override
 			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<Generator, Integer>(getSubjectHolder(), Generator.SPECIFIED_ALLOCATION_SIZE_PROPERTY) {
+				return new PropertyAspectAdapter<DbGenerator, Integer>(getSubjectHolder(), DbGenerator.SPECIFIED_ALLOCATION_SIZE_PROPERTY) {
 					@Override
 					protected Integer buildValue_() {
 						return this.subject.getSpecifiedAllocationSize();
@@ -103,7 +103,7 @@ public abstract class GeneratorComposite<T extends Generator> extends Pane<T>
 	}
 	
 	protected void addInitialValueCombo(Composite container) {
-		new IntegerCombo<Generator>(this, getSubjectHolder(), container) {
+		new IntegerCombo<DbGenerator>(this, getSubjectHolder(), container) {
 			@Override
 			protected String getHelpId() {
 				return null;//JpaHelpContextIds.MAPPING_COLUMN_LENGTH;
@@ -111,7 +111,7 @@ public abstract class GeneratorComposite<T extends Generator> extends Pane<T>
 
 			@Override
 			protected PropertyValueModel<Integer> buildDefaultHolder() {
-				return new PropertyAspectAdapter<Generator, Integer>(getSubjectHolder(), Generator.DEFAULT_INITIAL_VALUE_PROPERTY) {
+				return new PropertyAspectAdapter<DbGenerator, Integer>(getSubjectHolder(), DbGenerator.DEFAULT_INITIAL_VALUE_PROPERTY) {
 					@Override
 					protected Integer buildValue_() {
 						return Integer.valueOf(this.subject.getDefaultInitialValue());
@@ -121,7 +121,7 @@ public abstract class GeneratorComposite<T extends Generator> extends Pane<T>
 			
 			@Override
 			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<Generator, Integer>(getSubjectHolder(), Generator.SPECIFIED_INITIAL_VALUE_PROPERTY) {
+				return new PropertyAspectAdapter<DbGenerator, Integer>(getSubjectHolder(), DbGenerator.SPECIFIED_INITIAL_VALUE_PROPERTY) {
 					@Override
 					protected Integer buildValue_() {
 						return this.subject.getSpecifiedInitialValue();

@@ -16,8 +16,9 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.ui.internal.details.GeneratorComposite;
+//import org.eclipse.jpt.jpa.ui.internal.details.GeneratorComposite;
 import org.eclipse.swt.widgets.Composite;
+import org.jboss.tools.hibernate.jpt.core.internal.context.GenericDbGenerator;
 import org.jboss.tools.hibernate.jpt.core.internal.context.GenericGenerator;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateGeneratorContainer;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaGenericGeneratorImpl;
@@ -26,12 +27,12 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaGenericGener
  * @author Dmitry Geraskov
  *
  */
-public class GenericGeneratorComposite extends GeneratorComposite<GenericGenerator> {
+public class GenericGeneratorComposite extends GeneratorComposite<GenericDbGenerator> {
 	
 	public GenericGeneratorComposite(Pane<?> parentPane,
-			PropertyValueModel<GenericGenerator> subjectHolder,
+			PropertyValueModel<GenericDbGenerator> subjectHolder,
 			Composite parent,
-			GeneratorBuilder<GenericGenerator> builder) {
+			GeneratorBuilder<GenericDbGenerator> builder) {
 		super(parentPane, subjectHolder, parent, builder);
 	}
 	

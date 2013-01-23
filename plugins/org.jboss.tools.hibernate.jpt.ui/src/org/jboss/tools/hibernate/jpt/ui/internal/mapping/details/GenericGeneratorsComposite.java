@@ -238,7 +238,7 @@ public class GenericGeneratorsComposite extends Pane<HibernateGeneratorContainer
 	}
 
 	private void installPaneSwitcher(PageBook pageBook) {
-//		new ControlSwitcher(this.getGenericGeneratorHolder(), this.buildPaneTransformer(), pageBook);
+		new ControlSwitcher(this.getGenericGeneratorHolder(), this.buildPaneTransformer(), pageBook);
 	}
 	
 	protected ModifiableCollectionValueModel<GenericGenerator> getGenericGeneratorHolder() {
