@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
 
+import java.util.Iterator;
 import java.util.ListIterator;
 
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -24,12 +25,13 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.Transformer;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.model.value.CollectionPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
+import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
+import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -47,16 +49,19 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaTypeDef;
  */
 public class TypeDefsComposite extends Pane<HibernateJavaTypeDefContainer> {
 
-	private AddRemoveListPane<HibernateJavaTypeDefContainer> listPane;
+//	private AddRemoveListPane<HibernateJavaTypeDefContainer, JavaTypeDef> listPane;
 	Pane<? extends JavaTypeDef> typeDefPane;
-	private ModifiablePropertyValueModel<JavaTypeDef> typeDefHolder;
+	
+//	private ModifiablePropertyValueModel<JavaTypeDef> typeDefHolder;
 	private NewNameDialogBuilder dialogBuilder = null;
+	private ModifiableCollectionValueModel<JavaTypeDef> selectedTypeDefsModel;
+	private PropertyValueModel<JavaTypeDef> selectedTypeDefModel;
 
 	public TypeDefsComposite(
 		Pane<?> parentPane, 
 		PropertyValueModel<? extends HibernateJavaTypeDefContainer> subjectHolder,
 		Composite parent) {
-		super(parentPane, subjectHolder, parent, false);
+		super(parentPane, subjectHolder, parent);
 		dialogBuilder = new NewNameDialogBuilder(getShell());
 		dialogBuilder.setDialogTitle(HibernateUIMappingMessages.TypeDefsComposite_dialogTitle);
 		dialogBuilder.setDescriptionTitle(HibernateUIMappingMessages.TypeDefsComposite_DescriptionTitle);
@@ -64,8 +69,12 @@ public class TypeDefsComposite extends Pane<HibernateJavaTypeDefContainer> {
 		dialogBuilder.setLabelText(HibernateUIMappingMessages.TypeDefsComposite_Name);		
 	}
 
-	void addTypeDef() {
-		addTypeDefFromDialog(buildAddTypeDefDialog());
+//	void addTypeDef() {
+//		addTypeDefFromDialog(buildAddTypeDefDialog());
+//	}
+	
+	JavaTypeDef addTypeDef() {
+		return addTypeDefFromDialog(buildAddTypeDefDialog());
 	}
 	
 	protected HibernatePersistenceUnit getPersistenceUnit(){
@@ -77,13 +86,23 @@ public class TypeDefsComposite extends Pane<HibernateJavaTypeDefContainer> {
 		return dialogBuilder.buildDialog();
 	}
 
-	protected void addTypeDefFromDialog(NewNameDialog dialog) {
+//	protected void addTypeDefFromDialog(NewNameDialog dialog) {
+//		if (dialog.open() != Window.OK) {
+//			return;
+//		}
+//		JavaTypeDef typeDef = this.getSubject().addTypeDef();
+//		typeDef.setName(dialog.getName());
+//		this.getTypeDefHolder().setValue(typeDef);//so that it gets selected in the List for the user to edit
+//	}
+
+	protected JavaTypeDef addTypeDefFromDialog(NewNameDialog dialog) {
 		if (dialog.open() != Window.OK) {
-			return;
+			return null;
 		}
 		JavaTypeDef typeDef = this.getSubject().addTypeDef();
 		typeDef.setName(dialog.getName());
-		this.getTypeDefHolder().setValue(typeDef);//so that it gets selected in the List for the user to edit
+//		this.getTypeDefHolder().setValue(typeDef);//so that it gets selected in the List for the user to edit
+		return typeDef;
 	}
 
 	private ListValueModel<JavaTypeDef> buildDisplayableTypeDefsListHolder() {
@@ -93,14 +112,14 @@ public class TypeDefsComposite extends Pane<HibernateJavaTypeDefContainer> {
 		);
 	}
 	
-	private AddRemoveListPane<HibernateJavaTypeDefContainer> addListPane(Composite container) {
+	private AddRemoveListPane<HibernateJavaTypeDefContainer, JavaTypeDef> addListPane(Composite container) {
 
-		return new AddRemoveListPane<HibernateJavaTypeDefContainer>(
+		return new AddRemoveListPane<HibernateJavaTypeDefContainer, JavaTypeDef>(
 			this,
 			container,
 			buildTypeDefsAdapter(),
 			buildDisplayableTypeDefsListHolder(),
-			this.getTypeDefHolder(),
+			this.selectedTypeDefsModel,
 			buildTypeDefsListLabelProvider()
 		);
 	}
@@ -135,19 +154,33 @@ public class TypeDefsComposite extends Pane<HibernateJavaTypeDefContainer> {
 		};
 	}
 	
-	private Adapter buildTypeDefsAdapter() {
+	private Adapter<JavaTypeDef> buildTypeDefsAdapter() {
 
-		return new AddRemoveListPane.AbstractAdapter() {
+		return new AddRemoveListPane.AbstractAdapter<JavaTypeDef>() {
 
-			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
-				addTypeDef();
+//			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
+//				addTypeDef();
+//			}
+
+//			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
+//				for (Object item : listSelectionModel.selectedValues()) {
+//					if (item instanceof JavaTypeDef) {
+//						getSubject().removeTypeDef((JavaTypeDef) item);
+//					}
+//				}
+//			}
+
+			@Override
+			public JavaTypeDef addNewItem() {
+				return addTypeDef();
 			}
 
-			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
-				for (Object item : listSelectionModel.selectedValues()) {
-					if (item instanceof JavaTypeDef) {
-						getSubject().removeTypeDef((JavaTypeDef) item);
-					}
+			@Override
+			public void removeSelectedItems(
+					CollectionValueModel<JavaTypeDef> selectedItemsModel) {
+				Iterator<JavaTypeDef> iterator = selectedItemsModel.iterator();
+				while (iterator.hasNext()) {
+					getSubject().removeTypeDef(iterator.next());
 				}
 			}
 		};
@@ -171,27 +204,46 @@ public class TypeDefsComposite extends Pane<HibernateJavaTypeDefContainer> {
 		};
 	}
 
-	private ModifiablePropertyValueModel<JavaTypeDef> buildTypeDefHolder() {
-		return new SimplePropertyValueModel<JavaTypeDef>();
-	}
+//	private ModifiablePropertyValueModel<JavaTypeDef> buildTypeDefHolder() {
+//		return new SimplePropertyValueModel<JavaTypeDef>();
+//	}
 
-	@Override
-	public void enableWidgets(boolean enabled) {
-		super.enableWidgets(enabled);
-		this.listPane.enableWidgets(enabled);
-	}
+//	@Override
+//	public void enableWidgets(boolean enabled) {
+//		super.enableWidgets(enabled);
+//		this.listPane.enableWidgets(enabled);
+//	}
 
 	@Override
 	protected void initialize() {
 		super.initialize();
-		this.typeDefHolder = buildTypeDefHolder();
+		this.selectedTypeDefsModel = this.buildSelectedTypeDefsModel();
+		this.selectedTypeDefModel = this.buildSelectedTypeDefModel(this.selectedTypeDefsModel);
+//		this.typeDefHolder = buildTypeDefHolder();
+	}
+
+	private ModifiableCollectionValueModel<JavaTypeDef> buildSelectedTypeDefsModel() {
+		return new SimpleCollectionValueModel<JavaTypeDef>();
+	}
+
+	private PropertyValueModel<JavaTypeDef> buildSelectedTypeDefModel(CollectionValueModel<JavaTypeDef> selectedTypeDefsModel) {
+		return new CollectionPropertyValueModelAdapter<JavaTypeDef, JavaTypeDef>(selectedTypeDefsModel) {
+			@Override
+			protected JavaTypeDef buildValue() {
+				if (this.collectionModel.size() == 1) {
+					return this.collectionModel.iterator().next();
+				}
+				return null;
+			}
+		};
 	}
 
 	@Override
 	protected void initializeLayout(Composite container) {
 
 		// List pane
-		this.listPane = this.addListPane(container);
+//		this.listPane = this.addListPane(container);
+		addListPane(container);
 
 		// Property pane
 		PageBook pageBook = new PageBook(container, SWT.NULL);
@@ -215,8 +267,8 @@ public class TypeDefsComposite extends Pane<HibernateJavaTypeDefContainer> {
 		new ControlSwitcher(this.getTypeDefHolder(), this.buildPaneTransformer(), pageBook);
 	}
 	
-	protected ModifiablePropertyValueModel<JavaTypeDef> getTypeDefHolder() {
-		return typeDefHolder;
+	protected PropertyValueModel<JavaTypeDef> getTypeDefHolder() {
+		return this.selectedTypeDefModel;
 	}
 	
 }

@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractJpaDetailsPage;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateGeneratorContainer;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateGenericGeneratorContainer;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaQueryContainer;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaTypeDefContainer;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernatePackageInfo;
@@ -65,11 +65,11 @@ public class PackageInfoDetailsPage extends AbstractJpaDetailsPage<HibernatePack
 		this.initializeGenericGeneratorsSection(container);
 	}
 	
-	private PropertyValueModel<HibernateGeneratorContainer> buildGeneratorContainerHolder() {
-		return new PropertyAspectAdapter<HibernatePackageInfo, HibernateGeneratorContainer>(getSubjectHolder()) {
+	private PropertyValueModel<HibernateGenericGeneratorContainer> buildGeneratorContainerHolder() {
+		return new PropertyAspectAdapter<HibernatePackageInfo, HibernateGenericGeneratorContainer>(getSubjectHolder()) {
 			@Override
-			protected HibernateGeneratorContainer buildValue_() {
-				return (HibernateGeneratorContainer)this.subject.getGeneratorContainer();
+			protected HibernateGenericGeneratorContainer buildValue_() {
+				return (HibernateGenericGeneratorContainer)this.subject.getGeneratorContainer();
 			}
 		};
 	}
@@ -78,7 +78,6 @@ public class PackageInfoDetailsPage extends AbstractJpaDetailsPage<HibernatePack
 		return new GenericGeneratorsComposite(
 				this, 
 				buildGeneratorContainerHolder(), 
-				this.buildWidgetsEnabledHolder(),
 				container).getControl();
 	}
 	

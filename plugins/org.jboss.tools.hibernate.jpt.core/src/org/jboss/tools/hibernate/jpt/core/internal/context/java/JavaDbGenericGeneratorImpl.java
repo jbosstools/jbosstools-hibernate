@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaGenerator;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaDbGenerator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
@@ -37,8 +37,8 @@ import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValida
  * @author Dmitry Geraskov (geraskov@gmail.com)
  * 
  */
-public class JavaGenericGeneratorImpl extends AbstractJavaGenerator<GenericGeneratorAnnotation>
-implements JavaGenericGenerator, Messages {
+public class JavaDbGenericGeneratorImpl extends AbstractJavaDbGenerator<GenericGeneratorAnnotation>
+implements JavaDbGenericGenerator, Messages {
 	
 	private String strategy;
 
@@ -68,7 +68,7 @@ implements JavaGenericGenerator, Messages {
 	/**
 	 * @param parent
 	 */
-	public JavaGenericGeneratorImpl(HibernateJavaGeneratorContainer parent, GenericGeneratorAnnotation generatorAnnotation) {
+	public JavaDbGenericGeneratorImpl(HibernateGenericGeneratorContainer parent, GenericGeneratorAnnotation generatorAnnotation) {
 		super(parent, generatorAnnotation);
 		this.strategy = generatorAnnotation.getStrategy();
 		this.initializeParameters();
@@ -89,8 +89,8 @@ implements JavaGenericGenerator, Messages {
 	
 	// ********** metadata conversion **********
 	@Override
-	public HibernateJavaGeneratorContainer getParent() {
-		return (HibernateJavaGeneratorContainer) super.getParent();
+	public HibernateGenericGeneratorContainer getParent() {
+		return (HibernateGenericGeneratorContainer) super.getParent();
 	}
 	
 	public void convertTo(EntityMappings entityMappings) {
@@ -127,15 +127,15 @@ implements JavaGenericGenerator, Messages {
 		return this.generatorAnnotation.getStrategyTextRange();
 	}
 
-//	@Override
-//	protected String getCatalog() {
-//		return null;
-//	}
-//
-//	@Override
-//	protected String getSchema() {
-//		return null;
-//	}
+	@Override
+	protected String getCatalog() {
+		return null;
+	}
+
+	@Override
+	protected String getSchema() {
+		return null;
+	}
 
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
@@ -264,29 +264,29 @@ implements JavaGenericGenerator, Messages {
 		implements ContextContainerTools.Adapter<JavaParameter, ParameterAnnotation>
 	{
 		public Iterable<JavaParameter> getContextElements() {
-			return JavaGenericGeneratorImpl.this.getParameters();
+			return JavaDbGenericGeneratorImpl.this.getParameters();
 		}
 		public Iterable<ParameterAnnotation> getResourceElements() {
-			return JavaGenericGeneratorImpl.this.getParameterAnnotations();
+			return JavaDbGenericGeneratorImpl.this.getParameterAnnotations();
 		}
 		public ParameterAnnotation getResourceElement(JavaParameter contextElement) {
 			return contextElement.getParameterAnnotation();
 		}
 		public void moveContextElement(int index, JavaParameter element) {
-			JavaGenericGeneratorImpl.this.moveParameter_(index, element);
+			JavaDbGenericGeneratorImpl.this.moveParameter_(index, element);
 		}
 		public void addContextElement(int index, ParameterAnnotation resourceElement) {
-			JavaGenericGeneratorImpl.this.addParameter_(index, resourceElement);
+			JavaDbGenericGeneratorImpl.this.addParameter_(index, resourceElement);
 		}
 		public void removeContextElement(JavaParameter element) {
-			JavaGenericGeneratorImpl.this.removeParameter_(element);
+			JavaDbGenericGeneratorImpl.this.removeParameter_(element);
 		}
 	}
 	
-//	@Override
-//	public int buildDefaultInitialValue() {
-//		return GenericGenerator.DEFAULT_INITIAL_VALUE;
-//	}
+	@Override
+	public int buildDefaultInitialValue() {
+		return GenericGenerator.DEFAULT_INITIAL_VALUE;
+	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode#javaCompletionProposals(int, org.eclipse.jpt.common.utility.Filter, org.eclipse.jdt.core.dom.CompilationUnit)

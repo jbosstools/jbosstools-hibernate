@@ -14,8 +14,11 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.internal.persistence.GenericPersistenceUnitGeneralTab;
-import org.eclipse.jpt.jpa.ui.internal.persistence.details.GenericPersistenceUnitGeneralComposite;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Spinner;
 
 /**
  * 
@@ -25,8 +28,6 @@ import org.eclipse.swt.widgets.Composite;
 public class HibernatePersistenceUnitGeneralComposite extends
 		GenericPersistenceUnitGeneralTab {
 	
-	GenericPersistenceUnitGeneralComposite
-
 	public HibernatePersistenceUnitGeneralComposite(
 			PropertyValueModel<PersistenceUnit> subjectHolder,
 			Composite container, WidgetFactory widgetFactory) {
@@ -46,4 +47,36 @@ public class HibernatePersistenceUnitGeneralComposite extends
 		new HibernatePersistenceUnitClassesComposite(this, container);
 	}
 
+	protected void updateGridData(Composite container, Spinner spinner) {
+
+		// It is possible the spinner's parent is not the container of the
+		// label, spinner and right control (a pane is sometimes required for
+		// painting the spinner's border)
+		Composite paneContainer = spinner.getParent();
+
+		while (container != paneContainer.getParent()) {
+			paneContainer = paneContainer.getParent();
+		}
+
+		Control[] controls = paneContainer.getChildren();
+
+		GridData gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = false;
+		gridData.horizontalAlignment       = GridData.BEGINNING;
+		controls[1].setLayoutData(gridData);
+
+		controls[2].setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+//		removeAlignRight(controls[2]);
+	}
+	
+	protected void updateGridData(Composite container) {
+
+		GridData gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace   = true;
+		gridData.horizontalAlignment       = SWT.FILL;
+		gridData.verticalAlignment         = SWT.FILL;
+		container.setLayoutData(gridData);
+	}
+	
 }

@@ -11,9 +11,21 @@
 
 package org.jboss.tools.hibernate.jpt.ui;
 
+import java.io.File;
+import java.net.URL;
+
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -101,9 +113,25 @@ public class HibernateJptUIPlugin extends AbstractUIPlugin {
 	 *
 	 */
 	public static void logInfo(String message) {
-		log(IStatus.INFO, message, null);
+		log(IStatus.INFO, message, null);		
 	}
 	
+	public Image getImage(String key) {
+		ImageRegistry registry = getImageRegistry();
+		if (registry == null) {
+			registry = createImageRegistry();
+		}
+		Image image = registry.get(key);
+		if (image == null) {
+			// a bad image descriptor will result in a "default" image
+			registry.put(key, getImageDescriptor("icons" + File.separatorChar + key + ".gif"));
+			image = registry.get(key);
+		}
+		return image;
+	}
 	
+	private ImageDescriptor getImageDescriptor(String filePath) {
+		return imageDescriptorFromPlugin(PLUGIN_ID, filePath);
+	}
 
 }

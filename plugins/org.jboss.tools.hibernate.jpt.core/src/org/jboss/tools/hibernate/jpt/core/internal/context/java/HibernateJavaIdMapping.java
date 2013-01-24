@@ -22,6 +22,6 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.TypeHolder;
  */
 public interface HibernateJavaIdMapping extends JavaIdMapping, IndexHolder, HibernateIdMapping, TypeHolder {
 	
-	HibernateJavaGeneratorContainer getGeneratorContainer();
+	HibernateGenericGeneratorContainer getGeneratorContainer();
 
 }

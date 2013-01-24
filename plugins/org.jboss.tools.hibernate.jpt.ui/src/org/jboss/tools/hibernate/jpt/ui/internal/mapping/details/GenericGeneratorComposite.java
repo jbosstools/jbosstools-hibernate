@@ -16,23 +16,24 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-//import org.eclipse.jpt.jpa.ui.internal.details.GeneratorComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.GeneratorComposite;
 import org.eclipse.swt.widgets.Composite;
-import org.jboss.tools.hibernate.jpt.core.internal.context.GenericDbGenerator;
 import org.jboss.tools.hibernate.jpt.core.internal.context.GenericGenerator;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateGeneratorContainer;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaGenericGeneratorImpl;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaDbGenericGenerator;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaDbGenericGeneratorImpl;
+//import org.eclipse.jpt.jpa.ui.internal.details.GeneratorComposite;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public class GenericGeneratorComposite extends GeneratorComposite<GenericDbGenerator> {
+public class GenericGeneratorComposite extends GeneratorComposite<JavaDbGenericGenerator> {
 	
 	public GenericGeneratorComposite(Pane<?> parentPane,
-			PropertyValueModel<GenericDbGenerator> subjectHolder,
+			PropertyValueModel<JavaDbGenericGenerator> subjectHolder,
 			Composite parent,
-			GeneratorBuilder<GenericDbGenerator> builder) {
+			GeneratorBuilder<JavaDbGenericGenerator> builder) {
 		super(parentPane, subjectHolder, parent, builder);
 	}
 	
@@ -51,7 +52,7 @@ public class GenericGeneratorComposite extends GeneratorComposite<GenericDbGener
 		// Generic generator widgets
 		this.addLabel(container, HibernateUIMappingMessages.GenericGeneratorComposite_strategy);
 		this.addEditableCombo(container,
-				new SimpleListValueModel<String>(JavaGenericGeneratorImpl.generatorClasses),
+				new SimpleListValueModel<String>(JavaDbGenericGeneratorImpl.generatorClasses),
 				buildStrategyHolder(),
 				StringConverter.Default.<String>instance(),
 				(String)null

@@ -16,6 +16,7 @@ import java.util.ListIterator;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jpt.common.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.AbstractAdapter;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
@@ -24,10 +25,10 @@ import org.eclipse.jpt.common.ui.internal.widgets.NewNameDialogBuilder;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.Transformer;
+import org.eclipse.jpt.common.utility.internal.model.value.CollectionPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
-import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
@@ -42,26 +43,34 @@ import org.eclipse.ui.part.PageBook;
 import org.jboss.tools.hibernate.jpt.core.internal.context.GenericGenerator;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateGeneratorContainer;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaGeneratorContainer;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaGenericGenerator;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateGenericGeneratorContainer;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaDbGenericGenerator;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public class GenericGeneratorsComposite extends Pane<HibernateGeneratorContainer> {
+public class GenericGeneratorsComposite extends Pane<HibernateGenericGeneratorContainer> {
 	
-	private AddRemoveListPane<HibernateGeneratorContainer, GenericGenerator> listPane;
+	private AddRemoveListPane<HibernateGenericGeneratorContainer, JavaDbGenericGenerator> listPane;
 	Pane<?> genericGeneratorPane;
-	private SimpleCollectionValueModel<GenericGenerator> generatorHolder;
+//	private SimpleCollectionValueModel<GenericDbGenerator> generatorHolder;
 	private NewNameDialogBuilder dialogBuilder = null;
+	
+	private ModifiableCollectionValueModel<JavaDbGenericGenerator> selectedGeneratorsModel;
+	private PropertyValueModel<JavaDbGenericGenerator> selectedGeneratorModel;
+	
 
 	public GenericGeneratorsComposite(
-		Pane<? extends Model> parentPane, 
-		PropertyValueModel<? extends HibernateGeneratorContainer> subjectHolder,
-		PropertyValueModel<Boolean> enabledModel,
-		Composite parent) {
-		super((Pane<? extends HibernateGeneratorContainer>) parentPane, parent);
+			Pane<?> parentPane, 
+			PropertyValueModel<? extends HibernateGenericGeneratorContainer> subjectHolder,
+			Composite parent) {
+//	public GenericGeneratorsComposite(
+//		Pane<? extends Model> parentPane, 
+//		PropertyValueModel<? extends HibernateGenericGeneratorContainer> subjectHolder,
+//		PropertyValueModel<Boolean> enabledModel,
+//		Composite parent) {
+		super((Pane<? extends HibernateGenericGeneratorContainer>) parentPane, parent);
 		dialogBuilder = new NewNameDialogBuilder(getShell());
 		dialogBuilder.setDialogTitle(HibernateUIMappingMessages.GenericGeneratorsComposite_dialogTitle);
 		dialogBuilder.setDescriptionTitle(HibernateUIMappingMessages.GenericGeneratorsComposite_DescriptionTitle);
@@ -69,7 +78,7 @@ public class GenericGeneratorsComposite extends Pane<HibernateGeneratorContainer
 		dialogBuilder.setLabelText(HibernateUIMappingMessages.GenericGeneratorsComposite_Name);		
 	}
 
-	GenericGenerator addGenericGenerator() {
+	JavaDbGenericGenerator addGenericDbGenerator() {
 		return addGenericGeneratorFromDialog(buildAddGenericGeneratorDialog());
 	}
 	
@@ -82,11 +91,11 @@ public class GenericGeneratorsComposite extends Pane<HibernateGeneratorContainer
 		return dialogBuilder.buildDialog();
 	}
 
-	protected GenericGenerator addGenericGeneratorFromDialog(NewNameDialog dialog) {
+	protected JavaDbGenericGenerator addGenericGeneratorFromDialog(NewNameDialog dialog) {
 		if (dialog.open() != Window.OK) {
 			return null;
 		}
-		GenericGenerator generator = this.getSubject().addGenericGenerator();
+		JavaDbGenericGenerator generator = this.getSubject().addGenericGenerator();
 		generator.setName(dialog.getName());
 //		this.getGenericGeneratorHolder().setValue(generator);//so that it gets selected in the List for the user to edit
 		return generator;
@@ -99,14 +108,14 @@ public class GenericGeneratorsComposite extends Pane<HibernateGeneratorContainer
 		);
 	}
 	
-	private AddRemoveListPane<HibernateGeneratorContainer, GenericGenerator> addListPane(Composite container) {
+	private AddRemoveListPane<HibernateGenericGeneratorContainer, JavaDbGenericGenerator> addListPane(Composite container) {
 
-		return new AddRemoveListPane<HibernateGeneratorContainer, GenericGenerator>(
+		return new AddRemoveListPane<HibernateGenericGeneratorContainer, JavaDbGenericGenerator>(
 				this, 
 				container, 
 				buildGenericGeneratorsAdapter(), 
 				buildDisplayableGenericGeneratorsListHolder(), 
-				this.getGenericGeneratorHolder(), 
+				this.selectedGeneratorsModel, 
 				buildGenericGeneratorsListLabelProvider());
 //		return new AddRemoveListPane<HibernateGeneratorContainer, GenericGenerator>(
 //			this,
@@ -149,17 +158,17 @@ public class GenericGeneratorsComposite extends Pane<HibernateGeneratorContainer
 		};
 	}
 	
-	private Adapter<GenericGenerator> buildGenericGeneratorsAdapter() {
+	private Adapter<JavaDbGenericGenerator> buildGenericGeneratorsAdapter() {
 
-		return new AbstractAdapter<GenericGenerator>() {
+		return new AbstractAdapter<JavaDbGenericGenerator>() {
 
-			public GenericGenerator addNewItem() {
-				return addGenericGenerator();
+			public JavaDbGenericGenerator addNewItem() {
+				return addGenericDbGenerator();
 			}
 
 			public void removeSelectedItems(
-					CollectionValueModel<GenericGenerator> selectedItemsModel) {
-				Iterator<GenericGenerator> iterator = selectedItemsModel.iterator();
+					CollectionValueModel<JavaDbGenericGenerator> selectedItemsModel) {
+				Iterator<JavaDbGenericGenerator> iterator = selectedItemsModel.iterator();
 				while (iterator.hasNext()) {
 					getSubject().removeGenericGenerator(iterator.next());
 				}
@@ -185,9 +194,9 @@ public class GenericGeneratorsComposite extends Pane<HibernateGeneratorContainer
 		};
 	}
 
-	private SimpleCollectionValueModel<GenericGenerator> buildGenericGeneratorHolder() {
-		return new SimpleCollectionValueModel<GenericGenerator>();
-	}
+//	private SimpleCollectionValueModel<GenericDbGenerator> buildGenericGeneratorHolder() {
+//		return new SimpleCollectionValueModel<GenericDbGenerator>();
+//	}
 
 /*	@Override
 	public void enableWidgets(boolean enabled) {
@@ -198,7 +207,25 @@ public class GenericGeneratorsComposite extends Pane<HibernateGeneratorContainer
 	@Override
 	protected void initialize() {
 		super.initialize();
-		this.generatorHolder = buildGenericGeneratorHolder();
+//		this.generatorHolder = buildGenericGeneratorHolder();
+		this.selectedGeneratorsModel = this.buildSelectedGeneratorsModel();
+		this.selectedGeneratorModel = this.buildSelectedGeneratorModel(this.selectedGeneratorsModel);
+	}
+
+	private ModifiableCollectionValueModel<JavaDbGenericGenerator> buildSelectedGeneratorsModel() {
+		return new SimpleCollectionValueModel<JavaDbGenericGenerator>();
+	}
+
+	private PropertyValueModel<JavaDbGenericGenerator> buildSelectedGeneratorModel(CollectionValueModel<JavaDbGenericGenerator> selectedGeneratorsModel) {
+		return new CollectionPropertyValueModelAdapter<JavaDbGenericGenerator, JavaDbGenericGenerator>(selectedGeneratorsModel) {
+			@Override
+			protected JavaDbGenericGenerator buildValue() {
+				if (this.collectionModel.size() == 1) {
+					return this.collectionModel.iterator().next();
+				}
+				return null;
+			}
+		};
 	}
 
 	@Override
@@ -217,20 +244,20 @@ public class GenericGeneratorsComposite extends Pane<HibernateGeneratorContainer
 		installPaneSwitcher(pageBook);
 	}
 	
-	protected Pane<? extends GenericGenerator> buildGenericGeneratorComposite(PageBook pageBook) {
+	protected Pane<? extends JavaDbGenericGenerator> buildGenericGeneratorComposite(PageBook pageBook) {
 		return new GenericGeneratorComposite(
 			this,
-			(PropertyValueModel<GenericGenerator>) this.getGenericGeneratorHolder(),
+			(PropertyValueModel<JavaDbGenericGenerator>) this.selectedGeneratorModel,
 			pageBook,
 			buildGenericGeneratorBuilder()
 		);
 	}
 	
-	protected GeneratorBuilder<GenericGenerator> buildGenericGeneratorBuilder() {
-		return new GeneratorBuilder<GenericGenerator>() {
-			public GenericGenerator addGenerator() {
-				HibernateJavaGeneratorContainer container = (HibernateJavaGeneratorContainer)getSubject();
-				JavaGenericGenerator generator = container.addGenericGenerator(container.getGenericGeneratorsSize());
+	protected GeneratorBuilder<JavaDbGenericGenerator> buildGenericGeneratorBuilder() {
+		return new GeneratorBuilder<JavaDbGenericGenerator>() {
+			public JavaDbGenericGenerator addGenerator() {
+				HibernateGenericGeneratorContainer container = (HibernateGenericGeneratorContainer)getSubject();
+				JavaDbGenericGenerator generator = container.addGenericGenerator(container.getGenericGeneratorsSize());
 //				generatorHolder.setValue(generator);
 				return generator;
 			}
@@ -241,8 +268,8 @@ public class GenericGeneratorsComposite extends Pane<HibernateGeneratorContainer
 		new ControlSwitcher(this.getGenericGeneratorHolder(), this.buildPaneTransformer(), pageBook);
 	}
 	
-	protected ModifiableCollectionValueModel<GenericGenerator> getGenericGeneratorHolder() {
-		return generatorHolder;
+	protected PropertyValueModel<JavaDbGenericGenerator> getGenericGeneratorHolder() {
+		return this.selectedGeneratorModel;
 	}
 	
 }

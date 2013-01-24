@@ -19,13 +19,13 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateGeneratorCon
  * @author Dmitry Geraskov
  *
  */
-public interface HibernateJavaGeneratorContainer extends
+public interface HibernateGenericGeneratorContainer extends
 		HibernateGeneratorContainer, JavaGeneratorContainer {
 	
-	ListIterable<JavaGenericGenerator> getGenericGenerators();
+	ListIterable<JavaDbGenericGenerator> getGenericGenerators();
 	
-	JavaGenericGenerator addGenericGenerator(int index);
+	JavaDbGenericGenerator addGenericGenerator(int index);
 
-	JavaGenericGenerator addGenericGenerator();
+	JavaDbGenericGenerator addGenericGenerator();
 
 }

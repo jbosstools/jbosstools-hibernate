@@ -155,35 +155,35 @@ implements GenericGeneratorAnnotation {
 		return this.getElementTextRange(this.nameDeclarationAdapter, getAstAnnotation(astRoot));
 	}
 
-//	@Override
-//	public Integer getAllocationSize() {
-//		return null;
-//	}
-//
-//	@Override
-//	public TextRange getAllocationSizeTextRange() {
-//		return null;
-//	}
-//
-//	@Override
-//	public Integer getInitialValue() {
-//		return null;
-//	}
-//
-//	@Override
-//	public TextRange getInitialValueTextRange() {
-//		return null;
-//	}
-//
-//	@Override
-//	public void setAllocationSize(Integer allocationSize) {
-//		throw new UnsupportedOperationException();
-//	}
-//
-//	@Override
-//	public void setInitialValue(Integer initialValue) {
-//		throw new UnsupportedOperationException();
-//	}
+	@Override
+	public Integer getAllocationSize() {
+		return null;
+	}
+
+	@Override
+	public TextRange getAllocationSizeTextRange() {
+		return null;
+	}
+
+	@Override
+	public Integer getInitialValue() {
+		return null;
+	}
+
+	@Override
+	public TextRange getInitialValueTextRange() {
+		return null;
+	}
+
+	@Override
+	public void setAllocationSize(Integer allocationSize) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void setInitialValue(Integer initialValue) {
+		throw new UnsupportedOperationException();
+	}
 
 	protected ShortCircuitAnnotationElementAdapter<String> buildNameAdapter() {
 		return new ShortCircuitAnnotationElementAdapter<String>(this.annotatedElement, this.nameDeclarationAdapter);

@@ -42,10 +42,12 @@ public class TypeDefPropertyComposite<T extends JavaTypeDef> extends Pane<T> {
 	protected void initializeLayout(Composite container) {
 
 		// Name widgets
-		addLabeledText(
-			container,
-			HibernateUIMappingMessages.TypeDefPropertyComposite_Name,
-			buildNameTextHolder());
+		this.addLabel(container, HibernateUIMappingMessages.TypeDefPropertyComposite_Name);
+		this.addText(container, buildNameTextHolder());
+//		addLabeledText(
+//			container,
+//			HibernateUIMappingMessages.TypeDefPropertyComposite_Name,
+//			buildNameTextHolder());
 		
 		addTypeClassChooser(container);
 		addDefForTypeClassChooser2(container);
@@ -105,10 +107,10 @@ public class TypeDefPropertyComposite<T extends JavaTypeDef> extends Pane<T> {
 				return superInterfaces;
 			}
 
-			@Override
-			protected String getLabelText() {
-				return HibernateUIMappingMessages.TypeDefPropertyComposite_TypeClass;
-			}
+//			@Override
+//			protected String getLabelText() {
+//				return HibernateUIMappingMessages.TypeDefPropertyComposite_TypeClass;
+//			}
 
 			@Override
 			protected IJavaProject getJavaProject() {
@@ -154,10 +156,10 @@ public class TypeDefPropertyComposite<T extends JavaTypeDef> extends Pane<T> {
 				return getSubject().getDefaultForTypeClass();
 			}
 
-			@Override
-			protected String getLabelText() {
-				return HibernateUIMappingMessages.TypeDefPropertyComposite_DefaultForType;
-			}
+//			@Override
+//			protected String getLabelText() {
+//				return HibernateUIMappingMessages.TypeDefPropertyComposite_DefaultForType;
+//			}
 
 			@Override
 			protected IJavaProject getJavaProject() {

@@ -11,9 +11,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.mappings.db.xpl;
 
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.jpt.common.core.internal.utility.JptPlugin;
-import org.eclipse.jpt.common.ui.internal.Tracing;
+import org.eclipse.core.commands.util.Tracing;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.common.ui.internal.widgets.ComboPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
@@ -38,7 +36,6 @@ import org.eclipse.jpt.jpa.ui.internal.details.db.SchemaCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.db.SequenceCombo;
 import org.eclipse.jpt.jpa.ui.internal.listeners.SWTConnectionListenerWrapper;
 import org.eclipse.swt.widgets.Composite;
-import org.jboss.tools.hibernate.jpt.ui.HibernateJptUIPlugin;
 
 /**
  * This abstract pane keeps a combo in sync with the database objects
@@ -267,13 +264,14 @@ public abstract class DatabaseObjectCombo<T extends JpaNode>
 		// do nothing by default
 	}
 
-	@Override
+//	@Override
 	protected void log(String flag, String message) {
-		if (flag.equals(UI_DB) && booleanDebugOption(UI_DB, false)) {
-			this.log(message);
-		} else {
-			super.log(flag, message);
-		}
+		Tracing.printTrace(flag, message);
+//		if (flag.equals(UI_DB) && booleanDebugOption(UI_DB, false)) {
+//			this.log(message);
+//		} else {
+//			super.log(flag, message);
+//		}
 	}
 
 	// broaden accessibility a bit

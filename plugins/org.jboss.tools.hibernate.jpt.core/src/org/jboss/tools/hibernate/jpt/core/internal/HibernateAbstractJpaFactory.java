@@ -52,7 +52,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaCol
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaDiscriminatorColumnImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntityImpl;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaGeneratorContainer;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateGenericGeneratorContainer;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaGeneratorContainerImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaIdMappingImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaJoinColumnImpl;
@@ -76,8 +76,8 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernatePackage
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.IndexImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaDiscriminatorFormula;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaDiscriminatorFormulaImpl;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaGenericGenerator;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaGenericGeneratorImpl;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaDbGenericGenerator;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaDbGenericGeneratorImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaIndex;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaParameter;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaType;
@@ -119,8 +119,8 @@ public abstract class HibernateAbstractJpaFactory extends AbstractJpaFactory {
 		return new HibernateJavaIdMappingImpl(parent);
 	}
 
-	public JavaGenericGenerator buildJavaGenericGenerator(HibernateJavaGeneratorContainer parent, GenericGeneratorAnnotation annotation) {
-		return new JavaGenericGeneratorImpl(parent, annotation);
+	public JavaDbGenericGenerator buildJavaGenericGenerator(HibernateGenericGeneratorContainer parent, GenericGeneratorAnnotation annotation) {
+		return new JavaDbGenericGeneratorImpl(parent, annotation);
 	}
 
 	public JavaTypeDef buildJavaTypeDef(JpaContextNode parent, TypeDefAnnotation typeDefResource) {

@@ -36,7 +36,6 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
@@ -352,9 +351,9 @@ public class ParametersComposite extends Pane<ParametrizedElement> {
 
 		@Override
 		protected void initializeMainComposite(Composite container,
-		                                       Adapter adapter,
-		                                       ListValueModel<Parameter> listHolder,
-		                                       ModifiablePropertyValueModel<Parameter> selectedItemHolder,
+		                                       Adapter<Parameter> adapter,
+		                                       ListValueModel<?> listHolder,
+		                                       ModifiableCollectionValueModel<Parameter> selectedItemHolder,
 		                                       IBaseLabelProvider labelProvider,
 		                                       String helpId) {
 

@@ -26,9 +26,9 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.GenericGenerato
  */
 public class HibernateJavaGeneratorContainerImpl extends
 	GenericJavaGeneratorContainer implements
-	HibernateJavaGeneratorContainer {
+	HibernateGenericGeneratorContainer {
 
-	protected final ContextListContainer<JavaGenericGenerator, GenericGeneratorAnnotation> genericGeneratorContainer;
+	protected final ContextListContainer<JavaDbGenericGenerator, GenericGeneratorAnnotation> genericGeneratorContainer;
 	
 	public HibernateJavaGeneratorContainerImpl(ParentAdapter parentAdapter) {
 		super(parentAdapter);
@@ -62,7 +62,7 @@ public class HibernateJavaGeneratorContainerImpl extends
 	}
 
 	// ******************* Generic Generators ****************
-	public ListIterable<JavaGenericGenerator> getGenericGenerators() {
+	public ListIterable<JavaDbGenericGenerator> getGenericGenerators() {
 		return this.genericGeneratorContainer.getContextElements();
 	}
 
@@ -70,11 +70,11 @@ public class HibernateJavaGeneratorContainerImpl extends
 		return this.genericGeneratorContainer.getContextElementsSize();
 	}
 
-	public JavaGenericGenerator addGenericGenerator() {
+	public JavaDbGenericGenerator addGenericGenerator() {
 		return this.addGenericGenerator(this.getGenericGeneratorsSize());
 	}
 
-	public JavaGenericGenerator addGenericGenerator(int index) {
+	public JavaDbGenericGenerator addGenericGenerator(int index) {
 		GenericGeneratorAnnotation annotation = this.addGenericGeneratorAnnotation(index);
 		return this.genericGeneratorContainer.addContextElement(index, annotation);
 	}
@@ -84,7 +84,7 @@ public class HibernateJavaGeneratorContainerImpl extends
 	}
 
 	public void removeGenericGenerator(GenericGenerator genericGenerator) {
-		this.removeGenericGenerator(this.genericGeneratorContainer.indexOfContextElement((JavaGenericGenerator) genericGenerator));
+		this.removeGenericGenerator(this.genericGeneratorContainer.indexOfContextElement((JavaDbGenericGenerator) genericGenerator));
 	}
 
 	public void removeGenericGenerator(int index) {
@@ -97,7 +97,7 @@ public class HibernateJavaGeneratorContainerImpl extends
 		this.genericGeneratorContainer.moveContextElement(targetIndex, sourceIndex);
 	}
 
-	protected JavaGenericGenerator buildGenericGenerator(GenericGeneratorAnnotation genericGeneratorAnnotation) {
+	protected JavaDbGenericGenerator buildGenericGenerator(GenericGeneratorAnnotation genericGeneratorAnnotation) {
 		return this.getJpaFactory().buildJavaGenericGenerator(this, genericGeneratorAnnotation);
 	}
 
@@ -113,7 +113,7 @@ public class HibernateJavaGeneratorContainerImpl extends
 		return this.parentAdapter.getResourceAnnotatedElement().getAnnotations(GenericGeneratorAnnotation.ANNOTATION_NAME);
 	}
 
-	protected ContextListContainer<JavaGenericGenerator, GenericGeneratorAnnotation> buildGenericGeneratorContainer() {
+	protected ContextListContainer<JavaDbGenericGenerator, GenericGeneratorAnnotation> buildGenericGeneratorContainer() {
 		GenericGeneratorContainer container = new GenericGeneratorContainer();
 		container.initialize();
 		return container;
@@ -123,14 +123,14 @@ public class HibernateJavaGeneratorContainerImpl extends
 	 * generic generator container
 	 */
 	protected class GenericGeneratorContainer
-		extends ContextListContainer<JavaGenericGenerator, GenericGeneratorAnnotation>
+		extends ContextListContainer<JavaDbGenericGenerator, GenericGeneratorAnnotation>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
 			return GENERIC_GENERATORS_LIST;
 		}
 		@Override
-		protected JavaGenericGenerator buildContextElement(GenericGeneratorAnnotation resourceElement) {
+		protected JavaDbGenericGenerator buildContextElement(GenericGeneratorAnnotation resourceElement) {
 			return HibernateJavaGeneratorContainerImpl.this.buildGenericGenerator(resourceElement);
 		}
 		@Override
@@ -138,7 +138,7 @@ public class HibernateJavaGeneratorContainerImpl extends
 			return HibernateJavaGeneratorContainerImpl.this.getGenericGeneratorAnnotations();
 		}
 		@Override
-		protected GenericGeneratorAnnotation getResourceElement(JavaGenericGenerator contextElement) {
+		protected GenericGeneratorAnnotation getResourceElement(JavaDbGenericGenerator contextElement) {
 			return contextElement.getGeneratorAnnotation();
 		}
 	}

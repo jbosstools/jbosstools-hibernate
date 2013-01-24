@@ -173,8 +173,8 @@ implements HibernateJavaEntity {
 	}
 
 	@Override
-	public HibernateJavaGeneratorContainer getGeneratorContainer() {
-		return (HibernateJavaGeneratorContainer)super.getGeneratorContainer();
+	public HibernateGenericGeneratorContainer getGeneratorContainer() {
+		return (HibernateGenericGeneratorContainer)super.getGeneratorContainer();
 	}
 
 	// ************************* validation ***********************

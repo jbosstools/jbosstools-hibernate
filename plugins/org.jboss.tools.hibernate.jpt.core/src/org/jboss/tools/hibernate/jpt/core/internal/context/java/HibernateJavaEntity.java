@@ -20,7 +20,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateEntity;
 public interface HibernateJavaEntity extends JavaEntity,
 HibernateEntity{
 	
-	HibernateJavaGeneratorContainer getGeneratorContainer();
+	HibernateGenericGeneratorContainer getGeneratorContainer();
 	
 	HibernateJavaTypeDefContainer getTypeDefContainer();
 

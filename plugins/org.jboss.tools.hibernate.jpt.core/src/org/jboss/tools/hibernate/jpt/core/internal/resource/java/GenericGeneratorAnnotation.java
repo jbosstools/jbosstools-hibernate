@@ -13,6 +13,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.jpa.core.resource.java.DbGeneratorAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.GeneratorAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 
@@ -21,7 +22,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
  *
  */
 public interface GenericGeneratorAnnotation extends 
-	NestableAnnotation, GeneratorAnnotation {
+	NestableAnnotation, GeneratorAnnotation, DbGeneratorAnnotation {
 	
 	String ANNOTATION_NAME = Hibernate.GENERIC_GENERATOR;
 	

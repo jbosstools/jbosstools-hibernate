@@ -14,6 +14,7 @@ import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
@@ -45,12 +46,11 @@ public class AddMappingListPane<E extends Object> extends AddRemoveListPane<Pers
 	}
 	
 	@Override
-	protected void initialize(
-			Adapter<E> adapter,
-			ListValueModel<E> listHolder,
-			ModifiableCollectionValueModel<E> selectedItemHolder,
-			IBaseLabelProvider labelProvider) {
-		super.initialize(adapter, listHolder, selectedItemHolder, labelProvider);
+	protected void initialize(Adapter<E> adapter,
+            ListValueModel<?> listHolder,
+            ModifiableCollectionValueModel<E> selectedItemsModel,
+            IBaseLabelProvider labelProvider) {
+		super.initialize(adapter, listHolder, selectedItemsModel, labelProvider);
 		this.adapter = (ExtendedAdapter) adapter;
 	}
 	
@@ -68,7 +68,7 @@ public class AddMappingListPane<E extends Object> extends AddRemoveListPane<Pers
 	private Runnable buildAddPackageItemAction() {
 		return new Runnable() {
 			public void run() {
-				adapter.addPackage(getSelectedItemsModel());
+				adapter.addPackage((ModifiableCollectionValueModel<ClassRef>) getSelectedItemsModel());
 			}
 		};
 	}
@@ -96,6 +96,6 @@ abstract class ExtendedAdapter extends AddRemoveListPane.AbstractAdapter<ClassRe
 		return JptUiPersistenceMessages.PersistenceUnitClassesComposite_open;
 	}
 
-	public abstract void addPackage(ModifiableCollectionValueModel<ClassRef> listSelectionModel);
+	public abstract ClassRef addPackage(ModifiableCollectionValueModel<ClassRef> listSelectionModel);
 	
 }

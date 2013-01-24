@@ -24,15 +24,15 @@ import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.Transformer;
+import org.eclipse.jpt.common.utility.internal.model.value.CollectionPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
@@ -41,7 +41,6 @@ import org.eclipse.jpt.jpa.core.context.QueryContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
-import org.eclipse.jpt.jpa.ui.editors.JpaPageComposite;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.NamedNativeQueryPropertyComposite;
@@ -65,12 +64,14 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernatePackage
  */
 public class HibernateQueriesComposite extends Pane<HibernateJavaQueryContainer> {
 
-	private AddRemoveListPane<QueryContainer, Query> listPane;
+//	private AddRemoveListPane<QueryContainer, Query> listPane;
 	private NamedNativeQueryPropertyComposite namedNativeQueryPane;
 	private Pane<? extends Query> namedQueryPane;
 	private HibernateNamedQueryPropertyComposite hibernateNamedQueryPane;
 	private HibernateNamedNativeQueryPropertyComposite hibernateNamedNativeQueryPane;
-	private ModifiablePropertyValueModel<Query> queryHolder;
+//	private ModifiablePropertyValueModel<Query> queryHolder;
+	private ModifiableCollectionValueModel<Query> selectedQueriesModel;
+	private PropertyValueModel<Query> selectedQueryModel;
 
 	/**
 	 * Creates a new <code>QueriesComposite</code>.
@@ -116,7 +117,7 @@ public class HibernateQueriesComposite extends Pane<HibernateJavaQueryContainer>
 			throw new IllegalArgumentException();
 		}
 		query.setName(hibernateAddQueryDialog.getName());
-		this.getQueryHolder().setValue(query);//so that it gets selected in the List for the user to edit
+//		this.getQueryHolder().setValue(query);//so that it gets selected in the List for the user to edit
 		return query;
 	}
 
@@ -134,7 +135,8 @@ public class HibernateQueriesComposite extends Pane<HibernateJavaQueryContainer>
 			container,
 			buildQueriesAdapter(),
 			buildDisplayableQueriesListHolder(),
-			this.queryHolder,
+//			this.queryHolder,
+			this.selectedQueriesModel,
 			buildQueriesListLabelProvider(),
 			JpaHelpContextIds.MAPPING_NAMED_QUERIES
 		);
@@ -158,7 +160,7 @@ public class HibernateQueriesComposite extends Pane<HibernateJavaQueryContainer>
 	}
 
 	private PropertyValueModel<NamedNativeQuery> buildNamedNativeQueryHolder() {
-		return new TransformationPropertyValueModel<Query, NamedNativeQuery>(this.queryHolder) {
+		return new TransformationPropertyValueModel<Query, NamedNativeQuery>(this.selectedQueryModel) {
 			@Override
 			protected NamedNativeQuery transform_(Query value) {
 				return (value instanceof NamedNativeQuery) ? (NamedNativeQuery) value : null;
@@ -218,7 +220,7 @@ public class HibernateQueriesComposite extends Pane<HibernateJavaQueryContainer>
 	}
 
 	private PropertyValueModel<NamedQuery> buildNamedQueryHolder() {
-		return new TransformationPropertyValueModel<Query, NamedQuery>(this.queryHolder) {
+		return new TransformationPropertyValueModel<Query, NamedQuery>(this.selectedQueryModel) {
 			@Override
 			protected NamedQuery transform_(Query value) {
 				return (value instanceof NamedQuery) ? (NamedQuery) value : null;
@@ -227,7 +229,7 @@ public class HibernateQueriesComposite extends Pane<HibernateJavaQueryContainer>
 	}
 
 	private PropertyValueModel<HibernateNamedQuery> buildHibernateNamedQueryHolder() {
-		return new TransformationPropertyValueModel<Query, HibernateNamedQuery>(this.queryHolder) {
+		return new TransformationPropertyValueModel<Query, HibernateNamedQuery>(this.selectedQueryModel) {
 			@Override
 			protected HibernateNamedQuery transform_(Query value) {
 				return (value instanceof HibernateNamedQuery) ? (HibernateNamedQuery) value : null;
@@ -236,7 +238,7 @@ public class HibernateQueriesComposite extends Pane<HibernateJavaQueryContainer>
 	}
 
 	private PropertyValueModel<HibernateNamedNativeQuery> buildHibernateNamedNativeQueryHolder() {
-		return new TransformationPropertyValueModel<Query, HibernateNamedNativeQuery>(this.queryHolder) {
+		return new TransformationPropertyValueModel<Query, HibernateNamedNativeQuery>(this.selectedQueryModel) {
 			@Override
 			protected HibernateNamedNativeQuery transform_(Query value) {
 				return (value instanceof HibernateNamedNativeQuery) ? (HibernateNamedNativeQuery) value : null;
@@ -336,9 +338,9 @@ public class HibernateQueriesComposite extends Pane<HibernateJavaQueryContainer>
 		};
 	}
 
-	private ModifiablePropertyValueModel<Query> buildQueryHolder() {
-		return new SimplePropertyValueModel<Query>();
-	}
+//	private ModifiablePropertyValueModel<Query> buildQueryHolder() {
+//		return new SimplePropertyValueModel<Query>();
+//	}
 
 //	@Override
 //	public void enableWidgets(boolean enabled) {
@@ -350,14 +352,33 @@ public class HibernateQueriesComposite extends Pane<HibernateJavaQueryContainer>
 	@Override
 	protected void initialize() {
 		super.initialize();
-		this.queryHolder = buildQueryHolder();
+		this.selectedQueriesModel = this.buildSelectedQueriesModel();
+		this.selectedQueryModel = this.buildSelectedQueryModel(this.selectedQueriesModel);
+//		this.queryHolder = buildQueryHolder();
+	}
+
+	private ModifiableCollectionValueModel<Query> buildSelectedQueriesModel() {
+		return new SimpleCollectionValueModel<Query>();
+	}
+
+	private PropertyValueModel<Query> buildSelectedQueryModel(CollectionValueModel<Query> selectedQueriesModel) {
+		return new CollectionPropertyValueModelAdapter<Query, Query>(selectedQueriesModel) {
+			@Override
+			protected Query buildValue() {
+				if (this.collectionModel.size() == 1) {
+					return this.collectionModel.iterator().next();
+				}
+				return null;
+			}
+		};
 	}
 
 	@Override
 	protected void initializeLayout(Composite container) {
 
 		// List pane
-		this.listPane = addListPane(container);
+		addListPane(container);
+//		this.listPane = addListPane(container);
 
 		// Property pane
 		PageBook pageBook = new PageBook(container, SWT.NULL);
@@ -399,11 +420,12 @@ public class HibernateQueriesComposite extends Pane<HibernateJavaQueryContainer>
 	}
 
 	private void installPaneSwitcher(PageBook pageBook) {
-		new ControlSwitcher(this.queryHolder, buildPaneTransformer(), pageBook);
+//		new ControlSwitcher(this.queryHolder, buildPaneTransformer(), pageBook);
+		new ControlSwitcher(getQueryHolder(), buildPaneTransformer(), pageBook);
 	}
 
-	protected ModifiablePropertyValueModel<Query> getQueryHolder() {
-		return this.queryHolder;
+	protected PropertyValueModel<Query> getQueryHolder() {
+		return this.selectedQueryModel;
 	}
 
 }
