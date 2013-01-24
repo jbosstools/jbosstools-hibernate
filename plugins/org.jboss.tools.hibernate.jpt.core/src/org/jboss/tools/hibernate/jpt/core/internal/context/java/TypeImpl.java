@@ -15,7 +15,7 @@ import java.util.List;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.iterables.ArrayListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.ArrayListIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;

@@ -31,8 +31,8 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.resource.java.QueryHintAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.context.CacheModeType;
 import org.jboss.tools.hibernate.jpt.core.internal.context.FlushModeType;
@@ -276,7 +276,7 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation 
 	// ***** hints
 	@Override
 	public ListIterable<QueryHintAnnotation> getHints() {
-		return EmptyListIterable.instance();
+		return EmptyListIterable<QueryHintAnnotation>.instance();
 	}
 
 	@Override

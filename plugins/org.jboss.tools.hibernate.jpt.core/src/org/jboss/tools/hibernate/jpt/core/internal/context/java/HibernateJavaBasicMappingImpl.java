@@ -11,13 +11,10 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.utility.Filter;
-import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter.Adapter;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
