@@ -299,7 +299,7 @@ implements JavaDbGenericGenerator, Messages {
 		}
 		TextRange strategyRange = getStrategyTextRange();
 		if (strategyRange != null && strategyRange.touches(pos)) {
-			return new ArrayListIterable<>(generatorClasses.toArray(new String[generatorClasses.size()]));
+			return new ArrayListIterable<String>(generatorClasses.toArray(new String[generatorClasses.size()]));
 		}
 		return null;
 	}

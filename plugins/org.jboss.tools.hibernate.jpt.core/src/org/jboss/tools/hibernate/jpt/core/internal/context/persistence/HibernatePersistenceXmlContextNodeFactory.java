@@ -41,11 +41,6 @@ public class HibernatePersistenceXmlContextNodeFactory extends
 	}
 	
 	@Override
-	public ClassRef buildClassRef(PersistenceUnit parent, String className) {
-		return new HibernateClassRef(parent, className);
-	}
-	
-	@Override
 	public ClassRef buildClassRef(PersistenceUnit parent,
 			XmlJavaClassRef classRef) {
 		return new HibernateClassRef(parent, classRef);

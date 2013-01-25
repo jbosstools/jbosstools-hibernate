@@ -112,7 +112,10 @@ public class AddGeneratedClassesJob extends WorkspaceJob {
 		return new TransformationIterable<IType, String>(
 				new FilteringIterable<IType>(
 						new TransformationIterable<String, IType>(
+								/* FIXME find correct replacement for function below 
 								jpaProject.getMappedJavaSourceClassNames()) {
+								*/
+								jpaProject.getAnnotatedJavaSourceClassNames()) {
 							@Override
 							protected IType transform(String fullyQualifiedName) {
 								return AddGeneratedClassesJob.this.findType(jpaProject, fullyQualifiedName);
