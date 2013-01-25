@@ -49,25 +49,13 @@ public class HibernateClassRef extends GenericClassRef implements PackageInfoRef
 	 * an explicit entry in the <code>persistence.xml</code>.
 	 */
 	public HibernateClassRef(PersistenceUnit parent, XmlJavaClassRef xmlJavaClassRef) {
-		super(parent, xmlJavaClassRef, xmlJavaClassRef.getJavaClass());
+		super(parent, xmlJavaClassRef);
 		JavaResourcePackage resourcePackage = this.resolveJavaResourcePackage();
 		if (resourcePackage != null){
 			this.javaPackageInfo = this.buildJavaPackageInfo(resourcePackage);
 		}
 	}
 
-	/**
-	 * Construct an <em>virtual</em> class ref; i.e. a class ref without
-	 * an explicit entry in the <code>persistence.xml</code>.
-	 */
-	public HibernateClassRef(PersistenceUnit parent, String className) {
-		super(parent, null, className);
-		JavaResourcePackage resourcePackage = this.resolveJavaResourcePackage();
-		if (resourcePackage != null){
-			this.javaPackageInfo = this.buildJavaPackageInfo(resourcePackage);
-		}
-	}
-	
 	@Override
 	protected HibernateAbstractJpaFactory getJpaFactory() {
 		return (HibernateAbstractJpaFactory) super.getJpaFactory();

@@ -104,7 +104,7 @@ public class TypeImpl extends AbstractJavaJpaContextNode implements JavaType, Me
 		}
 		TextRange typeRange = getTypeTextRange();
 		if (typeRange != null && typeRange.touches(pos)) {
-			return new ArrayListIterable<>(getPersistenceUnit().uniqueTypeDefNames());
+			return new ArrayListIterable<String>(getPersistenceUnit().uniqueTypeDefNames());
 //			return getJavaCandidateNames();
 		}
 		return null;

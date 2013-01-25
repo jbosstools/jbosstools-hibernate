@@ -160,18 +160,20 @@ implements Messages, Hibernate {
 	 * mapped (i.e. have the appropriate annotation etc.) but not specified
 	 * in the persistence unit.
 	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	protected Iterable<String> getImpliedClassNames_() {
-		return new CompositeIterable<String>(super.getImpliedClassNames_(),
-				new FilteringIterable<String>(this.getJpaProject().getMappedJavaSourcePackagesNames()) {
-					@Override
-					protected boolean accept(String mappedPackageName) {
-						return !HibernatePersistenceUnit.this.specifiedPackageInfo(mappedPackageName);
-					}
-				}
-		);
-	}
+
+	// FIXME Find what was changed related to this function
+	//	@SuppressWarnings("unchecked")
+//	@Override
+//	protected Iterable<String> getImpliedClassNames_() {
+//		return new CompositeIterable<String>(super.getImpliedClassNames_(),
+//				new FilteringIterable<String>(this.getJpaProject().getMappedJavaSourcePackagesNames()) {
+//					@Override
+//					protected boolean accept(String mappedPackageName) {
+//						return !HibernatePersistenceUnit.this.specifiedPackageInfo(mappedPackageName);
+//					}
+//				}
+//		);
+//	}
 	
 	
 	
