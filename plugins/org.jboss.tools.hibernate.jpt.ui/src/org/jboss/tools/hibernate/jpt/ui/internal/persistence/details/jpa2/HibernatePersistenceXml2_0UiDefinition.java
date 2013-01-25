@@ -16,16 +16,14 @@ import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.jpa.core.resource.persistence.v2_0.JPA2_0;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.persistence.AbstractPersistenceXmlResourceUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.AbstractResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceXmlUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceXmlUiFactory;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public class HibernatePersistenceXml2_0UiDefinition extends
-		AbstractPersistenceXmlResourceUiDefinition {
+public class HibernatePersistenceXml2_0UiDefinition extends AbstractResourceUiDefinition {
 	// singleton
 	private static final ResourceUiDefinition INSTANCE = new HibernatePersistenceXml2_0UiDefinition();
 	

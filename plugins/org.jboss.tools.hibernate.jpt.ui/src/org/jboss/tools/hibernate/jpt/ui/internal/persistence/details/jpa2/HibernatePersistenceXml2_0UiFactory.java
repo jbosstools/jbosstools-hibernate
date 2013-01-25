@@ -20,11 +20,6 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.JpaConnection2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.JpaOptions2_0;
-import org.eclipse.jpt.jpa.ui.editors.JpaPageComposite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.GenericPersistenceUnit2_0ConnectionTab;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.GenericPersistenceUnit2_0OptionsTab;
-import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitPropertiesTab;
-import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceXmlUiFactory;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
@@ -37,6 +32,8 @@ import org.jboss.tools.hibernate.jpt.ui.internal.persistence.details.HibernatePr
  */
 public class HibernatePersistenceXml2_0UiFactory implements
 		PersistenceXmlUiFactory {
+	
+	PersistenceXml2_0UiDefinition
 
 	// **************** persistence unit composites ****************************
 	public ListIterator<JpaPageComposite> createPersistenceUnitComposites(

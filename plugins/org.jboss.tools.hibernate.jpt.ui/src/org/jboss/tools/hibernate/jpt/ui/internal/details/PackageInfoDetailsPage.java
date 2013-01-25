@@ -16,8 +16,12 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractJpaDetailsPage;
+import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.Section;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateGenericGeneratorContainer;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaQueryContainer;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaTypeDefContainer;
@@ -58,11 +62,19 @@ public class PackageInfoDetailsPage extends AbstractJpaDetailsPage<HibernatePack
 		};
 	}
 	
+	
 	protected void initializeGenericGeneratorsCollapsibleSection(Composite container) {
-		container = addCollapsibleSection(
-				container,
-				Messages.PackageInfoDetailsPage_GenericGeneratorsSection);
-		this.initializeGenericGeneratorsSection(container);
+		final Section section = this.getWidgetFactory().createSection(container,
+				ExpandableComposite.TITLE_BAR |
+				ExpandableComposite.TWISTIE |
+				ExpandableComposite.EXPANDED);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(JptUiDetailsMessages.BasicSection_title);
+		section.setClient(this.initializeGenericGeneratorsSection(section));
+//		container = addCollapsibleSection(
+//				container,
+//				Messages.PackageInfoDetailsPage_GenericGeneratorsSection);
+//		this.initializeGenericGeneratorsSection(container);
 	}
 	
 	private PropertyValueModel<HibernateGenericGeneratorContainer> buildGeneratorContainerHolder() {
@@ -82,10 +94,17 @@ public class PackageInfoDetailsPage extends AbstractJpaDetailsPage<HibernatePack
 	}
 	
 	protected void initializeQueriesCollapsibleSection(Composite container) {
-		container = addCollapsibleSection(
-				container,
-				Messages.PackageInfoDetailsPage_QueriesSection);
-		this.initializeQueriesSection(container, buildQueryContainerHolder());
+		final Section section = this.getWidgetFactory().createSection(container,
+				ExpandableComposite.TITLE_BAR |
+				ExpandableComposite.TWISTIE |
+				ExpandableComposite.EXPANDED);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(JptUiDetailsMessages.BasicSection_title);
+		section.setClient(this.initializeQueriesSection(section, buildQueryContainerHolder()));
+//		container = addCollapsibleSection(
+//				container,
+//				Messages.PackageInfoDetailsPage_QueriesSection);
+//		this.initializeQueriesSection(container, buildQueryContainerHolder());
 	}
 	
 	private PropertyValueModel<HibernateJavaQueryContainer> buildQueryContainerHolder() {
@@ -97,21 +116,28 @@ public class PackageInfoDetailsPage extends AbstractJpaDetailsPage<HibernatePack
 		};
 	}
 	
-	protected void initializeQueriesSection(Composite container, PropertyValueModel<HibernateJavaQueryContainer> queryContainerHolder) {
-		new HibernateQueriesComposite(this, queryContainerHolder, container);
+	protected Control initializeQueriesSection(Composite container, PropertyValueModel<HibernateJavaQueryContainer> queryContainerHolder) {
+		return new HibernateQueriesComposite(this, queryContainerHolder, container).getControl();
 	}
 	
 	protected void initializeTypeDefCollapsibleSection(Composite container) {
-		container = addCollapsibleSection(
-				container,
-				Messages.PackageInfoDetailsPage_TypeDefinitionsSection);
-		this.initializeTypeDefsSection(container, buildTypeDefContainerHolder());
+		final Section section = this.getWidgetFactory().createSection(container,
+				ExpandableComposite.TITLE_BAR |
+				ExpandableComposite.TWISTIE |
+				ExpandableComposite.EXPANDED);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(JptUiDetailsMessages.BasicSection_title);
+		section.setClient(this.initializeTypeDefsSection(section, buildTypeDefContainerHolder()));
+//		container = addCollapsibleSection(
+//				container,
+//				Messages.PackageInfoDetailsPage_TypeDefinitionsSection);
+//		this.initializeTypeDefsSection(container, buildTypeDefContainerHolder());
 	}
 	
-	protected void initializeTypeDefsSection(
+	protected Control initializeTypeDefsSection(
 			Composite container,
 			PropertyValueModel<HibernateJavaTypeDefContainer> typeDefContainerHolder) {
-		new TypeDefsComposite(this, typeDefContainerHolder, container);
+		return new TypeDefsComposite(this, typeDefContainerHolder, container).getControl();
 	}
 	
 	private PropertyValueModel<HibernateJavaTypeDefContainer> buildTypeDefContainerHolder() {

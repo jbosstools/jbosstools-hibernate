@@ -12,7 +12,7 @@ package org.jboss.tools.hibernate.jpt.ui.internal.details.java;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsPageManager;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
@@ -48,7 +48,7 @@ public class JavaPackageInfoDetailsProvider implements JpaDetailsProvider {
 	
 	@Override
 	public boolean providesDetails(JpaStructureNode structureNode) {
-			return Tools.valuesAreEqual(structureNode.getType(),  JavaPackageInfo.class)
+			return ObjectTools.equals(structureNode.getType(),  JavaPackageInfo.class)
 				&& structureNode.getResourceType().getContentType().equals(JavaResourceCompilationUnit.PACKAGE_INFO_CONTENT_TYPE);
 	}
 	

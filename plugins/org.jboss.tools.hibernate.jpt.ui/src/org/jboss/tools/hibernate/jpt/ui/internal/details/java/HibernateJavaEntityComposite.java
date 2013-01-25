@@ -21,7 +21,9 @@ import org.eclipse.jpt.jpa.ui.internal.details.java.JavaSecondaryTablesComposite
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Hyperlink;
+import org.eclipse.ui.forms.widgets.Section;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateGeneratorContainer;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaQueryContainer;
@@ -29,7 +31,6 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaTyp
 import org.jboss.tools.hibernate.jpt.ui.internal.details.HibernateTableComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateGenerationComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateQueriesComposite;
-import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateUIMappingMessages;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.TypeDefsComposite;
 
 /**
@@ -55,16 +56,23 @@ public class HibernateJavaEntityComposite extends AbstractEntityComposite<Hibern
 	}
 	
 	protected void initializeTypeDefCollapsibleSection(Composite container) {
-		container = addCollapsibleSection(
-				container,
-				HibernateUIMappingMessages.HibernateJavaEntityComposite_TypeDefinitionsSection);
-		this.initializeTypeDefsSection(container, buildTypeDefContainerHolder());
+		final Section section = this.getWidgetFactory().createSection(container,
+				ExpandableComposite.TITLE_BAR |
+				ExpandableComposite.TWISTIE |
+				ExpandableComposite.EXPANDED);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(JptUiDetailsMessages.BasicSection_title);
+		section.setClient(this.initializeTypeDefsSection(section, buildTypeDefContainerHolder()));
+//		container = addCollapsibleSection(
+//				container,
+//				HibernateUIMappingMessages.HibernateJavaEntityComposite_TypeDefinitionsSection);
+//		this.initializeTypeDefsSection(container, buildTypeDefContainerHolder());
 	}
 	
-	protected void initializeTypeDefsSection(
+	protected Control initializeTypeDefsSection(
 			Composite container,
 			PropertyValueModel<HibernateJavaTypeDefContainer> typeDefContainerHolder) {
-		new TypeDefsComposite(this, typeDefContainerHolder, container);
+		return new TypeDefsComposite(this, typeDefContainerHolder, container).getControl();
 	}
 
 	private PropertyValueModel<HibernateJavaTypeDefContainer> buildTypeDefContainerHolder() {
