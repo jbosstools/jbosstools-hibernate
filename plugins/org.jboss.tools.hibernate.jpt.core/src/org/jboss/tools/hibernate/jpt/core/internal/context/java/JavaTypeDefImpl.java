@@ -270,7 +270,7 @@ public class JavaTypeDefImpl extends AbstractJavaJpaContextNode implements JavaT
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		
-		if (StringTools.stringIsEmpty(this.name)){
+		if (StringTools.isBlank(this.name)){
 			messages.add(
 					HibernateJpaValidationMessage.buildMessage(
 							IMessage.HIGH_SEVERITY,
@@ -298,7 +298,7 @@ public class JavaTypeDefImpl extends AbstractJavaJpaContextNode implements JavaT
 			}
 		}
 		
-		if (!StringTools.stringIsEmpty(this.typeClass)){
+		if (!StringTools.isBlank(this.typeClass)){
 			IType lwType = null;
 			try {
 				lwType = getJpaProject().getJavaProject().findType(typeClass);

@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -92,16 +93,16 @@ public class HibernatePackageInfoImpl extends AbstractJavaJpaContextNode impleme
 		this.typeDefContainer.update();
 		this.generatorContainer.update();
 		this.queryContainer.update();
-		this.registerRootStructureNode();
+//		this.registerRootStructureNode();
 	}
 	
-	protected void registerRootStructureNode() {
-		JpaFile jpaFile = this.getJpaFile();
-		// the JPA file can be null if the resource type is "external"
-		if (jpaFile != null) {
-			jpaFile.addRootStructureNode(this.name, this);
-		}
-	}
+//	protected void registerRootStructureNode() {
+//		JpaFile jpaFile = this.getJpaFile();
+//		// the JPA file can be null if the resource type is "external"
+//		if (jpaFile != null) {
+//			jpaFile.addRootStructureNode(this.name, this);
+//		}
+//	}
 	
 	@Override
 	public JptResourceType getResourceType() {
@@ -181,17 +182,17 @@ public class HibernatePackageInfoImpl extends AbstractJavaJpaContextNode impleme
 	}
 
 	public void dispose() {
-		this.unregisterRootStructureNode();
+//		this.unregisterRootStructureNode();
 	}
 	
-	protected void unregisterRootStructureNode() {
-		JpaFile jpaFile = this.getJpaFile();
-		// the JPA file can be null if the .java file was deleted
-		// or the resource type is "external"
-		if (jpaFile != null) {
-			jpaFile.removeRootStructureNode(this.name, this);
-		}
-	}
+//	protected void unregisterRootStructureNode() {
+//		JpaFile jpaFile = this.getJpaFile();
+//		// the JPA file can be null if the .java file was deleted
+//		// or the resource type is "external"
+//		if (jpaFile != null) {
+//			jpaFile.removeRootStructureNode(this.name, this);
+//		}
+//	}
 	
 	protected JpaFile getJpaFile() {
 		return this.getJpaFile(this.resourcePackage.getFile());
@@ -265,5 +266,15 @@ public class HibernatePackageInfoImpl extends AbstractJavaJpaContextNode impleme
 		}
 		return null;
 	}
+
+	@Override
+	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
+		IResource resource = this.getResource();
+		// the resource can be null if the resource type is "external"
+		if (resource != null && resource.equals(jpaFile.getFile())) {
+			rootStructureNodes.add(this);
+		}
+	}
+
 
 }

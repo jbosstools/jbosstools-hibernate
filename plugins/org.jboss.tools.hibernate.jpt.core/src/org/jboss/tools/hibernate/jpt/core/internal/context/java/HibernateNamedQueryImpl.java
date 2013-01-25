@@ -40,7 +40,8 @@ public class HibernateNamedQueryImpl extends AbstractHibernateNamedQueryImpl<Hib
 
 	@Override
 	protected void validateQuery_(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter) {
-		queryHelper.validate(this, this.query, this.queryAnnotation.getQueryTextRange(), 1, messages);
+//		queryHelper.validate(this, this.query, this.queryAnnotation.getQueryTextRanges(), 1, messages);
+		queryHelper.validate(this, this.query, this.query, this.queryAnnotation.getQueryTextRanges(), 1, null, messages);
 	}
 
 	// ********** misc **********

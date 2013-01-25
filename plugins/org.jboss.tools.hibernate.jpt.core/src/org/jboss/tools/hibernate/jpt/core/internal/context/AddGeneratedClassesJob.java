@@ -23,8 +23,8 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
-import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
@@ -92,7 +92,7 @@ public class AddGeneratedClassesJob extends WorkspaceJob {
 	
 	protected IStatus addNewClassRefs(IProgressMonitor monitor, JpaProject jpaProject, XmlPersistenceUnit persistenceUnit) {
 		Iterable<String> mappedClassNames = getMappedNewClassNames(jpaProject, '$');
-		final SubMonitor sm = SubMonitor.convert(monitor, CollectionTools.size(mappedClassNames));
+		final SubMonitor sm = SubMonitor.convert(monitor, IterableTools.size(mappedClassNames));
 		
 		for (String fullyQualifiedTypeName : mappedClassNames) {
 			if ( ! mappingFileContains(jpaProject, fullyQualifiedTypeName)) {

@@ -16,8 +16,8 @@ import java.util.List;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.node.AbstractNode;
-import org.eclipse.jpt.common.utility.internal.node.Node;
-import org.eclipse.jpt.common.utility.internal.node.Problem;
+import org.eclipse.jpt.common.utility.node.Node;
+import org.eclipse.jpt.common.utility.node.Problem;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateUIMappingMessages;
 
 /**
@@ -62,7 +62,7 @@ final class NameStateObject extends AbstractNode
 	}
 
 	private void addNameProblemsTo(List<Problem> currentProblems) {
-		if (StringTools.stringIsEmpty(this.name)) {
+		if (StringTools.isBlank(this.name)) {
 			currentProblems.add(buildProblem(HibernateUIMappingMessages.NameStateObject_nameMustBeSpecified, IMessageProvider.ERROR));
 		} else if (this.names != null && this.names.contains(this.name.trim())) {
 			currentProblems.add(buildProblem(HibernateUIMappingMessages.NameStateObject_nameAlreadyExists, IMessageProvider.ERROR));

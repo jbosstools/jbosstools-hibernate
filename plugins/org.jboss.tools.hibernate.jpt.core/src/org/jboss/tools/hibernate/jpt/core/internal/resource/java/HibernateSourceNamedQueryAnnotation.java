@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
+import java.util.List;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.CombinationIndexedDeclarationAnnotationAdapter;
@@ -27,8 +29,8 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.resource.java.QueryHintAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.context.CacheModeType;
 import org.jboss.tools.hibernate.jpt.core.internal.context.FlushModeType;
@@ -52,7 +54,8 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation
 	private DeclarationAnnotationElementAdapter<String> queryDeclarationAdapter;
 	private AnnotationElementAdapter<String> queryAdapter;
 	private String query;
-	TextRange queryTextRange;
+	List<TextRange> queryTextRanges;
+//	TextRange queryTextRange;
 
 	private DeclarationAnnotationElementAdapter<String> flushModeDeclarationAdapter;
 	private AnnotationElementAdapter<String> flushModeAdapter;
@@ -126,7 +129,7 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation
 		this.name = this.buildName(astRoot);
 		this.nameTextRange = this.buildNameTextRange();
 		this.query = this.buildQuery(astRoot);
-		this.queryTextRange = this.buildQueryTextRange(astRoot);
+		this.queryTextRanges = this.buildQueryTextRanges(astRoot);
 		this.flushMode = this.buildFlushMode(astRoot);
 		this.flushModeTextRange =  this.buildFlushModeTextRange(astRoot);
 		this.cacheMode = this.buildCacheMode(astRoot);
@@ -145,7 +148,7 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation
 		this.syncName(this.buildName(astRoot));
 		this.nameTextRange = this.buildNameTextRange();
 		this.syncQuery(this.buildQuery(astRoot));
-		this.queryTextRange = this.buildQueryTextRange(astRoot);
+		this.queryTextRanges = this.buildQueryTextRanges(astRoot);
 		this.syncFlushMode(this.buildFlushMode(astRoot));
 		this.flushModeTextRange =  this.buildFlushModeTextRange(astRoot);
 		this.syncCacheMode(this.buildCacheMode(astRoot));
@@ -225,12 +228,12 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation
 	}
 
 	@Override
-	public TextRange getQueryTextRange() {
-		return this.queryTextRange;
+	public List<TextRange> getQueryTextRanges() {
+		return this.queryTextRanges;
 	}
 	
-	private TextRange buildQueryTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.queryDeclarationAdapter, getAstAnnotation(astRoot));
+	private List<TextRange> buildQueryTextRanges(CompilationUnit astRoot) {
+		return this.getElementTextRanges(this.queryDeclarationAdapter, getAstAnnotation(astRoot));
 	}
 
 	// ***** hints

@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
+import java.util.List;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
@@ -58,7 +60,8 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation 
 	private DeclarationAnnotationElementAdapter<String> queryDeclarationAdapter;
 	private AnnotationElementAdapter<String> queryAdapter;
 	private String query;
-	TextRange queryTextRange;
+//	TextRange queryTextRange;
+	List<TextRange> queryTextRanges;
 
 	private DeclarationAnnotationElementAdapter<String> flushModeDeclarationAdapter;
 	private AnnotationElementAdapter<String> flushModeAdapter;
@@ -155,7 +158,7 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation 
 		this.name = this.buildName(astRoot);
 		this.nameTextRange = this.buildNameTextRange(astRoot);
 		this.query = this.buildQuery(astRoot);
-		this.queryTextRange = this.buildQueryTextRange(astRoot);
+		this.queryTextRanges = this.buildQueryTextRanges(astRoot);
 		this.flushMode = this.buildFlushMode(astRoot);
 		this.flushModeTextRange =  this.buildFlushModeTextRange(astRoot);
 		this.cacheMode = this.buildCacheMode(astRoot);
@@ -178,7 +181,7 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation 
 		this.syncName(this.buildName(astRoot));
 		this.nameTextRange = this.buildNameTextRange(astRoot);
 		this.syncQuery(this.buildQuery(astRoot));
-		this.queryTextRange = this.buildQueryTextRange(astRoot);
+		this.queryTextRanges = this.buildQueryTextRanges(astRoot);
 		this.syncFlushMode(this.buildFlushMode(astRoot));
 		this.flushModeTextRange =  this.buildFlushModeTextRange(astRoot);
 		this.syncCacheMode(this.buildCacheMode(astRoot));
@@ -265,18 +268,18 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation 
 	}
 
 	@Override
-	public TextRange getQueryTextRange() {
-		return this.queryTextRange;
+	public List<TextRange> getQueryTextRanges() {
+		return this.queryTextRanges;
 	}
 	
-	private TextRange buildQueryTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.queryDeclarationAdapter, getAstAnnotation(astRoot));
+	private List<TextRange> buildQueryTextRanges(CompilationUnit astRoot) {
+		return this.getElementTextRanges(this.queryDeclarationAdapter, getAstAnnotation(astRoot));
 	}
 
 	// ***** hints
 	@Override
 	public ListIterable<QueryHintAnnotation> getHints() {
-		return EmptyListIterable<QueryHintAnnotation>.instance();
+		return EmptyListIterable.<QueryHintAnnotation>instance();
 	}
 
 	@Override

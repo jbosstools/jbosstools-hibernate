@@ -13,13 +13,10 @@ package org.jboss.tools.hibernate.jpt.core.internal.libval;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jdt.core.IClasspathEntry;
-import org.eclipse.jpt.common.core.internal.libval.LibValUtil;
+import org.eclipse.jpt.common.core.internal.libval.LibraryValidatorTools;
 import org.eclipse.jpt.common.core.libprov.JptLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.common.core.libval.LibraryValidator;
-import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.internal.libprov.JpaUserLibraryProviderInstallOperationConfig;
 
 /**
@@ -34,16 +31,18 @@ public class HibernateUserLibraryValidator implements LibraryValidator {
 		Set<String> classNames = new HashSet<String>();
 		//classNames.add("javax.persistence.Entity"); //$NON-NLS-1$
 		classNames.add("org.hibernate.SessionFactory");//$NON-NLS-1$
+		return LibraryValidatorTools.validateClasspathEntries(jpaConfig.resolve(), classNames);
 
-		Iterable<IPath> libraryPaths = new TransformationIterable<IClasspathEntry, IPath>(
-				jpaConfig.resolve()) {
-			@Override
-			protected IPath transform(IClasspathEntry o) {
-				return o.getPath();
-			}
-		};
+//		Iterable<IPath> libraryPaths = new TransformationIterable<IClasspathEntry, IPath>(
+//				jpaConfig.resolve()) {
+//			@Override
+//			protected IPath transform(IClasspathEntry o) {
+//				return o.getPath();
+//			}
+//		};
+//
+//		return LibraryValidatorTools.validateClasspathEntries(libraryPaths, classNames);
 
-		return LibValUtil.validate(libraryPaths, classNames);
 	}
 
 }

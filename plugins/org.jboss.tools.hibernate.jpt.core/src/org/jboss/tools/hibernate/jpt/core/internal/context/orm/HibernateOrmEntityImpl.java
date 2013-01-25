@@ -14,9 +14,9 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 import java.util.ListIterator;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.iterator.EmptyListIterator;
 import org.eclipse.jpt.jpa.core.context.Entity;
@@ -117,7 +117,7 @@ implements HibernateOrmEntity {
 	}
 
 	protected boolean tableNameIsValid(String tableName) {
-		return this.tableIsUndefined || CollectionTools.contains(this.getAllAssociatedDBTableNames(), tableName);
+		return this.tableIsUndefined || IterableTools.contains(this.getAllAssociatedDBTableNames(), tableName);
 	}
 	
 	public Iterable<String> getAllAssociatedDBTableNames() {

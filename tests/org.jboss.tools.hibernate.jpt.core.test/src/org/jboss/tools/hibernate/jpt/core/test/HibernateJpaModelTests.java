@@ -10,18 +10,19 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.test;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.security.auth.login.FailedLoginException;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProject.Reference;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
@@ -75,7 +76,7 @@ public class HibernateJpaModelTests {
 		assertTrue(p.getPersistenceUnitsSize() > 0);
 		assertTrue(p.getPersistenceUnits().iterator().next() instanceof HibernatePersistenceUnit);
 		HibernatePersistenceUnit hpu = (HibernatePersistenceUnit) p.getPersistenceUnits().iterator().next();
-		List<ClassRef> crs = CollectionTools.list(hpu.getClassRefs());
+		List<ClassRef> crs = IterableTools.list(hpu.getClassRefs());
 		assertTrue(crs.size() == 2);
 		if (crs.get(0).isFor("entity.ManyToMany1")){
 			checkManyToMany1(crs.get(0));
@@ -106,7 +107,7 @@ public class HibernateJpaModelTests {
 		assertTrue(p.getPersistenceUnits().iterator().hasNext());
 		assertTrue(p.getPersistenceUnits().iterator().next() instanceof HibernatePersistenceUnit);
 		HibernatePersistenceUnit hpu = (HibernatePersistenceUnit) p.getPersistenceUnits().iterator().next();
-		List<ClassRef> crs = CollectionTools.list(hpu.getClassRefs());
+		List<ClassRef> crs = IterableTools.list(hpu.getClassRefs());
 		assertTrue(crs.size() == 2);
 		if (crs.get(0).isFor("entity.ManyToMany1")){
 			checkManyToManyNS1(crs.get(0));
@@ -126,7 +127,7 @@ public class HibernateJpaModelTests {
 		HibernateJavaTable table = entity.getTable();
 		assertEquals("ManyToMany1", table.getDBTableName());
 
-		ArrayList<JavaPersistentAttribute> attrs = CollectionTools.list(javaPersistentType.getAttributes());
+		ArrayList<JavaPersistentAttribute> attrs = IterableTools.list(javaPersistentType.getAttributes());
 		assertTrue(attrs.size() == 3);
 
 		//id
@@ -155,7 +156,7 @@ public class HibernateJpaModelTests {
 		HibernateJavaTable table = entity.getTable();
 		assertEquals("ManyToMany22", table.getDBTableName());
 
-		ArrayList<JavaPersistentAttribute> attrs = CollectionTools.list(javaPersistentType.getAttributes());
+		ArrayList<JavaPersistentAttribute> attrs = IterableTools.list(javaPersistentType.getAttributes());
 		assertTrue(attrs.size() == 3);
 		//id
 		assertTrue(attrs.get(0).getMapping() instanceof HibernateJavaIdMapping);
@@ -188,7 +189,7 @@ public class HibernateJpaModelTests {
 		HibernateJavaTable table = entity.getTable();
 		assertEquals("ctn_ManyToMany1", table.getDBTableName());
 
-		ArrayList<JavaPersistentAttribute> attrs = CollectionTools.list(javaPersistentType.getAttributes());
+		ArrayList<JavaPersistentAttribute> attrs = IterableTools.list(javaPersistentType.getAttributes());
 		assertTrue(attrs.size() == 3);
 
 		//id
@@ -217,7 +218,7 @@ public class HibernateJpaModelTests {
 		HibernateJavaTable table = entity.getTable();
 		assertEquals("tn_ManyToMany22", table.getDBTableName());
 
-		ArrayList<JavaPersistentAttribute> attrs = CollectionTools.list(javaPersistentType.getAttributes());
+		ArrayList<JavaPersistentAttribute> attrs = IterableTools.list(javaPersistentType.getAttributes());
 		assertTrue(attrs.size() == 3);
 		//id
 		assertTrue(attrs.get(0).getMapping() instanceof HibernateJavaIdMapping);

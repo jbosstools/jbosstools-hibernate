@@ -155,7 +155,7 @@ public class HibernateClassRef extends GenericClassRef implements PackageInfoRef
 		if (reporter.isCancelled()) {
 			throw new ValidationCancelledException();
 		}
-		if (StringTools.stringIsEmpty(this.className)) {
+		if (StringTools.isBlank(this.className)) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
