@@ -89,7 +89,7 @@ public class TypeDefPropertyComposite<T extends JavaTypeDef> extends Pane<T> {
 
 					@Override
 					protected void setValue_(String value) {
-						if (StringTools.stringIsEmpty(value)){
+						if (StringTools.isBlank(value)){
 							value = null;
 						}
 						this.subject.setTypeClass(value);
@@ -143,7 +143,7 @@ public class TypeDefPropertyComposite<T extends JavaTypeDef> extends Pane<T> {
 
 					@Override
 					protected void setValue_(String value) {
-						if (StringTools.stringIsEmpty(value)){
+						if (StringTools.isBlank(value)){
 							value = null;
 						}
 						this.subject.setDefaultForTypeClass(value);

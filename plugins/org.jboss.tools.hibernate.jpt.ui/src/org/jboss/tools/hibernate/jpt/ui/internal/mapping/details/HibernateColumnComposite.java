@@ -16,7 +16,7 @@ import java.util.Iterator;
 import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -374,11 +374,7 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 
 			@Override
 			protected Iterable<String> getValues_() {
-				return CollectionTools.iterable(this.values());
-			}
-			
-			protected Iterator<String> values() {
-				return this.getSubject().getCandidateTableNames().iterator();
+				return this.getSubject().getCandidateTableNames();
 			}
 			
 			@Override

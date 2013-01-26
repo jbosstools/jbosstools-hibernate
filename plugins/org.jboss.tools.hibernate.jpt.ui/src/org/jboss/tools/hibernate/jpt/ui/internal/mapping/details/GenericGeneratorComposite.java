@@ -11,9 +11,9 @@
 package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.StringConverter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.StringObjectTransformer;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.ui.internal.details.GeneratorComposite;
@@ -54,7 +54,7 @@ public class GenericGeneratorComposite extends GeneratorComposite<JavaDbGenericG
 		this.addEditableCombo(container,
 				new SimpleListValueModel<String>(JavaDbGenericGeneratorImpl.generatorClasses),
 				buildStrategyHolder(),
-				StringConverter.Default.<String>instance(),
+				StringObjectTransformer.<String>instance(),
 				(String)null
 			);
 			

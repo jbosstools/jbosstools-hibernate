@@ -22,8 +22,7 @@ import org.eclipse.jpt.common.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.Transformer;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
@@ -34,6 +33,7 @@ import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
@@ -307,7 +307,7 @@ public class HibernateQueriesComposite extends Pane<HibernateJavaQueryContainer>
 		list.add(buildHibernateNamedNativeQueriesListHolder());
 		list.add(buildNamedQueriesListHolder());
 		list.add(buildNamedNativeQueriesListHolder());
-		return new CompositeListValueModel<ListValueModel<? extends Query>, Query>(list);
+		return CompositeListValueModel.forModels(list);
 	}
 
 	private ILabelProvider buildQueriesListLabelProvider() {
@@ -321,13 +321,13 @@ public class HibernateQueriesComposite extends Pane<HibernateJavaQueryContainer>
 					int index = -1;
 
 					if (query instanceof HibernateNamedQuery) {
-						index = CollectionTools.indexOf(getSubject().getHibernateNamedQueries(), query);
+						index = IterableTools.indexOf(getSubject().getHibernateNamedQueries(), query);
 					} else if (query instanceof HibernateNamedNativeQuery) {
-						index = CollectionTools.indexOf(getSubject().getHibernateNamedNativeQueries(), query);
+						index = IterableTools.indexOf(getSubject().getHibernateNamedNativeQueries(), query);
 					} else if (query instanceof NamedQuery) {
-						index = CollectionTools.indexOf(getSubject().getNamedQueries(), query);
+						index = IterableTools.indexOf(getSubject().getNamedQueries(), query);
 					} else {
-						index = CollectionTools.indexOf(getSubject().getNamedNativeQueries(), query);
+						index = IterableTools.indexOf(getSubject().getNamedNativeQueries(), query);
 					}
 
 					name = NLS.bind(JptUiDetailsMessages.QueriesComposite_displayString, index);

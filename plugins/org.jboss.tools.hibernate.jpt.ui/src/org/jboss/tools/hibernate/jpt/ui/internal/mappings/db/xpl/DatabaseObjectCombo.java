@@ -15,7 +15,7 @@ import org.eclipse.core.commands.util.Tracing;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.common.ui.internal.widgets.ComboPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -146,7 +146,7 @@ public abstract class DatabaseObjectCombo<T extends JpaNode>
 
 	@Override
 	protected final Iterable<String> getValues() {
-		return this.connectionProfileIsActive() ? this.getValues_() : EmptyIterable.<String>instance();
+		return this.connectionProfileIsActive() ? this.getValues_() : IterableTools.<String>emptyIterable();
 	}
 
 	/**

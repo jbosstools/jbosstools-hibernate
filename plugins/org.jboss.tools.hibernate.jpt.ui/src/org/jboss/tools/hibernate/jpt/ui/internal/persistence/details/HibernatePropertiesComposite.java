@@ -30,24 +30,25 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.ui.wizards.TypedElementSelectionValidator;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.StringConverter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.StringObjectTransformer;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.ui.editors.JpaPageComposite;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
@@ -62,14 +63,12 @@ import org.hibernate.eclipse.console.utils.DriverClassHelpers;
 import org.hibernate.eclipse.console.wizards.NewConfigurationWizard;
 import org.hibernate.eclipse.console.wizards.NewConfigurationWizardPage;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
-import org.jboss.tools.hibernate.jpt.ui.wizard.Messages;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties> implements
-		JpaPageComposite {
+public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties> {
 
 	private Text cfgFile;
 
@@ -80,16 +79,15 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 	 * @param container
 	 * @param widgetFactory
 	 */
-	public HibernatePropertiesComposite(PropertyValueModel<BasicHibernateProperties> subjectHolder,
-			Composite container, WidgetFactory widgetFactory) {
-		super(subjectHolder, container, widgetFactory);
+	public HibernatePropertiesComposite(
+			Pane<BasicHibernateProperties> parentPane, Composite parent) {
+		super(parentPane, parent);
 	}
 
 	@Override
 	protected void initializeLayout(Composite container) {
-
-		Composite section = addSection(container, Messages.HibernatePropertiesComposite_basic_properties);
-
+		GridLayout gl = new GridLayout(3, false);
+		container.setLayout(gl);
 		this.helper = new DriverClassHelpers();
 
 		final SimpleListValueModel<String> lvmDialect = new SimpleListValueModel<String>(Arrays.asList(this.helper
@@ -116,18 +114,24 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 		ModifiablePropertyValueModel<String> dialectHolder = buildDialectHolder();
 		final ModifiablePropertyValueModel<String> driverHolder = buildDriverHolder();
 		final ModifiablePropertyValueModel<String> urlHolder = buildUrlHolder();
-
-		this.addButton(section, HibernateConsoleMessages.CodeGenerationSettingsTab_setup, createSetupAction());
-		this.addLabel(section, HibernateConsoleMessages.ConsoleConfigurationPropertySource_config_file + ':');
-		this.addText(section, buildConfigFileHolder());		
+		
+		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+		
+		this.addLabel(container, HibernateConsoleMessages.ConsoleConfigurationPropertySource_config_file + ':');
+		this.cfgFile = this.addText(container, buildConfigFileHolder());
+		Button b = this.addButton(container, HibernateConsoleMessages.CodeGenerationSettingsTab_setup, createSetupAction());
+		cfgFile.setLayoutData(gd);		
 //		Button b = addButton(section, HibernateConsoleMessages.CodeGenerationSettingsTab_setup, createSetupAction());
-//		this.cfgFile = addLabeledText(section,
+//		this.cfgFile = addLabeledText(container,
 //				HibernateConsoleMessages.ConsoleConfigurationPropertySource_config_file + ':', buildConfigFileHolder(),
 //				b, null);
-
-		this.addLabel(section, HibernateConsoleMessages.NewConfigurationWizardPage_database_dialect);
-		this.addEditableCombo(section, lvmDialect, dialectHolder, StringConverter.Default.<String>instance(), (String)null);
-//		addLabeledEditableCombo(
+		gd = new GridData(GridData.FILL_HORIZONTAL);
+		this.addLabel(container, HibernateConsoleMessages.NewConfigurationWizardPage_database_dialect);
+		Control c = this.addEditableCombo(container, lvmDialect, dialectHolder, StringObjectTransformer.<String>instance(), (String)null);
+		gd.horizontalSpan = 2;
+		c.setLayoutData(gd);
+		
+		//		addLabeledEditableCombo(
 //				section,
 //				HibernateConsoleMessages.NewConfigurationWizardPage_database_dialect,
 //				lvmDialect,
@@ -135,8 +139,9 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 //				StringConverter.Default.<String>instance(),
 //				null);
 
-		this.addLabel(section, HibernateConsoleMessages.NewConfigurationWizardPage_driver_class);
-		this.addEditableCombo(section, lvmDriver, driverHolder, StringConverter.Default.<String>instance(), (String)null);
+		this.addLabel(container, HibernateConsoleMessages.NewConfigurationWizardPage_driver_class);
+		c = this.addEditableCombo(container, lvmDriver, driverHolder, StringObjectTransformer.<String>instance(), (String)null);
+		c.setLayoutData(gd);
 //		addLabeledEditableCombo(
 //				section,
 //				HibernateConsoleMessages.NewConfigurationWizardPage_driver_class,
@@ -145,8 +150,9 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 //				StringConverter.Default.<String>instance(),
 //				null);
 
-		this.addLabel(section, HibernateConsoleMessages.NewConfigurationWizardPage_connection_url);
-		this.addEditableCombo(section, lvmUrl, urlHolder, StringConverter.Default.<String>instance(), (String)null);
+		this.addLabel(container, HibernateConsoleMessages.NewConfigurationWizardPage_connection_url);
+		c = this.addEditableCombo(container, lvmUrl, urlHolder, StringObjectTransformer.<String>instance(), (String)null);
+		c.setLayoutData(gd);
 //		addLabeledEditableCombo(
 //				section,
 //				HibernateConsoleMessages.NewConfigurationWizardPage_connection_url,
@@ -184,29 +190,33 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 				}
 			) );
 
-		this.addLabel(section, HibernateConsoleMessages.NewConfigurationWizardPage_default_schema);
-		this.addText(section, buildSchemaDefaultHolder());
+		this.addLabel(container, HibernateConsoleMessages.NewConfigurationWizardPage_default_schema);
+		c = this.addText(container, buildSchemaDefaultHolder());
+		c.setLayoutData(gd);
 //		addLabeledText(
 //				section,
 //				HibernateConsoleMessages.NewConfigurationWizardPage_default_schema,
 //				buildSchemaDefaultHolder());
 
-		this.addLabel(section, HibernateConsoleMessages.NewConfigurationWizardPage_default_catalog);
-		this.addText(section, buildCatalogDefaultHolder());
+		this.addLabel(container, HibernateConsoleMessages.NewConfigurationWizardPage_default_catalog);
+		c = this.addText(container, buildCatalogDefaultHolder());
+		c.setLayoutData(gd);
 //		addLabeledText(
 //				section,
 //				HibernateConsoleMessages.NewConfigurationWizardPage_default_catalog,
 //				buildCatalogDefaultHolder());
 
-		this.addLabel(section, HibernateConsoleMessages.NewConfigurationWizardPage_user_name);
-		this.addText(section, buildUsernameHolder());
+		this.addLabel(container, HibernateConsoleMessages.NewConfigurationWizardPage_user_name);
+		c = this.addText(container, buildUsernameHolder());
+		c.setLayoutData(gd);
 //		addLabeledText(
 //				section,
 //				HibernateConsoleMessages.NewConfigurationWizardPage_user_name,
 //				buildUsernameHolder());
 
-		this.addLabel(section, HibernateConsoleMessages.NewConfigurationWizardPage_password);
-		this.addText(section, buildPasswordHolder());
+		this.addLabel(container, HibernateConsoleMessages.NewConfigurationWizardPage_password);
+		c = this.addText(container, buildPasswordHolder());
+		c.setLayoutData(gd);
 //		addLabeledText(
 //				section,
 //				HibernateConsoleMessages.NewConfigurationWizardPage_password,
@@ -504,24 +514,8 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 		};
 	}
 
-	@Override
-	public String getHelpID() {
-		// TODO help
-		return null;
-	}
-
 	public Image getPageImage() {
 		return null;
 	}
 
-	@Override
-	public String getPageText() {
-		return Messages.HibernatePropertiesComposite_hibernate;
-	}
-
-	@Override
-	public ImageDescriptor getPageImageDescriptor() {
-		// TODO hibernate tab in persistence.xml image
-		return null;
-	}
 }

@@ -10,7 +10,7 @@
 package org.jboss.tools.hibernate.jpt.ui.internal.mappings.db.xpl;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaNode;
 import org.eclipse.jpt.jpa.db.Table;
@@ -40,7 +40,7 @@ public abstract class ColumnCombo<T extends JpaNode>
 	@Override
 	protected Iterable<String> getValues_() {
 		Table dbTable = this.getDbTable();
-		return (dbTable != null) ? dbTable.getSortedColumnIdentifiers() : EmptyIterable.<String>instance();
+		return (dbTable != null) ? dbTable.getSortedColumnIdentifiers() : IterableTools.<String>emptyIterable();
 	}
 	
 	protected Table getDbTable() {

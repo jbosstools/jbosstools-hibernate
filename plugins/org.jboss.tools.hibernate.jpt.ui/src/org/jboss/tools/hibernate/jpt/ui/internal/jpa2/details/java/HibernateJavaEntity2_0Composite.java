@@ -33,7 +33,11 @@ import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Entity2_0OverridesComposite;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.forms.events.ExpansionAdapter;
+import org.eclipse.ui.forms.events.ExpansionEvent;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Hyperlink;
+import org.eclipse.ui.forms.widgets.Section;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateGeneratorContainer;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaQueryContainer;
@@ -66,16 +70,26 @@ public class HibernateJavaEntity2_0Composite extends AbstractEntityComposite<Hib
 	}
 	
 	protected void initializeTypeDefCollapsibleSection(Composite container) {
-		container = addCollapsibleSection(
-				container,
-				"Type Definitions");
-		this.initializeTypeDefsSection(container, buildTypeDefContainerHolder());
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText("Type Definitions");
+		
+		section.addExpansionListener(new ExpansionAdapter() {
+			@Override
+			public void expansionStateChanging(ExpansionEvent e) {
+				if (e.getState() && section.getClient() == null) {
+					section.setClient(initializeTypeDefsSection(section, buildTypeDefContainerHolder()));
+				}
+			}
+		});
+		
+		
 	}
 	
-	protected void initializeTypeDefsSection(
+	protected Control initializeTypeDefsSection(
 			Composite container,
 			PropertyValueModel<HibernateJavaTypeDefContainer> typeDefContainerHolder) {
-		new TypeDefsComposite(this, typeDefContainerHolder, container);
+		return new TypeDefsComposite(this, typeDefContainerHolder, container).getControl();
 	}
 
 	private PropertyValueModel<HibernateJavaTypeDefContainer> buildTypeDefContainerHolder() {

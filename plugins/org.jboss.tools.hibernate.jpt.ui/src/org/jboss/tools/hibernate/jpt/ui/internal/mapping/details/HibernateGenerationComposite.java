@@ -72,13 +72,17 @@ public class HibernateGenerationComposite extends GenerationComposite {
 	}
 	
 	private void initializeGenericGeneratorPane(Composite container) {
-		
 		// Generic Generator sub-section
-		container = this.addCollapsibleSubSection(
-			this.addSubPane(container, 10),
-			HibernateUIMappingMessages.HibernateGeneratorsComposite_SectionLabel,
-			this.genericGeneratorExpansionStateHolder
-		);
+//		container = this.addCollapsibleSubSection(
+//				this.addSubPane(container, 10),
+//				HibernateUIMappingMessages.HibernateGeneratorsComposite_SectionLabel,
+//				this.genericGeneratorExpansionStateHolder
+//			);
+		
+		container = this.addSection(this.addSubPane(container, 10),
+			HibernateUIMappingMessages.HibernateGeneratorsComposite_SectionLabel,"")
+			/*this.genericGeneratorExpansionStateHolder*/
+		;
 
 		// Generic Generator check box
 		Button genericGeneratorCheckBox = addCheckBox(

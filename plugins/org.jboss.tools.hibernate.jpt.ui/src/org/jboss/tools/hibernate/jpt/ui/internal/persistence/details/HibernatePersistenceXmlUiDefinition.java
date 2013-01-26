@@ -10,22 +10,26 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.persistence.details;
 
+import java.util.List;
+
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.jpa.core.resource.persistence.JPA;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.persistence.AbstractPersistenceXmlResourceUiDefinition;
+import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
+import org.eclipse.jpt.jpa.ui.internal.AbstractResourceUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitConnectionEditorPageDefinition;
+import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitGeneralEditorPageDefinition;
+import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitPropertiesEditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceXmlUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceXmlUiFactory;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public class HibernatePersistenceXmlUiDefinition extends
-		AbstractPersistenceXmlResourceUiDefinition {
+public class HibernatePersistenceXmlUiDefinition extends AbstractResourceUiDefinition {
 	// singleton
 	private static final ResourceUiDefinition INSTANCE = new HibernatePersistenceXmlUiDefinition();
 	
@@ -47,8 +51,11 @@ public class HibernatePersistenceXmlUiDefinition extends
 	
 	
 	@Override
-	protected PersistenceXmlUiFactory buildPersistenceXmlUiFactory() {
-		return new HibernatePersistenceXmlUiFactory();
+	protected void addEditorPageDefinitionsTo(List<JpaEditorPageDefinition> definitions) {
+		definitions.add(PersistenceUnitGeneralEditorPageDefinition.instance());
+		definitions.add(PersistenceUnitConnectionEditorPageDefinition.instance());
+		definitions.add(PersistenceUnitPropertiesEditorPageDefinition.instance());
+		definitions.add(HibernatePropertiesPageDefinition.instance());
 	}
 	
 	public boolean providesUi(JptResourceType resourceType) {

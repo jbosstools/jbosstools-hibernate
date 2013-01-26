@@ -200,10 +200,7 @@ public class HibernateBasicMappingComposite extends AbstractBasicMappingComposit
 
 	protected void initializeIndexCollapsibleSection(Composite container) {
 		if (getSubject() instanceof IndexHolder) {
-			container = addCollapsibleSection(
-					container,
-					HibernateUIMappingMessages.Index_section_index
-				);
+			container = addSection(container,HibernateUIMappingMessages.Index_section_index,"");
 			((GridLayout) container.getLayout()).numColumns = 2;
 			this.initializeIndexSection(container);
 		}
