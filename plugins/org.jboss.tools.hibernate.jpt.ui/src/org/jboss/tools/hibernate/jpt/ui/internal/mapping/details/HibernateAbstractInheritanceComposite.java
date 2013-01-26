@@ -16,12 +16,13 @@ import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.StringConverter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractEntityComposite;
@@ -207,10 +208,10 @@ public abstract class HibernateAbstractInheritanceComposite<T extends HibernateE
 		};
 	}
 
-	private StringConverter<String> buildDiscriminatorValueConverter() {
-		return new StringConverter<String>() {
+	private Transformer<String,String> buildDiscriminatorValueConverter() {
+		return new AbstractTransformer<String, String>() {
 			@Override
-			public String convertToString(String value) {
+			protected String transform_(String value) {
 
 				if (getSubject() == null) {
 					return null;

@@ -16,15 +16,16 @@ import java.util.List;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.common.ui.internal.widgets.ValidatingDialog;
-import org.eclipse.jpt.common.utility.internal.StringConverter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticListValueModel;
 import org.eclipse.jpt.common.utility.internal.node.AbstractNode;
-import org.eclipse.jpt.common.utility.internal.node.Node;
-import org.eclipse.jpt.common.utility.internal.node.Problem;
+import org.eclipse.jpt.common.utility.node.Node;
+import org.eclipse.jpt.common.utility.node.Problem;
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
@@ -170,10 +171,10 @@ public class HibernateAddQueryDialog extends ValidatingDialog<AddQueryStateObjec
 			return new StaticListValueModel<String>(queryTypes);
 		}
 
-		private StringConverter<String> buildStringConverter() {
-			return new StringConverter<String>() {
+		private Transformer<String,String> buildStringConverter() {
+			return new AbstractTransformer<String,String>() {
 				@Override
-				public String convertToString(String value) {
+				protected String transform_(String value) {
 					if (value == NAMED_QUERY) {
 						return JptUiDetailsMessages.AddQueryDialog_namedQuery;
 					}
@@ -271,7 +272,7 @@ final class AddQueryStateObject extends AbstractNode
 	}
 
 	private void addNameProblemsTo(List<Problem> currentProblems) {
-		if (StringTools.stringIsEmpty(this.name)) {
+		if (StringTools.isBlank(this.name)) {
 			currentProblems.add(buildProblem(JptUiDetailsMessages.QueryStateObject_nameMustBeSpecified, IMessageProvider.ERROR));
 		}
 		else if (names().contains(this.name)){
@@ -280,7 +281,7 @@ final class AddQueryStateObject extends AbstractNode
 	}
 
 	private void addQueryTypeProblemsTo(List<Problem> currentProblems) {
-		if (StringTools.stringIsEmpty(this.queryType)) {
+		if (StringTools.isBlank(this.queryType)) {
 			currentProblems.add(buildProblem(JptUiDetailsMessages.QueryStateObject_typeMustBeSpecified, IMessageProvider.ERROR));
 		}
 	}

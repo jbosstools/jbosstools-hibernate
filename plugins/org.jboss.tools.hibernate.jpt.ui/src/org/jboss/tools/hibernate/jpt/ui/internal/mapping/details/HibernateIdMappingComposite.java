@@ -83,9 +83,9 @@ implements JpaComposite{
 	
 	protected void initializeIndexCollapsibleSection(Composite container) {
 		if (getSubject() instanceof IndexHolder) {
-			container = addCollapsibleSection(
+			container = addSection(
 					container,
-					HibernateUIMappingMessages.Index_section_index
+					HibernateUIMappingMessages.Index_section_index,""
 				);
 			((GridLayout) container.getLayout()).numColumns = 2;
 			this.initializeIndexSection(container);			
