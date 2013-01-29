@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<feature 
-	id="org.hibernate.eclipse.test.feature" 
-	label="JBoss Tools - Tests - Hibernate" 
-	version="3.6.0.qualifier" 
-	provider-name="JBoss by Red Hat">
+<feature
+      id="org.hibernate.eclipse.test.feature"
+      label="JBoss Tools - Tests - Hibernate"
+      version="3.7.0.qualifier"
+      provider-name="JBoss by Red Hat">
 
    <description url="http://www.jboss.org/tools">
       %description
@@ -17,12 +17,22 @@
       %license
    </license>
 
-	<plugin id="org.hibernate.eclipse.console.test" download-size="0" install-size="0" version="0.0.0" />
-	<plugin id="org.hibernate.eclipse.jdt.ui.test" download-size="0" install-size="0" version="0.0.0" />
-	<plugin id="org.jboss.tools.hibernate.ui.test" download-size="0" install-size="0" version="0.0.0" />
+   <plugin
+         id="org.hibernate.eclipse.console.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
 
-	<!-- TODO: should these be enabled / built? -->
-	<!-- commented until migration to juno is finished --> 
-	<!-- plugin id="org.jboss.tools.hibernate.jpt.core.test" download-size="0" install-size="0" version="0.0.0" / -->
-	
+   <plugin
+         id="org.hibernate.eclipse.jdt.ui.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.jboss.tools.hibernate.ui.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
 </feature>
