@@ -19,6 +19,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.iterator.EmptyListIterator;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
@@ -135,16 +136,19 @@ implements HibernateOrmEntity {
 	 * Convert Table to it's DB name.
 	 */
 	protected Iterable<String> convertToDBNames_(Iterable<ReadOnlyTable> tables) {
-		return new TransformationIterable<ReadOnlyTable, String>(tables) {
-			@Override
-			protected String transform(ReadOnlyTable t) {
-				if (t instanceof HibernateTable) {
-					return ((HibernateTable)t).getDBTableName();
-				} else {
-					return t.getName();//What is this???
+		return new TransformationIterable<ReadOnlyTable, String>(
+				tables,
+				new Transformer<ReadOnlyTable, String> () {
+					@Override
+					public String transform(ReadOnlyTable t) {
+						if (t instanceof HibernateTable) {
+							return ((HibernateTable)t).getDBTableName();
+						} else {
+							return t.getName();//What is this???
+						}
+					}
 				}
-			}
-		};
+			);
 	}
 
 

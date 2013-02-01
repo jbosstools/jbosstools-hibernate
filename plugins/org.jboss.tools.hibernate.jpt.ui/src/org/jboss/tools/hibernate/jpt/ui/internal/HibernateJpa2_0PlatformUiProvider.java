@@ -56,16 +56,16 @@ public class HibernateJpa2_0PlatformUiProvider extends
 
 	// ********** details providers **********
 
-	@Override
-	protected void addDetailsProvidersTo(List<JpaDetailsProvider> providers) {
-		providers.add(JavaPackageInfoDetailsProvider.instance());
-		providers.add(JavaPersistentTypeDetailsProvider.instance());
-		providers.add(JavaPersistentAttributeDetailsProvider.instance());
-		providers.add(EntityMappingsDetailsProvider.instance());
-		providers.add(OrmPersistentTypeDetailsProvider.instance());
-		providers.add(OrmPersistentAttributeDetailsProvider.instance());
-		providers.add(EntityMappings2_0DetailsProvider.instance());
-	}
+//	@Override
+//	protected void addDetailsProvidersTo(List<JpaDetailsProvider> providers) {
+//		providers.add(JavaPackageInfoDetailsProvider.instance());
+//		providers.add(JavaPersistentTypeDetailsProvider.instance());
+//		providers.add(JavaPersistentAttributeDetailsProvider.instance());
+//		providers.add(EntityMappingsDetailsProvider.instance());
+//		providers.add(OrmPersistentTypeDetailsProvider.instance());
+//		providers.add(OrmPersistentAttributeDetailsProvider.instance());
+//		providers.add(EntityMappings2_0DetailsProvider.instance());
+//	}
 
 	// ********** resource ui definitions **********
 

@@ -12,7 +12,7 @@ package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
 
 import java.util.Collection;
 
-import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
+import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
@@ -234,7 +234,7 @@ public abstract class HibernateAbstractInheritanceComposite<T extends HibernateE
 
 					if (defaultName.length() > 0) {
 						value = NLS.bind(
-								JptCommonUiMessages.DefaultWithOneParam,
+								JptCommonUiMessages.DEFAULT_WITH_ONE_PARAM,
 							defaultName
 						);
 					}
@@ -243,7 +243,7 @@ public abstract class HibernateAbstractInheritanceComposite<T extends HibernateE
 					}
 				}
 				if (value.startsWith(NONE_KEY)) {
-					value = JptCommonUiMessages.NoneSelected;
+					value = JptCommonUiMessages.NONE_SELECTED;
 				}
 				return value;
 			}

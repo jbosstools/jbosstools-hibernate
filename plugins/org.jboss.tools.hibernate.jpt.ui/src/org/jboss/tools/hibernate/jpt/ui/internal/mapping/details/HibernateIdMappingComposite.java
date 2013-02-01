@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
@@ -42,9 +43,10 @@ implements JpaComposite{
 			PropertyValueModel<? extends HibernateIdMapping> subjectHolder,
 			PropertyValueModel<Boolean> enabledModel,
 	        Composite parent,
-	        WidgetFactory widgetFactory) {
+	        WidgetFactory widgetFactory,
+	        ResourceManager resourceManager) {
 
-		super(subjectHolder, enabledModel, parent, widgetFactory);
+		super(subjectHolder, enabledModel, parent, widgetFactory, resourceManager);
 	}
 	
 	@Override
@@ -58,7 +60,7 @@ implements JpaComposite{
 	protected Control initializeIdSection(Composite container) {
 		return new HibernateColumnComposite(
 				this, 
-				(PropertyValueModel<? extends HibernateColumn>) buildColumnHolder(), 
+				(PropertyValueModel<? extends HibernateColumn>) buildColumnModel(), 
 				container).getControl();
 	}
 	

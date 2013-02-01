@@ -3,6 +3,7 @@
  */
 package org.jboss.tools.hibernate.jpt.ui.internal.persistence.details;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
@@ -25,8 +26,8 @@ public class HibernatePersistenceUnitGeneralEditorPage extends
 
 	public HibernatePersistenceUnitGeneralEditorPage(
 			PropertyValueModel<PersistenceUnit> subjectHolder,
-			Composite parent, WidgetFactory widgetFactory) {
-		super(subjectHolder, parent, widgetFactory);
+			Composite parent, WidgetFactory widgetFactory, ResourceManager resourcemanager) {
+		super(subjectHolder, parent, widgetFactory, resourcemanager);
 	}
 	
 	protected Control buildClassesComposite(Composite parent) {

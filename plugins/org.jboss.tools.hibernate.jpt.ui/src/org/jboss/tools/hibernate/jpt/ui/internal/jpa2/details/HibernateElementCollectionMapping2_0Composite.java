@@ -13,6 +13,7 @@ package org.jboss.tools.hibernate.jpt.ui.internal.jpa2.details;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
@@ -45,8 +46,9 @@ public class HibernateElementCollectionMapping2_0Composite extends
 			PropertyValueModel<? extends ElementCollectionMapping2_0> subjectHolder,
 					PropertyValueModel<Boolean> enabledModel,
                     Composite parent,
-                    WidgetFactory widgetFactory) {
-		super(subjectHolder, enabledModel, parent, widgetFactory);
+                    WidgetFactory widgetFactory, 
+                    ResourceManager resourceManager) {
+		super(subjectHolder, enabledModel, parent, widgetFactory, resourceManager);
 	}
 
 	@Override
@@ -66,7 +68,7 @@ public class HibernateElementCollectionMapping2_0Composite extends
 			HibernateUIMappingMessages.TypeComposite_type,
 			buildTypeBooleanHolder(), 
 			null);
-		registerSubPane(new TypeComposite(buildTypeConverterHolder(converterHolder), converterSection, getWidgetFactory()));
+		new TypeComposite(this, buildTypeConverterHolder(converterHolder), converterSection);
 
 		return result;
 	}

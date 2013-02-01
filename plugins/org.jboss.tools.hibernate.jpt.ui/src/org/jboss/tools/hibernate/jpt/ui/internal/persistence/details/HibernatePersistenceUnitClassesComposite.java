@@ -29,7 +29,7 @@ import org.eclipse.jface.viewers.IFilter;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
+import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
@@ -43,9 +43,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
 import org.eclipse.jpt.jpa.ui.internal.persistence.JptUiPersistenceMessages;
-import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitClassesComposite;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -54,7 +52,6 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionDialog;
 import org.eclipse.ui.progress.IProgressService;
-import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.utils.DialogSelectionHelper;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 import org.jboss.tools.hibernate.jpt.core.internal.context.persistence.PackageInfoRef;
@@ -228,17 +225,20 @@ public class HibernatePersistenceUnitClassesComposite extends Pane<PersistenceUn
 		return new LabelProvider() {
 			@Override
 			public Image getImage(Object element) {
-				ClassRef classRef = (ClassRef) element;
-				JavaPersistentType persistentType = classRef.getJavaPersistentType();
 				Image image = null;
-
-				if (persistentType != null) {
-					image = this.getImage(persistentType);
-//					image = JpaMappingImageHelper.imageForTypeMapping(persistentType.getMappingKey());
-				} else if (classRef instanceof PackageInfoRef){
-					PackageInfoRef packageInfoRef = (PackageInfoRef)classRef;
-					if (packageInfoRef.getJavaPackageInfo() != null){
-						image = JavaPlugin.getImageDescriptorRegistry().get(JavaPluginImages.DESC_OBJS_PACKAGE);
+				if(element instanceof ClassRef) {
+					ClassRef classRef = (ClassRef) element;
+					JavaPersistentType persistentType = classRef.getJavaPersistentType();
+				
+		
+					if (persistentType != null) {
+						image = this.getImage(persistentType);
+		//					image = JpaMappingImageHelper.imageForTypeMapping(persistentType.getMappingKey());
+					} else if (classRef instanceof PackageInfoRef){
+						PackageInfoRef packageInfoRef = (PackageInfoRef)classRef;
+						if (packageInfoRef.getJavaPackageInfo() != null){
+							image = JavaPlugin.getImageDescriptorRegistry().get(JavaPluginImages.DESC_OBJS_PACKAGE);
+						}
 					}
 				}
 
@@ -318,8 +318,8 @@ public class HibernatePersistenceUnitClassesComposite extends Pane<PersistenceUn
 			return null;
 		}
 
-		typeSelectionDialog.setTitle(JptCommonUiMessages.ClassChooserPane_dialogTitle);
-		typeSelectionDialog.setMessage(JptCommonUiMessages.ClassChooserPane_dialogMessage);
+		typeSelectionDialog.setTitle(JptCommonUiMessages.CLASS_CHOOSER_PANE__DIALOG_TITLE);
+		typeSelectionDialog.setMessage(JptCommonUiMessages.CLASS_CHOOSER_PANE__DIALOG_MESSAGE);
 
 		if (typeSelectionDialog.open() == Window.OK) {
 			return (IType) typeSelectionDialog.getResult()[0];
@@ -348,7 +348,7 @@ public class HibernatePersistenceUnitClassesComposite extends Pane<PersistenceUn
 				new IJavaProject[]{getJavaProject()},
 				createPackageFilter(),
 				Messages.HibernatePersistenceUnitClassesComposite_PackageSelectionDialog_title,
-				JptCommonUiMessages.ClassChooserPane_dialogMessage);
+				JptCommonUiMessages.CLASS_CHOOSER_PANE__DIALOG_MESSAGE);
 	}
 	
 	protected IFilter createPackageFilter(){

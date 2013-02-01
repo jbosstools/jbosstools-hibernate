@@ -73,7 +73,7 @@ implements HibernateOrmIdMapping {
 	
 	protected void validateColumn(List<IMessage> messages) {
 		OrmPersistentAttribute pa = this.getPersistentAttribute();
-		String tableName = this.column.getTable();
+		String tableName = this.column.getTableName();
 		if (this.getTypeMapping().tableNameIsInvalid(tableName)) {
 			if (pa.isVirtual()) {
 				messages.add(
@@ -82,7 +82,7 @@ implements HibernateOrmIdMapping {
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_TABLE_NOT_VALID,
 						new String[] {pa.getName(), tableName, this.getColumn().getDBColumnName()},
 						this.column, 
-						this.column.getTableTextRange()
+						this.column.getTableNameTextRange()
 					)
 				);
 			} else {
@@ -92,7 +92,7 @@ implements HibernateOrmIdMapping {
 						JpaValidationMessages.COLUMN_UNRESOLVED_TABLE,
 						new String[] {tableName, this.getColumn().getDBColumnName()}, 
 						this.column, 
-						this.column.getTableTextRange()
+						this.column.getTableNameTextRange()
 					)
 				);
 			}

@@ -35,9 +35,9 @@ public class HibernateJpaPlatformFactory implements JpaPlatformFactory {
 		super();
 	}
 
-	public JpaPlatform buildJpaPlatform(String id) {
+	public JpaPlatform buildJpaPlatform(JpaPlatform.Config config) {
 		return new HibernateJpaPlatform(
-				id,
+				config,
 				this.buildJpaVersion(),
 				buildJpaFactory(),
 				buildJpaAnnotationProvider(),

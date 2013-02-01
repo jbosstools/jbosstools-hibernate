@@ -12,29 +12,26 @@ package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.java;
 
 import java.util.List;
 
-import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
-import org.eclipse.jpt.jpa.ui.details.java.DefaultJavaAttributeMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.details.java.JavaAttributeMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.details.java.JavaTypeMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.details.java.JavaUiFactory;
+import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.details.JpaUiFactory;
+import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.BasicMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.EmbeddableUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.EmbeddedIdMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.EmbeddedMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.EntityUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.IdMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.ManyToManyMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.ManyToOneMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.MappedSuperclassUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.OneToManyMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.OneToOneMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.TransientMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.VersionMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.java.AbstractJavaResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.java.DefaultBasicMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.java.DefaultEmbeddedMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.java.JavaBasicMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.java.JavaEmbeddableUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.java.JavaEmbeddedIdMappingUDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.java.JavaEmbeddedMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.java.JavaEntityUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.java.JavaIdMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.java.JavaManyToManyMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.java.JavaManyToOneMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.java.JavaMappedSuperclassUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.java.JavaOneToManyMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.java.JavaOneToOneMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.java.JavaTransientMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.java.JavaVersionMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.java.NullJavaAttributeMappingUiDefinition;
 
 /**
@@ -62,36 +59,36 @@ public class HibernateJavaResourceUiDefinition extends AbstractJavaResourceUiDef
 	}
 	
 	@Override
-	protected JavaUiFactory buildJavaUiFactory() {
+	protected JpaUiFactory buildUiFactory() {
 		return new HibernateJavaUiFactory();
 	}
 	
 	@Override
-	protected void addSpecifiedAttributeMappingUiDefinitionsTo(List<JavaAttributeMappingUiDefinition<? extends AttributeMapping>> definitions) {
-		definitions.add(JavaIdMappingUiDefinition.instance());
-		definitions.add(JavaEmbeddedIdMappingUDefinition.instance());
-		definitions.add(JavaBasicMappingUiDefinition.instance());
-		definitions.add(JavaVersionMappingUiDefinition.instance());
-		definitions.add(JavaManyToOneMappingUiDefinition.instance());
-		definitions.add(JavaOneToManyMappingUiDefinition.instance());
-		definitions.add(JavaOneToOneMappingUiDefinition.instance());
-		definitions.add(JavaManyToManyMappingUiDefinition.instance());
-		definitions.add(JavaEmbeddedMappingUiDefinition.instance());
-		definitions.add(JavaTransientMappingUiDefinition.instance());
+	protected void addSpecifiedAttributeMappingUiDefinitionsTo(List<MappingUiDefinition> definitions) {
+		definitions.add(IdMappingUiDefinition.instance());
+		definitions.add(EmbeddedIdMappingUiDefinition.instance());
+		definitions.add(BasicMappingUiDefinition.instance());
+		definitions.add(VersionMappingUiDefinition.instance());
+		definitions.add(ManyToOneMappingUiDefinition.instance());
+		definitions.add(OneToManyMappingUiDefinition.instance());
+		definitions.add(OneToOneMappingUiDefinition.instance());
+		definitions.add(ManyToManyMappingUiDefinition.instance());
+		definitions.add(EmbeddedMappingUiDefinition.instance());
+		definitions.add(TransientMappingUiDefinition.instance());
 	}
 	
 	@Override
-	protected void addDefaultAttributeMappingUiDefinitionsTo(List<DefaultJavaAttributeMappingUiDefinition<?>> definitions) {
+	protected void addDefaultAttributeMappingUiDefinitionsTo(List<DefaultMappingUiDefinition> definitions) {
 		definitions.add(DefaultBasicMappingUiDefinition.instance());
 		definitions.add(DefaultEmbeddedMappingUiDefinition.instance());
 		definitions.add(NullJavaAttributeMappingUiDefinition.instance());
 	}
 	
 	@Override
-	protected void addSpecifiedTypeMappingUiDefinitionsTo(List<JavaTypeMappingUiDefinition<? extends TypeMapping>> definitions) {
-		definitions.add(JavaEntityUiDefinition.instance());
-		definitions.add(JavaMappedSuperclassUiDefinition.instance());
-		definitions.add(JavaEmbeddableUiDefinition.instance());
+	protected void addTypeMappingUiDefinitionsTo(List<MappingUiDefinition> definitions) {
+		definitions.add(EntityUiDefinition.instance());
+		definitions.add(MappedSuperclassUiDefinition.instance());
+		definitions.add(EmbeddableUiDefinition.instance());
 	}
 
 }

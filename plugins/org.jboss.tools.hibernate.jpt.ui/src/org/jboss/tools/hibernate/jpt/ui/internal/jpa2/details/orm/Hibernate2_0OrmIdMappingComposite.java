@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.jpa2.details.orm;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -44,9 +45,10 @@ implements JpaComposite{
 	public Hibernate2_0OrmIdMappingComposite(PropertyValueModel<? extends HibernateOrmIdMapping> subjectHolder,
 							  PropertyValueModel<Boolean> enabledModel,
 	                          Composite parent,
-	                          WidgetFactory widgetFactory) {
+	                          WidgetFactory widgetFactory,
+	                          ResourceManager resourceManager) {
 
-		super(subjectHolder, enabledModel, parent, widgetFactory);
+		super(subjectHolder, enabledModel, parent, widgetFactory, resourceManager);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -66,7 +68,7 @@ implements JpaComposite{
 		mappedByRelationshipPane.getControl().setLayoutData(gridData);
 
 		// Column widgets
-		HibernateColumnComposite columnComposite = new HibernateColumnComposite(this, (PropertyValueModel<? extends HibernateColumn>)buildColumnHolder(), container);
+		HibernateColumnComposite columnComposite = new HibernateColumnComposite(this, (PropertyValueModel<? extends HibernateColumn>)buildColumnModel(), container);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		columnComposite.getControl().setLayoutData(gridData);

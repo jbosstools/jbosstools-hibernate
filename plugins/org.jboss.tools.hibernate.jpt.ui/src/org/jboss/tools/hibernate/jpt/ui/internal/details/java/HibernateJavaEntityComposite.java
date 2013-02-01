@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.details.java;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -45,8 +46,8 @@ public class HibernateJavaEntityComposite extends AbstractEntityComposite<Hibern
 	 * @param widgetFactory
 	 */
 	public HibernateJavaEntityComposite(PropertyValueModel<? extends HibernateJavaEntity> subjectHolder,
-			Composite parent, WidgetFactory widgetFactory) {
-		super(subjectHolder, parent, widgetFactory);
+			Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager) {
+		super(subjectHolder, parent, widgetFactory, resourceManager);
 	}
 	
 	@Override
@@ -89,7 +90,7 @@ public class HibernateJavaEntityComposite extends AbstractEntityComposite<Hibern
 	protected Control initializeQueriesSection(Composite container) {
 		return new HibernateQueriesComposite(
 				this, 
-				(PropertyValueModel<? extends HibernateJavaQueryContainer>) buildGeneratorContainerHolder(), 
+				(PropertyValueModel<? extends HibernateJavaQueryContainer>) buildGeneratorContainerModel(), 
 				container).getControl();
 	}
 	
@@ -106,7 +107,7 @@ public class HibernateJavaEntityComposite extends AbstractEntityComposite<Hibern
 	@SuppressWarnings("unchecked")
 	@Override
 	protected Control initializeGeneratorsSection(Composite container) {
-		return new HibernateGenerationComposite(this, (PropertyValueModel<? extends HibernateGeneratorContainer>) buildGeneratorContainerHolder(), container).getControl();
+		return new HibernateGenerationComposite(this, (PropertyValueModel<? extends HibernateGeneratorContainer>) buildGeneratorContainerModel(), container).getControl();
 	}
 	
 	
@@ -129,7 +130,7 @@ public class HibernateJavaEntityComposite extends AbstractEntityComposite<Hibern
 
 		//Id class widgets
 		Hyperlink hyperlink = this.addHyperlink(container, JptUiDetailsMessages.IdClassComposite_label);
-		new IdClassChooser(this, this.buildIdClassReferenceHolder(), container, hyperlink);
+		new IdClassChooser(this, this.buildIdClassReferenceModel(), container, hyperlink);
 
 		return container;
 		

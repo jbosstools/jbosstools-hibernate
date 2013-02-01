@@ -86,16 +86,16 @@ implements HibernateOrmColumn {
 
 	@Override
 	public String getDefaultDBTableName() {
-		return getDefaultTable();
+		return getDefaultTableName();
 	}
 
 	@Override
 	public String getSpecifiedDBTableName() {
-		if (getSpecifiedTable() == null) return null;
+		if (getSpecifiedTableName() == null) return null;
 		NamingStrategy ns = getJpaProject().getNamingStrategy();
 		if (getJpaProject().isNamingStrategyEnabled() && ns != null){
 			try {
-				return ns.tableName(getSpecifiedTable());
+				return ns.tableName(getSpecifiedTableName());
 			} catch (Exception e) {
 				IMessage m = HibernateJpaValidationMessage.buildMessage(
 						IMessage.HIGH_SEVERITY,
@@ -103,7 +103,7 @@ implements HibernateOrmColumn {
 				HibernateJptPlugin.logException(m.getText(), e);
 			}
 		}
-		return this.getSpecifiedTable();
+		return this.getSpecifiedTableName();
 	}
 
 }

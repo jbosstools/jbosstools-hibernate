@@ -97,22 +97,22 @@ public class HibernateJavaColumnImpl extends GenericJavaColumn implements Hibern
 	}
 
 	public String getDefaultDBTableName() {
-		return getDefaultTable();
+		return getDefaultTableName();
 	}
 
 	public String getSpecifiedDBTableName() {
-		if (getSpecifiedTable() == null) return null;
+		if (getSpecifiedTableName() == null) return null;
 		NamingStrategy ns = getJpaProject().getNamingStrategy();
 		if (getJpaProject().isNamingStrategyEnabled() && ns != null){
 			try {
-				return ns.tableName(getSpecifiedTable());
+				return ns.tableName(getSpecifiedTableName());
 			} catch (Exception e) {
 				IMessage m = HibernateJpaValidationMessage.buildMessage(IMessage.HIGH_SEVERITY,
 						Messages.NAMING_STRATEGY_EXCEPTION, this);
 				HibernateJptPlugin.logException(m.getText(), e);
 			}
 		}
-		return this.getSpecifiedTable();
+		return this.getSpecifiedTableName();
 	}
 
 	//********** Generated ************

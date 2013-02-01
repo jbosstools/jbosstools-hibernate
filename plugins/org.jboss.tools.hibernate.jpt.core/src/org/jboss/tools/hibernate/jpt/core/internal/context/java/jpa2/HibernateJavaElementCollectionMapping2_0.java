@@ -26,8 +26,7 @@ public class HibernateJavaElementCollectionMapping2_0 extends
 		AbstractJavaElementCollectionMapping2_0 {
 	
 	protected static final Iterable<JavaConverter.Adapter> HIBERNATE_CONVERTER_ADAPTERS = 
-			new CompositeIterable<JavaConverter.Adapter>(JavaTypeConverter.Adapter.instance(),
-					new ArrayIterable<JavaConverter.Adapter>(CONVERTER_ADAPTER_ARRAY));
+			new CompositeIterable<JavaConverter.Adapter>(new ArrayIterable<JavaConverter.Adapter>(CONVERTER_ADAPTER_ARRAY));
 	
 	public HibernateJavaElementCollectionMapping2_0(
 			JavaPersistentAttribute parent) {

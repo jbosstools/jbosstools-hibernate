@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.jpa2.details.java;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -59,8 +60,8 @@ public class HibernateJavaEntity2_0Composite extends AbstractEntityComposite<Hib
 	 * @param widgetFactory
 	 */
 	public HibernateJavaEntity2_0Composite(PropertyValueModel<? extends HibernateJavaEntity> subjectHolder,
-			Composite parent, WidgetFactory widgetFactory) {
-		super(subjectHolder, parent, widgetFactory);
+			Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager) {
+		super(subjectHolder, parent, widgetFactory,resourceManager);
 	}
 	
 	@Override
@@ -104,7 +105,7 @@ public class HibernateJavaEntity2_0Composite extends AbstractEntityComposite<Hib
 	@SuppressWarnings("unchecked")
 	@Override
 	protected Control initializeQueriesSection(Composite container) {
-		return new HibernateQueries2_0Composite(this, (PropertyValueModel<? extends HibernateJavaQueryContainer>) buildQueryContainerHolder(), container).getControl();
+		return new HibernateQueries2_0Composite(this, (PropertyValueModel<? extends HibernateJavaQueryContainer>) buildQueryContainerModel(), container).getControl();
 	}
 	
 	@SuppressWarnings("unused")
@@ -120,7 +121,10 @@ public class HibernateJavaEntity2_0Composite extends AbstractEntityComposite<Hib
 	@SuppressWarnings("unchecked")
 	@Override
 	protected Control initializeGeneratorsSection(Composite container) {
-		return new HibernateGenerationComposite(this, (PropertyValueModel<? extends HibernateGeneratorContainer>) buildGeneratorContainerHolder(), addSubPane(container, 10)).getControl();
+		Composite subPane = addSubPane(container, 10);
+		new HibernateGenerationComposite(this, buildGeneratorContainerModel(), subPane).getControl();
+		return subPane;
+		
 	}
 	
 	
@@ -135,8 +139,8 @@ public class HibernateJavaEntity2_0Composite extends AbstractEntityComposite<Hib
 		container = this.addSubPane(container, 2, 0, 0, 0, 0);
 
 		// Java class widgets
-		Hyperlink javaClassHyperlink = this.addHyperlink(container, JptUiDetailsOrmMessages.OrmJavaClassChooser_javaClass);
-		new OrmJavaClassChooser(this, (PropertyValueModel<? extends OrmTypeMapping>) getSubjectHolder(), container, javaClassHyperlink);
+//		Hyperlink javaClassHyperlink = this.addHyperlink(container, JptUiDetailsOrmMessages.OrmJavaClassChooser_javaClass);
+//		new OrmJavaClassChooser(this, (PropertyValueModel<? extends OrmTypeMapping>) getSubjectHolder(), container, javaClassHyperlink);
 
 		// Table widgets
 		HibernateTableComposite tableComposite = new HibernateTableComposite(this, container);
@@ -154,7 +158,7 @@ public class HibernateJavaEntity2_0Composite extends AbstractEntityComposite<Hib
 
 		// Id class widgets
 		Hyperlink hyperlink = this.addHyperlink(container,JptUiDetailsMessages.IdClassComposite_label);
-		new IdClassChooser(this, this.buildIdClassReferenceHolder(), container, hyperlink);
+		new IdClassChooser(this, this.buildIdClassReferenceModel(), container, hyperlink);
 
 		// Cacheable widgets
 		Cacheable2_0TriStateCheckBox cacheableCheckBox = new Cacheable2_0TriStateCheckBox(this, buildCacheableHolder(), container);
@@ -162,11 +166,12 @@ public class HibernateJavaEntity2_0Composite extends AbstractEntityComposite<Hib
 		gridData.horizontalSpan = 2;
 		cacheableCheckBox.getControl().setLayoutData(gridData);
 
+		// FIXME: classcast exception if uncommented
 		// Metadata complete widgets
-		MetadataCompleteTriStateCheckBox metadataCompleteCheckBox = new MetadataCompleteTriStateCheckBox(this, (PropertyValueModel<? extends OrmTypeMapping>) getSubjectHolder(), container);
-		gridData = new GridData(GridData.FILL_HORIZONTAL);
-		gridData.horizontalSpan = 2;
-		metadataCompleteCheckBox.getControl().setLayoutData(gridData);
+//		MetadataCompleteTriStateCheckBox metadataCompleteCheckBox = new MetadataCompleteTriStateCheckBox(this, (PropertyValueModel<? extends OrmTypeMapping>) getSubjectHolder(), container);
+//		gridData = new GridData(GridData.FILL_HORIZONTAL);
+//		gridData.horizontalSpan = 2;
+//		metadataCompleteCheckBox.getControl().setLayoutData(gridData);
 
 		return container;
 		

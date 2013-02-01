@@ -12,6 +12,7 @@ package org.jboss.tools.hibernate.jpt.ui.internal.widgets;
 
 import java.util.Collection;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.common.ui.internal.widgets.ValidatingDialog;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
@@ -35,13 +36,14 @@ public class EnterNameDialog extends ValidatingDialog<NameStateObject> {
 	private String name;
 	private Collection<String> names;
 	
-	public EnterNameDialog(Shell parentShell, String descriptionTitle){
-		this(parentShell, descriptionTitle, null, null);
+	public EnterNameDialog(Shell parentShell, ResourceManager resourceManager, String descriptionTitle){
+		this(parentShell, resourceManager, descriptionTitle, null, null);
 	}
 	
-	public EnterNameDialog(Shell parentShell, String descriptionTitle, String name,
+	public EnterNameDialog(Shell parentShell, ResourceManager resourceManager, String descriptionTitle, String name,
             Collection<String> names){
 		this(parentShell,
+			resourceManager,
 			HibernateUIMappingMessages.EnterNameDialog_title,
 			descriptionTitle,
 			null,
@@ -56,6 +58,7 @@ public class EnterNameDialog extends ValidatingDialog<NameStateObject> {
 	 *
 	 */
 	public EnterNameDialog(Shell parentShell,
+				ResourceManager resourceManager,
 	              String dialogTitle,
 	              String descriptionTitle,
 	              Image descriptionImage,
@@ -64,7 +67,7 @@ public class EnterNameDialog extends ValidatingDialog<NameStateObject> {
 	              String name,
 	              Collection<String> names)
 	{
-		super(parentShell, dialogTitle);
+		super(parentShell, resourceManager, dialogTitle);
 
 		this.name             = name;
 		this.labelText        = labelText;
@@ -123,7 +126,7 @@ public class EnterNameDialog extends ValidatingDialog<NameStateObject> {
 		private Text text;
 
 		NewNameDialogPane(Composite parent) {
-			super(EnterNameDialog.this.getSubjectHolder(), parent);
+			super(EnterNameDialog.this.getSubjectHolder(), parent, EnterNameDialog.this.resourceManager);
 		}
 
 		private ModifiablePropertyValueModel<String> buildNameHolder() {
@@ -144,13 +147,7 @@ public class EnterNameDialog extends ValidatingDialog<NameStateObject> {
 		protected void initializeLayout(Composite container) {
 			
 			this.addLabel(container, labelText);
-			this.addText(container, buildNameHolder(), null);
-
-//			text = addLabeledText(
-//				container,
-//				labelText,
-//				buildNameHolder()
-//			);
+			text = this.addText(container, buildNameHolder(), null);
 		}
 
 		void selectAll() {

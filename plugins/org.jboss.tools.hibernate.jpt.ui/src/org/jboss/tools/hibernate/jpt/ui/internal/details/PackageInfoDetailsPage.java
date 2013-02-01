@@ -10,12 +10,13 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.details;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.util.PaneVisibilityEnabler;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.ui.internal.details.AbstractJpaDetailsPage;
+import org.eclipse.jpt.jpa.ui.internal.details.AbstractJpaDetailsPageManager;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -34,15 +35,15 @@ import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.TypeDefsComposi
  * @author Dmitry Geraskov
  *
  */
-public class PackageInfoDetailsPage extends AbstractJpaDetailsPage<HibernatePackageInfo> {
+public class PackageInfoDetailsPage extends AbstractJpaDetailsPageManager<HibernatePackageInfo> {
 	
 	/**
 	 * @param parent
 	 * @param widgetFactory
 	 */
 	public PackageInfoDetailsPage(Composite parent,
-			WidgetFactory widgetFactory) {
-		super(parent, widgetFactory);
+			WidgetFactory widgetFactory, ResourceManager resourceManager ) {
+		super(parent, widgetFactory, resourceManager);
 	}
 
 	@Override

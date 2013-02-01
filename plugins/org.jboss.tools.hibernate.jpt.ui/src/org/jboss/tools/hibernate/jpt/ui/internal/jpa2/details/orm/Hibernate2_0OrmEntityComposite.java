@@ -11,6 +11,7 @@
 
 package org.jboss.tools.hibernate.jpt.ui.internal.jpa2.details.orm;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -51,8 +52,8 @@ public class Hibernate2_0OrmEntityComposite extends AbstractEntityComposite<Hibe
 	 * @param widgetFactory
 	 */
 	public Hibernate2_0OrmEntityComposite(PropertyValueModel<? extends HibernateOrmEntity> subjectHolder,
-			Composite parent, WidgetFactory widgetFactory) {
-		super(subjectHolder, parent, widgetFactory);
+			Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager) {
+		super(subjectHolder, parent, widgetFactory, resourceManager);
 	}
 	
 	@Override
@@ -88,7 +89,7 @@ public class Hibernate2_0OrmEntityComposite extends AbstractEntityComposite<Hibe
 
 		// Id class widgets
 		Hyperlink hyperlink = this.addHyperlink(container,JptUiDetailsMessages.IdClassComposite_label);
-		new IdClassChooser(this, buildIdClassReferenceHolder(), container, hyperlink);
+		new IdClassChooser(this, buildIdClassReferenceModel(), container, hyperlink);
 
 		// Metadata complete widgets
 		MetadataCompleteTriStateCheckBox metadataCompleteCheckBox = new MetadataCompleteTriStateCheckBox(this, getSubjectHolder(), container);
@@ -115,12 +116,12 @@ public class Hibernate2_0OrmEntityComposite extends AbstractEntityComposite<Hibe
 
 	@Override
 	protected Control initializeGeneratorsSection(Composite container) {
-		return new Generation2_0Composite(this, buildGeneratorContainerHolder(), container).getControl();
+		return new Generation2_0Composite(this, buildGeneratorContainerModel(), container).getControl();
 	}
 
 	@Override
 	protected Control initializeQueriesSection(Composite container) {
-		return new Queries2_0Composite(this, buildQueryContainerHolder(), container).getControl();
+		return new Queries2_0Composite(this, buildQueryContainerModel(), container).getControl();
 	}
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolder() {

@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.jpt.ui.internal.persistence.details;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -20,8 +21,8 @@ public class HibernatePropertiesPage extends Pane<BasicHibernateProperties> {
 	private WidgetFactory widgetFactory;
 	public HibernatePropertiesPage(
 			PropertyValueModel<BasicHibernateProperties> buildPersistenceUnitModel,
-			Composite parent, WidgetFactory widgetFactory) {
-		super(buildPersistenceUnitModel,parent,widgetFactory);
+			Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager) {
+		super(buildPersistenceUnitModel,parent,widgetFactory, resourceManager);
 		this.parent = parent;
 		this.widgetFactory = widgetFactory;
 	}

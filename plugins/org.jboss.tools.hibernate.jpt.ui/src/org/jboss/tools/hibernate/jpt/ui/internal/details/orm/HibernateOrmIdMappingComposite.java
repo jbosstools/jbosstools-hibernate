@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.details.orm;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
@@ -39,9 +40,10 @@ implements JpaComposite{
 	public HibernateOrmIdMappingComposite(PropertyValueModel<? extends HibernateOrmIdMapping> subjectHolder,
 								PropertyValueModel<Boolean> enabledModel,
 	                          Composite parent,
-	                          WidgetFactory widgetFactory) {
+	                          WidgetFactory widgetFactory,
+	                          ResourceManager resourceManager) {
 
-		super(subjectHolder, enabledModel, parent, widgetFactory);
+		super(subjectHolder, enabledModel, parent, widgetFactory, resourceManager);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -52,7 +54,7 @@ implements JpaComposite{
 
 		container = this.addSubPane(container, 2, 0, 0, 0, 0);
 
-		HibernateColumnComposite columnComposite = new HibernateColumnComposite(this, (PropertyValueModel<? extends HibernateColumn>) buildColumnHolder(), container);
+		HibernateColumnComposite columnComposite = new HibernateColumnComposite(this, (PropertyValueModel<? extends HibernateColumn>) buildColumnModel(), container);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		columnComposite.getControl().setLayoutData(gridData);

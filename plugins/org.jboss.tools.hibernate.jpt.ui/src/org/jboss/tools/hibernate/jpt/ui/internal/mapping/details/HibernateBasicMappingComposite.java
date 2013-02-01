@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
@@ -93,9 +94,10 @@ public class HibernateBasicMappingComposite extends AbstractBasicMappingComposit
 			PropertyValueModel<? extends BasicMapping> subjectHolder,
 			PropertyValueModel<Boolean> enabledModel,
 	        Composite parent,
-	        WidgetFactory widgetFactory) {
+	        WidgetFactory widgetFactory,
+	        ResourceManager resourceManager) {
 
-		super(subjectHolder, enabledModel, parent, widgetFactory);
+		super(subjectHolder, enabledModel, parent, widgetFactory, resourceManager);
 	}
 
 	@Override
@@ -121,7 +123,7 @@ public class HibernateBasicMappingComposite extends AbstractBasicMappingComposit
 		HibernateColumnComposite columnComposite = 
 				new HibernateColumnComposite(
 						this, 
-						(PropertyValueModel<? extends HibernateColumn>) buildColumnHolder(), 
+						(PropertyValueModel<? extends HibernateColumn>) buildColumnModel(), 
 						container);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
@@ -165,8 +167,7 @@ public class HibernateBasicMappingComposite extends AbstractBasicMappingComposit
 				buildConverterBooleanHolder(TypeConverter.class),
 				null);
 		
-		registerSubPane(new TypeComposite(buildHibernateConverterHolder(converterHolder),
-				container, getWidgetFactory()));
+		new TypeComposite(this,buildHibernateConverterHolder(converterHolder), container);
 		
 		return result;
 	}
