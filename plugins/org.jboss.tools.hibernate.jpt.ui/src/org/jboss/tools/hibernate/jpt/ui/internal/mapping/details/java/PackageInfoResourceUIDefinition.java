@@ -12,6 +12,7 @@ package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.java;
 
 import java.util.Iterator;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
@@ -28,6 +29,7 @@ import org.eclipse.jpt.jpa.ui.MappingResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
+import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
 import org.eclipse.swt.widgets.Composite;
@@ -78,7 +80,7 @@ public class PackageInfoResourceUIDefinition implements
 	public JpaComposite buildAttributeMappingComposite(String key,
 			PropertyValueModel<AttributeMapping> mappingHolder,
 			PropertyValueModel<Boolean> enabledModel,
-			Composite parent, WidgetFactory widgetFactory) {
+			Composite parent, WidgetFactory widgetFactory, ResourceManager resourcemgr) {
 		return null;
 	}
 
@@ -86,7 +88,7 @@ public class PackageInfoResourceUIDefinition implements
 	 * @see org.eclipse.jpt.jpa.ui.MappingResourceUiDefinition#attributeMappingUiDefinitions()
 	 */
 	@Override
-	public Iterable<MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping>> getAttributeMappingUiDefinitions() {
+	public Iterable<MappingUiDefinition> getAttributeMappingUiDefinitions() {
 		return null;
 	}
 
@@ -94,7 +96,7 @@ public class PackageInfoResourceUIDefinition implements
 	 * @see org.eclipse.jpt.jpa.ui.MappingResourceUiDefinition#getDefaultAttributeMappingUiDefinition(java.lang.String)
 	 */
 	@Override
-	public DefaultMappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping> getDefaultAttributeMappingUiDefinition(
+	public DefaultMappingUiDefinition getDefaultAttributeMappingUiDefinition(
 			String key) {
 		return null;
 	}
@@ -104,8 +106,10 @@ public class PackageInfoResourceUIDefinition implements
 	 */
 	@Override
 	public JpaComposite buildTypeMappingComposite(String key,
-			PropertyValueModel<TypeMapping> mappingHolder, Composite parent,
-			WidgetFactory widgetFactory) {
+			PropertyValueModel<TypeMapping> mappingHolder,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parent,
+			WidgetFactory widgetFactory, ResourceManager resourceManager) {
 		return null;
 	}
 
@@ -113,7 +117,7 @@ public class PackageInfoResourceUIDefinition implements
 	 * @see org.eclipse.jpt.jpa.ui.MappingResourceUiDefinition#typeMappingUiDefinitions()
 	 */
 	@Override
-	public Iterable<MappingUiDefinition<PersistentType, ? extends TypeMapping>> getTypeMappingUiDefinitions() {
+	public Iterable<MappingUiDefinition> getTypeMappingUiDefinitions() {
 		return null;
 	}
 
@@ -121,17 +125,17 @@ public class PackageInfoResourceUIDefinition implements
 	 * @see org.eclipse.jpt.jpa.ui.MappingResourceUiDefinition#getDefaultTypeMappingUiDefinition()
 	 */
 	@Override
-	public DefaultMappingUiDefinition<PersistentType, ? extends TypeMapping> getDefaultTypeMappingUiDefinition() {
+	public DefaultMappingUiDefinition getDefaultTypeMappingUiDefinition() {
 		return null;
 	}
 
 	@Override
-	public MappingUiDefinition<PersistentType, ? extends TypeMapping> getTypeMappingUiDefinition(
+	public MappingUiDefinition getTypeMappingUiDefinition(
 			String mappingKey) {
-		Iterable<MappingUiDefinition<PersistentType, ? extends TypeMapping>> iterable = getTypeMappingUiDefinitions();
-		Iterator<MappingUiDefinition<PersistentType, ? extends TypeMapping>> iter = iterable.iterator();
+		Iterable<MappingUiDefinition> iterable = getTypeMappingUiDefinitions();
+		Iterator<MappingUiDefinition> iter = iterable.iterator();
 		while (iter.hasNext()) {
-			MappingUiDefinition<PersistentType, ? extends TypeMapping> mapping = iter.next();
+			MappingUiDefinition mapping = iter.next();
 			if (mapping.getKey().equals(mappingKey)) {
 				return mapping;
 			}
@@ -140,12 +144,12 @@ public class PackageInfoResourceUIDefinition implements
 	}
 
 	@Override
-	public MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping> getAttributeMappingUiDefinition(
+	public MappingUiDefinition getAttributeMappingUiDefinition(
 			String mappingKey) {
-		Iterable<MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping>> iterable = getAttributeMappingUiDefinitions();
-		Iterator<MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping>> iter = iterable.iterator();
+		Iterable<MappingUiDefinition> iterable = getAttributeMappingUiDefinitions();
+		Iterator<MappingUiDefinition> iter = iterable.iterator();
 		while (iter.hasNext()) {
-			MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping> mapping = iter.next();
+			MappingUiDefinition mapping = iter.next();
 			if (mapping.getKey().equals(mappingKey)) {
 				return mapping;
 			}
@@ -155,7 +159,11 @@ public class PackageInfoResourceUIDefinition implements
 
 	@Override
 	public ListIterable<JpaEditorPageDefinition> getEditorPageDefinitions() {
-		// TODO Auto-generated method stub
+		return IterableTools.emptyListIterable();
+	}
+
+	@Override
+	public Iterable<JpaDetailsProvider> getDetailsProviders() {
 		return IterableTools.emptyListIterable();
 	}
 

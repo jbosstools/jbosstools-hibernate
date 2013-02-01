@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jpt.common.utility.internal.iterator.TransformationIterator;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmTable;
@@ -121,16 +122,19 @@ public class HibernateOrmTableImpl extends GenericOrmTable implements HibernateO
 	 * Convert Table to it's DB name.
 	 */
 	protected Iterator<String> tableNames(Iterator<Table> tables) {
-		return new TransformationIterator<Table, String>(tables) {
-			@Override
-			protected String transform(Table t) {
-				if (t instanceof HibernateTable) {
-					return ((HibernateTable)t).getDBTableName();
-				} else {
-					return t.getName();//What is this???
+		return new TransformationIterator<Table, String>(
+				tables,
+				new Transformer<Table,String>() {
+					@Override
+					public String transform(Table t) {
+						if (t instanceof HibernateTable) {
+							return ((HibernateTable)t).getDBTableName();
+						} else {
+							return t.getName();//What is this???
+						}
+					}
 				}
-			}
-		};
+			);
 	}
 
 	//@Override

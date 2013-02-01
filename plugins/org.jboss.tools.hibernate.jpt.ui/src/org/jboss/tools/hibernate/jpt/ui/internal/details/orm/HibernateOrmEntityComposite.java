@@ -11,6 +11,7 @@
 
 package org.jboss.tools.hibernate.jpt.ui.internal.details.orm;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -46,8 +47,8 @@ public class HibernateOrmEntityComposite extends AbstractEntityComposite<Hiberna
 	 * @param widgetFactory
 	 */
 	public HibernateOrmEntityComposite(PropertyValueModel<? extends HibernateOrmEntity> subjectHolder,
-			Composite parent, WidgetFactory widgetFactory) {
-		super(subjectHolder, parent, widgetFactory);
+			Composite parent, WidgetFactory widgetFactory, ResourceManager resourceManager) {
+		super(subjectHolder, parent, widgetFactory, resourceManager);
 	}
 	
 	@Override
@@ -82,7 +83,7 @@ public class HibernateOrmEntityComposite extends AbstractEntityComposite<Hiberna
 
 		// Id class widgets
 		Hyperlink hyperlink = this.addHyperlink(container,JptUiDetailsMessages.IdClassComposite_label);
-		new IdClassChooser(this, this.buildIdClassReferenceHolder(), container, hyperlink);
+		new IdClassChooser(this, this.buildIdClassReferenceModel(), container, hyperlink);
 
 		// Metadata complete widgets
 		MetadataCompleteTriStateCheckBox metadataCompleteCheckBox = new MetadataCompleteTriStateCheckBox(this, getSubjectHolder(), container);

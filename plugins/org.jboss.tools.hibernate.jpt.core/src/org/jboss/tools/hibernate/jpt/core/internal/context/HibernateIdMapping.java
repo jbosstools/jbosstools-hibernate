@@ -11,11 +11,12 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
 import org.eclipse.jpt.jpa.core.context.IdMapping;
+import org.eclipse.jpt.jpa.core.jpa2.context.IdMapping2_0;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public interface HibernateIdMapping extends IdMapping {
+public interface HibernateIdMapping extends IdMapping2_0 {
 
 }

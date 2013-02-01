@@ -14,17 +14,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.common.ui.internal.widgets.ValidatingDialog;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticListValueModel;
 import org.eclipse.jpt.common.utility.internal.node.AbstractNode;
-import org.eclipse.jpt.common.utility.node.Node;
-import org.eclipse.jpt.common.utility.node.Problem;
 import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.node.Node;
+import org.eclipse.jpt.common.utility.node.Problem;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
@@ -59,8 +60,8 @@ public class HibernateAddQueryDialog extends ValidatingDialog<AddQueryStateObjec
 	 * 						and @org.hibernate.annotations.NamedNativeQuery
 	 * 						could be added.
 	 */
-	public HibernateAddQueryDialog(Shell parent, PersistenceUnit pUnit, boolean hibernateOnly) {
-		super(parent);
+	public HibernateAddQueryDialog(Shell parent, PersistenceUnit pUnit, boolean hibernateOnly, ResourceManager resourceManager) {
+		super(parent, resourceManager, JptUiDetailsMessages.AddQueryDialog_title);
 		this.pUnit = pUnit;
 		this.hibernateOnly = hibernateOnly;
 	}
@@ -72,16 +73,13 @@ public class HibernateAddQueryDialog extends ValidatingDialog<AddQueryStateObjec
 
 	// ********** open **********
 
-	@Override
-	protected void configureShell(Shell shell) {
-		super.configureShell(shell);
-		shell.setText(this.getTitle());
-	}
-
-	@Override
-	protected String getTitle() {
-		return JptUiDetailsMessages.AddQueryDialog_title;
-	}
+	
+// FIXME: Check if title passed in constructor is shown
+//	@Override
+//	protected void configureShell(Shell shell) {
+//		super.configureShell(shell);
+//		shell.setText(getTitle());
+//	}
 
 	@Override
 	protected String getDescriptionTitle() {
@@ -130,14 +128,14 @@ public class HibernateAddQueryDialog extends ValidatingDialog<AddQueryStateObjec
 		private Text nameText;
 
 		QueryDialogPane(Composite parent) {
-			super(HibernateAddQueryDialog.this.getSubjectHolder(), parent);
+			super(HibernateAddQueryDialog.this.getSubjectHolder(), parent,resourceManager);
 		}
 
 		@Override
 		protected void initializeLayout(Composite container) {
 			
 			this.addLabel(container, JptUiDetailsMessages.AddQueryDialog_name);
-			this.addText(container, buildNameHolder());
+			this.nameText = this.addText(container, buildNameHolder());
 //			this.nameText = addLabeledText(
 //				container,
 //				JptUiDetailsMessages.AddQueryDialog_name,

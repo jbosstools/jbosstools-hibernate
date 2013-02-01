@@ -10,12 +10,14 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.TypeConverter;
 
@@ -33,9 +35,14 @@ public class TypeComposite extends Pane<TypeConverter> {
 	 */
 	public TypeComposite(PropertyValueModel<? extends TypeConverter> subjectHolder,
 	                             Composite parent,
-	                             WidgetFactory widgetFactory) {
+	                             WidgetFactory widgetFactory,
+	                             ResourceManager resourceManager) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(subjectHolder, parent, widgetFactory, resourceManager);
+	}
+	
+	public TypeComposite(Pane<?> parentPane, PropertyValueModel<? extends TypeConverter> subjectHolder, Composite parentComposite) {
+		super(parentPane, subjectHolder, parentComposite);
 	}
 
 	@Override

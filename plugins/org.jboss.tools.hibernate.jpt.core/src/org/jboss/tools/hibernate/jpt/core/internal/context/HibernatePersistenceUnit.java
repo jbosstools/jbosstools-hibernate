@@ -30,6 +30,7 @@ import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.iterator.CloneListIterator;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.java.JavaGenerator;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
@@ -268,7 +269,9 @@ implements Messages, Hibernate {
 	@SuppressWarnings("unchecked")
 	protected Iterable<JavaGenerator> getAllJavaGenerators() {
 		return new CompositeIterable<JavaGenerator>(
-				new CompositeIterable<JavaGenerator>(this.getAllJavaTypeMappingGeneratorLists()),
+				// Kepler M4
+				// new CompositeIterable<JavaGenerator>(this.getAllJavaTypeMappingGeneratorLists()),
+				new CompositeIterable<JavaGenerator>(super.getAllJavaGenerators()),
 				new CompositeIterable<JavaGenerator>(this.getAllPackageInfoMappingGeneratorLists()));
 	}
 
@@ -276,27 +279,32 @@ implements Messages, Hibernate {
 	 * @return
 	 */
 	protected Iterable<Iterable<JavaGenerator>>  getAllPackageInfoMappingGeneratorLists() {
-		return new TransformationIterable<HibernatePackageInfo, Iterable<JavaGenerator>>(this.getClassRefPackageInfos_()) {
-			@Override
-			protected Iterable<JavaGenerator> transform(HibernatePackageInfo o) {
-				return new SubIterableWrapper<Generator, JavaGenerator>(this.transform_(o));
-			}
-			protected Iterable<Generator> transform_(HibernatePackageInfo o) {
-				return o.getGeneratorContainer().getGenerators();
-			}
-		};
+		return new TransformationIterable<HibernatePackageInfo, Iterable<JavaGenerator>>(
+				this.getClassRefPackageInfos_(),
+				new Transformer<HibernatePackageInfo, Iterable<JavaGenerator>>() {
+					@Override
+					public Iterable<JavaGenerator> transform(HibernatePackageInfo o) {
+						return new SubIterableWrapper<Generator, JavaGenerator>(this.transform_(o));
+					}
+					protected Iterable<Generator> transform_(HibernatePackageInfo o) {
+						return o.getGeneratorContainer().getGenerators();
+					}
+				}
+			);
 	}
 
 	
 	protected Iterable<HibernatePackageInfo> getClassRefPackageInfos_() {
 		return new FilteringIterable<HibernatePackageInfo>(
 				new TransformationIterable<HibernateClassRef, HibernatePackageInfo>(
-						new SubIterableWrapper<ClassRef,HibernateClassRef>(this.getClassRefs())) {
-					@Override
-					protected HibernatePackageInfo transform(HibernateClassRef classRef) {
-						return classRef.getJavaPackageInfo();
-					}
-				},
+						new SubIterableWrapper<ClassRef,HibernateClassRef>(this.getClassRefs()),
+						new Transformer<HibernateClassRef, HibernatePackageInfo>() {
+							@Override
+							public HibernatePackageInfo transform(HibernateClassRef classRef) {
+								return classRef.getJavaPackageInfo();
+							}
+						}
+					),
 				NotNullFilter.INSTANCE
 		);
 	}

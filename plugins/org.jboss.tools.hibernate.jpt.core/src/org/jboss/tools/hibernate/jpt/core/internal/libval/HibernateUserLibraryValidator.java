@@ -31,7 +31,7 @@ public class HibernateUserLibraryValidator implements LibraryValidator {
 		Set<String> classNames = new HashSet<String>();
 		//classNames.add("javax.persistence.Entity"); //$NON-NLS-1$
 		classNames.add("org.hibernate.SessionFactory");//$NON-NLS-1$
-		return LibraryValidatorTools.validateClasspathEntries(jpaConfig.resolve(), classNames);
+		return LibraryValidatorTools.validateClasses(jpaConfig, classNames);
 
 //		Iterable<IPath> libraryPaths = new TransformationIterable<IClasspathEntry, IPath>(
 //				jpaConfig.resolve()) {

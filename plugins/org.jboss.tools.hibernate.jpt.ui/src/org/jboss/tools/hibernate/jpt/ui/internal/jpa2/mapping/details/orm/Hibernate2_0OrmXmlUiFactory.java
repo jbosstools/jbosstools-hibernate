@@ -10,11 +10,12 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.jpa2.mapping.details.orm;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.orm.OrmBasicMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
-import org.eclipse.jpt.jpa.core.context.orm.OrmIdMapping;
+import org.eclipse.jpt.jpa.core.context.BasicMapping;
+import org.eclipse.jpt.jpa.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.GenericOrmXml2_0UiFactory;
 import org.eclipse.swt.widgets.Composite;
@@ -31,37 +32,43 @@ import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateBasicM
 public class Hibernate2_0OrmXmlUiFactory extends GenericOrmXml2_0UiFactory {
 	
 	@Override
-	public JpaComposite createOrmBasicMappingComposite(
-			PropertyValueModel<OrmBasicMapping> subjectHolder,
+	public JpaComposite createBasicMappingComposite(
+			PropertyValueModel<? extends BasicMapping> subjectHolder,
 			PropertyValueModel<Boolean> enabledModel,
-			Composite parent, WidgetFactory widgetFactory) {
+			Composite parent, 
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
 		return new HibernateBasicMappingComposite(
 				subjectHolder, 
 				enabledModel,
 				parent,
-				widgetFactory);
+				widgetFactory, 
+				resourceManager);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public JpaComposite createOrmIdMappingComposite(
-			PropertyValueModel<OrmIdMapping> subjectHolder,
+	public JpaComposite createIdMappingComposite(
+			PropertyValueModel<? extends IdMapping> subjectHolder,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
-			WidgetFactory widgetFactory) {
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
 		return new Hibernate2_0OrmIdMappingComposite(
 				(PropertyValueModel<? extends HibernateOrmIdMapping>) subjectHolder,
 				enabledModel,
 				parent, 
-				widgetFactory);
+				widgetFactory,
+				resourceManager);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public JpaComposite createOrmEntityComposite(
-			PropertyValueModel<OrmEntity> subjectHolder, Composite parent,
-			WidgetFactory widgetFactory) {
-		return new Hibernate2_0OrmEntityComposite((PropertyValueModel<? extends HibernateOrmEntity>) subjectHolder, parent, widgetFactory);
+	public JpaComposite createEntityComposite(
+			PropertyValueModel<? extends Entity> subjectHolder, Composite parent,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new Hibernate2_0OrmEntityComposite((PropertyValueModel<? extends HibernateOrmEntity>) subjectHolder, parent, widgetFactory, resourceManager);
 	}
 
 

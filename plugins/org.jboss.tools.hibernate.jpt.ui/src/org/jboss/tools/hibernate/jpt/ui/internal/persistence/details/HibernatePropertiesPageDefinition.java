@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.jpt.ui.internal.persistence.details;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -34,23 +35,22 @@ public class HibernatePropertiesPageDefinition extends PersistenceUnitEditorPage
 		return null;
 	}
 
+
 	@Override
-	public ImageDescriptor getPageImageDescriptor() {
-		// TODO Auto-generated method stub
+	public ImageDescriptor getTitleImageDescriptor() {
 		return null;
 	}
 
 	@Override
-	public String getPageText() {
-		// TODO Auto-generated method stub
+	public String getTitleText() {
 		return "Hibernate";
 	}
 
 	@Override
 	protected void buildEditorPageContent(Composite parent,
-			WidgetFactory widgetFactory,
-			PropertyValueModel<JpaStructureNode> jpaRootStructureNodeModel) {
-		new HibernatePropertiesPage(this.buildBasicHibernatePropertiesHolder(buildPersistenceUnitModel(jpaRootStructureNodeModel)), parent, widgetFactory);		
+			WidgetFactory widgetFactory, ResourceManager resourceManager,
+			PropertyValueModel<PersistenceUnit> persistenceUnitModel) {
+		new HibernatePropertiesPage(buildBasicHibernatePropertiesHolder(persistenceUnitModel), parent, widgetFactory, resourceManager);		
 	}
 	
 	protected PropertyValueModel<BasicHibernateProperties> buildBasicHibernatePropertiesHolder(

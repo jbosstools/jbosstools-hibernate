@@ -129,7 +129,7 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 //			JpaHelpContextIds.MAPPING_COLUMN_LENGTH
 //		);
 
-		updateGridData(container, fetchSizeSpinner);
+//		updateGridData(container, fetchSizeSpinner);
 
 		this.addLabel(container, HibernateUIMappingMessages.NamedQueryPropertyComposite_timeout);
 		Spinner timeoutSpinner = this.addSpinner(
@@ -150,7 +150,7 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 //			JpaHelpContextIds.MAPPING_COLUMN_LENGTH
 //		);
 
-		updateGridData(container, timeoutSpinner);
+	//updateGridData(container, timeoutSpinner);
 
 	}
 

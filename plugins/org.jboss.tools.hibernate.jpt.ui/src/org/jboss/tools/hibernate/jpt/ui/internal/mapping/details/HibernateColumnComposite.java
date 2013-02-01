@@ -162,14 +162,14 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 				super.addPropertyNames(propertyNames);
 				propertyNames.add(NamedColumn.DEFAULT_NAME_PROPERTY);
 				propertyNames.add(NamedColumn.SPECIFIED_NAME_PROPERTY);
-				propertyNames.add(BaseColumn.DEFAULT_TABLE_PROPERTY);
-				propertyNames.add(BaseColumn.SPECIFIED_TABLE_PROPERTY);
+				propertyNames.add(BaseColumn.DEFAULT_TABLE_NAME_PROPERTY);
+				propertyNames.add(BaseColumn.SPECIFIED_TABLE_NAME_PROPERTY);
 			}
 
 			@Override
 			protected void propertyChanged(String propertyName) {
-				if (propertyName == BaseColumn.DEFAULT_TABLE_PROPERTY ||
-				    propertyName == BaseColumn.SPECIFIED_TABLE_PROPERTY) {
+				if (propertyName == BaseColumn.DEFAULT_TABLE_NAME_PROPERTY ||
+				    propertyName == BaseColumn.SPECIFIED_TABLE_NAME_PROPERTY) {
 					this.doPopulate();
 				} else {
 					super.propertyChanged(propertyName);
@@ -344,8 +344,8 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(BaseColumn.DEFAULT_TABLE_PROPERTY);
-				propertyNames.add(BaseColumn.SPECIFIED_TABLE_PROPERTY);
+				propertyNames.add(BaseColumn.DEFAULT_TABLE_NAME_PROPERTY);
+				propertyNames.add(BaseColumn.SPECIFIED_TABLE_NAME_PROPERTY);
 			}
 
 			@Override
@@ -355,12 +355,12 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 
 			@Override
 			protected void setValue(String value) {
-				this.getSubject().setSpecifiedTable(value);
+				this.getSubject().setSpecifiedTableName(value);
 			}
 
 			@Override
 			protected String getValue() {
-				String specifiedName = this.getSubject().getSpecifiedTable();
+				String specifiedName = this.getSubject().getSpecifiedTableName();
 				if (specifiedName == null){
 					return null;
 				}

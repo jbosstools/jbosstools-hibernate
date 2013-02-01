@@ -10,20 +10,18 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.java;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
-import org.eclipse.jpt.jpa.core.context.java.JavaIdMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
+import org.eclipse.jpt.jpa.core.context.BasicMapping;
+import org.eclipse.jpt.jpa.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.java.BaseJavaUiFactory;
+import org.eclipse.jpt.jpa.ui.internal.details.java.GenericJavaUiFactory;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaIdMapping;
-import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmEntity;
 import org.jboss.tools.hibernate.jpt.ui.internal.details.java.HibernateJavaEntityComposite;
-import org.jboss.tools.hibernate.jpt.ui.internal.details.orm.HibernateOrmEntityComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateBasicMappingComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateIdMappingComposite;
 
@@ -31,48 +29,55 @@ import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateIdMapp
  * @author Dmitry Geraskov
  * 
  */
-public class HibernateJavaUiFactory extends BaseJavaUiFactory {
+public class HibernateJavaUiFactory extends GenericJavaUiFactory {
 
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public JpaComposite createJavaIdMappingComposite(
-			PropertyValueModel<JavaIdMapping> subjectHolder,
+	public JpaComposite createIdMappingComposite(
+			PropertyValueModel<? extends IdMapping> subjectHolder,
 			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
-			WidgetFactory widgetFactory) {
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
 		return new HibernateIdMappingComposite(
 				(PropertyValueModel<? extends HibernateJavaIdMapping>) subjectHolder, 
 				enabledModel,
 				parent, 
-				widgetFactory);
+				widgetFactory,
+				resourceManager);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public JpaComposite createJavaEntityComposite(PropertyValueModel<JavaEntity> subjectHolder,
-			Composite parent, WidgetFactory widgetFactory) {
-		return new HibernateJavaEntityComposite((PropertyValueModel<? extends HibernateJavaEntity>) subjectHolder, parent, widgetFactory);
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public JpaComposite createOrmEntityComposite(
-			PropertyValueModel<OrmEntity> subjectHolder, Composite parent,
-			WidgetFactory widgetFactory) {
-		return new HibernateOrmEntityComposite((PropertyValueModel<? extends HibernateOrmEntity>) subjectHolder, parent, widgetFactory);
+	public JpaComposite createEntityComposite(PropertyValueModel<? extends Entity> subjectHolder,
+			Composite parent, 
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
+		return new HibernateJavaEntityComposite((PropertyValueModel<? extends HibernateJavaEntity>) subjectHolder, parent, widgetFactory,resourceManager);
 	}
 
-	public JpaComposite createJavaBasicMappingComposite(
-			PropertyValueModel<JavaBasicMapping> subjectHolder,
+	
+	// FIXME: find out when this methos was used and where was it moved after refactoring
+//	@SuppressWarnings("unchecked")
+//	@Override
+//	public JpaComposite createOrmEntityComposite(
+//			PropertyValueModel<? extends Entity> subjectHolder, Composite parent,
+//			WidgetFactory widgetFactory, ResourceManager resourceManager) {
+//		return new HibernateOrmEntityComposite((PropertyValueModel<? extends Entity>) subjectHolder, parent, widgetFactory, resourceManager);
+//	}
+	@Override
+	public JpaComposite createBasicMappingComposite(
+			PropertyValueModel<? extends BasicMapping> mappingModel,
 			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
+			Composite parentComposite,
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
 		return new HibernateBasicMappingComposite(
-				subjectHolder, 
+				mappingModel, 
 				enabledModel,
-				parent, 
-				widgetFactory);
+				parentComposite, 
+				widgetFactory,resourceManager);
 	}
 	
 	

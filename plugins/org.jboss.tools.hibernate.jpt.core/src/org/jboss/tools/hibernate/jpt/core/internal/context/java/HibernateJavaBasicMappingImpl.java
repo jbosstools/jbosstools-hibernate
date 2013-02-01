@@ -36,8 +36,7 @@ public class HibernateJavaBasicMappingImpl extends AbstractJavaBasicMapping
 implements HibernateJavaBasicMapping {
 
 	protected static final Iterable<JavaConverter.Adapter> HIBERNATE_CONVERTER_ADAPTERS = 
-			new CompositeIterable<JavaConverter.Adapter>(JavaTypeConverter.Adapter.instance(),
-					new ArrayIterable<JavaConverter.Adapter>(CONVERTER_ADAPTER_ARRAY));
+			new CompositeIterable<JavaConverter.Adapter>(new ArrayIterable<JavaConverter.Adapter>(CONVERTER_ADAPTER_ARRAY));
 
 	protected GenerationTime specifiedGenerationTime;
 

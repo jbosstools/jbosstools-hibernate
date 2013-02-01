@@ -92,7 +92,7 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 
 		final SimpleListValueModel<String> lvmDialect = new SimpleListValueModel<String>(Arrays.asList(this.helper
 				.getDialectNames()));
-		PropertyValueModel<BasicHibernateProperties> p = getSubjectHolder();
+		PropertyValueModel<BasicHibernateProperties> p = (PropertyValueModel<BasicHibernateProperties>)getSubjectHolder();
 		List<String> drivers = new ArrayList<String>();
 		BasicHibernateProperties props = p.getValue();
 		if (props != null) {

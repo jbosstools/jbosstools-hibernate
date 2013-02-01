@@ -13,6 +13,7 @@ package org.jboss.tools.hibernate.jpt.core.internal;
 import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.jpa.core.JpaFactory;
+import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPlatformProvider;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation;
 import org.eclipse.jpt.jpa.core.ResourceDefinition;
@@ -39,8 +40,16 @@ public class HibernateJpaPlatform extends GenericJpaPlatform {
 		return super.getResourceDefinition(resourceType);
 	}
 
-	public HibernateJpaPlatform(String id, Version jpaVersion, JpaFactory jpaFactory, AnnotationProvider annotationProvider, JpaPlatformProvider platformProvider, JpaPlatformVariation jpaVariation, JPQLGrammar jpqlGrammar) {
-		super(id, jpaVersion, jpaFactory, annotationProvider, platformProvider, jpaVariation, jpqlGrammar);
+//	public HibernateJpaPlatform(String id, Version jpaVersion, JpaFactory jpaFactory, AnnotationProvider annotationProvider, JpaPlatformProvider platformProvider, JpaPlatformVariation jpaVariation, JPQLGrammar jpqlGrammar) {
+//		super(id, jpaVersion, jpaFactory, annotationProvider, platformProvider, jpaVariation, jpqlGrammar);
+//	}
+
+	public HibernateJpaPlatform(JpaPlatform.Config config, Version jpaVersion,
+			JpaFactory jpaFactory, AnnotationProvider annotationProvider,
+			JpaPlatformProvider platformProvider,
+			JpaPlatformVariation jpaVariation, JPQLGrammar jpqlGrammar) {
+		super(config, jpaVersion, jpaFactory, annotationProvider, platformProvider,
+				jpaVariation, jpqlGrammar);
 	}
 
 }

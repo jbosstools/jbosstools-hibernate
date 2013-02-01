@@ -26,6 +26,7 @@ import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
@@ -115,12 +116,15 @@ public class AddGeneratedClassesJob extends WorkspaceJob {
 								/* FIXME find correct replacement for function below 
 								jpaProject.getMappedJavaSourceClassNames()) {
 								*/
-								jpaProject.getAnnotatedJavaSourceClassNames()) {
-							@Override
-							protected IType transform(String fullyQualifiedName) {
-								return AddGeneratedClassesJob.this.findType(jpaProject, fullyQualifiedName);
-							}
-						}){
+								jpaProject.getTypeMappingAnnotationNames(),
+								new Transformer<String, IType>() {
+									@Override
+									public IType transform(String fullyQualifiedName) {
+										return AddGeneratedClassesJob.this.findType(jpaProject, fullyQualifiedName);
+									}
+								}
+							)
+						) {
 					@Override
 					protected boolean accept(IType o) {
 						for (IResource res : javaFilesToAdd) {
@@ -130,12 +134,13 @@ public class AddGeneratedClassesJob extends WorkspaceJob {
 						}
 						return false;
 					}
-				}) {
-			@Override
-			protected String transform(IType jdtType) {
-				return jdtType.getFullyQualifiedName(enclosingTypeSeparator);
-			}
-		};
+				},new Transformer<IType, String>() {
+					@Override
+					public String transform(IType jdtType) {
+						return jdtType.getFullyQualifiedName(enclosingTypeSeparator);
+					}
+				}
+			);
 	}
 	
 	protected IType findType(JpaProject jpaProject, String typeName) {

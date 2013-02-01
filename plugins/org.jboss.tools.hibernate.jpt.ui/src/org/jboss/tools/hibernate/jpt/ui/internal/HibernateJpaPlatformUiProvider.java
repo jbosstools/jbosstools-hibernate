@@ -51,15 +51,15 @@ public class HibernateJpaPlatformUiProvider extends
 		super();
 	}
 	// ********** details providers **********
-	@Override
-	protected void addDetailsProvidersTo(List<JpaDetailsProvider> providers) {
-		providers.add(JavaPackageInfoDetailsProvider.instance());
-		providers.add(JavaPersistentTypeDetailsProvider.instance());
-		providers.add(JavaPersistentAttributeDetailsProvider.instance());
-		providers.add(EntityMappingsDetailsProvider.instance());
-		providers.add(OrmPersistentTypeDetailsProvider.instance());
-		providers.add(OrmPersistentAttributeDetailsProvider.instance());
-	}
+//	@Override
+//	protected void addDetailsProvidersTo(List<JpaDetailsProvider> providers) {
+//		providers.add(JavaPackageInfoDetailsProvider.instance());
+//		providers.add(JavaPersistentTypeDetailsProvider.instance());
+//		providers.add(JavaPersistentAttributeDetailsProvider.instance());
+//		providers.add(EntityMappingsDetailsProvider.instance());
+//		providers.add(OrmPersistentTypeDetailsProvider.instance());
+//		providers.add(OrmPersistentAttributeDetailsProvider.instance());
+//	}
 	
 	// ********** resource ui definitions **********
 	

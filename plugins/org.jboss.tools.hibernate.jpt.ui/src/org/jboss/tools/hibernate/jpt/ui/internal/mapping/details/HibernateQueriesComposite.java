@@ -92,7 +92,7 @@ public class HibernateQueriesComposite extends Pane<HibernateJavaQueryContainer>
 
 	protected HibernateAddQueryDialog buildAddQueryDialog() {
 		boolean hibernateOnly = (getSubject().getParent() instanceof HibernatePackageInfo);
-		return new HibernateAddQueryDialog(getControl().getShell(), this.getSubject().getPersistenceUnit(), hibernateOnly);
+		return new HibernateAddQueryDialog(getControl().getShell(), this.getSubject().getPersistenceUnit(), hibernateOnly, getResourceManager());
 	}
 
 	protected Query addQueryFromDialog(HibernateAddQueryDialog hibernateAddQueryDialog) {

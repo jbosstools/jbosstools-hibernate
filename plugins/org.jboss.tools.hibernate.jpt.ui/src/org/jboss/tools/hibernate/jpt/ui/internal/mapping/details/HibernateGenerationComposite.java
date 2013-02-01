@@ -36,7 +36,7 @@ public class HibernateGenerationComposite extends GenerationComposite {
 	private ModifiablePropertyValueModel<JavaDbGenericGenerator> generatorHolder;
 	
 	public HibernateGenerationComposite(Pane<?> parentPane,
-			PropertyValueModel<? extends HibernateGeneratorContainer> subjectHolder,
+			PropertyValueModel<? extends GeneratorContainer> subjectHolder,
 			Composite parent) {
 		super(parentPane, subjectHolder, parent);
 	}

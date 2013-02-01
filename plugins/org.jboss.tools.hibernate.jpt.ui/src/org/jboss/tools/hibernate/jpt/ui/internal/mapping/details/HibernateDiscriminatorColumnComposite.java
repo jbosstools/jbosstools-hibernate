@@ -12,7 +12,7 @@ package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
 
 import java.util.Collection;
 
-import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
+import org.eclipse.jpt.common.ui.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
@@ -210,7 +210,7 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 				
 			@Override
 			protected String buildNullDefaultValueEntry() {
-				return JptCommonUiMessages.NoneSelected;
+				return JptCommonUiMessages.NONE_SELECTED;
 			}
 
 			@Override
@@ -362,7 +362,7 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 				
 			@Override
 			protected String nullDisplayString() {
-				return JptCommonUiMessages.NoneSelected;
+				return JptCommonUiMessages.NONE_SELECTED;
 			}
 				
 			@Override

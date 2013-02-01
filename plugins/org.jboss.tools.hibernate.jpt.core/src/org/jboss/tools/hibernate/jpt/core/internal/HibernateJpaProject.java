@@ -30,6 +30,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageInfoCompilat
 import org.eclipse.jpt.common.core.utility.command.JobCommand;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
@@ -205,21 +206,27 @@ public class HibernateJpaProject extends AbstractJpaProject {
 	 * Return the JPA project's resource compilation units.
 	 */
 	protected Iterable<JavaResourcePackageInfoCompilationUnit> getInternalJavaResourcePackageInfoCompilationUnits() {
-		return new TransformationIterable<JpaFile, JavaResourcePackageInfoCompilationUnit>(this.getJavaPackageInfoSourceJpaFiles()) {
-			@Override
-			protected JavaResourcePackageInfoCompilationUnit transform(JpaFile jpaFile) {
-				return (JavaResourcePackageInfoCompilationUnit) jpaFile.getResourceModel();
-			}
-		};
+		return new TransformationIterable<JpaFile, JavaResourcePackageInfoCompilationUnit>(
+				this.getJavaPackageInfoSourceJpaFiles(),
+				new Transformer<JpaFile, JavaResourcePackageInfoCompilationUnit> () {
+					@Override
+					public JavaResourcePackageInfoCompilationUnit transform(JpaFile jpaFile) {
+						return (JavaResourcePackageInfoCompilationUnit) jpaFile.getResourceModel();
+					}
+				}
+			);
 	}
 
 	protected Iterable<JavaResourcePackage> getInternalSourceJavaResourcePackages() {
-		return new TransformationIterable<JavaResourcePackageInfoCompilationUnit, JavaResourcePackage>(this.getInternalJavaResourcePackageInfoCompilationUnits()) {
-			@Override
-			protected JavaResourcePackage transform(final JavaResourcePackageInfoCompilationUnit compilationUnit) {
-				return compilationUnit.getPackage();
-			}
-		};
+		return new TransformationIterable<JavaResourcePackageInfoCompilationUnit, JavaResourcePackage>(
+				this.getInternalJavaResourcePackageInfoCompilationUnits(),
+				new Transformer<JavaResourcePackageInfoCompilationUnit, JavaResourcePackage>() {
+					@Override
+					public JavaResourcePackage transform(final JavaResourcePackageInfoCompilationUnit compilationUnit) {
+						return compilationUnit.getPackage();
+					}
+				}
+			);
 	}
 	
 	protected Iterable<JavaResourcePackage> getInternalAnnotatedSourceJavaResourcePacakges() {
@@ -241,12 +248,15 @@ public class HibernateJpaProject extends AbstractJpaProject {
 	}
 	
 	public Iterable<String> getMappedJavaSourcePackagesNames() {
-		return new TransformationIterable<JavaResourcePackage, String>(this.getInternalMappedSourceJavaResourcePackages()) {
-			@Override
-			protected String transform(JavaResourcePackage jrpPackage) {
-				return jrpPackage == null ? null :  jrpPackage.getName();
-			}
-		};
+		return new TransformationIterable<JavaResourcePackage, String>(
+				this.getInternalMappedSourceJavaResourcePackages(),
+				new Transformer<JavaResourcePackage, String>() {
+					@Override
+					public String transform(JavaResourcePackage jrpPackage) {
+						return jrpPackage == null ? null :  jrpPackage.getName();
+					}
+				}
+			);
 	}
 	
 	@Override

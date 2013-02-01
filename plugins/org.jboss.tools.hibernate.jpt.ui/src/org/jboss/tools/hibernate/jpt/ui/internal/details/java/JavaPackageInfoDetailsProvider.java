@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.details.java;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -47,17 +48,17 @@ public class JavaPackageInfoDetailsProvider implements JpaDetailsProvider {
 	}
 	
 	@Override
-	public boolean providesDetails(JpaStructureNode structureNode) {
-			return ObjectTools.equals(structureNode.getType(),  JavaPackageInfo.class)
-				&& structureNode.getResourceType().getContentType().equals(JavaResourceCompilationUnit.PACKAGE_INFO_CONTENT_TYPE);
-	}
-	
-	@Override
-	public JpaDetailsPageManager<HibernatePackageInfo> buildDetailsPageManager(
+	public JpaDetailsPageManager buildDetailsPageManager(
 			Composite parent,
-			WidgetFactory widgetFactory) {
+			WidgetFactory widgetFactory,
+			ResourceManager resourceManager) {
 	
-		return new PackageInfoDetailsPage(parent, widgetFactory);
+		return new PackageInfoDetailsPage(parent, widgetFactory, resourceManager);
+	}
+
+	@Override
+	public Class<? extends JpaStructureNode> getType() {
+		return JavaPackageInfo.class;
 	}
 
 }

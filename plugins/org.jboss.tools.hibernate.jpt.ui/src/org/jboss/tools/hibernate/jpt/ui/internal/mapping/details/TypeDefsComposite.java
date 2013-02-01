@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.ListIterator;
 
@@ -42,6 +43,7 @@ import org.eclipse.ui.part.PageBook;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaTypeDefContainer;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaTypeDef;
+import org.jboss.tools.hibernate.jpt.ui.internal.widgets.EnterNameDialog;
 
 /**
  * @author Dmitry Geraskov
@@ -62,11 +64,6 @@ public class TypeDefsComposite extends Pane<HibernateJavaTypeDefContainer> {
 		PropertyValueModel<? extends HibernateJavaTypeDefContainer> subjectHolder,
 		Composite parent) {
 		super(parentPane, subjectHolder, parent);
-		dialogBuilder = new NewNameDialogBuilder(getShell());
-		dialogBuilder.setDialogTitle(HibernateUIMappingMessages.TypeDefsComposite_dialogTitle);
-		dialogBuilder.setDescriptionTitle(HibernateUIMappingMessages.TypeDefsComposite_DescriptionTitle);
-		dialogBuilder.setDescription(HibernateUIMappingMessages.TypeDefsComposite_Description);
-		dialogBuilder.setLabelText(HibernateUIMappingMessages.TypeDefsComposite_Name);		
 	}
 
 //	void addTypeDef() {
@@ -81,9 +78,19 @@ public class TypeDefsComposite extends Pane<HibernateJavaTypeDefContainer> {
 		return (HibernatePersistenceUnit)this.getSubject().getPersistenceUnit();
 	}
 
-	protected NewNameDialog buildAddTypeDefDialog() {
-		dialogBuilder.setExistingNames(new ArrayIterator<String>(getPersistenceUnit().uniqueTypeDefNames()));
-		return dialogBuilder.buildDialog();
+	protected EnterNameDialog buildAddTypeDefDialog() {
+		
+		return new EnterNameDialog(
+				this.getShell(),
+				getResourceManager(),
+				HibernateUIMappingMessages.TypeDefsComposite_DescriptionTitle,
+				HibernateUIMappingMessages.TypeDefsComposite_dialogTitle,
+				null,
+				HibernateUIMappingMessages.TypeDefsComposite_Description,
+				HibernateUIMappingMessages.TypeDefsComposite_Name,
+				HibernateUIMappingMessages.TypeDefsComposite_Name,
+				Arrays.asList(getPersistenceUnit().uniqueTypeDefNames())				
+				);
 	}
 
 //	protected void addTypeDefFromDialog(NewNameDialog dialog) {
@@ -95,7 +102,7 @@ public class TypeDefsComposite extends Pane<HibernateJavaTypeDefContainer> {
 //		this.getTypeDefHolder().setValue(typeDef);//so that it gets selected in the List for the user to edit
 //	}
 
-	protected JavaTypeDef addTypeDefFromDialog(NewNameDialog dialog) {
+	protected JavaTypeDef addTypeDefFromDialog(EnterNameDialog dialog) {
 		if (dialog.open() != Window.OK) {
 			return null;
 		}
