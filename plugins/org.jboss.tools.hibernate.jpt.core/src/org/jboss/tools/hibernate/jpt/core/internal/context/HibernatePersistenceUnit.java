@@ -37,6 +37,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnit;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.GenericClassRef;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -298,10 +299,13 @@ implements Messages, Hibernate {
 		return new FilteringIterable<HibernatePackageInfo>(
 				new TransformationIterable<HibernateClassRef, HibernatePackageInfo>(
 						new SubIterableWrapper<ClassRef,HibernateClassRef>(this.getClassRefs()),
-						new Transformer<HibernateClassRef, HibernatePackageInfo>() {
+						new Transformer<GenericClassRef, HibernatePackageInfo>() {
 							@Override
-							public HibernatePackageInfo transform(HibernateClassRef classRef) {
-								return classRef.getJavaPackageInfo();
+							public HibernatePackageInfo transform(GenericClassRef classRef) {
+								if (classRef instanceof HibernateClassRef) {
+									return ((HibernateClassRef)classRef).getJavaPackageInfo();
+								}
+								return null;
 							}
 						}
 					),
