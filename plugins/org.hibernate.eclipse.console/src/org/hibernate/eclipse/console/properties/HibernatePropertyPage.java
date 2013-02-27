@@ -294,7 +294,8 @@ public class HibernatePropertyPage extends PropertyPage {
 		/* Replaced previous line by next by Koen after Dali API changes */
 		String jpaPlatformId = HibernateEclipseUtils.getJpaPlatformID(project);
 		return HibernatePropertiesConstants.HIBERNATE_JPA_PLATFORM_ID.equals(jpaPlatformId)
-				|| HibernatePropertiesConstants.HIBERNATE_JPA2_0_PLATFORM_ID.equals(jpaPlatformId);
+				|| HibernatePropertiesConstants.HIBERNATE_JPA2_0_PLATFORM_ID.equals(jpaPlatformId) 
+				|| HibernatePropertiesConstants.HIBERNATE_JPA2_1_PLATFORM_ID.equals(jpaPlatformId);
 	}
 
 	private IProject getProject() {

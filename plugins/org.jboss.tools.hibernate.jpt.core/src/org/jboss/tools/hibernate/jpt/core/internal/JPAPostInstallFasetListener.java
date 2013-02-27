@@ -57,12 +57,16 @@ public class JPAPostInstallFasetListener implements IFacetedProjectListener {
 		if (event.getType() == Type.POST_INSTALL){
 			IProject project = event.getProject().getProject();
 			IProjectFacetActionEvent pEvent = (IProjectFacetActionEvent)event;
-			if (pEvent.getProjectFacet().getId().equals(JpaProject.FACET_ID)
-					&& (HibernateJpaPlatform.HIBERNATE_PLATFORM_ID.equals(HibernateEclipseUtils.getJpaPlatformID(project))
-							|| HibernateJpaPlatform.HIBERNATE2_0_PLATFORM_ID.equals(HibernateEclipseUtils.getJpaPlatformID(project)))){
-				if (checkPreConditions(project)){
-					exportConnectionProfilePropertiesToPersistenceXml(project);
-					buildConsoleConfiguration(project);
+			if (pEvent.getProjectFacet().getId().equals(JpaProject.FACET_ID)) {
+				String platformId = HibernateEclipseUtils.getJpaPlatformID(project);
+				if (platformId != null && 
+						(platformId.equals(HibernateJpaPlatform.HIBERNATE_PLATFORM_ID) || 
+								platformId.equals(HibernateJpaPlatform.HIBERNATE2_0_PLATFORM_ID) || 
+								platformId.equals(HibernateJpaPlatform.HIBERNATE2_1_PLATFORM_ID))) {
+					if (checkPreConditions(project)) {
+						exportConnectionProfilePropertiesToPersistenceXml(project);
+						buildConsoleConfiguration(project);
+					}
 				}
 			}
 		}

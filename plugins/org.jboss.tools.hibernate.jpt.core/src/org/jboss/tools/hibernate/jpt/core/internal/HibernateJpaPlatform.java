@@ -30,6 +30,8 @@ public class HibernateJpaPlatform extends GenericJpaPlatform {
 
 	public static final String HIBERNATE2_0_PLATFORM_ID = "hibernate2_0"; //$NON-NLS-1$
 
+	public static final String HIBERNATE2_1_PLATFORM_ID = "hibernate2_1"; //$NON-NLS-1$
+
 	@Override
 	public ResourceDefinition getResourceDefinition(JptResourceType resourceType) {
 		for (ResourceDefinition resourceDefinition : getPlatformProvider().getResourceDefinitions()) {
