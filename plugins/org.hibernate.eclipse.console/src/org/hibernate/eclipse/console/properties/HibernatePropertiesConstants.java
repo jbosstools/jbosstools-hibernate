@@ -15,6 +15,7 @@ import org.hibernate.eclipse.nature.HibernateNature;
 
 /**
  * @author Dmitry Geraskov
+ * @author Koen Aers
  *
  */
 public class HibernatePropertiesConstants {
@@ -32,5 +33,7 @@ public class HibernatePropertiesConstants {
 	public static final String HIBERNATE_JPA_PLATFORM_ID = "hibernate"; //$NON-NLS-1$
 	
 	public static final String HIBERNATE_JPA2_0_PLATFORM_ID = "hibernate2_0"; //$NON-NLS-1$
+
+	public static final String HIBERNATE_JPA2_1_PLATFORM_ID = "hibernate2_1"; //$NON-NLS-1$
 
 }

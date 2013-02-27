@@ -14,6 +14,11 @@
             jpaPlatform="hibernate2_0"
             id="hibernate2_0">
       </jpaPlatformUi>
+      <jpaPlatformUi
+            factoryClass="org.jboss.tools.hibernate.jpt.ui.internal.platform.HibernateJpa2_1PlatformUiFactory"
+            jpaPlatform="hibernate2_1"
+            id="hibernate2_1">
+      </jpaPlatformUi>
       
     </extension>
 </plugin>
