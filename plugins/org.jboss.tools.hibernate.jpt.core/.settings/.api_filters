@@ -16,4 +16,12 @@
             </message_arguments>
         </filter>
     </resource>
+    <resource path="src/org/jboss/tools/hibernate/jpt/core/internal/context/java/HibernateJavaDiscriminatorColumnImpl.java" type="org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaDiscriminatorColumnImpl">
+        <filter id="576720909">
+            <message_arguments>
+                <message_argument value="GenericJavaDiscriminatorColumn"/>
+                <message_argument value="HibernateJavaDiscriminatorColumnImpl"/>
+            </message_arguments>
+        </filter>
+    </resource>
 </component>

@@ -30,6 +30,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageInfoCompilat
 import org.eclipse.jpt.common.core.utility.command.JobCommand;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -89,8 +90,8 @@ public class HibernateJpaProject extends AbstractJpaProject {
 	}
 	
 	public BasicHibernateProperties getBasicHibernateProperties(){
-		if (getRootContextNode() != null){
-			PersistenceXml persistenceXml = getRootContextNode().getPersistenceXml();
+		if (getContextModelRoot() != null){
+			PersistenceXml persistenceXml = getContextModelRoot().getPersistenceXml();
 			Persistence persistence = persistenceXml.getRoot();
 			if (persistence.getPersistenceUnitsSize() > 0){
 				PersistenceUnit persistenceUnit = persistence.getPersistenceUnit(0);
@@ -230,12 +231,7 @@ public class HibernateJpaProject extends AbstractJpaProject {
 	}
 	
 	protected Iterable<JavaResourcePackage> getInternalAnnotatedSourceJavaResourcePacakges() {
-		return new FilteringIterable<JavaResourcePackage>(this.getInternalSourceJavaResourcePackages()) {
-			@Override
-			protected boolean accept(JavaResourcePackage jrpPackage) {
-				return /*jrpPackage.isPersistable() && jrpPackage.isAnnotated()*/true; 
-			}
-		};
+		return new FilteringIterable<JavaResourcePackage>(this.getInternalSourceJavaResourcePackages(),PredicateTools.truePredicate());
 	}
 	
 	/**

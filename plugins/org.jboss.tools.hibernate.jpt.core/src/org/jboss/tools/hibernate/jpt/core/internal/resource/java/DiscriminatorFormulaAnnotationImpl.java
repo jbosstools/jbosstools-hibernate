@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
@@ -42,7 +42,7 @@ DiscriminatorFormulaAnnotation {
 	private String value;
 	private CompilationUnit astRoot;
 
-	protected DiscriminatorFormulaAnnotationImpl(JavaResourceNode parent, Type type) {
+	protected DiscriminatorFormulaAnnotationImpl(JavaResourceModel parent, Type type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
 		this.valueAdapter = this.buildAdapter(VALUE_ADAPTER);
 	}

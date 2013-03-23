@@ -12,15 +12,16 @@ package org.jboss.tools.hibernate.jpt.core.internal.jpa2.context.definition;
 
 import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaAttributeMappingDefinitionWrapper;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClass2_0Annotation;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumerated2_0Annotation;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumn2_0Annotation;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyTemporal2_0Annotation;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumn2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClassAnnotation2_0;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumnAnnotation2_0;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumeratedAnnotation2_0;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumnAnnotation2_0;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyTemporalAnnotation2_0;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumnAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.jboss.tools.hibernate.jpt.core.internal.context.definition.HibernateJavaManyToManyMappingDefinition;
@@ -65,18 +66,18 @@ public class HibernateJavaManyToManyMappingDefinition2_0 extends JavaAttributeMa
 	public static final String[] SUPPORTING_ANNOTATION_NAMES_ARRAY_2_0 = new String[] {
 		AttributeOverrideAnnotation.ANNOTATION_NAME,
 		JPA.ATTRIBUTE_OVERRIDES,
-		MapKeyClass2_0Annotation.ANNOTATION_NAME,
-		MapKeyColumn2_0Annotation.ANNOTATION_NAME,
-		MapKeyEnumerated2_0Annotation.ANNOTATION_NAME,
-		MapKeyJoinColumn2_0Annotation.ANNOTATION_NAME,
+		MapKeyClassAnnotation2_0.ANNOTATION_NAME,
+		MapKeyColumnAnnotation2_0.ANNOTATION_NAME,
+		MapKeyEnumeratedAnnotation2_0.ANNOTATION_NAME,
+		MapKeyJoinColumnAnnotation2_0.ANNOTATION_NAME,
 		JPA2_0.MAP_KEY_JOIN_COLUMNS,
-		MapKeyTemporal2_0Annotation.ANNOTATION_NAME,
-		OrderColumn2_0Annotation.ANNOTATION_NAME
+		MapKeyTemporalAnnotation2_0.ANNOTATION_NAME,
+		OrderColumnAnnotation2_0.ANNOTATION_NAME
 	};
-	private static final Iterable<String> SUPPORTING_ANNOTATION_NAMES_2_0 = new ArrayIterable<String>(SUPPORTING_ANNOTATION_NAMES_ARRAY_2_0);
+	private static final Iterable<String> SUPPORTING_ANNOTATION_NAMES_2_0 = IterableTools.iterable(SUPPORTING_ANNOTATION_NAMES_ARRAY_2_0);
 
 	@SuppressWarnings("unchecked")
-	private static final Iterable<String> COMBINED_SUPPORTING_ANNOTATION_NAMES = new CompositeIterable<String>(
+	private static final Iterable<String> COMBINED_SUPPORTING_ANNOTATION_NAMES = IterableTools.concatenate(
 		DELEGATE.getSupportingAnnotationNames(),
 		SUPPORTING_ANNOTATION_NAMES_2_0
 	);

@@ -11,8 +11,9 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmBasicMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlBasic;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -28,7 +29,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValida
  */
 public class HibernateOrmBasicMapping extends AbstractOrmBasicMapping<XmlBasic> {
 
-	public HibernateOrmBasicMapping(OrmPersistentAttribute parent,
+	public HibernateOrmBasicMapping(OrmSpecifiedPersistentAttribute parent,
 			XmlBasic resourceMapping) {
 		super(parent, resourceMapping);
 	}
@@ -39,7 +40,7 @@ public class HibernateOrmBasicMapping extends AbstractOrmBasicMapping<XmlBasic> 
 	}
 
 	@Override
-	public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+	public String getDefaultColumnName(NamedColumn column) {
 		if (getName() != null){
 			NamingStrategy ns = getJpaProject().getNamingStrategy();
 			if (getJpaProject().isNamingStrategyEnabled() && ns != null) {

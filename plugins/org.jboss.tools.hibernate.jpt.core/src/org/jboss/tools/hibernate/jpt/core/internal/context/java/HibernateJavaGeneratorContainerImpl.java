@@ -12,9 +12,11 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SubListIterableWrapper;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.Generator;
+import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaGeneratorContainer;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.context.GenericGenerator;
@@ -30,7 +32,7 @@ public class HibernateJavaGeneratorContainerImpl extends
 
 	protected final ContextListContainer<JavaDbGenericGenerator, GenericGeneratorAnnotation> genericGeneratorContainer;
 	
-	public HibernateJavaGeneratorContainerImpl(ParentAdapter parentAdapter) {
+	public HibernateJavaGeneratorContainerImpl(JavaGeneratorContainer.Parent parentAdapter) {
 		super(parentAdapter);
 		this.genericGeneratorContainer = this.buildGenericGeneratorContainer();
 	}
@@ -50,12 +52,12 @@ public class HibernateJavaGeneratorContainerImpl extends
 	@Override
 	public void update() {
 		super.update();
-		this.updateNodes(this.getGenericGenerators());
+		this.updateModels(this.getGenericGenerators());
 	}
 	
 	@Override
 	protected Iterable<Generator> getGenerators_() {
-		return new CompositeIterable<Generator>(
+		return IterableTools.concatenate(
 				super.getGenerators_(),
 				this.getGenericGenerators()
 			);
@@ -80,7 +82,7 @@ public class HibernateJavaGeneratorContainerImpl extends
 	}
 	
 	protected GenericGeneratorAnnotation addGenericGeneratorAnnotation(int index) {
-		return (GenericGeneratorAnnotation) this.parentAdapter.getResourceAnnotatedElement().addAnnotation(index, GenericGeneratorAnnotation.ANNOTATION_NAME);
+		return (GenericGeneratorAnnotation) this.parent.getResourceAnnotatedElement().addAnnotation(index, GenericGeneratorAnnotation.ANNOTATION_NAME);
 	}
 
 	public void removeGenericGenerator(GenericGenerator genericGenerator) {
@@ -88,12 +90,12 @@ public class HibernateJavaGeneratorContainerImpl extends
 	}
 
 	public void removeGenericGenerator(int index) {
-		this.parentAdapter.getResourceAnnotatedElement().removeAnnotation(index, GenericGeneratorAnnotation.ANNOTATION_NAME);
+		this.parent.getResourceAnnotatedElement().removeAnnotation(index, GenericGeneratorAnnotation.ANNOTATION_NAME);
 		this.genericGeneratorContainer.removeContextElement(index);
 	}
 
 	public void moveGenericGenerator(int targetIndex, int sourceIndex) {
-		this.parentAdapter.getResourceAnnotatedElement().moveAnnotation(targetIndex, sourceIndex, GenericGeneratorAnnotation.ANNOTATION_NAME);
+		this.parent.getResourceAnnotatedElement().moveAnnotation(targetIndex, sourceIndex, GenericGeneratorAnnotation.ANNOTATION_NAME);
 		this.genericGeneratorContainer.moveContextElement(targetIndex, sourceIndex);
 	}
 
@@ -110,7 +112,7 @@ public class HibernateJavaGeneratorContainerImpl extends
 	}
 
 	protected ListIterable<NestableAnnotation> getNestableGenericGeneratorAnnotations_() {
-		return this.parentAdapter.getResourceAnnotatedElement().getAnnotations(GenericGeneratorAnnotation.ANNOTATION_NAME);
+		return this.parent.getResourceAnnotatedElement().getAnnotations(GenericGeneratorAnnotation.ANNOTATION_NAME);
 	}
 
 	protected ContextListContainer<JavaDbGenericGenerator, GenericGeneratorAnnotation> buildGenericGeneratorContainer() {

@@ -16,9 +16,9 @@ import java.util.List;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -30,7 +30,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValida
  * @author Dmitry Geraskov
  *
  */
-public class ForeignKeyImpl extends AbstractJavaJpaContextNode implements ForeignKey {
+public class ForeignKeyImpl extends AbstractJavaContextModel<JpaContextModel> implements ForeignKey {
 
 	private ForeignKeyAnnotation annotation;
 	
@@ -38,7 +38,7 @@ public class ForeignKeyImpl extends AbstractJavaJpaContextNode implements Foreig
 	
 	private String inverseName;
 
-	public ForeignKeyImpl(JpaContextNode parent, ForeignKeyAnnotation annotation) {
+	public ForeignKeyImpl(JpaContextModel parent, ForeignKeyAnnotation annotation) {
 		super(parent);
 		this.annotation = annotation;
 		this.name = annotation.getName();

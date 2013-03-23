@@ -14,18 +14,21 @@ package org.jboss.tools.hibernate.jpt.ui.internal.jpa2.details.orm;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.AccessHolder;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAccessReference;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.CacheableHolder2_0;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.core.jpa2.context.CacheableReference2_0;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.details.orm.JptJpaUiDetailsOrmMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractEntityComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.EntityNameCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.IdClassChooser;
-import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.JptUiDetailsOrmMessages;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.AbstractOrmEntityComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.MetadataCompleteTriStateCheckBox;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmInheritanceComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmJavaClassChooser;
@@ -44,7 +47,7 @@ import org.jboss.tools.hibernate.jpt.ui.internal.details.HibernateTableComposite
  * @author Dmitry Geraskov
  *
  */
-public class Hibernate2_0OrmEntityComposite extends AbstractEntityComposite<HibernateOrmEntity> {
+public class Hibernate2_0OrmEntityComposite extends AbstractOrmEntityComposite<HibernateOrmEntity> {
 
 	/**
 	 * @param subjectHolder
@@ -68,10 +71,10 @@ public class Hibernate2_0OrmEntityComposite extends AbstractEntityComposite<Hibe
 //		new MetadataCompleteComposite(this, getSubjectHolder(), container);
 
 		container = this.addSubPane(container, 2, 0, 0, 0, 0);
-
+		
 		// Java class widgets
-		Hyperlink javaClassHyperlink = this.addHyperlink(container, JptUiDetailsOrmMessages.OrmJavaClassChooser_javaClass);
-		new OrmJavaClassChooser(this, getSubjectHolder(), container, javaClassHyperlink);
+		Hyperlink javaClassHyperlink = this.addHyperlink(container, JptJpaUiDetailsOrmMessages.ORM_JAVA_CLASS_CHOOSER_JAVA_CLASS);
+		new OrmJavaClassChooser(this, buildPersistentTypeReferenceModel() , container, javaClassHyperlink);
 
 		// Table widgets
 		HibernateTableComposite tableComposite = new HibernateTableComposite(this, container);
@@ -80,15 +83,15 @@ public class Hibernate2_0OrmEntityComposite extends AbstractEntityComposite<Hibe
 		tableComposite.getControl().setLayoutData(gridData);
 
 		// Entity name widgets
-		this.addLabel(container, JptUiDetailsMessages.EntityNameComposite_name);
+		this.addLabel(container, JptJpaUiDetailsMessages.EntityNameComposite_name);
 		new EntityNameCombo(this, container);
 
 		// Access type widgets
-		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
+		this.addLabel(container, JptJpaUiMessages.AccessTypeComposite_access);
 		new AccessTypeComboViewer(this, buildAccessHolder(), container);
 
 		// Id class widgets
-		Hyperlink hyperlink = this.addHyperlink(container,JptUiDetailsMessages.IdClassComposite_label);
+		Hyperlink hyperlink = this.addHyperlink(container,JptJpaUiDetailsMessages.IdClassComposite_label);
 		new IdClassChooser(this, buildIdClassReferenceModel(), container, hyperlink);
 
 		// Metadata complete widgets
@@ -104,7 +107,7 @@ public class Hibernate2_0OrmEntityComposite extends AbstractEntityComposite<Hibe
 		return new PropertyAspectAdapter<OrmEntity, Cacheable2_0>(getSubjectHolder()) {
 			@Override
 			protected Cacheable2_0 buildValue_() {
-				return ((CacheableHolder2_0) this.subject).getCacheable();
+				return ((CacheableReference2_0) this.subject).getCacheable();
 			}
 		};
 	}
@@ -124,12 +127,12 @@ public class Hibernate2_0OrmEntityComposite extends AbstractEntityComposite<Hibe
 		return new Queries2_0Composite(this, buildQueryContainerModel(), container).getControl();
 	}
 	
-	protected PropertyValueModel<AccessHolder> buildAccessHolder() {
-		return new PropertyAspectAdapter<OrmEntity, AccessHolder>(
+	protected PropertyValueModel<SpecifiedAccessReference> buildAccessHolder() {
+		return new PropertyAspectAdapter<OrmEntity, SpecifiedAccessReference>(
 			getSubjectHolder())
 		{
 			@Override
-			protected AccessHolder buildValue_() {
+			protected SpecifiedAccessReference buildValue_() {
 				return this.subject.getPersistentType();
 			}
 		};

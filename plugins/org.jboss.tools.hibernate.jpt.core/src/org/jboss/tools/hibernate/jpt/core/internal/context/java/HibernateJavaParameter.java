@@ -11,15 +11,15 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.ParameterAnnotation;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public class HibernateJavaParameter extends AbstractJavaJpaContextNode implements JavaParameter {
+public class HibernateJavaParameter extends AbstractJavaContextModel<JpaContextModel> implements JavaParameter {
 
 	protected String name;
 
@@ -27,7 +27,7 @@ public class HibernateJavaParameter extends AbstractJavaJpaContextNode implement
 
 	protected ParameterAnnotation resourceParameter;
 	
-	public HibernateJavaParameter(JpaContextNode parent, ParameterAnnotation resourceParameter) {
+	public HibernateJavaParameter(JpaContextModel parent, ParameterAnnotation resourceParameter) {
 		super(parent);
 		this.resourceParameter = resourceParameter;
 		this.name = resourceParameter.getName();

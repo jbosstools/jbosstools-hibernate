@@ -12,7 +12,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.List;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaIdMapping;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -34,7 +34,7 @@ implements HibernateJavaIdMapping {
 	/**
 	 * @param parent
 	 */
-	public HibernateJavaIdMappingImpl(JavaPersistentAttribute parent) {
+	public HibernateJavaIdMappingImpl(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
 		this.index = this.buildIndex();
 		this.type = this.buildType();

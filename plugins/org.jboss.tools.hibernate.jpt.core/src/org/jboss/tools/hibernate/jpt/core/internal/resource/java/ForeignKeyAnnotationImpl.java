@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotat
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
@@ -47,7 +47,7 @@ ForeignKeyAnnotation {
 	private String inverseName;
 	private CompilationUnit astRoot;
 
-	protected ForeignKeyAnnotationImpl(JavaResourceNode parent, Member member) {
+	protected ForeignKeyAnnotationImpl(JavaResourceModel parent, Member member) {
 		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
 		this.nameAdapter = this.buildElementAdapter(NAME_ADAPTER);
 		this.inverseNameAdapter = this.buildElementAdapter(INVERSE_NAME_ADAPTER);

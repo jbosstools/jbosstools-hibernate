@@ -49,7 +49,7 @@ public interface JavaTypeConverter extends TypeConverter, JavaConverter{
 		}
 
 		public JavaConverter buildConverter(Annotation converterAnnotation, JavaAttributeMapping parent, JpaFactory factory) {
-			return ((HibernateAbstractJpaFactory)factory).buildJavaTypeConverter(parent, (TypeAnnotation) converterAnnotation, this.buildOwner());
+			return ((HibernateAbstractJpaFactory)factory).buildJavaTypeConverter(parent, (TypeAnnotation) converterAnnotation, this.buildConverterParentAdapter(parent));
 		}
 	}
 }

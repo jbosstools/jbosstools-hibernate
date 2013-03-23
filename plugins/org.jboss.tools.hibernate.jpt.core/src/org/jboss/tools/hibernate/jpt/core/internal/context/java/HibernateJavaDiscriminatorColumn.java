@@ -11,7 +11,7 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaDiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedDiscriminatorColumn;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateDiscriminatorColumn;
 
 /**
@@ -20,6 +20,6 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateDiscriminato
  *
  */
 public interface HibernateJavaDiscriminatorColumn extends
-		HibernateDiscriminatorColumn, JavaDiscriminatorColumn {
+		HibernateDiscriminatorColumn, JavaSpecifiedDiscriminatorColumn {
 
 }

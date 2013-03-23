@@ -13,12 +13,12 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
 import java.util.List;
 
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmIdMapping;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlId;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.hibernate.cfg.NamingStrategy;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
@@ -33,7 +33,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValida
 public class HibernateOrmIdMappingImpl extends AbstractOrmIdMapping<XmlId>
 implements HibernateOrmIdMapping {
 
-	public HibernateOrmIdMappingImpl(OrmPersistentAttribute parent,
+	public HibernateOrmIdMappingImpl(OrmSpecifiedPersistentAttribute parent,
 			XmlId resourceMapping) {
 		super(parent, resourceMapping);
 	}
@@ -44,7 +44,7 @@ implements HibernateOrmIdMapping {
 	}
 
 	@Override
-	public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+	public String getDefaultColumnName(NamedColumn column) {
 		if (getName() != null){
 			NamingStrategy namingStrategy = getJpaProject().getNamingStrategy();
 			if (getJpaProject().isNamingStrategyEnabled() && namingStrategy != null){
@@ -77,22 +77,20 @@ implements HibernateOrmIdMapping {
 		if (this.getTypeMapping().tableNameIsInvalid(tableName)) {
 			if (pa.isVirtual()) {
 				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_TABLE_NOT_VALID,
+					buildValidationMessage(
+						JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_TABLE_NOT_VALID,
 						new String[] {pa.getName(), tableName, this.getColumn().getDBColumnName()},
 						this.column, 
-						this.column.getTableNameTextRange()
+						this.column.getTableNameValidationTextRange()
 					)
 				);
 			} else {
 				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.COLUMN_UNRESOLVED_TABLE,
+					buildValidationMessage(
+						JptJpaCoreValidationMessages.COLUMN_UNRESOLVED_TABLE,
 						new String[] {tableName, this.getColumn().getDBColumnName()}, 
 						this.column, 
-						this.column.getTableNameTextRange()
+						this.column.getTableNameValidationTextRange()
 					)
 				);
 			}
@@ -102,22 +100,20 @@ implements HibernateOrmIdMapping {
 		if ( ! this.column.isResolved() && this.column.getDbTable() != null) {
 			if (pa.isVirtual()) {
 				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_NAME,
+					buildValidationMessage(
+						JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_NAME,
 						new String[] {pa.getName(), this.getColumn().getDBColumnName()},
 						this.column, 
-						this.column.getNameTextRange()
+						this.column.getTableNameValidationTextRange()
 					)
 				);
 			} else {
 				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
+					buildValidationMessage(
+						JptJpaCoreValidationMessages.COLUMN_UNRESOLVED_NAME,
 						new String[] {this.getColumn().getDBColumnName()}, 
 						this.column, 
-						this.column.getNameTextRange()
+						this.column.getTableNameValidationTextRange()
 					)
 				);
 			}

@@ -12,14 +12,14 @@ package org.jboss.tools.hibernate.jpt.ui.internal.mappings.db.xpl;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.JpaNode;
+import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  * This combo-box displays a table's columns.
  */
-public abstract class ColumnCombo<T extends JpaNode>
+public abstract class ColumnCombo<T extends JpaModel>
 	extends DatabaseObjectCombo<T>
 {
 	public ColumnCombo(

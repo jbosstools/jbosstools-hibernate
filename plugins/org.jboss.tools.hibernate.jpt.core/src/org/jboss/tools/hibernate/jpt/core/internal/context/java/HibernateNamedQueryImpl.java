@@ -12,7 +12,9 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.List;
 
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
+import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -25,7 +27,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedQ
  */
 public class HibernateNamedQueryImpl extends AbstractHibernateNamedQueryImpl<HibernateNamedQueryAnnotation> implements HibernateJavaNamedQuery {
 
-	public HibernateNamedQueryImpl(JpaContextNode parent,
+	public HibernateNamedQueryImpl(JavaQueryContainer parent,
 			HibernateNamedQueryAnnotation queryAnnotation) {
 		super(parent, queryAnnotation);
 	}
@@ -39,14 +41,30 @@ public class HibernateNamedQueryImpl extends AbstractHibernateNamedQueryImpl<Hib
 	// ********** validation **********
 
 	@Override
-	protected void validateQuery_(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter) {
+	public void validate(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter) {
 //		queryHelper.validate(this, this.query, this.queryAnnotation.getQueryTextRanges(), 1, messages);
-		queryHelper.validate(this, this.query, this.query, this.queryAnnotation.getQueryTextRanges(), 1, null, messages);
+		queryHelper.validate(this, this.queryAnnotation.getQuery(), this.queryAnnotation.getQuery(), this.queryAnnotation.getQueryTextRanges(), 1, null, messages);
 	}
 
 	// ********** misc **********
 	@Override
 	public Class<HibernateNamedQuery> getType() {
 		return HibernateNamedQuery.class;
+	}
+
+	@Override
+	public String getQuery() {
+		return this.queryAnnotation.getQuery();
+	}
+
+	@Override
+	public void setQuery(String query) {
+		this.queryAnnotation.setQuery(query);
+	}
+
+	@Override
+	public List<TextRange> getQueryTextRanges() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

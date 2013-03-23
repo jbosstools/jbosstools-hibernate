@@ -10,13 +10,14 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
+
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public interface Generated extends JpaContextNode {
+public interface Generated extends JpaContextModel {
 
 	GenerationTime getGenerationTime();
 	

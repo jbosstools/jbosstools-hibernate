@@ -10,8 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
-import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaColumn;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.Table;
@@ -28,8 +28,8 @@ import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValida
  */
 public class HibernateJavaColumnImpl extends GenericJavaColumn implements HibernateJavaColumn {
 
-	public HibernateJavaColumnImpl(JpaContextNode parent, JavaColumn.Owner owner) {
-		super(parent, owner);
+	public HibernateJavaColumnImpl(JavaSpecifiedColumn.ParentAdapter parent) {
+		super(parent);
 	}
 
 	@Override

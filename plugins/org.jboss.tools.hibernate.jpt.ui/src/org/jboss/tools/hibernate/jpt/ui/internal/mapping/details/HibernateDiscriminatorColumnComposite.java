@@ -19,15 +19,14 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.DiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.db.Table;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractEntityComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -97,91 +96,91 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 	protected void initializeLayout(Composite container) {
 
 //		// Discriminator Column sub-pane
-//		Composite discriminatorColumnContainer = addTitledGroup(
+//		Composite SpecifiedDiscriminatorColumnContainer = addTitledGroup(
 //			addSubPane(container, 10),
-//			JptUiDetailsMessages.InheritanceComposite_discriminatorColumnGroupBox
+//			JptJpaUiDetailsMessages.InheritanceComposite_SpecifiedDiscriminatorColumnGroupBox
 //		);
 //
-//		PropertyValueModel<DiscriminatorColumn> discriminatorColumnHolder =
-//			buildDiscriminatorColumnHolder();
+//		PropertyValueModel<SpecifiedDiscriminatorColumn> SpecifiedDiscriminatorColumnHolder =
+//			buildSpecifiedDiscriminatorColumnHolder();
 //
 //		// Name widgets
 //		addLabeledComposite(
-//			discriminatorColumnContainer,
-//			JptUiDetailsMessages.DiscriminatorColumnComposite_name,
-//			addDiscriminatorColumnCombo(container, discriminatorColumnHolder),
+//			SpecifiedDiscriminatorColumnContainer,
+//			JptJpaUiDetailsMessages.SpecifiedDiscriminatorColumnComposite_name,
+//			addSpecifiedDiscriminatorColumnCombo(container, SpecifiedDiscriminatorColumnHolder),
 //			JpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_COLUMN
 //		);
 //
 //		// Formula widgets
 //		addLabeledText(
-//			discriminatorColumnContainer,
-//			HibernateUIMappingMessages.HibernateDiscriminatorColumnComposite_formula,
+//			SpecifiedDiscriminatorColumnContainer,
+//			HibernateUIMappingMessages.HibernateSpecifiedDiscriminatorColumnComposite_formula,
 //			buildDiscriminatorFormulaValueHolder(),
 //			null//TODO help
 //		);
 //
 //		// Discriminator Type widgets
 //		addLabeledComposite(
-//			discriminatorColumnContainer,
-//			JptUiDetailsMessages.DiscriminatorColumnComposite_discriminatorType,
-//			addDiscriminatorTypeCombo(container, discriminatorColumnHolder),
+//			SpecifiedDiscriminatorColumnContainer,
+//			JptJpaUiDetailsMessages.SpecifiedDiscriminatorColumnComposite_discriminatorType,
+//			addDiscriminatorTypeCombo(container, SpecifiedDiscriminatorColumnHolder),
 //			JpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_TYPE
 //		);
 //
 //		container = addCollapsibleSubSection(
-//			discriminatorColumnContainer,
-//			JptUiDetailsMessages.InheritanceComposite_detailsGroupBox,
+//			SpecifiedDiscriminatorColumnContainer,
+//			JptJpaUiDetailsMessages.InheritanceComposite_detailsGroupBox,
 //			new SimplePropertyValueModel<Boolean>(Boolean.FALSE)
 //		);
 //
-//		new DetailsComposite(this, discriminatorColumnHolder, addSubPane(container, 0, 16));
+//		new DetailsComposite(this, SpecifiedDiscriminatorColumnHolder, addSubPane(container, 0, 16));
 //
-//		new PaneVisibilityEnabler(buildDiscriminatorColumnEnabledHolder(), this);
+//		new PaneVisibilityEnabler(buildSpecifiedDiscriminatorColumnEnabledHolder(), this);
 
-		PropertyValueModel<DiscriminatorColumn> discriminatorColumnHolder =
-				buildDiscriminatorColumnHolder();
-		PropertyValueModel<Boolean> enabledModel = buildDiscriminatorColumnEnabledHolder();
+		PropertyValueModel<SpecifiedDiscriminatorColumn> SpecifiedDiscriminatorColumnHolder =
+				buildSpecifiedDiscriminatorColumnHolder();
+		PropertyValueModel<Boolean> enabledModel = buildSpecifiedDiscriminatorColumnEnabledHolder();
 
 			// Name widgets
-			this.addLabel(container, JptUiDetailsMessages.DiscriminatorColumnComposite_name, enabledModel);
-			this.addDiscriminatorColumnCombo(container, discriminatorColumnHolder, enabledModel);
+			this.addLabel(container, JptJpaUiDetailsMessages.DiscriminatorColumnComposite_name, enabledModel);
+			this.addSpecifiedDiscriminatorColumnCombo(container, SpecifiedDiscriminatorColumnHolder, enabledModel);
 
 			// Discriminator Type widgets
-			this.addLabel(container,JptUiDetailsMessages.DiscriminatorColumnComposite_discriminatorType, enabledModel);
-			this.addDiscriminatorTypeCombo(container, discriminatorColumnHolder, enabledModel);
+			this.addLabel(container,JptJpaUiDetailsMessages.DiscriminatorColumnComposite_discriminatorType, enabledModel);
+			this.addDiscriminatorTypeCombo(container, SpecifiedDiscriminatorColumnHolder, enabledModel);
 
 
 			Section detailsSection = this.getWidgetFactory().createSection(container, ExpandableComposite.TWISTIE);
 			detailsSection.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			detailsSection.setText(JptUiDetailsMessages.InheritanceComposite_detailsGroupBox);
-			detailsSection.setClient(this.initializeDetailsClient(detailsSection, discriminatorColumnHolder, enabledModel));
+			detailsSection.setText(JptJpaUiDetailsMessages.InheritanceComposite_detailsGroupBox);
+			detailsSection.setClient(this.initializeDetailsClient(detailsSection, SpecifiedDiscriminatorColumnHolder, enabledModel));
 
 		
 	}
 
-	private ColumnCombo<DiscriminatorColumn> addDiscriminatorColumnCombo(
+	private ColumnCombo<SpecifiedDiscriminatorColumn> addSpecifiedDiscriminatorColumnCombo(
 			Composite container,
-			PropertyValueModel<DiscriminatorColumn> discriminatorColumnHolder, 
+			PropertyValueModel<SpecifiedDiscriminatorColumn> SpecifiedDiscriminatorColumnHolder, 
 			PropertyValueModel<Boolean> enabledModel) {
 
-		return new ColumnCombo<DiscriminatorColumn>(
+		return new ColumnCombo<SpecifiedDiscriminatorColumn>(
 			this,
-			discriminatorColumnHolder,
+			SpecifiedDiscriminatorColumnHolder,
 			container)
 		{
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(ReadOnlyNamedColumn.SPECIFIED_NAME_PROPERTY);
-				propertyNames.add(ReadOnlyNamedColumn.DEFAULT_NAME_PROPERTY);
-				propertyNames.add(ReadOnlyNamedColumn.DB_TABLE_PROPERTY);
+				propertyNames.add(NamedColumn.SPECIFIED_NAME_PROPERTY);
+				propertyNames.add(NamedColumn.DEFAULT_NAME_PROPERTY);
+				propertyNames.add(NamedColumn.DB_TABLE_PROPERTY);
 			}
 
 			@Override
 			protected void propertyChanged(String propertyName) {
-					if (propertyName.equals(ReadOnlyNamedColumn.DB_TABLE_PROPERTY)) {
+					if (propertyName.equals(NamedColumn.DB_TABLE_PROPERTY)) {
 						this.doPopulate();
 					} else {
 						super.propertyChanged(propertyName);
@@ -220,18 +219,18 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 
 			@Override
 			public String toString() {
-				return "DiscriminatorColumnComposite.columnCombo"; //$NON-NLS-1$
+				return "SpecifiedDiscriminatorColumnComposite.columnCombo"; //$NON-NLS-1$
 			}
 		};
 	}	
 	
-//	private ColumnCombo<DiscriminatorColumn> addDiscriminatorColumnCombo(
+//	private ColumnCombo<SpecifiedDiscriminatorColumn> addSpecifiedDiscriminatorColumnCombo(
 //		Composite container,
-//		PropertyValueModel<DiscriminatorColumn> discriminatorColumnHolder) {
+//		PropertyValueModel<SpecifiedDiscriminatorColumn> SpecifiedDiscriminatorColumnHolder) {
 //
-//		return new ColumnCombo<DiscriminatorColumn>(
+//		return new ColumnCombo<SpecifiedDiscriminatorColumn>(
 //			this,
-//			discriminatorColumnHolder,
+//			SpecifiedDiscriminatorColumnHolder,
 //			container)
 //		{
 //
@@ -269,10 +268,10 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 //		};
 //	}
 
-	private PropertyValueModel<DiscriminatorColumn> buildDiscriminatorColumnHolder() {
-		return new PropertyAspectAdapter<Entity, DiscriminatorColumn>(getSubjectHolder()) {
+	private PropertyValueModel<SpecifiedDiscriminatorColumn> buildSpecifiedDiscriminatorColumnHolder() {
+		return new PropertyAspectAdapter<Entity, SpecifiedDiscriminatorColumn>(getSubjectHolder()) {
 			@Override
-			protected DiscriminatorColumn buildValue_() {
+			protected SpecifiedDiscriminatorColumn buildValue_() {
 				return this.subject.getDiscriminatorColumn();
 			}
 		};
@@ -299,7 +298,7 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 //							? getSubject().getDiscriminatorFormula()
 //							: getSubject().addDiscriminatorFormula());
 //					discriminatorFormula.setValue(value);
-//					//HibernateDiscriminatorColumnComposite.this.discriminatorFormulaHolder.setValue(discriminatorFormula);
+//					//HibernateSpecifiedDiscriminatorColumnComposite.this.discriminatorFormulaHolder.setValue(discriminatorFormula);
 //				//}
 //				//setValue_(value);
 //			}
@@ -319,22 +318,22 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 //		};
 //	}
 
-	private EnumFormComboViewer<DiscriminatorColumn, DiscriminatorType> addDiscriminatorTypeCombo(
+	private EnumFormComboViewer<SpecifiedDiscriminatorColumn, DiscriminatorType> addDiscriminatorTypeCombo(
 		    Composite container,
-			PropertyValueModel<DiscriminatorColumn> discriminatorColumnHolder,
+			PropertyValueModel<SpecifiedDiscriminatorColumn> SpecifiedDiscriminatorColumnHolder,
 			PropertyValueModel<Boolean> enabledModel) {
 
-		return new EnumFormComboViewer<DiscriminatorColumn, DiscriminatorType>(
+		return new EnumFormComboViewer<SpecifiedDiscriminatorColumn, DiscriminatorType>(
 			this,
-			discriminatorColumnHolder,
+			SpecifiedDiscriminatorColumnHolder,
 			enabledModel,
 			container)
 		{
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(DiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE_PROPERTY);
-				propertyNames.add(DiscriminatorColumn.SPECIFIED_DISCRIMINATOR_TYPE_PROPERTY);
+				propertyNames.add(SpecifiedDiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE_PROPERTY);
+				propertyNames.add(SpecifiedDiscriminatorColumn.SPECIFIED_DISCRIMINATOR_TYPE_PROPERTY);
 			}
 
 			@Override
@@ -351,11 +350,11 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 			protected String displayString(DiscriminatorType value) {
 				switch (value) {
 					case CHAR :
-						return JptUiDetailsMessages.DiscriminatorColumnComposite_char;
+						return JptJpaUiDetailsMessages.DiscriminatorColumnComposite_char;
 					case INTEGER :
-						return JptUiDetailsMessages.DiscriminatorColumnComposite_integer;
+						return JptJpaUiDetailsMessages.DiscriminatorColumnComposite_integer;
 					case STRING :
-						return JptUiDetailsMessages.DiscriminatorColumnComposite_string;						default :
+						return JptJpaUiDetailsMessages.DiscriminatorColumnComposite_string;						default :
 					throw new IllegalStateException();
 				}
 			}
@@ -385,20 +384,20 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 	
 	
 	
-//	private EnumFormComboViewer<DiscriminatorColumn, DiscriminatorType> addDiscriminatorTypeCombo(
+//	private EnumFormComboViewer<SpecifiedDiscriminatorColumn, DiscriminatorType> addDiscriminatorTypeCombo(
 //		Composite container,
-//		PropertyValueModel<DiscriminatorColumn> discriminatorColumnHolder) {
+//		PropertyValueModel<SpecifiedDiscriminatorColumn> SpecifiedDiscriminatorColumnHolder) {
 //
-//		return new EnumFormComboViewer<DiscriminatorColumn, DiscriminatorType>(
+//		return new EnumFormComboViewer<SpecifiedDiscriminatorColumn, DiscriminatorType>(
 //			this,
-//			discriminatorColumnHolder,
+//			SpecifiedDiscriminatorColumnHolder,
 //			container)
 //		{
 //			@Override
 //			protected void addPropertyNames(Collection<String> propertyNames) {
 //				super.addPropertyNames(propertyNames);
-//				propertyNames.add(DiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE_PROPERTY);
-//				propertyNames.add(DiscriminatorColumn.SPECIFIED_DISCRIMINATOR_TYPE_PROPERTY);
+//				propertyNames.add(SpecifiedDiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE_PROPERTY);
+//				propertyNames.add(SpecifiedDiscriminatorColumn.SPECIFIED_DISCRIMINATOR_TYPE_PROPERTY);
 //			}
 //
 //			@Override
@@ -415,11 +414,11 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 //			protected String displayString(DiscriminatorType value) {
 //				switch (value) {
 //					case CHAR :
-//						return JptUiDetailsMessages.DiscriminatorColumnComposite_char;
+//						return JptJpaUiDetailsMessages.SpecifiedDiscriminatorColumnComposite_char;
 //					case INTEGER :
-//						return JptUiDetailsMessages.DiscriminatorColumnComposite_integer;
+//						return JptJpaUiDetailsMessages.SpecifiedDiscriminatorColumnComposite_integer;
 //					case STRING :
-//						return JptUiDetailsMessages.DiscriminatorColumnComposite_string;
+//						return JptJpaUiDetailsMessages.SpecifiedDiscriminatorColumnComposite_string;
 //					default :
 //						throw new IllegalStateException();
 //				}
@@ -442,7 +441,7 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 //		};
 //	}
 
-	protected ModifiablePropertyValueModel<Boolean> buildDiscriminatorColumnEnabledHolder() {
+	protected ModifiablePropertyValueModel<Boolean> buildSpecifiedDiscriminatorColumnEnabledHolder() {
 		return new PropertyAspectAdapter<Entity, Boolean>(getSubjectHolder(), Entity.SPECIFIED_DISCRIMINATOR_COLUMN_IS_ALLOWED_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -451,7 +450,7 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 		};
 	}
 	
-	protected Control initializeDetailsClient(Section detailsSection, PropertyValueModel<DiscriminatorColumn> discriminatorColumnHolder, PropertyValueModel<Boolean> enabledModel) {
+	protected Control initializeDetailsClient(Section detailsSection, PropertyValueModel<SpecifiedDiscriminatorColumn> SpecifiedDiscriminatorColumnHolder, PropertyValueModel<Boolean> enabledModel) {
 		Composite detailsClient = this.addSubPane(detailsSection, 2, 0, 0, 0, 0);
 		detailsSection.setClient(detailsClient);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
@@ -459,24 +458,24 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 		detailsSection.setLayoutData(gridData);
 
 		// Length widgets
-		Label lengthLabel = this.addLabel(detailsClient, JptUiDetailsMessages.ColumnComposite_length, enabledModel);
+		Label lengthLabel = this.addLabel(detailsClient, JptJpaUiDetailsMessages.ColumnComposite_length, enabledModel);
 		gridData = new GridData();
 		gridData.horizontalIndent = 16;
 		lengthLabel.setLayoutData(gridData);
-		this.addLengthCombo(detailsClient, discriminatorColumnHolder, enabledModel);
+		this.addLengthCombo(detailsClient, SpecifiedDiscriminatorColumnHolder, enabledModel);
 
 		// Column Definition widgets
-		Label columnDefinitionLabel = this.addLabel(detailsClient, JptUiDetailsMessages.ColumnComposite_columnDefinition, enabledModel);
+		Label columnDefinitionLabel = this.addLabel(detailsClient, JptJpaUiDetailsMessages.ColumnComposite_columnDefinition, enabledModel);
 		gridData = new GridData();
 		gridData.horizontalIndent = 16;
 		columnDefinitionLabel.setLayoutData(gridData);
-		this.addText(detailsClient, this.buildColumnDefinitionHolder(discriminatorColumnHolder), null, enabledModel);
+		this.addText(detailsClient, this.buildColumnDefinitionHolder(SpecifiedDiscriminatorColumnHolder), null, enabledModel);
 
 		return detailsClient;
 	}
 
-	private void addLengthCombo(Composite container, PropertyValueModel<DiscriminatorColumn> subjectHolder, PropertyValueModel<Boolean> enabledModel) {
-		new IntegerCombo<DiscriminatorColumn>(this, subjectHolder, enabledModel, container) {			
+	private void addLengthCombo(Composite container, PropertyValueModel<SpecifiedDiscriminatorColumn> subjectHolder, PropertyValueModel<Boolean> enabledModel) {
+		new IntegerCombo<SpecifiedDiscriminatorColumn>(this, subjectHolder, enabledModel, container) {			
 			@Override
 			protected String getHelpId() {
 				return JpaHelpContextIds.MAPPING_COLUMN_LENGTH;
@@ -484,7 +483,7 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 
 			@Override
 			protected PropertyValueModel<Integer> buildDefaultHolder() {
-				return new PropertyAspectAdapter<DiscriminatorColumn, Integer>(getSubjectHolder(), DiscriminatorColumn.DEFAULT_LENGTH_PROPERTY) {
+				return new PropertyAspectAdapter<SpecifiedDiscriminatorColumn, Integer>(getSubjectHolder(), SpecifiedDiscriminatorColumn.DEFAULT_LENGTH_PROPERTY) {
 					@Override
 					protected Integer buildValue_() {
 						return Integer.valueOf(this.subject.getDefaultLength());
@@ -494,7 +493,7 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 			
 			@Override
 			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<DiscriminatorColumn, Integer>(getSubjectHolder(), DiscriminatorColumn.SPECIFIED_LENGTH_PROPERTY) {
+				return new PropertyAspectAdapter<SpecifiedDiscriminatorColumn, Integer>(getSubjectHolder(), SpecifiedDiscriminatorColumn.SPECIFIED_LENGTH_PROPERTY) {
 					@Override
 					protected Integer buildValue_() {
 						return this.subject.getSpecifiedLength();
@@ -509,9 +508,9 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 		};
 	}
 	
-	private ModifiablePropertyValueModel<String> buildColumnDefinitionHolder(PropertyValueModel<DiscriminatorColumn> discriminatorColumnHolder) {
+	private ModifiablePropertyValueModel<String> buildColumnDefinitionHolder(PropertyValueModel<SpecifiedDiscriminatorColumn> SpecifiedDiscriminatorColumnHolder) {
 
-		return new PropertyAspectAdapter<DiscriminatorColumn, String>(discriminatorColumnHolder, NamedColumn.COLUMN_DEFINITION_PROPERTY) {
+		return new PropertyAspectAdapter<SpecifiedDiscriminatorColumn, String>(SpecifiedDiscriminatorColumnHolder, NamedColumn.COLUMN_DEFINITION_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getColumnDefinition();
@@ -527,9 +526,9 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 		};
 	}
 
-//	protected class DetailsComposite extends Pane<DiscriminatorColumn> {
+//	protected class DetailsComposite extends Pane<SpecifiedDiscriminatorColumn> {
 //		public DetailsComposite(Pane<?> parentPane,
-//            PropertyValueModel<? extends DiscriminatorColumn> subjectHolder,
+//            PropertyValueModel<? extends SpecifiedDiscriminatorColumn> subjectHolder,
 //            Composite parent) {
 //
 //			super(parentPane, subjectHolder, parent);
@@ -543,17 +542,17 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 //			// Column Definition widgets
 //			addLabeledText(
 //				container,
-//				JptUiDetailsMessages.ColumnComposite_columnDefinition,
+//				JptJpaUiDetailsMessages.ColumnComposite_columnDefinition,
 //				buildColumnDefinitionHolder(getSubjectHolder())
 //			);
 //		}
 //
 //		private void addLengthCombo(Composite container) {
-//			new IntegerCombo<DiscriminatorColumn>(this, container) {
+//			new IntegerCombo<SpecifiedDiscriminatorColumn>(this, container) {
 //
 //				@Override
 //				protected String getLabelText() {
-//					return JptUiDetailsMessages.ColumnComposite_length;
+//					return JptJpaUiDetailsMessages.ColumnComposite_length;
 //				}
 //
 //				@Override
@@ -563,7 +562,7 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 //
 //				@Override
 //				protected PropertyValueModel<Integer> buildDefaultHolder() {
-//					return new PropertyAspectAdapter<DiscriminatorColumn, Integer>(getSubjectHolder(), DiscriminatorColumn.DEFAULT_LENGTH_PROPERTY) {
+//					return new PropertyAspectAdapter<SpecifiedDiscriminatorColumn, Integer>(getSubjectHolder(), SpecifiedDiscriminatorColumn.DEFAULT_LENGTH_PROPERTY) {
 //						@Override
 //						protected Integer buildValue_() {
 //							return Integer.valueOf(this.subject.getDefaultLength());
@@ -573,7 +572,7 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 //
 //				@Override
 //				protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-//					return new PropertyAspectAdapter<DiscriminatorColumn, Integer>(getSubjectHolder(), DiscriminatorColumn.SPECIFIED_LENGTH_PROPERTY) {
+//					return new PropertyAspectAdapter<SpecifiedDiscriminatorColumn, Integer>(getSubjectHolder(), SpecifiedDiscriminatorColumn.SPECIFIED_LENGTH_PROPERTY) {
 //						@Override
 //						protected Integer buildValue_() {
 //							return this.subject.getSpecifiedLength();
@@ -588,9 +587,9 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 //			};
 //		}
 //
-//		private ModifiablePropertyValueModel<String> buildColumnDefinitionHolder(PropertyValueModel<DiscriminatorColumn> discriminatorColumnHolder) {
+//		private ModifiablePropertyValueModel<String> buildColumnDefinitionHolder(PropertyValueModel<SpecifiedDiscriminatorColumn> SpecifiedDiscriminatorColumnHolder) {
 //
-//			return new PropertyAspectAdapter<DiscriminatorColumn, String>(discriminatorColumnHolder, NamedColumn.COLUMN_DEFINITION_PROPERTY) {
+//			return new PropertyAspectAdapter<SpecifiedDiscriminatorColumn, String>(SpecifiedDiscriminatorColumnHolder, NamedColumn.COLUMN_DEFINITION_PROPERTY) {
 //				@Override
 //				protected String buildValue_() {
 //					return this.subject.getColumnDefinition();

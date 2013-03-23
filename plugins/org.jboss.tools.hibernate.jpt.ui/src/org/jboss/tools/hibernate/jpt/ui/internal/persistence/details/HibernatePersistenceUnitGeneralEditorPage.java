@@ -7,7 +7,6 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.ui.internal.persistence.JptUiPersistenceMessages;
 import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitGeneralEditorPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;

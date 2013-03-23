@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateColumn;
 
 /**
@@ -18,6 +18,6 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateColumn;
  * @author Dmitry Geraskov
  *
  */
-public interface HibernateJavaColumn extends JavaColumn, HibernateColumn {
+public interface HibernateJavaColumn extends JavaSpecifiedColumn, HibernateColumn {
 
 }

@@ -16,8 +16,8 @@ import org.eclipse.jpt.common.ui.internal.util.PaneVisibilityEnabler;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractJpaDetailsPageManager;
-import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -70,7 +70,7 @@ public class PackageInfoDetailsPage extends AbstractJpaDetailsPageManager<Hibern
 				ExpandableComposite.TWISTIE |
 				ExpandableComposite.EXPANDED);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptUiDetailsMessages.BasicSection_title);
+		section.setText(JptJpaUiDetailsMessages.BasicSection_title);
 		section.setClient(this.initializeGenericGeneratorsSection(section));
 //		container = addCollapsibleSection(
 //				container,
@@ -100,7 +100,7 @@ public class PackageInfoDetailsPage extends AbstractJpaDetailsPageManager<Hibern
 				ExpandableComposite.TWISTIE |
 				ExpandableComposite.EXPANDED);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptUiDetailsMessages.BasicSection_title);
+		section.setText(JptJpaUiDetailsMessages.BasicSection_title);
 		section.setClient(this.initializeQueriesSection(section, buildQueryContainerHolder()));
 //		container = addCollapsibleSection(
 //				container,
@@ -127,7 +127,7 @@ public class PackageInfoDetailsPage extends AbstractJpaDetailsPageManager<Hibern
 				ExpandableComposite.TWISTIE |
 				ExpandableComposite.EXPANDED);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptUiDetailsMessages.BasicSection_title);
+		section.setText(JptJpaUiDetailsMessages.BasicSection_title);
 		section.setClient(this.initializeTypeDefsSection(section, buildTypeDefContainerHolder()));
 //		container = addCollapsibleSection(
 //				container,

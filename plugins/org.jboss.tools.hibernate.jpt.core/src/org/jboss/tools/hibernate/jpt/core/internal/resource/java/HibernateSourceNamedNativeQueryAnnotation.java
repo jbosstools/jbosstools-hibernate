@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.ShortCircuitAnnotationEl
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationAdapter;
@@ -118,7 +118,7 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation 
 	private String resultSetMapping;
 	private TextRange resultSetMappingTextRange;
 
-	HibernateSourceNamedNativeQueryAnnotation(JavaResourceNode parent, AnnotatedElement annotatedElement,DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	HibernateSourceNamedNativeQueryAnnotation(JavaResourceModel parent, AnnotatedElement annotatedElement,DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, annotatedElement, daa, annotationAdapter);
 		this.nameDeclarationAdapter = this.buildNameAdapter(daa);
 		this.nameAdapter = this.buildAdapter(this.nameDeclarationAdapter);
@@ -642,7 +642,7 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation 
 	 * for subclasses
 	 */
 
-	public static HibernateNamedNativeQueryAnnotation createNamedNativeQuery(JavaResourceNode parent, AnnotatedElement member) {
+	public static HibernateNamedNativeQueryAnnotation createNamedNativeQuery(JavaResourceModel parent, AnnotatedElement member) {
 		return new HibernateSourceNamedNativeQueryAnnotation(parent, member, DECLARATION_ANNOTATION_ADAPTER, new ElementAnnotationAdapter(member, DECLARATION_ANNOTATION_ADAPTER));
 	}
 

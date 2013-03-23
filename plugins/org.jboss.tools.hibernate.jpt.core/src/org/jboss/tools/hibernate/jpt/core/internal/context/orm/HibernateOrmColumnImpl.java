@@ -11,8 +11,7 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
-import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmColumn;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.Table;
@@ -30,8 +29,8 @@ import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValida
 public class HibernateOrmColumnImpl extends GenericOrmColumn
 implements HibernateOrmColumn {
 
-	public HibernateOrmColumnImpl(JpaContextNode parent, OrmColumn.Owner owner) {
-		super(parent, owner);
+	public HibernateOrmColumnImpl(OrmSpecifiedColumn.ParentAdapter parent) {
+		super(parent);
 	}
 
 	@Override
@@ -73,10 +72,12 @@ implements HibernateOrmColumn {
 		return getDefaultName();
 	}
 
-	@Override
-	public Table getDbTable() {
-		return this.owner.resolveDbTable(this.getDBTableName());
-	}
+	
+	// FIXME: Check if it was required
+//	@Override
+//	public Table getDbTable() {
+//		return this.parent.resolveDbTable(this.getDBTableName());
+//	}
 
 	@Override
 	public String getDBTableName() {

@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotat
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
@@ -43,7 +43,7 @@ GeneratedAnnotation {
 	private GenerationTime value;
 	private CompilationUnit astRoot;
 
-	protected GeneratedAnnotationImpl(JavaResourceNode parent, Attribute attribute) {
+	protected GeneratedAnnotationImpl(JavaResourceModel parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
 		this.valueAdapter = this.buildAdapter(VALUE_ADAPTER);
 	}

@@ -10,13 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.definition;
 
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JoinTableAnnotation;
@@ -55,7 +54,7 @@ public class HibernateJavaOneToOneMappingDefinition implements JavaAttributeMapp
 		return OneToOneAnnotation.ANNOTATION_NAME;
 	}
 
-	public boolean isSpecified(JavaPersistentAttribute persistentAttribute) {
+	public boolean isSpecified(JavaSpecifiedPersistentAttribute persistentAttribute) {
 		return persistentAttribute.getResourceAttribute().getAnnotation(this.getAnnotationName()) != null;
 	}
 	
@@ -70,14 +69,14 @@ public class HibernateJavaOneToOneMappingDefinition implements JavaAttributeMapp
 		PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME,
 		JPA.PRIMARY_KEY_JOIN_COLUMNS
 	};
-	private static final Iterable<String> SUPPORTING_ANNOTATION_NAMES = new ArrayIterable<String>(SUPPORTING_ANNOTATION_NAMES_ARRAY);
+	private static final Iterable<String> SUPPORTING_ANNOTATION_NAMES = IterableTools.iterable(SUPPORTING_ANNOTATION_NAMES_ARRAY);
 
 	@Override
 	public Iterable<String> getSupportingAnnotationNames() {
-		return new CompositeIterable<String>(SUPPORTING_ANNOTATION_NAMES, new ArrayIterable<String>(HIBERNATE_ANNOTATION_NAMES_ARRAY));
+		return IterableTools.concatenate(SUPPORTING_ANNOTATION_NAMES, IterableTools.iterable(HIBERNATE_ANNOTATION_NAMES_ARRAY));
 	}
 	
-	public JavaAttributeMapping buildMapping(JavaPersistentAttribute persistentAttribute, JpaFactory factory) {
+	public JavaAttributeMapping buildMapping(JavaSpecifiedPersistentAttribute persistentAttribute, JpaFactory factory) {
 		return factory.buildJavaOneToOneMapping(persistentAttribute);
 	}
 

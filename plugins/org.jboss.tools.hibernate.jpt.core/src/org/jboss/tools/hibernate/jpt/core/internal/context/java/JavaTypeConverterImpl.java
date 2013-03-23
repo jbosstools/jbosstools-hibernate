@@ -31,8 +31,8 @@ public class JavaTypeConverterImpl extends AbstractJavaConverter implements Java
 	
 	protected String type;
 
-	public JavaTypeConverterImpl(JavaAttributeMapping parent, TypeAnnotation typeAnnotation, JavaConverter.Owner owner) {
-		super(parent, owner);
+	public JavaTypeConverterImpl(JavaAttributeMapping parent, TypeAnnotation typeAnnotation, JavaConverter.ParentAdapter owner) {
+		super(owner);
 		this.typeAnnotation = typeAnnotation;
 		type = buildHibernateType();
 	}

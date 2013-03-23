@@ -43,7 +43,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.jpa.ui.internal.persistence.JptUiPersistenceMessages;
+import org.eclipse.jpt.jpa.ui.persistence.JptJpaUiPersistenceMessages;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -256,7 +256,7 @@ public class HibernatePersistenceUnitClassesComposite extends Pane<PersistenceUn
 				String name = classRef.getClassName();
 
 				if (name == null) {
-					name = JptUiPersistenceMessages.PersistenceUnitClassesComposite_mappedClassesNoName;
+					name = JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_CLASSES_COMPOSITE_CLASS_REF_NO_NAME;
 				}
 
 				return name;
@@ -267,7 +267,7 @@ public class HibernatePersistenceUnitClassesComposite extends Pane<PersistenceUn
 	private ListValueModel<ClassRef> buildItemListHolder() {
 		return new ItemPropertyListValueModelAdapter<ClassRef>(
 			buildListHolder(),
-			ClassRef.JAVA_PERSISTENT_TYPE_PROPERTY,
+			ClassRef.JAVA_MANAGED_TYPE_PROPERTY,
 			ClassRef.CLASS_NAME_PROPERTY
 		);
 	}
@@ -400,7 +400,7 @@ public class HibernatePersistenceUnitClassesComposite extends Pane<PersistenceUn
 
 		this.addCheckBox(
 			container,
-			JptUiPersistenceMessages.PersistenceUnitClassesComposite_excludeUnlistedMappedClasses,
+			JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_CLASSES_COMPOSITE_EXCLUDE_UNLISTED_CLASSES,
 			buildExcludeUnlistedMappedClassesHolder(),
 			JpaHelpContextIds.PERSISTENCE_XML_GENERAL
 		);

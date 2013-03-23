@@ -12,10 +12,10 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.List;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTable;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaJoinTable;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -32,9 +32,8 @@ import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValida
 public class HibernateJavaJoinTableImpl extends GenericJavaJoinTable
 	implements HibernateJavaJoinTable {
 
-	public HibernateJavaJoinTableImpl(JavaJoinTableRelationshipStrategy parent,
-			Owner owner) {
-		super(parent, owner);
+	public HibernateJavaJoinTableImpl(JavaSpecifiedJoinTable.ParentAdapter owner) {
+		super(owner);
 	}
 
 	@Override
@@ -78,41 +77,27 @@ public class HibernateJavaJoinTableImpl extends GenericJavaJoinTable
 	//@Override
 	protected boolean validateAgainstDatabase(List<IMessage> messages, IReporter reporter) {
 		if ( ! this.catalogIsResolved()) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.JOIN_TABLE_UNRESOLVED_CATALOG,
-					new String[] {this.getCatalog(), this.getDBTableName()},
-					this,
-					this.getCatalogTextRange()
-				)
-			);
+			messages.add(buildValidationMessage(
+					JptJpaCoreValidationMessages.JOIN_TABLE_UNRESOLVED_CATALOG,
+					new String[] { this.getCatalog(), this.getDBTableName() },
+					this.getCatalogValidationTextRange()));
 			return false;
 		}
 
 		if ( ! this.schemaIsResolved()) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.JOIN_TABLE_UNRESOLVED_SCHEMA,
-					new String[] {this.getSchema(), this.getDBTableName()},
-					this,
-					this.getSchemaTextRange()
-				)
-			);
+			messages.add(buildValidationMessage(
+					JptJpaCoreValidationMessages.JOIN_TABLE_UNRESOLVED_SCHEMA,
+					new String[] { this.getSchema(), this.getDBTableName() },
+					this.getSchemaValidationTextRange()));
 			return false;
 		}
 
 		if ( ! this.isResolved()) {
 			if (getName() != null) { //if name is null, the validation will be handled elsewhere, such as the target entity is not defined
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.JOIN_TABLE_UNRESOLVED_NAME,
-							new String[] {this.getDBTableName()},
-							this,
-							this.getNameTextRange())
-					);
+				messages.add(buildValidationMessage(
+						JptJpaCoreValidationMessages.JOIN_TABLE_UNRESOLVED_NAME,
+						new String[] { this.getDBTableName() },
+						this.getNameValidationTextRange()));
 			}
 			return false;
 		}

@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnn
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
@@ -42,7 +42,7 @@ public class SourceParameterAnnotation extends SourceAnnotation implements
 	private CompilationUnit astRoot;
 
 
-	public SourceParameterAnnotation(JavaResourceNode parent, AnnotatedElement member, IndexedDeclarationAnnotationAdapter idaa) {
+	public SourceParameterAnnotation(JavaResourceModel parent, AnnotatedElement member, IndexedDeclarationAnnotationAdapter idaa) {
 		super(parent, member, idaa, new ElementIndexedAnnotationAdapter(member, idaa));
 		this.nameDeclarationAdapter = this.buildNameAdapter(idaa);
 		this.nameAdapter = this.buildAdapter(this.nameDeclarationAdapter);
@@ -140,7 +140,7 @@ public class SourceParameterAnnotation extends SourceAnnotation implements
 
 	// ********** static methods **********
 
-	public static SourceParameterAnnotation createParameter(JavaResourceNode parent, AnnotatedElement member,  DeclarationAnnotationAdapter annotationAdapter, String elementName, int index) {
+	public static SourceParameterAnnotation createParameter(JavaResourceModel parent, AnnotatedElement member,  DeclarationAnnotationAdapter annotationAdapter, String elementName, int index) {
 		return new SourceParameterAnnotation(parent, member, buildParameterAnnotationAdapter(annotationAdapter, elementName, index));
 	}
 

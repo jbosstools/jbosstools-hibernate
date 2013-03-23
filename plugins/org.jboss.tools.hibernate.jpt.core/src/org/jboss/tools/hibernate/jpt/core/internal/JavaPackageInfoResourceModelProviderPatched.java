@@ -57,7 +57,7 @@ public class JavaPackageInfoResourceModelProviderPatched implements
 						cu,
 						jpaProject.getJpaPlatform().getAnnotationProvider(),
 						jpaProject.getJpaPlatform().getAnnotationEditFormatter(),
-						jpaProject.getManager().getModifySharedDocumentCommandExecutor());
+						jpaProject.getManager().getModifySharedDocumentCommandContext());
 			} else {
 				//ignore package-info placed in default package as
 				//it doesn't have package declaration and can't hold annotations

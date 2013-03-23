@@ -14,10 +14,12 @@ import java.util.List;
 
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.common.core.internal.utility.EmptyTextRange;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.ArrayListIterable;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.hibernate.type.TypeFactory;
@@ -30,13 +32,13 @@ import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValida
  * @author Dmitry Geraskov
  *
  */
-public class TypeImpl extends AbstractJavaJpaContextNode implements JavaType, Messages {
+public class TypeImpl extends AbstractJavaContextModel<JpaContextModel> implements JavaType, Messages {
 
 	private TypeAnnotation annotation;
 	
 	private String type;
 	
-	public TypeImpl(JpaContextNode parent, TypeAnnotation annotation) {
+	public TypeImpl(JpaContextModel parent, TypeAnnotation annotation) {
 		super(parent);
 		this.annotation = annotation;
 		this.type = annotation.getType();
@@ -104,7 +106,7 @@ public class TypeImpl extends AbstractJavaJpaContextNode implements JavaType, Me
 		}
 		TextRange typeRange = getTypeTextRange();
 		if (typeRange != null && typeRange.touches(pos)) {
-			return new ArrayListIterable<String>(getPersistenceUnit().uniqueTypeDefNames());
+			return IterableTools.iterable(getPersistenceUnit().uniqueTypeDefNames());
 //			return getJavaCandidateNames();
 		}
 		return null;
@@ -128,7 +130,7 @@ public class TypeImpl extends AbstractJavaJpaContextNode implements JavaType, Me
 	protected void validateType(List<IMessage> messages, IReporter reporter) {
 		//TODO implement TypeDefs package-level support
 		if (type != null) {
-			TextRange range = getTypeTextRange() == null ? TextRange.Empty.instance() : getTypeTextRange();
+			TextRange range = getTypeTextRange() == null ? EmptyTextRange.instance() : getTypeTextRange();
 			if (type.trim().length() == 0) {
 				messages.add(HibernateJpaValidationMessage.buildMessage(
 						IMessage.HIGH_SEVERITY,

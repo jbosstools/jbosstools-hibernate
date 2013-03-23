@@ -14,23 +14,23 @@ package org.jboss.tools.hibernate.jpt.core.internal.jpa2;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jpa.core.JpaDataSource;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
-import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedQuery;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaSequenceGenerator;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn.ParentAdapter;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaColumn;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaNamedQuery;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaOrderable;
 import org.eclipse.jpt.jpa.core.internal.jpa2.GenericJpaDatabaseIdentifierAdapter;
 import org.eclipse.jpt.jpa.core.internal.jpa2.GenericMetamodelSynchronizer;
@@ -38,7 +38,6 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaCacheable2
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaCollectionTable2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaDerivedIdentity2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaEmbeddable2_0;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaNamedQuery2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaOrphanRemoval2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaPersistentType2_0;
@@ -46,20 +45,18 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaSequenceGe
 import org.eclipse.jpt.jpa.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType;
-import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0.Owner;
+import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalHolder2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheableHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalMapping2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheableReference2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionTable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaDerivedIdentity2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaElementCollectionMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaEmbeddedMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.NamedQuery2_0Annotation;
-import org.eclipse.jpt.jpa.core.jpa2.resource.java.SequenceGenerator2_0Annotation;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSpecifiedOrderColumn2_0;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.NamedQueryAnnotation2_0;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.SequenceGeneratorAnnotation2_0;
 import org.eclipse.jpt.jpa.core.resource.java.EmbeddableAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.NamedQueryAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.SequenceGeneratorAnnotation;
@@ -76,7 +73,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.java.jpa2.HibernateJa
 public class HibernateJpaFactory2_0 extends HibernateAbstractJpaFactory implements JpaFactory2_0 {
 
 	// ********** Hibernate Specific **********
-	public JavaElementCollectionMapping2_0 buildJavaElementCollectionMapping2_0(JavaPersistentAttribute parent) {
+	public JavaElementCollectionMapping2_0 buildJavaElementCollectionMapping2_0(JavaSpecifiedPersistentAttribute parent) {
 		return new HibernateJavaElementCollectionMapping2_0(parent);
 	}
 
@@ -91,7 +88,7 @@ public class HibernateJpaFactory2_0 extends HibernateAbstractJpaFactory implemen
 		return super.buildJpaProject(config);
 	}
 
-	public MetamodelSourceType.Synchronizer buildMetamodelSynchronizer(MetamodelSourceType sourceType) {
+	public MetamodelSourceType2_0.Synchronizer buildMetamodelSynchronizer(MetamodelSourceType2_0 sourceType) {
 		return new GenericMetamodelSynchronizer(sourceType);
 	}
 
@@ -102,7 +99,7 @@ public class HibernateJpaFactory2_0 extends HibernateAbstractJpaFactory implemen
 
 	// ********** Java Context Model **********
 	@Override
-	public JavaPersistentType buildJavaPersistentType(PersistentType.Owner owner,
+	public JavaPersistentType buildJavaPersistentType(PersistentType.Parent owner,
 			JavaResourceType jrt) {
 		return new GenericJavaPersistentType2_0(owner, jrt);
 	}
@@ -114,49 +111,56 @@ public class HibernateJpaFactory2_0 extends HibernateAbstractJpaFactory implemen
 
 	@Override
 	public JavaSequenceGenerator buildJavaSequenceGenerator(JavaGeneratorContainer parent, SequenceGeneratorAnnotation annotation) {
-		return new GenericJavaSequenceGenerator2_0(parent, (SequenceGenerator2_0Annotation) annotation);
+		return new GenericJavaSequenceGenerator2_0(parent, (SequenceGeneratorAnnotation2_0) annotation);
 	}
 
 	//The 2.0 JPA spec supports association overrides on an embedded mapping while the 1.0 spec did not
-	public JavaAssociationOverrideContainer buildJavaAssociationOverrideContainer(JavaEmbeddedMapping2_0 parent, JavaAssociationOverrideContainer.Owner owner) {
-		return new GenericJavaAssociationOverrideContainer(parent, owner);
+	public JavaAssociationOverrideContainer buildJavaAssociationOverrideContainer(JavaAssociationOverrideContainer.ParentAdapter owner) {
+		return new GenericJavaAssociationOverrideContainer(owner);
 	}
 
 	public JavaDerivedIdentity2_0 buildJavaDerivedIdentity(JavaSingleRelationshipMapping2_0 parent) {
 		return new GenericJavaDerivedIdentity2_0(parent);
 	}
 
-	public Cacheable2_0 buildJavaCacheable(JavaCacheableHolder2_0 parent) {
+	public Cacheable2_0 buildJavaCacheable(JavaCacheableReference2_0 parent) {
 		return new GenericJavaCacheable2_0(parent);
 	}
 
-	public OrphanRemovable2_0 buildJavaOrphanRemoval(OrphanRemovalHolder2_0 parent) {
+	public OrphanRemovable2_0 buildJavaOrphanRemoval(OrphanRemovalMapping2_0 parent) {
 		return new GenericJavaOrphanRemoval2_0(parent);
 	}
 
 	@Override
 	public JavaNamedQuery buildJavaNamedQuery(JavaQueryContainer parent, NamedQueryAnnotation annotation) {
-		return new GenericJavaNamedQuery2_0(parent, (NamedQuery2_0Annotation) annotation);
+		return new GenericJavaNamedQuery(parent, (NamedQueryAnnotation2_0) annotation);
 	}
 
-	public JavaCollectionTable2_0 buildJavaCollectionTable(JavaElementCollectionMapping2_0 parent, Table.Owner owner) {
-		return new GenericJavaCollectionTable2_0(parent, owner);
+	public JavaCollectionTable2_0 buildJavaCollectionTable( JavaCollectionTable2_0.ParentAdapter owner) {
+		return new GenericJavaCollectionTable2_0(owner);
 	}
 
-	public JavaOrderColumn2_0 buildJavaOrderColumn(JavaOrderable2_0 parent, ReadOnlyNamedColumn.Owner owner) {
-		return new GenericJavaOrderColumn2_0(parent, owner);
+	public JavaSpecifiedOrderColumn2_0 buildJavaOrderColumn(JavaSpecifiedOrderColumn2_0.ParentAdapter owner) {
+		return new GenericJavaOrderColumn2_0(owner);
 	}
 
-	public JavaColumn buildJavaMapKeyColumn(JpaContextNode parent, JavaColumn.Owner owner) {
-		return new GenericJavaColumn(parent, owner);
+	public JavaSpecifiedColumn buildJavaMapKeyColumn(ParentAdapter owner) {
+		return new GenericJavaColumn(owner);
 	}
 
-	public JavaOrderable2_0 buildJavaOrderable(JavaAttributeMapping parent, Owner owner) {
-		return new GenericJavaOrderable(parent, owner);
+	public JavaOrderable2_0 buildJavaOrderable(JavaOrderable2_0.ParentAdapter owner) {
+		return new GenericJavaOrderable(owner);
 	}
 
 	@Override
 	public Orderable buildJavaOrderable(JavaAttributeMapping parent) {
 		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public JavaElementCollectionMapping2_0 buildJavaElementCollectionMapping(
+			JavaSpecifiedPersistentAttribute parent) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

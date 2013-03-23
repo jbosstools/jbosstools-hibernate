@@ -14,10 +14,10 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractEntityComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.EntityNameCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.IdClassChooser;
-import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.java.JavaSecondaryTablesComposite;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -62,7 +62,7 @@ public class HibernateJavaEntityComposite extends AbstractEntityComposite<Hibern
 				ExpandableComposite.TWISTIE |
 				ExpandableComposite.EXPANDED);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptUiDetailsMessages.BasicSection_title);
+		section.setText(JptJpaUiDetailsMessages.BasicSection_title);
 		section.setClient(this.initializeTypeDefsSection(section, buildTypeDefContainerHolder()));
 //		container = addCollapsibleSection(
 //				container,
@@ -125,11 +125,11 @@ public class HibernateJavaEntityComposite extends AbstractEntityComposite<Hibern
 		tableComposite.getControl().setLayoutData(gridData);
 
 		//Entity name widgets
-		this.addLabel(container, JptUiDetailsMessages.EntityNameComposite_name);
+		this.addLabel(container, JptJpaUiDetailsMessages.EntityNameComposite_name);
 		new EntityNameCombo(this, container);
 
 		//Id class widgets
-		Hyperlink hyperlink = this.addHyperlink(container, JptUiDetailsMessages.IdClassComposite_label);
+		Hyperlink hyperlink = this.addHyperlink(container, JptJpaUiDetailsMessages.IdClassComposite_label);
 		new IdClassChooser(this, this.buildIdClassReferenceModel(), container, hyperlink);
 
 		return container;

@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.db.Table;
 
@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * @author Dmitry Geraskov
  *
  */
-public interface DiscriminatorFormula extends JpaContextNode {
+public interface DiscriminatorFormula extends JpaContextModel {
 
 	String getValue();
 	void setValue(String value);

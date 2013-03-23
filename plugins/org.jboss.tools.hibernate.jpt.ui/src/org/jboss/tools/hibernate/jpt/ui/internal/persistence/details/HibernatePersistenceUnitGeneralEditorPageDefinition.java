@@ -12,8 +12,8 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.PersistenceUnitEditorPageDefinition;
-import org.eclipse.jpt.jpa.ui.internal.persistence.JptUiPersistenceMessages;
 import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitGeneralEditorPage;
+import org.eclipse.jpt.jpa.ui.persistence.JptJpaUiPersistenceMessages;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -61,6 +61,6 @@ public class HibernatePersistenceUnitGeneralEditorPageDefinition extends Persist
 
 	@Override
 	public String getTitleText() {
-		return JptUiPersistenceMessages.PersistenceUnitGeneralComposite_general;
+		return JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_GENERAL_COMPOSITE_GENERAL;
 	}
 }

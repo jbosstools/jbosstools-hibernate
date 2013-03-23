@@ -11,6 +11,7 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmOneToManyMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOneToManyRelationship2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlOneToMany;
@@ -25,7 +26,7 @@ public class HibernateOrmOneToManyMapping extends GenericOrmOneToManyMapping {
 	 * @param parent
 	 * @param resourceMapping
 	 */
-	public HibernateOrmOneToManyMapping(OrmPersistentAttribute parent,
+	public HibernateOrmOneToManyMapping(OrmSpecifiedPersistentAttribute parent,
 			XmlOneToMany resourceMapping) {
 		super(parent, resourceMapping);
 	}

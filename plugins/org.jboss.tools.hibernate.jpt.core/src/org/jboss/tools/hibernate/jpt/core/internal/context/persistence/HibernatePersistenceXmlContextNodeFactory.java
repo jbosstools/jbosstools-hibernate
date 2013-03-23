@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
-import org.eclipse.jpt.jpa.core.internal.context.persistence.GenericPersistenceXmlContextNodeFactory;
+import org.eclipse.jpt.jpa.core.internal.context.persistence.GenericPersistenceXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
@@ -26,7 +26,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.basic.HibernatePersis
  *
  */
 public class HibernatePersistenceXmlContextNodeFactory extends
-		GenericPersistenceXmlContextNodeFactory implements HibernatePersistenceUnitPropertiesBuilder {
+		GenericPersistenceXmlContextModelFactory implements HibernatePersistenceUnitPropertiesBuilder {
 
 	public PersistenceUnit buildPersistenceUnit(Persistence parent, XmlPersistenceUnit xmlPersistenceUnit) {
 		return new HibernatePersistenceUnit(parent, xmlPersistenceUnit);

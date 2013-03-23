@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
-import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.db.CatalogCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.db.SchemaCombo;
 import org.eclipse.swt.events.FocusEvent;
@@ -85,13 +85,13 @@ public class HibernateTableComposite extends Pane<HibernateEntity>
 		// Table group pane
 		Group tableGroupPane = addTitledGroup(
 			container,
-			JptUiDetailsMessages.TableComposite_tableSection
+			JptJpaUiDetailsMessages.TableComposite_tableSection
 		);
 
 		PropertyValueModel<HibernateTable> subjectHolder = buildTableHolder();
 		
 		// Table widgets
-		this.addLabel(tableGroupPane, JptUiDetailsMessages.TableChooser_label);
+		this.addLabel(tableGroupPane, JptJpaUiDetailsMessages.TableChooser_label);
 		this.addTableCombo(subjectHolder, tableGroupPane);		
 //		addLabeledComposite(
 //				tableGroupPane,
@@ -101,7 +101,7 @@ public class HibernateTableComposite extends Pane<HibernateEntity>
 //			);
 		
 		// Catalog widgets
-		this.addLabel(tableGroupPane, JptUiDetailsMessages.CatalogChooser_label);
+		this.addLabel(tableGroupPane, JptJpaUiDetailsMessages.CatalogChooser_label);
 		this.addTableCombo(subjectHolder, tableGroupPane);
 //		addLabeledComposite(
 //			tableGroupPane,
@@ -111,7 +111,7 @@ public class HibernateTableComposite extends Pane<HibernateEntity>
 //		);
 
 		// Schema widgets
-		this.addLabel(tableGroupPane, JptUiDetailsMessages.SchemaChooser_label);
+		this.addLabel(tableGroupPane, JptJpaUiDetailsMessages.SchemaChooser_label);
 		this.addTableCombo(subjectHolder, tableGroupPane);
 //		addLabeledComposite(
 //			tableGroupPane,

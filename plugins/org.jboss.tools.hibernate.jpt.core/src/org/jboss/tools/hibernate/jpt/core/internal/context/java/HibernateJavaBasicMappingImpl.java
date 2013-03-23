@@ -15,9 +15,10 @@ import java.util.List;
 
 import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter.Adapter;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaBasicMapping;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -36,7 +37,7 @@ public class HibernateJavaBasicMappingImpl extends AbstractJavaBasicMapping
 implements HibernateJavaBasicMapping {
 
 	protected static final Iterable<JavaConverter.Adapter> HIBERNATE_CONVERTER_ADAPTERS = 
-			new CompositeIterable<JavaConverter.Adapter>(new ArrayIterable<JavaConverter.Adapter>(CONVERTER_ADAPTER_ARRAY));
+			IterableTools.iterable(CONVERTER_ADAPTER_ARRAY);
 
 	protected GenerationTime specifiedGenerationTime;
 
@@ -44,7 +45,7 @@ implements HibernateJavaBasicMapping {
 
 	protected JavaType type;
 
-	public HibernateJavaBasicMappingImpl(JavaPersistentAttribute parent) {
+	public HibernateJavaBasicMappingImpl(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
 		this.index = this.buildIndex();
 		this.type = this.buildType();

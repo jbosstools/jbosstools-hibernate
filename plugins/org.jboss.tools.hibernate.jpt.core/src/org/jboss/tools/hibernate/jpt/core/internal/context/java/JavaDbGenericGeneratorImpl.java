@@ -16,8 +16,10 @@ import java.util.Vector;
 
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.common.core.internal.utility.EmptyTextRange;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.ArrayListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
@@ -84,7 +86,7 @@ implements JavaDbGenericGenerator, Messages {
 	@Override
 	public void update() {
 		super.update();
-		this.updateNodes(this.getParameters());
+		this.updateModels(this.getParameters());
 	}
 	
 	// ********** metadata conversion **********
@@ -153,7 +155,7 @@ implements JavaDbGenericGenerator, Messages {
 	 */
 	protected void validateStrategy(List<IMessage> messages, IReporter reporter){
 		if (this.strategy != null) {
-			TextRange range = getStrategyTextRange() == null ? TextRange.Empty.instance() : getStrategyTextRange();
+			TextRange range = getStrategyTextRange() == null ? EmptyTextRange.instance() : getStrategyTextRange();
 			if (this.strategy.trim().length() == 0) {
 				messages.add(HibernateJpaValidationMessage.buildMessage(IMessage.HIGH_SEVERITY, STRATEGY_CANT_BE_EMPTY, getResource(), range));
 			} else if (!generatorClasses.contains(this.strategy)){
@@ -191,7 +193,7 @@ implements JavaDbGenericGenerator, Messages {
 
 	//************************ parameters ***********************
 	public ListIterable<JavaParameter> getParameters() {
-		return new LiveCloneListIterable<JavaParameter>(this.parameters);
+		return IterableTools.cloneLive(this.parameters);
 	}
 
 	public int getParametersSize() {
@@ -299,7 +301,7 @@ implements JavaDbGenericGenerator, Messages {
 		}
 		TextRange strategyRange = getStrategyTextRange();
 		if (strategyRange != null && strategyRange.touches(pos)) {
-			return new ArrayListIterable<String>(generatorClasses.toArray(new String[generatorClasses.size()]));
+			return IterableTools.iterable(generatorClasses.toArray(new String[generatorClasses.size()]));
 		}
 		return null;
 	}

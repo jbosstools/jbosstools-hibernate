@@ -11,12 +11,10 @@
 package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
 
 import java.util.Collection;
-import java.util.Iterator;
 
 import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
-import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -24,11 +22,12 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 import org.eclipse.jpt.jpa.db.Table;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.BasicMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.IdMappingComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.VersionMappingComposite;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.events.FocusEvent;
@@ -213,7 +212,7 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 	}
 
 	private ModifiablePropertyValueModel<String> buildColumnDefinitionHolder() {
-		return new PropertyAspectAdapter<Column, String>(getSubjectHolder(), NamedColumn.COLUMN_DEFINITION_PROPERTY) {
+		return new PropertyAspectAdapter<SpecifiedColumn, String>(getSubjectHolder(), NamedColumn.COLUMN_DEFINITION_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getColumnDefinition();
@@ -230,7 +229,7 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 	}
 	
 	private ModifiablePropertyValueModel<Boolean> buildInsertableHolder() {
-		return new PropertyAspectAdapter<Column, Boolean>(getSubjectHolder(), BaseColumn.SPECIFIED_INSERTABLE_PROPERTY) {
+		return new PropertyAspectAdapter<SpecifiedColumn, Boolean>(getSubjectHolder(), BaseColumn.SPECIFIED_INSERTABLE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSpecifiedInsertable();
@@ -253,23 +252,23 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 				if ((getSubject() != null) && (value == null)) {
 					boolean defaultValue = getSubject().isDefaultInsertable();
 
-					String defaultStringValue = defaultValue ? JptUiDetailsMessages.OptionalComposite_true :
-						                                       JptUiDetailsMessages.OptionalComposite_false;
+					String defaultStringValue = defaultValue ? JptJpaUiDetailsMessages.OptionalComposite_true :
+						                                       JptJpaUiDetailsMessages.OptionalComposite_false;
 
 					return NLS.bind(
-						JptUiDetailsMessages.ColumnComposite_insertableWithDefault,
+						JptJpaUiDetailsMessages.ColumnComposite_insertableWithDefault,
 						defaultStringValue
 					);
 				}
 
-				return JptUiDetailsMessages.ColumnComposite_insertable;
+				return JptJpaUiDetailsMessages.ColumnComposite_insertable;
 			}
 		};
 	}
 
 
 	private ModifiablePropertyValueModel<Boolean> buildNullableHolder() {
-		return new PropertyAspectAdapter<Column, Boolean>(
+		return new PropertyAspectAdapter<SpecifiedColumn, Boolean>(
 				getSubjectHolder(),
 				BaseColumn.SPECIFIED_NULLABLE_PROPERTY) {
 			
@@ -290,10 +289,10 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 			@Override
 			protected String transform(Boolean value) {
 				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptUiDetailsMessages.OptionalComposite_true : JptUiDetailsMessages.OptionalComposite_false;
-					return NLS.bind(JptUiDetailsMessages.ColumnComposite_nullableWithDefault, defaultStringValue);
+					String defaultStringValue = value.booleanValue() ? JptJpaUiDetailsMessages.OptionalComposite_true : JptJpaUiDetailsMessages.OptionalComposite_false;
+					return NLS.bind(JptJpaUiDetailsMessages.ColumnComposite_nullableWithDefault, defaultStringValue);
 				}
-				return JptUiDetailsMessages.ColumnComposite_nullable;
+				return JptJpaUiDetailsMessages.ColumnComposite_nullable;
 			}
 		};
 	}
@@ -385,7 +384,7 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildUniqueHolder() {
-		return new PropertyAspectAdapter<Column, Boolean>(
+		return new PropertyAspectAdapter<SpecifiedColumn, Boolean>(
 				getSubjectHolder(),
 				BaseColumn.SPECIFIED_UNIQUE_PROPERTY) {
 			
@@ -408,10 +407,10 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 			@Override
 			protected String transform(Boolean value) {
 				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptUiDetailsMessages.OptionalComposite_true : JptUiDetailsMessages.OptionalComposite_false;
-					return NLS.bind(JptUiDetailsMessages.ColumnComposite_uniqueWithDefault, defaultStringValue);
+					String defaultStringValue = value.booleanValue() ? JptJpaUiDetailsMessages.OptionalComposite_true : JptJpaUiDetailsMessages.OptionalComposite_false;
+					return NLS.bind(JptJpaUiDetailsMessages.ColumnComposite_uniqueWithDefault, defaultStringValue);
 				}
-				return JptUiDetailsMessages.ColumnComposite_unique;
+				return JptJpaUiDetailsMessages.ColumnComposite_unique;
 			}
 		};
 	}
@@ -433,7 +432,7 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 	}
 	
 	private ModifiablePropertyValueModel<Boolean> buildUpdatableHolder() {
-		return new PropertyAspectAdapter<Column, Boolean>(
+		return new PropertyAspectAdapter<SpecifiedColumn, Boolean>(
 				getSubjectHolder(),
 				BaseColumn.DEFAULT_UPDATABLE_PROPERTY,
 				BaseColumn.SPECIFIED_UPDATABLE_PROPERTY) {
@@ -457,10 +456,10 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 			@Override
 			protected String transform(Boolean value) {
 				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptUiDetailsMessages.OptionalComposite_true : JptUiDetailsMessages.OptionalComposite_false;
-					return NLS.bind(JptUiDetailsMessages.ColumnComposite_updatableWithDefault, defaultStringValue);
+					String defaultStringValue = value.booleanValue() ? JptJpaUiDetailsMessages.OptionalComposite_true : JptJpaUiDetailsMessages.OptionalComposite_false;
+					return NLS.bind(JptJpaUiDetailsMessages.ColumnComposite_updatableWithDefault, defaultStringValue);
 				}
-				return JptUiDetailsMessages.ColumnComposite_updatable;
+				return JptJpaUiDetailsMessages.ColumnComposite_updatable;
 			}
 		};
 	}
@@ -486,13 +485,13 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 //		// Column group pane
 //		container = addTitledGroup(
 //			container,
-//			JptUiDetailsMessages.ColumnComposite_columnSection
+//			JptJpaUiDetailsMessages.ColumnComposite_columnSection
 //		);
 //
 //		// Column widgets
 //		addLabeledComposite(
 //			container,
-//			JptUiDetailsMessages.ColumnComposite_name,
+//			JptJpaUiDetailsMessages.ColumnComposite_name,
 //			addColumnCombo(container),
 //			JpaHelpContextIds.MAPPING_COLUMN
 //		);
@@ -500,7 +499,7 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 //		// Table widgets
 //		addLabeledComposite(
 //			container,
-//			JptUiDetailsMessages.ColumnComposite_table,
+//			JptJpaUiDetailsMessages.ColumnComposite_table,
 //			addTableCombo(container),
 //			JpaHelpContextIds.MAPPING_COLUMN_TABLE
 //		);
@@ -508,25 +507,25 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 //		// Details sub-pane
 //		container = addCollapsibleSubSection(
 //			container,
-//			JptUiDetailsMessages.ColumnComposite_details,
+//			JptJpaUiDetailsMessages.ColumnComposite_details,
 //			new SimplePropertyValueModel<Boolean>(Boolean.FALSE)
 //		);
 //
 //		new DetailsComposite(this, getSubjectHolder(), addSubPane(container, 0, 16));
 		
 		// Column widgets
-		this.addLabel(container, JptUiDetailsMessages.ColumnComposite_name);
+		this.addLabel(container, JptJpaUiDetailsMessages.ColumnComposite_name);
 		this.addColumnCombo(container);
 
 		// Table widgets
-		this.addLabel(container, JptUiDetailsMessages.ColumnComposite_table);
+		this.addLabel(container, JptJpaUiDetailsMessages.ColumnComposite_table);
 		this.addTableCombo(container);
 
 
 		// Details sub-pane
 		final Section detailsSection = this.getWidgetFactory().createSection(container, ExpandableComposite.TWISTIE);
 		detailsSection.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		detailsSection.setText(JptUiDetailsMessages.ColumnComposite_details);
+		detailsSection.setText(JptJpaUiDetailsMessages.ColumnComposite_details);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		detailsSection.setLayoutData(gridData);
@@ -556,7 +555,7 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 //			// Insertable tri-state check box
 //			addTriStateCheckBoxWithDefault(
 //				addSubPane(container, 4),
-//				JptUiDetailsMessages.ColumnComposite_insertable,
+//				JptJpaUiDetailsMessages.ColumnComposite_insertable,
 //				buildInsertableHolder(),
 //				buildInsertableStringHolder(),
 //				JpaHelpContextIds.MAPPING_COLUMN_INSERTABLE
@@ -565,7 +564,7 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 //			// Updatable tri-state check box
 //			addTriStateCheckBoxWithDefault(
 //				container,
-//				JptUiDetailsMessages.ColumnComposite_updatable,
+//				JptJpaUiDetailsMessages.ColumnComposite_updatable,
 //				buildUpdatableHolder(),
 //				buildUpdatableStringHolder(),
 //				JpaHelpContextIds.MAPPING_COLUMN_UPDATABLE
@@ -574,7 +573,7 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 //			// Unique tri-state check box
 //			addTriStateCheckBoxWithDefault(
 //				container,
-//				JptUiDetailsMessages.ColumnComposite_unique,
+//				JptJpaUiDetailsMessages.ColumnComposite_unique,
 //				buildUniqueHolder(),
 //				buildUniqueStringHolder(),
 //				JpaHelpContextIds.MAPPING_COLUMN_UNIQUE
@@ -583,7 +582,7 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 //			// Nullable tri-state check box
 //			addTriStateCheckBoxWithDefault(
 //				container,
-//				JptUiDetailsMessages.ColumnComposite_nullable,
+//				JptJpaUiDetailsMessages.ColumnComposite_nullable,
 //				buildNullableHolder(),
 //				buildNullableStringHolder(),
 //				JpaHelpContextIds.MAPPING_COLUMN_NULLABLE
@@ -596,7 +595,7 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 //			// Column Definition widgets
 //			addLabeledText(
 //				container,
-//				JptUiDetailsMessages.ColumnComposite_columnDefinition,
+//				JptJpaUiDetailsMessages.ColumnComposite_columnDefinition,
 //				buildColumnDefinitionHolder()
 //			);
 //		}
@@ -606,7 +605,7 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 //				
 //				@Override
 //				protected String getLabelText() {
-//					return JptUiDetailsMessages.ColumnComposite_length;
+//					return JptJpaUiDetailsMessages.ColumnComposite_length;
 //				}
 //			
 //				@Override
@@ -646,7 +645,7 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 //				
 //				@Override
 //				protected String getLabelText() {
-//					return JptUiDetailsMessages.ColumnComposite_precision;
+//					return JptJpaUiDetailsMessages.ColumnComposite_precision;
 //				}
 //			
 //				@Override
@@ -686,7 +685,7 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 //				
 //				@Override
 //				protected String getLabelText() {
-//					return JptUiDetailsMessages.ColumnComposite_scale;
+//					return JptJpaUiDetailsMessages.ColumnComposite_scale;
 //				}
 //			
 //				@Override
@@ -728,7 +727,7 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 		// Insertable tri-state check box
 		TriStateCheckBox insertableCheckBox = addTriStateCheckBoxWithDefault(
 				detailsClient,
-				JptUiDetailsMessages.ColumnComposite_insertable,
+				JptJpaUiDetailsMessages.ColumnComposite_insertable,
 				buildInsertableHolder(),
 				buildInsertableStringHolder(),
 				JpaHelpContextIds.MAPPING_COLUMN_INSERTABLE);
@@ -739,7 +738,7 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 		// Updatable tri-state check box
 		TriStateCheckBox updatableCheckBox = addTriStateCheckBoxWithDefault(
 				detailsClient,
-				JptUiDetailsMessages.ColumnComposite_updatable,
+				JptJpaUiDetailsMessages.ColumnComposite_updatable,
 				buildUpdatableHolder(),
 				buildUpdatableStringHolder(),
 				JpaHelpContextIds.MAPPING_COLUMN_UPDATABLE);
@@ -750,7 +749,7 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 		// Unique tri-state check box
 		TriStateCheckBox uniqueCheckBox = addTriStateCheckBoxWithDefault(
 				detailsClient,
-				JptUiDetailsMessages.ColumnComposite_unique,
+				JptJpaUiDetailsMessages.ColumnComposite_unique,
 				buildUniqueHolder(),
 				buildUniqueStringHolder(),
 				JpaHelpContextIds.MAPPING_COLUMN_UNIQUE);
@@ -761,7 +760,7 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 		// Nullable tri-state check box
 		TriStateCheckBox nullableCheckBox = addTriStateCheckBoxWithDefault(
 				detailsClient,
-				JptUiDetailsMessages.ColumnComposite_nullable,
+				JptJpaUiDetailsMessages.ColumnComposite_nullable,
 				buildNullableHolder(),
 				buildNullableStringHolder(),
 				JpaHelpContextIds.MAPPING_COLUMN_NULLABLE);
@@ -769,17 +768,17 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 		gridData.horizontalSpan = 2;
 		nullableCheckBox.getCheckBox().setLayoutData(gridData);
 
-		this.addLabel(detailsClient, JptUiDetailsMessages.ColumnComposite_length);		
+		this.addLabel(detailsClient, JptJpaUiDetailsMessages.ColumnComposite_length);		
 		this.addLengthCombo(detailsClient);
 
-		this.addLabel(detailsClient, JptUiDetailsMessages.ColumnComposite_precision);		
+		this.addLabel(detailsClient, JptJpaUiDetailsMessages.ColumnComposite_precision);		
 		this.addPrecisionCombo(detailsClient);
 
-		this.addLabel(detailsClient, JptUiDetailsMessages.ColumnComposite_scale);		
+		this.addLabel(detailsClient, JptJpaUiDetailsMessages.ColumnComposite_scale);		
 		this.addScaleCombo(detailsClient);
 
 		// Column Definition widgets
-		this.addLabel(detailsClient, JptUiDetailsMessages.ColumnComposite_columnDefinition);
+		this.addLabel(detailsClient, JptJpaUiDetailsMessages.ColumnComposite_columnDefinition);
 		this.addText(detailsClient, buildColumnDefinitionHolder());
 
 		return detailsClient;
@@ -812,7 +811,7 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 					
 					@Override
 					protected void setValue_(Integer value) {
-						((Column) this.subject).setSpecifiedLength(value);
+						this.subject.setSpecifiedLength(value);
 					}
 				};
 			}
@@ -838,7 +837,7 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 			
 			@Override
 			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<HibernateColumn, Integer>(getSubjectHolder(), HibernateColumn.SPECIFIED_PRECISION_PROPERTY) {
+				return new PropertyAspectAdapter<SpecifiedColumn, Integer>(getSubjectHolder(), HibernateColumn.SPECIFIED_PRECISION_PROPERTY) {
 					@Override
 					protected Integer buildValue_() {
 						return this.subject.getSpecifiedPrecision();
@@ -846,7 +845,7 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 					
 					@Override
 					protected void setValue_(Integer value) {
-						((Column) this.subject).setSpecifiedPrecision(value);
+						this.subject.setSpecifiedPrecision(value);
 					}
 				};
 			}
@@ -872,7 +871,7 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 			
 			@Override
 			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<HibernateColumn, Integer>(getSubjectHolder(), HibernateColumn.SPECIFIED_SCALE_PROPERTY) {
+				return new PropertyAspectAdapter<SpecifiedColumn, Integer>(getSubjectHolder(), HibernateColumn.SPECIFIED_SCALE_PROPERTY) {
 					@Override
 					protected Integer buildValue_() {
 						return this.subject.getSpecifiedScale();
@@ -880,7 +879,7 @@ public class HibernateColumnComposite extends Pane<HibernateColumn> {
 					
 					@Override
 					protected void setValue_(Integer value) {
-						((Column) this.subject).setSpecifiedScale(value);
+						this.subject.setSpecifiedScale(value);
 					}
 				};
 			}

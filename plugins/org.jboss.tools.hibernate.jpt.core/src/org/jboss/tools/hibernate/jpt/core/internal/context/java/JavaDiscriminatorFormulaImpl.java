@@ -12,8 +12,8 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.jboss.tools.hibernate.jpt.core.internal.context.DiscriminatorFormula;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.DiscriminatorFormulaAnnotation;
 
@@ -21,13 +21,13 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.DiscriminatorFo
  * @author Dmitry Geraskov
  *
  */
-public class JavaDiscriminatorFormulaImpl extends AbstractJavaJpaContextNode implements JavaDiscriminatorFormula {
+public class JavaDiscriminatorFormulaImpl extends AbstractJavaContextModel<JpaContextModel> implements JavaDiscriminatorFormula {
 
 	protected String value;
 
 	protected DiscriminatorFormulaAnnotation annotation;
 
-	public JavaDiscriminatorFormulaImpl(JpaContextNode parent, DiscriminatorFormulaAnnotation annotation) {
+	public JavaDiscriminatorFormulaImpl(JpaContextModel parent, DiscriminatorFormulaAnnotation annotation) {
 		super(parent);
 		this.annotation = annotation;
 		this.value = annotation.getValue();

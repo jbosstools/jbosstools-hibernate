@@ -11,13 +11,13 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
-import org.eclipse.jpt.jpa.core.context.DiscriminatorColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedDiscriminatorColumn;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public interface HibernateDiscriminatorColumn extends DiscriminatorColumn,
+public interface HibernateDiscriminatorColumn extends SpecifiedDiscriminatorColumn,
 HibernateNamedColumn {
 
 	

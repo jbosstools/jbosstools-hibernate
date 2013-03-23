@@ -12,7 +12,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.List;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaManyToOneMapping;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -31,7 +31,7 @@ AbstractJavaManyToOneMapping implements ForeignKeyHolder {
 
 	protected ForeignKey foreignKey;
 
-	public HibernateJavaManyToOneMapping(JavaPersistentAttribute parent) {
+	public HibernateJavaManyToOneMapping(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
 		this.foreignKey = buildForeignKey();
 	}

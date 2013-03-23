@@ -12,18 +12,19 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.IndexAnnotation;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public class IndexImpl extends AbstractJavaJpaContextNode implements JavaIndex {
+public class IndexImpl extends AbstractJavaContextModel<JpaContextModel> implements JavaIndex {
 	
 	private IndexAnnotation annotation;
 	
@@ -31,7 +32,7 @@ public class IndexImpl extends AbstractJavaJpaContextNode implements JavaIndex {
 	
 	private String[] columnNames = new String[0];
 
-	public IndexImpl(JpaContextNode parent, IndexAnnotation annotation) {
+	public IndexImpl(JpaContextModel parent, IndexAnnotation annotation) {
 		super(parent);
 		this.annotation = annotation;
 		this.name = annotation.getName();

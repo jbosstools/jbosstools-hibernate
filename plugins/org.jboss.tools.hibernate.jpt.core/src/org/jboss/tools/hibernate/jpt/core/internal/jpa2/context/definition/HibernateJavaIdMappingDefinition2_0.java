@@ -11,7 +11,7 @@
 package org.jboss.tools.hibernate.jpt.core.internal.jpa2.context.definition;
 
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaAttributeMappingDefinitionWrapper;
 import org.jboss.tools.hibernate.jpt.core.internal.context.definition.HibernateJavaIdMappingDefinition;
 
@@ -52,7 +52,7 @@ public class HibernateJavaIdMappingDefinition2_0 extends JavaAttributeMappingDef
 	 * accompanied by a M-1 or 1-1 annotation).
 	 */
 	@Override
-	public boolean isSpecified(JavaPersistentAttribute persistentAttribute) {
+	public boolean isSpecified(JavaSpecifiedPersistentAttribute persistentAttribute) {
 		boolean idSpecified = super.isSpecified(persistentAttribute);
 		return idSpecified && ! this.isDerivedId(persistentAttribute);
 	}
@@ -67,16 +67,16 @@ public class HibernateJavaIdMappingDefinition2_0 extends JavaAttributeMappingDef
 	 *     @Id @Basic @ManyToOne private int foo;
 	 * </pre>
 	 */
-	private boolean isDerivedId(JavaPersistentAttribute persistentAttribute) {
+	private boolean isDerivedId(JavaSpecifiedPersistentAttribute persistentAttribute) {
 		return this.attributeHasManyToOneMapping(persistentAttribute) ||
 			this.attributeHasOneToOneMapping(persistentAttribute);
 	}
 
-	private boolean attributeHasManyToOneMapping(JavaPersistentAttribute persistentAttribute) {
+	private boolean attributeHasManyToOneMapping(JavaSpecifiedPersistentAttribute persistentAttribute) {
 		return HibernateJavaManyToOneMappingDefinition2_0.instance().isSpecified(persistentAttribute);
 	}
 
-	private boolean attributeHasOneToOneMapping(JavaPersistentAttribute persistentAttribute) {
+	private boolean attributeHasOneToOneMapping(JavaSpecifiedPersistentAttribute persistentAttribute) {
 		return HibernateJavaOneToOneMappingDefinition2_0.instance().isSpecified(persistentAttribute);
 	}
 		

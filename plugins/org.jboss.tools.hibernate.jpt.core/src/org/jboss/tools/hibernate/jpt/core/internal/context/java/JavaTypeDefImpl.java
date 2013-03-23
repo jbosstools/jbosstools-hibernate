@@ -14,15 +14,18 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
 
+import javax.swing.event.ListSelectionEvent;
+
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
@@ -37,7 +40,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValida
  * @author Dmitry Geraskov
  * 
  */
-public class JavaTypeDefImpl extends AbstractJavaJpaContextNode implements JavaTypeDef, Messages {
+public class JavaTypeDefImpl extends AbstractJavaContextModel<JpaContextModel> implements JavaTypeDef, Messages {
 	
 	protected TypeDefAnnotation typeDefAnnotation;
 	
@@ -50,7 +53,7 @@ public class JavaTypeDefImpl extends AbstractJavaJpaContextNode implements JavaT
 	protected final Vector<JavaParameter> parameters = new Vector<JavaParameter>();
 	protected final ParameterContainerAdapter parameterContainerAdapter = new ParameterContainerAdapter();
 
-	public JavaTypeDefImpl(JpaContextNode parent, TypeDefAnnotation typeDefAnnotation) {
+	public JavaTypeDefImpl(JpaContextModel parent, TypeDefAnnotation typeDefAnnotation) {
 		super(parent);
 		this.typeDefAnnotation = typeDefAnnotation;
 		this.name = typeDefAnnotation.getName();
@@ -82,7 +85,7 @@ public class JavaTypeDefImpl extends AbstractJavaJpaContextNode implements JavaT
 	public void update() {
 		super.update();
 		this.getPersistenceUnit().addTypeDef(this);
-		this.updateNodes(this.getParameters());
+		this.updateModels(this.getParameters());
 	}
 		
 	
@@ -156,7 +159,7 @@ public class JavaTypeDefImpl extends AbstractJavaJpaContextNode implements JavaT
 	//************************ parameters ***********************
 	//************************ parameters ***********************
 	public ListIterable<JavaParameter> getParameters() {
-		return new LiveCloneListIterable<JavaParameter>(this.parameters);
+		return IterableTools.cloneLive((List<JavaParameter>)this.parameters);
 	}
 
 	public int getParametersSize() {

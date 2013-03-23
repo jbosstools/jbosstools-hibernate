@@ -13,9 +13,9 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 import java.util.List;
 
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
+import org.eclipse.jpt.jpa.core.context.java.JavaTable;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaTable;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.hibernate.cfg.NamingStrategy;
@@ -32,8 +32,8 @@ public class HibernateJavaTableImpl extends GenericJavaTable implements Hibernat
 
 	protected String defaultDBTableName;
 
-	public HibernateJavaTableImpl(JavaEntity parent, Owner owner) {
-		super(parent, owner);
+	public HibernateJavaTableImpl(JavaTable.ParentAdapter parent) {
+		super(parent);
 	}
 
 	@Override
@@ -111,12 +111,10 @@ public class HibernateJavaTableImpl extends GenericJavaTable implements Hibernat
 	protected void validateAgainstDatabase(List<IMessage> messages) {
 		if ( ! this.catalogIsResolved()) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.TABLE_UNRESOLVED_CATALOG,
+					buildValidationMessage(
+							JptJpaCoreValidationMessages.TABLE_UNRESOLVED_CATALOG,
 							new String[] {this.getCatalog(), this.getDBTableName()},
-							this,
-							this.getCatalogTextRange()
+							this.getCatalogValidationTextRange()
 					)
 			);
 			return;
@@ -124,12 +122,10 @@ public class HibernateJavaTableImpl extends GenericJavaTable implements Hibernat
 
 		if ( ! this.schemaIsResolved()) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.TABLE_UNRESOLVED_SCHEMA,
+					buildValidationMessage(
+							JptJpaCoreValidationMessages.TABLE_UNRESOLVED_SCHEMA,
 							new String[] {this.getSchema(), this.getDBTableName()},
-							this,
-							this.getSchemaTextRange()
+							this.getSchemaValidationTextRange()
 					)
 			);
 			return;
@@ -137,12 +133,10 @@ public class HibernateJavaTableImpl extends GenericJavaTable implements Hibernat
 
 		if ( ! this.isResolved()) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.TABLE_UNRESOLVED_NAME,
+					buildValidationMessage(
+							JptJpaCoreValidationMessages.TABLE_UNRESOLVED_NAME,
 							new String[] {this.getDBTableName()},
-							this,
-							this.getNameTextRange()
+							this.getNameValidationTextRange()
 					)
 			);
 		}

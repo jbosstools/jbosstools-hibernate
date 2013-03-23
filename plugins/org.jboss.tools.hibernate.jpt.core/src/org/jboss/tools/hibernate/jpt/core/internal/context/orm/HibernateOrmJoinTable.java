@@ -11,7 +11,7 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTable;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinTable;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateTable;
 
 /**
@@ -19,6 +19,6 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateTable;
  * @author Dmitry Geraskov
  *
  */
-public interface HibernateOrmJoinTable extends OrmJoinTable, HibernateTable {
+public interface HibernateOrmJoinTable extends OrmSpecifiedJoinTable, HibernateTable {
 
 }

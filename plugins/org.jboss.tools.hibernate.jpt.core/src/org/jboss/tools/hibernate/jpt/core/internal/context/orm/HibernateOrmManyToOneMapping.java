@@ -11,7 +11,7 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmManyToOneMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmManyToOneRelationship2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlManyToOne;
@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlManyToOne;
 public class HibernateOrmManyToOneMapping extends
 		AbstractOrmManyToOneMapping<XmlManyToOne> {
 
-	public HibernateOrmManyToOneMapping(OrmPersistentAttribute parent, XmlManyToOne resourceMapping) {
+	public HibernateOrmManyToOneMapping(OrmSpecifiedPersistentAttribute parent, XmlManyToOne resourceMapping) {
 		super(parent, resourceMapping);
 	}
 

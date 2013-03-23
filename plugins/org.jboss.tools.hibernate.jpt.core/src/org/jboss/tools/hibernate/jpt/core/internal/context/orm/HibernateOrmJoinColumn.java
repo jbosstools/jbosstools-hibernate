@@ -11,7 +11,7 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumn;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateJoinColumn;
 
 /**
@@ -20,6 +20,6 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateJoinColumn;
  *
  */
 public interface HibernateOrmJoinColumn extends HibernateJoinColumn,
-		OrmJoinColumn {
+		OrmSpecifiedJoinColumn {
 
 }

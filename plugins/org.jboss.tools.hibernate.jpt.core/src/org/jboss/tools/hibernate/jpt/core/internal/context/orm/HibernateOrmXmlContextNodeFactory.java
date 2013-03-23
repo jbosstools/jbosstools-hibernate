@@ -10,25 +10,22 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.Table;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBasicMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmIdMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumn;
-import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTable;
-import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOneToOneMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinTable;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTable;
-import org.eclipse.jpt.jpa.core.internal.context.orm.GenericOrmXmlContextNodeFactory;
+import org.eclipse.jpt.jpa.core.internal.context.orm.GenericOrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlId;
@@ -43,16 +40,16 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
  * @author Dmitry Geraskov
  *
  */
-public class HibernateOrmXmlContextNodeFactory extends GenericOrmXmlContextNodeFactory {
+public class HibernateOrmXmlContextNodeFactory extends GenericOrmXmlContextModelFactory {
 
 	@Override
-	public OrmBasicMapping buildOrmBasicMapping(OrmPersistentAttribute parent,
+	public OrmBasicMapping buildOrmBasicMapping(OrmSpecifiedPersistentAttribute parent,
 			XmlBasic resourceMapping) {
 		return new HibernateOrmBasicMapping(parent, resourceMapping);
 	}
 
 	@Override
-	public OrmIdMapping buildOrmIdMapping(OrmPersistentAttribute parent,
+	public OrmIdMapping buildOrmIdMapping(OrmSpecifiedPersistentAttribute parent,
 			XmlId resourceMapping) {
 		return new HibernateOrmIdMappingImpl(parent, resourceMapping);
 	}
@@ -64,46 +61,44 @@ public class HibernateOrmXmlContextNodeFactory extends GenericOrmXmlContextNodeF
 	}
 
 	@Override
-	public OrmTable buildOrmTable(OrmEntity parent, Table.Owner owner) {
-		return new HibernateOrmTableImpl(parent, owner);
+	public OrmTable buildOrmTable(OrmTable.ParentAdapter parentAdapter) {
+		return new HibernateOrmTableImpl(parentAdapter);
 	}
 
 	@Override
-	public OrmJoinTable buildOrmJoinTable(OrmJoinTableRelationshipStrategy parent, Table.Owner owner) {
-		return new HibernateOrmJoinTableImpl(parent, owner);
+	public OrmSpecifiedJoinTable buildOrmJoinTable(OrmSpecifiedJoinTable.ParentAdapter parentAdapter) {
+		return new HibernateOrmJoinTableImpl(parentAdapter);
 	}
 
 	@Override
-	public OrmColumn buildOrmColumn(JpaContextNode parent, OrmColumn.Owner owner) {
-		return new HibernateOrmColumnImpl(parent, owner);
+	public OrmSpecifiedColumn buildOrmColumn(OrmSpecifiedColumn.ParentAdapter parentAdapter) {
+		return new HibernateOrmColumnImpl(parentAdapter);
 	}
 
 	@Override
-	public OrmJoinColumn buildOrmJoinColumn(JpaContextNode parent,
-			ReadOnlyJoinColumn.Owner owner,
-			XmlJoinColumn resourceJoinColumn) {
-		return new HibernateOrmJoinColumnImpl(parent, owner, resourceJoinColumn);
+	public OrmSpecifiedJoinColumn buildOrmJoinColumn(JoinColumn.ParentAdapter parentAdapter, XmlJoinColumn xmlJoinColumn) {
+		return new HibernateOrmJoinColumnImpl(parentAdapter, xmlJoinColumn);
 	}
 
 	@Override
-	public OrmManyToOneMapping buildOrmManyToOneMapping(OrmPersistentAttribute parent, XmlManyToOne resourceMapping) {
+	public OrmManyToOneMapping buildOrmManyToOneMapping(OrmSpecifiedPersistentAttribute parent, XmlManyToOne resourceMapping) {
 		return new HibernateOrmManyToOneMapping(parent,resourceMapping);
 	}
 
 	@Override
-	public OrmOneToOneMapping buildOrmOneToOneMapping(OrmPersistentAttribute parent, XmlOneToOne resourceMapping) {
+	public OrmOneToOneMapping buildOrmOneToOneMapping(OrmSpecifiedPersistentAttribute parent, XmlOneToOne resourceMapping) {
 		return new HibernateOrmOneToOneMapping(parent, resourceMapping);
 	}
 
 	@Override
 	public OrmOneToManyMapping buildOrmOneToManyMapping(
-			OrmPersistentAttribute parent, XmlOneToMany resourceMapping) {
+			OrmSpecifiedPersistentAttribute parent, XmlOneToMany resourceMapping) {
 		return new HibernateOrmOneToManyMapping(parent, resourceMapping);
 	}
 
 	@Override
 	public OrmManyToManyMapping buildOrmManyToManyMapping(
-			OrmPersistentAttribute parent, XmlManyToMany resourceMapping) {
+			OrmSpecifiedPersistentAttribute parent, XmlManyToMany resourceMapping) {
 		return new HibernateOrmManyToManyMapping(parent, resourceMapping);
 	}
 
