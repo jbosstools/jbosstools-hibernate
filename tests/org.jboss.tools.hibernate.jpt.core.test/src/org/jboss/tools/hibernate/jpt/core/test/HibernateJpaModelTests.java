@@ -25,11 +25,11 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProject.Reference;
-import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
-import org.eclipse.jpt.jpa.core.context.java.JavaJoinTable;
-import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTable;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
@@ -71,7 +71,7 @@ public class HibernateJpaModelTests {
 	@Test
 	public void testDefaultMapping(){
 		assertNotNull(jpaProject);
-		JpaRootContextNode rootContextNode = jpaProject.getRootContextNode();
+		JpaContextModelRoot rootContextNode = jpaProject.getContextModelRoot();
 		Persistence p = rootContextNode.getPersistenceXml().getRoot();
 		assertTrue(p.getPersistenceUnitsSize() > 0);
 		assertTrue(p.getPersistenceUnits().iterator().next() instanceof HibernatePersistenceUnit);
@@ -102,7 +102,7 @@ public class HibernateJpaModelTests {
 			fail(e.getMessage());
 		}
 		assertNotNull(jpaProject);
-		JpaRootContextNode rootContextNode = jpaProject.getRootContextNode();
+		JpaContextModelRoot rootContextNode = jpaProject.getContextModelRoot();
 		Persistence p = rootContextNode.getPersistenceXml().getRoot();
 		assertTrue(p.getPersistenceUnits().iterator().hasNext());
 		assertTrue(p.getPersistenceUnits().iterator().next() instanceof HibernatePersistenceUnit);
@@ -127,7 +127,7 @@ public class HibernateJpaModelTests {
 		HibernateJavaTable table = entity.getTable();
 		assertEquals("ManyToMany1", table.getDBTableName());
 
-		ArrayList<JavaPersistentAttribute> attrs = IterableTools.list(javaPersistentType.getAttributes());
+		ArrayList<JavaSpecifiedPersistentAttribute> attrs = IterableTools.list(javaPersistentType.getAttributes());
 		assertTrue(attrs.size() == 3);
 
 		//id
@@ -156,7 +156,7 @@ public class HibernateJpaModelTests {
 		HibernateJavaTable table = entity.getTable();
 		assertEquals("ManyToMany22", table.getDBTableName());
 
-		ArrayList<JavaPersistentAttribute> attrs = IterableTools.list(javaPersistentType.getAttributes());
+		ArrayList<JavaSpecifiedPersistentAttribute> attrs = IterableTools.list(javaPersistentType.getAttributes());
 		assertTrue(attrs.size() == 3);
 		//id
 		assertTrue(attrs.get(0).getMapping() instanceof HibernateJavaIdMapping);
@@ -174,8 +174,8 @@ public class HibernateJpaModelTests {
 		assertTrue(attrs.get(2).getMapping() instanceof HibernateJavaManyToManyMapping);
 		HibernateJavaManyToManyMapping hjmtmm = (HibernateJavaManyToManyMapping)attrs.get(2).getMapping();
 		assertEquals("entity.ManyToMany1", hjmtmm.getTargetEntity());
-		JavaJoinTableRelationshipStrategy jtJoiningStrategy = hjmtmm.getRelationship().getJoinTableStrategy();
-		JavaJoinTable joinTable = jtJoiningStrategy.getJoinTable();
+		JavaSpecifiedJoinTableRelationshipStrategy jtJoiningStrategy = hjmtmm.getRelationship().getJoinTableStrategy();
+		JavaSpecifiedJoinTable joinTable = jtJoiningStrategy.getJoinTable();
 		assertTrue(joinTable instanceof HibernateJavaJoinTable);
 		HibernateJavaJoinTable hjjt = (HibernateJavaJoinTable)joinTable;
 		assertEquals("ManyToMany22_ManyToMany1", hjjt.getDBTableName());
@@ -189,7 +189,7 @@ public class HibernateJpaModelTests {
 		HibernateJavaTable table = entity.getTable();
 		assertEquals("ctn_ManyToMany1", table.getDBTableName());
 
-		ArrayList<JavaPersistentAttribute> attrs = IterableTools.list(javaPersistentType.getAttributes());
+		ArrayList<JavaSpecifiedPersistentAttribute> attrs = IterableTools.list(javaPersistentType.getAttributes());
 		assertTrue(attrs.size() == 3);
 
 		//id
@@ -218,7 +218,7 @@ public class HibernateJpaModelTests {
 		HibernateJavaTable table = entity.getTable();
 		assertEquals("tn_ManyToMany22", table.getDBTableName());
 
-		ArrayList<JavaPersistentAttribute> attrs = IterableTools.list(javaPersistentType.getAttributes());
+		ArrayList<JavaSpecifiedPersistentAttribute> attrs = IterableTools.list(javaPersistentType.getAttributes());
 		assertTrue(attrs.size() == 3);
 		//id
 		assertTrue(attrs.get(0).getMapping() instanceof HibernateJavaIdMapping);
@@ -236,8 +236,8 @@ public class HibernateJpaModelTests {
 		assertTrue(attrs.get(2).getMapping() instanceof HibernateJavaManyToManyMapping);
 		HibernateJavaManyToManyMapping hjmtmm = (HibernateJavaManyToManyMapping)attrs.get(2).getMapping();
 		assertEquals("entity.ManyToMany1", hjmtmm.getTargetEntity());
-		JavaJoinTableRelationshipStrategy jtJoiningStrategy = hjmtmm.getRelationship().getJoinTableStrategy();
-		JavaJoinTable joinTable = jtJoiningStrategy.getJoinTable();
+		JavaSpecifiedJoinTableRelationshipStrategy jtJoiningStrategy = hjmtmm.getRelationship().getJoinTableStrategy();
+		JavaSpecifiedJoinTable joinTable = jtJoiningStrategy.getJoinTable();
 		assertTrue(joinTable instanceof HibernateJavaJoinTable);
 		HibernateJavaJoinTable hjjt = (HibernateJavaJoinTable)joinTable;
 		hjjt.getDbTable();

@@ -41,8 +41,8 @@ import org.eclipse.jpt.jpa.core.context.QueryContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.NamedNativeQueryPropertyComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.NamedQueryPropertyComposite;
 import org.eclipse.osgi.util.NLS;
@@ -330,7 +330,7 @@ public class HibernateQueriesComposite extends Pane<HibernateJavaQueryContainer>
 						index = IterableTools.indexOf(getSubject().getNamedNativeQueries(), query);
 					}
 
-					name = NLS.bind(JptUiDetailsMessages.QueriesComposite_displayString, index);
+					name = NLS.bind(JptJpaUiDetailsMessages.QueriesComposite_displayString, index);
 				}
 
 				return name;

@@ -12,6 +12,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.definition;
 
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
@@ -112,7 +113,7 @@ public class HibernateJavaEntityDefinition implements JavaTypeMappingDefinition
 			Hibernate.NAMED_NATIVE_QUERIES,
 			Hibernate.DISCRIMINATOR_FORMULA,
 	};
-	protected static final Iterable<String> SUPPORTING_ANNOTATION_NAMES = new ArrayIterable<String>(SUPPORTING_ANNOTATION_NAMES_ARRAY);
+	protected static final Iterable<String> SUPPORTING_ANNOTATION_NAMES = IterableTools.listIterable(SUPPORTING_ANNOTATION_NAMES_ARRAY);
 
 	public JavaEntity buildMapping(JavaPersistentType persistentType, Annotation mappingAnnotation, JpaFactory factory) {
 		return factory.buildJavaEntity(persistentType, (EntityAnnotation) mappingAnnotation);

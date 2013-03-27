@@ -11,14 +11,14 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaIndex;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public interface IndexHolder extends JpaContextNode {
+public interface IndexHolder extends JpaContextModel {
 	
 	//******************** index *****************
 

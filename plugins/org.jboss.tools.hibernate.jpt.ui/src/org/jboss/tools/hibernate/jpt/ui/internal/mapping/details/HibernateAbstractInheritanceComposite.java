@@ -25,9 +25,9 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractEntityComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.DiscriminatorColumnComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
@@ -117,7 +117,7 @@ public abstract class HibernateAbstractInheritanceComposite<T extends HibernateE
 		);
 
 		// Strategy widgets
-		this.addLabel(subPane, JptUiDetailsMessages.InheritanceComposite_strategy);
+		this.addLabel(subPane, JptJpaUiDetailsMessages.InheritanceComposite_strategy);
 		this.addStrategyCombo(container);
 //		addLabeledComposite(
 //			subPane,
@@ -143,7 +143,7 @@ public abstract class HibernateAbstractInheritanceComposite<T extends HibernateE
 		
 		this.addLabel(
 				subPane,
-				JptUiDetailsMessages.InheritanceComposite_discriminatorValue,
+				JptJpaUiDetailsMessages.InheritanceComposite_discriminatorValue,
 				dvEnabled
 			);
 		this.addEditableCombo(
@@ -239,7 +239,7 @@ public abstract class HibernateAbstractInheritanceComposite<T extends HibernateE
 						);
 					}
 					else {
-						value = JptUiDetailsMessages.ProviderDefault;
+						value = JptJpaUiDetailsMessages.ProviderDefault;
 					}
 				}
 				if (value.startsWith(NONE_KEY)) {
@@ -301,11 +301,11 @@ public abstract class HibernateAbstractInheritanceComposite<T extends HibernateE
 			protected String displayString(InheritanceType value) {
 				switch (value) {
 				case JOINED :
-					return JptUiDetailsMessages.AbstractInheritanceComposite_joined;
+					return JptJpaUiDetailsMessages.AbstractInheritanceComposite_joined;
 				case SINGLE_TABLE :
-					return JptUiDetailsMessages.AbstractInheritanceComposite_single_table;
+					return JptJpaUiDetailsMessages.AbstractInheritanceComposite_single_table;
 				case TABLE_PER_CLASS :
-					return JptUiDetailsMessages.AbstractInheritanceComposite_table_per_class;
+					return JptJpaUiDetailsMessages.AbstractInheritanceComposite_table_per_class;
 				default :
 					throw new IllegalStateException();
 			}

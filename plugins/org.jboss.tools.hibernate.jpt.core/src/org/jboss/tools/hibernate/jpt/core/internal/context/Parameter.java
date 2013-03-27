@@ -10,13 +10,13 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public interface Parameter extends JpaContextNode {
+public interface Parameter extends JpaContextModel {
 	
 	String getName();
 	void setName(String value);

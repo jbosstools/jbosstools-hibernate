@@ -18,7 +18,7 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
@@ -39,7 +39,7 @@ public class GenerateDdlWizard extends Wizard {
 	public GenerateDdlWizard(HibernateJpaProject jpaProject, IStructuredSelection selection) {
 		super();
 		this.jpaProject = jpaProject;
-		this.setWindowTitle( JptUiMessages.GenericPlatformUiDialog_notSupportedMessageTitle);
+		this.setWindowTitle( JptJpaUiMessages.GenericPlatformUiDialog_notSupportedMessageTitle);
 	}
 	
 	@Override

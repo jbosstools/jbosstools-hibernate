@@ -15,9 +15,10 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.jpt.common.core.internal.utility.EmptyTextRange;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.JpaNode;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidator;
+import org.eclipse.jpt.jpa.core.JpaModel;
+import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
@@ -30,25 +31,25 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 public class HibernateJpaValidationMessage {
 	
 	private static String[] DEFAULT_PARMS = new String[0];
-	private static TextRange DEFAULT_TEXT_RANGE = TextRange.Empty.instance();
+	private static TextRange DEFAULT_TEXT_RANGE = EmptyTextRange.instance();
 	
 	public static IMessage buildMessage(
-			int defaultSeverity, String messageId, JpaNode targetObject) {
+			int defaultSeverity, String messageId, JpaModel targetObject) {
 		return buildMessage(defaultSeverity, messageId, DEFAULT_PARMS, targetObject);
 	}
 	
 	public static IMessage buildMessage(
-			int defaultSeverity, String messageId, String[] parms, JpaNode targetObject) {
+			int defaultSeverity, String messageId, String[] parms, JpaModel targetObject) {
 		return buildMessage(defaultSeverity, messageId, parms, targetObject, DEFAULT_TEXT_RANGE);
 	}
 	
 	public static IMessage buildMessage(
-			int defaultSeverity, String messageId, JpaNode targetObject, TextRange textRange) {
+			int defaultSeverity, String messageId, JpaModel targetObject, TextRange textRange) {
 		return buildMessage(defaultSeverity, messageId, DEFAULT_PARMS, targetObject, textRange);
 	}
 	
 	public static IMessage buildMessage(
-			int defaultSeverity, String messageId, String[] parms, JpaNode targetObject, TextRange textRange) {
+			int defaultSeverity, String messageId, String[] parms, JpaModel targetObject, TextRange textRange) {
 		return buildMessage(defaultSeverity, messageId, parms, targetObject.getResource(), DEFAULT_TEXT_RANGE);
 	}
 
@@ -77,7 +78,7 @@ public class HibernateJpaValidationMessage {
 			severity = severityPreference;
 		}
 		IMessage message = new LocalMessage(severity, messageId, parms, targetObject);
-		message.setMarkerId(JpaValidator.MARKER_ID);
+		message.setMarkerId(JpaProject.MARKER_TYPE);
 		if (textRange == null) {
 			//log an exception and then continue without setting location information
 			//At least the user will still get the validation message and will

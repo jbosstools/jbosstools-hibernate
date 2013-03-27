@@ -19,8 +19,8 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.jpa.core.JpaPlatformProvider;
+import org.eclipse.jpt.jpa.core.JpaResourceDefinition;
 import org.eclipse.jpt.jpa.core.JpaResourceModelProvider;
-import org.eclipse.jpt.jpa.core.ResourceDefinition;
 import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
@@ -39,8 +39,8 @@ import org.eclipse.jpt.jpa.core.internal.context.java.JavaVersionMappingDefiniti
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaElementCollectionMappingDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaEmbeddedMappingDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaOneToManyMappingDefinition2_0;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXml2_0Definition;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.GenericPersistenceXml2_0Definition;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXmlDefinition2_0;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.GenericPersistenceXmlDefinition2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernatePropertiesResourceModelProvider;
@@ -116,8 +116,8 @@ public class HibernateJpa2_0PlatformProvider extends AbstractJpaPlatformProvider
 	protected static final JptResourceType[] MOST_RECENT_SUPPORTED_RESOURCE_TYPES = new JptResourceType[] {
 		JavaSourceFileDefinition.instance().getResourceType(),
 		JarDefinition.instance().getResourceType(),
-		GenericPersistenceXml2_0Definition.instance().getResourceType(),
-		GenericOrmXml2_0Definition.instance().getResourceType()
+		GenericPersistenceXmlDefinition2_0.instance().getResourceType(),
+		GenericOrmXmlDefinition2_0.instance().getResourceType()
 	};
 
 	@Override
@@ -188,11 +188,11 @@ public class HibernateJpa2_0PlatformProvider extends AbstractJpaPlatformProvider
 	// ********** resource definitions **********
 
 	@Override
-	protected void addResourceDefinitionsTo(ArrayList<ResourceDefinition> definitions) {
+	protected void addResourceDefinitionsTo(ArrayList<JpaResourceDefinition> definitions) {
 		CollectionTools.addAll(definitions, RESOURCE_DEFINITIONS);
 	}
 
-	protected static final ResourceDefinition[] RESOURCE_DEFINITIONS = new ResourceDefinition[] {
+	protected static final JpaResourceDefinition[] RESOURCE_DEFINITIONS = new JpaResourceDefinition[] {
 		HibernatePersistenceXmlDefinition.instance(),
 		Hibernate2_0PersistenceXmlDefinition.instance(),
 		HibernateOrmXmlDefinition.instance(),

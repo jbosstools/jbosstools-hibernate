@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPlatformProvider;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation;
-import org.eclipse.jpt.jpa.core.ResourceDefinition;
+import org.eclipse.jpt.jpa.core.JpaResourceDefinition;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatform;
 import org.eclipse.persistence.jpa.jpql.parser.JPQLGrammar;
 
@@ -33,8 +33,8 @@ public class HibernateJpaPlatform extends GenericJpaPlatform {
 	public static final String HIBERNATE2_1_PLATFORM_ID = "hibernate2_1"; //$NON-NLS-1$
 
 	@Override
-	public ResourceDefinition getResourceDefinition(JptResourceType resourceType) {
-		for (ResourceDefinition resourceDefinition : getPlatformProvider().getResourceDefinitions()) {
+	public JpaResourceDefinition getResourceDefinition(JptResourceType resourceType) {
+		for (JpaResourceDefinition resourceDefinition : getPlatformProvider().getResourceDefinitions()) {
 			if (resourceDefinition.getResourceType().equals(resourceType)) {
 				return resourceDefinition;
 			}

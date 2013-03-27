@@ -28,7 +28,7 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
@@ -50,7 +50,7 @@ public class GenerateEntitiesWizard extends Wizard {
 	public GenerateEntitiesWizard( HibernateJpaProject jpaProject, IStructuredSelection selection) {
 		super();
 		this.jpaProject = jpaProject;
-		this.setWindowTitle( JptUiMessages.GenerateEntitiesWizard_generateEntities);
+		this.setWindowTitle( JptJpaUiMessages.GenerateEntitiesWizard_generateEntities);
 	}
 	
 	@Override

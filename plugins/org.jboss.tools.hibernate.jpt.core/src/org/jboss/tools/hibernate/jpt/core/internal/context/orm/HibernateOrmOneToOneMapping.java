@@ -13,6 +13,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappingRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmOneToOneMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlOneToOne;
 
@@ -22,7 +23,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlOneToOne;
  */
 public class HibernateOrmOneToOneMapping extends AbstractOrmOneToOneMapping<XmlOneToOne> {
 
-	public HibernateOrmOneToOneMapping(OrmPersistentAttribute parent, XmlOneToOne xmlMapping) {
+	public HibernateOrmOneToOneMapping(OrmSpecifiedPersistentAttribute parent, XmlOneToOne xmlMapping) {
 		super(parent, xmlMapping);
 	}
 

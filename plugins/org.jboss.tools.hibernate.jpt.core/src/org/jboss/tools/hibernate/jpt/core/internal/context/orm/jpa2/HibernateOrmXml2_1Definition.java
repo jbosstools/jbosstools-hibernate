@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.jpa.core.context.orm.NullOrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMappingDefinition;
-import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
+import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.orm.OrmBasicMappingDefinition;
@@ -74,12 +74,12 @@ public class HibernateOrmXml2_1Definition extends AbstractOrmXmlDefinition {
 				JPA2_1.SCHEMA_VERSION);
 	}
 
-	public EFactory getResourceNodeFactory() {
+	public EFactory getResourceModelFactory() {
 		return OrmFactory.eINSTANCE;
 	}
 
 	@Override
-	protected OrmXmlContextNodeFactory buildContextNodeFactory() {
+	protected OrmXmlContextModelFactory buildContextModelFactory() {
 		return new HibernateOrmXml2_0ContextNodeFactory();
 	}
 

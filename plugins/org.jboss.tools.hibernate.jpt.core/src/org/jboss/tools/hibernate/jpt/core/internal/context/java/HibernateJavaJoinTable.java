@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaJoinTable;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTable;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateTable;
 
 /**
@@ -18,6 +18,6 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateTable;
  * @author Dmitry Geraskov
  *
  */
-public interface HibernateJavaJoinTable extends JavaJoinTable, HibernateTable {
+public interface HibernateJavaJoinTable extends JavaSpecifiedJoinTable, HibernateTable {
 
 }

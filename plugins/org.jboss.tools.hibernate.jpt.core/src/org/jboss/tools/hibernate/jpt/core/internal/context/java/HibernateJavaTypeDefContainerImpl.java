@@ -17,8 +17,8 @@ import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.SubListIterableWrapper;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
@@ -29,13 +29,13 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeDefAnnotati
  *
  */
 public class HibernateJavaTypeDefContainerImpl extends
-		AbstractJavaJpaContextNode implements HibernateJavaTypeDefContainer {
+		AbstractJavaContextModel<JpaContextModel> implements HibernateJavaTypeDefContainer {
 
 	protected JavaResourceAnnotatedElement javaResourceannotatedElement;
 	
 	protected final ContextListContainer<JavaTypeDef, TypeDefAnnotation> typeDefContainer;
 
-	public HibernateJavaTypeDefContainerImpl(JpaContextNode parent, JavaResourceAnnotatedElement javaResourcePersistentElement) {
+	public HibernateJavaTypeDefContainerImpl(JpaContextModel parent, JavaResourceAnnotatedElement javaResourcePersistentElement) {
 		super(parent);
 		this.javaResourceannotatedElement = javaResourcePersistentElement;
 		this.typeDefContainer = this.buildTypeDefContainer();
@@ -60,7 +60,7 @@ public class HibernateJavaTypeDefContainerImpl extends
 	@Override
 	public void update() {
 		super.update();
-		this.updateNodes(this.getTypeDefs());
+		this.updateModels(this.getTypeDefs());
 	}
 
 	// ********** type defs **********

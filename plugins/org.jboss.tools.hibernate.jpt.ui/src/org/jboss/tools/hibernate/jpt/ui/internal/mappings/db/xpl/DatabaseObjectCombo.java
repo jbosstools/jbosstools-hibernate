@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaDataSource;
-import org.eclipse.jpt.jpa.core.JpaNode;
+import org.eclipse.jpt.jpa.core.JpaModel;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Column;
@@ -48,7 +48,7 @@ import org.eclipse.swt.widgets.Composite;
  * @see TableCombo
  */
 @SuppressWarnings("nls")
-public abstract class DatabaseObjectCombo<T extends JpaNode>
+public abstract class DatabaseObjectCombo<T extends JpaModel>
 	extends ComboPane<T>
 {
 	/**

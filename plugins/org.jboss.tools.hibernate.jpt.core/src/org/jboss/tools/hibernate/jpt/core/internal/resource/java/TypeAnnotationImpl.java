@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotat
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
@@ -41,7 +41,7 @@ TypeAnnotation {
 	private String type;
 	private CompilationUnit astRoot;
 
-	protected TypeAnnotationImpl(JavaResourceNode parent, Member attribute) {
+	protected TypeAnnotationImpl(JavaResourceModel parent, Member attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
 		this.typeAdapter = this.buildTypeAdapter(TYPE_ADAPTER);
 	}

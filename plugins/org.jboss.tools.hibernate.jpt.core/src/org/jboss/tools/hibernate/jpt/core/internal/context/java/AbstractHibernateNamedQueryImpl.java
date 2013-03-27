@@ -10,7 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
+import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.CacheModeType;
@@ -23,7 +24,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateQueryA
  *
  */
 @SuppressWarnings("restriction")
-public abstract class AbstractHibernateNamedQueryImpl<T extends HibernateQueryAnnotation> extends AbstractJavaQuery<T>
+public abstract class AbstractHibernateNamedQueryImpl<T extends HibernateQueryAnnotation> extends AbstractJavaQuery<JavaQueryContainer,T>
 	implements HibernateJavaQuery {
 
 	private FlushModeType specifiedFlushMode;
@@ -45,7 +46,7 @@ public abstract class AbstractHibernateNamedQueryImpl<T extends HibernateQueryAn
 	/**
 	 * @param parent
 	 */
-	public AbstractHibernateNamedQueryImpl(JpaContextNode parent, T queryAnnotation) {
+	public AbstractHibernateNamedQueryImpl(JavaQueryContainer parent, T queryAnnotation) {
 		super(parent, queryAnnotation);
 		this.specifiedFlushMode = this.getResourceFlushMode(queryAnnotation);
 		this.specifiedCacheMode = this.getResourceCacheMode(queryAnnotation);

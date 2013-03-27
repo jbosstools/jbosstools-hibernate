@@ -11,12 +11,13 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
 import org.eclipse.jpt.jpa.core.context.Column;
+import org.eclipse.jpt.jpa.core.context.SpecifiedColumn;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public interface HibernateColumn extends Column, HibernateNamedColumn {
+public interface HibernateColumn extends SpecifiedColumn, HibernateNamedColumn {
 	
 	//**** Table ****
 	

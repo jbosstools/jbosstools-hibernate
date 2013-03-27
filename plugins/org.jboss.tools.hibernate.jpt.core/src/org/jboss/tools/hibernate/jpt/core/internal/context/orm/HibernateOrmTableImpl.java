@@ -17,10 +17,9 @@ import java.util.List;
 import org.eclipse.jpt.common.utility.internal.iterator.TransformationIterator;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.Table;
-import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
+import org.eclipse.jpt.jpa.core.context.orm.OrmTable;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmTable;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.hibernate.cfg.NamingStrategy;
@@ -38,8 +37,8 @@ public class HibernateOrmTableImpl extends GenericOrmTable implements HibernateO
 
 	protected String defaultDBTableName;
 
-	public HibernateOrmTableImpl(OrmEntity parent, Owner owner) {
-		super(parent, owner);
+	public HibernateOrmTableImpl(OrmTable.ParentAdapter owner) {
+		super(owner);
 	}
 
 	@Override
@@ -141,12 +140,10 @@ public class HibernateOrmTableImpl extends GenericOrmTable implements HibernateO
 	protected void validateAgainstDatabase(List<IMessage> messages) {
 		if ( ! this.catalogIsResolved()) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.TABLE_UNRESOLVED_CATALOG,
+					buildValidationMessage(
+							JptJpaCoreValidationMessages.TABLE_UNRESOLVED_CATALOG,
 							new String[] {this.getCatalog(), this.getDBTableName()},
-							this,
-							this.getCatalogTextRange()
+							this.getCatalogValidationTextRange()
 					)
 			);
 			return;
@@ -154,12 +151,10 @@ public class HibernateOrmTableImpl extends GenericOrmTable implements HibernateO
 
 		if ( ! this.schemaIsResolved()) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.TABLE_UNRESOLVED_SCHEMA,
+					buildValidationMessage(
+							JptJpaCoreValidationMessages.TABLE_UNRESOLVED_SCHEMA,
 							new String[] {this.getSchema(), this.getDBTableName()},
-							this,
-							this.getSchemaTextRange()
+							this.getSchemaValidationTextRange()
 					)
 			);
 			return;
@@ -167,12 +162,10 @@ public class HibernateOrmTableImpl extends GenericOrmTable implements HibernateO
 
 		if ( ! this.isResolved()) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.TABLE_UNRESOLVED_NAME,
+					buildValidationMessage(
+							JptJpaCoreValidationMessages.TABLE_UNRESOLVED_NAME,
 							new String[] {this.getDBTableName()},
-							this,
-							this.getNameTextRange()
+							this.getNameValidationTextRange()
 					)
 			);
 			return;

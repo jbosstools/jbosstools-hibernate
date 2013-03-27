@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotat
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.TypeStringExpressionConverter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
@@ -71,7 +71,7 @@ public class TypeDefAnnotationImpl extends SourceAnnotation
 	 * @param parent
 	 * @param member
 	 */
-	public TypeDefAnnotationImpl(JavaResourceNode parent, AnnotatedElement member,
+	public TypeDefAnnotationImpl(JavaResourceModel parent, AnnotatedElement member,
 			DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
 		this.nameDeclarationAdapter = this.buildNameDeclarationAdapter();

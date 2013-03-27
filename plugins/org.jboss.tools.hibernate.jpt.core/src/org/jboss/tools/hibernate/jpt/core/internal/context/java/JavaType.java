@@ -11,14 +11,14 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeAnnotation;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public interface JavaType extends JpaContextNode {
+public interface JavaType extends JpaContextModel {
 	
 	String getType();
 	void setType(String name);

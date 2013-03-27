@@ -11,7 +11,7 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedColumn;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateColumn;
 
 /**
@@ -19,6 +19,6 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateColumn;
  * @author Dmitry Geraskov
  *
  */
-public interface HibernateOrmColumn extends OrmColumn, HibernateColumn {
+public interface HibernateOrmColumn extends OrmSpecifiedColumn, HibernateColumn {
 
 }

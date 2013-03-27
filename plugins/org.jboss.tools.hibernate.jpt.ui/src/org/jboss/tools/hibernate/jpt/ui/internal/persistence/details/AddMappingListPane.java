@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.ui.internal.persistence.JptUiPersistenceMessages;
+import org.eclipse.jpt.jpa.ui.persistence.JptJpaUiPersistenceMessages;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
@@ -93,7 +93,7 @@ abstract class ExtendedAdapter extends AddRemoveListPane.AbstractAdapter<ClassRe
 
 	@Override
 	public String optionalButtonText() {
-		return JptUiPersistenceMessages.PersistenceUnitClassesComposite_open;
+		return JptJpaUiPersistenceMessages.PERSISTENCE_UNIT_CLASSES_COMPOSITE_OPEN;
 	}
 
 	public abstract ClassRef addPackage(ModifiableCollectionValueModel<ClassRef> listSelectionModel);

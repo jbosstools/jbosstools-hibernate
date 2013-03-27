@@ -13,10 +13,9 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.List;
 
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedDiscriminatorColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaDiscriminatorColumn;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -35,8 +34,8 @@ public class HibernateJavaDiscriminatorColumnImpl extends
 		GenericJavaDiscriminatorColumn implements
 		HibernateJavaDiscriminatorColumn {
 
-	public HibernateJavaDiscriminatorColumnImpl(JavaEntity parent, ReadOnlyNamedDiscriminatorColumn.Owner owner) {
-		super(parent, owner);
+	public HibernateJavaDiscriminatorColumnImpl(JavaSpecifiedDiscriminatorColumn.ParentAdapter parent) {
+		super(parent);
 	}
 
 	@Override
@@ -82,10 +81,10 @@ public class HibernateJavaDiscriminatorColumnImpl extends
 				messages.add(
 					HibernateJpaValidationMessage.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.DISCRIMINATOR_COLUMN_UNRESOLVED_NAME,
+						JptJpaCoreValidationMessages.DISCRIMINATOR_COLUMN_UNRESOLVED_NAME.getID(),
 						new String[] {this.getDBColumnName()}, 
 						this,
-						this.getNameTextRange()
+						this.getNameValidationTextRange()
 					)
 				);
 			}

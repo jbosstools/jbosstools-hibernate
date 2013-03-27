@@ -25,11 +25,10 @@ import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.node.Node;
-import org.eclipse.jpt.common.utility.node.Problem;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -61,7 +60,7 @@ public class HibernateAddQueryDialog extends ValidatingDialog<AddQueryStateObjec
 	 * 						could be added.
 	 */
 	public HibernateAddQueryDialog(Shell parent, PersistenceUnit pUnit, boolean hibernateOnly, ResourceManager resourceManager) {
-		super(parent, resourceManager, JptUiDetailsMessages.AddQueryDialog_title);
+		super(parent, resourceManager, JptJpaUiDetailsMessages.AddQueryDialog_title);
 		this.pUnit = pUnit;
 		this.hibernateOnly = hibernateOnly;
 	}
@@ -83,12 +82,12 @@ public class HibernateAddQueryDialog extends ValidatingDialog<AddQueryStateObjec
 
 	@Override
 	protected String getDescriptionTitle() {
-		return JptUiDetailsMessages.AddQueryDialog_descriptionTitle;
+		return JptJpaUiDetailsMessages.AddQueryDialog_descriptionTitle;
 	}
 
 	@Override
 	protected String getDescription() {
-		return JptUiDetailsMessages.AddQueryDialog_description;
+		return JptJpaUiDetailsMessages.AddQueryDialog_description;
 	}
 
 	@Override
@@ -134,15 +133,15 @@ public class HibernateAddQueryDialog extends ValidatingDialog<AddQueryStateObjec
 		@Override
 		protected void initializeLayout(Composite container) {
 			
-			this.addLabel(container, JptUiDetailsMessages.AddQueryDialog_name);
+			this.addLabel(container, JptJpaUiDetailsMessages.AddQueryDialog_name);
 			this.nameText = this.addText(container, buildNameHolder());
 //			this.nameText = addLabeledText(
 //				container,
-//				JptUiDetailsMessages.AddQueryDialog_name,
+//				JptUiJpaDetailsMessages.AddQueryDialog_name,
 //				buildNameHolder()
 //			);
 
-			this.addLabel(container, JptUiDetailsMessages.AddQueryDialog_queryType);
+			this.addLabel(container, JptJpaUiDetailsMessages.AddQueryDialog_queryType);
 			this.addCombo(
 					container,
 					buildQueryTypeListHolder(), 
@@ -174,10 +173,10 @@ public class HibernateAddQueryDialog extends ValidatingDialog<AddQueryStateObjec
 				@Override
 				protected String transform_(String value) {
 					if (value == NAMED_QUERY) {
-						return JptUiDetailsMessages.AddQueryDialog_namedQuery;
+						return JptJpaUiDetailsMessages.AddQueryDialog_namedQuery;
 					}
 					if (value == NAMED_NATIVE_QUERY) {
-						return JptUiDetailsMessages.AddQueryDialog_namedNativeQuery;
+						return JptJpaUiDetailsMessages.AddQueryDialog_namedNativeQuery;
 					}
 					if (value == HibernateNamedQuery.HIBERNATE_NAMED_QUERY) {
 						return HibernateUIMappingMessages.HibernateAddQueryDialog_hibernateNamedQuery;
@@ -271,16 +270,16 @@ final class AddQueryStateObject extends AbstractNode
 
 	private void addNameProblemsTo(List<Problem> currentProblems) {
 		if (StringTools.isBlank(this.name)) {
-			currentProblems.add(buildProblem(JptUiDetailsMessages.QueryStateObject_nameMustBeSpecified, IMessageProvider.ERROR));
+			currentProblems.add(buildProblem(JptJpaUiDetailsMessages.QueryStateObject_nameMustBeSpecified, IMessageProvider.ERROR));
 		}
 		else if (names().contains(this.name)){
-			currentProblems.add(buildProblem(JptUiDetailsMessages.AddQueryDialog_nameExists, IMessageProvider.WARNING));
+			currentProblems.add(buildProblem(JptJpaUiDetailsMessages.AddQueryDialog_nameExists, IMessageProvider.WARNING));
 		}
 	}
 
 	private void addQueryTypeProblemsTo(List<Problem> currentProblems) {
 		if (StringTools.isBlank(this.queryType)) {
-			currentProblems.add(buildProblem(JptUiDetailsMessages.QueryStateObject_typeMustBeSpecified, IMessageProvider.ERROR));
+			currentProblems.add(buildProblem(JptJpaUiDetailsMessages.QueryStateObject_typeMustBeSpecified, IMessageProvider.ERROR));
 		}
 	}
 

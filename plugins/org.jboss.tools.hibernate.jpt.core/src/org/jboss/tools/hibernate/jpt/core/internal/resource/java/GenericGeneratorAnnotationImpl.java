@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotation
 import org.eclipse.jpt.common.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
@@ -57,7 +57,7 @@ implements GenericGeneratorAnnotation {
 	 * @param parent
 	 * @param member
 	 */
-	public GenericGeneratorAnnotationImpl(JavaResourceNode parent, AnnotatedElement member,
+	public GenericGeneratorAnnotationImpl(JavaResourceModel parent, AnnotatedElement member,
 			DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
 		this.nameDeclarationAdapter = this.buildNameDeclarationAdapter();

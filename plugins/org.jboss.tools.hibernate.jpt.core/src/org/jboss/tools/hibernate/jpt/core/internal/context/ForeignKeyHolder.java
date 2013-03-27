@@ -11,14 +11,14 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.db.Table;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public interface ForeignKeyHolder extends JpaContextNode {
+public interface ForeignKeyHolder extends JpaContextModel {
 	
 	//******************** ForeignKey *****************
 

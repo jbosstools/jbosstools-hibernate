@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.StringExpressionConverte
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
@@ -49,7 +49,7 @@ implements IndexAnnotation{
 	private String[] columnNames;
 	private CompilationUnit astRoot;
 
-	protected IndexAnnotationImpl(JavaResourceNode parent, Member member) {
+	protected IndexAnnotationImpl(JavaResourceModel parent, Member member) {
 		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
 		this.nameAdapter = this.buildNameAdapter(NAME_ADAPTER);
 		this.columnNamesAdapter = this.buildColumnNamesAdapter(COLUMN_NAMES_ADAPTER);

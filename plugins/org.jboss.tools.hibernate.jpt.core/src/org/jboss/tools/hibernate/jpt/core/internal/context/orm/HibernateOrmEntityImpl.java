@@ -14,20 +14,20 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 import java.util.ListIterator;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.iterator.EmptyListIterator;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
+import org.eclipse.jpt.jpa.core.context.NamedColumn;
+import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmEntity;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.NullOrmCacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.CacheableHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.CacheableReference2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlCacheable_2_0;
@@ -85,13 +85,13 @@ implements HibernateOrmEntity {
 
 	protected Cacheable2_0 buildCacheable() {
 		return this.isJpa2_0Compatible() ?
-				this.getContextNodeFactory2_0().buildOrmCacheable(this) :
+				this.getContextModelFactory2_0().buildOrmCacheable(this) :
 				new NullOrmCacheable2_0(this);
 	}
 
 	@Override
 	public boolean calculateDefaultCacheable() {
-		CacheableHolder2_0 javaEntity = (CacheableHolder2_0) this.getJavaTypeMappingForDefaults();
+		CacheableReference2_0 javaEntity = (CacheableReference2_0) this.getJavaTypeMappingForDefaults();
 		if (javaEntity != null) {
 			return javaEntity.getCacheable().isCacheable();
 		}
@@ -103,7 +103,7 @@ implements HibernateOrmEntity {
 	}
 
 	protected Cacheable2_0 getParentCacheable() {
-		CacheableHolder2_0 parentEntity = (CacheableHolder2_0) this.getParentEntity();
+		CacheableReference2_0 parentEntity = (CacheableReference2_0) this.getParentEntity();
 		return (parentEntity == null) ? null : parentEntity.getCacheable();
 	}
 
@@ -128,19 +128,19 @@ implements HibernateOrmEntity {
 	/**
 	 * strip out <code>null</code> names
 	 */
-	protected Iterable<String> convertToDBNames(Iterable<ReadOnlyTable> tables) {
-		return new FilteringIterable<String>(this.convertToDBNames_(tables), NotNullFilter.<String>instance());
+	protected Iterable<String> convertToDBNames(Iterable<Table> tables) {
+		return new FilteringIterable<String>(this.convertToDBNames_(tables),PredicateTools.notNullPredicate());
 	}
 
 	/**
 	 * Convert Table to it's DB name.
 	 */
-	protected Iterable<String> convertToDBNames_(Iterable<ReadOnlyTable> tables) {
-		return new TransformationIterable<ReadOnlyTable, String>(
+	protected Iterable<String> convertToDBNames_(Iterable<Table> tables) {
+		return new TransformationIterable<Table, String>(
 				tables,
-				new Transformer<ReadOnlyTable, String> () {
+				new Transformer<Table, String> () {
 					@Override
-					public String transform(ReadOnlyTable t) {
+					public String transform(Table t) {
 						if (t instanceof HibernateTable) {
 							return ((HibernateTable)t).getDBTableName();
 						} else {
@@ -153,13 +153,13 @@ implements HibernateOrmEntity {
 
 
 	@Override
-	protected PrimaryKeyJoinColumnOwner buildPrimaryKeyJoinColumnOwner() {
+	protected PrimaryKeyJoinColumnParentAdapter buildPrimaryKeyJoinColumnParentAdapter() {
 		return new HibernatePrimaryKeyJoinColumnOwner();
 	}
 
 	// ********** pk join column owner **********
 //do we need this?
-	class HibernatePrimaryKeyJoinColumnOwner extends PrimaryKeyJoinColumnOwner
+	class HibernatePrimaryKeyJoinColumnOwner extends PrimaryKeyJoinColumnParentAdapter
 	{
 
 		public org.eclipse.jpt.jpa.db.Table getDbTable(String tableName) {
@@ -178,7 +178,7 @@ implements HibernateOrmEntity {
 		}
 
 		@Override
-		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+		public String getDefaultColumnName(NamedColumn column) {
 			if (getJoinColumnsSize() != 1) {
 				return null;
 			}
@@ -214,6 +214,7 @@ implements HibernateOrmEntity {
 			return null;
 		}
 
+		
 	}
 
 	@Override

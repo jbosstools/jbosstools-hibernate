@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
  * @author Dmitry Geraskov
  *
  */
-public interface HibernatePackageInfo extends JavaPackageInfo, JavaGeneratorContainer.ParentAdapter, JavaQueryContainer.Owner{
+public interface HibernatePackageInfo extends JavaPackageInfo, JavaGeneratorContainer.Parent, JavaQueryContainer.Parent{
 	
 	JavaQueryContainer getQueryContainer();
 	JavaGeneratorContainer getGeneratorContainer();

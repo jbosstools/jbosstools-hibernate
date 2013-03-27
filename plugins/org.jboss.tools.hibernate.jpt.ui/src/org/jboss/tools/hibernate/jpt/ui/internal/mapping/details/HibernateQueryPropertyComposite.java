@@ -18,8 +18,10 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
+import org.eclipse.jpt.jpa.core.context.NamedQuery;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -45,19 +47,19 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		this.addLabel(container, JptUiDetailsMessages.NamedQueryComposite_nameTextLabel);
+		this.addLabel(container, JptJpaUiDetailsMessages.NamedQueryComposite_nameTextLabel);
 		this.addText(container, buildNameTextHolder());
 //		addLabeledText(
 //			container,
-//			JptUiDetailsMessages.NamedQueryComposite_nameTextLabel,
+//			JptJpaUiDetailsMessages.NamedQueryComposite_nameTextLabel,
 //			buildNameTextHolder());
 
 		// Query text area
-		this.addLabel(container, JptUiDetailsMessages.NamedQueryPropertyComposite_query);
+		this.addLabel(container, JptJpaUiDetailsMessages.NamedQueryPropertyComposite_query);
 		this.addMultiLineText(container, buildQueryHolder(), 4);
 //		addLabeledMultiLineText(
 //			container,
-//			JptUiDetailsMessages.NamedQueryPropertyComposite_query,
+//			JptJpaUiDetailsMessages.NamedQueryPropertyComposite_query,
 //			buildQueryHolder(),
 //			4,
 //			null
@@ -215,15 +217,24 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 	}
 
 	private ModifiablePropertyValueModel<String> buildQueryHolder() {
-		return new PropertyAspectAdapter<HibernateQuery, String>(getSubjectHolder(), HibernateQuery.QUERY_PROPERTY) {
+		return new PropertyAspectAdapter<HibernateQuery, String>(getSubjectHolder(), NamedQuery.QUERY_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				return this.subject.getQuery();
+				String queryText = "";
+				if(subject instanceof NamedQuery ) {
+					queryText = ((NamedQuery)this.subject).getQuery();
+				} else if (subject instanceof NamedNativeQuery) {
+					queryText = ((NamedNativeQuery)this.subject).getQuery();
+				}
+				return queryText;
 			}
 
 			@Override
 			protected void setValue_(String value) {
-				this.subject.setQuery(value);
+				String queryText = "";
+				if(subject instanceof NamedQuery ) {
+					((NamedQuery)this.subject).setQuery(value);
+				} 
 			}
 		};
 	}
@@ -256,8 +267,8 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 				if ((getSubject() != null) && (value == null)) {
 					boolean defaultValue = getSubject().isDefaultCacheable();
 
-					String defaultStringValue = defaultValue ? JptUiDetailsMessages.OptionalComposite_true :
-					                                           JptUiDetailsMessages.OptionalComposite_false;
+					String defaultStringValue = defaultValue ? JptJpaUiDetailsMessages.OptionalComposite_true :
+					                                           JptJpaUiDetailsMessages.OptionalComposite_false;
 
 					return NLS.bind(
 						HibernateUIMappingMessages.NamedQueryPropertyComposite_cacheableWithDefault,
@@ -299,8 +310,8 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 				if ((getSubject() != null) && (value == null)) {
 					boolean defaultValue = getSubject().isDefaultReadOnly();
 
-					String defaultStringValue = defaultValue ? JptUiDetailsMessages.OptionalComposite_true :
-					                                           JptUiDetailsMessages.OptionalComposite_false;
+					String defaultStringValue = defaultValue ? JptJpaUiDetailsMessages.OptionalComposite_true :
+					                                           JptJpaUiDetailsMessages.OptionalComposite_false;
 
 					return NLS.bind(
 						HibernateUIMappingMessages.NamedQueryPropertyComposite_readOnlyWithDefault,

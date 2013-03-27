@@ -11,7 +11,7 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateJoinColumn;
 
 /**
@@ -20,6 +20,6 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateJoinColumn;
  *
  */
 public interface HibernateJavaJoinColumn extends HibernateJoinColumn,
-		JavaJoinColumn {
+	JavaSpecifiedJoinColumn {
 
 }

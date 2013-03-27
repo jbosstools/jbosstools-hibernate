@@ -14,8 +14,8 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
+import org.eclipse.jpt.jpa.ui.details.orm.JptJpaUiDetailsOrmMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractIdMappingComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.JptUiDetailsOrmMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmMappingNameText;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -60,7 +60,7 @@ implements JpaComposite{
 		columnComposite.getControl().setLayoutData(gridData);
 
 		// Name widgets
-		this.addLabel(container, JptUiDetailsOrmMessages.OrmMappingNameChooser_name);
+		this.addLabel(container, JptJpaUiDetailsOrmMessages.ORM_MAPPING_NAME_CHOOSER_NAME);
 		new OrmMappingNameText(this, getSubjectHolder(), container);
 
 		return container;

@@ -11,11 +11,11 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SubListIterableWrapper;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.Query;
+import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaQueryContainer;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedNativeQuery;
@@ -35,8 +35,8 @@ implements HibernateJavaQueryContainer{
 	protected final ContextListContainer<HibernateJavaNamedQuery, HibernateNamedQueryAnnotation> hibernateNamedQueryContainer;
 	protected final ContextListContainer<HibernateJavaNamedNativeQuery, HibernateNamedNativeQueryAnnotation> hibernateNamedNativeQueryContainer;
 
-	public HibernateJavaQueryContainerImpl(JpaContextNode parent, Owner owner) {
-		super(parent, owner);
+	public HibernateJavaQueryContainerImpl(JavaQueryContainer.Parent owner) {
+		super(owner);
 		this.hibernateNamedQueryContainer = this.buildHibernateNamedQueryContainer();
 		this.hibernateNamedNativeQueryContainer = this.buildHibernateNamedNativeQueryContainer();
 	}
@@ -59,15 +59,15 @@ implements HibernateJavaQueryContainer{
 	@Override
 	public void update() {
 		super.update();
-		this.updateNodes(this.getHibernateNamedQueries());
-		this.updateNodes(this.getHibernateNamedNativeQueries());
+		this.updateModels(this.getHibernateNamedQueries());
+		this.updateModels(this.getHibernateNamedNativeQueries());
 	}
 	
 	// ********** queries **********
 
 	@SuppressWarnings("unchecked")
 	public Iterable<Query> getQueries() {
-		return new CompositeIterable<Query>(super.getQueries(),
+		return IterableTools.concatenate(super.getQueries(),
 				this.getHibernateNamedQueries(), this.getHibernateNamedNativeQueries());
 	}
 
@@ -93,7 +93,7 @@ implements HibernateJavaQueryContainer{
 	}
 
 	protected HibernateNamedQueryAnnotation addHibernateNamedQueryAnnotation(int index) {
-		return (HibernateNamedQueryAnnotation) this.owner.getResourceAnnotatedElement().addAnnotation(index, HibernateNamedQueryAnnotation.ANNOTATION_NAME);
+		return (HibernateNamedQueryAnnotation) this.parent.getResourceAnnotatedElement().addAnnotation(index, HibernateNamedQueryAnnotation.ANNOTATION_NAME);
 	}
 
 	@Override
@@ -103,13 +103,13 @@ implements HibernateJavaQueryContainer{
 
 	@Override
 	public void removeHibernateNamedQuery(int index) {
-		this.owner.getResourceAnnotatedElement().removeAnnotation(index, HibernateNamedQueryAnnotation.ANNOTATION_NAME);
+		this.parent.getResourceAnnotatedElement().removeAnnotation(index, HibernateNamedQueryAnnotation.ANNOTATION_NAME);
 		this.hibernateNamedQueryContainer.removeContextElement(index);
 	}
 
 	@Override
 	public void moveHibernateNamedQuery(int targetIndex, int sourceIndex) {
-		this.owner.getResourceAnnotatedElement().moveAnnotation(targetIndex, sourceIndex, HibernateNamedQueryAnnotation.ANNOTATION_NAME);
+		this.parent.getResourceAnnotatedElement().moveAnnotation(targetIndex, sourceIndex, HibernateNamedQueryAnnotation.ANNOTATION_NAME);
 		this.hibernateNamedQueryContainer.moveContextElement(targetIndex, sourceIndex);
 	}
 
@@ -128,7 +128,7 @@ implements HibernateJavaQueryContainer{
 	}
 
 	protected ListIterable<NestableAnnotation> getNestableHibernateNamedQueryAnnotations_() {
-		return this.owner.getResourceAnnotatedElement().getAnnotations(HibernateNamedQueryAnnotation.ANNOTATION_NAME);
+		return this.parent.getResourceAnnotatedElement().getAnnotations(HibernateNamedQueryAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected ContextListContainer<HibernateJavaNamedQuery, HibernateNamedQueryAnnotation> buildHibernateNamedQueryContainer() {
@@ -184,7 +184,7 @@ implements HibernateJavaQueryContainer{
 	}
 
 	protected HibernateNamedNativeQueryAnnotation addHibernateNamedNativeQueryAnnotation(int index) {
-		return (HibernateNamedNativeQueryAnnotation) this.owner.getResourceAnnotatedElement().addAnnotation(index, HibernateNamedNativeQueryAnnotation.ANNOTATION_NAME);
+		return (HibernateNamedNativeQueryAnnotation) this.parent.getResourceAnnotatedElement().addAnnotation(index, HibernateNamedNativeQueryAnnotation.ANNOTATION_NAME);
 	}
 
 	@Override
@@ -194,13 +194,13 @@ implements HibernateJavaQueryContainer{
 
 	@Override
 	public void removeHibernateNamedNativeQuery(int index) {
-		this.owner.getResourceAnnotatedElement().removeAnnotation(index, HibernateNamedNativeQueryAnnotation.ANNOTATION_NAME);
+		this.parent.getResourceAnnotatedElement().removeAnnotation(index, HibernateNamedNativeQueryAnnotation.ANNOTATION_NAME);
 		this.hibernateNamedNativeQueryContainer.removeContextElement(index);
 	}
 
 	@Override
 	public void moveHibernateNamedNativeQuery(int targetIndex, int sourceIndex) {
-		this.owner.getResourceAnnotatedElement().moveAnnotation(targetIndex, sourceIndex, HibernateNamedNativeQueryAnnotation.ANNOTATION_NAME);
+		this.parent.getResourceAnnotatedElement().moveAnnotation(targetIndex, sourceIndex, HibernateNamedNativeQueryAnnotation.ANNOTATION_NAME);
 		this.hibernateNamedNativeQueryContainer.moveContextElement(targetIndex, sourceIndex);
 	}
 
@@ -219,7 +219,7 @@ implements HibernateJavaQueryContainer{
 	}
 
 	protected ListIterable<NestableAnnotation> getNestableHibernateNamedNativeQueryAnnotations_() {
-		return this.owner.getResourceAnnotatedElement().getAnnotations(HibernateNamedNativeQueryAnnotation.ANNOTATION_NAME);
+		return this.parent.getResourceAnnotatedElement().getAnnotations(HibernateNamedNativeQueryAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected ContextListContainer<HibernateJavaNamedNativeQuery, HibernateNamedNativeQueryAnnotation> buildHibernateNamedNativeQueryContainer() {

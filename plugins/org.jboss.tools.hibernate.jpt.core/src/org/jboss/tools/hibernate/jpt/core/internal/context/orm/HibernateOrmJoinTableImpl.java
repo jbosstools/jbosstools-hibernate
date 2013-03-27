@@ -14,10 +14,9 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 import java.util.List;
 
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmJoinTable;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -35,8 +34,8 @@ public class HibernateOrmJoinTableImpl extends GenericOrmJoinTable implements
 HibernateOrmJoinTable {
 
 
-	public HibernateOrmJoinTableImpl(OrmJoinTableRelationshipStrategy parent, Owner owner) {
-		super(parent, owner);
+	public HibernateOrmJoinTableImpl(OrmSpecifiedJoinTable.ParentAdapter owner) {
+		super(owner);
 	}
 
 	@Override
@@ -85,22 +84,18 @@ HibernateOrmJoinTable {
 		if ( ! this.catalogIsResolved()) {
 			if (persistentAttribute.isVirtual()) {
 				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.JOIN_TABLE_UNRESOLVED_CATALOG,
+						buildValidationMessage(
+								JptJpaCoreValidationMessages.JOIN_TABLE_UNRESOLVED_CATALOG,
 								new String[] {persistentAttribute.getName(), this.getCatalog(), this.getDBTableName()},
-								this,
-								this.getCatalogTextRange()
+								this.getCatalogValidationTextRange()
 						)
 				);
 			} else {
 				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_CATALOG,
+						buildValidationMessage(
+								JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_CATALOG,
 								new String[] {this.getCatalog(), this.getDBTableName()},
-								this,
-								this.getCatalogTextRange()
+								this.getCatalogValidationTextRange()
 						)
 				);
 			}
@@ -110,22 +105,18 @@ HibernateOrmJoinTable {
 		if ( ! this.schemaIsResolved()) {
 			if (persistentAttribute.isVirtual()) {
 				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.JOIN_TABLE_UNRESOLVED_SCHEMA,
+						buildValidationMessage(
+								JptJpaCoreValidationMessages.JOIN_TABLE_UNRESOLVED_SCHEMA,
 								new String[] {persistentAttribute.getName(), this.getSchema(), this.getDBTableName()},
-								this,
-								this.getSchemaTextRange()
+								this.getSchemaValidationTextRange()
 						)
 				);
 			} else {
 				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_SCHEMA,
+						buildValidationMessage(
+								JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_SCHEMA,
 								new String[] {this.getSchema(), this.getDBTableName()},
-								this,
-								this.getSchemaTextRange()
+								this.getSchemaValidationTextRange()
 						)
 				);
 			}
@@ -135,23 +126,19 @@ HibernateOrmJoinTable {
 			if (getDBTableName() != null) { //if name is null, the validation will be handled elsewhere, such as the target entity is not defined
 				if (persistentAttribute.isVirtual()) {
 					messages.add(
-							DefaultJpaValidationMessages.buildMessage(
-									IMessage.HIGH_SEVERITY,
-									JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_NAME,
+							buildValidationMessage(
+									JptJpaCoreValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_NAME,
 									new String[] {persistentAttribute.getName(), this.getDBTableName()},
-									this,
-									this.getNameTextRange()
+									this.getNameValidationTextRange()
 							)
 					);
 				}
 				else {
 					messages.add(
-							DefaultJpaValidationMessages.buildMessage(
-									IMessage.HIGH_SEVERITY,
-									JpaValidationMessages.JOIN_TABLE_UNRESOLVED_NAME,
+							buildValidationMessage(
+									JptJpaCoreValidationMessages.JOIN_TABLE_UNRESOLVED_NAME,
 									new String[] {this.getDBTableName()},
-									this,
-									this.getNameTextRange())
+									this.getNameValidationTextRange())
 					);
 				}
 			}

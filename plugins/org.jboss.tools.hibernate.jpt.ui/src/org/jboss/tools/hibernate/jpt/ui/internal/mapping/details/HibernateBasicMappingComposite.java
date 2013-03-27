@@ -18,10 +18,10 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractBasicMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.ColumnComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComboViewer;
-import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.OptionalTriStateCheckBox;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -141,7 +141,7 @@ public class HibernateBasicMappingComposite extends AbstractBasicMappingComposit
 		}
 
 		// Fetch type widgets
-		this.addLabel(container, JptUiDetailsMessages.BasicGeneralSection_fetchLabel);
+		this.addLabel(container, JptJpaUiDetailsMessages.BasicGeneralSection_fetchLabel);
 		new FetchTypeComboViewer(this, container);
 
 		// Optional widgets

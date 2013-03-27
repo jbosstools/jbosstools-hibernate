@@ -14,9 +14,10 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 import java.util.Iterator;
 
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.SpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaJoinColumn;
 import org.eclipse.jpt.jpa.core.resource.java.CompleteJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.db.Column;
@@ -36,8 +37,8 @@ import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValida
 public class HibernateJavaJoinColumnImpl extends GenericJavaJoinColumn
 implements HibernateJavaJoinColumn {
 
-	public HibernateJavaJoinColumnImpl(JpaContextNode parent, ReadOnlyJoinColumn.Owner owner, CompleteJoinColumnAnnotation joinColumnAnnotation) {
-		super(parent, owner, joinColumnAnnotation);
+	public HibernateJavaJoinColumnImpl(JoinColumn.ParentAdapter parentAdapter, CompleteJoinColumnAnnotation joinColumnAnnotation) {
+		super(parentAdapter, joinColumnAnnotation);
 	}
 
 	@Override
@@ -47,22 +48,22 @@ implements HibernateJavaJoinColumn {
 
 	@Override
 	protected String buildDefaultName() {
-		return NamingStrategyMappingTools.buildJoinColumnDefaultName(this, this.owner);
+		return NamingStrategyMappingTools.buildJoinColumnDefaultName(this, this.parentAdapter);
 	}
 
 	@Override
-	public ReadOnlyPersistentAttribute getReferencedPersistentAttribute() {
-		if (this.owner.getJoinColumnsSize() != 1) {
+	public PersistentAttribute getReferencedPersistentAttribute() {
+		if (this.parentAdapter.getJoinColumnsSize() != 1) {
 			return null;
 		}
-		Entity targetEntity = this.owner.getRelationshipTarget();
+		Entity targetEntity = this.parentAdapter.getRelationshipTarget();
 		if (targetEntity == null) {
 			return null;
 		}
-		ReadOnlyPersistentAttribute pAttr = null;
-		Iterator<ReadOnlyPersistentAttribute> attributes = targetEntity.getPersistentType().getAllAttributes().iterator();
-		for (Iterator<ReadOnlyPersistentAttribute> stream = attributes; stream.hasNext();) {
-			ReadOnlyPersistentAttribute attribute = stream.next();
+		PersistentAttribute pAttr = null;
+		Iterator<PersistentAttribute> attributes = targetEntity.getPersistentType().getAllAttributes().iterator();
+		for (Iterator<PersistentAttribute> stream = attributes; stream.hasNext();) {
+			PersistentAttribute attribute = stream.next();
 			String name = attribute.getPrimaryKeyColumnName();
 			if (name != null) {
 				if (pAttr == null){

@@ -13,14 +13,14 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.persistence;
 import java.util.List;
 
 import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.GenericClassRef;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlJavaClassRef;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -105,7 +105,7 @@ public class HibernateClassRef extends GenericClassRef implements PackageInfoRef
 		JavaResourcePackage resourcePackage = this.resolveJavaResourcePackage();
 		if (resourcePackage == null) {
 			if (this.javaPackageInfo != null) {
-				this.javaPackageInfo.dispose();
+//				this.javaPackageInfo.dispose();
 				this.setJavaPackageInfo(null);
 			}
 		} else {
@@ -115,7 +115,7 @@ public class HibernateClassRef extends GenericClassRef implements PackageInfoRef
 				if (this.javaPackageInfo.getResourcePackage() == resourcePackage) {
 					this.javaPackageInfo.update();
 				} else {
-					this.javaPackageInfo.dispose();
+//					this.javaPackageInfo.dispose();
 					this.setJavaPackageInfo(this.buildJavaPackageInfo(resourcePackage));
 				}
 			}
@@ -144,51 +144,37 @@ public class HibernateClassRef extends GenericClassRef implements PackageInfoRef
 			throw new ValidationCancelledException();
 		}
 		if (StringTools.isBlank(this.className)) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_CLASS,
-					this,
-					this.getValidationTextRange()
-				)
-			);
+			messages.add(buildValidationMessage(
+					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_CLASS,
+					this.getValidationTextRange()));
 			return;
 		}
 
-		if (this.javaPersistentType == null
+		if (this.getJavaPersistentType() == null
 				&& this.javaPackageInfo == null) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_CLASS,
-					new String[] {this.getJavaClassName()},
-					this,
-					this.getValidationTextRange()
-				)
-			);
+			messages.add(buildValidationMessage(
+					JptJpaCoreValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_CLASS,
+					new String[] { this.getJavaClassName() },
+					this.getValidationTextRange()));
 			return;
 		}
 
-		if (javaPersistentType != null){
+		if (this.getJavaPersistentType() != null){
 			// 190062 validate Java class only if this is the only reference to it
 			// i.e. the persistence.xml ref is the only ref - none of the mapping
 			// files reference the same class
 			boolean validateJavaPersistentType = true;
 			for (MappingFileRef mappingFileRef : this.getPersistenceUnit().getMappingFileRefsContaining(this.getJavaClassName())) {
 				validateJavaPersistentType = false;
-				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.LOW_SEVERITY,
-							JpaValidationMessages.PERSISTENCE_UNIT_REDUNDANT_CLASS,
-							new String[] {this.getJavaClassName(), mappingFileRef.getFileName()},
-							this,
-							this.getValidationTextRange()
-						)
-					);
+				messages.add(buildValidationMessage(
+						JptJpaCoreValidationMessages.PERSISTENCE_UNIT_REDUNDANT_CLASS,
+						new String[] { this.getJavaClassName(),
+								mappingFileRef.getFileName() },
+						this.getValidationTextRange()));
 			}
 
 			if (validateJavaPersistentType) {
-				this.validateJavaPersistentType(messages, reporter);
+				this.validateJavaManagedType(messages, reporter);
 			}
 		} else {
 			validatePackageInfo(messages, reporter);

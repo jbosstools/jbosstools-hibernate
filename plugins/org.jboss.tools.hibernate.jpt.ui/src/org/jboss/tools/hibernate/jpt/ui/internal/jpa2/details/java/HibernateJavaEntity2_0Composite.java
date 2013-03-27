@@ -14,21 +14,17 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.AccessHolder;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAccessReference;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
-import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.CacheableHolder2_0;
-import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.core.jpa2.context.CacheableReference2_0;
+import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
+import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractEntityComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.EntityNameCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.IdClassChooser;
-import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.java.JavaSecondaryTablesComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.JptUiDetailsOrmMessages;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.MetadataCompleteTriStateCheckBox;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmJavaClassChooser;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Cacheable2_0TriStateCheckBox;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Entity2_0OverridesComposite;
 import org.eclipse.swt.layout.GridData;
@@ -149,15 +145,15 @@ public class HibernateJavaEntity2_0Composite extends AbstractEntityComposite<Hib
 		tableComposite.getControl().setLayoutData(gridData);
 
 		// Entity name widgets
-		this.addLabel(container, JptUiDetailsMessages.EntityNameComposite_name);
+		this.addLabel(container, JptJpaUiDetailsMessages.EntityNameComposite_name);
 		new EntityNameCombo(this, container);
 
 		// Access type widgets
-		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
+		this.addLabel(container, JptJpaUiMessages.AccessTypeComposite_access);
 		new AccessTypeComboViewer(this, this.buildAccessHolder(), container);
 
 		// Id class widgets
-		Hyperlink hyperlink = this.addHyperlink(container,JptUiDetailsMessages.IdClassComposite_label);
+		Hyperlink hyperlink = this.addHyperlink(container,JptJpaUiDetailsMessages.IdClassComposite_label);
 		new IdClassChooser(this, this.buildIdClassReferenceModel(), container, hyperlink);
 
 		// Cacheable widgets
@@ -178,10 +174,10 @@ public class HibernateJavaEntity2_0Composite extends AbstractEntityComposite<Hib
 	
 	}
 	
-	protected PropertyValueModel<AccessHolder> buildAccessHolder() {
-		return new PropertyAspectAdapter<JavaEntity, AccessHolder>(getSubjectHolder()) {
+	protected PropertyValueModel<SpecifiedAccessReference> buildAccessHolder() {
+		return new PropertyAspectAdapter<JavaEntity, SpecifiedAccessReference>(getSubjectHolder()) {
 			@Override
-			protected AccessHolder buildValue_() {
+			protected SpecifiedAccessReference buildValue_() {
 				return this.subject.getPersistentType();
 			}
 		};
@@ -191,7 +187,7 @@ public class HibernateJavaEntity2_0Composite extends AbstractEntityComposite<Hib
 		return new PropertyAspectAdapter<JavaEntity, Cacheable2_0>(getSubjectHolder()) {
 			@Override
 			protected Cacheable2_0 buildValue_() {
-				return ((CacheableHolder2_0) this.subject).getCacheable();
+				return ((CacheableReference2_0) this.subject).getCacheable();
 			}
 		};
 	}

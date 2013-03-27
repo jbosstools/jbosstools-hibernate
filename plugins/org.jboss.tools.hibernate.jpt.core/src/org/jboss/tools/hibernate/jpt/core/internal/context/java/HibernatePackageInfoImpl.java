@@ -17,19 +17,20 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.common.core.internal.resource.java.source.SourceNode;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceModel;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -40,7 +41,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
  * @author Dmitry Geraskov
  *
  */
-public class HibernatePackageInfoImpl extends AbstractJavaJpaContextNode implements HibernatePackageInfo {
+public class HibernatePackageInfoImpl extends AbstractJavaContextModel<PersistentType.Parent> implements HibernatePackageInfo {
 	
 	//FIXME may be need  to create "Mapping" class??
 	protected final HibernateJavaTypeDefContainer typeDefContainer;
@@ -53,8 +54,8 @@ public class HibernatePackageInfoImpl extends AbstractJavaJpaContextNode impleme
 	/**
 	 * @param parent
 	 */
-	public HibernatePackageInfoImpl(PersistentType.Owner owner, JavaResourcePackage resourcePackage) {
-		super(owner);
+	public HibernatePackageInfoImpl(PersistentType.Parent parent, JavaResourcePackage resourcePackage) {
+		super(parent);
 		this.resourcePackage = resourcePackage;
 		this.name = resourcePackage.getName();
 		this.typeDefContainer = getJpaFactory().buildJavaTypeDefContainer(this, getResourceAnnotatedElement());
@@ -108,10 +109,14 @@ public class HibernatePackageInfoImpl extends AbstractJavaJpaContextNode impleme
 	public JptResourceType getResourceType() {
 		return PlatformTools.getResourceType(JavaResourceCompilationUnit.PACKAGE_INFO_CONTENT_TYPE);
 	}
-	@Override
+	
+	/* Removed in keplerm6
+	 * 
+	 * @Override
 	public boolean parentSupportsGenerators() {
 		return true;
 	}
+	*/
 	
 	@Override
 	public ContextType getContextType() {
@@ -154,7 +159,7 @@ public class HibernatePackageInfoImpl extends AbstractJavaJpaContextNode impleme
 	}
 
 	protected JavaQueryContainer buildQueryContainer() {
-		return this.getJpaFactory().buildJavaQueryContainer(this, this);
+		return this.getJpaFactory().buildJavaQueryContainer(this);
 	}
 	
 	protected CompilationUnit buildASTRoot() {
@@ -166,13 +171,13 @@ public class HibernatePackageInfoImpl extends AbstractJavaJpaContextNode impleme
 	public JpaStructureNode getStructureNode(int offset) {
 		CompilationUnit astRoot = this.buildASTRoot();
 
-		if (this.contains(offset)) {
+		if (this.containsOffset(offset)) {
 			return this;
 		}
 		return null;
 	}
 	
-	protected boolean contains(int offset) {
+	public  boolean containsOffset(int offset) {
 		TextRange fullTextRange = this.resourcePackage.getTextRange();
 		// 'fullTextRange' will be null if the type no longer exists in the java;
 		// the context model can be out of synch with the resource model
@@ -203,11 +208,13 @@ public class HibernatePackageInfoImpl extends AbstractJavaJpaContextNode impleme
 		return this.resourcePackage;
 	}
 	
+	/*
+	Removed in keplerm6
 	@Override
-	public JpaContextNode getGeneratorContainerParent() {
+	public JpaContextModel getGeneratorContainerParent() {
 		return this;  // no adapter
 	}
-	
+	*/
 	@Override
 	public JavaResourceAnnotatedElement getResourceAnnotatedElement() {
 		return this.resourcePackage;
@@ -234,7 +241,7 @@ public class HibernatePackageInfoImpl extends AbstractJavaJpaContextNode impleme
 		// the file will be in a different project if the type is "external" and source;
 		// the type will be binary if it is in a JAR in the current project
 		if ((file != null) && file.getProject().equals(this.getJpaProject().getProject()) &&
-				(this.resourcePackage instanceof SourceNode)) {
+				(this.resourcePackage instanceof SourceModel)) {
 			// build the AST root here to pass down
 			this.validate(messages, reporter);
 		}
@@ -268,6 +275,33 @@ public class HibernatePackageInfoImpl extends AbstractJavaJpaContextNode impleme
 	}
 
 	@Override
+	public TextRange getFullTextRange() {
+		return this.resourcePackage.getTextRange();
+	}
+
+	@Override
+	public Iterable<? extends JpaStructureNode> getChildren() {
+		return IterableTools.emptyIterable();
+	}
+
+	@Override
+	public int getChildrenSize() {
+		return 0;
+	}
+
+	@Override
+	public void addRootStructureNodesTo(JpaFile jpaFile,
+			Collection<JpaStructureNode> rootStructureNodes) {
+	}
+
+	@Override
+	public boolean supportsGenerators() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	/* removed in keplerm6
+	@Override
 	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
 		IResource resource = this.getResource();
 		// the resource can be null if the resource type is "external"
@@ -275,6 +309,7 @@ public class HibernatePackageInfoImpl extends AbstractJavaJpaContextNode impleme
 			rootStructureNodes.add(this);
 		}
 	}
+	*/
 
 
 }

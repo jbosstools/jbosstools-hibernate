@@ -12,11 +12,12 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.definition;
 
 import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.GeneratedValueAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.IdAnnotation;
@@ -56,7 +57,7 @@ public class HibernateJavaIdMappingDefinition implements JavaAttributeMappingDef
 		return IdAnnotation.ANNOTATION_NAME;
 	}
 
-	public boolean isSpecified(JavaPersistentAttribute persistentAttribute) {
+	public boolean isSpecified(JavaSpecifiedPersistentAttribute persistentAttribute) {
 		return persistentAttribute.getResourceAttribute().getAnnotation(this.getAnnotationName()) != null;
 	}
 
@@ -72,15 +73,15 @@ public class HibernateJavaIdMappingDefinition implements JavaAttributeMappingDef
 		TableGeneratorAnnotation.ANNOTATION_NAME,
 		SequenceGeneratorAnnotation.ANNOTATION_NAME
 	};
-	private static final Iterable<String> SUPPORTING_ANNOTATION_NAMES = new ArrayIterable<String>(SUPPORTING_ANNOTATION_NAMES_ARRAY);
+	private static final Iterable<String> SUPPORTING_ANNOTATION_NAMES = IterableTools.listIterable(SUPPORTING_ANNOTATION_NAMES_ARRAY);
 
 	@Override
 	public Iterable<String> getSupportingAnnotationNames() {
-		return new CompositeIterable<String>(SUPPORTING_ANNOTATION_NAMES, new ArrayIterable<String>(HIBERNATE_ANNOTATION_NAMES_ARRAY));
+		return IterableTools.concatenate(SUPPORTING_ANNOTATION_NAMES,IterableTools.listIterable(HIBERNATE_ANNOTATION_NAMES_ARRAY));
 	}
 	
 	@Override
-	public JavaAttributeMapping buildMapping(JavaPersistentAttribute persistentAttribute, JpaFactory factory) {
+	public JavaAttributeMapping buildMapping(JavaSpecifiedPersistentAttribute persistentAttribute, JpaFactory factory) {
 		return factory.buildJavaIdMapping(persistentAttribute);
 	}
 

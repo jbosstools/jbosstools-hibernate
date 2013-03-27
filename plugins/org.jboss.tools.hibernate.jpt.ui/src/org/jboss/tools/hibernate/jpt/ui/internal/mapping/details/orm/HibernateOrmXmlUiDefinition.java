@@ -35,7 +35,7 @@ import org.eclipse.jpt.jpa.ui.internal.details.OneToOneMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.TransientMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.VersionMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.AbstractOrmXmlResourceUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.structure.OrmStructureItemContentProviderFactory;
+import org.eclipse.jpt.jpa.ui.internal.structure.JpaFileStructureItemContentProviderFactory;
 import org.eclipse.jpt.jpa.ui.internal.structure.OrmStructureItemLabelProviderFactory;
 
 
@@ -80,7 +80,7 @@ public class HibernateOrmXmlUiDefinition extends AbstractOrmXmlResourceUiDefinit
 	
 	public static final ItemTreeStateProviderFactoryProvider STRUCTURE_VIEW_FACTORY_PROVIDER =
 			new SimpleItemTreeStateProviderFactoryProvider(
-					OrmStructureItemContentProviderFactory.instance(),
+					JpaFileStructureItemContentProviderFactory.instance(),
 					OrmStructureItemLabelProviderFactory.instance()
 				);
 	

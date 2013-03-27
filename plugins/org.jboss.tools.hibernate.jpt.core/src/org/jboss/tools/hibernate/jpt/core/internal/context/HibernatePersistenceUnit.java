@@ -24,12 +24,14 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.iterator.CloneListIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.CloneListIterator.Adapter.ReadOnly;
+import org.eclipse.jpt.common.utility.internal.predicate.PredicateTools;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.java.JavaGenerator;
@@ -97,7 +99,7 @@ implements Messages, Hibernate {
 	@Override
 	protected void initializeProperties() {
 		super.initializeProperties();
-		this.hibernateProperties = ((HibernatePersistenceUnitPropertiesBuilder)this.getContextNodeFactory())
+		this.hibernateProperties = ((HibernatePersistenceUnitPropertiesBuilder)this.getContextModelFactory())
 		.buildHibernatePersistenceUnitProperties(this);
 	}
 
@@ -121,7 +123,7 @@ implements Messages, Hibernate {
 	// ******** Type Def *********
 
 	public ListIterator<JavaTypeDef> typeDefs() {
-		return new CloneListIterator<JavaTypeDef>(this.typeDefs);
+		return new CloneListIterator<JavaTypeDef>(this.typeDefs,CloneListIterator.Adapter.ReadOnly.<JavaTypeDef>instance());
 	}
 
 	public int typeDefsSize() {
@@ -269,10 +271,8 @@ implements Messages, Hibernate {
 	
 	@SuppressWarnings("unchecked")
 	protected Iterable<JavaGenerator> getAllJavaGenerators() {
-		return new CompositeIterable<JavaGenerator>(
-				// Kepler M4
-				// new CompositeIterable<JavaGenerator>(this.getAllJavaTypeMappingGeneratorLists()),
-				new CompositeIterable<JavaGenerator>(super.getAllJavaGenerators()),
+		return IterableTools.concatenate(
+				IterableTools.concatenate(super.getAllJavaGenerators()),
 				new CompositeIterable<JavaGenerator>(this.getAllPackageInfoMappingGeneratorLists()));
 	}
 
@@ -309,7 +309,7 @@ implements Messages, Hibernate {
 							}
 						}
 					),
-				NotNullFilter.INSTANCE
+				PredicateTools.notNullPredicate()
 		);
 	}
 	

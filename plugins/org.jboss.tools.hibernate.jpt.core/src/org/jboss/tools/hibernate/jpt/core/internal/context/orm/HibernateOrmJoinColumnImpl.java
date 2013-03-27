@@ -12,9 +12,8 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmJoinColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.jpa.db.Column;
@@ -34,14 +33,14 @@ import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValida
 public class HibernateOrmJoinColumnImpl extends GenericOrmJoinColumn implements
 		HibernateOrmJoinColumn {
 
-	public HibernateOrmJoinColumnImpl(JpaContextNode parent, ReadOnlyJoinColumn.Owner owner,
+	public HibernateOrmJoinColumnImpl(JoinColumn.ParentAdapter owner,
 			XmlJoinColumn resourceJoinColumn) {
-		super(parent, owner, resourceJoinColumn);
+		super(owner, resourceJoinColumn);
 	}
 
 	@Override
 	protected String buildDefaultName() {
-		return NamingStrategyMappingTools.buildJoinColumnDefaultName(this, this.owner);
+		return NamingStrategyMappingTools.buildJoinColumnDefaultName(this, this.parentAdapter);
 	}
 
 	@Override
@@ -118,16 +117,16 @@ public class HibernateOrmJoinColumnImpl extends GenericOrmJoinColumn implements
 		return this.specifiedReferencedColumnName;
 	}
 
-	public ReadOnlyPersistentAttribute getReferencedPersistentAttribute() {
-		if (this.owner.getJoinColumnsSize() != 1) {
+	public PersistentAttribute getReferencedPersistentAttribute() {
+		if (this.parentAdapter.getJoinColumnsSize() != 1) {
 			return null;
 		}
-		Entity targetEntity = this.owner.getRelationshipTarget();
+		Entity targetEntity = this.parentAdapter.getRelationshipTarget();
 		if (targetEntity == null) {
 			return null;
 		}
-		ReadOnlyPersistentAttribute pAttr = null;
-		for (ReadOnlyPersistentAttribute attribute : targetEntity.getPersistentType().getAllAttributes()) {
+		PersistentAttribute pAttr = null;
+		for (PersistentAttribute attribute : targetEntity.getPersistentType().getAllAttributes()) {
 			String name = attribute.getPrimaryKeyColumnName();
 			if (name != null) {
 				if (pAttr == null){

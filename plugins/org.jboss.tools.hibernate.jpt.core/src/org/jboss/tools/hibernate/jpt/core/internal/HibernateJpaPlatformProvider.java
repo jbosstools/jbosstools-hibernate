@@ -19,8 +19,8 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.jpa.core.JpaPlatformProvider;
+import org.eclipse.jpt.jpa.core.JpaResourceDefinition;
 import org.eclipse.jpt.jpa.core.JpaResourceModelProvider;
-import org.eclipse.jpt.jpa.core.ResourceDefinition;
 import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
@@ -182,11 +182,11 @@ public class HibernateJpaPlatformProvider extends AbstractJpaPlatformProvider {
 	// ********** resource definitions **********
 
 	@Override
-	protected void addResourceDefinitionsTo(ArrayList<ResourceDefinition> definitions) {
+	protected void addResourceDefinitionsTo(ArrayList<JpaResourceDefinition> definitions) {
 		CollectionTools.addAll(definitions, RESOURCE_DEFINITIONS);
 	}
 
-	protected static final ResourceDefinition[] RESOURCE_DEFINITIONS = new ResourceDefinition[] {
+	protected static final JpaResourceDefinition[] RESOURCE_DEFINITIONS = new JpaResourceDefinition[] {
 		HibernatePersistenceXmlDefinition.instance(),
 		HibernateOrmXmlDefinition.instance()};
 

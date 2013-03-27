@@ -11,13 +11,13 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public interface HibernateJavaTypeDefContainer extends JpaContextNode {
+public interface HibernateJavaTypeDefContainer extends JpaContextModel {
 
 	//******************** typeDef *****************
 	

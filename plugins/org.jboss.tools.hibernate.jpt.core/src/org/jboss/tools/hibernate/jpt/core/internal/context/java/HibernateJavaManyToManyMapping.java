@@ -14,7 +14,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 import java.util.List;
 
 import org.eclipse.jpt.jpa.core.context.java.JavaMappingRelationship;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaManyToManyMapping;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -33,7 +33,7 @@ AbstractJavaManyToManyMapping implements ForeignKeyHolder{
 
 	protected ForeignKey foreignKey;
 
-	public HibernateJavaManyToManyMapping(JavaPersistentAttribute parent) {
+	public HibernateJavaManyToManyMapping(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
 		this.foreignKey = buildForeignKey();
 	}

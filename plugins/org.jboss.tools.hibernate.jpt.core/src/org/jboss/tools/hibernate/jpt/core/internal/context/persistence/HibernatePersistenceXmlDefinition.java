@@ -13,7 +13,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.persistence;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
-import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlContextNodeFactory;
+import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceXmlDefinition;
 import org.eclipse.jpt.jpa.core.resource.persistence.JPA;
@@ -48,12 +48,12 @@ public class HibernatePersistenceXmlDefinition extends
 	}
 	
 	
-	public EFactory getResourceNodeFactory() {
+	public EFactory getResourceModelFactory() {
 		return PersistenceFactory.eINSTANCE;
 	}
 	
 	@Override
-	protected PersistenceXmlContextNodeFactory buildContextNodeFactory() {
+	protected PersistenceXmlContextModelFactory buildContextModelFactory() {
 		return new HibernatePersistenceXmlContextNodeFactory();
 	}
 	

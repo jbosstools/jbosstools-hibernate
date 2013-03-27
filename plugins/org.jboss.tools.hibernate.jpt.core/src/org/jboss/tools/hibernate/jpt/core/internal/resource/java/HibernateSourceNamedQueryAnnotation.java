@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotation
 import org.eclipse.jpt.common.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationAdapter;
@@ -94,7 +94,7 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation
 	private CompilationUnit astRoot;
 
 
-	HibernateSourceNamedQueryAnnotation(JavaResourceNode parent, AnnotatedElement annotatedElement, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	HibernateSourceNamedQueryAnnotation(JavaResourceModel parent, AnnotatedElement annotatedElement, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, annotatedElement, daa, annotationAdapter);
 		this.nameDeclarationAdapter = this.buildNameAdapter(daa);
 		this.nameAdapter = this.buildAdapter(this.nameDeclarationAdapter);
@@ -502,7 +502,7 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation
 		return (IndexedAnnotationAdapter) this.annotationAdapter;
 	}
 
-	public static HibernateNamedQueryAnnotation createNamedQuery(JavaResourceNode parent, AnnotatedElement annotatedElement, int index) {
+	public static HibernateNamedQueryAnnotation createNamedQuery(JavaResourceModel parent, AnnotatedElement annotatedElement, int index) {
 		IndexedDeclarationAnnotationAdapter idaa = buildNamedQueryDeclarationAnnotationAdapter(index);
 		IndexedAnnotationAdapter iaa = buildNamedQueryAnnotationAdapter(annotatedElement, idaa);
 		return new HibernateSourceNamedQueryAnnotation(

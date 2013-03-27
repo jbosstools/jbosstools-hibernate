@@ -13,10 +13,10 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 import java.util.List;
 
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaSecondaryTable;
-import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.java.SecondaryTableAnnotation;
+import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -34,8 +34,8 @@ public class HibernateJavaSecondaryTableImpl extends GenericJavaSecondaryTable i
 		HibernateJavaSecondaryTable {
 
 
-	public HibernateJavaSecondaryTableImpl(JavaEntity parent, Owner owner, SecondaryTableAnnotation tableAnnotation) {
-		super(parent, owner, tableAnnotation);
+	public HibernateJavaSecondaryTableImpl(JavaSpecifiedSecondaryTable.ParentAdapter parentAdapter, SecondaryTableAnnotation tableAnnotation) {
+		super(parentAdapter, tableAnnotation);
 	}
 
 	@Override
@@ -80,12 +80,10 @@ public class HibernateJavaSecondaryTableImpl extends GenericJavaSecondaryTable i
 	protected boolean validateAgainstDatabase(List<IMessage> messages) {
 		if ( ! this.catalogIsResolved()) {
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.SECONDARY_TABLE_UNRESOLVED_CATALOG,
+					buildValidationMessage(
+					JptJpaCoreValidationMessages.SECONDARY_TABLE_UNRESOLVED_CATALOG,
 					new String[] {this.getCatalog(), this.getDBTableName()},
-					this,
-					this.getCatalogTextRange()
+					this.getCatalogValidationTextRange()
 				)
 			);
 			return false;
@@ -93,12 +91,10 @@ public class HibernateJavaSecondaryTableImpl extends GenericJavaSecondaryTable i
 
 		if ( ! this.schemaIsResolved()) {
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.SECONDARY_TABLE_UNRESOLVED_SCHEMA,
+					buildValidationMessage(
+					JptJpaCoreValidationMessages.SECONDARY_TABLE_UNRESOLVED_SCHEMA,
 					new String[] {this.getSchema(), this.getDBTableName()},
-					this,
-					this.getSchemaTextRange()
+					this.getSchemaValidationTextRange()
 				)
 			);
 			return false;
@@ -106,12 +102,10 @@ public class HibernateJavaSecondaryTableImpl extends GenericJavaSecondaryTable i
 
 		if ( ! this.isResolved()) {
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.SECONDARY_TABLE_UNRESOLVED_NAME,
+					buildValidationMessage(
+					JptJpaCoreValidationMessages.SECONDARY_TABLE_UNRESOLVED_NAME,
 					new String[] {this.getDBTableName()},
-					this,
-					this.getNameTextRange()
+					this.getNameValidationTextRange()
 				)
 			);
 			return false;

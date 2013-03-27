@@ -11,14 +11,14 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
-import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaType;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public interface TypeHolder extends JpaContextNode {
+public interface TypeHolder extends JpaContextModel {
 	
 	//******************** index *****************
 

@@ -12,7 +12,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.List;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaOneToOneMapping;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -30,7 +30,7 @@ public class HibernateJavaOneToOneMapping extends
 
 	protected ForeignKey foreignKey;
 
-	public HibernateJavaOneToOneMapping(JavaPersistentAttribute parent) {
+	public HibernateJavaOneToOneMapping(JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
 		this.foreignKey = buildForeignKey();
 	}

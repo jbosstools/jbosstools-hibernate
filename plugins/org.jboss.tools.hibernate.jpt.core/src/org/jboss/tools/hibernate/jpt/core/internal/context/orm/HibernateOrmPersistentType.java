@@ -28,9 +28,9 @@ public class HibernateOrmPersistentType extends GenericOrmPersistentType {
 
 	protected AccessType buildDefaultAccess() {
 		if ( ! this.mapping.isMetadataComplete()) {
-			if (this.javaPersistentType != null) {
+			if (this.getJavaPersistentType() != null) {
 				if (this.javaPersistentTypeHasSpecifiedAccess()) {
-					return this.javaPersistentType.getAccess();
+					return this.getJavaPersistentType().getSpecifiedAccess();
 				}
 				if (this.superPersistentType != null) {
 					return this.superPersistentType.getAccess();

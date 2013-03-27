@@ -10,13 +10,11 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java.jpa2;
 
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter.Adapter;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.AbstractJavaElementCollectionMapping2_0;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaTypeConverter;
 
 /**
  * @author Dmitry Geraskov
@@ -26,10 +24,10 @@ public class HibernateJavaElementCollectionMapping2_0 extends
 		AbstractJavaElementCollectionMapping2_0 {
 	
 	protected static final Iterable<JavaConverter.Adapter> HIBERNATE_CONVERTER_ADAPTERS = 
-			new CompositeIterable<JavaConverter.Adapter>(new ArrayIterable<JavaConverter.Adapter>(CONVERTER_ADAPTER_ARRAY));
+			IterableTools.iterable(CONVERTER_ADAPTER_ARRAY);
 	
 	public HibernateJavaElementCollectionMapping2_0(
-			JavaPersistentAttribute parent) {
+			JavaSpecifiedPersistentAttribute parent) {
 		super(parent);
 	}
 

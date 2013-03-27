@@ -14,7 +14,7 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.AccessHolder;
+import org.eclipse.jpt.jpa.core.context.SpecifiedAccessReference;
 import org.eclipse.jpt.jpa.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractIdMappingComposite;
@@ -89,10 +89,10 @@ implements JpaComposite{
 		new IdMappingGeneration2_0Composite(this, container);
 	}
 	
-	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
-		return new PropertyAspectAdapter<OrmIdMapping, AccessHolder>(getSubjectHolder()) {
+	protected PropertyValueModel<SpecifiedAccessReference> buildAccessHolderHolder() {
+		return new PropertyAspectAdapter<OrmIdMapping, SpecifiedAccessReference>(getSubjectHolder()) {
 			@Override
-			protected AccessHolder buildValue_() {
+			protected SpecifiedAccessReference buildValue_() {
 				return this.subject.getPersistentAttribute();
 			}
 		};
