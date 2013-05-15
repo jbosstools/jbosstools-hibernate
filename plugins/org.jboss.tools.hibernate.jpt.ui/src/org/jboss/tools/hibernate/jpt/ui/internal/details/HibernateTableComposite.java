@@ -14,7 +14,6 @@ import java.util.Collection;
 
 import javax.persistence.Table;
 
-import org.eclipse.jpt.common.ui.internal.util.PaneVisibilityEnabler;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;

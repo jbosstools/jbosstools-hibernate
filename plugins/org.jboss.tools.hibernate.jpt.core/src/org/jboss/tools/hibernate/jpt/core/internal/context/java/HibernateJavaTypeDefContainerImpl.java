@@ -65,11 +65,11 @@ public class HibernateJavaTypeDefContainerImpl extends
 
 	// ********** type defs **********
 	public ListIterable<JavaTypeDef> getTypeDefs() {
-		return this.typeDefContainer.getContextElements();
+		return this.typeDefContainer;
 	}
 
 	public int getTypeDefsSize() {
-		return this.typeDefContainer.getContextElementsSize();
+		return this.typeDefContainer.size();
 	}
 
 	public JavaTypeDef addTypeDef() {
@@ -86,17 +86,17 @@ public class HibernateJavaTypeDefContainerImpl extends
 	}
 
 	public void removeTypeDef(JavaTypeDef namedQuery) {
-		this.removeTypeDef(this.typeDefContainer.indexOfContextElement((JavaTypeDef) namedQuery));
+		this.removeTypeDef(this.typeDefContainer.indexOf((JavaTypeDef) namedQuery));
 	}
 
 	public void removeTypeDef(int index) {
 		this.javaResourceannotatedElement.removeAnnotation(index, TypeDefAnnotation.ANNOTATION_NAME);
-		this.typeDefContainer.removeContextElement(index);
+		this.typeDefContainer.remove(index);
 	}
 
 	public void moveTypeDef(int targetIndex, int sourceIndex) {
 		this.javaResourceannotatedElement.moveAnnotation(targetIndex, sourceIndex, TypeDefAnnotation.ANNOTATION_NAME);
-		this.typeDefContainer.moveContextElement(targetIndex, sourceIndex);
+		this.typeDefContainer.move(targetIndex, sourceIndex);
 	}
 
 	protected JavaTypeDef buildTypeDef(TypeDefAnnotation namedQueryAnnotation) {
@@ -116,31 +116,25 @@ public class HibernateJavaTypeDefContainerImpl extends
 	}
 
 	protected ContextListContainer<JavaTypeDef, TypeDefAnnotation> buildTypeDefContainer() {
-		TypeDefContainer container = new TypeDefContainer();
-		container.initialize();
-		return container;
+		return this.buildSpecifiedContextListContainer(TYPE_DEFS_LIST, new TypeDefContainer());
 	}
 
 	/**
 	 * named query container
 	 */
 	protected class TypeDefContainer
-		extends ContextListContainer<JavaTypeDef, TypeDefAnnotation>
+		extends AbstractContainerAdapter<JavaTypeDef, TypeDefAnnotation>
 	{
 		@Override
-		protected String getContextElementsPropertyName() {
-			return TYPE_DEFS_LIST;
-		}
-		@Override
-		protected JavaTypeDef buildContextElement(TypeDefAnnotation resourceElement) {
+		public JavaTypeDef buildContextElement(TypeDefAnnotation resourceElement) {
 			return HibernateJavaTypeDefContainerImpl.this.buildTypeDef(resourceElement);
 		}
 		@Override
-		protected ListIterable<TypeDefAnnotation> getResourceElements() {
+		public ListIterable<TypeDefAnnotation> getResourceElements() {
 			return HibernateJavaTypeDefContainerImpl.this.getTypeDefAnnotations();
 		}
 		@Override
-		protected TypeDefAnnotation getResourceElement(JavaTypeDef contextElement) {
+		public TypeDefAnnotation extractResourceElement(JavaTypeDef contextElement) {
 			return contextElement.getTypeDefAnnotation();
 		}
 	}

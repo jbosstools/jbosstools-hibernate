@@ -25,8 +25,8 @@ import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.EntityNameCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.IdClassChooser;
 import org.eclipse.jpt.jpa.ui.internal.details.java.JavaSecondaryTablesComposite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Cacheable2_0TriStateCheckBox;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Entity2_0OverridesComposite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.CacheableTriStateCheckBox2_0;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.EntityOverridesComposite2_0;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -157,7 +157,7 @@ public class HibernateJavaEntity2_0Composite extends AbstractEntityComposite<Hib
 		new IdClassChooser(this, this.buildIdClassReferenceModel(), container, hyperlink);
 
 		// Cacheable widgets
-		Cacheable2_0TriStateCheckBox cacheableCheckBox = new Cacheable2_0TriStateCheckBox(this, buildCacheableHolder(), container);
+		CacheableTriStateCheckBox2_0 cacheableCheckBox = new CacheableTriStateCheckBox2_0(this, buildCacheableHolder(), container);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		cacheableCheckBox.getControl().setLayoutData(gridData);
@@ -204,6 +204,6 @@ public class HibernateJavaEntity2_0Composite extends AbstractEntityComposite<Hib
 	
 	@Override
 	protected Control initializeAttributeOverridesSection(Composite container) {
-		return new Entity2_0OverridesComposite(this, container).getControl();
+		return new EntityOverridesComposite2_0(this, container).getControl();
 	}
 }

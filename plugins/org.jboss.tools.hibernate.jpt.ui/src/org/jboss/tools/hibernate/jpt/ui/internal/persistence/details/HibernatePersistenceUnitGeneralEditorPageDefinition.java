@@ -7,12 +7,10 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.PersistenceUnitEditorPageDefinition;
-import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitGeneralEditorPage;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.PersistenceUnitEditorPageDefinition2_0;
 import org.eclipse.jpt.jpa.ui.persistence.JptJpaUiPersistenceMessages;
 import org.eclipse.swt.widgets.Composite;
 
@@ -20,7 +18,7 @@ import org.eclipse.swt.widgets.Composite;
  * @author eskimo
  *
  */
-public class HibernatePersistenceUnitGeneralEditorPageDefinition extends PersistenceUnitEditorPageDefinition
+public class HibernatePersistenceUnitGeneralEditorPageDefinition extends PersistenceUnitEditorPageDefinition2_0
 {
 	// singleton
 	private static final JpaEditorPageDefinition INSTANCE = 

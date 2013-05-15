@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.internal.utility.ContentTypeTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.jpa.core.context.orm.NullOrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
@@ -35,8 +35,7 @@ import org.eclipse.jpt.jpa.core.internal.context.orm.OrmOneToManyMappingDefiniti
 import org.eclipse.jpt.jpa.core.internal.context.orm.OrmOneToOneMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.orm.OrmTransientMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.orm.OrmVersionMappingDefinition;
-import org.eclipse.jpt.jpa.core.internal.jpa2.Generic2_0JpaPlatformProvider;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.OrmElementCollectionMapping2_0Definition;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.OrmElementCollectionMappingDefinition2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_1.JPA2_1;
@@ -69,7 +68,7 @@ public class HibernateOrmXml2_1Definition extends AbstractOrmXmlDefinition {
 	}
 
 	public JptResourceType getResourceType() {
-		return PlatformTools.getResourceType(
+		return ContentTypeTools.getResourceType(
 				XmlEntityMappings.CONTENT_TYPE, 
 				JPA2_1.SCHEMA_VERSION);
 	}
@@ -109,7 +108,7 @@ public class HibernateOrmXml2_1Definition extends AbstractOrmXmlDefinition {
 	 */
 	protected static final OrmAttributeMappingDefinition[] ATTRIBUTE_MAPPING_DEFINITIONS = new OrmAttributeMappingDefinition[] {
 		OrmTransientMappingDefinition.instance(),
-		OrmElementCollectionMapping2_0Definition.instance(),
+		OrmElementCollectionMappingDefinition2_0.instance(),
 		OrmIdMappingDefinition.instance(),
 		OrmVersionMappingDefinition.instance(),
 		OrmBasicMappingDefinition.instance(),

@@ -231,7 +231,7 @@ public class HibernateJpaProject extends AbstractJpaProject {
 	}
 	
 	protected Iterable<JavaResourcePackage> getInternalAnnotatedSourceJavaResourcePacakges() {
-		return new FilteringIterable<JavaResourcePackage>(this.getInternalSourceJavaResourcePackages(),PredicateTools.truePredicate());
+		return new FilteringIterable<JavaResourcePackage>(this.getInternalSourceJavaResourcePackages(),PredicateTools.true_());
 	}
 	
 	/**

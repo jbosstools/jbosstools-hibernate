@@ -11,7 +11,6 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SubListIterableWrapper;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
@@ -65,11 +64,11 @@ public class HibernateJavaGeneratorContainerImpl extends
 
 	// ******************* Generic Generators ****************
 	public ListIterable<JavaDbGenericGenerator> getGenericGenerators() {
-		return this.genericGeneratorContainer.getContextElements();
+		return this.genericGeneratorContainer;
 	}
 
 	public int getGenericGeneratorsSize() {
-		return this.genericGeneratorContainer.getContextElementsSize();
+		return this.genericGeneratorContainer.size();
 	}
 
 	public JavaDbGenericGenerator addGenericGenerator() {
@@ -86,17 +85,17 @@ public class HibernateJavaGeneratorContainerImpl extends
 	}
 
 	public void removeGenericGenerator(GenericGenerator genericGenerator) {
-		this.removeGenericGenerator(this.genericGeneratorContainer.indexOfContextElement((JavaDbGenericGenerator) genericGenerator));
+		this.removeGenericGenerator(this.genericGeneratorContainer.indexOf((JavaDbGenericGenerator) genericGenerator));
 	}
 
 	public void removeGenericGenerator(int index) {
 		this.parent.getResourceAnnotatedElement().removeAnnotation(index, GenericGeneratorAnnotation.ANNOTATION_NAME);
-		this.genericGeneratorContainer.removeContextElement(index);
+		this.genericGeneratorContainer.remove(index);
 	}
 
 	public void moveGenericGenerator(int targetIndex, int sourceIndex) {
 		this.parent.getResourceAnnotatedElement().moveAnnotation(targetIndex, sourceIndex, GenericGeneratorAnnotation.ANNOTATION_NAME);
-		this.genericGeneratorContainer.moveContextElement(targetIndex, sourceIndex);
+		this.genericGeneratorContainer.move(targetIndex, sourceIndex);
 	}
 
 	protected JavaDbGenericGenerator buildGenericGenerator(GenericGeneratorAnnotation genericGeneratorAnnotation) {
@@ -116,50 +115,27 @@ public class HibernateJavaGeneratorContainerImpl extends
 	}
 
 	protected ContextListContainer<JavaDbGenericGenerator, GenericGeneratorAnnotation> buildGenericGeneratorContainer() {
-		GenericGeneratorContainer container = new GenericGeneratorContainer();
-		container.initialize();
-		return container;
+		return this.buildSpecifiedContextListContainer(GENERIC_GENERATORS_LIST, new GenericGeneratorContainer());
 	}
 
 	/**
 	 * generic generator container
 	 */
 	protected class GenericGeneratorContainer
-		extends ContextListContainer<JavaDbGenericGenerator, GenericGeneratorAnnotation>
+		extends AbstractContainerAdapter<JavaDbGenericGenerator, GenericGeneratorAnnotation>
 	{
 		@Override
-		protected String getContextElementsPropertyName() {
-			return GENERIC_GENERATORS_LIST;
-		}
-		@Override
-		protected JavaDbGenericGenerator buildContextElement(GenericGeneratorAnnotation resourceElement) {
+		public JavaDbGenericGenerator buildContextElement(GenericGeneratorAnnotation resourceElement) {
 			return HibernateJavaGeneratorContainerImpl.this.buildGenericGenerator(resourceElement);
 		}
 		@Override
-		protected ListIterable<GenericGeneratorAnnotation> getResourceElements() {
+		public ListIterable<GenericGeneratorAnnotation> getResourceElements() {
 			return HibernateJavaGeneratorContainerImpl.this.getGenericGeneratorAnnotations();
 		}
 		@Override
-		protected GenericGeneratorAnnotation getResourceElement(JavaDbGenericGenerator contextElement) {
+		public GenericGeneratorAnnotation extractResourceElement(JavaDbGenericGenerator contextElement) {
 			return contextElement.getGeneratorAnnotation();
 		}
 	}
-
-//	@Override
-//	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter) {
-//		Iterable<String> result = super.getJavaCompletionProposals(pos, filter);
-//		if (result != null) {
-//			return result;
-//		}
-//		ListIterator<JavaGenericGenerator> genericGenerators = getGenericGenerators().iterator();
-//		while (genericGenerators.hasNext()) {
-//			result = genericGenerators.next()
-//			.getJavaCompletionProposals(pos, filter);
-//			if (result != null) {
-//				return result;
-//			}
-//		}
-//		return null;
-//	}
 
 }

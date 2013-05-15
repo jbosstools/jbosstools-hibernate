@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.ConvertibleMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.AbstractElementCollectionMapping2_0Composite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.AbstractElementCollectionMappingComposite2_0;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Section;
@@ -35,7 +35,7 @@ import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.TypeComposite;
  *
  */
 public class HibernateElementCollectionMapping2_0Composite extends
-		AbstractElementCollectionMapping2_0Composite<ElementCollectionMapping2_0> {
+		AbstractElementCollectionMappingComposite2_0<ElementCollectionMapping2_0> {
 
 	/**
 	 * @param subjectHolder

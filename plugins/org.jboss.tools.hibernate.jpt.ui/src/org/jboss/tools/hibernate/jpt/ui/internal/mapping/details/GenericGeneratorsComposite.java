@@ -16,7 +16,7 @@ import java.util.ListIterator;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.common.ui.internal.util.ControlSwitcher;
+import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.AbstractAdapter;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
@@ -265,7 +265,7 @@ public class GenericGeneratorsComposite extends Pane<HibernateGenericGeneratorCo
 	}
 
 	private void installPaneSwitcher(PageBook pageBook) {
-		new ControlSwitcher(this.getGenericGeneratorHolder(), this.buildPaneTransformer(), pageBook);
+		SWTBindTools.bind(this.getGenericGeneratorHolder(), this.buildPaneTransformer(), pageBook);
 	}
 	
 	protected PropertyValueModel<JavaDbGenericGenerator> getGenericGeneratorHolder() {

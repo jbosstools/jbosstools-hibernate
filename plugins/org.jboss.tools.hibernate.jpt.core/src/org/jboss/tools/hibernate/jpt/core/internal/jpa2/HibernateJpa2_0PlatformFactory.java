@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.JpaPlatformVariation;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformFactory.GenericJpaPlatformVersion;
 import org.eclipse.jpt.jpa.core.internal.JpaAnnotationProvider;
-import org.eclipse.jpt.jpa.core.internal.jpa2.Generic2_0JpaAnnotationDefinitionProvider;
+import org.eclipse.jpt.jpa.core.internal.jpa2.GenericJpaAnnotationDefinitionProvider2_0;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.persistence.jpa.jpql.parser.JPQLGrammar2_0;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaPlatform;
@@ -59,7 +59,7 @@ public class HibernateJpa2_0PlatformFactory implements JpaPlatformFactory {
 	
 	protected JpaAnnotationProvider buildJpaAnnotationProvider() {
 		return new JpaAnnotationProvider(
-			Generic2_0JpaAnnotationDefinitionProvider.instance(),
+			GenericJpaAnnotationDefinitionProvider2_0.instance(),
 			HibernateJpa2_0AnnotationDefinitionProvider.instance());
 	}
 	

@@ -14,7 +14,7 @@ import java.util.Iterator;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.internal.utility.ContentTypeTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
@@ -22,8 +22,6 @@ import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.ui.MappingResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
@@ -65,7 +63,7 @@ public class PackageInfoResourceUIDefinition implements
 	 */
 	@Override
 	public boolean providesUi(JptResourceType resourceType) {
-		JptResourceType pirt = PlatformTools.getResourceType(JavaResourceCompilationUnit.PACKAGE_INFO_CONTENT_TYPE);
+		JptResourceType pirt = ContentTypeTools.getResourceType(JavaResourceCompilationUnit.PACKAGE_INFO_CONTENT_TYPE);
 		return resourceType.equals(pirt);
 	}
 

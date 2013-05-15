@@ -13,31 +13,26 @@ package org.jboss.tools.hibernate.jpt.ui.internal.jpa2.mapping.details.orm;
 import java.util.List;
 
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.internal.utility.ContentTypeTools;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
-import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.JpaUiFactory;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.BasicMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.EmbeddableUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.EmbeddedIdMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.EmbeddedMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.EntityUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.IdMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.ManyToManyMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.ManyToOneMappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.MappedSuperclassUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.OneToManyMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.OneToOneMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.TransientMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.VersionMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.AbstractOrmXmlResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmXmlUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.ElementCollectionMapping2_0UiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.ElementCollectionMappingUiDefinition2_0;
 
 
 /**
@@ -72,7 +67,7 @@ public class Hibernate2_0OrmXmlUiDefinition extends AbstractOrmXmlResourceUiDefi
 	}
 	
 	public boolean providesUi(JptResourceType resourceType) {
-		JptResourceType jrt = PlatformTools.getResourceType(XmlEntityMappings.CONTENT_TYPE, JPA2_0.SCHEMA_VERSION);
+		JptResourceType jrt = ContentTypeTools.getResourceType(XmlEntityMappings.CONTENT_TYPE, JPA2_0.SCHEMA_VERSION);
 		return resourceType.equals(jrt);
 	}
 	
@@ -92,6 +87,6 @@ public class Hibernate2_0OrmXmlUiDefinition extends AbstractOrmXmlResourceUiDefi
 		definitions.add(ManyToManyMappingUiDefinition.instance());
 		definitions.add(EmbeddedMappingUiDefinition.instance());
 		definitions.add(TransientMappingUiDefinition.instance());
-		definitions.add(ElementCollectionMapping2_0UiDefinition.instance());
+		definitions.add(ElementCollectionMappingUiDefinition2_0.instance());
 	}
 }

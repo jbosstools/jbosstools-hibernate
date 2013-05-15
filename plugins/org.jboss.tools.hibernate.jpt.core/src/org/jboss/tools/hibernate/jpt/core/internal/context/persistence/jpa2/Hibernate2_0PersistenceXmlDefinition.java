@@ -12,7 +12,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.persistence.jpa2;
 
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.internal.utility.ContentTypeTools;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlContextModelFactory;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceXmlDefinition;
@@ -58,7 +58,7 @@ public class Hibernate2_0PersistenceXmlDefinition extends
 	}
 	
 	public JptResourceType getResourceType() {
-		return PlatformTools.getResourceType(
+		return ContentTypeTools.getResourceType(
 				XmlPersistence.CONTENT_TYPE, 
 				JPA2_0.SCHEMA_VERSION);
 	}

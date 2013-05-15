@@ -12,20 +12,13 @@
 package org.jboss.tools.hibernate.jpt.ui;
 
 import java.io.File;
-import java.net.URL;
 
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 /**

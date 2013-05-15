@@ -309,7 +309,7 @@ implements Messages, Hibernate {
 							}
 						}
 					),
-				PredicateTools.notNullPredicate()
+				PredicateTools.isNotNull()
 		);
 	}
 	

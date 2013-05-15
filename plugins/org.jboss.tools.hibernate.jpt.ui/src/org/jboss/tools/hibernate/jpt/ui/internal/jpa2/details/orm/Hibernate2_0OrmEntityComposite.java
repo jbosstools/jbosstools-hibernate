@@ -14,17 +14,14 @@ package org.jboss.tools.hibernate.jpt.ui.internal.jpa2.details.orm;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.SpecifiedAccessReference;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.CacheableReference2_0;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.details.orm.JptJpaUiDetailsOrmMessages;
-import org.eclipse.jpt.jpa.ui.internal.details.AbstractEntityComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.EntityNameCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.IdClassChooser;
@@ -33,9 +30,9 @@ import org.eclipse.jpt.jpa.ui.internal.details.orm.MetadataCompleteTriStateCheck
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmInheritanceComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmJavaClassChooser;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmSecondaryTablesComposite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Entity2_0OverridesComposite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Generation2_0Composite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Queries2_0Composite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.EntityOverridesComposite2_0;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.GenerationComposite2_0;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.QueriesComposite2_0;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -114,17 +111,17 @@ public class Hibernate2_0OrmEntityComposite extends AbstractOrmEntityComposite<H
 	
 	@Override
 	protected Control initializeAttributeOverridesSection(Composite container) {
-		return new Entity2_0OverridesComposite(this, container).getControl();
+		return new EntityOverridesComposite2_0(this, container).getControl();
 	}
 
 	@Override
 	protected Control initializeGeneratorsSection(Composite container) {
-		return new Generation2_0Composite(this, buildGeneratorContainerModel(), container).getControl();
+		return new GenerationComposite2_0(this, buildGeneratorContainerModel(), container).getControl();
 	}
 
 	@Override
 	protected Control initializeQueriesSection(Composite container) {
-		return new Queries2_0Composite(this, buildQueryContainerModel(), container).getControl();
+		return new QueriesComposite2_0(this, buildQueryContainerModel(), container).getControl();
 	}
 	
 	protected PropertyValueModel<SpecifiedAccessReference> buildAccessHolder() {

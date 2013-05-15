@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.context.BasicMapping;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.GenericOrmXml2_0UiFactory;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.GenericOrmXmlUiFactory2_0;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmEntity;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmIdMapping;
@@ -29,7 +29,7 @@ import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateBasicM
  * @author Dmitry Geraskov
  *
  */
-public class Hibernate2_0OrmXmlUiFactory extends GenericOrmXml2_0UiFactory {
+public class Hibernate2_0OrmXmlUiFactory extends GenericOrmXmlUiFactory2_0 {
 	
 	@Override
 	public JpaComposite createBasicMappingComposite(

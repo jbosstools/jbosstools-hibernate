@@ -129,7 +129,7 @@ implements HibernateOrmEntity {
 	 * strip out <code>null</code> names
 	 */
 	protected Iterable<String> convertToDBNames(Iterable<Table> tables) {
-		return new FilteringIterable<String>(this.convertToDBNames_(tables),PredicateTools.notNullPredicate());
+		return new FilteringIterable<String>(this.convertToDBNames_(tables),PredicateTools.isNotNull());
 	}
 
 	/**

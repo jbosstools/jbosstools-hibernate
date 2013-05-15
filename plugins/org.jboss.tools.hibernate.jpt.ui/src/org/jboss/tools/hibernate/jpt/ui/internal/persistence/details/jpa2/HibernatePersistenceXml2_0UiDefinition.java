@@ -13,15 +13,15 @@ package org.jboss.tools.hibernate.jpt.ui.internal.persistence.details.jpa2;
 import java.util.List;
 
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.internal.utility.ContentTypeTools;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.jpa.core.resource.persistence.v2_0.JPA2_0;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.internal.AbstractResourceUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.PersistenceUnitConnection2_0EditorPageDefinition;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.PersistenceUnitOptions2_0EditorPageDefinition;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.PersistenceUnitConnectionEditorPageDefinition2_0;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.PersistenceUnitOptionsEditorPageDefinition2_0;
 import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitPropertiesEditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceXmlUiDefinition;
 import org.jboss.tools.hibernate.jpt.ui.internal.persistence.details.HibernatePersistenceUnitGeneralEditorPageDefinition;
@@ -60,14 +60,14 @@ public class HibernatePersistenceXml2_0UiDefinition extends AbstractResourceUiDe
 	@Override
 	protected void addEditorPageDefinitionsTo(List<JpaEditorPageDefinition> definitions) {
 		definitions.add(HibernatePersistenceUnitGeneralEditorPageDefinition.instance());
-		definitions.add(PersistenceUnitConnection2_0EditorPageDefinition.instance());
-		definitions.add(PersistenceUnitOptions2_0EditorPageDefinition.instance());
+		definitions.add(PersistenceUnitConnectionEditorPageDefinition2_0.instance());
+		definitions.add(PersistenceUnitOptionsEditorPageDefinition2_0.instance());
 		definitions.add(PersistenceUnitPropertiesEditorPageDefinition.instance());
 		definitions.add(HibernatePropertiesPageDefinition.instance());		
 	}
 		
 	public boolean providesUi(JptResourceType resourceType) {
-		JptResourceType resType = PlatformTools.getResourceType(XmlPersistence.CONTENT_TYPE, JPA2_0.SCHEMA_VERSION);
+		JptResourceType resType = ContentTypeTools.getResourceType(XmlPersistence.CONTENT_TYPE, JPA2_0.SCHEMA_VERSION);
 		return resourceType.equals(resType);
 	}
 	

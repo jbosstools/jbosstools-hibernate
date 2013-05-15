@@ -12,7 +12,6 @@ package org.jboss.tools.hibernate.jpt.ui.internal.details;
 
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.ui.internal.util.PaneVisibilityEnabler;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;

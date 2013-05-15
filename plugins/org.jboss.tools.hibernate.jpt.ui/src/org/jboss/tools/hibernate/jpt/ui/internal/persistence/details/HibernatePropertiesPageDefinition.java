@@ -5,18 +5,15 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.PersistenceUnitEditorPageDefinition;
-import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitConnectionEditorPageDefinition;
-import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitPropertiesEditorPage;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.PersistenceUnitEditorPageDefinition2_0;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
 
 
-public class HibernatePropertiesPageDefinition extends PersistenceUnitEditorPageDefinition {
+public class HibernatePropertiesPageDefinition extends PersistenceUnitEditorPageDefinition2_0 {
 
 	// singleton
 	private static final JpaEditorPageDefinition INSTANCE = 

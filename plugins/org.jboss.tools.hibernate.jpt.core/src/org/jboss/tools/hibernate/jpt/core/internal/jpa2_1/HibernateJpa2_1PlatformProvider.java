@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.internal.utility.ContentTypeTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
@@ -39,7 +39,7 @@ import org.eclipse.jpt.jpa.core.internal.context.java.JavaVersionMappingDefiniti
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaElementCollectionMappingDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaEmbeddedMappingDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaOneToManyMappingDefinition2_0;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXmlDefinition2_1;
+import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.orm.GenericOrmXmlDefinition2_1;
 import org.eclipse.jpt.jpa.core.internal.jpa2_1.context.persistence.GenericPersistenceXmlDefinition2_1;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
@@ -90,19 +90,19 @@ public class HibernateJpa2_1PlatformProvider extends AbstractJpaPlatformProvider
 
 	public JptResourceType getMostRecentSupportedResourceType(IContentType contentType) {
 		if (contentType.equals(JavaResourceCompilationUnit.PACKAGE_INFO_CONTENT_TYPE)) {
-			return PlatformTools.getResourceType(JavaResourceCompilationUnit.PACKAGE_INFO_CONTENT_TYPE);
+			return ContentTypeTools.getResourceType(JavaResourceCompilationUnit.PACKAGE_INFO_CONTENT_TYPE);
 		}
 		else if (contentType.equals(JavaResourceCompilationUnit.CONTENT_TYPE)) {
-			return PlatformTools.getResourceType(JavaResourceCompilationUnit.CONTENT_TYPE);
+			return ContentTypeTools.getResourceType(JavaResourceCompilationUnit.CONTENT_TYPE);
 		}
 		else if (contentType.equals(JavaResourcePackageFragmentRoot.JAR_CONTENT_TYPE)) {
-			return PlatformTools.getResourceType(JavaResourcePackageFragmentRoot.JAR_CONTENT_TYPE);
+			return ContentTypeTools.getResourceType(JavaResourcePackageFragmentRoot.JAR_CONTENT_TYPE);
 		}
 		else if (contentType.equals(XmlPersistence.CONTENT_TYPE)) {
-			return PlatformTools.getResourceType(XmlPersistence.CONTENT_TYPE);
+			return ContentTypeTools.getResourceType(XmlPersistence.CONTENT_TYPE);
 		}
 		else if (contentType.equals(XmlEntityMappings.CONTENT_TYPE)) {
-			return PlatformTools.getResourceType(XmlEntityMappings.CONTENT_TYPE);
+			return ContentTypeTools.getResourceType(XmlEntityMappings.CONTENT_TYPE);
 		}
 		else {
 			throw new IllegalArgumentException(contentType.toString());

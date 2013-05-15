@@ -18,7 +18,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceModel;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.internal.utility.ContentTypeTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
@@ -26,7 +26,6 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
@@ -107,7 +106,7 @@ public class HibernatePackageInfoImpl extends AbstractJavaContextModel<Persisten
 	
 	@Override
 	public JptResourceType getResourceType() {
-		return PlatformTools.getResourceType(JavaResourceCompilationUnit.PACKAGE_INFO_CONTENT_TYPE);
+		return ContentTypeTools.getResourceType(JavaResourceCompilationUnit.PACKAGE_INFO_CONTENT_TYPE);
 	}
 	
 	/* Removed in keplerm6

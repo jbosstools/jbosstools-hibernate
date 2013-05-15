@@ -14,7 +14,6 @@ package org.jboss.tools.hibernate.jpt.core.internal.jpa2;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jpa.core.JpaDataSource;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
@@ -32,8 +31,8 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaAssociatio
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaColumn;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaNamedQuery;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaOrderable;
-import org.eclipse.jpt.jpa.core.internal.jpa2.GenericJpaDatabaseIdentifierAdapter;
-import org.eclipse.jpt.jpa.core.internal.jpa2.GenericMetamodelSynchronizer;
+import org.eclipse.jpt.jpa.core.internal.jpa2.GenericJpaDatabaseIdentifierAdapter2_0;
+import org.eclipse.jpt.jpa.core.internal.jpa2.GenericMetamodelSynchronizer2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaCacheable2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaCollectionTable2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaDerivedIdentity2_0;
@@ -89,11 +88,11 @@ public class HibernateJpaFactory2_0 extends HibernateAbstractJpaFactory implemen
 	}
 
 	public MetamodelSourceType2_0.Synchronizer buildMetamodelSynchronizer(MetamodelSourceType2_0 sourceType) {
-		return new GenericMetamodelSynchronizer(sourceType);
+		return new GenericMetamodelSynchronizer2_0(sourceType);
 	}
 
 	public DatabaseIdentifierAdapter buildDatabaseIdentifierAdapter(JpaDataSource dataSource) {
-		return new GenericJpaDatabaseIdentifierAdapter(dataSource);
+		return new GenericJpaDatabaseIdentifierAdapter2_0(dataSource);
 	}
 
 

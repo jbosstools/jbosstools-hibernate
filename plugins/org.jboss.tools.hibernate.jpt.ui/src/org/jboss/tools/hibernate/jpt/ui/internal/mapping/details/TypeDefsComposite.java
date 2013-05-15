@@ -17,14 +17,12 @@ import java.util.ListIterator;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.common.ui.internal.util.ControlSwitcher;
+import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
-import org.eclipse.jpt.common.ui.internal.widgets.NewNameDialog;
 import org.eclipse.jpt.common.ui.internal.widgets.NewNameDialogBuilder;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
@@ -271,7 +269,7 @@ public class TypeDefsComposite extends Pane<HibernateJavaTypeDefContainer> {
 	}
 
 	private void installPaneSwitcher(PageBook pageBook) {
-		new ControlSwitcher(this.getTypeDefHolder(), this.buildPaneTransformer(), pageBook);
+		SWTBindTools.bind(this.getTypeDefHolder(), this.buildPaneTransformer(), pageBook);
 	}
 	
 	protected PropertyValueModel<JavaTypeDef> getTypeDefHolder() {

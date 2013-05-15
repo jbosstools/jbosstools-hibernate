@@ -13,7 +13,7 @@ package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
 import java.util.Collection;
 
 import org.eclipse.jpt.common.ui.JptCommonUiMessages;
-import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.swt.widgets.DisplayTools;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
@@ -324,7 +324,7 @@ public abstract class HibernateAbstractInheritanceComposite<T extends HibernateE
 	}
 
 	protected final int getGroupBoxMargin() {
-		Group group = this.getWidgetFactory().createGroup(SWTUtil.getShell(), "");
+		Group group = this.getWidgetFactory().createGroup(DisplayTools.getShell(), "");
 		Rectangle clientArea = group.getClientArea();
 		group.dispose();
 		return clientArea.x + 5;

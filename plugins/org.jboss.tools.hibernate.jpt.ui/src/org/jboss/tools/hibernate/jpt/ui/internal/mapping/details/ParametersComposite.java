@@ -21,7 +21,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jpt.common.ui.internal.swt.ColumnAdapter;
-import org.eclipse.jpt.common.ui.internal.util.PaneVisibilityEnabler;
+import org.eclipse.jpt.common.ui.internal.utility.*;util.PaneVisibilityEnabler;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveTablePane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;

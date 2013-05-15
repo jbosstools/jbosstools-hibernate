@@ -16,17 +16,14 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.java.Generic2_0JavaUiFactory;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.java.GenericJavaUiFactory2_0;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaIdMapping;
-import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmEntity;
 import org.jboss.tools.hibernate.jpt.ui.internal.jpa2.details.HibernateElementCollectionMapping2_0Composite;
 import org.jboss.tools.hibernate.jpt.ui.internal.jpa2.details.java.HibernateJavaEntity2_0Composite;
-import org.jboss.tools.hibernate.jpt.ui.internal.jpa2.details.orm.Hibernate2_0OrmEntityComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateBasicMappingComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateIdMappingComposite;
 
@@ -34,7 +31,7 @@ import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateIdMapp
  * @author Dmitry Geraskov
  * 
  */
-public class Hibernate2_0JavaUiFactory extends Generic2_0JavaUiFactory {
+public class Hibernate2_0JavaUiFactory extends GenericJavaUiFactory2_0 {
 
 
 	@SuppressWarnings("unchecked")

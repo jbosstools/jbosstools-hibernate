@@ -74,12 +74,12 @@ implements HibernateJavaQueryContainer{
 	// ********** hibernateNamed queries **********
 	@Override
 	public ListIterable<HibernateJavaNamedQuery> getHibernateNamedQueries() {
-		return this.hibernateNamedQueryContainer.getContextElements();
+		return this.hibernateNamedQueryContainer;
 	}
 
 	@Override
 	public int getHibernateNamedQueriesSize() {
-		return this.hibernateNamedQueryContainer.getContextElementsSize();
+		return this.hibernateNamedQueryContainer.size();
 	}
 
 	public HibernateNamedQuery addHibernateNamedQuery() {
@@ -98,19 +98,19 @@ implements HibernateJavaQueryContainer{
 
 	@Override
 	public void removeHibernateNamedQuery(HibernateNamedQuery hibernateNamedQuery) {
-		this.removeHibernateNamedQuery(this.hibernateNamedQueryContainer.indexOfContextElement((HibernateJavaNamedQuery) hibernateNamedQuery));
+		this.removeHibernateNamedQuery(this.hibernateNamedQueryContainer.indexOf((HibernateJavaNamedQuery) hibernateNamedQuery));
 	}
 
 	@Override
 	public void removeHibernateNamedQuery(int index) {
 		this.parent.getResourceAnnotatedElement().removeAnnotation(index, HibernateNamedQueryAnnotation.ANNOTATION_NAME);
-		this.hibernateNamedQueryContainer.removeContextElement(index);
+		this.hibernateNamedQueryContainer.remove(index);
 	}
 
 	@Override
 	public void moveHibernateNamedQuery(int targetIndex, int sourceIndex) {
 		this.parent.getResourceAnnotatedElement().moveAnnotation(targetIndex, sourceIndex, HibernateNamedQueryAnnotation.ANNOTATION_NAME);
-		this.hibernateNamedQueryContainer.moveContextElement(targetIndex, sourceIndex);
+		this.hibernateNamedQueryContainer.move(targetIndex, sourceIndex);
 	}
 
 	protected HibernateJavaNamedQuery buildHibernateNamedQuery(HibernateNamedQueryAnnotation hibernateNamedQueryAnnotation) {
@@ -132,31 +132,25 @@ implements HibernateJavaQueryContainer{
 	}
 	
 	protected ContextListContainer<HibernateJavaNamedQuery, HibernateNamedQueryAnnotation> buildHibernateNamedQueryContainer() {
-		HibernateNamedQueryContainerAdapter container = new HibernateNamedQueryContainerAdapter();
-		container.initialize();
-		return container;
+		return this.buildSpecifiedContextListContainer(HIBERNATE_NAMED_QUERIES_LIST, new HibernateNamedQueryContainerAdapter());
 	}
 
 	/**
 	 * hibernateNamed query container adapter
 	 */
 	protected class HibernateNamedQueryContainerAdapter
-		extends ContextListContainer<HibernateJavaNamedQuery, HibernateNamedQueryAnnotation>
+		extends AbstractContainerAdapter<HibernateJavaNamedQuery, HibernateNamedQueryAnnotation>
 	{
 		@Override
-		protected String getContextElementsPropertyName() {
-			return HIBERNATE_NAMED_QUERIES_LIST;
-		}
-		@Override
-		protected HibernateJavaNamedQuery buildContextElement(HibernateNamedQueryAnnotation resourceElement) {
+		public HibernateJavaNamedQuery buildContextElement(HibernateNamedQueryAnnotation resourceElement) {
 			return HibernateJavaQueryContainerImpl.this.buildHibernateNamedQuery(resourceElement);
 		}
 		@Override
-		protected ListIterable<HibernateNamedQueryAnnotation> getResourceElements() {
+		public ListIterable<HibernateNamedQueryAnnotation> getResourceElements() {
 			return HibernateJavaQueryContainerImpl.this.getHibernateNamedQueryAnnotations();
 		}
 		@Override
-		protected HibernateNamedQueryAnnotation getResourceElement(HibernateJavaNamedQuery contextElement) {
+		public HibernateNamedQueryAnnotation extractResourceElement(HibernateJavaNamedQuery contextElement) {
 			return contextElement.getQueryAnnotation();
 		}
 		
@@ -165,12 +159,12 @@ implements HibernateJavaQueryContainer{
 	// ********** hibernateNamed native queries **********
 	@Override
 	public ListIterable<HibernateJavaNamedNativeQuery> getHibernateNamedNativeQueries() {
-		return this.hibernateNamedNativeQueryContainer.getContextElements();
+		return this.hibernateNamedNativeQueryContainer;
 	}
 
 	@Override
 	public int getHibernateNamedNativeQueriesSize() {
-		return this.hibernateNamedNativeQueryContainer.getContextElementsSize();
+		return this.hibernateNamedNativeQueryContainer.size();
 	}
 
 	public HibernateNamedNativeQuery addHibernateNamedNativeQuery() {
@@ -189,19 +183,19 @@ implements HibernateJavaQueryContainer{
 
 	@Override
 	public void removeHibernateNamedNativeQuery(HibernateNamedNativeQuery hibernateNamedNativeQuery) {
-		this.removeHibernateNamedNativeQuery(this.hibernateNamedNativeQueryContainer.indexOfContextElement((HibernateJavaNamedNativeQuery) hibernateNamedNativeQuery));
+		this.removeHibernateNamedNativeQuery(this.hibernateNamedNativeQueryContainer.indexOf((HibernateJavaNamedNativeQuery) hibernateNamedNativeQuery));
 	}
 
 	@Override
 	public void removeHibernateNamedNativeQuery(int index) {
 		this.parent.getResourceAnnotatedElement().removeAnnotation(index, HibernateNamedNativeQueryAnnotation.ANNOTATION_NAME);
-		this.hibernateNamedNativeQueryContainer.removeContextElement(index);
+		this.hibernateNamedNativeQueryContainer.remove(index);
 	}
 
 	@Override
 	public void moveHibernateNamedNativeQuery(int targetIndex, int sourceIndex) {
 		this.parent.getResourceAnnotatedElement().moveAnnotation(targetIndex, sourceIndex, HibernateNamedNativeQueryAnnotation.ANNOTATION_NAME);
-		this.hibernateNamedNativeQueryContainer.moveContextElement(targetIndex, sourceIndex);
+		this.hibernateNamedNativeQueryContainer.move(targetIndex, sourceIndex);
 	}
 
 	protected HibernateJavaNamedNativeQuery buildHibernateNamedNativeQuery(HibernateNamedNativeQueryAnnotation hibernateNamedNativeQueryAnnotation) {
@@ -223,31 +217,25 @@ implements HibernateJavaQueryContainer{
 	}
 	
 	protected ContextListContainer<HibernateJavaNamedNativeQuery, HibernateNamedNativeQueryAnnotation> buildHibernateNamedNativeQueryContainer() {
-		HibernateNamedNativeQueryContainerAdapter container = new HibernateNamedNativeQueryContainerAdapter();
-		container.initialize();
-		return container;
+		return this.buildSpecifiedContextListContainer(HIBERNATE_NAMED_NATIVE_QUERIES_LIST, new HibernateNamedNativeQueryContainerAdapter());
 	}
 
 	/**
 	 * hibernateNamed native query container adapter
 	 */
 	protected class HibernateNamedNativeQueryContainerAdapter
-		extends ContextListContainer<HibernateJavaNamedNativeQuery, HibernateNamedNativeQueryAnnotation>
+		extends AbstractContainerAdapter<HibernateJavaNamedNativeQuery, HibernateNamedNativeQueryAnnotation>
 	{
 		@Override
-		protected String getContextElementsPropertyName() {
-			return HIBERNATE_NAMED_NATIVE_QUERIES_LIST;
-		}
-		@Override
-		protected HibernateJavaNamedNativeQuery buildContextElement(HibernateNamedNativeQueryAnnotation resourceElement) {
+		public HibernateJavaNamedNativeQuery buildContextElement(HibernateNamedNativeQueryAnnotation resourceElement) {
 			return HibernateJavaQueryContainerImpl.this.buildHibernateNamedNativeQuery(resourceElement);
 		}
 		@Override
-		protected ListIterable<HibernateNamedNativeQueryAnnotation> getResourceElements() {
+		public ListIterable<HibernateNamedNativeQueryAnnotation> getResourceElements() {
 			return HibernateJavaQueryContainerImpl.this.getHibernateNamedNativeQueryAnnotations();
 		}
 		@Override
-		protected HibernateNamedNativeQueryAnnotation getResourceElement(HibernateJavaNamedNativeQuery contextElement) {
+		public HibernateNamedNativeQueryAnnotation extractResourceElement(HibernateJavaNamedNativeQuery contextElement) {
 			return contextElement.getQueryAnnotation();
 		}
 	}

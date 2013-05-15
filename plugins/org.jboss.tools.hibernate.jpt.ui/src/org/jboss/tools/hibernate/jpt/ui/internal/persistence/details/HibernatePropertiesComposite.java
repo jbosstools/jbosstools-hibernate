@@ -38,7 +38,7 @@ import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWra
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
-import org.eclipse.jpt.common.utility.internal.transformer.StringObjectTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -127,7 +127,7 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 //				b, null);
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		this.addLabel(container, HibernateConsoleMessages.NewConfigurationWizardPage_database_dialect);
-		Control c = this.addEditableCombo(container, lvmDialect, dialectHolder, StringObjectTransformer.<String>instance(), (String)null);
+		Control c = this.addEditableCombo(container, lvmDialect, dialectHolder, TransformerTools.<String>objectToStringTransformer(), (String)null);
 		gd.horizontalSpan = 2;
 		c.setLayoutData(gd);
 		
@@ -140,7 +140,7 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 //				null);
 
 		this.addLabel(container, HibernateConsoleMessages.NewConfigurationWizardPage_driver_class);
-		c = this.addEditableCombo(container, lvmDriver, driverHolder, StringObjectTransformer.<String>instance(), (String)null);
+		c = this.addEditableCombo(container, lvmDriver, driverHolder, TransformerTools.<String>objectToStringTransformer(), (String)null);
 		c.setLayoutData(gd);
 //		addLabeledEditableCombo(
 //				section,
@@ -151,7 +151,7 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 //				null);
 
 		this.addLabel(container, HibernateConsoleMessages.NewConfigurationWizardPage_connection_url);
-		c = this.addEditableCombo(container, lvmUrl, urlHolder, StringObjectTransformer.<String>instance(), (String)null);
+		c = this.addEditableCombo(container, lvmUrl, urlHolder, TransformerTools.<String>objectToStringTransformer(), (String)null);
 		c.setLayoutData(gd);
 //		addLabeledEditableCombo(
 //				section,

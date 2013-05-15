@@ -13,7 +13,7 @@ package org.jboss.tools.hibernate.jpt.ui.internal.persistence.details;
 import java.util.List;
 
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.internal.utility.ContentTypeTools;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.jpa.core.resource.persistence.JPA;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
@@ -59,7 +59,7 @@ public class HibernatePersistenceXmlUiDefinition extends AbstractResourceUiDefin
 	}
 	
 	public boolean providesUi(JptResourceType resourceType) {
-		JptResourceType resType = PlatformTools.getResourceType(XmlPersistence.CONTENT_TYPE, JPA.SCHEMA_VERSION);
+		JptResourceType resType = ContentTypeTools.getResourceType(XmlPersistence.CONTENT_TYPE, JPA.SCHEMA_VERSION);
 		return resourceType.equals(resType);
 	}
 

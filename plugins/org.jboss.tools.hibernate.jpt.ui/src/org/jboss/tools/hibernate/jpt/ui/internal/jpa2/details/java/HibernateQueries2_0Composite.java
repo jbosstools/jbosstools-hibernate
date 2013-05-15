@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.jpa2.context.NamedQuery2_0;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.NamedQueryProperty2_0Composite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.NamedQueryPropertyComposite2_0;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.PageBook;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaQueryContainer;
@@ -37,7 +37,7 @@ public class HibernateQueries2_0Composite extends HibernateQueriesComposite {
 	
 	@Override
 	protected Pane<NamedQuery2_0> buildNamedQueryPropertyComposite(PageBook pageBook) {
-		return new NamedQueryProperty2_0Composite(
+		return new NamedQueryPropertyComposite2_0(
 			this,
 			this.buildNamedQuery2_0Holder(),
 			pageBook);
