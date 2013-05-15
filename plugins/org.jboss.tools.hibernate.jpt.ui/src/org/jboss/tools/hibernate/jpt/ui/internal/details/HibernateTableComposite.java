@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Group;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateEntity;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateTable;
 import org.jboss.tools.hibernate.jpt.ui.internal.mappings.db.xpl.TableCombo;
+import org.jboss.tools.hibernate.jpt.ui.internal.utils.PaneVisibilityEnabler;
 
 /**
  * @author Dmitry Geraskov

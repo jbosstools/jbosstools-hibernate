@@ -29,6 +29,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernatePackage
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.GenericGeneratorsComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateQueriesComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.TypeDefsComposite;
+import org.jboss.tools.hibernate.jpt.ui.internal.utils.PaneVisibilityEnabler;
 
 /**
  * @author Dmitry Geraskov
