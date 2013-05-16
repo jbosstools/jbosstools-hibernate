@@ -118,8 +118,18 @@ public abstract class HibernateConsoleTest extends TestCase {
 		long start = System.currentTimeMillis();
 		while (!Job.getJobManager().isIdle()) {
 			delay(500);
-			if ( (System.currentTimeMillis()-start) > MAX_IDLE )
-				throw new RuntimeException(ConsoleTestMessages.HibernateConsoleTest_long_running_task_detected);
+			if ( (System.currentTimeMillis()-start) > MAX_IDLE ) {
+				Job[] jobs = Job.getJobManager().find(null);
+				StringBuffer str = new StringBuffer();
+				for (Job job : jobs) {
+					if (job.getThread() != null) {
+						str.append("\n").append(job.getName()).append(" (")
+								.append(job.getClass()).append(")");
+					}
+				}
+				throw new RuntimeException(
+						ConsoleTestMessages.HibernateConsoleTest_long_running_task_detected + ":" + str.toString()); //$NON-NLS-1$
+			}
 		}
 		delay(1000);
 	}
