@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="org.eclipse.ui.ide.workbench"
+            name="Test Product to Control Tests Execution">
+         <property
+               name="aboutText"
+               value="This is test application">
+         </property>
+         <property
+               name="appName"
+               value="JBoss Tools Hibernate Test Application">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
+         </property>
+      </product>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="org.hibernate.eclipse.console.test.EmptyPerspectiveFactory"
+            id="org.hibernate.eclipse.console.test.perspective"
+            name="EmptyPerspective">
+      </perspective>
+   </extension>
+
+</plugin>

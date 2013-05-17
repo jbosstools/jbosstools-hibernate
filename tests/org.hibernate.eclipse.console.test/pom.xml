@@ -23,6 +23,7 @@
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
+					<product>org.hibernate.eclipse.console.test.product</product>
 					<explodedBundles>
 						<bundle>org.hibernate.eclipse.console.test</bundle>
 						<bundle>org.hibernate.eclipse</bundle>
