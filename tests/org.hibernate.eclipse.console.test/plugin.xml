@@ -21,13 +21,4 @@
          </property>
       </product>
    </extension>
-   <extension
-         point="org.eclipse.ui.perspectives">
-      <perspective
-            class="org.hibernate.eclipse.console.test.EmptyPerspectiveFactory"
-            id="org.hibernate.eclipse.console.test.perspective"
-            name="EmptyPerspective">
-      </perspective>
-   </extension>
-
 </plugin>
