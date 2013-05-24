@@ -53,7 +53,7 @@ public class Hibernate2_1PersistenceXmlDefinition extends
 	
 	@Override
 	protected PersistenceXmlContextModelFactory buildContextModelFactory() {
-		return new Hibernate2_0PersistenceXmlContextNodeFactory();
+		return new Hibernate2_1PersistenceXmlContextNodeFactory();
 	}
 	
 	public JptResourceType getResourceType() {
