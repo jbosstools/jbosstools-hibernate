@@ -22,7 +22,7 @@
              class="org.hibernate.eclipse.jdt.ui.internal.HQLJavaCompletionProposalComputer">
           <partition type="__java_string"/>
        </javaCompletionProposalComputer>
-       <proposalCategory icon="icons/hibernate_proposalcategory.png"/>
+       <proposalCategory icon="$nl$/icons/hibernate_proposalcategory.png"/>
     </extension>
   <extension
         point="org.eclipse.jdt.core.compilationParticipant">
@@ -162,7 +162,7 @@
       <wizard
             category="hibernatewizards"
             class="org.hibernate.eclipse.jdt.ui.wizards.NewHibernateMappingFileWizard"
-            icon="icons/hibernate_small_icon.gif"
+            icon="$nl$/icons/hibernate_small_icon.gif"
             id="org.hibernate.eclipse.console.wizards.NewHibernateMappingFileWizard"
             name="%New_wizard_menu_New_mapping_file">
          <description>

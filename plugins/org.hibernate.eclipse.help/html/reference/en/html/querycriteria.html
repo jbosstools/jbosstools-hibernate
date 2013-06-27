@@ -1,0 +1,266 @@
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   <title>Chapter&nbsp;15.&nbsp;Criteria Queries</title><link rel="stylesheet" href="../shared/css/html.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.65.1"><link rel="home" href="index.html" title="HIBERNATE - Relational Persistence for Idiomatic Java"><link rel="up" href="index.html" title="HIBERNATE - Relational Persistence for Idiomatic Java"><link rel="previous" href="queryhql.html" title="Chapter&nbsp;14.&nbsp;HQL: The Hibernate Query Language"><link rel="next" href="querysql.html" title="Chapter&nbsp;16.&nbsp;Native SQL"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter&nbsp;15.&nbsp;Criteria Queries</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="queryhql.html">Prev</a>&nbsp;</td><th width="60%" align="center">&nbsp;</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="querysql.html">Next</a></td></tr></table><hr></div><div class="chapter" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="querycriteria"></a>Chapter&nbsp;15.&nbsp;Criteria Queries</h2></div></div><div></div></div><p>
+        Hibernate features an intuitive, extensible criteria query API.
+    </p><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="querycriteria-creating"></a>15.1.&nbsp;Creating a <tt class="literal">Criteria</tt> instance</h2></div></div><div></div></div><p>
+            The interface <tt class="literal">org.hibernate.Criteria</tt> represents a query against
+            a particular persistent class. The <tt class="literal">Session</tt> is a factory for
+            <tt class="literal">Criteria</tt> instances.
+        </p><pre class="programlisting">Criteria crit = sess.createCriteria(Cat.class);
+crit.setMaxResults(50);
+List cats = crit.list();</pre></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="querycriteria-narrowing"></a>15.2.&nbsp;Narrowing the result set</h2></div></div><div></div></div><p>
+            An individual query criterion is an instance of the interface
+            <tt class="literal">org.hibernate.criterion.Criterion</tt>. The class
+            <tt class="literal">org.hibernate.criterion.Restrictions</tt> defines
+            factory methods for obtaining certain built-in
+            <tt class="literal">Criterion</tt> types.
+        </p><pre class="programlisting">List cats = sess.createCriteria(Cat.class)
+    .add( Restrictions.like("name", "Fritz%") )
+    .add( Restrictions.between("weight", minWeight, maxWeight) )
+    .list();</pre><p>
+            Restrictions may be grouped logically.
+        </p><pre class="programlisting">List cats = sess.createCriteria(Cat.class)
+    .add( Restrictions.like("name", "Fritz%") )
+    .add( Restrictions.or(
+        Restrictions.eq( "age", new Integer(0) ),
+        Restrictions.isNull("age")
+    ) )
+    .list();</pre><pre class="programlisting">List cats = sess.createCriteria(Cat.class)
+    .add( Restrictions.in( "name", new String[] { "Fritz", "Izi", "Pk" } ) )
+    .add( Restrictions.disjunction()
+        .add( Restrictions.isNull("age") )
+        .add( Restrictions.eq("age", new Integer(0) ) )
+        .add( Restrictions.eq("age", new Integer(1) ) )
+        .add( Restrictions.eq("age", new Integer(2) ) )
+    ) )
+    .list();</pre><p>
+            There are quite a range of built-in criterion types (<tt class="literal">Restrictions</tt>
+            subclasses), but one that is especially useful lets you specify SQL directly.
+        </p><pre class="programlisting">List cats = sess.createCriteria(Cat.class)
+    .add( Restrictions.sqlRestriction("lower({alias}.name) like lower(?)", "Fritz%", Hibernate.STRING) )
+    .list();</pre><p>
+            The <tt class="literal">{alias}</tt> placeholder with be replaced by the row alias
+            of the queried entity.
+        </p><p>
+            An alternative approach to obtaining a criterion is to get it from a 
+            <tt class="literal">Property</tt> instance. You can create a <tt class="literal">Property</tt>
+            by calling <tt class="literal">Property.forName()</tt>.
+        </p><pre class="programlisting">
+Property age = Property.forName("age");
+List cats = sess.createCriteria(Cat.class)
+    .add( Restrictions.disjunction()
+        .add( age.isNull() )
+        .add( age.eq( new Integer(0) ) )
+        .add( age.eq( new Integer(1) ) )
+        .add( age.eq( new Integer(2) ) )
+    ) )
+    .add( Property.forName("name").in( new String[] { "Fritz", "Izi", "Pk" } ) )
+    .list();</pre></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="querycriteria-ordering"></a>15.3.&nbsp;Ordering the results</h2></div></div><div></div></div><p>
+            You may order the results using <tt class="literal">org.hibernate.criterion.Order</tt>.
+        </p><pre class="programlisting">List cats = sess.createCriteria(Cat.class)
+    .add( Restrictions.like("name", "F%")
+    .addOrder( Order.asc("name") )
+    .addOrder( Order.desc("age") )
+    .setMaxResults(50)
+    .list();</pre><pre class="programlisting">List cats = sess.createCriteria(Cat.class)
+    .add( Property.forName("name").like("F%") )
+    .addOrder( Property.forName("name").asc() )
+    .addOrder( Property.forName("age").desc() )
+    .setMaxResults(50)
+    .list();</pre></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="querycriteria-associations"></a>15.4.&nbsp;Associations</h2></div></div><div></div></div><p>
+            You may easily specify constraints upon related entities by navigating
+            associations using <tt class="literal">createCriteria()</tt>.
+        </p><pre class="programlisting">List cats = sess.createCriteria(Cat.class)
+    .add( Restrictions.like("name", "F%") )
+    .createCriteria("kittens")
+        .add( Restrictions.like("name", "F%") )
+    .list();</pre><p>
+            note that the second <tt class="literal">createCriteria()</tt> returns a new
+            instance of <tt class="literal">Criteria</tt>, which refers to the elements of
+            the <tt class="literal">kittens</tt> collection.
+        </p><p>
+            The following, alternate form is useful in certain circumstances.
+        </p><pre class="programlisting">List cats = sess.createCriteria(Cat.class)
+    .createAlias("kittens", "kt")
+    .createAlias("mate", "mt")
+    .add( Restrictions.eqProperty("kt.name", "mt.name") )
+    .list();</pre><p>
+            (<tt class="literal">createAlias()</tt> does not create a new instance of
+            <tt class="literal">Criteria</tt>.)
+        </p><p>
+            Note that the kittens collections held by the <tt class="literal">Cat</tt> instances
+            returned by the previous two queries are <span class="emphasis"><em>not</em></span> pre-filtered
+            by the criteria! If you wish to retrieve just the kittens that match the
+            criteria, you must use a <tt class="literal">ResultTransformer</tt>.
+        </p><pre class="programlisting">List cats = sess.createCriteria(Cat.class)
+    .createCriteria("kittens", "kt")
+        .add( Restrictions.eq("name", "F%") )
+    .setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP)
+    .list();
+Iterator iter = cats.iterator();
+while ( iter.hasNext() ) {
+    Map map = (Map) iter.next();
+    Cat cat = (Cat) map.get(Criteria.ROOT_ALIAS);
+    Cat kitten = (Cat) map.get("kt");
+}</pre></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="querycriteria-dynamicfetching"></a>15.5.&nbsp;Dynamic association fetching</h2></div></div><div></div></div><p>
+            You may specify association fetching semantics at runtime using
+            <tt class="literal">setFetchMode()</tt>.
+        </p><pre class="programlisting">List cats = sess.createCriteria(Cat.class)
+    .add( Restrictions.like("name", "Fritz%") )
+    .setFetchMode("mate", FetchMode.EAGER)
+    .setFetchMode("kittens", FetchMode.EAGER)
+    .list();</pre><p>
+            This query will fetch both <tt class="literal">mate</tt> and <tt class="literal">kittens</tt>
+            by outer join. See <a href="performance.html#performance-fetching" title="19.1.&nbsp;Fetching strategies">Section&nbsp;19.1, &#8220;Fetching strategies&#8221;</a> for more information.
+        </p></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="querycriteria-examples"></a>15.6.&nbsp;Example queries</h2></div></div><div></div></div><p>
+            The class <tt class="literal">org.hibernate.criterion.Example</tt> allows
+            you to construct a query criterion from a given instance.
+        </p><pre class="programlisting">Cat cat = new Cat();
+cat.setSex('F');
+cat.setColor(Color.BLACK);
+List results = session.createCriteria(Cat.class)
+    .add( Example.create(cat) )
+    .list();</pre><p>
+           Version properties, identifiers and associations are ignored. By default,
+           null valued properties are excluded.
+        </p><p>
+           You can adjust how the <tt class="literal">Example</tt> is applied.
+        </p><pre class="programlisting">Example example = Example.create(cat)
+    .excludeZeroes()           //exclude zero valued properties
+    .excludeProperty("color")  //exclude the property named "color"
+    .ignoreCase()              //perform case insensitive string comparisons
+    .enableLike();             //use like for string comparisons
+List results = session.createCriteria(Cat.class)
+    .add(example)
+    .list();</pre><p>
+            You can even use examples to place criteria upon associated objects.
+        </p><pre class="programlisting">List results = session.createCriteria(Cat.class)
+    .add( Example.create(cat) )
+    .createCriteria("mate")
+        .add( Example.create( cat.getMate() ) )
+    .list();</pre></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="querycriteria-projection"></a>15.7.&nbsp;Projections, aggregation and grouping</h2></div></div><div></div></div><p>
+            The class <tt class="literal">org.hibernate.criterion.Projections</tt> is a
+            factory for <tt class="literal">Projection</tt> instances. We apply a
+            projection to a query by calling <tt class="literal">setProjection()</tt>.
+        </p><pre class="programlisting">List results = session.createCriteria(Cat.class)
+    .setProjection( Projections.rowCount() )
+    .add( Restrictions.eq("color", Color.BLACK) )
+    .list();</pre><pre class="programlisting">List results = session.createCriteria(Cat.class)
+    .setProjection( Projections.projectionList()
+        .add( Projections.rowCount() )
+        .add( Projections.avg("weight") )
+        .add( Projections.max("weight") )
+        .add( Projections.groupProperty("color") )
+    )
+    .list();</pre><p>
+            There is no explicit "group by" necessary in a criteria query. Certain
+            projection types are defined to be <span class="emphasis"><em>grouping projections</em></span>,
+            which also appear in the SQL <tt class="literal">group by</tt> clause.
+        </p><p>
+            An alias may optionally be assigned to a projection, so that the projected value
+            may be referred to in restrictions or orderings. Here are two different ways to
+            do this:
+        </p><pre class="programlisting">List results = session.createCriteria(Cat.class)
+    .setProjection( Projections.alias( Projections.groupProperty("color"), "colr" ) )
+    .addOrder( Order.asc("colr") )
+    .list();</pre><pre class="programlisting">List results = session.createCriteria(Cat.class)
+    .setProjection( Projections.groupProperty("color").as("colr") )
+    .addOrder( Order.asc("colr") )
+    .list();</pre><p>
+            The <tt class="literal">alias()</tt> and <tt class="literal">as()</tt> methods simply wrap a
+            projection instance in another, aliased, instance of <tt class="literal">Projection</tt>.
+            As a shortcut, you can assign an alias when you add the projection to a 
+            projection list:
+        </p><pre class="programlisting">List results = session.createCriteria(Cat.class)
+    .setProjection( Projections.projectionList()
+        .add( Projections.rowCount(), "catCountByColor" )
+        .add( Projections.avg("weight"), "avgWeight" )
+        .add( Projections.max("weight"), "maxWeight" )
+        .add( Projections.groupProperty("color"), "color" )
+    )
+    .addOrder( Order.desc("catCountByColor") )
+    .addOrder( Order.desc("avgWeight") )
+    .list();</pre><pre class="programlisting">List results = session.createCriteria(Domestic.class, "cat")
+    .createAlias("kittens", "kit")
+    .setProjection( Projections.projectionList()
+        .add( Projections.property("cat.name"), "catName" )
+        .add( Projections.property("kit.name"), "kitName" )
+    )
+    .addOrder( Order.asc("catName") )
+    .addOrder( Order.asc("kitName") )
+    .list();</pre><p>
+            You can also use <tt class="literal">Property.forName()</tt> to express projections:
+        </p><pre class="programlisting">List results = session.createCriteria(Cat.class)
+    .setProjection( Property.forName("name") )
+    .add( Property.forName("color").eq(Color.BLACK) )
+    .list();</pre><pre class="programlisting">List results = session.createCriteria(Cat.class)
+    .setProjection( Projections.projectionList()
+        .add( Projections.rowCount().as("catCountByColor") )
+        .add( Property.forName("weight").avg().as("avgWeight") )
+        .add( Property.forName("weight").max().as("maxWeight") )
+        .add( Property.forName("color").group().as("color" )
+    )
+    .addOrder( Order.desc("catCountByColor") )
+    .addOrder( Order.desc("avgWeight") )
+    .list();</pre></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="querycriteria-detachedqueries"></a>15.8.&nbsp;Detached queries and subqueries</h2></div></div><div></div></div><p>
+            The <tt class="literal">DetachedCriteria</tt> class lets you create a query outside the scope 
+            of a session, and then later execute it using some arbitrary <tt class="literal">Session</tt>.
+        </p><pre class="programlisting">DetachedCriteria query = DetachedCriteria.forClass(Cat.class)
+    .add( Property.forName("sex").eq('F') );
+    
+Session session = ....;
+Transaction txn = session.beginTransaction();
+List results = query.getExecutableCriteria(session).setMaxResults(100).list();
+txn.commit();
+session.close();</pre><p>
+            A <tt class="literal">DetachedCriteria</tt> may also be used to express a subquery. Criterion
+            instances involving subqueries may be obtained via <tt class="literal">Subqueries</tt> or
+            <tt class="literal">Property</tt>.            
+        </p><pre class="programlisting">DetachedCriteria avgWeight = DetachedCriteria.forClass(Cat.class)
+    .setProjection( Property.forName("weight").avg() );
+session.createCriteria(Cat.class)
+    .add( Property.forName("weight).gt(avgWeight) )
+    .list();</pre><pre class="programlisting">DetachedCriteria weights = DetachedCriteria.forClass(Cat.class)
+    .setProjection( Property.forName("weight") );
+session.createCriteria(Cat.class)
+    .add( Subqueries.geAll("weight", weights) )
+    .list();</pre><p>
+            Even correlated subqueries are possible:
+        </p><pre class="programlisting">DetachedCriteria avgWeightForSex = DetachedCriteria.forClass(Cat.class, "cat2")
+    .setProjection( Property.forName("weight").avg() )
+    .add( Property.forName("cat2.sex").eqProperty("cat.sex") );
+session.createCriteria(Cat.class, "cat")
+    .add( Property.forName("weight).gt(avgWeightForSex) )
+    .list();</pre></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="query-criteria-naturalid"></a>15.9.&nbsp;Queries by natural identifier</h2></div></div><div></div></div><p>
+            For most queries, including criteria queries, the query cache is not very efficient,
+            because query cache invalidation occurs too frequently. However, there is one special
+            kind of query where we can optimize the cache invalidation algorithm: lookups by a 
+            constant natural key. In some applications, this kind of query occurs frequently.
+            The criteria API provides special provision for this use case.
+        </p><p>
+            First, you should map the natural key of your entity using 
+            <tt class="literal">&lt;natural-id&gt;</tt>, and enable use of the second-level cache.
+        </p><pre class="programlisting">&lt;class name="User"&gt;
+    &lt;cache usage="read-write"/&gt;
+    &lt;id name="id"&gt;
+        &lt;generator class="increment"/&gt;
+    &lt;/id&gt;
+    &lt;natural-id&gt;
+        &lt;property name="name"/&gt;
+        &lt;property name="org"/&gt;
+    &lt;/natural-id&gt;
+    &lt;property name="password"/&gt;
+&lt;/class&gt;</pre><p>
+            Note that this functionality is not intended for use with entities with 
+            <span class="emphasis"><em>mutable</em></span> natural keys.
+        </p><p>
+            Next, enable the Hibernate query cache.
+        </p><p>
+            Now, <tt class="literal">Restrictions.naturalId()</tt> allows us to make use of
+            the more efficient cache algorithm.
+        </p><pre class="programlisting">session.createCriteria(User.class)
+    .add( Restrictions.naturalId()
+        .set("name", "gavin")
+        .set("org", "hb") 
+    ).setCacheable(true)
+    .uniqueResult();</pre></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="queryhql.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="index.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="querysql.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter&nbsp;14.&nbsp;HQL: The Hibernate Query Language&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;Chapter&nbsp;16.&nbsp;Native SQL</td></tr></table></div></body></html>

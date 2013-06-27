@@ -7,7 +7,7 @@
      <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            icon="icons/hibernate_small_icon.gif"
+            icon="$nl$/icons/hibernate_small_icon.gif"
             class="org.hibernate.eclipse.console.HibernateConsolePerspectiveFactory"
             name="%perspective.name"
             id="org.hibernate.eclipse.console.HibernateConsolePerspective"/>
@@ -18,7 +18,7 @@
             name="%ViewCategory_Hibernate"
             id="hibernatecategory"/>
      <view
-            icon="icons/hibernate_small_icon.gif"
+            icon="$nl$/icons/hibernate_small_icon.gif"
             class="org.hibernate.eclipse.console.views.KnownConfigurationsView"
             category="hibernatecategory"
             name="%ViewName_HibernateConfigurations"
@@ -26,17 +26,17 @@
    <!--   <view
             category="hibernatecategory"
             class="org.hibernate.eclipse.graph.EntityGraphView"
-            icon="icons/hibernate_small_icon.gif"
+            icon="$nl$/icons/hibernate_small_icon.gif"
             id="org.hibernate.eclipse.graph.EntityGraphView"
             name="Hibernate Entity Model"/>
       <view
             category="hibernatecategory"
             class="org.hibernate.eclipse.graph.RelationalGraphView"
-            icon="icons/hibernate_small_icon.gif"
+            icon="$nl$/icons/hibernate_small_icon.gif"
             id="org.hibernate.eclipse.graph.RelationalGraphView"
             name="Hibernate Relational Model"/> -->
       <view
-            icon="icons/hibernate_small_icon.gif"
+            icon="$nl$/icons/hibernate_small_icon.gif"
             class="org.hibernate.eclipse.console.views.QueryPageTabView"
             category="hibernatecategory"
             name="%ViewName_HibernateQueryResult"
@@ -44,13 +44,13 @@
       <view
             category="hibernatecategory"
             class="org.hibernate.eclipse.console.views.DynamicSQLPreviewView"
-            icon="icons/hibernate_small_icon.gif"
+            icon="$nl$/icons/hibernate_small_icon.gif"
             id="org.hibernate.eclipse.console.views.DynamicSQLPreviewView"
             name="%ViewName_HibernateDynamicSQLPreview"/>
       <view
             category="hibernatecategory"
             class="org.hibernate.eclipse.console.views.QueryParametersView"
-            icon="icons/images/parameter.gif"
+            icon="$nl$/icons/images/parameter.gif"
             id="org.hibernate.eclipse.console.views.QueryParametersView"
             name="%ViewName_QueryParameters"/>
 
@@ -64,13 +64,13 @@
       <!--wizard
             category="hibernatewizards"
             class="org.hibernate.eclipse.console.wizards.NewHibernateMappingFileWizard"
-            icon="icons/hibernate_small_icon.gif"
+            icon="$nl$/icons/hibernate_small_icon.gif"
             id="org.hibernate.eclipse.console.wizards.NewHibernateMappingFileWizard"
             name="Hibernate XML Mapping file (hbm.xml)"/-->
       <wizard
             category="hibernatewizards"
             class="org.hibernate.eclipse.console.wizards.NewConfigurationWizard"
-            icon="icons/hibernate_small_icon.gif"
+            icon="$nl$/icons/hibernate_small_icon.gif"
             id="org.hibernate.eclipse.console.wizards.NewConfigurationWizard"
             name="Hibernate Configuration File (cfg.xml)">
          <description>Create a new hibernate.cfg.xml file (Helping with the initial JDBC setup etc.)</description>
@@ -78,9 +78,9 @@
       <wizard
             category="hibernatewizards"
             class="org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard"
-            descriptionImage="icons/hibernate_small_icon.gif"
+            descriptionImage="$nl$/icons/hibernate_small_icon.gif"
             finalPerspective="org.hibernate.eclipse.console.HibernateConsolePerspective"
-            icon="icons/hibernate_small_icon.gif"
+            icon="$nl$/icons/hibernate_small_icon.gif"
             id="org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard"
             name="Hibernate Console Configuration"
             preferredPerspectives="org.hibernate.eclipse.console.HibernateConsolePerspective">
@@ -90,7 +90,7 @@
             canFinishEarly="false"
             category="hibernatewizards"
             class="org.hibernate.eclipse.console.wizards.NewReverseEngineeringFileWizard"
-            icon="icons/hibernate_small_icon.gif"
+            icon="$nl$/icons/hibernate_small_icon.gif"
             id="org.hibernate.eclipse.console.wizards.NewReverseEngineeringFileWizard"
             name="Hibernate Reverse Engineering File (reveng.xml)">
          <description>Create a new hibernate.reveng.xml (Helping with the initial table and type filtering)</description>
@@ -199,7 +199,7 @@
             class="org.hibernate.eclipse.hqleditor.HQLEditor"
             contributorClass="org.hibernate.eclipse.hqleditor.HQLEditorActionContributor"
             extensions="hql"
-            icon="icons/images/hql_editor.gif"
+            icon="$nl$/icons/images/hql_editor.gif"
             id="org.hibernate.eclipse.hqleditor.HQLEditor"
             name="HQL Editor">
       </editor>
@@ -207,7 +207,7 @@
             class="org.hibernate.eclipse.criteriaeditor.CriteriaEditor"
             contributorClass="org.hibernate.eclipse.criteriaeditor.CriteriaEditorActionContributor"
             extensions="crit"
-            icon="icons/images/criteria_editor.gif"
+            icon="$nl$/icons/images/criteria_editor.gif"
             id="org.hibernate.eclipse.criteriaeditor.CriteriaEditor"
             name="Criteria Editor"/>
    </extension>
@@ -224,7 +224,7 @@
           </menu-->
           <action
                 allowLabelUpdate="true"
-                icon="icons/images/execute.gif"
+                icon="$nl$/icons/images/execute.gif"
                 id="org.hibernate.eclipse.console.actions.ExecuteQueryAction"
                 definitionId="org.hibernate.eclipse.console.actions.ExecuteHQLActionCommand"
                 label="Run Query"
@@ -244,7 +244,7 @@
          <action
                label="Hibernate Code Generation..."
                style="pulldown"
-               icon="icons/images/hibernate_launch.png"
+               icon="$nl$/icons/images/hibernate_launch.png"
                class="org.hibernate.eclipse.launch.LaunchMenuDelegate"
                menubarPath="org.eclipse.ui.run/HibernateToolsGroup"
                id="org.hibernate.eclipse.launch.LaunchMenuDelegateMenu">
@@ -252,7 +252,7 @@
          <action
                label="Hibernate Code Generation..."
                style="pulldown"
-               icon="icons/images/hibernate_launch.png"
+               icon="$nl$/icons/images/hibernate_launch.png"
                tooltip="Generate code via Hibernate Tools"
                class="org.hibernate.eclipse.launch.LaunchMenuDelegate"
                toolbarPath="org.eclipse.debug.ui.launchActionSet/hibernatetool"
@@ -298,7 +298,7 @@
          <action
                actionID="clearEditor"
                class="org.hibernate.eclipse.console.actions.ClearHQLEditorAction"
-               icon="icons/images/clear.gif"
+               icon="$nl$/icons/images/clear.gif"
                id="org.hibernate.eclipse.console.actions.ClearHQLEditorAction"
                label="&amp;Clear HQL Editor"
                menubarPath="HQL/hqlGroup"
@@ -376,11 +376,11 @@
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTypeImages">
       <launchConfigurationTypeImage
-            icon="icons/images/hibernate_launch.png"
+            icon="$nl$/icons/images/hibernate_launch.png"
             configTypeID="org.hibernate.eclipse.launch.CodeGenerationLaunchConfigurationType"
             id="org.hibernate.eclipse.launch.CodeGenerationLaunchImage"/>
       <launchConfigurationTypeImage
-            icon="icons/images/hibernate_config.gif"
+            icon="$nl$/icons/images/hibernate_config.gif"
             configTypeID="org.hibernate.eclipse.launch.ConsoleConfigurationLaunchConfigurationType"
             id="org.hibernate.eclipse.launch.ConsoleConfiguraitonLaunchImage"/>
    </extension>
@@ -401,18 +401,18 @@
    <extension
          point="org.eclipse.debug.ui.launchGroups">
       <launchGroup
-            bannerImage="icons/images/newhibernate_wiz.gif"
+            bannerImage="$nl$/icons/images/newhibernate_wiz.gif"
             category="org.hibernate.eclipse.launchcategory"
             id="org.hibernate.eclipse.launch.CodeGenerationLaunchGroup"
-            image="icons/images/hibernate_launch.png"
+            image="$nl$/icons/images/hibernate_launch.png"
             label="Hibernate Code Generation"
             mode="run"
             title="Select or configure a code generation to run"/>
       <launchGroup
-            bannerImage="icons/images/newhibernate_wiz.gif"
+            bannerImage="$nl$/icons/images/newhibernate_wiz.gif"
             category="org.hibernate.eclipse.launchcategory"
             id="org.hibernate.eclipse.launch.ConsoleConfigurationLaunchGroup"
-            image="icons/images/hibernate_launch.png"
+            image="$nl$/icons/images/hibernate_launch.png"
             label="Hibernate Console Configuration"
             mode="run"
             title="Select or configure a console configuration to run"/>
@@ -430,7 +430,7 @@
       <exporter
             classname="org.hibernate.tool.hbm2x.POJOExporter"
             description="Domain code (.java)"
-            icon="icons/images/mapped_class.gif"
+            icon="$nl$/icons/images/mapped_class.gif"
             id="org.hibernate.tools.hbm2java">
          <property
                description="Generate EJB3 annotations"
@@ -456,7 +456,7 @@
       <exporter
             classname="org.hibernate.tool.hbm2x.HibernateMappingExporter"
             description="Hibernate XML Mappings (.hbm.xml)"
-            icon="icons/images/hibernate_mapping.gif"
+            icon="$nl$/icons/images/hibernate_mapping.gif"
             id="org.hibernate.tools.hbm2hbmxml">
             <property
                description="Output directory"
@@ -472,7 +472,7 @@
       <exporter
             classname="org.hibernate.tool.hbm2x.DAOExporter"
             description="DAO code (.java)"
-            icon="icons/hibernate_small_icon.gif"
+            icon="$nl$/icons/hibernate_small_icon.gif"
             id="org.hibernate.tools.hbm2dao">
          <property
                description="Generate EJB3 annotations"
@@ -498,7 +498,7 @@
        <exporter
             classname="org.hibernate.tool.hbm2x.GenericExporter"
             description="Generic Exporter (&lt;hbmtemplate&gt;)"
-            icon="icons/images/hibernate_mapping.gif"
+            icon="$nl$/icons/images/hibernate_mapping.gif"
             id="org.hibernate.tools.hbmtemplate">
             <property
                description="Output directory"
@@ -530,7 +530,7 @@
       <exporter
             classname="org.hibernate.tool.hbm2x.HibernateConfigurationExporter"
             description="Hibernate XML Configuration (.cfg.xml)"
-            icon="icons/hibernate_small_icon.gif"
+            icon="$nl$/icons/hibernate_small_icon.gif"
             id="org.hibernate.tools.hbm2cfgxml">
             <property
                description="Output directory"
@@ -546,7 +546,7 @@
       <exporter
             classname="org.hibernate.tool.hbm2x.DocExporter"
             description="Schema Documentation (.html)"
-            icon="icons/images/schema.gif"
+            icon="$nl$/icons/images/schema.gif"
             id="org.hibernate.tools.hbm2doc">
          <property
                description="executable to run GraphViz"
@@ -567,7 +567,7 @@
       <exporter
             classname="org.hibernate.tool.hbm2x.Hbm2DDLExporter"
             description="Schema Export (.ddl)"
-            icon="icons/images/schema.gif"
+            icon="$nl$/icons/images/schema.gif"
             id="org.hibernate.tools.hbm2ddl">
          <property
                description="Output directory"
@@ -623,7 +623,7 @@
       <exporter
             classname="org.hibernate.tool.hbm2x.QueryExporter"
             description="HQL Query Execution Exporter"
-            icon="icons/images/hql_editor_connect.gif"
+            icon="$nl$/icons/images/hql_editor_connect.gif"
             id="org.hibernate.tools.query">
          <property
                description="Output directory"
@@ -791,7 +791,7 @@
       <wizard
             category="org.hibernate.eclipse.console.HibernateToolsExport"
             class="org.hibernate.eclipse.codegen.ExportAntCodeGenWizard"
-            icon="icons/images/ant_codegen_export.gif"
+            icon="$nl$/icons/images/ant_codegen_export.gif"
             id="org.hibernate.eclipse.codegen.ExportAntCodeGenWizard"
             name="%exportHibernateAntCodeGenerationWizardName">
          <description>

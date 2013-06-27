@@ -1,0 +1,388 @@
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   <title>Chapter&nbsp;4.&nbsp;Persistent Classes</title><link rel="stylesheet" href="../shared/css/html.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.65.1"><link rel="home" href="index.html" title="HIBERNATE - Relational Persistence for Idiomatic Java"><link rel="up" href="index.html" title="HIBERNATE - Relational Persistence for Idiomatic Java"><link rel="previous" href="session-configuration.html" title="Chapter&nbsp;3.&nbsp;Configuration"><link rel="next" href="mapping.html" title="Chapter&nbsp;5.&nbsp;Basic O/R Mapping"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter&nbsp;4.&nbsp;Persistent Classes</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="session-configuration.html">Prev</a>&nbsp;</td><th width="60%" align="center">&nbsp;</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="mapping.html">Next</a></td></tr></table><hr></div><div class="chapter" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="persistent-classes"></a>Chapter&nbsp;4.&nbsp;Persistent Classes</h2></div></div><div></div></div><p>
+        Persistent classes are classes in an application that implement the entities
+        of the business problem (e.g. Customer and Order in an E-commerce application).
+        Not all instances of a persistent class are considered to be in the persistent 
+        state - an instance may instead be transient or detached.
+    </p><p>
+        Hibernate works best if these classes follow some simple rules, also known
+        as the Plain Old Java Object (POJO) programming model. However, none of these
+        rules are hard requirements. Indeed, Hibernate3 assumes very little about
+        the nature of your persistent objects. You may express a domain model in other 
+        ways: using trees of <tt class="literal">Map</tt> instances, for example.
+    </p><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="persistent-classes-pojo"></a>4.1.&nbsp;A simple POJO example</h2></div></div><div></div></div><p>
+            Most Java applications require a persistent class representing felines.
+        </p><pre class="programlisting">package eg;
+import java.util.Set;
+import java.util.Date;
+
+public class Cat {
+    private Long id; // identifier
+
+    private Date birthdate;
+    private Color color;
+    private char sex;
+    private float weight;
+    private int litterId;
+
+    private Cat mother;
+    private Set kittens = new HashSet();
+
+    private void setId(Long id) {
+        this.id=id;
+    }
+    public Long getId() {
+        return id;
+    }
+
+    void setBirthdate(Date date) {
+        birthdate = date;
+    }
+    public Date getBirthdate() {
+        return birthdate;
+    }
+
+    void setWeight(float weight) {
+        this.weight = weight;
+    }
+    public float getWeight() {
+        return weight;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+    void setColor(Color color) {
+        this.color = color;
+    }
+
+    void setSex(char sex) {
+        this.sex=sex;
+    }
+    public char getSex() {
+        return sex;
+    }
+
+    void setLitterId(int id) {
+        this.litterId = id;
+    }
+    public int getLitterId() {
+        return litterId;
+    }
+
+    void setMother(Cat mother) {
+        this.mother = mother;
+    }
+    public Cat getMother() {
+        return mother;
+    }
+    void setKittens(Set kittens) {
+        this.kittens = kittens;
+    }
+    public Set getKittens() {
+        return kittens;
+    }
+    
+    // addKitten not needed by Hibernate
+    public void addKitten(Cat kitten) {
+    	kitten.setMother(this);
+	kitten.setLitterId( kittens.size() ); 
+        kittens.add(kitten);
+    }
+}</pre><p>
+            There are four main rules to follow here:
+        </p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="persistent-classes-pojo-constructor"></a>4.1.1.&nbsp;Implement a no-argument constructor</h3></div></div><div></div></div><p>
+                <tt class="literal">Cat</tt> has a no-argument constructor. All persistent classes must 
+                have a default constructor (which may be non-public) so that Hibernate can instantiate 
+                them using <tt class="literal">Constructor.newInstance()</tt>. We strongly recommend having a 
+                default constructor with at least <span class="emphasis"><em>package</em></span> visibility for runtime proxy 
+                generation in Hibernate.
+            </p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="persistent-classes-pojo-identifier"></a>4.1.2.&nbsp;Provide an identifier property (optional)</h3></div></div><div></div></div><p>
+                <tt class="literal">Cat</tt> has a property called <tt class="literal">id</tt>. This property 
+                maps to the primary key column of a database table. The property might have been called
+                anything, and its type might have been any primitive type, any primitive "wrapper" 
+                type, <tt class="literal">java.lang.String</tt> or <tt class="literal">java.util.Date</tt>. (If 
+                your legacy database table has composite keys, you can even use a user-defined class 
+                with properties of these types - see the section on composite identifiers later.)
+            </p><p>
+                The identifier property is strictly optional. You can leave them off and let Hibernate 
+                keep track of object identifiers internally. We do not recommend this, however.
+            </p><p>
+                In fact, some functionality is available only to classes which declare an
+                identifier property:
+            </p><div class="itemizedlist"><ul type="disc" compact><li><p>
+                        Transitive reattachment for detached objects (cascade update or cascade
+                        merge) - see <a href="objectstate.html#objectstate-transitive" title="10.11.&nbsp;Transitive persistence">Section&nbsp;10.11, &#8220;Transitive persistence&#8221;</a>
+                    </p></li><li><p>
+                        <tt class="literal">Session.saveOrUpdate()</tt>
+                    </p></li><li><p>
+                        <tt class="literal">Session.merge()</tt>
+                    </p></li></ul></div><p>
+                We recommend you declare consistently-named identifier properties on persistent
+                classes. We further recommend that you use a nullable (ie. non-primitive) type.
+            </p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="persistent-classes-pojo-final"></a>4.1.3.&nbsp;Prefer non-final classes (optional)</h3></div></div><div></div></div><p>
+                A central feature of Hibernate, <span class="emphasis"><em>proxies</em></span>, depends upon the
+                persistent class being either non-final, or the implementation of an interface
+                that declares all public methods.
+            </p><p>
+                You can persist <tt class="literal">final</tt> classes that do not implement an interface
+                with Hibernate, but you won't be able to use proxies for lazy association fetching -
+                which will limit your options for performance tuning.
+            </p><p>
+                You should also avoid declaring <tt class="literal">public final</tt> methods on the 
+                non-final classes. If you want to use a class with a <tt class="literal">public final</tt> 
+                method, you must explicitly disable proxying by setting <tt class="literal">lazy="false"</tt>.
+            </p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="persistent-classes-pojo-accessors"></a>4.1.4.&nbsp;Declare accessors and mutators for persistent fields (optional)</h3></div></div><div></div></div><p>
+                <tt class="literal">Cat</tt> declares accessor methods for all its persistent fields.
+                Many other ORM tools directly persist instance variables. We believe it is 
+                better to provide an indirection between the relational schema and internal
+                data structures of the class. By default, Hibernate persists JavaBeans style 
+                properties, and recognizes method names of the form <tt class="literal">getFoo</tt>, 
+                <tt class="literal">isFoo</tt> and <tt class="literal">setFoo</tt>. You may switch to direct 
+                field access for particular properties, if needed.
+            </p><p>
+                Properties need <span class="emphasis"><em>not</em></span> be declared public - Hibernate can
+                persist a property with a default, <tt class="literal">protected</tt> or 
+                <tt class="literal">private</tt> get / set pair.
+            </p></div></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="persistent-classes-inheritance"></a>4.2.&nbsp;Implementing inheritance</h2></div></div><div></div></div><p>
+            A subclass must also observe the first and second rules. It inherits its
+            identifier property from the superclass, <tt class="literal">Cat</tt>.
+        </p><pre class="programlisting">package eg;
+
+public class DomesticCat extends Cat {
+        private String name;
+
+        public String getName() {
+                return name;
+        }
+        protected void setName(String name) {
+                this.name=name;
+        }
+}</pre></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="persistent-classes-equalshashcode"></a>4.3.&nbsp;Implementing <tt class="literal">equals()</tt> and <tt class="literal">hashCode()</tt></h2></div></div><div></div></div><p>
+            You have to override the <tt class="literal">equals()</tt> and <tt class="literal">hashCode()</tt>
+            methods if you 
+        </p><div class="itemizedlist"><ul type="disc" compact><li><p>
+                    intend to put instances of persistent classes in a <tt class="literal">Set</tt>
+                    (the recommended way to represent many-valued associations) 
+                    <span class="emphasis"><em>and</em></span>
+                </p></li><li><p>
+                    intend to use reattachment of detached instances
+                </p></li></ul></div><p>
+            Hibernate guarantees equivalence of persistent identity (database row) and Java identity
+            only inside a particular session scope. So as soon as we mix instances retrieved in
+            different sessions, we must implement <tt class="literal">equals()</tt> and
+            <tt class="literal">hashCode()</tt> if we wish to have meaningful semantics for
+            <tt class="literal">Set</tt>s.
+        </p><p>
+            The most obvious way is to implement <tt class="literal">equals()</tt>/<tt class="literal">hashCode()</tt>
+            by comparing the identifier value of both objects. If the value is the same, both must
+            be the same database row, they are therefore equal (if both are added to a <tt class="literal">Set</tt>,
+            we will only have one element in the <tt class="literal">Set</tt>). Unfortunately, we can't use that
+            approach with generated identifiers! Hibernate will only assign identifier values to objects 
+            that are persistent, a newly created instance will not have any identifier value! Furthermore,
+            if an instance is unsaved and currently in a <tt class="literal">Set</tt>, saving it will assign
+            an identifier value to the object. If <tt class="literal">equals()</tt> and <tt class="literal">hashCode()</tt>
+            are based on the identifier value, the hash code would change, breaking the contract of the
+            <tt class="literal">Set</tt>. See the Hibernate website for a full discussion of this problem. Note
+            that this is not a Hibernate issue, but normal Java semantics of object identity and equality.
+        </p><p>
+            We recommend  implementing <tt class="literal">equals()</tt> and <tt class="literal">hashCode()</tt>
+            using <span class="emphasis"><em>Business key equality</em></span>. Business key equality means that the
+            <tt class="literal">equals()</tt> method compares only the properties that form the business
+            key, a key that would identify our instance in the real world (a
+            <span class="emphasis"><em>natural</em></span> candidate key):
+        </p><pre class="programlisting">public class Cat {
+
+    ...
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        if ( !(other instanceof Cat) ) return false;
+
+        final Cat cat = (Cat) other;
+
+        if ( !cat.getLitterId().equals( getLitterId() ) ) return false;
+        if ( !cat.getMother().equals( getMother() ) ) return false;
+
+        return true;
+    }
+
+    public int hashCode() {
+        int result;
+        result = getMother().hashCode();
+        result = 29 * result + getLitterId();
+        return result;
+    }
+
+}</pre><p>
+            Note that a business key does not have to be as solid as a database
+            primary key candidate (see <a href="transactions.html#transactions-basics-identity" title="11.1.3.&nbsp;Considering object identity">Section&nbsp;11.1.3, &#8220;Considering object identity&#8221;</a>).
+            Immutable or unique properties are usually good
+            candidates for a business key.
+        </p></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="persistent-classes-dynamicmodels"></a>4.4.&nbsp;Dynamic models</h2></div></div><div></div></div><p>
+            <span class="emphasis"><em>Note that the following features are currently considered
+            experimental and may change in the near future.</em></span>
+        </p><p>
+            Persistent entities don't necessarily have to be represented as POJO classes
+            or as JavaBean objects at runtime. Hibernate also supports dynamic models
+            (using <tt class="literal">Map</tt>s of <tt class="literal">Map</tt>s at runtime) and the
+            representation of entities as DOM4J trees. With this approach, you don't
+            write persistent classes, only mapping files.
+        </p><p>
+            By default, Hibernate works in normal POJO mode. You may set a default entity
+            representation mode for a particular <tt class="literal">SessionFactory</tt> using the
+            <tt class="literal">default_entity_mode</tt> configuration option (see
+            <a href="session-configuration.html#configuration-optional-properties" title="Table&nbsp;3.3.&nbsp;Hibernate Configuration Properties">Table&nbsp;3.3, &#8220;Hibernate Configuration Properties&#8221;</a>.
+        </p><p>
+            The following examples demonstrates the representation using <tt class="literal">Map</tt>s.
+            First, in the mapping file, an <tt class="literal">entity-name</tt> has to be declared
+            instead of (or in addition to) a class name:
+        </p><pre class="programlisting">&lt;hibernate-mapping&gt;
+
+    &lt;class entity-name="Customer"&gt;
+
+        &lt;id name="id"
+            type="long"
+            column="ID"&gt;
+            &lt;generator class="sequence"/&gt;
+        &lt;/id&gt;
+
+        &lt;property name="name"
+            column="NAME"
+            type="string"/&gt;
+
+        &lt;property name="address"
+            column="ADDRESS"
+            type="string"/&gt;
+
+        &lt;many-to-one name="organization"
+            column="ORGANIZATION_ID"
+            class="Organization"/&gt;
+
+        &lt;bag name="orders"
+            inverse="true"
+            lazy="false"
+            cascade="all"&gt;
+            &lt;key column="CUSTOMER_ID"/&gt;
+            &lt;one-to-many class="Order"/&gt;
+        &lt;/bag&gt;
+
+    &lt;/class&gt;
+    
+&lt;/hibernate-mapping&gt;</pre><p>
+
+            Note that even though associations are declared using target class names,
+            the target type of an associations may also be a dynamic entity instead
+            of a POJO.
+        </p><p>
+            After setting the default entity mode to <tt class="literal">dynamic-map</tt>
+            for the <tt class="literal">SessionFactory</tt>, we can at runtime work with
+            <tt class="literal">Map</tt>s of <tt class="literal">Map</tt>s:
+        </p><pre class="programlisting">Session s = openSession();
+Transaction tx = s.beginTransaction();
+Session s = openSession();
+
+// Create a customer
+Map david = new HashMap();
+david.put("name", "David");
+
+// Create an organization
+Map foobar = new HashMap();
+foobar.put("name", "Foobar Inc.");
+
+// Link both
+david.put("organization", foobar);
+
+// Save both
+s.save("Customer", david);
+s.save("Organization", foobar);
+
+tx.commit();
+s.close();</pre><p>
+            The advantages of a dynamic mapping are quick turnaround time for prototyping
+            without the need for entity class implementation. However, you lose compile-time
+            type checking and will very likely deal with many exceptions at runtime. Thanks
+            to the Hibernate mapping, the database schema can easily be normalized and sound,
+            allowing to add a proper domain model implementation on top later on.
+        </p><p>
+            Entity representation modes can also be set on a per <tt class="literal">Session</tt>
+            basis:
+        </p><pre class="programlisting">Session dynamicSession = pojoSession.getSession(EntityMode.MAP);
+
+// Create a customer
+Map david = new HashMap();
+david.put("name", "David");
+dynamicSession.save("Customer", david);
+...
+dynamicSession.flush();
+dynamicSession.close()
+...
+// Continue on pojoSession
+</pre><p>
+            Please note that the call to <tt class="literal">getSession()</tt> using an
+            <tt class="literal">EntityMode</tt> is on the <tt class="literal">Session</tt> API, not the
+            <tt class="literal">SessionFactory</tt>. That way, the new <tt class="literal">Session</tt>
+            shares the underlying JDBC connection, transaction, and other context
+            information. This means you don't have tocall <tt class="literal">flush()</tt>
+            and <tt class="literal">close()</tt> on the secondary <tt class="literal">Session</tt>, and
+            also leave the transaction and connection handling to the primary unit of work.
+        </p><p>
+            More information about the XML representation capabilities can be found
+            in <a href="xml.html" title="Chapter&nbsp;18.&nbsp;XML Mapping">Chapter&nbsp;18, <i>XML Mapping</i></a>.
+        </p></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="persistent-classes-tuplizers"></a>4.5.&nbsp;Tuplizers</h2></div></div><div></div></div><p>
+            <tt class="literal">org.hibernate.tuple.Tuplizer</tt>, and its sub-interfaces, are responsible
+            for managing a particular representation of a piece of data, given that representation's
+            <tt class="literal">org.hibernate.EntityMode</tt>.  If a given piece of data is thought of as
+            a data structure, then a tuplizer is the thing which knows how to create such a data structure
+            and how to extract values from and inject values into such a data structure.  For example,
+            for the POJO entity mode, the correpsonding tuplizer knows how create the POJO through its
+            constructor and how to access the POJO properties using the defined property accessors.
+            There are two high-level types of Tuplizers, represented by the
+            <tt class="literal">org.hibernate.tuple.EntityTuplizer</tt> and <tt class="literal">org.hibernate.tuple.ComponentTuplizer</tt>
+            interfaces.  <tt class="literal">EntityTuplizer</tt>s are responsible for managing the above mentioned
+            contracts in regards to entities, while <tt class="literal">ComponentTuplizer</tt>s do the same for
+            components.
+        </p><p>
+            Users may also plug in their own tuplizers.  Perhaps you require that a <tt class="literal">java.util.Map</tt>
+            implementation other than <tt class="literal">java.util.HashMap</tt> be used while in the
+            dynamic-map entity-mode; or perhaps you need to define a different proxy generation strategy
+            than the one used by default.  Both would be achieved by defining a custom tuplizer
+            implementation.  Tuplizers definitions are attached to the entity or component mapping they
+            are meant to manage.  Going back to the example of our customer entity:
+        </p><pre class="programlisting">&lt;hibernate-mapping&gt;
+    &lt;class entity-name="Customer"&gt;
+        &lt;!--
+            Override the dynamic-map entity-mode
+            tuplizer for the customer entity
+        --&gt;
+        &lt;tuplizer entity-mode="dynamic-map"
+                class="CustomMapTuplizerImpl"/&gt;
+
+        &lt;id name="id" type="long" column="ID"&gt;
+            &lt;generator class="sequence"/&gt;
+        &lt;/id&gt;
+
+        &lt;!-- other properties --&gt;
+        ...
+    &lt;/class&gt;
+&lt;/hibernate-mapping&gt;
+
+
+public class CustomMapTuplizerImpl
+        extends org.hibernate.tuple.DynamicMapEntityTuplizer {
+    // override the buildInstantiator() method to plug in our custom map...
+    protected final Instantiator buildInstantiator(
+            org.hibernate.mapping.PersistentClass mappingInfo) {
+        return new CustomMapInstantiator( mappingInfo );
+    }
+
+    private static final class CustomMapInstantiator
+            extends org.hibernate.tuple.DynamicMapInstantitor {
+        // override the generateMap() method to return our custom map...
+	    protected final Map generateMap() {
+		    return new CustomMap();
+	    }
+    }
+}</pre></div><p>
+        TODO: Document user-extension framework in the property and proxy packages
+    </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="session-configuration.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="index.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="mapping.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter&nbsp;3.&nbsp;Configuration&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;Chapter&nbsp;5.&nbsp;Basic O/R Mapping</td></tr></table></div></body></html>

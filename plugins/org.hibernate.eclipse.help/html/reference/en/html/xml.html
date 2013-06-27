@@ -1,0 +1,196 @@
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   <title>Chapter&nbsp;18.&nbsp;XML Mapping</title><link rel="stylesheet" href="../shared/css/html.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.65.1"><link rel="home" href="index.html" title="HIBERNATE - Relational Persistence for Idiomatic Java"><link rel="up" href="index.html" title="HIBERNATE - Relational Persistence for Idiomatic Java"><link rel="previous" href="filters.html" title="Chapter&nbsp;17.&nbsp;Filtering data"><link rel="next" href="performance.html" title="Chapter&nbsp;19.&nbsp;Improving performance"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter&nbsp;18.&nbsp;XML Mapping</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="filters.html">Prev</a>&nbsp;</td><th width="60%" align="center">&nbsp;</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="performance.html">Next</a></td></tr></table><hr></div><div class="chapter" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="xml"></a>Chapter&nbsp;18.&nbsp;XML Mapping</h2></div></div><div></div></div><p><span class="emphasis"><em>
+        Note that this is an experimental feature in Hibernate 3.0 and is under
+        extremely active development.
+    </em></span></p><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="xml-intro"></a>18.1.&nbsp;Working with XML data</h2></div></div><div></div></div><p>
+            Hibernate lets you work with persistent XML data in much the same way
+            you work with persistent POJOs. A parsed XML tree can be thought of
+            as just another way to represent the relational data at the object level,
+            instead of POJOs.
+        </p><p>
+            Hibernate supports dom4j as API for manipulating XML trees. You can write 
+            queries that retrieve dom4j trees from the database and have any 
+            modification you make to the tree automatically synchronized to the 
+            database. You can even take an XML document, parse it using dom4j, and
+            write it to the database with any of Hibernate's basic operations: 
+            <tt class="literal">persist(), saveOrUpdate(), merge(), delete(), replicate()</tt> 
+            (merging is not yet supported).
+        </p><p>
+            This feature has many applications including data import/export, 
+            externalization of entity data via JMS or SOAP and XSLT-based reporting.
+        </p><p>
+            A single mapping may be used to simultaneously map properties of a class
+            and nodes of an XML document to the database, or, if there is no class to map, 
+            it may be used to map just the XML.
+        </p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="xml-intro-mapping"></a>18.1.1.&nbsp;Specifying XML and class mapping together</h3></div></div><div></div></div><p>
+                Here is an example of mapping a POJO and XML simultaneously:
+            </p><pre class="programlisting">&lt;class name="Account" 
+        table="ACCOUNTS" 
+        node="account"&gt;
+        
+    &lt;id name="accountId" 
+            column="ACCOUNT_ID" 
+            node="@id"/&gt;
+            
+    &lt;many-to-one name="customer" 
+            column="CUSTOMER_ID" 
+            node="customer/@id" 
+            embed-xml="false"/&gt;
+            
+    &lt;property name="balance" 
+            column="BALANCE" 
+            node="balance"/&gt;
+            
+    ...
+    
+&lt;/class&gt;</pre></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="xml-onlyxml"></a>18.1.2.&nbsp;Specifying only an XML mapping</h3></div></div><div></div></div><p>
+                Here is an example where there is no POJO class:
+            </p><pre class="programlisting">&lt;class entity-name="Account" 
+        table="ACCOUNTS" 
+        node="account"&gt;
+        
+    &lt;id name="id" 
+            column="ACCOUNT_ID" 
+            node="@id" 
+            type="string"/&gt;
+            
+    &lt;many-to-one name="customerId" 
+            column="CUSTOMER_ID" 
+            node="customer/@id" 
+            embed-xml="false" 
+            entity-name="Customer"/&gt;
+            
+    &lt;property name="balance" 
+            column="BALANCE" 
+            node="balance" 
+            type="big_decimal"/&gt;
+            
+    ...
+    
+&lt;/class&gt;</pre><p>
+                This mapping allows you to access the data as a dom4j tree, or as a graph of
+                property name/value pairs (java <tt class="literal">Map</tt>s). The property names
+                are purely logical constructs that may be referred to in HQL queries.
+            </p></div></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="xml-mapping"></a>18.2.&nbsp;XML mapping metadata</h2></div></div><div></div></div><p>
+            Many Hibernate mapping elements accept the <tt class="literal">node</tt> attribute.
+            This let's you specify the name of an XML attribute or element that holds the
+            property or entity data. The format of the <tt class="literal">node</tt> attribute
+            must be one of the following:
+        </p><div class="itemizedlist"><ul type="disc" compact><li><p><tt class="literal">"element-name"</tt> - map to the named XML element</p></li><li><p><tt class="literal">"@attribute-name"</tt> - map to the named XML attribute</p></li><li><p><tt class="literal">"."</tt> - map to the parent element</p></li><li><p>
+                <tt class="literal">"element-name/@attribute-name"</tt> - 
+                map to the named attribute of the named element
+            </p></li></ul></div><p>
+            For collections and single valued associations, there is an additional 
+            <tt class="literal">embed-xml</tt> attribute. If <tt class="literal">embed-xml="true"</tt>,
+            the default, the XML tree for the associated entity (or collection of value type) 
+            will be embedded directly in the XML tree for the entity that owns the association.
+            Otherwise, if <tt class="literal">embed-xml="false"</tt>, then only the referenced 
+            identifier value will appear in the XML for single point associations and 
+            collections will simply not appear at all.
+        </p><p>
+            You should be careful not to leave <tt class="literal">embed-xml="true"</tt> for
+            too many associations, since XML does not deal well with circularity!
+        </p><pre class="programlisting">&lt;class name="Customer" 
+        table="CUSTOMER" 
+        node="customer"&gt;
+        
+    &lt;id name="id" 
+            column="CUST_ID" 
+            node="@id"/&gt;
+            
+    &lt;map name="accounts" 
+            node="." 
+            embed-xml="true"&gt;
+        &lt;key column="CUSTOMER_ID" 
+                not-null="true"/&gt;
+        &lt;map-key column="SHORT_DESC" 
+                node="@short-desc" 
+                type="string"/&gt;
+        &lt;one-to-many entity-name="Account"
+                embed-xml="false" 
+                node="account"/&gt;
+    &lt;/map&gt;
+    
+    &lt;component name="name" 
+            node="name"&gt;
+        &lt;property name="firstName" 
+                node="first-name"/&gt;
+        &lt;property name="initial" 
+                node="initial"/&gt;
+        &lt;property name="lastName" 
+                node="last-name"/&gt;
+    &lt;/component&gt;
+    
+    ...
+    
+&lt;/class&gt;</pre><p>
+            in this case, we have decided to embed the collection of account ids, but not
+            the actual account data. The following HQL query:
+        </p><pre class="programlisting">from Customer c left join fetch c.accounts where c.lastName like :lastName</pre><p>
+            Would return datasets such as this:
+        </p><pre class="programlisting">&lt;customer id="123456789"&gt;
+    &lt;account short-desc="Savings"&gt;987632567&lt;/account&gt;
+    &lt;account short-desc="Credit Card"&gt;985612323&lt;/account&gt;
+    &lt;name&gt;
+        &lt;first-name&gt;Gavin&lt;/first-name&gt;
+        &lt;initial&gt;A&lt;/initial&gt;
+        &lt;last-name&gt;King&lt;/last-name&gt;
+    &lt;/name&gt;
+    ...
+&lt;/customer&gt;</pre><p>
+            If you set <tt class="literal">embed-xml="true"</tt> on the <tt class="literal">&lt;one-to-many&gt;</tt>
+            mapping, the data might look more like this:
+        </p><pre class="programlisting">&lt;customer id="123456789"&gt;
+    &lt;account id="987632567" short-desc="Savings"&gt;
+        &lt;customer id="123456789"/&gt;
+        &lt;balance&gt;100.29&lt;/balance&gt;
+    &lt;/account&gt;
+    &lt;account id="985612323" short-desc="Credit Card"&gt;
+        &lt;customer id="123456789"/&gt;
+        &lt;balance&gt;-2370.34&lt;/balance&gt;
+    &lt;/account&gt;
+    &lt;name&gt;
+        &lt;first-name&gt;Gavin&lt;/first-name&gt;
+        &lt;initial&gt;A&lt;/initial&gt;
+        &lt;last-name&gt;King&lt;/last-name&gt;
+    &lt;/name&gt;
+    ...
+&lt;/customer&gt;</pre></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="xml-manipulation"></a>18.3.&nbsp;Manipulating XML data</h2></div></div><div></div></div><p>
+            Let's rearead and update XML documents in the application. We do this by
+            obtaining a dom4j session:
+        </p><pre class="programlisting">Document doc = ....;
+       
+Session session = factory.openSession();
+Session dom4jSession = session.getSession(EntityMode.DOM4J);
+Transaction tx = session.beginTransaction();
+
+List results = dom4jSession
+    .createQuery("from Customer c left join fetch c.accounts where c.lastName like :lastName")
+    .list();
+for ( int i=0; i&lt;results.size(); i++ ) {
+    //add the customer data to the XML document
+    Element customer = (Element) results.get(i);
+    doc.add(customer);
+}
+
+tx.commit();
+session.close();</pre><pre class="programlisting">Session session = factory.openSession();
+Session dom4jSession = session.getSession(EntityMode.DOM4J);
+Transaction tx = session.beginTransaction();
+
+Element cust = (Element) dom4jSession.get("Customer", customerId);
+for ( int i=0; i&lt;results.size(); i++ ) {
+    Element customer = (Element) results.get(i);
+    //change the customer name in the XML and database
+    Element name = customer.element("name");
+    name.element("first-name").setText(firstName);
+    name.element("initial").setText(initial);
+    name.element("last-name").setText(lastName);
+}
+
+tx.commit();
+session.close();</pre><p>
+            It is extremely useful to combine this feature with Hibernate's <tt class="literal">replicate()</tt>
+            operation to implement XML-based data import/export.
+        </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="filters.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="index.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="performance.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter&nbsp;17.&nbsp;Filtering data&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;Chapter&nbsp;19.&nbsp;Improving performance</td></tr></table></div></body></html>

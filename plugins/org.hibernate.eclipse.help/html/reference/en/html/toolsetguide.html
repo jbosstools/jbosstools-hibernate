@@ -1,0 +1,202 @@
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   <title>Chapter&nbsp;20.&nbsp;Toolset Guide</title><link rel="stylesheet" href="../shared/css/html.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.65.1"><link rel="home" href="index.html" title="HIBERNATE - Relational Persistence for Idiomatic Java"><link rel="up" href="index.html" title="HIBERNATE - Relational Persistence for Idiomatic Java"><link rel="previous" href="performance.html" title="Chapter&nbsp;19.&nbsp;Improving performance"><link rel="next" href="example-parentchild.html" title="Chapter&nbsp;21.&nbsp;Example: Parent/Child"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter&nbsp;20.&nbsp;Toolset Guide</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="performance.html">Prev</a>&nbsp;</td><th width="60%" align="center">&nbsp;</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="example-parentchild.html">Next</a></td></tr></table><hr></div><div class="chapter" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="toolsetguide"></a>Chapter&nbsp;20.&nbsp;Toolset Guide</h2></div></div><div></div></div><p>
+        Roundtrip engineering with Hibernate is possible using a set of Eclipse plugins,
+        commandline tools, as well as Ant tasks.
+    </p><p>
+        The <span class="emphasis"><em>Hibernate Tools</em></span> currently include plugins for the Eclipse
+        IDE as well as Ant tasks for reverse engineering of existing databases:
+    </p><div class="itemizedlist"><ul type="disc"><li><p>
+            <span class="emphasis"><em>Mapping Editor:</em></span> An editor for Hibernate XML mapping files,
+            supporting auto-completion and syntax highlighting. It also supports semantic
+            auto-completion for class names and property/field names, making it much more versatile than a normal XML editor.
+        </p></li><li><p>
+            <span class="emphasis"><em>Console:</em></span> The console is a new view in Eclipse. In addition to
+            a tree overview of your console configurations, you also get an interactive view
+            of your persistent classes and their relationships. The console allows you to
+            execute HQL queries against your database and browse the result directly in
+            Eclipse.
+        </p></li><li><p>
+            <span class="emphasis"><em>Development Wizards:</em></span> Several wizards are provided with the
+            Hibernate Eclipse tools; you can use a wizard to quickly generate Hibernate configuration
+            (cfg.xml) files, or you may even completely reverse engineer an existing database schema
+            into POJO source files and Hibernate mapping files. The reverse engineering wizard
+            supports customizable templates.
+        </p></li><li><p>
+            <span class="emphasis"><em>Ant Tasks:</em></span>
+        </p></li></ul></div><p>
+        Please refer to the <span class="emphasis"><em>Hibernate Tools</em></span> package and it's documentation
+        for more information.
+    </p><p>
+        However, the Hibernate main package comes bundled with an integrated tool (it can even
+        be used from "inside" Hibernate on-the-fly): <span class="emphasis"><em>SchemaExport</em></span> aka
+        <tt class="literal">hbm2ddl</tt>.
+    </p><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="toolsetguide-s1"></a>20.1.&nbsp;Automatic schema generation</h2></div></div><div></div></div><p>
+            DDL may be generated from your mapping files by a Hibernate utility. The generated
+            schema includes referential integrity constraints (primary and foreign keys) for
+            entity and collection tables. Tables and sequences are also created for mapped
+            identifier generators.
+        </p><p>
+            You <span class="emphasis"><em>must</em></span> specify a SQL <tt class="literal">Dialect</tt> via the 
+            <tt class="literal">hibernate.dialect</tt> property when using this tool, as DDL
+            is highly vendor specific.
+        </p><p>
+            First, customize your mapping files to improve the generated schema.
+        </p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="toolsetguide-s1-2"></a>20.1.1.&nbsp;Customizing the schema</h3></div></div><div></div></div><p>
+                Many Hibernate mapping elements define optional attributes named <tt class="literal">length</tt>,
+                <tt class="literal">precision</tt> and <tt class="literal">scale</tt>. You may set the length, precision 
+                and scale of a column with this attribute. 
+                
+            </p><pre class="programlisting">&lt;property name="zip" length="5"/&gt;</pre><pre class="programlisting">&lt;property name="balance" precision="12" scale="2"/&gt;</pre><p>
+                Some tags also accept a <tt class="literal">not-null</tt> attribute (for generating a 
+                <tt class="literal">NOT NULL</tt> constraint on table columns) and a <tt class="literal">unique</tt> 
+                attribute (for generating <tt class="literal">UNIQUE</tt> constraint on table columns).
+            </p><pre class="programlisting">&lt;many-to-one name="bar" column="barId" not-null="true"/&gt;</pre><pre class="programlisting">&lt;element column="serialNumber" type="long" not-null="true" unique="true"/&gt;</pre><p>
+                A <tt class="literal">unique-key</tt> attribute may be used to group columns in
+                a single unique key constraint. Currently, the specified value of the 
+                <tt class="literal">unique-key</tt> attribute is <span class="emphasis"><em>not</em></span> used 
+                to name the constraint in the generated DDL, only to group the columns in 
+                the mapping file.
+            </p><pre class="programlisting">&lt;many-to-one name="org" column="orgId" unique-key="OrgEmployeeId"/&gt;
+&lt;property name="employeeId" unique-key="OrgEmployee"/&gt;</pre><p>
+                An <tt class="literal">index</tt> attribute specifies the name of an index that
+                will be created using the mapped column or columns. Multiple columns may be 
+                grouped into the same index, simply by specifying the same index name. 
+            </p><pre class="programlisting">&lt;property name="lastName" index="CustName"/&gt;
+&lt;property name="firstName" index="CustName"/&gt;</pre><p>
+                A <tt class="literal">foreign-key</tt> attribute may be used to override the name 
+                of any generated foreign key constraint.
+            </p><pre class="programlisting">&lt;many-to-one name="bar" column="barId" foreign-key="FKFooBar"/&gt;</pre><p>
+                Many mapping elements also accept a child <tt class="literal">&lt;column&gt;</tt> element. 
+                This is particularly useful for mapping multi-column types:
+            </p><pre class="programlisting">&lt;property name="name" type="my.customtypes.Name"/&gt;
+    &lt;column name="last" not-null="true" index="bar_idx" length="30"/&gt;
+    &lt;column name="first" not-null="true" index="bar_idx" length="20"/&gt;
+    &lt;column name="initial"/&gt;
+&lt;/property&gt;</pre><p>
+                The <tt class="literal">default</tt> attribute lets you specify a default value for
+                a column (you should assign the same value to the mapped property before
+                saving a new instance of the mapped class).
+            </p><pre class="programlisting">&lt;property name="credits" type="integer" insert="false"&gt;
+    &lt;column name="credits" default="10"/&gt;
+&lt;/property&gt;</pre><pre class="programlisting">&lt;version name="version" type="integer" insert="false"&gt;
+    &lt;column name="version" default="0"/&gt;
+&lt;/property&gt;</pre><p>
+                The <tt class="literal">sql-type</tt> attribute allows the user to override the default 
+                mapping of a Hibernate type to SQL datatype.
+            </p><pre class="programlisting">&lt;property name="balance" type="float"&gt;
+    &lt;column name="balance" sql-type="decimal(13,3)"/&gt;
+&lt;/property&gt;</pre><p>
+                The <tt class="literal">check</tt> attribute allows you to specify a check constraint.
+            </p><pre class="programlisting">&lt;property name="foo" type="integer"&gt;
+    &lt;column name="foo" check="foo &gt; 10"/&gt;
+&lt;/property&gt;</pre><pre class="programlisting">&lt;class name="Foo" table="foos" check="bar &lt; 100.0"&gt;
+    ...
+    &lt;property name="bar" type="float"/&gt;
+&lt;/class&gt;</pre><div class="table"><a name="schemattributes-summary"></a><p class="title"><b>Table&nbsp;20.1.&nbsp;Summary</b></p><table summary="Summary" border="1"><colgroup><col><col><col></colgroup><thead><tr><th>Attribute</th><th>Values</th><th>Interpretation</th></tr></thead><tbody><tr><td><tt class="literal">length</tt></td><td>number</td><td>column length</td></tr><tr><td><tt class="literal">precision</tt></td><td>number</td><td>column decimal precision</td></tr><tr><td><tt class="literal">scale</tt></td><td>number</td><td>column decimal scale</td></tr><tr><td><tt class="literal">not-null</tt></td><td><tt class="literal">true|false</tt></td><td>specfies that the column should be non-nullable</td></tr><tr><td><tt class="literal">unique</tt></td><td><tt class="literal">true|false</tt></td><td>specifies that the column should have a unique constraint</td></tr><tr><td><tt class="literal">index</tt></td><td><tt class="literal">index_name</tt></td><td>specifies the name of a (multi-column) index</td></tr><tr><td><tt class="literal">unique-key</tt></td><td><tt class="literal">unique_key_name</tt></td><td>specifies the name of a multi-column unique constraint</td></tr><tr><td><tt class="literal">foreign-key</tt></td><td><tt class="literal">foreign_key_name</tt></td><td>
+                                specifies the name of the foreign key constraint generated
+                                for an association, for a <tt class="literal">&lt;one-to-one&gt;</tt>, 
+                                <tt class="literal">&lt;many-to-one&gt;</tt>, <tt class="literal">&lt;key&gt;</tt>, 
+                                or <tt class="literal">&lt;many-to-many&gt;</tt> mapping element. Note that
+                                <tt class="literal">inverse="true"</tt> sides will not be considered
+                                by <tt class="literal">SchemaExport</tt>.
+                            </td></tr><tr><td><tt class="literal">sql-type</tt></td><td><tt class="literal">SQL column type</tt></td><td>
+                                overrides the default column type (attribute of 
+                                <tt class="literal">&lt;column&gt;</tt> element only)
+                            </td></tr><tr><td><tt class="literal">default</tt></td><td>SQL expression</td><td>
+                                specify a default value for the column
+                            </td></tr><tr><td><tt class="literal">check</tt></td><td>SQL expression</td><td>
+                                create an SQL check constraint on either column or table
+                            </td></tr></tbody></table></div><p>
+                The <tt class="literal">&lt;comment&gt;</tt> element allows you to specify comments
+                for the generated schema.
+            </p><pre class="programlisting">&lt;class name="Customer" table="CurCust"&gt;
+    &lt;comment&gt;Current customers only&lt;/comment&gt;
+    ...
+&lt;/class&gt;</pre><pre class="programlisting">&lt;property name="balance"&gt;
+    &lt;column name="bal"&gt;
+        &lt;comment&gt;Balance in USD&lt;/comment&gt;
+    &lt;/column&gt;
+&lt;/property&gt;</pre><p>
+                This results in a <tt class="literal">comment on table</tt> or 
+                <tt class="literal">comment on column</tt> statement in the generated
+                DDL (where supported).
+            </p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="toolsetguide-s1-3"></a>20.1.2.&nbsp;Running the tool</h3></div></div><div></div></div><p>
+                The <tt class="literal">SchemaExport</tt> tool writes a DDL script to standard out and/or
+                executes the DDL statements.
+            </p><p>
+                <tt class="literal">java -cp </tt><span class="emphasis"><em>hibernate_classpaths</em></span>
+                <tt class="literal">org.hibernate.tool.hbm2ddl.SchemaExport</tt> <span class="emphasis"><em>options mapping_files</em></span>
+            </p><div class="table"><a name="d0e15581"></a><p class="title"><b>Table&nbsp;20.2.&nbsp;<tt class="literal">SchemaExport</tt> Command Line Options</b></p><table summary="SchemaExport Command Line Options" border="1"><colgroup><col><col></colgroup><thead><tr><th>Option</th><th>Description</th></tr></thead><tbody><tr><td><tt class="literal">--quiet</tt></td><td>don't output the script to stdout</td></tr><tr><td><tt class="literal">--drop</tt></td><td>only drop the tables</td></tr><tr><td><tt class="literal">--create</tt></td><td>only create the tables</td></tr><tr><td><tt class="literal">--text</tt></td><td>don't export to the database</td></tr><tr><td><tt class="literal">--output=my_schema.ddl</tt></td><td>output the ddl script to a file</td></tr><tr><td><tt class="literal">--naming=eg.MyNamingStrategy</tt></td><td>select a <tt class="literal">NamingStrategy</tt></td></tr><tr><td><tt class="literal">--config=hibernate.cfg.xml</tt></td><td>read Hibernate configuration from an XML file</td></tr><tr><td><tt class="literal">--properties=hibernate.properties</tt></td><td>read database properties from a file</td></tr><tr><td><tt class="literal">--format</tt></td><td>format the generated SQL nicely in the script</td></tr><tr><td><tt class="literal">--delimiter=;</tt></td><td>set an end of line delimiter for the script</td></tr></tbody></table></div><p>
+                You may even embed <tt class="literal">SchemaExport</tt> in your application:
+            </p><pre class="programlisting">Configuration cfg = ....;
+new SchemaExport(cfg).create(false, true);</pre></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="toolsetguide-s1-4"></a>20.1.3.&nbsp;Properties</h3></div></div><div></div></div><p>
+                Database properties may be specified
+            </p><div class="itemizedlist"><ul type="disc" compact><li><p>as system properties with <tt class="literal">-D</tt><span class="emphasis"><em>&lt;property&gt;</em></span></p></li><li><p>in <tt class="literal">hibernate.properties</tt></p></li><li><p>in a named properties file with <tt class="literal">--properties</tt></p></li></ul></div><p>
+                The needed properties are:
+            </p><div class="table"><a name="d0e15690"></a><p class="title"><b>Table&nbsp;20.3.&nbsp;SchemaExport Connection Properties</b></p><table summary="SchemaExport Connection Properties" border="1"><colgroup><col><col></colgroup><thead><tr><th>Property Name</th><th>Description</th></tr></thead><tbody><tr><td><tt class="literal">hibernate.connection.driver_class</tt></td><td>jdbc driver class</td></tr><tr><td><tt class="literal">hibernate.connection.url</tt></td><td>jdbc url</td></tr><tr><td><tt class="literal">hibernate.connection.username</tt></td><td>database user</td></tr><tr><td><tt class="literal">hibernate.connection.password</tt></td><td>user password</td></tr><tr><td><tt class="literal">hibernate.dialect</tt></td><td>dialect</td></tr></tbody></table></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="toolsetguide-s1-5"></a>20.1.4.&nbsp;Using Ant</h3></div></div><div></div></div><p>
+                You can call <tt class="literal">SchemaExport</tt> from your Ant build script:
+            </p><pre class="programlisting">&lt;target name="schemaexport"&gt;
+    &lt;taskdef name="schemaexport"
+        classname="org.hibernate.tool.hbm2ddl.SchemaExportTask"
+        classpathref="class.path"/&gt;
+    
+    &lt;schemaexport
+        properties="hibernate.properties"
+        quiet="no"
+        text="no"
+        drop="no"
+        delimiter=";"
+        output="schema-export.sql"&gt;
+        &lt;fileset dir="src"&gt;
+            &lt;include name="**/*.hbm.xml"/&gt;
+        &lt;/fileset&gt;
+    &lt;/schemaexport&gt;
+&lt;/target&gt;</pre></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="toolsetguide-s1-6"></a>20.1.5.&nbsp;Incremental schema updates</h3></div></div><div></div></div><p>
+                The <tt class="literal">SchemaUpdate</tt> tool will update an existing schema with "incremental" changes.
+                Note that <tt class="literal">SchemaUpdate</tt> depends heavily upon the JDBC metadata API, so it will
+                not work with all JDBC drivers.
+            </p><p>
+                <tt class="literal">java -cp </tt><span class="emphasis"><em>hibernate_classpaths</em></span>
+                <tt class="literal">org.hibernate.tool.hbm2ddl.SchemaUpdate</tt> <span class="emphasis"><em>options mapping_files</em></span>
+            </p><div class="table"><a name="d0e15767"></a><p class="title"><b>Table&nbsp;20.4.&nbsp;<tt class="literal">SchemaUpdate</tt> Command Line Options</b></p><table summary="SchemaUpdate Command Line Options" border="1"><colgroup><col><col></colgroup><thead><tr><th>Option</th><th>Description</th></tr></thead><tbody><tr><td><tt class="literal">--quiet</tt></td><td>don't output the script to stdout</td></tr><tr><td><tt class="literal">--text</tt></td><td>don't export the script to the database</td></tr><tr><td><tt class="literal">--naming=eg.MyNamingStrategy</tt></td><td>select a <tt class="literal">NamingStrategy</tt></td></tr><tr><td><tt class="literal">--properties=hibernate.properties</tt></td><td>read database properties from a file</td></tr><tr><td><tt class="literal">--config=hibernate.cfg.xml</tt></td><td>specify a <tt class="literal">.cfg.xml</tt> file</td></tr></tbody></table></div><p>
+                You may embed <tt class="literal">SchemaUpdate</tt> in your application:
+            </p><pre class="programlisting">Configuration cfg = ....;
+new SchemaUpdate(cfg).execute(false);</pre></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="toolsetguide-s1-7"></a>20.1.6.&nbsp;Using Ant for incremental schema updates</h3></div></div><div></div></div><p>
+                You can call <tt class="literal">SchemaUpdate</tt> from the Ant script:
+            </p><pre class="programlisting">&lt;target name="schemaupdate"&gt;
+    &lt;taskdef name="schemaupdate"
+        classname="org.hibernate.tool.hbm2ddl.SchemaUpdateTask"
+        classpathref="class.path"/&gt;
+    
+    &lt;schemaupdate
+        properties="hibernate.properties"
+        quiet="no"&gt;
+        &lt;fileset dir="src"&gt;
+            &lt;include name="**/*.hbm.xml"/&gt;
+        &lt;/fileset&gt;
+    &lt;/schemaupdate&gt;
+&lt;/target&gt;</pre></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="toolsetguide-s1-8"></a>20.1.7.&nbsp;Schema validation</h3></div></div><div></div></div><p>
+                The <tt class="literal">SchemaValidator</tt> tool will validate that the existing database schema "matches"
+                your mapping documents. Note that <tt class="literal">SchemaValidator</tt> depends heavily upon the JDBC 
+                metadata API, so it will not work with all JDBC drivers. This tool is extremely useful for testing.
+            </p><p>
+                <tt class="literal">java -cp </tt><span class="emphasis"><em>hibernate_classpaths</em></span>
+                <tt class="literal">org.hibernate.tool.hbm2ddl.SchemaValidator</tt> <span class="emphasis"><em>options mapping_files</em></span>
+            </p><div class="table"><a name="d0e15858"></a><p class="title"><b>Table&nbsp;20.5.&nbsp;<tt class="literal">SchemaValidator</tt> Command Line Options</b></p><table summary="SchemaValidator Command Line Options" border="1"><colgroup><col><col></colgroup><thead><tr><th>Option</th><th>Description</th></tr></thead><tbody><tr><td><tt class="literal">--naming=eg.MyNamingStrategy</tt></td><td>select a <tt class="literal">NamingStrategy</tt></td></tr><tr><td><tt class="literal">--properties=hibernate.properties</tt></td><td>read database properties from a file</td></tr><tr><td><tt class="literal">--config=hibernate.cfg.xml</tt></td><td>specify a <tt class="literal">.cfg.xml</tt> file</td></tr></tbody></table></div><p>
+                You may embed <tt class="literal">SchemaValidator</tt> in your application:
+            </p><pre class="programlisting">Configuration cfg = ....;
+new SchemaValidator(cfg).validate();</pre></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="toolsetguide-s1-9"></a>20.1.8.&nbsp;Using Ant for schema validation</h3></div></div><div></div></div><p>
+                You can call <tt class="literal">SchemaValidator</tt> from the Ant script:
+            </p><pre class="programlisting">&lt;target name="schemavalidate"&gt;
+    &lt;taskdef name="schemavalidator"
+        classname="org.hibernate.tool.hbm2ddl.SchemaValidatorTask"
+        classpathref="class.path"/&gt;
+    
+    &lt;schemavalidator
+        properties="hibernate.properties"&gt;
+        &lt;fileset dir="src"&gt;
+            &lt;include name="**/*.hbm.xml"/&gt;
+        &lt;/fileset&gt;
+    &lt;/schemaupdate&gt;
+&lt;/target&gt;</pre></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="performance.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="index.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="example-parentchild.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter&nbsp;19.&nbsp;Improving performance&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;Chapter&nbsp;21.&nbsp;Example: Parent/Child</td></tr></table></div></body></html>

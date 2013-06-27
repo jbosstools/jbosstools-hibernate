@@ -33,3 +33,4 @@ Export-Package: org.jboss.tools.hibernate.jpt.ui,
  org.jboss.tools.hibernate.jpt.ui.internal.platform,
  org.jboss.tools.hibernate.jpt.ui.wizard
 Bundle-Localization: plugin
+Eclipse-BundleShape: jar

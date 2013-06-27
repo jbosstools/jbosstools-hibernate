@@ -39,3 +39,4 @@ Bundle-ClassPath: lib/required/antlr-2.7.7.jar,
  lib/tools/hibernate-tools-4.0.0-CR1.jar,
  lib/required/commons-logging-1.1.1.jar
 Bundle-Vendor: JBoss by Red Hat
+Eclipse-BundleShape: jar

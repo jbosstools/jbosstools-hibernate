@@ -57,19 +57,22 @@
          id="org.hibernate.eclipse"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.hibernate.eclipse.console"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.hibernate.eclipse.help"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.hibernate.eclipse.jdt.apt.ui"
@@ -89,7 +92,8 @@
          id="org.hibernate.eclipse.mapper"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.jboss.tools.hibernate.jpt.core"
@@ -109,7 +113,8 @@
          id="org.jboss.tools.hibernate.ui"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.jboss.tools.hibernate.xml"
@@ -129,7 +134,8 @@
          id="org.hibernate.eclipse.libs"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.jboss.tools.hibernate3_5"
@@ -149,6 +155,7 @@
          id="org.jboss.tools.hibernate4_0"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
 </feature>

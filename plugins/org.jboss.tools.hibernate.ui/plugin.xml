@@ -67,7 +67,7 @@
          <action
             id="org.jboss.tools.hibernate.ui.view.openDiagramAction" 
             label="Mapping Diagram" 
-            icon="images/hibernate_small_icon.gif"
+            icon="$nl$/images/hibernate_small_icon.gif"
             menubarPath="group.primalEditors.last"
             class="org.jboss.tools.hibernate.ui.view.OpenDiagramActionDelegate"> 
          </action> 
