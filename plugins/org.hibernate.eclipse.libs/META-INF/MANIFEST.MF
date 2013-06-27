@@ -569,3 +569,4 @@ Export-Package: EDU.oswego.cs.dl.util.concurrent,
  org.w3c.tidy.ant,
  pojo
 Bundle-Vendor: JBoss by Red Hat
+Eclipse-BundleShape: dir
