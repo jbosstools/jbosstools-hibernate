@@ -1,7 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ActivationPolicy: lazy
 Bundle-Name: %pluginName
-Bundle-ClassPath: org.jboss.tools.hibernate.ui.jar
 Bundle-Activator: org.jboss.tools.hibernate.ui.diagram.UiPlugin
 Bundle-Vendor: %providerName
 Bundle-ManifestVersion: 2
@@ -29,4 +28,5 @@ Export-Package: org.jboss.tools.hibernate.ui.diagram,
  org.jboss.tools.hibernate.ui.view
 Import-Package: org.eclipse.ui.actions
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Eclipse-BundleShape: jar
 

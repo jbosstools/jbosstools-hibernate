@@ -3,7 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.hibernate.eclipse;singleton:=true
 Bundle-Version: 3.7.0.qualifier
-Bundle-ClassPath: org.hibernate.eclipse.jar
 Bundle-Activator: org.hibernate.eclipse.HibernatePlugin
 Bundle-Vendor: %Bundle-Vendor.0
 Bundle-Localization: plugin
@@ -26,3 +25,4 @@ Require-Bundle: org.hibernate.eclipse.libs;bundle-version="3.7.0",
 Bundle-ActivationPolicy: lazy
 Eclipse-BuddyPolicy: registered
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Eclipse-BundleShape: jar

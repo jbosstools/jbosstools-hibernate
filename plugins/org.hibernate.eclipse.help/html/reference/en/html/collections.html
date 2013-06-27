@@ -1,0 +1,737 @@
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   <title>Chapter&nbsp;6.&nbsp;Collection Mapping</title><link rel="stylesheet" href="../shared/css/html.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.65.1"><link rel="home" href="index.html" title="HIBERNATE - Relational Persistence for Idiomatic Java"><link rel="up" href="index.html" title="HIBERNATE - Relational Persistence for Idiomatic Java"><link rel="previous" href="mapping.html" title="Chapter&nbsp;5.&nbsp;Basic O/R Mapping"><link rel="next" href="associations.html" title="Chapter&nbsp;7.&nbsp;Association Mappings"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter&nbsp;6.&nbsp;Collection Mapping</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="mapping.html">Prev</a>&nbsp;</td><th width="60%" align="center">&nbsp;</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="associations.html">Next</a></td></tr></table><hr></div><div class="chapter" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="collections"></a>Chapter&nbsp;6.&nbsp;Collection Mapping</h2></div></div><div></div></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="collections-persistent"></a>6.1.&nbsp;Persistent collections</h2></div></div><div></div></div><p>
+            Hibernate requires that persistent collection-valued fields be declared
+            as an interface type, for example:
+        </p><pre class="programlisting">public class Product {
+    private String serialNumber;
+    private Set parts = new HashSet();
+    
+    public Set getParts() { return parts; }
+    void setParts(Set parts) { this.parts = parts; }
+    public String getSerialNumber() { return serialNumber; }
+    void setSerialNumber(String sn) { serialNumber = sn; }
+}</pre><p>
+            The actual interface might be <tt class="literal">java.util.Set</tt>,
+            <tt class="literal">java.util.Collection</tt>, <tt class="literal">java.util.List</tt>,
+            <tt class="literal">java.util.Map</tt>, <tt class="literal">java.util.SortedSet</tt>,
+            <tt class="literal">java.util.SortedMap</tt> or ... anything you like! (Where 
+            "anything you like" means you will have to write an implementation of 
+            <tt class="literal">org.hibernate.usertype.UserCollectionType</tt>.)
+        </p><p>
+            Notice how we initialized the instance variable with an instance of
+            <tt class="literal">HashSet</tt>. This is the best way to initialize collection
+            valued properties of newly instantiated (non-persistent) instances. When
+            you make the instance persistent - by calling <tt class="literal">persist()</tt>,
+            for example - Hibernate will actually replace the <tt class="literal">HashSet</tt>
+            with an instance of Hibernate's own implementation of <tt class="literal">Set</tt>.
+            Watch out for errors like this:
+        </p><pre class="programlisting">Cat cat = new DomesticCat();
+Cat kitten = new DomesticCat();
+....
+Set kittens = new HashSet();
+kittens.add(kitten);
+cat.setKittens(kittens);
+session.persist(cat);
+kittens = cat.getKittens(); // Okay, kittens collection is a Set
+(HashSet) cat.getKittens(); // Error!</pre><p>
+            The persistent collections injected by Hibernate behave like
+            <tt class="literal">HashMap</tt>, <tt class="literal">HashSet</tt>,
+            <tt class="literal">TreeMap</tt>, <tt class="literal">TreeSet</tt> or
+            <tt class="literal">ArrayList</tt>, depending upon the interface type.
+        </p><p>
+            Collections instances have the usual behavior of value types. They are 
+            automatically persisted when referenced by a persistent object and 
+            automatically deleted when unreferenced. If a collection is passed from one
+            persistent object to another, its elements might be moved from one table to
+            another. Two entities may not share a reference to the same collection 
+            instance. Due to the underlying relational model, collection-valued properties
+            do not support null value semantics; Hibernate does not distinguish between 
+            a null collection reference and an empty collection.
+        </p><p>
+            You shouldn't have to worry much about any of this. Use persistent collections 
+            the same way you use ordinary Java collections. Just make sure you understand 
+            the semantics of bidirectional associations (discussed later).
+        </p></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="collections-mapping"></a>6.2.&nbsp;Collection mappings</h2></div></div><div></div></div><p>
+            The Hibernate mapping element used for mapping a collection depends upon
+            the type of the interface. For example, a <tt class="literal">&lt;set&gt;</tt> 
+            element is used for mapping properties of type <tt class="literal">Set</tt>.
+        </p><pre class="programlisting">&lt;class name="Product"&gt;
+    &lt;id name="serialNumber" column="productSerialNumber"/&gt;
+    &lt;set name="parts"&gt;
+        &lt;key column="productSerialNumber" not-null="true"/&gt;
+        &lt;one-to-many class="Part"/&gt;
+    &lt;/set&gt;
+&lt;/class&gt;</pre><p>
+            Apart from <tt class="literal">&lt;set&gt;</tt>, there is also 
+            <tt class="literal">&lt;list&gt;</tt>, <tt class="literal">&lt;map&gt;</tt>,
+            <tt class="literal">&lt;bag&gt;</tt>, <tt class="literal">&lt;array&gt;</tt> and
+            <tt class="literal">&lt;primitive-array&gt;</tt> mapping elements. The
+            <tt class="literal">&lt;map&gt;</tt> element is representative:
+        </p><div class="programlistingco"><pre class="programlisting">&lt;map
+    name="propertyName"                                         <span class="co">(1)</span>
+    table="table_name"                                          <span class="co">(2)</span>
+    schema="schema_name"                                        <span class="co">(3)</span>
+    lazy="true|extra|false"                                     <span class="co">(4)</span>
+    inverse="true|false"                                        <span class="co">(5)</span>
+    cascade="all|none|save-update|delete|all-delete-orphan|delet<span class="co">(6)</span>e-orphan"
+    sort="unsorted|natural|comparatorClass"                     <span class="co">(7)</span>
+    order-by="column_name asc|desc"                             <span class="co">(8)</span>
+    where="arbitrary sql where condition"                       <span class="co">(9)</span>
+    fetch="join|select|subselect"                               <span class="co">(10)</span>
+    batch-size="N"                                              <span class="co">(11)</span>
+    access="field|property|ClassName"                           <span class="co">(12)</span>
+    optimistic-lock="true|false"                                <span class="co">(13)</span>
+    mutable="true|false"                                        <span class="co">(14)</span>
+    node="element-name|."
+    embed-xml="true|false"
+&gt;
+
+    &lt;key .... /&gt;
+    &lt;map-key .... /&gt;
+    &lt;element .... /&gt;
+&lt;/map&gt;</pre><div class="calloutlist"><table border="0" summary="Callout list"><tr><td width="5%" valign="top" align="left">(1)</td><td valign="top" align="left"><p>
+                        <tt class="literal">name</tt> the collection property name
+                    </p></td></tr><tr><td width="5%" valign="top" align="left">(2)</td><td valign="top" align="left"><p>
+                        <tt class="literal">table</tt> (optional - defaults to property name) the
+                        name of the collection table (not used for one-to-many associations)
+                    </p></td></tr><tr><td width="5%" valign="top" align="left">(3)</td><td valign="top" align="left"><p>
+                        <tt class="literal">schema</tt> (optional) the name of a table schema to
+                        override the schema declared on the root element
+                    </p></td></tr><tr><td width="5%" valign="top" align="left">(4)</td><td valign="top" align="left"><p>
+                        <tt class="literal">lazy</tt> (optional - defaults to <tt class="literal">true</tt>)
+                        may be used to disable lazy fetching and specify that the association is 
+                        always eagerly fetched, or to enable "extra-lazy" fetching where most 
+                        operations do not initialize the collection (suitable for very large 
+                        collections)
+                    </p></td></tr><tr><td width="5%" valign="top" align="left">(5)</td><td valign="top" align="left"><p>
+                        <tt class="literal">inverse</tt> (optional - defaults to <tt class="literal">false</tt>)
+                        mark this collection as the "inverse" end of a bidirectional association
+                    </p></td></tr><tr><td width="5%" valign="top" align="left">(6)</td><td valign="top" align="left"><p>
+                        <tt class="literal">cascade</tt> (optional - defaults to <tt class="literal">none</tt>)
+                        enable operations to cascade to child entities
+                    </p></td></tr><tr><td width="5%" valign="top" align="left">(7)</td><td valign="top" align="left"><p>
+                        <tt class="literal">sort</tt> (optional) specify a sorted collection with
+                        <tt class="literal">natural</tt> sort order, or a given comparator class
+                    </p></td></tr><tr><td width="5%" valign="top" align="left">(8)</td><td valign="top" align="left"><p>
+                        <tt class="literal">order-by</tt> (optional, JDK1.4 only) specify a table column (or columns)
+                        that define the iteration order of the <tt class="literal">Map</tt>, <tt class="literal">Set</tt>
+                        or bag, together with an optional <tt class="literal">asc</tt> or <tt class="literal">desc</tt>
+                    </p></td></tr><tr><td width="5%" valign="top" align="left">(9)</td><td valign="top" align="left"><p>
+                        <tt class="literal">where</tt> (optional) specify an arbitrary SQL <tt class="literal">WHERE</tt>
+                        condition to be used when retrieving or removing the collection (useful if the
+                        collection should contain only a subset of the available data)
+                    </p></td></tr><tr><td width="5%" valign="top" align="left">(10)</td><td valign="top" align="left"><p>
+                        <tt class="literal">fetch</tt> (optional, defaults to <tt class="literal">select</tt>) Choose
+                        between outer-join fetching, fetching by sequential select, and fetching by sequential
+                        subselect.
+                    </p></td></tr><tr><td width="5%" valign="top" align="left">(11)</td><td valign="top" align="left"><p>
+                        <tt class="literal">batch-size</tt> (optional, defaults to <tt class="literal">1</tt>) specify a
+                        "batch size" for lazily fetching instances of this collection.
+                    </p></td></tr><tr><td width="5%" valign="top" align="left">(12)</td><td valign="top" align="left"><p>
+                        <tt class="literal">access</tt> (optional - defaults to <tt class="literal">property</tt>): The
+                        strategy Hibernate should use for accessing the collection property value.
+                    </p></td></tr><tr><td width="5%" valign="top" align="left">(13)</td><td valign="top" align="left"><p>
+                        <tt class="literal">optimistic-lock</tt> (optional - defaults to <tt class="literal">true</tt>): 
+                        Species that changes to the state of the collection results in increment of the
+                        owning entity's version. (For one to many associations, it is often reasonable to
+                        disable this setting.)
+                    </p></td></tr><tr><td width="5%" valign="top" align="left">(14)</td><td valign="top" align="left"><p>
+                        <tt class="literal">mutable</tt> (optional - defaults to <tt class="literal">true</tt>): 
+                        A value of <tt class="literal">false</tt> specifies that the elements of the 
+                        collection never change (a minor performance optimization in some cases).
+                    </p></td></tr></table></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="collections-foreignkeys"></a>6.2.1.&nbsp;Collection foreign keys</h3></div></div><div></div></div><p>
+                Collection instances are distinguished in the database by the foreign key of
+                the entity that owns the collection. This foreign key is referred to as the
+                <span class="emphasis"><em>collection key column</em></span> (or columns) of the collection 
+                table. The collection key column is mapped by the <tt class="literal">&lt;key&gt;</tt> 
+                element. 
+            </p><p>
+                There may be a nullability constraint on the foreign key column. For most
+                collections, this is implied. For unidirectional one to many associations,
+                the foreign key column is nullable by default, so you might need to specify
+                <tt class="literal">not-null="true"</tt>.
+            </p><pre class="programlisting">&lt;key column="productSerialNumber" not-null="true"/&gt;</pre><p>
+                The foreign key constraint may use <tt class="literal">ON DELETE CASCADE</tt>.
+            </p><pre class="programlisting">&lt;key column="productSerialNumber" on-delete="cascade"/&gt;</pre><p>
+                See the previous chapter for a full definition of the <tt class="literal">&lt;key&gt;</tt> 
+                element.
+            </p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="collections-elements"></a>6.2.2.&nbsp;Collection elements</h3></div></div><div></div></div><p>
+                Collections may contain almost any other Hibernate type, including all basic types,
+                custom types, components, and of course, references to other entities. This is an
+                important distinction: an object in a collection might be handled with "value" 
+                semantics (its lifecycle fully depends on the collection owner) or it might be a
+                reference to another entity, with its own lifecycle. In the latter case, only the 
+                "link" between the two objects is considered to be state held by the collection. 
+            </p><p>
+                The contained type is referred to as the <span class="emphasis"><em>collection element type</em></span>. 
+                Collection elements are mapped by <tt class="literal">&lt;element&gt;</tt> or
+                <tt class="literal">&lt;composite-element&gt;</tt>, or in the case of entity references, 
+                with <tt class="literal">&lt;one-to-many&gt;</tt> or <tt class="literal">&lt;many-to-many&gt;</tt>. 
+                The first two map elements with value semantics, the next two are used to map entity 
+                associations.
+            </p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="collections-indexed"></a>6.2.3.&nbsp;Indexed collections</h3></div></div><div></div></div><p>
+                All collection mappings, except those with set and bag semantics, need an
+                <span class="emphasis"><em>index column</em></span> in the collection table - a column that maps to an
+                array index, or <tt class="literal">List</tt> index, or <tt class="literal">Map</tt> key. The
+                index of a <tt class="literal">Map</tt> may be of any basic type, mapped with 
+                <tt class="literal">&lt;map-key&gt;</tt>, it may be an entity reference mapped with 
+                <tt class="literal">&lt;map-key-many-to-many&gt;</tt>, or it may be a composite type,
+                mapped with <tt class="literal">&lt;composite-map-key&gt;</tt>. The index of an array or 
+                list is always of type <tt class="literal">integer</tt> and is mapped using the 
+                <tt class="literal">&lt;list-index&gt;</tt> element. The mapped column contains 
+                sequential integers (numbered from zero, by default).
+            </p><div class="programlistingco"><pre class="programlisting">&lt;list-index 
+        column="column_name"                <span class="co">(1)</span>
+        base="0|1|..."/&gt;</pre><div class="calloutlist"><table border="0" summary="Callout list"><tr><td width="5%" valign="top" align="left">(1)</td><td valign="top" align="left"><p>
+                        <tt class="literal">column_name</tt> (required): The name of the column holding the
+                        collection index values.
+                    </p></td></tr><tr><td width="5%" valign="top" align="left">(1)</td><td valign="top" align="left"><p>
+                        <tt class="literal">base</tt> (optional, defaults to <tt class="literal">0</tt>): The value
+                        of the index column that corresponds to the first element of the list or array.
+                    </p></td></tr></table></div></div><div class="programlistingco"><pre class="programlisting">&lt;map-key 
+        column="column_name"                <span class="co">(1)</span>
+        formula="any SQL expression"        <span class="co">(2)</span>
+        type="type_name"                    <span class="co">(3)</span>
+        node="@attribute-name"
+        length="N"/&gt;</pre><div class="calloutlist"><table border="0" summary="Callout list"><tr><td width="5%" valign="top" align="left">(1)</td><td valign="top" align="left"><p>
+                        <tt class="literal">column</tt> (optional): The name of the column holding the
+                        collection index values.
+                    </p></td></tr><tr><td width="5%" valign="top" align="left">(2)</td><td valign="top" align="left"><p>
+                        <tt class="literal">formula</tt> (optional): A SQL formula used to evaluate the
+                        key of the map.
+                    </p></td></tr><tr><td width="5%" valign="top" align="left">(3)</td><td valign="top" align="left"><p>
+                        <tt class="literal">type</tt> (reguired): The type of the map keys.
+                    </p></td></tr></table></div></div><div class="programlistingco"><pre class="programlisting">&lt;map-key-many-to-many
+        column="column_name"                <span class="co">(1)</span>
+        formula="any SQL expression"        <span class="co">(2)</span><span class="co">(3)</span>
+        class="ClassName"
+/&gt;</pre><div class="calloutlist"><table border="0" summary="Callout list"><tr><td width="5%" valign="top" align="left">(1)</td><td valign="top" align="left"><p>
+                        <tt class="literal">column</tt> (optional): The name of the foreign key
+                        column for the collection index values.
+                    </p></td></tr><tr><td width="5%" valign="top" align="left">(2)</td><td valign="top" align="left"><p>
+                        <tt class="literal">formula</tt> (optional): A SQL formula used to evaluate the
+                        foreign key of the map key.
+                    </p></td></tr><tr><td width="5%" valign="top" align="left">(3)</td><td valign="top" align="left"><p>
+                        <tt class="literal">class</tt> (required): The entity class used as the map key.
+                    </p></td></tr></table></div></div><p>
+                If your table doesn't have an index column, and you still wish to use <tt class="literal">List</tt> 
+                as the property type, you should map the property as a Hibernate <span class="emphasis"><em>&lt;bag&gt;</em></span>.
+                A bag does not retain its order when it is retrieved from the database, but it may be 
+                optionally sorted or ordered.
+            </p></div><p>
+            There are quite a range of mappings that can be generated for collections, covering 
+            many common relational models. We suggest you experiment with the schema generation tool 
+            to get a feeling for how various mapping declarations translate to database tables.
+        </p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="collections-ofvalues"></a>6.2.4.&nbsp;Collections of values and many-to-many associations</h3></div></div><div></div></div><p>
+            Any collection of values or many-to-many association requires a dedicated 
+            <span class="emphasis"><em>collection table</em></span> with a foreign key column or columns, 
+            <span class="emphasis"><em>collection element column</em></span> or columns and possibly 
+            an index column or columns.
+        </p><p>
+            For a collection of values, we use the <tt class="literal">&lt;element&gt;</tt> tag.
+        </p><div class="programlistingco"><pre class="programlisting">&lt;element
+        column="column_name"                     <span class="co">(1)</span>
+        formula="any SQL expression"             <span class="co">(2)</span>
+        type="typename"                          <span class="co">(3)</span>
+        length="L"
+        precision="P"
+        scale="S"
+        not-null="true|false"
+        unique="true|false"
+        node="element-name"
+/&gt;</pre><div class="calloutlist"><table border="0" summary="Callout list"><tr><td width="5%" valign="top" align="left">(1)</td><td valign="top" align="left"><p>
+                        <tt class="literal">column</tt> (optional): The name of the column holding the
+                        collection element values.
+                    </p></td></tr><tr><td width="5%" valign="top" align="left">(2)</td><td valign="top" align="left"><p>
+                        <tt class="literal">formula</tt> (optional): An SQL formula used to evaluate the
+                        element.
+                    </p></td></tr><tr><td width="5%" valign="top" align="left">(3)</td><td valign="top" align="left"><p>
+                        <tt class="literal">type</tt> (required): The type of the collection element.
+                    </p></td></tr></table></div></div><p>
+            A <span class="emphasis"><em>many-to-many association</em></span> is specified using the 
+            <tt class="literal">&lt;many-to-many&gt;</tt> element.
+        </p><div class="programlistingco"><pre class="programlisting">&lt;many-to-many
+        column="column_name"                               <span class="co">(1)</span>
+        formula="any SQL expression"                       <span class="co">(2)</span>
+        class="ClassName"                                  <span class="co">(3)</span>
+        fetch="select|join"                                <span class="co">(4)</span>
+        unique="true|false"                                <span class="co">(5)</span>
+        not-found="ignore|exception"                       <span class="co">(6)</span>
+        entity-name="EntityName"                           <span class="co">(7)</span>
+        property-ref="propertyNameFromAssociatedClass"     <span class="co">(8)</span>
+        node="element-name"
+        embed-xml="true|false"
+    /&gt;</pre><div class="calloutlist"><table border="0" summary="Callout list"><tr><td width="5%" valign="top" align="left">(1)</td><td valign="top" align="left"><p>
+                        <tt class="literal">column</tt> (optional): The name of the element foreign key column.
+                    </p></td></tr><tr><td width="5%" valign="top" align="left">(2)</td><td valign="top" align="left"><p>
+                        <tt class="literal">formula</tt> (optional): An SQL formula used to evaluate the element
+                        foreign key value.
+                    </p></td></tr><tr><td width="5%" valign="top" align="left">(3)</td><td valign="top" align="left"><p>
+                        <tt class="literal">class</tt> (required): The name of the associated class.
+                    </p></td></tr><tr><td width="5%" valign="top" align="left">(4)</td><td valign="top" align="left"><p>
+                        <tt class="literal">fetch</tt> (optional - defaults to <tt class="literal">join</tt>):
+                        enables outer-join or sequential select fetching for this association. This
+                        is a special case; for full eager fetching (in a single <tt class="literal">SELECT</tt>)
+                        of an entity and its many-to-many relationships to other entities, you would
+                        enable <tt class="literal">join</tt> fetching not only of the collection itself,
+                        but also with this attribute on the <tt class="literal">&lt;many-to-many&gt;</tt>
+                        nested element.
+                    </p></td></tr><tr><td width="5%" valign="top" align="left">(5)</td><td valign="top" align="left"><p>
+                        <tt class="literal">unique</tt> (optional): Enable the DDL generation of a unique
+                        constraint for the foreign-key column. This makes the association multiplicity
+                        effectively one to many.
+                    </p></td></tr><tr><td width="5%" valign="top" align="left">(6)</td><td valign="top" align="left"><p>
+	                    <tt class="literal">not-found</tt> (optional - defaults to <tt class="literal">exception</tt>): 
+	                    Specifies how foreign keys that reference missing rows will be handled: 
+	                    <tt class="literal">ignore</tt> will treat a missing row as a null association.
+	                </p></td></tr><tr><td width="5%" valign="top" align="left">(7)</td><td valign="top" align="left"><p>
+                        <tt class="literal">entity-name</tt> (optional): The entity name of the associated class,
+                        as an alternative to <tt class="literal">class</tt>.
+                    </p></td></tr><tr><td width="5%" valign="top" align="left">(8)</td><td valign="top" align="left"><p>
+                        <tt class="literal">property-ref</tt>: (optional) The name of a property of the associated 
+                        class that is joined to this foreign key. If not specified, the primary key of
+                        the associated class is used.
+                    </p></td></tr></table></div></div><p>
+            Some examples, first, a set of strings:
+        </p><pre class="programlisting">&lt;set name="names" table="person_names"&gt;
+    &lt;key column="person_id"/&gt;
+    &lt;element column="person_name" type="string"/&gt;
+&lt;/set&gt;</pre><p>
+            A bag containing integers (with an iteration order determined by the
+            <tt class="literal">order-by</tt> attribute):
+        </p><pre class="programlisting">&lt;bag name="sizes" 
+        table="item_sizes" 
+        order-by="size asc"&gt;
+    &lt;key column="item_id"/&gt;
+    &lt;element column="size" type="integer"/&gt;
+&lt;/bag&gt;</pre><p>
+            An array of entities - in this case, a many to many association:
+        </p><pre class="programlisting">&lt;array name="addresses" 
+        table="PersonAddress" 
+        cascade="persist"&gt;
+    &lt;key column="personId"/&gt;
+    &lt;list-index column="sortOrder"/&gt;
+    &lt;many-to-many column="addressId" class="Address"/&gt;
+&lt;/array&gt;</pre><p>
+            A map from string indices to dates:
+        </p><pre class="programlisting">&lt;map name="holidays" 
+        table="holidays" 
+        schema="dbo" 
+        order-by="hol_name asc"&gt;
+    &lt;key column="id"/&gt;
+    &lt;map-key column="hol_name" type="string"/&gt;
+    &lt;element column="hol_date" type="date"/&gt;
+&lt;/map&gt;</pre><p>
+            A list of components (discussed in the next chapter):
+        </p><pre class="programlisting">&lt;list name="carComponents" 
+        table="CarComponents"&gt;
+    &lt;key column="carId"/&gt;
+    &lt;list-index column="sortOrder"/&gt;
+    &lt;composite-element class="CarComponent"&gt;
+        &lt;property name="price"/&gt;
+        &lt;property name="type"/&gt;
+        &lt;property name="serialNumber" column="serialNum"/&gt;
+    &lt;/composite-element&gt;
+&lt;/list&gt;</pre></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="collections-onetomany"></a>6.2.5.&nbsp;One-to-many associations</h3></div></div><div></div></div><p>
+            A <span class="emphasis"><em>one to many association</em></span> links the tables of two classes
+            via a foreign key, with no intervening collection table. This mapping loses 
+            certain semantics of normal Java collections:
+        </p><div class="itemizedlist"><ul type="disc" compact><li><p>
+                    An instance of the contained entity class may not belong to more than
+                    one instance of the collection
+                </p></li><li><p>
+                    An instance of the contained entity class may not appear at more than
+                    one value of the collection index
+                </p></li></ul></div><p>
+            An association from <tt class="literal">Product</tt> to <tt class="literal">Part</tt> requires 
+            existence of a foreign key column and possibly an index column to the <tt class="literal">Part</tt> 
+            table. A <tt class="literal">&lt;one-to-many&gt;</tt> tag indicates that this is a one to many 
+            association.
+        </p><div class="programlistingco"><pre class="programlisting">&lt;one-to-many 
+        class="ClassName"                                  <span class="co">(1)</span>
+        not-found="ignore|exception"                       <span class="co">(2)</span>
+        entity-name="EntityName"                           <span class="co">(3)</span>
+        node="element-name"
+        embed-xml="true|false"
+    /&gt;</pre><div class="calloutlist"><table border="0" summary="Callout list"><tr><td width="5%" valign="top" align="left">(1)</td><td valign="top" align="left"><p>
+                        <tt class="literal">class</tt> (required): The name of the associated class.
+                    </p></td></tr><tr><td width="5%" valign="top" align="left">(2)</td><td valign="top" align="left"><p>
+		                <tt class="literal">not-found</tt> (optional - defaults to <tt class="literal">exception</tt>): 
+		                Specifies how cached identifiers that reference missing rows will be handled: 
+		                <tt class="literal">ignore</tt> will treat a missing row as a null association.
+		            </p></td></tr><tr><td width="5%" valign="top" align="left">(3)</td><td valign="top" align="left"><p>
+                        <tt class="literal">entity-name</tt> (optional): The entity name of the associated class,
+                        as an alternative to <tt class="literal">class</tt>.
+                    </p></td></tr></table></div></div><p>
+            Notice that the <tt class="literal">&lt;one-to-many&gt;</tt> element does not need to
+            declare any columns. Nor is it necessary to specify the <tt class="literal">table</tt>
+            name anywhere.
+        </p><p>
+            <span class="emphasis"><em>Very important note:</em></span> If the foreign key column of a 
+            <tt class="literal">&lt;one-to-many&gt;</tt> association is declared <tt class="literal">NOT NULL</tt>, 
+            you must declare the <tt class="literal">&lt;key&gt;</tt> mapping 
+            <tt class="literal">not-null="true"</tt> or <span class="emphasis"><em>use a bidirectional association</em></span> 
+            with the collection mapping marked <tt class="literal">inverse="true"</tt>. See the discussion 
+            of bidirectional associations later in this chapter.
+        </p><p>
+            This example shows a map of <tt class="literal">Part</tt> entities by name (where
+            <tt class="literal">partName</tt> is a persistent property of <tt class="literal">Part</tt>).
+            Notice the use of a formula-based index.
+        </p><pre class="programlisting">&lt;map name="parts"
+        cascade="all"&gt;
+    &lt;key column="productId" not-null="true"/&gt;
+    &lt;map-key formula="partName"/&gt;
+    &lt;one-to-many class="Part"/&gt;
+&lt;/map&gt;</pre></div></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="collections-advancedmappings"></a>6.3.&nbsp;Advanced collection mappings</h2></div></div><div></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="collections-sorted"></a>6.3.1.&nbsp;Sorted collections</h3></div></div><div></div></div><p>
+            Hibernate supports collections implementing <tt class="literal">java.util.SortedMap</tt> and
+            <tt class="literal">java.util.SortedSet</tt>. You must specify a comparator in the mapping file:
+        </p><pre class="programlisting">&lt;set name="aliases" 
+            table="person_aliases" 
+            sort="natural"&gt;
+    &lt;key column="person"/&gt;
+    &lt;element column="name" type="string"/&gt;
+&lt;/set&gt;
+
+&lt;map name="holidays" sort="my.custom.HolidayComparator"&gt;
+    &lt;key column="year_id"/&gt;
+    &lt;map-key column="hol_name" type="string"/&gt;
+    &lt;element column="hol_date" type="date"/&gt;
+&lt;/map&gt;</pre><p>
+            Allowed values of the <tt class="literal">sort</tt> attribute are <tt class="literal">unsorted</tt>,
+            <tt class="literal">natural</tt> and the name of a class implementing
+            <tt class="literal">java.util.Comparator</tt>.
+        </p><p>
+            Sorted collections actually behave like <tt class="literal">java.util.TreeSet</tt> or
+            <tt class="literal">java.util.TreeMap</tt>.
+        </p><p>
+            If you want the database itself to order the collection elements use the
+            <tt class="literal">order-by</tt> attribute of <tt class="literal">set</tt>, <tt class="literal">bag</tt>
+            or <tt class="literal">map</tt> mappings. This solution is only available under
+            JDK 1.4 or higher (it is implemented using <tt class="literal">LinkedHashSet</tt> or
+            <tt class="literal">LinkedHashMap</tt>). This performs the ordering in the SQL query, 
+            not in memory.
+        </p><pre class="programlisting">&lt;set name="aliases" table="person_aliases" order-by="lower(name) asc"&gt;
+    &lt;key column="person"/&gt;
+    &lt;element column="name" type="string"/&gt;
+&lt;/set&gt;
+
+&lt;map name="holidays" order-by="hol_date, hol_name"&gt;
+    &lt;key column="year_id"/&gt;
+    &lt;map-key column="hol_name" type="string"/&gt;
+    &lt;element column="hol_date type="date"/&gt;
+&lt;/map&gt;</pre><p>
+            Note that the value of the <tt class="literal">order-by</tt> attribute is an SQL ordering, not
+            a HQL ordering!
+        </p><p>
+            Associations may even be sorted by some arbitrary criteria at runtime using a collection
+            <tt class="literal">filter()</tt>.
+        </p><pre class="programlisting">sortedUsers = s.createFilter( group.getUsers(), "order by this.name" ).list();</pre></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="collections-bidirectional"></a>6.3.2.&nbsp;Bidirectional associations</h3></div></div><div></div></div><p>
+            A <span class="emphasis"><em>bidirectional association</em></span> allows navigation from both
+            "ends" of the association. Two kinds of bidirectional association are
+            supported:
+
+            </p><div class="variablelist"><dl><dt><span class="term">one-to-many</span></dt><dd><p>
+                            set or bag valued at one end, single-valued at the other
+                        </p></dd><dt><span class="term">many-to-many</span></dt><dd><p>
+                            set or bag valued at both ends
+                        </p></dd></dl></div><p>
+
+        </p><p>
+            You may specify a bidirectional many-to-many association simply by mapping two
+            many-to-many associations to the same database table and declaring one end as
+            <span class="emphasis"><em>inverse</em></span> (which one is your choice, but it can not be an
+            indexed collection).
+        </p><p>
+            Here's an example of a bidirectional many-to-many association; each category can
+            have many items and each item can be in many categories:
+        </p><pre class="programlisting">&lt;class name="Category"&gt;
+    &lt;id name="id" column="CATEGORY_ID"/&gt;
+    ...
+    &lt;bag name="items" table="CATEGORY_ITEM"&gt;
+        &lt;key column="CATEGORY_ID"/&gt;
+        &lt;many-to-many class="Item" column="ITEM_ID"/&gt;
+    &lt;/bag&gt;
+&lt;/class&gt;
+
+&lt;class name="Item"&gt;
+    &lt;id name="id" column="CATEGORY_ID"/&gt;
+    ...
+
+    &lt;!-- inverse end --&gt;
+    &lt;bag name="categories" table="CATEGORY_ITEM" inverse="true"&gt;
+        &lt;key column="ITEM_ID"/&gt;
+        &lt;many-to-many class="Category" column="CATEGORY_ID"/&gt;
+    &lt;/bag&gt;
+&lt;/class&gt;</pre><p>
+            Changes made only to the inverse end of the association are <span class="emphasis"><em>not</em></span>
+            persisted. This means that Hibernate has two representations in memory for every
+            bidirectional association, one link from A to B and another link from B to A. This
+            is easier to understand if you think about the Java object model and how we create
+            a many-to-many relationship in Java:
+        </p><pre class="programlisting">
+category.getItems().add(item);          // The category now "knows" about the relationship
+item.getCategories().add(category);     // The item now "knows" about the relationship
+
+session.persist(item);                   // The relationship won't be saved!
+session.persist(category);               // The relationship will be saved</pre><p>
+            The non-inverse side is used to save the in-memory representation to the database.
+        </p><p>
+            You may define a bidirectional one-to-many association by mapping a one-to-many association
+            to the same table column(s) as a many-to-one association and declaring the many-valued
+            end <tt class="literal">inverse="true"</tt>.
+        </p><pre class="programlisting">&lt;class name="Parent"&gt;
+    &lt;id name="id" column="parent_id"/&gt;
+    ....
+    &lt;set name="children" inverse="true"&gt;
+        &lt;key column="parent_id"/&gt;
+        &lt;one-to-many class="Child"/&gt;
+    &lt;/set&gt;
+&lt;/class&gt;
+
+&lt;class name="Child"&gt;
+    &lt;id name="id" column="child_id"/&gt;
+    ....
+    &lt;many-to-one name="parent" 
+        class="Parent" 
+        column="parent_id"
+        not-null="true"/&gt;
+&lt;/class&gt;</pre><p>
+            Mapping one end of an association with <tt class="literal">inverse="true"</tt> doesn't
+            affect the operation of cascades, these are orthogonal concepts!
+        </p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="collections-indexedbidirectional"></a>6.3.3.&nbsp;Bidirectional associations with indexed collections</h3></div></div><div></div></div><p>
+            A bidirectional association where one end is represented as a <tt class="literal">&lt;list&gt;</tt>
+            or <tt class="literal">&lt;map&gt;</tt> requires special consideration. If there is a property of
+            the child class which maps to the index column, no problem, we can continue using 
+            <tt class="literal">inverse="true"</tt> on the collection mapping:
+        </p><pre class="programlisting">&lt;class name="Parent"&gt;
+    &lt;id name="id" column="parent_id"/&gt;
+    ....
+    &lt;map name="children" inverse="true"&gt;
+        &lt;key column="parent_id"/&gt;
+        &lt;map-key column="name" 
+            type="string"/&gt;
+        &lt;one-to-many class="Child"/&gt;
+    &lt;/map&gt;
+&lt;/class&gt;
+
+&lt;class name="Child"&gt;
+    &lt;id name="id" column="child_id"/&gt;
+    ....
+    &lt;property name="name" 
+        not-null="true"/&gt;
+    &lt;many-to-one name="parent" 
+        class="Parent" 
+        column="parent_id"
+        not-null="true"/&gt;
+&lt;/class&gt;</pre><p>
+            But, if there is no such property on the child class, we can't think of the association as
+            truly bidirectional (there is information available at one end of the association that is
+            not available at the other end). In this case, we can't map the collection 
+            <tt class="literal">inverse="true"</tt>. Instead, we could use the following mapping:
+        </p><pre class="programlisting">&lt;class name="Parent"&gt;
+    &lt;id name="id" column="parent_id"/&gt;
+    ....
+    &lt;map name="children"&gt;
+        &lt;key column="parent_id"
+            not-null="true"/&gt;
+        &lt;map-key column="name" 
+            type="string"/&gt;
+        &lt;one-to-many class="Child"/&gt;
+    &lt;/map&gt;
+&lt;/class&gt;
+
+&lt;class name="Child"&gt;
+    &lt;id name="id" column="child_id"/&gt;
+    ....
+    &lt;many-to-one name="parent" 
+        class="Parent" 
+        column="parent_id"
+        insert="false"
+        update="false"
+        not-null="true"/&gt;
+&lt;/class&gt;</pre><p>
+           Note that in this mapping, the collection-valued end of the association is responsible for 
+           updates to the foreign key. TODO: Does this really result in some unnecessary update statements?
+       </p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="collections-ternary"></a>6.3.4.&nbsp;Ternary associations</h3></div></div><div></div></div><p>
+            There are three possible approaches to mapping a ternary association. One is to use a 
+            <tt class="literal">Map</tt> with an association as its index:
+        </p><pre class="programlisting">&lt;map name="contracts"&gt;
+    &lt;key column="employer_id" not-null="true"/&gt;
+    &lt;map-key-many-to-many column="employee_id" class="Employee"/&gt;
+    &lt;one-to-many class="Contract"/&gt;
+&lt;/map&gt;</pre><pre class="programlisting">&lt;map name="connections"&gt;
+    &lt;key column="incoming_node_id"/&gt;
+    &lt;map-key-many-to-many column="outgoing_node_id" class="Node"/&gt;
+    &lt;many-to-many column="connection_id" class="Connection"/&gt;
+&lt;/map&gt;</pre><p>
+            A second approach is to simply remodel the association as an entity class. This
+            is the approach we use most commonly.
+        </p><p>
+            A final alternative is to use composite elements, which we will discuss later. 
+        </p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="collections-idbag"></a>6.3.5.&nbsp;<tt class="literal">Using an &lt;idbag&gt;</tt></h3></div></div><div></div></div><p>
+            If you've fully embraced our view that composite keys are a bad thing and that
+            entities should have synthetic identifiers (surrogate keys), then you might
+            find it a bit odd that the many to many associations and collections of values
+            that we've shown so far all map to tables with composite keys! Now, this point
+            is quite arguable; a pure association table doesn't seem to benefit much from
+            a surrogate key (though a collection of composite values <span class="emphasis"><em>might</em></span>).
+            Nevertheless, Hibernate provides a feature that allows you to map many to many
+            associations and collections of values to a table with a surrogate key.
+        </p><p>
+            The <tt class="literal">&lt;idbag&gt;</tt> element lets you map a <tt class="literal">List</tt>
+            (or <tt class="literal">Collection</tt>) with bag semantics.
+        </p><pre class="programlisting">&lt;idbag name="lovers" table="LOVERS"&gt;
+    &lt;collection-id column="ID" type="long"&gt;
+        &lt;generator class="sequence"/&gt;
+    &lt;/collection-id&gt;
+    &lt;key column="PERSON1"/&gt;
+    &lt;many-to-many column="PERSON2" class="Person" fetch="join"/&gt;
+&lt;/idbag&gt;</pre><p>
+            As you can see, an <tt class="literal">&lt;idbag&gt;</tt> has a synthetic id generator,
+            just like an entity class! A different surrogate key is assigned to each collection
+            row. Hibernate does not provide any mechanism to discover the surrogate key value
+            of a particular row, however.
+        </p><p>
+            Note that the update performance of an <tt class="literal">&lt;idbag&gt;</tt> is
+            <span class="emphasis"><em>much</em></span> better than a regular <tt class="literal">&lt;bag&gt;</tt>!
+            Hibernate can locate individual rows efficiently and update or delete them
+            individually, just like a list, map or set.
+        </p><p>
+            In the current implementation, the <tt class="literal">native</tt> identifier generation
+            strategy is not supported for <tt class="literal">&lt;idbag&gt;</tt> collection identifiers.
+        </p></div></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="collections-example"></a>6.4.&nbsp;Collection examples</h2></div></div><div></div></div><p>
+            The previous sections are pretty confusing. So lets look at an example. This
+            class:
+        </p><pre class="programlisting">package eg;
+import java.util.Set;
+
+public class Parent {
+    private long id;
+    private Set children;
+
+    public long getId() { return id; }
+    private void setId(long id) { this.id=id; }
+
+    private Set getChildren() { return children; }
+    private void setChildren(Set children) { this.children=children; }
+
+    ....
+    ....
+}</pre><p>
+            has a collection of <tt class="literal">Child</tt> instances. If each
+            child has at most one parent, the most natural mapping is a 
+            one-to-many association:
+        </p><pre class="programlisting">&lt;hibernate-mapping&gt;
+
+    &lt;class name="Parent"&gt;
+        &lt;id name="id"&gt;
+            &lt;generator class="sequence"/&gt;
+        &lt;/id&gt;
+        &lt;set name="children"&gt;
+            &lt;key column="parent_id"/&gt;
+            &lt;one-to-many class="Child"/&gt;
+        &lt;/set&gt;
+    &lt;/class&gt;
+
+    &lt;class name="Child"&gt;
+        &lt;id name="id"&gt;
+            &lt;generator class="sequence"/&gt;
+        &lt;/id&gt;
+        &lt;property name="name"/&gt;
+    &lt;/class&gt;
+
+&lt;/hibernate-mapping&gt;</pre><p>
+            This maps to the following table definitions:
+        </p><pre class="programlisting">create table parent ( id bigint not null primary key )
+create table child ( id bigint not null primary key, name varchar(255), parent_id bigint )
+alter table child add constraint childfk0 (parent_id) references parent</pre><p>
+            If the parent is <span class="emphasis"><em>required</em></span>, use a bidirectional one-to-many
+            association:
+        </p><pre class="programlisting">&lt;hibernate-mapping&gt;
+
+    &lt;class name="Parent"&gt;
+        &lt;id name="id"&gt;
+            &lt;generator class="sequence"/&gt;
+        &lt;/id&gt;
+        &lt;set name="children" inverse="true"&gt;
+            &lt;key column="parent_id"/&gt;
+            &lt;one-to-many class="Child"/&gt;
+        &lt;/set&gt;
+    &lt;/class&gt;
+
+    &lt;class name="Child"&gt;
+        &lt;id name="id"&gt;
+            &lt;generator class="sequence"/&gt;
+        &lt;/id&gt;
+        &lt;property name="name"/&gt;
+        &lt;many-to-one name="parent" class="Parent" column="parent_id" not-null="true"/&gt;
+    &lt;/class&gt;
+
+&lt;/hibernate-mapping&gt;</pre><p>
+            Notice the <tt class="literal">NOT NULL</tt> constraint:
+        </p><pre class="programlisting">create table parent ( id bigint not null primary key )
+create table child ( id bigint not null
+                     primary key,
+                     name varchar(255),
+                     parent_id bigint not null )
+alter table child add constraint childfk0 (parent_id) references parent</pre><p>
+            Alternatively, if you absolutely insist that this association should be unidirectional,
+            you can declare the <tt class="literal">NOT NULL</tt> constraint on the <tt class="literal">&lt;key&gt;</tt>
+            mapping:
+        </p><pre class="programlisting">&lt;hibernate-mapping&gt;
+
+    &lt;class name="Parent"&gt;
+        &lt;id name="id"&gt;
+            &lt;generator class="sequence"/&gt;
+        &lt;/id&gt;
+        &lt;set name="children"&gt;
+            &lt;key column="parent_id" not-null="true"/&gt;
+            &lt;one-to-many class="Child"/&gt;
+        &lt;/set&gt;
+    &lt;/class&gt;
+
+    &lt;class name="Child"&gt;
+        &lt;id name="id"&gt;
+            &lt;generator class="sequence"/&gt;
+        &lt;/id&gt;
+        &lt;property name="name"/&gt;
+    &lt;/class&gt;
+
+&lt;/hibernate-mapping&gt;</pre><p>
+            On the other hand, if a child might have multiple parents, a many-to-many
+            association is appropriate:
+        </p><pre class="programlisting">&lt;hibernate-mapping&gt;
+
+    &lt;class name="Parent"&gt;
+        &lt;id name="id"&gt;
+            &lt;generator class="sequence"/&gt;
+        &lt;/id&gt;
+        &lt;set name="children" table="childset"&gt;
+            &lt;key column="parent_id"/&gt;
+            &lt;many-to-many class="Child" column="child_id"/&gt;
+        &lt;/set&gt;
+    &lt;/class&gt;
+
+    &lt;class name="Child"&gt;
+        &lt;id name="id"&gt;
+            &lt;generator class="sequence"/&gt;
+        &lt;/id&gt;
+        &lt;property name="name"/&gt;
+    &lt;/class&gt;
+
+&lt;/hibernate-mapping&gt;</pre><p>
+            Table definitions:
+        </p><pre class="programlisting">create table parent ( id bigint not null primary key )
+create table child ( id bigint not null primary key, name varchar(255) )
+create table childset ( parent_id bigint not null,
+                        child_id bigint not null,
+                        primary key ( parent_id, child_id ) )
+alter table childset add constraint childsetfk0 (parent_id) references parent
+alter table childset add constraint childsetfk1 (child_id) references child</pre><p>
+            For more examples and a complete walk-through a parent/child relationship mapping,
+            see <a href="example-parentchild.html" title="Chapter&nbsp;21.&nbsp;Example: Parent/Child">Chapter&nbsp;21, <i>Example: Parent/Child</i></a>.
+        </p><p>
+            Even more exotic association mappings are possible, we will catalog all possibilities
+            in the next chapter.
+        </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="mapping.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="index.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="associations.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter&nbsp;5.&nbsp;Basic O/R Mapping&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;Chapter&nbsp;7.&nbsp;Association Mappings</td></tr></table></div></body></html>

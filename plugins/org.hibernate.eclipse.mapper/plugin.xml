@@ -121,7 +121,7 @@
       <editor
             class="org.hibernate.eclipse.mapper.editors.ReverseEngineeringEditor"
             contributorClass="org.hibernate.eclipse.mapper.editors.ReverseEngineeringEditorContributor"
-            icon="icons/hibernate_small_icon.gif"
+            icon="$nl$/icons/hibernate_small_icon.gif"
             id="org.hibernate.eclipse.mapper.editors.ReverseEngineeringEditor"
             name="Hibernate Reverse Engineering Editor">
          <contentTypeBinding contentTypeId="org.hibernate.eclipse.mapper.revengxmlsource"/>
@@ -159,7 +159,7 @@
         point="org.eclipse.ui.decorators">
      <decorator
            adaptable="true"
-           icon="icons/images/hibernate_overlay.gif"
+           icon="$nl$/icons/images/hibernate_overlay.gif"
            id="org.hibernate.eclipse.decorators.HibernateDecorator"
            label="Hibernate Decorator"
            lightweight="true"

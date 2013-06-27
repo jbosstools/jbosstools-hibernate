@@ -35,3 +35,4 @@ Bundle-ClassPath: lib/required/antlr-2.7.6.jar,
  .,
  lib/required/hibernate3.jar
 Bundle-Vendor: JBoss by Red Hat
+Eclipse-BundleShape: jar

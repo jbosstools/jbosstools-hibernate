@@ -1,0 +1,97 @@
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   <title>Chapter&nbsp;17.&nbsp;Filtering data</title><link rel="stylesheet" href="../shared/css/html.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.65.1"><link rel="home" href="index.html" title="HIBERNATE - Relational Persistence for Idiomatic Java"><link rel="up" href="index.html" title="HIBERNATE - Relational Persistence for Idiomatic Java"><link rel="previous" href="querysql.html" title="Chapter&nbsp;16.&nbsp;Native SQL"><link rel="next" href="xml.html" title="Chapter&nbsp;18.&nbsp;XML Mapping"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter&nbsp;17.&nbsp;Filtering data</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="querysql.html">Prev</a>&nbsp;</td><th width="60%" align="center">&nbsp;</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="xml.html">Next</a></td></tr></table><hr></div><div class="chapter" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="filters"></a>Chapter&nbsp;17.&nbsp;Filtering data</h2></div></div><div></div></div><p>
+        Hibernate3 provides an innovative new approach to handling data with "visibility" rules.
+        A <span class="emphasis"><em>Hibernate filter</em></span> is a global, named, parameterized filter that may be 
+        enabled or disabled for a particular Hibernate session.
+    </p><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="objectstate-filters"></a>17.1.&nbsp;Hibernate filters</h2></div></div><div></div></div><p>
+            Hibernate3 adds the ability to pre-define filter criteria and attach those filters at both
+            a class and a collection level. A filter criteria is the ability to define a restriction clause
+            very similiar to the existing "where" attribute available on the class and various collection
+            elements. Except these filter conditions can be parameterized. The application can then make
+            the decision at runtime whether given filters should be enabled and what their parameter
+            values should be. Filters can be used like database views, but parameterized inside the
+            application.
+        </p><p>
+            In order to use filters, they must first be defined and then attached to the appropriate
+            mapping elements. To define a filter, use the <tt class="literal">&lt;filter-def/&gt;</tt> element
+            within a <tt class="literal">&lt;hibernate-mapping/&gt;</tt> element:
+        </p><pre class="programlisting">&lt;filter-def name="myFilter"&gt;
+    &lt;filter-param name="myFilterParam" type="string"/&gt;
+&lt;/filter-def&gt;</pre><p>
+            Then, this filter can be attached to a class:
+        </p><pre class="programlisting">&lt;class name="myClass" ...&gt;
+    ...
+    &lt;filter name="myFilter" condition=":myFilterParam = MY_FILTERED_COLUMN"/&gt;
+&lt;/class&gt;</pre><p>
+            or, to a collection:
+        </p><pre class="programlisting">&lt;set ...&gt;
+    &lt;filter name="myFilter" condition=":myFilterParam = MY_FILTERED_COLUMN"/&gt;
+&lt;/set&gt;</pre><p>
+            or, even to both (or multiples of each) at the same time.
+        </p><p>
+            The methods on <tt class="literal">Session</tt> are: <tt class="literal">enableFilter(String filterName)</tt>,
+            <tt class="literal">getEnabledFilter(String filterName)</tt>, and <tt class="literal">disableFilter(String filterName)</tt>.
+            By default, filters are <span class="emphasis"><em>not</em></span> enabled for a given session; they must be explcitly
+            enabled through use of the <tt class="literal">Session.enabledFilter()</tt> method, which returns an
+            instance of the <tt class="literal">Filter</tt> interface. Using the simple filter defined above, this
+            would look like:
+        </p><pre class="programlisting">session.enableFilter("myFilter").setParameter("myFilterParam", "some-value");</pre><p>
+            Note that methods on the org.hibernate.Filter interface do allow the method-chaining common to much of Hibernate.
+        </p><p>
+            A full example, using temporal data with an effective record date pattern:
+        </p><pre class="programlisting">&lt;filter-def name="effectiveDate"&gt;
+    &lt;filter-param name="asOfDate" type="date"/&gt;
+&lt;/filter-def&gt;
+
+&lt;class name="Employee" ...&gt;
+...
+    &lt;many-to-one name="department" column="dept_id" class="Department"/&gt;
+    &lt;property name="effectiveStartDate" type="date" column="eff_start_dt"/&gt;
+    &lt;property name="effectiveEndDate" type="date" column="eff_end_dt"/&gt;
+...
+    &lt;!--
+        Note that this assumes non-terminal records have an eff_end_dt set to
+        a max db date for simplicity-sake
+    --&gt;
+    &lt;filter name="effectiveDate"
+            condition=":asOfDate BETWEEN eff_start_dt and eff_end_dt"/&gt;
+&lt;/class&gt;
+
+&lt;class name="Department" ...&gt;
+...
+    &lt;set name="employees" lazy="true"&gt;
+        &lt;key column="dept_id"/&gt;
+        &lt;one-to-many class="Employee"/&gt;
+        &lt;filter name="effectiveDate"
+                condition=":asOfDate BETWEEN eff_start_dt and eff_end_dt"/&gt;
+    &lt;/set&gt;
+&lt;/class&gt;</pre><p>
+            Then, in order to ensure that you always get back currently effective records, simply
+            enable the filter on the session prior to retrieving employee data:
+        </p><pre class="programlisting">Session session = ...;
+session.enabledFilter("effectiveDate").setParameter("asOfDate", new Date());
+List results = session.createQuery("from Employee as e where e.salary &gt; :targetSalary")
+         .setLong("targetSalary", new Long(1000000))
+         .list();
+</pre><p>
+            In the HQL above, even though we only explicitly mentioned a salary constraint on the results,
+            because of the enabled filter the query will return only currently active employees who have
+            a salary greater than a million dollars.
+        </p><p>
+            Note: if you plan on using filters with outer joining (either through HQL or load fetching) be
+            careful of the direction of the condition expression.  Its safest to set this up for left
+            outer joining; in general, place the parameter first followed by the column name(s) after
+            the operator.
+        </p><p>
+            After being defined a filter might be attached to multiple entities and/or
+            collections each with its own condition.  That can be tedious when the
+            conditions are the same each time.  Thus <tt class="literal">&lt;filter-def/&gt;</tt>
+            allows defining a default condition, either as an attribute or CDATA:
+        </p><pre class="programlisting">&lt;filter-def name="myFilter" condition="abc &gt; xyz"&gt;...&lt;/filter-def&gt;
+&lt;filter-def name="myOtherFilter"&gt;abc=xyz&lt;/filter-def&gt;</pre><p>
+            This default condition will then be used whenever the filter is attached to something
+            without specifying a condition.  Note that this means you can give a specific condition
+            as part of the attachment of the filter which overrides the default condition in that
+            particular case.
+        </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="querysql.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="index.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="xml.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter&nbsp;16.&nbsp;Native SQL&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;Chapter&nbsp;18.&nbsp;XML Mapping</td></tr></table></div></body></html>

@@ -1,0 +1,737 @@
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   <title>Chapter&nbsp;10.&nbsp;Working with objects</title><link rel="stylesheet" href="../shared/css/html.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.65.1"><link rel="home" href="index.html" title="HIBERNATE - Relational Persistence for Idiomatic Java"><link rel="up" href="index.html" title="HIBERNATE - Relational Persistence for Idiomatic Java"><link rel="previous" href="inheritance.html" title="Chapter&nbsp;9.&nbsp;Inheritance Mapping"><link rel="next" href="transactions.html" title="Chapter&nbsp;11.&nbsp;Transactions And Concurrency"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter&nbsp;10.&nbsp;Working with objects</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="inheritance.html">Prev</a>&nbsp;</td><th width="60%" align="center">&nbsp;</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="transactions.html">Next</a></td></tr></table><hr></div><div class="chapter" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="objectstate"></a>Chapter&nbsp;10.&nbsp;Working with objects</h2></div></div><div></div></div><p>
+        Hibernate is a full object/relational mapping solution that not only shields
+        the developer from the details of the underlying database management
+        system, but also offers <span class="emphasis"><em>state management</em></span> of objects. This is,
+        contrary to the management of SQL <tt class="literal">statements</tt> in common JDBC/SQL
+        persistence layers, a very natural object-oriented view of persistence in Java
+        applications.
+    </p><p>
+        In other words, Hibernate application developers should always think about the
+        <span class="emphasis"><em>state</em></span> of their objects, and not necessarily about the
+        execution of SQL statements. This part is taken care of by Hibernate and is only
+        relevant for the application developer when tuning the performance of the system.
+    </p><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="objectstate-overview"></a>10.1.&nbsp;Hibernate object states</h2></div></div><div></div></div><p>
+            Hibernate defines and supports the following object states:
+        </p><div class="itemizedlist"><ul type="disc"><li><p>
+                    <span class="emphasis"><em>Transient</em></span> - an object is transient if it has just
+                    been instantiated using the <tt class="literal">new</tt> operator, and it
+                    is not associated with a Hibernate <tt class="literal">Session</tt>. It has no
+                    persistent representation in the database and no identifier value has been
+                    assigned. Transient instances will be destroyed by the garbage collector if
+                    the application doesn't hold a reference anymore. Use the Hibernate
+                    <tt class="literal">Session</tt> to make an object persistent (and let Hibernate
+                    take care of the SQL statements that need to be executed for this transition).
+                </p></li><li><p>
+                    <span class="emphasis"><em>Persistent</em></span> - a persistent instance has a representation
+                    in the database and an identifier value. It might just have been saved or loaded,
+                    however, it is by definition in the scope of a <tt class="literal">Session</tt>.
+                    Hibernate will detect any changes made to an object in persistent state and
+                    synchronize the state with the database when the unit of work completes.
+                    Developers don't execute manual <tt class="literal">UPDATE</tt> statements, or
+                    <tt class="literal">DELETE</tt> statements when an object should be made transient.
+                </p></li><li><p>
+                    <span class="emphasis"><em>Detached</em></span> - a detached instance is an object that has been
+                    persistent, but its <tt class="literal">Session</tt> has been closed. The reference
+                    to the object is still valid, of course, and the detached instance might even
+                    be modified in this state. A detached instance can be reattached to a new
+                    <tt class="literal">Session</tt> at a later point in time, making it (and all the
+                    modifications) persistent again. This feature enables a programming model for
+                    long running units of work that require user think-time. We call them
+                    <span class="emphasis"><em>application transactions</em></span>, i.e. a unit of work from the
+                    point of view of the user.
+                </p></li></ul></div><p>
+            We'll now discuss the states and state transitions (and the Hibernate methods that
+            trigger a transition) in more detail.
+        </p></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="objectstate-makingpersistent"></a>10.2.&nbsp;Making objects persistent</h2></div></div><div></div></div><p>
+            Newly instantiated instances of a a persistent class are considered 
+            <span class="emphasis"><em>transient</em></span> by Hibernate. We can make a transient 
+            instance <span class="emphasis"><em>persistent</em></span> by associating it with a 
+            session:
+        </p><pre class="programlisting">DomesticCat fritz = new DomesticCat();
+fritz.setColor(Color.GINGER);
+fritz.setSex('M');
+fritz.setName("Fritz");
+Long generatedId = (Long) sess.save(fritz);</pre><p>
+            If <tt class="literal">Cat</tt> has a generated identifier, the identifier is
+            generated and assigned to the <tt class="literal">cat</tt> when <tt class="literal">save()</tt> 
+            is called. If <tt class="literal">Cat</tt> has an <tt class="literal">assigned</tt>
+            identifier, or a composite key, the identifier should be assigned to 
+            the <tt class="literal">cat</tt> instance before calling <tt class="literal">save()</tt>.
+            You may also use <tt class="literal">persist()</tt> instead of <tt class="literal">save()</tt>,
+            with the semantics defined in the EJB3 early draft.
+        </p><p>
+            Alternatively, you may assign the identifier using an overloaded version
+            of <tt class="literal">save()</tt>.
+        </p><pre class="programlisting">DomesticCat pk = new DomesticCat();
+pk.setColor(Color.TABBY);
+pk.setSex('F');
+pk.setName("PK");
+pk.setKittens( new HashSet() );
+pk.addKitten(fritz);
+sess.save( pk, new Long(1234) );</pre><p>
+            If the object you make persistent has associated objects (e.g. the
+            <tt class="literal">kittens</tt> collection in the previous example),
+            these objects may be made persistent in any order you like unless you
+            have a <tt class="literal">NOT NULL</tt> constraint upon a foreign key column.
+            There is never a risk of violating foreign key constraints. However, you 
+            might violate a <tt class="literal">NOT NULL</tt> constraint if you
+            <tt class="literal">save()</tt> the objects in the wrong order.
+        </p><p>
+            Usually you don't bother with this detail, as you'll very likely use Hibernate's
+            <span class="emphasis"><em>transitive persistence</em></span> feature to save the associated
+            objects automatically. Then, even <tt class="literal">NOT NULL</tt>
+            constraint violations don't occur - Hibernate will take care of everything.
+            Transitive persistence is discussed later in this chapter.
+        </p></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="objectstate-loading"></a>10.3.&nbsp;Loading an object</h2></div></div><div></div></div><p>
+            The <tt class="literal">load()</tt> methods of <tt class="literal">Session</tt> gives you
+            a way to retrieve a persistent instance if you already know its identifier. 
+            <tt class="literal">load()</tt> takes a class object and will load the state into 
+            a newly instantiated instance of that class, in persistent state.
+        </p><pre class="programlisting">Cat fritz = (Cat) sess.load(Cat.class, generatedId);</pre><pre class="programlisting">// you need to wrap primitive identifiers
+long id = 1234;
+DomesticCat pk = (DomesticCat) sess.load( DomesticCat.class, new Long(id) );</pre><p>
+            Alternatively, you can load state into a given instance:
+        </p><pre class="programlisting">Cat cat = new DomesticCat();
+// load pk's state into cat
+sess.load( cat, new Long(pkId) );
+Set kittens = cat.getKittens();</pre><p>
+            Note that <tt class="literal">load()</tt> will throw an unrecoverable exception if 
+            there is no matching database row. If the class is mapped with a proxy, 
+            <tt class="literal">load()</tt> just returns an uninitialized proxy and does not 
+            actually hit the database until you invoke a method of the proxy. This 
+            behaviour is very useful if you wish to create an association to an object
+            without actually loading it from the database. It also allows multiple
+            instances to be loaded as a batch if <tt class="literal">batch-size</tt> is
+            defined for the class mapping.
+        </p><p>
+            If you are not certain that a matching row exists, you should use the 
+            <tt class="literal">get()</tt> method, which hits the database immediately and 
+            returns null if there is no matching row.
+        </p><pre class="programlisting">Cat cat = (Cat) sess.get(Cat.class, id);
+if (cat==null) {
+    cat = new Cat();
+    sess.save(cat, id);
+}
+return cat;</pre><p>
+            You may even load an object using an SQL <tt class="literal">SELECT ... FOR UPDATE</tt>,
+            using a <tt class="literal">LockMode</tt>. See the API documentation for more information.
+        </p><pre class="programlisting">Cat cat = (Cat) sess.get(Cat.class, id, LockMode.UPGRADE);</pre><p>
+            Note that any associated instances or contained collections are 
+            <span class="emphasis"><em>not</em></span> selected <tt class="literal">FOR UPDATE</tt>, unless you decide
+            to specify <tt class="literal">lock</tt> or <tt class="literal">all</tt> as a
+            cascade style for the association.
+        </p><p>
+            It is possible to re-load an object and all its collections at any time, using the 
+            <tt class="literal">refresh()</tt> method. This is useful when database triggers are used to
+            initialize some of the properties of the object.
+        </p><pre class="programlisting">sess.save(cat);
+sess.flush(); //force the SQL INSERT
+sess.refresh(cat); //re-read the state (after the trigger executes)</pre><p>
+            An important question usually appears at this point: How much does Hibernate load
+            from the database and how many SQL <tt class="literal">SELECT</tt>s will it use? This
+            depends on the <span class="emphasis"><em>fetching strategy</em></span> and is explained in
+            <a href="performance.html#performance-fetching" title="19.1.&nbsp;Fetching strategies">Section&nbsp;19.1, &#8220;Fetching strategies&#8221;</a>.
+        </p></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="objectstate-querying"></a>10.4.&nbsp;Querying</h2></div></div><div></div></div><p>
+            If you don't know the identifiers of the objects you are looking for, 
+            you need a query. Hibernate supports an easy-to-use but powerful object 
+            oriented query language (HQL). For programmatic query creation, Hibernate
+            supports a sophisticated Criteria and Example query feature (QBC and QBE).
+            You may also express your query in the native SQL of your database, with
+            optional support from Hibernate for result set conversion into objects.
+        </p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="objectstate-querying-executing"></a>10.4.1.&nbsp;Executing queries</h3></div></div><div></div></div><p>
+                HQL and native SQL queries are represented with an instance of <tt class="literal">org.hibernate.Query</tt>.
+                This interface offers methods for parameter binding, result set handling, and for the execution
+                of the actual query. You always obtain a <tt class="literal">Query</tt> using the current
+                <tt class="literal">Session</tt>:
+            </p><pre class="programlisting">List cats = session.createQuery(
+    "from Cat as cat where cat.birthdate &lt; ?")
+    .setDate(0, date)
+    .list();
+
+List mothers = session.createQuery(
+    "select mother from Cat as cat join cat.mother as mother where cat.name = ?")
+    .setString(0, name)
+    .list();
+
+List kittens = session.createQuery(
+    "from Cat as cat where cat.mother = ?")
+    .setEntity(0, pk)
+    .list();
+
+Cat mother = (Cat) session.createQuery(
+    "select cat.mother from Cat as cat where cat = ?")
+    .setEntity(0, izi)
+    .uniqueResult();]]
+
+Query mothersWithKittens = (Cat) session.createQuery(
+    "select mother from Cat as mother left join fetch mother.kittens");
+Set uniqueMothers = new HashSet(mothersWithKittens.list());</pre><p>
+                A query is usually executed by invoking <tt class="literal">list()</tt>, the
+                result of the query will be loaded completely into a collection in memory.
+                Entity instances retrieved by a query are in persistent state. The
+                <tt class="literal">uniqueResult()</tt> method offers a shortcut if you
+                know your query will only return a single object. Note that queries that
+                make use of eager fetching of collections usually return duplicates of
+                the root objects (but with their collections initialized). You can filter
+                these duplicates simply through a <tt class="literal">Set</tt>.
+            </p><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="objectstate-querying-executing-iterate"></a>10.4.1.1.&nbsp;Iterating results</h4></div></div><div></div></div><p>
+                    Occasionally, you might be able to achieve better performance by
+                    executing the query using the <tt class="literal">iterate()</tt> method.
+                    This will only usually be the case if you expect that the actual
+                    entity instances returned by the query will already be in the session
+                    or second-level cache. If they are not already cached,
+                    <tt class="literal">iterate()</tt> will be slower than <tt class="literal">list()</tt>
+                    and might require many database hits for a simple query, usually
+                    <span class="emphasis"><em>1</em></span> for the initial select which only returns identifiers,
+                    and <span class="emphasis"><em>n</em></span> additional selects to initialize the actual instances.
+                </p><pre class="programlisting">// fetch ids
+Iterator iter = sess.createQuery("from eg.Qux q order by q.likeliness").iterate();
+while ( iter.hasNext() ) {
+    Qux qux = (Qux) iter.next();  // fetch the object
+    // something we couldnt express in the query
+    if ( qux.calculateComplicatedAlgorithm() ) {
+        // delete the current instance
+        iter.remove();
+        // dont need to process the rest
+        break;
+    }
+}</pre></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="objectstate-querying-executing-tuples"></a>10.4.1.2.&nbsp;Queries that return tuples</h4></div></div><div></div></div><p>
+                    Hibernate queries sometimes return tuples of objects, in which case each tuple
+                    is returned as an array:
+                </p><pre class="programlisting">Iterator kittensAndMothers = sess.createQuery(
+            "select kitten, mother from Cat kitten join kitten.mother mother")
+            .list()
+            .iterator();
+
+while ( kittensAndMothers.hasNext() ) {
+    Object[] tuple = (Object[]) kittensAndMothers.next();
+    Cat kitten  = tuple[0];
+    Cat mother  = tuple[1];
+    ....
+}</pre></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="objectstate-querying-executing-scalar"></a>10.4.1.3.&nbsp;Scalar results</h4></div></div><div></div></div><p>
+                    Queries may specify a property of a class in the <tt class="literal">select</tt> clause.
+                    They may even call SQL aggregate functions. Properties or aggregates are considered
+                    "scalar" results (and not entities in persistent state).
+                </p><pre class="programlisting">Iterator results = sess.createQuery(
+        "select cat.color, min(cat.birthdate), count(cat) from Cat cat " +
+        "group by cat.color")
+        .list()
+        .iterator();
+
+while ( results.hasNext() ) {
+    Object[] row = (Object[]) results.next();
+    Color type = (Color) row[0];
+    Date oldest = (Date) row[1];
+    Integer count = (Integer) row[2];
+    .....
+}</pre></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="objectstate-querying-executing-parameters"></a>10.4.1.4.&nbsp;Bind parameters</h4></div></div><div></div></div><p>
+                    Methods on <tt class="literal">Query</tt> are provided for binding values to
+                    named parameters or JDBC-style <tt class="literal">?</tt> parameters. 
+                    <span class="emphasis"><em>Contrary to JDBC, Hibernate numbers parameters from zero.</em></span>
+                    Named parameters are identifiers of the form <tt class="literal">:name</tt> in 
+                    the query string. The advantages of named parameters are:
+                </p><div class="itemizedlist"><ul type="disc" compact><li><p>
+                            named parameters are insensitive to the order they occur in the
+                            query string
+                        </p></li><li><p>
+                            they may occur multiple times in the same query
+                        </p></li><li><p>
+                            they are self-documenting
+                        </p></li></ul></div><pre class="programlisting">//named parameter (preferred)
+Query q = sess.createQuery("from DomesticCat cat where cat.name = :name");
+q.setString("name", "Fritz");
+Iterator cats = q.iterate();</pre><pre class="programlisting">//positional parameter
+Query q = sess.createQuery("from DomesticCat cat where cat.name = ?");
+q.setString(0, "Izi");
+Iterator cats = q.iterate();</pre><pre class="programlisting">//named parameter list
+List names = new ArrayList();
+names.add("Izi");
+names.add("Fritz");
+Query q = sess.createQuery("from DomesticCat cat where cat.name in (:namesList)");
+q.setParameterList("namesList", names);
+List cats = q.list();</pre></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="objectstate-querying-executing-pagination"></a>10.4.1.5.&nbsp;Pagination</h4></div></div><div></div></div><p>
+                    If you need to specify bounds upon your result set (the maximum number of rows
+                    you want to retrieve and / or the first row you want to retrieve) you should
+                    use methods of the <tt class="literal">Query</tt> interface:
+                </p><pre class="programlisting">Query q = sess.createQuery("from DomesticCat cat");
+q.setFirstResult(20);
+q.setMaxResults(10);
+List cats = q.list();</pre><p>
+                    Hibernate knows how to translate this limit query into the native
+                    SQL of your DBMS.
+                </p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="objectstate-querying-executing-scrolling"></a>10.4.1.6.&nbsp;Scrollable iteration</h4></div></div><div></div></div><p>
+                    If your JDBC driver supports scrollable <tt class="literal">ResultSet</tt>s, the
+                    <tt class="literal">Query</tt> interface may be used to obtain a
+                    <tt class="literal">ScrollableResults</tt> object, which allows flexible
+                    navigation of the query results.
+                </p><pre class="programlisting">Query q = sess.createQuery("select cat.name, cat from DomesticCat cat " +
+                            "order by cat.name");
+ScrollableResults cats = q.scroll();
+if ( cats.first() ) {
+
+    // find the first name on each page of an alphabetical list of cats by name
+    firstNamesOfPages = new ArrayList();
+    do {
+        String name = cats.getString(0);
+        firstNamesOfPages.add(name);
+    }
+    while ( cats.scroll(PAGE_SIZE) );
+
+    // Now get the first page of cats
+    pageOfCats = new ArrayList();
+    cats.beforeFirst();
+    int i=0;
+    while( ( PAGE_SIZE &gt; i++ ) &amp;&amp; cats.next() ) pageOfCats.add( cats.get(1) );
+
+}
+cats.close()</pre><p>
+                    Note that an open database connection (and cursor) is required for this
+                    functionality, use <tt class="literal">setMaxResult()</tt>/<tt class="literal">setFirstResult()</tt>
+                    if you need offline pagination functionality.
+                </p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="objectstate-querying-executing-named"></a>10.4.1.7.&nbsp;Externalizing named queries</h4></div></div><div></div></div><p>
+                    You may also define named queries in the mapping document. (Remember to use a
+                    <tt class="literal">CDATA</tt> section if your query contains characters that could
+                    be interpreted as markup.)
+                </p><pre class="programlisting">&lt;query name="ByNameAndMaximumWeight"&gt;&lt;![CDATA[
+    from eg.DomesticCat as cat
+        where cat.name = ?
+        and cat.weight &gt; ?
+] ]&gt;&lt;/query&gt;</pre><p>
+                    Parameter binding and executing is done programatically:
+                </p><pre class="programlisting">Query q = sess.getNamedQuery("ByNameAndMaximumWeight");
+q.setString(0, name);
+q.setInt(1, minWeight);
+List cats = q.list();</pre><p>
+                    Note that the actual program code is independent of the query language that
+                    is used, you may also define native SQL queries in metadata, or migrate
+                    existing queries to Hibernate by placing them in mapping files.
+                </p><p>
+                    Also note that a query declaration inside a <tt class="literal">&lt;hibernate-mapping&gt;</tt>
+                    element requires a global unique name for the query, while a query declaration inside a
+                    <tt class="literal">&lt;class&gt;</tt> element is made unique automatically by prepending the
+                    fully qualified name of the class, for example
+                    <tt class="literal">eg.Cat.ByNameAndMaximumWeight</tt>.
+                </p></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="objectstate-filtering"></a>10.4.2.&nbsp;Filtering collections</h3></div></div><div></div></div><p>
+                A collection <span class="emphasis"><em>filter</em></span> is a special type of query that may be applied to
+                a persistent collection or array. The query string may refer to <tt class="literal">this</tt>,
+                meaning the current collection element.
+            </p><pre class="programlisting">Collection blackKittens = session.createFilter(
+    pk.getKittens(), 
+    "where this.color = ?")
+    .setParameter( Color.BLACK, Hibernate.custom(ColorUserType.class) )
+    .list()
+);</pre><p>
+                The returned collection is considered a bag, and it's a copy of the given
+                collection. The original collection is not modified (this is contrary to
+                the implication of the name "filter", but consistent with expected behavior).
+            </p><p>
+                Observe that filters do not require a <tt class="literal">from</tt> clause (though they may have
+                one if required). Filters are not limited to returning the collection elements themselves.
+            </p><pre class="programlisting">Collection blackKittenMates = session.createFilter(
+    pk.getKittens(), 
+    "select this.mate where this.color = eg.Color.BLACK.intValue")
+    .list();</pre><p>
+                Even an empty filter query is useful, e.g. to load a subset of elements in a
+                huge collection:
+            </p><pre class="programlisting">Collection tenKittens = session.createFilter(
+    mother.getKittens(), "")
+    .setFirstResult(0).setMaxResults(10)
+    .list();</pre></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="objecstate-querying-criteria"></a>10.4.3.&nbsp;Criteria queries</h3></div></div><div></div></div><p>
+                HQL is extremely powerful but some developers prefer to build queries dynamically,
+                using an object-oriented API, rather than building query strings. Hibernate provides
+                an intuitive <tt class="literal">Criteria</tt> query API for these cases:
+            </p><pre class="programlisting">Criteria crit = session.createCriteria(Cat.class);
+crit.add( Expression.eq( "color", eg.Color.BLACK ) );
+crit.setMaxResults(10);
+List cats = crit.list();</pre><p>
+                The <tt class="literal">Criteria</tt> and the associated <tt class="literal">Example</tt>
+                API are discussed in more detail in <a href="querycriteria.html" title="Chapter&nbsp;15.&nbsp;Criteria Queries">Chapter&nbsp;15, <i>Criteria Queries</i></a>.
+            </p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="objectstate-querying-nativesql"></a>10.4.4.&nbsp;Queries in native SQL</h3></div></div><div></div></div><p>
+                You may express a query in SQL, using <tt class="literal">createSQLQuery()</tt> and
+                let Hibernate take care of the mapping from result sets to objects. Note
+                that you may at any time call <tt class="literal">session.connection()</tt> and
+                use the JDBC <tt class="literal">Connection</tt> directly. If you chose to use the
+                Hibernate API, you must enclose SQL aliases in braces:
+            </p><pre class="programlisting">List cats = session.createSQLQuery(
+    "SELECT {cat.*} FROM CAT {cat} WHERE ROWNUM&lt;10",
+    "cat",
+    Cat.class
+).list();</pre><pre class="programlisting">List cats = session.createSQLQuery(
+    "SELECT {cat}.ID AS {cat.id}, {cat}.SEX AS {cat.sex}, " +
+           "{cat}.MATE AS {cat.mate}, {cat}.SUBCLASS AS {cat.class}, ... " +
+    "FROM CAT {cat} WHERE ROWNUM&lt;10",
+    "cat",
+    Cat.class
+).list()</pre><p>
+                SQL queries may contain named and positional parameters, just like Hibernate queries.
+                More information about native SQL queries in Hibernate can be found in
+                <a href="querysql.html" title="Chapter&nbsp;16.&nbsp;Native SQL">Chapter&nbsp;16, <i>Native SQL</i></a>.
+            </p></div></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="objectstate-modifying"></a>10.5.&nbsp;Modifying persistent objects</h2></div></div><div></div></div><p>
+            <span class="emphasis"><em>Transactional persistent instances</em></span> (ie. objects loaded, saved, created or
+            queried by the <tt class="literal">Session</tt>) may be manipulated by the application
+            and any changes to persistent state will be persisted when the <tt class="literal">Session</tt>
+            is <span class="emphasis"><em>flushed</em></span> (discussed later in this chapter). There is no need
+            to call a particular method (like <tt class="literal">update()</tt>, which has a different
+            purpose) to make your modifications persistent. So the most straightforward way to update
+            the state of an object is to <tt class="literal">load()</tt> it,
+            and then manipulate it directly, while the <tt class="literal">Session</tt> is open:
+        </p><pre class="programlisting">DomesticCat cat = (DomesticCat) sess.load( Cat.class, new Long(69) );
+cat.setName("PK");
+sess.flush();  // changes to cat are automatically detected and persisted</pre><p>
+            Sometimes this programming model is inefficient since it would require both an SQL
+            <tt class="literal">SELECT</tt> (to load an object) and an SQL <tt class="literal">UPDATE</tt>
+            (to persist its updated state) in the same session. Therefore Hibernate offers an
+            alternate approach, using detached instances.
+        </p><p>
+            <span class="emphasis"><em>Note that Hibernate does not offer its own API for direct execution of
+            <tt class="literal">UPDATE</tt> or <tt class="literal">DELETE</tt> statements. Hibernate is a
+            <span class="emphasis"><em>state management</em></span> service, you don't have to think in
+            <span class="emphasis"><em>statements</em></span> to use it. JDBC is a perfect API for executing
+            SQL statements, you can get a JDBC <tt class="literal">Connection</tt> at any time
+            by calling <tt class="literal">session.connection()</tt>. Furthermore, the notion
+            of mass operations conflicts with object/relational mapping for online
+            transaction processing-oriented applications. Future versions of Hibernate
+            may however provide special mass operation functions. See <a href="batch.html" title="Chapter&nbsp;13.&nbsp;Batch processing">Chapter&nbsp;13, <i>Batch processing</i></a>
+            for some possible batch operation tricks.</em></span>
+        </p></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="objectstate-detached"></a>10.6.&nbsp;Modifying detached objects</h2></div></div><div></div></div><p>
+            Many applications need to retrieve an object in one transaction, send it to the
+            UI layer for manipulation, then save the changes in a new transaction.
+            Applications that use this kind of approach in a high-concurrency environment
+            usually use versioned  data to ensure isolation for the "long" unit of work.
+        </p><p>
+            Hibernate supports this model by providing for reattachment of detached instances
+            using the <tt class="literal">Session.update()</tt> or <tt class="literal">Session.merge()</tt>
+            methods:
+        </p><pre class="programlisting">// in the first session
+Cat cat = (Cat) firstSession.load(Cat.class, catId);
+Cat potentialMate = new Cat();
+firstSession.save(potentialMate);
+
+// in a higher layer of the application
+cat.setMate(potentialMate);
+
+// later, in a new session
+secondSession.update(cat);  // update cat
+secondSession.update(mate); // update mate</pre><p>
+            If the <tt class="literal">Cat</tt> with identifier <tt class="literal">catId</tt> had already
+            been loaded  by <tt class="literal">secondSession</tt> when the application tried to
+            reattach it, an exception would have been thrown.
+        </p><p>
+            Use <tt class="literal">update()</tt> if you are sure that the session does
+            not contain an already persistent instance with the same identifier, and
+            <tt class="literal">merge()</tt> if you want to merge your modifications at any time
+            without consideration of the state of the session. In other words, <tt class="literal">update()</tt>
+            is usually the first method you would call in a fresh session, ensuring that
+            reattachment of your detached instances is the first operation that is executed.
+        </p><p>
+            The application should individually <tt class="literal">update()</tt> detached instances
+            reachable from the given detached instance if and <span class="emphasis"><em>only</em></span> if it wants
+            their state also updated. This can be automated of course, using <span class="emphasis"><em>transitive
+            persistence</em></span>, see <a href="objectstate.html#objectstate-transitive" title="10.11.&nbsp;Transitive persistence">Section&nbsp;10.11, &#8220;Transitive persistence&#8221;</a>.
+        </p><p>
+            The <tt class="literal">lock()</tt> method also allows an application to reassociate
+            an object with a new session. However, the detached instance has to be unmodified!
+        </p><pre class="programlisting">//just reassociate:
+sess.lock(fritz, LockMode.NONE);
+//do a version check, then reassociate:
+sess.lock(izi, LockMode.READ);
+//do a version check, using SELECT ... FOR UPDATE, then reassociate:
+sess.lock(pk, LockMode.UPGRADE);</pre><p>
+            Note that <tt class="literal">lock()</tt> can be used with various
+            <tt class="literal">LockMode</tt>s, see the API documentation and the
+            chapter on transaction handling for more information. Reattachment is not
+            the only usecase for <tt class="literal">lock()</tt>.
+        </p><p>
+            Other models for long units of work are discussed in <a href="transactions.html#transactions-optimistic" title="11.3.&nbsp;Optimistic concurrency control">Section&nbsp;11.3, &#8220;Optimistic concurrency control&#8221;</a>.
+        </p></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="objectstate-saveorupdate"></a>10.7.&nbsp;Automatic state detection</h2></div></div><div></div></div><p>
+            Hibernate users have requested a general purpose method that either saves a
+            transient instance by generating a new identifier or updates/reattaches
+            the detached instances associated with its current identifier.
+            The <tt class="literal">saveOrUpdate()</tt> method implements this functionality.
+        </p><pre class="programlisting">// in the first session
+Cat cat = (Cat) firstSession.load(Cat.class, catID);
+
+// in a higher tier of the application
+Cat mate = new Cat();
+cat.setMate(mate);
+
+// later, in a new session
+secondSession.saveOrUpdate(cat);   // update existing state (cat has a non-null id)
+secondSession.saveOrUpdate(mate);  // save the new instance (mate has a null id)</pre><p>
+            The usage and semantics of <tt class="literal">saveOrUpdate()</tt> seems to be confusing
+            for new users. Firstly, so long as you are not trying to use instances from one session
+            in another new session, you should not need to use <tt class="literal">update()</tt>,
+            <tt class="literal">saveOrUpdate()</tt>, or <tt class="literal">merge()</tt>. Some whole
+            applications will never use either of these methods.
+        </p><p>
+            Usually <tt class="literal">update()</tt> or <tt class="literal">saveOrUpdate()</tt> are used in
+            the following scenario:
+        </p><div class="itemizedlist"><ul type="disc" compact><li><p>
+                    the application loads an object in the first session
+                </p></li><li><p>
+                    the object is passed up to the UI tier
+                </p></li><li><p>
+                    some modifications are made to the object
+                </p></li><li><p>
+                    the object is passed back down to the business logic tier
+                </p></li><li><p>
+                    the application persists these modifications by calling
+                    <tt class="literal">update()</tt> in a second session
+                </p></li></ul></div><p>
+            <tt class="literal">saveOrUpdate()</tt> does the following:
+        </p><div class="itemizedlist"><ul type="disc" compact><li><p>
+                    if the object is already persistent in this session, do nothing
+                </p></li><li><p>
+                    if another object associated with the session has the same identifier, 
+                    throw an exception
+                </p></li><li><p>
+                    if the object has no identifier property, <tt class="literal">save()</tt> it
+                </p></li><li><p>
+                    if the object's identifier has the value assigned to a newly instantiated
+                    object, <tt class="literal">save()</tt> it
+                </p></li><li><p>
+                    if the object is versioned (by a <tt class="literal">&lt;version&gt;</tt> or
+                    <tt class="literal">&lt;timestamp&gt;</tt>), and the version property value
+                    is the same value assigned to a newly instantiated object, 
+                    <tt class="literal">save()</tt> it
+                </p></li><li><p>
+                    otherwise <tt class="literal">update()</tt> the object
+                </p></li></ul></div><p>
+            and <tt class="literal">merge()</tt> is very different:
+        </p><div class="itemizedlist"><ul type="disc" compact><li><p>
+                    if there is a persistent instance with the same identifier currently 
+                    associated with the session, copy the state of the given object onto 
+                    the persistent instance
+                </p></li><li><p>
+                    if there is no persistent instance currently associated with the session, 
+                    try to load it from the database, or create a new persistent instance
+                </p></li><li><p>
+                    the persistent instance is returned
+                </p></li><li><p>
+                    the given instance does not become associated with the session, it
+                    remains detached
+                </p></li></ul></div></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="objectstate-deleting"></a>10.8.&nbsp;Deleting persistent objects</h2></div></div><div></div></div><p>
+            <tt class="literal">Session.delete()</tt> will remove an object's state from the database.
+            Of course, your application might still hold a reference to a deleted object.
+            It's best to think of <tt class="literal">delete()</tt> as making a persistent instance
+            transient.
+        </p><pre class="programlisting">sess.delete(cat);</pre><p>
+            You may delete objects in any order you like, without risk of foreign key
+            constraint violations. It is still possible to violate a <tt class="literal">NOT
+            NULL</tt> constraint on a foreign key column by deleting objects in
+            the wrong order, e.g. if you delete the parent, but forget to delete the
+            children.
+        </p></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="objectstate-replicating"></a>10.9.&nbsp;Replicating object between two different datastores</h2></div></div><div></div></div><p>
+    	    It is occasionally useful to be able to take a graph of persistent instances
+    	    and make them persistent in a different datastore, without regenerating identifier
+    	    values.
+    	</p><pre class="programlisting">//retrieve a cat from one database
+Session session1 = factory1.openSession();
+Transaction tx1 = session1.beginTransaction();
+Cat cat = session1.get(Cat.class, catId);
+tx1.commit();
+session1.close();
+
+//reconcile with a second database
+Session session2 = factory2.openSession();
+Transaction tx2 = session2.beginTransaction();
+session2.replicate(cat, ReplicationMode.LATEST_VERSION);
+tx2.commit();
+session2.close();</pre><p>
+            The <tt class="literal">ReplicationMode</tt> determines how <tt class="literal">replicate()</tt>
+            will deal with conflicts with existing rows in the database.
+        </p><div class="itemizedlist"><ul type="disc" compact><li><p>
+                    <tt class="literal">ReplicationMode.IGNORE</tt> - ignore the object when there is
+                    an existing database row with the same identifier
+                </p></li><li><p>
+                    <tt class="literal">ReplicationMode.OVERWRITE</tt> - overwrite any existing database 
+                    row with the same identifier
+                </p></li><li><p>
+                    <tt class="literal">ReplicationMode.EXCEPTION</tt> - throw an exception if there is
+                    an existing database row with the same identifier
+                </p></li><li><p>
+                    <tt class="literal">ReplicationMode.LATEST_VERSION</tt> - overwrite the row if its
+                    version number is earlier than the version number of the object, or ignore
+                    the object otherwise
+                </p></li></ul></div><p>
+            Usecases for this feature include reconciling data entered into different database
+            instances, upgrading system configuration information during product upgrades,
+            rolling back changes made during non-ACID transactions and more.
+        </p></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="objectstate-flushing"></a>10.10.&nbsp;Flushing the Session</h2></div></div><div></div></div><p>
+            From time to time the <tt class="literal">Session</tt> will execute the SQL statements 
+            needed to synchronize the JDBC connection's state with the state of objects held in 
+            memory. This process, <span class="emphasis"><em>flush</em></span>, occurs by default at the following 
+            points
+        </p><div class="itemizedlist"><ul type="disc" compact><li><p>
+                    before some query executions
+                </p></li><li><p>
+                    from <tt class="literal">org.hibernate.Transaction.commit()</tt>
+                </p></li><li><p>
+                    from <tt class="literal">Session.flush()</tt>
+                </p></li></ul></div><p>
+            The SQL statements are issued in the following order
+        </p><div class="orderedlist"><ol type="1" compact><li><p>
+                    all entity insertions, in the same order the corresponding objects
+                    were saved using <tt class="literal">Session.save()</tt>
+                </p></li><li><p>
+                    all entity updates
+                </p></li><li><p>
+                    all collection deletions
+                </p></li><li><p>
+                    all collection element deletions, updates and insertions
+                </p></li><li><p>
+                    all collection insertions
+                </p></li><li><p>
+                    all entity deletions, in the same order the corresponding objects
+                    were deleted using <tt class="literal">Session.delete()</tt>
+                </p></li></ol></div><p>
+            (An exception is that objects using <tt class="literal">native</tt> ID generation are 
+            inserted when they are saved.)
+        </p><p>
+            Except when you explicity <tt class="literal">flush()</tt>, there are absolutely no 
+            guarantees about <span class="emphasis"><em>when</em></span> the <tt class="literal">Session</tt> executes 
+            the JDBC calls, only the <span class="emphasis"><em>order</em></span> in which they are executed.
+            However, Hibernate does guarantee that the <tt class="literal">Query.list(..)</tt> 
+            will never return stale data; nor will they return the wrong data.
+        </p><p>
+            It is possible to change the default behavior so that flush occurs less frequently.
+            The <tt class="literal">FlushMode</tt> class defines three different modes: only flush
+            at commit time (and only when the Hibernate <tt class="literal">Transaction</tt> API
+            is used), flush automatically using the explained routine, or never flush unless
+            <tt class="literal">flush()</tt> is called explicitly. The last mode is useful for long running
+            units of work, where a <tt class="literal">Session</tt> is kept open and disconnected for
+            a long time (see <a href="transactions.html#transactions-optimistic-longsession" title="11.3.2.&nbsp;Extended session and automatic versioning">Section&nbsp;11.3.2, &#8220;Extended session and automatic versioning&#8221;</a>).
+        </p><pre class="programlisting">sess = sf.openSession();
+Transaction tx = sess.beginTransaction();
+sess.setFlushMode(FlushMode.COMMIT); // allow queries to return stale state
+
+Cat izi = (Cat) sess.load(Cat.class, id);
+izi.setName(iznizi);
+
+// might return stale data
+sess.find("from Cat as cat left outer join cat.kittens kitten");
+
+// change to izi is not flushed!
+...
+tx.commit(); // flush occurs
+sess.close();</pre><p>
+            During flush, an exception might occur (e.g. if a DML operation violates a constraint).
+            Since handling exceptions involves some understanding of Hibernate's transactional 
+            behavior, we discuss it in <a href="transactions.html" title="Chapter&nbsp;11.&nbsp;Transactions And Concurrency">Chapter&nbsp;11, <i>Transactions And Concurrency</i></a>.
+        </p></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="objectstate-transitive"></a>10.11.&nbsp;Transitive persistence</h2></div></div><div></div></div><p>
+            It is quite cumbersome to save, delete, or reattach individual objects,
+            especially if you deal with a graph of associated objects. A common case is
+            a parent/child relationship. Consider the following example:
+        </p><p>
+            If the children in a parent/child relationship would be value typed (e.g. a collection
+            of addresses or strings), their lifecycle would depend on the parent and no
+            further action would be required for convenient "cascading" of state changes.
+            When the parent is saved, the value-typed child objects are saved as
+            well, when the parent is deleted, the children will be deleted, etc. This
+            even works for operations such as the removal of a child from the collection;
+            Hibernate will detect this and, since value-typed objects can't have shared
+            references, delete the child from the database.
+        </p><p>
+            Now consider the same scenario with parent and child objects being entities,
+            not value-types (e.g. categories and items, or parent and child cats). Entities
+            have their own lifecycle, support shared references (so removing an entity from
+            the collection does not mean it can be deleted), and there is by default no
+            cascading of state from one entity to any other associated entities. Hibernate
+            does not implement <span class="emphasis"><em>persistence by reachability</em></span> by default.
+        </p><p>
+            For each basic operation of the Hibernate session - including <tt class="literal">persist(), merge(),
+            saveOrUpdate(), delete(), lock(), refresh(), evict(), replicate()</tt> - there is a 
+            corresponding cascade style. Respectively, the cascade styles are named <tt class="literal">create, 
+            merge, save-update, delete, lock, refresh, evict, replicate</tt>. If you want an 
+            operation to be cascaded along an association, you must indicate that in the mapping
+            document. For example:
+        </p><pre class="programlisting">&lt;one-to-one name="person" cascade="persist"/&gt;</pre><p>
+            Cascade styles my be combined:
+        </p><pre class="programlisting">&lt;one-to-one name="person" cascade="persist,delete,lock"/&gt;</pre><p>
+            You may even use <tt class="literal">cascade="all"</tt> to specify that <span class="emphasis"><em>all</em></span>
+            operations should be cascaded along the association. The default <tt class="literal">cascade="none"</tt>
+            specifies that no operations are to be cascaded.
+        </p><p>
+            A special cascade style, <tt class="literal">delete-orphan</tt>, applies only to one-to-many
+            associations, and indicates that the <tt class="literal">delete()</tt> operation should
+            be applied to any child object that is removed from the association.
+        </p><p>
+            Recommendations:
+        </p><div class="itemizedlist"><ul type="disc" compact><li><p>
+                    It doesn't usually make sense to enable cascade on a <tt class="literal">&lt;many-to-one&gt;</tt>
+                    or <tt class="literal">&lt;many-to-many&gt;</tt> association. Cascade is often useful for 
+                    <tt class="literal">&lt;one-to-one&gt;</tt> and <tt class="literal">&lt;one-to-many&gt;</tt>
+                    associations.
+                </p></li><li><p>
+                    If the child object's lifespan is bounded by the lifespan of the of the parent
+                    object make it a <span class="emphasis"><em>lifecycle object</em></span> by specifying
+                    <tt class="literal">cascade="all,delete-orphan"</tt>.
+                </p></li><li><p>
+                    Otherwise, you might not need cascade at all. But if you think that you will often be
+                    working with the parent and children together in the same transaction, and you want to save 
+                    yourself some typing, consider using <tt class="literal">cascade="persist,merge,save-update"</tt>.
+                </p></li></ul></div><p>
+            Mapping an association (either a single valued association, or a collection) with 
+            <tt class="literal">cascade="all"</tt> marks the association as a 
+            <span class="emphasis"><em>parent/child</em></span> style relationship where save/update/delete of the 
+            parent results in save/update/delete of the child or children.
+        </p><p>
+            Futhermore, a mere reference to a child from a persistent parent will result in 
+            save/update of the child. This metaphor is incomplete, however. A child which becomes 
+            unreferenced by its parent is <span class="emphasis"><em>not</em></span> automatically deleted, except 
+            in the case of a <tt class="literal">&lt;one-to-many&gt;</tt> association mapped with
+            <tt class="literal">cascade="delete-orphan"</tt>. The precise semantics of cascading 
+            operations for a parent/child relationship are as follows:
+        </p><div class="itemizedlist"><ul type="disc" compact><li><p>
+                    If a parent is passed to <tt class="literal">persist()</tt>, all children are passed to 
+                    <tt class="literal">persist()</tt>
+                </p></li><li><p>
+                    If a parent is passed to <tt class="literal">merge()</tt>, all children are passed to 
+                    <tt class="literal">merge()</tt>
+                </p></li><li><p>
+                    If a parent is passed to <tt class="literal">save()</tt>, <tt class="literal">update()</tt> or 
+                    <tt class="literal">saveOrUpdate()</tt>, all children are passed to <tt class="literal">saveOrUpdate()</tt>
+                </p></li><li><p>
+                    If a transient or detached child becomes referenced by a persistent parent, 
+                    it is passed to <tt class="literal">saveOrUpdate()</tt>
+                </p></li><li><p>
+                    If a parent is deleted, all children are passed to <tt class="literal">delete()</tt>
+                </p></li><li><p>
+                    If a child is dereferenced by a persistent parent, <span class="emphasis"><em>nothing
+                    special happens</em></span> - the application should explicitly delete 
+                    the child if necessary - unless <tt class="literal">cascade="delete-orphan"</tt>, 
+                    in which case the "orphaned" child is deleted.
+                </p></li></ul></div><p>
+            Finally, note that cascading of operations can be applied to an object graph at
+            <span class="emphasis"><em>call time</em></span> or at <span class="emphasis"><em>flush time</em></span>. All operations,
+            if enabled, are cascaded to associated entities reachable when the operation is
+            executed. However, <tt class="literal">save-upate</tt> and <tt class="literal">delete-orphan</tt>
+            are transitive for all associated entities reachable during flush of the
+            <tt class="literal">Session</tt>.
+        </p></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="objectstate-metadata"></a>10.12.&nbsp;Using metadata</h2></div></div><div></div></div><p>
+            Hibernate requires a very rich meta-level model of all entity and value types. From time
+            to time, this model is very useful to the application itself. For example, the application
+            might use Hibernate's metadata to implement a "smart" deep-copy algorithm that understands
+            which objects should be copied (eg. mutable value types) and which should not (eg. 
+            immutable value types and, possibly, associated entities).
+        </p><p>
+            Hibernate exposes metadata via the <tt class="literal">ClassMetadata</tt> and
+            <tt class="literal">CollectionMetadata</tt> interfaces and the <tt class="literal">Type</tt>
+            hierarchy. Instances of the metadata interfaces may be obtained from the 
+            <tt class="literal">SessionFactory</tt>.
+        </p><pre class="programlisting">Cat fritz = ......;
+ClassMetadata catMeta = sessionfactory.getClassMetadata(Cat.class);
+
+Object[] propertyValues = catMeta.getPropertyValues(fritz);
+String[] propertyNames = catMeta.getPropertyNames();
+Type[] propertyTypes = catMeta.getPropertyTypes();
+
+// get a Map of all properties which are not collections or associations
+Map namedValues = new HashMap();
+for ( int i=0; i&lt;propertyNames.length; i++ ) {
+    if ( !propertyTypes[i].isEntityType() &amp;&amp; !propertyTypes[i].isCollectionType() ) {
+        namedValues.put( propertyNames[i], propertyValues[i] );
+    }
+}</pre></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="inheritance.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="index.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="transactions.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter&nbsp;9.&nbsp;Inheritance Mapping&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;Chapter&nbsp;11.&nbsp;Transactions And Concurrency</td></tr></table></div></body></html>
