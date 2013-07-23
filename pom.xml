@@ -4,7 +4,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	<parent>
 		<groupId>org.jboss.tools</groupId>
 		<artifactId>parent</artifactId>
-		<version>4.1.0.CR1-SNAPSHOT</version>
+		<version>4.2.0.Alpha1-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools</groupId>
 	<artifactId>hibernatetools</artifactId>
@@ -17,4 +17,18 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<module>tests</module>
 		<module>site</module>
 	</modules>
+	<repositories>
+		<!-- To resolve parent artifact -->
+		<repository>
+			<id>jboss-public-repository-group</id>
+			<name>JBoss Public Repository Group</name>
+			<url>http://repository.jboss.org/nexus/content/groups/public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 </project>
