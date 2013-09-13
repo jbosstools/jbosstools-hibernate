@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jboss.tools</groupId>
 	<artifactId>${docname}-${translation}</artifactId>
-	<version>1.0</version>
+	<version>4.2.0.Final-SNAPSHOT</version>
 	<packaging>jdocbook</packaging>
 	<name>${bookname}-(${translation})</name>
 
@@ -27,7 +27,7 @@
 					<plugin>
 						<groupId>org.jboss.maven.plugins</groupId>
 						<artifactId>maven-jdocbook-plugin</artifactId>
-						<version>2.3.4</version>
+						<version>2.3.6</version>
 						<extensions>true</extensions>
 						<configuration>
 							<formats>
@@ -52,6 +52,12 @@
 									<finalName>index.html</finalName>
 								</format>
 							</formats>
+							<injections>
+								<injection>
+									<name>project.version</name>
+									<value>${project.version}</value>
+								</injection>
+							</injections>							
 							<options>
 								<useRelativeImageUris>true</useRelativeImageUris>
 							</options>							

@@ -6,44 +6,16 @@
 	<simpara>
 		<revhistory>
 			<revision>
-				<revnumber>2-0</revnumber>
-				<date>Fri Jan 21 2011</date>
+				<revnumber>7.1.0-1</revnumber>
+				<date>Mon Dec 09 2013</date>
 				<author>
-					<firstname>JBoss Tools</firstname>
-					<surname>Documentation Team</surname>
-					<email>mcaspers@redhat.com</email>
+					<firstname>Michelle</firstname>
+					<surname>Murray</surname>
+					<email>mmurray@redhat.com</email>
 				</author>
 				<revdescription>
 					<simplelist>
-						<member>General updates</member>
-					</simplelist>
-				</revdescription>
-			</revision>		
-			<revision>
-				<revnumber>1-0</revnumber>
-				<date>Wed Jun 09 2010</date>
-				<author>
-					<firstname>JBoss Tools</firstname>
-					<surname>Documentation Team</surname>
-					<email>irooskov@redhat.com</email>
-				</author>
-				<revdescription>
-					<simplelist>
-						<member>General updates</member>
-					</simplelist>
-				</revdescription>
-			</revision>
-			<revision>
-				<revnumber>0-0</revnumber>
-				<date>Fri Nov 20 2009</date>
-				<author>
-					<firstname>Isaac</firstname>
-					<surname>Rooskov</surname>
-					<email>irooskov@redhat.com</email>
-				</author>
-				<revdescription>
-					<simplelist>
-						<member>Initial creation of book by publican</member>
+						<member>Released for 7.1.0</member>
 					</simplelist>
 				</revdescription>
 			</revision>
