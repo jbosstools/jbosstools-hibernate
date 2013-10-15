@@ -242,7 +242,7 @@ public class HibernatePackageInfoImpl extends AbstractJavaContextModel<Persisten
 		if ((file != null) && file.getProject().equals(this.getJpaProject().getProject()) &&
 				(this.resourcePackage instanceof SourceModel)) {
 			// build the AST root here to pass down
-			this.validate(messages, reporter);
+			this.doValidate(messages, reporter);
 		}
 	}
 	
