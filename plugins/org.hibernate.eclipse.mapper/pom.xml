@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.jboss.tools.hibernatetools</groupId>
 		<artifactId>plugins</artifactId>
-		<version>3.7.0-SNAPSHOT</version>
+		<version>3.7.1-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.hibernatetools.plugins</groupId>
 	<artifactId>org.hibernate.eclipse.mapper</artifactId> 
