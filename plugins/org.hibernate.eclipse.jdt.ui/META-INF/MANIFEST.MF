@@ -31,4 +31,3 @@ Export-Package: org.hibernate.eclipse.jdt.ui,
  org.hibernate.eclipse.jdt.ui.internal.jpa.process,
  org.hibernate.eclipse.jdt.ui.wizards
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Eclipse-BundleShape: jar
