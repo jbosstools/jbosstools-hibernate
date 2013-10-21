@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.jboss.tools.hibernate.ui.test
-Bundle-Version: 3.7.0.qualifier
+Bundle-Version: 3.8.0.qualifier
 Require-Bundle: org.hibernate.eclipse.libs;bundle-version="3.7.0",
  org.junit;bundle-version="3.8.2",
  org.eclipse.wst.common.project.facet.ui;bundle-version="1.4.300",

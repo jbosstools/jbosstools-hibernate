@@ -9,7 +9,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	<groupId>org.jboss.tools</groupId>
 	<artifactId>hibernatetools</artifactId>
 	<name>hibernatetools.all</name>
-	<version>3.7.0-SNAPSHOT</version>
+	<version>3.8.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<properties>
 		<tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-hibernate.git</tycho.scmUrl>
