@@ -655,8 +655,8 @@ public class ProcessEntityInfo extends ASTVisitor {
 		if (mvp != null) {
 			natd.values().add(mvp);
 		}
+		NormalAnnotation natd2 = null;
 		/** /
-		NormalAnnotation natd2 = null;		
 		if (rei.owner == OwnerType.NO) {
 			natd2 = rewriter.getAST().newNormalAnnotation();
 			natd2.setTypeName(rewriter.getAST().newSimpleName(JPAConst.ANNOTATION_JOINCOLUMN));
@@ -683,12 +683,10 @@ public class ProcessEntityInfo extends ASTVisitor {
 			lrw = rewriter.getListRewrite(node, MethodDeclaration.MODIFIERS2_PROPERTY);
 		}
 		if (lrw != null) {
-			/** /
 			if (natd2 != null) {
 				lrw.insertFirst(natd2, null);
 			}
 			lrw.insertFirst(natd, null);
-			/**/
 		}
 		return true;
 	}
