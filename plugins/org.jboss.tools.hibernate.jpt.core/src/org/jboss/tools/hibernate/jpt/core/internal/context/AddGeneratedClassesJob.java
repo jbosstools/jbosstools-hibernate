@@ -96,6 +96,11 @@ public class AddGeneratedClassesJob extends WorkspaceJob {
 	
 	protected IStatus addNewClassRefs(IProgressMonitor monitor, JpaProject jpaProject, XmlPersistenceUnit persistenceUnit) {
 		Iterable<String> mappedClassNames = getMappedNewClassNames(jpaProject, '$');
+		java.util.Iterator<String> iterator = mappedClassNames.iterator();
+		while(iterator.hasNext()) {
+			String str = iterator.next();
+			System.out.println(str);
+		}
 		final SubMonitor sm = SubMonitor.convert(monitor, IterableTools.size(mappedClassNames));
 		
 		for (String fullyQualifiedTypeName : mappedClassNames) {
@@ -129,9 +134,11 @@ public class AddGeneratedClassesJob extends WorkspaceJob {
 				),
 				new Predicate<IType>() {
 					public boolean evaluate(IType mapping) {
-						for (IResource res : javaFilesToAdd) {
-							if (res.equals(mapping.getResource())){
-								return true;
+						if (mapping != null) {
+							for (IResource res : javaFilesToAdd) {
+								if (res.equals(mapping.getResource())){
+									return true;
+								}
 							}
 						}
 						return false;
