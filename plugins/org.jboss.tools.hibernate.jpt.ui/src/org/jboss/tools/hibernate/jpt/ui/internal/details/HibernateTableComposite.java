@@ -85,13 +85,13 @@ public class HibernateTableComposite extends Pane<HibernateEntity>
 		// Table group pane
 		Group tableGroupPane = addTitledGroup(
 			container,
-			JptJpaUiDetailsMessages.TableComposite_tableSection
+			JptJpaUiDetailsMessages.TABLE_COMPOSITE_TABLE_SECTION
 		);
 
 		PropertyValueModel<HibernateTable> subjectHolder = buildTableHolder();
 		
 		// Table widgets
-		this.addLabel(tableGroupPane, JptJpaUiDetailsMessages.TableChooser_label);
+		this.addLabel(tableGroupPane, JptJpaUiDetailsMessages.TABLE_CHOOSER_LABEL);
 		this.addTableCombo(subjectHolder, tableGroupPane);		
 //		addLabeledComposite(
 //				tableGroupPane,
@@ -101,7 +101,7 @@ public class HibernateTableComposite extends Pane<HibernateEntity>
 //			);
 		
 		// Catalog widgets
-		this.addLabel(tableGroupPane, JptJpaUiDetailsMessages.CatalogChooser_label);
+		this.addLabel(tableGroupPane, JptJpaUiDetailsMessages.CATALOG_CHOOSER_LABEL);
 		this.addTableCombo(subjectHolder, tableGroupPane);
 //		addLabeledComposite(
 //			tableGroupPane,
@@ -111,7 +111,7 @@ public class HibernateTableComposite extends Pane<HibernateEntity>
 //		);
 
 		// Schema widgets
-		this.addLabel(tableGroupPane, JptJpaUiDetailsMessages.SchemaChooser_label);
+		this.addLabel(tableGroupPane, JptJpaUiDetailsMessages.SCHEMA_CHOOSER_LABEL);
 		this.addTableCombo(subjectHolder, tableGroupPane);
 //		addLabeledComposite(
 //			tableGroupPane,

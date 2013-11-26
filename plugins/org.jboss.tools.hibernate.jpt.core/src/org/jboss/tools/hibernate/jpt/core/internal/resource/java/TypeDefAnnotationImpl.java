@@ -32,6 +32,7 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 
@@ -115,7 +116,7 @@ public class TypeDefAnnotationImpl extends SourceAnnotation
 	}
 
 	public void setName(String name) {
-		if (this.attributeValueHasChanged(this.name, name)) {
+		if (ObjectTools.notEquals(this.name, name)) {
 			this.name = name;
 			this.nameAdapter.setValue(name);
 		}
@@ -141,7 +142,7 @@ public class TypeDefAnnotationImpl extends SourceAnnotation
 	}
 
 	public void setTypeClass(String typeClass) {
-		if (this.attributeValueHasChanged(this.typeClass, typeClass)) {
+		if (ObjectTools.notEquals(this.typeClass, typeClass)) {
 			this.typeClass = typeClass;
 			this.typeClassAdapter.setValue(typeClass);
 		}
@@ -182,7 +183,7 @@ public class TypeDefAnnotationImpl extends SourceAnnotation
 	}
 
 	public void setDefaultForType(String defaultForType) {
-		if (this.attributeValueHasChanged(this.defaultForType, defaultForType)) {
+		if (ObjectTools.notEquals(this.defaultForType, defaultForType)) {
 			this.defaultForType = defaultForType;
 			this.defaultForTypeAdapter.setValue(defaultForType);
 		}

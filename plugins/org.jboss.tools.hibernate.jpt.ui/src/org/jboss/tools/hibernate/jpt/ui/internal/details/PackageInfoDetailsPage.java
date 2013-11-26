@@ -70,7 +70,7 @@ public class PackageInfoDetailsPage extends AbstractJpaDetailsPageManager<Hibern
 				ExpandableComposite.TWISTIE |
 				ExpandableComposite.EXPANDED);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptJpaUiDetailsMessages.BasicSection_title);
+		section.setText(JptJpaUiDetailsMessages.BASIC_SECTION_TITLE);
 		section.setClient(this.initializeGenericGeneratorsSection(section));
 //		container = addCollapsibleSection(
 //				container,
@@ -100,7 +100,7 @@ public class PackageInfoDetailsPage extends AbstractJpaDetailsPageManager<Hibern
 				ExpandableComposite.TWISTIE |
 				ExpandableComposite.EXPANDED);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptJpaUiDetailsMessages.BasicSection_title);
+		section.setText(JptJpaUiDetailsMessages.BASIC_SECTION_TITLE);
 		section.setClient(this.initializeQueriesSection(section, buildQueryContainerHolder()));
 //		container = addCollapsibleSection(
 //				container,
@@ -127,7 +127,7 @@ public class PackageInfoDetailsPage extends AbstractJpaDetailsPageManager<Hibern
 				ExpandableComposite.TWISTIE |
 				ExpandableComposite.EXPANDED);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptJpaUiDetailsMessages.BasicSection_title);
+		section.setText(JptJpaUiDetailsMessages.BASIC_SECTION_TITLE);
 		section.setClient(this.initializeTypeDefsSection(section, buildTypeDefContainerHolder()));
 //		container = addCollapsibleSection(
 //				container,

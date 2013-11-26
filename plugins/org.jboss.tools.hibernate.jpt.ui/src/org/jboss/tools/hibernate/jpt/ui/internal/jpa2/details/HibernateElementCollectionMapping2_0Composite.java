@@ -78,7 +78,7 @@ public class HibernateElementCollectionMapping2_0Composite extends
 			@Override
 			protected Boolean buildValue_() {
 				Converter converter = this.subject.getConverter();
-				return Boolean.valueOf(converter.getType() == TypeConverter.class);
+				return Boolean.valueOf(converter.getConverterType() == TypeConverter.class);
 			}
 
 			@Override
@@ -94,7 +94,7 @@ public class HibernateElementCollectionMapping2_0Composite extends
 		return new TransformationPropertyValueModel<Converter, TypeConverter>(converterHolder) {
 			@Override
 			protected TypeConverter transform_(Converter converter) {
-				return converter.getType() == TypeConverter.class ? (TypeConverter) converter : null;
+				return converter.getConverterType() == TypeConverter.class ? (TypeConverter) converter : null;
 			}
 		};
 	}

@@ -26,6 +26,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.Attribute;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.jboss.tools.hibernate.jpt.core.internal.context.GenerationTime;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 
@@ -64,7 +65,7 @@ GeneratedAnnotation {
 	}
 
 	public void setValue(GenerationTime value) {
-		if (this.attributeValueHasChanged(this.value, value)) {
+		if (ObjectTools.notEquals(this.value, value)) {
 			this.value = value;
 			this.valueAdapter.setValue(GenerationTime.toJavaAnnotationValue(value));
 		}

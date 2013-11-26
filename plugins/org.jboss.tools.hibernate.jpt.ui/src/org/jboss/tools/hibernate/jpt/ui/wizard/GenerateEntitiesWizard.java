@@ -50,7 +50,7 @@ public class GenerateEntitiesWizard extends Wizard {
 	public GenerateEntitiesWizard( HibernateJpaProject jpaProject, IStructuredSelection selection) {
 		super();
 		this.jpaProject = jpaProject;
-		this.setWindowTitle( JptJpaUiMessages.GenerateEntitiesWizard_generateEntities);
+		this.setWindowTitle( JptJpaUiMessages.GENERATE_ENTITIES_WIZARD_GENERATE_ENTITIES);
 	}
 	
 	@Override

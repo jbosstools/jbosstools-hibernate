@@ -18,13 +18,11 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.internal.utility.EmptyTextRange;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaDbGenerator;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaDatabaseGenerator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
@@ -39,7 +37,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValida
  * @author Dmitry Geraskov (geraskov@gmail.com)
  * 
  */
-public class JavaDbGenericGeneratorImpl extends AbstractJavaDbGenerator<GenericGeneratorAnnotation>
+public class JavaDbGenericGeneratorImpl extends AbstractJavaDatabaseGenerator<GenericGeneratorAnnotation>
 implements JavaDbGenericGenerator, Messages {
 	
 	private String strategy;
@@ -105,7 +103,7 @@ implements JavaDbGenericGenerator, Messages {
 	
 	// ********** misc **********
 
-	public Class<GenericGenerator> getType() {
+	public Class<GenericGenerator> getGeneratorType() {
 		return GenericGenerator.class;
 	}
 

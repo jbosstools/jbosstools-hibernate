@@ -47,7 +47,7 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		this.addLabel(container, JptJpaUiDetailsMessages.NamedQueryComposite_nameTextLabel);
+		this.addLabel(container, JptJpaUiDetailsMessages.NAMED_QUERY_COMPOSITE_NAME_TEXT_LABEL);
 		this.addText(container, buildNameTextHolder());
 //		addLabeledText(
 //			container,
@@ -55,7 +55,7 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 //			buildNameTextHolder());
 
 		// Query text area
-		this.addLabel(container, JptJpaUiDetailsMessages.NamedQueryPropertyComposite_query);
+		this.addLabel(container, JptJpaUiDetailsMessages.NAMED_QUERY_PROPERTY_COMPOSITE_QUERY);
 		this.addMultiLineText(container, buildQueryHolder(), 4);
 //		addLabeledMultiLineText(
 //			container,
@@ -267,8 +267,8 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 				if ((getSubject() != null) && (value == null)) {
 					boolean defaultValue = getSubject().isDefaultCacheable();
 
-					String defaultStringValue = defaultValue ? JptJpaUiDetailsMessages.OptionalComposite_true :
-					                                           JptJpaUiDetailsMessages.OptionalComposite_false;
+					String defaultStringValue = defaultValue ? JptJpaUiDetailsMessages.OPTIONAL_COMPOSITE_TRUE :
+					                                           JptJpaUiDetailsMessages.OPTIONAL_COMPOSITE_FALSE;
 
 					return NLS.bind(
 						HibernateUIMappingMessages.NamedQueryPropertyComposite_cacheableWithDefault,
@@ -310,8 +310,8 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 				if ((getSubject() != null) && (value == null)) {
 					boolean defaultValue = getSubject().isDefaultReadOnly();
 
-					String defaultStringValue = defaultValue ? JptJpaUiDetailsMessages.OptionalComposite_true :
-					                                           JptJpaUiDetailsMessages.OptionalComposite_false;
+					String defaultStringValue = defaultValue ? JptJpaUiDetailsMessages.OPTIONAL_COMPOSITE_TRUE :
+					                                           JptJpaUiDetailsMessages.OPTIONAL_COMPOSITE_FALSE;
 
 					return NLS.bind(
 						HibernateUIMappingMessages.NamedQueryPropertyComposite_readOnlyWithDefault,

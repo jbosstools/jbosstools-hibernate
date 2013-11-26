@@ -12,8 +12,9 @@ package org.jboss.tools.hibernate.jpt.ui.internal.utils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
+import org.eclipse.jpt.common.ui.internal.swt.listeners.SWTListenerTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
@@ -212,15 +213,7 @@ abstract class StateController
 	 * @return A new <code>PropertyChangeListener</code>
 	 */
 	private PropertyChangeListener buildBooleanChangeListener() {
-		return new SWTPropertyChangeListenerWrapper(
-			buildBooleanChangeListener_()
-		)
-		{
-			@Override
-			public String toString() {
-				return "StateController.SWTPropertyChangeListenerWrapper";
-			}
-		};
+		return SWTListenerTools.wrap(buildBooleanChangeListener_());
 	}
 
 	/**

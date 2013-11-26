@@ -57,7 +57,7 @@ public class JavaPackageInfoDetailsProvider implements JpaDetailsProvider {
 	}
 
 	@Override
-	public Class<? extends JpaStructureNode> getType() {
+	public Class<? extends JpaStructureNode> getStructureType() {
 		return JavaPackageInfo.class;
 	}
 

@@ -49,7 +49,7 @@ public class JavaTypeConverterImpl extends AbstractJavaConverter implements Java
 
 	// ********** misc **********
 
-	public Class<? extends Converter> getType() {
+	public Class<? extends Converter> getConverterType() {
 		return TypeConverter.class;
 	}
 	

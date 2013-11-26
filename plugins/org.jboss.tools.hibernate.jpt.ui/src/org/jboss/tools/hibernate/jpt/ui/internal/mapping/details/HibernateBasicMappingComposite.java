@@ -141,7 +141,7 @@ public class HibernateBasicMappingComposite extends AbstractBasicMappingComposit
 		}
 
 		// Fetch type widgets
-		this.addLabel(container, JptJpaUiDetailsMessages.BasicGeneralSection_fetchLabel);
+		this.addLabel(container, JptJpaUiDetailsMessages.BASIC_GENERAL_SECTION_FETCH_LABEL);
 		new FetchTypeComboViewer(this, container);
 
 		// Optional widgets
@@ -176,7 +176,7 @@ public class HibernateBasicMappingComposite extends AbstractBasicMappingComposit
 		return new TransformationPropertyValueModel<Converter, TypeConverter>(converterHolder) {
 			@Override
 			protected TypeConverter transform_(Converter converter) {
-				return converter.getType() == TypeConverter.class ? (TypeConverter) converter : null;
+				return converter.getConverterType() == TypeConverter.class ? (TypeConverter) converter : null;
 			}
 		};
 	}

@@ -30,6 +30,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.Member;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * @author Dmitry Geraskov
@@ -80,7 +81,7 @@ implements IndexAnnotation{
 	}
 
 	public void setName(String newName) {
-		if (this.attributeValueHasChanged(this.name, newName)) {
+		if (ObjectTools.notEquals(this.name, newName)) {
 			this.name = newName;
 			this.nameAdapter.setValue(newName);
 		}
@@ -93,7 +94,7 @@ implements IndexAnnotation{
 	}
 
 	public void setColumnNames(String[] newColumnNames) {
-		if (this.attributeValueHasChanged(this.columnNames, newColumnNames)) {
+		if (ObjectTools.notEquals(this.columnNames, newColumnNames)) {
 			this.columnNames = newColumnNames;
 			this.columnNamesAdapter.setValue(newColumnNames);
 		}

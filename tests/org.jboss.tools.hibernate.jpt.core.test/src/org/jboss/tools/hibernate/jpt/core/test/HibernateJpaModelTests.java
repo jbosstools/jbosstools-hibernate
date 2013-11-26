@@ -25,7 +25,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProject.Reference;
-import org.eclipse.jpt.jpa.core.context.JpaContextModelRoot;
+import org.eclipse.jpt.jpa.core.context.JpaContextRoot;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTableRelationshipStrategy;
@@ -71,7 +71,7 @@ public class HibernateJpaModelTests {
 	@Test
 	public void testDefaultMapping(){
 		assertNotNull(jpaProject);
-		JpaContextModelRoot rootContextNode = jpaProject.getContextModelRoot();
+		JpaContextRoot rootContextNode = jpaProject.getContextRoot();
 		Persistence p = rootContextNode.getPersistenceXml().getRoot();
 		assertTrue(p.getPersistenceUnitsSize() > 0);
 		assertTrue(p.getPersistenceUnits().iterator().next() instanceof HibernatePersistenceUnit);
@@ -102,7 +102,7 @@ public class HibernateJpaModelTests {
 			fail(e.getMessage());
 		}
 		assertNotNull(jpaProject);
-		JpaContextModelRoot rootContextNode = jpaProject.getContextModelRoot();
+		JpaContextRoot rootContextNode = jpaProject.getContextRoot();
 		Persistence p = rootContextNode.getPersistenceXml().getRoot();
 		assertTrue(p.getPersistenceUnits().iterator().hasNext());
 		assertTrue(p.getPersistenceUnits().iterator().next() instanceof HibernatePersistenceUnit);

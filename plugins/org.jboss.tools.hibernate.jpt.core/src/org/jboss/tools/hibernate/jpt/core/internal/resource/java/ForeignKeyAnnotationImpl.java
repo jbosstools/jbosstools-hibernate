@@ -27,6 +27,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.Member;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.ForeignKeyAnnotation;
 
 /**
@@ -76,7 +77,7 @@ ForeignKeyAnnotation {
 	}
 
 	public void setName(String name) {
-		if (this.attributeValueHasChanged(this.name, name)) {
+		if (ObjectTools.notEquals(this.name, name)) {
 			this.name = name;
 			this.nameAdapter.setValue(name);
 		}
@@ -102,7 +103,7 @@ ForeignKeyAnnotation {
 	}
 
 	public void setInverseName(String inverseName) {
-		if (this.attributeValueHasChanged(this.inverseName, inverseName)) {
+		if (ObjectTools.notEquals(this.inverseName, inverseName)) {
 			this.inverseName = inverseName;
 			this.inverseNameAdapter.setValue(inverseName);
 		}

@@ -32,8 +32,8 @@ public class HibernateOrmPersistentType extends GenericOrmPersistentType {
 				if (this.javaPersistentTypeHasSpecifiedAccess()) {
 					return this.getJavaPersistentType().getSpecifiedAccess();
 				}
-				if (this.superPersistentType != null) {
-					return this.superPersistentType.getAccess();
+				if (getSuperPersistentType() != null) {
+					return getSuperPersistentType().getAccess();
 				}
 			}
 		}

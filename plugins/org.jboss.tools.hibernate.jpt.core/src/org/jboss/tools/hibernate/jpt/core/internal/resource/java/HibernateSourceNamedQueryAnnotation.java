@@ -29,6 +29,7 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.resource.java.QueryHintAnnotation;
@@ -178,7 +179,7 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation
 
 	@Override
 	public void setName(String name) {
-		if (this.attributeValueHasChanged(this.name, name)) {
+		if (ObjectTools.notEquals(this.name, name)) {
 			this.name = name;
 			this.nameAdapter.setValue(name);
 		}
@@ -211,7 +212,7 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation
 
 	@Override
 	public void setQuery(String query) {
-		if (this.attributeValueHasChanged(this.query, query)) {
+		if (ObjectTools.notEquals(this.query, query)) {
 			this.query = query;
 			this.queryAdapter.setValue(query);
 		}
@@ -276,7 +277,7 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation
 
 	@Override
 	public void setFlushMode(FlushModeType flushMode) {
-		if (this.attributeValueHasChanged(this.flushMode, flushMode)) {
+		if (ObjectTools.notEquals(this.flushMode, flushMode)) {
 			this.flushMode = flushMode;
 			this.flushModeAdapter.setValue(FlushModeType.toJavaAnnotationValue(flushMode));
 		}
@@ -310,7 +311,7 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation
 
 	@Override
 	public void setCacheMode(CacheModeType cacheMode) {
-		if (this.attributeValueHasChanged(this.cacheMode, cacheMode)) {
+		if (ObjectTools.notEquals(this.cacheMode, cacheMode)) {
 			this.cacheMode = cacheMode;
 			this.cacheModeAdapter.setValue(CacheModeType.toJavaAnnotationValue(cacheMode));
 		}
@@ -343,7 +344,7 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation
 
 	@Override
 	public void setCacheable(Boolean cacheable){
-		if (this.attributeValueHasChanged(this.cacheable, cacheable)) {
+		if (ObjectTools.notEquals(this.cacheable, cacheable)) {
 			this.cacheable = cacheable;
 			this.cacheableAdapter.setValue(cacheable);
 		}
@@ -367,7 +368,7 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation
 
 	@Override
 	public void setCacheRegion(String cacheRegion){
-		if (this.attributeValueHasChanged(this.cacheRegion, cacheRegion)) {
+		if (ObjectTools.notEquals(this.cacheRegion, cacheRegion)) {
 			this.cacheRegion = cacheRegion;
 			this.cacheRegionAdapter.setValue(cacheRegion);
 		}
@@ -390,7 +391,7 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation
 
 	@Override
 	public void setFetchSize(Integer fetchSize){
-		if (this.attributeValueHasChanged(this.fetchSize, fetchSize)) {
+		if (ObjectTools.notEquals(this.fetchSize, fetchSize)) {
 			this.fetchSize = fetchSize;
 			this.fetchSizeAdapter.setValue(fetchSize);
 		}
@@ -412,7 +413,7 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation
 	}
 	@Override
 	public void setTimeout(Integer timeout){
-		if (this.attributeValueHasChanged(this.timeout, timeout)) {
+		if (ObjectTools.notEquals(this.timeout, timeout)) {
 			this.timeout = timeout;
 			this.timeoutAdapter.setValue(timeout);
 		}
@@ -435,7 +436,7 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation
 
 	@Override
 	public void setComment(String comment){
-		if (this.attributeValueHasChanged(this.comment, comment)) {
+		if (ObjectTools.notEquals(this.comment, comment)) {
 			this.comment = comment;
 			this.commentAdapter.setValue(comment);
 		}
@@ -458,7 +459,7 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation
 
 	@Override
 	public void setReadOnly(Boolean readOnly){
-		if (this.attributeValueHasChanged(this.readOnly, readOnly)) {
+		if (ObjectTools.notEquals(this.readOnly, readOnly)) {
 			this.readOnly = readOnly;
 			this.readOnlyAdapter.setValue(readOnly);
 		}

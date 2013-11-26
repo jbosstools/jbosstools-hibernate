@@ -270,7 +270,7 @@ implements Messages, Hibernate {
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected Iterable<JavaGenerator> getAllJavaGenerators() {
+	protected Iterable<Generator> getAllJavaGenerators() {
 		return IterableTools.concatenate(
 				IterableTools.concatenate(super.getAllJavaGenerators()),
 				new CompositeIterable<JavaGenerator>(this.getAllPackageInfoMappingGeneratorLists()));

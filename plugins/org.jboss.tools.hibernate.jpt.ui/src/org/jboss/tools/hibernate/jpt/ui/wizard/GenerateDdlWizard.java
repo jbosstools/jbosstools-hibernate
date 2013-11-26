@@ -39,7 +39,7 @@ public class GenerateDdlWizard extends Wizard {
 	public GenerateDdlWizard(HibernateJpaProject jpaProject, IStructuredSelection selection) {
 		super();
 		this.jpaProject = jpaProject;
-		this.setWindowTitle( JptJpaUiMessages.GenericPlatformUiDialog_notSupportedMessageTitle);
+		this.setWindowTitle( JptJpaUiMessages.GENERIC_PLATFORM_UI_DIALOG_NOT_SUPPORTED_MESSAGE_TITLE);
 	}
 	
 	@Override

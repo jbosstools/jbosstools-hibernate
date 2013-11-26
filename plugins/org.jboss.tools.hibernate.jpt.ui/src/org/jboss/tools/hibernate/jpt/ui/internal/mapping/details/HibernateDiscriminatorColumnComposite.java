@@ -19,10 +19,10 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.SpecifiedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
+import org.eclipse.jpt.jpa.core.context.SpecifiedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.jpa.ui.details.JptJpaUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
@@ -143,17 +143,17 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 		PropertyValueModel<Boolean> enabledModel = buildSpecifiedDiscriminatorColumnEnabledHolder();
 
 			// Name widgets
-			this.addLabel(container, JptJpaUiDetailsMessages.DiscriminatorColumnComposite_name, enabledModel);
+			this.addLabel(container, JptJpaUiDetailsMessages.DISCRIMINATOR_COLUMN_COMPOSITE_NAME, enabledModel);
 			this.addSpecifiedDiscriminatorColumnCombo(container, SpecifiedDiscriminatorColumnHolder, enabledModel);
 
 			// Discriminator Type widgets
-			this.addLabel(container,JptJpaUiDetailsMessages.DiscriminatorColumnComposite_discriminatorType, enabledModel);
+			this.addLabel(container,JptJpaUiDetailsMessages.DISCRIMINATOR_COLUMN_COMPOSITE_DISCRIMINATOR_TYPE, enabledModel);
 			this.addDiscriminatorTypeCombo(container, SpecifiedDiscriminatorColumnHolder, enabledModel);
 
 
 			Section detailsSection = this.getWidgetFactory().createSection(container, ExpandableComposite.TWISTIE);
 			detailsSection.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			detailsSection.setText(JptJpaUiDetailsMessages.InheritanceComposite_detailsGroupBox);
+			detailsSection.setText(JptJpaUiDetailsMessages.INHERITANCE_COMPOSITE_DETAILS_GROUP_BOX);
 			detailsSection.setClient(this.initializeDetailsClient(detailsSection, SpecifiedDiscriminatorColumnHolder, enabledModel));
 
 		
@@ -350,12 +350,13 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 			protected String displayString(DiscriminatorType value) {
 				switch (value) {
 					case CHAR :
-						return JptJpaUiDetailsMessages.DiscriminatorColumnComposite_char;
+						return JptJpaUiDetailsMessages.DISCRIMINATOR_COLUMN_COMPOSITE_CHAR;
 					case INTEGER :
-						return JptJpaUiDetailsMessages.DiscriminatorColumnComposite_integer;
+						return JptJpaUiDetailsMessages.DISCRIMINATOR_COLUMN_COMPOSITE_INTEGER;
 					case STRING :
-						return JptJpaUiDetailsMessages.DiscriminatorColumnComposite_string;						default :
-					throw new IllegalStateException();
+						return JptJpaUiDetailsMessages.DISCRIMINATOR_COLUMN_COMPOSITE_STRING;
+					default :
+						throw new IllegalStateException();
 				}
 			}
 				
@@ -458,14 +459,14 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 		detailsSection.setLayoutData(gridData);
 
 		// Length widgets
-		Label lengthLabel = this.addLabel(detailsClient, JptJpaUiDetailsMessages.ColumnComposite_length, enabledModel);
+		Label lengthLabel = this.addLabel(detailsClient, JptJpaUiDetailsMessages.COLUMN_COMPOSITE_LENGTH, enabledModel);
 		gridData = new GridData();
 		gridData.horizontalIndent = 16;
 		lengthLabel.setLayoutData(gridData);
 		this.addLengthCombo(detailsClient, SpecifiedDiscriminatorColumnHolder, enabledModel);
 
 		// Column Definition widgets
-		Label columnDefinitionLabel = this.addLabel(detailsClient, JptJpaUiDetailsMessages.ColumnComposite_columnDefinition, enabledModel);
+		Label columnDefinitionLabel = this.addLabel(detailsClient, JptJpaUiDetailsMessages.COLUMN_COMPOSITE_COLUMN_DEFINITION, enabledModel);
 		gridData = new GridData();
 		gridData.horizontalIndent = 16;
 		columnDefinitionLabel.setLayoutData(gridData);

@@ -60,7 +60,7 @@ public class HibernateAddQueryDialog extends ValidatingDialog<AddQueryStateObjec
 	 * 						could be added.
 	 */
 	public HibernateAddQueryDialog(Shell parent, PersistenceUnit pUnit, boolean hibernateOnly, ResourceManager resourceManager) {
-		super(parent, resourceManager, JptJpaUiDetailsMessages.AddQueryDialog_title);
+		super(parent, resourceManager, JptJpaUiDetailsMessages.ADD_QUERY_DIALOG_TITLE);
 		this.pUnit = pUnit;
 		this.hibernateOnly = hibernateOnly;
 	}
@@ -82,12 +82,12 @@ public class HibernateAddQueryDialog extends ValidatingDialog<AddQueryStateObjec
 
 	@Override
 	protected String getDescriptionTitle() {
-		return JptJpaUiDetailsMessages.AddQueryDialog_descriptionTitle;
+		return JptJpaUiDetailsMessages.ADD_QUERY_DIALOG_DESCRIPTION_TITLE;
 	}
 
 	@Override
 	protected String getDescription() {
-		return JptJpaUiDetailsMessages.AddQueryDialog_description;
+		return JptJpaUiDetailsMessages.ADD_QUERY_DIALOG_DESCRIPTION;
 	}
 
 	@Override
@@ -133,7 +133,7 @@ public class HibernateAddQueryDialog extends ValidatingDialog<AddQueryStateObjec
 		@Override
 		protected void initializeLayout(Composite container) {
 			
-			this.addLabel(container, JptJpaUiDetailsMessages.AddQueryDialog_name);
+			this.addLabel(container, JptJpaUiDetailsMessages.ADD_QUERY_DIALOG_NAME);
 			this.nameText = this.addText(container, buildNameHolder());
 //			this.nameText = addLabeledText(
 //				container,
@@ -141,7 +141,7 @@ public class HibernateAddQueryDialog extends ValidatingDialog<AddQueryStateObjec
 //				buildNameHolder()
 //			);
 
-			this.addLabel(container, JptJpaUiDetailsMessages.AddQueryDialog_queryType);
+			this.addLabel(container, JptJpaUiDetailsMessages.ADD_QUERY_DIALOG_QUERY_TYPE);
 			this.addCombo(
 					container,
 					buildQueryTypeListHolder(), 
@@ -173,10 +173,10 @@ public class HibernateAddQueryDialog extends ValidatingDialog<AddQueryStateObjec
 				@Override
 				protected String transform_(String value) {
 					if (value == NAMED_QUERY) {
-						return JptJpaUiDetailsMessages.AddQueryDialog_namedQuery;
+						return JptJpaUiDetailsMessages.ADD_QUERY_DIALOG_NAMED_QUERY;
 					}
 					if (value == NAMED_NATIVE_QUERY) {
-						return JptJpaUiDetailsMessages.AddQueryDialog_namedNativeQuery;
+						return JptJpaUiDetailsMessages.ADD_QUERY_DIALOG_NAMED_NATIVE_QUERY;
 					}
 					if (value == HibernateNamedQuery.HIBERNATE_NAMED_QUERY) {
 						return HibernateUIMappingMessages.HibernateAddQueryDialog_hibernateNamedQuery;
@@ -270,16 +270,16 @@ final class AddQueryStateObject extends AbstractNode
 
 	private void addNameProblemsTo(List<Problem> currentProblems) {
 		if (StringTools.isBlank(this.name)) {
-			currentProblems.add(buildProblem(JptJpaUiDetailsMessages.QueryStateObject_nameMustBeSpecified, IMessageProvider.ERROR));
+			currentProblems.add(buildProblem(JptJpaUiDetailsMessages.QUERYSTATEOBJECT_NAME_MUST_BE_SPECIFIED, IMessageProvider.ERROR));
 		}
 		else if (names().contains(this.name)){
-			currentProblems.add(buildProblem(JptJpaUiDetailsMessages.AddQueryDialog_nameExists, IMessageProvider.WARNING));
+			currentProblems.add(buildProblem(JptJpaUiDetailsMessages.ADD_QUERY_DIALOG_NAME_EXISTS, IMessageProvider.WARNING));
 		}
 	}
 
 	private void addQueryTypeProblemsTo(List<Problem> currentProblems) {
 		if (StringTools.isBlank(this.queryType)) {
-			currentProblems.add(buildProblem(JptJpaUiDetailsMessages.QueryStateObject_typeMustBeSpecified, IMessageProvider.ERROR));
+			currentProblems.add(buildProblem(JptJpaUiDetailsMessages.QUERYSTATEOBJECT_TYPE_MUST_BE_SPECIFIED, IMessageProvider.ERROR));
 		}
 	}
 

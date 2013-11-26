@@ -117,7 +117,7 @@ public abstract class HibernateAbstractInheritanceComposite<T extends HibernateE
 		);
 
 		// Strategy widgets
-		this.addLabel(subPane, JptJpaUiDetailsMessages.InheritanceComposite_strategy);
+		this.addLabel(subPane, JptJpaUiDetailsMessages.INHERITANCE_COMPOSITE_STRATEGY);
 		this.addStrategyCombo(container);
 //		addLabeledComposite(
 //			subPane,
@@ -143,7 +143,7 @@ public abstract class HibernateAbstractInheritanceComposite<T extends HibernateE
 		
 		this.addLabel(
 				subPane,
-				JptJpaUiDetailsMessages.InheritanceComposite_discriminatorValue,
+				JptJpaUiDetailsMessages.INHERITANCE_COMPOSITE_DISCRIMINATOR_VALUE,
 				dvEnabled
 			);
 		this.addEditableCombo(
@@ -239,7 +239,7 @@ public abstract class HibernateAbstractInheritanceComposite<T extends HibernateE
 						);
 					}
 					else {
-						value = JptJpaUiDetailsMessages.ProviderDefault;
+						value = JptJpaUiDetailsMessages.PROVIDER_DEFAULT;
 					}
 				}
 				if (value.startsWith(NONE_KEY)) {
@@ -301,11 +301,11 @@ public abstract class HibernateAbstractInheritanceComposite<T extends HibernateE
 			protected String displayString(InheritanceType value) {
 				switch (value) {
 				case JOINED :
-					return JptJpaUiDetailsMessages.AbstractInheritanceComposite_joined;
+					return JptJpaUiDetailsMessages.ABSTRACT_INHERITANCE_COMPOSITE_JOINED;
 				case SINGLE_TABLE :
-					return JptJpaUiDetailsMessages.AbstractInheritanceComposite_single_table;
+					return JptJpaUiDetailsMessages.ABSTRACT_INHERITANCE_COMPOSITE_SINGLE_TABLE;
 				case TABLE_PER_CLASS :
-					return JptJpaUiDetailsMessages.AbstractInheritanceComposite_table_per_class;
+					return JptJpaUiDetailsMessages.ABSTRACT_INHERITANCE_COMPOSITE_TABLE_PER_CLASS;
 				default :
 					throw new IllegalStateException();
 			}

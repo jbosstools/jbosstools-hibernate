@@ -163,7 +163,7 @@ public class AddGeneratedClassesJob extends WorkspaceJob {
 	}
 
 	boolean mappingFileContains(JpaProject jpaProject, String fullyQualifiedTypeName) {
-		PersistenceXml persistenceXml = jpaProject.getContextModelRoot().getPersistenceXml();
+		PersistenceXml persistenceXml = jpaProject.getContextRoot().getPersistenceXml();
 		if (persistenceXml == null) {
 			return false;
 		}

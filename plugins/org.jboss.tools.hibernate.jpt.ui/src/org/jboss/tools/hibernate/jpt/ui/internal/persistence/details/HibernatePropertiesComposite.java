@@ -34,7 +34,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
+import org.eclipse.jpt.common.ui.internal.swt.listeners.SWTListenerTools;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
@@ -161,7 +161,7 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 //				StringConverter.Default.<String>instance(),
 //				null);
 
-		dialectHolder.addPropertyChangeListener(PropertyValueModel.VALUE, new SWTPropertyChangeListenerWrapper(
+		dialectHolder.addPropertyChangeListener(PropertyValueModel.VALUE, SWTListenerTools.wrap(
 				new PropertyChangeListener() {
 					@Override
 					public void propertyChanged(PropertyChangeEvent event) {
@@ -176,7 +176,7 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 			)
 		);
 
-		driverHolder.addPropertyChangeListener( PropertyValueModel.VALUE, new SWTPropertyChangeListenerWrapper(
+		driverHolder.addPropertyChangeListener( PropertyValueModel.VALUE, SWTListenerTools.wrap(
 				new PropertyChangeListener() {
 					@Override
 					public void propertyChanged(PropertyChangeEvent event) {

@@ -12,7 +12,7 @@
 package org.jboss.tools.hibernate.jpt.ui.internal.mappings.db.xpl;
 
 import org.eclipse.core.commands.util.Tracing;
-import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
+import org.eclipse.jpt.common.ui.internal.swt.listeners.SWTListenerTools;
 import org.eclipse.jpt.common.ui.internal.widgets.ComboPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -96,7 +96,7 @@ public abstract class DatabaseObjectCombo<T extends JpaModel>
 	}
 
 	protected PropertyChangeListener buildConnectionProfileListener() {
-		return new SWTPropertyChangeListenerWrapper(this.buildConnectionProfileListener_());
+		return SWTListenerTools.wrap(this.buildConnectionProfileListener_());
 	}
 
 	protected PropertyChangeListener buildConnectionProfileListener_() {

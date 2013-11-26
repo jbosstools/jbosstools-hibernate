@@ -18,7 +18,7 @@ import java.util.ListIterator;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.common.ui.internal.swt.bind.SWTBindTools;
+import org.eclipse.jpt.common.ui.internal.swt.bindings.SWTBindingTools;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
@@ -330,7 +330,7 @@ public class HibernateQueriesComposite extends Pane<HibernateJavaQueryContainer>
 						index = IterableTools.indexOf(getSubject().getNamedNativeQueries(), query);
 					}
 
-					name = NLS.bind(JptJpaUiDetailsMessages.QueriesComposite_displayString, index);
+					name = NLS.bind(JptJpaUiDetailsMessages.QUERIES_COMPOSITE_DISPLAY_STRING, index);
 				}
 
 				return name;
@@ -420,7 +420,7 @@ public class HibernateQueriesComposite extends Pane<HibernateJavaQueryContainer>
 	}
 
 	private void installPaneSwitcher(PageBook pageBook) {
-		SWTBindTools.bind(getQueryHolder(), buildPaneTransformer(), pageBook);
+		SWTBindingTools.bind(getQueryHolder(), buildPaneTransformer(), pageBook);
 	}
 
 	protected PropertyValueModel<Query> getQueryHolder() {

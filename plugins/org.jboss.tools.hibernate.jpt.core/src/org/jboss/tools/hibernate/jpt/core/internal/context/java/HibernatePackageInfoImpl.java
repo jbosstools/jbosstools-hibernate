@@ -220,7 +220,7 @@ public class HibernatePackageInfoImpl extends AbstractJavaContextModel<Persisten
 	}
 	
 	@Override
-	public Class<? extends JpaStructureNode> getType() {
+	public Class<? extends JpaStructureNode> getStructureType() {
 		return JavaPackageInfo.class;
 	}
 
@@ -279,12 +279,12 @@ public class HibernatePackageInfoImpl extends AbstractJavaContextModel<Persisten
 	}
 
 	@Override
-	public Iterable<? extends JpaStructureNode> getChildren() {
+	public Iterable<? extends JpaStructureNode> getStructureChildren() {
 		return IterableTools.emptyIterable();
 	}
 
 	@Override
-	public int getChildrenSize() {
+	public int getStructureChildrenSize() {
 		return 0;
 	}
 

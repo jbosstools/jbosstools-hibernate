@@ -90,8 +90,8 @@ public class HibernateJpaProject extends AbstractJpaProject {
 	}
 	
 	public BasicHibernateProperties getBasicHibernateProperties(){
-		if (getContextModelRoot() != null){
-			PersistenceXml persistenceXml = getContextModelRoot().getPersistenceXml();
+		if (getContextRoot() != null){
+			PersistenceXml persistenceXml = getContextRoot().getPersistenceXml();
 			Persistence persistence = persistenceXml.getRoot();
 			if (persistence.getPersistenceUnitsSize() > 0){
 				PersistenceUnit persistenceUnit = persistence.getPersistenceUnit(0);

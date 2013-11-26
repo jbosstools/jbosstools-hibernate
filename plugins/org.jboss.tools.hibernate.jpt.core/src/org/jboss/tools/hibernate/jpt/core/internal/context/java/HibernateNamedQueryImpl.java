@@ -13,7 +13,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 import java.util.List;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
+import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -48,8 +48,9 @@ public class HibernateNamedQueryImpl extends AbstractHibernateNamedQueryImpl<Hib
 
 	// ********** misc **********
 	@Override
-	public Class<HibernateNamedQuery> getType() {
-		return HibernateNamedQuery.class;
+	public Class<NamedQuery> getQueryType() {
+//		return HibernateNamedQuery.class;
+		return NamedQuery.class;
 	}
 
 	@Override
@@ -67,4 +68,5 @@ public class HibernateNamedQueryImpl extends AbstractHibernateNamedQueryImpl<Hib
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 }

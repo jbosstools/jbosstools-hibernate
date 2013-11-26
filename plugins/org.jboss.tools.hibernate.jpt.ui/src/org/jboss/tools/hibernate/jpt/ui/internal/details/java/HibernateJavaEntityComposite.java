@@ -62,7 +62,7 @@ public class HibernateJavaEntityComposite extends AbstractEntityComposite<Hibern
 				ExpandableComposite.TWISTIE |
 				ExpandableComposite.EXPANDED);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText(JptJpaUiDetailsMessages.BasicSection_title);
+		section.setText(JptJpaUiDetailsMessages.BASIC_SECTION_TITLE);
 		section.setClient(this.initializeTypeDefsSection(section, buildTypeDefContainerHolder()));
 //		container = addCollapsibleSection(
 //				container,
@@ -125,11 +125,11 @@ public class HibernateJavaEntityComposite extends AbstractEntityComposite<Hibern
 		tableComposite.getControl().setLayoutData(gridData);
 
 		//Entity name widgets
-		this.addLabel(container, JptJpaUiDetailsMessages.EntityNameComposite_name);
+		this.addLabel(container, JptJpaUiDetailsMessages.ENTITY_NAME_COMPOSITE_NAME);
 		new EntityNameCombo(this, container);
 
 		//Id class widgets
-		Hyperlink hyperlink = this.addHyperlink(container, JptJpaUiDetailsMessages.IdClassComposite_label);
+		Hyperlink hyperlink = this.addHyperlink(container, JptJpaUiDetailsMessages.ID_CLASS_COMPOSITE_LABEL);
 		new IdClassChooser(this, this.buildIdClassReferenceModel(), container, hyperlink);
 
 		return container;

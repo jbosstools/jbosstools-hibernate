@@ -12,6 +12,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.List;
 
+import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -152,8 +153,9 @@ public class HibernateNamedNativeQueryImpl extends AbstractHibernateNamedQueryIm
 	
 	// ********** misc **********
 	@Override
-	public Class<HibernateNamedNativeQuery> getType() {
-		return HibernateNamedNativeQuery.class;
+	public Class<NamedNativeQuery> getQueryType() {
+//		return HibernateNamedNativeQuery.class;
+		return NamedNativeQuery.class;
 	}
 
 	@Override
