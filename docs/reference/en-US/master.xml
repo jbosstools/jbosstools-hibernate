@@ -50,9 +50,9 @@
       <holder>JBoss by Red Hat</holder>
     </copyright>
 
-    <releaseinfo>
-      Version: 3.3.0.M5
-    </releaseinfo>
+       <releaseinfo>
+            Version: &project.version;
+       </releaseinfo>
 
 
     <mediaobject>

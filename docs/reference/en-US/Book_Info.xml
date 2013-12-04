@@ -4,10 +4,8 @@
 <bookinfo>
 	<title>Hibernate Tools Reference Guide</title>
 	<subtitle>Provides information relating to the Hibernate Tools set.</subtitle>
-	<productname>JBoss Developer Studio</productname>
-	<productnumber>6.0</productnumber>
-	<edition>6.0.0</edition>
-	<pubsnumber>1</pubsnumber>
+	<productname>Red Hat JBoss Developer Studio</productname>
+	<productnumber>7.1</productnumber>
 	<abstract>
 		<para>
 			The Hibernate Tools Reference Guide explains how to use the Hibernate Tools to perform reverse engineering, code generation, visualization and interaction with Hibernate.
