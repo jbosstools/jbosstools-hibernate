@@ -4,7 +4,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	<parent>
 		<groupId>org.jboss.tools</groupId>
 		<artifactId>parent</artifactId>
-		<version>4.2.0.Alpha1-SNAPSHOT</version>
+		<version>4.2.0.Alpha2-SNAPSHOT</version>
 	</parent>
 	<artifactId>hibernatetools</artifactId>
 	<name>hibernatetools.all</name>
@@ -31,6 +31,12 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
+		</repository>
+
+		<repository>
+			<id>jbosstools-base</id>
+			<layout>p2</layout>
+			<url>${jbosstools-base-site}</url>
 		</repository>
 	</repositories>
 </project>
