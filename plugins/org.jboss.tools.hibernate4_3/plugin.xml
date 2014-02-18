@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.hibernate.eclipse.hibernateextension">
+      <hibernateextension
+            classname="org.jboss.tools.hibernate4_3.HibernateExtension4_3"
+            version="%hibernate.version">
+      </hibernateextension>
+   </extension>
+</plugin>
