@@ -27,6 +27,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<module>org.jboss.tools.hibernate3_5</module>
 		<module>org.jboss.tools.hibernate3_6</module>
 		<module>org.jboss.tools.hibernate4_0</module>
+                <module>org.jboss.tools.hibernate4_3</module>
 	</modules>
 </project>
 	
