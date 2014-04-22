@@ -12,7 +12,7 @@ package org.hibernate.eclipse.console.workbench;
 
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.internal.compiler.impl.CompilerOptions;
+import org.eclipse.jdt.internal.compiler.classfmt.ClassFileConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Display;
@@ -38,8 +38,8 @@ public class ProjectCompilerVersionChecker {
 				if (iJavaProject.exists()) {
 					String projectTarget = iJavaProject.getOption(JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, true);
 					String eclipseCompilerVersion = System.getProperty("java.specification.version"); //$NON-NLS-1$
-					long projectJdkLevel = CompilerOptions.versionToJdkLevel(projectTarget);
-					long eclipseJdkLevel = CompilerOptions.versionToJdkLevel(eclipseCompilerVersion);
+					long projectJdkLevel = versionToJdkLevel(projectTarget);
+					long eclipseJdkLevel = versionToJdkLevel(eclipseCompilerVersion);
 					if (eclipseJdkLevel < projectJdkLevel){
 						Display.getDefault().syncExec(new Runnable(){
 							@Override
@@ -55,4 +55,45 @@ public class ProjectCompilerVersionChecker {
 		}
 		return true;
 	}
+	
+	private static final String VERSION_JSR14 = "jsr14"; //$NON-NLS-1$
+	private static final String VERSION_CLDC1_1 = "cldc1.1"; //$NON-NLS-1$
+
+	private static long versionToJdkLevel(Object versionID) {
+		if (versionID instanceof String) {
+			String version = (String) versionID;
+			// verification is optimized for all versions with same length and same "1." prefix
+			if (version.length() == 3 && version.charAt(0) == '1' && version.charAt(1) == '.') {
+				switch (version.charAt(2)) {
+					case '1':
+						return ClassFileConstants.JDK1_1;
+					case '2':
+						return ClassFileConstants.JDK1_2;
+					case '3':
+						return ClassFileConstants.JDK1_3;
+					case '4':
+						return ClassFileConstants.JDK1_4;
+					case '5':
+						return ClassFileConstants.JDK1_5;
+					case '6':
+						return ClassFileConstants.JDK1_6;
+					case '7':
+						return ClassFileConstants.JDK1_7;
+					case '8':
+						return ClassFileConstants.JDK1_8;
+					default:
+						return 0; // unknown
+				}
+			}
+			if (VERSION_JSR14.equals(versionID)) {
+				return ClassFileConstants.JDK1_4;
+			}
+			if (VERSION_CLDC1_1.equals(versionID)) {
+				return ClassFileConstants.CLDC_1_1;
+			}
+		}
+		return 0; // unknown
+	}
+
+	
 }
