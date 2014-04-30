@@ -226,6 +226,35 @@ public class ConfigurationFactory {
 			changeDatasourceProperties(invoke);
 			invoke = configureConnectionProfile(invoke);
 			return invoke;
+//			Class hibernatePersistanceProviderClass = ReflectHelper.classForName("org.hibernate.jpa.HibernatePersistenceProvider", ConsoleConfiguration.class);
+//			Object hibernatePersistanceProvider = hibernatePersistanceProviderClass.newInstance();
+//			
+//			Method getEntityManagerFactoryBuilderOrNull = hibernatePersistanceProviderClass.getDeclaredMethod(
+//					"getEntityManagerFactoryBuilderOrNull", 
+//					new Class[] { String.class, Map.class });
+//			getEntityManagerFactoryBuilderOrNull.setAccessible(true);
+//			Object entityManagerFactoryBuilder = 
+//					getEntityManagerFactoryBuilderOrNull.invoke(
+//							hibernatePersistanceProvider, 
+//							new Object[] { persistenceUnit, overrides});
+//			
+//			if (entityManagerFactoryBuilder == null) {
+//				throw new HibernateConsoleRuntimeException(
+//						"Persistence unit not found: '" + 
+//						persistenceUnit + 
+//						"'.");
+//			}
+//			
+//			Method build =
+//					entityManagerFactoryBuilder.getClass().getMethod(
+//							"build", new Class[0]);
+//			build.invoke(entityManagerFactoryBuilder, null);
+//			
+//			Method getHibernateConfiguration = 
+//					entityManagerFactoryBuilder.getClass().getMethod(
+//							"getHibernateConfiguration", new Class[0]);
+//			return (Configuration)getHibernateConfiguration.invoke(
+//							entityManagerFactoryBuilder, null);
 		} catch (HibernateConsoleRuntimeException he) {
 			throw he;
 		} catch (Exception e) {
