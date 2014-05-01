@@ -12,7 +12,7 @@
    <packaging>eclipse-plugin</packaging>
 
    <properties>
-      <version.hibernate-core>4.3.1.Final</version.hibernate-core>
+      <version.hibernate-core>4.3.5.Final</version.hibernate-core>
    </properties>
 
    <build>
