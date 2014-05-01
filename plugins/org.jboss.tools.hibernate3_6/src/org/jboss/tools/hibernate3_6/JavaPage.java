@@ -98,7 +98,6 @@ public class JavaPage extends AbstractQueryPage {
         }
 	}
 
-    @SuppressWarnings("unchecked")
 	private Interpreter setupInterpreter(Session session) throws EvalError, HibernateException {
         Interpreter interpreter = new Interpreter();
 

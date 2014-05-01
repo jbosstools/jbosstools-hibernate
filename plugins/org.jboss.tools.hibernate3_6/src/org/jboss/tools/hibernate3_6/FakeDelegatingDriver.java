@@ -44,6 +44,6 @@ public class FakeDelegatingDriver implements Driver {
 		return this.driver.jdbcCompliant();
 	}
 	public Logger getParentLogger() throws SQLFeatureNotSupportedException {
-		return Logger.global;
+		return Logger.getLogger(Logger.GLOBAL_LOGGER_NAME) ;
 	}
 }
