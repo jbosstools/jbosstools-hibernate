@@ -20,5 +20,6 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.eclipse.debug.core
 Bundle-ClassPath: .,
- lib/hibernate-core-3.5.6-Final.jar
+ lib/hibernate-core-3.5.6-Final.jar,
+ lib/hibernate-tools-3.4.0.CR2.jar
 Bundle-Vendor: JBoss by Red Hat

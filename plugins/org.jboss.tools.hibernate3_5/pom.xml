@@ -13,6 +13,7 @@
 	
    <properties>
       <version.hibernate-core>3.5.6-Final</version.hibernate-core>
+      <version.hibernate-tools>3.4.0.CR2</version.hibernate-tools>
    </properties>
 
    <build>
@@ -55,6 +56,12 @@
                            <artifactId>hibernate-core</artifactId>
                            <version>${version.hibernate-core}</version>
                            <destFileName>hibernate-core-${version.hibernate-core}.jar</destFileName>
+                        </artifactItem>
+                        <artifactItem>
+                           <groupId>org.hibernate</groupId>
+                           <artifactId>hibernate-tools</artifactId>
+                           <version>${version.hibernate-tools}</version>
+                           <destFileName>hibernate-tools-${version.hibernate-tools}.jar</destFileName>
                         </artifactItem>
                      </artifactItems>
                      <skip>false</skip>
