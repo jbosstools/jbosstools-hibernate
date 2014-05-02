@@ -15,6 +15,7 @@
       <version.hibernate-core>3.5.6-Final</version.hibernate-core>
       <version.hibernate-tools>3.4.0.CR2</version.hibernate-tools>
       <version.slf4j-log4j12>1.5.8</version.slf4j-log4j12>
+      <version.cglib>2.2</version.cglib>
    </properties>
 
    <build>
@@ -69,6 +70,12 @@
                            <artifactId>slf4j-log4j12</artifactId>
                            <version>${version.slf4j-log4j12}</version>
                            <destFileName>slf4j-log4j12-${version.slf4j-log4j12}.jar</destFileName>
+                        </artifactItem>
+                        <artifactItem>
+                           <groupId>cglib</groupId>
+                           <artifactId>cglib</artifactId>
+                           <version>${version.cglib}</version>
+                           <destFileName>cglib-${version.cglib}.jar</destFileName>
                         </artifactItem>
                      </artifactItems>
                      <skip>false</skip>
