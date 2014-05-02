@@ -17,6 +17,7 @@
       <version.slf4j-log4j12>1.5.8</version.slf4j-log4j12>
       <version.cglib>2.2</version.cglib>
       <version.commons-logging>1.0.4</version.commons-logging>
+      <version.freemarker>2.3.8</version.freemarker>
    </properties>
 
    <build>
@@ -83,6 +84,12 @@
                            <artifactId>commons-logging</artifactId>
                            <version>${version.commons-logging}</version>
                            <destFileName>commons-logging-${version.commons-logging}.jar</destFileName>
+                        </artifactItem>
+                        <artifactItem>
+                           <groupId>freemarker</groupId>
+                           <artifactId>freemarker</artifactId>
+                           <version>${version.freemarker}</version>
+                           <destFileName>freemarker-${version.freemarker}.jar</destFileName>
                         </artifactItem>
                      </artifactItems>
                      <skip>false</skip>
