@@ -16,6 +16,7 @@
       <version.hibernate-tools>3.4.0.CR2</version.hibernate-tools>
       <version.slf4j-log4j12>1.5.8</version.slf4j-log4j12>
       <version.cglib>2.2</version.cglib>
+      <version.commons-logging>1.0.4</version.commons-logging>
    </properties>
 
    <build>
@@ -76,6 +77,12 @@
                            <artifactId>cglib</artifactId>
                            <version>${version.cglib}</version>
                            <destFileName>cglib-${version.cglib}.jar</destFileName>
+                        </artifactItem>
+                        <artifactItem>
+                           <groupId>commons-logging</groupId>
+                           <artifactId>commons-logging</artifactId>
+                           <version>${version.commons-logging}</version>
+                           <destFileName>commons-logging-${version.commons-logging}.jar</destFileName>
                         </artifactItem>
                      </artifactItems>
                      <skip>false</skip>
