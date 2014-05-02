@@ -25,5 +25,6 @@ Bundle-ClassPath: .,
  lib/slf4j-log4j12-1.5.8.jar,
  lib/cglib-2.2.jar,
  lib/commons-logging-1.0.4.jar,
- lib/freemarker-2.3.8.jar
+ lib/freemarker-2.3.8.jar,
+ lib/jtidy-r8-20060801.jar
 Bundle-Vendor: JBoss by Red Hat

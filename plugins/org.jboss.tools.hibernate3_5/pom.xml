@@ -18,6 +18,7 @@
       <version.cglib>2.2</version.cglib>
       <version.commons-logging>1.0.4</version.commons-logging>
       <version.freemarker>2.3.8</version.freemarker>
+      <version.jtidy>r8-20060801</version.jtidy>
    </properties>
 
    <build>
@@ -90,6 +91,12 @@
                            <artifactId>freemarker</artifactId>
                            <version>${version.freemarker}</version>
                            <destFileName>freemarker-${version.freemarker}.jar</destFileName>
+                        </artifactItem>
+                        <artifactItem>
+                           <groupId>org.hibernate</groupId>
+                           <artifactId>jtidy</artifactId>
+                           <version>${version.jtidy}</version>
+                           <destFileName>jtidy-${version.jtidy}.jar</destFileName>
                         </artifactItem>
                      </artifactItems>
                      <skip>false</skip>
