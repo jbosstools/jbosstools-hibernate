@@ -19,6 +19,7 @@
       <version.commons-logging>1.0.4</version.commons-logging>
       <version.freemarker>2.3.8</version.freemarker>
       <version.jtidy>r8-20060801</version.jtidy>
+      <version.bsh-core>2.0b4</version.bsh-core>
    </properties>
 
    <build>
@@ -97,6 +98,12 @@
                            <artifactId>jtidy</artifactId>
                            <version>${version.jtidy}</version>
                            <destFileName>jtidy-${version.jtidy}.jar</destFileName>
+                        </artifactItem>
+                        <artifactItem>
+                           <groupId>org.beanshell</groupId>
+                           <artifactId>bsh-core</artifactId>
+                           <version>${version.bsh-core}</version>
+                           <destFileName>bsh-core-${version.bsh-core}.jar</destFileName>
                         </artifactItem>
                      </artifactItems>
                      <skip>false</skip>
