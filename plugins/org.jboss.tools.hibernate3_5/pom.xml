@@ -20,6 +20,7 @@
       <version.freemarker>2.3.8</version.freemarker>
       <version.jtidy>r8-20060801</version.jtidy>
       <version.bsh-core>2.0b4</version.bsh-core>
+      <version.log4j>1.2.15</version.log4j>
    </properties>
 
    <build>
@@ -104,6 +105,12 @@
                            <artifactId>bsh-core</artifactId>
                            <version>${version.bsh-core}</version>
                            <destFileName>bsh-core-${version.bsh-core}.jar</destFileName>
+                        </artifactItem>
+                        <artifactItem>
+                           <groupId>log4j</groupId>
+                           <artifactId>log4j</artifactId>
+                           <version>${version.log4j}</version>
+                           <destFileName>log4j-${version.log4j}.jar</destFileName>
                         </artifactItem>
                      </artifactItems>
                      <skip>false</skip>
