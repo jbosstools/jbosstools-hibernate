@@ -24,6 +24,7 @@
       <version.bsh-core>2.0b4</version.bsh-core>
       <version.log4j>1.2.15</version.log4j>
       <version.antlr>2.7.6</version.antlr>
+      <version.dom4j>1.6.1</version.dom4j>
    </properties>
 
    <build>
@@ -132,6 +133,12 @@
                            <artifactId>commons-collections</artifactId>
                            <version>${version.commons-collections}</version>
                            <destFileName>commons-collections-${version.commons-collections}.jar</destFileName>
+                        </artifactItem>
+                        <artifactItem>
+                           <groupId>dom4j</groupId>
+                           <artifactId>dom4j</artifactId>
+                           <version>${version.dom4j}</version>
+                           <destFileName>dom4j-${version.dom4j}.jar</destFileName>
                         </artifactItem>
                      </artifactItems>
                      <skip>false</skip>
