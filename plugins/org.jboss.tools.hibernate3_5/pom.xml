@@ -15,6 +15,7 @@
       <version.hibernate-core>3.5.6-Final</version.hibernate-core>
       <version.hibernate-tools>3.4.0.CR2</version.hibernate-tools>
       <version.hibernate-jpa-2.0-api>1.0.0.Final</version.hibernate-jpa-2.0-api>
+      <version.slf4j-api>1.5.8</version.slf4j-api>
       <version.slf4j-log4j12>1.5.8</version.slf4j-log4j12>
       <version.cglib>2.2</version.cglib>
       <version.commons-logging>1.0.4</version.commons-logging>
@@ -153,6 +154,12 @@
                            <artifactId>jta</artifactId>
                            <version>${version.jta}</version>
                            <destFileName>jta-${version.jta}.jar</destFileName>
+                        </artifactItem>
+                        <artifactItem>
+                           <groupId>org.slf4j</groupId>
+                           <artifactId>slf4j-api</artifactId>
+                           <version>${version.slf4j-api}</version>
+                           <destFileName>slf4j-api-${version.slf4j-api}.jar</destFileName>
                         </artifactItem>
                      </artifactItems>
                      <skip>false</skip>
