@@ -25,6 +25,7 @@
       <version.log4j>1.2.15</version.log4j>
       <version.antlr>2.7.6</version.antlr>
       <version.dom4j>1.6.1</version.dom4j>
+      <version.javassist>3.9.0.GA</version.javassist>
    </properties>
 
    <build>
@@ -139,6 +140,12 @@
                            <artifactId>dom4j</artifactId>
                            <version>${version.dom4j}</version>
                            <destFileName>dom4j-${version.dom4j}.jar</destFileName>
+                        </artifactItem>
+                        <artifactItem>
+                           <groupId>javassist</groupId>
+                           <artifactId>javassist</artifactId>
+                           <version>${version.javassist}</version>
+                           <destFileName>javassist-${version.javassist}.jar</destFileName>
                         </artifactItem>
                      </artifactItems>
                      <skip>false</skip>
