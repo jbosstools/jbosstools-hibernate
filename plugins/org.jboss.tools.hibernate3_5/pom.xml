@@ -26,6 +26,7 @@
       <version.antlr>2.7.6</version.antlr>
       <version.dom4j>1.6.1</version.dom4j>
       <version.javassist>3.9.0.GA</version.javassist>
+      <version.jta>1.1</version.jta>
    </properties>
 
    <build>
@@ -146,6 +147,12 @@
                            <artifactId>javassist</artifactId>
                            <version>${version.javassist}</version>
                            <destFileName>javassist-${version.javassist}.jar</destFileName>
+                        </artifactItem>
+                        <artifactItem>
+                           <groupId>javax.transaction</groupId>
+                           <artifactId>jta</artifactId>
+                           <version>${version.jta}</version>
+                           <destFileName>jta-${version.jta}.jar</destFileName>
                         </artifactItem>
                      </artifactItems>
                      <skip>false</skip>

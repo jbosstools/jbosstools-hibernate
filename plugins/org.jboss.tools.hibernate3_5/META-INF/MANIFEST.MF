@@ -33,5 +33,6 @@ Bundle-ClassPath: .,
  lib/antlr-2.7.6.jar,
  lib/commons-collections-3.1.jar,
  lib/dom4j-1.6.1.jar,
- lib/javassist-3.9.0.GA.jar
+ lib/javassist-3.9.0.GA.jar,
+ lib/jta-1.1.jar
 Bundle-Vendor: JBoss by Red Hat
