@@ -18,6 +18,7 @@
       <version.slf4j-log4j12>1.5.8</version.slf4j-log4j12>
       <version.cglib>2.2</version.cglib>
       <version.commons-logging>1.0.4</version.commons-logging>
+      <version.commons-collections>3.1</version.commons-collections>
       <version.freemarker>2.3.8</version.freemarker>
       <version.jtidy>r8-20060801</version.jtidy>
       <version.bsh-core>2.0b4</version.bsh-core>
@@ -125,6 +126,12 @@
                            <artifactId>antlr</artifactId>
                            <version>${version.antlr}</version>
                            <destFileName>antlr-${version.antlr}.jar</destFileName>
+                        </artifactItem>
+                        <artifactItem>
+                           <groupId>commons-collections</groupId>
+                           <artifactId>commons-collections</artifactId>
+                           <version>${version.commons-collections}</version>
+                           <destFileName>commons-collections-${version.commons-collections}.jar</destFileName>
                         </artifactItem>
                      </artifactItems>
                      <skip>false</skip>

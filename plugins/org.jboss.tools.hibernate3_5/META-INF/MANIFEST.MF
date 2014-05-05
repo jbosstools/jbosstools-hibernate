@@ -30,5 +30,6 @@ Bundle-ClassPath: .,
  lib/bsh-core-2.0b4.jar,
  lib/log4j-1.2.15.jar,
  lib/hibernate-jpa-2.0-api-1.0.0.Final.jar,
- lib/antlr-2.7.6.jar
+ lib/antlr-2.7.6.jar,
+ lib/commons-collections-3.1.jar
 Bundle-Vendor: JBoss by Red Hat
