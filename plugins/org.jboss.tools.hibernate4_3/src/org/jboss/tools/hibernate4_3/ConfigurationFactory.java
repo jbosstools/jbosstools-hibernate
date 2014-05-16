@@ -202,28 +202,41 @@ public class ConfigurationFactory {
 			if (StringHelper.isEmpty((String) overrides.get("javax.persistence.validation.mode"))) {//$NON-NLS-1$
 				overrides.put("javax.persistence.validation.mode", "none"); //$NON-NLS-1$//$NON-NLS-2$
 			}
-			Class<?> clazz = StandardClassLoaderDelegateImpl.INSTANCE.classForName(
-					"org.hibernate.ejb.Ejb3Configuration"); //$NON-NLS-1$
-			Object ejb3cfg = clazz.newInstance();
-			if (StringHelper.isNotEmpty(entityResolver)) {
-				Class<?> resolver = StandardClassLoaderDelegateImpl.INSTANCE.classForName(entityResolver);
-				Object object = resolver.newInstance();
-				Method method = clazz.getMethod(
-						"setEntityResolver", new Class[] { EntityResolver.class });//$NON-NLS-1$
-				method.invoke(ejb3cfg, new Object[] { object });
+			Class hibernatePersistanceProviderClass = 
+					StandardClassLoaderDelegateImpl.INSTANCE.classForName(
+							"org.hibernate.jpa.HibernatePersistenceProvider");
+			Object hibernatePersistanceProvider = hibernatePersistanceProviderClass.newInstance();
+		
+			Method getEntityManagerFactoryBuilderOrNull = hibernatePersistanceProviderClass.getDeclaredMethod(
+					"getEntityManagerFactoryBuilderOrNull", 
+					new Class[] { String.class, Map.class });
+			getEntityManagerFactoryBuilderOrNull.setAccessible(true);
+			Object entityManagerFactoryBuilder = 
+					getEntityManagerFactoryBuilderOrNull.invoke(
+							hibernatePersistanceProvider, 
+							new Object[] { persistenceUnit, overrides});
+		
+			if (entityManagerFactoryBuilder == null) {
+				throw new HibernateConsoleRuntimeException(
+						"Persistence unit not found: '" + 
+						persistenceUnit + 
+						"'.");
 			}
-			Method method = clazz.getMethod("configure", new Class[] { String.class, Map.class }); //$NON-NLS-1$
-			if (method.invoke(ejb3cfg, new Object[] { persistenceUnit, overrides }) == null) {
-				String out = NLS.bind(
-						ConsoleMessages.ConsoleConfiguration_persistence_unit_not_found,
-						persistenceUnit);
-				throw new HibernateConsoleRuntimeException(out);
-			}
-			//in hibernate 4 "buildMappings" is not called in method "configure", so call it manually
-			method = clazz.getMethod("buildMappings", new Class[0]); //$NON-NLS-1$
-			method.invoke(ejb3cfg, new Object[0]);
-			method = clazz.getMethod("getHibernateConfiguration", new Class[0]);//$NON-NLS-1$
-			Configuration invoke = (Configuration) method.invoke(ejb3cfg, (Object[]) null);
+			
+			Method buildServiceRegistry = 
+					entityManagerFactoryBuilder.getClass().getMethod(
+							"buildServiceRegistry", new Class[0]);
+			Object serviceRegistry = buildServiceRegistry.invoke(entityManagerFactoryBuilder, null);
+			
+			Class serviceRegistryClass = StandardClassLoaderDelegateImpl.INSTANCE.classForName(
+					"org.hibernate.service.ServiceRegistry");
+
+			Method buildHibernateConfiguration = 
+					entityManagerFactoryBuilder.getClass().getMethod(
+							"buildHibernateConfiguration", 
+							new Class[] { serviceRegistryClass });
+			
+			Configuration invoke = (Configuration)buildHibernateConfiguration.invoke(entityManagerFactoryBuilder, new Object[] { serviceRegistry });
 			changeDatasourceProperties(invoke);
 			invoke = configureConnectionProfile(invoke);
 			return invoke;
