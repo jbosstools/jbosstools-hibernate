@@ -65,7 +65,7 @@ public class JPAPostInstallFasetListener implements IFacetedProjectListener {
 								platformId.equals(HibernateJpaPlatform.HIBERNATE2_1_PLATFORM_ID))) {
 					if (checkPreConditions(project)) {
 						exportConnectionProfilePropertiesToPersistenceXml(project);
-						buildConsoleConfiguration(project);
+						buildConsoleConfiguration(project, platformId);
 					}
 				}
 			}
@@ -142,7 +142,7 @@ public class JPAPostInstallFasetListener implements IFacetedProjectListener {
 		return configs.size() > 0 ? configs.get(0) : null;
 	}
 
-	protected void buildConsoleConfiguration(IProject project){
+	protected void buildConsoleConfiguration(IProject project, String platformId){
 		ILaunchManager lm = DebugPlugin.getDefault().getLaunchManager();
 		ILaunchConfigurationType lct = LaunchHelper.getHibernateLaunchConfigsType();
 		String launchName = lm.generateLaunchConfigurationName(project.getName());
@@ -157,6 +157,13 @@ public class JPAPostInstallFasetListener implements IFacetedProjectListener {
 			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, true );
 			wc.setAttribute(IConsoleConfigurationLaunchConstants.FILE_MAPPINGS, (List<String>)null);
 			wc.setAttribute(IConsoleConfigurationLaunchConstants.USE_JPA_PROJECT_PROFILE, Boolean.toString(true));
+			if (HibernateJpaPlatform.HIBERNATE2_1_PLATFORM_ID.equals(platformId)) {
+				wc.setAttribute(IConsoleConfigurationLaunchConstants.HIBERNATE_VERSION, "4.3"); //$NON-NLS-1$
+			} else if (HibernateJpaPlatform.HIBERNATE2_0_PLATFORM_ID.equals(platformId)) {
+				wc.setAttribute(IConsoleConfigurationLaunchConstants.HIBERNATE_VERSION, "4.0"); //$NON-NLS-1$
+			} else {
+				wc.setAttribute(IConsoleConfigurationLaunchConstants.HIBERNATE_VERSION, "3.6"); //$NON-NLS-1$
+			}
 
 			wc.doSave();
 			ProjectUtils.toggleHibernateOnProject(project, true, launchName);
