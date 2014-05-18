@@ -19,7 +19,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.hibernate.console;
+package org.hibernate.console.refactored;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -44,6 +44,9 @@ import org.eclipse.osgi.util.NLS;
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
 import org.hibernate.connection.DriverManagerConnectionProvider;
+import org.hibernate.console.ConnectionProfileUtil;
+import org.hibernate.console.ConsoleMessages;
+import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
 import org.hibernate.console.proxy.ConfigurationDefaultProxy;
