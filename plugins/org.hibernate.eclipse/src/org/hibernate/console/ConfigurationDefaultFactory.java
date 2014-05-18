@@ -43,11 +43,11 @@ import org.eclipse.datatools.connectivity.ProfileManager;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
-import org.hibernate.cfg.Environment;
 import org.hibernate.connection.DriverManagerConnectionProvider;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
 import org.hibernate.console.proxy.ConfigurationDefaultProxy;
+import org.hibernate.console.proxy.HibernateEnvironment;
 import org.hibernate.console.spi.HibernateConfiguration;
 import org.hibernate.eclipse.libs.FakeDelegatingDriver;
 import org.hibernate.util.ConfigHelper;
@@ -81,9 +81,9 @@ public class ConfigurationDefaultFactory {
 		if (properties != null) {
 			// in case the transaction manager is empty then we need to inject a faketm since
 			// hibernate will still try and instantiate it.
-			String str = properties.getProperty(Environment.TRANSACTION_MANAGER_STRATEGY);
+			String str = properties.getProperty(HibernateEnvironment.TRANSACTION_MANAGER_STRATEGY);
 			if (str != null && StringHelper.isEmpty(str)) {
-				properties.setProperty(Environment.TRANSACTION_MANAGER_STRATEGY, FAKE_TM_LOOKUP);
+				properties.setProperty(HibernateEnvironment.TRANSACTION_MANAGER_STRATEGY, FAKE_TM_LOOKUP);
 				// properties.setProperty( "hibernate.transaction.factory_class", "");
 			}
 		}
@@ -99,7 +99,7 @@ public class ConfigurationDefaultFactory {
 
 		// here both setProperties and configxml have had their chance to tell which databasedriver
 		// is needed.
-		registerFakeDriver(localCfg.getProperty(Environment.DRIVER));
+		registerFakeDriver(localCfg.getProperty(HibernateEnvironment.DRIVER));
 		// autoConfigureDialect(localCfg); Disabled for now since it causes very looong timeouts for
 		// non-running databases + i havent been needed until now...
 
@@ -114,7 +114,7 @@ public class ConfigurationDefaultFactory {
 		}
 		// TODO: HBX-
 		localCfg.setProperty("hibernate.temp.use_jdbc_metadata_defaults", "false"); //$NON-NLS-1$//$NON-NLS-2$
-		localCfg.setProperty(Environment.HBM2DDL_AUTO, "false"); //$NON-NLS-1$
+		localCfg.setProperty(HibernateEnvironment.HBM2DDL_AUTO, "false"); //$NON-NLS-1$
 		// to fix: JBIDE-5839 & JBIDE-5997 - setup this property: false is default value
 		// to make hibernate tools diff hibernate versions compatible:
 		// if the property not set get NoSuchMethodError with FullTextIndexEventListener
@@ -129,10 +129,10 @@ public class ConfigurationDefaultFactory {
 	// autoConfigureDialect(localCfg); Disabled for now since it causes very looong timeouts for
 	// non-running databases + i havent been needed until now...
 	private void autoConfigureDialect(HibernateConfiguration localCfg) {
-		if (localCfg.getProperty(Environment.DIALECT) == null) {
+		if (localCfg.getProperty(HibernateEnvironment.DIALECT) == null) {
 			String dialect = ConnectionProfileUtil.autoDetectDialect(localCfg.getProperties());
 			if (dialect != null){
-				localCfg.setProperty(Environment.DIALECT, dialect);
+				localCfg.setProperty(HibernateEnvironment.DIALECT, dialect);
 			}
 		}
 	}
@@ -182,7 +182,7 @@ public class ConfigurationDefaultFactory {
 				overrides.put("hibernate.ejb.naming_strategy", prefs.getNamingStrategy()); //$NON-NLS-1$
 			}
 			if (StringHelper.isNotEmpty(prefs.getDialectName())) {
-				overrides.put(Environment.DIALECT, prefs.getDialectName());
+				overrides.put(HibernateEnvironment.DIALECT, prefs.getDialectName());
 			}
 			if (!includeMappings) {
 				overrides.put("hibernate.archive.autodetection", "none"); //$NON-NLS-1$//$NON-NLS-2$
@@ -233,7 +233,7 @@ public class ConfigurationDefaultFactory {
 		localCfg = configureConnectionProfile(localCfg);
 		// replace dialect if it is set in preferences
 		if (StringHelper.isNotEmpty(prefs.getDialectName())) {
-			localCfg.setProperty(Environment.DIALECT, prefs.getDialectName());
+			localCfg.setProperty(HibernateEnvironment.DIALECT, prefs.getDialectName());
 		}
 		if (StringHelper.isEmpty(localCfg.getProperty("javax.persistence.validation.mode"))) {//$NON-NLS-1$
 			localCfg.setProperty("javax.persistence.validation.mode", "none"); //$NON-NLS-1$//$NON-NLS-2$
@@ -331,10 +331,10 @@ public class ConfigurationDefaultFactory {
 	private void changeDatasourceProperties(HibernateConfiguration localCfg){
 		final Properties invokeProperties = localCfg.getProperties();
 		// set this property to null!
-		if (invokeProperties.containsKey(Environment.DATASOURCE)){
-			invokeProperties.setProperty(Environment.TRANSACTION_MANAGER_STRATEGY, FAKE_TM_LOOKUP);
-			invokeProperties.put(Environment.CONNECTION_PROVIDER, DriverManagerConnectionProvider.class.getName());
-			invokeProperties.remove(Environment.DATASOURCE);
+		if (invokeProperties.containsKey(HibernateEnvironment.DATASOURCE)){
+			invokeProperties.setProperty(HibernateEnvironment.TRANSACTION_MANAGER_STRATEGY, FAKE_TM_LOOKUP);
+			invokeProperties.put(HibernateEnvironment.CONNECTION_PROVIDER, DriverManagerConnectionProvider.class.getName());
+			invokeProperties.remove(HibernateEnvironment.DATASOURCE);
 			localCfg.setProperties(invokeProperties);
 		}
 	}
