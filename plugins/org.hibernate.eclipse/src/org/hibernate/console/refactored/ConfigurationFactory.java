@@ -61,14 +61,14 @@ import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 
-public class ConfigurationDefaultFactory {
+public class ConfigurationFactory {
 
 	public static final String FAKE_TM_LOOKUP = "org.hibernate.console.FakeTransactionManagerLookup"; //$NON-NLS-1$
 	
 	private ConsoleConfigurationPreferences prefs;
 	private Map<String, FakeDelegatingDriver> fakeDrivers;
 
-	public ConfigurationDefaultFactory(ConsoleConfigurationPreferences prefs,
+	public ConfigurationFactory(ConsoleConfigurationPreferences prefs,
 			Map<String, FakeDelegatingDriver> fakeDrivers) {
 		this.prefs = prefs;
 		this.fakeDrivers = fakeDrivers;
