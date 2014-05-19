@@ -19,5 +19,8 @@ public interface HibernateConfiguration {
 	HibernateConfiguration configure(Document document);
 	void setEntityResolver(EntityResolver entityResolver);
 	void setNamingStrategy(String strategyName);
+	void buildMappings();
+	HibernateSessionFactory buildSessionFactory();
+	HibernateSettings buildSettings();
 
 }

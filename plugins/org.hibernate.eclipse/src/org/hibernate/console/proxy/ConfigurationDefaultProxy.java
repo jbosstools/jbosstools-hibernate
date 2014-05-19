@@ -4,12 +4,16 @@ import java.io.File;
 import java.util.Map;
 import java.util.Properties;
 
+import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.NamingStrategy;
+import org.hibernate.cfg.Settings;
 import org.hibernate.console.ConsoleMessages;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.spi.HibernateConfiguration;
+import org.hibernate.console.spi.HibernateSessionFactory;
+import org.hibernate.console.spi.HibernateSettings;
 import org.hibernate.ejb.Ejb3Configuration;
 import org.hibernate.util.xpl.ReflectHelper;
 import org.w3c.dom.Document;
@@ -95,6 +99,20 @@ public class ConfigurationDefaultProxy implements HibernateConfiguration {
 				ConsoleMessages.ConsoleConfiguration_could_not_configure_naming_strategy
 				+ strategyName, c);
 			}
+	}
+	
+	public void buildMappings() {
+		configuration.buildMappings();
+	}
+	
+	public HibernateSessionFactory buildSessionFactory() {
+		SessionFactory sessionFactory = configuration.buildSessionFactory();
+		return new SessionFactoryProxy(sessionFactory);
+	}
+	
+	public HibernateSettings buildSettings() {
+		Settings settings = configuration.buildSettings();
+		return new SettingsProxy(settings);
 	}
 
 }
