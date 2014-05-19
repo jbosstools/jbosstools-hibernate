@@ -73,14 +73,14 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	private HibernateExtension extension;
 	
 	private void loadHibernateExtension(){
-		String version = hibernateVersion == null ? "3.5" : hibernateVersion;//3.5 is a default version
+		String version = hibernateVersion == null ? "3.5" : hibernateVersion;//3.5 is a default version //$NON-NLS-1$
 		HibernateExtensionDefinition def = HibernateExtensionManager.findHibernateExtensionDefinition(version);
 		if (def != null){
 			HibernateExtension hibernateExtension = def.createHibernateExtensionInstance();
 			hibernateExtension.setConsoleConfigurationPreferences(prefs);
 			extension = hibernateExtension;
 		} else {
-			throw new IllegalArgumentException("Can't find definition for hibernate version " + version);
+			throw new IllegalArgumentException("Can't find definition for hibernate version " + version); //$NON-NLS-1$
 		}
 	}
 	
