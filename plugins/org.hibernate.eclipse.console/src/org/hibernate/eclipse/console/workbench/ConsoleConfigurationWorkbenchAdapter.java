@@ -23,7 +23,7 @@ package org.hibernate.eclipse.console.workbench;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.osgi.util.NLS;
-import org.hibernate.cfg.Configuration;
+//import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.KnownConfigurations;
@@ -51,9 +51,18 @@ public class ConsoleConfigurationWorkbenchAdapter extends BasicWorkbenchAdapter 
 				HibernateConsolePlugin.getDefault().logErrorMessage("Problems while creating sessionfactory", t);
 			}
 		}*/
+		
+		Object configuration = ccfg.getConfiguration();		
+		
+		// if getConfiguration() would return an spi interface 
+		// the following code could be a solution to use a proxy
+		// class proper to the hibernate version
+//		if (ccfg.getHibernateExtension() != null) {
+//			configuration = ccfg.getHibernateExtension().getConfiguration();
+//		} else {
+//			configuration = ccfg.getConfiguration();
+//		}
 
-
-		Configuration configuration = ccfg.getConfiguration();
 		Object o1;
 		if(configuration!=null) {
 			o1 = configuration;
