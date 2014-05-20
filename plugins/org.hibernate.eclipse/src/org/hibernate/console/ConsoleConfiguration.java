@@ -185,8 +185,11 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 
 	public void build() {
 		reset();
-		configuration = buildWith(null, true);
 		getHibernateExtension().build();
+//		configuration = getHibernateExtension().getConfiguration();
+//		reinitClassLoader();
+//		executionContext = new DefaultExecutionContext(getName(), classLoader);
+		configuration = buildWith(null, true);
 		fireConfigurationBuilt();
 	}
 	
@@ -244,9 +247,13 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	}
 
 	protected ClassLoader getParentClassLoader() {
-		ClassLoader cl = Thread.currentThread().getContextClassLoader();
-		//ClassLoader cl = ConsoleConfiguration.class.getClassLoader();
-		return cl;
+//		HibernateExtension extension = getHibernateExtension();
+//		if (extension != null) {
+//			return extension.getClass().getClassLoader();
+//		} else {
+//			return Thread.currentThread().getContextClassLoader();
+//		}
+		return Thread.currentThread().getContextClassLoader();
 	}
 	
 	public Configuration getConfiguration() {
