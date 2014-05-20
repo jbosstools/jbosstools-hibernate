@@ -23,6 +23,7 @@ package org.hibernate.eclipse.console.actions;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Event;
 import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
@@ -66,6 +67,13 @@ public class ExecuteQueryAction extends Action {
 		if (cfg != null) {
 			//keep states of ConsoleConfiguration and HibernateExtension synchronized
 			if (!(cfg.isSessionFactoryCreated() && cfg.getHibernateExtension().isSessionFactoryCreated())) {
+				if ("4.3".equals(cfg.getHibernateExtension().getHibernateVersion())) { //$NON-NLS-1$
+					MessageDialog.openInformation(
+							HibernateConsolePlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell(), 
+							"Unsupported Hibernate Version",  //$NON-NLS-1$
+							"Unfortunately executing queries for Hibernate 4.3 is not yet supported.\nBut stay tuned, it is coming soon!"); //$NON-NLS-1$
+					return;
+				}
 				if (ProjectCompilerVersionChecker.validateProjectComplianceLevel(cfg)){
 					if (queryEditor.askUserForConfiguration(cfg.getName())) {
 						if (!(cfg.hasConfiguration() && cfg.getHibernateExtension().hasConfiguration())) {
