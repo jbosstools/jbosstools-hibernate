@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.hibernate.console.ext;
 
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.console.QueryInputModel;
 import org.hibernate.console.QueryPage;
 import org.hibernate.console.execution.ExecutionContext.Command;
@@ -44,13 +46,13 @@ public interface HibernateExtension {
 
 	//FIXME remove this method
 	public boolean hasConfiguration();
-	/*
+	
 	//FIXME remove this method
-	public Object getConfiguration();
+	public Configuration getConfiguration();
 	//FIXME remove this method
-	public Object getSessionFactory();
+//	public SessionFactory getSessionFactory();
 	//FIXME remove this method
-	*/
+	
 
 	public Object execute(Command command);
 
