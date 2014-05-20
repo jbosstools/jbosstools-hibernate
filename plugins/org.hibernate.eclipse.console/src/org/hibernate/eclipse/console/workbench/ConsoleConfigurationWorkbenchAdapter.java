@@ -27,6 +27,7 @@ import org.eclipse.osgi.util.NLS;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.KnownConfigurations;
+import org.hibernate.console.ext.HibernateExtension;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 
@@ -37,6 +38,16 @@ public class ConsoleConfigurationWorkbenchAdapter extends BasicWorkbenchAdapter 
 		if (!ProjectCompilerVersionChecker.validateProjectComplianceLevel(ccfg)){
 			return new Object[0];
 		}
+		
+		HibernateExtension extension = ccfg.getHibernateExtension();
+		if (extension != null && "4.3".equals(extension.getHibernateVersion())) { //$NON-NLS-1$
+			return new Object[] { 
+				NLS.bind(
+						HibernateConsoleMessages.ConsoleConfigurationWorkbenchAdapter_unsupported_hibernate_version,
+						extension.getHibernateVersion())
+			};
+		}
+		
 		//String sfError = null;
 		if(!ccfg.hasConfiguration()) {
 			ccfg.build();

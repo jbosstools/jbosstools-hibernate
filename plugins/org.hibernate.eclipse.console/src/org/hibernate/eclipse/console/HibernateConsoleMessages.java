@@ -259,6 +259,7 @@ public class HibernateConsoleMessages extends NLS {
 	public static String BasicWorkbenchAdapter_error_while_expanding;
 	public static String BasicWorkbenchAdapter_hibernate_configuration_error;
 	public static String ConfigurationWorkbenchAdapter_configuration;
+	public static String ConsoleConfigurationWorkbenchAdapter_unsupported_hibernate_version;
 	public static String ConsoleConfigurationWorkbenchAdapter_empty_configuration;
 	public static String KnownConfigurationsWorkbenchAdapter_configurations;
 	public static String LazyDatabaseSchemaWorkbenchAdapter_database;
