@@ -61,34 +61,34 @@ public abstract class MappingTestsBase extends TestCase {
 	}
 
 	protected void setUp() throws Exception {
-//		super.setUp();
-//		
-//		testProject = new ConfigurableTestProject("JUnitTestProj" + System.currentTimeMillis()); //$NON-NLS-1$
-//
-//		consoleConfigName = testProject.getIProject().getName();
-//		testPackage = null;		
-//
-//		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().setPerspective(
-//				PlatformUI.getWorkbench().getPerspectiveRegistry().findPerspectiveWithId("org.eclipse.ui.resourcePerspective")); //$NON-NLS-1$
-//
-//		IPackagesViewPart packageExplorer = null;
-//		try {
-//			packageExplorer = (IPackagesViewPart) PlatformUI.getWorkbench()
-//				.getActiveWorkbenchWindow().getActivePage().showView(JavaUI.ID_PACKAGES);
-//		} catch (PartInitException e) {
-//			throw new RuntimeException(e);
-//		}
-//
-//		packageExplorer.selectAndReveal(testProject.getIJavaProject());
-//
-//		PlatformUI.getWorkbench()
-//		.getActiveWorkbenchWindow().getActivePage().setPerspective(
-//				PlatformUI.getWorkbench().getPerspectiveRegistry().findPerspectiveWithId(HibernateConsolePerspectiveFactory.ID_CONSOLE_PERSPECTIVE));
-//		
-//		setUpConsoleConfig();
-//
-//		ProjectUtils.toggleHibernateOnProject(testProject.getIProject(), true, consoleConfigName);
-//		testProject.fullBuild();
+		super.setUp();
+		
+		testProject = new ConfigurableTestProject("JUnitTestProj" + System.currentTimeMillis()); //$NON-NLS-1$
+
+		consoleConfigName = testProject.getIProject().getName();
+		testPackage = null;		
+
+		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().setPerspective(
+				PlatformUI.getWorkbench().getPerspectiveRegistry().findPerspectiveWithId("org.eclipse.ui.resourcePerspective")); //$NON-NLS-1$
+
+		IPackagesViewPart packageExplorer = null;
+		try {
+			packageExplorer = (IPackagesViewPart) PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage().showView(JavaUI.ID_PACKAGES);
+		} catch (PartInitException e) {
+			throw new RuntimeException(e);
+		}
+
+		packageExplorer.selectAndReveal(testProject.getIJavaProject());
+
+		PlatformUI.getWorkbench()
+		.getActiveWorkbenchWindow().getActivePage().setPerspective(
+				PlatformUI.getWorkbench().getPerspectiveRegistry().findPerspectiveWithId(HibernateConsolePerspectiveFactory.ID_CONSOLE_PERSPECTIVE));
+		
+		setUpConsoleConfig();
+
+		ProjectUtils.toggleHibernateOnProject(testProject.getIProject(), true, consoleConfigName);
+		testProject.fullBuild();
 	}
 
 	abstract protected void setUpConsoleConfig() throws Exception;
@@ -103,13 +103,13 @@ public abstract class MappingTestsBase extends TestCase {
 	}
 
 	public void tearDown() throws Exception {
-//		ProjectUtils.toggleHibernateOnProject(testProject.getIProject(), false, consoleConfigName);
-//		ConsoleConfigUtils.deleteConsoleConfig(consoleConfigName);
-//		testProject.deleteIProject(false);
-//		testProject = null;
-//		consoleConfigName = null;
-//		testPackage = null;		
-//		super.tearDown();
+		ProjectUtils.toggleHibernateOnProject(testProject.getIProject(), false, consoleConfigName);
+		ConsoleConfigUtils.deleteConsoleConfig(consoleConfigName);
+		testProject.deleteIProject(false);
+		testProject = null;
+		consoleConfigName = null;
+		testPackage = null;		
+		super.tearDown();
 	}
 
 	/**

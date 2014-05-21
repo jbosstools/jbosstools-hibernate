@@ -27,32 +27,32 @@ public abstract class HibernateConsoleTest extends TestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-//		this.project = createTestProject();
-//
-//
-//		waitForJobs();
-//		PlatformUI.getWorkbench()
-//				.getActiveWorkbenchWindow().getActivePage().setPerspective(
-//						PlatformUI.getWorkbench().getPerspectiveRegistry().findPerspectiveWithId(HibernateConsolePerspectiveFactory.ID_CONSOLE_PERSPECTIVE));
-//
-//
-//		IPackagesViewPart packageExplorer = null;
-//		try {
-//			packageExplorer = (IPackagesViewPart) PlatformUI.getWorkbench()
-//				.getActiveWorkbenchWindow().getActivePage().showView(JavaUI.ID_PACKAGES);
-//		} catch (PartInitException e) {
-//			throw new RuntimeException(e);
-//		}
-//
-//		IType type = this.project.getTestClassType();
-//		packageExplorer.selectAndReveal(type);
-//
-//
-//		FileEditorInput input = new FileEditorInput((IFile) type.getCompilationUnit().getCorrespondingResource());
-//
-//		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(input, JavaUI.ID_CU_EDITOR );
-//
-//		delay(2000);
+		this.project = createTestProject();
+
+
+		waitForJobs();
+		PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage().setPerspective(
+						PlatformUI.getWorkbench().getPerspectiveRegistry().findPerspectiveWithId(HibernateConsolePerspectiveFactory.ID_CONSOLE_PERSPECTIVE));
+
+
+		IPackagesViewPart packageExplorer = null;
+		try {
+			packageExplorer = (IPackagesViewPart) PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage().showView(JavaUI.ID_PACKAGES);
+		} catch (PartInitException e) {
+			throw new RuntimeException(e);
+		}
+
+		IType type = this.project.getTestClassType();
+		packageExplorer.selectAndReveal(type);
+
+
+		FileEditorInput input = new FileEditorInput((IFile) type.getCompilationUnit().getCorrespondingResource());
+
+		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(input, JavaUI.ID_CU_EDITOR );
+
+		delay(2000);
 	}
 
 	protected SimpleTestProject createTestProject() {
@@ -60,19 +60,19 @@ public abstract class HibernateConsoleTest extends TestCase {
 	}
 
 	protected void tearDown() throws Exception {
-//		waitForJobs();
-//
-//		IEditorPart editorPart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-//		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().closeEditor(editorPart, false);
-//
-//		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().setPerspective(
-//				PlatformUI.getWorkbench().getPerspectiveRegistry().findPerspectiveWithId("org.eclipse.ui.resourcePerspective")); //$NON-NLS-1$
-//
-//
-//		this.project.deleteIProject();
-//		this.project = null;
-//
-//		super.tearDown();
+		waitForJobs();
+
+		IEditorPart editorPart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().closeEditor(editorPart, false);
+
+		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().setPerspective(
+				PlatformUI.getWorkbench().getPerspectiveRegistry().findPerspectiveWithId("org.eclipse.ui.resourcePerspective")); //$NON-NLS-1$
+
+
+		this.project.deleteIProject();
+		this.project = null;
+
+		super.tearDown();
 	}
 
 

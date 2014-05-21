@@ -2,8 +2,6 @@ package org.hibernate.eclipse.console.test;
 
 import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.PlatformUI;
-import org.junit.Ignore;
-import org.junit.Test;
 
 public class PerspectiveTest extends HibernateConsoleTest {
 
@@ -12,11 +10,11 @@ public class PerspectiveTest extends HibernateConsoleTest {
 	}
 
 	public void testEnableHibernateProject() {
-//
-//		IPerspectiveDescriptor perspective = PlatformUI.getWorkbench()
-//		.getActiveWorkbenchWindow().getActivePage().getPerspective();
-//
-//		assertEquals(perspective.getLabel(), ConsoleTestMessages.PerspectiveTest_hibernate);
+
+		IPerspectiveDescriptor perspective = PlatformUI.getWorkbench()
+		.getActiveWorkbenchWindow().getActivePage().getPerspective();
+
+		assertEquals(perspective.getLabel(), ConsoleTestMessages.PerspectiveTest_hibernate);
 	}
 
 }

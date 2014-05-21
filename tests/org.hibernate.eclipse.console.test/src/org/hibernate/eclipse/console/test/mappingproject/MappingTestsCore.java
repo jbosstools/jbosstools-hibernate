@@ -19,8 +19,6 @@ import org.eclipse.core.runtime.Path;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 import org.hibernate.eclipse.console.test.project.TestProject;
 import org.hibernate.eclipse.console.test.utils.ConsoleConfigUtils;
-import org.junit.Ignore;
-import org.junit.Test;
 
 /**
  * 
@@ -38,34 +36,32 @@ public class MappingTestsCore extends MappingTestsBase {
 				cfgFilePath, testProject.getIProject().getName());
 	}
 
-	@Ignore
-	@Test
 	public void testEachPackWithTestSet() throws CoreException, IOException {
-//	   	long start_time = System.currentTimeMillis();
-//	   	// 1) ---
-//	   	// here we use one BIG project configuration for testing - time consuming thing
-//		//boolean useAllRes = testProject.useAllSources();
-//		//assertTrue(useAllRes);
-//	   	// 1) ---
-//	   	// 2) +++
-//	   	// here we use many SMALL projects configurations for testing.
-//	   	// this case is essential better for run time.
-//		boolean createListRes = testProject.createTestFoldersList();
-//		assertTrue(createListRes);
-//	   	// 2) +++
-//		testProject.restartTestFolders();
-//		executions = 0;
-//		int prev_failCount = result.failureCount();
-//		int prev_errCount = result.errorCount();
-//		while (testProject.setupNextTestFolder()) {
-//			allTestsRunForProject();
-//		}
-//		if (Customization.USE_CONSOLE_OUTPUT) {
-//			System.out.println("====================================================="); //$NON-NLS-1$
-//			System.out.print(result.errorCount() - prev_errCount + ConsoleTestMessages.HibernateAllMappingTests_errors + " \t"); //$NON-NLS-1$
-//			System.out.print(result.failureCount() - prev_failCount + ConsoleTestMessages.HibernateAllMappingTests_fails + "\t");						 //$NON-NLS-1$
-//			System.out.print((System.currentTimeMillis() - start_time) / 1000 + ConsoleTestMessages.HibernateAllMappingTests_seconds + "\t" );	 //$NON-NLS-1$
-//			System.out.println(executions + ConsoleTestMessages.HibernateAllMappingTests_packages_tested );
-//		}
+	   	long start_time = System.currentTimeMillis();
+	   	// 1) ---
+	   	// here we use one BIG project configuration for testing - time consuming thing
+		//boolean useAllRes = testProject.useAllSources();
+		//assertTrue(useAllRes);
+	   	// 1) ---
+	   	// 2) +++
+	   	// here we use many SMALL projects configurations for testing.
+	   	// this case is essential better for run time.
+		boolean createListRes = testProject.createTestFoldersList();
+		assertTrue(createListRes);
+	   	// 2) +++
+		testProject.restartTestFolders();
+		executions = 0;
+		int prev_failCount = result.failureCount();
+		int prev_errCount = result.errorCount();
+		while (testProject.setupNextTestFolder()) {
+			allTestsRunForProject();
+		}
+		if (Customization.USE_CONSOLE_OUTPUT) {
+			System.out.println("====================================================="); //$NON-NLS-1$
+			System.out.print(result.errorCount() - prev_errCount + ConsoleTestMessages.HibernateAllMappingTests_errors + " \t"); //$NON-NLS-1$
+			System.out.print(result.failureCount() - prev_failCount + ConsoleTestMessages.HibernateAllMappingTests_fails + "\t");						 //$NON-NLS-1$
+			System.out.print((System.currentTimeMillis() - start_time) / 1000 + ConsoleTestMessages.HibernateAllMappingTests_seconds + "\t" );	 //$NON-NLS-1$
+			System.out.println(executions + ConsoleTestMessages.HibernateAllMappingTests_packages_tested );
+		}
 	}
 }
