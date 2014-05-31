@@ -26,6 +26,9 @@ import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.internal.core.DefaultWorkingCopyOwner;
+import org.eclipse.jdt.internal.core.JavaProject;
+import org.eclipse.jdt.internal.core.NameLookup;
 
 /**
  * Compilation unit common functions
@@ -55,9 +58,20 @@ public class Utils {
 	static public IType findType(IJavaProject javaProject, 
 			String fullyQualifiedName) {
 		IType lwType = null;
-		if (javaProject != null) {
+		if (javaProject != null && javaProject instanceof JavaProject) {
 			try {
-				lwType = javaProject.findType(fullyQualifiedName);
+				NameLookup nameLookup = 
+						((JavaProject)javaProject).newNameLookup(DefaultWorkingCopyOwner.PRIMARY);
+				NameLookup.Answer answer = nameLookup.findType(
+						fullyQualifiedName,
+						false,
+						NameLookup.ACCEPT_ALL,
+						true, // also accept secondary types
+						true, /* wait for indexes (only if consider secondary types)*/
+						false/*don't check restrictions*/,
+						null);
+				lwType = answer.type;
+//				lwType = javaProject.findType(fullyQualifiedName);
 			} catch (JavaModelException e) {
 				// just ignore it!
 				//HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
