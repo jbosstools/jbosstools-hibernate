@@ -15,7 +15,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.variables,
  org.eclipse.jdt.core,
  org.eclipse.wst.sse.core
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: .,
  lib/bsh-core-2.0b4.jar,
  lib/required/hibernate-core-4.3.1.Final.jar,

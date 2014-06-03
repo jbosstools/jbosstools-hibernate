@@ -64,4 +64,4 @@ Require-Bundle: org.junit;bundle-version="3.8.2",
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.hibernate.eclipse.console.test.HibernateConsoleTestPlugin
 Eclipse-RegisterBuddy: org.hibernate.eclipse
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

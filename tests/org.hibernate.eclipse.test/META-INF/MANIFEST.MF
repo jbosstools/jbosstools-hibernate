@@ -5,4 +5,4 @@ Bundle-SymbolicName: org.hibernate.eclipse.test
 Bundle-Version: 3.8.0.qualifier
 Fragment-Host: org.hibernate.eclipse;bundle-version="3.8.0"
 Require-Bundle: org.junit;bundle-version="4.11.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
