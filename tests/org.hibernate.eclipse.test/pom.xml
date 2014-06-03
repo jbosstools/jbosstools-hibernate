@@ -11,4 +11,24 @@
 	
 	<packaging>eclipse-test-plugin</packaging>
 
+	<properties>
+		<coverage.filter>org.hibernate.console*</coverage.filter>
+		<emma.instrument.bundles>org.hibernate.console</emma.instrument.bundles>
+	</properties>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<version>${tychoVersion}</version>
+				<configuration>
+					<includes>
+						<include>**/*Test.class</include>
+					</includes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
 </project>
