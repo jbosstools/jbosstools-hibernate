@@ -14,6 +14,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
@@ -57,7 +58,7 @@ public class Utils {
 		IType lwType = null;
 		if (javaProject != null) {
 			try {
-				lwType = javaProject.findType(fullyQualifiedName);
+				lwType = javaProject.findType(fullyQualifiedName,(IProgressMonitor)null);
 			} catch (JavaModelException e) {
 				// just ignore it!
 				//HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
