@@ -41,12 +41,12 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.execution.ExecutionContext.Command;
+import org.hibernate.console.spi.HibernateConfiguration;
 import org.hibernate.eclipse.builder.HibernateBuilder;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
@@ -150,7 +150,7 @@ public class HibernateNature implements IProjectNature {
 
 		@SuppressWarnings("unchecked")
 		protected IStatus run(IProgressMonitor monitor) {
-			Configuration cfg = ccfg.buildWith(null, false);
+			HibernateConfiguration cfg = ccfg.buildWith(null, false);
 			final JDBCMetaDataConfiguration jcfg = new JDBCMetaDataConfiguration();
 			jcfg.setProperties(cfg.getProperties());
 			monitor.beginTask(HibernateConsoleMessages.HibernateNature_reading_database_metadata, IProgressMonitor.UNKNOWN);

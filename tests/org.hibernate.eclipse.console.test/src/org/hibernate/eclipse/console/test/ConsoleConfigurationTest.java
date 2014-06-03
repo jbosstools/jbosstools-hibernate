@@ -7,7 +7,6 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.hibernate.Hibernate;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Mappings;
 import org.hibernate.console.ConcoleConfigurationAdapter;
 import org.hibernate.console.ConsoleConfiguration;
@@ -16,6 +15,7 @@ import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.QueryInputModel;
 import org.hibernate.console.QueryPage;
+import org.hibernate.console.spi.HibernateConfiguration;
 import org.hibernate.eclipse.console.test.launchcfg.TestConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.views.QueryPageTabView;
 import org.hibernate.mapping.Column;
@@ -127,7 +127,7 @@ public class ConsoleConfigurationTest extends TestCase {
 		}
 		
 		consoleCfg.build();
-		Configuration c = consoleCfg.getConfiguration();
+		HibernateConfiguration c = consoleCfg.getConfiguration();
 		Mappings mappings = c.createMappings();
 		RootClass rc = new RootClass();
 		rc.setEntityName("java.awt.Button");

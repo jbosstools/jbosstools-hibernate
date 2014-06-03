@@ -31,8 +31,6 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.hibernate.Session;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
@@ -44,6 +42,8 @@ import org.hibernate.console.QueryPage;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.ext.HibernateException;
 import org.hibernate.console.ext.HibernateExtension;
+import org.hibernate.console.spi.HibernateConfiguration;
+import org.hibernate.console.util.HibernateHelper;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.ext.CompletionProposalsResult;
@@ -54,7 +54,6 @@ import org.hibernate.eclipse.launch.PathHelper;
 import org.hibernate.proxy.HibernateProxyHelper;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Exporter;
-import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.ide.completion.IHQLCodeAssist;
 import org.hibernate.util.ReflectHelper;
 import org.jboss.tools.hibernate3_5.HibernateExtension3_5;
@@ -83,7 +82,7 @@ public class ConsoleExtension3_5 implements ConsoleExtension {
 				//HibernateConsolePlugin.getDefault().logErrorMessage(mess, e);
 			}
 		}
-		IHQLCodeAssist hqlEval = new HQLCodeAssist(hibernateExtension.getConfiguration());
+		IHQLCodeAssist hqlEval = HibernateHelper.INSTANCE.getHibernateService().newHQLCodeAssist(hibernateExtension.getConfiguration());
 		query = query.replace('\t', ' ');
 		hqlEval.codeComplete(query, currentOffset, requestor);
 		return new CompletionProposalsResult(requestor.getCompletionProposals(), requestor.getLastErrorMessage());
@@ -152,7 +151,7 @@ public class ConsoleExtension3_5 implements ConsoleExtension {
 					if (attributes.isReverseEngineer()) {
 						monitor.subTask(HibernateConsoleMessages.CodeGenerationLaunchDelegate_reading_jdbc_metadata);
 					}
-					final Configuration cfg = buildConfiguration(attributes, cc, ResourcesPlugin.getWorkspace().getRoot());
+					final HibernateConfiguration cfg = buildConfiguration(attributes, cc, ResourcesPlugin.getWorkspace().getRoot());
 
 					monitor.worked(1);
 
@@ -199,21 +198,23 @@ public class ConsoleExtension3_5 implements ConsoleExtension {
 				}
 	
 	
-	private Configuration buildConfiguration(final ExporterAttributes attributes, ConsoleConfiguration cc, IWorkspaceRoot root) {
+	private HibernateConfiguration buildConfiguration(final ExporterAttributes attributes, ConsoleConfiguration cc, IWorkspaceRoot root) {
 		final boolean reveng = attributes.isReverseEngineer();
 		final String reverseEngineeringStrategy = attributes.getRevengStrategy();
 		final boolean preferBasicCompositeids = attributes.isPreferBasicCompositeIds();
 		final IResource revengres = PathHelper.findMember( root, attributes.getRevengSettings());
 		
 		if(reveng) {
-			Configuration configuration = null;
+			HibernateConfiguration configuration = null;
 			if(cc.hasConfiguration()) {
 				configuration = cc.getConfiguration();
 			} else {
 				configuration = cc.buildWith( null, false );
 			}
+			
+			final HibernateConfiguration cfg = HibernateHelper.INSTANCE.getHibernateService().newJDBCMetaDataConfiguration();
 
-			final JDBCMetaDataConfiguration cfg = new JDBCMetaDataConfiguration();
+//			final JDBCMetaDataConfiguration cfg = new JDBCMetaDataConfiguration();
 			Properties properties = configuration.getProperties();
 			cfg.setProperties( properties );
 			cc.buildWith(cfg,false);

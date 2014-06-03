@@ -22,7 +22,6 @@ import java.util.Map;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Settings;
 import org.hibernate.console.ConfigurationFactory;
 import org.hibernate.console.ConsoleConfigClassLoader;
@@ -36,6 +35,7 @@ import org.hibernate.console.ext.HibernateException;
 import org.hibernate.console.ext.HibernateExtension;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.PreferencesClassPathUtils;
+import org.hibernate.console.spi.HibernateConfiguration;
 import org.hibernate.eclipse.libs.FakeDelegatingDriver;
 
 /**
@@ -51,7 +51,7 @@ public class HibernateExtension3_5 implements HibernateExtension {
 	
 	private ConsoleConfigurationPreferences prefs;
 	
-	private Configuration configuration;
+	private HibernateConfiguration configuration;
 	
 	private SessionFactory sessionFactory;
 	
@@ -126,11 +126,11 @@ public class HibernateExtension3_5 implements HibernateExtension {
 		return res;
 	}
 
-	public Configuration buildWith(final Configuration cfg, final boolean includeMappings) {
+	public HibernateConfiguration buildWith(final HibernateConfiguration cfg, final boolean includeMappings) {
 		reinitClassLoader();
 		//TODO handle user libraries here
 		executionContext = new DefaultExecutionContext(prefs.getName(), classLoader);
-		Configuration result = (Configuration)execute(new Command() {
+		HibernateConfiguration result = (HibernateConfiguration)execute(new Command() {
 			public Object execute() {
 				ConfigurationFactory cf = new ConfigurationFactory(prefs, fakeDrivers);
 				return cf.createConfiguration(cfg, includeMappings);
@@ -260,11 +260,11 @@ public class HibernateExtension3_5 implements HibernateExtension {
 	/**
 	 * @return
 	 */
-	public Configuration getConfiguration() {
+	public HibernateConfiguration getConfiguration() {
 		return configuration;
 	}
 	
-	public Settings getSettings(final Configuration cfg) {
+	public Settings getSettings(final HibernateConfiguration cfg) {
 		return (Settings) execute(new Command() {
 			public Object execute() {
 				return cfg.buildSettings();

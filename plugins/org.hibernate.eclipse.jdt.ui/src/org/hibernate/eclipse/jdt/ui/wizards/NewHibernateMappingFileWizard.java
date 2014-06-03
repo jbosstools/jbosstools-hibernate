@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -61,8 +62,10 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.ui.ide.IDE;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.ImageConstants;
+import org.hibernate.console.spi.HibernateConfiguration;
+import org.hibernate.console.util.HibernateHelper;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
@@ -240,20 +243,20 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 		this.selection = new StructuredSelection(filteredElements.toArray());
 	}
 	
-	protected class HibernateMappingExporter2 extends HibernateMappingExporter {
+	protected class HibernateMappingExporterWrapper { // extends HibernateMappingExporter {
 		protected IJavaProject proj;
-		public HibernateMappingExporter2(IJavaProject proj, Configuration cfg, File outputdir) {
-	    	super(cfg, outputdir);
+		private HibernateMappingExporter target = null;
+		public HibernateMappingExporterWrapper(IJavaProject proj, HibernateConfiguration cfg, File outputdir) {
+	    	target = HibernateHelper.INSTANCE.getHibernateService().newHibernateMappingExporter(cfg, outputdir);
 	    	this.proj = proj;
 	    }
 		/**
 		 * redefine base exportPOJO to setup right output dir in case 
 		 * of several source folders 
 		 */
-		@SuppressWarnings("unchecked")
-		@Override
+		@SuppressWarnings("rawtypes")
 		protected void exportPOJO(Map additionalContext, POJOClass element) {
-			File outputdir4FileOld = getOutputDirectory();
+			File outputdir4FileOld = target.getOutputDirectory();
 			File outputdir4FileNew = outputdir4FileOld;
 			String fullyQualifiedName = element.getQualifiedDeclarationName();
 			ICompilationUnit icu = Utils.findCompilationUnit(proj, fullyQualifiedName);
@@ -286,18 +289,36 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 			if (!outputdir4FileNew.exists()) {
 				outputdir4FileNew.mkdirs();
 			}
-			setOutputDirectory(outputdir4FileNew);
-			super.exportPOJO(additionalContext, element);
-			setOutputDirectory(outputdir4FileOld);
+			target.setOutputDirectory(outputdir4FileNew);
+			invokeTargetExport(additionalContext, element);
+//			target.exportPOJO(additionalContext, element);
+			target.setOutputDirectory(outputdir4FileOld);
+		}
+		
+		@SuppressWarnings("rawtypes")
+		private void invokeTargetExport(Map map, POJOClass pojoClass) {
+			try {
+				Method exportPOJO = target.getClass().getMethod("exportPOJO", new Class[] { Map.class, POJOClass.class }); //$NON-NLS-1$
+				exportPOJO.setAccessible(true);
+				exportPOJO.invoke(target, new Object[] { map, pojoClass });
+			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				throw new HibernateConsoleRuntimeException(e);
+			}  
+		}
+		public void setGlobalSettings(HibernateMappingGlobalSettings hmgs) {
+			target.setGlobalSettings(hmgs);
+		}
+		public void start() {
+			target.start();
 		}
 	}
 
 	protected Map<IJavaProject, IPath> getPlaces2Gen() {
 		updateCompilationUnits();
-		Map<IJavaProject, Configuration> configs = createConfigurations();
+		Map<IJavaProject, HibernateConfiguration> configs = createConfigurations();
 		Map<IJavaProject, IPath> places2Gen = new HashMap<IJavaProject, IPath>();
-		for (Entry<IJavaProject, Configuration> entry : configs.entrySet()) {
-			Configuration config = entry.getValue();
+		for (Entry<IJavaProject, HibernateConfiguration> entry : configs.entrySet()) {
+			HibernateConfiguration config = entry.getValue();
 			HibernateMappingGlobalSettings hmgs = new HibernateMappingGlobalSettings();
 
 			//final IPath projPath = entry.getKey().getProject().getLocation();
@@ -309,7 +330,7 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 			if (!folder2Gen.exists()) {
 				folder2Gen.mkdirs();
 			}
-			HibernateMappingExporter2 hce = new HibernateMappingExporter2(
+			HibernateMappingExporterWrapper hce = new HibernateMappingExporterWrapper(
 					entry.getKey(), config, folder2Gen);
 
 			hce.setGlobalSettings(hmgs);
@@ -535,9 +556,9 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 	}
 	
 
-	protected Map<IJavaProject, Configuration> createConfigurations() {
+	protected Map<IJavaProject, HibernateConfiguration> createConfigurations() {
 		ConfigurationActor actor = new ConfigurationActor(selectionCU);
-		Map<IJavaProject, Configuration> configs = actor.createConfigurations(processDepth);
+		Map<IJavaProject, HibernateConfiguration> configs = actor.createConfigurations(processDepth);
 		return configs;
 	}
 	

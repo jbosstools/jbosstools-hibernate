@@ -17,6 +17,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import junit.framework.TestCase;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -24,9 +26,9 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.internal.core.LaunchManager;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
+import org.hibernate.console.spi.HibernateConfiguration;
 import org.hibernate.eclipse.console.model.impl.ExporterFactory;
 import org.hibernate.eclipse.console.model.impl.ExporterFactoryStrings;
 import org.hibernate.eclipse.console.test.launchcfg.TestConsoleConfigurationPreferences;
@@ -39,8 +41,6 @@ import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.GenericExporter;
 import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
 import org.hibernate.tool.hbm2x.QueryExporter;
-
-import junit.framework.TestCase;
 
 /**
  * @author Vitali Yemialyanchyk
@@ -158,7 +158,7 @@ public class ExporterAttributesTest extends TestCase {
         props.put(CodeGenerationStrings.EJB3, "" + expAttr.isEJB3Enabled()); //$NON-NLS-1$
         props.put(CodeGenerationStrings.JDK5, "" + expAttr.isJDK5Enabled()); //$NON-NLS-1$
         consoleCfg.build();
-        Configuration cfg = consoleCfg.getConfiguration();
+        HibernateConfiguration cfg = consoleCfg.getConfiguration();
 		assertNotNull(cfg);
 		Set<String> outputDirectories = new HashSet<String>();
 		for (int i = 0; i < exporterFactories.size(); i++) {

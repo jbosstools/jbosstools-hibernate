@@ -41,8 +41,9 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.WildcardType;
 import org.hibernate.FetchMode;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Mappings;
+import org.hibernate.console.spi.HibernateConfiguration;
+import org.hibernate.console.util.HibernateHelper;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.collect.AllEntitiesInfoCollector;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
@@ -89,8 +90,8 @@ public class ConfigurationActor {
 	 * 
 	 * @return different configuration for different projects
 	 */
-	public Map<IJavaProject, Configuration> createConfigurations(int processDepth){
-		Map<IJavaProject, Configuration> configs = new HashMap<IJavaProject, Configuration>();
+	public Map<IJavaProject, HibernateConfiguration> createConfigurations(int processDepth){
+		Map<IJavaProject, HibernateConfiguration> configs = new HashMap<IJavaProject, HibernateConfiguration>();
 		if (selectionCU.size() == 0) {
 			return configs;
 		}		
@@ -130,8 +131,8 @@ public class ConfigurationActor {
 		return configs;
 	}
 	
-	protected Configuration createConfiguration(IJavaProject project, Map<String, EntityInfo> entities) {
-		Configuration config = new Configuration();
+	protected HibernateConfiguration createConfiguration(IJavaProject project, Map<String, EntityInfo> entities) {
+		HibernateConfiguration config = HibernateHelper.INSTANCE.getHibernateService().newDefaultConfiguration();
 		
 		ProcessEntityInfo processor = new ProcessEntityInfo();
 		processor.setEntities(entities);
@@ -161,7 +162,6 @@ public class ConfigurationActor {
 	 * @param rootClasses
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	private Collection<PersistentClass> createHierarhyStructure(IJavaProject project, Map<String, RootClass> rootClasses){
 		Map<String, PersistentClass> pcCopy = new HashMap<String, PersistentClass>();
 		for (Map.Entry<String, RootClass> entry : rootClasses.entrySet()) {
@@ -204,7 +204,7 @@ public class ConfigurationActor {
 						subclass.addProperty(pastClass.getIdentifierProperty());
 					}
 					
-					Iterator it = pastClass.getPropertyIterator();
+					Iterator<?> it = pastClass.getPropertyIterator();
 					while (it.hasNext()) {
 						subclass.addProperty((Property) it.next());
 					}

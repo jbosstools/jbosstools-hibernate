@@ -24,11 +24,11 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.hibernate.HibernateException;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.execution.ExecutionContext;
+import org.hibernate.console.spi.HibernateConfiguration;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.resolver.DialectFactory;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
@@ -65,7 +65,7 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 		dialect = null;
 	}
 
-	protected Configuration getConfig() {
+	protected HibernateConfiguration getConfig() {
 		final ConsoleConfiguration consoleConfig = getConsoleConfig();
 		if (consoleConfig != null) {
 			if (!consoleConfig.hasConfiguration()) {
@@ -144,7 +144,7 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 		if (sqlType != null) {
 			return false;
 		}
-		final Configuration config = getConfig();
+		final HibernateConfiguration config = getConfig();
 		if (mapping == null && config != null) {
 			final ConsoleConfiguration consoleConfig = getConsoleConfig();
 			mapping = (Mapping)consoleConfig.execute(new ExecutionContext.Command() {

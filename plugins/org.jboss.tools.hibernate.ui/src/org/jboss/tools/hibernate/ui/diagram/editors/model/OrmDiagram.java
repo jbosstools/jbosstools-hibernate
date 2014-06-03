@@ -28,8 +28,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Properties;
 import java.util.Map.Entry;
+import java.util.Properties;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -47,10 +47,9 @@ import org.eclipse.ui.XMLMemento;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import org.hibernate.HibernateException;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
-import org.hibernate.console.execution.ExecutionContext;
+import org.hibernate.console.spi.HibernateConfiguration;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.mapping.RootClass;
@@ -217,7 +216,7 @@ public class OrmDiagram extends BaseElement {
 		elements.clear();
 		connections.clear();
 		StringBuilder errorMessage = new StringBuilder();
-		Configuration config = getConfig(errorMessage);
+		HibernateConfiguration config = getConfig(errorMessage);
 		final ElementsFactory factory = new ElementsFactory(
 			consoleConfigName, elements, connections);
 		for (int i = 0; i < roots.size(); i++) {
@@ -374,7 +373,7 @@ public class OrmDiagram extends BaseElement {
 	}
 
 	public boolean refreshRootsFromNames() {
-		final Configuration config = getConfig();
+		final HibernateConfiguration config = getConfig();
 		if (config == null) {
 			return false;
 		}
@@ -790,11 +789,11 @@ public class OrmDiagram extends BaseElement {
 		return consoleConfigName;
 	}
 
-	protected Configuration getConfig() {
+	protected HibernateConfiguration getConfig() {
 		return getConfig(null);
 	}
 	
-	protected Configuration getConfig(StringBuilder error) {
+	protected HibernateConfiguration getConfig(StringBuilder error) {
 		if (error != null) {
 			error.delete(0, error.length());
 		}

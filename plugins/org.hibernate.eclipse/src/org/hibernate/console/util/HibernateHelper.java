@@ -19,7 +19,7 @@ public class HibernateHelper {
 	
 	private HibernateService loadHibernateService() {
 		ServiceLoader<HibernateService> loader = 
-				ServiceLoader.load(HibernateService.class, Thread.currentThread().getContextClassLoader());
+				ServiceLoader.load(HibernateService.class);
 		return loader.iterator().next();
 	}
 

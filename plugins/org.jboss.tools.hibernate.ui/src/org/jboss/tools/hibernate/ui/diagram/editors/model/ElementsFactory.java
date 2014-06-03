@@ -16,9 +16,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
+import org.hibernate.console.spi.HibernateConfiguration;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
@@ -117,7 +117,7 @@ public class ElementsFactory {
 		OrmShape s = null;
 		Property property = (Property)element;
 		if (!property.isComposite()) {
-			final Configuration config = getConfig();
+			final HibernateConfiguration config = getConfig();
 			//
 			Type type = UtilTypeExtract.getTypeUsingExecContext(property.getValue(), getConsoleConfig());
 			if (type != null && type.isEntityType()) {
@@ -241,7 +241,7 @@ public class ElementsFactory {
 			tableShape = getShape(databaseTable);
 			if (tableShape == null) {
 				tableShape = createShape(databaseTable);
-				final Configuration config = getConfig();
+				final HibernateConfiguration config = getConfig();
 				if (config != null) {
 					Iterator iterator = config.getClassMappings();
 					while (iterator.hasNext()) {
@@ -527,8 +527,8 @@ public class ElementsFactory {
 		return consoleConfig;
 	}
 
-	public Configuration getConfig() {
-		Configuration config = null;
+	public HibernateConfiguration getConfig() {
+		HibernateConfiguration config = null;
 		final ConsoleConfiguration consoleConfig = getConsoleConfig();
 		if (consoleConfig != null) {
 			config = consoleConfig.getConfiguration();

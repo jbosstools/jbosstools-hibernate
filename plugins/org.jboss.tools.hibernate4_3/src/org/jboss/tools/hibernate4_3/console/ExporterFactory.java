@@ -15,8 +15,8 @@ import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.osgi.util.NLS;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
+import org.hibernate.console.spi.HibernateConfiguration;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.model.impl.ExporterFactoryStrings;
 import org.hibernate.eclipse.launch.ExporterAttributes;
@@ -28,6 +28,7 @@ import org.hibernate.tool.hbm2x.GenericExporter;
 import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
 import org.hibernate.tool.hbm2x.QueryExporter;
 import org.hibernate.util.xpl.StringHelper;
+import org.jboss.tools.hibernate.util.HibernateHelper;
 
 /**
  * ExporterFactory is used in UI to hold additional configuration for Exporter definitions
@@ -204,7 +205,7 @@ public class ExporterFactory {
 	 * @param collector
 	 * @throws CoreException in case of resolve variables issues.
 	 */
-	public Exporter createConfiguredExporter(Configuration cfg, String defaultOutputDirectory,
+	public Exporter createConfiguredExporter(HibernateConfiguration cfg, String defaultOutputDirectory,
 			String customTemplatePath, Properties globalProperties, Set<String> outputDirectories, ArtifactCollector collector) throws CoreException {
 
 		Exporter exporter = getExporterDefinition().createExporterInstance();
@@ -237,8 +238,8 @@ public class ExporterFactory {
 			exporter.setOutputDirectory(new File(loc));
 		}
 
-		exporter.setConfiguration(cfg);
-
+		HibernateHelper.INSTANCE.getHibernateService().setExporterConfiguration(exporter, cfg);
+		
 		List<String> templatePathList = new ArrayList<String>();
 		if (extract.containsKey(ExporterFactoryStrings.TEMPLATE_PATH)) {
 			String resolveTemplatePath = resolve(extract.getProperty(ExporterFactoryStrings.TEMPLATE_PATH));

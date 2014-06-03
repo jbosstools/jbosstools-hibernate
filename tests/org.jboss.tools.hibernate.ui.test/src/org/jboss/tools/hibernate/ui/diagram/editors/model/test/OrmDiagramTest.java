@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.spi.HibernateConfiguration;
 import org.hibernate.mapping.RootClass;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmDiagram;
 import org.jmock.Expectations;
@@ -41,7 +41,7 @@ public class OrmDiagramTest extends TestCase {
 	public void testLoadAndSave() {
 		
 		final ConsoleConfiguration consoleConfig = context.mock(ConsoleConfiguration.class);
-		final Configuration config = context.mock(Configuration.class);
+		final HibernateConfiguration config = context.mock(HibernateConfiguration.class);
 		final RootClass ioe = context.mock(RootClass.class);
 		ArrayList<RootClass> rts = new ArrayList<RootClass>();
 		rts.add(ioe);

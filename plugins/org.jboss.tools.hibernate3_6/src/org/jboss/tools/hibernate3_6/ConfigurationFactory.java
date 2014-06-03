@@ -15,7 +15,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Method;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -35,18 +34,18 @@ import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
 import org.hibernate.annotations.common.util.ReflectHelper;
 import org.hibernate.annotations.common.util.StringHelper;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.connection.DriverManagerConnectionProvider;
 import org.hibernate.console.ConnectionProfileUtil;
-import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ConsoleMessages;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
+import org.hibernate.console.spi.HibernateConfiguration;
 import org.hibernate.util.ConfigHelper;
 import org.hibernate.util.XMLHelper;
+import org.jboss.tools.hibernate.util.HibernateHelper;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
@@ -68,7 +67,7 @@ public class ConfigurationFactory {
 		return prefs;
 	}
 	
-	private void changeDatasourceProperties(Configuration localCfg){
+	private void changeDatasourceProperties(HibernateConfiguration localCfg){
 		final Properties invokeProperties = localCfg.getProperties();
 		// set this property to null!
 		if (invokeProperties.containsKey(Environment.DATASOURCE)){
@@ -79,7 +78,7 @@ public class ConfigurationFactory {
 		}
 	}
 
-	public Configuration createConfiguration(Configuration localCfg, boolean includeMappings) {
+	public HibernateConfiguration createConfiguration(HibernateConfiguration localCfg, boolean includeMappings) {
 		Properties properties = prefs.getProperties();
 
 		if (properties != null) {
@@ -130,7 +129,7 @@ public class ConfigurationFactory {
 	}
 
 	@SuppressWarnings("unused")
-	private void autoConfigureDialect(Configuration localCfg) {
+	private void autoConfigureDialect(HibernateConfiguration localCfg) {
 		if (localCfg.getProperty(Environment.DIALECT) == null) {
 			String dialect = ConnectionProfileUtil.autoDetectDialect(localCfg.getProperties());
 			if (dialect != null){
@@ -140,8 +139,8 @@ public class ConfigurationFactory {
 	}
 
 	// TODO: delegate to some extension point
-	private Configuration buildConfiguration(Properties properties, boolean includeMappings) {
-		Configuration localCfg = null;
+	private HibernateConfiguration buildConfiguration(Properties properties, boolean includeMappings) {
+		HibernateConfiguration localCfg = null;
 		if (prefs.getConfigurationMode().equals(ConfigurationMode.ANNOTATIONS)) {
 			try {
 				localCfg = buildAnnotationConfiguration();
@@ -164,22 +163,18 @@ public class ConfigurationFactory {
 						ConsoleMessages.ConsoleConfiguration_could_not_load_jpa_configuration, e);
 			}
 		} else {
-			localCfg = new Configuration();
+			localCfg = HibernateHelper.INSTANCE.getHibernateService().newDefaultConfiguration();
 			localCfg = configureStandardConfiguration(includeMappings, localCfg, properties);
 		}
 		return localCfg;
 	}
 
-	@SuppressWarnings("unchecked")
-	private Configuration buildAnnotationConfiguration() throws ClassNotFoundException,
+	private HibernateConfiguration buildAnnotationConfiguration() throws ClassNotFoundException,
 			InstantiationException, IllegalAccessException {
-		Class<Configuration> clazz = ReflectHelper
-				.classForName("org.hibernate.cfg.AnnotationConfiguration"); //$NON-NLS-1$
-		Configuration newInstance = clazz.newInstance();
-		return newInstance;
+		return HibernateHelper.INSTANCE.getHibernateService().newAnnotationConfiguration();
 	}
 
-	private Configuration buildJPAConfiguration(String persistenceUnit, Properties properties,
+	private HibernateConfiguration buildJPAConfiguration(String persistenceUnit, Properties properties,
 			String entityResolver, boolean includeMappings) {
 		if (StringHelper.isEmpty(persistenceUnit)) {
 			persistenceUnit = null;
@@ -201,25 +196,7 @@ public class ConfigurationFactory {
 			if (StringHelper.isEmpty((String) overrides.get("javax.persistence.validation.mode"))) {//$NON-NLS-1$
 				overrides.put("javax.persistence.validation.mode", "none"); //$NON-NLS-1$//$NON-NLS-2$
 			}
-			Class<?> clazz = ReflectHelper.classForName(
-					"org.hibernate.ejb.Ejb3Configuration", ConsoleConfiguration.class); //$NON-NLS-1$
-			Object ejb3cfg = clazz.newInstance();
-			if (StringHelper.isNotEmpty(entityResolver)) {
-				Class<?> resolver = ReflectHelper.classForName(entityResolver, this.getClass());
-				Object object = resolver.newInstance();
-				Method method = clazz.getMethod(
-						"setEntityResolver", new Class[] { EntityResolver.class });//$NON-NLS-1$
-				method.invoke(ejb3cfg, new Object[] { object });
-			}
-			Method method = clazz.getMethod("configure", new Class[] { String.class, Map.class }); //$NON-NLS-1$
-			if (method.invoke(ejb3cfg, new Object[] { persistenceUnit, overrides }) == null) {
-				String out = NLS.bind(
-						ConsoleMessages.ConsoleConfiguration_persistence_unit_not_found,
-						persistenceUnit);
-				throw new HibernateConsoleRuntimeException(out);
-			}
-			method = clazz.getMethod("getHibernateConfiguration", new Class[0]);//$NON-NLS-1$
-			Configuration invoke = (Configuration) method.invoke(ejb3cfg, (Object[]) null);
+			HibernateConfiguration invoke = HibernateHelper.INSTANCE.getHibernateService().newJpaConfiguration(entityResolver, persistenceUnit, overrides);
 			changeDatasourceProperties(invoke);
 			invoke = configureConnectionProfile(invoke);
 			return invoke;
@@ -232,8 +209,8 @@ public class ConfigurationFactory {
 		}
 	}
 
-	private Configuration configureStandardConfiguration(final boolean includeMappings,
-			Configuration localCfg, Properties properties) {
+	private HibernateConfiguration configureStandardConfiguration(final boolean includeMappings,
+			HibernateConfiguration localCfg, Properties properties) {
 		if (properties != null) {
 			localCfg = localCfg.setProperties(properties);
 		}
@@ -274,7 +251,7 @@ public class ConfigurationFactory {
 	}
 
 	@SuppressWarnings("unchecked")
-	private Configuration loadConfigurationXML(Configuration localCfg, boolean includeMappings,
+	private HibernateConfiguration loadConfigurationXML(HibernateConfiguration localCfg, boolean includeMappings,
 			EntityResolver entityResolver) {
 		File configXMLFile = prefs.getConfigXMLFile();
 		if (!includeMappings) {
@@ -334,7 +311,7 @@ public class ConfigurationFactory {
 			if (configXMLFile != null) {
 				return localCfg.configure(configXMLFile);
 			} else {
-				Configuration resultCfg = localCfg;
+				HibernateConfiguration resultCfg = localCfg;
 				if (checkHibernateResoureExistence("/hibernate.cfg.xml")) { //$NON-NLS-1$
 					resultCfg = localCfg.configure();
 				}
@@ -360,7 +337,7 @@ public class ConfigurationFactory {
 		return (is != null);
 	}
 
-	private Configuration configureConnectionProfile(Configuration localCfg) {
+	private HibernateConfiguration configureConnectionProfile(HibernateConfiguration localCfg) {
 		String connProfileName = prefs.getConnectionProfileName();
 		if (connProfileName == null) {
 			return localCfg;

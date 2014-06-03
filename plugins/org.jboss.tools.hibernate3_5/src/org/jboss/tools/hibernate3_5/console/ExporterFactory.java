@@ -16,8 +16,9 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.annotations.common.util.StringHelper;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
+import org.hibernate.console.spi.HibernateConfiguration;
+import org.hibernate.console.util.HibernateHelper;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.model.impl.ExporterFactoryStrings;
 import org.hibernate.eclipse.console.model.impl.ExporterProperty;
@@ -204,7 +205,7 @@ public class ExporterFactory {
 	 * @param collector
 	 * @throws CoreException in case of resolve variables issues.
 	 */
-	public Exporter createConfiguredExporter(Configuration cfg, String defaultOutputDirectory,
+	public Exporter createConfiguredExporter(HibernateConfiguration cfg, String defaultOutputDirectory,
 			String customTemplatePath, Properties globalProperties, Set<String> outputDirectories, ArtifactCollector collector) throws CoreException {
 
 		Exporter exporter = getExporterDefinition().createExporterInstance();
@@ -236,8 +237,10 @@ public class ExporterFactory {
 			outputDirectories.add(loc);
 			exporter.setOutputDirectory(new File(loc));
 		}
+		
+		HibernateHelper.INSTANCE.getHibernateService().setExporterConfiguration(exporter, cfg);
 
-		exporter.setConfiguration(cfg);
+//		exporter.setConfiguration(cfg);
 
 		List<String> templatePathList = new ArrayList<String>();
 		if (extract.containsKey(ExporterFactoryStrings.TEMPLATE_PATH)) {

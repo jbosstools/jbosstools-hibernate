@@ -30,10 +30,10 @@ import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.eclipse.ui.progress.IDeferredWorkbenchAdapter;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.IPropertySource2;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.node.BaseNode;
+import org.hibernate.console.spi.HibernateConfiguration;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
@@ -54,7 +54,7 @@ public class ConfigurationAdapterFactory implements IAdapterFactory {
 		Map<Class<?>, IDeferredWorkbenchAdapter> deferredMap = new HashMap<Class<?>, IDeferredWorkbenchAdapter>();
 		
 		deferredMap.put(ConsoleConfiguration.class, new ConsoleConfigurationWorkbenchAdapter());
-		deferredMap.put(Configuration.class, new ConfigurationWorkbenchAdapter());
+		deferredMap.put(HibernateConfiguration.class, new ConfigurationWorkbenchAdapter());
 		deferredMap.put(KnownConfigurations.class, new KnownConfigurationsWorkbenchAdapter());
 		deferredMap.put(LazyDatabaseSchema.class, new LazyDatabaseSchemaWorkbenchAdapter());
 		deferredMap.put( LazySessionFactory.class, new LazySessionFactoryAdapter() );

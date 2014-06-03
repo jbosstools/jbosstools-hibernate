@@ -58,10 +58,10 @@ import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 import org.eclipse.ui.texteditor.TextOperationAction;
 import org.hibernate.HibernateException;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.QueryPage;
+import org.hibernate.console.spi.HibernateConfiguration;
 import org.hibernate.eclipse.console.AbstractQueryEditor;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
@@ -158,7 +158,6 @@ public class CriteriaEditor extends AbstractQueryEditor {
 		return evalCtx ;
 	}
 
-	@SuppressWarnings("unchecked")
 	private String[] getImports() {
 
 		final ConsoleConfiguration consoleConfiguration = getConsoleConfiguration();
@@ -174,9 +173,9 @@ public class CriteriaEditor extends AbstractQueryEditor {
 		}
 		
 		Set<String> imports = new HashSet<String>();
-		Configuration configuration = consoleConfiguration.getConfiguration();
+		HibernateConfiguration configuration = consoleConfiguration.getConfiguration();
 		if(configuration!=null) {
-			Iterator<PersistentClass> classMappings = configuration.getClassMappings();
+			Iterator<? extends PersistentClass> classMappings = configuration.getClassMappings();
 			while ( classMappings.hasNext() ) {
 				PersistentClass clazz = classMappings.next();
 				String className = clazz.getClassName();

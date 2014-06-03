@@ -22,8 +22,9 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.core.PackageFragmentRoot;
 import org.eclipse.osgi.util.NLS;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.spi.HibernateConfiguration;
+import org.hibernate.console.util.HibernateHelper;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 import org.hibernate.eclipse.console.test.project.ConfigurableTestProject;
 import org.hibernate.eclipse.console.test.utils.ConsoleConfigUtils;
@@ -58,7 +59,7 @@ public class HbmExportExceptionTest extends BaseTestSetCase {
 			Object[] persClassesInit = getPersistenceClasses(false);
 
 			final ConsoleConfiguration consCFG = getConsoleConfig();
-			Configuration config = consCFG.getConfiguration();
+			HibernateConfiguration config = consCFG.getConfiguration();
 			//delete old hbm files
 			assertNotNull(testPackage);
 			int nDeleted = 0;
@@ -77,8 +78,8 @@ public class HbmExportExceptionTest extends BaseTestSetCase {
 			
 			HibernateMappingGlobalSettings hmgs = new HibernateMappingGlobalSettings();
 			
-			HibernateMappingExporter hce = new HibernateMappingExporter(config, 
-				getSrcFolder());
+			HibernateMappingExporter hce = HibernateHelper.INSTANCE.getHibernateService().newHibernateMappingExporter(config, getSrcFolder());
+
 			
 			hce.setGlobalSettings(hmgs);
 			try {

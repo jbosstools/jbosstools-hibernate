@@ -41,12 +41,12 @@ import org.eclipse.jpt.jpa.core.internal.AbstractJpaProject;
 import org.eclipse.wst.validation.ValidationFramework;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
+import org.hibernate.console.spi.HibernateConfiguration;
 import org.hibernate.eclipse.console.properties.HibernatePropertiesConstants;
 import org.hibernate.eclipse.nature.HibernateNature;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit;
@@ -82,7 +82,7 @@ public class HibernateJpaProject extends AbstractJpaProject {
 		ConsoleConfiguration cc = getDefaultConsoleConfiguration();
 		if (cc != null){
 			if (cc.getConfiguration() != null){
-				Configuration config = cc.getConfiguration();
+				HibernateConfiguration config = cc.getConfiguration();
 				return config.getNamingStrategy();
 			}
 		}
@@ -117,7 +117,7 @@ public class HibernateJpaProject extends AbstractJpaProject {
 		ConsoleConfiguration cc = getDefaultConsoleConfiguration();
 		if (cc != null){
 			if (cc.hasConfiguration()){//was not build yet
-				Configuration configuration = cc.getConfiguration();
+				HibernateConfiguration configuration = cc.getConfiguration();
 				if (configuration.getProperties().containsKey(Environment.DEFAULT_SCHEMA)){
 					schema = configuration.getProperty(Environment.DEFAULT_SCHEMA);
 				}
@@ -154,7 +154,7 @@ public class HibernateJpaProject extends AbstractJpaProject {
 		ConsoleConfiguration cc = getDefaultConsoleConfiguration();
 		if (cc != null){
 			if (cc.hasConfiguration()){//was not build yet
-				Configuration configuration = cc.getConfiguration();
+				HibernateConfiguration configuration = cc.getConfiguration();
 				if (configuration.getProperties().containsKey(Environment.DEFAULT_CATALOG)){
 					catalog = configuration.getProperty(Environment.DEFAULT_CATALOG);
 				}
