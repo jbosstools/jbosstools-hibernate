@@ -28,7 +28,7 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.internal.core.LaunchManager;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
-import org.hibernate.console.spi.HibernateConfiguration;
+import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.eclipse.console.model.impl.ExporterFactory;
 import org.hibernate.eclipse.console.model.impl.ExporterFactoryStrings;
 import org.hibernate.eclipse.console.test.launchcfg.TestConsoleConfigurationPreferences;
@@ -158,7 +158,7 @@ public class ExporterAttributesTest extends TestCase {
         props.put(CodeGenerationStrings.EJB3, "" + expAttr.isEJB3Enabled()); //$NON-NLS-1$
         props.put(CodeGenerationStrings.JDK5, "" + expAttr.isJDK5Enabled()); //$NON-NLS-1$
         consoleCfg.build();
-        HibernateConfiguration cfg = consoleCfg.getConfiguration();
+        IConfiguration cfg = consoleCfg.getConfiguration();
 		assertNotNull(cfg);
 		Set<String> outputDirectories = new HashSet<String>();
 		for (int i = 0; i < exporterFactories.size(); i++) {

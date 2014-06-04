@@ -16,7 +16,7 @@ import java.util.Properties;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
-import org.hibernate.console.spi.HibernateConfiguration;
+import org.hibernate.console.spi.IConfiguration;
 
 /**
  * Responsible to provide Hibernate configuration 
@@ -27,9 +27,9 @@ import org.hibernate.console.spi.HibernateConfiguration;
  */
 public class ConfigurationPropertySource implements IPropertySource {
 
-	private HibernateConfiguration cfg;
+	private IConfiguration cfg;
 
-	public ConfigurationPropertySource(HibernateConfiguration cfg) {
+	public ConfigurationPropertySource(IConfiguration cfg) {
 		this.cfg = cfg;
 	}
 

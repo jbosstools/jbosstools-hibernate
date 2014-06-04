@@ -47,7 +47,7 @@ import org.hibernate.console.ext.HibernateExtensionDefinition;
 import org.hibernate.console.ext.HibernateExtensionManager;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.PreferencesClassPathUtils;
-import org.hibernate.console.spi.HibernateConfiguration;
+import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.eclipse.libs.FakeDelegatingDriver;
 import org.hibernate.tool.hbm2x.StringUtils;
 
@@ -59,7 +59,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	private Map<String, FakeDelegatingDriver> fakeDrivers = new HashMap<String, FakeDelegatingDriver>();
 
 	/* TODO: move this out to the actual users of the configuraiton/sf ? */
-	private HibernateConfiguration configuration;
+	private IConfiguration configuration;
 	private SessionFactory sessionFactory;
 	
 	//****************************** EXTENSION **********************
@@ -234,10 +234,10 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	 * @return
 	 *
 	 */
-	public HibernateConfiguration buildWith(final HibernateConfiguration cfg, final boolean includeMappings) {
+	public IConfiguration buildWith(final IConfiguration cfg, final boolean includeMappings) {
 		reinitClassLoader();
 		executionContext = new DefaultExecutionContext(getName(), classLoader);
-		HibernateConfiguration result = (HibernateConfiguration)execute(new Command() {
+		IConfiguration result = (IConfiguration)execute(new Command() {
 			public Object execute() {
 				ConfigurationFactory csf = new ConfigurationFactory(prefs, fakeDrivers);
 				return csf.createConfiguration(cfg, includeMappings);
@@ -256,7 +256,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		return Thread.currentThread().getContextClassLoader();
 	}
 	
-	public HibernateConfiguration getConfiguration() {
+	public IConfiguration getConfiguration() {
 		return configuration;
 	}
 	/**
@@ -431,7 +431,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		return resetted;
 	}
 
-	public Settings getSettings(final HibernateConfiguration cfg) {
+	public Settings getSettings(final IConfiguration cfg) {
 		return (Settings) execute(new Command() {
 				public Object execute() {
 					return cfg.buildSettings();

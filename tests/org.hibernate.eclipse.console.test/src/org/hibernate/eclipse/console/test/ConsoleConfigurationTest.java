@@ -15,7 +15,7 @@ import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.QueryInputModel;
 import org.hibernate.console.QueryPage;
-import org.hibernate.console.spi.HibernateConfiguration;
+import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.eclipse.console.test.launchcfg.TestConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.views.QueryPageTabView;
 import org.hibernate.mapping.Column;
@@ -127,7 +127,7 @@ public class ConsoleConfigurationTest extends TestCase {
 		}
 		
 		consoleCfg.build();
-		HibernateConfiguration c = consoleCfg.getConfiguration();
+		IConfiguration c = consoleCfg.getConfiguration();
 		Mappings mappings = c.createMappings();
 		RootClass rc = new RootClass();
 		rc.setEntityName("java.awt.Button");

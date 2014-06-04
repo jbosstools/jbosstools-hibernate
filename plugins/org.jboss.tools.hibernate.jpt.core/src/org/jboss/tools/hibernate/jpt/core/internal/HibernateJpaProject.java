@@ -46,7 +46,7 @@ import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
-import org.hibernate.console.spi.HibernateConfiguration;
+import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.eclipse.console.properties.HibernatePropertiesConstants;
 import org.hibernate.eclipse.nature.HibernateNature;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit;
@@ -82,7 +82,7 @@ public class HibernateJpaProject extends AbstractJpaProject {
 		ConsoleConfiguration cc = getDefaultConsoleConfiguration();
 		if (cc != null){
 			if (cc.getConfiguration() != null){
-				HibernateConfiguration config = cc.getConfiguration();
+				IConfiguration config = cc.getConfiguration();
 				return config.getNamingStrategy();
 			}
 		}
@@ -117,7 +117,7 @@ public class HibernateJpaProject extends AbstractJpaProject {
 		ConsoleConfiguration cc = getDefaultConsoleConfiguration();
 		if (cc != null){
 			if (cc.hasConfiguration()){//was not build yet
-				HibernateConfiguration configuration = cc.getConfiguration();
+				IConfiguration configuration = cc.getConfiguration();
 				if (configuration.getProperties().containsKey(Environment.DEFAULT_SCHEMA)){
 					schema = configuration.getProperty(Environment.DEFAULT_SCHEMA);
 				}
@@ -154,7 +154,7 @@ public class HibernateJpaProject extends AbstractJpaProject {
 		ConsoleConfiguration cc = getDefaultConsoleConfiguration();
 		if (cc != null){
 			if (cc.hasConfiguration()){//was not build yet
-				HibernateConfiguration configuration = cc.getConfiguration();
+				IConfiguration configuration = cc.getConfiguration();
 				if (configuration.getProperties().containsKey(Environment.DEFAULT_CATALOG)){
 					catalog = configuration.getProperty(Environment.DEFAULT_CATALOG);
 				}

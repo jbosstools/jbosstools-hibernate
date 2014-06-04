@@ -45,7 +45,7 @@ import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.ext.HibernateException;
 import org.hibernate.console.ext.HibernateExtension;
-import org.hibernate.console.spi.HibernateConfiguration;
+import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.ext.CompletionProposalsResult;
@@ -161,7 +161,7 @@ public class ConsoleExtension4_3 implements ConsoleExtension {
 					if (attributes.isReverseEngineer()) {
 						monitor.subTask(HibernateConsoleMessages.CodeGenerationLaunchDelegate_reading_jdbc_metadata);
 					}
-					final HibernateConfiguration cfg = buildConfiguration(attributes, (HibernateExtension4_3) cc.getHibernateExtension(), ResourcesPlugin.getWorkspace().getRoot());
+					final IConfiguration cfg = buildConfiguration(attributes, (HibernateExtension4_3) cc.getHibernateExtension(), ResourcesPlugin.getWorkspace().getRoot());
 
 					monitor.worked(1);
 
@@ -210,21 +210,21 @@ public class ConsoleExtension4_3 implements ConsoleExtension {
 				}
 	
 	
-	private HibernateConfiguration buildConfiguration(final ExporterAttributes attributes, HibernateExtension4_3 cc, IWorkspaceRoot root) {
+	private IConfiguration buildConfiguration(final ExporterAttributes attributes, HibernateExtension4_3 cc, IWorkspaceRoot root) {
 		final boolean reveng = attributes.isReverseEngineer();
 		final String reverseEngineeringStrategy = attributes.getRevengStrategy();
 		final boolean preferBasicCompositeids = attributes.isPreferBasicCompositeIds();
 		final IResource revengres = PathHelper.findMember( root, attributes.getRevengSettings());
 		
 		if(reveng) {
-			HibernateConfiguration configuration = null;
+			IConfiguration configuration = null;
 			if(cc.hasConfiguration()) {
 				configuration = cc.getConfiguration();
 			} else {
 				configuration = cc.buildWith( null, false );
 			}
 
-			final HibernateConfiguration cfg = HibernateHelper.INSTANCE.getHibernateService().newJDBCMetaDataConfiguration();
+			final IConfiguration cfg = HibernateHelper.INSTANCE.getHibernateService().newJDBCMetaDataConfiguration();
 			Properties properties = configuration.getProperties();
 			cfg.setProperties( properties );
 			cc.buildWith(cfg,false);
@@ -272,7 +272,7 @@ public class ConsoleExtension4_3 implements ConsoleExtension {
 			return cfg;
 		} else {
 			cc.build();
-			final HibernateConfiguration configuration = cc.getConfiguration();
+			final IConfiguration configuration = cc.getConfiguration();
 
 			cc.execute(new Command() {
 				public Object execute() {

@@ -10,22 +10,22 @@ import org.hibernate.tool.ide.completion.HQLCodeAssist;
 
 public interface IService {
 
-	HibernateConfiguration newAnnotationConfiguration();
+	IConfiguration newAnnotationConfiguration();
 
-	HibernateConfiguration newJpaConfiguration(String entityResolver,
+	IConfiguration newJpaConfiguration(String entityResolver,
 			String persistenceUnit, Map<Object, Object> overrides);
 	
-	HibernateConfiguration newDefaultConfiguration();
+	IConfiguration newDefaultConfiguration();
 	
-	void setExporterConfiguration(Exporter exporter, HibernateConfiguration hcfg);
+	void setExporterConfiguration(Exporter exporter, IConfiguration hcfg);
 	
 	HibernateMappingExporter newHibernateMappingExporter(
-			HibernateConfiguration hcfg, File file);
+			IConfiguration hcfg, File file);
 	
-	SchemaExport newSchemaExport(HibernateConfiguration hcfg);
+	SchemaExport newSchemaExport(IConfiguration hcfg);
 	
-	HQLCodeAssist newHQLCodeAssist(HibernateConfiguration hcfg);
+	HQLCodeAssist newHQLCodeAssist(IConfiguration hcfg);
 
-	HibernateConfiguration newJDBCMetaDataConfiguration();
+	IConfiguration newJDBCMetaDataConfiguration();
 
 }

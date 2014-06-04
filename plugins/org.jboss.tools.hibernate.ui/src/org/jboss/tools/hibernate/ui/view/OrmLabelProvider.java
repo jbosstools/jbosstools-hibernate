@@ -28,7 +28,7 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.execution.ExecutionContext;
-import org.hibernate.console.spi.HibernateConfiguration;
+import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.resolver.DialectFactory;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
@@ -65,7 +65,7 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 		dialect = null;
 	}
 
-	protected HibernateConfiguration getConfig() {
+	protected IConfiguration getConfig() {
 		final ConsoleConfiguration consoleConfig = getConsoleConfig();
 		if (consoleConfig != null) {
 			if (!consoleConfig.hasConfiguration()) {
@@ -144,7 +144,7 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 		if (sqlType != null) {
 			return false;
 		}
-		final HibernateConfiguration config = getConfig();
+		final IConfiguration config = getConfig();
 		if (mapping == null && config != null) {
 			final ConsoleConfiguration consoleConfig = getConsoleConfig();
 			mapping = (Mapping)consoleConfig.execute(new ExecutionContext.Command() {

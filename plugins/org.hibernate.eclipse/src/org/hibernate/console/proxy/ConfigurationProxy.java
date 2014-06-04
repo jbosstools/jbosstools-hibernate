@@ -11,13 +11,13 @@ import org.hibernate.cfg.Mappings;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.cfg.Settings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
-import org.hibernate.console.spi.HibernateConfiguration;
+import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.engine.Mapping;
 import org.hibernate.mapping.PersistentClass;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 
-public class ConfigurationProxy implements HibernateConfiguration {
+public class ConfigurationProxy implements IConfiguration {
 	
 	private Configuration target;
 	
@@ -31,7 +31,7 @@ public class ConfigurationProxy implements HibernateConfiguration {
 	}
 
 	@Override
-	public HibernateConfiguration addFile(File file) {
+	public IConfiguration addFile(File file) {
 		target.addFile(file);
 		return this;
 	}
@@ -42,7 +42,7 @@ public class ConfigurationProxy implements HibernateConfiguration {
 	}
 
 	@Override
-	public HibernateConfiguration setProperties(Properties properties) {
+	public IConfiguration setProperties(Properties properties) {
 		target.setProperties(properties);
 		return this;
 	}
@@ -68,19 +68,19 @@ public class ConfigurationProxy implements HibernateConfiguration {
 	}
 
 	@Override
-	public HibernateConfiguration configure(Document document) {
+	public IConfiguration configure(Document document) {
 		target.configure(document);
 		return this;
 	}
 
 	@Override
-	public HibernateConfiguration configure(File file) {
+	public IConfiguration configure(File file) {
 		target.configure(file);
 		return this;
 	}
 
 	@Override
-	public HibernateConfiguration configure() {
+	public IConfiguration configure() {
 		target.configure();
 		return this;
 	}

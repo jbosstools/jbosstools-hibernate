@@ -20,7 +20,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.osgi.util.NLS;
-import org.hibernate.console.spi.HibernateConfiguration;
+import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 import org.hibernate.eclipse.console.test.project.TestProject;
 import org.hibernate.eclipse.console.test.utils.FilesTransfer;
@@ -75,7 +75,7 @@ public class HbmExporterTest extends TestCase {
 	 * Fails if configuration is null.
 	 * @return
 	 */
-	protected HibernateConfiguration getConfigurationFor(String... cuNames){
+	protected IConfiguration getConfigurationFor(String... cuNames){
 		Set<ICompilationUnit> selectionCU = new HashSet<ICompilationUnit>();
 		for (int i = 0; i < cuNames.length; i++) {
 			ICompilationUnit icu = Utils.findCompilationUnit(project.getIJavaProject(),
@@ -84,21 +84,21 @@ public class HbmExporterTest extends TestCase {
 			selectionCU.add(icu);
 		}
 		ConfigurationActor actor = new ConfigurationActor(selectionCU);
-		Map<IJavaProject, HibernateConfiguration> configurations = actor.createConfigurations(Integer.MAX_VALUE);
+		Map<IJavaProject, IConfiguration> configurations = actor.createConfigurations(Integer.MAX_VALUE);
 		assertEquals(1, configurations.size());
-		HibernateConfiguration config = configurations.get(project.getIJavaProject());
+		IConfiguration config = configurations.get(project.getIJavaProject());
 		assertNotNull(config);
 		return config;
 	}
 	
-	protected void checkClassesMaped(HibernateConfiguration config, String... classesNames){
+	protected void checkClassesMaped(IConfiguration config, String... classesNames){
 		for (int i = 0; i < classesNames.length; i++) {
 			assertNotNull(config.getClassMapping(classesNames[i]));
 		}
 	}
 	
 	public void testId(){
-		HibernateConfiguration config = getConfigurationFor("pack.A"); //$NON-NLS-1$
+		IConfiguration config = getConfigurationFor("pack.A"); //$NON-NLS-1$
 		checkClassesMaped(config, "pack.A", "pack.B"); //$NON-NLS-1$ //$NON-NLS-2$
 		PersistentClass a = config.getClassMapping("pack.A"); //$NON-NLS-1$
 		PersistentClass b = config.getClassMapping("pack.B"); //$NON-NLS-1$
@@ -112,7 +112,7 @@ public class HbmExporterTest extends TestCase {
 	}
 	
 	public void testProperty(){
-		HibernateConfiguration config = getConfigurationFor("pack.A"); //$NON-NLS-1$
+		IConfiguration config = getConfigurationFor("pack.A"); //$NON-NLS-1$
 		checkClassesMaped(config, "pack.A", "pack.B"); //$NON-NLS-1$ //$NON-NLS-2$
 		PersistentClass a = config.getClassMapping("pack.A"); //$NON-NLS-1$
 		
@@ -125,7 +125,7 @@ public class HbmExporterTest extends TestCase {
 	}
 	
 	public void testArray(){
-		HibernateConfiguration config = getConfigurationFor("pack.A"); //$NON-NLS-1$
+		IConfiguration config = getConfigurationFor("pack.A"); //$NON-NLS-1$
 		checkClassesMaped(config, "pack.A", "pack.B"); //$NON-NLS-1$ //$NON-NLS-2$
 		PersistentClass a = config.getClassMapping("pack.A"); //$NON-NLS-1$
 		PersistentClass b = config.getClassMapping("pack.B"); //$NON-NLS-1$
@@ -151,7 +151,7 @@ public class HbmExporterTest extends TestCase {
 	}
 	
 	public void testList(){
-		HibernateConfiguration config = getConfigurationFor("pack.A"); //$NON-NLS-1$
+		IConfiguration config = getConfigurationFor("pack.A"); //$NON-NLS-1$
 		checkClassesMaped(config, "pack.A", "pack.B"); //$NON-NLS-1$ //$NON-NLS-2$
 		PersistentClass a = config.getClassMapping("pack.A"); //$NON-NLS-1$
 		PersistentClass b = config.getClassMapping("pack.B"); //$NON-NLS-1$
@@ -169,7 +169,7 @@ public class HbmExporterTest extends TestCase {
 	}
 	
 	public void testSet(){
-		HibernateConfiguration config = getConfigurationFor("pack.A"); //$NON-NLS-1$
+		IConfiguration config = getConfigurationFor("pack.A"); //$NON-NLS-1$
 		checkClassesMaped(config, "pack.A", "pack.B"); //$NON-NLS-1$ //$NON-NLS-2$
 		PersistentClass a = config.getClassMapping("pack.A"); //$NON-NLS-1$
 		PersistentClass b = config.getClassMapping("pack.B"); //$NON-NLS-1$
@@ -186,7 +186,7 @@ public class HbmExporterTest extends TestCase {
 	}
 	
 	public void testMap(){
-		HibernateConfiguration config = getConfigurationFor("pack.A"); //$NON-NLS-1$
+		IConfiguration config = getConfigurationFor("pack.A"); //$NON-NLS-1$
 		checkClassesMaped(config, "pack.A", "pack.B"); //$NON-NLS-1$ //$NON-NLS-2$
 		PersistentClass a = config.getClassMapping("pack.A"); //$NON-NLS-1$
 		PersistentClass b = config.getClassMapping("pack.B"); //$NON-NLS-1$

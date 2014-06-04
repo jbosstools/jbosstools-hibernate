@@ -23,7 +23,7 @@ package org.hibernate.eclipse.graph;
 
 
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.hibernate.console.spi.HibernateConfiguration;
+import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.eclipse.console.ConsolePreferencesConstants;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.views.KnownConfigurationsView;
@@ -49,8 +49,8 @@ public class EntityGraphView extends AbstractGraphViewPart {
 
 	protected void selectionChanged(IStructuredSelection ss)  {
 		Object o = ss.getFirstElement();
-		if (o instanceof HibernateConfiguration) {
-			viewer.setContents(new ConfigurationViewAdapter((HibernateConfiguration) o));
+		if (o instanceof IConfiguration) {
+			viewer.setContents(new ConfigurationViewAdapter((IConfiguration) o));
 			boolean b = HibernateConsolePlugin.getDefault().getPluginPreferences().getBoolean(ConsolePreferencesConstants.ENTITY_MODEL_LAYOUT);
 			((ConfigurationEditPart)viewer.getContents()).setManualLayoutActive(b);
 		}

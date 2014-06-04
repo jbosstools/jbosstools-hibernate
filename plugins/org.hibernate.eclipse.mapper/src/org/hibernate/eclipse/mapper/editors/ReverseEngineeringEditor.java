@@ -46,7 +46,7 @@ import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
-import org.hibernate.console.spi.HibernateConfiguration;
+import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.model.IReverseEngineeringDefinition;
 import org.hibernate.eclipse.console.model.ITableFilter;
@@ -202,7 +202,7 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 			}
 
 			ITableFilter[] tableFilters = getReverseEngineeringDefinition().getTableFilters();
-			HibernateConfiguration cfg = configuration.buildWith(null, false);
+			IConfiguration cfg = configuration.buildWith(null, false);
 			Settings settings = configuration.getSettings(cfg);
 
 			OverrideRepository repository = new OverrideRepository();///*settings.getDefaultCatalogName(),settings.getDefaultSchemaName()*/);

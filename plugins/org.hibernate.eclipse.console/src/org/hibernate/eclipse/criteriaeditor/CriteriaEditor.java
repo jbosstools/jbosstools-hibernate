@@ -61,7 +61,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.QueryPage;
-import org.hibernate.console.spi.HibernateConfiguration;
+import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.eclipse.console.AbstractQueryEditor;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
@@ -173,7 +173,7 @@ public class CriteriaEditor extends AbstractQueryEditor {
 		}
 		
 		Set<String> imports = new HashSet<String>();
-		HibernateConfiguration configuration = consoleConfiguration.getConfiguration();
+		IConfiguration configuration = consoleConfiguration.getConfiguration();
 		if(configuration!=null) {
 			Iterator<? extends PersistentClass> classMappings = configuration.getClassMappings();
 			while ( classMappings.hasNext() ) {

@@ -42,7 +42,7 @@ import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.WildcardType;
 import org.hibernate.FetchMode;
 import org.hibernate.cfg.Mappings;
-import org.hibernate.console.spi.HibernateConfiguration;
+import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.console.util.HibernateHelper;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.collect.AllEntitiesInfoCollector;
@@ -90,8 +90,8 @@ public class ConfigurationActor {
 	 * 
 	 * @return different configuration for different projects
 	 */
-	public Map<IJavaProject, HibernateConfiguration> createConfigurations(int processDepth){
-		Map<IJavaProject, HibernateConfiguration> configs = new HashMap<IJavaProject, HibernateConfiguration>();
+	public Map<IJavaProject, IConfiguration> createConfigurations(int processDepth){
+		Map<IJavaProject, IConfiguration> configs = new HashMap<IJavaProject, IConfiguration>();
 		if (selectionCU.size() == 0) {
 			return configs;
 		}		
@@ -131,8 +131,8 @@ public class ConfigurationActor {
 		return configs;
 	}
 	
-	protected HibernateConfiguration createConfiguration(IJavaProject project, Map<String, EntityInfo> entities) {
-		HibernateConfiguration config = HibernateHelper.INSTANCE.getHibernateService().newDefaultConfiguration();
+	protected IConfiguration createConfiguration(IJavaProject project, Map<String, EntityInfo> entities) {
+		IConfiguration config = HibernateHelper.INSTANCE.getHibernateService().newDefaultConfiguration();
 		
 		ProcessEntityInfo processor = new ProcessEntityInfo();
 		processor.setEntities(entities);

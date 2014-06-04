@@ -14,7 +14,7 @@ import org.hibernate.console.QueryInputModel;
 import org.hibernate.console.QueryPage;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
-import org.hibernate.console.spi.HibernateConfiguration;
+import org.hibernate.console.spi.IConfiguration;
 
 /**
  * @author Dmitry Geraskov
@@ -47,7 +47,7 @@ public interface HibernateExtension {
 	public boolean hasConfiguration();
 	
 	//FIXME remove this method
-	public HibernateConfiguration getConfiguration();
+	public IConfiguration getConfiguration();
 	//FIXME remove this method
 //	public SessionFactory getSessionFactory();
 	//FIXME remove this method

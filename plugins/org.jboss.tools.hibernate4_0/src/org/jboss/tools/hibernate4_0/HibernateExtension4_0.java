@@ -34,7 +34,7 @@ import org.hibernate.console.ext.HibernateException;
 import org.hibernate.console.ext.HibernateExtension;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.PreferencesClassPathUtils;
-import org.hibernate.console.spi.HibernateConfiguration;
+import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.service.internal.StandardServiceRegistryImpl;
@@ -52,7 +52,7 @@ public class HibernateExtension4_0 implements HibernateExtension {
 	
 	private ConsoleConfigurationPreferences prefs;
 	
-	private HibernateConfiguration configuration;
+	private IConfiguration configuration;
 	
 	private SessionFactory sessionFactory;
 	
@@ -134,11 +134,11 @@ public class HibernateExtension4_0 implements HibernateExtension {
 		return res;
 	}
 
-	public HibernateConfiguration buildWith(final HibernateConfiguration cfg, final boolean includeMappings) {
+	public IConfiguration buildWith(final IConfiguration cfg, final boolean includeMappings) {
 		reinitClassLoader();
 		//TODO handle user libraries here
 		executionContext = new DefaultExecutionContext(prefs.getName(), classLoader);
-		HibernateConfiguration result = (HibernateConfiguration)execute(new Command() {
+		IConfiguration result = (IConfiguration)execute(new Command() {
 			public Object execute() {
 				ConfigurationFactory cf = new ConfigurationFactory(prefs, fakeDrivers);
 				return cf.createConfiguration(cfg, includeMappings);
@@ -273,11 +273,11 @@ public class HibernateExtension4_0 implements HibernateExtension {
 	/**
 	 * @return
 	 */
-	public HibernateConfiguration getConfiguration() {
+	public IConfiguration getConfiguration() {
 		return configuration;
 	}
 	
-	public Settings getSettings(final HibernateConfiguration cfg, final ServiceRegistry serviceRegisrty) {
+	public Settings getSettings(final IConfiguration cfg, final ServiceRegistry serviceRegisrty) {
 		return (Settings) execute(new Command() {
 			public Object execute() {
 				return cfg.buildSettings(serviceRegisrty);

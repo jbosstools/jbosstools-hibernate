@@ -64,7 +64,7 @@ import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.ui.ide.IDE;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.ImageConstants;
-import org.hibernate.console.spi.HibernateConfiguration;
+import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.console.util.HibernateHelper;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
@@ -246,7 +246,7 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 	protected class HibernateMappingExporterWrapper { // extends HibernateMappingExporter {
 		protected IJavaProject proj;
 		private HibernateMappingExporter target = null;
-		public HibernateMappingExporterWrapper(IJavaProject proj, HibernateConfiguration cfg, File outputdir) {
+		public HibernateMappingExporterWrapper(IJavaProject proj, IConfiguration cfg, File outputdir) {
 	    	target = HibernateHelper.INSTANCE.getHibernateService().newHibernateMappingExporter(cfg, outputdir);
 	    	this.proj = proj;
 	    }
@@ -315,10 +315,10 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 
 	protected Map<IJavaProject, IPath> getPlaces2Gen() {
 		updateCompilationUnits();
-		Map<IJavaProject, HibernateConfiguration> configs = createConfigurations();
+		Map<IJavaProject, IConfiguration> configs = createConfigurations();
 		Map<IJavaProject, IPath> places2Gen = new HashMap<IJavaProject, IPath>();
-		for (Entry<IJavaProject, HibernateConfiguration> entry : configs.entrySet()) {
-			HibernateConfiguration config = entry.getValue();
+		for (Entry<IJavaProject, IConfiguration> entry : configs.entrySet()) {
+			IConfiguration config = entry.getValue();
 			HibernateMappingGlobalSettings hmgs = new HibernateMappingGlobalSettings();
 
 			//final IPath projPath = entry.getKey().getProject().getLocation();
@@ -556,9 +556,9 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 	}
 	
 
-	protected Map<IJavaProject, HibernateConfiguration> createConfigurations() {
+	protected Map<IJavaProject, IConfiguration> createConfigurations() {
 		ConfigurationActor actor = new ConfigurationActor(selectionCU);
-		Map<IJavaProject, HibernateConfiguration> configs = actor.createConfigurations(processDepth);
+		Map<IJavaProject, IConfiguration> configs = actor.createConfigurations(processDepth);
 		return configs;
 	}
 	

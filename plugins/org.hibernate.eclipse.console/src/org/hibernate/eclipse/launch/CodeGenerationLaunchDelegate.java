@@ -77,7 +77,7 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.execution.ExecutionContext.Command;
-import org.hibernate.console.spi.HibernateConfiguration;
+import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.console.util.HibernateHelper;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
@@ -383,7 +383,7 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 			if (attributes.isReverseEngineer()) {
 				monitor.subTask(HibernateConsoleMessages.CodeGenerationLaunchDelegate_reading_jdbc_metadata);
 			}
-			final HibernateConfiguration cfg = buildConfiguration(attributes, cc, ResourcesPlugin.getWorkspace().getRoot());
+			final IConfiguration cfg = buildConfiguration(attributes, cc, ResourcesPlugin.getWorkspace().getRoot());
 
 			monitor.worked(1);
 
@@ -429,14 +429,14 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 
 		}
 
-	private HibernateConfiguration buildConfiguration(final ExporterAttributes attributes, ConsoleConfiguration cc, IWorkspaceRoot root) {
+	private IConfiguration buildConfiguration(final ExporterAttributes attributes, ConsoleConfiguration cc, IWorkspaceRoot root) {
 		final boolean reveng = attributes.isReverseEngineer();
 		final String reverseEngineeringStrategy = attributes.getRevengStrategy();
 		final boolean preferBasicCompositeids = attributes.isPreferBasicCompositeIds();
 		final IResource revengres = PathHelper.findMember( root, attributes.getRevengSettings());
 		
 		if(reveng) {
-			HibernateConfiguration configuration = null;
+			IConfiguration configuration = null;
 			if(cc.hasConfiguration()) {
 				configuration = cc.getConfiguration();
 			} else {
@@ -444,7 +444,7 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 			}
 
 //			final JDBCMetaDataConfiguration cfg = new JDBCMetaDataConfiguration();
-			final HibernateConfiguration cfg = HibernateHelper.INSTANCE.getHibernateService().newJDBCMetaDataConfiguration();
+			final IConfiguration cfg = HibernateHelper.INSTANCE.getHibernateService().newJDBCMetaDataConfiguration();
 			Properties properties = configuration.getProperties();
 			cfg.setProperties( properties );
 			cc.buildWith(cfg,false);

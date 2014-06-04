@@ -13,19 +13,19 @@ import org.hibernate.mapping.PersistentClass;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 
-public interface HibernateConfiguration {
+public interface IConfiguration {
 
 	String getProperty(String driver);
-	HibernateConfiguration addFile(File file);
+	IConfiguration addFile(File file);
 	void setProperty(String name, String value);
-	HibernateConfiguration setProperties(Properties properties);
+	IConfiguration setProperties(Properties properties);
 	void setEntityResolver(EntityResolver entityResolver);
 	void setNamingStrategy(NamingStrategy namingStrategy);
 	Properties getProperties();
 	void addProperties(Properties properties);
-	HibernateConfiguration configure(Document document);
-	HibernateConfiguration configure(File file);
-	HibernateConfiguration configure();
+	IConfiguration configure(Document document);
+	IConfiguration configure(File file);
+	IConfiguration configure();
 	void buildMappings();
 	SessionFactory buildSessionFactory();
 	Settings buildSettings();

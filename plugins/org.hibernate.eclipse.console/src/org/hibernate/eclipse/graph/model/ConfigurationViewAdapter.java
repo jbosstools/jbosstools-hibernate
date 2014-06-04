@@ -28,18 +28,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 
-import org.hibernate.console.spi.HibernateConfiguration;
+import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.mapping.PersistentClass;
 
 public class ConfigurationViewAdapter extends Observable {
 
-	private final HibernateConfiguration cfg;
+	private final IConfiguration cfg;
 	private Map<String, PersistentClassViewAdapter> persistentClasses; // key: name, value: PersistentClassViewAdapter
 	private List<TableViewAdapter> selectedTables;
 	//private final Map sourceAssociations; // key: name, value: List of AssociationViewAdapter
 	//private final Map targetAssociations; // key: name, value: List of AssociationViewAdapter
 	
-	public ConfigurationViewAdapter(HibernateConfiguration cfg) {
+	public ConfigurationViewAdapter(IConfiguration cfg) {
 		this.cfg = cfg;		
 		
 		//sourceAssociations = new HashMap();
@@ -73,7 +73,7 @@ public class ConfigurationViewAdapter extends Observable {
 		return selectedTables;
 	}
 
-	public HibernateConfiguration getConfiguration() {
+	public IConfiguration getConfiguration() {
 		return cfg;
 	}
 

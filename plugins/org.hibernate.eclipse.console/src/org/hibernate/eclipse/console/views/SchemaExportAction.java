@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.execution.ExecutionContext.Command;
-import org.hibernate.console.spi.HibernateConfiguration;
+import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.console.util.HibernateHelper;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
@@ -92,7 +92,7 @@ public class SchemaExportAction extends ConsoleConfigReadyUseBaseAction {
 				config.execute( new Command() {
 					@SuppressWarnings("unchecked")
 					public Object execute() {
-						final HibernateConfiguration cfg = config.getConfiguration();
+						final IConfiguration cfg = config.getConfiguration();
 						if (cfg == null) {
 							return null;
 						}

@@ -42,7 +42,7 @@ import org.hibernate.connection.ConnectionProvider;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.execution.ExecutionContext;
-import org.hibernate.console.spi.HibernateConfiguration;
+import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
@@ -111,7 +111,7 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 	}
 
 	protected DefaultDatabaseCollector readDatabaseSchema(final IProgressMonitor monitor, final ConsoleConfiguration consoleConfiguration, final ReverseEngineeringStrategy strategy) {
-		final HibernateConfiguration configuration = consoleConfiguration.buildWith(null, false);
+		final IConfiguration configuration = consoleConfiguration.buildWith(null, false);
 		return (DefaultDatabaseCollector) consoleConfiguration.execute(new ExecutionContext.Command() {
 
 			public Object execute() {

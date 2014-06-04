@@ -7,7 +7,7 @@ import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
-import org.hibernate.console.spi.HibernateConfiguration;
+import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.console.spi.IService;
 import org.hibernate.ejb.Ejb3Configuration;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
@@ -21,13 +21,13 @@ import org.xml.sax.EntityResolver;
 public class ServiceProxy implements IService {
 
 	@Override
-	public HibernateConfiguration newAnnotationConfiguration() {
+	public IConfiguration newAnnotationConfiguration() {
 		Configuration configuration = new AnnotationConfiguration();
 		return new ConfigurationProxy(configuration);
 	}
 
 	@Override
-	public HibernateConfiguration newJpaConfiguration(
+	public IConfiguration newJpaConfiguration(
 			String entityResolver, 
 			String persistenceUnit, 
 			Map<Object, Object> overrides) {
@@ -47,14 +47,14 @@ public class ServiceProxy implements IService {
 	}
 
 	@Override
-	public HibernateConfiguration newDefaultConfiguration() {
+	public IConfiguration newDefaultConfiguration() {
 		return new ConfigurationProxy(new Configuration());
 	}
 
 	@Override
 	public void setExporterConfiguration(
 			Exporter exporter,
-			HibernateConfiguration hcfg) {
+			IConfiguration hcfg) {
 		if (hcfg instanceof ConfigurationProxy) {
 			exporter.setConfiguration(((ConfigurationProxy)hcfg).getConfiguration());
 		}
@@ -62,7 +62,7 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public HibernateMappingExporter newHibernateMappingExporter(
-			HibernateConfiguration hcfg, File file) {
+			IConfiguration hcfg, File file) {
 		HibernateMappingExporter result = null;
 		if (hcfg instanceof ConfigurationProxy) {
 			result = new HibernateMappingExporter(((ConfigurationProxy)hcfg).getConfiguration()	, file);
@@ -71,7 +71,7 @@ public class ServiceProxy implements IService {
 	}
 
 	@Override
-	public SchemaExport newSchemaExport(HibernateConfiguration hcfg) {
+	public SchemaExport newSchemaExport(IConfiguration hcfg) {
 		SchemaExport result = null;
 		if (hcfg instanceof ConfigurationProxy) {
 			result = new SchemaExport(((ConfigurationProxy)hcfg).getConfiguration());
@@ -80,7 +80,7 @@ public class ServiceProxy implements IService {
 	}
 
 	@Override
-	public HQLCodeAssist newHQLCodeAssist(HibernateConfiguration hcfg) {
+	public HQLCodeAssist newHQLCodeAssist(IConfiguration hcfg) {
 		HQLCodeAssist result = null;
 		if (hcfg instanceof ConfigurationProxy) {
 			result = new HQLCodeAssist(((ConfigurationProxy)hcfg).getConfiguration());
@@ -89,7 +89,7 @@ public class ServiceProxy implements IService {
 	}
 
 	@Override
-	public HibernateConfiguration newJDBCMetaDataConfiguration() {
+	public IConfiguration newJDBCMetaDataConfiguration() {
 		Configuration configuration = new JDBCMetaDataConfiguration();
 		return new ConfigurationProxy(configuration);
 	}

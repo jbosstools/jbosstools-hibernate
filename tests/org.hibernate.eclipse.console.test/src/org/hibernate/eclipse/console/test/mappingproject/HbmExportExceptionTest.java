@@ -23,7 +23,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.core.PackageFragmentRoot;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.console.spi.HibernateConfiguration;
+import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.console.util.HibernateHelper;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 import org.hibernate.eclipse.console.test.project.ConfigurableTestProject;
@@ -59,7 +59,7 @@ public class HbmExportExceptionTest extends BaseTestSetCase {
 			Object[] persClassesInit = getPersistenceClasses(false);
 
 			final ConsoleConfiguration consCFG = getConsoleConfig();
-			HibernateConfiguration config = consCFG.getConfiguration();
+			IConfiguration config = consCFG.getConfiguration();
 			//delete old hbm files
 			assertNotNull(testPackage);
 			int nDeleted = 0;

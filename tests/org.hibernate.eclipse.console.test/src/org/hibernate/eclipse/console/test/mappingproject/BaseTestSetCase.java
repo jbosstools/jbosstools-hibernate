@@ -21,7 +21,7 @@ import org.eclipse.ui.PlatformUI;
 import org.hibernate.InvalidMappingException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
-import org.hibernate.console.spi.HibernateConfiguration;
+import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 import org.hibernate.eclipse.console.workbench.ConfigurationWorkbenchAdapter;
 import org.hibernate.eclipse.console.workbench.ConsoleConfigurationWorkbenchAdapter;
@@ -79,7 +79,7 @@ public class BaseTestSetCase extends TestCase {
 			configs = ccWorkbenchAdapter.getChildren(consCFG);
 			assertNotNull(configs);
 			assertEquals(3, configs.length);
-			assertTrue(configs[0] instanceof HibernateConfiguration);
+			assertTrue(configs[0] instanceof IConfiguration);
 			persClasses = configWorkbenchAdapter.getChildren(configs[0]);
 		} catch (InvalidMappingException ex) {
 			String out = NLS.bind(ConsoleTestMessages.OpenMappingDiagramTest_mapping_diagrams_for_package_cannot_be_opened,

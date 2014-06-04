@@ -46,7 +46,7 @@ import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.execution.ExecutionContext.Command;
-import org.hibernate.console.spi.HibernateConfiguration;
+import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.eclipse.builder.HibernateBuilder;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
@@ -150,7 +150,7 @@ public class HibernateNature implements IProjectNature {
 
 		@SuppressWarnings("unchecked")
 		protected IStatus run(IProgressMonitor monitor) {
-			HibernateConfiguration cfg = ccfg.buildWith(null, false);
+			IConfiguration cfg = ccfg.buildWith(null, false);
 			final JDBCMetaDataConfiguration jcfg = new JDBCMetaDataConfiguration();
 			jcfg.setProperties(cfg.getProperties());
 			monitor.beginTask(HibernateConsoleMessages.HibernateNature_reading_database_metadata, IProgressMonitor.UNKNOWN);
