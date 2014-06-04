@@ -2,24 +2,24 @@ package org.jboss.tools.hibernate.util;
 
 import java.util.ServiceLoader;
 
-import org.hibernate.console.spi.HibernateService;
+import org.hibernate.console.spi.IService;
 
 public class HibernateHelper {
 	
 	public static HibernateHelper INSTANCE = new HibernateHelper();
 	
-	private HibernateService hibernateService = null;
+	private IService hibernateService = null;
 	
-	public HibernateService getHibernateService() {
+	public IService getHibernateService() {
 		if (hibernateService == null) {
 			hibernateService = loadHibernateService();
 		}
 		return hibernateService;
 	}
 	
-	private HibernateService loadHibernateService() {
-		ServiceLoader<HibernateService> loader = 
-				ServiceLoader.load(HibernateService.class);
+	private IService loadHibernateService() {
+		ServiceLoader<IService> loader = 
+				ServiceLoader.load(IService.class);
 		return loader.iterator().next();
 	}
 

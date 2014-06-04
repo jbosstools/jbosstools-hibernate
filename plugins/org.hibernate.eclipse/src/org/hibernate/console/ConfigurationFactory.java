@@ -49,7 +49,7 @@ import org.hibernate.connection.DriverManagerConnectionProvider;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
 import org.hibernate.console.spi.HibernateConfiguration;
-import org.hibernate.console.spi.HibernateService;
+import org.hibernate.console.spi.IService;
 import org.hibernate.console.util.HibernateHelper;
 import org.hibernate.eclipse.libs.FakeDelegatingDriver;
 import org.hibernate.util.ConfigHelper;
@@ -172,7 +172,7 @@ public class ConfigurationFactory {
 
 	private HibernateConfiguration buildAnnotationConfiguration() throws ClassNotFoundException,
 			InstantiationException, IllegalAccessException {
-		HibernateService service = HibernateHelper.INSTANCE.getHibernateService();
+		IService service = HibernateHelper.INSTANCE.getHibernateService();
 		return service.newAnnotationConfiguration();
 	}
 

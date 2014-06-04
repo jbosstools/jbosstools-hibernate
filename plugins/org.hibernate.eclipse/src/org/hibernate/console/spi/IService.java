@@ -8,7 +8,7 @@ import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 
-public interface HibernateService {
+public interface IService {
 
 	HibernateConfiguration newAnnotationConfiguration();
 

@@ -10,14 +10,14 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.spi.HibernateConfiguration;
-import org.hibernate.console.spi.HibernateService;
+import org.hibernate.console.spi.IService;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 
-public class ServiceProxy implements HibernateService {
+public class ServiceProxy implements IService {
 
 	@Override
 	public HibernateConfiguration newAnnotationConfiguration() {
