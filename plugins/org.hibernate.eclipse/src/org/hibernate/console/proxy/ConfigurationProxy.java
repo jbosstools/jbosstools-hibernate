@@ -87,7 +87,7 @@ public class ConfigurationProxy implements HibernateConfiguration {
 
 	@Override
 	public void buildMappings() {
-		target.buildMapping();
+		target.buildMappings();
 	}
 
 	@Override
