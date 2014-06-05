@@ -45,6 +45,7 @@ import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.ext.HibernateException;
 import org.hibernate.console.ext.HibernateExtension;
 import org.hibernate.console.spi.IConfiguration;
+import org.hibernate.console.spi.IExporter;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.ext.CompletionProposalsResult;
@@ -54,7 +55,6 @@ import org.hibernate.eclipse.launch.CodeGenerationUtils;
 import org.hibernate.eclipse.launch.PathHelper;
 import org.hibernate.proxy.HibernateProxyHelper;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
-import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.ide.completion.IHQLCodeAssist;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 import org.jboss.tools.hibernate3_6.HibernateExtension3_6;
@@ -189,7 +189,7 @@ public class ConsoleExtension3_6 implements ConsoleExtension {
 		                       Properties globalProperties = new Properties();
 		                       globalProperties.putAll(props);
 
-		                       Exporter exporter;
+		                       IExporter exporter;
 							try {
 								//FIXME - the exporters are not the same here!
 								//may be need to create it using the data from exporter definition???

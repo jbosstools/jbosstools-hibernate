@@ -18,6 +18,7 @@ import org.eclipse.osgi.util.NLS;
 import org.hibernate.annotations.common.util.StringHelper;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.spi.IConfiguration;
+import org.hibernate.console.spi.IExporter;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.model.impl.ExporterFactoryStrings;
 import org.hibernate.eclipse.console.model.impl.ExporterProperty;
@@ -25,7 +26,6 @@ import org.hibernate.eclipse.launch.ExporterAttributes;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
 import org.hibernate.eclipse.launch.PathHelper;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
-import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.GenericExporter;
 import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
 import org.hibernate.tool.hbm2x.QueryExporter;
@@ -206,10 +206,10 @@ public class ExporterFactory {
 	 * @param collector
 	 * @throws CoreException in case of resolve variables issues.
 	 */
-	public Exporter createConfiguredExporter(IConfiguration cfg, String defaultOutputDirectory,
+	public IExporter createConfiguredExporter(IConfiguration cfg, String defaultOutputDirectory,
 			String customTemplatePath, Properties globalProperties, Set<String> outputDirectories, ArtifactCollector collector) throws CoreException {
 
-		Exporter exporter = getExporterDefinition().createExporterInstance();
+		IExporter exporter = getExporterDefinition().createExporterInstance();
 
 		Properties extract = new Properties();
 		Properties props = new Properties();

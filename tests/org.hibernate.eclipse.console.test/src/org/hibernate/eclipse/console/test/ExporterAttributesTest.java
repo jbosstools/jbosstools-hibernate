@@ -29,6 +29,7 @@ import org.eclipse.debug.internal.core.LaunchManager;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.spi.IConfiguration;
+import org.hibernate.console.spi.IExporter;
 import org.hibernate.eclipse.console.model.impl.ExporterFactory;
 import org.hibernate.eclipse.console.model.impl.ExporterFactoryStrings;
 import org.hibernate.eclipse.console.test.launchcfg.TestConsoleConfigurationPreferences;
@@ -37,7 +38,6 @@ import org.hibernate.eclipse.console.test.utils.ResourceReadUtils;
 import org.hibernate.eclipse.launch.CodeGenerationStrings;
 import org.hibernate.eclipse.launch.ExporterAttributes;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
-import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.GenericExporter;
 import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
 import org.hibernate.tool.hbm2x.QueryExporter;
@@ -170,7 +170,7 @@ public class ExporterAttributesTest extends TestCase {
 			propsForTesting.putAll(globalProperties);
 			propsForTesting.putAll(ef.getProperties());
 			//
-			Exporter exporter = null;
+			IExporter exporter = null;
 			outputDirectories.clear();
 			try {
 				exporter = ef.createConfiguredExporter(cfg,

@@ -78,6 +78,7 @@ import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.spi.IConfiguration;
+import org.hibernate.console.spi.IExporter;
 import org.hibernate.console.util.HibernateHelper;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
@@ -85,7 +86,6 @@ import org.hibernate.eclipse.console.ext.ConsoleExtension;
 import org.hibernate.eclipse.console.ext.ConsoleExtensionManager;
 import org.hibernate.eclipse.console.model.impl.ExporterFactory;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
-import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.util.xpl.ReflectHelper;
 import org.hibernate.util.xpl.StringHelper;
 
@@ -407,7 +407,7 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
                        Properties globalProperties = new Properties();
                        globalProperties.putAll(props);
 
-                       Exporter exporter;
+                       IExporter exporter;
 					try {
 						exporter = exporterFactories[i].createConfiguredExporter(cfg, attributes.getOutputPath(), attributes.getTemplatePath(), globalProperties, outputDirectories, artifactCollector);
 					} catch (CoreException e) {

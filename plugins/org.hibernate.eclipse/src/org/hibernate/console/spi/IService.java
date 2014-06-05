@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.Map;
 
 import org.hibernate.tool.hbm2ddl.SchemaExport;
-import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 
@@ -17,7 +16,7 @@ public interface IService {
 	
 	IConfiguration newDefaultConfiguration();
 	
-	void setExporterConfiguration(Exporter exporter, IConfiguration hcfg);
+	void setExporterConfiguration(IExporter exporter, IConfiguration hcfg);
 	
 	HibernateMappingExporter newHibernateMappingExporter(
 			IConfiguration hcfg, File file);
@@ -27,5 +26,7 @@ public interface IService {
 	HQLCodeAssist newHQLCodeAssist(IConfiguration hcfg);
 
 	IConfiguration newJDBCMetaDataConfiguration();
+	
+	IExporter createExporter(String exporterClassName);
 
 }

@@ -7,10 +7,10 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.spi.IConfiguration;
+import org.hibernate.console.spi.IExporter;
 import org.hibernate.console.spi.IService;
 import org.hibernate.ejb.Ejb3Configuration;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
-import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.util.xpl.ReflectHelper;
@@ -52,11 +52,9 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public void setExporterConfiguration(
-			Exporter exporter,
+			IExporter exporter,
 			IConfiguration hcfg) {
-		if (hcfg instanceof ConfigurationProxy) {
-			exporter.setConfiguration(((ConfigurationProxy)hcfg).getConfiguration());
-		}
+		exporter.setConfiguration(hcfg);
 	}
 
 	@Override
@@ -91,6 +89,11 @@ public class ServiceProxy implements IService {
 	public IConfiguration newJDBCMetaDataConfiguration() {
 		Configuration configuration = new JDBCMetaDataConfiguration();
 		return new ConfigurationProxy(configuration);
+	}
+
+	@Override
+	public IExporter createExporter(String exporterClassName) {
+		return new ExporterProxy(exporterClassName);
 	}
 
 

@@ -158,12 +158,12 @@ public class ConfigurationProxy implements IConfiguration {
 
 	@Override
 	public SessionFactory buildSessionFactory(Object serviceRegistry) {
-		throw new RuntimeException("not supported");
+		throw new RuntimeException("not supported"); //$NON-NLS-1$
 	}
 
 	@Override
 	public Object buildSettings(Object serviceRegisrty) {
-		throw new RuntimeException("not supported");
+		throw new RuntimeException("not supported"); //$NON-NLS-1$
 	}
 
 }

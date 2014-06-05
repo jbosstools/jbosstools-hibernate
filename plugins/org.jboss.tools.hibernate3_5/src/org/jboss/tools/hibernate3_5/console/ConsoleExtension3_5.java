@@ -43,6 +43,7 @@ import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.ext.HibernateException;
 import org.hibernate.console.ext.HibernateExtension;
 import org.hibernate.console.spi.IConfiguration;
+import org.hibernate.console.spi.IExporter;
 import org.hibernate.console.util.HibernateHelper;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
@@ -53,7 +54,6 @@ import org.hibernate.eclipse.launch.CodeGenerationUtils;
 import org.hibernate.eclipse.launch.PathHelper;
 import org.hibernate.proxy.HibernateProxyHelper;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
-import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.ide.completion.IHQLCodeAssist;
 import org.hibernate.util.ReflectHelper;
 import org.jboss.tools.hibernate3_5.HibernateExtension3_5;
@@ -175,7 +175,7 @@ public class ConsoleExtension3_5 implements ConsoleExtension {
 		                       Properties globalProperties = new Properties();
 		                       globalProperties.putAll(props);
 
-		                       Exporter exporter;
+		                       IExporter exporter;
 							try {
 								exporter = exporterFactories[i].createConfiguredExporter(cfg, attributes.getOutputPath(), attributes.getTemplatePath(), globalProperties, outputDirectories, artifactCollector);
 							} catch (CoreException e) {
