@@ -189,7 +189,7 @@ public class ExporterAttributesTest extends TestCase {
 				assertNull(propsFromExporter.getProperty(ExporterFactoryStrings.FILE_PATTERN));
 				assertNull(propsFromExporter.getProperty(ExporterFactoryStrings.TEMPLATE_NAME));
 				assertNull(propsFromExporter.getProperty(ExporterFactoryStrings.FOR_EACH));
-				GenericExporter ge = (GenericExporter) exporter;
+				GenericExporter ge = exporter.getGenericExporter();
 				assertEquals(propsForTesting.getProperty(ExporterFactoryStrings.FILE_PATTERN), ge.getFilePattern());
 				assertEquals(propsForTesting.getProperty(ExporterFactoryStrings.TEMPLATE_NAME), ge.getTemplateName());
 				// to test GenericExporter should provide public getter but it doesn't

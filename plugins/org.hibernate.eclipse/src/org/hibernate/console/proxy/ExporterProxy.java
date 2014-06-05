@@ -8,6 +8,7 @@ import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.console.spi.IExporter;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Exporter;
+import org.hibernate.tool.hbm2x.GenericExporter;
 import org.hibernate.util.xpl.ReflectHelper;
 
 public class ExporterProxy implements IExporter {
@@ -63,6 +64,15 @@ public class ExporterProxy implements IExporter {
 	@Override
 	public Properties getProperties() {
 		return target.getProperties();
+	}
+
+	@Override
+	public GenericExporter getGenericExporter() {
+		GenericExporter result = null;
+		if (target instanceof GenericExporter) {
+			result = (GenericExporter)target;
+		}
+		return result;
 	}
 
 }

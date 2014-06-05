@@ -292,7 +292,7 @@ public class ExporterFactory {
 		exporter.setTemplatePath(templatePathList.toArray(new String[templatePathList.size()]));
 		// special handling for GenericExporter (TODO: be delegated via plugin.xml)
 		if (getExporterDefinitionId().equals("org.hibernate.tools.hbmtemplate")) { //$NON-NLS-1$
-			GenericExporter ge = (GenericExporter) exporter;
+			GenericExporter ge = exporter.getGenericExporter();
 			ge.setFilePattern(extract.getProperty(ExporterFactoryStrings.FILE_PATTERN));
 			ge.setTemplateName(extract.getProperty(ExporterFactoryStrings.TEMPLATE_NAME));
 			ge.setForEach(extract.getProperty(ExporterFactoryStrings.FOR_EACH));
