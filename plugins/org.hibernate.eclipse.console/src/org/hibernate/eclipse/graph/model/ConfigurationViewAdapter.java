@@ -28,8 +28,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 
-import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.mapping.PersistentClass;
+import org.jboss.tools.hibernate.spi.IConfiguration;
 
 public class ConfigurationViewAdapter extends Observable {
 

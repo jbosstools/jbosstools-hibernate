@@ -11,9 +11,9 @@ import org.hibernate.cfg.Mappings;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.cfg.Settings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
-import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.engine.Mapping;
 import org.hibernate.mapping.PersistentClass;
+import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 

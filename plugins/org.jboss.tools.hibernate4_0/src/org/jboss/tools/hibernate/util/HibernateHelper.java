@@ -2,7 +2,7 @@ package org.jboss.tools.hibernate.util;
 
 import java.util.ServiceLoader;
 
-import org.hibernate.console.spi.IService;
+import org.jboss.tools.hibernate.spi.IService;
 
 public class HibernateHelper {
 	

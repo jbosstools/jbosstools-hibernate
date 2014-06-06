@@ -35,8 +35,8 @@ import org.hibernate.console.ext.HibernateException;
 import org.hibernate.console.ext.HibernateExtension;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.PreferencesClassPathUtils;
-import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.eclipse.libs.FakeDelegatingDriver;
+import org.jboss.tools.hibernate.spi.IConfiguration;
 
 /**
  * 

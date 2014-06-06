@@ -33,13 +33,13 @@ import org.eclipse.ui.views.properties.IPropertySource2;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.node.BaseNode;
-import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
+import org.jboss.tools.hibernate.spi.IConfiguration;
 
 public class ConfigurationAdapterFactory implements IAdapterFactory {
 

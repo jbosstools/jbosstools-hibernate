@@ -31,12 +31,12 @@ import org.eclipse.swt.widgets.Shell;
 import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.execution.ExecutionContext.Command;
-import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.console.util.HibernateHelper;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.actions.ConsoleConfigReadyUseBaseAction;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.jboss.tools.hibernate.spi.IConfiguration;
 
 /**
  * @author max

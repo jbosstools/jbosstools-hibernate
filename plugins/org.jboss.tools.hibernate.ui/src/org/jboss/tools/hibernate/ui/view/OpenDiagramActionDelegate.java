@@ -28,10 +28,10 @@ import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.internal.ObjectPluginAction;
 import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
+import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.UiPlugin;
 

@@ -21,12 +21,12 @@ import org.eclipse.ui.PlatformUI;
 import org.hibernate.InvalidMappingException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
-import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 import org.hibernate.eclipse.console.workbench.ConfigurationWorkbenchAdapter;
 import org.hibernate.eclipse.console.workbench.ConsoleConfigurationWorkbenchAdapter;
 import org.hibernate.eclipse.console.workbench.PersistentClassWorkbenchAdapter;
 import org.hibernate.eclipse.console.workbench.PropertyWorkbenchAdapter;
+import org.jboss.tools.hibernate.spi.IConfiguration;
 
 /**
  * @author vy (vyemialyanchyk@gmail.com)

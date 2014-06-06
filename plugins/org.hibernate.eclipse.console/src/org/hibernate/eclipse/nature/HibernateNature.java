@@ -46,12 +46,12 @@ import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.execution.ExecutionContext.Command;
-import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.eclipse.builder.HibernateBuilder;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.properties.HibernatePropertiesConstants;
 import org.hibernate.mapping.Table;
+import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.osgi.service.prefs.Preferences;
 
 public class HibernateNature implements IProjectNature {

@@ -20,7 +20,6 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.osgi.util.NLS;
-import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 import org.hibernate.eclipse.console.test.project.TestProject;
 import org.hibernate.eclipse.console.test.utils.FilesTransfer;
@@ -38,6 +37,7 @@ import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Value;
 import org.hibernate.type.IntegerType;
+import org.jboss.tools.hibernate.spi.IConfiguration;
 
 public class HbmExporterTest extends TestCase {
 	

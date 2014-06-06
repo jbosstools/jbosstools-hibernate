@@ -27,8 +27,6 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.annotations.common.util.StringHelper;
 import org.hibernate.console.HibernateConsoleRuntimeException;
-import org.hibernate.console.spi.IConfiguration;
-import org.hibernate.console.spi.IExporter;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.model.impl.ExporterFactoryStrings;
 import org.hibernate.eclipse.console.model.impl.ExporterProperty;
@@ -39,6 +37,8 @@ import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.GenericExporter;
 import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
 import org.hibernate.tool.hbm2x.QueryExporter;
+import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 
 /**

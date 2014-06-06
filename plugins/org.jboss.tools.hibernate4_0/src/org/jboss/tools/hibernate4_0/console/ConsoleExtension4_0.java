@@ -44,8 +44,6 @@ import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.ext.HibernateException;
 import org.hibernate.console.ext.HibernateExtension;
-import org.hibernate.console.spi.IConfiguration;
-import org.hibernate.console.spi.IExporter;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.ext.CompletionProposalsResult;
@@ -56,6 +54,8 @@ import org.hibernate.eclipse.launch.PathHelper;
 import org.hibernate.proxy.HibernateProxyHelper;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.ide.completion.IHQLCodeAssist;
+import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 import org.jboss.tools.hibernate4_0.HibernateExtension4_0;
 

@@ -28,7 +28,6 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.execution.ExecutionContext;
-import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.resolver.DialectFactory;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
@@ -36,6 +35,7 @@ import org.hibernate.engine.Mapping;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
+import org.jboss.tools.hibernate.spi.IConfiguration;
 
 /**
  *

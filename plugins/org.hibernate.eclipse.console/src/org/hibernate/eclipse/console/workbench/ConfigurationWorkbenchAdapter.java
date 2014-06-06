@@ -27,10 +27,10 @@ import java.util.Iterator;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.KnownConfigurations;
-import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.mapping.PersistentClass;
+import org.jboss.tools.hibernate.spi.IConfiguration;
 
 public class ConfigurationWorkbenchAdapter extends BasicWorkbenchAdapter {
 

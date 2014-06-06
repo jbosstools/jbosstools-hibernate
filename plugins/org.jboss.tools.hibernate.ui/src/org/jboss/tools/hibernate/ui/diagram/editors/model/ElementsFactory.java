@@ -18,7 +18,6 @@ import java.util.Set;
 
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
-import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
@@ -35,6 +34,7 @@ import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.type.EntityType;
 import org.hibernate.type.Type;
+import org.jboss.tools.hibernate.spi.IConfiguration;
 
 /**
  * Responsible to create diagram elements for given

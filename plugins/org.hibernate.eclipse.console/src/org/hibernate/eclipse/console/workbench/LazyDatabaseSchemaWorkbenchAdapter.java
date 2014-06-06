@@ -42,11 +42,11 @@ import org.hibernate.connection.ConnectionProvider;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.execution.ExecutionContext;
-import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.mapping.Table;
+import org.jboss.tools.hibernate.spi.IConfiguration;
 
 public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 	

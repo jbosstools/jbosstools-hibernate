@@ -51,10 +51,10 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.hibernate.annotations.common.util.ReflectHelper;
 import org.hibernate.console.HibernateConsoleRuntimeException;
-import org.hibernate.console.spi.IExporter;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.model.impl.ExporterProperty;
+import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 
 /**

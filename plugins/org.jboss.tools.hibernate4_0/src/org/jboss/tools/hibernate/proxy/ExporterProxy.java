@@ -4,14 +4,14 @@ import java.io.File;
 import java.util.Properties;
 
 import org.hibernate.console.HibernateConsoleRuntimeException;
-import org.hibernate.console.spi.IConfiguration;
-import org.hibernate.console.spi.IExporter;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.GenericExporter;
 import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
 import org.hibernate.tool.hbm2x.QueryExporter;
 import org.hibernate.util.xpl.ReflectHelper;
+import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IExporter;
 
 public class ExporterProxy implements IExporter {
 	

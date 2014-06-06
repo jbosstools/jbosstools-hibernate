@@ -14,7 +14,7 @@ import org.hibernate.console.QueryInputModel;
 import org.hibernate.console.QueryPage;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
-import org.hibernate.console.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IConfiguration;
 
 /**
  * @author Dmitry Geraskov

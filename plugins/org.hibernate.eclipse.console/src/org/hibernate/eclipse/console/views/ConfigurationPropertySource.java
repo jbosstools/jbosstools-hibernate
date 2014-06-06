@@ -16,7 +16,7 @@ import java.util.Properties;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
-import org.hibernate.console.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IConfiguration;
 
 /**
  * Responsible to provide Hibernate configuration 

@@ -1,4 +1,4 @@
-package org.hibernate.console.spi;
+package org.jboss.tools.hibernate.spi;
 
 import java.io.File;
 import java.util.Properties;

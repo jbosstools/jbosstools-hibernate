@@ -42,7 +42,6 @@ import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.WildcardType;
 import org.hibernate.FetchMode;
 import org.hibernate.cfg.Mappings;
-import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.console.util.HibernateHelper;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.collect.AllEntitiesInfoCollector;
@@ -69,6 +68,7 @@ import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
 import org.hibernate.util.xpl.StringHelper;
+import org.jboss.tools.hibernate.spi.IConfiguration;
 
 /**
  * @author Dmitry Geraskov

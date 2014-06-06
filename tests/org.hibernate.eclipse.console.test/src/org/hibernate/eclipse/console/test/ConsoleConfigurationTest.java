@@ -15,7 +15,6 @@ import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.QueryInputModel;
 import org.hibernate.console.QueryPage;
-import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.eclipse.console.test.launchcfg.TestConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.views.QueryPageTabView;
 import org.hibernate.mapping.Column;
@@ -25,6 +24,7 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
+import org.jboss.tools.hibernate.spi.IConfiguration;
 
 public class ConsoleConfigurationTest extends TestCase {
 

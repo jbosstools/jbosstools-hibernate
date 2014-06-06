@@ -48,8 +48,8 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.hibernate.console.spi.IExporter;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 
 /**

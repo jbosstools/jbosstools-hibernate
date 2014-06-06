@@ -46,13 +46,13 @@ import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
-import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.eclipse.console.properties.HibernatePropertiesConstants;
 import org.hibernate.eclipse.nature.HibernateNature;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
 import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValidationMessage;
+import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.osgi.service.prefs.Preferences;
 
 /**

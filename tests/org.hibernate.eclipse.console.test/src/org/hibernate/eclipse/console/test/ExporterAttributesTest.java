@@ -28,8 +28,6 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.internal.core.LaunchManager;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
-import org.hibernate.console.spi.IConfiguration;
-import org.hibernate.console.spi.IExporter;
 import org.hibernate.eclipse.console.model.impl.ExporterFactory;
 import org.hibernate.eclipse.console.model.impl.ExporterFactoryStrings;
 import org.hibernate.eclipse.console.test.launchcfg.TestConsoleConfigurationPreferences;
@@ -41,6 +39,8 @@ import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.GenericExporter;
 import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
 import org.hibernate.tool.hbm2x.QueryExporter;
+import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IExporter;
 
 /**
  * @author Vitali Yemialyanchyk

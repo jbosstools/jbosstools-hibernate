@@ -50,11 +50,11 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.hibernate.console.HibernateConsoleRuntimeException;
-import org.hibernate.console.spi.IExporter;
 import org.hibernate.console.util.HibernateHelper;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.util.xpl.ReflectHelper;
+import org.jboss.tools.hibernate.spi.IExporter;
 
 /**
  * Represents what is specified in plugin.xml about possible exporters.

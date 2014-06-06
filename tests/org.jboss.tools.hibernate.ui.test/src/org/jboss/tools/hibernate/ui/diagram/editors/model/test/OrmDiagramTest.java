@@ -16,8 +16,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.mapping.RootClass;
+import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmDiagram;
 import org.jmock.Expectations;
 import org.jmock.Mockery;

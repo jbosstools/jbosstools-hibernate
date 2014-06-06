@@ -46,7 +46,6 @@ import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
-import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.model.IReverseEngineeringDefinition;
 import org.hibernate.eclipse.console.model.ITableFilter;
@@ -62,6 +61,7 @@ import org.hibernate.eclipse.mapper.editors.xpl.XMLFormEditorPart;
 import org.hibernate.eclipse.mapper.model.DOMReverseEngineeringDefinition;
 import org.hibernate.eclipse.nature.HibernateNature;
 import org.hibernate.util.xpl.StringHelper;
+import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.w3c.dom.Document;
 
 public class ReverseEngineeringEditor extends XMLFormEditorPart {

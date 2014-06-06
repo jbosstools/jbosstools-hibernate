@@ -34,10 +34,10 @@ import org.hibernate.console.ext.HibernateException;
 import org.hibernate.console.ext.HibernateExtension;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.PreferencesClassPathUtils;
-import org.hibernate.console.spi.IConfiguration;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.service.internal.StandardServiceRegistryImpl;
+import org.jboss.tools.hibernate.spi.IConfiguration;
 
 /**
  * 
