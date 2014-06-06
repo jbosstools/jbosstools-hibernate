@@ -1,4 +1,4 @@
-package org.hibernate.console.util;
+package org.jboss.tools.hibernate.util;
 
 import java.util.ServiceLoader;
 

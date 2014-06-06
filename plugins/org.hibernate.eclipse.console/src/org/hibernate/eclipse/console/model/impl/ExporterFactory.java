@@ -17,7 +17,6 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
-import org.hibernate.console.util.HibernateHelper;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.launch.ExporterAttributes;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
@@ -29,6 +28,7 @@ import org.hibernate.tool.hbm2x.QueryExporter;
 import org.hibernate.util.xpl.StringHelper;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IExporter;
+import org.jboss.tools.hibernate.util.HibernateHelper;
 
 /**
  * ExporterFactory is used in UI to hold additional configuration for Exporter definitions

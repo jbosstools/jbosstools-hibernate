@@ -64,7 +64,6 @@ import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.ui.ide.IDE;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.ImageConstants;
-import org.hibernate.console.util.HibernateHelper;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
@@ -77,6 +76,7 @@ import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.util.HibernateHelper;
 
 /**
  * @author Dmitry Geraskov

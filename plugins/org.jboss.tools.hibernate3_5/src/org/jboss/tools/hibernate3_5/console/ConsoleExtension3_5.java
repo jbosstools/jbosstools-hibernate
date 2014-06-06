@@ -42,7 +42,6 @@ import org.hibernate.console.QueryPage;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.ext.HibernateException;
 import org.hibernate.console.ext.HibernateExtension;
-import org.hibernate.console.util.HibernateHelper;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.ext.CompletionProposalsResult;
@@ -56,6 +55,7 @@ import org.hibernate.tool.ide.completion.IHQLCodeAssist;
 import org.hibernate.util.ReflectHelper;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IExporter;
+import org.jboss.tools.hibernate.util.HibernateHelper;
 import org.jboss.tools.hibernate3_5.HibernateExtension3_5;
 
 
