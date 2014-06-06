@@ -496,7 +496,7 @@
                value=""/>
       </exporter>
        <exporter
-            classname="org.jboss.tools.hibernate.proxy.GenericExporterProxy"
+            classname="org.hibernate.tool.hbm2x.GenericExporter"
             description="Generic Exporter (&lt;hbmtemplate&gt;)"
             icon="icons/images/hibernate_mapping.gif"
             id="org.hibernate.tools.hbmtemplate">
