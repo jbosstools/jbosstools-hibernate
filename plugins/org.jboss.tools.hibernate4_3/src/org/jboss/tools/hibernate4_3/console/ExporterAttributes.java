@@ -48,7 +48,6 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jdt.core.JavaConventions;
@@ -120,7 +119,6 @@ public class ExporterAttributes
 		return HibernateLaunchConstants.ATTR_EXPORTERS + "." + exporterId; //$NON-NLS-1$
 	}
 
-	@SuppressWarnings("unchecked")
 	private List<ExporterFactory> readExporterFactories(ILaunchConfiguration configuration) throws CoreException {
 
 	   List<String> exporterNames = configuration.getAttribute(HibernateLaunchConstants.ATTR_EXPORTERS, (List<String>)null);
@@ -219,14 +217,6 @@ public class ExporterAttributes
 		}
 	}
 
-
-    private Path pathOrNull(String p) {
-        if(p==null || p.trim().length()==0) {
-            return null;
-        } else {
-            return new Path(p);
-        }
-    }
 
    public String getOutputPath()
    {
