@@ -1,4 +1,4 @@
-package org.hibernate.console.proxy;
+package org.jboss.tools.hibernate.proxy;
 
 import java.io.File;
 import java.util.Iterator;
