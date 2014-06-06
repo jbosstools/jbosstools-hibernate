@@ -37,10 +37,10 @@ import org.hibernate.eclipse.launch.CodeGenerationStrings;
 import org.hibernate.eclipse.launch.ExporterAttributes;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
-import org.hibernate.tool.hbm2x.QueryExporter;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.spi.IGenericExporter;
+import org.jboss.tools.hibernate.spi.IQueryExporter;
 
 /**
  * @author Vitali Yemialyanchyk
@@ -205,10 +205,9 @@ public class ExporterAttributesTest extends TestCase {
 			}
 			// test special handling for QueryExporter
 			if (exporterDefinitionId.equals("org.hibernate.tools.query")) { //$NON-NLS-1$
-				assertTrue(exporter instanceof QueryExporter);
 				assertNull(propsFromExporter.getProperty(ExporterFactoryStrings.QUERY_STRING));
 				assertNull(propsFromExporter.getProperty(ExporterFactoryStrings.OUTPUTFILENAME));
-				QueryExporter queryExporter = exporter.getQueryExporter();
+				IQueryExporter queryExporter = exporter.getQueryExporter();
 				// to test QueryExporter should provide public getter but it doesn't
 				//List<String> queryStrings = queryExporter.getQueries();
 				//assertEquals(1, queryStrings.size());

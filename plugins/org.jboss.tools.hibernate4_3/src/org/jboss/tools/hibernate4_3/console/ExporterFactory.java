@@ -23,11 +23,11 @@ import org.hibernate.eclipse.launch.HibernateLaunchConstants;
 import org.hibernate.eclipse.launch.PathHelper;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
-import org.hibernate.tool.hbm2x.QueryExporter;
 import org.hibernate.util.xpl.StringHelper;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.spi.IGenericExporter;
+import org.jboss.tools.hibernate.spi.IQueryExporter;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 
 /**
@@ -294,7 +294,7 @@ public class ExporterFactory {
 		}
 		// special handling for QueryExporter
 		if (getExporterDefinitionId().equals("org.hibernate.tools.query")) { //$NON-NLS-1$
-			QueryExporter queryExporter = exporter.getQueryExporter();
+			IQueryExporter queryExporter = exporter.getQueryExporter();
 			List<String> queryStrings = new ArrayList<String>();
 			queryStrings.add(extract.getProperty(ExporterFactoryStrings.QUERY_STRING, "")); //$NON-NLS-1$
 			queryExporter.setQueries(queryStrings);

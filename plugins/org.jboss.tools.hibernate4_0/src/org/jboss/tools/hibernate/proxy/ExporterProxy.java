@@ -13,6 +13,7 @@ import org.hibernate.util.xpl.ReflectHelper;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.spi.IGenericExporter;
+import org.jboss.tools.hibernate.spi.IQueryExporter;
 
 public class ExporterProxy implements IExporter {
 	
@@ -88,10 +89,10 @@ public class ExporterProxy implements IExporter {
 	}
 
 	@Override
-	public QueryExporter getQueryExporter() {
-		QueryExporter result = null;
+	public IQueryExporter getQueryExporter() {
+		IQueryExporter result = null;
 		if (target instanceof QueryExporter) {
-			result = (QueryExporter)target;
+			result = new QueryExporterProxy((QueryExporter)target);
 		}
 		return result;
 	}

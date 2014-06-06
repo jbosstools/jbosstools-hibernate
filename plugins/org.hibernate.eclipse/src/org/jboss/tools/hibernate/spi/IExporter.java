@@ -5,7 +5,6 @@ import java.util.Properties;
 
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
-import org.hibernate.tool.hbm2x.QueryExporter;
 
 
 public interface IExporter {
@@ -19,6 +18,6 @@ public interface IExporter {
 	Properties getProperties();
 	IGenericExporter getGenericExporter();
 	Hbm2DDLExporter getHbm2DDLExporter();
-	QueryExporter getQueryExporter();
+	IQueryExporter getQueryExporter();
 
 }
