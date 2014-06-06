@@ -36,11 +36,11 @@ import org.hibernate.eclipse.console.test.utils.ResourceReadUtils;
 import org.hibernate.eclipse.launch.CodeGenerationStrings;
 import org.hibernate.eclipse.launch.ExporterAttributes;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
-import org.hibernate.tool.hbm2x.GenericExporter;
 import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
 import org.hibernate.tool.hbm2x.QueryExporter;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IExporter;
+import org.jboss.tools.hibernate.spi.IGenericExporter;
 
 /**
  * @author Vitali Yemialyanchyk
@@ -188,7 +188,7 @@ public class ExporterAttributesTest extends TestCase {
 				assertNull(propsFromExporter.getProperty(ExporterFactoryStrings.FILE_PATTERN));
 				assertNull(propsFromExporter.getProperty(ExporterFactoryStrings.TEMPLATE_NAME));
 				assertNull(propsFromExporter.getProperty(ExporterFactoryStrings.FOR_EACH));
-				GenericExporter ge = exporter.getGenericExporter();
+				IGenericExporter ge = exporter.getGenericExporter();
 				assertNotNull(ge);
 				assertEquals(propsForTesting.getProperty(ExporterFactoryStrings.FILE_PATTERN), ge.getFilePattern());
 				assertEquals(propsForTesting.getProperty(ExporterFactoryStrings.TEMPLATE_NAME), ge.getTemplateName());

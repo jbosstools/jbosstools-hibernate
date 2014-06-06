@@ -12,6 +12,7 @@ import org.hibernate.tool.hbm2x.QueryExporter;
 import org.hibernate.util.xpl.ReflectHelper;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IExporter;
+import org.jboss.tools.hibernate.spi.IGenericExporter;
 
 public class ExporterProxy implements IExporter {
 	
@@ -69,10 +70,10 @@ public class ExporterProxy implements IExporter {
 	}
 
 	@Override
-	public GenericExporter getGenericExporter() {
-		GenericExporter result = null;
+	public IGenericExporter getGenericExporter() {
+		IGenericExporter result = null;
 		if (target instanceof GenericExporter) {
-			result = (GenericExporter)target;
+			result = new GenericExporterProxy((GenericExporter)target);
 		}
 		return result;
 	}

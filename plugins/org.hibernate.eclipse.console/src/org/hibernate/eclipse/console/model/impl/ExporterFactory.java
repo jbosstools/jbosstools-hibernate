@@ -21,12 +21,12 @@ import org.hibernate.eclipse.launch.ExporterAttributes;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
 import org.hibernate.eclipse.launch.PathHelper;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
-import org.hibernate.tool.hbm2x.GenericExporter;
 import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
 import org.hibernate.tool.hbm2x.QueryExporter;
 import org.hibernate.util.xpl.StringHelper;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IExporter;
+import org.jboss.tools.hibernate.spi.IGenericExporter;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 
 /**
@@ -280,7 +280,7 @@ public class ExporterFactory {
 		exporter.setTemplatePath(templatePathList.toArray(new String[templatePathList.size()]));
 		// special handling for GenericExporter (TODO: be delegated via plugin.xml)
 		if (getExporterDefinitionId().equals("org.hibernate.tools.hbmtemplate")) { //$NON-NLS-1$
-			GenericExporter ge = exporter.getGenericExporter();
+			IGenericExporter ge = exporter.getGenericExporter();
 			ge.setFilePattern(extract.getProperty(ExporterFactoryStrings.FILE_PATTERN));
 			ge.setTemplateName(extract.getProperty(ExporterFactoryStrings.TEMPLATE_NAME));
 			ge.setForEach(extract.getProperty(ExporterFactoryStrings.FOR_EACH));
