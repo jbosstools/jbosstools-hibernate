@@ -185,7 +185,6 @@ public class ExporterAttributesTest extends TestCase {
 			String exporterDefinitionId = ef.getExporterDefinitionId();
 			// test special handling for GenericExporter
 			if (exporterDefinitionId.equals("org.hibernate.tools.hbmtemplate")) { //$NON-NLS-1$
-				assertTrue(exporter instanceof IExporter);
 				assertNull(propsFromExporter.getProperty(ExporterFactoryStrings.FILE_PATTERN));
 				assertNull(propsFromExporter.getProperty(ExporterFactoryStrings.TEMPLATE_NAME));
 				assertNull(propsFromExporter.getProperty(ExporterFactoryStrings.FOR_EACH));
@@ -198,9 +197,9 @@ public class ExporterAttributesTest extends TestCase {
 			}
 			// test special handling for Hbm2DDLExporter
 			if (exporterDefinitionId.equals("org.hibernate.tools.hbm2ddl")) { //$NON-NLS-1$
-				assertTrue(exporter instanceof Hbm2DDLExporter);
 				assertNull(propsFromExporter.getProperty(ExporterFactoryStrings.EXPORTTODATABASE));
 				Hbm2DDLExporter ddlExporter = exporter.getHbm2DDLExporter();
+				assertNotNull(ddlExporter);
 				// to test Hbm2DDLExporter should provide public getter but it doesn't
 				//assertEquals(propsForTesting.getProperty(ExporterFactoryStrings.EXPORTTODATABASE), ddlExporter.getExport());
 			}
@@ -209,7 +208,7 @@ public class ExporterAttributesTest extends TestCase {
 				assertTrue(exporter instanceof QueryExporter);
 				assertNull(propsFromExporter.getProperty(ExporterFactoryStrings.QUERY_STRING));
 				assertNull(propsFromExporter.getProperty(ExporterFactoryStrings.OUTPUTFILENAME));
-				QueryExporter queryExporter = (QueryExporter)exporter;
+				QueryExporter queryExporter = exporter.getQueryExporter();
 				// to test QueryExporter should provide public getter but it doesn't
 				//List<String> queryStrings = queryExporter.getQueries();
 				//assertEquals(1, queryStrings.size());

@@ -302,7 +302,7 @@ public class ExporterFactory {
 		}
 		// special handling for QueryExporter
 		if (getExporterDefinitionId().equals("org.hibernate.tools.query")) { //$NON-NLS-1$
-			QueryExporter queryExporter = (QueryExporter) exporter;
+			QueryExporter queryExporter = exporter.getQueryExporter();
 			List<String> queryStrings = new ArrayList<String>();
 			queryStrings.add(extract.getProperty(ExporterFactoryStrings.QUERY_STRING, "")); //$NON-NLS-1$
 			queryExporter.setQueries(queryStrings);
