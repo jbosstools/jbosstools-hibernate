@@ -185,11 +185,12 @@ public class ExporterAttributesTest extends TestCase {
 			String exporterDefinitionId = ef.getExporterDefinitionId();
 			// test special handling for GenericExporter
 			if (exporterDefinitionId.equals("org.hibernate.tools.hbmtemplate")) { //$NON-NLS-1$
-				assertTrue(exporter instanceof GenericExporter);
+				assertTrue(exporter instanceof IExporter);
 				assertNull(propsFromExporter.getProperty(ExporterFactoryStrings.FILE_PATTERN));
 				assertNull(propsFromExporter.getProperty(ExporterFactoryStrings.TEMPLATE_NAME));
 				assertNull(propsFromExporter.getProperty(ExporterFactoryStrings.FOR_EACH));
 				GenericExporter ge = exporter.getGenericExporter();
+				assertNotNull(ge);
 				assertEquals(propsForTesting.getProperty(ExporterFactoryStrings.FILE_PATTERN), ge.getFilePattern());
 				assertEquals(propsForTesting.getProperty(ExporterFactoryStrings.TEMPLATE_NAME), ge.getTemplateName());
 				// to test GenericExporter should provide public getter but it doesn't
@@ -199,7 +200,7 @@ public class ExporterAttributesTest extends TestCase {
 			if (exporterDefinitionId.equals("org.hibernate.tools.hbm2ddl")) { //$NON-NLS-1$
 				assertTrue(exporter instanceof Hbm2DDLExporter);
 				assertNull(propsFromExporter.getProperty(ExporterFactoryStrings.EXPORTTODATABASE));
-				Hbm2DDLExporter ddlExporter = (Hbm2DDLExporter) exporter;
+				Hbm2DDLExporter ddlExporter = exporter.getHbm2DDLExporter();
 				// to test Hbm2DDLExporter should provide public getter but it doesn't
 				//assertEquals(propsForTesting.getProperty(ExporterFactoryStrings.EXPORTTODATABASE), ddlExporter.getExport());
 			}

@@ -9,6 +9,7 @@ import org.hibernate.console.spi.IExporter;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.GenericExporter;
+import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
 import org.hibernate.util.xpl.ReflectHelper;
 
 public class ExporterProxy implements IExporter {
@@ -71,6 +72,15 @@ public class ExporterProxy implements IExporter {
 		GenericExporter result = null;
 		if (target instanceof GenericExporter) {
 			result = (GenericExporter)target;
+		}
+		return result;
+	}
+
+	@Override
+	public Hbm2DDLExporter getHbm2DDLExporter() {
+		Hbm2DDLExporter result = null;
+		if (target instanceof Hbm2DDLExporter) {
+			result = (Hbm2DDLExporter)target;
 		}
 		return result;
 	}
