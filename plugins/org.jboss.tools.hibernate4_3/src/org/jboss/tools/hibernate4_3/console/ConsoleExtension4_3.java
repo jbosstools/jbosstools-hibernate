@@ -52,8 +52,8 @@ import org.hibernate.eclipse.launch.CodeGenerationStrings;
 import org.hibernate.eclipse.launch.CodeGenerationUtils;
 import org.hibernate.eclipse.launch.PathHelper;
 import org.hibernate.proxy.HibernateProxyHelper;
-import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.ide.completion.IHQLCodeAssist;
+import org.jboss.tools.hibernate.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.util.HibernateHelper;
@@ -118,7 +118,7 @@ public class ConsoleExtension4_3 implements ConsoleExtension {
 		try {
 		    Set<String> outputDirectories = new HashSet<String>();
 		    ExporterFactory[] exporters = exporterFactories.toArray( new ExporterFactory[exporterFactories.size()] );
-            ArtifactCollector collector = runExporters(attributes, exporters, outputDirectories, monitor);
+            IArtifactCollector collector = runExporters(attributes, exporters, outputDirectories, monitor);
 
             for (String path : outputDirectories) {
             	CodeGenerationUtils.refreshOutputDir(path);
@@ -146,7 +146,7 @@ public class ConsoleExtension4_3 implements ConsoleExtension {
 		return null;
 	}
 
-	private ArtifactCollector runExporters (final ExporterAttributes attributes, final ExporterFactory[] exporterFactories, final Set<String> outputDirectories, final IProgressMonitor monitor)
+	private IArtifactCollector runExporters (final ExporterAttributes attributes, final ExporterFactory[] exporterFactories, final Set<String> outputDirectories, final IProgressMonitor monitor)
 			   throws CoreException
 		    {
 
@@ -166,10 +166,10 @@ public class ConsoleExtension4_3 implements ConsoleExtension {
 					if (monitor.isCanceled())
 						return null;
 
-					return (ArtifactCollector) hibernateExtension.execute(new Command() {
+					return (IArtifactCollector) hibernateExtension.execute(new Command() {
 
 						public Object execute() {
-							ArtifactCollector artifactCollector = new ArtifactCollector();
+							IArtifactCollector artifactCollector = HibernateHelper.INSTANCE.getHibernateService().newArtifactCollector();
 
 		                    // Global properties
 			                Properties props = new Properties();

@@ -12,9 +12,11 @@ import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.util.xpl.ReflectHelper;
 import org.hibernate.util.xpl.StringHelper;
+import org.jboss.tools.hibernate.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.spi.IService;
+import org.jboss.tools.hibernate.util.HibernateHelper;
 import org.xml.sax.EntityResolver;
 
 public class ServiceProxy implements IService {
@@ -94,6 +96,11 @@ public class ServiceProxy implements IService {
 	@Override
 	public IExporter createExporter(String exporterClassName) {
 		return new ExporterProxy(exporterClassName);
+	}
+
+	@Override
+	public IArtifactCollector newArtifactCollector() {
+		return HibernateHelper.INSTANCE.getHibernateService().newArtifactCollector();
 	}
 
 

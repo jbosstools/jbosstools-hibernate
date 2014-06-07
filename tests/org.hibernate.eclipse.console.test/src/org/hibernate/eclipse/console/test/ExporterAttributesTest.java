@@ -35,12 +35,13 @@ import org.hibernate.eclipse.console.test.project.LaunchConfigTestProject;
 import org.hibernate.eclipse.console.test.utils.ResourceReadUtils;
 import org.hibernate.eclipse.launch.CodeGenerationStrings;
 import org.hibernate.eclipse.launch.ExporterAttributes;
-import org.hibernate.tool.hbm2x.ArtifactCollector;
+import org.jboss.tools.hibernate.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.spi.IGenericExporter;
 import org.jboss.tools.hibernate.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.spi.IQueryExporter;
+import org.jboss.tools.hibernate.util.HibernateHelper;
 
 /**
  * @author Vitali Yemialyanchyk
@@ -151,7 +152,7 @@ public class ExporterAttributesTest extends TestCase {
 		str2 = ResourceReadUtils.adjustXmlText(str2);
 		assertEquals(str1, str2);
 		//
-		ArtifactCollector artifactCollector = new ArtifactCollector();
+		IArtifactCollector artifactCollector = HibernateHelper.INSTANCE.getHibernateService().newArtifactCollector();
 		ExporterAttributes expAttr = exporterAttributes;
         // Global properties
         Properties props = new Properties();

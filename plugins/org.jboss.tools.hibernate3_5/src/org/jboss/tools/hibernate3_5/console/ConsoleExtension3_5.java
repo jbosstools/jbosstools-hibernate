@@ -50,9 +50,9 @@ import org.hibernate.eclipse.launch.CodeGenerationStrings;
 import org.hibernate.eclipse.launch.CodeGenerationUtils;
 import org.hibernate.eclipse.launch.PathHelper;
 import org.hibernate.proxy.HibernateProxyHelper;
-import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.ide.completion.IHQLCodeAssist;
 import org.hibernate.util.ReflectHelper;
+import org.jboss.tools.hibernate.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.util.HibernateHelper;
@@ -91,7 +91,6 @@ public class ConsoleExtension3_5 implements ConsoleExtension {
 	/* (non-Javadoc)
 	 * @see org.hibernate.eclipse.console.ext.ConsoleExtension#launchExporters(org.hibernate.eclipse.console.ext.ILaunchConfiguration, java.lang.String, org.hibernate.eclipse.console.ext.ILaunch, org.eclipse.core.runtime.IProgressMonitor)
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public Map<String, File[]> launchExporters(ILaunchConfiguration configuration,
 			String mode, ILaunch launch, IProgressMonitor monitor)
@@ -110,7 +109,7 @@ public class ConsoleExtension3_5 implements ConsoleExtension {
 		try {
 		    Set<String> outputDirectories = new HashSet<String>();
 		    ExporterFactory[] exporters = exporterFactories.toArray( new ExporterFactory[exporterFactories.size()] );
-            ArtifactCollector collector = runExporters(attributes, exporters, outputDirectories, monitor);
+            IArtifactCollector collector = runExporters(attributes, exporters, outputDirectories, monitor);
 
             for (String path : outputDirectories) {
             	CodeGenerationUtils.refreshOutputDir(path);
@@ -138,7 +137,7 @@ public class ConsoleExtension3_5 implements ConsoleExtension {
 		return null;
 	}
 
-	private ArtifactCollector runExporters (final ExporterAttributes attributes, final ExporterFactory[] exporterFactories, final Set<String> outputDirectories, final IProgressMonitor monitor)
+	private IArtifactCollector runExporters (final ExporterAttributes attributes, final ExporterFactory[] exporterFactories, final Set<String> outputDirectories, final IProgressMonitor monitor)
 			   throws CoreException
 		    {
 
@@ -158,10 +157,10 @@ public class ConsoleExtension3_5 implements ConsoleExtension {
 					if (monitor.isCanceled())
 						return null;
 
-					return (ArtifactCollector) cc.execute(new Command() {
+					return (IArtifactCollector) cc.execute(new Command() {
 
 						public Object execute() {
-							ArtifactCollector artifactCollector = new ArtifactCollector();
+							IArtifactCollector artifactCollector = HibernateHelper.INSTANCE.getHibernateService().newArtifactCollector();
 
 		                    // Global properties
 			                Properties props = new Properties();

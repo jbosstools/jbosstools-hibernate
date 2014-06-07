@@ -82,9 +82,9 @@ import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.ext.ConsoleExtension;
 import org.hibernate.eclipse.console.ext.ConsoleExtensionManager;
 import org.hibernate.eclipse.console.model.impl.ExporterFactory;
-import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.util.xpl.ReflectHelper;
 import org.hibernate.util.xpl.StringHelper;
+import org.jboss.tools.hibernate.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.util.HibernateHelper;
@@ -370,7 +370,7 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 		}
 	}
 
-	private ArtifactCollector runExporters (final ExporterAttributes attributes, final ExporterFactory[] exporterFactories, final Set<String> outputDirectories, final IProgressMonitor monitor)
+	private IArtifactCollector runExporters (final ExporterAttributes attributes, final ExporterFactory[] exporterFactories, final Set<String> outputDirectories, final IProgressMonitor monitor)
 	   throws CoreException
     {
 
@@ -390,10 +390,10 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 			if (monitor.isCanceled())
 				return null;
 
-			return (ArtifactCollector) cc.execute(new Command() {
+			return (IArtifactCollector) cc.execute(new Command() {
 
 				public Object execute() {
-					ArtifactCollector artifactCollector = new ArtifactCollector();
+					IArtifactCollector artifactCollector = HibernateHelper.INSTANCE.getHibernateService().newArtifactCollector();
 
                     // Global properties
 	                Properties props = new Properties();

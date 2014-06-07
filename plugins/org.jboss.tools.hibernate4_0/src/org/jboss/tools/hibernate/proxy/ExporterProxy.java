@@ -4,12 +4,12 @@ import java.io.File;
 import java.util.Properties;
 
 import org.hibernate.console.HibernateConsoleRuntimeException;
-import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.GenericExporter;
 import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
 import org.hibernate.tool.hbm2x.QueryExporter;
 import org.hibernate.util.xpl.ReflectHelper;
+import org.jboss.tools.hibernate.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.spi.IGenericExporter;
@@ -47,8 +47,10 @@ public class ExporterProxy implements IExporter {
 	}
 
 	@Override
-	public void setArtifactCollector(ArtifactCollector collector) {
-		target.setArtifactCollector(collector);
+	public void setArtifactCollector(IArtifactCollector collector) {
+		if (collector instanceof ArtifactCollectorProxy) {
+			target.setArtifactCollector(((ArtifactCollectorProxy)collector).getTarget());
+		}
 	}
 
 	@Override

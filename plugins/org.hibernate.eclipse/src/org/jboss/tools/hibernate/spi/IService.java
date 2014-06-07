@@ -28,5 +28,7 @@ public interface IService {
 	IConfiguration newJDBCMetaDataConfiguration();
 	
 	IExporter createExporter(String exporterClassName);
+	
+	IArtifactCollector newArtifactCollector();
 
 }

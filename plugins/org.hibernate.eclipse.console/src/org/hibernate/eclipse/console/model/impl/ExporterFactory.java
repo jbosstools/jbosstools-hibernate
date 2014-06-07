@@ -20,8 +20,8 @@ import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.launch.ExporterAttributes;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
 import org.hibernate.eclipse.launch.PathHelper;
-import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.util.xpl.StringHelper;
+import org.jboss.tools.hibernate.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.spi.IGenericExporter;
@@ -205,7 +205,7 @@ public class ExporterFactory {
 	 * @throws CoreException in case of resolve variables issues.
 	 */
 	public IExporter createConfiguredExporter(IConfiguration cfg, String defaultOutputDirectory,
-			String customTemplatePath, Properties globalProperties, Set<String> outputDirectories, ArtifactCollector collector) throws CoreException {
+			String customTemplatePath, Properties globalProperties, Set<String> outputDirectories, IArtifactCollector collector) throws CoreException {
 
 		IExporter exporter = getExporterDefinition().createExporterInstance();
 
