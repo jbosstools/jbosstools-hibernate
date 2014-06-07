@@ -13,6 +13,7 @@ import org.hibernate.util.xpl.ReflectHelper;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.spi.IGenericExporter;
+import org.jboss.tools.hibernate.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.spi.IQueryExporter;
 
 public class ExporterProxy implements IExporter {
@@ -80,10 +81,10 @@ public class ExporterProxy implements IExporter {
 	}
 
 	@Override
-	public Hbm2DDLExporter getHbm2DDLExporter() {
-		Hbm2DDLExporter result = null;
+	public IHbm2DDLExporter getHbm2DDLExporter() {
+		IHbm2DDLExporter result = null;
 		if (target instanceof Hbm2DDLExporter) {
-			result = (Hbm2DDLExporter)target;
+			result = new Hbm2DDLExporterProxy((Hbm2DDLExporter)target);
 		}
 		return result;
 	}

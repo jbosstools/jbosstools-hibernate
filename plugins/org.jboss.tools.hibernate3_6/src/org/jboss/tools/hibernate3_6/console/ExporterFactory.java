@@ -34,10 +34,10 @@ import org.hibernate.eclipse.launch.ExporterAttributes;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
 import org.hibernate.eclipse.launch.PathHelper;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
-import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.spi.IGenericExporter;
+import org.jboss.tools.hibernate.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.spi.IQueryExporter;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 
@@ -299,7 +299,7 @@ public class ExporterFactory {
 		}
 		// special handling for Hbm2DDLExporter
 		if (getExporterDefinitionId().equals("org.hibernate.tools.hbm2ddl")) { //$NON-NLS-1$
-			Hbm2DDLExporter ddlExporter = exporter.getHbm2DDLExporter();;
+			IHbm2DDLExporter ddlExporter = exporter.getHbm2DDLExporter();;
 			//avoid users to delete their databases with a single click
 			boolean exportToDatabse = Boolean.parseBoolean(extract.getProperty(ExporterFactoryStrings.EXPORTTODATABASE));
 			ddlExporter.setExport(exportToDatabse);

@@ -36,10 +36,10 @@ import org.hibernate.eclipse.console.test.utils.ResourceReadUtils;
 import org.hibernate.eclipse.launch.CodeGenerationStrings;
 import org.hibernate.eclipse.launch.ExporterAttributes;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
-import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.spi.IGenericExporter;
+import org.jboss.tools.hibernate.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.spi.IQueryExporter;
 
 /**
@@ -198,7 +198,7 @@ public class ExporterAttributesTest extends TestCase {
 			// test special handling for Hbm2DDLExporter
 			if (exporterDefinitionId.equals("org.hibernate.tools.hbm2ddl")) { //$NON-NLS-1$
 				assertNull(propsFromExporter.getProperty(ExporterFactoryStrings.EXPORTTODATABASE));
-				Hbm2DDLExporter ddlExporter = exporter.getHbm2DDLExporter();
+				IHbm2DDLExporter ddlExporter = exporter.getHbm2DDLExporter();
 				assertNotNull(ddlExporter);
 				// to test Hbm2DDLExporter should provide public getter but it doesn't
 				//assertEquals(propsForTesting.getProperty(ExporterFactoryStrings.EXPORTTODATABASE), ddlExporter.getExport());
