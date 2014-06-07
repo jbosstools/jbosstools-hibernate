@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+import org.hibernate.Filter;
 import org.hibernate.annotations.common.util.StandardClassLoaderDelegateImpl;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
@@ -16,7 +17,9 @@ import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.jboss.tools.hibernate.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IExporter;
+import org.jboss.tools.hibernate.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.spi.IService;
+import org.jboss.tools.hibernate.spi.ISessionFactory;
 
 public class ServiceProxy implements IService {
 
@@ -120,6 +123,15 @@ public class ServiceProxy implements IService {
 	@Override
 	public IArtifactCollector newArtifactCollector() {
 		return new ArtifactCollectorProxy();
+	}
+
+	@Override
+	public IHQLQueryPlan newHQLQueryPlan(
+			String query, 
+			boolean shallow,
+			Map<String, Filter> enabledFilters, 
+			ISessionFactory sessionFactory) {
+		return new HQLQueryPlanProxy(query, shallow, enabledFilters, sessionFactory);
 	}
 
 

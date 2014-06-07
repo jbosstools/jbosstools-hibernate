@@ -38,7 +38,7 @@ public class SessionFactoryProxy implements ISessionFactory {
 		return target.openSession();
 	}
 	
-	public SessionFactory getTarget() {
+	SessionFactory getTarget() {
 		return target;
 	}
 
