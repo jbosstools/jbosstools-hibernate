@@ -35,7 +35,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.osgi.util.NLS;
-import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.Settings;
 import org.hibernate.console.execution.DefaultExecutionContext;
@@ -50,6 +49,7 @@ import org.hibernate.console.preferences.PreferencesClassPathUtils;
 import org.hibernate.eclipse.libs.FakeDelegatingDriver;
 import org.hibernate.tool.hbm2x.StringUtils;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.ISessionFactory;
 
 public class ConsoleConfiguration implements ExecutionContextHolder {
 
@@ -60,7 +60,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 
 	/* TODO: move this out to the actual users of the configuraiton/sf ? */
 	private IConfiguration configuration;
-	private SessionFactory sessionFactory;
+	private ISessionFactory sessionFactory;
 	
 	//****************************** EXTENSION **********************
 	private String hibernateVersion = "==<None>=="; //set to some unused value //$NON-NLS-1$
@@ -290,7 +290,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		getHibernateExtension().buildSessionFactory();
 	}
 
-	public SessionFactory getSessionFactory() {
+	public ISessionFactory getSessionFactory() {
 		return sessionFactory;
 	}
 
@@ -346,7 +346,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		}
 	}
 
-	private void fireFactoryClosing(SessionFactory sessionFactory2) {
+	private void fireFactoryClosing(ISessionFactory sessionFactory2) {
 		for (ConsoleConfigurationListener view : cloneConsoleCfgListeners()) {
 			view.sessionFactoryClosing(this, sessionFactory2);
 		}

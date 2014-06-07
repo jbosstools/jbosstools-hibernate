@@ -19,6 +19,7 @@ import org.eclipse.jdt.core.dom.StringLiteral;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.engine.query.HQLQueryPlan;
 import org.hibernate.impl.SessionFactoryImpl;
+import org.jboss.tools.hibernate.proxy.SessionFactoryProxy;
 
 public class HQLDetector extends ASTVisitor {
 
@@ -109,7 +110,7 @@ public class HQLDetector extends ASTVisitor {
 			if(allowEL) {
 				query = ELTransformer.removeEL(query);
 			}
-			new HQLQueryPlan(query, false, Collections.EMPTY_MAP, (SessionFactoryImpl)cc.getSessionFactory());
+			new HQLQueryPlan(query, false, Collections.EMPTY_MAP, (SessionFactoryImpl) ((SessionFactoryProxy)cc.getSessionFactory()).getTarget());
 		} else {											
 			//messager.printWarning( annoValue.getPosition(), "Could not verify syntax. SessionFactory not created." );
 		}		

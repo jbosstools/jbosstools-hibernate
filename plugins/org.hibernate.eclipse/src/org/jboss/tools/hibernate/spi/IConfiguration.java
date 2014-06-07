@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.Properties;
 
-import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Mappings;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.cfg.Settings;
@@ -27,7 +26,7 @@ public interface IConfiguration {
 	IConfiguration configure(File file);
 	IConfiguration configure();
 	void buildMappings();
-	SessionFactory buildSessionFactory();
+	ISessionFactory buildSessionFactory();
 	Settings buildSettings();
 	Mappings createMappings();
 	Iterator<? extends PersistentClass> getClassMappings();
@@ -38,7 +37,7 @@ public interface IConfiguration {
 	PersistentClass getClassMapping(String string);
 	NamingStrategy getNamingStrategy();
 	EntityResolver getEntityResolver();
-	SessionFactory buildSessionFactory(Object serviceRegistry);
+	ISessionFactory buildSessionFactory(Object serviceRegistry);
 	Object buildSettings(Object serviceRegisrty);
 
 }

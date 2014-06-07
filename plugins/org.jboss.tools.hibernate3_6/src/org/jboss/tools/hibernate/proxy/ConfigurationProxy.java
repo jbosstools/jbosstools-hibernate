@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.Properties;
 
-import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.Mappings;
@@ -14,6 +13,7 @@ import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.engine.Mapping;
 import org.hibernate.mapping.PersistentClass;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.ISessionFactory;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 
@@ -91,8 +91,8 @@ public class ConfigurationProxy implements IConfiguration {
 	}
 
 	@Override
-	public SessionFactory buildSessionFactory() {
-		return target.buildSessionFactory();
+	public ISessionFactory buildSessionFactory() {
+		return new SessionFactoryProxy(target.buildSessionFactory());
 	}
 
 	@Override
@@ -156,7 +156,7 @@ public class ConfigurationProxy implements IConfiguration {
 	}
 
 	@Override
-	public SessionFactory buildSessionFactory(Object serviceRegistry) {
+	public ISessionFactory buildSessionFactory(Object serviceRegistry) {
 		throw new RuntimeException("not supported");
 	}
 

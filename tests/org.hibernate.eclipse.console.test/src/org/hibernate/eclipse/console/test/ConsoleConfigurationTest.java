@@ -6,7 +6,6 @@ import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.hibernate.Hibernate;
-import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Mappings;
 import org.hibernate.console.ConcoleConfigurationAdapter;
 import org.hibernate.console.ConsoleConfiguration;
@@ -25,6 +24,7 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.ISessionFactory;
 
 public class ConsoleConfigurationTest extends TestCase {
 
@@ -53,12 +53,12 @@ public class ConsoleConfigurationTest extends TestCase {
 		public int queryCreated;
 
 		public void sessionFactoryClosing(ConsoleConfiguration configuration,
-				SessionFactory aboutToCloseFactory) {
+				ISessionFactory aboutToCloseFactory) {
 			factoryClosing++;
 		}
 
 		public void sessionFactoryBuilt(ConsoleConfiguration ccfg,
-				SessionFactory builtSessionFactory) {
+				ISessionFactory builtSessionFactory) {
 			factoryBuilt++;
 		}
 

@@ -21,11 +21,11 @@
  */
 package org.hibernate.console.node;
 
-import org.hibernate.SessionFactory;
 import org.hibernate.console.ConcoleConfigurationAdapter;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ConsoleMessages;
 import org.hibernate.console.ImageConstants;
+import org.jboss.tools.hibernate.spi.ISessionFactory;
 
 /**
  * @author max
@@ -40,11 +40,11 @@ class ConfigurationNode extends BaseNode {
 		super(null,parent);
 		this.configuration = configuration;
 		configuration.addConsoleConfigurationListener(new ConcoleConfigurationAdapter() {
-			public void sessionFactoryBuilt(ConsoleConfiguration ccfg, SessionFactory builtSessionFactory) {
+			public void sessionFactoryBuilt(ConsoleConfiguration ccfg, ISessionFactory builtSessionFactory) {
 				clear();
 			}
 
-			public void sessionFactoryClosing(ConsoleConfiguration configuration, SessionFactory closedSessionFactory) {
+			public void sessionFactoryClosing(ConsoleConfiguration configuration, ISessionFactory closedSessionFactory) {
 				clear();
 			}
 

@@ -21,7 +21,6 @@ import java.util.Map;
 
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Settings;
 import org.hibernate.console.ConsoleConfigClassLoader;
 import org.hibernate.console.ConsoleMessages;
@@ -35,6 +34,7 @@ import org.hibernate.console.ext.HibernateExtension;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.PreferencesClassPathUtils;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.ISessionFactory;
 
 /**
  * 
@@ -51,7 +51,7 @@ public class HibernateExtension3_6 implements HibernateExtension {
 	
 	private IConfiguration configuration;
 	
-	private SessionFactory sessionFactory;
+	private ISessionFactory sessionFactory;
 	
 	private Map<String, FakeDelegatingDriver> fakeDrivers = new HashMap<String, FakeDelegatingDriver>();
 

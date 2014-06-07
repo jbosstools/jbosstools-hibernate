@@ -21,7 +21,8 @@
  */
 package org.hibernate.console;
 
-import org.hibernate.SessionFactory;
+import org.jboss.tools.hibernate.spi.ISessionFactory;
+
 
 
 public interface KnownConfigurationsListener {
@@ -29,9 +30,9 @@ public interface KnownConfigurationsListener {
 	
 	public void configurationBuilt(ConsoleConfiguration ccfg);
 	
-	public void sessionFactoryBuilt(ConsoleConfiguration ccfg, SessionFactory builtFactory);
+	public void sessionFactoryBuilt(ConsoleConfiguration ccfg, ISessionFactory builtFactory);
 	
-	public void sessionFactoryClosing(ConsoleConfiguration configuration, SessionFactory closingFactory);
+	public void sessionFactoryClosing(ConsoleConfiguration configuration, ISessionFactory closingFactory);
 	
 	public void configurationRemoved(ConsoleConfiguration root, boolean forUpdate);
 

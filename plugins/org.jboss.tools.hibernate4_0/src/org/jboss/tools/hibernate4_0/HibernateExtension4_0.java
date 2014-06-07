@@ -21,7 +21,6 @@ import java.util.Map;
 
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Settings;
 import org.hibernate.console.ConsoleConfigClassLoader;
 import org.hibernate.console.ConsoleMessages;
@@ -38,6 +37,7 @@ import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.service.internal.StandardServiceRegistryImpl;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.ISessionFactory;
 
 /**
  * 
@@ -54,7 +54,7 @@ public class HibernateExtension4_0 implements HibernateExtension {
 	
 	private IConfiguration configuration;
 	
-	private SessionFactory sessionFactory;
+	private ISessionFactory sessionFactory;
 	
 	private ServiceRegistry serviceRegistry;
 	

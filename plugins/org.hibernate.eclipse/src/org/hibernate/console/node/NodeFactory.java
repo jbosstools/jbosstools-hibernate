@@ -29,7 +29,6 @@ import net.sf.cglib.proxy.Enhancer;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ConsoleMessages;
 import org.hibernate.console.ImageConstants;
@@ -39,6 +38,7 @@ import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.type.CollectionType;
 import org.hibernate.type.EntityType;
 import org.hibernate.type.Type;
+import org.jboss.tools.hibernate.spi.ISessionFactory;
 
 /**
  * @author MAX
@@ -61,10 +61,9 @@ public class NodeFactory {
 		setConsoleConfiguration(c);
 	}
 
-	@SuppressWarnings("unchecked")
 	private void setConsoleConfiguration(ConsoleConfiguration c) {
 		consoleConfiguration = c;
-		SessionFactory sf = c.getSessionFactory();
+		ISessionFactory sf = c.getSessionFactory();
 		classMetaData = sf.getAllClassMetadata();
         collectionMetaData = sf.getAllCollectionMetadata();
 		classes = new ArrayList<String>();

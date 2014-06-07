@@ -13,7 +13,6 @@ package org.jboss.tools.hibernate4_3;
 import java.util.Collections;
 import java.util.Iterator;
 
-import org.hibernate.SessionFactory;
 import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.QLFormatHelper;
@@ -22,11 +21,13 @@ import org.hibernate.hql.spi.QueryTranslator;
 import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.type.Type;
 import org.hibernate.util.xpl.StringHelper;
+import org.jboss.tools.hibernate.proxy.SessionFactoryProxy;
+import org.jboss.tools.hibernate.spi.ISessionFactory;
 
 public class QueryHelper {
 	
 	
-	static String generateSQL(ExecutionContext executionContext, final SessionFactory sessionFactory, final String query) {
+	static String generateSQL(ExecutionContext executionContext, final ISessionFactory sessionFactory, final String query) {
 
 		if(StringHelper.isEmpty(query)) return ""; //$NON-NLS-1$
 
@@ -34,7 +35,7 @@ public class QueryHelper {
 			@SuppressWarnings("unchecked")
 			public Object execute() {
 				try {
-					SessionFactoryImpl sfimpl = (SessionFactoryImpl) sessionFactory; // hack - to get to the actual queries..
+					SessionFactoryImpl sfimpl = (SessionFactoryImpl) ((SessionFactoryProxy)sessionFactory).getTarget(); // hack - to get to the actual queries..
 					StringBuffer str = new StringBuffer(256);
 					HQLQueryPlan plan = new HQLQueryPlan(query, false, Collections.EMPTY_MAP, sfimpl);
 
