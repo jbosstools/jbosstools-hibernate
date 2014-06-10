@@ -1,7 +1,7 @@
 package org.jboss.tools.hibernate.proxy;
 
-import org.hibernate.Query;
 import org.hibernate.Session;
+import org.jboss.tools.hibernate.spi.IQuery;
 import org.jboss.tools.hibernate.spi.ISession;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
 
@@ -26,8 +26,8 @@ public class SessionProxy implements ISession {
 	}
 
 	@Override
-	public Query createQuery(String queryString) {
-		return target.createQuery(queryString);
+	public IQuery createQuery(String queryString) {
+		return new QueryProxy(target.createQuery(queryString));
 	}
 
 	@Override

@@ -28,19 +28,19 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.console.AbstractQueryPage;
 import org.hibernate.console.ConsoleQueryParameter;
 import org.hibernate.console.QueryInputModel;
 import org.hibernate.console.ext.HibernateExtension;
 import org.hibernate.type.Type;
 import org.hibernate.type.TypeFactory;
+import org.jboss.tools.hibernate.spi.IQuery;
 import org.jboss.tools.hibernate.spi.ISession;
 
 
 public class HQLQueryPage extends AbstractQueryPage {
 
-	private Query query;
+	private IQuery query;
 	private String queryString;
 	
 	public List<Object> getList() {
@@ -72,7 +72,7 @@ public class HQLQueryPage extends AbstractQueryPage {
 	}
 		
 	
-	private void setupParameters(Query query2, QueryInputModel model) {
+	private void setupParameters(IQuery query2, QueryInputModel model) {
 		
 		if(model.getMaxResults()!=null) {
 			query2.setMaxResults( model.getMaxResults().intValue() );
