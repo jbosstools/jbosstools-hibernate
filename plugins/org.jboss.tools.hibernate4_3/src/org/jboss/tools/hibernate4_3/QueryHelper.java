@@ -12,17 +12,18 @@ package org.jboss.tools.hibernate4_3;
 
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.Map;
 
+import org.hibernate.Filter;
 import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.QLFormatHelper;
-import org.hibernate.engine.query.spi.HQLQueryPlan;
-import org.hibernate.hql.spi.QueryTranslator;
-import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.type.Type;
 import org.hibernate.util.xpl.StringHelper;
-import org.jboss.tools.hibernate.proxy.SessionFactoryProxy;
+import org.jboss.tools.hibernate.spi.IHQLQueryPlan;
+import org.jboss.tools.hibernate.spi.IQueryTranslator;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
+import org.jboss.tools.hibernate.util.HibernateHelper;
 
 public class QueryHelper {
 	
@@ -32,16 +33,15 @@ public class QueryHelper {
 		if(StringHelper.isEmpty(query)) return ""; //$NON-NLS-1$
 
 		String result = (String) executionContext.execute(new ExecutionContext.Command() {
-			@SuppressWarnings("unchecked")
 			public Object execute() {
 				try {
-					SessionFactoryImpl sfimpl = (SessionFactoryImpl) ((SessionFactoryProxy)sessionFactory).getTarget(); // hack - to get to the actual queries..
 					StringBuffer str = new StringBuffer(256);
-					HQLQueryPlan plan = new HQLQueryPlan(query, false, Collections.EMPTY_MAP, sfimpl);
+					Map<String, Filter> enabledFilters = Collections.emptyMap();
+					IHQLQueryPlan plan = HibernateHelper.INSTANCE.getHibernateService().newHQLQueryPlan(query, false, enabledFilters, sessionFactory);
 
-					QueryTranslator[] translators = plan.getTranslators();
+					IQueryTranslator[] translators = plan.getTranslators();
 					for (int i = 0; i < translators.length; i++) {
-						QueryTranslator translator = translators[i];
+						IQueryTranslator translator = translators[i];
 						if(translator.isManipulationStatement()) {
 							str.append(HibernateConsoleMessages.DynamicSQLPreviewView_manipulation_of + i + ":"); //$NON-NLS-1$
 							Iterator<?> iterator = translator.getQuerySpaces().iterator();
