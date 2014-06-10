@@ -26,7 +26,6 @@ import java.util.Collection;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource2;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
-import org.hibernate.EntityMode;
 import org.hibernate.HibernateException;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.ext.HibernateExtension;

@@ -29,12 +29,10 @@ import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
-import org.hibernate.SharedSessionContract;
 import org.hibernate.console.AbstractQueryPage;
 import org.hibernate.console.ConsoleQueryParameter;
 import org.hibernate.console.QueryInputModel;
 import org.hibernate.console.ext.HibernateExtension;
-import org.hibernate.type.BasicType;
 import org.hibernate.type.BasicTypeRegistry;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.spi.ISession;
