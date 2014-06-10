@@ -29,12 +29,12 @@ import java.util.Map;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.hibernate.console.AbstractQueryPage;
 import org.hibernate.console.ConsoleMessages;
 import org.hibernate.console.QueryInputModel;
 import org.hibernate.console.ext.HibernateExtension;
 import org.hibernate.engine.SessionImplementor;
+import org.jboss.tools.hibernate.spi.ISession;
 
 import bsh.EvalError;
 import bsh.Interpreter;
@@ -72,7 +72,7 @@ public class JavaPage extends AbstractQueryPage {
         		addException( new IllegalArgumentException(ConsoleMessages.JavaPage_not_allowed) );
         		return;
         	}
-            ip = setupInterpreter((Session)getSession() );
+            ip = setupInterpreter((ISession)getSession() );
             Object o =  ip.eval(criteriaCode);
             // ugly! TODO: make un-ugly!
             if(o instanceof Criteria) {
@@ -99,7 +99,7 @@ public class JavaPage extends AbstractQueryPage {
 	}
 
     @SuppressWarnings("unchecked")
-	private Interpreter setupInterpreter(Session session) throws EvalError, HibernateException {
+	private Interpreter setupInterpreter(ISession session) throws EvalError, HibernateException {
         Interpreter interpreter = new Interpreter();
 
         interpreter.set("session", session); //$NON-NLS-1$
@@ -160,9 +160,9 @@ public class JavaPage extends AbstractQueryPage {
 	}
 
     public void release() {
-    	if (((Session)getSession()).isOpen() ) {
+    	if (((ISession)getSession()).isOpen() ) {
     		try {
-    			((Session)getSession()).close();
+    			((ISession)getSession()).close();
     		} 
     		catch (HibernateException e) {
     			exceptions.add(e);

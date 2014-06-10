@@ -30,7 +30,6 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.views.properties.IPropertySource;
-import org.hibernate.Session;
 import org.hibernate.annotations.common.util.ReflectHelper;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
@@ -56,6 +55,7 @@ import org.hibernate.tool.ide.completion.IHQLCodeAssist;
 import org.jboss.tools.hibernate.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IExporter;
+import org.jboss.tools.hibernate.spi.ISession;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 import org.jboss.tools.hibernate3_6.HibernateExtension3_6;
 
@@ -316,14 +316,14 @@ public class ConsoleExtension3_6 implements ConsoleExtension {
 	@Override
 	public IPropertySource getPropertySource(Object object,
 			QueryPage selectedQueryPage) {
-		Session currentSession = (Session)selectedQueryPage.getSession();
+		ISession currentSession = (ISession)selectedQueryPage.getSession();
 		if((currentSession.isOpen() && currentSession.contains(object)) || hasMetaData( object, currentSession) ) {
 			return new EntityPropertySource(object, currentSession, hibernateExtension);
 		}
 		return null;
 	}
 	
-	private boolean hasMetaData(Object object, Session currentSession) {
+	private boolean hasMetaData(Object object, ISession currentSession) {
 		return currentSession.getSessionFactory().getClassMetadata(HibernateProxyHelper.getClassWithoutInitializingProxy(object))!=null;
 	}
 

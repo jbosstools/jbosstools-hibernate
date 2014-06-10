@@ -2,10 +2,10 @@ package org.jboss.tools.hibernate.proxy;
 
 import java.util.Map;
 
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
+import org.jboss.tools.hibernate.spi.ISession;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
 
 public class SessionFactoryProxy implements ISessionFactory {
@@ -33,12 +33,27 @@ public class SessionFactoryProxy implements ISessionFactory {
 	}
 
 	@Override
-	public Session openSession() {
-		return target.openSession();
+	public ISession openSession() {
+		return new SessionProxy(this, target.openSession());
 	}
 	
 	public SessionFactory getTarget() {
 		return target;
+	}
+
+	@Override
+	public ClassMetadata getClassMetadata(Class<?> clazz) {
+		return target.getClassMetadata(clazz);
+	}
+
+	@Override
+	public ClassMetadata getClassMetadata(String entityName) {
+		return target.getClassMetadata(entityName);
+	}
+
+	@Override
+	public CollectionMetadata getCollectionMetadata(String string) {
+		return target.getCollectionMetadata(string);
 	}
 
 }

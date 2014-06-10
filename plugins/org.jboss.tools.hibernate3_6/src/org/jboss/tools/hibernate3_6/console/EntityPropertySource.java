@@ -28,7 +28,6 @@ import org.eclipse.ui.views.properties.IPropertySource2;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.hibernate.EntityMode;
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.ext.HibernateExtension;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
@@ -37,6 +36,7 @@ import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.persister.entity.AbstractEntityPersister;
 import org.hibernate.proxy.HibernateProxyHelper;
 import org.hibernate.tuple.entity.EntityMetamodel;
+import org.jboss.tools.hibernate.spi.ISession;
 
 
 
@@ -46,10 +46,10 @@ public class EntityPropertySource implements IPropertySource2
 	private IPropertyDescriptor[] propertyDescriptors;
 
 	private final HibernateExtension extension;
-	private final Session currentSession;
+	private final ISession currentSession;
 	private ClassMetadata classMetadata;
 
-	public EntityPropertySource(final Object object, final Session currentSession, HibernateExtension extension)
+	public EntityPropertySource(final Object object, final ISession currentSession, HibernateExtension extension)
 	{
 		this.currentSession = currentSession;
 		this.extension = extension;

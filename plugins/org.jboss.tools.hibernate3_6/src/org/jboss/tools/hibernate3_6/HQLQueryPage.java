@@ -29,13 +29,13 @@ import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
-import org.hibernate.Session;
 import org.hibernate.console.AbstractQueryPage;
 import org.hibernate.console.ConsoleQueryParameter;
 import org.hibernate.console.QueryInputModel;
 import org.hibernate.console.ext.HibernateExtension;
 import org.hibernate.type.BasicTypeRegistry;
 import org.hibernate.type.Type;
+import org.jboss.tools.hibernate.spi.ISession;
 
 
 public class HQLQueryPage extends AbstractQueryPage {
@@ -121,7 +121,7 @@ public class HQLQueryPage extends AbstractQueryPage {
 	public void setSession(Object s) {
 		super.setSession(s);
 		try {			             
-			query = ((Session)this.getSession()).createQuery(getQueryString());
+			query = ((ISession)this.getSession()).createQuery(getQueryString());
 		} catch (HibernateException e) {
 			addException(e);			
 		} catch (Exception e) {
@@ -186,9 +186,9 @@ public class HQLQueryPage extends AbstractQueryPage {
     }
 
     public void release() {
-    	if (((Session)getSession()).isOpen() ) {
+    	if (((ISession)getSession()).isOpen() ) {
     		try {
-    			((Session)getSession()).close();
+    			((ISession)getSession()).close();
     		} 
     		catch (HibernateException e) {
     			exceptions.add(e);

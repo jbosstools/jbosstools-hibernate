@@ -20,7 +20,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.osgi.util.NLS;
-import org.hibernate.Session;
 import org.hibernate.cfg.Settings;
 import org.hibernate.console.ConsoleConfigClassLoader;
 import org.hibernate.console.ConsoleMessages;
@@ -34,6 +33,7 @@ import org.hibernate.console.ext.HibernateExtension;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.PreferencesClassPathUtils;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.ISession;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
 
 /**
@@ -68,7 +68,7 @@ public class HibernateExtension3_6 implements HibernateExtension {
 			final QueryInputModel queryParameters) {
 		return (QueryPage)execute(new Command() {
 			public Object execute() {
-				Session session = sessionFactory.openSession();
+				ISession session = sessionFactory.openSession();
 				QueryPage qp = new HQLQueryPage(HibernateExtension3_6.this, hql,queryParameters);
 				qp.setSession(session);
 				return qp;
@@ -81,7 +81,7 @@ public class HibernateExtension3_6 implements HibernateExtension {
 			final QueryInputModel model) {
 		return (QueryPage)execute(new Command() {
 			public Object execute() {
-				Session session = sessionFactory.openSession();
+				ISession session = sessionFactory.openSession();
 				QueryPage qp = new JavaPage(HibernateExtension3_6.this,criteriaCode,model);
 				qp.setSession(session);
 				return qp;
