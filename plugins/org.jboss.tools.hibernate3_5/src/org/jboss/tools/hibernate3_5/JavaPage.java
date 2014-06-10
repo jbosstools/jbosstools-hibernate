@@ -33,7 +33,6 @@ import org.hibernate.console.AbstractQueryPage;
 import org.hibernate.console.ConsoleMessages;
 import org.hibernate.console.QueryInputModel;
 import org.hibernate.console.ext.HibernateExtension;
-import org.hibernate.engine.SessionImplementor;
 import org.jboss.tools.hibernate.spi.ISession;
 
 import bsh.EvalError;
@@ -98,15 +97,13 @@ public class JavaPage extends AbstractQueryPage {
         }
 	}
 
-    @SuppressWarnings("unchecked")
 	private Interpreter setupInterpreter(ISession session) throws EvalError, HibernateException {
         Interpreter interpreter = new Interpreter();
 
         interpreter.set("session", session); //$NON-NLS-1$
         interpreter.setClassLoader( Thread.currentThread().getContextClassLoader() );
-        SessionImplementor si = (SessionImplementor)session;
 
-        Map<String, ?> map = si.getFactory().getAllClassMetadata();
+        Map<String, ?> map = session.getSessionFactory().getAllClassMetadata();
 
         Iterator<String> iterator = map.keySet().iterator();
         //TODO: filter non classes.
