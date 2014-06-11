@@ -30,9 +30,10 @@ import org.eclipse.osgi.util.NLS;
 import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleMessages;
 import org.hibernate.type.CollectionType;
-import org.hibernate.type.Type;
+import org.jboss.tools.hibernate.proxy.TypeProxy;
 import org.jboss.tools.hibernate.spi.IClassMetadata;
 import org.jboss.tools.hibernate.spi.ICollectionMetadata;
+import org.jboss.tools.hibernate.spi.IType;
 
 /**
  * @author MAX
@@ -42,7 +43,7 @@ class PersistentCollectionNode extends BaseNode implements TypedNode{
 
 	BaseNode virtualNode;
 	CollectionType type;
-	Type elementType;
+	IType elementType;
 	private boolean objectGraph;
 	private Object baseObject;
 	private Object collectionObject;
@@ -59,7 +60,7 @@ class PersistentCollectionNode extends BaseNode implements TypedNode{
 
 
 
-		iconName = factory.getIconNameForType(type);
+		iconName = factory.getIconNameForType(new TypeProxy(type));
 		this.elementType = metadata.getElementType();
 		if(objectGraph) {
 			//
@@ -173,7 +174,7 @@ class PersistentCollectionNode extends BaseNode implements TypedNode{
 
 	}
 
-	private BaseNode createNode(int idx, Object element, Type type) { // TODO: use a common way to create these darn nodes!
+	private BaseNode createNode(int idx, Object element, IType type) { // TODO: use a common way to create these darn nodes!
 		return new ClassNode(factory, this,type.getReturnedClass().getName(), factory.getMetaData(type.getReturnedClass() ),element,objectGraph);
 	}
 
@@ -181,7 +182,7 @@ class PersistentCollectionNode extends BaseNode implements TypedNode{
 		return getLabel(getName(),b) + " : " + getLabel(type.getReturnedClass().getName(),b) + "<" + getLabel(elementType.getReturnedClass().getName(),b) + ">";  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 	}
 
-	public Type getType() {
-		return type;
+	public IType getType() {
+		return new TypeProxy(type);
 	}
 }

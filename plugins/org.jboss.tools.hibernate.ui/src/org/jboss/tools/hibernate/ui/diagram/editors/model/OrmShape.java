@@ -27,7 +27,7 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
-import org.hibernate.type.Type;
+import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.ui.diagram.rulers.DiagramGuide;
 
 /**
@@ -192,7 +192,7 @@ public class OrmShape extends ExpandableShape {
 							if (val instanceof Collection) {
 								bodyOrmShape = new ComponentShape(field, getConsoleConfigName());
 							} else {
-								Type type = getTypeUsingExecContext(val);
+								IType type = getTypeUsingExecContext(val);
 								if (type != null && type.isEntityType()) {
 									bodyOrmShape = new ExpandableShape(field, getConsoleConfigName());
 								} else {

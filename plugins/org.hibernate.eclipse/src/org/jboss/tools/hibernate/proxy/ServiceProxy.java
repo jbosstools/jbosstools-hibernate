@@ -20,6 +20,7 @@ import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
+import org.jboss.tools.hibernate.spi.ITypeFactory;
 import org.xml.sax.EntityResolver;
 
 public class ServiceProxy implements IService {
@@ -113,6 +114,11 @@ public class ServiceProxy implements IService {
 			Map<String, Filter> enabledFilters, 
 			ISessionFactory sessionFactory) {
 		return new HQLQueryPlanProxy(query, shallow, enabledFilters, sessionFactory);
+	}
+
+	@Override
+	public ITypeFactory newTypeFactory() {
+		return new TypeFactoryProxy();
 	}
 
 

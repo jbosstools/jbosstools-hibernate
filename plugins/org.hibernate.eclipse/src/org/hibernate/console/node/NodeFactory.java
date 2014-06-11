@@ -33,12 +33,11 @@ import org.hibernate.console.ConsoleMessages;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.mapping.Table;
 import org.hibernate.type.CollectionType;
-import org.hibernate.type.EntityType;
-import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.spi.IClassMetadata;
 import org.jboss.tools.hibernate.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.spi.ISession;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
+import org.jboss.tools.hibernate.spi.IType;
 
 /**
  * @author MAX
@@ -165,11 +164,10 @@ public class NodeFactory {
 		//return new PersistentCollectionNode(this, node, name, type,  md, getCollectionMetaData(type.getRole() ), baseObject, objectGraph);
 	}
 
-		public String getIconNameForType(Type type) {
+		public String getIconNameForType(IType type) {
 			String result = ImageConstants.UNKNOWNPROPERTY;
 			if(type.isEntityType() ) {
-				EntityType et = (EntityType) type;
-				if(!et.isOneToOne() ) {
+				if(!type.isOneToOne() ) {
 					result = ImageConstants.MANYTOONE;
 				} else {
 					result = ImageConstants.ONETOONE;

@@ -26,5 +26,6 @@ public interface ITypeFactory {
 	IType getTimezoneType();
 	IType getTrueFalseType();
 	IType getYesNoType();
+	IType getNamedType(String typeName);
 
 }

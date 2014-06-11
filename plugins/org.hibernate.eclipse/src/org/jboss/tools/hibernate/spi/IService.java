@@ -45,5 +45,7 @@ public interface IService {
 			boolean shallow, 
 			Map<String, Filter> enabledFilters, 
 			ISessionFactory sessionFactory);
+	
+	ITypeFactory newTypeFactory();
 
 }

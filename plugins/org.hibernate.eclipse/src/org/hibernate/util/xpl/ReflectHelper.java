@@ -37,7 +37,7 @@ import org.hibernate.property.DirectPropertyAccessor;
 import org.hibernate.property.Getter;
 import org.hibernate.property.PropertyAccessor;
 import org.hibernate.type.PrimitiveType;
-import org.hibernate.type.Type;
+import org.jboss.tools.hibernate.spi.IType;
 
 /**
  * Utility class for various reflection operations.
@@ -325,14 +325,14 @@ public final class ReflectHelper {
 
 	/**
 	 * Retrieve a constructor for the given class, with arguments matching the specified Hibernate mapping
-	 * {@link Type types}.
+	 * {@link IType types}.
 	 *
 	 * @param clazz The class needing instantiation
 	 * @param types The types representing the required ctor param signature
 	 * @return The matching constructor.
 	 * @throws PropertyNotFoundException Indicates we could not locate an appropriate constructor (todo : again with PropertyNotFoundException???)
 	 */
-	public static Constructor getConstructor(Class clazz, Type[] types) throws PropertyNotFoundException {
+	public static Constructor getConstructor(Class clazz, IType[] types) throws PropertyNotFoundException {
 		final Constructor[] candidates = clazz.getConstructors();
 		for ( int i = 0; i < candidates.length; i++ ) {
 			final Constructor constructor = candidates[i];

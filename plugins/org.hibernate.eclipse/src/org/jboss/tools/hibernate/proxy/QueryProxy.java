@@ -1,14 +1,17 @@
 package org.jboss.tools.hibernate.proxy;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.spi.IQuery;
+import org.jboss.tools.hibernate.spi.IType;
 
 public class QueryProxy implements IQuery {
 	
 	private Query target = null;
+	private IType[] returnTypes = null;
 
 	public QueryProxy(Query query) {
 		target = query;
@@ -26,18 +29,24 @@ public class QueryProxy implements IQuery {
 	}
 
 	@Override
-	public void setParameter(int pos, Object value, Type type) {
-		target.setParameter(pos, value, type);
+	public void setParameter(int pos, Object value, IType type) {
+		if (type instanceof TypeProxy) {
+			target.setParameter(pos, value, ((TypeProxy)type).getTarget());
+		}
 	}
 
 	@Override
-	public void setParameterList(String name, List<Object> list, Type type) {
-		target.setParameterList(name, list, type);
+	public void setParameterList(String name, List<Object> list, IType type) {
+		if (type instanceof TypeProxy) {
+			target.setParameterList(name, list, ((TypeProxy)type).getTarget());
+		}
 	}
 
 	@Override
-	public void setParameter(String name, Object value, Type type) {
-		target.setParameter(name, value, type);
+	public void setParameter(String name, Object value, IType type) {
+		if (type instanceof TypeProxy) {
+			target.setParameter(name, value, ((TypeProxy)type).getTarget());
+		}
 	}
 
 	@Override
@@ -46,8 +55,20 @@ public class QueryProxy implements IQuery {
 	}
 
 	@Override
-	public Type[] getReturnTypes() {
-		return target.getReturnTypes();
+	public IType[] getReturnTypes() {
+		if (returnTypes == null) {
+			initializeReturnTypes();
+		}
+		return returnTypes;
+	}
+	
+	private void initializeReturnTypes() {
+		Type[] origin = target.getReturnTypes();
+		ArrayList<IType> destination = new ArrayList<IType>(origin.length);
+		for (Type type : origin) {
+			destination.add(new TypeProxy(type));
+		}
+		this.returnTypes = destination.toArray(new IType[destination.size()]);
 	}
 
 }

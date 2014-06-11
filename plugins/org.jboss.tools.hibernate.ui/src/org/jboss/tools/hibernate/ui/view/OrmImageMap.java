@@ -31,7 +31,7 @@ import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
-import org.hibernate.type.Type;
+import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.ui.diagram.UiPlugin;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.UtilTypeExtract;
 
@@ -123,7 +123,7 @@ public class OrmImageMap {
 			} else if (value instanceof Any) {
 				str = "Image_PersistentFieldAny"; //$NON-NLS-1$
 			} else {
-				Type type = UtilTypeExtract.getTypeUsingExecContext(value, cfg);
+				IType type = UtilTypeExtract.getTypeUsingExecContext(value, cfg);
 				if (type != null && type.isCollectionType()) {
 					if (value instanceof PrimitiveArray) {
 						str = "Image_Collection_primitive_array"; //$NON-NLS-1$

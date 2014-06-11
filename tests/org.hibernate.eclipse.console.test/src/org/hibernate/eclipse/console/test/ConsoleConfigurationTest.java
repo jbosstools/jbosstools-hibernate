@@ -5,7 +5,6 @@ import junit.framework.TestCase;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
-import org.hibernate.Hibernate;
 import org.hibernate.cfg.Mappings;
 import org.hibernate.console.ConcoleConfigurationAdapter;
 import org.hibernate.console.ConsoleConfiguration;
@@ -25,10 +24,13 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
+import org.jboss.tools.hibernate.spi.ITypeFactory;
+import org.jboss.tools.hibernate.util.HibernateHelper;
 
 public class ConsoleConfigurationTest extends TestCase {
 
 	private ConsoleConfiguration consoleCfg;
+	private ITypeFactory typeFactory;
 
 	public ConsoleConfigurationTest(String name) {
 		super( name );
@@ -36,7 +38,7 @@ public class ConsoleConfigurationTest extends TestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-
+		typeFactory = HibernateHelper.INSTANCE.getHibernateService().newTypeFactory();
 		TestConsoleConfigurationPreferences cfgprefs = new TestConsoleConfigurationPreferences();
 		consoleCfg = new ConsoleConfiguration(cfgprefs);
 		KnownConfigurations.getInstance().addConfiguration(consoleCfg, true);
@@ -152,10 +154,10 @@ public class ConsoleConfigurationTest extends TestCase {
 
 		consoleCfg.buildSessionFactory();
 		
-		ConsoleQueryParameter paramA = new ConsoleQueryParameter("a", Hibernate.INTEGER,
+		ConsoleQueryParameter paramA = new ConsoleQueryParameter("a", typeFactory.getIntegerType(),
 				new Integer[]{new Integer(1), new Integer(2)});
-		ConsoleQueryParameter paramB = new ConsoleQueryParameter("b", Hibernate.INTEGER, new Integer(3));
-		ConsoleQueryParameter paramOrdered = new ConsoleQueryParameter("0", Hibernate.INTEGER, new Integer(4));
+		ConsoleQueryParameter paramB = new ConsoleQueryParameter("b", typeFactory.getIntegerType(), new Integer(3));
+		ConsoleQueryParameter paramOrdered = new ConsoleQueryParameter("0", typeFactory.getIntegerType(), new Integer(4));
 		QueryInputModel model = new QueryInputModel();
 		model.addParameter(paramA);
 		model.addParameter(paramB);
@@ -169,5 +171,6 @@ public class ConsoleConfigurationTest extends TestCase {
 			//ignore - there is fake mapping
 		}
 	}
+
 
 }

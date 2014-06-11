@@ -32,50 +32,53 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
-import org.hibernate.Hibernate;
 import org.hibernate.mapping.Table;
-import org.hibernate.type.NullableType;
-import org.hibernate.type.Type;
+import org.jboss.tools.hibernate.spi.IType;
+import org.jboss.tools.hibernate.spi.ITypeFactory;
+import org.jboss.tools.hibernate.util.HibernateHelper;
 
 
 public class ConsoleQueryParameter {
 
 	static private final Object NULL_MARKER = null; //new Object() { public String toString() { return "[null]"; } };
 	
-	static final Map<Type, String> typeFormats = new HashMap<Type, String>();
+	static final Map<IType, String> typeFormats = new HashMap<IType, String>();
 	static {
-		addTypeFormat(Hibernate.BOOLEAN, Boolean.TRUE );
-		addTypeFormat(Hibernate.BYTE, Byte.valueOf((byte) 42));
-		addTypeFormat(Hibernate.BIG_INTEGER, BigInteger.valueOf(42));
-		addTypeFormat(Hibernate.SHORT, Short.valueOf((short) 42));
-		addTypeFormat(Hibernate.CALENDAR, new GregorianCalendar());
-		addTypeFormat(Hibernate.CALENDAR_DATE, new GregorianCalendar());
-		addTypeFormat(Hibernate.INTEGER, Integer.valueOf(42));
-		addTypeFormat(Hibernate.INTEGER, Integer.valueOf(42));
-		addTypeFormat(Hibernate.BIG_DECIMAL, new BigDecimal(42.0));
-		addTypeFormat(Hibernate.CHARACTER, Character.valueOf('h'));
-		addTypeFormat(Hibernate.CLASS, Table.class);
-		addTypeFormat(Hibernate.CURRENCY, Currency.getInstance(Locale.getDefault()));
-		addTypeFormat(Hibernate.DATE, new Date());
-		addTypeFormat(Hibernate.DOUBLE, Double.valueOf(42.42));
-		addTypeFormat(Hibernate.FLOAT, Float.valueOf((float)42.42));
-		addTypeFormat(Hibernate.LOCALE, Locale.getDefault());
-		addTypeFormat(Hibernate.LONG, Long.valueOf(42));
-		addTypeFormat(Hibernate.STRING, "a string"); //$NON-NLS-1$
-		addTypeFormat(Hibernate.TEXT, "a text"); //$NON-NLS-1$
-		addTypeFormat(Hibernate.TIME, new Date());
-		addTypeFormat(Hibernate.TIMESTAMP, new Date());
-		addTypeFormat(Hibernate.TIMEZONE, TimeZone.getDefault());
-		addTypeFormat(Hibernate.TRUE_FALSE, Boolean.TRUE);
-		addTypeFormat(Hibernate.YES_NO, Boolean.TRUE);
+		
+		ITypeFactory typeFactory = 
+				HibernateHelper.INSTANCE.getHibernateService().newTypeFactory();
+		
+		addTypeFormat(typeFactory.getBooleanType(), Boolean.TRUE);
+		addTypeFormat(typeFactory.getByteType(), Byte.valueOf((byte) 42));
+		addTypeFormat(typeFactory.getBigIntegerType(), BigInteger.valueOf(42));
+		addTypeFormat(typeFactory.getShortType(), Short.valueOf((short) 42));
+		addTypeFormat(typeFactory.getCalendarType(), new GregorianCalendar());
+		addTypeFormat(typeFactory.getCalendarDateType(), new GregorianCalendar());
+		addTypeFormat(typeFactory.getIntegerType(), Integer.valueOf(42));
+		addTypeFormat(typeFactory.getBigDecimalType(), new BigDecimal(42.0));
+		addTypeFormat(typeFactory.getCharacterType(), Character.valueOf('h'));
+		addTypeFormat(typeFactory.getClassType(), Table.class);
+		addTypeFormat(typeFactory.getCurrencyType(), Currency.getInstance(Locale.getDefault()));
+		addTypeFormat(typeFactory.getDateType(), new Date());
+		addTypeFormat(typeFactory.getDoubleType(), Double.valueOf(42.42));
+		addTypeFormat(typeFactory.getFloatType(), Float.valueOf((float)42.42));
+		addTypeFormat(typeFactory.getLocaleType(), Locale.getDefault());
+		addTypeFormat(typeFactory.getLongType(), Long.valueOf(42));
+		addTypeFormat(typeFactory.getStringType(), "a string"); //$NON-NLS-1$
+		addTypeFormat(typeFactory.getTextType(), "a text"); //$NON-NLS-1$
+		addTypeFormat(typeFactory.getTimeType(), new Date());
+		addTypeFormat(typeFactory.getTimestampType(), new Date());
+		addTypeFormat(typeFactory.getTimezoneType(), TimeZone.getDefault());
+		addTypeFormat(typeFactory.getTrueFalseType(), Boolean.TRUE);
+		addTypeFormat(typeFactory.getYesNoType(), Boolean.TRUE);
 	}
 
 
-	private static void addTypeFormat(NullableType nullableType, Object value) {
-		typeFormats.put(nullableType, nullableType.toString(value));
+	private static void addTypeFormat(IType type, Object value) {
+		typeFormats.put(type, type.toString(value));
 	}
 	String name;
-	NullableType type;
+	IType type;
 	Object value;
 	
 	public ConsoleQueryParameter(ConsoleQueryParameter cqp) {
@@ -88,7 +91,7 @@ public class ConsoleQueryParameter {
 		
 	}
 
-	public ConsoleQueryParameter(String name, NullableType type, Object value) {
+	public ConsoleQueryParameter(String name, IType type, Object value) {
 		this.name = name;
 		this.type = type;
 		this.value = value;
@@ -106,7 +109,7 @@ public class ConsoleQueryParameter {
 		return type.getName();
 	}
 	
-	public void setType(NullableType type) {
+	public void setType(IType type) {
 		this.type = type;
 	}
 	
@@ -152,7 +155,7 @@ public class ConsoleQueryParameter {
 		return "<unknown>";				 //$NON-NLS-1$
 	}
 
-	public static Set<Type> getPossibleTypes() {
+	public static Set<IType> getPossibleTypes() {
 		return typeFormats.keySet();
 	}
 

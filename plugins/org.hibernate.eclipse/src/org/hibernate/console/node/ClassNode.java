@@ -28,8 +28,8 @@ import org.hibernate.Hibernate;
 import org.hibernate.console.ConsoleMessages;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.type.CollectionType;
-import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.spi.IClassMetadata;
+import org.jboss.tools.hibernate.spi.IType;
 
 /**
  * @author MAX
@@ -80,7 +80,7 @@ class ClassNode extends BaseNode {
 
         String[] names = md.getPropertyNames();
         for (int i = 0; i < names.length; i++) {
-            Type type = md.getPropertyTypes()[i];
+            IType type = md.getPropertyTypes()[i];
 
             if(type.isCollectionType() ) {
                 PersistentCollectionNode tn = factory.createPersistentCollectionNode(this, names[i], md, (CollectionType)type, getValue(), objectGraph);

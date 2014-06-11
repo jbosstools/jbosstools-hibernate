@@ -18,11 +18,11 @@ import org.hibernate.Filter;
 import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.QLFormatHelper;
-import org.hibernate.type.Type;
 import org.hibernate.util.xpl.StringHelper;
 import org.jboss.tools.hibernate.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.spi.IQueryTranslator;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
+import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 
 public class QueryHelper {
@@ -52,10 +52,10 @@ public class QueryHelper {
 							}
 
 						} else {
-							Type[] returnTypes = translator.getReturnTypes();
+							IType[] returnTypes = translator.getReturnTypes();
 							str.append(i +": "); //$NON-NLS-1$
 							for (int j = 0; j < returnTypes.length; j++) {
-								Type returnType = returnTypes[j];
+								IType returnType = returnTypes[j];
 								str.append(returnType.getName());
 								if(j<returnTypes.length-1) { str.append(", "); }							 //$NON-NLS-1$
 							}

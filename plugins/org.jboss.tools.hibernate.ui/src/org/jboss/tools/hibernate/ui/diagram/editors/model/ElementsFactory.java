@@ -32,9 +32,8 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
-import org.hibernate.type.EntityType;
-import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IType;
 
 /**
  * Responsible to create diagram elements for given
@@ -119,11 +118,10 @@ public class ElementsFactory {
 		if (!property.isComposite()) {
 			final IConfiguration config = getConfig();
 			//
-			Type type = UtilTypeExtract.getTypeUsingExecContext(property.getValue(), getConsoleConfig());
+			IType type = UtilTypeExtract.getTypeUsingExecContext(property.getValue(), getConsoleConfig());
 			if (type != null && type.isEntityType()) {
-				EntityType et = (EntityType) type;
 				Object clazz = config != null ? 
-						config.getClassMapping(et.getAssociatedEntityName()) : null;
+						config.getClassMapping(type.getAssociatedEntityName()) : null;
 				if (clazz instanceof RootClass) {
 					RootClass rootClass = (RootClass)clazz;
 					s = getOrCreatePersistentClass(rootClass, null);

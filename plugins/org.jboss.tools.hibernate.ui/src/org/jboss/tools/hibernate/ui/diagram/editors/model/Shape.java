@@ -23,7 +23,7 @@ import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Value;
-import org.hibernate.type.Type;
+import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Connection.ConnectionType;
 import org.jboss.tools.hibernate.ui.view.HibernateUtils;
 
@@ -302,7 +302,7 @@ public class Shape extends BaseElement {
 				if (value instanceof Component) {
 					res = prop.getValue().toString();
 				} else {
-					Type type = getTypeUsingExecContext(prop.getValue());
+					IType type = getTypeUsingExecContext(prop.getValue());
 					if (type != null) {
 						res = type.getReturnedClass().getName();
 					}
@@ -370,7 +370,7 @@ public class Shape extends BaseElement {
 		return consoleConfig;
 	}
 
-	public Type getTypeUsingExecContext(final Value val) {
+	public IType getTypeUsingExecContext(final Value val) {
 		return UtilTypeExtract.getTypeUsingExecContext(val, getConsoleConfig());
 	}
 }

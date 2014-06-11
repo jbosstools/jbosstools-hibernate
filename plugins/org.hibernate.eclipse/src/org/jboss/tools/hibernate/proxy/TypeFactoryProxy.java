@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.Hibernate;
+import org.hibernate.type.TypeFactory;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.ITypeFactory;
 
@@ -119,6 +120,11 @@ public class TypeFactoryProxy implements ITypeFactory {
 	@Override
 	public IType getYesNoType() {
 		return new TypeProxy(Hibernate.YES_NO);
+	}
+
+	@Override
+	public IType getNamedType(String typeName) {
+		return new TypeProxy(TypeFactory.heuristicType(typeName));
 	}
 
 }

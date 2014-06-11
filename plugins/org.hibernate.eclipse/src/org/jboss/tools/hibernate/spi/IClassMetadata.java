@@ -1,15 +1,13 @@
 package org.jboss.tools.hibernate.spi;
 
-import org.hibernate.type.Type;
-
 public interface IClassMetadata {
 
 	String getEntityName();
 	String getIdentifierPropertyName();
 	String[] getPropertyNames();
-	Type[] getPropertyTypes();
+	IType[] getPropertyTypes();
 	Class<?> getMappedClass();
-	Type getIdentifierType();
+	IType getIdentifierType();
 	Object getPropertyValue(Object object, String name);
 	boolean hasIdentifierProperty();
 	Object getIdentifier(Object object);

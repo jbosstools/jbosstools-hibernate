@@ -10,7 +10,8 @@
  ******************************************************************************/
 package org.hibernate.console.node;
 
-import org.hibernate.type.Type;
+import org.jboss.tools.hibernate.spi.IType;
+
 
 /**
  * @author Dmitry Geraskov
@@ -18,6 +19,6 @@ import org.hibernate.type.Type;
  */
 public interface TypedNode {
 	
-	public Type getType();
+	public IType getType();
 
 }

@@ -32,10 +32,11 @@ import org.hibernate.console.AbstractQueryPage;
 import org.hibernate.console.ConsoleQueryParameter;
 import org.hibernate.console.QueryInputModel;
 import org.hibernate.console.ext.HibernateExtension;
-import org.hibernate.type.Type;
-import org.hibernate.type.TypeFactory;
 import org.jboss.tools.hibernate.spi.IQuery;
 import org.jboss.tools.hibernate.spi.ISession;
+import org.jboss.tools.hibernate.spi.IType;
+import org.jboss.tools.hibernate.spi.ITypeFactory;
+import org.jboss.tools.hibernate.util.HibernateHelper;
 
 
 public class HQLQueryPage extends AbstractQueryPage {
@@ -85,17 +86,23 @@ public class HQLQueryPage extends AbstractQueryPage {
 			try {
 				int pos = Integer.parseInt(parameter.getName());
 				//FIXME no method to set positioned list value
-				query2.setParameter(pos, calcValue( parameter ),
-						TypeFactory.heuristicType(parameter.getTypeName()));
+				query2.setParameter(
+						pos, 
+						calcValue( parameter ),
+						getTypeFactory().getNamedType(parameter.getTypeName()));
 			} catch(NumberFormatException nfe) {
 				Object value = parameter.getValue();
 				if (value != null && value.getClass().isArray()){
 					Object[] values = (Object[])value;
-					query2.setParameterList(parameter.getName(), Arrays.asList(values),
-							TypeFactory.heuristicType(parameter.getTypeName()));
+					query2.setParameterList(
+							parameter.getName(), 
+							Arrays.asList(values),
+							getTypeFactory().getNamedType(parameter.getTypeName()));
 				} else {
-					query2.setParameter(parameter.getName(), calcValue( parameter ),
-							TypeFactory.heuristicType(parameter.getTypeName()));
+					query2.setParameter(
+							parameter.getName(), 
+							calcValue( parameter ),
+							getTypeFactory().getNamedType(parameter.getTypeName()));
 				}
 			}
 		}		
@@ -103,6 +110,14 @@ public class HQLQueryPage extends AbstractQueryPage {
 
 	private Object calcValue(ConsoleQueryParameter parameter) {
 		return parameter.getValueForQuery();				
+	}
+	
+	private ITypeFactory typeFactory = null;
+	private ITypeFactory getTypeFactory() {
+		if (typeFactory == null) {
+			typeFactory = HibernateHelper.INSTANCE.getHibernateService().newTypeFactory();
+		}
+		return typeFactory;
 	}
 
 	/**
@@ -152,17 +167,17 @@ public class HQLQueryPage extends AbstractQueryPage {
     			// ignore - http://opensource.atlassian.com/projects/hibernate/browse/HHH-2188
     		}
 			if(returnAliases==null) {
-    		Type[] t;
+    		IType[] t;
     		try {
 			t = query.getReturnTypes();
     		} catch(NullPointerException npe) {
-    			t = new Type[] { null };
+    			t = new IType[] { null };
     			// ignore - http://opensource.atlassian.com/projects/hibernate/browse/HHH-2188
     		}
     		l = new ArrayList<String>(t.length);
     
     		for (int i = 0; i < t.length; i++) {
-    			Type type = t[i];
+    			IType type = t[i];
     			if(type==null) {
     			    l.add("<multiple types>");	 //$NON-NLS-1$
     			} else {

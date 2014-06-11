@@ -1,7 +1,7 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.type.EntityType;
-import org.hibernate.type.NullableType;
+import org.hibernate.type.StringRepresentableType;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.spi.IType;
 
@@ -13,11 +13,12 @@ public class TypeProxy implements IType {
 		target = type;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public String toString(Object value) {
 		String result = null;
-		if (target instanceof NullableType) {
-			result = ((NullableType)target).toString(value);
+		if (target instanceof StringRepresentableType) {
+			result = ((StringRepresentableType<Object>)target).toString(value);
 		}
 		return result;
 	}
@@ -27,11 +28,12 @@ public class TypeProxy implements IType {
 		return target.getName();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object fromStringValue(String value) {
 		Object result = null;
-		if (target instanceof NullableType) {
-			result = ((NullableType)target).fromStringValue(value);
+		if (target instanceof StringRepresentableType) {
+			result = ((StringRepresentableType<Object>)target).fromStringValue(value);
 		}
 		return result;
 	}

@@ -21,7 +21,7 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
-import org.hibernate.type.Type;
+import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.UtilTypeExtract;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Utils;
 
@@ -87,7 +87,7 @@ public class OrmLabelMap {
 		name.append(field.getName());
 		name.append(" :"); //$NON-NLS-1$
 		String typeString = null;
-		Type type = UtilTypeExtract.getTypeUsingExecContext(field.getValue(), cfg);
+		IType type = UtilTypeExtract.getTypeUsingExecContext(field.getValue(), cfg);
 		if (type != null && type.getReturnedClass() != null) {
 			typeString = type.getReturnedClass().getName();
 		} else {

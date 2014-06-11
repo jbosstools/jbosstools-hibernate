@@ -1,15 +1,20 @@
 package org.jboss.tools.hibernate.proxy;
 
+import java.util.ArrayList;
+
 import org.hibernate.EntityMode;
 import org.hibernate.engine.SessionImplementor;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.spi.IClassMetadata;
 import org.jboss.tools.hibernate.spi.ISessionImplementor;
+import org.jboss.tools.hibernate.spi.IType;
 
 public class ClassMetadataProxy implements IClassMetadata {
 	
 	private ClassMetadata target = null;
+	private IType[] propertyTypes = null;
+	private IType identifierType = null;
 
 	public ClassMetadataProxy(ClassMetadata classMetadata) {
 		target = classMetadata;
@@ -31,8 +36,20 @@ public class ClassMetadataProxy implements IClassMetadata {
 	}
 
 	@Override
-	public Type[] getPropertyTypes() {
-		return target.getPropertyTypes();
+	public IType[] getPropertyTypes() {
+		if (propertyTypes == null) {
+			initializePropertyTypes();
+		}
+		return propertyTypes;
+	}
+	
+	private void initializePropertyTypes() {
+		Type[] origin = target.getPropertyTypes();
+		ArrayList<IType> propertyTypes = new ArrayList<IType>(origin.length);
+		for (Type type : origin) {
+			propertyTypes.add(new TypeProxy(type));
+		}
+		this.propertyTypes = propertyTypes.toArray(new IType[origin.length]);
 	}
 
 	@Override
@@ -41,8 +58,11 @@ public class ClassMetadataProxy implements IClassMetadata {
 	}
 
 	@Override
-	public Type getIdentifierType() {
-		return target.getIdentifierType();
+	public IType getIdentifierType() {
+		if (identifierType == null) {
+			identifierType = new TypeProxy(target.getIdentifierType());
+		}
+		return identifierType;
 	}
 
 	@Override
