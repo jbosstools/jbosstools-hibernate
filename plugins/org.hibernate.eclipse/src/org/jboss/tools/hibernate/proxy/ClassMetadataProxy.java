@@ -1,7 +1,5 @@
 package org.jboss.tools.hibernate.proxy;
 
-import java.io.Serializable;
-
 import org.hibernate.EntityMode;
 import org.hibernate.engine.SessionImplementor;
 import org.hibernate.metadata.ClassMetadata;
