@@ -32,11 +32,11 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ConsoleMessages;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.mapping.Table;
-import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.type.CollectionType;
 import org.hibernate.type.EntityType;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.spi.IClassMetadata;
+import org.jboss.tools.hibernate.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.spi.ISession;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
 
@@ -47,7 +47,7 @@ public class NodeFactory {
 
 	private Map<String, IClassMetadata> classMetaData;
 	private List<String> classes;
-	private Map<String, CollectionMetadata> collectionMetaData;
+	private Map<String, ICollectionMetadata> collectionMetaData;
 	private ConsoleConfiguration consoleConfiguration;
 
 
@@ -106,7 +106,7 @@ public class NodeFactory {
 		return getMetaData(clazz.getName() );
 	}
 
-     public CollectionMetadata getCollectionMetaData(String role) {
+     public ICollectionMetadata getCollectionMetaData(String role) {
         return collectionMetaData.get(role);
      }
 
@@ -160,7 +160,7 @@ public class NodeFactory {
 		Enhancer e = ProxyFactory.createEnhancer(PersistentCollectionNode.class);
 
         return (PersistentCollectionNode) e.create(
-        		 new Class[] { NodeFactory.class, BaseNode.class, String.class, CollectionType.class, IClassMetadata.class, CollectionMetadata.class, Object.class, boolean.class},
+        		 new Class[] { NodeFactory.class, BaseNode.class, String.class, CollectionType.class, IClassMetadata.class, ICollectionMetadata.class, Object.class, boolean.class},
         		 new Object[] { this, node, name, type,  md, getCollectionMetaData(type.getRole() ), baseObject, Boolean.valueOf(objectGraph) } );
 		//return new PersistentCollectionNode(this, node, name, type,  md, getCollectionMetaData(type.getRole() ), baseObject, objectGraph);
 	}

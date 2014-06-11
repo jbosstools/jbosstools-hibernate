@@ -29,10 +29,10 @@ import javax.swing.tree.TreeNode;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleMessages;
-import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.type.CollectionType;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.spi.IClassMetadata;
+import org.jboss.tools.hibernate.spi.ICollectionMetadata;
 
 /**
  * @author MAX
@@ -49,7 +49,7 @@ class PersistentCollectionNode extends BaseNode implements TypedNode{
 
 	boolean childrenCreated = false;
 	private IClassMetadata md;
-	public PersistentCollectionNode(NodeFactory factory, BaseNode parent, String name, CollectionType type, IClassMetadata md, CollectionMetadata metadata, Object baseObject, boolean objectGraph) {
+	public PersistentCollectionNode(NodeFactory factory, BaseNode parent, String name, CollectionType type, IClassMetadata md, ICollectionMetadata metadata, Object baseObject, boolean objectGraph) {
 		super(factory, parent);
 		this.md = md;
 		this.type = type;

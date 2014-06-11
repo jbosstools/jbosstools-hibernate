@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
 import org.jboss.tools.hibernate.spi.IClassMetadata;
+import org.jboss.tools.hibernate.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.spi.ISession;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
 
@@ -14,6 +15,7 @@ public class SessionFactoryProxy implements ISessionFactory {
 	
 	private SessionFactory target;
 	private Map<String, IClassMetadata> allClassMetadata = null;
+	private Map<String, ICollectionMetadata> allCollectionMetadata = null;
 
 	public SessionFactoryProxy(SessionFactory sessionFactory) {
 		target = sessionFactory;
@@ -32,7 +34,6 @@ public class SessionFactoryProxy implements ISessionFactory {
 		return allClassMetadata;
 	}
 	
-	@SuppressWarnings("unchecked")
 	private void initializeAllClassMetadata() {
 		Map<String, ClassMetadata> origin = target.getAllClassMetadata();
 		allClassMetadata = new HashMap<String, IClassMetadata>(origin.size());
@@ -45,8 +46,22 @@ public class SessionFactoryProxy implements ISessionFactory {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Map<String, CollectionMetadata> getAllCollectionMetadata() {
+	public Map<String, ICollectionMetadata> getAllCollectionMetadata() {
+		if (allCollectionMetadata == null) {
+			initializeAllCollectionMetadata();
+		}
 		return target.getAllCollectionMetadata();
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void initializeAllCollectionMetadata() {
+		Map<String, CollectionMetadata> origin = target.getAllCollectionMetadata();
+		allCollectionMetadata = new HashMap<String, ICollectionMetadata>(origin.size());
+		for (Map.Entry<String, CollectionMetadata> entry : origin.entrySet()) {
+			allCollectionMetadata.put(
+					entry.getKey(), 
+					new CollectionMetadataProxy(entry.getValue()));
+		}
 	}
 
 	@Override
@@ -75,8 +90,11 @@ public class SessionFactoryProxy implements ISessionFactory {
 	}
 
 	@Override
-	public CollectionMetadata getCollectionMetadata(String string) {
-		return target.getCollectionMetadata(string);
+	public ICollectionMetadata getCollectionMetadata(String string) {
+		if (allCollectionMetadata == null) {
+			initializeAllCollectionMetadata();
+		}
+		return allCollectionMetadata.get(string);
 	}
 
 }

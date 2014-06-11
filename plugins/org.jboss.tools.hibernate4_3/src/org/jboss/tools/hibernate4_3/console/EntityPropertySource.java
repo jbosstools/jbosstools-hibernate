@@ -30,11 +30,11 @@ import org.hibernate.HibernateException;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.ext.HibernateExtension;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
-import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.persister.entity.AbstractEntityPersister;
 import org.hibernate.proxy.HibernateProxyHelper;
 import org.hibernate.tuple.entity.EntityMetamodel;
 import org.jboss.tools.hibernate.spi.IClassMetadata;
+import org.jboss.tools.hibernate.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.spi.ISession;
 
 
@@ -137,7 +137,7 @@ public class EntityPropertySource implements IPropertySource2
 		}
 
 		if (propertyValue instanceof Collection<?>) {
-			CollectionMetadata collectionMetadata = currentSession.getSessionFactory().getCollectionMetadata(classMetadata.getEntityName() + "." + id); //$NON-NLS-1$
+			ICollectionMetadata collectionMetadata = currentSession.getSessionFactory().getCollectionMetadata(classMetadata.getEntityName() + "." + id); //$NON-NLS-1$
 			if(collectionMetadata!=null) {
 				propertyValue = new CollectionPropertySource((Collection<?>) propertyValue);
 			}
