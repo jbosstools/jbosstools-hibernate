@@ -31,11 +31,11 @@ import org.hibernate.HibernateException;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.ext.HibernateExtension;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
-import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.persister.entity.AbstractEntityPersister;
 import org.hibernate.proxy.HibernateProxyHelper;
 import org.hibernate.tuple.entity.EntityMetamodel;
+import org.jboss.tools.hibernate.spi.IClassMetadata;
 import org.jboss.tools.hibernate.spi.ISession;
 
 
@@ -47,7 +47,7 @@ public class EntityPropertySource implements IPropertySource2
 
 	private final HibernateExtension extension;
 	private final ISession currentSession;
-	private ClassMetadata classMetadata;
+	private IClassMetadata classMetadata;
 
 	public EntityPropertySource(final Object object, final ISession currentSession, HibernateExtension extension)
 	{
@@ -84,7 +84,7 @@ public class EntityPropertySource implements IPropertySource2
 		return propertyDescriptors;
 	}
 
-	static protected IPropertyDescriptor[] initializePropertyDescriptors(ClassMetadata classMetadata) {
+	static protected IPropertyDescriptor[] initializePropertyDescriptors(IClassMetadata classMetadata) {
 
 		String[] propertyNames = classMetadata.getPropertyNames();
 		int length = propertyNames.length;
@@ -118,10 +118,10 @@ public class EntityPropertySource implements IPropertySource2
 		Object propertyValue;
 
 		if(id.equals(classMetadata.getIdentifierPropertyName())) {
-			propertyValue = classMetadata.getIdentifier(reflectedObject, EntityMode.POJO);
+			propertyValue = classMetadata.getIdentifier(reflectedObject);
 		} else {
 			try {
-				propertyValue = classMetadata.getPropertyValue(reflectedObject, (String)id, EntityMode.POJO);
+				propertyValue = classMetadata.getPropertyValue(reflectedObject, (String)id);
 			} catch (HibernateException he) {
 				propertyValue = HibernateConsoleMessages.EntityPropertySource_unable_to_resolve_property;
 				if (classMetadata instanceof AbstractEntityPersister) {

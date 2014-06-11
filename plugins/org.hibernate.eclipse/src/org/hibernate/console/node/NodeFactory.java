@@ -32,11 +32,11 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ConsoleMessages;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.mapping.Table;
-import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.type.CollectionType;
 import org.hibernate.type.EntityType;
 import org.hibernate.type.Type;
+import org.jboss.tools.hibernate.spi.IClassMetadata;
 import org.jboss.tools.hibernate.spi.ISession;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
 
@@ -45,7 +45,7 @@ import org.jboss.tools.hibernate.spi.ISessionFactory;
  */
 public class NodeFactory {
 
-	private Map<String, ClassMetadata> classMetaData;
+	private Map<String, IClassMetadata> classMetaData;
 	private List<String> classes;
 	private Map<String, CollectionMetadata> collectionMetaData;
 	private ConsoleConfiguration consoleConfiguration;
@@ -80,7 +80,7 @@ public class NodeFactory {
     }
 
     public BaseNode createObjectNode(ISession session, Object o) throws HibernateException {
-		ClassMetadata md = getMetaData(session.getEntityName(o) );
+		IClassMetadata md = getMetaData(session.getEntityName(o) );
 		return internalCreateClassNode(null, md.getEntityName(), md, o, false);
 		//return new ClassNode(this,null,md.getEntityName(),md,o,true);
 	}
@@ -90,19 +90,19 @@ public class NodeFactory {
 		//return new ClassNode(this, node, clazz, getMetaData(clazz),null,false);
 	}
 
-	private ClassNode internalCreateClassNode(BaseNode node, String clazz,ClassMetadata md, Object o, boolean objectGraph) {
+	private ClassNode internalCreateClassNode(BaseNode node, String clazz,IClassMetadata md, Object o, boolean objectGraph) {
 
 		Enhancer e = ProxyFactory.createEnhancer(ClassNode.class);
 
-        return (ClassNode) e.create(new Class[] { NodeFactory.class, BaseNode.class, String.class, ClassMetadata.class, Object.class, boolean.class},
+        return (ClassNode) e.create(new Class[] { NodeFactory.class, BaseNode.class, String.class, IClassMetadata.class, Object.class, boolean.class},
        		 new Object[] { this, node, clazz, md,o, Boolean.valueOf(objectGraph) } );
 	}
 
-	public ClassMetadata getMetaData(String clazz) {
+	public IClassMetadata getMetaData(String clazz) {
 		return classMetaData.get(clazz);
 	}
 
-	public ClassMetadata getMetaData(Class<?> clazz) {
+	public IClassMetadata getMetaData(Class<?> clazz) {
 		return getMetaData(clazz.getName() );
 	}
 
@@ -110,14 +110,14 @@ public class NodeFactory {
         return collectionMetaData.get(role);
      }
 
-	public BaseNode createPropertyNode(BaseNode parent, int idx, ClassMetadata metadata) {
+	public BaseNode createPropertyNode(BaseNode parent, int idx, IClassMetadata metadata) {
 		return createPropertyNode(parent, idx, metadata, null,false);
 	}
 
-	public BaseNode createPropertyNode(BaseNode node, int i, ClassMetadata md, Object baseObject, boolean objectGraph) {
+	public BaseNode createPropertyNode(BaseNode node, int i, IClassMetadata md, Object baseObject, boolean objectGraph) {
 		Enhancer e = ProxyFactory.createEnhancer(PropertyNode.class);
 
-        return (BaseNode) e.create(new Class[] { NodeFactory.class, BaseNode.class, int.class, ClassMetadata.class, Object.class, boolean.class},
+        return (BaseNode) e.create(new Class[] { NodeFactory.class, BaseNode.class, int.class, IClassMetadata.class, Object.class, boolean.class},
         		 new Object[] { this, node, Integer.valueOf(i),md,baseObject,Boolean.valueOf(objectGraph) } );
 	}
 
@@ -127,16 +127,16 @@ public class NodeFactory {
 	 * @param md
 	 * @return
 	 */
-	public IdentifierNode createIdentifierNode(BaseNode parent, ClassMetadata md) {
+	public IdentifierNode createIdentifierNode(BaseNode parent, IClassMetadata md) {
 		Enhancer e = ProxyFactory.createEnhancer(IdentifierNode.class);
 
-        return (IdentifierNode) e.create(new Class[] { NodeFactory.class, BaseNode.class, ClassMetadata.class},
+        return (IdentifierNode) e.create(new Class[] { NodeFactory.class, BaseNode.class, IClassMetadata.class},
         		 new Object[] { this, parent, md } );
 		//return new IdentifierNode(this, parent, md);
 	}
 
 	public BaseNode createNode(BaseNode parent, final Class<?> clazz) {
-		ClassMetadata metadata = getMetaData(clazz);
+		IClassMetadata metadata = getMetaData(clazz);
 		if(metadata!=null) {
 			return createClassNode(parent, clazz.getName() );
 		}
@@ -156,11 +156,11 @@ public class NodeFactory {
 		};
 	}
 
-	public PersistentCollectionNode createPersistentCollectionNode(ClassNode node, String name, ClassMetadata md, CollectionType type, Object baseObject, boolean objectGraph) {
+	public PersistentCollectionNode createPersistentCollectionNode(ClassNode node, String name, IClassMetadata md, CollectionType type, Object baseObject, boolean objectGraph) {
 		Enhancer e = ProxyFactory.createEnhancer(PersistentCollectionNode.class);
 
         return (PersistentCollectionNode) e.create(
-        		 new Class[] { NodeFactory.class, BaseNode.class, String.class, CollectionType.class, ClassMetadata.class, CollectionMetadata.class, Object.class, boolean.class},
+        		 new Class[] { NodeFactory.class, BaseNode.class, String.class, CollectionType.class, IClassMetadata.class, CollectionMetadata.class, Object.class, boolean.class},
         		 new Object[] { this, node, name, type,  md, getCollectionMetaData(type.getRole() ), baseObject, Boolean.valueOf(objectGraph) } );
 		//return new PersistentCollectionNode(this, node, name, type,  md, getCollectionMetaData(type.getRole() ), baseObject, objectGraph);
 	}

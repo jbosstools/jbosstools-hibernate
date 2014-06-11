@@ -21,14 +21,13 @@
  */
 package org.hibernate.console.node;
 
-import org.hibernate.EntityMode;
 import org.hibernate.HibernateException;
-import org.hibernate.metadata.ClassMetadata;
+import org.jboss.tools.hibernate.spi.IClassMetadata;
 
 class PropertyNode extends TypeNode {
 
-	ClassMetadata baseMetaData;
-	public PropertyNode(NodeFactory factory, BaseNode parent, int idx, ClassMetadata metadata,Object baseObject, boolean objectGraph) {
+	IClassMetadata baseMetaData;
+	public PropertyNode(NodeFactory factory, BaseNode parent, int idx, IClassMetadata metadata,Object baseObject, boolean objectGraph) {
         super(factory, parent, metadata.getPropertyTypes()[idx], factory.getMetaData(metadata.getPropertyTypes()[idx].getReturnedClass() ), baseObject, objectGraph);
         name = metadata.getPropertyNames()[idx];
         baseMetaData = metadata;
@@ -40,7 +39,7 @@ class PropertyNode extends TypeNode {
 					if(baseObject==null) {
 						return null;
 					}
-					return baseMetaData.getPropertyValue(baseObject, getName(), EntityMode.POJO);
+					return baseMetaData.getPropertyValue(baseObject, getName());
 				} catch (HibernateException e) {
 					e.printStackTrace();
 					return null;

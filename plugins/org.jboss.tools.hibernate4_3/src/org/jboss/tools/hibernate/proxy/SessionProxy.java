@@ -4,8 +4,9 @@ import org.hibernate.Session;
 import org.jboss.tools.hibernate.spi.IQuery;
 import org.jboss.tools.hibernate.spi.ISession;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
+import org.jboss.tools.hibernate.spi.ISessionImplementor;
 
-public class SessionProxy implements ISession {
+public class SessionProxy implements ISession, ISessionImplementor {
 	
 	private Session target;
 	private ISessionFactory targetFactory;
@@ -45,4 +46,12 @@ public class SessionProxy implements ISession {
 		return target.contains(object);
 	}
 
+	@Override
+	public ISessionImplementor getSessionImplementor() {
+		return this;
+	}
+	
+	Session getTarget() {
+		return target;
+	}
 }

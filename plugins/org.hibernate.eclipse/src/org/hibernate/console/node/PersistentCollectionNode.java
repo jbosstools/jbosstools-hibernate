@@ -27,13 +27,12 @@ import java.util.Iterator;
 import javax.swing.tree.TreeNode;
 
 import org.eclipse.osgi.util.NLS;
-import org.hibernate.EntityMode;
 import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleMessages;
-import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.type.CollectionType;
 import org.hibernate.type.Type;
+import org.jboss.tools.hibernate.spi.IClassMetadata;
 
 /**
  * @author MAX
@@ -49,8 +48,8 @@ class PersistentCollectionNode extends BaseNode implements TypedNode{
 	private Object collectionObject;
 
 	boolean childrenCreated = false;
-	private ClassMetadata md;
-	public PersistentCollectionNode(NodeFactory factory, BaseNode parent, String name, CollectionType type, ClassMetadata md, CollectionMetadata metadata, Object baseObject, boolean objectGraph) {
+	private IClassMetadata md;
+	public PersistentCollectionNode(NodeFactory factory, BaseNode parent, String name, CollectionType type, IClassMetadata md, CollectionMetadata metadata, Object baseObject, boolean objectGraph) {
 		super(factory, parent);
 		this.md = md;
 		this.type = type;
@@ -72,7 +71,7 @@ class PersistentCollectionNode extends BaseNode implements TypedNode{
 	Object initCollectionObject() {
 		if(collectionObject!=null) return collectionObject;
 		try {
-			collectionObject = md.getPropertyValue(baseObject, name, EntityMode.POJO);
+			collectionObject = md.getPropertyValue(baseObject, name);
 		} catch (HibernateException e) {
 			IllegalArgumentException iae = new IllegalArgumentException(ConsoleMessages.PersistentCollectionNode_could_not_access_property_value);
 			iae.initCause(e);
