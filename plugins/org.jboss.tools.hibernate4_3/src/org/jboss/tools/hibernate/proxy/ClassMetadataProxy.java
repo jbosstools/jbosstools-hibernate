@@ -6,7 +6,7 @@ import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.spi.IClassMetadata;
-import org.jboss.tools.hibernate.spi.ISessionImplementor;
+import org.jboss.tools.hibernate.spi.ISession;
 import org.jboss.tools.hibernate.spi.IType;
 
 public class ClassMetadataProxy implements IClassMetadata {
@@ -80,10 +80,10 @@ public class ClassMetadataProxy implements IClassMetadata {
 	}
 
 	@Override
-	public Object getIdentifier(Object object, ISessionImplementor implementor) {
+	public Object getIdentifier(Object object, ISession session) {
 		Object result = null;
-		if (implementor instanceof SessionProxy) {
-			SessionImplementor impl = (SessionImplementor)((SessionProxy)implementor).getTarget();
+		if (session instanceof SessionProxy) {
+			SessionImplementor impl = (SessionImplementor)((SessionProxy)session).getTarget();
 			result = target.getIdentifier(object, impl);
 		}
 		return result;

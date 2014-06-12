@@ -11,6 +11,6 @@ public interface IClassMetadata {
 	Object getPropertyValue(Object object, String name);
 	boolean hasIdentifierProperty();
 	Object getIdentifier(Object object);
-	Object getIdentifier(Object object, ISessionImplementor implementor);
+	Object getIdentifier(Object object, ISession implementor);
 
 }

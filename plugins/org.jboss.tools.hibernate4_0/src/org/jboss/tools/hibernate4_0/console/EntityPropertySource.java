@@ -117,7 +117,7 @@ public class EntityPropertySource implements IPropertySource2
 		Object propertyValue;
 
 		if(id.equals(classMetadata.getIdentifierPropertyName())) {
-			propertyValue = classMetadata.getIdentifier(reflectedObject, currentSession.getSessionImplementor());
+			propertyValue = classMetadata.getIdentifier(reflectedObject, currentSession);
 		} else {
 			try {
 				propertyValue = classMetadata.getPropertyValue(reflectedObject, (String)id);

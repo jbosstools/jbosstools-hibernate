@@ -8,6 +8,5 @@ public interface ISession {
 	boolean isOpen();
 	void close();
 	boolean contains(Object object);
-	ISessionImplementor getSessionImplementor();
 
 }
