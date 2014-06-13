@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.proxy;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Map;
 
 import org.hibernate.Filter;
@@ -19,11 +20,11 @@ public class HQLQueryPlanProxy implements IHQLQueryPlan {
 	public HQLQueryPlanProxy(
 			String hql,
 			boolean shallow,
-			Map<String, Filter> enabledFilters,
 			ISessionFactory sessionFactory) {
 		assert sessionFactory instanceof SessionFactoryProxy;
 		SessionFactoryImpl factory = 
 				(SessionFactoryImpl) ((SessionFactoryProxy)sessionFactory).getTarget();
+		Map<String, Filter> enabledFilters = Collections.emptyMap();
 		target = new HQLQueryPlan(hql, shallow, enabledFilters, factory);
 	}
 

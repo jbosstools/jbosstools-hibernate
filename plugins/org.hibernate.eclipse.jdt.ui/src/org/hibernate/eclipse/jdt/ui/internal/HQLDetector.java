@@ -1,10 +1,8 @@
 package org.hibernate.eclipse.jdt.ui.internal;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -17,7 +15,6 @@ import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jdt.core.dom.StringLiteral;
-import org.hibernate.Filter;
 import org.hibernate.console.ConsoleConfiguration;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 
@@ -110,8 +107,7 @@ public class HQLDetector extends ASTVisitor {
 			if(allowEL) {
 				query = ELTransformer.removeEL(query);
 			}
-			Map<String, Filter> enabledFilters = Collections.emptyMap();
-			HibernateHelper.INSTANCE.getHibernateService().newHQLQueryPlan(query, false, enabledFilters, cc.getSessionFactory());
+			HibernateHelper.INSTANCE.getHibernateService().newHQLQueryPlan(query, false, cc.getSessionFactory());
 		} else {											
 			//messager.printWarning( annoValue.getPosition(), "Could not verify syntax. SessionFactory not created." );
 		}		

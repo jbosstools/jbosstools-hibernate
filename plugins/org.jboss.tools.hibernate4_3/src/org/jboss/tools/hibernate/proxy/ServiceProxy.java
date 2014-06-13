@@ -130,9 +130,8 @@ public class ServiceProxy implements IService {
 	public IHQLQueryPlan newHQLQueryPlan(
 			String query, 
 			boolean shallow,
-			Map<String, Filter> enabledFilters, 
 			ISessionFactory sessionFactory) {
-		return new HQLQueryPlanProxy(query, shallow, enabledFilters, sessionFactory);
+		return new HQLQueryPlanProxy(query, shallow, sessionFactory);
 	}
 
 	@Override

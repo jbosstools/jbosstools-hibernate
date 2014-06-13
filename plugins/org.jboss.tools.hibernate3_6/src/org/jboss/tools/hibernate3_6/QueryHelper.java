@@ -10,11 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate3_6;
 
-import java.util.Collections;
 import java.util.Iterator;
-import java.util.Map;
 
-import org.hibernate.Filter;
 import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.QLFormatHelper;
@@ -41,8 +38,7 @@ public class QueryHelper {
 			public Object execute() {
 				try {
 					StringBuffer str = new StringBuffer(256);
-					Map<String, Filter> enabledFilters = Collections.emptyMap();
-					IHQLQueryPlan plan = HibernateHelper.INSTANCE.getHibernateService().newHQLQueryPlan(query, false, enabledFilters, sessionFactory);
+					IHQLQueryPlan plan = HibernateHelper.INSTANCE.getHibernateService().newHQLQueryPlan(query, false, sessionFactory);
 					IQueryTranslator[] translators = plan.getTranslators();
 					for (int i = 0; i < translators.length; i++) {
 						IQueryTranslator translator = translators[i];
