@@ -8,7 +8,6 @@ import org.hibernate.Filter;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.hql.spi.QueryTranslator;
 import org.hibernate.internal.SessionFactoryImpl;
-import org.jboss.tools.hibernate.spi.IFilter;
 import org.jboss.tools.hibernate.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.spi.IQueryTranslator;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
