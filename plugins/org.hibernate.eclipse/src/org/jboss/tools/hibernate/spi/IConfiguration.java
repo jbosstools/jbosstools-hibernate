@@ -38,6 +38,6 @@ public interface IConfiguration {
 	NamingStrategy getNamingStrategy();
 	EntityResolver getEntityResolver();
 	ISessionFactory buildSessionFactory(Object serviceRegistry);
-	Object buildSettings(Object serviceRegisrty);
+	Object buildSettings(Object serviceRegistry);
 
 }

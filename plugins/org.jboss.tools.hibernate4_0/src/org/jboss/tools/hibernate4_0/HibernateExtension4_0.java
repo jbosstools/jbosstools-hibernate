@@ -277,10 +277,10 @@ public class HibernateExtension4_0 implements HibernateExtension {
 		return configuration;
 	}
 	
-	public Settings getSettings(final IConfiguration cfg, final ServiceRegistry serviceRegisrty) {
+	public Settings getSettings(final IConfiguration cfg, final ServiceRegistry serviceRegistry) {
 		return (Settings) execute(new Command() {
 			public Object execute() {
-				return cfg.buildSettings(serviceRegisrty);
+				return cfg.buildSettings(serviceRegistry);
 			}
 		});
 	}
