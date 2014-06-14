@@ -34,8 +34,8 @@ import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.actions.ConsoleConfigReadyUseBaseAction;
-import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.ISchemaExport;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 
 /**
@@ -90,7 +90,6 @@ public class SchemaExportAction extends ConsoleConfigReadyUseBaseAction {
 			final ConsoleConfiguration config = (ConsoleConfiguration) node;
 			try {
 				config.execute( new Command() {
-					@SuppressWarnings("unchecked")
 					public Object execute() {
 						final IConfiguration cfg = config.getConfiguration();
 						if (cfg == null) {
@@ -102,7 +101,7 @@ public class SchemaExportAction extends ConsoleConfigReadyUseBaseAction {
 						if (!res) {
 							return null;
 						}
-						SchemaExport export = HibernateHelper.INSTANCE.getHibernateService().newSchemaExport(cfg);
+						ISchemaExport export = HibernateHelper.INSTANCE.getHibernateService().newSchemaExport(cfg);
 						export.create(false, true);
 						if (!export.getExceptions().isEmpty()) {
 							Iterator<Throwable> iterator = export.getExceptions().iterator();

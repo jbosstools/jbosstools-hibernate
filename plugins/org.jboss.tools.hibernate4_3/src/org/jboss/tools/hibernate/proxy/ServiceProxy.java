@@ -5,7 +5,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import org.hibernate.Filter;
 import org.hibernate.annotations.common.util.StandardClassLoaderDelegateImpl;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
@@ -18,6 +17,7 @@ import org.jboss.tools.hibernate.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.spi.IHQLQueryPlan;
+import org.jboss.tools.hibernate.spi.ISchemaExport;
 import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
 import org.jboss.tools.hibernate.spi.ITypeFactory;
@@ -93,10 +93,12 @@ public class ServiceProxy implements IService {
 	}
 
 	@Override
-	public SchemaExport newSchemaExport(IConfiguration hcfg) {
-		SchemaExport result = null;
+	public ISchemaExport newSchemaExport(IConfiguration hcfg) {
+		ISchemaExport result = null;
 		if (hcfg instanceof ConfigurationProxy) {
-			result = new SchemaExport(((ConfigurationProxy)hcfg).getConfiguration());
+			SchemaExport schemaExport = 
+					new SchemaExport(((ConfigurationProxy)hcfg).getConfiguration());
+			result = new SchemaExportProxy(schemaExport);
 		}
 		return result;
 	}

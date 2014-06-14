@@ -3,7 +3,6 @@ package org.jboss.tools.hibernate.spi;
 import java.io.File;
 import java.util.Map;
 
-import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 
@@ -26,7 +25,7 @@ public interface IService {
 			IConfiguration hcfg, 
 			File file);
 	
-	SchemaExport newSchemaExport(
+	ISchemaExport newSchemaExport(
 			IConfiguration hcfg);
 	
 	HQLCodeAssist newHQLCodeAssist(
