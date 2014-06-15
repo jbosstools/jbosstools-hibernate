@@ -8,15 +8,18 @@ import java.util.Map;
 import org.hibernate.annotations.common.util.StandardClassLoaderDelegateImpl;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
+import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
+import org.hibernate.util.xpl.ReflectHelper;
 import org.jboss.tools.hibernate.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.spi.IHQLQueryPlan;
+import org.jboss.tools.hibernate.spi.INamingStrategy;
 import org.jboss.tools.hibernate.spi.ISchemaExport;
 import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
@@ -141,5 +144,15 @@ public class ServiceProxy implements IService {
 		return new TypeFactoryProxy();
 	}
 
+	@Override
+	public INamingStrategy newNamingStrategy(String strategyClassName) {
+		try {
+			NamingStrategy ns = (NamingStrategy) ReflectHelper.classForName(
+					strategyClassName).newInstance();
+			return new NamingStrategyProxy(ns);
+		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+			return null;
+		}
+	}
 
 }

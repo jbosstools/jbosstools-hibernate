@@ -44,5 +44,7 @@ public interface IService {
 			ISessionFactory sessionFactory);
 	
 	ITypeFactory newTypeFactory();
+	
+	INamingStrategy newNamingStrategy(String strategyClassName);
 
 }
