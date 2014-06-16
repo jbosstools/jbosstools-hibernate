@@ -11,7 +11,8 @@ public interface INamingStrategy {
 	String columnName(String specifiedName);
 	String propertyToColumnName(String buildDefaultName);
 	String tableName(String specifiedTableName);
-	String joinKeyColumnName(String primaryKeyColumnName,
+	String joinKeyColumnName(
+			String primaryKeyColumnName,
 			String primaryTableName);
 	String classToTableName(String defaultName);
 
