@@ -10,6 +10,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
+import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
@@ -25,6 +26,7 @@ import org.jboss.tools.hibernate.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.spi.ISchemaExport;
 import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
+import org.jboss.tools.hibernate.spi.ITableFilter;
 import org.jboss.tools.hibernate.spi.ITypeFactory;
 
 public class ServiceProxy implements IService {
@@ -160,6 +162,11 @@ public class ServiceProxy implements IService {
 	@Override
 	public IOverrideRepository newOverrideRepository() {
 		return new OverrideRepositoryProxy(new OverrideRepository());
+	}
+
+	@Override
+	public ITableFilter newTableFilter() {
+		return new TableFilterProxy(new TableFilter());
 	}
 
 }

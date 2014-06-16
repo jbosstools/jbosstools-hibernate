@@ -49,4 +49,6 @@ public interface IService {
 	
 	IOverrideRepository newOverrideRepository();
 
+	ITableFilter newTableFilter();
+
 }

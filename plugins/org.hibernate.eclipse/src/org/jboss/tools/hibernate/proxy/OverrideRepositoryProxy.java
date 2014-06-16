@@ -6,6 +6,7 @@ import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
 import org.jboss.tools.hibernate.spi.IOverrideRepository;
+import org.jboss.tools.hibernate.spi.ITableFilter;
 
 public class OverrideRepositoryProxy implements IOverrideRepository {
 	
@@ -27,8 +28,9 @@ public class OverrideRepositoryProxy implements IOverrideRepository {
 	}
 
 	@Override
-	public void addTableFilter(TableFilter tf) {
-		target.addTableFilter(tf);
+	public void addTableFilter(ITableFilter tf) {
+		assert tf instanceof TableFilterProxy;
+		target.addTableFilter(((TableFilterProxy)tf).getTarget());
 	}
 
 }
