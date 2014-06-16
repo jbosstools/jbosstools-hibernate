@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import org.hibernate.cfg.Mappings;
-import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.cfg.Settings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.mapping.PersistentClass;
@@ -19,7 +18,7 @@ public interface IConfiguration {
 	void setProperty(String name, String value);
 	IConfiguration setProperties(Properties properties);
 	void setEntityResolver(EntityResolver entityResolver);
-	void setNamingStrategy(NamingStrategy namingStrategy);
+	void setNamingStrategy(INamingStrategy namingStrategy);
 	Properties getProperties();
 	void addProperties(Properties properties);
 	IConfiguration configure(Document document);
@@ -35,7 +34,7 @@ public interface IConfiguration {
 	void readFromJDBC();
 	Object buildMapping();
 	PersistentClass getClassMapping(String string);
-	NamingStrategy getNamingStrategy();
+	INamingStrategy getNamingStrategy();
 	EntityResolver getEntityResolver();
 	ISessionFactory buildSessionFactory(Object serviceRegistry);
 	Object buildSettings(Object serviceRegistry);

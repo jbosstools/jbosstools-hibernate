@@ -17,11 +17,11 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmBasicMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlBasic;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.hibernate.cfg.NamingStrategy;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValidationMessage;
+import org.jboss.tools.hibernate.spi.INamingStrategy;
 
 /**
  * @author Dmitry Geraskov
@@ -42,7 +42,7 @@ public class HibernateOrmBasicMapping extends AbstractOrmBasicMapping<XmlBasic> 
 	@Override
 	public String getDefaultColumnName(NamedColumn column) {
 		if (getName() != null){
-			NamingStrategy ns = getJpaProject().getNamingStrategy();
+			INamingStrategy ns = getJpaProject().getNamingStrategy();
 			if (getJpaProject().isNamingStrategyEnabled() && ns != null) {
 				try {
 					return ns.propertyToColumnName(getName());

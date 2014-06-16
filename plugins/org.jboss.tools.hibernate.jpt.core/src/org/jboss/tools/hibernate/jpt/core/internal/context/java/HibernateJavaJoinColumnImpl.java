@@ -29,6 +29,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 import org.jboss.tools.hibernate.jpt.core.internal.context.NamingStrategyMappingTools;
 import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValidationMessage;
+import org.jboss.tools.hibernate.spi.INamingStrategy;
 
 /**
  * @author Dmitry Geraskov
@@ -96,7 +97,7 @@ implements HibernateJavaJoinColumn {
 	@Override
 	public String getSpecifiedDBColumnName() {
 		if (getSpecifiedName() == null) return null;
-		NamingStrategy ns = getJpaProject().getNamingStrategy();
+		INamingStrategy ns = getJpaProject().getNamingStrategy();
 		if (getJpaProject().isNamingStrategyEnabled() && ns != null){
 			try {
 				return ns.columnName(getSpecifiedName());
@@ -129,7 +130,7 @@ implements HibernateJavaJoinColumn {
 	@Override
 	public String getReferencedSpecifiedDBColumnName() {
 		if (this.specifiedReferencedColumnName == null) return null;
-		NamingStrategy ns = getJpaProject().getNamingStrategy();
+		INamingStrategy ns = getJpaProject().getNamingStrategy();
 		if (getJpaProject().isNamingStrategyEnabled() && ns != null){
 			try {
 				return ns.columnName(this.specifiedReferencedColumnName);

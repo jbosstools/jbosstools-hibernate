@@ -35,7 +35,6 @@ import org.hibernate.MappingException;
 import org.hibernate.annotations.common.util.ReflectHelper;
 import org.hibernate.annotations.common.util.StringHelper;
 import org.hibernate.cfg.Environment;
-import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.connection.DriverManagerConnectionProvider;
 import org.hibernate.console.ConnectionProfileUtil;
 import org.hibernate.console.ConsoleMessages;
@@ -45,6 +44,7 @@ import org.hibernate.console.preferences.ConsoleConfigurationPreferences.Configu
 import org.hibernate.util.ConfigHelper;
 import org.hibernate.util.XMLHelper;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.INamingStrategy;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
@@ -228,8 +228,8 @@ public class ConfigurationFactory {
 		localCfg.setEntityResolver(entityResolver);
 		if (StringHelper.isNotEmpty(prefs.getNamingStrategy())) {
 			try {
-				NamingStrategy ns = (NamingStrategy) ReflectHelper.classForName(
-						prefs.getNamingStrategy()).newInstance();
+				INamingStrategy ns = HibernateHelper.INSTANCE.getHibernateService().newNamingStrategy(
+						prefs.getNamingStrategy());
 				localCfg.setNamingStrategy(ns);
 			} catch (Exception c) {
 				throw new HibernateConsoleRuntimeException(

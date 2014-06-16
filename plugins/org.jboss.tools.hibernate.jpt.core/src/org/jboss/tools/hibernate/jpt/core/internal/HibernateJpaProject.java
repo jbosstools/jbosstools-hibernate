@@ -42,7 +42,6 @@ import org.eclipse.wst.validation.ValidationFramework;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.hibernate.cfg.Environment;
-import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
@@ -53,6 +52,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
 import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValidationMessage;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.INamingStrategy;
 import org.osgi.service.prefs.Preferences;
 
 /**
@@ -78,7 +78,7 @@ public class HibernateJpaProject extends AbstractJpaProject {
 		return null;
 	}
 
-	public NamingStrategy getNamingStrategy(){
+	public INamingStrategy getNamingStrategy(){
 		ConsoleConfiguration cc = getDefaultConsoleConfiguration();
 		if (cc != null){
 			if (cc.getConfiguration() != null){

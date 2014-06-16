@@ -7,13 +7,13 @@ import java.util.Properties;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.Mappings;
-import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.cfg.Settings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.engine.spi.Mapping;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.service.ServiceRegistry;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.INamingStrategy;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
@@ -21,6 +21,7 @@ import org.xml.sax.EntityResolver;
 public class ConfigurationProxy implements IConfiguration {
 	
 	private Configuration target;
+	private INamingStrategy namingStrategy;
 	
 	public ConfigurationProxy(Configuration configuration) {
 		target = configuration;
@@ -54,8 +55,10 @@ public class ConfigurationProxy implements IConfiguration {
 	}
 
 	@Override
-	public void setNamingStrategy(NamingStrategy namingStrategy) {
-		target.setNamingStrategy(namingStrategy);
+	public void setNamingStrategy(INamingStrategy namingStrategy) {
+		assert namingStrategy instanceof NamingStrategyProxy;
+		this.namingStrategy = namingStrategy;
+		target.setNamingStrategy(((NamingStrategyProxy)namingStrategy).getTarget());
 	}
 
 	@Override
@@ -147,8 +150,8 @@ public class ConfigurationProxy implements IConfiguration {
 	}
 
 	@Override
-	public NamingStrategy getNamingStrategy() {
-		return target.getNamingStrategy();
+	public INamingStrategy getNamingStrategy() {
+		return namingStrategy;
 	}
 
 	@Override

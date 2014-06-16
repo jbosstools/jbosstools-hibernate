@@ -20,11 +20,11 @@ import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmIdMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlId;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.hibernate.cfg.NamingStrategy;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValidationMessage;
+import org.jboss.tools.hibernate.spi.INamingStrategy;
 
 /**
  * @author Dmitry Geraskov
@@ -46,7 +46,7 @@ implements HibernateOrmIdMapping {
 	@Override
 	public String getDefaultColumnName(NamedColumn column) {
 		if (getName() != null){
-			NamingStrategy namingStrategy = getJpaProject().getNamingStrategy();
+			INamingStrategy namingStrategy = getJpaProject().getNamingStrategy();
 			if (getJpaProject().isNamingStrategyEnabled() && namingStrategy != null){
 				try {
 					return namingStrategy.propertyToColumnName(getName());
