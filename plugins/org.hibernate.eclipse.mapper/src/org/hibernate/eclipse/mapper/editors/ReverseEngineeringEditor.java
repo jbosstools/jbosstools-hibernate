@@ -42,7 +42,6 @@ import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
 import org.hibernate.HibernateException;
 import org.hibernate.cfg.Settings;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
-import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
@@ -62,6 +61,9 @@ import org.hibernate.eclipse.mapper.model.DOMReverseEngineeringDefinition;
 import org.hibernate.eclipse.nature.HibernateNature;
 import org.hibernate.util.xpl.StringHelper;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IOverrideRepository;
+import org.jboss.tools.hibernate.spi.IService;
+import org.jboss.tools.hibernate.util.HibernateHelper;
 import org.w3c.dom.Document;
 
 public class ReverseEngineeringEditor extends XMLFormEditorPart {
@@ -205,7 +207,8 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 			IConfiguration cfg = configuration.buildWith(null, false);
 			Settings settings = configuration.getSettings(cfg);
 
-			OverrideRepository repository = new OverrideRepository();///*settings.getDefaultCatalogName(),settings.getDefaultSchemaName()*/);
+			IService service = HibernateHelper.INSTANCE.getHibernateService();
+			IOverrideRepository repository = service.newOverrideRepository();
 			boolean hasIncludes = false;
 			for (int i = 0; i < tableFilters.length; i++) {
 				ITableFilter filter = tableFilters[i];

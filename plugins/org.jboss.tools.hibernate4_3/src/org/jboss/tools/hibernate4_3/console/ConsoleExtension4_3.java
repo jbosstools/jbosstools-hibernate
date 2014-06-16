@@ -32,7 +32,6 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.hibernate.annotations.common.util.ReflectHelper;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
-import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.console.ConsoleConfiguration;
@@ -55,6 +54,8 @@ import org.hibernate.tool.ide.completion.IHQLCodeAssist;
 import org.jboss.tools.hibernate.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IExporter;
+import org.jboss.tools.hibernate.spi.IOverrideRepository;
+import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ISession;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 import org.jboss.tools.hibernate4_3.HibernateExtension4_3;
@@ -235,11 +236,12 @@ public class ConsoleExtension4_3 implements ConsoleExtension {
 					//todo: factor this setup of revengstrategy to core		
 					ReverseEngineeringStrategy res = new DefaultReverseEngineeringStrategy();
 
-					OverrideRepository repository = null;
+					IService service = HibernateHelper.INSTANCE.getHibernateService();
+					IOverrideRepository repository = null;
 					
 					if(revengres!=null) {
 						File file = PathHelper.getLocation( revengres ).toFile();
-						repository = new OverrideRepository();
+						repository = service.newOverrideRepository();
 						repository.addFile(file);						
 					}
 					

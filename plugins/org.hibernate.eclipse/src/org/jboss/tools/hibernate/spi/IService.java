@@ -46,5 +46,7 @@ public interface IService {
 	ITypeFactory newTypeFactory();
 	
 	INamingStrategy newNamingStrategy(String strategyClassName);
+	
+	IOverrideRepository newOverrideRepository();
 
 }

@@ -9,6 +9,7 @@ import org.hibernate.annotations.common.util.StandardClassLoaderDelegateImpl;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.NamingStrategy;
+import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
@@ -20,6 +21,7 @@ import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.spi.INamingStrategy;
+import org.jboss.tools.hibernate.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.spi.ISchemaExport;
 import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
@@ -153,6 +155,11 @@ public class ServiceProxy implements IService {
 		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
 			return null;
 		}
+	}
+
+	@Override
+	public IOverrideRepository newOverrideRepository() {
+		return new OverrideRepositoryProxy(new OverrideRepository());
 	}
 
 }

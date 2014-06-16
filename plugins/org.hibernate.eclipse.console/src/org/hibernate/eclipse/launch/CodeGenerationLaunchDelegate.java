@@ -70,7 +70,6 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.text.edits.TextEdit;
 import org.hibernate.HibernateException;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
-import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.console.ConsoleConfiguration;
@@ -87,6 +86,8 @@ import org.hibernate.util.xpl.StringHelper;
 import org.jboss.tools.hibernate.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IExporter;
+import org.jboss.tools.hibernate.spi.IOverrideRepository;
+import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 
 @SuppressWarnings("restriction")
@@ -455,13 +456,16 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 
 				public Object execute() {					
 					//todo: factor this setup of revengstrategy to core		
+					
+					IService service = HibernateHelper.INSTANCE.getHibernateService();
+					
 					ReverseEngineeringStrategy res = new DefaultReverseEngineeringStrategy();
 
-					OverrideRepository repository = null;
+					IOverrideRepository repository = null;
 					
 					if(revengres!=null) {
 						File file = PathHelper.getLocation( revengres ).toFile();
-						repository = new OverrideRepository();
+						repository = service.newOverrideRepository();
 						repository.addFile(file);						
 					}
 					
