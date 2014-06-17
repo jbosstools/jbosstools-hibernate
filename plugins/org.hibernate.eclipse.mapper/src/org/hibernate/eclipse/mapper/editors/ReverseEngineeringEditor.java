@@ -237,7 +237,11 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 					return null;
 			}
 
-			LazyDatabaseSchema lazyDatabaseSchema = new LazyDatabaseSchema(configuration, repository.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy()));
+			LazyDatabaseSchema lazyDatabaseSchema = 
+					new LazyDatabaseSchema(
+							configuration, 
+							repository.getReverseEngineeringStrategy(
+									HibernateHelper.INSTANCE.getHibernateService().newDefaultReverseEngineeringStrategy()));
 
 			return lazyDatabaseSchema;
 		} catch(HibernateException he) {

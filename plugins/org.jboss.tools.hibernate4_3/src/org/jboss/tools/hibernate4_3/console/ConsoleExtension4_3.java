@@ -11,7 +11,6 @@
 package org.jboss.tools.hibernate4_3.console;
 
 import java.io.File;
-import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -28,11 +27,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.views.properties.IPropertySource;
-import org.hibernate.annotations.common.util.ReflectHelper;
-import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
-import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
@@ -55,6 +50,7 @@ import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.spi.IReverseEngineeringSettings;
+import org.jboss.tools.hibernate.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ISession;
 import org.jboss.tools.hibernate.util.HibernateHelper;
@@ -234,9 +230,9 @@ public class ConsoleExtension4_3 implements ConsoleExtension {
 
 				public Object execute() {					
 					//todo: factor this setup of revengstrategy to core		
-					ReverseEngineeringStrategy res = new DefaultReverseEngineeringStrategy();
-
 					IService service = HibernateHelper.INSTANCE.getHibernateService();
+					IReverseEngineeringStrategy res = service.newDefaultReverseEngineeringStrategy();
+
 					IOverrideRepository repository = null;
 					
 					if(revengres!=null) {
@@ -250,7 +246,7 @@ public class ConsoleExtension4_3 implements ConsoleExtension {
 					}
 
 					if(reverseEngineeringStrategy!=null && reverseEngineeringStrategy.trim().length()>0) {
-						res = loadreverseEngineeringStrategy(reverseEngineeringStrategy, res);
+						res = service.newReverseEngineeringStrategy(reverseEngineeringStrategy, res);
 					}
 
 					IReverseEngineeringSettings qqsettings = service.newReverseEngineeringSettings(res)
@@ -259,7 +255,7 @@ public class ConsoleExtension4_3 implements ConsoleExtension {
 					//.setDetectOneToOne( attributes.detectOneToOne() )
 					.setDetectOptimisticLock( attributes.detectOptimisticLock() );
 
-					res.setSettings(qqsettings.getTarget());
+					res.setSettings(qqsettings);
 
 					cfg.setReverseEngineeringStrategy( res );
 
@@ -284,31 +280,6 @@ public class ConsoleExtension4_3 implements ConsoleExtension {
 			return configuration;
 		}
 	}
-	
-	// TODO: merge with revstrategy load in JDBCConfigurationTask
-	@SuppressWarnings("unchecked")
-	private ReverseEngineeringStrategy loadreverseEngineeringStrategy(final String className, ReverseEngineeringStrategy delegate) {
-        try {
-            Class<ReverseEngineeringStrategy> clazz = ReflectHelper.classForName(className, getClass());
-			Constructor<ReverseEngineeringStrategy> constructor = clazz.getConstructor(new Class[] { ReverseEngineeringStrategy.class });
-            return constructor.newInstance(new Object[] { delegate });
-        }
-        catch (NoSuchMethodException e) {
-			try {
-				Class<?> clazz = ReflectHelper.classForName(className, getClass());
-				ReverseEngineeringStrategy rev = (ReverseEngineeringStrategy) clazz.newInstance();
-				return rev;
-			}
-			catch (Exception eq) {
-				String out = NLS.bind(HibernateConsoleMessages.CodeGenerationLaunchDelegate_could_not_create_or_find_with_default_noarg_constructor, className);
-				throw new HibernateConsoleRuntimeException(out, eq);
-			}
-		}
-        catch (Exception e) {
-			String out = NLS.bind(HibernateConsoleMessages.CodeGenerationLaunchDelegate_could_not_create_or_find_with_one_argument_delegate_constructor, className);
-			throw new HibernateConsoleRuntimeException(out, e);
-		}
-    }
 	
 	@Override
 	public IPropertySource getPropertySource(Object object,

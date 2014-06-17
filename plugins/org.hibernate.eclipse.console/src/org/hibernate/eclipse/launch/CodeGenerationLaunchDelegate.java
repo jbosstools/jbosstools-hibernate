@@ -25,7 +25,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -69,9 +68,6 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.text.edits.TextEdit;
 import org.hibernate.HibernateException;
-import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
-import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
-import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
@@ -81,13 +77,13 @@ import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.ext.ConsoleExtension;
 import org.hibernate.eclipse.console.ext.ConsoleExtensionManager;
 import org.hibernate.eclipse.console.model.impl.ExporterFactory;
-import org.hibernate.util.xpl.ReflectHelper;
 import org.hibernate.util.xpl.StringHelper;
 import org.jboss.tools.hibernate.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.spi.IReverseEngineeringSettings;
+import org.jboss.tools.hibernate.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 
@@ -460,7 +456,7 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 					
 					IService service = HibernateHelper.INSTANCE.getHibernateService();
 					
-					ReverseEngineeringStrategy res = new DefaultReverseEngineeringStrategy();
+					IReverseEngineeringStrategy res = service.newDefaultReverseEngineeringStrategy();
 
 					IOverrideRepository repository = null;
 					
@@ -475,7 +471,7 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 					}
 
 					if(reverseEngineeringStrategy!=null && reverseEngineeringStrategy.trim().length()>0) {
-						res = loadreverseEngineeringStrategy(reverseEngineeringStrategy, res);
+						res = service.newReverseEngineeringStrategy(reverseEngineeringStrategy, res);
 					}
 					
 					IReverseEngineeringSettings qqsettings = service.newReverseEngineeringSettings(res)
@@ -484,7 +480,7 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 							.setDetectOneToOne( attributes.detectOneToOne() )
 							.setDetectOptimisticLock( attributes.detectOptimisticLock() );
 
-					res.setSettings(qqsettings.getTarget());
+					res.setSettings(qqsettings);
 
 					cfg.setReverseEngineeringStrategy( res );
 
@@ -501,31 +497,6 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 			return cc.getConfiguration();
 		}
 	}
-
-	// TODO: merge with revstrategy load in JDBCConfigurationTask
-	@SuppressWarnings("unchecked")
-	private ReverseEngineeringStrategy loadreverseEngineeringStrategy(final String className, ReverseEngineeringStrategy delegate) {
-        try {
-            Class<ReverseEngineeringStrategy> clazz = ReflectHelper.classForName(className);
-			Constructor<ReverseEngineeringStrategy> constructor = clazz.getConstructor(new Class[] { ReverseEngineeringStrategy.class });
-            return constructor.newInstance(new Object[] { delegate });
-        }
-        catch (NoSuchMethodException e) {
-			try {
-				Class<?> clazz = ReflectHelper.classForName(className);
-				ReverseEngineeringStrategy rev = (ReverseEngineeringStrategy) clazz.newInstance();
-				return rev;
-			}
-			catch (Exception eq) {
-				String out = NLS.bind(HibernateConsoleMessages.CodeGenerationLaunchDelegate_could_not_create_or_find_with_default_noarg_constructor, className);
-				throw new HibernateConsoleRuntimeException(out, eq);
-			}
-		}
-        catch (Exception e) {
-			String out = NLS.bind(HibernateConsoleMessages.CodeGenerationLaunchDelegate_could_not_create_or_find_with_one_argument_delegate_constructor, className);
-			throw new HibernateConsoleRuntimeException(out, e);
-		}
-    }
 
 	public boolean preLaunchCheck(ILaunchConfiguration configuration, String mode, IProgressMonitor monitor) throws CoreException {
 		ExporterAttributes attributes = new ExporterAttributes(configuration);

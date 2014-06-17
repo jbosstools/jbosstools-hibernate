@@ -3,9 +3,8 @@ package org.jboss.tools.hibernate.proxy;
 import java.io.File;
 
 import org.hibernate.cfg.reveng.OverrideRepository;
-import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
-import org.hibernate.cfg.reveng.TableFilter;
 import org.jboss.tools.hibernate.spi.IOverrideRepository;
+import org.jboss.tools.hibernate.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.spi.ITableFilter;
 
 public class OverrideRepositoryProxy implements IOverrideRepository {
@@ -22,9 +21,13 @@ public class OverrideRepositoryProxy implements IOverrideRepository {
 	}
 
 	@Override
-	public ReverseEngineeringStrategy getReverseEngineeringStrategy(
-			ReverseEngineeringStrategy res) {
-		return target.getReverseEngineeringStrategy(res);
+	public IReverseEngineeringStrategy getReverseEngineeringStrategy(
+			IReverseEngineeringStrategy res) {
+		assert res instanceof ReverseEngineeringStrategyProxy;
+		
+		return new ReverseEngineeringStrategyProxy(
+				target.getReverseEngineeringStrategy(
+						((ReverseEngineeringStrategyProxy)res).getTarget()));
 	}
 
 	@Override

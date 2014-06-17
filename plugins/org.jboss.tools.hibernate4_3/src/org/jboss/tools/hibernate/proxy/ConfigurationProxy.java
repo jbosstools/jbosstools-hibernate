@@ -8,12 +8,12 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.Mappings;
 import org.hibernate.cfg.Settings;
-import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.engine.spi.Mapping;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.service.ServiceRegistry;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.INamingStrategy;
+import org.jboss.tools.hibernate.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
@@ -126,12 +126,13 @@ public class ConfigurationProxy implements IConfiguration {
 	}
 
 	@Override
-	public void setReverseEngineeringStrategy(ReverseEngineeringStrategy res) {
+	public void setReverseEngineeringStrategy(IReverseEngineeringStrategy res) {
+		assert res instanceof ReverseEngineeringStrategyProxy;
 		if (target instanceof JDBCMetaDataConfiguration) {
-			((JDBCMetaDataConfiguration)target).setReverseEngineeringStrategy(res);
+			((JDBCMetaDataConfiguration)target).setReverseEngineeringStrategy(
+					((ReverseEngineeringStrategyProxy)res).getTarget());
 		}
 	}
-
 	@Override
 	public void readFromJDBC() {
 		if (target instanceof JDBCMetaDataConfiguration) {

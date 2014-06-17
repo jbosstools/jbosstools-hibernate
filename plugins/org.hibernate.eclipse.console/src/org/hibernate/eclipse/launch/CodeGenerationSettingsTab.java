@@ -56,7 +56,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
-import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.KnownConfigurations;
@@ -66,6 +65,8 @@ import org.hibernate.eclipse.console.utils.DialogSelectionHelper;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.console.utils.LaunchHelper;
 import org.hibernate.eclipse.console.wizards.NewReverseEngineeringFileWizard;
+import org.jboss.tools.hibernate.spi.IService;
+import org.jboss.tools.hibernate.util.HibernateHelper;
 
 @SuppressWarnings("restriction")
 public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
@@ -164,7 +165,8 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
         reverseEngineeringStrategy = new StringButtonDialogField(new IStringButtonAdapter() {
 
 			public void changeControlPressed(DialogField field) {
-				String string = DialogSelectionHelper.chooseImplementation(ReverseEngineeringStrategy.class.getName(), reverseEngineeringStrategy.getText(), HibernateConsoleMessages.CodeGenerationSettingsTab_choose_reverse_engineering_strategy, getShell());
+				IService service = HibernateHelper.INSTANCE.getHibernateService();
+				String string = DialogSelectionHelper.chooseImplementation(service.getReverseEngineeringStrategyClassName(), reverseEngineeringStrategy.getText(), HibernateConsoleMessages.CodeGenerationSettingsTab_choose_reverse_engineering_strategy, getShell());
 				if(string!=null) {
 					reverseEngineeringStrategy.setText(string);
 				}

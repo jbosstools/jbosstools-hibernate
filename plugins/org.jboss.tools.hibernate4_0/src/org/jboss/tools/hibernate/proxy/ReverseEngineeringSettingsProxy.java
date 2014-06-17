@@ -35,8 +35,7 @@ public class ReverseEngineeringSettingsProxy implements IReverseEngineeringSetti
 		return this;
 	}
 
-	@Override
-	public ReverseEngineeringSettings getTarget() {
+	ReverseEngineeringSettings getTarget() {
 		return target;
 	}
 

@@ -6,7 +6,6 @@ import java.util.Properties;
 
 import org.hibernate.cfg.Mappings;
 import org.hibernate.cfg.Settings;
-import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.mapping.PersistentClass;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
@@ -30,7 +29,7 @@ public interface IConfiguration {
 	Mappings createMappings();
 	Iterator<? extends PersistentClass> getClassMappings();
 	void setPreferBasicCompositeIds(boolean preferBasicCompositeids);
-	void setReverseEngineeringStrategy(ReverseEngineeringStrategy res);
+	void setReverseEngineeringStrategy(IReverseEngineeringStrategy res);
 	void readFromJDBC();
 	Object buildMapping();
 	PersistentClass getClassMapping(String string);

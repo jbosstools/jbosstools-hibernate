@@ -2,8 +2,10 @@ package org.jboss.tools.hibernate.spi;
 
 import java.io.File;
 import java.util.Map;
+import java.util.Properties;
 
-import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
+import org.hibernate.cfg.Settings;
+import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 
@@ -53,6 +55,17 @@ public interface IService {
 	ITableFilter newTableFilter();
 
 	IReverseEngineeringSettings newReverseEngineeringSettings(
-			ReverseEngineeringStrategy res);
+			IReverseEngineeringStrategy res);
+
+	IReverseEngineeringStrategy newDefaultReverseEngineeringStrategy();
+
+	JDBCReader newJDBCReader(Properties properties, Settings settings,
+			IReverseEngineeringStrategy strategy);
+
+	IReverseEngineeringStrategy newReverseEngineeringStrategy(
+			String strategyName, 
+			IReverseEngineeringStrategy delegate);
+
+	String getReverseEngineeringStrategyClassName();
 
 }
