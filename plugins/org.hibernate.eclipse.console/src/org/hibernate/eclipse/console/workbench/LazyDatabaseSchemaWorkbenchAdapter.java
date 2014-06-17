@@ -33,7 +33,6 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.HibernateException;
-import org.hibernate.cfg.JDBCReaderFactory;
 import org.hibernate.cfg.Settings;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.JDBCReader;
@@ -46,6 +45,7 @@ import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IJDBCReader;
 import org.jboss.tools.hibernate.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 
@@ -122,7 +122,7 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 				try {
 					connectionProvider = settings.getConnectionProvider();
 					
-					JDBCReader reader = HibernateHelper.INSTANCE.getHibernateService().newJDBCReader(configuration.getProperties(), settings, strategy);
+					IJDBCReader reader = HibernateHelper.INSTANCE.getHibernateService().newJDBCReader(configuration.getProperties(), settings, strategy);
 					db = new DefaultDatabaseCollector(reader.getMetaDataDialect());
 					reader.readDatabaseSchema(db, settings.getDefaultCatalogName(), settings.getDefaultSchemaName(), new ProgressListenerMonitor(monitor));
 				} catch (HibernateException he) {

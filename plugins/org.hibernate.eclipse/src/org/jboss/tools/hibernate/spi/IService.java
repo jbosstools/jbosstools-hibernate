@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.hibernate.cfg.Settings;
-import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 
@@ -59,7 +58,7 @@ public interface IService {
 
 	IReverseEngineeringStrategy newDefaultReverseEngineeringStrategy();
 
-	JDBCReader newJDBCReader(Properties properties, Settings settings,
+	IJDBCReader newJDBCReader(Properties properties, Settings settings,
 			IReverseEngineeringStrategy strategy);
 
 	IReverseEngineeringStrategy newReverseEngineeringStrategy(

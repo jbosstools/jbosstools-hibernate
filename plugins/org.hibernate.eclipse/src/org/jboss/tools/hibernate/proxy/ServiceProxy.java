@@ -28,6 +28,7 @@ import org.jboss.tools.hibernate.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.spi.IHQLQueryPlan;
+import org.jboss.tools.hibernate.spi.IJDBCReader;
 import org.jboss.tools.hibernate.spi.INamingStrategy;
 import org.jboss.tools.hibernate.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.spi.IReverseEngineeringSettings;
@@ -174,10 +175,15 @@ public class ServiceProxy implements IService {
 	}
 
 	@Override
-	public JDBCReader newJDBCReader(Properties properties, Settings settings,
+	public IJDBCReader newJDBCReader(Properties properties, Settings settings,
 			IReverseEngineeringStrategy strategy) {
 		assert strategy instanceof ReverseEngineeringStrategyProxy;
-		return JDBCReaderFactory.newJDBCReader(properties, settings, ((ReverseEngineeringStrategyProxy)strategy).getTarget());
+		JDBCReader target = 
+				JDBCReaderFactory.newJDBCReader(
+						properties, 
+						settings, 
+						((ReverseEngineeringStrategyProxy)strategy).getTarget());
+		return new JDBCReaderProxy(target);
 	}
 
 	@Override
