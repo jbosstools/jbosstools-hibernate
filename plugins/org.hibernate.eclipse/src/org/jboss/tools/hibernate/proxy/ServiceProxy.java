@@ -21,6 +21,7 @@ import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.ejb.Ejb3Configuration;
+import org.hibernate.mapping.Property;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
@@ -38,6 +39,7 @@ import org.jboss.tools.hibernate.spi.IMetaDataDialect;
 import org.jboss.tools.hibernate.spi.INamingStrategy;
 import org.jboss.tools.hibernate.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.spi.IProgressListener;
+import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.spi.ISchemaExport;
@@ -246,6 +248,11 @@ public class ServiceProxy implements IService {
 	@Override
 	public ICfg2HbmTool newCfg2HbmTool() {
 		return new Cfg2HbmToolProxy(new Cfg2HbmTool());
+	}
+
+	@Override
+	public IProperty newProperty() {
+		return new PropertyProxy(new Property());
 	}
 
 }

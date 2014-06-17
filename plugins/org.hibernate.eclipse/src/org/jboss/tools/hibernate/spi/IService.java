@@ -73,5 +73,7 @@ public interface IService {
 	IProgressListener newProgressListener(IProgressMonitor monitor);
 	
 	ICfg2HbmTool newCfg2HbmTool();
+	
+	IProperty newProperty();
 
 }
