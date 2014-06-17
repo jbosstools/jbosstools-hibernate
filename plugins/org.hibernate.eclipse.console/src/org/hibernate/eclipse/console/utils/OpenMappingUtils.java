@@ -63,9 +63,10 @@ import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
-import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.hibernate.util.XMLHelper;
 import org.hibernate.util.xpl.StringHelper;
+import org.jboss.tools.hibernate.spi.ICfg2HbmTool;
+import org.jboss.tools.hibernate.util.HibernateHelper;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 
@@ -697,7 +698,7 @@ public class OpenMappingUtils {
 		}
 		// in case if we could not find property - we select class
 		res = classRegion;
-		final Cfg2HbmTool tool = new Cfg2HbmTool();
+		final ICfg2HbmTool tool = HibernateHelper.INSTANCE.getHibernateService().newCfg2HbmTool();
 		final PersistentClass persistentClass = property.getPersistentClass();
 		final String tagName = tool.getTag(persistentClass);
 		IRegion finalRegion = null;
@@ -924,7 +925,7 @@ public class OpenMappingUtils {
 			fullClassName = persClass.getClassName();
 		}
 		shortClassName = getShortClassName(fullClassName);
-		final Cfg2HbmTool tool = new Cfg2HbmTool();
+		final ICfg2HbmTool tool = HibernateHelper.INSTANCE.getHibernateService().newCfg2HbmTool();
 		final String tagName = tool.getTag(persClass);
 		persistentClassPairs[0][0] = tagName;
 		persistentClassPairs[1][0] = tagName;
@@ -987,7 +988,7 @@ public class OpenMappingUtils {
 	 * @return a search patterns
 	 */
 	public static String generateHbmPropertyPattern(Property property) {
-		final Cfg2HbmTool tool = new Cfg2HbmTool();
+		final ICfg2HbmTool tool = HibernateHelper.INSTANCE.getHibernateService().newCfg2HbmTool();
 		String toolTag = ""; //$NON-NLS-1$
 		PersistentClass pc = property.getPersistentClass();
 		if (pc != null && pc.getIdentifierProperty() == property) {

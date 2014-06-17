@@ -71,5 +71,7 @@ public interface IService {
 	IDatabaseCollector newDatabaseCollector(IMetaDataDialect metaDataDialect);
 
 	IProgressListener newProgressListener(IProgressMonitor monitor);
+	
+	ICfg2HbmTool newCfg2HbmTool();
 
 }

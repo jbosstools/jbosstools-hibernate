@@ -22,11 +22,13 @@ import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.ejb.Ejb3Configuration;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.util.xpl.ReflectHelper;
 import org.hibernate.util.xpl.StringHelper;
 import org.jboss.tools.hibernate.spi.IArtifactCollector;
+import org.jboss.tools.hibernate.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.spi.IExporter;
@@ -239,6 +241,11 @@ public class ServiceProxy implements IService {
 	@Override
 	public IProgressListener newProgressListener(IProgressMonitor monitor) {
 		return new ProgressListenerProxy(monitor);
+	}
+
+	@Override
+	public ICfg2HbmTool newCfg2HbmTool() {
+		return new Cfg2HbmToolProxy(new Cfg2HbmTool());
 	}
 
 }
