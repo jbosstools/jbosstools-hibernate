@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Map;
 import java.util.Properties;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.hibernate.cfg.Settings;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
@@ -69,5 +70,7 @@ public interface IService {
 	String getReverseEngineeringStrategyClassName();
 
 	IDatabaseCollector newDatabaseCollector(MetaDataDialect metaDataDialect);
+
+	IProgressListener newProgressListener(IProgressMonitor monitor);
 
 }

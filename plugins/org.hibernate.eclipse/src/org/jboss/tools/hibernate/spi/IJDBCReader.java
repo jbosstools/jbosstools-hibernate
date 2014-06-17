@@ -1,6 +1,5 @@
 package org.jboss.tools.hibernate.spi;
 
-import org.hibernate.cfg.reveng.ProgressListener;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 
 public interface IJDBCReader {
@@ -11,6 +10,6 @@ public interface IJDBCReader {
 			IDatabaseCollector databaseCollector,
 			String defaultCatalogName, 
 			String defaultSchemaName,
-			ProgressListener progressListener);
+			IProgressListener progressListener);
 
 }

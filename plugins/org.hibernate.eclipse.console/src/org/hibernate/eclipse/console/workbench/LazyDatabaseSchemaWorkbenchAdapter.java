@@ -45,6 +45,7 @@ import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.spi.IJDBCReader;
+import org.jboss.tools.hibernate.spi.IProgressListener;
 import org.jboss.tools.hibernate.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.util.HibernateHelper;
@@ -122,8 +123,9 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 					connectionProvider = settings.getConnectionProvider();
 					IService service = HibernateHelper.INSTANCE.getHibernateService();
 					IJDBCReader reader = service.newJDBCReader(configuration.getProperties(), settings, strategy);
+					IProgressListener progressListener = service.newProgressListener(monitor);
 					db = service.newDatabaseCollector(reader.getMetaDataDialect());
-					reader.readDatabaseSchema(db, settings.getDefaultCatalogName(), settings.getDefaultSchemaName(), new ProgressListenerMonitor(monitor));
+					reader.readDatabaseSchema(db, settings.getDefaultCatalogName(), settings.getDefaultSchemaName(), progressListener);
 				} catch (HibernateException he) {
 					throw he;
 				} catch (UnsupportedOperationException he) {

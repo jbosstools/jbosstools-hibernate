@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Properties;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.hibernate.annotations.common.util.StandardClassLoaderDelegateImpl;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -37,6 +38,7 @@ import org.jboss.tools.hibernate.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.spi.IJDBCReader;
 import org.jboss.tools.hibernate.spi.INamingStrategy;
 import org.jboss.tools.hibernate.spi.IOverrideRepository;
+import org.jboss.tools.hibernate.spi.IProgressListener;
 import org.jboss.tools.hibernate.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.spi.ISchemaExport;
@@ -263,4 +265,10 @@ public class ServiceProxy implements IService {
 	public IDatabaseCollector newDatabaseCollector(MetaDataDialect metaDataDialect) {
 		return new DatabaseCollectorProxy(new DefaultDatabaseCollector(metaDataDialect));
 	}
+	
+	@Override
+	public IProgressListener newProgressListener(IProgressMonitor monitor) {
+		return new ProgressListenerProxy(monitor);
+	}
+
 }
