@@ -3,6 +3,7 @@ package org.jboss.tools.hibernate.spi;
 import java.io.File;
 import java.util.Map;
 
+import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 
@@ -50,5 +51,8 @@ public interface IService {
 	IOverrideRepository newOverrideRepository();
 
 	ITableFilter newTableFilter();
+
+	IReverseEngineeringSettings newReverseEngineeringSettings(
+			ReverseEngineeringStrategy res);
 
 }

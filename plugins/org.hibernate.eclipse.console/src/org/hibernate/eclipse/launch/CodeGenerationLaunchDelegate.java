@@ -87,6 +87,7 @@ import org.jboss.tools.hibernate.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.spi.IOverrideRepository;
+import org.jboss.tools.hibernate.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 
@@ -476,14 +477,14 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 					if(reverseEngineeringStrategy!=null && reverseEngineeringStrategy.trim().length()>0) {
 						res = loadreverseEngineeringStrategy(reverseEngineeringStrategy, res);
 					}
+					
+					IReverseEngineeringSettings qqsettings = service.newReverseEngineeringSettings(res)
+							.setDefaultPackageName(attributes.getPackageName())
+							.setDetectManyToMany( attributes.detectManyToMany() )
+							.setDetectOneToOne( attributes.detectOneToOne() )
+							.setDetectOptimisticLock( attributes.detectOptimisticLock() );
 
-					ReverseEngineeringSettings qqsettings = new ReverseEngineeringSettings(res)
-					.setDefaultPackageName(attributes.getPackageName())
-					.setDetectManyToMany( attributes.detectManyToMany() )
-					.setDetectOneToOne( attributes.detectOneToOne() )
-					.setDetectOptimisticLock( attributes.detectOptimisticLock() );
-
-					res.setSettings(qqsettings);
+					res.setSettings(qqsettings.getTarget());
 
 					cfg.setReverseEngineeringStrategy( res );
 

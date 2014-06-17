@@ -10,6 +10,8 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
+import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
+import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.jpa.HibernatePersistenceProvider;
@@ -23,6 +25,7 @@ import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.spi.INamingStrategy;
 import org.jboss.tools.hibernate.spi.IOverrideRepository;
+import org.jboss.tools.hibernate.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.spi.ISchemaExport;
 import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
@@ -167,6 +170,12 @@ public class ServiceProxy implements IService {
 	@Override
 	public ITableFilter newTableFilter() {
 		return new TableFilterProxy(new TableFilter());
+	}
+
+	@Override
+	public IReverseEngineeringSettings newReverseEngineeringSettings(
+			ReverseEngineeringStrategy res) {
+		return new ReverseEngineeringSettingsProxy(new ReverseEngineeringSettings(res));
 	}
 
 }

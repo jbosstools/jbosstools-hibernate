@@ -32,7 +32,6 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.hibernate.annotations.common.util.ReflectHelper;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
-import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
@@ -55,6 +54,7 @@ import org.jboss.tools.hibernate.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.spi.IOverrideRepository;
+import org.jboss.tools.hibernate.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ISession;
 import org.jboss.tools.hibernate.util.HibernateHelper;
@@ -253,13 +253,13 @@ public class ConsoleExtension4_3 implements ConsoleExtension {
 						res = loadreverseEngineeringStrategy(reverseEngineeringStrategy, res);
 					}
 
-					ReverseEngineeringSettings qqsettings = new ReverseEngineeringSettings(res)
+					IReverseEngineeringSettings qqsettings = service.newReverseEngineeringSettings(res)
 					.setDefaultPackageName(attributes.getPackageName())
 					.setDetectManyToMany( attributes.detectManyToMany() )
 					//.setDetectOneToOne( attributes.detectOneToOne() )
 					.setDetectOptimisticLock( attributes.detectOptimisticLock() );
 
-					res.setSettings(qqsettings);
+					res.setSettings(qqsettings.getTarget());
 
 					cfg.setReverseEngineeringStrategy( res );
 
