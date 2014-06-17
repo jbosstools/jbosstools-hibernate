@@ -34,8 +34,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.HibernateException;
 import org.hibernate.cfg.Settings;
-import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
-import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.connection.ConnectionProvider;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
@@ -45,8 +43,10 @@ import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.spi.IJDBCReader;
 import org.jboss.tools.hibernate.spi.IReverseEngineeringStrategy;
+import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 
 public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
@@ -55,7 +55,6 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 		return getChildren(o, new NullProgressMonitor());
 	}
 
-	@SuppressWarnings("unchecked")
 	public Object[] getChildren(Object o, final IProgressMonitor monitor) {
 		LazyDatabaseSchema dbs = getLazyDatabaseSchema( o );
 		dbs.setConnected(false);
@@ -63,7 +62,7 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 		ConsoleConfiguration consoleConfiguration = dbs.getConsoleConfiguration();
 		Object[] res;
 		try {
-			DefaultDatabaseCollector db = readDatabaseSchema(monitor, consoleConfiguration, dbs.getReverseEngineeringStrategy());
+			IDatabaseCollector db = readDatabaseSchema(monitor, consoleConfiguration, dbs.getReverseEngineeringStrategy());
 
 			List<TableContainer> result = new ArrayList<TableContainer>();
 
@@ -111,19 +110,19 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 		return getLazyDatabaseSchema(o).getConsoleConfiguration();
 	}
 
-	protected DefaultDatabaseCollector readDatabaseSchema(final IProgressMonitor monitor, final ConsoleConfiguration consoleConfiguration, final IReverseEngineeringStrategy strategy) {
+	protected IDatabaseCollector readDatabaseSchema(final IProgressMonitor monitor, final ConsoleConfiguration consoleConfiguration, final IReverseEngineeringStrategy strategy) {
 		final IConfiguration configuration = consoleConfiguration.buildWith(null, false);
-		return (DefaultDatabaseCollector) consoleConfiguration.execute(new ExecutionContext.Command() {
+		return (IDatabaseCollector) consoleConfiguration.execute(new ExecutionContext.Command() {
 
 			public Object execute() {
-				DefaultDatabaseCollector db = null;
+				IDatabaseCollector db = null;
 				Settings settings = consoleConfiguration.getSettings(configuration);
 				ConnectionProvider connectionProvider = null;
 				try {
 					connectionProvider = settings.getConnectionProvider();
-					
-					IJDBCReader reader = HibernateHelper.INSTANCE.getHibernateService().newJDBCReader(configuration.getProperties(), settings, strategy);
-					db = new DefaultDatabaseCollector(reader.getMetaDataDialect());
+					IService service = HibernateHelper.INSTANCE.getHibernateService();
+					IJDBCReader reader = service.newJDBCReader(configuration.getProperties(), settings, strategy);
+					db = service.newDatabaseCollector(reader.getMetaDataDialect());
 					reader.readDatabaseSchema(db, settings.getDefaultCatalogName(), settings.getDefaultSchemaName(), new ProgressListenerMonitor(monitor));
 				} catch (HibernateException he) {
 					throw he;

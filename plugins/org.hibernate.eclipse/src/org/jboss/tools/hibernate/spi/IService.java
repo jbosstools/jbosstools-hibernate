@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.hibernate.cfg.Settings;
+import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 
@@ -66,5 +67,7 @@ public interface IService {
 			IReverseEngineeringStrategy delegate);
 
 	String getReverseEngineeringStrategyClassName();
+
+	IDatabaseCollector newDatabaseCollector(MetaDataDialect metaDataDialect);
 
 }

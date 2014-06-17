@@ -14,12 +14,14 @@ import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.JDBCReaderFactory;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.cfg.Settings;
+import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
+import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.hibernate.service.ServiceRegistry;
@@ -29,6 +31,7 @@ import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.util.xpl.ReflectHelper;
 import org.jboss.tools.hibernate.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.spi.IJDBCReader;
@@ -254,5 +257,10 @@ public class ServiceProxy implements IService {
 	@Override
 	public String getReverseEngineeringStrategyClassName() {
 		return ReverseEngineeringStrategy.class.getName();
+	}
+	
+	@Override
+	public IDatabaseCollector newDatabaseCollector(MetaDataDialect metaDataDialect) {
+		return new DatabaseCollectorProxy(new DefaultDatabaseCollector(metaDataDialect));
 	}
 }

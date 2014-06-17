@@ -1,9 +1,9 @@
 package org.jboss.tools.hibernate.proxy;
 
-import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.cfg.reveng.ProgressListener;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
+import org.jboss.tools.hibernate.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.spi.IJDBCReader;
 
 public class JDBCReaderProxy implements IJDBCReader {
@@ -21,12 +21,13 @@ public class JDBCReaderProxy implements IJDBCReader {
 
 	@Override
 	public void readDatabaseSchema(
-			DefaultDatabaseCollector databaseCollector,
+			IDatabaseCollector databaseCollector,
 			String defaultCatalogName, 
 			String defaultSchemaName,
 			ProgressListener progressListener) {
+		assert databaseCollector instanceof DatabaseCollectorProxy;
 		target.readDatabaseSchema(
-				databaseCollector, 
+				((DatabaseCollectorProxy)databaseCollector).getTarget(), 
 				defaultCatalogName, 
 				defaultSchemaName,
 				progressListener);
