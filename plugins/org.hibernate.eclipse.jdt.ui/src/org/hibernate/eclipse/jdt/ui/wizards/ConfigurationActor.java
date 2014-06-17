@@ -41,7 +41,6 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.WildcardType;
 import org.hibernate.FetchMode;
-import org.hibernate.cfg.Mappings;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.collect.AllEntitiesInfoCollector;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
@@ -68,6 +67,7 @@ import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
 import org.hibernate.util.xpl.StringHelper;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IMappings;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 
 /**
@@ -148,7 +148,7 @@ public class ConfigurationActor {
 			}
 		}
 		
-		Mappings mappings = config.createMappings();
+		IMappings mappings = config.createMappings();
 		Collection<PersistentClass> classesCollection = createHierarhyStructure(project, processor.getRootClasses());
 		for (PersistentClass persistentClass : classesCollection) {
 			mappings.addClass(persistentClass);

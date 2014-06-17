@@ -5,7 +5,6 @@ import junit.framework.TestCase;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
-import org.hibernate.cfg.Mappings;
 import org.hibernate.console.ConcoleConfigurationAdapter;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ConsoleQueryParameter;
@@ -23,6 +22,7 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IMappings;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
 import org.jboss.tools.hibernate.spi.ITypeFactory;
 import org.jboss.tools.hibernate.util.HibernateHelper;
@@ -130,7 +130,7 @@ public class ConsoleConfigurationTest extends TestCase {
 		
 		consoleCfg.build();
 		IConfiguration c = consoleCfg.getConfiguration();
-		Mappings mappings = c.createMappings();
+		IMappings mappings = c.createMappings();
 		RootClass rc = new RootClass();
 		rc.setEntityName("java.awt.Button");
 		rc.setClassName( "java.awt.Button" );

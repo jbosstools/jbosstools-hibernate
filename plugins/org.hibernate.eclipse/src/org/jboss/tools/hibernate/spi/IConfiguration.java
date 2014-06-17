@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.Properties;
 
-import org.hibernate.cfg.Mappings;
 import org.hibernate.cfg.Settings;
 import org.hibernate.mapping.PersistentClass;
 import org.w3c.dom.Document;
@@ -26,7 +25,7 @@ public interface IConfiguration {
 	void buildMappings();
 	ISessionFactory buildSessionFactory();
 	Settings buildSettings();
-	Mappings createMappings();
+	IMappings createMappings();
 	Iterator<? extends PersistentClass> getClassMappings();
 	void setPreferBasicCompositeIds(boolean preferBasicCompositeids);
 	void setReverseEngineeringStrategy(IReverseEngineeringStrategy res);

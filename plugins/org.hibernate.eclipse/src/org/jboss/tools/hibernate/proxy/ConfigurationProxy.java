@@ -6,11 +6,11 @@ import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
-import org.hibernate.cfg.Mappings;
 import org.hibernate.cfg.Settings;
 import org.hibernate.engine.Mapping;
 import org.hibernate.mapping.PersistentClass;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IMappings;
 import org.jboss.tools.hibernate.spi.INamingStrategy;
 import org.jboss.tools.hibernate.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
@@ -108,8 +108,8 @@ public class ConfigurationProxy implements IConfiguration {
 	}
 
 	@Override
-	public Mappings createMappings() {
-		return target.createMappings();
+	public IMappings createMappings() {
+		return new MappingsProxy(target.createMappings());
 	}
 
 	@SuppressWarnings("unchecked")
