@@ -18,7 +18,6 @@ import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
-import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.ejb.Ejb3Configuration;
 import org.hibernate.service.ServiceRegistry;
@@ -34,6 +33,7 @@ import org.jboss.tools.hibernate.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.spi.IJDBCReader;
+import org.jboss.tools.hibernate.spi.IMetaDataDialect;
 import org.jboss.tools.hibernate.spi.INamingStrategy;
 import org.jboss.tools.hibernate.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.spi.IProgressListener;
@@ -242,8 +242,11 @@ public class ServiceProxy implements IService {
 	}
 	
 	@Override
-	public IDatabaseCollector newDatabaseCollector(MetaDataDialect metaDataDialect) {
-		return new DatabaseCollectorProxy(new DefaultDatabaseCollector(metaDataDialect));
+	public IDatabaseCollector newDatabaseCollector(IMetaDataDialect metaDataDialect) {
+		assert metaDataDialect instanceof MetaDataDialectProxy;
+		return new DatabaseCollectorProxy(
+				new DefaultDatabaseCollector(
+						((MetaDataDialectProxy)metaDataDialect).getTarget()));
 	}
 
 	@Override

@@ -1,22 +1,26 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.cfg.reveng.JDBCReader;
-import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.jboss.tools.hibernate.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.spi.IJDBCReader;
+import org.jboss.tools.hibernate.spi.IMetaDataDialect;
 import org.jboss.tools.hibernate.spi.IProgressListener;
 
 public class JDBCReaderProxy implements IJDBCReader {
 	
 	private JDBCReader target = null;
+	private IMetaDataDialect metaDataDialect = null;
 
 	public JDBCReaderProxy(JDBCReader reader) {
 		target = reader;
 	}
 
 	@Override
-	public MetaDataDialect getMetaDataDialect() {
-		return target.getMetaDataDialect();
+	public IMetaDataDialect getMetaDataDialect() {
+		if (metaDataDialect == null) {
+			metaDataDialect = new MetaDataDialectProxy(target.getMetaDataDialect());
+		}
+		return metaDataDialect;
 	}
 
 	@Override
