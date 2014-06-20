@@ -15,6 +15,7 @@ public interface IValue {
 	boolean isManyToOne();
 	boolean isOneToOne();
 	boolean isMap();
+	boolean isSet();
 	boolean isComponent();
 	Boolean isEmbedded();
 	boolean isToOne();
@@ -30,5 +31,12 @@ public interface IValue {
 	String getComponentClassName();
 	Iterator<Column> getColumnIterator();
 	Boolean isTypeSpecified();
+	Table getCollectionTable();
+	IValue getKey();
+	IValue getIndex();
+	boolean isArray();
+	String getElementClassName();
+	boolean isPrimitiveArray();
+	String getTypeName();
 
 }

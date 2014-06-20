@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.proxy;
 
 import java.util.Iterator;
 
+import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
@@ -11,6 +12,8 @@ import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
+import org.hibernate.mapping.PrimitiveArray;
+import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
@@ -23,6 +26,9 @@ public class ValueProxy implements IValue {
 	
 	private Value target = null;
 	private IValue collectionElement = null;
+	private Table collectionTable = null;
+	private IValue key = null;
+	private IValue index = null;
 	private IType type = null;
 
 	public ValueProxy(Value value) {
@@ -172,6 +178,69 @@ public class ValueProxy implements IValue {
 	@Override
 	public String toString() {
 		return target.toString();
+	}
+
+	@Override
+	public Table getCollectionTable() {
+		if (isCollection() && collectionTable == null) {
+			collectionTable = ((Collection)target).getCollectionTable();
+		}
+		return collectionTable;
+	}
+
+	@Override
+	public IValue getKey() {
+		if (key == null && isCollection()) {
+			Collection collection = (Collection)target;
+			if (collection.getKey() != null) {
+				key = new ValueProxy(collection.getKey());
+			}
+		}
+		return key;
+	}
+
+	@Override
+	public boolean isSet() {
+		return target instanceof Set;
+	}
+
+	@Override
+	public IValue getIndex() {
+		if (index == null && isList()) {
+			List list = (List)target;
+			if (list.getIndex() != null) {
+				index = new ValueProxy(list.getIndex());
+			}
+		}
+		return index;
+	}
+
+	@Override
+	public boolean isArray() {
+		return target instanceof Array;
+	}
+
+	@Override
+	public String getElementClassName() {
+		String result = null;
+		if (isArray()) {
+			result = ((Array)target).getElementClassName();
+		}
+		return result;
+	}
+
+	@Override
+	public boolean isPrimitiveArray() {
+		return target instanceof PrimitiveArray;
+	}
+
+	@Override
+	public String getTypeName() {
+		String result = null;
+		if (isSimpleValue())  {
+			result = ((SimpleValue)target).getTypeName();
+		}
+		return result;
 	}
 
 }

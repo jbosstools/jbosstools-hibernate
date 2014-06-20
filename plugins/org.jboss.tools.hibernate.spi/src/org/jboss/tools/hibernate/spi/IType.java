@@ -12,5 +12,6 @@ public interface IType {
 	boolean isCollectionType();
 	Class<?> getReturnedClass();
 	String getAssociatedEntityName();
+	boolean isIntegerType();
 
 }
