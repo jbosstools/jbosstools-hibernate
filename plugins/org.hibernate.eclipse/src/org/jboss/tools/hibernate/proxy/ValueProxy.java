@@ -84,6 +84,8 @@ public class ValueProxy implements IValue {
 		Boolean result = null;
 		if (isComponent()) {
 			result = ((Component)target).isEmbedded();
+		} else if (isToOne()) {
+			result = ((ToOne)target).isEmbedded();
 		}
 		return result;
 	}
