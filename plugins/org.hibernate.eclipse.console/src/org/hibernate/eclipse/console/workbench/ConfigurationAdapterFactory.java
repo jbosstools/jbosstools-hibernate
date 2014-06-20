@@ -38,8 +38,8 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
-import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IValue;
 
 public class ConfigurationAdapterFactory implements IAdapterFactory {
 
@@ -74,7 +74,7 @@ public class ConfigurationAdapterFactory implements IAdapterFactory {
 		map.put(TableContainer.class, new TableContainerWorkbenchAdapter());
 		map.put(PersistentClass.class, new PersistentClassWorkbenchAdapter());
 		map.put(Property.class, new PropertyWorkbenchAdapter());
-		map.put(Value.class, new ValueWorkbenchAdapter());
+		map.put(IValue.class, new ValueWorkbenchAdapter());
 		map.put(Table.class, new TableWorkbenchAdapter());
 		map.put(PrimaryKey.class, new PrimaryKeyWorkbenchAdapter());
 		map.put(Column.class, new ColumnWorkbenchAdapter());

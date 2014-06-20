@@ -49,23 +49,18 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
-import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
-import org.hibernate.mapping.Component;
-import org.hibernate.mapping.ManyToOne;
-import org.hibernate.mapping.Map;
-import org.hibernate.mapping.OneToMany;
-import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
-import org.hibernate.mapping.Value;
 import org.hibernate.util.XMLHelper;
 import org.hibernate.util.xpl.StringHelper;
+import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.ICfg2HbmTool;
+import org.jboss.tools.hibernate.spi.IValue;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
@@ -1026,33 +1021,33 @@ public class OpenMappingUtils {
 				toolTag = "id"; //$NON-NLS-1$
 			}
 		} else {
-			Value value = property.getValue();
+			IValue value = new ValueProxy(property.getValue());
 			toolTag = "basic"; //$NON-NLS-1$
 			if (!value.isSimpleValue()) {
-				if (value instanceof Collection) {
-					value = ((Collection)value).getElement();
+				if (value.isCollection()) {
+					value = value.getCollectionElement();
 				}
 			}
-			if (value instanceof OneToMany) {
+			if (value.isOneToMany()) {
 				toolTag = "one-to-many"; //$NON-NLS-1$
 			}
-			else if (value instanceof ManyToOne) {
+			else if (value.isManyToOne()) {
 				// could be many-to-one | many-to-many
 				toolTag = "many-to-((one)|(many))"; //$NON-NLS-1$
 			}
-			else if (value instanceof OneToOne) {
+			else if (value.isOneToOne()) {
 				toolTag = "one-to-one"; //$NON-NLS-1$
 			}
-			else if (value instanceof Map) {
+			else if (value.isMap()) {
 				toolTag = "many-to-many"; //$NON-NLS-1$
 			}
-			else if (value instanceof Component) {
-				if (((Component)value).isEmbedded()) {
+			else if (value.isComponent()) {
+				if (value.isEmbedded()) {
 					toolTag = "embedded"; //$NON-NLS-1$
 				}
 			}
-			if (value instanceof ToOne) {
-				if (((ToOne)value).isEmbedded()) {
+			if (value.isToOne()) {
+				if (value.isEmbedded()) {
 					toolTag = "embedded"; //$NON-NLS-1$
 				}
 			}

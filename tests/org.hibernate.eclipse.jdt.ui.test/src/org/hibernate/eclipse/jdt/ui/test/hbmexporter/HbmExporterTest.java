@@ -35,9 +35,10 @@ import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.Value;
 import org.hibernate.type.IntegerType;
+import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IValue;
 
 public class HbmExporterTest extends TestCase {
 	
@@ -117,7 +118,7 @@ public class HbmExporterTest extends TestCase {
 		PersistentClass a = config.getClassMapping("pack.A"); //$NON-NLS-1$
 		
 		Property prop = a.getProperty("prop"); //$NON-NLS-1$
-		Value value = prop.getValue();
+		IValue value = new ValueProxy(prop.getValue());
 		assertNotNull(value);
 		assertTrue("Expected to get ManyToOne-type mapping", value.getClass()== ManyToOne.class); //$NON-NLS-1$
 		ManyToOne mto = (ManyToOne)value;
@@ -131,7 +132,7 @@ public class HbmExporterTest extends TestCase {
 		PersistentClass b = config.getClassMapping("pack.B"); //$NON-NLS-1$
 		
 		Property bs = a.getProperty("bs"); //$NON-NLS-1$
-		Value value = bs.getValue();
+		IValue value = new ValueProxy(bs.getValue());
 		assertNotNull(value);
 		assertTrue("Expected to get Array-type mapping", value.getClass()==Array.class); //$NON-NLS-1$
 		Array ar = (Array)value;
@@ -141,7 +142,7 @@ public class HbmExporterTest extends TestCase {
 		
 		Property testIntArray = b.getProperty("testIntArray"); //$NON-NLS-1$
 		assertNotNull(testIntArray);
-		value = testIntArray.getValue();
+		value = new ValueProxy(testIntArray.getValue());
 		assertNotNull(value);
 		assertTrue("Expected to get PrimitiveArray-type mapping", //$NON-NLS-1$  
 				value.getClass()==PrimitiveArray.class);
@@ -157,7 +158,7 @@ public class HbmExporterTest extends TestCase {
 		PersistentClass b = config.getClassMapping("pack.B"); //$NON-NLS-1$
 		
 		Property listProp = a.getProperty("list"); //$NON-NLS-1$
-		Value value = listProp.getValue();
+		IValue value = new ValueProxy(listProp.getValue());
 		assertNotNull(value);
 		assertTrue("Expected to get List-type mapping", //$NON-NLS-1$ 
 				value.getClass()==org.hibernate.mapping.List.class);
@@ -175,7 +176,7 @@ public class HbmExporterTest extends TestCase {
 		PersistentClass b = config.getClassMapping("pack.B"); //$NON-NLS-1$
 		
 		Property setProp = a.getProperty("set"); //$NON-NLS-1$
-		Value value = setProp.getValue();
+		IValue value = new ValueProxy(setProp.getValue());
 		assertNotNull(value);
 		assertTrue("Expected to get Set-type mapping",  //$NON-NLS-1$
 				value.getClass()==org.hibernate.mapping.Set.class);
@@ -192,7 +193,7 @@ public class HbmExporterTest extends TestCase {
 		PersistentClass b = config.getClassMapping("pack.B"); //$NON-NLS-1$
 		
 		Property mapValue = a.getProperty("mapValue"); //$NON-NLS-1$
-		Value value = mapValue.getValue();
+		IValue value = new ValueProxy(mapValue.getValue());
 		assertNotNull(value);
 		assertTrue("Expected to get Map-type mapping", //$NON-NLS-1$ 
 				value.getClass()==org.hibernate.mapping.Map.class);

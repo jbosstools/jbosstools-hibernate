@@ -30,8 +30,9 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
-import org.hibernate.mapping.Value;
+import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IType;
+import org.jboss.tools.hibernate.spi.IValue;
 import org.jboss.tools.hibernate.ui.diagram.UiPlugin;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.UtilTypeExtract;
 
@@ -113,7 +114,7 @@ public class OrmImageMap {
 		} else if (persistentClass != null && persistentClass.getIdentifierProperty() == field) {
 			str = "Image_PersistentFieldSimple_id"; //$NON-NLS-1$
 		} else if (field.getValue() != null) {
-			final Value value = field.getValue();
+			final IValue value = new ValueProxy(field.getValue());
 			if (value instanceof OneToMany) {
 				str = "Image_PersistentFieldOne-to-many"; //$NON-NLS-1$
 			} else if (value instanceof OneToOne) {

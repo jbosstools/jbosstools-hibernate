@@ -2,12 +2,13 @@ package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.spi.IProperty;
+import org.jboss.tools.hibernate.spi.IValue;
 
 public class PropertyProxy implements IProperty {
 	
 	private Property target = null;
+	private IValue value = null;
 	
 	public PropertyProxy(Property property) {
 		target = property;
@@ -24,8 +25,11 @@ public class PropertyProxy implements IProperty {
 	}
 
 	@Override
-	public Value getValue() {
-		return target.getValue();
+	public IValue getValue() {
+		if (target.getValue() != null && value == null) {
+			value = new ValueProxy(target.getValue());
+		}
+		return value;
 	}
 
 	@Override
@@ -49,8 +53,9 @@ public class PropertyProxy implements IProperty {
 	}
 
 	@Override
-	public void setValue(Value value) {
-		target.setValue(value);
+	public void setValue(IValue value) {
+		assert value instanceof ValueProxy;
+		target.setValue(((ValueProxy)value).getTarget());
 	}
 	
 	Property getTarget() {

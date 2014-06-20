@@ -20,10 +20,10 @@ import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.mapping.Column;
-import org.hibernate.mapping.Component;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.Value;
+import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IType;
+import org.jboss.tools.hibernate.spi.IValue;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Connection.ConnectionType;
 import org.jboss.tools.hibernate.ui.view.HibernateUtils;
 
@@ -298,11 +298,11 @@ public class Shape extends BaseElement {
 			if (PROPERTY_NAME.equals(propertyId)) {
 				res = prop.getName();
 			} else if (PROPERTY_TYPE.equals(propertyId)) {
-				Value value = prop.getValue();
-				if (value instanceof Component) {
-					res = prop.getValue().toString();
+				IValue value = prop.getValue() != null ? new ValueProxy(prop.getValue()) : null;
+				if (value.isComponent()) {
+					res = value.toString();
 				} else {
-					IType type = getTypeUsingExecContext(prop.getValue());
+					IType type = getTypeUsingExecContext(value);
 					if (type != null) {
 						res = type.getReturnedClass().getName();
 					}
@@ -370,7 +370,7 @@ public class Shape extends BaseElement {
 		return consoleConfig;
 	}
 
-	public IType getTypeUsingExecContext(final Value val) {
+	public IType getTypeUsingExecContext(final IValue val) {
 		return UtilTypeExtract.getTypeUsingExecContext(val, getConsoleConfig());
 	}
 }

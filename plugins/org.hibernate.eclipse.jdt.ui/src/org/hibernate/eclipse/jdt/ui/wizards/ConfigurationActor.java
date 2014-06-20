@@ -64,10 +64,11 @@ import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
-import org.hibernate.mapping.Value;
 import org.hibernate.util.xpl.StringHelper;
+import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IMappings;
+import org.jboss.tools.hibernate.spi.IValue;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 
 /**
@@ -492,9 +493,9 @@ class TypeVisitor extends ASTVisitor{
 		if (tb.isPrimitive()){
 			array = new PrimitiveArray(rootClass);
 			
-			SimpleValue value = buildSimpleValue(tb.getName());
+			IValue value = buildSimpleValue(tb.getName());
 			value.setTable(rootClass.getTable());
-			array.setElement(value);
+			array.setElement(((ValueProxy)value).getTarget());
 			array.setCollectionTable(rootClass.getTable());//TODO what to set?
 		} else {
 			RootClass associatedClass = rootClasses.get(tb.getBinaryName());
@@ -521,7 +522,7 @@ class TypeVisitor extends ASTVisitor{
 		//index.addColumn(new Column(varName.toUpperCase()+"_POSITION"));
 		
 		array.setIndex(index);
-		buildProperty(array);
+		buildProperty(new ValueProxy(array));
 		prop.setCascade("none");//$NON-NLS-1$
 		return false;//do not visit children
 	}
@@ -536,31 +537,30 @@ class TypeVisitor extends ASTVisitor{
 		Assert.isNotNull(rootClass, "RootClass not found."); //$NON-NLS-1$
 		
 		ITypeBinding[] interfaces = Utils.getAllInterfaces(tb);
-		Value value = buildCollectionValue(interfaces);
+		IValue value = buildCollectionValue(interfaces);
 		if (value != null) {
-			org.hibernate.mapping.Collection cValue = (org.hibernate.mapping.Collection)value;			
 			if (ref != null && rootClasses.get(ref.fullyQualifiedName) != null){
 				OneToMany oValue = new OneToMany(rootClass);
 				RootClass associatedClass = rootClasses.get(ref.fullyQualifiedName);
 				oValue.setAssociatedClass(associatedClass);
 				oValue.setReferencedEntityName(associatedClass.getEntityName());
 				//Set another table
-				cValue.setCollectionTable(associatedClass.getTable());				
-				cValue.setElement(oValue);				
+				value.setCollectionTable(associatedClass.getTable());				
+				value.setElement(new ValueProxy(oValue));				
 			} else {
-				SimpleValue elementValue = buildSimpleValue(tb.getTypeArguments()[0].getQualifiedName());
+				IValue elementValue = buildSimpleValue(tb.getTypeArguments()[0].getQualifiedName());
 				elementValue.setTable(rootClass.getTable());
-				cValue.setElement(elementValue);
-				cValue.setCollectionTable(rootClass.getTable());//TODO what to set?
+				value.setElement(elementValue);
+				value.setCollectionTable(rootClass.getTable());//TODO what to set?
 			}
-			if (value instanceof org.hibernate.mapping.List){
-				((IndexedCollection)cValue).setIndex(new SimpleValue());
-			} else if (value instanceof org.hibernate.mapping.Map){
-				SimpleValue map_key = new SimpleValue();
+			if (value.isList()){
+				value.setIndex(new ValueProxy(new SimpleValue()));
+			} else if (value.isMap()){
+				IValue map_key = new ValueProxy(new SimpleValue());
 				//FIXME: is it possible to map Map<SourceType, String>?
 				//Or only Map<String, SourceType>
 				map_key.setTypeName(tb.getTypeArguments()[0].getBinaryName());
-				((IndexedCollection)cValue).setIndex(map_key);
+				value.setIndex(map_key);
 			}
 		}
 				
@@ -591,11 +591,11 @@ class TypeVisitor extends ASTVisitor{
 		ITypeBinding tb = type.resolveBinding();
 		if (tb == null) return false;//Unresolved binding. Omit the property.
 		ITypeBinding[] interfaces = Utils.getAllInterfaces(tb);
-		Value value = buildCollectionValue(interfaces);
+		IValue value = buildCollectionValue(interfaces);
 		if (value != null){
-			SimpleValue element = buildSimpleValue("string");//$NON-NLS-1$
-			((org.hibernate.mapping.Collection) value).setElement(element);
-			((org.hibernate.mapping.Collection) value).setCollectionTable(rootClass.getTable());//TODO what to set?
+			IValue element = buildSimpleValue("string");//$NON-NLS-1$
+			value.setElement(element);
+			value.setCollectionTable(rootClass.getTable());//TODO what to set?
 			buildProperty(value);
 			if (value instanceof org.hibernate.mapping.List){
 				((IndexedCollection)value).setIndex(new SimpleValue());
@@ -631,7 +631,7 @@ class TypeVisitor extends ASTVisitor{
 			sValue.setTypeName(tb.getBinaryName());
 			sValue.setFetchMode(FetchMode.JOIN);
 			sValue.setReferencedEntityName(ref.fullyQualifiedName);
-			buildProperty(sValue);
+			buildProperty(new ValueProxy(sValue));
 			prop.setCascade("none");//$NON-NLS-1$
 		} else {
 			value = buildSimpleValue(tb.getBinaryName());
@@ -649,20 +649,20 @@ class TypeVisitor extends ASTVisitor{
 		return prop;
 	}
 	
-	protected void buildProperty(Value value){
+	protected void buildProperty(IValue value){
 		prop = new Property();
 		prop.setName(varName);
-		prop.setValue(value);
+		prop.setValue(((ValueProxy)value).getTarget());
 	}
 	
-	private SimpleValue buildSimpleValue(String typeName){
+	private IValue buildSimpleValue(String typeName){
 		SimpleValue sValue = new SimpleValue();
 		sValue.addColumn(new Column(varName.toUpperCase()));
 		sValue.setTypeName(typeName);
-		return sValue;
+		return new ValueProxy(sValue);
 	}
 	
-	private org.hibernate.mapping.Collection buildCollectionValue(ITypeBinding[] interfaces){
+	private IValue buildCollectionValue(ITypeBinding[] interfaces){
 		org.hibernate.mapping.Collection cValue = null;
 		if (Utils.isImplementInterface(interfaces, Set.class.getName())){
 			cValue = new org.hibernate.mapping.Set(rootClass);
@@ -687,6 +687,6 @@ class TypeVisitor extends ASTVisitor{
 		cValue.setKey(key);
 		cValue.setLazy(true);
 		cValue.setRole(StringHelper.qualify(rootClass.getEntityName(), varName));
-		return cValue;
+		return new ValueProxy(cValue);
 	}
 }

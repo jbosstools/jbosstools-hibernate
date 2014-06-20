@@ -20,8 +20,9 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
-import org.hibernate.mapping.Value;
+import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IType;
+import org.jboss.tools.hibernate.spi.IValue;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.UtilTypeExtract;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Utils;
 
@@ -87,7 +88,8 @@ public class OrmLabelMap {
 		name.append(field.getName());
 		name.append(" :"); //$NON-NLS-1$
 		String typeString = null;
-		IType type = UtilTypeExtract.getTypeUsingExecContext(field.getValue(), cfg);
+		IValue v = field.getValue() != null ? new ValueProxy(field.getValue()) : null;
+		IType type = UtilTypeExtract.getTypeUsingExecContext(v, cfg);
 		if (type != null && type.getReturnedClass() != null) {
 			typeString = type.getReturnedClass().getName();
 		} else {
@@ -103,7 +105,7 @@ public class OrmLabelMap {
 			name.append(typeString);
 			return name.toString();
 		}
-		Value value = field.getValue();
+		IValue value = field.getValue() != null ? new ValueProxy(field.getValue()) : null;
 		String typeName = null;
 		if (value != null) {
 			typeName = (String) value.accept(new TypeNameValueVisitor(false));

@@ -26,8 +26,9 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
-import org.hibernate.mapping.Value;
+import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IType;
+import org.jboss.tools.hibernate.spi.IValue;
 import org.jboss.tools.hibernate.ui.diagram.rulers.DiagramGuide;
 
 /**
@@ -184,9 +185,9 @@ public class OrmShape extends ExpandableShape {
 				Property field = iterator.next();
 				if (!field.isBackRef()) {
 					if (!field.isComposite()) {
-						final Value val = field.getValue();
+						final IValue val = new ValueProxy(field.getValue());
 						Shape bodyOrmShape = null;
-						if (val.isSimpleValue() && !((SimpleValue)val).isTypeSpecified()) {
+						if (val.isSimpleValue() && val.isTypeSpecified()) {
 							bodyOrmShape = new Shape(field, getConsoleConfigName());
 						} else {
 							if (val instanceof Collection) {

@@ -26,8 +26,9 @@ import org.eclipse.swt.graphics.Image;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.Value;
 import org.hibernate.util.xpl.StringHelper;
+import org.jboss.tools.hibernate.proxy.ValueProxy;
+import org.jboss.tools.hibernate.spi.IValue;
 
 public class HibernateWorkbenchHelper {
 
@@ -38,7 +39,7 @@ public class HibernateWorkbenchHelper {
 				return EclipseImages.getImageDescriptor(ImageConstants.IDPROPERTY);
 			}
 		}
-		String iconNameForValue = getIconNameForValue(property.getValue());
+		String iconNameForValue = getIconNameForValue(new ValueProxy(property.getValue()));
 		
 		return EclipseImages.getImageDescriptor(iconNameForValue);
 	}
@@ -50,12 +51,12 @@ public class HibernateWorkbenchHelper {
 				return EclipseImages.getImage(ImageConstants.IDPROPERTY);
 			}
 		}
-		String iconNameForValue = getIconNameForValue(property.getValue());
+		String iconNameForValue = getIconNameForValue(new ValueProxy(property.getValue()));
 		
 		return EclipseImages.getImage(iconNameForValue);
 	}
 	
-	static private String getIconNameForValue(Value value) {
+	static private String getIconNameForValue(IValue value) {
 		String result;
 		
 		result = (String) value.accept(new IconNameValueVisitor());

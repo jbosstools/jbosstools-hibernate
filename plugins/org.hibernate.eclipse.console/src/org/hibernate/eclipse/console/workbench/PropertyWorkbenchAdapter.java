@@ -38,8 +38,9 @@ import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
-import org.hibernate.mapping.Value;
 import org.hibernate.mapping.ValueVisitor;
+import org.jboss.tools.hibernate.proxy.ValueProxy;
+import org.jboss.tools.hibernate.spi.IValue;
 
 public class PropertyWorkbenchAdapter implements IWorkbenchAdapter {
 	
@@ -119,7 +120,7 @@ public class PropertyWorkbenchAdapter implements IWorkbenchAdapter {
 
 	public String getLabel(Object o) {
 		Property property = ((Property)o);
-		Value value = property.getValue();
+		IValue value = new ValueProxy(property.getValue());
 		String typeName = (String) value.accept(new TypeNameValueVisitor(true));
 		
 		if (typeName!=null) {

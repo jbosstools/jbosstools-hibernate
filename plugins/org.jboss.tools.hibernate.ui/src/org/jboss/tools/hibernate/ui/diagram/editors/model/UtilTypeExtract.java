@@ -14,16 +14,15 @@ import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
-import org.hibernate.mapping.Value;
-import org.jboss.tools.hibernate.proxy.TypeProxy;
 import org.jboss.tools.hibernate.spi.IType;
+import org.jboss.tools.hibernate.spi.IValue;
 
 /**
  * @author vitali
  */
 public class UtilTypeExtract {
 
-	public static IType getTypeUsingExecContext(final Value val, final ConsoleConfiguration cfg) {
+	public static IType getTypeUsingExecContext(final IValue val, final ConsoleConfiguration cfg) {
 		IType type = null;
 		if (val == null) {
 			return type;
@@ -32,11 +31,11 @@ public class UtilTypeExtract {
 			if (cfg != null) {
 				type = (IType) cfg.execute(new Command() {
 					public Object execute() {
-						return new TypeProxy(val.getType());
+						return val.getType();
 					}
 				});								
 			} else {
-				type = new TypeProxy(val.getType());
+				type = val.getType();
 			}
 		} catch (HibernateException e) {
 			//type is not accessible

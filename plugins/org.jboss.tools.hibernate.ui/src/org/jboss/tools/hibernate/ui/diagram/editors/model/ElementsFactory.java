@@ -31,9 +31,10 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
-import org.hibernate.mapping.Value;
+import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IType;
+import org.jboss.tools.hibernate.spi.IValue;
 
 /**
  * Responsible to create diagram elements for given
@@ -118,7 +119,8 @@ public class ElementsFactory {
 		if (!property.isComposite()) {
 			final IConfiguration config = getConfig();
 			//
-			IType type = UtilTypeExtract.getTypeUsingExecContext(property.getValue(), getConsoleConfig());
+			IValue v = property.getValue() != null ? new ValueProxy(property.getValue()) : null;
+			IType type = UtilTypeExtract.getTypeUsingExecContext(v, getConsoleConfig());
 			if (type != null && type.isEntityType()) {
 				Object clazz = config != null ? 
 						config.getClassMapping(type.getAssociatedEntityName()) : null;
@@ -141,14 +143,14 @@ public class ElementsFactory {
 		}
 	}
 
-	@SuppressWarnings("rawtypes")
 	protected void refreshComponentReferences(ComponentShape componentShape) {
 		Property property = (Property)componentShape.getOrmElement();
-		if (!(property.getValue() instanceof Collection)) {
+		IValue v = (new ValueProxy(property.getValue()));
+		if (!v.isCollection()) {
 			return;
 		}
-		Collection collection = (Collection)property.getValue();
-		Value component = collection.getElement();
+		Collection collection = (Collection)((ValueProxy)v).getTarget();
+		IValue component = new ValueProxy(collection.getElement());
 		Shape csChild0 = null, csChild1 = null;
 		Iterator<Shape> tmp = componentShape.getChildrenIterator();
 		if (tmp.hasNext()) {
@@ -158,23 +160,20 @@ public class ElementsFactory {
 			csChild1 = tmp.next();
 		}
 		OrmShape childShape = null;
-		if (component instanceof Component) {
-			childShape = elements.get(((Component)component).getComponentClassName());
+		if (component.isComponent()) {
+			childShape = elements.get(component.getComponentClassName());
 			if (childShape == null) {
 				childShape = getOrCreateComponentClass(property);
 			}
-			SimpleValue value = (SimpleValue)csChild0.getOrmElement();
+			IValue value = (IValue)csChild0.getOrmElement();
 			OrmShape tableShape = getOrCreateDatabaseTable(value.getTable());
 			if (tableShape != null) {
-				Iterator it = value.getColumnIterator();
+				Iterator<Column> it = value.getColumnIterator();
 				while (it.hasNext()) {
-					Object el = it.next();
-					if (el instanceof Column) {
-						Column col = (Column)el;
-						Shape shape = tableShape.getChild(col);
-						if (shouldCreateConnection(csChild0, shape)) {
-							connections.add(new Connection(csChild0, shape));
-						}
+					Column el = it.next();
+					Shape shape = tableShape.getChild(el);
+					if (shouldCreateConnection(csChild0, shape)) {
+						connections.add(new Connection(csChild0, shape));
 					}
 				}
 			}
@@ -453,7 +452,7 @@ public class ElementsFactory {
 			if (!(element instanceof Property && parentProperty != element)) {
 				continue;
 			}
-			Value value = ((Property)element).getValue();
+			IValue value = new ValueProxy(((Property)element).getValue());
 			Iterator iterator = value.getColumnIterator();
 			while (iterator.hasNext()) {
 				Object o = iterator.next();

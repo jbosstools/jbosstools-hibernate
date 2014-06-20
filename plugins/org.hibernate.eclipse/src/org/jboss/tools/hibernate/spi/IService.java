@@ -6,6 +6,7 @@ import java.util.Properties;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.hibernate.cfg.Settings;
+import org.hibernate.mapping.Value;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 
@@ -75,5 +76,5 @@ public interface IService {
 	ICfg2HbmTool newCfg2HbmTool();
 	
 	IProperty newProperty();
-
+	
 }
