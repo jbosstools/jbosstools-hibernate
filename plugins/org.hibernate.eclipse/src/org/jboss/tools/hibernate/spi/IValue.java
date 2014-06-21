@@ -3,8 +3,8 @@ package org.jboss.tools.hibernate.spi;
 import java.util.Iterator;
 
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
-import org.hibernate.mapping.ValueVisitor;
 
 public interface IValue {
 
@@ -15,11 +15,10 @@ public interface IValue {
 	boolean isManyToOne();
 	boolean isOneToOne();
 	boolean isMap();
-	boolean isSet();
 	boolean isComponent();
 	Boolean isEmbedded();
 	boolean isToOne();
-	Object accept(ValueVisitor valueVisitor);
+	Object accept(IValueVisitor valueVisitor);
 	Table getTable();
 	IType getType();
 	void setElement(IValue element);
@@ -34,9 +33,17 @@ public interface IValue {
 	Table getCollectionTable();
 	IValue getKey();
 	IValue getIndex();
-	boolean isArray();
 	String getElementClassName();
-	boolean isPrimitiveArray();
 	String getTypeName();
+	boolean isDependantValue();
+	boolean isAny();
+	boolean isSet();
+	boolean isPrimitiveArray();
+	boolean isArray();
+	boolean isIdentifierBag();
+	boolean isBag();
+	String getReferencedEntityName();
+	String getEntityName();
+	Iterator<? extends Property> getPropertyIterator();
 
 }

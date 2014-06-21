@@ -21,23 +21,10 @@
  */
 package org.hibernate.eclipse.console.workbench;
 
-import org.hibernate.mapping.Any;
-import org.hibernate.mapping.Array;
-import org.hibernate.mapping.Bag;
-import org.hibernate.mapping.Component;
-import org.hibernate.mapping.DependantValue;
-import org.hibernate.mapping.IdentifierBag;
-import org.hibernate.mapping.List;
-import org.hibernate.mapping.ManyToOne;
-import org.hibernate.mapping.Map;
-import org.hibernate.mapping.OneToMany;
-import org.hibernate.mapping.OneToOne;
-import org.hibernate.mapping.PrimitiveArray;
-import org.hibernate.mapping.Set;
-import org.hibernate.mapping.SimpleValue;
-import org.hibernate.mapping.ValueVisitor;
+import org.jboss.tools.hibernate.spi.IValue;
+import org.jboss.tools.hibernate.spi.IValueVisitor;
 
-public class TypeNameValueVisitor implements ValueVisitor {
+public class TypeNameValueVisitor implements IValueVisitor {
 
 	/** if true then only return the classname, not the fully qualified classname */
 	final boolean dequalify; 
@@ -46,31 +33,31 @@ public class TypeNameValueVisitor implements ValueVisitor {
 		this.dequalify=dequalify;
 	}
 	
-	public Object accept(Bag bag) {
-		return "Bag <" + bag.getElement().accept(this) + ">";  //$NON-NLS-1$//$NON-NLS-2$
+	private Object acceptBag(IValue bag) {
+		return "Bag <" + bag.getCollectionElement().accept(this) + ">";  //$NON-NLS-1$//$NON-NLS-2$
 	}
 
-	public Object accept(IdentifierBag bag) {
-		return "IdBag <" + bag.getElement().accept(this) + ">";  //$NON-NLS-1$//$NON-NLS-2$
+	private Object acceptIdBag(IValue bag) {
+		return "IdBag <" + bag.getCollectionElement().accept(this) + ">";  //$NON-NLS-1$//$NON-NLS-2$
 	}
 
-	public Object accept(List list) {
-		return "List <" + list.getElement().accept(this) + ">"; //$NON-NLS-1$ //$NON-NLS-2$
+	private Object acceptList(IValue list) {
+		return "List <" + list.getCollectionElement().accept(this) + ">"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	public Object accept(PrimitiveArray primitiveArray) {
-		return primitiveArray.getElement().accept(this) + "[]"; //$NON-NLS-1$
+	private Object acceptPrimitiveArray(IValue primitiveArray) {
+		return primitiveArray.getCollectionElement().accept(this) + "[]"; //$NON-NLS-1$
 	}
 
-	public Object accept(Array list) {
-		return list.getElement().accept(this) + "[]"; //$NON-NLS-1$
+	private Object acceptArray(IValue list) {
+		return list.getCollectionElement().accept(this) + "[]"; //$NON-NLS-1$
 	}
 
-	public Object accept(Map map) {
-		return "Map<" + map.getElement().accept(this) + ">"; //$NON-NLS-1$ //$NON-NLS-2$
+	private Object acceptMap(IValue map) {
+		return "Map<" + map.getCollectionElement().accept(this) + ">"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	public Object accept(OneToMany many) {
+	private Object acceptOneToMany(IValue many) {
 		return dequalify(many.getReferencedEntityName());
 	}
 
@@ -81,32 +68,66 @@ public class TypeNameValueVisitor implements ValueVisitor {
 		return referencedEntityName;
 	}
 
-	public Object accept(Set set) {
-		return "Set<" + set.getElement().accept(this) + ">"; //$NON-NLS-1$ //$NON-NLS-2$
+	private Object acceptSet(IValue set) {
+		return "Set<" + set.getCollectionElement().accept(this) + ">"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	public Object accept(Any any) {
+	private Object acceptAny(IValue any) {
 		return "Any"; //$NON-NLS-1$
 	}
 
-	public Object accept(SimpleValue value) {
+	private Object acceptSimpleValue(IValue value) {
 		return dequalify(value.getTypeName());
 	}
 
-	public Object accept(DependantValue value) {
+	private Object acceptDependantValue(IValue value) {
 		return null;
 	}
 
-	public Object accept(Component component) {
+	private Object acceptComponent(IValue component) {
 		return dequalify(component.getComponentClassName());
 	}
 
-	public Object accept(ManyToOne mto) {
+	private Object acceptManyToOne(IValue mto) {
 		return dequalify(mto.getReferencedEntityName());
 	}
 
-	public Object accept(OneToOne oto) {
+	private Object acceptOneToOne(IValue oto) {
 		return dequalify(oto.getEntityName());
 	}
 
+	@Override
+	public Object accept(IValue value) {
+		if (value.isOneToOne()) {
+			return acceptOneToOne(value);
+		} else if (value.isManyToOne()) {
+			return acceptManyToOne(value);
+		} else if (value.isComponent()) {
+			return acceptComponent(value);
+		} else if (value.isDependantValue()) {
+			return acceptDependantValue(value);
+		} else if (value.isAny()) {
+			return acceptAny(value);
+		} else if (value.isSimpleValue()) {
+			return acceptSimpleValue(value);
+		} else if (value.isSet()) {
+			return acceptSet(value);
+		} else if (value.isOneToMany()) {
+			return acceptOneToMany(value);
+		} else if (value.isMap()) {
+			return acceptMap(value);
+		} else if (value.isPrimitiveArray()) {
+			return acceptPrimitiveArray(value);
+		} else if (value.isArray()) {
+			return acceptArray(value);
+		} else if (value.isList()) {
+			return acceptList(value);
+		} else if (value.isIdentifierBag()) {
+			return acceptIdBag(value);
+		} else if (value.isBag()) {
+			return acceptBag(value);
+		}
+		return null;
+	}
+	
 }

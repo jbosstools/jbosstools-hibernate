@@ -2,10 +2,14 @@ package org.jboss.tools.hibernate.proxy;
 
 import java.util.Iterator;
 
+import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
+import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
+import org.hibernate.mapping.DependantValue;
+import org.hibernate.mapping.IdentifierBag;
 import org.hibernate.mapping.IndexedCollection;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
@@ -13,14 +17,15 @@ import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PrimitiveArray;
+import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
-import org.hibernate.mapping.ValueVisitor;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.IValue;
+import org.jboss.tools.hibernate.spi.IValueVisitor;
 
 public class ValueProxy implements IValue {
 	
@@ -102,8 +107,8 @@ public class ValueProxy implements IValue {
 	}
 
 	@Override
-	public Object accept(ValueVisitor valueVisitor) {
-		return target.accept(valueVisitor);
+	public Object accept(IValueVisitor valueVisitor) {
+		return valueVisitor.accept(this);
 	}
 
 	@Override
@@ -199,6 +204,15 @@ public class ValueProxy implements IValue {
 		return key;
 	}
 
+	public boolean isDependantValue() {
+		return target instanceof DependantValue;
+	}
+
+	@Override
+	public boolean isAny() {
+		return target instanceof Any;
+	}
+
 	@Override
 	public boolean isSet() {
 		return target instanceof Set;
@@ -239,6 +253,46 @@ public class ValueProxy implements IValue {
 		String result = null;
 		if (isSimpleValue())  {
 			result = ((SimpleValue)target).getTypeName();
+		}
+		return result;
+	}
+
+	@Override
+	public boolean isIdentifierBag() {
+		return target instanceof IdentifierBag;
+	}
+
+	@Override
+	public boolean isBag() {
+		return target instanceof Bag;
+	}
+
+	@Override
+	public String getReferencedEntityName() {
+		String result = null;
+		if (target instanceof OneToMany) {
+			result = ((OneToMany)target).getReferencedEntityName();
+		} else if (target instanceof ToOne) {
+			result = ((ToOne)target).getReferencedEntityName();
+		}
+		return result;
+	}
+
+	@Override
+	public String getEntityName() {
+		String result = null;
+		if (target instanceof OneToOne) {
+			result = ((OneToOne)target).getEntityName();
+		}
+		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Iterator<? extends Property> getPropertyIterator() {
+		Iterator<? extends Property> result = null;
+		if (target instanceof Component) {
+			result = ((Component)target).getPropertyIterator();
 		}
 		return result;
 	}
