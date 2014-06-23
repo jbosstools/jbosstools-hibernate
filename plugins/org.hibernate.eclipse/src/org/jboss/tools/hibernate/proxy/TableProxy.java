@@ -96,5 +96,14 @@ public class TableProxy implements ITable {
 	public boolean isPhysicalTable() {
 		return target.isPhysicalTable();
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		boolean result = false;
+		if (o != null & o.getClass() == getClass()) {
+			result = ((TableProxy)o).getTarget().equals(getTarget());
+		}
+		return result;
+	}
 
 }

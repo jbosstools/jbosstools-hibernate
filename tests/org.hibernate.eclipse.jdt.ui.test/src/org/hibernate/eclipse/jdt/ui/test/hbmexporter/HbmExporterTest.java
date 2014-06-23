@@ -31,6 +31,7 @@ import org.hibernate.eclipse.jdt.ui.test.HibernateJDTuiTestPlugin;
 import org.hibernate.eclipse.jdt.ui.wizards.ConfigurationActor;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
+import org.jboss.tools.hibernate.proxy.TableProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IValue;
@@ -154,7 +155,7 @@ public class HbmExporterTest extends TestCase {
 		IValue value = new ValueProxy(listProp.getValue());
 		assertTrue("Expected to get List-type mapping", value.isList());
 		assertTrue(value.getCollectionElement().isOneToMany());
-		assertTrue(value.getCollectionTable().equals(b.getTable()));
+		assertTrue(value.getCollectionTable().equals(new TableProxy(b.getTable())));
 		assertNotNull(value.getIndex());
 		assertNotNull(value.getKey());
 	}
@@ -169,7 +170,7 @@ public class HbmExporterTest extends TestCase {
 		IValue value = new ValueProxy(setProp.getValue());
 		assertTrue("Expected to get Set-type mapping", value.isSet());
 		assertTrue(value.getCollectionElement().isOneToMany());
-		assertTrue(value.getCollectionTable().equals(b.getTable()));
+		assertTrue(value.getCollectionTable().equals(new TableProxy(b.getTable())));
 		assertNotNull(value.getKey());
 	}
 	
@@ -183,7 +184,7 @@ public class HbmExporterTest extends TestCase {
 		IValue value = new ValueProxy(mapValue.getValue());
 		assertTrue("Expected to get Map-type mapping", value.isMap());
 		assertTrue(value.getCollectionElement().isOneToMany());
-		assertTrue(value.getCollectionTable().equals(b.getTable()));
+		assertTrue(value.getCollectionTable().equals(new TableProxy(b.getTable())));
 		assertNotNull(value.getKey());
 		assertEquals("string", value.getKey().getType().getName()); //$NON-NLS-1$
 	}
