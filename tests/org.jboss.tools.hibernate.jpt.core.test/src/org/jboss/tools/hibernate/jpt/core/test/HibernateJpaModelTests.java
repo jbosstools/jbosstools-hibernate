@@ -43,6 +43,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaIdM
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaJoinTable;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaManyToManyMapping;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaTable;
+import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.test.util.ResourcesUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -93,8 +94,9 @@ public class HibernateJpaModelTests {
 		assertNotNull("Console configuration not found for project " + PROJECT_NAME, cc);
 		cc.build();
 		assertNotNull("Console configuration build problem", cc.getConfiguration());
+		IConfiguration configuration = cc.getConfiguration();
 		assertNotNull("Naming Strategy not found", cc.getConfiguration().getNamingStrategy());
-		assertEquals("ns.NamingStrategy", cc.getConfiguration().getNamingStrategy().getClass().getName());
+		assertEquals("ns.NamingStrategy", cc.getConfiguration().getNamingStrategy().getStrategyClassName());
 
 		try {
 			jpaProject = ((Reference) project.getAdapter(Reference.class)).getValue();

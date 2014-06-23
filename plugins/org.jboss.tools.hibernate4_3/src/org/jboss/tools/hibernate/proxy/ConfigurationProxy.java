@@ -152,6 +152,9 @@ public class ConfigurationProxy implements IConfiguration {
 
 	@Override
 	public INamingStrategy getNamingStrategy() {
+		if (namingStrategy == null) {
+			namingStrategy = new NamingStrategyProxy(target.getNamingStrategy());
+		}
 		return namingStrategy;
 	}
 

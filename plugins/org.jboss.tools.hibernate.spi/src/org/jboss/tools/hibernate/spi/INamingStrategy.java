@@ -15,5 +15,6 @@ public interface INamingStrategy {
 			String primaryKeyColumnName,
 			String primaryTableName);
 	String classToTableName(String defaultName);
+	String getStrategyClassName();
 
 }

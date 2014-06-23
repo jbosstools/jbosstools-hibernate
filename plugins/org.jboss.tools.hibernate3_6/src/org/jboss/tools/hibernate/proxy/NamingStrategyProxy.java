@@ -56,4 +56,9 @@ public class NamingStrategyProxy implements INamingStrategy {
 		return target.classToTableName(defaultName);
 	}
 
+	@Override
+	public String getStrategyClassName() {
+		return getTarget().getClass().getName();
+	}
+
 }

@@ -259,9 +259,11 @@ public class ConfigurationFactory {
 		localCfg.setEntityResolver(entityResolver);
 		if (StringHelper.isNotEmpty(prefs.getNamingStrategy())) {
 			try {
+				System.out.println("naming strategy name : " + prefs.getNamingStrategy());
 				INamingStrategy ns = 
 						HibernateHelper.INSTANCE.getHibernateService().newNamingStrategy(
 								prefs.getNamingStrategy());
+				System.out.println("naming strategy object: " + ns);
 				localCfg.setNamingStrategy(ns);
 			} catch (Exception c) {
 				throw new HibernateConsoleRuntimeException(
