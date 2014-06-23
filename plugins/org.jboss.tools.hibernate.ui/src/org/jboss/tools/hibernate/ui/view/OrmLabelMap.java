@@ -160,7 +160,7 @@ public class OrmLabelMap {
 		StringBuffer name = new StringBuffer();
 		name.append(persistentClass.getEntityName() != null ? 
 				persistentClass.getEntityName() : persistentClass.getClassName());
-		ITable table = new TableProxy(persistentClass.getTable());
+		ITable table = persistentClass.getTable() != null ? new TableProxy(persistentClass.getTable()) : null;
 		if (table != null) {
 			final String tableName = Utils.getTableName(table);
 			if (tableName != null) {

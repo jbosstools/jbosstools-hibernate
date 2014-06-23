@@ -61,7 +61,7 @@ public class Utils {
 			res = getName(property.getPersistentClass()) + "." + property.getName(); //$NON-NLS-1$
 		} else if (obj instanceof SimpleValue) {
 			SimpleValue sv = (SimpleValue)obj;
-			res = getTableName(new TableProxy(sv.getTable())) + "." + sv.getForeignKeyName(); //$NON-NLS-1$
+			res = getTableName(sv.getTable() != null ? new TableProxy(sv.getTable()) : null) + "." + sv.getForeignKeyName(); //$NON-NLS-1$
 		} else if (obj instanceof String) {
 			res = (String)obj;
 		}

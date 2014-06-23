@@ -52,7 +52,7 @@ public class HibernateUtils {
 	
 	public static ITable getTable(Column column) {
 		if (column.getValue() != null) {
-			return new TableProxy(column.getValue().getTable());
+			return column.getValue().getTable() != null ? new TableProxy(column.getValue().getTable()) : null;
 		}
 		return null;
 	}

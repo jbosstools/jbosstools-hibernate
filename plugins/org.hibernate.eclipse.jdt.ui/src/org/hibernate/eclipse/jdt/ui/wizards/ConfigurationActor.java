@@ -495,7 +495,7 @@ class TypeVisitor extends ASTVisitor{
 			array = new PrimitiveArray(rootClass);
 			
 			IValue value = buildSimpleValue(tb.getName());
-			value.setTable(new TableProxy(rootClass.getTable()));
+			value.setTable(rootClass.getTable() != null ? new TableProxy(rootClass.getTable()) : null);
 			array.setElement(((ValueProxy)value).getTarget());
 			array.setCollectionTable(rootClass.getTable());//TODO what to set?
 		} else {
@@ -546,13 +546,13 @@ class TypeVisitor extends ASTVisitor{
 				oValue.setAssociatedClass(associatedClass);
 				oValue.setReferencedEntityName(associatedClass.getEntityName());
 				//Set another table
-				value.setCollectionTable(new TableProxy(associatedClass.getTable()));				
+				value.setCollectionTable(associatedClass.getTable() != null ? new TableProxy(associatedClass.getTable()) : null);				
 				value.setElement(new ValueProxy(oValue));				
 			} else {
 				IValue elementValue = buildSimpleValue(tb.getTypeArguments()[0].getQualifiedName());
-				elementValue.setTable(new TableProxy(rootClass.getTable()));
+				elementValue.setTable(rootClass.getTable() != null ? new TableProxy(rootClass.getTable()) : null);
 				value.setElement(elementValue);
-				value.setCollectionTable(new TableProxy(rootClass.getTable()));//TODO what to set?
+				value.setCollectionTable(rootClass.getTable() != null ? new TableProxy(rootClass.getTable()) : null);//TODO what to set?
 			}
 			if (value.isList()){
 				value.setIndex(new ValueProxy(new SimpleValue()));
@@ -596,7 +596,7 @@ class TypeVisitor extends ASTVisitor{
 		if (value != null){
 			IValue element = buildSimpleValue("string");//$NON-NLS-1$
 			value.setElement(element);
-			value.setCollectionTable(new TableProxy(rootClass.getTable()));//TODO what to set?
+			value.setCollectionTable(rootClass.getTable() != null ? new TableProxy(rootClass.getTable()) : null);//TODO what to set?
 			buildProperty(value);
 			if (value instanceof org.hibernate.mapping.List){
 				((IndexedCollection)value).setIndex(new SimpleValue());

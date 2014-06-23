@@ -69,7 +69,7 @@ public class ElementsFactory {
 				Iterator<ForeignKey> itFK = (Iterator<ForeignKey>)databaseTable.getForeignKeyIterator();
 				while (itFK.hasNext()) {
 					final ForeignKey fk = itFK.next();
-					ITable referencedTable = new TableProxy(fk.getReferencedTable());
+					ITable referencedTable = fk.getReferencedTable() != null ? new TableProxy(fk.getReferencedTable()) : null;
 					final OrmShape referencedShape = getOrCreateDatabaseTable(referencedTable);
 					//
 					Iterator<Column> itColumns = (Iterator<Column>)fk.columnIterator();
@@ -140,7 +140,7 @@ public class ElementsFactory {
 			if (shouldCreateConnection(shape, s)) {
 				connections.add(new Connection(shape, s));
 			}
-			createConnections(s, getOrCreateDatabaseTable(new TableProxy(property.getValue().getTable())));
+			createConnections(s, getOrCreateDatabaseTable(property.getValue().getTable() != null ? new TableProxy(property.getValue().getTable()) : null));
 		}
 	}
 
@@ -188,7 +188,7 @@ public class ElementsFactory {
 				if (shouldCreateConnection(csChild1, childShape)) {
 					connections.add(new Connection(csChild1, childShape));
 				}
-				OrmShape keyTableShape = getOrCreateDatabaseTable(new TableProxy(collection.getKey().getTable()));
+				OrmShape keyTableShape = getOrCreateDatabaseTable(collection.getKey().getTable() != null ? new TableProxy(collection.getKey().getTable()) : null);
 				Iterator it = collection.getKey().getColumnIterator();
 				while (it.hasNext()) {
 					Object el = it.next();
@@ -204,7 +204,7 @@ public class ElementsFactory {
 
 		} else {
 			// this is case: if (collection.isMap() || collection.isSet())
-			childShape = getOrCreateDatabaseTable(new TableProxy(collection.getCollectionTable()));
+			childShape = getOrCreateDatabaseTable(collection.getCollectionTable() != null ? new TableProxy(collection.getCollectionTable()) : null);
 			if (childShape != null) {
 				Iterator it = ((DependantValue)csChild0.getOrmElement()).getColumnIterator();
 				while (it.hasNext()) {
@@ -272,7 +272,7 @@ public class ElementsFactory {
 			classShape = createShape(persistentClass);
 		}
 		if (componentClassDatabaseTable == null && persistentClass.getTable() != null) {
-			componentClassDatabaseTable = new TableProxy(persistentClass.getTable());
+			componentClassDatabaseTable = persistentClass.getTable() != null ? new TableProxy(persistentClass.getTable()) : null;
 		}
 		if (componentClassDatabaseTable != null) {
 			shape = getShape(componentClassDatabaseTable);
@@ -295,7 +295,7 @@ public class ElementsFactory {
 					subclassShape = createShape(subclass);
 				}
 				if (((Subclass)element).isJoinedSubclass()) {
-					ITable jcTable = new TableProxy(((Subclass)element).getTable());
+					ITable jcTable = ((Subclass)element).getTable() != null ? new TableProxy(((Subclass)element).getTable()) : null;
 					OrmShape jcTableShape = getOrCreateDatabaseTable(jcTable);
 					createConnections(subclassShape, jcTableShape);
 					if (shouldCreateConnection(subclassShape, jcTableShape)) {
@@ -307,7 +307,7 @@ public class ElementsFactory {
 						connections.add(new Connection(subclassShape, shape));
 					}
 				}
-				OrmShape ownerTableShape = getOrCreateDatabaseTable(new TableProxy(((Subclass)element).getRootTable()));
+				OrmShape ownerTableShape = getOrCreateDatabaseTable(((Subclass)element).getRootTable() != null ? new TableProxy(((Subclass)element).getRootTable()) : null);
 				createConnections(subclassShape, ownerTableShape);
 
 				Iterator<Join> joinIterator = subclass.getJoinIterator();
@@ -316,7 +316,7 @@ public class ElementsFactory {
 					Iterator<Property> iterator = join.getPropertyIterator();
 					while (iterator.hasNext()) {
 						Property property = iterator.next();
-						OrmShape tableShape =  getOrCreateDatabaseTable(new TableProxy(property.getValue().getTable()));
+						OrmShape tableShape =  getOrCreateDatabaseTable(property.getValue().getTable() != null ? new TableProxy(property.getValue().getTable()) : null);
 						createConnections(subclassShape, tableShape);
 					}
 				}
@@ -335,7 +335,7 @@ public class ElementsFactory {
 						connections.add(new Connection(idPropertyShape, componentClassShape));
 					}
 
-					OrmShape tableShape = getOrCreateDatabaseTable(new TableProxy(identifier.getTable()));
+					OrmShape tableShape = getOrCreateDatabaseTable(identifier.getTable() != null ? new TableProxy(identifier.getTable()) : null);
 					if (componentClassShape != null) {
 						createConnections(componentClassShape, tableShape);
 					}
@@ -349,7 +349,7 @@ public class ElementsFactory {
 			Iterator<Property> iterator = join.getPropertyIterator();
 			while (iterator.hasNext()) {
 				Property property = iterator.next();
-				OrmShape tableShape = getOrCreateDatabaseTable(new TableProxy(property.getValue().getTable()));
+				OrmShape tableShape = getOrCreateDatabaseTable(property.getValue().getTable() != null ? new TableProxy(property.getValue().getTable()) : null);
 				createConnections(classShape, tableShape);
 			}
 		}
@@ -365,9 +365,9 @@ public class ElementsFactory {
 			Component component = (Component)((Collection)property.getValue()).getElement();
 			if (component != null) {
 				classShape = createShape(property);
-				OrmShape tableShape = elements.get(Utils.getTableName(new TableProxy(component.getTable())));
+				OrmShape tableShape = elements.get(Utils.getTableName(component.getTable() != null ? new TableProxy(component.getTable()) : null));
 				if (tableShape == null) {
-					tableShape = getOrCreateDatabaseTable(new TableProxy(component.getTable()));
+					tableShape = getOrCreateDatabaseTable(component.getTable() != null ? new TableProxy(component.getTable()) : null);
 				}
 				createConnections(classShape, tableShape);
 				if (shouldCreateConnection(classShape, tableShape)) {
@@ -402,9 +402,13 @@ public class ElementsFactory {
 			if (classShape == null) {
 				classShape = createShape(component.getAssociatedClass());
 			}
-			OrmShape tableShape = elements.get(Utils.getTableName(new TableProxy(component.getAssociatedClass().getTable())));
+			OrmShape tableShape = elements.get(Utils.getTableName(
+					component.getAssociatedClass().getTable() != null ? 
+							new TableProxy(component.getAssociatedClass().getTable()) : null));
 			if (tableShape == null) {
-				tableShape = getOrCreateDatabaseTable(new TableProxy(component.getAssociatedClass().getTable()));
+				tableShape = getOrCreateDatabaseTable(
+						component.getAssociatedClass().getTable() != null ?
+								new TableProxy(component.getAssociatedClass().getTable()) : null);
 			}
 			createConnections(classShape, tableShape);
 			if (shouldCreateConnection(classShape, tableShape)) {

@@ -60,8 +60,8 @@ public class RelationalGraphView extends AbstractGraphViewPart {
 				if(cv==null) {
 					cv = new ConfigurationViewAdapter(pe.getPersistentClassViewAdapter().getConfiguration().getConfiguration());
 				} 
-				
-				ITable table = new TableProxy(pe.getPersistentClassViewAdapter().getPersistentClass().getTable());
+				ITable table = pe.getPersistentClassViewAdapter().getPersistentClass().getTable() != null ? 
+						new TableProxy(pe.getPersistentClassViewAdapter().getPersistentClass().getTable()) : null;
 				tables.add(new TableViewAdapter(cv,table));
 				
 			}			
