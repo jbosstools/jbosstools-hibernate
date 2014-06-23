@@ -30,7 +30,7 @@ import org.eclipse.ui.actions.ActionFactory;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.Table;
+import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.AutoLayoutAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ExportImageAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.OpenMappingAction;
@@ -90,7 +90,7 @@ public class PopupMenuProvider extends ContextMenuProvider {
 				Object first = selectedShape.getOrmElement();
 				if (first instanceof PersistentClass
 						|| first.getClass() == Property.class
-						|| first instanceof Table
+						|| first instanceof ITable
 						|| first instanceof Column) {
 					action = getActionRegistry().getAction(OpenSourceAction.ACTION_ID);
 					appendToGroup(GROUP_OPEN_SOURCE, action);
@@ -115,7 +115,7 @@ public class PopupMenuProvider extends ContextMenuProvider {
 				if (null != obj && obj instanceof OrmShape) {
 					selectedShape = (Shape)obj;
 					Object first = selectedShape.getOrmElement();
-					if (first instanceof PersistentClass || first instanceof Table) {
+					if (first instanceof PersistentClass || first instanceof ITable) {
 						addToggleVisibleStateMenu = true;
 					}
 				}

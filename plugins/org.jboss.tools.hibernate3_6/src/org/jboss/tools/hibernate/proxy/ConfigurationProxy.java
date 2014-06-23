@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.proxy;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
 
@@ -15,6 +16,7 @@ import org.jboss.tools.hibernate.spi.IMappings;
 import org.jboss.tools.hibernate.spi.INamingStrategy;
 import org.jboss.tools.hibernate.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
+import org.jboss.tools.hibernate.spi.ITable;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 
@@ -22,6 +24,7 @@ public class ConfigurationProxy implements IConfiguration {
 	
 	private Configuration target;
 	private INamingStrategy namingStrategy;
+	private HashSet<ITable> tableMappings = null;
 	
 	public ConfigurationProxy(Configuration configuration) {
 		target = configuration;
@@ -173,14 +176,24 @@ public class ConfigurationProxy implements IConfiguration {
 		throw new RuntimeException("not supported");
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public Iterator<Table> getTableMappings() {
-		Iterator<Table> result = null;
+	public Iterator<ITable> getTableMappings() {
+		Iterator<ITable> result = null;
 		if (target instanceof JDBCMetaDataConfiguration) {
-			result = ((JDBCMetaDataConfiguration)target).getTableMappings();
+			if (tableMappings == null) {
+				initializeTableMappings();
+			}
+			result = tableMappings.iterator();
 		}
 		return result;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void initializeTableMappings() {
+		Iterator<Table> iterator = ((JDBCMetaDataConfiguration)target).getTableMappings();
+		while (iterator.hasNext()) {
+			tableMappings.add(new TableProxy(iterator.next()));
+		}
 	}
 
 }

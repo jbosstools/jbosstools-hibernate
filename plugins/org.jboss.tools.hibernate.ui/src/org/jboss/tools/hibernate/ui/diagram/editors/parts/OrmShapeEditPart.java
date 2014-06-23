@@ -23,7 +23,7 @@ import org.eclipse.swt.graphics.RGB;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.Table;
+import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.ui.diagram.editors.figures.TitleFigure;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.BaseElement;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.ExpandableShape;
@@ -123,7 +123,7 @@ public class OrmShapeEditPart extends ExpandableShapeEditPart {
 		Object element = getElement();
 		if (element instanceof PersistentClass || element instanceof Component) {
 			return ResourceManager.getInstance().getColor(new RGB(0, 0, 0));
-		} else if (element instanceof Table || element instanceof Property) {
+		} else if (element instanceof ITable || element instanceof Property) {
 			return ResourceManager.getInstance().getColor(new RGB(
 					Integer.parseInt(ColorConstants.Colors_DatabaseColumnR),
 					Integer.parseInt(ColorConstants.Colors_DatabaseColumnG),

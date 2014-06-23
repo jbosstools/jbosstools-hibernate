@@ -14,7 +14,8 @@ import java.util.Iterator;
 
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
-import org.hibernate.mapping.Table;
+import org.jboss.tools.hibernate.proxy.TableProxy;
+import org.jboss.tools.hibernate.spi.ITable;
 
 /**
  * @author some modifications from Vitali
@@ -22,7 +23,7 @@ import org.hibernate.mapping.Table;
 public class HibernateUtils {
 	
 	public static boolean isPrimaryKey(Column column) {
-		Table table = getTable(column);
+		ITable table = getTable(column);
 		if (table != null) {
 			if (table.getPrimaryKey() != null) {
 				if (table.getPrimaryKey().containsColumn(column)) {
@@ -35,7 +36,7 @@ public class HibernateUtils {
 	
 	@SuppressWarnings("unchecked")
 	public static boolean isForeignKey(Column column) {
-		Table table = getTable(column);
+		ITable table = getTable(column);
 		if (table != null) {
 			Iterator<ForeignKey> iter = table.getForeignKeyIterator();
 			while (iter.hasNext()) {
@@ -49,9 +50,9 @@ public class HibernateUtils {
 		
 	}
 	
-	public static Table getTable(Column column) {
+	public static ITable getTable(Column column) {
 		if (column.getValue() != null) {
-			return column.getValue().getTable();
+			return new TableProxy(column.getValue().getTable());
 		}
 		return null;
 	}

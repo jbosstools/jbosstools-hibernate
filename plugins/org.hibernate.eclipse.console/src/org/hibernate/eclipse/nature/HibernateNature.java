@@ -50,8 +50,8 @@ import org.hibernate.eclipse.builder.HibernateBuilder;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.properties.HibernatePropertiesConstants;
-import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.ITable;
 import org.osgi.service.prefs.Preferences;
 
 public class HibernateNature implements IProjectNature {
@@ -117,11 +117,11 @@ public class HibernateNature implements IProjectNature {
 		}
 	}
 
-	List<Table> tables = null;
+	List<ITable> tables = null;
 
 	private ReadDatabaseMetaData job;
 
-	public List<Table> getTables() {
+	public List<ITable> getTables() {
 		ConsoleConfiguration ccfg = getDefaultConsoleConfiguration();
 		if(ccfg==null) return Collections.emptyList();
 
@@ -163,11 +163,11 @@ public class HibernateNature implements IProjectNature {
 				});
 
 
-				List<Table> result = new ArrayList<Table>();
-				Iterator<Table> tabs = jcfg.getTableMappings();
+				List<ITable> result = new ArrayList<ITable>();
+				Iterator<ITable> tabs = jcfg.getTableMappings();
 
 				while (tabs.hasNext() ) {
-					Table table = tabs.next();
+					ITable table = tabs.next();
 					monitor.subTask(table.getName() );
 					result.add(table);
 				}
@@ -182,11 +182,11 @@ public class HibernateNature implements IProjectNature {
 
 	}
 
-	public List<Table> getMatchingTables(String tableName) {
-		List<Table> result = new ArrayList<Table>();
-		Iterator<Table> tableMappings = getTables().iterator();
+	public List<ITable> getMatchingTables(String tableName) {
+		List<ITable> result = new ArrayList<ITable>();
+		Iterator<ITable> tableMappings = getTables().iterator();
 		while (tableMappings.hasNext() ) {
-			Table table = tableMappings.next();
+			ITable table = tableMappings.next();
 			if(table.getName().toUpperCase().startsWith(tableName.toUpperCase()) ) {
 				result.add(table);
 			}
@@ -194,10 +194,10 @@ public class HibernateNature implements IProjectNature {
 		return result;
 	}
 
-	public Table getTable(TableIdentifier nearestTableName) {
+	public ITable getTable(TableIdentifier nearestTableName) {
 		// TODO: can be made MUCH more efficient with proper indexing of the tables.
 		// TODO: handle catalog/schema properly
-		for (Table table : getTables()) {
+		for (ITable table : getTables()) {
 			if(nearestTableName.getName().equals(table.getName())) {
 				return table;
 			}

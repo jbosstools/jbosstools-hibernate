@@ -28,15 +28,15 @@ import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.EclipseImages;
-import org.hibernate.mapping.Table;
+import org.jboss.tools.hibernate.spi.ITable;
 
 public class TableContainerWorkbenchAdapter implements IWorkbenchAdapter {
 
 	public Object[] getChildren(Object o) {
 		TableContainer tc = getTableContainer( o );
-		return BasicWorkbenchAdapter.toArray(tc.getTables().iterator(), Table.class, new Comparator<Table>() {
+		return BasicWorkbenchAdapter.toArray(tc.getTables().iterator(), ITable.class, new Comparator<ITable>() {
 
-			public int compare(Table arg0, Table arg1) {
+			public int compare(ITable arg0, ITable arg1) {
 
 				return arg0.getName().compareTo(arg1.getName());
 			}

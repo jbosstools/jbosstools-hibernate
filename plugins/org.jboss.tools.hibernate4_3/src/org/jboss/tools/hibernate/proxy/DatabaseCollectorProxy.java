@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
-import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.spi.IDatabaseCollector;
+import org.jboss.tools.hibernate.spi.ITable;
 
 public class DatabaseCollectorProxy implements IDatabaseCollector {
 	
@@ -22,7 +22,7 @@ public class DatabaseCollectorProxy implements IDatabaseCollector {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Iterator<Entry<String, List<Table>>> getQualifierEntries() {
+	public Iterator<Entry<String, List<ITable>>> getQualifierEntries() {
 		return target.getQualifierEntries();
 	}
 

@@ -25,8 +25,8 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Subclass;
-import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
+import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.IValue;
 import org.jboss.tools.hibernate.ui.diagram.rulers.DiagramGuide;
@@ -285,8 +285,8 @@ public class OrmShape extends ExpandableShape {
 					}
 				}
 			}
-		} else if (ormElement instanceof Table) {
-			Iterator iterator = ((Table)getOrmElement()).getColumnIterator();
+		} else if (ormElement instanceof ITable) {
+			Iterator iterator = ((ITable)getOrmElement()).getColumnIterator();
 			while (iterator.hasNext()) {
 				Column column = (Column)iterator.next();
 				Shape bodyOrmShape = new Shape(column, getConsoleConfigName());
@@ -447,7 +447,7 @@ public class OrmShape extends ExpandableShape {
 			res = descriptors_entity;
 		} else if (ormElement instanceof Subclass) {
 			//RootClass rootClass = ((Subclass)ormElement).getRootClass();
-		} else if (ormElement instanceof Table) {
+		} else if (ormElement instanceof ITable) {
 			//Iterator iterator = ((Table)getOrmElement()).getColumnIterator();
 			//while (iterator.hasNext()) {
 			//	Column column = (Column)iterator.next();
@@ -463,14 +463,14 @@ public class OrmShape extends ExpandableShape {
 	public Object getPropertyValue(Object propertyId) {
 		Object res = null;
 		RootClass rootClass = null;
-		Table table = null;
+		ITable table = null;
 		Object ormElement = getOrmElement();
 		if (ormElement instanceof RootClass) {
 			rootClass = (RootClass)ormElement;
 		} else if (ormElement instanceof Subclass) {
 			//rootClass = ((Subclass)ormElement).getRootClass();
-		} else if (ormElement instanceof Table) {
-			table = (Table)getOrmElement();
+		} else if (ormElement instanceof ITable) {
+			table = (ITable)getOrmElement();
 		}
 		if (rootClass != null) {
 			if (ENTITY_isAbstract.equals(propertyId)) {

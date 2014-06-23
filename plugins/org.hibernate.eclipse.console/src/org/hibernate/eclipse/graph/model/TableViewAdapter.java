@@ -26,15 +26,15 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.mapping.Column;
-import org.hibernate.mapping.Table;
+import org.jboss.tools.hibernate.spi.ITable;
 
 
 public class TableViewAdapter extends GraphNode {
 
-	private Table table;
+	private ITable table;
 	private final ConfigurationViewAdapter configuration;
 
-	public TableViewAdapter(ConfigurationViewAdapter configuration, Table table) {
+	public TableViewAdapter(ConfigurationViewAdapter configuration, ITable table) {
 		this.configuration = configuration;
 		this.table = table;
 	}
@@ -44,11 +44,10 @@ public class TableViewAdapter extends GraphNode {
 		
 	}
 
-	public Table getTable() {
+	public ITable getTable() {
 		return table;
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<ColumnViewAdapter> getColumns() {
 		List<ColumnViewAdapter> result = new ArrayList<ColumnViewAdapter>();
 		Iterator<Column> columnIterator = table.getColumnIterator();

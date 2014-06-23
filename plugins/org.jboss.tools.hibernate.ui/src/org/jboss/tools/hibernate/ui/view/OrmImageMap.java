@@ -29,8 +29,8 @@ import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
-import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
+import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.IValue;
 import org.jboss.tools.hibernate.ui.diagram.UiPlugin;
@@ -45,8 +45,8 @@ public class OrmImageMap {
 
 	public static ImageDescriptor getImageDescriptor(final Object obj, final ConsoleConfiguration cfg) {
 		String imageName = null;
-		if (obj instanceof Table) {
-			imageName = getImageName((Table)obj);
+		if (obj instanceof ITable) {
+			imageName = getImageName((ITable)obj);
 		} else if (obj instanceof Column) {
 			imageName = getImageName((Column)obj);
 		} else if (obj instanceof Property) {
@@ -69,7 +69,7 @@ public class OrmImageMap {
 	 * @param table
 	 * @return
 	 */
-	public static String getImageName(Table table) {
+	public static String getImageName(ITable table) {
 		return "Image_DatabaseTable"; //$NON-NLS-1$
 	}
 
@@ -83,7 +83,7 @@ public class OrmImageMap {
 		String str = "Image_DatabaseColumn"; //$NON-NLS-1$
 		final boolean primaryKey = HibernateUtils.isPrimaryKey(column);
 		final boolean foreignKey = HibernateUtils.isForeignKey(column);
-		final Table table = HibernateUtils.getTable(column);
+		final ITable table = HibernateUtils.getTable(column);
 		if (column.isUnique()) {
 			str = "Image_DatabaseUniqueKeyColumn"; //$NON-NLS-1$
 		} else if (primaryKey && table != null && foreignKey) {

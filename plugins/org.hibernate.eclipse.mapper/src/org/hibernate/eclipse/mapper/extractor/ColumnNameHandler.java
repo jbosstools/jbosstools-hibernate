@@ -34,7 +34,7 @@ import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.nature.HibernateNature;
 import org.hibernate.mapping.Column;
-import org.hibernate.mapping.Table;
+import org.jboss.tools.hibernate.spi.ITable;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Node;
 
@@ -56,7 +56,7 @@ public class ColumnNameHandler implements HBMInfoHandler {
 		if(nature!=null) {
 			TableIdentifier nearestTableName = extractor.getNearestTableName(node);
 			if(nearestTableName!=null) {
-				Table table = nature.getTable(nearestTableName);
+				ITable table = nature.getTable(nearestTableName);
 				if (table!=null) {
 					Iterator tableMappings = table.getColumnIterator();
 					while (tableMappings.hasNext() ) {

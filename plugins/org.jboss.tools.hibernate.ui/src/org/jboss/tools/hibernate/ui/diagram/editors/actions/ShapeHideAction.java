@@ -21,7 +21,7 @@ import org.eclipse.gef.ui.actions.SelectionAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IWorkbenchPart;
 import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.Table;
+import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
 import org.jboss.tools.hibernate.ui.diagram.editors.command.ToggleShapeVisibleStateCommand;
@@ -109,7 +109,7 @@ public class ShapeHideAction extends SelectionAction {
 			if (null != obj && obj instanceof OrmShape) {
 				OrmShape ormShape = (OrmShape)obj;
 				Object ormElement = ormShape.getOrmElement();
-				if (ormElement instanceof PersistentClass || ormElement instanceof Table) {
+				if (ormElement instanceof PersistentClass || ormElement instanceof ITable) {
 					if (ormShape.isVisible()) {
 						res = true;
 					}

@@ -23,6 +23,7 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
+import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.IValue;
 import org.jboss.tools.hibernate.spi.IValueVisitor;
@@ -31,7 +32,8 @@ public class ValueProxy implements IValue {
 	
 	private Value target = null;
 	private IValue collectionElement = null;
-	private Table collectionTable = null;
+	private ITable collectionTable = null;
+	private ITable table = null;
 	private IValue key = null;
 	private IValue index = null;
 	private IType type = null;
@@ -112,8 +114,11 @@ public class ValueProxy implements IValue {
 	}
 
 	@Override
-	public Table getTable() {
-		return target.getTable();
+	public ITable getTable() {
+		if (target.getTable() != null && table == null) {
+			table = new TableProxy(target.getTable());
+		}
+		return table;
 	}
 
 	@Override
@@ -133,16 +138,19 @@ public class ValueProxy implements IValue {
 	}
 
 	@Override
-	public void setCollectionTable(Table table) {
+	public void setCollectionTable(ITable table) {
+		assert table instanceof TableProxy;
 		if (isCollection()) {
-			((Collection)target).setCollectionTable(table);
+			collectionTable = table;
+			((Collection)target).setCollectionTable(((TableProxy)table).getTarget());
 		}
 	}
 
 	@Override
-	public void setTable(Table table) {
+	public void setTable(ITable table) {
+		assert table instanceof TableProxy;
 		if (isSimpleValue()) {
-			((SimpleValue)target).setTable(table);
+			((SimpleValue)target).setTable(((TableProxy)table).getTarget());
 		}
 	}
 
@@ -186,9 +194,12 @@ public class ValueProxy implements IValue {
 	}
 
 	@Override
-	public Table getCollectionTable() {
+	public ITable getCollectionTable() {
 		if (isCollection() && collectionTable == null) {
-			collectionTable = ((Collection)target).getCollectionTable();
+			Table ct = ((Collection)target).getCollectionTable();
+			if (ct != null) {
+				collectionTable = new TableProxy(ct);
+			}
 		}
 		return collectionTable;
 	}

@@ -20,16 +20,19 @@ import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
-import org.hibernate.mapping.Table;
+import org.jboss.tools.hibernate.proxy.TableProxy;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IMappings;
+import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
+import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.ITypeFactory;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 
 public class ConsoleConfigurationTest extends TestCase {
 
 	private ConsoleConfiguration consoleCfg;
+	private IService service;
 	private ITypeFactory typeFactory;
 
 	public ConsoleConfigurationTest(String name) {
@@ -38,7 +41,8 @@ public class ConsoleConfigurationTest extends TestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		typeFactory = HibernateHelper.INSTANCE.getHibernateService().newTypeFactory();
+		service = HibernateHelper.INSTANCE.getHibernateService();
+		typeFactory = service.newTypeFactory();
 		TestConsoleConfigurationPreferences cfgprefs = new TestConsoleConfigurationPreferences();
 		consoleCfg = new ConsoleConfiguration(cfgprefs);
 		KnownConfigurations.getInstance().addConfiguration(consoleCfg, true);
@@ -137,8 +141,8 @@ public class ConsoleConfigurationTest extends TestCase {
 		Column column = new Column("label");
 		PrimaryKey pk = new PrimaryKey();
 		pk.addColumn(column);
-		Table table = new Table("faketable");
-		rc.setTable(table);
+		ITable table = service.newTable("faketable");
+		rc.setTable(((TableProxy)table).getTarget());
 		table.addColumn(column);
 		table.setPrimaryKey(pk);
 		Property fakeProp = new Property();
@@ -146,7 +150,7 @@ public class ConsoleConfigurationTest extends TestCase {
 		SimpleValue sv = new SimpleValue();
 		sv.addColumn(column);
 		sv.setTypeName("string");
-		sv.setTable(table);
+		sv.setTable(((TableProxy)table).getTarget());
 		fakeProp.setValue(sv);
 		rc.setIdentifierProperty(fakeProp);
 		rc.setIdentifier((KeyValue) fakeProp.getValue());

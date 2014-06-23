@@ -31,12 +31,12 @@ import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ConsoleMessages;
 import org.hibernate.console.ImageConstants;
-import org.hibernate.mapping.Table;
 import org.hibernate.type.CollectionType;
 import org.jboss.tools.hibernate.spi.IClassMetadata;
 import org.jboss.tools.hibernate.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.spi.ISession;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
+import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IType;
 
 /**
@@ -191,7 +191,7 @@ public class NodeFactory {
 			return consoleConfiguration;
 		}
 
-		public static TableNode createTableNode(BaseNode parent, Table table) {
+		public static TableNode createTableNode(BaseNode parent, ITable table) {
 			return new TableNode(parent, table);
 		}
 

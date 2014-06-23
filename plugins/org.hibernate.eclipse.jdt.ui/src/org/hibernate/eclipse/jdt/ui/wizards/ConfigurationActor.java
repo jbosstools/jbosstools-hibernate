@@ -62,12 +62,13 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Subclass;
-import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
 import org.hibernate.util.xpl.StringHelper;
+import org.jboss.tools.hibernate.proxy.TableProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IMappings;
+import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IValue;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 
@@ -198,7 +199,7 @@ public class ConfigurationActor {
 					subclass.setDiscriminatorValue(StringHelper.unqualify(pastClass.getClassName()));
 					subclass.setAbstract(pastClass.isAbstract());
 					if (subclass instanceof JoinedSubclass) {
-						((JoinedSubclass) subclass).setTable(new Table(StringHelper.unqualify(pastClass.getClassName()).toUpperCase()));
+						((JoinedSubclass) subclass).setTable(((TableProxy)HibernateHelper.INSTANCE.getHibernateService().newTable(StringHelper.unqualify(pastClass.getClassName()).toUpperCase())).getTarget());
 						((JoinedSubclass) subclass).setKey((KeyValue) pc.getIdentifierProperty().getValue());
 					}
 					if (pastClass.getIdentifierProperty() != null) {
@@ -275,13 +276,13 @@ class ProcessEntityInfo extends ASTVisitor {
 			Map.Entry<String, EntityInfo> entry = it.next();
 			EntityInfo entryInfo = entry.getValue();
 			String className = entryInfo.getName();
-			Table table = new Table(className.toUpperCase());
+			ITable table = HibernateHelper.INSTANCE.getHibernateService().newTable(className.toUpperCase());
 			RootClass rootClass = new RootClass();
 			rootClass.setEntityName( entryInfo.getFullyQualifiedName() );
 			rootClass.setClassName( entryInfo.getFullyQualifiedName() );
 			rootClass.setProxyInterfaceName( entryInfo.getFullyQualifiedName() );
 			rootClass.setLazy(true);
-			rootClass.setTable(table);
+			rootClass.setTable(((TableProxy)table).getTarget());
 			rootClass.setAbstract(entryInfo.isAbstractFlag());//abstract or interface
 			rootClasses.put(entryInfo.getFullyQualifiedName(), rootClass);
 		}
@@ -494,7 +495,7 @@ class TypeVisitor extends ASTVisitor{
 			array = new PrimitiveArray(rootClass);
 			
 			IValue value = buildSimpleValue(tb.getName());
-			value.setTable(rootClass.getTable());
+			value.setTable(new TableProxy(rootClass.getTable()));
 			array.setElement(((ValueProxy)value).getTarget());
 			array.setCollectionTable(rootClass.getTable());//TODO what to set?
 		} else {
@@ -545,13 +546,13 @@ class TypeVisitor extends ASTVisitor{
 				oValue.setAssociatedClass(associatedClass);
 				oValue.setReferencedEntityName(associatedClass.getEntityName());
 				//Set another table
-				value.setCollectionTable(associatedClass.getTable());				
+				value.setCollectionTable(new TableProxy(associatedClass.getTable()));				
 				value.setElement(new ValueProxy(oValue));				
 			} else {
 				IValue elementValue = buildSimpleValue(tb.getTypeArguments()[0].getQualifiedName());
-				elementValue.setTable(rootClass.getTable());
+				elementValue.setTable(new TableProxy(rootClass.getTable()));
 				value.setElement(elementValue);
-				value.setCollectionTable(rootClass.getTable());//TODO what to set?
+				value.setCollectionTable(new TableProxy(rootClass.getTable()));//TODO what to set?
 			}
 			if (value.isList()){
 				value.setIndex(new ValueProxy(new SimpleValue()));
@@ -595,7 +596,7 @@ class TypeVisitor extends ASTVisitor{
 		if (value != null){
 			IValue element = buildSimpleValue("string");//$NON-NLS-1$
 			value.setElement(element);
-			value.setCollectionTable(rootClass.getTable());//TODO what to set?
+			value.setCollectionTable(new TableProxy(rootClass.getTable()));//TODO what to set?
 			buildProperty(value);
 			if (value instanceof org.hibernate.mapping.List){
 				((IndexedCollection)value).setIndex(new SimpleValue());

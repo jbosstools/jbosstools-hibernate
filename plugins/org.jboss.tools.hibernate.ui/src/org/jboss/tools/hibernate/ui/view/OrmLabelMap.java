@@ -19,8 +19,9 @@ import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.SimpleValue;
-import org.hibernate.mapping.Table;
+import org.jboss.tools.hibernate.proxy.TableProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
+import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.IValue;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.UtilTypeExtract;
@@ -39,8 +40,8 @@ public class OrmLabelMap {
 
 	public static String getLabel(final Object obj, final ConsoleConfiguration cfg) {
 		String label = null;
-		if (obj instanceof Table) {
-			label = getParticularLabel((Table)obj);
+		if (obj instanceof ITable) {
+			label = getParticularLabel((ITable)obj);
 		} else if (obj instanceof Column) {
 			label = getParticularLabel((Column)obj);
 		} else if (obj instanceof Property) {
@@ -62,7 +63,7 @@ public class OrmLabelMap {
 		return label;
 	}
 
-	public static String getParticularLabel(Table table) {
+	public static String getParticularLabel(ITable table) {
 		return Utils.getTableName(table);
 	}
 
@@ -159,7 +160,7 @@ public class OrmLabelMap {
 		StringBuffer name = new StringBuffer();
 		name.append(persistentClass.getEntityName() != null ? 
 				persistentClass.getEntityName() : persistentClass.getClassName());
-		Table table = persistentClass.getTable();
+		ITable table = new TableProxy(persistentClass.getTable());
 		if (table != null) {
 			final String tableName = Utils.getTableName(table);
 			if (tableName != null) {

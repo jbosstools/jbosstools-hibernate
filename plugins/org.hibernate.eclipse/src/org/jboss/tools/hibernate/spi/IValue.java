@@ -4,7 +4,6 @@ import java.util.Iterator;
 
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.Table;
 
 public interface IValue {
 
@@ -19,18 +18,18 @@ public interface IValue {
 	Boolean isEmbedded();
 	boolean isToOne();
 	Object accept(IValueVisitor valueVisitor);
-	Table getTable();
+	ITable getTable();
 	IType getType();
 	void setElement(IValue element);
-	void setCollectionTable(Table table);
-	void setTable(Table table);
+	void setCollectionTable(ITable table);
+	void setTable(ITable table);
 	boolean isList();
 	void setIndex(IValue value);
 	void setTypeName(String name);
 	String getComponentClassName();
 	Iterator<Column> getColumnIterator();
 	Boolean isTypeSpecified();
-	Table getCollectionTable();
+	ITable getCollectionTable();
 	IValue getKey();
 	IValue getIndex();
 	String getElementClassName();

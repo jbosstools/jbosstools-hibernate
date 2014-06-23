@@ -21,6 +21,7 @@ import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.ejb.Ejb3Configuration;
 import org.hibernate.mapping.Property;
+import org.hibernate.mapping.Table;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
@@ -44,6 +45,7 @@ import org.jboss.tools.hibernate.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.spi.ISchemaExport;
 import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
+import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.ITableFilter;
 import org.jboss.tools.hibernate.spi.ITypeFactory;
 import org.xml.sax.EntityResolver;
@@ -251,6 +253,11 @@ public class ServiceProxy implements IService {
 	@Override
 	public IProperty newProperty() {
 		return new PropertyProxy(new Property());
+	}
+
+	@Override
+	public ITable newTable(String name) {
+		return new TableProxy(new Table(name));
 	}
 
 }

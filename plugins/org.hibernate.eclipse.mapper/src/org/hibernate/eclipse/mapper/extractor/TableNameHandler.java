@@ -30,7 +30,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.hibernate.eclipse.nature.HibernateNature;
-import org.hibernate.mapping.Table;
+import org.jboss.tools.hibernate.spi.ITable;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Node;
 
@@ -50,7 +50,7 @@ public class TableNameHandler implements HBMInfoHandler {
 		
 		List proposals = new ArrayList();
 		for (Iterator iter = tables.iterator(); iter.hasNext();) {
-			Table element = (Table) iter.next();
+			ITable element = (ITable) iter.next();
 			proposals.add(new CompletionProposal(element.getName(), offset, start.length(), element.getName().length(), null, null, null, null) );
 		}
 		

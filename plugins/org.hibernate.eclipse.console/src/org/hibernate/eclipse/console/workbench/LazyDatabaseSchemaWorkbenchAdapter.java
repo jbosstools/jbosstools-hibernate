@@ -41,13 +41,13 @@ import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
-import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.spi.IJDBCReader;
 import org.jboss.tools.hibernate.spi.IProgressListener;
 import org.jboss.tools.hibernate.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.spi.IService;
+import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 
 public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
@@ -67,9 +67,9 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 
 			List<TableContainer> result = new ArrayList<TableContainer>();
 
-			Iterator<Map.Entry<String, List<Table>>> qualifierEntries = db.getQualifierEntries();
+			Iterator<Map.Entry<String, List<ITable>>> qualifierEntries = db.getQualifierEntries();
 			while (qualifierEntries.hasNext()) {
-				Map.Entry<String, List<Table>> entry = qualifierEntries.next();
+				Map.Entry<String, List<ITable>> entry = qualifierEntries.next();
 				result.add(new TableContainer(entry.getKey(), entry.getValue()));
 			}
 			res = toArray(result.iterator(), TableContainer.class, new Comparator<TableContainer>() {

@@ -32,7 +32,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
-import org.hibernate.mapping.Table;
+import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.ITypeFactory;
 import org.jboss.tools.hibernate.util.HibernateHelper;
@@ -57,7 +57,7 @@ public class ConsoleQueryParameter {
 		addTypeFormat(typeFactory.getIntegerType(), Integer.valueOf(42));
 		addTypeFormat(typeFactory.getBigDecimalType(), new BigDecimal(42.0));
 		addTypeFormat(typeFactory.getCharacterType(), Character.valueOf('h'));
-		addTypeFormat(typeFactory.getClassType(), Table.class);
+		addTypeFormat(typeFactory.getClassType(), ITable.class);
 		addTypeFormat(typeFactory.getCurrencyType(), Currency.getInstance(Locale.getDefault()));
 		addTypeFormat(typeFactory.getDateType(), new Date());
 		addTypeFormat(typeFactory.getDoubleType(), Double.valueOf(42.42));

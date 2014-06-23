@@ -37,6 +37,6 @@ public interface IConfiguration {
 	EntityResolver getEntityResolver();
 	ISessionFactory buildSessionFactory(Object serviceRegistry);
 	Object buildSettings(Object serviceRegistry);
-	Iterator<Table> getTableMappings();
+	Iterator<ITable> getTableMappings();
 
 }

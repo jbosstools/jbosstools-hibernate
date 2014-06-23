@@ -30,9 +30,10 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Subclass;
-import org.hibernate.mapping.Table;
+import org.jboss.tools.hibernate.proxy.TableProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.IValue;
 
@@ -63,12 +64,12 @@ public class ElementsFactory {
 		while (it.hasNext()) {
 			final OrmShape shape = it.next();
 			Object ormElement = shape.getOrmElement();
-			if (ormElement instanceof Table) {
-				Table databaseTable = (Table)ormElement;
+			if (ormElement instanceof ITable) {
+				ITable databaseTable = (ITable)ormElement;
 				Iterator<ForeignKey> itFK = (Iterator<ForeignKey>)databaseTable.getForeignKeyIterator();
 				while (itFK.hasNext()) {
 					final ForeignKey fk = itFK.next();
-					Table referencedTable = fk.getReferencedTable();
+					ITable referencedTable = new TableProxy(fk.getReferencedTable());
 					final OrmShape referencedShape = getOrCreateDatabaseTable(referencedTable);
 					//
 					Iterator<Column> itColumns = (Iterator<Column>)fk.columnIterator();
@@ -139,7 +140,7 @@ public class ElementsFactory {
 			if (shouldCreateConnection(shape, s)) {
 				connections.add(new Connection(shape, s));
 			}
-			createConnections(s, getOrCreateDatabaseTable(property.getValue().getTable()));
+			createConnections(s, getOrCreateDatabaseTable(new TableProxy(property.getValue().getTable())));
 		}
 	}
 
@@ -187,7 +188,7 @@ public class ElementsFactory {
 				if (shouldCreateConnection(csChild1, childShape)) {
 					connections.add(new Connection(csChild1, childShape));
 				}
-				OrmShape keyTableShape = getOrCreateDatabaseTable(collection.getKey().getTable());
+				OrmShape keyTableShape = getOrCreateDatabaseTable(new TableProxy(collection.getKey().getTable()));
 				Iterator it = collection.getKey().getColumnIterator();
 				while (it.hasNext()) {
 					Object el = it.next();
@@ -203,7 +204,7 @@ public class ElementsFactory {
 
 		} else {
 			// this is case: if (collection.isMap() || collection.isSet())
-			childShape = getOrCreateDatabaseTable(collection.getCollectionTable());
+			childShape = getOrCreateDatabaseTable(new TableProxy(collection.getCollectionTable()));
 			if (childShape != null) {
 				Iterator it = ((DependantValue)csChild0.getOrmElement()).getColumnIterator();
 				while (it.hasNext()) {
@@ -232,7 +233,7 @@ public class ElementsFactory {
 	}
 	
 	@SuppressWarnings("rawtypes")
-	protected OrmShape getOrCreateDatabaseTable(Table databaseTable) {
+	protected OrmShape getOrCreateDatabaseTable(ITable databaseTable) {
 		OrmShape tableShape = null;
 		if (databaseTable != null) {
 			tableShape = getShape(databaseTable);
@@ -260,7 +261,7 @@ public class ElementsFactory {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected OrmShape getOrCreatePersistentClass(PersistentClass persistentClass, 
-			Table componentClassDatabaseTable) {
+			ITable componentClassDatabaseTable) {
 		OrmShape classShape = null;
 		if (persistentClass == null) {
 			return classShape;
@@ -271,7 +272,7 @@ public class ElementsFactory {
 			classShape = createShape(persistentClass);
 		}
 		if (componentClassDatabaseTable == null && persistentClass.getTable() != null) {
-			componentClassDatabaseTable = persistentClass.getTable();
+			componentClassDatabaseTable = new TableProxy(persistentClass.getTable());
 		}
 		if (componentClassDatabaseTable != null) {
 			shape = getShape(componentClassDatabaseTable);
@@ -294,7 +295,7 @@ public class ElementsFactory {
 					subclassShape = createShape(subclass);
 				}
 				if (((Subclass)element).isJoinedSubclass()) {
-					Table jcTable = ((Subclass)element).getTable();
+					ITable jcTable = new TableProxy(((Subclass)element).getTable());
 					OrmShape jcTableShape = getOrCreateDatabaseTable(jcTable);
 					createConnections(subclassShape, jcTableShape);
 					if (shouldCreateConnection(subclassShape, jcTableShape)) {
@@ -306,7 +307,7 @@ public class ElementsFactory {
 						connections.add(new Connection(subclassShape, shape));
 					}
 				}
-				OrmShape ownerTableShape = getOrCreateDatabaseTable(((Subclass)element).getRootTable());
+				OrmShape ownerTableShape = getOrCreateDatabaseTable(new TableProxy(((Subclass)element).getRootTable()));
 				createConnections(subclassShape, ownerTableShape);
 
 				Iterator<Join> joinIterator = subclass.getJoinIterator();
@@ -315,7 +316,7 @@ public class ElementsFactory {
 					Iterator<Property> iterator = join.getPropertyIterator();
 					while (iterator.hasNext()) {
 						Property property = iterator.next();
-						OrmShape tableShape =  getOrCreateDatabaseTable(property.getValue().getTable());
+						OrmShape tableShape =  getOrCreateDatabaseTable(new TableProxy(property.getValue().getTable()));
 						createConnections(subclassShape, tableShape);
 					}
 				}
@@ -334,7 +335,7 @@ public class ElementsFactory {
 						connections.add(new Connection(idPropertyShape, componentClassShape));
 					}
 
-					OrmShape tableShape = getOrCreateDatabaseTable(identifier.getTable());
+					OrmShape tableShape = getOrCreateDatabaseTable(new TableProxy(identifier.getTable()));
 					if (componentClassShape != null) {
 						createConnections(componentClassShape, tableShape);
 					}
@@ -348,7 +349,7 @@ public class ElementsFactory {
 			Iterator<Property> iterator = join.getPropertyIterator();
 			while (iterator.hasNext()) {
 				Property property = iterator.next();
-				OrmShape tableShape = getOrCreateDatabaseTable(property.getValue().getTable());
+				OrmShape tableShape = getOrCreateDatabaseTable(new TableProxy(property.getValue().getTable()));
 				createConnections(classShape, tableShape);
 			}
 		}
@@ -364,9 +365,9 @@ public class ElementsFactory {
 			Component component = (Component)((Collection)property.getValue()).getElement();
 			if (component != null) {
 				classShape = createShape(property);
-				OrmShape tableShape = elements.get(Utils.getTableName(component.getTable()));
+				OrmShape tableShape = elements.get(Utils.getTableName(new TableProxy(component.getTable())));
 				if (tableShape == null) {
-					tableShape = getOrCreateDatabaseTable(component.getTable());
+					tableShape = getOrCreateDatabaseTable(new TableProxy(component.getTable()));
 				}
 				createConnections(classShape, tableShape);
 				if (shouldCreateConnection(classShape, tableShape)) {
@@ -401,9 +402,9 @@ public class ElementsFactory {
 			if (classShape == null) {
 				classShape = createShape(component.getAssociatedClass());
 			}
-			OrmShape tableShape = elements.get(Utils.getTableName(component.getAssociatedClass().getTable()));
+			OrmShape tableShape = elements.get(Utils.getTableName(new TableProxy(component.getAssociatedClass().getTable())));
 			if (tableShape == null) {
-				tableShape = getOrCreateDatabaseTable(component.getAssociatedClass().getTable());
+				tableShape = getOrCreateDatabaseTable(new TableProxy(component.getAssociatedClass().getTable()));
 			}
 			createConnections(classShape, tableShape);
 			if (shouldCreateConnection(classShape, tableShape)) {

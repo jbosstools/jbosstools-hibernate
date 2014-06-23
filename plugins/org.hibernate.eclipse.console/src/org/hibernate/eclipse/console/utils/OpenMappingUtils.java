@@ -54,12 +54,11 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
-import org.hibernate.mapping.Table;
-import org.hibernate.mapping.ToOne;
 import org.hibernate.util.XMLHelper;
 import org.hibernate.util.xpl.StringHelper;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.ICfg2HbmTool;
+import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IValue;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 import org.xml.sax.EntityResolver;
@@ -127,7 +126,7 @@ public class OpenMappingUtils {
 	 * @param table
 	 * @return
 	 */
-	public static String getTableName(Table table) {
+	public static String getTableName(ITable table) {
 		return getTableName(table.getCatalog(), table.getSchema(), table.getName());
 	}
 
@@ -160,8 +159,8 @@ public class OpenMappingUtils {
 			res = rootClassInFile(consoleConfig, file, (RootClass)element);
 		} else if (element instanceof Subclass) {
 			res = subclassInFile(consoleConfig, file, (Subclass)element);
-		} else if (element instanceof Table) {
-			res = tableInFile(consoleConfig, file, (Table)element);
+		} else if (element instanceof ITable) {
+			res = tableInFile(consoleConfig, file, (ITable)element);
 		}
 		return res;
 	}
@@ -238,7 +237,7 @@ public class OpenMappingUtils {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static boolean tableInFile(ConsoleConfiguration consoleConfig, IFile file, Table table) {
+	public static boolean tableInFile(ConsoleConfiguration consoleConfig, IFile file, ITable table) {
 		EntityResolver entityResolver = consoleConfig.getConfiguration().getEntityResolver(); 
 		Document doc = getDocument(file.getLocation().toFile(), entityResolver);
 		Iterator<Element> classes = getElements(doc, HIBERNATE_TAG_CLASS);
@@ -669,8 +668,8 @@ public class OpenMappingUtils {
 			selectRegion = findSelectRegion(proj, findAdapter, (PersistentClass)selection);
 		} else if (selection instanceof Property){
 			selectRegion = findSelectRegion(proj, findAdapter, (Property)selection);
-		} else if (selection instanceof Table) {
-			selectRegion = findSelectRegion(proj, findAdapter, (Table)selection);
+		} else if (selection instanceof ITable) {
+			selectRegion = findSelectRegion(proj, findAdapter, (ITable)selection);
 		} else if (selection instanceof Column) {
 			selectRegion = findSelectRegion(proj, findAdapter, (Column)selection);
 		}
@@ -802,7 +801,7 @@ public class OpenMappingUtils {
 	 * @param table
 	 * @return a proper document region
 	 */
-	public static IRegion findSelectRegion(IJavaProject proj, FindReplaceDocumentAdapter findAdapter, Table table) {
+	public static IRegion findSelectRegion(IJavaProject proj, FindReplaceDocumentAdapter findAdapter, ITable table) {
 		IRegion res = null;
 		String[] tablePatterns = generateTablePatterns(table.getName());
 		IRegion tableRegion = null;

@@ -31,12 +31,12 @@ import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
-import org.hibernate.mapping.Table;
+import org.jboss.tools.hibernate.spi.ITable;
 
 public class TableWorkbenchAdapter implements IWorkbenchAdapter {
 
 	public Object[] getChildren(Object o) {
-		Table t = getTable( o );
+		ITable t = getTable( o );
 		
 		List<Object> items = new ArrayList<Object>();
 		
@@ -56,8 +56,8 @@ public class TableWorkbenchAdapter implements IWorkbenchAdapter {
 		return items.toArray(new Object[items.size()]);
 	}
 
-	private Table getTable(Object o) {
-		return (Table) o;
+	private ITable getTable(Object o) {
+		return (ITable) o;
 	}
 
 	public ImageDescriptor getImageDescriptor(Object object) {
@@ -65,7 +65,7 @@ public class TableWorkbenchAdapter implements IWorkbenchAdapter {
 	}
 
 	public String getLabel(Object o) {
-		Table table = getTable(o);
+		ITable table = getTable(o);
 		//return Table.qualify(table.getCatalog(), table.getSchema(), table.getName(), '.');
 		return table.getName();
 	}
