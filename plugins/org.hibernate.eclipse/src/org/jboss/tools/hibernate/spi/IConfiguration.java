@@ -6,6 +6,7 @@ import java.util.Properties;
 
 import org.hibernate.cfg.Settings;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Table;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 
@@ -36,5 +37,6 @@ public interface IConfiguration {
 	EntityResolver getEntityResolver();
 	ISessionFactory buildSessionFactory(Object serviceRegistry);
 	Object buildSettings(Object serviceRegistry);
+	Iterator<Table> getTableMappings();
 
 }

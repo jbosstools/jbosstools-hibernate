@@ -9,6 +9,7 @@ import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.Settings;
 import org.hibernate.engine.spi.Mapping;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IMappings;
@@ -180,5 +181,15 @@ public class ConfigurationProxy implements IConfiguration {
 			throw new RuntimeException("unknown service registry object");
 		}
 	}	
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Iterator<Table> getTableMappings() {
+		Iterator<Table> result = null;
+		if (target instanceof JDBCMetaDataConfiguration) {
+			result = ((JDBCMetaDataConfiguration)target).getTableMappings();
+		}
+		return result;
+	}
 
 }

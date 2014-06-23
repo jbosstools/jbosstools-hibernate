@@ -9,6 +9,7 @@ import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.Settings;
 import org.hibernate.engine.Mapping;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IMappings;
 import org.jboss.tools.hibernate.spi.INamingStrategy;
@@ -172,6 +173,16 @@ public class ConfigurationProxy implements IConfiguration {
 	@Override
 	public Object buildSettings(Object serviceRegisrty) {
 		throw new RuntimeException("not supported"); //$NON-NLS-1$
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Iterator<Table> getTableMappings() {
+		Iterator<Table> result = null;
+		if (target instanceof JDBCMetaDataConfiguration) {
+			result = ((JDBCMetaDataConfiguration)target).getTableMappings();
+		}
+		return result;
 	}
 
 }
