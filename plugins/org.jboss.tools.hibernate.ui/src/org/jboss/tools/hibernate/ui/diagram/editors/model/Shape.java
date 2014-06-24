@@ -20,7 +20,6 @@ import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.mapping.Property;
-import org.jboss.tools.hibernate.proxy.ColumnProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IType;
@@ -339,7 +338,7 @@ public class Shape extends BaseElement {
 			} else if (PROPERTY_TYPE.equals(propertyId)) {
 				String sqlType = col.getSqlType();
 				if (sqlType == null) {
-					getOrmDiagram().getLabelProvider().updateColumnSqlType(((ColumnProxy)col).getTarget());
+					getOrmDiagram().getLabelProvider().updateColumnSqlType(col);
 					sqlType = col.getSqlType();
 				}
 				StringBuffer name = new StringBuffer();
