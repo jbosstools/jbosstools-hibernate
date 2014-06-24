@@ -73,9 +73,9 @@ import org.hibernate.eclipse.mapper.model.RevEngGeneratorAdapter;
 import org.hibernate.eclipse.mapper.model.RevEngParamAdapter;
 import org.hibernate.eclipse.mapper.model.RevEngPrimaryKeyAdapter;
 import org.hibernate.eclipse.mapper.model.RevEngTableAdapter;
-import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
 import org.jboss.tools.hibernate.proxy.TableProxy;
+import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.ITable;
 
 public class TablePropertiesBlock extends MasterDetailsBlock {
@@ -204,7 +204,7 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 						ITable table = (ITable) object;
 						tables.put(TableIdentifier.create(((TableProxy)table).getTarget()), object);
 						lastTable = TableIdentifier.create(((TableProxy)table).getTarget());
-					} else if (object instanceof Column) {
+					} else if (object instanceof IColumn) {
 						List existing = (List) columns.get(lastTable);
 						if(existing==null) {
 							existing = new ArrayList();
@@ -240,7 +240,7 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 				if(columnList!=null) {
 					Iterator colIterator = columnList.iterator();
 					while ( colIterator.hasNext() ) {
-						Column column = (Column) colIterator.next();
+						IColumn column = (IColumn) colIterator.next();
 						IRevEngColumn revCol = editor.getReverseEngineeringDefinition().createColumn();
 						revCol.setName(column.getName());
 						if (column.getSqlType() != null){

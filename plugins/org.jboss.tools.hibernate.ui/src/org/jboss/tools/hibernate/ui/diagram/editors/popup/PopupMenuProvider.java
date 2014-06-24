@@ -27,9 +27,9 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.ui.actions.ActionFactory;
-import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
+import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.AutoLayoutAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ExportImageAction;
@@ -91,7 +91,7 @@ public class PopupMenuProvider extends ContextMenuProvider {
 				if (first instanceof PersistentClass
 						|| first.getClass() == Property.class
 						|| first instanceof ITable
-						|| first instanceof Column) {
+						|| first instanceof IColumn) {
 					action = getActionRegistry().getAction(OpenSourceAction.ACTION_ID);
 					appendToGroup(GROUP_OPEN_SOURCE, action);
 					createMenuItem(getMenu(), action);

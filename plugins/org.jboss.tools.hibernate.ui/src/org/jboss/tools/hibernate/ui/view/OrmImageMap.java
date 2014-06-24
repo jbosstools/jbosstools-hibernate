@@ -15,7 +15,6 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
-import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.IdentifierBag;
@@ -30,6 +29,7 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
+import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.IValue;
@@ -47,8 +47,8 @@ public class OrmImageMap {
 		String imageName = null;
 		if (obj instanceof ITable) {
 			imageName = getImageName((ITable)obj);
-		} else if (obj instanceof Column) {
-			imageName = getImageName((Column)obj);
+		} else if (obj instanceof IColumn) {
+			imageName = getImageName((IColumn)obj);
 		} else if (obj instanceof Property) {
 			imageName = getImageName((Property)obj, cfg);
 		} else if (obj instanceof OneToMany) {
@@ -79,7 +79,7 @@ public class OrmImageMap {
 	 * @param column
 	 * @return
 	 */
-	public static String getImageName(Column column) {
+	public static String getImageName(IColumn column) {
 		String str = "Image_DatabaseColumn"; //$NON-NLS-1$
 		final boolean primaryKey = HibernateUtils.isPrimaryKey(column);
 		final boolean foreignKey = HibernateUtils.isForeignKey(column);

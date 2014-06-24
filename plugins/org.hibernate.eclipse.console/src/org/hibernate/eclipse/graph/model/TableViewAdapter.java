@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.hibernate.mapping.Column;
+import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.ITable;
 
 
@@ -50,9 +50,9 @@ public class TableViewAdapter extends GraphNode {
 
 	public List<ColumnViewAdapter> getColumns() {
 		List<ColumnViewAdapter> result = new ArrayList<ColumnViewAdapter>();
-		Iterator<Column> columnIterator = table.getColumnIterator();
+		Iterator<IColumn> columnIterator = table.getColumnIterator();
 		while ( columnIterator.hasNext() ) {
-			Column element = columnIterator.next();
+			IColumn element = columnIterator.next();
 			result.add(new ColumnViewAdapter(this,element));
 		}
 		

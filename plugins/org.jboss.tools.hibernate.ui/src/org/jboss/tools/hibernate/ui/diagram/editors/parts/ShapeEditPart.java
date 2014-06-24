@@ -33,13 +33,13 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
-import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.SimpleValue;
+import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.ui.diagram.editors.figures.TitleFigure;
 import org.jboss.tools.hibernate.ui.diagram.editors.figures.TopLineBorder;
@@ -120,7 +120,7 @@ public class ShapeEditPart extends OrmEditPart implements NodeEditPart {
 	@Override
 	public void performRequest(Request req) {
 		if (RequestConstants.REQ_OPEN.equals(req.getType())) {
-			if (getModelShape().getOrmElement() instanceof Column) {
+			if (getModelShape().getOrmElement() instanceof IColumn) {
 				if (getModelShape().getTargetConnections().size() > 0) {
 					getModelShape().getTargetConnections().get(0).getSource().setFocus();
 				}
@@ -305,7 +305,7 @@ public class ShapeEditPart extends OrmEditPart implements NodeEditPart {
 					Integer.parseInt(ColorConstants.Colors_PersistentFieldR),
 					Integer.parseInt(ColorConstants.Colors_PersistentFieldG),
 					Integer.parseInt(ColorConstants.Colors_PersistentFieldB)));
-		else if (el instanceof Column)
+		else if (el instanceof IColumn)
 			return ResourceManager.getInstance().getColor(new RGB(
 					Integer.parseInt(ColorConstants.Colors_DatabaseColumnR),
 					Integer.parseInt(ColorConstants.Colors_DatabaseColumnG),
@@ -334,7 +334,7 @@ public class ShapeEditPart extends OrmEditPart implements NodeEditPart {
 		if (el instanceof PersistentClass || el instanceof Property ||
 				el instanceof SimpleValue || el instanceof OneToMany) {
 			return ResourceManager.getInstance().getColor(new RGB(112, 161, 99));
-		} else if (el instanceof ITable || el instanceof Column) {
+		} else if (el instanceof ITable || el instanceof IColumn) {
 			return ResourceManager.getInstance().getColor(new RGB(66, 173, 247));
 		}
 		return ResourceManager.getInstance().getColor(new RGB(255, 0, 0));

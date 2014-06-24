@@ -1,16 +1,19 @@
 package org.jboss.tools.hibernate.proxy;
 
+import java.util.HashSet;
 import java.util.Iterator;
 
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
+import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.ITable;
 
 public class TableProxy implements ITable {
 	
 	private Table target = null;
+	private HashSet<IColumn> columns = null;
 	
 	public TableProxy(Table table) {
 		target = table;
@@ -26,8 +29,10 @@ public class TableProxy implements ITable {
 	}
 
 	@Override
-	public void addColumn(Column column) {
-		target.addColumn(column);
+	public void addColumn(IColumn column) {
+		assert column instanceof ColumnProxy;
+		target.addColumn(((ColumnProxy)column).getTarget());
+		columns = null;
 	}
 
 	@Override
@@ -50,10 +55,20 @@ public class TableProxy implements ITable {
 		return target.getPrimaryKey();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public Iterator<Column> getColumnIterator() {
-		return target.getColumnIterator();
+	public Iterator<IColumn> getColumnIterator() {
+		if (columns == null) {
+			initializeColumns();
+		}
+		return columns.iterator();
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void initializeColumns() {
+		Iterator<Column> iterator = target.getColumnIterator();
+		while (iterator.hasNext()) {
+			columns.add(new ColumnProxy(iterator.next()));
+		}
 	}
 
 	@SuppressWarnings("unchecked")

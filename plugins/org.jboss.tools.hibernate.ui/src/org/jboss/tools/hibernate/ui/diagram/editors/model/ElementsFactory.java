@@ -19,7 +19,6 @@ import java.util.Set;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.mapping.Collection;
-import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.ForeignKey;
@@ -32,6 +31,7 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Subclass;
 import org.jboss.tools.hibernate.proxy.TableProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
+import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IType;
@@ -72,20 +72,20 @@ public class ElementsFactory {
 					ITable referencedTable = fk.getReferencedTable() != null ? new TableProxy(fk.getReferencedTable()) : null;
 					final OrmShape referencedShape = getOrCreateDatabaseTable(referencedTable);
 					//
-					Iterator<Column> itColumns = (Iterator<Column>)fk.columnIterator();
+					Iterator<IColumn> itColumns = (Iterator<IColumn>)fk.columnIterator();
 					while (itColumns.hasNext()) {
-						Column col = itColumns.next();
+						IColumn col = itColumns.next();
 						Shape shapeColumn = shape.getChild(col);
-						Iterator<Column> itReferencedColumns = null;
+						Iterator<IColumn> itReferencedColumns = null;
 						if (fk.isReferenceToPrimaryKey()) {
 							itReferencedColumns = 
-								(Iterator<Column>)referencedTable.getPrimaryKey().columnIterator();
+								(Iterator<IColumn>)referencedTable.getPrimaryKey().columnIterator();
 						} else {
 							itReferencedColumns = 
-								(Iterator<Column>)fk.getReferencedColumns().iterator();
+								(Iterator<IColumn>)fk.getReferencedColumns().iterator();
 						}
 						while (itReferencedColumns != null && itReferencedColumns.hasNext()) {
-							Column colReferenced = itReferencedColumns.next();
+							IColumn colReferenced = itReferencedColumns.next();
 							Shape shapeReferencedColumn = referencedShape.getChild(colReferenced);
 							if (shouldCreateConnection(shapeColumn, shapeReferencedColumn)) {
 								connections.add(new Connection(shapeColumn, shapeReferencedColumn));
@@ -169,9 +169,9 @@ public class ElementsFactory {
 			IValue value = (IValue)csChild0.getOrmElement();
 			OrmShape tableShape = getOrCreateDatabaseTable(value.getTable());
 			if (tableShape != null) {
-				Iterator<Column> it = value.getColumnIterator();
+				Iterator<IColumn> it = value.getColumnIterator();
 				while (it.hasNext()) {
-					Column el = it.next();
+					IColumn el = it.next();
 					Shape shape = tableShape.getChild(el);
 					if (shouldCreateConnection(csChild0, shape)) {
 						connections.add(new Connection(csChild0, shape));
@@ -192,8 +192,8 @@ public class ElementsFactory {
 				Iterator it = collection.getKey().getColumnIterator();
 				while (it.hasNext()) {
 					Object el = it.next();
-					if (el instanceof Column) {
-						Column col = (Column)el;
+					if (el instanceof IColumn) {
+						IColumn col = (IColumn)el;
 						Shape shape = keyTableShape.getChild(col);
 						if (shouldCreateConnection(csChild0, shape)) {
 							connections.add(new Connection(csChild0, shape));
@@ -209,8 +209,8 @@ public class ElementsFactory {
 				Iterator it = ((DependantValue)csChild0.getOrmElement()).getColumnIterator();
 				while (it.hasNext()) {
 					Object el = it.next();
-					if (el instanceof Column) {
-						Column col = (Column)el;
+					if (el instanceof IColumn) {
+						IColumn col = (IColumn)el;
 						Shape shape = childShape.getChild(col);
 						if (shouldCreateConnection(csChild0, shape)) {
 							connections.add(new Connection(csChild0, shape));
@@ -220,8 +220,8 @@ public class ElementsFactory {
 				it = ((SimpleValue)csChild1.getOrmElement()).getColumnIterator();
 				while (it.hasNext()) {
 					Object el = it.next();
-					if (el instanceof Column) {
-						Column col = (Column)el;
+					if (el instanceof IColumn) {
+						IColumn col = (IColumn)el;
 						Shape shape = childShape.getChild(col);
 						if (shouldCreateConnection(csChild1, shape)) {
 							connections.add(new Connection(csChild1, shape));
@@ -461,10 +461,10 @@ public class ElementsFactory {
 			Iterator iterator = value.getColumnIterator();
 			while (iterator.hasNext()) {
 				Object o = iterator.next();
-				if (!(o instanceof Column)) {
+				if (!(o instanceof IColumn)) {
 					continue;
 				}
-				Column dbColumn = (Column)o;
+				IColumn dbColumn = (IColumn)o;
 				Iterator<Shape> itColumns = dbTable.getChildrenIterator();
 				while (itColumns.hasNext()) {
 					final Shape shapeCol = itColumns.next();
@@ -476,8 +476,8 @@ public class ElementsFactory {
 					}
 					Object ormElement = shapeCol.getOrmElement();
 					String name2 = ""; //$NON-NLS-1$
-					if (ormElement instanceof Column) {
-						Column dbColumn2 = (Column)ormElement;
+					if (ormElement instanceof IColumn) {
+						IColumn dbColumn2 = (IColumn)ormElement;
 						name2 = dbColumn2.getName();
 					} else if (ormElement instanceof Property) {
 						Property property2 = (Property)ormElement;

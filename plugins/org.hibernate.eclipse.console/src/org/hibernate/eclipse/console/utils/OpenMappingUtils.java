@@ -49,7 +49,6 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
-import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -58,6 +57,7 @@ import org.hibernate.util.XMLHelper;
 import org.hibernate.util.xpl.StringHelper;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.ICfg2HbmTool;
+import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IValue;
 import org.jboss.tools.hibernate.util.HibernateHelper;
@@ -670,8 +670,8 @@ public class OpenMappingUtils {
 			selectRegion = findSelectRegion(proj, findAdapter, (Property)selection);
 		} else if (selection instanceof ITable) {
 			selectRegion = findSelectRegion(proj, findAdapter, (ITable)selection);
-		} else if (selection instanceof Column) {
-			selectRegion = findSelectRegion(proj, findAdapter, (Column)selection);
+		} else if (selection instanceof IColumn) {
+			selectRegion = findSelectRegion(proj, findAdapter, (IColumn)selection);
 		}
 		return selectRegion;
 	}
@@ -827,7 +827,7 @@ public class OpenMappingUtils {
 	 * @param table
 	 * @return a proper document region
 	 */
-	public static IRegion findSelectRegion(IJavaProject proj, FindReplaceDocumentAdapter findAdapter, Column column) {
+	public static IRegion findSelectRegion(IJavaProject proj, FindReplaceDocumentAdapter findAdapter, IColumn column) {
 		IRegion res = null;
 		String[] columnPatterns = generateColumnPatterns(column.getName());
 		IRegion columnRegion = null;

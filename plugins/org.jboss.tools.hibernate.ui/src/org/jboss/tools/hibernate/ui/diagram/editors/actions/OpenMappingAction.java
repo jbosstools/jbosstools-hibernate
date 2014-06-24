@@ -21,8 +21,8 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
-import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Property;
+import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.UiPlugin;
 import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
@@ -77,7 +77,7 @@ public class OpenMappingAction extends SelectionAction {
 			}
 			Shape shapeParent = null;
 			Object selectionParent = null;
-			if (selection instanceof Column) {
+			if (selection instanceof IColumn) {
 				shapeParent = (Shape)shape.getParent();
 				selectionParent = shapeParent.getOrmElement();
 			}

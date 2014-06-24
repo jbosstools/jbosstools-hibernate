@@ -48,7 +48,6 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefEntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefType;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
 import org.hibernate.mapping.Array;
-import org.hibernate.mapping.Column;
 import org.hibernate.mapping.IndexedCollection;
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.KeyValue;
@@ -64,8 +63,10 @@ import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.ToOne;
 import org.hibernate.util.xpl.StringHelper;
+import org.jboss.tools.hibernate.proxy.ColumnProxy;
 import org.jboss.tools.hibernate.proxy.TableProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
+import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IMappings;
 import org.jboss.tools.hibernate.spi.ITable;
@@ -180,7 +181,7 @@ public class ConfigurationActor {
 						if (pc instanceof RootClass && pc.getDiscriminator() == null){
 							SimpleValue discr = new SimpleValue();
 							discr.setTypeName("string"); //$NON-NLS-1$
-							discr.addColumn(new Column("DISCR_COL")); //$NON-NLS-1$
+							discr.addColumn(((ColumnProxy)HibernateHelper.INSTANCE.getHibernateService().newColumn("DISCR_COL")).getTarget()); //$NON-NLS-1$
 							((RootClass)pc).setDiscriminator(discr);
 						}
 					} else {
@@ -342,7 +343,7 @@ class ProcessEntityInfo extends ASTVisitor {
 		if (currentType == node && rootClass.getIdentifierProperty() == null){
 			//root class should always has id
 			SimpleValue sValue = new SimpleValue();
-			sValue.addColumn(new Column("id".toUpperCase()));//$NON-NLS-1$
+			sValue.addColumn(((ColumnProxy)HibernateHelper.INSTANCE.getHibernateService().newColumn("id".toUpperCase())).getTarget());//$NON-NLS-1$
 			sValue.setTypeName(Long.class.getName());
 			Property prop = new Property();
 			prop.setName("id"); //$NON-NLS-1$
@@ -513,7 +514,7 @@ class TypeVisitor extends ASTVisitor{
 		
 		SimpleValue key = new SimpleValue();
 		if (StringHelper.isNotEmpty(entityInfo.getPrimaryIdName())) {
-			key.addColumn(new Column(entityInfo.getPrimaryIdName().toUpperCase()));
+			key.addColumn(((ColumnProxy)HibernateHelper.INSTANCE.getHibernateService().newColumn(entityInfo.getPrimaryIdName().toUpperCase())).getTarget());
 		}
 		array.setKey(key);
 		array.setFetchMode(FetchMode.JOIN);
@@ -627,8 +628,8 @@ class TypeVisitor extends ASTVisitor{
 				throw new IllegalStateException(ref.refType.toString());
 			}
 			
-			Column column = new Column(varName.toUpperCase());
-			sValue.addColumn(column);					
+			IColumn column = HibernateHelper.INSTANCE.getHibernateService().newColumn(varName.toUpperCase());
+			sValue.addColumn(((ColumnProxy)column).getTarget());					
 			sValue.setTypeName(tb.getBinaryName());
 			sValue.setFetchMode(FetchMode.JOIN);
 			sValue.setReferencedEntityName(ref.fullyQualifiedName);
@@ -658,7 +659,7 @@ class TypeVisitor extends ASTVisitor{
 	
 	private IValue buildSimpleValue(String typeName){
 		SimpleValue sValue = new SimpleValue();
-		sValue.addColumn(new Column(varName.toUpperCase()));
+		sValue.addColumn(((ColumnProxy)HibernateHelper.INSTANCE.getHibernateService().newColumn(varName.toUpperCase())).getTarget());
 		sValue.setTypeName(typeName);
 		return new ValueProxy(sValue);
 	}
@@ -683,7 +684,7 @@ class TypeVisitor extends ASTVisitor{
 		SimpleValue key = new SimpleValue();
 		key.setTypeName("string");//$NON-NLS-1$
 		if (StringHelper.isNotEmpty(entityInfo.getPrimaryIdName())){
-			key.addColumn(new Column(entityInfo.getPrimaryIdName().toUpperCase()));
+			key.addColumn(((ColumnProxy)HibernateHelper.INSTANCE.getHibernateService().newColumn(entityInfo.getPrimaryIdName().toUpperCase())).getTarget());
 		}
 		cValue.setKey(key);
 		cValue.setLazy(true);

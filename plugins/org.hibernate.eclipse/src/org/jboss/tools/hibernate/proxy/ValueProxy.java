@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.proxy;
 
+import java.util.HashSet;
 import java.util.Iterator;
 
 import org.hibernate.mapping.Any;
@@ -23,6 +24,7 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
+import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.IValue;
@@ -37,6 +39,7 @@ public class ValueProxy implements IValue {
 	private IValue key = null;
 	private IValue index = null;
 	private IType type = null;
+	private HashSet<IColumn> columns = null;
 
 	public ValueProxy(Value value) {
 		target = value;
@@ -177,10 +180,20 @@ public class ValueProxy implements IValue {
 		return isComponent() ? ((Component)target).getComponentClassName() : null;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public Iterator<Column> getColumnIterator() {
-		return target.getColumnIterator();
+	public Iterator<IColumn> getColumnIterator() {
+		if (columns == null) {
+			initializeColumns();
+		}
+		return columns.iterator();
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void initializeColumns() {
+		Iterator<Column> iterator = target.getColumnIterator();
+		while (iterator.hasNext()) {
+			columns.add(new ColumnProxy(iterator.next()));
+		}
 	}
 
 	@Override

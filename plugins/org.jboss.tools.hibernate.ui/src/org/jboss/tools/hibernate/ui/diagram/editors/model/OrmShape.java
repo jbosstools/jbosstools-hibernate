@@ -18,7 +18,6 @@ import org.eclipse.ui.IMemento;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import org.hibernate.mapping.Collection;
-import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.Property;
@@ -26,6 +25,7 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Subclass;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
+import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.IValue;
@@ -288,14 +288,14 @@ public class OrmShape extends ExpandableShape {
 		} else if (ormElement instanceof ITable) {
 			Iterator iterator = ((ITable)getOrmElement()).getColumnIterator();
 			while (iterator.hasNext()) {
-				Column column = (Column)iterator.next();
+				IColumn column = (IColumn)iterator.next();
 				Shape bodyOrmShape = new Shape(column, getConsoleConfigName());
 				addChild(bodyOrmShape);
 			}
 		}
 	}
 	
-	public Shape getChild(Column ormElement) {
+	public Shape getChild(IColumn ormElement) {
 		if (ormElement == null) {
 			return null;
 		}
@@ -303,7 +303,7 @@ public class OrmShape extends ExpandableShape {
 		while (it.hasNext()) {
 			final Shape child = it.next();
 			Object childElement = child.getOrmElement();
-			if (childElement instanceof Column && ormElement.getName().equals(((Column)childElement).getName())) {
+			if (childElement instanceof IColumn && ormElement.getName().equals(((IColumn)childElement).getName())) {
 				return child;
 			}
 		}

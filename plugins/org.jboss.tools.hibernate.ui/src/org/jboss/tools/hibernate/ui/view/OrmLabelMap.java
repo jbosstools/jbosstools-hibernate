@@ -12,7 +12,6 @@ package org.jboss.tools.hibernate.ui.view;
 
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.workbench.TypeNameValueVisitor;
-import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.OneToMany;
@@ -21,6 +20,7 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.SimpleValue;
 import org.jboss.tools.hibernate.proxy.TableProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
+import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.IValue;
@@ -42,8 +42,8 @@ public class OrmLabelMap {
 		String label = null;
 		if (obj instanceof ITable) {
 			label = getParticularLabel((ITable)obj);
-		} else if (obj instanceof Column) {
-			label = getParticularLabel((Column)obj);
+		} else if (obj instanceof IColumn) {
+			label = getParticularLabel((IColumn)obj);
 		} else if (obj instanceof Property) {
 			label = getParticularLabel((Property)obj, cfg);
 		} else if (obj instanceof OneToMany) {
@@ -67,7 +67,7 @@ public class OrmLabelMap {
 		return Utils.getTableName(table);
 	}
 
-	public static String getParticularLabel(Column column) {
+	public static String getParticularLabel(IColumn column) {
 		final String sqlType = column.getSqlType();
 		StringBuffer name = new StringBuffer();
 		name.append(column.getName());

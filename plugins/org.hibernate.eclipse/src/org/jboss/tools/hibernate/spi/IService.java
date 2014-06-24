@@ -77,5 +77,7 @@ public interface IService {
 	IProperty newProperty();
 	
 	ITable newTable(String name);
+
+	IColumn newColumn(String string);
 	
 }

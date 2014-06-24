@@ -24,6 +24,7 @@ import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.jpa.HibernatePersistenceProvider;
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
@@ -34,6 +35,7 @@ import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.util.xpl.ReflectHelper;
 import org.jboss.tools.hibernate.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.spi.ICfg2HbmTool;
+import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.spi.IExporter;
@@ -293,6 +295,11 @@ public class ServiceProxy implements IService {
 	@Override
 	public ITable newTable(String name) {
 		return new TableProxy(new Table(name));
+	}
+
+	@Override
+	public IColumn newColumn(String string) {
+		return new ColumnProxy(new Column(string));
 	}
 
 }

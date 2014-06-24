@@ -26,8 +26,9 @@ import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.EclipseImages;
-import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
+import org.jboss.tools.hibernate.proxy.ColumnProxy;
+import org.jboss.tools.hibernate.spi.IColumn;
 
 public class PrimaryKeyWorkbenchAdapter implements IWorkbenchAdapter {
 
@@ -38,7 +39,7 @@ public class PrimaryKeyWorkbenchAdapter implements IWorkbenchAdapter {
 		if(t.getColumnSpan()==1) {
 			return new Object[0];
 		} else {
-			return t.getColumns().toArray(new Column[0]);
+			return t.getColumns().toArray(new IColumn[0]);
 		}
 	}
 
@@ -53,7 +54,7 @@ public class PrimaryKeyWorkbenchAdapter implements IWorkbenchAdapter {
 	public String getLabel(Object o) {
 		PrimaryKey table = getPrimaryKey(o);
 		if(table.getColumnSpan()==1) {
-			return ColumnWorkbenchAdapter.getColumnLabel(table.getColumn(0));
+			return ColumnWorkbenchAdapter.getColumnLabel(table.getColumn(0) != null ? new ColumnProxy(table.getColumn(0)) : null);
 		} else {
 			return HibernateConsoleMessages.PrimaryKeyWorkbenchAdapter_composite_primary_key;
 		}

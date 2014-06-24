@@ -33,7 +33,7 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.nature.HibernateNature;
-import org.hibernate.mapping.Column;
+import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Node;
@@ -60,7 +60,7 @@ public class ColumnNameHandler implements HBMInfoHandler {
 				if (table!=null) {
 					Iterator tableMappings = table.getColumnIterator();
 					while (tableMappings.hasNext() ) {
-						Column column = (Column) tableMappings.next();
+						IColumn column = (IColumn) tableMappings.next();
 						if(column.getName().toUpperCase().startsWith(start.toUpperCase()) ) {
 							columns.add(column);
 						}
@@ -71,7 +71,7 @@ public class ColumnNameHandler implements HBMInfoHandler {
 
 		List proposals = new ArrayList();
 		for (Iterator iter = columns.iterator(); iter.hasNext();) {
-			Column element = (Column) iter.next();
+			IColumn element = (IColumn) iter.next();
 			proposals.add(new CompletionProposal(element.getName(), offset, start.length(), element.getName().length(), null, null, null, null) );
 		}
 		

@@ -2,7 +2,6 @@ package org.jboss.tools.hibernate.spi;
 
 import java.util.Iterator;
 
-import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Property;
 
 public interface IValue {
@@ -27,7 +26,7 @@ public interface IValue {
 	void setIndex(IValue value);
 	void setTypeName(String name);
 	String getComponentClassName();
-	Iterator<Column> getColumnIterator();
+	Iterator<IColumn> getColumnIterator();
 	Boolean isTypeSpecified();
 	ITable getCollectionTable();
 	IValue getKey();

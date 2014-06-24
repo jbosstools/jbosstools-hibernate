@@ -19,9 +19,10 @@ import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
-import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Property;
+import org.jboss.tools.hibernate.proxy.ColumnProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
+import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.IValue;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Connection.ConnectionType;
@@ -270,7 +271,7 @@ public class Shape extends BaseElement {
 	public IPropertyDescriptor[] getPropertyDescriptors() {
 		if (getOrmElement() instanceof Property) {
 			return descriptors_property;
-		} else if (getOrmElement() instanceof Column) {
+		} else if (getOrmElement() instanceof IColumn) {
 			return descriptors_column;
 		}
 		return super.getPropertyDescriptors();
@@ -286,9 +287,9 @@ public class Shape extends BaseElement {
 	@Override
 	public Object getPropertyValue(Object propertyId) {
 		Object res = null;
-		Column col = null;
-		if (getOrmElement() instanceof Column) {
-			col = (Column)getOrmElement();
+		IColumn col = null;
+		if (getOrmElement() instanceof IColumn) {
+			col = (IColumn)getOrmElement();
 		}
 		Property prop = null;
 		if (getOrmElement() instanceof Property) {
@@ -338,7 +339,7 @@ public class Shape extends BaseElement {
 			} else if (PROPERTY_TYPE.equals(propertyId)) {
 				String sqlType = col.getSqlType();
 				if (sqlType == null) {
-					getOrmDiagram().getLabelProvider().updateColumnSqlType(col);
+					getOrmDiagram().getLabelProvider().updateColumnSqlType(((ColumnProxy)col).getTarget());
 					sqlType = col.getSqlType();
 				}
 				StringBuffer name = new StringBuffer();

@@ -32,9 +32,9 @@ import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.resolver.DialectFactory;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.engine.Mapping;
-import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
+import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 
 /**
@@ -103,8 +103,8 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 
 	@Override
 	public String getText(Object obj) {
-		if (obj instanceof Column) {
-			updateColumnSqlType((Column)obj);
+		if (obj instanceof IColumn) {
+			updateColumnSqlType((IColumn)obj);
 		}
 		return OrmLabelMap.getLabel(obj, getConsoleConfig());
 	}
@@ -139,7 +139,7 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 	 * @param column
 	 * @return
 	 */
-	public boolean updateColumnSqlType(final Column column) {
+	public boolean updateColumnSqlType(final IColumn column) {
 		String sqlType = column.getSqlType();
 		if (sqlType != null) {
 			return false;

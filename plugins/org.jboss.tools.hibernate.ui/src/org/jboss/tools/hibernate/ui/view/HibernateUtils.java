@@ -12,9 +12,9 @@ package org.jboss.tools.hibernate.ui.view;
 
 import java.util.Iterator;
 
-import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
-import org.jboss.tools.hibernate.proxy.TableProxy;
+import org.jboss.tools.hibernate.proxy.ColumnProxy;
+import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.ITable;
 
 /**
@@ -22,11 +22,11 @@ import org.jboss.tools.hibernate.spi.ITable;
  */
 public class HibernateUtils {
 	
-	public static boolean isPrimaryKey(Column column) {
+	public static boolean isPrimaryKey(IColumn column) {
 		ITable table = getTable(column);
 		if (table != null) {
 			if (table.getPrimaryKey() != null) {
-				if (table.getPrimaryKey().containsColumn(column)) {
+				if (table.getPrimaryKey().containsColumn(((ColumnProxy)column).getTarget())) {
 					return true;
 				}
 			}
@@ -34,14 +34,13 @@ public class HibernateUtils {
 		return false;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static boolean isForeignKey(Column column) {
+	public static boolean isForeignKey(IColumn column) {
 		ITable table = getTable(column);
 		if (table != null) {
 			Iterator<ForeignKey> iter = table.getForeignKeyIterator();
 			while (iter.hasNext()) {
 				ForeignKey fk = iter.next();
-				if (fk.containsColumn(column)) {
+				if (fk.containsColumn(((ColumnProxy)column).getTarget())) {
 					return true;
 				}
 			}
@@ -50,9 +49,9 @@ public class HibernateUtils {
 		
 	}
 	
-	public static ITable getTable(Column column) {
+	public static ITable getTable(IColumn column) {
 		if (column.getValue() != null) {
-			return column.getValue().getTable() != null ? new TableProxy(column.getValue().getTable()) : null;
+			return column.getValue().getTable();
 		}
 		return null;
 	}

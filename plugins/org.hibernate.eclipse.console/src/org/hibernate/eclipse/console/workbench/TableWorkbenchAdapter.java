@@ -29,8 +29,9 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.utils.EclipseImages;
-import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
+import org.jboss.tools.hibernate.proxy.ColumnProxy;
+import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.ITable;
 
 public class TableWorkbenchAdapter implements IWorkbenchAdapter {
@@ -47,8 +48,8 @@ public class TableWorkbenchAdapter implements IWorkbenchAdapter {
 		
 		Iterator<?> columnIterator = t.getColumnIterator();
 		while ( columnIterator.hasNext() ) {
-			Column col = (Column) columnIterator.next();
-			if(primaryKey==null || !primaryKey.containsColumn(col)) {
+			IColumn col = (IColumn) columnIterator.next();
+			if(primaryKey==null || !primaryKey.containsColumn(((ColumnProxy)col).getTarget())) {
 				items.add(col); // only add non-pk columns here
 			}			
 		}

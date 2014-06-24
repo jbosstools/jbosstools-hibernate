@@ -33,10 +33,10 @@ import org.eclipse.ui.views.properties.IPropertySource2;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.node.BaseNode;
-import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
+import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IValue;
@@ -77,7 +77,7 @@ public class ConfigurationAdapterFactory implements IAdapterFactory {
 		map.put(IValue.class, new ValueWorkbenchAdapter());
 		map.put(ITable.class, new TableWorkbenchAdapter());
 		map.put(PrimaryKey.class, new PrimaryKeyWorkbenchAdapter());
-		map.put(Column.class, new ColumnWorkbenchAdapter());
+		map.put(IColumn.class, new ColumnWorkbenchAdapter());
 		map.put(BaseNode.class, new BaseNodeWorkbenchAdapter());
 		
 		
