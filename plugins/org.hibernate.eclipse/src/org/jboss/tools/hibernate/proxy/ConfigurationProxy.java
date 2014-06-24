@@ -12,6 +12,7 @@ import org.hibernate.engine.Mapping;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IMapping;
 import org.jboss.tools.hibernate.spi.IMappings;
 import org.jboss.tools.hibernate.spi.INamingStrategy;
 import org.jboss.tools.hibernate.spi.IReverseEngineeringStrategy;
@@ -25,6 +26,7 @@ public class ConfigurationProxy implements IConfiguration {
 	private Configuration target;
 	private INamingStrategy namingStrategy;
 	private HashSet<ITable> tableMappings = null;
+	private IMapping mapping = null;
 	
 	public ConfigurationProxy(Configuration configuration) {
 		target = configuration;
@@ -146,8 +148,14 @@ public class ConfigurationProxy implements IConfiguration {
 	}
 
 	@Override
-	public Mapping buildMapping() {
-		return target.buildMapping();
+	public IMapping buildMapping() {
+		if (mapping == null) {
+			Mapping m = target.buildMapping();
+			if (m != null) {
+				mapping = new MappingProxy(m);
+			}
+		}
+		return mapping;
 	}
 
 	@Override

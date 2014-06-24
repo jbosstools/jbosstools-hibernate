@@ -30,13 +30,13 @@ import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.dialect.resolver.DialectFactory;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
-import org.hibernate.engine.Mapping;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.jboss.tools.hibernate.proxy.DialectProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IDialect;
+import org.jboss.tools.hibernate.spi.IMapping;
 
 /**
  *
@@ -46,7 +46,7 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 	private Map<ImageDescriptor, Image> imageCache = new HashMap<ImageDescriptor, Image>(25);
 	
 	protected String consoleConfigName;
-	protected Mapping mapping = null;
+	protected IMapping mapping = null;
 	protected IDialect dialect = null;
 
 	public OrmLabelProvider() {
@@ -148,7 +148,7 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 		final IConfiguration config = getConfig();
 		if (mapping == null && config != null) {
 			final ConsoleConfiguration consoleConfig = getConsoleConfig();
-			mapping = (Mapping)consoleConfig.execute(new ExecutionContext.Command() {
+			mapping = (IMapping)consoleConfig.execute(new ExecutionContext.Command() {
 				public Object execute() {
 					return config.buildMapping();
 				}

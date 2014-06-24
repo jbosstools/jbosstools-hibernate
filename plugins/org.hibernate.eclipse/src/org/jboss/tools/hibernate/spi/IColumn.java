@@ -1,7 +1,5 @@
 package org.jboss.tools.hibernate.spi;
 
-import org.hibernate.engine.Mapping;
-
 public interface IColumn {
 
 	String getName();
@@ -16,7 +14,7 @@ public interface IColumn {
 	boolean isNullable();
 	IValue getValue();
 	boolean isUnique();
-	String getSqlType(IDialect dialect, Mapping mapping);
+	String getSqlType(IDialect dialect, IMapping mapping);
 	void setSqlType(String sqlType);
 
 }
