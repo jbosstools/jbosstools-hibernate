@@ -19,6 +19,7 @@ import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
+import org.hibernate.connection.DriverManagerConnectionProvider;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.resolver.DialectFactory;
@@ -280,6 +281,11 @@ public class ServiceProxy implements IService {
 			dialect = DialectFactory.buildDialect(properties, connection);
 		}
 		return dialect != null ? new DialectProxy(dialect) : null;
+	}
+
+	@Override
+	public Class<?> getDriverManagerConnectionProviderClass() {
+		return DriverManagerConnectionProvider.class;
 	}
 
 }

@@ -83,4 +83,6 @@ public interface IService {
 	
 	IDialect newDialect(Properties properties, Connection connection);
 	
+	Class<?> getDriverManagerConnectionProviderClass();
+	
 }

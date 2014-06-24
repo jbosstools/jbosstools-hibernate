@@ -26,6 +26,7 @@ import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.dialect.Dialect;
+import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.engine.jdbc.dialect.internal.DialectFactoryImpl;
 import org.hibernate.engine.jdbc.dialect.spi.DatabaseMetaDataDialectResolutionInfoAdapter;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
@@ -332,5 +333,9 @@ public class ServiceProxy implements IService {
 		return dialect != null ? new DialectProxy(dialect) : null;
 	}
 
-
+	@Override
+	public Class<?> getDriverManagerConnectionProviderClass() {
+		return DriverManagerConnectionProviderImpl.class;
+	}
+	
 }

@@ -27,6 +27,7 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
+import org.hibernate.service.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.service.jdbc.dialect.internal.DialectFactoryImpl;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
@@ -290,6 +291,11 @@ public class ServiceProxy implements IService {
 	public IDialect newDialect(Properties properties, Connection connection) {
 		Dialect dialect = new DialectFactoryImpl().buildDialect(properties, connection);
 		return dialect != null ? new DialectProxy(dialect) : null;
+	}
+
+	@Override
+	public Class<?> getDriverManagerConnectionProviderClass() {
+		return DriverManagerConnectionProviderImpl.class;
 	}
 
 

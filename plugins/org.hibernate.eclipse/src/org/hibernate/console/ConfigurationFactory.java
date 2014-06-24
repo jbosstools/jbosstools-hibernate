@@ -44,7 +44,6 @@ import org.eclipse.osgi.util.NLS;
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
 import org.hibernate.cfg.Environment;
-import org.hibernate.connection.DriverManagerConnectionProvider;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
 import org.hibernate.eclipse.libs.FakeDelegatingDriver;
@@ -376,7 +375,7 @@ public class ConfigurationFactory {
 		// set this property to null!
 		if (invokeProperties.containsKey(Environment.DATASOURCE)){
 			invokeProperties.setProperty(Environment.TRANSACTION_MANAGER_STRATEGY, FAKE_TM_LOOKUP);
-			invokeProperties.put(Environment.CONNECTION_PROVIDER, DriverManagerConnectionProvider.class.getName());
+			invokeProperties.put(Environment.CONNECTION_PROVIDER, HibernateHelper.INSTANCE.getHibernateService().getDriverManagerConnectionProviderClass().getName());
 			invokeProperties.remove(Environment.DATASOURCE);
 			localCfg.setProperties(invokeProperties);
 		}
