@@ -188,11 +188,15 @@ public class ValueProxy implements IValue {
 		return columns.iterator();
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	private void initializeColumns() {
-		Iterator<Column> iterator = target.getColumnIterator();
+		columns = new HashSet<IColumn>();
+		Iterator iterator = target.getColumnIterator();
 		while (iterator.hasNext()) {
-			columns.add(new ColumnProxy(iterator.next()));
+			Object object = iterator.next();
+			if (object instanceof Column) {
+				columns.add(new ColumnProxy(object));
+			}
 		}
 	}
 

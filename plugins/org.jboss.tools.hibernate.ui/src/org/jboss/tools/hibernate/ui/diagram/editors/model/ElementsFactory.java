@@ -19,6 +19,7 @@ import java.util.Set;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.mapping.Collection;
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.ForeignKey;
@@ -29,6 +30,7 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Subclass;
+import org.jboss.tools.hibernate.proxy.ColumnProxy;
 import org.jboss.tools.hibernate.proxy.TableProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
@@ -72,9 +74,9 @@ public class ElementsFactory {
 					ITable referencedTable = fk.getReferencedTable() != null ? new TableProxy(fk.getReferencedTable()) : null;
 					final OrmShape referencedShape = getOrCreateDatabaseTable(referencedTable);
 					//
-					Iterator<IColumn> itColumns = (Iterator<IColumn>)fk.columnIterator();
+					Iterator itColumns = fk.columnIterator();
 					while (itColumns.hasNext()) {
-						IColumn col = itColumns.next();
+						IColumn col = new ColumnProxy(itColumns.next());
 						Shape shapeColumn = shape.getChild(col);
 						Iterator<IColumn> itReferencedColumns = null;
 						if (fk.isReferenceToPrimaryKey()) {
@@ -85,7 +87,7 @@ public class ElementsFactory {
 								(Iterator<IColumn>)fk.getReferencedColumns().iterator();
 						}
 						while (itReferencedColumns != null && itReferencedColumns.hasNext()) {
-							IColumn colReferenced = itReferencedColumns.next();
+							IColumn colReferenced = new ColumnProxy(itReferencedColumns.next());
 							Shape shapeReferencedColumn = referencedShape.getChild(colReferenced);
 							if (shouldCreateConnection(shapeColumn, shapeReferencedColumn)) {
 								connections.add(new Connection(shapeColumn, shapeReferencedColumn));

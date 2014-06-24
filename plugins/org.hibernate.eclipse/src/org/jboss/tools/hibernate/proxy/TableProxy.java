@@ -65,6 +65,7 @@ public class TableProxy implements ITable {
 	
 	@SuppressWarnings("unchecked")
 	private void initializeColumns() {
+		columns = new HashSet<IColumn>();
 		Iterator<Column> iterator = target.getColumnIterator();
 		while (iterator.hasNext()) {
 			columns.add(new ColumnProxy(iterator.next()));
