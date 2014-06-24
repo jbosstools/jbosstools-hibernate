@@ -4,6 +4,8 @@ import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Map;
 import java.util.Properties;
 
@@ -23,6 +25,11 @@ import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.console.HibernateConsoleRuntimeException;
+import org.hibernate.dialect.Dialect;
+import org.hibernate.engine.jdbc.dialect.internal.DialectFactoryImpl;
+import org.hibernate.engine.jdbc.dialect.spi.DatabaseMetaDataDialectResolutionInfoAdapter;
+import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
+import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfoSource;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Property;
@@ -38,6 +45,7 @@ import org.jboss.tools.hibernate.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IDatabaseCollector;
+import org.jboss.tools.hibernate.spi.IDialect;
 import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.spi.IJDBCReader;
@@ -301,5 +309,28 @@ public class ServiceProxy implements IService {
 	public IColumn newColumn(String string) {
 		return new ColumnProxy(new Column(string));
 	}
+
+	@Override
+	public IDialect newDialect(Properties properties, final Connection connection) {
+		Dialect dialect = new DialectFactoryImpl().buildDialect(
+				properties, 
+				new DialectResolutionInfoSource() {
+					@Override
+					public DialectResolutionInfo getDialectResolutionInfo() {
+						try {
+							return new DatabaseMetaDataDialectResolutionInfoAdapter( connection.getMetaData() );
+						}
+						catch ( SQLException sqlException ) {
+							throw new HibernateConsoleRuntimeException(
+									"Unable to access java.sql.DatabaseMetaData to determine appropriate Dialect to use",
+									sqlException
+							);
+						}
+					}
+				}
+		);
+		return dialect != null ? new DialectProxy(dialect) : null;
+	}
+
 
 }

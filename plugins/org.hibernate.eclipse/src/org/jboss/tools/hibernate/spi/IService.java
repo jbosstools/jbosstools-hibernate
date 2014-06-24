@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.spi;
 
 import java.io.File;
+import java.sql.Connection;
 import java.util.Map;
 import java.util.Properties;
 
@@ -79,5 +80,7 @@ public interface IService {
 	ITable newTable(String name);
 
 	IColumn newColumn(String string);
+	
+	IDialect newDialect(Properties properties, Connection connection);
 	
 }

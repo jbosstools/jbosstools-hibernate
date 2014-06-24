@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.proxy;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
+import java.sql.Connection;
 import java.util.Map;
 import java.util.Properties;
 
@@ -19,12 +20,14 @@ import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.console.HibernateConsoleRuntimeException;
+import org.hibernate.dialect.Dialect;
 import org.hibernate.ejb.Ejb3Configuration;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
+import org.hibernate.service.jdbc.dialect.internal.DialectFactoryImpl;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
@@ -36,6 +39,7 @@ import org.jboss.tools.hibernate.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IDatabaseCollector;
+import org.jboss.tools.hibernate.spi.IDialect;
 import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.spi.IJDBCReader;
@@ -280,6 +284,12 @@ public class ServiceProxy implements IService {
 	@Override
 	public IColumn newColumn(String string) {
 		return new ColumnProxy(new Column(string));
+	}
+
+	@Override
+	public IDialect newDialect(Properties properties, Connection connection) {
+		Dialect dialect = new DialectFactoryImpl().buildDialect(properties, connection);
+		return dialect != null ? new DialectProxy(dialect) : null;
 	}
 
 

@@ -32,9 +32,8 @@ import org.eclipse.datatools.connectivity.ProfileManager;
 import org.eclipse.datatools.connectivity.drivers.DriverInstance;
 import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
 import org.hibernate.cfg.Environment;
-import org.hibernate.dialect.resolver.DialectFactory;
-import org.jboss.tools.hibernate.proxy.DialectProxy;
 import org.jboss.tools.hibernate.spi.IDialect;
+import org.jboss.tools.hibernate.util.HibernateHelper;
 
 /**
  * @author Vitali Yemialyanchyk
@@ -119,7 +118,7 @@ public class ConnectionProfileUtil {
 				//note this code potentially could throw class cast exception
 				//see https://issues.jboss.org/browse/JBIDE-8192
 				//probably when not Hiberante3.5 is used
-				IDialect dialect = new DialectProxy(DialectFactory.buildDialect(properties, connection));
+				IDialect dialect = HibernateHelper.INSTANCE.getHibernateService().newDialect(properties, connection);
 				return dialect.toString();
 			} catch (SQLException e) {
 				// can't determine dialect
