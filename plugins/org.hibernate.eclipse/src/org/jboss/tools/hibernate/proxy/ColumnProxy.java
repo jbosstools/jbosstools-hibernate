@@ -1,9 +1,9 @@
 package org.jboss.tools.hibernate.proxy;
 
-import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.Mapping;
 import org.hibernate.mapping.Column;
 import org.jboss.tools.hibernate.spi.IColumn;
+import org.jboss.tools.hibernate.spi.IDialect;
 import org.jboss.tools.hibernate.spi.IValue;
 
 public class ColumnProxy implements IColumn {
@@ -83,8 +83,9 @@ public class ColumnProxy implements IColumn {
 	}
 
 	@Override
-	public String getSqlType(Dialect dialect, Mapping mapping) {
-		return target.getSqlType(dialect, mapping);
+	public String getSqlType(IDialect dialect, Mapping mapping) {
+		assert dialect instanceof DialectProxy;
+		return target.getSqlType(((DialectProxy)dialect).getTarget(), mapping);
 	}
 
 	@Override

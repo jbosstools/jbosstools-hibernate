@@ -28,14 +28,15 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.execution.ExecutionContext;
-import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.resolver.DialectFactory;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.engine.Mapping;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
+import org.jboss.tools.hibernate.proxy.DialectProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IDialect;
 
 /**
  *
@@ -46,7 +47,7 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 	
 	protected String consoleConfigName;
 	protected Mapping mapping = null;
-	protected Dialect dialect = null;
+	protected IDialect dialect = null;
 
 	public OrmLabelProvider() {
 	}
@@ -157,7 +158,7 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 			final String dialectName = config.getProperty(Environment.DIALECT);
 			if (dialectName != null) {
 				try {
-					dialect = DialectFactory.buildDialect(config.getProperties());
+					dialect = new DialectProxy(DialectFactory.buildDialect(config.getProperties()));
 				} catch (HibernateException e) {
 					HibernateConsolePlugin.getDefault().logErrorMessage("HibernateException: ", e); //$NON-NLS-1$
 				}

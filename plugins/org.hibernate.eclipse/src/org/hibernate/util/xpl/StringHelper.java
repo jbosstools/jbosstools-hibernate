@@ -24,12 +24,12 @@
  */
 package org.hibernate.util.xpl;
 
-import java.util.Iterator;
-import java.util.StringTokenizer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.StringTokenizer;
 
-import org.hibernate.dialect.Dialect;
+import org.jboss.tools.hibernate.spi.IDialect;
 
 public final class StringHelper {
 
@@ -557,7 +557,7 @@ public final class StringHelper {
 	 *
 	 * @return True if quoted, false otherwise
 	 */
-	public static boolean isQuoted(String name, Dialect dialect) {
+	public static boolean isQuoted(String name, IDialect dialect) {
 		return name != null && name.length() != 0
 				&& ( name.charAt( 0 ) == '`' && name.charAt( name.length() - 1 ) == '`'
 				|| name.charAt( 0 ) == dialect.openQuote() && name.charAt( name.length() - 1 ) == dialect.closeQuote() );
@@ -571,7 +571,7 @@ public final class StringHelper {
 	 *
 	 * @return The unquoted version.
 	 */
-	public static String unquote(String name, Dialect dialect) {
+	public static String unquote(String name, IDialect dialect) {
 		if ( isQuoted( name, dialect ) ) {
 			return name.substring( 1, name.length() - 1 );
 		}
@@ -588,7 +588,7 @@ public final class StringHelper {
 	 *
 	 * @return The unquoted versions.
 	 */
-	public static String[] unquote(String[] names, Dialect dialect) {
+	public static String[] unquote(String[] names, IDialect dialect) {
 		if ( names == null ) {
 			return null;
 		}
