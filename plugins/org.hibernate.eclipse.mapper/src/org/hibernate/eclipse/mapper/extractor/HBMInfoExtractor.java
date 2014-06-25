@@ -40,10 +40,11 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
 import org.eclipse.wst.sse.ui.internal.contentassist.CustomCompletionProposal;
 import org.eclipse.wst.xml.ui.internal.contentassist.XMLRelevanceConstants;
-import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.eclipse.mapper.MapperMessages;
 import org.hibernate.util.xpl.StringHelper;
+import org.jboss.tools.hibernate.spi.IEnvironment;
+import org.jboss.tools.hibernate.util.HibernateHelper;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
@@ -180,7 +181,8 @@ public class HBMInfoExtractor {
 	private String[] extractHibernateProperties() {
 		try {
 			// TODO: extract property names from the Environment class in the users hibernate configuration.
-			Class cl = Environment.class;
+			IEnvironment environment = HibernateHelper.INSTANCE.getHibernateService().getEnvironment();
+			Class cl = environment.getWrappedClass();
 			List names = new ArrayList();
 			Field[] fields = cl.getFields();
 			for (int i = 0; i < fields.length; i++) {
