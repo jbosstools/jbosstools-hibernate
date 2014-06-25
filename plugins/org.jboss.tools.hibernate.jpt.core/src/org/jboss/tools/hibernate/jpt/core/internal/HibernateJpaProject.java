@@ -41,7 +41,6 @@ import org.eclipse.jpt.jpa.core.internal.AbstractJpaProject;
 import org.eclipse.wst.validation.ValidationFramework;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
-import org.hibernate.cfg.Environment;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
@@ -52,7 +51,9 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
 import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValidationMessage;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IEnvironment;
 import org.jboss.tools.hibernate.spi.INamingStrategy;
+import org.jboss.tools.hibernate.util.HibernateHelper;
 import org.osgi.service.prefs.Preferences;
 
 /**
@@ -64,10 +65,13 @@ public class HibernateJpaProject extends AbstractJpaProject {
 	private Boolean cachedNamingStrategyEnable;
 	
 	private final JobCommand revalidateCommand;
+	
+	private IEnvironment environment;
 
 	public HibernateJpaProject(JpaProject.Config config){
 		super(config);
 		revalidateCommand = new RevalidateProjectCommand();
+		environment = HibernateHelper.INSTANCE.getHibernateService().getEnvironment();
 	}
 	
 	public ConsoleConfiguration getDefaultConsoleConfiguration(){
@@ -118,13 +122,13 @@ public class HibernateJpaProject extends AbstractJpaProject {
 		if (cc != null){
 			if (cc.hasConfiguration()){//was not build yet
 				IConfiguration configuration = cc.getConfiguration();
-				if (configuration.getProperties().containsKey(Environment.DEFAULT_SCHEMA)){
-					schema = configuration.getProperty(Environment.DEFAULT_SCHEMA);
+				if (configuration.getProperties().containsKey(environment.getDefaultSchema())){
+					schema = configuration.getProperty(environment.getDefaultSchema());
 				}
 			}
 			Properties properties = cc.getPreferences().getProperties();
-			if (properties != null && properties.containsKey(Environment.DEFAULT_SCHEMA)){
-				schema = properties.getProperty(Environment.DEFAULT_SCHEMA);
+			if (properties != null && properties.containsKey(environment.getDefaultSchema())){
+				schema = properties.getProperty(environment.getDefaultSchema());
 			}
 		}
 		if (schema == null){
@@ -155,14 +159,14 @@ public class HibernateJpaProject extends AbstractJpaProject {
 		if (cc != null){
 			if (cc.hasConfiguration()){//was not build yet
 				IConfiguration configuration = cc.getConfiguration();
-				if (configuration.getProperties().containsKey(Environment.DEFAULT_CATALOG)){
-					catalog = configuration.getProperty(Environment.DEFAULT_CATALOG);
+				if (configuration.getProperties().containsKey(environment.getDefaultCatalog())){
+					catalog = configuration.getProperty(environment.getDefaultCatalog());
 				}
 				
 			}
 			Properties properties = cc.getPreferences().getProperties();
-			if (properties != null && properties.containsKey(Environment.DEFAULT_CATALOG)){
-				catalog = properties.getProperty(Environment.DEFAULT_CATALOG);
+			if (properties != null && properties.containsKey(environment.getDefaultCatalog())){
+				catalog = properties.getProperty(environment.getDefaultCatalog());
 			}
 		}
 		if (catalog == null){
