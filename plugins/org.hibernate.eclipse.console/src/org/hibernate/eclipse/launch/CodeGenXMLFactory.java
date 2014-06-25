@@ -35,7 +35,6 @@ import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.datatools.connectivity.ProfileManager;
 import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.hibernate.cfg.Environment;
 import org.hibernate.console.ConfigurationFactory;
 import org.hibernate.console.ConfigurationXMLStrings;
 import org.hibernate.console.ConfigurationXMLFactory;
@@ -47,6 +46,8 @@ import org.hibernate.console.preferences.PreferencesClassPathUtils;
 import org.hibernate.eclipse.console.model.impl.ExporterFactory;
 import org.hibernate.eclipse.launch.ExportersXMLAttributeDescription.AttributeDescription;
 import org.hibernate.util.xpl.StringHelper;
+import org.jboss.tools.hibernate.spi.IEnvironment;
+import org.jboss.tools.hibernate.util.HibernateHelper;
 
 /**
  * XML document part creation factory,
@@ -170,22 +171,23 @@ public class CodeGenXMLFactory {
 		boolean bPropFile = profile != null;
 		// update property with fake tm
 		Properties propsTmp = null;
+		IEnvironment environment = HibernateHelper.INSTANCE.getHibernateService().getEnvironment();
 		if (consoleConfigPrefs != null && consoleConfigPrefs.getPropertyFile() != null) {
 			propsTmp = consoleConfigPrefs.getProperties();
-			String tmStrategy = propsTmp.getProperty(Environment.TRANSACTION_MANAGER_STRATEGY);
+			String tmStrategy = propsTmp.getProperty(environment.getTransactionManagerStrategy());
 			if (tmStrategy != null && StringHelper.isEmpty(tmStrategy)) {
-				propsTmp.setProperty(Environment.TRANSACTION_MANAGER_STRATEGY,
+				propsTmp.setProperty(environment.getTransactionManagerStrategy(),
 					ConfigurationFactory.FAKE_TM_LOOKUP);
 				bPropFile = true;
 			}
 		}
 		if (bPropFile) {
 			Set<String> specialProps = new TreeSet<String>();
-			specialProps.add(Environment.DRIVER);
-			specialProps.add(Environment.URL);
-			specialProps.add(Environment.USER);
-			specialProps.add(Environment.PASS);
-			specialProps.add(Environment.DIALECT);
+			specialProps.add(environment.getDriver());
+			specialProps.add(environment.getURL());
+			specialProps.add(environment.getUser());
+			specialProps.add(environment.getPass());
+			specialProps.add(environment.getDialect());
 			//
 			if (propsTmp == null) {
 				propsTmp = new Properties();
@@ -203,12 +205,12 @@ public class CodeGenXMLFactory {
 				//
 				String dialectName = consoleConfigPrefs.getDialectName();
 				//
-				propsTmp.setProperty(Environment.DRIVER, driverClass);
-				propsTmp.setProperty(Environment.URL, url);
-				propsTmp.setProperty(Environment.USER, user);
-				propsTmp.setProperty(Environment.PASS, pass);
+				propsTmp.setProperty(environment.getDriver(), driverClass);
+				propsTmp.setProperty(environment.getURL(), url);
+				propsTmp.setProperty(environment.getUser(), user);
+				propsTmp.setProperty(environment.getPass(), pass);
 				if (StringHelper.isNotEmpty(dialectName)) {
-					propsTmp.setProperty(Environment.DIALECT, dialectName);
+					propsTmp.setProperty(environment.getDialect(), dialectName);
 				}
 			}
 			// output keys in sort order
