@@ -41,6 +41,7 @@ import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.spi.IDialect;
+import org.jboss.tools.hibernate.spi.IEnvironment;
 import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.spi.IJDBCReader;
@@ -296,6 +297,11 @@ public class ServiceProxy implements IService {
 	@Override
 	public Class<?> getDriverManagerConnectionProviderClass() {
 		return DriverManagerConnectionProviderImpl.class;
+	}
+
+	@Override
+	public IEnvironment getEnvironment() {
+		return new EnvironmentProxy();
 	}
 
 
