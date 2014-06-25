@@ -43,7 +43,6 @@ import org.eclipse.datatools.connectivity.ProfileManager;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
-import org.hibernate.cfg.Environment;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
 import org.hibernate.eclipse.libs.FakeDelegatingDriver;
@@ -52,6 +51,7 @@ import org.hibernate.util.XMLHelper;
 import org.hibernate.util.xpl.ReflectHelper;
 import org.hibernate.util.xpl.StringHelper;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IEnvironment;
 import org.jboss.tools.hibernate.spi.INamingStrategy;
 import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.util.HibernateHelper;
@@ -65,11 +65,15 @@ public class ConfigurationFactory {
 	
 	private ConsoleConfigurationPreferences prefs;
 	private Map<String, FakeDelegatingDriver> fakeDrivers;
+	private IService service;
+	private IEnvironment environment;
 
 	public ConfigurationFactory(ConsoleConfigurationPreferences prefs,
 			Map<String, FakeDelegatingDriver> fakeDrivers) {
 		this.prefs = prefs;
 		this.fakeDrivers = fakeDrivers;
+		service = HibernateHelper.INSTANCE.getHibernateService();
+		environment = service.getEnvironment();
 	}
 
 	public ConsoleConfigurationPreferences getPreferences() {
@@ -82,9 +86,9 @@ public class ConfigurationFactory {
 		if (properties != null) {
 			// in case the transaction manager is empty then we need to inject a faketm since
 			// hibernate will still try and instantiate it.
-			String str = properties.getProperty(Environment.TRANSACTION_MANAGER_STRATEGY);
+			String str = properties.getProperty(environment.getTransactionManagerStrategy());
 			if (str != null && StringHelper.isEmpty(str)) {
-				properties.setProperty(Environment.TRANSACTION_MANAGER_STRATEGY, FAKE_TM_LOOKUP);
+				properties.setProperty(environment.getTransactionManagerStrategy(), FAKE_TM_LOOKUP);
 				// properties.setProperty( "hibernate.transaction.factory_class", "");
 			}
 		}
@@ -100,7 +104,7 @@ public class ConfigurationFactory {
 
 		// here both setProperties and configxml have had their chance to tell which databasedriver
 		// is needed.
-		registerFakeDriver(localCfg.getProperty(Environment.DRIVER));
+		registerFakeDriver(localCfg.getProperty(environment.getDriver()));
 		// autoConfigureDialect(localCfg); Disabled for now since it causes very looong timeouts for
 		// non-running databases + i havent been needed until now...
 
@@ -115,7 +119,7 @@ public class ConfigurationFactory {
 		}
 		// TODO: HBX-
 		localCfg.setProperty("hibernate.temp.use_jdbc_metadata_defaults", "false"); //$NON-NLS-1$//$NON-NLS-2$
-		localCfg.setProperty(Environment.HBM2DDL_AUTO, "false"); //$NON-NLS-1$
+		localCfg.setProperty(environment.getHBM2DDLAuto(), "false"); //$NON-NLS-1$
 		// to fix: JBIDE-5839 & JBIDE-5997 - setup this property: false is default value
 		// to make hibernate tools diff hibernate versions compatible:
 		// if the property not set get NoSuchMethodError with FullTextIndexEventListener
@@ -130,10 +134,10 @@ public class ConfigurationFactory {
 	// autoConfigureDialect(localCfg); Disabled for now since it causes very looong timeouts for
 	// non-running databases + i havent been needed until now...
 	private void autoConfigureDialect(IConfiguration localCfg) {
-		if (localCfg.getProperty(Environment.DIALECT) == null) {
+		if (localCfg.getProperty(environment.getDialect()) == null) {
 			String dialect = ConnectionProfileUtil.autoDetectDialect(localCfg.getProperties());
 			if (dialect != null){
-				localCfg.setProperty(Environment.DIALECT, dialect);
+				localCfg.setProperty(environment.getDialect(), dialect);
 			}
 		}
 	}
@@ -163,7 +167,7 @@ public class ConfigurationFactory {
 						ConsoleMessages.ConsoleConfiguration_could_not_load_jpa_configuration, e);
 			}
 		} else {
-			localCfg = HibernateHelper.INSTANCE.getHibernateService().newDefaultConfiguration();
+			localCfg = service.newDefaultConfiguration();
 			localCfg = configureStandardConfiguration(includeMappings, localCfg, properties);
 		}
 		return localCfg;
@@ -171,7 +175,6 @@ public class ConfigurationFactory {
 
 	private IConfiguration buildAnnotationConfiguration() throws ClassNotFoundException,
 			InstantiationException, IllegalAccessException {
-		IService service = HibernateHelper.INSTANCE.getHibernateService();
 		return service.newAnnotationConfiguration();
 	}
 
@@ -189,7 +192,7 @@ public class ConfigurationFactory {
 				overrides.put("hibernate.ejb.naming_strategy", prefs.getNamingStrategy()); //$NON-NLS-1$
 			}
 			if (StringHelper.isNotEmpty(prefs.getDialectName())) {
-				overrides.put(Environment.DIALECT, prefs.getDialectName());
+				overrides.put(environment.getDialect(), prefs.getDialectName());
 			}
 			if (!includeMappings) {
 				overrides.put("hibernate.archive.autodetection", "none"); //$NON-NLS-1$//$NON-NLS-2$
@@ -197,7 +200,7 @@ public class ConfigurationFactory {
 			if (StringHelper.isEmpty((String) overrides.get("javax.persistence.validation.mode"))) {//$NON-NLS-1$
 				overrides.put("javax.persistence.validation.mode", "none"); //$NON-NLS-1$//$NON-NLS-2$
 			}
-			IConfiguration invoke = HibernateHelper.INSTANCE.getHibernateService().newJpaConfiguration(entityResolver, persistenceUnit, overrides);
+			IConfiguration invoke = service.newJpaConfiguration(entityResolver, persistenceUnit, overrides);
 			changeDatasourceProperties(invoke);
 			invoke = configureConnectionProfile(invoke);
 			return invoke;
@@ -260,7 +263,7 @@ public class ConfigurationFactory {
 			try {
 				System.out.println("naming strategy name : " + prefs.getNamingStrategy());
 				INamingStrategy ns = 
-						HibernateHelper.INSTANCE.getHibernateService().newNamingStrategy(
+						service.newNamingStrategy(
 								prefs.getNamingStrategy());
 				System.out.println("naming strategy object: " + ns);
 				localCfg.setNamingStrategy(ns);
@@ -275,7 +278,7 @@ public class ConfigurationFactory {
 		localCfg = configureConnectionProfile(localCfg);
 		// replace dialect if it is set in preferences
 		if (StringHelper.isNotEmpty(prefs.getDialectName())) {
-			localCfg.setProperty(Environment.DIALECT, prefs.getDialectName());
+			localCfg.setProperty(environment.getDialect(), prefs.getDialectName());
 		}
 		if (StringHelper.isEmpty(localCfg.getProperty("javax.persistence.validation.mode"))) {//$NON-NLS-1$
 			localCfg.setProperty("javax.persistence.validation.mode", "none"); //$NON-NLS-1$//$NON-NLS-2$
@@ -373,10 +376,10 @@ public class ConfigurationFactory {
 	private void changeDatasourceProperties(IConfiguration localCfg){
 		final Properties invokeProperties = localCfg.getProperties();
 		// set this property to null!
-		if (invokeProperties.containsKey(Environment.DATASOURCE)){
-			invokeProperties.setProperty(Environment.TRANSACTION_MANAGER_STRATEGY, FAKE_TM_LOOKUP);
-			invokeProperties.put(Environment.CONNECTION_PROVIDER, HibernateHelper.INSTANCE.getHibernateService().getDriverManagerConnectionProviderClass().getName());
-			invokeProperties.remove(Environment.DATASOURCE);
+		if (invokeProperties.containsKey(environment.getDataSource())){
+			invokeProperties.setProperty(environment.getTransactionManagerStrategy(), FAKE_TM_LOOKUP);
+			invokeProperties.put(environment.getConnectionProvider(), service.getDriverManagerConnectionProviderClass().getName());
+			invokeProperties.remove(environment.getDataSource());
 			localCfg.setProperties(invokeProperties);
 		}
 	}
