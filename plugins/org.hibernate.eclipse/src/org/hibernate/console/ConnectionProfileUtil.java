@@ -31,8 +31,8 @@ import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.datatools.connectivity.ProfileManager;
 import org.eclipse.datatools.connectivity.drivers.DriverInstance;
 import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
-import org.hibernate.cfg.Environment;
 import org.jboss.tools.hibernate.spi.IDialect;
+import org.jboss.tools.hibernate.spi.IEnvironment;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 
 /**
@@ -88,29 +88,31 @@ public class ConnectionProfileUtil {
 	 */
 	public static Properties getHibernateConnectionProperties(IConnectionProfile profile){
 		Properties props = new Properties();
+		IEnvironment environment = HibernateHelper.INSTANCE.getHibernateService().getEnvironment();
 		if (profile != null) {
 			final Properties cpProperties = profile.getProperties(profile.getProviderId());
 			String driverClass = ConnectionProfileUtil.getDriverClass(profile.getName());
-			props.setProperty(Environment.DRIVER, driverClass);
+			props.setProperty(environment.getDriver(), driverClass);
 			String url = cpProperties.getProperty(IJDBCDriverDefinitionConstants.URL_PROP_ID);
-			props.setProperty(Environment.URL, url);
+			props.setProperty(environment.getURL(), url);
 			String user = cpProperties.getProperty(IJDBCDriverDefinitionConstants.USERNAME_PROP_ID);
 			if (null != user && user.length() > 0) {
-				props.setProperty(Environment.USER, user);
+				props.setProperty(environment.getUser(), user);
 			}
 			String pass = cpProperties.getProperty(IJDBCDriverDefinitionConstants.PASSWORD_PROP_ID);
 			if (null != pass && pass.length() > 0) {
-				props.setProperty(Environment.PASS, pass);
+				props.setProperty(environment.getPass(), pass);
 			}
 		}
 		return props;
 	}
 	
 	public static String autoDetectDialect(Properties properties) {
-		if (properties.getProperty(Environment.DIALECT) == null) {
-			String url = properties.getProperty(Environment.URL);
-			String user = properties.getProperty(Environment.USER);
-			String pass = properties.getProperty(Environment.PASS);
+		IEnvironment environment = HibernateHelper.INSTANCE.getHibernateService().getEnvironment();		
+		if (properties.getProperty(environment.getDialect()) == null) {
+			String url = properties.getProperty(environment.getURL());
+			String user = properties.getProperty(environment.getUser());
+			String pass = properties.getProperty(environment.getPass());
 			Connection connection = null;
 			try {
 				connection = DriverManager.getConnection(url, user, pass);
@@ -133,7 +135,7 @@ public class ConnectionProfileUtil {
 			}
 			return null;
 		} else {
-			return properties.getProperty(Environment.DIALECT);
+			return properties.getProperty(environment.getDialect());
 		}
 	}
 }
