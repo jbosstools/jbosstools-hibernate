@@ -24,7 +24,6 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.hibernate.HibernateException;
-import org.hibernate.cfg.Environment;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.execution.ExecutionContext;
@@ -34,6 +33,7 @@ import org.hibernate.mapping.RootClass;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IDialect;
+import org.jboss.tools.hibernate.spi.IEnvironment;
 import org.jboss.tools.hibernate.spi.IMapping;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 
@@ -140,6 +140,7 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 	 * @return
 	 */
 	public boolean updateColumnSqlType(final IColumn column) {
+		IEnvironment environment = HibernateHelper.INSTANCE.getHibernateService().getEnvironment();
 		String sqlType = column.getSqlType();
 		if (sqlType != null) {
 			return false;
@@ -154,7 +155,7 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 			} );
 		}
 		if (dialect == null && config != null) {
-			final String dialectName = config.getProperty(Environment.DIALECT);
+			final String dialectName = config.getProperty(environment.getDialect());
 			if (dialectName != null) {
 				try {
 					dialect = HibernateHelper.INSTANCE.getHibernateService().newDialect(config.getProperties(), null);
