@@ -35,7 +35,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.osgi.util.NLS;
-import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.Settings;
 import org.hibernate.console.execution.DefaultExecutionContext;
 import org.hibernate.console.execution.ExecutionContext;
@@ -49,7 +48,9 @@ import org.hibernate.console.preferences.PreferencesClassPathUtils;
 import org.hibernate.eclipse.libs.FakeDelegatingDriver;
 import org.hibernate.tool.hbm2x.StringUtils;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IEnvironment;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
+import org.jboss.tools.hibernate.util.HibernateHelper;
 
 public class ConsoleConfiguration implements ExecutionContextHolder {
 
@@ -374,6 +375,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	}
 	
 	public File getConfigXMLFile() {
+		IEnvironment environment = HibernateHelper.INSTANCE.getHibernateService().getEnvironment();
 		File configXMLFile = null;
 		if (prefs != null) {
 			configXMLFile = prefs.getConfigXMLFile();
@@ -395,7 +397,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 			}
 		}
 		if (configXMLFile == null) {
-			URL url = Environment.class.getClassLoader().getResource("hibernate.cfg.xml"); //$NON-NLS-1$
+			URL url = environment.getWrappedClass().getClassLoader().getResource("hibernate.cfg.xml"); //$NON-NLS-1$
 			if (url != null) {
 				URI uri = null;
 				try {
