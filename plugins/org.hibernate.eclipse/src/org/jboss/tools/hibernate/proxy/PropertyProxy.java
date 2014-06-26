@@ -58,7 +58,7 @@ public class PropertyProxy implements IProperty {
 		target.setValue(((ValueProxy)value).getTarget());
 	}
 	
-	Property getTarget() {
+	public Property getTarget() {
 		return target;
 	}
 

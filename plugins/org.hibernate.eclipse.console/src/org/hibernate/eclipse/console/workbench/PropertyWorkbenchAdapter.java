@@ -23,8 +23,8 @@ package org.hibernate.eclipse.console.workbench;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.model.IWorkbenchAdapter;
-import org.hibernate.mapping.Property;
-import org.jboss.tools.hibernate.proxy.ValueProxy;
+import org.jboss.tools.hibernate.proxy.PropertyProxy;
+import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.IValue;
 import org.jboss.tools.hibernate.spi.IValueVisitor;
 
@@ -33,9 +33,9 @@ public class PropertyWorkbenchAdapter implements IWorkbenchAdapter {
 	final static Object[] NO_CHILDREN = new Object[0];
 
 	public Object[] getChildren(Object o) {
-		Property p = (Property) o;
+		IProperty p = (IProperty) o;
 		
-		Object[] result = (Object[]) new ValueProxy(p.getValue()).accept(new IValueVisitor() {
+		Object[] result = (Object[]) p.getValue().accept(new IValueVisitor() {
 			
 			@Override
 			public Object accept(IValue value) {
@@ -44,7 +44,7 @@ public class PropertyWorkbenchAdapter implements IWorkbenchAdapter {
 				} else if (value.isManyToOne()) {
 					return NO_CHILDREN;
 				} else if (value.isComponent()) {
-					return BasicWorkbenchAdapter.toArray(value.getPropertyIterator(), Property.class, null);
+					return BasicWorkbenchAdapter.toArray(value.getPropertyIterator(), IProperty.class, null);
 				} else if (value.isDependantValue()) {
 					return NO_CHILDREN;
 				} else if (value.isAny()) {
@@ -77,14 +77,14 @@ public class PropertyWorkbenchAdapter implements IWorkbenchAdapter {
 	}
 
 	public ImageDescriptor getImageDescriptor(Object object) {
-		Property property = ((Property)object);
+		IProperty property = ((IProperty)object);
 		
-		return HibernateWorkbenchHelper.getImageDescriptor(property);		 
+		return HibernateWorkbenchHelper.getImageDescriptor(((PropertyProxy)property).getTarget());		 
 	}
 
 	public String getLabel(Object o) {
-		Property property = ((Property)o);
-		IValue value = new ValueProxy(property.getValue());
+		IProperty property = ((IProperty)o);
+		IValue value = property.getValue();
 		String typeName = (String) value.accept(new TypeNameValueVisitor(true));
 		
 		if (typeName!=null) {
@@ -95,7 +95,7 @@ public class PropertyWorkbenchAdapter implements IWorkbenchAdapter {
 	}
 
 	public Object getParent(Object o) {
-		Property p = (Property) o;
+		IProperty p = (IProperty) o;
 		return p.getPersistentClass();
 	}
 

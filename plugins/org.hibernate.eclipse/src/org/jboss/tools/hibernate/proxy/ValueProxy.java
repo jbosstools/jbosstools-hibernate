@@ -25,6 +25,7 @@ import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.spi.IColumn;
+import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.IValue;
@@ -317,12 +318,15 @@ public class ValueProxy implements IValue {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Iterator<? extends Property> getPropertyIterator() {
-		Iterator<? extends Property> result = null;
+	public Iterator<IProperty> getPropertyIterator() {
+		HashSet<IProperty> result = new HashSet<IProperty>();
 		if (target instanceof Component) {
-			result = ((Component)target).getPropertyIterator();
+			Iterator<Property> origin = ((Component)target).getPropertyIterator();
+			while (origin.hasNext()) {
+				result.add(new PropertyProxy(origin.next()));
+			}
 		}
-		return result;
+		return result.iterator();
 	}
 
 }

@@ -2,8 +2,6 @@ package org.jboss.tools.hibernate.spi;
 
 import java.util.Iterator;
 
-import org.hibernate.mapping.Property;
-
 public interface IValue {
 
 	boolean isSimpleValue();
@@ -42,6 +40,6 @@ public interface IValue {
 	boolean isBag();
 	String getReferencedEntityName();
 	String getEntityName();
-	Iterator<? extends Property> getPropertyIterator();
+	Iterator<IProperty> getPropertyIterator();
 
 }
