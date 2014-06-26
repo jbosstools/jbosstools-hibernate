@@ -33,7 +33,6 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.HibernateException;
-import org.hibernate.cfg.Settings;
 import org.hibernate.connection.ConnectionProvider;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
@@ -47,6 +46,7 @@ import org.jboss.tools.hibernate.spi.IJDBCReader;
 import org.jboss.tools.hibernate.spi.IProgressListener;
 import org.jboss.tools.hibernate.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.spi.IService;
+import org.jboss.tools.hibernate.spi.ISettings;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 
@@ -117,7 +117,7 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 
 			public Object execute() {
 				IDatabaseCollector db = null;
-				Settings settings = consoleConfiguration.getSettings(configuration);
+				ISettings settings = consoleConfiguration.getSettings(configuration);
 				ConnectionProvider connectionProvider = null;
 				try {
 					connectionProvider = settings.getConnectionProvider();

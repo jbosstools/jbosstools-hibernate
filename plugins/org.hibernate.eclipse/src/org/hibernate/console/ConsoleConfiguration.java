@@ -35,7 +35,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.osgi.util.NLS;
-import org.hibernate.cfg.Settings;
 import org.hibernate.console.execution.DefaultExecutionContext;
 import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.console.execution.ExecutionContext.Command;
@@ -50,6 +49,7 @@ import org.hibernate.tool.hbm2x.StringUtils;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IEnvironment;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
+import org.jboss.tools.hibernate.spi.ISettings;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 
 public class ConsoleConfiguration implements ExecutionContextHolder {
@@ -433,8 +433,8 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		return resetted;
 	}
 
-	public Settings getSettings(final IConfiguration cfg) {
-		return (Settings) execute(new Command() {
+	public ISettings getSettings(final IConfiguration cfg) {
+		return (ISettings) execute(new Command() {
 				public Object execute() {
 					return cfg.buildSettings();
 				}

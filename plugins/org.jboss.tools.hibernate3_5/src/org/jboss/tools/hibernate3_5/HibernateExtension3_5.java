@@ -20,7 +20,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.osgi.util.NLS;
-import org.hibernate.cfg.Settings;
 import org.hibernate.console.ConfigurationFactory;
 import org.hibernate.console.ConsoleConfigClassLoader;
 import org.hibernate.console.ConsoleMessages;
@@ -37,6 +36,7 @@ import org.hibernate.eclipse.libs.FakeDelegatingDriver;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.ISession;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
+import org.jboss.tools.hibernate.spi.ISettings;
 
 /**
  * 
@@ -264,8 +264,8 @@ public class HibernateExtension3_5 implements HibernateExtension {
 		return configuration;
 	}
 	
-	public Settings getSettings(final IConfiguration cfg) {
-		return (Settings) execute(new Command() {
+	public ISettings getSettings(final IConfiguration cfg) {
+		return (ISettings) execute(new Command() {
 			public Object execute() {
 				return cfg.buildSettings();
 			}
