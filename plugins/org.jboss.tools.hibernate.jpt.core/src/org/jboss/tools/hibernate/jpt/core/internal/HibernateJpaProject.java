@@ -71,7 +71,13 @@ public class HibernateJpaProject extends AbstractJpaProject {
 	public HibernateJpaProject(JpaProject.Config config){
 		super(config);
 		revalidateCommand = new RevalidateProjectCommand();
-		environment = HibernateHelper.INSTANCE.getHibernateService().getEnvironment();
+	}
+	
+	private IEnvironment getEnvironment() {
+		if (environment == null) {
+			environment = HibernateHelper.INSTANCE.getHibernateService().getEnvironment();
+		}
+		return environment;
 	}
 	
 	public ConsoleConfiguration getDefaultConsoleConfiguration(){
@@ -122,13 +128,13 @@ public class HibernateJpaProject extends AbstractJpaProject {
 		if (cc != null){
 			if (cc.hasConfiguration()){//was not build yet
 				IConfiguration configuration = cc.getConfiguration();
-				if (configuration.getProperties().containsKey(environment.getDefaultSchema())){
-					schema = configuration.getProperty(environment.getDefaultSchema());
+				if (configuration.getProperties().containsKey(getEnvironment().getDefaultSchema())){
+					schema = configuration.getProperty(getEnvironment().getDefaultSchema());
 				}
 			}
 			Properties properties = cc.getPreferences().getProperties();
-			if (properties != null && properties.containsKey(environment.getDefaultSchema())){
-				schema = properties.getProperty(environment.getDefaultSchema());
+			if (properties != null && properties.containsKey(getEnvironment().getDefaultSchema())){
+				schema = properties.getProperty(getEnvironment().getDefaultSchema());
 			}
 		}
 		if (schema == null){
@@ -159,14 +165,14 @@ public class HibernateJpaProject extends AbstractJpaProject {
 		if (cc != null){
 			if (cc.hasConfiguration()){//was not build yet
 				IConfiguration configuration = cc.getConfiguration();
-				if (configuration.getProperties().containsKey(environment.getDefaultCatalog())){
-					catalog = configuration.getProperty(environment.getDefaultCatalog());
+				if (configuration.getProperties().containsKey(getEnvironment().getDefaultCatalog())){
+					catalog = configuration.getProperty(getEnvironment().getDefaultCatalog());
 				}
 				
 			}
 			Properties properties = cc.getPreferences().getProperties();
-			if (properties != null && properties.containsKey(environment.getDefaultCatalog())){
-				catalog = properties.getProperty(environment.getDefaultCatalog());
+			if (properties != null && properties.containsKey(getEnvironment().getDefaultCatalog())){
+				catalog = properties.getProperty(getEnvironment().getDefaultCatalog());
 			}
 		}
 		if (catalog == null){
