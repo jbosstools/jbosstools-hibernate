@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.hibernate.cfg.Settings;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 
@@ -60,7 +59,7 @@ public interface IService {
 
 	IReverseEngineeringStrategy newDefaultReverseEngineeringStrategy();
 
-	IJDBCReader newJDBCReader(Properties properties, Settings settings,
+	IJDBCReader newJDBCReader(Properties properties, ISettings settings,
 			IReverseEngineeringStrategy strategy);
 
 	IReverseEngineeringStrategy newReverseEngineeringStrategy(

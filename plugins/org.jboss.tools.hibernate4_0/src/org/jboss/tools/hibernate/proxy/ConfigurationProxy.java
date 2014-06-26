@@ -7,7 +7,6 @@ import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
-import org.hibernate.cfg.Settings;
 import org.hibernate.engine.spi.Mapping;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
@@ -17,6 +16,7 @@ import org.jboss.tools.hibernate.spi.IMappings;
 import org.jboss.tools.hibernate.spi.INamingStrategy;
 import org.jboss.tools.hibernate.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
+import org.jboss.tools.hibernate.spi.ISettings;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
@@ -104,7 +104,7 @@ public class ConfigurationProxy implements IConfiguration {
 	}
 
 	@Override
-	public Settings buildSettings() {
+	public ISettings buildSettings() {
 		throw new RuntimeException("unsupported operation");
 	}
 	

@@ -11,7 +11,6 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.JDBCReaderFactory;
 import org.hibernate.cfg.NamingStrategy;
-import org.hibernate.cfg.Settings;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.JDBCReader;
@@ -53,6 +52,7 @@ import org.jboss.tools.hibernate.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.spi.ISchemaExport;
 import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
+import org.jboss.tools.hibernate.spi.ISettings;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.ITableFilter;
 import org.jboss.tools.hibernate.spi.ITypeFactory;
@@ -193,13 +193,14 @@ public class ServiceProxy implements IService {
 	}
 
 	@Override
-	public IJDBCReader newJDBCReader(Properties properties, Settings settings,
+	public IJDBCReader newJDBCReader(Properties properties, ISettings settings,
 			IReverseEngineeringStrategy strategy) {
 		assert strategy instanceof ReverseEngineeringStrategyProxy;
+		assert settings instanceof SettingsProxy;
 		JDBCReader target = 
 				JDBCReaderFactory.newJDBCReader(
 						properties, 
-						settings, 
+						((SettingsProxy)settings).getTarget(), 
 						((ReverseEngineeringStrategyProxy)strategy).getTarget());
 		return new JDBCReaderProxy(target);
 	}

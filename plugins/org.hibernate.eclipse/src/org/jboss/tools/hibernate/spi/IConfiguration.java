@@ -4,9 +4,7 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.Properties;
 
-import org.hibernate.cfg.Settings;
 import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.Table;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 
@@ -25,7 +23,7 @@ public interface IConfiguration {
 	IConfiguration configure();
 	void buildMappings();
 	ISessionFactory buildSessionFactory();
-	Settings buildSettings();
+	ISettings buildSettings();
 	IMappings createMappings();
 	Iterator<? extends PersistentClass> getClassMappings();
 	void setPreferBasicCompositeIds(boolean preferBasicCompositeids);
