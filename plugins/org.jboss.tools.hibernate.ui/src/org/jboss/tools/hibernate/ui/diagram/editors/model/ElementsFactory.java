@@ -206,7 +206,7 @@ public class ElementsFactory {
 			// this is case: if (collection.isMap() || collection.isSet())
 			childShape = getOrCreateDatabaseTable(collection.getCollectionTable() != null ? new TableProxy(collection.getCollectionTable()) : null);
 			if (childShape != null) {
-				Iterator it = ((DependantValue)csChild0.getOrmElement()).getColumnIterator();
+				Iterator it = ((DependantValue)((ValueProxy)csChild0.getOrmElement()).getTarget()).getColumnIterator();
 				while (it.hasNext()) {
 					Object el = it.next();
 					if (el instanceof IColumn) {

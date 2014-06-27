@@ -51,12 +51,12 @@ public class OrmImageMap {
 			imageName = getImageName((Property)obj, cfg);
 		} else if (obj instanceof OneToMany) {
 			imageName = getImageName((OneToMany)obj);
-		} else if (obj instanceof IValue && ((IValue)obj).isSimpleValue()) {
-			imageName = getImageName((IValue)obj);
 		} else if (obj instanceof PersistentClass) {
 			imageName = getImageName((PersistentClass)obj);
 		} else if (obj instanceof String) {
 			imageName = "Image_Error"; //$NON-NLS-1$;
+		} else if (obj instanceof IValue && ((IValue)obj).isSimpleValue() || ((IValue)obj).isOneToMany()) {
+			imageName = getImageName((IValue)obj);
 		}
 		return UiPlugin.getImageDescriptor("images/" + ImageBundle.getString(imageName)); //$NON-NLS-1$
 	}
@@ -178,7 +178,7 @@ public class OrmImageMap {
 		} else if (field.isComponent()) {
 			res = "Image_PersistentFieldComponent"; //$NON-NLS-1$
 		} else if (field.isDependantValue()) {
-			DependantValue mapping = (DependantValue)field;
+			DependantValue mapping = (DependantValue)((ValueProxy)field).getTarget();
 			if (mapping.getTable().getIdentifierValue() == mapping) {
 				res = "Image_PersistentFieldComponent_id"; //$NON-NLS-1$				
 			}

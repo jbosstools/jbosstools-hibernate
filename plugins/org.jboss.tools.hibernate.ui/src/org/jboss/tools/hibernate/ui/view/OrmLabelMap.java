@@ -46,7 +46,7 @@ public class OrmLabelMap {
 			label = getParticularLabel((Property)obj, cfg);
 		} else if (obj instanceof OneToMany) {
 			label = getParticularLabel((OneToMany)obj);
-		} else if (obj instanceof IValue && ((IValue)obj).isSimpleValue()) {
+		} else if (obj instanceof IValue && (((IValue)obj).isSimpleValue() || ((IValue)obj).isOneToMany())) {
 			label = getParticularLabel((IValue)obj);
 		} else if (obj instanceof PersistentClass) {
 			label = getParticularLabel((PersistentClass)obj);
@@ -131,11 +131,11 @@ public class OrmLabelMap {
 	 * @param field
 	 * @return
 	 */
-	public static String getParticularLabel(IValue field) {
+	public static String getParticularLabel(IValue value) {
 		String label = UIViewMessages.OrmLabelProvider_element;
-		if (field.isDependantValue()) {
+		if (value.isDependantValue()) {
 			label = "key"; //$NON-NLS-1$
-		} else if (field.isComponent()) {
+		} else if (value.isComponent()) {
 			label = "element"; //$NON-NLS-1$
 		}
 		return label;

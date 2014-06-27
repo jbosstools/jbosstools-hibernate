@@ -50,7 +50,7 @@ public class OpenMappingDiagramTest extends BaseTestSetCase {
 				ex = Utils.getExceptionIfItOccured(editor);
 			}
 			if (ex != null) {
-				System.out.println(ex.getStackTrace());
+				ex.printStackTrace();
 				String out = NLS.bind(ConsoleTestMessages.OpenMappingDiagramTest_mapping_diagram_for_not_opened,
 						new Object[]{persClass.getClassName(), ex.getMessage()});
 				fail(out);
