@@ -85,5 +85,7 @@ public interface IService {
 	Class<?> getDriverManagerConnectionProviderClass();
 
 	IEnvironment getEnvironment();
+
+	IValue newSimpleValue();
 	
 }

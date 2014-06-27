@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.spi;
 
 import java.util.Iterator;
+import java.util.Properties;
 
 public interface IValue {
 
@@ -41,5 +42,8 @@ public interface IValue {
 	String getReferencedEntityName();
 	String getEntityName();
 	Iterator<IProperty> getPropertyIterator();
+	void addColumn(IColumn column);
+	void setTypeParameters(Properties typeParameters);
+	String getForeignKeyName();
 
 }

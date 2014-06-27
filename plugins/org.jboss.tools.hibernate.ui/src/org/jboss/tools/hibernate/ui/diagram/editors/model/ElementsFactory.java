@@ -19,7 +19,6 @@ import java.util.Set;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.mapping.Collection;
-import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.ForeignKey;
@@ -28,7 +27,6 @@ import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
-import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Subclass;
 import org.jboss.tools.hibernate.proxy.ColumnProxy;
 import org.jboss.tools.hibernate.proxy.TableProxy;
@@ -219,7 +217,7 @@ public class ElementsFactory {
 						}
 					}
 				}
-				it = ((SimpleValue)csChild1.getOrmElement()).getColumnIterator();
+				it = ((IValue)csChild1.getOrmElement()).getColumnIterator();
 				while (it.hasNext()) {
 					Object el = it.next();
 					if (el instanceof IColumn) {

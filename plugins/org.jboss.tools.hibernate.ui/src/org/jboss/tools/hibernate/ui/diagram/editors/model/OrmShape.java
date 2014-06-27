@@ -22,7 +22,6 @@ import org.hibernate.mapping.Component;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
-import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Subclass;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
@@ -231,8 +230,9 @@ public class OrmShape extends ExpandableShape {
 				if (!field.isBackRef()) {
 					if (!field.isComposite()) {
 
+						IValue fieldValue = new ValueProxy(field.getValue());
 						boolean typeIsAccessible = true;
-						if (field.getValue().isSimpleValue() && ((SimpleValue)field.getValue()).isTypeSpecified()) {
+						if (fieldValue.isSimpleValue() && fieldValue.isTypeSpecified()) {
 							try {
 								field.getValue().getType();
 							} catch (Exception e) {
@@ -263,7 +263,8 @@ public class OrmShape extends ExpandableShape {
 					if (!property.isComposite()) {
 						
 						boolean typeIsAccessible = true;
-						if (property.getValue().isSimpleValue() && ((SimpleValue)property.getValue()).isTypeSpecified()) {
+						IValue propertyValue = new ValueProxy(property.getValue());
+						if (propertyValue.isSimpleValue() && propertyValue.isTypeSpecified()) {
 							try {
 								property.getValue().getType();
 							} catch (Exception e) {

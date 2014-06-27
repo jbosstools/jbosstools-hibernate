@@ -18,9 +18,9 @@ import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
-import org.hibernate.mapping.SimpleValue;
 import org.jboss.tools.hibernate.proxy.ColumnProxy;
 import org.jboss.tools.hibernate.proxy.TableProxy;
+import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IMappings;
@@ -28,6 +28,7 @@ import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.ITypeFactory;
+import org.jboss.tools.hibernate.spi.IValue;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 
 public class ConsoleConfigurationTest extends TestCase {
@@ -148,11 +149,11 @@ public class ConsoleConfigurationTest extends TestCase {
 		table.setPrimaryKey(pk);
 		Property fakeProp = new Property();
 		fakeProp.setName("label");
-		SimpleValue sv = new SimpleValue();
-		sv.addColumn(((ColumnProxy)column).getTarget());
+		IValue sv = service.newSimpleValue();
+		sv.addColumn(column);
 		sv.setTypeName("string");
-		sv.setTable(((TableProxy)table).getTarget());
-		fakeProp.setValue(sv);
+		sv.setTable(table);
+		fakeProp.setValue(((ValueProxy)sv).getTarget());
 		rc.setIdentifierProperty(fakeProp);
 		rc.setIdentifier((KeyValue) fakeProp.getValue());
 		mappings.addClass(rc);

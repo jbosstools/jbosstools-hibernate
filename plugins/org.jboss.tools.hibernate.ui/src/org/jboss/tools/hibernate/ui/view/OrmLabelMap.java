@@ -13,11 +13,9 @@ package org.jboss.tools.hibernate.ui.view;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.workbench.TypeNameValueVisitor;
 import org.hibernate.mapping.Component;
-import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.SimpleValue;
 import org.jboss.tools.hibernate.proxy.TableProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
@@ -48,8 +46,8 @@ public class OrmLabelMap {
 			label = getParticularLabel((Property)obj, cfg);
 		} else if (obj instanceof OneToMany) {
 			label = getParticularLabel((OneToMany)obj);
-		} else if (obj instanceof SimpleValue) {
-			label = getParticularLabel((SimpleValue)obj);
+		} else if (obj instanceof IValue && ((IValue)obj).isSimpleValue()) {
+			label = getParticularLabel((IValue)obj);
 		} else if (obj instanceof PersistentClass) {
 			label = getParticularLabel((PersistentClass)obj);
 		} else if (obj instanceof String) {
@@ -97,7 +95,7 @@ public class OrmLabelMap {
 			if (field.getValue() instanceof Component) {
 				typeString = ((Component)field.getValue()).getComponentClassName();
 			} else if (field.getValue()!= null && field.getValue().isSimpleValue()) {
-				typeString = ((SimpleValue)field.getValue()).getTypeName();
+				typeString = new ValueProxy(field.getValue()).getTypeName();
 			}
 		}
 		if (typeString != null) {
@@ -133,11 +131,11 @@ public class OrmLabelMap {
 	 * @param field
 	 * @return
 	 */
-	public static String getParticularLabel(SimpleValue field) {
+	public static String getParticularLabel(IValue field) {
 		String label = UIViewMessages.OrmLabelProvider_element;
-		if (field instanceof DependantValue) {
+		if (field.isDependantValue()) {
 			label = "key"; //$NON-NLS-1$
-		} else if (field instanceof Component) {
+		} else if (field.isComponent()) {
 			label = "element"; //$NON-NLS-1$
 		}
 		return label;

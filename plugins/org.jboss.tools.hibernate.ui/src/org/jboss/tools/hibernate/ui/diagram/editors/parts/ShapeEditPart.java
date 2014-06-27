@@ -38,9 +38,9 @@ import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.SimpleValue;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.ITable;
+import org.jboss.tools.hibernate.spi.IValue;
 import org.jboss.tools.hibernate.ui.diagram.editors.figures.TitleFigure;
 import org.jboss.tools.hibernate.ui.diagram.editors.figures.TopLineBorder;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Connection;
@@ -300,7 +300,7 @@ public class ShapeEditPart extends OrmEditPart implements NodeEditPart {
 					Integer.parseInt(ColorConstants.Colors_PersistentClassR),
 					Integer.parseInt(ColorConstants.Colors_PersistentClassG),
 					Integer.parseInt(ColorConstants.Colors_PersistentClassB)));
-		else if (el instanceof Property || el instanceof SimpleValue)
+		else if (el instanceof Property || (el instanceof IValue && ((IValue)el).isSimpleValue()))
 			return ResourceManager.getInstance().getColor(new RGB(
 					Integer.parseInt(ColorConstants.Colors_PersistentFieldR),
 					Integer.parseInt(ColorConstants.Colors_PersistentFieldG),
@@ -332,7 +332,7 @@ public class ShapeEditPart extends OrmEditPart implements NodeEditPart {
 	protected Color getSelectionColor() {
 		final Object el = getElement();
 		if (el instanceof PersistentClass || el instanceof Property ||
-				el instanceof SimpleValue || el instanceof OneToMany) {
+				(el instanceof IValue && ((IValue)el).isSimpleValue()) || el instanceof OneToMany) {
 			return ResourceManager.getInstance().getColor(new RGB(112, 161, 99));
 		} else if (el instanceof ITable || el instanceof IColumn) {
 			return ResourceManager.getInstance().getColor(new RGB(66, 173, 247));

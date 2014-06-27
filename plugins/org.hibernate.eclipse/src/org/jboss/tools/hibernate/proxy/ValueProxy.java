@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.proxy;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Properties;
 
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
@@ -327,6 +328,25 @@ public class ValueProxy implements IValue {
 			}
 		}
 		return result.iterator();
+	}
+
+	@Override
+	public void addColumn(IColumn column) {
+		assert column instanceof ColumnProxy;
+		assert target instanceof SimpleValue;
+		((SimpleValue)target).addColumn(((ColumnProxy)column).getTarget());
+	}
+
+	@Override
+	public void setTypeParameters(Properties typeParameters) {
+		assert target instanceof SimpleValue;
+		((SimpleValue)target).setTypeParameters(typeParameters);
+	}
+
+	@Override
+	public String getForeignKeyName() {
+		assert target instanceof SimpleValue;
+		return ((SimpleValue)target).getForeignKeyName();
 	}
 
 }

@@ -15,7 +15,6 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
-import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.IdentifierBag;
 import org.hibernate.mapping.List;
@@ -27,7 +26,6 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Set;
-import org.hibernate.mapping.SimpleValue;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.ITable;
@@ -53,8 +51,8 @@ public class OrmImageMap {
 			imageName = getImageName((Property)obj, cfg);
 		} else if (obj instanceof OneToMany) {
 			imageName = getImageName((OneToMany)obj);
-		} else if (obj instanceof SimpleValue) {
-			imageName = getImageName((SimpleValue)obj);
+		} else if (obj instanceof IValue && ((IValue)obj).isSimpleValue()) {
+			imageName = getImageName((IValue)obj);
 		} else if (obj instanceof PersistentClass) {
 			imageName = getImageName((PersistentClass)obj);
 		} else if (obj instanceof String) {
@@ -173,18 +171,18 @@ public class OrmImageMap {
 	 * @param field
 	 * @return
 	 */
-	public static String getImageName(SimpleValue field) {
+	public static String getImageName(IValue field) {
 		String res = "Image_PersistentFieldSimple"; //$NON-NLS-1$
-		if (field instanceof Any) {
+		if (field.isAny()) {
 			res = "Image_PersistentFieldMany-to-any"; //$NON-NLS-1$
-		} else if (field instanceof Component) {
+		} else if (field.isComponent()) {
 			res = "Image_PersistentFieldComponent"; //$NON-NLS-1$
-		} else if (field instanceof DependantValue) {
+		} else if (field.isDependantValue()) {
 			DependantValue mapping = (DependantValue)field;
 			if (mapping.getTable().getIdentifierValue() == mapping) {
 				res = "Image_PersistentFieldComponent_id"; //$NON-NLS-1$				
 			}
-		} else if (field instanceof ManyToOne) {
+		} else if (field.isManyToOne()) {
 			res = "Image_PersistentFieldMany-to-many"; //$NON-NLS-1$
 		}
 		return res;

@@ -58,7 +58,6 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
-import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.ToOne;
@@ -69,6 +68,7 @@ import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IMappings;
+import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IValue;
 import org.jboss.tools.hibernate.util.HibernateHelper;
@@ -85,8 +85,11 @@ public class ConfigurationActor {
 	 */
 	protected Set<ICompilationUnit> selectionCU;
 	
+	private IService service;
+	
 	public ConfigurationActor(Set<ICompilationUnit> selectionCU){
 		this.selectionCU = selectionCU;
+		service = HibernateHelper.INSTANCE.getHibernateService();
 	}	
 
 	/**
@@ -179,10 +182,10 @@ public class ConfigurationActor {
 					if (pc.isAbstract()){
 						subclass = new SingleTableSubclass(pc);
 						if (pc instanceof RootClass && pc.getDiscriminator() == null){
-							SimpleValue discr = new SimpleValue();
+							IValue discr = service.newSimpleValue();
 							discr.setTypeName("string"); //$NON-NLS-1$
-							discr.addColumn(((ColumnProxy)HibernateHelper.INSTANCE.getHibernateService().newColumn("DISCR_COL")).getTarget()); //$NON-NLS-1$
-							((RootClass)pc).setDiscriminator(discr);
+							discr.addColumn(service.newColumn("DISCR_COL")); //$NON-NLS-1$
+							((RootClass)pc).setDiscriminator(((ValueProxy)discr).getTarget());
 						}
 					} else {
 						subclass = new JoinedSubclass(pc);
@@ -270,6 +273,12 @@ class ProcessEntityInfo extends ASTVisitor {
 	
 	TypeVisitor typeVisitor;
 	
+	IService service;
+	
+	ProcessEntityInfo() {
+		service = HibernateHelper.INSTANCE.getHibernateService();
+	}
+	
 	public void setEntities(Map<String, EntityInfo> entities) {
 		rootClasses.clear();
 		Iterator<Map.Entry<String, EntityInfo>> it = entities.entrySet().iterator();
@@ -342,12 +351,12 @@ class ProcessEntityInfo extends ASTVisitor {
 	public void endVisit(TypeDeclaration node) {
 		if (currentType == node && rootClass.getIdentifierProperty() == null){
 			//root class should always has id
-			SimpleValue sValue = new SimpleValue();
-			sValue.addColumn(((ColumnProxy)HibernateHelper.INSTANCE.getHibernateService().newColumn("id".toUpperCase())).getTarget());//$NON-NLS-1$
+			IValue sValue = service.newSimpleValue();
+			sValue.addColumn(service.newColumn("id".toUpperCase()));//$NON-NLS-1$
 			sValue.setTypeName(Long.class.getName());
 			Property prop = new Property();
 			prop.setName("id"); //$NON-NLS-1$
-			prop.setValue(sValue);
+			prop.setValue(((ValueProxy)sValue).getTarget());
 			rootClass.setIdentifierProperty(prop);
 		}
 	}
@@ -473,8 +482,11 @@ class TypeVisitor extends ASTVisitor{
 	
 	private Property prop;
 	
+	private IService service;
+	
 	TypeVisitor(Map<String, RootClass> rootClasses){
 		this.rootClasses = rootClasses;
+		service = HibernateHelper.INSTANCE.getHibernateService();
 	}
 	
 	public void init(String varName, EntityInfo entityInfo){
@@ -512,18 +524,18 @@ class TypeVisitor extends ASTVisitor{
 			array.setElement(oValue);
 		}
 		
-		SimpleValue key = new SimpleValue();
+		IValue key = service.newSimpleValue();
 		if (StringHelper.isNotEmpty(entityInfo.getPrimaryIdName())) {
-			key.addColumn(((ColumnProxy)HibernateHelper.INSTANCE.getHibernateService().newColumn(entityInfo.getPrimaryIdName().toUpperCase())).getTarget());
+			key.addColumn(service.newColumn(entityInfo.getPrimaryIdName().toUpperCase()));
 		}
-		array.setKey(key);
+		array.setKey((KeyValue)((ValueProxy)key).getTarget());
 		array.setFetchMode(FetchMode.JOIN);
-		SimpleValue index = new SimpleValue();
+		IValue index = service.newSimpleValue();
 		
 		//add default index
 		//index.addColumn(new Column(varName.toUpperCase()+"_POSITION"));
 		
-		array.setIndex(index);
+		array.setIndex(((ValueProxy)index).getTarget());
 		buildProperty(new ValueProxy(array));
 		prop.setCascade("none");//$NON-NLS-1$
 		return false;//do not visit children
@@ -556,9 +568,9 @@ class TypeVisitor extends ASTVisitor{
 				value.setCollectionTable(rootClass.getTable() != null ? new TableProxy(rootClass.getTable()) : null);//TODO what to set?
 			}
 			if (value.isList()){
-				value.setIndex(new ValueProxy(new SimpleValue()));
+				value.setIndex(service.newSimpleValue());
 			} else if (value.isMap()){
-				IValue map_key = new ValueProxy(new SimpleValue());
+				IValue map_key = service.newSimpleValue();
 				//FIXME: is it possible to map Map<SourceType, String>?
 				//Or only Map<String, SourceType>
 				map_key.setTypeName(tb.getTypeArguments()[0].getBinaryName());
@@ -571,7 +583,7 @@ class TypeVisitor extends ASTVisitor{
 		}
 		
 		buildProperty(value);
-		if (!(value instanceof SimpleValue)){
+		if (!(value.isSimpleValue())){
 			prop.setCascade("none");//$NON-NLS-1$
 		}
 		return false;//do not visit children
@@ -600,12 +612,12 @@ class TypeVisitor extends ASTVisitor{
 			value.setCollectionTable(rootClass.getTable() != null ? new TableProxy(rootClass.getTable()) : null);//TODO what to set?
 			buildProperty(value);
 			if (value instanceof org.hibernate.mapping.List){
-				((IndexedCollection)value).setIndex(new SimpleValue());
+				((IndexedCollection)value).setIndex(((ValueProxy)service.newSimpleValue()).getTarget());
 			} else if (value instanceof org.hibernate.mapping.Map){
-				SimpleValue map_key = new SimpleValue();
+				IValue map_key = service.newSimpleValue();
 				//FIXME: how to detect key-type here
 				map_key.setTypeName("string"); //$NON-NLS-1$
-				((IndexedCollection)value).setIndex(map_key);
+				((IndexedCollection)value).setIndex(((ValueProxy)map_key).getTarget());
 			}
 			prop.setCascade("none");//$NON-NLS-1$
 		} else if (tb.isEnum()){
@@ -613,7 +625,7 @@ class TypeVisitor extends ASTVisitor{
 			Properties typeParameters = new Properties();
 			typeParameters.put(org.hibernate.type.EnumType.ENUM, tb.getBinaryName());
 			typeParameters.put(org.hibernate.type.EnumType.TYPE, java.sql.Types.VARCHAR);
-			((SimpleValue)value).setTypeParameters(typeParameters);
+			value.setTypeParameters(typeParameters);
 			buildProperty(value);
 		} else if (ref != null /*&& ref.fullyQualifiedName.indexOf('$') < 0*/){
 			ToOne sValue = null;
@@ -658,10 +670,10 @@ class TypeVisitor extends ASTVisitor{
 	}
 	
 	private IValue buildSimpleValue(String typeName){
-		SimpleValue sValue = new SimpleValue();
-		sValue.addColumn(((ColumnProxy)HibernateHelper.INSTANCE.getHibernateService().newColumn(varName.toUpperCase())).getTarget());
+		IValue sValue = service.newSimpleValue();
+		sValue.addColumn(service.newColumn(varName.toUpperCase()));
 		sValue.setTypeName(typeName);
-		return new ValueProxy(sValue);
+		return sValue;
 	}
 	
 	private IValue buildCollectionValue(ITypeBinding[] interfaces){
@@ -681,12 +693,12 @@ class TypeVisitor extends ASTVisitor{
 		//By default set the same table, but for one-to-many should change it to associated class's table
 		cValue.setCollectionTable(rootClass.getTable());
 
-		SimpleValue key = new SimpleValue();
+		IValue key = service.newSimpleValue();
 		key.setTypeName("string");//$NON-NLS-1$
 		if (StringHelper.isNotEmpty(entityInfo.getPrimaryIdName())){
-			key.addColumn(((ColumnProxy)HibernateHelper.INSTANCE.getHibernateService().newColumn(entityInfo.getPrimaryIdName().toUpperCase())).getTarget());
+			key.addColumn(service.newColumn(entityInfo.getPrimaryIdName().toUpperCase()));
 		}
-		cValue.setKey(key);
+		cValue.setKey((KeyValue)((ValueProxy)key).getTarget());
 		cValue.setLazy(true);
 		cValue.setRole(StringHelper.qualify(rootClass.getEntityName(), varName));
 		return new ValueProxy(cValue);

@@ -16,9 +16,8 @@ import java.util.Properties;
 import org.eclipse.ui.IMemento;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.SimpleValue;
-import org.jboss.tools.hibernate.proxy.TableProxy;
 import org.jboss.tools.hibernate.spi.ITable;
+import org.jboss.tools.hibernate.spi.IValue;
 
 /**
  * Some common model utils.
@@ -59,9 +58,9 @@ public class Utils {
 		} else if (obj instanceof Property) {
 			Property property = (Property)obj;
 			res = getName(property.getPersistentClass()) + "." + property.getName(); //$NON-NLS-1$
-		} else if (obj instanceof SimpleValue) {
-			SimpleValue sv = (SimpleValue)obj;
-			res = getTableName(sv.getTable() != null ? new TableProxy(sv.getTable()) : null) + "." + sv.getForeignKeyName(); //$NON-NLS-1$
+		} else if (obj instanceof IValue && ((IValue)obj).isSimpleValue()) {
+			IValue sv = (IValue)obj;
+			res = getTableName(sv.getTable()) + "." + sv.getForeignKeyName(); //$NON-NLS-1$
 		} else if (obj instanceof String) {
 			res = (String)obj;
 		}
