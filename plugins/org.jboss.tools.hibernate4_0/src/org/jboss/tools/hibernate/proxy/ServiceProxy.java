@@ -23,6 +23,7 @@ import org.hibernate.dialect.Dialect;
 import org.hibernate.ejb.Ejb3Configuration;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Property;
+import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
@@ -58,6 +59,7 @@ import org.jboss.tools.hibernate.spi.ISettings;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.ITableFilter;
 import org.jboss.tools.hibernate.spi.ITypeFactory;
+import org.jboss.tools.hibernate.spi.IValue;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 import org.xml.sax.EntityResolver;
 
@@ -303,6 +305,11 @@ public class ServiceProxy implements IService {
 	@Override
 	public IEnvironment getEnvironment() {
 		return new EnvironmentProxy();
+	}
+
+	@Override
+	public IValue newSimpleValue() {
+		return new ValueProxy(new SimpleValue(null));
 	}
 
 

@@ -33,6 +33,7 @@ import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfoSource;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Property;
+import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
@@ -64,6 +65,7 @@ import org.jboss.tools.hibernate.spi.ISettings;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.ITableFilter;
 import org.jboss.tools.hibernate.spi.ITypeFactory;
+import org.jboss.tools.hibernate.spi.IValue;
 
 public class ServiceProxy implements IService {
 	
@@ -345,4 +347,9 @@ public class ServiceProxy implements IService {
 		return new EnvironmentProxy();
 	}
 	
+	@Override
+	public IValue newSimpleValue() {
+		return new ValueProxy(new SimpleValue(null));
+	}
+
 }
