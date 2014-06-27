@@ -23,7 +23,9 @@ package org.hibernate.eclipse.console.workbench;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.model.IWorkbenchAdapter;
+import org.hibernate.mapping.Property;
 import org.jboss.tools.hibernate.proxy.PropertyProxy;
+import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.IValue;
 import org.jboss.tools.hibernate.spi.IValueVisitor;
@@ -33,9 +35,9 @@ public class PropertyWorkbenchAdapter implements IWorkbenchAdapter {
 	final static Object[] NO_CHILDREN = new Object[0];
 
 	public Object[] getChildren(Object o) {
-		IProperty p = (IProperty) o;
+		Property p = (Property) o;
 		
-		Object[] result = (Object[]) p.getValue().accept(new IValueVisitor() {
+		Object[] result = (Object[])(new ValueProxy(p.getValue())).accept(new IValueVisitor() {
 			
 			@Override
 			public Object accept(IValue value) {
