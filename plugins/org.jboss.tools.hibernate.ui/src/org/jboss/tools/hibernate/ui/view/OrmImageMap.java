@@ -12,7 +12,6 @@ package org.jboss.tools.hibernate.ui.view;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.IdentifierBag;
@@ -128,7 +127,7 @@ public class OrmImageMap {
 				if (type != null && type.isCollectionType()) {
 					if (value instanceof PrimitiveArray) {
 						str = "Image_Collection_primitive_array"; //$NON-NLS-1$
-					} else if (value instanceof Array) {
+					} else if (value.isArray()) {
 						str = "Image_Collection_array"; //$NON-NLS-1$
 					} else if (value instanceof List) {
 						str = "Image_Collection_list"; //$NON-NLS-1$

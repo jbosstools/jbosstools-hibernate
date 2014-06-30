@@ -47,7 +47,6 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefEntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefType;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
-import org.hibernate.mapping.Array;
 import org.hibernate.mapping.IndexedCollection;
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.KeyValue;
@@ -55,7 +54,6 @@ import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
@@ -500,28 +498,28 @@ class TypeVisitor extends ASTVisitor{
 
 	@Override
 	public boolean visit(ArrayType type) {
-		Array array = null;
+		IValue array = null;
 		Type componentType = type.getComponentType();
 		ITypeBinding tb = componentType.resolveBinding();
 		if (tb == null) return false;//Unresolved binding. Omit the property.
 		if (tb.isPrimitive()){
-			array = new PrimitiveArray(rootClass);
+			array = service.newPrimitiveArray(rootClass);
 			
 			IValue value = buildSimpleValue(tb.getName());
 			value.setTable(rootClass.getTable() != null ? new TableProxy(rootClass.getTable()) : null);
-			array.setElement(((ValueProxy)value).getTarget());
-			array.setCollectionTable(rootClass.getTable());//TODO what to set?
+			array.setElement(value);
+			array.setCollectionTable(new TableProxy(rootClass.getTable()));//TODO what to set?
 		} else {
 			RootClass associatedClass = rootClasses.get(tb.getBinaryName());
-			array = new Array(rootClass);
+			array = service.newArray(rootClass);
 			array.setElementClassName(tb.getBinaryName());
-			array.setCollectionTable(associatedClass.getTable());
+			array.setCollectionTable(new TableProxy(associatedClass.getTable()));
 			
 			OneToMany oValue = new OneToMany(rootClass);
 			oValue.setAssociatedClass(associatedClass);
 			oValue.setReferencedEntityName(tb.getBinaryName());
 			
-			array.setElement(oValue);
+			array.setElement(new ValueProxy(oValue));
 		}
 		
 		IValue key = service.newSimpleValue();
@@ -535,8 +533,8 @@ class TypeVisitor extends ASTVisitor{
 		//add default index
 		//index.addColumn(new Column(varName.toUpperCase()+"_POSITION"));
 		
-		array.setIndex(((ValueProxy)index).getTarget());
-		buildProperty(new ValueProxy(array));
+		array.setIndex(index);
+		buildProperty(array);
 		prop.setCascade("none");//$NON-NLS-1$
 		return false;//do not visit children
 	}

@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
 
+import org.hibernate.FetchMode;
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
@@ -13,6 +14,7 @@ import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.IdentifierBag;
 import org.hibernate.mapping.IndexedCollection;
+import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
@@ -369,6 +371,24 @@ public class ValueProxy implements IValue {
 	@Override
 	public String getParentProperty() {
 		return ((Component)target).getParentProperty();
+	}
+
+	@Override
+	public void setElementClassName(String name) {
+		assert target instanceof Array;
+		((Array)target).setElementClassName(name);
+	}
+
+	@Override
+	public void setKey(KeyValue target) {
+		assert target instanceof Collection;
+		((Collection)target).setKey(target);
+	}
+
+	@Override
+	public void setFetchMode(FetchMode fetchMode) {
+		assert target instanceof Collection;
+		((Collection)target).setFetchMode(fetchMode);
 	}
 
 }

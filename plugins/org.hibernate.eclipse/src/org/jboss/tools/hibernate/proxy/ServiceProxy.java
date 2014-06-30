@@ -24,7 +24,10 @@ import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.resolver.DialectFactory;
 import org.hibernate.ejb.Ejb3Configuration;
+import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
@@ -302,6 +305,16 @@ public class ServiceProxy implements IService {
 	@Override
 	public IValue newSimpleValue() {
 		return new ValueProxy(new SimpleValue());
+	}
+
+	@Override
+	public IValue newPrimitiveArray(PersistentClass persistentClass) {
+		return new ValueProxy(new PrimitiveArray(persistentClass));
+	}
+
+	@Override
+	public IValue newArray(PersistentClass persistentClass) {
+		return new ValueProxy(new Array(persistentClass));
 	}
 
 }

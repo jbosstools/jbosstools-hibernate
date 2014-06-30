@@ -3,6 +3,8 @@ package org.jboss.tools.hibernate.spi;
 import java.util.Iterator;
 import java.util.Properties;
 
+import org.hibernate.FetchMode;
+import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PersistentClass;
 
 public interface IValue {
@@ -50,5 +52,8 @@ public interface IValue {
 	PersistentClass getOwner();
 	IValue getElement();
 	String getParentProperty();
+	void setElementClassName(String binaryName);
+	void setKey(KeyValue target);
+	void setFetchMode(FetchMode join);
 
 }

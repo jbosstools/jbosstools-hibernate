@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 
@@ -87,5 +88,9 @@ public interface IService {
 	IEnvironment getEnvironment();
 
 	IValue newSimpleValue();
+
+	IValue newPrimitiveArray(PersistentClass persistentClass);
+
+	IValue newArray(PersistentClass persistentClass);
 	
 }
