@@ -53,7 +53,7 @@ public interface IValue {
 	IValue getElement();
 	String getParentProperty();
 	void setElementClassName(String binaryName);
-	void setKey(KeyValue target);
+	void setKey(KeyValue keyValue);
 	void setFetchMode(FetchMode join);
 
 }

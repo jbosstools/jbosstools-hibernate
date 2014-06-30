@@ -380,9 +380,9 @@ public class ValueProxy implements IValue {
 	}
 
 	@Override
-	public void setKey(KeyValue target) {
+	public void setKey(KeyValue keyValue) {
 		assert target instanceof Collection;
-		((Collection)target).setKey(target);
+		((Collection)target).setKey(keyValue);
 	}
 
 	@Override
