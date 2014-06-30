@@ -12,7 +12,6 @@ package org.jboss.tools.hibernate.ui.view;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.DependantValue;
@@ -122,7 +121,7 @@ public class OrmImageMap {
 				str = "Image_PersistentFieldOne-to-one"; //$NON-NLS-1$
 			} else if (value instanceof ManyToOne) {
 				str = "Image_PersistentFieldMany-to-one"; //$NON-NLS-1$
-			} else if (value instanceof Any) {
+			} else if (value.isAny()) {
 				str = "Image_PersistentFieldAny"; //$NON-NLS-1$
 			} else {
 				IType type = UtilTypeExtract.getTypeUsingExecContext(value, cfg);
