@@ -33,7 +33,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
-import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.PersistentClass;
@@ -295,7 +294,7 @@ public class ShapeEditPart extends OrmEditPart implements NodeEditPart {
 
 	protected Color getColor() {
 		final Object el = getElement();
-		if (el instanceof PersistentClass || el instanceof Component)
+		if (el instanceof PersistentClass || (el instanceof IValue && ((IValue)el).isComponent()))
 			return ResourceManager.getInstance().getColor(new RGB(
 					Integer.parseInt(ColorConstants.Colors_PersistentClassR),
 					Integer.parseInt(ColorConstants.Colors_PersistentClassG),

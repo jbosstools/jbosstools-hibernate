@@ -18,6 +18,7 @@ import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Set;
@@ -347,6 +348,27 @@ public class ValueProxy implements IValue {
 	public String getForeignKeyName() {
 		assert target instanceof SimpleValue;
 		return ((SimpleValue)target).getForeignKeyName();
+	}
+
+	@Override
+	public PersistentClass getOwner() {
+		assert target instanceof Component;
+		return ((Component)target).getOwner();
+	}
+
+	@Override
+	public IValue getElement() {
+		assert target instanceof Collection;
+		IValue result = null;
+		if (((Collection)target).getElement() != null) {
+			result = new ValueProxy(((Collection)target).getElement());
+		}
+		return result;
+	}
+
+	@Override
+	public String getParentProperty() {
+		return ((Component)target).getParentProperty();
 	}
 
 }

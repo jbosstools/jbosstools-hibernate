@@ -12,13 +12,13 @@ package org.jboss.tools.hibernate.ui.view;
 
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.workbench.TypeNameValueVisitor;
-import org.hibernate.mapping.Component;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.jboss.tools.hibernate.proxy.TableProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
+import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.IValue;
@@ -46,6 +46,8 @@ public class OrmLabelMap {
 			label = getParticularLabel((Property)obj, cfg);
 		} else if (obj instanceof OneToMany) {
 			label = getParticularLabel((OneToMany)obj);
+		} else if (obj instanceof IProperty) {
+			label = getParticularLabel((IProperty)obj, cfg);
 		} else if (obj instanceof IValue && (((IValue)obj).isSimpleValue() || ((IValue)obj).isOneToMany())) {
 			label = getParticularLabel((IValue)obj);
 		} else if (obj instanceof PersistentClass) {
@@ -92,10 +94,11 @@ public class OrmLabelMap {
 		if (type != null && type.getReturnedClass() != null) {
 			typeString = type.getReturnedClass().getName();
 		} else {
-			if (field.getValue() instanceof Component) {
-				typeString = ((Component)field.getValue()).getComponentClassName();
-			} else if (field.getValue()!= null && field.getValue().isSimpleValue()) {
-				typeString = new ValueProxy(field.getValue()).getTypeName();
+			IValue fieldValue = field.getValue() != null ? new ValueProxy(field.getValue()) : null;
+			if (fieldValue.isComponent()) {
+				typeString = fieldValue.getComponentClassName();
+			} else if (fieldValue != null && fieldValue.isSimpleValue()) {
+				typeString = fieldValue.getTypeName();
 			}
 		}
 		if (typeString != null) {
@@ -105,6 +108,38 @@ public class OrmLabelMap {
 			return name.toString();
 		}
 		IValue value = field.getValue() != null ? new ValueProxy(field.getValue()) : null;
+		String typeName = null;
+		if (value != null) {
+			typeName = (String) value.accept(new TypeNameValueVisitor(false));
+			if (typeName != null) {
+				return field.getName() + " : " + typeName; //$NON-NLS-1$
+			}
+		}
+		return field.getName();
+	}
+
+	public static String getParticularLabel(IProperty field, final ConsoleConfiguration cfg) {
+		StringBuffer name = new StringBuffer();
+		name.append(field.getName());
+		name.append(" :"); //$NON-NLS-1$
+		String typeString = null;
+		IValue value = field.getValue();
+		IType type = UtilTypeExtract.getTypeUsingExecContext(value, cfg);
+		if (type != null && type.getReturnedClass() != null) {
+			typeString = type.getReturnedClass().getName();
+		} else {
+			if (value.isComponent()) {
+				typeString = value.getComponentClassName();
+			} else if (value != null && value.isSimpleValue()) {
+				typeString = value.getTypeName();
+			}
+		}
+		if (typeString != null) {
+			typeString = correctTypeString(typeString);
+			name.append(SPACE);
+			name.append(typeString);
+			return name.toString();
+		}
 		String typeName = null;
 		if (value != null) {
 			typeName = (String) value.accept(new TypeNameValueVisitor(false));

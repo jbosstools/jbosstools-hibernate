@@ -18,13 +18,12 @@ import org.eclipse.ui.IMemento;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import org.hibernate.mapping.Collection;
-import org.hibernate.mapping.Component;
-import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
+import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.IValue;
@@ -167,13 +166,13 @@ public class OrmShape extends ExpandableShape {
 				addChild(new Shape(identifierProperty, getConsoleConfigName()));
 			}
 
-			KeyValue identifier = rootClass.getIdentifier();
-			if (identifier instanceof Component) {
-				Component component = (Component)identifier;
+			IValue identifier = rootClass.getIdentifier() != null ? new ValueProxy(rootClass.getIdentifier()) : null;
+			if (identifier != null && identifier.isComponent()) {
+				IValue component = identifier;
 				if (component.isEmbedded()) {
-					Iterator<Property> iterator = ((Component)identifier).getPropertyIterator();
+					Iterator<IProperty> iterator = identifier.getPropertyIterator();
 					while (iterator.hasNext()) {
-						Property property = iterator.next();
+						IProperty property = iterator.next();
 						addChild(new Shape(property, getConsoleConfigName()));
 					}
 				}
@@ -215,11 +214,11 @@ public class OrmShape extends ExpandableShape {
 				addChild(new Shape(identifierProperty, getConsoleConfigName()));
 			}
 
-			KeyValue identifier = rootClass.getIdentifier();
-			if (identifier instanceof Component) {
-				Iterator<Property> iterator = ((Component)identifier).getPropertyIterator();
+			IValue identifier = rootClass.getIdentifier() != null ? new ValueProxy(rootClass.getIdentifier()) : null;
+			if (identifier.isComponent()) {
+				Iterator<IProperty> iterator = identifier.getPropertyIterator();
 				while (iterator.hasNext()) {
-					Property property = iterator.next();
+					IProperty property = iterator.next();
 					addChild(new Shape(property, getConsoleConfigName()));
 				}
 			}

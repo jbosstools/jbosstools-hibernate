@@ -3,6 +3,8 @@ package org.jboss.tools.hibernate.spi;
 import java.util.Iterator;
 import java.util.Properties;
 
+import org.hibernate.mapping.PersistentClass;
+
 public interface IValue {
 
 	boolean isSimpleValue();
@@ -45,5 +47,8 @@ public interface IValue {
 	void addColumn(IColumn column);
 	void setTypeParameters(Properties typeParameters);
 	String getForeignKeyName();
+	PersistentClass getOwner();
+	IValue getElement();
+	String getParentProperty();
 
 }

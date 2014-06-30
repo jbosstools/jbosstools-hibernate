@@ -13,10 +13,13 @@ package org.jboss.tools.hibernate.ui.diagram.editors.model;
 import java.util.Iterator;
 
 import org.hibernate.mapping.Collection;
-import org.hibernate.mapping.Component;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
+import org.jboss.tools.hibernate.proxy.PropertyProxy;
+import org.jboss.tools.hibernate.proxy.ValueProxy;
+import org.jboss.tools.hibernate.spi.IProperty;
+import org.jboss.tools.hibernate.spi.IValue;
 
 // TODO: What is this ? And why is it extending mapping classes ?!
 // vitali: it seems this is class to "wrap" properties set to RootClass
@@ -44,12 +47,13 @@ public class SpecialRootClass extends RootClass {
 		if (property == null) {
 			return;
 		}
-		Component component = null;
+		IValue propVal = property.getValue() != null ? new ValueProxy(property.getValue()) : null;
+		IValue component = null;
 		if (property.getValue() instanceof Collection) {
 			Collection collection = (Collection)property.getValue();
-			component = (Component)collection.getElement();
-		} else if (property.getValue() instanceof Component) {
-			component = (Component)property.getValue();
+			component = collection.getElement() != null ? new ValueProxy(collection.getElement()) : null;
+		} else if (propVal.isComponent()) {
+			component = propVal;
 		}
 		if (component != null) {
 			setClassName(component.getComponentClassName());
@@ -60,11 +64,11 @@ public class SpecialRootClass extends RootClass {
 				parentProperty.setName(component.getParentProperty());
 				parentProperty.setPersistentClass(ownerClass);
 			}
-			Iterator<Property> iterator = component.getPropertyIterator();
+			Iterator<IProperty> iterator = component.getPropertyIterator();
 			while (iterator.hasNext()) {
-				Property property = iterator.next();
+				IProperty property = iterator.next();
 				if (property != null) {
-					addProperty(property);
+					addProperty(((PropertyProxy)property).getTarget());
 				}
 			}
 		}

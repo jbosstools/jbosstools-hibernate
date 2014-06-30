@@ -34,10 +34,10 @@ import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.OpenMappingUtils;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
-import org.hibernate.mapping.Component;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
+import org.jboss.tools.hibernate.spi.IValue;
 
 /**
  * Open Mapping File action
@@ -186,7 +186,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 		}
    		if (editorPart == null && parentProperty.isComposite()) {
 			if (OpenMappingUtils.hasConfigXMLMappingClassAnnotation(consoleConfig, rootClass)) {
-				String fullyQualifiedName =((Component)parentProperty.getValue()).getComponentClassName();
+				String fullyQualifiedName =((IValue)parentProperty.getValue()).getComponentClassName();
 				editorPart = OpenSourceAction.run(consoleConfig, compositeProperty, fullyQualifiedName);
 			}
 	    }
@@ -278,9 +278,9 @@ public class OpenMappingAction extends SelectionListenerAction {
 		}
 		if (propRegion == null && parentProperty.isComposite()){
 			String[] componentPatterns = new String[]{
-					OpenMappingUtils.createPattern("embeddable", "class", ((Component)parentProperty.getValue()).getComponentClassName()),
+					OpenMappingUtils.createPattern("embeddable", "class", ((IValue)parentProperty.getValue()).getComponentClassName()),
 					OpenMappingUtils.createPattern("embeddable", "class", OpenMappingUtils.getShortClassName(
-							((Component)parentProperty.getValue()).getComponentClassName()))
+							((IValue)parentProperty.getValue()).getComponentClassName()))
 			};
 			IRegion componentRegion = null;
 			for (int i = 0; i < componentPatterns.length && componentRegion == null; i++) {

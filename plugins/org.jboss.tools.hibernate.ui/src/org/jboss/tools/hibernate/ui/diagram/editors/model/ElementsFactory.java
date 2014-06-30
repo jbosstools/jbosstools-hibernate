@@ -19,7 +19,6 @@ import java.util.Set;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.mapping.Collection;
-import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Join;
@@ -323,8 +322,8 @@ public class ElementsFactory {
 			}
 		}
 
-		if (persistentClass.getIdentifier() instanceof Component) {
-			Component identifier = (Component)persistentClass.getIdentifier();
+		IValue identifier = persistentClass.getIdentifier() != null ? new ValueProxy(persistentClass.getIdentifier()) : null;
+		if (identifier != null && identifier.isComponent()) {
 			if (identifier.getComponentClassName() != null && !identifier.getComponentClassName().equals(identifier.getOwner().getEntityName())) {
 				OrmShape componentClassShape = elements.get(identifier.getComponentClassName());
 				if (componentClassShape == null && persistentClass instanceof RootClass) {
@@ -335,7 +334,7 @@ public class ElementsFactory {
 						connections.add(new Connection(idPropertyShape, componentClassShape));
 					}
 
-					OrmShape tableShape = getOrCreateDatabaseTable(identifier.getTable() != null ? new TableProxy(identifier.getTable()) : null);
+					OrmShape tableShape = getOrCreateDatabaseTable(identifier.getTable());
 					if (componentClassShape != null) {
 						createConnections(componentClassShape, tableShape);
 					}
@@ -361,13 +360,14 @@ public class ElementsFactory {
 		if (property == null) {
 			return classShape;
 		}
-		if (property.getValue() instanceof Collection) {
-			Component component = (Component)((Collection)property.getValue()).getElement();
+		IValue value = property.getValue() != null ? new ValueProxy(property.getValue()) : null;
+		if (value.isCollection()) {
+			IValue component = value.getElement();
 			if (component != null) {
 				classShape = createShape(property);
-				OrmShape tableShape = elements.get(Utils.getTableName(component.getTable() != null ? new TableProxy(component.getTable()) : null));
+				OrmShape tableShape = elements.get(Utils.getTableName(component.getTable()));
 				if (tableShape == null) {
-					tableShape = getOrCreateDatabaseTable(component.getTable() != null ? new TableProxy(component.getTable()) : null);
+					tableShape = getOrCreateDatabaseTable(component.getTable());
 				}
 				createConnections(classShape, tableShape);
 				if (shouldCreateConnection(classShape, tableShape)) {
@@ -382,8 +382,8 @@ public class ElementsFactory {
 					}
 				}
 			}
-		} else if (property.getValue() instanceof Component) {
-			classShape = elements.get(((Component)property.getValue()).getComponentClassName());
+		} else if (value.isComponent()) {
+			classShape = elements.get(value.getComponentClassName());
 			if (classShape == null) {
 				classShape = createShape(property);
 			}

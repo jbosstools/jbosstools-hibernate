@@ -20,10 +20,10 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
-import org.hibernate.mapping.Component;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.jboss.tools.hibernate.spi.ITable;
+import org.jboss.tools.hibernate.spi.IValue;
 import org.jboss.tools.hibernate.ui.diagram.editors.figures.TitleFigure;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.BaseElement;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.ExpandableShape;
@@ -121,7 +121,7 @@ public class OrmShapeEditPart extends ExpandableShapeEditPart {
 
 	protected Color getBackgroundColor() {
 		Object element = getElement();
-		if (element instanceof PersistentClass || element instanceof Component) {
+		if (element instanceof PersistentClass || (element instanceof IValue && ((IValue)element).isComponent())) {
 			return ResourceManager.getInstance().getColor(new RGB(0, 0, 0));
 		} else if (element instanceof ITable || element instanceof Property) {
 			return ResourceManager.getInstance().getColor(new RGB(
