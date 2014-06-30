@@ -21,7 +21,6 @@ import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Set;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
@@ -125,7 +124,7 @@ public class OrmImageMap {
 			} else {
 				IType type = UtilTypeExtract.getTypeUsingExecContext(value, cfg);
 				if (type != null && type.isCollectionType()) {
-					if (value instanceof PrimitiveArray) {
+					if (value.isPrimitiveArray()) {
 						str = "Image_Collection_primitive_array"; //$NON-NLS-1$
 					} else if (value.isArray()) {
 						str = "Image_Collection_array"; //$NON-NLS-1$
