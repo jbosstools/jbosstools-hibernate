@@ -95,7 +95,7 @@ public class OrmLabelMap {
 			typeString = type.getReturnedClass().getName();
 		} else {
 			IValue fieldValue = field.getValue() != null ? new ValueProxy(field.getValue()) : null;
-			if (fieldValue.isComponent()) {
+			if (fieldValue != null && fieldValue.isComponent()) {
 				typeString = fieldValue.getComponentClassName();
 			} else if (fieldValue != null && fieldValue.isSimpleValue()) {
 				typeString = fieldValue.getTypeName();
