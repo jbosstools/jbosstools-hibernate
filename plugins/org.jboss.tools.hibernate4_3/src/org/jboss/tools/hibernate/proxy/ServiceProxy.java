@@ -32,6 +32,7 @@ import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfoSource;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.hibernate.mapping.Array;
+import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimitiveArray;
@@ -363,6 +364,11 @@ public class ServiceProxy implements IService {
 	@Override
 	public IValue newArray(PersistentClass persistentClass) {
 		return new ValueProxy(new Array(null, persistentClass));
+	}
+
+	@Override
+	public IValue newBag(PersistentClass persistentClass) {
+		return new ValueProxy(new Bag(null, persistentClass));
 	}
 
 }

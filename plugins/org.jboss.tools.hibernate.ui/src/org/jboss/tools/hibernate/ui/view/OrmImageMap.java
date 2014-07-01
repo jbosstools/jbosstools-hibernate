@@ -134,7 +134,7 @@ public class OrmImageMap {
 						str = "Image_Collection_set"; //$NON-NLS-1$
 					} else if (value instanceof Map) {
 						str = "Image_Collection_map"; //$NON-NLS-1$
-					} else if (value instanceof Bag) {
+					} else if (value.isBag()) {
 						str = "Image_Collection_bag"; //$NON-NLS-1$
 					} else if (value instanceof IdentifierBag) {
 						str = "Image_Collection_idbag"; //$NON-NLS-1$

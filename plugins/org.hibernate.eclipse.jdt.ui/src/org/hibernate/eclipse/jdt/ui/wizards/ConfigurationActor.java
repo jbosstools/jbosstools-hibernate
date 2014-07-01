@@ -683,7 +683,7 @@ class TypeVisitor extends ASTVisitor{
 		} else if (Utils.isImplementInterface(interfaces, Map.class.getName())){
 			cValue = new ValueProxy(new org.hibernate.mapping.Map(rootClass));
 		} else if (Utils.isImplementInterface(interfaces, Collection.class.getName())){
-			cValue = new ValueProxy(new org.hibernate.mapping.Bag(rootClass));
+			cValue = service.newBag(rootClass);
 		}
 		
 		if (cValue == null) return null;

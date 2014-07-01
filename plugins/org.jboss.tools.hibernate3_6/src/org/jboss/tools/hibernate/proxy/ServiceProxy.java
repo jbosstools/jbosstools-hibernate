@@ -24,6 +24,7 @@ import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.resolver.DialectFactory;
 import org.hibernate.ejb.Ejb3Configuration;
 import org.hibernate.mapping.Array;
+import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimitiveArray;
@@ -313,6 +314,11 @@ public class ServiceProxy implements IService {
 	@Override
 	public IValue newArray(PersistentClass persistentClass) {
 		return new ValueProxy(new Array(null, persistentClass));
+	}
+
+	@Override
+	public IValue newBag(PersistentClass persistentClass) {
+		return new ValueProxy(new Bag(null, persistentClass));
 	}
 
 }

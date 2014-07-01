@@ -92,5 +92,7 @@ public interface IService {
 	IValue newPrimitiveArray(PersistentClass persistentClass);
 
 	IValue newArray(PersistentClass persistentClass);
+
+	IValue newBag(PersistentClass persistentClass);
 	
 }
