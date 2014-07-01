@@ -677,7 +677,7 @@ class TypeVisitor extends ASTVisitor{
 	private IValue buildCollectionValue(ITypeBinding[] interfaces){
 		IValue cValue = null;
 		if (Utils.isImplementInterface(interfaces, Set.class.getName())){
-			cValue = new ValueProxy(new org.hibernate.mapping.Set(rootClass));
+			cValue = service.newSet(rootClass);
 		} else if (Utils.isImplementInterface(interfaces, List.class.getName())){
 			cValue = service.newList(rootClass);
 		} else if (Utils.isImplementInterface(interfaces, Map.class.getName())){

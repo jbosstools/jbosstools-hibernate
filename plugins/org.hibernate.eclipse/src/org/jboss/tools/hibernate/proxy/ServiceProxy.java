@@ -31,6 +31,7 @@ import org.hibernate.mapping.List;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
+import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
@@ -332,6 +333,11 @@ public class ServiceProxy implements IService {
 	@Override
 	public IValue newMap(PersistentClass persistentClass) {
 		return new ValueProxy(new org.hibernate.mapping.Map(persistentClass));
+	}
+
+	@Override
+	public IValue newSet(PersistentClass persistentClass) {
+		return new ValueProxy(new Set(persistentClass));
 	}
 
 }

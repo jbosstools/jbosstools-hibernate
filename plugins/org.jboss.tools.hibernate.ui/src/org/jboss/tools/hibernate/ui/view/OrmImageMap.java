@@ -125,7 +125,7 @@ public class OrmImageMap {
 						str = "Image_Collection_array"; //$NON-NLS-1$
 					} else if (value.isList()) {
 						str = "Image_Collection_list"; //$NON-NLS-1$
-					} else if (value instanceof Set) {
+					} else if (value.isSet()) {
 						str = "Image_Collection_set"; //$NON-NLS-1$
 					} else if (value.isMap()) {
 						str = "Image_Collection_map"; //$NON-NLS-1$
