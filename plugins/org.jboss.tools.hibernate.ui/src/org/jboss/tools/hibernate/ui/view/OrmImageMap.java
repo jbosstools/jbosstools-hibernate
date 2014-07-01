@@ -12,7 +12,6 @@ package org.jboss.tools.hibernate.ui.view;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.mapping.IdentifierBag;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
@@ -134,7 +133,7 @@ public class OrmImageMap {
 						str = "Image_Collection_map"; //$NON-NLS-1$
 					} else if (value.isBag()) {
 						str = "Image_Collection_bag"; //$NON-NLS-1$
-					} else if (value instanceof IdentifierBag) {
+					} else if (value.isIdentifierBag()) {
 						str = "Image_Collection_idbag"; //$NON-NLS-1$
 					} else {
 						str = "Image_Collection"; //$NON-NLS-1$
