@@ -675,21 +675,21 @@ class TypeVisitor extends ASTVisitor{
 	}
 	
 	private IValue buildCollectionValue(ITypeBinding[] interfaces){
-		org.hibernate.mapping.Collection cValue = null;
+		IValue cValue = null;
 		if (Utils.isImplementInterface(interfaces, Set.class.getName())){
-			cValue = new org.hibernate.mapping.Set(rootClass);
+			cValue = new ValueProxy(new org.hibernate.mapping.Set(rootClass));
 		} else if (Utils.isImplementInterface(interfaces, List.class.getName())){
-			cValue = new org.hibernate.mapping.List(rootClass);
+			cValue = new ValueProxy(new org.hibernate.mapping.List(rootClass));
 		} else if (Utils.isImplementInterface(interfaces, Map.class.getName())){
-			cValue = new org.hibernate.mapping.Map(rootClass);
+			cValue = new ValueProxy(new org.hibernate.mapping.Map(rootClass));
 		} else if (Utils.isImplementInterface(interfaces, Collection.class.getName())){
-			cValue = new org.hibernate.mapping.Bag(rootClass);
+			cValue = new ValueProxy(new org.hibernate.mapping.Bag(rootClass));
 		}
 		
 		if (cValue == null) return null;
 		
 		//By default set the same table, but for one-to-many should change it to associated class's table
-		cValue.setCollectionTable(rootClass.getTable());
+		cValue.setCollectionTable(new TableProxy(rootClass.getTable()));
 
 		IValue key = service.newSimpleValue();
 		key.setTypeName("string");//$NON-NLS-1$
@@ -699,6 +699,6 @@ class TypeVisitor extends ASTVisitor{
 		cValue.setKey((KeyValue)((ValueProxy)key).getTarget());
 		cValue.setLazy(true);
 		cValue.setRole(StringHelper.qualify(rootClass.getEntityName(), varName));
-		return new ValueProxy(cValue);
+		return cValue;
 	}
 }

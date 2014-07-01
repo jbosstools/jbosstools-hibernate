@@ -30,10 +30,10 @@ import org.eclipse.swt.graphics.Image;
 import org.hibernate.HibernateException;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.workbench.HibernateWorkbenchHelper;
-import org.hibernate.mapping.Collection;
-import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.Property;
 import org.hibernate.type.EntityType;
+import org.jboss.tools.hibernate.proxy.ValueProxy;
+import org.jboss.tools.hibernate.spi.IValue;
 
 public class PropertyViewAdapter extends Observable {
 
@@ -77,11 +77,11 @@ public class PropertyViewAdapter extends Observable {
 	}
 	
 	private void createSingleEndedEnityAssociations() {
-		try { //TODO: we need the consoleconfiguration here to know the exact types			
-			if ( property.getValue() instanceof Collection ) {
-				Collection collection = (Collection) property.getValue();
-				if(!collection.isInverse() && collection.getElement() instanceof OneToMany) {
-					OneToMany oneToMany = (OneToMany) collection.getElement();
+		try { //TODO: we need the consoleconfiguration here to know the exact types	
+			IValue value = property.getValue() != null ? new ValueProxy(property.getValue()) : null;
+			if ( value != null && value.isCollection() ) {
+				if(!value.isInverse() && value.getElement().isOneToMany()) {
+					IValue oneToMany = value.getElement();
 					
 					String entityName = oneToMany.getAssociatedClass().getEntityName();
 					PersistentClassViewAdapter target = configuration

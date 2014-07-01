@@ -391,4 +391,28 @@ public class ValueProxy implements IValue {
 		((Collection)target).setFetchMode(fetchMode);
 	}
 
+	@Override
+	public boolean isInverse() {
+		assert target instanceof Collection;
+		return ((Collection)target).isInverse();
+	}
+
+	@Override
+	public PersistentClass getAssociatedClass() {
+		assert target instanceof OneToMany;
+		return ((OneToMany)target).getAssociatedClass();
+	}
+
+	@Override
+	public void setLazy(boolean b) {
+		assert target instanceof Collection;
+		((Collection)target).setLazy(b);
+	}
+
+	@Override
+	public void setRole(String role) {
+		assert target instanceof Collection;
+		((Collection)target).setRole(role);
+	}
+
 }

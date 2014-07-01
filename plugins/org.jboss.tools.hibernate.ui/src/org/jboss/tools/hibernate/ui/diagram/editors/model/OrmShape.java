@@ -17,7 +17,6 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
-import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
@@ -188,7 +187,7 @@ public class OrmShape extends ExpandableShape {
 						if (val.isSimpleValue() && val.isTypeSpecified()) {
 							bodyOrmShape = new Shape(field, getConsoleConfigName());
 						} else {
-							if (val instanceof Collection) {
+							if (val.isCollection()) {
 								bodyOrmShape = new ComponentShape(field, getConsoleConfigName());
 							} else {
 								IType type = getTypeUsingExecContext(val);

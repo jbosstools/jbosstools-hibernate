@@ -55,5 +55,9 @@ public interface IValue {
 	void setElementClassName(String binaryName);
 	void setKey(KeyValue keyValue);
 	void setFetchMode(FetchMode join);
+	boolean isInverse();
+	PersistentClass getAssociatedClass();
+	void setLazy(boolean b);
+	void setRole(String role);
 
 }

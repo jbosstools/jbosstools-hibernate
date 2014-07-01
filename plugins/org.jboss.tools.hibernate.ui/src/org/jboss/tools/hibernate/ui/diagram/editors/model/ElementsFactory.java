@@ -18,7 +18,6 @@ import java.util.Set;
 
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
-import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Join;
@@ -149,8 +148,8 @@ public class ElementsFactory {
 		if (!v.isCollection()) {
 			return;
 		}
-		Collection collection = (Collection)((ValueProxy)v).getTarget();
-		IValue component = new ValueProxy(collection.getElement());
+		IValue collection = v;
+		IValue component = collection.getElement();
 		Shape csChild0 = null, csChild1 = null;
 		Iterator<Shape> tmp = componentShape.getChildrenIterator();
 		if (tmp.hasNext()) {
@@ -187,7 +186,7 @@ public class ElementsFactory {
 				if (shouldCreateConnection(csChild1, childShape)) {
 					connections.add(new Connection(csChild1, childShape));
 				}
-				OrmShape keyTableShape = getOrCreateDatabaseTable(collection.getKey().getTable() != null ? new TableProxy(collection.getKey().getTable()) : null);
+				OrmShape keyTableShape = getOrCreateDatabaseTable(collection.getKey().getTable());
 				Iterator it = collection.getKey().getColumnIterator();
 				while (it.hasNext()) {
 					Object el = it.next();
@@ -203,7 +202,7 @@ public class ElementsFactory {
 
 		} else {
 			// this is case: if (collection.isMap() || collection.isSet())
-			childShape = getOrCreateDatabaseTable(collection.getCollectionTable() != null ? new TableProxy(collection.getCollectionTable()) : null);
+			childShape = getOrCreateDatabaseTable(collection.getCollectionTable());
 			if (childShape != null) {
 				Iterator it = ((DependantValue)((ValueProxy)csChild0.getOrmElement()).getTarget()).getColumnIterator();
 				while (it.hasNext()) {
@@ -393,7 +392,7 @@ public class ElementsFactory {
 
 	protected OrmShape getOrCreateAssociationClass(Property property) {
 		OrmShape classShape = null;
-		OneToMany component = (OneToMany)((Collection)property.getValue()).getElement();
+		OneToMany component = (OneToMany) new ValueProxy(property.getValue()).getElement();
 		if (component == null) {
 			return classShape;
 		}

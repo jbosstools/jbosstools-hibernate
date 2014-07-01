@@ -12,7 +12,6 @@ package org.jboss.tools.hibernate.ui.diagram.editors.model;
 
 import java.util.Iterator;
 
-import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -49,9 +48,9 @@ public class SpecialRootClass extends RootClass {
 		}
 		IValue propVal = property.getValue() != null ? new ValueProxy(property.getValue()) : null;
 		IValue component = null;
-		if (property.getValue() instanceof Collection) {
-			Collection collection = (Collection)property.getValue();
-			component = collection.getElement() != null ? new ValueProxy(collection.getElement()) : null;
+		if (propVal != null && propVal.isCollection()) {
+			IValue collection = propVal;
+			component = collection.getElement();
 		} else if (propVal.isComponent()) {
 			component = propVal;
 		}
