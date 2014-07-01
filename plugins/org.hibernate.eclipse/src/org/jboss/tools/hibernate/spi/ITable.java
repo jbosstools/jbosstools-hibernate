@@ -22,5 +22,6 @@ public interface ITable {
 	boolean isAbstract();
 	boolean isAbstractUnionTable();
 	boolean isPhysicalTable();
+	IValue getIdentifierValue();
 
 }

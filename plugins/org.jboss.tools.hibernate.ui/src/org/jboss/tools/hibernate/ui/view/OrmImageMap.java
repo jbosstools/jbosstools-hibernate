@@ -12,8 +12,6 @@ package org.jboss.tools.hibernate.ui.view;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.mapping.Bag;
-import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.IdentifierBag;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
@@ -225,8 +223,7 @@ public class OrmImageMap {
 		} else if (field.isComponent()) {
 			res = "Image_PersistentFieldComponent"; //$NON-NLS-1$
 		} else if (field.isDependantValue()) {
-			DependantValue mapping = (DependantValue)((ValueProxy)field).getTarget();
-			if (mapping.getTable().getIdentifierValue() == mapping) {
+       		if (field.getTable().getIdentifierValue() == field) {
 				res = "Image_PersistentFieldComponent_id"; //$NON-NLS-1$				
 			}
 		} else if (field.isManyToOne()) {

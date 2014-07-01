@@ -18,7 +18,6 @@ import java.util.Set;
 
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
-import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Join;
 import org.hibernate.mapping.OneToMany;
@@ -204,7 +203,7 @@ public class ElementsFactory {
 			// this is case: if (collection.isMap() || collection.isSet())
 			childShape = getOrCreateDatabaseTable(collection.getCollectionTable());
 			if (childShape != null) {
-				Iterator it = ((DependantValue)((ValueProxy)csChild0.getOrmElement()).getTarget()).getColumnIterator();
+				Iterator<IColumn> it = ((IValue)csChild0.getOrmElement()).getColumnIterator();
 				while (it.hasNext()) {
 					Object el = it.next();
 					if (el instanceof IColumn) {

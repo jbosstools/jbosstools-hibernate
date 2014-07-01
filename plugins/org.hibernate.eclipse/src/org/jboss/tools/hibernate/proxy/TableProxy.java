@@ -9,11 +9,13 @@ import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.ITable;
+import org.jboss.tools.hibernate.spi.IValue;
 
 public class TableProxy implements ITable {
 	
 	private Table target = null;
 	private HashSet<IColumn> columns = null;
+	private IValue identifierValue = null;
 	
 	public TableProxy(Table table) {
 		target = table;
@@ -120,6 +122,14 @@ public class TableProxy implements ITable {
 			result = ((TableProxy)o).getTarget().equals(getTarget());
 		}
 		return result;
+	}
+
+	@Override
+	public IValue getIdentifierValue() {
+		if (identifierValue == null && target.getIdentifierValue() != null) {
+			identifierValue = new ValueProxy(target.getIdentifierValue());
+		}
+		return identifierValue;
 	}
 
 }
