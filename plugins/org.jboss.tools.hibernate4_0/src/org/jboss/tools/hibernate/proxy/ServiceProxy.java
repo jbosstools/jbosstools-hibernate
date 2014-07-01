@@ -338,4 +338,9 @@ public class ServiceProxy implements IService {
 	}
 
 
+	@Override
+	public IValue newMap(PersistentClass persistentClass) {
+		return new ValueProxy(new org.hibernate.mapping.Map(null, persistentClass));
+	}
+
 }

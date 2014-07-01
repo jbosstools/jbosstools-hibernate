@@ -611,7 +611,7 @@ class TypeVisitor extends ASTVisitor{
 			buildProperty(value);
 			if (value.isList()){
 				((IndexedCollection)value).setIndex(((ValueProxy)service.newSimpleValue()).getTarget());
-			} else if (value instanceof org.hibernate.mapping.Map){
+			} else if (value.isMap()){
 				IValue map_key = service.newSimpleValue();
 				//FIXME: how to detect key-type here
 				map_key.setTypeName("string"); //$NON-NLS-1$
@@ -681,7 +681,7 @@ class TypeVisitor extends ASTVisitor{
 		} else if (Utils.isImplementInterface(interfaces, List.class.getName())){
 			cValue = service.newList(rootClass);
 		} else if (Utils.isImplementInterface(interfaces, Map.class.getName())){
-			cValue = new ValueProxy(new org.hibernate.mapping.Map(rootClass));
+			cValue = service.newMap(rootClass);
 		} else if (Utils.isImplementInterface(interfaces, Collection.class.getName())){
 			cValue = service.newBag(rootClass);
 		}

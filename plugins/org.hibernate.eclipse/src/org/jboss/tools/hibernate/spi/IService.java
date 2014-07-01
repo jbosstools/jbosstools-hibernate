@@ -96,5 +96,7 @@ public interface IService {
 	IValue newBag(PersistentClass persistentClass);
 
 	IValue newList(PersistentClass persistentClass);
+
+	IValue newMap(PersistentClass persistentClass);
 	
 }
