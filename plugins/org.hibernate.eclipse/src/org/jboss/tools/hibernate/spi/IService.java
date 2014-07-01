@@ -94,5 +94,7 @@ public interface IService {
 	IValue newArray(PersistentClass persistentClass);
 
 	IValue newBag(PersistentClass persistentClass);
+
+	IValue newList(PersistentClass persistentClass);
 	
 }

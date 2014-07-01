@@ -34,6 +34,7 @@ import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.List;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
@@ -369,6 +370,11 @@ public class ServiceProxy implements IService {
 	@Override
 	public IValue newBag(PersistentClass persistentClass) {
 		return new ValueProxy(new Bag(null, persistentClass));
+	}
+
+	@Override
+	public IValue newList(PersistentClass persistentClass) {
+		return new ValueProxy(new List(null, persistentClass));
 	}
 
 }

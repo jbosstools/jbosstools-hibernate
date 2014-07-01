@@ -609,7 +609,7 @@ class TypeVisitor extends ASTVisitor{
 			value.setElement(element);
 			value.setCollectionTable(rootClass.getTable() != null ? new TableProxy(rootClass.getTable()) : null);//TODO what to set?
 			buildProperty(value);
-			if (value instanceof org.hibernate.mapping.List){
+			if (value.isList()){
 				((IndexedCollection)value).setIndex(((ValueProxy)service.newSimpleValue()).getTarget());
 			} else if (value instanceof org.hibernate.mapping.Map){
 				IValue map_key = service.newSimpleValue();
@@ -679,7 +679,7 @@ class TypeVisitor extends ASTVisitor{
 		if (Utils.isImplementInterface(interfaces, Set.class.getName())){
 			cValue = new ValueProxy(new org.hibernate.mapping.Set(rootClass));
 		} else if (Utils.isImplementInterface(interfaces, List.class.getName())){
-			cValue = new ValueProxy(new org.hibernate.mapping.List(rootClass));
+			cValue = service.newList(rootClass);
 		} else if (Utils.isImplementInterface(interfaces, Map.class.getName())){
 			cValue = new ValueProxy(new org.hibernate.mapping.Map(rootClass));
 		} else if (Utils.isImplementInterface(interfaces, Collection.class.getName())){

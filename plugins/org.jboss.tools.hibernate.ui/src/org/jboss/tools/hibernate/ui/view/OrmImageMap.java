@@ -12,7 +12,6 @@ package org.jboss.tools.hibernate.ui.view;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
@@ -125,7 +124,7 @@ public class OrmImageMap {
 						str = "Image_Collection_primitive_array"; //$NON-NLS-1$
 					} else if (value.isArray()) {
 						str = "Image_Collection_array"; //$NON-NLS-1$
-					} else if (value instanceof List) {
+					} else if (value.isList()) {
 						str = "Image_Collection_list"; //$NON-NLS-1$
 					} else if (value instanceof Set) {
 						str = "Image_Collection_set"; //$NON-NLS-1$
