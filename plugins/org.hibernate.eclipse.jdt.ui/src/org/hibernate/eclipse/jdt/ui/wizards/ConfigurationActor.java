@@ -47,7 +47,6 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefEntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefType;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
-import org.hibernate.mapping.IndexedCollection;
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.ManyToOne;
@@ -610,12 +609,12 @@ class TypeVisitor extends ASTVisitor{
 			value.setCollectionTable(rootClass.getTable() != null ? new TableProxy(rootClass.getTable()) : null);//TODO what to set?
 			buildProperty(value);
 			if (value.isList()){
-				((IndexedCollection)value).setIndex(((ValueProxy)service.newSimpleValue()).getTarget());
+				value.setIndex(service.newSimpleValue());
 			} else if (value.isMap()){
 				IValue map_key = service.newSimpleValue();
 				//FIXME: how to detect key-type here
 				map_key.setTypeName("string"); //$NON-NLS-1$
-				((IndexedCollection)value).setIndex(((ValueProxy)map_key).getTarget());
+				value.setIndex(map_key);
 			}
 			prop.setCascade("none");//$NON-NLS-1$
 		} else if (tb.isEnum()){
