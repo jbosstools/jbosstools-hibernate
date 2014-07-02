@@ -387,8 +387,12 @@ public class ValueProxy implements IValue {
 
 	@Override
 	public void setFetchMode(FetchMode fetchMode) {
-		assert target instanceof Collection;
-		((Collection)target).setFetchMode(fetchMode);
+		assert (target instanceof Collection || target instanceof ToOne);
+		if (target instanceof Collection) {
+			((Collection)target).setFetchMode(fetchMode);
+		} else if (target instanceof ToOne) {
+			((ToOne)target).setFetchMode(fetchMode);
+		}
 	}
 
 	@Override
