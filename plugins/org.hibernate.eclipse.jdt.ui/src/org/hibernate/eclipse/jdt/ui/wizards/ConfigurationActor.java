@@ -57,9 +57,7 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Subclass;
-import org.hibernate.mapping.ToOne;
 import org.hibernate.util.xpl.StringHelper;
-import org.jboss.tools.hibernate.proxy.ColumnProxy;
 import org.jboss.tools.hibernate.proxy.TableProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
@@ -625,24 +623,24 @@ class TypeVisitor extends ASTVisitor{
 			value.setTypeParameters(typeParameters);
 			buildProperty(value);
 		} else if (ref != null /*&& ref.fullyQualifiedName.indexOf('$') < 0*/){
-			ToOne sValue = null;
+			IValue sValue = null;
 			if (ref.refType == RefType.MANY2ONE){
-				sValue = new ManyToOne(rootClass.getTable());
+				sValue = new ValueProxy(new ManyToOne(rootClass.getTable()));
 			} else if (ref.refType == RefType.ONE2ONE){
-				sValue = new OneToOne(rootClass.getTable(), rootClass);
+				sValue = new ValueProxy(new OneToOne(rootClass.getTable(), rootClass));
 			} else if (ref.refType == RefType.UNDEF){
-				sValue = new OneToOne(rootClass.getTable(), rootClass);
+				sValue = new ValueProxy(new OneToOne(rootClass.getTable(), rootClass));
 			} else {
 				//OneToMany and ManyToMany must be a collection
 				throw new IllegalStateException(ref.refType.toString());
 			}
 			
 			IColumn column = HibernateHelper.INSTANCE.getHibernateService().newColumn(varName.toUpperCase());
-			sValue.addColumn(((ColumnProxy)column).getTarget());					
+			sValue.addColumn(column);					
 			sValue.setTypeName(tb.getBinaryName());
 			sValue.setFetchMode(FetchMode.JOIN);
 			sValue.setReferencedEntityName(ref.fullyQualifiedName);
-			buildProperty(new ValueProxy(sValue));
+			buildProperty(sValue);
 			prop.setCascade("none");//$NON-NLS-1$
 		} else {
 			value = buildSimpleValue(tb.getBinaryName());

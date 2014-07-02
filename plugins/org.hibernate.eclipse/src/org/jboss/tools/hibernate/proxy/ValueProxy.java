@@ -415,4 +415,10 @@ public class ValueProxy implements IValue {
 		((Collection)target).setRole(role);
 	}
 
+	@Override
+	public void setReferencedEntityName(String name) {
+		assert target instanceof ToOne;
+		((ToOne)target).setReferencedEntityName(name);
+	}
+
 }

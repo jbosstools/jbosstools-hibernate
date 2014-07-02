@@ -59,5 +59,6 @@ public interface IValue {
 	PersistentClass getAssociatedClass();
 	void setLazy(boolean b);
 	void setRole(String role);
+	void setReferencedEntityName(String name);
 
 }
