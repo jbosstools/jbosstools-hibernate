@@ -49,8 +49,6 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefType;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.KeyValue;
-import org.hibernate.mapping.ManyToOne;
-import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
@@ -512,11 +510,11 @@ class TypeVisitor extends ASTVisitor{
 			array.setElementClassName(tb.getBinaryName());
 			array.setCollectionTable(new TableProxy(associatedClass.getTable()));
 			
-			OneToMany oValue = new OneToMany(rootClass);
+			IValue oValue = service.newOneToMany(rootClass);
 			oValue.setAssociatedClass(associatedClass);
 			oValue.setReferencedEntityName(tb.getBinaryName());
 			
-			array.setElement(new ValueProxy(oValue));
+			array.setElement(oValue);
 		}
 		
 		IValue key = service.newSimpleValue();
@@ -549,13 +547,13 @@ class TypeVisitor extends ASTVisitor{
 		IValue value = buildCollectionValue(interfaces);
 		if (value != null) {
 			if (ref != null && rootClasses.get(ref.fullyQualifiedName) != null){
-				OneToMany oValue = new OneToMany(rootClass);
+				IValue oValue = service.newOneToMany(rootClass);
 				RootClass associatedClass = rootClasses.get(ref.fullyQualifiedName);
 				oValue.setAssociatedClass(associatedClass);
 				oValue.setReferencedEntityName(associatedClass.getEntityName());
 				//Set another table
 				value.setCollectionTable(associatedClass.getTable() != null ? new TableProxy(associatedClass.getTable()) : null);				
-				value.setElement(new ValueProxy(oValue));				
+				value.setElement(oValue);				
 			} else {
 				IValue elementValue = buildSimpleValue(tb.getTypeArguments()[0].getQualifiedName());
 				elementValue.setTable(rootClass.getTable() != null ? new TableProxy(rootClass.getTable()) : null);

@@ -20,7 +20,6 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Join;
-import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -391,7 +390,7 @@ public class ElementsFactory {
 
 	protected OrmShape getOrCreateAssociationClass(Property property) {
 		OrmShape classShape = null;
-		OneToMany component = (OneToMany) new ValueProxy(property.getValue()).getElement();
+		IValue component = new ValueProxy(property.getValue()).getElement();
 		if (component == null) {
 			return classShape;
 		}

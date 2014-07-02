@@ -12,7 +12,6 @@ package org.jboss.tools.hibernate.ui.view;
 
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.workbench.TypeNameValueVisitor;
-import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.jboss.tools.hibernate.proxy.TableProxy;
@@ -44,8 +43,6 @@ public class OrmLabelMap {
 			label = getParticularLabel((IColumn)obj);
 		} else if (obj instanceof Property) {
 			label = getParticularLabel((Property)obj, cfg);
-		} else if (obj instanceof OneToMany) {
-			label = getParticularLabel((OneToMany)obj);
 		} else if (obj instanceof IProperty) {
 			label = getParticularLabel((IProperty)obj, cfg);
 		} else if (obj instanceof IValue && (((IValue)obj).isSimpleValue() || ((IValue)obj).isOneToMany())) {
@@ -150,10 +147,6 @@ public class OrmLabelMap {
 		return field.getName();
 	}
 
-	public static String getParticularLabel(OneToMany field) {
-		return UIViewMessages.OrmLabelProvider_element;
-	}
-
 	/**
 	 * the label for hierarchy:
 	 * SimpleValue
@@ -172,6 +165,8 @@ public class OrmLabelMap {
 			label = "key"; //$NON-NLS-1$
 		} else if (value.isComponent()) {
 			label = "element"; //$NON-NLS-1$
+		} else if (value.isOneToMany()) {
+			label =  UIViewMessages.OrmLabelProvider_element;
 		}
 		return label;
 	}

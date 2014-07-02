@@ -425,4 +425,10 @@ public class ValueProxy implements IValue {
 		((ToOne)target).setReferencedEntityName(name);
 	}
 
+	@Override
+	public void setAssociatedClass(PersistentClass persistentClass) {
+		assert target instanceof OneToMany;
+		((OneToMany)target).setAssociatedClass(persistentClass);
+	}
+
 }

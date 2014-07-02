@@ -12,7 +12,6 @@ package org.jboss.tools.hibernate.ui.view;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
@@ -40,8 +39,6 @@ public class OrmImageMap {
 			imageName = getImageName((IColumn)obj);
 		} else if (obj instanceof Property) {
 			imageName = getImageName((Property)obj, cfg);
-		} else if (obj instanceof OneToMany) {
-			imageName = getImageName((OneToMany)obj);
 		} else if (obj instanceof PersistentClass) {
 			imageName = getImageName((PersistentClass)obj);
 		} else if (obj instanceof String) {
@@ -106,7 +103,7 @@ public class OrmImageMap {
 			str = "Image_PersistentFieldSimple_id"; //$NON-NLS-1$
 		} else if (field.getValue() != null) {
 			final IValue value = new ValueProxy(field.getValue());
-			if (value instanceof OneToMany) {
+			if (value.isOneToMany()) {
 				str = "Image_PersistentFieldOne-to-many"; //$NON-NLS-1$
 			} else if (value instanceof OneToOne) {
 				str = "Image_PersistentFieldOne-to-one"; //$NON-NLS-1$
@@ -189,15 +186,6 @@ public class OrmImageMap {
 		}
 		return str;
 	}
-	/**
-	 * the image name for hierarchy:
-	 * OneToMany
-	 * @param field
-	 * @return
-	 */
-	public static String getImageName(OneToMany field) {
-		return "Image_PersistentFieldOne-to-many"; //$NON-NLS-1$
-	}
 
 	/**
 	 * the image name for hierarchy:
@@ -223,6 +211,8 @@ public class OrmImageMap {
 			}
 		} else if (field.isManyToOne()) {
 			res = "Image_PersistentFieldMany-to-many"; //$NON-NLS-1$
+		} else if (field.isOneToMany()) {
+			res = "Image_PersistentFieldOne-to-many";  //$NON-NLS-1$
 		}
 		return res;
 	}

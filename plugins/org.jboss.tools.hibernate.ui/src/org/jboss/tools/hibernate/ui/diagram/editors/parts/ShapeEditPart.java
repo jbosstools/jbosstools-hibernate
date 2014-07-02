@@ -33,7 +33,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
-import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.jboss.tools.hibernate.spi.IColumn;
@@ -318,7 +317,7 @@ public class ShapeEditPart extends OrmEditPart implements NodeEditPart {
 					Integer.parseInt(ColorConstants.Colors_DatabaseTableR),
 					Integer.parseInt(ColorConstants.Colors_DatabaseTableG),
 					Integer.parseInt(ColorConstants.Colors_DatabaseTableB)));
-		else if (el instanceof OneToMany)
+		else if (el instanceof IValue && ((IValue)el).isOneToMany())
 			return ResourceManager.getInstance().getColor(new RGB(
 					Integer.parseInt(ColorConstants.Colors_PersistentFieldR),
 					Integer.parseInt(ColorConstants.Colors_PersistentFieldG),
@@ -330,7 +329,7 @@ public class ShapeEditPart extends OrmEditPart implements NodeEditPart {
 	protected Color getSelectionColor() {
 		final Object el = getElement();
 		if (el instanceof PersistentClass || el instanceof Property ||
-				(el instanceof IValue && ((IValue)el).isSimpleValue()) || el instanceof OneToMany) {
+				(el instanceof IValue && ((IValue)el).isSimpleValue() || ((IValue)el).isOneToMany())) {
 			return ResourceManager.getInstance().getColor(new RGB(112, 161, 99));
 		} else if (el instanceof ITable || el instanceof IColumn) {
 			return ResourceManager.getInstance().getColor(new RGB(66, 173, 247));
