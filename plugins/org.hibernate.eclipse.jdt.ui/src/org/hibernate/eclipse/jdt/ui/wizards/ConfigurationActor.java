@@ -625,7 +625,7 @@ class TypeVisitor extends ASTVisitor{
 		} else if (ref != null /*&& ref.fullyQualifiedName.indexOf('$') < 0*/){
 			IValue sValue = null;
 			if (ref.refType == RefType.MANY2ONE){
-				sValue = new ValueProxy(new ManyToOne(rootClass.getTable()));
+				sValue = service.newManyToOne(rootClass.getTable());
 			} else if (ref.refType == RefType.ONE2ONE){
 				sValue = new ValueProxy(new OneToOne(rootClass.getTable(), rootClass));
 			} else if (ref.refType == RefType.UNDEF){

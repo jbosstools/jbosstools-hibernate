@@ -12,13 +12,13 @@ package org.jboss.tools.hibernate.ui.diagram.editors.model;
 
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
-import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.ITable;
+import org.jboss.tools.hibernate.spi.IValue;
 
 /**
  * Directed connection between 2 shapes, from source to target. 
@@ -306,7 +306,7 @@ public class Connection extends BaseElement {
 				res = "OneToOne"; //$NON-NLS-1$
 			} else if (res instanceof OneToMany) {
 				res = "OneToMany"; //$NON-NLS-1$
-			} else if (res instanceof ManyToOne) {
+			} else if (res instanceof IValue && ((IValue)res).isManyToOne()) {
 				res = "ManyToOne"; //$NON-NLS-1$
 			}
 		} else if (PROPERTY_SOURCE_CLASS_FIELD.equals(propertyId)) {

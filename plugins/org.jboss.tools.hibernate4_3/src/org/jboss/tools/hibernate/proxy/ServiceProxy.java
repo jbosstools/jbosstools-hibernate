@@ -35,6 +35,7 @@ import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.List;
+import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
@@ -386,6 +387,11 @@ public class ServiceProxy implements IService {
 	@Override
 	public IValue newSet(PersistentClass persistentClass) {
 		return new ValueProxy(new Set(null, persistentClass));
+	}
+
+	@Override
+	public IValue newManyToOne(Table table) {
+		return new ValueProxy(new ManyToOne(null, table));
 	}
 
 }

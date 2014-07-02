@@ -12,12 +12,10 @@ package org.jboss.tools.hibernate.ui.view;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.Set;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IProperty;
@@ -112,7 +110,7 @@ public class OrmImageMap {
 				str = "Image_PersistentFieldOne-to-many"; //$NON-NLS-1$
 			} else if (value instanceof OneToOne) {
 				str = "Image_PersistentFieldOne-to-one"; //$NON-NLS-1$
-			} else if (value instanceof ManyToOne) {
+			} else if (value.isManyToOne()) {
 				str = "Image_PersistentFieldMany-to-one"; //$NON-NLS-1$
 			} else if (value.isAny()) {
 				str = "Image_PersistentFieldAny"; //$NON-NLS-1$

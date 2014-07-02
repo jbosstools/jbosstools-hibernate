@@ -8,6 +8,7 @@ import java.util.Properties;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.Table;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 
@@ -101,5 +102,7 @@ public interface IService {
 	IValue newMap(PersistentClass persistentClass);
 
 	IValue newSet(PersistentClass persistentClass);
+
+	IValue newManyToOne(Table table);
 	
 }
