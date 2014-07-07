@@ -421,8 +421,12 @@ public class ValueProxy implements IValue {
 
 	@Override
 	public void setReferencedEntityName(String name) {
-		assert target instanceof ToOne;
-		((ToOne)target).setReferencedEntityName(name);
+		assert (target instanceof ToOne || target instanceof ManyToOne);
+		if (isToOne()) {
+			((ToOne)target).setReferencedEntityName(name);
+		} else if (isOneToMany()) {
+			((OneToMany)target).setReferencedEntityName(name);
+		}
 	}
 
 	@Override
