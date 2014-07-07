@@ -49,7 +49,6 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefType;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.KeyValue;
-import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -625,9 +624,9 @@ class TypeVisitor extends ASTVisitor{
 			if (ref.refType == RefType.MANY2ONE){
 				sValue = service.newManyToOne(rootClass.getTable());
 			} else if (ref.refType == RefType.ONE2ONE){
-				sValue = new ValueProxy(new OneToOne(rootClass.getTable(), rootClass));
+				sValue = service.newOneToOne(rootClass);
 			} else if (ref.refType == RefType.UNDEF){
-				sValue = new ValueProxy(new OneToOne(rootClass.getTable(), rootClass));
+				sValue = service.newOneToOne(rootClass);
 			} else {
 				//OneToMany and ManyToMany must be a collection
 				throw new IllegalStateException(ref.refType.toString());

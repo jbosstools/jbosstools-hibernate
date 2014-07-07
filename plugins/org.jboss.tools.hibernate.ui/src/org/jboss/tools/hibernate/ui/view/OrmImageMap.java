@@ -12,7 +12,6 @@ package org.jboss.tools.hibernate.ui.view;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
@@ -105,7 +104,7 @@ public class OrmImageMap {
 			final IValue value = new ValueProxy(field.getValue());
 			if (value.isOneToMany()) {
 				str = "Image_PersistentFieldOne-to-many"; //$NON-NLS-1$
-			} else if (value instanceof OneToOne) {
+			} else if (value.isOneToOne()) {
 				str = "Image_PersistentFieldOne-to-one"; //$NON-NLS-1$
 			} else if (value.isManyToOne()) {
 				str = "Image_PersistentFieldMany-to-one"; //$NON-NLS-1$

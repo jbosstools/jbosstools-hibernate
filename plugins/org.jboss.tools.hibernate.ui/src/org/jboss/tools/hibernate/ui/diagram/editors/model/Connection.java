@@ -12,7 +12,6 @@ package org.jboss.tools.hibernate.ui.diagram.editors.model;
 
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
-import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.jboss.tools.hibernate.spi.IColumn;
@@ -301,7 +300,7 @@ public class Connection extends BaseElement {
 			} else if (target.getOrmElement() instanceof Property) {
 				res = ((Property)(target.getOrmElement())).getValue().toString();
 			}
-			if (res instanceof OneToOne) {
+			if (res instanceof IValue && ((IValue)res).isOneToOne()) {
 				res = "OneToOne"; //$NON-NLS-1$
 			} else if (res instanceof IValue && ((IValue)res).isOneToMany()) {
 				res = "OneToMany"; //$NON-NLS-1$
