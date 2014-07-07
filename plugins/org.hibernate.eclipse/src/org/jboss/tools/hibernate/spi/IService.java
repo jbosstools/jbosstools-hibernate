@@ -102,7 +102,7 @@ public interface IService {
 
 	IValue newSet(PersistentClass persistentClass);
 
-	IValue newManyToOne(Table table);
+	IValue newManyToOne(ITable table);
 
 	IValue newOneToMany(PersistentClass persistentClass);
 

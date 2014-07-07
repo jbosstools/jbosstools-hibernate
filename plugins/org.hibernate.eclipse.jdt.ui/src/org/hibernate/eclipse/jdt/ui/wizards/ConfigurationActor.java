@@ -622,7 +622,7 @@ class TypeVisitor extends ASTVisitor{
 		} else if (ref != null /*&& ref.fullyQualifiedName.indexOf('$') < 0*/){
 			IValue sValue = null;
 			if (ref.refType == RefType.MANY2ONE){
-				sValue = service.newManyToOne(rootClass.getTable());
+				sValue = service.newManyToOne(new TableProxy(rootClass.getTable()));
 			} else if (ref.refType == RefType.ONE2ONE){
 				sValue = service.newOneToOne(rootClass);
 			} else if (ref.refType == RefType.UNDEF){

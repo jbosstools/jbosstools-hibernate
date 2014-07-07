@@ -344,8 +344,9 @@ public class ServiceProxy implements IService {
 	}
 
 	@Override
-	public IValue newManyToOne(Table table) {
-		return new ValueProxy(new ManyToOne(table));
+	public IValue newManyToOne(ITable table) {
+		assert table instanceof TableProxy;
+		return new ValueProxy(new ManyToOne(((TableProxy)table).getTarget()));
 	}
 
 	@Override
