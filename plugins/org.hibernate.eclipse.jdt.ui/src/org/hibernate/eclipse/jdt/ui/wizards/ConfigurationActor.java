@@ -169,7 +169,7 @@ public class ConfigurationActor {
 		for (Map.Entry<String, IPersistentClass> entry : pcCopy.entrySet()) {
 			IPersistentClass pc = null;
 			try {
-				pc = getMappedSuperclass(project, pcCopy, (RootClass) entry.getValue());				
+				pc = getMappedSuperclass(project, pcCopy, (RootClass) ((PersistentClassProxy)entry.getValue()).getTarget());				
 				Subclass subclass = null;
 				if (pc != null){
 					if (pc.isAbstract()){
@@ -184,7 +184,7 @@ public class ConfigurationActor {
 						subclass = new JoinedSubclass(((PersistentClassProxy)pc).getTarget());
 					}
 				} else {
-					pc = getMappedImplementedInterface(project, pcCopy, (RootClass) entry.getValue());
+					pc = getMappedImplementedInterface(project, pcCopy, (RootClass) ((PersistentClassProxy)entry.getValue()).getTarget());
 					if (pc != null){
 						subclass = new SingleTableSubclass(((PersistentClassProxy)pc).getTarget());
 					}
