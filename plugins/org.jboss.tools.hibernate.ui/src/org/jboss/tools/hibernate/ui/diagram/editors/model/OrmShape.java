@@ -20,8 +20,10 @@ import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
+import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
+import org.jboss.tools.hibernate.spi.IPersistentClass;
 import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IType;
@@ -158,6 +160,9 @@ public class OrmShape extends ExpandableShape {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected void initModel() {
 		Object ormElement = getOrmElement();
+		if (ormElement instanceof IPersistentClass) {
+			ormElement = ((PersistentClassProxy)ormElement).getTarget();
+		}
 		if (ormElement instanceof RootClass) {
 			RootClass rootClass = (RootClass)ormElement;
 			Property identifierProperty = rootClass.getIdentifierProperty();
@@ -441,6 +446,9 @@ public class OrmShape extends ExpandableShape {
 			return res;
 		}
 		Object ormElement = getOrmElement();
+		if (ormElement instanceof IPersistentClass) {
+			ormElement = ((PersistentClassProxy)ormElement).getTarget();
+		}
 		if (ormElement instanceof RootClass) {
 			//RootClass rootClass = (RootClass)ormElement;
 			res = descriptors_entity;
@@ -464,6 +472,9 @@ public class OrmShape extends ExpandableShape {
 		RootClass rootClass = null;
 		ITable table = null;
 		Object ormElement = getOrmElement();
+		if (ormElement instanceof IPersistentClass) {
+			ormElement = ((PersistentClassProxy)ormElement).getTarget();
+		}
 		if (ormElement instanceof RootClass) {
 			rootClass = (RootClass)ormElement;
 		} else if (ormElement instanceof Subclass) {

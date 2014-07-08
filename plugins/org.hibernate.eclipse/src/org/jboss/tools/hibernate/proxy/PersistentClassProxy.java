@@ -77,7 +77,7 @@ public class PersistentClassProxy implements IPersistentClass {
 
 	@Override
 	public IPersistentClass getRootClass() {
-		if (rootClass == null) {
+		if (rootClass == null && target.getRootClass() != null) {
 			rootClass = new PersistentClassProxy(target.getRootClass());
 		}
 		return rootClass;
@@ -123,7 +123,7 @@ public class PersistentClassProxy implements IPersistentClass {
 
 	@Override
 	public IValue getDiscriminator() {
-		if (discriminator == null) {
+		if (discriminator == null && target.getDiscriminator() != null) {
 			discriminator = new ValueProxy(target.getDiscriminator());
 		}
 		return discriminator;
@@ -131,7 +131,7 @@ public class PersistentClassProxy implements IPersistentClass {
 
 	@Override
 	public IValue getIdentifier() {
-		if (identifier == null) {
+		if (identifier == null && target.getIdentifier() != null) {
 			identifier = new ValueProxy(target.getIdentifier());
 		}
 		return identifier;
@@ -145,7 +145,7 @@ public class PersistentClassProxy implements IPersistentClass {
 
 	@Override
 	public IProperty getVersion() {
-		if (version == null) {
+		if (version == null && target.getVersion() != null) {
 			version = new PropertyProxy(target.getVersion());
 		}
 		return version;

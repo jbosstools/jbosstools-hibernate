@@ -54,6 +54,7 @@ import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.mapping.RootClass;
 import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IPersistentClass;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.UiPlugin;
@@ -1037,6 +1038,9 @@ public class OrmDiagram extends BaseElement {
 			while (it.hasNext()) {
 				final OrmShape shape = it.next();
 				Object ormElement = shape.getOrmElement();
+				if (ormElement instanceof IPersistentClass) {
+					ormElement = ((PersistentClassProxy)ormElement).getTarget();
+				}
 				if (ormElement instanceof RootClass) {
 					nEntities++;
 				}

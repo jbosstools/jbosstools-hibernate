@@ -122,6 +122,9 @@ public class ElementsFactory {
 			if (type != null && type.isEntityType()) {
 				Object clazz = config != null ? 
 						config.getClassMapping(type.getAssociatedEntityName()) : null;
+				if (clazz instanceof IPersistentClass) {
+					clazz = ((PersistentClassProxy)clazz).getTarget();
+				}
 				if (clazz instanceof RootClass) {
 					RootClass rootClass = (RootClass)clazz;
 					s = getOrCreatePersistentClass(rootClass != null ? new PersistentClassProxy(rootClass) : null, null);
@@ -241,6 +244,9 @@ public class ElementsFactory {
 					Iterator iterator = config.getClassMappings();
 					while (iterator.hasNext()) {
 						Object clazz = iterator.next();
+						if (clazz instanceof IPersistentClass) {
+							clazz = ((PersistentClassProxy)clazz).getTarget();
+						}
 						if (clazz instanceof RootClass) {
 							RootClass cls = (RootClass)clazz;
 							if (databaseTable.equals(cls.getTable())) {
@@ -324,7 +330,7 @@ public class ElementsFactory {
 		if (identifier != null && identifier.isComponent()) {
 			if (identifier.getComponentClassName() != null && !identifier.getComponentClassName().equals(identifier.getOwner().getEntityName())) {
 				OrmShape componentClassShape = elements.get(identifier.getComponentClassName());
-				if (componentClassShape == null && persistentClass instanceof RootClass) {
+				if (componentClassShape == null && persistentClass.isInstanceOfRootClass()) {
 					componentClassShape = getOrCreateComponentClass(((RootClass)persistentClass).getIdentifierProperty());
 
 					Shape idPropertyShape = classShape.getChild(persistentClass.getIdentifierProperty());
@@ -395,7 +401,7 @@ public class ElementsFactory {
 		if (component == null) {
 			return classShape;
 		}
-		if (component.getAssociatedClass() instanceof RootClass) {
+		if (component.getAssociatedClass().isInstanceOfRootClass()) {
 			classShape = getOrCreatePersistentClass(component.getAssociatedClass(), null);
 			if (classShape == null) {
 				classShape = createShape(component.getAssociatedClass());
