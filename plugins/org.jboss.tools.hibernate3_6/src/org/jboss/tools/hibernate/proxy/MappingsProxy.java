@@ -1,8 +1,8 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.cfg.Mappings;
-import org.hibernate.mapping.PersistentClass;
 import org.jboss.tools.hibernate.spi.IMappings;
+import org.jboss.tools.hibernate.spi.IPersistentClass;
 
 public class MappingsProxy implements IMappings {
 	
@@ -13,8 +13,9 @@ public class MappingsProxy implements IMappings {
 	}
 
 	@Override
-	public void addClass(PersistentClass persistentClass) {
-		target.addClass(persistentClass);
+	public void addClass(IPersistentClass persistentClass) {
+		assert persistentClass instanceof PersistentClassProxy;
+		target.addClass(((PersistentClassProxy)persistentClass).getTarget());
 	}
 
 }

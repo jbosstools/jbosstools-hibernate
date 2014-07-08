@@ -28,8 +28,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 
-import org.hibernate.mapping.PersistentClass;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IPersistentClass;
 
 public class ConfigurationViewAdapter extends Observable {
 
@@ -48,10 +48,10 @@ public class ConfigurationViewAdapter extends Observable {
 
 	public List<PersistentClassViewAdapter> getPersistentClasses() {
 		if(persistentClasses==null) {
-			Iterator<? extends PersistentClass> classMappings = cfg.getClassMappings();
+			Iterator<IPersistentClass> classMappings = cfg.getClassMappings();
 			persistentClasses = new HashMap<String, PersistentClassViewAdapter>();
 			while ( classMappings.hasNext() ) {
-				PersistentClass clazz = classMappings.next();
+				IPersistentClass clazz = classMappings.next();
 				persistentClasses.put( clazz.getEntityName(), new PersistentClassViewAdapter(this, clazz) );
 			}
 			

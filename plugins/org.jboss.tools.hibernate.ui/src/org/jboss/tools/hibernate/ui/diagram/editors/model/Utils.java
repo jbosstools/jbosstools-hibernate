@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.Properties;
 
 import org.eclipse.ui.IMemento;
-import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
+import org.jboss.tools.hibernate.spi.IPersistentClass;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IValue;
 
@@ -46,8 +46,8 @@ public class Utils {
 
 	public static String getName(Object obj) {
 		String res = ""; //$NON-NLS-1$
-		if (obj instanceof PersistentClass) {
-			PersistentClass rootClass = (PersistentClass)obj;
+		if (obj instanceof IPersistentClass) {
+			IPersistentClass rootClass = (IPersistentClass)obj;
 			if (rootClass.getEntityName() != null) {
 				res = rootClass.getEntityName();
 			} else {

@@ -28,7 +28,6 @@ import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
-import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Set;
@@ -57,6 +56,7 @@ import org.jboss.tools.hibernate.spi.IJDBCReader;
 import org.jboss.tools.hibernate.spi.IMetaDataDialect;
 import org.jboss.tools.hibernate.spi.INamingStrategy;
 import org.jboss.tools.hibernate.spi.IOverrideRepository;
+import org.jboss.tools.hibernate.spi.IPersistentClass;
 import org.jboss.tools.hibernate.spi.IProgressListener;
 import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.IReverseEngineeringSettings;
@@ -322,34 +322,39 @@ public class ServiceProxy implements IService {
 	}
 
 	@Override
-	public IValue newPrimitiveArray(PersistentClass persistentClass) {
-		return new ValueProxy(new PrimitiveArray(null, persistentClass));
+	public IValue newPrimitiveArray(IPersistentClass persistentClass) {
+		assert persistentClass instanceof PersistentClassProxy;
+		return new ValueProxy(new PrimitiveArray(null, ((PersistentClassProxy)persistentClass).getTarget()));
 	}
 
 	@Override
-	public IValue newArray(PersistentClass persistentClass) {
-		return new ValueProxy(new Array(null, persistentClass));
+	public IValue newArray(IPersistentClass persistentClass) {
+		assert persistentClass instanceof PersistentClassProxy;
+		return new ValueProxy(new Array(null, ((PersistentClassProxy)persistentClass).getTarget()));
 	}
 
 	@Override
-	public IValue newBag(PersistentClass persistentClass) {
-		return new ValueProxy(new Bag(null, persistentClass));
+	public IValue newBag(IPersistentClass persistentClass) {
+		assert persistentClass instanceof PersistentClassProxy;
+		return new ValueProxy(new Bag(null, ((PersistentClassProxy)persistentClass).getTarget()));
 	}
 
 	@Override
-	public IValue newList(PersistentClass persistentClass) {
-		return new ValueProxy(new List(null, persistentClass));
-	}
-
-
-	@Override
-	public IValue newMap(PersistentClass persistentClass) {
-		return new ValueProxy(new org.hibernate.mapping.Map(null, persistentClass));
+	public IValue newList(IPersistentClass persistentClass) {
+		assert persistentClass instanceof PersistentClassProxy;
+		return new ValueProxy(new List(null, ((PersistentClassProxy)persistentClass).getTarget()));
 	}
 
 	@Override
-	public IValue newSet(PersistentClass persistentClass) {
-		return new ValueProxy(new Set(null, persistentClass));
+	public IValue newMap(IPersistentClass persistentClass) {
+		assert persistentClass instanceof PersistentClassProxy;
+		return new ValueProxy(new org.hibernate.mapping.Map(null, ((PersistentClassProxy)persistentClass).getTarget()));
+	}
+
+	@Override
+	public IValue newSet(IPersistentClass persistentClass) {
+		assert persistentClass instanceof PersistentClassProxy;
+		return new ValueProxy(new Set(null, ((PersistentClassProxy)persistentClass).getTarget()));
 	}
 
 	@Override
@@ -359,13 +364,15 @@ public class ServiceProxy implements IService {
 	}
 
 	@Override
-	public IValue newOneToMany(PersistentClass persistentClass) {
-		return new ValueProxy(new OneToMany(null, persistentClass));
+	public IValue newOneToMany(IPersistentClass persistentClass) {
+		assert persistentClass instanceof PersistentClassProxy;
+		return new ValueProxy(new OneToMany(null, ((PersistentClassProxy)persistentClass).getTarget()));
 	}
 
 	@Override
-	public IValue newOneToOne(PersistentClass persistentClass) {
-		return new ValueProxy(new OneToOne(null, persistentClass.getTable(), persistentClass));
+	public IValue newOneToOne(IPersistentClass persistentClass) {
+		assert persistentClass instanceof PersistentClassProxy;
+		return new ValueProxy(new OneToOne(null, ((PersistentClassProxy)persistentClass).getTarget().getTable(), ((PersistentClassProxy)persistentClass).getTarget()));
 	}
 
 }

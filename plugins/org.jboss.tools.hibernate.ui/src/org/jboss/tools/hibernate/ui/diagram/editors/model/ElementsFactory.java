@@ -20,15 +20,16 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Join;
-import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
 import org.jboss.tools.hibernate.proxy.ColumnProxy;
+import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.proxy.TableProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IPersistentClass;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.IValue;
@@ -123,16 +124,16 @@ public class ElementsFactory {
 						config.getClassMapping(type.getAssociatedEntityName()) : null;
 				if (clazz instanceof RootClass) {
 					RootClass rootClass = (RootClass)clazz;
-					s = getOrCreatePersistentClass(rootClass, null);
+					s = getOrCreatePersistentClass(rootClass != null ? new PersistentClassProxy(rootClass) : null, null);
 					if (shouldCreateConnection(shape, s)) {
 						connections.add(new Connection(shape, s));
 					}
 				} else if (clazz instanceof Subclass) {
-					s = getOrCreatePersistentClass(((Subclass)clazz).getRootClass(), null);
+					s = getOrCreatePersistentClass(new PersistentClassProxy(((Subclass)clazz).getRootClass()), null);
 				}
 			}
 		} else {
-			s = getOrCreatePersistentClass(new SpecialRootClass(property), null);
+			s = getOrCreatePersistentClass(new PersistentClassProxy(new SpecialRootClass(property)), null);
 			if (shouldCreateConnection(shape, s)) {
 				connections.add(new Connection(shape, s));
 			}
@@ -245,7 +246,7 @@ public class ElementsFactory {
 							if (databaseTable.equals(cls.getTable())) {
 								// create persistent class shape only for RootClass,
 								// which has same table reference
-								getOrCreatePersistentClass(cls, null);
+								getOrCreatePersistentClass(new PersistentClassProxy(cls), null);
 							}
 						}
 					}
@@ -256,7 +257,7 @@ public class ElementsFactory {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	protected OrmShape getOrCreatePersistentClass(PersistentClass persistentClass, 
+	protected OrmShape getOrCreatePersistentClass(IPersistentClass persistentClass, 
 			ITable componentClassDatabaseTable) {
 		OrmShape classShape = null;
 		if (persistentClass == null) {
@@ -268,7 +269,7 @@ public class ElementsFactory {
 			classShape = createShape(persistentClass);
 		}
 		if (componentClassDatabaseTable == null && persistentClass.getTable() != null) {
-			componentClassDatabaseTable = persistentClass.getTable() != null ? new TableProxy(persistentClass.getTable()) : null;
+			componentClassDatabaseTable = persistentClass.getTable();
 		}
 		if (componentClassDatabaseTable != null) {
 			shape = getShape(componentClassDatabaseTable);
@@ -319,7 +320,7 @@ public class ElementsFactory {
 			}
 		}
 
-		IValue identifier = persistentClass.getIdentifier() != null ? new ValueProxy(persistentClass.getIdentifier()) : null;
+		IValue identifier = persistentClass.getIdentifier();
 		if (identifier != null && identifier.isComponent()) {
 			if (identifier.getComponentClassName() != null && !identifier.getComponentClassName().equals(identifier.getOwner().getEntityName())) {
 				OrmShape componentClassShape = elements.get(identifier.getComponentClassName());
@@ -400,12 +401,10 @@ public class ElementsFactory {
 				classShape = createShape(component.getAssociatedClass());
 			}
 			OrmShape tableShape = elements.get(Utils.getTableName(
-					component.getAssociatedClass().getTable() != null ? 
-							new TableProxy(component.getAssociatedClass().getTable()) : null));
+					component.getAssociatedClass().getTable()));
 			if (tableShape == null) {
 				tableShape = getOrCreateDatabaseTable(
-						component.getAssociatedClass().getTable() != null ?
-								new TableProxy(component.getAssociatedClass().getTable()) : null);
+						component.getAssociatedClass().getTable());
 			}
 			createConnections(classShape, tableShape);
 			if (shouldCreateConnection(classShape, tableShape)) {

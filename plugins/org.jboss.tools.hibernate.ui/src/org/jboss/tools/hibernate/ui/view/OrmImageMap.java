@@ -12,10 +12,11 @@ package org.jboss.tools.hibernate.ui.view;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
+import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
+import org.jboss.tools.hibernate.spi.IPersistentClass;
 import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IType;
@@ -38,8 +39,8 @@ public class OrmImageMap {
 			imageName = getImageName((IColumn)obj);
 		} else if (obj instanceof Property) {
 			imageName = getImageName((Property)obj, cfg);
-		} else if (obj instanceof PersistentClass) {
-			imageName = getImageName((PersistentClass)obj);
+		} else if (obj instanceof IPersistentClass) {
+			imageName = getImageName((IPersistentClass)obj);
 		} else if (obj instanceof String) {
 			imageName = "Image_Error"; //$NON-NLS-1$;
 		} else if (obj instanceof IProperty) {
@@ -95,7 +96,7 @@ public class OrmImageMap {
 		if (field == null) {
 			return str;
 		}
-		final PersistentClass persistentClass = field.getPersistentClass(); 
+		final IPersistentClass persistentClass = field.getPersistentClass() != null ? new PersistentClassProxy(field.getPersistentClass()) : null; 
 		if (persistentClass != null && persistentClass.getVersion() == field) {
 			str = "Image_PersistentFieldSimple_version"; //$NON-NLS-1$
 		} else if (persistentClass != null && persistentClass.getIdentifierProperty() == field) {
@@ -143,7 +144,7 @@ public class OrmImageMap {
 		if (field == null) {
 			return str;
 		}
-		final PersistentClass persistentClass = field.getPersistentClass(); 
+		final IPersistentClass persistentClass = field.getPersistentClass(); 
 		if (persistentClass != null && persistentClass.getVersion() == field) {
 			str = "Image_PersistentFieldSimple_version"; //$NON-NLS-1$
 		} else if (persistentClass != null && persistentClass.getIdentifierProperty() == field) {
@@ -229,7 +230,7 @@ public class OrmImageMap {
 	 * @param persistentClass
 	 * @return
 	 */
-	public static String getImageName(PersistentClass persistentClass) {
+	public static String getImageName(IPersistentClass persistentClass) {
 		return "Image_PersistentClass"; //$NON-NLS-1$
 	}
 

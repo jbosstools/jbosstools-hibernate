@@ -52,6 +52,7 @@ import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.mapping.RootClass;
+import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
@@ -222,7 +223,7 @@ public class OrmDiagram extends BaseElement {
 		for (int i = 0; i < roots.size(); i++) {
 			RootClass rc = roots.get(i);
 			if (rc != null) {
-				factory.getOrCreatePersistentClass(rc, null);
+				factory.getOrCreatePersistentClass(new PersistentClassProxy(rc), null);
 			}
 		}
 		updateChildrenList();

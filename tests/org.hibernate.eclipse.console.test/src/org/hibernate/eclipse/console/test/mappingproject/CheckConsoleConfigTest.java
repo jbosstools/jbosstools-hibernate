@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.hibernate.eclipse.console.test.mappingproject;
 
-import org.hibernate.mapping.PersistentClass;
+import org.jboss.tools.hibernate.spi.IPersistentClass;
 
 /**
  * @author vy (vyemialyanchyk@gmail.com)
@@ -28,7 +28,7 @@ public class CheckConsoleConfigTest extends BaseTestSetCase {
 		Object[] persClasses = getPersistenceClasses(true);
 		assertTrue(persClasses.length > 0);
 		for (int i = 0; i < persClasses.length; i++) {
-			assertTrue(persClasses[i] instanceof PersistentClass);
+			assertTrue(persClasses[i] instanceof IPersistentClass);
 		}
 	}
 }

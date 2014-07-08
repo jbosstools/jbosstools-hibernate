@@ -49,16 +49,17 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
-import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.util.XMLHelper;
 import org.hibernate.util.xpl.StringHelper;
+import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.proxy.PropertyProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.spi.IColumn;
+import org.jboss.tools.hibernate.spi.IPersistentClass;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IValue;
 import org.jboss.tools.hibernate.util.HibernateHelper;
@@ -104,7 +105,7 @@ public class OpenMappingUtils {
 	 * @param rootClass
 	 * @return
 	 */
-	public static String getPersistentClassName(PersistentClass rootClass) {
+	public static String getPersistentClassName(IPersistentClass rootClass) {
 		if (rootClass == null) {
 			return ""; //$NON-NLS-1$
 		}
@@ -137,7 +138,7 @@ public class OpenMappingUtils {
 	 * @param rootClass
 	 * @return
 	 */
-	public static boolean hasConfigXMLMappingClassAnnotation(ConsoleConfiguration consoleConfig, PersistentClass rootClass) {
+	public static boolean hasConfigXMLMappingClassAnnotation(ConsoleConfiguration consoleConfig, IPersistentClass rootClass) {
 		java.io.File configXMLFile = consoleConfig.getPreferences().getConfigXMLFile();
 		if (configXMLFile == null) {
 			return true;
@@ -183,7 +184,7 @@ public class OpenMappingUtils {
 	public static boolean rootClassInFile(ConsoleConfiguration consoleConfig, IFile file, RootClass rootClass) {
 		EntityResolver entityResolver = consoleConfig.getConfiguration().getEntityResolver(); 
 		Document doc = getDocument(file.getLocation().toFile(), entityResolver);
-		final String clName = getPersistentClassName(rootClass);
+		final String clName = getPersistentClassName(rootClass != null ? new PersistentClassProxy(rootClass) : null);
 		final String clNameUnq = StringHelper.unqualify(clName);
 		boolean res = false;
 		// TODO: getElements - this is *extremely* inefficient - no need to scan the whole tree again and again.
@@ -217,7 +218,7 @@ public class OpenMappingUtils {
 	public static boolean subclassInFile(ConsoleConfiguration consoleConfig, IFile file, Subclass subclass) {
 		EntityResolver entityResolver = consoleConfig.getConfiguration().getEntityResolver(); 
 		Document doc = getDocument(file.getLocation().toFile(), entityResolver);
-		final String clName = getPersistentClassName(subclass);
+		final String clName = getPersistentClassName(subclass != null ? new PersistentClassProxy(subclass) : null);
 		final String clNameUnq = StringHelper.unqualify(clName);
 		boolean res = false;
 		// TODO: getElements - this is *extremely* inefficient - no need to scan the whole tree again and again.
@@ -665,8 +666,8 @@ public class OpenMappingUtils {
 	 */
 	public static IRegion findSelectRegion(IJavaProject proj, FindReplaceDocumentAdapter findAdapter, Object selection) {
 		IRegion selectRegion = null;
-		if (selection instanceof RootClass || selection instanceof Subclass) {
-			selectRegion = findSelectRegion(proj, findAdapter, (PersistentClass)selection);
+		if (selection instanceof IPersistentClass && (((IPersistentClass)selection).isInstanceOfRootClass() || ((IPersistentClass)selection).isInstanceOfSubclass())) {
+			selectRegion = findSelectRegion(proj, findAdapter, (IPersistentClass)selection);
 		} else if (selection instanceof Property){
 			selectRegion = findSelectRegion(proj, findAdapter, (Property)selection);
 		} else if (selection instanceof ITable) {
@@ -694,7 +695,7 @@ public class OpenMappingUtils {
 		// in case if we could not find property - we select class
 		res = classRegion;
 		final ICfg2HbmTool tool = HibernateHelper.INSTANCE.getHibernateService().newCfg2HbmTool();
-		final PersistentClass persistentClass = property.getPersistentClass();
+		final IPersistentClass persistentClass = property.getPersistentClass() != null ? new PersistentClassProxy(property.getPersistentClass()) : null;
 		final String tagName = tool.getTag(persistentClass);
 		IRegion finalRegion = null;
 		IRegion propRegion = null;
@@ -750,7 +751,7 @@ public class OpenMappingUtils {
 	 * @param persistentClass
 	 * @return a proper document region
 	 */
-	public static IRegion findSelectRegion(IJavaProject proj, FindReplaceDocumentAdapter findAdapter, PersistentClass persistentClass) {
+	public static IRegion findSelectRegion(IJavaProject proj, FindReplaceDocumentAdapter findAdapter, IPersistentClass persistentClass) {
 		IRegion res = null;
 		String[] classPatterns = generatePersistentClassPatterns(persistentClass);
 		IRegion classRegion = null;
@@ -911,7 +912,7 @@ public class OpenMappingUtils {
 	 * @param persClass
 	 * @return an arrays of search patterns
 	 */
-	public static String[] generatePersistentClassPatterns(PersistentClass persClass) {
+	public static String[] generatePersistentClassPatterns(IPersistentClass persClass) {
 		String fullClassName = null;
 		String shortClassName = null;
 		if (persClass.getEntityName() != null){
@@ -985,7 +986,7 @@ public class OpenMappingUtils {
 	public static String generateHbmPropertyPattern(Property property) {
 		final ICfg2HbmTool tool = HibernateHelper.INSTANCE.getHibernateService().newCfg2HbmTool();
 		String toolTag = ""; //$NON-NLS-1$
-		PersistentClass pc = property.getPersistentClass();
+		IPersistentClass pc = property.getPersistentClass() != null ? new PersistentClassProxy(property.getPersistentClass()) : null;
 		if (pc != null && pc.getIdentifierProperty() == property) {
 			if (property.isComposite()) {
 				toolTag = "composite-id"; //$NON-NLS-1$
@@ -1013,7 +1014,7 @@ public class OpenMappingUtils {
 	 */
 	public static String generateEjbPropertyPattern(Property property) {
 		String toolTag = ""; //$NON-NLS-1$
-		PersistentClass pc = property.getPersistentClass();
+		IPersistentClass pc = property.getPersistentClass() != null ? new PersistentClassProxy(property.getPersistentClass()) : null;
 		if (pc != null && pc.getIdentifierProperty() == property) {
 			if (property.isComposite()) {
 				toolTag = "embedded-id"; //$NON-NLS-1$

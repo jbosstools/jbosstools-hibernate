@@ -21,22 +21,23 @@
  */
 package org.hibernate.eclipse.graph.model;
 
-import org.hibernate.mapping.PersistentClass;
+import org.jboss.tools.hibernate.spi.IPersistentClass;
+
 
 public class PersistentClassViewAdapter extends GraphNode {
 
-	private PersistentClass persistentClass;
+	private IPersistentClass persistentClass;
 
 	private final ConfigurationViewAdapter configuration;
 
-	public PersistentClassViewAdapter(ConfigurationViewAdapter configuration, PersistentClass clazz) {
+	public PersistentClassViewAdapter(ConfigurationViewAdapter configuration, IPersistentClass clazz) {
 		this.configuration = configuration;
 		this.persistentClass = clazz;
 				
 	}
 
 	
-	public PersistentClass getPersistentClass() {
+	public IPersistentClass getPersistentClass() {
 		return persistentClass;
 	}
 
@@ -48,7 +49,7 @@ public class PersistentClassViewAdapter extends GraphNode {
 
 	private void createInheritanceAssociations() {
 		
-		PersistentClass superclass = getPersistentClass().getSuperclass();
+		IPersistentClass superclass = getPersistentClass().getSuperclass();
 		if(superclass!=null) {
 			PersistentClassViewAdapter target = getConfiguration().getPersistentClassViewAdapter(superclass.getEntityName());
 			InheritanceViewAdapter iva = new InheritanceViewAdapter(this, target);

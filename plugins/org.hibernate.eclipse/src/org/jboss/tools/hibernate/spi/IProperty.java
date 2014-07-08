@@ -1,11 +1,10 @@
 package org.jboss.tools.hibernate.spi;
 
-import org.hibernate.mapping.PersistentClass;
 
 public interface IProperty {
 
 	String getName();
-	PersistentClass getPersistentClass();
+	IPersistentClass getPersistentClass();
 	IValue getValue();
 	boolean isComposite();
 	String getNodeName();

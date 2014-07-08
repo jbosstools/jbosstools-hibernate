@@ -1,7 +1,7 @@
 package org.jboss.tools.hibernate.proxy;
 
-import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
+import org.jboss.tools.hibernate.spi.IPersistentClass;
 import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.IValue;
 
@@ -9,6 +9,7 @@ public class PropertyProxy implements IProperty {
 	
 	private Property target = null;
 	private IValue value = null;
+	private IPersistentClass persistentClass = null;
 	
 	public PropertyProxy(Property property) {
 		target = property;
@@ -20,8 +21,11 @@ public class PropertyProxy implements IProperty {
 	}
 
 	@Override
-	public PersistentClass getPersistentClass() {
-		return target.getPersistentClass();
+	public IPersistentClass getPersistentClass() {
+		if (persistentClass != null) {
+			persistentClass = new PersistentClassProxy(target.getPersistentClass());
+		}
+		return persistentClass;
 	}
 
 	@Override

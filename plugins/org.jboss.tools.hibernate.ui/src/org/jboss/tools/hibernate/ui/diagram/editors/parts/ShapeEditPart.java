@@ -33,9 +33,9 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
-import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.jboss.tools.hibernate.spi.IColumn;
+import org.jboss.tools.hibernate.spi.IPersistentClass;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IValue;
 import org.jboss.tools.hibernate.ui.diagram.editors.figures.TitleFigure;
@@ -292,7 +292,7 @@ public class ShapeEditPart extends OrmEditPart implements NodeEditPart {
 
 	protected Color getColor() {
 		final Object el = getElement();
-		if (el instanceof PersistentClass || (el instanceof IValue && ((IValue)el).isComponent()))
+		if (el instanceof IPersistentClass || (el instanceof IValue && ((IValue)el).isComponent()))
 			return ResourceManager.getInstance().getColor(new RGB(
 					Integer.parseInt(ColorConstants.Colors_PersistentClassR),
 					Integer.parseInt(ColorConstants.Colors_PersistentClassG),
@@ -328,7 +328,7 @@ public class ShapeEditPart extends OrmEditPart implements NodeEditPart {
 
 	protected Color getSelectionColor() {
 		final Object el = getElement();
-		if (el instanceof PersistentClass || el instanceof Property ||
+		if (el instanceof IPersistentClass || el instanceof Property ||
 				(el instanceof IValue && ((IValue)el).isSimpleValue() || ((IValue)el).isOneToMany())) {
 			return ResourceManager.getInstance().getColor(new RGB(112, 161, 99));
 		} else if (el instanceof ITable || el instanceof IColumn) {

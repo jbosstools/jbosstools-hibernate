@@ -5,7 +5,6 @@ import java.util.Properties;
 
 import org.hibernate.FetchMode;
 import org.hibernate.mapping.KeyValue;
-import org.hibernate.mapping.PersistentClass;
 
 public interface IValue {
 
@@ -49,17 +48,17 @@ public interface IValue {
 	void addColumn(IColumn column);
 	void setTypeParameters(Properties typeParameters);
 	String getForeignKeyName();
-	PersistentClass getOwner();
+	IPersistentClass getOwner();
 	IValue getElement();
 	String getParentProperty();
 	void setElementClassName(String binaryName);
 	void setKey(KeyValue keyValue);
 	void setFetchMode(FetchMode join);
 	boolean isInverse();
-	PersistentClass getAssociatedClass();
+	IPersistentClass getAssociatedClass();
 	void setLazy(boolean b);
 	void setRole(String role);
 	void setReferencedEntityName(String name);
-	void setAssociatedClass(PersistentClass persistentClass);
+	void setAssociatedClass(IPersistentClass persistentClass);
 
 }

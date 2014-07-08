@@ -12,11 +12,12 @@ package org.jboss.tools.hibernate.ui.diagram.editors.model;
 
 import java.util.Iterator;
 
-import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
+import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.proxy.PropertyProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
+import org.jboss.tools.hibernate.spi.IPersistentClass;
 import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.IValue;
 
@@ -57,11 +58,11 @@ public class SpecialRootClass extends RootClass {
 		if (component != null) {
 			setClassName(component.getComponentClassName());
 			setEntityName(component.getComponentClassName());
-			PersistentClass ownerClass = component.getOwner();
+			IPersistentClass ownerClass = component.getOwner();
 			if (component.getParentProperty() != null) {
 				parentProperty = new Property();
 				parentProperty.setName(component.getParentProperty());
-				parentProperty.setPersistentClass(ownerClass);
+				parentProperty.setPersistentClass(((PersistentClassProxy)ownerClass).getTarget());
 			}
 			Iterator<IProperty> iterator = component.getPropertyIterator();
 			while (iterator.hasNext()) {

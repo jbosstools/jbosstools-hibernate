@@ -34,9 +34,10 @@ import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.OpenMappingUtils;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
-import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
+import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
+import org.jboss.tools.hibernate.spi.IPersistentClass;
 import org.jboss.tools.hibernate.spi.IValue;
 
 /**
@@ -93,7 +94,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 		boolean isPropertySel = (path.getLastSegment().getClass() == Property.class);
 		if (isPropertySel) {
 			Property propertySel = (Property)path.getLastSegment();
-			PersistentClass persClass = propertySel.getPersistentClass();
+			IPersistentClass persClass = propertySel.getPersistentClass() != null ? new PersistentClassProxy(propertySel.getPersistentClass()) : null;
 			if (persClass == null
 					|| (RootClass.class.isAssignableFrom(persClass.getClass())
 					&& persClass.getClass() != RootClass.class)) {
@@ -140,14 +141,14 @@ public class OpenMappingAction extends SelectionListenerAction {
 		}
 		if (editorPart == null) {
 			//try to find hibernate-annotations
-			PersistentClass rootClass = null;
-			if (selection instanceof PersistentClass) {
-				rootClass = (PersistentClass)selection;
+			IPersistentClass rootClass = null;
+			if (selection instanceof IPersistentClass) {
+				rootClass = (IPersistentClass)selection;
 		    }
 			else if (selection instanceof Property) {
 	    		Property p = (Property)selection;
 	    		if (p.getPersistentClass() != null) {
-	    			rootClass = p.getPersistentClass();
+	    			rootClass = new PersistentClassProxy(p.getPersistentClass());
 	    		}
 		    }
 			if (rootClass != null){
@@ -177,7 +178,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 	 */
 	public static IEditorPart run(ConsoleConfiguration consoleConfig, Property compositeProperty, Property parentProperty) 
 			throws PartInitException, JavaModelException, FileNotFoundException {
-		PersistentClass rootClass = parentProperty.getPersistentClass();
+		IPersistentClass rootClass = parentProperty.getPersistentClass() != null ? new PersistentClassProxy(parentProperty.getPersistentClass()) : null;
 		IFile file = OpenMappingUtils.searchFileToOpen(consoleConfig, rootClass);
 		IEditorPart editorPart = null;
 		if (file != null){
@@ -260,7 +261,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 		try {
 			final String hbmPropertyPattern = OpenMappingUtils.generateHbmPropertyPattern(compositeProperty);
 			propRegion = findAdapter.find(startOffset, hbmPropertyPattern, true, true, false, true);
-			PersistentClass rootClass = parentProperty.getPersistentClass();
+			IPersistentClass rootClass = parentProperty.getPersistentClass() != null ? new PersistentClassProxy(parentProperty.getPersistentClass()) : null;
 			if (propRegion == null && parentProperty.isComposite()
 					&& (rootClass.getIdentifierProperty() == parentProperty ||
 						!rootClass.hasIdentifierProperty())) {

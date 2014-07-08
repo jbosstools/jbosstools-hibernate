@@ -29,11 +29,10 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.process.AllEntitiesProcessor;
 import org.hibernate.eclipse.jdt.ui.test.HibernateJDTuiTestPlugin;
 import org.hibernate.eclipse.jdt.ui.wizards.ConfigurationActor;
-import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
-import org.jboss.tools.hibernate.proxy.TableProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IPersistentClass;
 import org.jboss.tools.hibernate.spi.IValue;
 
 public class HbmExporterTest extends TestCase {
@@ -97,8 +96,8 @@ public class HbmExporterTest extends TestCase {
 	public void testId(){
 		IConfiguration config = getConfigurationFor("pack.A"); //$NON-NLS-1$
 		checkClassesMaped(config, "pack.A", "pack.B"); //$NON-NLS-1$ //$NON-NLS-2$
-		PersistentClass a = config.getClassMapping("pack.A"); //$NON-NLS-1$
-		PersistentClass b = config.getClassMapping("pack.B"); //$NON-NLS-1$
+		IPersistentClass a = config.getClassMapping("pack.A"); //$NON-NLS-1$
+		IPersistentClass b = config.getClassMapping("pack.B"); //$NON-NLS-1$
 		
 		Property aId= a.getIdentifierProperty();
 		Property bId= b.getIdentifierProperty();
@@ -111,7 +110,7 @@ public class HbmExporterTest extends TestCase {
 	public void testProperty(){
 		IConfiguration config = getConfigurationFor("pack.A"); //$NON-NLS-1$
 		checkClassesMaped(config, "pack.A", "pack.B"); //$NON-NLS-1$ //$NON-NLS-2$
-		PersistentClass a = config.getClassMapping("pack.A"); //$NON-NLS-1$
+		IPersistentClass a = config.getClassMapping("pack.A"); //$NON-NLS-1$
 		
 		Property prop = a.getProperty("prop"); //$NON-NLS-1$
 		assertNotNull(prop.getValue());
@@ -123,8 +122,8 @@ public class HbmExporterTest extends TestCase {
 	public void testArray(){
 		IConfiguration config = getConfigurationFor("pack.A"); //$NON-NLS-1$
 		checkClassesMaped(config, "pack.A", "pack.B"); //$NON-NLS-1$ //$NON-NLS-2$
-		PersistentClass a = config.getClassMapping("pack.A"); //$NON-NLS-1$
-		PersistentClass b = config.getClassMapping("pack.B"); //$NON-NLS-1$
+		IPersistentClass a = config.getClassMapping("pack.A"); //$NON-NLS-1$
+		IPersistentClass b = config.getClassMapping("pack.B"); //$NON-NLS-1$
 		
 		Property bs = a.getProperty("bs"); //$NON-NLS-1$
 		assertNotNull(bs.getValue());
@@ -147,15 +146,15 @@ public class HbmExporterTest extends TestCase {
 	public void testList(){
 		IConfiguration config = getConfigurationFor("pack.A"); //$NON-NLS-1$
 		checkClassesMaped(config, "pack.A", "pack.B"); //$NON-NLS-1$ //$NON-NLS-2$
-		PersistentClass a = config.getClassMapping("pack.A"); //$NON-NLS-1$
-		PersistentClass b = config.getClassMapping("pack.B"); //$NON-NLS-1$
+		IPersistentClass a = config.getClassMapping("pack.A"); //$NON-NLS-1$
+		IPersistentClass b = config.getClassMapping("pack.B"); //$NON-NLS-1$
 		
 		Property listProp = a.getProperty("list"); //$NON-NLS-1$
 		assertNotNull(listProp.getValue());
 		IValue value = new ValueProxy(listProp.getValue());
 		assertTrue("Expected to get List-type mapping", value.isList());
 		assertTrue(value.getCollectionElement().isOneToMany());
-		assertTrue(value.getCollectionTable().equals(new TableProxy(b.getTable())));
+		assertTrue(value.getCollectionTable().equals(b.getTable()));
 		assertNotNull(value.getIndex());
 		assertNotNull(value.getKey());
 	}
@@ -163,28 +162,28 @@ public class HbmExporterTest extends TestCase {
 	public void testSet(){
 		IConfiguration config = getConfigurationFor("pack.A"); //$NON-NLS-1$
 		checkClassesMaped(config, "pack.A", "pack.B"); //$NON-NLS-1$ //$NON-NLS-2$
-		PersistentClass a = config.getClassMapping("pack.A"); //$NON-NLS-1$
-		PersistentClass b = config.getClassMapping("pack.B"); //$NON-NLS-1$
+		IPersistentClass a = config.getClassMapping("pack.A"); //$NON-NLS-1$
+		IPersistentClass b = config.getClassMapping("pack.B"); //$NON-NLS-1$
 		Property setProp = a.getProperty("set"); //$NON-NLS-1$
 		assertNotNull(setProp.getValue());
 		IValue value = new ValueProxy(setProp.getValue());
 		assertTrue("Expected to get Set-type mapping", value.isSet());
 		assertTrue(value.getCollectionElement().isOneToMany());
-		assertTrue(value.getCollectionTable().equals(new TableProxy(b.getTable())));
+		assertTrue(value.getCollectionTable().equals(b.getTable()));
 		assertNotNull(value.getKey());
 	}
 	
 	public void testMap(){
 		IConfiguration config = getConfigurationFor("pack.A"); //$NON-NLS-1$
 		checkClassesMaped(config, "pack.A", "pack.B"); //$NON-NLS-1$ //$NON-NLS-2$
-		PersistentClass a = config.getClassMapping("pack.A"); //$NON-NLS-1$
-		PersistentClass b = config.getClassMapping("pack.B"); //$NON-NLS-1$		
+		IPersistentClass a = config.getClassMapping("pack.A"); //$NON-NLS-1$
+		IPersistentClass b = config.getClassMapping("pack.B"); //$NON-NLS-1$		
 		Property mapValue = a.getProperty("mapValue"); //$NON-NLS-1$
 		assertNotNull(mapValue.getValue());
 		IValue value = new ValueProxy(mapValue.getValue());
 		assertTrue("Expected to get Map-type mapping", value.isMap());
 		assertTrue(value.getCollectionElement().isOneToMany());
-		assertTrue(value.getCollectionTable().equals(new TableProxy(b.getTable())));
+		assertTrue(value.getCollectionTable().equals(b.getTable()));
 		assertNotNull(value.getKey());
 		assertEquals("string", value.getKey().getType().getName()); //$NON-NLS-1$
 	}

@@ -21,7 +21,7 @@ import org.eclipse.gef.ui.actions.SelectionAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IWorkbenchPart;
-import org.hibernate.mapping.PersistentClass;
+import org.jboss.tools.hibernate.spi.IPersistentClass;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
@@ -120,7 +120,7 @@ public class ToggleShapeVisibleStateAction extends SelectionAction {
 			}
 			if (null != obj && obj instanceof OrmShape) {
 				Object ormElement = ((OrmShape)obj).getOrmElement();
-				if (ormElement instanceof PersistentClass || ormElement instanceof ITable) {
+				if (ormElement instanceof IPersistentClass || ormElement instanceof ITable) {
 					res = true;
 				}
 			} 

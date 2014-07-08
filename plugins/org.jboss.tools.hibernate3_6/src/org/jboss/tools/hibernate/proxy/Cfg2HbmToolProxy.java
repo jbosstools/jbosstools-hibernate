@@ -1,8 +1,8 @@
 package org.jboss.tools.hibernate.proxy;
 
-import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.jboss.tools.hibernate.spi.ICfg2HbmTool;
+import org.jboss.tools.hibernate.spi.IPersistentClass;
 import org.jboss.tools.hibernate.spi.IProperty;
 
 public class Cfg2HbmToolProxy implements ICfg2HbmTool {
@@ -14,8 +14,9 @@ public class Cfg2HbmToolProxy implements ICfg2HbmTool {
 	}
 
 	@Override
-	public String getTag(PersistentClass persistentClass) {
-		return target.getTag(persistentClass);
+	public String getTag(IPersistentClass persistentClass) {
+		assert persistentClass instanceof PersistentClassProxy;
+		return target.getTag(((PersistentClassProxy)persistentClass).getTarget());
 	}
 
 	@Override

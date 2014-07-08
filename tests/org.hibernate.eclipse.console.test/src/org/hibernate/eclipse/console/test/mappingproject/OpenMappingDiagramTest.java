@@ -16,7 +16,7 @@ import org.eclipse.ui.PartInitException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 import org.hibernate.eclipse.console.test.utils.Utils;
-import org.hibernate.mapping.PersistentClass;
+import org.jboss.tools.hibernate.spi.IPersistentClass;
 import org.jboss.tools.hibernate.ui.view.OpenDiagramActionDelegate;
 
 /**
@@ -36,8 +36,8 @@ public class OpenMappingDiagramTest extends BaseTestSetCase {
 		final Object[] persClasses = getPersistenceClasses(false);
 		final ConsoleConfiguration consCFG = getConsoleConfig();
 		for (int i = 0; i < persClasses.length; i++) {
-			assertTrue(persClasses[i] instanceof PersistentClass);
-			PersistentClass persClass = (PersistentClass) persClasses[i];
+			assertTrue(persClasses[i] instanceof IPersistentClass);
+			IPersistentClass persClass = (IPersistentClass) persClasses[i];
 
 			IEditorPart editor = null;
 			Throwable ex = null;

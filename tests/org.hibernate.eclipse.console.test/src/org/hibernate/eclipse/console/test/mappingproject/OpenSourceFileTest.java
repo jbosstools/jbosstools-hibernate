@@ -20,10 +20,9 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.actions.OpenSourceAction;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 import org.hibernate.eclipse.console.test.utils.Utils;
-import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
-import org.jboss.tools.hibernate.spi.IValue;
+import org.jboss.tools.hibernate.spi.IPersistentClass;
 
 /**
  * @author Dmitry Geraskov
@@ -43,8 +42,8 @@ public class OpenSourceFileTest extends BaseTestSetCase {
 		final Object[] persClasses = getPersistenceClasses(false);
 		final ConsoleConfiguration consCFG = getConsoleConfig();
 		for (int i = 0; i < persClasses.length; i++) {
-			assertTrue(persClasses[i] instanceof PersistentClass);
-			PersistentClass persClass = (PersistentClass) persClasses[i];
+			assertTrue(persClasses[i] instanceof IPersistentClass);
+			IPersistentClass persClass = (IPersistentClass) persClasses[i];
 			String fullyQualifiedName = persClass.getClassName();
 			// test PersistentClasses
 			openTest(persClass, consCFG, fullyQualifiedName);

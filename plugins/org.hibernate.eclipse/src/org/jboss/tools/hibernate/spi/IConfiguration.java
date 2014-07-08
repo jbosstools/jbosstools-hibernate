@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.Properties;
 
-import org.hibernate.mapping.PersistentClass;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 
@@ -25,12 +24,12 @@ public interface IConfiguration {
 	ISessionFactory buildSessionFactory();
 	ISettings buildSettings();
 	IMappings createMappings();
-	Iterator<? extends PersistentClass> getClassMappings();
+	Iterator<IPersistentClass> getClassMappings();
 	void setPreferBasicCompositeIds(boolean preferBasicCompositeids);
 	void setReverseEngineeringStrategy(IReverseEngineeringStrategy res);
 	void readFromJDBC();
 	Object buildMapping();
-	PersistentClass getClassMapping(String string);
+	IPersistentClass getClassMapping(String string);
 	INamingStrategy getNamingStrategy();
 	EntityResolver getEntityResolver();
 	ISessionFactory buildSessionFactory(Object serviceRegistry);

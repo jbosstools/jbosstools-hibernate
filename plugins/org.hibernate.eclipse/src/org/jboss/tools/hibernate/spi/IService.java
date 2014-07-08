@@ -6,8 +6,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.Table;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 
@@ -90,22 +88,22 @@ public interface IService {
 
 	IValue newSimpleValue();
 
-	IValue newPrimitiveArray(PersistentClass persistentClass);
+	IValue newPrimitiveArray(IPersistentClass persistentClass);
 
-	IValue newArray(PersistentClass persistentClass);
+	IValue newArray(IPersistentClass persistentClass);
 
-	IValue newBag(PersistentClass persistentClass);
+	IValue newBag(IPersistentClass persistentClass);
 
-	IValue newList(PersistentClass persistentClass);
+	IValue newList(IPersistentClass persistentClass);
 
-	IValue newMap(PersistentClass persistentClass);
+	IValue newMap(IPersistentClass persistentClass);
 
-	IValue newSet(PersistentClass persistentClass);
+	IValue newSet(IPersistentClass persistentClass);
 
 	IValue newManyToOne(ITable table);
 
-	IValue newOneToMany(PersistentClass persistentClass);
+	IValue newOneToMany(IPersistentClass persistentClass);
 
-	IValue newOneToOne(PersistentClass persistentClass);
+	IValue newOneToOne(IPersistentClass persistentClass);
 	
 }

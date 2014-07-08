@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.proxy;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
@@ -13,6 +14,7 @@ import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IMappings;
 import org.jboss.tools.hibernate.spi.INamingStrategy;
+import org.jboss.tools.hibernate.spi.IPersistentClass;
 import org.jboss.tools.hibernate.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
 import org.jboss.tools.hibernate.spi.ISettings;
@@ -25,6 +27,7 @@ public class ConfigurationProxy implements IConfiguration {
 	private Configuration target;
 	private INamingStrategy namingStrategy;
 	private HashSet<ITable> tableMappings = null;
+	private HashMap<String, IPersistentClass> classMappings = null;
 	
 	public ConfigurationProxy(Configuration configuration) {
 		target = configuration;
@@ -117,8 +120,20 @@ public class ConfigurationProxy implements IConfiguration {
 	}
 
 	@Override
-	public Iterator<? extends PersistentClass> getClassMappings() {
-		return target.getClassMappings();
+	public Iterator<IPersistentClass> getClassMappings() {
+		if (classMappings == null) {
+			initializeClassMappings();
+		}
+		return classMappings.values().iterator();
+	}
+	
+	private void initializeClassMappings() {
+		classMappings = new HashMap<String, IPersistentClass>();
+		Iterator<?> origin = target.getClassMappings();
+		while (origin.hasNext()) {
+			IPersistentClass pc = new PersistentClassProxy((PersistentClass)origin.next());
+			classMappings.put(pc.getEntityName(), pc);
+		}
 	}
 
 	@Override
@@ -149,8 +164,11 @@ public class ConfigurationProxy implements IConfiguration {
 	}
 
 	@Override
-	public PersistentClass getClassMapping(String string) {
-		return target.getClassMapping(string);
+	public IPersistentClass getClassMapping(String string) {
+		if (classMappings == null) {
+			initializeClassMappings();
+		}
+		return classMappings.get(string);
 	}
 
 	@Override

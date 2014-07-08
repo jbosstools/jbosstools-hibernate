@@ -12,11 +12,10 @@ package org.jboss.tools.hibernate.ui.view;
 
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.workbench.TypeNameValueVisitor;
-import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
-import org.jboss.tools.hibernate.proxy.TableProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
+import org.jboss.tools.hibernate.spi.IPersistentClass;
 import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IType;
@@ -47,8 +46,8 @@ public class OrmLabelMap {
 			label = getParticularLabel((IProperty)obj, cfg);
 		} else if (obj instanceof IValue && (((IValue)obj).isSimpleValue() || ((IValue)obj).isOneToMany())) {
 			label = getParticularLabel((IValue)obj);
-		} else if (obj instanceof PersistentClass) {
-			label = getParticularLabel((PersistentClass)obj);
+		} else if (obj instanceof IPersistentClass) {
+			label = getParticularLabel((IPersistentClass)obj);
 		} else if (obj instanceof String) {
 			label = (String)obj;
 		} else {
@@ -184,11 +183,11 @@ public class OrmLabelMap {
 	 * @param persistentClass
 	 * @return
 	 */
-	public static String getParticularLabel(PersistentClass persistentClass) {
+	public static String getParticularLabel(IPersistentClass persistentClass) {
 		StringBuffer name = new StringBuffer();
 		name.append(persistentClass.getEntityName() != null ? 
 				persistentClass.getEntityName() : persistentClass.getClassName());
-		ITable table = persistentClass.getTable() != null ? new TableProxy(persistentClass.getTable()) : null;
+		ITable table = persistentClass.getTable();
 		if (table != null) {
 			final String tableName = Utils.getTableName(table);
 			if (tableName != null) {

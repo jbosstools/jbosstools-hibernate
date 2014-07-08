@@ -21,7 +21,7 @@ import org.eclipse.ui.internal.ErrorEditorPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 import org.hibernate.eclipse.console.utils.OpenMappingUtils;
-import org.hibernate.mapping.PersistentClass;
+import org.jboss.tools.hibernate.spi.IPersistentClass;
 
 /**
  * @author Dmitry Geraskov
@@ -31,7 +31,7 @@ import org.hibernate.mapping.PersistentClass;
 public class Utils {
 
 
-	public static String getPersistentClassName(PersistentClass persClass) {
+	public static String getPersistentClassName(IPersistentClass persClass) {
 		if (persClass == null) {
 			return ""; //$NON-NLS-1$
 		}

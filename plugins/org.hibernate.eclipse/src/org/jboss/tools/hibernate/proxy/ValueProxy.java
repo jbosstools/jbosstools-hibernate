@@ -20,7 +20,6 @@ import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
-import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Set;
@@ -29,6 +28,7 @@ import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.spi.IColumn;
+import org.jboss.tools.hibernate.spi.IPersistentClass;
 import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IType;
@@ -45,6 +45,7 @@ public class ValueProxy implements IValue {
 	private IValue index = null;
 	private IType type = null;
 	private HashSet<IColumn> columns = null;
+	private IPersistentClass owner = null;
 
 	public ValueProxy(Value value) {
 		target = value;
@@ -353,9 +354,11 @@ public class ValueProxy implements IValue {
 	}
 
 	@Override
-	public PersistentClass getOwner() {
+	public IPersistentClass getOwner() {
 		assert target instanceof Component;
-		return ((Component)target).getOwner();
+		if (owner != null && ((Component)target).getOwner() != null)
+			owner = new PersistentClassProxy(((Component)target).getOwner());
+		return owner;
 	}
 
 	@Override
@@ -402,9 +405,9 @@ public class ValueProxy implements IValue {
 	}
 
 	@Override
-	public PersistentClass getAssociatedClass() {
+	public IPersistentClass getAssociatedClass() {
 		assert target instanceof OneToMany;
-		return ((OneToMany)target).getAssociatedClass();
+		return ((OneToMany)target).getAssociatedClass() != null ? new PersistentClassProxy(((OneToMany)target).getAssociatedClass()) : null;
 	}
 
 	@Override
@@ -430,9 +433,10 @@ public class ValueProxy implements IValue {
 	}
 
 	@Override
-	public void setAssociatedClass(PersistentClass persistentClass) {
+	public void setAssociatedClass(IPersistentClass persistentClass) {
 		assert target instanceof OneToMany;
-		((OneToMany)target).setAssociatedClass(persistentClass);
+		assert persistentClass instanceof PersistentClassProxy;
+		((OneToMany)target).setAssociatedClass(((PersistentClassProxy)persistentClass).getTarget());
 	}
 
 }

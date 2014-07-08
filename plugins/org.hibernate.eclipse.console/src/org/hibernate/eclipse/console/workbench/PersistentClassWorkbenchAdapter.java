@@ -29,15 +29,15 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.utils.EclipseImages;
-import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.util.JoinedIterator;
+import org.jboss.tools.hibernate.spi.IPersistentClass;
 
 public class PersistentClassWorkbenchAdapter implements IWorkbenchAdapter {
 
 	@SuppressWarnings("unchecked")
 	public Object[] getChildren(Object o) {
-		PersistentClass pc = (PersistentClass) o;
+		IPersistentClass pc = (IPersistentClass) o;
 		Property identifierProperty = pc.getIdentifierProperty();
 		List<Property> properties = new ArrayList<Property>();
 		
@@ -55,7 +55,7 @@ public class PersistentClassWorkbenchAdapter implements IWorkbenchAdapter {
 	}
 
 	public String getLabel(Object o) {
-		PersistentClass pc = (PersistentClass) o;
+		IPersistentClass pc = (IPersistentClass) o;
 		return HibernateWorkbenchHelper.getLabelForClassName(pc.getEntityName());
 	}
 

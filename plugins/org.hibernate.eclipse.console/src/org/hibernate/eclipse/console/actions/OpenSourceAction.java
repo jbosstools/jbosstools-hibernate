@@ -30,8 +30,9 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
-import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
+import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
+import org.jboss.tools.hibernate.spi.IPersistentClass;
 import org.jboss.tools.hibernate.spi.IValue;
 
 /**
@@ -62,7 +63,7 @@ public class OpenSourceAction extends SelectionListenerAction {
 		for (int i = 0; i < paths.length; i++) {
 			TreePath path = paths[i];
 			Object lastSegment = path.getLastSegment();
-	    	PersistentClass persClass = getPersistentClass(lastSegment);
+	    	IPersistentClass persClass = getPersistentClass(lastSegment);
 			ConsoleConfiguration consoleConfig = (ConsoleConfiguration)(path.getSegment(0));
 
 			String fullyQualifiedName = null;
@@ -168,11 +169,11 @@ public class OpenSourceAction extends SelectionListenerAction {
 
 	}
 
-	private PersistentClass getPersistentClass(Object selection){
+	private IPersistentClass getPersistentClass(Object selection){
     	if (selection instanceof Property){
-    		return ((Property)selection).getPersistentClass();
-		} else if (selection instanceof PersistentClass){
-			return (PersistentClass)selection;
+    		return ((Property)selection).getPersistentClass() != null ? new PersistentClassProxy(((Property)selection).getPersistentClass()) : null;
+		} else if (selection instanceof IPersistentClass){
+			return (IPersistentClass)selection;
 		} else {
 			return null;
 		}

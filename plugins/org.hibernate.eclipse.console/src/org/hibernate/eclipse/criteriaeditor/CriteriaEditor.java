@@ -65,8 +65,8 @@ import org.hibernate.eclipse.console.AbstractQueryEditor;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.views.QueryPageTabView;
-import org.hibernate.mapping.PersistentClass;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IPersistentClass;
 
 public class CriteriaEditor extends AbstractQueryEditor {
 
@@ -175,9 +175,9 @@ public class CriteriaEditor extends AbstractQueryEditor {
 		Set<String> imports = new HashSet<String>();
 		IConfiguration configuration = consoleConfiguration.getConfiguration();
 		if(configuration!=null) {
-			Iterator<? extends PersistentClass> classMappings = configuration.getClassMappings();
+			Iterator<IPersistentClass> classMappings = configuration.getClassMappings();
 			while ( classMappings.hasNext() ) {
-				PersistentClass clazz = classMappings.next();
+				IPersistentClass clazz = classMappings.next();
 				String className = clazz.getClassName();
 				if(className!=null) {
 					imports.add( className );

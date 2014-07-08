@@ -20,8 +20,8 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.actions.OpenMappingAction;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 import org.hibernate.eclipse.console.test.utils.Utils;
-import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
+import org.jboss.tools.hibernate.spi.IPersistentClass;
 
 /**
  * @author Dmitry Geraskov
@@ -41,8 +41,8 @@ public class OpenMappingFileTest extends BaseTestSetCase {
 		final ConsoleConfiguration consCFG = getConsoleConfig();
 		final String testClass = "class"; //$NON-NLS-1$
 		for (int i = 0; i < persClasses.length; i++) {
-			assertTrue(persClasses[i] instanceof PersistentClass);
-			PersistentClass persClass = (PersistentClass) persClasses[i];
+			assertTrue(persClasses[i] instanceof IPersistentClass);
+			IPersistentClass persClass = (IPersistentClass) persClasses[i];
 			openTest(persClass, consCFG);
 			Object[] props =  pcWorkbenchAdapter.getChildren(persClass);
 			for (int j = 0; j < props.length; j++) {

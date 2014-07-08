@@ -29,17 +29,17 @@ import org.hibernate.console.ImageConstants;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.EclipseImages;
-import org.hibernate.mapping.PersistentClass;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IPersistentClass;
 
 public class ConfigurationWorkbenchAdapter extends BasicWorkbenchAdapter {
 
 	public Object[] getChildren(Object o) {
 		IConfiguration cfg = (IConfiguration) o;
-		Iterator<? extends PersistentClass> classMappings = cfg.getClassMappings();
-		return toArray(classMappings, PersistentClass.class, new Comparator<PersistentClass>() {
+		Iterator<IPersistentClass> classMappings = cfg.getClassMappings();
+		return toArray(classMappings, IPersistentClass.class, new Comparator<IPersistentClass>() {
 
-			public int compare(PersistentClass p0, PersistentClass p1) {
+			public int compare(IPersistentClass p0, IPersistentClass p1) {
 				String label0 = HibernateWorkbenchHelper.getLabelForClassName(p0.getEntityName());
 				String label1 = HibernateWorkbenchHelper.getLabelForClassName(p1.getEntityName());
 				return label0.compareTo(label1);

@@ -19,6 +19,7 @@ import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.jboss.tools.hibernate.proxy.ColumnProxy;
+import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.proxy.TableProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
@@ -156,7 +157,7 @@ public class ConsoleConfigurationTest extends TestCase {
 		fakeProp.setValue(((ValueProxy)sv).getTarget());
 		rc.setIdentifierProperty(fakeProp);
 		rc.setIdentifier((KeyValue) fakeProp.getValue());
-		mappings.addClass(rc);
+		mappings.addClass(new PersistentClassProxy(rc));
 
 		consoleCfg.buildSessionFactory();
 		
