@@ -109,7 +109,7 @@ public class OpenMappingUtils {
 		if (rootClass == null) {
 			return ""; //$NON-NLS-1$
 		}
-		return rootClass.getEntityName() != null ? rootClass.getEntityName() : rootClass.getClassName();
+		return rootClass.getEntityName() != null ? rootClass.getEntityName() : null;
 	}
 
 	/**
@@ -157,6 +157,9 @@ public class OpenMappingUtils {
 	 */
 	public static boolean elementInFile(ConsoleConfiguration consoleConfig, IFile file, Object element) {
 		boolean res = false;
+		if (element instanceof IPersistentClass) {
+			element = ((PersistentClassProxy)element).getTarget();
+		}
 		if (element instanceof RootClass) {
 			res = rootClassInFile(consoleConfig, file, (RootClass)element);
 		} else if (element instanceof Subclass) {
@@ -666,6 +669,11 @@ public class OpenMappingUtils {
 	 */
 	public static IRegion findSelectRegion(IJavaProject proj, FindReplaceDocumentAdapter findAdapter, Object selection) {
 		IRegion selectRegion = null;
+		if (selection instanceof Subclass) {
+			selection = new PersistentClassProxy((Subclass)selection);
+		} else if (selection instanceof RootClass) {
+			selection = new PersistentClassProxy((RootClass)selection);
+		}
 		if (selection instanceof IPersistentClass && (((IPersistentClass)selection).isInstanceOfRootClass() || ((IPersistentClass)selection).isInstanceOfSubclass())) {
 			selectRegion = findSelectRegion(proj, findAdapter, (IPersistentClass)selection);
 		} else if (selection instanceof Property){

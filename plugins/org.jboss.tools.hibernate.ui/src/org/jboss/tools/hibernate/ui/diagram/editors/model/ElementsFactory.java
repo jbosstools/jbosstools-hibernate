@@ -281,7 +281,7 @@ public class ElementsFactory {
 				connections.add(new Connection(classShape, shape));
 			}
 		}
-		RootClass rc = (RootClass)persistentClass;
+		RootClass rc = (RootClass)((PersistentClassProxy)persistentClass).getTarget();
 		Iterator iter = rc.getSubclassIterator();
 		while (iter.hasNext()) {
 			Object element = iter.next();

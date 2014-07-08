@@ -13,6 +13,8 @@ package org.jboss.tools.hibernate.ui.view;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.workbench.TypeNameValueVisitor;
 import org.hibernate.mapping.Property;
+import org.hibernate.mapping.Subclass;
+import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
@@ -48,6 +50,8 @@ public class OrmLabelMap {
 			label = getParticularLabel((IValue)obj);
 		} else if (obj instanceof IPersistentClass) {
 			label = getParticularLabel((IPersistentClass)obj);
+		} else if (obj instanceof Subclass) {
+			label = getParticularLabel(new PersistentClassProxy((Subclass)obj));
 		} else if (obj instanceof String) {
 			label = (String)obj;
 		} else {

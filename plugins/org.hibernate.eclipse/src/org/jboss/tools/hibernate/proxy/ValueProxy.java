@@ -356,7 +356,7 @@ public class ValueProxy implements IValue {
 	@Override
 	public IPersistentClass getOwner() {
 		assert target instanceof Component;
-		if (owner != null && ((Component)target).getOwner() != null)
+		if (owner == null && ((Component)target).getOwner() != null)
 			owner = new PersistentClassProxy(((Component)target).getOwner());
 		return owner;
 	}

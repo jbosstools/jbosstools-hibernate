@@ -110,7 +110,7 @@ public class PersistentClassProxy implements IPersistentClass {
 
 	@Override
 	public ITable getTable() {
-		if (table == null) {
+		if (table == null && target.getTable() != null) {
 			table = new TableProxy(target.getTable());
 		}
 		return table;
