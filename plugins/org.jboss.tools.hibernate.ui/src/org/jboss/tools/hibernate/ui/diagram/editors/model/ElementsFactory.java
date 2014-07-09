@@ -331,7 +331,7 @@ public class ElementsFactory {
 			if (identifier.getComponentClassName() != null && !identifier.getComponentClassName().equals(identifier.getOwner().getEntityName())) {
 				OrmShape componentClassShape = elements.get(identifier.getComponentClassName());
 				if (componentClassShape == null && persistentClass.isInstanceOfRootClass()) {
-					componentClassShape = getOrCreateComponentClass(((RootClass)persistentClass).getIdentifierProperty());
+					componentClassShape = getOrCreateComponentClass(((RootClass)((PersistentClassProxy)persistentClass).getTarget()).getIdentifierProperty());
 
 					Shape idPropertyShape = classShape.getChild(persistentClass.getIdentifierProperty());
 					if (shouldCreateConnection(idPropertyShape, componentClassShape)) {

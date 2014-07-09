@@ -13,6 +13,7 @@ package org.jboss.tools.hibernate.ui.view;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.mapping.Property;
+import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
 import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
@@ -48,6 +49,8 @@ public class OrmImageMap {
 			imageName = getImageName((IProperty)obj, cfg);
 		} else if (obj instanceof Subclass) {
 			imageName = getImageName((new PersistentClassProxy((Subclass)obj)));
+		} else if (obj instanceof RootClass) {
+			imageName = getImageName((new PersistentClassProxy((RootClass)obj)));
 		} else if (obj instanceof IValue && ((IValue)obj).isSimpleValue() || ((IValue)obj).isOneToMany()) {
 			imageName = getImageName((IValue)obj);
 		}
