@@ -150,6 +150,31 @@ public class PersistentClassProxy implements IPersistentClass {
 		}
 		return version;
 	}
+
+	@Override
+	public void setClassName(String className) {
+		target.setClassName(className);
+	}
+
+	@Override
+	public void setEntityName(String entityName) {
+		target.setEntityName(entityName);
+	}
+
+	@Override
+	public void setDiscriminatorValue(String value) {
+		target.setDiscriminatorValue(value);
+	}
+
+	@Override
+	public void setAbstract(boolean b) {
+		target.setAbstract(b);
+	}
+
+	@Override
+	public void addProperty(Property property) {
+		target.addProperty(property);
+	}
 	
 	
 

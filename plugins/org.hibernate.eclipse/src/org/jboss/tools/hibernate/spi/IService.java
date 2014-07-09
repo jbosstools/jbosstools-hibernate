@@ -105,5 +105,9 @@ public interface IService {
 	IValue newOneToMany(IPersistentClass persistentClass);
 
 	IValue newOneToOne(IPersistentClass persistentClass);
+
+	IPersistentClass newSingleTableSubclass(IPersistentClass persistentClass);
+
+	IPersistentClass newJoinedSubclass(IPersistentClass persistentClass);
 	
 }

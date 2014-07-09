@@ -27,5 +27,10 @@ public interface IPersistentClass {
 	IValue getIdentifier();
 	Iterator<Join> getJoinIterator();
 	IProperty getVersion();
+	void setClassName(String className);
+	void setEntityName(String entityName);
+	void setDiscriminatorValue(String value);
+	void setAbstract(boolean b);
+	void addProperty(Property property);
 
 }

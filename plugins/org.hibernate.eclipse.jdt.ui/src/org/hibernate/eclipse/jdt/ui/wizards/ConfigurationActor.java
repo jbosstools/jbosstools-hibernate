@@ -51,8 +51,6 @@ import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
-import org.hibernate.mapping.SingleTableSubclass;
-import org.hibernate.mapping.Subclass;
 import org.hibernate.util.xpl.StringHelper;
 import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.proxy.TableProxy;
@@ -170,10 +168,10 @@ public class ConfigurationActor {
 			IPersistentClass pc = null;
 			try {
 				pc = getMappedSuperclass(project, pcCopy, (RootClass) ((PersistentClassProxy)entry.getValue()).getTarget());				
-				Subclass subclass = null;
+				IPersistentClass subclass = null;
 				if (pc != null){
 					if (pc.isAbstract()){
-						subclass = new SingleTableSubclass(((PersistentClassProxy)pc).getTarget());
+						subclass = service.newSingleTableSubclass(pc);
 						if (pc instanceof RootClass && pc.getDiscriminator() == null){
 							IValue discr = service.newSimpleValue();
 							discr.setTypeName("string"); //$NON-NLS-1$
@@ -181,12 +179,12 @@ public class ConfigurationActor {
 							((RootClass)pc).setDiscriminator(((ValueProxy)discr).getTarget());
 						}
 					} else {
-						subclass = new JoinedSubclass(((PersistentClassProxy)pc).getTarget());
+						subclass = service.newJoinedSubclass(pc);
 					}
 				} else {
 					pc = getMappedImplementedInterface(project, pcCopy, (RootClass) ((PersistentClassProxy)entry.getValue()).getTarget());
 					if (pc != null){
-						subclass = new SingleTableSubclass(((PersistentClassProxy)pc).getTarget());
+						subclass = service.newSingleTableSubclass(pc);
 					}
 				}
 				if (subclass != null){
@@ -207,7 +205,7 @@ public class ConfigurationActor {
 					while (it.hasNext()) {
 						subclass.addProperty((Property) it.next());
 					}
-					entry.setValue(new PersistentClassProxy(subclass));
+					entry.setValue(subclass);
 				}
 			} catch (JavaModelException e) {
 				HibernateConsolePlugin.getDefault().log(e);

@@ -27,6 +27,7 @@ import org.hibernate.ejb.Ejb3Configuration;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
@@ -35,6 +36,7 @@ import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
+import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
@@ -365,6 +367,19 @@ public class ServiceProxy implements IService {
 	public IValue newOneToOne(IPersistentClass persistentClass) {
 		assert persistentClass instanceof PersistentClassProxy;
 		return new ValueProxy(new OneToOne(((PersistentClassProxy)persistentClass).getTarget().getTable(), ((PersistentClassProxy)persistentClass).getTarget()));
+	}
+
+	@Override
+	public IPersistentClass newSingleTableSubclass(
+			IPersistentClass persistentClass) {
+		assert persistentClass instanceof PersistentClassProxy;
+		return new PersistentClassProxy(new SingleTableSubclass(((PersistentClassProxy)persistentClass).getTarget()));
+	}
+
+	@Override
+	public IPersistentClass newJoinedSubclass(IPersistentClass persistentClass) {
+		assert persistentClass instanceof PersistentClassProxy;
+		return new PersistentClassProxy(new JoinedSubclass(((PersistentClassProxy)persistentClass).getTarget()));
 	}
 
 }
