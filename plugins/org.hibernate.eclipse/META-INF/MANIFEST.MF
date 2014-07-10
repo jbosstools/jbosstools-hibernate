@@ -17,7 +17,6 @@ Export-Package: org.hibernate.console,
  org.hibernate.eclipse.logging,
  org.hibernate.eclipse.logging.xpl,
  org.hibernate.util.xpl,
- org.jboss.tools.hibernate.legacy,
  org.jboss.tools.hibernate.proxy,
  org.jboss.tools.hibernate.spi,
  org.jboss.tools.hibernate.util
