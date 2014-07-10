@@ -8,7 +8,7 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.ui.diagram.editors.model;
+package org.jboss.tools.hibernate.legacy;
 
 import java.util.Iterator;
 
@@ -74,7 +74,7 @@ public class SpecialRootClass extends RootClass {
 		}
 	}
 
-	protected Property getParentProperty() {
+	public Property getParentProperty() {
 		return parentProperty;
 	}
 

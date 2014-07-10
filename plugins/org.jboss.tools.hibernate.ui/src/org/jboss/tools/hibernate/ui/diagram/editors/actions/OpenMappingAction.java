@@ -22,12 +22,12 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.mapping.Property;
+import org.jboss.tools.hibernate.legacy.SpecialRootClass;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.UiPlugin;
 import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Shape;
-import org.jboss.tools.hibernate.ui.diagram.editors.model.SpecialRootClass;
 import org.jboss.tools.hibernate.ui.view.DiagramEditorInput;
 
 /**
