@@ -47,7 +47,6 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefEntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefType;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
-import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -193,9 +192,9 @@ public class ConfigurationActor {
 					subclass.setEntityName(pastClass.getEntityName());
 					subclass.setDiscriminatorValue(StringHelper.unqualify(pastClass.getClassName()));
 					subclass.setAbstract(pastClass.isAbstract());
-					if (subclass instanceof JoinedSubclass) {
-						((JoinedSubclass) subclass).setTable(((TableProxy)HibernateHelper.INSTANCE.getHibernateService().newTable(StringHelper.unqualify(pastClass.getClassName()).toUpperCase())).getTarget());
-						((JoinedSubclass) subclass).setKey((KeyValue) pc.getIdentifierProperty().getValue());
+					if (subclass.isInstanceOfJoinedSubclass()) {
+						subclass.setTable(HibernateHelper.INSTANCE.getHibernateService().newTable(StringHelper.unqualify(pastClass.getClassName()).toUpperCase()));
+						subclass.setKey(new ValueProxy((KeyValue) pc.getIdentifierProperty().getValue()));
 					}
 					if (pastClass.getIdentifierProperty() != null) {
 						subclass.addProperty(pastClass.getIdentifierProperty());

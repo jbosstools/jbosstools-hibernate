@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import org.hibernate.mapping.Join;
 import org.hibernate.mapping.Property;
+import org.jboss.tools.hibernate.proxy.ValueProxy;
 
 public interface IPersistentClass {
 
@@ -32,5 +33,8 @@ public interface IPersistentClass {
 	void setDiscriminatorValue(String value);
 	void setAbstract(boolean b);
 	void addProperty(Property property);
+	boolean isInstanceOfJoinedSubclass();
+	void setTable(ITable table);
+	void setKey(IValue value);
 
 }

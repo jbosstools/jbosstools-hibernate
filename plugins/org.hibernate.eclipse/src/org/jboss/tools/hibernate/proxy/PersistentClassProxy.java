@@ -3,6 +3,8 @@ package org.jboss.tools.hibernate.proxy;
 import java.util.Iterator;
 
 import org.hibernate.mapping.Join;
+import org.hibernate.mapping.JoinedSubclass;
+import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -174,6 +176,26 @@ public class PersistentClassProxy implements IPersistentClass {
 	@Override
 	public void addProperty(Property property) {
 		target.addProperty(property);
+	}
+
+	@Override
+	public boolean isInstanceOfJoinedSubclass() {
+		return target instanceof JoinedSubclass;
+	}
+
+	@Override
+	public void setTable(ITable table) {
+		assert target instanceof JoinedSubclass;
+		assert table instanceof TableProxy;
+		((JoinedSubclass)target).setTable(((TableProxy)table).getTarget());
+	}
+
+	@Override
+	public void setKey(IValue value) {
+		assert target instanceof JoinedSubclass;
+		assert value instanceof ValueProxy;
+		assert ((ValueProxy)value).getTarget() instanceof KeyValue;
+		((JoinedSubclass)target).setKey((KeyValue)((ValueProxy)value).getTarget());
 	}
 	
 	
