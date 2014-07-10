@@ -390,4 +390,9 @@ public class ServiceProxy implements IService {
 		return new PersistentClassProxy(new JoinedSubclass(((PersistentClassProxy)persistentClass).getTarget()));
 	}
 
+	@Override
+	public IPersistentClass newSpecialRootClass(Property ormElement) {
+		return new SpecialRootClassProxy(ormElement);
+	}
+
 }

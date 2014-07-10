@@ -14,8 +14,8 @@ import java.util.Iterator;
 
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
-import org.jboss.tools.hibernate.legacy.SpecialRootClass;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
+import org.jboss.tools.hibernate.spi.IPersistentClass;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.IValue;
 
@@ -26,7 +26,7 @@ import org.jboss.tools.hibernate.spi.IValue;
 public class SpecialOrmShape extends OrmShape {
 	private Shape parentShape;
 
-	public SpecialOrmShape(SpecialRootClass ioe, String consoleConfigName) {
+	public SpecialOrmShape(IPersistentClass ioe, String consoleConfigName) {
 		super(ioe, consoleConfigName);
 	}
 
@@ -36,13 +36,13 @@ public class SpecialOrmShape extends OrmShape {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void initModel() {
-		RootClass rootClass = (RootClass)getOrmElement();
+		IPersistentClass rootClass = (IPersistentClass)getOrmElement();
 		Property identifierProperty = rootClass.getIdentifierProperty();
 		if (identifierProperty != null) {
 			addChild(new Shape(identifierProperty, getConsoleConfigName()));
 		}
 
-		SpecialRootClass src = (SpecialRootClass)getOrmElement();
+		IPersistentClass src = (IPersistentClass)getOrmElement();
 		if (src.getParentProperty() != null) {
 			Shape bodyOrmShape = new Shape(src.getParentProperty(), getConsoleConfigName());
 			addChild(bodyOrmShape);

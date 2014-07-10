@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.hibernate.mapping.Property;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 
@@ -109,5 +110,7 @@ public interface IService {
 	IPersistentClass newSingleTableSubclass(IPersistentClass persistentClass);
 
 	IPersistentClass newJoinedSubclass(IPersistentClass persistentClass);
+
+	IPersistentClass newSpecialRootClass(Property ormElement);
 	
 }

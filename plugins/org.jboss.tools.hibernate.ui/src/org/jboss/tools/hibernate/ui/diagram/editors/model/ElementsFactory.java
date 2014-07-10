@@ -23,7 +23,6 @@ import org.hibernate.mapping.Join;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
-import org.jboss.tools.hibernate.legacy.SpecialRootClass;
 import org.jboss.tools.hibernate.proxy.ColumnProxy;
 import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.proxy.TableProxy;
@@ -31,9 +30,11 @@ import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
+import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.IValue;
+import org.jboss.tools.hibernate.util.HibernateHelper;
 
 /**
  * Responsible to create diagram elements for given
@@ -46,12 +47,14 @@ public class ElementsFactory {
 	private final String consoleConfigName;
 	private final HashMap<String, OrmShape> elements;
 	private final ArrayList<Connection> connections;
+	private IService service;
 	
 	public ElementsFactory(String consoleConfigName, HashMap<String, OrmShape> elements,
 			ArrayList<Connection> connections) {
 		this.consoleConfigName = consoleConfigName;
 		this.elements = elements;
 		this.connections = connections;
+		this.service = HibernateHelper.INSTANCE.getHibernateService();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -137,7 +140,7 @@ public class ElementsFactory {
 				}
 			}
 		} else {
-			s = getOrCreatePersistentClass(new PersistentClassProxy(new SpecialRootClass(property)), null);
+			s = getOrCreatePersistentClass(service.newSpecialRootClass(property), null);
 			if (shouldCreateConnection(shape, s)) {
 				connections.add(new Connection(shape, s));
 			}
@@ -424,7 +427,7 @@ public class ElementsFactory {
 	protected OrmShape createShape(Object ormElement) {
 		OrmShape ormShape = null;
 		if (ormElement instanceof Property) {
-			SpecialRootClass specialRootClass = new SpecialRootClass((Property)ormElement);
+			IPersistentClass specialRootClass = service.newSpecialRootClass((Property)ormElement);
 			String key = Utils.getName(specialRootClass.getEntityName());
 			ormShape = elements.get(key);
 			if (null == ormShape) {
@@ -449,8 +452,8 @@ public class ElementsFactory {
 			return res;
 		}
 		Property parentProperty = null;
-		if (persistentClass.getOrmElement() instanceof SpecialRootClass) {
-			parentProperty = ((SpecialRootClass)persistentClass.getOrmElement()).getParentProperty();
+		if (persistentClass.getOrmElement() instanceof IPersistentClass && ((IPersistentClass)persistentClass.getOrmElement()).isInstanceOfSpecialRootClass()) {
+			parentProperty = ((IPersistentClass)persistentClass.getOrmElement()).getParentProperty();
 		}
 		Iterator<Shape> itFields = persistentClass.getChildrenIterator();
 		Set<Shape> processed = new HashSet<Shape>();
@@ -503,7 +506,7 @@ public class ElementsFactory {
 	public OrmShape getShape(Object ormElement) {
 		OrmShape ormShape = null;
 		if (ormElement instanceof Property) {
-			SpecialRootClass specialRootClass = new SpecialRootClass((Property)ormElement);
+			IPersistentClass specialRootClass = service.newSpecialRootClass((Property)ormElement);
 			ormShape = elements.get(Utils.getName(specialRootClass.getEntityName()));
 		} else {
 			ormShape = elements.get(Utils.getName(ormElement));

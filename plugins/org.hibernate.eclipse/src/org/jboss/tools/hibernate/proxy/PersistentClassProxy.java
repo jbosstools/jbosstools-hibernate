@@ -197,6 +197,20 @@ public class PersistentClassProxy implements IPersistentClass {
 		assert ((ValueProxy)value).getTarget() instanceof KeyValue;
 		((JoinedSubclass)target).setKey((KeyValue)((ValueProxy)value).getTarget());
 	}
+
+	public boolean isInstanceOfSpecialRootClass() {
+		return false;
+	}
+
+	@Override
+	public Property getProperty() {
+		throw new RuntimeException("getProperty() is only allowed on SpecialRootClass"); //$NON-NLS-1$
+	}
+
+	@Override
+	public Property getParentProperty() {
+		throw new RuntimeException("getProperty() is only allowed on SpecialRootClass"); //$NON-NLS-1$
+	}
 	
 	
 
