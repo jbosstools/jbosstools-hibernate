@@ -2,7 +2,6 @@ package org.jboss.tools.hibernate.spi;
 
 import java.util.Iterator;
 
-import org.hibernate.mapping.Join;
 import org.hibernate.mapping.Property;
 
 public interface IPersistentClass {
@@ -25,7 +24,7 @@ public interface IPersistentClass {
 	Boolean isAbstract();
 	IValue getDiscriminator();
 	IValue getIdentifier();
-	Iterator<Join> getJoinIterator();
+	Iterator<IJoin> getJoinIterator();
 	IProperty getVersion();
 	void setClassName(String className);
 	void setEntityName(String entityName);

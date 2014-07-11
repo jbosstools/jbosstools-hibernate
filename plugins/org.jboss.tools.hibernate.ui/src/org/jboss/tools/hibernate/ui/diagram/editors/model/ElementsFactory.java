@@ -19,7 +19,6 @@ import java.util.Set;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.mapping.ForeignKey;
-import org.hibernate.mapping.Join;
 import org.hibernate.mapping.Property;
 import org.jboss.tools.hibernate.proxy.ColumnProxy;
 import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
@@ -27,6 +26,7 @@ import org.jboss.tools.hibernate.proxy.TableProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IJoin;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
 import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ITable;
@@ -315,9 +315,9 @@ public class ElementsFactory {
 				OrmShape ownerTableShape = getOrCreateDatabaseTable(((IPersistentClass)element).getRootTable());
 				createConnections(subclassShape, ownerTableShape);
 
-				Iterator<Join> joinIterator = subclass.getJoinIterator();
+				Iterator<IJoin> joinIterator = subclass.getJoinIterator();
 				while (joinIterator.hasNext()) {
-					Join join = joinIterator.next();
+					IJoin join = joinIterator.next();
 					Iterator<Property> iterator = join.getPropertyIterator();
 					while (iterator.hasNext()) {
 						Property property = iterator.next();
@@ -348,9 +348,9 @@ public class ElementsFactory {
 			}
 		}
 
-		Iterator joinIterator = persistentClass.getJoinIterator();
+		Iterator<IJoin> joinIterator = persistentClass.getJoinIterator();
 		while (joinIterator.hasNext()) {
-			Join join = (Join)joinIterator.next();
+			IJoin join = (IJoin)joinIterator.next();
 			Iterator<Property> iterator = join.getPropertyIterator();
 			while (iterator.hasNext()) {
 				Property property = iterator.next();

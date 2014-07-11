@@ -10,6 +10,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
+import org.jboss.tools.hibernate.spi.IJoin;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
 import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.ITable;
@@ -26,6 +27,7 @@ public class PersistentClassProxy implements IPersistentClass {
 	private IValue identifier = null;
 	private IProperty version = null;
 	private HashSet<IPersistentClass> subclasses = null;
+	private HashSet<IJoin> joins = null;
 
 	public PersistentClassProxy(PersistentClass persistentClass) {
 		target = persistentClass;
@@ -142,10 +144,20 @@ public class PersistentClassProxy implements IPersistentClass {
 		return identifier;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public Iterator<Join> getJoinIterator() {
-		return target.getJoinIterator();
+	public Iterator<IJoin> getJoinIterator() {
+		if (joins == null) {
+			initializeJoins();
+		}
+		return joins.iterator();
+	}
+	
+	private void initializeJoins() {
+		joins = new HashSet<IJoin>();
+		Iterator<?> origin = target.getJoinIterator();
+		while (origin.hasNext()) {
+			joins.add(new JoinProxy((Join)origin.next()));
+		}
 	}
 
 	@Override
