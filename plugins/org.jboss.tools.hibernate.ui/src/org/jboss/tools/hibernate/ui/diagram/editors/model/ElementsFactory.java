@@ -21,7 +21,6 @@ import org.hibernate.console.KnownConfigurations;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Join;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.Subclass;
 import org.jboss.tools.hibernate.proxy.ColumnProxy;
 import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.proxy.TableProxy;
@@ -134,8 +133,8 @@ public class ElementsFactory {
 					if (shouldCreateConnection(shape, s)) {
 						connections.add(new Connection(shape, s));
 					}
-				} else if (clazz instanceof Subclass) {
-					s = getOrCreatePersistentClass(new PersistentClassProxy(((Subclass)clazz).getRootClass()), null);
+				} else if (clazz instanceof IPersistentClass && ((IPersistentClass)clazz).isInstanceOfSubclass()) {
+					s = getOrCreatePersistentClass(((IPersistentClass)clazz).getRootClass(), null);
 				}
 			}
 		} else {
@@ -294,14 +293,14 @@ public class ElementsFactory {
 		Iterator iter = rc.getSubclassIterator();
 		while (iter.hasNext()) {
 			Object element = iter.next();
-			if (element instanceof Subclass) {
-				Subclass subclass = (Subclass)element;
+			if (element instanceof IPersistentClass && ((IPersistentClass)element).isInstanceOfSubclass()) {
+				IPersistentClass subclass = (IPersistentClass)element;
 				OrmShape subclassShape = getShape(subclass);
 				if (subclassShape == null) {
 					subclassShape = createShape(subclass);
 				}
-				if (((Subclass)element).isJoinedSubclass()) {
-					ITable jcTable = ((Subclass)element).getTable() != null ? new TableProxy(((Subclass)element).getTable()) : null;
+				if (((IPersistentClass)element).isJoinedSubclass()) {
+					ITable jcTable = ((IPersistentClass)element).getTable();
 					OrmShape jcTableShape = getOrCreateDatabaseTable(jcTable);
 					createConnections(subclassShape, jcTableShape);
 					if (shouldCreateConnection(subclassShape, jcTableShape)) {
@@ -313,7 +312,7 @@ public class ElementsFactory {
 						connections.add(new Connection(subclassShape, shape));
 					}
 				}
-				OrmShape ownerTableShape = getOrCreateDatabaseTable(((Subclass)element).getRootTable() != null ? new TableProxy(((Subclass)element).getRootTable()) : null);
+				OrmShape ownerTableShape = getOrCreateDatabaseTable(((IPersistentClass)element).getRootTable());
 				createConnections(subclassShape, ownerTableShape);
 
 				Iterator<Join> joinIterator = subclass.getJoinIterator();

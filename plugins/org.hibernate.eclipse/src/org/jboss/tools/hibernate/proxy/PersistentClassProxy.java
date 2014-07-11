@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.proxy;
 
+import java.util.HashSet;
 import java.util.Iterator;
 
 import org.hibernate.mapping.Join;
@@ -20,9 +21,11 @@ public class PersistentClassProxy implements IPersistentClass {
 	private IPersistentClass rootClass = null;
 	private IPersistentClass superClass = null;
 	private ITable table = null;
+	private ITable rootTable = null;
 	private IValue discriminator = null;
 	private IValue identifier = null;
 	private IProperty version = null;
+	private HashSet<IPersistentClass> subclasses = null;
 
 	public PersistentClassProxy(PersistentClass persistentClass) {
 		target = persistentClass;
@@ -249,8 +252,19 @@ public class PersistentClassProxy implements IPersistentClass {
 	}
 
 	@Override
-	public Iterator<?> getSubclassIterator() {
-		return target.getSubclassIterator();
+	public Iterator<IPersistentClass> getSubclassIterator() {
+		if (subclasses == null) {
+			initializeSubclasses();
+		}
+		return subclasses.iterator();
+	}
+	
+	private void initializeSubclasses() {
+		Iterator<?> origin = target.getSubclassIterator();
+		subclasses = new HashSet<IPersistentClass>();
+		while (origin.hasNext()) {
+			subclasses.add(new PersistentClassProxy((Subclass)origin.next()));
+		}
 	}
 
 	@Override
@@ -381,6 +395,14 @@ public class PersistentClassProxy implements IPersistentClass {
 	@Override
 	public String getWhere() {
 		return target.getWhere();
+	}
+
+	@Override
+	public ITable getRootTable() {
+		if (rootTable == null) {
+			rootTable = new TableProxy(target.getRootTable());
+		}
+		return rootTable;
 	}
 	
 	

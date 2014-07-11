@@ -50,7 +50,6 @@ import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.Subclass;
 import org.hibernate.util.XMLHelper;
 import org.hibernate.util.xpl.StringHelper;
 import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
@@ -156,15 +155,10 @@ public class OpenMappingUtils {
 	 */
 	public static boolean elementInFile(ConsoleConfiguration consoleConfig, IFile file, Object element) {
 		boolean res = false;
-		if (element instanceof IPersistentClass) {
-			if (((IPersistentClass)element).isInstanceOfRootClass()) {
-				res = rootClassInFile(consoleConfig, file, (IPersistentClass)element);
-			} else {
-				element = ((PersistentClassProxy)element).getTarget();
-			}
-		}
-		if (element instanceof Subclass) {
-			res = subclassInFile(consoleConfig, file, (Subclass)element);
+		if (element instanceof IPersistentClass && ((IPersistentClass)element).isInstanceOfRootClass()) {
+			res = rootClassInFile(consoleConfig, file, (IPersistentClass)element);
+		} else if (element instanceof IPersistentClass && ((IPersistentClass)element).isInstanceOfSubclass()) {
+			res = subclassInFile(consoleConfig, file, (IPersistentClass)element);
 		} else if (element instanceof ITable) {
 			res = tableInFile(consoleConfig, file, (ITable)element);
 		}
@@ -219,10 +213,10 @@ public class OpenMappingUtils {
 	 * @param subclass
 	 * @return
 	 */
-	public static boolean subclassInFile(ConsoleConfiguration consoleConfig, IFile file, Subclass subclass) {
+	public static boolean subclassInFile(ConsoleConfiguration consoleConfig, IFile file, IPersistentClass subclass) {
 		EntityResolver entityResolver = consoleConfig.getConfiguration().getEntityResolver(); 
 		Document doc = getDocument(file.getLocation().toFile(), entityResolver);
-		final String clName = getPersistentClassName(subclass != null ? new PersistentClassProxy(subclass) : null);
+		final String clName = getPersistentClassName(subclass);
 		final String clNameUnq = StringHelper.unqualify(clName);
 		boolean res = false;
 		// TODO: getElements - this is *extremely* inefficient - no need to scan the whole tree again and again.
@@ -670,9 +664,6 @@ public class OpenMappingUtils {
 	 */
 	public static IRegion findSelectRegion(IJavaProject proj, FindReplaceDocumentAdapter findAdapter, Object selection) {
 		IRegion selectRegion = null;
-		if (selection instanceof Subclass) {
-			selection = new PersistentClassProxy((Subclass)selection);
-		}
 		if (selection instanceof IPersistentClass && (((IPersistentClass)selection).isInstanceOfRootClass() || ((IPersistentClass)selection).isInstanceOfSubclass())) {
 			selectRegion = findSelectRegion(proj, findAdapter, (IPersistentClass)selection);
 		} else if (selection instanceof Property){

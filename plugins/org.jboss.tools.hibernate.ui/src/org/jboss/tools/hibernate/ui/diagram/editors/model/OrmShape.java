@@ -18,8 +18,6 @@ import org.eclipse.ui.IMemento;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.Subclass;
-import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
@@ -206,11 +204,8 @@ public class OrmShape extends ExpandableShape {
 					}
 				}
 			}
-		} else if (ormElement instanceof Subclass || (ormElement instanceof IPersistentClass && ((IPersistentClass)ormElement).isInstanceOfSubclass())) {
-			if (ormElement instanceof IPersistentClass && ((IPersistentClass)ormElement).isInstanceOfSubclass()) {
-				ormElement = ((PersistentClassProxy)ormElement).getTarget();
-			}
-			IPersistentClass rootClass = new PersistentClassProxy(((Subclass)ormElement).getRootClass());
+		} else if (ormElement instanceof IPersistentClass && ((IPersistentClass)ormElement).isInstanceOfSubclass()) {
+			IPersistentClass rootClass = ((IPersistentClass)ormElement).getRootClass();
 
 			Property identifierProperty = rootClass.getIdentifierProperty();
 			if (identifierProperty != null) {
@@ -258,7 +253,7 @@ public class OrmShape extends ExpandableShape {
 					}
 				}
 			}
-			Iterator<Property> iter = ((Subclass)ormElement).getPropertyIterator();
+			Iterator<Property> iter = ((IPersistentClass)ormElement).getPropertyIterator();
 			while (iter.hasNext()) {
 				Property property = iter.next();
 				if (!property.isBackRef()) {
@@ -448,7 +443,7 @@ public class OrmShape extends ExpandableShape {
 		if (ormElement instanceof IPersistentClass && ((IPersistentClass)ormElement).isInstanceOfRootClass()) {
 			//RootClass rootClass = (RootClass)ormElement;
 			res = descriptors_entity;
-		} else if (ormElement instanceof Subclass || (ormElement instanceof IPersistentClass && ((IPersistentClass)ormElement).isInstanceOfSubclass())) {
+		} else if (ormElement instanceof IPersistentClass && ((IPersistentClass)ormElement).isInstanceOfSubclass()) {
 			//RootClass rootClass = ((Subclass)ormElement).getRootClass();
 		} else if (ormElement instanceof ITable) {
 			//Iterator iterator = ((Table)getOrmElement()).getColumnIterator();
@@ -470,7 +465,7 @@ public class OrmShape extends ExpandableShape {
 		Object ormElement = getOrmElement();
 		if (ormElement instanceof IPersistentClass && ((IPersistentClass)ormElement).isInstanceOfRootClass()) {
 			rootClass = (IPersistentClass)ormElement;
-		} else if (ormElement instanceof Subclass || (ormElement instanceof IPersistentClass && ((IPersistentClass)ormElement).isInstanceOfSubclass())) {
+		} else if (ormElement instanceof IPersistentClass && ((IPersistentClass)ormElement).isInstanceOfSubclass()) {
 			//rootClass = ((Subclass)ormElement).getRootClass();
 		} else if (ormElement instanceof ITable) {
 			table = (ITable)getOrmElement();

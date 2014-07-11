@@ -70,5 +70,6 @@ public interface IPersistentClass {
 	String getTemporaryIdTableDDL();
 	String getTemporaryIdTableName();
 	String getWhere();
+	ITable getRootTable();
 
 }

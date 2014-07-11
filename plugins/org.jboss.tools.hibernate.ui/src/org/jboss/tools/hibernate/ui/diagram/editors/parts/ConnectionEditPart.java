@@ -24,7 +24,6 @@ import org.eclipse.gef.editpolicies.SelectionEditPolicy;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.Subclass;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
 import org.jboss.tools.hibernate.spi.ITable;
@@ -96,7 +95,7 @@ public class ConnectionEditPart extends AbstractConnectionEditPart
 
 	private Color getColor() {
 		Object el = getTargetElement();
-		if ((el instanceof IPersistentClass && ((IPersistentClass)el).isInstanceOfRootClass()) || (el instanceof Subclass || (el instanceof IPersistentClass && ((IPersistentClass)el).isInstanceOfSubclass()))) { 
+		if ((el instanceof IPersistentClass && ((IPersistentClass)el).isInstanceOfRootClass()) || (el instanceof IPersistentClass && ((IPersistentClass)el).isInstanceOfSubclass())) { 
 			return ResourceManager.getInstance().getColor(new RGB(210, 155, 100));
 		} else if (el instanceof IColumn || el instanceof ITable || el instanceof Property) { 
 			return ResourceManager.getInstance().getColor(new RGB(160, 160, 160));
@@ -106,7 +105,7 @@ public class ConnectionEditPart extends AbstractConnectionEditPart
 
 	private Color getSelectionColor() {
 		Object el = getTargetElement();
-		if ((el instanceof IPersistentClass && ((IPersistentClass)el).isInstanceOfRootClass()) || (el instanceof Subclass || (el instanceof IPersistentClass && ((IPersistentClass)el).isInstanceOfSubclass()))) { 
+		if ((el instanceof IPersistentClass && ((IPersistentClass)el).isInstanceOfRootClass()) || (el instanceof IPersistentClass && ((IPersistentClass)el).isInstanceOfSubclass())) { 
 			return ResourceManager.getInstance().getColor(new RGB(112, 161, 99));
 		} else if (el instanceof IColumn || el instanceof ITable || (el instanceof IValue && ((IValue)el).isComponent())) { 
 			return ResourceManager.getInstance().getColor(new RGB(66, 173, 247));
