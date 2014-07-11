@@ -29,8 +29,6 @@ import org.eclipse.ui.internal.ObjectPluginAction;
 import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
-import org.hibernate.mapping.RootClass;
-import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
@@ -111,18 +109,18 @@ public class OpenDiagramActionDelegate implements IObjectActionDelegate {
 
 	public IEditorPart openEditor(IPersistentClass persClass,
 			ConsoleConfiguration consoleConfig) throws PartInitException {
-		DiagramEditorInput input = new DiagramEditorInput(consoleConfig.getName(), (RootClass)((PersistentClassProxy)persClass.getRootClass()).getTarget());
+		DiagramEditorInput input = new DiagramEditorInput(consoleConfig.getName(), persClass.getRootClass());
 		return IDE.openEditor(UiPlugin.getPage(), input, "org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer");		//$NON-NLS-1$
 	}
 
 	public IEditorPart openEditor(Set<IPersistentClass> setPC, ConsoleConfiguration consoleConfig) throws PartInitException {
 		
-		RootClass[] rcArr = new RootClass[setPC.size()];
+		IPersistentClass[] rcArr = new IPersistentClass[setPC.size()];
 		IPersistentClass persClass = null;
 		int i = 0;
     	for (Iterator<IPersistentClass> it = setPC.iterator(); it.hasNext(); ) {
     		persClass = it.next();
-    		rcArr[i++] = (RootClass)((PersistentClassProxy)persClass.getRootClass()).getTarget();
+    		rcArr[i++] = persClass.getRootClass();
     	}
 		DiagramEditorInput input = new DiagramEditorInput(consoleConfig.getName(), rcArr);
 		return IDE.openEditor(UiPlugin.getPage(), input, "org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer");		//$NON-NLS-1$

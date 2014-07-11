@@ -49,10 +49,8 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefType;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.RootClass;
 import org.hibernate.util.xpl.StringHelper;
-import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
-import org.jboss.tools.hibernate.proxy.TableProxy;
+import org.jboss.tools.hibernate.proxy.PropertyProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IConfiguration;
@@ -158,30 +156,30 @@ public class ConfigurationActor {
 	 * @param rootClasses
 	 * @return
 	 */
-	private Collection<IPersistentClass> createHierarhyStructure(IJavaProject project, Map<String, RootClass> rootClasses){
+	private Collection<IPersistentClass> createHierarhyStructure(IJavaProject project, Map<String, IPersistentClass> rootClasses){
 		Map<String, IPersistentClass> pcCopy = new HashMap<String, IPersistentClass>();
-		for (Map.Entry<String, RootClass> entry : rootClasses.entrySet()) {
-			pcCopy.put(entry.getKey(), entry.getValue() != null ? new PersistentClassProxy(entry.getValue()) : null);
+		for (Map.Entry<String, IPersistentClass> entry : rootClasses.entrySet()) {
+			pcCopy.put(entry.getKey(), entry.getValue());
 		}
 		for (Map.Entry<String, IPersistentClass> entry : pcCopy.entrySet()) {
 			IPersistentClass pc = null;
 			try {
-				pc = getMappedSuperclass(project, pcCopy, (RootClass) ((PersistentClassProxy)entry.getValue()).getTarget());				
+				pc = getMappedSuperclass(project, pcCopy, entry.getValue());				
 				IPersistentClass subclass = null;
 				if (pc != null){
 					if (pc.isAbstract()){
 						subclass = service.newSingleTableSubclass(pc);
-						if (pc instanceof RootClass && pc.getDiscriminator() == null){
+						if (pc.isInstanceOfRootClass() && pc.getDiscriminator() == null){
 							IValue discr = service.newSimpleValue();
 							discr.setTypeName("string"); //$NON-NLS-1$
 							discr.addColumn(service.newColumn("DISCR_COL")); //$NON-NLS-1$
-							((RootClass)pc).setDiscriminator(((ValueProxy)discr).getTarget());
+							pc.setDiscriminator(discr);
 						}
 					} else {
 						subclass = service.newJoinedSubclass(pc);
 					}
 				} else {
-					pc = getMappedImplementedInterface(project, pcCopy, (RootClass) ((PersistentClassProxy)entry.getValue()).getTarget());
+					pc = getMappedImplementedInterface(project, pcCopy, entry.getValue());
 					if (pc != null){
 						subclass = service.newSingleTableSubclass(pc);
 					}
@@ -213,7 +211,7 @@ public class ConfigurationActor {
 		return pcCopy.values();
 	}
 	
-	private IPersistentClass getMappedSuperclass(IJavaProject project, Map<String, IPersistentClass> persistentClasses, RootClass rootClass) throws JavaModelException{
+	private IPersistentClass getMappedSuperclass(IJavaProject project, Map<String, IPersistentClass> persistentClasses, IPersistentClass rootClass) throws JavaModelException{
 		IType type = Utils.findType(project, rootClass.getClassName());
 		//TODO not direct superclass?
 		if (type.getSuperclassName() != null){
@@ -227,7 +225,7 @@ public class ConfigurationActor {
 		return null;
 	}
 	
-	private IPersistentClass getMappedImplementedInterface(IJavaProject project, Map<String, IPersistentClass> persistentClasses, RootClass rootClass) throws JavaModelException{
+	private IPersistentClass getMappedImplementedInterface(IJavaProject project, Map<String, IPersistentClass> persistentClasses, IPersistentClass rootClass) throws JavaModelException{
 		IType type = Utils.findType(project, rootClass.getClassName());	
 		//TODO not direct interfaces?
 		String[] interfaces = type.getSuperInterfaceNames();			
@@ -247,12 +245,12 @@ public class ConfigurationActor {
 
 class ProcessEntityInfo extends ASTVisitor {
 	
-	private Map<String, RootClass> rootClasses = new HashMap<String, RootClass>();
+	private Map<String, IPersistentClass> rootClasses = new HashMap<String, IPersistentClass>();
 	
 	/**
 	 * current rootClass
 	 */
-	private RootClass rootClass;
+	private IPersistentClass rootClass;
 	
 	/**
 	 * information about entity
@@ -277,12 +275,12 @@ class ProcessEntityInfo extends ASTVisitor {
 			EntityInfo entryInfo = entry.getValue();
 			String className = entryInfo.getName();
 			ITable table = HibernateHelper.INSTANCE.getHibernateService().newTable(className.toUpperCase());
-			RootClass rootClass = new RootClass();
+			IPersistentClass rootClass = service.newRootClass();
 			rootClass.setEntityName( entryInfo.getFullyQualifiedName() );
 			rootClass.setClassName( entryInfo.getFullyQualifiedName() );
 			rootClass.setProxyInterfaceName( entryInfo.getFullyQualifiedName() );
 			rootClass.setLazy(true);
-			rootClass.setTable(((TableProxy)table).getTarget());
+			rootClass.setTable(table);
 			rootClass.setAbstract(entryInfo.isAbstractFlag());//abstract or interface
 			rootClasses.put(entryInfo.getFullyQualifiedName(), rootClass);
 		}
@@ -347,7 +345,7 @@ class ProcessEntityInfo extends ASTVisitor {
 			Property prop = new Property();
 			prop.setName("id"); //$NON-NLS-1$
 			prop.setValue(((ValueProxy)sValue).getTarget());
-			rootClass.setIdentifierProperty(prop);
+			rootClass.setIdentifierProperty(new PropertyProxy(prop));
 		}
 	}
 	
@@ -376,7 +374,7 @@ class ProcessEntityInfo extends ASTVisitor {
 			}
 			String name = var.getName().getIdentifier();
 			if (name.equals(primaryIdName)) {
-				rootClass.setIdentifierProperty(prop);
+				rootClass.setIdentifierProperty(new PropertyProxy(prop));
 			} else {
 				rootClass.addProperty(prop);
 			}
@@ -421,7 +419,7 @@ class ProcessEntityInfo extends ASTVisitor {
 					varName = primaryIdName;
 				Property prop = createProperty(varName, methodType);
 				if (varName.equals(primaryIdName)) {
-					rootClass.setIdentifierProperty(prop);
+					rootClass.setIdentifierProperty(new PropertyProxy(prop));
 				} else {
 					rootClass.addProperty(prop);
 				}
@@ -435,7 +433,7 @@ class ProcessEntityInfo extends ASTVisitor {
 	 * @return the rootClass
 	 */
 	public IPersistentClass getPersistentClass() {
-		return new PersistentClassProxy(rootClass);
+		return rootClass;
 	}
 	
 	protected Property createProperty(VariableDeclarationFragment var) {
@@ -452,7 +450,7 @@ class ProcessEntityInfo extends ASTVisitor {
 	/**
 	 * @return the rootClasses
 	 */
-	public Map<String, RootClass> getRootClasses() {
+	public Map<String, IPersistentClass> getRootClasses() {
 		return rootClasses;
 	}
 	
@@ -462,9 +460,9 @@ class TypeVisitor extends ASTVisitor{
 	
 	private String varName;
 	
-	private Map<String, RootClass> rootClasses;
+	private Map<String, IPersistentClass> rootClasses;
 	
-	private RootClass rootClass;
+	private IPersistentClass rootClass;
 	
 	private EntityInfo entityInfo;
 	
@@ -474,7 +472,7 @@ class TypeVisitor extends ASTVisitor{
 	
 	private IService service;
 	
-	TypeVisitor(Map<String, RootClass> rootClasses){
+	TypeVisitor(Map<String, IPersistentClass> rootClasses){
 		this.rootClasses = rootClasses;
 		service = HibernateHelper.INSTANCE.getHibernateService();
 	}
@@ -495,20 +493,20 @@ class TypeVisitor extends ASTVisitor{
 		ITypeBinding tb = componentType.resolveBinding();
 		if (tb == null) return false;//Unresolved binding. Omit the property.
 		if (tb.isPrimitive()){
-			array = service.newPrimitiveArray(rootClass != null ? new PersistentClassProxy(rootClass) : null);
+			array = service.newPrimitiveArray(rootClass);
 			
 			IValue value = buildSimpleValue(tb.getName());
-			value.setTable(rootClass.getTable() != null ? new TableProxy(rootClass.getTable()) : null);
+			value.setTable(rootClass.getTable());
 			array.setElement(value);
-			array.setCollectionTable(new TableProxy(rootClass.getTable()));//TODO what to set?
+			array.setCollectionTable(rootClass.getTable());//TODO what to set?
 		} else {
-			RootClass associatedClass = rootClasses.get(tb.getBinaryName());
-			array = service.newArray(rootClass != null ? new PersistentClassProxy(rootClass) : null);
+			IPersistentClass associatedClass = rootClasses.get(tb.getBinaryName());
+			array = service.newArray(rootClass);
 			array.setElementClassName(tb.getBinaryName());
-			array.setCollectionTable(new TableProxy(associatedClass.getTable()));
+			array.setCollectionTable(associatedClass.getTable());
 			
-			IValue oValue = service.newOneToMany(rootClass != null ? new PersistentClassProxy(rootClass) : null);
-			oValue.setAssociatedClass(associatedClass != null ? new PersistentClassProxy(associatedClass) : null);
+			IValue oValue = service.newOneToMany(rootClass);
+			oValue.setAssociatedClass(associatedClass);
 			oValue.setReferencedEntityName(tb.getBinaryName());
 			
 			array.setElement(oValue);
@@ -544,18 +542,18 @@ class TypeVisitor extends ASTVisitor{
 		IValue value = buildCollectionValue(interfaces);
 		if (value != null) {
 			if (ref != null && rootClasses.get(ref.fullyQualifiedName) != null){
-				IValue oValue = service.newOneToMany(rootClass != null ? new PersistentClassProxy(rootClass) : null);
-				RootClass associatedClass = rootClasses.get(ref.fullyQualifiedName);
-				oValue.setAssociatedClass(associatedClass != null ? new PersistentClassProxy(associatedClass) : null);
+				IValue oValue = service.newOneToMany(rootClass);
+				IPersistentClass associatedClass = rootClasses.get(ref.fullyQualifiedName);
+				oValue.setAssociatedClass(associatedClass);
 				oValue.setReferencedEntityName(associatedClass.getEntityName());
 				//Set another table
-				value.setCollectionTable(associatedClass.getTable() != null ? new TableProxy(associatedClass.getTable()) : null);				
+				value.setCollectionTable(associatedClass.getTable());				
 				value.setElement(oValue);				
 			} else {
 				IValue elementValue = buildSimpleValue(tb.getTypeArguments()[0].getQualifiedName());
-				elementValue.setTable(rootClass.getTable() != null ? new TableProxy(rootClass.getTable()) : null);
+				elementValue.setTable(rootClass.getTable());
 				value.setElement(elementValue);
-				value.setCollectionTable(rootClass.getTable() != null ? new TableProxy(rootClass.getTable()) : null);//TODO what to set?
+				value.setCollectionTable(rootClass.getTable());//TODO what to set?
 			}
 			if (value.isList()){
 				value.setIndex(service.newSimpleValue());
@@ -599,7 +597,7 @@ class TypeVisitor extends ASTVisitor{
 		if (value != null){
 			IValue element = buildSimpleValue("string");//$NON-NLS-1$
 			value.setElement(element);
-			value.setCollectionTable(rootClass.getTable() != null ? new TableProxy(rootClass.getTable()) : null);//TODO what to set?
+			value.setCollectionTable(rootClass.getTable());//TODO what to set?
 			buildProperty(value);
 			if (value.isList()){
 				value.setIndex(service.newSimpleValue());
@@ -620,11 +618,11 @@ class TypeVisitor extends ASTVisitor{
 		} else if (ref != null /*&& ref.fullyQualifiedName.indexOf('$') < 0*/){
 			IValue sValue = null;
 			if (ref.refType == RefType.MANY2ONE){
-				sValue = service.newManyToOne(new TableProxy(rootClass.getTable()));
+				sValue = service.newManyToOne(rootClass.getTable());
 			} else if (ref.refType == RefType.ONE2ONE){
-				sValue = service.newOneToOne(rootClass != null ? new PersistentClassProxy(rootClass) : null);
+				sValue = service.newOneToOne(rootClass);
 			} else if (ref.refType == RefType.UNDEF){
-				sValue = service.newOneToOne(rootClass != null ? new PersistentClassProxy(rootClass) : null);
+				sValue = service.newOneToOne(rootClass);
 			} else {
 				//OneToMany and ManyToMany must be a collection
 				throw new IllegalStateException(ref.refType.toString());
@@ -669,19 +667,19 @@ class TypeVisitor extends ASTVisitor{
 	private IValue buildCollectionValue(ITypeBinding[] interfaces){
 		IValue cValue = null;
 		if (Utils.isImplementInterface(interfaces, Set.class.getName())){
-			cValue = service.newSet(rootClass != null ? new PersistentClassProxy(rootClass) : null);
+			cValue = service.newSet(rootClass);
 		} else if (Utils.isImplementInterface(interfaces, List.class.getName())){
-			cValue = service.newList(rootClass != null ? new PersistentClassProxy(rootClass) : null);
+			cValue = service.newList(rootClass);
 		} else if (Utils.isImplementInterface(interfaces, Map.class.getName())){
-			cValue = service.newMap(rootClass != null ? new PersistentClassProxy(rootClass) : null);
+			cValue = service.newMap(rootClass);
 		} else if (Utils.isImplementInterface(interfaces, Collection.class.getName())){
-			cValue = service.newBag(rootClass != null ? new PersistentClassProxy(rootClass) : null);
+			cValue = service.newBag(rootClass);
 		}
 		
 		if (cValue == null) return null;
 		
 		//By default set the same table, but for one-to-many should change it to associated class's table
-		cValue.setCollectionTable(new TableProxy(rootClass.getTable()));
+		cValue.setCollectionTable(rootClass.getTable());
 
 		IValue key = service.newSimpleValue();
 		key.setTypeName("string");//$NON-NLS-1$

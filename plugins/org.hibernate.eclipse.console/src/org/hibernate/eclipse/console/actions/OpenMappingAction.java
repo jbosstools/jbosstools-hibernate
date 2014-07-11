@@ -35,7 +35,6 @@ import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.OpenMappingUtils;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.RootClass;
 import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
 import org.jboss.tools.hibernate.spi.IValue;
@@ -96,8 +95,8 @@ public class OpenMappingAction extends SelectionListenerAction {
 			Property propertySel = (Property)path.getLastSegment();
 			IPersistentClass persClass = propertySel.getPersistentClass() != null ? new PersistentClassProxy(propertySel.getPersistentClass()) : null;
 			if (persClass == null
-					|| (RootClass.class.isAssignableFrom(persClass.getClass())
-					&& persClass.getClass() != RootClass.class)) {
+					|| (persClass.isAssignableToRootClass()
+					&& !persClass.isRootClass())) {
 				Property parentProp = (Property)path.getParentPath().getLastSegment();
 				return run(consoleConfig, propertySel, parentProp);
 			}
@@ -121,7 +120,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 			Property p = (Property)selection;
 			if (p.getPersistentClass() != null) {
 				//use PersistentClass to open editor
-				file = OpenMappingUtils.searchFileToOpen(consoleConfig, p.getPersistentClass());
+				file = OpenMappingUtils.searchFileToOpen(consoleConfig, new PersistentClassProxy(p.getPersistentClass()));
 			}
 		}
 		else {

@@ -51,8 +51,6 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
-import org.hibernate.mapping.RootClass;
-import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
 import org.jboss.tools.hibernate.spi.ITable;
@@ -77,7 +75,7 @@ public class OrmDiagram extends BaseElement {
 	
 	// hibernate console configuration is the source of diagram elements 
 	protected String consoleConfigName;
-	protected ArrayList<RootClass> roots = new ArrayList<RootClass>();
+	protected ArrayList<IPersistentClass> roots = new ArrayList<IPersistentClass>();
 	protected ArrayList<String> entityNames = new ArrayList<String>();
 
 	private	boolean dirty = false;
@@ -133,13 +131,13 @@ public class OrmDiagram extends BaseElement {
 		};
 	}
 	
-	public class RootClassComparator implements Comparator<RootClass> {
-		public int compare(RootClass o1, RootClass o2) {
+	public class RootClassComparator implements Comparator<IPersistentClass> {
+		public int compare(IPersistentClass o1, IPersistentClass o2) {
 			return getItemName(o1).compareTo(getItemName(o2));
 		}
 	}
 	
-	public OrmDiagram(String consoleConfigName, ArrayList<RootClass> rts) {
+	public OrmDiagram(String consoleConfigName, ArrayList<IPersistentClass> rts) {
 		initFontHeight();
 		createRulers();
 		this.consoleConfigName = consoleConfigName;
@@ -190,7 +188,7 @@ public class OrmDiagram extends BaseElement {
 		return name;
 	}
 	
-	protected String getItemFullName(RootClass rootClass) {
+	protected String getItemFullName(IPersistentClass rootClass) {
 		if (rootClass == null) {
 			return ""; //$NON-NLS-1$
 		}
@@ -209,7 +207,7 @@ public class OrmDiagram extends BaseElement {
 		return res.substring(res.lastIndexOf(".") + 1); //$NON-NLS-1$
 	}
 	
-	protected String getItemName(RootClass rootClass) {
+	protected String getItemName(IPersistentClass rootClass) {
 		return getItemName(getItemFullName(rootClass));
 	}
 	
@@ -222,9 +220,9 @@ public class OrmDiagram extends BaseElement {
 		final ElementsFactory factory = new ElementsFactory(
 			consoleConfigName, elements, connections);
 		for (int i = 0; i < roots.size(); i++) {
-			RootClass rc = roots.get(i);
+			IPersistentClass rc = roots.get(i);
 			if (rc != null) {
-				factory.getOrCreatePersistentClass(new PersistentClassProxy(rc), null);
+				factory.getOrCreatePersistentClass(rc, null);
 			}
 		}
 		updateChildrenList();
@@ -282,9 +280,9 @@ public class OrmDiagram extends BaseElement {
 		topRuler = new DiagramRuler(true);
 	}
 	
-	protected class OrmElCompare implements Comparator<RootClass> {
+	protected class OrmElCompare implements Comparator<IPersistentClass> {
 
-		public int compare(RootClass o1, RootClass o2) {
+		public int compare(IPersistentClass o1, IPersistentClass o2) {
 			return o1.getNodeName().compareTo(o2.getNodeName());
 		}
 		
@@ -367,7 +365,7 @@ public class OrmDiagram extends BaseElement {
 		return (HashMap<String, OrmShape>)elements.clone();
 	}
 
-	public RootClass getOrmElement(int idx) {
+	public IPersistentClass getOrmElement(int idx) {
 		if (0 > idx || idx >= roots.size()) {
 			return null;
 		}
@@ -380,7 +378,7 @@ public class OrmDiagram extends BaseElement {
 			return false;
 		}
 		for (int i = 0; i < roots.size(); i++) {
-			RootClass newOrmElement = (RootClass)config.getClassMapping(entityNames.get(i));
+			IPersistentClass newOrmElement = config.getClassMapping(entityNames.get(i));
 			if (roots.get(i) == null) {
 				if (newOrmElement == null) {
 					continue;
@@ -926,13 +924,13 @@ public class OrmDiagram extends BaseElement {
 		} else if (!consoleConfigName.equals(od.getConsoleConfigName())) {
 			return res;
 		}
-		final ArrayList<RootClass> rootsOd = od.roots;
+		final ArrayList<IPersistentClass> rootsOd = od.roots;
 		if (roots.size() != rootsOd.size()) {
 			return res;
 		}
 		res = true;
 		for (int i = 0; i < roots.size(); i++) {
-			RootClass rc = roots.get(i);
+			IPersistentClass rc = roots.get(i);
 			if (rc == null) {
 				if (rc != rootsOd.get(i)) {
 					res = false;
@@ -1038,10 +1036,7 @@ public class OrmDiagram extends BaseElement {
 			while (it.hasNext()) {
 				final OrmShape shape = it.next();
 				Object ormElement = shape.getOrmElement();
-				if (ormElement instanceof IPersistentClass) {
-					ormElement = ((PersistentClassProxy)ormElement).getTarget();
-				}
-				if (ormElement instanceof RootClass) {
+				if (ormElement instanceof IPersistentClass && ((IPersistentClass)ormElement).isInstanceOfRootClass()) {
 					nEntities++;
 				}
 			}

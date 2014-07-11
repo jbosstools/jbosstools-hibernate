@@ -112,5 +112,7 @@ public interface IService {
 	IPersistentClass newJoinedSubclass(IPersistentClass persistentClass);
 
 	IPersistentClass newSpecialRootClass(Property ormElement);
+
+	IPersistentClass newRootClass();
 	
 }

@@ -16,8 +16,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.mapping.RootClass;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IPersistentClass;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmDiagram;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -42,8 +42,8 @@ public class OrmDiagramTest extends TestCase {
 		
 		final ConsoleConfiguration consoleConfig = context.mock(ConsoleConfiguration.class);
 		final IConfiguration config = context.mock(IConfiguration.class);
-		final RootClass ioe = context.mock(RootClass.class);
-		ArrayList<RootClass> rts = new ArrayList<RootClass>();
+		final IPersistentClass ioe = context.mock(IPersistentClass.class);
+		ArrayList<IPersistentClass> rts = new ArrayList<IPersistentClass>();
 		rts.add(ioe);
 		final List<Object> emptyList = new ArrayList<Object>();
 		final Iterator<Object> emptyListIterator = emptyList.iterator();
@@ -65,6 +65,9 @@ public class OrmDiagramTest extends TestCase {
 
 				oneOf(ioe).getEntityName();
 				will(returnValue(innerIntricateName));
+				
+				oneOf(ioe).isInstanceOfRootClass();
+				will(returnValue(true));
 
 				oneOf(ioe).getIdentifierProperty();
 				will(returnValue(null));

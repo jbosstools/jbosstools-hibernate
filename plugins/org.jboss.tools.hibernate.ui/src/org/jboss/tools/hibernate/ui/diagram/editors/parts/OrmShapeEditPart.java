@@ -21,7 +21,6 @@ import org.eclipse.gef.RequestConstants;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
 import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
@@ -126,8 +125,6 @@ public class OrmShapeEditPart extends ExpandableShapeEditPart {
 		Object element = getElement();
 		if (element instanceof Subclass) {
 			element = new PersistentClassProxy((Subclass)element);
-		} else if (element instanceof RootClass) {
-			element = new PersistentClassProxy((RootClass)element);
 		}
 		if (element instanceof IPersistentClass || (element instanceof IValue && ((IValue)element).isComponent())) {
 			return ResourceManager.getInstance().getColor(new RGB(0, 0, 0));

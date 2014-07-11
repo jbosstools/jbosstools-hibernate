@@ -22,7 +22,7 @@ public interface IPersistentClass {
 	Iterator<Property> getPropertyIterator();
 	Property getProperty(String string);
 	ITable getTable();
-	boolean isAbstract();
+	Boolean isAbstract();
 	IValue getDiscriminator();
 	IValue getIdentifier();
 	Iterator<Join> getJoinIterator();
@@ -38,5 +38,37 @@ public interface IPersistentClass {
 	boolean isInstanceOfSpecialRootClass();
 	Property getProperty();
 	Property getParentProperty();
+	void setIdentifierProperty(IProperty property);
+	void setIdentifier(IValue value);
+	void setDiscriminator(IValue discr);
+	void setProxyInterfaceName(String interfaceName);
+	void setLazy(boolean b);
+	Iterator<?> getSubclassIterator();
+	boolean isCustomDeleteCallable();
+	boolean isCustomInsertCallable();
+	boolean isCustomUpdateCallable();
+	boolean isDiscriminatorInsertable();
+	boolean isDiscriminatorValueNotNull();
+	boolean isDiscriminatorValueNull();
+	boolean isExplicitPolymorphism();
+	boolean isForceDiscriminator();
+	boolean isInherited();
+	boolean isJoinedSubclass();
+	boolean isLazy();
+	boolean isLazyPropertiesCacheable();
+	boolean isMutable();
+	boolean isPolymorphic();
+	boolean isVersioned();
+	int getBatchSize();
+	String getCacheConcurrencyStrategy();
+	String getCustomSQLDelete();
+	String getCustomSQLInsert();
+	String getCustomSQLUpdate();
+	String getDiscriminatorValue();
+	String getLoaderName();
+	int getOptimisticLockMode();
+	String getTemporaryIdTableDDL();
+	String getTemporaryIdTableName();
+	String getWhere();
 
 }

@@ -13,8 +13,8 @@ package org.jboss.tools.hibernate.ui.diagram.editors.model;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.RootClass;
 import org.jboss.tools.hibernate.spi.IColumn;
+import org.jboss.tools.hibernate.spi.IPersistentClass;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IValue;
 
@@ -133,10 +133,10 @@ public class Connection extends BaseElement {
 				return ConnectionType.ForeignKeyConstraint;
 			}
 			boolean bClassMapping = true;
-			if (!(source.getOrmElement() instanceof RootClass || source.getOrmElement() instanceof ITable)) {
+			if (!((source.getOrmElement() instanceof IPersistentClass && ((IPersistentClass)source.getOrmElement()).isInstanceOfRootClass()) || source.getOrmElement() instanceof ITable)) {
 				bClassMapping = false;
 			}
-			if (!(target.getOrmElement() instanceof RootClass || target.getOrmElement() instanceof ITable)) {
+			if (!((target.getOrmElement() instanceof IPersistentClass && ((IPersistentClass)target.getOrmElement()).isInstanceOfRootClass()) || target.getOrmElement() instanceof ITable)) {
 				bClassMapping = false;
 			}
 			if (bClassMapping) {
@@ -244,16 +244,16 @@ public class Connection extends BaseElement {
 			}
 		} else if (PROPERTY_CLASS_NAME.equals(propertyId)) {
 			if (connectType == ConnectionType.ClassMapping) {
-				if (source.getOrmElement() instanceof RootClass) {
-					res = ((RootClass)(source.getOrmElement())).getClassName();
-				} else if (target.getOrmElement() instanceof RootClass) {
-					res = ((RootClass)(target.getOrmElement())).getClassName();
+				if (source.getOrmElement() instanceof IPersistentClass && ((IPersistentClass)source.getOrmElement()).isInstanceOfRootClass()) {
+					res = ((IPersistentClass)(source.getOrmElement())).getClassName();
+				} else if (target.getOrmElement() instanceof IPersistentClass && ((IPersistentClass)target.getOrmElement()).isInstanceOfRootClass()) {
+					res = ((IPersistentClass)(target.getOrmElement())).getClassName();
 				}
 			} else if (connectType == ConnectionType.PropertyMapping) {
-				if (((Shape)source.getParent()).getOrmElement() instanceof RootClass) {
-					res = ((RootClass)(((Shape)source.getParent()).getOrmElement())).getClassName();
-				} else if (((Shape)target.getParent()).getOrmElement() instanceof RootClass) {
-					res = ((RootClass)(((Shape)target.getParent()).getOrmElement())).getClassName();
+				if (((Shape)source.getParent()).getOrmElement() instanceof IPersistentClass && ((IPersistentClass)((Shape)source.getParent()).getOrmElement()).isInstanceOfRootClass()) {
+					res = ((IPersistentClass)(((Shape)source.getParent()).getOrmElement())).getClassName();
+				} else if (((Shape)target.getParent()).getOrmElement() instanceof IPersistentClass && ((IPersistentClass)((Shape)target.getParent()).getOrmElement()).isInstanceOfRootClass()) {
+					res = ((IPersistentClass)(((Shape)target.getParent()).getOrmElement())).getClassName();
 				}
 			}
 		} else if (PROPERTY_TABLE_NAME.equals(propertyId)) {

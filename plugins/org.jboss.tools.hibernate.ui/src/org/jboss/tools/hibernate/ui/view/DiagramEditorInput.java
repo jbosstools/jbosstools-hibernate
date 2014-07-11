@@ -20,7 +20,7 @@ import org.eclipse.ui.IPersistableElement;
 import org.eclipse.ui.IStorageEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.mapping.RootClass;
+import org.jboss.tools.hibernate.spi.IPersistentClass;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmDiagram;
 
 /**
@@ -34,12 +34,12 @@ public class DiagramEditorInput implements IEditorInput, IStorageEditorInput, IP
 	private DiagramEditorStorage storage = new DiagramEditorStorage();
 
 	public DiagramEditorInput() {
-		ArrayList<RootClass> roots = new ArrayList<RootClass>();
+		ArrayList<IPersistentClass> roots = new ArrayList<IPersistentClass>();
 		createOrmDiagram("", roots); //$NON-NLS-1$
 	}
 
 	public DiagramEditorInput(FileEditorInput fei) {
-		ArrayList<RootClass> roots = new ArrayList<RootClass>();
+		ArrayList<IPersistentClass> roots = new ArrayList<IPersistentClass>();
 		createOrmDiagram("", roots); //$NON-NLS-1$
 		ormDiagram.loadFromFile(fei.getPath(), true);
 		if (ormDiagram.getConsoleConfig() != null) {
@@ -50,21 +50,21 @@ public class DiagramEditorInput implements IEditorInput, IStorageEditorInput, IP
 		ormDiagram.setDirty(false);
 	}
 
-	public DiagramEditorInput(String configName, RootClass rc) {
-		ArrayList<RootClass> roots = new ArrayList<RootClass>();
+	public DiagramEditorInput(String configName, IPersistentClass rc) {
+		ArrayList<IPersistentClass> roots = new ArrayList<IPersistentClass>();
 		roots.add(rc);
 		createOrmDiagram(configName, roots);
 	}
 
-	public DiagramEditorInput(String configName, RootClass[] rcs) {
-		ArrayList<RootClass> roots = new ArrayList<RootClass>();
+	public DiagramEditorInput(String configName, IPersistentClass[] rcs) {
+		ArrayList<IPersistentClass> roots = new ArrayList<IPersistentClass>();
     	for (int i = 0; i < rcs.length; i++) {
     		roots.add(rcs[i]);
     	}
     	createOrmDiagram(configName, roots);
 	}
 	
-	protected void createOrmDiagram(String configName, ArrayList<RootClass> roots) {
+	protected void createOrmDiagram(String configName, ArrayList<IPersistentClass> roots) {
 		ormDiagram = new OrmDiagram(configName, roots);
 	}
 	

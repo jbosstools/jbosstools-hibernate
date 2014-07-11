@@ -18,7 +18,6 @@ import org.eclipse.ui.IMemento;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
 import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
@@ -160,17 +159,14 @@ public class OrmShape extends ExpandableShape {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected void initModel() {
 		Object ormElement = getOrmElement();
-		if (ormElement instanceof IPersistentClass) {
-			ormElement = ((PersistentClassProxy)ormElement).getTarget();
-		}
-		if (ormElement instanceof RootClass) {
-			RootClass rootClass = (RootClass)ormElement;
+		if (ormElement instanceof IPersistentClass && ((IPersistentClass)ormElement).isInstanceOfRootClass()) {
+			IPersistentClass rootClass = (IPersistentClass)ormElement;
 			Property identifierProperty = rootClass.getIdentifierProperty();
 			if (identifierProperty != null) {
 				addChild(new Shape(identifierProperty, getConsoleConfigName()));
 			}
 
-			IValue identifier = rootClass.getIdentifier() != null ? new ValueProxy(rootClass.getIdentifier()) : null;
+			IValue identifier = rootClass.getIdentifier();
 			if (identifier != null && identifier.isComponent()) {
 				IValue component = identifier;
 				if (component.isEmbedded()) {
@@ -210,15 +206,18 @@ public class OrmShape extends ExpandableShape {
 					}
 				}
 			}
-		} else if (ormElement instanceof Subclass) {
-			RootClass rootClass = ((Subclass)ormElement).getRootClass();
+		} else if (ormElement instanceof Subclass || (ormElement instanceof IPersistentClass && ((IPersistentClass)ormElement).isInstanceOfSubclass())) {
+			if (ormElement instanceof IPersistentClass && ((IPersistentClass)ormElement).isInstanceOfSubclass()) {
+				ormElement = ((PersistentClassProxy)ormElement).getTarget();
+			}
+			IPersistentClass rootClass = new PersistentClassProxy(((Subclass)ormElement).getRootClass());
 
 			Property identifierProperty = rootClass.getIdentifierProperty();
 			if (identifierProperty != null) {
 				addChild(new Shape(identifierProperty, getConsoleConfigName()));
 			}
 
-			IValue identifier = rootClass.getIdentifier() != null ? new ValueProxy(rootClass.getIdentifier()) : null;
+			IValue identifier = rootClass.getIdentifier();
 			if (identifier.isComponent()) {
 				Iterator<IProperty> iterator = identifier.getPropertyIterator();
 				while (iterator.hasNext()) {
@@ -446,13 +445,10 @@ public class OrmShape extends ExpandableShape {
 			return res;
 		}
 		Object ormElement = getOrmElement();
-		if (ormElement instanceof IPersistentClass) {
-			ormElement = ((PersistentClassProxy)ormElement).getTarget();
-		}
-		if (ormElement instanceof RootClass) {
+		if (ormElement instanceof IPersistentClass && ((IPersistentClass)ormElement).isInstanceOfRootClass()) {
 			//RootClass rootClass = (RootClass)ormElement;
 			res = descriptors_entity;
-		} else if (ormElement instanceof Subclass) {
+		} else if (ormElement instanceof Subclass || (ormElement instanceof IPersistentClass && ((IPersistentClass)ormElement).isInstanceOfSubclass())) {
 			//RootClass rootClass = ((Subclass)ormElement).getRootClass();
 		} else if (ormElement instanceof ITable) {
 			//Iterator iterator = ((Table)getOrmElement()).getColumnIterator();
@@ -469,15 +465,12 @@ public class OrmShape extends ExpandableShape {
 	@Override
 	public Object getPropertyValue(Object propertyId) {
 		Object res = null;
-		RootClass rootClass = null;
+		IPersistentClass rootClass = null;
 		ITable table = null;
 		Object ormElement = getOrmElement();
-		if (ormElement instanceof IPersistentClass) {
-			ormElement = ((PersistentClassProxy)ormElement).getTarget();
-		}
-		if (ormElement instanceof RootClass) {
-			rootClass = (RootClass)ormElement;
-		} else if (ormElement instanceof Subclass) {
+		if (ormElement instanceof IPersistentClass && ((IPersistentClass)ormElement).isInstanceOfRootClass()) {
+			rootClass = (IPersistentClass)ormElement;
+		} else if (ormElement instanceof Subclass || (ormElement instanceof IPersistentClass && ((IPersistentClass)ormElement).isInstanceOfSubclass())) {
 			//rootClass = ((Subclass)ormElement).getRootClass();
 		} else if (ormElement instanceof ITable) {
 			table = (ITable)getOrmElement();

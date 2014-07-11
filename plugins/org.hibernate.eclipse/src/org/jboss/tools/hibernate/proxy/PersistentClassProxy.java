@@ -119,7 +119,7 @@ public class PersistentClassProxy implements IPersistentClass {
 	}
 
 	@Override
-	public boolean isAbstract() {
+	public Boolean isAbstract() {
 		return target.isAbstract();
 	}
 
@@ -185,9 +185,13 @@ public class PersistentClassProxy implements IPersistentClass {
 
 	@Override
 	public void setTable(ITable table) {
-		assert target instanceof JoinedSubclass;
+		assert (target instanceof JoinedSubclass || target instanceof RootClass);
 		assert table instanceof TableProxy;
-		((JoinedSubclass)target).setTable(((TableProxy)table).getTarget());
+		if (target instanceof RootClass) {
+			((RootClass)target).setTable(((TableProxy)table).getTarget());
+		} else if (target instanceof JoinedSubclass) {
+			((JoinedSubclass)target).setTable(((TableProxy)table).getTarget());
+		}
 	}
 
 	@Override
@@ -210,6 +214,173 @@ public class PersistentClassProxy implements IPersistentClass {
 	@Override
 	public Property getParentProperty() {
 		throw new RuntimeException("getProperty() is only allowed on SpecialRootClass"); //$NON-NLS-1$
+	}
+
+	@Override
+	public void setIdentifierProperty(IProperty property) {
+		assert property instanceof PropertyProxy;
+		assert target instanceof RootClass;
+		((RootClass)target).setIdentifierProperty(((PropertyProxy)property).getTarget());
+	}
+
+	@Override
+	public void setIdentifier(IValue value) {
+		assert value instanceof ValueProxy;
+		assert ((ValueProxy)value).getTarget() instanceof KeyValue;
+		assert target instanceof RootClass;
+		((RootClass)target).setIdentifier((KeyValue)((ValueProxy)value).getTarget());
+	}
+
+	@Override
+	public void setDiscriminator(IValue discr) {
+		assert target instanceof RootClass;
+		assert discr instanceof ValueProxy;
+		((RootClass)target).setDiscriminator(((ValueProxy)discr).getTarget());
+	}
+
+	@Override
+	public void setProxyInterfaceName(String name) {
+		target.setProxyInterfaceName(name);
+	}
+
+	@Override
+	public void setLazy(boolean b) {
+		target.setLazy(b);
+	}
+
+	@Override
+	public Iterator<?> getSubclassIterator() {
+		return target.getSubclassIterator();
+	}
+
+	@Override
+	public boolean isCustomDeleteCallable() {
+		return target.isCustomDeleteCallable();
+	}
+
+	@Override
+	public boolean isCustomInsertCallable() {
+		return target.isCustomInsertCallable();
+	}
+
+	@Override
+	public boolean isCustomUpdateCallable() {
+		return target.isCustomUpdateCallable();
+	}
+
+	@Override
+	public boolean isDiscriminatorInsertable() {
+		return target.isDiscriminatorInsertable();
+	}
+
+	@Override
+	public boolean isDiscriminatorValueNotNull() {
+		return target.isDiscriminatorValueNotNull();
+	}
+
+	@Override
+	public boolean isDiscriminatorValueNull() {
+		return target.isDiscriminatorValueNull();
+	}
+
+	@Override
+	public boolean isExplicitPolymorphism() {
+		return target.isExplicitPolymorphism();
+	}
+
+	@Override
+	public boolean isForceDiscriminator() {
+		return target.isForceDiscriminator();
+	}
+
+	@Override
+	public boolean isInherited() {
+		return target.isInherited();
+	}
+
+	@Override
+	public boolean isJoinedSubclass() {
+		return target.isJoinedSubclass();
+	}
+
+	@Override
+	public boolean isLazy() {
+		return target.isLazy();
+	}
+
+	@Override
+	public boolean isLazyPropertiesCacheable() {
+		return target.isLazyPropertiesCacheable();
+	}
+
+	@Override
+	public boolean isMutable() {
+		return target.isMutable();
+	}
+
+	@Override
+	public boolean isPolymorphic() {
+		return target.isPolymorphic();
+	}
+
+	@Override
+	public boolean isVersioned() {
+		return target.isVersioned();
+	}
+
+	@Override
+	public int getBatchSize() {
+		return target.getBatchSize();
+	}
+
+	@Override
+	public String getCacheConcurrencyStrategy() {
+		return target.getCacheConcurrencyStrategy();
+	}
+
+	@Override
+	public String getCustomSQLDelete() {
+		return target.getCustomSQLDelete();
+	}
+
+	@Override
+	public String getCustomSQLInsert() {
+		return target.getCustomSQLInsert();
+	}
+
+	@Override
+	public String getCustomSQLUpdate() {
+		return target.getCustomSQLUpdate();
+	}
+
+	@Override
+	public String getDiscriminatorValue() {
+		return target.getDiscriminatorValue();
+	}
+
+	@Override
+	public String getLoaderName() {
+		return target.getLoaderName();
+	}
+
+	@Override
+	public int getOptimisticLockMode() {
+		return target.getOptimisticLockMode();
+	}
+
+	@Override
+	public String getTemporaryIdTableDDL() {
+		return target.getTemporaryIdTableDDL();
+	}
+
+	@Override
+	public String getTemporaryIdTableName() {
+		return target.getTemporaryIdTableName();
+	}
+
+	@Override
+	public String getWhere() {
+		return target.getWhere();
 	}
 	
 	

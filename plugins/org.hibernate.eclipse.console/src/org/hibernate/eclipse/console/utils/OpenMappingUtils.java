@@ -50,7 +50,6 @@ import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.util.XMLHelper;
 import org.hibernate.util.xpl.StringHelper;
@@ -158,11 +157,13 @@ public class OpenMappingUtils {
 	public static boolean elementInFile(ConsoleConfiguration consoleConfig, IFile file, Object element) {
 		boolean res = false;
 		if (element instanceof IPersistentClass) {
-			element = ((PersistentClassProxy)element).getTarget();
+			if (((IPersistentClass)element).isInstanceOfRootClass()) {
+				res = rootClassInFile(consoleConfig, file, (IPersistentClass)element);
+			} else {
+				element = ((PersistentClassProxy)element).getTarget();
+			}
 		}
-		if (element instanceof RootClass) {
-			res = rootClassInFile(consoleConfig, file, (RootClass)element);
-		} else if (element instanceof Subclass) {
+		if (element instanceof Subclass) {
 			res = subclassInFile(consoleConfig, file, (Subclass)element);
 		} else if (element instanceof ITable) {
 			res = tableInFile(consoleConfig, file, (ITable)element);
@@ -184,10 +185,10 @@ public class OpenMappingUtils {
 	 * @param rootClass
 	 * @return
 	 */
-	public static boolean rootClassInFile(ConsoleConfiguration consoleConfig, IFile file, RootClass rootClass) {
+	public static boolean rootClassInFile(ConsoleConfiguration consoleConfig, IFile file, IPersistentClass rootClass) {
 		EntityResolver entityResolver = consoleConfig.getConfiguration().getEntityResolver(); 
 		Document doc = getDocument(file.getLocation().toFile(), entityResolver);
-		final String clName = getPersistentClassName(rootClass != null ? new PersistentClassProxy(rootClass) : null);
+		final String clName = getPersistentClassName(rootClass);
 		final String clNameUnq = StringHelper.unqualify(clName);
 		boolean res = false;
 		// TODO: getElements - this is *extremely* inefficient - no need to scan the whole tree again and again.
@@ -671,8 +672,6 @@ public class OpenMappingUtils {
 		IRegion selectRegion = null;
 		if (selection instanceof Subclass) {
 			selection = new PersistentClassProxy((Subclass)selection);
-		} else if (selection instanceof RootClass) {
-			selection = new PersistentClassProxy((RootClass)selection);
 		}
 		if (selection instanceof IPersistentClass && (((IPersistentClass)selection).isInstanceOfRootClass() || ((IPersistentClass)selection).isInstanceOfSubclass())) {
 			selectRegion = findSelectRegion(proj, findAdapter, (IPersistentClass)selection);
@@ -695,7 +694,7 @@ public class OpenMappingUtils {
 	 */
 	public static IRegion findSelectRegion(IJavaProject proj, FindReplaceDocumentAdapter findAdapter, Property property) {
 		Assert.isNotNull(property.getPersistentClass());
-		IRegion classRegion = findSelectRegion(proj, findAdapter, property.getPersistentClass());
+		IRegion classRegion = findSelectRegion(proj, findAdapter, new PersistentClassProxy(property.getPersistentClass()));
 		IRegion res = null;
 		if (classRegion == null) {
 			return res;

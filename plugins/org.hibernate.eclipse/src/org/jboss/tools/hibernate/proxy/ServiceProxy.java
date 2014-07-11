@@ -34,6 +34,7 @@ import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
+import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.SingleTableSubclass;
@@ -385,6 +386,11 @@ public class ServiceProxy implements IService {
 	@Override
 	public IPersistentClass newSpecialRootClass(Property ormElement) {
 		return new SpecialRootClassProxy(ormElement);
+	}
+
+	@Override
+	public IPersistentClass newRootClass() {
+		return new PersistentClassProxy(new RootClass());
 	}
 
 }

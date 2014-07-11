@@ -21,7 +21,6 @@ import org.hibernate.console.KnownConfigurations;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Join;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
 import org.jboss.tools.hibernate.proxy.ColumnProxy;
 import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
@@ -129,9 +128,9 @@ public class ElementsFactory {
 				if (clazz instanceof IPersistentClass) {
 					clazz = ((PersistentClassProxy)clazz).getTarget();
 				}
-				if (clazz instanceof RootClass) {
-					RootClass rootClass = (RootClass)clazz;
-					s = getOrCreatePersistentClass(rootClass != null ? new PersistentClassProxy(rootClass) : null, null);
+				if (clazz instanceof IPersistentClass && ((IPersistentClass)clazz).isInstanceOfRootClass()) {
+					IPersistentClass rootClass = (IPersistentClass)clazz;
+					s = getOrCreatePersistentClass(rootClass, null);
 					if (shouldCreateConnection(shape, s)) {
 						connections.add(new Connection(shape, s));
 					}
@@ -251,12 +250,12 @@ public class ElementsFactory {
 						if (clazz instanceof IPersistentClass) {
 							clazz = ((PersistentClassProxy)clazz).getTarget();
 						}
-						if (clazz instanceof RootClass) {
-							RootClass cls = (RootClass)clazz;
+						if (clazz instanceof IPersistentClass && ((IPersistentClass)clazz).isInstanceOfRootClass()) {
+							IPersistentClass cls = (IPersistentClass)clazz;
 							if (databaseTable.equals(cls.getTable())) {
 								// create persistent class shape only for RootClass,
 								// which has same table reference
-								getOrCreatePersistentClass(new PersistentClassProxy(cls), null);
+								getOrCreatePersistentClass(cls, null);
 							}
 						}
 					}
@@ -291,7 +290,7 @@ public class ElementsFactory {
 				connections.add(new Connection(classShape, shape));
 			}
 		}
-		RootClass rc = (RootClass)((PersistentClassProxy)persistentClass).getTarget();
+		IPersistentClass rc = persistentClass;
 		Iterator iter = rc.getSubclassIterator();
 		while (iter.hasNext()) {
 			Object element = iter.next();
@@ -335,7 +334,7 @@ public class ElementsFactory {
 			if (identifier.getComponentClassName() != null && !identifier.getComponentClassName().equals(identifier.getOwner().getEntityName())) {
 				OrmShape componentClassShape = elements.get(identifier.getComponentClassName());
 				if (componentClassShape == null && persistentClass.isInstanceOfRootClass()) {
-					componentClassShape = getOrCreateComponentClass(((RootClass)((PersistentClassProxy)persistentClass).getTarget()).getIdentifierProperty());
+					componentClassShape = getOrCreateComponentClass(persistentClass.getIdentifierProperty());
 
 					Shape idPropertyShape = classShape.getChild(persistentClass.getIdentifierProperty());
 					if (shouldCreateConnection(idPropertyShape, componentClassShape)) {
