@@ -5,7 +5,6 @@ import java.util.Iterator;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
-import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.IValue;
 
 public class SpecialRootClassProxy extends PersistentClassProxy {
@@ -40,11 +39,11 @@ public class SpecialRootClassProxy extends PersistentClassProxy {
 				parentProperty.setName(component.getParentProperty());
 				parentProperty.setPersistentClass(((PersistentClassProxy)ownerClass).getTarget());
 			}
-			Iterator<IProperty> iterator = component.getPropertyIterator();
+			Iterator<Property> iterator = component.getPropertyIterator();
 			while (iterator.hasNext()) {
-				IProperty property = iterator.next();
+				Property property = iterator.next();
 				if (property != null) {
-					addProperty(((PropertyProxy)property).getTarget());
+					addProperty(property);
 				}
 			}
 		}

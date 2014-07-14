@@ -17,7 +17,6 @@ import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
-import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.IValue;
@@ -43,8 +42,8 @@ public class OrmImageMap {
 			imageName = getImageName((IPersistentClass)obj);
 		} else if (obj instanceof String) {
 			imageName = "Image_Error"; //$NON-NLS-1$;
-		} else if (obj instanceof IProperty) {
-			imageName = getImageName((IProperty)obj, cfg);
+		} else if (obj instanceof Property) {
+			imageName = getImageName((Property)obj, cfg);
 		} else if (obj instanceof IValue && ((IValue)obj).isSimpleValue() || ((IValue)obj).isOneToMany()) {
 			imageName = getImageName((IValue)obj);
 		}
@@ -103,54 +102,6 @@ public class OrmImageMap {
 			str = "Image_PersistentFieldSimple_id"; //$NON-NLS-1$
 		} else if (field.getValue() != null) {
 			final IValue value = new ValueProxy(field.getValue());
-			if (value.isOneToMany()) {
-				str = "Image_PersistentFieldOne-to-many"; //$NON-NLS-1$
-			} else if (value.isOneToOne()) {
-				str = "Image_PersistentFieldOne-to-one"; //$NON-NLS-1$
-			} else if (value.isManyToOne()) {
-				str = "Image_PersistentFieldMany-to-one"; //$NON-NLS-1$
-			} else if (value.isAny()) {
-				str = "Image_PersistentFieldAny"; //$NON-NLS-1$
-			} else {
-				IType type = UtilTypeExtract.getTypeUsingExecContext(value, cfg);
-				if (type != null && type.isCollectionType()) {
-					if (value.isPrimitiveArray()) {
-						str = "Image_Collection_primitive_array"; //$NON-NLS-1$
-					} else if (value.isArray()) {
-						str = "Image_Collection_array"; //$NON-NLS-1$
-					} else if (value.isList()) {
-						str = "Image_Collection_list"; //$NON-NLS-1$
-					} else if (value.isSet()) {
-						str = "Image_Collection_set"; //$NON-NLS-1$
-					} else if (value.isMap()) {
-						str = "Image_Collection_map"; //$NON-NLS-1$
-					} else if (value.isBag()) {
-						str = "Image_Collection_bag"; //$NON-NLS-1$
-					} else if (value.isIdentifierBag()) {
-						str = "Image_Collection_idbag"; //$NON-NLS-1$
-					} else {
-						str = "Image_Collection"; //$NON-NLS-1$
-					}
-				}
-			}
-		} else if ("parent".equals(field.getName())) { //$NON-NLS-1$
-			str = "Image_PersistentFieldParent"; //$NON-NLS-1$
-		}
-		return str;
-	}
-
-	public static String getImageName(IProperty field, final ConsoleConfiguration cfg) {
-		String str = "Image_PersistentFieldSimple"; //$NON-NLS-1$
-		if (field == null) {
-			return str;
-		}
-		final IPersistentClass persistentClass = field.getPersistentClass(); 
-		if (persistentClass != null && persistentClass.getVersion() == field) {
-			str = "Image_PersistentFieldSimple_version"; //$NON-NLS-1$
-		} else if (persistentClass != null && persistentClass.getIdentifierProperty() == field) {
-			str = "Image_PersistentFieldSimple_id"; //$NON-NLS-1$
-		} else if (field.getValue() != null) {
-			final IValue value = field.getValue();
 			if (value.isOneToMany()) {
 				str = "Image_PersistentFieldOne-to-many"; //$NON-NLS-1$
 			} else if (value.isOneToOne()) {

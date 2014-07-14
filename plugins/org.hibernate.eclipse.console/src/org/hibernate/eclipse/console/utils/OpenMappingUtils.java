@@ -53,7 +53,6 @@ import org.hibernate.mapping.Property;
 import org.hibernate.util.XMLHelper;
 import org.hibernate.util.xpl.StringHelper;
 import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
-import org.jboss.tools.hibernate.proxy.PropertyProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.spi.IColumn;
@@ -992,7 +991,7 @@ public class OpenMappingUtils {
 				toolTag = "id"; //$NON-NLS-1$
 			}
 		} else {
-			toolTag = tool.getTag(new PropertyProxy(property));
+			toolTag = tool.getTag(property);
 			if ("component".equals(toolTag) && "embedded".equals(property.getPropertyAccessorName())) {  //$NON-NLS-1$//$NON-NLS-2$
 				toolTag = "properties"; //$NON-NLS-1$
 			}

@@ -21,7 +21,6 @@ import org.hibernate.mapping.Property;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
-import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.IValue;
@@ -168,9 +167,9 @@ public class OrmShape extends ExpandableShape {
 			if (identifier != null && identifier.isComponent()) {
 				IValue component = identifier;
 				if (component.isEmbedded()) {
-					Iterator<IProperty> iterator = identifier.getPropertyIterator();
+					Iterator<Property> iterator = identifier.getPropertyIterator();
 					while (iterator.hasNext()) {
-						IProperty property = iterator.next();
+						Property property = iterator.next();
 						addChild(new Shape(property, getConsoleConfigName()));
 					}
 				}
@@ -214,9 +213,9 @@ public class OrmShape extends ExpandableShape {
 
 			IValue identifier = rootClass.getIdentifier();
 			if (identifier.isComponent()) {
-				Iterator<IProperty> iterator = identifier.getPropertyIterator();
+				Iterator<Property> iterator = identifier.getPropertyIterator();
 				while (iterator.hasNext()) {
-					IProperty property = iterator.next();
+					Property property = iterator.next();
 					addChild(new Shape(property, getConsoleConfigName()));
 				}
 			}

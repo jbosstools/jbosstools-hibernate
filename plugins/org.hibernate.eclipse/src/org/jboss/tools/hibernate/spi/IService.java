@@ -75,7 +75,7 @@ public interface IService {
 	
 	ICfg2HbmTool newCfg2HbmTool();
 	
-	IProperty newProperty();
+	Property newProperty();
 	
 	ITable newTable(String name);
 

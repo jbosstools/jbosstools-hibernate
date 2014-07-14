@@ -16,7 +16,6 @@ import org.hibernate.mapping.Property;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
-import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.IValue;
@@ -42,8 +41,8 @@ public class OrmLabelMap {
 			label = getParticularLabel((IColumn)obj);
 		} else if (obj instanceof Property) {
 			label = getParticularLabel((Property)obj, cfg);
-		} else if (obj instanceof IProperty) {
-			label = getParticularLabel((IProperty)obj, cfg);
+		} else if (obj instanceof Property) {
+			label = getParticularLabel((Property)obj, cfg);
 		} else if (obj instanceof IValue && (((IValue)obj).isSimpleValue() || ((IValue)obj).isOneToMany())) {
 			label = getParticularLabel((IValue)obj);
 		} else if (obj instanceof IPersistentClass) {
@@ -104,38 +103,6 @@ public class OrmLabelMap {
 			return name.toString();
 		}
 		IValue value = field.getValue() != null ? new ValueProxy(field.getValue()) : null;
-		String typeName = null;
-		if (value != null) {
-			typeName = (String) value.accept(new TypeNameValueVisitor(false));
-			if (typeName != null) {
-				return field.getName() + " : " + typeName; //$NON-NLS-1$
-			}
-		}
-		return field.getName();
-	}
-
-	public static String getParticularLabel(IProperty field, final ConsoleConfiguration cfg) {
-		StringBuffer name = new StringBuffer();
-		name.append(field.getName());
-		name.append(" :"); //$NON-NLS-1$
-		String typeString = null;
-		IValue value = field.getValue();
-		IType type = UtilTypeExtract.getTypeUsingExecContext(value, cfg);
-		if (type != null && type.getReturnedClass() != null) {
-			typeString = type.getReturnedClass().getName();
-		} else {
-			if (value.isComponent()) {
-				typeString = value.getComponentClassName();
-			} else if (value != null && value.isSimpleValue()) {
-				typeString = value.getTypeName();
-			}
-		}
-		if (typeString != null) {
-			typeString = correctTypeString(typeString);
-			name.append(SPACE);
-			name.append(typeString);
-			return name.toString();
-		}
 		String typeName = null;
 		if (value != null) {
 			typeName = (String) value.accept(new TypeNameValueVisitor(false));

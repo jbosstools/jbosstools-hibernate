@@ -60,7 +60,6 @@ import org.jboss.tools.hibernate.spi.INamingStrategy;
 import org.jboss.tools.hibernate.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
 import org.jboss.tools.hibernate.spi.IProgressListener;
-import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.spi.ISchemaExport;
@@ -276,8 +275,8 @@ public class ServiceProxy implements IService {
 	}
 
 	@Override
-	public IProperty newProperty() {
-		return new PropertyProxy(new Property());
+	public Property newProperty() {
+		return new Property();
 	}
 
 	@Override

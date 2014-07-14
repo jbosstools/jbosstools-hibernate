@@ -25,7 +25,7 @@ public interface IPersistentClass {
 	IValue getDiscriminator();
 	IValue getIdentifier();
 	Iterator<IJoin> getJoinIterator();
-	IProperty getVersion();
+	Property getVersion();
 	void setClassName(String className);
 	void setEntityName(String entityName);
 	void setDiscriminatorValue(String value);
@@ -37,7 +37,7 @@ public interface IPersistentClass {
 	boolean isInstanceOfSpecialRootClass();
 	Property getProperty();
 	Property getParentProperty();
-	void setIdentifierProperty(IProperty property);
+	void setIdentifierProperty(Property property);
 	void setIdentifier(IValue value);
 	void setDiscriminator(IValue discr);
 	void setProxyInterfaceName(String interfaceName);

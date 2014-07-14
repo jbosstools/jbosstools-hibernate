@@ -50,7 +50,6 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.Property;
 import org.hibernate.util.xpl.StringHelper;
-import org.jboss.tools.hibernate.proxy.PropertyProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IConfiguration;
@@ -345,7 +344,7 @@ class ProcessEntityInfo extends ASTVisitor {
 			Property prop = new Property();
 			prop.setName("id"); //$NON-NLS-1$
 			prop.setValue(((ValueProxy)sValue).getTarget());
-			rootClass.setIdentifierProperty(new PropertyProxy(prop));
+			rootClass.setIdentifierProperty(prop);
 		}
 	}
 	
@@ -374,7 +373,7 @@ class ProcessEntityInfo extends ASTVisitor {
 			}
 			String name = var.getName().getIdentifier();
 			if (name.equals(primaryIdName)) {
-				rootClass.setIdentifierProperty(new PropertyProxy(prop));
+				rootClass.setIdentifierProperty(prop);
 			} else {
 				rootClass.addProperty(prop);
 			}
@@ -419,7 +418,7 @@ class ProcessEntityInfo extends ASTVisitor {
 					varName = primaryIdName;
 				Property prop = createProperty(varName, methodType);
 				if (varName.equals(primaryIdName)) {
-					rootClass.setIdentifierProperty(new PropertyProxy(prop));
+					rootClass.setIdentifierProperty(prop);
 				} else {
 					rootClass.addProperty(prop);
 				}

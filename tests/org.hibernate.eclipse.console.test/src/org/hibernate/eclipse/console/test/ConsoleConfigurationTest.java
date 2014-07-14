@@ -17,7 +17,6 @@ import org.hibernate.eclipse.console.views.QueryPageTabView;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
 import org.jboss.tools.hibernate.proxy.ColumnProxy;
-import org.jboss.tools.hibernate.proxy.PropertyProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IConfiguration;
@@ -153,7 +152,7 @@ public class ConsoleConfigurationTest extends TestCase {
 		sv.setTypeName("string");
 		sv.setTable(table);
 		fakeProp.setValue(((ValueProxy)sv).getTarget());
-		rc.setIdentifierProperty(new PropertyProxy(fakeProp));
+		rc.setIdentifierProperty(fakeProp);
 		rc.setIdentifier(new ValueProxy(fakeProp.getValue()));
 		mappings.addClass(rc);
 

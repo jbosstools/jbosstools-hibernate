@@ -24,9 +24,7 @@ package org.hibernate.eclipse.console.workbench;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.hibernate.mapping.Property;
-import org.jboss.tools.hibernate.proxy.PropertyProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
-import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.IValue;
 import org.jboss.tools.hibernate.spi.IValueVisitor;
 
@@ -46,7 +44,7 @@ public class PropertyWorkbenchAdapter implements IWorkbenchAdapter {
 				} else if (value.isManyToOne()) {
 					return NO_CHILDREN;
 				} else if (value.isComponent()) {
-					return BasicWorkbenchAdapter.toArray(value.getPropertyIterator(), IProperty.class, null);
+					return BasicWorkbenchAdapter.toArray(value.getPropertyIterator(), Property.class, null);
 				} else if (value.isDependantValue()) {
 					return NO_CHILDREN;
 				} else if (value.isAny()) {
@@ -79,14 +77,13 @@ public class PropertyWorkbenchAdapter implements IWorkbenchAdapter {
 	}
 
 	public ImageDescriptor getImageDescriptor(Object object) {
-		IProperty property = ((IProperty)object);
-		
-		return HibernateWorkbenchHelper.getImageDescriptor(((PropertyProxy)property).getTarget());		 
+		Property property = ((Property)object);	
+		return HibernateWorkbenchHelper.getImageDescriptor(property);		 
 	}
 
 	public String getLabel(Object o) {
-		IProperty property = ((IProperty)o);
-		IValue value = property.getValue();
+		Property property = ((Property)o);
+		IValue value = new ValueProxy(property.getValue());
 		String typeName = (String) value.accept(new TypeNameValueVisitor(true));
 		
 		if (typeName!=null) {
@@ -97,7 +94,7 @@ public class PropertyWorkbenchAdapter implements IWorkbenchAdapter {
 	}
 
 	public Object getParent(Object o) {
-		IProperty p = (IProperty) o;
+		Property p = (Property) o;
 		return p.getPersistentClass();
 	}
 

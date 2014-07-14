@@ -12,7 +12,6 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
 import org.jboss.tools.hibernate.spi.IJoin;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
-import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IValue;
 
@@ -25,7 +24,7 @@ public class PersistentClassProxy implements IPersistentClass {
 	private ITable rootTable = null;
 	private IValue discriminator = null;
 	private IValue identifier = null;
-	private IProperty version = null;
+	private Property version = null;
 	private HashSet<IPersistentClass> subclasses = null;
 	private HashSet<IJoin> joins = null;
 
@@ -161,11 +160,8 @@ public class PersistentClassProxy implements IPersistentClass {
 	}
 
 	@Override
-	public IProperty getVersion() {
-		if (version == null && target.getVersion() != null) {
-			version = new PropertyProxy(target.getVersion());
-		}
-		return version;
+	public Property getVersion() {
+		return target.getVersion();
 	}
 
 	@Override
@@ -232,10 +228,9 @@ public class PersistentClassProxy implements IPersistentClass {
 	}
 
 	@Override
-	public void setIdentifierProperty(IProperty property) {
-		assert property instanceof PropertyProxy;
+	public void setIdentifierProperty(Property property) {
 		assert target instanceof RootClass;
-		((RootClass)target).setIdentifierProperty(((PropertyProxy)property).getTarget());
+		((RootClass)target).setIdentifierProperty(property);
 	}
 
 	@Override

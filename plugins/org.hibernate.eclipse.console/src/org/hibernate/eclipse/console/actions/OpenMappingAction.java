@@ -36,6 +36,7 @@ import org.hibernate.eclipse.console.utils.OpenMappingUtils;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.mapping.Property;
 import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
+import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
 import org.jboss.tools.hibernate.spi.IValue;
 
@@ -186,7 +187,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 		}
    		if (editorPart == null && parentProperty.isComposite()) {
 			if (OpenMappingUtils.hasConfigXMLMappingClassAnnotation(consoleConfig, rootClass)) {
-				String fullyQualifiedName =((IValue)parentProperty.getValue()).getComponentClassName();
+				String fullyQualifiedName =new ValueProxy(parentProperty.getValue()).getComponentClassName();
 				editorPart = OpenSourceAction.run(consoleConfig, compositeProperty, fullyQualifiedName);
 			}
 	    }
@@ -278,9 +279,9 @@ public class OpenMappingAction extends SelectionListenerAction {
 		}
 		if (propRegion == null && parentProperty.isComposite()){
 			String[] componentPatterns = new String[]{
-					OpenMappingUtils.createPattern("embeddable", "class", ((IValue)parentProperty.getValue()).getComponentClassName()),
+					OpenMappingUtils.createPattern("embeddable", "class", new ValueProxy(parentProperty.getValue()).getComponentClassName()),
 					OpenMappingUtils.createPattern("embeddable", "class", OpenMappingUtils.getShortClassName(
-							((IValue)parentProperty.getValue()).getComponentClassName()))
+							new ValueProxy(parentProperty.getValue()).getComponentClassName()))
 			};
 			IRegion componentRegion = null;
 			for (int i = 0; i < componentPatterns.length && componentRegion == null; i++) {
