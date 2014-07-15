@@ -20,8 +20,8 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.actions.OpenMappingAction;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 import org.hibernate.eclipse.console.test.utils.Utils;
-import org.hibernate.mapping.Property;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
+import org.jboss.tools.hibernate.spi.IProperty;
 
 /**
  * @author Dmitry Geraskov
@@ -46,28 +46,28 @@ public class OpenMappingFileTest extends BaseTestSetCase {
 			openTest(persClass, consCFG);
 			Object[] props =  pcWorkbenchAdapter.getChildren(persClass);
 			for (int j = 0; j < props.length; j++) {
-				if (props[j].getClass() != Property.class) {
+				if (!(props[j] instanceof IProperty && ((IProperty)props[j]).classIsPropertyClass())) {
 					continue;
 				}
 				openTest(props[j], consCFG);
 				Object[] compProperties = propertyWorkbenchAdapter.getChildren(props[j]);
 				for (int k = 0; k < compProperties.length; k++) {
 					//test Composite properties
-					if (compProperties[k].getClass() != Property.class) {
+					if (!(compProperties[k] instanceof IProperty && ((IProperty)props[j]).classIsPropertyClass())) {
 						continue;
 					}
-					final Property prop = (Property)compProperties[k];
+					final IProperty prop = (IProperty)compProperties[k];
 					if (testClass.equals(prop.getNodeName()) || testClass.equals(prop.getName())) {
 						continue;
 					}
-					openPropertyTest((Property)compProperties[k], (Property) props[j], consCFG);
+					openPropertyTest((IProperty)compProperties[k], (IProperty) props[j], consCFG);
 				}
 			}
 		}
 		//close all editors
 	}
 
-	private void openPropertyTest(Property compositeProperty, Property parentProperty, ConsoleConfiguration consCFG){
+	private void openPropertyTest(IProperty compositeProperty, IProperty parentProperty, ConsoleConfiguration consCFG){
 		IEditorPart editor = null;
 		Throwable ex = null;
 		try {
@@ -83,7 +83,7 @@ public class OpenMappingFileTest extends BaseTestSetCase {
 			Object[] compProperties = propertyWorkbenchAdapter.getChildren(compositeProperty);
 			for (int k = 0; k < compProperties.length; k++) {
 				//test Composite properties
-				assertTrue(compProperties[k] instanceof Property);
+				assertTrue(compProperties[k] instanceof IProperty);
 				// use only first level to time safe
 				//openPropertyTest((Property)compProperties[k], compositeProperty, consCFG);
 			}

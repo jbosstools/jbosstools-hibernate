@@ -2,42 +2,40 @@ package org.jboss.tools.hibernate.spi;
 
 import java.util.Iterator;
 
-import org.hibernate.mapping.Property;
-
 public interface IPersistentClass {
 
 	String getClassName();
 	String getEntityName();
 	boolean isAssignableToRootClass();
 	boolean isRootClass();
-	Property getIdentifierProperty();
+	IProperty getIdentifierProperty();
 	boolean hasIdentifierProperty();
 	boolean isInstanceOfRootClass();
 	boolean isInstanceOfSubclass();
 	String getNodeName();
 	IPersistentClass getRootClass();
-	Iterator<Property> getPropertyClosureIterator();
+	Iterator<IProperty> getPropertyClosureIterator();
 	IPersistentClass getSuperclass();
-	Iterator<Property> getPropertyIterator();
-	Property getProperty(String string);
+	Iterator<IProperty> getPropertyIterator();
+	IProperty getProperty(String string);
 	ITable getTable();
 	Boolean isAbstract();
 	IValue getDiscriminator();
 	IValue getIdentifier();
 	Iterator<IJoin> getJoinIterator();
-	Property getVersion();
+	IProperty getVersion();
 	void setClassName(String className);
 	void setEntityName(String entityName);
 	void setDiscriminatorValue(String value);
 	void setAbstract(boolean b);
-	void addProperty(Property property);
+	void addProperty(IProperty property);
 	boolean isInstanceOfJoinedSubclass();
 	void setTable(ITable table);
 	void setKey(IValue value);
 	boolean isInstanceOfSpecialRootClass();
-	Property getProperty();
-	Property getParentProperty();
-	void setIdentifierProperty(Property property);
+	IProperty getProperty();
+	IProperty getParentProperty();
+	void setIdentifierProperty(IProperty property);
 	void setIdentifier(IValue value);
 	void setDiscriminator(IValue discr);
 	void setProxyInterfaceName(String interfaceName);

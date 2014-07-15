@@ -29,6 +29,7 @@ import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
+import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.IValue;
@@ -45,6 +46,7 @@ public class ValueProxy implements IValue {
 	private IType type = null;
 	private HashSet<IColumn> columns = null;
 	private IPersistentClass owner = null;
+	private HashSet<IProperty> properties = null;
 
 	public ValueProxy(Value value) {
 		target = value;
@@ -320,17 +322,21 @@ public class ValueProxy implements IValue {
 		return result;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public Iterator<Property> getPropertyIterator() {
-		HashSet<Property> result = new HashSet<Property>();
-		if (target instanceof Component) {
-			Iterator<Property> origin = ((Component)target).getPropertyIterator();
-			while (origin.hasNext()) {
-				result.add(origin.next());
-			}
+	public Iterator<IProperty> getPropertyIterator() {
+		if (properties == null) {
+			initializeProperties();
 		}
-		return result.iterator();
+		return properties.iterator();
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void initializeProperties() {
+		properties = new HashSet<IProperty>();
+		Iterator<Property> origin = ((Component)target).getPropertyIterator();
+		while (origin.hasNext()) {
+			properties.add(new PropertyProxy(origin.next()));
+		}
 	}
 
 	@Override

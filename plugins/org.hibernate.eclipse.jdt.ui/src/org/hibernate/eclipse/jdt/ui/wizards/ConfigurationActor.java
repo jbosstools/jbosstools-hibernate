@@ -48,13 +48,13 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefEntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefType;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
 import org.hibernate.mapping.KeyValue;
-import org.hibernate.mapping.Property;
 import org.hibernate.util.xpl.StringHelper;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IMappings;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
+import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IValue;
@@ -197,9 +197,9 @@ public class ConfigurationActor {
 						subclass.addProperty(pastClass.getIdentifierProperty());
 					}
 					
-					Iterator<?> it = pastClass.getPropertyIterator();
+					Iterator<IProperty> it = pastClass.getPropertyIterator();
 					while (it.hasNext()) {
-						subclass.addProperty((Property) it.next());
+						subclass.addProperty(it.next());
 					}
 					entry.setValue(subclass);
 				}
@@ -341,9 +341,9 @@ class ProcessEntityInfo extends ASTVisitor {
 			IValue sValue = service.newSimpleValue();
 			sValue.addColumn(service.newColumn("id".toUpperCase()));//$NON-NLS-1$
 			sValue.setTypeName(Long.class.getName());
-			Property prop = new Property();
+			IProperty prop = service.newProperty();
 			prop.setName("id"); //$NON-NLS-1$
-			prop.setValue(((ValueProxy)sValue).getTarget());
+			prop.setValue(sValue);
 			rootClass.setIdentifierProperty(prop);
 		}
 	}
@@ -364,7 +364,7 @@ class ProcessEntityInfo extends ASTVisitor {
 		Iterator<VariableDeclarationFragment> itVarNames = node.fragments().iterator();
 		while (itVarNames.hasNext()) {
 			VariableDeclarationFragment var = itVarNames.next();
-			Property prop = createProperty(var);			
+			IProperty prop = createProperty(var);			
 			if (prop == null) {
 				continue;
 			}
@@ -416,7 +416,7 @@ class ProcessEntityInfo extends ASTVisitor {
 				Type methodType = node.getReturnType2();
 				if (varName.toLowerCase().equals(primaryIdName.toLowerCase()))
 					varName = primaryIdName;
-				Property prop = createProperty(varName, methodType);
+				IProperty prop = createProperty(varName, methodType);
 				if (varName.equals(primaryIdName)) {
 					rootClass.setIdentifierProperty(prop);
 				} else {
@@ -435,14 +435,14 @@ class ProcessEntityInfo extends ASTVisitor {
 		return rootClass;
 	}
 	
-	protected Property createProperty(VariableDeclarationFragment var) {
+	protected IProperty createProperty(VariableDeclarationFragment var) {
 		return createProperty(var.getName().getIdentifier(), ((FieldDeclaration)var.getParent()).getType());
 	}
 	
-	protected Property createProperty(String varName,  Type varType) {
+	protected IProperty createProperty(String varName,  Type varType) {
 			typeVisitor.init(varName, entityInfo);
 			varType.accept(typeVisitor);
-			Property p = typeVisitor.getProperty();
+			IProperty p = typeVisitor.getProperty();
 			return p;
 	}
 
@@ -467,7 +467,7 @@ class TypeVisitor extends ASTVisitor{
 	
 	private RefEntityInfo ref;
 	
-	private Property prop;
+	private IProperty prop;
 	
 	private IService service;
 	
@@ -646,14 +646,14 @@ class TypeVisitor extends ASTVisitor{
 		return super.visit(type);
 	}
 	
-	public Property getProperty(){
+	public IProperty getProperty(){
 		return prop;
 	}
 	
 	protected void buildProperty(IValue value){
-		prop = new Property();
+		prop = service.newProperty();
 		prop.setName(varName);
-		prop.setValue(((ValueProxy)value).getTarget());
+		prop.setValue(value);
 	}
 	
 	private IValue buildSimpleValue(String typeName){

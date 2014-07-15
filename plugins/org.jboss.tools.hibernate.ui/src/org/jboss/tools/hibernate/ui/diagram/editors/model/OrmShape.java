@@ -17,10 +17,9 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
-import org.hibernate.mapping.Property;
-import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
+import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.IValue;
@@ -158,7 +157,7 @@ public class OrmShape extends ExpandableShape {
 		Object ormElement = getOrmElement();
 		if (ormElement instanceof IPersistentClass && ((IPersistentClass)ormElement).isInstanceOfRootClass()) {
 			IPersistentClass rootClass = (IPersistentClass)ormElement;
-			Property identifierProperty = rootClass.getIdentifierProperty();
+			IProperty identifierProperty = rootClass.getIdentifierProperty();
 			if (identifierProperty != null) {
 				addChild(new Shape(identifierProperty, getConsoleConfigName()));
 			}
@@ -167,20 +166,20 @@ public class OrmShape extends ExpandableShape {
 			if (identifier != null && identifier.isComponent()) {
 				IValue component = identifier;
 				if (component.isEmbedded()) {
-					Iterator<Property> iterator = identifier.getPropertyIterator();
+					Iterator<IProperty> iterator = identifier.getPropertyIterator();
 					while (iterator.hasNext()) {
-						Property property = iterator.next();
+						IProperty property = iterator.next();
 						addChild(new Shape(property, getConsoleConfigName()));
 					}
 				}
 			}
 
-			Iterator<Property> iterator = rootClass.getPropertyIterator();
+			Iterator<IProperty> iterator = rootClass.getPropertyIterator();
 			while (iterator.hasNext()) {
-				Property field = iterator.next();
+				IProperty field = iterator.next();
 				if (!field.isBackRef()) {
 					if (!field.isComposite()) {
-						final IValue val = new ValueProxy(field.getValue());
+						final IValue val = field.getValue();
 						Shape bodyOrmShape = null;
 						if (val.isSimpleValue() && val.isTypeSpecified()) {
 							bodyOrmShape = new Shape(field, getConsoleConfigName());
@@ -206,27 +205,27 @@ public class OrmShape extends ExpandableShape {
 		} else if (ormElement instanceof IPersistentClass && ((IPersistentClass)ormElement).isInstanceOfSubclass()) {
 			IPersistentClass rootClass = ((IPersistentClass)ormElement).getRootClass();
 
-			Property identifierProperty = rootClass.getIdentifierProperty();
+			IProperty identifierProperty = rootClass.getIdentifierProperty();
 			if (identifierProperty != null) {
 				addChild(new Shape(identifierProperty, getConsoleConfigName()));
 			}
 
 			IValue identifier = rootClass.getIdentifier();
 			if (identifier.isComponent()) {
-				Iterator<Property> iterator = identifier.getPropertyIterator();
+				Iterator<IProperty> iterator = identifier.getPropertyIterator();
 				while (iterator.hasNext()) {
-					Property property = iterator.next();
+					IProperty property = iterator.next();
 					addChild(new Shape(property, getConsoleConfigName()));
 				}
 			}
 
-			Iterator<Property> iterator = rootClass.getPropertyIterator();
+			Iterator<IProperty> iterator = rootClass.getPropertyIterator();
 			while (iterator.hasNext()) {
-				Property field = iterator.next();
+				IProperty field = iterator.next();
 				if (!field.isBackRef()) {
 					if (!field.isComposite()) {
 
-						IValue fieldValue = new ValueProxy(field.getValue());
+						IValue fieldValue = field.getValue();
 						boolean typeIsAccessible = true;
 						if (fieldValue.isSimpleValue() && fieldValue.isTypeSpecified()) {
 							try {
@@ -252,14 +251,14 @@ public class OrmShape extends ExpandableShape {
 					}
 				}
 			}
-			Iterator<Property> iter = ((IPersistentClass)ormElement).getPropertyIterator();
+			Iterator<IProperty> iter = ((IPersistentClass)ormElement).getPropertyIterator();
 			while (iter.hasNext()) {
-				Property property = iter.next();
+				IProperty property = iter.next();
 				if (!property.isBackRef()) {
 					if (!property.isComposite()) {
 						
 						boolean typeIsAccessible = true;
-						IValue propertyValue = new ValueProxy(property.getValue());
+						IValue propertyValue = property.getValue();
 						if (propertyValue.isSimpleValue() && propertyValue.isTypeSpecified()) {
 							try {
 								property.getValue().getType();
@@ -307,7 +306,7 @@ public class OrmShape extends ExpandableShape {
 		return null;
 	}
 
-	public Shape getChild(Property ormElement) {
+	public Shape getChild(IProperty ormElement) {
 		if (ormElement == null) {
 			return null;
 		}
@@ -315,7 +314,7 @@ public class OrmShape extends ExpandableShape {
 		while (it.hasNext()) {
 			final Shape child = it.next();
 			Object childElement = child.getOrmElement();
-			if (childElement instanceof Property && ormElement.getName().equals(((Property)childElement).getName())) {
+			if (childElement instanceof IProperty && ormElement.getName().equals(((IProperty)childElement).getName())) {
 				return child;
 			}
 		}

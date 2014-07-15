@@ -5,14 +5,15 @@ import java.util.Iterator;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
+import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.IValue;
 
 public class SpecialRootClassProxy extends PersistentClassProxy {
 
-	private Property property;
-	private Property parentProperty;
+	private IProperty property;
+	private IProperty parentProperty;
 
-	public SpecialRootClassProxy(Property property) {
+	public SpecialRootClassProxy(IProperty property) {
 		super(new RootClass());
 		this.property = property;
 		generate();
@@ -22,7 +23,7 @@ public class SpecialRootClassProxy extends PersistentClassProxy {
 		if (property == null) {
 			return;
 		}
-		IValue propVal = property.getValue() != null ? new ValueProxy(property.getValue()) : null;
+		IValue propVal = property.getValue();
 		IValue component = null;
 		if (propVal != null && propVal.isCollection()) {
 			IValue collection = propVal;
@@ -35,13 +36,13 @@ public class SpecialRootClassProxy extends PersistentClassProxy {
 			setEntityName(component.getComponentClassName());
 			IPersistentClass ownerClass = component.getOwner();
 			if (component.getParentProperty() != null) {
-				parentProperty = new Property();
+				parentProperty = new PropertyProxy(new Property());
 				parentProperty.setName(component.getParentProperty());
-				parentProperty.setPersistentClass(((PersistentClassProxy)ownerClass).getTarget());
+				parentProperty.setPersistentClass(ownerClass);
 			}
-			Iterator<Property> iterator = component.getPropertyIterator();
+			Iterator<IProperty> iterator = component.getPropertyIterator();
 			while (iterator.hasNext()) {
-				Property property = iterator.next();
+				IProperty property = iterator.next();
 				if (property != null) {
 					addProperty(property);
 				}
@@ -49,11 +50,11 @@ public class SpecialRootClassProxy extends PersistentClassProxy {
 		}
 	}
 
-	public Property getParentProperty() {
+	public IProperty getParentProperty() {
 		return parentProperty;
 	}
 
-	public Property getProperty() {
+	public IProperty getProperty() {
 		return this.property;
 	}
 

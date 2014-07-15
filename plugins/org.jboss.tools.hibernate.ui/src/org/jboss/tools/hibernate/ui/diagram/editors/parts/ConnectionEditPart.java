@@ -23,9 +23,9 @@ import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.gef.editpolicies.SelectionEditPolicy;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
-import org.hibernate.mapping.Property;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
+import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IValue;
 import org.jboss.tools.hibernate.ui.diagram.editors.figures.RoundPolylineConnection;
@@ -97,7 +97,7 @@ public class ConnectionEditPart extends AbstractConnectionEditPart
 		Object el = getTargetElement();
 		if ((el instanceof IPersistentClass && ((IPersistentClass)el).isInstanceOfRootClass()) || (el instanceof IPersistentClass && ((IPersistentClass)el).isInstanceOfSubclass())) { 
 			return ResourceManager.getInstance().getColor(new RGB(210, 155, 100));
-		} else if (el instanceof IColumn || el instanceof ITable || el instanceof Property) { 
+		} else if (el instanceof IColumn || el instanceof ITable || el instanceof IProperty) { 
 			return ResourceManager.getInstance().getColor(new RGB(160, 160, 160));
 		}
 		return ResourceManager.getInstance().getColor(new RGB(255, 0, 0));

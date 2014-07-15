@@ -30,9 +30,8 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
-import org.hibernate.mapping.Property;
-import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
+import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.IValue;
 
 /**
@@ -67,11 +66,11 @@ public class OpenSourceAction extends SelectionListenerAction {
 			ConsoleConfiguration consoleConfig = (ConsoleConfiguration)(path.getSegment(0));
 
 			String fullyQualifiedName = null;
-			if (lastSegment instanceof Property){
+			if (lastSegment instanceof IProperty){
 				Object prevSegment = path.getParentPath().getLastSegment();
-				if (prevSegment instanceof Property
-						&& ((Property)prevSegment).isComposite()){
-					fullyQualifiedName =((IValue)((Property) prevSegment).getValue()).getComponentClassName();
+				if (prevSegment instanceof IProperty
+						&& ((IProperty)prevSegment).isComposite()){
+					fullyQualifiedName =((IValue)((IProperty) prevSegment).getValue()).getComponentClassName();
 				}
 			}
 			if (fullyQualifiedName == null && persClass != null){
@@ -127,8 +126,8 @@ public class OpenSourceAction extends SelectionListenerAction {
 			}
 		}
 		IJavaElement jElement = null;
-		if (selection instanceof Property){
-			final String selectionName =((Property)selection).getName(); 
+		if (selection instanceof IProperty){
+			final String selectionName =((IProperty)selection).getName(); 
 			final IType typeSave = type;
 			while (true) {
 				jElement = type.getField(selectionName);
@@ -170,8 +169,8 @@ public class OpenSourceAction extends SelectionListenerAction {
 	}
 
 	private IPersistentClass getPersistentClass(Object selection){
-    	if (selection instanceof Property){
-    		return ((Property)selection).getPersistentClass() != null ? new PersistentClassProxy(((Property)selection).getPersistentClass()) : null;
+    	if (selection instanceof IProperty){
+    		return ((IProperty)selection).getPersistentClass();
 		} else if (selection instanceof IPersistentClass){
 			return (IPersistentClass)selection;
 		} else {

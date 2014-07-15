@@ -20,9 +20,8 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.actions.OpenSourceAction;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 import org.hibernate.eclipse.console.test.utils.Utils;
-import org.hibernate.mapping.Property;
-import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
+import org.jboss.tools.hibernate.spi.IProperty;
 
 /**
  * @author Dmitry Geraskov
@@ -49,19 +48,19 @@ public class OpenSourceFileTest extends BaseTestSetCase {
 			openTest(persClass, consCFG, fullyQualifiedName);
 			Object[] fields = pcWorkbenchAdapter.getChildren(persClass);
 			for (int j = 0; j < fields.length; j++) {
-				if (fields[j].getClass() != Property.class) {
+				if (!(fields[j] instanceof IProperty && ((IProperty)fields[j]).classIsPropertyClass())) {
 					continue;
 				}
 				fullyQualifiedName = persClass.getClassName();
 				// test Properties
 				openTest(fields[j], consCFG, fullyQualifiedName);
-				if (fields[j] instanceof Property
-					&& ((Property)fields[j]).isComposite()) {
-					fullyQualifiedName =new ValueProxy(((Property) fields[j]).getValue()).getComponentClassName();
+				if (fields[j] instanceof IProperty
+					&& ((IProperty)fields[j]).isComposite()) {
+					fullyQualifiedName =((IProperty) fields[j]).getValue().getComponentClassName();
 
 					Object[] compProperties = propertyWorkbenchAdapter.getChildren(fields[j]);
 					for (int k = 0; k < compProperties.length; k++) {
-						if (compProperties[k].getClass() != Property.class) {
+						if (!(compProperties[k] instanceof IProperty && ((IProperty)compProperties[k]).classIsPropertyClass())) {
 							continue;
 						}
 						//test Composite properties

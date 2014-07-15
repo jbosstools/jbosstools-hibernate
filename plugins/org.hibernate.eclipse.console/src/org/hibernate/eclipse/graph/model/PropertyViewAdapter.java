@@ -30,14 +30,13 @@ import org.eclipse.swt.graphics.Image;
 import org.hibernate.HibernateException;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.workbench.HibernateWorkbenchHelper;
-import org.hibernate.mapping.Property;
-import org.hibernate.type.EntityType;
-import org.jboss.tools.hibernate.proxy.ValueProxy;
+import org.jboss.tools.hibernate.spi.IProperty;
+import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.IValue;
 
 public class PropertyViewAdapter extends Observable {
 
-	final private Property property;
+	final private IProperty property;
 
 	private final ConfigurationViewAdapter configuration;
 
@@ -47,7 +46,7 @@ public class PropertyViewAdapter extends Observable {
 	private List<PropertyViewAdapter> targetAssociations;
 	
 	public PropertyViewAdapter(PersistentClassViewAdapter clazz,
-			Property property) {
+			IProperty property) {
 		this.clazz = clazz;
 		this.property = property;
 		this.configuration = clazz.getConfiguration();
@@ -56,7 +55,7 @@ public class PropertyViewAdapter extends Observable {
 		
 	}
 
-	public Property getProperty() {
+	public IProperty getProperty() {
 		return property;
 	}
 
@@ -78,7 +77,7 @@ public class PropertyViewAdapter extends Observable {
 	
 	private void createSingleEndedEnityAssociations() {
 		try { //TODO: we need the consoleconfiguration here to know the exact types	
-			IValue value = property.getValue() != null ? new ValueProxy(property.getValue()) : null;
+			IValue value = property.getValue();
 			if ( value != null && value.isCollection() ) {
 				if(!value.isInverse() && value.getElement().isOneToMany()) {
 					IValue oneToMany = value.getElement();
@@ -91,7 +90,7 @@ public class PropertyViewAdapter extends Observable {
 					target.addTargetAssociation( pava );
 				}
 			} else if ( property.getType().isEntityType() ) {
-				EntityType et = (EntityType) property.getType();
+				IType et = (IType) property.getType();
 				PersistentClassViewAdapter target = configuration.getPersistentClassViewAdapter( et.getAssociatedEntityName() );
 				PropertyAssociationViewAdapter pava = new PropertyAssociationViewAdapter( clazz, this, target );
 				this.addSourceAssociation( pava );

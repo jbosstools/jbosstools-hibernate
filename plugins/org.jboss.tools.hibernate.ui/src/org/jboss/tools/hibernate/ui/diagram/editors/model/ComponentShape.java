@@ -12,8 +12,7 @@ package org.jboss.tools.hibernate.ui.diagram.editors.model;
 
 import java.util.Properties;
 
-import org.hibernate.mapping.Property;
-import org.jboss.tools.hibernate.proxy.ValueProxy;
+import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.IValue;
 
 /**
@@ -31,8 +30,8 @@ public class ComponentShape extends ExpandableShape {
 	 */
 	protected void initModel() {
 		Object ormElement = getOrmElement();
-		if (ormElement instanceof Property) {
-			IValue collection = new ValueProxy(((Property)ormElement).getValue());
+		if (ormElement instanceof IProperty) {
+			IValue collection = ((IProperty)ormElement).getValue();
 			Shape bodyOrmShape = new Shape(collection.getKey(), getConsoleConfigName());
 			bodyOrmShape.setIndent(20);
 			addChild(bodyOrmShape);

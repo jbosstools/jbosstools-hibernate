@@ -5,7 +5,6 @@ import java.util.Properties;
 
 import org.hibernate.FetchMode;
 import org.hibernate.mapping.KeyValue;
-import org.hibernate.mapping.Property;
 
 public interface IValue {
 
@@ -45,7 +44,7 @@ public interface IValue {
 	boolean isBag();
 	String getReferencedEntityName();
 	String getEntityName();
-	Iterator<Property> getPropertyIterator();
+	Iterator<IProperty> getPropertyIterator();
 	void addColumn(IColumn column);
 	void setTypeParameters(Properties typeParameters);
 	String getForeignKeyName();

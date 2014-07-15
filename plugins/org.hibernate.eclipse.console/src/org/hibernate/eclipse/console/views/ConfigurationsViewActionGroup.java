@@ -43,8 +43,8 @@ import org.hibernate.eclipse.console.actions.OpenMappingAction;
 import org.hibernate.eclipse.console.actions.OpenSourceAction;
 import org.hibernate.eclipse.console.actions.RefreshAction;
 import org.hibernate.eclipse.console.actions.RenameAction;
-import org.hibernate.mapping.Property;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
+import org.jboss.tools.hibernate.spi.IProperty;
 
 /**
  * @author max
@@ -178,7 +178,7 @@ public class ConfigurationsViewActionGroup extends ActionGroup {
 		menu.add(new GroupMarker(GROUP_ADDITION_LAST));
 		menu.add(new Separator(GROUP_OTHER_EDITORS));
 		// TODO: shouldn't these and maybe the others not be defined via menu extension points ?
-		if (first != null && (first instanceof IPersistentClass || first.getClass() == Property.class)) {			
+		if (first != null && (first instanceof IPersistentClass || (first instanceof IProperty && ((IProperty)first).classIsPropertyClass()))) {			
 			menu.appendToGroup(GROUP_OTHER_EDITORS, openSourceAction);
 			menu.appendToGroup(GROUP_OTHER_EDITORS, openMappingAction);
 		}

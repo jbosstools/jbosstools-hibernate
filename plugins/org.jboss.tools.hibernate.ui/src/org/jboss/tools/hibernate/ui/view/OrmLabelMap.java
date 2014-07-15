@@ -12,10 +12,9 @@ package org.jboss.tools.hibernate.ui.view;
 
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.workbench.TypeNameValueVisitor;
-import org.hibernate.mapping.Property;
-import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
+import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.IValue;
@@ -39,10 +38,10 @@ public class OrmLabelMap {
 			label = getParticularLabel((ITable)obj);
 		} else if (obj instanceof IColumn) {
 			label = getParticularLabel((IColumn)obj);
-		} else if (obj instanceof Property) {
-			label = getParticularLabel((Property)obj, cfg);
-		} else if (obj instanceof Property) {
-			label = getParticularLabel((Property)obj, cfg);
+		} else if (obj instanceof IProperty) {
+			label = getParticularLabel((IProperty)obj, cfg);
+		} else if (obj instanceof IProperty) {
+			label = getParticularLabel((IProperty)obj, cfg);
 		} else if (obj instanceof IValue && (((IValue)obj).isSimpleValue() || ((IValue)obj).isOneToMany())) {
 			label = getParticularLabel((IValue)obj);
 		} else if (obj instanceof IPersistentClass) {
@@ -79,17 +78,17 @@ public class OrmLabelMap {
 		return name.toString();
 	}
 
-	public static String getParticularLabel(Property field, final ConsoleConfiguration cfg) {
+	public static String getParticularLabel(IProperty field, final ConsoleConfiguration cfg) {
 		StringBuffer name = new StringBuffer();
 		name.append(field.getName());
 		name.append(" :"); //$NON-NLS-1$
 		String typeString = null;
-		IValue v = field.getValue() != null ? new ValueProxy(field.getValue()) : null;
+		IValue v = field.getValue();
 		IType type = UtilTypeExtract.getTypeUsingExecContext(v, cfg);
 		if (type != null && type.getReturnedClass() != null) {
 			typeString = type.getReturnedClass().getName();
 		} else {
-			IValue fieldValue = field.getValue() != null ? new ValueProxy(field.getValue()) : null;
+			IValue fieldValue = field.getValue();
 			if (fieldValue != null && fieldValue.isComponent()) {
 				typeString = fieldValue.getComponentClassName();
 			} else if (fieldValue != null && fieldValue.isSimpleValue()) {
@@ -102,7 +101,7 @@ public class OrmLabelMap {
 			name.append(typeString);
 			return name.toString();
 		}
-		IValue value = field.getValue() != null ? new ValueProxy(field.getValue()) : null;
+		IValue value = field.getValue();
 		String typeName = null;
 		if (value != null) {
 			typeName = (String) value.accept(new TypeNameValueVisitor(false));

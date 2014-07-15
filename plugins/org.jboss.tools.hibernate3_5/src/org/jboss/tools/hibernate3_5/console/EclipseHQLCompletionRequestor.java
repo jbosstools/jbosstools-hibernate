@@ -32,6 +32,7 @@ import org.hibernate.eclipse.console.workbench.HibernateWorkbenchHelper;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.ide.completion.IHQLCompletionRequestor;
 import org.hibernate.util.StringHelper;
+import org.jboss.tools.hibernate.proxy.PropertyProxy;
 
 public class EclipseHQLCompletionRequestor implements IHQLCompletionRequestor {
 
@@ -117,7 +118,7 @@ public class EclipseHQLCompletionRequestor implements IHQLCompletionRequestor {
 			break;
 		case HQLCompletionProposal.PROPERTY:
 			if(proposal.getProperty()!=null) {
-				return HibernateWorkbenchHelper.getImage( proposal.getProperty() );
+				return HibernateWorkbenchHelper.getImage(new PropertyProxy(proposal.getProperty() ));
 			} else {
 				key = ImageConstants.PROPERTY;				
 			}

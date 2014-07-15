@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.hibernate.mapping.Property;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 
@@ -75,7 +74,7 @@ public interface IService {
 	
 	ICfg2HbmTool newCfg2HbmTool();
 	
-	Property newProperty();
+	IProperty newProperty();
 	
 	ITable newTable(String name);
 
@@ -111,7 +110,7 @@ public interface IService {
 
 	IPersistentClass newJoinedSubclass(IPersistentClass persistentClass);
 
-	IPersistentClass newSpecialRootClass(Property ormElement);
+	IPersistentClass newSpecialRootClass(IProperty ormElement);
 
 	IPersistentClass newRootClass();
 	

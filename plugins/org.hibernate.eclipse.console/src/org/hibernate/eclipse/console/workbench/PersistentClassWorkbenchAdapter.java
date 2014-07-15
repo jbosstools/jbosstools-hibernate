@@ -29,24 +29,24 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.utils.EclipseImages;
-import org.hibernate.mapping.Property;
 import org.hibernate.util.JoinedIterator;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
+import org.jboss.tools.hibernate.spi.IProperty;
 
 public class PersistentClassWorkbenchAdapter implements IWorkbenchAdapter {
 
 	@SuppressWarnings("unchecked")
 	public Object[] getChildren(Object o) {
 		IPersistentClass pc = (IPersistentClass) o;
-		Property identifierProperty = pc.getIdentifierProperty();
-		List<Property> properties = new ArrayList<Property>();
+		IProperty identifierProperty = pc.getIdentifierProperty();
+		List<IProperty> properties = new ArrayList<IProperty>();
 		
 		if(identifierProperty!=null) {
 			properties.add(identifierProperty);
 		}
 		
-		Iterator<Property> propertyClosureIterator = new JoinedIterator(properties.iterator(), pc.getPropertyClosureIterator());
-		return BasicWorkbenchAdapter.toArray(propertyClosureIterator, Property.class, null);
+		Iterator<IProperty> propertyClosureIterator = new JoinedIterator(properties.iterator(), pc.getPropertyClosureIterator());
+		return BasicWorkbenchAdapter.toArray(propertyClosureIterator, IProperty.class, null);
 	}
 
 	

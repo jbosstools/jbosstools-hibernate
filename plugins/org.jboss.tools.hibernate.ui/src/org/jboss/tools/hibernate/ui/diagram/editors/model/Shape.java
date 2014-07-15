@@ -19,9 +19,8 @@ import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
-import org.hibernate.mapping.Property;
-import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
+import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.IValue;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Connection.ConnectionType;
@@ -268,7 +267,7 @@ public class Shape extends BaseElement {
 	 */
 	@Override
 	public IPropertyDescriptor[] getPropertyDescriptors() {
-		if (getOrmElement() instanceof Property) {
+		if (getOrmElement() instanceof IProperty) {
 			return descriptors_property;
 		} else if (getOrmElement() instanceof IColumn) {
 			return descriptors_column;
@@ -290,15 +289,15 @@ public class Shape extends BaseElement {
 		if (getOrmElement() instanceof IColumn) {
 			col = (IColumn)getOrmElement();
 		}
-		Property prop = null;
-		if (getOrmElement() instanceof Property) {
-			prop = (Property)getOrmElement();
+		IProperty prop = null;
+		if (getOrmElement() instanceof IProperty) {
+			prop = (IProperty)getOrmElement();
 		}
 		if (prop != null) {
 			if (PROPERTY_NAME.equals(propertyId)) {
 				res = prop.getName();
 			} else if (PROPERTY_TYPE.equals(propertyId)) {
-				IValue value = prop.getValue() != null ? new ValueProxy(prop.getValue()) : null;
+				IValue value = prop.getValue();
 				if (value.isComponent()) {
 					res = value.toString();
 				} else {

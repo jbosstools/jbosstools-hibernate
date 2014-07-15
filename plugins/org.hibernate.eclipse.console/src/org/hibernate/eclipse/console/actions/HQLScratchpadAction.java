@@ -28,9 +28,8 @@ import org.hibernate.console.node.BaseNode;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
-import org.hibernate.mapping.Property;
-import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
+import org.jboss.tools.hibernate.spi.IProperty;
 
 public class HQLScratchpadAction extends OpenQueryEditorAction {
 
@@ -56,9 +55,9 @@ public class HQLScratchpadAction extends OpenQueryEditorAction {
 		if (node instanceof IPersistentClass){
 			String name = ((IPersistentClass)node).getEntityName();
 			return "from " + name; //$NON-NLS-1$
-		} else if (node instanceof Property){
-			String prName = ((Property)node).getName();
-			IPersistentClass pClass = ((Property)node).getPersistentClass() != null ? new PersistentClassProxy(((Property)node).getPersistentClass()) : null;
+		} else if (node instanceof IProperty){
+			String prName = ((IProperty)node).getName();
+			IPersistentClass pClass = ((IProperty)node).getPersistentClass();
 			String enName = ""; //$NON-NLS-1$
 			if (pClass != null){
 				enName = pClass.getEntityName();
@@ -69,8 +68,8 @@ public class HQLScratchpadAction extends OpenQueryEditorAction {
 					if (path.getSegment(i) instanceof IPersistentClass){
 						enName = ((IPersistentClass)path.getSegment(i)).getEntityName();
 						enName = enName.substring(enName.lastIndexOf('.') + 1);
-					} else if (path.getSegment(i) instanceof Property){
-						prName = ((Property)path.getSegment(i)).getName() + "." + prName; //$NON-NLS-1$
+					} else if (path.getSegment(i) instanceof IProperty){
+						prName = ((IProperty)path.getSegment(i)).getName() + "." + prName; //$NON-NLS-1$
 					}
 				}
 			}

@@ -21,10 +21,9 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
-import org.hibernate.mapping.Property;
-import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
+import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.UiPlugin;
 import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
@@ -60,10 +59,10 @@ public class OpenMappingAction extends SelectionAction {
 		while (iterator.hasNext() && editorPart == null) {
 			Shape shape = iterator.next();
 			Object selection = shape.getOrmElement();
-			if (selection instanceof Property
-					&& new PersistentClassProxy(((Property)selection).getPersistentClass()).isInstanceOfSpecialRootClass()) {
-				Property compositSel = ((Property)selection);
-				Property parentProperty = ((IPersistentClass)compositSel.getPersistentClass()).getProperty();
+			if (selection instanceof IProperty
+					&& ((IProperty)selection).getPersistentClass().isInstanceOfSpecialRootClass()) {
+				IProperty compositSel = ((IProperty)selection);
+				IProperty parentProperty = ((IPersistentClass)compositSel.getPersistentClass()).getProperty();
 				try {
 					editorPart = org.hibernate.eclipse.console.actions.OpenMappingAction.run(consoleConfig, compositSel, parentProperty);
 				} catch (CoreException e) {

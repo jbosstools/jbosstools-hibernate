@@ -27,9 +27,9 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.ui.actions.ActionFactory;
-import org.hibernate.mapping.Property;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
+import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.AutoLayoutAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ExportImageAction;
@@ -62,7 +62,6 @@ public class PopupMenuProvider extends ContextMenuProvider {
 		this.actionRegistry = actionRegistry;
 	}
     		
-	@SuppressWarnings("unchecked")
 	public void buildContextMenu(IMenuManager menu) {
 		
 		menu.add(new Separator(GROUP_OPEN_SOURCE));
@@ -89,7 +88,7 @@ public class PopupMenuProvider extends ContextMenuProvider {
 			if (selectedShape != null && selection.size() == 1) {
 				Object first = selectedShape.getOrmElement();
 				if (first instanceof IPersistentClass
-						|| first.getClass() == Property.class
+						|| (first instanceof IProperty && ((IProperty)first).classIsPropertyClass())
 						|| first instanceof ITable
 						|| first instanceof IColumn) {
 					action = getActionRegistry().getAction(OpenSourceAction.ACTION_ID);
@@ -103,7 +102,7 @@ public class PopupMenuProvider extends ContextMenuProvider {
 			}
 			boolean addToggleVisibleStateMenu = false;
 			boolean addToggleExpandStateMenu = false;
-		    Iterator it = selection.iterator();
+		    Iterator<?> it = selection.iterator();
 		    while (it.hasNext() && (!addToggleVisibleStateMenu || !addToggleExpandStateMenu)) {
 		    	Object element = it.next();
 				Object obj = null;

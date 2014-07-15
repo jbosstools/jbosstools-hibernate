@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.proxy;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -12,6 +13,7 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
 import org.jboss.tools.hibernate.spi.IJoin;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
+import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IValue;
 
@@ -24,9 +26,12 @@ public class PersistentClassProxy implements IPersistentClass {
 	private ITable rootTable = null;
 	private IValue discriminator = null;
 	private IValue identifier = null;
-	private Property version = null;
+	private IProperty version = null;
+	private IProperty identifierProperty = null;
 	private HashSet<IPersistentClass> subclasses = null;
 	private HashSet<IJoin> joins = null;
+	private HashSet<IProperty> propertyClosures = null;
+	private HashMap<String, IProperty> properties = null;
 
 	public PersistentClassProxy(PersistentClass persistentClass) {
 		target = persistentClass;
@@ -57,8 +62,11 @@ public class PersistentClassProxy implements IPersistentClass {
 	}
 
 	@Override
-	public Property getIdentifierProperty() {
-		return target.getIdentifierProperty();
+	public IProperty getIdentifierProperty() {
+		if (identifierProperty == null  && target.getIdentifierProperty() != null) {
+			identifierProperty = new PropertyProxy(target.getIdentifierProperty());
+		}
+		return identifierProperty;
 	}
 
 	@Override
@@ -89,10 +97,21 @@ public class PersistentClassProxy implements IPersistentClass {
 		return rootClass;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public Iterator<Property> getPropertyClosureIterator() {
-		return target.getPropertyClosureIterator();
+	public Iterator<IProperty> getPropertyClosureIterator() {
+		if (propertyClosures == null) {
+			initializePropertyClosures();
+		}
+		return propertyClosures.iterator();
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void initializePropertyClosures() {
+		propertyClosures = new HashSet<IProperty>();
+		Iterator<Property> origin = target.getPropertyClosureIterator();
+		while (origin.hasNext()) {
+			propertyClosures.add(new PropertyProxy(origin.next()));
+		}
 	}
 
 	@Override
@@ -103,15 +122,30 @@ public class PersistentClassProxy implements IPersistentClass {
 		return superClass;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public Iterator<Property> getPropertyIterator() {
-		return target.getPropertyIterator();
+	public Iterator<IProperty> getPropertyIterator() {
+		if (properties == null) {
+			initializeProperties();
+		}
+		return properties.values().iterator();
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void initializeProperties() {
+		properties = new HashMap<String, IProperty>();
+		Iterator<Property> origin = target.getPropertyIterator();
+		while (origin.hasNext()) {
+			Property property = origin.next();
+			properties.put(property.getName(), new PropertyProxy(property));
+		}
 	}
 
 	@Override
-	public Property getProperty(String string) {
-		return target.getProperty(string);
+	public IProperty getProperty(String string) {
+		if (properties == null) {
+			initializeProperties();
+		}
+		return properties.get(string);
 	}
 
 	@Override
@@ -160,8 +194,11 @@ public class PersistentClassProxy implements IPersistentClass {
 	}
 
 	@Override
-	public Property getVersion() {
-		return target.getVersion();
+	public IProperty getVersion() {
+		if (version == null && target.getVersion() != null) {
+			version = new PropertyProxy(target.getVersion());
+		}
+		return version;
 	}
 
 	@Override
@@ -185,8 +222,11 @@ public class PersistentClassProxy implements IPersistentClass {
 	}
 
 	@Override
-	public void addProperty(Property property) {
-		target.addProperty(property);
+	public void addProperty(IProperty property) {
+		assert property instanceof PropertyProxy;
+		target.addProperty(((PropertyProxy)property).getTarget());
+		properties = null;
+		propertyClosures = null;
 	}
 
 	@Override
@@ -218,19 +258,21 @@ public class PersistentClassProxy implements IPersistentClass {
 	}
 
 	@Override
-	public Property getProperty() {
+	public IProperty getProperty() {
 		throw new RuntimeException("getProperty() is only allowed on SpecialRootClass"); //$NON-NLS-1$
 	}
 
 	@Override
-	public Property getParentProperty() {
+	public IProperty getParentProperty() {
 		throw new RuntimeException("getProperty() is only allowed on SpecialRootClass"); //$NON-NLS-1$
 	}
 
 	@Override
-	public void setIdentifierProperty(Property property) {
+	public void setIdentifierProperty(IProperty property) {
 		assert target instanceof RootClass;
-		((RootClass)target).setIdentifierProperty(property);
+		assert property instanceof PropertyProxy;
+		((RootClass)target).setIdentifierProperty(((PropertyProxy)property).getTarget());
+		identifierProperty = property;
 	}
 
 	@Override

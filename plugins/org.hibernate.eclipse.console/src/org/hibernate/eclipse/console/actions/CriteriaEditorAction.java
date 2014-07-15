@@ -29,9 +29,8 @@ import org.hibernate.console.node.BaseNode;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
-import org.hibernate.mapping.Property;
-import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
+import org.jboss.tools.hibernate.spi.IProperty;
 
 public class CriteriaEditorAction extends OpenQueryEditorAction {
 	
@@ -64,10 +63,10 @@ public class CriteriaEditorAction extends OpenQueryEditorAction {
 		if (node instanceof IPersistentClass){
 			enName = ((IPersistentClass)node).getEntityName();
 			enName = enName.substring(enName.lastIndexOf('.') + 1);
-		} else if (node instanceof Property){
-			Property prop = (Property)node;
+		} else if (node instanceof IProperty){
+			IProperty prop = (IProperty)node;
 			String prName = prop.getName();
-			IPersistentClass pClass = prop.getPersistentClass() != null ? new PersistentClassProxy(prop.getPersistentClass()) : null;
+			IPersistentClass pClass = prop.getPersistentClass();
 			if (pClass != null){
 				enName = pClass.getEntityName();
 				enName = enName.substring(enName.lastIndexOf('.') + 1);
@@ -82,8 +81,8 @@ public class CriteriaEditorAction extends OpenQueryEditorAction {
 					if (path.getSegment(i) instanceof IPersistentClass){
 						enName = ((IPersistentClass)path.getSegment(i)).getEntityName();
 						enName = enName.substring(enName.lastIndexOf('.') + 1);
-					} else if (path.getSegment(i) instanceof Property){
-						prName = ((Property)path.getSegment(i)).getName();
+					} else if (path.getSegment(i) instanceof IProperty){
+						prName = ((IProperty)path.getSegment(i)).getName();
 						if (prop.getValue().isSimpleValue()) {
 						    propCriteria += NLS.bind(projection, prName);
 						} else {

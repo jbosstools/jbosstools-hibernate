@@ -25,33 +25,32 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.utils.EclipseImages;
-import org.hibernate.mapping.Property;
 import org.hibernate.util.xpl.StringHelper;
-import org.jboss.tools.hibernate.proxy.ValueProxy;
+import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.IValue;
 
 public class HibernateWorkbenchHelper {
 
-	public static ImageDescriptor getImageDescriptor(Property property) {
+	public static ImageDescriptor getImageDescriptor(IProperty property) {
 		if(property==null) return null;
 		if(property.getPersistentClass()!=null) {
 			if(property.getPersistentClass().getIdentifierProperty()==property) {
 				return EclipseImages.getImageDescriptor(ImageConstants.IDPROPERTY);
 			}
 		}
-		String iconNameForValue = getIconNameForValue(new ValueProxy(property.getValue()));
+		String iconNameForValue = getIconNameForValue(property.getValue());
 		
 		return EclipseImages.getImageDescriptor(iconNameForValue);
 	}
 	
-	public static Image getImage(Property property) {
+	public static Image getImage(IProperty property) {
 		if(property==null) return null;
 		if(property.getPersistentClass()!=null) {
 			if(property.getPersistentClass().getIdentifierProperty()==property) {
 				return EclipseImages.getImage(ImageConstants.IDPROPERTY);
 			}
 		}
-		String iconNameForValue = getIconNameForValue(new ValueProxy(property.getValue()));
+		String iconNameForValue = getIconNameForValue(property.getValue());
 		
 		return EclipseImages.getImage(iconNameForValue);
 	}

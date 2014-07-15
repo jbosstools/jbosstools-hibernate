@@ -12,10 +12,8 @@ package org.jboss.tools.hibernate.ui.diagram.editors.model;
 
 import java.util.Iterator;
 
-import org.hibernate.mapping.Property;
-import org.hibernate.mapping.RootClass;
-import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
+import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.IValue;
 
@@ -33,11 +31,10 @@ public class SpecialOrmShape extends OrmShape {
 	/**
 	 * creates children of the shape, 
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void initModel() {
 		IPersistentClass rootClass = (IPersistentClass)getOrmElement();
-		Property identifierProperty = rootClass.getIdentifierProperty();
+		IProperty identifierProperty = rootClass.getIdentifierProperty();
 		if (identifierProperty != null) {
 			addChild(new Shape(identifierProperty, getConsoleConfigName()));
 		}
@@ -49,10 +46,10 @@ public class SpecialOrmShape extends OrmShape {
 			parentShape = bodyOrmShape;
 		}
 		
-		Iterator<Property> iterator = rootClass.getPropertyIterator();
+		Iterator<IProperty> iterator = rootClass.getPropertyIterator();
 		while (iterator.hasNext()) {
-			Property field = iterator.next();
-			IValue v = field.getValue() != null ? new ValueProxy(field.getValue()) : null;
+			IProperty field = iterator.next();
+			IValue v = field.getValue();
 			IType type = getTypeUsingExecContext(v);
 			Shape bodyOrmShape = null;
 			if (type != null && type.isEntityType()) {

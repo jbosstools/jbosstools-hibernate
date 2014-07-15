@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.Properties;
 
 import org.eclipse.ui.IMemento;
-import org.hibernate.mapping.Property;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
+import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IValue;
 
@@ -55,8 +55,8 @@ public class Utils {
 			}
 		} else if (obj instanceof ITable) {
 			res = getTableName((ITable)obj);
-		} else if (obj instanceof Property) {
-			Property property = (Property)obj;
+		} else if (obj instanceof IProperty) {
+			IProperty property = (IProperty)obj;
 			res = getName(property.getPersistentClass()) + "." + property.getName(); //$NON-NLS-1$
 		} else if (obj instanceof IValue && ((IValue)obj).isSimpleValue()) {
 			IValue sv = (IValue)obj;

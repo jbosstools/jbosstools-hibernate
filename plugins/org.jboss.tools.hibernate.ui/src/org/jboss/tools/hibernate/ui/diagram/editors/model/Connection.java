@@ -12,9 +12,9 @@ package org.jboss.tools.hibernate.ui.diagram.editors.model;
 
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
-import org.hibernate.mapping.Property;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
+import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IValue;
 
@@ -151,8 +151,8 @@ public class Connection extends BaseElement {
 		}
 		if (((source instanceof OrmShape) ^ (target instanceof OrmShape))) {
 			boolean bAssociation = true;
-			if (!(!(source instanceof OrmShape) && source.getOrmElement() instanceof Property) &&
-				!(!(target instanceof OrmShape) && target.getOrmElement() instanceof Property)) {
+			if (!(!(source instanceof OrmShape) && source.getOrmElement() instanceof IProperty) &&
+				!(!(target instanceof OrmShape) && target.getOrmElement() instanceof IProperty)) {
 				bAssociation = false;
 			}
 			if (bAssociation) {
@@ -271,10 +271,10 @@ public class Connection extends BaseElement {
 				}
 			}
 		} else if (PROPERTY_CLASS_FIELD.equals(propertyId)) {
-			if (source.getOrmElement() instanceof Property) {
-				res = ((Property)(source.getOrmElement())).getName();
-			} else if (target.getOrmElement() instanceof Property) {
-				res = ((Property)(target.getOrmElement())).getName();
+			if (source.getOrmElement() instanceof IProperty) {
+				res = ((IProperty)(source.getOrmElement())).getName();
+			} else if (target.getOrmElement() instanceof IProperty) {
+				res = ((IProperty)(target.getOrmElement())).getName();
 			}
 		} else if (PROPERTY_TABLE_FIELD.equals(propertyId)) {
 			if (source.getOrmElement() instanceof IColumn) {
@@ -283,10 +283,10 @@ public class Connection extends BaseElement {
 				res = ((IColumn)(target.getOrmElement())).getName();
 			}
 		} else if (PROPERTY_CLASS_FIELD_TYPE.equals(propertyId)) {
-			if (source.getOrmElement() instanceof Property) {
-				res = ((Property)(source.getOrmElement())).getType().toString();
-			} else if (target.getOrmElement() instanceof Property) {
-				res = ((Property)(target.getOrmElement())).getType().toString();
+			if (source.getOrmElement() instanceof IProperty) {
+				res = ((IProperty)(source.getOrmElement())).getType().toString();
+			} else if (target.getOrmElement() instanceof IProperty) {
+				res = ((IProperty)(target.getOrmElement())).getType().toString();
 			}
 		} else if (PROPERTY_TABLE_FIELD_TYPE.equals(propertyId)) {
 			if (source.getOrmElement() instanceof IColumn) {
@@ -295,10 +295,10 @@ public class Connection extends BaseElement {
 				res = ((IColumn)(target.getOrmElement())).getSqlType();
 			}
 		} else if (PROPERTY_ASSOCIATION_TYPE.equals(propertyId)) {
-			if (source.getOrmElement() instanceof Property) {
-				res = ((Property)(source.getOrmElement())).getValue().toString();
-			} else if (target.getOrmElement() instanceof Property) {
-				res = ((Property)(target.getOrmElement())).getValue().toString();
+			if (source.getOrmElement() instanceof IProperty) {
+				res = ((IProperty)(source.getOrmElement())).getValue().toString();
+			} else if (target.getOrmElement() instanceof IProperty) {
+				res = ((IProperty)(target.getOrmElement())).getValue().toString();
 			}
 			if (res instanceof IValue && ((IValue)res).isOneToOne()) {
 				res = "OneToOne"; //$NON-NLS-1$
@@ -308,12 +308,12 @@ public class Connection extends BaseElement {
 				res = "ManyToOne"; //$NON-NLS-1$
 			}
 		} else if (PROPERTY_SOURCE_CLASS_FIELD.equals(propertyId)) {
-			if (source.getOrmElement() instanceof Property) {
-				res = ((Property)(source.getOrmElement())).getName();
+			if (source.getOrmElement() instanceof IProperty) {
+				res = ((IProperty)(source.getOrmElement())).getName();
 			}
 		} else if (PROPERTY_SOURCE_CLASS_FIELD_TYPE.equals(propertyId)) {
-			if (source.getOrmElement() instanceof Property) {
-				res = ((Property)(source.getOrmElement())).getType().toString();
+			if (source.getOrmElement() instanceof IProperty) {
+				res = ((IProperty)(source.getOrmElement())).getType().toString();
 			}
 		} else if (PROPERTY_SOURCE_TABLE_FIELD.equals(propertyId)) {
 			if (source.getOrmElement() instanceof IColumn) {

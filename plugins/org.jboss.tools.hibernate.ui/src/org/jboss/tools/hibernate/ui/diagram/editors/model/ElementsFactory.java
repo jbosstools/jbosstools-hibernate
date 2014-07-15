@@ -19,15 +19,14 @@ import java.util.Set;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.mapping.ForeignKey;
-import org.hibernate.mapping.Property;
 import org.jboss.tools.hibernate.proxy.ColumnProxy;
 import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.proxy.TableProxy;
-import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IJoin;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
+import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IType;
@@ -111,15 +110,15 @@ public class ElementsFactory {
 	
 	protected void processExpand(ExpandableShape shape) {
 		Object element = shape.getOrmElement();
-		if (!(element instanceof Property)) {
+		if (!(element instanceof IProperty)) {
 			return;
 		}
 		OrmShape s = null;
-		Property property = (Property)element;
+		IProperty property = (IProperty)element;
 		if (!property.isComposite()) {
 			final IConfiguration config = getConfig();
 			//
-			IValue v = property.getValue() != null ? new ValueProxy(property.getValue()) : null;
+			IValue v = property.getValue();
 			IType type = UtilTypeExtract.getTypeUsingExecContext(v, getConsoleConfig());
 			if (type != null && type.isEntityType()) {
 				Object clazz = config != null ? 
@@ -142,13 +141,13 @@ public class ElementsFactory {
 			if (shouldCreateConnection(shape, s)) {
 				connections.add(new Connection(shape, s));
 			}
-			createConnections(s, getOrCreateDatabaseTable(property.getValue().getTable() != null ? new TableProxy(property.getValue().getTable()) : null));
+			createConnections(s, getOrCreateDatabaseTable(property.getValue().getTable()));
 		}
 	}
 
 	protected void refreshComponentReferences(ComponentShape componentShape) {
-		Property property = (Property)componentShape.getOrmElement();
-		IValue v = (new ValueProxy(property.getValue()));
+		IProperty property = (IProperty)componentShape.getOrmElement();
+		IValue v = property.getValue();
 		if (!v.isCollection()) {
 			return;
 		}
@@ -318,10 +317,10 @@ public class ElementsFactory {
 				Iterator<IJoin> joinIterator = subclass.getJoinIterator();
 				while (joinIterator.hasNext()) {
 					IJoin join = joinIterator.next();
-					Iterator<Property> iterator = join.getPropertyIterator();
+					Iterator<IProperty> iterator = join.getPropertyIterator();
 					while (iterator.hasNext()) {
-						Property property = iterator.next();
-						OrmShape tableShape =  getOrCreateDatabaseTable(property.getValue().getTable() != null ? new TableProxy(property.getValue().getTable()) : null);
+						IProperty property = iterator.next();
+						OrmShape tableShape =  getOrCreateDatabaseTable(property.getValue().getTable());
 						createConnections(subclassShape, tableShape);
 					}
 				}
@@ -351,22 +350,22 @@ public class ElementsFactory {
 		Iterator<IJoin> joinIterator = persistentClass.getJoinIterator();
 		while (joinIterator.hasNext()) {
 			IJoin join = (IJoin)joinIterator.next();
-			Iterator<Property> iterator = join.getPropertyIterator();
+			Iterator<IProperty> iterator = join.getPropertyIterator();
 			while (iterator.hasNext()) {
-				Property property = iterator.next();
-				OrmShape tableShape = getOrCreateDatabaseTable(property.getValue().getTable() != null ? new TableProxy(property.getValue().getTable()) : null);
+				IProperty property = iterator.next();
+				OrmShape tableShape = getOrCreateDatabaseTable(property.getValue().getTable());
 				createConnections(classShape, tableShape);
 			}
 		}
 		return classShape;
 	}
 
-	protected OrmShape getOrCreateComponentClass(Property property) {
+	protected OrmShape getOrCreateComponentClass(IProperty property) {
 		OrmShape classShape = null;
 		if (property == null) {
 			return classShape;
 		}
-		IValue value = property.getValue() != null ? new ValueProxy(property.getValue()) : null;
+		IValue value = property.getValue();
 		if (value.isCollection()) {
 			IValue component = value.getElement();
 			if (component != null) {
@@ -382,7 +381,7 @@ public class ElementsFactory {
 				Shape parentShape = ((SpecialOrmShape)classShape).getParentShape();
 				if (parentShape != null) {
 					OrmShape parentClassShape = elements.get(
-							Utils.getName(((Property)parentShape.getOrmElement()).getPersistentClass().getEntityName()));
+							Utils.getName(((IProperty)parentShape.getOrmElement()).getPersistentClass().getEntityName()));
 					if (shouldCreateConnection(parentShape, parentClassShape)) {
 						connections.add(new Connection(parentShape, parentClassShape));
 					}
@@ -397,9 +396,9 @@ public class ElementsFactory {
 		return classShape;
 	}
 
-	protected OrmShape getOrCreateAssociationClass(Property property) {
+	protected OrmShape getOrCreateAssociationClass(IProperty property) {
 		OrmShape classShape = null;
-		IValue component = new ValueProxy(property.getValue()).getElement();
+		IValue component = property.getValue().getElement();
 		if (component == null) {
 			return classShape;
 		}
@@ -424,8 +423,8 @@ public class ElementsFactory {
 	
 	protected OrmShape createShape(Object ormElement) {
 		OrmShape ormShape = null;
-		if (ormElement instanceof Property) {
-			IPersistentClass specialRootClass = service.newSpecialRootClass((Property)ormElement);
+		if (ormElement instanceof IProperty) {
+			IPersistentClass specialRootClass = service.newSpecialRootClass((IProperty)ormElement);
 			String key = Utils.getName(specialRootClass.getEntityName());
 			ormShape = elements.get(key);
 			if (null == ormShape) {
@@ -449,7 +448,7 @@ public class ElementsFactory {
 		if (persistentClass == null || dbTable == null) {
 			return res;
 		}
-		Property parentProperty = null;
+		IProperty parentProperty = null;
 		if (persistentClass.getOrmElement() instanceof IPersistentClass && ((IPersistentClass)persistentClass.getOrmElement()).isInstanceOfSpecialRootClass()) {
 			parentProperty = ((IPersistentClass)persistentClass.getOrmElement()).getParentProperty();
 		}
@@ -458,10 +457,10 @@ public class ElementsFactory {
 		while (itFields.hasNext()) {
 			final Shape shape = itFields.next();
 			Object element = shape.getOrmElement();
-			if (!(element instanceof Property && parentProperty != element)) {
+			if (!(element instanceof IProperty && parentProperty != element)) {
 				continue;
 			}
-			IValue value = new ValueProxy(((Property)element).getValue());
+			IValue value = ((IProperty)element).getValue();
 			Iterator iterator = value.getColumnIterator();
 			while (iterator.hasNext()) {
 				Object o = iterator.next();
@@ -483,8 +482,8 @@ public class ElementsFactory {
 					if (ormElement instanceof IColumn) {
 						IColumn dbColumn2 = (IColumn)ormElement;
 						name2 = dbColumn2.getName();
-					} else if (ormElement instanceof Property) {
-						Property property2 = (Property)ormElement;
+					} else if (ormElement instanceof IProperty) {
+						IProperty property2 = (IProperty)ormElement;
 						name2 = property2.getName();
 					}
 					if (dbColumn.getName().equals(name2)) {
@@ -503,8 +502,8 @@ public class ElementsFactory {
 
 	public OrmShape getShape(Object ormElement) {
 		OrmShape ormShape = null;
-		if (ormElement instanceof Property) {
-			IPersistentClass specialRootClass = service.newSpecialRootClass((Property)ormElement);
+		if (ormElement instanceof IProperty) {
+			IPersistentClass specialRootClass = service.newSpecialRootClass((IProperty)ormElement);
 			ormShape = elements.get(Utils.getName(specialRootClass.getEntityName()));
 		} else {
 			ormShape = elements.get(Utils.getName(ormElement));

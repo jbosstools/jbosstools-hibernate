@@ -12,11 +12,9 @@ package org.jboss.tools.hibernate.ui.view;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.mapping.Property;
-import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
-import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
+import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.IValue;
@@ -36,14 +34,14 @@ public class OrmImageMap {
 			imageName = getImageName((ITable)obj);
 		} else if (obj instanceof IColumn) {
 			imageName = getImageName((IColumn)obj);
-		} else if (obj instanceof Property) {
-			imageName = getImageName((Property)obj, cfg);
+		} else if (obj instanceof IProperty) {
+			imageName = getImageName((IProperty)obj, cfg);
 		} else if (obj instanceof IPersistentClass) {
 			imageName = getImageName((IPersistentClass)obj);
 		} else if (obj instanceof String) {
 			imageName = "Image_Error"; //$NON-NLS-1$;
-		} else if (obj instanceof Property) {
-			imageName = getImageName((Property)obj, cfg);
+		} else if (obj instanceof IProperty) {
+			imageName = getImageName((IProperty)obj, cfg);
 		} else if (obj instanceof IValue && ((IValue)obj).isSimpleValue() || ((IValue)obj).isOneToMany()) {
 			imageName = getImageName((IValue)obj);
 		}
@@ -90,18 +88,18 @@ public class OrmImageMap {
 	 * @param field
 	 * @return
 	 */
-	public static String getImageName(Property field, final ConsoleConfiguration cfg) {
+	public static String getImageName(IProperty field, final ConsoleConfiguration cfg) {
 		String str = "Image_PersistentFieldSimple"; //$NON-NLS-1$
 		if (field == null) {
 			return str;
 		}
-		final IPersistentClass persistentClass = field.getPersistentClass() != null ? new PersistentClassProxy(field.getPersistentClass()) : null; 
+		final IPersistentClass persistentClass = field.getPersistentClass(); 
 		if (persistentClass != null && persistentClass.getVersion() == field) {
 			str = "Image_PersistentFieldSimple_version"; //$NON-NLS-1$
 		} else if (persistentClass != null && persistentClass.getIdentifierProperty() == field) {
 			str = "Image_PersistentFieldSimple_id"; //$NON-NLS-1$
 		} else if (field.getValue() != null) {
-			final IValue value = new ValueProxy(field.getValue());
+			final IValue value = field.getValue();
 			if (value.isOneToMany()) {
 				str = "Image_PersistentFieldOne-to-many"; //$NON-NLS-1$
 			} else if (value.isOneToOne()) {

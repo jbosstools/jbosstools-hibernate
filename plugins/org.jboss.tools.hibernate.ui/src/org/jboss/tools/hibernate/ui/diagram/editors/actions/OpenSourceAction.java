@@ -21,10 +21,9 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
-import org.hibernate.mapping.Property;
-import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
+import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.UiPlugin;
@@ -81,8 +80,8 @@ public class OpenSourceAction extends SelectionAction {
 			IPersistentClass rootClass = null;
 			if (selection instanceof IPersistentClass) {
 				rootClass = (IPersistentClass) selection;
-			} else if (selection instanceof Property) {
-				rootClass = new PersistentClassProxy(((Property) selection).getPersistentClass());
+			} else if (selection instanceof IProperty) {
+				rootClass = ((IProperty) selection).getPersistentClass();
 			} else {
 				continue;
 			}

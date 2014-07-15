@@ -28,13 +28,13 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
-import org.hibernate.mapping.Property;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IDialect;
 import org.jboss.tools.hibernate.spi.IEnvironment;
 import org.jboss.tools.hibernate.spi.IMapping;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
+import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 
 /**
@@ -119,7 +119,7 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 	public Color getForeground(Object element) {
 		if (element instanceof IPersistentClass && ((IPersistentClass)element).isInstanceOfRootClass()) {
 			return Display.getCurrent().getSystemColor(SWT.COLOR_DARK_GREEN);
-		} else if (element instanceof Property) {
+		} else if (element instanceof IProperty) {
 			return Display.getCurrent().getSystemColor(SWT.COLOR_DARK_BLUE);
 		}
 		return null;
