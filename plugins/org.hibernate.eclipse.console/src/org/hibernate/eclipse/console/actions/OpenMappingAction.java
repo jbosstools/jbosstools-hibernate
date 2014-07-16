@@ -260,7 +260,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 			propRegion = findAdapter.find(startOffset, hbmPropertyPattern, true, true, false, true);
 			IPersistentClass rootClass = parentProperty.getPersistentClass();
 			if (propRegion == null && parentProperty.isComposite()
-					&& (rootClass.getIdentifierProperty() == parentProperty ||
+					&& (parentProperty.equals(rootClass.getIdentifierProperty()) ||
 						!rootClass.hasIdentifierProperty())) {
 				// try to use key-property
 				String pattern = hbmPropertyPattern.replaceFirst("<property", "<key-property"); //$NON-NLS-1$ //$NON-NLS-2$

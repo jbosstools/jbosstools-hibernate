@@ -142,5 +142,11 @@ public class PropertyProxy implements IProperty {
 	public boolean isOptimisticLocked() {
 		return target.isOptimisticLocked();
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof PropertyProxy)) return false;
+		return getTarget().equals(((PropertyProxy)o).getTarget());
+	}
 
 }

@@ -982,7 +982,7 @@ public class OpenMappingUtils {
 		final ICfg2HbmTool tool = HibernateHelper.INSTANCE.getHibernateService().newCfg2HbmTool();
 		String toolTag = ""; //$NON-NLS-1$
 		IPersistentClass pc = property.getPersistentClass();
-		if (pc != null && pc.getIdentifierProperty() == property) {
+		if (pc != null && (property.equals(pc.getIdentifierProperty()))) {
 			if (property.isComposite()) {
 				toolTag = "composite-id"; //$NON-NLS-1$
 			} else {
@@ -1010,7 +1010,7 @@ public class OpenMappingUtils {
 	public static String generateEjbPropertyPattern(IProperty property) {
 		String toolTag = ""; //$NON-NLS-1$
 		IPersistentClass pc = property.getPersistentClass();
-		if (pc != null && pc.getIdentifierProperty() == property) {
+		if (pc != null && property.equals(pc.getIdentifierProperty())) {
 			if (property.isComposite()) {
 				toolTag = "embedded-id"; //$NON-NLS-1$
 			} else {
