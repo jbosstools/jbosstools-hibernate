@@ -1,7 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Jboss Tools Hibernate Service Provider Interface
-Bundle-SymbolicName: org.jboss.tools.hibernate.spi
-Bundle-Version: 3.8.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Export-Package: org.jboss.tools.hibernate.spi
