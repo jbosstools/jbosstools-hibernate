@@ -1,7 +1,6 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.cfg.Settings;
-import org.hibernate.connection.ConnectionProvider;
 import org.jboss.tools.hibernate.spi.ISettings;
 
 public class SettingsProxy implements ISettings {
@@ -14,11 +13,6 @@ public class SettingsProxy implements ISettings {
 
 	public Settings getTarget() {
 		return target;
-	}
-
-	@Override
-	public ConnectionProvider getConnectionProvider() {
-		return target.getConnectionProvider();
 	}
 
 	@Override

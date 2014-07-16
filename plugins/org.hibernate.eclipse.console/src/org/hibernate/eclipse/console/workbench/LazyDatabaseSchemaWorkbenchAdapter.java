@@ -33,7 +33,6 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.HibernateException;
-import org.hibernate.connection.ConnectionProvider;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.execution.ExecutionContext;
@@ -118,9 +117,7 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 			public Object execute() {
 				IDatabaseCollector db = null;
 				ISettings settings = consoleConfiguration.getSettings(configuration);
-				ConnectionProvider connectionProvider = null;
 				try {
-					connectionProvider = settings.getConnectionProvider();
 					IService service = HibernateHelper.INSTANCE.getHibernateService();
 					IJDBCReader reader = service.newJDBCReader(configuration.getProperties(), settings, strategy);
 					IProgressListener progressListener = service.newProgressListener(monitor);
@@ -130,11 +127,6 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 					throw he;
 				} catch (UnsupportedOperationException he) {
 					throw new HibernateException(he);
-				}
-				finally {
-					if (connectionProvider != null) {
-						connectionProvider.close();
-					}
 				}
 				return db;
 			}
