@@ -206,7 +206,6 @@ public class ConfigurationProxy implements IConfiguration {
 		return result;
 	}
 	
-	@SuppressWarnings("unchecked")
 	private void initializeTableMappings() {
 		Iterator<Table> iterator = ((JDBCMetaDataConfiguration)target).getTableMappings();
 		while (iterator.hasNext()) {
