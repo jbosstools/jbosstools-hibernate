@@ -24,12 +24,13 @@ package org.hibernate.console.node;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.EntityMode;
 import org.hibernate.Hibernate;
 import org.hibernate.console.ConsoleMessages;
 import org.hibernate.console.ImageConstants;
+import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.type.CollectionType;
-import org.jboss.tools.hibernate.spi.IClassMetadata;
-import org.jboss.tools.hibernate.spi.IType;
+import org.hibernate.type.Type;
 
 /**
  * @author MAX
@@ -37,13 +38,13 @@ import org.jboss.tools.hibernate.spi.IType;
  */
 class ClassNode extends BaseNode {
 
-	IClassMetadata md;
+	ClassMetadata md;
 
 	boolean objectGraph;
 
 	Object baseObject;
 	boolean childrenCreated = false;
-	public ClassNode(NodeFactory factory, BaseNode parent, String name, IClassMetadata metadata, Object baseObject, boolean objectGraph) {
+	public ClassNode(NodeFactory factory, BaseNode parent, String name, ClassMetadata metadata, Object baseObject, boolean objectGraph) {
 
 		super(factory, parent);
         this.name = name;
@@ -80,7 +81,7 @@ class ClassNode extends BaseNode {
 
         String[] names = md.getPropertyNames();
         for (int i = 0; i < names.length; i++) {
-            IType type = md.getPropertyTypes()[i];
+            Type type = md.getPropertyTypes()[i];
 
             if(type.isCollectionType() ) {
                 PersistentCollectionNode tn = factory.createPersistentCollectionNode(this, names[i], md, (CollectionType)type, getValue(), objectGraph);
@@ -106,7 +107,7 @@ class ClassNode extends BaseNode {
           }
 
         // currentParent is the root
-        String cname = ( (ClassNode)currentParent).md.getMappedClass().getName();
+        String cname = ( (ClassNode)currentParent).md.getMappedClass(EntityMode.POJO).getName();
 
 		if (cname.lastIndexOf(".") != -1) { //$NON-NLS-1$
 			cname = cname.substring(cname.lastIndexOf(".") + 1); //$NON-NLS-1$
@@ -121,7 +122,7 @@ class ClassNode extends BaseNode {
 		return "select " + alias + path + " from " + cname + " as " + alias; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
-	public IClassMetadata getClassMetadata() {
+	public ClassMetadata getClassMetadata() {
 		return md;
 	}
 

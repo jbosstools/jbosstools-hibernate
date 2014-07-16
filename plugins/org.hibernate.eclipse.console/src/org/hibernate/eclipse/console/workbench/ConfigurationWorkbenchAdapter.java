@@ -25,17 +25,18 @@ import java.util.Comparator;
 import java.util.Iterator;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.mapping.PersistentClass;
-import org.jboss.tools.hibernate.spi.IConfiguration;
 
 public class ConfigurationWorkbenchAdapter extends BasicWorkbenchAdapter {
 
+	@SuppressWarnings("unchecked")
 	public Object[] getChildren(Object o) {
-		IConfiguration cfg = (IConfiguration) o;
+		Configuration cfg = (Configuration) o;
 		Iterator<? extends PersistentClass> classMappings = cfg.getClassMappings();
 		return toArray(classMappings, PersistentClass.class, new Comparator<PersistentClass>() {
 

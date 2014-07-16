@@ -59,7 +59,7 @@
       <objectContribution id="diagramEditorAction" objectClass="java.lang.Object"> 
          <visibility>
            <or>
-             <objectClass name="org.hibernate.console.spi.HibernateConfiguration"/>
+             <objectClass name="org.hibernate.cfg.Configuration"/>
              <objectClass name="org.hibernate.console.ConsoleConfiguration"/>
              <objectClass name="org.hibernate.mapping.PersistentClass"/>
            </or>

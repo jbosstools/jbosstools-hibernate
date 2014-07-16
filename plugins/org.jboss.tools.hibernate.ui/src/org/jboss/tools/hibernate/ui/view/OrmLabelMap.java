@@ -12,16 +12,16 @@ package org.jboss.tools.hibernate.ui.view;
 
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.workbench.TypeNameValueVisitor;
+import org.hibernate.mapping.Column;
+import org.hibernate.mapping.Component;
+import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
-import org.jboss.tools.hibernate.proxy.TableProxy;
-import org.jboss.tools.hibernate.proxy.ValueProxy;
-import org.jboss.tools.hibernate.spi.IColumn;
-import org.jboss.tools.hibernate.spi.IProperty;
-import org.jboss.tools.hibernate.spi.ITable;
-import org.jboss.tools.hibernate.spi.IType;
-import org.jboss.tools.hibernate.spi.IValue;
+import org.hibernate.mapping.SimpleValue;
+import org.hibernate.mapping.Table;
+import org.hibernate.mapping.Value;
+import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.UtilTypeExtract;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Utils;
 
@@ -38,18 +38,16 @@ public class OrmLabelMap {
 
 	public static String getLabel(final Object obj, final ConsoleConfiguration cfg) {
 		String label = null;
-		if (obj instanceof ITable) {
-			label = getParticularLabel((ITable)obj);
-		} else if (obj instanceof IColumn) {
-			label = getParticularLabel((IColumn)obj);
+		if (obj instanceof Table) {
+			label = getParticularLabel((Table)obj);
+		} else if (obj instanceof Column) {
+			label = getParticularLabel((Column)obj);
 		} else if (obj instanceof Property) {
 			label = getParticularLabel((Property)obj, cfg);
 		} else if (obj instanceof OneToMany) {
 			label = getParticularLabel((OneToMany)obj);
-		} else if (obj instanceof IProperty) {
-			label = getParticularLabel((IProperty)obj, cfg);
-		} else if (obj instanceof IValue && (((IValue)obj).isSimpleValue() || ((IValue)obj).isOneToMany())) {
-			label = getParticularLabel((IValue)obj);
+		} else if (obj instanceof SimpleValue) {
+			label = getParticularLabel((SimpleValue)obj);
 		} else if (obj instanceof PersistentClass) {
 			label = getParticularLabel((PersistentClass)obj);
 		} else if (obj instanceof String) {
@@ -63,11 +61,11 @@ public class OrmLabelMap {
 		return label;
 	}
 
-	public static String getParticularLabel(ITable table) {
+	public static String getParticularLabel(Table table) {
 		return Utils.getTableName(table);
 	}
 
-	public static String getParticularLabel(IColumn column) {
+	public static String getParticularLabel(Column column) {
 		final String sqlType = column.getSqlType();
 		StringBuffer name = new StringBuffer();
 		name.append(column.getName());
@@ -89,16 +87,14 @@ public class OrmLabelMap {
 		name.append(field.getName());
 		name.append(" :"); //$NON-NLS-1$
 		String typeString = null;
-		IValue v = field.getValue() != null ? new ValueProxy(field.getValue()) : null;
-		IType type = UtilTypeExtract.getTypeUsingExecContext(v, cfg);
+		Type type = UtilTypeExtract.getTypeUsingExecContext(field.getValue(), cfg);
 		if (type != null && type.getReturnedClass() != null) {
 			typeString = type.getReturnedClass().getName();
 		} else {
-			IValue fieldValue = field.getValue() != null ? new ValueProxy(field.getValue()) : null;
-			if (fieldValue != null && fieldValue.isComponent()) {
-				typeString = fieldValue.getComponentClassName();
-			} else if (fieldValue != null && fieldValue.isSimpleValue()) {
-				typeString = fieldValue.getTypeName();
+			if (field.getValue() instanceof Component) {
+				typeString = ((Component)field.getValue()).getComponentClassName();
+			} else if (field.getValue()!= null && field.getValue().isSimpleValue()) {
+				typeString = ((SimpleValue)field.getValue()).getTypeName();
 			}
 		}
 		if (typeString != null) {
@@ -107,39 +103,7 @@ public class OrmLabelMap {
 			name.append(typeString);
 			return name.toString();
 		}
-		IValue value = field.getValue() != null ? new ValueProxy(field.getValue()) : null;
-		String typeName = null;
-		if (value != null) {
-			typeName = (String) value.accept(new TypeNameValueVisitor(false));
-			if (typeName != null) {
-				return field.getName() + " : " + typeName; //$NON-NLS-1$
-			}
-		}
-		return field.getName();
-	}
-
-	public static String getParticularLabel(IProperty field, final ConsoleConfiguration cfg) {
-		StringBuffer name = new StringBuffer();
-		name.append(field.getName());
-		name.append(" :"); //$NON-NLS-1$
-		String typeString = null;
-		IValue value = field.getValue();
-		IType type = UtilTypeExtract.getTypeUsingExecContext(value, cfg);
-		if (type != null && type.getReturnedClass() != null) {
-			typeString = type.getReturnedClass().getName();
-		} else {
-			if (value.isComponent()) {
-				typeString = value.getComponentClassName();
-			} else if (value != null && value.isSimpleValue()) {
-				typeString = value.getTypeName();
-			}
-		}
-		if (typeString != null) {
-			typeString = correctTypeString(typeString);
-			name.append(SPACE);
-			name.append(typeString);
-			return name.toString();
-		}
+		Value value = field.getValue();
 		String typeName = null;
 		if (value != null) {
 			typeName = (String) value.accept(new TypeNameValueVisitor(false));
@@ -166,11 +130,11 @@ public class OrmLabelMap {
 	 * @param field
 	 * @return
 	 */
-	public static String getParticularLabel(IValue value) {
+	public static String getParticularLabel(SimpleValue field) {
 		String label = UIViewMessages.OrmLabelProvider_element;
-		if (value.isDependantValue()) {
+		if (field instanceof DependantValue) {
 			label = "key"; //$NON-NLS-1$
-		} else if (value.isComponent()) {
+		} else if (field instanceof Component) {
 			label = "element"; //$NON-NLS-1$
 		}
 		return label;
@@ -193,7 +157,7 @@ public class OrmLabelMap {
 		StringBuffer name = new StringBuffer();
 		name.append(persistentClass.getEntityName() != null ? 
 				persistentClass.getEntityName() : persistentClass.getClassName());
-		ITable table = persistentClass.getTable() != null ? new TableProxy(persistentClass.getTable()) : null;
+		Table table = persistentClass.getTable();
 		if (table != null) {
 			final String tableName = Utils.getTableName(table);
 			if (tableName != null) {

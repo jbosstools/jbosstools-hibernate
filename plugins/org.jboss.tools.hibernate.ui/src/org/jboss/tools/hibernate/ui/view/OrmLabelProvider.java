@@ -24,18 +24,18 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.hibernate.HibernateException;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.Environment;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.execution.ExecutionContext;
+import org.hibernate.dialect.Dialect;
+import org.hibernate.dialect.resolver.DialectFactory;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.engine.Mapping;
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
-import org.jboss.tools.hibernate.spi.IColumn;
-import org.jboss.tools.hibernate.spi.IConfiguration;
-import org.jboss.tools.hibernate.spi.IDialect;
-import org.jboss.tools.hibernate.spi.IEnvironment;
-import org.jboss.tools.hibernate.spi.IMapping;
-import org.jboss.tools.hibernate.util.HibernateHelper;
 
 /**
  *
@@ -45,8 +45,8 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 	private Map<ImageDescriptor, Image> imageCache = new HashMap<ImageDescriptor, Image>(25);
 	
 	protected String consoleConfigName;
-	protected IMapping mapping = null;
-	protected IDialect dialect = null;
+	protected Mapping mapping = null;
+	protected Dialect dialect = null;
 
 	public OrmLabelProvider() {
 	}
@@ -65,7 +65,7 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 		dialect = null;
 	}
 
-	protected IConfiguration getConfig() {
+	protected Configuration getConfig() {
 		final ConsoleConfiguration consoleConfig = getConsoleConfig();
 		if (consoleConfig != null) {
 			if (!consoleConfig.hasConfiguration()) {
@@ -103,8 +103,8 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 
 	@Override
 	public String getText(Object obj) {
-		if (obj instanceof IColumn) {
-			updateColumnSqlType((IColumn)obj);
+		if (obj instanceof Column) {
+			updateColumnSqlType((Column)obj);
 		}
 		return OrmLabelMap.getLabel(obj, getConsoleConfig());
 	}
@@ -139,26 +139,25 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 	 * @param column
 	 * @return
 	 */
-	public boolean updateColumnSqlType(final IColumn column) {
-		IEnvironment environment = HibernateHelper.INSTANCE.getHibernateService().getEnvironment();
+	public boolean updateColumnSqlType(final Column column) {
 		String sqlType = column.getSqlType();
 		if (sqlType != null) {
 			return false;
 		}
-		final IConfiguration config = getConfig();
+		final Configuration config = getConfig();
 		if (mapping == null && config != null) {
 			final ConsoleConfiguration consoleConfig = getConsoleConfig();
-			mapping = (IMapping)consoleConfig.execute(new ExecutionContext.Command() {
+			mapping = (Mapping)consoleConfig.execute(new ExecutionContext.Command() {
 				public Object execute() {
 					return config.buildMapping();
 				}
 			} );
 		}
 		if (dialect == null && config != null) {
-			final String dialectName = config.getProperty(environment.getDialect());
+			final String dialectName = config.getProperty(Environment.DIALECT);
 			if (dialectName != null) {
 				try {
-					dialect = HibernateHelper.INSTANCE.getHibernateService().newDialect(config.getProperties(), null);
+					dialect = DialectFactory.buildDialect(config.getProperties());
 				} catch (HibernateException e) {
 					HibernateConsolePlugin.getDefault().logErrorMessage("HibernateException: ", e); //$NON-NLS-1$
 				}

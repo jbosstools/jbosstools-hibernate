@@ -17,8 +17,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import junit.framework.TestCase;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -26,6 +24,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.internal.core.LaunchManager;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.model.impl.ExporterFactory;
@@ -35,13 +34,13 @@ import org.hibernate.eclipse.console.test.project.LaunchConfigTestProject;
 import org.hibernate.eclipse.console.test.utils.ResourceReadUtils;
 import org.hibernate.eclipse.launch.CodeGenerationStrings;
 import org.hibernate.eclipse.launch.ExporterAttributes;
-import org.jboss.tools.hibernate.spi.IArtifactCollector;
-import org.jboss.tools.hibernate.spi.IConfiguration;
-import org.jboss.tools.hibernate.spi.IExporter;
-import org.jboss.tools.hibernate.spi.IGenericExporter;
-import org.jboss.tools.hibernate.spi.IHbm2DDLExporter;
-import org.jboss.tools.hibernate.spi.IQueryExporter;
-import org.jboss.tools.hibernate.util.HibernateHelper;
+import org.hibernate.tool.hbm2x.ArtifactCollector;
+import org.hibernate.tool.hbm2x.Exporter;
+import org.hibernate.tool.hbm2x.GenericExporter;
+import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
+import org.hibernate.tool.hbm2x.QueryExporter;
+
+import junit.framework.TestCase;
 
 /**
  * @author Vitali Yemialyanchyk
@@ -152,14 +151,14 @@ public class ExporterAttributesTest extends TestCase {
 		str2 = ResourceReadUtils.adjustXmlText(str2);
 		assertEquals(str1, str2);
 		//
-		IArtifactCollector artifactCollector = HibernateHelper.INSTANCE.getHibernateService().newArtifactCollector();
+		ArtifactCollector artifactCollector = new ArtifactCollector();
 		ExporterAttributes expAttr = exporterAttributes;
         // Global properties
         Properties props = new Properties();
         props.put(CodeGenerationStrings.EJB3, "" + expAttr.isEJB3Enabled()); //$NON-NLS-1$
         props.put(CodeGenerationStrings.JDK5, "" + expAttr.isJDK5Enabled()); //$NON-NLS-1$
         consoleCfg.build();
-        IConfiguration cfg = consoleCfg.getConfiguration();
+        Configuration cfg = consoleCfg.getConfiguration();
 		assertNotNull(cfg);
 		Set<String> outputDirectories = new HashSet<String>();
 		for (int i = 0; i < exporterFactories.size(); i++) {
@@ -171,7 +170,7 @@ public class ExporterAttributesTest extends TestCase {
 			propsForTesting.putAll(globalProperties);
 			propsForTesting.putAll(ef.getProperties());
 			//
-			IExporter exporter = null;
+			Exporter exporter = null;
 			outputDirectories.clear();
 			try {
 				exporter = ef.createConfiguredExporter(cfg,
@@ -186,11 +185,11 @@ public class ExporterAttributesTest extends TestCase {
 			String exporterDefinitionId = ef.getExporterDefinitionId();
 			// test special handling for GenericExporter
 			if (exporterDefinitionId.equals("org.hibernate.tools.hbmtemplate")) { //$NON-NLS-1$
+				assertTrue(exporter instanceof GenericExporter);
 				assertNull(propsFromExporter.getProperty(ExporterFactoryStrings.FILE_PATTERN));
 				assertNull(propsFromExporter.getProperty(ExporterFactoryStrings.TEMPLATE_NAME));
 				assertNull(propsFromExporter.getProperty(ExporterFactoryStrings.FOR_EACH));
-				IGenericExporter ge = exporter.getGenericExporter();
-				assertNotNull(ge);
+				GenericExporter ge = (GenericExporter) exporter;
 				assertEquals(propsForTesting.getProperty(ExporterFactoryStrings.FILE_PATTERN), ge.getFilePattern());
 				assertEquals(propsForTesting.getProperty(ExporterFactoryStrings.TEMPLATE_NAME), ge.getTemplateName());
 				// to test GenericExporter should provide public getter but it doesn't
@@ -198,17 +197,18 @@ public class ExporterAttributesTest extends TestCase {
 			}
 			// test special handling for Hbm2DDLExporter
 			if (exporterDefinitionId.equals("org.hibernate.tools.hbm2ddl")) { //$NON-NLS-1$
+				assertTrue(exporter instanceof Hbm2DDLExporter);
 				assertNull(propsFromExporter.getProperty(ExporterFactoryStrings.EXPORTTODATABASE));
-				IHbm2DDLExporter ddlExporter = exporter.getHbm2DDLExporter();
-				assertNotNull(ddlExporter);
+				Hbm2DDLExporter ddlExporter = (Hbm2DDLExporter) exporter;
 				// to test Hbm2DDLExporter should provide public getter but it doesn't
 				//assertEquals(propsForTesting.getProperty(ExporterFactoryStrings.EXPORTTODATABASE), ddlExporter.getExport());
 			}
 			// test special handling for QueryExporter
 			if (exporterDefinitionId.equals("org.hibernate.tools.query")) { //$NON-NLS-1$
+				assertTrue(exporter instanceof QueryExporter);
 				assertNull(propsFromExporter.getProperty(ExporterFactoryStrings.QUERY_STRING));
 				assertNull(propsFromExporter.getProperty(ExporterFactoryStrings.OUTPUTFILENAME));
-				IQueryExporter queryExporter = exporter.getQueryExporter();
+				QueryExporter queryExporter = (QueryExporter)exporter;
 				// to test QueryExporter should provide public getter but it doesn't
 				//List<String> queryStrings = queryExporter.getQueries();
 				//assertEquals(1, queryStrings.size());

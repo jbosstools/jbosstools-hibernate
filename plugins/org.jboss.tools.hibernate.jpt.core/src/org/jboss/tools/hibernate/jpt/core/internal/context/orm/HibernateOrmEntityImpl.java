@@ -32,6 +32,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlCacheable_2_0;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.hibernate.cfg.NamingStrategy;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
 import org.jboss.tools.hibernate.jpt.core.internal.context.GenericGenerator;
@@ -40,7 +41,6 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateTable;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValidationMessage;
-import org.jboss.tools.hibernate.spi.INamingStrategy;
 
 /**
  * @author Dmitry Geraskov
@@ -186,7 +186,7 @@ implements HibernateOrmEntity {
 			String colName = (parentEntity == null)
 					? getPrimaryKeyColumnName() : parentEntity.getPrimaryKeyColumnName();
 			if (colName != null){
-				INamingStrategy ns = HibernateOrmEntityImpl.this.getJpaProject().getNamingStrategy();
+				NamingStrategy ns = HibernateOrmEntityImpl.this.getJpaProject().getNamingStrategy();
 				if (getJpaProject().isNamingStrategyEnabled() && ns != null){
 					try {
 						String name = ns.joinKeyColumnName(colName,	(parentEntity == null)

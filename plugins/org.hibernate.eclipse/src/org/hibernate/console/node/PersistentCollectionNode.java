@@ -27,13 +27,13 @@ import java.util.Iterator;
 import javax.swing.tree.TreeNode;
 
 import org.eclipse.osgi.util.NLS;
+import org.hibernate.EntityMode;
 import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleMessages;
+import org.hibernate.metadata.ClassMetadata;
+import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.type.CollectionType;
-import org.jboss.tools.hibernate.proxy.TypeProxy;
-import org.jboss.tools.hibernate.spi.IClassMetadata;
-import org.jboss.tools.hibernate.spi.ICollectionMetadata;
-import org.jboss.tools.hibernate.spi.IType;
+import org.hibernate.type.Type;
 
 /**
  * @author MAX
@@ -43,14 +43,14 @@ class PersistentCollectionNode extends BaseNode implements TypedNode{
 
 	BaseNode virtualNode;
 	CollectionType type;
-	IType elementType;
+	Type elementType;
 	private boolean objectGraph;
 	private Object baseObject;
 	private Object collectionObject;
 
 	boolean childrenCreated = false;
-	private IClassMetadata md;
-	public PersistentCollectionNode(NodeFactory factory, BaseNode parent, String name, CollectionType type, IClassMetadata md, ICollectionMetadata metadata, Object baseObject, boolean objectGraph) {
+	private ClassMetadata md;
+	public PersistentCollectionNode(NodeFactory factory, BaseNode parent, String name, CollectionType type, ClassMetadata md, CollectionMetadata metadata, Object baseObject, boolean objectGraph) {
 		super(factory, parent);
 		this.md = md;
 		this.type = type;
@@ -60,7 +60,7 @@ class PersistentCollectionNode extends BaseNode implements TypedNode{
 
 
 
-		iconName = factory.getIconNameForType(new TypeProxy(type));
+		iconName = factory.getIconNameForType(type);
 		this.elementType = metadata.getElementType();
 		if(objectGraph) {
 			//
@@ -72,7 +72,7 @@ class PersistentCollectionNode extends BaseNode implements TypedNode{
 	Object initCollectionObject() {
 		if(collectionObject!=null) return collectionObject;
 		try {
-			collectionObject = md.getPropertyValue(baseObject, name);
+			collectionObject = md.getPropertyValue(baseObject, name, EntityMode.POJO);
 		} catch (HibernateException e) {
 			IllegalArgumentException iae = new IllegalArgumentException(ConsoleMessages.PersistentCollectionNode_could_not_access_property_value);
 			iae.initCause(e);
@@ -174,7 +174,7 @@ class PersistentCollectionNode extends BaseNode implements TypedNode{
 
 	}
 
-	private BaseNode createNode(int idx, Object element, IType type) { // TODO: use a common way to create these darn nodes!
+	private BaseNode createNode(int idx, Object element, Type type) { // TODO: use a common way to create these darn nodes!
 		return new ClassNode(factory, this,type.getReturnedClass().getName(), factory.getMetaData(type.getReturnedClass() ),element,objectGraph);
 	}
 
@@ -182,7 +182,7 @@ class PersistentCollectionNode extends BaseNode implements TypedNode{
 		return getLabel(getName(),b) + " : " + getLabel(type.getReturnedClass().getName(),b) + "<" + getLabel(elementType.getReturnedClass().getName(),b) + ">";  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 	}
 
-	public IType getType() {
-		return new TypeProxy(type);
+	public Type getType() {
+		return type;
 	}
 }

@@ -16,19 +16,18 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.annotations.common.util.StringHelper;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.model.impl.ExporterFactoryStrings;
 import org.hibernate.eclipse.console.model.impl.ExporterProperty;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
 import org.hibernate.eclipse.launch.PathHelper;
-import org.jboss.tools.hibernate.spi.IArtifactCollector;
-import org.jboss.tools.hibernate.spi.IConfiguration;
-import org.jboss.tools.hibernate.spi.IExporter;
-import org.jboss.tools.hibernate.spi.IGenericExporter;
-import org.jboss.tools.hibernate.spi.IHbm2DDLExporter;
-import org.jboss.tools.hibernate.spi.IQueryExporter;
-import org.jboss.tools.hibernate.util.HibernateHelper;
+import org.hibernate.tool.hbm2x.ArtifactCollector;
+import org.hibernate.tool.hbm2x.Exporter;
+import org.hibernate.tool.hbm2x.GenericExporter;
+import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
+import org.hibernate.tool.hbm2x.QueryExporter;
 
 /**
  * ExporterFactory is used in UI to hold additional configuration for Exporter definitions
@@ -205,10 +204,10 @@ public class ExporterFactory {
 	 * @param collector
 	 * @throws CoreException in case of resolve variables issues.
 	 */
-	public IExporter createConfiguredExporter(IConfiguration cfg, String defaultOutputDirectory,
-			String customTemplatePath, Properties globalProperties, Set<String> outputDirectories, IArtifactCollector collector) throws CoreException {
+	public Exporter createConfiguredExporter(Configuration cfg, String defaultOutputDirectory,
+			String customTemplatePath, Properties globalProperties, Set<String> outputDirectories, ArtifactCollector collector) throws CoreException {
 
-		IExporter exporter = getExporterDefinition().createExporterInstance();
+		Exporter exporter = getExporterDefinition().createExporterInstance();
 
 		Properties extract = new Properties();
 		Properties props = new Properties();
@@ -237,10 +236,8 @@ public class ExporterFactory {
 			outputDirectories.add(loc);
 			exporter.setOutputDirectory(new File(loc));
 		}
-		
-		HibernateHelper.INSTANCE.getHibernateService().setExporterConfiguration(exporter, cfg);
 
-//		exporter.setConfiguration(cfg);
+		exporter.setConfiguration(cfg);
 
 		List<String> templatePathList = new ArrayList<String>();
 		if (extract.containsKey(ExporterFactoryStrings.TEMPLATE_PATH)) {
@@ -283,20 +280,20 @@ public class ExporterFactory {
 		exporter.setTemplatePath(templatePathList.toArray(new String[templatePathList.size()]));
 		// special handling for GenericExporter (TODO: be delegated via plugin.xml)
 		if (getExporterDefinitionId().equals("org.hibernate.tools.hbmtemplate")) { //$NON-NLS-1$
-			IGenericExporter ge = exporter.getGenericExporter();
+			GenericExporter ge = (GenericExporter) exporter;
 			ge.setFilePattern(extract.getProperty(ExporterFactoryStrings.FILE_PATTERN));
 			ge.setTemplateName(extract.getProperty(ExporterFactoryStrings.TEMPLATE_NAME));
 			ge.setForEach(extract.getProperty(ExporterFactoryStrings.FOR_EACH));
 		}
 		// special handling for Hbm2DDLExporter
 		if (getExporterDefinitionId().equals("org.hibernate.tools.hbm2ddl")) { //$NON-NLS-1$
-			IHbm2DDLExporter ddlExporter = exporter.getHbm2DDLExporter();
+			Hbm2DDLExporter ddlExporter = (Hbm2DDLExporter) exporter;
 			//avoid users to delete their databases with a single click
 			ddlExporter.setExport(Boolean.parseBoolean(extract.getProperty(ExporterFactoryStrings.EXPORTTODATABASE)));
 		}
 		// special handling for QueryExporter
 		if (getExporterDefinitionId().equals("org.hibernate.tools.query")) { //$NON-NLS-1$
-			IQueryExporter queryExporter = exporter.getQueryExporter();
+			QueryExporter queryExporter = (QueryExporter) exporter;
 			List<String> queryStrings = new ArrayList<String>();
 			queryStrings.add(extract.getProperty(ExporterFactoryStrings.QUERY_STRING, "")); //$NON-NLS-1$
 			queryExporter.setQueries(queryStrings);

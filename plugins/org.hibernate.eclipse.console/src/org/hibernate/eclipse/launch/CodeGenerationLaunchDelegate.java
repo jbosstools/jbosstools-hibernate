@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -68,6 +69,12 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.text.edits.TextEdit;
 import org.hibernate.HibernateException;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.JDBCMetaDataConfiguration;
+import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
+import org.hibernate.cfg.reveng.OverrideRepository;
+import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
+import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
@@ -77,15 +84,10 @@ import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.ext.ConsoleExtension;
 import org.hibernate.eclipse.console.ext.ConsoleExtensionManager;
 import org.hibernate.eclipse.console.model.impl.ExporterFactory;
+import org.hibernate.tool.hbm2x.ArtifactCollector;
+import org.hibernate.tool.hbm2x.Exporter;
+import org.hibernate.util.xpl.ReflectHelper;
 import org.hibernate.util.xpl.StringHelper;
-import org.jboss.tools.hibernate.spi.IArtifactCollector;
-import org.jboss.tools.hibernate.spi.IConfiguration;
-import org.jboss.tools.hibernate.spi.IExporter;
-import org.jboss.tools.hibernate.spi.IOverrideRepository;
-import org.jboss.tools.hibernate.spi.IReverseEngineeringSettings;
-import org.jboss.tools.hibernate.spi.IReverseEngineeringStrategy;
-import org.jboss.tools.hibernate.spi.IService;
-import org.jboss.tools.hibernate.util.HibernateHelper;
 
 @SuppressWarnings("restriction")
 public class CodeGenerationLaunchDelegate extends AntLaunchDelegate { 
@@ -368,7 +370,7 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 		}
 	}
 
-	private IArtifactCollector runExporters (final ExporterAttributes attributes, final ExporterFactory[] exporterFactories, final Set<String> outputDirectories, final IProgressMonitor monitor)
+	private ArtifactCollector runExporters (final ExporterAttributes attributes, final ExporterFactory[] exporterFactories, final Set<String> outputDirectories, final IProgressMonitor monitor)
 	   throws CoreException
     {
 
@@ -381,17 +383,17 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 			if (attributes.isReverseEngineer()) {
 				monitor.subTask(HibernateConsoleMessages.CodeGenerationLaunchDelegate_reading_jdbc_metadata);
 			}
-			final IConfiguration cfg = buildConfiguration(attributes, cc, ResourcesPlugin.getWorkspace().getRoot());
+			final Configuration cfg = buildConfiguration(attributes, cc, ResourcesPlugin.getWorkspace().getRoot());
 
 			monitor.worked(1);
 
 			if (monitor.isCanceled())
 				return null;
 
-			return (IArtifactCollector) cc.execute(new Command() {
+			return (ArtifactCollector) cc.execute(new Command() {
 
 				public Object execute() {
-					IArtifactCollector artifactCollector = HibernateHelper.INSTANCE.getHibernateService().newArtifactCollector();
+					ArtifactCollector artifactCollector = new ArtifactCollector();
 
                     // Global properties
 	                Properties props = new Properties();
@@ -405,7 +407,7 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
                        Properties globalProperties = new Properties();
                        globalProperties.putAll(props);
 
-                       IExporter exporter;
+                       Exporter exporter;
 					try {
 						exporter = exporterFactories[i].createConfiguredExporter(cfg, attributes.getOutputPath(), attributes.getTemplatePath(), globalProperties, outputDirectories, artifactCollector);
 					} catch (CoreException e) {
@@ -427,22 +429,21 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 
 		}
 
-	private IConfiguration buildConfiguration(final ExporterAttributes attributes, ConsoleConfiguration cc, IWorkspaceRoot root) {
+	private Configuration buildConfiguration(final ExporterAttributes attributes, ConsoleConfiguration cc, IWorkspaceRoot root) {
 		final boolean reveng = attributes.isReverseEngineer();
 		final String reverseEngineeringStrategy = attributes.getRevengStrategy();
 		final boolean preferBasicCompositeids = attributes.isPreferBasicCompositeIds();
 		final IResource revengres = PathHelper.findMember( root, attributes.getRevengSettings());
 		
 		if(reveng) {
-			IConfiguration configuration = null;
+			Configuration configuration = null;
 			if(cc.hasConfiguration()) {
 				configuration = cc.getConfiguration();
 			} else {
 				configuration = cc.buildWith( null, false );
 			}
 
-//			final JDBCMetaDataConfiguration cfg = new JDBCMetaDataConfiguration();
-			final IConfiguration cfg = HibernateHelper.INSTANCE.getHibernateService().newJDBCMetaDataConfiguration();
+			final JDBCMetaDataConfiguration cfg = new JDBCMetaDataConfiguration();
 			Properties properties = configuration.getProperties();
 			cfg.setProperties( properties );
 			cc.buildWith(cfg,false);
@@ -453,16 +454,13 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 
 				public Object execute() {					
 					//todo: factor this setup of revengstrategy to core		
-					
-					IService service = HibernateHelper.INSTANCE.getHibernateService();
-					
-					IReverseEngineeringStrategy res = service.newDefaultReverseEngineeringStrategy();
+					ReverseEngineeringStrategy res = new DefaultReverseEngineeringStrategy();
 
-					IOverrideRepository repository = null;
+					OverrideRepository repository = null;
 					
 					if(revengres!=null) {
 						File file = PathHelper.getLocation( revengres ).toFile();
-						repository = service.newOverrideRepository();
+						repository = new OverrideRepository();
 						repository.addFile(file);						
 					}
 					
@@ -471,14 +469,14 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 					}
 
 					if(reverseEngineeringStrategy!=null && reverseEngineeringStrategy.trim().length()>0) {
-						res = service.newReverseEngineeringStrategy(reverseEngineeringStrategy, res);
+						res = loadreverseEngineeringStrategy(reverseEngineeringStrategy, res);
 					}
-					
-					IReverseEngineeringSettings qqsettings = service.newReverseEngineeringSettings(res)
-							.setDefaultPackageName(attributes.getPackageName())
-							.setDetectManyToMany( attributes.detectManyToMany() )
-							.setDetectOneToOne( attributes.detectOneToOne() )
-							.setDetectOptimisticLock( attributes.detectOptimisticLock() );
+
+					ReverseEngineeringSettings qqsettings = new ReverseEngineeringSettings(res)
+					.setDefaultPackageName(attributes.getPackageName())
+					.setDetectManyToMany( attributes.detectManyToMany() )
+					.setDetectOneToOne( attributes.detectOneToOne() )
+					.setDetectOptimisticLock( attributes.detectOptimisticLock() );
 
 					res.setSettings(qqsettings);
 
@@ -497,6 +495,31 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 			return cc.getConfiguration();
 		}
 	}
+
+	// TODO: merge with revstrategy load in JDBCConfigurationTask
+	@SuppressWarnings("unchecked")
+	private ReverseEngineeringStrategy loadreverseEngineeringStrategy(final String className, ReverseEngineeringStrategy delegate) {
+        try {
+            Class<ReverseEngineeringStrategy> clazz = ReflectHelper.classForName(className);
+			Constructor<ReverseEngineeringStrategy> constructor = clazz.getConstructor(new Class[] { ReverseEngineeringStrategy.class });
+            return constructor.newInstance(new Object[] { delegate });
+        }
+        catch (NoSuchMethodException e) {
+			try {
+				Class<?> clazz = ReflectHelper.classForName(className);
+				ReverseEngineeringStrategy rev = (ReverseEngineeringStrategy) clazz.newInstance();
+				return rev;
+			}
+			catch (Exception eq) {
+				String out = NLS.bind(HibernateConsoleMessages.CodeGenerationLaunchDelegate_could_not_create_or_find_with_default_noarg_constructor, className);
+				throw new HibernateConsoleRuntimeException(out, eq);
+			}
+		}
+        catch (Exception e) {
+			String out = NLS.bind(HibernateConsoleMessages.CodeGenerationLaunchDelegate_could_not_create_or_find_with_one_argument_delegate_constructor, className);
+			throw new HibernateConsoleRuntimeException(out, e);
+		}
+    }
 
 	public boolean preLaunchCheck(ILaunchConfiguration configuration, String mode, IProgressMonitor monitor) throws CoreException {
 		ExporterAttributes attributes = new ExporterAttributes(configuration);

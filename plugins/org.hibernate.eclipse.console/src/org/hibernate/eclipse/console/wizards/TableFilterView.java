@@ -45,9 +45,9 @@ import org.hibernate.eclipse.console.workbench.DeferredContentProvider;
 import org.hibernate.eclipse.console.workbench.LazyDatabaseSchema;
 import org.hibernate.eclipse.console.workbench.TableContainer;
 import org.hibernate.eclipse.console.workbench.xpl.AnyAdaptableLabelProvider;
+import org.hibernate.mapping.Column;
+import org.hibernate.mapping.Table;
 import org.hibernate.util.xpl.StringHelper;
-import org.jboss.tools.hibernate.spi.IColumn;
-import org.jboss.tools.hibernate.spi.ITable;
 
 public abstract class TableFilterView extends TreeToTableComposite {
 
@@ -140,8 +140,8 @@ public abstract class TableFilterView extends TreeToTableComposite {
 				Object sel = iterator.next();
 				ITableFilter filter = null;
 
-				if ( sel instanceof ITable ) {
-					ITable table = (ITable) sel;
+				if ( sel instanceof Table ) {
+					Table table = (Table) sel;
 					filter = revEngDef.createTableFilter();
 					if ( StringHelper.isNotEmpty( table.getName() ) ) {
 						filter.setMatchName( table.getName() );
@@ -170,7 +170,7 @@ public abstract class TableFilterView extends TreeToTableComposite {
 					}
 					filter.setMatchName(".*"); //$NON-NLS-1$
 					filter.setExclude( Boolean.valueOf( exclude ) );
-				} else if ( sel instanceof IColumn ) {
+				} else if ( sel instanceof Column ) {
 					// we ignore column since at the moment we dont know which table is there.
 					return;
 				} else {

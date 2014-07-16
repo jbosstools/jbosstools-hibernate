@@ -10,34 +10,37 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate4_3;
 
+import java.util.Collections;
 import java.util.Iterator;
 
+import org.hibernate.SessionFactory;
 import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.QLFormatHelper;
+import org.hibernate.engine.query.spi.HQLQueryPlan;
+import org.hibernate.hql.spi.QueryTranslator;
+import org.hibernate.internal.SessionFactoryImpl;
+import org.hibernate.type.Type;
 import org.hibernate.util.xpl.StringHelper;
-import org.jboss.tools.hibernate.spi.IHQLQueryPlan;
-import org.jboss.tools.hibernate.spi.IQueryTranslator;
-import org.jboss.tools.hibernate.spi.ISessionFactory;
-import org.jboss.tools.hibernate.spi.IType;
-import org.jboss.tools.hibernate.util.HibernateHelper;
 
 public class QueryHelper {
 	
 	
-	static String generateSQL(ExecutionContext executionContext, final ISessionFactory sessionFactory, final String query) {
+	static String generateSQL(ExecutionContext executionContext, final SessionFactory sessionFactory, final String query) {
 
 		if(StringHelper.isEmpty(query)) return ""; //$NON-NLS-1$
 
 		String result = (String) executionContext.execute(new ExecutionContext.Command() {
+			@SuppressWarnings("unchecked")
 			public Object execute() {
 				try {
+					SessionFactoryImpl sfimpl = (SessionFactoryImpl) sessionFactory; // hack - to get to the actual queries..
 					StringBuffer str = new StringBuffer(256);
-					IHQLQueryPlan plan = HibernateHelper.INSTANCE.getHibernateService().newHQLQueryPlan(query, false, sessionFactory);
+					HQLQueryPlan plan = new HQLQueryPlan(query, false, Collections.EMPTY_MAP, sfimpl);
 
-					IQueryTranslator[] translators = plan.getTranslators();
+					QueryTranslator[] translators = plan.getTranslators();
 					for (int i = 0; i < translators.length; i++) {
-						IQueryTranslator translator = translators[i];
+						QueryTranslator translator = translators[i];
 						if(translator.isManipulationStatement()) {
 							str.append(HibernateConsoleMessages.DynamicSQLPreviewView_manipulation_of + i + ":"); //$NON-NLS-1$
 							Iterator<?> iterator = translator.getQuerySpaces().iterator();
@@ -48,10 +51,10 @@ public class QueryHelper {
 							}
 
 						} else {
-							IType[] returnTypes = translator.getReturnTypes();
+							Type[] returnTypes = translator.getReturnTypes();
 							str.append(i +": "); //$NON-NLS-1$
 							for (int j = 0; j < returnTypes.length; j++) {
-								IType returnType = returnTypes[j];
+								Type returnType = returnTypes[j];
 								str.append(returnType.getName());
 								if(j<returnTypes.length-1) { str.append(", "); }							 //$NON-NLS-1$
 							}

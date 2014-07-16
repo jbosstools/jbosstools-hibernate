@@ -35,6 +35,10 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.osgi.util.NLS;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.Environment;
+import org.hibernate.cfg.Settings;
 import org.hibernate.console.execution.DefaultExecutionContext;
 import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.console.execution.ExecutionContext.Command;
@@ -46,11 +50,6 @@ import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.PreferencesClassPathUtils;
 import org.hibernate.eclipse.libs.FakeDelegatingDriver;
 import org.hibernate.tool.hbm2x.StringUtils;
-import org.jboss.tools.hibernate.spi.IConfiguration;
-import org.jboss.tools.hibernate.spi.IEnvironment;
-import org.jboss.tools.hibernate.spi.ISessionFactory;
-import org.jboss.tools.hibernate.spi.ISettings;
-import org.jboss.tools.hibernate.util.HibernateHelper;
 
 public class ConsoleConfiguration implements ExecutionContextHolder {
 
@@ -60,8 +59,8 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	private Map<String, FakeDelegatingDriver> fakeDrivers = new HashMap<String, FakeDelegatingDriver>();
 
 	/* TODO: move this out to the actual users of the configuraiton/sf ? */
-	private IConfiguration configuration;
-	private ISessionFactory sessionFactory;
+	private Configuration configuration;
+	private SessionFactory sessionFactory;
 	
 	//****************************** EXTENSION **********************
 	private String hibernateVersion = "==<None>=="; //set to some unused value //$NON-NLS-1$
@@ -235,10 +234,10 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	 * @return
 	 *
 	 */
-	public IConfiguration buildWith(final IConfiguration cfg, final boolean includeMappings) {
+	public Configuration buildWith(final Configuration cfg, final boolean includeMappings) {
 		reinitClassLoader();
 		executionContext = new DefaultExecutionContext(getName(), classLoader);
-		IConfiguration result = (IConfiguration)execute(new Command() {
+		Configuration result = (Configuration)execute(new Command() {
 			public Object execute() {
 				ConfigurationFactory csf = new ConfigurationFactory(prefs, fakeDrivers);
 				return csf.createConfiguration(cfg, includeMappings);
@@ -257,7 +256,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		return Thread.currentThread().getContextClassLoader();
 	}
 	
-	public IConfiguration getConfiguration() {
+	public Configuration getConfiguration() {
 		return configuration;
 	}
 	/**
@@ -291,7 +290,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		getHibernateExtension().buildSessionFactory();
 	}
 
-	public ISessionFactory getSessionFactory() {
+	public SessionFactory getSessionFactory() {
 		return sessionFactory;
 	}
 
@@ -347,7 +346,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		}
 	}
 
-	private void fireFactoryClosing(ISessionFactory sessionFactory2) {
+	private void fireFactoryClosing(SessionFactory sessionFactory2) {
 		for (ConsoleConfigurationListener view : cloneConsoleCfgListeners()) {
 			view.sessionFactoryClosing(this, sessionFactory2);
 		}
@@ -375,7 +374,6 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	}
 	
 	public File getConfigXMLFile() {
-		IEnvironment environment = HibernateHelper.INSTANCE.getHibernateService().getEnvironment();
 		File configXMLFile = null;
 		if (prefs != null) {
 			configXMLFile = prefs.getConfigXMLFile();
@@ -397,7 +395,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 			}
 		}
 		if (configXMLFile == null) {
-			URL url = environment.getWrappedClass().getClassLoader().getResource("hibernate.cfg.xml"); //$NON-NLS-1$
+			URL url = Environment.class.getClassLoader().getResource("hibernate.cfg.xml"); //$NON-NLS-1$
 			if (url != null) {
 				URI uri = null;
 				try {
@@ -433,8 +431,8 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		return resetted;
 	}
 
-	public ISettings getSettings(final IConfiguration cfg) {
-		return (ISettings) execute(new Command() {
+	public Settings getSettings(final Configuration cfg) {
+		return (Settings) execute(new Command() {
 				public Object execute() {
 					return cfg.buildSettings();
 				}

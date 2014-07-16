@@ -49,19 +49,23 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.mapping.Collection;
+import org.hibernate.mapping.Column;
+import org.hibernate.mapping.Component;
+import org.hibernate.mapping.ManyToOne;
+import org.hibernate.mapping.Map;
+import org.hibernate.mapping.OneToMany;
+import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
+import org.hibernate.mapping.Table;
+import org.hibernate.mapping.ToOne;
+import org.hibernate.mapping.Value;
+import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.hibernate.util.XMLHelper;
 import org.hibernate.util.xpl.StringHelper;
-import org.jboss.tools.hibernate.proxy.PropertyProxy;
-import org.jboss.tools.hibernate.proxy.ValueProxy;
-import org.jboss.tools.hibernate.spi.ICfg2HbmTool;
-import org.jboss.tools.hibernate.spi.IColumn;
-import org.jboss.tools.hibernate.spi.ITable;
-import org.jboss.tools.hibernate.spi.IValue;
-import org.jboss.tools.hibernate.util.HibernateHelper;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 
@@ -127,7 +131,7 @@ public class OpenMappingUtils {
 	 * @param table
 	 * @return
 	 */
-	public static String getTableName(ITable table) {
+	public static String getTableName(Table table) {
 		return getTableName(table.getCatalog(), table.getSchema(), table.getName());
 	}
 
@@ -160,8 +164,8 @@ public class OpenMappingUtils {
 			res = rootClassInFile(consoleConfig, file, (RootClass)element);
 		} else if (element instanceof Subclass) {
 			res = subclassInFile(consoleConfig, file, (Subclass)element);
-		} else if (element instanceof ITable) {
-			res = tableInFile(consoleConfig, file, (ITable)element);
+		} else if (element instanceof Table) {
+			res = tableInFile(consoleConfig, file, (Table)element);
 		}
 		return res;
 	}
@@ -238,7 +242,7 @@ public class OpenMappingUtils {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static boolean tableInFile(ConsoleConfiguration consoleConfig, IFile file, ITable table) {
+	public static boolean tableInFile(ConsoleConfiguration consoleConfig, IFile file, Table table) {
 		EntityResolver entityResolver = consoleConfig.getConfiguration().getEntityResolver(); 
 		Document doc = getDocument(file.getLocation().toFile(), entityResolver);
 		Iterator<Element> classes = getElements(doc, HIBERNATE_TAG_CLASS);
@@ -669,10 +673,10 @@ public class OpenMappingUtils {
 			selectRegion = findSelectRegion(proj, findAdapter, (PersistentClass)selection);
 		} else if (selection instanceof Property){
 			selectRegion = findSelectRegion(proj, findAdapter, (Property)selection);
-		} else if (selection instanceof ITable) {
-			selectRegion = findSelectRegion(proj, findAdapter, (ITable)selection);
-		} else if (selection instanceof IColumn) {
-			selectRegion = findSelectRegion(proj, findAdapter, (IColumn)selection);
+		} else if (selection instanceof Table) {
+			selectRegion = findSelectRegion(proj, findAdapter, (Table)selection);
+		} else if (selection instanceof Column) {
+			selectRegion = findSelectRegion(proj, findAdapter, (Column)selection);
 		}
 		return selectRegion;
 	}
@@ -693,7 +697,7 @@ public class OpenMappingUtils {
 		}
 		// in case if we could not find property - we select class
 		res = classRegion;
-		final ICfg2HbmTool tool = HibernateHelper.INSTANCE.getHibernateService().newCfg2HbmTool();
+		final Cfg2HbmTool tool = new Cfg2HbmTool();
 		final PersistentClass persistentClass = property.getPersistentClass();
 		final String tagName = tool.getTag(persistentClass);
 		IRegion finalRegion = null;
@@ -802,7 +806,7 @@ public class OpenMappingUtils {
 	 * @param table
 	 * @return a proper document region
 	 */
-	public static IRegion findSelectRegion(IJavaProject proj, FindReplaceDocumentAdapter findAdapter, ITable table) {
+	public static IRegion findSelectRegion(IJavaProject proj, FindReplaceDocumentAdapter findAdapter, Table table) {
 		IRegion res = null;
 		String[] tablePatterns = generateTablePatterns(table.getName());
 		IRegion tableRegion = null;
@@ -828,7 +832,7 @@ public class OpenMappingUtils {
 	 * @param table
 	 * @return a proper document region
 	 */
-	public static IRegion findSelectRegion(IJavaProject proj, FindReplaceDocumentAdapter findAdapter, IColumn column) {
+	public static IRegion findSelectRegion(IJavaProject proj, FindReplaceDocumentAdapter findAdapter, Column column) {
 		IRegion res = null;
 		String[] columnPatterns = generateColumnPatterns(column.getName());
 		IRegion columnRegion = null;
@@ -920,7 +924,7 @@ public class OpenMappingUtils {
 			fullClassName = persClass.getClassName();
 		}
 		shortClassName = getShortClassName(fullClassName);
-		final ICfg2HbmTool tool = HibernateHelper.INSTANCE.getHibernateService().newCfg2HbmTool();
+		final Cfg2HbmTool tool = new Cfg2HbmTool();
 		final String tagName = tool.getTag(persClass);
 		persistentClassPairs[0][0] = tagName;
 		persistentClassPairs[1][0] = tagName;
@@ -983,7 +987,7 @@ public class OpenMappingUtils {
 	 * @return a search patterns
 	 */
 	public static String generateHbmPropertyPattern(Property property) {
-		final ICfg2HbmTool tool = HibernateHelper.INSTANCE.getHibernateService().newCfg2HbmTool();
+		final Cfg2HbmTool tool = new Cfg2HbmTool();
 		String toolTag = ""; //$NON-NLS-1$
 		PersistentClass pc = property.getPersistentClass();
 		if (pc != null && pc.getIdentifierProperty() == property) {
@@ -993,7 +997,7 @@ public class OpenMappingUtils {
 				toolTag = "id"; //$NON-NLS-1$
 			}
 		} else {
-			toolTag = tool.getTag(new PropertyProxy(property));
+			toolTag = tool.getTag(property);
 			if ("component".equals(toolTag) && "embedded".equals(property.getPropertyAccessorName())) {  //$NON-NLS-1$//$NON-NLS-2$
 				toolTag = "properties"; //$NON-NLS-1$
 			}
@@ -1021,33 +1025,33 @@ public class OpenMappingUtils {
 				toolTag = "id"; //$NON-NLS-1$
 			}
 		} else {
-			IValue value = new ValueProxy(property.getValue());
+			Value value = property.getValue();
 			toolTag = "basic"; //$NON-NLS-1$
 			if (!value.isSimpleValue()) {
-				if (value.isCollection()) {
-					value = value.getCollectionElement();
+				if (value instanceof Collection) {
+					value = ((Collection)value).getElement();
 				}
 			}
-			if (value.isOneToMany()) {
+			if (value instanceof OneToMany) {
 				toolTag = "one-to-many"; //$NON-NLS-1$
 			}
-			else if (value.isManyToOne()) {
+			else if (value instanceof ManyToOne) {
 				// could be many-to-one | many-to-many
 				toolTag = "many-to-((one)|(many))"; //$NON-NLS-1$
 			}
-			else if (value.isOneToOne()) {
+			else if (value instanceof OneToOne) {
 				toolTag = "one-to-one"; //$NON-NLS-1$
 			}
-			else if (value.isMap()) {
+			else if (value instanceof Map) {
 				toolTag = "many-to-many"; //$NON-NLS-1$
 			}
-			else if (value.isComponent()) {
-				if (value.isEmbedded()) {
+			else if (value instanceof Component) {
+				if (((Component)value).isEmbedded()) {
 					toolTag = "embedded"; //$NON-NLS-1$
 				}
 			}
-			if (value.isToOne()) {
-				if (value.isEmbedded()) {
+			if (value instanceof ToOne) {
+				if (((ToOne)value).isEmbedded()) {
 					toolTag = "embedded"; //$NON-NLS-1$
 				}
 			}

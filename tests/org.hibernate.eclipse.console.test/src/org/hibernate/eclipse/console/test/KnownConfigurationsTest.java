@@ -8,11 +8,11 @@ import java.util.Properties;
 
 import junit.framework.TestCase;
 
+import org.hibernate.SessionFactory;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.KnownConfigurationsAdapter;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
-import org.jboss.tools.hibernate.spi.ISessionFactory;
 import org.w3c.dom.Element;
 
 public class KnownConfigurationsTest extends TestCase {
@@ -29,11 +29,11 @@ public class KnownConfigurationsTest extends TestCase {
 			added.add(root);
 		}
 
-		public void sessionFactoryBuilt(ConsoleConfiguration ccfg, ISessionFactory builtFactory) {
+		public void sessionFactoryBuilt(ConsoleConfiguration ccfg, SessionFactory builtFactory) {
 			fail(ConsoleTestMessages.KnownConfigurationsTest_no_sf_should_be_build);
 		}
 
-		public void sessionFactoryClosing(ConsoleConfiguration configuration, ISessionFactory closingFactory) {
+		public void sessionFactoryClosing(ConsoleConfiguration configuration, SessionFactory closingFactory) {
 			fail(ConsoleTestMessages.KnownConfigurationsTest_no_sf_should_be_closed);
 		}
 

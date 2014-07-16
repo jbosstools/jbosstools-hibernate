@@ -40,12 +40,12 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.model.IWorkbenchAdapter;
+import org.hibernate.SessionFactory;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.KnownConfigurationsListener;
 import org.hibernate.eclipse.console.utils.LaunchHelper;
 import org.hibernate.eclipse.console.workbench.DeferredContentProvider;
-import org.jboss.tools.hibernate.spi.ISessionFactory;
 
 @SuppressWarnings("restriction")
 public class KnownConfigurationsProvider extends DeferredContentProvider implements KnownConfigurationsListener,
@@ -105,7 +105,7 @@ public class KnownConfigurationsProvider extends DeferredContentProvider impleme
         }
 	}
 
-	public void sessionFactoryBuilt(final ConsoleConfiguration ccfg, ISessionFactory builtFactory) {
+	public void sessionFactoryBuilt(final ConsoleConfiguration ccfg, SessionFactory builtFactory) {
 		/*(Display.getDefault().syncExec(new Runnable() { Disabled as it will generate double entries in the child list
 			public void run() {
 				tv.refresh(ccfg);
@@ -113,7 +113,7 @@ public class KnownConfigurationsProvider extends DeferredContentProvider impleme
 		});	*/			
 	}
 
-	public void sessionFactoryClosing(final ConsoleConfiguration configuration, ISessionFactory closingFactory) {
+	public void sessionFactoryClosing(final ConsoleConfiguration configuration, SessionFactory closingFactory) {
 		refreshTree(configuration);				
 	}
 

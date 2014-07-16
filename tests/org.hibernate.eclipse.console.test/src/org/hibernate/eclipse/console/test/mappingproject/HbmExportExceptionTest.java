@@ -22,16 +22,15 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.core.PackageFragmentRoot;
 import org.eclipse.osgi.util.NLS;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 import org.hibernate.eclipse.console.test.project.ConfigurableTestProject;
 import org.hibernate.eclipse.console.test.utils.ConsoleConfigUtils;
+import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.ExporterException;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
-import org.jboss.tools.hibernate.spi.IArtifactCollector;
-import org.jboss.tools.hibernate.spi.IConfiguration;
-import org.jboss.tools.hibernate.util.HibernateHelper;
 
 /**
  * @author Dmitry Geraskov
@@ -59,7 +58,7 @@ public class HbmExportExceptionTest extends BaseTestSetCase {
 			Object[] persClassesInit = getPersistenceClasses(false);
 
 			final ConsoleConfiguration consCFG = getConsoleConfig();
-			IConfiguration config = consCFG.getConfiguration();
+			Configuration config = consCFG.getConfiguration();
 			//delete old hbm files
 			assertNotNull(testPackage);
 			int nDeleted = 0;
@@ -78,13 +77,13 @@ public class HbmExportExceptionTest extends BaseTestSetCase {
 			
 			HibernateMappingGlobalSettings hmgs = new HibernateMappingGlobalSettings();
 			
-			HibernateMappingExporter hce = HibernateHelper.INSTANCE.getHibernateService().newHibernateMappingExporter(config, getSrcFolder());
-
+			HibernateMappingExporter hce = new HibernateMappingExporter(config, 
+				getSrcFolder());
 			
 			hce.setGlobalSettings(hmgs);
 			try {
 				hce.start();
-				IArtifactCollector collector = HibernateHelper.INSTANCE.getHibernateService().newArtifactCollector();
+				ArtifactCollector collector = hce.getArtifactCollector();
 				collector.formatFiles();
 	
 				try {//build generated configuration

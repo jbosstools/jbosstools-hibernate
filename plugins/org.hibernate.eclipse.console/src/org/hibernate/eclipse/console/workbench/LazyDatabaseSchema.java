@@ -21,22 +21,22 @@
  */
 package org.hibernate.eclipse.console.workbench;
 
+import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
+import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.console.ConsoleConfiguration;
-import org.jboss.tools.hibernate.spi.IReverseEngineeringStrategy;
-import org.jboss.tools.hibernate.util.HibernateHelper;
 
 public class LazyDatabaseSchema {
 
 	private final ConsoleConfiguration ccfg;
-	private final IReverseEngineeringStrategy res;
+	private final ReverseEngineeringStrategy res;
 	protected boolean connectedFlag = false;
 	protected boolean errorFlag = false;
 	
 	public LazyDatabaseSchema(ConsoleConfiguration ccfg) {
-		this(ccfg, HibernateHelper.INSTANCE.getHibernateService().newDefaultReverseEngineeringStrategy());
+		this(ccfg, new DefaultReverseEngineeringStrategy());
 	}
 
-	public LazyDatabaseSchema(ConsoleConfiguration ccfg, IReverseEngineeringStrategy res) {
+	public LazyDatabaseSchema(ConsoleConfiguration ccfg, ReverseEngineeringStrategy res) {
 		this.ccfg = ccfg;
 		this.res = res;
 	}
@@ -44,7 +44,7 @@ public class LazyDatabaseSchema {
 		return ccfg;
 	}
 
-	public IReverseEngineeringStrategy getReverseEngineeringStrategy() {
+	public ReverseEngineeringStrategy getReverseEngineeringStrategy() {
 		return res;
 	}
 	

@@ -33,7 +33,7 @@ import java.util.List;
 
 import org.hibernate.LockMode;
 import org.hibernate.LockOptions;
-import org.jboss.tools.hibernate.spi.IType;
+import org.hibernate.type.Type;
 
 public final class ArrayHelper {
 	
@@ -102,8 +102,8 @@ public final class ArrayHelper {
 		return (int[][]) coll.toArray( new int[ coll.size() ][] );
 	}
 	
-	public static IType[] toTypeArray(Collection coll) {
-		return (IType[]) coll.toArray( new IType[coll.size()] );
+	public static Type[] toTypeArray(Collection coll) {
+		return (Type[]) coll.toArray( new Type[coll.size()] );
 	}
 
 	public static int[] toIntArray(Collection coll) {
@@ -249,7 +249,7 @@ public final class ArrayHelper {
 	public static final boolean[] EMPTY_BOOLEAN_ARRAY = {};
 	public static final Class[] EMPTY_CLASS_ARRAY = {};
 	public static final Object[] EMPTY_OBJECT_ARRAY = {};
-	public static final IType[] EMPTY_TYPE_ARRAY = {};
+	public static final Type[] EMPTY_TYPE_ARRAY = {};
 	
 	public static int[] getBatchSizes(int maxBatchSize) {
 		int batchSize = maxBatchSize;

@@ -29,15 +29,14 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.utils.EclipseImages;
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
-import org.jboss.tools.hibernate.proxy.ColumnProxy;
-import org.jboss.tools.hibernate.spi.IColumn;
-import org.jboss.tools.hibernate.spi.ITable;
+import org.hibernate.mapping.Table;
 
 public class TableWorkbenchAdapter implements IWorkbenchAdapter {
 
 	public Object[] getChildren(Object o) {
-		ITable t = getTable( o );
+		Table t = getTable( o );
 		
 		List<Object> items = new ArrayList<Object>();
 		
@@ -48,8 +47,8 @@ public class TableWorkbenchAdapter implements IWorkbenchAdapter {
 		
 		Iterator<?> columnIterator = t.getColumnIterator();
 		while ( columnIterator.hasNext() ) {
-			IColumn col = (IColumn) columnIterator.next();
-			if(primaryKey==null || !primaryKey.containsColumn(((ColumnProxy)col).getTarget())) {
+			Column col = (Column) columnIterator.next();
+			if(primaryKey==null || !primaryKey.containsColumn(col)) {
 				items.add(col); // only add non-pk columns here
 			}			
 		}
@@ -57,8 +56,8 @@ public class TableWorkbenchAdapter implements IWorkbenchAdapter {
 		return items.toArray(new Object[items.size()]);
 	}
 
-	private ITable getTable(Object o) {
-		return (ITable) o;
+	private Table getTable(Object o) {
+		return (Table) o;
 	}
 
 	public ImageDescriptor getImageDescriptor(Object object) {
@@ -66,7 +65,7 @@ public class TableWorkbenchAdapter implements IWorkbenchAdapter {
 	}
 
 	public String getLabel(Object o) {
-		ITable table = getTable(o);
+		Table table = getTable(o);
 		//return Table.qualify(table.getCatalog(), table.getSchema(), table.getName(), '.');
 		return table.getName();
 	}

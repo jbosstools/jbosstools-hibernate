@@ -20,6 +20,9 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.osgi.util.NLS;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Settings;
 import org.hibernate.console.ConsoleConfigClassLoader;
 import org.hibernate.console.ConsoleMessages;
@@ -32,9 +35,6 @@ import org.hibernate.console.ext.HibernateException;
 import org.hibernate.console.ext.HibernateExtension;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.PreferencesClassPathUtils;
-import org.jboss.tools.hibernate.spi.IConfiguration;
-import org.jboss.tools.hibernate.spi.ISession;
-import org.jboss.tools.hibernate.spi.ISessionFactory;
 
 /**
  * 
@@ -49,9 +49,9 @@ public class HibernateExtension3_6 implements HibernateExtension {
 	
 	private ConsoleConfigurationPreferences prefs;
 	
-	private IConfiguration configuration;
+	private Configuration configuration;
 	
-	private ISessionFactory sessionFactory;
+	private SessionFactory sessionFactory;
 	
 	private Map<String, FakeDelegatingDriver> fakeDrivers = new HashMap<String, FakeDelegatingDriver>();
 
@@ -68,7 +68,7 @@ public class HibernateExtension3_6 implements HibernateExtension {
 			final QueryInputModel queryParameters) {
 		return (QueryPage)execute(new Command() {
 			public Object execute() {
-				ISession session = sessionFactory.openSession();
+				Session session = sessionFactory.openSession();
 				QueryPage qp = new HQLQueryPage(HibernateExtension3_6.this, hql,queryParameters);
 				qp.setSession(session);
 				return qp;
@@ -81,7 +81,7 @@ public class HibernateExtension3_6 implements HibernateExtension {
 			final QueryInputModel model) {
 		return (QueryPage)execute(new Command() {
 			public Object execute() {
-				ISession session = sessionFactory.openSession();
+				Session session = sessionFactory.openSession();
 				QueryPage qp = new JavaPage(HibernateExtension3_6.this,criteriaCode,model);
 				qp.setSession(session);
 				return qp;
@@ -124,11 +124,11 @@ public class HibernateExtension3_6 implements HibernateExtension {
 		return res;
 	}
 
-	public IConfiguration buildWith(final IConfiguration cfg, final boolean includeMappings) {
+	public Configuration buildWith(final Configuration cfg, final boolean includeMappings) {
 		reinitClassLoader();
 		//TODO handle user libraries here
 		executionContext = new DefaultExecutionContext(prefs.getName(), classLoader);
-		IConfiguration result = (IConfiguration)execute(new Command() {
+		Configuration result = (Configuration)execute(new Command() {
 			public Object execute() {
 				ConfigurationFactory cf = new ConfigurationFactory(prefs, fakeDrivers);
 				return cf.createConfiguration(cfg, includeMappings);
@@ -262,11 +262,11 @@ public class HibernateExtension3_6 implements HibernateExtension {
 	/**
 	 * @return
 	 */
-	public IConfiguration getConfiguration() {
+	public Configuration getConfiguration() {
 		return configuration;
 	}
 	
-	public Settings getSettings(final IConfiguration cfg) {
+	public Settings getSettings(final Configuration cfg) {
 		return (Settings) execute(new Command() {
 			public Object execute() {
 				return cfg.buildSettings();

@@ -21,20 +21,17 @@
  */
 package org.hibernate.eclipse.console.model.impl;
 
-import org.jboss.tools.hibernate.spi.IService;
-import org.jboss.tools.hibernate.spi.ITableFilter;
-import org.jboss.tools.hibernate.util.HibernateHelper;
+import org.hibernate.cfg.reveng.TableFilter;
+import org.hibernate.eclipse.console.model.ITableFilter;
 
-public class TableFilterImpl implements org.hibernate.eclipse.console.model.ITableFilter {
+public class TableFilterImpl implements ITableFilter {
 
-	ITableFilter tf = null;
+	TableFilter tf = new TableFilter();
 	private final ReverseEngineeringDefinitionImpl revModel;
 	
 	protected TableFilterImpl(
 			ReverseEngineeringDefinitionImpl reverseEngineeringDefinitionImpl) {
-		this.revModel = reverseEngineeringDefinitionImpl;	
-		IService service = HibernateHelper.INSTANCE.getHibernateService();
-		tf = service.newTableFilter();
+				this.revModel = reverseEngineeringDefinitionImpl;		
 	}
 
 	public void setExclude(Boolean exclude) {

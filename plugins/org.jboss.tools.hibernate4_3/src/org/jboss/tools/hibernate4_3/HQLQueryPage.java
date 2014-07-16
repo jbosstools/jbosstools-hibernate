@@ -28,22 +28,21 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.console.AbstractQueryPage;
 import org.hibernate.console.ConsoleQueryParameter;
 import org.hibernate.console.QueryInputModel;
 import org.hibernate.console.ext.HibernateExtension;
-import org.jboss.tools.hibernate.spi.IQuery;
-import org.jboss.tools.hibernate.spi.ISession;
-import org.jboss.tools.hibernate.spi.IType;
-import org.jboss.tools.hibernate.spi.ITypeFactory;
-import org.jboss.tools.hibernate.util.HibernateHelper;
+import org.hibernate.type.BasicTypeRegistry;
+import org.hibernate.type.Type;
 
 
 public class HQLQueryPage extends AbstractQueryPage {
 
-	private IQuery query;
+	private Query query;
 	private String queryString;
-	private ITypeFactory typeFactory;
+	private BasicTypeRegistry defaultBasicTypeRegistry = new BasicTypeRegistry();
 	
 	public List<Object> getList() {
 		if (query==null) return Collections.emptyList();
@@ -74,7 +73,7 @@ public class HQLQueryPage extends AbstractQueryPage {
 	}
 		
 	
-	private void setupParameters(IQuery query2, QueryInputModel model) {
+	private void setupParameters(Query query2, QueryInputModel model) {
 		
 		if(model.getMaxResults()!=null) {
 			query2.setMaxResults( model.getMaxResults().intValue() );
@@ -88,16 +87,16 @@ public class HQLQueryPage extends AbstractQueryPage {
 				int pos = Integer.parseInt(parameter.getName());
 				//FIXME no method to set positioned list value
 				query2.setParameter(pos, calcValue( parameter ),
-						getTypeFactory().getNamedType(parameter.getTypeName()));
+						defaultBasicTypeRegistry.getRegisteredType(parameter.getTypeName()));
 			} catch(NumberFormatException nfe) {
 				Object value = parameter.getValue();
 				if (value != null && value.getClass().isArray()){
 					Object[] values = (Object[])value;
 					query2.setParameterList(parameter.getName(), Arrays.asList(values),
-							getTypeFactory().getNamedType(parameter.getTypeName()));
+							defaultBasicTypeRegistry.getRegisteredType(parameter.getTypeName()));
 				} else {
 					query2.setParameter(parameter.getName(), calcValue( parameter ),
-							getTypeFactory().getNamedType(parameter.getTypeName()));
+							defaultBasicTypeRegistry.getRegisteredType(parameter.getTypeName()));
 				}
 			}
 		}		
@@ -122,7 +121,7 @@ public class HQLQueryPage extends AbstractQueryPage {
 	public void setSession(Object s) {
 		super.setSession(s);
 		try {			             
-			query = ((ISession) this.getSession()).createQuery(getQueryString());
+			query = ((Session) this.getSession()).createQuery(getQueryString());
 		} catch (HibernateException e) {
 			addException(e);			
 		} catch (Exception e) {
@@ -154,17 +153,17 @@ public class HQLQueryPage extends AbstractQueryPage {
     			// ignore - http://opensource.atlassian.com/projects/hibernate/browse/HHH-2188
     		}
 			if(returnAliases==null) {
-    		IType[] t;
+    		Type[] t;
     		try {
 			t = query.getReturnTypes();
     		} catch(NullPointerException npe) {
-    			t = new IType[] { null };
+    			t = new Type[] { null };
     			// ignore - http://opensource.atlassian.com/projects/hibernate/browse/HHH-2188
     		}
     		l = new ArrayList<String>(t.length);
     
     		for (int i = 0; i < t.length; i++) {
-    			IType type = t[i];
+    			Type type = t[i];
     			if(type==null) {
     			    l.add("<multiple types>");	 //$NON-NLS-1$
     			} else {
@@ -187,21 +186,14 @@ public class HQLQueryPage extends AbstractQueryPage {
     }
 
     public void release() {
-    	if (((ISession)getSession()).isOpen() ) {
+    	if (((Session)getSession()).isOpen() ) {
     		try {
-    			((ISession)getSession()).close();
+    			((Session)getSession()).close();
     		} 
     		catch (HibernateException e) {
     			exceptions.add(e);
     		}
     	}    	
-    }
-    
-    private ITypeFactory getTypeFactory() {
-    	if (typeFactory == null) {
-    		typeFactory = HibernateHelper.INSTANCE.getHibernateService().newTypeFactory();
-    	}
-    	return typeFactory;
     }
 
 }

@@ -40,11 +40,16 @@ import org.eclipse.wst.sse.ui.StructuredTextEditor;
 import org.eclipse.wst.xml.core.internal.provisional.IXMLPreferenceNames;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
 import org.hibernate.HibernateException;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Settings;
+import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
+import org.hibernate.cfg.reveng.OverrideRepository;
+import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.model.IReverseEngineeringDefinition;
+import org.hibernate.eclipse.console.model.ITableFilter;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.eclipse.console.workbench.LazyDatabaseSchema;
 import org.hibernate.eclipse.mapper.MapperMessages;
@@ -57,12 +62,6 @@ import org.hibernate.eclipse.mapper.editors.xpl.XMLFormEditorPart;
 import org.hibernate.eclipse.mapper.model.DOMReverseEngineeringDefinition;
 import org.hibernate.eclipse.nature.HibernateNature;
 import org.hibernate.util.xpl.StringHelper;
-import org.jboss.tools.hibernate.spi.IConfiguration;
-import org.jboss.tools.hibernate.spi.IOverrideRepository;
-import org.jboss.tools.hibernate.spi.IService;
-import org.jboss.tools.hibernate.spi.ISettings;
-import org.jboss.tools.hibernate.spi.ITableFilter;
-import org.jboss.tools.hibernate.util.HibernateHelper;
 import org.w3c.dom.Document;
 
 public class ReverseEngineeringEditor extends XMLFormEditorPart {
@@ -202,16 +201,15 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 				}
 			}
 
-			org.hibernate.eclipse.console.model.ITableFilter[] tableFilters = getReverseEngineeringDefinition().getTableFilters();
-			IConfiguration cfg = configuration.buildWith(null, false);
-			ISettings settings = configuration.getSettings(cfg);
+			ITableFilter[] tableFilters = getReverseEngineeringDefinition().getTableFilters();
+			Configuration cfg = configuration.buildWith(null, false);
+			Settings settings = configuration.getSettings(cfg);
 
-			IService service = HibernateHelper.INSTANCE.getHibernateService();
-			IOverrideRepository repository = service.newOverrideRepository();
+			OverrideRepository repository = new OverrideRepository();///*settings.getDefaultCatalogName(),settings.getDefaultSchemaName()*/);
 			boolean hasIncludes = false;
 			for (int i = 0; i < tableFilters.length; i++) {
-				org.hibernate.eclipse.console.model.ITableFilter filter = tableFilters[i];
-				ITableFilter tf = service.newTableFilter();
+				ITableFilter filter = tableFilters[i];
+				TableFilter tf = new TableFilter();
 				tf.setExclude(filter.getExclude());
 				if(filter.getExclude()!=null && !filter.getExclude().booleanValue()) {
 					hasIncludes = true;
@@ -221,7 +219,7 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 				tf.setMatchSchema(filter.getMatchSchema());
 				repository.addTableFilter(tf);
 			}
-			ITableFilter tf = service.newTableFilter();
+			TableFilter tf = new TableFilter();
 			tf.setExclude(Boolean.FALSE);
 			tf.setMatchCatalog(".*"); //$NON-NLS-1$
 			tf.setMatchSchema(".*"); //$NON-NLS-1$
@@ -237,11 +235,7 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 					return null;
 			}
 
-			LazyDatabaseSchema lazyDatabaseSchema = 
-					new LazyDatabaseSchema(
-							configuration, 
-							repository.getReverseEngineeringStrategy(
-									HibernateHelper.INSTANCE.getHibernateService().newDefaultReverseEngineeringStrategy()));
+			LazyDatabaseSchema lazyDatabaseSchema = new LazyDatabaseSchema(configuration, repository.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy()));
 
 			return lazyDatabaseSchema;
 		} catch(HibernateException he) {

@@ -19,11 +19,11 @@ import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
+import org.hibernate.mapping.Column;
+import org.hibernate.mapping.Component;
 import org.hibernate.mapping.Property;
-import org.jboss.tools.hibernate.proxy.ValueProxy;
-import org.jboss.tools.hibernate.spi.IColumn;
-import org.jboss.tools.hibernate.spi.IType;
-import org.jboss.tools.hibernate.spi.IValue;
+import org.hibernate.mapping.Value;
+import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Connection.ConnectionType;
 import org.jboss.tools.hibernate.ui.view.HibernateUtils;
 
@@ -270,7 +270,7 @@ public class Shape extends BaseElement {
 	public IPropertyDescriptor[] getPropertyDescriptors() {
 		if (getOrmElement() instanceof Property) {
 			return descriptors_property;
-		} else if (getOrmElement() instanceof IColumn) {
+		} else if (getOrmElement() instanceof Column) {
 			return descriptors_column;
 		}
 		return super.getPropertyDescriptors();
@@ -286,9 +286,9 @@ public class Shape extends BaseElement {
 	@Override
 	public Object getPropertyValue(Object propertyId) {
 		Object res = null;
-		IColumn col = null;
-		if (getOrmElement() instanceof IColumn) {
-			col = (IColumn)getOrmElement();
+		Column col = null;
+		if (getOrmElement() instanceof Column) {
+			col = (Column)getOrmElement();
 		}
 		Property prop = null;
 		if (getOrmElement() instanceof Property) {
@@ -298,11 +298,11 @@ public class Shape extends BaseElement {
 			if (PROPERTY_NAME.equals(propertyId)) {
 				res = prop.getName();
 			} else if (PROPERTY_TYPE.equals(propertyId)) {
-				IValue value = prop.getValue() != null ? new ValueProxy(prop.getValue()) : null;
-				if (value.isComponent()) {
-					res = value.toString();
+				Value value = prop.getValue();
+				if (value instanceof Component) {
+					res = prop.getValue().toString();
 				} else {
-					IType type = getTypeUsingExecContext(value);
+					Type type = getTypeUsingExecContext(prop.getValue());
 					if (type != null) {
 						res = type.getReturnedClass().getName();
 					}
@@ -370,7 +370,7 @@ public class Shape extends BaseElement {
 		return consoleConfig;
 	}
 
-	public IType getTypeUsingExecContext(final IValue val) {
+	public Type getTypeUsingExecContext(final Value val) {
 		return UtilTypeExtract.getTypeUsingExecContext(val, getConsoleConfig());
 	}
 }

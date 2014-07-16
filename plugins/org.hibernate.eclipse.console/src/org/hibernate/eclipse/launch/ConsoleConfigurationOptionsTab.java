@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
+import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.DialogSelectionHelper;
@@ -119,7 +120,7 @@ public class ConsoleConfigurationOptionsTab extends ConsoleConfigurationTab {
 	}
 
 	private void handleNamingStrategyBrowse() {
-		String string = DialogSelectionHelper.chooseImplementation("org.hibernate.cfg.NamingStrategy", namingStrategyClassNameText.getText(), HibernateConsoleMessages.ConsoleConfigurationOptionsTab_select_naming_strategy_class, getShell());
+		String string = DialogSelectionHelper.chooseImplementation(NamingStrategy.class.getName(), namingStrategyClassNameText.getText(), HibernateConsoleMessages.ConsoleConfigurationOptionsTab_select_naming_strategy_class, getShell());
 		if(string!=null) {
 			namingStrategyClassNameText.setText(string);
 		}

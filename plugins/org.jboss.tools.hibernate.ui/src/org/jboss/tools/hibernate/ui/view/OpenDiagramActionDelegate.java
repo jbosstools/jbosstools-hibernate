@@ -27,11 +27,12 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.internal.ObjectPluginAction;
 import org.hibernate.HibernateException;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
-import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.UiPlugin;
 
@@ -67,14 +68,14 @@ public class OpenDiagramActionDelegate implements IObjectActionDelegate {
         	if (last_el instanceof PersistentClass) {
     			PersistentClass persClass = (PersistentClass) last_el;
     			setPC.add(persClass);
-    		} else if (last_el instanceof IConfiguration) {
-    			IConfiguration config = (IConfiguration)last_el;
+    		} else if (last_el instanceof Configuration) {
+    			Configuration config = (Configuration)last_el;
     			Iterator<PersistentClass> it = (Iterator<PersistentClass>)(config.getClassMappings());
     			while (it.hasNext()) {
         			setPC.add(it.next());
     			}
     		} else if (last_el instanceof ConsoleConfiguration) {
-    			IConfiguration config = consoleConfig.getConfiguration();
+    			Configuration config = consoleConfig.getConfiguration();
     			if (config == null) {
     				try {
         				consoleConfig.build();

@@ -28,15 +28,15 @@ import org.eclipse.ui.views.properties.IPropertySource2;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.hibernate.EntityMode;
 import org.hibernate.HibernateException;
+import org.hibernate.Session;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.ext.HibernateExtension;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
+import org.hibernate.metadata.ClassMetadata;
+import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.persister.entity.AbstractEntityPersister;
 import org.hibernate.proxy.HibernateProxyHelper;
 import org.hibernate.tuple.entity.EntityMetamodel;
-import org.jboss.tools.hibernate.spi.IClassMetadata;
-import org.jboss.tools.hibernate.spi.ICollectionMetadata;
-import org.jboss.tools.hibernate.spi.ISession;
 
 
 
@@ -46,10 +46,10 @@ public class EntityPropertySource implements IPropertySource2
 	private IPropertyDescriptor[] propertyDescriptors;
 
 	private final HibernateExtension extension;
-	private final ISession currentSession;
-	private IClassMetadata classMetadata;
+	private final Session currentSession;
+	private ClassMetadata classMetadata;
 
-	public EntityPropertySource(final Object object, final ISession currentSession, HibernateExtension extension)
+	public EntityPropertySource(final Object object, final Session currentSession, HibernateExtension extension)
 	{
 		this.currentSession = currentSession;
 		this.extension = extension;
@@ -84,7 +84,7 @@ public class EntityPropertySource implements IPropertySource2
 		return propertyDescriptors;
 	}
 
-	static protected IPropertyDescriptor[] initializePropertyDescriptors(IClassMetadata classMetadata) {
+	static protected IPropertyDescriptor[] initializePropertyDescriptors(ClassMetadata classMetadata) {
 
 		String[] propertyNames = classMetadata.getPropertyNames();
 		int length = propertyNames.length;
@@ -118,10 +118,10 @@ public class EntityPropertySource implements IPropertySource2
 		Object propertyValue;
 
 		if(id.equals(classMetadata.getIdentifierPropertyName())) {
-			propertyValue = classMetadata.getIdentifier(reflectedObject);
+			propertyValue = classMetadata.getIdentifier(reflectedObject, EntityMode.POJO);
 		} else {
 			try {
-				propertyValue = classMetadata.getPropertyValue(reflectedObject, (String)id);
+				propertyValue = classMetadata.getPropertyValue(reflectedObject, (String)id, EntityMode.POJO);
 			} catch (HibernateException he) {
 				propertyValue = HibernateConsoleMessages.EntityPropertySource_unable_to_resolve_property;
 				if (classMetadata instanceof AbstractEntityPersister) {
@@ -138,7 +138,7 @@ public class EntityPropertySource implements IPropertySource2
 		}
 
 		if (propertyValue instanceof Collection<?>) {
-			ICollectionMetadata collectionMetadata = currentSession.getSessionFactory().getCollectionMetadata(classMetadata.getEntityName() + "." + id); //$NON-NLS-1$
+			CollectionMetadata collectionMetadata = currentSession.getSessionFactory().getCollectionMetadata(classMetadata.getEntityName() + "." + id); //$NON-NLS-1$
 			if(collectionMetadata!=null) {
 				propertyValue = new CollectionPropertySource((Collection<?>) propertyValue);
 			}

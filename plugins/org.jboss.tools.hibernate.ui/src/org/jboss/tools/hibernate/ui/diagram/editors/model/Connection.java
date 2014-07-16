@@ -12,13 +12,13 @@ package org.jboss.tools.hibernate.ui.diagram.editors.model;
 
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
+import org.hibernate.mapping.Column;
+import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
-import org.jboss.tools.hibernate.spi.IColumn;
-import org.jboss.tools.hibernate.spi.ITable;
-import org.jboss.tools.hibernate.spi.IValue;
+import org.hibernate.mapping.Table;
 
 /**
  * Directed connection between 2 shapes, from source to target. 
@@ -131,24 +131,24 @@ public class Connection extends BaseElement {
 	 */
 	public ConnectionType getConnectionType() {
 		if (source instanceof OrmShape && target instanceof OrmShape) {
-			if ((source.getOrmElement() instanceof ITable) && (target.getOrmElement() instanceof ITable)) {
+			if ((source.getOrmElement() instanceof Table) && (target.getOrmElement() instanceof Table)) {
 				return ConnectionType.ForeignKeyConstraint;
 			}
 			boolean bClassMapping = true;
-			if (!(source.getOrmElement() instanceof RootClass || source.getOrmElement() instanceof ITable)) {
+			if (!(source.getOrmElement() instanceof RootClass || source.getOrmElement() instanceof Table)) {
 				bClassMapping = false;
 			}
-			if (!(target.getOrmElement() instanceof RootClass || target.getOrmElement() instanceof ITable)) {
+			if (!(target.getOrmElement() instanceof RootClass || target.getOrmElement() instanceof Table)) {
 				bClassMapping = false;
 			}
 			if (bClassMapping) {
 				return ConnectionType.ClassMapping;
 			}
 		}
-		if ((source.getOrmElement() instanceof ITable && target.getOrmElement() instanceof ITable) ||
-			(source.getOrmElement() instanceof ITable && target.getOrmElement() instanceof IColumn) ||
-			(source.getOrmElement() instanceof IColumn && target.getOrmElement() instanceof ITable) ||
-			(source.getOrmElement() instanceof IColumn && target.getOrmElement() instanceof IColumn)) {
+		if ((source.getOrmElement() instanceof Table && target.getOrmElement() instanceof Table) ||
+			(source.getOrmElement() instanceof Table && target.getOrmElement() instanceof Column) ||
+			(source.getOrmElement() instanceof Column && target.getOrmElement() instanceof Table) ||
+			(source.getOrmElement() instanceof Column && target.getOrmElement() instanceof Column)) {
 			return ConnectionType.ForeignKeyConstraint;
 		}
 		if (((source instanceof OrmShape) ^ (target instanceof OrmShape))) {
@@ -260,16 +260,16 @@ public class Connection extends BaseElement {
 			}
 		} else if (PROPERTY_TABLE_NAME.equals(propertyId)) {
 			if (connectType == ConnectionType.ClassMapping) {
-				if (source.getOrmElement() instanceof ITable) {
-					res = ((ITable)(source.getOrmElement())).getName();
-				} else if (target.getOrmElement() instanceof ITable) {
-					res = ((ITable)(target.getOrmElement())).getName();
+				if (source.getOrmElement() instanceof Table) {
+					res = ((Table)(source.getOrmElement())).getName();
+				} else if (target.getOrmElement() instanceof Table) {
+					res = ((Table)(target.getOrmElement())).getName();
 				}
 			} else if (connectType == ConnectionType.PropertyMapping) {
-				if (((Shape)source.getParent()).getOrmElement() instanceof ITable) {
-					res = ((ITable)(((Shape)source.getParent()).getOrmElement())).getName();
-				} else if (((Shape)target.getParent()).getOrmElement() instanceof ITable) {
-					res = ((ITable)(((Shape)target.getParent()).getOrmElement())).getName();
+				if (((Shape)source.getParent()).getOrmElement() instanceof Table) {
+					res = ((Table)(((Shape)source.getParent()).getOrmElement())).getName();
+				} else if (((Shape)target.getParent()).getOrmElement() instanceof Table) {
+					res = ((Table)(((Shape)target.getParent()).getOrmElement())).getName();
 				}
 			}
 		} else if (PROPERTY_CLASS_FIELD.equals(propertyId)) {
@@ -279,10 +279,10 @@ public class Connection extends BaseElement {
 				res = ((Property)(target.getOrmElement())).getName();
 			}
 		} else if (PROPERTY_TABLE_FIELD.equals(propertyId)) {
-			if (source.getOrmElement() instanceof IColumn) {
-				res = ((IColumn)(source.getOrmElement())).getName();
-			} else if (target.getOrmElement() instanceof IColumn) {
-				res = ((IColumn)(target.getOrmElement())).getName();
+			if (source.getOrmElement() instanceof Column) {
+				res = ((Column)(source.getOrmElement())).getName();
+			} else if (target.getOrmElement() instanceof Column) {
+				res = ((Column)(target.getOrmElement())).getName();
 			}
 		} else if (PROPERTY_CLASS_FIELD_TYPE.equals(propertyId)) {
 			if (source.getOrmElement() instanceof Property) {
@@ -291,10 +291,10 @@ public class Connection extends BaseElement {
 				res = ((Property)(target.getOrmElement())).getType().toString();
 			}
 		} else if (PROPERTY_TABLE_FIELD_TYPE.equals(propertyId)) {
-			if (source.getOrmElement() instanceof IColumn) {
-				res = ((IColumn)(source.getOrmElement())).getSqlType();
-			} else if (target.getOrmElement() instanceof IColumn) {
-				res = ((IColumn)(target.getOrmElement())).getSqlType();
+			if (source.getOrmElement() instanceof Column) {
+				res = ((Column)(source.getOrmElement())).getSqlType();
+			} else if (target.getOrmElement() instanceof Column) {
+				res = ((Column)(target.getOrmElement())).getSqlType();
 			}
 		} else if (PROPERTY_ASSOCIATION_TYPE.equals(propertyId)) {
 			if (source.getOrmElement() instanceof Property) {
@@ -306,7 +306,7 @@ public class Connection extends BaseElement {
 				res = "OneToOne"; //$NON-NLS-1$
 			} else if (res instanceof OneToMany) {
 				res = "OneToMany"; //$NON-NLS-1$
-			} else if (res instanceof IValue && ((IValue)res).isManyToOne()) {
+			} else if (res instanceof ManyToOne) {
 				res = "ManyToOne"; //$NON-NLS-1$
 			}
 		} else if (PROPERTY_SOURCE_CLASS_FIELD.equals(propertyId)) {
@@ -318,20 +318,20 @@ public class Connection extends BaseElement {
 				res = ((Property)(source.getOrmElement())).getType().toString();
 			}
 		} else if (PROPERTY_SOURCE_TABLE_FIELD.equals(propertyId)) {
-			if (source.getOrmElement() instanceof IColumn) {
-				res = ((IColumn)(source.getOrmElement())).getName();
+			if (source.getOrmElement() instanceof Column) {
+				res = ((Column)(source.getOrmElement())).getName();
 			}
 		} else if (PROPERTY_TARGET_TABLE_FIELD.equals(propertyId)) {
-			if (target.getOrmElement() instanceof IColumn) {
-				res = ((IColumn)(target.getOrmElement())).getName();
+			if (target.getOrmElement() instanceof Column) {
+				res = ((Column)(target.getOrmElement())).getName();
 			}
 		} else if (PROPERTY_SOURCE_TABLE_FIELD_TYPE.equals(propertyId)) {
-			if (source.getOrmElement() instanceof IColumn) {
-				res = ((IColumn)(source.getOrmElement())).getSqlType();
+			if (source.getOrmElement() instanceof Column) {
+				res = ((Column)(source.getOrmElement())).getSqlType();
 			}
 		} else if (PROPERTY_TARGET_TABLE_FIELD_TYPE.equals(propertyId)) {
-			if (target.getOrmElement() instanceof IColumn) {
-				res = ((IColumn)(target.getOrmElement())).getSqlType();
+			if (target.getOrmElement() instanceof Column) {
+				res = ((Column)(target.getOrmElement())).getSqlType();
 			}
 		}
 		if (res == null) {

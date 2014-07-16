@@ -10,11 +10,12 @@
  ******************************************************************************/
 package org.hibernate.console.ext;
 
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.console.QueryInputModel;
 import org.hibernate.console.QueryPage;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
-import org.jboss.tools.hibernate.spi.IConfiguration;
 
 /**
  * @author Dmitry Geraskov
@@ -47,7 +48,7 @@ public interface HibernateExtension {
 	public boolean hasConfiguration();
 	
 	//FIXME remove this method
-	public IConfiguration getConfiguration();
+	public Configuration getConfiguration();
 	//FIXME remove this method
 //	public SessionFactory getSessionFactory();
 	//FIXME remove this method

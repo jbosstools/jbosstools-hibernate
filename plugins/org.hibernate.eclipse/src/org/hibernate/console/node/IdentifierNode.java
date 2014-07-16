@@ -22,7 +22,7 @@
 package org.hibernate.console.node;
 
 import org.hibernate.console.ImageConstants;
-import org.jboss.tools.hibernate.spi.IClassMetadata;
+import org.hibernate.metadata.ClassMetadata;
 
 /**
  * @author MAX
@@ -35,7 +35,7 @@ class IdentifierNode extends TypeNode {
 	 * @param parent
 	 * @param md
 	 */
-	public IdentifierNode(NodeFactory factory, BaseNode parent, IClassMetadata md) {
+	public IdentifierNode(NodeFactory factory, BaseNode parent, ClassMetadata md) {
         super(factory, parent, md.getIdentifierType(), factory.getMetaData(md.getIdentifierType().getReturnedClass() ), null, false);
         name = md.getIdentifierPropertyName();
         iconName = ImageConstants.IDPROPERTY;

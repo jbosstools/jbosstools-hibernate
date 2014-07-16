@@ -23,12 +23,12 @@ package org.hibernate.eclipse.console.views.properties;
 
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.IPropertySourceProvider;
+import org.hibernate.Session;
 import org.hibernate.console.QueryPage;
 import org.hibernate.eclipse.console.ext.ConsoleExtension;
 import org.hibernate.eclipse.console.ext.ConsoleExtensionManager;
 import org.hibernate.eclipse.console.views.QueryPageTabView;
 import org.hibernate.proxy.HibernateProxyHelper;
-import org.jboss.tools.hibernate.spi.ISession;
 
 public class HibernatePropertySourceProvider implements IPropertySourceProvider
 {	
@@ -68,7 +68,7 @@ public class HibernatePropertySourceProvider implements IPropertySourceProvider
 		
 	}
 
-	private boolean hasMetaData(Object object, ISession currentSession) {
+	private boolean hasMetaData(Object object, Session currentSession) {
 		return currentSession.getSessionFactory().getClassMetadata(HibernateProxyHelper.getClassWithoutInitializingProxy(object))!=null;
 	}
 }

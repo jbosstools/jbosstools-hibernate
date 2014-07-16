@@ -5,6 +5,10 @@ import junit.framework.TestCase;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
+import org.hibernate.Hibernate;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.Mappings;
 import org.hibernate.console.ConcoleConfigurationAdapter;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ConsoleQueryParameter;
@@ -14,28 +18,17 @@ import org.hibernate.console.QueryInputModel;
 import org.hibernate.console.QueryPage;
 import org.hibernate.eclipse.console.test.launchcfg.TestConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.views.QueryPageTabView;
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
-import org.jboss.tools.hibernate.proxy.ColumnProxy;
-import org.jboss.tools.hibernate.proxy.TableProxy;
-import org.jboss.tools.hibernate.proxy.ValueProxy;
-import org.jboss.tools.hibernate.spi.IColumn;
-import org.jboss.tools.hibernate.spi.IConfiguration;
-import org.jboss.tools.hibernate.spi.IMappings;
-import org.jboss.tools.hibernate.spi.IService;
-import org.jboss.tools.hibernate.spi.ISessionFactory;
-import org.jboss.tools.hibernate.spi.ITable;
-import org.jboss.tools.hibernate.spi.ITypeFactory;
-import org.jboss.tools.hibernate.spi.IValue;
-import org.jboss.tools.hibernate.util.HibernateHelper;
+import org.hibernate.mapping.SimpleValue;
+import org.hibernate.mapping.Table;
 
 public class ConsoleConfigurationTest extends TestCase {
 
 	private ConsoleConfiguration consoleCfg;
-	private IService service;
-	private ITypeFactory typeFactory;
 
 	public ConsoleConfigurationTest(String name) {
 		super( name );
@@ -43,8 +36,7 @@ public class ConsoleConfigurationTest extends TestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		service = HibernateHelper.INSTANCE.getHibernateService();
-		typeFactory = service.newTypeFactory();
+
 		TestConsoleConfigurationPreferences cfgprefs = new TestConsoleConfigurationPreferences();
 		consoleCfg = new ConsoleConfiguration(cfgprefs);
 		KnownConfigurations.getInstance().addConfiguration(consoleCfg, true);
@@ -61,12 +53,12 @@ public class ConsoleConfigurationTest extends TestCase {
 		public int queryCreated;
 
 		public void sessionFactoryClosing(ConsoleConfiguration configuration,
-				ISessionFactory aboutToCloseFactory) {
+				SessionFactory aboutToCloseFactory) {
 			factoryClosing++;
 		}
 
 		public void sessionFactoryBuilt(ConsoleConfiguration ccfg,
-				ISessionFactory builtSessionFactory) {
+				SessionFactory builtSessionFactory) {
 			factoryBuilt++;
 		}
 
@@ -135,35 +127,35 @@ public class ConsoleConfigurationTest extends TestCase {
 		}
 		
 		consoleCfg.build();
-		IConfiguration c = consoleCfg.getConfiguration();
-		IMappings mappings = c.createMappings();
+		Configuration c = consoleCfg.getConfiguration();
+		Mappings mappings = c.createMappings();
 		RootClass rc = new RootClass();
 		rc.setEntityName("java.awt.Button");
 		rc.setClassName( "java.awt.Button" );
-		IColumn column = service.newColumn("label");
+		Column column = new Column("label");
 		PrimaryKey pk = new PrimaryKey();
-		pk.addColumn(((ColumnProxy)column).getTarget());
-		ITable table = service.newTable("faketable");
-		rc.setTable(((TableProxy)table).getTarget());
+		pk.addColumn(column);
+		Table table = new Table("faketable");
+		rc.setTable(table);
 		table.addColumn(column);
 		table.setPrimaryKey(pk);
 		Property fakeProp = new Property();
 		fakeProp.setName("label");
-		IValue sv = service.newSimpleValue();
+		SimpleValue sv = new SimpleValue();
 		sv.addColumn(column);
 		sv.setTypeName("string");
 		sv.setTable(table);
-		fakeProp.setValue(((ValueProxy)sv).getTarget());
+		fakeProp.setValue(sv);
 		rc.setIdentifierProperty(fakeProp);
 		rc.setIdentifier((KeyValue) fakeProp.getValue());
 		mappings.addClass(rc);
 
 		consoleCfg.buildSessionFactory();
 		
-		ConsoleQueryParameter paramA = new ConsoleQueryParameter("a", typeFactory.getIntegerType(),
+		ConsoleQueryParameter paramA = new ConsoleQueryParameter("a", Hibernate.INTEGER,
 				new Integer[]{new Integer(1), new Integer(2)});
-		ConsoleQueryParameter paramB = new ConsoleQueryParameter("b", typeFactory.getIntegerType(), new Integer(3));
-		ConsoleQueryParameter paramOrdered = new ConsoleQueryParameter("0", typeFactory.getIntegerType(), new Integer(4));
+		ConsoleQueryParameter paramB = new ConsoleQueryParameter("b", Hibernate.INTEGER, new Integer(3));
+		ConsoleQueryParameter paramOrdered = new ConsoleQueryParameter("0", Hibernate.INTEGER, new Integer(4));
 		QueryInputModel model = new QueryInputModel();
 		model.addParameter(paramA);
 		model.addParameter(paramB);
@@ -177,6 +169,5 @@ public class ConsoleConfigurationTest extends TestCase {
 			//ignore - there is fake mapping
 		}
 	}
-
 
 }

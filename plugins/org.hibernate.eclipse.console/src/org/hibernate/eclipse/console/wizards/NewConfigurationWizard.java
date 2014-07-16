@@ -36,6 +36,9 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.datatools.connectivity.IConnectionProfile;
+import org.eclipse.datatools.connectivity.ProfileManager;
+import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
@@ -55,14 +58,14 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.ui.ide.IDE;
+import org.hibernate.cfg.Environment;
+import org.hibernate.console.ConnectionProfileUtil;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.actions.AddConfigurationAction;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
-import org.jboss.tools.hibernate.spi.IEnvironment;
-import org.jboss.tools.hibernate.util.HibernateHelper;
 
 /**
  * Creates a new hibernate.cfg.xml
@@ -152,15 +155,14 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
         cPage = new ExtendedWizardNewFileCreationPage( "Ccfgxml", (IStructuredSelection) selection ) { //$NON-NLS-1$
         	protected InputStream getInitialContents() {
         		final Properties props = new Properties();
-        		IEnvironment environment = HibernateHelper.INSTANCE.getHibernateService().getEnvironment();
-                putIfNotNull(props, environment.getSessionFactoryName(), connectionInfoPage.getSessionFactoryName() );
-                putIfNotNull(props, environment.getDialect(), connectionInfoPage.getDialect() );
-                putIfNotNull(props, environment.getDriver(), connectionInfoPage.getDriver() );
-                putIfNotNull(props, environment.getURL(), connectionInfoPage.getConnectionURL() );
-                putIfNotNull(props, environment.getUser(), connectionInfoPage.getUsername() );
-                putIfNotNull(props, environment.getPass(), connectionInfoPage.getPassword() );
-                putIfNotNull(props, environment.getDefaultCatalog(), connectionInfoPage.getDefaultCatalog() );
-                putIfNotNull(props, environment.getDefaultSchema(), connectionInfoPage.getDefaultSchema() );
+                putIfNotNull(props, Environment.SESSION_FACTORY_NAME, connectionInfoPage.getSessionFactoryName() );
+                putIfNotNull(props, Environment.DIALECT, connectionInfoPage.getDialect() );
+                putIfNotNull(props, Environment.DRIVER, connectionInfoPage.getDriver() );
+                putIfNotNull(props, Environment.URL, connectionInfoPage.getConnectionURL() );
+                putIfNotNull(props, Environment.USER, connectionInfoPage.getUsername() );
+                putIfNotNull(props, Environment.PASS, connectionInfoPage.getPassword() );
+                putIfNotNull(props, Environment.DEFAULT_CATALOG, connectionInfoPage.getDefaultCatalog() );
+                putIfNotNull(props, Environment.DEFAULT_SCHEMA, connectionInfoPage.getDefaultSchema() );
         		return openContentStream(props);
         	}
         };
@@ -185,15 +187,14 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 	 */
 	public boolean performFinish() {
 		final Properties props = new Properties();
-		IEnvironment environment = HibernateHelper.INSTANCE.getHibernateService().getEnvironment();
-		putIfNotNull(props, environment.getSessionFactoryName(), connectionInfoPage.getSessionFactoryName() );
-		putIfNotNull(props, environment.getDialect(), connectionInfoPage.getDialect() );
-		putIfNotNull(props, environment.getDefaultCatalog(), connectionInfoPage.getDefaultCatalog() );
-        putIfNotNull(props, environment.getDefaultSchema(), connectionInfoPage.getDefaultSchema() );
-        putIfNotNull(props, environment.getDriver(), connectionInfoPage.getDriver() );
-        putIfNotNull(props, environment.getURL(), connectionInfoPage.getConnectionURL() );
-        putIfNotNull(props, environment.getUser(), connectionInfoPage.getUsername() );
-        putIfNotNull(props, environment.getPass(), connectionInfoPage.getPassword() );
+		putIfNotNull(props, Environment.SESSION_FACTORY_NAME, connectionInfoPage.getSessionFactoryName() );
+		putIfNotNull(props, Environment.DIALECT, connectionInfoPage.getDialect() );
+		putIfNotNull(props, Environment.DEFAULT_CATALOG, connectionInfoPage.getDefaultCatalog() );
+        putIfNotNull(props, Environment.DEFAULT_SCHEMA, connectionInfoPage.getDefaultSchema() );
+        putIfNotNull(props, Environment.DRIVER, connectionInfoPage.getDriver() );
+        putIfNotNull(props, Environment.URL, connectionInfoPage.getConnectionURL() );
+        putIfNotNull(props, Environment.USER, connectionInfoPage.getUsername() );
+        putIfNotNull(props, Environment.PASS, connectionInfoPage.getPassword() );
 
 		
         final IFile file = cPage.createNewFile();

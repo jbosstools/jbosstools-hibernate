@@ -29,14 +29,13 @@ import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Shell;
 import org.hibernate.HibernateException;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.actions.ConsoleConfigReadyUseBaseAction;
-import org.jboss.tools.hibernate.spi.IConfiguration;
-import org.jboss.tools.hibernate.spi.ISchemaExport;
-import org.jboss.tools.hibernate.util.HibernateHelper;
+import org.hibernate.tool.hbm2ddl.SchemaExport;
 
 /**
  * @author max
@@ -90,8 +89,9 @@ public class SchemaExportAction extends ConsoleConfigReadyUseBaseAction {
 			final ConsoleConfiguration config = (ConsoleConfiguration) node;
 			try {
 				config.execute( new Command() {
+					@SuppressWarnings("unchecked")
 					public Object execute() {
-						final IConfiguration cfg = config.getConfiguration();
+						final Configuration cfg = config.getConfiguration();
 						if (cfg == null) {
 							return null;
 						}
@@ -101,7 +101,7 @@ public class SchemaExportAction extends ConsoleConfigReadyUseBaseAction {
 						if (!res) {
 							return null;
 						}
-						ISchemaExport export = HibernateHelper.INSTANCE.getHibernateService().newSchemaExport(cfg);
+						SchemaExport export = new SchemaExport(cfg);
 						export.create(false, true);
 						if (!export.getExceptions().isEmpty()) {
 							Iterator<Throwable> iterator = export.getExceptions().iterator();

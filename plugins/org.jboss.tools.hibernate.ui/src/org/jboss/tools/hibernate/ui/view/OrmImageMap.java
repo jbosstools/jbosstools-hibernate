@@ -12,16 +12,26 @@ package org.jboss.tools.hibernate.ui.view;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.mapping.Any;
+import org.hibernate.mapping.Array;
+import org.hibernate.mapping.Bag;
+import org.hibernate.mapping.Column;
+import org.hibernate.mapping.Component;
+import org.hibernate.mapping.DependantValue;
+import org.hibernate.mapping.IdentifierBag;
+import org.hibernate.mapping.List;
+import org.hibernate.mapping.ManyToOne;
+import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
-import org.jboss.tools.hibernate.proxy.ValueProxy;
-import org.jboss.tools.hibernate.spi.IColumn;
-import org.jboss.tools.hibernate.spi.IProperty;
-import org.jboss.tools.hibernate.spi.ITable;
-import org.jboss.tools.hibernate.spi.IType;
-import org.jboss.tools.hibernate.spi.IValue;
+import org.hibernate.mapping.Set;
+import org.hibernate.mapping.SimpleValue;
+import org.hibernate.mapping.Table;
+import org.hibernate.mapping.Value;
+import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.ui.diagram.UiPlugin;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.UtilTypeExtract;
 
@@ -34,22 +44,20 @@ public class OrmImageMap {
 
 	public static ImageDescriptor getImageDescriptor(final Object obj, final ConsoleConfiguration cfg) {
 		String imageName = null;
-		if (obj instanceof ITable) {
-			imageName = getImageName((ITable)obj);
-		} else if (obj instanceof IColumn) {
-			imageName = getImageName((IColumn)obj);
+		if (obj instanceof Table) {
+			imageName = getImageName((Table)obj);
+		} else if (obj instanceof Column) {
+			imageName = getImageName((Column)obj);
 		} else if (obj instanceof Property) {
 			imageName = getImageName((Property)obj, cfg);
 		} else if (obj instanceof OneToMany) {
 			imageName = getImageName((OneToMany)obj);
+		} else if (obj instanceof SimpleValue) {
+			imageName = getImageName((SimpleValue)obj);
 		} else if (obj instanceof PersistentClass) {
 			imageName = getImageName((PersistentClass)obj);
 		} else if (obj instanceof String) {
 			imageName = "Image_Error"; //$NON-NLS-1$;
-		} else if (obj instanceof IProperty) {
-			imageName = getImageName((IProperty)obj, cfg);
-		} else if (obj instanceof IValue && ((IValue)obj).isSimpleValue() || ((IValue)obj).isOneToMany()) {
-			imageName = getImageName((IValue)obj);
 		}
 		return UiPlugin.getImageDescriptor("images/" + ImageBundle.getString(imageName)); //$NON-NLS-1$
 	}
@@ -60,7 +68,7 @@ public class OrmImageMap {
 	 * @param table
 	 * @return
 	 */
-	public static String getImageName(ITable table) {
+	public static String getImageName(Table table) {
 		return "Image_DatabaseTable"; //$NON-NLS-1$
 	}
 
@@ -70,11 +78,11 @@ public class OrmImageMap {
 	 * @param column
 	 * @return
 	 */
-	public static String getImageName(IColumn column) {
+	public static String getImageName(Column column) {
 		String str = "Image_DatabaseColumn"; //$NON-NLS-1$
 		final boolean primaryKey = HibernateUtils.isPrimaryKey(column);
 		final boolean foreignKey = HibernateUtils.isForeignKey(column);
-		final ITable table = HibernateUtils.getTable(column);
+		final Table table = HibernateUtils.getTable(column);
 		if (column.isUnique()) {
 			str = "Image_DatabaseUniqueKeyColumn"; //$NON-NLS-1$
 		} else if (primaryKey && table != null && foreignKey) {
@@ -105,31 +113,31 @@ public class OrmImageMap {
 		} else if (persistentClass != null && persistentClass.getIdentifierProperty() == field) {
 			str = "Image_PersistentFieldSimple_id"; //$NON-NLS-1$
 		} else if (field.getValue() != null) {
-			final IValue value = new ValueProxy(field.getValue());
+			final Value value = field.getValue();
 			if (value instanceof OneToMany) {
 				str = "Image_PersistentFieldOne-to-many"; //$NON-NLS-1$
 			} else if (value instanceof OneToOne) {
 				str = "Image_PersistentFieldOne-to-one"; //$NON-NLS-1$
-			} else if (value.isManyToOne()) {
+			} else if (value instanceof ManyToOne) {
 				str = "Image_PersistentFieldMany-to-one"; //$NON-NLS-1$
-			} else if (value.isAny()) {
+			} else if (value instanceof Any) {
 				str = "Image_PersistentFieldAny"; //$NON-NLS-1$
 			} else {
-				IType type = UtilTypeExtract.getTypeUsingExecContext(value, cfg);
+				Type type = UtilTypeExtract.getTypeUsingExecContext(value, cfg);
 				if (type != null && type.isCollectionType()) {
-					if (value.isPrimitiveArray()) {
+					if (value instanceof PrimitiveArray) {
 						str = "Image_Collection_primitive_array"; //$NON-NLS-1$
-					} else if (value.isArray()) {
+					} else if (value instanceof Array) {
 						str = "Image_Collection_array"; //$NON-NLS-1$
-					} else if (value.isList()) {
+					} else if (value instanceof List) {
 						str = "Image_Collection_list"; //$NON-NLS-1$
-					} else if (value.isSet()) {
+					} else if (value instanceof Set) {
 						str = "Image_Collection_set"; //$NON-NLS-1$
-					} else if (value.isMap()) {
+					} else if (value instanceof Map) {
 						str = "Image_Collection_map"; //$NON-NLS-1$
-					} else if (value.isBag()) {
+					} else if (value instanceof Bag) {
 						str = "Image_Collection_bag"; //$NON-NLS-1$
-					} else if (value.isIdentifierBag()) {
+					} else if (value instanceof IdentifierBag) {
 						str = "Image_Collection_idbag"; //$NON-NLS-1$
 					} else {
 						str = "Image_Collection"; //$NON-NLS-1$
@@ -142,53 +150,6 @@ public class OrmImageMap {
 		return str;
 	}
 
-	public static String getImageName(IProperty field, final ConsoleConfiguration cfg) {
-		String str = "Image_PersistentFieldSimple"; //$NON-NLS-1$
-		if (field == null) {
-			return str;
-		}
-		final PersistentClass persistentClass = field.getPersistentClass(); 
-		if (persistentClass != null && persistentClass.getVersion() == field) {
-			str = "Image_PersistentFieldSimple_version"; //$NON-NLS-1$
-		} else if (persistentClass != null && persistentClass.getIdentifierProperty() == field) {
-			str = "Image_PersistentFieldSimple_id"; //$NON-NLS-1$
-		} else if (field.getValue() != null) {
-			final IValue value = field.getValue();
-			if (value.isOneToMany()) {
-				str = "Image_PersistentFieldOne-to-many"; //$NON-NLS-1$
-			} else if (value.isOneToOne()) {
-				str = "Image_PersistentFieldOne-to-one"; //$NON-NLS-1$
-			} else if (value.isManyToOne()) {
-				str = "Image_PersistentFieldMany-to-one"; //$NON-NLS-1$
-			} else if (value.isAny()) {
-				str = "Image_PersistentFieldAny"; //$NON-NLS-1$
-			} else {
-				IType type = UtilTypeExtract.getTypeUsingExecContext(value, cfg);
-				if (type != null && type.isCollectionType()) {
-					if (value.isPrimitiveArray()) {
-						str = "Image_Collection_primitive_array"; //$NON-NLS-1$
-					} else if (value.isArray()) {
-						str = "Image_Collection_array"; //$NON-NLS-1$
-					} else if (value.isList()) {
-						str = "Image_Collection_list"; //$NON-NLS-1$
-					} else if (value.isSet()) {
-						str = "Image_Collection_set"; //$NON-NLS-1$
-					} else if (value.isMap()) {
-						str = "Image_Collection_map"; //$NON-NLS-1$
-					} else if (value.isBag()) {
-						str = "Image_Collection_bag"; //$NON-NLS-1$
-					} else if (value.isIdentifierBag()) {
-						str = "Image_Collection_idbag"; //$NON-NLS-1$
-					} else {
-						str = "Image_Collection"; //$NON-NLS-1$
-					}
-				}
-			}
-		} else if ("parent".equals(field.getName())) { //$NON-NLS-1$
-			str = "Image_PersistentFieldParent"; //$NON-NLS-1$
-		}
-		return str;
-	}
 	/**
 	 * the image name for hierarchy:
 	 * OneToMany
@@ -211,17 +172,18 @@ public class OrmImageMap {
 	 * @param field
 	 * @return
 	 */
-	public static String getImageName(IValue field) {
+	public static String getImageName(SimpleValue field) {
 		String res = "Image_PersistentFieldSimple"; //$NON-NLS-1$
-		if (field.isAny()) {
+		if (field instanceof Any) {
 			res = "Image_PersistentFieldMany-to-any"; //$NON-NLS-1$
-		} else if (field.isComponent()) {
+		} else if (field instanceof Component) {
 			res = "Image_PersistentFieldComponent"; //$NON-NLS-1$
-		} else if (field.isDependantValue()) {
-       		if (field.getTable().getIdentifierValue() == field) {
+		} else if (field instanceof DependantValue) {
+			DependantValue mapping = (DependantValue)field;
+			if (mapping.getTable().getIdentifierValue() == mapping) {
 				res = "Image_PersistentFieldComponent_id"; //$NON-NLS-1$				
 			}
-		} else if (field.isManyToOne()) {
+		} else if (field instanceof ManyToOne) {
 			res = "Image_PersistentFieldMany-to-many"; //$NON-NLS-1$
 		}
 		return res;

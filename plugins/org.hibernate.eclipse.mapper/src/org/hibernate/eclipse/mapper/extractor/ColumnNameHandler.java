@@ -33,8 +33,8 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.nature.HibernateNature;
-import org.jboss.tools.hibernate.spi.IColumn;
-import org.jboss.tools.hibernate.spi.ITable;
+import org.hibernate.mapping.Column;
+import org.hibernate.mapping.Table;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Node;
 
@@ -56,11 +56,11 @@ public class ColumnNameHandler implements HBMInfoHandler {
 		if(nature!=null) {
 			TableIdentifier nearestTableName = extractor.getNearestTableName(node);
 			if(nearestTableName!=null) {
-				ITable table = nature.getTable(nearestTableName);
+				Table table = nature.getTable(nearestTableName);
 				if (table!=null) {
 					Iterator tableMappings = table.getColumnIterator();
 					while (tableMappings.hasNext() ) {
-						IColumn column = (IColumn) tableMappings.next();
+						Column column = (Column) tableMappings.next();
 						if(column.getName().toUpperCase().startsWith(start.toUpperCase()) ) {
 							columns.add(column);
 						}
@@ -71,7 +71,7 @@ public class ColumnNameHandler implements HBMInfoHandler {
 
 		List proposals = new ArrayList();
 		for (Iterator iter = columns.iterator(); iter.hasNext();) {
-			IColumn element = (IColumn) iter.next();
+			Column element = (Column) iter.next();
 			proposals.add(new CompletionProposal(element.getName(), offset, start.length(), element.getName().length(), null, null, null, null) );
 		}
 		

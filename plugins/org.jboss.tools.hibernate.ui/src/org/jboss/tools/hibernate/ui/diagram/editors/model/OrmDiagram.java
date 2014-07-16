@@ -28,8 +28,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.Map.Entry;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -47,13 +47,14 @@ import org.eclipse.ui.XMLMemento;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import org.hibernate.HibernateException;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
+import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.mapping.RootClass;
-import org.jboss.tools.hibernate.spi.IConfiguration;
-import org.jboss.tools.hibernate.spi.ITable;
+import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.UiPlugin;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Connection.ConnectionType;
@@ -216,7 +217,7 @@ public class OrmDiagram extends BaseElement {
 		elements.clear();
 		connections.clear();
 		StringBuilder errorMessage = new StringBuilder();
-		IConfiguration config = getConfig(errorMessage);
+		Configuration config = getConfig(errorMessage);
 		final ElementsFactory factory = new ElementsFactory(
 			consoleConfigName, elements, connections);
 		for (int i = 0; i < roots.size(); i++) {
@@ -373,7 +374,7 @@ public class OrmDiagram extends BaseElement {
 	}
 
 	public boolean refreshRootsFromNames() {
-		final IConfiguration config = getConfig();
+		final Configuration config = getConfig();
 		if (config == null) {
 			return false;
 		}
@@ -789,11 +790,11 @@ public class OrmDiagram extends BaseElement {
 		return consoleConfigName;
 	}
 
-	protected IConfiguration getConfig() {
+	protected Configuration getConfig() {
 		return getConfig(null);
 	}
 	
-	protected IConfiguration getConfig(StringBuilder error) {
+	protected Configuration getConfig(StringBuilder error) {
 		if (error != null) {
 			error.delete(0, error.length());
 		}
@@ -1047,7 +1048,7 @@ public class OrmDiagram extends BaseElement {
 			while (it.hasNext()) {
 				final OrmShape shape = it.next();
 				Object ormElement = shape.getOrmElement();
-				if (ormElement instanceof ITable) {
+				if (ormElement instanceof Table) {
 					nTables++;
 				}
 			}

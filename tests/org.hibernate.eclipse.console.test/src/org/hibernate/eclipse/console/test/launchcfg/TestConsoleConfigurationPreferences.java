@@ -8,11 +8,10 @@ import java.util.Properties;
 import junit.framework.Assert;
 
 import org.eclipse.core.runtime.FileLocator;
+import org.hibernate.cfg.Environment;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 import org.hibernate.eclipse.console.test.HibernateConsoleTestPlugin;
-import org.jboss.tools.hibernate.spi.IEnvironment;
-import org.jboss.tools.hibernate.util.HibernateHelper;
 import org.osgi.framework.Bundle;
 import org.w3c.dom.Element;
 
@@ -51,9 +50,8 @@ public class TestConsoleConfigurationPreferences implements ConsoleConfiguration
 	}
 
 	public Properties getProperties() {
-		IEnvironment environment = HibernateHelper.INSTANCE.getHibernateService().getEnvironment();
 		Properties p = new Properties();
-		p.setProperty(environment.getDialect(), "org.hibernate.dialect.HSQLDialect"); //$NON-NLS-1$
+		p.setProperty(Environment.DIALECT, "org.hibernate.dialect.HSQLDialect"); //$NON-NLS-1$
 		return p;
 	}
 

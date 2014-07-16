@@ -21,7 +21,7 @@
  */
 package org.hibernate.console;
 
-import org.jboss.tools.hibernate.spi.ISessionFactory;
+import org.hibernate.SessionFactory;
 
 
 /**
@@ -35,14 +35,14 @@ public interface ConsoleConfigurationListener {
 	 * called when the factory has just been created 
 	 * @param builtSessionFactory TODO
 	 */	 
-	public void sessionFactoryBuilt(ConsoleConfiguration ccfg, ISessionFactory builtSessionFactory);
+	public void sessionFactoryBuilt(ConsoleConfiguration ccfg, SessionFactory builtSessionFactory);
 	
 	/**
 	 * Called when this sessionFactory is about to be closed. Used for listeners to clean up resources related to this sessionfactory (such as closing sessions)
 	 * @param configuration
 	 * @param closedSessionFactory TODO
 	 */
-	public void sessionFactoryClosing(ConsoleConfiguration configuration, ISessionFactory aboutToCloseFactory);
+	public void sessionFactoryClosing(ConsoleConfiguration configuration, SessionFactory aboutToCloseFactory);
 
 	public void configurationBuilt(ConsoleConfiguration ccfg);
 

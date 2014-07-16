@@ -30,9 +30,9 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
+import org.hibernate.mapping.Component;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
-import org.jboss.tools.hibernate.spi.IValue;
 
 /**
  * @author Dmitry Geraskov
@@ -70,7 +70,7 @@ public class OpenSourceAction extends SelectionListenerAction {
 				Object prevSegment = path.getParentPath().getLastSegment();
 				if (prevSegment instanceof Property
 						&& ((Property)prevSegment).isComposite()){
-					fullyQualifiedName =((IValue)((Property) prevSegment).getValue()).getComponentClassName();
+					fullyQualifiedName =((Component)((Property) prevSegment).getValue()).getComponentClassName();
 				}
 			}
 			if (fullyQualifiedName == null && persClass != null){

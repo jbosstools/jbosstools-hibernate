@@ -20,10 +20,9 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.actions.OpenSourceAction;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 import org.hibernate.eclipse.console.test.utils.Utils;
+import org.hibernate.mapping.Component;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
-import org.jboss.tools.hibernate.proxy.ValueProxy;
-import org.jboss.tools.hibernate.spi.IValue;
 
 /**
  * @author Dmitry Geraskov
@@ -58,7 +57,7 @@ public class OpenSourceFileTest extends BaseTestSetCase {
 				openTest(fields[j], consCFG, fullyQualifiedName);
 				if (fields[j] instanceof Property
 					&& ((Property)fields[j]).isComposite()) {
-					fullyQualifiedName =new ValueProxy(((Property) fields[j]).getValue()).getComponentClassName();
+					fullyQualifiedName =((Component)((Property) fields[j]).getValue()).getComponentClassName();
 
 					Object[] compProperties = propertyWorkbenchAdapter.getChildren(fields[j]);
 					for (int k = 0; k < compProperties.length; k++) {

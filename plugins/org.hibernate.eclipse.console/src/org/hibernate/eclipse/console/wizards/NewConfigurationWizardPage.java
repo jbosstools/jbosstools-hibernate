@@ -50,11 +50,10 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
+import org.hibernate.cfg.Environment;
 import org.hibernate.console.ConnectionProfileUtil;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.DriverClassHelpers;
-import org.jboss.tools.hibernate.spi.IEnvironment;
-import org.jboss.tools.hibernate.util.HibernateHelper;
 
 /**
  * Wizard for creating basic hibernate.cfg.xml
@@ -469,16 +468,15 @@ public class NewConfigurationWizardPage extends WizardPage {
 	
     
     private void fillPropertiesFromConnectionProfile(String cpName){
-    	IEnvironment environment = HibernateHelper.INSTANCE.getHibernateService().getEnvironment();
 		IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(cpName);
 		Properties p = ConnectionProfileUtil.getHibernateConnectionProperties(profile);
-		driver_classCombo.setText(p.getProperty(environment.getDriver()));
-		urlCombo.setText(p.getProperty(environment.getURL()));
-		if (p.containsKey(environment.getUser())){
-			 usernameText.setText(p.getProperty(environment.getUser()));
+		driver_classCombo.setText(p.getProperty(Environment.DRIVER));
+		urlCombo.setText(p.getProperty(Environment.URL));
+		if (p.containsKey(Environment.USER)){
+			 usernameText.setText(p.getProperty(Environment.USER));
 		}
-		if (p.containsKey(environment.getPass())){
-			 passwordText.setText(p.getProperty(environment.getPass()));
+		if (p.containsKey(Environment.PASS)){
+			 passwordText.setText(p.getProperty(Environment.PASS));
 		}
 		/*this causes very long timeouts when db is not started
 		String dialect = ConnectionProfileUtil.autoDetectDialect(p);

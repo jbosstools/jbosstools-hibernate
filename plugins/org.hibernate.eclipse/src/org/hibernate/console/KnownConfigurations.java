@@ -50,9 +50,9 @@ import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleManager;
 import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
+import org.hibernate.SessionFactory;
 import org.hibernate.console.node.BaseNode;
 import org.hibernate.console.node.ConfigurationListNode;
-import org.jboss.tools.hibernate.spi.ISessionFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -68,7 +68,7 @@ public class KnownConfigurations  {
 	private Map<String, ConsoleConfiguration> configurations;
 	private ConsoleConfigurationListener sfListener = new ConcoleConfigurationAdapter() {
 
-		public void sessionFactoryClosing(final ConsoleConfiguration configuration, final ISessionFactory closingFactory) {
+		public void sessionFactoryClosing(final ConsoleConfiguration configuration, final SessionFactory closingFactory) {
 			fireNotification(new Notification() {
 				public void notify(KnownConfigurationsListener listener) {
 					listener.sessionFactoryClosing(configuration, closingFactory);
@@ -76,7 +76,7 @@ public class KnownConfigurations  {
 			});
 		}
 
-		public void sessionFactoryBuilt(final ConsoleConfiguration ccfg, final ISessionFactory builtSessionFactory) {
+		public void sessionFactoryBuilt(final ConsoleConfiguration ccfg, final SessionFactory builtSessionFactory) {
 			fireNotification(new Notification() {
 				public void notify(KnownConfigurationsListener listener) {
 					listener.sessionFactoryBuilt(ccfg, builtSessionFactory);

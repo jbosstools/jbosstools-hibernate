@@ -10,8 +10,7 @@
  ******************************************************************************/
 package org.hibernate.console;
 
-import org.jboss.tools.hibernate.spi.ISessionFactory;
-
+import org.hibernate.SessionFactory;
 
 /**
  * This adapter class provides default implementations for the
@@ -38,10 +37,10 @@ public abstract class KnownConfigurationsAdapter implements KnownConfigurationsL
 			boolean forUpdate) {}
 
 	public void sessionFactoryBuilt(ConsoleConfiguration ccfg,
-			ISessionFactory builtFactory) {}
+			SessionFactory builtFactory) {}
 
 	public void sessionFactoryClosing(ConsoleConfiguration configuration,
-			ISessionFactory closingFactory) {}
+			SessionFactory closingFactory) {}
 	
 	public void configurationReset(ConsoleConfiguration ccfg){}
 

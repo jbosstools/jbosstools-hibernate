@@ -4,4 +4,3 @@ Bundle-Name: Hibernate Libs
 Bundle-SymbolicName: org.jboss.tools.hibernate.libs
 Bundle-Version: 3.8.0.qualifier
 Bundle-ClassPath: lib/hibernate-core-4.3.5.Final.jar
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7

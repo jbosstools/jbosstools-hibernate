@@ -16,23 +16,25 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
+import org.hibernate.mapping.Collection;
+import org.hibernate.mapping.Column;
+import org.hibernate.mapping.Component;
+import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Join;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Subclass;
-import org.jboss.tools.hibernate.proxy.ColumnProxy;
-import org.jboss.tools.hibernate.proxy.TableProxy;
-import org.jboss.tools.hibernate.proxy.ValueProxy;
-import org.jboss.tools.hibernate.spi.IColumn;
-import org.jboss.tools.hibernate.spi.IConfiguration;
-import org.jboss.tools.hibernate.spi.ITable;
-import org.jboss.tools.hibernate.spi.IType;
-import org.jboss.tools.hibernate.spi.IValue;
+import org.hibernate.mapping.Table;
+import org.hibernate.mapping.Value;
+import org.hibernate.type.EntityType;
+import org.hibernate.type.Type;
 
 /**
  * Responsible to create diagram elements for given
@@ -61,28 +63,28 @@ public class ElementsFactory {
 		while (it.hasNext()) {
 			final OrmShape shape = it.next();
 			Object ormElement = shape.getOrmElement();
-			if (ormElement instanceof ITable) {
-				ITable databaseTable = (ITable)ormElement;
+			if (ormElement instanceof Table) {
+				Table databaseTable = (Table)ormElement;
 				Iterator<ForeignKey> itFK = (Iterator<ForeignKey>)databaseTable.getForeignKeyIterator();
 				while (itFK.hasNext()) {
 					final ForeignKey fk = itFK.next();
-					ITable referencedTable = fk.getReferencedTable() != null ? new TableProxy(fk.getReferencedTable()) : null;
+					Table referencedTable = fk.getReferencedTable();
 					final OrmShape referencedShape = getOrCreateDatabaseTable(referencedTable);
 					//
-					Iterator itColumns = fk.columnIterator();
+					Iterator<Column> itColumns = (Iterator<Column>)fk.columnIterator();
 					while (itColumns.hasNext()) {
-						IColumn col = new ColumnProxy(itColumns.next());
+						Column col = itColumns.next();
 						Shape shapeColumn = shape.getChild(col);
-						Iterator<IColumn> itReferencedColumns = null;
+						Iterator<Column> itReferencedColumns = null;
 						if (fk.isReferenceToPrimaryKey()) {
 							itReferencedColumns = 
-								(Iterator<IColumn>)referencedTable.getPrimaryKey().columnIterator();
+								(Iterator<Column>)referencedTable.getPrimaryKey().columnIterator();
 						} else {
 							itReferencedColumns = 
-								(Iterator<IColumn>)fk.getReferencedColumns().iterator();
+								(Iterator<Column>)fk.getReferencedColumns().iterator();
 						}
 						while (itReferencedColumns != null && itReferencedColumns.hasNext()) {
-							IColumn colReferenced = new ColumnProxy(itReferencedColumns.next());
+							Column colReferenced = itReferencedColumns.next();
 							Shape shapeReferencedColumn = referencedShape.getChild(colReferenced);
 							if (shouldCreateConnection(shapeColumn, shapeReferencedColumn)) {
 								connections.add(new Connection(shapeColumn, shapeReferencedColumn));
@@ -115,13 +117,13 @@ public class ElementsFactory {
 		OrmShape s = null;
 		Property property = (Property)element;
 		if (!property.isComposite()) {
-			final IConfiguration config = getConfig();
+			final Configuration config = getConfig();
 			//
-			IValue v = property.getValue() != null ? new ValueProxy(property.getValue()) : null;
-			IType type = UtilTypeExtract.getTypeUsingExecContext(v, getConsoleConfig());
+			Type type = UtilTypeExtract.getTypeUsingExecContext(property.getValue(), getConsoleConfig());
 			if (type != null && type.isEntityType()) {
+				EntityType et = (EntityType) type;
 				Object clazz = config != null ? 
-						config.getClassMapping(type.getAssociatedEntityName()) : null;
+						config.getClassMapping(et.getAssociatedEntityName()) : null;
 				if (clazz instanceof RootClass) {
 					RootClass rootClass = (RootClass)clazz;
 					s = getOrCreatePersistentClass(rootClass, null);
@@ -137,18 +139,18 @@ public class ElementsFactory {
 			if (shouldCreateConnection(shape, s)) {
 				connections.add(new Connection(shape, s));
 			}
-			createConnections(s, getOrCreateDatabaseTable(property.getValue().getTable() != null ? new TableProxy(property.getValue().getTable()) : null));
+			createConnections(s, getOrCreateDatabaseTable(property.getValue().getTable()));
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	protected void refreshComponentReferences(ComponentShape componentShape) {
 		Property property = (Property)componentShape.getOrmElement();
-		IValue v = (new ValueProxy(property.getValue()));
-		if (!v.isCollection()) {
+		if (!(property.getValue() instanceof Collection)) {
 			return;
 		}
-		IValue collection = v;
-		IValue component = collection.getElement();
+		Collection collection = (Collection)property.getValue();
+		Value component = collection.getElement();
 		Shape csChild0 = null, csChild1 = null;
 		Iterator<Shape> tmp = componentShape.getChildrenIterator();
 		if (tmp.hasNext()) {
@@ -158,20 +160,23 @@ public class ElementsFactory {
 			csChild1 = tmp.next();
 		}
 		OrmShape childShape = null;
-		if (component.isComponent()) {
-			childShape = elements.get(component.getComponentClassName());
+		if (component instanceof Component) {
+			childShape = elements.get(((Component)component).getComponentClassName());
 			if (childShape == null) {
 				childShape = getOrCreateComponentClass(property);
 			}
-			IValue value = (IValue)csChild0.getOrmElement();
+			SimpleValue value = (SimpleValue)csChild0.getOrmElement();
 			OrmShape tableShape = getOrCreateDatabaseTable(value.getTable());
 			if (tableShape != null) {
-				Iterator<IColumn> it = value.getColumnIterator();
+				Iterator it = value.getColumnIterator();
 				while (it.hasNext()) {
-					IColumn el = it.next();
-					Shape shape = tableShape.getChild(el);
-					if (shouldCreateConnection(csChild0, shape)) {
-						connections.add(new Connection(csChild0, shape));
+					Object el = it.next();
+					if (el instanceof Column) {
+						Column col = (Column)el;
+						Shape shape = tableShape.getChild(col);
+						if (shouldCreateConnection(csChild0, shape)) {
+							connections.add(new Connection(csChild0, shape));
+						}
 					}
 				}
 			}
@@ -189,8 +194,8 @@ public class ElementsFactory {
 				Iterator it = collection.getKey().getColumnIterator();
 				while (it.hasNext()) {
 					Object el = it.next();
-					if (el instanceof IColumn) {
-						IColumn col = (IColumn)el;
+					if (el instanceof Column) {
+						Column col = (Column)el;
 						Shape shape = keyTableShape.getChild(col);
 						if (shouldCreateConnection(csChild0, shape)) {
 							connections.add(new Connection(csChild0, shape));
@@ -203,22 +208,22 @@ public class ElementsFactory {
 			// this is case: if (collection.isMap() || collection.isSet())
 			childShape = getOrCreateDatabaseTable(collection.getCollectionTable());
 			if (childShape != null) {
-				Iterator<IColumn> it = ((IValue)csChild0.getOrmElement()).getColumnIterator();
+				Iterator it = ((DependantValue)csChild0.getOrmElement()).getColumnIterator();
 				while (it.hasNext()) {
 					Object el = it.next();
-					if (el instanceof IColumn) {
-						IColumn col = (IColumn)el;
+					if (el instanceof Column) {
+						Column col = (Column)el;
 						Shape shape = childShape.getChild(col);
 						if (shouldCreateConnection(csChild0, shape)) {
 							connections.add(new Connection(csChild0, shape));
 						}
 					}
 				}
-				it = ((IValue)csChild1.getOrmElement()).getColumnIterator();
+				it = ((SimpleValue)csChild1.getOrmElement()).getColumnIterator();
 				while (it.hasNext()) {
 					Object el = it.next();
-					if (el instanceof IColumn) {
-						IColumn col = (IColumn)el;
+					if (el instanceof Column) {
+						Column col = (Column)el;
 						Shape shape = childShape.getChild(col);
 						if (shouldCreateConnection(csChild1, shape)) {
 							connections.add(new Connection(csChild1, shape));
@@ -230,13 +235,13 @@ public class ElementsFactory {
 	}
 	
 	@SuppressWarnings("rawtypes")
-	protected OrmShape getOrCreateDatabaseTable(ITable databaseTable) {
+	protected OrmShape getOrCreateDatabaseTable(Table databaseTable) {
 		OrmShape tableShape = null;
 		if (databaseTable != null) {
 			tableShape = getShape(databaseTable);
 			if (tableShape == null) {
 				tableShape = createShape(databaseTable);
-				final IConfiguration config = getConfig();
+				final Configuration config = getConfig();
 				if (config != null) {
 					Iterator iterator = config.getClassMappings();
 					while (iterator.hasNext()) {
@@ -258,7 +263,7 @@ public class ElementsFactory {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected OrmShape getOrCreatePersistentClass(PersistentClass persistentClass, 
-			ITable componentClassDatabaseTable) {
+			Table componentClassDatabaseTable) {
 		OrmShape classShape = null;
 		if (persistentClass == null) {
 			return classShape;
@@ -269,7 +274,7 @@ public class ElementsFactory {
 			classShape = createShape(persistentClass);
 		}
 		if (componentClassDatabaseTable == null && persistentClass.getTable() != null) {
-			componentClassDatabaseTable = persistentClass.getTable() != null ? new TableProxy(persistentClass.getTable()) : null;
+			componentClassDatabaseTable = persistentClass.getTable();
 		}
 		if (componentClassDatabaseTable != null) {
 			shape = getShape(componentClassDatabaseTable);
@@ -292,7 +297,7 @@ public class ElementsFactory {
 					subclassShape = createShape(subclass);
 				}
 				if (((Subclass)element).isJoinedSubclass()) {
-					ITable jcTable = ((Subclass)element).getTable() != null ? new TableProxy(((Subclass)element).getTable()) : null;
+					Table jcTable = ((Subclass)element).getTable();
 					OrmShape jcTableShape = getOrCreateDatabaseTable(jcTable);
 					createConnections(subclassShape, jcTableShape);
 					if (shouldCreateConnection(subclassShape, jcTableShape)) {
@@ -304,7 +309,7 @@ public class ElementsFactory {
 						connections.add(new Connection(subclassShape, shape));
 					}
 				}
-				OrmShape ownerTableShape = getOrCreateDatabaseTable(((Subclass)element).getRootTable() != null ? new TableProxy(((Subclass)element).getRootTable()) : null);
+				OrmShape ownerTableShape = getOrCreateDatabaseTable(((Subclass)element).getRootTable());
 				createConnections(subclassShape, ownerTableShape);
 
 				Iterator<Join> joinIterator = subclass.getJoinIterator();
@@ -313,15 +318,15 @@ public class ElementsFactory {
 					Iterator<Property> iterator = join.getPropertyIterator();
 					while (iterator.hasNext()) {
 						Property property = iterator.next();
-						OrmShape tableShape =  getOrCreateDatabaseTable(property.getValue().getTable() != null ? new TableProxy(property.getValue().getTable()) : null);
+						OrmShape tableShape =  getOrCreateDatabaseTable(property.getValue().getTable());
 						createConnections(subclassShape, tableShape);
 					}
 				}
 			}
 		}
 
-		IValue identifier = persistentClass.getIdentifier() != null ? new ValueProxy(persistentClass.getIdentifier()) : null;
-		if (identifier != null && identifier.isComponent()) {
+		if (persistentClass.getIdentifier() instanceof Component) {
+			Component identifier = (Component)persistentClass.getIdentifier();
 			if (identifier.getComponentClassName() != null && !identifier.getComponentClassName().equals(identifier.getOwner().getEntityName())) {
 				OrmShape componentClassShape = elements.get(identifier.getComponentClassName());
 				if (componentClassShape == null && persistentClass instanceof RootClass) {
@@ -346,7 +351,7 @@ public class ElementsFactory {
 			Iterator<Property> iterator = join.getPropertyIterator();
 			while (iterator.hasNext()) {
 				Property property = iterator.next();
-				OrmShape tableShape = getOrCreateDatabaseTable(property.getValue().getTable() != null ? new TableProxy(property.getValue().getTable()) : null);
+				OrmShape tableShape = getOrCreateDatabaseTable(property.getValue().getTable());
 				createConnections(classShape, tableShape);
 			}
 		}
@@ -358,9 +363,8 @@ public class ElementsFactory {
 		if (property == null) {
 			return classShape;
 		}
-		IValue value = property.getValue() != null ? new ValueProxy(property.getValue()) : null;
-		if (value.isCollection()) {
-			IValue component = value.getElement();
+		if (property.getValue() instanceof Collection) {
+			Component component = (Component)((Collection)property.getValue()).getElement();
 			if (component != null) {
 				classShape = createShape(property);
 				OrmShape tableShape = elements.get(Utils.getTableName(component.getTable()));
@@ -380,8 +384,8 @@ public class ElementsFactory {
 					}
 				}
 			}
-		} else if (value.isComponent()) {
-			classShape = elements.get(value.getComponentClassName());
+		} else if (property.getValue() instanceof Component) {
+			classShape = elements.get(((Component)property.getValue()).getComponentClassName());
 			if (classShape == null) {
 				classShape = createShape(property);
 			}
@@ -391,7 +395,7 @@ public class ElementsFactory {
 
 	protected OrmShape getOrCreateAssociationClass(Property property) {
 		OrmShape classShape = null;
-		OneToMany component = (OneToMany) new ValueProxy(property.getValue()).getElement();
+		OneToMany component = (OneToMany)((Collection)property.getValue()).getElement();
 		if (component == null) {
 			return classShape;
 		}
@@ -400,13 +404,9 @@ public class ElementsFactory {
 			if (classShape == null) {
 				classShape = createShape(component.getAssociatedClass());
 			}
-			OrmShape tableShape = elements.get(Utils.getTableName(
-					component.getAssociatedClass().getTable() != null ? 
-							new TableProxy(component.getAssociatedClass().getTable()) : null));
+			OrmShape tableShape = elements.get(Utils.getTableName(component.getAssociatedClass().getTable()));
 			if (tableShape == null) {
-				tableShape = getOrCreateDatabaseTable(
-						component.getAssociatedClass().getTable() != null ?
-								new TableProxy(component.getAssociatedClass().getTable()) : null);
+				tableShape = getOrCreateDatabaseTable(component.getAssociatedClass().getTable());
 			}
 			createConnections(classShape, tableShape);
 			if (shouldCreateConnection(classShape, tableShape)) {
@@ -455,14 +455,14 @@ public class ElementsFactory {
 			if (!(element instanceof Property && parentProperty != element)) {
 				continue;
 			}
-			IValue value = new ValueProxy(((Property)element).getValue());
+			Value value = ((Property)element).getValue();
 			Iterator iterator = value.getColumnIterator();
 			while (iterator.hasNext()) {
 				Object o = iterator.next();
-				if (!(o instanceof IColumn)) {
+				if (!(o instanceof Column)) {
 					continue;
 				}
-				IColumn dbColumn = (IColumn)o;
+				Column dbColumn = (Column)o;
 				Iterator<Shape> itColumns = dbTable.getChildrenIterator();
 				while (itColumns.hasNext()) {
 					final Shape shapeCol = itColumns.next();
@@ -474,8 +474,8 @@ public class ElementsFactory {
 					}
 					Object ormElement = shapeCol.getOrmElement();
 					String name2 = ""; //$NON-NLS-1$
-					if (ormElement instanceof IColumn) {
-						IColumn dbColumn2 = (IColumn)ormElement;
+					if (ormElement instanceof Column) {
+						Column dbColumn2 = (Column)ormElement;
 						name2 = dbColumn2.getName();
 					} else if (ormElement instanceof Property) {
 						Property property2 = (Property)ormElement;
@@ -527,8 +527,8 @@ public class ElementsFactory {
 		return consoleConfig;
 	}
 
-	public IConfiguration getConfig() {
-		IConfiguration config = null;
+	public Configuration getConfig() {
+		Configuration config = null;
 		final ConsoleConfiguration consoleConfig = getConsoleConfig();
 		if (consoleConfig != null) {
 			config = consoleConfig.getConfiguration();

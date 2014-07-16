@@ -38,7 +38,7 @@ import org.hibernate.eclipse.graph.anchor.LeftOrRightParentAnchor;
 import org.hibernate.eclipse.graph.figures.EditableLabel;
 import org.hibernate.eclipse.graph.model.ColumnViewAdapter;
 import org.hibernate.eclipse.graph.model.GraphNode;
-import org.jboss.tools.hibernate.spi.IColumn;
+import org.hibernate.mapping.Column;
 
 public class ColumnEditPart extends AbstractGraphicalEditPart implements NodeEditPart, Observer {
 	
@@ -57,7 +57,7 @@ public class ColumnEditPart extends AbstractGraphicalEditPart implements NodeEdi
 	}
 	
 	protected IFigure createFigure() {
-		IColumn column = ((ColumnViewAdapter) getModel()).getcolumn();
+		Column column = ((ColumnViewAdapter) getModel()).getcolumn();
 		String label = column.getName();
 		Label columnLabel = new EditableLabel(label);
 		//columnLabel.setIcon(((ColumnViewAdapter)getModel()).getImage());

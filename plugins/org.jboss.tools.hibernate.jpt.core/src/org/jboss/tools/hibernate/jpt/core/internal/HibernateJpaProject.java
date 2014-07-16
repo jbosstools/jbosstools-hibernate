@@ -41,6 +41,9 @@ import org.eclipse.jpt.jpa.core.internal.AbstractJpaProject;
 import org.eclipse.wst.validation.ValidationFramework;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.Environment;
+import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
@@ -50,10 +53,6 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceU
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
 import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValidationMessage;
-import org.jboss.tools.hibernate.spi.IConfiguration;
-import org.jboss.tools.hibernate.spi.IEnvironment;
-import org.jboss.tools.hibernate.spi.INamingStrategy;
-import org.jboss.tools.hibernate.util.HibernateHelper;
 import org.osgi.service.prefs.Preferences;
 
 /**
@@ -65,19 +64,10 @@ public class HibernateJpaProject extends AbstractJpaProject {
 	private Boolean cachedNamingStrategyEnable;
 	
 	private final JobCommand revalidateCommand;
-	
-	private IEnvironment environment;
 
 	public HibernateJpaProject(JpaProject.Config config){
 		super(config);
 		revalidateCommand = new RevalidateProjectCommand();
-	}
-	
-	private IEnvironment getEnvironment() {
-		if (environment == null) {
-			environment = HibernateHelper.INSTANCE.getHibernateService().getEnvironment();
-		}
-		return environment;
 	}
 	
 	public ConsoleConfiguration getDefaultConsoleConfiguration(){
@@ -88,11 +78,11 @@ public class HibernateJpaProject extends AbstractJpaProject {
 		return null;
 	}
 
-	public INamingStrategy getNamingStrategy(){
+	public NamingStrategy getNamingStrategy(){
 		ConsoleConfiguration cc = getDefaultConsoleConfiguration();
 		if (cc != null){
 			if (cc.getConfiguration() != null){
-				IConfiguration config = cc.getConfiguration();
+				Configuration config = cc.getConfiguration();
 				return config.getNamingStrategy();
 			}
 		}
@@ -127,14 +117,14 @@ public class HibernateJpaProject extends AbstractJpaProject {
 		ConsoleConfiguration cc = getDefaultConsoleConfiguration();
 		if (cc != null){
 			if (cc.hasConfiguration()){//was not build yet
-				IConfiguration configuration = cc.getConfiguration();
-				if (configuration.getProperties().containsKey(getEnvironment().getDefaultSchema())){
-					schema = configuration.getProperty(getEnvironment().getDefaultSchema());
+				Configuration configuration = cc.getConfiguration();
+				if (configuration.getProperties().containsKey(Environment.DEFAULT_SCHEMA)){
+					schema = configuration.getProperty(Environment.DEFAULT_SCHEMA);
 				}
 			}
 			Properties properties = cc.getPreferences().getProperties();
-			if (properties != null && properties.containsKey(getEnvironment().getDefaultSchema())){
-				schema = properties.getProperty(getEnvironment().getDefaultSchema());
+			if (properties != null && properties.containsKey(Environment.DEFAULT_SCHEMA)){
+				schema = properties.getProperty(Environment.DEFAULT_SCHEMA);
 			}
 		}
 		if (schema == null){
@@ -164,15 +154,15 @@ public class HibernateJpaProject extends AbstractJpaProject {
 		ConsoleConfiguration cc = getDefaultConsoleConfiguration();
 		if (cc != null){
 			if (cc.hasConfiguration()){//was not build yet
-				IConfiguration configuration = cc.getConfiguration();
-				if (configuration.getProperties().containsKey(getEnvironment().getDefaultCatalog())){
-					catalog = configuration.getProperty(getEnvironment().getDefaultCatalog());
+				Configuration configuration = cc.getConfiguration();
+				if (configuration.getProperties().containsKey(Environment.DEFAULT_CATALOG)){
+					catalog = configuration.getProperty(Environment.DEFAULT_CATALOG);
 				}
 				
 			}
 			Properties properties = cc.getPreferences().getProperties();
-			if (properties != null && properties.containsKey(getEnvironment().getDefaultCatalog())){
-				catalog = properties.getProperty(getEnvironment().getDefaultCatalog());
+			if (properties != null && properties.containsKey(Environment.DEFAULT_CATALOG)){
+				catalog = properties.getProperty(Environment.DEFAULT_CATALOG);
 			}
 		}
 		if (catalog == null){

@@ -52,9 +52,8 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.util.xpl.ReflectHelper;
-import org.jboss.tools.hibernate.spi.IExporter;
-import org.jboss.tools.hibernate.util.HibernateHelper;
 
 /**
  * Represents what is specified in plugin.xml about possible exporters.
@@ -118,8 +117,25 @@ public class ExporterDefinition {
 	}
 
 
-	public IExporter createExporterInstance() {
-		return HibernateHelper.INSTANCE.getHibernateService().createExporter(classname);
+	public Exporter createExporterInstance() {
+	   Exporter exporter = null;
+
+	   try {
+		   exporter = (Exporter) ReflectHelper.classForName( classname ).newInstance();
+	   }
+	   catch (InstantiationException e) {
+		   throw new HibernateConsoleRuntimeException(NLS.bind(
+				   HibernateConsoleMessages.ExporterDefinition_problem_creating_exporter_class, classname));
+	   }
+	   catch (IllegalAccessException e) {
+		   throw new HibernateConsoleRuntimeException(NLS.bind(
+				   HibernateConsoleMessages.ExporterDefinition_problem_creating_exporter_class, classname));	}
+	   catch (ClassNotFoundException e) {
+		   throw new HibernateConsoleRuntimeException(NLS.bind(
+				   HibernateConsoleMessages.ExporterDefinition_problem_creating_exporter_class, classname));
+	   }
+
+	   return exporter;
 	}
 
 	public String getDescription() {

@@ -31,9 +31,9 @@ import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.datatools.connectivity.ProfileManager;
 import org.eclipse.datatools.connectivity.drivers.DriverInstance;
 import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
-import org.jboss.tools.hibernate.spi.IDialect;
-import org.jboss.tools.hibernate.spi.IEnvironment;
-import org.jboss.tools.hibernate.util.HibernateHelper;
+import org.hibernate.cfg.Environment;
+import org.hibernate.dialect.Dialect;
+import org.hibernate.dialect.resolver.DialectFactory;
 
 /**
  * @author Vitali Yemialyanchyk
@@ -88,31 +88,29 @@ public class ConnectionProfileUtil {
 	 */
 	public static Properties getHibernateConnectionProperties(IConnectionProfile profile){
 		Properties props = new Properties();
-		IEnvironment environment = HibernateHelper.INSTANCE.getHibernateService().getEnvironment();
 		if (profile != null) {
 			final Properties cpProperties = profile.getProperties(profile.getProviderId());
 			String driverClass = ConnectionProfileUtil.getDriverClass(profile.getName());
-			props.setProperty(environment.getDriver(), driverClass);
+			props.setProperty(Environment.DRIVER, driverClass);
 			String url = cpProperties.getProperty(IJDBCDriverDefinitionConstants.URL_PROP_ID);
-			props.setProperty(environment.getURL(), url);
+			props.setProperty(Environment.URL, url);
 			String user = cpProperties.getProperty(IJDBCDriverDefinitionConstants.USERNAME_PROP_ID);
 			if (null != user && user.length() > 0) {
-				props.setProperty(environment.getUser(), user);
+				props.setProperty(Environment.USER, user);
 			}
 			String pass = cpProperties.getProperty(IJDBCDriverDefinitionConstants.PASSWORD_PROP_ID);
 			if (null != pass && pass.length() > 0) {
-				props.setProperty(environment.getPass(), pass);
+				props.setProperty(Environment.PASS, pass);
 			}
 		}
 		return props;
 	}
 	
 	public static String autoDetectDialect(Properties properties) {
-		IEnvironment environment = HibernateHelper.INSTANCE.getHibernateService().getEnvironment();		
-		if (properties.getProperty(environment.getDialect()) == null) {
-			String url = properties.getProperty(environment.getURL());
-			String user = properties.getProperty(environment.getUser());
-			String pass = properties.getProperty(environment.getPass());
+		if (properties.getProperty(Environment.DIALECT) == null) {
+			String url = properties.getProperty(Environment.URL);
+			String user = properties.getProperty(Environment.USER);
+			String pass = properties.getProperty(Environment.PASS);
 			Connection connection = null;
 			try {
 				connection = DriverManager.getConnection(url, user, pass);
@@ -120,7 +118,7 @@ public class ConnectionProfileUtil {
 				//note this code potentially could throw class cast exception
 				//see https://issues.jboss.org/browse/JBIDE-8192
 				//probably when not Hiberante3.5 is used
-				IDialect dialect = HibernateHelper.INSTANCE.getHibernateService().newDialect(properties, connection);
+				Dialect dialect = DialectFactory.buildDialect(properties, connection);
 				return dialect.toString();
 			} catch (SQLException e) {
 				// can't determine dialect
@@ -135,7 +133,7 @@ public class ConnectionProfileUtil {
 			}
 			return null;
 		} else {
-			return properties.getProperty(environment.getDialect());
+			return properties.getProperty(Environment.DIALECT);
 		}
 	}
 }

@@ -21,11 +21,11 @@
  */
 package org.hibernate.console.node;
 
-import org.jboss.tools.hibernate.spi.ITable;
+import org.hibernate.mapping.Table;
 
 class TableNode extends BaseNode {
 
-	public TableNode(BaseNode parent, ITable table) {
+	public TableNode(BaseNode parent, Table table) {
 		super(null, parent);
 		name = table.getName();
 	}

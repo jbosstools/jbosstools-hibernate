@@ -58,6 +58,7 @@ import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 import org.eclipse.ui.texteditor.TextOperationAction;
 import org.hibernate.HibernateException;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.QueryPage;
@@ -66,7 +67,6 @@ import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.views.QueryPageTabView;
 import org.hibernate.mapping.PersistentClass;
-import org.jboss.tools.hibernate.spi.IConfiguration;
 
 public class CriteriaEditor extends AbstractQueryEditor {
 
@@ -158,6 +158,7 @@ public class CriteriaEditor extends AbstractQueryEditor {
 		return evalCtx ;
 	}
 
+	@SuppressWarnings("unchecked")
 	private String[] getImports() {
 
 		final ConsoleConfiguration consoleConfiguration = getConsoleConfiguration();
@@ -173,9 +174,9 @@ public class CriteriaEditor extends AbstractQueryEditor {
 		}
 		
 		Set<String> imports = new HashSet<String>();
-		IConfiguration configuration = consoleConfiguration.getConfiguration();
+		Configuration configuration = consoleConfiguration.getConfiguration();
 		if(configuration!=null) {
-			Iterator<? extends PersistentClass> classMappings = configuration.getClassMappings();
+			Iterator<PersistentClass> classMappings = configuration.getClassMappings();
 			while ( classMappings.hasNext() ) {
 				PersistentClass clazz = classMappings.next();
 				String className = clazz.getClassName();

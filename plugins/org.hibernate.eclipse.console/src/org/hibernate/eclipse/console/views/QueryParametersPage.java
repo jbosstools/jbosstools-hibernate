@@ -67,9 +67,10 @@ import org.hibernate.console.QueryInputModel;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.QueryEditor;
 import org.hibernate.eclipse.console.utils.EclipseImages;
-import org.hibernate.hql.classic.ParserHelper;
 import org.hibernate.util.xpl.StringHelper;
-import org.jboss.tools.hibernate.spi.IType;
+import org.hibernate.hql.classic.ParserHelper;
+import org.hibernate.type.NullableType;
+import org.hibernate.type.Type;
 
 public class QueryParametersPage extends Page implements IQueryParametersPage {
 
@@ -188,10 +189,10 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 			}
 
 		});
-		final List<IType> possibleTypes = new ArrayList<IType>(ConsoleQueryParameter.getPossibleTypes());
-		Collections.sort(possibleTypes, new Comparator<IType>() {
+		final List<Type> possibleTypes = new ArrayList<Type>(ConsoleQueryParameter.getPossibleTypes());
+		Collections.sort(possibleTypes, new Comparator<Type>() {
 
-			public int compare(IType t1, IType t2) {
+			public int compare(Type t1, Type t2) {
 				return t1.getName().compareTo(t2.getName());
 			}
 
@@ -207,10 +208,10 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 					cqp.setName( (String) value );
 				}
 				if ( TYPE_PROPERTY.equals( property ) ) {
-					Iterator<IType> iterator = possibleTypes.iterator();
+					Iterator<Type> iterator = possibleTypes.iterator();
 					int i = 0;
 					while(iterator.hasNext()) {
-						IType type = iterator.next();
+						NullableType type = (NullableType) iterator.next();
 						if(i==((Integer)value).intValue()) {
 							if(!cqp.getTypeName().equals(type.getName())) {
 								cqp.setType(type);
@@ -256,7 +257,7 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 					return cqp.getName();
 				}
 				if ( TYPE_PROPERTY.equals( property ) ) {
-					Iterator<IType> iterator = possibleTypes.iterator();
+					Iterator<Type> iterator = possibleTypes.iterator();
 					String type = cqp.getTypeName();
 					int i = 0;
 					while(iterator.hasNext()) {
@@ -299,10 +300,10 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 
 		String[] valueTypes = new String[possibleTypes.size()];
 
-		Iterator<IType> iterator = possibleTypes.iterator();
+		Iterator<Type> iterator = possibleTypes.iterator();
 		int i=0;
 		while ( iterator.hasNext() ) {
-			IType element = iterator.next();
+			Type element = iterator.next();
 			valueTypes[i++] = element.getName();
 		}
 		CellEditor[] editors = new CellEditor[columnProperties.length];

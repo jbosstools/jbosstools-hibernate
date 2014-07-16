@@ -20,11 +20,11 @@ import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.hibernate.cfg.NamingStrategy;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValidationMessage;
-import org.jboss.tools.hibernate.spi.INamingStrategy;
 
 /**
  * @author Dmitry Geraskov
@@ -63,7 +63,7 @@ public class HibernateJavaSecondaryTableImpl extends GenericJavaSecondaryTable i
 	@Override
 	public String getSpecifiedDBTableName() {
 		if (getSpecifiedName() == null) return null;
-		INamingStrategy ns = getJpaProject().getNamingStrategy();
+		NamingStrategy ns = getJpaProject().getNamingStrategy();
 		if (getJpaProject().isNamingStrategyEnabled() && ns != null){
 			try {
 				return ns.tableName(getSpecifiedName());

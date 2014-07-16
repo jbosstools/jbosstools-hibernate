@@ -34,6 +34,7 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.contentassist.IContextInformation;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.ext.CompletionProposalsResult;
@@ -41,6 +42,8 @@ import org.hibernate.eclipse.console.ext.ConsoleExtension;
 import org.hibernate.eclipse.console.ext.ConsoleExtensionManager;
 import org.hibernate.eclipse.hqleditor.HQLCompletionProcessor;
 import org.hibernate.eclipse.nature.HibernateNature;
+import org.hibernate.tool.ide.completion.HQLCodeAssist;
+import org.hibernate.tool.ide.completion.IHQLCodeAssist;
 
 public class HQLJavaCompletionProposalComputer implements IJavaCompletionProposalComputer {
 
@@ -77,6 +80,11 @@ public class HQLJavaCompletionProposalComputer implements IJavaCompletionProposa
 		try {
 				 ConsoleConfiguration consoleConfiguration = getConfiguration( ctx.getProject() );
 				 if(consoleConfiguration!=null) {
+					 Configuration configuration = consoleConfiguration.getConfiguration();
+					 
+					 
+					 IHQLCodeAssist hqlEval = new HQLCodeAssist(configuration);
+
 					 String query = ""; //$NON-NLS-1$
 					 int stringStart = getStringStart( ctx.getDocument(), ctx.getInvocationOffset() );
 					 int stringEnd = getStringEnd( ctx.getDocument(), ctx.getInvocationOffset() );
@@ -88,8 +96,8 @@ public class HQLJavaCompletionProposalComputer implements IJavaCompletionProposa
 							errorMessage = codeCompletions.getErrorMessage();
 							proposals = codeCompletions.getCompletionProposals();
 					} else {
-						errorMessage = "There is no completion proposal implementation for this hibernate version \'" //$NON-NLS-1$
-								+ consoleConfiguration.getHibernateExtension().getHibernateVersion() + "\'"; //$NON-NLS-1$
+						errorMessage = "There is no completion proposal implementation for this hibernate version \'"
+								+ consoleConfiguration.getHibernateExtension().getHibernateVersion() + "\'";
 					}
 				 }
 		} catch(RuntimeException re) {

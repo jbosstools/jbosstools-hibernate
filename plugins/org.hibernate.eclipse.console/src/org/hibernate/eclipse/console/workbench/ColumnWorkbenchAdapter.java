@@ -26,7 +26,7 @@ import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.hibernate.cfg.reveng.JDBCToHibernateTypeHelper;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.utils.EclipseImages;
-import org.jboss.tools.hibernate.spi.IColumn;
+import org.hibernate.mapping.Column;
 
 public class ColumnWorkbenchAdapter implements IWorkbenchAdapter {
 
@@ -39,11 +39,11 @@ public class ColumnWorkbenchAdapter implements IWorkbenchAdapter {
 	}
 
 	public String getLabel(Object o) {
-		IColumn c = (IColumn) o;
+		Column c = (Column) o;
 		return getColumnLabel( c );
 	}
 
-	static String getColumnLabel(IColumn c) {
+	static String getColumnLabel(Column c) {
 		String label = c.getName();
 		if(c.getSqlTypeCode()!=null) {
 			label += " : " + JDBCToHibernateTypeHelper.getJDBCTypeName(c.getSqlTypeCode().intValue()); //$NON-NLS-1$

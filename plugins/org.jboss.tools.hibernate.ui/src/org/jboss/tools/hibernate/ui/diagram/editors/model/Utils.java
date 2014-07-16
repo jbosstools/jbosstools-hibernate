@@ -16,8 +16,8 @@ import java.util.Properties;
 import org.eclipse.ui.IMemento;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
-import org.jboss.tools.hibernate.spi.ITable;
-import org.jboss.tools.hibernate.spi.IValue;
+import org.hibernate.mapping.SimpleValue;
+import org.hibernate.mapping.Table;
 
 /**
  * Some common model utils.
@@ -53,13 +53,13 @@ public class Utils {
 			} else {
 				res = rootClass.getClassName();
 			}
-		} else if (obj instanceof ITable) {
-			res = getTableName((ITable)obj);
+		} else if (obj instanceof Table) {
+			res = getTableName((Table)obj);
 		} else if (obj instanceof Property) {
 			Property property = (Property)obj;
 			res = getName(property.getPersistentClass()) + "." + property.getName(); //$NON-NLS-1$
-		} else if (obj instanceof IValue && ((IValue)obj).isSimpleValue()) {
-			IValue sv = (IValue)obj;
+		} else if (obj instanceof SimpleValue) {
+			SimpleValue sv = (SimpleValue)obj;
 			res = getTableName(sv.getTable()) + "." + sv.getForeignKeyName(); //$NON-NLS-1$
 		} else if (obj instanceof String) {
 			res = (String)obj;
@@ -77,7 +77,7 @@ public class Utils {
 		return (catalog != null ? catalog + "." : "") + (schema != null ? schema + "." : "") + name; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	}
 
-	public static String getTableName(ITable table) {
+	public static String getTableName(Table table) {
 		return getTableName(table.getCatalog(), table.getSchema(), table.getName());
 	}
 

@@ -15,12 +15,12 @@ import java.util.Iterator;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredViewer;
+import org.hibernate.SessionFactory;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ConsoleConfigurationListener;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.KnownConfigurationsListener;
 import org.hibernate.console.QueryPage;
-import org.jboss.tools.hibernate.spi.ISessionFactory;
 
 /**
  * @author Vitali Yemialyanchyk
@@ -82,10 +82,10 @@ public abstract class ConsoleConfigReadyUseBaseAction extends ConsoleConfigurati
 	public void queryPageCreated(QueryPage qp) {
 	}
 
-	public void sessionFactoryBuilt(ConsoleConfiguration ccfg, ISessionFactory builtSessionFactory) {
+	public void sessionFactoryBuilt(ConsoleConfiguration ccfg, SessionFactory builtSessionFactory) {
 	}
 
-	public void sessionFactoryClosing(ConsoleConfiguration ccfg, ISessionFactory aboutToCloseFactory) {
+	public void sessionFactoryClosing(ConsoleConfiguration ccfg, SessionFactory aboutToCloseFactory) {
 	}
 
 	public void configurationBuilt(ConsoleConfiguration ccfg) {

@@ -24,7 +24,7 @@ Export-Package: org.hibernate.eclipse.jdt.ui.test
 Bundle-Activator: org.hibernate.eclipse.jdt.ui.test.HibernateJDTuiTestPlugin
 Bundle-Vendor: %Bundle-Vendor.0
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.jmock, 
  org.jmock.api, 
  org.jmock.integration.junit3, 

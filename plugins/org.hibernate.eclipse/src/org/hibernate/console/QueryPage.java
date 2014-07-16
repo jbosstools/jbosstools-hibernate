@@ -24,6 +24,7 @@ package org.hibernate.console;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
+import org.hibernate.Session;
 import org.hibernate.console.ext.HibernateExtension;
 
 /**

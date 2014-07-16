@@ -17,15 +17,17 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
+import org.hibernate.mapping.Collection;
+import org.hibernate.mapping.Column;
+import org.hibernate.mapping.Component;
+import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Subclass;
-import org.jboss.tools.hibernate.proxy.ValueProxy;
-import org.jboss.tools.hibernate.spi.IColumn;
-import org.jboss.tools.hibernate.spi.IProperty;
-import org.jboss.tools.hibernate.spi.ITable;
-import org.jboss.tools.hibernate.spi.IType;
-import org.jboss.tools.hibernate.spi.IValue;
+import org.hibernate.mapping.Table;
+import org.hibernate.mapping.Value;
+import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.ui.diagram.rulers.DiagramGuide;
 
 /**
@@ -165,13 +167,13 @@ public class OrmShape extends ExpandableShape {
 				addChild(new Shape(identifierProperty, getConsoleConfigName()));
 			}
 
-			IValue identifier = rootClass.getIdentifier() != null ? new ValueProxy(rootClass.getIdentifier()) : null;
-			if (identifier != null && identifier.isComponent()) {
-				IValue component = identifier;
+			KeyValue identifier = rootClass.getIdentifier();
+			if (identifier instanceof Component) {
+				Component component = (Component)identifier;
 				if (component.isEmbedded()) {
-					Iterator<IProperty> iterator = identifier.getPropertyIterator();
+					Iterator<Property> iterator = ((Component)identifier).getPropertyIterator();
 					while (iterator.hasNext()) {
-						IProperty property = iterator.next();
+						Property property = iterator.next();
 						addChild(new Shape(property, getConsoleConfigName()));
 					}
 				}
@@ -182,15 +184,15 @@ public class OrmShape extends ExpandableShape {
 				Property field = iterator.next();
 				if (!field.isBackRef()) {
 					if (!field.isComposite()) {
-						final IValue val = new ValueProxy(field.getValue());
+						final Value val = field.getValue();
 						Shape bodyOrmShape = null;
-						if (val.isSimpleValue() && val.isTypeSpecified()) {
+						if (val.isSimpleValue() && !((SimpleValue)val).isTypeSpecified()) {
 							bodyOrmShape = new Shape(field, getConsoleConfigName());
 						} else {
-							if (val.isCollection()) {
+							if (val instanceof Collection) {
 								bodyOrmShape = new ComponentShape(field, getConsoleConfigName());
 							} else {
-								IType type = getTypeUsingExecContext(val);
+								Type type = getTypeUsingExecContext(val);
 								if (type != null && type.isEntityType()) {
 									bodyOrmShape = new ExpandableShape(field, getConsoleConfigName());
 								} else {
@@ -213,11 +215,11 @@ public class OrmShape extends ExpandableShape {
 				addChild(new Shape(identifierProperty, getConsoleConfigName()));
 			}
 
-			IValue identifier = rootClass.getIdentifier() != null ? new ValueProxy(rootClass.getIdentifier()) : null;
-			if (identifier.isComponent()) {
-				Iterator<IProperty> iterator = identifier.getPropertyIterator();
+			KeyValue identifier = rootClass.getIdentifier();
+			if (identifier instanceof Component) {
+				Iterator<Property> iterator = ((Component)identifier).getPropertyIterator();
 				while (iterator.hasNext()) {
-					IProperty property = iterator.next();
+					Property property = iterator.next();
 					addChild(new Shape(property, getConsoleConfigName()));
 				}
 			}
@@ -228,9 +230,8 @@ public class OrmShape extends ExpandableShape {
 				if (!field.isBackRef()) {
 					if (!field.isComposite()) {
 
-						IValue fieldValue = new ValueProxy(field.getValue());
 						boolean typeIsAccessible = true;
-						if (fieldValue.isSimpleValue() && fieldValue.isTypeSpecified()) {
+						if (field.getValue().isSimpleValue() && ((SimpleValue)field.getValue()).isTypeSpecified()) {
 							try {
 								field.getValue().getType();
 							} catch (Exception e) {
@@ -261,8 +262,7 @@ public class OrmShape extends ExpandableShape {
 					if (!property.isComposite()) {
 						
 						boolean typeIsAccessible = true;
-						IValue propertyValue = new ValueProxy(property.getValue());
-						if (propertyValue.isSimpleValue() && propertyValue.isTypeSpecified()) {
+						if (property.getValue().isSimpleValue() && ((SimpleValue)property.getValue()).isTypeSpecified()) {
 							try {
 								property.getValue().getType();
 							} catch (Exception e) {
@@ -284,17 +284,17 @@ public class OrmShape extends ExpandableShape {
 					}
 				}
 			}
-		} else if (ormElement instanceof ITable) {
-			Iterator iterator = ((ITable)getOrmElement()).getColumnIterator();
+		} else if (ormElement instanceof Table) {
+			Iterator iterator = ((Table)getOrmElement()).getColumnIterator();
 			while (iterator.hasNext()) {
-				IColumn column = (IColumn)iterator.next();
+				Column column = (Column)iterator.next();
 				Shape bodyOrmShape = new Shape(column, getConsoleConfigName());
 				addChild(bodyOrmShape);
 			}
 		}
 	}
 	
-	public Shape getChild(IColumn ormElement) {
+	public Shape getChild(Column ormElement) {
 		if (ormElement == null) {
 			return null;
 		}
@@ -302,7 +302,7 @@ public class OrmShape extends ExpandableShape {
 		while (it.hasNext()) {
 			final Shape child = it.next();
 			Object childElement = child.getOrmElement();
-			if (childElement instanceof IColumn && ormElement.getName().equals(((IColumn)childElement).getName())) {
+			if (childElement instanceof Column && ormElement.getName().equals(((Column)childElement).getName())) {
 				return child;
 			}
 		}
@@ -446,7 +446,7 @@ public class OrmShape extends ExpandableShape {
 			res = descriptors_entity;
 		} else if (ormElement instanceof Subclass) {
 			//RootClass rootClass = ((Subclass)ormElement).getRootClass();
-		} else if (ormElement instanceof ITable) {
+		} else if (ormElement instanceof Table) {
 			//Iterator iterator = ((Table)getOrmElement()).getColumnIterator();
 			//while (iterator.hasNext()) {
 			//	Column column = (Column)iterator.next();
@@ -462,14 +462,14 @@ public class OrmShape extends ExpandableShape {
 	public Object getPropertyValue(Object propertyId) {
 		Object res = null;
 		RootClass rootClass = null;
-		ITable table = null;
+		Table table = null;
 		Object ormElement = getOrmElement();
 		if (ormElement instanceof RootClass) {
 			rootClass = (RootClass)ormElement;
 		} else if (ormElement instanceof Subclass) {
 			//rootClass = ((Subclass)ormElement).getRootClass();
-		} else if (ormElement instanceof ITable) {
-			table = (ITable)getOrmElement();
+		} else if (ormElement instanceof Table) {
+			table = (Table)getOrmElement();
 		}
 		if (rootClass != null) {
 			if (ENTITY_isAbstract.equals(propertyId)) {

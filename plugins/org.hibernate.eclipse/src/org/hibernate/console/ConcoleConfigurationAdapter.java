@@ -10,8 +10,7 @@
  ******************************************************************************/
 package org.hibernate.console;
 
-import org.jboss.tools.hibernate.spi.ISessionFactory;
-
+import org.hibernate.SessionFactory;
 
 /**
  * This adapter class provides default implementations for the
@@ -33,10 +32,10 @@ public abstract class ConcoleConfigurationAdapter implements
 	public void queryPageCreated(QueryPage qp) {}
 
 	public void sessionFactoryBuilt(ConsoleConfiguration ccfg,
-			ISessionFactory builtSessionFactory) {}
+			SessionFactory builtSessionFactory) {}
 
 	public void sessionFactoryClosing(ConsoleConfiguration configuration,
-			ISessionFactory aboutToCloseFactory) {}
+			SessionFactory aboutToCloseFactory) {}
 
 	public void configurationBuilt(ConsoleConfiguration ccfg){};
 }

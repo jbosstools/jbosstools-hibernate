@@ -30,8 +30,7 @@ import org.hibernate.eclipse.graph.model.ConfigurationViewAdapter;
 import org.hibernate.eclipse.graph.model.TableViewAdapter;
 import org.hibernate.eclipse.graph.parts.ConfigurationEditPart;
 import org.hibernate.eclipse.graph.parts.PersistentClassEditPart;
-import org.jboss.tools.hibernate.proxy.TableProxy;
-import org.jboss.tools.hibernate.spi.ITable;
+import org.hibernate.mapping.Table;
 
 public class RelationalGraphView extends AbstractGraphViewPart {
 
@@ -60,8 +59,8 @@ public class RelationalGraphView extends AbstractGraphViewPart {
 				if(cv==null) {
 					cv = new ConfigurationViewAdapter(pe.getPersistentClassViewAdapter().getConfiguration().getConfiguration());
 				} 
-				ITable table = pe.getPersistentClassViewAdapter().getPersistentClass().getTable() != null ? 
-						new TableProxy(pe.getPersistentClassViewAdapter().getPersistentClass().getTable()) : null;
+				
+				Table table = pe.getPersistentClassViewAdapter().getPersistentClass().getTable();
 				tables.add(new TableViewAdapter(cv,table));
 				
 			}			

@@ -31,4 +31,4 @@ Import-Package: org.eclipse.core.resources,
  org.jmock.lib.legacy, 
  org.jmock.lib.script, 
  org.jmock.syntax 
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6

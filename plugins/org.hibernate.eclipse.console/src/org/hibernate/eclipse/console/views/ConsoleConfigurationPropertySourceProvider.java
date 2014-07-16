@@ -24,8 +24,8 @@ package org.hibernate.eclipse.console.views;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.IPropertySourceProvider;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
-import org.jboss.tools.hibernate.spi.IConfiguration;
 
 public class ConsoleConfigurationPropertySourceProvider implements
 		IPropertySourceProvider {
@@ -37,8 +37,8 @@ public class ConsoleConfigurationPropertySourceProvider implements
 		if (object instanceof ConsoleConfiguration) {
 			return new ConsoleConfigurationPropertySource((ConsoleConfiguration)object);
 		}
-		if (object instanceof IConfiguration) {
-			return new ConfigurationPropertySource((IConfiguration)object);
+		if (object instanceof Configuration) {
+			return new ConfigurationPropertySource((Configuration)object);
 		}
 		
 		return (IPropertySource) Platform.getAdapterManager().getAdapter(object, IPropertySource.class);

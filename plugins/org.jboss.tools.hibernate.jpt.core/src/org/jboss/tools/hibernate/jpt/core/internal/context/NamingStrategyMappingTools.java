@@ -16,10 +16,10 @@ import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.hibernate.cfg.NamingStrategy;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
 import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValidationMessage;
-import org.jboss.tools.hibernate.spi.INamingStrategy;
 
 /**
  * @author Dmitry Geraskov
@@ -56,7 +56,7 @@ public class NamingStrategyMappingTools {
 			return null;
 		}
 
-		INamingStrategy ns = getJpaProject(relationshipReference).getNamingStrategy();
+		NamingStrategy ns = getJpaProject(relationshipReference).getNamingStrategy();
 		if (getJpaProject(relationshipReference).isNamingStrategyEnabled() && ns != null){
 			/*
 			 * By testing generated DDL I have found for JPA console configuration:

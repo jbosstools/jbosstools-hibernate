@@ -33,6 +33,12 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.HibernateException;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.JDBCReaderFactory;
+import org.hibernate.cfg.Settings;
+import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
+import org.hibernate.cfg.reveng.JDBCReader;
+import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.connection.ConnectionProvider;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
@@ -40,15 +46,7 @@ import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
-import org.jboss.tools.hibernate.spi.IConfiguration;
-import org.jboss.tools.hibernate.spi.IDatabaseCollector;
-import org.jboss.tools.hibernate.spi.IJDBCReader;
-import org.jboss.tools.hibernate.spi.IProgressListener;
-import org.jboss.tools.hibernate.spi.IReverseEngineeringStrategy;
-import org.jboss.tools.hibernate.spi.IService;
-import org.jboss.tools.hibernate.spi.ISettings;
-import org.jboss.tools.hibernate.spi.ITable;
-import org.jboss.tools.hibernate.util.HibernateHelper;
+import org.hibernate.mapping.Table;
 
 public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 	
@@ -56,6 +54,7 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 		return getChildren(o, new NullProgressMonitor());
 	}
 
+	@SuppressWarnings("unchecked")
 	public Object[] getChildren(Object o, final IProgressMonitor monitor) {
 		LazyDatabaseSchema dbs = getLazyDatabaseSchema( o );
 		dbs.setConnected(false);
@@ -63,13 +62,13 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 		ConsoleConfiguration consoleConfiguration = dbs.getConsoleConfiguration();
 		Object[] res;
 		try {
-			IDatabaseCollector db = readDatabaseSchema(monitor, consoleConfiguration, dbs.getReverseEngineeringStrategy());
+			DefaultDatabaseCollector db = readDatabaseSchema(monitor, consoleConfiguration, dbs.getReverseEngineeringStrategy());
 
 			List<TableContainer> result = new ArrayList<TableContainer>();
 
-			Iterator<Map.Entry<String, List<ITable>>> qualifierEntries = db.getQualifierEntries();
+			Iterator<Map.Entry<String, List<Table>>> qualifierEntries = db.getQualifierEntries();
 			while (qualifierEntries.hasNext()) {
-				Map.Entry<String, List<ITable>> entry = qualifierEntries.next();
+				Map.Entry<String, List<Table>> entry = qualifierEntries.next();
 				result.add(new TableContainer(entry.getKey(), entry.getValue()));
 			}
 			res = toArray(result.iterator(), TableContainer.class, new Comparator<TableContainer>() {
@@ -111,21 +110,20 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 		return getLazyDatabaseSchema(o).getConsoleConfiguration();
 	}
 
-	protected IDatabaseCollector readDatabaseSchema(final IProgressMonitor monitor, final ConsoleConfiguration consoleConfiguration, final IReverseEngineeringStrategy strategy) {
-		final IConfiguration configuration = consoleConfiguration.buildWith(null, false);
-		return (IDatabaseCollector) consoleConfiguration.execute(new ExecutionContext.Command() {
+	protected DefaultDatabaseCollector readDatabaseSchema(final IProgressMonitor monitor, final ConsoleConfiguration consoleConfiguration, final ReverseEngineeringStrategy strategy) {
+		final Configuration configuration = consoleConfiguration.buildWith(null, false);
+		return (DefaultDatabaseCollector) consoleConfiguration.execute(new ExecutionContext.Command() {
 
 			public Object execute() {
-				IDatabaseCollector db = null;
-				ISettings settings = consoleConfiguration.getSettings(configuration);
+				DefaultDatabaseCollector db = null;
+				Settings settings = consoleConfiguration.getSettings(configuration);
 				ConnectionProvider connectionProvider = null;
 				try {
 					connectionProvider = settings.getConnectionProvider();
-					IService service = HibernateHelper.INSTANCE.getHibernateService();
-					IJDBCReader reader = service.newJDBCReader(configuration.getProperties(), settings, strategy);
-					IProgressListener progressListener = service.newProgressListener(monitor);
-					db = service.newDatabaseCollector(reader.getMetaDataDialect());
-					reader.readDatabaseSchema(db, settings.getDefaultCatalogName(), settings.getDefaultSchemaName(), progressListener);
+
+					JDBCReader reader = JDBCReaderFactory.newJDBCReader(configuration.getProperties(), settings, strategy);
+					db = new DefaultDatabaseCollector(reader.getMetaDataDialect());
+					reader.readDatabaseSchema(db, settings.getDefaultCatalogName(), settings.getDefaultSchemaName(), new ProgressListenerMonitor(monitor));
 				} catch (HibernateException he) {
 					throw he;
 				} catch (UnsupportedOperationException he) {

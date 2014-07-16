@@ -95,7 +95,7 @@ public class HibernateJpaOrmModelTests {
 		cc.build();
 		assertNotNull("Console configuration build problem", cc.getConfiguration());
 		assertNotNull("Naming Strategy not found", cc.getConfiguration().getNamingStrategy());
-		assertEquals("ns.NamingStrategy", cc.getConfiguration().getNamingStrategy().getStrategyClassName());
+		assertEquals("ns.NamingStrategy", cc.getConfiguration().getNamingStrategy().getClass().getName());
 
 		try {
 			jpaProject = ((Reference) project.getAdapter(Reference.class)).getValue();

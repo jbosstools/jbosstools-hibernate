@@ -22,8 +22,8 @@
 package org.hibernate.console.node;
 
 import org.eclipse.osgi.util.NLS;
-import org.jboss.tools.hibernate.spi.IClassMetadata;
-import org.jboss.tools.hibernate.spi.IType;
+import org.hibernate.metadata.ClassMetadata;
+import org.hibernate.type.Type;
 
 /**
  * @author MAX
@@ -31,8 +31,8 @@ import org.jboss.tools.hibernate.spi.IType;
  */
 class TypeNode extends ClassNode implements TypedNode{
 
-	IType type;
-	public TypeNode(NodeFactory factory, BaseNode parent, IType type, IClassMetadata metadata, Object baseObject, boolean objectGraph) {
+	Type type;
+	public TypeNode(NodeFactory factory, BaseNode parent, Type type, ClassMetadata metadata, Object baseObject, boolean objectGraph) {
 		super(factory, parent, type.getReturnedClass().getName(), metadata, baseObject, objectGraph);
 		this.type = type;
 				
@@ -73,7 +73,7 @@ class TypeNode extends ClassNode implements TypedNode{
 	/**
 	 * 
 	 */
-	public IType getType() {
+	public Type getType() {
 		return type;
 	}
 

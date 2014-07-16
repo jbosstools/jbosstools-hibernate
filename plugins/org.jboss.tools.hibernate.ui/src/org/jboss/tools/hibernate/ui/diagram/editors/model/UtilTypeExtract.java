@@ -14,22 +14,22 @@ import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
-import org.jboss.tools.hibernate.spi.IType;
-import org.jboss.tools.hibernate.spi.IValue;
+import org.hibernate.mapping.Value;
+import org.hibernate.type.Type;
 
 /**
  * @author vitali
  */
 public class UtilTypeExtract {
 
-	public static IType getTypeUsingExecContext(final IValue val, final ConsoleConfiguration cfg) {
-		IType type = null;
+	public static Type getTypeUsingExecContext(final Value val, final ConsoleConfiguration cfg) {
+		Type type = null;
 		if (val == null) {
 			return type;
 		}
 		try {
 			if (cfg != null) {
-				type = (IType) cfg.execute(new Command() {
+				type = (Type) cfg.execute(new Command() {
 					public Object execute() {
 						return val.getType();
 					}

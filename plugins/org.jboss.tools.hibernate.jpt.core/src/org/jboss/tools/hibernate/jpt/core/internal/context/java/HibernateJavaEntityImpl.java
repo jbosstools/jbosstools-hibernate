@@ -32,6 +32,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.resource.java.EntityAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
+import org.hibernate.cfg.NamingStrategy;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
@@ -39,7 +40,6 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateTable;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.DiscriminatorFormulaAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValidationMessage;
-import org.jboss.tools.hibernate.spi.INamingStrategy;
 
 /**
  * @author Dmitry Geraskov
@@ -233,7 +233,7 @@ implements HibernateJavaEntity {
 			Entity parentEntity = HibernateJavaEntityImpl.this.getParentEntity();
 			if (parentEntity != null) {
 				HibernateJpaProject hibernateJpaProject = HibernateJavaEntityImpl.this.getJpaProject();
-				INamingStrategy ns = hibernateJpaProject.getNamingStrategy();
+				NamingStrategy ns = hibernateJpaProject.getNamingStrategy();
 				if (hibernateJpaProject.isNamingStrategyEnabled() && ns != null) {
 					try {
 						String name = ns.joinKeyColumnName(parentEntity.getPrimaryKeyColumnName(),

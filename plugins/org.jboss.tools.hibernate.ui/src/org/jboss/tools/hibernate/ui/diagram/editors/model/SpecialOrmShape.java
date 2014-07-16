@@ -14,9 +14,7 @@ import java.util.Iterator;
 
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
-import org.jboss.tools.hibernate.proxy.ValueProxy;
-import org.jboss.tools.hibernate.spi.IType;
-import org.jboss.tools.hibernate.spi.IValue;
+import org.hibernate.type.Type;
 
 /**
  * 
@@ -51,8 +49,7 @@ public class SpecialOrmShape extends OrmShape {
 		Iterator<Property> iterator = rootClass.getPropertyIterator();
 		while (iterator.hasNext()) {
 			Property field = iterator.next();
-			IValue v = field.getValue() != null ? new ValueProxy(field.getValue()) : null;
-			IType type = getTypeUsingExecContext(v);
+			Type type = getTypeUsingExecContext(field.getValue());
 			Shape bodyOrmShape = null;
 			if (type != null && type.isEntityType()) {
 				bodyOrmShape = new ExpandableShape(field, getConsoleConfigName());

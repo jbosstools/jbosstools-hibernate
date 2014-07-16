@@ -30,16 +30,16 @@ import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.eclipse.ui.progress.IDeferredWorkbenchAdapter;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.IPropertySource2;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.node.BaseNode;
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
-import org.jboss.tools.hibernate.spi.IColumn;
-import org.jboss.tools.hibernate.spi.IConfiguration;
-import org.jboss.tools.hibernate.spi.ITable;
-import org.jboss.tools.hibernate.spi.IValue;
+import org.hibernate.mapping.Table;
+import org.hibernate.mapping.Value;
 
 public class ConfigurationAdapterFactory implements IAdapterFactory {
 
@@ -54,7 +54,7 @@ public class ConfigurationAdapterFactory implements IAdapterFactory {
 		Map<Class<?>, IDeferredWorkbenchAdapter> deferredMap = new HashMap<Class<?>, IDeferredWorkbenchAdapter>();
 		
 		deferredMap.put(ConsoleConfiguration.class, new ConsoleConfigurationWorkbenchAdapter());
-		deferredMap.put(IConfiguration.class, new ConfigurationWorkbenchAdapter());
+		deferredMap.put(Configuration.class, new ConfigurationWorkbenchAdapter());
 		deferredMap.put(KnownConfigurations.class, new KnownConfigurationsWorkbenchAdapter());
 		deferredMap.put(LazyDatabaseSchema.class, new LazyDatabaseSchemaWorkbenchAdapter());
 		deferredMap.put( LazySessionFactory.class, new LazySessionFactoryAdapter() );
@@ -74,10 +74,10 @@ public class ConfigurationAdapterFactory implements IAdapterFactory {
 		map.put(TableContainer.class, new TableContainerWorkbenchAdapter());
 		map.put(PersistentClass.class, new PersistentClassWorkbenchAdapter());
 		map.put(Property.class, new PropertyWorkbenchAdapter());
-		map.put(IValue.class, new ValueWorkbenchAdapter());
-		map.put(ITable.class, new TableWorkbenchAdapter());
+		map.put(Value.class, new ValueWorkbenchAdapter());
+		map.put(Table.class, new TableWorkbenchAdapter());
 		map.put(PrimaryKey.class, new PrimaryKeyWorkbenchAdapter());
-		map.put(IColumn.class, new ColumnWorkbenchAdapter());
+		map.put(Column.class, new ColumnWorkbenchAdapter());
 		map.put(BaseNode.class, new BaseNodeWorkbenchAdapter());
 		
 		

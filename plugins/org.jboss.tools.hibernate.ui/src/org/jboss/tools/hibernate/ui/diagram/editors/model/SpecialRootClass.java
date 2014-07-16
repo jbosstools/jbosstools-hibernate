@@ -12,13 +12,11 @@ package org.jboss.tools.hibernate.ui.diagram.editors.model;
 
 import java.util.Iterator;
 
+import org.hibernate.mapping.Collection;
+import org.hibernate.mapping.Component;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
-import org.jboss.tools.hibernate.proxy.PropertyProxy;
-import org.jboss.tools.hibernate.proxy.ValueProxy;
-import org.jboss.tools.hibernate.spi.IProperty;
-import org.jboss.tools.hibernate.spi.IValue;
 
 // TODO: What is this ? And why is it extending mapping classes ?!
 // vitali: it seems this is class to "wrap" properties set to RootClass
@@ -46,13 +44,12 @@ public class SpecialRootClass extends RootClass {
 		if (property == null) {
 			return;
 		}
-		IValue propVal = property.getValue() != null ? new ValueProxy(property.getValue()) : null;
-		IValue component = null;
-		if (propVal != null && propVal.isCollection()) {
-			IValue collection = propVal;
-			component = collection.getElement();
-		} else if (propVal.isComponent()) {
-			component = propVal;
+		Component component = null;
+		if (property.getValue() instanceof Collection) {
+			Collection collection = (Collection)property.getValue();
+			component = (Component)collection.getElement();
+		} else if (property.getValue() instanceof Component) {
+			component = (Component)property.getValue();
 		}
 		if (component != null) {
 			setClassName(component.getComponentClassName());
@@ -63,11 +60,11 @@ public class SpecialRootClass extends RootClass {
 				parentProperty.setName(component.getParentProperty());
 				parentProperty.setPersistentClass(ownerClass);
 			}
-			Iterator<IProperty> iterator = component.getPropertyIterator();
+			Iterator<Property> iterator = component.getPropertyIterator();
 			while (iterator.hasNext()) {
-				IProperty property = iterator.next();
+				Property property = iterator.next();
 				if (property != null) {
-					addProperty(((PropertyProxy)property).getTarget());
+					addProperty(property);
 				}
 			}
 		}
