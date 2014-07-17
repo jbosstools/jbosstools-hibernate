@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.cfg.Settings;
+import org.hibernate.connection.ConnectionProvider;
 import org.jboss.tools.hibernate.spi.ISettings;
 
 public class SettingsProxy implements ISettings {
@@ -23,6 +24,14 @@ public class SettingsProxy implements ISettings {
 	@Override
 	public String getDefaultSchemaName() {
 		return target.getDefaultSchemaName();
+	}
+	
+	/*
+	 * @deprecated This method is not supported anymore in recent Hibernate versions
+	 */
+	@Deprecated
+	public ConnectionProvider getConnectionProvider() {
+		return target.getConnectionProvider();
 	}
 
 }
