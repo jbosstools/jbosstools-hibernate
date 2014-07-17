@@ -159,6 +159,7 @@ public class JPAPostInstallFasetListener implements IFacetedProjectListener {
 			wc.setAttribute(IConsoleConfigurationLaunchConstants.USE_JPA_PROJECT_PROFILE, Boolean.toString(true));
 			if (HibernateJpaPlatform.HIBERNATE2_1_PLATFORM_ID.equals(platformId)) {
 				wc.setAttribute(IConsoleConfigurationLaunchConstants.HIBERNATE_VERSION, "4.3"); //$NON-NLS-1$
+				wc.setAttribute(IConsoleConfigurationLaunchConstants.PERSISTENCE_UNIT_NAME, getPersistenceUnitName(project));
 			} else if (HibernateJpaPlatform.HIBERNATE2_0_PLATFORM_ID.equals(platformId)) {
 				wc.setAttribute(IConsoleConfigurationLaunchConstants.HIBERNATE_VERSION, "4.0"); //$NON-NLS-1$
 			} else {
@@ -170,6 +171,18 @@ public class JPAPostInstallFasetListener implements IFacetedProjectListener {
 		} catch (CoreException e) {
 			HibernateJptPlugin.logException(e);
 		}
+	}
+	
+	private String getPersistenceUnitName(IProject project) {
+		String result = null;
+		PersistenceXmlResourceProvider defaultXmlResourceProvider = PersistenceXmlResourceProvider.getDefaultXmlResourceProvider(project);
+		final JptXmlResource resource = defaultXmlResourceProvider.getXmlResource();
+		XmlPersistence persistence = (XmlPersistence) resource.getRootObject();							
+		if (persistence.getPersistenceUnits().size() > 0) {
+			XmlPersistenceUnit persistenceUnit = persistence.getPersistenceUnits().get(0);
+			result = persistenceUnit.getName();
+		}
+		return result;
 	}
 
 }
