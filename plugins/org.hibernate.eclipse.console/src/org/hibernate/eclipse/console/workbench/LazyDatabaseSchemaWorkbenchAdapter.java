@@ -21,6 +21,7 @@
  */
 package org.hibernate.eclipse.console.workbench;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -71,9 +72,19 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 				Map.Entry<String, List<ITable>> entry = qualifierEntries.next();
 				result.add(new TableContainer(entry.getKey(), entry.getValue()));
 			}
-			res = toArray(result.iterator(), TableContainer.class, new Comparator<TableContainer>() {
-				public int compare(TableContainer arg0, TableContainer arg1) {
-					return arg0.getName().compareTo(arg1.getName());
+			res = toArray(result.iterator(), Object.class, new Comparator<Object>() {
+				public int compare(Object arg0, Object arg1) {
+					return getName(arg0).compareTo(getName(arg1));
+				}
+				private String getName(Object o) {
+					String result = null;
+					try {
+						Method m = o.getClass().getMethod("getName", new Class[] {});
+						m.invoke(o, new Object[] {});
+					} catch (Exception e) {
+						throw new RuntimeException(e);
+					}
+					return result;
 				}
 			});
 			dbs.setConnected(true);

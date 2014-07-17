@@ -21,7 +21,9 @@
  */
 package org.hibernate.eclipse.console.workbench;
 
+import java.lang.reflect.Method;
 import java.util.Comparator;
+import java.util.List;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.model.IWorkbenchAdapter;
@@ -34,14 +36,23 @@ public class TableContainerWorkbenchAdapter implements IWorkbenchAdapter {
 
 	public Object[] getChildren(Object o) {
 		TableContainer tc = getTableContainer( o );
-		return BasicWorkbenchAdapter.toArray(tc.getTables().iterator(), ITable.class, new Comparator<ITable>() {
-
-			public int compare(ITable arg0, ITable arg1) {
-
-				return arg0.getName().compareTo(arg1.getName());
+		List<ITable> list = tc.getTables();
+		Object[] children = BasicWorkbenchAdapter.toArray(list.iterator(), Object.class, new Comparator<Object>() {
+			public int compare(Object arg0, Object arg1) {
+				return getName(arg0).compareTo(getName(arg1));
 			}
-
+			private String getName(Object o) {
+				String result = null;
+				try {
+					Method m = o.getClass().getMethod("getName", new Class[] {});
+					result = (String)m.invoke(o, new Object[] {});
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+				return result;
+			}
 		});
+		return children;
 	}
 
 	private TableContainer getTableContainer(Object o) {
