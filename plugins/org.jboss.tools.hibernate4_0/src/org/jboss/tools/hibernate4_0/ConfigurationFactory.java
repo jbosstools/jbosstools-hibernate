@@ -128,16 +128,6 @@ public class ConfigurationFactory {
 		return localCfg;
 	}
 
-	@SuppressWarnings("unused")
-	private void autoConfigureDialect(IConfiguration localCfg, ServiceRegistry serviceRegistry) {
-		if (localCfg.getProperty(Environment.DIALECT) == null) {
-			String dialect = ConnectionProfileUtil.autoDetectDialect(localCfg.getProperties());
-			if (dialect != null){
-				localCfg.setProperty(Environment.DIALECT, dialect);
-			}
-		}
-	}
-
 	// TODO: delegate to some extension point
 	private IConfiguration buildConfiguration(Properties properties, boolean includeMappings) {
 		IConfiguration localCfg = null;
