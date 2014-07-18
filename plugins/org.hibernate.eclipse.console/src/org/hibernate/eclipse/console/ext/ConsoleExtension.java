@@ -20,7 +20,6 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.hibernate.console.QueryPage;
 import org.hibernate.console.ext.HibernateExtension;
-import org.jboss.tools.hibernate.spi.IService;
 
 /**
  * @author Dmitry Geraskov
@@ -45,7 +44,5 @@ public interface ConsoleExtension {
 			ILaunch launch, IProgressMonitor monitor) throws CoreException;
 	
 	public IPropertySource getPropertySource(Object object, QueryPage selectedQueryPage);
-	
-	public IService getHibernateService();
 	
 }

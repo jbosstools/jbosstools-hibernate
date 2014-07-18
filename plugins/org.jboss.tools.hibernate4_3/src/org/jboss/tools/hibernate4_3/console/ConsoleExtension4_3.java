@@ -295,9 +295,4 @@ public class ConsoleExtension4_3 implements ConsoleExtension {
 		return currentSession.getSessionFactory().getClassMetadata(HibernateProxyHelper.getClassWithoutInitializingProxy(object))!=null;
 	}
 
-	@Override
-	public IService getHibernateService() {
-		return HibernateHelper.INSTANCE.getHibernateService();
-	}
-
 }
