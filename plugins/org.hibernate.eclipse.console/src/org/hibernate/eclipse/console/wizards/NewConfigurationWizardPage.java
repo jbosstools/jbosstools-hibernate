@@ -54,6 +54,7 @@ import org.hibernate.console.ConnectionProfileUtil;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.DriverClassHelpers;
 import org.jboss.tools.hibernate.spi.IEnvironment;
+import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 
 /**
@@ -469,9 +470,10 @@ public class NewConfigurationWizardPage extends WizardPage {
 	
     
     private void fillPropertiesFromConnectionProfile(String cpName){
-    	IEnvironment environment = HibernateHelper.INSTANCE.getHibernateService().getEnvironment();
+    	IService service = HibernateHelper.INSTANCE.getHibernateService();
+    	IEnvironment environment = service.getEnvironment();
 		IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(cpName);
-		Properties p = ConnectionProfileUtil.getHibernateConnectionProperties(profile);
+		Properties p = ConnectionProfileUtil.getHibernateConnectionProperties(service, profile);
 		driver_classCombo.setText(p.getProperty(environment.getDriver()));
 		urlCombo.setText(p.getProperty(environment.getURL()));
 		if (p.containsKey(environment.getUser())){

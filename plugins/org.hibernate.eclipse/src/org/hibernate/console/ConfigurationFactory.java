@@ -75,7 +75,7 @@ public class ConfigurationFactory {
 		service = HibernateHelper.INSTANCE.getHibernateService();
 		environment = service.getEnvironment();
 	}
-
+	
 	public ConsoleConfigurationPreferences getPreferences() {
 		return prefs;
 	}
@@ -135,7 +135,7 @@ public class ConfigurationFactory {
 	// non-running databases + i havent been needed until now...
 	private void autoConfigureDialect(IConfiguration localCfg) {
 		if (localCfg.getProperty(environment.getDialect()) == null) {
-			String dialect = ConnectionProfileUtil.autoDetectDialect(localCfg.getProperties());
+			String dialect = ConnectionProfileUtil.autoDetectDialect(service, localCfg.getProperties());
 			if (dialect != null){
 				localCfg.setProperty(environment.getDialect(), dialect);
 			}
@@ -392,7 +392,7 @@ public class ConfigurationFactory {
 		IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(
 				connProfileName);
 		if (profile != null) {
-			localCfg.addProperties(ConnectionProfileUtil.getHibernateConnectionProperties(profile));
+			localCfg.addProperties(ConnectionProfileUtil.getHibernateConnectionProperties(service, profile));
 		} else {
 			String out = NLS.bind(
 					ConsoleMessages.ConsoleConfiguration_connection_profile_not_found,

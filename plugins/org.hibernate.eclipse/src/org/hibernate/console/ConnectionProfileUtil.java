@@ -33,7 +33,7 @@ import org.eclipse.datatools.connectivity.drivers.DriverInstance;
 import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
 import org.jboss.tools.hibernate.spi.IDialect;
 import org.jboss.tools.hibernate.spi.IEnvironment;
-import org.jboss.tools.hibernate.util.HibernateHelper;
+import org.jboss.tools.hibernate.spi.IService;
 
 /**
  * @author Vitali Yemialyanchyk
@@ -86,9 +86,9 @@ public class ConnectionProfileUtil {
 	 * @param profile
 	 * @return
 	 */
-	public static Properties getHibernateConnectionProperties(IConnectionProfile profile){
+	public static Properties getHibernateConnectionProperties(IService service, IConnectionProfile profile){
 		Properties props = new Properties();
-		IEnvironment environment = HibernateHelper.INSTANCE.getHibernateService().getEnvironment();
+		IEnvironment environment = service.getEnvironment();
 		if (profile != null) {
 			final Properties cpProperties = profile.getProperties(profile.getProviderId());
 			String driverClass = ConnectionProfileUtil.getDriverClass(profile.getName());
@@ -107,8 +107,8 @@ public class ConnectionProfileUtil {
 		return props;
 	}
 	
-	public static String autoDetectDialect(Properties properties) {
-		IEnvironment environment = HibernateHelper.INSTANCE.getHibernateService().getEnvironment();		
+	public static String autoDetectDialect(IService service, Properties properties) {
+		IEnvironment environment = service.getEnvironment();		
 		if (properties.getProperty(environment.getDialect()) == null) {
 			String url = properties.getProperty(environment.getURL());
 			String user = properties.getProperty(environment.getUser());
@@ -120,7 +120,7 @@ public class ConnectionProfileUtil {
 				//note this code potentially could throw class cast exception
 				//see https://issues.jboss.org/browse/JBIDE-8192
 				//probably when not Hiberante3.5 is used
-				IDialect dialect = HibernateHelper.INSTANCE.getHibernateService().newDialect(properties, connection);
+				IDialect dialect = service.newDialect(properties, connection);
 				return dialect.toString();
 			} catch (SQLException e) {
 				// can't determine dialect

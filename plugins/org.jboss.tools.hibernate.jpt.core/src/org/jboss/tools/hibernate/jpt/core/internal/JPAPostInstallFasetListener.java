@@ -46,6 +46,8 @@ import org.hibernate.eclipse.console.utils.LaunchHelper;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
 import org.hibernate.eclipse.utils.HibernateEclipseUtils;
+import org.jboss.tools.hibernate.spi.IService;
+import org.jboss.tools.hibernate.util.HibernateHelper;
 
 /**
  * @author Dmitry Geraskov
@@ -98,8 +100,9 @@ public class JPAPostInstallFasetListener implements IFacetedProjectListener {
 	public Properties getConnectionProperties(IProject project){
 		String cpName = HibernateEclipseUtils.getConnectionProfileName(project);
 		if (cpName != null){
+			IService service = HibernateHelper.INSTANCE.getHibernateService();
 			return ConnectionProfileUtil.getHibernateConnectionProperties(
-					ProfileManager.getInstance().getProfileByName(cpName));
+					service, ProfileManager.getInstance().getProfileByName(cpName));
 		}
 		return new Properties();
 	}

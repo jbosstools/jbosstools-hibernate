@@ -53,9 +53,9 @@ import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
 import org.hibernate.internal.util.ConfigHelper;
 import org.hibernate.internal.util.xml.XMLHelper;
-import org.hibernate.service.ServiceRegistry;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.INamingStrategy;
+import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
@@ -347,7 +347,8 @@ public class ConfigurationFactory {
 		IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(
 				connProfileName);
 		if (profile != null) {
-			localCfg.addProperties(ConnectionProfileUtil.getHibernateConnectionProperties(profile));
+			IService service = HibernateHelper.INSTANCE.getHibernateService();
+			localCfg.addProperties(ConnectionProfileUtil.getHibernateConnectionProperties(service, profile));
 		} else {
 			String out = NLS.bind(
 					ConsoleMessages.ConsoleConfiguration_connection_profile_not_found,
