@@ -15,6 +15,7 @@ import org.hibernate.console.QueryPage;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IService;
 
 /**
  * @author Dmitry Geraskov
@@ -60,5 +61,7 @@ public interface HibernateExtension {
 	public boolean hasExecutionContext();
 	
 	public String getConsoleConfigurationName();
+	
+	public IService getHibernateService();
 	
 }

@@ -36,8 +36,10 @@ import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.service.internal.StandardServiceRegistryImpl;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ISession;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
+import org.jboss.tools.hibernate.util.HibernateHelper;
 
 /**
  * 
@@ -313,4 +315,10 @@ public class HibernateExtension4_0 implements HibernateExtension {
 	public String getConsoleConfigurationName() {
 		return prefs.getName();
 	}
+	
+	@Override
+	public IService getHibernateService() {
+		return HibernateHelper.INSTANCE.getHibernateService();
+	}
+
 }
