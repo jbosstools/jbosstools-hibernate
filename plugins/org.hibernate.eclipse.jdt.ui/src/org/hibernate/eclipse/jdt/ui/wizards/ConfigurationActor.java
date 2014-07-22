@@ -40,7 +40,6 @@ import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.WildcardType;
-import org.hibernate.FetchMode;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.collect.AllEntitiesInfoCollector;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
@@ -514,7 +513,7 @@ class TypeVisitor extends ASTVisitor{
 			key.addColumn(service.newColumn(entityInfo.getPrimaryIdName().toUpperCase()));
 		}
 		array.setKey(key);
-		array.setFetchMode(FetchMode.JOIN);
+		array.setFetchModeJoin();
 		IValue index = service.newSimpleValue();
 		
 		//add default index
@@ -628,7 +627,7 @@ class TypeVisitor extends ASTVisitor{
 			IColumn column = HibernateHelper.INSTANCE.getHibernateService().newColumn(varName.toUpperCase());
 			sValue.addColumn(column);					
 			sValue.setTypeName(tb.getBinaryName());
-			sValue.setFetchMode(FetchMode.JOIN);
+			sValue.setFetchModeJoin();
 			sValue.setReferencedEntityName(ref.fullyQualifiedName);
 			buildProperty(sValue);
 			prop.setCascade("none");//$NON-NLS-1$

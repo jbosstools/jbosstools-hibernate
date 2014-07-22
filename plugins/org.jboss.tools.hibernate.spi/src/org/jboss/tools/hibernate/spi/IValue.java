@@ -3,8 +3,6 @@ package org.jboss.tools.hibernate.spi;
 import java.util.Iterator;
 import java.util.Properties;
 
-import org.hibernate.FetchMode;
-
 public interface IValue {
 
 	boolean isSimpleValue();
@@ -52,7 +50,7 @@ public interface IValue {
 	String getParentProperty();
 	void setElementClassName(String binaryName);
 	void setKey(IValue keyValue);
-	void setFetchMode(FetchMode join);
+	void setFetchModeJoin();
 	boolean isInverse();
 	IPersistentClass getAssociatedClass();
 	void setLazy(boolean b);
