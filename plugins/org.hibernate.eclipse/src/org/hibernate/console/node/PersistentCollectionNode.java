@@ -29,8 +29,6 @@ import javax.swing.tree.TreeNode;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleMessages;
-import org.hibernate.type.CollectionType;
-import org.jboss.tools.hibernate.proxy.TypeProxy;
 import org.jboss.tools.hibernate.spi.IClassMetadata;
 import org.jboss.tools.hibernate.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.spi.IType;
@@ -42,7 +40,7 @@ import org.jboss.tools.hibernate.spi.IType;
 class PersistentCollectionNode extends BaseNode implements TypedNode{
 
 	BaseNode virtualNode;
-	CollectionType type;
+	IType type;
 	IType elementType;
 	private boolean objectGraph;
 	private Object baseObject;
@@ -50,7 +48,7 @@ class PersistentCollectionNode extends BaseNode implements TypedNode{
 
 	boolean childrenCreated = false;
 	private IClassMetadata md;
-	public PersistentCollectionNode(NodeFactory factory, BaseNode parent, String name, CollectionType type, IClassMetadata md, ICollectionMetadata metadata, Object baseObject, boolean objectGraph) {
+	public PersistentCollectionNode(NodeFactory factory, BaseNode parent, String name, IType type, IClassMetadata md, ICollectionMetadata metadata, Object baseObject, boolean objectGraph) {
 		super(factory, parent);
 		this.md = md;
 		this.type = type;
@@ -60,7 +58,7 @@ class PersistentCollectionNode extends BaseNode implements TypedNode{
 
 
 
-		iconName = factory.getIconNameForType(new TypeProxy(type));
+		iconName = factory.getIconNameForType(type);
 		this.elementType = metadata.getElementType();
 		if(objectGraph) {
 			//
@@ -183,6 +181,6 @@ class PersistentCollectionNode extends BaseNode implements TypedNode{
 	}
 
 	public IType getType() {
-		return new TypeProxy(type);
+		return type;
 	}
 }

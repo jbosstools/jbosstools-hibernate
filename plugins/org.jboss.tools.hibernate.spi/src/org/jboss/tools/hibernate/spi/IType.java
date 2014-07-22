@@ -13,5 +13,6 @@ public interface IType {
 	Class<?> getReturnedClass();
 	String getAssociatedEntityName();
 	boolean isIntegerType();
+	boolean isArrayType();
 
 }

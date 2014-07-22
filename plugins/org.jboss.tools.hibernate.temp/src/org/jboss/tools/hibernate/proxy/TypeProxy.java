@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.proxy;
 
+import org.hibernate.type.CollectionType;
 import org.hibernate.type.EntityType;
 import org.hibernate.type.IntegerType;
 import org.hibernate.type.NullableType;
@@ -87,6 +88,15 @@ public class TypeProxy implements IType {
 	@Override
 	public boolean isIntegerType() {
 		return target instanceof IntegerType;
+	}
+
+	@Override
+	public boolean isArrayType() {
+		if (target instanceof CollectionType) {
+			return ((CollectionType)target).isArrayType();
+		} else {
+			return false;
+		}
 	}
 
 }
