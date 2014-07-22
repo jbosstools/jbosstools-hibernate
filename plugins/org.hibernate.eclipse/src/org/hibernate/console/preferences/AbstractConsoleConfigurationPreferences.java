@@ -70,6 +70,7 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 		this.useProjectClasspath = useProjectclassPath;
 		this.connectionProfile = connectionProfile;
 		this.dialectName = dialectName;
+		this.hibernateVersion = hibernateVersion;
 	}
 
 	protected AbstractConsoleConfigurationPreferences() {
