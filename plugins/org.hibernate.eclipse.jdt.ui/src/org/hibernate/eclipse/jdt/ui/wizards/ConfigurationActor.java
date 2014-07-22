@@ -47,9 +47,7 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefEntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefType;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
-import org.hibernate.mapping.KeyValue;
 import org.hibernate.util.xpl.StringHelper;
-import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IMappings;
@@ -191,7 +189,7 @@ public class ConfigurationActor {
 					subclass.setAbstract(pastClass.isAbstract());
 					if (subclass.isInstanceOfJoinedSubclass()) {
 						subclass.setTable(HibernateHelper.INSTANCE.getHibernateService().newTable(StringHelper.unqualify(pastClass.getClassName()).toUpperCase()));
-						subclass.setKey(new ValueProxy((KeyValue) pc.getIdentifierProperty().getValue()));
+						subclass.setKey(pc.getIdentifierProperty().getValue());
 					}
 					if (pastClass.getIdentifierProperty() != null) {
 						subclass.addProperty(pastClass.getIdentifierProperty());
@@ -515,7 +513,7 @@ class TypeVisitor extends ASTVisitor{
 		if (StringHelper.isNotEmpty(entityInfo.getPrimaryIdName())) {
 			key.addColumn(service.newColumn(entityInfo.getPrimaryIdName().toUpperCase()));
 		}
-		array.setKey((KeyValue)((ValueProxy)key).getTarget());
+		array.setKey(key);
 		array.setFetchMode(FetchMode.JOIN);
 		IValue index = service.newSimpleValue();
 		
@@ -685,7 +683,7 @@ class TypeVisitor extends ASTVisitor{
 		if (StringHelper.isNotEmpty(entityInfo.getPrimaryIdName())){
 			key.addColumn(service.newColumn(entityInfo.getPrimaryIdName().toUpperCase()));
 		}
-		cValue.setKey((KeyValue)((ValueProxy)key).getTarget());
+		cValue.setKey(key);
 		cValue.setLazy(true);
 		cValue.setRole(StringHelper.qualify(rootClass.getEntityName(), varName));
 		return cValue;

@@ -388,9 +388,11 @@ public class ValueProxy implements IValue {
 	}
 
 	@Override
-	public void setKey(KeyValue keyValue) {
+	public void setKey(IValue keyValue) {
+		assert keyValue instanceof ValueProxy;
 		assert target instanceof Collection;
-		((Collection)target).setKey(keyValue);
+		assert ((ValueProxy)keyValue).getTarget() instanceof KeyValue;
+		((Collection)target).setKey((KeyValue)((ValueProxy)keyValue).getTarget());
 	}
 
 	@Override

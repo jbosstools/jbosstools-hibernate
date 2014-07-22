@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import org.hibernate.FetchMode;
-import org.hibernate.mapping.KeyValue;
 
 public interface IValue {
 
@@ -52,7 +51,7 @@ public interface IValue {
 	IValue getElement();
 	String getParentProperty();
 	void setElementClassName(String binaryName);
-	void setKey(KeyValue keyValue);
+	void setKey(IValue keyValue);
 	void setFetchMode(FetchMode join);
 	boolean isInverse();
 	IPersistentClass getAssociatedClass();
