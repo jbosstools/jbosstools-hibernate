@@ -27,7 +27,6 @@ import java.util.List;
 import org.hibernate.Hibernate;
 import org.hibernate.console.ConsoleMessages;
 import org.hibernate.console.ImageConstants;
-import org.hibernate.type.CollectionType;
 import org.jboss.tools.hibernate.spi.IClassMetadata;
 import org.jboss.tools.hibernate.spi.IType;
 
@@ -83,7 +82,7 @@ class ClassNode extends BaseNode {
             IType type = md.getPropertyTypes()[i];
 
             if(type.isCollectionType() ) {
-                PersistentCollectionNode tn = factory.createPersistentCollectionNode(this, names[i], md, (CollectionType)type, getValue(), objectGraph);
+                PersistentCollectionNode tn = factory.createPersistentCollectionNode(this, names[i], md, type, getValue(), objectGraph);
                 children.add(tn);
             } else {
                 children.add(factory.createPropertyNode(this, i, md, getValue(), objectGraph) );

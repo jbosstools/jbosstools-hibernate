@@ -16,5 +16,6 @@ public interface IType {
 	boolean isArrayType();
 	boolean isInstanceOfPrimitiveType();
 	Class<?> getPrimitiveClass();
+	String getRole();
 
 }

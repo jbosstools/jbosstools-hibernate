@@ -112,4 +112,10 @@ public class TypeProxy implements IType {
 					null;
 	}
 
+	@Override
+	public String getRole() {
+		assert target instanceof CollectionType;
+		return ((CollectionType)target).getRole();
+	}
+
 }
