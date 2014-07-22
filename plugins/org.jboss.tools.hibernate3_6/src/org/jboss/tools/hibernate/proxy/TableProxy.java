@@ -5,9 +5,9 @@ import java.util.Iterator;
 
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
-import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.spi.IColumn;
+import org.jboss.tools.hibernate.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IValue;
 
@@ -16,6 +16,7 @@ public class TableProxy implements ITable {
 	private Table target = null;
 	private HashSet<IColumn> columns = null;
 	private IValue identifierValue = null;
+	private IPrimaryKey primaryKey = null;
 	
 	public TableProxy(Table table) {
 		target = table;
@@ -38,8 +39,10 @@ public class TableProxy implements ITable {
 	}
 
 	@Override
-	public void setPrimaryKey(PrimaryKey pk) {
-		target.setPrimaryKey(pk);
+	public void setPrimaryKey(IPrimaryKey pk) {
+		assert pk instanceof PrimaryKeyProxy;
+		primaryKey = pk;
+		target.setPrimaryKey(((PrimaryKeyProxy)pk).getTarget());
 	}
 
 	@Override
@@ -53,8 +56,11 @@ public class TableProxy implements ITable {
 	}
 
 	@Override
-	public PrimaryKey getPrimaryKey() {
-		return target.getPrimaryKey();
+	public IPrimaryKey getPrimaryKey() {
+		if (primaryKey == null && target.getPrimaryKey() != null) {
+			primaryKey = new PrimaryKeyProxy(target.getPrimaryKey());
+		}
+		return primaryKey;
 	}
 
 	@Override

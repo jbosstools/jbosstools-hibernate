@@ -31,6 +31,7 @@ import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
+import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -58,6 +59,7 @@ import org.jboss.tools.hibernate.spi.IMetaDataDialect;
 import org.jboss.tools.hibernate.spi.INamingStrategy;
 import org.jboss.tools.hibernate.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
+import org.jboss.tools.hibernate.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.spi.IProgressListener;
 import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.IReverseEngineeringSettings;
@@ -389,6 +391,11 @@ public class ServiceProxy implements IService {
 	@Override
 	public IPersistentClass newRootClass() {
 		return new PersistentClassProxy(new RootClass());
+	}
+
+	@Override
+	public IPrimaryKey newPrimaryKey() {
+		return new PrimaryKeyProxy(new PrimaryKey());
 	}
 
 }

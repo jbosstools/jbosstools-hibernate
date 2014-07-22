@@ -113,5 +113,7 @@ public interface IService {
 	IPersistentClass newSpecialRootClass(IProperty ormElement);
 
 	IPersistentClass newRootClass();
+
+	IPrimaryKey newPrimaryKey();
 	
 }

@@ -46,8 +46,8 @@ import org.hibernate.eclipse.console.workbench.DeferredContentProvider;
 import org.hibernate.eclipse.console.workbench.LazyDatabaseSchema;
 import org.hibernate.eclipse.console.workbench.xpl.AnyAdaptableLabelProvider;
 import org.hibernate.eclipse.mapper.MapperMessages;
-import org.hibernate.mapping.PrimaryKey;
 import org.jboss.tools.hibernate.spi.IColumn;
+import org.jboss.tools.hibernate.spi.IPrimaryKey;
 
 public abstract class TypeMappingView extends TreeToTableComposite {
 
@@ -127,9 +127,9 @@ public abstract class TypeMappingView extends TreeToTableComposite {
 					IColumn col = (IColumn) sel;
 					Integer sqlTypeCode = col.getSqlTypeCode();
 					createTypeMapping( col, sqlTypeCode );
-				} else if (sel instanceof PrimaryKey) {
-					PrimaryKey pk = (PrimaryKey) sel;
-					Iterator iter = pk.columnIterator();
+				} else if (sel instanceof IPrimaryKey) {
+					IPrimaryKey pk = (IPrimaryKey) sel;
+					Iterator<IColumn> iter = pk.columnIterator();
 					while ( iter.hasNext() ) {
 						IColumn column = (IColumn) iter.next();
 						createTypeMapping(column, column.getSqlTypeCode());

@@ -26,7 +26,7 @@ public class HibernateUtils {
 		ITable table = getTable(column);
 		if (table != null) {
 			if (table.getPrimaryKey() != null) {
-				if (table.getPrimaryKey().containsColumn(((ColumnProxy)column).getTarget())) {
+				if (table.getPrimaryKey().containsColumn(column)) {
 					return true;
 				}
 			}

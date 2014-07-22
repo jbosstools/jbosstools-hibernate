@@ -1,0 +1,88 @@
+package org.jboss.tools.hibernate.proxy;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.hibernate.mapping.PrimaryKey;
+import org.jboss.tools.hibernate.spi.IColumn;
+import org.jboss.tools.hibernate.spi.IPrimaryKey;
+import org.jboss.tools.hibernate.spi.ITable;
+
+public class PrimaryKeyProxy implements IPrimaryKey {
+
+	private PrimaryKey target = null;
+	private List<IColumn> columns = null;
+	private ITable table = null;
+
+	public PrimaryKeyProxy(PrimaryKey primaryKey) {
+		target = primaryKey;
+	}
+
+	@Override
+	public void addColumn(IColumn column) {
+		assert column instanceof ColumnProxy;
+		target.addColumn(((ColumnProxy)column).getTarget());
+	}
+
+	PrimaryKey getTarget() {
+		return target;
+	}
+
+	@Override
+	public int getColumnSpan() {
+		return target.getColumnSpan();
+	}
+
+	@Override
+	public List<IColumn> getColumns() {
+		if (columns == null) {
+			initializeColumns();
+		}
+		return columns;
+	}
+	
+	private void initializeColumns() {
+		columns = new ArrayList<IColumn>();
+		Iterator<?> origin = target.getColumns().iterator();
+		while (origin.hasNext()) {
+			columns.add(new ColumnProxy(origin.next()));
+		}
+	}
+
+	@Override
+	public IColumn getColumn(int i) {
+		if (columns == null) {
+			initializeColumns();
+		}
+		return columns.get(i);
+	}
+
+	@Override
+	public ITable getTable() {
+		if (table == null && target.getTable() != null) {
+			table = new TableProxy(target.getTable());
+		}
+		return table;
+	}
+
+	@Override
+	public boolean containsColumn(IColumn column) {
+		assert column instanceof ColumnProxy;
+		return target.containsColumn(((ColumnProxy)column).getTarget());
+	}
+
+	@Override
+	public Iterator<IColumn> columnIterator() {
+		if (columns == null) {
+			initializeColumns();
+		}
+		return columns.iterator();
+	}
+
+	@Override
+	public String getName() {
+		return target.getName();
+	}
+
+}

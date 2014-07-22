@@ -26,15 +26,14 @@ import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.EclipseImages;
-import org.hibernate.mapping.PrimaryKey;
-import org.jboss.tools.hibernate.proxy.ColumnProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
+import org.jboss.tools.hibernate.spi.IPrimaryKey;
 
 public class PrimaryKeyWorkbenchAdapter implements IWorkbenchAdapter {
 
 	@SuppressWarnings("unchecked")
 	public Object[] getChildren(Object o) {
-		PrimaryKey t = getPrimaryKey( o );
+		IPrimaryKey t = getPrimaryKey( o );
 
 		if(t.getColumnSpan()==1) {
 			return new Object[0];
@@ -43,8 +42,8 @@ public class PrimaryKeyWorkbenchAdapter implements IWorkbenchAdapter {
 		}
 	}
 
-	private PrimaryKey getPrimaryKey(Object o) {
-		return (PrimaryKey)o;
+	private IPrimaryKey getPrimaryKey(Object o) {
+		return (IPrimaryKey)o;
 	}
 
 	public ImageDescriptor getImageDescriptor(Object object) {
@@ -52,9 +51,9 @@ public class PrimaryKeyWorkbenchAdapter implements IWorkbenchAdapter {
 	}
 
 	public String getLabel(Object o) {
-		PrimaryKey table = getPrimaryKey(o);
+		IPrimaryKey table = getPrimaryKey(o);
 		if(table.getColumnSpan()==1) {
-			return ColumnWorkbenchAdapter.getColumnLabel(table.getColumn(0) != null ? new ColumnProxy(table.getColumn(0)) : null);
+			return ColumnWorkbenchAdapter.getColumnLabel(table.getColumn(0));
 		} else {
 			return HibernateConsoleMessages.PrimaryKeyWorkbenchAdapter_composite_primary_key;
 		}

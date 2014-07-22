@@ -73,9 +73,9 @@ import org.hibernate.eclipse.mapper.model.RevEngGeneratorAdapter;
 import org.hibernate.eclipse.mapper.model.RevEngParamAdapter;
 import org.hibernate.eclipse.mapper.model.RevEngPrimaryKeyAdapter;
 import org.hibernate.eclipse.mapper.model.RevEngTableAdapter;
-import org.hibernate.mapping.PrimaryKey;
 import org.jboss.tools.hibernate.proxy.TableProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
+import org.jboss.tools.hibernate.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.spi.ITable;
 
 public class TablePropertiesBlock extends MasterDetailsBlock {
@@ -211,13 +211,13 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 							columns.put(lastTable,existing);
 						}
 						existing.add(object);
-					} else if (object instanceof PrimaryKey) {
+					} else if (object instanceof IPrimaryKey) {
 						List existing = (List) columns.get(lastTable);
 						if(existing==null) {
 							existing = new ArrayList();
 							columns.put(lastTable,existing);
 						}
-						existing.addAll(((PrimaryKey)object).getColumns());
+						existing.addAll(((IPrimaryKey)object).getColumns());
 					}
 				}
 			}
