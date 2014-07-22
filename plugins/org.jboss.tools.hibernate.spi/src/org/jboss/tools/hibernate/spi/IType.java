@@ -14,5 +14,7 @@ public interface IType {
 	String getAssociatedEntityName();
 	boolean isIntegerType();
 	boolean isArrayType();
+	boolean isInstanceOfPrimitiveType();
+	Class<?> getPrimitiveClass();
 
 }

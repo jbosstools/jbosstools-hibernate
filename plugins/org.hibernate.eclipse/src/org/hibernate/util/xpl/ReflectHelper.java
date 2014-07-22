@@ -36,7 +36,6 @@ import org.hibernate.property.BasicPropertyAccessor;
 import org.hibernate.property.DirectPropertyAccessor;
 import org.hibernate.property.Getter;
 import org.hibernate.property.PropertyAccessor;
-import org.hibernate.type.PrimitiveType;
 import org.jboss.tools.hibernate.spi.IType;
 
 /**
@@ -341,8 +340,8 @@ public final class ReflectHelper {
 				boolean found = true;
 				for ( int j = 0; j < params.length; j++ ) {
 					final boolean ok = params[j].isAssignableFrom( types[j].getReturnedClass() ) || (
-							types[j] instanceof PrimitiveType &&
-									params[j] == ( ( PrimitiveType ) types[j] ).getPrimitiveClass()
+							types[j].isInstanceOfPrimitiveType() &&
+									params[j] == types[j].getPrimitiveClass()
 					);
 					if ( !ok ) {
 						found = false;

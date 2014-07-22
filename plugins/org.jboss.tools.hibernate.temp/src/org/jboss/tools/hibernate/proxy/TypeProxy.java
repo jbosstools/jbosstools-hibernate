@@ -4,6 +4,7 @@ import org.hibernate.type.CollectionType;
 import org.hibernate.type.EntityType;
 import org.hibernate.type.IntegerType;
 import org.hibernate.type.NullableType;
+import org.hibernate.type.PrimitiveType;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.spi.IType;
 
@@ -97,6 +98,18 @@ public class TypeProxy implements IType {
 		} else {
 			return false;
 		}
+	}
+
+	@Override
+	public boolean isInstanceOfPrimitiveType() {
+		return target instanceof PrimitiveType;
+	}
+
+	@Override
+	public Class<?> getPrimitiveClass() {
+		return isInstanceOfPrimitiveType() ? 
+				((PrimitiveType)target).getPrimitiveClass() :
+					null;
 	}
 
 }
