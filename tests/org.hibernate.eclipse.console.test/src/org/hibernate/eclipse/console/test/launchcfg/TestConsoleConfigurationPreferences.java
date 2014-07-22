@@ -103,7 +103,7 @@ public class TestConsoleConfigurationPreferences implements ConsoleConfiguration
 	@Override
 	public String getHibernateVersion() {
 		// TODO Auto-generated method stub
-		return null;
+		return "3.5";
 	}
 
 }
