@@ -7,6 +7,7 @@ import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.spi.IColumn;
+import org.jboss.tools.hibernate.spi.IForeignKey;
 import org.jboss.tools.hibernate.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IValue;
@@ -17,6 +18,7 @@ public class TableProxy implements ITable {
 	private HashSet<IColumn> columns = null;
 	private IValue identifierValue = null;
 	private IPrimaryKey primaryKey = null;
+	private HashSet<IForeignKey> foreignKeys = null;
 	
 	public TableProxy(Table table) {
 		target = table;
@@ -80,10 +82,20 @@ public class TableProxy implements ITable {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public Iterator<ForeignKey> getForeignKeyIterator() {
-		return target.getForeignKeyIterator();
+	public Iterator<IForeignKey> getForeignKeyIterator() {
+		if (foreignKeys == null) {
+			initializeForeignKeys();
+		}
+		return foreignKeys.iterator();
+	}
+	
+	private void initializeForeignKeys() {
+		foreignKeys = new HashSet<IForeignKey>();
+		Iterator<?> origin = target.getForeignKeyIterator();
+		while (origin.hasNext()) {
+			foreignKeys.add(new ForeignKeyProxy((ForeignKey)origin.next()));
+		}
 	}
 
 	@Override

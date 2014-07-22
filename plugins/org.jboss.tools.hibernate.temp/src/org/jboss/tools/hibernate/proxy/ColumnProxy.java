@@ -11,8 +11,8 @@ public class ColumnProxy implements IColumn {
 	private Column target = null;
 	private IValue value = null;
 
-	public ColumnProxy(Object column) {
-		target = (Column)column;
+	public ColumnProxy(Column column) {
+		target = column;
 	}
 
 	public Column getTarget() {

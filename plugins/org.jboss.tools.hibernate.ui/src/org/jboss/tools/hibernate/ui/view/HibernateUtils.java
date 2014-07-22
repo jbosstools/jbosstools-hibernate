@@ -12,9 +12,8 @@ package org.jboss.tools.hibernate.ui.view;
 
 import java.util.Iterator;
 
-import org.hibernate.mapping.ForeignKey;
-import org.jboss.tools.hibernate.proxy.ColumnProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
+import org.jboss.tools.hibernate.spi.IForeignKey;
 import org.jboss.tools.hibernate.spi.ITable;
 
 /**
@@ -37,10 +36,10 @@ public class HibernateUtils {
 	public static boolean isForeignKey(IColumn column) {
 		ITable table = getTable(column);
 		if (table != null) {
-			Iterator<ForeignKey> iter = table.getForeignKeyIterator();
+			Iterator<IForeignKey> iter = table.getForeignKeyIterator();
 			while (iter.hasNext()) {
-				ForeignKey fk = iter.next();
-				if (fk.containsColumn(((ColumnProxy)column).getTarget())) {
+				IForeignKey fk = iter.next();
+				if (fk.containsColumn(column)) {
 					return true;
 				}
 			}

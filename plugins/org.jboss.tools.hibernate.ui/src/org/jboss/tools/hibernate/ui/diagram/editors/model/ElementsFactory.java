@@ -18,12 +18,9 @@ import java.util.Set;
 
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
-import org.hibernate.mapping.ForeignKey;
-import org.jboss.tools.hibernate.proxy.ColumnProxy;
-import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
-import org.jboss.tools.hibernate.proxy.TableProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IForeignKey;
 import org.jboss.tools.hibernate.spi.IJoin;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
 import org.jboss.tools.hibernate.spi.IProperty;
@@ -64,15 +61,15 @@ public class ElementsFactory {
 			Object ormElement = shape.getOrmElement();
 			if (ormElement instanceof ITable) {
 				ITable databaseTable = (ITable)ormElement;
-				Iterator<ForeignKey> itFK = (Iterator<ForeignKey>)databaseTable.getForeignKeyIterator();
+				Iterator<IForeignKey> itFK = databaseTable.getForeignKeyIterator();
 				while (itFK.hasNext()) {
-					final ForeignKey fk = itFK.next();
-					ITable referencedTable = fk.getReferencedTable() != null ? new TableProxy(fk.getReferencedTable()) : null;
+					final IForeignKey fk = itFK.next();
+					ITable referencedTable = fk.getReferencedTable();
 					final OrmShape referencedShape = getOrCreateDatabaseTable(referencedTable);
 					//
-					Iterator itColumns = fk.columnIterator();
+					Iterator<IColumn> itColumns = fk.columnIterator();
 					while (itColumns.hasNext()) {
-						IColumn col = new ColumnProxy(itColumns.next());
+						IColumn col = itColumns.next();
 						Shape shapeColumn = shape.getChild(col);
 						Iterator<IColumn> itReferencedColumns = null;
 						if (fk.isReferenceToPrimaryKey()) {
@@ -83,7 +80,7 @@ public class ElementsFactory {
 								(Iterator<IColumn>)fk.getReferencedColumns().iterator();
 						}
 						while (itReferencedColumns != null && itReferencedColumns.hasNext()) {
-							IColumn colReferenced = new ColumnProxy(itReferencedColumns.next());
+							IColumn colReferenced = itReferencedColumns.next();
 							Shape shapeReferencedColumn = referencedShape.getChild(colReferenced);
 							if (shouldCreateConnection(shapeColumn, shapeReferencedColumn)) {
 								connections.add(new Connection(shapeColumn, shapeReferencedColumn));
@@ -123,9 +120,6 @@ public class ElementsFactory {
 			if (type != null && type.isEntityType()) {
 				Object clazz = config != null ? 
 						config.getClassMapping(type.getAssociatedEntityName()) : null;
-				if (clazz instanceof IPersistentClass) {
-					clazz = ((PersistentClassProxy)clazz).getTarget();
-				}
 				if (clazz instanceof IPersistentClass && ((IPersistentClass)clazz).isInstanceOfRootClass()) {
 					IPersistentClass rootClass = (IPersistentClass)clazz;
 					s = getOrCreatePersistentClass(rootClass, null);
@@ -190,7 +184,7 @@ public class ElementsFactory {
 					connections.add(new Connection(csChild1, childShape));
 				}
 				OrmShape keyTableShape = getOrCreateDatabaseTable(collection.getKey().getTable());
-				Iterator it = collection.getKey().getColumnIterator();
+				Iterator<IColumn> it = collection.getKey().getColumnIterator();
 				while (it.hasNext()) {
 					Object el = it.next();
 					if (el instanceof IColumn) {
@@ -245,9 +239,6 @@ public class ElementsFactory {
 					Iterator iterator = config.getClassMappings();
 					while (iterator.hasNext()) {
 						Object clazz = iterator.next();
-						if (clazz instanceof IPersistentClass) {
-							clazz = ((PersistentClassProxy)clazz).getTarget();
-						}
 						if (clazz instanceof IPersistentClass && ((IPersistentClass)clazz).isInstanceOfRootClass()) {
 							IPersistentClass cls = (IPersistentClass)clazz;
 							if (databaseTable.equals(cls.getTable())) {
@@ -263,7 +254,7 @@ public class ElementsFactory {
 		return tableShape;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ "rawtypes" })
 	protected OrmShape getOrCreatePersistentClass(IPersistentClass persistentClass, 
 			ITable componentClassDatabaseTable) {
 		OrmShape classShape = null;

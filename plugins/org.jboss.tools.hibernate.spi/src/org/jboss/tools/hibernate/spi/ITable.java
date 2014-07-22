@@ -2,8 +2,6 @@ package org.jboss.tools.hibernate.spi;
 
 import java.util.Iterator;
 
-import org.hibernate.mapping.ForeignKey;
-
 public interface ITable {
 
 	String getName();
@@ -13,7 +11,7 @@ public interface ITable {
 	String getSchema();
 	IPrimaryKey getPrimaryKey();
 	Iterator<IColumn> getColumnIterator();
-	Iterator<ForeignKey> getForeignKeyIterator();
+	Iterator<IForeignKey> getForeignKeyIterator();
 	String getComment();
 	String getRowId();
 	String getSubselect();

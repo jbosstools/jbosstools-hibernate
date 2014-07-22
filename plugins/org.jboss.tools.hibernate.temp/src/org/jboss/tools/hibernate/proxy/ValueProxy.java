@@ -202,7 +202,7 @@ public class ValueProxy implements IValue {
 		while (iterator.hasNext()) {
 			Object object = iterator.next();
 			if (object instanceof Column) {
-				columns.add(new ColumnProxy(object));
+				columns.add(new ColumnProxy((Column)object));
 			}
 		}
 	}
