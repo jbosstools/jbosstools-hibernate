@@ -54,7 +54,7 @@ import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IEnvironment;
 import org.jboss.tools.hibernate.spi.INamingStrategy;
 import org.jboss.tools.hibernate.spi.IService;
-import org.jboss.tools.hibernate.util.HibernateHelper;
+import org.jboss.tools.hibernate.util.ServiceLookup;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
@@ -72,7 +72,7 @@ public class ConfigurationFactory {
 			Map<String, FakeDelegatingDriver> fakeDrivers) {
 		this.prefs = prefs;
 		this.fakeDrivers = fakeDrivers;
-		service = HibernateHelper.INSTANCE.getHibernateService();
+		service = ServiceLookup.INSTANCE.getService(prefs.getHibernateVersion());
 		environment = service.getEnvironment();
 	}
 	

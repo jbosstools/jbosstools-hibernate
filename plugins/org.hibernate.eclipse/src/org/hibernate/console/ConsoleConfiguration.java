@@ -50,7 +50,6 @@ import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IEnvironment;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
 import org.jboss.tools.hibernate.spi.ISettings;
-import org.jboss.tools.hibernate.util.HibernateHelper;
 
 public class ConsoleConfiguration implements ExecutionContextHolder {
 
@@ -375,7 +374,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	}
 	
 	public File getConfigXMLFile() {
-		IEnvironment environment = HibernateHelper.INSTANCE.getHibernateService().getEnvironment();
+		IEnvironment environment = getHibernateExtension().getHibernateService().getEnvironment();
 		File configXMLFile = null;
 		if (prefs != null) {
 			configXMLFile = prefs.getConfigXMLFile();

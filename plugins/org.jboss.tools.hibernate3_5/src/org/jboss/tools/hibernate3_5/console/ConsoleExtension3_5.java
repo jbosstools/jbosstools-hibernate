@@ -79,7 +79,7 @@ public class ConsoleExtension3_5 implements ConsoleExtension {
 				//HibernateConsolePlugin.getDefault().logErrorMessage(mess, e);
 			}
 		}
-		IHQLCodeAssist hqlEval = HibernateHelper.INSTANCE.getHibernateService().newHQLCodeAssist(hibernateExtension.getConfiguration());
+		IHQLCodeAssist hqlEval = hibernateExtension.getHibernateService().newHQLCodeAssist(hibernateExtension.getConfiguration());
 		query = query.replace('\t', ' ');
 		hqlEval.codeComplete(query, currentOffset, requestor);
 		return new CompletionProposalsResult(requestor.getCompletionProposals(), requestor.getLastErrorMessage());
@@ -157,7 +157,7 @@ public class ConsoleExtension3_5 implements ConsoleExtension {
 					return (IArtifactCollector) cc.execute(new Command() {
 
 						public Object execute() {
-							IArtifactCollector artifactCollector = HibernateHelper.INSTANCE.getHibernateService().newArtifactCollector();
+							IArtifactCollector artifactCollector = hibernateExtension.getHibernateService().newArtifactCollector();
 
 		                    // Global properties
 			                Properties props = new Properties();
@@ -222,7 +222,7 @@ public class ConsoleExtension3_5 implements ConsoleExtension {
 				public Object execute() {					
 					//todo: factor this setup of revengstrategy to core		
 					
-					IService service = HibernateHelper.INSTANCE.getHibernateService();
+					IService service = hibernateExtension.getHibernateService();
 
 					IReverseEngineeringStrategy res = service.newDefaultReverseEngineeringStrategy();
 
