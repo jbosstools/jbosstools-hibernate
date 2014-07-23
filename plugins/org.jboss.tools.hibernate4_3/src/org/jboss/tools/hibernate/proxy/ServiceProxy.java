@@ -61,6 +61,7 @@ import org.jboss.tools.hibernate.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.spi.IDialect;
 import org.jboss.tools.hibernate.spi.IEnvironment;
 import org.jboss.tools.hibernate.spi.IExporter;
+import org.jboss.tools.hibernate.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.spi.IJDBCReader;
 import org.jboss.tools.hibernate.spi.IMetaDataDialect;
@@ -165,10 +166,10 @@ public class ServiceProxy implements IService {
 	}
 
 	@Override
-	public HQLCodeAssist newHQLCodeAssist(IConfiguration hcfg) {
-		HQLCodeAssist result = null;
+	public IHQLCodeAssist newHQLCodeAssist(IConfiguration hcfg) {
+		IHQLCodeAssist result = null;
 		if (hcfg instanceof ConfigurationProxy) {
-			result = new HQLCodeAssist(((ConfigurationProxy)hcfg).getConfiguration());
+			result = new HQLCodeAssistProxy(new HQLCodeAssist(((ConfigurationProxy)hcfg).getConfiguration()));
 		}
 		return result;
 	}

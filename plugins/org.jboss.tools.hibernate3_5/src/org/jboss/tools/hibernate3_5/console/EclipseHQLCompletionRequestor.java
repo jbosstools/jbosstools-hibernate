@@ -34,7 +34,7 @@ import org.hibernate.tool.ide.completion.IHQLCompletionRequestor;
 import org.hibernate.util.StringHelper;
 import org.jboss.tools.hibernate.proxy.PropertyProxy;
 
-public class EclipseHQLCompletionRequestor implements IHQLCompletionRequestor {
+public class EclipseHQLCompletionRequestor implements IHQLCompletionRequestor, org.jboss.tools.hibernate.spi.IHQLCompletionRequestor {
 
 	private final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
 	private String lastErrorMessage;

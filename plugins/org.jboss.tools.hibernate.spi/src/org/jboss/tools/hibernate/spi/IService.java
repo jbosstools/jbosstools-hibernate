@@ -7,7 +7,6 @@ import java.util.Properties;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
-import org.hibernate.tool.ide.completion.HQLCodeAssist;
 
 public interface IService {
 
@@ -31,7 +30,7 @@ public interface IService {
 	ISchemaExport newSchemaExport(
 			IConfiguration hcfg);
 	
-	HQLCodeAssist newHQLCodeAssist(
+	IHQLCodeAssist newHQLCodeAssist(
 			IConfiguration hcfg);
 
 	IConfiguration newJDBCMetaDataConfiguration();
