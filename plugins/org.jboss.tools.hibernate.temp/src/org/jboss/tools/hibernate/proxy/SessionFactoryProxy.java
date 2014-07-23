@@ -45,13 +45,12 @@ public class SessionFactoryProxy implements ISessionFactory {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Map<String, ICollectionMetadata> getAllCollectionMetadata() {
 		if (allCollectionMetadata == null) {
 			initializeAllCollectionMetadata();
 		}
-		return target.getAllCollectionMetadata();
+		return allCollectionMetadata;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -59,9 +58,9 @@ public class SessionFactoryProxy implements ISessionFactory {
 		Map<String, CollectionMetadata> origin = target.getAllCollectionMetadata();
 		allCollectionMetadata = new HashMap<String, ICollectionMetadata>(origin.size());
 		for (Map.Entry<String, CollectionMetadata> entry : origin.entrySet()) {
-			allCollectionMetadata.put(
-					entry.getKey(), 
-					new CollectionMetadataProxy(entry.getValue()));
+			String key = entry.getKey();
+			CollectionMetadata value = entry.getValue();
+			allCollectionMetadata.put(key, new CollectionMetadataProxy(value));
 		}
 	}
 
