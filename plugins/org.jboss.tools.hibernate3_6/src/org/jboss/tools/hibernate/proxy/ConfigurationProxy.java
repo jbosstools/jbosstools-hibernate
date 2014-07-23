@@ -31,6 +31,8 @@ public class ConfigurationProxy implements IConfiguration {
 	
 	public ConfigurationProxy(Configuration configuration) {
 		target = configuration;
+		target.setProperty("hibernate.validator.autoregister_listeners", "false");
+		target.setProperty("hibernate.validator.apply_to_ddl", "false");
 	}
 
 	@Override
