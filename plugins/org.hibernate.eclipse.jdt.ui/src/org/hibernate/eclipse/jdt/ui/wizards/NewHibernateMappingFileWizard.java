@@ -72,10 +72,10 @@ import org.hibernate.eclipse.jdt.ui.internal.JdtUiMessages;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.collect.AllEntitiesInfoCollector;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
-import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 
 /**
@@ -245,7 +245,7 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 	
 	protected class HibernateMappingExporterWrapper { // extends HibernateMappingExporter {
 		protected IJavaProject proj;
-		private HibernateMappingExporter target = null;
+		private IHibernateMappingExporter target = null;
 		public HibernateMappingExporterWrapper(IJavaProject proj, IConfiguration cfg, File outputdir) {
 	    	target = HibernateHelper.INSTANCE.getHibernateService().newHibernateMappingExporter(cfg, outputdir);
 	    	this.proj = proj;

@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 
 public interface IService {
 
@@ -23,7 +22,7 @@ public interface IService {
 			IExporter exporter, 
 			IConfiguration hcfg);
 	
-	HibernateMappingExporter newHibernateMappingExporter(
+	IHibernateMappingExporter newHibernateMappingExporter(
 			IConfiguration hcfg, 
 			File file);
 	

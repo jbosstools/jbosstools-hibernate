@@ -63,6 +63,7 @@ import org.jboss.tools.hibernate.spi.IEnvironment;
 import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.spi.IHQLQueryPlan;
+import org.jboss.tools.hibernate.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.spi.IJDBCReader;
 import org.jboss.tools.hibernate.spi.IMetaDataDialect;
 import org.jboss.tools.hibernate.spi.INamingStrategy;
@@ -145,11 +146,11 @@ public class ServiceProxy implements IService {
 	}
 
 	@Override
-	public HibernateMappingExporter newHibernateMappingExporter(
+	public IHibernateMappingExporter newHibernateMappingExporter(
 			IConfiguration hcfg, File file) {
-		HibernateMappingExporter result = null;
+		IHibernateMappingExporter result = null;
 		if (hcfg instanceof ConfigurationProxy) {
-			result = new HibernateMappingExporter(((ConfigurationProxy)hcfg).getConfiguration()	, file);
+			result = new HibernateMappingExporterProxy(new HibernateMappingExporter(((ConfigurationProxy)hcfg).getConfiguration()	, file));
 		}
 		return result;
 	}

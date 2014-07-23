@@ -27,10 +27,10 @@ import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 import org.hibernate.eclipse.console.test.project.ConfigurableTestProject;
 import org.hibernate.eclipse.console.test.utils.ConsoleConfigUtils;
 import org.hibernate.tool.hbm2x.ExporterException;
-import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
 import org.jboss.tools.hibernate.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 
 /**
@@ -78,7 +78,7 @@ public class HbmExportExceptionTest extends BaseTestSetCase {
 			
 			HibernateMappingGlobalSettings hmgs = new HibernateMappingGlobalSettings();
 			
-			HibernateMappingExporter hce = HibernateHelper.INSTANCE.getHibernateService().newHibernateMappingExporter(config, getSrcFolder());
+			IHibernateMappingExporter hce = HibernateHelper.INSTANCE.getHibernateService().newHibernateMappingExporter(config, getSrcFolder());
 
 			
 			hce.setGlobalSettings(hmgs);
