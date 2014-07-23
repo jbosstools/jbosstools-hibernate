@@ -72,10 +72,10 @@ import org.hibernate.eclipse.jdt.ui.internal.JdtUiMessages;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.collect.AllEntitiesInfoCollector;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
-import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IHibernateMappingExporter;
+import org.jboss.tools.hibernate.spi.IHibernateMappingGlobalSettings;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 
 /**
@@ -305,7 +305,7 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 				throw new HibernateConsoleRuntimeException(e);
 			}  
 		}
-		public void setGlobalSettings(HibernateMappingGlobalSettings hmgs) {
+		public void setGlobalSettings(IHibernateMappingGlobalSettings hmgs) {
 			target.setGlobalSettings(hmgs);
 		}
 		public void start() {
@@ -319,7 +319,7 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 		Map<IJavaProject, IPath> places2Gen = new HashMap<IJavaProject, IPath>();
 		for (Entry<IJavaProject, IConfiguration> entry : configs.entrySet()) {
 			IConfiguration config = entry.getValue();
-			HibernateMappingGlobalSettings hmgs = new HibernateMappingGlobalSettings();
+			IHibernateMappingGlobalSettings hmgs = HibernateHelper.INSTANCE.getHibernateService().newHibernateMappingGlobalSettings();
 
 			//final IPath projPath = entry.getKey().getProject().getLocation();
 			IPath place2Gen = previewPage.getRootPlace2Gen().append(entry.getKey().getElementName());

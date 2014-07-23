@@ -3,8 +3,8 @@ package org.jboss.tools.hibernate.proxy;
 import java.io.File;
 
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
-import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
 import org.jboss.tools.hibernate.spi.IHibernateMappingExporter;
+import org.jboss.tools.hibernate.spi.IHibernateMappingGlobalSettings;
 
 public class HibernateMappingExporterProxy implements IHibernateMappingExporter {
 	
@@ -16,8 +16,9 @@ public class HibernateMappingExporterProxy implements IHibernateMappingExporter 
 	}
 
 	@Override
-	public void setGlobalSettings(HibernateMappingGlobalSettings hmgs) {
-		target.setGlobalSettings(hmgs);
+	public void setGlobalSettings(IHibernateMappingGlobalSettings hmgs) {
+		assert hmgs instanceof HibernateMappingGlobalSettingsProxy;
+		target.setGlobalSettings(((HibernateMappingGlobalSettingsProxy)hmgs).getTarget());
 	}
 
 	@Override

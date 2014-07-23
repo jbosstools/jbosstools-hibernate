@@ -113,5 +113,7 @@ public interface IService {
 	IPersistentClass newRootClass();
 
 	IPrimaryKey newPrimaryKey();
+
+	IHibernateMappingGlobalSettings newHibernateMappingGlobalSettings();
 	
 }

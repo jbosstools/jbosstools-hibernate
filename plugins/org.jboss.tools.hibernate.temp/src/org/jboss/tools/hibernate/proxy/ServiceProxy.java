@@ -43,6 +43,7 @@ import org.hibernate.mapping.Table;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
+import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.util.xpl.ReflectHelper;
 import org.hibernate.util.xpl.StringHelper;
@@ -57,6 +58,7 @@ import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.spi.IHibernateMappingExporter;
+import org.jboss.tools.hibernate.spi.IHibernateMappingGlobalSettings;
 import org.jboss.tools.hibernate.spi.IJDBCReader;
 import org.jboss.tools.hibernate.spi.IMetaDataDialect;
 import org.jboss.tools.hibernate.spi.INamingStrategy;
@@ -400,6 +402,11 @@ public class ServiceProxy implements IService {
 	@Override
 	public IPrimaryKey newPrimaryKey() {
 		return new PrimaryKeyProxy(new PrimaryKey());
+	}
+
+	@Override
+	public IHibernateMappingGlobalSettings newHibernateMappingGlobalSettings() {
+		return new HibernateMappingGlobalSettingsProxy(new HibernateMappingGlobalSettings());
 	}
 
 }
