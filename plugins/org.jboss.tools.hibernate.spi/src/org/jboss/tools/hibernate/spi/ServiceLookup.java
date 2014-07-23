@@ -31,7 +31,9 @@ public class ServiceLookup {
 				try {
 					Object object = configurationElement.createExecutableExtension("class");
 					String name = configurationElement.getAttribute("name");
-					services.put(name, (IService)object);
+					if (object != null && name != null && object instanceof IService) {
+						services.put(name, (IService)object);
+					}
 				} catch (CoreException e) {
 					HibernateServicePlugin.getDefault().log(e);
 				}
