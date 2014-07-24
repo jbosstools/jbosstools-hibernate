@@ -10,6 +10,7 @@
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="testHibernateJpaOrmProject"/>
 <stringAttribute key="org.hibernate.eclipse.launch.CONFIGURATION_FACTORY" value="JPA"/>
 <listAttribute key="org.hibernate.eclipse.launch.FILE_MAPPINGS"/>
+<stringAttribute key="org.hibernate.eclipse.launch.HIBERNATE_VERSION" value="3.6"/>
 <stringAttribute key="org.hibernate.eclipse.launchDIALECT" value="org.hibernate.dialect.PostgreSQLDialect"/>
 <stringAttribute key="org.hibernate.eclipse.launchNAMING_STRATEGY" value="ns.NamingStrategy"/>
 </launchConfiguration>
