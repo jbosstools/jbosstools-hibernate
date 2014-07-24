@@ -32,7 +32,7 @@ public class QueryParametersTest extends TestCase {
 	}
 
 	public void testQueryParameter() {
-		QueryInputModel model = new QueryInputModel(service.newTypeFactory());
+		QueryInputModel model = new QueryInputModel(service);
 		
 		ConsoleQueryParameter[] cqps = model.getQueryParameters();
 		assertNotNull(cqps);
@@ -49,7 +49,7 @@ public class QueryParametersTest extends TestCase {
 		
 		TestObserver testObserver = new TestObserver();
 		qpmodel.addObserver(testObserver);
-		ConsoleQueryParameter consoleQueryParameter = new ConsoleQueryParameter();
+		ConsoleQueryParameter consoleQueryParameter = new ConsoleQueryParameter(service);
 		qpmodel.addParameter(consoleQueryParameter);
 		assertEquals(1,testObserver.cnt);
 		
@@ -59,7 +59,7 @@ public class QueryParametersTest extends TestCase {
 	
 	public void testCreateUnique() {
 		
-		QueryInputModel model = new QueryInputModel(service.newTypeFactory());
+		QueryInputModel model = new QueryInputModel(service);
 		
 		ConsoleQueryParameter parameter = model.createUniqueParameter("param"); //$NON-NLS-1$
 		model.addParameter(parameter);

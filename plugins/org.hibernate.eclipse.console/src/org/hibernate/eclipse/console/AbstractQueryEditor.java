@@ -299,7 +299,7 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 	public QueryInputModel getQueryInputModel() {
 		if (queryInputModel == null) {
 			IService service = getConsoleConfiguration().getHibernateExtension().getHibernateService();
-			queryInputModel = new QueryInputModel(service.newTypeFactory());
+			queryInputModel = new QueryInputModel(service);
 		}
 		return queryInputModel;
 	}

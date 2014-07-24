@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Set;
 
+import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ITypeFactory;
 
 /**
@@ -44,12 +45,14 @@ public class QueryInputModel extends Observable {
 	List<ConsoleQueryParameter> parameters;
 	boolean ignoreParameters = false;
 	private ITypeFactory typeFactory;
+	private IService service;
 	
 	private Integer maxResults;
 	
-	public QueryInputModel(ITypeFactory typeFactory) {
+	public QueryInputModel(IService service) {
 		parameters = new ArrayList<ConsoleQueryParameter>();
-		this.typeFactory = typeFactory;
+		this.service = service;
+		this.typeFactory = service.newTypeFactory();
 	}
 	
 	public int getParameterCount() {
@@ -68,7 +71,7 @@ public class QueryInputModel extends Observable {
 	}
 	
 	public QueryInputModel getCopyForQuery() {
-		QueryInputModel result = new QueryInputModel(typeFactory);
+		QueryInputModel result = new QueryInputModel(service);
 		
 		ConsoleQueryParameter[] queryParametersForQuery = getQueryParametersForQuery();
 		result.parameters = Arrays.asList( queryParametersForQuery );
@@ -115,10 +118,10 @@ public class QueryInputModel extends Observable {
 	/** create a parameter which does not collide with any other parameter */
 	public ConsoleQueryParameter createUniqueParameter(String paramName) {
 		if(parameters.isEmpty()) {
-			return new ConsoleQueryParameter(paramName, typeFactory.getStringType(), ""); //$NON-NLS-1$
+			return new ConsoleQueryParameter(service, paramName, typeFactory.getStringType(), ""); //$NON-NLS-1$
 		} else {
 			ConsoleQueryParameter cqp = parameters.get(parameters.size()-1);
-			ConsoleQueryParameter c = new ConsoleQueryParameter(cqp);
+			ConsoleQueryParameter c = new ConsoleQueryParameter(service, cqp);
 			c.setName(makeUnique(parameters.iterator(), paramName));
 			return c;
 		}
@@ -165,5 +168,9 @@ public class QueryInputModel extends Observable {
 
 	public Integer getMaxResults() {
 		return maxResults;
+	}
+	
+	public IService getService() {
+		return service;
 	}
 }

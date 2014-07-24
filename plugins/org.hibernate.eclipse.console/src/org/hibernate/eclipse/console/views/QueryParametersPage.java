@@ -188,7 +188,7 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 			}
 
 		});
-		final List<IType> possibleTypes = new ArrayList<IType>(ConsoleQueryParameter.getPossibleTypes());
+		final List<IType> possibleTypes = new ArrayList<IType>(model.getService().getTypeFormats().keySet());
 		Collections.sort(possibleTypes, new Comparator<IType>() {
 
 			public int compare(IType t1, IType t2) {

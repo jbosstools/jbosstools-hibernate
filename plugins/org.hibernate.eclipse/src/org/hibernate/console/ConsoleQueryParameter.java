@@ -21,77 +21,35 @@
  */
 package org.hibernate.console;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.Currency;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
-import java.util.TimeZone;
 
-import org.jboss.tools.hibernate.spi.ITable;
+import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.IType;
-import org.jboss.tools.hibernate.spi.ITypeFactory;
-import org.jboss.tools.hibernate.util.HibernateHelper;
 
 
 public class ConsoleQueryParameter {
 
 	static private final Object NULL_MARKER = null; //new Object() { public String toString() { return "[null]"; } };
 	
-	static final Map<IType, String> typeFormats = new HashMap<IType, String>();
-	static {
-		
-		ITypeFactory typeFactory = 
-				HibernateHelper.INSTANCE.getHibernateService().newTypeFactory();
-		
-		addTypeFormat(typeFactory.getBooleanType(), Boolean.TRUE);
-		addTypeFormat(typeFactory.getByteType(), Byte.valueOf((byte) 42));
-		addTypeFormat(typeFactory.getBigIntegerType(), BigInteger.valueOf(42));
-		addTypeFormat(typeFactory.getShortType(), Short.valueOf((short) 42));
-		addTypeFormat(typeFactory.getCalendarType(), new GregorianCalendar());
-		addTypeFormat(typeFactory.getCalendarDateType(), new GregorianCalendar());
-		addTypeFormat(typeFactory.getIntegerType(), Integer.valueOf(42));
-		addTypeFormat(typeFactory.getBigDecimalType(), new BigDecimal(42.0));
-		addTypeFormat(typeFactory.getCharacterType(), Character.valueOf('h'));
-		addTypeFormat(typeFactory.getClassType(), ITable.class);
-		addTypeFormat(typeFactory.getCurrencyType(), Currency.getInstance(Locale.getDefault()));
-		addTypeFormat(typeFactory.getDateType(), new Date());
-		addTypeFormat(typeFactory.getDoubleType(), Double.valueOf(42.42));
-		addTypeFormat(typeFactory.getFloatType(), Float.valueOf((float)42.42));
-		addTypeFormat(typeFactory.getLocaleType(), Locale.getDefault());
-		addTypeFormat(typeFactory.getLongType(), Long.valueOf(42));
-		addTypeFormat(typeFactory.getStringType(), "a string"); //$NON-NLS-1$
-		addTypeFormat(typeFactory.getTextType(), "a text"); //$NON-NLS-1$
-		addTypeFormat(typeFactory.getTimeType(), new Date());
-		addTypeFormat(typeFactory.getTimestampType(), new Date());
-		addTypeFormat(typeFactory.getTimezoneType(), TimeZone.getDefault());
-		addTypeFormat(typeFactory.getTrueFalseType(), Boolean.TRUE);
-		addTypeFormat(typeFactory.getYesNoType(), Boolean.TRUE);
-	}
-
-
-	private static void addTypeFormat(IType type, Object value) {
-		typeFormats.put(type, type.toString(value));
-	}
+	private IService service;
+	
 	String name;
 	IType type;
 	Object value;
 	
-	public ConsoleQueryParameter(ConsoleQueryParameter cqp) {
+	public ConsoleQueryParameter(IService service, ConsoleQueryParameter cqp) {
+		this.service = service;
 		name = cqp.name;
 		type = cqp.type;
 		value = cqp.value;
 	}
 
-	public ConsoleQueryParameter() {
-		
+	public ConsoleQueryParameter(IService service) {
+		this.service = service;
 	}
 
-	public ConsoleQueryParameter(String name, IType type, Object value) {
+	public ConsoleQueryParameter(IService service, String name, IType type, Object value) {
+		this.service = service;
 		this.name = name;
 		this.type = type;
 		this.value = value;
@@ -147,16 +105,12 @@ public class ConsoleQueryParameter {
 	
 	public String getDefaultFormat() {
 		if(type!=null) {
-			Object object = typeFormats.get(type);
+			Object object = service.getTypeFormats().get(type);
 			if(object!=null) {
 				return object.toString();
 			}
 		}
 		return "<unknown>";				 //$NON-NLS-1$
-	}
-
-	public static Set<IType> getPossibleTypes() {
-		return typeFormats.keySet();
 	}
 
 	public void setNull() {

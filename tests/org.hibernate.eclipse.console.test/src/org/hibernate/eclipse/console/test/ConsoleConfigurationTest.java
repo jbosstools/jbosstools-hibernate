@@ -156,11 +156,11 @@ public class ConsoleConfigurationTest extends TestCase {
 
 		consoleCfg.buildSessionFactory();
 		
-		ConsoleQueryParameter paramA = new ConsoleQueryParameter("a", typeFactory.getIntegerType(),
+		ConsoleQueryParameter paramA = new ConsoleQueryParameter(service, "a", typeFactory.getIntegerType(),
 				new Integer[]{new Integer(1), new Integer(2)});
-		ConsoleQueryParameter paramB = new ConsoleQueryParameter("b", typeFactory.getIntegerType(), new Integer(3));
-		ConsoleQueryParameter paramOrdered = new ConsoleQueryParameter("0", typeFactory.getIntegerType(), new Integer(4));
-		QueryInputModel model = new QueryInputModel(service.newTypeFactory());
+		ConsoleQueryParameter paramB = new ConsoleQueryParameter(service, "b", typeFactory.getIntegerType(), new Integer(3));
+		ConsoleQueryParameter paramOrdered = new ConsoleQueryParameter(service, "0", typeFactory.getIntegerType(), new Integer(4));
+		QueryInputModel model = new QueryInputModel(service);
 		model.addParameter(paramA);
 		model.addParameter(paramB);
 		model.addParameter(paramOrdered);
