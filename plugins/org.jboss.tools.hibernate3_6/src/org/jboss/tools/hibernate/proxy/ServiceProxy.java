@@ -85,6 +85,8 @@ public class ServiceProxy implements IService {
 	@Override
 	public IConfiguration newAnnotationConfiguration() {
 		Configuration configuration = new Configuration();
+		configuration.setProperty("hibernate.validator.autoregister_listeners", "false");
+		configuration.setProperty("hibernate.validator.apply_to_ddl", "false");
 		return new ConfigurationProxy(configuration);
 	}
 
@@ -103,6 +105,8 @@ public class ServiceProxy implements IService {
 				throw new HibernateConsoleRuntimeException(e);
 			}
 		}
+		ejb3Configuration.setProperty("hibernate.validator.autoregister_listeners", "false");
+		ejb3Configuration.setProperty("hibernate.validator.apply_to_ddl", "false");
 		ejb3Configuration.configure(persistenceUnit, overrides);
 		Configuration configuration = ejb3Configuration.getHibernateConfiguration();
 		return new ConfigurationProxy(configuration);
@@ -110,7 +114,10 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public IConfiguration newDefaultConfiguration() {
-		return new ConfigurationProxy(new Configuration());
+		Configuration target = new Configuration();
+		target.setProperty("hibernate.validator.autoregister_listeners", "false");
+		target.setProperty("hibernate.validator.apply_to_ddl", "false");
+		return new ConfigurationProxy(target);
 	}
 
 	@Override

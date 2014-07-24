@@ -40,7 +40,6 @@ public class HibernateExtensionManager {
 
 	public static HibernateExtensionDefinition[] findHiberanteExtensionDefinitions() {
 		List<HibernateExtensionDefinition> hibernateExtensions = new ArrayList<HibernateExtensionDefinition>();
-
 		IExtension[] extensions = findExtensions(HIBERNATEEXTENSION_EXTENSION_ID);
 		for (int i = 0; i < extensions.length; i++) {
 			IConfigurationElement elements[] = extensions[i].getConfigurationElements();
