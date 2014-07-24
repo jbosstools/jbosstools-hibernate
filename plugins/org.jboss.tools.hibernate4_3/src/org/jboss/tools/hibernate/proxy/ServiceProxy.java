@@ -82,8 +82,10 @@ import org.jboss.tools.hibernate.spi.ISessionFactory;
 import org.jboss.tools.hibernate.spi.ISettings;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.ITableFilter;
+import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.ITypeFactory;
 import org.jboss.tools.hibernate.spi.IValue;
+import org.jboss.tools.hibernate.util.TypeFormats;
 
 public class ServiceProxy implements IService {
 	
@@ -455,6 +457,11 @@ public class ServiceProxy implements IService {
 	@Override
 	public IHibernateMappingGlobalSettings newHibernateMappingGlobalSettings() {
 		return new HibernateMappingGlobalSettingsProxy(new HibernateMappingGlobalSettings());
+	}
+
+	@Override
+	public Map<IType, String> getTypeFormats() {
+		return TypeFormats.getTypeFormats();
 	}
 
 }

@@ -116,4 +116,6 @@ public interface IService {
 
 	IHibernateMappingGlobalSettings newHibernateMappingGlobalSettings();
 	
+	Map<IType, String> getTypeFormats();
+	
 }
