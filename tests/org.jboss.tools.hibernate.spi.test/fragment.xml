@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<fragment>
+   <extension
+         point="org.jboss.tools.hibernate.spi.services">
+      <service
+            class="org.jboss.tools.hibernate.spi.internal.TestService"
+            name="test">
+      </service>
+   </extension>
+
+</fragment>

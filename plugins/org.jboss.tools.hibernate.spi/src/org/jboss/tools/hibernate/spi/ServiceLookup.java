@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.spi;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
@@ -24,6 +25,7 @@ public class ServiceLookup {
 	}
 	
 	private static void initializeServices() {
+		services = new HashMap<String, IService>();
 		IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
 		IExtensionPoint extensionPoint = extensionRegistry.getExtensionPoint(SERVICES_EXTENSION_ID);
 		for (IExtension extension : extensionPoint.getExtensions()) {

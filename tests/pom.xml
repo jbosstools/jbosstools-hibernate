@@ -16,6 +16,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<module>org.hibernate.eclipse.jdt.ui.test</module>
 		<module>org.jboss.tools.hibernate.ui.test</module>
 		<module>org.jboss.tools.hibernate.jpt.core.test</module>
+                <module>org.jboss.tools.hibernate.spi.test</module>
 	</modules>
 </project>
 	
