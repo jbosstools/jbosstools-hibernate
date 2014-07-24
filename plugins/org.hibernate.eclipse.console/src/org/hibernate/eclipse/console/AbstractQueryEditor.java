@@ -65,6 +65,7 @@ import org.hibernate.console.QueryInputModel;
 import org.hibernate.eclipse.console.actions.ClearAction;
 import org.hibernate.eclipse.console.actions.ExecuteQueryAction;
 import org.hibernate.eclipse.console.actions.StickResTabAction;
+import org.jboss.tools.hibernate.spi.IService;
 
 public abstract class AbstractQueryEditor extends TextEditor implements
 		QueryEditor, IShowEditorInput {
@@ -73,7 +74,7 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 	private ExecuteQueryAction execAction = null;
 	private ClearAction clearAction = null;
 	private StickResTabAction stickResTabAction = null;
-	final private QueryInputModel queryInputModel;
+	private QueryInputModel queryInputModel;
 
 	private String defPartName;
 	private Image defTitleImage;
@@ -84,10 +85,6 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 
 	protected boolean pinToOneResTab = false;
 	
-	public AbstractQueryEditor() {
-		queryInputModel = new QueryInputModel();
-	}
-
 	final public boolean askUserForConfiguration(String name) {
 		String out = NLS.bind(HibernateConsoleMessages.AbstractQueryEditor_do_you_want_open_session_factory, name);
 		return MessageDialog.openQuestion( HibernateConsolePlugin.getDefault()
@@ -230,7 +227,7 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 					catch (NumberFormatException e1) {
 						maxResults = null;
 					}
-					queryInputModel.setMaxResults( maxResults );
+					getQueryInputModel().setMaxResults( maxResults );
 				}
 
 			};
@@ -251,7 +248,7 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 						catch (NumberFormatException e1) {
 							maxResults = null;
 						}
-						queryInputModel.setMaxResults( maxResults );
+						getQueryInputModel().setMaxResults( maxResults );
 					}
 				} );
 				return control;
@@ -300,6 +297,10 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 	   }
 
 	public QueryInputModel getQueryInputModel() {
+		if (queryInputModel == null) {
+			IService service = getConsoleConfiguration().getHibernateExtension().getHibernateService();
+			queryInputModel = new QueryInputModel(service.newTypeFactory());
+		}
 		return queryInputModel;
 	}
 

@@ -10,10 +10,12 @@ import org.hibernate.console.ConsoleQueryParameter;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.QueryInputModel;
 import org.hibernate.eclipse.console.test.launchcfg.TestConsoleConfigurationPreferences;
+import org.jboss.tools.hibernate.spi.IService;
 
 public class QueryParametersTest extends TestCase {
 	
 	private ConsoleConfiguration consoleCfg;
+	private IService service;
 
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -21,6 +23,7 @@ public class QueryParametersTest extends TestCase {
 		TestConsoleConfigurationPreferences cfgprefs = new TestConsoleConfigurationPreferences();
 		consoleCfg = new ConsoleConfiguration(cfgprefs);
 		KnownConfigurations.getInstance().addConfiguration(consoleCfg, true);
+		service = consoleCfg.getHibernateExtension().getHibernateService();
 	}
 	
 	protected void tearDown() throws Exception {
@@ -29,7 +32,7 @@ public class QueryParametersTest extends TestCase {
 	}
 
 	public void testQueryParameter() {
-		QueryInputModel model = new QueryInputModel();
+		QueryInputModel model = new QueryInputModel(service.newTypeFactory());
 		
 		ConsoleQueryParameter[] cqps = model.getQueryParameters();
 		assertNotNull(cqps);
@@ -56,7 +59,7 @@ public class QueryParametersTest extends TestCase {
 	
 	public void testCreateUnique() {
 		
-		QueryInputModel model = new QueryInputModel();
+		QueryInputModel model = new QueryInputModel(service.newTypeFactory());
 		
 		ConsoleQueryParameter parameter = model.createUniqueParameter("param"); //$NON-NLS-1$
 		model.addParameter(parameter);

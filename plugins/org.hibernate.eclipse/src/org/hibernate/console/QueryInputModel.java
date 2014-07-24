@@ -30,7 +30,6 @@ import java.util.Observable;
 import java.util.Set;
 
 import org.jboss.tools.hibernate.spi.ITypeFactory;
-import org.jboss.tools.hibernate.util.HibernateHelper;
 
 /**
  * Class for managing misc parameters and other inputs to a Query, Criteria etc.  
@@ -48,9 +47,9 @@ public class QueryInputModel extends Observable {
 	
 	private Integer maxResults;
 	
-	public QueryInputModel() {
+	public QueryInputModel(ITypeFactory typeFactory) {
 		parameters = new ArrayList<ConsoleQueryParameter>();
-		typeFactory = HibernateHelper.INSTANCE.getHibernateService().newTypeFactory();
+		this.typeFactory = typeFactory;
 	}
 	
 	public int getParameterCount() {
@@ -69,7 +68,7 @@ public class QueryInputModel extends Observable {
 	}
 	
 	public QueryInputModel getCopyForQuery() {
-		QueryInputModel result = new QueryInputModel();
+		QueryInputModel result = new QueryInputModel(typeFactory);
 		
 		ConsoleQueryParameter[] queryParametersForQuery = getQueryParametersForQuery();
 		result.parameters = Arrays.asList( queryParametersForQuery );

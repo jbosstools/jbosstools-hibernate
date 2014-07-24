@@ -28,6 +28,7 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.QueryInputModel;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.eclipse.console.test.launchcfg.TestConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.test.project.SimpleTestProject;
 import org.hibernate.eclipse.console.test.project.SimpleTestProjectWithMapping;
 import org.hibernate.eclipse.console.test.project.TestProject;
@@ -44,10 +45,19 @@ public class CriteriaEditorTest extends TestCase {
 	
 	private SimpleTestProjectWithMapping project = null;
 	
+	private TestConsoleConfigurationPreferences consolePrefs;
+	private ConsoleConfiguration consoleConfiguration;
+
 	protected void setUp() throws Exception {
+		consolePrefs = new TestConsoleConfigurationPreferences();
+		consoleConfiguration = new ConsoleConfiguration(consolePrefs);
+		KnownConfigurations.getInstance().addConfiguration(consoleConfiguration, false);
 	}
 
 	protected void tearDown() throws Exception {
+		consolePrefs = null;
+		consoleConfiguration = null;
+		KnownConfigurations.getInstance().removeAllConfigurations();
 		cleanUpProject();
 	}
 	
@@ -60,7 +70,7 @@ public class CriteriaEditorTest extends TestCase {
 	
 	public void testCriteriaEditorOpen(){
 		IEditorPart editorPart = HibernateConsolePlugin.getDefault()
-			.openCriteriaEditor(null, ""); //$NON-NLS-1$
+			.openCriteriaEditor(consoleConfiguration.getName(), ""); //$NON-NLS-1$
 		assertNotNull("Criteria Editor was not opened", editorPart); //$NON-NLS-1$
 		assertTrue("Opened editor is not CriteriaEditor", editorPart instanceof CriteriaEditor); //$NON-NLS-1$
 		

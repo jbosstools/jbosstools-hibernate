@@ -299,7 +299,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	ArrayList<ConsoleConfigurationListener> consoleCfgListeners = new ArrayList<ConsoleConfigurationListener>();
 
 	public QueryPage executeHQLQuery(final String hql) {
-		return executeHQLQuery(hql, new QueryInputModel());
+		return executeHQLQuery(hql, new QueryInputModel(extension.getHibernateService().newTypeFactory()));
 	}
 
 	public QueryPage executeHQLQuery(final String hql, final QueryInputModel queryParameters) {

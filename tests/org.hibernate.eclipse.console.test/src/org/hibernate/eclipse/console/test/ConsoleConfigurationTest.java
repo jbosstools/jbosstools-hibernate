@@ -160,7 +160,7 @@ public class ConsoleConfigurationTest extends TestCase {
 				new Integer[]{new Integer(1), new Integer(2)});
 		ConsoleQueryParameter paramB = new ConsoleQueryParameter("b", typeFactory.getIntegerType(), new Integer(3));
 		ConsoleQueryParameter paramOrdered = new ConsoleQueryParameter("0", typeFactory.getIntegerType(), new Integer(4));
-		QueryInputModel model = new QueryInputModel();
+		QueryInputModel model = new QueryInputModel(service.newTypeFactory());
 		model.addParameter(paramA);
 		model.addParameter(paramB);
 		model.addParameter(paramOrdered);

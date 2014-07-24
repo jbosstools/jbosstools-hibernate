@@ -36,6 +36,7 @@ import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.QueryInputModel;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.eclipse.console.test.launchcfg.TestConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.test.project.SimpleTestProject;
 import org.hibernate.eclipse.console.test.project.SimpleTestProjectWithMapping;
 import org.hibernate.eclipse.console.test.project.TestProject;
@@ -54,10 +55,19 @@ public class HQLEditorTest extends TestCase {
 	
 	private SimpleTestProjectWithMapping project = null;
 	
+	private TestConsoleConfigurationPreferences consolePrefs;
+	private ConsoleConfiguration consoleConfiguration;
+	
 	protected void setUp() throws Exception {
+		consolePrefs = new TestConsoleConfigurationPreferences();
+		consoleConfiguration = new ConsoleConfiguration(consolePrefs);
+		KnownConfigurations.getInstance().addConfiguration(consoleConfiguration, false);
 	}
 
 	protected void tearDown() throws Exception {
+		consolePrefs = null;
+		consoleConfiguration = null;
+		KnownConfigurations.getInstance().removeAllConfigurations();
 		cleanUpProject();
 	}
 	
@@ -70,7 +80,7 @@ public class HQLEditorTest extends TestCase {
 
 	public void testHQLEditorOpen(){
 		IEditorPart editorPart = HibernateConsolePlugin.getDefault()
-			.openScratchHQLEditor(null, ""); //$NON-NLS-1$
+			.openScratchHQLEditor(consoleConfiguration.getName(), ""); //$NON-NLS-1$
 		assertNotNull("Editor was not opened", editorPart); //$NON-NLS-1$
 		assertTrue("Opened editor is not HQLEditor", editorPart instanceof HQLEditor); //$NON-NLS-1$
 		
@@ -83,7 +93,7 @@ public class HQLEditorTest extends TestCase {
 		String query = "from pack.Article a\n" + //$NON-NLS-1$
 				"where a.articleid in (:a, :b) --or a.articleid = :c"; //$NON-NLS-1$
 		IEditorPart editorPart = HibernateConsolePlugin.getDefault()
-			.openScratchHQLEditor(null, query);
+			.openScratchHQLEditor(consoleConfiguration.getName(), query);
 		assertTrue("Opened editor is not HQLEditor", editorPart instanceof HQLEditor); //$NON-NLS-1$
 		
 		HQLEditor editor = (HQLEditor)editorPart;
