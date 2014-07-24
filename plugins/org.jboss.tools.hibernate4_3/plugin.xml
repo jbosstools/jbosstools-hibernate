@@ -15,4 +15,11 @@
             version="%hibernate.version">
       </consoleextension>
    </extension>
+   <extension
+         point="org.jboss.tools.hibernate.spi.services">
+      <service
+            class="org.jboss.tools.hibernate.proxy.ServiceProxy"
+            name="%hibernate.version">
+      </service>
+   </extension>
 </plugin>
