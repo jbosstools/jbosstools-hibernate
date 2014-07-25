@@ -23,7 +23,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
-import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.execution.ExecutionContext;
@@ -73,8 +72,8 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 				try {
     				consoleConfig.build();
     				consoleConfig.buildMappings();
-				} catch (HibernateException he) {
-					// here just ignore this
+				} catch (Exception he) {
+					HibernateConsolePlugin.getDefault().logErrorMessage("HibernateException: ", he); //$NON-NLS-1$
 				}
 			}
 			return consoleConfig.getConfiguration();
@@ -160,8 +159,8 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 			if (dialectName != null) {
 				try {
 					dialect = getService().newDialect(config.getProperties(), null);
-				} catch (HibernateException e) {
-					HibernateConsolePlugin.getDefault().logErrorMessage("HibernateException: ", e); //$NON-NLS-1$
+				} catch (Exception e) {
+					HibernateConsolePlugin.getDefault().logErrorMessage("Exception: ", e); //$NON-NLS-1$
 				}
 			}
 		}
@@ -173,9 +172,6 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 						return column.getSqlType(dialect, mapping);
 					}
 				} );
-			} catch (HibernateException e) {
-				//type is not accessible
-				HibernateConsolePlugin.getDefault().logErrorMessage("HibernateException: ", e); //$NON-NLS-1$
 			} catch (Exception e) {
 				// do not ignore it - print in Error Log
 				HibernateConsolePlugin.getDefault().logErrorMessage("Exception: ", e); //$NON-NLS-1$

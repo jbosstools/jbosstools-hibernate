@@ -26,7 +26,6 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.internal.ObjectPluginAction;
-import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.jboss.tools.hibernate.spi.IConfiguration;
@@ -77,7 +76,7 @@ public class OpenDiagramActionDelegate implements IObjectActionDelegate {
     			if (config == null) {
     				try {
         				consoleConfig.build();
-    				} catch (HibernateException he) {
+    				} catch (Exception he) {
     					HibernateConsolePlugin.getDefault().showError(
     						HibernateConsolePlugin.getShell(), 
     						DiagramViewerMessages.OpenDiagramActionDelegate_could_not_load_configuration + 

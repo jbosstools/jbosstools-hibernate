@@ -46,7 +46,6 @@ import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.XMLMemento;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
-import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
@@ -803,7 +802,7 @@ public class OrmDiagram extends BaseElement {
 				try {
     				consoleConfig.build();
     				consoleConfig.buildMappings();
-				} catch (HibernateException he) {
+				} catch (Exception he) {
 					// here just ignore this
 					if (error != null) {
 						error.append(consoleConfigName);

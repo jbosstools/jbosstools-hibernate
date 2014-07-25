@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.diagram.editors.model;
 
-import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
@@ -37,9 +36,6 @@ public class UtilTypeExtract {
 			} else {
 				type = val.getType();
 			}
-		} catch (HibernateException e) {
-			//type is not accessible
-			HibernateConsolePlugin.getDefault().logErrorMessage("HibernateException: ", e); //$NON-NLS-1$
 		} catch (Exception e) {
 			//type is not accessible
 			// EnumType -> setParameterValues(Properties parameters) in case parameters := null NPE
