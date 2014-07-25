@@ -28,7 +28,6 @@ import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.IValue;
-import org.jboss.tools.hibernate.util.HibernateHelper;
 
 /**
  * Responsible to create diagram elements for given
@@ -48,7 +47,6 @@ public class ElementsFactory {
 		this.consoleConfigName = consoleConfigName;
 		this.elements = elements;
 		this.connections = connections;
-		this.service = HibernateHelper.INSTANCE.getHibernateService();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -131,7 +129,7 @@ public class ElementsFactory {
 				}
 			}
 		} else {
-			s = getOrCreatePersistentClass(service.newSpecialRootClass(property), null);
+			s = getOrCreatePersistentClass(getService().newSpecialRootClass(property), null);
 			if (shouldCreateConnection(shape, s)) {
 				connections.add(new Connection(shape, s));
 			}
@@ -415,7 +413,7 @@ public class ElementsFactory {
 	protected OrmShape createShape(Object ormElement) {
 		OrmShape ormShape = null;
 		if (ormElement instanceof IProperty) {
-			IPersistentClass specialRootClass = service.newSpecialRootClass((IProperty)ormElement);
+			IPersistentClass specialRootClass = getService().newSpecialRootClass((IProperty)ormElement);
 			String key = Utils.getName(specialRootClass.getEntityName());
 			ormShape = elements.get(key);
 			if (null == ormShape) {
@@ -494,7 +492,7 @@ public class ElementsFactory {
 	public OrmShape getShape(Object ormElement) {
 		OrmShape ormShape = null;
 		if (ormElement instanceof IProperty) {
-			IPersistentClass specialRootClass = service.newSpecialRootClass((IProperty)ormElement);
+			IPersistentClass specialRootClass = getService().newSpecialRootClass((IProperty)ormElement);
 			ormShape = elements.get(Utils.getName(specialRootClass.getEntityName()));
 		} else {
 			ormShape = elements.get(Utils.getName(ormElement));
@@ -530,5 +528,12 @@ public class ElementsFactory {
 			config = consoleConfig.getConfiguration();
 		}
 		return config;
+	}
+	
+	private IService getService() {
+		if (service == null) {
+			service = getConsoleConfig().getHibernateExtension().getHibernateService();
+		}
+		return service;
 	}
 }

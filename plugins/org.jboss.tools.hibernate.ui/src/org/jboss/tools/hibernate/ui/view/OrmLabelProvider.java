@@ -35,7 +35,7 @@ import org.jboss.tools.hibernate.spi.IEnvironment;
 import org.jboss.tools.hibernate.spi.IMapping;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
 import org.jboss.tools.hibernate.spi.IProperty;
-import org.jboss.tools.hibernate.util.HibernateHelper;
+import org.jboss.tools.hibernate.spi.IService;
 
 /**
  *
@@ -43,6 +43,7 @@ import org.jboss.tools.hibernate.util.HibernateHelper;
 public class OrmLabelProvider extends LabelProvider implements IColorProvider, IFontProvider {
 
 	private Map<ImageDescriptor, Image> imageCache = new HashMap<ImageDescriptor, Image>(25);
+	private IService service = null;
 	
 	protected String consoleConfigName;
 	protected IMapping mapping = null;
@@ -140,7 +141,7 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 	 * @return
 	 */
 	public boolean updateColumnSqlType(final IColumn column) {
-		IEnvironment environment = HibernateHelper.INSTANCE.getHibernateService().getEnvironment();
+		IEnvironment environment = getService().getEnvironment();
 		String sqlType = column.getSqlType();
 		if (sqlType != null) {
 			return false;
@@ -158,7 +159,7 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 			final String dialectName = config.getProperty(environment.getDialect());
 			if (dialectName != null) {
 				try {
-					dialect = HibernateHelper.INSTANCE.getHibernateService().newDialect(config.getProperties(), null);
+					dialect = getService().newDialect(config.getProperties(), null);
 				} catch (HibernateException e) {
 					HibernateConsolePlugin.getDefault().logErrorMessage("HibernateException: ", e); //$NON-NLS-1$
 				}
@@ -185,6 +186,13 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 			return true; 
 		}
 		return false;
+	}
+	
+	private IService getService() {
+		if (service == null) {
+			service = getConsoleConfig().getHibernateExtension().getHibernateService();
+		}
+		return service;
 	}
 
 }
