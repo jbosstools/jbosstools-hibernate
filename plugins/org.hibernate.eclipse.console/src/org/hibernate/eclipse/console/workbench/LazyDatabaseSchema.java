@@ -23,7 +23,6 @@ package org.hibernate.eclipse.console.workbench;
 
 import org.hibernate.console.ConsoleConfiguration;
 import org.jboss.tools.hibernate.spi.IReverseEngineeringStrategy;
-import org.jboss.tools.hibernate.util.HibernateHelper;
 
 public class LazyDatabaseSchema {
 
@@ -33,7 +32,7 @@ public class LazyDatabaseSchema {
 	protected boolean errorFlag = false;
 	
 	public LazyDatabaseSchema(ConsoleConfiguration ccfg) {
-		this(ccfg, HibernateHelper.INSTANCE.getHibernateService().newDefaultReverseEngineeringStrategy());
+		this(ccfg, ccfg.getHibernateExtension().getHibernateService().newDefaultReverseEngineeringStrategy());
 	}
 
 	public LazyDatabaseSchema(ConsoleConfiguration ccfg, IReverseEngineeringStrategy res) {

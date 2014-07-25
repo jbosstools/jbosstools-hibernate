@@ -66,7 +66,6 @@ import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.console.utils.LaunchHelper;
 import org.hibernate.eclipse.console.wizards.NewReverseEngineeringFileWizard;
 import org.jboss.tools.hibernate.spi.IService;
-import org.jboss.tools.hibernate.util.HibernateHelper;
 
 @SuppressWarnings("restriction")
 public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
@@ -165,7 +164,7 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
         reverseEngineeringStrategy = new StringButtonDialogField(new IStringButtonAdapter() {
 
 			public void changeControlPressed(DialogField field) {
-				IService service = HibernateHelper.INSTANCE.getHibernateService();
+				IService service = getService();
 				String string = DialogSelectionHelper.chooseImplementation(service.getReverseEngineeringStrategyClassName(), reverseEngineeringStrategy.getText(), HibernateConsoleMessages.CodeGenerationSettingsTab_choose_reverse_engineering_strategy, getShell());
 				if(string!=null) {
 					reverseEngineeringStrategy.setText(string);
@@ -281,6 +280,14 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
         dialogChanged();
         setControl(sc);
 	}
+    
+    private IService getService() {
+    	String ccn = consoleConfigurationName.getText();
+    	if (ccn == null || "".equals(ccn)) return null; //$NON-NLS-1$
+    	ConsoleConfiguration cc = KnownConfigurations.getInstance().find(ccn);
+    	if (cc == null) return null;
+    	return cc.getHibernateExtension().getHibernateService();
+    }
 
     private void fillLabel(Composite container) {
         new Label(container, SWT.NULL);

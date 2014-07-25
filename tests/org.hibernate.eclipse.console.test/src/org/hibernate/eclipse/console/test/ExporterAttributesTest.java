@@ -178,7 +178,7 @@ public class ExporterAttributesTest extends TestCase {
 			try {
 				exporter = ef.createConfiguredExporter(cfg,
 					expAttr.getOutputPath(), expAttr.getTemplatePath(), globalProperties,
-					outputDirectories, artifactCollector);
+					outputDirectories, artifactCollector, service);
 			} catch (CoreException e) {
 				e.printStackTrace();
 			}

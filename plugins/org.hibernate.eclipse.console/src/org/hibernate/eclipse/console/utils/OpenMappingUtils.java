@@ -55,9 +55,9 @@ import org.jboss.tools.hibernate.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
 import org.jboss.tools.hibernate.spi.IProperty;
+import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IValue;
-import org.jboss.tools.hibernate.util.HibernateHelper;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 
@@ -659,12 +659,12 @@ public class OpenMappingUtils {
 	 * @param selection
 	 * @return a proper document region
 	 */
-	public static IRegion findSelectRegion(IJavaProject proj, FindReplaceDocumentAdapter findAdapter, Object selection) {
+	public static IRegion findSelectRegion(IJavaProject proj, FindReplaceDocumentAdapter findAdapter, Object selection, IService service) {
 		IRegion selectRegion = null;
 		if (selection instanceof IPersistentClass && (((IPersistentClass)selection).isInstanceOfRootClass() || ((IPersistentClass)selection).isInstanceOfSubclass())) {
-			selectRegion = findSelectRegion(proj, findAdapter, (IPersistentClass)selection);
+			selectRegion = findSelectRegion(proj, findAdapter, (IPersistentClass)selection, service);
 		} else if (selection instanceof IProperty){
-			selectRegion = findSelectRegion(proj, findAdapter, (IProperty)selection);
+			selectRegion = findSelectRegion(proj, findAdapter, (IProperty)selection, service);
 		} else if (selection instanceof ITable) {
 			selectRegion = findSelectRegion(proj, findAdapter, (ITable)selection);
 		} else if (selection instanceof IColumn) {
@@ -680,16 +680,16 @@ public class OpenMappingUtils {
 	 * @param property
 	 * @return a proper document region
 	 */
-	public static IRegion findSelectRegion(IJavaProject proj, FindReplaceDocumentAdapter findAdapter, IProperty property) {
+	public static IRegion findSelectRegion(IJavaProject proj, FindReplaceDocumentAdapter findAdapter, IProperty property, IService service) {
 		Assert.isNotNull(property.getPersistentClass());
-		IRegion classRegion = findSelectRegion(proj, findAdapter, property.getPersistentClass());
+		IRegion classRegion = findSelectRegion(proj, findAdapter, property.getPersistentClass(), service);
 		IRegion res = null;
 		if (classRegion == null) {
 			return res;
 		}
 		// in case if we could not find property - we select class
 		res = classRegion;
-		final ICfg2HbmTool tool = HibernateHelper.INSTANCE.getHibernateService().newCfg2HbmTool();
+		final ICfg2HbmTool tool = service.newCfg2HbmTool();
 		final IPersistentClass persistentClass = property.getPersistentClass();
 		final String tagName = tool.getTag(persistentClass);
 		IRegion finalRegion = null;
@@ -702,7 +702,7 @@ public class OpenMappingUtils {
 				tagClose = "</" + EJB_TAG_ENTITY; //$NON-NLS-1$
 				finalRegion = findAdapter.find(startOffset, tagClose, true, true, false, false);
 			}
-			propRegion = findAdapter.find(startOffset, generateHbmPropertyPattern(property), true, true, false, true);
+			propRegion = findAdapter.find(startOffset, generateHbmPropertyPattern(property, service), true, true, false, true);
 			if (propRegion == null) {
 				propRegion = findAdapter.find(startOffset, generateEjbPropertyPattern(property), true, true, false, true);
 			}
@@ -746,9 +746,9 @@ public class OpenMappingUtils {
 	 * @param persistentClass
 	 * @return a proper document region
 	 */
-	public static IRegion findSelectRegion(IJavaProject proj, FindReplaceDocumentAdapter findAdapter, IPersistentClass persistentClass) {
+	public static IRegion findSelectRegion(IJavaProject proj, FindReplaceDocumentAdapter findAdapter, IPersistentClass persistentClass, IService service) {
 		IRegion res = null;
-		String[] classPatterns = generatePersistentClassPatterns(persistentClass);
+		String[] classPatterns = generatePersistentClassPatterns(persistentClass, service);
 		IRegion classRegion = null;
 		try {
 			for (int i = 0; (classRegion == null) && (i < classPatterns.length); i++){
@@ -907,7 +907,7 @@ public class OpenMappingUtils {
 	 * @param persClass
 	 * @return an arrays of search patterns
 	 */
-	public static String[] generatePersistentClassPatterns(IPersistentClass persClass) {
+	public static String[] generatePersistentClassPatterns(IPersistentClass persClass, IService service) {
 		String fullClassName = null;
 		String shortClassName = null;
 		if (persClass.getEntityName() != null){
@@ -916,7 +916,7 @@ public class OpenMappingUtils {
 			fullClassName = persClass.getClassName();
 		}
 		shortClassName = getShortClassName(fullClassName);
-		final ICfg2HbmTool tool = HibernateHelper.INSTANCE.getHibernateService().newCfg2HbmTool();
+		final ICfg2HbmTool tool = service.newCfg2HbmTool();
 		final String tagName = tool.getTag(persClass);
 		persistentClassPairs[0][0] = tagName;
 		persistentClassPairs[1][0] = tagName;
@@ -978,8 +978,8 @@ public class OpenMappingUtils {
 	 * @param property
 	 * @return a search patterns
 	 */
-	public static String generateHbmPropertyPattern(IProperty property) {
-		final ICfg2HbmTool tool = HibernateHelper.INSTANCE.getHibernateService().newCfg2HbmTool();
+	public static String generateHbmPropertyPattern(IProperty property, IService service) {
+		final ICfg2HbmTool tool = service.newCfg2HbmTool();
 		String toolTag = ""; //$NON-NLS-1$
 		IPersistentClass pc = property.getPersistentClass();
 		if (pc != null && (property.equals(pc.getIdentifierProperty()))) {

@@ -48,7 +48,6 @@ import org.jboss.tools.hibernate.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ISettings;
 import org.jboss.tools.hibernate.spi.ITable;
-import org.jboss.tools.hibernate.util.HibernateHelper;
 
 public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 	
@@ -129,7 +128,7 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 				IDatabaseCollector db = null;
 				ISettings settings = consoleConfiguration.getSettings(configuration);
 				try {
-					IService service = HibernateHelper.INSTANCE.getHibernateService();
+					IService service = consoleConfiguration.getHibernateExtension().getHibernateService();
 					IJDBCReader reader = service.newJDBCReader(configuration.getProperties(), settings, strategy);
 					IProgressListener progressListener = service.newProgressListener(monitor);
 					db = service.newDatabaseCollector(reader.getMetaDataDialect());

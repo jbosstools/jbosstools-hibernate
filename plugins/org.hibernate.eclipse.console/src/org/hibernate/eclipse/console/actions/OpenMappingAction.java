@@ -36,6 +36,7 @@ import org.hibernate.eclipse.console.utils.OpenMappingUtils;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.jboss.tools.hibernate.spi.IPersistentClass;
 import org.jboss.tools.hibernate.spi.IProperty;
+import org.jboss.tools.hibernate.spi.IService;
 
 /**
  * Open Mapping File action
@@ -130,10 +131,11 @@ public class OpenMappingAction extends SelectionListenerAction {
 		}
 		if (file != null) {
 			editorPart = OpenMappingUtils.openFileInEditor(file);
-			boolean updateRes = updateEditorSelection(editorPart, selection);
+			IService service = consoleConfig.getHibernateExtension().getHibernateService();
+			boolean updateRes = updateEditorSelection(editorPart, selection, service);
 			if (!updateRes && selectionParent != null) {
 				// if it is not possible to select object, try to select it's parent
-				updateRes = updateEditorSelection(editorPart, selectionParent);
+				updateRes = updateEditorSelection(editorPart, selectionParent, service);
 			}
 		}
 		if (editorPart == null) {
@@ -180,7 +182,8 @@ public class OpenMappingAction extends SelectionListenerAction {
 		IEditorPart editorPart = null;
 		if (file != null){
 			editorPart = OpenMappingUtils.openFileInEditor(file);
-			updateEditorSelection(editorPart, compositeProperty, parentProperty);
+			IService service = consoleConfig.getHibernateExtension().getHibernateService();
+			updateEditorSelection(editorPart, compositeProperty, parentProperty, service);
 		}
    		if (editorPart == null && parentProperty.isComposite()) {
 			if (OpenMappingUtils.hasConfigXMLMappingClassAnnotation(consoleConfig, rootClass)) {
@@ -201,7 +204,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 	 * @param editorPart
 	 * @param selection
 	 */
-	public static boolean updateEditorSelection(IEditorPart editorPart, Object selection) {
+	public static boolean updateEditorSelection(IEditorPart editorPart, Object selection, IService service) {
 		ITextEditor[] textEditors = OpenMappingUtils.getTextEditors(editorPart);
 		if (textEditors.length == 0) {
 			return false;
@@ -217,7 +220,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 			return false;
 		}
 		IJavaProject proj = ProjectUtils.findJavaProject(editorPart);
-		IRegion selectRegion = OpenMappingUtils.findSelectRegion(proj, findAdapter, selection);
+		IRegion selectRegion = OpenMappingUtils.findSelectRegion(proj, findAdapter, selection, service);
 		if (selectRegion != null) {
 			if (editorPart instanceof MultiPageEditorPart) {
 				((MultiPageEditorPart)editorPart).setActiveEditor(textEditor);
@@ -233,7 +236,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 	 * @param compositeProperty
 	 * @param parentProperty
 	 */
-	public static boolean updateEditorSelection(IEditorPart editorPart, IProperty compositeProperty, IProperty parentProperty) {
+	public static boolean updateEditorSelection(IEditorPart editorPart, IProperty compositeProperty, IProperty parentProperty, IService service) {
 		ITextEditor[] textEditors = OpenMappingUtils.getTextEditors(editorPart);
 		if (textEditors.length == 0) {
 			return false;
@@ -249,14 +252,14 @@ public class OpenMappingAction extends SelectionListenerAction {
 			return false;
 		}
 		IJavaProject proj = ProjectUtils.findJavaProject(editorPart);
-		IRegion parentRegion = OpenMappingUtils.findSelectRegion(proj, findAdapter, parentProperty);
+		IRegion parentRegion = OpenMappingUtils.findSelectRegion(proj, findAdapter, parentProperty, service);
 		if (parentRegion == null) {
 			return false;
 		}
 		int startOffset = parentRegion.getOffset() + parentRegion.getLength();
 		IRegion propRegion = null;
 		try {
-			final String hbmPropertyPattern = OpenMappingUtils.generateHbmPropertyPattern(compositeProperty);
+			final String hbmPropertyPattern = OpenMappingUtils.generateHbmPropertyPattern(compositeProperty, service);
 			propRegion = findAdapter.find(startOffset, hbmPropertyPattern, true, true, false, true);
 			IPersistentClass rootClass = parentProperty.getPersistentClass();
 			if (propRegion == null && parentProperty.isComposite()

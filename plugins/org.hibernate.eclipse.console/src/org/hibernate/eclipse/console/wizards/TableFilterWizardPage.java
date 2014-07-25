@@ -166,7 +166,7 @@ public class TableFilterWizardPage extends WizardPage {
 
 		};
 
-		IReverseEngineeringDefinition model = new ReverseEngineeringDefinitionImpl();
+		IReverseEngineeringDefinition model = new ReverseEngineeringDefinitionImpl(consoleConfigurationName);
 		model.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				dialogChanged();

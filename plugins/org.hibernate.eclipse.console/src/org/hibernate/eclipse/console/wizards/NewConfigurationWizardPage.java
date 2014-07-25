@@ -28,6 +28,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.datatools.connectivity.ProfileManager;
+import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
 import org.eclipse.jface.dialogs.IDialogPage;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.window.Window;
@@ -53,9 +54,6 @@ import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.hibernate.console.ConnectionProfileUtil;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.DriverClassHelpers;
-import org.jboss.tools.hibernate.spi.IEnvironment;
-import org.jboss.tools.hibernate.spi.IService;
-import org.jboss.tools.hibernate.util.HibernateHelper;
 
 /**
  * Wizard for creating basic hibernate.cfg.xml
@@ -470,17 +468,15 @@ public class NewConfigurationWizardPage extends WizardPage {
 	
     
     private void fillPropertiesFromConnectionProfile(String cpName){
-    	IService service = HibernateHelper.INSTANCE.getHibernateService();
-    	IEnvironment environment = service.getEnvironment();
 		IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(cpName);
-		Properties p = ConnectionProfileUtil.getHibernateConnectionProperties(service, profile);
-		driver_classCombo.setText(p.getProperty(environment.getDriver()));
-		urlCombo.setText(p.getProperty(environment.getURL()));
-		if (p.containsKey(environment.getUser())){
-			 usernameText.setText(p.getProperty(environment.getUser()));
+		Properties p = getHibernateConnectionProperties(profile);
+		driver_classCombo.setText(p.getProperty("hibernate.connection.driver_class"));
+		urlCombo.setText(p.getProperty("hibernate.connection.url"));
+		if (p.containsKey("hibernate.connection.username")){
+			 usernameText.setText(p.getProperty("hibernate.connection.username"));
 		}
-		if (p.containsKey(environment.getPass())){
-			 passwordText.setText(p.getProperty(environment.getPass()));
+		if (p.containsKey("hibernate.connection.password")){
+			 passwordText.setText(p.getProperty("hibernate.connection.password"));
 		}
 		/*this causes very long timeouts when db is not started
 		String dialect = ConnectionProfileUtil.autoDetectDialect(p);
@@ -488,4 +484,27 @@ public class NewConfigurationWizardPage extends WizardPage {
 			dialectCombo.setText(dialect);
 		}*/
     }
+    
+	private Properties getHibernateConnectionProperties(IConnectionProfile profile){
+		Properties props = new Properties();
+		if (profile != null) {
+			final Properties cpProperties = profile.getProperties(profile.getProviderId());
+			String driverClass = ConnectionProfileUtil.getDriverClass(profile.getName());
+			props.setProperty("hibernate.connection.driver_class", driverClass);
+			String url = cpProperties.getProperty(IJDBCDriverDefinitionConstants.URL_PROP_ID);
+			props.setProperty("hibernate.connection.url", url);
+			String user = cpProperties.getProperty(IJDBCDriverDefinitionConstants.USERNAME_PROP_ID);
+			if (null != user && user.length() > 0) {
+				props.setProperty("hibernate.connection.username", user);
+			}
+			String pass = cpProperties.getProperty(IJDBCDriverDefinitionConstants.PASSWORD_PROP_ID);
+			if (null != pass && pass.length() > 0) {
+				props.setProperty("hibernate.connection.password", pass);
+			}
+		}
+		return props;
+	}
+	
+	
+    
 }

@@ -36,7 +36,7 @@ import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.actions.ConsoleConfigReadyUseBaseAction;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.ISchemaExport;
-import org.jboss.tools.hibernate.util.HibernateHelper;
+import org.jboss.tools.hibernate.spi.IService;
 
 /**
  * @author max
@@ -101,7 +101,8 @@ public class SchemaExportAction extends ConsoleConfigReadyUseBaseAction {
 						if (!res) {
 							return null;
 						}
-						ISchemaExport export = HibernateHelper.INSTANCE.getHibernateService().newSchemaExport(cfg);
+						IService service = config.getHibernateExtension().getHibernateService();
+						ISchemaExport export = service.newSchemaExport(cfg);
 						export.create(false, true);
 						if (!export.getExceptions().isEmpty()) {
 							Iterator<Throwable> iterator = export.getExceptions().iterator();

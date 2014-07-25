@@ -85,7 +85,6 @@ import org.jboss.tools.hibernate.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.spi.IService;
-import org.jboss.tools.hibernate.util.HibernateHelper;
 
 @SuppressWarnings("restriction")
 public class CodeGenerationLaunchDelegate extends AntLaunchDelegate { 
@@ -387,11 +386,13 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 
 			if (monitor.isCanceled())
 				return null;
+			
+			final IService service = cc.getHibernateExtension().getHibernateService();
 
 			return (IArtifactCollector) cc.execute(new Command() {
 
 				public Object execute() {
-					IArtifactCollector artifactCollector = HibernateHelper.INSTANCE.getHibernateService().newArtifactCollector();
+					IArtifactCollector artifactCollector = service.newArtifactCollector();
 
                     // Global properties
 	                Properties props = new Properties();
@@ -407,7 +408,7 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 
                        IExporter exporter;
 					try {
-						exporter = exporterFactories[i].createConfiguredExporter(cfg, attributes.getOutputPath(), attributes.getTemplatePath(), globalProperties, outputDirectories, artifactCollector);
+						exporter = exporterFactories[i].createConfiguredExporter(cfg, attributes.getOutputPath(), attributes.getTemplatePath(), globalProperties, outputDirectories, artifactCollector, service);
 					} catch (CoreException e) {
 						throw new HibernateConsoleRuntimeException(HibernateConsoleMessages.CodeGenerationLaunchDelegate_error_while_setting_up + exporterFactories[i].getExporterDefinition(), e);
 					}
@@ -442,7 +443,8 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 			}
 
 //			final JDBCMetaDataConfiguration cfg = new JDBCMetaDataConfiguration();
-			final IConfiguration cfg = HibernateHelper.INSTANCE.getHibernateService().newJDBCMetaDataConfiguration();
+			final IService service = cc.getHibernateExtension().getHibernateService();
+			final IConfiguration cfg = service.newJDBCMetaDataConfiguration();
 			Properties properties = configuration.getProperties();
 			cfg.setProperties( properties );
 			cc.buildWith(cfg,false);
@@ -453,8 +455,6 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 
 				public Object execute() {					
 					//todo: factor this setup of revengstrategy to core		
-					
-					IService service = HibernateHelper.INSTANCE.getHibernateService();
 					
 					IReverseEngineeringStrategy res = service.newDefaultReverseEngineeringStrategy();
 

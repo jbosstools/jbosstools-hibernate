@@ -27,7 +27,7 @@ import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.spi.IGenericExporter;
 import org.jboss.tools.hibernate.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.spi.IQueryExporter;
-import org.jboss.tools.hibernate.util.HibernateHelper;
+import org.jboss.tools.hibernate.spi.IService;
 
 /**
  * ExporterFactory is used in UI to hold additional configuration for Exporter definitions
@@ -205,9 +205,9 @@ public class ExporterFactory {
 	 * @throws CoreException in case of resolve variables issues.
 	 */
 	public IExporter createConfiguredExporter(IConfiguration cfg, String defaultOutputDirectory,
-			String customTemplatePath, Properties globalProperties, Set<String> outputDirectories, IArtifactCollector collector) throws CoreException {
+			String customTemplatePath, Properties globalProperties, Set<String> outputDirectories, IArtifactCollector collector, IService service) throws CoreException {
 
-		IExporter exporter = getExporterDefinition().createExporterInstance();
+		IExporter exporter = getExporterDefinition().createExporterInstance(service);
 
 		Properties extract = new Properties();
 		Properties props = new Properties();
@@ -237,7 +237,7 @@ public class ExporterFactory {
 			exporter.setOutputDirectory(new File(loc));
 		}
 
-		HibernateHelper.INSTANCE.getHibernateService().setExporterConfiguration(exporter, cfg);
+		service.setExporterConfiguration(exporter, cfg);
 
 		List<String> templatePathList = new ArrayList<String>();
 		if (extract.containsKey(ExporterFactoryStrings.TEMPLATE_PATH)) {

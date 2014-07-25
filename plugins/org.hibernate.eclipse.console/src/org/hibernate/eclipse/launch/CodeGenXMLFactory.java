@@ -13,8 +13,8 @@ package org.hibernate.eclipse.launch;
 import java.io.ByteArrayOutputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -36,8 +36,8 @@ import org.eclipse.datatools.connectivity.ProfileManager;
 import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.hibernate.console.ConfigurationFactory;
-import org.hibernate.console.ConfigurationXMLStrings;
 import org.hibernate.console.ConfigurationXMLFactory;
+import org.hibernate.console.ConfigurationXMLStrings;
 import org.hibernate.console.ConnectionProfileUtil;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
@@ -47,7 +47,8 @@ import org.hibernate.eclipse.console.model.impl.ExporterFactory;
 import org.hibernate.eclipse.launch.ExportersXMLAttributeDescription.AttributeDescription;
 import org.hibernate.util.xpl.StringHelper;
 import org.jboss.tools.hibernate.spi.IEnvironment;
-import org.jboss.tools.hibernate.util.HibernateHelper;
+import org.jboss.tools.hibernate.spi.IService;
+import org.jboss.tools.hibernate.spi.ServiceLookup;
 
 /**
  * XML document part creation factory,
@@ -171,7 +172,9 @@ public class CodeGenXMLFactory {
 		boolean bPropFile = profile != null;
 		// update property with fake tm
 		Properties propsTmp = null;
-		IEnvironment environment = HibernateHelper.INSTANCE.getHibernateService().getEnvironment();
+		String hibernateVersion = consoleConfigPrefs == null ? "3.5" : consoleConfigPrefs.getHibernateVersion();
+		IService service = ServiceLookup.findService(hibernateVersion);
+		IEnvironment environment = service.getEnvironment();
 		if (consoleConfigPrefs != null && consoleConfigPrefs.getPropertyFile() != null) {
 			propsTmp = consoleConfigPrefs.getProperties();
 			String tmStrategy = propsTmp.getProperty(environment.getTransactionManagerStrategy());

@@ -61,8 +61,6 @@ import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.actions.AddConfigurationAction;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
-import org.jboss.tools.hibernate.spi.IEnvironment;
-import org.jboss.tools.hibernate.util.HibernateHelper;
 
 /**
  * Creates a new hibernate.cfg.xml
@@ -152,15 +150,14 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
         cPage = new ExtendedWizardNewFileCreationPage( "Ccfgxml", (IStructuredSelection) selection ) { //$NON-NLS-1$
         	protected InputStream getInitialContents() {
         		final Properties props = new Properties();
-        		IEnvironment environment = HibernateHelper.INSTANCE.getHibernateService().getEnvironment();
-                putIfNotNull(props, environment.getSessionFactoryName(), connectionInfoPage.getSessionFactoryName() );
-                putIfNotNull(props, environment.getDialect(), connectionInfoPage.getDialect() );
-                putIfNotNull(props, environment.getDriver(), connectionInfoPage.getDriver() );
-                putIfNotNull(props, environment.getURL(), connectionInfoPage.getConnectionURL() );
-                putIfNotNull(props, environment.getUser(), connectionInfoPage.getUsername() );
-                putIfNotNull(props, environment.getPass(), connectionInfoPage.getPassword() );
-                putIfNotNull(props, environment.getDefaultCatalog(), connectionInfoPage.getDefaultCatalog() );
-                putIfNotNull(props, environment.getDefaultSchema(), connectionInfoPage.getDefaultSchema() );
+                putIfNotNull(props, "hibernate.session_factory_name", connectionInfoPage.getSessionFactoryName() );
+                putIfNotNull(props, "hibernate.dialect", connectionInfoPage.getDialect() );
+                putIfNotNull(props, "hibernate.connection.driver_class", connectionInfoPage.getDriver() );
+                putIfNotNull(props, "hibernate.connection.url", connectionInfoPage.getConnectionURL() );
+                putIfNotNull(props, "hibernate.connection.username", connectionInfoPage.getUsername() );
+                putIfNotNull(props, "hibernate.connection.password", connectionInfoPage.getPassword() );
+                putIfNotNull(props, "hibernate.default_catalog", connectionInfoPage.getDefaultCatalog() );
+                putIfNotNull(props, "hibernate.default_schema", connectionInfoPage.getDefaultSchema() );
         		return openContentStream(props);
         	}
         };
@@ -185,15 +182,14 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 	 */
 	public boolean performFinish() {
 		final Properties props = new Properties();
-		IEnvironment environment = HibernateHelper.INSTANCE.getHibernateService().getEnvironment();
-		putIfNotNull(props, environment.getSessionFactoryName(), connectionInfoPage.getSessionFactoryName() );
-		putIfNotNull(props, environment.getDialect(), connectionInfoPage.getDialect() );
-		putIfNotNull(props, environment.getDefaultCatalog(), connectionInfoPage.getDefaultCatalog() );
-        putIfNotNull(props, environment.getDefaultSchema(), connectionInfoPage.getDefaultSchema() );
-        putIfNotNull(props, environment.getDriver(), connectionInfoPage.getDriver() );
-        putIfNotNull(props, environment.getURL(), connectionInfoPage.getConnectionURL() );
-        putIfNotNull(props, environment.getUser(), connectionInfoPage.getUsername() );
-        putIfNotNull(props, environment.getPass(), connectionInfoPage.getPassword() );
+		putIfNotNull(props, "hibernate.session_factory_name", connectionInfoPage.getSessionFactoryName() );
+		putIfNotNull(props, "hibernate.dialect", connectionInfoPage.getDialect() );
+		putIfNotNull(props, "hibernate.default_catalog", connectionInfoPage.getDefaultCatalog() );
+        putIfNotNull(props, "hibernate.default_schema", connectionInfoPage.getDefaultSchema() );
+        putIfNotNull(props, "hibernate.connection.driver_class", connectionInfoPage.getDriver() );
+        putIfNotNull(props, "hibernate.connection.url", connectionInfoPage.getConnectionURL() );
+        putIfNotNull(props, "hibernate.connection.username", connectionInfoPage.getUsername() );
+        putIfNotNull(props, "hibernate.connection.password", connectionInfoPage.getPassword() );
 
 		
         final IFile file = cPage.createNewFile();
@@ -358,6 +354,5 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 		}
 		return super.canFinish();
 	}
-	
 	
 }

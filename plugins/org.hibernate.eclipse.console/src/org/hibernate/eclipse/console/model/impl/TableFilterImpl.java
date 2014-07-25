@@ -23,7 +23,6 @@ package org.hibernate.eclipse.console.model.impl;
 
 import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ITableFilter;
-import org.jboss.tools.hibernate.util.HibernateHelper;
 
 public class TableFilterImpl implements org.hibernate.eclipse.console.model.ITableFilter {
 
@@ -33,7 +32,7 @@ public class TableFilterImpl implements org.hibernate.eclipse.console.model.ITab
 	protected TableFilterImpl(
 			ReverseEngineeringDefinitionImpl reverseEngineeringDefinitionImpl) {
 		this.revModel = reverseEngineeringDefinitionImpl;	
-		IService service = HibernateHelper.INSTANCE.getHibernateService();
+		IService service = reverseEngineeringDefinitionImpl.getService();
 		tf = service.newTableFilter();
 	}
 

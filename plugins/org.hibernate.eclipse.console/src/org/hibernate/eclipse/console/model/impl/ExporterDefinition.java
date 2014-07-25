@@ -47,14 +47,10 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.hibernate.console.HibernateConsoleRuntimeException;
-import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
-import org.hibernate.util.xpl.ReflectHelper;
 import org.jboss.tools.hibernate.spi.IExporter;
-import org.jboss.tools.hibernate.util.HibernateHelper;
+import org.jboss.tools.hibernate.spi.IService;
 
 /**
  * Represents what is specified in plugin.xml about possible exporters.
@@ -118,8 +114,8 @@ public class ExporterDefinition {
 	}
 
 
-	public IExporter createExporterInstance() {
-		return HibernateHelper.INSTANCE.getHibernateService().createExporter(classname);
+	public IExporter createExporterInstance(IService service) {
+		return service.createExporter(classname);
 	}
 
 	public String getDescription() {
