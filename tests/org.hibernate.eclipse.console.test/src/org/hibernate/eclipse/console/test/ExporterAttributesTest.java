@@ -41,7 +41,7 @@ import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.spi.IGenericExporter;
 import org.jboss.tools.hibernate.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.spi.IQueryExporter;
-import org.jboss.tools.hibernate.util.HibernateHelper;
+import org.jboss.tools.hibernate.spi.IService;
 
 /**
  * @author Vitali Yemialyanchyk
@@ -51,6 +51,7 @@ public class ExporterAttributesTest extends TestCase {
 
 	private ConsoleConfiguration consoleCfg;
 	private LaunchConfigTestProject project;
+	private IService service;
 	private LaunchManager launchManager = new LaunchManager();
 
 	public ExporterAttributesTest(String name) {
@@ -64,6 +65,7 @@ public class ExporterAttributesTest extends TestCase {
 
 		TestConsoleConfigurationPreferences cfgprefs = new TestConsoleConfigurationPreferences();
 		consoleCfg = new ConsoleConfiguration(cfgprefs);
+		service = consoleCfg.getHibernateExtension().getHibernateService();
 		KnownConfigurations.getInstance().addConfiguration(consoleCfg, true);
 	}
 
@@ -152,7 +154,7 @@ public class ExporterAttributesTest extends TestCase {
 		str2 = ResourceReadUtils.adjustXmlText(str2);
 		assertEquals(str1, str2);
 		//
-		IArtifactCollector artifactCollector = HibernateHelper.INSTANCE.getHibernateService().newArtifactCollector();
+		IArtifactCollector artifactCollector = service.newArtifactCollector();
 		ExporterAttributes expAttr = exporterAttributes;
         // Global properties
         Properties props = new Properties();

@@ -31,7 +31,8 @@ import org.jboss.tools.hibernate.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.spi.IHibernateMappingGlobalSettings;
-import org.jboss.tools.hibernate.util.HibernateHelper;
+import org.jboss.tools.hibernate.spi.IService;
+import org.jboss.tools.hibernate.spi.ServiceLookup;
 
 /**
  * @author Dmitry Geraskov
@@ -41,12 +42,18 @@ import org.jboss.tools.hibernate.util.HibernateHelper;
 public class HbmExportExceptionTest extends BaseTestSetCase {
 
 	protected ConfigurableTestProject testProject = null;
+	private IService service = null;
 
 	public HbmExportExceptionTest() {
 	}
 
 	public HbmExportExceptionTest(String name) {
 		super(name);
+	}
+	
+	protected void setUp() throws Exception {
+		super.setUp();
+		service = ServiceLookup.findService("3.5");
 	}
 
 	protected void tearDown() throws Exception {
@@ -76,15 +83,15 @@ public class HbmExportExceptionTest extends BaseTestSetCase {
 				}
 			}
 			
-			IHibernateMappingGlobalSettings hmgs = HibernateHelper.INSTANCE.getHibernateService().newHibernateMappingGlobalSettings();
+			IHibernateMappingGlobalSettings hmgs = service.newHibernateMappingGlobalSettings();
 			
-			IHibernateMappingExporter hce = HibernateHelper.INSTANCE.getHibernateService().newHibernateMappingExporter(config, getSrcFolder());
+			IHibernateMappingExporter hce = service.newHibernateMappingExporter(config, getSrcFolder());
 
 			
 			hce.setGlobalSettings(hmgs);
 			try {
 				hce.start();
-				IArtifactCollector collector = HibernateHelper.INSTANCE.getHibernateService().newArtifactCollector();
+				IArtifactCollector collector = service.newArtifactCollector();
 				collector.formatFiles();
 	
 				try {//build generated configuration

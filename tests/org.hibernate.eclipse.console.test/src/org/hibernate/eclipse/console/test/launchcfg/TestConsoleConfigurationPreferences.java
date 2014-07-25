@@ -12,7 +12,8 @@ import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 import org.hibernate.eclipse.console.test.HibernateConsoleTestPlugin;
 import org.jboss.tools.hibernate.spi.IEnvironment;
-import org.jboss.tools.hibernate.util.HibernateHelper;
+import org.jboss.tools.hibernate.spi.IService;
+import org.jboss.tools.hibernate.spi.ServiceLookup;
 import org.osgi.framework.Bundle;
 import org.w3c.dom.Element;
 
@@ -51,7 +52,7 @@ public class TestConsoleConfigurationPreferences implements ConsoleConfiguration
 	}
 
 	public Properties getProperties() {
-		IEnvironment environment = HibernateHelper.INSTANCE.getHibernateService().getEnvironment();
+		IEnvironment environment = getService().getEnvironment();
 		Properties p = new Properties();
 		p.setProperty(environment.getDialect(), "org.hibernate.dialect.HSQLDialect"); //$NON-NLS-1$
 		return p;
@@ -102,8 +103,11 @@ public class TestConsoleConfigurationPreferences implements ConsoleConfiguration
 	 */
 	@Override
 	public String getHibernateVersion() {
-		// TODO Auto-generated method stub
 		return "3.5";
+	}
+	
+	private IService getService() {
+		return ServiceLookup.findService(getHibernateVersion());
 	}
 
 }

@@ -25,7 +25,6 @@ import org.jboss.tools.hibernate.spi.ISessionFactory;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.ITypeFactory;
 import org.jboss.tools.hibernate.spi.IValue;
-import org.jboss.tools.hibernate.util.HibernateHelper;
 
 public class ConsoleConfigurationTest extends TestCase {
 
@@ -39,10 +38,10 @@ public class ConsoleConfigurationTest extends TestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		service = HibernateHelper.INSTANCE.getHibernateService();
 		typeFactory = service.newTypeFactory();
 		TestConsoleConfigurationPreferences cfgprefs = new TestConsoleConfigurationPreferences();
 		consoleCfg = new ConsoleConfiguration(cfgprefs);
+		service = consoleCfg.getHibernateExtension().getHibernateService();
 		KnownConfigurations.getInstance().addConfiguration(consoleCfg, true);
 	}
 
