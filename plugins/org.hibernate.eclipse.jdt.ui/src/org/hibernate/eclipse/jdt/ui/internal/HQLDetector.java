@@ -16,7 +16,7 @@ import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jdt.core.dom.StringLiteral;
 import org.hibernate.console.ConsoleConfiguration;
-import org.jboss.tools.hibernate.util.HibernateHelper;
+import org.jboss.tools.hibernate.spi.IService;
 
 public class HQLDetector extends ASTVisitor {
 
@@ -107,7 +107,8 @@ public class HQLDetector extends ASTVisitor {
 			if(allowEL) {
 				query = ELTransformer.removeEL(query);
 			}
-			HibernateHelper.INSTANCE.getHibernateService().newHQLQueryPlan(query, false, cc.getSessionFactory());
+			IService service = cc.getHibernateExtension().getHibernateService();
+			service.newHQLQueryPlan(query, false, cc.getSessionFactory());
 		} else {											
 			//messager.printWarning( annoValue.getPosition(), "Could not verify syntax. SessionFactory not created." );
 		}		

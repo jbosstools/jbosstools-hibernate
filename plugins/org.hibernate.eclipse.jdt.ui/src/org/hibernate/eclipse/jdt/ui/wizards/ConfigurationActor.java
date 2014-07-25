@@ -40,12 +40,14 @@ import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.WildcardType;
+import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.collect.AllEntitiesInfoCollector;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefEntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefType;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
+import org.hibernate.eclipse.nature.HibernateNature;
 import org.hibernate.util.xpl.StringHelper;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IConfiguration;
@@ -55,7 +57,7 @@ import org.jboss.tools.hibernate.spi.IProperty;
 import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IValue;
-import org.jboss.tools.hibernate.util.HibernateHelper;
+import org.jboss.tools.hibernate.spi.ServiceLookup;
 
 /**
  * @author Dmitry Geraskov
@@ -68,12 +70,9 @@ public class ConfigurationActor {
 	 * result of processing selection
 	 */
 	protected Set<ICompilationUnit> selectionCU;
-	
-	private IService service;
-	
+		
 	public ConfigurationActor(Set<ICompilationUnit> selectionCU){
 		this.selectionCU = selectionCU;
-		service = HibernateHelper.INSTANCE.getHibernateService();
 	}	
 
 	/**
@@ -121,10 +120,21 @@ public class ConfigurationActor {
 		return configs;
 	}
 	
+	private IService getService(IJavaProject project) {
+		HibernateNature hibnat = HibernateNature.getHibernateNature(project);
+		if (hibnat != null) {
+			ConsoleConfiguration cc = hibnat.getDefaultConsoleConfiguration();
+			return cc.getHibernateExtension().getHibernateService();
+		} else {
+			return ServiceLookup.findService("3.5"); //$NON-NLS-1$
+		}
+	}
+	
 	protected IConfiguration createConfiguration(IJavaProject project, Map<String, EntityInfo> entities) {
-		IConfiguration config = HibernateHelper.INSTANCE.getHibernateService().newDefaultConfiguration();
+		IService service = getService(project);
+		IConfiguration config = service.newDefaultConfiguration();
 		
-		ProcessEntityInfo processor = new ProcessEntityInfo();
+		ProcessEntityInfo processor = new ProcessEntityInfo(service);
 		processor.setEntities(entities);
 		
 		for (Entry<String, EntityInfo> entry : entities.entrySet()) {			
@@ -153,6 +163,7 @@ public class ConfigurationActor {
 	 * @return
 	 */
 	private Collection<IPersistentClass> createHierarhyStructure(IJavaProject project, Map<String, IPersistentClass> rootClasses){
+		IService service = getService(project);
 		Map<String, IPersistentClass> pcCopy = new HashMap<String, IPersistentClass>();
 		for (Map.Entry<String, IPersistentClass> entry : rootClasses.entrySet()) {
 			pcCopy.put(entry.getKey(), entry.getValue());
@@ -187,7 +198,7 @@ public class ConfigurationActor {
 					subclass.setDiscriminatorValue(StringHelper.unqualify(pastClass.getClassName()));
 					subclass.setAbstract(pastClass.isAbstract());
 					if (subclass.isInstanceOfJoinedSubclass()) {
-						subclass.setTable(HibernateHelper.INSTANCE.getHibernateService().newTable(StringHelper.unqualify(pastClass.getClassName()).toUpperCase()));
+						subclass.setTable(service.newTable(StringHelper.unqualify(pastClass.getClassName()).toUpperCase()));
 						subclass.setKey(pc.getIdentifierProperty().getValue());
 					}
 					if (pastClass.getIdentifierProperty() != null) {
@@ -259,8 +270,8 @@ class ProcessEntityInfo extends ASTVisitor {
 	
 	IService service;
 	
-	ProcessEntityInfo() {
-		service = HibernateHelper.INSTANCE.getHibernateService();
+	ProcessEntityInfo(IService service) {
+		this.service = service;
 	}
 	
 	public void setEntities(Map<String, EntityInfo> entities) {
@@ -270,7 +281,7 @@ class ProcessEntityInfo extends ASTVisitor {
 			Map.Entry<String, EntityInfo> entry = it.next();
 			EntityInfo entryInfo = entry.getValue();
 			String className = entryInfo.getName();
-			ITable table = HibernateHelper.INSTANCE.getHibernateService().newTable(className.toUpperCase());
+			ITable table = service.newTable(className.toUpperCase());
 			IPersistentClass rootClass = service.newRootClass();
 			rootClass.setEntityName( entryInfo.getFullyQualifiedName() );
 			rootClass.setClassName( entryInfo.getFullyQualifiedName() );
@@ -280,7 +291,7 @@ class ProcessEntityInfo extends ASTVisitor {
 			rootClass.setAbstract(entryInfo.isAbstractFlag());//abstract or interface
 			rootClasses.put(entryInfo.getFullyQualifiedName(), rootClass);
 		}
-		typeVisitor = new TypeVisitor(rootClasses);
+		typeVisitor = new TypeVisitor(service, rootClasses);
 	}
 
 	
@@ -468,9 +479,9 @@ class TypeVisitor extends ASTVisitor{
 	
 	private IService service;
 	
-	TypeVisitor(Map<String, IPersistentClass> rootClasses){
+	TypeVisitor(IService service, Map<String, IPersistentClass> rootClasses){
 		this.rootClasses = rootClasses;
-		service = HibernateHelper.INSTANCE.getHibernateService();
+		this.service = service;
 	}
 	
 	public void init(String varName, EntityInfo entityInfo){
@@ -624,7 +635,7 @@ class TypeVisitor extends ASTVisitor{
 				throw new IllegalStateException(ref.refType.toString());
 			}
 			
-			IColumn column = HibernateHelper.INSTANCE.getHibernateService().newColumn(varName.toUpperCase());
+			IColumn column = service.newColumn(varName.toUpperCase());
 			sValue.addColumn(column);					
 			sValue.setTypeName(tb.getBinaryName());
 			sValue.setFetchModeJoin();
@@ -687,4 +698,5 @@ class TypeVisitor extends ASTVisitor{
 		cValue.setRole(StringHelper.qualify(rootClass.getEntityName(), varName));
 		return cValue;
 	}
+	
 }

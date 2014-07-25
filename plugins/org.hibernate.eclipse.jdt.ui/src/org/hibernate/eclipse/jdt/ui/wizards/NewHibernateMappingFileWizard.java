@@ -24,8 +24,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -62,6 +62,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.ui.ide.IDE;
+import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
@@ -72,11 +73,13 @@ import org.hibernate.eclipse.jdt.ui.internal.JdtUiMessages;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.collect.AllEntitiesInfoCollector;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
+import org.hibernate.eclipse.nature.HibernateNature;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.spi.IHibernateMappingGlobalSettings;
-import org.jboss.tools.hibernate.util.HibernateHelper;
+import org.jboss.tools.hibernate.spi.IService;
+import org.jboss.tools.hibernate.spi.ServiceLookup;
 
 /**
  * @author Dmitry Geraskov
@@ -247,7 +250,7 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 		protected IJavaProject proj;
 		private IHibernateMappingExporter target = null;
 		public HibernateMappingExporterWrapper(IJavaProject proj, IConfiguration cfg, File outputdir) {
-	    	target = HibernateHelper.INSTANCE.getHibernateService().newHibernateMappingExporter(cfg, outputdir);
+	    	target = getService(proj).newHibernateMappingExporter(cfg, outputdir);
 	    	this.proj = proj;
 	    }
 		/**
@@ -313,13 +316,23 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 		}
 	}
 
+	private IService getService(IJavaProject project) {
+		HibernateNature hibnat = HibernateNature.getHibernateNature(project);
+		if (hibnat != null) {
+			ConsoleConfiguration cc = hibnat.getDefaultConsoleConfiguration();
+			return cc.getHibernateExtension().getHibernateService();
+		} else {
+			return ServiceLookup.findService("3.5"); //$NON-NLS-1$
+		}
+	}
+	
 	protected Map<IJavaProject, IPath> getPlaces2Gen() {
 		updateCompilationUnits();
 		Map<IJavaProject, IConfiguration> configs = createConfigurations();
 		Map<IJavaProject, IPath> places2Gen = new HashMap<IJavaProject, IPath>();
 		for (Entry<IJavaProject, IConfiguration> entry : configs.entrySet()) {
 			IConfiguration config = entry.getValue();
-			IHibernateMappingGlobalSettings hmgs = HibernateHelper.INSTANCE.getHibernateService().newHibernateMappingGlobalSettings();
+			IHibernateMappingGlobalSettings hmgs = getService(entry.getKey()).newHibernateMappingGlobalSettings();
 
 			//final IPath projPath = entry.getKey().getProject().getLocation();
 			IPath place2Gen = previewPage.getRootPlace2Gen().append(entry.getKey().getElementName());
@@ -601,4 +614,6 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 	public boolean canFinish() {
 		return !page0.getSelection().isEmpty() || cPage.isPageComplete();
 	}
+	
+	
 }
