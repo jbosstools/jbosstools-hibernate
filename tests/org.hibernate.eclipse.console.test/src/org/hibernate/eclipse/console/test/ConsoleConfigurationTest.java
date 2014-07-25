@@ -38,10 +38,10 @@ public class ConsoleConfigurationTest extends TestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		typeFactory = service.newTypeFactory();
 		TestConsoleConfigurationPreferences cfgprefs = new TestConsoleConfigurationPreferences();
 		consoleCfg = new ConsoleConfiguration(cfgprefs);
 		service = consoleCfg.getHibernateExtension().getHibernateService();
+		typeFactory = service.newTypeFactory();
 		KnownConfigurations.getInstance().addConfiguration(consoleCfg, true);
 	}
 
