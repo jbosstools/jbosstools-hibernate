@@ -53,7 +53,6 @@ import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValida
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IEnvironment;
 import org.jboss.tools.hibernate.spi.INamingStrategy;
-import org.jboss.tools.hibernate.util.HibernateHelper;
 import org.osgi.service.prefs.Preferences;
 
 /**
@@ -75,7 +74,10 @@ public class HibernateJpaProject extends AbstractJpaProject {
 	
 	private IEnvironment getEnvironment() {
 		if (environment == null) {
-			environment = HibernateHelper.INSTANCE.getHibernateService().getEnvironment();
+			ConsoleConfiguration cc = getDefaultConsoleConfiguration();
+			if (cc != null) {
+				environment = cc.getHibernateExtension().getHibernateService().getEnvironment();
+			}
 		}
 		return environment;
 	}

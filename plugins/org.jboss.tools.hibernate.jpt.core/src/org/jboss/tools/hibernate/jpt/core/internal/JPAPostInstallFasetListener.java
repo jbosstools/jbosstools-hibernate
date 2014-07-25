@@ -28,6 +28,8 @@ import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.internal.core.LaunchConfiguration;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -41,13 +43,14 @@ import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectEvent.Typ
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectListener;
 import org.eclipse.wst.common.project.facet.core.events.IProjectFacetActionEvent;
 import org.hibernate.console.ConnectionProfileUtil;
+import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
 import org.hibernate.eclipse.console.utils.LaunchHelper;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
+import org.hibernate.eclipse.nature.HibernateNature;
 import org.hibernate.eclipse.utils.HibernateEclipseUtils;
 import org.jboss.tools.hibernate.spi.IService;
-import org.jboss.tools.hibernate.util.HibernateHelper;
 
 /**
  * @author Dmitry Geraskov
@@ -98,9 +101,19 @@ public class JPAPostInstallFasetListener implements IFacetedProjectListener {
 	}
 	
 	public Properties getConnectionProperties(IProject project){
+		IJavaProject javaProject = JavaCore.create(project);
+		IService service = null;
+		if (javaProject != null) {
+			HibernateNature hibNat = HibernateNature.getHibernateNature(javaProject);
+			if (hibNat != null) {
+				ConsoleConfiguration cc = hibNat.getDefaultConsoleConfiguration();
+				if (cc != null) {
+					service = cc.getHibernateExtension().getHibernateService();
+				}
+			}
+		}
 		String cpName = HibernateEclipseUtils.getConnectionProfileName(project);
-		if (cpName != null){
-			IService service = HibernateHelper.INSTANCE.getHibernateService();
+		if (cpName != null && service != null){
 			return ConnectionProfileUtil.getHibernateConnectionProperties(
 					service, ProfileManager.getInstance().getProfileByName(cpName));
 		}
