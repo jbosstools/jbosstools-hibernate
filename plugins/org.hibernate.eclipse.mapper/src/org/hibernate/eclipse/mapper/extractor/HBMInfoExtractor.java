@@ -40,10 +40,10 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
 import org.eclipse.wst.sse.ui.internal.contentassist.CustomCompletionProposal;
 import org.eclipse.wst.xml.ui.internal.contentassist.XMLRelevanceConstants;
-import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.eclipse.mapper.MapperMessages;
 import org.hibernate.util.xpl.StringHelper;
 import org.jboss.tools.hibernate.spi.IEnvironment;
+import org.jboss.tools.hibernate.spi.ITableIdentifier;
 import org.jboss.tools.hibernate.util.HibernateHelper;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -612,7 +612,7 @@ public class HBMInfoExtractor {
 		return typename;
 	}
 
-	public TableIdentifier getNearestTableName(Node node) {
+	public ITableIdentifier getNearestTableName(Node node) {
 		Map map = tableProvider;
 
 		if(node==null) return null;
@@ -641,7 +641,7 @@ public class HBMInfoExtractor {
 				schema = namedItem.getNodeValue();
 			}
 
-			return new TableIdentifier(catalog,schema,typename);
+			return HibernateHelper.INSTANCE.getHibernateService().newTableIdentifier(catalog,schema,typename);
 		}
 
 		return null;

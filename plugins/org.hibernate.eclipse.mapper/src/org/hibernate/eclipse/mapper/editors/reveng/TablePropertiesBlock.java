@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -55,7 +56,7 @@ import org.eclipse.ui.forms.SectionPart;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
-import org.hibernate.cfg.reveng.TableIdentifier;
+import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.model.IRevEngColumn;
 import org.hibernate.eclipse.console.model.IRevEngGenerator;
 import org.hibernate.eclipse.console.model.IRevEngParameter;
@@ -66,6 +67,7 @@ import org.hibernate.eclipse.console.workbench.DeferredContentProvider;
 import org.hibernate.eclipse.console.workbench.LazyDatabaseSchema;
 import org.hibernate.eclipse.console.workbench.xpl.AnyAdaptableLabelProvider;
 import org.hibernate.eclipse.mapper.MapperMessages;
+import org.hibernate.eclipse.mapper.MapperPlugin;
 import org.hibernate.eclipse.mapper.editors.ReverseEngineeringEditor;
 import org.hibernate.eclipse.mapper.editors.reveng.xpl.CheckedTreeSelectionDialog;
 import org.hibernate.eclipse.mapper.model.RevEngColumnAdapter;
@@ -73,10 +75,13 @@ import org.hibernate.eclipse.mapper.model.RevEngGeneratorAdapter;
 import org.hibernate.eclipse.mapper.model.RevEngParamAdapter;
 import org.hibernate.eclipse.mapper.model.RevEngPrimaryKeyAdapter;
 import org.hibernate.eclipse.mapper.model.RevEngTableAdapter;
+import org.hibernate.eclipse.nature.HibernateNature;
 import org.jboss.tools.hibernate.proxy.TableProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IPrimaryKey;
+import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ITable;
+import org.jboss.tools.hibernate.spi.ITableIdentifier;
 
 public class TablePropertiesBlock extends MasterDetailsBlock {
 
@@ -196,14 +201,14 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 			dialog.setContainerMode(true);
 			dialog.open();
 			Object[] result = dialog.getResult();
-			TableIdentifier lastTable = null;
+			ITableIdentifier lastTable = null;
 			if(result!=null) {
 				for (int i = 0; i < result.length; i++) {
 					Object object = result[i];
 					if(object instanceof ITable) {
 						ITable table = (ITable) object;
-						tables.put(TableIdentifier.create(((TableProxy)table).getTarget()), object);
-						lastTable = TableIdentifier.create(((TableProxy)table).getTarget());
+						tables.put(getService().createTableIdentifier(table), object);
+						lastTable = getService().createTableIdentifier(table);
 					} else if (object instanceof IColumn) {
 						List existing = (List) columns.get(lastTable);
 						if(existing==null) {
@@ -384,5 +389,23 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 		dp.registerPage( RevEngParamAdapter.class, new ParamDetailsPage() );
 		dp.registerPage( RevEngPrimaryKeyAdapter.class, new PrimaryKeyDetailsPage() );
 		//dp.registerPage( org.hibernate.mapping.Table.class, new TypeOneDetailsPage() );
+	}
+	
+	private IService getService() {
+		IService result = null;
+		HibernateNature hibnat = null;
+		try {
+			hibnat = editor.getHibernateNature();
+			if (hibnat != null) {
+				ConsoleConfiguration cc = hibnat.getDefaultConsoleConfiguration();
+				if (cc != null) {
+					result = cc.getHibernateExtension().getHibernateService();
+				}
+			}
+		} catch (CoreException e) {
+			MapperPlugin.getDefault().logException(e);
+		}
+		return result;
+		
 	}
 }

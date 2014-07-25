@@ -42,7 +42,6 @@ import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
-import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.execution.ExecutionContext.Command;
@@ -52,6 +51,7 @@ import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.properties.HibernatePropertiesConstants;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.ITable;
+import org.jboss.tools.hibernate.spi.ITableIdentifier;
 import org.osgi.service.prefs.Preferences;
 
 public class HibernateNature implements IProjectNature {
@@ -194,7 +194,7 @@ public class HibernateNature implements IProjectNature {
 		return result;
 	}
 
-	public ITable getTable(TableIdentifier nearestTableName) {
+	public ITable getTable(ITableIdentifier nearestTableName) {
 		// TODO: can be made MUCH more efficient with proper indexing of the tables.
 		// TODO: handle catalog/schema properly
 		for (ITable table : getTables()) {

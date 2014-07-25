@@ -34,6 +34,7 @@ import org.jboss.tools.hibernate.spi.ISessionFactory;
 import org.jboss.tools.hibernate.spi.ISettings;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.ITableFilter;
+import org.jboss.tools.hibernate.spi.ITableIdentifier;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.ITypeFactory;
 import org.jboss.tools.hibernate.spi.IValue;
@@ -274,6 +275,17 @@ public class TestService implements IService {
 
 	@Override
 	public Map<IType, String> getTypeFormats() {
+		return null;
+	}
+
+	@Override
+	public ITableIdentifier createTableIdentifier(ITable table) {
+		return null;
+	}
+
+	@Override
+	public ITableIdentifier newTableIdentifier(String catalog, String schema,
+			String typename) {
 		return null;
 	}
 

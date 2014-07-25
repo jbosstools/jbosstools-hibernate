@@ -117,5 +117,9 @@ public interface IService {
 	IHibernateMappingGlobalSettings newHibernateMappingGlobalSettings();
 	
 	Map<IType, String> getTypeFormats();
+
+	ITableIdentifier createTableIdentifier(ITable table);
+
+	ITableIdentifier newTableIdentifier(String catalog, String schema, String typename);
 	
 }

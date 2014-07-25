@@ -18,6 +18,7 @@ import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
+import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.ejb.Ejb3Configuration;
@@ -76,6 +77,7 @@ import org.jboss.tools.hibernate.spi.ISessionFactory;
 import org.jboss.tools.hibernate.spi.ISettings;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.ITableFilter;
+import org.jboss.tools.hibernate.spi.ITableIdentifier;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.ITypeFactory;
 import org.jboss.tools.hibernate.spi.IValue;
@@ -422,6 +424,18 @@ public class ServiceProxy implements IService {
 	@Override
 	public Map<IType, String> getTypeFormats() {
 		return TypeFormats.getTypeFormats();
+	}
+
+	@Override
+	public ITableIdentifier createTableIdentifier(ITable table) {
+		assert table instanceof TableProxy;
+		return new TableIdentifierProxy(TableIdentifier.create(((TableProxy)table).getTarget()));
+	}
+
+	@Override
+	public ITableIdentifier newTableIdentifier(String catalog, String schema,
+			String name) {
+		return new TableIdentifierProxy(new TableIdentifier(catalog, schema, name));
 	}
 
 }

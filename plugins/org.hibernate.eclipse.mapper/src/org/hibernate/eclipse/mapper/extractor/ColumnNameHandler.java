@@ -35,6 +35,7 @@ import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.nature.HibernateNature;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.ITable;
+import org.jboss.tools.hibernate.spi.ITableIdentifier;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Node;
 
@@ -54,7 +55,7 @@ public class ColumnNameHandler implements HBMInfoHandler {
 		
 		HibernateNature nature = HibernateNature.getHibernateNature( javaProject );
 		if(nature!=null) {
-			TableIdentifier nearestTableName = extractor.getNearestTableName(node);
+			ITableIdentifier nearestTableName = extractor.getNearestTableName(node);
 			if(nearestTableName!=null) {
 				ITable table = nature.getTable(nearestTableName);
 				if (table!=null) {
