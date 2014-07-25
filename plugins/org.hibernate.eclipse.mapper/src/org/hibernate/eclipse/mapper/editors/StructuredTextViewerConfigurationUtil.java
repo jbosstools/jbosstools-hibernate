@@ -19,6 +19,7 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.mapper.MapperPlugin;
 import org.hibernate.eclipse.nature.HibernateNature;
 import org.jboss.tools.hibernate.spi.IService;
+import org.jboss.tools.hibernate.spi.ServiceLookup;
 
 public class StructuredTextViewerConfigurationUtil {
 
@@ -112,8 +113,12 @@ public class StructuredTextViewerConfigurationUtil {
 	public static IService getService(ISourceViewer sourceViewer) {
 		IJavaProject javaProject = findJavaProject(sourceViewer);
 		HibernateNature hibnat = HibernateNature.getHibernateNature(javaProject);
-		ConsoleConfiguration cc = hibnat.getDefaultConsoleConfiguration();
-		return cc.getHibernateExtension().getHibernateService();
+		if (hibnat != null) {
+			ConsoleConfiguration cc = hibnat.getDefaultConsoleConfiguration();
+			return cc.getHibernateExtension().getHibernateService();
+		} else {
+			return ServiceLookup.findService("3.5"); //$NON-NLS-1$
+		}
 	}
 	
 }
