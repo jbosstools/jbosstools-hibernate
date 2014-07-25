@@ -76,7 +76,6 @@ import org.hibernate.eclipse.mapper.model.RevEngParamAdapter;
 import org.hibernate.eclipse.mapper.model.RevEngPrimaryKeyAdapter;
 import org.hibernate.eclipse.mapper.model.RevEngTableAdapter;
 import org.hibernate.eclipse.nature.HibernateNature;
-import org.jboss.tools.hibernate.proxy.TableProxy;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.spi.IService;

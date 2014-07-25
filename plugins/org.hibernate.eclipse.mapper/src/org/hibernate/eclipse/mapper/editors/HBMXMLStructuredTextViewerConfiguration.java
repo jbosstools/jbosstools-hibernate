@@ -32,6 +32,7 @@ import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredPartitionTy
 import org.eclipse.wst.xml.core.internal.provisional.text.IXMLPartitions;
 import org.eclipse.wst.xml.ui.StructuredTextViewerConfigurationXML;
 import org.eclipse.wst.xml.ui.internal.contentassist.NoRegionContentAssistProcessor;
+import org.jboss.tools.hibernate.spi.IService;
 
 public class HBMXMLStructuredTextViewerConfiguration extends StructuredTextViewerConfigurationXML {
 
@@ -39,18 +40,25 @@ public class HBMXMLStructuredTextViewerConfiguration extends StructuredTextViewe
 		
 	}
 	
-	static Map partitionToContentAssist = new HashMap();
-	static {
-		IContentAssistProcessor[] contentAssistProcessor = new IContentAssistProcessor[] { new HBMXMLContentAssistProcessor() };
-		partitionToContentAssist.put(IStructuredPartitionTypes.DEFAULT_PARTITION, contentAssistProcessor);
-		partitionToContentAssist.put(IXMLPartitions.XML_DEFAULT, contentAssistProcessor);
-		
-		contentAssistProcessor = new IContentAssistProcessor[] { new NoRegionContentAssistProcessor() };
-		partitionToContentAssist.put(IStructuredPartitionTypes.UNKNOWN_PARTITION, contentAssistProcessor );
-	}
+//	static Map partitionToContentAssist = new HashMap();
+//	static {
+//		IContentAssistProcessor[] contentAssistProcessor = new IContentAssistProcessor[] { new HBMXMLContentAssistProcessor() };
+//		partitionToContentAssist.put(IStructuredPartitionTypes.DEFAULT_PARTITION, contentAssistProcessor);
+//		partitionToContentAssist.put(IXMLPartitions.XML_DEFAULT, contentAssistProcessor);
+//		
+//		contentAssistProcessor = new IContentAssistProcessor[] { new NoRegionContentAssistProcessor() };
+//		partitionToContentAssist.put(IStructuredPartitionTypes.UNKNOWN_PARTITION, contentAssistProcessor );
+//	}
 	
 	protected IContentAssistProcessor[] getContentAssistProcessors(ISourceViewer sourceViewer, String partitionType) {
-		return (IContentAssistProcessor[]) partitionToContentAssist.get(partitionType);
+		IService service = StructuredTextViewerConfigurationUtil.getService(sourceViewer);
+		if (IStructuredPartitionTypes.DEFAULT_PARTITION.equals(partitionType) || IXMLPartitions.XML_DEFAULT.equals(partitionType)) {
+			return new IContentAssistProcessor[] { new HBMXMLContentAssistProcessor(service) };
+		} else if (IStructuredPartitionTypes.UNKNOWN_PARTITION.equals(partitionType)) {
+			return new IContentAssistProcessor[] { new NoRegionContentAssistProcessor() };
+		} else {
+			return null;
+		}
 	}
 	
 	
@@ -60,7 +68,8 @@ public class HBMXMLStructuredTextViewerConfiguration extends StructuredTextViewe
 		}
 		
 		IHyperlinkDetector[] baseDetectors =  super.getHyperlinkDetectors(sourceViewer);
-		HBMXMLHyperlinkDetector hyperlinkDetector = new HBMXMLHyperlinkDetector();
+		IService service = StructuredTextViewerConfigurationUtil.getService(sourceViewer);
+		HBMXMLHyperlinkDetector hyperlinkDetector = new HBMXMLHyperlinkDetector(service);
 		
 		if(baseDetectors==null || baseDetectors.length==0) {
 			return new IHyperlinkDetector[] { hyperlinkDetector };
@@ -79,4 +88,5 @@ public class HBMXMLStructuredTextViewerConfiguration extends StructuredTextViewe
 	private boolean hyperLinksEnabled() {
 		return !fPreferenceStore.getBoolean(AbstractDecoratedTextEditorPreferenceConstants.EDITOR_HYPERLINKS_ENABLED);
 	}
+	
 }

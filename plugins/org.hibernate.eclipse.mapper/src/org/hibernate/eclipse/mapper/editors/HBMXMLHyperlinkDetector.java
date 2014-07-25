@@ -31,6 +31,7 @@ import org.eclipse.jface.text.hyperlink.IHyperlinkDetector;
 import org.hibernate.eclipse.mapper.editors.xpl.BaseXMLHyperlinkSupport;
 import org.hibernate.eclipse.mapper.extractor.HBMInfoExtractor;
 import org.hibernate.eclipse.mapper.extractor.HBMInfoHandler;
+import org.jboss.tools.hibernate.spi.IService;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Node;
 
@@ -40,17 +41,17 @@ import org.w3c.dom.Node;
  */
 public class HBMXMLHyperlinkDetector extends BaseXMLHyperlinkSupport implements IHyperlinkDetector {
 
-	HBMInfoExtractor infoExtractor = new HBMInfoExtractor();
+	HBMInfoExtractor infoExtractor = null;
 	
-	public HBMXMLHyperlinkDetector() {
-		
+	public HBMXMLHyperlinkDetector(IService service) {
+		infoExtractor = new HBMInfoExtractor(service);
 	}
 
 	public IHyperlink[] detectHyperlinks(ITextViewer textViewer, IRegion region, boolean canShowMultipleHyperlinks) {
 		if (region == null || textViewer == null) {
 			return null;
 		}
-		IJavaProject jp = CFGXMLStructuredTextViewerConfiguration.findJavaProject(textViewer);
+		IJavaProject jp = StructuredTextViewerConfigurationUtil.findJavaProject(textViewer);
 		if(jp==null) return new IHyperlink[0];
 		
 		IDocument document = textViewer.getDocument();
@@ -68,7 +69,7 @@ public class HBMXMLHyperlinkDetector extends BaseXMLHyperlinkSupport implements 
 					String path = currentNode.getNodeName() + ">" + currentAttrNode.getName(); //$NON-NLS-1$
 			        HBMInfoHandler handler = infoExtractor.getAttributeHandler(path);
 					if(handler!=null) {
-						IJavaProject project = CFGXMLStructuredTextViewerConfiguration.findJavaProject(document);
+						IJavaProject project = StructuredTextViewerConfigurationUtil.findJavaProject(document);
 						IJavaElement element = handler.getJavaElement(project, currentNode, currentAttrNode);
 						if(element!=null) {
 							return new IHyperlink[] {new HBMXMLHyperlink(getHyperlinkRegion(currentAttrNode), element)};

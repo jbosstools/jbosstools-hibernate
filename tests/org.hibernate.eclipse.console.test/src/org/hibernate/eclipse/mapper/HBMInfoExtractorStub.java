@@ -11,6 +11,7 @@
 package org.hibernate.eclipse.mapper;
 
 import org.hibernate.eclipse.mapper.extractor.HBMInfoExtractor;
+import org.jboss.tools.hibernate.spi.IService;
 import org.w3c.dom.Node;
 
 /**
@@ -18,6 +19,10 @@ import org.w3c.dom.Node;
  *
  */
 public class HBMInfoExtractorStub extends HBMInfoExtractor {
+
+	public HBMInfoExtractorStub(IService service) {
+		super(service);
+	}
 
 	protected String packageName = null;
 	

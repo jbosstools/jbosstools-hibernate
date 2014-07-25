@@ -62,7 +62,6 @@ import org.jboss.tools.hibernate.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ISettings;
 import org.jboss.tools.hibernate.spi.ITableFilter;
-import org.jboss.tools.hibernate.util.HibernateHelper;
 import org.w3c.dom.Document;
 
 public class ReverseEngineeringEditor extends XMLFormEditorPart {
@@ -206,7 +205,7 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 			IConfiguration cfg = configuration.buildWith(null, false);
 			ISettings settings = configuration.getSettings(cfg);
 
-			IService service = HibernateHelper.INSTANCE.getHibernateService();
+			IService service = configuration.getHibernateExtension().getHibernateService();
 			IOverrideRepository repository = service.newOverrideRepository();
 			boolean hasIncludes = false;
 			for (int i = 0; i < tableFilters.length; i++) {
@@ -241,7 +240,7 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 					new LazyDatabaseSchema(
 							configuration, 
 							repository.getReverseEngineeringStrategy(
-									HibernateHelper.INSTANCE.getHibernateService().newDefaultReverseEngineeringStrategy()));
+									service.newDefaultReverseEngineeringStrategy()));
 
 			return lazyDatabaseSchema;
 		} catch(HibernateException he) {

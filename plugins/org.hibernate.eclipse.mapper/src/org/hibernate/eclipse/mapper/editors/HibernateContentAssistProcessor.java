@@ -32,7 +32,7 @@ public abstract class HibernateContentAssistProcessor extends BaseXMLContentAssi
 	}
 
 	protected IJavaProject getJavaProject(ContentAssistRequest contentAssistRequest) {
-		return CFGXMLStructuredTextViewerConfiguration.findJavaProject(contentAssistRequest);
+		return StructuredTextViewerConfigurationUtil.findJavaProject(contentAssistRequest);
 	}
 	
 }

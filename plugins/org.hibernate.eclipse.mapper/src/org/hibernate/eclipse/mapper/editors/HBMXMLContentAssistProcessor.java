@@ -29,14 +29,16 @@ import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.wst.xml.ui.internal.contentassist.ContentAssistRequest;
 import org.hibernate.eclipse.mapper.extractor.HBMInfoExtractor;
 import org.hibernate.eclipse.mapper.extractor.HBMInfoHandler;
+import org.jboss.tools.hibernate.spi.IService;
 import org.w3c.dom.Node;
 
 public class HBMXMLContentAssistProcessor extends HibernateContentAssistProcessor {
 
-	private HBMInfoExtractor sourceLocator = new HBMInfoExtractor();
+	private HBMInfoExtractor sourceLocator = null;
 	
-	public HBMXMLContentAssistProcessor() {
+	public HBMXMLContentAssistProcessor(IService service) {
 		super();
+		sourceLocator = new HBMInfoExtractor(service);
 	}
 
 	private static final boolean DEBUG = false;

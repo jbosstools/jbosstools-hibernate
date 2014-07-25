@@ -12,9 +12,14 @@ package org.hibernate.eclipse.mapper;
 
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
+import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.test.project.ConfigurableTestProject;
+import org.hibernate.eclipse.mapper.editors.StructuredTextViewerConfigurationUtil;
 import org.hibernate.eclipse.mapper.extractor.JavaTypeHandler;
 import org.hibernate.eclipse.mapper.extractor.PackageHandler;
+import org.hibernate.eclipse.nature.HibernateNature;
+import org.jboss.tools.hibernate.spi.IService;
+
 import junit.framework.TestCase;
 
 /**
@@ -22,16 +27,22 @@ import junit.framework.TestCase;
  *
  */
 public class HBMInfoExtractorTest extends TestCase {
-	private HBMInfoExtractorStub sourceLocator = new HBMInfoExtractorStub();
+	private HBMInfoExtractorStub sourceLocator = null;
 	private ConfigurableTestProject testProj = null;
 
 	protected void setUp() throws Exception {
 		testProj = new ConfigurableTestProject("HBMInfoProj" + System.currentTimeMillis()); //$NON-NLS-1$
+		IJavaProject javaProj = testProj.getIJavaProject();
+		HibernateNature hibnat = HibernateNature.getHibernateNature(javaProj);
+		ConsoleConfiguration cc = hibnat.getDefaultConsoleConfiguration();
+		IService service = cc.getHibernateExtension().getHibernateService();
+		sourceLocator = new HBMInfoExtractorStub(service);
 	}
 
 	protected void tearDown() throws Exception {
 		testProj.deleteIProject();
 		testProj = null;
+		sourceLocator = null;
 	}
 
 	public void executeJavaTypeHandlerTest(String start, String attributeName) {

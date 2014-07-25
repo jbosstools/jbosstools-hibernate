@@ -43,8 +43,8 @@ import org.eclipse.wst.xml.ui.internal.contentassist.XMLRelevanceConstants;
 import org.hibernate.eclipse.mapper.MapperMessages;
 import org.hibernate.util.xpl.StringHelper;
 import org.jboss.tools.hibernate.spi.IEnvironment;
+import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ITableIdentifier;
-import org.jboss.tools.hibernate.util.HibernateHelper;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
@@ -71,9 +71,10 @@ public class HBMInfoExtractor {
 
 	private HibernateTypeDescriptor[] propertyAccessors;
 
+	private IService service;
 
-
-	public HBMInfoExtractor() {
+	public HBMInfoExtractor(IService service) {
+		this.service = service;
 		setupTypeFinder();
 		setupTableFinder();
 
@@ -181,7 +182,7 @@ public class HBMInfoExtractor {
 	private String[] extractHibernateProperties() {
 		try {
 			// TODO: extract property names from the Environment class in the users hibernate configuration.
-			IEnvironment environment = HibernateHelper.INSTANCE.getHibernateService().getEnvironment();
+			IEnvironment environment = service.getEnvironment();
 			Class cl = environment.getWrappedClass();
 			List names = new ArrayList();
 			Field[] fields = cl.getFields();
@@ -641,7 +642,7 @@ public class HBMInfoExtractor {
 				schema = namedItem.getNodeValue();
 			}
 
-			return HibernateHelper.INSTANCE.getHibernateService().newTableIdentifier(catalog,schema,typename);
+			return service.newTableIdentifier(catalog,schema,typename);
 		}
 
 		return null;

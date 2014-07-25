@@ -30,6 +30,7 @@ import java.util.List;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.wst.xml.ui.internal.contentassist.ContentAssistRequest;
 import org.hibernate.eclipse.mapper.extractor.HBMInfoExtractor;
+import org.jboss.tools.hibernate.spi.IService;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
@@ -39,10 +40,10 @@ public class CFGXMLContentAssistProcessor extends HibernateContentAssistProcesso
 	
 	static String[] propertyNames;
 	
-	public CFGXMLContentAssistProcessor() {
+	public CFGXMLContentAssistProcessor(IService service) {
 		super();
 	
-		extractor = new HBMInfoExtractor();
+		extractor = new HBMInfoExtractor(service);
 		
 	}
 
