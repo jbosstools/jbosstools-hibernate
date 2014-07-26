@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.spi;
 
 import java.io.File;
+import java.util.Map;
 
 public interface IHibernateMappingExporter {
 
@@ -8,5 +9,6 @@ public interface IHibernateMappingExporter {
 	void start();
 	File getOutputDirectory();
 	void setOutputDirectory(File directory);
+	void exportPOJO(Map<Object, Object> map, IPOJOClass pojoClass);
 
 }

@@ -17,7 +17,6 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -63,7 +62,6 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.ui.ide.IDE;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
@@ -74,10 +72,10 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.collect.AllEntitiesInfoCollecto
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
 import org.hibernate.eclipse.nature.HibernateNature;
-import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.spi.IHibernateMappingGlobalSettings;
+import org.jboss.tools.hibernate.spi.IPOJOClass;
 import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ServiceLookup;
 
@@ -258,7 +256,7 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 		 * of several source folders 
 		 */
 		@SuppressWarnings("rawtypes")
-		protected void exportPOJO(Map additionalContext, POJOClass element) {
+		protected void exportPOJO(Map additionalContext, IPOJOClass element) {
 			File outputdir4FileOld = target.getOutputDirectory();
 			File outputdir4FileNew = outputdir4FileOld;
 			String fullyQualifiedName = element.getQualifiedDeclarationName();
@@ -299,14 +297,15 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 		}
 		
 		@SuppressWarnings("rawtypes")
-		private void invokeTargetExport(Map map, POJOClass pojoClass) {
-			try {
-				Method exportPOJO = target.getClass().getMethod("exportPOJO", new Class[] { Map.class, POJOClass.class }); //$NON-NLS-1$
-				exportPOJO.setAccessible(true);
-				exportPOJO.invoke(target, new Object[] { map, pojoClass });
-			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-				throw new HibernateConsoleRuntimeException(e);
-			}  
+		private void invokeTargetExport(Map map, IPOJOClass pojoClass) {
+//			try {
+//				Method exportPOJO = target.getClass().getMethod("exportPOJO", new Class[] { Map.class, IPOJOClass.class }); //$NON-NLS-1$
+//				exportPOJO.setAccessible(true);
+//				exportPOJO.invoke(target, new Object[] { map, pojoClass });
+//			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+//				throw new RuntimeException(e);
+//			}  
+			target.exportPOJO(map, pojoClass);
 		}
 		public void setGlobalSettings(IHibernateMappingGlobalSettings hmgs) {
 			target.setGlobalSettings(hmgs);
