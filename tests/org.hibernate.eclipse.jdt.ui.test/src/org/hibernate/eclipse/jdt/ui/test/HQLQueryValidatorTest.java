@@ -21,7 +21,6 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
-import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
@@ -181,7 +180,7 @@ public class HQLQueryValidatorTest extends HibernateConsoleTest {
 		try {
 		HQLDetector.checkQuery(ccfg, "from TestClass where id = #{some.id.field}", false); //$NON-NLS-1$
 		fail("should have failed with EL expressions!"); //$NON-NLS-1$
-		} catch (HibernateException he) {
+		} catch (Exception he) {
 			// ok
 		}
 		
