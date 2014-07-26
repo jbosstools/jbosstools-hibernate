@@ -23,7 +23,7 @@ package org.hibernate.eclipse.console.workbench;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.model.IWorkbenchAdapter;
-import org.hibernate.cfg.reveng.JDBCToHibernateTypeHelper;
+import org.jboss.tools.hibernate.util.JDBCToHibernateTypeHelper;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.jboss.tools.hibernate.spi.IColumn;
