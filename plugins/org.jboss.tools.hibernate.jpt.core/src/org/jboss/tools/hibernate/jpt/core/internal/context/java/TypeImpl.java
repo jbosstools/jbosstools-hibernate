@@ -16,17 +16,17 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.internal.utility.EmptyTextRange;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayListIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaContextModel;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
-import org.hibernate.type.TypeFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValidationMessage;
+import org.jboss.tools.hibernate.spi.IService;
+import org.jboss.tools.hibernate.spi.ITypeFactory;
 
 /**
  * @author Dmitry Geraskov
@@ -38,10 +38,12 @@ public class TypeImpl extends AbstractJavaContextModel<JpaContextModel> implemen
 	
 	private String type;
 	
-	public TypeImpl(JpaContextModel parent, TypeAnnotation annotation) {
+	private ITypeFactory typeFactory;
+	
+	public TypeImpl(JpaContextModel parent, TypeAnnotation annotation, IService service) {
 		super(parent);
 		this.annotation = annotation;
-		this.type = annotation.getType();
+		this.typeFactory = service.newTypeFactory();
 	}
 	
 	public void synchronizeWithResourceModel() {
@@ -135,7 +137,7 @@ public class TypeImpl extends AbstractJavaContextModel<JpaContextModel> implemen
 				messages.add(HibernateJpaValidationMessage.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						TYPE_CANT_BE_EMPTY, this, range));
-			} else if (TypeFactory.basic(type) == null && !getPersistenceUnit().hasTypeDef(type))	{
+			} else if (typeFactory.getBasicType(type) == null && !getPersistenceUnit().hasTypeDef(type))	{
 				IType lwType = null;
 				try {
 					lwType = getJpaProject().getJavaProject().findType(type);

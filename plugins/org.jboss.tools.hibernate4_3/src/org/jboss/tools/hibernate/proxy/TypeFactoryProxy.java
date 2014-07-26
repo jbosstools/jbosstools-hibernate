@@ -129,4 +129,9 @@ public class TypeFactoryProxy implements ITypeFactory {
 		return new TypeProxy(typeRegistry.getRegisteredType(typeName));
 	}
 
+	@Override
+	public IType getBasicType(String typeName) {
+		return getNamedType(typeName);
+	}
+
 }

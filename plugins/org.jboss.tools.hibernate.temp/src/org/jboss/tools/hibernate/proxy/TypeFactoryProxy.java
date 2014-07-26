@@ -127,4 +127,9 @@ public class TypeFactoryProxy implements ITypeFactory {
 		return new TypeProxy(TypeFactory.heuristicType(typeName));
 	}
 
+	@Override
+	public IType getBasicType(String type) {
+		return new TypeProxy(TypeFactory.basic(type));
+	}
+
 }

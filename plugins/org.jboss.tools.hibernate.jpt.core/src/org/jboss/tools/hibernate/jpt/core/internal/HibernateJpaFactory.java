@@ -14,6 +14,8 @@ import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.resource.java.EmbeddableAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEmbeddable;
+import org.jboss.tools.hibernate.spi.IService;
+import org.jboss.tools.hibernate.spi.ServiceLookup;
 
 
 /**
@@ -27,6 +29,11 @@ public class HibernateJpaFactory extends HibernateAbstractJpaFactory {
 	@Override
 	public JavaEmbeddable buildJavaEmbeddable(JavaPersistentType parent, EmbeddableAnnotation embeddableAnnotation) {
 		return new HibernateJavaEmbeddable(parent, embeddableAnnotation);
+	}
+
+	@Override
+	public IService getHibernateService() {
+		return ServiceLookup.findService("3.6");
 	}
 
 }

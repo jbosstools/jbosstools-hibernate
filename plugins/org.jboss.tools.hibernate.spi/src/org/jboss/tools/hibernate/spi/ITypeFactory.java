@@ -27,5 +27,6 @@ public interface ITypeFactory {
 	IType getTrueFalseType();
 	IType getYesNoType();
 	IType getNamedType(String typeName);
+	IType getBasicType(String type);
 
 }

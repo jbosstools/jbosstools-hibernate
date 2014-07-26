@@ -17,7 +17,6 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
-import org.eclipse.jpt.jpa.core.context.NamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
@@ -34,13 +33,11 @@ import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTable;
-import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaTable;
 import org.eclipse.jpt.jpa.core.internal.AbstractJpaFactory;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.CompleteJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.EntityAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.SecondaryTableAnnotation;
@@ -94,12 +91,15 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.IndexAnnotation
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.ParameterAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeDefAnnotation;
+import org.jboss.tools.hibernate.spi.IService;
 
 /**
  * @author Dmitry Geraskov
  *
  */
 public abstract class HibernateAbstractJpaFactory extends AbstractJpaFactory {
+	
+	public abstract IService getHibernateService();
 
 	// ********** Core Model **********
 	@Override
@@ -232,7 +232,7 @@ public abstract class HibernateAbstractJpaFactory extends AbstractJpaFactory {
 	}
 
 	public JavaType buildType(JpaContextModel parent, TypeAnnotation annotation) {
-		return new TypeImpl(parent, annotation);
+		return new TypeImpl(parent, annotation, getHibernateService());
 	}
 
 	public JavaConverter buildJavaTypeConverter(JavaAttributeMapping parent,
