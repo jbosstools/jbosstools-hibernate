@@ -27,7 +27,6 @@ import java.util.List;
 import org.eclipse.wst.sse.core.internal.provisional.INodeAdapterFactory;
 import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
 import org.eclipse.wst.xml.core.internal.provisional.format.ElementNodeFormatter;
-import org.jboss.deployment.DeploymentException;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -127,7 +126,6 @@ public class DOMModelUtil {
 	    * @return either the named child or the supplied default
 	    */
 	   public static Element getOptionalChild(Element element, String tagName)
-	      throws DeploymentException
 	   {
 	      List goodChildren = getChildrenByTagName(element, tagName);
 

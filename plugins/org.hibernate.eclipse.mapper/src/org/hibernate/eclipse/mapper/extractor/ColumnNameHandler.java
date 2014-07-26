@@ -25,13 +25,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
-import org.hibernate.cfg.reveng.TableIdentifier;
-import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.nature.HibernateNature;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.ITable;

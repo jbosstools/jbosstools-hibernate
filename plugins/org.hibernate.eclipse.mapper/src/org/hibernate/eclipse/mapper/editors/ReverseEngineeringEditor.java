@@ -39,8 +39,6 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.wst.sse.ui.StructuredTextEditor;
 import org.eclipse.wst.xml.core.internal.provisional.IXMLPreferenceNames;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
-import org.hibernate.HibernateException;
-import org.hibernate.cfg.Settings;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
@@ -243,7 +241,7 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 									service.newDefaultReverseEngineeringStrategy()));
 
 			return lazyDatabaseSchema;
-		} catch(HibernateException he) {
+		} catch(Exception he) {
 			HibernateConsolePlugin.getDefault().showError(getContainer().getShell(), MapperMessages.ReverseEngineeringEditor_error_while_refreshing_databasetree, he);
 			return null;
 		}
