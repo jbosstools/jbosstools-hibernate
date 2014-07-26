@@ -8,7 +8,6 @@ Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui;bundle-version="3.105.0",
  org.eclipse.core.runtime;bundle-version="3.9.0",
  org.hibernate.eclipse;bundle-version="3.7.0",
- org.hibernate.eclipse.libs;bundle-version="3.7.0",
  org.eclipse.jface.text;bundle-version="3.8.100",
  org.hibernate.eclipse.console;bundle-version="3.7.0",
  org.eclipse.debug.core;bundle-version="3.8.0",
@@ -16,7 +15,8 @@ Require-Bundle: org.eclipse.ui;bundle-version="3.105.0",
  org.eclipse.jdt.core;bundle-version="3.9.0",
  org.eclipse.datatools.connectivity;bundle-version="1.2.7",
  org.eclipse.ui.views;bundle-version="3.6.100",
- org.jboss.tools.hibernate.spi;bundle-version="3.8.0"
+ org.jboss.tools.hibernate.spi;bundle-version="3.8.0",
+ org.jboss.tools.hibernate.dom4j;bundle-version="1.6.1"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: org.eclipse.debug.core
@@ -33,9 +33,10 @@ Bundle-ClassPath: .,
  lib/hibernate-jpa-2.0-api-1.0.0.Final.jar,
  lib/antlr-2.7.6.jar,
  lib/commons-collections-3.1.jar,
- lib/dom4j-1.6.1.jar,
  lib/javassist-3.9.0.GA.jar,
  lib/jta-1.1.jar,
- lib/slf4j-api-1.5.8.jar
+ lib/slf4j-api-1.5.8.jar,
+ lib/hibernate-entitymanager-3.5.6-Final.jar,
+ lib/hibernate-annotations-3.5.6-Final.jar
 Bundle-Vendor: JBoss by Red Hat
 Export-Package: org.jboss.tools.hibernate.proxy
