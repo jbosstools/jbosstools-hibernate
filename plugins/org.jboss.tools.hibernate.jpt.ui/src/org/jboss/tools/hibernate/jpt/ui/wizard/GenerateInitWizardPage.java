@@ -51,7 +51,6 @@ import org.hibernate.eclipse.console.utils.DialogSelectionHelper;
 import org.hibernate.eclipse.console.utils.DriverClassHelpers;
 import org.hibernate.eclipse.console.utils.LaunchHelper;
 import org.hibernate.eclipse.launch.PathHelper;
-import org.hibernate.tool.hbm2x.StringUtils;
 import org.hibernate.util.xpl.StringHelper;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
 import org.jboss.tools.hibernate.jpt.ui.HibernateJptUIPlugin;
@@ -209,7 +208,7 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 		connectionProfileName.setItems(dtpConnectionProfileNames());
 
 		String connectionName = getProjectConnectionProfileName();
-		if (!StringUtils.isEmpty(connectionName)) {
+		if (!isEmpty(connectionName)) {
 			connectionProfileName.selectItem(connectionName);
 		}
 		connectionProfileName.doFillIntoGrid(dbGroup, numColumns);
@@ -363,4 +362,8 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 		}
 		return null;
 	}
+	
+	private boolean isEmpty(String str) {
+		return (str == null || str.trim().length() == 0);
+	}	
 }
