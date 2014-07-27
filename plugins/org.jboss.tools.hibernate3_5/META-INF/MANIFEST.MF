@@ -38,3 +38,4 @@ Bundle-ClassPath: .,
  lib/jta-1.1.jar,
  lib/slf4j-api-1.5.8.jar
 Bundle-Vendor: JBoss by Red Hat
+Export-Package: org.jboss.tools.hibernate.proxy
