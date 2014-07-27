@@ -38,7 +38,7 @@ import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ISession;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
 import org.jboss.tools.hibernate.spi.ISettings;
-import org.jboss.tools.hibernate.util.HibernateHelper;
+import org.jboss.tools.hibernate.util.ServiceLookup;
 
 /**
  * 
@@ -305,6 +305,6 @@ public class HibernateExtension3_5 implements HibernateExtension {
 
 	@Override
 	public IService getHibernateService() {
-		return HibernateHelper.INSTANCE.getHibernateService();
+		return ServiceLookup.service();
 	}
 }

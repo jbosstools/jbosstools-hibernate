@@ -52,7 +52,7 @@ import org.jboss.tools.hibernate.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ISession;
-import org.jboss.tools.hibernate.util.HibernateHelper;
+import org.jboss.tools.hibernate.util.ServiceLookup;
 import org.jboss.tools.hibernate3_5.HibernateExtension3_5;
 
 
@@ -208,7 +208,7 @@ public class ConsoleExtension3_5 implements ConsoleExtension {
 				configuration = cc.buildWith( null, false );
 			}
 			
-			final IConfiguration cfg = HibernateHelper.INSTANCE.getHibernateService().newJDBCMetaDataConfiguration();
+			final IConfiguration cfg = ServiceLookup.service().newJDBCMetaDataConfiguration();
 
 //			final JDBCMetaDataConfiguration cfg = new JDBCMetaDataConfiguration();
 			Properties properties = configuration.getProperties();
