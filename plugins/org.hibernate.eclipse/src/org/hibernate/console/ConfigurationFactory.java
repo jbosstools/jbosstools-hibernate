@@ -42,13 +42,13 @@ import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.datatools.connectivity.ProfileManager;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.HibernateException;
-import org.hibernate.MappingException;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
 import org.hibernate.util.ConfigHelper;
 import org.hibernate.util.XMLHelper;
 import org.hibernate.util.xpl.ReflectHelper;
 import org.hibernate.util.xpl.StringHelper;
+import org.jboss.tools.hibernate.exception.MappingException;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IEnvironment;
 import org.jboss.tools.hibernate.spi.INamingStrategy;
@@ -415,7 +415,7 @@ public class ConfigurationFactory {
 	private void registerFakeDriver(String driverClassName) {
 		if (driverClassName != null) {
 			try {
-				Class<Driver> driverClass = ReflectHelper.classForName(driverClassName);
+				Class<Driver> driverClass = (Class<Driver>)ReflectHelper.classForName(driverClassName);
 				if (!fakeDrivers.containsKey(driverClassName)) { // To avoid "double registration"
 					FakeDelegatingDriver fakeDelegatingDriver = new FakeDelegatingDriver(
 							driverClass.newInstance());

@@ -372,7 +372,7 @@ public class DriverDeleteTest extends TestCase {
 					Class<Driver> driverClass = null;
 					//Class.forName(DRIVER_TEST_CLASS);
 					//if (driverClass != null) {
-						driverClass = ReflectHelper.classForName(DRIVER_TEST_CLASS);
+						driverClass = (Class<Driver>)ReflectHelper.classForName(DRIVER_TEST_CLASS);
 						Driver driver2 = driverClass.newInstance();
 						//DriverManager.registerDriver(driver2);
 						ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();

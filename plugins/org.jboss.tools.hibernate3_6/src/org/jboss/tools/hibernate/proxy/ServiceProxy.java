@@ -248,7 +248,7 @@ public class ServiceProxy implements IService {
 	@SuppressWarnings("unchecked")
 	private ReverseEngineeringStrategy newReverseEngineeringStrategy(final String className, ReverseEngineeringStrategy delegate) {
         try {
-            Class<ReverseEngineeringStrategy> clazz = ReflectHelper.classForName(className);
+            Class<ReverseEngineeringStrategy> clazz = (Class<ReverseEngineeringStrategy>)ReflectHelper.classForName(className);
 			Constructor<ReverseEngineeringStrategy> constructor = clazz.getConstructor(new Class[] { ReverseEngineeringStrategy.class });
             return constructor.newInstance(new Object[] { delegate });
         }

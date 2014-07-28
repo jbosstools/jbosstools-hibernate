@@ -7,7 +7,7 @@ import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hibernate.MappingException;
+import org.jboss.tools.hibernate.exception.MappingException;
 
 /**
  * Utility class for mapping between sqltypes and hibernate type names.
