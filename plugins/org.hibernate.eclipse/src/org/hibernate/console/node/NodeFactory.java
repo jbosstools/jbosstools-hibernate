@@ -31,6 +31,7 @@ import org.hibernate.console.ImageConstants;
 import org.jboss.tools.hibernate.spi.HibernateException;
 import org.jboss.tools.hibernate.spi.IClassMetadata;
 import org.jboss.tools.hibernate.spi.ICollectionMetadata;
+import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ISession;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
 import org.jboss.tools.hibernate.spi.ITable;
@@ -191,6 +192,10 @@ public class NodeFactory {
 
 		public static TableNode createTableNode(BaseNode parent, ITable table) {
 			return new TableNode(parent, table);
+		}
+		
+		public IService getService() {
+			return getConsoleConfiguration().getHibernateExtension().getHibernateService();
 		}
 
 }

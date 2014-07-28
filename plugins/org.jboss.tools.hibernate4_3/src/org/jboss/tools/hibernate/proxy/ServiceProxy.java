@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.common.util.StandardClassLoaderDelegateImpl;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -476,6 +477,11 @@ public class ServiceProxy implements IService {
 	public ITableIdentifier newTableIdentifier(String catalog, String schema,
 			String name) {
 		return new TableIdentifierProxy(new TableIdentifier(catalog, schema, name));
+	}
+
+	@Override
+	public boolean isInitialized(Object object) {
+		return Hibernate.isInitialized(object);
 	}
 
 }

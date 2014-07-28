@@ -3,7 +3,8 @@ package org.hibernate.util.xpl;
 import java.io.InputStream;
 import java.io.Serializable;
 
-import org.hibernate.util.ConfigHelper;
+import org.jboss.tools.hibernate.spi.HibernateException;
+import org.jboss.tools.hibernate.spi.IService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.EntityResolver;
@@ -16,6 +17,12 @@ public class DTDEntityResolver implements EntityResolver, Serializable {
 	private static final String HIBERNATE_NAMESPACE = "http://www.hibernate.org/dtd/";
 	private static final String OLD_HIBERNATE_NAMESPACE = "http://hibernate.sourceforge.net/";
 	private static final String USER_NAMESPACE = "classpath://";
+	
+	private IService service;
+
+	public DTDEntityResolver(IService service) {
+		this.service = service;
+	}
 
 	public InputSource resolveEntity(String publicId, String systemId) {
 		InputSource source = null; // returning null triggers default behavior
@@ -76,10 +83,40 @@ public class DTDEntityResolver implements EntityResolver, Serializable {
 
 	protected InputStream resolveInLocalNamespace(String path) {
 		try {
-			return ConfigHelper.getUserResourceAsStream( path );
+			return getUserResourceAsStream( path );
 		}
 		catch ( Throwable t ) {
 			return null;
 		}
 	}
+	
+	private InputStream getUserResourceAsStream(String resource) {
+		boolean hasLeadingSlash = resource.startsWith( "/" );
+		String stripped = hasLeadingSlash ? resource.substring(1) : resource;
+
+		InputStream stream = null;
+
+		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		if ( classLoader != null ) {
+			stream = classLoader.getResourceAsStream( resource );
+			if ( stream == null && hasLeadingSlash ) {
+				stream = classLoader.getResourceAsStream( stripped );
+			}
+		}
+
+		if ( stream == null && service != null) {
+			stream = service.getClass().getClassLoader().getResourceAsStream( resource );
+		}
+		if ( stream == null && hasLeadingSlash && service != null) {
+			stream = service.getClass().getClassLoader().getResourceAsStream( stripped );
+		}
+
+		if ( stream == null ) {
+			throw new HibernateException( resource + " not found" );
+		}
+
+		return stream;
+	}
+
+	
 }

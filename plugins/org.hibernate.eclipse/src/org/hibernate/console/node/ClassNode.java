@@ -24,7 +24,6 @@ package org.hibernate.console.node;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Hibernate;
 import org.hibernate.console.ConsoleMessages;
 import org.hibernate.console.ImageConstants;
 import org.jboss.tools.hibernate.spi.IClassMetadata;
@@ -42,12 +41,15 @@ class ClassNode extends BaseNode {
 
 	Object baseObject;
 	boolean childrenCreated = false;
+	private NodeFactory factory;
+	
 	public ClassNode(NodeFactory factory, BaseNode parent, String name, IClassMetadata metadata, Object baseObject, boolean objectGraph) {
 
 		super(factory, parent);
         this.name = name;
         this.baseObject = baseObject;
         this.objectGraph  = objectGraph;
+        this.factory = factory;
 
 		md = metadata;
 			if (md != null) { // Don't have any hibernate related info about this one...
@@ -127,7 +129,7 @@ class ClassNode extends BaseNode {
 	public String renderLabel(boolean fullyQualifiedNames) {
 		if(objectGraph) {
 			Object o = getValue();
-			if(Hibernate.isInitialized(o) ) {
+			if(factory.getService().isInitialized(o) ) {
 				return super.renderLabel(fullyQualifiedNames) + " = " + o;	 //$NON-NLS-1$
 			} else {
 				return super.renderLabel(fullyQualifiedNames) + " = " + ConsoleMessages.ClassNode_uninitialized_proxy; //$NON-NLS-1$

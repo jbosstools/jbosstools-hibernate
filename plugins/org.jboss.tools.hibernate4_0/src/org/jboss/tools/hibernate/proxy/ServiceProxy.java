@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.hibernate.Hibernate;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.JDBCReaderFactory;
@@ -436,6 +437,11 @@ public class ServiceProxy implements IService {
 	public ITableIdentifier newTableIdentifier(String catalog, String schema,
 			String name) {
 		return new TableIdentifierProxy(new TableIdentifier(catalog, schema, name));
+	}
+
+	@Override
+	public boolean isInitialized(Object object) {
+		return Hibernate.isInitialized(object);
 	}
 
 }

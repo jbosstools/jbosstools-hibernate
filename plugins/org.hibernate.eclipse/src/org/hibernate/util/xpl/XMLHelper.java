@@ -8,6 +8,7 @@ import org.dom4j.io.DOMReader;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
+import org.jboss.tools.hibernate.spi.IService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.EntityResolver;
@@ -16,8 +17,6 @@ import org.xml.sax.SAXParseException;
 
 public final class XMLHelper {
 	private static final Logger log = LoggerFactory.getLogger(XMLHelper.class);
-
-	public static final EntityResolver DEFAULT_DTD_RESOLVER = new DTDEntityResolver();
 
 	private DOMReader domReader;
 	private SAXReader saxReader;
@@ -88,5 +87,10 @@ public final class XMLHelper {
 			System.out.println( element.asXML() );
 		}
 
+	}
+	
+	protected IService service;
+	public void setService(IService service) {
+		this.service = service;
 	}
 }

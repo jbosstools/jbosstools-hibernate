@@ -289,4 +289,9 @@ public class TestService implements IService {
 		return null;
 	}
 
+	@Override
+	public boolean isInitialized(Object object) {
+		return false;
+	}
+
 }

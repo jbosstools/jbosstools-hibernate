@@ -122,4 +122,6 @@ public interface IService {
 
 	ITableIdentifier newTableIdentifier(String catalog, String schema, String typename);
 	
+	boolean isInitialized(Object object);
+	
 }

@@ -43,6 +43,7 @@ import org.eclipse.datatools.connectivity.ProfileManager;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
+import org.hibernate.util.xpl.DTDEntityResolver;
 //import org.hibernate.util.ConfigHelper;
 import org.hibernate.util.xpl.ReflectHelper;
 import org.hibernate.util.xpl.StringHelper;
@@ -249,7 +250,7 @@ public class ConfigurationFactory {
 		if (properties != null) {
 			localCfg = localCfg.setProperties(properties);
 		}
-		EntityResolver entityResolver = XMLHelper.DEFAULT_DTD_RESOLVER;
+		EntityResolver entityResolver = new DTDEntityResolver(service);
 		if (StringHelper.isNotEmpty(prefs.getEntityResolverName())) {
 			try {
 				entityResolver = (EntityResolver) ReflectHelper.classForName(
