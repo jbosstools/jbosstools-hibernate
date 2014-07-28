@@ -1,4 +1,4 @@
-package org.hibernate.console;
+package org.jboss.tools.hibernate3_5;
 
 import java.sql.Connection;
 import java.sql.SQLException;

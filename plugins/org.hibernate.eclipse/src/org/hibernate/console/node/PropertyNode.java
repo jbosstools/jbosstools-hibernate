@@ -21,7 +21,6 @@
  */
 package org.hibernate.console.node;
 
-import org.hibernate.HibernateException;
 import org.jboss.tools.hibernate.spi.IClassMetadata;
 
 class PropertyNode extends TypeNode {
@@ -40,7 +39,7 @@ class PropertyNode extends TypeNode {
 						return null;
 					}
 					return baseMetaData.getPropertyValue(baseObject, getName());
-				} catch (HibernateException e) {
+				} catch (RuntimeException e) {
 					e.printStackTrace();
 					return null;
 				}

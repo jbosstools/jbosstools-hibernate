@@ -25,12 +25,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import net.sf.cglib.proxy.Enhancer;
-
-import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ConsoleMessages;
 import org.hibernate.console.ImageConstants;
+import org.jboss.tools.hibernate.spi.HibernateException;
 import org.jboss.tools.hibernate.spi.IClassMetadata;
 import org.jboss.tools.hibernate.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.spi.ISession;
@@ -77,7 +75,7 @@ public class NodeFactory {
         return new ConfigurationEntitiesNode(name, this, classes);
     }
 
-    public BaseNode createObjectNode(ISession session, Object o) throws HibernateException {
+    public BaseNode createObjectNode(ISession session, Object o) throws Exception {
 		IClassMetadata md = getMetaData(session.getEntityName(o) );
 //		return internalCreateClassNode(null, md.getEntityName(), md, o, false);
 		return new ClassNode(this,null,md.getEntityName(),md,o,true);

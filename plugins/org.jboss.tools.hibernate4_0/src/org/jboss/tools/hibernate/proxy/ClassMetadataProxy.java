@@ -2,9 +2,11 @@ package org.jboss.tools.hibernate.proxy;
 
 import java.util.ArrayList;
 
+import org.hibernate.EntityMode;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.type.Type;
+import org.jboss.tools.hibernate.spi.HibernateException;
 import org.jboss.tools.hibernate.spi.IClassMetadata;
 import org.jboss.tools.hibernate.spi.ISession;
 import org.jboss.tools.hibernate.spi.IType;
@@ -65,8 +67,12 @@ public class ClassMetadataProxy implements IClassMetadata {
 	}
 
 	@Override
-	public Object getPropertyValue(Object object, String name) {
-		return target.getPropertyValue(object, name);
+	public Object getPropertyValue(Object object, String name) throws HibernateException {
+		try {
+			return target.getPropertyValue(object, name);
+		} catch (org.hibernate.HibernateException e) {
+			throw new HibernateException(e.getMessage(), e.getCause());
+		}
 	}
 
 	@Override

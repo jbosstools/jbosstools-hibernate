@@ -166,7 +166,7 @@ public class CriteriaEditor extends AbstractQueryEditor {
 			try {
 			 	consoleConfiguration.build();
 	 			consoleConfiguration.buildMappings();
-			} catch (HibernateException e) {
+			} catch (Exception e) {
 				String mess = NLS.bind(HibernateConsoleMessages.CompletionHelper_error_could_not_build_cc, consoleConfiguration.getName());
 				HibernateConsolePlugin.getDefault().logErrorMessage(mess, e);
 			}

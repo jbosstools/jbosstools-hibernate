@@ -11,7 +11,7 @@ public interface IExporter {
 	void setArtifactCollector(IArtifactCollector collector);
 	void setOutputDirectory(File file);
 	void setTemplatePath(String[] strings);
-	void start();
+	void start() throws HibernateException;
 	Properties getProperties();
 	IGenericExporter getGenericExporter();
 	IHbm2DDLExporter getHbm2DDLExporter();

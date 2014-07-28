@@ -33,13 +33,13 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.osgi.util.NLS;
-import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
+import org.jboss.tools.hibernate.spi.HibernateException;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.spi.IJDBCReader;
@@ -87,7 +87,7 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 				}
 			});
 			dbs.setConnected(true);
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.LazyDatabaseSchemaWorkbenchAdapter_problems_while_reading_database_schema, e);
 			String out = NLS.bind(HibernateConsoleMessages.LazyDatabaseSchemaWorkbenchAdapter_reading_schema_error, e.getMessage());
 			res = new Object[] { out };
@@ -133,10 +133,10 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 					IProgressListener progressListener = service.newProgressListener(monitor);
 					db = service.newDatabaseCollector(reader.getMetaDataDialect());
 					reader.readDatabaseSchema(db, settings.getDefaultCatalogName(), settings.getDefaultSchemaName(), progressListener);
-				} catch (HibernateException he) {
-					throw he;
 				} catch (UnsupportedOperationException he) {
 					throw new HibernateException(he);
+				} catch (Exception he) {
+					throw new HibernateException(he.getMessage(), he.getCause());
 				}
 				return db;
 			}

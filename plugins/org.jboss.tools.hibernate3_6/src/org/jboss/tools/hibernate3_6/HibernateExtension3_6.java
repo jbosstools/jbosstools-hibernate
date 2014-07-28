@@ -31,7 +31,7 @@ import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.ext.HibernateExtension;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.PreferencesClassPathUtils;
-import org.jboss.tools.hibernate.exception.HibernateException;
+import org.jboss.tools.hibernate.spi.HibernateException;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ISession;

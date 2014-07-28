@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate.exception;
+package org.jboss.tools.hibernate.spi;
 
 @SuppressWarnings("serial")
 public class HibernateException extends RuntimeException {

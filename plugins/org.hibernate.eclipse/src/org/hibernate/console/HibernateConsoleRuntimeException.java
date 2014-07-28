@@ -21,12 +21,14 @@
  */
 package org.hibernate.console;
 
-import org.hibernate.HibernateException;
+import org.jboss.tools.hibernate.spi.HibernateException;
+
 
 /**
  * @author max
  *
  */
+@SuppressWarnings("serial")
 public class HibernateConsoleRuntimeException extends HibernateException {
 
 	

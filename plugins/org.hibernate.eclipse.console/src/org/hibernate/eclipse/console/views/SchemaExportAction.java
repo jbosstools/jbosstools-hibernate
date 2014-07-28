@@ -28,7 +28,6 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Shell;
-import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
@@ -123,7 +122,7 @@ public class SchemaExportAction extends ConsoleConfigReadyUseBaseAction {
 				// the view just react to config being
 				// build ?
 			}
-			catch (HibernateException he) {
+			catch (Exception he) {
 				HibernateConsolePlugin.getDefault().showError(
 						viewer.getControl().getShell(),
 						HibernateConsoleMessages.SchemaExportAction_exception_running_schemaexport, he );

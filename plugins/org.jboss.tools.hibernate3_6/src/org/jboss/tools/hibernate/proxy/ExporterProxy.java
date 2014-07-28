@@ -9,6 +9,7 @@ import org.hibernate.tool.hbm2x.GenericExporter;
 import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
 import org.hibernate.tool.hbm2x.QueryExporter;
 import org.hibernate.util.xpl.ReflectHelper;
+import org.jboss.tools.hibernate.spi.HibernateException;
 import org.jboss.tools.hibernate.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IExporter;
@@ -64,8 +65,12 @@ public class ExporterProxy implements IExporter {
 	}
 
 	@Override
-	public void start() {
-		target.start();
+	public void start() throws HibernateException {
+		try {
+			target.start();
+		} catch (org.hibernate.HibernateException e) {
+			throw new HibernateException(e.getMessage(), e.getCause());
+		}
 	}
 
 	@Override

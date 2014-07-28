@@ -5,7 +5,6 @@ import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.ui.actions.SelectionListenerAction;
-import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
@@ -36,7 +35,7 @@ public abstract class OpenQueryEditorAction extends SelectionListenerAction {
 			try {
 			  openQueryEditor( config, generateQuery(path) );
 			  showed = true;
-			} catch(HibernateException he) {
+			} catch(Exception he) {
 				HibernateConsolePlugin.getDefault().showError(null, HibernateConsoleMessages.OpenQueryEditorAction_exception_open_hql_editor, he);
 			}
 		}

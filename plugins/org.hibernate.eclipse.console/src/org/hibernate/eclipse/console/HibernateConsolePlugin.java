@@ -58,7 +58,6 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
@@ -670,7 +669,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 		return AbstractUIPlugin.imageDescriptorFromPlugin(ID, path);
 	}
 
-	public void logWarning(HibernateException he) {
+	public void logWarning(Exception he) {
 		logMessage(IStatus.WARNING, he==null?null:he.getMessage(), he);
 	}
 

@@ -1,5 +1,7 @@
 package org.jboss.tools.hibernate.exception;
 
+import org.jboss.tools.hibernate.spi.HibernateException;
+
 
 @SuppressWarnings("serial")
 public class MappingException extends HibernateException {

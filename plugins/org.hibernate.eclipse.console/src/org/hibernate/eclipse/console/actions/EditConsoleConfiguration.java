@@ -29,7 +29,6 @@ import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
-import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
@@ -67,14 +66,14 @@ public class EditConsoleConfiguration extends ConsoleConfigurationBasedAction {
 						final ConsoleConfiguration config = (ConsoleConfiguration) node;
 						edit( config );
 					}
-				} catch(HibernateException he) {
+				} catch(Exception he) {
 					HibernateConsolePlugin.getDefault().showError(null, HibernateConsoleMessages.EditConsoleConfiguration_exception_while_edit_config, he);
 				}
 			}
 		} else {
 			try {
 				edit(cfg);
-			} catch(HibernateException he) {
+			} catch(Exception he) {
 				HibernateConsolePlugin.getDefault().showError(null, HibernateConsoleMessages.EditConsoleConfiguration_exception_while_edit_config, he);
 			}
 		}

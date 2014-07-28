@@ -52,7 +52,7 @@ public class LoadConsoleCFGCompletionProposal implements ICompletionProposal {
 						return consoleConfiguration;
 					}
 				} );
-			} catch (HibernateException he) {
+			} catch (Exception he) {
 				HibernateConsolePlugin.getDefault().showError(HibernateConsolePlugin.getShell(), HibernateConsoleMessages.LoadConsoleCFGCompletionProposal_could_not_load_configuration + ' ' + consoleConfiguration.getName(), he);
 			}
 		}
