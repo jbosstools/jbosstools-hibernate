@@ -45,7 +45,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
-import org.hibernate.eclipse.libs.FakeDelegatingDriver;
 import org.hibernate.util.ConfigHelper;
 import org.hibernate.util.XMLHelper;
 import org.hibernate.util.xpl.ReflectHelper;
