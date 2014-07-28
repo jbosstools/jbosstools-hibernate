@@ -40,7 +40,7 @@ import org.hibernate.console.execution.DefaultExecutionContext;
 import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.test.HibernateConsoleTestPlugin;
 import org.hibernate.eclipse.console.test.utils.GarbageCollectionUtil;
-import org.hibernate.util.ReflectHelper;
+import org.hibernate.util.xpl.ReflectHelper;
 
 import junit.framework.TestCase;
 

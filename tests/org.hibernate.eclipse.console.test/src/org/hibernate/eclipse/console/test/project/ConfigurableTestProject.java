@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
@@ -31,7 +32,6 @@ import org.hibernate.eclipse.console.test.mappingproject.Customization;
 import org.hibernate.eclipse.console.test.mappingproject.MappingTestsAnnotations;
 import org.hibernate.eclipse.console.test.mappingproject.MappingTestsJpa;
 import org.hibernate.eclipse.console.test.utils.FilesTransfer;
-import org.hibernate.eclipse.libs.HibernateLibsPlugin;
 
 /**
  * 
@@ -77,7 +77,7 @@ public class ConfigurableTestProject extends TestProject {
 	}
 	
 	protected File getHibernateLibsPluginFolder(String path) throws IOException {
-		URL entry = HibernateLibsPlugin.getDefault().getBundle().getEntry(path);
+		URL entry = Platform.getBundle("org.hibernate.eclipse.libs").getEntry(path);
 		URL resProject = FileLocator.resolve(entry);
 		String resolvePath = FileLocator.resolve(resProject).getFile();
 		File folder = new File(resolvePath);

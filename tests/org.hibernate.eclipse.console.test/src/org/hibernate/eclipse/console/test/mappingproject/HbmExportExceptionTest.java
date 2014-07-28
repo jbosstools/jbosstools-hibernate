@@ -26,7 +26,6 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 import org.hibernate.eclipse.console.test.project.ConfigurableTestProject;
 import org.hibernate.eclipse.console.test.utils.ConsoleConfigUtils;
-import org.hibernate.tool.hbm2x.ExporterException;
 import org.jboss.tools.hibernate.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IHibernateMappingExporter;
@@ -109,7 +108,7 @@ public class HbmExportExceptionTest extends BaseTestSetCase {
 							new Object[] { ConsoleConfigUtils.CFG_FILE_NAME, testPackage.getPath(), e.getMessage() } );
 					fail(out);
 				}
-			} catch (ExporterException e){
+			} catch (Exception e){
 				throw (Exception)e.getCause();
 			}
 			//

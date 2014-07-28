@@ -18,7 +18,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
-import org.hibernate.InvalidMappingException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
@@ -81,7 +80,7 @@ public class BaseTestSetCase extends TestCase {
 			assertEquals(3, configs.length);
 			assertTrue(configs[0] instanceof IConfiguration);
 			persClasses = configWorkbenchAdapter.getChildren(configs[0]);
-		} catch (InvalidMappingException ex) {
+		} catch (Exception ex) {
 			String out = NLS.bind(ConsoleTestMessages.OpenMappingDiagramTest_mapping_diagrams_for_package_cannot_be_opened,
 				new Object[] { testPackage.getElementName(), ex.getMessage() });
 			fail(out);
