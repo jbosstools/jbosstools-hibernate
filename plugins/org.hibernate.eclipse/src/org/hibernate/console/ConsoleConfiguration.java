@@ -44,7 +44,6 @@ import org.hibernate.console.ext.HibernateExtensionDefinition;
 import org.hibernate.console.ext.HibernateExtensionManager;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.PreferencesClassPathUtils;
-import org.hibernate.tool.hbm2x.StringUtils;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IEnvironment;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
@@ -79,13 +78,17 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	}
 	
 	private void updateHibernateVersion(String hibernateVersion){
-		if (!StringUtils.equals(this.hibernateVersion, hibernateVersion)){
+		if (!equals(this.hibernateVersion, hibernateVersion)){
 			this.hibernateVersion = hibernateVersion;
 			loadHibernateExtension();
 		}
 	}
 	
-	public HibernateExtension getHibernateExtension(){
+    private boolean equals(String str1, String str2) {
+        return (str1 == null ? str2 == null : str1.equals(str2) );
+    }
+
+    public HibernateExtension getHibernateExtension(){
 		updateHibernateVersion(prefs.getHibernateVersion());//reinit if necessary
 		return this.extension;
 	}
