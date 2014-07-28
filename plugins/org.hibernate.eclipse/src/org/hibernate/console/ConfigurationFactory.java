@@ -43,7 +43,7 @@ import org.eclipse.datatools.connectivity.ProfileManager;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
-import org.hibernate.util.ConfigHelper;
+//import org.hibernate.util.ConfigHelper;
 import org.hibernate.util.xpl.ReflectHelper;
 import org.hibernate.util.xpl.StringHelper;
 import org.hibernate.util.xpl.XMLHelper;
@@ -309,7 +309,7 @@ public class ConfigurationFactory {
 			} else {
 				resourceName = "/hibernate.cfg.xml"; //$NON-NLS-1$
 				if (checkHibernateResoureExistence(resourceName)) {
-					stream = ConfigHelper.getResourceAsStream(resourceName); // simulate hibernate's
+					stream = getResourceAsStream(resourceName); // simulate hibernate's
 																				// default look up
 				} else {
 					return localCfg;
@@ -361,7 +361,7 @@ public class ConfigurationFactory {
 	private boolean checkHibernateResoureExistence(String resource) {
 		InputStream is = null;
 		try {
-			is = ConfigHelper.getResourceAsStream(resource);
+			is = getResourceAsStream(resource);
 		} catch (HibernateException e) {
 			// just ignore
 		} finally {
@@ -442,4 +442,25 @@ public class ConfigurationFactory {
 		}
 	}
 	
+	private InputStream getResourceAsStream(String resource) {
+		String stripped = resource.startsWith("/") ?
+				resource.substring(1) : resource;
+
+		InputStream stream = null;
+		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		if (classLoader!=null) {
+			stream = classLoader.getResourceAsStream( stripped );
+		}
+		if ( stream == null ) {
+			stream = environment.getClass().getResourceAsStream( resource );
+		}
+		if ( stream == null ) {
+			stream = environment.getClass().getClassLoader().getResourceAsStream( stripped );
+		}
+		if ( stream == null ) {
+			throw new HibernateException( resource + " not found" );
+		}
+		return stream;
+	}
+
 }
