@@ -26,6 +26,7 @@ package org.hibernate.util.xpl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
@@ -358,7 +359,17 @@ public final class StringHelper {
 				locations.add( new Integer( indx ) );
 			}
 		}
-		return ArrayHelper.toIntArray( locations );
+		return toIntArray( locations );
+	}
+
+	private static int[] toIntArray(Collection coll) {
+		Iterator iter = coll.iterator();
+		int[] arr = new int[ coll.size() ];
+		int i=0;
+		while( iter.hasNext() ) {
+			arr[i++] = ( (Integer) iter.next() ).intValue();
+		}
+		return arr;
 	}
 
 	public static boolean isNotEmpty(String string) {
