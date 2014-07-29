@@ -27,8 +27,6 @@ import java.io.Reader;
 import org.eclipse.jface.text.rules.ICharacterScanner;
 import org.eclipse.jface.text.rules.IRule;
 import org.eclipse.jface.text.rules.IToken;
-import org.hibernate.hql.antlr.HqlBaseLexer;
-import org.hibernate.hql.antlr.HqlSqlTokenTypes;
 
 import antlr.Token;
 import antlr.TokenStreamException;
@@ -42,7 +40,7 @@ public class HQLLexerRule implements IRule {
 	}
 
 	public IToken evaluate(final ICharacterScanner scanner) {
-		HqlBaseLexer lexer = new HqlBaseLexer(new Reader() {
+		HQLBaseLexer lexer = new HQLBaseLexer(new Reader() {
 
 			public void close() throws IOException {
 				// noop				
@@ -70,7 +68,7 @@ public class HQLLexerRule implements IRule {
 		});
 		try {
 			Token token = lexer.nextToken();
-			if(token.getType()==HqlSqlTokenTypes.IDENT) {
+			if(token.getType()==HQLTokenTypes.IDENT) {
 				return hqlToken;
 			} 
 		}
