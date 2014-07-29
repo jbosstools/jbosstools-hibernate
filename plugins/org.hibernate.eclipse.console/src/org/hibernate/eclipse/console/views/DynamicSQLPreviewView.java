@@ -1,9 +1,6 @@
 
 package org.hibernate.eclipse.console.views;
 
-import java.util.Collections;
-import java.util.Iterator;
-
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextViewer;
@@ -23,20 +20,13 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
-import org.hibernate.SessionFactory;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.console.ext.HibernateExtension;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
-import org.hibernate.eclipse.console.utils.QLFormatHelper;
 import org.hibernate.eclipse.hqleditor.HQLEditor;
 import org.hibernate.eclipse.hqleditor.HQLEditorDocumentSetupParticipant;
 import org.hibernate.eclipse.hqleditor.HQLSourceViewer;
 import org.hibernate.eclipse.hqleditor.HQLSourceViewerConfiguration;
-import org.hibernate.engine.query.HQLQueryPlan;
-import org.hibernate.hql.QueryTranslator;
-import org.hibernate.impl.SessionFactoryImpl;
-import org.hibernate.type.Type;
 import org.hibernate.util.xpl.StringHelper;
 
 public class DynamicSQLPreviewView extends ViewPart {
