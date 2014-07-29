@@ -3,8 +3,6 @@ package org.hibernate.eclipse.utils;
 import java.util.Iterator;
 import java.util.List;
 
-import org.hibernate.util.EmptyIterator;
-
 public class JoinedIterator implements Iterator {
 
 	private static final Iterator[] ITERATORS = {};
@@ -73,4 +71,24 @@ public class JoinedIterator implements Iterator {
 		}
 	}
 
+	private static final class EmptyIterator implements Iterator {
+
+		public static final Iterator INSTANCE = new EmptyIterator();
+
+		public boolean hasNext() {
+			return false;
+		}
+
+		public Object next() {
+			throw new UnsupportedOperationException();
+		}
+
+		public void remove() {
+			throw new UnsupportedOperationException();
+		}
+
+		private EmptyIterator() {}
+
+	}
+	
 }
