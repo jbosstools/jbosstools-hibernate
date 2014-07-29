@@ -41,7 +41,6 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.execution.ExecutionContext.Command;
@@ -50,6 +49,7 @@ import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.properties.HibernatePropertiesConstants;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.ITableIdentifier;
 import org.osgi.service.prefs.Preferences;
@@ -148,10 +148,10 @@ public class HibernateNature implements IProjectNature {
 			this.ccfg = ccfg;
 		}
 
-		@SuppressWarnings("unchecked")
 		protected IStatus run(IProgressMonitor monitor) {
 			IConfiguration cfg = ccfg.buildWith(null, false);
-			final JDBCMetaDataConfiguration jcfg = new JDBCMetaDataConfiguration();
+			IService service = ccfg.getHibernateExtension().getHibernateService();
+			final IConfiguration jcfg = service.newJDBCMetaDataConfiguration();
 			jcfg.setProperties(cfg.getProperties());
 			monitor.beginTask(HibernateConsoleMessages.HibernateNature_reading_database_metadata, IProgressMonitor.UNKNOWN);
 			try {
