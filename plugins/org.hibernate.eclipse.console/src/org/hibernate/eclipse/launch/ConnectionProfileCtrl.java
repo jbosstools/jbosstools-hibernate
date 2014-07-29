@@ -42,9 +42,9 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.internal.dialogs.PropertyDialog;
-import org.hibernate.annotations.common.util.StringHelper;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.util.xpl.StringHelper;
 
 /**
  * 
