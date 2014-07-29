@@ -67,7 +67,6 @@ import org.hibernate.console.QueryInputModel;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.QueryEditor;
 import org.hibernate.eclipse.console.utils.EclipseImages;
-import org.hibernate.hql.classic.ParserHelper;
 import org.hibernate.util.xpl.StringHelper;
 import org.jboss.tools.hibernate.spi.IType;
 
@@ -77,6 +76,9 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 	private static final String TYPE_PROPERTY = "type"; //$NON-NLS-1$
 	private static final String VALUE_PROPERTY = "value"; //$NON-NLS-1$
 	private static final String NULL_PROPERTY = "null_prop"; //$NON-NLS-1$
+	
+	private static final String HQL_SEPARATORS = " \n\r\f\t,()=<>&|+-=/*'^![]#~\\"; //$NON-NLS-1$
+	private static final String HQL_VARIABLE_PREFIX = ":"; //$NON-NLS-1$
 
 	private Composite top = null;
 
@@ -429,12 +431,12 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 				model.addParameter( cqp );
 			}
 
-			StringTokenizer st = new StringTokenizer(queryString, ParserHelper.HQL_SEPARATORS);
+			StringTokenizer st = new StringTokenizer(queryString, HQL_SEPARATORS);
 			Set<String> result = new HashSet<String>();
 
 			while ( st.hasMoreTokens() ) {
 				String string = st.nextToken();
-				if( string.startsWith(ParserHelper.HQL_VARIABLE_PREFIX) ) {
+				if( string.startsWith(HQL_VARIABLE_PREFIX) ) {
 					result.add( string.substring(1) );
 				}
 			}
