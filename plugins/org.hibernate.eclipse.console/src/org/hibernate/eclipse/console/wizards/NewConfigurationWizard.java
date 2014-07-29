@@ -60,7 +60,9 @@ import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.actions.AddConfigurationAction;
 import org.hibernate.eclipse.console.utils.EclipseImages;
-import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
+import org.jboss.tools.hibernate.spi.IExporter;
+import org.jboss.tools.hibernate.spi.IService;
+import org.jboss.tools.hibernate.spi.ServiceLookup;
 
 /**
  * Creates a new hibernate.cfg.xml
@@ -291,8 +293,11 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 	 */
 	private InputStream openContentStream(Properties props) {
         StringWriter stringWriter = new StringWriter();
-        HibernateConfigurationExporter hce = new HibernateConfigurationExporter();
-		hce.setCustomProperties(props);
+        // lookup the hibernate 3.5 service by default
+        // TODO offer user choice of hibernate version here?
+        IService service = ServiceLookup.findService("3.5");
+        IExporter hce = service.createExporter("org.hibernate.tool.hbm2x.HibernateConfigurationExporter");
+ 		hce.setCustomProperties(props);
 		hce.setOutput(stringWriter);
         hce.start();
         try {

@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.spi;
 
 import java.io.File;
+import java.io.StringWriter;
 import java.util.Properties;
 
 
@@ -16,5 +17,7 @@ public interface IExporter {
 	IGenericExporter getGenericExporter();
 	IHbm2DDLExporter getHbm2DDLExporter();
 	IQueryExporter getQueryExporter();
+	void setCustomProperties(Properties props);
+	void setOutput(StringWriter stringWriter);
 
 }
