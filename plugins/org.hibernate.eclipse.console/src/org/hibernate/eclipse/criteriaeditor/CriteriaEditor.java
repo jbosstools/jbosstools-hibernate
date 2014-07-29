@@ -57,7 +57,6 @@ import org.eclipse.ui.texteditor.ChainedPreferenceStore;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 import org.eclipse.ui.texteditor.TextOperationAction;
-import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.QueryPage;

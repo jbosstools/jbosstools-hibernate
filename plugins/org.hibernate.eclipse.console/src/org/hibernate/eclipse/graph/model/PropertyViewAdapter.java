@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Observable;
 
 import org.eclipse.swt.graphics.Image;
-import org.hibernate.HibernateException;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.workbench.HibernateWorkbenchHelper;
 import org.jboss.tools.hibernate.spi.IProperty;

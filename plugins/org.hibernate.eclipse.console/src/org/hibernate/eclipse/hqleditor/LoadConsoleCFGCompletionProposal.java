@@ -15,7 +15,6 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
-import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.execution.ExecutionContext;
