@@ -34,6 +34,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/commons-collections-3.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/slf4j-api-1.5.8.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/slf4j-log4j12-1.5.8.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/tools/hibernate-tools-3.4.0.CR2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/tools/hibernate-tools-3.4.0.CR2.jar" sourcepath="/Users/koen/.m2/repository/org/hibernate/hibernate-tools/3.4.0.CR2/hibernate-tools-3.4.0.CR2-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

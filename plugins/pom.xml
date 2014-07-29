@@ -15,6 +15,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
                 <module>org.jboss.tools.hibernate.spi</module>
                 <module>org.jboss.tools.hibernate.dom4j</module>
                 <module>org.jboss.tools.hibernate.antlr</module>
+                <module>org.jboss.tools.hibernate.jtidy</module>
 		<module>org.hibernate.eclipse</module>
 		<module>org.hibernate.eclipse.console</module>
 		<module>org.hibernate.eclipse.help</module>

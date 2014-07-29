@@ -18,7 +18,8 @@ Require-Bundle: org.hibernate.eclipse.libs;bundle-version="3.8.0",
  org.eclipse.ui.views;bundle-version="3.6.100",
  org.jboss.tools.hibernate.spi;bundle-version="3.8.0",
  org.jboss.tools.hibernate.dom4j;bundle-version="1.6.1",
- org.jboss.tools.hibernate.antlr;bundle-version="2.7.7"
+ org.jboss.tools.hibernate.antlr;bundle-version="2.7.7",
+ org.jboss.tools.hibernate.jtidy;bundle-version="8.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: org.eclipse.debug.core
@@ -29,7 +30,6 @@ Bundle-ClassPath: .,
  lib/cglib-2.2.jar,
  lib/commons-logging-1.0.4.jar,
  lib/freemarker-2.3.8.jar,
- lib/jtidy-r8-20060801.jar,
  lib/bsh-core-2.0b4.jar,
  lib/log4j-1.2.15.jar,
  lib/hibernate-jpa-2.0-api-1.0.0.Final.jar,

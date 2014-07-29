@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: JTidy
+Bundle-SymbolicName: org.jboss.tools.hibernate.jtidy
+Bundle-Version: 8.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ClassPath: lib/jtidy-r8-20060801.jar
+Export-Package: org.w3c.tidy,
+ org.w3c.tidy.ant
