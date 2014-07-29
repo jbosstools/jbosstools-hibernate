@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.spi.internal;
 
 import java.io.File;
 import java.sql.Connection;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -38,6 +39,7 @@ import org.jboss.tools.hibernate.spi.ITableIdentifier;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.ITypeFactory;
 import org.jboss.tools.hibernate.spi.IValue;
+import org.xml.sax.EntityResolver;
 
 public class TestService implements IService {
 
@@ -292,6 +294,12 @@ public class TestService implements IService {
 	@Override
 	public boolean isInitialized(Object object) {
 		return false;
+	}
+
+	@Override
+	public List<String> getJPAMappingFilePaths(String persistenceUnitName,
+			EntityResolver entityResolver) {
+		return null;
 	}
 
 }

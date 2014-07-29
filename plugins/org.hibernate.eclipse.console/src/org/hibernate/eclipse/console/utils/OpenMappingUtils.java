@@ -534,7 +534,10 @@ public class OpenMappingUtils {
 		final ConsoleConfiguration cc2 = consoleConfig;
 		List<String> documentPaths = (List<String>)consoleConfig.execute(new ExecutionContext.Command() {
 			public Object execute() {
-				return OpenMappingUtilsEjb3.enumDocuments(cc2);
+				String persistenceUnitName = cc2.getPreferences().getPersistenceUnitName();
+				EntityResolver entityResolver = cc2.getConfiguration().getEntityResolver();
+				IService service = cc2.getHibernateExtension().getHibernateService();
+				return service.getJPAMappingFilePaths(persistenceUnitName, entityResolver);
 			}
 		});
     	if (documentPaths == null) {

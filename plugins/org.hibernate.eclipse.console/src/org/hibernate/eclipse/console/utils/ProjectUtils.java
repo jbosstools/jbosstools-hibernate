@@ -435,7 +435,7 @@ public class ProjectUtils {
 		}
 		IPath projPathFull = javaProject.getResource().getLocation();
 		IPath projPath = javaProject.getPath();
-		IPath path = javaProject.readOutputLocation().append(OpenMappingUtilsEjb3.META_INF_PERS_XML);
+		IPath path = javaProject.readOutputLocation().append("META-INF/persistence.xml"); //$NON-NLS-1$
 		path = path.makeRelativeTo(projPath);
 		path = projPathFull.append(path);
 		IFile file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(path);

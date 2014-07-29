@@ -3,6 +3,7 @@ package org.jboss.tools.hibernate.proxy;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.sql.Connection;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -30,7 +31,6 @@ import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.JoinedSubclass;
-import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
@@ -81,6 +81,7 @@ import org.jboss.tools.hibernate.spi.ITableIdentifier;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.ITypeFactory;
 import org.jboss.tools.hibernate.spi.IValue;
+import org.jboss.tools.hibernate.util.OpenMappingUtilsEjb3;
 import org.jboss.tools.hibernate.util.TypeFormats;
 import org.xml.sax.EntityResolver;
 
@@ -348,7 +349,7 @@ public class ServiceProxy implements IService {
 	@Override
 	public IValue newList(IPersistentClass persistentClass) {
 		assert persistentClass instanceof PersistentClassProxy;
-		return new ValueProxy(new List(((PersistentClassProxy)persistentClass).getTarget()));
+		return new ValueProxy(new org.hibernate.mapping.List(((PersistentClassProxy)persistentClass).getTarget()));
 	}
 
 	@Override
@@ -434,6 +435,12 @@ public class ServiceProxy implements IService {
 	@Override
 	public boolean isInitialized(Object object) {
 		return Hibernate.isInitialized(object);
+	}
+
+	@Override
+	public List<String> getJPAMappingFilePaths(
+			String persistenceUnitName, EntityResolver entityResolver) {
+		return OpenMappingUtilsEjb3.enumDocuments(persistenceUnitName, entityResolver);
 	}
 
 }

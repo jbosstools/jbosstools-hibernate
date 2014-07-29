@@ -1,4 +1,4 @@
-package org.hibernate.eclipse.console.utils;
+package org.jboss.tools.hibernate.util;
 
 import java.io.IOException;
 import java.net.URL;
@@ -32,6 +32,7 @@ import org.hibernate.ejb.packaging.NamedInputStream;
 import org.hibernate.ejb.packaging.PackageFilter;
 import org.hibernate.ejb.packaging.PersistenceMetadata;
 import org.hibernate.ejb.packaging.PersistenceXmlLoader;
+import org.xml.sax.EntityResolver;
 
 /**
  * Most functions in this utility class are copy of 
@@ -56,8 +57,7 @@ public class OpenMappingUtilsEjb3 {
 	 * @param consoleConfiguration
 	 * @return
 	 */
-	public static List<String> enumDocuments(ConsoleConfiguration consoleConfiguration) {
-		String persistenceUnitName = consoleConfiguration.getPreferences().getPersistenceUnitName();
+	public static List<String> enumDocuments(String persistenceUnitName, EntityResolver entityResolver) {
 		Enumeration<URL> xmls = null;
 		try {
 			xmls = Thread.currentThread().getContextClassLoader().getResources(META_INF_PERS_XML);
@@ -75,7 +75,7 @@ public class OpenMappingUtilsEjb3 {
 			try {
 				metadataFiles = PersistenceXmlLoader.deploy(
 						url, EMPTY_MAP,
-						consoleConfiguration.getConfiguration().getEntityResolver(),
+						entityResolver,
 						PersistenceUnitTransactionType.RESOURCE_LOCAL);
 			} catch (Exception e1) {
 				//ignore

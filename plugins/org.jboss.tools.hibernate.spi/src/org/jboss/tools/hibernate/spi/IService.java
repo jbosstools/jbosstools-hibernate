@@ -2,10 +2,12 @@ package org.jboss.tools.hibernate.spi;
 
 import java.io.File;
 import java.sql.Connection;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.xml.sax.EntityResolver;
 
 public interface IService {
 
@@ -123,5 +125,8 @@ public interface IService {
 	ITableIdentifier newTableIdentifier(String catalog, String schema, String typename);
 	
 	boolean isInitialized(Object object);
+
+	List<String> getJPAMappingFilePaths(String persistenceUnitName,
+			EntityResolver entityResolver);
 	
 }
