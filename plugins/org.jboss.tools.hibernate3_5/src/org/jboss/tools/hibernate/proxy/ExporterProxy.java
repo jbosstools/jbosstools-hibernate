@@ -36,7 +36,7 @@ public class ExporterProxy implements IExporter {
 	private Exporter createTarget(String exporterClassName) {
 		Exporter result = null;
 		try {
-			result = (Exporter) ReflectHelper.classForName(exporterClassName).newInstance();
+			result = (Exporter)this.getClass().getClassLoader().loadClass(exporterClassName).newInstance();
 		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
 			throw new HibernateException(e);
 		}
