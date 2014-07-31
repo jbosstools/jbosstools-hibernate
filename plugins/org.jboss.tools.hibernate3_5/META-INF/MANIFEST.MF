@@ -23,6 +23,7 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: org.eclipse.debug.core
 Bundle-ClassPath: .,
+ lib/hibernate3.jar,
  lib/hibernate-tools-3.4.0.CR2.jar,
  lib/slf4j-log4j12-1.5.8.jar,
  lib/cglib-2.2.jar,
