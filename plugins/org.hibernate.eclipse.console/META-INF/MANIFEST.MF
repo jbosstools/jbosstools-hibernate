@@ -89,8 +89,7 @@ Require-Bundle: org.hibernate.eclipse;bundle-version="3.7.0",
  org.jboss.tools.hibernate.spi;bundle-version="3.8.0",
  org.jboss.tools.hibernate.dom4j;bundle-version="1.6.1",
  org.jboss.tools.hibernate.antlr;bundle-version="2.7.7",
- org.jboss.tools.hibernate.jtidy;bundle-version="8.0.0",
- org.hibernate.eclipse.libs;bundle-version="3.8.0"
+ org.jboss.tools.hibernate.jtidy;bundle-version="8.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Eclipse-BundleShape: dir
