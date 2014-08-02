@@ -8,10 +8,12 @@ import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
+import org.hibernate.cfg.Settings;
 import org.hibernate.engine.spi.Mapping;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
+import org.hibernate.service.ServiceRegistryBuilder;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IMappings;
 import org.jboss.tools.hibernate.spi.INamingStrategy;
@@ -29,6 +31,8 @@ public class ConfigurationProxy implements IConfiguration {
 	private INamingStrategy namingStrategy;
 	private HashSet<ITable> tableMappings = null;
 	private HashMap<String, IPersistentClass> classMappings = null;
+	private ServiceRegistry serviceRegistry = null;
+
 	
 	public ConfigurationProxy(Configuration configuration) {
 		target = configuration;
@@ -108,7 +112,14 @@ public class ConfigurationProxy implements IConfiguration {
 
 	@Override
 	public ISettings buildSettings() {
-		throw new RuntimeException("unsupported operation");
+		if (serviceRegistry == null) {
+			Configuration configuration = new Configuration();
+			configuration.configure();
+			ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
+			builder.applySettings(configuration.getProperties());
+			serviceRegistry = builder.buildServiceRegistry();
+		}
+		return new SettingsProxy((Settings)buildSettings(serviceRegistry));
 	}
 	
 	Configuration getConfiguration() {

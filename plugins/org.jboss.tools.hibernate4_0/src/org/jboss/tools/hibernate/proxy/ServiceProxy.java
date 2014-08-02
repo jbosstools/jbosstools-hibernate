@@ -239,8 +239,10 @@ public class ServiceProxy implements IService {
 
 	private ServiceRegistry getServiceRegistry() {
 		if (serviceRegistry == null) {
+			Configuration configuration = new Configuration();
+			configuration.configure();
 			ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
-			builder.configure();
+			builder.applySettings(configuration.getProperties());
 			serviceRegistry = builder.buildServiceRegistry();
 		}
 		return serviceRegistry;
