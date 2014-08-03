@@ -89,8 +89,6 @@ import org.xml.sax.EntityResolver;
 
 public class ServiceProxy implements IService {
 
-	private ServiceRegistry serviceRegistry = null;
-
 	@Override
 	public IConfiguration newAnnotationConfiguration() {
 		Configuration configuration = new Configuration();
@@ -233,19 +231,16 @@ public class ServiceProxy implements IService {
 						properties, 
 						((SettingsProxy)settings).getTarget(), 
 						((ReverseEngineeringStrategyProxy)strategy).getTarget(),
-						getServiceRegistry());
+						buildServiceRegistry());
 		return new JDBCReaderProxy(target);
 	}
 
-	private ServiceRegistry getServiceRegistry() {
-		if (serviceRegistry == null) {
-			Configuration configuration = new Configuration();
-			configuration.configure();
-			ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
-			builder.applySettings(configuration.getProperties());
-			serviceRegistry = builder.buildServiceRegistry();
-		}
-		return serviceRegistry;
+	private ServiceRegistry buildServiceRegistry() {
+		Configuration configuration = new Configuration();
+		configuration.configure();
+		ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
+		builder.applySettings(configuration.getProperties());
+		return builder.buildServiceRegistry();
 	}
 
 	@Override
