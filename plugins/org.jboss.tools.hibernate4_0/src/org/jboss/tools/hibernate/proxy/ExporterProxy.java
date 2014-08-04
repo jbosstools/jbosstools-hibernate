@@ -4,13 +4,11 @@ import java.io.File;
 import java.io.StringWriter;
 import java.util.Properties;
 
-import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.GenericExporter;
 import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
 import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
 import org.hibernate.tool.hbm2x.QueryExporter;
-import org.hibernate.util.xpl.ReflectHelper;
 import org.jboss.tools.hibernate.spi.HibernateException;
 import org.jboss.tools.hibernate.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.spi.IConfiguration;
@@ -37,9 +35,9 @@ public class ExporterProxy implements IExporter {
 	private Exporter createTarget(String exporterClassName) {
 		Exporter result = null;
 		try {
-			result = (Exporter) ReflectHelper.classForName(exporterClassName).newInstance();
+			result = (Exporter)this.getClass().getClassLoader().loadClass(exporterClassName).newInstance();
 		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-			throw new HibernateConsoleRuntimeException(e);
+			throw new HibernateException(e);
 		}
 		return result;
 	}
