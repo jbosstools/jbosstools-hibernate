@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
 import org.jboss.tools.hibernate.spi.IColumn;
 import org.jboss.tools.hibernate.spi.IPrimaryKey;
@@ -46,7 +47,7 @@ public class PrimaryKeyProxy implements IPrimaryKey {
 		columns = new ArrayList<IColumn>();
 		Iterator<?> origin = target.getColumns().iterator();
 		while (origin.hasNext()) {
-			columns.add(new ColumnProxy(origin.next()));
+			columns.add(new ColumnProxy((Column)origin.next()));
 		}
 	}
 

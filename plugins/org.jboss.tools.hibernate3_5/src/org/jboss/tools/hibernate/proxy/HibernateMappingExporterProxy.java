@@ -23,8 +23,7 @@ public class HibernateMappingExporterProxy implements IHibernateMappingExporter 
 	@Override
 	public void setGlobalSettings(IHibernateMappingGlobalSettings hmgs) {
 		assert hmgs instanceof HibernateMappingGlobalSettingsProxy;
-		target.setGlobalSettings(((HibernateMappingGlobalSettingsProxy) hmgs)
-				.getTarget());
+		target.setGlobalSettings(((HibernateMappingGlobalSettingsProxy) hmgs).getTarget());
 	}
 
 	@Override
