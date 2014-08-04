@@ -170,7 +170,7 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public IArtifactCollector newArtifactCollector() {
-		return HibernateHelper.INSTANCE.getHibernateService().newArtifactCollector();
+		return new ArtifactCollectorProxy();
 	}
 
 	@Override
