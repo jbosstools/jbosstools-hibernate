@@ -9,12 +9,15 @@ import java.util.Properties;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.Settings;
+import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.spi.Mapping;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
+import org.hibernate.service.jdbc.dialect.spi.DialectFactory;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IDialect;
 import org.jboss.tools.hibernate.spi.IMapping;
 import org.jboss.tools.hibernate.spi.IMappings;
 import org.jboss.tools.hibernate.spi.INamingStrategy;
@@ -34,6 +37,7 @@ public class ConfigurationProxy implements IConfiguration {
 	private HashMap<String, IPersistentClass> classMappings = null;
 	private ServiceRegistry serviceRegistry = null;
 	private IMapping mapping = null;
+	private IDialect dialect = null;
 
 	
 	public ConfigurationProxy(Configuration configuration) {
@@ -240,6 +244,18 @@ public class ConfigurationProxy implements IConfiguration {
 		while (iterator.hasNext()) {
 			tableMappings.add(new TableProxy(iterator.next()));
 		}
+	}
+
+	@Override
+	public IDialect getDialect() {
+		if (dialect != null) {
+			DialectFactory dialectFactory = serviceRegistry.getService(DialectFactory.class);
+			Dialect d = dialectFactory.buildDialect(getProperties(), null);
+			if (d != null) {
+				dialect = new DialectProxy(d);
+			}
+		}
+		return dialect;
 	}
 
 }

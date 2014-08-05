@@ -29,8 +29,8 @@ import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
-import org.hibernate.engine.jdbc.dialect.internal.DialectFactoryImpl;
 import org.hibernate.engine.jdbc.dialect.spi.DatabaseMetaDataDialectResolutionInfoAdapter;
+import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfoSource;
 import org.hibernate.jpa.HibernatePersistenceProvider;
@@ -339,7 +339,9 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public IDialect newDialect(Properties properties, final Connection connection) {
-		Dialect dialect = new DialectFactoryImpl().buildDialect(
+		ServiceRegistry serviceRegistry = buildServiceRegistry();
+		DialectFactory dialectFactory = serviceRegistry.getService(DialectFactory.class);
+		Dialect dialect = dialectFactory.buildDialect(
 				properties, 
 				new DialectResolutionInfoSource() {
 					@Override

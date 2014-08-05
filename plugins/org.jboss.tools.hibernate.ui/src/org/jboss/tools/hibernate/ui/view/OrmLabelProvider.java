@@ -164,7 +164,7 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 			final String dialectName = config.getProperty(environment.getDialect());
 			if (dialectName != null) {
 				try {
-					dialect = getService().newDialect(config.getProperties(), null);
+					dialect = config.getDialect();
 				} catch (Exception e) {
 					HibernateConsolePlugin.getDefault().logErrorMessage("Exception: ", e); //$NON-NLS-1$
 				}

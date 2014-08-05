@@ -8,10 +8,13 @@ import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
+import org.hibernate.dialect.Dialect;
+import org.hibernate.dialect.resolver.DialectFactory;
 import org.hibernate.engine.Mapping;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.spi.IDialect;
 import org.jboss.tools.hibernate.spi.IMapping;
 import org.jboss.tools.hibernate.spi.IMappings;
 import org.jboss.tools.hibernate.spi.INamingStrategy;
@@ -30,6 +33,7 @@ public class ConfigurationProxy implements IConfiguration {
 	private HashSet<ITable> tableMappings = null;
 	private HashMap<String, IPersistentClass> classMappings = null;
 	private IMapping mapping = null;
+	private IDialect dialect = null;
 	
 	public ConfigurationProxy(Configuration configuration) {
 		target = configuration;
@@ -221,6 +225,17 @@ public class ConfigurationProxy implements IConfiguration {
 		while (iterator.hasNext()) {
 			tableMappings.add(new TableProxy(iterator.next()));
 		}
+	}
+
+	@Override
+	public IDialect getDialect() {
+		if (dialect == null) {
+			Dialect d = DialectFactory.buildDialect(getProperties());
+			if (d != null) {
+				dialect = new DialectProxy(d);
+			}
+		}
+		return dialect;
 	}
 
 }

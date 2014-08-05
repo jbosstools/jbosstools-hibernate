@@ -35,5 +35,6 @@ public interface IConfiguration {
 	ISessionFactory buildSessionFactory(Object serviceRegistry);
 	Object buildSettings(Object serviceRegistry);
 	Iterator<ITable> getTableMappings();
+	IDialect getDialect();
 
 }
