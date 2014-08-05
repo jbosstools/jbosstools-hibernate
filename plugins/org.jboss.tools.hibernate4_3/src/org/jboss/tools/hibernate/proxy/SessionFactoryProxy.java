@@ -44,13 +44,12 @@ public class SessionFactoryProxy implements ISessionFactory {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Map<String, ICollectionMetadata> getAllCollectionMetadata() {
 		if (allCollectionMetadata == null) {
 			initializeAllCollectionMetadata();
 		}
-		return target.getAllCollectionMetadata();
+		return allCollectionMetadata;
 	}
 	
 	@SuppressWarnings("unchecked")
