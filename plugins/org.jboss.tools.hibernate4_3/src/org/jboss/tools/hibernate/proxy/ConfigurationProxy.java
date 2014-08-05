@@ -101,7 +101,7 @@ public class ConfigurationProxy implements IConfiguration {
 
 	@Override
 	public void buildMappings() {
-		target.buildMapping();
+		target.buildMappings();
 	}
 
 	@Override
