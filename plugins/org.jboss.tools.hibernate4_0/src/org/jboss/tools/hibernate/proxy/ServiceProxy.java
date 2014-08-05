@@ -41,6 +41,7 @@ import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
+import org.hibernate.service.classloading.internal.ClassLoaderServiceImpl;
 import org.hibernate.service.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.service.jdbc.dialect.internal.DialectFactoryImpl;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
@@ -82,7 +83,6 @@ import org.jboss.tools.hibernate.spi.ITableIdentifier;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.ITypeFactory;
 import org.jboss.tools.hibernate.spi.IValue;
-import org.jboss.tools.hibernate.util.HibernateHelper;
 import org.jboss.tools.hibernate.util.OpenMappingUtilsEjb3;
 import org.jboss.tools.hibernate.util.TypeFormats;
 import org.xml.sax.EntityResolver;
@@ -314,7 +314,9 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public IDialect newDialect(Properties properties, Connection connection) {
-		Dialect dialect = new DialectFactoryImpl().buildDialect(properties, connection);
+		DialectFactoryImpl dialectFactory = new DialectFactoryImpl();
+		dialectFactory.setClassLoaderService(new ClassLoaderServiceImpl());
+		Dialect dialect = dialectFactory.buildDialect(properties, connection);
 		return dialect != null ? new DialectProxy(dialect) : null;
 	}
 
