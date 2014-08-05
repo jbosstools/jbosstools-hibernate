@@ -28,7 +28,7 @@ public interface IConfiguration {
 	void setPreferBasicCompositeIds(boolean preferBasicCompositeids);
 	void setReverseEngineeringStrategy(IReverseEngineeringStrategy res);
 	void readFromJDBC();
-	Object buildMapping();
+	IMapping buildMapping();
 	IPersistentClass getClassMapping(String string);
 	INamingStrategy getNamingStrategy();
 	EntityResolver getEntityResolver();
