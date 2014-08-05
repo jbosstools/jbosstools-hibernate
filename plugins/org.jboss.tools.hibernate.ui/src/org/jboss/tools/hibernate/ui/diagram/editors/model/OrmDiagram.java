@@ -82,7 +82,7 @@ public class OrmDiagram extends BaseElement {
 	protected HashMap<String, OrmShape> elements = new HashMap<String, OrmShape>();
 	protected ArrayList<Connection> connections = new ArrayList<Connection>();
 
-	protected OrmLabelProvider labelProvider = new OrmLabelProvider();
+	protected OrmLabelProvider labelProvider;
 	
 	protected boolean connectionsVisibilityClassMapping = true;
 	protected boolean connectionsVisibilityPropertyMapping = true;
@@ -142,7 +142,7 @@ public class OrmDiagram extends BaseElement {
 		this.consoleConfigName = consoleConfigName;
 		@SuppressWarnings("unused")
 		ConsoleConfiguration consoleConfig = getConsoleConfig();
-		labelProvider.setConsoleConfigName(consoleConfigName);
+		labelProvider = new OrmLabelProvider(consoleConfigName);
 		roots.addAll(rts);
 		// should sort elements - cause different sort order gives different file name
 		// for the same thing

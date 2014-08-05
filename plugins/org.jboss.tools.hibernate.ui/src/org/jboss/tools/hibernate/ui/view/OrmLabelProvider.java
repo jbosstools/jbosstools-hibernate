@@ -61,6 +61,12 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 			return;
 		}
 		this.consoleConfigName = consoleConfigName;
+		getConsoleConfig().execute(new ExecutionContext.Command() {			
+			@Override
+			public Object execute() {
+				return getConfig().buildSessionFactory();
+			}
+		});
 		mapping = null;
 		dialect = null;
 	}
