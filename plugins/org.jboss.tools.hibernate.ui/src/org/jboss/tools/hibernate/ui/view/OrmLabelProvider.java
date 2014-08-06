@@ -61,12 +61,17 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 			return;
 		}
 		this.consoleConfigName = consoleConfigName;
-		getConsoleConfig().execute(new ExecutionContext.Command() {			
-			@Override
-			public Object execute() {
-				return getConfig().buildSessionFactory();
-			}
-		});
+		final ConsoleConfiguration consoleConfig = getConsoleConfig();
+		// need to build session factory for hibernate 4.3
+		// TODO verify if/how this can be done differently
+		if (consoleConfig != null && "4.3".equals(consoleConfig.getHibernateExtension().getHibernateVersion())) {
+			getConsoleConfig().execute(new ExecutionContext.Command() {			
+				@Override
+				public Object execute() {
+					return getConfig().buildSessionFactory();
+				}
+			});
+		}
 		mapping = null;
 		dialect = null;
 	}
