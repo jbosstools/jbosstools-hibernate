@@ -29,7 +29,7 @@ import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.spi.IGenericExporter;
 import org.jboss.tools.hibernate.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.spi.IQueryExporter;
-import org.jboss.tools.hibernate.util.HibernateHelper;
+import org.jboss.tools.hibernate.util.ServiceLookup;
 
 /**
  * ExporterFactory is used in UI to hold additional configuration for Exporter definitions
@@ -239,7 +239,7 @@ public class ExporterFactory {
 			exporter.setOutputDirectory(new File(loc));
 		}
 
-		HibernateHelper.INSTANCE.getHibernateService().setExporterConfiguration(exporter, cfg);
+		ServiceLookup.service().setExporterConfiguration(exporter, cfg);
 
 		List<String> templatePathList = new ArrayList<String>();
 		if (extract.containsKey(ExporterFactoryStrings.TEMPLATE_PATH)) {

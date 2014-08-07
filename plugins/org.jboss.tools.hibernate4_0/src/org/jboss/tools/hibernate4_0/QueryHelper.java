@@ -20,7 +20,7 @@ import org.jboss.tools.hibernate.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.spi.IQueryTranslator;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
 import org.jboss.tools.hibernate.spi.IType;
-import org.jboss.tools.hibernate.util.HibernateHelper;
+import org.jboss.tools.hibernate.util.ServiceLookup;
 
 /**
  * @author Dmitry Geraskov
@@ -38,7 +38,7 @@ public class QueryHelper {
 			public Object execute() {
 				try {
 					StringBuffer str = new StringBuffer(256);
-					IHQLQueryPlan plan = HibernateHelper.INSTANCE.getHibernateService().newHQLQueryPlan(query, false, sessionFactory);
+					IHQLQueryPlan plan = ServiceLookup.service().newHQLQueryPlan(query, false, sessionFactory);
 
 					IQueryTranslator[] translators = plan.getTranslators();
 					for (int i = 0; i < translators.length; i++) {
