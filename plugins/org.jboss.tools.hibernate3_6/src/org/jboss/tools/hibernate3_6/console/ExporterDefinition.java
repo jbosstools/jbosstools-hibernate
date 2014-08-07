@@ -25,7 +25,7 @@ import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.model.impl.ExporterProperty;
 import org.jboss.tools.hibernate.spi.IExporter;
-import org.jboss.tools.hibernate.util.HibernateHelper;
+import org.jboss.tools.hibernate.util.ServiceLookup;
 
 /**
  * Represents what is specified in plugin.xml about possible exporters.
@@ -93,7 +93,7 @@ public class ExporterDefinition {
 
 
 	public IExporter createExporterInstance() {
-	   return HibernateHelper.INSTANCE.getHibernateService().createExporter(classname);
+	   return ServiceLookup.service().createExporter(classname);
 	}
 
 	public String getDescription() {

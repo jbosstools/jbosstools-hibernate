@@ -36,7 +36,7 @@ import org.jboss.tools.hibernate.spi.IQuery;
 import org.jboss.tools.hibernate.spi.ISession;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.ITypeFactory;
-import org.jboss.tools.hibernate.util.HibernateHelper;
+import org.jboss.tools.hibernate.util.ServiceLookup;
 
 
 public class HQLQueryPage extends AbstractQueryPage {
@@ -199,7 +199,7 @@ public class HQLQueryPage extends AbstractQueryPage {
     
     private ITypeFactory getTypeFactory() {
     	if (typeFactory == null) {
-    		typeFactory = HibernateHelper.INSTANCE.getHibernateService().newTypeFactory();
+    		typeFactory = ServiceLookup.service().newTypeFactory();
     	}
     	return typeFactory;
     }
