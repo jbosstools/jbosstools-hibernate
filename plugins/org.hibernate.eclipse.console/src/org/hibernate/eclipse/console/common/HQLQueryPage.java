@@ -19,7 +19,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.tools.hibernate3_6;
+package org.hibernate.eclipse.console.common;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,7 +27,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import org.hibernate.HibernateException;
 import org.hibernate.console.AbstractQueryPage;
 import org.hibernate.console.ConsoleQueryParameter;
 import org.hibernate.console.QueryInputModel;
@@ -43,7 +42,6 @@ public class HQLQueryPage extends AbstractQueryPage {
 
 	private IQuery query;
 	private String queryString;
-	private ITypeFactory typeFactory;
 	
 	public List<Object> getList() {
 		if (query==null) return Collections.emptyList();
@@ -62,12 +60,9 @@ public class HQLQueryPage extends AbstractQueryPage {
 				}
 				pcs.firePropertyChange("list", null, list); //$NON-NLS-1$
 			} 
-			catch (HibernateException e) {
+			catch (RuntimeException e) {
 				list = Collections.emptyList();
 				addException(e);				                
-			} catch (IllegalArgumentException e) {
-				list = Collections.emptyList();
-				addException(e);
 			}
 		}
 		return list;
@@ -87,16 +82,22 @@ public class HQLQueryPage extends AbstractQueryPage {
 			try {
 				int pos = Integer.parseInt(parameter.getName());
 				//FIXME no method to set positioned list value
-				query2.setParameter(pos, calcValue( parameter ),
+				query2.setParameter(
+						pos, 
+						calcValue( parameter ),
 						getTypeFactory().getNamedType(parameter.getTypeName()));
 			} catch(NumberFormatException nfe) {
 				Object value = parameter.getValue();
 				if (value != null && value.getClass().isArray()){
 					Object[] values = (Object[])value;
-					query2.setParameterList(parameter.getName(), Arrays.asList(values),
+					query2.setParameterList(
+							parameter.getName(), 
+							Arrays.asList(values),
 							getTypeFactory().getNamedType(parameter.getTypeName()));
 				} else {
-					query2.setParameter(parameter.getName(), calcValue( parameter ),
+					query2.setParameter(
+							parameter.getName(), 
+							calcValue( parameter ),
 							getTypeFactory().getNamedType(parameter.getTypeName()));
 				}
 			}
@@ -105,6 +106,14 @@ public class HQLQueryPage extends AbstractQueryPage {
 
 	private Object calcValue(ConsoleQueryParameter parameter) {
 		return parameter.getValueForQuery();				
+	}
+	
+	private ITypeFactory typeFactory = null;
+	private ITypeFactory getTypeFactory() {
+		if (typeFactory == null) {
+			typeFactory = getService().newTypeFactory();
+		}
+		return typeFactory;
 	}
 
 	/**
@@ -122,9 +131,7 @@ public class HQLQueryPage extends AbstractQueryPage {
 	public void setSession(Object s) {
 		super.setSession(s);
 		try {			             
-			query = ((ISession) this.getSession()).createQuery(getQueryString());
-		} catch (HibernateException e) {
-			addException(e);			
+			query = ((ISession)this.getSession()).createQuery(getQueryString());
 		} catch (Exception e) {
 			addException( e );
 		} 
@@ -179,7 +186,7 @@ public class HQLQueryPage extends AbstractQueryPage {
         			l.add(t[i]);
         		}			
     		}
-    	} catch (HibernateException he) {
+    	} catch (RuntimeException he) {
     		addException(he);           
     	}
     
@@ -191,19 +198,12 @@ public class HQLQueryPage extends AbstractQueryPage {
     		try {
     			((ISession)getSession()).close();
     		} 
-    		catch (HibernateException e) {
+    		catch (RuntimeException e) {
     			exceptions.add(e);
     		}
     	}    	
     }
     
-    private ITypeFactory getTypeFactory() {
-    	if (typeFactory == null) {
-    		typeFactory = getService().newTypeFactory();
-    	}
-    	return typeFactory;
-    }
-
     private IService getService() {
     	return getHibernateExtension().getHibernateService();
     }
