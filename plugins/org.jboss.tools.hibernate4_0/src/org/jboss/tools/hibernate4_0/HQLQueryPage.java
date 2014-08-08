@@ -33,10 +33,10 @@ import org.hibernate.console.ConsoleQueryParameter;
 import org.hibernate.console.QueryInputModel;
 import org.hibernate.console.ext.HibernateExtension;
 import org.jboss.tools.hibernate.spi.IQuery;
+import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ISession;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.ITypeFactory;
-import org.jboss.tools.hibernate.util.ServiceLookup;
 
 
 public class HQLQueryPage extends AbstractQueryPage {
@@ -199,9 +199,13 @@ public class HQLQueryPage extends AbstractQueryPage {
     
     private ITypeFactory getTypeFactory() {
     	if (typeFactory == null) {
-    		typeFactory = ServiceLookup.service().newTypeFactory();
+    		typeFactory = getService().newTypeFactory();
     	}
     	return typeFactory;
+    }
+
+    private IService getService() {
+    	return getHibernateExtension().getHibernateService();
     }
 
 }
