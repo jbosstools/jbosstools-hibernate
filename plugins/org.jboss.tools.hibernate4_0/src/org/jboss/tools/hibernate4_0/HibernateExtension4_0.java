@@ -21,8 +21,10 @@ import java.util.Map;
 
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.cfg.Settings;
+import org.hibernate.console.ConfigurationFactory;
 import org.hibernate.console.ConsoleConfigClassLoader;
 import org.hibernate.console.ConsoleMessages;
+import org.hibernate.console.FakeDelegatingDriver;
 import org.hibernate.console.QueryInputModel;
 import org.hibernate.console.QueryPage;
 import org.hibernate.console.execution.DefaultExecutionContext;
