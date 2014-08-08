@@ -16,6 +16,7 @@ import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocumentRegion;
 import org.eclipse.wst.xml.ui.internal.contentassist.ContentAssistRequest;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.ext.HibernateExtension;
 import org.hibernate.eclipse.mapper.MapperPlugin;
 import org.hibernate.eclipse.nature.HibernateNature;
 import org.jboss.tools.hibernate.spi.IService;
@@ -115,10 +116,16 @@ public class StructuredTextViewerConfigurationUtil {
 		HibernateNature hibnat = HibernateNature.getHibernateNature(javaProject);
 		if (hibnat != null) {
 			ConsoleConfiguration cc = hibnat.getDefaultConsoleConfiguration();
-			return cc.getHibernateExtension().getHibernateService();
-		} else {
-			return ServiceLookup.findService("3.5"); //$NON-NLS-1$
-		}
+			if (cc != null) {
+				HibernateExtension extension = cc.getHibernateExtension();
+				if (extension != null) {
+					return extension.getHibernateService();
+				}
+			}
+		} 
+		// return hibernate 3.5 service by default
+		// TODO find a way to return the correct service
+		return ServiceLookup.findService("3.5"); //$NON-NLS-1$
 	}
 	
 }
