@@ -282,7 +282,7 @@ public class HibernateExtension3_6 implements HibernateExtension {
 	}
 	
 	public String generateSQL(final String query) {
-		return QueryHelper.generateSQL(executionContext, sessionFactory, query);
+		return QueryHelper.generateSQL(executionContext, sessionFactory, query, getHibernateService());
 	}
 
 	@Override
