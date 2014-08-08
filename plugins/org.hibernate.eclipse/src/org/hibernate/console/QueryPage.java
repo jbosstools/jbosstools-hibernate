@@ -25,6 +25,7 @@ import java.beans.PropertyChangeListener;
 import java.util.List;
 
 import org.hibernate.console.ext.HibernateExtension;
+import org.jboss.tools.hibernate.spi.ISession;
 
 /**
  * @author MAX
@@ -71,8 +72,8 @@ public interface QueryPage {
      */
     public abstract void setSticky(boolean b);
     
-    public Object getSession();
-    public void setSession(Object session);
+    public ISession getSession();
+    public void setSession(ISession session);
     
 	public HibernateExtension getHibernateExtension();
 	

@@ -128,7 +128,7 @@ public class HQLQueryPage extends AbstractQueryPage {
 	}
 
 	@Override
-	public void setSession(Object s) {
+	public void setSession(ISession s) {
 		super.setSession(s);
 		try {			             
 			query = ((ISession)this.getSession()).createQuery(getQueryString());
@@ -207,5 +207,6 @@ public class HQLQueryPage extends AbstractQueryPage {
     private IService getService() {
     	return getHibernateExtension().getHibernateService();
     }
+
 
 }

@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.console.ext.HibernateExtension;
+import org.jboss.tools.hibernate.spi.ISession;
 
 /**
  * @author MAX
@@ -36,7 +37,7 @@ public abstract class AbstractQueryPage implements QueryPage {
 
 	protected PropertyChangeSupport pcs = new PropertyChangeSupport(this);    
     private int id;
-    private Object session;
+    private ISession session;
 	private final HibernateExtension extension;
     protected List<Object> list;
     protected long queryTime = -1;				//shows how long query runs
@@ -92,11 +93,11 @@ public abstract class AbstractQueryPage implements QueryPage {
         this.sticky = sticky;
     }
 
-	public Object getSession() {
+	public ISession getSession() {
 		return session;
 	}
 
-	public void setSession(Object s) {
+	public void setSession(ISession s) {
 		session = s;		
 	}
 
