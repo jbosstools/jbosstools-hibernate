@@ -8,7 +8,7 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate3_5;
+package org.hibernate.eclipse.console.common;
 
 import java.util.Iterator;
 
@@ -30,7 +30,7 @@ public class QueryHelper {
 	
 	
 	
-	static String generateSQL(ExecutionContext executionContext, final ISessionFactory sessionFactory, final String query, final IService service) {
+	public static String generateSQL(ExecutionContext executionContext, final ISessionFactory sessionFactory, final String query, final IService service) {
 
 		if(StringHelper.isEmpty(query)) return ""; //$NON-NLS-1$
 
