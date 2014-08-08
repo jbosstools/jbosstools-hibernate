@@ -19,7 +19,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.tools.hibernate3_6.console;
+package org.hibernate.eclipse.console.common;
 
 import java.util.Collection;
 import java.util.Iterator;

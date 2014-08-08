@@ -31,6 +31,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.ext.HibernateExtension;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
+import org.hibernate.eclipse.console.common.CollectionPropertySource;
 import org.hibernate.persister.entity.AbstractEntityPersister;
 import org.hibernate.proxy.HibernateProxyHelper;
 import org.hibernate.tuple.entity.EntityMetamodel;
