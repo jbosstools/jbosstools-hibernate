@@ -56,7 +56,7 @@ import org.hibernate.internal.util.xml.XMLHelper;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.INamingStrategy;
 import org.jboss.tools.hibernate.spi.IService;
-import org.jboss.tools.hibernate.util.HibernateHelper;
+import org.jboss.tools.hibernate.util.ServiceLookup;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.ErrorHandler;
@@ -156,7 +156,7 @@ public class ConfigurationFactory {
 						ConsoleMessages.ConsoleConfiguration_could_not_load_jpa_configuration, e);
 			}
 		} else {
-			localCfg = HibernateHelper.INSTANCE.getHibernateService().newDefaultConfiguration();
+			localCfg = getHibernateService().newDefaultConfiguration();
 			localCfg = configureStandardConfiguration(includeMappings, localCfg, properties);
 		}
 		return localCfg;
@@ -164,7 +164,7 @@ public class ConfigurationFactory {
 
 	private IConfiguration buildAnnotationConfiguration() throws ClassNotFoundException,
 			InstantiationException, IllegalAccessException {
-		return HibernateHelper.INSTANCE.getHibernateService().newAnnotationConfiguration();
+		return getHibernateService().newAnnotationConfiguration();
 	}
 
 	private IConfiguration buildJPAConfiguration(String persistenceUnit, Properties properties,
@@ -189,7 +189,7 @@ public class ConfigurationFactory {
 			if (StringHelper.isEmpty((String) overrides.get("javax.persistence.validation.mode"))) {//$NON-NLS-1$
 				overrides.put("javax.persistence.validation.mode", "none"); //$NON-NLS-1$//$NON-NLS-2$
 			}
-			IConfiguration configuration = HibernateHelper.INSTANCE.getHibernateService().newJpaConfiguration(entityResolver, persistenceUnit, overrides);
+			IConfiguration configuration = getHibernateService().newJpaConfiguration(entityResolver, persistenceUnit, overrides);
 			changeDatasourceProperties(configuration);
 			configuration = configureConnectionProfile(configuration);
 			return configuration;
@@ -221,7 +221,7 @@ public class ConfigurationFactory {
 		localCfg.setEntityResolver(entityResolver);
 		if (StringHelper.isNotEmpty(prefs.getNamingStrategy())) {
 			try {
-				INamingStrategy ns = HibernateHelper.INSTANCE.getHibernateService().newNamingStrategy(
+				INamingStrategy ns = getHibernateService().newNamingStrategy(
 						prefs.getNamingStrategy());
 				localCfg.setNamingStrategy(ns);
 			} catch (Exception c) {
@@ -363,7 +363,7 @@ public class ConfigurationFactory {
 		IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(
 				connProfileName);
 		if (profile != null) {
-			IService service = HibernateHelper.INSTANCE.getHibernateService();
+			IService service = getHibernateService();
 			localCfg.addProperties(ConnectionProfileUtil.getHibernateConnectionProperties(service, profile));
 		} else {
 			String out = NLS.bind(
@@ -406,5 +406,10 @@ public class ConfigurationFactory {
 			}
 		}
 	}
+	
+	private IService getHibernateService() {
+		return ServiceLookup.service();
+	}
+
 
 }

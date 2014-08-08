@@ -53,7 +53,7 @@ import org.jboss.tools.hibernate.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ISession;
-import org.jboss.tools.hibernate.util.HibernateHelper;
+import org.jboss.tools.hibernate.util.ServiceLookup;
 import org.jboss.tools.hibernate4_3.HibernateExtension4_3;
 
 public class ConsoleExtension4_3 implements ConsoleExtension {
@@ -87,7 +87,7 @@ public class ConsoleExtension4_3 implements ConsoleExtension {
 				//HibernateConsolePlugin.getDefault().logErrorMessage(mess, e);
 			}
 		}
-		IHQLCodeAssist hqlEval = HibernateHelper.INSTANCE.getHibernateService().newHQLCodeAssist(hibernateExtension.getConfiguration());
+		IHQLCodeAssist hqlEval = ServiceLookup.service().newHQLCodeAssist(hibernateExtension.getConfiguration());
 		query = query.replace('\t', ' ');
 		hqlEval.codeComplete(query, currentOffset, requestor);
 		return new CompletionProposalsResult(requestor.getCompletionProposals(), requestor.getLastErrorMessage());
@@ -166,7 +166,7 @@ public class ConsoleExtension4_3 implements ConsoleExtension {
 					return (IArtifactCollector) hibernateExtension.execute(new Command() {
 
 						public Object execute() {
-							IArtifactCollector artifactCollector = HibernateHelper.INSTANCE.getHibernateService().newArtifactCollector();
+							IArtifactCollector artifactCollector = ServiceLookup.service().newArtifactCollector();
 
 		                    // Global properties
 			                Properties props = new Properties();
@@ -219,7 +219,7 @@ public class ConsoleExtension4_3 implements ConsoleExtension {
 				configuration = cc.buildWith( null, false );
 			}
 
-			final IConfiguration cfg = HibernateHelper.INSTANCE.getHibernateService().newJDBCMetaDataConfiguration();
+			final IConfiguration cfg = ServiceLookup.service().newJDBCMetaDataConfiguration();
 			Properties properties = configuration.getProperties();
 			cfg.setProperties( properties );
 			cc.buildWith(cfg,false);
@@ -230,7 +230,7 @@ public class ConsoleExtension4_3 implements ConsoleExtension {
 
 				public Object execute() {					
 					//todo: factor this setup of revengstrategy to core		
-					IService service = HibernateHelper.INSTANCE.getHibernateService();
+					IService service = ServiceLookup.service();
 					IReverseEngineeringStrategy res = service.newDefaultReverseEngineeringStrategy();
 
 					IOverrideRepository repository = null;
