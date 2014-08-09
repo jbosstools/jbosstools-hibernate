@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.Session;
+import org.jboss.tools.hibernate.spi.ICriteria;
 import org.jboss.tools.hibernate.spi.IQuery;
 import org.jboss.tools.hibernate.spi.ISession;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
@@ -47,6 +48,10 @@ public class SessionProxy implements ISession {
 
 	Session getTarget() {
 		return target;
+	}
+	
+	public ICriteria createCriteria(Class<?> persistentClass) {
+		return new CriteriaProxy(target.createCriteria(persistentClass));
 	}
 	
 }

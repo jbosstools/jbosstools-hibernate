@@ -8,5 +8,6 @@ public interface ISession {
 	boolean isOpen();
 	void close();
 	boolean contains(Object object);
+	ICriteria createCriteria(Class<?> persistentClass);
 
 }
