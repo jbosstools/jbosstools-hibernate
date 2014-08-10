@@ -34,6 +34,7 @@ import org.hibernate.console.ext.HibernateExtension;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.PreferencesClassPathUtils;
 import org.hibernate.eclipse.console.common.HQLQueryPage;
+import org.hibernate.eclipse.console.common.JavaPage;
 import org.hibernate.eclipse.console.common.QueryHelper;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;

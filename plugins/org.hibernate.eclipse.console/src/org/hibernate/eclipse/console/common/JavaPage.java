@@ -19,7 +19,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.tools.hibernate3_6;
+package org.hibernate.eclipse.console.common;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -120,7 +120,6 @@ public class JavaPage extends AbstractQueryPage {
         return interpreter;
     }
 
-    @SuppressWarnings("unchecked")
 	public List<Object> getList() {
         if(list!=null) return list;
         try {
@@ -155,7 +154,7 @@ public class JavaPage extends AbstractQueryPage {
 		ip = null;
 	}
 
-    public void release() {
+	 public void release() {
     	if (((ISession)getSession()).isOpen() ) {
     		try {
     			((ISession)getSession()).close();
