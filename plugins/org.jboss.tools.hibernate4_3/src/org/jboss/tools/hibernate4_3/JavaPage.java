@@ -120,7 +120,6 @@ public class JavaPage extends AbstractQueryPage {
         return interpreter;
     }
 
-    @SuppressWarnings("unchecked")
 	public List<Object> getList() {
         if(list!=null) return list;
         try {
