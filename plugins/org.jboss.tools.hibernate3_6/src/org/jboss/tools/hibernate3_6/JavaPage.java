@@ -27,12 +27,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
 import org.hibernate.console.AbstractQueryPage;
 import org.hibernate.console.ConsoleMessages;
 import org.hibernate.console.QueryInputModel;
 import org.hibernate.console.ext.HibernateExtension;
+import org.jboss.tools.hibernate.spi.ICriteria;
 import org.jboss.tools.hibernate.spi.ISession;
 
 import bsh.EvalError;
@@ -47,7 +46,7 @@ public class JavaPage extends AbstractQueryPage {
 
     private String criteriaCode;
 
-    Criteria criteria = null;
+    ICriteria criteria = null;
 
     private Interpreter ip;
 
@@ -74,8 +73,8 @@ public class JavaPage extends AbstractQueryPage {
             ip = setupInterpreter(getSession());
             Object o =  ip.eval(criteriaCode);
             // ugly! TODO: make un-ugly!
-            if(o instanceof Criteria) {
-                criteria = (Criteria) o;
+            if(o instanceof ICriteria) {
+                criteria = (ICriteria) o;
                 if(model.getMaxResults()!=null) {
                 	criteria.setMaxResults( model.getMaxResults().intValue() );
                 }
@@ -92,12 +91,12 @@ public class JavaPage extends AbstractQueryPage {
         catch (EvalError e) {
             addException(e);
         }
-        catch (HibernateException e) {
+        catch (RuntimeException e) {
         	addException(e);
         }
 	}
 
-	private Interpreter setupInterpreter(ISession session) throws EvalError, HibernateException {
+	private Interpreter setupInterpreter(ISession session) throws EvalError, RuntimeException {
         Interpreter interpreter = new Interpreter();
 
         interpreter.set("session", session); //$NON-NLS-1$
@@ -134,7 +133,7 @@ public class JavaPage extends AbstractQueryPage {
                 return Collections.emptyList();
             }
         }
-        catch (HibernateException e) {
+        catch (RuntimeException e) {
         	list = Collections.emptyList();
             addException(e);
         }
@@ -161,7 +160,7 @@ public class JavaPage extends AbstractQueryPage {
     		try {
     			((ISession)getSession()).close();
     		} 
-    		catch (HibernateException e) {
+    		catch (RuntimeException e) {
     			exceptions.add(e);
     		}
     	}    	
