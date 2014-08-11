@@ -49,6 +49,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.eclipse.console.model.impl.ExporterProperty;
 import org.jboss.tools.hibernate.spi.IExporter;
 import org.jboss.tools.hibernate.util.ServiceLookup;
 

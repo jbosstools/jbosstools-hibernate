@@ -18,6 +18,7 @@ import org.eclipse.osgi.util.NLS;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.model.impl.ExporterFactoryStrings;
+import org.hibernate.eclipse.console.model.impl.ExporterProperty;
 import org.hibernate.eclipse.launch.ExporterAttributes;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
 import org.hibernate.eclipse.launch.PathHelper;
