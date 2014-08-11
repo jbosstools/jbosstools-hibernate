@@ -26,16 +26,14 @@ import java.util.Collection;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource2;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
-import org.hibernate.HibernateException;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.ext.HibernateExtension;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.common.CollectionPropertySource;
-import org.hibernate.persister.entity.AbstractEntityPersister;
 import org.hibernate.proxy.HibernateProxyHelper;
-import org.hibernate.tuple.entity.EntityMetamodel;
 import org.jboss.tools.hibernate.spi.IClassMetadata;
 import org.jboss.tools.hibernate.spi.ICollectionMetadata;
+import org.jboss.tools.hibernate.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.spi.ISession;
 
 
@@ -122,15 +120,14 @@ public class EntityPropertySource implements IPropertySource2
 		} else {
 			try {
 				propertyValue = classMetadata.getPropertyValue(reflectedObject, (String)id);
-			} catch (HibernateException he) {
+			} catch (RuntimeException he) {
 				propertyValue = HibernateConsoleMessages.EntityPropertySource_unable_to_resolve_property;
-				if (classMetadata instanceof AbstractEntityPersister) {
-					AbstractEntityPersister aep = (AbstractEntityPersister)classMetadata;
-					EntityMetamodel emm = aep.getEntityMetamodel();
+				if (classMetadata.isInstanceOfAbstractEntityPersister()) {
+					IEntityMetamodel emm = classMetadata.getEntityMetamodel();
 					if (emm != null) {
 						Integer idx = emm.getPropertyIndexOrNull((String)id);
 						if (idx != null) {
-							propertyValue = emm.getTuplizer().getPropertyValue(reflectedObject, idx);
+							propertyValue = emm.getTuplizerPropertyValue(reflectedObject, idx);
 						}
 					}
 				}
