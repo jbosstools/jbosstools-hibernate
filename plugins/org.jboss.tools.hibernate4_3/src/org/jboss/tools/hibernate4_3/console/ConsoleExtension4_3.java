@@ -40,8 +40,10 @@ import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.common.EntityPropertySource;
 import org.hibernate.eclipse.console.ext.CompletionProposalsResult;
 import org.hibernate.eclipse.console.ext.ConsoleExtension;
+import org.hibernate.eclipse.console.model.impl.ExporterFactory;
 import org.hibernate.eclipse.launch.CodeGenerationStrings;
 import org.hibernate.eclipse.launch.CodeGenerationUtils;
+import org.hibernate.eclipse.launch.ExporterAttributes;
 import org.hibernate.eclipse.launch.PathHelper;
 import org.hibernate.proxy.HibernateProxyHelper;
 import org.jboss.tools.hibernate.spi.HibernateException;
@@ -185,7 +187,7 @@ public class ConsoleExtension4_3 implements ConsoleExtension {
 							try {
 								//FIXME - the exporters are not the same here!
 								//may be need to create it using the data from exporter definition???
-								exporter = exporterFactories[i].createConfiguredExporter(cfg, attributes.getOutputPath(), attributes.getTemplatePath(), globalProperties, outputDirectories, artifactCollector);
+								exporter = exporterFactories[i].createConfiguredExporter(cfg, attributes.getOutputPath(), attributes.getTemplatePath(), globalProperties, outputDirectories, artifactCollector, hibernateExtension.getHibernateService());
 							} catch (CoreException e) {
 								throw new HibernateConsoleRuntimeException(HibernateConsoleMessages.CodeGenerationLaunchDelegate_error_while_setting_up + exporterFactories[i].getExporterDefinition(), e);
 							}
