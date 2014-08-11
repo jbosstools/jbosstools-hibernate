@@ -4,9 +4,12 @@ import java.util.ArrayList;
 
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.metadata.ClassMetadata;
+import org.hibernate.persister.entity.AbstractEntityPersister;
+import org.hibernate.tuple.entity.EntityMetamodel;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.spi.HibernateException;
 import org.jboss.tools.hibernate.spi.IClassMetadata;
+import org.jboss.tools.hibernate.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.spi.ISession;
 import org.jboss.tools.hibernate.spi.IType;
 
@@ -92,6 +95,18 @@ public class ClassMetadataProxy implements IClassMetadata {
 			result = target.getIdentifier(object, impl);
 		}
 		return result;
+	}
+
+	@Override
+	public boolean isInstanceOfAbstractEntityPersister() {
+		return target instanceof AbstractEntityPersister;
+	}
+
+	@Override
+	public IEntityMetamodel getEntityMetamodel() {
+		assert target instanceof AbstractEntityPersister;
+		EntityMetamodel emm = ((AbstractEntityPersister)target).getEntityMetamodel();
+		return emm != null ? new EntityMetamodelProxy(emm) : null;
 	}
 
 }

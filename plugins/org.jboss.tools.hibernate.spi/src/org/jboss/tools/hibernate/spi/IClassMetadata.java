@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.spi;
 
+
 public interface IClassMetadata {
 
 	String getEntityName();
@@ -12,5 +13,7 @@ public interface IClassMetadata {
 	boolean hasIdentifierProperty();
 	Object getIdentifier(Object object);
 	Object getIdentifier(Object object, ISession implementor);
+	boolean isInstanceOfAbstractEntityPersister();
+	IEntityMetamodel getEntityMetamodel();
 
 }
