@@ -302,4 +302,9 @@ public class TestService implements IService {
 		return null;
 	}
 
+	@Override
+	public Class<?> getClassWithoutInitializingProxy(Object reflectedObject) {
+		return null;
+	}
+
 }

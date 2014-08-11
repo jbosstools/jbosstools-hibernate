@@ -128,5 +128,7 @@ public interface IService {
 
 	List<String> getJPAMappingFilePaths(String persistenceUnitName,
 			EntityResolver entityResolver);
+
+	Class<?> getClassWithoutInitializingProxy(Object reflectedObject);
 	
 }

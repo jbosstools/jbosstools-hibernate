@@ -49,6 +49,7 @@ import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
+import org.hibernate.proxy.HibernateProxyHelper;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
@@ -489,6 +490,11 @@ public class ServiceProxy implements IService {
 	public List<String> getJPAMappingFilePaths(
 			String persistenceUnitName, EntityResolver entityResolver) {
 		return OpenMappingUtilsEjb3.enumDocuments(persistenceUnitName, entityResolver);
+	}
+
+	@Override
+	public Class<?> getClassWithoutInitializingProxy(Object reflectedObject) {
+		return HibernateProxyHelper.getClassWithoutInitializingProxy(reflectedObject);
 	}
 
 }
