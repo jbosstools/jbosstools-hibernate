@@ -36,6 +36,7 @@ import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.ext.HibernateExtension;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.eclipse.console.common.EntityPropertySource;
 import org.hibernate.eclipse.console.ext.CompletionProposalsResult;
 import org.hibernate.eclipse.console.ext.ConsoleExtension;
 import org.hibernate.eclipse.launch.CodeGenerationStrings;

@@ -19,7 +19,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.tools.hibernate3_6.console;
+package org.hibernate.eclipse.console.common;
 
 import java.util.Collection;
 
@@ -30,7 +30,6 @@ import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.ext.HibernateExtension;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.common.CollectionPropertySource;
-import org.hibernate.proxy.HibernateProxyHelper;
 import org.jboss.tools.hibernate.spi.IClassMetadata;
 import org.jboss.tools.hibernate.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.spi.IEntityMetamodel;
@@ -55,7 +54,7 @@ public class EntityPropertySource implements IPropertySource2
 		if(currentSession.isOpen()) {
 			classMetadata = currentSession.getSessionFactory().getClassMetadata( currentSession.getEntityName(reflectedObject) );
 		} else {
-			classMetadata = currentSession.getSessionFactory().getClassMetadata( HibernateProxyHelper.getClassWithoutInitializingProxy(reflectedObject));
+			classMetadata = currentSession.getSessionFactory().getClassMetadata(extension.getHibernateService().getClassWithoutInitializingProxy(reflectedObject));
 		}
 
 	}
@@ -116,7 +115,7 @@ public class EntityPropertySource implements IPropertySource2
 		Object propertyValue;
 
 		if(id.equals(classMetadata.getIdentifierPropertyName())) {
-			propertyValue = classMetadata.getIdentifier(reflectedObject);
+			propertyValue = classMetadata.getIdentifier(reflectedObject, currentSession);
 		} else {
 			try {
 				propertyValue = classMetadata.getPropertyValue(reflectedObject, (String)id);
