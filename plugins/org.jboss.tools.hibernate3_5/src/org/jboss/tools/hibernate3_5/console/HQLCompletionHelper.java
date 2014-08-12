@@ -10,7 +10,7 @@ import org.hibernate.eclipse.console.common.CompletionProposal;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.console.workbench.HibernateWorkbenchHelper;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
-import org.jboss.tools.hibernate.proxy.PropertyProxy;
+import org.jboss.tools.hibernate.spi.IHQLCompletionProposal;
 
 public class HQLCompletionHelper {
 
@@ -26,7 +26,7 @@ public class HQLCompletionHelper {
 		return result;
 	}
 
-	public boolean accept(HQLCompletionProposal proposal) {
+	public boolean accept(IHQLCompletionProposal proposal) {
 		result.add(new CompletionProposal(proposal.getCompletion(), // replacementString 
 										  proposal.getReplaceStart()+virtualOffset, // replacementOffset 
 										  proposal.getReplaceEnd()-proposal.getReplaceStart(), // replacementLength
@@ -38,7 +38,7 @@ public class HQLCompletionHelper {
 		return true;
 	}
 
-	private String getDisplayString(HQLCompletionProposal proposal) {
+	private String getDisplayString(IHQLCompletionProposal proposal) {
 		StringBuffer buf = new StringBuffer(proposal.getSimpleName());
 		
 		switch(proposal.getCompletionKind()) {
@@ -82,7 +82,7 @@ public class HQLCompletionHelper {
 		return buf.toString();
 	}
 
-	private Image getImage(HQLCompletionProposal proposal) {
+	private Image getImage(IHQLCompletionProposal proposal) {
 		String key = null;
 		
 		switch(proposal.getCompletionKind()) {
@@ -92,7 +92,7 @@ public class HQLCompletionHelper {
 			break;
 		case HQLCompletionProposal.PROPERTY:
 			if(proposal.getProperty()!=null) {
-				return HibernateWorkbenchHelper.getImage(new PropertyProxy(proposal.getProperty() ));
+				return HibernateWorkbenchHelper.getImage(proposal.getProperty());
 			} else {
 				key = ImageConstants.PROPERTY;				
 			}

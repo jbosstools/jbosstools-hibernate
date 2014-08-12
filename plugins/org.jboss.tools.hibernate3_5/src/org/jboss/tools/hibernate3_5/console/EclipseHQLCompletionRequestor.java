@@ -26,6 +26,7 @@ import java.util.List;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.ide.completion.IHQLCompletionRequestor;
+import org.jboss.tools.hibernate.proxy.HQLCompletionProposalProxy;
 
 public class EclipseHQLCompletionRequestor implements IHQLCompletionRequestor, org.jboss.tools.hibernate.spi.IHQLCompletionRequestor {
 
@@ -40,7 +41,7 @@ public class EclipseHQLCompletionRequestor implements IHQLCompletionRequestor, o
 	}
 
 	public boolean accept(HQLCompletionProposal proposal) {
-		return helper.accept(proposal);
+		return helper.accept(new HQLCompletionProposalProxy(proposal));
 	}
 
 	public void completionFailure(String errorMessage) {
