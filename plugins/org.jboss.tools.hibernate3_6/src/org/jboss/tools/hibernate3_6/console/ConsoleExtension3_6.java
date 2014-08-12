@@ -77,7 +77,6 @@ public class ConsoleExtension3_6 implements ConsoleExtension {
 	@Override
 	public CompletionProposalsResult hqlCodeComplete(String query, int startPosition , int currentOffset) {
 		HQLCompletionHandler handler = new HQLCompletionHandler(startPosition);
-		EclipseHQLCompletionRequestor requestor = new EclipseHQLCompletionRequestor(handler);
 		if (!hibernateExtension.hasConfiguration()){
 			try {
 				hibernateExtension.build();
@@ -98,7 +97,7 @@ public class ConsoleExtension3_6 implements ConsoleExtension {
 		IHQLCodeAssist hqlEval = hibernateExtension.getHibernateService().newHQLCodeAssist(hibernateExtension.getConfiguration());
 		query = query.replace('\t', ' ');
 		hqlEval.codeComplete(query, currentOffset, handler);
-		return new CompletionProposalsResult(requestor.getCompletionProposals(), requestor.getLastErrorMessage());
+		return new CompletionProposalsResult(handler.getCompletionProposals(), handler.getLastErrorMessage());
 	}
 
 	/* (non-Javadoc)
