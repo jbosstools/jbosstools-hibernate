@@ -10,5 +10,11 @@ public interface IHQLCompletionProposal {
 	String getEntityName();
 	String getShortEntityName();
 	IProperty getProperty();
+	
+	int aliasRefKind();
+	int entityNameKind();
+	int propertyKind();
+	int keywordKind();
+	int functionKind();
 
 }

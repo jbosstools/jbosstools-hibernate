@@ -9,7 +9,6 @@ import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.common.CompletionProposal;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.console.workbench.HibernateWorkbenchHelper;
-import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.jboss.tools.hibernate.spi.IHQLCompletionProposal;
 
 public class HQLCompletionHelper {
@@ -40,9 +39,8 @@ public class HQLCompletionHelper {
 
 	private String getDisplayString(IHQLCompletionProposal proposal) {
 		StringBuffer buf = new StringBuffer(proposal.getSimpleName());
-		
-		switch(proposal.getCompletionKind()) {
-		case HQLCompletionProposal.ENTITY_NAME:
+		int kind = proposal.getCompletionKind();
+		if (kind == proposal.entityNameKind()) {
 			if(proposal.getEntityName()!=null && 
 					  !(proposal.getSimpleName().equals( proposal.getEntityName()))) {
 				buf.append(" - "); //$NON-NLS-1$
@@ -51,15 +49,13 @@ public class HQLCompletionHelper {
 					!(proposal.getSimpleName().equals( proposal.getEntityName()))) {
 				buf.append( " - " + proposal.getShortEntityName() ); //$NON-NLS-1$
 			} 
-			break;
-		case HQLCompletionProposal.ALIAS_REF:
+		} else if (kind == proposal.aliasRefKind()) {
 			if(proposal.getShortEntityName()!=null) {
 				buf.append( " - " + proposal.getShortEntityName() ); //$NON-NLS-1$
 			} else if(proposal.getEntityName()!=null) {
 				buf.append( " - " + proposal.getEntityName() ); //$NON-NLS-1$
 			}
-			break;
-		case HQLCompletionProposal.PROPERTY:
+		} else if (kind == proposal.propertyKind()) {
 			if(proposal.getShortEntityName()!=null) {
 				buf.append( " - " + proposal.getShortEntityName() ); //$NON-NLS-1$
 			} else if(proposal.getEntityName()!=null) {
@@ -69,44 +65,28 @@ public class HQLCompletionHelper {
 					buf.append( " - " + proposal.getEntityName() ); //$NON-NLS-1$
 				}
 			}
-			break;
-		case HQLCompletionProposal.KEYWORD:
-			break;
-		case HQLCompletionProposal.FUNCTION:
-			break;
-		default:
-			
 		}
-		
-		
 		return buf.toString();
 	}
 
 	private Image getImage(IHQLCompletionProposal proposal) {
 		String key = null;
-		
-		switch(proposal.getCompletionKind()) {
-		case HQLCompletionProposal.ENTITY_NAME:
-		case HQLCompletionProposal.ALIAS_REF:
+		int kind = proposal.getCompletionKind();
+		if (kind == proposal.entityNameKind() || kind == proposal.aliasRefKind()) {
 			key = ImageConstants.MAPPEDCLASS;
-			break;
-		case HQLCompletionProposal.PROPERTY:
+		} else if (kind == proposal.propertyKind()) {
 			if(proposal.getProperty()!=null) {
 				return HibernateWorkbenchHelper.getImage(proposal.getProperty());
 			} else {
 				key = ImageConstants.PROPERTY;				
 			}
-			break;
-		case HQLCompletionProposal.KEYWORD:
+		} else if (kind == proposal.keywordKind()) {
 			key = null;
-			break;
-		case HQLCompletionProposal.FUNCTION:
+		} else if (kind == proposal.functionKind()) {
 			key = ImageConstants.FUNCTION;
-			break;
-		default:
+		} else {
 			key = null;
-		}
-		
+		}		
 		return key==null?null:EclipseImages.getImage( key );
 	}
 

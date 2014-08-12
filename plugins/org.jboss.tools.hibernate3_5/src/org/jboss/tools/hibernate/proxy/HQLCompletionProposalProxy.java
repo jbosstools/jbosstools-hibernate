@@ -52,4 +52,29 @@ public class HQLCompletionProposalProxy implements IHQLCompletionProposal {
 		return target.getProperty() != null ? new PropertyProxy(target.getProperty()) : null;
 	}
 
+	@Override
+	public int aliasRefKind() {
+		return HQLCompletionProposal.ALIAS_REF;
+	}
+
+	@Override
+	public int entityNameKind() {
+		return HQLCompletionProposal.ENTITY_NAME;
+	}
+
+	@Override
+	public int propertyKind() {
+		return HQLCompletionProposal.PROPERTY;
+	}
+
+	@Override
+	public int keywordKind() {
+		return HQLCompletionProposal.KEYWORD;
+	}
+
+	@Override
+	public int functionKind() {
+		return HQLCompletionProposal.FUNCTION;
+	}
+
 }
