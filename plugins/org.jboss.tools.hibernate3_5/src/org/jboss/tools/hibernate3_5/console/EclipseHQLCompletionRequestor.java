@@ -30,30 +30,30 @@ import org.jboss.tools.hibernate.proxy.HQLCompletionProposalProxy;
 
 public class EclipseHQLCompletionRequestor implements IHQLCompletionRequestor, org.jboss.tools.hibernate.spi.IHQLCompletionRequestor {
 
-	private HQLCompletionHelper helper;
+	private HQLCompletionHandler handler;
 	
-	public EclipseHQLCompletionRequestor(HQLCompletionHelper helper) {
-		this.helper = helper;
+	public EclipseHQLCompletionRequestor(HQLCompletionHandler helper) {
+		this.handler = helper;
 	}
 	
 	public List<ICompletionProposal> getCompletionProposals() {		
-		return helper.getCompletionProposals();
+		return handler.getCompletionProposals();
 	}
 
 	public boolean accept(HQLCompletionProposal proposal) {
-		return helper.accept(new HQLCompletionProposalProxy(proposal));
+		return handler.accept(new HQLCompletionProposalProxy(proposal));
 	}
 
 	public void completionFailure(String errorMessage) {
-		helper.completionFailure(errorMessage);		
+		handler.completionFailure(errorMessage);		
 	}
 	
 	public String getLastErrorMessage() {
-		return helper.getLastErrorMessage();
+		return handler.getLastErrorMessage();
 	}
 	
 	public void clear() {
-		helper.clear();;
+		handler.clear();;
 	}
 
 }

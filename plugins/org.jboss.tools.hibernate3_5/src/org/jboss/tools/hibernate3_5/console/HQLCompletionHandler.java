@@ -11,13 +11,13 @@ import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.console.workbench.HibernateWorkbenchHelper;
 import org.jboss.tools.hibernate.spi.IHQLCompletionProposal;
 
-public class HQLCompletionHelper {
+public class HQLCompletionHandler {
 
 	private final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
 	private String lastErrorMessage;
 	private final int virtualOffset;
 	
-	public HQLCompletionHelper(int virtualOffset) {
+	public HQLCompletionHandler(int virtualOffset) {
 		this.virtualOffset = virtualOffset;
 	}
 
