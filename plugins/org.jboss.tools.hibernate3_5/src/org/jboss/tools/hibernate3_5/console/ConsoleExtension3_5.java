@@ -37,6 +37,7 @@ import org.hibernate.console.ext.HibernateExtension;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.common.EntityPropertySource;
+import org.hibernate.eclipse.console.common.HQLCompletionHandler;
 import org.hibernate.eclipse.console.ext.CompletionProposalsResult;
 import org.hibernate.eclipse.console.ext.ConsoleExtension;
 import org.hibernate.eclipse.console.model.impl.ExporterFactory;
@@ -71,8 +72,8 @@ public class ConsoleExtension3_5 implements ConsoleExtension {
 
 	@Override
 	public CompletionProposalsResult hqlCodeComplete(String query, int startPosition, int currentOffset) {
-		HQLCompletionHandler helper = new HQLCompletionHandler(startPosition);
-		EclipseHQLCompletionRequestor requestor = new EclipseHQLCompletionRequestor(helper);
+		HQLCompletionHandler handler = new HQLCompletionHandler(startPosition);
+		EclipseHQLCompletionRequestor requestor = new EclipseHQLCompletionRequestor(handler);
 		if (!hibernateExtension.hasConfiguration()){
 			try {
 				hibernateExtension.build();
@@ -86,7 +87,7 @@ public class ConsoleExtension3_5 implements ConsoleExtension {
 		IHQLCodeAssist hqlEval = hibernateExtension.getHibernateService().newHQLCodeAssist(hibernateExtension.getConfiguration());
 		query = query.replace('\t', ' ');
 		hqlEval.codeComplete(query, currentOffset, requestor);
-		return new CompletionProposalsResult(requestor.getCompletionProposals(), requestor.getLastErrorMessage());
+		return new CompletionProposalsResult(handler.getCompletionProposals(), requestor.getLastErrorMessage());
 	}
 
 	/* (non-Javadoc)

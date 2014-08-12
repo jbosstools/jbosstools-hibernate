@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate3_5.console;
+package org.hibernate.eclipse.console.common;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,13 +105,13 @@ public class HQLCompletionHandler implements IHQLCompletionHandler {
 	}
 
 	private String unqualify(String qualifiedName) {
-		int loc = qualifiedName.lastIndexOf(".");
+		int loc = qualifiedName.lastIndexOf("."); //$NON-NLS-1$
 		return ( loc < 0 ) ? qualifiedName : qualifiedName.substring( loc + 1 );
 	}
 
 	private String qualifier(String qualifiedName) {
-		int loc = qualifiedName.lastIndexOf(".");
-		return ( loc < 0 ) ? "" : qualifiedName.substring( 0, loc );
+		int loc = qualifiedName.lastIndexOf("."); //$NON-NLS-1$
+		return ( loc < 0 ) ? "" : qualifiedName.substring( 0, loc ); //$NON-NLS-1$
 	}
 
 }

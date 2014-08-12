@@ -33,8 +33,8 @@ public class EclipseHQLCompletionRequestor implements IHQLCompletionRequestor, o
 
 	private IHQLCompletionHandler handler;
 	
-	public EclipseHQLCompletionRequestor(IHQLCompletionHandler helper) {
-		this.handler = helper;
+	public EclipseHQLCompletionRequestor(IHQLCompletionHandler handler) {
+		this.handler = handler;
 	}
 	
 	public List<ICompletionProposal> getCompletionProposals() {		
