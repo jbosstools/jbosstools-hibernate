@@ -32,7 +32,6 @@ import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.console.workbench.HibernateWorkbenchHelper;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.ide.completion.IHQLCompletionRequestor;
-import org.hibernate.util.StringHelper;
 import org.jboss.tools.hibernate.proxy.PropertyProxy;
 
 public class EclipseHQLCompletionRequestor implements IHQLCompletionRequestor, org.jboss.tools.hibernate.spi.IHQLCompletionRequestor {
@@ -73,7 +72,7 @@ public class EclipseHQLCompletionRequestor implements IHQLCompletionRequestor, o
 			if(proposal.getEntityName()!=null && 
 					  !(proposal.getSimpleName().equals( proposal.getEntityName()))) {
 				buf.append(" - "); //$NON-NLS-1$
-				buf.append(StringHelper.qualifier( proposal.getEntityName() ));
+				buf.append(qualifier( proposal.getEntityName() ));
 			} else if(proposal.getShortEntityName()!=null &&
 					!(proposal.getSimpleName().equals( proposal.getEntityName()))) {
 				buf.append( " - " + proposal.getShortEntityName() ); //$NON-NLS-1$
@@ -91,7 +90,7 @@ public class EclipseHQLCompletionRequestor implements IHQLCompletionRequestor, o
 				buf.append( " - " + proposal.getShortEntityName() ); //$NON-NLS-1$
 			} else if(proposal.getEntityName()!=null) {
 				if(proposal.getEntityName().indexOf( "." )>=0) { //$NON-NLS-1$
-					buf.append( " - " + StringHelper.unqualify( proposal.getEntityName() )); //$NON-NLS-1$
+					buf.append( " - " + unqualify( proposal.getEntityName() )); //$NON-NLS-1$
 				} else {
 					buf.append( " - " + proposal.getEntityName() ); //$NON-NLS-1$
 				}
@@ -148,6 +147,16 @@ public class EclipseHQLCompletionRequestor implements IHQLCompletionRequestor, o
 	public void clear() {
 		result.clear();
 		lastErrorMessage = null;
+	}
+
+	private String unqualify(String qualifiedName) {
+		int loc = qualifiedName.lastIndexOf(".");
+		return ( loc < 0 ) ? qualifiedName : qualifiedName.substring( loc + 1 );
+	}
+
+	private String qualifier(String qualifiedName) {
+		int loc = qualifiedName.lastIndexOf(".");
+		return ( loc < 0 ) ? "" : qualifiedName.substring( 0, loc );
 	}
 
 }
