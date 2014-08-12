@@ -27,12 +27,13 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.ide.completion.IHQLCompletionRequestor;
 import org.jboss.tools.hibernate.proxy.HQLCompletionProposalProxy;
+import org.jboss.tools.hibernate.spi.IHQLCompletionHandler;
 
 public class EclipseHQLCompletionRequestor implements IHQLCompletionRequestor, org.jboss.tools.hibernate.spi.IHQLCompletionRequestor {
 
-	private HQLCompletionHandler handler;
+	private IHQLCompletionHandler handler;
 	
-	public EclipseHQLCompletionRequestor(HQLCompletionHandler helper) {
+	public EclipseHQLCompletionRequestor(IHQLCompletionHandler helper) {
 		this.handler = helper;
 	}
 	

@@ -10,8 +10,9 @@ import org.hibernate.eclipse.console.common.CompletionProposal;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.console.workbench.HibernateWorkbenchHelper;
 import org.jboss.tools.hibernate.spi.IHQLCompletionProposal;
+import org.jboss.tools.hibernate.spi.IHQLCompletionHandler;
 
-public class HQLCompletionHandler {
+public class HQLCompletionHandler implements IHQLCompletionHandler {
 
 	private final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
 	private String lastErrorMessage;
