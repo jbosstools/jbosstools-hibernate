@@ -1,8 +1,10 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
+import org.hibernate.tool.ide.completion.HQLCompletionProposal;
+import org.hibernate.tool.ide.completion.IHQLCompletionRequestor;
 import org.jboss.tools.hibernate.spi.IHQLCodeAssist;
-import org.jboss.tools.hibernate.spi.IHQLCompletionRequestor;
+import org.jboss.tools.hibernate.spi.IHQLCompletionHandler;
 
 public class HQLCodeAssistProxy implements IHQLCodeAssist {
 	
@@ -14,9 +16,23 @@ public class HQLCodeAssistProxy implements IHQLCodeAssist {
 
 	@Override
 	public void codeComplete(String query, int currentOffset,
-			IHQLCompletionRequestor requestor) {
-		assert requestor instanceof org.hibernate.tool.ide.completion.IHQLCompletionRequestor;
-		target.codeComplete(query, currentOffset, (org.hibernate.tool.ide.completion.IHQLCompletionRequestor)requestor);
+			IHQLCompletionHandler handler) {
+		target.codeComplete(query, currentOffset, new HQLCompletionRequestor(handler));
+	}
+	
+	private class HQLCompletionRequestor implements IHQLCompletionRequestor {		
+		private IHQLCompletionHandler handler = null;		
+		public HQLCompletionRequestor(IHQLCompletionHandler handler) {
+			this.handler = handler;
+		}
+		@Override
+		public boolean accept(HQLCompletionProposal proposal) {
+			return handler.accept(new HQLCompletionProposalProxy(proposal));
+		}
+		@Override
+		public void completionFailure(String errorMessage) {
+			handler.completionFailure(errorMessage);			
+		}		
 	}
 
 }

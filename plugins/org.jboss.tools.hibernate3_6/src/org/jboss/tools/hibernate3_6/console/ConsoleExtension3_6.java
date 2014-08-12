@@ -97,7 +97,7 @@ public class ConsoleExtension3_6 implements ConsoleExtension {
 		}
 		IHQLCodeAssist hqlEval = hibernateExtension.getHibernateService().newHQLCodeAssist(hibernateExtension.getConfiguration());
 		query = query.replace('\t', ' ');
-		hqlEval.codeComplete(query, currentOffset, requestor);
+		hqlEval.codeComplete(query, currentOffset, handler);
 		return new CompletionProposalsResult(requestor.getCompletionProposals(), requestor.getLastErrorMessage());
 	}
 
