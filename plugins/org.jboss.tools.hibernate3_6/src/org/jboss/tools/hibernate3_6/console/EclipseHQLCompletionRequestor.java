@@ -1,13 +1,24 @@
-/*******************************************************************************
- * Copyright (c) 2012 Red Hat, Inc.
- * Distributed under license by Red Hat, Inc. All rights reserved.
- * This program is made available under the terms of the
- * Eclipse Public License v1.0 which accompanies this distribution,
- * and is available at http://www.eclipse.org/legal/epl-v10.html
+/*
+ * JBoss, Home of Professional Open Source
+ * Copyright 2005, JBoss Inc., and individual contributors as indicated
+ * by the @authors tag. See the copyright.txt in the distribution for a
+ * full listing of individual contributors.
  *
- * Contributor:
- *     Red Hat, Inc. - initial API and implementation
- ******************************************************************************/
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ */
 package org.jboss.tools.hibernate3_6.console;
 
 import java.util.ArrayList;
@@ -18,11 +29,10 @@ import org.eclipse.swt.graphics.Image;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.common.CompletionProposal;
 import org.hibernate.eclipse.console.utils.EclipseImages;
-import org.hibernate.mapping.Property;
-import org.hibernate.mapping.Value;
+import org.hibernate.eclipse.console.workbench.HibernateWorkbenchHelper;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.ide.completion.IHQLCompletionRequestor;
-import org.hibernate.util.xpl.StringHelper;
+import org.jboss.tools.hibernate.proxy.PropertyProxy;
 
 public class EclipseHQLCompletionRequestor implements IHQLCompletionRequestor, org.jboss.tools.hibernate.spi.IHQLCompletionRequestor {
 
@@ -62,7 +72,7 @@ public class EclipseHQLCompletionRequestor implements IHQLCompletionRequestor, o
 			if(proposal.getEntityName()!=null && 
 					  !(proposal.getSimpleName().equals( proposal.getEntityName()))) {
 				buf.append(" - "); //$NON-NLS-1$
-				buf.append(StringHelper.qualifier( proposal.getEntityName() ));
+				buf.append(qualifier( proposal.getEntityName() ));
 			} else if(proposal.getShortEntityName()!=null &&
 					!(proposal.getSimpleName().equals( proposal.getEntityName()))) {
 				buf.append( " - " + proposal.getShortEntityName() ); //$NON-NLS-1$
@@ -80,7 +90,7 @@ public class EclipseHQLCompletionRequestor implements IHQLCompletionRequestor, o
 				buf.append( " - " + proposal.getShortEntityName() ); //$NON-NLS-1$
 			} else if(proposal.getEntityName()!=null) {
 				if(proposal.getEntityName().indexOf( "." )>=0) { //$NON-NLS-1$
-					buf.append( " - " + StringHelper.unqualify( proposal.getEntityName() )); //$NON-NLS-1$
+					buf.append( " - " + unqualify( proposal.getEntityName() )); //$NON-NLS-1$
 				} else {
 					buf.append( " - " + proposal.getEntityName() ); //$NON-NLS-1$
 				}
@@ -107,14 +117,8 @@ public class EclipseHQLCompletionRequestor implements IHQLCompletionRequestor, o
 			key = ImageConstants.MAPPEDCLASS;
 			break;
 		case HQLCompletionProposal.PROPERTY:
-			Property property = proposal.getProperty();
-			if(property!=null) {
-				if(property.getPersistentClass()!=null
-						&& property.getPersistentClass().getIdentifierProperty()==property) {
-						key = ImageConstants.IDPROPERTY;
-				} else {
-					key = getIconNameForValue(property.getValue());
-				}
+			if(proposal.getProperty()!=null) {
+				return HibernateWorkbenchHelper.getImage(new PropertyProxy(proposal.getProperty() ));
 			} else {
 				key = ImageConstants.PROPERTY;				
 			}
@@ -144,16 +148,15 @@ public class EclipseHQLCompletionRequestor implements IHQLCompletionRequestor, o
 		result.clear();
 		lastErrorMessage = null;
 	}
-	
-	static private String getIconNameForValue(Value value) {
-		String result;
-		
-		result = (String) value.accept(new IconNameValueVisitor());
-		
-		if(result==null) {
-			result = ImageConstants.UNKNOWNPROPERTY;
-		}
-		return result;
+
+	private String unqualify(String qualifiedName) {
+		int loc = qualifiedName.lastIndexOf(".");
+		return ( loc < 0 ) ? qualifiedName : qualifiedName.substring( loc + 1 );
+	}
+
+	private String qualifier(String qualifiedName) {
+		int loc = qualifiedName.lastIndexOf(".");
+		return ( loc < 0 ) ? "" : qualifiedName.substring( 0, loc );
 	}
 
 }
