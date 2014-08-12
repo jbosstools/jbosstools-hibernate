@@ -29,7 +29,7 @@ import org.hibernate.console.QueryPage;
 import org.hibernate.console.execution.DefaultExecutionContext;
 import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.console.execution.ExecutionContext.Command;
-import org.hibernate.console.ext.HibernateExtension;
+import org.hibernate.console.ext.AbstractHibernateExtension;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.PreferencesClassPathUtils;
 import org.hibernate.eclipse.console.common.HQLQueryPage;
@@ -48,7 +48,7 @@ import org.jboss.tools.hibernate.util.ServiceLookup;
  * @author Dmitry Geraskov
  *
  */
-public class HibernateExtension3_5 implements HibernateExtension {
+public class HibernateExtension3_5 extends AbstractHibernateExtension {
 	
 	private ConsoleConfigClassLoader classLoader = null;
 
