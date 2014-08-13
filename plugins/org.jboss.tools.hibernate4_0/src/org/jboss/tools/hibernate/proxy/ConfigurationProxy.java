@@ -113,17 +113,16 @@ public class ConfigurationProxy implements IConfiguration {
 
 	@Override
 	public ISessionFactory buildSessionFactory() {
-		return new SessionFactoryProxy(target.buildSessionFactory());
+		if (serviceRegistry == null) {
+			buildServiceRegistry();
+		}
+		return new SessionFactoryProxy(target.buildSessionFactory(serviceRegistry));
 	}
 
 	@Override
 	public ISettings buildSettings() {
 		if (serviceRegistry == null) {
-			Configuration configuration = new Configuration();
-			configuration.configure();
-			ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
-			builder.applySettings(configuration.getProperties());
-			serviceRegistry = builder.buildServiceRegistry();
+			buildServiceRegistry();
 		}
 		return new SettingsProxy((Settings)buildSettings(serviceRegistry));
 	}
@@ -256,6 +255,14 @@ public class ConfigurationProxy implements IConfiguration {
 			}
 		}
 		return dialect;
+	}
+	
+	private void buildServiceRegistry() {
+		Configuration configuration = new Configuration();
+		configuration.configure();
+		ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
+		builder.applySettings(configuration.getProperties());
+		serviceRegistry = builder.buildServiceRegistry();		
 	}
 
 }
