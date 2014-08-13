@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
 
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.Settings;
@@ -15,7 +16,6 @@ import org.hibernate.engine.spi.Mapping;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.service.ServiceRegistryBuilder;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IDialect;
 import org.jboss.tools.hibernate.spi.IMapping;
@@ -112,15 +112,16 @@ public class ConfigurationProxy implements IConfiguration {
 
 	@Override
 	public ISessionFactory buildSessionFactory() {
-		return new SessionFactoryProxy(target.buildSessionFactory());
+		if (serviceRegistry == null) {
+			buildServiceRegistry();
+		}
+		return new SessionFactoryProxy(target.buildSessionFactory(serviceRegistry));
 	}
 
 	@Override
 	public ISettings buildSettings() {
 		if (serviceRegistry == null) {
-			ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
-			builder.configure();
-			serviceRegistry = builder.build();
+			buildServiceRegistry();
 		}
 		return new SettingsProxy((Settings)buildSettings(serviceRegistry));
 	}
@@ -252,6 +253,12 @@ public class ConfigurationProxy implements IConfiguration {
 			}
 		}
 		return dialect;
+	}
+	
+	private void buildServiceRegistry() {
+		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
+		builder.configure();
+		serviceRegistry = builder.build();		
 	}
 
 }
