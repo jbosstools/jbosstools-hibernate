@@ -57,7 +57,6 @@ import org.jboss.tools.hibernate.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ISession;
-import org.jboss.tools.hibernate3_6.HibernateExtension3_6;
 
 /**
  * @author Dmitry Geraskov
@@ -65,13 +64,13 @@ import org.jboss.tools.hibernate3_6.HibernateExtension3_6;
  */
 public class ConsoleExtension3_6 implements ConsoleExtension {
 	
-	private HibernateExtension3_6 hibernateExtension;
+	private HibernateExtension hibernateExtension;
 	
 	public ConsoleExtension3_6(){}
 	
 	@Override
 	public void setHibernateExtention(HibernateExtension hibernateExtension){
-		this.hibernateExtension = (HibernateExtension3_6) hibernateExtension;
+		this.hibernateExtension = hibernateExtension;
 	}
 
 	@Override
@@ -164,7 +163,7 @@ public class ConsoleExtension3_6 implements ConsoleExtension {
 					if (attributes.isReverseEngineer()) {
 						monitor.subTask(HibernateConsoleMessages.CodeGenerationLaunchDelegate_reading_jdbc_metadata);
 					}
-					final IConfiguration cfg = buildConfiguration(attributes, (HibernateExtension3_6) cc.getHibernateExtension(), ResourcesPlugin.getWorkspace().getRoot());
+					final IConfiguration cfg = buildConfiguration(attributes, cc.getHibernateExtension(), ResourcesPlugin.getWorkspace().getRoot());
 
 					monitor.worked(1);
 
@@ -213,7 +212,7 @@ public class ConsoleExtension3_6 implements ConsoleExtension {
 				}
 	
 	
-	private IConfiguration buildConfiguration(final ExporterAttributes attributes, HibernateExtension3_6 cc, IWorkspaceRoot root) {
+	private IConfiguration buildConfiguration(final ExporterAttributes attributes, HibernateExtension cc, IWorkspaceRoot root) {
 		final boolean reveng = attributes.isReverseEngineer();
 		final String reverseEngineeringStrategy = attributes.getRevengStrategy();
 		final boolean preferBasicCompositeids = attributes.isPreferBasicCompositeIds();
