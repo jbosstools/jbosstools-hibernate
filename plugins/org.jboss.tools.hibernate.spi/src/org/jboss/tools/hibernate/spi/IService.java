@@ -131,4 +131,6 @@ public interface IService {
 
 	Class<?> getClassWithoutInitializingProxy(Object reflectedObject);
 	
+	ClassLoader getClassLoader();
+	
 }

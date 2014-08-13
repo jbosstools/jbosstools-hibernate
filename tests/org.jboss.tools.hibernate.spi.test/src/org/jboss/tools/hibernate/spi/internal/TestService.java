@@ -307,4 +307,9 @@ public class TestService implements IService {
 		return null;
 	}
 
+	@Override
+	public ClassLoader getClassLoader() {
+		return null;
+	}
+
 }

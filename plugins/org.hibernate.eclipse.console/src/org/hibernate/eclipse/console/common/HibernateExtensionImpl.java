@@ -88,7 +88,7 @@ public class HibernateExtensionImpl implements HibernateExtension {
 	}
 	
 	private ClassLoader getParentClassLoader() {
-		return getHibernateService().getClass().getClassLoader();
+		return getHibernateService().getClassLoader();
 	}
 
 	@Override

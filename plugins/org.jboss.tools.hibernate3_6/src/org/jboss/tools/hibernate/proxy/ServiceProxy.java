@@ -454,4 +454,9 @@ public class ServiceProxy implements IService {
 		return HibernateProxyHelper.getClassWithoutInitializingProxy(reflectedObject);
 	}
 
+	@Override
+	public ClassLoader getClassLoader() {
+		return ServiceProxy.class.getClassLoader();
+	}
+
 }
