@@ -18,8 +18,6 @@ import java.sql.SQLException;
 import java.util.Iterator;
 
 import org.eclipse.osgi.util.NLS;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.boot.registry.internal.StandardServiceRegistryImpl;
 import org.hibernate.cfg.Settings;
 import org.hibernate.console.ConfigurationFactory;
 import org.hibernate.console.ConsoleConfigClassLoader;
@@ -49,8 +47,6 @@ import org.jboss.tools.hibernate.util.ServiceLookup;
  *
  */
 public class HibernateExtension4_3 extends AbstractHibernateExtension {
-	
-	private ServiceRegistry serviceRegistry;
 	
 	public HibernateExtension4_3() {
 	}
@@ -104,10 +100,7 @@ public class HibernateExtension4_3 extends AbstractHibernateExtension {
 				if (sessionFactory != null) {
 					throw new HibernateException("Factory was not closed before attempt to build a new Factory");
 				}
-				serviceRegistry =  new StandardServiceRegistryBuilder()
-					.applySettings( configuration.getProperties())
-					.build();
-				sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+				sessionFactory = configuration.buildSessionFactory();
 				return null;
 			}
 		});
@@ -119,8 +112,6 @@ public class HibernateExtension4_3 extends AbstractHibernateExtension {
 		if (sessionFactory != null) {
 			sessionFactory.close();
 			sessionFactory = null;
-			( (StandardServiceRegistryImpl) serviceRegistry ).destroy();
-			serviceRegistry = null;
 			res = true;
 		}
 		return res;
