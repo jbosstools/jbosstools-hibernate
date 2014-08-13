@@ -1,5 +1,6 @@
 package org.hibernate.console.ext;
 
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,4 +26,10 @@ public abstract class AbstractHibernateExtension implements HibernateExtension {
 	
 	protected Map<String, FakeDelegatingDriver> fakeDrivers = new HashMap<String, FakeDelegatingDriver>();
 
+	protected abstract boolean cleanUpClassLoader();
+	
+	protected abstract ConsoleConfigClassLoader createClassLoader(final URL[] customClassPathURLs);
+
+	protected abstract void reinitClassLoader();
+	
 }
