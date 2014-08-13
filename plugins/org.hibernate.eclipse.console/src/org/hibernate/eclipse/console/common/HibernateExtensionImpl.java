@@ -33,7 +33,7 @@ import org.jboss.tools.hibernate.spi.ISessionFactory;
 import org.jboss.tools.hibernate.spi.ISettings;
 import org.jboss.tools.hibernate.spi.ServiceLookup;
 
-public abstract class AbstractHibernateExtension implements HibernateExtension {
+public class HibernateExtensionImpl implements HibernateExtension {
 
 	protected IConfiguration configuration;
 	
@@ -105,7 +105,7 @@ public abstract class AbstractHibernateExtension implements HibernateExtension {
 		return (QueryPage)execute(new Command() {
 			public Object execute() {
 				ISession session = sessionFactory.openSession();
-				QueryPage qp = new HQLQueryPage(AbstractHibernateExtension.this, hql,queryParameters);
+				QueryPage qp = new HQLQueryPage(HibernateExtensionImpl.this, hql,queryParameters);
 				qp.setSession(session);
 				return qp;
 			}
@@ -118,7 +118,7 @@ public abstract class AbstractHibernateExtension implements HibernateExtension {
 		return (QueryPage)execute(new Command() {
 			public Object execute() {
 				ISession session = sessionFactory.openSession();
-				QueryPage qp = new JavaPage(AbstractHibernateExtension.this,criteriaCode,model);
+				QueryPage qp = new JavaPage(HibernateExtensionImpl.this,criteriaCode,model);
 				qp.setSession(session);
 				return qp;
 			}

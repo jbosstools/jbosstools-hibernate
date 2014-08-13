@@ -10,13 +10,13 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate3_6;
 
-import org.hibernate.eclipse.console.common.AbstractHibernateExtension;
+import org.hibernate.eclipse.console.common.HibernateExtensionImpl;
 
 /**
  * 
  * @author Dmitry Geraskov
  *
  */
-public class HibernateExtension3_6 extends AbstractHibernateExtension {
+public class HibernateExtension3_6 extends HibernateExtensionImpl {
 	
 }
