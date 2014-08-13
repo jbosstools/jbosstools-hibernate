@@ -133,9 +133,7 @@ public class HibernateConsoleMessages extends NLS {
 	public static String ConsoleConfigurationPropertySource_error;
 	public static String ConsoleConfigurationPropertySource_name;
 	public static String ConsoleConfigurationPropertySource_properties_file;
-	public static String DynamicSQLPreviewView_caused_by;
 	public static String DynamicSQLPreviewView_empty_hql_query;
-	public static String DynamicSQLPreviewView_manipulation_of;
 	public static String DynamicSQLPreviewView_no_console_conf_associated;
 	public static String DynamicSQLPreviewView_no_hql_query_editor;
 	public static String DynamicSQLPreviewView_no_hql_query_editor_selected;

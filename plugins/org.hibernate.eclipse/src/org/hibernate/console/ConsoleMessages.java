@@ -41,6 +41,8 @@ public class ConsoleMessages extends NLS {
 	public static String StringListDialog_Remove;
 	public static String PluginFileAppender_missing_plugin_state_location;
 	public static String PluginLogAppender_missing_layout_for_appender;
+	public static String DynamicSQLPreviewView_caused_by;
+	public static String DynamicSQLPreviewView_manipulation_of;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, ConsoleMessages.class);

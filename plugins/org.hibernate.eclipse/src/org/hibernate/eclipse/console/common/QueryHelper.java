@@ -12,8 +12,8 @@ package org.hibernate.eclipse.console.common;
 
 import java.util.Iterator;
 
+import org.hibernate.console.ConsoleMessages;
 import org.hibernate.console.execution.ExecutionContext;
-import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.QLFormatHelper;
 import org.hibernate.util.xpl.StringHelper;
 import org.jboss.tools.hibernate.spi.IHQLQueryPlan;
@@ -43,7 +43,7 @@ public class QueryHelper {
 					for (int i = 0; i < translators.length; i++) {
 						IQueryTranslator translator = translators[i];
 						if(translator.isManipulationStatement()) {
-							str.append(HibernateConsoleMessages.DynamicSQLPreviewView_manipulation_of + i + ":"); //$NON-NLS-1$
+							str.append(ConsoleMessages.DynamicSQLPreviewView_manipulation_of + i + ":"); //$NON-NLS-1$
 							Iterator<?> iterator = translator.getQuerySpaces().iterator();
 							while ( iterator.hasNext() ) {
 								Object qspace = iterator.next();
@@ -79,7 +79,7 @@ public class QueryHelper {
 							cause=null;
 						} else {
 							cause = cause.getCause();
-							if(cause!=null) msgs.append(HibernateConsoleMessages.DynamicSQLPreviewView_caused_by);
+							if(cause!=null) msgs.append(ConsoleMessages.DynamicSQLPreviewView_caused_by);
 						}
 					}
 					return msgs.toString();
