@@ -15,9 +15,7 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.console.ConfigurationFactory;
@@ -27,7 +25,6 @@ import org.hibernate.console.FakeDelegatingDriver;
 import org.hibernate.console.QueryInputModel;
 import org.hibernate.console.QueryPage;
 import org.hibernate.console.execution.DefaultExecutionContext;
-import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.ext.AbstractHibernateExtension;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
@@ -39,7 +36,6 @@ import org.jboss.tools.hibernate.spi.HibernateException;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ISession;
-import org.jboss.tools.hibernate.spi.ISessionFactory;
 import org.jboss.tools.hibernate.spi.ISettings;
 import org.jboss.tools.hibernate.util.ServiceLookup;
 
@@ -50,18 +46,6 @@ import org.jboss.tools.hibernate.util.ServiceLookup;
  */
 public class HibernateExtension3_5 extends AbstractHibernateExtension {
 	
-	private ConsoleConfigClassLoader classLoader = null;
-
-	private ExecutionContext executionContext;
-	
-	private ConsoleConfigurationPreferences prefs;
-	
-	private IConfiguration configuration;
-	
-	private ISessionFactory sessionFactory;
-	
-	private Map<String, FakeDelegatingDriver> fakeDrivers = new HashMap<String, FakeDelegatingDriver>();
-
 	public HibernateExtension3_5() {
 	}
 

@@ -15,9 +15,7 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -43,7 +41,6 @@ import org.jboss.tools.hibernate.spi.HibernateException;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ISession;
-import org.jboss.tools.hibernate.spi.ISessionFactory;
 import org.jboss.tools.hibernate.util.ServiceLookup;
 
 /**
@@ -53,20 +50,8 @@ import org.jboss.tools.hibernate.util.ServiceLookup;
  */
 public class HibernateExtension4_3 extends AbstractHibernateExtension {
 	
-	private ConsoleConfigClassLoader classLoader = null;
-	
-	private ExecutionContext executionContext;
-	
-	private ConsoleConfigurationPreferences prefs;
-	
-	private IConfiguration configuration;
-	
-	private ISessionFactory sessionFactory;
-	
 	private ServiceRegistry serviceRegistry;
 	
-	private Map<String, FakeDelegatingDriver> fakeDrivers = new HashMap<String, FakeDelegatingDriver>();
-
 	public HibernateExtension4_3() {
 	}
 
