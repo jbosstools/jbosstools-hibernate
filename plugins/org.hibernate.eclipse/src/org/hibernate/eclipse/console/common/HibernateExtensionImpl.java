@@ -96,7 +96,7 @@ public class HibernateExtensionImpl implements HibernateExtension {
 		String result = prefs.getHibernateVersion();
 		// return hibernate 3.5 by default
 		// TODO do something smarter here
-		return result != null ? result : "3.5";
+		return result != null ? result : "3.5"; //$NON-NLS-1$
 	}
 
 	@Override
