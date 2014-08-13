@@ -63,5 +63,7 @@ public interface HibernateExtension {
 	public String getConsoleConfigurationName();
 	
 	public IService getHibernateService();
+
+	public IConfiguration buildWith(IConfiguration object, boolean b);
 	
 }
