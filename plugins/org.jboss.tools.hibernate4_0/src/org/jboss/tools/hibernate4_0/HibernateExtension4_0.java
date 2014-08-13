@@ -11,8 +11,6 @@
 package org.jboss.tools.hibernate4_0;
 
 import java.net.URL;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Iterator;
@@ -141,46 +139,6 @@ public class HibernateExtension4_0 extends AbstractHibernateExtension {
 		classLoader = createClassLoader(customClassPathURLs);
 	}
 	
-	protected ConsoleConfigClassLoader createClassLoader(final URL[] customClassPathURLs) {
-		ConsoleConfigClassLoader classLoader = AccessController.doPrivileged(new PrivilegedAction<ConsoleConfigClassLoader>() {
-			public ConsoleConfigClassLoader run() {
-				return new ConsoleConfigClassLoader(customClassPathURLs, Thread.currentThread().getContextClassLoader()) {
-					protected Class<?> findClass(String name) throws ClassNotFoundException {
-						try {
-							return super.findClass(name);
-						} catch (ClassNotFoundException cnfe) {
-							throw cnfe;
-						} catch (IllegalStateException e){
-							e.printStackTrace();
-							throw e;
-						}
-					}
-		
-					protected synchronized Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
-						try {
-							return super.loadClass(name, resolve);
-						} catch (ClassNotFoundException cnfe) {
-							throw cnfe;
-						}
-					}
-		
-					public Class<?> loadClass(String name) throws ClassNotFoundException {
-						try {
-							return super.loadClass(name);
-						} catch (ClassNotFoundException cnfe) {
-							throw cnfe;
-						}
-					}
-					
-					public URL getResource(String name) {
-					      return super.getResource(name);
-					}
-				};
-			}
-		});
-		return classLoader;
-	}
-
 	public String getName() {
 		return prefs.getName();
 	}

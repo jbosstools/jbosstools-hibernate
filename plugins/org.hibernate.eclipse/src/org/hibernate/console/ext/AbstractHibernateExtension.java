@@ -1,6 +1,8 @@
 package org.hibernate.console.ext;
 
 import java.net.URL;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,8 +30,50 @@ public abstract class AbstractHibernateExtension implements HibernateExtension {
 
 	protected abstract boolean cleanUpClassLoader();
 	
-	protected abstract ConsoleConfigClassLoader createClassLoader(final URL[] customClassPathURLs);
-
 	protected abstract void reinitClassLoader();
 	
+	protected ConsoleConfigClassLoader createClassLoader(final URL[] customClassPathURLs) {
+		ConsoleConfigClassLoader classLoader = AccessController.doPrivileged(new PrivilegedAction<ConsoleConfigClassLoader>() {
+			public ConsoleConfigClassLoader run() {
+				return new ConsoleConfigClassLoader(customClassPathURLs, getParentClassLoader()) {
+					protected Class<?> findClass(String name) throws ClassNotFoundException {
+						try {
+							return super.findClass(name);
+						} catch (ClassNotFoundException cnfe) {
+							throw cnfe;
+						} catch (IllegalStateException e){
+							e.printStackTrace();
+							throw e;
+						}
+					}
+		
+					protected synchronized Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+						try {
+							return super.loadClass(name, resolve);
+						} catch (ClassNotFoundException cnfe) {
+							throw cnfe;
+						}
+					}
+		
+					public Class<?> loadClass(String name) throws ClassNotFoundException {
+						try {
+							return super.loadClass(name);
+						} catch (ClassNotFoundException cnfe) {
+							throw cnfe;
+						}
+					}
+					
+					public URL getResource(String name) {
+					      return super.getResource(name);
+					}
+				};
+			}
+		});
+		return classLoader;
+	}
+	
+	private ClassLoader getParentClassLoader() {
+		return getHibernateService().getClass().getClassLoader();
+	}
+
 }
