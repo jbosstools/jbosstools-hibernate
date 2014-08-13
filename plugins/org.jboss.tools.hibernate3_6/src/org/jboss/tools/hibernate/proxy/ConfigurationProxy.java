@@ -197,11 +197,6 @@ public class ConfigurationProxy implements IConfiguration {
 	}
 
 	@Override
-	public ISessionFactory buildSessionFactory(Object serviceRegistry) {
-		throw new RuntimeException("not supported");
-	}
-
-	@Override
 	public Object buildSettings(Object serviceRegisrty) {
 		throw new RuntimeException("not supported");
 	}

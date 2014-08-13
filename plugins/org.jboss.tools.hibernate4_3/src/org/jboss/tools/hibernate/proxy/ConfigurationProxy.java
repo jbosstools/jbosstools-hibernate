@@ -207,15 +207,6 @@ public class ConfigurationProxy implements IConfiguration {
 	}
 
 	@Override
-	public ISessionFactory buildSessionFactory(Object serviceRegistry) {
-		if (serviceRegistry instanceof ServiceRegistry) {
-			return new SessionFactoryProxy(target.buildSessionFactory((ServiceRegistry)serviceRegistry));
-		} else {
-			throw new RuntimeException("unknown service registry object");
-		}
-	}
-
-	@Override
 	public Object buildSettings(Object serviceRegistry) {
 		if (serviceRegistry instanceof ServiceRegistry) {
 			return target.buildSettings((ServiceRegistry)serviceRegistry);

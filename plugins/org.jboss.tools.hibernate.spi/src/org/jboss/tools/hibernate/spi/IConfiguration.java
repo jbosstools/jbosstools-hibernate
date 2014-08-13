@@ -32,7 +32,6 @@ public interface IConfiguration {
 	IPersistentClass getClassMapping(String string);
 	INamingStrategy getNamingStrategy();
 	EntityResolver getEntityResolver();
-	ISessionFactory buildSessionFactory(Object serviceRegistry);
 	Object buildSettings(Object serviceRegistry);
 	Iterator<ITable> getTableMappings();
 	IDialect getDialect();
