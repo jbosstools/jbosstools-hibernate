@@ -57,7 +57,6 @@ import org.jboss.tools.hibernate.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ISession;
 import org.jboss.tools.hibernate.util.ServiceLookup;
-import org.jboss.tools.hibernate3_5.HibernateExtension3_5;
 
 
 /**
@@ -66,7 +65,7 @@ import org.jboss.tools.hibernate3_5.HibernateExtension3_5;
  */
 public class ConsoleExtension3_5 implements ConsoleExtension {
 	
-	private HibernateExtension3_5 hibernateExtension;
+	private HibernateExtension hibernateExtension;
 	
 	public ConsoleExtension3_5(){}
 
@@ -273,7 +272,7 @@ public class ConsoleExtension3_5 implements ConsoleExtension {
 	
 	@Override
 	public void setHibernateExtention(HibernateExtension hibernateExtension) {
-		this.hibernateExtension = (HibernateExtension3_5) hibernateExtension;
+		this.hibernateExtension = hibernateExtension;
 	}
 
 	@Override
