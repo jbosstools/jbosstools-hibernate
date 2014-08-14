@@ -45,7 +45,6 @@ import org.hibernate.eclipse.launch.CodeGenerationStrings;
 import org.hibernate.eclipse.launch.CodeGenerationUtils;
 import org.hibernate.eclipse.launch.ExporterAttributes;
 import org.hibernate.eclipse.launch.PathHelper;
-import org.hibernate.proxy.HibernateProxyHelper;
 import org.jboss.tools.hibernate.spi.HibernateException;
 import org.jboss.tools.hibernate.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.spi.IConfiguration;
@@ -285,7 +284,7 @@ public class ConsoleExtension3_5 extends ConsoleExtensionImpl {
 	}
 	
 	private boolean hasMetaData(Object object, ISession currentSession) {
-		return currentSession.getSessionFactory().getClassMetadata(HibernateProxyHelper.getClassWithoutInitializingProxy(object))!=null;
+		return currentSession.getSessionFactory().getClassMetadata(hibernateExtension.getHibernateService().getClassWithoutInitializingProxy(object))!=null;
 	}
 
 }
