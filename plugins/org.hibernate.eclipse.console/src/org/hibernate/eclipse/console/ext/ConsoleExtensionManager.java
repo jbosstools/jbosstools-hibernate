@@ -23,6 +23,7 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.common.ConsoleExtension;
+import org.hibernate.eclipse.console.common.ConsoleExtensionDefinition;
 import org.hibernate.eclipse.console.common.HibernateExtension;
 
 /**
