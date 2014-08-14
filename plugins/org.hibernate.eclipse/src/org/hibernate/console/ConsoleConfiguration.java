@@ -41,7 +41,7 @@ import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.execution.ExecutionContextHolder;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.PreferencesClassPathUtils;
-import org.hibernate.eclipse.console.common.HibernateExtensionImpl;
+import org.hibernate.eclipse.console.common.HibernateExtension;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IEnvironment;
 import org.jboss.tools.hibernate.spi.ISessionFactory;
@@ -61,10 +61,10 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	//****************************** EXTENSION **********************
 	private String hibernateVersion = "==<None>=="; //set to some unused value //$NON-NLS-1$
 	
-	private HibernateExtensionImpl extension;
+	private HibernateExtension extension;
 	
 	private void loadHibernateExtension(){
-		extension = new HibernateExtensionImpl();
+		extension = new HibernateExtension();
 		extension.setConsoleConfigurationPreferences(prefs);
 //		String version = hibernateVersion == null ? "3.5" : hibernateVersion;//3.5 is a default version //$NON-NLS-1$
 //		HibernateExtensionDefinition def = HibernateExtensionManager.findHibernateExtensionDefinition(version);
@@ -88,7 +88,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
         return (str1 == null ? str2 == null : str1.equals(str2) );
     }
 
-    public HibernateExtensionImpl getHibernateExtension(){
+    public HibernateExtension getHibernateExtension(){
 		updateHibernateVersion(prefs.getHibernateVersion());//reinit if necessary
 		return this.extension;
 	}
@@ -249,7 +249,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	}
 
 	protected ClassLoader getParentClassLoader() {
-		HibernateExtensionImpl extension = getHibernateExtension();
+		HibernateExtension extension = getHibernateExtension();
 		if (extension != null) {
 			return extension.getHibernateService().getClassLoader();
 		} else {

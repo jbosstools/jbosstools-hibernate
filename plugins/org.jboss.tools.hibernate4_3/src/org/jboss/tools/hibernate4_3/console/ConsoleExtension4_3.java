@@ -38,7 +38,7 @@ import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.common.EntityPropertySource;
 import org.hibernate.eclipse.console.common.HQLCompletionHandler;
-import org.hibernate.eclipse.console.common.HibernateExtensionImpl;
+import org.hibernate.eclipse.console.common.HibernateExtension;
 import org.hibernate.eclipse.console.ext.CompletionProposalsResult;
 import org.hibernate.eclipse.console.ext.ConsoleExtension;
 import org.hibernate.eclipse.console.model.impl.ExporterFactory;
@@ -61,12 +61,12 @@ import org.jboss.tools.hibernate.util.ServiceLookup;
 
 public class ConsoleExtension4_3 implements ConsoleExtension {
 	
-	private HibernateExtensionImpl hibernateExtension;
+	private HibernateExtension hibernateExtension;
 	
 	public ConsoleExtension4_3(){}
 	
 	@Override
-	public void setHibernateExtention(HibernateExtensionImpl hibernateExtension){
+	public void setHibernateExtention(HibernateExtension hibernateExtension){
 		this.hibernateExtension = hibernateExtension;
 	}
 
@@ -208,7 +208,7 @@ public class ConsoleExtension4_3 implements ConsoleExtension {
 				}
 	
 	
-	private IConfiguration buildConfiguration(final ExporterAttributes attributes, HibernateExtensionImpl cc, IWorkspaceRoot root) {
+	private IConfiguration buildConfiguration(final ExporterAttributes attributes, HibernateExtension cc, IWorkspaceRoot root) {
 		final boolean reveng = attributes.isReverseEngineer();
 		final String reverseEngineeringStrategy = attributes.getRevengStrategy();
 		final boolean preferBasicCompositeids = attributes.isPreferBasicCompositeIds();

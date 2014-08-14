@@ -12,7 +12,7 @@ package org.hibernate.eclipse.console.ext;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.hibernate.eclipse.console.common.HibernateExtensionImpl;
+import org.hibernate.eclipse.console.common.HibernateExtension;
 
 /**
  * @author Dmitry Geraskov
@@ -38,7 +38,7 @@ public class ConsoleExtensionDefinition {
 		this.hibernateVersion = hibernateVersion;
 	}
 	
-	public ConsoleExtension createConsoleExtensionInstance(HibernateExtensionImpl hibernateExtension) {
+	public ConsoleExtension createConsoleExtensionInstance(HibernateExtension hibernateExtension) {
 		if (hibernateExtension != null) {
 			try {
 				ConsoleExtension consoleExtension = (ConsoleExtension) element

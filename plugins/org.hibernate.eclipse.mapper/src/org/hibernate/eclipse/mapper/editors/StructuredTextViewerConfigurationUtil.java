@@ -16,7 +16,7 @@ import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocumentRegion;
 import org.eclipse.wst.xml.ui.internal.contentassist.ContentAssistRequest;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.eclipse.console.common.HibernateExtensionImpl;
+import org.hibernate.eclipse.console.common.HibernateExtension;
 import org.hibernate.eclipse.mapper.MapperPlugin;
 import org.hibernate.eclipse.nature.HibernateNature;
 import org.jboss.tools.hibernate.spi.IService;
@@ -117,7 +117,7 @@ public class StructuredTextViewerConfigurationUtil {
 		if (hibnat != null) {
 			ConsoleConfiguration cc = hibnat.getDefaultConsoleConfiguration();
 			if (cc != null) {
-				HibernateExtensionImpl extension = cc.getHibernateExtension();
+				HibernateExtension extension = cc.getHibernateExtension();
 				if (extension != null) {
 					return extension.getHibernateService();
 				}

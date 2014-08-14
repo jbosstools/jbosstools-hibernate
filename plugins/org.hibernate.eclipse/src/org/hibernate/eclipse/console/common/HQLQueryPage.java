@@ -120,7 +120,7 @@ public class HQLQueryPage extends AbstractQueryPage {
 	 * @param string
 	 * @param queryParameters 
 	 */
-	public HQLQueryPage(HibernateExtensionImpl extension, String string, QueryInputModel model) {
+	public HQLQueryPage(HibernateExtension extension, String string, QueryInputModel model) {
 		super(extension, model);
 		queryString = string;
 		setTabName(getQueryString().replace('\n', ' ').replace('\r', ' ').replace('\t', ' '));

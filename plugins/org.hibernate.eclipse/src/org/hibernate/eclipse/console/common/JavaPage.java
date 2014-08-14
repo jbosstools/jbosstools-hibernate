@@ -53,7 +53,7 @@ public class JavaPage extends AbstractQueryPage {
      * @param model
      * @param session2
      */
-    public JavaPage(HibernateExtensionImpl extension, String criteriaCode, QueryInputModel model) {
+    public JavaPage(HibernateExtension extension, String criteriaCode, QueryInputModel model) {
 		super(extension, model);
         this.criteriaCode =  criteriaCode;
 		setTabName(getQueryString().replace('\n', ' ').replace('\r', ' '));

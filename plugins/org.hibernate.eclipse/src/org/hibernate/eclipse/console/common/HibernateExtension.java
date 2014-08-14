@@ -29,7 +29,7 @@ import org.jboss.tools.hibernate.spi.ISessionFactory;
 import org.jboss.tools.hibernate.spi.ISettings;
 import org.jboss.tools.hibernate.spi.ServiceLookup;
 
-public class HibernateExtensionImpl {
+public class HibernateExtension {
 
 	protected IConfiguration configuration;
 	
@@ -99,7 +99,7 @@ public class HibernateExtensionImpl {
 		return (QueryPage)execute(new Command() {
 			public Object execute() {
 				ISession session = sessionFactory.openSession();
-				QueryPage qp = new HQLQueryPage(HibernateExtensionImpl.this, hql,queryParameters);
+				QueryPage qp = new HQLQueryPage(HibernateExtension.this, hql,queryParameters);
 				qp.setSession(session);
 				return qp;
 			}
@@ -111,7 +111,7 @@ public class HibernateExtensionImpl {
 		return (QueryPage)execute(new Command() {
 			public Object execute() {
 				ISession session = sessionFactory.openSession();
-				QueryPage qp = new JavaPage(HibernateExtensionImpl.this,criteriaCode,model);
+				QueryPage qp = new JavaPage(HibernateExtension.this,criteriaCode,model);
 				qp.setSession(session);
 				return qp;
 			}

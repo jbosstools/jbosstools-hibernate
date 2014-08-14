@@ -24,7 +24,7 @@ package org.hibernate.console;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
-import org.hibernate.eclipse.console.common.HibernateExtensionImpl;
+import org.hibernate.eclipse.console.common.HibernateExtension;
 import org.jboss.tools.hibernate.spi.ISession;
 
 /**
@@ -75,7 +75,7 @@ public interface QueryPage {
     public ISession getSession();
     public void setSession(ISession session);
     
-	public HibernateExtensionImpl getHibernateExtension();
+	public HibernateExtension getHibernateExtension();
 	
     public void addPropertyChangeListener(PropertyChangeListener listener);
 

@@ -37,7 +37,7 @@ import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.common.EntityPropertySource;
 import org.hibernate.eclipse.console.common.HQLCompletionHandler;
-import org.hibernate.eclipse.console.common.HibernateExtensionImpl;
+import org.hibernate.eclipse.console.common.HibernateExtension;
 import org.hibernate.eclipse.console.ext.CompletionProposalsResult;
 import org.hibernate.eclipse.console.ext.ConsoleExtension;
 import org.hibernate.eclipse.console.model.impl.ExporterFactory;
@@ -65,7 +65,7 @@ import org.jboss.tools.hibernate.util.ServiceLookup;
  */
 public class ConsoleExtension3_5 implements ConsoleExtension {
 	
-	private HibernateExtensionImpl hibernateExtension;
+	private HibernateExtension hibernateExtension;
 	
 	public ConsoleExtension3_5(){}
 
@@ -270,7 +270,7 @@ public class ConsoleExtension3_5 implements ConsoleExtension {
 		}
 	}
 	
-	public void setHibernateExtention(HibernateExtensionImpl hibernateExtension) {
+	public void setHibernateExtention(HibernateExtension hibernateExtension) {
 		this.hibernateExtension = hibernateExtension;
 	}
 

@@ -41,11 +41,11 @@ public class EntityPropertySource implements IPropertySource2
 	private Object reflectedObject;
 	private IPropertyDescriptor[] propertyDescriptors;
 
-	private final HibernateExtensionImpl extension;
+	private final HibernateExtension extension;
 	private final ISession currentSession;
 	private IClassMetadata classMetadata;
 
-	public EntityPropertySource(final Object object, final ISession currentSession, HibernateExtensionImpl extension)
+	public EntityPropertySource(final Object object, final ISession currentSession, HibernateExtension extension)
 	{
 		this.currentSession = currentSession;
 		this.extension = extension;
