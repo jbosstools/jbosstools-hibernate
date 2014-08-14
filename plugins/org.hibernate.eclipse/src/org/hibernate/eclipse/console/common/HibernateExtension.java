@@ -122,13 +122,6 @@ public class HibernateExtension {
 		});
 	}
 
-	/**
-	 * @param ConsoleConfigurationPreferences the prefs to set
-	 */
-	public void setConsoleConfigurationPreferences(ConsoleConfigurationPreferences prefs) {
-		this.prefs = prefs;
-	}
-	
 	public void build() {
 		configuration = buildWith(null, true);
 	}
