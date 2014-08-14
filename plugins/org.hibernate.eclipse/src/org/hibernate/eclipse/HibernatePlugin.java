@@ -24,14 +24,19 @@ package org.hibernate.eclipse;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.logging.LoggingHelper;
 import org.hibernate.eclipse.logging.PluginLogManager;
 import org.osgi.framework.BundleContext;
@@ -101,6 +106,31 @@ public class HibernatePlugin extends Plugin {
 	}
 	
 	public void log(Throwable t) {
-		plugin.getLog().log(new Status(Status.ERROR, plugin.getBundle().getSymbolicName(), t.getMessage(), t));
+		plugin.getLog().log(new Status(Status.ERROR, getId(), t.getMessage(), t));
 	}
+	
+	public static IStatus throwableToStatus(Throwable t, int code) {
+		List<IStatus> causes = new ArrayList<IStatus>();
+		Throwable temp = t;
+		while(temp!=null && temp.getCause()!=temp) {
+			causes.add(new Status(IStatus.ERROR, getId(), code, temp.getMessage()==null?temp.toString() + HibernateConsoleMessages.HibernateConsolePlugin_no_message_1:temp.toString(), temp) );
+			temp = temp.getCause();
+		}
+        String msg = HibernateConsoleMessages.HibernateConsolePlugin_no_message_2;
+        if(t!=null && t.getMessage()!=null) {
+            msg = t.toString();
+        }
+
+        if(causes.isEmpty()) {
+        	return new Status(IStatus.ERROR, getId(), code, msg, t);
+        } else {
+        	return new MultiStatus(getId(), code,causes.toArray(new IStatus[causes.size()]), msg, t);
+        }
+	}
+	
+	public static String getId() {
+		return plugin.getBundle().getSymbolicName();
+	}
+
+	
 }

@@ -56,7 +56,7 @@ import org.eclipse.osgi.util.NLS;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.eclipse.console.ExtensionManager;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
-import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.eclipse.HibernatePlugin;
 import org.hibernate.eclipse.console.model.impl.ExporterDefinition;
 import org.hibernate.eclipse.console.model.impl.ExporterFactory;
 
@@ -113,7 +113,7 @@ public class ExporterAttributes
 
          exporterFactories = readExporterFactories(configuration);
        } catch (CoreException e) {
-         throw new CoreException(HibernateConsolePlugin.throwableToStatus(e, 666));
+         throw new CoreException(HibernatePlugin.throwableToStatus(e, 666));
       }
    }
 
