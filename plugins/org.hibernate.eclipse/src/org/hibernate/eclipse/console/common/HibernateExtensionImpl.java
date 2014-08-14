@@ -19,12 +19,8 @@ import org.hibernate.console.QueryPage;
 import org.hibernate.console.execution.DefaultExecutionContext;
 import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.console.execution.ExecutionContext.Command;
-import org.hibernate.console.ext.HibernateExtension;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.PreferencesClassPathUtils;
-import org.hibernate.eclipse.console.common.HQLQueryPage;
-import org.hibernate.eclipse.console.common.JavaPage;
-import org.hibernate.eclipse.console.common.QueryHelper;
 import org.jboss.tools.hibernate.spi.HibernateException;
 import org.jboss.tools.hibernate.spi.IConfiguration;
 import org.jboss.tools.hibernate.spi.IService;
@@ -33,7 +29,7 @@ import org.jboss.tools.hibernate.spi.ISessionFactory;
 import org.jboss.tools.hibernate.spi.ISettings;
 import org.jboss.tools.hibernate.spi.ServiceLookup;
 
-public class HibernateExtensionImpl implements HibernateExtension {
+public class HibernateExtensionImpl {
 
 	protected IConfiguration configuration;
 	
@@ -91,7 +87,6 @@ public class HibernateExtensionImpl implements HibernateExtension {
 		return getHibernateService().getClassLoader();
 	}
 
-	@Override
 	public String getHibernateVersion() {
 		String result = prefs.getHibernateVersion();
 		// return hibernate 3.5 by default
@@ -99,7 +94,6 @@ public class HibernateExtensionImpl implements HibernateExtension {
 		return result != null ? result : "3.5"; //$NON-NLS-1$
 	}
 
-	@Override
 	public QueryPage executeHQLQuery(final String hql,
 			final QueryInputModel queryParameters) {
 		return (QueryPage)execute(new Command() {
@@ -112,7 +106,6 @@ public class HibernateExtensionImpl implements HibernateExtension {
 		});
 	}
 
-	@Override
 	public QueryPage executeCriteriaQuery(final String criteriaCode,
 			final QueryInputModel model) {
 		return (QueryPage)execute(new Command() {
@@ -136,7 +129,6 @@ public class HibernateExtensionImpl implements HibernateExtension {
 		configuration = buildWith(null, true);
 	}
 
-	@Override
 	public void buildSessionFactory() {
 		execute(new Command() {
 			public Object execute() {
@@ -149,7 +141,6 @@ public class HibernateExtensionImpl implements HibernateExtension {
 		});
 	}
 
-	@Override
 	public boolean closeSessionFactory() {
 		boolean res = false;
 		if (sessionFactory != null) {
@@ -196,7 +187,6 @@ public class HibernateExtensionImpl implements HibernateExtension {
 		throw new HibernateException(msg);
 	}
 
-	@Override
 	public boolean reset() {
 		boolean resetted = false;
 		// reseting state
@@ -246,7 +236,6 @@ public class HibernateExtensionImpl implements HibernateExtension {
 		return resetted;
 	}
 
-	@Override
 	public boolean hasConfiguration() {
 		return configuration != null;
 	}
@@ -266,7 +255,6 @@ public class HibernateExtensionImpl implements HibernateExtension {
 		});
 	}
 
-	@Override
 	public boolean isSessionFactoryCreated() {
 		return sessionFactory != null;
 	}
@@ -275,7 +263,6 @@ public class HibernateExtensionImpl implements HibernateExtension {
 		return QueryHelper.generateSQL(executionContext, sessionFactory, query, getHibernateService());
 	}
 
-	@Override
 	public void buildMappings() {
 		execute(new Command() {
 			public Object execute() {
@@ -285,17 +272,14 @@ public class HibernateExtensionImpl implements HibernateExtension {
 		});
 	}
 
-	@Override
 	public boolean hasExecutionContext() {
 		return executionContext != null;
 	}
 
-	@Override
 	public String getConsoleConfigurationName() {
 		return prefs.getName();
 	}
 
-	@Override
 	public IService getHibernateService() {
 		return ServiceLookup.findService(getHibernateVersion());
 	}

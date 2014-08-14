@@ -21,8 +21,8 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.console.ext.HibernateExtension;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
+import org.hibernate.eclipse.console.common.HibernateExtensionImpl;
 import org.hibernate.eclipse.hqleditor.HQLEditor;
 import org.hibernate.eclipse.hqleditor.HQLEditorDocumentSetupParticipant;
 import org.hibernate.eclipse.hqleditor.HQLSourceViewer;
@@ -113,7 +113,7 @@ public class DynamicSQLPreviewView extends ViewPart {
 				if(StringHelper.isEmpty( editor.getQueryString() )) {
 					textViewer.getDocument().set( HibernateConsoleMessages.DynamicSQLPreviewView_empty_hql_query );
 				} else if(consoleConfiguration!=null) {
-					HibernateExtension hibernateExtension = consoleConfiguration.getHibernateExtension();
+					HibernateExtensionImpl hibernateExtension = consoleConfiguration.getHibernateExtension();
 					if(hibernateExtension.isSessionFactoryCreated()) {
 						String generateSQL = hibernateExtension.generateSQL(editor.getQueryString());
 						if(StringHelper.isEmpty( generateSQL )) {

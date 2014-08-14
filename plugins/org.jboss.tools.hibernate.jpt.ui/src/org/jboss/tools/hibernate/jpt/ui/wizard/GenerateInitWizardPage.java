@@ -42,7 +42,6 @@ import org.eclipse.swt.widgets.Group;
 import org.hibernate.console.ConnectionProfileUtil;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
-import org.hibernate.console.ext.HibernateExtensionManager;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
 import org.hibernate.eclipse.console.EclipseConsoleConfigurationPreferences;
@@ -54,6 +53,7 @@ import org.hibernate.eclipse.launch.PathHelper;
 import org.hibernate.util.xpl.StringHelper;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
 import org.jboss.tools.hibernate.jpt.ui.HibernateJptUIPlugin;
+import org.jboss.tools.hibernate.spi.ServiceLookup;
 
 /**
  * @author Dmitry Geraskov
@@ -164,7 +164,7 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 
         hibernateVersion = new ComboDialogField(SWT.READ_ONLY);
         hibernateVersion.setLabelText(HibernateConsoleMessages.ConsoleConfigurationMainTab_0);
-		hibernateVersion.setItems((String[])HibernateExtensionManager.getHibernateExtensionDefinitionsAsMap().keySet().toArray(new String[0]));
+		hibernateVersion.setItems(ServiceLookup.getVersions());
 		hibernateVersion.selectItem(0);
 		hibernateVersion.setDialogFieldListener(fieldlistener);
 		hibernateVersion.doFillIntoGrid(container, numColumns);

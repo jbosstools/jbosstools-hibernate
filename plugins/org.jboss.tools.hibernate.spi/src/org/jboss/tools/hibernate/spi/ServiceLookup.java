@@ -42,5 +42,12 @@ public class ServiceLookup {
 			}
 		}
 	}
+	
+	public static String[] getVersions() {
+		if (services == null) {
+			initializeServices();
+		}
+		return services.keySet().toArray(new String[services.size()]);
+	}
 
 }

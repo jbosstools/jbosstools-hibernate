@@ -39,7 +39,6 @@ import org.hibernate.console.execution.DefaultExecutionContext;
 import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.execution.ExecutionContextHolder;
-import org.hibernate.console.ext.HibernateExtension;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.PreferencesClassPathUtils;
 import org.hibernate.eclipse.console.common.HibernateExtensionImpl;
@@ -62,7 +61,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	//****************************** EXTENSION **********************
 	private String hibernateVersion = "==<None>=="; //set to some unused value //$NON-NLS-1$
 	
-	private HibernateExtension extension;
+	private HibernateExtensionImpl extension;
 	
 	private void loadHibernateExtension(){
 		extension = new HibernateExtensionImpl();
@@ -89,7 +88,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
         return (str1 == null ? str2 == null : str1.equals(str2) );
     }
 
-    public HibernateExtension getHibernateExtension(){
+    public HibernateExtensionImpl getHibernateExtension(){
 		updateHibernateVersion(prefs.getHibernateVersion());//reinit if necessary
 		return this.extension;
 	}
@@ -250,7 +249,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	}
 
 	protected ClassLoader getParentClassLoader() {
-		HibernateExtension extension = getHibernateExtension();
+		HibernateExtensionImpl extension = getHibernateExtension();
 		if (extension != null) {
 			return extension.getHibernateService().getClassLoader();
 		} else {

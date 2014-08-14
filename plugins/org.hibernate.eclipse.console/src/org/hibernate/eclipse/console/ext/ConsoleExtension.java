@@ -19,7 +19,7 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.hibernate.console.QueryPage;
-import org.hibernate.console.ext.HibernateExtension;
+import org.hibernate.eclipse.console.common.HibernateExtensionImpl;
 
 /**
  * @author Dmitry Geraskov
@@ -29,7 +29,7 @@ public interface ConsoleExtension {
 	
 	public CompletionProposalsResult hqlCodeComplete(String query, int startPosition, int position);
 	
-	public void setHibernateExtention(HibernateExtension hibernateExtension);
+	public void setHibernateExtention(HibernateExtensionImpl hibernateExtension);
 
 	/**
 	 * 

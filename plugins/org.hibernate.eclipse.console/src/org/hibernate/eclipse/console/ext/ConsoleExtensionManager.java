@@ -22,7 +22,7 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.console.ext.HibernateExtension;
+import org.hibernate.eclipse.console.common.HibernateExtensionImpl;
 
 /**
  * @author Dmitry Geraskov
@@ -34,7 +34,7 @@ public class ConsoleExtensionManager {
 	
 	private static Map<String, ConsoleExtensionDefinition> consoleExtensionDefinitions;
 	
-	private static Map<HibernateExtension, ConsoleExtension> consoleExtensions = new HashMap<HibernateExtension, ConsoleExtension>();
+	private static Map<HibernateExtensionImpl, ConsoleExtension> consoleExtensions = new HashMap<HibernateExtensionImpl, ConsoleExtension>();
 
 	private static IExtension[] findExtensions(String extensionId) {
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
@@ -83,7 +83,7 @@ public class ConsoleExtensionManager {
 	}
 	
 	
-	public static ConsoleExtension getConsoleExtension(HibernateExtension hibernateExtension){
+	public static ConsoleExtension getConsoleExtension(HibernateExtensionImpl hibernateExtension){
 		if (hibernateExtension != null){
 			if (!consoleExtensions.containsKey(hibernateExtension)){
 				ConsoleExtensionDefinition definition = findConsoleExtensionDefinition(hibernateExtension.getHibernateVersion());

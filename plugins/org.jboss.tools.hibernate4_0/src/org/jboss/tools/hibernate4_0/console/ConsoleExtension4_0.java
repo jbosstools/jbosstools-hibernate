@@ -34,11 +34,11 @@ import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.QueryPage;
 import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.console.execution.ExecutionContext.Command;
-import org.hibernate.console.ext.HibernateExtension;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.common.EntityPropertySource;
 import org.hibernate.eclipse.console.common.HQLCompletionHandler;
+import org.hibernate.eclipse.console.common.HibernateExtensionImpl;
 import org.hibernate.eclipse.console.ext.CompletionProposalsResult;
 import org.hibernate.eclipse.console.ext.ConsoleExtension;
 import org.hibernate.eclipse.console.model.impl.ExporterFactory;
@@ -64,12 +64,12 @@ import org.jboss.tools.hibernate.spi.ISession;
  */
 public class ConsoleExtension4_0 implements ConsoleExtension {
 	
-	private HibernateExtension hibernateExtension;
+	private HibernateExtensionImpl hibernateExtension;
 	
 	public ConsoleExtension4_0(){}
 	
 	@Override
-	public void setHibernateExtention(HibernateExtension hibernateExtension){
+	public void setHibernateExtention(HibernateExtensionImpl hibernateExtension){
 		this.hibernateExtension = hibernateExtension;
 	}
 
@@ -211,7 +211,7 @@ public class ConsoleExtension4_0 implements ConsoleExtension {
 				}
 	
 	
-	private IConfiguration buildConfiguration(final ExporterAttributes attributes, HibernateExtension cc, IWorkspaceRoot root) {
+	private IConfiguration buildConfiguration(final ExporterAttributes attributes, HibernateExtensionImpl cc, IWorkspaceRoot root) {
 		final boolean reveng = attributes.isReverseEngineer();
 		final String reverseEngineeringStrategy = attributes.getRevengStrategy();
 		final boolean preferBasicCompositeids = attributes.isPreferBasicCompositeIds();
