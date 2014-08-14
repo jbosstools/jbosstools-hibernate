@@ -10,39 +10,11 @@
  ******************************************************************************/
 package org.hibernate.eclipse.console.common;
 
-import java.io.File;
-import java.util.Map;
-
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.debug.core.ILaunch;
-import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.ui.views.properties.IPropertySource;
-import org.hibernate.console.QueryPage;
-import org.hibernate.eclipse.console.common.HibernateExtension;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public interface ConsoleExtension {
-	
-	public CompletionProposalsResult hqlCodeComplete(String query, int startPosition, int position);
-	
-	public void setHibernateExtention(HibernateExtension hibernateExtension);
-
-	/**
-	 * 
-	 * @param configuration
-	 * @param mode
-	 * @param launch
-	 * @param monitor
-	 * @return the generated files separated by the contents
-	 * @throws CoreException
-	 */
-	public Map<String, File[]> launchExporters(ILaunchConfiguration configuration, String mode,
-			ILaunch launch, IProgressMonitor monitor) throws CoreException;
-	
-	public IPropertySource getPropertySource(Object object, QueryPage selectedQueryPage);
+public class ConsoleExtension extends ConsoleExtensionImpl {
 	
 }

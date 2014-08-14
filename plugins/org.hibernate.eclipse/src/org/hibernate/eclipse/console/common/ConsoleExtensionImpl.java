@@ -41,16 +41,14 @@ import org.jboss.tools.hibernate.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ISession;
 
-public class ConsoleExtensionImpl implements ConsoleExtension {
+public class ConsoleExtensionImpl {
 
 	private HibernateExtension hibernateExtension;
 
-	@Override
 	public void setHibernateExtention(HibernateExtension hibernateExtension) {
 		this.hibernateExtension = hibernateExtension;
 	}
 
-	@Override
 	public CompletionProposalsResult hqlCodeComplete(String query,
 			int startPosition, int currentOffset) {
 		HQLCompletionHandler handler = new HQLCompletionHandler(startPosition);
@@ -74,7 +72,6 @@ public class ConsoleExtensionImpl implements ConsoleExtension {
 				handler.getLastErrorMessage());
 	}
 
-	@Override
 	public Map<String, File[]> launchExporters(
 			ILaunchConfiguration configuration, String mode, ILaunch launch,
 			IProgressMonitor monitor) throws CoreException {
@@ -131,7 +128,6 @@ public class ConsoleExtensionImpl implements ConsoleExtension {
 		return null;
 	}
 
-	@Override
 	public IPropertySource getPropertySource(Object object,
 			QueryPage selectedQueryPage) {
 		ISession currentSession = ((ISession)selectedQueryPage.getSession());
