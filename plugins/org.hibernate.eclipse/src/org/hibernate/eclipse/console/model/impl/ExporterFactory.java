@@ -17,7 +17,6 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
-import org.hibernate.eclipse.launch.ExporterAttributes;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
 import org.hibernate.eclipse.launch.PathHelper;
 import org.hibernate.util.xpl.StringHelper;
@@ -94,7 +93,7 @@ public class ExporterFactory {
 		if(configuration.getAttribute(HibernateLaunchConstants.ATTR_EXPORTERS, (List<String>)null)==null) {
 				enabled = configuration.getAttribute( getId(), false );
 		} else {
-			enabled = configuration.getAttribute(ExporterAttributes.getLaunchAttributePrefix(getId()), false);
+			enabled = configuration.getAttribute(getLaunchAttributePrefix(getId()), false);
 		}
 		} catch(CoreException ce) {
 			// ignore; assume false
@@ -110,7 +109,7 @@ public class ExporterFactory {
 		if(oldSettings) {
 			configuration.setAttribute( getId(), isEnabled() );
 		} else {
-			configuration.setAttribute(ExporterAttributes.getLaunchAttributePrefix(getId()), isEnabled());
+			configuration.setAttribute(getLaunchAttributePrefix(getId()), isEnabled());
 		}
 	}
 
@@ -360,4 +359,10 @@ public class ExporterFactory {
 			}
 		}
 	}
+
+	private String getLaunchAttributePrefix(String exporterId) {
+		return HibernateLaunchConstants.ATTR_EXPORTERS + "." + exporterId; //$NON-NLS-1$
+	}
+
+
 }
