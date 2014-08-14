@@ -31,6 +31,7 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.core.runtime.Status;
 import org.hibernate.eclipse.logging.LoggingHelper;
 import org.hibernate.eclipse.logging.PluginLogManager;
 import org.osgi.framework.BundleContext;
@@ -97,5 +98,9 @@ public class HibernatePlugin extends Plugin {
 		String tplPrjLcStr = FileLocator.resolve(resProject).getFile();
 		resourceFolder = new File(tplPrjLcStr);
 		return resourceFolder;
+	}
+	
+	public void log(Throwable t) {
+		plugin.getLog().log(new Status(Status.ERROR, plugin.getBundle().getSymbolicName(), t.getMessage(), t));
 	}
 }
