@@ -42,6 +42,10 @@ public class HibernateExtension {
 	private ISessionFactory sessionFactory;
 	
 	private Map<String, FakeDelegatingDriver> fakeDrivers = new HashMap<String, FakeDelegatingDriver>();
+	
+	public HibernateExtension(ConsoleConfigurationPreferences prefs) {
+		this.prefs = prefs;
+	}
 
 	protected ConsoleConfigClassLoader createClassLoader(final URL[] customClassPathURLs) {
 		ConsoleConfigClassLoader classLoader = AccessController.doPrivileged(new PrivilegedAction<ConsoleConfigClassLoader>() {

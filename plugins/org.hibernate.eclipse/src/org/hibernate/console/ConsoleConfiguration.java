@@ -64,8 +64,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	private HibernateExtension extension;
 	
 	private void loadHibernateExtension(){
-		extension = new HibernateExtension();
-		extension.setConsoleConfigurationPreferences(prefs);
+		extension = new HibernateExtension(prefs);
 //		String version = hibernateVersion == null ? "3.5" : hibernateVersion;//3.5 is a default version //$NON-NLS-1$
 //		HibernateExtensionDefinition def = HibernateExtensionManager.findHibernateExtensionDefinition(version);
 //		if (def != null){
