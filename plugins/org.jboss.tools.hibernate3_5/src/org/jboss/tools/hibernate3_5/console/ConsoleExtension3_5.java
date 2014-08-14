@@ -10,13 +10,13 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate3_5.console;
 
-import org.hibernate.eclipse.console.common.ConsoleExtensionImpl;
+import org.hibernate.eclipse.console.common.ConsoleExtension;
 
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public class ConsoleExtension3_5 extends ConsoleExtensionImpl {
+public class ConsoleExtension3_5 extends ConsoleExtension {
 	
 }

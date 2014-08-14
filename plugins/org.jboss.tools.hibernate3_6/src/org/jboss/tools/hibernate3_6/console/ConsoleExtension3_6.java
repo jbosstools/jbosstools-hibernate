@@ -10,12 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate3_6.console;
 
-import org.hibernate.eclipse.console.common.ConsoleExtensionImpl;
+import org.hibernate.eclipse.console.common.ConsoleExtension;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public class ConsoleExtension3_6 extends ConsoleExtensionImpl {
+public class ConsoleExtension3_6 extends ConsoleExtension {
 	
 }

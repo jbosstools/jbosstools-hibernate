@@ -56,7 +56,7 @@ import org.jboss.tools.hibernate.spi.ISession;
  * @author Dmitry Geraskov
  *
  */
-public class ConsoleExtension extends ConsoleExtensionImpl {
+public class ConsoleExtension {
 	
 	private HibernateExtension hibernateExtension;
 
