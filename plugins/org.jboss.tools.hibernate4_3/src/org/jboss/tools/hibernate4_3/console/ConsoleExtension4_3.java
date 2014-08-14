@@ -40,7 +40,7 @@ import org.hibernate.eclipse.console.common.EntityPropertySource;
 import org.hibernate.eclipse.console.common.HQLCompletionHandler;
 import org.hibernate.eclipse.console.common.HibernateExtension;
 import org.hibernate.eclipse.console.ext.CompletionProposalsResult;
-import org.hibernate.eclipse.console.ext.ConsoleExtension;
+import org.hibernate.eclipse.console.ext.ConsoleExtensionImpl;
 import org.hibernate.eclipse.console.model.impl.ExporterFactory;
 import org.hibernate.eclipse.launch.CodeGenerationStrings;
 import org.hibernate.eclipse.launch.CodeGenerationUtils;
@@ -59,7 +59,7 @@ import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.ISession;
 import org.jboss.tools.hibernate.util.ServiceLookup;
 
-public class ConsoleExtension4_3 implements ConsoleExtension {
+public class ConsoleExtension4_3 extends ConsoleExtensionImpl {
 	
 	private HibernateExtension hibernateExtension;
 	
