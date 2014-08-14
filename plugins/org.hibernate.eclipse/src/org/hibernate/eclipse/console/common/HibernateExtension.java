@@ -31,17 +31,17 @@ import org.jboss.tools.hibernate.spi.ServiceLookup;
 
 public class HibernateExtension {
 
-	protected IConfiguration configuration;
+	private IConfiguration configuration;
 	
-	protected ConsoleConfigClassLoader classLoader = null;
+	private ConsoleConfigClassLoader classLoader = null;
 
-	protected ExecutionContext executionContext;
+	private ExecutionContext executionContext;
 	
-	protected ConsoleConfigurationPreferences prefs;
+	private ConsoleConfigurationPreferences prefs;
 	
-	protected ISessionFactory sessionFactory;
+	private ISessionFactory sessionFactory;
 	
-	protected Map<String, FakeDelegatingDriver> fakeDrivers = new HashMap<String, FakeDelegatingDriver>();
+	private Map<String, FakeDelegatingDriver> fakeDrivers = new HashMap<String, FakeDelegatingDriver>();
 
 	protected ConsoleConfigClassLoader createClassLoader(final URL[] customClassPathURLs) {
 		ConsoleConfigClassLoader classLoader = AccessController.doPrivileged(new PrivilegedAction<ConsoleConfigClassLoader>() {
