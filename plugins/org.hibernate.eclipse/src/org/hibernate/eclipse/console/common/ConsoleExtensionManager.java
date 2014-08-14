@@ -8,7 +8,7 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.hibernate.eclipse.console.ext;
+package org.hibernate.eclipse.console.common;
 
 import java.util.ArrayList;
 import java.util.HashMap;

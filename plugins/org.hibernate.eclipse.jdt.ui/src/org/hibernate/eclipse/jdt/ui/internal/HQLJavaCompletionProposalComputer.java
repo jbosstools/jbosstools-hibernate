@@ -38,7 +38,7 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.common.CompletionProposalsResult;
 import org.hibernate.eclipse.console.common.ConsoleExtension;
-import org.hibernate.eclipse.console.ext.ConsoleExtensionManager;
+import org.hibernate.eclipse.console.common.ConsoleExtensionManager;
 import org.hibernate.eclipse.hqleditor.HQLCompletionProcessor;
 import org.hibernate.eclipse.nature.HibernateNature;
 

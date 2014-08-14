@@ -40,7 +40,7 @@ import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.QueryEditor;
 import org.hibernate.eclipse.console.common.CompletionProposalsResult;
 import org.hibernate.eclipse.console.common.ConsoleExtension;
-import org.hibernate.eclipse.console.ext.ConsoleExtensionManager;
+import org.hibernate.eclipse.console.common.ConsoleExtensionManager;
 
 /**
  * content assist processor for HQL code.
