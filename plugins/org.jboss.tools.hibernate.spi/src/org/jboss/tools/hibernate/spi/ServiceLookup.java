@@ -1,5 +1,7 @@
 package org.jboss.tools.hibernate.spi;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +18,7 @@ public class ServiceLookup {
 	private static final String SERVICES_EXTENSION_ID = "org.jboss.tools.hibernate.spi.services"; //$NON-NLS-1$
 
 	private static Map<String, IService> services = null;
+	private static String[] versions = null;
 	
 	public static IService findService(String hibernateVersion) {
 		if (services == null) {
@@ -24,6 +27,13 @@ public class ServiceLookup {
 		return services.get(hibernateVersion);
 	}
 	
+	public static String[] getVersions() {
+		if (services == null) {
+			initializeServices();
+		}
+		return versions;
+	}
+
 	private static void initializeServices() {
 		services = new HashMap<String, IService>();
 		IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
@@ -41,13 +51,9 @@ public class ServiceLookup {
 				}
 			}
 		}
+		ArrayList<String> list = new ArrayList<String>(services.keySet());
+		Collections.sort(list);
+		versions = list.toArray(new String[list.size()]);
 	}
 	
-	public static String[] getVersions() {
-		if (services == null) {
-			initializeServices();
-		}
-		return services.keySet().toArray(new String[services.size()]);
-	}
-
 }
