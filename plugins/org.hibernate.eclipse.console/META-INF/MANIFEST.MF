@@ -10,7 +10,6 @@ Bundle-Localization: plugin
 Export-Package: org.hibernate.eclipse.builder,
  org.hibernate.eclipse.console,
  org.hibernate.eclipse.console.actions,
- org.hibernate.eclipse.console.common,
  org.hibernate.eclipse.console.ext,
  org.hibernate.eclipse.console.model,
  org.hibernate.eclipse.console.model.impl,
