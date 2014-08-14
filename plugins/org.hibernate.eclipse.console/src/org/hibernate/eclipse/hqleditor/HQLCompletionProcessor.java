@@ -38,8 +38,8 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.QueryEditor;
-import org.hibernate.eclipse.console.ext.CompletionProposalsResult;
-import org.hibernate.eclipse.console.ext.ConsoleExtension;
+import org.hibernate.eclipse.console.common.CompletionProposalsResult;
+import org.hibernate.eclipse.console.common.ConsoleExtension;
 import org.hibernate.eclipse.console.ext.ConsoleExtensionManager;
 
 /**

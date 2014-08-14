@@ -25,6 +25,8 @@ import org.hibernate.console.QueryPage;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.eclipse.console.common.CompletionProposalsResult;
+import org.hibernate.eclipse.console.common.ConsoleExtension;
 import org.hibernate.eclipse.console.common.EntityPropertySource;
 import org.hibernate.eclipse.console.common.HQLCompletionHandler;
 import org.hibernate.eclipse.console.common.HibernateExtension;

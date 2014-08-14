@@ -12,6 +12,7 @@ package org.hibernate.eclipse.console.ext;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.hibernate.eclipse.console.common.ConsoleExtension;
 import org.hibernate.eclipse.console.common.HibernateExtension;
 
 /**
