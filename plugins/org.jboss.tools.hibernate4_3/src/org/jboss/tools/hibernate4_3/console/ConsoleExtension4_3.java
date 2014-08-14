@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate4_3.console;
 
-import org.hibernate.eclipse.console.ext.ConsoleExtensionImpl;
+import org.hibernate.eclipse.console.common.ConsoleExtensionImpl;
 
 public class ConsoleExtension4_3 extends ConsoleExtensionImpl {
 	

@@ -1,4 +1,4 @@
-package org.hibernate.eclipse.console.ext;
+package org.hibernate.eclipse.console.common;
 
 import java.io.File;
 import java.util.HashMap;
@@ -23,13 +23,8 @@ import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.QueryPage;
 import org.hibernate.console.execution.ExecutionContext.Command;
+import org.hibernate.eclipse.HibernatePlugin;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
-import org.hibernate.eclipse.console.HibernateConsolePlugin;
-import org.hibernate.eclipse.console.common.CompletionProposalsResult;
-import org.hibernate.eclipse.console.common.ConsoleExtension;
-import org.hibernate.eclipse.console.common.EntityPropertySource;
-import org.hibernate.eclipse.console.common.HQLCompletionHandler;
-import org.hibernate.eclipse.console.common.HibernateExtension;
 import org.hibernate.eclipse.console.model.impl.ExporterFactory;
 import org.hibernate.eclipse.launch.CodeGenerationStrings;
 import org.hibernate.eclipse.launch.CodeGenerationUtils;
@@ -121,11 +116,11 @@ public class ConsoleExtensionImpl implements ConsoleExtension {
 				return map;
 			}
 		} catch (Exception e) {
-			throw new CoreException(HibernateConsolePlugin.throwableToStatus(e,
+			throw new CoreException(HibernatePlugin.throwableToStatus(e,
 					666));
 		} catch (NoClassDefFoundError e) {
 			throw new CoreException(
-					HibernateConsolePlugin
+					HibernatePlugin
 							.throwableToStatus(
 									new HibernateConsoleRuntimeException(
 											HibernateConsoleMessages.CodeGenerationLaunchDelegate_received_noclassdeffounderror,
