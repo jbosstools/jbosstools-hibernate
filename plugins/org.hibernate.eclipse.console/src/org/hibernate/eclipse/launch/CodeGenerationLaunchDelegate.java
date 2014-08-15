@@ -74,7 +74,6 @@ import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.common.ConsoleExtension;
-import org.hibernate.eclipse.console.common.ConsoleExtensionManager;
 import org.hibernate.eclipse.console.model.impl.ExporterFactory;
 import org.hibernate.util.xpl.StringHelper;
 import org.jboss.tools.hibernate.spi.HibernateException;
