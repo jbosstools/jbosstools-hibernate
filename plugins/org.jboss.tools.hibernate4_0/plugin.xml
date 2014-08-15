@@ -2,13 +2,6 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="org.hibernate.eclipse.console.consoleextension">
-      <consoleextension
-            classname="org.jboss.tools.hibernate4_0.console.ConsoleExtension4_0"
-            version="%hibernate.version">
-      </consoleextension>
-   </extension>
-   <extension
          point="org.jboss.tools.hibernate.spi.services">
       <service
             class="org.jboss.tools.hibernate.proxy.ServiceProxy"
