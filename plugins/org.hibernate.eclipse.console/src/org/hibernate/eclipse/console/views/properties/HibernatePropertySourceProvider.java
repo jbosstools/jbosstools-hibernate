@@ -25,7 +25,6 @@ import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.IPropertySourceProvider;
 import org.hibernate.console.QueryPage;
 import org.hibernate.eclipse.console.common.ConsoleExtension;
-import org.hibernate.eclipse.console.common.ConsoleExtensionManager;
 import org.hibernate.eclipse.console.views.QueryPageTabView;
 
 public class HibernatePropertySourceProvider implements IPropertySourceProvider
@@ -50,7 +49,7 @@ public class HibernatePropertySourceProvider implements IPropertySourceProvider
 		}
 		else {
 			QueryPage selectedQueryPage = view.getSelectedQueryPage();
-			ConsoleExtension consoleExtension = ConsoleExtensionManager.getConsoleExtension(selectedQueryPage.getHibernateExtension());
+			ConsoleExtension consoleExtension = selectedQueryPage.getHibernateExtension().getConsoleExtension();
 			return consoleExtension.getPropertySource(object, selectedQueryPage);
 			/*return (IPropertySource) selectedQueryPage.getAdapter(IPropertySource.class);
 			//			 maybe we should be hooked up with the queryview to get this ?

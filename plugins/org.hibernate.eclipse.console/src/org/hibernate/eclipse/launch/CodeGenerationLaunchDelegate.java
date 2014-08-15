@@ -263,7 +263,7 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 		Assert.isNotNull(monitor);
 		ExporterAttributes attributes = new ExporterAttributes(configuration);
 		ConsoleConfiguration cc = KnownConfigurations.getInstance().find(attributes.getConsoleConfigurationName());
-		ConsoleExtension consoleExtension = ConsoleExtensionManager.getConsoleExtension(cc.getHibernateExtension());
+		ConsoleExtension consoleExtension = cc.getHibernateExtension().getConsoleExtension();
 		Map<String, File[]> generatedFiles = consoleExtension.launchExporters(configuration, mode, launch, monitor);
 		// code formatting needs to happen *after* refresh to make sure eclipse will format the uptodate files!
         if(generatedFiles!=null) {

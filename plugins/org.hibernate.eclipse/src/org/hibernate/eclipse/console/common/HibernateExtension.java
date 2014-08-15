@@ -43,8 +43,16 @@ public class HibernateExtension {
 	
 	private Map<String, FakeDelegatingDriver> fakeDrivers = new HashMap<String, FakeDelegatingDriver>();
 	
+	private ConsoleExtension consoleExtension;
+	
 	public HibernateExtension(ConsoleConfigurationPreferences prefs) {
 		this.prefs = prefs;
+		consoleExtension = new ConsoleExtension();
+		consoleExtension.setHibernateExtention(this);
+	}
+	
+	public ConsoleExtension getConsoleExtension() {
+		return consoleExtension;
 	}
 
 	protected ConsoleConfigClassLoader createClassLoader(final URL[] customClassPathURLs) {

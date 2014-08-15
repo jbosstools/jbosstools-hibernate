@@ -38,7 +38,6 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.common.CompletionProposalsResult;
 import org.hibernate.eclipse.console.common.ConsoleExtension;
-import org.hibernate.eclipse.console.common.ConsoleExtensionManager;
 import org.hibernate.eclipse.hqleditor.HQLCompletionProcessor;
 import org.hibernate.eclipse.nature.HibernateNature;
 
@@ -81,7 +80,7 @@ public class HQLJavaCompletionProposalComputer implements IJavaCompletionProposa
 					 int stringStart = getStringStart( ctx.getDocument(), ctx.getInvocationOffset() );
 					 int stringEnd = getStringEnd( ctx.getDocument(), ctx.getInvocationOffset() );
 					 query = ctx.getDocument().get(stringStart, stringEnd-stringStart );
-					 ConsoleExtension consoleExtension = ConsoleExtensionManager.getConsoleExtension(consoleConfiguration.getHibernateExtension());
+					 ConsoleExtension consoleExtension = consoleConfiguration.getHibernateExtension().getConsoleExtension();
 					 if (consoleExtension != null){
 							CompletionProposalsResult codeCompletions = consoleExtension.hqlCodeComplete(query, stringStart, ctx.getInvocationOffset() - stringStart);
 					
