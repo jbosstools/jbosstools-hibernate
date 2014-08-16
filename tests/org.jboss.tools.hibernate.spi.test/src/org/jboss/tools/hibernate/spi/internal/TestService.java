@@ -36,7 +36,6 @@ import org.jboss.tools.hibernate.spi.ISettings;
 import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.ITableFilter;
 import org.jboss.tools.hibernate.spi.ITableIdentifier;
-import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.ITypeFactory;
 import org.jboss.tools.hibernate.spi.IValue;
 import org.xml.sax.EntityResolver;
@@ -272,11 +271,6 @@ public class TestService implements IService {
 
 	@Override
 	public IHibernateMappingGlobalSettings newHibernateMappingGlobalSettings() {
-		return null;
-	}
-
-	@Override
-	public Map<IType, String> getTypeFormats() {
 		return null;
 	}
 

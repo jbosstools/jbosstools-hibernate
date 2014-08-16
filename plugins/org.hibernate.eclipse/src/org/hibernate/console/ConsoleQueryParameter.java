@@ -21,35 +21,34 @@
  */
 package org.hibernate.console;
 
-import java.util.Set;
-
 import org.jboss.tools.hibernate.spi.IService;
 import org.jboss.tools.hibernate.spi.IType;
+import org.jboss.tools.hibernate.spi.ITypeFactory;
 
 
 public class ConsoleQueryParameter {
 
 	static private final Object NULL_MARKER = null; //new Object() { public String toString() { return "[null]"; } };
 	
-	private IService service;
+	private ITypeFactory typeFactory;
 	
 	String name;
 	IType type;
 	Object value;
 	
 	public ConsoleQueryParameter(IService service, ConsoleQueryParameter cqp) {
-		this.service = service;
+		this(service);
 		name = cqp.name;
 		type = cqp.type;
 		value = cqp.value;
 	}
 
 	public ConsoleQueryParameter(IService service) {
-		this.service = service;
+		this.typeFactory = service.newTypeFactory();
 	}
 
 	public ConsoleQueryParameter(IService service, String name, IType type, Object value) {
-		this.service = service;
+		this(service);
 		this.name = name;
 		this.type = type;
 		this.value = value;
@@ -105,7 +104,7 @@ public class ConsoleQueryParameter {
 	
 	public String getDefaultFormat() {
 		if(type!=null) {
-			Object object = service.getTypeFormats().get(type);
+			Object object = typeFactory.getTypeFormats().get(type);
 			if(object!=null) {
 				return object.toString();
 			}

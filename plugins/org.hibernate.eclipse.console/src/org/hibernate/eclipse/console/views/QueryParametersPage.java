@@ -91,7 +91,7 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 	final QueryInputModel model;
 
 	private ToggleActive toggleActive;
-
+	
 	private Observer observer = new Observer() {
 		public void update(java.util.Observable o, Object arg) {
 			if(!tableViewer.getTable().isDisposed()) {
@@ -190,7 +190,7 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 			}
 
 		});
-		final List<IType> possibleTypes = new ArrayList<IType>(model.getService().getTypeFormats().keySet());
+		final List<IType> possibleTypes = new ArrayList<IType>(model.getService().newTypeFactory().getTypeFormats().keySet());
 		Collections.sort(possibleTypes, new Comparator<IType>() {
 
 			public int compare(IType t1, IType t2) {
