@@ -1,11 +1,24 @@
 package org.jboss.tools.hibernate.proxy;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Currency;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.TimeZone;
+
 import org.hibernate.Hibernate;
 import org.hibernate.type.TypeFactory;
+import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IType;
 import org.jboss.tools.hibernate.spi.ITypeFactory;
 
 public class TypeFactoryProxy implements ITypeFactory {
+
+	private Map<IType, String> typeFormats = null;
 
 	@Override
 	public IType getBooleanType() {
@@ -132,4 +145,42 @@ public class TypeFactoryProxy implements ITypeFactory {
 		return new TypeProxy(TypeFactory.basic(type));
 	}
 
+	@Override
+	public Map<IType, String> getTypeFormats() {
+		if (typeFormats == null) {
+			initializeTypeFormats();
+		}
+		return typeFormats;
+	}
+	
+	private void initializeTypeFormats() {
+		typeFormats = new HashMap<IType, String>();		
+		addTypeFormat(getBooleanType(), Boolean.TRUE);
+		addTypeFormat(getByteType(), Byte.valueOf((byte) 42));
+		addTypeFormat(getBigIntegerType(), BigInteger.valueOf(42));
+		addTypeFormat(getShortType(), Short.valueOf((short) 42));
+		addTypeFormat(getCalendarType(), new GregorianCalendar());
+		addTypeFormat(getCalendarDateType(), new GregorianCalendar());
+		addTypeFormat(getIntegerType(), Integer.valueOf(42));
+		addTypeFormat(getBigDecimalType(), new BigDecimal(42.0));
+		addTypeFormat(getCharacterType(), Character.valueOf('h'));
+		addTypeFormat(getClassType(), ITable.class);
+		addTypeFormat(getCurrencyType(), Currency.getInstance(Locale.getDefault()));
+		addTypeFormat(getDateType(), new Date());
+		addTypeFormat(getDoubleType(), Double.valueOf(42.42));
+		addTypeFormat(getFloatType(), Float.valueOf((float)42.42));
+		addTypeFormat(getLocaleType(), Locale.getDefault());
+		addTypeFormat(getLongType(), Long.valueOf(42));
+		addTypeFormat(getStringType(), "a string"); //$NON-NLS-1$
+		addTypeFormat(getTextType(), "a text"); //$NON-NLS-1$
+		addTypeFormat(getTimeType(), new Date());
+		addTypeFormat(getTimestampType(), new Date());
+		addTypeFormat(getTimezoneType(), TimeZone.getDefault());
+		addTypeFormat(getTrueFalseType(), Boolean.TRUE);
+		addTypeFormat(getYesNoType(), Boolean.TRUE);
+	}
+	
+	private void addTypeFormat(IType type, Object value) {
+		typeFormats.put(type, type.toString(value));
+	}
 }

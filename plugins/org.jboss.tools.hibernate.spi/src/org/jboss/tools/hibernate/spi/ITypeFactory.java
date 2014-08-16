@@ -1,5 +1,7 @@
 package org.jboss.tools.hibernate.spi;
 
+import java.util.Map;
+
 
 public interface ITypeFactory {
 
@@ -28,5 +30,6 @@ public interface ITypeFactory {
 	IType getYesNoType();
 	IType getNamedType(String typeName);
 	IType getBasicType(String type);
-
+	Map<IType, String> getTypeFormats();
+	
 }
