@@ -18,7 +18,6 @@ import javax.persistence.Entity;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.spi.PersistenceUnitTransactionType;
 
-import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.ejb.Ejb3Configuration;
 import org.hibernate.ejb.HibernatePersistence;
 import org.hibernate.ejb.packaging.ClassFilter;
@@ -129,7 +128,7 @@ public class OpenMappingUtilsEjb3 {
 							nis.getStream().close();
 						}
 						catch (IOException ioe) {
-			    			HibernateConsolePlugin.getDefault().logErrorMessage("could not close input stream for", ioe);	//$NON-NLS-1$
+			    			// ignore
 						}
 					}
 					break;
