@@ -23,7 +23,6 @@ import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.connection.DriverManagerConnectionProvider;
-import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.resolver.DialectFactory;
 import org.hibernate.ejb.Ejb3Configuration;
@@ -48,8 +47,9 @@ import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
-import org.hibernate.util.xpl.ReflectHelper;
-import org.hibernate.util.xpl.StringHelper;
+import org.hibernate.util.ReflectHelper;
+import org.hibernate.util.StringHelper;
+import org.jboss.tools.hibernate.spi.HibernateException;
 import org.jboss.tools.hibernate.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.spi.IColumn;
@@ -104,7 +104,7 @@ public class ServiceProxy implements IService {
 				Object object = resolver.newInstance();
 				ejb3Configuration.setEntityResolver((EntityResolver)object);
 			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-				throw new HibernateConsoleRuntimeException(e);
+				throw new HibernateException(e);
 			}
 		}
 		ejb3Configuration.configure(persistenceUnit, overrides);
@@ -255,11 +255,11 @@ public class ServiceProxy implements IService {
 				return rev;
 			}
 			catch (Exception eq) {
-				throw new HibernateConsoleRuntimeException(eq);
+				throw new HibernateException(eq);
 			}
 		}
         catch (Exception e) {
-			throw new HibernateConsoleRuntimeException(e);
+			throw new HibernateException(e);
 		}
     }
 
