@@ -5,6 +5,5 @@ public interface IHQLCompletionHandler {
 
 	boolean accept(IHQLCompletionProposal proposal);
 	void completionFailure(String errorMessage);
-	String getLastErrorMessage();
 
 }
