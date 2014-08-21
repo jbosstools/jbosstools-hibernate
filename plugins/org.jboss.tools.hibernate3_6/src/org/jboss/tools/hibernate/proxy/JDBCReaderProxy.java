@@ -31,7 +31,6 @@ public class JDBCReaderProxy implements IJDBCReader {
 			String defaultSchemaName,
 			IProgressListener progressListener) {
 		assert databaseCollector instanceof DatabaseCollectorProxy;
-		assert progressListener instanceof ProgressListenerProxy;
 		target.readDatabaseSchema(
 				((DatabaseCollectorProxy)databaseCollector).getTarget(), 
 				defaultCatalogName, 
