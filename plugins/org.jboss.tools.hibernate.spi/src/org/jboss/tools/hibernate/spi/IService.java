@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.xml.sax.EntityResolver;
 
 public interface IService {
@@ -70,8 +69,6 @@ public interface IService {
 
 	IDatabaseCollector newDatabaseCollector(IMetaDataDialect metaDataDialect);
 
-	IProgressListener newProgressListener(IProgressMonitor monitor);
-	
 	ICfg2HbmTool newCfg2HbmTool();
 	
 	IProperty newProperty();
