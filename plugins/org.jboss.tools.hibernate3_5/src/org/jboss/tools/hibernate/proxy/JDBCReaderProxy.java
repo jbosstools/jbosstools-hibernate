@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.cfg.reveng.JDBCReader;
+import org.hibernate.cfg.reveng.ProgressListener;
 import org.jboss.tools.hibernate.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.spi.IJDBCReader;
 import org.jboss.tools.hibernate.spi.IMetaDataDialect;
@@ -35,7 +36,18 @@ public class JDBCReaderProxy implements IJDBCReader {
 				((DatabaseCollectorProxy)databaseCollector).getTarget(), 
 				defaultCatalogName, 
 				defaultSchemaName,
-				((ProgressListenerProxy)progressListener).getTarget());
+				new ProgressListenerImpl(progressListener));
+	}
+	
+	private class ProgressListenerImpl implements ProgressListener {
+		private IProgressListener target;
+		public ProgressListenerImpl(IProgressListener progressListener) {
+			target = progressListener;
+		}
+		@Override
+		public void startSubTask(String name) {
+			target.startSubTask(name);
+		}		
 	}
 
 }

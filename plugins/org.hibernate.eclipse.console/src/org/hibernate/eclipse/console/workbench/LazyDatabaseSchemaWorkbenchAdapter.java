@@ -142,5 +142,5 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 			}
 		});
 	}
-
+	
 }
