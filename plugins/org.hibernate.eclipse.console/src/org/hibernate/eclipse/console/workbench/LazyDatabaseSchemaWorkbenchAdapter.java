@@ -130,9 +130,8 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 				try {
 					IService service = consoleConfiguration.getHibernateExtension().getHibernateService();
 					IJDBCReader reader = service.newJDBCReader(configuration.getProperties(), settings, strategy);
-					IProgressListener progressListener = service.newProgressListener(monitor);
 					db = service.newDatabaseCollector(reader.getMetaDataDialect());
-					reader.readDatabaseSchema(db, settings.getDefaultCatalogName(), settings.getDefaultSchemaName(), progressListener);
+					reader.readDatabaseSchema(db, settings.getDefaultCatalogName(), settings.getDefaultSchemaName(), new ProgressListener(monitor));
 				} catch (UnsupportedOperationException he) {
 					throw new HibernateException(he);
 				} catch (Exception he) {
@@ -141,6 +140,18 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 				return db;
 			}
 		});
+	}
+	
+	private class ProgressListener implements IProgressListener {
+		private IProgressMonitor progressMonitor;
+		public ProgressListener(IProgressMonitor monitor) {
+			progressMonitor = monitor;
+		}
+		@Override
+		public void startSubTask(String name) {
+			progressMonitor.subTask(name);
+		}
+		
 	}
 	
 }
