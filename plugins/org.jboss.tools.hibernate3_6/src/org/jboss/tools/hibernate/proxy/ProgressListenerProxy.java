@@ -23,4 +23,8 @@ public class ProgressListenerProxy implements IProgressListener {
 		return target ;
 	}
 
+	@Override
+	public void startSubTask(String name) {
+		target.startSubTask(name);
+	}
 }
