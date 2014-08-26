@@ -5,7 +5,6 @@ Bundle-SymbolicName: org.jboss.tools.hibernate3_5;singleton:=true
 Bundle-Version: 3.8.0.qualifier
 Bundle-Localization: plugin
 Require-Bundle: org.hibernate.eclipse;bundle-version="3.7.0",
- org.hibernate.eclipse.console;bundle-version="3.7.0",
  org.jboss.tools.hibernate.spi;bundle-version="3.8.0",
  org.jboss.tools.hibernate.dom4j;bundle-version="1.6.1",
  org.jboss.tools.hibernate.antlr;bundle-version="2.7.7",
