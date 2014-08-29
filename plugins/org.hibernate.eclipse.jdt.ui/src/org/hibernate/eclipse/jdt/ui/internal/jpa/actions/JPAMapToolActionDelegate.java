@@ -23,6 +23,7 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.e4.core.commands.ExpressionContext;
 import org.eclipse.jdt.internal.ui.javaeditor.CompilationUnitEditor;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
@@ -99,9 +100,13 @@ public class JPAMapToolActionDelegate extends AbstractHandler implements IObject
 		return false;
 	}
 
-	public void setEnabled(Object evaluationContext) {
-		if (evaluationContext instanceof EvaluationContext) {
-			EvaluationContext ec = (EvaluationContext)evaluationContext;
+	public void setEnabled(Object context) {
+		if (context instanceof EvaluationContext) {
+			EvaluationContext ec = (EvaluationContext)context;
+			Object obj = ec.getDefaultVariable();
+			refContextObject = new WeakReference<Object>(obj);
+		} else if (context instanceof ExpressionContext) {
+			ExpressionContext ec = (ExpressionContext)context;
 			Object obj = ec.getDefaultVariable();
 			refContextObject = new WeakReference<Object>(obj);
 		} else {
