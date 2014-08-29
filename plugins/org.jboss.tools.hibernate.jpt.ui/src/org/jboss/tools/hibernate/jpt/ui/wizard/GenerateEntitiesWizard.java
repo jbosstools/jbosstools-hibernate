@@ -20,7 +20,12 @@ import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jdt.core.IJavaProject;
@@ -33,7 +38,6 @@ import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
 import org.jboss.tools.hibernate.jpt.core.internal.context.AddGeneratedClassesJob;
-import org.jboss.tools.hibernate.jpt.ui.HibernateJptUIPlugin;
 import org.jboss.tools.hibernate.jpt.ui.internal.platform.HibernateJpaPlatformUi;
 
 /**
@@ -63,7 +67,7 @@ public class GenerateEntitiesWizard extends Wizard {
 	@Override
 	public boolean performFinish() {
 		String projectName = jpaProject.getName();
-		ILaunchConfigurationWorkingCopy wc = HibernateJpaPlatformUi.createDefaultLaunchConfig(projectName);
+		final ILaunchConfigurationWorkingCopy wc = HibernateJpaPlatformUi.createDefaultLaunchConfig(projectName);
 		if (wc != null) {
 			// SHOULD PRESENT THE CONFIGURATION!!!
 			String concoleConfigurationName = initPage.getConfigurationName();			
@@ -84,20 +88,26 @@ public class GenerateEntitiesWizard extends Wizard {
 			wc.setAttribute(HibernateLaunchConstants.ATTR_EXPORTERS + '.' + HibernateJpaPlatformUi.exporter_id + ".extension_id",  //$NON-NLS-1$
 						HibernateLaunchConstants.ATTR_PREFIX + "hbm2java"); //$NON-NLS-1$
 			try {
-				NewJavaFilesListener rcl = new NewJavaFilesListener(jpaProject.getJavaProject());;
+				final NewJavaFilesListener rcl = new NewJavaFilesListener(jpaProject.getJavaProject());;
 				if (!jpaProject.discoversAnnotatedClasses()){
 					ResourcesPlugin.getWorkspace().addResourceChangeListener(rcl);
-				}				
-				wc.launch(ILaunchManager.RUN_MODE, null);
-				if (!jpaProject.discoversAnnotatedClasses()){
-					ResourcesPlugin.getWorkspace().removeResourceChangeListener(rcl);
-					if (rcl.generatedJavaFiles.size() > 0){
-						AddGeneratedClassesJob job = new AddGeneratedClassesJob(jpaProject, rcl.generatedJavaFiles);
-						job.schedule();
-					}
 				}
-			} catch (CoreException e) {
-				HibernateJptUIPlugin.logException(e);
+				Job generationJob = new WorkspaceJob("Generating Entities") {					
+					@Override
+					public IStatus runInWorkspace(IProgressMonitor arg0) throws CoreException {
+						wc.launch(ILaunchManager.RUN_MODE, null);
+						if (!jpaProject.discoversAnnotatedClasses()){
+							ResourcesPlugin.getWorkspace().removeResourceChangeListener(rcl);
+							if (rcl.generatedJavaFiles.size() > 0){
+								AddGeneratedClassesJob job = new AddGeneratedClassesJob(jpaProject, rcl.generatedJavaFiles);
+								job.schedule();
+							}
+						}
+						return Status.OK_STATUS;
+					}
+				};
+				generationJob.setUser(true);
+				generationJob.schedule();
 			} finally{
 				if (initPage.isTemporaryConfiguration()){
 					KnownConfigurations.getInstance().removeConfiguration(KnownConfigurations.getInstance().find(concoleConfigurationName), false);				
