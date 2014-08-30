@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: JBoss Hibernate 3.5 Libs
 Bundle-SymbolicName: org.hibernate.eclipse.libs
-Bundle-Version: 4.0.0.qualifier
+Bundle-Version: 4.0.1.qualifier
 Bundle-ClassPath: .,
  lib/hibernate/asm.jar,
  lib/hibernate/asm-attrs.jar,
