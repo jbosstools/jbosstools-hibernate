@@ -591,22 +591,4 @@ public final class StringHelper {
 		}
 	}
 
-	/**
-	 * Return the unquoted version of name stripping the start and end quote characters.
-	 *
-	 * @param names The names to be unquoted.
-	 * @param dialect The dialect (to determine the "real" quoting chars).
-	 *
-	 * @return The unquoted versions.
-	 */
-	public static String[] unquote(String[] names, IDialect dialect) {
-		if ( names == null ) {
-			return null;
-		}
-		String[] unquoted = new String[ names.length ];
-		for ( int i = 0; i < names.length; i++ ) {
-			unquoted[i] = unquote( names[i], dialect );
-		}
-		return unquoted;
-	}
 }
