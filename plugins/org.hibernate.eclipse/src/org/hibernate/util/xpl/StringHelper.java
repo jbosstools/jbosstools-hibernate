@@ -574,21 +574,4 @@ public final class StringHelper {
 				|| name.charAt( 0 ) == dialect.openQuote() && name.charAt( name.length() - 1 ) == dialect.closeQuote() );
 	}
 
-	/**
-	 * Return the unquoted version of name stripping the start and end quote characters.
-	 *
-	 * @param name The name to be unquoted.
-	 * @param dialect The dialect (to determine the "real" quoting chars).
-	 *
-	 * @return The unquoted version.
-	 */
-	public static String unquote(String name, IDialect dialect) {
-		if ( isQuoted( name, dialect ) ) {
-			return name.substring( 1, name.length() - 1 );
-		}
-		else {
-			return name;
-		}
-	}
-
 }
