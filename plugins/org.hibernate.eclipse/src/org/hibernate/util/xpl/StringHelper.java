@@ -555,23 +555,4 @@ public final class StringHelper {
 		}
 	}
 
-	/**
-	 * Determine if the given name is quoted.  It is considered quoted if either:
-	 * <ol>
-	 * <li>starts AND ends with backticks (`)</li>
-	 * <li>starts with dialect-specified {@link org.hibernate.dialect.Dialect#openQuote() open-quote}
-	 * 		AND ends with dialect-specified {@link org.hibernate.dialect.Dialect#closeQuote() close-quote}</li>
-	 * </ol>
-	 *
-	 * @param name The name to check
-	 * @param dialect The dialect (to determine the "real" quoting chars).
-	 *
-	 * @return True if quoted, false otherwise
-	 */
-	public static boolean isQuoted(String name, IDialect dialect) {
-		return name != null && name.length() != 0
-				&& ( name.charAt( 0 ) == '`' && name.charAt( name.length() - 1 ) == '`'
-				|| name.charAt( 0 ) == dialect.openQuote() && name.charAt( name.length() - 1 ) == dialect.closeQuote() );
-	}
-
 }
