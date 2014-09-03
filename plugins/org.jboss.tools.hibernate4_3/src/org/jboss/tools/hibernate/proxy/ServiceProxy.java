@@ -255,13 +255,13 @@ public class ServiceProxy implements IService {
 						configuration.getProperties(), 
 						((SettingsProxy)settings).getTarget(), 
 						((ReverseEngineeringStrategyProxy)strategy).getTarget(),
-						buildServiceRegistry());
+						buildServiceRegistry(configuration.getProperties()));
 		return new JDBCReaderProxy(target);
 	}
 
-	private ServiceRegistry buildServiceRegistry() {
+	private ServiceRegistry buildServiceRegistry(Properties properties) {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
-		builder.configure();
+		builder.applySettings(properties);
 		return builder.build();
 	}
 
@@ -331,7 +331,7 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public IDialect newDialect(Properties properties, final Connection connection) {
-		ServiceRegistry serviceRegistry = buildServiceRegistry();
+		ServiceRegistry serviceRegistry = buildServiceRegistry(properties);
 		DialectFactory dialectFactory = serviceRegistry.getService(DialectFactory.class);
 		Dialect dialect = dialectFactory.buildDialect(
 				properties, 
