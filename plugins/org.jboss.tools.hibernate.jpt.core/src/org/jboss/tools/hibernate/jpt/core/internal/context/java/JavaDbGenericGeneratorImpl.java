@@ -52,6 +52,7 @@ implements JavaDbGenericGenerator, Messages {
 	 */
 	static {
 		generatorClasses.add( "uuid"); //$NON-NLS-1$
+		generatorClasses.add( "uuid2"); //$NON-NLS-1$
 		generatorClasses.add( "hilo"); //$NON-NLS-1$
 		generatorClasses.add( "assigned"); //$NON-NLS-1$
 		generatorClasses.add( "identity"); //$NON-NLS-1$
