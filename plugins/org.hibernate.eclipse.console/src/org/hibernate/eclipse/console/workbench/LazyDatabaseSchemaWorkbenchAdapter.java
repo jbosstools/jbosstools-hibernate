@@ -129,7 +129,7 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 				ISettings settings = consoleConfiguration.getSettings(configuration);
 				try {
 					IService service = consoleConfiguration.getHibernateExtension().getHibernateService();
-					IJDBCReader reader = service.newJDBCReader(configuration.getProperties(), settings, strategy);
+					IJDBCReader reader = service.newJDBCReader(configuration, settings, strategy);
 					db = service.newDatabaseCollector(reader.getMetaDataDialect());
 					reader.readDatabaseSchema(db, settings.getDefaultCatalogName(), settings.getDefaultSchemaName(), new ProgressListener(monitor));
 				} catch (UnsupportedOperationException he) {

@@ -129,7 +129,7 @@ public class TestService implements IService {
 	}
 
 	@Override
-	public IJDBCReader newJDBCReader(Properties properties, ISettings settings,
+	public IJDBCReader newJDBCReader(IConfiguration configuration, ISettings settings,
 			IReverseEngineeringStrategy strategy) {
 		return null;
 	}
