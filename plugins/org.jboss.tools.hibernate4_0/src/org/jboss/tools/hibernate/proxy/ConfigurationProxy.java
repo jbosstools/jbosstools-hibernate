@@ -249,10 +249,8 @@ public class ConfigurationProxy implements IConfiguration {
 	}
 	
 	private void buildServiceRegistry() {
-		Configuration configuration = new Configuration();
-		configuration.configure();
 		ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
-		builder.applySettings(configuration.getProperties());
+		builder.applySettings(target.getProperties());
 		serviceRegistry = builder.buildServiceRegistry();		
 	}
 
