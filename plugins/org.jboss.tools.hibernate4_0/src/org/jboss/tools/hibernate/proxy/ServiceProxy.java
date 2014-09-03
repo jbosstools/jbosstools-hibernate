@@ -228,13 +228,11 @@ public class ServiceProxy implements IService {
 						configuration.getProperties(), 
 						((SettingsProxy)settings).getTarget(), 
 						((ReverseEngineeringStrategyProxy)strategy).getTarget(),
-						buildServiceRegistry());
+						buildServiceRegistry(configuration));
 		return new JDBCReaderProxy(target);
 	}
 
-	private ServiceRegistry buildServiceRegistry() {
-		Configuration configuration = new Configuration();
-		configuration.configure();
+	private ServiceRegistry buildServiceRegistry(IConfiguration configuration) {
 		ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
 		builder.applySettings(configuration.getProperties());
 		return builder.buildServiceRegistry();
