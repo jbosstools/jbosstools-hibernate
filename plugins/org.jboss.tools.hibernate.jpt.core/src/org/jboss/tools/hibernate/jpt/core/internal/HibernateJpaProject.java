@@ -306,13 +306,17 @@ public class HibernateJpaProject extends AbstractJpaProject {
 	 * @param messages
 	 */
 	protected void validateConsoleConfiguration(List<IMessage> messages) {
-		if (KnownConfigurations.getInstance().find(getDefaultConsoleConfigurationName()) == null){
-			IMessage message = HibernateJpaValidationMessage.buildMessage(IMessage.HIGH_SEVERITY,
-					Messages.CC_NOT_EXISTS, new String[]{getDefaultConsoleConfigurationName()}, getResource());
+		if (KnownConfigurations.getInstance().find(
+				getDefaultConsoleConfigurationName()) == null) {
+			
+			IMessage message = HibernateJpaValidationMessage.buildMessage(
+					IMessage.NORMAL_SEVERITY, Messages.CC_NOT_EXISTS,
+					new String[] { getDefaultConsoleConfigurationName() },
+					getResource());
 			messages.add(message);
 		}
 	}
-	
+
 	//replace original method as it has NPE https://issues.jboss.org/browse/JBIDE-11378
 	@Override
 	public JavaResourcePackage getJavaResourcePackage(String packageName) {
