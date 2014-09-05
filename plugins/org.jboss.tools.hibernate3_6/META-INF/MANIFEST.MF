@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Hibernate3_6
+Bundle-Name: Hibernate 3.6 libraries
 Bundle-SymbolicName: org.jboss.tools.hibernate3_6;singleton:=true
 Bundle-Version: 4.0.0.qualifier
 Bundle-Localization: plugin

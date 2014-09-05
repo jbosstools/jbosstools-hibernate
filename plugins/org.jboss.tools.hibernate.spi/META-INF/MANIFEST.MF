@@ -1,6 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Jboss Tools Hibernate Service Provider Interface
+Bundle-Name: Hibernate Tools Service Provider Interface
+Bundle-Vendor: JBoss by Red Hat
 Bundle-SymbolicName: org.jboss.tools.hibernate.spi;singleton:=true
 Bundle-Version: 4.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
