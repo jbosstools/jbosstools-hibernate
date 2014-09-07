@@ -197,11 +197,6 @@ public class ConfigurationProxy implements IConfiguration {
 	}
 
 	@Override
-	public Object buildSettings(Object serviceRegisrty) {
-		throw new RuntimeException("not supported");
-	}
-
-	@Override
 	public Iterator<ITable> getTableMappings() {
 		Iterator<ITable> result = null;
 		if (target instanceof JDBCMetaDataConfiguration) {

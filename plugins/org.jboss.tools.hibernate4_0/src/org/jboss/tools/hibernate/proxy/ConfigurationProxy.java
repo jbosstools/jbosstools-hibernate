@@ -8,7 +8,6 @@ import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
-import org.hibernate.cfg.Settings;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.spi.Mapping;
 import org.hibernate.mapping.PersistentClass;
@@ -124,7 +123,7 @@ public class ConfigurationProxy implements IConfiguration {
 		if (serviceRegistry == null) {
 			buildServiceRegistry();
 		}
-		return new SettingsProxy((Settings)buildSettings(serviceRegistry));
+		return new SettingsProxy(target.buildSettings(serviceRegistry));
 	}
 	
 	Configuration getConfiguration() {
@@ -207,15 +206,6 @@ public class ConfigurationProxy implements IConfiguration {
 	public EntityResolver getEntityResolver() {
 		return target.getEntityResolver();
 	}
-
-	@Override
-	public Object buildSettings(Object serviceRegistry) {
-		if (serviceRegistry instanceof ServiceRegistry) {
-			return target.buildSettings((ServiceRegistry)serviceRegistry);
-		} else {
-			throw new RuntimeException("unknown service registry object");
-		}
-	}	
 
 	@Override
 	public Iterator<ITable> getTableMappings() {
