@@ -253,7 +253,7 @@ public class EclipseLaunchConsoleConfigurationPreferences implements ConsoleConf
 	@Override
 	public String getHibernateVersion() {
 		if (launchConfiguration.exists()){
-			return getAttribute(IConsoleConfigurationLaunchConstants.HIBERNATE_VERSION, null);
+			return getAttribute(IConsoleConfigurationLaunchConstants.HIBERNATE_VERSION, "3.5"); //$NON-NLS-1$
 		}
 		return null;
 	}
