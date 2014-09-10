@@ -72,9 +72,7 @@ public class ConfigurationFactory {
 			Map<String, FakeDelegatingDriver> fakeDrivers) {
 		this.prefs = prefs;
 		this.fakeDrivers = fakeDrivers;
-		String hibernateVersion = prefs.getHibernateVersion();
-		hibernateVersion = hibernateVersion == null ? "3.5" : hibernateVersion; //$NON-NLS-1$
-		service = ServiceLookup.findService(hibernateVersion);
+		service = ServiceLookup.findService(prefs.getHibernateVersion());
 		environment = service.getEnvironment();
 	}
 	
