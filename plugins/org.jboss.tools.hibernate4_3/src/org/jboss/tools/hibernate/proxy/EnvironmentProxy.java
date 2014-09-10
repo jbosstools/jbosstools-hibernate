@@ -7,7 +7,8 @@ public class EnvironmentProxy implements IEnvironment {
 
 	@Override
 	public String getTransactionManagerStrategy() {
-		throw new RuntimeException("unsupported");
+		// Unsupported in 4.3 Environment
+		return "hibernate.transaction.manager_lookup_class";
 	}
 
 	@Override
