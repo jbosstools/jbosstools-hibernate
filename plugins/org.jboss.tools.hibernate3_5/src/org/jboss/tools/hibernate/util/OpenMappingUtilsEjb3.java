@@ -5,7 +5,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +42,7 @@ public class OpenMappingUtilsEjb3 {
 	
 	public static final String META_INF_PERS_XML = "META-INF/persistence.xml"; //$NON-NLS-1$
 	public static final String META_INF_ORM_XML = "META-INF/orm.xml"; //$NON-NLS-1$
-	private static final Map EMPTY_MAP = Collections.unmodifiableMap( new HashMap(0) );
+	private static final Map<?,?> EMPTY_MAP = Collections.emptyMap();
 
 	private OpenMappingUtilsEjb3() {}
 	
@@ -150,8 +149,7 @@ public class OpenMappingUtilsEjb3 {
 	 * @param integration
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
-	private static JarVisitor getMainJarVisitor(URL url, PersistenceMetadata metadata, Map integration) {
+	private static JarVisitor getMainJarVisitor(URL url, PersistenceMetadata metadata, Map<?,?> integration) {
 		URL jarURL = JarVisitorFactory.getJarURLFromURLEntry(url, "/" + META_INF_PERS_XML); //$NON-NLS-1$
 		Filter[] persistenceXmlFilter = getFilters(metadata, integration, metadata.getExcludeUnlistedClasses());
 		JarVisitor visitor = JarVisitorFactory.getVisitor(jarURL, persistenceXmlFilter);
@@ -166,9 +164,8 @@ public class OpenMappingUtilsEjb3 {
 	 * @param metadata
 	 * @throws IOException
 	 */
-	@SuppressWarnings("unchecked")
 	private static void addMetadataFromVisitor(JarVisitor visitor, String addPath, PersistenceMetadata metadata) throws IOException {
-		Set[] entries = visitor.getMatchingEntries();
+		Set<?>[] entries = visitor.getMatchingEntries();
 		Filter[] filters = visitor.getFilters();
 		int size = filters.length;
 		List<String> classes = metadata.getClasses();
@@ -202,8 +199,7 @@ public class OpenMappingUtilsEjb3 {
 	 * @param excludeIfNotOverriden
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
-	private static boolean[] getDetectedArtifacts(Properties properties, Map overridenProperties, boolean excludeIfNotOverriden) {
+	private static boolean[] getDetectedArtifacts(Properties properties, Map<?,?> overridenProperties, boolean excludeIfNotOverriden) {
 		//result[0] - detect classes
 		//result[1] - detect hbm
 		boolean[] result = { false, false };
@@ -240,8 +236,7 @@ public class OpenMappingUtilsEjb3 {
 	 * @param excludeIfNotOverriden
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
-	private static Filter[] getFilters(PersistenceMetadata metadata, Map overridenProperties, boolean excludeIfNotOverriden) {
+	private static Filter[] getFilters(PersistenceMetadata metadata, Map<?,?> overridenProperties, boolean excludeIfNotOverriden) {
 		Properties properties = metadata.getProps();
 		final List<String> mappingFiles = metadata.getMappingFiles();
 		boolean[] detectedArtifacts = getDetectedArtifacts(properties, overridenProperties, excludeIfNotOverriden);
