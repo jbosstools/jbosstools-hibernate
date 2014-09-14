@@ -5,8 +5,7 @@ Bundle-Vendor: JBoss by Red Hat
 Bundle-SymbolicName: org.jboss.tools.hibernate4_3;singleton:=true
 Bundle-Version: 4.0.1.qualifier
 Bundle-Localization: plugin
-Require-Bundle: org.eclipse.core.runtime,
- org.hibernate.eclipse,
+Require-Bundle: org.hibernate.eclipse,
  org.eclipse.datatools.connectivity,
  org.hibernate.eclipse.console,
  org.eclipse.ui.views;bundle-version="3.7.0",
