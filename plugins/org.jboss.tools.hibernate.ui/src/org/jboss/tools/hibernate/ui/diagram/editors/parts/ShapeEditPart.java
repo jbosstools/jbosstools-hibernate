@@ -327,14 +327,19 @@ public class ShapeEditPart extends OrmEditPart implements NodeEditPart {
 	}
 
 	protected Color getSelectionColor() {
+		Color result = ResourceManager.getInstance().getColor(new RGB(255, 0, 0));
 		final Object el = getElement();
-		if (el instanceof IPersistentClass || el instanceof IProperty ||
-				(el instanceof IValue && ((IValue)el).isSimpleValue() || ((IValue)el).isOneToMany())) {
-			return ResourceManager.getInstance().getColor(new RGB(112, 161, 99));
+		if (el instanceof IPersistentClass || el instanceof IProperty) {
+			result = ResourceManager.getInstance().getColor(new RGB(112, 161, 99));
+		} else if (el instanceof IValue) {
+			IValue value = (IValue)el;
+			if (value.isSimpleValue() || value.isOneToMany()) {
+				result = ResourceManager.getInstance().getColor(new RGB(112, 161, 99));
+			}
 		} else if (el instanceof ITable || el instanceof IColumn) {
-			return ResourceManager.getInstance().getColor(new RGB(66, 173, 247));
+			result = ResourceManager.getInstance().getColor(new RGB(66, 173, 247));
 		}
-		return ResourceManager.getInstance().getColor(new RGB(255, 0, 0));
+		return result;
 	}
 
 	private class ShapesSelectionEditPolicy extends SelectionEditPolicy {
