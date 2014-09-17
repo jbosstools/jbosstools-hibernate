@@ -264,11 +264,9 @@ public class ConfigurationFactory {
 		localCfg.setEntityResolver(entityResolver);
 		if (StringHelper.isNotEmpty(prefs.getNamingStrategy())) {
 			try {
-				System.out.println("naming strategy name : " + prefs.getNamingStrategy());
 				INamingStrategy ns = 
 						service.newNamingStrategy(
 								prefs.getNamingStrategy());
-				System.out.println("naming strategy object: " + ns);
 				localCfg.setNamingStrategy(ns);
 			} catch (Exception c) {
 				throw new HibernateConsoleRuntimeException(
@@ -444,7 +442,7 @@ public class ConfigurationFactory {
 	}
 	
 	private InputStream getResourceAsStream(String resource) {
-		String stripped = resource.startsWith("/") ?
+		String stripped = resource.startsWith("/") ? //$NON-NLS-1$
 				resource.substring(1) : resource;
 
 		InputStream stream = null;
@@ -459,7 +457,7 @@ public class ConfigurationFactory {
 			stream = environment.getClass().getClassLoader().getResourceAsStream( stripped );
 		}
 		if ( stream == null ) {
-			throw new HibernateException( resource + " not found" );
+			throw new HibernateException( resource + " not found" ); //$NON-NLS-1$
 		}
 		return stream;
 	}
