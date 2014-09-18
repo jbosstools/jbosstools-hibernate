@@ -12,58 +12,57 @@ import org.hibernate.util.xpl.StringHelper;
  *  In here to simplify migration from 3.2 to 3.3 where this class changed.
  *   
  */
-@SuppressWarnings({ "unchecked", "nls" })
 public class Formatter {
 	
-	private static final Set BEGIN_CLAUSES = new HashSet();
-	private static final Set END_CLAUSES = new HashSet();
-	private static final Set LOGICAL = new HashSet();
-	private static final Set QUANTIFIERS = new HashSet();
-	private static final Set DML = new HashSet();
-	private static final Set MISC = new HashSet();
+	private static final Set<String> BEGIN_CLAUSES = new HashSet<String>();
+	private static final Set<String> END_CLAUSES = new HashSet<String>();
+	private static final Set<String> LOGICAL = new HashSet<String>();
+	private static final Set<String> QUANTIFIERS = new HashSet<String>();
+	private static final Set<String> DML = new HashSet<String>();
+	private static final Set<String> MISC = new HashSet<String>();
 	static {
 		
-		BEGIN_CLAUSES.add("left");
-		BEGIN_CLAUSES.add("right");
-		BEGIN_CLAUSES.add("inner");
-		BEGIN_CLAUSES.add("outer");
-		BEGIN_CLAUSES.add("group");
-		BEGIN_CLAUSES.add("order");
+		BEGIN_CLAUSES.add("left"); //$NON-NLS-1$
+		BEGIN_CLAUSES.add("right"); //$NON-NLS-1$
+		BEGIN_CLAUSES.add("inner"); //$NON-NLS-1$
+		BEGIN_CLAUSES.add("outer"); //$NON-NLS-1$
+		BEGIN_CLAUSES.add("group"); //$NON-NLS-1$
+		BEGIN_CLAUSES.add("order"); //$NON-NLS-1$
 
-		END_CLAUSES.add("where");
-		END_CLAUSES.add("set");
-		END_CLAUSES.add("having");
-		END_CLAUSES.add("join");
-		END_CLAUSES.add("from");
-		END_CLAUSES.add("by");
-		END_CLAUSES.add("join");
-		END_CLAUSES.add("into");
-		END_CLAUSES.add("union");
+		END_CLAUSES.add("where"); //$NON-NLS-1$
+		END_CLAUSES.add("set"); //$NON-NLS-1$
+		END_CLAUSES.add("having"); //$NON-NLS-1$
+		END_CLAUSES.add("join"); //$NON-NLS-1$
+		END_CLAUSES.add("from"); //$NON-NLS-1$
+		END_CLAUSES.add("by"); //$NON-NLS-1$
+		END_CLAUSES.add("join"); //$NON-NLS-1$
+		END_CLAUSES.add("into"); //$NON-NLS-1$
+		END_CLAUSES.add("union"); //$NON-NLS-1$
 		
-		LOGICAL.add("and");
-		LOGICAL.add("or");
-		LOGICAL.add("when");
-		LOGICAL.add("else");
-		LOGICAL.add("end");
+		LOGICAL.add("and"); //$NON-NLS-1$
+		LOGICAL.add("or"); //$NON-NLS-1$
+		LOGICAL.add("when"); //$NON-NLS-1$
+		LOGICAL.add("else"); //$NON-NLS-1$
+		LOGICAL.add("end"); //$NON-NLS-1$
 		
-		QUANTIFIERS.add("in");
-		QUANTIFIERS.add("all");
-		QUANTIFIERS.add("exists");
-		QUANTIFIERS.add("some");
-		QUANTIFIERS.add("any");
+		QUANTIFIERS.add("in"); //$NON-NLS-1$
+		QUANTIFIERS.add("all"); //$NON-NLS-1$
+		QUANTIFIERS.add("exists"); //$NON-NLS-1$
+		QUANTIFIERS.add("some"); //$NON-NLS-1$
+		QUANTIFIERS.add("any"); //$NON-NLS-1$
 		
-		DML.add("insert");
-		DML.add("update");
-		DML.add("delete");
+		DML.add("insert"); //$NON-NLS-1$
+		DML.add("update"); //$NON-NLS-1$
+		DML.add("delete"); //$NON-NLS-1$
 		
-		MISC.add("select");
-		MISC.add("on");
+		MISC.add("select"); //$NON-NLS-1$
+		MISC.add("on"); //$NON-NLS-1$
 		//MISC.add("values");
 
 	}
 	
-	String indentString = "    ";
-	String initial = "\n    ";
+	String indentString = "    "; //$NON-NLS-1$
+	String initial = "\n    "; //$NON-NLS-1$
 
 	boolean beginLine = true;
 	boolean afterBeginBeforeEnd = false;
@@ -74,8 +73,8 @@ public class Formatter {
 	boolean afterInsert = false;
 	int inFunction = 0;
 	int parensSinceSelect = 0;
-	private LinkedList parenCounts = new LinkedList();
-	private LinkedList afterByOrFromOrSelects = new LinkedList();
+	private LinkedList<Integer> parenCounts = new LinkedList<Integer>();
+	private LinkedList<Boolean> afterByOrFromOrSelects = new LinkedList<Boolean>();
 
 	int indent = 1;
 
@@ -88,7 +87,7 @@ public class Formatter {
 	public Formatter(String sql) {
 		tokens = new StringTokenizer(
 				sql, 
-				"()+*/-=<>'`\"[]," + StringHelper.WHITESPACE, 
+				"()+*/-=<>'`\"[]," + StringHelper.WHITESPACE,  //$NON-NLS-1$
 				true
 			);
 	}
@@ -111,34 +110,34 @@ public class Formatter {
 			token = tokens.nextToken();
 			lcToken = token.toLowerCase();
 			
-			if ( "'".equals(token) ) {
+			if ( "'".equals(token) ) { //$NON-NLS-1$
 				String t;
 				do {
 					t = tokens.nextToken();
 					token += t;
 				} 
-				while ( !"'".equals(t) && tokens.hasMoreTokens() ); // cannot handle single quotes
+				while ( !"'".equals(t) && tokens.hasMoreTokens() ); // cannot handle single quotes //$NON-NLS-1$
 			}		
-			else if ( "\"".equals(token) ) {
+			else if ( "\"".equals(token) ) { //$NON-NLS-1$
 				String t;
 				do {
 					t = tokens.nextToken();
 					token += t;
 				} 
-				while ( !"\"".equals(t) );
+				while ( !"\"".equals(t) ); //$NON-NLS-1$
 			}
 			
-			if ( afterByOrSetOrFromOrSelect && ",".equals(token) ) {
+			if ( afterByOrSetOrFromOrSelect && ",".equals(token) ) { //$NON-NLS-1$
 				commaAfterByOrFromOrSelect();
 			}
-			else if ( afterOn && ",".equals(token) ) {
+			else if ( afterOn && ",".equals(token) ) { //$NON-NLS-1$
 				commaAfterOn();
 			}
 			
-			else if ( "(".equals(token) ) {
+			else if ( "(".equals(token) ) { //$NON-NLS-1$
 				openParen();
 			}
-			else if ( ")".equals(token) ) {
+			else if ( ")".equals(token) ) { //$NON-NLS-1$
 				closeParen();
 			}
 
@@ -150,7 +149,7 @@ public class Formatter {
 				endNewClause(); 
 			}
 			
-			else if ( "select".equals(lcToken) ) {
+			else if ( "select".equals(lcToken) ) { //$NON-NLS-1$
 				select();
 			}
 			
@@ -158,15 +157,15 @@ public class Formatter {
 				updateOrInsertOrDelete();
 			}
 			
-			else if ( "values".equals(lcToken) ) {
+			else if ( "values".equals(lcToken) ) { //$NON-NLS-1$
 				values();
 			}
 			
-			else if ( "on".equals(lcToken) ) {
+			else if ( "on".equals(lcToken) ) { //$NON-NLS-1$
 				on();
 			}
 			
-			else if ( afterBetween && lcToken.equals("and") ) {
+			else if ( afterBetween && lcToken.equals("and") ) { //$NON-NLS-1$
 				misc();
 				afterBetween = false;
 			}
@@ -203,7 +202,7 @@ public class Formatter {
 	}
 
 	private void logical() {
-		if ( "end".equals(lcToken) ) indent--;
+		if ( "end".equals(lcToken) ) indent--; //$NON-NLS-1$
 		newline();
 		out();
 		beginLine = false;
@@ -219,7 +218,7 @@ public class Formatter {
 
 	private void misc() {
 		out();
-		if ( "between".equals(lcToken) ) {
+		if ( "between".equals(lcToken) ) { //$NON-NLS-1$
 			afterBetween = true;
 		}
 		if (afterInsert) {
@@ -228,7 +227,7 @@ public class Formatter {
 		}
 		else {
 			beginLine = false;
-			if ( "case".equals(lcToken) ) {
+			if ( "case".equals(lcToken) ) { //$NON-NLS-1$
 				indent++;
 			}
 		}
@@ -236,7 +235,7 @@ public class Formatter {
 
 	private void white() {
 		if ( !beginLine ) {
-			result.append(" ");
+			result.append(" "); //$NON-NLS-1$
 		}
 	}
 	
@@ -244,8 +243,8 @@ public class Formatter {
 		out();
 		indent++;
 		beginLine = false;
-		if ( "update".equals(lcToken) ) newline();
-		if ( "insert".equals(lcToken) ) afterInsert = true;
+		if ( "update".equals(lcToken) ) newline(); //$NON-NLS-1$
+		if ( "insert".equals(lcToken) ) afterInsert = true; //$NON-NLS-1$
 	}
 
 	private void select() {
@@ -272,12 +271,12 @@ public class Formatter {
 			newline();
 		}
 		out();
-		if ( !"union".equals(lcToken) ) indent++;
+		if ( !"union".equals(lcToken) ) indent++; //$NON-NLS-1$
 		newline();
 		afterBeginBeforeEnd = false;
-		afterByOrSetOrFromOrSelect = "by".equals(lcToken) 
-				|| "set".equals(lcToken)
-				|| "from".equals(lcToken);
+		afterByOrSetOrFromOrSelect = "by".equals(lcToken)  //$NON-NLS-1$
+				|| "set".equals(lcToken) //$NON-NLS-1$
+				|| "from".equals(lcToken); //$NON-NLS-1$
 	}
 
 	private void beginNewClause() {
@@ -359,7 +358,7 @@ public class Formatter {
 	}
 	
 	private void newline() {
-		result.append("\n");
+		result.append("\n"); //$NON-NLS-1$
 		for ( int i=0; i<indent; i++ ) {
 			result.append(indentString);
 		}
@@ -368,7 +367,7 @@ public class Formatter {
 
 	public static void main(String[] args) {
 		if ( args.length>0 ) System.out.println( 
-			new Formatter( StringHelper.join(" ", args) ).format()
+			new Formatter( StringHelper.join(" ", args) ).format() //$NON-NLS-1$
 		);
 	}
 
