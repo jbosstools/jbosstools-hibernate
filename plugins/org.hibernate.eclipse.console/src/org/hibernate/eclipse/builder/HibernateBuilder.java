@@ -22,7 +22,6 @@
  */
 package org.hibernate.eclipse.builder;
 
-import java.io.File;
 import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
@@ -39,7 +38,8 @@ public class HibernateBuilder extends IncrementalProjectBuilder {
 
 	public static final String BUILDER_ID = HibernateConsolePlugin.ID + ".hibernateBuilder"; //$NON-NLS-1$
 	
-    protected IProject[] build(int kind, Map args, final IProgressMonitor monitor)
+	@Override
+    protected IProject[] build(int kind, Map<String, String> args, final IProgressMonitor monitor)
             throws CoreException {
         
         
@@ -66,34 +66,5 @@ public class HibernateBuilder extends IncrementalProjectBuilder {
         return null;
     }
 
-   private void process(final File file){
-/*
-        InstrumentTask task = new InstrumentTask(){
-            
-             protected Collection getFiles() {
-               return Collections.singleton(file);       
-            
-             }  
-           }; 
-         
-           task.execute();
-           */
-    }
-    
 }
 
-/**
-* $Log$
-* Revision 1.4  2006/07/07 13:51:13  mandersen
-* JBIDE-276 - lgpl headers
-*
-* Revision 1.3  2005/06/18 23:37:46  maxcsaucdk
-* checkstyle nazi
-*
-* Revision 1.2  2005/05/30 20:28:46  maxcsaucdk
-* enablement of HibernateNature
-*
-* Revision 1.1  2005/05/24 20:21:36  maxcsaucdk
-* commit for jbosside integration build
-*
-*/
