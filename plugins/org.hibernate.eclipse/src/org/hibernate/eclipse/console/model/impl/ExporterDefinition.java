@@ -87,7 +87,7 @@ public class ExporterDefinition {
 	static private ImageDescriptor createIcon(IConfigurationElement element) {
 		if ( element.getAttribute( "icon" ) != null ) { //$NON-NLS-1$
 			return AbstractUIPlugin.imageDescriptorFromPlugin(
-					element.getNamespace(), element.getAttribute( "icon" ) ); //$NON-NLS-1$
+					element.getContributor().getName(), element.getAttribute( "icon" ) ); //$NON-NLS-1$
 		} else {
 			return null;
 		}
