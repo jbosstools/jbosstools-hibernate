@@ -48,13 +48,13 @@ public class ConsoleConfigClassLoader extends URLClassLoader {
 	/**
 	 * cleanup jar file factory cache
 	 */
-	@SuppressWarnings({ "nls" })
+	@SuppressWarnings( { "nls" })
 	public boolean cleanupJarFileFactory()
 	{
 		boolean res = false;
 		Class<?> classJarURLConnection = null;
 		try {
-			classJarURLConnection = ReflectHelper.classForName("sun.net.www.protocol.jar.JarURLConnection");
+			classJarURLConnection = ReflectHelper.classForName("sun.net.www.protocol.jar.JarURLConnection"); //$NON-NLS-1$
 		} catch (ClassNotFoundException e) {
 			//ignore
 		}
@@ -63,7 +63,7 @@ public class ConsoleConfigClassLoader extends URLClassLoader {
 		}
 		Field f = null;
 		try {
-			f = classJarURLConnection.getDeclaredField("factory");
+			f = classJarURLConnection.getDeclaredField("factory"); //$NON-NLS-1$
 		} catch (NoSuchFieldException e) {
 			//ignore
 		}
@@ -84,7 +84,7 @@ public class ConsoleConfigClassLoader extends URLClassLoader {
 		//
 		HashMap<?,?> fileCache = null;
 		try {
-			f = classJarFileFactory.getDeclaredField("fileCache");
+			f = classJarFileFactory.getDeclaredField("fileCache"); //$NON-NLS-1$
 			f.setAccessible(true);
 			obj = f.get(null);
 			if (obj instanceof HashMap) {
@@ -96,7 +96,7 @@ public class ConsoleConfigClassLoader extends URLClassLoader {
 		}
 		HashMap<?,?> urlCache = null;
 		try {
-			f = classJarFileFactory.getDeclaredField("urlCache");
+			f = classJarFileFactory.getDeclaredField("urlCache"); //$NON-NLS-1$
 			f.setAccessible(true);
 			obj = f.get(null);
 			if (obj instanceof HashMap) {
@@ -168,7 +168,7 @@ public class ConsoleConfigClassLoader extends URLClassLoader {
 		Class<?> classURLClassLoader = URLClassLoader.class;
 		Field f = null;
 		try {
-			f = classURLClassLoader.getDeclaredField("ucp");
+			f = classURLClassLoader.getDeclaredField("ucp"); //$NON-NLS-1$
 		} catch (NoSuchFieldException e1) {
 			//ignore
 		}
@@ -184,15 +184,15 @@ public class ConsoleConfigClassLoader extends URLClassLoader {
 				final Object ucp = obj;
 				f = null;
 				try {
-					f = ucp.getClass().getDeclaredField("loaders");
+					f = ucp.getClass().getDeclaredField("loaders"); //$NON-NLS-1$
 				} catch (NoSuchFieldException e1) {
 					//ignore
 				}
 				if (f != null) {
 					f.setAccessible(true);
-					ArrayList loaders = null;
+					ArrayList<?> loaders = null;
 					try {
-						loaders = (ArrayList) f.get(ucp);
+						loaders = (ArrayList<?>) f.get(ucp);
 						res = true;
 					} catch (IllegalAccessException e1) {
 						//ignore
@@ -201,7 +201,7 @@ public class ConsoleConfigClassLoader extends URLClassLoader {
 						obj = loaders.get(i);
 						f = null;
 						try {
-							f = obj.getClass().getDeclaredField("jar");
+							f = obj.getClass().getDeclaredField("jar"); //$NON-NLS-1$
 						} catch (NoSuchFieldException e) {
 							//ignore
 						}
@@ -245,7 +245,7 @@ public class ConsoleConfigClassLoader extends URLClassLoader {
 		Class<?> classClassLoader = ClassLoader.class;
 		java.lang.reflect.Field nativeLibraries = null;
 		try {
-			nativeLibraries = classClassLoader.getDeclaredField("nativeLibraries");
+			nativeLibraries = classClassLoader.getDeclaredField("nativeLibraries"); //$NON-NLS-1$
 		} catch (NoSuchFieldException e1) {
 			//ignore
 		}
@@ -267,7 +267,7 @@ public class ConsoleConfigClassLoader extends URLClassLoader {
 		for (Object lib : java_lang_ClassLoader_NativeLibrary) {
 			java.lang.reflect.Method finalize = null;
 			try {
-				finalize = lib.getClass().getDeclaredMethod("finalize", new Class[0]);
+				finalize = lib.getClass().getDeclaredMethod("finalize", new Class[0]); //$NON-NLS-1$
 			} catch (NoSuchMethodException e) {
 				//ignore
 			}
