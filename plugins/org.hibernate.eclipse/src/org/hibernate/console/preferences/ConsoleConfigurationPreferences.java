@@ -52,6 +52,7 @@ public interface ConsoleConfigurationPreferences {
 	// TODO: we should move this to some classhandler
 	static public class ConfigurationMode implements Serializable {
 
+		private static final long serialVersionUID = 1L;
 		private static final ArrayList<ConfigurationMode> INSTANCES = new ArrayList<ConfigurationMode>();
 		private static final ArrayList<String> LABELS = new ArrayList<String>();
 
