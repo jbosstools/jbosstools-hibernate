@@ -108,7 +108,7 @@ public class ConsoleConfigClassLoader extends URLClassLoader {
 		}
 		if (urlCache != null) {
 			HashMap<?,?> urlCacheTmp = (HashMap<?,?>)urlCache.clone();
-			Iterator it = urlCacheTmp.keySet().iterator();
+			Iterator<?> it = urlCacheTmp.keySet().iterator();
 			while (it.hasNext()) {
 				obj = it.next();
 				if (!(obj instanceof JarFile)) {
@@ -131,7 +131,7 @@ public class ConsoleConfigClassLoader extends URLClassLoader {
 		} else if (fileCache != null) {
 			// urlCache := null
 			HashMap<?,?> fileCacheTmp = (HashMap<?,?>)fileCache.clone();
-			Iterator it = fileCacheTmp.keySet().iterator();
+			Iterator<?> it = fileCacheTmp.keySet().iterator();
 			while (it.hasNext()) {
 				Object key = it.next();
 				obj = fileCache.get(key);
