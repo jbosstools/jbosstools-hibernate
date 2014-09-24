@@ -263,7 +263,7 @@ public class ConsoleConfigClassLoader extends URLClassLoader {
 			return res;
 		}
 		res = true;
-		Vector java_lang_ClassLoader_NativeLibrary = (Vector)obj;
+		Vector<?> java_lang_ClassLoader_NativeLibrary = (Vector<?>)obj;
 		for (Object lib : java_lang_ClassLoader_NativeLibrary) {
 			java.lang.reflect.Method finalize = null;
 			try {
