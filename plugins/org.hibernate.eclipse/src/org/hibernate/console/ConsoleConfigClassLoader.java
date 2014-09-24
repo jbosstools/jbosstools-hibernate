@@ -82,32 +82,32 @@ public class ConsoleConfigClassLoader extends URLClassLoader {
 		}
 		Class<?> classJarFileFactory = obj.getClass();
 		//
-		HashMap fileCache = null;
+		HashMap<?,?> fileCache = null;
 		try {
 			f = classJarFileFactory.getDeclaredField("fileCache");
 			f.setAccessible(true);
 			obj = f.get(null);
 			if (obj instanceof HashMap) {
-				fileCache = (HashMap)obj;
+				fileCache = (HashMap<?, ?>)obj;
 			}
 		} catch (NoSuchFieldException e) {
 		} catch (IllegalAccessException e) {
 			//ignore
 		}
-		HashMap urlCache = null;
+		HashMap<?,?> urlCache = null;
 		try {
 			f = classJarFileFactory.getDeclaredField("urlCache");
 			f.setAccessible(true);
 			obj = f.get(null);
 			if (obj instanceof HashMap) {
-				urlCache = (HashMap)obj;
+				urlCache = (HashMap<?,?>)obj;
 			}
 		} catch (NoSuchFieldException e) {
 		} catch (IllegalAccessException e) {
 			//ignore
 		}
 		if (urlCache != null) {
-			HashMap urlCacheTmp = (HashMap)urlCache.clone();
+			HashMap<?,?> urlCacheTmp = (HashMap<?,?>)urlCache.clone();
 			Iterator it = urlCacheTmp.keySet().iterator();
 			while (it.hasNext()) {
 				obj = it.next();
@@ -130,7 +130,7 @@ public class ConsoleConfigClassLoader extends URLClassLoader {
 			res = true;
 		} else if (fileCache != null) {
 			// urlCache := null
-			HashMap fileCacheTmp = (HashMap)fileCache.clone();
+			HashMap<?,?> fileCacheTmp = (HashMap<?,?>)fileCache.clone();
 			Iterator it = fileCacheTmp.keySet().iterator();
 			while (it.hasNext()) {
 				Object key = it.next();
