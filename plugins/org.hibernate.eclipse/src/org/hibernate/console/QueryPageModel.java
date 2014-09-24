@@ -34,8 +34,10 @@ import javax.swing.AbstractListModel;
  * @author max
  *
  */
-public class QueryPageModel extends AbstractListModel {
+public class QueryPageModel extends AbstractListModel<QueryPage> {
 
+	private static final long serialVersionUID = 1L;
+	
 	List<QueryPage> pages = new ArrayList<QueryPage>();
 
 	public int getSize() {
