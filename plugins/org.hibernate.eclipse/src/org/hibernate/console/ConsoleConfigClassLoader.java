@@ -48,7 +48,7 @@ public class ConsoleConfigClassLoader extends URLClassLoader {
 	/**
 	 * cleanup jar file factory cache
 	 */
-	@SuppressWarnings({ "nls", "unchecked" })
+	@SuppressWarnings({ "nls" })
 	public boolean cleanupJarFileFactory()
 	{
 		boolean res = false;
@@ -159,7 +159,7 @@ public class ConsoleConfigClassLoader extends URLClassLoader {
 	 * @param cl
 	 * @return
 	 */
-	@SuppressWarnings( { "nls", "unchecked" })
+	@SuppressWarnings( { "nls" })
 	public boolean closeClassLoader(ClassLoader cl) {
 		boolean res = false;
 		if (cl == null) {
@@ -239,7 +239,7 @@ public class ConsoleConfigClassLoader extends URLClassLoader {
 	 * @param cl
 	 * @return
 	 */
-	@SuppressWarnings({ "nls", "unchecked" })
+	@SuppressWarnings({ "nls" })
 	public boolean finalizeNativeLibs(ClassLoader cl) {
 		boolean res = false;
 		Class classClassLoader = ClassLoader.class;
