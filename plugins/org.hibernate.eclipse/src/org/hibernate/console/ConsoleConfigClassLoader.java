@@ -52,7 +52,7 @@ public class ConsoleConfigClassLoader extends URLClassLoader {
 	public boolean cleanupJarFileFactory()
 	{
 		boolean res = false;
-		Class classJarURLConnection = null;
+		Class<?> classJarURLConnection = null;
 		try {
 			classJarURLConnection = ReflectHelper.classForName("sun.net.www.protocol.jar.JarURLConnection");
 		} catch (ClassNotFoundException e) {
@@ -80,7 +80,7 @@ public class ConsoleConfigClassLoader extends URLClassLoader {
 		if (obj == null) {
 			return res;
 		}
-		Class classJarFileFactory = obj.getClass();
+		Class<?> classJarFileFactory = obj.getClass();
 		//
 		HashMap fileCache = null;
 		try {
@@ -165,7 +165,7 @@ public class ConsoleConfigClassLoader extends URLClassLoader {
 		if (cl == null) {
 			return res;
 		}
-		Class classURLClassLoader = URLClassLoader.class;
+		Class<?> classURLClassLoader = URLClassLoader.class;
 		Field f = null;
 		try {
 			f = classURLClassLoader.getDeclaredField("ucp");
@@ -242,7 +242,7 @@ public class ConsoleConfigClassLoader extends URLClassLoader {
 	@SuppressWarnings({ "nls" })
 	public boolean finalizeNativeLibs(ClassLoader cl) {
 		boolean res = false;
-		Class classClassLoader = ClassLoader.class;
+		Class<?> classClassLoader = ClassLoader.class;
 		java.lang.reflect.Field nativeLibraries = null;
 		try {
 			nativeLibraries = classClassLoader.getDeclaredField("nativeLibraries");
