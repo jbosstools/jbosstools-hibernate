@@ -70,7 +70,7 @@ public class StandAloneConsoleConfigurationPreferences extends AbstractConsoleCo
 		for (int i = 0; i < customClasspath.length; i++) {
 			File file = customClasspath[i];
 			try {
-				result[i] = file.toURL();
+				result[i] = file.toURI().toURL();
 			}
 			catch (MalformedURLException mue) {
 				throw new HibernateConsoleRuntimeException(ConsoleMessages.StandAloneConsoleConfigurationPreferences_could_not_resolve_classpaths, mue);
