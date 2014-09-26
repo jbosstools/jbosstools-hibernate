@@ -121,7 +121,6 @@ public class ExporterAttributes
 		return HibernateLaunchConstants.ATTR_EXPORTERS + "." + exporterId; //$NON-NLS-1$
 	}
 
-	@SuppressWarnings("unchecked")
 	private List<ExporterFactory> readExporterFactories(ILaunchConfiguration configuration) throws CoreException {
 
 	   List<String> exporterNames = configuration.getAttribute(HibernateLaunchConstants.ATTR_EXPORTERS, (List<String>)null);
