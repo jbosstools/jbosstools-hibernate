@@ -371,7 +371,7 @@ public class ExporterAttributes
         }
         if (msg == null) {
             if (reverseEngineer && packageName.length() > 0) {
-                IStatus val= JavaConventions.validatePackageName(packageName);
+                IStatus val= JavaConventions.validatePackageName(packageName, "1.3", "1.3"); //$NON-NLS-1$ //$NON-NLS-2$
                 if (val.getSeverity() == IStatus.ERROR || val.getSeverity() == IStatus.WARNING) {
                 	msg = val.getMessage();
                 }
