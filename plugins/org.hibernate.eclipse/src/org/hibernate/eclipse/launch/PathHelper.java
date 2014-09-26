@@ -1,6 +1,7 @@
 package org.hibernate.eclipse.launch;
 
 import java.io.File;
+import java.net.URI;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
@@ -38,9 +39,16 @@ public class PathHelper {
 
 		IResource findMember = root.findMember(pathOrNull);
 		if(findMember==null) {
-			IContainer[] findContainersForLocation = root.findContainersForLocation(pathOrNull);
-			if(findContainersForLocation.length>0) {
-				findMember = findContainersForLocation[0];
+			URI uri = null;
+			File file = pathOrNull.toFile();
+			if (file != null) {
+				uri = file.toURI();
+			}
+			if (uri != null) {
+				IContainer[] findContainersForLocation = root.findContainersForLocationURI(pathOrNull.toFile().toURI());
+				if(findContainersForLocation.length>0) {
+					findMember = findContainersForLocation[0];
+				}
 			}
 		}
 		return findMember;
