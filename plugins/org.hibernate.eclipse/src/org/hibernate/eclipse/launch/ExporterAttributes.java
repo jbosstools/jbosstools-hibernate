@@ -48,15 +48,14 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jdt.core.JavaConventions;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.console.HibernateConsoleRuntimeException;
+import org.hibernate.eclipse.HibernatePlugin;
 import org.hibernate.eclipse.console.ExtensionManager;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
-import org.hibernate.eclipse.HibernatePlugin;
 import org.hibernate.eclipse.console.model.impl.ExporterDefinition;
 import org.hibernate.eclipse.console.model.impl.ExporterFactory;
 
@@ -219,14 +218,6 @@ public class ExporterAttributes
 		}
 	}
 
-
-    private Path pathOrNull(String p) {
-        if(p==null || p.trim().length()==0) {
-            return null;
-        } else {
-            return new Path(p);
-        }
-    }
 
    public String getOutputPath()
    {
