@@ -74,7 +74,7 @@ public class HibernatePlugin extends Plugin {
 			// should log this!
 		} else {
 			LoggingHelper helper = LoggingHelper.getDefault();
-			PluginLogManager manager = new PluginLogManager(this, helper, entry);
+			new PluginLogManager(this, helper, entry);
 		}
 	}
 
