@@ -21,8 +21,8 @@ public class SeamUtil {
 	{
 		return name.substring(0, 1).toUpperCase() + name.substring(1);
 	}
-	public Set set()
+	public Set<?> set()
 	{
-		return new HashSet();
+		return new HashSet<Object>();
 	}
 }
