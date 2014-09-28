@@ -69,9 +69,6 @@ public class PluginLogManager {
 		 * @param appender appender added for this level
 		 */
 		public void addAppenderEvent(Category cat, Appender appender) {
-			if (appender instanceof PluginLogAppender) {
-				((PluginLogAppender)appender).setLog(log);
-			}			
 			if (appender instanceof PluginFileAppender) {
 				((PluginFileAppender)appender).setStateLocation(stateLocation);
 			}
