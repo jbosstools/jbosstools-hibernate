@@ -30,8 +30,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
-import org.jboss.tools.hibernate.spi.IDialect;
-
 public final class StringHelper {
 
 	private static final int ALIAS_TRUNCATE_LENGTH = 10;
