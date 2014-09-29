@@ -58,6 +58,7 @@ import org.jboss.tools.hibernate.spi.ServiceLookup;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXParseException;
 
 public class ConfigurationFactory {
 
@@ -315,7 +316,7 @@ public class ConfigurationFactory {
 				}
 			}
 			try {
-				List<Throwable> errors = new ArrayList<Throwable>();
+				List<SAXParseException> errors = new ArrayList<SAXParseException>();
 				doc = xmlHelper.createSAXReader(resourceName, errors, entityResolver).read(
 						new InputSource(stream));
 				if (errors.size() != 0) {

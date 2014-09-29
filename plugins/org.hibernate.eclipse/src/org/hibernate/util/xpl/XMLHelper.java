@@ -25,7 +25,7 @@ public final class XMLHelper {
 	 * Create a dom4j SAXReader which will append all validation errors
 	 * to errorList
 	 */
-	public SAXReader createSAXReader(String file, List errorsList, EntityResolver entityResolver) {
+	public SAXReader createSAXReader(String file, List<SAXParseException> errorsList, EntityResolver entityResolver) {
 		SAXReader saxReader = resolveSAXReader();
 		saxReader.setEntityResolver(entityResolver);
 		saxReader.setErrorHandler( new ErrorLogger(file, errorsList) );
@@ -53,7 +53,7 @@ public final class XMLHelper {
 		private String file;
 		private List<SAXParseException> errors;
 
-		private ErrorLogger(String file, List errors) {
+		private ErrorLogger(String file, List<SAXParseException> errors) {
 			this.file=file;
 			this.errors = errors;
 		}

@@ -60,6 +60,7 @@ import org.jboss.tools.hibernate.spi.ITable;
 import org.jboss.tools.hibernate.spi.IValue;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXParseException;
 
 /**
  * Utility class for useful open mapping file action functions. 
@@ -385,7 +386,7 @@ public class OpenMappingUtils {
 			HibernateConsolePlugin.getDefault().logErrorMessage("Configuration file not found", e); //$NON-NLS-1$
 		}
 		try {
-			List<Throwable> errors = new ArrayList<Throwable>();
+			List<SAXParseException> errors = new ArrayList<SAXParseException>();
 			XMLHelper helper = new XMLHelper();
 			SAXReader saxReader = helper.createSAXReader(configXMLFile.getPath(), errors, entityResolver);
 			saxReader.setValidation(false);
