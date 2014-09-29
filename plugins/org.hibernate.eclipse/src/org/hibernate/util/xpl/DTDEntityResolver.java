@@ -12,6 +12,8 @@ import org.xml.sax.InputSource;
 
 public class DTDEntityResolver implements EntityResolver, Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	private static final Logger log = LoggerFactory.getLogger( DTDEntityResolver.class );
 
 	private static final String HIBERNATE_NAMESPACE = "http://www.hibernate.org/dtd/";
