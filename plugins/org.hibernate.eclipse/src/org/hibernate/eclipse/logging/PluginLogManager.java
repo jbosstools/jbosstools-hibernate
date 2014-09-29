@@ -53,7 +53,6 @@ import org.hibernate.console.execution.ExecutionContext.Command;
  */
 public class PluginLogManager {
 
-	private ILog log;
 	private IPath stateLocation;
 	private Hierarchy hierarchy;
 	private HashMap<String, ILogListener> hookedPlugins = new HashMap<String, ILogListener>();
@@ -93,7 +92,6 @@ public class PluginLogManager {
 	 * @param properties log configuration properties
 	 */
 	public PluginLogManager(Plugin plugin, LoggingHelper helper, final URL log4jUrl) {
-		this.log = plugin.getLog();  
 		this.stateLocation = plugin.getStateLocation(); 
 		this.hierarchy = new Hierarchy(new RootLogger(Level.DEBUG));
 		this.hierarchy.addHierarchyEventListener(new PluginEventListener());
