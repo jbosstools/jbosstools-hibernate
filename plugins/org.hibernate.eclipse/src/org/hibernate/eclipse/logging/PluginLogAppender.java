@@ -28,7 +28,6 @@ import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.spi.ErrorCode;
 import org.apache.log4j.spi.LoggingEvent;
 import org.apache.log4j.spi.ThrowableInformation;
-import org.eclipse.core.runtime.ILog;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.hibernate.console.ConsoleMessages;
 import org.hibernate.console.KnownConfigurations;
@@ -40,17 +39,6 @@ import org.hibernate.console.KnownConfigurations;
  * @author Manoel Marques
  */
 public class PluginLogAppender extends AppenderSkeleton {
-
-	private ILog pluginLog;
-
-
-	/**
-	 * Sets the Eclipse log instance
-	 * @param log plug-in log
-	 */
-	void setLog(ILog pluginLog) {
-		this.pluginLog = pluginLog;
-	}
 
 	/**
 	 * Log event happened.
