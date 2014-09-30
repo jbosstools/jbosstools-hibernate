@@ -64,7 +64,7 @@ public final class StringHelper {
 		return buf.toString();
 	}
 
-	public static String join(String seperator, Iterator objects) {
+	public static String join(String seperator, Iterator<?> objects) {
 		StringBuffer buf = new StringBuffer();
 		if ( objects.hasNext() ) buf.append( objects.next() );
 		while ( objects.hasNext() ) {
@@ -280,7 +280,7 @@ public final class StringHelper {
 		return buf.append( array[len - 1] ).toString();
 	}
 
-	public static String[] multiply(String string, Iterator placeholders, Iterator replacements) {
+	public static String[] multiply(String string, Iterator<?> placeholders, Iterator<?> replacements) {
 		String[] result = new String[]{string};
 		while ( placeholders.hasNext() ) {
 			result = multiply( result, ( String ) placeholders.next(), ( String[] ) replacements.next() );
@@ -336,7 +336,7 @@ public final class StringHelper {
 			return new int[0];
 		}
 
-		ArrayList locations = new ArrayList( 20 );
+		ArrayList<Integer> locations = new ArrayList<Integer>( 20 );
 
 		// Impl note: takes advantage of the fact that an escpaed single quote
 		// embedded within a quote-block can really be handled as two seperate
@@ -360,12 +360,12 @@ public final class StringHelper {
 		return toIntArray( locations );
 	}
 
-	private static int[] toIntArray(Collection coll) {
-		Iterator iter = coll.iterator();
+	private static int[] toIntArray(Collection<Integer> coll) {
+		Iterator<Integer> iter = coll.iterator();
 		int[] arr = new int[ coll.size() ];
 		int i=0;
 		while( iter.hasNext() ) {
-			arr[i++] = ( (Integer) iter.next() ).intValue();
+			arr[i++] = iter.next().intValue();
 		}
 		return arr;
 	}
