@@ -84,11 +84,6 @@ public class ClassMetadataProxy implements IClassMetadata {
 	}
 
 	@Override
-	public Object getIdentifier(Object object) {
-		return target.getIdentifier(object, EntityMode.POJO);
-	}
-
-	@Override
 	public Object getIdentifier(Object object, ISession session) {
 		Object result = null;
 		if (session instanceof SessionProxy) {
