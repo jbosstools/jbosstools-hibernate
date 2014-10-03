@@ -33,7 +33,7 @@ import java.util.StringTokenizer;
 public final class StringHelper {
 
 	private static final int ALIAS_TRUNCATE_LENGTH = 10;
-	public static final String WHITESPACE = " \n\r\f\t";
+	public static final String WHITESPACE = " \n\r\f\t"; //$NON-NLS-1$
 
 	private StringHelper() { /* static methods only - hide constructor */
 	}
@@ -55,7 +55,7 @@ public final class StringHelper {
 
 	public static String join(String seperator, String[] strings) {
 		int length = strings.length;
-		if ( length == 0 ) return "";
+		if ( length == 0 ) return ""; //$NON-NLS-1$
 		StringBuffer buf = new StringBuffer( length * strings[0].length() )
 				.append( strings[0] );
 		for ( int i = 1; i < length; i++ ) {
@@ -161,13 +161,13 @@ public final class StringHelper {
 	}
 
 	public static String unqualify(String qualifiedName) {
-		int loc = qualifiedName.lastIndexOf(".");
-		return ( loc < 0 ) ? qualifiedName : qualifiedName.substring( qualifiedName.lastIndexOf(".") + 1 );
+		int loc = qualifiedName.lastIndexOf("."); //$NON-NLS-1$
+		return ( loc < 0 ) ? qualifiedName : qualifiedName.substring( qualifiedName.lastIndexOf(".") + 1 ); //$NON-NLS-1$
 	}
 
 	public static String qualifier(String qualifiedName) {
-		int loc = qualifiedName.lastIndexOf(".");
-		return ( loc < 0 ) ? "" : qualifiedName.substring( 0, loc );
+		int loc = qualifiedName.lastIndexOf("."); //$NON-NLS-1$
+		return ( loc < 0 ) ? "" : qualifiedName.substring( 0, loc ); //$NON-NLS-1$
 	}
 
 	/**
@@ -198,7 +198,7 @@ public final class StringHelper {
 	 * @return The collapsed form.
 	 */
 	public static String collapseQualifier(String qualifier, boolean includeDots) {
-		StringTokenizer tokenizer = new StringTokenizer( qualifier, "." );
+		StringTokenizer tokenizer = new StringTokenizer( qualifier, "." ); //$NON-NLS-1$
 		String collapsed = Character.toString( tokenizer.nextToken().charAt( 0 ) );
 		while ( tokenizer.hasMoreTokens() ) {
 			if ( includeDots ) {
@@ -256,26 +256,26 @@ public final class StringHelper {
 	}
 
 	public static String root(String qualifiedName) {
-		int loc = qualifiedName.indexOf( "." );
+		int loc = qualifiedName.indexOf( "." ); //$NON-NLS-1$
 		return ( loc < 0 ) ? qualifiedName : qualifiedName.substring( 0, loc );
 	}
 
 	public static String unroot(String qualifiedName) {
-		int loc = qualifiedName.indexOf( "." );
+		int loc = qualifiedName.indexOf( "." ); //$NON-NLS-1$
 		return ( loc < 0 ) ? qualifiedName : qualifiedName.substring( loc+1, qualifiedName.length() );
 	}
 
 	public static boolean booleanValue(String tfString) {
 		String trimmed = tfString.trim().toLowerCase();
-		return trimmed.equals( "true" ) || trimmed.equals( "t" );
+		return trimmed.equals( "true" ) || trimmed.equals( "t" );  //$NON-NLS-1$//$NON-NLS-2$
 	}
 
 	public static String toString(Object[] array) {
 		int len = array.length;
-		if ( len == 0 ) return "";
+		if ( len == 0 ) return ""; //$NON-NLS-1$
 		StringBuffer buf = new StringBuffer( len * 12 );
 		for ( int i = 0; i < len - 1; i++ ) {
-			buf.append( array[i] ).append(", ");
+			buf.append( array[i] ).append(", "); //$NON-NLS-1$
 		}
 		return buf.append( array[len - 1] ).toString();
 	}
@@ -301,7 +301,7 @@ public final class StringHelper {
 
 	public static int countUnquoted(String string, char character) {
 		if ( '\'' == character ) {
-			throw new IllegalArgumentException( "Unquoted count of quotes is invalid" );
+			throw new IllegalArgumentException( "Unquoted count of quotes is invalid" ); //$NON-NLS-1$
 		}
 		if (string == null)
 			return 0;
@@ -330,7 +330,7 @@ public final class StringHelper {
 
 	public static int[] locateUnquoted(String string, char character) {
 		if ( '\'' == character ) {
-			throw new IllegalArgumentException( "Unquoted count of quotes is invalid" );
+			throw new IllegalArgumentException( "Unquoted count of quotes is invalid" ); //$NON-NLS-1$
 		}
 		if (string == null) {
 			return new int[0];
@@ -458,7 +458,7 @@ public final class StringHelper {
 				.replace( '$', '_' ); //classname may be an inner class
 		result = cleanAlias( result );
 		if ( Character.isDigit( result.charAt(result.length()-1) ) ) {
-			return result + "x"; //ick!
+			return result + "x"; //ick! //$NON-NLS-1$
 		}
 		else {
 			return result;
@@ -506,8 +506,8 @@ public final class StringHelper {
 
 	public static String moveAndToBeginning(String filter) {
 		if ( filter.trim().length()>0 ){
-			filter += " and ";
-			if ( filter.startsWith(" and ") ) filter = filter.substring(4);
+			filter += " and "; //$NON-NLS-1$
+			if ( filter.startsWith(" and ") ) filter = filter.substring(4); //$NON-NLS-1$
 		}
 		return filter;
 	}
