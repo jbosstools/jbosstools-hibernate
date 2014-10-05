@@ -91,8 +91,6 @@ import org.xml.sax.EntityResolver;
 
 public class ServiceProxy implements IService {
 	
-	private ServiceRegistry serviceRegistry = null;
-
 	@Override
 	public IConfiguration newAnnotationConfiguration() {
 		Configuration configuration = new Configuration();
@@ -124,8 +122,8 @@ public class ServiceProxy implements IService {
 			Method buildServiceRegistry = 
 					entityManagerFactoryBuilder.getClass().getMethod(
 							"buildServiceRegistry", new Class[0]);
-			Object serviceRegistry = buildServiceRegistry.invoke(entityManagerFactoryBuilder, null);		
-			Class serviceRegistryClass = StandardClassLoaderDelegateImpl.INSTANCE.classForName(
+			Object serviceRegistry = buildServiceRegistry.invoke(entityManagerFactoryBuilder, (Object[])null);		
+			Class<?> serviceRegistryClass = StandardClassLoaderDelegateImpl.INSTANCE.classForName(
 					"org.hibernate.service.ServiceRegistry");
 			Method buildHibernateConfiguration = 
 					entityManagerFactoryBuilder.getClass().getMethod(
