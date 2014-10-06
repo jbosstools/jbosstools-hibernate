@@ -428,7 +428,7 @@ public class PersistentClassProxy implements IPersistentClass {
 
 	@Override
 	public int getOptimisticLockMode() {
-		return target.getOptimisticLockMode();
+		return target.getOptimisticLockStyle().getOldCode();
 	}
 
 	@Override
