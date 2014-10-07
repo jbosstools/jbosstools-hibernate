@@ -58,14 +58,14 @@ public final class XMLHelper {
 			this.errors = errors;
 		}
 		public void error(SAXParseException error) {
-			log.error( "Error parsing XML: " + file + '(' + error.getLineNumber() + ") " + error.getMessage() );
+			log.error( "Error parsing XML: " + file + '(' + error.getLineNumber() + ") " + error.getMessage() );  //$NON-NLS-1$//$NON-NLS-2$
 			errors.add(error);
 		}
 		public void fatalError(SAXParseException error) {
 			error(error);
 		}
 		public void warning(SAXParseException warn) {
-			log.warn( "Warning parsing XML: " + file + '(' + warn.getLineNumber() + ") " + warn.getMessage() );
+			log.warn( "Warning parsing XML: " + file + '(' + warn.getLineNumber() + ") " + warn.getMessage() ); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
@@ -80,7 +80,7 @@ public final class XMLHelper {
 			XMLWriter writer = new XMLWriter( System.out, outformat );
 			writer.write( element );
 			writer.flush();
-			System.out.println( "" );
+			System.out.println( "" ); //$NON-NLS-1$
 		}
 		catch( Throwable t ) {
 			// otherwise, just dump it
