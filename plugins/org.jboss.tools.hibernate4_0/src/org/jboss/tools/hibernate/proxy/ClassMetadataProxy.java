@@ -2,7 +2,6 @@ package org.jboss.tools.hibernate.proxy;
 
 import java.util.ArrayList;
 
-import org.hibernate.EntityMode;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.persister.entity.AbstractEntityPersister;
