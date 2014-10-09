@@ -97,8 +97,8 @@ public final class JDBCToHibernateTypeHelper {
 	   }
 	}
    
-   static Map jdbcTypes; // Name to value
-   static Map jdbcTypeValues; // value to Name
+   static Map<String, Object> jdbcTypes; // Name to value
+   static Map<Object, String> jdbcTypeValues; // value to Name
    
    public static String[] getJDBCTypes() {
 	   checkTypes();
@@ -126,7 +126,7 @@ public final class JDBCToHibernateTypeHelper {
 
    private static void checkTypes() {
 	   if(jdbcTypes==null) {
-		   jdbcTypes = new HashMap();
+		   jdbcTypes = new HashMap<String, Object>();
 		   Field[] fields = Types.class.getFields();
 		   for (int i = 0; i < fields.length; i++) {
 			   Field field = fields[i];
@@ -147,7 +147,7 @@ public final class JDBCToHibernateTypeHelper {
    
     public static String getJDBCTypeName(int value) {
 		if(jdbcTypeValues==null) {
-			jdbcTypeValues = new HashMap();
+			jdbcTypeValues = new HashMap<Object, String>();
 			Field[] fields = Types.class.getFields();
 			for (int i = 0; i < fields.length; i++) {
 				Field field = fields[i];
