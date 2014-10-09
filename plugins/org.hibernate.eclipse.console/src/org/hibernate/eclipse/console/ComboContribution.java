@@ -1,6 +1,5 @@
 package org.hibernate.eclipse.console;
 
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
