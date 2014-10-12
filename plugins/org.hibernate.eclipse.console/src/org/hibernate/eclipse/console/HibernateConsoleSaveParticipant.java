@@ -102,7 +102,7 @@ public class HibernateConsoleSaveParticipant implements ISaveParticipant {
 	}
 
 	public void doStart(HibernateConsolePlugin plugin) throws CoreException {
-		ISavedState lastState = ResourcesPlugin.getWorkspace().addSaveParticipant(plugin, this);
+		ISavedState lastState = ResourcesPlugin.getWorkspace().addSaveParticipant(plugin.getBundle().getSymbolicName(), this);
 		if (lastState == null) {
 			return;
 		}
