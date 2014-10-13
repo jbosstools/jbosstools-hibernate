@@ -32,6 +32,7 @@ public class QueryEditorStorage implements IStorage {
 		setContents(source);
 	}
 
+	@SuppressWarnings("rawtypes")
 	public Object getAdapter( Class key ) {
         return null;
     }
