@@ -11,6 +11,7 @@
 package org.hibernate.eclipse.console;
 
 import java.io.File;
+import java.text.MessageFormat;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
@@ -55,7 +56,6 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.ide.FileStoreEditorInput;
-import org.eclipse.ui.internal.editors.text.NLSUtility;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.hibernate.console.ConsoleConfiguration;
@@ -364,7 +364,7 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 		        		shell,
 		        		HibernateConsoleMessages.AbstractQueryEditor_save_as,
 		        		null,
-		        		NLSUtility.format(HibernateConsoleMessages.AbstractQueryEditor_already_exists_do_you_want_to_replace_it, path),
+		        		MessageFormat.format(HibernateConsoleMessages.AbstractQueryEditor_already_exists_do_you_want_to_replace_it, path),
 		        		MessageDialog.WARNING,
 		        		new String[] { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL },
 		        		1); // 'No' is the default
@@ -382,7 +382,7 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 			} catch (CoreException ex) {
 				HibernateConsolePlugin.getDefault().log(ex.getStatus());
 				String title= HibernateConsoleMessages.AbstractQueryEditor_problems_during_save_as;
-				String msg= NLSUtility.format(HibernateConsoleMessages.AbstractQueryEditor_save_could_not_be_completed, ex.getMessage());
+				String msg= MessageFormat.format(HibernateConsoleMessages.AbstractQueryEditor_save_could_not_be_completed, ex.getMessage());
 				MessageDialog.openError(shell, title, msg);
 				return;
 			}
@@ -407,7 +407,7 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 			dialog.create();
 
 			if (provider.isDeleted(input) && original != null) {
-				String message= NLSUtility.format(HibernateConsoleMessages.AbstractQueryEditor_the_original_file_has_been_deleted_or_is_not_accessible, original.getName());
+				String message= MessageFormat.format(HibernateConsoleMessages.AbstractQueryEditor_the_original_file_has_been_deleted_or_is_not_accessible, original.getName());
 				dialog.setErrorMessage(null);
 				dialog.setMessage(message, IMessageProvider.WARNING);
 			}
@@ -447,7 +447,7 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 			final IStatus status= x.getStatus();
 			if (status == null || status.getSeverity() != IStatus.CANCEL) {
 				String title= HibernateConsoleMessages.AbstractQueryEditor_problems_during_save_as;
-				String msg= NLSUtility.format(HibernateConsoleMessages.AbstractQueryEditor_save_could_not_be_completed, x.getMessage());
+				String msg= MessageFormat.format(HibernateConsoleMessages.AbstractQueryEditor_save_could_not_be_completed, x.getMessage());
 				MessageDialog.openError(shell, title, msg);
 			}
 		} finally {
