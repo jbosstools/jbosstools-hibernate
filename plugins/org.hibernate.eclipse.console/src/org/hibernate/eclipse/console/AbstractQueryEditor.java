@@ -55,7 +55,6 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.ide.FileStoreEditorInput;
-import org.eclipse.ui.internal.editors.text.EditorsPlugin;
 import org.eclipse.ui.internal.editors.text.NLSUtility;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.texteditor.IDocumentProvider;
@@ -381,7 +380,7 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 			try {
 				fileStore= EFS.getStore(localFile.toURI());
 			} catch (CoreException ex) {
-				EditorsPlugin.log(ex.getStatus());
+				HibernateConsolePlugin.getDefault().log(ex.getStatus());
 				String title= HibernateConsoleMessages.AbstractQueryEditor_problems_during_save_as;
 				String msg= NLSUtility.format(HibernateConsoleMessages.AbstractQueryEditor_save_could_not_be_completed, ex.getMessage());
 				MessageDialog.openError(shell, title, msg);
