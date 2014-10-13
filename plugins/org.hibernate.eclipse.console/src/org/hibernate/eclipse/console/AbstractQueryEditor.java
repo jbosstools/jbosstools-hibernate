@@ -334,7 +334,6 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 	 * @see org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#performSaveAs(IProgressMonitor)
 	 * the same method except line: "dialog.setOriginalName(getSaveAsFileExtension());"
 	 */
-	@SuppressWarnings("restriction")
 	protected void performSaveAs(IProgressMonitor progressMonitor) {
 		Shell shell= getSite().getShell();
 		final IEditorInput input= getEditorInput();
