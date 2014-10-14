@@ -59,7 +59,7 @@ public class EditConsoleConfiguration extends ConsoleConfigurationBasedAction {
 
 	protected void doRun() {
 		if(cfg==null) {
-			for (Iterator i = getSelectedNonResources().iterator(); i.hasNext();) {
+			for (Iterator<?> i = getSelectedNonResources().iterator(); i.hasNext();) {
 				try {
 					Object node = i.next();
 					if(node instanceof ConsoleConfiguration) {
