@@ -279,8 +279,8 @@ public class OpenMappingAction extends SelectionListenerAction {
 		}
 		if (propRegion == null && parentProperty.isComposite()){
 			String[] componentPatterns = new String[]{
-					OpenMappingUtils.createPattern("embeddable", "class", parentProperty.getValue().getComponentClassName()),
-					OpenMappingUtils.createPattern("embeddable", "class", OpenMappingUtils.getShortClassName(
+					OpenMappingUtils.createPattern("embeddable", "class", parentProperty.getValue().getComponentClassName()), //$NON-NLS-1$ //$NON-NLS-2$
+					OpenMappingUtils.createPattern("embeddable", "class", OpenMappingUtils.getShortClassName(  //$NON-NLS-1$//$NON-NLS-2$
 							parentProperty.getValue().getComponentClassName()))
 			};
 			IRegion componentRegion = null;
