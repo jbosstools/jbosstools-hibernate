@@ -95,7 +95,7 @@ public class EclipseLaunchConsoleConfigurationPreferences implements ConsoleConf
 			URL[] cp = new URL[classpath.length];
 			for (int i = 0; i < classpath.length; i++) {
 				String str = classpath[i];
-				cp[i] = new File(str).toURL();
+				cp[i] = new File(str).toURI().toURL();
 			}
 			return cp;
 		}
