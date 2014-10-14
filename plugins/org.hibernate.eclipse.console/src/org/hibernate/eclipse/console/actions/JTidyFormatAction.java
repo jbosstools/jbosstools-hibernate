@@ -71,7 +71,7 @@ public class JTidyFormatAction implements IObjectActionDelegate {
 		String out = NLS.bind(HibernateConsoleMessages.JTidyFormatAction_do_you_want_format_xml_files_with_jtidy, currentSelection.size());
         if(currentSelection!=null && MessageDialog.openQuestion(targetPart.getSite().getShell(),
         		HibernateConsoleMessages.JTidyFormatAction_format_with_jtidy, out) ) {
-            Iterator iterator = currentSelection.iterator();
+            Iterator<?> iterator = currentSelection.iterator();
             try {
             while(iterator.hasNext() ) {
                 IFile file = (IFile) iterator.next();
