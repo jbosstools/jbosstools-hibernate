@@ -125,7 +125,7 @@ public class EclipseConsoleConfigurationPreferences extends AbstractConsoleConfi
 			}
 			for (int i = 0; i < additonal.length; i++) {
 				String url = additonal[i];
-				result[i+rawLocationsURLForResources.length] = new File(url).toURL();
+				result[i+rawLocationsURLForResources.length] = new File(url).toURI().toURL();
 			}
 			return result;
 		} catch (MalformedURLException mue) {
