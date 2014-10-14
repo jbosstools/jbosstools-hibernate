@@ -59,7 +59,7 @@ public class CloseQueryPageAction extends SelectionListenerAction {
 		IStructuredSelection selection =
 			(IStructuredSelection) this.selectionProvider.getSelection();
 		if (!selection.isEmpty() ) {
-			for (Iterator i = selection.iterator(); i.hasNext(); ) {
+			for (Iterator<?> i = selection.iterator(); i.hasNext(); ) {
 				KnownConfigurations.getInstance().getQueryPageModel().remove( (QueryPage) i.next() );
 			}
 		}
