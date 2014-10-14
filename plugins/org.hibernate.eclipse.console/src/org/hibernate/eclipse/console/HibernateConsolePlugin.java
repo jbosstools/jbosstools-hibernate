@@ -646,20 +646,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 
 	public JavaTextTools getJavaTextTools() {
 		if (javaTextTools == null) {
-			javaTextTools = new JavaTextTools(PreferenceConstants.getPreferenceStore()){
-				public void setupJavaDocumentPartitioner(IDocument document, String partitioning) {
-					IDocumentPartitioner partitioner= createDocumentPartitioner();
-					if (document instanceof IDocumentExtension3) {
-						IDocumentExtension3 extension3= (IDocumentExtension3) document;
-						partitioner.connect(document);
-						extension3.setDocumentPartitioner(partitioning, partitioner);
-					} else {
-						document.setDocumentPartitioner(partitioner);
-						partitioner.connect(document);
-					}
-
-				}
-			};
+			javaTextTools = new JavaTextTools(PreferenceConstants.getPreferenceStore());
 		}
 
 		return javaTextTools;
