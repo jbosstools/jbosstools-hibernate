@@ -95,7 +95,7 @@ public class AddConfigurationAction extends Action {
 		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
 
 		ILaunchConfigurationType launchConfigurationType = LaunchHelper.getHibernateLaunchConfigsType();
-		String launchName = launchManager.generateUniqueLaunchConfigurationNameFrom(HibernateConsoleMessages.AddConfigurationAction_hibernate);
+		String launchName = launchManager.generateLaunchConfigurationName(HibernateConsoleMessages.AddConfigurationAction_hibernate);
 		//ILaunchConfiguration[] launchConfigurations = launchManager.getLaunchConfigurations( launchConfigurationType );
 		ILaunchConfigurationWorkingCopy wc = launchConfigurationType.newInstance(null, launchName);
 		wc.setAttribute(TEMPORARY_CONFIG_FLAG, true);
