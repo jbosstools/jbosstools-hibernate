@@ -23,7 +23,6 @@ package org.hibernate.eclipse.console.actions;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Event;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
