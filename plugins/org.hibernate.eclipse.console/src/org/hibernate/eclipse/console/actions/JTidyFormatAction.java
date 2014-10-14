@@ -45,6 +45,7 @@ import org.hibernate.eclipse.utils.XMLPrettyPrinter;
 public class JTidyFormatAction implements IObjectActionDelegate {
 
     private IWorkbenchPart targetPart;
+    private IStructuredSelection currentSelection;
 
     /**
 	 * Constructor for Action1.
@@ -67,12 +68,10 @@ public class JTidyFormatAction implements IObjectActionDelegate {
 	 * @see IActionDelegate#run(IAction)
 	 */
 	public void run(IAction action) {
-		IStructuredSelection selection = (IStructuredSelection) ( (PluginAction)action).getSelection();
-
-		String out = NLS.bind(HibernateConsoleMessages.JTidyFormatAction_do_you_want_format_xml_files_with_jtidy, selection.size());
-        if(selection!=null && MessageDialog.openQuestion(targetPart.getSite().getShell(),
+		String out = NLS.bind(HibernateConsoleMessages.JTidyFormatAction_do_you_want_format_xml_files_with_jtidy, currentSelection.size());
+        if(currentSelection!=null && MessageDialog.openQuestion(targetPart.getSite().getShell(),
         		HibernateConsoleMessages.JTidyFormatAction_format_with_jtidy, out) ) {
-            Iterator iterator = selection.iterator();
+            Iterator iterator = currentSelection.iterator();
             try {
             while(iterator.hasNext() ) {
                 IFile file = (IFile) iterator.next();
@@ -103,8 +102,9 @@ public class JTidyFormatAction implements IObjectActionDelegate {
      * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction, org.eclipse.jface.viewers.ISelection)
      */
     public void selectionChanged(IAction action, ISelection selection) {
-        // TODO Auto-generated method stub
-
+    	if (selection instanceof IStructuredSelection) {
+    		currentSelection = (IStructuredSelection)selection;
+    	}
     }
 
 }
