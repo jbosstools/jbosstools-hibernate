@@ -50,9 +50,9 @@ public class DeleteConfigurationAction extends SelectionListenerAction {
 	}
 
 	public void run() {
-		List selectedNonResources = getSelectedNonResources();
+		List<?> selectedNonResources = getSelectedNonResources();
 		boolean ccSelected = false;
-		Iterator iter = selectedNonResources.iterator();
+		Iterator<?> iter = selectedNonResources.iterator();
 		while (iter.hasNext() ) {
 			if (iter.next() instanceof ConsoleConfiguration) {
 				ccSelected = true;
@@ -86,7 +86,7 @@ public class DeleteConfigurationAction extends SelectionListenerAction {
 
 	protected boolean updateSelection(IStructuredSelection selection) {
 		if(!selection.isEmpty() ) {
-			Iterator iter = getSelectedNonResources().iterator();
+			Iterator<?> iter = getSelectedNonResources().iterator();
 			while (iter.hasNext() ) {
 				Object element = iter.next();
 				if(element instanceof ConsoleConfiguration) {
