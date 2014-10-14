@@ -73,7 +73,7 @@ public abstract class ConsoleConfigurationBasedAction extends SelectionListenerA
 	final protected boolean updateSelection(IStructuredSelection selection) {
 		   boolean enabled = false;
 		   if(!supportMultiple && selection.size()>1) return false;
-	        for (Iterator i = selection.iterator();
+	        for (Iterator<?> i = selection.iterator();
 	            i.hasNext();
 	            ) {
 	            Object object = i.next();
