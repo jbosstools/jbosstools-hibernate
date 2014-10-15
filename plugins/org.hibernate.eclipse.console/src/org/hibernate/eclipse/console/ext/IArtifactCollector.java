@@ -21,6 +21,6 @@ public interface IArtifactCollector {
 	
 	public File[] getFiles(String type);
 	
-	public Set getFileTypes();
+	public Set<?> getFileTypes();
 
 }
