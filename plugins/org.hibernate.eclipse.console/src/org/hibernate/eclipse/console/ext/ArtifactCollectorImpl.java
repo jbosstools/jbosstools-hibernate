@@ -12,7 +12,7 @@ public class ArtifactCollectorImpl implements IArtifactCollector {
 	}
 
 	@Override
-	public Set getFileTypes() {
+	public Set<?> getFileTypes() {
 		// TODO Auto-generated method stub
 		return null;
 	}
