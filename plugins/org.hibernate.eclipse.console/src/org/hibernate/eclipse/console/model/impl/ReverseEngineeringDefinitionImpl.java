@@ -26,9 +26,9 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.jdt.internal.ui.wizards.dialogfields.ComboDialogField;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
+import org.hibernate.eclipse.console.model.IConsoleConfigurationNameProvider;
 import org.hibernate.eclipse.console.model.IRevEngColumn;
 import org.hibernate.eclipse.console.model.IRevEngGenerator;
 import org.hibernate.eclipse.console.model.IRevEngParameter;
@@ -42,10 +42,10 @@ import org.jboss.tools.hibernate.spi.IService;
 public class ReverseEngineeringDefinitionImpl implements
 		IReverseEngineeringDefinition {
 	
-	private ComboDialogField consoleConfigNameField;
+	private IConsoleConfigurationNameProvider consoleConfigurationNameProvider;
 	
-	public ReverseEngineeringDefinitionImpl(ComboDialogField cdf) {
-		consoleConfigNameField = cdf;
+	public ReverseEngineeringDefinitionImpl(IConsoleConfigurationNameProvider ccnp) {
+		consoleConfigurationNameProvider = ccnp;
 	}
 
 	private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
@@ -71,7 +71,7 @@ public class ReverseEngineeringDefinitionImpl implements
 	}
 	
 	IService getService() {
-		String consoleConfigurationName = consoleConfigNameField.getText();
+		String consoleConfigurationName = consoleConfigurationNameProvider.getConsoleConfigurationName();
 		if (consoleConfigurationName == null || "".equals(consoleConfigurationName)) return null;
 		ConsoleConfiguration cc = KnownConfigurations.getInstance().find(consoleConfigurationName);
 		if (cc == null) return null;
