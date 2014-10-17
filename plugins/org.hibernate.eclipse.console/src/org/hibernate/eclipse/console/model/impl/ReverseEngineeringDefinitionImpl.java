@@ -72,7 +72,7 @@ public class ReverseEngineeringDefinitionImpl implements
 	
 	IService getService() {
 		String consoleConfigurationName = consoleConfigurationNameProvider.getConsoleConfigurationName();
-		if (consoleConfigurationName == null || "".equals(consoleConfigurationName)) return null;
+		if (consoleConfigurationName == null || "".equals(consoleConfigurationName)) return null; //$NON-NLS-1$
 		ConsoleConfiguration cc = KnownConfigurations.getInstance().find(consoleConfigurationName);
 		if (cc == null) return null;
 		return cc.getHibernateExtension().getHibernateService();
