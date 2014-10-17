@@ -154,13 +154,24 @@ public class ReverseEngineeringDefinitionImpl implements
 	}
 
 	public void moveTypeMappingDown(ITypeMapping item) {
-		move(item, 1, typeMappings, TYPEMAPPING_STRUCTURE);		
+		moveTypeMapping(item, 1);		
 	}
 
 	public void moveTypeMappingUp(ITypeMapping item) {
-		move(item, -1, typeMappings, TYPEMAPPING_STRUCTURE);		
+		moveTypeMapping(item, -1);		
 	}
 	
+	private void moveTypeMapping(ITypeMapping tm, int shift) {
+		int i = typeMappings.indexOf(tm);		
+		if(i>=0) {
+			if(i+shift<typeMappings.size() && i+shift>=0) { 
+				typeMappings.remove(i);
+				typeMappings.add(i+shift, tm);
+			}
+		}		
+		firePropertyChange(TYPEMAPPING_STRUCTURE, null, null);
+	}
+
 	public void removeAllTypeMappings() {
 		typeMappings.clear();
 		firePropertyChange(TYPEMAPPING_STRUCTURE, null, null);
