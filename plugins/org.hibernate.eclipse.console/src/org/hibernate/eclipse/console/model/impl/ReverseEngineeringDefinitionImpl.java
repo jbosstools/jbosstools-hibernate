@@ -127,19 +127,6 @@ public class ReverseEngineeringDefinitionImpl implements
 		firePropertyChange(TABLEFILTER_STRUCTURE, null, null);
 	}
 
-	private void move(Object tf, int shift, List list, String prop) {
-		int i = list.indexOf(tf);
-		
-		if(i>=0) {
-			if(i+shift<list.size() && i+shift>=0) { 
-				list.remove(i);
-				list.add(i+shift, tf);
-			}
-		}
-		
-		firePropertyChange(prop, null, null);
-	}
-
 	public ITypeMapping[] getTypeMappings() {
 		return typeMappings .toArray(new ITypeMapping[typeMappings.size()]);
 	}
