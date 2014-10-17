@@ -109,17 +109,22 @@ public class ReverseEngineeringDefinitionImpl implements
 	}
 
 	public void moveTableFilterDown(ITableFilter item) {
-		move(item,1);		
+		moveTableFilter(item,1);		
 	}
 
 	public void moveTableFilterUp(ITableFilter item) {
-		move(item,-1);		
+		moveTableFilter(item,-1);		
 	}
 
-	private void move(Object tf, int shift) {
-		List<ITableFilter> list = tableFilters;
-		String prop = TABLEFILTER_STRUCTURE;
-		move( tf, shift, list, prop );
+	private void moveTableFilter(ITableFilter tf, int shift) {
+		int i = tableFilters.indexOf(tf);		
+		if(i>=0) {
+			if(i+shift<tableFilters.size() && i+shift>=0) { 
+				tableFilters.remove(i);
+				tableFilters.add(i+shift, tf);
+			}
+		}		
+		firePropertyChange(TABLEFILTER_STRUCTURE, null, null);
 	}
 
 	private void move(Object tf, int shift, List list, String prop) {
