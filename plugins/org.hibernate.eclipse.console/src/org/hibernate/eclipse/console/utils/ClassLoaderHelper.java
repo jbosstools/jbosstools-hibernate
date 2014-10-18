@@ -84,7 +84,7 @@ public class ClassLoaderHelper {
 			IPath outputPath = location.append(
 				project.getOutputLocation().removeFirstSegments(1) );
 
-			pathElements.add(outputPath.toFile().toURL() );
+			pathElements.add(outputPath.toFile().toURI().toURL() );
 		} catch (JavaModelException e) {
 			e.printStackTrace();
 		} catch (MalformedURLException e) {
@@ -96,7 +96,7 @@ public class ClassLoaderHelper {
 
 	private static URL getRawLocationURL(IPath simplePath) throws MalformedURLException {
 		File file = getRawLocationFile(simplePath);
-		return file.toURL();
+		return file.toURI().toURL();
 	}
 
 	private static File getRawLocationFile(IPath simplePath) {
