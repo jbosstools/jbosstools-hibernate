@@ -1002,7 +1002,7 @@ public class OpenMappingUtils {
 	}
 	
 	public static String generateOrmEmbeddablePropertyPattern(IProperty property) {
-		return createPattern("basic", "name", property.getName());
+		return createPattern("basic", "name", property.getName()); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
