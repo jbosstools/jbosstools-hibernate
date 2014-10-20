@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
-import org.eclipse.ui.views.navigator.ResourceSorter;
+import org.eclipse.ui.views.navigator.ResourceComparator;
 import org.hibernate.eclipse.console.FileFilter;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 
@@ -85,7 +85,7 @@ public class DialogSelectionHelper {
 		dialog.setMessage(description);
 		dialog.addFilter(new FileFilter(fileExtensions, usedFiles, true, allowDirectories) );
 		dialog.setInput(root);
-		dialog.setSorter(new ResourceSorter(ResourceSorter.NAME) );
+		dialog.setComparator(new ResourceComparator(ResourceComparator.NAME));
 		dialog.setInitialSelection(focus);
 
 		if (dialog.open() == Window.OK) {
@@ -120,7 +120,7 @@ public class DialogSelectionHelper {
 		dialog.setTitle(title);
 		dialog.setMessage(description);
 		dialog.setInput(root);
-		dialog.setSorter(new ResourceSorter(ResourceSorter.NAME) );
+		dialog.setComparator(new ResourceComparator(ResourceComparator.NAME));
 		dialog.setInitialSelection(focus);
 
 		if (dialog.open() == Window.OK) {
