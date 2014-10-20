@@ -32,7 +32,6 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.internal.core.PackageFragmentRoot;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.FindReplaceDocumentAdapter;
 import org.eclipse.jface.text.IDocument;
@@ -411,21 +410,21 @@ public class OpenMappingUtils {
 	
 	public static IPackageFragmentRoot[] getCCPackageFragmentRoots(ConsoleConfiguration consoleConfiguration) {
 		IJavaProject[] projs = ProjectUtils.findJavaProjects(consoleConfiguration);
-		ArrayList<PackageFragmentRoot> res = new ArrayList<PackageFragmentRoot>(); 
+		ArrayList<IPackageFragmentRoot> res = new ArrayList<IPackageFragmentRoot>(); 
 		try {
 			for (int i = 0; i < projs.length; i++) {
 				IPackageFragmentRoot[] pfrs = projs[i].getAllPackageFragmentRoots();
 				for (int j = 0; j < pfrs.length; j++) {
-					if (pfrs[j].getClass() != PackageFragmentRoot.class) {
+					if (pfrs[j].isArchive() || pfrs[j].isExternal()) {
 						continue;
 					}
-					res.add((PackageFragmentRoot)pfrs[j]);
+					res.add(pfrs[j]);
 				}
 			}
 		} catch (JavaModelException e) {
 			HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.OpenFileActionUtils_problems_while_get_project_package_fragment_roots, e);
 		}
-		return res.toArray(new PackageFragmentRoot[0]);
+		return res.toArray(new IPackageFragmentRoot[0]);
 	}
 
 	/**
@@ -567,7 +566,7 @@ public class OpenMappingUtils {
 			}
 			for (int j = 0; j < pfrs.length; j++) {
 				// TODO: think about possibility to open resources from jar files
-				if (pfrs[j].getClass() != PackageFragmentRoot.class) {
+				if (pfrs[j].isArchive() || pfrs[j].isExternal()) {
 					continue;
 				}
 				final IPath pathSrc = pfrs[j].getPath();
