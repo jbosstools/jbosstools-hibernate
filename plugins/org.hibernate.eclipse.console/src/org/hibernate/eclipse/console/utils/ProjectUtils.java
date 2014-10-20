@@ -367,7 +367,7 @@ public class ProjectUtils {
 		if (cu == null) {
 			return res;
 		}
-		List types = cu.types();
+		List<?> types = cu.types();
 		for (int i = 0; i < types.size() && res == null; i++) {
 			Object obj = types.get(i);
 			if (!(obj instanceof TypeDeclaration)) {
@@ -462,7 +462,7 @@ public class ProjectUtils {
 		if (doc == null || doc.getRootElement() == null) {
 			return new String[0];
 		}
-		Iterator it = doc.getRootElement().elements("persistence-unit").iterator(); //$NON-NLS-1$
+		Iterator<?> it = doc.getRootElement().elements("persistence-unit").iterator(); //$NON-NLS-1$
 		ArrayList<String> res = new ArrayList<String>();
 		while (it.hasNext()) {
 			Element el = (Element)it.next();
