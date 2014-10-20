@@ -21,7 +21,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.jdt.internal.ui.wizards.buildpaths.FolderSelectionDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
@@ -113,7 +112,6 @@ public class DialogSelectionHelper {
 
 		ElementTreeSelectionDialog dialog= null;
 		dialog = new FolderSelectionDialog(shell, new WorkbenchLabelProvider(), new WorkbenchContentProvider() );
-		//	dialog = new FileFolderSelectionDialog(shell, allowMultiple, allowDirectories ? IResource.FOLDER : IResource.FILE );
 
 		dialog.setValidator(validator);
 		dialog.setAllowMultiple(allowMultiple);

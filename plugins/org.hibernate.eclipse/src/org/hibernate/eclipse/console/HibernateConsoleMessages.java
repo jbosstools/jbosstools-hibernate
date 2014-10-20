@@ -544,6 +544,9 @@ public class HibernateConsoleMessages extends NLS {
 	public static String QueryParametersPage_add_query_parameter_tooltip;
 	public static String QueryParametersPage_remove_query_parameter_tooltip;
 	public static String QueryParametersPage_enable_disable_parameters_tooltip;
+	
+	public static String FolderSelectionDialog_button;
+	
 	//
 	static {
 		// initialize resource bundle
