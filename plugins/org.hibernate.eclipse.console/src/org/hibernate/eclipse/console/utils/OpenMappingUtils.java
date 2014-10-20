@@ -570,7 +570,7 @@ public class OpenMappingUtils {
 				if (pfrs[j].getClass() != PackageFragmentRoot.class) {
 					continue;
 				}
-				final IPath pathSrc = ((PackageFragmentRoot)pfrs[j]).getPath();
+				final IPath pathSrc = pfrs[j].getPath();
 				final IPath pathOut = projPathOut;
 				final IPath pathFull = projPathFull;
 				pathsSrc.add(pathSrc);
