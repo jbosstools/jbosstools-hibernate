@@ -357,7 +357,6 @@ public class ProjectUtils {
 		return lwType;
 	}
 	
-	@SuppressWarnings("unchecked")
 	static public String getParentTypename(IJavaProject proj, String fullyQualifiedName) {
 		String res = null;
 		ICompilationUnit icu = findCompilationUnit(proj, fullyQualifiedName);
