@@ -409,7 +409,7 @@ public class OpenMappingUtils {
 		return doc;
 	}
 	
-	public static PackageFragmentRoot[] getCCPackageFragmentRoots(ConsoleConfiguration consoleConfiguration) {
+	public static IPackageFragmentRoot[] getCCPackageFragmentRoots(ConsoleConfiguration consoleConfiguration) {
 		IJavaProject[] projs = ProjectUtils.findJavaProjects(consoleConfiguration);
 		ArrayList<PackageFragmentRoot> res = new ArrayList<PackageFragmentRoot>(); 
 		try {
@@ -453,7 +453,7 @@ public class OpenMappingUtils {
         	return file;
 		}
 		//
-		PackageFragmentRoot[] packageFragments = getCCPackageFragmentRoots(consoleConfig);
+		IPackageFragmentRoot[] packageFragments = getCCPackageFragmentRoots(consoleConfig);
 		//
 		ArrayList<IPath> paths = new ArrayList<IPath>(); 
 		for (int i = 0; i < packageFragments.length; i++) {
