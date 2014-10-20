@@ -24,7 +24,8 @@ package org.hibernate.eclipse.console.views;
 
 import java.io.FileNotFoundException;
 
-import org.eclipse.debug.internal.ui.DebugUIPlugin;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
@@ -49,6 +50,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.ActionContext;
 import org.eclipse.ui.actions.ActionGroup;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 import org.hibernate.console.ConsoleConfiguration;
@@ -94,12 +96,12 @@ public class KnownConfigurationsView extends ViewPart {
 		
 		final KnownConfigurationsProvider cp = new KnownConfigurationsProvider();
 		viewer.setContentProvider(cp);
-		DebugUIPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(cp);
+		getDebugUIPlugin().getPreferenceStore().addPropertyChangeListener(cp);
 		
 		viewer.getTree().addDisposeListener(new DisposeListener() {
 			
 			public void widgetDisposed(DisposeEvent e) {
-				DebugUIPlugin.getDefault().getPreferenceStore().removePropertyChangeListener(cp);
+				 getDebugUIPlugin().getPreferenceStore().removePropertyChangeListener(cp);
 			}
 		});
 		
@@ -110,6 +112,10 @@ public class KnownConfigurationsView extends ViewPart {
 		createContextMenu();		
 		hookDoubleClick();
 		provideSelection();
+	}
+	
+	private AbstractUIPlugin getDebugUIPlugin() {
+		return (AbstractUIPlugin)Platform.getBundle(IDebugUIConstants.PLUGIN_ID);
 	}
 
     private void hookDoubleClick() {
