@@ -67,7 +67,6 @@ import org.xml.sax.SAXParseException;
  * @author Dmitry Geraskov
  * @author Vitali Yemialyanchyk
  */
-@SuppressWarnings("restriction")
 public class OpenMappingUtils {
 	
 	public static final String HIBERNATE_TAG_CLASS = "class";                       //$NON-NLS-1$
