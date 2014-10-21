@@ -26,10 +26,8 @@ import org.eclipse.jface.viewers.Viewer;
 
 public class NavigatorProvider implements ITreeContentProvider {
 
-	
-	private Viewer viewer;
-
 	KnownConfigurationsProvider kcp = null;
+
 	public NavigatorProvider() {
 		kcp = new KnownConfigurationsProvider();
 	}
