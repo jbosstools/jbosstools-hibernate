@@ -38,22 +38,6 @@ public class NavigatorProvider implements ITreeContentProvider {
 		return kcp.getChildren( parentElement );
 	}
 
-	private Object[] getRealChildren(Object parentElement) {
-		Number parent = (Number) parentElement;
-		Object[] children = new Object[parent.intValue()*2];
-		for(int kids=0;kids<children.length;kids++) {
-			try {
-				Thread.sleep( children.length );
-			}
-			catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			children[kids] = Long.valueOf(kids);
-		}
-		return children;
-	}
-
 	public Object getParent(Object element) {
 		return kcp.getParent( element );
 	}
