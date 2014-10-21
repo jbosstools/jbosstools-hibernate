@@ -36,42 +36,6 @@ public class NavigatorProvider implements ITreeContentProvider {
 	
 	public Object[] getChildren(Object parentElement) {
 		return kcp.getChildren( parentElement );
-		/*if(parentElement instanceof Number) {
-			PendingNode placeHolder = new PendingNode(parentElement.toString());				
-			PendingJob loadJob = new PendingJob((AbstractTreeViewer) viewer, placeHolder, parentElement, new ITreeContentProvider() {
-			
-				public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-					
-			
-				}
-			
-				public void dispose() {
-					
-			
-				}
-			
-				public Object[] getElements(Object inputElement) {
-					return NavigatorProvider.this.getElements( inputElement );
-				}
-			
-				public boolean hasChildren(Object element) {
-					return true;
-				}
-			
-				public Object getParent(Object element) {
-					return null;
-				}
-			
-				public Object[] getChildren(Object parentElement) {
-					return getRealChildren( parentElement );
-				}
-			
-			});
-			loadJob.schedule();
-			return new Object[] { placeHolder };			
-		} else {
-			return getRealChildren( parentElement );
-		}	*/	
 	}
 
 	private Object[] getRealChildren(Object parentElement) {
