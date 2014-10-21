@@ -180,13 +180,6 @@ public class QueryPageTabView extends ViewPart implements ISelectionProvider {
 		for (ISelectionChangedListener listener : listeners) {
 			listener.selectionChanged(new SelectionChangedEvent(this, selection) );
 		}
-		
-		/*QueryPageViewer results = getSelectedQueryPageViewer();
-		if (results != null) {
-			results.updateStatusLine();
-		} else {
-			getViewSite().getActionBars().getStatusLineManager().setMessage("");
-		}*/		
 	}
 	
 	/** fire event that query-tab is changed **/
