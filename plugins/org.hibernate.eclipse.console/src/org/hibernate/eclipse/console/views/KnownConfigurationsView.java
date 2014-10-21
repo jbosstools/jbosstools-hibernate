@@ -69,7 +69,6 @@ import org.jboss.tools.hibernate.spi.IProperty;
  * @author max
  *
  */
-@SuppressWarnings("restriction")
 public class KnownConfigurationsView extends ViewPart {
 
 	public static final String ID = "org.hibernate.eclipse.console.views.KnownConfigurationsView";	//$NON-NLS-1$
