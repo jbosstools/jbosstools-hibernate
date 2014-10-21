@@ -238,7 +238,8 @@ public class KnownConfigurationsView extends ViewPart {
 		viewer.getTree().setFocus();
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
+	@Override
 	public Object getAdapter(Class adapter) {
 		if (adapter.equals(IPropertySheetPage.class) )
 		{
