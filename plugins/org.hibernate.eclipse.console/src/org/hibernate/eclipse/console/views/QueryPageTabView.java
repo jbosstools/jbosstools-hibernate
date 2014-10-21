@@ -195,9 +195,9 @@ public class QueryPageTabView extends ViewPart implements ISelectionProvider {
 		fireSelectionChangedEvent(selection);
 	}
 	
-	@SuppressWarnings("unchecked")
+	@Override
+	@SuppressWarnings("rawtypes")
 	public Object getAdapter(Class adapter) {
-
 		if (adapter.equals(IPropertySheetPage.class) )
 		{
 			PropertySheetPage page = new PropertySheetPage();
