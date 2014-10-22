@@ -127,7 +127,7 @@ public class HibernateRefactoringUtil {
 			IScopeContext scope = new ProjectScope(project);
 
 			Preferences node = scope.getNode(HibernatePropertiesConstants.HIBERNATE_CONSOLE_NODE);
-			String defaultConfiguration = node.get(HibernatePropertiesConstants.DEFAULT_CONFIGURATION, "");
+			String defaultConfiguration = node.get(HibernatePropertiesConstants.DEFAULT_CONFIGURATION, ""); //$NON-NLS-1$
 			return defaultConfiguration.equals(oldCCName);
 		}
 		return false;
