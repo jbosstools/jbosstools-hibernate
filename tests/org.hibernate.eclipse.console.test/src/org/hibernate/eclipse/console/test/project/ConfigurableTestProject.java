@@ -61,9 +61,7 @@ public class ConfigurableTestProject extends TestProject {
 	   	long startCopyLibs = System.currentTimeMillis();
 		final File libFolder = getFolder(RESOURCE_LIB_PATH);
 		List<IPath> libs = copyLibs(libFolder);
-		final File libFolderHibernatePlugin = getHibernateLibsPluginFolder(HIBERNATE_PLUGIN_LIB_PATH);
-		List<IPath> libsHibernatePlugin = copyLibs(libFolderHibernatePlugin);
-		libs.addAll(libsHibernatePlugin);
+		libs.addAll(copyLibs(getFolder("res/libs/")));
 	   	long startBuild = System.currentTimeMillis();
 		generateClassPath(libs, sourcePackageFragment);
 		fullBuild();
