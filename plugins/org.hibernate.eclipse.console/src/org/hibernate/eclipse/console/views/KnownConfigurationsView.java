@@ -24,8 +24,7 @@ package org.hibernate.eclipse.console.views;
 
 import java.io.FileNotFoundException;
 
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.debug.ui.IDebugUIConstants;
+import org.eclipse.debug.internal.ui.DebugUIPlugin;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
@@ -69,6 +68,7 @@ import org.jboss.tools.hibernate.spi.IProperty;
  * @author max
  *
  */
+@SuppressWarnings("restriction")
 public class KnownConfigurationsView extends ViewPart {
 
 	public static final String ID = "org.hibernate.eclipse.console.views.KnownConfigurationsView";	//$NON-NLS-1$
@@ -113,8 +113,8 @@ public class KnownConfigurationsView extends ViewPart {
 		provideSelection();
 	}
 	
-	private AbstractUIPlugin getDebugUIPlugin() {
-		return (AbstractUIPlugin)Platform.getBundle(IDebugUIConstants.PLUGIN_ID);
+	private AbstractUIPlugin  getDebugUIPlugin() {
+		return DebugUIPlugin.getDefault();
 	}
 
     private void hookDoubleClick() {
@@ -230,8 +230,9 @@ public class KnownConfigurationsView extends ViewPart {
 	
 	public void dispose() {
 		super.dispose();
-		actionGroup.dispose();
-		
+		if (actionGroup != null) {
+			actionGroup.dispose();
+		}
 	}
 
 	public void setFocus() {
