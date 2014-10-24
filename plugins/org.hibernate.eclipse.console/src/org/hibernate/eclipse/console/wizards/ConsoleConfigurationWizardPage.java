@@ -495,7 +495,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage implements
 				
 				if (v.getJavaProject() != null) {
 					ILaunchManager lm = DebugPlugin.getDefault().getLaunchManager();
-					String uniqName = lm.generateUniqueLaunchConfigurationNameFrom(v.getJavaProject().getElementName());
+					String uniqName = lm.generateLaunchConfigurationName(v.getJavaProject().getElementName());
 					launchConfig.rename(uniqName);							
 				}
 				setPathAttribute(launchConfig, IConsoleConfigurationLaunchConstants.PROPERTY_FILE, v.getPropertyFile());
