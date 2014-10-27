@@ -95,9 +95,9 @@ public class ConfigurationEditPart extends AbstractGraphicalEditPart implements 
 	 */
 	public boolean resetFigureBounds(boolean updateConstraint)
 	{
-		List tableParts = getChildren();
+		List<?> tableParts = getChildren();
 		
-		for (Iterator iter = tableParts.iterator(); iter.hasNext();)
+		for (Iterator<?> iter = tableParts.iterator(); iter.hasNext();)
 		{
 			GraphicalEditPart nodePart = (GraphicalEditPart) iter.next();
 			
@@ -134,9 +134,9 @@ public class ConfigurationEditPart extends AbstractGraphicalEditPart implements 
 
 	public boolean resetModelBounds(GraphXYLayout layout) {
 
-			List tableParts = getChildren();
+			List<?> tableParts = getChildren();
 			
-			for (Iterator iter = tableParts.iterator(); iter.hasNext();)
+			for (Iterator<?> iter = tableParts.iterator(); iter.hasNext();)
 			{
 				GraphNodeEditPart classPart = (GraphNodeEditPart) iter.next();
 				IFigure persistentClassFigure = classPart.getFigure();
