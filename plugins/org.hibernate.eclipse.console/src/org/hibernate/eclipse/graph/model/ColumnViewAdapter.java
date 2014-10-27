@@ -27,12 +27,9 @@ import org.jboss.tools.hibernate.spi.IColumn;
 
 public class ColumnViewAdapter extends Observable {
 
-	private final TableViewAdapter table;
 	private final IColumn column;
 
 	public ColumnViewAdapter(TableViewAdapter adapter, IColumn element) {
-		this.table = adapter;
-		// TODO Auto-generated constructor stub
 		this.column = element;
 	}
 
