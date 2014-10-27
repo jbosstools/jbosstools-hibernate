@@ -69,9 +69,9 @@ public class ClusterEdgeCreator
 			this.edgeList = graph.edges;
 
 			//iterate through all of the nodes in the node list
-			for (Iterator<Node> iter = nodeList.iterator(); iter.hasNext();)
+			for (Iterator<?> iter = nodeList.iterator(); iter.hasNext();)
 			{
-				Node node = iter.next();
+				Node node = (Node)iter.next();
 
 				//check whether we have already come across this node
 				if (!encountered.contains(node))
