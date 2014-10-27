@@ -163,9 +163,9 @@ public class ClusterEdgeCreator
 		{
 			depth++;
 			EdgeList incoming = node.incoming;
-			for (Iterator<Edge> iter = incoming.iterator(); iter.hasNext();)
+			for (Iterator<?> iter = incoming.iterator(); iter.hasNext();)
 			{
-				Edge edge = iter.next();
+				Edge edge = (Edge)iter.next();
 				Node incomingNode = edge.source;
 
 				if (!encountered.contains(incomingNode))
@@ -182,7 +182,7 @@ public class ClusterEdgeCreator
 			}
 
 			EdgeList outgoing = node.outgoing;
-			for (Iterator iter = outgoing.iterator(); iter.hasNext();)
+			for (Iterator<?> iter = outgoing.iterator(); iter.hasNext();)
 			{
 				Edge edge = (Edge) iter.next();
 				Node outgoingNode = edge.target;
