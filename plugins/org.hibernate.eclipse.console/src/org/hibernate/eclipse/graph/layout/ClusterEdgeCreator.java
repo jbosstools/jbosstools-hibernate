@@ -208,7 +208,6 @@ public class ClusterEdgeCreator
 	 */
 	private Edge newDummyEdge(Node sourceNode, Node targetNode)
 	{
-		boolean addedEdge;
 		DummyEdgePart edgePart = new DummyEdgePart();
 		Edge edge = new Edge(edgePart, sourceNode, targetNode);
 		edge.weight = 2;
@@ -217,7 +216,6 @@ public class ClusterEdgeCreator
 		edgeList.add(edge);
 
 		//targetNode = sourceNode;
-		addedEdge = true;
 		return edge;
 	}
 
