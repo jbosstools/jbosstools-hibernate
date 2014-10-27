@@ -206,6 +206,7 @@ public class ClusterEdgeCreator
 	/**
 	 * creates a new dummy edge to be used in the graph
 	 */
+	@SuppressWarnings("unchecked")
 	private Edge newDummyEdge(Node sourceNode, Node targetNode)
 	{
 		DummyEdgePart edgePart = new DummyEdgePart();
