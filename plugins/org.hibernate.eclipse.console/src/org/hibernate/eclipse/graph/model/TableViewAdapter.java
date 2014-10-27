@@ -32,10 +32,8 @@ import org.jboss.tools.hibernate.spi.ITable;
 public class TableViewAdapter extends GraphNode {
 
 	private ITable table;
-	private final ConfigurationViewAdapter configuration;
 
 	public TableViewAdapter(ConfigurationViewAdapter configuration, ITable table) {
-		this.configuration = configuration;
 		this.table = table;
 	}
 	
