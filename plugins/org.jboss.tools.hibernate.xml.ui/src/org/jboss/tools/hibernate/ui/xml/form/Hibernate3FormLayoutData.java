@@ -147,7 +147,7 @@ public class Hibernate3FormLayoutData implements IFormLayoutData {
 			
 	};
 	
-	private static Map FORM_LAYOUT_DEFINITION_MAP = Collections.synchronizedMap(new ArrayToMap(FORM_LAYOUT_DEFINITIONS));
+	private static Map<String, IFormData> FORM_LAYOUT_DEFINITION_MAP = Collections.synchronizedMap(new ArrayToMap(FORM_LAYOUT_DEFINITIONS));
 	
 	static Hibernate3FormLayoutData INSTANCE = new Hibernate3FormLayoutData();
 	
