@@ -49,7 +49,7 @@ public class ConfigurationWorkbenchAdapter extends BasicWorkbenchAdapter {
 			private String getEntityName(Object o) {
 				String result = null;
 				try {
-					Method m = o.getClass().getMethod("getEntityName", new Class[] {});
+					Method m = o.getClass().getMethod("getEntityName", new Class[] {}); //$NON-NLS-1$
 					result = (String)m.invoke(o, new Object[] {});
 				} catch (Exception e) {
 					throw new RuntimeException(e);
