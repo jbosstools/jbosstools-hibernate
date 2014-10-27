@@ -63,7 +63,6 @@ public class PersistentClassEditPart extends GraphNodeEditPart  {
 		return HibernateWorkbenchHelper.getLabelForClassName(getPersistentClass().getEntityName());
 	}
 
-	@SuppressWarnings("unchecked")
 	protected List<PropertyViewAdapter> getModelChildren() {	
 		
 		List<PropertyViewAdapter> list = new ArrayList<PropertyViewAdapter>();
