@@ -86,6 +86,7 @@ public class DirectedGraphLayoutVisitor
 	/**
 	 * Adds nodes to the graph object for use by the GraphLayoutManager
 	 */
+	@SuppressWarnings("unchecked")
 	protected void addNodes(PersistentClassEditPart pClassPart)
 	{
 		Node n = new Node(pClassPart);
@@ -118,6 +119,7 @@ public class DirectedGraphLayoutVisitor
 
 	//******************* RelationshipPart contribution methods **********/
 
+	@SuppressWarnings("unchecked")
 	protected void addEdges(AssociationEditPart relationshipPart)
 	{
 		GraphAnimation.recordInitialState((Connection) relationshipPart.getFigure());
