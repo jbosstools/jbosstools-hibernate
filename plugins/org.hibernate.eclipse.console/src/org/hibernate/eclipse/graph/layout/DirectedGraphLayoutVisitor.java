@@ -52,7 +52,6 @@ public class DirectedGraphLayoutVisitor
 	Set<AssociationEditPart> addedAssociations;
 	
 	DirectedGraph graph;
-	private ConfigurationEditPart diagram;
 
 	/**
 	 * Public method for reading graph nodes
@@ -62,7 +61,6 @@ public class DirectedGraphLayoutVisitor
 
 		partToNodesMap = new HashMap<AbstractGraphicalEditPart, Object>();
 		addedAssociations = new HashSet<AssociationEditPart>();
-		this.diagram = diagram;
 		graph = new DirectedGraph();
 		addNodes(diagram);
 		if (graph.nodes.size() > 0)
