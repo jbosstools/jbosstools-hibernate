@@ -47,9 +47,7 @@ public class RelationalGraphView extends AbstractGraphViewPart {
 	}
 
 	protected void selectionChanged(IStructuredSelection selection) {
-		Iterator<Object> iterator = selection.iterator();
-		
-				
+		Iterator<?> iterator = selection.iterator();
 		List<TableViewAdapter> tables=new ArrayList<TableViewAdapter>();
 		ConfigurationViewAdapter cv = null;
 		while(iterator.hasNext()) {
