@@ -131,13 +131,6 @@
          unpack="false"/>
 
    <plugin
-         id="org.hibernate.eclipse.libs"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.jboss.tools.hibernate3_5"
          download-size="0"
          install-size="0"
