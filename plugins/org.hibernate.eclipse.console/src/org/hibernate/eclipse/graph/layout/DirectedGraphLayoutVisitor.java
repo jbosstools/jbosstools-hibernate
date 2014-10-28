@@ -32,7 +32,6 @@ import java.util.Set;
 import org.eclipse.draw2d.AbsoluteBendpoint;
 import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -77,7 +76,6 @@ public class DirectedGraphLayoutVisitor
 	protected void addNodes(ConfigurationEditPart diagram)
 	{
 		GraphAnimation.recordInitialState(diagram.getFigure());
-		IFigure fig = diagram.getFigure();
 		for (int i = 0; i < diagram.getChildren().size(); i++)
 		{
 			PersistentClassEditPart tp = (PersistentClassEditPart) diagram.getChildren().get(i);
