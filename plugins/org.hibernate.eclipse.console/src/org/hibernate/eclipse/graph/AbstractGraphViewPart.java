@@ -125,7 +125,7 @@ public abstract class AbstractGraphViewPart extends ViewPart {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public Object getAdapter(Class adapter) {
 		if(adapter.equals(GraphicalViewer.class)) {
 			return viewer;
