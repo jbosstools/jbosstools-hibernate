@@ -74,12 +74,12 @@ public class ColumnEditPart extends AbstractGraphicalEditPart implements NodeEdi
 		return super.getCommand( request );
 	}
 	
-	public List getModelSourceConnections() {
+	public List<?> getModelSourceConnections() {
 	//	List sc = ((ColumnViewAdapter) getModel()).getSourceConnections();
 		return Collections.EMPTY_LIST;
 	}
 	
-	public List getModelTargetConnections() {
+	public List<?> getModelTargetConnections() {
 		//List tc = ((ColumnViewAdapter) getModel()).getTargetConnections();
 		return Collections.EMPTY_LIST;
 	}
