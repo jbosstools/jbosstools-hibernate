@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: JTidy for Hibernate Tools
+Bundle-Name: JTidy for JBoss Tools Hibernate
 Bundle-Vendor: JBoss by Red Hat
-Bundle-SymbolicName: org.jboss.tools.hibernate.jtidy
+Bundle-SymbolicName: org.jboss.tools.hibernate.libs.jtidy
 Bundle-Version: 8.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: lib/jtidy-r8-20060801.jar
