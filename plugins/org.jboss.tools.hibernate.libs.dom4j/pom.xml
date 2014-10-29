@@ -7,7 +7,7 @@
 		<version>4.0.1-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.hibernatetools.plugins</groupId>
-	<artifactId>org.jboss.tools.hibernate.dom4j</artifactId> 
+	<artifactId>org.jboss.tools.hibernate.libs.dom4j</artifactId> 
 	
 	<packaging>eclipse-plugin</packaging>
 	<version>1.6.1-SNAPSHOT</version>
