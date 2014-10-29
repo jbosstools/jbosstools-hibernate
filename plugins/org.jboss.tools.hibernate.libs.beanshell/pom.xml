@@ -7,7 +7,7 @@
 		<version>4.0.1-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.hibernatetools.plugins</groupId>
-	<artifactId>org.jboss.tools.hibernate.beanshell</artifactId> 
+	<artifactId>org.jboss.tools.hibernate.libs.beanshell</artifactId> 
 	
 	<packaging>eclipse-plugin</packaging>
 	<version>2.0.0-SNAPSHOT</version>

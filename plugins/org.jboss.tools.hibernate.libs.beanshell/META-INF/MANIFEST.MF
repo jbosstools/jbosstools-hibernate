@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Beanshell for Hibernate Tools
-Bundle-SymbolicName: org.jboss.tools.hibernate.beanshell
+Bundle-Name: Beanshell for JBoss Tools Hibernate
+Bundle-SymbolicName: org.jboss.tools.hibernate.libs.beanshell
 Bundle-Version: 2.0.0.qualifier
 Bundle-Vendor: JBoss by Red Hat
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7

@@ -13,7 +13,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	<packaging>pom</packaging>
 	<modules>
                 <module>org.jboss.tools.hibernate.spi</module>
-                <module>org.jboss.tools.hibernate.beanshell</module>
+                <module>org.jboss.tools.hibernate.libs.beanshell</module>
                 <module>org.jboss.tools.hibernate.dom4j</module>
                 <module>org.jboss.tools.hibernate.libs.antlr</module>
                 <module>org.jboss.tools.hibernate.jtidy</module>
