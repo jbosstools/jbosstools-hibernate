@@ -61,7 +61,7 @@ Require-Bundle: org.junit;bundle-version="3.8.2",
  org.eclipse.ui.editors;bundle-version="3.8.100",
  org.jboss.tools.hibernate3_5;bundle-version="3.7.0",
  org.jboss.tools.hibernate.spi;bundle-version="3.8.0",
- org.jboss.tools.hibernate.dom4j;bundle-version="1.6.1"
+ org.jboss.tools.hibernate.libs.dom4j;bundle-version="1.6.1"
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.hibernate.eclipse.console.test.HibernateConsoleTestPlugin
 Eclipse-RegisterBuddy: org.hibernate.eclipse
