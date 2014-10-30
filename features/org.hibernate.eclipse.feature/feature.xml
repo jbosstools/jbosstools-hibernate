@@ -166,26 +166,26 @@
          unpack="false"/>
 
    <plugin
-         id="org.jboss.tools.hibernate.dom4j"
+         id="org.jboss.tools.hibernate.libs.dom4j"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.jboss.tools.hibernate.antlr"
+         id="org.jboss.tools.hibernate.libs.antlr"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
 
    <plugin
-         id="org.jboss.tools.hibernate.jtidy"
+         id="org.jboss.tools.hibernate.libs.jtidy"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
 
    <plugin
-         id="org.jboss.tools.hibernate.beanshell"
+         id="org.jboss.tools.hibernate.libs.beanshell"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
