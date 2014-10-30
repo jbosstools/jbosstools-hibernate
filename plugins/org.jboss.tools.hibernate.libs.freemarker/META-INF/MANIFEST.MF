@@ -5,3 +5,21 @@ Bundle-SymbolicName: org.jboss.tools.hibernate.libs.freemarker
 Bundle-Version: 2.3.8.qualifier
 Bundle-Vendor: JBoss by Red Hat
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ClassPath: lib/freemarker-2.3.8.jar
+Export-Package: freemarker.cache,
+ freemarker.core,
+ freemarker.debug,
+ freemarker.debug.impl,
+ freemarker.ext.ant,
+ freemarker.ext.beans,
+ freemarker.ext.dom,
+ freemarker.ext.jdom,
+ freemarker.ext.jsp,
+ freemarker.ext.jython,
+ freemarker.ext.rhino,
+ freemarker.ext.servlet,
+ freemarker.ext.util,
+ freemarker.ext.xml,
+ freemarker.log,
+ freemarker.template,
+ freemarker.template.utility
