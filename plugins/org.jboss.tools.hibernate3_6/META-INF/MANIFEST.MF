@@ -30,5 +30,7 @@ Bundle-ClassPath: lib/required/cglib-2.2.jar,
  lib/tools/freemarker.jar,
  lib/log4j-1.2.15.jar,
  .,
- lib/required/hibernate3.jar
+ lib/hibernate-core-3.6.9.Final.jar,
+ lib/hibernate-entitymanager-3.6.9.Final.jar,
+ lib/hibernate-commons-annotations-3.2.0.Final.jar
 Bundle-Vendor: JBoss by Red Hat
