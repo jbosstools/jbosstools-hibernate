@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate-jpa-2.0-api-1.0.1.Final.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-logging-1.0.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-collections-3.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/cglib-2.2.jar"/>
@@ -10,7 +11,6 @@
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="lib" path="lib/tools/freemarker.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jpa/hibernate-jpa-2.0-api-1.0.1.Final.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/tools/hibernate-tools-3.6.0.CR1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/required/javassist-3.12.0.GA.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/required/jta-1.1.jar"/>
