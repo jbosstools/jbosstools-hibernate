@@ -16,12 +16,12 @@ Require-Bundle: org.eclipse.ui;bundle-version="3.105.0",
  org.jboss.tools.hibernate.spi;bundle-version="3.8.0",
  org.jboss.tools.hibernate.libs.dom4j;bundle-version="1.6.1",
  org.jboss.tools.hibernate.libs.antlr;bundle-version="2.7.7",
- org.jboss.tools.hibernate.libs.jtidy;bundle-version="8.0.0"
+ org.jboss.tools.hibernate.libs.jtidy;bundle-version="8.0.0",
+ org.jboss.tools.hibernate.libs.freemarker;bundle-version="2.3.8"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: lib/required/jta-1.1.jar,
  lib/required/slf4j-api-1.6.1.jar,
  lib/required/slf4j-log4j12-1.6.1.jar,
- lib/tools/freemarker.jar,
  lib/log4j-1.2.15.jar,
  .,
  lib/hibernate-core-3.6.9.Final.jar,
