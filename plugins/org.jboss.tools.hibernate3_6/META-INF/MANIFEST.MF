@@ -19,8 +19,7 @@ Require-Bundle: org.eclipse.ui;bundle-version="3.105.0",
  org.jboss.tools.hibernate.libs.jtidy;bundle-version="8.0.0",
  org.jboss.tools.hibernate.libs.freemarker;bundle-version="2.3.8"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Bundle-ClassPath: lib/required/slf4j-log4j12-1.6.1.jar,
- lib/log4j-1.2.15.jar,
+Bundle-ClassPath: lib/log4j-1.2.15.jar,
  .,
  lib/hibernate-core-3.6.9.Final.jar,
  lib/hibernate-entitymanager-3.6.9.Final.jar,
@@ -32,5 +31,6 @@ Bundle-ClassPath: lib/required/slf4j-log4j12-1.6.1.jar,
  lib/hibernate-tools-3.6.0.CR1.jar,
  lib/javassist-3.12.0.GA.jar,
  lib/jta-1.1.jar,
- lib/slf4j-api-1.6.1.jar
+ lib/slf4j-api-1.6.1.jar,
+ lib/slf4j-log4j12-1.6.1.jar
 Bundle-Vendor: JBoss by Red Hat
