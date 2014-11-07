@@ -18,8 +18,7 @@ Require-Bundle: org.eclipse.ui;bundle-version="3.105.0",
  org.jboss.tools.hibernate.libs.antlr;bundle-version="2.7.7",
  org.jboss.tools.hibernate.libs.jtidy;bundle-version="8.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Bundle-ClassPath: lib/required/classmate-0.5.4.jar,
- lib/required/commons-collections-3.2.1.jar,
+Bundle-ClassPath: lib/required/commons-collections-3.2.1.jar,
  lib/required/hibernate-jpa-2.0-api-1.0.1.Final.jar,
  lib/required/jandex-1.0.3.Final.jar,
  lib/required/javassist-3.12.1.GA.jar,
