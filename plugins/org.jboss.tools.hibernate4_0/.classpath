@@ -8,7 +8,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/required/jandex-1.0.3.Final.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/required/javassist-3.12.1.GA.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/required/jboss-transaction-api_1.1_spec-1.0.0.Final.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/tools/freemarker.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/required/slf4j-api-1.5.8.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/log4j-1.2.15.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/slf4j-log4j12-1.5.8.jar"/>

@@ -16,14 +16,14 @@ Require-Bundle: org.eclipse.ui;bundle-version="3.105.0",
  org.jboss.tools.hibernate.spi;bundle-version="3.8.0",
  org.jboss.tools.hibernate.libs.dom4j;bundle-version="1.6.1",
  org.jboss.tools.hibernate.libs.antlr;bundle-version="2.7.7",
- org.jboss.tools.hibernate.libs.jtidy;bundle-version="8.0.0"
+ org.jboss.tools.hibernate.libs.jtidy;bundle-version="8.0.0",
+ org.jboss.tools.hibernate.libs.freemarker;bundle-version="2.3.8"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: lib/required/commons-collections-3.2.1.jar,
  lib/required/hibernate-jpa-2.0-api-1.0.1.Final.jar,
  lib/required/jandex-1.0.3.Final.jar,
  lib/required/javassist-3.12.1.GA.jar,
  lib/required/jboss-transaction-api_1.1_spec-1.0.0.Final.jar,
- lib/tools/freemarker.jar,
  lib/required/slf4j-api-1.5.8.jar,
  lib/log4j-1.2.15.jar,
  lib/slf4j-log4j12-1.5.8.jar,
