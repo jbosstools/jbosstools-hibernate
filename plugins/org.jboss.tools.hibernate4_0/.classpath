@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/commons-logging-1.1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-collections-3.2.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
@@ -16,6 +17,5 @@
 	<classpathentry exported="true" kind="lib" path="lib/required/hibernate-core-4.0.0.Final.jar" sourcepath="/Users/koen/.m2/repository/org/hibernate/hibernate-core/4.0.0.Final/hibernate-core-4.0.0.Final-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/required/jboss-logging-3.1.0.CR2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/tools/hibernate-tools-4.0.0-CR1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/required/commons-logging-1.1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
