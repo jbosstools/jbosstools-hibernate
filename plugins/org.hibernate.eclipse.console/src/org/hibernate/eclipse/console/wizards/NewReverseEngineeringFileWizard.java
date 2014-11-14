@@ -140,17 +140,6 @@ public class NewReverseEngineeringFileWizard extends Wizard implements INewWizar
 		return true;
 	}
 
-	/**
-     * @param props
-     * @param dialect
-     * @param dialect2
-     */
-    private void putIfNotNull(Properties props, String key, String value) {
-        if(value!=null) {
-            props.put(key,value);
-        }
-    }
-
     /**
 	 * The worker method. It will find the container, create the
 	 * file if missing or just replace its contents, and open
