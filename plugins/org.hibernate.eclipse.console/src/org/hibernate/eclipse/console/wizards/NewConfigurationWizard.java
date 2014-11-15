@@ -152,14 +152,14 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
         cPage = new ExtendedWizardNewFileCreationPage( "Ccfgxml", (IStructuredSelection) selection ) { //$NON-NLS-1$
         	protected InputStream getInitialContents() {
         		final Properties props = new Properties();
-                putIfNotNull(props, "hibernate.session_factory_name", connectionInfoPage.getSessionFactoryName() );
-                putIfNotNull(props, "hibernate.dialect", connectionInfoPage.getDialect() );
-                putIfNotNull(props, "hibernate.connection.driver_class", connectionInfoPage.getDriver() );
-                putIfNotNull(props, "hibernate.connection.url", connectionInfoPage.getConnectionURL() );
-                putIfNotNull(props, "hibernate.connection.username", connectionInfoPage.getUsername() );
-                putIfNotNull(props, "hibernate.connection.password", connectionInfoPage.getPassword() );
-                putIfNotNull(props, "hibernate.default_catalog", connectionInfoPage.getDefaultCatalog() );
-                putIfNotNull(props, "hibernate.default_schema", connectionInfoPage.getDefaultSchema() );
+                putIfNotNull(props, "hibernate.session_factory_name", connectionInfoPage.getSessionFactoryName() ); //$NON-NLS-1$
+                putIfNotNull(props, "hibernate.dialect", connectionInfoPage.getDialect() ); //$NON-NLS-1$
+                putIfNotNull(props, "hibernate.connection.driver_class", connectionInfoPage.getDriver() ); //$NON-NLS-1$
+                putIfNotNull(props, "hibernate.connection.url", connectionInfoPage.getConnectionURL() ); //$NON-NLS-1$
+                putIfNotNull(props, "hibernate.connection.username", connectionInfoPage.getUsername() ); //$NON-NLS-1$
+                putIfNotNull(props, "hibernate.connection.password", connectionInfoPage.getPassword() ); //$NON-NLS-1$
+                putIfNotNull(props, "hibernate.default_catalog", connectionInfoPage.getDefaultCatalog() ); //$NON-NLS-1$
+                putIfNotNull(props, "hibernate.default_schema", connectionInfoPage.getDefaultSchema() ); //$NON-NLS-1$
         		return openContentStream(props);
         	}
         };
@@ -184,14 +184,14 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 	 */
 	public boolean performFinish() {
 		final Properties props = new Properties();
-		putIfNotNull(props, "hibernate.session_factory_name", connectionInfoPage.getSessionFactoryName() );
-		putIfNotNull(props, "hibernate.dialect", connectionInfoPage.getDialect() );
-		putIfNotNull(props, "hibernate.default_catalog", connectionInfoPage.getDefaultCatalog() );
-        putIfNotNull(props, "hibernate.default_schema", connectionInfoPage.getDefaultSchema() );
-        putIfNotNull(props, "hibernate.connection.driver_class", connectionInfoPage.getDriver() );
-        putIfNotNull(props, "hibernate.connection.url", connectionInfoPage.getConnectionURL() );
-        putIfNotNull(props, "hibernate.connection.username", connectionInfoPage.getUsername() );
-        putIfNotNull(props, "hibernate.connection.password", connectionInfoPage.getPassword() );
+		putIfNotNull(props, "hibernate.session_factory_name", connectionInfoPage.getSessionFactoryName() ); //$NON-NLS-1$
+		putIfNotNull(props, "hibernate.dialect", connectionInfoPage.getDialect() ); //$NON-NLS-1$
+		putIfNotNull(props, "hibernate.default_catalog", connectionInfoPage.getDefaultCatalog() ); //$NON-NLS-1$
+        putIfNotNull(props, "hibernate.default_schema", connectionInfoPage.getDefaultSchema() ); //$NON-NLS-1$
+        putIfNotNull(props, "hibernate.connection.driver_class", connectionInfoPage.getDriver() ); //$NON-NLS-1$
+        putIfNotNull(props, "hibernate.connection.url", connectionInfoPage.getConnectionURL() ); //$NON-NLS-1$
+        putIfNotNull(props, "hibernate.connection.username", connectionInfoPage.getUsername() ); //$NON-NLS-1$
+        putIfNotNull(props, "hibernate.connection.password", connectionInfoPage.getPassword() ); //$NON-NLS-1$
 
 		
         final IFile file = cPage.createNewFile();
@@ -295,8 +295,8 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
         StringWriter stringWriter = new StringWriter();
         // lookup the hibernate 3.5 service by default
         // TODO offer user choice of hibernate version here?
-        IService service = ServiceLookup.findService("3.5");
-        IExporter hce = service.createExporter("org.hibernate.tool.hbm2x.HibernateConfigurationExporter");
+        IService service = ServiceLookup.findService("3.5"); //$NON-NLS-1$
+        IExporter hce = service.createExporter("org.hibernate.tool.hbm2x.HibernateConfigurationExporter"); //$NON-NLS-1$
  		hce.setCustomProperties(props);
 		hce.setOutput(stringWriter);
         hce.start();
