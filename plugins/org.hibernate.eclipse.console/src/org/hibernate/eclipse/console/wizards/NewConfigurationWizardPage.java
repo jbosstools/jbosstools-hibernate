@@ -83,8 +83,6 @@ public class NewConfigurationWizardPage extends WizardPage {
 
     private Button createConsoleConfiguration;
 
-    private ISelection selection;
-
     private final WizardNewFileCreationPage fileCreation;
 
     private boolean beenShown = false;
@@ -102,7 +100,6 @@ public class NewConfigurationWizardPage extends WizardPage {
         this.fileCreation = page;
         setTitle(HibernateConsoleMessages.NewConfigurationWizardPage_hibernate_config_file);
         setDescription(HibernateConsoleMessages.NewConfigurationWizardPage_this_wizard_creates);
-        this.selection = selection;
     }
 
     /**
