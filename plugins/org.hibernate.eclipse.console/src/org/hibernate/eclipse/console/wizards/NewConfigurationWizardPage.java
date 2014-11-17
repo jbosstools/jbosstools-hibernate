@@ -464,13 +464,13 @@ public class NewConfigurationWizardPage extends WizardPage {
     private void fillPropertiesFromConnectionProfile(String cpName){
 		IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(cpName);
 		Properties p = getHibernateConnectionProperties(profile);
-		driver_classCombo.setText(p.getProperty("hibernate.connection.driver_class"));
-		urlCombo.setText(p.getProperty("hibernate.connection.url"));
-		if (p.containsKey("hibernate.connection.username")){
-			 usernameText.setText(p.getProperty("hibernate.connection.username"));
+		driver_classCombo.setText(p.getProperty("hibernate.connection.driver_class")); //$NON-NLS-1$
+		urlCombo.setText(p.getProperty("hibernate.connection.url")); //$NON-NLS-1$
+		if (p.containsKey("hibernate.connection.username")){ //$NON-NLS-1$
+			 usernameText.setText(p.getProperty("hibernate.connection.username")); //$NON-NLS-1$
 		}
-		if (p.containsKey("hibernate.connection.password")){
-			 passwordText.setText(p.getProperty("hibernate.connection.password"));
+		if (p.containsKey("hibernate.connection.password")){ //$NON-NLS-1$
+			 passwordText.setText(p.getProperty("hibernate.connection.password")); //$NON-NLS-1$
 		}
 		/*this causes very long timeouts when db is not started
 		String dialect = ConnectionProfileUtil.autoDetectDialect(p);
@@ -484,16 +484,16 @@ public class NewConfigurationWizardPage extends WizardPage {
 		if (profile != null) {
 			final Properties cpProperties = profile.getProperties(profile.getProviderId());
 			String driverClass = ConnectionProfileUtil.getDriverClass(profile.getName());
-			props.setProperty("hibernate.connection.driver_class", driverClass);
+			props.setProperty("hibernate.connection.driver_class", driverClass); //$NON-NLS-1$
 			String url = cpProperties.getProperty(IJDBCDriverDefinitionConstants.URL_PROP_ID);
-			props.setProperty("hibernate.connection.url", url);
+			props.setProperty("hibernate.connection.url", url); //$NON-NLS-1$
 			String user = cpProperties.getProperty(IJDBCDriverDefinitionConstants.USERNAME_PROP_ID);
 			if (null != user && user.length() > 0) {
-				props.setProperty("hibernate.connection.username", user);
+				props.setProperty("hibernate.connection.username", user); //$NON-NLS-1$
 			}
 			String pass = cpProperties.getProperty(IJDBCDriverDefinitionConstants.PASSWORD_PROP_ID);
 			if (null != pass && pass.length() > 0) {
-				props.setProperty("hibernate.connection.password", pass);
+				props.setProperty("hibernate.connection.password", pass); //$NON-NLS-1$
 			}
 		}
 		return props;
