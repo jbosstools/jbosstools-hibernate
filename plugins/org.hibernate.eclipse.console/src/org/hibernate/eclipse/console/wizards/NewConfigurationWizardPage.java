@@ -288,10 +288,7 @@ public class NewConfigurationWizardPage extends WizardPage {
      * @param container
      */
     private void fillLabel(Composite container) {
-        Label label = new Label(container, SWT.NULL);
-        //GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-      //  label.setLayoutData(gd);
-        //label.setBackground(getShell().getDisplay().getSystemColor(SWT.COLOR_CYAN));
+        new Label(container, SWT.NULL);
     }
 
     /**
