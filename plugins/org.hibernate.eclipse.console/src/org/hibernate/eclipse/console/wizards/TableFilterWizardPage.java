@@ -127,20 +127,6 @@ public class TableFilterWizardPage extends WizardPage {
     	updateWarningStatus(null);
     }
 
-    /**
-     * Updates buttons state.
-     */
-    private void updateButtons() {
-    	String strConsoleConfig = consoleConfigurationName.getText();
-    	boolean enabled = true;
-    	if (null == strConsoleConfig || 0 == strConsoleConfig.length()) {
-    		enabled = false;
-    	}
-    	
-    	// FIXME Commented to fix compilation error under Eclipse 3.4
-    	// tfc.setRefreshEnabled(enabled);
-    }
-
     protected boolean hasDuplicates() {
     	boolean res = false;
     	ITableFilter[] filters = getTableFilters();
