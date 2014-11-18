@@ -148,7 +148,6 @@ public class TreeToTableComposite extends Composite {
 	private Button removeAllButton = null;
 	private Label fillLabel = null;
 	private Composite composite = null;
-	private Label label = null;
 	private Button refreshButton = null;
 	private Label emptyLabel = null;
 	private Button[] addButtons;
@@ -183,7 +182,7 @@ public class TreeToTableComposite extends Composite {
 		createTableFiltersGroup();
 		createComposite();
 		setSize(new org.eclipse.swt.graphics.Point(913,358));
-		label = new Label(this, SWT.NONE);
+		new Label(this, SWT.NONE);
 	}
 
 	/**
