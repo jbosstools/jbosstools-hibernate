@@ -27,13 +27,13 @@ Bundle-ClassPath: lib/required/hibernate-jpa-2.0-api-1.0.1.Final.jar,
  lib/log4j-1.2.15.jar,
  lib/slf4j-log4j12-1.5.8.jar,
  .,
- lib/jpa/hibernate-entitymanager-4.0.0.Final.jar,
  lib/required/jboss-logging-3.1.0.CR2.jar,
  lib/tools/hibernate-tools-4.0.0-CR1.jar,
  lib/commons-collections-3.2.1.jar,
  lib/commons-logging-1.1.1.jar,
  lib/hibernate-commons-annotations-4.0.1.Final.jar,
- lib/hibernate-core-4.0.0.Final.jar
+ lib/hibernate-core-4.0.0.Final.jar,
+ lib/hibernate-entitymanager-4.0.0.Final.jar
 Bundle-Vendor: JBoss by Red Hat
 Eclipse-BundleShape: dir
 

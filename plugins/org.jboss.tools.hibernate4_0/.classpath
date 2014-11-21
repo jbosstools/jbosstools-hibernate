@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate-entitymanager-4.0.0.Final.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate-core-4.0.0.Final.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate-commons-annotations-4.0.1.Final.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-logging-1.1.1.jar"/>
@@ -14,7 +15,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/required/slf4j-api-1.5.8.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/log4j-1.2.15.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/slf4j-log4j12-1.5.8.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jpa/hibernate-entitymanager-4.0.0.Final.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/required/jboss-logging-3.1.0.CR2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/tools/hibernate-tools-4.0.0-CR1.jar"/>
 	<classpathentry kind="output" path="bin"/>
