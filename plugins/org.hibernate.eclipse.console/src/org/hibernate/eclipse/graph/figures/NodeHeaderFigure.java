@@ -105,15 +105,6 @@ public class NodeHeaderFigure extends Figure {
 		typeAndLabelColumn.add(nameLabel);
 	}
 
-	private void addTypeLabel(String nodeType) {
-		typeLabel = new Label();
-		typeLabel.setBorder(new MarginBorder(2));
-		typeLabel.setForegroundColor(ColorConstants.darkGray);
-		typeLabel.setFont(TYPEFONT);
-		typeLabel.setText("<<" + nodeType + ">>"); //$NON-NLS-1$ //$NON-NLS-2$
-		typeAndLabelColumn.add(typeLabel);
-	}
-
   private void addIconLabel(String iconDescriptor) {
     iconLabel = new Label();
     iconLabel.setBorder(new MarginBorder(2));
