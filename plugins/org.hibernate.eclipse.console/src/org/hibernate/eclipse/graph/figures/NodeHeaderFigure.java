@@ -110,12 +110,6 @@ public class NodeHeaderFigure extends Figure {
     embeddedFigure.add(iconLabel);
   }
   
-/*  private Image getNodeIcon(ImageDescriptor iconDescriptor) {
-	  return EclipseImages.getImage(iconDescriptor);
-  }*/
-	
-  
-	
 	protected void paintClientArea(Graphics graphics) {
 		Color foreground = graphics.getForegroundColor();
 		graphics.setForegroundColor(FiguresConstants.white);
