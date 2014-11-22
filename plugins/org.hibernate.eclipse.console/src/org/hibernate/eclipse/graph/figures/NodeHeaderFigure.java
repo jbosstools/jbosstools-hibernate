@@ -59,7 +59,6 @@ public class NodeHeaderFigure extends Figure {
 	
 	private Figure embeddedFigure;
 	private Figure typeAndLabelColumn;
-	private Label typeLabel;
 	private Label nameLabel;
 	private Label iconLabel;
 	
