@@ -56,7 +56,6 @@ import org.hibernate.eclipse.console.utils.EclipseImages;
 public class NodeHeaderFigure extends Figure {
 	
 	private static final Font NAMEFONT = new Font(null, "Arial", 9, SWT.BOLD); //$NON-NLS-1$
-	private static final Font TYPEFONT = new Font(null, "Arial", 9, SWT.ITALIC); //$NON-NLS-1$
 	
 	private Figure embeddedFigure;
 	private Figure typeAndLabelColumn;
