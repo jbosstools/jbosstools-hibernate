@@ -54,40 +54,41 @@ import org.hibernate.eclipse.console.utils.EclipseImages;
 
 // Based on what was found in JBPM GPD 19/4/2006 04:34 AM
 public class NodeHeaderFigure extends Figure {
-	
+
 	private static final Font NAMEFONT = new Font(null, "Arial", 9, SWT.BOLD); //$NON-NLS-1$
-	
+
 	private Figure embeddedFigure;
 	private Figure typeAndLabelColumn;
 	private Label nameLabel;
 	private Label iconLabel;
-	
-	public NodeHeaderFigure(String nodeName, String nodeType, String iconName, boolean hideName) {
+
+	public NodeHeaderFigure(String nodeName, String nodeType, String iconName,
+			boolean hideName) {
 		FlowLayout flowLayout = new FlowLayout();
 		flowLayout.setMajorAlignment(FlowLayout.ALIGN_CENTER);
 		setLayoutManager(flowLayout);
 		addEmbeddedParent(nodeName, nodeType, iconName, hideName);
 	}
-  
-  
-  private void addEmbeddedParent(String nodeName, String nodeType, String iconDescriptor, boolean hideName) {
-    embeddedFigure = new Figure();
-    ToolbarLayout layout = new ToolbarLayout(true);
-    layout.setMinorAlignment(ToolbarLayout.ALIGN_CENTER);
-    embeddedFigure.setLayoutManager(layout);
-    addIconLabel(iconDescriptor);
-    addTypeAndNameColumn(nodeType, nodeName, hideName);
-    add(embeddedFigure);
-  }
-  
-  
-	private void addTypeAndNameColumn(String nodeType, String nodeName, boolean hideName) {
+
+	private void addEmbeddedParent(String nodeName, String nodeType,
+			String iconDescriptor, boolean hideName) {
+		embeddedFigure = new Figure();
+		ToolbarLayout layout = new ToolbarLayout(true);
+		layout.setMinorAlignment(ToolbarLayout.ALIGN_CENTER);
+		embeddedFigure.setLayoutManager(layout);
+		addIconLabel(iconDescriptor);
+		addTypeAndNameColumn(nodeType, nodeName, hideName);
+		add(embeddedFigure);
+	}
+
+	private void addTypeAndNameColumn(String nodeType, String nodeName,
+			boolean hideName) {
 		ToolbarLayout layout = new ToolbarLayout();
 		layout.setStretchMinorAxis(false);
 		layout.setMinorAlignment(ToolbarLayout.ALIGN_CENTER);
 		typeAndLabelColumn = new Figure();
 		typeAndLabelColumn.setLayoutManager(layout);
-		//addTypeLabel(nodeType);
+		// addTypeLabel(nodeType);
 		if (!hideName) {
 			addNameLabel(nodeName);
 		}
@@ -103,13 +104,13 @@ public class NodeHeaderFigure extends Figure {
 		typeAndLabelColumn.add(nameLabel);
 	}
 
-  private void addIconLabel(String iconDescriptor) {
-    iconLabel = new Label();
-    iconLabel.setBorder(new MarginBorder(2));
-    iconLabel.setIcon(EclipseImages.getImage(iconDescriptor));
-    embeddedFigure.add(iconLabel);
-  }
-  
+	private void addIconLabel(String iconDescriptor) {
+		iconLabel = new Label();
+		iconLabel.setBorder(new MarginBorder(2));
+		iconLabel.setIcon(EclipseImages.getImage(iconDescriptor));
+		embeddedFigure.add(iconLabel);
+	}
+
 	protected void paintClientArea(Graphics graphics) {
 		Color foreground = graphics.getForegroundColor();
 		graphics.setForegroundColor(FiguresConstants.white);
@@ -117,13 +118,13 @@ public class NodeHeaderFigure extends Figure {
 		graphics.setForegroundColor(foreground);
 		super.paintClientArea(graphics);
 	}
-	
+
 	public void setNodeName(String name) {
 		if (name != null && nameLabel != null) {
 			nameLabel.setText(name);
 		}
 	}
-	
+
 	public Label getNameLabel() {
 		return nameLabel;
 	}
