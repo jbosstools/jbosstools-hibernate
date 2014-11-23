@@ -46,7 +46,7 @@ public class PersistentClassFigure extends Figure {
 		header = new NodeHeaderFigure(name, "Class", ImageConstants.MAPPEDCLASS, false); //$NON-NLS-1$
 		
 		ToolbarLayout layout = new ToolbarLayout();
-		layout.setVertical(true);
+		layout.setHorizontal(false);
 		layout.setStretchMinorAxis(true);
 		setLayoutManager(layout);
 		//setBorder(new LineBorder(FiguresConstants.veryLightGray, 1));		
