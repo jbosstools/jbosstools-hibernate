@@ -38,10 +38,7 @@ public class HQLEditorInputFactory implements IElementFactory {
 
     public IAdaptable createElement( IMemento memento ) {
         IAdaptable input = null;
-        
-        // Get the editor input type from the memento.
-        String editorInputType = memento.getString( KEY_EDITOR_INPUT_TYPE );
-        
+                
         // Create a Storage object from the memento.
         String contentName = memento.getString( KEY_STORAGE_NAME );
         String contentString = memento.getString( KEY_STORAGE_CONTENT );
