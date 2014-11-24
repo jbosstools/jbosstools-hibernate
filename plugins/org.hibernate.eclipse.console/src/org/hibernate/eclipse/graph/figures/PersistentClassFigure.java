@@ -64,24 +64,4 @@ public class PersistentClassFigure extends Figure {
 		header.setNodeName(headerName);		
 	}
 	
-	protected void paintBorder(Graphics graphics) {
-		/*Rectangle bounds = getBounds().getCopy();
-		Point origin = bounds.getLocation();
-		int height = bounds.height;
-		int width = bounds.width;
-		graphics.translate(origin);
-		graphics.setForegroundColor(ColorConstants.lightGray);
-		graphics.drawLine(0, 0, width - 2, 0);
-		graphics.drawLine(width - 2, 0, width - 2, height - 2);
-		graphics.drawLine(width - 2, height - 2, 0, height - 2);
-		graphics.drawLine(0, height - 2, 0, 0);
-		graphics.setForegroundColor(FiguresConstants.veryLightGray);
-		graphics.drawLine(width - 1, 1, width - 1, height - 1);
-		graphics.drawLine(width - 1, height - 1, 1, height - 1);*/
-		super.paintBorder(graphics);
-	}
-	
-	public void setBounds(Rectangle rect) {		
-		super.setBounds( rect );
-	}
 }
