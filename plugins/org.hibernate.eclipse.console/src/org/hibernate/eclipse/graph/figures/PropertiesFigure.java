@@ -33,7 +33,7 @@ public class PropertiesFigure extends Figure {
 
 	public PropertiesFigure(Color bgColor, Color fgColor) {
 		FlowLayout layout = new FlowLayout();
-		layout.setMinorAlignment( FlowLayout.ALIGN_LEFTTOP );
+		layout.setMinorAlignment( FlowLayout.ALIGN_TOPLEFT );
 		layout.setStretchMinorAxis( true );		
 		layout.setHorizontal( false );
 		setLayoutManager( layout );
