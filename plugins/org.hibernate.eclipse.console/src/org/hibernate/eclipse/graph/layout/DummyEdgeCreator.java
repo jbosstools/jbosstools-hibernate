@@ -75,6 +75,7 @@ public class DummyEdgeCreator extends OldGraphVisitor
 
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void setDummyEdges()
 	{
 
@@ -107,6 +108,7 @@ public class DummyEdgeCreator extends OldGraphVisitor
 	/**
 	 * creates a new dummy edge to be used in the graph
 	 */
+	@SuppressWarnings("unchecked")
 	private Edge newDummyEdge(Node targetNode, Node sourceNode)
 	{
 		DummyEdgePart edgePart = new DummyEdgePart();
@@ -121,6 +123,7 @@ public class DummyEdgeCreator extends OldGraphVisitor
 	 * @return a suitable first table to relate to. Will only be called if there
 	 *         are > 1 table
 	 */
+	@SuppressWarnings("unchecked")
 	private Node findTargetNode(Node cantBeThis)
 	{
 
