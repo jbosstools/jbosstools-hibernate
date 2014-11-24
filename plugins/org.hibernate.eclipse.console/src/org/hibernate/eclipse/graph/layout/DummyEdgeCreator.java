@@ -38,7 +38,7 @@ import org.hibernate.eclipse.graph.layout.xpl.OldGraphVisitor;
  * Creates dummy edges between nodes, to be used with NodeJoiningDirectedGraphLayout
  * @author Phil Zoio
  */
-public class DummyEdgeCreator extends OldGraphVisitor
+public class DummyEdgeCreator 
 {
 
 	NodeList nodeList;
