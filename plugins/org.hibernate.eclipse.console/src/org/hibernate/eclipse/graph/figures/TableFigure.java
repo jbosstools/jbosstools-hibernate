@@ -44,7 +44,7 @@ public class TableFigure extends Figure {
 		label.setFont(tableHeaderFont);
 		
 		ToolbarLayout layout = new ToolbarLayout();
-		layout.setVertical(true);
+		layout.setHorizontal(false);
 		layout.setStretchMinorAxis(true);
 		setLayoutManager(layout);
 		setBorder(new LineBorder(ColorConstants.black, 1));
