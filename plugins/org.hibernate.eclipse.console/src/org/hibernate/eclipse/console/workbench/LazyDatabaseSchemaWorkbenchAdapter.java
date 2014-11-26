@@ -78,7 +78,7 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 				private String getName(Object o) {
 					String result = null;
 					try {
-						Method m = o.getClass().getMethod("getName", new Class[] {});
+						Method m = o.getClass().getMethod("getName", new Class[] {}); //$NON-NLS-1$
 						m.invoke(o, new Object[] {});
 					} catch (Exception e) {
 						throw new RuntimeException(e);
