@@ -22,7 +22,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: lib/log4j-1.2.15.jar,
  lib/slf4j-log4j12-1.5.8.jar,
  .,
- lib/required/jboss-logging-3.1.0.CR2.jar,
  lib/commons-collections-3.2.1.jar,
  lib/commons-logging-1.1.1.jar,
  lib/hibernate-commons-annotations-4.0.1.Final.jar,
@@ -32,7 +31,8 @@ Bundle-ClassPath: lib/log4j-1.2.15.jar,
  lib/hibernate-tools-4.0.0-CR1.jar,
  lib/javassist-3.12.1.GA.jar,
  lib/jboss-transaction-api_1.1_spec-1.0.0.Final.jar,
- lib/slf4j-api-1.5.8.jar
+ lib/slf4j-api-1.5.8.jar,
+ lib/jboss-logging-3.1.0.CR2.jar
 Bundle-Vendor: JBoss by Red Hat
 Eclipse-BundleShape: dir
 
