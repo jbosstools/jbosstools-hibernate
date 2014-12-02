@@ -241,7 +241,7 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements
 	/**
 	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public Object getAdapter(Class type) {
 		if (type == ZoomManager.class) {
 			return ((ScalableFreeformRootEditPart) getGraphicalViewer()
