@@ -110,7 +110,7 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 		
 	}
 	
-	private static final Comparator STRING_REVERSE_ALPHABETICAL = new Comparator<String>() {
+	private static final Comparator<String> STRING_REVERSE_ALPHABETICAL = new Comparator<String>() {
 		@Override
 		public int compare(String s1, String s2) {
 			return s2.compareTo(s1);
