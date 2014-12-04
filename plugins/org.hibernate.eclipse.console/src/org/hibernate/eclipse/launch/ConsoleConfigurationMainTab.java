@@ -549,18 +549,6 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 		return projectNameText.getText();
 	}
 
-	private String checkForFile(String msgPrefix, IResource resource) {
-		if(resource!=null) {
-			if(resource instanceof IFile) {
-				return null;
-			} else {
-				return NLS.bind(HibernateConsoleMessages.ConsoleConfigurationMainTab_is_not_file, msgPrefix);
-			}
-		} else {
-			return NLS.bind(HibernateConsoleMessages.ConsoleConfigurationMainTab_does_not_exist, msgPrefix);
-		}
-	}
-
 	public Image getImage() {
 		return EclipseImages.getImage(ImageConstants.MINI_HIBERNATE);
 	}
