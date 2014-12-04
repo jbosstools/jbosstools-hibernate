@@ -3,7 +3,9 @@
  */
 package org.hibernate.eclipse.launch;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -107,6 +109,13 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 		connectionProfileCtrl.addModifyListener(getChangeListener());
 		
 	}
+	
+	private static final Comparator STRING_REVERSE_ALPHABETICAL = new Comparator<String>() {
+		@Override
+		public int compare(String s1, String s2) {
+			return s2.compareTo(s1);
+		}		
+	};
 			
 	private void createConfigurationMode(Composite container) {
 		Group group = createGroup( container, HibernateConsoleMessages.ConsoleConfigurationMainTab_type);
@@ -129,7 +138,9 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 		Label hLabel = new Label(comp2, SWT.NULL);
 		hLabel.setText(HibernateConsoleMessages.ConsoleConfigurationMainTab_0);
 		hibernateVersion = new Combo(comp2, SWT.READ_ONLY);
-		hibernateVersion.setItems(ServiceLookup.getVersions());
+		String[] versions = ServiceLookup.getVersions();
+		Arrays.sort(versions, STRING_REVERSE_ALPHABETICAL);
+		hibernateVersion.setItems(versions);
 		hibernateVersion.select(0);
 		hibernateVersion.setLayoutData(new GridData(53, -1));
 		hibernateVersion.addModifyListener(getChangeListener());
