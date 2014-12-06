@@ -44,8 +44,10 @@ public class PersistentClassWorkbenchAdapter implements IWorkbenchAdapter {
 		if(identifierProperty!=null) {
 			properties.add(identifierProperty);
 		}
-		
-		Iterator<IProperty> propertyClosureIterator = new JoinedIterator(properties.iterator(), pc.getPropertyClosureIterator());
+		ArrayList<Iterator<IProperty>> iterators = new ArrayList<Iterator<IProperty>>(2);
+		iterators.add(0, properties.iterator());
+		iterators.add(1, pc.getPropertyClosureIterator());
+		Iterator<IProperty> propertyClosureIterator = new JoinedIterator(iterators);
 		return BasicWorkbenchAdapter.toArray(propertyClosureIterator, IProperty.class, null);
 	}
 
