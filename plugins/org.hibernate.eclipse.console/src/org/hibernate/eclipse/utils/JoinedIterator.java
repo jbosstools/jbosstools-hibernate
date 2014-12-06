@@ -30,7 +30,9 @@ public class JoinedIterator implements Iterator {
 	}
 
 	public JoinedIterator(Iterator first, Iterator second) {
-		this( new Iterator[] { first, second } );
+		this.iterators = new Iterator[2];
+		this.iterators[0] = first;
+		this.iterators[1] = second;
 	}
 
 	public boolean hasNext() {
