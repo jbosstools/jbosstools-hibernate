@@ -1,5 +1,6 @@
 package org.hibernate.eclipse.utils;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -8,7 +9,7 @@ public class JoinedIterator implements Iterator {
 	private static final Iterator[] ITERATORS = {};
 
 	// wrapped iterators
-	private Iterator[] iterators;
+	private List<Iterator> iterators;
 
 	// index of current iterator in the wrapped iterators array
 	private int currentIteratorIndex;
@@ -19,20 +20,23 @@ public class JoinedIterator implements Iterator {
 	// the last used iterator
 	private Iterator lastUsedIterator;
 
-	public JoinedIterator(List iterators) {
-		this( (Iterator[]) iterators.toArray(ITERATORS) );
-	}
-
-	public JoinedIterator(Iterator[] iterators) {
+	public JoinedIterator(List<Iterator> iterators) {
 		if( iterators==null )
 			throw new NullPointerException("Unexpected NULL iterators argument");
 		this.iterators = iterators;
 	}
 
+	public JoinedIterator(Iterator[] iterators) {
+		this.iterators = new ArrayList(iterators.length);
+		for (Iterator iterator : iterators) {
+			this.iterators.add(iterator);
+		}
+	}
+
 	public JoinedIterator(Iterator first, Iterator second) {
-		this.iterators = new Iterator[2];
-		this.iterators[0] = first;
-		this.iterators[1] = second;
+		iterators = new ArrayList(2);
+		iterators.add(first);
+		iterators.add(second);
 	}
 
 	public boolean hasNext() {
@@ -56,20 +60,20 @@ public class JoinedIterator implements Iterator {
 	protected void updateCurrentIterator() {
 
 		if (currentIterator == null) {
-			if( iterators.length==0  ) {
+			if( iterators.size()==0  ) {
 				currentIterator = EmptyIterator.INSTANCE;
 			}
 			else {
-				currentIterator = iterators[0];
+				currentIterator = iterators.get(0);
 			}
 			// set last used iterator here, in case the user calls remove
 			// before calling hasNext() or next() (although they shouldn't)
 			lastUsedIterator = currentIterator;
 		}
 
-		while (! currentIterator.hasNext() && currentIteratorIndex < iterators.length - 1) {
+		while (! currentIterator.hasNext() && currentIteratorIndex < iterators.size() - 1) {
 			currentIteratorIndex++;
-			currentIterator = iterators[currentIteratorIndex];
+			currentIterator = iterators.get(currentIteratorIndex);
 		}
 	}
 
