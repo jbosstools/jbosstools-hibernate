@@ -59,7 +59,7 @@ public class JoinedIterator<T> implements Iterator<T> {
 
 		if (currentIterator == null) {
 			if( iterators.size()==0  ) {
-				currentIterator = EmptyIterator.INSTANCE;
+				currentIterator = new EmptyIterator<T>();
 			}
 			else {
 				currentIterator = iterators.get(0);
@@ -76,8 +76,6 @@ public class JoinedIterator<T> implements Iterator<T> {
 	}
 
 	private static final class EmptyIterator<T> implements Iterator<T> {
-
-		public static final Iterator INSTANCE = new EmptyIterator();
 
 		public boolean hasNext() {
 			return false;
