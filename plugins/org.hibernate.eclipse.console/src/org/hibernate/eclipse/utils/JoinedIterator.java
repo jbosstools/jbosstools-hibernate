@@ -4,35 +4,35 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class JoinedIterator implements Iterator {
+public class JoinedIterator<T> implements Iterator<T> {
 
 	// wrapped iterators
-	private List<Iterator> iterators;
+	private List<Iterator<T>> iterators;
 
 	// index of current iterator in the wrapped iterators array
 	private int currentIteratorIndex;
 
 	// the current iterator
-	private Iterator currentIterator;
+	private Iterator<T> currentIterator;
 
 	// the last used iterator
-	private Iterator lastUsedIterator;
+	private Iterator<T> lastUsedIterator;
 
-	public JoinedIterator(List<Iterator> iterators) {
+	public JoinedIterator(List<Iterator<T>> iterators) {
 		if( iterators==null )
 			throw new NullPointerException("Unexpected NULL iterators argument");
 		this.iterators = iterators;
 	}
 
-	public JoinedIterator(Iterator[] iterators) {
-		this.iterators = new ArrayList(iterators.length);
-		for (Iterator iterator : iterators) {
+	public JoinedIterator(Iterator<T>[] iterators) {
+		this.iterators = new ArrayList<Iterator<T>>(iterators.length);
+		for (Iterator<T> iterator : iterators) {
 			this.iterators.add(iterator);
 		}
 	}
 
-	public JoinedIterator(Iterator first, Iterator second) {
-		iterators = new ArrayList(2);
+	public JoinedIterator(Iterator<T> first, Iterator<T> second) {
+		iterators = new ArrayList<Iterator<T>>(2);
 		iterators.add(first);
 		iterators.add(second);
 	}
@@ -42,7 +42,7 @@ public class JoinedIterator implements Iterator {
 		return currentIterator.hasNext();
 	}
 
-	public Object next() {
+	public T next() {
 		updateCurrentIterator();
 		return currentIterator.next();
 	}
