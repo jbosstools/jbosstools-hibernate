@@ -75,7 +75,7 @@ public class JoinedIterator<T> implements Iterator<T> {
 		}
 	}
 
-	private static final class EmptyIterator implements Iterator {
+	private static final class EmptyIterator<T> implements Iterator<T> {
 
 		public static final Iterator INSTANCE = new EmptyIterator();
 
@@ -83,7 +83,7 @@ public class JoinedIterator<T> implements Iterator<T> {
 			return false;
 		}
 
-		public Object next() {
+		public T next() {
 			throw new UnsupportedOperationException();
 		}
 
