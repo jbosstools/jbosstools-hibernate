@@ -6,8 +6,6 @@ import java.util.List;
 
 public class JoinedIterator implements Iterator {
 
-	private static final Iterator[] ITERATORS = {};
-
 	// wrapped iterators
 	private List<Iterator> iterators;
 
