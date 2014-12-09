@@ -21,7 +21,7 @@ public class HQLExpressionCompilerParticipant extends CompilationParticipant {
 	}
 
 	protected CompilationUnit parse(ICompilationUnit unit) {
-		ASTParser parser = ASTParser.newParser(AST.JLS3); 
+		ASTParser parser = ASTParser.newParser(AST.JLS8); 
 		parser.setKind(ASTParser.K_COMPILATION_UNIT);
 		parser.setSource(unit); 
 		parser.setResolveBindings(false); 
@@ -33,7 +33,7 @@ public class HQLExpressionCompilerParticipant extends CompilationParticipant {
 			BuildContext context = files[i];
 			ConsoleConfiguration consoleConfiguration = getConsoleConfiguration( ProjectUtils.findJavaProject( context.getFile().getProject().getName() ) );
 			if(consoleConfiguration!=null && consoleConfiguration.isSessionFactoryCreated()) {
-				ASTParser parser = ASTParser.newParser( AST.JLS3 );
+				ASTParser parser = ASTParser.newParser( AST.JLS8 );
 				parser.setKind( ASTParser.K_COMPILATION_UNIT );
 				parser.setSource( context.getContents() );
 				parser.setResolveBindings( false );
