@@ -20,7 +20,7 @@ public class JoinedIterator<T> implements Iterator<T> {
 
 	public JoinedIterator(List<Iterator<T>> iterators) {
 		if( iterators==null )
-			throw new NullPointerException("Unexpected NULL iterators argument");
+			throw new NullPointerException("Unexpected NULL iterators argument"); //$NON-NLS-1$
 		this.iterators = iterators;
 	}
 
