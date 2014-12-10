@@ -41,11 +41,11 @@ public class CriteriaEditorInput extends QueryEditorInput {
 
 
     public String getFactoryId() {
-        return CriteriaditorInputFactory.ID_FACTORY;
+        return CriteriaEditorInputFactory.ID_FACTORY;
     }
 
     public void saveState(IMemento memento) {
-        CriteriaditorInputFactory.saveState( memento, this );
+        CriteriaEditorInputFactory.saveState( memento, this );
     }
 
     public void resetName() {

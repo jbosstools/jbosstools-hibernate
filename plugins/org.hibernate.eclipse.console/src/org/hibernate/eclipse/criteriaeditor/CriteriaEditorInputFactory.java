@@ -26,7 +26,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.ui.IElementFactory;
 import org.eclipse.ui.IMemento;
 
-public class CriteriaditorInputFactory implements IElementFactory {
+public class CriteriaEditorInputFactory implements IElementFactory {
 
     public final static String ID_FACTORY =  "org.hibernate.eclipse.criteriaeditor.CriteriaEditorInputFactory"; //$NON-NLS-1$
     public final static String ID_STORAGE_EDITOR_INPUT = "CriteriaEditorStorageEditorInput"; //$NON-NLS-1$
