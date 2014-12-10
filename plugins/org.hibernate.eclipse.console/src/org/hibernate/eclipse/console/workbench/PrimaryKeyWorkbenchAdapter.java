@@ -31,7 +31,6 @@ import org.jboss.tools.hibernate.spi.IPrimaryKey;
 
 public class PrimaryKeyWorkbenchAdapter implements IWorkbenchAdapter {
 
-	@SuppressWarnings("unchecked")
 	public Object[] getChildren(Object o) {
 		IPrimaryKey t = getPrimaryKey( o );
 
