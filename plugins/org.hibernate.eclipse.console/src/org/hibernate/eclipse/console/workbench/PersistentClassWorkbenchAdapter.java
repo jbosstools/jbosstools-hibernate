@@ -35,7 +35,6 @@ import org.jboss.tools.hibernate.spi.IProperty;
 
 public class PersistentClassWorkbenchAdapter implements IWorkbenchAdapter {
 
-	@SuppressWarnings("unchecked")
 	public Object[] getChildren(Object o) {
 		IPersistentClass pc = (IPersistentClass) o;
 		IProperty identifierProperty = pc.getIdentifierProperty();
