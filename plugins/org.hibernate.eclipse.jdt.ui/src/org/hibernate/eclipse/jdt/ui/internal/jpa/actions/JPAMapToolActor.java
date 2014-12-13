@@ -240,7 +240,7 @@ public class JPAMapToolActor {
 						sDocument = (SynchronizableDocument)fDocument;
 					}
 					if (sDocument != null) {
-						ASTParser parser = ASTParser.newParser(AST.JLS3);
+						ASTParser parser = ASTParser.newParser(AST.JLS8);
 						parser.setSource(sDocument.get().toCharArray());
 						parser.setResolveBindings(false);
 						resultCU = (org.eclipse.jdt.core.dom.CompilationUnit) parser.createAST(null);
