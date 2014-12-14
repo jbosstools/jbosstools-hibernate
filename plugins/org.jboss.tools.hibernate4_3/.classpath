@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/javassist-3.18.1-GA.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jandex-1.1.0.Final.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate-tools-4.3.1.CR1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate-jpa-2.1-api-1.0.0.Final.jar"/>
@@ -14,7 +15,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/slf4j-api-1.6.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-collections-3.2.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-logging-1.1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/required/javassist-3.18.1-GA.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.15.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
