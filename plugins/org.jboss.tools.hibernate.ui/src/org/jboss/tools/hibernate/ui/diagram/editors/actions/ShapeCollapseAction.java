@@ -62,7 +62,7 @@ public class ShapeCollapseAction extends SelectionAction {
 			return cc;
 		}
 		List<ExpandableShape> selectedShape = new ArrayList<ExpandableShape>();
-		Iterator it = getSelectedObjects().iterator();
+		Iterator<?> it = getSelectedObjects().iterator();
 		while (it.hasNext()) {
 			Object firstElement = it.next();
 			Object obj = null;
@@ -95,7 +95,7 @@ public class ShapeCollapseAction extends SelectionAction {
 		if (getSelectedObjects().isEmpty()) {
 			return res;
 		}
-		Iterator it = getSelectedObjects().iterator();
+		Iterator<?> it = getSelectedObjects().iterator();
 		while (it.hasNext() && !res) {
 			Object firstElement = it.next();
 			Object obj = null;
