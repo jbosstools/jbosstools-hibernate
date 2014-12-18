@@ -9,12 +9,12 @@ Require-Bundle: org.hibernate.eclipse;bundle-version="4.0.1",
  org.jboss.tools.hibernate.libs.dom4j;bundle-version="1.6.1",
  org.jboss.tools.hibernate.libs.freemarker;bundle-version="2.3.8",
  org.jboss.tools.hibernate.libs.jtidy;bundle-version="8.0.0",
- org.jboss.tools.hibernate.spi;bundle-version="3.8.0"
+ org.jboss.tools.hibernate.spi;bundle-version="3.8.0",
+ org.apache.commons.collections;bundle-version="3.2.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: .,
  lib/asm-3.1.jar,
  lib/cglib-2.2.jar,
- lib/commons-collections-3.1.jar,
  lib/commons-logging-1.0.4.jar,
  lib/hibernate-annotations-3.5.6-Final.jar,
  lib/hibernate-commons-annotations-3.2.0.Final.jar,
