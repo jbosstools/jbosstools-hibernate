@@ -6,7 +6,6 @@ Bundle-Version: 4.0.1.qualifier
 Bundle-Localization: plugin
 Require-Bundle: org.hibernate.eclipse;bundle-version="3.7.0",
  org.eclipse.datatools.connectivity;bundle-version="1.2.7",
- org.hibernate.eclipse.console;bundle-version="3.7.0",
  org.jboss.tools.hibernate.spi;bundle-version="3.8.0",
  org.jboss.tools.hibernate.libs.dom4j;bundle-version="1.6.1",
  org.jboss.tools.hibernate.libs.antlr;bundle-version="2.7.7",
