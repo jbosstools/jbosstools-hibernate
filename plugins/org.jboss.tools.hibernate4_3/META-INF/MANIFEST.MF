@@ -6,7 +6,6 @@ Bundle-SymbolicName: org.jboss.tools.hibernate4_3;singleton:=true
 Bundle-Version: 4.0.1.qualifier
 Bundle-Localization: plugin
 Require-Bundle: org.hibernate.eclipse,
- org.eclipse.datatools.connectivity,
  org.jboss.tools.hibernate.libs.antlr;bundle-version="2.7.7",
  org.jboss.tools.hibernate.libs.dom4j;bundle-version="1.6.1",
  org.jboss.tools.hibernate.libs.freemarker;bundle-version="2.3.8",
