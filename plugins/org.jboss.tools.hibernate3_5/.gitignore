@@ -1,3 +1,4 @@
 lib/asm-*.jar
 lib/cglib-*.jar
 lib/commons-logging-*.jar
+lib/hibernate-annotations-*.jar
