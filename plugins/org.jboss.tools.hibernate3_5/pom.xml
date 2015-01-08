@@ -16,7 +16,7 @@
 		<asm.version>3.1</asm.version>
 		<cglib.version>2.2</cglib.version>
 		<commons-logging.version>1.0.4</commons-logging.version>
-		<hibernate-annotations.version>3.5.6-Final</hibernate-annotations.version>
+		<hibernate.version>3.5.6-Final</hibernate.version>
 		<hibernate-commons-annotations.version>3.2.0.Final</hibernate-commons-annotations.version>
 	</properties>
 
@@ -54,12 +54,17 @@
 						<artifactItem>
 							<groupId>org.hibernate</groupId>
 							<artifactId>hibernate-annotations</artifactId>
-							<version>${hibernate-annotations.version}</version>
+							<version>${hibernate.version}</version>
 						</artifactItem>
 						<artifactItem>
 							<groupId>org.hibernate</groupId>
 							<artifactId>hibernate-commons-annotations</artifactId>
 							<version>${hibernate-commons-annotations.version}</version>
+						</artifactItem>
+						<artifactItem>
+							<groupId>org.hibernate</groupId>
+							<artifactId>hibernate-core</artifactId>
+							<version>${hibernate.version}</version>
 						</artifactItem>
 					</artifactItems>
 					<skip>false</skip>
@@ -76,8 +81,9 @@
 							    <include>**/asm-${asm.version}.jar</include>
 							    <include>**/cglib-${cglib.version}.jar</include>
 							    <include>**/commons-logging-${commons-logging.version}.jar</include>
-							    <include>**/hibernate-annotations-${hibernate-annotations.version}.jar</include>
+							    <include>**/hibernate-annotations-${hibernate.version}.jar</include>
 							    <include>**/hibernate-commons-annotations-${hibernate-commons-annotations.version}.jar</include>
+							    <include>**/hibernate-core-${hibernate.version}.jar</include>
 							</includes>
 						</fileset>
 					</filesets>
