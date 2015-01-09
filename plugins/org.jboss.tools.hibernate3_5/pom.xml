@@ -20,6 +20,7 @@
 		<hibernate-commons-annotations.version>3.2.0.Final</hibernate-commons-annotations.version>
 		<hibernate-jpa-2.0-api.version>1.0.0.Final</hibernate-jpa-2.0-api.version>
 		<hibernate-tools.version>3.4.0.CR2</hibernate-tools.version>
+		<javassist.version>3.9.0.GA</javassist.version>
 	</properties>
 
 	<build>
@@ -83,6 +84,11 @@
 							<artifactId>hibernate-tools</artifactId>
 							<version>${hibernate-tools.version}</version>
 						</artifactItem>
+						<artifactItem>
+							<groupId>javassist</groupId>
+							<artifactId>javassist</artifactId>
+							<version>${javassist.version}</version>
+						</artifactItem>
 					</artifactItems>
 					<skip>false</skip>
 					<outputDirectory>${basedir}/lib</outputDirectory>
@@ -104,6 +110,7 @@
 							    <include>**/hibernate-entitymanager-${hibernate.version}.jar</include>
 							    <include>**/hibernate-jpa-2.0-api-${hibernate-jpa-2.0-api.version}.jar</include>
 							    <include>**/hibernate-tools-${hibernate-tools.version}.jar</include>
+							    <include>**/javassist-${javassist.version}.jar</include>
 							</includes>
 						</fileset>
 					</filesets>
