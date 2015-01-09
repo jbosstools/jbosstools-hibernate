@@ -5,3 +5,4 @@ lib/hibernate-annotations-*.jar
 lib/hibernate-commons-annotations-*.jar
 lib/hibernate-core-*.jar
 lib/hibernate-entitymanager-*.jar
+lib/hibernate-jpa-2.0-api-*.jar
