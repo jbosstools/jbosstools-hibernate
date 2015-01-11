@@ -22,6 +22,7 @@
 		<hibernate-tools.version>3.4.0.CR2</hibernate-tools.version>
 		<javassist.version>3.9.0.GA</javassist.version>
 		<jta.version>1.1</jta.version>
+		<log4j.version>1.2.15</log4j.version>
 	</properties>
 
 	<build>
@@ -95,6 +96,11 @@
 							<artifactId>jta</artifactId>
 							<version>${jta.version}</version>
 						</artifactItem>
+						<artifactItem>
+							<groupId>log4j</groupId>
+							<artifactId>log4j</artifactId>
+							<version>${log4j.version}</version>
+						</artifactItem>
 					</artifactItems>
 					<skip>false</skip>
 					<outputDirectory>${basedir}/lib</outputDirectory>
@@ -118,6 +124,7 @@
 							    <include>**/hibernate-tools-${hibernate-tools.version}.jar</include>
 							    <include>**/javassist-${javassist.version}.jar</include>
 							    <include>**/jta-${jta.version}.jar</include>
+							    <include>**/log4j-${log4j.version}.jar</include>
 							</includes>
 						</fileset>
 					</filesets>
