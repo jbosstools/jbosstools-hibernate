@@ -10,3 +10,4 @@ lib/hibernate-tools-*.jar
 lib/javassist-*.jar
 lib/jta-*.jar
 lib/log4j-*.jar
+lib/slf4j-api-*.jar
