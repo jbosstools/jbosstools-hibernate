@@ -1,2 +1,3 @@
 lib/cglib-*.jar
 lib/commons-logging-*.jar
+lib/hibernate-commons-annotations-*.jar
