@@ -10,4 +10,51 @@
 	<artifactId>org.jboss.tools.hibernate3_6</artifactId> 
 	
 	<packaging>eclipse-plugin</packaging>
+
+	<properties>
+		<cglib.version>2.2</cglib.version>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>get-libs</id>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<phase>generate-resources</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<artifactItems>
+						<artifactItem>
+							<groupId>cglib</groupId>
+							<artifactId>cglib</artifactId>
+							<version>${cglib.version}</version>
+						</artifactItem>
+					</artifactItems>
+					<skip>false</skip>
+					<outputDirectory>${basedir}/lib</outputDirectory>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>${basedir}/lib</directory>
+							<includes>
+								<include>**/cglib-${cglib.version}.jar</include>
+							</includes>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
 </project>
