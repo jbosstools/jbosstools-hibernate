@@ -11,7 +11,6 @@
 	
 	<packaging>eclipse-plugin</packaging>
 	
-
 	<properties>
 		<asm.version>3.1</asm.version>
 		<cglib.version>2.2</cglib.version>
@@ -123,22 +122,6 @@
 					<filesets>
 						<fileset>
 							<directory>${basedir}/lib</directory>
-							<includes>
-							    <include>**/asm-${asm.version}.jar</include>
-							    <include>**/cglib-${cglib.version}.jar</include>
-							    <include>**/commons-logging-${commons-logging.version}.jar</include>
-							    <include>**/hibernate-annotations-${hibernate.version}.jar</include>
-							    <include>**/hibernate-commons-annotations-${hibernate-commons-annotations.version}.jar</include>
-							    <include>**/hibernate-core-${hibernate.version}.jar</include>
-							    <include>**/hibernate-entitymanager-${hibernate.version}.jar</include>
-							    <include>**/hibernate-jpa-2.0-api-${hibernate-jpa-2.0-api.version}.jar</include>
-							    <include>**/hibernate-tools-${hibernate-tools.version}.jar</include>
-							    <include>**/javassist-${javassist.version}.jar</include>
-							    <include>**/jta-${jta.version}.jar</include>
-							    <include>**/log4j-${log4j.version}.jar</include>
-							    <include>**/slf4j-api-${slf4j.version}.jar</include>
-							    <include>**/slf4j-log4j12-${slf4j.version}.jar</include>
-							</includes>
 						</fileset>
 					</filesets>
 				</configuration>
