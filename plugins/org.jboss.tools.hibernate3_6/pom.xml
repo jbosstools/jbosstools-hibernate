@@ -13,6 +13,7 @@
 
 	<properties>
 		<cglib.version>2.2</cglib.version>
+		<commons-logging.version>1.0.4</commons-logging.version>
 	</properties>
 
 	<build>
@@ -36,6 +37,11 @@
 							<artifactId>cglib</artifactId>
 							<version>${cglib.version}</version>
 						</artifactItem>
+						<artifactItem>
+							<groupId>commons-logging</groupId>
+							<artifactId>commons-logging</artifactId>
+							<version>${commons-logging.version}</version>
+						</artifactItem>
 					</artifactItems>
 					<skip>false</skip>
 					<outputDirectory>${basedir}/lib</outputDirectory>
@@ -49,6 +55,7 @@
 							<directory>${basedir}/lib</directory>
 							<includes>
 								<include>**/cglib-${cglib.version}.jar</include>
+								<include>**/commons-logging-${commons-logging.version}.jar</include>
 							</includes>
 						</fileset>
 					</filesets>
