@@ -14,6 +14,7 @@
 	<properties>
 		<cglib.version>2.2</cglib.version>
 		<commons-logging.version>1.0.4</commons-logging.version>
+		<hibernate.version>3.6.9.Final</hibernate.version>
 		<hibernate-commons-annotations.version>3.2.0.Final</hibernate-commons-annotations.version>
 	</properties>
 
@@ -48,6 +49,11 @@
 							<artifactId>hibernate-commons-annotations</artifactId>
 							<version>${hibernate-commons-annotations.version}</version>
 						</artifactItem>
+						<artifactItem>
+							<groupId>org.hibernate</groupId>
+							<artifactId>hibernate-core</artifactId>
+							<version>${hibernate.version}</version>
+						</artifactItem>
 					</artifactItems>
 					<skip>false</skip>
 					<outputDirectory>${basedir}/lib</outputDirectory>
@@ -63,6 +69,7 @@
 								<include>**/cglib-${cglib.version}.jar</include>
 								<include>**/commons-logging-${commons-logging.version}.jar</include>
 								<include>**/hibernate-commons-annotations-${hibernate-commons-annotations.version}.jar</include>
+								<include>**/hibernate-core-${hibernate.version}.jar</include>
 							</includes>
 						</fileset>
 					</filesets>
