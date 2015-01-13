@@ -54,6 +54,11 @@
 							<artifactId>hibernate-core</artifactId>
 							<version>${hibernate.version}</version>
 						</artifactItem>
+						<artifactItem>
+							<groupId>org.hibernate</groupId>
+							<artifactId>hibernate-entitymanager</artifactId>
+							<version>${hibernate.version}</version>
+						</artifactItem>
 					</artifactItems>
 					<skip>false</skip>
 					<outputDirectory>${basedir}/lib</outputDirectory>
@@ -70,6 +75,7 @@
 								<include>**/commons-logging-${commons-logging.version}.jar</include>
 								<include>**/hibernate-commons-annotations-${hibernate-commons-annotations.version}.jar</include>
 								<include>**/hibernate-core-${hibernate.version}.jar</include>
+								<include>**/hibernate-entitymanager-${hibernate.version}.jar</include>
 							</includes>
 						</fileset>
 					</filesets>
