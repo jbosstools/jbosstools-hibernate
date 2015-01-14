@@ -4,3 +4,4 @@ lib/hibernate-core-*.jar
 lib/hibernate-entitymanager-*.jar
 lib/hibernate-jpa-2.0-api-*.jar
 lib/hibernate-tools-*.jar
+lib/jboss-logging-*.jar
