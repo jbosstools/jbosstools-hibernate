@@ -16,6 +16,7 @@
 		<hibernate.version>4.0.0.Final</hibernate.version>
 		<hibernate-commons-annotations.version>4.0.1.Final</hibernate-commons-annotations.version>
 		<hibernate-jpa-2.0-api.version>1.0.1.Final</hibernate-jpa-2.0-api.version>
+		<hibernate-tools.version>4.0.0-CR1</hibernate-tools.version>
 	</properties>
 
 	<build>
@@ -59,6 +60,11 @@
 							<artifactId>hibernate-jpa-2.0-api</artifactId>
 							<version>${hibernate-jpa-2.0-api.version}</version>
 						</artifactItem>
+						<artifactItem>
+							<groupId>org.hibernate</groupId>
+							<artifactId>hibernate-tools</artifactId>
+							<version>${hibernate-tools.version}</version>
+						</artifactItem>
 					</artifactItems>
 					<skip>false</skip>
 					<outputDirectory>${basedir}/lib</outputDirectory>
@@ -76,6 +82,7 @@
 								<include>**/hibernate-core-${hibernate.version}.jar</include>
 								<include>**/hibernate-entitymanager-${hibernate.version}.jar</include>
 								<include>**/hibernate-jpa-2.0-api-${hibernate-jpa-2.0-api.version}.jar</include>
+								<include>**/hibernate-tools-${hibernate-tools.version}.jar</include>
 							</includes>
 						</fileset>
 					</filesets>
