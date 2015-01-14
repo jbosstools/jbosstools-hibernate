@@ -19,6 +19,7 @@
 		<hibernate-tools.version>4.0.0-CR1</hibernate-tools.version>
 		<jboss-logging.version>3.1.0.CR2</jboss-logging.version>
 		<jboss-transaction-api_1.1_spec.version>1.0.0.Final</jboss-transaction-api_1.1_spec.version>
+		<javassist.version>3.12.1.GA</javassist.version>
 	</properties>
 
 	<build>
@@ -77,6 +78,11 @@
 							<artifactId>jboss-transaction-api_1.1_spec</artifactId>
 							<version>${jboss-transaction-api_1.1_spec.version}</version>
 						</artifactItem>
+						<artifactItem>
+							<groupId>javassist</groupId>
+							<artifactId>javassist</artifactId>
+							<version>${javassist.version}</version>
+						</artifactItem>
 					</artifactItems>
 					<skip>false</skip>
 					<outputDirectory>${basedir}/lib</outputDirectory>
@@ -97,6 +103,7 @@
 								<include>**/hibernate-tools-${hibernate-tools.version}.jar</include>
 								<include>**/jboss-logging-${jboss-logging.version}.jar</include>
 								<include>**/jboss-transaction-api_1.1_spec-${jboss-transaction-api_1.1_spec.version}.jar</include>
+								<include>**/javassist-${javassist.version}.jar</include>
 							</includes>
 						</fileset>
 					</filesets>
