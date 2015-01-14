@@ -9,3 +9,4 @@ lib/javassist-*.jar
 lib/jta-*.jar
 lib/log4j-*.jar
 lib/slf4j-api-*.jar
+lib/slf4j-log4j12-*.jar
