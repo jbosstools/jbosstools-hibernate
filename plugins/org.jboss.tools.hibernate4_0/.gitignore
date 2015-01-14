@@ -1,3 +1,4 @@
 lib/commons-logging-*.jar
 lib/hibernate-commons-annotations-*.jar
 lib/hibernate-core-*.jar
+lib/hibernate-entitymanager-*.jar
