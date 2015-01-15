@@ -1,12 +1,1 @@
-lib/commons-logging-*.jar
-lib/hibernate-commons-annotations-*.jar
-lib/hibernate-core-*.jar
-lib/hibernate-entitymanager-*.jar
-lib/hibernate-jpa-2.0-api-*.jar
-lib/hibernate-tools-*.jar
-lib/jboss-logging-*.jar
-lib/jboss-transaction-api_1.1_spec-*.jar
-lib/javassist-*.jar
-lib/log4j-*.jar
-lib/slf4j-api-*.jar
-lib/slf4j-log4j12-*.jar
+lib/
