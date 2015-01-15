@@ -9,3 +9,4 @@ lib/jboss-transaction-api_1.1_spec-*.jar
 lib/javassist-*.jar
 lib/log4j-*.jar
 lib/slf4j-api-*.jar
+lib/slf4j-log4j12-*.jar
