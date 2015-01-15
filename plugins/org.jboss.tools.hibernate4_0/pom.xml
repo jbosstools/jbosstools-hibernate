@@ -20,6 +20,7 @@
 		<jboss-logging.version>3.1.0.CR2</jboss-logging.version>
 		<jboss-transaction-api_1.1_spec.version>1.0.0.Final</jboss-transaction-api_1.1_spec.version>
 		<javassist.version>3.12.1.GA</javassist.version>
+		<log4j.version>1.2.15</log4j.version>
 	</properties>
 
 	<build>
@@ -83,6 +84,11 @@
 							<artifactId>javassist</artifactId>
 							<version>${javassist.version}</version>
 						</artifactItem>
+						<artifactItem>
+							<groupId>log4j</groupId>
+							<artifactId>log4j</artifactId>
+							<version>${log4j.version}</version>
+						</artifactItem>
 					</artifactItems>
 					<skip>false</skip>
 					<outputDirectory>${basedir}/lib</outputDirectory>
@@ -104,6 +110,7 @@
 								<include>**/jboss-logging-${jboss-logging.version}.jar</include>
 								<include>**/jboss-transaction-api_1.1_spec-${jboss-transaction-api_1.1_spec.version}.jar</include>
 								<include>**/javassist-${javassist.version}.jar</include>
+								<include>**/log4j-${log4j.version}.jar</include>
 							</includes>
 						</fileset>
 					</filesets>
