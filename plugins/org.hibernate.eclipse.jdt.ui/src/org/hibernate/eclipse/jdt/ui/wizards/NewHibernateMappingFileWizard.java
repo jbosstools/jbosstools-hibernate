@@ -246,9 +246,56 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 	
 	protected class HibernateMappingExporterWrapper { // extends HibernateMappingExporter {
 		protected IJavaProject proj;
+		private IHibernateMappingExporter delegate = new IHibernateMappingExporter() {			
+			@Override public void start() {}			
+			@Override public void setOutputDirectory(File directory) {}
+			@Override public void setGlobalSettings(IHibernateMappingGlobalSettings hmgs) {}
+			@Override public void setExportPOJODelegate(IHibernateMappingExporter delegate) {}
+			@Override public File getOutputDirectory() { return null; }		
+			@Override public void exportPOJO(Map<Object, Object> map, IPOJOClass pojoClass) {
+				File outputdir4FileOld = target.getOutputDirectory();
+				File outputdir4FileNew = outputdir4FileOld;
+				String fullyQualifiedName = pojoClass.getQualifiedDeclarationName();
+				ICompilationUnit icu = Utils.findCompilationUnit(proj, fullyQualifiedName);
+				if (icu != null) {
+					IResource resource = null;
+					try {
+						resource = icu.getCorrespondingResource();
+					} catch (JavaModelException e) {
+						//ignore
+					}
+					String[] aFQName = fullyQualifiedName.split("\\."); //$NON-NLS-1$
+					int n = aFQName.length - 1;
+					for ( ; n >= 0 && resource != null; n--) {
+						if (n == 0 && aFQName[n].length() == 0) {
+							// handle the (default package) case
+							break;
+						}
+						resource = resource.getParent();
+					}
+					if (resource != null) {
+						final IPath projPath = proj.getResource().getLocation();
+						IPath place2Gen = previewPage.getRootPlace2Gen().append(proj.getElementName());
+						//
+						IPath tmpPath = resource.getLocation();
+						tmpPath = tmpPath.makeRelativeTo(projPath);
+						place2Gen = place2Gen.append(tmpPath);
+						outputdir4FileNew = place2Gen.toFile();
+					}
+				}
+				if (!outputdir4FileNew.exists()) {
+					outputdir4FileNew.mkdirs();
+				}
+				target.setOutputDirectory(outputdir4FileNew);
+				invokeTargetExport(map, pojoClass);
+//				target.exportPOJO(additionalContext, element);
+				target.setOutputDirectory(outputdir4FileOld);
+			}
+		};
 		private IHibernateMappingExporter target = null;
 		public HibernateMappingExporterWrapper(IJavaProject proj, IConfiguration cfg, File outputdir) {
 	    	target = getService(proj).newHibernateMappingExporter(cfg, outputdir);
+	    	target.setExportPOJODelegate(delegate);
 	    	this.proj = proj;
 	    }
 		/**
