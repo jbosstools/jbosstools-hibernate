@@ -43,7 +43,6 @@ import org.hibernate.mapping.Table;
 import org.hibernate.proxy.HibernateProxyHelper;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
-import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.util.xpl.ReflectHelper;
@@ -131,11 +130,7 @@ public class ServiceProxy implements IService {
 	@Override
 	public IHibernateMappingExporter newHibernateMappingExporter(
 			IConfiguration hcfg, File file) {
-		IHibernateMappingExporter result = null;
-		if (hcfg instanceof ConfigurationProxy) {
-			result = new HibernateMappingExporterProxy(new HibernateMappingExporter(((ConfigurationProxy)hcfg).getConfiguration()	, file));
-		}
-		return result;
+		return new HibernateMappingExporterProxy(hcfg, file);
 	}
 
 	@Override
