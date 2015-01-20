@@ -3,3 +3,4 @@ lib/hibernate-commons-annotations-*.jar
 lib/hibernate-core-*.jar
 lib/hibernate-entitymanager-*.jar
 lib/hibernate-jpa-2.1-api-*.jar
+lib/hibernate-tools-*.jar
