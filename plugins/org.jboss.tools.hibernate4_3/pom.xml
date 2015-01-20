@@ -17,6 +17,7 @@
 		<hibernate-commons-annotations.version>4.0.4.Final</hibernate-commons-annotations.version>
 		<hibernate-jpa-2.1-api.version>1.0.0.Final</hibernate-jpa-2.1-api.version>
 		<hibernate-tools.version>4.3.1.CR1</hibernate-tools.version>
+		<jboss-logging.version>3.1.3.GA</jboss-logging.version>
 	</properties>
 
 	<build>
@@ -65,6 +66,11 @@
 							<artifactId>hibernate-tools</artifactId>
 							<version>${hibernate-tools.version}</version>
 						</artifactItem>
+						<artifactItem>
+							<groupId>org.jboss.logging</groupId>
+							<artifactId>jboss-logging</artifactId>
+							<version>${jboss-logging.version}</version>
+						</artifactItem>
 					</artifactItems>
 					<skip>false</skip>
 					<outputDirectory>${basedir}/lib</outputDirectory>
@@ -83,6 +89,7 @@
 								<include>**/hibernate-entitymanager-${hibernate.version}.jar</include>
 								<include>**/hibernate-jpa-2.1-api-${hibernate-jpa-2.1-api.version}.jar</include>
 								<include>**/hibernate-tools-${hibernate-tools.version}.jar</include>
+								<include>**/jboss-logging-${jboss-logging.version}.jar</include>
 							</includes>
 						</fileset>
 					</filesets>
