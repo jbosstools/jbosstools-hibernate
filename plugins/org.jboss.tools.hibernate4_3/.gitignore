@@ -7,3 +7,4 @@ lib/hibernate-tools-*.jar
 lib/jboss-logging-*.jar
 lib/jboss-transaction-api_1.2_spec-*.jar
 lib/jandex-*.jar
+lib/javassist-*.jar
