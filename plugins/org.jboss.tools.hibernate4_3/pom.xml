@@ -21,6 +21,7 @@
 		<jboss-transaction-api_1.2_spec.version>1.0.0.Final</jboss-transaction-api_1.2_spec.version>
 		<jandex.version>1.1.0.Final</jandex.version>
 		<javassist.version>3.18.1-GA</javassist.version>
+		<slf4j.version>1.6.1</slf4j.version>
 	</properties>
 
 	<build>
@@ -89,6 +90,11 @@
 							<artifactId>javassist</artifactId>
 							<version>${javassist.version}</version>
 						</artifactItem>
+						<artifactItem>
+							<groupId>org.slf4j</groupId>
+							<artifactId>slf4j-api</artifactId>
+							<version>${slf4j.version}</version>
+						</artifactItem>
 					</artifactItems>
 					<skip>false</skip>
 					<outputDirectory>${basedir}/lib</outputDirectory>
@@ -111,6 +117,7 @@
 								<include>**/jboss-transaction-api_1.2_spec-${jboss-transaction-api_1.2_spec.version}.jar</include>
 								<include>**/jandex-${jandex.version}.jar</include>
 								<include>**/javassist-${javassist.version}.jar</include>
+								<include>**/slf4j-api-${slf4j.version}.jar</include>
 							</includes>
 						</fileset>
 					</filesets>
