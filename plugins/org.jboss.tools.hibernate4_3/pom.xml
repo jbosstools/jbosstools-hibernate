@@ -106,19 +106,6 @@
 					<filesets>
 						<fileset>
 							<directory>${basedir}/lib</directory>
-							<includes>
-								<include>**/commons-logging-${commons-logging.version}.jar</include>
-								<include>**/hibernate-commons-annotations-${hibernate-commons-annotations.version}.jar</include>
-								<include>**/hibernate-core-${hibernate.version}.jar</include>
-								<include>**/hibernate-entitymanager-${hibernate.version}.jar</include>
-								<include>**/hibernate-jpa-2.1-api-${hibernate-jpa-2.1-api.version}.jar</include>
-								<include>**/hibernate-tools-${hibernate-tools.version}.jar</include>
-								<include>**/jboss-logging-${jboss-logging.version}.jar</include>
-								<include>**/jboss-transaction-api_1.2_spec-${jboss-transaction-api_1.2_spec.version}.jar</include>
-								<include>**/jandex-${jandex.version}.jar</include>
-								<include>**/javassist-${javassist.version}.jar</include>
-								<include>**/slf4j-api-${slf4j.version}.jar</include>
-							</includes>
 						</fileset>
 					</filesets>
 				</configuration>
