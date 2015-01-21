@@ -7,7 +7,7 @@ Bundle-Version: 4.0.1.qualifier
 Bundle-Localization: plugin
 Require-Bundle: org.apache.commons.collections;bundle-version="3.2.0",
  org.hibernate.eclipse;bundle-version="4.0.1",
- org.jboss.tools.hibernate.libs.antlr;bundle-version="2.7.7",
+ org.jboss.tools.hibernate.libs.antlr.v_2_7_7;bundle-version="2.7.7",
  org.jboss.tools.hibernate.libs.dom4j;bundle-version="1.6.1",
  org.jboss.tools.hibernate.libs.freemarker;bundle-version="2.3.8",
  org.jboss.tools.hibernate.libs.jtidy;bundle-version="8.0.0",

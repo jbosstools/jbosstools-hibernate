@@ -173,7 +173,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.jboss.tools.hibernate.libs.antlr"
+         id="org.jboss.tools.hibernate.libs.antlr.v_2_7_7"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
