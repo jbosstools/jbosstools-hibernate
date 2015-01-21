@@ -75,13 +75,6 @@
          unpack="false"/>
 
    <plugin
-         id="org.hibernate.eclipse.jdt.apt.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.hibernate.eclipse.jdt.ui"
          download-size="0"
          install-size="0"

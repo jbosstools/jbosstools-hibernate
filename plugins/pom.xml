@@ -21,7 +21,6 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<module>org.hibernate.eclipse</module>
 		<module>org.hibernate.eclipse.console</module>
 		<module>org.hibernate.eclipse.help</module>
-		<module>org.hibernate.eclipse.jdt.apt.ui</module>
 		<module>org.hibernate.eclipse.jdt.ui</module>
 		<module>org.hibernate.eclipse.mapper</module>
 		<module>org.jboss.tools.hibernate.jpt.core</module>
