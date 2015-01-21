@@ -86,7 +86,7 @@ Require-Bundle: org.hibernate.eclipse;bundle-version="3.7.0",
  org.eclipse.core.externaltools;bundle-version="1.0.100",
  org.eclipse.jst.j2ee.web;bundle-version="1.1.600",
  org.jboss.tools.hibernate.spi;bundle-version="3.8.0",
- org.jboss.tools.hibernate.libs.dom4j;bundle-version="1.6.1",
+ org.jboss.tools.hibernate.libs.dom4j.v_1_6_1;bundle-version="1.6.1",
  org.jboss.tools.hibernate.libs.antlr.v_2_7_7;bundle-version="2.7.7",
  org.jboss.tools.hibernate.libs.jtidy;bundle-version="8.0.0"
 Bundle-ActivationPolicy: lazy
