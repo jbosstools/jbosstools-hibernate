@@ -9,7 +9,7 @@ Require-Bundle: org.apache.commons.collections;bundle-version="3.2.0",
  org.jboss.tools.hibernate.spi;bundle-version="4.0.1",
  org.jboss.tools.hibernate.libs.dom4j.v_1_6_1;bundle-version="1.6.1",
  org.jboss.tools.hibernate.libs.antlr.v_2_7_7;bundle-version="2.7.7",
- org.jboss.tools.hibernate.libs.jtidy;bundle-version="8.0.0",
+ org.jboss.tools.hibernate.libs.jtidy.v_r8-20060801;bundle-version="8.0.0",
  org.jboss.tools.hibernate.libs.freemarker.v_2_3_8;bundle-version="2.3.8"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: .,
