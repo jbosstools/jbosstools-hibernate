@@ -185,7 +185,7 @@
          version="0.0.0"/>
 
    <plugin
-         id="org.jboss.tools.hibernate.libs.beanshell"
+         id="org.jboss.tools.hibernate.libs.bsh.v_2_0_b4"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
