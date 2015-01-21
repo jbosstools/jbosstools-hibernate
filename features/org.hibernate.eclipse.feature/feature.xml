@@ -191,7 +191,7 @@
          version="0.0.0"/>
 
    <plugin
-         id="org.jboss.tools.hibernate.libs.freemarker"
+         id="org.jboss.tools.hibernate.libs.freemarker.v_2_3_8"
          download-size="0"
          install-size="0"
          version="0.0.0"/>

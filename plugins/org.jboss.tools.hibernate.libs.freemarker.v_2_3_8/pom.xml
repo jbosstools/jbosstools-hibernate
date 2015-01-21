@@ -7,7 +7,7 @@
 		<version>4.0.1-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.hibernatetools.plugins</groupId>
-	<artifactId>org.jboss.tools.hibernate.libs.freemarker</artifactId> 
+	<artifactId>org.jboss.tools.hibernate.libs.freemarker.v_2_3_8</artifactId> 
 	
 	<packaging>eclipse-plugin</packaging>
 	<version>2.3.8-SNAPSHOT</version>
