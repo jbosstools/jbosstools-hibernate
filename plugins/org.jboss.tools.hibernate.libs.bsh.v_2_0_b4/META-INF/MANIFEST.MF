@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Beanshell for JBoss Tools Hibernate
 Bundle-SymbolicName: org.jboss.tools.hibernate.libs.bsh.v_2_0_b4
-Bundle-Version: 2.0.0.qualifier
+Bundle-Version: 5.0.0.qualifier
 Bundle-Vendor: JBoss by Red Hat
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: lib/bsh-core-2.0b4.jar

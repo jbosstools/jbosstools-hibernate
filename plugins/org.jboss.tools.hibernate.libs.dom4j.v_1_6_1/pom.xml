@@ -4,13 +4,12 @@
 	<parent>
 		<groupId>org.jboss.tools.hibernatetools</groupId>
 		<artifactId>plugins</artifactId>
-		<version>4.0.1-SNAPSHOT</version>
+		<version>5.0.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.hibernatetools.plugins</groupId>
 	<artifactId>org.jboss.tools.hibernate.libs.dom4j.v_1_6_1</artifactId> 
 	
 	<packaging>eclipse-plugin</packaging>
-	<version>1.6.1-SNAPSHOT</version>
 
 	<properties>
 	    <dom4j.version>1.6.1</dom4j.version>

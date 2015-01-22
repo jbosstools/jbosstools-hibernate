@@ -4,13 +4,12 @@
 	<parent>
 		<groupId>org.jboss.tools.hibernatetools</groupId>
 		<artifactId>plugins</artifactId>
-		<version>4.0.1-SNAPSHOT</version>
+		<version>5.0.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.hibernatetools.plugins</groupId>
 	<artifactId>org.jboss.tools.hibernate.libs.freemarker.v_2_3_8</artifactId> 
 	
 	<packaging>eclipse-plugin</packaging>
-	<version>2.3.8-SNAPSHOT</version>
 
 	<properties>
 		<freemarker.version>2.3.8</freemarker.version>
