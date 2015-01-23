@@ -53,140 +53,29 @@
       <import plugin="org.eclipse.jdt.apt.core"/>
    </requires>
 
-   <plugin
-         id="org.hibernate.eclipse"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+<plugin id="org.hibernate.eclipse" download-size="0" install-size="0" version="0.0.0"              unpack="false"/>
+<plugin id="org.hibernate.eclipse.console" download-size="0" install-size="0" version="0.0.0"      unpack="false"/>
+<plugin id="org.hibernate.eclipse.help" download-size="0" install-size="0" version="0.0.0"         unpack="false"/>
+<plugin id="org.hibernate.eclipse.jdt.ui" download-size="0" install-size="0" version="0.0.0"       unpack="false"/>
+<plugin id="org.hibernate.eclipse.mapper" download-size="0" install-size="0" version="0.0.0"       unpack="false"/>
+<plugin id="org.jboss.tools.hibernate3_5" download-size="0" install-size="0" version="0.0.0"       unpack="false"/>
+<plugin id="org.jboss.tools.hibernate3_6" download-size="0" install-size="0" version="0.0.0"       unpack="false"/>
+<plugin id="org.jboss.tools.hibernate4_0" download-size="0" install-size="0" version="0.0.0"       unpack="false"/>
+<plugin id="org.jboss.tools.hibernate4_3" download-size="0" install-size="0" version="0.0.0"       unpack="false"/>
+<plugin id="org.jboss.tools.hibernate.jpt.core" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+<plugin id="org.jboss.tools.hibernate.jpt.ui" download-size="0" install-size="0" version="0.0.0"   unpack="false"/>
 
-   <plugin
-         id="org.hibernate.eclipse.console"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+<plugin id="org.jboss.tools.hibernate.libs.antlr.v_2_7_7" download-size="0" install-size="0" version="0.0.0"/>
+<plugin id="org.jboss.tools.hibernate.libs.bsh.v_2_0_b4" download-size="0" install-size="0" version="0.0.0"/>
 
-   <plugin
-         id="org.hibernate.eclipse.help"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+<plugin id="org.jboss.tools.hibernate.libs.dom4j.v_1_6_1" download-size="0" install-size="0" version="0.0.0"        unpack="false"/>
 
-   <plugin
-         id="org.hibernate.eclipse.jdt.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+<plugin id="org.jboss.tools.hibernate.libs.freemarker.v_2_3_8" download-size="0" install-size="0" version="0.0.0"/>
+<plugin id="org.jboss.tools.hibernate.libs.jtidy.v_r8-20060801" download-size="0" install-size="0" version="0.0.0"/>
+<plugin id="org.jboss.tools.hibernate.runtime.spi" download-size="0" install-size="0" version="0.0.0"/>
 
-   <plugin
-         id="org.hibernate.eclipse.mapper"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.jboss.tools.hibernate.jpt.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.jboss.tools.hibernate.jpt.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.jboss.tools.hibernate.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.jboss.tools.hibernate.xml"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.jboss.tools.hibernate.xml.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.jboss.tools.hibernate3_5"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.jboss.tools.hibernate3_6"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.jboss.tools.hibernate4_0"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.jboss.tools.hibernate4_3"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.jboss.tools.hibernate.spi"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.jboss.tools.hibernate.libs.dom4j.v_1_6_1"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.jboss.tools.hibernate.libs.antlr.v_2_7_7"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.jboss.tools.hibernate.libs.jtidy.v_r8-20060801"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.jboss.tools.hibernate.libs.bsh.v_2_0_b4"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.jboss.tools.hibernate.libs.freemarker.v_2_3_8"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
+<plugin id="org.jboss.tools.hibernate.ui" download-size="0" install-size="0" version="0.0.0"       unpack="false"/>
+<plugin id="org.jboss.tools.hibernate.xml" download-size="0" install-size="0" version="0.0.0"      unpack="false"/>
+<plugin id="org.jboss.tools.hibernate.xml.ui" download-size="0" install-size="0" version="0.0.0"   unpack="false"/>
 
 </feature>
