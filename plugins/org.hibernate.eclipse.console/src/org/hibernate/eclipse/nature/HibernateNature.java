@@ -48,10 +48,10 @@ import org.hibernate.eclipse.builder.HibernateBuilder;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.properties.HibernatePropertiesConstants;
-import org.jboss.tools.hibernate.spi.IConfiguration;
-import org.jboss.tools.hibernate.spi.IService;
-import org.jboss.tools.hibernate.spi.ITable;
-import org.jboss.tools.hibernate.spi.ITableIdentifier;
+import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IService;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
+import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
 import org.osgi.service.prefs.Preferences;
 
 public class HibernateNature implements IProjectNature {

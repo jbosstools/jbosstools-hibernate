@@ -12,10 +12,10 @@ package org.jboss.tools.hibernate.ui.diagram.editors.model;
 
 import java.util.Iterator;
 
-import org.jboss.tools.hibernate.spi.IPersistentClass;
-import org.jboss.tools.hibernate.spi.IProperty;
-import org.jboss.tools.hibernate.spi.IType;
-import org.jboss.tools.hibernate.spi.IValue;
+import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
+import org.jboss.tools.hibernate.runtime.spi.IProperty;
+import org.jboss.tools.hibernate.runtime.spi.IType;
+import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 /**
  * 

@@ -7,8 +7,8 @@ import java.util.Set;
 
 import org.hibernate.hql.QueryTranslator;
 import org.hibernate.type.Type;
-import org.jboss.tools.hibernate.spi.IQueryTranslator;
-import org.jboss.tools.hibernate.spi.IType;
+import org.jboss.tools.hibernate.runtime.spi.IQueryTranslator;
+import org.jboss.tools.hibernate.runtime.spi.IType;
 
 public class QueryTranslatorProxy implements IQueryTranslator {
 	

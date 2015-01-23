@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.Set;
 
 import org.hibernate.tool.hbm2x.ArtifactCollector;
-import org.jboss.tools.hibernate.spi.IArtifactCollector;
+import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 
 public class ArtifactCollectorProxy implements IArtifactCollector {
 	

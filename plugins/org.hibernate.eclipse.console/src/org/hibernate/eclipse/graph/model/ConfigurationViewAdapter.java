@@ -28,8 +28,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 
-import org.jboss.tools.hibernate.spi.IConfiguration;
-import org.jboss.tools.hibernate.spi.IPersistentClass;
+import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 
 public class ConfigurationViewAdapter extends Observable {
 

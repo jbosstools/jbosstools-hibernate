@@ -33,9 +33,9 @@ import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.actions.ConsoleConfigReadyUseBaseAction;
-import org.jboss.tools.hibernate.spi.IConfiguration;
-import org.jboss.tools.hibernate.spi.ISchemaExport;
-import org.jboss.tools.hibernate.spi.IService;
+import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
+import org.jboss.tools.hibernate.runtime.spi.IService;
 
 /**
  * @author max

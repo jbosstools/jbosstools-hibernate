@@ -12,9 +12,9 @@ import java.util.TimeZone;
 
 import org.hibernate.type.BasicTypeRegistry;
 import org.hibernate.type.StandardBasicTypes;
-import org.jboss.tools.hibernate.spi.ITable;
-import org.jboss.tools.hibernate.spi.IType;
-import org.jboss.tools.hibernate.spi.ITypeFactory;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
+import org.jboss.tools.hibernate.runtime.spi.IType;
+import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 
 public class TypeFactoryProxy implements ITypeFactory {
 	

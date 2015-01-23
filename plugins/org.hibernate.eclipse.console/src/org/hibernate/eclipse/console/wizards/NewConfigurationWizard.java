@@ -60,9 +60,9 @@ import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.actions.AddConfigurationAction;
 import org.hibernate.eclipse.console.utils.EclipseImages;
-import org.jboss.tools.hibernate.spi.IExporter;
-import org.jboss.tools.hibernate.spi.IService;
-import org.jboss.tools.hibernate.spi.ServiceLookup;
+import org.jboss.tools.hibernate.runtime.spi.IExporter;
+import org.jboss.tools.hibernate.runtime.spi.IService;
+import org.jboss.tools.hibernate.runtime.spi.ServiceLookup;
 
 /**
  * Creates a new hibernate.cfg.xml

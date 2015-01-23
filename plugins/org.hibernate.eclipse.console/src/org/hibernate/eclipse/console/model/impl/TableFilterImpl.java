@@ -21,8 +21,8 @@
  */
 package org.hibernate.eclipse.console.model.impl;
 
-import org.jboss.tools.hibernate.spi.IService;
-import org.jboss.tools.hibernate.spi.ITableFilter;
+import org.jboss.tools.hibernate.runtime.spi.IService;
+import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 
 public class TableFilterImpl implements org.hibernate.eclipse.console.model.ITableFilter {
 

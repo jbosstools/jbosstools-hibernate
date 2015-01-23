@@ -64,7 +64,7 @@ import org.hibernate.console.QueryInputModel;
 import org.hibernate.eclipse.console.actions.ClearAction;
 import org.hibernate.eclipse.console.actions.ExecuteQueryAction;
 import org.hibernate.eclipse.console.actions.StickResTabAction;
-import org.jboss.tools.hibernate.spi.IService;
+import org.jboss.tools.hibernate.runtime.spi.IService;
 
 public abstract class AbstractQueryEditor extends TextEditor implements
 		QueryEditor, IShowEditorInput {

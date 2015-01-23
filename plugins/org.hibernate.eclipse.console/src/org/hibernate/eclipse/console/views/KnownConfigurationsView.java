@@ -60,8 +60,8 @@ import org.hibernate.eclipse.console.actions.EditConsoleConfiguration;
 import org.hibernate.eclipse.console.actions.OpenMappingAction;
 import org.hibernate.eclipse.console.viewers.xpl.MTreeViewer;
 import org.hibernate.eclipse.console.workbench.xpl.AnyAdaptableLabelProvider;
-import org.jboss.tools.hibernate.spi.IPersistentClass;
-import org.jboss.tools.hibernate.spi.IProperty;
+import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
+import org.jboss.tools.hibernate.runtime.spi.IProperty;
 
 
 /**

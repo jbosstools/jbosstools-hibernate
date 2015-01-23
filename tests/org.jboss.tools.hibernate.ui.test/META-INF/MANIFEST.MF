@@ -11,7 +11,7 @@ Require-Bundle: org.junit;bundle-version="3.8.2",
  org.hibernate.eclipse.console.test;bundle-version="5.0.0",
  org.jboss.tools.hibernate.ui;bundle-version="5.0.0",
  org.hibernate.eclipse;bundle-version="5.0.0",
- org.jboss.tools.hibernate.spi;bundle-version="5.0.0"
+ org.jboss.tools.hibernate.runtime.spi;bundle-version="5.0.0"
 Bundle-ActivationPolicy: lazy
 Export-Package: org.jboss.tools.hibernate.ui.test
 Bundle-Activator: org.jboss.tools.hibernate.ui.test.UiTestPlugin

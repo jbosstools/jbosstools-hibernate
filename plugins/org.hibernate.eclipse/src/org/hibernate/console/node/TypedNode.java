@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.hibernate.console.node;
 
-import org.jboss.tools.hibernate.spi.IType;
+import org.jboss.tools.hibernate.runtime.spi.IType;
 
 
 /**

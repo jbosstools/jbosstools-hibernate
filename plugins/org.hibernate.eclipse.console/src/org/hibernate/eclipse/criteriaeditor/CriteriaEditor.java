@@ -64,8 +64,8 @@ import org.hibernate.eclipse.console.AbstractQueryEditor;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.views.QueryPageTabView;
-import org.jboss.tools.hibernate.spi.IConfiguration;
-import org.jboss.tools.hibernate.spi.IPersistentClass;
+import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 
 public class CriteriaEditor extends AbstractQueryEditor {
 

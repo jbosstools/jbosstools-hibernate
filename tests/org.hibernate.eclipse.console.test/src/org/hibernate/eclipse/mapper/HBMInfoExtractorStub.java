@@ -11,7 +11,7 @@
 package org.hibernate.eclipse.mapper;
 
 import org.hibernate.eclipse.mapper.extractor.HBMInfoExtractor;
-import org.jboss.tools.hibernate.spi.IService;
+import org.jboss.tools.hibernate.runtime.spi.IService;
 import org.w3c.dom.Node;
 
 /**

@@ -45,8 +45,8 @@ import org.hibernate.eclipse.console.workbench.DeferredContentProvider;
 import org.hibernate.eclipse.console.workbench.LazyDatabaseSchema;
 import org.hibernate.eclipse.console.workbench.xpl.AnyAdaptableLabelProvider;
 import org.hibernate.eclipse.mapper.MapperMessages;
-import org.jboss.tools.hibernate.spi.IColumn;
-import org.jboss.tools.hibernate.spi.IPrimaryKey;
+import org.jboss.tools.hibernate.runtime.spi.IColumn;
+import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.util.JDBCToHibernateTypeHelper;
 
 public abstract class TypeMappingView extends TreeToTableComposite {

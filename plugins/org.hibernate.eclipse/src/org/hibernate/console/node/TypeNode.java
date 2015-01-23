@@ -22,8 +22,8 @@
 package org.hibernate.console.node;
 
 import org.eclipse.osgi.util.NLS;
-import org.jboss.tools.hibernate.spi.IClassMetadata;
-import org.jboss.tools.hibernate.spi.IType;
+import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
+import org.jboss.tools.hibernate.runtime.spi.IType;
 
 /**
  * @author MAX

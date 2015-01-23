@@ -30,8 +30,8 @@ import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.utils.JoinedIterator;
-import org.jboss.tools.hibernate.spi.IPersistentClass;
-import org.jboss.tools.hibernate.spi.IProperty;
+import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
+import org.jboss.tools.hibernate.runtime.spi.IProperty;
 
 public class PersistentClassWorkbenchAdapter implements IWorkbenchAdapter {
 

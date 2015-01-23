@@ -31,7 +31,7 @@ import org.eclipse.jface.text.hyperlink.IHyperlinkDetector;
 import org.hibernate.eclipse.mapper.editors.xpl.BaseXMLHyperlinkSupport;
 import org.hibernate.eclipse.mapper.extractor.HBMInfoExtractor;
 import org.hibernate.eclipse.mapper.extractor.HBMInfoHandler;
-import org.jboss.tools.hibernate.spi.IService;
+import org.jboss.tools.hibernate.runtime.spi.IService;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Node;
 

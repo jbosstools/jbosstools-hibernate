@@ -1,7 +1,7 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.tool.hbm2x.GenericExporter;
-import org.jboss.tools.hibernate.spi.IGenericExporter;
+import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 
 public class GenericExporterProxy implements IGenericExporter {
 	

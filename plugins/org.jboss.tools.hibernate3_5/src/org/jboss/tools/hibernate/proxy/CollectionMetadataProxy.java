@@ -1,8 +1,8 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.metadata.CollectionMetadata;
-import org.jboss.tools.hibernate.spi.ICollectionMetadata;
-import org.jboss.tools.hibernate.spi.IType;
+import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
+import org.jboss.tools.hibernate.runtime.spi.IType;
 
 public class CollectionMetadataProxy implements ICollectionMetadata {
 	

@@ -11,11 +11,11 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
-import org.jboss.tools.hibernate.spi.IJoin;
-import org.jboss.tools.hibernate.spi.IPersistentClass;
-import org.jboss.tools.hibernate.spi.IProperty;
-import org.jboss.tools.hibernate.spi.ITable;
-import org.jboss.tools.hibernate.spi.IValue;
+import org.jboss.tools.hibernate.runtime.spi.IJoin;
+import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
+import org.jboss.tools.hibernate.runtime.spi.IProperty;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
+import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public class PersistentClassProxy implements IPersistentClass {
 	

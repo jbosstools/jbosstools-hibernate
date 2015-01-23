@@ -26,7 +26,7 @@ import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.jboss.tools.hibernate.util.JDBCToHibernateTypeHelper;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.utils.EclipseImages;
-import org.jboss.tools.hibernate.spi.IColumn;
+import org.jboss.tools.hibernate.runtime.spi.IColumn;
 
 public class ColumnWorkbenchAdapter implements IWorkbenchAdapter {
 

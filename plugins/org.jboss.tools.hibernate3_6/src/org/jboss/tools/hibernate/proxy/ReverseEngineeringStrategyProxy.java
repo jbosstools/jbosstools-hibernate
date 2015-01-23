@@ -1,8 +1,8 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
-import org.jboss.tools.hibernate.spi.IReverseEngineeringSettings;
-import org.jboss.tools.hibernate.spi.IReverseEngineeringStrategy;
+import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
+import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 
 public class ReverseEngineeringStrategyProxy implements
 		IReverseEngineeringStrategy {

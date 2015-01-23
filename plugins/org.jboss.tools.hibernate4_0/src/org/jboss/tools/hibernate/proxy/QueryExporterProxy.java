@@ -3,7 +3,7 @@ package org.jboss.tools.hibernate.proxy;
 import java.util.List;
 
 import org.hibernate.tool.hbm2x.QueryExporter;
-import org.jboss.tools.hibernate.spi.IQueryExporter;
+import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 
 public class QueryExporterProxy implements IQueryExporter {
 	

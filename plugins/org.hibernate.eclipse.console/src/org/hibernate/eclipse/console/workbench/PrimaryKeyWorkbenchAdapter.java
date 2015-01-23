@@ -26,8 +26,8 @@ import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.EclipseImages;
-import org.jboss.tools.hibernate.spi.IColumn;
-import org.jboss.tools.hibernate.spi.IPrimaryKey;
+import org.jboss.tools.hibernate.runtime.spi.IColumn;
+import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 
 public class PrimaryKeyWorkbenchAdapter implements IWorkbenchAdapter {
 

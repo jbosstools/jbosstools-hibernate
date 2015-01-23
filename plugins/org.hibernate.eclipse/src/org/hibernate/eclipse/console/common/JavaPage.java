@@ -30,8 +30,8 @@ import java.util.Map;
 import org.hibernate.console.AbstractQueryPage;
 import org.hibernate.console.ConsoleMessages;
 import org.hibernate.console.QueryInputModel;
-import org.jboss.tools.hibernate.spi.ICriteria;
-import org.jboss.tools.hibernate.spi.ISession;
+import org.jboss.tools.hibernate.runtime.spi.ICriteria;
+import org.jboss.tools.hibernate.runtime.spi.ISession;
 
 import bsh.EvalError;
 import bsh.Interpreter;

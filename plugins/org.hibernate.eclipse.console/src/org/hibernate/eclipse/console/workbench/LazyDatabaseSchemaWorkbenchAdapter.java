@@ -39,15 +39,15 @@ import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
-import org.jboss.tools.hibernate.spi.HibernateException;
-import org.jboss.tools.hibernate.spi.IConfiguration;
-import org.jboss.tools.hibernate.spi.IDatabaseCollector;
-import org.jboss.tools.hibernate.spi.IJDBCReader;
-import org.jboss.tools.hibernate.spi.IProgressListener;
-import org.jboss.tools.hibernate.spi.IReverseEngineeringStrategy;
-import org.jboss.tools.hibernate.spi.IService;
-import org.jboss.tools.hibernate.spi.ISettings;
-import org.jboss.tools.hibernate.spi.ITable;
+import org.jboss.tools.hibernate.runtime.spi.HibernateException;
+import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
+import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
+import org.jboss.tools.hibernate.runtime.spi.IProgressListener;
+import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
+import org.jboss.tools.hibernate.runtime.spi.IService;
+import org.jboss.tools.hibernate.runtime.spi.ISettings;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
 
 public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 	

@@ -29,8 +29,8 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Set;
 
-import org.jboss.tools.hibernate.spi.IService;
-import org.jboss.tools.hibernate.spi.ITypeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IService;
+import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 
 /**
  * Class for managing misc parameters and other inputs to a Query, Criteria etc.  

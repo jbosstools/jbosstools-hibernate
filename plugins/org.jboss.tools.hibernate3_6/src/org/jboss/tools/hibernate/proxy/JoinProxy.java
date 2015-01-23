@@ -5,8 +5,8 @@ import java.util.Iterator;
 
 import org.hibernate.mapping.Join;
 import org.hibernate.mapping.Property;
-import org.jboss.tools.hibernate.spi.IJoin;
-import org.jboss.tools.hibernate.spi.IProperty;
+import org.jboss.tools.hibernate.runtime.spi.IJoin;
+import org.jboss.tools.hibernate.runtime.spi.IProperty;
 
 public class JoinProxy implements IJoin {
 	

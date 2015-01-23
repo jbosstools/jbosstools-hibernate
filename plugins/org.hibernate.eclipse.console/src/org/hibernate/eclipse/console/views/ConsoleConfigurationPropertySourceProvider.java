@@ -25,7 +25,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.IPropertySourceProvider;
 import org.hibernate.console.ConsoleConfiguration;
-import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 
 public class ConsoleConfigurationPropertySourceProvider implements
 		IPropertySourceProvider {

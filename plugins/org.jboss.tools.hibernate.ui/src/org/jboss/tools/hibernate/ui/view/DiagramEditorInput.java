@@ -20,7 +20,7 @@ import org.eclipse.ui.IPersistableElement;
 import org.eclipse.ui.IStorageEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
 import org.hibernate.console.ConsoleConfiguration;
-import org.jboss.tools.hibernate.spi.IPersistentClass;
+import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmDiagram;
 
 /**

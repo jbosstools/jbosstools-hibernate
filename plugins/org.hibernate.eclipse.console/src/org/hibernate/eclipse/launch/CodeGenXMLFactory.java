@@ -46,9 +46,9 @@ import org.hibernate.console.preferences.PreferencesClassPathUtils;
 import org.hibernate.eclipse.console.model.impl.ExporterFactory;
 import org.hibernate.eclipse.launch.ExportersXMLAttributeDescription.AttributeDescription;
 import org.hibernate.util.xpl.StringHelper;
-import org.jboss.tools.hibernate.spi.IEnvironment;
-import org.jboss.tools.hibernate.spi.IService;
-import org.jboss.tools.hibernate.spi.ServiceLookup;
+import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
+import org.jboss.tools.hibernate.runtime.spi.IService;
+import org.jboss.tools.hibernate.runtime.spi.ServiceLookup;
 
 /**
  * XML document part creation factory,

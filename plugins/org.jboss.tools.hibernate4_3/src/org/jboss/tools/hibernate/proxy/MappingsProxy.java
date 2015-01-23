@@ -1,8 +1,8 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.cfg.Mappings;
-import org.jboss.tools.hibernate.spi.IMappings;
-import org.jboss.tools.hibernate.spi.IPersistentClass;
+import org.jboss.tools.hibernate.runtime.spi.IMappings;
+import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 
 public class MappingsProxy implements IMappings {
 	

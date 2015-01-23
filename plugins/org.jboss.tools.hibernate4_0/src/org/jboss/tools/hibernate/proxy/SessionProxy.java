@@ -1,10 +1,10 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.Session;
-import org.jboss.tools.hibernate.spi.ICriteria;
-import org.jboss.tools.hibernate.spi.IQuery;
-import org.jboss.tools.hibernate.spi.ISession;
-import org.jboss.tools.hibernate.spi.ISessionFactory;
+import org.jboss.tools.hibernate.runtime.spi.ICriteria;
+import org.jboss.tools.hibernate.runtime.spi.IQuery;
+import org.jboss.tools.hibernate.runtime.spi.ISession;
+import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 
 public class SessionProxy implements ISession {
 	

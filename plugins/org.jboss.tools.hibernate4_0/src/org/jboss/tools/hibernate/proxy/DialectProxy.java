@@ -1,7 +1,7 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.dialect.Dialect;
-import org.jboss.tools.hibernate.spi.IDialect;
+import org.jboss.tools.hibernate.runtime.spi.IDialect;
 
 public class DialectProxy implements IDialect {
 	

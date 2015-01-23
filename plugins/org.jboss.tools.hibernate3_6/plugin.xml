@@ -2,7 +2,7 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="org.jboss.tools.hibernate.spi.services">
+         point="org.jboss.tools.hibernate.runtime.spi.services">
       <service
             class="org.jboss.tools.hibernate.proxy.ServiceProxy"
             name="%hibernate.version">

@@ -28,14 +28,14 @@ import java.util.Map;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ConsoleMessages;
 import org.hibernate.console.ImageConstants;
-import org.jboss.tools.hibernate.spi.HibernateException;
-import org.jboss.tools.hibernate.spi.IClassMetadata;
-import org.jboss.tools.hibernate.spi.ICollectionMetadata;
-import org.jboss.tools.hibernate.spi.IService;
-import org.jboss.tools.hibernate.spi.ISession;
-import org.jboss.tools.hibernate.spi.ISessionFactory;
-import org.jboss.tools.hibernate.spi.ITable;
-import org.jboss.tools.hibernate.spi.IType;
+import org.jboss.tools.hibernate.runtime.spi.HibernateException;
+import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
+import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
+import org.jboss.tools.hibernate.runtime.spi.IService;
+import org.jboss.tools.hibernate.runtime.spi.ISession;
+import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
+import org.jboss.tools.hibernate.runtime.spi.IType;
 
 /**
  * @author MAX

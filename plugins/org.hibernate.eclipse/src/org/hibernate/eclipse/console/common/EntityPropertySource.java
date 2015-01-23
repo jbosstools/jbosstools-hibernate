@@ -29,10 +29,10 @@ import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.common.CollectionPropertySource;
-import org.jboss.tools.hibernate.spi.IClassMetadata;
-import org.jboss.tools.hibernate.spi.ICollectionMetadata;
-import org.jboss.tools.hibernate.spi.IEntityMetamodel;
-import org.jboss.tools.hibernate.spi.ISession;
+import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
+import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
+import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
+import org.jboss.tools.hibernate.runtime.spi.ISession;
 
 
 

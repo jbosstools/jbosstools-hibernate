@@ -8,8 +8,8 @@ import java.util.Map.Entry;
 
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.mapping.Table;
-import org.jboss.tools.hibernate.spi.IDatabaseCollector;
-import org.jboss.tools.hibernate.spi.ITable;
+import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
 
 public class DatabaseCollectorProxy implements IDatabaseCollector {
 	

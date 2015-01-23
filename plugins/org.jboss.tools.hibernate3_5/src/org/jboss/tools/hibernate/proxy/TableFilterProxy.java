@@ -1,7 +1,7 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.cfg.reveng.TableFilter;
-import org.jboss.tools.hibernate.spi.ITableFilter;
+import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 
 public class TableFilterProxy implements ITableFilter {
 	

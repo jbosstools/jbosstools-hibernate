@@ -13,8 +13,8 @@ package org.jboss.tools.hibernate.ui.diagram.editors.model;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
-import org.jboss.tools.hibernate.spi.IType;
-import org.jboss.tools.hibernate.spi.IValue;
+import org.jboss.tools.hibernate.runtime.spi.IType;
+import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 /**
  * @author vitali

@@ -76,14 +76,14 @@ import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.common.ConsoleExtension;
 import org.hibernate.eclipse.console.model.impl.ExporterFactory;
 import org.hibernate.util.xpl.StringHelper;
-import org.jboss.tools.hibernate.spi.HibernateException;
-import org.jboss.tools.hibernate.spi.IArtifactCollector;
-import org.jboss.tools.hibernate.spi.IConfiguration;
-import org.jboss.tools.hibernate.spi.IExporter;
-import org.jboss.tools.hibernate.spi.IOverrideRepository;
-import org.jboss.tools.hibernate.spi.IReverseEngineeringSettings;
-import org.jboss.tools.hibernate.spi.IReverseEngineeringStrategy;
-import org.jboss.tools.hibernate.spi.IService;
+import org.jboss.tools.hibernate.runtime.spi.HibernateException;
+import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
+import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IExporter;
+import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
+import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
+import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
+import org.jboss.tools.hibernate.runtime.spi.IService;
 
 @SuppressWarnings("restriction")
 public class CodeGenerationLaunchDelegate extends AntLaunchDelegate { 

@@ -3,7 +3,7 @@ package org.jboss.tools.hibernate.proxy;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.jboss.tools.hibernate.spi.ICriteria;
+import org.jboss.tools.hibernate.runtime.spi.ICriteria;
 
 public class CriteriaProxy implements ICriteria {
 	

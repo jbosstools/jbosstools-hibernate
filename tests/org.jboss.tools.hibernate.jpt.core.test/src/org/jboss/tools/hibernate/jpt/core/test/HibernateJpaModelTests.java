@@ -43,7 +43,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaIdM
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaJoinTable;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaManyToManyMapping;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaTable;
-import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.test.util.ResourcesUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

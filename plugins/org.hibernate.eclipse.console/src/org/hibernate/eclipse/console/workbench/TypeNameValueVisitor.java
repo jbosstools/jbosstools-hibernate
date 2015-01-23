@@ -21,8 +21,8 @@
  */
 package org.hibernate.eclipse.console.workbench;
 
-import org.jboss.tools.hibernate.spi.IValue;
-import org.jboss.tools.hibernate.spi.IValueVisitor;
+import org.jboss.tools.hibernate.runtime.spi.IValue;
+import org.jboss.tools.hibernate.runtime.spi.IValueVisitor;
 
 public class TypeNameValueVisitor implements IValueVisitor {
 

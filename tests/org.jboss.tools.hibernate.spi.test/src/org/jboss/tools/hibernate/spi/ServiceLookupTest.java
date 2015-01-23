@@ -1,5 +1,7 @@
 package org.jboss.tools.hibernate.spi;
 
+import org.jboss.tools.hibernate.runtime.spi.IService;
+import org.jboss.tools.hibernate.runtime.spi.ServiceLookup;
 import org.jboss.tools.hibernate.spi.internal.TestService;
 import org.junit.Assert;
 import org.junit.Test;

@@ -1,7 +1,7 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
-import org.jboss.tools.hibernate.spi.IHibernateMappingGlobalSettings;
+import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingGlobalSettings;
 
 public class HibernateMappingGlobalSettingsProxy implements
 		IHibernateMappingGlobalSettings {

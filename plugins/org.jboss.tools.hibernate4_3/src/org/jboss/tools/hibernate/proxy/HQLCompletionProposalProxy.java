@@ -1,8 +1,8 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
-import org.jboss.tools.hibernate.spi.IHQLCompletionProposal;
-import org.jboss.tools.hibernate.spi.IProperty;
+import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
+import org.jboss.tools.hibernate.runtime.spi.IProperty;
 
 public class HQLCompletionProposalProxy implements IHQLCompletionProposal {
 	

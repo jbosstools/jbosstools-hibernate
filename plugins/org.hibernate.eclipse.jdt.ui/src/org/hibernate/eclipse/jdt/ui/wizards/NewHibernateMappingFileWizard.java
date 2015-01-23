@@ -72,12 +72,12 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.collect.AllEntitiesInfoCollecto
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
 import org.hibernate.eclipse.nature.HibernateNature;
-import org.jboss.tools.hibernate.spi.IConfiguration;
-import org.jboss.tools.hibernate.spi.IHibernateMappingExporter;
-import org.jboss.tools.hibernate.spi.IHibernateMappingGlobalSettings;
-import org.jboss.tools.hibernate.spi.IPOJOClass;
-import org.jboss.tools.hibernate.spi.IService;
-import org.jboss.tools.hibernate.spi.ServiceLookup;
+import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
+import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingGlobalSettings;
+import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
+import org.jboss.tools.hibernate.runtime.spi.IService;
+import org.jboss.tools.hibernate.runtime.spi.ServiceLookup;
 
 /**
  * @author Dmitry Geraskov
@@ -244,7 +244,7 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 		this.selection = new StructuredSelection(filteredElements.toArray());
 	}
 	
-	protected class HibernateMappingExporterWrapper { // extends HibernateMappingExporter {
+	protected class HibernateMappingExporterWrapper { 
 		protected IJavaProject proj;
 		private IHibernateMappingExporter delegate = new IHibernateMappingExporter() {			
 			@Override public void start() {}			
@@ -287,8 +287,7 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 					outputdir4FileNew.mkdirs();
 				}
 				target.setOutputDirectory(outputdir4FileNew);
-				invokeTargetExport(map, pojoClass);
-//				target.exportPOJO(additionalContext, element);
+				target.exportPOJO(map, pojoClass);
 				target.setOutputDirectory(outputdir4FileOld);
 			}
 		};
@@ -298,62 +297,6 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 	    	target.setExportPOJODelegate(delegate);
 	    	this.proj = proj;
 	    }
-		/**
-		 * redefine base exportPOJO to setup right output dir in case 
-		 * of several source folders 
-		 */
-		@SuppressWarnings("rawtypes")
-		protected void exportPOJO(Map additionalContext, IPOJOClass element) {
-			File outputdir4FileOld = target.getOutputDirectory();
-			File outputdir4FileNew = outputdir4FileOld;
-			String fullyQualifiedName = element.getQualifiedDeclarationName();
-			ICompilationUnit icu = Utils.findCompilationUnit(proj, fullyQualifiedName);
-			if (icu != null) {
-				IResource resource = null;
-				try {
-					resource = icu.getCorrespondingResource();
-				} catch (JavaModelException e) {
-					//ignore
-				}
-				String[] aFQName = fullyQualifiedName.split("\\."); //$NON-NLS-1$
-				int n = aFQName.length - 1;
-				for ( ; n >= 0 && resource != null; n--) {
-					if (n == 0 && aFQName[n].length() == 0) {
-						// handle the (default package) case
-						break;
-					}
-					resource = resource.getParent();
-				}
-				if (resource != null) {
-					final IPath projPath = proj.getResource().getLocation();
-					IPath place2Gen = previewPage.getRootPlace2Gen().append(proj.getElementName());
-					//
-					IPath tmpPath = resource.getLocation();
-					tmpPath = tmpPath.makeRelativeTo(projPath);
-					place2Gen = place2Gen.append(tmpPath);
-					outputdir4FileNew = place2Gen.toFile();
-				}
-			}
-			if (!outputdir4FileNew.exists()) {
-				outputdir4FileNew.mkdirs();
-			}
-			target.setOutputDirectory(outputdir4FileNew);
-			invokeTargetExport(additionalContext, element);
-//			target.exportPOJO(additionalContext, element);
-			target.setOutputDirectory(outputdir4FileOld);
-		}
-		
-		@SuppressWarnings("rawtypes")
-		private void invokeTargetExport(Map map, IPOJOClass pojoClass) {
-//			try {
-//				Method exportPOJO = target.getClass().getMethod("exportPOJO", new Class[] { Map.class, IPOJOClass.class }); //$NON-NLS-1$
-//				exportPOJO.setAccessible(true);
-//				exportPOJO.invoke(target, new Object[] { map, pojoClass });
-//			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-//				throw new RuntimeException(e);
-//			}  
-			target.exportPOJO(map, pojoClass);
-		}
 		public void setGlobalSettings(IHibernateMappingGlobalSettings hmgs) {
 			target.setGlobalSettings(hmgs);
 		}

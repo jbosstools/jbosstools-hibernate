@@ -30,7 +30,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.hibernate.eclipse.nature.HibernateNature;
-import org.jboss.tools.hibernate.spi.ITable;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Node;
 

@@ -40,7 +40,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateTable;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValidationMessage;
-import org.jboss.tools.hibernate.spi.INamingStrategy;
+import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 
 /**
  * @author Dmitry Geraskov

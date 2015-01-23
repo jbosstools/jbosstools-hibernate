@@ -16,11 +16,11 @@ import org.hibernate.console.ConsoleMessages;
 import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.utils.QLFormatHelper;
 import org.hibernate.util.xpl.StringHelper;
-import org.jboss.tools.hibernate.spi.IHQLQueryPlan;
-import org.jboss.tools.hibernate.spi.IQueryTranslator;
-import org.jboss.tools.hibernate.spi.IService;
-import org.jboss.tools.hibernate.spi.ISessionFactory;
-import org.jboss.tools.hibernate.spi.IType;
+import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
+import org.jboss.tools.hibernate.runtime.spi.IQueryTranslator;
+import org.jboss.tools.hibernate.runtime.spi.IService;
+import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
+import org.jboss.tools.hibernate.runtime.spi.IType;
 
 /**
  * @author Dmitry Geraskov

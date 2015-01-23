@@ -6,10 +6,10 @@ import java.util.Map;
 import org.hibernate.SessionFactory;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
-import org.jboss.tools.hibernate.spi.IClassMetadata;
-import org.jboss.tools.hibernate.spi.ICollectionMetadata;
-import org.jboss.tools.hibernate.spi.ISession;
-import org.jboss.tools.hibernate.spi.ISessionFactory;
+import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
+import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
+import org.jboss.tools.hibernate.runtime.spi.ISession;
+import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 
 public class SessionFactoryProxy implements ISessionFactory {
 	

@@ -22,7 +22,7 @@
 package org.hibernate.console.node;
 
 import org.hibernate.console.ImageConstants;
-import org.jboss.tools.hibernate.spi.IClassMetadata;
+import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 
 /**
  * @author MAX

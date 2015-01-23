@@ -2,7 +2,7 @@ package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.EntityMode;
 import org.hibernate.tuple.entity.EntityMetamodel;
-import org.jboss.tools.hibernate.spi.IEntityMetamodel;
+import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 
 public class EntityMetamodelProxy implements IEntityMetamodel {
 	

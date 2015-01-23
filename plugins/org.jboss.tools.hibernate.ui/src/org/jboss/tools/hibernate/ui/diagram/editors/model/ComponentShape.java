@@ -12,8 +12,8 @@ package org.jboss.tools.hibernate.ui.diagram.editors.model;
 
 import java.util.Properties;
 
-import org.jboss.tools.hibernate.spi.IProperty;
-import org.jboss.tools.hibernate.spi.IValue;
+import org.jboss.tools.hibernate.runtime.spi.IProperty;
+import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 /**
  * @author some modifications from Vitali

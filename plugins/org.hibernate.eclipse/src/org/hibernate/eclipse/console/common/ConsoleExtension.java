@@ -40,16 +40,16 @@ import org.hibernate.eclipse.launch.CodeGenerationStrings;
 import org.hibernate.eclipse.launch.CodeGenerationUtils;
 import org.hibernate.eclipse.launch.ExporterAttributes;
 import org.hibernate.eclipse.launch.PathHelper;
-import org.jboss.tools.hibernate.spi.HibernateException;
-import org.jboss.tools.hibernate.spi.IArtifactCollector;
-import org.jboss.tools.hibernate.spi.IConfiguration;
-import org.jboss.tools.hibernate.spi.IExporter;
-import org.jboss.tools.hibernate.spi.IHQLCodeAssist;
-import org.jboss.tools.hibernate.spi.IOverrideRepository;
-import org.jboss.tools.hibernate.spi.IReverseEngineeringSettings;
-import org.jboss.tools.hibernate.spi.IReverseEngineeringStrategy;
-import org.jboss.tools.hibernate.spi.IService;
-import org.jboss.tools.hibernate.spi.ISession;
+import org.jboss.tools.hibernate.runtime.spi.HibernateException;
+import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
+import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IExporter;
+import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
+import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
+import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
+import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
+import org.jboss.tools.hibernate.runtime.spi.IService;
+import org.jboss.tools.hibernate.runtime.spi.ISession;
 
 
 /**

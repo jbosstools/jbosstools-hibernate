@@ -9,8 +9,8 @@ import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.common.CompletionProposal;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.console.workbench.HibernateWorkbenchHelper;
-import org.jboss.tools.hibernate.spi.IHQLCompletionProposal;
-import org.jboss.tools.hibernate.spi.IHQLCompletionHandler;
+import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionHandler;
+import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 
 public class HQLCompletionHandler implements IHQLCompletionHandler {
 

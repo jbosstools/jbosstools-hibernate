@@ -20,7 +20,7 @@ import org.hibernate.console.ConsoleConfigurationListener;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.KnownConfigurationsListener;
 import org.hibernate.console.QueryPage;
-import org.jboss.tools.hibernate.spi.ISessionFactory;
+import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 
 /**
  * @author Vitali Yemialyanchyk

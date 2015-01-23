@@ -38,7 +38,7 @@ import org.hibernate.eclipse.graph.anchor.LeftOrRightParentAnchor;
 import org.hibernate.eclipse.graph.figures.EditableLabel;
 import org.hibernate.eclipse.graph.model.ColumnViewAdapter;
 import org.hibernate.eclipse.graph.model.GraphNode;
-import org.jboss.tools.hibernate.spi.IColumn;
+import org.jboss.tools.hibernate.runtime.spi.IColumn;
 
 public class ColumnEditPart extends AbstractGraphicalEditPart implements NodeEditPart, Observer {
 	

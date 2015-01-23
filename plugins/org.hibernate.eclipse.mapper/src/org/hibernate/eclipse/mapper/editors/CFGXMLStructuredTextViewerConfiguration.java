@@ -27,7 +27,7 @@ import org.eclipse.wst.sse.core.text.IStructuredPartitions;
 import org.eclipse.wst.xml.core.text.IXMLPartitions;
 import org.eclipse.wst.xml.ui.StructuredTextViewerConfigurationXML;
 import org.eclipse.wst.xml.ui.internal.contentassist.NoRegionContentAssistProcessor;
-import org.jboss.tools.hibernate.spi.IService;
+import org.jboss.tools.hibernate.runtime.spi.IService;
 
 
 public class CFGXMLStructuredTextViewerConfiguration extends StructuredTextViewerConfigurationXML {

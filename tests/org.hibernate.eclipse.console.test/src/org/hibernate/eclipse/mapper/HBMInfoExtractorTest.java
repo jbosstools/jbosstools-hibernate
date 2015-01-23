@@ -17,8 +17,8 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.hibernate.eclipse.console.test.project.ConfigurableTestProject;
 import org.hibernate.eclipse.mapper.extractor.JavaTypeHandler;
 import org.hibernate.eclipse.mapper.extractor.PackageHandler;
-import org.jboss.tools.hibernate.spi.IService;
-import org.jboss.tools.hibernate.spi.ServiceLookup;
+import org.jboss.tools.hibernate.runtime.spi.IService;
+import org.jboss.tools.hibernate.runtime.spi.ServiceLookup;
 
 /**
  * @author Vitali

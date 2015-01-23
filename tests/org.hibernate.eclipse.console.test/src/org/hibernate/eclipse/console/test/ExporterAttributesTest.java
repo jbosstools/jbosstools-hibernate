@@ -35,13 +35,13 @@ import org.hibernate.eclipse.console.test.project.LaunchConfigTestProject;
 import org.hibernate.eclipse.console.test.utils.ResourceReadUtils;
 import org.hibernate.eclipse.launch.CodeGenerationStrings;
 import org.hibernate.eclipse.launch.ExporterAttributes;
-import org.jboss.tools.hibernate.spi.IArtifactCollector;
-import org.jboss.tools.hibernate.spi.IConfiguration;
-import org.jboss.tools.hibernate.spi.IExporter;
-import org.jboss.tools.hibernate.spi.IGenericExporter;
-import org.jboss.tools.hibernate.spi.IHbm2DDLExporter;
-import org.jboss.tools.hibernate.spi.IQueryExporter;
-import org.jboss.tools.hibernate.spi.IService;
+import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
+import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IExporter;
+import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
+import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
+import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
+import org.jboss.tools.hibernate.runtime.spi.IService;
 
 /**
  * @author Vitali Yemialyanchyk

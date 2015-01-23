@@ -6,10 +6,10 @@ import java.util.Map;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
-import org.jboss.tools.hibernate.spi.IConfiguration;
-import org.jboss.tools.hibernate.spi.IHibernateMappingExporter;
-import org.jboss.tools.hibernate.spi.IHibernateMappingGlobalSettings;
-import org.jboss.tools.hibernate.spi.IPOJOClass;
+import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
+import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingGlobalSettings;
+import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 
 public class HibernateMappingExporterProxy implements IHibernateMappingExporter {
 

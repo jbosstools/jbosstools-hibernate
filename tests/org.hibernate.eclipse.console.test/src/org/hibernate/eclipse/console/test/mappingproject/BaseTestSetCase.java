@@ -25,7 +25,7 @@ import org.hibernate.eclipse.console.workbench.ConfigurationWorkbenchAdapter;
 import org.hibernate.eclipse.console.workbench.ConsoleConfigurationWorkbenchAdapter;
 import org.hibernate.eclipse.console.workbench.PersistentClassWorkbenchAdapter;
 import org.hibernate.eclipse.console.workbench.PropertyWorkbenchAdapter;
-import org.jboss.tools.hibernate.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 
 /**
  * @author vy (vyemialyanchyk@gmail.com)

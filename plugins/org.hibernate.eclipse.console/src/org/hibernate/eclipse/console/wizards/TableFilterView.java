@@ -46,8 +46,8 @@ import org.hibernate.eclipse.console.workbench.LazyDatabaseSchema;
 import org.hibernate.eclipse.console.workbench.TableContainer;
 import org.hibernate.eclipse.console.workbench.xpl.AnyAdaptableLabelProvider;
 import org.hibernate.util.xpl.StringHelper;
-import org.jboss.tools.hibernate.spi.IColumn;
-import org.jboss.tools.hibernate.spi.ITable;
+import org.jboss.tools.hibernate.runtime.spi.IColumn;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
 
 public abstract class TableFilterView extends TreeToTableComposite {
 

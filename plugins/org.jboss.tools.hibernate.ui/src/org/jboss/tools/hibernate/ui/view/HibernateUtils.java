@@ -12,9 +12,9 @@ package org.jboss.tools.hibernate.ui.view;
 
 import java.util.Iterator;
 
-import org.jboss.tools.hibernate.spi.IColumn;
-import org.jboss.tools.hibernate.spi.IForeignKey;
-import org.jboss.tools.hibernate.spi.ITable;
+import org.jboss.tools.hibernate.runtime.spi.IColumn;
+import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
 
 /**
  * @author some modifications from Vitali

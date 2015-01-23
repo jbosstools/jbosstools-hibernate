@@ -10,7 +10,7 @@ import org.hibernate.console.ConsoleQueryParameter;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.QueryInputModel;
 import org.hibernate.eclipse.console.test.launchcfg.TestConsoleConfigurationPreferences;
-import org.jboss.tools.hibernate.spi.IService;
+import org.jboss.tools.hibernate.runtime.spi.IService;
 
 public class QueryParametersTest extends TestCase {
 	

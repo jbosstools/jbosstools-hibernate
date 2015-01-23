@@ -30,11 +30,11 @@ import java.util.List;
 import org.hibernate.console.AbstractQueryPage;
 import org.hibernate.console.ConsoleQueryParameter;
 import org.hibernate.console.QueryInputModel;
-import org.jboss.tools.hibernate.spi.IQuery;
-import org.jboss.tools.hibernate.spi.IService;
-import org.jboss.tools.hibernate.spi.ISession;
-import org.jboss.tools.hibernate.spi.IType;
-import org.jboss.tools.hibernate.spi.ITypeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IQuery;
+import org.jboss.tools.hibernate.runtime.spi.IService;
+import org.jboss.tools.hibernate.runtime.spi.ISession;
+import org.jboss.tools.hibernate.runtime.spi.IType;
+import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 
 
 public class HQLQueryPage extends AbstractQueryPage {

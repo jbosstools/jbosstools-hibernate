@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.type.Type;
-import org.jboss.tools.hibernate.spi.IQuery;
-import org.jboss.tools.hibernate.spi.IType;
+import org.jboss.tools.hibernate.runtime.spi.IQuery;
+import org.jboss.tools.hibernate.runtime.spi.IType;
 
 public class QueryProxy implements IQuery {
 	

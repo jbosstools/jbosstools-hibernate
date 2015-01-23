@@ -1,7 +1,7 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
-import org.jboss.tools.hibernate.spi.IMetaDataDialect;
+import org.jboss.tools.hibernate.runtime.spi.IMetaDataDialect;
 
 public class MetaDataDialectProxy implements IMetaDataDialect {
 

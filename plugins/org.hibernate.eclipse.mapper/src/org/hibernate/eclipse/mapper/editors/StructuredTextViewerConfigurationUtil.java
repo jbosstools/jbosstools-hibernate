@@ -19,8 +19,8 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.common.HibernateExtension;
 import org.hibernate.eclipse.mapper.MapperPlugin;
 import org.hibernate.eclipse.nature.HibernateNature;
-import org.jboss.tools.hibernate.spi.IService;
-import org.jboss.tools.hibernate.spi.ServiceLookup;
+import org.jboss.tools.hibernate.runtime.spi.IService;
+import org.jboss.tools.hibernate.runtime.spi.ServiceLookup;
 
 public class StructuredTextViewerConfigurationUtil {
 

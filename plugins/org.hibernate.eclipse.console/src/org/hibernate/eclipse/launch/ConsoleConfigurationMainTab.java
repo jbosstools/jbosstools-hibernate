@@ -53,7 +53,7 @@ import org.hibernate.eclipse.console.wizards.NewConfigurationWizard;
 import org.hibernate.eclipse.console.wizards.NewConfigurationWizardPage;
 import org.hibernate.eclipse.utils.HibernateEclipseUtils;
 import org.hibernate.util.xpl.StringHelper;
-import org.jboss.tools.hibernate.spi.ServiceLookup;
+import org.jboss.tools.hibernate.runtime.spi.ServiceLookup;
 
 @SuppressWarnings("restriction")
 public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {

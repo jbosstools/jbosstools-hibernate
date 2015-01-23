@@ -26,12 +26,12 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 import org.hibernate.eclipse.console.test.project.ConfigurableTestProject;
 import org.hibernate.eclipse.console.test.utils.ConsoleConfigUtils;
-import org.jboss.tools.hibernate.spi.IArtifactCollector;
-import org.jboss.tools.hibernate.spi.IConfiguration;
-import org.jboss.tools.hibernate.spi.IHibernateMappingExporter;
-import org.jboss.tools.hibernate.spi.IHibernateMappingGlobalSettings;
-import org.jboss.tools.hibernate.spi.IService;
-import org.jboss.tools.hibernate.spi.ServiceLookup;
+import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
+import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
+import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingGlobalSettings;
+import org.jboss.tools.hibernate.runtime.spi.IService;
+import org.jboss.tools.hibernate.runtime.spi.ServiceLookup;
 
 /**
  * @author Dmitry Geraskov

@@ -25,8 +25,8 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceU
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.validation.HibernateJpaValidationMessage;
-import org.jboss.tools.hibernate.spi.IService;
-import org.jboss.tools.hibernate.spi.ITypeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IService;
+import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 
 /**
  * @author Dmitry Geraskov

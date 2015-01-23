@@ -7,9 +7,9 @@ import java.util.List;
 
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
-import org.jboss.tools.hibernate.spi.IColumn;
-import org.jboss.tools.hibernate.spi.IForeignKey;
-import org.jboss.tools.hibernate.spi.ITable;
+import org.jboss.tools.hibernate.runtime.spi.IColumn;
+import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
 
 public class ForeignKeyProxy implements IForeignKey {
 	

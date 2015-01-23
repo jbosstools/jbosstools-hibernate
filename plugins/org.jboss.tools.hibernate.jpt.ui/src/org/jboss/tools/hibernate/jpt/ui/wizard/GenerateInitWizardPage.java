@@ -53,7 +53,7 @@ import org.hibernate.eclipse.launch.PathHelper;
 import org.hibernate.util.xpl.StringHelper;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
 import org.jboss.tools.hibernate.jpt.ui.HibernateJptUIPlugin;
-import org.jboss.tools.hibernate.spi.ServiceLookup;
+import org.jboss.tools.hibernate.runtime.spi.ServiceLookup;
 
 /**
  * @author Dmitry Geraskov

@@ -91,7 +91,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.IndexAnnotation
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.ParameterAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeDefAnnotation;
-import org.jboss.tools.hibernate.spi.IService;
+import org.jboss.tools.hibernate.runtime.spi.IService;
 
 /**
  * @author Dmitry Geraskov

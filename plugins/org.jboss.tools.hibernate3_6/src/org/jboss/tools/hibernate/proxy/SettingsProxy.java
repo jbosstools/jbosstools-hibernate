@@ -1,7 +1,7 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.cfg.Settings;
-import org.jboss.tools.hibernate.spi.ISettings;
+import org.jboss.tools.hibernate.runtime.spi.ISettings;
 
 public class SettingsProxy implements ISettings {
 	

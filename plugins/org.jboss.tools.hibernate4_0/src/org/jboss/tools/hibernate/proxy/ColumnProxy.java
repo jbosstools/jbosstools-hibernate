@@ -1,10 +1,10 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.mapping.Column;
-import org.jboss.tools.hibernate.spi.IColumn;
-import org.jboss.tools.hibernate.spi.IDialect;
-import org.jboss.tools.hibernate.spi.IMapping;
-import org.jboss.tools.hibernate.spi.IValue;
+import org.jboss.tools.hibernate.runtime.spi.IColumn;
+import org.jboss.tools.hibernate.runtime.spi.IDialect;
+import org.jboss.tools.hibernate.runtime.spi.IMapping;
+import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public class ColumnProxy implements IColumn {
 	

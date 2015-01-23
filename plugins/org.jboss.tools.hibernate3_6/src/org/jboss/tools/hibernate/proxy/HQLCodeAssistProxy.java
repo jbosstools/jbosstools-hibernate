@@ -3,8 +3,8 @@ package org.jboss.tools.hibernate.proxy;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.ide.completion.IHQLCompletionRequestor;
-import org.jboss.tools.hibernate.spi.IHQLCodeAssist;
-import org.jboss.tools.hibernate.spi.IHQLCompletionHandler;
+import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
+import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionHandler;
 
 public class HQLCodeAssistProxy implements IHQLCodeAssist {
 	

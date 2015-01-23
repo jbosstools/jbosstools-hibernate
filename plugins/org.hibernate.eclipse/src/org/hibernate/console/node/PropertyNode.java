@@ -21,7 +21,7 @@
  */
 package org.hibernate.console.node;
 
-import org.jboss.tools.hibernate.spi.IClassMetadata;
+import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 
 class PropertyNode extends TypeNode {
 

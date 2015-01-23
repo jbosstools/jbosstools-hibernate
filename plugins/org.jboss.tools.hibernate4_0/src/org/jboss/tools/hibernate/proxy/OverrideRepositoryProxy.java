@@ -3,9 +3,9 @@ package org.jboss.tools.hibernate.proxy;
 import java.io.File;
 
 import org.hibernate.cfg.reveng.OverrideRepository;
-import org.jboss.tools.hibernate.spi.IOverrideRepository;
-import org.jboss.tools.hibernate.spi.IReverseEngineeringStrategy;
-import org.jboss.tools.hibernate.spi.ITableFilter;
+import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
+import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
+import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 
 public class OverrideRepositoryProxy implements IOverrideRepository {
 	

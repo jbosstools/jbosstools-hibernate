@@ -16,7 +16,7 @@ import org.eclipse.ui.PartInitException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 import org.hibernate.eclipse.console.test.utils.Utils;
-import org.jboss.tools.hibernate.spi.IPersistentClass;
+import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.ui.view.OpenDiagramActionDelegate;
 
 /**

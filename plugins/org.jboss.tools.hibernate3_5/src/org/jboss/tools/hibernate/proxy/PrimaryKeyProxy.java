@@ -6,9 +6,9 @@ import java.util.List;
 
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
-import org.jboss.tools.hibernate.spi.IColumn;
-import org.jboss.tools.hibernate.spi.IPrimaryKey;
-import org.jboss.tools.hibernate.spi.ITable;
+import org.jboss.tools.hibernate.runtime.spi.IColumn;
+import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
 
 public class PrimaryKeyProxy implements IPrimaryKey {
 	

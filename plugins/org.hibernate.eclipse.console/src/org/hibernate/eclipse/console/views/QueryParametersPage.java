@@ -68,7 +68,7 @@ import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.QueryEditor;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.util.xpl.StringHelper;
-import org.jboss.tools.hibernate.spi.IType;
+import org.jboss.tools.hibernate.runtime.spi.IType;
 
 public class QueryParametersPage extends Page implements IQueryParametersPage {
 

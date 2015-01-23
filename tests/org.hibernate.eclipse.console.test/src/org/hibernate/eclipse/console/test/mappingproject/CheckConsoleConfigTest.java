@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.hibernate.eclipse.console.test.mappingproject;
 
-import org.jboss.tools.hibernate.spi.IPersistentClass;
+import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 
 /**
  * @author vy (vyemialyanchyk@gmail.com)

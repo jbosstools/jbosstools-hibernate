@@ -23,9 +23,9 @@ package org.hibernate.eclipse.console.workbench;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.model.IWorkbenchAdapter;
-import org.jboss.tools.hibernate.spi.IProperty;
-import org.jboss.tools.hibernate.spi.IValue;
-import org.jboss.tools.hibernate.spi.IValueVisitor;
+import org.jboss.tools.hibernate.runtime.spi.IProperty;
+import org.jboss.tools.hibernate.runtime.spi.IValue;
+import org.jboss.tools.hibernate.runtime.spi.IValueVisitor;
 
 public class PropertyWorkbenchAdapter implements IWorkbenchAdapter {
 	
