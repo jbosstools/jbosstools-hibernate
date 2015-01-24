@@ -7,7 +7,7 @@
 		<version>5.0.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.hibernatetools.tests</groupId>
-	<artifactId>org.jboss.tools.hibernate.spi.test</artifactId> 
+	<artifactId>org.jboss.tools.hibernate.runtime.spi.test</artifactId> 
 	
 	<packaging>eclipse-test-plugin</packaging>
 	

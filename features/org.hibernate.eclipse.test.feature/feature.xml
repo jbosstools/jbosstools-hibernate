@@ -22,7 +22,7 @@
 
    <plugin id="org.jboss.tools.hibernate.jpt.core.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
 
-   <plugin id="org.jboss.tools.hibernate.spi.test" download-size="0" install-size="0" version="0.0.0"      unpack="false" fragment="true"/>
+   <plugin id="org.jboss.tools.hibernate.runtime.spi.test" download-size="0" install-size="0" version="0.0.0"      unpack="false" fragment="true"/>
 
    <plugin id="org.jboss.tools.hibernate.ui.test" download-size="0" install-size="0" version="0.0.0"/>
 </feature>
