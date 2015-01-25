@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Hibernate 4.3 libraries
 Bundle-Vendor: JBoss by Red Hat
-Bundle-SymbolicName: org.jboss.tools.hibernate4_3;singleton:=true
+Bundle-SymbolicName: org.jboss.tools.hibernate.runtime.v_4_3;singleton:=true
 Bundle-Version: 5.0.0.qualifier
 Bundle-Localization: plugin
 Require-Bundle: org.apache.commons.collections;bundle-version="3.2.0",
