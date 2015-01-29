@@ -14,7 +14,7 @@ public abstract class AbstractArtifactCollector implements IArtifactCollector {
 		return "org.hibernate.tool.hbm2x.ArtifactCollector";
 	}
 	
-	protected Object getTarget() {
+	public Object getTarget() {
 		if (target == null) {
 			target = Util.getInstance(getTargetClassName(), this);
 		}
