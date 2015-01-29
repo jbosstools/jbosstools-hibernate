@@ -17,7 +17,7 @@ Require-Bundle: org.junit;bundle-version="3.8.2",
  org.jboss.tools.hibernate.jpt.core;bundle-version="5.0.0",
  org.jboss.tools.tests;bundle-version="3.5.0",
  org.hibernate.eclipse;bundle-version="5.0.0",
- org.jboss.tools.hibernate3_5;bundle-version="5.0.0",
+ org.jboss.tools.hibernate.runtime.v_3_5;bundle-version="5.0.0",
  org.jboss.tools.hibernate.runtime.spi;bundle-version="5.0.0",
  org.jboss.tools.hibernate.runtime.v_3_6;bundle-version="5.0.0"
 Bundle-ActivationPolicy: lazy
