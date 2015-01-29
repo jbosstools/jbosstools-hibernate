@@ -16,7 +16,7 @@ import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
-import org.jboss.tools.hibernate.runtime.v_3_5.internal.ArtifactCollectorProxy;
+import org.jboss.tools.hibernate.runtime.v_3_5.internal.ArtifactCollectorImpl;
 
 public class ExporterProxy implements IExporter {
 	
@@ -50,8 +50,8 @@ public class ExporterProxy implements IExporter {
 
 	@Override
 	public void setArtifactCollector(IArtifactCollector collector) {
-		if (collector instanceof ArtifactCollectorProxy) {
-			target.setArtifactCollector(((ArtifactCollectorProxy)collector).getTarget());
+		if (collector instanceof ArtifactCollectorImpl) {
+			target.setArtifactCollector(((ArtifactCollectorImpl)collector).getTarget());
 		}
 	}
 

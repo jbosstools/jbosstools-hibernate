@@ -6,7 +6,7 @@ import java.util.Set;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 
-public class ArtifactCollectorProxy implements IArtifactCollector {
+public class ArtifactCollectorImpl implements IArtifactCollector {
 	
 	private ArtifactCollector target = new ArtifactCollector();
 	
