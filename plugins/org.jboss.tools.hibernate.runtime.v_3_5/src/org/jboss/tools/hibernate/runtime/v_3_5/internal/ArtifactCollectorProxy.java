@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate.proxy;
+package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
 import java.io.File;
 import java.util.Set;
@@ -10,7 +10,7 @@ public class ArtifactCollectorProxy implements IArtifactCollector {
 	
 	private ArtifactCollector target = new ArtifactCollector();
 	
-	ArtifactCollector getTarget() {
+	public ArtifactCollector getTarget() {
 		return target;
 	}
 
