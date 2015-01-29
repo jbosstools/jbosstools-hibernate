@@ -25,7 +25,7 @@ public abstract class AbstractArtifactCollector implements IArtifactCollector {
 	@Override
 	public Set<String> getFileTypes() {
 		return (Set<String>)Util.invokeMethod(
-				this, 
+				getTarget(), 
 				"getFileTypes", 
 				new Class[] {},
 				new Object[] {});
@@ -34,7 +34,7 @@ public abstract class AbstractArtifactCollector implements IArtifactCollector {
 	@Override
 	public void formatFiles() {
 		Util.invokeMethod(
-				this, 
+				getTarget(), 
 				"formatFiles", 
 				new Class[] {}, 
 				new Object[] {});
@@ -43,7 +43,7 @@ public abstract class AbstractArtifactCollector implements IArtifactCollector {
 	@Override
 	public File[] getFiles(String string) {
 		return (File[])Util.invokeMethod(
-				this, 
+				getTarget(), 
 				"getFiles", 
 				new Class[] {String.class}, 
 				new Object[] { string });
