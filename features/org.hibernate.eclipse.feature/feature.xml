@@ -58,6 +58,7 @@
 <plugin id="org.hibernate.eclipse.help" download-size="0" install-size="0" version="0.0.0"         unpack="false"/>
 <plugin id="org.hibernate.eclipse.jdt.ui" download-size="0" install-size="0" version="0.0.0"       unpack="false"/>
 <plugin id="org.hibernate.eclipse.mapper" download-size="0" install-size="0" version="0.0.0"       unpack="false"/>
+<plugin id="org.jboss.tools.hibernate.runtime.common" download-size="0" install-size="0" version="0.0.0"       unpack="false"/>
 <plugin id="org.jboss.tools.hibernate.runtime.v_3_5" download-size="0" install-size="0" version="0.0.0"       unpack="false"/>
 <plugin id="org.jboss.tools.hibernate.runtime.v_3_6" download-size="0" install-size="0" version="0.0.0"       unpack="false"/>
 <plugin id="org.jboss.tools.hibernate.runtime.v_4_0" download-size="0" install-size="0" version="0.0.0"       unpack="false"/>
