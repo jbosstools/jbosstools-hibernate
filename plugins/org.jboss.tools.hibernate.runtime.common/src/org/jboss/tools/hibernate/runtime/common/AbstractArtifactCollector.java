@@ -8,7 +8,7 @@ import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 
 public abstract class AbstractArtifactCollector implements IArtifactCollector {
 	
-	protected Object target = null;
+	private Object target = null;
 	
 	protected String getTargetClassName() {
 		return "org.hibernate.tool.hbm2x.ArtifactCollector";
