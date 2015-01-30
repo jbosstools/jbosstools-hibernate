@@ -16,6 +16,7 @@ import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
+import org.jboss.tools.hibernate.runtime.v_3_6.internal.ArtifactCollectorProxy;
 
 public class ExporterProxy implements IExporter {
 	
