@@ -50,8 +50,8 @@ public class ExporterProxy implements IExporter {
 
 	@Override
 	public void setArtifactCollector(IArtifactCollector collector) {
-		if (collector instanceof ArtifactCollectorProxy) {
-			target.setArtifactCollector((ArtifactCollector)((ArtifactCollectorProxy)collector).getTarget());
+		if (collector instanceof ArtifactCollectorImpl) {
+			target.setArtifactCollector((ArtifactCollector)((ArtifactCollectorImpl)collector).getTarget());
 		}
 	}
 
