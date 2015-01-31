@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.StringWriter;
 import java.util.Properties;
 
+import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.GenericExporter;
 import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
@@ -50,7 +51,7 @@ public class ExporterProxy implements IExporter {
 	@Override
 	public void setArtifactCollector(IArtifactCollector collector) {
 		if (collector instanceof ArtifactCollectorProxy) {
-			target.setArtifactCollector(((ArtifactCollectorProxy)collector).getTarget());
+			target.setArtifactCollector((ArtifactCollector)((ArtifactCollectorProxy)collector).getTarget());
 		}
 	}
 
