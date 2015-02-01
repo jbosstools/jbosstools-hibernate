@@ -10,7 +10,7 @@ public class ArtifactCollectorProxy implements IArtifactCollector {
 	
 	private ArtifactCollector target = new ArtifactCollector();
 	
-	ArtifactCollector getTarget() {
+	public Object getTarget() {
 		return target;
 	}
 
