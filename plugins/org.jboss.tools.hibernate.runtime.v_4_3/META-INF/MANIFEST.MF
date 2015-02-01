@@ -11,7 +11,8 @@ Require-Bundle: org.apache.commons.collections;bundle-version="3.2.0",
  org.jboss.tools.hibernate.libs.dom4j.v_1_6_1;bundle-version="5.0.0",
  org.jboss.tools.hibernate.libs.freemarker.v_2_3_8;bundle-version="5.0.0",
  org.jboss.tools.hibernate.libs.jtidy.v_r8-20060801;bundle-version="5.0.0",
- org.jboss.tools.hibernate.runtime.spi;bundle-version="5.0.0"
+ org.jboss.tools.hibernate.runtime.spi;bundle-version="5.0.0",
+ org.jboss.tools.hibernate.runtime.common;bundle-version="5.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: .,
  lib/commons-logging-1.1.1.jar,
