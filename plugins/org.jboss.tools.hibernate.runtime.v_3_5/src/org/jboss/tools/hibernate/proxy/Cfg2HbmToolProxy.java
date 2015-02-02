@@ -9,10 +9,10 @@ public class Cfg2HbmToolProxy implements ICfg2HbmTool {
 	
 	private Cfg2HbmTool target = null;
 	
-	public Cfg2HbmToolProxy(Cfg2HbmTool tool) {
-		target = tool;
+	public Cfg2HbmToolProxy() {
+		target = new Cfg2HbmTool();
 	}
-
+	
 	@Override
 	public String getTag(IPersistentClass persistentClass) {
 		assert persistentClass instanceof PersistentClassProxy;

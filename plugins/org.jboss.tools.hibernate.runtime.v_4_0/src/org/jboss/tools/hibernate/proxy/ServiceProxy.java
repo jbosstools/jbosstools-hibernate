@@ -45,7 +45,6 @@ import org.hibernate.service.classloading.internal.ClassLoaderServiceImpl;
 import org.hibernate.service.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.service.jdbc.dialect.internal.DialectFactoryImpl;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
-import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.util.xpl.ReflectHelper;
@@ -280,7 +279,7 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public ICfg2HbmTool newCfg2HbmTool() {
-		return new Cfg2HbmToolProxy(new Cfg2HbmTool());
+		return new Cfg2HbmToolProxy();
 	}
 
 	@Override
