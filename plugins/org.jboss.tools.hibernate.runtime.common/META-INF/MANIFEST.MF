@@ -9,3 +9,4 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.10.0",
  org.jboss.tools.hibernate.runtime.spi;bundle-version="5.0.0"
 Bundle-ActivationPolicy: lazy
 Export-Package: org.jboss.tools.hibernate.runtime.common
+Bundle-Activator: org.jboss.tools.hibernate.runtime.common.internal.HibernateRuntimeCommon
