@@ -1,11 +1,11 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
-import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
+import org.jboss.tools.hibernate.runtime.common.AbstractCfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 
-public class Cfg2HbmToolProxy implements ICfg2HbmTool {
+public class Cfg2HbmToolProxy extends AbstractCfg2HbmTool {
 	
 	private Cfg2HbmTool target = null;
 	
