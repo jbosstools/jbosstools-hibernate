@@ -7,9 +7,9 @@ import org.jboss.tools.hibernate.runtime.spi.IProperty;
 
 public abstract class AbstractCfg2HbmTool implements ICfg2HbmTool {
 
-	private Object target = null;
+	protected Object target = null;
 	
-	private Object getTarget() {
+	protected Object getTarget() {
 		if (target == null) {
 			target = Util.getInstance(getTargetClassName(), this);
 		}
