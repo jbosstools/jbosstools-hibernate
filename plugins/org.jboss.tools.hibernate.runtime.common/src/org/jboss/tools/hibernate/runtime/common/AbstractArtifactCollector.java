@@ -6,21 +6,14 @@ import java.util.Set;
 import org.jboss.tools.hibernate.runtime.common.internal.Util;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 
-public abstract class AbstractArtifactCollector implements IArtifactCollector {
-	
-	private Object target = null;
+public abstract class AbstractArtifactCollector 
+extends AbstractFacade 
+implements IArtifactCollector {
 	
 	protected String getTargetClassName() {
 		return "org.hibernate.tool.hbm2x.ArtifactCollector";
 	}
 	
-	public Object getTarget() {
-		if (target == null) {
-			target = Util.getInstance(getTargetClassName(), this);
-		}
-		return target;
-	}
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public Set<String> getFileTypes() {
