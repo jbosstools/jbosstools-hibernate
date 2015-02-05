@@ -7,10 +7,6 @@ import org.jboss.tools.hibernate.runtime.spi.IProperty;
 
 public class Cfg2HbmToolProxy extends AbstractCfg2HbmTool {
 	
-	public Cfg2HbmToolProxy() {
-		target = new Cfg2HbmTool();
-	}
-	
 	@Override
 	public String getTag(IPersistentClass persistentClass) {
 		assert persistentClass instanceof PersistentClassProxy;
