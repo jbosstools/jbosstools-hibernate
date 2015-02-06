@@ -5,17 +5,10 @@ import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 
-public abstract class AbstractCfg2HbmTool implements ICfg2HbmTool {
+public abstract class AbstractCfg2HbmTool 
+extends AbstractFacade 
+implements ICfg2HbmTool {
 
-	protected Object target = null;
-	
-	protected Object getTarget() {
-		if (target == null) {
-			target = Util.getInstance(getTargetClassName(), this);
-		}
-		return target;
-	}
-	
 	protected String getTargetClassName() {
 		return "org.hibernate.tool.hbm2x.Cfg2HbmTool";
 	}
