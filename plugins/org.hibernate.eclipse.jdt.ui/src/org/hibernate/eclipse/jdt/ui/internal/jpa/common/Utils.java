@@ -27,7 +27,6 @@ import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
-import org.eclipse.jdt.internal.core.JavaProject;
 
 /**
  * Compilation unit common functions
@@ -57,7 +56,7 @@ public class Utils {
 	static public IType findType(IJavaProject javaProject, 
 			String fullyQualifiedName) {
 		IType lwType = null;
-		if (javaProject != null && javaProject instanceof JavaProject) {
+		if (javaProject != null) {
 			try {
 				lwType = javaProject.findType(fullyQualifiedName,(IProgressMonitor)null);
 			} catch (JavaModelException e) {
