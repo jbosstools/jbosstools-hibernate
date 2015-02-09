@@ -117,7 +117,7 @@ public class HibernateJptUIPlugin extends AbstractUIPlugin {
 		Image image = registry.get(key);
 		if (image == null) {
 			// a bad image descriptor will result in a "default" image
-			registry.put(key, getImageDescriptor("icons" + File.separatorChar + key + ".gif"));
+			registry.put(key, getImageDescriptor("icons" + File.separatorChar + key + ".gif")); //$NON-NLS-2$
 			image = registry.get(key);
 		}
 		return image;
