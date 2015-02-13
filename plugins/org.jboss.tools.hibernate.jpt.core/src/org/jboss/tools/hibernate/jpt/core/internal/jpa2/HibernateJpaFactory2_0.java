@@ -167,6 +167,6 @@ public class HibernateJpaFactory2_0 extends HibernateAbstractJpaFactory implemen
 
 	@Override
 	public IService getHibernateService() {
-		return ServiceLookup.findService("4.0");
+		return ServiceLookup.findService("4.0"); //$NON-NLS-1$
 	}
 }
