@@ -99,7 +99,7 @@ public class DebugJavaCompletionProposalComputer implements IJavaCompletionPropo
 
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List computeContextInformation(ContentAssistInvocationContext context, IProgressMonitor monitor) {
 		// TODO Auto-generated method stub
 		return Collections.EMPTY_LIST;
