@@ -63,7 +63,7 @@ public class ShapeShowAction extends SelectionAction {
 			return cc;
 		}
 		List<OrmShape> selectedShape = new ArrayList<OrmShape>();
-		Iterator it = getSelectedObjects().iterator();
+		Iterator<?> it = getSelectedObjects().iterator();
 		while (it.hasNext()) {
 			Object firstElement = it.next();
 			Object obj = null;
@@ -95,7 +95,7 @@ public class ShapeShowAction extends SelectionAction {
 		if (getSelectedObjects().isEmpty()) {
 			return res;
 		}
-		Iterator it = getSelectedObjects().iterator();
+		Iterator<?> it = getSelectedObjects().iterator();
 		while (it.hasNext() && !res) {
 			Object firstElement = it.next();
 			Object obj = null;
