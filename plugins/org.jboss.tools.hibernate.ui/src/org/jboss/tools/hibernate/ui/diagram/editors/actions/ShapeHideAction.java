@@ -57,7 +57,6 @@ public class ShapeHideAction extends SelectionAction {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public Command getCommand() {
 		CompoundCommand cc = new CompoundCommand();
 		if (getSelectedObjects().isEmpty()) {
@@ -91,7 +90,6 @@ public class ShapeHideAction extends SelectionAction {
 		return canPerformAction();
 	}
 
-	@SuppressWarnings("unchecked")
 	private boolean canPerformAction() {
 		boolean res = false;
 		if (getSelectedObjects().isEmpty()) {
