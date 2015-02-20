@@ -114,7 +114,6 @@ public class HibernateJavaEntity2_0Composite extends AbstractEntityComposite<Hib
 		};
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	protected Control initializeGeneratorsSection(Composite container) {
 		Composite subPane = addSubPane(container, 10);
