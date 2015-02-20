@@ -11,14 +11,11 @@
 package org.jboss.tools.hibernate.jpt.ui.internal.details.java;
 
 import org.eclipse.jface.resource.ResourceManager;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsPageManager;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
 import org.eclipse.swt.widgets.Composite;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernatePackageInfo;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaPackageInfo;
 import org.jboss.tools.hibernate.jpt.ui.internal.details.PackageInfoDetailsPage;
 
