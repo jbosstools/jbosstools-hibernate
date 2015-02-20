@@ -69,7 +69,7 @@ public class HibernateJavaEntity2_0Composite extends AbstractEntityComposite<Hib
 	protected void initializeTypeDefCollapsibleSection(Composite container) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		section.setText("Type Definitions");
+		section.setText("Type Definitions"); //$NON-NLS-1$
 		
 		section.addExpansionListener(new ExpansionAdapter() {
 			@Override
