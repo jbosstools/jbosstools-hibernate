@@ -21,7 +21,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/tools/freemarker.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/bsh-core-2.0b4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/jgroups-2.2.8.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/hibernate/antlr-2.7.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/tools/jtidy-r8-20060801.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/annotations/hibernate-jpa-2.0-api-1.0.0.Final.jar" sourcepath="C:/Documents and Settings/dgeraskov/.m2/repository/org/hibernate/javax/persistence/hibernate-jpa-2.0-api/1.0.0.Final/hibernate-jpa-2.0-api-1.0.0.Final-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/javassist.jar"/>
