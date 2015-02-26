@@ -57,6 +57,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.model.IRevEngColumn;
 import org.hibernate.eclipse.console.model.IRevEngGenerator;
 import org.hibernate.eclipse.console.model.IRevEngParameter;
@@ -391,20 +392,8 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 	}
 	
 	private IService getService() {
-		IService result = null;
-		HibernateNature hibnat = null;
-		try {
-			hibnat = editor.getHibernateNature();
-			if (hibnat != null) {
-				ConsoleConfiguration cc = hibnat.getDefaultConsoleConfiguration();
-				if (cc != null) {
-					result = cc.getHibernateExtension().getHibernateService();
-				}
-			}
-		} catch (CoreException e) {
-			MapperPlugin.getDefault().logException(e);
-		}
-		return result;
-		
+		String consoleConfigurationName = editor.getConsoleConfigurationName();
+		ConsoleConfiguration consoleConfiguration = KnownConfigurations.getInstance().find(consoleConfigurationName);
+		return consoleConfiguration.getHibernateExtension().getHibernateService();		
 	}
 }
