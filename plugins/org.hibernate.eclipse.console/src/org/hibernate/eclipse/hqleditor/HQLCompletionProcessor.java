@@ -128,8 +128,8 @@ public class HQLCompletionProcessor implements IContentAssistProcessor {
 		    				errorMessage = HibernateConsoleMessages.HQLCompletionProcessor_no_hql_completions_available;
 		    			}
 					} else {
-						errorMessage = "There is no completion proposal implementation for this hibernate version \'"
-								+ consoleConfiguration.getHibernateExtension().getHibernateVersion() + "\'";
+						errorMessage = "There is no completion proposal implementation for this hibernate version \'" //$NON-NLS-1$
+								+ consoleConfiguration.getHibernateExtension().getHibernateVersion() + "\'"; //$NON-NLS-1$
 					}
 				}
     		} else {
