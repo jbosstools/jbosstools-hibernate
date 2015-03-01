@@ -95,7 +95,6 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 
 	protected void createMasterPart(final IManagedForm managedForm,	Composite parent) {
 		sashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,true));
-		final ScrolledForm form = managedForm.getForm();
 		FormToolkit toolkit = managedForm.getToolkit();
 		Section section = toolkit.createSection( parent, Section.DESCRIPTION |
 				Section.FOCUS_TITLE | Section.TWISTIE | Section.EXPANDED);
