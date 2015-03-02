@@ -223,9 +223,9 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 				}
 			}
 
-			Iterator iterator = tables.entrySet().iterator();
+			Iterator<Map.Entry<ITableIdentifier, ITable>> iterator = tables.entrySet().iterator();
 			while ( iterator.hasNext() ) {
-				Map.Entry element = (Map.Entry) iterator.next();
+				Map.Entry<ITableIdentifier, ITable> element = iterator.next();
 				ITable table = (ITable) element.getValue();
 				IRevEngTable retable = null;
 				//	editor.getReverseEngineeringDefinition().findTable(TableIdentifier.create(table));
