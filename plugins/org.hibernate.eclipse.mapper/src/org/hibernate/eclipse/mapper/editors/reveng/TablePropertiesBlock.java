@@ -167,7 +167,7 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 
 		LazyDatabaseSchema lds = editor.getLazyDatabaseSchema();
 
-		Map tables = new HashMap();
+		Map<ITableIdentifier, ITable> tables = new HashMap<ITableIdentifier, ITable>();
 		Map columns = new HashMap();
 
 		if (lds == null) {
@@ -203,7 +203,7 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 					Object object = result[i];
 					if(object instanceof ITable) {
 						ITable table = (ITable) object;
-						tables.put(getService().createTableIdentifier(table), object);
+						tables.put(getService().createTableIdentifier(table), table);
 						lastTable = getService().createTableIdentifier(table);
 					} else if (object instanceof IColumn) {
 						List existing = (List) columns.get(lastTable);
