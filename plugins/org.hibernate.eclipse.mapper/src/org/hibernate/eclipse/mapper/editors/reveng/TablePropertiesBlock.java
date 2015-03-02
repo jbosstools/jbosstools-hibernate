@@ -264,8 +264,8 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 		}
 		boolean updateSelection = false;
 		TreeSelection ts = (TreeSelection)sel;
-		List list = ts.toList();
-		for (Iterator it = list.iterator(); it.hasNext();) {
+		List<?> list = ts.toList();
+		for (Iterator<?> it = list.iterator(); it.hasNext();) {
 			Object obj = it.next();
 			if (obj instanceof IRevEngTable) {
 				IRevEngTable retable = (IRevEngTable)obj;
@@ -327,7 +327,7 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 		        SelectionListener listener = new SelectionAdapter() {
 		            public void widgetSelected(SelectionEvent e) {
 		                IStructuredSelection viewerElements = (IStructuredSelection) getTreeViewer().getSelection();
-		                Iterator iterator = viewerElements.iterator();
+		                Iterator<?> iterator = viewerElements.iterator();
 		                while(iterator.hasNext()) {
 		                	getTreeViewer().setSubtreeChecked(iterator.next(), true);
 		                }
