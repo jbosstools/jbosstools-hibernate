@@ -175,7 +175,7 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 			IRevEngTable retable = editor.getReverseEngineeringDefinition().createTable();
 			retable.setCatalog(""); //$NON-NLS-1$
 			retable.setSchema(""); //$NON-NLS-1$
-			TreeSet ts = new TreeSet();
+			TreeSet<String> ts = new TreeSet<String>();
 			IRevEngTable[] retables = editor.getReverseEngineeringDefinition().getTables();
 			char separartor = '%';
 			for (int i = 0; i < retables.length; i++) {
