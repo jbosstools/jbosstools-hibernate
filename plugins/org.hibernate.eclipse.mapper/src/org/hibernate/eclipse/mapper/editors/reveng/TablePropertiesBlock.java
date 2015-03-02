@@ -206,16 +206,17 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 						tables.put(getService().createTableIdentifier(table), table);
 						lastTable = getService().createTableIdentifier(table);
 					} else if (object instanceof IColumn) {
-						List existing = (List) columns.get(lastTable);
+						IColumn column = (IColumn)object;
+						List<IColumn> existing = columns.get(lastTable);
 						if(existing==null) {
-							existing = new ArrayList();
+							existing = new ArrayList<IColumn>();
 							columns.put(lastTable,existing);
 						}
-						existing.add(object);
+						existing.add(column);
 					} else if (object instanceof IPrimaryKey) {
-						List existing = (List) columns.get(lastTable);
+						List<IColumn> existing = columns.get(lastTable);
 						if(existing==null) {
-							existing = new ArrayList();
+							existing = new ArrayList<IColumn>();
 							columns.put(lastTable,existing);
 						}
 						existing.addAll(((IPrimaryKey)object).getColumns());
@@ -237,11 +238,11 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 					editor.getReverseEngineeringDefinition().addTable(retable);
 				}
 
-				List columnList = (List) columns.get(element.getKey());
+				List<IColumn> columnList = columns.get(element.getKey());
 				if(columnList!=null) {
-					Iterator colIterator = columnList.iterator();
+					Iterator<IColumn> colIterator = columnList.iterator();
 					while ( colIterator.hasNext() ) {
-						IColumn column = (IColumn) colIterator.next();
+						IColumn column = colIterator.next();
 						IRevEngColumn revCol = editor.getReverseEngineeringDefinition().createColumn();
 						revCol.setName(column.getName());
 						if (column.getSqlType() != null){
