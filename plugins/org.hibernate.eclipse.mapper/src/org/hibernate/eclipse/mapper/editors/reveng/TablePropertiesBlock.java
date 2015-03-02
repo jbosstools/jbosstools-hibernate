@@ -168,7 +168,7 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 		LazyDatabaseSchema lds = editor.getLazyDatabaseSchema();
 
 		Map<ITableIdentifier, ITable> tables = new HashMap<ITableIdentifier, ITable>();
-		Map columns = new HashMap();
+		Map<ITableIdentifier, List<IColumn>> columns = new HashMap<ITableIdentifier, List<IColumn>>();
 
 		if (lds == null) {
 			String tableName = "", namePrefix = "TABLE_";  //$NON-NLS-1$  //$NON-NLS-2$
