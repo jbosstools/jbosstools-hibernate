@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.forms.FormColors;
+import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.TableWrapData;
@@ -112,7 +112,7 @@ public class FormTextEntry {
 			label = link;
 		} else {
 			label = toolkit.createLabel(parent, labelText);
-			label.setForeground(toolkit.getColors().getColor(FormColors.TITLE));
+			label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
 			label.setToolTipText(getToolTipText(label));
 		}
 		text = toolkit.createText(parent, "", style); //$NON-NLS-1$
