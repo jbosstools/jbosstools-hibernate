@@ -1,7 +1,9 @@
-package org.jboss.tools.hibernate.runtime.common.internal;
+package org.jboss.tools.hibernate.runtime.common;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
+import org.jboss.tools.hibernate.runtime.common.internal.HibernateRuntimeCommon;
 
 public class Util {
 	

@@ -1,6 +1,5 @@
 package org.jboss.tools.hibernate.runtime.common;
 
-import org.jboss.tools.hibernate.runtime.common.internal.Util;
 
 public abstract class AbstractFacade {
 
