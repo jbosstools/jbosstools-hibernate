@@ -25,7 +25,10 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jdt.core.IJavaProject;
@@ -34,6 +37,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jpt.jpa.ui.JptJpaUiMessages;
+import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
@@ -87,36 +91,52 @@ public class GenerateEntitiesWizard extends Wizard {
 
 			wc.setAttribute(HibernateLaunchConstants.ATTR_EXPORTERS + '.' + HibernateJpaPlatformUi.exporter_id + ".extension_id",  //$NON-NLS-1$
 						HibernateLaunchConstants.ATTR_PREFIX + "hbm2java"); //$NON-NLS-1$
-			try {
-				final NewJavaFilesListener rcl = new NewJavaFilesListener(jpaProject.getJavaProject());;
-				if (!jpaProject.discoversAnnotatedClasses()){
-					ResourcesPlugin.getWorkspace().addResourceChangeListener(rcl);
-				}
-				Job generationJob = new WorkspaceJob("Generating Entities") {					
-					@Override
-					public IStatus runInWorkspace(IProgressMonitor arg0) throws CoreException {
-						wc.launch(ILaunchManager.RUN_MODE, null);
-						if (!jpaProject.discoversAnnotatedClasses()){
-							ResourcesPlugin.getWorkspace().removeResourceChangeListener(rcl);
-							if (rcl.generatedJavaFiles.size() > 0){
-								AddGeneratedClassesJob job = new AddGeneratedClassesJob(jpaProject, rcl.generatedJavaFiles);
-								job.schedule();
-							}
-						}
-						return Status.OK_STATUS;
-					}
-				};
-				generationJob.setUser(true);
-				generationJob.schedule();
-			} finally{
-				if (initPage.isTemporaryConfiguration()){
-					KnownConfigurations.getInstance().removeConfiguration(KnownConfigurations.getInstance().find(concoleConfigurationName), false);				
-				}
+			final NewJavaFilesListener rcl = new NewJavaFilesListener(jpaProject.getJavaProject());;
+			if (!jpaProject.discoversAnnotatedClasses()){
+				ResourcesPlugin.getWorkspace().addResourceChangeListener(rcl);
 			}
+			Job generationJob = new WorkspaceJob("Generating Entities") {					
+				@Override
+				public IStatus runInWorkspace(IProgressMonitor arg0) throws CoreException {
+					wc.launch(ILaunchManager.RUN_MODE, null);
+					if (!jpaProject.discoversAnnotatedClasses()){
+						ResourcesPlugin.getWorkspace().removeResourceChangeListener(rcl);
+						if (rcl.generatedJavaFiles.size() > 0){
+							AddGeneratedClassesJob job = new AddGeneratedClassesJob(jpaProject, rcl.generatedJavaFiles);
+							job.schedule();
+						}
+					}
+					return Status.OK_STATUS;
+				}
+			};
+			if (initPage.isTemporaryConfiguration()) {
+				temporaryConfigurationName = initPage.getConfigurationName();
+				generationJob.addJobChangeListener(jobChangeListener);
+			}
+			generationJob.setUser(true);
+			generationJob.schedule();
 		}
 		return true;
 	}
-
+	
+	private void cleanup(Job job) {
+		job.removeJobChangeListener(jobChangeListener);
+		ConsoleConfiguration configuration = KnownConfigurations.getInstance().find(temporaryConfigurationName);
+		if (configuration != null) {
+			KnownConfigurations.getInstance().removeConfiguration(configuration, false);
+		}
+		temporaryConfigurationName = null;
+	}
+	
+	private String temporaryConfigurationName = null;
+	
+	private IJobChangeListener jobChangeListener = new JobChangeAdapter() {
+		@Override
+		public void done(IJobChangeEvent event) {
+			cleanup(event.getJob());
+		}
+	};
+	
 }
 
 class NewJavaFilesListener implements IResourceChangeListener {
