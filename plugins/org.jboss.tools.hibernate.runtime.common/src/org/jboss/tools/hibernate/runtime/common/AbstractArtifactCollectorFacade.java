@@ -5,7 +5,7 @@ import java.util.Set;
 
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 
-public abstract class AbstractArtifactCollector 
+public abstract class AbstractArtifactCollectorFacade 
 extends AbstractFacade 
 implements IArtifactCollector {
 	
