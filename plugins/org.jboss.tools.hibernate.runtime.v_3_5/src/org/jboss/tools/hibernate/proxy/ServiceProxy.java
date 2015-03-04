@@ -78,6 +78,7 @@ import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_3_5.internal.ArtifactCollectorFacadeImpl;
+import org.jboss.tools.hibernate.runtime.v_3_5.internal.Cfg2HbmToolProxy;
 import org.jboss.tools.hibernate.util.OpenMappingUtilsEjb3;
 import org.xml.sax.EntityResolver;
 
