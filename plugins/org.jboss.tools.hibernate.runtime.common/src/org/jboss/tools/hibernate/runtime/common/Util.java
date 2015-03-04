@@ -37,6 +37,7 @@ public class Util {
 		Method method;
 		try {
 			method = object.getClass().getMethod(name, parameterTypes);
+			method.setAccessible(true);
 			result = method.invoke(object, arguments);
 		} catch (NoSuchMethodException | 
 				SecurityException | 
