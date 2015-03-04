@@ -78,7 +78,6 @@ import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
-import org.jboss.tools.hibernate.runtime.v_3_5.internal.ArtifactCollectorFacadeImpl;
 import org.jboss.tools.hibernate.runtime.v_3_5.internal.Cfg2HbmToolFacadeImpl;
 import org.jboss.tools.hibernate.runtime.v_3_5.internal.FacadeFactoryImpl;
 import org.jboss.tools.hibernate.util.OpenMappingUtilsEjb3;
@@ -165,7 +164,7 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public IArtifactCollector newArtifactCollector() {
-		return new ArtifactCollectorFacadeImpl();
+		return facadeFactory.createArtifactCollector();
 	}
 
 	@Override
