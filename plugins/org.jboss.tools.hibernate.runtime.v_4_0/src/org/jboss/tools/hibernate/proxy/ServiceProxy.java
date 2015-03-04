@@ -57,6 +57,7 @@ import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
+import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
@@ -81,10 +82,13 @@ import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_4_0.internal.ArtifactCollectorFacadeImpl;
 import org.jboss.tools.hibernate.runtime.v_4_0.internal.Cfg2HbmToolFacadeImpl;
+import org.jboss.tools.hibernate.runtime.v_4_0.internal.FacadeFactoryImpl;
 import org.jboss.tools.hibernate.util.OpenMappingUtilsEjb3;
 import org.xml.sax.EntityResolver;
 
 public class ServiceProxy implements IService {
+
+	private IFacadeFactory facadeFactory = new FacadeFactoryImpl();
 
 	@Override
 	public IConfiguration newAnnotationConfiguration() {

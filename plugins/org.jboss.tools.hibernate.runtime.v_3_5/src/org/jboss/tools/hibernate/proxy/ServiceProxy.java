@@ -165,7 +165,7 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public IArtifactCollector newArtifactCollector() {
-		return facadeFactory.;
+		return new ArtifactCollectorFacadeImpl();
 	}
 
 	@Override
