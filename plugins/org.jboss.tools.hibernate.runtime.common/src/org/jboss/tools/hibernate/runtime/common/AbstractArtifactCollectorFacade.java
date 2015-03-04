@@ -12,6 +12,10 @@ implements IArtifactCollector {
 	
 	protected IFacadeFactory facadeFactory;
 	
+	public AbstractArtifactCollectorFacade(IFacadeFactory facadeFactory) {
+		this.facadeFactory = facadeFactory;
+	}
+	
 	protected String getTargetClassName() {
 		return "org.hibernate.tool.hbm2x.ArtifactCollector";
 	}
