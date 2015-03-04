@@ -6,7 +6,7 @@ import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	
 	public IArtifactCollector createArtifactCollector() {
-		return new ArtifactCollectorFacadeImpl();
+		return new ArtifactCollectorFacadeImpl(this);
 	}
 	
 }
