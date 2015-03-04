@@ -12,7 +12,7 @@ public class Cfg2HbmToolProxy extends AbstractCfg2HbmTool {
 		assert persistentClass instanceof PersistentClassProxy;
 		return ((Cfg2HbmTool)getTarget()).getTag(((PersistentClassProxy)persistentClass).getTarget());
 	}
-
+	
 	@Override
 	public String getTag(IProperty property) {
 		assert property instanceof PropertyProxy;
