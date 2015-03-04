@@ -7,11 +7,6 @@ import org.jboss.tools.hibernate.runtime.spi.IProperty;
 
 public class Cfg2HbmToolProxy extends AbstractCfg2HbmTool {
 	
-	@Override
-	public String getTag(IPersistentClass persistentClass) {
-		return getPersistentClassTag(persistentClass);
-	}
-	
 	private Class<?> getPersistentClassClass() {
 		return Util.getClass("org.hibernate.mapping.PersistentClass", this);
 	}
@@ -24,25 +19,22 @@ public class Cfg2HbmToolProxy extends AbstractCfg2HbmTool {
 		return Util.invokeMethod(object, "getTarget", new Class[] {}, new Object[] {});
 	}
 	
-	private String getPersistentClassTag(Object object) {
+	@Override
+	public String getTag(IPersistentClass persistentClass) {
 		return (String)Util.invokeMethod(
 				getTarget(), 
 				"getTag", 
 				new Class[] { getPersistentClassClass() }, 
-				new Object[] { getTarget(object) });
-	}
-	
-	private String getPropertyTag(Object object) {
-		return (String)Util.invokeMethod(
-				getTarget(), 
-				"getTag", 
-				new Class[] { getPropertyClass() }, 
-				new Object[] { getTarget(object) });
+				new Object[] { getTarget(persistentClass) });
 	}
 	
 	@Override
 	public String getTag(IProperty property) {
-		return getPropertyTag(property);
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getTag", 
+				new Class[] { getPropertyClass() }, 
+				new Object[] { getTarget(property) });
 	}
 
 }
