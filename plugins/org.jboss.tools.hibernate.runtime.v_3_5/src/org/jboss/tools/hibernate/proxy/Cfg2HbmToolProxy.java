@@ -1,7 +1,5 @@
 package org.jboss.tools.hibernate.proxy;
 
-import org.hibernate.mapping.Property;
-import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.common.AbstractCfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.common.Util;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -18,6 +16,10 @@ public class Cfg2HbmToolProxy extends AbstractCfg2HbmTool {
 		return Util.getClass("org.hibernate.mapping.PersistentClass", this);
 	}
 	
+	private Class<?> getPropertyClass() {
+		return Util.getClass("org.hibernate.mapping.Property", this);
+	}
+	
 	private Object getTarget(Object object) {
 		return Util.invokeMethod(object, "getTarget", new Class[] {}, new Object[] {});
 	}
@@ -30,10 +32,17 @@ public class Cfg2HbmToolProxy extends AbstractCfg2HbmTool {
 				new Object[] { getTarget(object) });
 	}
 	
+	private String getPropertyTag(Object object) {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getTag", 
+				new Class[] { getPropertyClass() }, 
+				new Object[] { getTarget(object) });
+	}
+	
 	@Override
 	public String getTag(IProperty property) {
-		assert property instanceof PropertyProxy;
-		return ((Cfg2HbmTool)getTarget()).getTag(((Property)getTarget(property)));
+		return getPropertyTag(property);
 	}
 
 }
