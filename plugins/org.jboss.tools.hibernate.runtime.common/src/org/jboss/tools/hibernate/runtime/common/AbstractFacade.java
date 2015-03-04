@@ -1,7 +1,7 @@
 package org.jboss.tools.hibernate.runtime.common;
 
 
-public abstract class AbstractFacade {
+public abstract class AbstractFacade implements IFacade {
 
 	private Object target = null;
 	
