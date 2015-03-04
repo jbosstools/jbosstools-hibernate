@@ -4,7 +4,7 @@ import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 
-public abstract class AbstractCfg2HbmTool 
+public abstract class AbstractCfg2HbmToolFacade 
 extends AbstractFacade 
 implements ICfg2HbmTool {
 
