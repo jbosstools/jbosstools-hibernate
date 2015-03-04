@@ -4,10 +4,13 @@ import java.io.File;
 import java.util.Set;
 
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
+import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 
 public abstract class AbstractArtifactCollectorFacade 
 extends AbstractFacade 
 implements IArtifactCollector {
+	
+	protected IFacadeFactory facadeFactory;
 	
 	protected String getTargetClassName() {
 		return "org.hibernate.tool.hbm2x.ArtifactCollector";
