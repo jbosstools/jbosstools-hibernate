@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.proxy;
 
+import org.hibernate.mapping.Property;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.common.AbstractCfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.common.Util;
@@ -32,7 +33,7 @@ public class Cfg2HbmToolProxy extends AbstractCfg2HbmTool {
 	@Override
 	public String getTag(IProperty property) {
 		assert property instanceof PropertyProxy;
-		return ((Cfg2HbmTool)getTarget()).getTag(((PropertyProxy)property).getTarget());
+		return ((Cfg2HbmTool)getTarget()).getTag(((Property)getTarget(property)));
 	}
 
 }
