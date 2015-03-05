@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_3_6.internal;
 
 import org.jboss.tools.hibernate.runtime.common.AbstractArtifactCollectorFacade;
+import org.jboss.tools.hibernate.runtime.common.AbstractCfg2HbmToolFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
@@ -12,7 +13,7 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	}
 	
 	public ICfg2HbmTool createCfg2HbmTool() {
-		return new Cfg2HbmToolFacadeImpl(this);
+		return new AbstractCfg2HbmToolFacade(this) {};
 	}
 	
 }
