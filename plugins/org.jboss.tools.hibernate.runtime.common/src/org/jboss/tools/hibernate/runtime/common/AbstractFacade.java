@@ -1,9 +1,13 @@
 package org.jboss.tools.hibernate.runtime.common;
 
+import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
+
 
 public abstract class AbstractFacade implements IFacade {
 
 	private Object target = null;
+	
+	protected IFacadeFactory facadeFactory;
 	
 	protected abstract String getTargetClassName();
 	

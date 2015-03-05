@@ -10,8 +10,6 @@ public abstract class AbstractArtifactCollectorFacade
 extends AbstractFacade 
 implements IArtifactCollector {
 	
-	protected IFacadeFactory facadeFactory;
-	
 	public AbstractArtifactCollectorFacade(IFacadeFactory facadeFactory) {
 		this.facadeFactory = facadeFactory;
 	}
