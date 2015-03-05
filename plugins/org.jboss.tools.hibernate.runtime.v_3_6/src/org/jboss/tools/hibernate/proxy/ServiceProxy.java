@@ -77,7 +77,6 @@ import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
-import org.jboss.tools.hibernate.runtime.v_3_6.internal.Cfg2HbmToolFacadeImpl;
 import org.jboss.tools.hibernate.runtime.v_3_6.internal.FacadeFactoryImpl;
 import org.jboss.tools.hibernate.util.OpenMappingUtilsEjb3;
 import org.xml.sax.EntityResolver;
@@ -280,7 +279,7 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public ICfg2HbmTool newCfg2HbmTool() {
-		return new Cfg2HbmToolFacadeImpl();
+		return facadeFactory.createCfg2HbmTool();
 	}
 
 	@Override
