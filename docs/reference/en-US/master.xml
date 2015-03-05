@@ -3,7 +3,7 @@
 "http://www.docbook.org/xml/4.3/docbookx.dtd"
 
 [
-<!ENTITY introduction SYSTEM "introduction.xml">
+<!-- <!ENTITY introduction SYSTEM "introduction.xml"> -->
 <!ENTITY setup SYSTEM "setup.xml">
 <!ENTITY codegenarchitecture SYSTEM "codegenarchitecture.xml">
 <!ENTITY plugins SYSTEM "plugins.xml">
@@ -54,13 +54,13 @@
       Version: &project.version;
     </releaseinfo>
 
-
+<!--
     <mediaobject>
       <imageobject>
         <imagedata fileref="images/hibernate_logo_a.png" format="PNG"/>
       </imageobject>
     </mediaobject>
-
+-->
 <!--<abstract>
    <title/>
        <para>
@@ -71,13 +71,13 @@
   </bookinfo>
   <toc/>
   
-  &introduction;
+ <!-- &introduction; 
   &setup; 
   &codegenarchitecture;
   &plugins; 
   &ant;
   &reveng;
-  &codegen;                   
+  &codegen;           -->        
   
   
   </book>

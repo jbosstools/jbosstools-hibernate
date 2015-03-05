@@ -12,19 +12,15 @@
 		<note>
 			<title>Note:</title>
 			<para>
-				Please note that these tools do not try to hide any of <productname>Hibernates</productname> functionality; rather the tools make working with <productname>Hibernate</productname> easier. You are still encouraged to read the <ulink url="http://hibernate.org/docs">Hibernate Documentation</ulink> in order to be able to fully utilize <productname>Hibernate Tools</productname> and especially <productname>Hibernate</productname> itself.
+				Note that these tools do not hide any of <productname>Hibernate</productname>'s functionality; rather the tools make working with <productname>Hibernate</productname> easier. You are still encouraged to read the <ulink url="http://hibernate.org/docs">Hibernate Documentation</ulink> in order to be able to fully utilize <productname>Hibernate Tools</productname> and especially <productname>Hibernate</productname> itself.
 			</para>
 		</note>
 		<section id="download_base_project">
 			<title>Download base project</title>
-			<para>You can download the example projects that are used in this chapter.</para>
-			<para>
-				A <property>JPA base project</property> is available on the <ulink url="http://docs.jboss.org/tools/resources/">documentation resources page</ulink>  together with a <ulink url="http://docs.jboss.org/tools/resources/TestHibernateproject_for_hibernate_jboss_tools.zip">base Java project</ulink>.
-      </para>
-			<para>Also you need start the <ulink url="http://docs.jboss.org/tools/resources/GSG_database.zip">database</ulink>.</para>
+			<para>You can download the example projects that are used in this chapter. A <property>JPA base project</property> is available on the <ulink url="http://docs.jboss.org/tools/resources/">documentation resources page</ulink>  together with a <ulink url="http://docs.jboss.org/tools/resources/TestHibernateproject_for_hibernate_jboss_tools.zip">base Java project</ulink>. Additionally, start the database using the files available <ulink url="http://docs.jboss.org/tools/resources/GSG_database.zip">here</ulink>.</para>
 			<note>
 				<title>Note:</title>
-				<para>The steps for running the database are documented in the <ulink url="http://docs.redhat.com/docs/en-US/JBoss_Developer_Studio/4.0/html-single/Getting_Started_Guide/index.html#start_dev_db">Getting Started Guide</ulink>.</para>
+				<para>The steps for running the database are documented in the <ulink url="https://access.redhat.com/documentation/en-US/Red_Hat_JBoss_Developer_Studio/4.1/html-single/Getting_Started_Guide/index.html#start_dev_db">Getting Started Guide</ulink>.</para>
 			</note>
 		</section>
 	</section>
@@ -32,9 +28,7 @@
 		<title>Creating a Hibernate Mapping File</title>
 		<para>Hibernate mapping files are used to specify how your objects relate to database tables.</para>
 		<para>
-			To create basic mappings for properties and associations, i. e. generate <filename>.hbm.xml</filename> files, Hibernate Tools provide a basic wizard which you can display by selecting <menuchoice><guimenuitem>File</guimenuitem><guimenuitem>New</guimenuitem>
-				<guimenuitem>Hibernate XML mapping file</guimenuitem>
-			</menuchoice>.
+			To create basic mappings for properties and associations, i. e. generate <filename>.hbm.xml</filename> files, Hibernate Tools provide a basic wizard which you can display by selecting <menuchoice><guimenuitem>File</guimenuitem><guimenuitem>New</guimenuitem><guimenuitem>Hibernate XML mapping files</guimenuitem></menuchoice>.
 		</para>
 		<para>
 			At first you will be asked to select a package or multiple individual classes to map. It is also possible to create an empty file: do not select any packages or classes and an empty <filename>.hbm</filename> file will be created in the specified location.
@@ -61,7 +55,7 @@
 				</imageobject>
 			</mediaobject>
 		</figure>
-		<para>This wizard page display a preview of the generated <filename>.hbm</filename> files.</para>
+		<para>This wizard page displays a preview of the generated <filename>.hbm</filename> files.</para>
 		<figure>
 			<title>Preview Generated Mapping Files</title>
 			<mediaobject>
@@ -77,9 +71,9 @@
 		<para>
 			To be able to perform reverse engineering, prototype queries, and of course to simply use <property>Hibernate Core</property> a <filename>hibernate.properties</filename> or <filename>hibernate.cfg.xml</filename> file is needed. <property>Hibernate Tools</property> provides a wizard for generating the <filename>hibernate.cfg.xml</filename> file if you do not already have one.
 		</para>
-<!-- Testing video documentaiton -->
+<!-- Testing video documentaiton 
 	<figure>
-		<title>Hibernate Configuration File creation video</title>
+		<title>Hibernate Configuration File creation</title>
 		<mediaobject>
 			<videoobject>
 				<videodata fileref="videos/hib-config-file-creation.mp4"/>
@@ -91,7 +85,7 @@
 			</textobject>
 		</mediaobject>
 	</figure>
-<!-- Testing video documentation -->
+Testing video documentation -->
 		<para>Start the wizard by clicking <menuchoice><guimenuitem>File</guimenuitem><guimenuitem>New</guimenuitem>
 				<guimenuitem>Other</guimenuitem>
 			</menuchoice> (<keycombo><keycap>Ctrl</keycap>
@@ -115,7 +109,7 @@
 		<note>
 			<title>Note:</title>
 			<para>
-				The contents in the comboboxes for the JDBC driver class and JDBC URL change automatically, depending on the Dialect and actual driver you have chosen.
+				The contents in the combo boxes for the JDBC driver class and JDBC URL change automatically, depending on the Dialect and actual driver you have chosen.
 			</para>
 		</note>
 		<para>
@@ -200,10 +194,10 @@
 							</entry>
 							<entry>
 								<para>
-									Choose between &quot;Core&quot;, &quot;Annotations&quot; and &quot;JPA&quot;. Note that the two latter requires running Eclipse IDE with a JDK 5 (or newer) runtime, otherwise you will get class loading and version errors.
+									Choose between &quot;Core&quot;, &quot;Annotations&quot; and &quot;JPA&quot;. Note that &quot;Annotations&quot; and &quot;JPA&quot; require a running Eclipse IDE with a JDK 5 (or newer) runtime, or you will get class loading and version errors.
 								</para>
 								<para>
-									You will also need to select the version of Hibernate your application server has (3.5, 3.6 or 4.0). Select a version from the drop-down box labelled <guilabel>Hibernate Version</guilabel>.
+									Select a version that corresponds to your application's Hibernate version. Select a version from the drop-down box labeled <guilabel>Hibernate Version</guilabel>.
 								</para>
 							</entry>
 							<entry>
@@ -227,7 +221,7 @@
 							</entry>
 							<entry>
 								<para>
-									DTP provided connection that you can use instead of what is defined in the <filename>cfg.xml</filename> and JPA <filename>persistence.xml</filename> files. It is possible to use an already configured Hibernate or JPA connection, or specify a new one here.
+									DTP provided connection that you can use instead of what is defined in the <filename>cfg.xml</filename> or JPA <filename>persistence.xml</filename> files. It is possible to use an already configured Hibernate or JPA connection, or specify a new one here.
 								</para>
 							</entry>
 							<entry>
@@ -275,12 +269,12 @@
 			<note>
 				<title>Tip:</title>
 				<para>
-					The two latter settings are usually not required if you specify a project that has a <filename> /hibernate.cfg.xml </filename> or <filename>/META-INF/persistence.xml</filename> file in its classpath.</para>
+					The last two settings are not required if you specify a project that has a <filename>/hibernate.cfg.xml</filename> or <filename>/META-INF/persistence.xml</filename> file in its classpath.</para>
 			</note>
 			<itemizedlist>
 				<listitem>
 					<para>
-						The <guilabel>Options</guilabel> tab the optional settings</para>
+						Add the optional settings in the <guilabel>Options</guilabel> tab fields.</para>
 				</listitem>
 			</itemizedlist>
 			<figure>
@@ -456,7 +450,7 @@
 							</entry>
 							<entry>
 								<para>
-									List of additional mapping files that should be loaded. Note: A <filename>hibernate.cfg.xml</filename> or <filename>persistence.xml</filename> can also contain mappings. Thus if these are duplications here, you will get "Duplicate mapping" errors when using the console configuration.
+									List of additional mapping files that should be loaded. Note: A <filename>hibernate.cfg.xml</filename> or <filename>persistence.xml</filename> can also contain mappings. Thus if there are duplications here, you will get "Duplicate mapping" errors when using the console configuration.
 								</para>
 							</entry>
 							<entry>
@@ -468,7 +462,7 @@
 			</table>
 			<itemizedlist>
 				<listitem>
-					<para>and the last tab <guilabel>Common</guilabel>
+					<para>Add common settings information in the <guilabel>Common</guilabel> tab.
 					</para>
 				</listitem>
 			</itemizedlist>
@@ -498,7 +492,7 @@
 		</section>
 		<section id="modif_console_conf">
 			<title>Modifying a Hibernate Console Configuration </title>
-			<para>When you created a Hibernate Console Configuration you can modify it in two ways: </para>
+			<para>When you create a Hibernate Console Configuration, you can modify it in two ways: </para>
 			<itemizedlist>
 				<listitem>
 					<para>
@@ -576,7 +570,7 @@
 										</entry>
 										<entry>
 											<para>
-												DTP provided connection that you can use instead of what is in the <filename>cfg.xml</filename> and JPA <filename>persistence.xml</filename> files. It is possible to use either an already configured Hibernate or JPA connection, or specify a new one here.
+												DTP provided connection that you can use instead of what is in the <filename>cfg.xml</filename> or JPA <filename>persistence.xml</filename> files. It is possible to use either an already configured Hibernate or JPA connection, or specify a new one here.
                       </para>
 										</entry>
 										<entry>
@@ -599,7 +593,7 @@
 											<para>Project</para>
 										</entry>
 										<entry>
-											<para>The name of a Java project which classpath should be used in the console configuration</para>
+											<para>The name of a Java project whose classpath should be used in the console configuration</para>
 										</entry>
 										<entry>
 											<para>True</para>
@@ -622,8 +616,7 @@
 										</entry>
 										<entry>
 											<para>
-												Choose between &quot;CORE&quot;, &quot;ANNOTATIONS&quot; and &quot;JPA&quot; according to the method of relational mapping you want to
-                        use. Note, the two latter requires running Eclipse IDE with a JDK 5 runtime, otherwise you will get class loading and/or version errors.
+												Choose between &quot;CORE&quot;, &quot;ANNOTATIONS&quot; and &quot;JPA&quot; according to the method of relational mapping you want to use. Note, &quot;Annotations&quot; and &quot;JPA&quot; require a running Eclipse IDE with a JDK 5 runtime, or you will get class loading and/or version errors.
                       </para>
 										</entry>
 										<entry>
@@ -651,7 +644,7 @@
 				</mediaobject>
 			</figure>
 			<para>
-				When closing the configuration the connection with database will be closed, JAR libs will be unlock (for Windows) and other resources will set as free.
+				When closing the configuration the connection with database will be closed, JAR libs will be unlocked (for Windows) and other resources are set free.
 			</para>
 		</section>
 	</section>
@@ -661,7 +654,7 @@
 			Hibernate provides &quot;click-and-generate&quot; reverse engineering and code generation facilities. This allows you to generate a range of artifacts based on database or an existing Hibernate configuration, be that mapping files or annotated classes. Some of these are POJO Java source files, Hibernate <filename>.hbm.xml</filename> files, <filename>hibernate.cfg.xml</filename> generation and schema documentation.
 		</para>
 		<para>
-			To start working with this process, start the <guilabel>Hibernate Code Generation</guilabel> tool which is available from the toolbar via the <property>Hibernate</property> icon or via the <menuchoice><guimenuitem>Run</guimenuitem><guimenuitem>Hibernate Code Generation</guimenuitem></menuchoice> menu item.
+			To start working with this process, start the <guilabel>Hibernate Code Generation</guilabel> tool which is available from the toolbar via the <property>Hibernate</property> icon or via the <menuchoice><guimenuitem>Run</guimenuitem><guimenuitem>Hibernate Code Generation Configurations</guimenuitem></menuchoice> menu item.
 		</para>
 		<section id="code_gen">
 			<title>Code Generation Launcher</title>
@@ -783,7 +776,7 @@
 							</entry>
 							<entry>
 								<para>
-									When a table that has a multi-column primary key a <code>&lt;composite-id&gt;</code> mapping will always be created. If this option is enabled and there are matching foreign-keys, each key column is still considered a 'basic' scalar (string, long, etc.) instead of a reference to an entity. If you disable this option a <code>&lt;key-many-to-one&gt;</code> instead. Note: a <code>&lt;many-to-one&gt;</code> property is still created, but is simply marked as non-updatable and non-insertable.
+									When a table has a multi-column primary key, a <code>&lt;composite-id&gt;</code> mapping will always be created. If this option is enabled and there are matching foreign-keys, each key column is still considered a 'basic' scalar (string, long, etc.) instead of a reference to an entity. If you disable this option a <code>&lt;key-many-to-one&gt;</code> property is created instead. Note: a <code>&lt;many-to-one&gt;</code> property is still created, but is simply marked as non-updatable and non-insertable.
 								</para>
 							</entry>
 						</row>
@@ -814,7 +807,7 @@
 									Reverse engineering detects one-to-one associations via primary key and both the <filename>hbm.xml</filename> file and annotation generation generates the proper code for it.
 								</para>
 								<para> 
-									The detection is enabled by default (except for Seam 1.2 and Seam 2.0) reverse engineering. For Hibernate Tools generation there is a checkbox to disable this feature if it is not required. 
+									The detection is enabled by default (except for Seam 1.2 and Seam 2.0) reverse engineering. For Hibernate Tools generation there is a check box to disable this feature if it is not required. 
 								</para>
 							</entry>
 						</row>
@@ -860,7 +853,7 @@
 				The following table provides a short description of the various exporters. Remember you can add and remove any Exporters depending on your needs.
 			</para>
 			<table>
-				<title>Code generation "Exporter" tab fields</title>
+				<title>Code generation Exporter tab fields</title>
 				<tgroup cols="2">
 					<colspec colnum="1" align="left" colwidth="1*"/>
 					<colspec colnum="2" colwidth="3*"/>
@@ -937,7 +930,7 @@
 				</tgroup>
 			</table>
 			<para>
-				Each Exporter listens to certain properties which can be setup in the <guilabel>Properties</guilabel> section where you can add and remove predefined or customer properties for each of the exporters. The following table lists the time of writing predefined properties:
+				Each Exporter uses certain properties which can be set up in the <guilabel>Properties</guilabel> section where you can add and remove predefined or custom properties for each of the exporters. The following table lists the predefined properties:
 			</para>
 			<para>
 				<table>
@@ -1012,7 +1005,7 @@
 								</entry>
 								<entry>
 									<para>
-										Pattern to use for the generated files, relatively for the output dir. Example: <filename>{package-name}/{class-name}.java</filename>.
+										Pattern to use for the generated files, with a path relative to the output dir. Example: <filename>{package-name}/{class-name}.java</filename>.
 									</para>
 								</entry>
 							</row>
@@ -1037,7 +1030,7 @@
 									<para>delimiter</para>
 								</entry>
 								<entry>
-									<para>If specified the statements will be dumped to this file</para>
+									<para>The delimiter used in the output file</para>
 								</entry>
 							</row>
 							<row>
@@ -1199,7 +1192,7 @@
 		<section>
 			<title>Configuration property completion</title>
 			<para>
-				Code completion for the value of <code>&lt;property&gt; name</code> attributes are available when editing the <filename>cfg.xml</filename> file.
+				Code completion for the value of <code>&lt;property&gt; name</code> attributes is available when editing the <filename>cfg.xml</filename> file.
 			</para>
 			<figure>
 				<title>Property Completion</title>
@@ -1326,7 +1319,7 @@
 			</mediaobject>
 		</figure>
 		<para>
-			Or you can get it via the <guilabel>Code Generation Launcher</guilabel> by checking the appropriate section in the <guilabel>Main</guilabel> tab of the <guilabel>Getting Hibernate Code Generation Wizard</guilabel> (see <xref linkend="hib_code_gen"/>).
+			Or you can get it via the <guilabel>Code Generation Launcher</guilabel> by checking the appropriate section in the <guilabel>Main</guilabel> tab of the <guilabel>Hibernate Code Generation Configurations</guilabel> wizard (see <xref linkend="hib_code_gen"/>).
     </para>
 		<para>
 			The following screenshot shows the <guilabel>Overview</guilabel> page where the appropriate console configuration is selected (it is auto-detected if Hibernate 3 support is enabled for the project).
@@ -1371,7 +1364,7 @@
 			</mediaobject>
 		</figure>
 		<para>
-			The <guilabel>Table and Columns</guilabel> page allows you to explicitly set which details (e.g. which hibernatetype and propertyname) should be used in the reverse engineered model. For more details on how to configure the tables while reverse engineering read <xref linkend="tab_and_col"/>.
+			The <guilabel>Table and Columns</guilabel> page allows you to explicitly set which details (e.g. which hibernate type and property name) should be used in the reverse engineered model. For more details on how to configure the tables while reverse engineering read <xref linkend="tab_and_col"/>.
 		</para>
 		<figure>
 			<title>Table and Columns Page</title>
@@ -1410,7 +1403,7 @@
 				The <guilabel>Console Configuration</guilabel> does not dynamically adjust to changes performed in mappings and Java code. To reload the configuration select the configuration and click the <guibutton>Reload</guibutton> button in the view toolbar or in the context menu.
 			</para>
 			<para>
-				It is possible to open source and mapping files for objects showed in the <guilabel>Hibernate Configurations View</guilabel>. Just bring up the context menu for an object and select <guimenuitem>Open Source File</guimenuitem> to see the appropriate Java class or <guimenuitem>Open Mapping File</guimenuitem> to open a <filename>.hbm.xml</filename> file.
+				It is possible to open source and mapping files for objects shown in the <guilabel>Hibernate Configurations View</guilabel>. Just bring up the context menu for an object and select <guimenuitem>Open Source File</guimenuitem> to see the appropriate Java class or <guimenuitem>Open Mapping File</guimenuitem> to open a <filename>.hbm.xml</filename> file.
 			</para>
 			<figure>
 				<title>Opening Source for Objects</title>
@@ -1423,7 +1416,7 @@
 			<section id="map_diagram">
 				<title>Mapping Diagram</title>
 				<para>
-					In order to visualize how entities are related, as well as view their structures, a <guilabel>Mapping Diagram</guilabel> is provided. It is available by right clicking on the entity you want view a mapping diagram for and then selecting <guilabel>Mapping Diagram</guilabel>.
+					In order to visualize how entities are related, as well as view their structures, a <guilabel>Mapping Diagram</guilabel> is provided. Right click an entity and select <guilabel>Mapping Diagram</guilabel> to view its mapping diagram.
 				</para>
 				<figure>
 					<title>Mapping Diagram</title>
@@ -1437,7 +1430,7 @@
 					</mediaobject>
 				</figure>
 				<para>
-					To make <guilabel>Mapping Diagram</guilabel> usage easier you can use the <guilabel>Rules</guilabel>, <guilabel>Grid</guilabel>, <guilabel>Snap to Geometry</guilabel> checkboxes in the <guimenu>View</guimenu> menu. 
+					To make <guilabel>Mapping Diagram</guilabel> usage easier you can use the <guilabel>Rules</guilabel>, <guilabel>Grid</guilabel>, <guilabel>Snap to Geometry</guilabel> check boxes in the <guimenu>View</guimenu> menu. 
 				</para>
 				<figure>
 					<title>View menu</title>
@@ -1448,7 +1441,7 @@
 					</mediaobject>
 				</figure>
 				<para>
-					If you select the <guilabel>Rulers</guilabel> checkbox, the view print page scale will be added to the page. The numbers on the scale displays its size in inches. If you click on the scale a <guilabel>Ruler Guide</guilabel> will appear on the diagram. You can connect any diagram item to it. To connect the items you should move their tops to the Ruler Guide. And while moving the ruler guide, the items will be moved together with it as a whole.
+					If you select the <guilabel>Rulers</guilabel> check box, the view print page scale will be added to the page. The numbers on the scale displays its size in inches. If you click on the scale a <guilabel>Ruler Guide</guilabel> will appear on the diagram. You can connect any diagram item to it. To connect the items you should move their tops to the Ruler Guide. And while moving the ruler guide, the items will be moved together with it as a whole.
         </para>
 				<figure>
 					<title>Moving the Ruler guide</title>
@@ -1458,7 +1451,7 @@
 						</imageobject>
 					</mediaobject>
 				</figure>
-				<para>If you select the <guilabel>Grid</guilabel> checkbox, a grid will appear on the diagram.</para>
+				<para>If you select the <guilabel>Grid</guilabel> check box, a grid will appear on the diagram.</para>
 				<figure>
 					<title>Grid on Mapping diagram</title>
 					<mediaobject>
@@ -1467,7 +1460,7 @@
 						</imageobject>
 					</mediaobject>
 				</figure>
-				<para>The <guilabel>Snap to Geometry</guilabel> checkbox allows you to align the diagram items with the grid.</para>
+				<para>The <guilabel>Snap to Geometry</guilabel> check box allows you to align the diagram items with the grid.</para>
 				<para>
 					For better navigating through the diagram use the <guilabel>Outline view</guilabel>, which is available in the structural and graphical modes.
 				</para>
@@ -1563,7 +1556,7 @@
 									<para>Auto layout</para>
 								</entry>
 								<entry>
-									<para>Used to dispose all the items in the diagram in a standard manner</para>
+									<para>Used to arrange of all the items in the diagram in a standard manner</para>
 								</entry>
 							</row>
 							<row>
@@ -1772,10 +1765,10 @@
 					</tgroup>
 				</table>
 				<para>
-					It is possible to save the diagram in the Eclipse workspace. Select <menuchoice><guimenuitem>File</guimenuitem><guimenuitem>Save As</guimenuitem></menuchoice>, and the wizard will ask you to specify the location within you project where you wish to save the file, and provide the name for the diagram. The default name is the item&apos;s names concatenated with the ampersand symbols. The file is saved with the <filename>.hibernate</filename> extension.
+					It is possible to save the diagram in the Eclipse work space. Select <menuchoice><guimenuitem>File</guimenuitem><guimenuitem>Save As</guimenuitem></menuchoice>, and the wizard will ask you to specify the location within you project where you wish to save the file, and provide the name for the diagram. The default name is the item&apos;s names concatenated with the ampersand symbols. The file is saved with the <filename>.hibernate</filename> extension.
 				</para>
 				<figure>
-					<title>The Diagram saved in the Workspace</title>
+					<title>The Diagram saved in the Work space</title>
 					<mediaobject>
 						<imageobject>
 							<imagedata fileref="images/plugins/saveDiagram.png"/>
@@ -1785,7 +1778,7 @@
 				<note>
 					<title>Note:</title>
 					<para>
-						If you restart Eclipse with the mapping diagram opened, the mapping diagram will be restored with the message like on the figure below. To view the diagram content, you should refresh the view.
+						If you restart Eclipse with the mapping diagram opened, the mapping diagram is restored and displays a message, as seen in the next screenshot. To view the diagram content, you should refresh the view.
            </para>
 				</note>
 				<figure>
@@ -1848,7 +1841,7 @@
 									<para>Refresh Visual Mapping</para>
 								</entry>
 								<entry>
-									<para>It will update the <guilabel>Mapping Diagram</guilabel> the if <guilabel>Console Configuration</guilabel> was changed. </para>
+									<para>Updates the <guilabel>Mapping Diagram</guilabel> if the <guilabel>Console Configuration</guilabel> was changed. </para>
 								</entry>
 							</row>
 							<row>
@@ -1966,15 +1959,15 @@
 				<note>
 					<title>Tip:</title>
 					<para>
-						If the context menu items are disabled then you need at first to create a <guilabel>Session Factory</guilabel>. That is done by expanding the <guilabel>Session Factory</guilabel> node.
+						If the context menu items are disabled, you need to first create a <guilabel>Session Factory</guilabel>. That is done by expanding the <guilabel>Session Factory</guilabel> node.
 					</para>
 				</note>
-				<para>When they are opened, the editors they should automatically detect the chosen <guilabel>Console Configuration</guilabel>.</para>
+				<para>When they are opened, the editors automatically detect the chosen <guilabel>Console Configuration</guilabel>.</para>
 				<para>
 					To generate a predefined query for any entity (or any entity child node) listed in the <guilabel>Session Factory</guilabel> you should double-click it. This will open the <guilabel>HQL Editor</guilabel> with the associated query.
 				</para>
 				<para>
-					Choosing <guimenuitem>HQL Editor</guimenuitem> in the context menu for any entity (or any entity child node) will also open the HQL Editor with the associated query. If you select <guimenuitem>Hibernate Criteria Editor</guimenuitem> in the context menu, it will open <guilabel>Hibernate Criteria Editor</guilabel> with the associated criteria.
+					Choosing <guimenuitem>HQL Editor</guimenuitem> in the context menu for any entity (or any entity child node) will also open the HQL Editor with the associated query. If you select <guimenuitem>Hibernate Criteria Editor</guimenuitem> in the context menu, it runs the <guilabel>Hibernate Criteria Editor</guilabel> with the associated criteria.
 				</para>
 				<figure>
 					<title>Generating Simple Queries</title>
@@ -2010,7 +2003,7 @@
 					</mediaobject>
 				</figure>
 				<para>
-					In addition, you can pin the <guilabel>HQL editor</guilabel> and <guilabel>Criteria editor</guilabel> as a tab in the <guilabel>Hibernate Query Result</guilabel> view. For that you need click on the <guibutton>Stick result to one tab</guibutton> button (<inlinemediaobject><imageobject><imagedata fileref="images/plugins/sticky_but.png"/></imageobject></inlinemediaobject>). In this state query executions results will be shown in one tab (no more will be opened). 
+					In addition, you can pin the <guilabel>HQL editor</guilabel> and <guilabel>Criteria editor</guilabel> as a tab in the <guilabel>Hibernate Query Result</guilabel> view. For that you need to click on the <guibutton>Stick result to one tab</guibutton> button (<inlinemediaobject><imageobject><imagedata fileref="images/plugins/sticky_but.png"/></imageobject></inlinemediaobject>). In this state query executions results will be shown in one tab (no more will be opened). 
 				</para>
 				<para>
 					You are able to rename the <guilabel>Hibernate Query Result</guilabel> tab. Click the tab, and type a new name in the <menuchoice><guimenuitem>Property View</guimenuitem><guimenuitem>Tab name</guimenuitem></menuchoice> field. 
@@ -2027,7 +2020,7 @@
 			<section>
 				<title>Error Handling</title>
 				<para>
-					Errors raised during the creation of the <guilabel>Session Factory</guilabel>, or when executing the queries (e.g. if your configuration or query is incorrect), will be shown in a message dialog or inclined in the view that detected the error. You may get more information about the error in the <guilabel>Error Log</guilabel> view on the right pane.
+					Errors raised during the creation of the <guilabel>Session Factory</guilabel>, or when executing the queries (e.g. if your configuration or query is incorrect), will be shown in a message dialog or displayed in-line in the view that detected the error. You may get more information about the error in the <guilabel>Error Log</guilabel> view on the right pane.
 				</para>
 				<para>
 					Results of a query will be shown in the <guilabel>Hibernate Query Result</guilabel> view and details of possible errors (syntax errors, database errors, etc.) can be seen in the <guilabel>Error Log</guilabel> view.
@@ -2040,7 +2033,7 @@
 				</note>
 			</section>
 			<section>
-				<title>Dynamic Query Translator</title>
+				<title>Hibernate Dynamic Query Translator</title>
 				<para>
 					If the <guilabel>Hibernate Dynamic Query Translator</guilabel> view is visible, it will show the generated SQL for a HQL query while you write in the <guilabel>HQL Editor</guilabel> .
 				</para>
@@ -2114,7 +2107,7 @@
 			</listitem>
 			<listitem>
 				<para>
-					<code>@MappedSuperclass</code> is added to abstract superclasses.</para>
+					<code>@MappedSuperclass</code> is added to abstract super-classes.</para>
 			</listitem>
 			<listitem>
 				<para>
@@ -2133,7 +2126,7 @@
 			</para>
 		</note>
 		<para>
-			To open this wizard you should right click the class you want to add the annotations to and select <menuchoice><guimenuitem>Source</guimenuitem><guimenuitem>Generate Hibernate/JPA annotations</guimenuitem></menuchoice> from the context menu. You will see the <guilabel>Hibernate: add JPA annotations</guilabel> dialog.
+			To open this wizard, right click on the class you want to add the annotations to and select <menuchoice><guimenuitem>Source</guimenuitem><guimenuitem>Generate Hibernate/JPA annotations</guimenuitem></menuchoice> from the context menu. You will see the <guilabel>Hibernate: add JPA annotations</guilabel> dialog.
 		</para>
 		<figure>
 			<title>Starting Hibernate:add JPA annotations dialog</title>
@@ -2144,7 +2137,7 @@
 			</mediaobject>
 		</figure>
 		<para>
-			The top section of this dialog lists all the classes that will be passed through refactoring. Next to the class you have selected, this list also displays its superclasses and the classes that the objects present in the current class as properties. If you want to add new classes or packages to the list, you should click the <guibutton>Back</guibutton> button. This will display the <guilabel>Add classes and packages</guilabel> page.
+			The top section of this dialog lists all the classes that will be passed through refactoring. Next to the class you have selected, this list also displays its super-classes and the classes that the objects present in the current class as properties. If you want to add new classes or packages to the list, you should click the <guibutton>Back</guibutton> button. This will display the <guilabel>Add classes and packages</guilabel> page.
 		</para>
 		<figure>
 			<title>Add classes and packages page </title>
@@ -2160,10 +2153,10 @@
 			By default the tags are added to the fields of selected classes. You can change this option to <guilabel>Getters</guilabel> in the <guilabel>Preferred location of Annotations</guilabel> drop down list, which results in the annotations being added to the getter methods. If you choose <guilabel>Auto select from class preference</guilabel> then the annotations are added according to the position of the majority of the existing annotations. 
 		</para>
 		<para>
-			If it is necessary to map your <code>String</code> properties to the columns that length differ from the default value (255), change the <guilabel>Default string length</guilabel> field and the <code>@Column(length = your length)</code> annotation will be created for every <code>String</code> property.
+			If it is necessary to map your <code>String</code> properties to the columns whose lengths differ from the default value (255), change the <guilabel>Default string length</guilabel> field and the <code>@Column(length = your length)</code> annotation will be created for every <code>String</code> property.
 		</para>
 		<para id="optim_lock">
-			You can add optimistic locking capabilities to an entity bean by selecting the <guilabel>Enable optimistic locking</guilabel> checkbox. This operation will add the version property to all the selected classes. The property will be also annotated with <code>@Version</code>, and a getter and setter will be created. If the property is already exists, it won't be created, but the getters and setters will be generated. If there is already <code>@MappedSuperclass</code> annotation with <code>@Version</code> in the base class of the current class, <code>@Version</code> is not inserted into the current class.
+			You can add optimistic locking capabilities to an entity bean by selecting the <guilabel>Enable optimistic locking</guilabel> check box. This operation will add the version property to all the selected classes. The property will be also annotated with <code>@Version</code>, and a getter and setter will be created. If the property already exists, it won't be created, but the getters and setters will be generated. If there is already <code>@MappedSuperclass</code> annotation with <code>@Version</code> in the base class of the current class, <code>@Version</code> is not inserted into the current class.
     </para>
 		<para>After defining all the required settings click the <guibutton>Next</guibutton> button.</para>
 		<figure>
@@ -2175,7 +2168,7 @@
 			</mediaobject>
 		</figure>
 		<para>
-			The view represents two windows: one with the source code and and the second with refactored one. With the help of the <inlinemediaobject><imageobject><imagedata fileref="images/plugins/butt1.png"/></imageobject></inlinemediaobject>, <inlinemediaobject><imageobject><imagedata fileref="images/plugins/butt2.png"/></imageobject></inlinemediaobject>, <inlinemediaobject><imageobject><imagedata fileref="images/plugins/butt3.png"/></imageobject></inlinemediaobject>, <inlinemediaobject><imageobject><imagedata fileref="images/plugins/butt4.png"/></imageobject></inlinemediaobject> buttons you can quickly navigate between the differences in the code. If you don't agree with some changes you can't undo them but you can remove the class from the list of classes that need refactoring.
+			The view includes two windows: one with the current source code and and the second with refactored source code. With the help of the <inlinemediaobject><imageobject><imagedata fileref="images/plugins/butt1.png"/></imageobject></inlinemediaobject>, <inlinemediaobject><imageobject><imagedata fileref="images/plugins/butt2.png"/></imageobject></inlinemediaobject>, <inlinemediaobject><imageobject><imagedata fileref="images/plugins/butt3.png"/></imageobject></inlinemediaobject>, <inlinemediaobject><imageobject><imagedata fileref="images/plugins/butt4.png"/></imageobject></inlinemediaobject> buttons you can quickly navigate between the differences in the code. If you don't agree with some changes you can't undo them but you can remove the class from the list of classes that need refactoring.
 		</para>
 		<figure>
 			<title>List of classes that need refactoring</title>
@@ -2190,10 +2183,10 @@
 	<section id="debug_log">
 		<title>Enable debug logging in the plugins</title>
 		<para>
-			It is possible to configure the Eclipse plugin to route all logging performed by the plugins and Hibernate code it self to the <guilabel>Error Log</guilabel> view in Eclipse.
+			It is possible to configure the Eclipse plugin to route all logging performed by the plugins and the Hibernate code itself to the <guilabel>Error Log</guilabel> view in Eclipse.
 		</para>
 		<para>
-			The <guilabel>Error Log</guilabel> view is very useful tool to use when solving any problems which appear in the Hibernate Tools plugins. You can use it if there are troubles setting up a <guilabel>Hibernate Console Configuration</guilabel>.
+			The <guilabel>Error Log</guilabel> view is used to solve problems which appear in the Hibernate Tools plugins. You can use it to troubleshoot issues while setting up a <guilabel>Hibernate Console Configuration</guilabel>.
 		</para>
 		<para>
 			This is done by editing the <filename>hibernate-log4j.properties</filename> file in the <filename>org.hibernate.eclipse/</filename> directory or JAR. This file includes a default configuration that only logs WARN and above to a set of custom appenders (PluginFileAppender and PluginLogAppender). You can change these settings to be as verbose or silent as you please. See the <ulink url="http://www.hibernate.org/5.html">Hibernate Documentation</ulink> for more information on logging categories and Log4j documentation.
@@ -2201,14 +2194,14 @@
 		<section>
 			<title>Relevant Resources Links</title>
 			<para>
-				More information on how to  to configure logging via a Log4j property file can be found in the <ulink url="http://supportweb.cs.bham.ac.uk/docs/tutorials/docsystem/build/tutorials/log4j/log4j.html">Log4j documentation</ulink>.
+				More information on how to  to configure logging via a Log4j property file can be found in the <ulink url="http://logging.apache.org/">Apache Log4j documentation</ulink>.
 			</para>
 		</section>
 	</section>
 	<section id="dali_integration">
 		<title>Hibernate support for Dali plugins in Eclipse WTP</title>
 		<para>
-			Starting from version 3.0.0 Alpha1, <productname>JBoss Tools</productname> Hibernate plugins support Eclipse Dali integration, which makes it possible to use a Hibernate as a complete JPA development platform.
+			Starting from version 3.0.0 Alpha1, <productname>JBoss Tools</productname> Hibernate plugins support Eclipse Dali integration, which makes it possible to use Hibernate as a complete JPA development platform.
 		</para>
 		<section id="jpa_project_with_hibernate">
 			<title>Creating JPA project with Hibernate support</title>
@@ -2229,7 +2222,7 @@
 			</para>
 			<para>Clicking the <guibutton>Finish</guibutton> button will generate the project.</para>
 			<figure>
-				<title>Targeting at Hibernate Platform</title>
+				<title>Hibernate Target Platform</title>
 				<mediaobject>
 					<imageobject>
 						<imagedata fileref="images/plugins/dali_integration2.png"/>
@@ -2258,7 +2251,7 @@
 			</figure>
 			<note>
 				<title>Note:</title>
-				<para>Remember to put the appropriate database driver to the classpath of your project.</para>
+				<para>Remember to specify the appropriate database driver to the classpath of your project.</para>
 			</note>
 			<para>The <guilabel>Generate Entities wizard</guilabel> will first ask you to choose the directory where all output will be written.</para>
 			<figure>
@@ -2274,7 +2267,7 @@
 				<listitem>
 					<para>A Hibernate Console Configuration (proposed by default)</para>
 					<para>
-						To select this option make sure that the <guilabel>Use Console Configuration</guilabel> checkbox is selected and select a configuration from the <guilabel>Console configurations</guilabel> list box.
+						To select this option make sure that the <guilabel>Use Console Configuration</guilabel> check box is selected and select a configuration from the <guilabel>Console configurations</guilabel> list box.
 					</para>
 					<figure>
 						<title>Generate Entities Wizard</title>
@@ -2293,7 +2286,7 @@
 				</listitem>
 			</itemizedlist>
 			<para>
-				The options you define in the <guilabel>Generate Entities Wizard</guilabel> can also be set with the <guilabel>Generate DDL wizard</guilabel>. The <guilabel>Generate DDL</guilabel> wizard also allows you automatically generate DDL for the database.
+				The options you define in the <guilabel>Generate Entities Wizard</guilabel> can also be set with the <guilabel>Generate DDL wizard</guilabel>. The <guilabel>Generate DDL</guilabel> wizard also allows you to automatically generate DDL for the database.
 			</para>
 			<figure>
 				<title>Generate DDL Wizard</title>

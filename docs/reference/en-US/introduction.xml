@@ -37,7 +37,7 @@
 						</entry>
 						<entry>
 							<para>
-								Allows to generate mapping or Java code through reverse engineering, schema generation and generation of other artifacts during the build process.
+								Generates mapping or Java code through reverse engineering, schema generation, and generation of other artifacts during the build process.
 							</para>
 						</entry>
 						<entry>
@@ -97,7 +97,7 @@
 						</entry>
 						<entry>
 							<para>
-								It is a new perspective in Eclipse which provides an overview of your Hibernate Console configurations, and were you also can get an interactive view of your persistent classes and their relationships. The console allows you to execute HQL queries against your database and browse the result directly in Eclipse.
+								A new Eclipse perspective that provides an overview of your Hibernate Console configurations, as well as an interactive view of your persistent classes and their relationships. The console allows you to execute HQL queries against your database and browse the result directly in Eclipse.
 							</para>
 						</entry>
 						<entry>
@@ -111,7 +111,7 @@
 						</entry>
 						<entry>
 							<para>
-								The editors are provided for writing, editing and executing HQL queries and criterias. They also have the ability to generate simple queries.
+								The editors are provided for writing, editing and executing HQL queries and criteria. They also have the ability to generate simple queries.
 							</para>
 						</entry>
 						<entry>
@@ -124,7 +124,7 @@
 							<para>Functional Mapping Diagram</para>
 						</entry>
 						<entry>
-							<para>Makes possible to visualize the structure of entities and the relationships between them.</para>
+							<para>Used to visualize the structure of entities and the relationships between them.</para>
 						</entry>
 						<entry>
 							<xref linkend="map_diagram"/>
@@ -153,7 +153,7 @@
         
     <para>The <productname>Hibernate Tools</productname> page on <ulink url="http://www.hibernate.org/subprojects/tools.html">hibernate.org</ulink>.</para>
 		<para>
-			All <productname>JBDS</productname> release documentation can be found on the <ulink url="http://docs.redhat.com/docs/en-US/JBoss_Developer_Studio/index.html">RedHat Documentation</ulink> website.
+			All <productname>JBDS</productname> release documentation can be found on the <ulink url="https://access.redhat.com/documentation/en-US/Red_Hat_JBoss_Developer_Studio/">Red Hat Documentation</ulink> website.
 		</para>
 		<para>
 			There is some additional information on <productname>Hibernate</productname> on the <ulink url="http://www.jboss.org/community/wiki/JBossHibernate3">JBoss Wiki</ulink> page. 
