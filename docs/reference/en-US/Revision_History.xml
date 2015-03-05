@@ -6,6 +6,20 @@
 	<simpara>
 		<revhistory>
 			<revision>
+				<revnumber>7.1.0-2</revnumber>
+				<date>Thu Mar 05 2015</date>
+				<author>
+					<firstname>Misha Husnain</firstname>
+					<surname>Ali</surname>
+					<email>mhusnain@redhat.com</email>
+				</author>
+				<revdescription>
+					<simplelist>
+						<member>TOOLSDOC-596: Minor fixes.</member>
+					</simplelist>
+				</revdescription>
+			</revision>
+			<revision>
 				<revnumber>7.1.0-1</revnumber>
 				<date>Mon Dec 09 2013</date>
 				<author>

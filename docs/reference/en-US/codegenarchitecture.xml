@@ -3,7 +3,7 @@
 	<title>Code generation architecture</title>
 
 	<para>
-		The code generation mechanism in <productname>Hibernate Tools</productname> consists of a few core concepts. This section explains their overall structure, which is the same for the <productname>Ant</productname> and <productname>Eclipse</productname> tools.
+		This section outlines and explains the code generation mechanism in <productname>Hibernate Tools</productname>. The overall structure of this mechanism is the same as that used for the <productname>Ant</productname> and <productname>Eclipse</productname> tools.
 	</para>
 
 	<section>
@@ -37,7 +37,7 @@
 
 				<listitem>
 					<para>
-						A JDBC configuration uses <property>Hibernate Tools</property> reverse engineering and reads its mappings via JDBC metadata + additional reverse engineering files (<filename>reveng.xml</filename>). Automatically used in Eclipse when doing reverse engineering from JDBC and referred to as <code>&lt;jdbcconfiguration&gt;</code> in Ant.</para>
+						A JDBC configuration uses <property>Hibernate Tools</property> reverse engineering and reads its mappings via JDBC metadata along with additional reverse engineering files (<filename>reveng.xml</filename>). Automatically used in Eclipse when doing reverse engineering from JDBC and referred to as <code>&lt;jdbcconfiguration&gt;</code> in Ant.</para>
 				</listitem>
 			</itemizedlist>
 		</para>
@@ -46,10 +46,10 @@
 			In most projects you will normally use only one of the <emphasis>Core</emphasis>, <emphasis>Annotation</emphasis> or <emphasis>JPA</emphasis> configuration and possibly the JDBC configuration if you are using the reverse engineering facilities of <productname>Hibernate Tools</productname>. 
 		</para>
 
-		<note>
+<!--		<note>
 			<title>Note:</title>
 			<para>Hibernate Tools has support for all kinds of Hibernate Configurations.</para>
-		</note>
+		</note>  --> <!-- Removed useless note -->
 
 		<para>The following drawing illustrates the core concepts:</para>
 
@@ -70,7 +70,7 @@
 		</para>
 
 		<para>
-			The code generation is performed based on the Configuration model no matter which type of configuration has been used to create the meta model, and thus the code generation is independent on the source of the meta model and represented via Exporters.
+			The code generation is performed based on the Configuration model no matter which type of configuration has been used to create the meta model, and thus the code generation is independent from the source of the meta model and represented via Exporters.
 		</para>
 	</section>
 
@@ -78,15 +78,15 @@
 		<title>Exporters</title>
 
 		<para>
-			Code generation is performed by an Exporters. An <emphasis>Exporter</emphasis> is handed a Hibernate Meta Model represented as a <code>Configuration</code> instance, and it is then the job of the exporter to generate a set of code artifacts.
+			Code generation is performed by Exporters. An <emphasis>Exporter</emphasis> is handed a Hibernate Meta Model represented as a <code>Configuration</code> instance, and it is then the job of the exporter to generate a set of code artifacts.
 		</para>
 
 		<para>
-			The tool provides a default set of Exporter's which can be used in both Ant and the Eclipse UI. Documentation for these Exporters can be found in <xref linkend="ant"/> and <xref linkend="plugins"/>.
+			The tool provides a default set of Exporters which can be used in both Ant and the Eclipse UI. Documentation for these Exporters can be found in <xref linkend="ant"/> and <xref linkend="plugins"/>.
 		</para>
 
 		<para>
-			Users can provide their own custom Exporter's, either through custom classes implementing the <code>Exporter</code> interface or simply through custom templates. This is documented at in <xref linkend="hbmtemplate"/>.
+			Users can provide their own custom Exporters, either through custom classes implementing the <code>Exporter</code> interface or simply through custom templates. This is documented at in <xref linkend="hbmtemplate"/>.
 		</para>
 	</section>
 </chapter>

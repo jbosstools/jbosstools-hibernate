@@ -219,7 +219,7 @@ public class Person implements Serializable, IAuditable {
               <literal>property-type</literal>
             </entry>
 
-            <entry>Overrides the default type of property. Use this with any tag's to specify the concrete type instead of just <code>Object</code>.</entry>
+            <entry>Overrides the default type of property. Use this with any tags to specify the concrete type instead of just <code>Object</code>.</entry>
           </row>
 
           <row>
@@ -242,7 +242,7 @@ public class Person implements Serializable, IAuditable {
     </table>
 
     <para>
-    	Attributes declared via the <code>&lt;meta&gt;</code> tag <code>&quot;inherited&quot;</code> inside an <code>hbm.xml</code> file by default.
+    	Attributes declared via the <code>&lt;meta&gt;</code> tag is <code>&quot;inherited&quot;</code> inside an <code>hbm.xml</code> file by default.
     </para>
 
     <para>
@@ -257,7 +257,7 @@ public class Person implements Serializable, IAuditable {
     </note>
 
     <para>
-    	To avoid having a <code>&lt;meta&gt;</code> tag inherited then you can specify <code> inherit = "false"</code> for the attribute. For example <code> &lt;meta attribute = "scope-class" inherit = "false"&gt;public abstract&lt;/meta&gt;</code> will restrict the <code>&quot;class-scope&quot;</code> to the current class, not the subclasses.
+    	To avoid having a <code>&lt;meta&gt;</code> tag inherited by subclasses, you can specify <code>inherit = "false"</code> for the attribute. For example <code>&lt;meta attribute = "scope-class" inherit = "false"&gt;public abstract&lt;/meta&gt;</code> will restrict the <code>&quot;class-scope&quot;</code> to the current class, not the subclasses.
     </para>
 
     <section>
@@ -349,14 +349,14 @@ public class Person implements Serializable, IAuditable {
       </section>
 
       <section>
-        <title>Be aware of putting at class scope level &lt;meta&gt; attributeuse-in-equals</title>
+        <title>Avoid putting at class scope level &lt;meta&gt; attribute use-in-equals</title>
 
         <para>
         	Only attributes with business meaning (e.g. the name, social security number, etc, but no generated id's) should be referenced when calculating the return value for the <code>equal()</code> and <code>hashCode()</code> methods.
         </para>
 
         <para>
-        	This is important because Java's hashbased collections, such as <code>java.util.Set</code>, rely on <code>equals()</code> and <code>hashcode()</code> being correct and not changing for objects in the set; this can be a problem if the id gets assigned for an object after you inserted it into a set.
+        	This is important because Java's hash-based collections, such as <code>java.util.Set</code>, rely on <code>equals()</code> and <code>hashcode()</code> being correct and not changing for objects in the set; this can be a problem if the id gets assigned for an object after you inserted it into a set.
         </para>
 
         <para>
@@ -364,7 +364,7 @@ public class Person implements Serializable, IAuditable {
         </para>
 
         <para>
-        	On <ulink url="http://www.hibernate.org/109.html">www.hibernate.org </ulink> you can find more in-depth explanation on the subject of <code>equals()</code> and <code>hashcode()</code> methods.
+        	On <ulink url="https://developer.jboss.org/wiki/EqualsAndHashCode" /> you can find more in-depth explanation on the subject of <code>equals()</code> and <code>hashcode()</code> methods.
         </para>
       </section>
     </section>
@@ -438,7 +438,7 @@ public class Person implements Serializable, IAuditable {
 </programlisting>
 
         <para>
-        	Now if in any <filename>.hbm.xml</filename> file we define the <code>&lt;meta&gt;</code> attributes: <code>pre-cond</code> or <code>post-cond</code>, and their contents will be generated into the body of the relevant <code>set</code> method.
+        	Now if in any <filename>.hbm.xml</filename> file we define the <code>&lt;meta&gt;</code> attributes <code>pre-cond</code> or <code>post-cond</code>, and their contents will be generated into the body of the relevant <code>set</code> method.
         </para>
 
         <para>
@@ -452,7 +452,7 @@ public class Person implements Serializable, IAuditable {
   </id>
   <property name="firstName" type="string">
       <meta attribute="pre-cond">
-      if ((firstName != null) &amp;&amp; (firstName.length() == 0) ) {
+      if ((firstName != null) && (firstName.length() == 0) ) {
         throw new IllegalArgumentException("firstName can not be an empty String");
       }
       </meta>
@@ -533,15 +533,8 @@ public class Person implements Serializable {
         <para>
         	In conclusion, this document is intended to introduce you to Hibernate plugin specific features related to tools both for the Eclipse and Ant tasks.
         </para>
-
-        <para>
-        	In <xref linkend="plugins"/> you&apos;ve learned about a set of wizards for creating Mapping files, Configuration files, Console Configurations, become familiar with Mapping and Configuration files editors, tooling for organizing and controlling Reverse Engineering, Hibernate Console and Mapping diagrams.
-        </para>
-
-        <para>The rest chapters have explored the use of the <productname>Hibernate Tools</productname> via Ant tasks.</para>
-
-        <para>
-        	Please visit <ulink url="http://www.jboss.com/index.html?module=bb&amp;op=viewforum&amp;f=201">JBoss Tools Users Forum</ulink> to leave questions or/and suggestions on the topic. Your feedback is always appreciated.
+	<para>
+        	Please visit the <ulink url="https://developer.jboss.org/en/tools/content?filterID=contentstatus[published]~objecttype~objecttype[thread]">JBoss Tools Users Forum</ulink> to leave questions or/and suggestions on the topic. Your feedback is always appreciated.
         </para>
       </section>
     </section>

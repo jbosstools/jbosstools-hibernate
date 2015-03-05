@@ -145,7 +145,7 @@
 
           <row>
             <entry>
-              <para>configuration (annotationconfiguration, jpaconfiguration, jdbcconfiguration)</para>
+              <para>configuration, annotationconfiguration, jpaconfiguration, jdbcconfiguration</para>
             </entry>
 
             <entry>
@@ -363,7 +363,7 @@
         <title>Example</title>
 
         <para>
-        	This example shows an example where no <filename>hibernate.cfg.xml</filename> file exists, and a <filename>hibernate.properties</filename> file and fileset is used instead.
+        	This example illustrates a configuration where no <filename>hibernate.cfg.xml</filename> file exists, and a <filename>hibernate.properties</filename> file and fileset is used instead.
         </para>
 
         <note>
@@ -425,7 +425,7 @@
       </para>
 
       <para>
-      	The <code>&lt;jpaconfiguration&gt;</code> tag will try and auto-configure it self based on the available classpath, e.g. look for the <filename>META-INF/persistence.xml</filename> file.
+      	The <code>&lt;jpaconfiguration&gt;</code> tag will try and auto-configure itself based on the available classpath, e.g. look for the <filename>META-INF/persistence.xml</filename> file.
       </para>
 
       <para>
@@ -450,7 +450,7 @@
          classpathref="jpatoolslib" />
 
 <hibernatetool destdir="${build.dir}">
- <jpaconfiguration persistenceunit="caveatemptor"/>
+ <jpaconfiguration persistenceunit="performance"/>
  <classpath>
   <!-- it is in this classpath you put your classes dir,
    and/or jpa persistence compliant jar -->
@@ -571,7 +571,7 @@
 
               <entry>
                 <para>
-                	If true, tables which are pure many-to-many link tables will be mapped as such. A pure many-to-many table is one which primary-key contains exactly two foreign-keys pointing to other entity tables and has no other columns.
+                	If true, tables which are pure many-to-many link tables will be mapped as such. A pure many-to-many table is one where the primary-key contains exactly two foreign-keys pointing to other entity tables and has no other columns.
                 </para>
               </entry>
 
@@ -629,7 +629,7 @@
       <title>Database schema exporter (&lt;hbm2ddl&gt;)</title>
 
       <para>
-      	<code>&lt;hbm2ddl&gt;</code> lets you run schemaexport and schemaupdate which generates the appropriate SQL DDL and allow you to store the result in a file or export it directly to the database. Remember that if a custom naming strategy is needed it is defined in the configuration element.
+      	<code>&lt;hbm2ddl&gt;</code> lets you run schemaexport and schemaupdate which generates the appropriate SQL DDL and allows you to store the result in a file or export it directly to the database. Remember that if a custom naming strategy is needed it is defined in the configuration element.
       </para>
 
       <programlisting role="XML"><![CDATA[<hbm2ddl
@@ -745,7 +745,7 @@
               </entry>
 
               <entry>
-                <para>If specified the statements will be dumped to this file</para>
+                <para>The delimiter for DDL commands</para>
               </entry>
 
               <entry>
@@ -803,7 +803,7 @@
       <title>POJO java code exporter (&lt;hbm2java&gt;)</title>
 
       <para>
-      	<code>&lt;hbm2java&gt;</code> is a Java code generator. Options for controlling whether JDK 5 syntax can be used and whether the POJO should be annotated with EJB3/Hibernate Annotations.
+      	<code>&lt;hbm2java&gt;</code> is a Java code generator. Options used to determine whether the JDK 5 syntax can be used and whether the POJO should be annotated with EJB3/Hibernate Annotations.
       </para>
 
       <programlisting role="XML"><![CDATA[<hbm2java
@@ -885,7 +885,7 @@
       <title>Hibernate Mapping files exporter (&lt;hbm2hbmxml&gt;)</title>
 
       <para>
-      	<code>&lt;hbm2hbmxml&gt;</code> generates a set of <filename>.hbm</filename> files. It is intended to be used together with a <code>&lt;jdbcconfiguration&gt;</code> when performing reverse engineering, but can be used with any kind of configuration e.g. to convert from annotation based POJO's to a <filename>hbm.xml</filename> file.
+      	<code>&lt;hbm2hbmxml&gt;</code> generates a set of <filename>.hbm.xml</filename> files. It is intended to be used together with a <code>&lt;jdbcconfiguration&gt;</code> when performing reverse engineering, but can be used with any kind of configuration e.g. to convert from annotation based POJO's to a <filename>hbm.xml</filename> file.
       </para>
 
       <note>
@@ -908,7 +908,7 @@
 </hibernatetool>]]></programlisting>
 
         <para>
-        	<code>&lt;hbm2hbmxml&gt;</code> is normally used with a <code>&lt;jdbcconfiguration&gt;</code> like in the above example, but any other configuration can also be used to convert between the different ways of performing mappings. Here is an example of that, using an <code>&lt;annotationconfiguration&gt;</code>.
+        	<code>&lt;hbm2hbmxml&gt;</code> is normally used with a <code>&lt;jdbcconfiguration&gt;</code>, but any other configuration can also be used to convert between the different ways of performing mappings. Here is an example of that, using an <code>&lt;annotationconfiguration&gt;</code>.
         </para>
 
         <note>
@@ -966,7 +966,7 @@
 
               <entry>
                 <para>
-                	The generated <filename>cfg.xml</filename> will have &lt;mapping class=".."/&gt;, opposed to &lt;mapping resource="..."/&gt; for each mapping.
+                	The generated <filename>cfg.xml</filename> will have &lt;mapping class="..."/&gt;, opposed to &lt;mapping resource="..."/&gt; for each mapping.
                 </para>
               </entry>
 
@@ -1004,7 +1004,7 @@
 ]]></programlisting>
 
       <para>
-      	Currently one session is opened and used for all queries, which are executed via the <code>list()</code> method. In the future more options might become available, like executing <code>executeUpdate()</code>, use named queries and etc.
+      	Currently one session is opened and used for all queries, which are executed via the <code>list()</code> method.
       </para>
 
       <para/>
@@ -1085,7 +1085,7 @@
         <title>Relevant Resources Links</title>
 
         <para>
-        	You can read more about <ulink url="http://velocity.apache.org/">Velocity</ulink> and <ulink url="http://freemarker.org/">Freemarker</ulink> to find out why using the latter is better or refer to Max Andersens discussion on the topic in <ulink url="http://in.relation.to/2110.lace;jsessionid=3462F47B17556604C15DF1B96572E940">&quot;A story about FreeMarker and Velocity&quot;</ulink>.
+        	You can read more about <ulink url="http://velocity.apache.org/">Velocity</ulink> and <ulink url="http://freemarker.org/">Freemarker</ulink> to compare the two or refer to Max Andersen's discussion on the topic in <ulink url="http://in.relation.to/2110.lace;jsessionid=3462F47B17556604C15DF1B96572E940">&quot;A story about FreeMarker and Velocity&quot;</ulink>.
         </para>
       </section>
     </section>
@@ -1110,7 +1110,7 @@
       <programlisting role="XML"><![CDATA[<property key="descriptors" value="true"/>]]></programlisting>
 
       <para>
-      	Usually using the <code>&lt;property&gt;</code> tag is enough when specifying the properties required by the exporters. Still, the Ant tools supports the notion of a <code>&lt;propertyset&gt;</code> which is used for grouping a set of properties. More about the functionality of <code>&lt;propertyset&gt;</code> is can be found in the <ulink url="http://ant.apache.org/manual/">Ant manual</ulink>.
+      	Usually using the <code>&lt;property&gt;</code> tag is enough when specifying the properties required by the exporters. Still, the Ant tools support a <code>&lt;propertyset&gt;</code> which is used for grouping a set of properties. More about the functionality of <code>&lt;propertyset&gt;</code> is can be found in the <ulink url="http://ant.apache.org/manual/">Ant manual</ulink>.
       </para>
     </section>
 
