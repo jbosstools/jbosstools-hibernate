@@ -11,7 +11,7 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	}
 	
 	public ICfg2HbmTool createCfg2HbmTool() {
-		return new Cfg2HbmToolFacadeImpl();
+		return new Cfg2HbmToolFacadeImpl(this);
 	}
 	
 }
