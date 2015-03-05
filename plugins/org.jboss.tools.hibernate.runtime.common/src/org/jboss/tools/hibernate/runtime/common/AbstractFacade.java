@@ -17,7 +17,7 @@ public abstract class AbstractFacade implements IFacade {
 	
 	public Object getTarget() {
 		if (target == null) {
-			target = Util.getInstance(getTargetClassName(), this);
+			target = Util.getInstance(getTargetClassName(), facadeFactory);
 		}
 		return target;
 	}
