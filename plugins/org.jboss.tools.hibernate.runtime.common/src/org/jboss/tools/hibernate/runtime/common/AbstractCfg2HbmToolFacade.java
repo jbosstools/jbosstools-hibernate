@@ -18,11 +18,11 @@ implements ICfg2HbmTool {
 	}
 	
 	private Class<?> getPersistentClassClass() {
-		return Util.getClass("org.hibernate.mapping.PersistentClass", this);
+		return Util.getClass("org.hibernate.mapping.PersistentClass", getClassLoader());
 	}
 	
 	private Class<?> getPropertyClass() {
-		return Util.getClass("org.hibernate.mapping.Property", this);
+		return Util.getClass("org.hibernate.mapping.Property", getClassLoader());
 	}
 	
 	private Object getTarget(Object object) {

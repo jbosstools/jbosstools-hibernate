@@ -15,9 +15,13 @@ public abstract class AbstractFacade implements IFacade {
 	
 	protected abstract String getTargetClassName();
 	
+	protected ClassLoader getClassLoader() {
+		return facadeFactory.getClassLoader();
+	}
+	
 	public Object getTarget() {
 		if (target == null) {
-			target = Util.getInstance(getTargetClassName(), facadeFactory);
+			target = Util.getInstance(getTargetClassName(), getClassLoader());
 		}
 		return target;
 	}

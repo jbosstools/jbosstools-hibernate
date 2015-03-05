@@ -7,20 +7,20 @@ import org.jboss.tools.hibernate.runtime.common.internal.HibernateRuntimeCommon;
 
 public class Util {
 	
-	public static Class<?> getClass(String className, Object caller) {
+	public static Class<?> getClass(String className, ClassLoader loader) {
 		Class<?> result = null;
 		try {
-			result = caller.getClass().getClassLoader().loadClass(className);
+			result = loader.loadClass(className);
 		} catch (ClassNotFoundException e) {
 			HibernateRuntimeCommon.log(e);
 		}
 		return result;
 	}
 	
-	public static Object getInstance(String className, Object caller) {
+	public static Object getInstance(String className, ClassLoader loader) {
 		Object result = null;
 		try {
-			result = getClass(className, caller).newInstance();
+			result = getClass(className, loader).newInstance();
 		} catch (InstantiationException | 
 				IllegalAccessException e) {
 			HibernateRuntimeCommon.log(e);
