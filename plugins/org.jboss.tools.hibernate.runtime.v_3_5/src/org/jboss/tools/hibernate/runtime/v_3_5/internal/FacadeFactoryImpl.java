@@ -8,6 +8,10 @@ import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 
 public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	
+	public ClassLoader getClassLoader() {
+		return FacadeFactoryImpl.class.getClassLoader();
+	}
+	
 	public IArtifactCollector createArtifactCollector() {
 		return new AbstractArtifactCollectorFacade(this) {};
 	}
