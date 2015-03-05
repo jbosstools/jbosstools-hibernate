@@ -11,7 +11,7 @@ extends AbstractFacade
 implements IArtifactCollector {
 	
 	public AbstractArtifactCollectorFacade(IFacadeFactory facadeFactory) {
-		this.facadeFactory = facadeFactory;
+		super(facadeFactory);
 	}
 	
 	protected String getTargetClassName() {

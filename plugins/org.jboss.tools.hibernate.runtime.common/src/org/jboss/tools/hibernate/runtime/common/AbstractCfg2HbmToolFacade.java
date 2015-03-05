@@ -10,7 +10,7 @@ extends AbstractFacade
 implements ICfg2HbmTool {
 	
 	public AbstractCfg2HbmToolFacade(IFacadeFactory facadeFactory) {
-		this.facadeFactory = facadeFactory;
+		super(facadeFactory);
 	}
 
 	protected String getTargetClassName() {

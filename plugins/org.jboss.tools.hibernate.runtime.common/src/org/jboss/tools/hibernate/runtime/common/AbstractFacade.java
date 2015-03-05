@@ -9,6 +9,10 @@ public abstract class AbstractFacade implements IFacade {
 	
 	protected IFacadeFactory facadeFactory;
 	
+	public AbstractFacade(IFacadeFactory facadeFactory) {
+		this.facadeFactory = facadeFactory;
+	}
+	
 	protected abstract String getTargetClassName();
 	
 	public Object getTarget() {
