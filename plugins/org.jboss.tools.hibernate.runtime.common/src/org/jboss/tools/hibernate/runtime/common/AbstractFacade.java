@@ -6,7 +6,7 @@ import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 public abstract class AbstractFacade implements IFacade {
 
 	private Object target = null;	
-	protected IFacadeFactory facadeFactory;
+	private IFacadeFactory facadeFactory;
 	
 	protected static Object createTarget(String name, IFacadeFactory facadeFactory) {
 		return Util.getInstance(name, facadeFactory.getClassLoader());
@@ -17,7 +17,7 @@ public abstract class AbstractFacade implements IFacade {
 		this.target = target;
 	}
 	
-	protected ClassLoader getClassLoader() {
+	protected ClassLoader getFacadeFactoryClassLoader() {
 		return facadeFactory.getClassLoader();
 	}
 	

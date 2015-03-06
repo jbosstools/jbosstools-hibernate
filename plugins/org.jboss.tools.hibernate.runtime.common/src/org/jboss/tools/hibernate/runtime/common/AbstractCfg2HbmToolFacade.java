@@ -16,11 +16,11 @@ implements ICfg2HbmTool {
 	}
 
 	private Class<?> getPersistentClassClass() {
-		return Util.getClass("org.hibernate.mapping.PersistentClass", getClassLoader());
+		return Util.getClass("org.hibernate.mapping.PersistentClass", getFacadeFactoryClassLoader());
 	}
 	
 	private Class<?> getPropertyClass() {
-		return Util.getClass("org.hibernate.mapping.Property", getClassLoader());
+		return Util.getClass("org.hibernate.mapping.Property", getFacadeFactoryClassLoader());
 	}
 	
 	private Object getTarget(Object object) {
