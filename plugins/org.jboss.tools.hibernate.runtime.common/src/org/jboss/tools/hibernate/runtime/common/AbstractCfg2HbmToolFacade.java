@@ -15,10 +15,6 @@ implements ICfg2HbmTool {
 		super(facadeFactory, createTarget(TARGET_CLASS_NAME, facadeFactory));
 	}
 
-	protected String getTargetClassName() {
-		return "org.hibernate.tool.hbm2x.Cfg2HbmTool";
-	}
-	
 	private Class<?> getPersistentClassClass() {
 		return Util.getClass("org.hibernate.mapping.PersistentClass", getClassLoader());
 	}

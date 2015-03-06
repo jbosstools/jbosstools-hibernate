@@ -17,16 +17,11 @@ public abstract class AbstractFacade implements IFacade {
 		this.target = target;
 	}
 	
-	protected abstract String getTargetClassName();
-	
 	protected ClassLoader getClassLoader() {
 		return facadeFactory.getClassLoader();
 	}
 	
 	public Object getTarget() {
-		if (target == null) {
-			target = Util.getInstance(getTargetClassName(), getClassLoader());
-		}
 		return target;
 	}
 

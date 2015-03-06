@@ -16,10 +16,6 @@ implements IArtifactCollector {
 		super(facadeFactory, createTarget(TARGET_CLASS_NAME, facadeFactory));
 	}
 	
-	protected String getTargetClassName() {
-		return "org.hibernate.tool.hbm2x.ArtifactCollector";
-	}
-	
 	@SuppressWarnings("unchecked")
 	@Override
 	public Set<String> getFileTypes() {
