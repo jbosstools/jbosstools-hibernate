@@ -124,13 +124,6 @@ public class ServiceProxy implements IService {
 	}
 
 	@Override
-	public void setExporterConfiguration(
-			IExporter exporter,
-			IConfiguration hcfg) {
-		exporter.setConfiguration(hcfg);
-	}
-
-	@Override
 	public IHibernateMappingExporter newHibernateMappingExporter(
 			IConfiguration hcfg, File file) {
 		return new HibernateMappingExporterProxy(hcfg, file);

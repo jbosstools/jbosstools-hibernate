@@ -57,10 +57,6 @@ public class TestService implements IService {
 	}
 
 	@Override
-	public void setExporterConfiguration(IExporter exporter, IConfiguration hcfg) {
-	}
-
-	@Override
 	public IHibernateMappingExporter newHibernateMappingExporter(
 			IConfiguration hcfg, File file) {
 		return null;

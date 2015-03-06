@@ -19,10 +19,6 @@ public interface IService {
 	
 	IConfiguration newDefaultConfiguration();
 	
-	void setExporterConfiguration(
-			IExporter exporter, 
-			IConfiguration hcfg);
-	
 	IHibernateMappingExporter newHibernateMappingExporter(
 			IConfiguration hcfg, 
 			File file);
