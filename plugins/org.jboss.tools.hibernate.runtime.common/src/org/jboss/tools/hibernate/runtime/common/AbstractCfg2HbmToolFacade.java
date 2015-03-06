@@ -9,8 +9,10 @@ public abstract class AbstractCfg2HbmToolFacade
 extends AbstractFacade 
 implements ICfg2HbmTool {
 	
+	private static final String TARGET_CLASS_NAME = "org.hibernate.tool.hbm2x.Cfg2HbmTool";
+	
 	public AbstractCfg2HbmToolFacade(IFacadeFactory facadeFactory) {
-		super(facadeFactory);
+		super(facadeFactory, createTarget(TARGET_CLASS_NAME, facadeFactory));
 	}
 
 	protected String getTargetClassName() {
