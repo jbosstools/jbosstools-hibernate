@@ -235,8 +235,8 @@ public class ExporterFactory {
 			outputDirectories.add(loc);
 			exporter.setOutputDirectory(new File(loc));
 		}
-
-		service.setExporterConfiguration(exporter, cfg);
+		
+		exporter.setConfiguration(cfg);
 
 		List<String> templatePathList = new ArrayList<String>();
 		if (extract.containsKey(ExporterFactoryStrings.TEMPLATE_PATH)) {
