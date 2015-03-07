@@ -15,7 +15,7 @@ import org.hibernate.engine.spi.Mapping;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
-import org.jboss.tools.hibernate.runtime.common.AbstractFacade;
+import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
@@ -30,7 +30,7 @@ import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 
-public class ConfigurationProxy extends AbstractFacade implements IConfiguration {
+public class ConfigurationProxy extends AbstractConfigurationFacade {
 	
 	private Configuration target;
 	private INamingStrategy namingStrategy;
