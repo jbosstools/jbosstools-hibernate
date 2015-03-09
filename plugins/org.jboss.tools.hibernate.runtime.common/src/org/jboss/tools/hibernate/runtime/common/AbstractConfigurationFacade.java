@@ -13,5 +13,13 @@ implements IConfiguration {
 		super(facadeFactory, target);
 	}
 	
+	@Override
+	public String getProperty(String propertyName) {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getProperty", 
+				new Class[] { String.class }, 
+				new Object[] { propertyName });
+	}
 
 }

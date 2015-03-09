@@ -50,11 +50,6 @@ public class ConfigurationProxy extends AbstractConfigurationFacade {
 	}
 
 	@Override
-	public String getProperty(String propertyName) {
-		return getTarget().getProperty(propertyName);
-	}
-
-	@Override
 	public IConfiguration addFile(File file) {
 		getTarget().addFile(file);
 		return this;
