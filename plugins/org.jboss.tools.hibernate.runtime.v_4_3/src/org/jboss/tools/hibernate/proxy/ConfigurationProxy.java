@@ -32,7 +32,6 @@ import org.xml.sax.EntityResolver;
 
 public class ConfigurationProxy extends AbstractConfigurationFacade {
 	
-	private Configuration target;
 	private INamingStrategy namingStrategy;
 	private HashSet<ITable> tableMappings = null;
 	private HashMap<String, IPersistentClass> classMappings = null;
@@ -44,74 +43,77 @@ public class ConfigurationProxy extends AbstractConfigurationFacade {
 			IFacadeFactory facadeFactory,
 			Configuration configuration) {
 		super(facadeFactory, configuration);
-		target = configuration;
+	}
+	
+	public Configuration getTarget() {
+		return (Configuration)super.getTarget();
 	}
 
 	@Override
 	public String getProperty(String propertyName) {
-		return target.getProperty(propertyName);
+		return getTarget().getProperty(propertyName);
 	}
 
 	@Override
 	public IConfiguration addFile(File file) {
-		target.addFile(file);
+		getTarget().addFile(file);
 		return this;
 	}
 
 	@Override
 	public void setProperty(String name, String value) {
-		target.setProperty(name, value);
+		getTarget().setProperty(name, value);
 	}
 
 	@Override
 	public IConfiguration setProperties(Properties properties) {
-		target.setProperties(properties);
+		getTarget().setProperties(properties);
 		return this;
 	}
 
 	@Override
 	public void setEntityResolver(EntityResolver entityResolver) {
-		target.setEntityResolver(entityResolver);
+		getTarget().setEntityResolver(entityResolver);
 	}
 
 	@Override
 	public void setNamingStrategy(INamingStrategy namingStrategy) {
 		assert namingStrategy instanceof NamingStrategyProxy;
 		this.namingStrategy = namingStrategy;
-		target.setNamingStrategy(((NamingStrategyProxy)namingStrategy).getTarget());
+		getTarget().setNamingStrategy(((NamingStrategyProxy)namingStrategy).getTarget());
 	}
 
 	@Override
 	public Properties getProperties() {
-		return target.getProperties();
+		return getTarget().getProperties();
 	}
 
 	@Override
 	public void addProperties(Properties properties) {
-		target.addProperties(properties);
+		getTarget().addProperties(properties);
 	}
 
 	@Override
 	public IConfiguration configure(Document document) {
-		target.configure(document);
+		getTarget().configure(document);
 		return this;
 	}
 
 	@Override
 	public IConfiguration configure(File file) {
-		target.configure(file);
+		getTarget().configure(file);
 		return this;
 	}
 
 	@Override
 	public IConfiguration configure() {
-		target.configure();
+		getTarget().configure();
 		return this;
 	}
 
 	@Override
 	public void buildMappings() {
-		target.buildMappings();
+		getTarget().buildMappings();
 	}
 
 	@Override
@@ -119,7 +121,7 @@ public class ConfigurationProxy extends AbstractConfigurationFacade {
 		if (serviceRegistry == null) {
 			buildServiceRegistry();
 		}
-		return new SessionFactoryProxy(target.buildSessionFactory(serviceRegistry));
+		return new SessionFactoryProxy(getTarget().buildSessionFactory(serviceRegistry));
 	}
 
 	@Override
@@ -127,16 +129,16 @@ public class ConfigurationProxy extends AbstractConfigurationFacade {
 		if (serviceRegistry == null) {
 			buildServiceRegistry();
 		}
-		return new SettingsProxy(target.buildSettings(serviceRegistry));
+		return new SettingsProxy(getTarget().buildSettings(serviceRegistry));
 	}
 	
 	Configuration getConfiguration() {
-		return target;
+		return getTarget();
 	}
 
 	@Override
 	public IMappings createMappings() {
-		return new MappingsProxy(target.createMappings());
+		return new MappingsProxy(getTarget().createMappings());
 	}
 
 	@Override
@@ -149,7 +151,7 @@ public class ConfigurationProxy extends AbstractConfigurationFacade {
 	
 	private void initializeClassMappings() {
 		classMappings = new HashMap<String, IPersistentClass>();
-		Iterator<?> origin = target.getClassMappings();
+		Iterator<?> origin = getTarget().getClassMappings();
 		while (origin.hasNext()) {
 			IPersistentClass pc = new PersistentClassProxy((PersistentClass)origin.next());
 			classMappings.put(pc.getEntityName(), pc);
@@ -158,30 +160,30 @@ public class ConfigurationProxy extends AbstractConfigurationFacade {
 
 	@Override
 	public void setPreferBasicCompositeIds(boolean preferBasicCompositeids) {
-		if (target instanceof JDBCMetaDataConfiguration) {
-			((JDBCMetaDataConfiguration)target).setPreferBasicCompositeIds(preferBasicCompositeids);
+		if (getTarget() instanceof JDBCMetaDataConfiguration) {
+			((JDBCMetaDataConfiguration)getTarget()).setPreferBasicCompositeIds(preferBasicCompositeids);
 		}
 	}
 
 	@Override
 	public void setReverseEngineeringStrategy(IReverseEngineeringStrategy res) {
 		assert res instanceof ReverseEngineeringStrategyProxy;
-		if (target instanceof JDBCMetaDataConfiguration) {
-			((JDBCMetaDataConfiguration)target).setReverseEngineeringStrategy(
+		if (getTarget() instanceof JDBCMetaDataConfiguration) {
+			((JDBCMetaDataConfiguration)getTarget()).setReverseEngineeringStrategy(
 					((ReverseEngineeringStrategyProxy)res).getTarget());
 		}
 	}
 	@Override
 	public void readFromJDBC() {
-		if (target instanceof JDBCMetaDataConfiguration) {
-			((JDBCMetaDataConfiguration)target).readFromJDBC();
+		if (getTarget() instanceof JDBCMetaDataConfiguration) {
+			((JDBCMetaDataConfiguration)getTarget()).readFromJDBC();
 		}
 	}
 
 	@Override
 	public IMapping buildMapping() {
 		if (mapping == null) {
-			Mapping m = target.buildMapping();
+			Mapping m = getTarget().buildMapping();
 			if (m != null) {
 				mapping = new MappingProxy(m);
 			}
@@ -200,20 +202,20 @@ public class ConfigurationProxy extends AbstractConfigurationFacade {
 	@Override
 	public INamingStrategy getNamingStrategy() {
 		if (namingStrategy == null) {
-			namingStrategy = new NamingStrategyProxy(target.getNamingStrategy());
+			namingStrategy = new NamingStrategyProxy(getTarget().getNamingStrategy());
 		}
 		return namingStrategy;
 	}
 
 	@Override
 	public EntityResolver getEntityResolver() {
-		return target.getEntityResolver();
+		return getTarget().getEntityResolver();
 	}
 
 	@Override
 	public Iterator<ITable> getTableMappings() {
 		Iterator<ITable> result = null;
-		if (target instanceof JDBCMetaDataConfiguration) {
+		if (getTarget() instanceof JDBCMetaDataConfiguration) {
 			if (tableMappings == null) {
 				initializeTableMappings();
 			}
@@ -223,7 +225,7 @@ public class ConfigurationProxy extends AbstractConfigurationFacade {
 	}
 	
 	private void initializeTableMappings() {
-		Iterator<Table> iterator = ((JDBCMetaDataConfiguration)target).getTableMappings();
+		Iterator<Table> iterator = ((JDBCMetaDataConfiguration)getTarget()).getTableMappings();
 		while (iterator.hasNext()) {
 			tableMappings.add(new TableProxy(iterator.next()));
 		}
