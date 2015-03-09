@@ -26,7 +26,7 @@ public class NamingStrategyProxy extends AbstractNamingStrategyFacade {
 			String targetEntityName, 
 			String name2, 
 			String propName) {
-		return target.collectionTableName(
+		return getTarget().collectionTableName(
 				ownerEntityName, 
 				name, 
 				targetEntityName, 
@@ -36,28 +36,28 @@ public class NamingStrategyProxy extends AbstractNamingStrategyFacade {
 
 	@Override
 	public String columnName(String name) {
-		return target.columnName(name);
+		return getTarget().columnName(name);
 	}
 
 	@Override
 	public String propertyToColumnName(String name) {
-		return target.propertyToColumnName(name);
+		return getTarget().propertyToColumnName(name);
 	}
 
 	@Override
 	public String tableName(String name) {
-		return target.tableName(name);
+		return getTarget().tableName(name);
 	}
 
 	@Override
 	public String joinKeyColumnName(String primaryKeyColumnName,
 			String primaryTableName) {
-		return target.joinKeyColumnName(primaryKeyColumnName, primaryTableName);
+		return getTarget().joinKeyColumnName(primaryKeyColumnName, primaryTableName);
 	}
 
 	@Override
 	public String classToTableName(String defaultName) {
-		return target.classToTableName(defaultName);
+		return getTarget().classToTableName(defaultName);
 	}
 
 	@Override
