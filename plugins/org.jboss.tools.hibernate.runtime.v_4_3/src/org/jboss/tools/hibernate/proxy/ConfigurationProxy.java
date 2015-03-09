@@ -197,7 +197,7 @@ public class ConfigurationProxy extends AbstractConfigurationFacade {
 	@Override
 	public INamingStrategy getNamingStrategy() {
 		if (namingStrategy == null) {
-			namingStrategy = new NamingStrategyProxy(getTarget().getNamingStrategy());
+			namingStrategy = new NamingStrategyProxy(getFacadeFactory(), getTarget().getNamingStrategy());
 		}
 		return namingStrategy;
 	}
