@@ -6,17 +6,14 @@ import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 
 public class NamingStrategyProxy extends AbstractNamingStrategyFacade {
 	
-	private NamingStrategy target;
-
 	public NamingStrategyProxy(
 			IFacadeFactory facadeFactory, 
 			NamingStrategy namingStrategy) {
 		super(facadeFactory, namingStrategy);
-		target = namingStrategy;
 	}
 
 	public NamingStrategy getTarget() {
-		return target;
+		return (NamingStrategy)super.getTarget();
 	}
 
 	@Override
