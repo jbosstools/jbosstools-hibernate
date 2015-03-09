@@ -1,11 +1,10 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.cfg.NamingStrategy;
-import org.jboss.tools.hibernate.runtime.common.AbstractFacade;
+import org.jboss.tools.hibernate.runtime.common.AbstractNamingStrategyFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 
-public class NamingStrategyProxy extends AbstractFacade implements INamingStrategy {
+public class NamingStrategyProxy extends AbstractNamingStrategyFacade {
 	
 	private NamingStrategy target;
 
