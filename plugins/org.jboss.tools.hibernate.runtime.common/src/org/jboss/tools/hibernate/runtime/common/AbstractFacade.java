@@ -17,6 +17,10 @@ public abstract class AbstractFacade implements IFacade {
 		this.target = target;
 	}
 	
+	protected IFacadeFactory getFacadeFactory() {
+		return facadeFactory;
+	}
+	
 	protected ClassLoader getFacadeFactoryClassLoader() {
 		return facadeFactory.getClassLoader();
 	}
