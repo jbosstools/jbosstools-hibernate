@@ -11,7 +11,7 @@ public class NamingStrategyProxy implements INamingStrategy {
 		target = namingStrategy;
 	}
 
-	NamingStrategy getTarget() {
+	public NamingStrategy getTarget() {
 		return target;
 	}
 
