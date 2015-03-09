@@ -13,4 +13,28 @@ implements INamingStrategy {
 		super(facadeFactory, target);
 	}
 
+	@Override
+	public String collectionTableName(
+			String ownerEntityName, 
+			String name,
+			String targetEntityName, 
+			String name2, 
+			String propName) {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"collectionTableName", 
+				new Class[] { 
+					String.class, 
+					String.class, 
+					String.class, 
+					String.class, 
+					String.class },
+				new Object[] { 
+					ownerEntityName, 
+					name, 
+					targetEntityName, 
+					name2, 
+					propName });
+	}
+
 }

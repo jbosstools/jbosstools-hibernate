@@ -17,21 +17,6 @@ public class NamingStrategyProxy extends AbstractNamingStrategyFacade {
 	}
 
 	@Override
-	public String collectionTableName(
-			String ownerEntityName, 
-			String name,
-			String targetEntityName, 
-			String name2, 
-			String propName) {
-		return getTarget().collectionTableName(
-				ownerEntityName, 
-				name, 
-				targetEntityName, 
-				name2, 
-				propName);
-	}
-
-	@Override
 	public String columnName(String name) {
 		return getTarget().columnName(name);
 	}
