@@ -12,7 +12,7 @@ public class DialectProxy implements IDialect {
 		target = dialect;
 	}
 
-	Dialect getTarget() {
+	public Dialect getTarget() {
 		return target;
 	}
 	
