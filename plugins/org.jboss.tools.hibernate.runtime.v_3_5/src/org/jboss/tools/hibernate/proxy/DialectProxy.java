@@ -6,15 +6,12 @@ import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 
 public class DialectProxy extends AbstractDialectFacade {
 	
-	private Dialect target;
-	
 	public DialectProxy(IFacadeFactory facadeFactory, Dialect dialect) {
 		super(facadeFactory, dialect);
-		target = dialect;
 	}
 
 	public Dialect getTarget() {
-		return target;
+		return (Dialect)super.getTarget();
 	}
 	
 	@Override
