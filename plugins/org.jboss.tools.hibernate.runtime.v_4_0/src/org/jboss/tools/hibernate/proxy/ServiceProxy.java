@@ -298,7 +298,7 @@ public class ServiceProxy implements IService {
 		DialectFactoryImpl dialectFactory = new DialectFactoryImpl();
 		dialectFactory.setClassLoaderService(new ClassLoaderServiceImpl());
 		Dialect dialect = dialectFactory.buildDialect(properties, connection);
-		return dialect != null ? new DialectProxy(dialect) : null;
+		return dialect != null ? new DialectProxy(facadeFactory, dialect) : null;
 	}
 
 	@Override

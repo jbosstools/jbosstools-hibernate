@@ -2,12 +2,13 @@ package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.dialect.Dialect;
 import org.jboss.tools.hibernate.runtime.spi.IDialect;
+import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 
 public class DialectProxy implements IDialect {
 	
 	private Dialect target;
 	
-	public DialectProxy(Dialect dialect) {
+	public DialectProxy(IFacadeFactory facadeFactory, Dialect dialect) {
 		target = dialect;
 	}
 

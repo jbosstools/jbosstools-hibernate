@@ -339,7 +339,7 @@ public class ServiceProxy implements IService {
 					}
 				}
 		);
-		return dialect != null ? new DialectProxy(dialect) : null;
+		return dialect != null ? new DialectProxy(facadeFactory, dialect) : null;
 	}
 
 	@Override

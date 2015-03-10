@@ -293,7 +293,7 @@ public class ServiceProxy implements IService {
 		} else {
 			dialect = DialectFactory.buildDialect(properties, connection);
 		}
-		return dialect != null ? new DialectProxy(dialect) : null;
+		return dialect != null ? new DialectProxy(facadeFactory, dialect) : null;
 	}
 
 	@Override
