@@ -74,4 +74,13 @@ implements INamingStrategy {
 				new Object[] { primaryKeyColumnName, primaryTableName });
 	}
 
+	@Override
+	public String classToTableName(String defaultName) {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"classToTableName", 
+				new Class[] { String.class }, 
+				new Object[] { defaultName });
+	}
+
 }

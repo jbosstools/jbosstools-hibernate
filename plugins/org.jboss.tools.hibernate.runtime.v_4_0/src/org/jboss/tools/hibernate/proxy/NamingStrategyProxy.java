@@ -17,11 +17,6 @@ public class NamingStrategyProxy extends AbstractNamingStrategyFacade {
 	}
 
 	@Override
-	public String classToTableName(String defaultName) {
-		return getTarget().classToTableName(defaultName);
-	}
-
-	@Override
 	public String getStrategyClassName() {
 		return getTarget().getClass().getName();
 	}
