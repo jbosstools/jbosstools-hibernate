@@ -64,4 +64,14 @@ implements INamingStrategy {
 				new Object[] { name });
 	}
 
+	@Override
+	public String joinKeyColumnName(String primaryKeyColumnName,
+			String primaryTableName) {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"joinKeyColumnName", 
+				new Class[] { String.class, String.class }, 
+				new Object[] { primaryKeyColumnName, primaryTableName });
+	}
+
 }
