@@ -27,7 +27,6 @@ import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISettings;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
-import org.jboss.tools.hibernate.runtime.v_3_5.internal.NamingStrategyFacade;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 
