@@ -17,11 +17,6 @@ public class NamingStrategyProxy extends AbstractNamingStrategyFacade {
 	}
 
 	@Override
-	public String columnName(String name) {
-		return getTarget().columnName(name);
-	}
-
-	@Override
 	public String propertyToColumnName(String name) {
 		return getTarget().propertyToColumnName(name);
 	}

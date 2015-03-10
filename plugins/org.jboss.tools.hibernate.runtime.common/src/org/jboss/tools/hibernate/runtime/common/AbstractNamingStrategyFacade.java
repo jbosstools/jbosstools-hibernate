@@ -37,4 +37,13 @@ implements INamingStrategy {
 					propName });
 	}
 
+	@Override
+	public String columnName(String name) {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"columnName", 
+				new Class[] { String.class }, 
+				new Object[] { name });
+	}
+
 }
