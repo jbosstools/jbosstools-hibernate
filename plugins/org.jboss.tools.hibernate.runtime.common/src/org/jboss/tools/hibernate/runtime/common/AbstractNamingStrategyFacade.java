@@ -55,4 +55,13 @@ implements INamingStrategy {
 				new Object[] { name });
 	}
 
+	@Override
+	public String tableName(String name) {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"tableName", 
+				new Class[] { String.class }, 
+				new Object[] { name });
+	}
+
 }

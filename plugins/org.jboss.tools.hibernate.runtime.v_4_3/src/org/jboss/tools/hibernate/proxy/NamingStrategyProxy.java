@@ -17,11 +17,6 @@ public class NamingStrategyProxy extends AbstractNamingStrategyFacade {
 	}
 
 	@Override
-	public String tableName(String name) {
-		return getTarget().tableName(name);
-	}
-
-	@Override
 	public String joinKeyColumnName(String primaryKeyColumnName,
 			String primaryTableName) {
 		return getTarget().joinKeyColumnName(primaryKeyColumnName, primaryTableName);
