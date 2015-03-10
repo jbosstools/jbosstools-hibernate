@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate.proxy;
+package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
 import org.hibernate.cfg.NamingStrategy;
 import org.jboss.tools.hibernate.runtime.common.AbstractNamingStrategyFacade;
