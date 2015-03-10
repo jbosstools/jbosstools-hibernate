@@ -226,7 +226,7 @@ public class ConfigurationProxy extends AbstractConfigurationFacade {
 		if (dialect == null) {
 			Dialect d = DialectFactory.buildDialect(getProperties());
 			if (d != null) {
-				dialect = new DialectProxy(getFacadeFactory(), d);
+				dialect = getFacadeFactory().createDialect(d);
 			}
 		}
 		return dialect;
