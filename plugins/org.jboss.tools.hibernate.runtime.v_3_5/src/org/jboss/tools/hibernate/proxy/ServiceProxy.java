@@ -178,7 +178,7 @@ public class ServiceProxy implements IService {
 		try {
 			NamingStrategy ns = (NamingStrategy) ReflectHelper.classForName(
 					strategyClassName).newInstance();
-			return new NamingStrategyFacade(facadeFactory, ns);
+			return facadeFactory.createNamingStrategy(ns);
 		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
 			return null;
 		}
