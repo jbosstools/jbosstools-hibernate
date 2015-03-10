@@ -19,17 +19,17 @@ public class DialectProxy extends AbstractDialectFacade {
 	
 	@Override
 	public String toString() {
-		return target.toString();
+		return getTarget().toString();
 	}
 
 	@Override
 	public char openQuote() {
-		return target.openQuote();
+		return getTarget().openQuote();
 	}
 
 	@Override
 	public char closeQuote() {
-		return target.closeQuote();
+		return getTarget().closeQuote();
 	}
 
 }
