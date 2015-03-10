@@ -14,4 +14,13 @@ public abstract class AbstractDialectFacade extends AbstractFacade implements ID
 		return getTarget().toString();
 	}
 
+	@Override
+	public char openQuote() {
+		return (char)Util.invokeMethod(
+				getTarget(), 
+				"openQuote", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 }
