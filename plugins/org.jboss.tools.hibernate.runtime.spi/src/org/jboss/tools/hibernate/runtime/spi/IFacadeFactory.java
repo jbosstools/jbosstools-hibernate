@@ -6,5 +6,6 @@ public interface IFacadeFactory {
 	IArtifactCollector createArtifactCollector();
 	ICfg2HbmTool createCfg2HbmTool();
 	INamingStrategy createNamingStrategy(Object target);
+	IDialect createDialect(Object target);
 
 }
