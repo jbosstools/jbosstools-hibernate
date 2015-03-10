@@ -79,7 +79,7 @@ import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_3_5.internal.FacadeFactoryImpl;
-import org.jboss.tools.hibernate.runtime.v_3_5.internal.NamingStrategyProxy;
+import org.jboss.tools.hibernate.runtime.v_3_5.internal.NamingStrategyFacade;
 import org.jboss.tools.hibernate.util.OpenMappingUtilsEjb3;
 import org.xml.sax.EntityResolver;
 
@@ -178,7 +178,7 @@ public class ServiceProxy implements IService {
 		try {
 			NamingStrategy ns = (NamingStrategy) ReflectHelper.classForName(
 					strategyClassName).newInstance();
-			return new NamingStrategyProxy(facadeFactory, ns);
+			return new NamingStrategyFacade(facadeFactory, ns);
 		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
 			return null;
 		}
