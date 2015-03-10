@@ -16,9 +16,4 @@ public class NamingStrategyProxy extends AbstractNamingStrategyFacade {
 		return (NamingStrategy)super.getTarget();
 	}
 
-	@Override
-	public String getStrategyClassName() {
-		return getTarget().getClass().getName();
-	}
-
 }

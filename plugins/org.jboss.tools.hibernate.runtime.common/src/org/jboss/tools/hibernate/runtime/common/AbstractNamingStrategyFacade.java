@@ -83,4 +83,9 @@ implements INamingStrategy {
 				new Object[] { defaultName });
 	}
 
+	@Override
+	public String getStrategyClassName() {
+		return getTarget().getClass().getName();
+	}
+
 }
