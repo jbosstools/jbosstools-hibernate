@@ -8,6 +8,7 @@ import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
+import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.spi.Mapping;
 import org.hibernate.mapping.PersistentClass;
@@ -16,6 +17,7 @@ import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.service.jdbc.dialect.spi.DialectFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
@@ -74,9 +76,9 @@ public class ConfigurationProxy extends AbstractConfigurationFacade {
 
 	@Override
 	public void setNamingStrategy(INamingStrategy namingStrategy) {
-		assert namingStrategy instanceof NamingStrategyProxy;
+		assert namingStrategy instanceof IFacade;
 		this.namingStrategy = namingStrategy;
-		getTarget().setNamingStrategy(((NamingStrategyProxy)namingStrategy).getTarget());
+		getTarget().setNamingStrategy((NamingStrategy)((IFacade)namingStrategy).getTarget());
 	}
 
 	@Override

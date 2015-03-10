@@ -12,8 +12,4 @@ public class NamingStrategyProxy extends AbstractNamingStrategyFacade {
 		super(facadeFactory, namingStrategy);
 	}
 
-	public NamingStrategy getTarget() {
-		return (NamingStrategy)super.getTarget();
-	}
-
 }
