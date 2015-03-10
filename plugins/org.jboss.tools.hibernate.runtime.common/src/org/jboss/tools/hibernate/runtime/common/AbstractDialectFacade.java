@@ -9,4 +9,9 @@ public abstract class AbstractDialectFacade extends AbstractFacade implements ID
 		super(facadeFactory, target);
 	}
 
+	@Override
+	public String toString() {
+		return getTarget().toString();
+	}
+
 }

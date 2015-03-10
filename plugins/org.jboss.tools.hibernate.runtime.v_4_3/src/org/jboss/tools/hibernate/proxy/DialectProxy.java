@@ -15,11 +15,6 @@ public class DialectProxy extends AbstractDialectFacade {
 	}
 	
 	@Override
-	public String toString() {
-		return getTarget().toString();
-	}
-
-	@Override
 	public char openQuote() {
 		return getTarget().openQuote();
 	}
