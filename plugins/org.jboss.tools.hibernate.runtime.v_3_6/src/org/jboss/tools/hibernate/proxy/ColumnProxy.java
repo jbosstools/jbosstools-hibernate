@@ -88,10 +88,10 @@ public class ColumnProxy implements IColumn {
 	@Override
 	public String getSqlType(IDialect dialect, IMapping mapping) {
 		assert dialect instanceof IFacade;
-		assert mapping instanceof MappingProxy;
+		assert mapping instanceof IFacade;
 		return target.getSqlType(
 				(Dialect)((IFacade)dialect).getTarget(), 
-				(Mapping)((MappingProxy)mapping).getTarget());
+				(Mapping)((IFacade)mapping).getTarget());
 	}
 
 	@Override

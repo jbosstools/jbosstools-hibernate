@@ -184,7 +184,7 @@ public class ConfigurationProxy extends AbstractConfigurationFacade {
 		if (mapping == null) {
 			Mapping m = getTarget().buildMapping();
 			if (m != null) {
-				mapping = new MappingProxy(getFacadeFactory(), m);
+				mapping = getFacadeFactory().createMapping(m);
 			}
 		}
 		return mapping;
