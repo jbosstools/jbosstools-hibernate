@@ -4,6 +4,7 @@ import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IMapping;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 
 public abstract class AbstractFacadeFactory implements IFacadeFactory {
@@ -24,4 +25,7 @@ public abstract class AbstractFacadeFactory implements IFacadeFactory {
 		return new AbstractDialectFacade(this, target) {};
 	}
 	
+	public IMapping createMapping(Object target ) {
+		return new AbstractMappingFacade(this, target) {};
+	}
 }

@@ -7,5 +7,6 @@ public interface IFacadeFactory {
 	ICfg2HbmTool createCfg2HbmTool();
 	INamingStrategy createNamingStrategy(Object target);
 	IDialect createDialect(Object target);
+	IMapping createMapping(Object target);
 
 }
