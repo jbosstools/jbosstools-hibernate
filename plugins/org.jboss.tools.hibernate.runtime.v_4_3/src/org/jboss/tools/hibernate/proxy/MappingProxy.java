@@ -13,7 +13,7 @@ public class MappingProxy implements IMapping {
 		target = m;
 	}
 
-	Mapping getTarget() {
+	public Mapping getTarget() {
 		return target;
 	}
 
