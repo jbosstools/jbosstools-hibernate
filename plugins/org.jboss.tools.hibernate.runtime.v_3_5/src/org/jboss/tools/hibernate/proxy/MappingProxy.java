@@ -15,7 +15,7 @@ public class MappingProxy extends AbstractMappingFacade {
 		target = m;
 	}
 
-	public Mapping getTarget() {
+	public Object getTarget() {
 		return target;
 	}
 

@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.dialect.Dialect;
+import org.hibernate.engine.Mapping;
 import org.hibernate.mapping.Column;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
@@ -90,7 +91,7 @@ public class ColumnProxy implements IColumn {
 		assert mapping instanceof MappingProxy;
 		return target.getSqlType(
 				(Dialect)((IFacade)dialect).getTarget(), 
-				((MappingProxy)mapping).getTarget());
+				(Mapping)((MappingProxy)mapping).getTarget());
 	}
 
 	@Override
