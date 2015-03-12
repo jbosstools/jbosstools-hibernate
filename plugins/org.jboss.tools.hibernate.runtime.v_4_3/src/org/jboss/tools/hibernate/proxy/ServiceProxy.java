@@ -21,6 +21,7 @@ import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.cfg.reveng.OverrideRepository;
+import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.cfg.reveng.TableIdentifier;
@@ -224,7 +225,8 @@ public class ServiceProxy implements IService {
 			IReverseEngineeringStrategy res) {
 		assert res instanceof ReverseEngineeringStrategyProxy;
 		return facadeFactory.createReverseEngineeringSettings(
-				((ReverseEngineeringStrategyProxy)res).getTarget());
+				new ReverseEngineeringSettings(
+						((ReverseEngineeringStrategyProxy)res).getTarget()));
 	}
 
 	@Override
