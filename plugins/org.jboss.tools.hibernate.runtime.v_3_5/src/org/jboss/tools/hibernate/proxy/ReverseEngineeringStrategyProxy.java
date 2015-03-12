@@ -1,6 +1,8 @@
 package org.jboss.tools.hibernate.proxy;
 
+import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 
@@ -19,8 +21,8 @@ public class ReverseEngineeringStrategyProxy implements
 
 	@Override
 	public void setSettings(IReverseEngineeringSettings settings) {
-		assert settings instanceof ReverseEngineeringSettingsProxy;
-		target.setSettings(((ReverseEngineeringSettingsProxy)settings).getTarget());
+		assert settings instanceof IFacade;
+		target.setSettings((ReverseEngineeringSettings)((IFacade)settings).getTarget());
 	}
 
 }
