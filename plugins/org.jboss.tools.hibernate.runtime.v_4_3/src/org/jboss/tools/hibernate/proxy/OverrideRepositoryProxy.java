@@ -1,7 +1,5 @@
 package org.jboss.tools.hibernate.proxy;
 
-import java.io.File;
-
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.jboss.tools.hibernate.runtime.common.AbstractOverrideRepositoryFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
@@ -18,11 +16,6 @@ public class OverrideRepositoryProxy extends AbstractOverrideRepositoryFacade {
 	
 	public OverrideRepository getTarget() {
 		return (OverrideRepository)super.getTarget();
-	}
-
-	@Override
-	public void addFile(File file) {
-		getTarget().addFile(file);
 	}
 
 	@Override
