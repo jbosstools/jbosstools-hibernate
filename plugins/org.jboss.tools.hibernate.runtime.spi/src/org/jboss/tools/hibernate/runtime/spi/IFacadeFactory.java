@@ -8,5 +8,5 @@ public interface IFacadeFactory {
 	INamingStrategy createNamingStrategy(Object target);
 	IDialect createDialect(Object target);
 	IMapping createMapping(Object target);
-
+	IReverseEngineeringSettings createReverseEngineeringSettings(Object target);
 }
