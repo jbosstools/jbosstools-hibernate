@@ -25,7 +25,7 @@ public class OverrideRepositoryProxy extends AbstractOverrideRepositoryFacade {
 
 	@Override
 	public void addFile(File file) {
-		target.addFile(file);
+		getTarget().addFile(file);
 	}
 
 	@Override
@@ -34,14 +34,14 @@ public class OverrideRepositoryProxy extends AbstractOverrideRepositoryFacade {
 		assert res instanceof ReverseEngineeringStrategyProxy;
 		
 		return new ReverseEngineeringStrategyProxy(
-				target.getReverseEngineeringStrategy(
+				getTarget().getReverseEngineeringStrategy(
 						((ReverseEngineeringStrategyProxy)res).getTarget()));
 	}
 
 	@Override
 	public void addTableFilter(ITableFilter tf) {
 		assert tf instanceof TableFilterProxy;
-		target.addTableFilter(((TableFilterProxy)tf).getTarget());
+		getTarget().addTableFilter(((TableFilterProxy)tf).getTarget());
 	}
 
 }
