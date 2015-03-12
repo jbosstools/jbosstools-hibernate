@@ -16,25 +16,25 @@ public class ReverseEngineeringSettingsProxy implements IReverseEngineeringSetti
 
 	@Override
 	public IReverseEngineeringSettings setDefaultPackageName(String str) {
-		target.setDefaultPackageName(str);
+		getTarget().setDefaultPackageName(str);
 		return this;
 	}
 
 	@Override
 	public IReverseEngineeringSettings setDetectManyToMany(boolean b) {
-		target.setDetectManyToMany(b);
+		getTarget().setDetectManyToMany(b);
 		return this;
 	}
 
 	@Override
 	public IReverseEngineeringSettings setDetectOneToOne(boolean b) {
-		target.setDetectOneToOne(b);
+		getTarget().setDetectOneToOne(b);
 		return this;
 	}
 
 	@Override
 	public IReverseEngineeringSettings setDetectOptimisticLock(boolean b) {
-		target.setDetectOptimisticLock(b);
+		getTarget().setDetectOptimisticLock(b);
 		return this;
 	}
 
