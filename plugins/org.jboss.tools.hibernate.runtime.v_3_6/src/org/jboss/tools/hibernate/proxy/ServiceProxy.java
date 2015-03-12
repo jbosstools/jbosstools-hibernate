@@ -204,6 +204,7 @@ public class ServiceProxy implements IService {
 			IReverseEngineeringStrategy res) {
 		assert res instanceof ReverseEngineeringStrategyProxy;
 		return new ReverseEngineeringSettingsProxy(
+				facadeFactory,
 				new ReverseEngineeringSettings(
 						((ReverseEngineeringStrategyProxy)res).getTarget()));
 	}
