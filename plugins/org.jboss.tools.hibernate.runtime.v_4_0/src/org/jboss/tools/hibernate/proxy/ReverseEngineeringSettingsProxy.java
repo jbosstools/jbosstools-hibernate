@@ -8,13 +8,10 @@ import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 public class ReverseEngineeringSettingsProxy 
 extends AbstractReverseEngineeringSettingsFacade {
 	
-	private ReverseEngineeringSettings target = null;
-	
 	public ReverseEngineeringSettingsProxy(
 			IFacadeFactory facadeFactory,
 			ReverseEngineeringSettings settings) {
 		super(facadeFactory, settings);
-		target = settings;
 	}
 
 	@Override
@@ -42,7 +39,7 @@ extends AbstractReverseEngineeringSettingsFacade {
 	}
 
 	public ReverseEngineeringSettings getTarget() {
-		return target;
+		return (ReverseEngineeringSettings)super.getTarget();
 	}
 
 }
