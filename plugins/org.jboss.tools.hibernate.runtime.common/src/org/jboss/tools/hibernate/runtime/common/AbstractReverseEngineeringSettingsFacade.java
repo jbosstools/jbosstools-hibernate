@@ -41,4 +41,14 @@ implements IReverseEngineeringSettings {
 		return this;
 	}
 
+	@Override
+	public IReverseEngineeringSettings setDetectOptimisticLock(boolean b) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setDetectOptimisticLock", 
+				new Class[] { boolean.class }, 
+				new Object[] { b } );
+		return this;
+	}
+
 }
