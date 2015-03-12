@@ -4,7 +4,6 @@ import org.hibernate.cfg.reveng.OverrideRepository;
 import org.jboss.tools.hibernate.runtime.common.AbstractOverrideRepositoryFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
-import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 
 public class OverrideRepositoryProxy extends AbstractOverrideRepositoryFacade {
 	
@@ -26,12 +25,6 @@ public class OverrideRepositoryProxy extends AbstractOverrideRepositoryFacade {
 		return new ReverseEngineeringStrategyProxy(
 				getTarget().getReverseEngineeringStrategy(
 						((ReverseEngineeringStrategyProxy)res).getTarget()));
-	}
-
-	@Override
-	public void addTableFilter(ITableFilter tf) {
-		assert tf instanceof TableFilterProxy;
-		getTarget().addTableFilter(((TableFilterProxy)tf).getTarget());
 	}
 
 }
