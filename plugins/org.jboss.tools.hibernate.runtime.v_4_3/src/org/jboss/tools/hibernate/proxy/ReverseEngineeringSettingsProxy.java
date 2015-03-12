@@ -15,12 +15,6 @@ extends AbstractReverseEngineeringSettingsFacade {
 	}
 
 	@Override
-	public IReverseEngineeringSettings setDetectOneToOne(boolean b) {
-		getTarget().setDetectOneToOne(b);
-		return this;
-	}
-
-	@Override
 	public IReverseEngineeringSettings setDetectOptimisticLock(boolean b) {
 		getTarget().setDetectOptimisticLock(b);
 		return this;

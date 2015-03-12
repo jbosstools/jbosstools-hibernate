@@ -31,4 +31,14 @@ implements IReverseEngineeringSettings {
 		return this;
 	}
 
+	@Override
+	public IReverseEngineeringSettings setDetectOneToOne(boolean b) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setDetectOneToOne", 
+				new Class[] { boolean.class }, 
+				new Object[] { b } );
+		return this;
+	}
+
 }
