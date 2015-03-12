@@ -11,4 +11,14 @@ implements IReverseEngineeringSettings {
 		super(facadeFactory, target);
 	}
 
+	@Override
+	public IReverseEngineeringSettings setDefaultPackageName(String name) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setDefaultPackageName", 
+				new Class[] { String.class }, 
+				new Object[] { name } );
+		return this;
+	}
+
 }

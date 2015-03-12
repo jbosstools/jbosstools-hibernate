@@ -15,12 +15,6 @@ extends AbstractReverseEngineeringSettingsFacade {
 	}
 
 	@Override
-	public IReverseEngineeringSettings setDefaultPackageName(String str) {
-		getTarget().setDefaultPackageName(str);
-		return this;
-	}
-
-	@Override
 	public IReverseEngineeringSettings setDetectManyToMany(boolean b) {
 		getTarget().setDetectManyToMany(b);
 		return this;
