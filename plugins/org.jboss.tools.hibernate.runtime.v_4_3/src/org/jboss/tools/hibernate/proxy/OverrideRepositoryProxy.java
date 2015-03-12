@@ -10,17 +10,14 @@ import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 
 public class OverrideRepositoryProxy extends AbstractOverrideRepositoryFacade {
 	
-	private OverrideRepository target = null;
-
 	public OverrideRepositoryProxy(
 			IFacadeFactory facadeFactory, 
 			OverrideRepository overrideRepository) {
 		super(facadeFactory, overrideRepository);
-		target = overrideRepository;
 	}
 	
 	public OverrideRepository getTarget() {
-		return target;
+		return (OverrideRepository)super.getTarget();
 	}
 
 	@Override
