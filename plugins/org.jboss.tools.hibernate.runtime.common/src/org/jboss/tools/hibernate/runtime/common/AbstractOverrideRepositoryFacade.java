@@ -7,9 +7,10 @@ public abstract class AbstractOverrideRepositoryFacade
 extends AbstractFacade 
 implements IOverrideRepository {
 
-	public AbstractOverrideRepositoryFacade(IFacadeFactory facadeFactory, Object target) {
+	public AbstractOverrideRepositoryFacade(
+			IFacadeFactory facadeFactory, 
+			Object target) {
 		super(facadeFactory, target);
-		// TODO Auto-generated constructor stub
 	}
 
 }
