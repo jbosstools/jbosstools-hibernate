@@ -18,6 +18,10 @@ public class OverrideRepositoryProxy extends AbstractOverrideRepositoryFacade {
 		super(facadeFactory, overrideRepository);
 		target = overrideRepository;
 	}
+	
+	public OverrideRepository getTarget() {
+		return target;
+	}
 
 	@Override
 	public void addFile(File file) {
