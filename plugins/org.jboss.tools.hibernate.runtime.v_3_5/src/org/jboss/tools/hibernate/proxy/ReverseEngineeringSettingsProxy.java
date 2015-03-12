@@ -15,12 +15,6 @@ extends AbstractReverseEngineeringSettingsFacade {
 	}
 
 	@Override
-	public IReverseEngineeringSettings setDetectManyToMany(boolean b) {
-		getTarget().setDetectManyToMany(b);
-		return this;
-	}
-
-	@Override
 	public IReverseEngineeringSettings setDetectOneToOne(boolean b) {
 		getTarget().setDetectOneToOne(b);
 		return this;

@@ -21,4 +21,14 @@ implements IReverseEngineeringSettings {
 		return this;
 	}
 
+	@Override
+	public IReverseEngineeringSettings setDetectManyToMany(boolean b) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setDetectManyToMany", 
+				new Class[] { boolean.class }, 
+				new Object[] { b } );
+		return this;
+	}
+
 }
