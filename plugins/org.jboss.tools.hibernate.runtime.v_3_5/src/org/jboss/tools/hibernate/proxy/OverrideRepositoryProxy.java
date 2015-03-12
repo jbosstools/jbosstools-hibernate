@@ -3,6 +3,7 @@ package org.jboss.tools.hibernate.proxy;
 import java.io.File;
 
 import org.hibernate.cfg.reveng.OverrideRepository;
+import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
@@ -11,7 +12,9 @@ public class OverrideRepositoryProxy implements IOverrideRepository {
 	
 	private OverrideRepository target = null;
 
-	public OverrideRepositoryProxy(OverrideRepository overrideRepository) {
+	public OverrideRepositoryProxy(
+			IFacadeFactory facadeFactory, 
+			OverrideRepository overrideRepository) {
 		target = overrideRepository;
 	}
 
