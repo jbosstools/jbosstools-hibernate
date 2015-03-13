@@ -10,17 +10,14 @@ import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 public class ReverseEngineeringStrategyProxy 
 extends AbstractReverseEngineeringStrategyFacade  {
 	
-	private ReverseEngineeringStrategy target = null;
-	
 	public ReverseEngineeringStrategyProxy(
 			IFacadeFactory facadeFactory, 
 			ReverseEngineeringStrategy res) {
 		super(facadeFactory, res);
-		target = res;
 	}
 
 	public ReverseEngineeringStrategy getTarget() {
-		return target;
+		return (ReverseEngineeringStrategy)super.getTarget();
 	}
 
 	@Override
