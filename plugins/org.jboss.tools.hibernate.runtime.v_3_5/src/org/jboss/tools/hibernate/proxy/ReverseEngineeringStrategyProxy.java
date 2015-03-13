@@ -18,7 +18,7 @@ public class ReverseEngineeringStrategyProxy implements
 		target = res;
 	}
 
-	ReverseEngineeringStrategy getTarget() {
+	public ReverseEngineeringStrategy getTarget() {
 		return target;
 	}
 
