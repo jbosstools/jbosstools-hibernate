@@ -23,6 +23,7 @@ public class OverrideRepositoryProxy extends AbstractOverrideRepositoryFacade {
 		assert res instanceof ReverseEngineeringStrategyProxy;
 		
 		return new ReverseEngineeringStrategyProxy(
+				getFacadeFactory(),
 				getTarget().getReverseEngineeringStrategy(
 						((ReverseEngineeringStrategyProxy)res).getTarget()));
 	}

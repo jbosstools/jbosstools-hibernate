@@ -3,6 +3,7 @@ package org.jboss.tools.hibernate.proxy;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
+import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 
@@ -11,7 +12,9 @@ public class ReverseEngineeringStrategyProxy implements
 	
 	private ReverseEngineeringStrategy target = null;
 	
-	public ReverseEngineeringStrategyProxy(ReverseEngineeringStrategy res) {
+	public ReverseEngineeringStrategyProxy(
+			IFacadeFactory facadeFactory, 
+			ReverseEngineeringStrategy res) {
 		target = res;
 	}
 

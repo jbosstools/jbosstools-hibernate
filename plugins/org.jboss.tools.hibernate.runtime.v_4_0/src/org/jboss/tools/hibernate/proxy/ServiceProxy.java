@@ -206,7 +206,7 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public IReverseEngineeringStrategy newDefaultReverseEngineeringStrategy() {
-		return new ReverseEngineeringStrategyProxy(new DefaultReverseEngineeringStrategy());
+		return new ReverseEngineeringStrategyProxy(facadeFactory, new DefaultReverseEngineeringStrategy());
 	}
 
 	@Override
@@ -235,7 +235,7 @@ public class ServiceProxy implements IService {
 		assert delegate instanceof ReverseEngineeringStrategyProxy;
 		ReverseEngineeringStrategy target = 
 				newReverseEngineeringStrategy(strategyName, ((ReverseEngineeringStrategyProxy)delegate).getTarget());
-		return new ReverseEngineeringStrategyProxy(target);
+		return new ReverseEngineeringStrategyProxy(facadeFactory, target);
 	}
 	
 	@SuppressWarnings("unchecked")
