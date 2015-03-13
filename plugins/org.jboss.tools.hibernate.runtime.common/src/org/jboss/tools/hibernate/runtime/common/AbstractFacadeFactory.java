@@ -7,6 +7,7 @@ import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IMapping;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
+import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 
 public abstract class AbstractFacadeFactory implements IFacadeFactory {
 
@@ -32,5 +33,9 @@ public abstract class AbstractFacadeFactory implements IFacadeFactory {
 	
 	public IReverseEngineeringSettings createReverseEngineeringSettings(Object target) {
 		return new AbstractReverseEngineeringSettingsFacade(this, target) {};
+	}
+	
+	public IReverseEngineeringStrategy createReverseEngineeringStrategy(Object target) {
+		return new AbstractReverseEngineeringStrategyFacade(this, target) {};
 	}
 }
