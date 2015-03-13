@@ -9,6 +9,7 @@ import java.util.Properties;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.NamingStrategy;
+import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.resolver.DialectFactory;
 import org.hibernate.engine.Mapping;
@@ -155,10 +156,10 @@ public class ConfigurationProxy extends AbstractConfigurationFacade {
 
 	@Override
 	public void setReverseEngineeringStrategy(IReverseEngineeringStrategy res) {
-		assert res instanceof ReverseEngineeringStrategyProxy;
+		assert res instanceof IFacade;
 		if (getTarget() instanceof JDBCMetaDataConfiguration) {
 			((JDBCMetaDataConfiguration)getTarget()).setReverseEngineeringStrategy(
-					((ReverseEngineeringStrategyProxy)res).getTarget());
+					(ReverseEngineeringStrategy)((IFacade)res).getTarget());
 		}
 	}
 	@Override

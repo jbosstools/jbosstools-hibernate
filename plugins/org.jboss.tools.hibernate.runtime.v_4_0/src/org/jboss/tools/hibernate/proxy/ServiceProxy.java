@@ -49,6 +49,7 @@ import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.util.xpl.ReflectHelper;
 import org.hibernate.util.xpl.StringHelper;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
@@ -198,10 +199,10 @@ public class ServiceProxy implements IService {
 	@Override
 	public IReverseEngineeringSettings newReverseEngineeringSettings(
 			IReverseEngineeringStrategy res) {
-		assert res instanceof ReverseEngineeringStrategyProxy;
+		assert res instanceof IFacade;
 		return facadeFactory.createReverseEngineeringSettings(
 				new ReverseEngineeringSettings(
-						((ReverseEngineeringStrategyProxy)res).getTarget()));
+						(ReverseEngineeringStrategy)((IFacade)res).getTarget()));
 	}
 
 	@Override
@@ -213,13 +214,13 @@ public class ServiceProxy implements IService {
 	@Override
 	public IJDBCReader newJDBCReader(IConfiguration configuration, ISettings settings,
 			IReverseEngineeringStrategy strategy) {
-		assert strategy instanceof ReverseEngineeringStrategyProxy;
+		assert strategy instanceof IFacade;
 		assert settings instanceof SettingsProxy;
 		JDBCReader target = 
 				JDBCReaderFactory.newJDBCReader(
 						configuration.getProperties(), 
 						((SettingsProxy)settings).getTarget(), 
-						((ReverseEngineeringStrategyProxy)strategy).getTarget(),
+						(ReverseEngineeringStrategy)((IFacade)strategy).getTarget(),
 						buildServiceRegistry(configuration));
 		return new JDBCReaderProxy(target);
 	}
@@ -233,9 +234,9 @@ public class ServiceProxy implements IService {
 	@Override
 	public IReverseEngineeringStrategy newReverseEngineeringStrategy(
 			String strategyName, IReverseEngineeringStrategy delegate) {
-		assert delegate instanceof ReverseEngineeringStrategyProxy;
+		assert delegate instanceof IFacade;
 		ReverseEngineeringStrategy target = 
-				newReverseEngineeringStrategy(strategyName, ((ReverseEngineeringStrategyProxy)delegate).getTarget());
+				newReverseEngineeringStrategy(strategyName, (ReverseEngineeringStrategy)((IFacade)delegate).getTarget());
 		return facadeFactory.createReverseEngineeringStrategy(target);
 	}
 	

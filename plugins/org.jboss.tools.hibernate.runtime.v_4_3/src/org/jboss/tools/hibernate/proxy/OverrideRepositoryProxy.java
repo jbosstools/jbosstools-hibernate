@@ -1,7 +1,9 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.cfg.reveng.OverrideRepository;
+import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.common.AbstractOverrideRepositoryFacade;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 
@@ -20,10 +22,10 @@ public class OverrideRepositoryProxy extends AbstractOverrideRepositoryFacade {
 	@Override
 	public IReverseEngineeringStrategy getReverseEngineeringStrategy(
 			IReverseEngineeringStrategy res) {
-		assert res instanceof ReverseEngineeringStrategyProxy;
+		assert res instanceof IFacade;
 		return getFacadeFactory().createReverseEngineeringStrategy(
 				getTarget().getReverseEngineeringStrategy(
-						((ReverseEngineeringStrategyProxy)res).getTarget()));
+						(ReverseEngineeringStrategy)((IFacade)res).getTarget()));
 	}
 
 }
