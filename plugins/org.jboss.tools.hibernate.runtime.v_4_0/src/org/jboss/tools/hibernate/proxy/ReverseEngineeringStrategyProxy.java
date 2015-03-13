@@ -26,7 +26,7 @@ extends AbstractReverseEngineeringStrategyFacade  {
 	@Override
 	public void setSettings(IReverseEngineeringSettings settings) {
 		assert settings instanceof IFacade;
-		target.setSettings((ReverseEngineeringSettings)((IFacade)settings).getTarget());
+		getTarget().setSettings((ReverseEngineeringSettings)((IFacade)settings).getTarget());
 	}
 
 }
