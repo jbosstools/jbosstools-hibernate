@@ -10,5 +10,6 @@ public interface IFacadeFactory {
 	IMapping createMapping(Object target);
 	IReverseEngineeringSettings createReverseEngineeringSettings(Object target);
 	IReverseEngineeringStrategy createReverseEngineeringStrategy(Object target);
+	IOverrideRepository createOverrideRepository(Object target);
 	
 }
