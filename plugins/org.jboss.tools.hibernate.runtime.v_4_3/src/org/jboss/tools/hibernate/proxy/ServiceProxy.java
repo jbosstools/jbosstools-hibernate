@@ -213,7 +213,7 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public IOverrideRepository newOverrideRepository() {
-		return new OverrideRepositoryProxy(facadeFactory, new OverrideRepository());
+		return facadeFactory.createOverrideRepository(new OverrideRepository());
 	}
 
 	@Override
