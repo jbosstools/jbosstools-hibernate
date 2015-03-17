@@ -14,6 +14,10 @@ public class GenericExporterProxy extends AbstractGenericExporterFacade {
 		super(facadeFactory, exporter);
 		this.target = exporter;
 	}
+	
+	public GenericExporter getTarget() {
+		return (GenericExporter)super.getTarget();
+	}
 
 	@Override
 	public void setFilePattern(String filePattern) {
