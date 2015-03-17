@@ -1,5 +1,7 @@
 package org.jboss.tools.hibernate.runtime.common;
 
+import java.util.List;
+
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 
@@ -20,6 +22,16 @@ implements ISchemaExport {
 				"create", 
 				new Class[] { boolean.class, boolean.class }, 
 				new Object[] { script, export });
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Throwable> getExceptions() {
+		return (List<Throwable>)Util.invokeMethod(
+				getTarget(), 
+				"getExceptions", 
+				new Class[] {}, 
+				new Object[] {});
 	}
 
 }

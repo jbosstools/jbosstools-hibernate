@@ -1,7 +1,5 @@
 package org.jboss.tools.hibernate.proxy;
 
-import java.util.List;
-
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.jboss.tools.hibernate.runtime.common.AbstractSchemaExportFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
@@ -17,12 +15,6 @@ extends AbstractSchemaExportFacade {
 
 	public SchemaExport getTarget() {
 		return (SchemaExport)super.getTarget();
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<Throwable> getExceptions() {
-		return getTarget().getExceptions();
 	}
 
 }
