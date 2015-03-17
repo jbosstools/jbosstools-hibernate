@@ -19,7 +19,7 @@ public class HibernateMappingExporterProxy implements IHibernateMappingExporter 
 	public HibernateMappingExporterProxy(IConfiguration configuration, File file) {
 		assert configuration instanceof ConfigurationProxy;
 		target = new HibernateMappingExporterWrapper(
-				((ConfigurationProxy)configuration).getConfiguration(),
+				((ConfigurationProxy)configuration).getTarget(),
 				file);
 	}
 

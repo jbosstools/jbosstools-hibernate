@@ -131,10 +131,6 @@ public class ConfigurationProxy extends AbstractConfigurationFacade {
 		return new SettingsProxy(getTarget().buildSettings(serviceRegistry));
 	}
 	
-	Configuration getConfiguration() {
-		return getTarget();
-	}
-
 	@Override
 	public IMappings createMappings() {
 		return new MappingsProxy(getTarget().createMappings());

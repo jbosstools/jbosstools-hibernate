@@ -133,7 +133,7 @@ public class ServiceProxy implements IService {
 		ISchemaExport result = null;
 		if (hcfg instanceof ConfigurationProxy) {
 			SchemaExport schemaExport = 
-					new SchemaExport(((ConfigurationProxy)hcfg).getConfiguration());
+					new SchemaExport(((ConfigurationProxy)hcfg).getTarget());
 			result = facadeFactory.createSchemaExport(schemaExport);
 		}
 		return result;
@@ -143,7 +143,7 @@ public class ServiceProxy implements IService {
 	public IHQLCodeAssist newHQLCodeAssist(IConfiguration hcfg) {
 		IHQLCodeAssist result = null;
 		if (hcfg instanceof ConfigurationProxy) {
-			result = new HQLCodeAssistProxy(new HQLCodeAssist(((ConfigurationProxy)hcfg).getConfiguration()));
+			result = new HQLCodeAssistProxy(new HQLCodeAssist(((ConfigurationProxy)hcfg).getTarget()));
 		}
 		return result;
 	}

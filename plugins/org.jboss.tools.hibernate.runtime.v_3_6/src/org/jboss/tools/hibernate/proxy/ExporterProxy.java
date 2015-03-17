@@ -36,7 +36,7 @@ public class ExporterProxy extends AbstractExporterFacade {
 	@Override
 	public void setConfiguration(IConfiguration configuration) {
 		if (configuration instanceof ConfigurationProxy) {
-			getTarget().setConfiguration(((ConfigurationProxy)configuration).getConfiguration());
+			getTarget().setConfiguration(((ConfigurationProxy)configuration).getTarget());
 		}
 	}
 	
