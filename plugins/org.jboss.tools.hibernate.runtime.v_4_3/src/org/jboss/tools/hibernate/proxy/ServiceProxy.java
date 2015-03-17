@@ -157,7 +157,7 @@ public class ServiceProxy implements IService {
 		if (hcfg instanceof ConfigurationProxy) {
 			SchemaExport schemaExport = 
 					new SchemaExport(((ConfigurationProxy)hcfg).getConfiguration());
-			result = new SchemaExportProxy(facadeFactory, schemaExport);
+			result = facadeFactory.createSchemaExport(schemaExport);
 		}
 		return result;
 	}
