@@ -22,4 +22,13 @@ implements IGenericExporter {
 				new Object[] { filePattern });
 	}
 
+	@Override
+	public void setTemplateName(String templateName) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setTemplateName", 
+				new Class[] { String.class }, 
+				new Object[] { templateName });
+	}
+
 }

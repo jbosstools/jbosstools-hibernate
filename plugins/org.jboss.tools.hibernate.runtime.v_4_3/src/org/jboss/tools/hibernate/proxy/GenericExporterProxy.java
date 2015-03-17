@@ -17,11 +17,6 @@ public class GenericExporterProxy extends AbstractGenericExporterFacade {
 	}
 
 	@Override
-	public void setTemplateName(String templateName) {
-		getTarget().setTemplateName(templateName);
-	}
-
-	@Override
 	public void setForEach(String foreach) {
 		getTarget().setForEach(foreach);
 	}
