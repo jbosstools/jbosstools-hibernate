@@ -49,4 +49,13 @@ implements IGenericExporter {
 				new Object[] {});
 	}
 
+	@Override
+	public String getTemplateName() {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getTemplateName", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 }
