@@ -80,7 +80,9 @@ public class ExporterProxy extends AbstractExporterFacade {
 	public IGenericExporter getGenericExporter() {
 		IGenericExporter result = null;
 		if (getTarget() instanceof GenericExporter) {
-			result = new GenericExporterProxy((GenericExporter)getTarget());
+			result = new GenericExporterProxy(
+					getFacadeFactory(), 
+					(GenericExporter)getTarget());
 		}
 		return result;
 	}
