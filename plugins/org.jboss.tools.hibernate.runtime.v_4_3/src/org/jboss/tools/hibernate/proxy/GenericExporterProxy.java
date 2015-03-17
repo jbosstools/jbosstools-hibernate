@@ -17,11 +17,6 @@ public class GenericExporterProxy extends AbstractGenericExporterFacade {
 	}
 
 	@Override
-	public void setForEach(String foreach) {
-		getTarget().setForEach(foreach);
-	}
-
-	@Override
 	public String getFilePattern() {
 		return getTarget().getFilePattern();
 	}

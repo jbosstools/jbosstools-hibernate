@@ -31,4 +31,13 @@ implements IGenericExporter {
 				new Object[] { templateName });
 	}
 
+	@Override
+	public void setForEach(String foreach) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setForEach", 
+				new Class[] { String.class }, 
+				new Object[] { foreach });
+	}
+
 }
