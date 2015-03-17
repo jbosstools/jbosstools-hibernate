@@ -17,11 +17,6 @@ public class GenericExporterProxy extends AbstractGenericExporterFacade {
 	}
 
 	@Override
-	public void setFilePattern(String filePattern) {
-		getTarget().setFilePattern(filePattern);
-	}
-
-	@Override
 	public void setTemplateName(String templateName) {
 		getTarget().setTemplateName(templateName);
 	}

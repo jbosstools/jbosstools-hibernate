@@ -13,4 +13,13 @@ implements IGenericExporter {
 		super(facadeFactory, target);
 	}
 	
+	@Override
+	public void setFilePattern(String filePattern) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setFilePattern", 
+				new Class[] { String.class }, 
+				new Object[] { filePattern });
+	}
+
 }
