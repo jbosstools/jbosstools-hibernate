@@ -19,11 +19,6 @@ extends AbstractSchemaExportFacade {
 		return (SchemaExport)super.getTarget();
 	}
 
-	@Override
-	public void create(boolean script, boolean export) {
-		getTarget().create(script, export);
-	}
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Throwable> getExceptions() {

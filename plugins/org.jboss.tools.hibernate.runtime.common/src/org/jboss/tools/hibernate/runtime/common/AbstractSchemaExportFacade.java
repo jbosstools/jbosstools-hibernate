@@ -13,4 +13,13 @@ implements ISchemaExport {
 		super(facadeFactory, target);
 	}
 
+	@Override
+	public void create(boolean script, boolean export) {
+		Util.invokeMethod(
+				getTarget(), 
+				"create", 
+				new Class[] { boolean.class, boolean.class }, 
+				new Object[] { script, export });
+	}
+
 }
