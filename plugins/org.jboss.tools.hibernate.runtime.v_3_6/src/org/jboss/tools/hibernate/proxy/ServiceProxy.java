@@ -42,11 +42,13 @@ import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.proxy.HibernateProxyHelper;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.util.xpl.ReflectHelper;
 import org.hibernate.util.xpl.StringHelper;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
+import org.jboss.tools.hibernate.runtime.common.Util;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
@@ -158,7 +160,10 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public IExporter createExporter(String exporterClassName) {
-		return new ExporterProxy(exporterClassName);
+		Exporter exporter = (Exporter)Util.getInstance(
+				exporterClassName, 
+				facadeFactory.getClassLoader());
+		return new ExporterProxy(facadeFactory, exporter);
 	}
 
 	@Override
