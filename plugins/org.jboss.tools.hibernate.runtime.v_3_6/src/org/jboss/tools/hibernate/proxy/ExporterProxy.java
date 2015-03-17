@@ -15,6 +15,7 @@ import org.jboss.tools.hibernate.runtime.spi.HibernateException;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
+import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
@@ -25,6 +26,10 @@ public class ExporterProxy implements IExporter {
 	
 	public ExporterProxy(String exporterClassName) {
 		target = createTarget(exporterClassName);
+	}
+
+	public ExporterProxy(IFacadeFactory facadeFactory, Exporter target) {
+		this.target = target;
 	}
 
 	@Override
