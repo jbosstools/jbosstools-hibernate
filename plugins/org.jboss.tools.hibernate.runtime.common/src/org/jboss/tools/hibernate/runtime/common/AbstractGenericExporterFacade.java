@@ -40,4 +40,13 @@ implements IGenericExporter {
 				new Object[] { foreach });
 	}
 
+	@Override
+	public String getFilePattern() {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getFilePattern", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 }
