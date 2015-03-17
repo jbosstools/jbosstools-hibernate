@@ -3,13 +3,16 @@ package org.jboss.tools.hibernate.proxy;
 import java.util.List;
 
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 
 public class SchemaExportProxy implements ISchemaExport {
 	
 	private SchemaExport target;
 
-	public SchemaExportProxy(SchemaExport schemaExport) {
+	public SchemaExportProxy(
+			IFacadeFactory facadeFactory, 
+			SchemaExport schemaExport) {
 		target = schemaExport;
 	}
 
