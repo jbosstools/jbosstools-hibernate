@@ -16,15 +16,19 @@ public class SchemaExportProxy implements ISchemaExport {
 		target = schemaExport;
 	}
 
+	public SchemaExport getTarget() {
+		return target;
+	}
+
 	@Override
 	public void create(boolean script, boolean export) {
-		target.create(script, export);
+		getTarget().create(script, export);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Throwable> getExceptions() {
-		return target.getExceptions();
+		return getTarget().getExceptions();
 	}
 
 }
