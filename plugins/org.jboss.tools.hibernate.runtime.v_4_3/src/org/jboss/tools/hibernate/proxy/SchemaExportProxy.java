@@ -3,21 +3,20 @@ package org.jboss.tools.hibernate.proxy;
 import java.util.List;
 
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.jboss.tools.hibernate.runtime.common.AbstractSchemaExportFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 
-public class SchemaExportProxy implements ISchemaExport {
+public class SchemaExportProxy 
+extends AbstractSchemaExportFacade {
 	
-	private SchemaExport target;
-
 	public SchemaExportProxy(
 			IFacadeFactory facadeFactory, 
 			SchemaExport schemaExport) {
-		target = schemaExport;
+		super(facadeFactory, schemaExport);
 	}
 
 	public SchemaExport getTarget() {
-		return target;
+		return (SchemaExport)super.getTarget();
 	}
 
 	@Override
