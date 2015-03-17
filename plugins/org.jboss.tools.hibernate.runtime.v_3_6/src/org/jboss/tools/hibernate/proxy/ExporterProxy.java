@@ -24,10 +24,6 @@ public class ExporterProxy implements IExporter {
 	
 	private Exporter target;
 	
-	public ExporterProxy(String exporterClassName) {
-		target = createTarget(exporterClassName);
-	}
-
 	public ExporterProxy(IFacadeFactory facadeFactory, Exporter target) {
 		this.target = target;
 	}
@@ -39,16 +35,6 @@ public class ExporterProxy implements IExporter {
 		}
 	}
 	
-	private Exporter createTarget(String exporterClassName) {
-		Exporter result = null;
-		try {
-			result = (Exporter)this.getClass().getClassLoader().loadClass(exporterClassName).newInstance();
-		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-			throw new HibernateException(e);
-		}
-		return result;
-	}
-
 	@Override
 	public void setProperties(Properties properties) {
 		target.setProperties(properties);
