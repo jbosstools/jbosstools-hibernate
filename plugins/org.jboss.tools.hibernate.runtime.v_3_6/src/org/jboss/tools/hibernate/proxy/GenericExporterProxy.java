@@ -1,16 +1,17 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.tool.hbm2x.GenericExporter;
+import org.jboss.tools.hibernate.runtime.common.AbstractGenericExporterFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 
-public class GenericExporterProxy implements IGenericExporter {
+public class GenericExporterProxy extends AbstractGenericExporterFacade {
 	
 	private GenericExporter target;
 
 	public GenericExporterProxy(
 			IFacadeFactory facadeFactory, 
 			GenericExporter exporter) {
+		super(facadeFactory, exporter);
 		this.target = exporter;
 	}
 
