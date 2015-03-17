@@ -9,6 +9,7 @@ import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
+import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 
 public abstract class AbstractFacadeFactory implements IFacadeFactory {
 
@@ -42,6 +43,10 @@ public abstract class AbstractFacadeFactory implements IFacadeFactory {
 	
 	public IOverrideRepository createOverrideRepository(Object target) {
 		return new AbstractOverrideRepositoryFacade(this, target) {};
+	}
+	
+	public ISchemaExport createSchemaExport(Object target) {
+		return new AbstractSchemaExportFacade(this, target) {};
 	}
 	
 }

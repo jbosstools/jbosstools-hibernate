@@ -11,5 +11,6 @@ public interface IFacadeFactory {
 	IReverseEngineeringSettings createReverseEngineeringSettings(Object target);
 	IReverseEngineeringStrategy createReverseEngineeringStrategy(Object target);
 	IOverrideRepository createOverrideRepository(Object target);
+	ISchemaExport createSchemaExport(Object target);
 	
 }
