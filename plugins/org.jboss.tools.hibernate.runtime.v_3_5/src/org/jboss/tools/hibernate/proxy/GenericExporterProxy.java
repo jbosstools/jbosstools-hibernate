@@ -6,13 +6,10 @@ import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 
 public class GenericExporterProxy extends AbstractGenericExporterFacade {
 	
-	private GenericExporter target;
-
 	public GenericExporterProxy(
 			IFacadeFactory facadeFactory, 
 			GenericExporter exporter) {
 		super(facadeFactory, exporter);
-		this.target = exporter;
 	}
 
 	public GenericExporter getTarget() {
@@ -21,27 +18,27 @@ public class GenericExporterProxy extends AbstractGenericExporterFacade {
 
 	@Override
 	public void setFilePattern(String filePattern) {
-		target.setFilePattern(filePattern);
+		getTarget().setFilePattern(filePattern);
 	}
 
 	@Override
 	public void setTemplateName(String templateName) {
-		target.setTemplateName(templateName);
+		getTarget().setTemplateName(templateName);
 	}
 
 	@Override
 	public void setForEach(String foreach) {
-		target.setForEach(foreach);
+		getTarget().setForEach(foreach);
 	}
 
 	@Override
 	public String getFilePattern() {
-		return target.getFilePattern();
+		return getTarget().getFilePattern();
 	}
 
 	@Override
 	public String getTemplateName() {
-		return target.getTemplateName();
+		return getTarget().getTemplateName();
 	}
 
 }
