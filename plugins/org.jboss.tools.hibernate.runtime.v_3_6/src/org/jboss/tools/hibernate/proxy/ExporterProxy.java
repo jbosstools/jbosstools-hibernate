@@ -28,39 +28,43 @@ public class ExporterProxy implements IExporter {
 		this.target = target;
 	}
 
+	public Exporter getTarget() {
+		return target;
+	}
+
 	@Override
 	public void setConfiguration(IConfiguration configuration) {
 		if (configuration instanceof ConfigurationProxy) {
-			target.setConfiguration(((ConfigurationProxy)configuration).getConfiguration());
+			getTarget().setConfiguration(((ConfigurationProxy)configuration).getConfiguration());
 		}
 	}
 	
 	@Override
 	public void setProperties(Properties properties) {
-		target.setProperties(properties);
+		getTarget().setProperties(properties);
 	}
 
 	@Override
 	public void setArtifactCollector(IArtifactCollector collector) {
 		if (collector instanceof IFacade) { 
-			target.setArtifactCollector((ArtifactCollector)(((IFacade)collector).getTarget()));
+			getTarget().setArtifactCollector((ArtifactCollector)(((IFacade)collector).getTarget()));
 		}
 	}
 
 	@Override
 	public void setOutputDirectory(File file) {
-		target.setOutputDirectory(file);
+		getTarget().setOutputDirectory(file);
 	}
 
 	@Override
 	public void setTemplatePath(String[] strings) {
-		target.setTemplatePath(strings);
+		getTarget().setTemplatePath(strings);
 	}
 
 	@Override
 	public void start() throws HibernateException {
 		try {
-			target.start();
+			getTarget().start();
 		} catch (org.hibernate.HibernateException e) {
 			throw new HibernateException(e.getMessage(), e.getCause());
 		}
@@ -68,14 +72,14 @@ public class ExporterProxy implements IExporter {
 
 	@Override
 	public Properties getProperties() {
-		return target.getProperties();
+		return getTarget().getProperties();
 	}
 
 	@Override
 	public IGenericExporter getGenericExporter() {
 		IGenericExporter result = null;
-		if (target instanceof GenericExporter) {
-			result = new GenericExporterProxy((GenericExporter)target);
+		if (getTarget() instanceof GenericExporter) {
+			result = new GenericExporterProxy((GenericExporter)getTarget());
 		}
 		return result;
 	}
@@ -83,8 +87,8 @@ public class ExporterProxy implements IExporter {
 	@Override
 	public IHbm2DDLExporter getHbm2DDLExporter() {
 		IHbm2DDLExporter result = null;
-		if (target instanceof Hbm2DDLExporter) {
-			result = new Hbm2DDLExporterProxy((Hbm2DDLExporter)target);
+		if (getTarget() instanceof Hbm2DDLExporter) {
+			result = new Hbm2DDLExporterProxy((Hbm2DDLExporter)getTarget());
 		}
 		return result;
 	}
@@ -92,22 +96,22 @@ public class ExporterProxy implements IExporter {
 	@Override
 	public IQueryExporter getQueryExporter() {
 		IQueryExporter result = null;
-		if (target instanceof QueryExporter) {
-			result = new QueryExporterProxy((QueryExporter)target);
+		if (getTarget() instanceof QueryExporter) {
+			result = new QueryExporterProxy((QueryExporter)getTarget());
 		}
 		return result;
 	}
 
 	@Override
 	public void setCustomProperties(Properties props) {
-		assert target instanceof HibernateConfigurationExporter;
-		((HibernateConfigurationExporter)target).setCustomProperties(props);
+		assert getTarget() instanceof HibernateConfigurationExporter;
+		((HibernateConfigurationExporter)getTarget()).setCustomProperties(props);
 	}
 
 	@Override
 	public void setOutput(StringWriter stringWriter) {
-		assert target instanceof HibernateConfigurationExporter;
-		((HibernateConfigurationExporter)target).setOutput(stringWriter);
+		assert getTarget() instanceof HibernateConfigurationExporter;
+		((HibernateConfigurationExporter)getTarget()).setOutput(stringWriter);
 	}
 
 }
