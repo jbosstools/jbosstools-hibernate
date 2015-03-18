@@ -1,5 +1,7 @@
 package org.jboss.tools.hibernate.runtime.common;
 
+import java.util.Hashtable;
+
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 
@@ -20,6 +22,16 @@ implements IHbm2DDLExporter {
 				"setExport", 
 				new Class[] { boolean.class }, 
 				new Object[] { export });
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Hashtable<Object, Object> getProperties() {
+		return (Hashtable<Object, Object>)Util.invokeMethod(
+				getTarget(), 
+				"getProperties", 
+				new Class[] {}, 
+				new Object[] {});
 	}
 
 }
