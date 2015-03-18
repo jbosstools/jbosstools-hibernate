@@ -5,6 +5,7 @@ import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
+import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IMapping;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
@@ -52,6 +53,10 @@ public abstract class AbstractFacadeFactory implements IFacadeFactory {
 	
 	public IGenericExporter createGenericExporter(Object target) {
 		return new AbstractGenericExporterFacade(this, target) {};
+	}
+	
+	public IHbm2DDLExporter createHbm2DDLExporter(Object target) {
+		return new AbstractHbm2DDLExporterFacade(this, target) {};
 	}
 	
 }

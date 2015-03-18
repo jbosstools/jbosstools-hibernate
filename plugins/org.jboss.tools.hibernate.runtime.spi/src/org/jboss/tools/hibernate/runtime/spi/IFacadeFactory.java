@@ -13,5 +13,6 @@ public interface IFacadeFactory {
 	IOverrideRepository createOverrideRepository(Object target);
 	ISchemaExport createSchemaExport(Object target);
 	IGenericExporter createGenericExporter(Object target);
+	IHbm2DDLExporter createHbm2DDLExporter(Object target);
 	
 }
