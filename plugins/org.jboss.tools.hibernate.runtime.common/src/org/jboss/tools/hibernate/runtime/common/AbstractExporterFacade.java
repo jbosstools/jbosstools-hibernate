@@ -1,5 +1,7 @@
 package org.jboss.tools.hibernate.runtime.common;
 
+import java.util.Properties;
+
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
@@ -35,4 +37,13 @@ implements IExporter {
 		return "org.hibernate.cfg.Configuration";
 	}
 	
+	@Override
+	public void setProperties(Properties properties) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setProperties", 
+				new Class[] { Properties.class }, 
+				new Object[] { properties });
+	}
+
 }

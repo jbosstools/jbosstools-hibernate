@@ -30,11 +30,6 @@ public class ExporterProxy extends AbstractExporterFacade {
 	}
 
 	@Override
-	public void setProperties(Properties properties) {
-		getTarget().setProperties(properties);
-	}
-
-	@Override
 	public void setArtifactCollector(IArtifactCollector collector) {
 		if (collector instanceof IFacade) {
 			getTarget().setArtifactCollector((ArtifactCollector)((IFacade)collector).getTarget());
