@@ -98,7 +98,9 @@ public class ExporterProxy extends AbstractExporterFacade {
 	public IQueryExporter getQueryExporter() {
 		IQueryExporter result = null;
 		if (getTarget() instanceof QueryExporter) {
-			result = new QueryExporterProxy((QueryExporter)getTarget());
+			result = new QueryExporterProxy(
+					getFacadeFactory(),
+					(QueryExporter)getTarget());
 		}
 		return result;
 	}
