@@ -22,15 +22,12 @@ import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 
 public class ExporterProxy extends AbstractExporterFacade {
 	
-	private Exporter target;
-	
 	public ExporterProxy(IFacadeFactory facadeFactory, Exporter target) {
 		super(facadeFactory, target);
-		this.target = target;
 	}
 
 	public Exporter getTarget() {
-		return target;
+		return (Exporter)super.getTarget();
 	}
 
 	@Override
