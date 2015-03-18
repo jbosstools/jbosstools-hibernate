@@ -17,6 +17,10 @@ public class Hbm2DDLExporterProxy extends AbstractHbm2DDLExporterFacade {
 		target = exporter;
 	}
 
+	public Hbm2DDLExporter getTarget() {
+		return (Hbm2DDLExporter)super.getTarget();
+	}
+
 	@Override
 	public void setExport(boolean export) {
 		target.setExport(export);
