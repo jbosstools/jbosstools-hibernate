@@ -3,16 +3,17 @@ package org.jboss.tools.hibernate.proxy;
 import java.util.Hashtable;
 
 import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
+import org.jboss.tools.hibernate.runtime.common.AbstractHbm2DDLExporterFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 
-public class Hbm2DDLExporterProxy implements IHbm2DDLExporter {
+public class Hbm2DDLExporterProxy extends AbstractHbm2DDLExporterFacade {
 	
 	private Hbm2DDLExporter target;
 
 	public Hbm2DDLExporterProxy(
 			IFacadeFactory facadeFactory, 
 			Hbm2DDLExporter exporter) {
+		super(facadeFactory, exporter);
 		target = exporter;
 	}
 
