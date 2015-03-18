@@ -7,6 +7,7 @@ import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 
 public abstract class AbstractExporterFacade 
 extends AbstractFacade 
@@ -105,6 +106,24 @@ implements IExporter {
 				new Object[] {});
 	}
 
+	@Override
+	public IGenericExporter getGenericExporter() {
+		IGenericExporter result = null;
+		Class<?> genericExporterClass = getGenericExporterClass();
+		if (genericExporterClass.isAssignableFrom(getTarget().getClass())) {
+			result = getFacadeFactory().createGenericExporter(getTarget());
+		}
+		return result;
+	}
 	
+	protected Class<?> getGenericExporterClass() {
+		return Util.getClass(
+				getGenericExporterClassName(), 
+				getFacadeFactoryClassLoader());
+	}
+
+	protected String getGenericExporterClassName() {
+		return "org.hibernate.tool.hbm2x.GenericExporter";
+	}
 
 }

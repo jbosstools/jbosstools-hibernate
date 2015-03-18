@@ -4,13 +4,11 @@ import java.io.StringWriter;
 import java.util.Properties;
 
 import org.hibernate.tool.hbm2x.Exporter;
-import org.hibernate.tool.hbm2x.GenericExporter;
 import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
 import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
 import org.hibernate.tool.hbm2x.QueryExporter;
 import org.jboss.tools.hibernate.runtime.common.AbstractExporterFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 
@@ -22,15 +20,6 @@ public class ExporterProxy extends AbstractExporterFacade {
 
 	public Exporter getTarget() {
 		return (Exporter)super.getTarget();
-	}
-
-	@Override
-	public IGenericExporter getGenericExporter() {
-		IGenericExporter result = null;
-		if (getTarget() instanceof GenericExporter) {
-			result = getFacadeFactory().createGenericExporter(getTarget());
-		}
-		return result;
 	}
 
 	@Override
