@@ -1,5 +1,7 @@
 package org.jboss.tools.hibernate.runtime.common;
 
+import java.util.List;
+
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 
@@ -11,6 +13,15 @@ implements IQueryExporter {
 			IFacadeFactory facadeFactory, 
 			Object target) {
 		super(facadeFactory, target);
+	}
+
+	@Override
+	public void setQueries(List<String> queryStrings) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setQueries", 
+				new Class[] { List.class }, 
+				new Object[] { queryStrings });
 	}
 
 }
