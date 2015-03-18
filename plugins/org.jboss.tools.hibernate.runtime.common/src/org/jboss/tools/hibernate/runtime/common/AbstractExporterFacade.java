@@ -96,6 +96,15 @@ implements IExporter {
 				new Object[] {});
 	}
 	
+	@Override
+	public Properties getProperties() {
+		return (Properties)Util.invokeMethod(
+				getTarget(), 
+				"getProperties", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	
 
 }

@@ -25,11 +25,6 @@ public class ExporterProxy extends AbstractExporterFacade {
 	}
 
 	@Override
-	public Properties getProperties() {
-		return getTarget().getProperties();
-	}
-
-	@Override
 	public IGenericExporter getGenericExporter() {
 		IGenericExporter result = null;
 		if (getTarget() instanceof GenericExporter) {
