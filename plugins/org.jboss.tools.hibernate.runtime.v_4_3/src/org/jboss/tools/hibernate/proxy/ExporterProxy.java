@@ -14,7 +14,6 @@ import org.jboss.tools.hibernate.runtime.common.AbstractExporterFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.HibernateException;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
-import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
@@ -30,13 +29,6 @@ public class ExporterProxy extends AbstractExporterFacade {
 		return (Exporter)super.getTarget();
 	}
 
-	@Override
-	public void setConfiguration(IConfiguration configuration) {
-		if (configuration instanceof ConfigurationProxy) {
-			getTarget().setConfiguration(((ConfigurationProxy)configuration).getTarget());
-		}
-	}
-	
 	@Override
 	public void setProperties(Properties properties) {
 		getTarget().setProperties(properties);
