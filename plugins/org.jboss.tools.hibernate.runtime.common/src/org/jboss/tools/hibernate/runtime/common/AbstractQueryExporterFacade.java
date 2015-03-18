@@ -24,4 +24,13 @@ implements IQueryExporter {
 				new Object[] { queryStrings });
 	}
 
+	@Override
+	public void setFilename(String filename) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setFileName", 
+				new Class[] { String.class }, 
+				new Object[] { filename });
+	}
+
 }

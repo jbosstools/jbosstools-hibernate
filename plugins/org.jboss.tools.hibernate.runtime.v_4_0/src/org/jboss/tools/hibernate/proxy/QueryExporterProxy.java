@@ -16,9 +16,4 @@ public class QueryExporterProxy extends AbstractQueryExporterFacade {
 		return (QueryExporter)super.getTarget();
 	}
 
-	@Override
-	public void setFilename(String filename) {
-		getTarget().setFilename(filename);
-	}
-
 }
