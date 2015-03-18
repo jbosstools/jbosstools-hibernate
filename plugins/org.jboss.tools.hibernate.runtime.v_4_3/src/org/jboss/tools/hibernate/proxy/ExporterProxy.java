@@ -1,6 +1,5 @@
 package org.jboss.tools.hibernate.proxy;
 
-import java.io.File;
 import java.io.StringWriter;
 import java.util.Properties;
 
@@ -24,11 +23,6 @@ public class ExporterProxy extends AbstractExporterFacade {
 	
 	public Exporter getTarget() {
 		return (Exporter)super.getTarget();
-	}
-
-	@Override
-	public void setOutputDirectory(File file) {
-		getTarget().setOutputDirectory(file);
 	}
 
 	@Override

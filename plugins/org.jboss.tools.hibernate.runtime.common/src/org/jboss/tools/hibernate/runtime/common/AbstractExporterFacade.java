@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.runtime.common;
 
+import java.io.File;
 import java.util.Properties;
 
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
@@ -66,6 +67,15 @@ implements IExporter {
 	
 	protected String getArtifactCollectorClassName() {
 		return "org.hibernate.tool.hbm2x.ArtifactCollector";
+	}
+
+	@Override
+	public void setOutputDirectory(File file) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setOutputDirectory", 
+				new Class[] { File.class }, 
+				new Object[] { file });
 	}
 
 }
