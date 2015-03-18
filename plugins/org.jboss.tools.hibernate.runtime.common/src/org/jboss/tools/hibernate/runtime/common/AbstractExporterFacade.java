@@ -78,4 +78,13 @@ implements IExporter {
 				new Object[] { file });
 	}
 
+	@Override
+	public void setTemplatePath(String[] strings) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setTemplatePath", 
+				new Class[] { String[].class }, 
+				new Object[] { strings });
+	}
+
 }

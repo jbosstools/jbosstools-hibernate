@@ -26,11 +26,6 @@ public class ExporterProxy extends AbstractExporterFacade {
 	}
 
 	@Override
-	public void setTemplatePath(String[] strings) {
-		getTarget().setTemplatePath(strings);
-	}
-
-	@Override
 	public void start() throws HibernateException {
 		try {
 			getTarget().start();
