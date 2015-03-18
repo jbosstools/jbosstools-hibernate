@@ -16,6 +16,10 @@ public class QueryExporterProxy extends AbstractQueryExporterFacade {
 		super(facadeFactory, exporter);
 		target = exporter;
 	}
+	
+	public QueryExporter getTarget() {
+		return (QueryExporter)super.getTarget();
+	}
 
 	@Override
 	public void setQueries(List<String> queryStrings) {
