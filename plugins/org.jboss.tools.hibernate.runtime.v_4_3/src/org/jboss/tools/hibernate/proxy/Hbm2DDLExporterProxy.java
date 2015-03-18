@@ -8,13 +8,10 @@ import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 
 public class Hbm2DDLExporterProxy extends AbstractHbm2DDLExporterFacade {
 	
-	private Hbm2DDLExporter target;
-
 	public Hbm2DDLExporterProxy(
 			IFacadeFactory facadeFactory, 
 			Hbm2DDLExporter exporter) {
 		super(facadeFactory, exporter);
-		target = exporter;
 	}
 	
 	public Hbm2DDLExporter getTarget() {
@@ -23,12 +20,12 @@ public class Hbm2DDLExporterProxy extends AbstractHbm2DDLExporterFacade {
 
 	@Override
 	public void setExport(boolean export) {
-		target.setExport(export);
+		getTarget().setExport(export);
 	}
 
 	@Override
 	public Hashtable<Object, Object> getProperties() {
-		return target.getProperties();
+		return getTarget().getProperties();
 	}
 
 }
