@@ -13,4 +13,13 @@ implements IHbm2DDLExporter {
 		super(facadeFactory, target);
 	}
 
+	@Override
+	public void setExport(boolean export) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setExport", 
+				new Class[] { boolean.class }, 
+				new Object[] { export });
+	}
+
 }

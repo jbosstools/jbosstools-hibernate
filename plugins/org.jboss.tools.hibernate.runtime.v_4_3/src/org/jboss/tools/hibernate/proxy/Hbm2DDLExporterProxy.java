@@ -19,11 +19,6 @@ public class Hbm2DDLExporterProxy extends AbstractHbm2DDLExporterFacade {
 	}
 
 	@Override
-	public void setExport(boolean export) {
-		getTarget().setExport(export);
-	}
-
-	@Override
 	public Hashtable<Object, Object> getProperties() {
 		return getTarget().getProperties();
 	}
