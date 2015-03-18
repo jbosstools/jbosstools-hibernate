@@ -8,13 +8,10 @@ import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 
 public class QueryExporterProxy extends AbstractQueryExporterFacade {
 	
-	private QueryExporter target;
-
 	public QueryExporterProxy(
 			IFacadeFactory facadeFactory, 
 			QueryExporter exporter) {
 		super(facadeFactory, exporter);
-		target = exporter;
 	}
 	
 	public QueryExporter getTarget() {
@@ -23,12 +20,12 @@ public class QueryExporterProxy extends AbstractQueryExporterFacade {
 
 	@Override
 	public void setQueries(List<String> queryStrings) {
-		target.setQueries(queryStrings);
+		getTarget().setQueries(queryStrings);
 	}
 
 	@Override
 	public void setFilename(String filename) {
-		target.setFilename(filename);
+		getTarget().setFilename(filename);
 	}
 
 }
