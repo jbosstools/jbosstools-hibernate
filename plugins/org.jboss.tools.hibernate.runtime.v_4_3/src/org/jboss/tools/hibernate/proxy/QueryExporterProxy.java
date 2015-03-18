@@ -3,16 +3,17 @@ package org.jboss.tools.hibernate.proxy;
 import java.util.List;
 
 import org.hibernate.tool.hbm2x.QueryExporter;
+import org.jboss.tools.hibernate.runtime.common.AbstractQueryExporterFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 
-public class QueryExporterProxy implements IQueryExporter {
+public class QueryExporterProxy extends AbstractQueryExporterFacade {
 	
 	private QueryExporter target;
 
 	public QueryExporterProxy(
 			IFacadeFactory facadeFactory, 
 			QueryExporter exporter) {
+		super(facadeFactory, exporter);
 		target = exporter;
 	}
 
