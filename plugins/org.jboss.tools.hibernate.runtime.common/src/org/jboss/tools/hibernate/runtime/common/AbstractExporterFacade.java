@@ -87,4 +87,15 @@ implements IExporter {
 				new Object[] { strings });
 	}
 
+	@Override
+	public void start() {
+		Util.invokeMethod(
+				getTarget(), 
+				"start", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+	
+	
+
 }

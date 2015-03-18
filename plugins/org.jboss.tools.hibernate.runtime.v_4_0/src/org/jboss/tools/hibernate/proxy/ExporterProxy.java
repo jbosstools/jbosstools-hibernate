@@ -9,7 +9,6 @@ import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
 import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
 import org.hibernate.tool.hbm2x.QueryExporter;
 import org.jboss.tools.hibernate.runtime.common.AbstractExporterFacade;
-import org.jboss.tools.hibernate.runtime.spi.HibernateException;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
@@ -23,15 +22,6 @@ public class ExporterProxy extends AbstractExporterFacade {
 
 	public Exporter getTarget() {
 		return (Exporter)super.getTarget();
-	}
-
-	@Override
-	public void start() throws HibernateException {
-		try {
-			getTarget().start();
-		} catch (org.hibernate.HibernateException e) {
-			throw new HibernateException(e.getMessage(), e.getCause());
-		}
 	}
 
 	@Override
