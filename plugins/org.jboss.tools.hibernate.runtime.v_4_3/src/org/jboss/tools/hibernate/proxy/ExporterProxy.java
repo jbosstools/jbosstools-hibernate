@@ -4,16 +4,13 @@ import java.io.File;
 import java.io.StringWriter;
 import java.util.Properties;
 
-import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.GenericExporter;
 import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
 import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
 import org.hibernate.tool.hbm2x.QueryExporter;
 import org.jboss.tools.hibernate.runtime.common.AbstractExporterFacade;
-import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.HibernateException;
-import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
@@ -27,13 +24,6 @@ public class ExporterProxy extends AbstractExporterFacade {
 	
 	public Exporter getTarget() {
 		return (Exporter)super.getTarget();
-	}
-
-	@Override
-	public void setArtifactCollector(IArtifactCollector collector) {
-		if (collector instanceof IFacade) {
-			getTarget().setArtifactCollector((ArtifactCollector)((IFacade)collector).getTarget());
-		}
 	}
 
 	@Override

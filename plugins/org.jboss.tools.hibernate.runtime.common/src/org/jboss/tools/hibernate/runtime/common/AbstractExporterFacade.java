@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.runtime.common;
 
 import java.util.Properties;
 
+import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
@@ -44,6 +45,27 @@ implements IExporter {
 				"setProperties", 
 				new Class[] { Properties.class }, 
 				new Object[] { properties });
+	}
+
+	@Override
+	public void setArtifactCollector(IArtifactCollector collector) {
+		if (collector instanceof IFacade) {
+			Util.invokeMethod(
+					getTarget(), 
+					"setArtifactCollector", 
+					new Class[] { getArtifactCollectorClass() }, 
+					new Object[] { ((IFacade)collector).getTarget() });
+		}
+	}
+	
+	protected Class<?> getArtifactCollectorClass() {
+		return Util.getClass(
+				getArtifactCollectorClassName(), 
+				getFacadeFactoryClassLoader());
+	}
+	
+	protected String getArtifactCollectorClassName() {
+		return "org.hibernate.tool.hbm2x.ArtifactCollector";
 	}
 
 }
