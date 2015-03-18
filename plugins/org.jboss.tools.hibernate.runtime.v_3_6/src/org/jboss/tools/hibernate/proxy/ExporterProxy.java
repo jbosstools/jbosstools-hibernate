@@ -89,9 +89,7 @@ public class ExporterProxy extends AbstractExporterFacade {
 	public IHbm2DDLExporter getHbm2DDLExporter() {
 		IHbm2DDLExporter result = null;
 		if (getTarget() instanceof Hbm2DDLExporter) {
-			result = new Hbm2DDLExporterProxy(
-					getFacadeFactory(),
-					(Hbm2DDLExporter)getTarget());
+			result = getFacadeFactory().createHbm2DDLExporter(getTarget());
 		}
 		return result;
 	}
