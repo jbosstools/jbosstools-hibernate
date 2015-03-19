@@ -51,7 +51,7 @@ public class TableFilterProxy implements ITableFilter {
 		return target.getMatchName();
 	}
 
-	TableFilter getTarget() {
+	public TableFilter getTarget() {
 		return target;
 	}
 
