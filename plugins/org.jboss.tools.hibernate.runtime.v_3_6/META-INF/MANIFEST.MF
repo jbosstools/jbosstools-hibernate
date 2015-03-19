@@ -14,6 +14,7 @@ Require-Bundle: org.apache.commons.collections;bundle-version="3.2.0",
  org.jboss.tools.hibernate.libs.freemarker.v_2_3_8;bundle-version="5.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: .,
+ lib/asm-3.1.jar,
  lib/cglib-2.2.jar,
  lib/commons-logging-1.0.4.jar,
  lib/hibernate-commons-annotations-3.2.0.Final.jar,
