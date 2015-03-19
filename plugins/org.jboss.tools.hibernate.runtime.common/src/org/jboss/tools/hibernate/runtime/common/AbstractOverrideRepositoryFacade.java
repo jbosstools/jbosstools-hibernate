@@ -33,7 +33,7 @@ implements IOverrideRepository {
 				getTarget(), 
 				"addTableFilter", 
 				new Class[] { getTableFilterClass() }, 
-				new Object[] { tf });
+				new Object[] { ((IFacade)tf).getTarget() });
 	}
 	
 	@Override
