@@ -1,13 +1,16 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.cfg.reveng.TableFilter;
+import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 
 public class TableFilterProxy implements ITableFilter {
 	
 	private TableFilter target = null;
 
-	public TableFilterProxy(TableFilter tableFilter) {
+	public TableFilterProxy(
+			IFacadeFactory facadeFactory, 
+			TableFilter tableFilter) {
 		target = tableFilter;
 	}
 
