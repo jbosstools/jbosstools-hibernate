@@ -17,42 +17,42 @@ public class TableFilterProxy extends AbstractTableFilterFacade {
 
 	@Override
 	public void setExclude(Boolean exclude) {
-		target.setExclude(exclude);
+		getTarget().setExclude(exclude);
 	}
 
 	@Override
 	public void setMatchCatalog(String catalog) {
-		target.setMatchCatalog(catalog);
+		getTarget().setMatchCatalog(catalog);
 	}
 
 	@Override
 	public void setMatchSchema(String schema) {
-		target.setMatchSchema(schema);
+		getTarget().setMatchSchema(schema);
 	}
 
 	@Override
 	public void setMatchName(String name) {
-		target.setMatchName(name);
+		getTarget().setMatchName(name);
 	}
 
 	@Override
 	public Boolean getExclude() {
-		return target.getExclude();
+		return getTarget().getExclude();
 	}
 
 	@Override
 	public String getMatchCatalog() {
-		return target.getMatchCatalog();
+		return getTarget().getMatchCatalog();
 	}
 
 	@Override
 	public String getMatchSchema() {
-		return target.getMatchSchema();
+		return getTarget().getMatchSchema();
 	}
 
 	@Override
 	public String getMatchName() {
-		return target.getMatchName();
+		return getTarget().getMatchName();
 	}
 
 	public TableFilter getTarget() {
