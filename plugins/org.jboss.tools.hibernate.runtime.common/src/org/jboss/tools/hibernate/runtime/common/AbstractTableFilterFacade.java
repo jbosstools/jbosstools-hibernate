@@ -13,4 +13,13 @@ implements ITableFilter {
 		super(facadeFactory, target);
 	}
 
+	@Override
+	public void setExclude(Boolean exclude) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setExclude", 
+				new Class[] { Boolean.class }, 
+				new Object[] { exclude });
+	}
+
 }
