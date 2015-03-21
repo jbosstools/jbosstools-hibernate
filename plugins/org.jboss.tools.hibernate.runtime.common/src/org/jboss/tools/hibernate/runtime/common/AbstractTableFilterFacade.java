@@ -22,4 +22,13 @@ implements ITableFilter {
 				new Object[] { exclude });
 	}
 
+	@Override
+	public void setMatchCatalog(String catalog) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setMatchCatalog", 
+				new Class[] { String.class }, 
+				new Object[] { catalog });
+	}
+
 }
