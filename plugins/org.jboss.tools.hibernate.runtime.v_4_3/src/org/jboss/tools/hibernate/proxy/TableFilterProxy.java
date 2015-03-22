@@ -16,11 +16,6 @@ public class TableFilterProxy extends AbstractTableFilterFacade {
 	}
 
 	@Override
-	public void setMatchSchema(String schema) {
-		getTarget().setMatchSchema(schema);
-	}
-
-	@Override
 	public void setMatchName(String name) {
 		getTarget().setMatchName(name);
 	}

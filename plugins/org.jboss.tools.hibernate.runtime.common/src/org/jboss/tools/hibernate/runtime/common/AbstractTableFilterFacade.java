@@ -31,4 +31,13 @@ implements ITableFilter {
 				new Object[] { catalog });
 	}
 
+	@Override
+	public void setMatchSchema(String schema) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setMatchSchema", 
+				new Class[] { String.class }, 
+				new Object[] { schema });
+	}
+
 }
