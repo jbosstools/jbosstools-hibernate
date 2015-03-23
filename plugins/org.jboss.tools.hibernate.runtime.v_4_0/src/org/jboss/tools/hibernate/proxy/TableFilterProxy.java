@@ -16,11 +16,6 @@ public class TableFilterProxy extends AbstractTableFilterFacade {
 	}
 
 	@Override
-	public String getMatchCatalog() {
-		return getTarget().getMatchCatalog();
-	}
-
-	@Override
 	public String getMatchSchema() {
 		return getTarget().getMatchSchema();
 	}

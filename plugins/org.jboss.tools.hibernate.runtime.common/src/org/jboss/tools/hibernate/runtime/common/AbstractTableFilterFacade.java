@@ -58,6 +58,15 @@ implements ITableFilter {
 				new Object[] {});
 	}
 
+	@Override
+	public String getMatchCatalog() {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getMatchCatalog", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 
 
 }
