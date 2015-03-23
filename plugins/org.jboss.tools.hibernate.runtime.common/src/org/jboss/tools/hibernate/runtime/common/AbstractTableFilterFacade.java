@@ -48,5 +48,16 @@ implements ITableFilter {
 				new Class[] { String.class }, 
 				new Object[] { name });
 	}
+	
+	@Override
+	public Boolean getExclude() {
+		return (Boolean)Util.invokeMethod(
+				getTarget(), 
+				"getExclude", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
+
 
 }
