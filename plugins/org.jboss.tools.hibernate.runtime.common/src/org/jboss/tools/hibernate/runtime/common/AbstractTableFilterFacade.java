@@ -76,6 +76,15 @@ implements ITableFilter {
 				new Object[] {});
 	}
 
+	@Override
+	public String getMatchName() {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getMatchName", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 
 
 }
