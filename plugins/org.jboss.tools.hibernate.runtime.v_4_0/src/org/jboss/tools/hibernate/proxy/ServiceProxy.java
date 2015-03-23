@@ -198,7 +198,7 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public ITableFilter newTableFilter() {
-		return new TableFilterProxy(facadeFactory, new TableFilter());
+		return facadeFactory.createTableFilter(new TableFilter());
 	}
 
 	@Override
