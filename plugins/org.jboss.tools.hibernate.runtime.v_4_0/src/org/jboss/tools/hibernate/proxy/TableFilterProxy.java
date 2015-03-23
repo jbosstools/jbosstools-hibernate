@@ -16,11 +16,6 @@ public class TableFilterProxy extends AbstractTableFilterFacade {
 	}
 
 	@Override
-	public void setMatchName(String name) {
-		getTarget().setMatchName(name);
-	}
-
-	@Override
 	public Boolean getExclude() {
 		return getTarget().getExclude();
 	}

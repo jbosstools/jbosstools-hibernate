@@ -40,4 +40,13 @@ implements ITableFilter {
 				new Object[] { schema });
 	}
 
+	@Override
+	public void setMatchName(String name) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setMatchName", 
+				new Class[] { String.class }, 
+				new Object[] { name });
+	}
+
 }
