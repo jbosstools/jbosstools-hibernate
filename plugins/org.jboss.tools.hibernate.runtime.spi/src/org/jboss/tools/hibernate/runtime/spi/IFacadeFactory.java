@@ -15,5 +15,6 @@ public interface IFacadeFactory {
 	IGenericExporter createGenericExporter(Object target);
 	IHbm2DDLExporter createHbm2DDLExporter(Object target);
 	IQueryExporter createQueryExporter(Object target);
+	ITableFilter createTableFilter(Object target);
 	
 }

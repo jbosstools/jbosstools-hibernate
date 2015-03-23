@@ -13,6 +13,7 @@ import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
+import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 
 public abstract class AbstractFacadeFactory implements IFacadeFactory {
 
@@ -62,6 +63,10 @@ public abstract class AbstractFacadeFactory implements IFacadeFactory {
 	
 	public IQueryExporter createQueryExporter(Object target) {
 		return new AbstractQueryExporterFacade(this, target) {};
+	}
+	
+	public ITableFilter createTableFilter(Object target) {
+		return new AbstractTableFilterFacade(this, target) {};
 	}
 	
 }
