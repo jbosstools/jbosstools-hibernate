@@ -1,16 +1,17 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.cfg.reveng.TableIdentifier;
+import org.jboss.tools.hibernate.runtime.common.AbstractTableIdentifierFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
 
-public class TableIdentifierProxy implements ITableIdentifier {
+public class TableIdentifierProxy extends AbstractTableIdentifierFacade {
 	
 	private TableIdentifier target = null;
 
 	public TableIdentifierProxy(
-			IFacadeFactory facadeFactory,
+			IFacadeFactory facadeFactory, 
 			TableIdentifier tableIdentifier) {
+		super(facadeFactory, tableIdentifier);
 		target = tableIdentifier;
 	}
 
