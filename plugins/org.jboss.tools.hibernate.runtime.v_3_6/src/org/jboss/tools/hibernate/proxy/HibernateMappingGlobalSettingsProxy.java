@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
+import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingGlobalSettings;
 
 public class HibernateMappingGlobalSettingsProxy implements
@@ -9,6 +10,7 @@ public class HibernateMappingGlobalSettingsProxy implements
 	private HibernateMappingGlobalSettings target = null;
 
 	public HibernateMappingGlobalSettingsProxy(
+			IFacadeFactory facadeFactory,
 			HibernateMappingGlobalSettings hibernateMappingGlobalSettings) {
 		target = hibernateMappingGlobalSettings;
 	}

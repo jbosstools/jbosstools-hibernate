@@ -407,7 +407,9 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public IHibernateMappingGlobalSettings newHibernateMappingGlobalSettings() {
-		return new HibernateMappingGlobalSettingsProxy(new HibernateMappingGlobalSettings());
+		return new HibernateMappingGlobalSettingsProxy(
+				facadeFactory,
+				new HibernateMappingGlobalSettings());
 	}
 
 	@Override
