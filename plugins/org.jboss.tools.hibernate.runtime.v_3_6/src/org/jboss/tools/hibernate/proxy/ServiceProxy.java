@@ -163,7 +163,7 @@ public class ServiceProxy implements IService {
 		Exporter exporter = (Exporter)Util.getInstance(
 				exporterClassName, 
 				facadeFactory.getClassLoader());
-		return new ExporterProxy(facadeFactory, exporter);
+		return facadeFactory.createExporter(exporter);
 	}
 
 	@Override
