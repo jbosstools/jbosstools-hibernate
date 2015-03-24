@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.common;
 
 import java.io.File;
+import java.io.StringWriter;
 import java.util.Properties;
 
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
@@ -184,6 +185,17 @@ implements IExporter {
 
 	protected String getHibernateConfigurationExporterClassName() {
 		return "org.hibernate.tool.hbm2x.QueryExporter";
+	}
+
+	@Override
+	public void setOutput(StringWriter stringWriter) {
+		assert getHibernateConfigurationExporterClass().isAssignableFrom(
+				getTarget().getClass());
+		Util.invokeMethod(
+				getTarget(), 
+				"setOutput", 
+				new Class[] { StringWriter.class }, 
+				new Object[] { stringWriter });
 	}
 
 }
