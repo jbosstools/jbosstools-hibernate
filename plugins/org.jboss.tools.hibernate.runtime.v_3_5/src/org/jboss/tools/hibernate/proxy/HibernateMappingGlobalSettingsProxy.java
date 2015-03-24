@@ -1,17 +1,18 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
+import org.jboss.tools.hibernate.runtime.common.AbstractHibernateMappingGlobalSettingsFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingGlobalSettings;
 
-public class HibernateMappingGlobalSettingsProxy implements
-		IHibernateMappingGlobalSettings {
+public class HibernateMappingGlobalSettingsProxy extends 
+AbstractHibernateMappingGlobalSettingsFacade {
 	
 	private HibernateMappingGlobalSettings target = null;
 
 	public HibernateMappingGlobalSettingsProxy(
 			IFacadeFactory facadeFactory,
 			HibernateMappingGlobalSettings hibernateMappingGlobalSettings) {
+		super(facadeFactory, hibernateMappingGlobalSettings);
 		target = hibernateMappingGlobalSettings;
 	}
 
