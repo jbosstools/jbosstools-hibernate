@@ -16,5 +16,6 @@ public interface IFacadeFactory {
 	IHbm2DDLExporter createHbm2DDLExporter(Object target);
 	IQueryExporter createQueryExporter(Object target);
 	ITableFilter createTableFilter(Object target);
+	IExporter createExporter(Object target);
 	
 }
