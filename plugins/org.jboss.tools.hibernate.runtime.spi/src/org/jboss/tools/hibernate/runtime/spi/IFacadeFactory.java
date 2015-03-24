@@ -18,5 +18,6 @@ public interface IFacadeFactory {
 	ITableFilter createTableFilter(Object target);
 	IExporter createExporter(Object target);
 	ITableIdentifier createTableIdentifier(Object target);
+	IHibernateMappingGlobalSettings createHibernateMappingGlobalSettings(Object target);
 	
 }

@@ -7,6 +7,7 @@ import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
+import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingGlobalSettings;
 import org.jboss.tools.hibernate.runtime.spi.IMapping;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
@@ -77,6 +78,10 @@ public abstract class AbstractFacadeFactory implements IFacadeFactory {
 	
 	public ITableIdentifier createTableIdentifier(Object target) {
 		return new AbstractTableIdentifierFacade(this, target) {};
+	}
+	
+	public IHibernateMappingGlobalSettings createHibernateMappingGlobalSettings(Object target) {
+		return new AbstractHibernateMappingGlobalSettingsFacade(this, target) {};
 	}
 	
 }
