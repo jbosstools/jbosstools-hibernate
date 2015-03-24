@@ -17,5 +17,6 @@ public interface IFacadeFactory {
 	IQueryExporter createQueryExporter(Object target);
 	ITableFilter createTableFilter(Object target);
 	IExporter createExporter(Object target);
+	ITableIdentifier createTableIdentifier(Object target);
 	
 }
