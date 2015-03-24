@@ -9,6 +9,7 @@ import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
+import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 
 public abstract class AbstractExporterFacade 
 extends AbstractFacade 
@@ -143,6 +144,25 @@ implements IExporter {
 
 	protected String getHbm2DDLExporterClassName() {
 		return "org.hibernate.tool.hbm2x.Hbm2DDLExporter";
+	}
+
+	@Override
+	public IQueryExporter getQueryExporter() {
+		IQueryExporter result = null;
+		if (getQueryExporterClass().isAssignableFrom(getTarget().getClass())) {
+			result = getFacadeFactory().createQueryExporter(getTarget());
+		}
+		return result;
+	}
+
+	protected Class<?> getQueryExporterClass() {
+		return Util.getClass(
+				getQueryExporterClassName(), 
+				getFacadeFactoryClassLoader());
+	}
+
+	protected String getQueryExporterClassName() {
+		return "org.hibernate.tool.hbm2x.QueryExporter";
 	}
 
 }

@@ -5,10 +5,8 @@ import java.util.Properties;
 
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
-import org.hibernate.tool.hbm2x.QueryExporter;
 import org.jboss.tools.hibernate.runtime.common.AbstractExporterFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 
 public class ExporterProxy extends AbstractExporterFacade {
 	
@@ -18,15 +16,6 @@ public class ExporterProxy extends AbstractExporterFacade {
 	
 	public Exporter getTarget() {
 		return (Exporter)super.getTarget();
-	}
-
-	@Override
-	public IQueryExporter getQueryExporter() {
-		IQueryExporter result = null;
-		if (getTarget() instanceof QueryExporter) {
-			result = getFacadeFactory().createQueryExporter(getTarget());
-		}
-		return result;
 	}
 
 	@Override
