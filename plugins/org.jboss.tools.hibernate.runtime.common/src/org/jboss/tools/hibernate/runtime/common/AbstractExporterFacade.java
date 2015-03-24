@@ -8,6 +8,7 @@ import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
+import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 
 public abstract class AbstractExporterFacade 
 extends AbstractFacade 
@@ -109,8 +110,7 @@ implements IExporter {
 	@Override
 	public IGenericExporter getGenericExporter() {
 		IGenericExporter result = null;
-		Class<?> genericExporterClass = getGenericExporterClass();
-		if (genericExporterClass.isAssignableFrom(getTarget().getClass())) {
+		if (getGenericExporterClass().isAssignableFrom(getTarget().getClass())) {
 			result = getFacadeFactory().createGenericExporter(getTarget());
 		}
 		return result;
@@ -124,6 +124,25 @@ implements IExporter {
 
 	protected String getGenericExporterClassName() {
 		return "org.hibernate.tool.hbm2x.GenericExporter";
+	}
+
+	@Override
+	public IHbm2DDLExporter getHbm2DDLExporter() {
+		IHbm2DDLExporter result = null;
+		if (getHbm2DDLExporterClass().isAssignableFrom(getTarget().getClass())) {
+			result = getFacadeFactory().createHbm2DDLExporter(getTarget());
+		}
+		return result;
+	}
+	
+	protected Class<?> getHbm2DDLExporterClass() {
+		return Util.getClass(
+				getHbm2DDLExporterClassName(), 
+				getFacadeFactoryClassLoader());
+	}
+
+	protected String getHbm2DDLExporterClassName() {
+		return "org.hibernate.tool.hbm2x.Hbm2DDLExporter";
 	}
 
 }
