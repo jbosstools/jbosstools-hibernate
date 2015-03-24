@@ -408,16 +408,15 @@ public class ServiceProxy implements IService {
 	@Override
 	public ITableIdentifier createTableIdentifier(ITable table) {
 		assert table instanceof TableProxy;
-		return new TableIdentifierProxy(
-				facadeFactory, 
-				TableIdentifier.create(((TableProxy)table).getTarget()));
+		return facadeFactory.createTableIdentifier(
+				TableIdentifier.create(
+						((TableProxy)table).getTarget()));
 	}
 
 	@Override
 	public ITableIdentifier newTableIdentifier(String catalog, String schema,
 			String name) {
-		return new TableIdentifierProxy(
-				facadeFactory, 
+		return facadeFactory.createTableIdentifier(
 				new TableIdentifier(catalog, schema, name));
 	}
 
