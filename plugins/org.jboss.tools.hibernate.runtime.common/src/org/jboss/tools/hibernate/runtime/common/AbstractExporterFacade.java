@@ -165,4 +165,25 @@ implements IExporter {
 		return "org.hibernate.tool.hbm2x.QueryExporter";
 	}
 
+	@Override
+	public void setCustomProperties(Properties props) {
+		assert getHibernateConfigurationExporterClass().isAssignableFrom(
+				getTarget().getClass());
+		Util.invokeMethod(
+				getTarget(), 
+				"setCustomProperties", 
+				new Class[] { Properties.class }, 
+				new Object[] { props });
+	}
+
+	protected Class<?> getHibernateConfigurationExporterClass() {
+		return Util.getClass(
+				getHibernateConfigurationExporterClassName(), 
+				getFacadeFactoryClassLoader());
+	}
+
+	protected String getHibernateConfigurationExporterClassName() {
+		return "org.hibernate.tool.hbm2x.QueryExporter";
+	}
+
 }

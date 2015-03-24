@@ -1,7 +1,6 @@
 package org.jboss.tools.hibernate.proxy;
 
 import java.io.StringWriter;
-import java.util.Properties;
 
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
@@ -16,12 +15,6 @@ public class ExporterProxy extends AbstractExporterFacade {
 	
 	public Exporter getTarget() {
 		return (Exporter)super.getTarget();
-	}
-
-	@Override
-	public void setCustomProperties(Properties props) {
-		assert getTarget() instanceof HibernateConfigurationExporter;
-		((HibernateConfigurationExporter)getTarget()).setCustomProperties(props);
 	}
 
 	@Override
