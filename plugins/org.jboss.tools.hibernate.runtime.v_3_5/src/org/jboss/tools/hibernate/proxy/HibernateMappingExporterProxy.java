@@ -5,7 +5,9 @@ import java.util.Map;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
+import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingGlobalSettings;
@@ -25,8 +27,8 @@ public class HibernateMappingExporterProxy implements IHibernateMappingExporter 
 
 	@Override
 	public void setGlobalSettings(IHibernateMappingGlobalSettings hmgs) {
-		assert hmgs instanceof HibernateMappingGlobalSettingsProxy;
-		target.setGlobalSettings(((HibernateMappingGlobalSettingsProxy) hmgs).getTarget());
+		assert hmgs instanceof IFacade;
+		target.setGlobalSettings((HibernateMappingGlobalSettings)((IFacade)hmgs).getTarget());
 	}
 
 	@Override
