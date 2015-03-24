@@ -15,7 +15,7 @@ public class HibernateMappingGlobalSettingsProxy implements
 		target = hibernateMappingGlobalSettings;
 	}
 
-	HibernateMappingGlobalSettings getTarget() {
+	public HibernateMappingGlobalSettings getTarget() {
 		return target;
 	}
 
