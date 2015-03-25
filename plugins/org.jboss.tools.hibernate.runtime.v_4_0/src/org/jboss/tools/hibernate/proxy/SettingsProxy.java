@@ -1,13 +1,14 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.cfg.Settings;
+import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISettings;
 
 public class SettingsProxy implements ISettings {
 	
 	private Settings target;
 
-	public SettingsProxy(Settings settings) {
+	public SettingsProxy(IFacadeFactory facadeFactory, Settings settings) {
 		target = settings;
 	}
 

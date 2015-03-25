@@ -118,7 +118,9 @@ public class ConfigurationProxy extends AbstractConfigurationFacade {
 
 	@Override
 	public ISettings buildSettings() {
-		return new SettingsProxy(getTarget().buildSettings());
+		return new SettingsProxy(
+				getFacadeFactory(),
+				getTarget().buildSettings());
 	}
 	
 	@Override
