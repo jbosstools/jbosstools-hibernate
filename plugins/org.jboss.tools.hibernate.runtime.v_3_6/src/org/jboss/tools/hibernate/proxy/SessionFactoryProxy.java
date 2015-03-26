@@ -71,7 +71,7 @@ public class SessionFactoryProxy implements ISessionFactory {
 		return new SessionProxy(this, target.openSession());
 	}
 	
-	SessionFactory getTarget() {
+	public SessionFactory getTarget() {
 		return target;
 	}
 
