@@ -66,7 +66,11 @@ public class SessionFactoryProxy extends AbstractSessionFactoryFacade {
 		for (Map.Entry<String, CollectionMetadata> entry : origin.entrySet()) {
 			String key = entry.getKey();
 			CollectionMetadata value = entry.getValue();
-			allCollectionMetadata.put(key, new CollectionMetadataProxy(value));
+			allCollectionMetadata.put(
+					key, 
+					new CollectionMetadataProxy(
+							getFacadeFactory(),
+							value));
 		}
 	}
 

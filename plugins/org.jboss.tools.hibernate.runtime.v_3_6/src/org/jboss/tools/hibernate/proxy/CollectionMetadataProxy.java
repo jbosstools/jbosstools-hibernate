@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.metadata.CollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
+import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 
 public class CollectionMetadataProxy implements ICollectionMetadata {
@@ -9,7 +10,9 @@ public class CollectionMetadataProxy implements ICollectionMetadata {
 	private CollectionMetadata target = null;
 	private IType elementType = null;
 
-	public CollectionMetadataProxy(CollectionMetadata value) {
+	public CollectionMetadataProxy(
+			IFacadeFactory facadeFactory, 
+			CollectionMetadata value) {
 		target = value;
 	}
 
