@@ -8,6 +8,7 @@ import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
+import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 
@@ -17,7 +18,9 @@ public class SessionFactoryProxy implements ISessionFactory {
 	private Map<String, IClassMetadata> allClassMetadata = null;
 	private Map<String, ICollectionMetadata> allCollectionMetadata = null;
 
-	public SessionFactoryProxy(SessionFactory sessionFactory) {
+	public SessionFactoryProxy(
+			IFacadeFactory facadeFactory,
+			SessionFactory sessionFactory) {
 		target = sessionFactory;
 	}
 

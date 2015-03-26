@@ -120,7 +120,9 @@ public class ConfigurationProxy extends AbstractConfigurationFacade {
 		if (serviceRegistry == null) {
 			buildServiceRegistry();
 		}
-		return new SessionFactoryProxy(getTarget().buildSessionFactory(serviceRegistry));
+		return new SessionFactoryProxy(
+				getFacadeFactory(),
+				getTarget().buildSessionFactory(serviceRegistry));
 	}
 
 	@Override
