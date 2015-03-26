@@ -6,19 +6,22 @@ import java.util.Map;
 import org.hibernate.SessionFactory;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
+import org.jboss.tools.hibernate.runtime.common.AbstractSessionFactoryFacade;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
-import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 
-public class SessionFactoryProxy implements ISessionFactory {
+public class SessionFactoryProxy extends AbstractSessionFactoryFacade {
 	
 	private SessionFactory target;
 	private Map<String, IClassMetadata> allClassMetadata = null;
 	private Map<String, ICollectionMetadata> allCollectionMetadata = null;
 
-	public SessionFactoryProxy(IFacadeFactory facadeFactory, SessionFactory sessionFactory) {
+	public SessionFactoryProxy(
+			IFacadeFactory facadeFactory, 
+			SessionFactory sessionFactory) {
+		super(facadeFactory, sessionFactory);
 		target = sessionFactory;
 	}
 
