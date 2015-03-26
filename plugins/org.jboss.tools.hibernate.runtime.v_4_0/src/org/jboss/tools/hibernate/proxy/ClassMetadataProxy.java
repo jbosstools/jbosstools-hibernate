@@ -10,6 +10,7 @@ import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.spi.HibernateException;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
+import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 
@@ -19,7 +20,9 @@ public class ClassMetadataProxy implements IClassMetadata {
 	private IType[] propertyTypes = null;
 	private IType identifierType = null;
 
-	public ClassMetadataProxy(ClassMetadata classMetadata) {
+	public ClassMetadataProxy(
+			IFacadeFactory facadeFactory,
+			ClassMetadata classMetadata) {
 		target = classMetadata;
 	}
 
