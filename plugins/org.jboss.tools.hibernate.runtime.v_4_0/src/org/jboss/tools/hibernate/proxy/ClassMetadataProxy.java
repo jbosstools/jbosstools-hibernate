@@ -7,14 +7,14 @@ import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.persister.entity.AbstractEntityPersister;
 import org.hibernate.tuple.entity.EntityMetamodel;
 import org.hibernate.type.Type;
+import org.jboss.tools.hibernate.runtime.common.AbstractClassMetadataFacade;
 import org.jboss.tools.hibernate.runtime.spi.HibernateException;
-import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 
-public class ClassMetadataProxy implements IClassMetadata {
+public class ClassMetadataProxy extends AbstractClassMetadataFacade {
 	
 	private ClassMetadata target = null;
 	private IType[] propertyTypes = null;
@@ -23,6 +23,7 @@ public class ClassMetadataProxy implements IClassMetadata {
 	public ClassMetadataProxy(
 			IFacadeFactory facadeFactory,
 			ClassMetadata classMetadata) {
+		super(facadeFactory, classMetadata);
 		target = classMetadata;
 	}
 
