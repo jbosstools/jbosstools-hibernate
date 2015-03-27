@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
+import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
@@ -13,7 +14,9 @@ public class SpecialRootClassProxy extends PersistentClassProxy {
 	private IProperty property;
 	private IProperty parentProperty;
 
-	public SpecialRootClassProxy(IProperty property) {
+	public SpecialRootClassProxy(
+			IFacadeFactory facadeFactory, 
+			IProperty property) {
 		super(new RootClass());
 		this.property = property;
 		generate();
