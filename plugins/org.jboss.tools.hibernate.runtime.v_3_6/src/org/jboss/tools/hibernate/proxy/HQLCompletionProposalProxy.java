@@ -1,17 +1,19 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
+import org.jboss.tools.hibernate.runtime.common.AbstractHQLCompletionProposalFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 
-public class HQLCompletionProposalProxy implements IHQLCompletionProposal {
+public class HQLCompletionProposalProxy 
+extends AbstractHQLCompletionProposalFacade {
 	
 	private HQLCompletionProposal target = null;
 
 	public HQLCompletionProposalProxy(
-			IFacadeFactory facadeFactory, 
+			IFacadeFactory facadeFactory,
 			HQLCompletionProposal proposal) {
+		super(facadeFactory, proposal);
 		target = proposal;
 	}
 
