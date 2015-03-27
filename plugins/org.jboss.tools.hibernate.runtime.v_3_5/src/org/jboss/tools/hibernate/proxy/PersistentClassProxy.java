@@ -11,6 +11,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
+import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
@@ -34,6 +35,12 @@ public class PersistentClassProxy implements IPersistentClass {
 	private HashMap<String, IProperty> properties = null;
 
 	public PersistentClassProxy(PersistentClass persistentClass) {
+		target = persistentClass;
+	}
+
+	public PersistentClassProxy(
+			IFacadeFactory facadeFactory,
+			PersistentClass persistentClass) {
 		target = persistentClass;
 	}
 
