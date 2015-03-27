@@ -28,6 +28,7 @@ import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
+import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
@@ -49,6 +50,10 @@ public class ValueProxy implements IValue {
 	private HashSet<IProperty> properties = null;
 
 	public ValueProxy(Value value) {
+		target = value;
+	}
+
+	public ValueProxy(IFacadeFactory facadeFactory, Value value) {
 		target = value;
 	}
 
