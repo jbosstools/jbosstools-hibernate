@@ -3,17 +3,18 @@ package org.jboss.tools.hibernate.proxy;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.ide.completion.IHQLCompletionRequestor;
+import org.jboss.tools.hibernate.runtime.common.AbstractHQLCodeAssistFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionHandler;
 
-public class HQLCodeAssistProxy implements IHQLCodeAssist {
+public class HQLCodeAssistProxy extends AbstractHQLCodeAssistFacade {
 	
 	HQLCodeAssist target = null;
 
 	public HQLCodeAssistProxy(
-			IFacadeFactory facadeFactory, 
+			IFacadeFactory facadeFactory,
 			HQLCodeAssist hqlCodeAssist) {
+		super(facadeFactory, hqlCodeAssist);
 		target = hqlCodeAssist;
 	}
 
