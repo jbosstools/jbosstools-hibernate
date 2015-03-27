@@ -31,7 +31,10 @@ public class HQLCodeAssistProxy extends AbstractHQLCodeAssistFacade {
 		}
 		@Override
 		public boolean accept(HQLCompletionProposal proposal) {
-			return handler.accept(new HQLCompletionProposalProxy(proposal));
+			return handler.accept(
+					new HQLCompletionProposalProxy(
+							HQLCodeAssistProxy.this.getFacadeFactory(),
+							proposal));
 		}
 		@Override
 		public void completionFailure(String errorMessage) {

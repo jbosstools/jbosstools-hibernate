@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
+import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 
@@ -8,7 +9,9 @@ public class HQLCompletionProposalProxy implements IHQLCompletionProposal {
 	
 	private HQLCompletionProposal target = null;
 
-	public HQLCompletionProposalProxy(HQLCompletionProposal proposal) {
+	public HQLCompletionProposalProxy(
+			IFacadeFactory facadeFactory,
+			HQLCompletionProposal proposal) {
 		target = proposal;
 	}
 
