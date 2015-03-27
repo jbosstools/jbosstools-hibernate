@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.mapping.Property;
+import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IType;
@@ -14,6 +15,12 @@ public class PropertyProxy implements IProperty {
 	private IPersistentClass persistentClass = null;
 	
 	public PropertyProxy(Property property) {
+		target = property;
+	}
+	
+	public PropertyProxy(
+			IFacadeFactory facadeFactory,
+			Property property) {
 		target = property;
 	}
 	
