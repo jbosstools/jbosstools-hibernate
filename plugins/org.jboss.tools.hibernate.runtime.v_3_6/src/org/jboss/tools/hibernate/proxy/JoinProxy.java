@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import org.hibernate.mapping.Join;
 import org.hibernate.mapping.Property;
+import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 
@@ -14,6 +15,12 @@ public class JoinProxy implements IJoin {
 	private HashSet<IProperty> properties = null;
 
 	public JoinProxy(Join join) {
+		target = join;
+	}
+
+	public JoinProxy(
+			IFacadeFactory facadeFactory,
+			Join join) {
 		target = join;
 	}
 
