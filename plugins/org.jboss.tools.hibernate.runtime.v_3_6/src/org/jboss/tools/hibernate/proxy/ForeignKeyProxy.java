@@ -8,6 +8,7 @@ import java.util.List;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
+import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 
@@ -19,6 +20,12 @@ public class ForeignKeyProxy implements IForeignKey {
 	private List<IColumn> referencedColumns = null;
 
 	public ForeignKeyProxy(ForeignKey foreignKey) {
+		target = foreignKey;
+	}
+
+	public ForeignKeyProxy(
+			IFacadeFactory facadeFactory,
+			ForeignKey foreignKey) {
 		target = foreignKey;
 	}
 
