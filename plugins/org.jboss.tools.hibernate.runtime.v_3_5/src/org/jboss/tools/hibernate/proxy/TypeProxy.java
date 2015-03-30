@@ -6,6 +6,7 @@ import org.hibernate.type.IntegerType;
 import org.hibernate.type.NullableType;
 import org.hibernate.type.PrimitiveType;
 import org.hibernate.type.Type;
+import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 
 public class TypeProxy implements IType {
@@ -15,6 +16,12 @@ public class TypeProxy implements IType {
 	public TypeProxy(Type type) {
 		target = type;
 	}
+	
+	public TypeProxy(
+			IFacadeFactory facadeFactory,
+			Type type) {
+		target = type;
+	}	
 
 	@Override
 	public String toString(Object value) {
