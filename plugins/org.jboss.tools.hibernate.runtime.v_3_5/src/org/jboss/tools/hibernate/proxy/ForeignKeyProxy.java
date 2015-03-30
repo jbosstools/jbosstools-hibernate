@@ -7,12 +7,12 @@ import java.util.List;
 
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
+import org.jboss.tools.hibernate.runtime.common.AbstractForeignKeyFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 
-public class ForeignKeyProxy implements IForeignKey {
+public class ForeignKeyProxy extends AbstractForeignKeyFacade {
 	
 	private ForeignKey target = null;
 	private ITable referencedTable = null;
@@ -22,6 +22,7 @@ public class ForeignKeyProxy implements IForeignKey {
 	public ForeignKeyProxy(
 			IFacadeFactory facadeFactory,
 			ForeignKey foreignKey) {
+		super(facadeFactory, foreignKey);
 		target = foreignKey;
 	}
 
