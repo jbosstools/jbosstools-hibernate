@@ -446,7 +446,7 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public IPrimaryKey newPrimaryKey() {
-		return new PrimaryKeyProxy(new PrimaryKey());
+		return new PrimaryKeyProxy(facadeFactory, new PrimaryKey());
 	}
 
 	@Override
