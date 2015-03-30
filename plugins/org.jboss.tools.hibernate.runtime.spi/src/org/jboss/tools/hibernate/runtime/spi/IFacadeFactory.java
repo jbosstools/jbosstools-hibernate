@@ -19,5 +19,6 @@ public interface IFacadeFactory {
 	IExporter createExporter(Object target);
 	ITableIdentifier createTableIdentifier(Object target);
 	IHibernateMappingGlobalSettings createHibernateMappingGlobalSettings(Object target);
+	IMappings createMappings(Object target);
 	
 }
