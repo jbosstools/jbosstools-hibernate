@@ -23,7 +23,7 @@ public class DatabaseCollectorProxy implements IDatabaseCollector {
 		target = dbc;
 	}
 	
-	DefaultDatabaseCollector getTarget() {
+	public DefaultDatabaseCollector getTarget() {
 		return target;
 	}
 
