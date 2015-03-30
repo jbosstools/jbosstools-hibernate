@@ -12,6 +12,7 @@ import java.util.TimeZone;
 
 import org.hibernate.Hibernate;
 import org.hibernate.type.TypeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
@@ -19,6 +20,8 @@ import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 public class TypeFactoryProxy implements ITypeFactory {
 
 	private Map<IType, String> typeFormats = null;
+	
+	public TypeFactoryProxy(IFacadeFactory facadeFactory) {}
 
 	@Override
 	public IType getBooleanType() {

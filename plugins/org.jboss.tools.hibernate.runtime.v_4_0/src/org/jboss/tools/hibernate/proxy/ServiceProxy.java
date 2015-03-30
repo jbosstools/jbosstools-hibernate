@@ -179,7 +179,7 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public ITypeFactory newTypeFactory() {
-		return new TypeFactoryProxy();
+		return new TypeFactoryProxy(facadeFactory);
 	}
 
 	@Override
