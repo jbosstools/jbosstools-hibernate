@@ -70,7 +70,7 @@ public class TableProxy implements ITable {
 	@Override
 	public IPrimaryKey getPrimaryKey() {
 		if (primaryKey == null && target.getPrimaryKey() != null) {
-			primaryKey = new PrimaryKeyProxy(target.getPrimaryKey());
+			primaryKey = new PrimaryKeyProxy(facadeFactory, target.getPrimaryKey());
 		}
 		return primaryKey;
 	}
