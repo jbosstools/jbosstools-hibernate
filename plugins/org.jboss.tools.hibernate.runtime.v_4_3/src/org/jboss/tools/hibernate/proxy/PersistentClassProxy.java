@@ -161,7 +161,7 @@ public class PersistentClassProxy implements IPersistentClass {
 	@Override
 	public ITable getTable() {
 		if (table == null && target.getTable() != null) {
-			table = new TableProxy(target.getTable());
+			table = new TableProxy(facadeFactory, target.getTable());
 		}
 		return table;
 	}
@@ -459,7 +459,7 @@ public class PersistentClassProxy implements IPersistentClass {
 	@Override
 	public ITable getRootTable() {
 		if (rootTable == null) {
-			rootTable = new TableProxy(target.getRootTable());
+			rootTable = new TableProxy(facadeFactory, target.getRootTable());
 		}
 		return rootTable;
 	}
