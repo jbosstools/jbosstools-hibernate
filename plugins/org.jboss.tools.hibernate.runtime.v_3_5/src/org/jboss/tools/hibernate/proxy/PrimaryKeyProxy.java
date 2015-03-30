@@ -6,13 +6,13 @@ import java.util.List;
 
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
+import org.jboss.tools.hibernate.runtime.common.AbstractPrimaryKeyFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 
-public class PrimaryKeyProxy implements IPrimaryKey {
-	
+public class PrimaryKeyProxy extends AbstractPrimaryKeyFacade {
+
 	private PrimaryKey target = null;
 	private List<IColumn> columns = null;
 	private ITable table = null;
@@ -20,6 +20,7 @@ public class PrimaryKeyProxy implements IPrimaryKey {
 	public PrimaryKeyProxy(
 			IFacadeFactory facadeFactory,
 			PrimaryKey primaryKey) {
+		super(facadeFactory, primaryKey);
 		target = primaryKey;
 	}
 
