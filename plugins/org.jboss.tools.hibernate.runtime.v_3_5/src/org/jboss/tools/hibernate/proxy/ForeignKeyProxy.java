@@ -19,10 +19,6 @@ public class ForeignKeyProxy implements IForeignKey {
 	private HashSet<IColumn> columns = null;
 	private List<IColumn> referencedColumns = null;
 
-	public ForeignKeyProxy(ForeignKey foreignKey) {
-		target = foreignKey;
-	}
-
 	public ForeignKeyProxy(
 			IFacadeFactory facadeFactory,
 			ForeignKey foreignKey) {
