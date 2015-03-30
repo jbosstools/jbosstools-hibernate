@@ -137,8 +137,7 @@ public class ConfigurationProxy extends AbstractConfigurationFacade {
 	
 	@Override
 	public IMappings createMappings() {
-		return new MappingsProxy(
-				getFacadeFactory(),
+		return getFacadeFactory().createMappings(
 				getTarget().createMappings());
 	}
 
