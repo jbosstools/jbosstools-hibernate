@@ -7,6 +7,7 @@ import java.util.List;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
+import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 
@@ -17,6 +18,12 @@ public class PrimaryKeyProxy implements IPrimaryKey {
 	private ITable table = null;
 
 	public PrimaryKeyProxy(PrimaryKey primaryKey) {
+		target = primaryKey;
+	}
+
+	public PrimaryKeyProxy(
+			IFacadeFactory facadeFactory,
+			PrimaryKey primaryKey) {
 		target = primaryKey;
 	}
 
