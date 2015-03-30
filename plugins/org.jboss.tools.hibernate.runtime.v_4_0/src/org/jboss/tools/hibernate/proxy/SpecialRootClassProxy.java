@@ -17,7 +17,7 @@ public class SpecialRootClassProxy extends PersistentClassProxy {
 	public SpecialRootClassProxy(
 			IFacadeFactory facadeFactory, 
 			IProperty property) {
-		super(new RootClass());
+		super(facadeFactory, new RootClass());
 		this.property = property;
 		generate();
 	}
