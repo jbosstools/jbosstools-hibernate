@@ -8,11 +8,11 @@ import java.util.Map.Entry;
 
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.mapping.Table;
-import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
+import org.jboss.tools.hibernate.runtime.common.AbstractDatabaseCollectorFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 
-public class DatabaseCollectorProxy implements IDatabaseCollector {
+public class DatabaseCollectorProxy extends AbstractDatabaseCollectorFacade {
 	
 	private DefaultDatabaseCollector target = null;
 	private HashMap<String, List<ITable>> qualifierEntries = null;
@@ -20,6 +20,7 @@ public class DatabaseCollectorProxy implements IDatabaseCollector {
 	public DatabaseCollectorProxy(
 			IFacadeFactory facadeFactory,
 			DefaultDatabaseCollector dbc) {
+		super(facadeFactory, dbc);
 		target = dbc;
 	}
 	
