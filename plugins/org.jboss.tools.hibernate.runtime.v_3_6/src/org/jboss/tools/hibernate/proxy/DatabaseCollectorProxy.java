@@ -44,7 +44,7 @@ public class DatabaseCollectorProxy extends AbstractDatabaseCollectorFacade {
 			Entry<String, List<Table>> entry = origin.next();
 			ArrayList<ITable> list = new ArrayList<ITable>();
 			for (Table table : entry.getValue()) {
-				list.add(new TableProxy(table));
+				list.add(new TableProxy(getFacadeFactory(), table));
 			}
 			qualifierEntries.put(entry.getKey(), list);
 		}
