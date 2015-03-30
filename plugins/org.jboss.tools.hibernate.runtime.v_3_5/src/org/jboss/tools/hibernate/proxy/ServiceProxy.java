@@ -378,13 +378,13 @@ public class ServiceProxy implements IService {
 	public IPersistentClass newSingleTableSubclass(
 			IPersistentClass persistentClass) {
 		assert persistentClass instanceof PersistentClassProxy;
-		return new PersistentClassProxy(new SingleTableSubclass(((PersistentClassProxy)persistentClass).getTarget()));
+		return new PersistentClassProxy(facadeFactory, new SingleTableSubclass(((PersistentClassProxy)persistentClass).getTarget()));
 	}
 
 	@Override
 	public IPersistentClass newJoinedSubclass(IPersistentClass persistentClass) {
 		assert persistentClass instanceof PersistentClassProxy;
-		return new PersistentClassProxy(new JoinedSubclass(((PersistentClassProxy)persistentClass).getTarget()));
+		return new PersistentClassProxy(facadeFactory, new JoinedSubclass(((PersistentClassProxy)persistentClass).getTarget()));
 	}
 
 	@Override
@@ -394,7 +394,7 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public IPersistentClass newRootClass() {
-		return new PersistentClassProxy(new RootClass());
+		return new PersistentClassProxy(facadeFactory, new RootClass());
 	}
 
 	@Override
