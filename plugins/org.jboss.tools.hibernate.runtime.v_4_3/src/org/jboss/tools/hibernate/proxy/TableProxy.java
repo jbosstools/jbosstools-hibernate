@@ -7,6 +7,7 @@ import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
+import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
@@ -21,6 +22,12 @@ public class TableProxy implements ITable {
 	private HashSet<IForeignKey> foreignKeys = null;
 	
 	public TableProxy(Table table) {
+		target = table;
+	}
+
+	public TableProxy(
+			IFacadeFactory facadeFactory,
+			Table table) {
 		target = table;
 	}
 
