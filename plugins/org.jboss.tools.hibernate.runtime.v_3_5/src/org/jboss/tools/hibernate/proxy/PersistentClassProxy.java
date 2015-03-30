@@ -33,6 +33,8 @@ public class PersistentClassProxy implements IPersistentClass {
 	private HashSet<IJoin> joins = null;
 	private HashSet<IProperty> propertyClosures = null;
 	private HashMap<String, IProperty> properties = null;
+	
+	private IFacadeFactory facadeFactory = null;
 
 	public PersistentClassProxy(PersistentClass persistentClass) {
 		target = persistentClass;
@@ -41,6 +43,7 @@ public class PersistentClassProxy implements IPersistentClass {
 	public PersistentClassProxy(
 			IFacadeFactory facadeFactory,
 			PersistentClass persistentClass) {
+		this.facadeFactory = facadeFactory;
 		target = persistentClass;
 	}
 
@@ -99,7 +102,7 @@ public class PersistentClassProxy implements IPersistentClass {
 	@Override
 	public IPersistentClass getRootClass() {
 		if (rootClass == null && target.getRootClass() != null) {
-			rootClass = new PersistentClassProxy(target.getRootClass());
+			rootClass = new PersistentClassProxy(facadeFactory, target.getRootClass());
 		}
 		return rootClass;
 	}
@@ -124,7 +127,7 @@ public class PersistentClassProxy implements IPersistentClass {
 	@Override
 	public IPersistentClass getSuperclass() {
 		if (superClass != null) {
-			superClass = new PersistentClassProxy(target.getSuperclass());
+			superClass = new PersistentClassProxy(facadeFactory, target.getSuperclass());
 		}
 		return superClass;
 	}
@@ -319,7 +322,7 @@ public class PersistentClassProxy implements IPersistentClass {
 		Iterator<?> origin = target.getSubclassIterator();
 		subclasses = new HashSet<IPersistentClass>();
 		while (origin.hasNext()) {
-			subclasses.add(new PersistentClassProxy((Subclass)origin.next()));
+			subclasses.add(new PersistentClassProxy(facadeFactory, (Subclass)origin.next()));
 		}
 	}
 
