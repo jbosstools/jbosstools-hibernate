@@ -29,7 +29,7 @@ public class PrimaryKeyProxy implements IPrimaryKey {
 		target.addColumn(((ColumnProxy)column).getTarget());
 	}
 
-	PrimaryKey getTarget() {
+	public PrimaryKey getTarget() {
 		return target;
 	}
 
