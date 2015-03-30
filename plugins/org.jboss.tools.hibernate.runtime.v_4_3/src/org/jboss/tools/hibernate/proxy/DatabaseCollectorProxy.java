@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
+import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 
 public class DatabaseCollectorProxy implements IDatabaseCollector {
@@ -16,7 +17,9 @@ public class DatabaseCollectorProxy implements IDatabaseCollector {
 	private DefaultDatabaseCollector target = null;
 	private HashMap<String, List<ITable>> qualifierEntries = null;
 	
-	public DatabaseCollectorProxy(DefaultDatabaseCollector dbc) {
+	public DatabaseCollectorProxy(
+			IFacadeFactory facadeFactory,
+			DefaultDatabaseCollector dbc) {
 		target = dbc;
 	}
 	

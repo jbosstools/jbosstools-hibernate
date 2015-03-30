@@ -270,6 +270,7 @@ public class ServiceProxy implements IService {
 	public IDatabaseCollector newDatabaseCollector(IMetaDataDialect metaDataDialect) {
 		assert metaDataDialect instanceof MetaDataDialectProxy;
 		return new DatabaseCollectorProxy(
+				facadeFactory,
 				new DefaultDatabaseCollector(
 						((MetaDataDialectProxy)metaDataDialect).getTarget()));
 	}
