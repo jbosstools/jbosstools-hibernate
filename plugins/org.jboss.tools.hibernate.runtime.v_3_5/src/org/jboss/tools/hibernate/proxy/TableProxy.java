@@ -21,6 +21,8 @@ public class TableProxy implements ITable {
 	private IPrimaryKey primaryKey = null;
 	private HashSet<IForeignKey> foreignKeys = null;
 	
+	private IFacadeFactory facadeFactory = null;
+	
 	public TableProxy(Table table) {
 		target = table;
 	}
@@ -28,6 +30,7 @@ public class TableProxy implements ITable {
 	public TableProxy(
 			IFacadeFactory facadeFactory,
 			Table table) {
+		this.facadeFactory = facadeFactory;
 		target = table;
 	}
 
@@ -101,7 +104,7 @@ public class TableProxy implements ITable {
 		foreignKeys = new HashSet<IForeignKey>();
 		Iterator<?> origin = target.getForeignKeyIterator();
 		while (origin.hasNext()) {
-			foreignKeys.add(new ForeignKeyProxy((ForeignKey)origin.next()));
+			foreignKeys.add(new ForeignKeyProxy(facadeFactory, (ForeignKey)origin.next()));
 		}
 	}
 
