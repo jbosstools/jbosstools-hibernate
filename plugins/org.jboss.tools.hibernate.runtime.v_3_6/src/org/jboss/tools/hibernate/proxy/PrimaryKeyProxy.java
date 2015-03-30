@@ -17,10 +17,6 @@ public class PrimaryKeyProxy implements IPrimaryKey {
 	private List<IColumn> columns = null;
 	private ITable table = null;
 
-	public PrimaryKeyProxy(PrimaryKey primaryKey) {
-		target = primaryKey;
-	}
-
 	public PrimaryKeyProxy(
 			IFacadeFactory facadeFactory,
 			PrimaryKey primaryKey) {
