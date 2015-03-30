@@ -29,7 +29,7 @@ public class ForeignKeyProxy extends AbstractForeignKeyFacade {
 	@Override
 	public ITable getReferencedTable() {
 		if (referencedTable == null && target.getReferencedTable() != null) {
-			referencedTable = new TableProxy(target.getReferencedTable());
+			referencedTable = new TableProxy(getFacadeFactory(), target.getReferencedTable());
 		}
 		return referencedTable;
 	}
