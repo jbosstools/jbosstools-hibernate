@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.hibernate.hql.QueryTranslator;
 import org.hibernate.type.Type;
+import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IQueryTranslator;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 
@@ -16,6 +17,12 @@ public class QueryTranslatorProxy implements IQueryTranslator {
 	private IType[] returnTypes = null;
 
 	public QueryTranslatorProxy(QueryTranslator translator) {
+		target = translator;
+	}
+
+	public QueryTranslatorProxy(
+			IFacadeFactory facadeFactory,
+			QueryTranslator translator) {
 		target = translator;
 	}
 
