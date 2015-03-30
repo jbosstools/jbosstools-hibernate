@@ -66,7 +66,7 @@ public class PrimaryKeyProxy extends AbstractPrimaryKeyFacade {
 	@Override
 	public ITable getTable() {
 		if (table == null && target.getTable() != null) {
-			table = new TableProxy(target.getTable());
+			table = new TableProxy(getFacadeFactory(), target.getTable());
 		}
 		return table;
 	}
