@@ -55,7 +55,7 @@ public class ClassMetadataProxy extends AbstractClassMetadataFacade {
 		Type[] origin = target.getPropertyTypes();
 		ArrayList<IType> propertyTypes = new ArrayList<IType>(origin.length);
 		for (Type type : origin) {
-			propertyTypes.add(new TypeProxy(type));
+			propertyTypes.add(new TypeProxy(getFacadeFactory(), type));
 		}
 		this.propertyTypes = propertyTypes.toArray(new IType[origin.length]);
 	}
@@ -68,7 +68,7 @@ public class ClassMetadataProxy extends AbstractClassMetadataFacade {
 	@Override
 	public IType getIdentifierType() {
 		if (identifierType == null) {
-			identifierType = new TypeProxy(target.getIdentifierType());
+			identifierType = new TypeProxy(getFacadeFactory(), target.getIdentifierType());
 		}
 		return identifierType;
 	}
