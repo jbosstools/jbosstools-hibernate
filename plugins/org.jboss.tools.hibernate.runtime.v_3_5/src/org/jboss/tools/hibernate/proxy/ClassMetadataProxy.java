@@ -27,6 +27,10 @@ public class ClassMetadataProxy extends AbstractClassMetadataFacade {
 		super(facadeFactory, classMetadata);
 		target = classMetadata;
 	}
+	
+	public ClassMetadata getTarget() {
+		return (ClassMetadata)super.getTarget();
+	}
 
 	@Override
 	public String getEntityName() {
