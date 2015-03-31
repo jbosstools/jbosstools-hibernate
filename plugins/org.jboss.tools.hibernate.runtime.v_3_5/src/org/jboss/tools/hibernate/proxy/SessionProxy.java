@@ -58,7 +58,9 @@ public class SessionProxy implements ISession {
 	}
 
 	public ICriteria createCriteria(Class<?> persistentClass) {
-		return new CriteriaProxy(target.createCriteria(persistentClass));
+		return new CriteriaProxy(
+				facadeFactory,
+				target.createCriteria(persistentClass));
 	}
 	
 }

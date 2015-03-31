@@ -3,18 +3,25 @@ package org.jboss.tools.hibernate.proxy;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.jboss.tools.hibernate.runtime.common.AbstractCriteriaFacade;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
+import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 
-public class CriteriaProxy implements ICriteria {
+public class CriteriaProxy extends AbstractCriteriaFacade {
 
 	private Criteria target;
 
-	public CriteriaProxy(Criteria criteria) {
+	public CriteriaProxy(
+			IFacadeFactory facadeFactory, 
+			Criteria criteria) {
+		super(facadeFactory, criteria);
 		target = criteria;
 	}
 	
 	public ICriteria createCriteria(String associationPath, String alias) {
-		return new CriteriaProxy(target.createCriteria(associationPath, alias));
+		return new CriteriaProxy(
+				getFacadeFactory(), 
+				target.createCriteria(associationPath, alias));
 	}
 
 	@Override
