@@ -48,12 +48,15 @@ public class ValueProxy implements IValue {
 	private HashSet<IColumn> columns = null;
 	private IPersistentClass owner = null;
 	private HashSet<IProperty> properties = null;
+	
+	private IFacadeFactory facadeFactory = null;
 
 	public ValueProxy(Value value) {
 		target = value;
 	}
 
 	public ValueProxy(IFacadeFactory facadeFactory, Value value) {
+		this.facadeFactory = facadeFactory;
 		target = value;
 	}
 
@@ -207,7 +210,7 @@ public class ValueProxy implements IValue {
 		while (iterator.hasNext()) {
 			Object object = iterator.next();
 			if (object instanceof Column) {
-				columns.add(new ColumnProxy(object));
+				columns.add(new ColumnProxy(facadeFactory, (Column)object));
 			}
 		}
 	}
