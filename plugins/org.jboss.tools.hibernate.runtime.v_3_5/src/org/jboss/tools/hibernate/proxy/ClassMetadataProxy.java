@@ -17,7 +17,6 @@ import org.jboss.tools.hibernate.runtime.spi.IType;
 
 public class ClassMetadataProxy extends AbstractClassMetadataFacade {
 	
-	private ClassMetadata target = null;
 	private IType[] propertyTypes = null;
 	private IType identifierType = null;
 
@@ -25,7 +24,6 @@ public class ClassMetadataProxy extends AbstractClassMetadataFacade {
 			IFacadeFactory facadeFactory,
 			ClassMetadata classMetadata) {
 		super(facadeFactory, classMetadata);
-		target = classMetadata;
 	}
 	
 	public ClassMetadata getTarget() {
@@ -34,17 +32,17 @@ public class ClassMetadataProxy extends AbstractClassMetadataFacade {
 
 	@Override
 	public String getEntityName() {
-		return target.getEntityName();
+		return getTarget().getEntityName();
 	}
 
 	@Override
 	public String getIdentifierPropertyName() {
-		return target.getIdentifierPropertyName();
+		return getTarget().getIdentifierPropertyName();
 	}
 
 	@Override
 	public String[] getPropertyNames() {
-		return target.getPropertyNames();
+		return getTarget().getPropertyNames();
 	}
 
 	@Override
@@ -56,7 +54,7 @@ public class ClassMetadataProxy extends AbstractClassMetadataFacade {
 	}
 	
 	private void initializePropertyTypes() {
-		Type[] origin = target.getPropertyTypes();
+		Type[] origin = getTarget().getPropertyTypes();
 		ArrayList<IType> propertyTypes = new ArrayList<IType>(origin.length);
 		for (Type type : origin) {
 			propertyTypes.add(new TypeProxy(getFacadeFactory(), type));
@@ -66,13 +64,13 @@ public class ClassMetadataProxy extends AbstractClassMetadataFacade {
 
 	@Override
 	public Class<?> getMappedClass() {
-		return target.getMappedClass(EntityMode.POJO);
+		return getTarget().getMappedClass(EntityMode.POJO);
 	}
 
 	@Override
 	public IType getIdentifierType() {
 		if (identifierType == null) {
-			identifierType = new TypeProxy(getFacadeFactory(), target.getIdentifierType());
+			identifierType = new TypeProxy(getFacadeFactory(), getTarget().getIdentifierType());
 		}
 		return identifierType;
 	}
@@ -80,7 +78,7 @@ public class ClassMetadataProxy extends AbstractClassMetadataFacade {
 	@Override
 	public Object getPropertyValue(Object object, String name) throws HibernateException {
 		try {
-			return target.getPropertyValue(object, name, EntityMode.POJO);
+			return getTarget().getPropertyValue(object, name, EntityMode.POJO);
 		} catch (org.hibernate.HibernateException e) {
 			throw new HibernateException(e.getMessage(), e.getCause());
 		}
@@ -88,7 +86,7 @@ public class ClassMetadataProxy extends AbstractClassMetadataFacade {
 
 	@Override
 	public boolean hasIdentifierProperty() {
-		return target.hasIdentifierProperty();
+		return getTarget().hasIdentifierProperty();
 	}
 
 	@Override
@@ -96,20 +94,20 @@ public class ClassMetadataProxy extends AbstractClassMetadataFacade {
 		Object result = null;
 		if (session instanceof SessionProxy) {
 			SessionImplementor impl = (SessionImplementor)((SessionProxy)session).getTarget();
-			result = target.getIdentifier(object, impl);
+			result = getTarget().getIdentifier(object, impl);
 		}
 		return result;
 	}
 
 	@Override
 	public boolean isInstanceOfAbstractEntityPersister() {
-		return target instanceof AbstractEntityPersister;
+		return getTarget() instanceof AbstractEntityPersister;
 	}
 
 	@Override
 	public IEntityMetamodel getEntityMetamodel() {
-		assert target instanceof AbstractEntityPersister;
-		EntityMetamodel emm = ((AbstractEntityPersister)target).getEntityMetamodel();
+		assert getTarget() instanceof AbstractEntityPersister;
+		EntityMetamodel emm = ((AbstractEntityPersister)getTarget()).getEntityMetamodel();
 		return emm != null ? new EntityMetamodelProxy(emm) : null;
 	}
 
