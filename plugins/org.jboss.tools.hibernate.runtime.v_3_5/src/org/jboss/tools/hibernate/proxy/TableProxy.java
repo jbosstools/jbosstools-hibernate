@@ -88,7 +88,7 @@ public class TableProxy implements ITable {
 		columns = new HashSet<IColumn>();
 		Iterator<Column> iterator = target.getColumnIterator();
 		while (iterator.hasNext()) {
-			columns.add(new ColumnProxy(iterator.next()));
+			columns.add(new ColumnProxy(facadeFactory, iterator.next()));
 		}
 	}
 
