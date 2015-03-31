@@ -11,13 +11,14 @@ public class SessionProxy implements ISession {
 	
 	private Session target;
 	private ISessionFactory targetFactory;
+	private IFacadeFactory facadeFactory = null;
 
 	public SessionProxy(
 			IFacadeFactory facadeFactory,
 			ISessionFactory sessionFactory, 
 			Session session) {
 		target = session;
-		targetFactory = sessionFactory;
+		this.facadeFactory = facadeFactory;
 	}
 
 	@Override
@@ -27,6 +28,9 @@ public class SessionProxy implements ISession {
 
 	@Override
 	public ISessionFactory getSessionFactory() {
+		if (targetFactory == null && target.getSessionFactory() != null) {
+			targetFactory = new SessionFactoryProxy(facadeFactory, target.getSessionFactory());
+		}
 		return targetFactory;
 	}
 
