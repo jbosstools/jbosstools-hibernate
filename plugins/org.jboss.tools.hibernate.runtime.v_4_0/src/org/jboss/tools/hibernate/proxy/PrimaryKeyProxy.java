@@ -51,7 +51,7 @@ public class PrimaryKeyProxy extends AbstractPrimaryKeyFacade {
 		columns = new ArrayList<IColumn>();
 		Iterator<?> origin = target.getColumns().iterator();
 		while (origin.hasNext()) {
-			columns.add(new ColumnProxy((Column)origin.next()));
+			columns.add(new ColumnProxy(getFacadeFactory(), (Column)origin.next()));
 		}
 	}
 
