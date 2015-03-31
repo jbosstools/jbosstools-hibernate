@@ -6,6 +6,7 @@ import org.hibernate.mapping.Column;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IDialect;
+import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IMapping;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 
@@ -17,6 +18,12 @@ public class ColumnProxy implements IColumn {
 	public ColumnProxy(Column column) {
 		target = column;
 	}
+	
+	public ColumnProxy(
+			IFacadeFactory facadeFactory, 
+			Column column) {
+		target = column;
+	}	
 
 	public Column getTarget() {
 		return target;
