@@ -155,7 +155,7 @@ public class TableProxy implements ITable {
 	@Override
 	public IValue getIdentifierValue() {
 		if (identifierValue == null && target.getIdentifierValue() != null) {
-			identifierValue = new ValueProxy(target.getIdentifierValue());
+			identifierValue = new ValueProxy(facadeFactory, target.getIdentifierValue());
 		}
 		return identifierValue;
 	}
