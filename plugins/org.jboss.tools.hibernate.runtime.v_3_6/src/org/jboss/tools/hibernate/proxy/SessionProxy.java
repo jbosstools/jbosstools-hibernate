@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.Session;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
+import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
@@ -11,7 +12,10 @@ public class SessionProxy implements ISession {
 	private Session target;
 	private ISessionFactory targetFactory;
 
-	public SessionProxy(ISessionFactory sessionFactory, Session session) {
+	public SessionProxy(
+			IFacadeFactory facadeFactory,
+			ISessionFactory sessionFactory, 
+			Session session) {
 		target = session;
 		targetFactory = sessionFactory;
 	}
