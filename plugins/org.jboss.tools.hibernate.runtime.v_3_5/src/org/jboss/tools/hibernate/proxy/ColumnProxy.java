@@ -17,10 +17,6 @@ public class ColumnProxy implements IColumn {
 	
 	private IFacadeFactory facadeFactory = null;
 
-	public ColumnProxy(Column column) {
-		target = column;
-	}
-	
 	public ColumnProxy(
 			IFacadeFactory facadeFactory, 
 			Column column) {
