@@ -3,14 +3,14 @@ package org.jboss.tools.hibernate.proxy;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.Mapping;
 import org.hibernate.mapping.Column;
+import org.jboss.tools.hibernate.runtime.common.AbstractColumnFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
-import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IMapping;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 
-public class ColumnProxy implements IColumn {
+public class ColumnProxy extends AbstractColumnFacade {
 	
 	private Column target = null;
 	private IValue value = null;
@@ -20,12 +20,13 @@ public class ColumnProxy implements IColumn {
 	public ColumnProxy(
 			IFacadeFactory facadeFactory, 
 			Column column) {
+		super(facadeFactory, column);
 		this.facadeFactory = facadeFactory;
 		target = column;
 	}	
 
 	public Column getTarget() {
-		return target;
+		return (Column)super.getTarget();
 	}
 
 	@Override
