@@ -79,7 +79,7 @@ public class ValueProxy implements IValue {
 		if (isCollection() && collectionElement == null) {
 			Value element = ((Collection)target).getElement();
 			if (element != null) {
-				collectionElement = new ValueProxy(element);
+				collectionElement = new ValueProxy(facadeFactory, element);
 			}
 		}
 		return collectionElement;
@@ -241,7 +241,7 @@ public class ValueProxy implements IValue {
 		if (key == null && isCollection()) {
 			Collection collection = (Collection)target;
 			if (collection.getKey() != null) {
-				key = new ValueProxy(collection.getKey());
+				key = new ValueProxy(facadeFactory, collection.getKey());
 			}
 		}
 		return key;
@@ -266,7 +266,7 @@ public class ValueProxy implements IValue {
 		if (index == null && isList()) {
 			List list = (List)target;
 			if (list.getIndex() != null) {
-				index = new ValueProxy(list.getIndex());
+				index = new ValueProxy(facadeFactory, list.getIndex());
 			}
 		}
 		return index;
@@ -379,7 +379,7 @@ public class ValueProxy implements IValue {
 		assert target instanceof Collection;
 		IValue result = null;
 		if (((Collection)target).getElement() != null) {
-			result = new ValueProxy(((Collection)target).getElement());
+			result = new ValueProxy(facadeFactory, ((Collection)target).getElement());
 		}
 		return result;
 	}
