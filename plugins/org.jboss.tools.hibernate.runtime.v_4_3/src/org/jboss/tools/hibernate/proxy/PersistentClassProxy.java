@@ -174,7 +174,7 @@ public class PersistentClassProxy implements IPersistentClass {
 	@Override
 	public IValue getDiscriminator() {
 		if (discriminator == null && target.getDiscriminator() != null) {
-			discriminator = new ValueProxy(target.getDiscriminator());
+			discriminator = new ValueProxy(facadeFactory, target.getDiscriminator());
 		}
 		return discriminator;
 	}
@@ -182,7 +182,7 @@ public class PersistentClassProxy implements IPersistentClass {
 	@Override
 	public IValue getIdentifier() {
 		if (identifier == null && target.getIdentifier() != null) {
-			identifier = new ValueProxy(target.getIdentifier());
+			identifier = new ValueProxy(facadeFactory, target.getIdentifier());
 		}
 		return identifier;
 	}
