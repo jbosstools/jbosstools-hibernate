@@ -14,18 +14,16 @@ import org.jboss.tools.hibernate.runtime.spi.ITable;
 
 public class DatabaseCollectorProxy extends AbstractDatabaseCollectorFacade {
 	
-	private DefaultDatabaseCollector target = null;
 	private HashMap<String, List<ITable>> qualifierEntries = null;
 	
 	public DatabaseCollectorProxy(
 			IFacadeFactory facadeFactory,
 			DefaultDatabaseCollector dbc) {
 		super(facadeFactory, dbc);
-		target = dbc;
 	}
 	
 	public DefaultDatabaseCollector getTarget() {
-		return target;
+		return (DefaultDatabaseCollector)super.getTarget();
 	}
 
 	@Override
@@ -39,7 +37,7 @@ public class DatabaseCollectorProxy extends AbstractDatabaseCollectorFacade {
 	@SuppressWarnings("unchecked")
 	private void initializeQualifierEntries() {
 		qualifierEntries = new HashMap<String, List<ITable>>();
-		Iterator<Entry<String, List<Table>>> origin = target.getQualifierEntries();
+		Iterator<Entry<String, List<Table>>> origin = getTarget().getQualifierEntries();
 		while (origin.hasNext()) {
 			Entry<String, List<Table>> entry = origin.next();
 			ArrayList<ITable> list = new ArrayList<ITable>();
