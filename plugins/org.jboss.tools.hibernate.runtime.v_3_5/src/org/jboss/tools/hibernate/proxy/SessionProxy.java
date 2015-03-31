@@ -15,7 +15,6 @@ public class SessionProxy implements ISession {
 
 	public SessionProxy(
 			IFacadeFactory facadeFactory,
-			ISessionFactory sessionFactory, 
 			Session session) {
 		target = session;
 		this.facadeFactory = facadeFactory;

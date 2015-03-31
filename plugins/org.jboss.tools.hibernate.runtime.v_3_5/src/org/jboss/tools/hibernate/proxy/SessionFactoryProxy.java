@@ -76,7 +76,7 @@ public class SessionFactoryProxy extends AbstractSessionFactoryFacade {
 
 	@Override
 	public ISession openSession() {
-		return new SessionProxy(getFacadeFactory(), this, target.openSession());
+		return new SessionProxy(getFacadeFactory(), target.openSession());
 	}
 	
 	public SessionFactory getTarget() {
