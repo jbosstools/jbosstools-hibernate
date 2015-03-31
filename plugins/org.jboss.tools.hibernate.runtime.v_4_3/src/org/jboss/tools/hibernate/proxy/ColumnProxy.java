@@ -28,22 +28,22 @@ public class ColumnProxy extends AbstractColumnFacade {
 
 	@Override
 	public String getName() {
-		return target.getName();
+		return getTarget().getName();
 	}
 
 	@Override
 	public Integer getSqlTypeCode() {
-		return target.getSqlTypeCode();
+		return getTarget().getSqlTypeCode();
 	}
 
 	@Override
 	public String getSqlType() {
-		return target.getSqlType();
+		return getTarget().getSqlType();
 	}
 
 	@Override
 	public int getLength() {
-		return target.getLength();
+		return getTarget().getLength();
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class ColumnProxy extends AbstractColumnFacade {
 
 	@Override
 	public int getPrecision() {
-		return target.getPrecision();
+		return getTarget().getPrecision();
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class ColumnProxy extends AbstractColumnFacade {
 
 	@Override
 	public int getScale() {
-		return target.getScale();
+		return getTarget().getScale();
 	}
 
 	@Override
@@ -73,34 +73,34 @@ public class ColumnProxy extends AbstractColumnFacade {
 
 	@Override
 	public boolean isNullable() {
-		return target.isNullable();
+		return getTarget().isNullable();
 	}
 
 	@Override
 	public IValue getValue() {
-		if (target.getValue() != null && value == null) {
-			value = new ValueProxy(getFacadeFactory(), target.getValue());
+		if (getTarget().getValue() != null && value == null) {
+			value = new ValueProxy(getFacadeFactory(), getTarget().getValue());
 		}
 		return value;
 	}
 
 	@Override
 	public boolean isUnique() {
-		return target.isUnique();
+		return getTarget().isUnique();
 	}
 
 	@Override
 	public String getSqlType(IDialect dialect, IMapping mapping) {
 		assert dialect instanceof IFacade;
 		assert mapping instanceof IFacade;
-		return target.getSqlType(
+		return getTarget().getSqlType(
 				(Dialect)((IFacade)dialect).getTarget(), 
 				(Mapping)((IFacade)mapping).getTarget());
 	}
 
 	@Override
 	public void setSqlType(String sqlType) {
-		target.setSqlType(sqlType);
+		getTarget().setSqlType(sqlType);
 	}
 
 }
