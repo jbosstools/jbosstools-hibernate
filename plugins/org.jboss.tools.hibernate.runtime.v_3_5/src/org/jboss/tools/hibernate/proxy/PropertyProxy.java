@@ -14,6 +14,8 @@ public class PropertyProxy implements IProperty {
 	private IType type = null;
 	private IPersistentClass persistentClass = null;
 	
+	private IFacadeFactory facadeFactory = null;
+	
 	public PropertyProxy(Property property) {
 		target = property;
 	}
@@ -21,6 +23,7 @@ public class PropertyProxy implements IProperty {
 	public PropertyProxy(
 			IFacadeFactory facadeFactory,
 			Property property) {
+		this.facadeFactory = facadeFactory;
 		target = property;
 	}
 	
@@ -31,7 +34,7 @@ public class PropertyProxy implements IProperty {
 	@Override
 	public IValue getValue() {
 		if (value == null && target.getValue() != null) {
-			value = new ValueProxy(target.getValue());
+			value = new ValueProxy(facadeFactory, target.getValue());
 		}
 		return value;
 	}
