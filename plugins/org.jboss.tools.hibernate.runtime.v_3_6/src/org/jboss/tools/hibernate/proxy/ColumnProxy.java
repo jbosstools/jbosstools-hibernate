@@ -82,7 +82,7 @@ public class ColumnProxy extends AbstractColumnFacade {
 	@Override
 	public IValue getValue() {
 		if (target.getValue() != null && value == null) {
-			value = new ValueProxy(facadeFactory, target.getValue());
+			value = new ValueProxy(getFacadeFactory(), target.getValue());
 		}
 		return value;
 	}
