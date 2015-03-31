@@ -12,14 +12,12 @@ import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public class ColumnProxy extends AbstractColumnFacade {
 	
-	private Column target = null;
 	private IValue value = null;
 	
 	public ColumnProxy(
 			IFacadeFactory facadeFactory, 
 			Column column) {
 		super(facadeFactory, column);
-		target = column;
 	}	
 
 	public Column getTarget() {
