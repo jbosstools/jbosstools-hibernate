@@ -14,6 +14,8 @@ public class ColumnProxy implements IColumn {
 	
 	private Column target = null;
 	private IValue value = null;
+	
+	private IFacadeFactory facadeFactory = null;
 
 	public ColumnProxy(Column column) {
 		target = column;
@@ -22,6 +24,7 @@ public class ColumnProxy implements IColumn {
 	public ColumnProxy(
 			IFacadeFactory facadeFactory, 
 			Column column) {
+		this.facadeFactory = facadeFactory;
 		target = column;
 	}	
 
@@ -82,7 +85,7 @@ public class ColumnProxy implements IColumn {
 	@Override
 	public IValue getValue() {
 		if (target.getValue() != null && value == null) {
-			value = new ValueProxy(target.getValue());
+			value = new ValueProxy(facadeFactory, target.getValue());
 		}
 		return value;
 	}
