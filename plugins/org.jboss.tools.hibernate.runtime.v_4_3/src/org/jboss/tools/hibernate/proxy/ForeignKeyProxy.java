@@ -46,7 +46,7 @@ public class ForeignKeyProxy extends AbstractForeignKeyFacade {
 		columns = new HashSet<IColumn>();
 		Iterator<?> origin = target.columnIterator();
 		while (origin.hasNext()) {
-			columns.add(new ColumnProxy((Column)origin.next()));
+			columns.add(new ColumnProxy(getFacadeFactory(), (Column)origin.next()));
 		}
 	}
 
@@ -66,7 +66,7 @@ public class ForeignKeyProxy extends AbstractForeignKeyFacade {
 	private void initializeReferencedColumns() {
 		referencedColumns = new ArrayList<IColumn>();
 		for (Object column : target.getReferencedColumns()) {
-			referencedColumns.add(new ColumnProxy((Column)column));
+			referencedColumns.add(new ColumnProxy(getFacadeFactory(), (Column)column));
 		}
 	}
 
