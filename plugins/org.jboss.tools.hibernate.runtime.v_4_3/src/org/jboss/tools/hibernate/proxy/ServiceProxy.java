@@ -325,7 +325,7 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public IColumn newColumn(String string) {
-		return new ColumnProxy(new Column(string));
+		return new ColumnProxy(facadeFactory, new Column(string));
 	}
 
 	@Override
