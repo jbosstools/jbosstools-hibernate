@@ -9,13 +9,10 @@ import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 
 public class CriteriaProxy extends AbstractCriteriaFacade {
 
-	private Criteria target;
-
 	public CriteriaProxy(
 			IFacadeFactory facadeFactory,
 			Criteria criteria) {
 		super(facadeFactory, criteria);
-		target = criteria;
 	}
 	
 	public Criteria getTarget() {
@@ -25,18 +22,18 @@ public class CriteriaProxy extends AbstractCriteriaFacade {
 	public ICriteria createCriteria(String associationPath, String alias) {
 		return new CriteriaProxy(
 				getFacadeFactory(), 
-				target.createCriteria(associationPath, alias));
+				getTarget().createCriteria(associationPath, alias));
 	}
 
 	@Override
 	public void setMaxResults(int intValue) {
-		target.setMaxResults(intValue);
+		getTarget().setMaxResults(intValue);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Object> list() {
-		return target.list();
+		return getTarget().list();
 	}
 
 }
