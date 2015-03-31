@@ -15,13 +15,10 @@ public class ColumnProxy extends AbstractColumnFacade {
 	private Column target = null;
 	private IValue value = null;
 	
-	private IFacadeFactory facadeFactory = null;
-
 	public ColumnProxy(
 			IFacadeFactory facadeFactory, 
 			Column column) {
 		super(facadeFactory, column);
-		this.facadeFactory = facadeFactory;
 		target = column;
 	}	
 
