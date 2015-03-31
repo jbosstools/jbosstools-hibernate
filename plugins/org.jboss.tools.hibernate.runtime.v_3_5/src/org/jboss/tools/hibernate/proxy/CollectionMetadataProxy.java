@@ -7,20 +7,18 @@ import org.jboss.tools.hibernate.runtime.spi.IType;
 
 public class CollectionMetadataProxy extends AbstractCollectionMetadataFacade {
 	
-	private CollectionMetadata target = null;
 	private IType elementType = null;
 
 	public CollectionMetadataProxy(
 			IFacadeFactory facadeFactory,
 			CollectionMetadata value) {
 		super(facadeFactory, value);
-		target = value;
 	}
 
 	@Override
 	public IType getElementType() {
 		if (elementType == null) {
-			elementType = new TypeProxy(getFacadeFactory(), target.getElementType());
+			elementType = new TypeProxy(getFacadeFactory(), ((CollectionMetadata)getTarget()).getElementType());
 		}
 		return elementType;
 	}
