@@ -18,6 +18,10 @@ public class CriteriaProxy extends AbstractCriteriaFacade {
 		target = criteria;
 	}
 	
+	public Criteria getTarget() {
+		return (Criteria)super.getTarget();
+	}
+	
 	public ICriteria createCriteria(String associationPath, String alias) {
 		return new CriteriaProxy(
 				getFacadeFactory(),
