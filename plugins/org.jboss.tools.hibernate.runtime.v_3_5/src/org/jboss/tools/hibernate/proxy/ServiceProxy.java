@@ -318,61 +318,61 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public IValue newSimpleValue() {
-		return new ValueProxy(new SimpleValue());
+		return new ValueProxy(facadeFactory, new SimpleValue());
 	}
 
 	@Override
 	public IValue newPrimitiveArray(IPersistentClass persistentClass) {
 		assert persistentClass instanceof PersistentClassProxy;
-		return new ValueProxy(new PrimitiveArray(((PersistentClassProxy)persistentClass).getTarget()));
+		return new ValueProxy(facadeFactory, new PrimitiveArray(((PersistentClassProxy)persistentClass).getTarget()));
 	}
 
 	@Override
 	public IValue newArray(IPersistentClass persistentClass) {
 		assert persistentClass instanceof PersistentClassProxy;
-		return new ValueProxy(new Array(((PersistentClassProxy)persistentClass).getTarget()));
+		return new ValueProxy(facadeFactory, new Array(((PersistentClassProxy)persistentClass).getTarget()));
 	}
 
 	@Override
 	public IValue newBag(IPersistentClass persistentClass) {
 		assert persistentClass instanceof PersistentClassProxy;
-		return new ValueProxy(new Bag(((PersistentClassProxy)persistentClass).getTarget()));
+		return new ValueProxy(facadeFactory, new Bag(((PersistentClassProxy)persistentClass).getTarget()));
 	}
 
 	@Override
 	public IValue newList(IPersistentClass persistentClass) {
 		assert persistentClass instanceof PersistentClassProxy;
-		return new ValueProxy(new org.hibernate.mapping.List(((PersistentClassProxy)persistentClass).getTarget()));
+		return new ValueProxy(facadeFactory, new org.hibernate.mapping.List(((PersistentClassProxy)persistentClass).getTarget()));
 	}
 
 	@Override
 	public IValue newMap(IPersistentClass persistentClass) {
 		assert persistentClass instanceof PersistentClassProxy;
-		return new ValueProxy(new org.hibernate.mapping.Map(((PersistentClassProxy)persistentClass).getTarget()));
+		return new ValueProxy(facadeFactory, new org.hibernate.mapping.Map(((PersistentClassProxy)persistentClass).getTarget()));
 	}
 
 	@Override
 	public IValue newSet(IPersistentClass persistentClass) {
 		assert persistentClass instanceof PersistentClassProxy;
-		return new ValueProxy(new Set(((PersistentClassProxy)persistentClass).getTarget()));
+		return new ValueProxy(facadeFactory, new Set(((PersistentClassProxy)persistentClass).getTarget()));
 	}
 
 	@Override
 	public IValue newManyToOne(ITable table) {
 		assert table instanceof TableProxy;
-		return new ValueProxy(new ManyToOne(((TableProxy)table).getTarget()));
+		return new ValueProxy(facadeFactory, new ManyToOne(((TableProxy)table).getTarget()));
 	}
 
 	@Override
 	public IValue newOneToMany(IPersistentClass persistentClass) {
 		assert persistentClass instanceof PersistentClassProxy;
-		return new ValueProxy(new OneToMany(((PersistentClassProxy)persistentClass).getTarget()));
+		return new ValueProxy(facadeFactory, new OneToMany(((PersistentClassProxy)persistentClass).getTarget()));
 	}
 
 	@Override
 	public IValue newOneToOne(IPersistentClass persistentClass) {
 		assert persistentClass instanceof PersistentClassProxy;
-		return new ValueProxy(new OneToOne(((PersistentClassProxy)persistentClass).getTarget().getTable(), ((PersistentClassProxy)persistentClass).getTarget()));
+		return new ValueProxy(facadeFactory, new OneToOne(((PersistentClassProxy)persistentClass).getTarget().getTable(), ((PersistentClassProxy)persistentClass).getTarget()));
 	}
 
 	@Override
