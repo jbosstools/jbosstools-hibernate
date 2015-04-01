@@ -25,6 +25,10 @@ public class ForeignKeyProxy extends AbstractForeignKeyFacade {
 		super(facadeFactory, foreignKey);
 		target = foreignKey;
 	}
+	
+	public ForeignKey getTarget() {
+		return (ForeignKey)super.getTarget();
+	}
 
 	@Override
 	public ITable getReferencedTable() {
