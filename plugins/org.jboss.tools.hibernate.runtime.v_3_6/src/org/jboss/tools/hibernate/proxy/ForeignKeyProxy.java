@@ -14,7 +14,6 @@ import org.jboss.tools.hibernate.runtime.spi.ITable;
 
 public class ForeignKeyProxy extends AbstractForeignKeyFacade {
 	
-	private ForeignKey target = null;
 	private ITable referencedTable = null;
 	private HashSet<IColumn> columns = null;
 	private List<IColumn> referencedColumns = null;
@@ -23,7 +22,6 @@ public class ForeignKeyProxy extends AbstractForeignKeyFacade {
 			IFacadeFactory facadeFactory,
 			ForeignKey foreignKey) {
 		super(facadeFactory, foreignKey);
-		target = foreignKey;
 	}
 
 	public ForeignKey getTarget() {
@@ -32,8 +30,8 @@ public class ForeignKeyProxy extends AbstractForeignKeyFacade {
 
 	@Override
 	public ITable getReferencedTable() {
-		if (referencedTable == null && target.getReferencedTable() != null) {
-			referencedTable = new TableProxy(getFacadeFactory(), target.getReferencedTable());
+		if (referencedTable == null && getTarget().getReferencedTable() != null) {
+			referencedTable = new TableProxy(getFacadeFactory(), getTarget().getReferencedTable());
 		}
 		return referencedTable;
 	}
@@ -48,7 +46,7 @@ public class ForeignKeyProxy extends AbstractForeignKeyFacade {
 	
 	private void initializeColumns() {
 		columns = new HashSet<IColumn>();
-		Iterator<?> origin = target.columnIterator();
+		Iterator<?> origin = getTarget().columnIterator();
 		while (origin.hasNext()) {
 			columns.add(new ColumnProxy(getFacadeFactory(), (Column)origin.next()));
 		}
@@ -56,7 +54,7 @@ public class ForeignKeyProxy extends AbstractForeignKeyFacade {
 
 	@Override
 	public boolean isReferenceToPrimaryKey() {
-		return target.isReferenceToPrimaryKey();
+		return getTarget().isReferenceToPrimaryKey();
 	}
 
 	@Override
@@ -69,7 +67,7 @@ public class ForeignKeyProxy extends AbstractForeignKeyFacade {
 	
 	private void initializeReferencedColumns() {
 		referencedColumns = new ArrayList<IColumn>();
-		for (Object column : target.getReferencedColumns()) {
+		for (Object column : getTarget().getReferencedColumns()) {
 			referencedColumns.add(new ColumnProxy(getFacadeFactory(), (Column)column));
 		}
 	}
@@ -77,7 +75,7 @@ public class ForeignKeyProxy extends AbstractForeignKeyFacade {
 	@Override
 	public boolean containsColumn(IColumn column) {
 		assert column instanceof ColumnProxy;
-		return target.containsColumn(((ColumnProxy)column).getTarget());
+		return getTarget().containsColumn(((ColumnProxy)column).getTarget());
 	}
 
 }
