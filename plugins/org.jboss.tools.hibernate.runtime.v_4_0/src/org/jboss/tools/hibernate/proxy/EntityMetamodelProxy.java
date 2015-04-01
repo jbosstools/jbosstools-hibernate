@@ -1,13 +1,17 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.tuple.entity.EntityMetamodel;
-import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
+import org.jboss.tools.hibernate.runtime.common.AbstractEntityMetamodelFacade;
+import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 
-public class EntityMetamodelProxy implements IEntityMetamodel {
+public class EntityMetamodelProxy extends AbstractEntityMetamodelFacade {
 	
 	private EntityMetamodel target = null;
 
-	public EntityMetamodelProxy(EntityMetamodel emm) {
+	public EntityMetamodelProxy(
+			IFacadeFactory facadeFactory, 
+			EntityMetamodel emm) {
+		super(facadeFactory, emm);
 		target = emm;
 	}
 
