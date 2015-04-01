@@ -15,6 +15,10 @@ public class EntityMetamodelProxy extends AbstractEntityMetamodelFacade {
 		super(facadeFactory, emm);
 		target = emm;
 	}
+	
+	public EntityMetamodel getTarget() {
+		return (EntityMetamodel)super.getTarget();
+	}
 
 	@Override
 	public Integer getPropertyIndexOrNull(String id) {
