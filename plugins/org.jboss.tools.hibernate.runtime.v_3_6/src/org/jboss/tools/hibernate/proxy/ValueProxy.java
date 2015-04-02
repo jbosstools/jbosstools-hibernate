@@ -51,10 +51,6 @@ public class ValueProxy implements IValue {
 	
 	private IFacadeFactory facadeFactory;
 
-	public ValueProxy(Value value) {
-		target = value;
-	}
-
 	public ValueProxy(IFacadeFactory facadeFactory, Value value) {
 		this.facadeFactory = facadeFactory;
 		target = value;
