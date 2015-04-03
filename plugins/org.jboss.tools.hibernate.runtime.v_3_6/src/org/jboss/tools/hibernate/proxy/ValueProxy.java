@@ -55,6 +55,10 @@ public class ValueProxy extends AbstractValueFacade {
 		target = value;
 	}
 
+	public Value getTarget() {
+		return (Value)super.getTarget();
+	}
+
 	@Override
 	public boolean isSimpleValue() {
 		return target.isSimpleValue();
@@ -63,10 +67,6 @@ public class ValueProxy extends AbstractValueFacade {
 	@Override
 	public boolean isCollection() {
 		return target instanceof Collection;
-	}
-
-	public Value getTarget() {
-		return target;
 	}
 
 	@Override
