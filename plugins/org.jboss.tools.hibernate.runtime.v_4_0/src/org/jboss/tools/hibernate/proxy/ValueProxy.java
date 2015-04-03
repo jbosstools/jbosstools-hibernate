@@ -27,6 +27,7 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
+import org.jboss.tools.hibernate.runtime.common.AbstractValueFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -36,7 +37,7 @@ import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.spi.IValueVisitor;
 
-public class ValueProxy implements IValue {
+public class ValueProxy extends AbstractValueFacade {
 	
 	private Value target = null;
 	private IValue collectionElement = null;
@@ -52,6 +53,7 @@ public class ValueProxy implements IValue {
 	private IFacadeFactory facadeFactory = null;
 
 	public ValueProxy(IFacadeFactory facadeFactory, Value value) {
+		super(facadeFactory, value);
 		this.facadeFactory = facadeFactory;
 		target = value;
 	}
