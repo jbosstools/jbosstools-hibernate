@@ -39,7 +39,6 @@ import org.jboss.tools.hibernate.runtime.spi.IValueVisitor;
 
 public class ValueProxy extends AbstractValueFacade {
 	
-	private Value target = null;
 	private IValue collectionElement = null;
 	private ITable collectionTable = null;
 	private ITable table = null;
@@ -52,7 +51,6 @@ public class ValueProxy extends AbstractValueFacade {
 	
 	public ValueProxy(IFacadeFactory facadeFactory, Value value) {
 		super(facadeFactory, value);
-		target = value;
 	}
 
 	public Value getTarget() {
@@ -61,18 +59,18 @@ public class ValueProxy extends AbstractValueFacade {
 
 	@Override
 	public boolean isSimpleValue() {
-		return target.isSimpleValue();
+		return getTarget().isSimpleValue();
 	}
 
 	@Override
 	public boolean isCollection() {
-		return target instanceof Collection;
+		return getTarget() instanceof Collection;
 	}
 
 	@Override
 	public IValue getCollectionElement() {
 		if (isCollection() && collectionElement == null) {
-			Value element = ((Collection)target).getElement();
+			Value element = ((Collection)getTarget()).getElement();
 			if (element != null) {
 				collectionElement = new ValueProxy(getFacadeFactory(), element);
 			}
@@ -82,43 +80,43 @@ public class ValueProxy extends AbstractValueFacade {
 
 	@Override
 	public boolean isOneToMany() {
-		return target instanceof OneToMany;
+		return getTarget() instanceof OneToMany;
 	}
 
 	@Override
 	public boolean isManyToOne() {
-		return target instanceof ManyToOne;
+		return getTarget() instanceof ManyToOne;
 	}
 
 	@Override
 	public boolean isOneToOne() {
-		return target instanceof OneToOne;
+		return getTarget() instanceof OneToOne;
 	}
 
 	@Override
 	public boolean isMap() {
-		return target instanceof Map;
+		return getTarget() instanceof Map;
 	}
 
 	@Override
 	public boolean isComponent() {
-		return target instanceof Component;
+		return getTarget() instanceof Component;
 	}
 
 	@Override
 	public Boolean isEmbedded() {
 		Boolean result = null;
 		if (isComponent()) {
-			result = ((Component)target).isEmbedded();
+			result = ((Component)getTarget()).isEmbedded();
 		} else if (isToOne()) {
-			result = ((ToOne)target).isEmbedded();
+			result = ((ToOne)getTarget()).isEmbedded();
 		}
 		return result;
 	}
 
 	@Override
 	public boolean isToOne() {
-		return target instanceof ToOne;
+		return getTarget() instanceof ToOne;
 	}
 
 	@Override
@@ -128,16 +126,16 @@ public class ValueProxy extends AbstractValueFacade {
 
 	@Override
 	public ITable getTable() {
-		if (target.getTable() != null && table == null) {
-			table = new TableProxy(target.getTable());
+		if (getTarget().getTable() != null && table == null) {
+			table = new TableProxy(getTarget().getTable());
 		}
 		return table;
 	}
 
 	@Override
 	public IType getType() {
-		if (target.getType() != null && type == null) {
-			type = new TypeProxy(target.getType());
+		if (getTarget().getType() != null && type == null) {
+			type = new TypeProxy(getTarget().getType());
 		}
 		return type;
 	}
@@ -146,7 +144,7 @@ public class ValueProxy extends AbstractValueFacade {
 	public void setElement(IValue element) {
 		assert element instanceof ValueProxy;
 		if (isCollection()) {
-			((Collection)target).setElement(((ValueProxy)element).getTarget());
+			((Collection)getTarget()).setElement(((ValueProxy)element).getTarget());
 		}
 	}
 
@@ -155,7 +153,7 @@ public class ValueProxy extends AbstractValueFacade {
 		assert table instanceof TableProxy;
 		if (isCollection()) {
 			collectionTable = table;
-			((Collection)target).setCollectionTable(((TableProxy)table).getTarget());
+			((Collection)getTarget()).setCollectionTable(((TableProxy)table).getTarget());
 		}
 	}
 
@@ -163,31 +161,31 @@ public class ValueProxy extends AbstractValueFacade {
 	public void setTable(ITable table) {
 		assert table instanceof TableProxy;
 		if (isSimpleValue()) {
-			((SimpleValue)target).setTable(((TableProxy)table).getTarget());
+			((SimpleValue)getTarget()).setTable(((TableProxy)table).getTarget());
 		}
 	}
 
 	@Override
 	public boolean isList() {
-		return target instanceof List;
+		return getTarget() instanceof List;
 	}
 
 	@Override
 	public void setIndex(IValue value) {
 		assert value instanceof ValueProxy;
-		((IndexedCollection)target).setIndex(((ValueProxy)value).getTarget());
+		((IndexedCollection)getTarget()).setIndex(((ValueProxy)value).getTarget());
 	}
 
 	@Override
 	public void setTypeName(String name) {
 		if (isSimpleValue()) {
-			((SimpleValue)target).setTypeName(name);
+			((SimpleValue)getTarget()).setTypeName(name);
 		}
 	}
 
 	@Override
 	public String getComponentClassName() {
-		return isComponent() ? ((Component)target).getComponentClassName() : null;
+		return isComponent() ? ((Component)getTarget()).getComponentClassName() : null;
 	}
 
 	@Override
@@ -201,7 +199,7 @@ public class ValueProxy extends AbstractValueFacade {
 	@SuppressWarnings("rawtypes")
 	private void initializeColumns() {
 		columns = new HashSet<IColumn>();
-		Iterator iterator = target.getColumnIterator();
+		Iterator iterator = getTarget().getColumnIterator();
 		while (iterator.hasNext()) {
 			Object object = iterator.next();
 			if (object instanceof Column) {
@@ -212,18 +210,18 @@ public class ValueProxy extends AbstractValueFacade {
 
 	@Override
 	public Boolean isTypeSpecified() {
-		return isSimpleValue() ? ((SimpleValue)target).isTypeSpecified() : null; 
+		return isSimpleValue() ? ((SimpleValue)getTarget()).isTypeSpecified() : null; 
 	}
 	
 	@Override
 	public String toString() {
-		return target.toString();
+		return getTarget().toString();
 	}
 
 	@Override
 	public ITable getCollectionTable() {
 		if (isCollection() && collectionTable == null) {
-			Table ct = ((Collection)target).getCollectionTable();
+			Table ct = ((Collection)getTarget()).getCollectionTable();
 			if (ct != null) {
 				collectionTable = new TableProxy(ct);
 			}
@@ -234,7 +232,7 @@ public class ValueProxy extends AbstractValueFacade {
 	@Override
 	public IValue getKey() {
 		if (key == null && isCollection()) {
-			Collection collection = (Collection)target;
+			Collection collection = (Collection)getTarget();
 			if (collection.getKey() != null) {
 				key = new ValueProxy(getFacadeFactory(), collection.getKey());
 			}
@@ -243,23 +241,23 @@ public class ValueProxy extends AbstractValueFacade {
 	}
 
 	public boolean isDependantValue() {
-		return target instanceof DependantValue;
+		return getTarget() instanceof DependantValue;
 	}
 
 	@Override
 	public boolean isAny() {
-		return target instanceof Any;
+		return getTarget() instanceof Any;
 	}
 
 	@Override
 	public boolean isSet() {
-		return target instanceof Set;
+		return getTarget() instanceof Set;
 	}
 
 	@Override
 	public IValue getIndex() {
 		if (index == null && isList()) {
-			List list = (List)target;
+			List list = (List)getTarget();
 			if (list.getIndex() != null) {
 				index = new ValueProxy(getFacadeFactory(), list.getIndex());
 			}
@@ -269,49 +267,49 @@ public class ValueProxy extends AbstractValueFacade {
 
 	@Override
 	public boolean isArray() {
-		return target instanceof Array;
+		return getTarget() instanceof Array;
 	}
 
 	@Override
 	public String getElementClassName() {
 		String result = null;
 		if (isArray()) {
-			result = ((Array)target).getElementClassName();
+			result = ((Array)getTarget()).getElementClassName();
 		}
 		return result;
 	}
 
 	@Override
 	public boolean isPrimitiveArray() {
-		return target instanceof PrimitiveArray;
+		return getTarget() instanceof PrimitiveArray;
 	}
 
 	@Override
 	public String getTypeName() {
 		String result = null;
 		if (isSimpleValue())  {
-			result = ((SimpleValue)target).getTypeName();
+			result = ((SimpleValue)getTarget()).getTypeName();
 		}
 		return result;
 	}
 
 	@Override
 	public boolean isIdentifierBag() {
-		return target instanceof IdentifierBag;
+		return getTarget() instanceof IdentifierBag;
 	}
 
 	@Override
 	public boolean isBag() {
-		return target instanceof Bag;
+		return getTarget() instanceof Bag;
 	}
 
 	@Override
 	public String getReferencedEntityName() {
 		String result = null;
-		if (target instanceof OneToMany) {
-			result = ((OneToMany)target).getReferencedEntityName();
-		} else if (target instanceof ToOne) {
-			result = ((ToOne)target).getReferencedEntityName();
+		if (getTarget() instanceof OneToMany) {
+			result = ((OneToMany)getTarget()).getReferencedEntityName();
+		} else if (getTarget() instanceof ToOne) {
+			result = ((ToOne)getTarget()).getReferencedEntityName();
 		}
 		return result;
 	}
@@ -319,8 +317,8 @@ public class ValueProxy extends AbstractValueFacade {
 	@Override
 	public String getEntityName() {
 		String result = null;
-		if (target instanceof OneToOne) {
-			result = ((OneToOne)target).getEntityName();
+		if (getTarget() instanceof OneToOne) {
+			result = ((OneToOne)getTarget()).getEntityName();
 		}
 		return result;
 	}
@@ -336,7 +334,7 @@ public class ValueProxy extends AbstractValueFacade {
 	@SuppressWarnings("unchecked")
 	private void initializeProperties() {
 		properties = new HashSet<IProperty>();
-		Iterator<Property> origin = ((Component)target).getPropertyIterator();
+		Iterator<Property> origin = ((Component)getTarget()).getPropertyIterator();
 		while (origin.hasNext()) {
 			properties.add(new PropertyProxy(origin.next()));
 		}
@@ -345,108 +343,108 @@ public class ValueProxy extends AbstractValueFacade {
 	@Override
 	public void addColumn(IColumn column) {
 		assert column instanceof ColumnProxy;
-		assert target instanceof SimpleValue;
-		((SimpleValue)target).addColumn(((ColumnProxy)column).getTarget());
+		assert getTarget() instanceof SimpleValue;
+		((SimpleValue)getTarget()).addColumn(((ColumnProxy)column).getTarget());
 	}
 
 	@Override
 	public void setTypeParameters(Properties typeParameters) {
-		assert target instanceof SimpleValue;
-		((SimpleValue)target).setTypeParameters(typeParameters);
+		assert getTarget() instanceof SimpleValue;
+		((SimpleValue)getTarget()).setTypeParameters(typeParameters);
 	}
 
 	@Override
 	public String getForeignKeyName() {
-		assert target instanceof SimpleValue;
-		return ((SimpleValue)target).getForeignKeyName();
+		assert getTarget() instanceof SimpleValue;
+		return ((SimpleValue)getTarget()).getForeignKeyName();
 	}
 
 	@Override
 	public IPersistentClass getOwner() {
-		assert target instanceof Component;
-		if (owner == null && ((Component)target).getOwner() != null)
-			owner = new PersistentClassProxy(((Component)target).getOwner());
+		assert getTarget() instanceof Component;
+		if (owner == null && ((Component)getTarget()).getOwner() != null)
+			owner = new PersistentClassProxy(((Component)getTarget()).getOwner());
 		return owner;
 	}
 
 	@Override
 	public IValue getElement() {
-		assert target instanceof Collection;
+		assert getTarget() instanceof Collection;
 		IValue result = null;
-		if (((Collection)target).getElement() != null) {
-			result = new ValueProxy(getFacadeFactory(), ((Collection)target).getElement());
+		if (((Collection)getTarget()).getElement() != null) {
+			result = new ValueProxy(getFacadeFactory(), ((Collection)getTarget()).getElement());
 		}
 		return result;
 	}
 
 	@Override
 	public String getParentProperty() {
-		return ((Component)target).getParentProperty();
+		return ((Component)getTarget()).getParentProperty();
 	}
 
 	@Override
 	public void setElementClassName(String name) {
-		assert target instanceof Array;
-		((Array)target).setElementClassName(name);
+		assert getTarget() instanceof Array;
+		((Array)getTarget()).setElementClassName(name);
 	}
 
 	@Override
 	public void setKey(IValue keyValue) {
 		assert keyValue instanceof ValueProxy;
-		assert target instanceof Collection;
+		assert getTarget() instanceof Collection;
 		assert ((ValueProxy)keyValue).getTarget() instanceof KeyValue;
-		((Collection)target).setKey((KeyValue)((ValueProxy)keyValue).getTarget());
+		((Collection)getTarget()).setKey((KeyValue)((ValueProxy)keyValue).getTarget());
 	}
 
 	@Override
 	public void setFetchModeJoin() {
-		assert (target instanceof Collection || target instanceof ToOne);
-		if (target instanceof Collection) {
-			((Collection)target).setFetchMode(FetchMode.JOIN);
-		} else if (target instanceof ToOne) {
-			((ToOne)target).setFetchMode(FetchMode.JOIN);
+		assert (getTarget() instanceof Collection || getTarget() instanceof ToOne);
+		if (getTarget() instanceof Collection) {
+			((Collection)getTarget()).setFetchMode(FetchMode.JOIN);
+		} else if (getTarget() instanceof ToOne) {
+			((ToOne)getTarget()).setFetchMode(FetchMode.JOIN);
 		}
 	}
 
 	@Override
 	public boolean isInverse() {
-		assert target instanceof Collection;
-		return ((Collection)target).isInverse();
+		assert getTarget() instanceof Collection;
+		return ((Collection)getTarget()).isInverse();
 	}
 
 	@Override
 	public IPersistentClass getAssociatedClass() {
-		assert target instanceof OneToMany;
-		return ((OneToMany)target).getAssociatedClass() != null ? new PersistentClassProxy(((OneToMany)target).getAssociatedClass()) : null;
+		assert getTarget() instanceof OneToMany;
+		return ((OneToMany)getTarget()).getAssociatedClass() != null ? new PersistentClassProxy(((OneToMany)getTarget()).getAssociatedClass()) : null;
 	}
 
 	@Override
 	public void setLazy(boolean b) {
-		assert target instanceof Collection;
-		((Collection)target).setLazy(b);
+		assert getTarget() instanceof Collection;
+		((Collection)getTarget()).setLazy(b);
 	}
 
 	@Override
 	public void setRole(String role) {
-		assert target instanceof Collection;
-		((Collection)target).setRole(role);
+		assert getTarget() instanceof Collection;
+		((Collection)getTarget()).setRole(role);
 	}
 
 	@Override
 	public void setReferencedEntityName(String name) {
-		assert (target instanceof ToOne || target instanceof ManyToOne);
+		assert (getTarget() instanceof ToOne || getTarget() instanceof ManyToOne);
 		if (isToOne()) {
-			((ToOne)target).setReferencedEntityName(name);
+			((ToOne)getTarget()).setReferencedEntityName(name);
 		} else if (isOneToMany()) {
-			((OneToMany)target).setReferencedEntityName(name);
+			((OneToMany)getTarget()).setReferencedEntityName(name);
 		}
 	}
 
 	@Override
 	public void setAssociatedClass(IPersistentClass persistentClass) {
-		assert target instanceof OneToMany;
+		assert getTarget() instanceof OneToMany;
 		assert persistentClass instanceof PersistentClassProxy;
-		((OneToMany)target).setAssociatedClass(((PersistentClassProxy)persistentClass).getTarget());
+		((OneToMany)getTarget()).setAssociatedClass(((PersistentClassProxy)persistentClass).getTarget());
 	}
 
 }
