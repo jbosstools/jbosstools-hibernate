@@ -50,11 +50,8 @@ public class ValueProxy extends AbstractValueFacade {
 	private IPersistentClass owner = null;
 	private HashSet<IProperty> properties = null;
 	
-	private IFacadeFactory facadeFactory;
-
 	public ValueProxy(IFacadeFactory facadeFactory, Value value) {
 		super(facadeFactory, value);
-		this.facadeFactory = facadeFactory;
 		target = value;
 	}
 
@@ -77,7 +74,7 @@ public class ValueProxy extends AbstractValueFacade {
 		if (isCollection() && collectionElement == null) {
 			Value element = ((Collection)target).getElement();
 			if (element != null) {
-				collectionElement = new ValueProxy(facadeFactory, element);
+				collectionElement = new ValueProxy(getFacadeFactory(), element);
 			}
 		}
 		return collectionElement;
@@ -208,7 +205,7 @@ public class ValueProxy extends AbstractValueFacade {
 		while (iterator.hasNext()) {
 			Object object = iterator.next();
 			if (object instanceof Column) {
-				columns.add(new ColumnProxy(facadeFactory, (Column)object));
+				columns.add(new ColumnProxy(getFacadeFactory(), (Column)object));
 			}
 		}
 	}
@@ -239,7 +236,7 @@ public class ValueProxy extends AbstractValueFacade {
 		if (key == null && isCollection()) {
 			Collection collection = (Collection)target;
 			if (collection.getKey() != null) {
-				key = new ValueProxy(facadeFactory, collection.getKey());
+				key = new ValueProxy(getFacadeFactory(), collection.getKey());
 			}
 		}
 		return key;
@@ -264,7 +261,7 @@ public class ValueProxy extends AbstractValueFacade {
 		if (index == null && isList()) {
 			List list = (List)target;
 			if (list.getIndex() != null) {
-				index = new ValueProxy(facadeFactory, list.getIndex());
+				index = new ValueProxy(getFacadeFactory(), list.getIndex());
 			}
 		}
 		return index;
@@ -377,7 +374,7 @@ public class ValueProxy extends AbstractValueFacade {
 		assert target instanceof Collection;
 		IValue result = null;
 		if (((Collection)target).getElement() != null) {
-			result = new ValueProxy(facadeFactory, ((Collection)target).getElement());
+			result = new ValueProxy(getFacadeFactory(), ((Collection)target).getElement());
 		}
 		return result;
 	}
