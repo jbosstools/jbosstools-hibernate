@@ -199,7 +199,7 @@ public class PersistentClassProxy implements IPersistentClass {
 		joins = new HashSet<IJoin>();
 		Iterator<?> origin = target.getJoinIterator();
 		while (origin.hasNext()) {
-			joins.add(new JoinProxy((Join)origin.next()));
+			joins.add(new JoinProxy(facadeFactory, (Join)origin.next()));
 		}
 	}
 
