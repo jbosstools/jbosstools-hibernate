@@ -14,10 +14,6 @@ public class JoinProxy implements IJoin {
 	private Join target = null;
 	private HashSet<IProperty> properties = null;
 
-	public JoinProxy(Join join) {
-		target = join;
-	}
-
 	public JoinProxy(
 			IFacadeFactory facadeFactory,
 			Join join) {
