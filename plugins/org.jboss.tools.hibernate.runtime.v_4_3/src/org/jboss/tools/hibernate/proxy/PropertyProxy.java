@@ -53,7 +53,7 @@ public class PropertyProxy implements IProperty {
 	@Override
 	public IPersistentClass getPersistentClass() {
 		if (persistentClass == null && target.getPersistentClass() != null) {
-			persistentClass = new PersistentClassProxy(target.getPersistentClass());
+			persistentClass = new PersistentClassProxy(facadeFactory, target.getPersistentClass());
 		}
 		return persistentClass;
 	}
