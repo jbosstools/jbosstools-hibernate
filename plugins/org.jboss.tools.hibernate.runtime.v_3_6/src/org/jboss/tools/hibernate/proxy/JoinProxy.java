@@ -5,19 +5,18 @@ import java.util.Iterator;
 
 import org.hibernate.mapping.Join;
 import org.hibernate.mapping.Property;
+import org.jboss.tools.hibernate.runtime.common.AbstractJoinFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 
-public class JoinProxy implements IJoin {
+public class JoinProxy extends AbstractJoinFacade {
 	
-	private Join target = null;
 	private HashSet<IProperty> properties = null;
 
 	public JoinProxy(
 			IFacadeFactory facadeFactory,
 			Join join) {
-		target = join;
+		super(facadeFactory, join);
 	}
 
 	@Override
@@ -31,7 +30,7 @@ public class JoinProxy implements IJoin {
 	@SuppressWarnings("unchecked")
 	private void initializeProperties() {
 		properties = new HashSet<IProperty>();
-		Iterator<Property> origin = target.getPropertyIterator();
+		Iterator<Property> origin = ((Join)getTarget()).getPropertyIterator();
 		while (origin.hasNext()) {
 			properties.add(new PropertyProxy(origin.next()));
 		}
