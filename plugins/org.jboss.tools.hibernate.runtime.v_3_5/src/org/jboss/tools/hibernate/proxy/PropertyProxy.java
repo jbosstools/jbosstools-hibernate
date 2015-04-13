@@ -16,10 +16,6 @@ public class PropertyProxy implements IProperty {
 	
 	private IFacadeFactory facadeFactory = null;
 	
-	public PropertyProxy(Property property) {
-		target = property;
-	}
-	
 	public PropertyProxy(
 			IFacadeFactory facadeFactory,
 			Property property) {
