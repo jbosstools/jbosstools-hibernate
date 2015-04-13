@@ -43,7 +43,7 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 	}
 
 	public PersistentClass getTarget() {
-		return target;
+		return (PersistentClass)super.getTarget();
 	}
 
 	@Override
