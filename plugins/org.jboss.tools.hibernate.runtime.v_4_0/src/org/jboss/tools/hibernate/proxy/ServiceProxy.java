@@ -290,7 +290,7 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public IProperty newProperty() {
-		return new PropertyProxy(new Property());
+		return new PropertyProxy(facadeFactory, new Property());
 	}
 
 	@Override
