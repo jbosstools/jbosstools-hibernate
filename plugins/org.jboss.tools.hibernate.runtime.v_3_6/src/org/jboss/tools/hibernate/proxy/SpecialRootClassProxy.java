@@ -39,7 +39,7 @@ public class SpecialRootClassProxy extends PersistentClassProxy {
 			setEntityName(component.getComponentClassName());
 			IPersistentClass ownerClass = component.getOwner();
 			if (component.getParentProperty() != null) {
-				parentProperty = new PropertyProxy(new Property());
+				parentProperty = new PropertyProxy(getFacadeFactory(), new Property());
 				parentProperty.setName(component.getParentProperty());
 				parentProperty.setPersistentClass(ownerClass);
 			}
