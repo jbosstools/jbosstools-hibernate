@@ -36,10 +36,6 @@ public class PersistentClassProxy implements IPersistentClass {
 
 	private IFacadeFactory facadeFactory = null;
 
-	public PersistentClassProxy(PersistentClass persistentClass) {
-		target = persistentClass;
-	}
-
 	public PersistentClassProxy(
 			IFacadeFactory facadeFactory,
 			PersistentClass persistentClass) {
