@@ -21,7 +21,6 @@ import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public class PersistentClassProxy extends AbstractPersistentClassFacade {
 	
-	private PersistentClass target = null;
 	private IPersistentClass rootClass = null;
 	private IPersistentClass superClass = null;
 	private ITable table = null;
@@ -39,7 +38,6 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 			IFacadeFactory facadeFactory,
 			PersistentClass persistentClass) {
 		super(facadeFactory, persistentClass);
-		target = persistentClass;
 	}
 
 	public PersistentClass getTarget() {
@@ -48,56 +46,56 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 
 	@Override
 	public String getClassName() {
-		return target.getClassName();
+		return getTarget().getClassName();
 	}
 
 	@Override
 	public String getEntityName() {
-		return target.getEntityName();
+		return getTarget().getEntityName();
 	}
 
 	@Override
 	public boolean isAssignableToRootClass() {
-		return RootClass.class.isAssignableFrom(target.getClass());
+		return RootClass.class.isAssignableFrom(getTarget().getClass());
 	}
 
 	@Override
 	public boolean isRootClass() {
-		return target.getClass() == RootClass.class;
+		return getTarget().getClass() == RootClass.class;
 	}
 
 	@Override
 	public IProperty getIdentifierProperty() {
-		if (identifierProperty == null  && target.getIdentifierProperty() != null) {
-			identifierProperty = new PropertyProxy(target.getIdentifierProperty());
+		if (identifierProperty == null  && getTarget().getIdentifierProperty() != null) {
+			identifierProperty = new PropertyProxy(getTarget().getIdentifierProperty());
 		}
 		return identifierProperty;
 	}
 
 	@Override
 	public boolean hasIdentifierProperty() {
-		return target.hasIdentifierProperty();
+		return getTarget().hasIdentifierProperty();
 	}
 
 	@Override
 	public boolean isInstanceOfRootClass() {
-		return target instanceof RootClass;
+		return getTarget() instanceof RootClass;
 	}
 
 	@Override
 	public boolean isInstanceOfSubclass() {
-		return target instanceof Subclass;
+		return getTarget() instanceof Subclass;
 	}
 
 	@Override
 	public String getNodeName() {
-		return target.getNodeName();
+		return getTarget().getNodeName();
 	}
 
 	@Override
 	public IPersistentClass getRootClass() {
-		if (rootClass == null && target.getRootClass() != null) {
-			rootClass = new PersistentClassProxy(getFacadeFactory(), target.getRootClass());
+		if (rootClass == null && getTarget().getRootClass() != null) {
+			rootClass = new PersistentClassProxy(getFacadeFactory(), getTarget().getRootClass());
 		}
 		return rootClass;
 	}
@@ -113,7 +111,7 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 	@SuppressWarnings("unchecked")
 	private void initializePropertyClosures() {
 		propertyClosures = new HashSet<IProperty>();
-		Iterator<Property> origin = target.getPropertyClosureIterator();
+		Iterator<Property> origin = getTarget().getPropertyClosureIterator();
 		while (origin.hasNext()) {
 			propertyClosures.add(new PropertyProxy(origin.next()));
 		}
@@ -122,7 +120,7 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 	@Override
 	public IPersistentClass getSuperclass() {
 		if (superClass != null) {
-			superClass = new PersistentClassProxy(getFacadeFactory(), target.getSuperclass());
+			superClass = new PersistentClassProxy(getFacadeFactory(), getTarget().getSuperclass());
 		}
 		return superClass;
 	}
@@ -138,7 +136,7 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 	@SuppressWarnings("unchecked")
 	private void initializeProperties() {
 		properties = new HashMap<String, IProperty>();
-		Iterator<Property> origin = target.getPropertyIterator();
+		Iterator<Property> origin = getTarget().getPropertyIterator();
 		while (origin.hasNext()) {
 			Property property = origin.next();
 			properties.put(property.getName(), new PropertyProxy(property));
@@ -155,29 +153,29 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 
 	@Override
 	public ITable getTable() {
-		if (table == null && target.getTable() != null) {
-			table = new TableProxy(getFacadeFactory(), target.getTable());
+		if (table == null && getTarget().getTable() != null) {
+			table = new TableProxy(getFacadeFactory(), getTarget().getTable());
 		}
 		return table;
 	}
 
 	@Override
 	public Boolean isAbstract() {
-		return target.isAbstract();
+		return getTarget().isAbstract();
 	}
 
 	@Override
 	public IValue getDiscriminator() {
-		if (discriminator == null && target.getDiscriminator() != null) {
-			discriminator = new ValueProxy(getFacadeFactory(), target.getDiscriminator());
+		if (discriminator == null && getTarget().getDiscriminator() != null) {
+			discriminator = new ValueProxy(getFacadeFactory(), getTarget().getDiscriminator());
 		}
 		return discriminator;
 	}
 
 	@Override
 	public IValue getIdentifier() {
-		if (identifier == null && target.getIdentifier() != null) {
-			identifier = new ValueProxy(getFacadeFactory(), target.getIdentifier());
+		if (identifier == null && getTarget().getIdentifier() != null) {
+			identifier = new ValueProxy(getFacadeFactory(), getTarget().getIdentifier());
 		}
 		return identifier;
 	}
@@ -192,7 +190,7 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 	
 	private void initializeJoins() {
 		joins = new HashSet<IJoin>();
-		Iterator<?> origin = target.getJoinIterator();
+		Iterator<?> origin = getTarget().getJoinIterator();
 		while (origin.hasNext()) {
 			joins.add(new JoinProxy(getFacadeFactory(), (Join)origin.next()));
 		}
@@ -200,62 +198,62 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 
 	@Override
 	public IProperty getVersion() {
-		if (version == null && target.getVersion() != null) {
-			version = new PropertyProxy(target.getVersion());
+		if (version == null && getTarget().getVersion() != null) {
+			version = new PropertyProxy(getTarget().getVersion());
 		}
 		return version;
 	}
 
 	@Override
 	public void setClassName(String className) {
-		target.setClassName(className);
+		getTarget().setClassName(className);
 	}
 
 	@Override
 	public void setEntityName(String entityName) {
-		target.setEntityName(entityName);
+		getTarget().setEntityName(entityName);
 	}
 
 	@Override
 	public void setDiscriminatorValue(String value) {
-		target.setDiscriminatorValue(value);
+		getTarget().setDiscriminatorValue(value);
 	}
 
 	@Override
 	public void setAbstract(boolean b) {
-		target.setAbstract(b);
+		getTarget().setAbstract(b);
 	}
 
 	@Override
 	public void addProperty(IProperty property) {
 		assert property instanceof PropertyProxy;
-		target.addProperty(((PropertyProxy)property).getTarget());
+		getTarget().addProperty(((PropertyProxy)property).getTarget());
 		properties = null;
 		propertyClosures = null;
 	}
 
 	@Override
 	public boolean isInstanceOfJoinedSubclass() {
-		return target instanceof JoinedSubclass;
+		return getTarget() instanceof JoinedSubclass;
 	}
 
 	@Override
 	public void setTable(ITable table) {
-		assert (target instanceof JoinedSubclass || target instanceof RootClass);
+		assert (getTarget() instanceof JoinedSubclass || getTarget() instanceof RootClass);
 		assert table instanceof TableProxy;
-		if (target instanceof RootClass) {
-			((RootClass)target).setTable(((TableProxy)table).getTarget());
-		} else if (target instanceof JoinedSubclass) {
-			((JoinedSubclass)target).setTable(((TableProxy)table).getTarget());
+		if (getTarget() instanceof RootClass) {
+			((RootClass)getTarget()).setTable(((TableProxy)table).getTarget());
+		} else if (getTarget() instanceof JoinedSubclass) {
+			((JoinedSubclass)getTarget()).setTable(((TableProxy)table).getTarget());
 		}
 	}
 
 	@Override
 	public void setKey(IValue value) {
-		assert target instanceof JoinedSubclass;
+		assert getTarget() instanceof JoinedSubclass;
 		assert value instanceof ValueProxy;
 		assert ((ValueProxy)value).getTarget() instanceof KeyValue;
-		((JoinedSubclass)target).setKey((KeyValue)((ValueProxy)value).getTarget());
+		((JoinedSubclass)getTarget()).setKey((KeyValue)((ValueProxy)value).getTarget());
 	}
 
 	public boolean isInstanceOfSpecialRootClass() {
@@ -274,9 +272,9 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 
 	@Override
 	public void setIdentifierProperty(IProperty property) {
-		assert target instanceof RootClass;
+		assert getTarget() instanceof RootClass;
 		assert property instanceof PropertyProxy;
-		((RootClass)target).setIdentifierProperty(((PropertyProxy)property).getTarget());
+		((RootClass)getTarget()).setIdentifierProperty(((PropertyProxy)property).getTarget());
 		identifierProperty = property;
 	}
 
@@ -284,25 +282,25 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 	public void setIdentifier(IValue value) {
 		assert value instanceof ValueProxy;
 		assert ((ValueProxy)value).getTarget() instanceof KeyValue;
-		assert target instanceof RootClass;
-		((RootClass)target).setIdentifier((KeyValue)((ValueProxy)value).getTarget());
+		assert getTarget() instanceof RootClass;
+		((RootClass)getTarget()).setIdentifier((KeyValue)((ValueProxy)value).getTarget());
 	}
 
 	@Override
 	public void setDiscriminator(IValue discr) {
-		assert target instanceof RootClass;
+		assert getTarget() instanceof RootClass;
 		assert discr instanceof ValueProxy;
-		((RootClass)target).setDiscriminator(((ValueProxy)discr).getTarget());
+		((RootClass)getTarget()).setDiscriminator(((ValueProxy)discr).getTarget());
 	}
 
 	@Override
 	public void setProxyInterfaceName(String name) {
-		target.setProxyInterfaceName(name);
+		getTarget().setProxyInterfaceName(name);
 	}
 
 	@Override
 	public void setLazy(boolean b) {
-		target.setLazy(b);
+		getTarget().setLazy(b);
 	}
 
 	@Override
@@ -314,7 +312,7 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 	}
 	
 	private void initializeSubclasses() {
-		Iterator<?> origin = target.getSubclassIterator();
+		Iterator<?> origin = getTarget().getSubclassIterator();
 		subclasses = new HashSet<IPersistentClass>();
 		while (origin.hasNext()) {
 			subclasses.add(new PersistentClassProxy(getFacadeFactory(), (Subclass)origin.next()));
@@ -323,138 +321,138 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 
 	@Override
 	public boolean isCustomDeleteCallable() {
-		return target.isCustomDeleteCallable();
+		return getTarget().isCustomDeleteCallable();
 	}
 
 	@Override
 	public boolean isCustomInsertCallable() {
-		return target.isCustomInsertCallable();
+		return getTarget().isCustomInsertCallable();
 	}
 
 	@Override
 	public boolean isCustomUpdateCallable() {
-		return target.isCustomUpdateCallable();
+		return getTarget().isCustomUpdateCallable();
 	}
 
 	@Override
 	public boolean isDiscriminatorInsertable() {
-		return target.isDiscriminatorInsertable();
+		return getTarget().isDiscriminatorInsertable();
 	}
 
 	@Override
 	public boolean isDiscriminatorValueNotNull() {
-		return target.isDiscriminatorValueNotNull();
+		return getTarget().isDiscriminatorValueNotNull();
 	}
 
 	@Override
 	public boolean isDiscriminatorValueNull() {
-		return target.isDiscriminatorValueNull();
+		return getTarget().isDiscriminatorValueNull();
 	}
 
 	@Override
 	public boolean isExplicitPolymorphism() {
-		return target.isExplicitPolymorphism();
+		return getTarget().isExplicitPolymorphism();
 	}
 
 	@Override
 	public boolean isForceDiscriminator() {
-		return target.isForceDiscriminator();
+		return getTarget().isForceDiscriminator();
 	}
 
 	@Override
 	public boolean isInherited() {
-		return target.isInherited();
+		return getTarget().isInherited();
 	}
 
 	@Override
 	public boolean isJoinedSubclass() {
-		return target.isJoinedSubclass();
+		return getTarget().isJoinedSubclass();
 	}
 
 	@Override
 	public boolean isLazy() {
-		return target.isLazy();
+		return getTarget().isLazy();
 	}
 
 	@Override
 	public boolean isLazyPropertiesCacheable() {
-		return target.isLazyPropertiesCacheable();
+		return getTarget().isLazyPropertiesCacheable();
 	}
 
 	@Override
 	public boolean isMutable() {
-		return target.isMutable();
+		return getTarget().isMutable();
 	}
 
 	@Override
 	public boolean isPolymorphic() {
-		return target.isPolymorphic();
+		return getTarget().isPolymorphic();
 	}
 
 	@Override
 	public boolean isVersioned() {
-		return target.isVersioned();
+		return getTarget().isVersioned();
 	}
 
 	@Override
 	public int getBatchSize() {
-		return target.getBatchSize();
+		return getTarget().getBatchSize();
 	}
 
 	@Override
 	public String getCacheConcurrencyStrategy() {
-		return target.getCacheConcurrencyStrategy();
+		return getTarget().getCacheConcurrencyStrategy();
 	}
 
 	@Override
 	public String getCustomSQLDelete() {
-		return target.getCustomSQLDelete();
+		return getTarget().getCustomSQLDelete();
 	}
 
 	@Override
 	public String getCustomSQLInsert() {
-		return target.getCustomSQLInsert();
+		return getTarget().getCustomSQLInsert();
 	}
 
 	@Override
 	public String getCustomSQLUpdate() {
-		return target.getCustomSQLUpdate();
+		return getTarget().getCustomSQLUpdate();
 	}
 
 	@Override
 	public String getDiscriminatorValue() {
-		return target.getDiscriminatorValue();
+		return getTarget().getDiscriminatorValue();
 	}
 
 	@Override
 	public String getLoaderName() {
-		return target.getLoaderName();
+		return getTarget().getLoaderName();
 	}
 
 	@Override
 	public int getOptimisticLockMode() {
-		return target.getOptimisticLockStyle().getOldCode();
+		return getTarget().getOptimisticLockStyle().getOldCode();
 	}
 
 	@Override
 	public String getTemporaryIdTableDDL() {
-		return target.getTemporaryIdTableDDL();
+		return getTarget().getTemporaryIdTableDDL();
 	}
 
 	@Override
 	public String getTemporaryIdTableName() {
-		return target.getTemporaryIdTableName();
+		return getTarget().getTemporaryIdTableName();
 	}
 
 	@Override
 	public String getWhere() {
-		return target.getWhere();
+		return getTarget().getWhere();
 	}
 
 	@Override
 	public ITable getRootTable() {
 		if (rootTable == null) {
-			rootTable = new TableProxy(getFacadeFactory(), target.getRootTable());
+			rootTable = new TableProxy(getFacadeFactory(), getTarget().getRootTable());
 		}
 		return rootTable;
 	}
