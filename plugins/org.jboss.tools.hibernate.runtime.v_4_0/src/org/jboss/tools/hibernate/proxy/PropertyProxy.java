@@ -1,13 +1,13 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.mapping.Property;
+import org.jboss.tools.hibernate.runtime.common.AbstractPropertyFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
-import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 
-public class PropertyProxy implements IProperty {
+public class PropertyProxy extends AbstractPropertyFacade {
 	
 	private Property target = null;
 	private IValue value = null;
@@ -19,6 +19,7 @@ public class PropertyProxy implements IProperty {
 	public PropertyProxy(
 			IFacadeFactory facadeFactory,
 			Property property) {
+		super(facadeFactory, property);
 		this.facadeFactory = facadeFactory;
 		target = property;
 	}
