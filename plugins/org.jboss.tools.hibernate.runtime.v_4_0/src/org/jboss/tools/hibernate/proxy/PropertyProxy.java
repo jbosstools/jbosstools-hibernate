@@ -13,14 +13,11 @@ public class PropertyProxy extends AbstractPropertyFacade {
 	private IValue value = null;
 	private IType type = null;
 	private IPersistentClass persistentClass = null;
-	
-	private IFacadeFactory facadeFactory = null;
-	
+		
 	public PropertyProxy(
 			IFacadeFactory facadeFactory,
 			Property property) {
 		super(facadeFactory, property);
-		this.facadeFactory = facadeFactory;
 		target = property;
 	}
 	
@@ -31,7 +28,7 @@ public class PropertyProxy extends AbstractPropertyFacade {
 	@Override
 	public IValue getValue() {
 		if (value == null && target.getValue() != null) {
-			value = new ValueProxy(facadeFactory, target.getValue());
+			value = new ValueProxy(getFacadeFactory(), target.getValue());
 		}
 		return value;
 	}
@@ -50,7 +47,7 @@ public class PropertyProxy extends AbstractPropertyFacade {
 	@Override
 	public IPersistentClass getPersistentClass() {
 		if (persistentClass == null && target.getPersistentClass() != null) {
-			persistentClass = new PersistentClassProxy(facadeFactory, target.getPersistentClass());
+			persistentClass = new PersistentClassProxy(getFacadeFactory(), target.getPersistentClass());
 		}
 		return persistentClass;
 	}
