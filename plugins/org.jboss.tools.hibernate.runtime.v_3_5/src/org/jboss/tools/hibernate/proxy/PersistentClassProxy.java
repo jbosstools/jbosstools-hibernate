@@ -35,13 +35,10 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 	private HashSet<IProperty> propertyClosures = null;
 	private HashMap<String, IProperty> properties = null;
 	
-	private IFacadeFactory facadeFactory = null;
-
 	public PersistentClassProxy(
 			IFacadeFactory facadeFactory,
 			PersistentClass persistentClass) {
 		super(facadeFactory, persistentClass);
-		this.facadeFactory = facadeFactory;
 		target = persistentClass;
 	}
 
@@ -100,7 +97,7 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 	@Override
 	public IPersistentClass getRootClass() {
 		if (rootClass == null && target.getRootClass() != null) {
-			rootClass = new PersistentClassProxy(facadeFactory, target.getRootClass());
+			rootClass = new PersistentClassProxy(getFacadeFactory(), target.getRootClass());
 		}
 		return rootClass;
 	}
@@ -125,7 +122,7 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 	@Override
 	public IPersistentClass getSuperclass() {
 		if (superClass != null) {
-			superClass = new PersistentClassProxy(facadeFactory, target.getSuperclass());
+			superClass = new PersistentClassProxy(getFacadeFactory(), target.getSuperclass());
 		}
 		return superClass;
 	}
@@ -159,7 +156,7 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 	@Override
 	public ITable getTable() {
 		if (table == null && target.getTable() != null) {
-			table = new TableProxy(facadeFactory, target.getTable());
+			table = new TableProxy(getFacadeFactory(), target.getTable());
 		}
 		return table;
 	}
@@ -172,7 +169,7 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 	@Override
 	public IValue getDiscriminator() {
 		if (discriminator == null && target.getDiscriminator() != null) {
-			discriminator = new ValueProxy(facadeFactory, target.getDiscriminator());
+			discriminator = new ValueProxy(getFacadeFactory(), target.getDiscriminator());
 		}
 		return discriminator;
 	}
@@ -180,7 +177,7 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 	@Override
 	public IValue getIdentifier() {
 		if (identifier == null && target.getIdentifier() != null) {
-			identifier = new ValueProxy(facadeFactory, target.getIdentifier());
+			identifier = new ValueProxy(getFacadeFactory(), target.getIdentifier());
 		}
 		return identifier;
 	}
@@ -197,7 +194,7 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 		joins = new HashSet<IJoin>();
 		Iterator<?> origin = target.getJoinIterator();
 		while (origin.hasNext()) {
-			joins.add(new JoinProxy(facadeFactory, (Join)origin.next()));
+			joins.add(new JoinProxy(getFacadeFactory(), (Join)origin.next()));
 		}
 	}
 
@@ -320,7 +317,7 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 		Iterator<?> origin = target.getSubclassIterator();
 		subclasses = new HashSet<IPersistentClass>();
 		while (origin.hasNext()) {
-			subclasses.add(new PersistentClassProxy(facadeFactory, (Subclass)origin.next()));
+			subclasses.add(new PersistentClassProxy(getFacadeFactory(), (Subclass)origin.next()));
 		}
 	}
 
@@ -457,7 +454,7 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 	@Override
 	public ITable getRootTable() {
 		if (rootTable == null) {
-			rootTable = new TableProxy(facadeFactory, target.getRootTable());
+			rootTable = new TableProxy(getFacadeFactory(), target.getRootTable());
 		}
 		return rootTable;
 	}
