@@ -11,6 +11,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
+import org.jboss.tools.hibernate.runtime.common.AbstractPersistentClassFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -18,7 +19,7 @@ import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 
-public class PersistentClassProxy implements IPersistentClass {
+public class PersistentClassProxy extends AbstractPersistentClassFacade {
 	
 	private PersistentClass target = null;
 	private IPersistentClass rootClass = null;
@@ -39,6 +40,7 @@ public class PersistentClassProxy implements IPersistentClass {
 	public PersistentClassProxy(
 			IFacadeFactory facadeFactory,
 			PersistentClass persistentClass) {
+		super(facadeFactory, persistentClass);
 		this.facadeFactory = facadeFactory;
 		target = persistentClass;
 	}
