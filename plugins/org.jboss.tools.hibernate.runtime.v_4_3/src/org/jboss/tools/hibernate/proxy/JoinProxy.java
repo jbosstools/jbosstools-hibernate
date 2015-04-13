@@ -32,7 +32,7 @@ public class JoinProxy extends AbstractJoinFacade {
 		properties = new HashSet<IProperty>();
 		Iterator<Property> origin = ((Join)getTarget()).getPropertyIterator();
 		while (origin.hasNext()) {
-			properties.add(new PropertyProxy(origin.next()));
+			properties.add(new PropertyProxy(getFacadeFactory(), origin.next()));
 		}
 	}
 
