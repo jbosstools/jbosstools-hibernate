@@ -23,7 +23,7 @@ public class PropertyProxy implements IProperty {
 		target = property;
 	}
 	
-	Property getTarget() {
+	public Property getTarget() {
 		return target;
 	}
 
