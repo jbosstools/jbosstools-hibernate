@@ -16,10 +16,6 @@ public class QueryTranslatorProxy implements IQueryTranslator {
 	private QueryTranslator target = null;
 	private IType[] returnTypes = null;
 
-	public QueryTranslatorProxy(QueryTranslator translator) {
-		target = translator;
-	}
-
 	public QueryTranslatorProxy(
 			IFacadeFactory facadeFactory,
 			QueryTranslator translator) {
