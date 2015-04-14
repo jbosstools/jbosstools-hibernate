@@ -13,14 +13,12 @@ import org.jboss.tools.hibernate.runtime.spi.IType;
 
 public class QueryTranslatorProxy extends AbstractQueryTranslatorFacade {
 	
-	private QueryTranslator target = null;
 	private IType[] returnTypes = null;
 
 	public QueryTranslatorProxy(
 			IFacadeFactory facadeFactory,
 			QueryTranslator translator) {
 		super(facadeFactory, translator);
-		target = translator;
 	}
 
 	public QueryTranslator getTarget() {
@@ -29,13 +27,13 @@ public class QueryTranslatorProxy extends AbstractQueryTranslatorFacade {
 
 	@Override
 	public boolean isManipulationStatement() {
-		return target.isManipulationStatement();
+		return getTarget().isManipulationStatement();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public Set<Serializable> getQuerySpaces() {
-		return target.getQuerySpaces();
+		return getTarget().getQuerySpaces();
 	}
 
 	@Override
@@ -47,7 +45,7 @@ public class QueryTranslatorProxy extends AbstractQueryTranslatorFacade {
 	}
 	
 	private void initializeReturnTypes() {
-		Type[] origin = target.getReturnTypes();
+		Type[] origin = getTarget().getReturnTypes();
 		ArrayList<IType> returnTypes = new ArrayList<IType>(origin.length);
 		for (Type type : origin) {
 			returnTypes.add(new TypeProxy(type));
@@ -58,7 +56,7 @@ public class QueryTranslatorProxy extends AbstractQueryTranslatorFacade {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<String> collectSqlStrings() {
-		return target.collectSqlStrings();
+		return getTarget().collectSqlStrings();
 	}
 
 }
