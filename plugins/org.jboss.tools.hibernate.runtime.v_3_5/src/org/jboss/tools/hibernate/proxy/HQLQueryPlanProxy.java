@@ -8,6 +8,7 @@ import org.hibernate.Filter;
 import org.hibernate.engine.query.HQLQueryPlan;
 import org.hibernate.hql.QueryTranslator;
 import org.hibernate.impl.SessionFactoryImpl;
+import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.runtime.spi.IQueryTranslator;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
@@ -16,6 +17,10 @@ public class HQLQueryPlanProxy implements IHQLQueryPlan {
 	
 	private HQLQueryPlan target = null;
 	private IQueryTranslator[] translators = null;
+	
+	public HQLQueryPlanProxy(IFacadeFactory facadeFactory, HQLQueryPlan queryPlan) {
+		target = queryPlan;
+	}
 	
 	public HQLQueryPlanProxy(
 			String hql,
