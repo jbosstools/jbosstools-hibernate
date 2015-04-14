@@ -72,7 +72,7 @@ public class QueryProxy extends AbstractQueryFacade {
 		Type[] origin = getTarget().getReturnTypes();
 		ArrayList<IType> destination = new ArrayList<IType>(origin.length);
 		for (Type type : origin) {
-			destination.add(new TypeProxy(type));
+			destination.add(new TypeProxy(getFacadeFactory(), type));
 		}
 		this.returnTypes = destination.toArray(new IType[destination.size()]);
 	}
