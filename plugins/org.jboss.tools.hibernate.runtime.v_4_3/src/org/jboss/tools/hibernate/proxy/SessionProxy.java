@@ -9,47 +9,45 @@ import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 
 public class SessionProxy extends AbstractSessionFacade {
 	
-	private Session target;
 	private ISessionFactory targetFactory;
 
 	public SessionProxy(
 			IFacadeFactory facadeFactory,
 			Session session) {
 		super(facadeFactory, session);
-		target = session;
 	}
 
 	@Override
 	public String getEntityName(Object o) {
-		return target.getEntityName(o);
+		return getTarget().getEntityName(o);
 	}
 
 	@Override
 	public ISessionFactory getSessionFactory() {
-		if (targetFactory == null && target.getSessionFactory() != null) {
-			targetFactory = new SessionFactoryProxy(getFacadeFactory(), target.getSessionFactory());
+		if (targetFactory == null && getTarget().getSessionFactory() != null) {
+			targetFactory = new SessionFactoryProxy(getFacadeFactory(), getTarget().getSessionFactory());
 		}
 		return targetFactory;
 	}
 
 	@Override
 	public IQuery createQuery(String queryString) {
-		return new QueryProxy(target.createQuery(queryString));
+		return new QueryProxy(getTarget().createQuery(queryString));
 	}
 
 	@Override
 	public boolean isOpen() {
-		return target.isOpen();
+		return getTarget().isOpen();
 	}
 
 	@Override
 	public void close() {
-		target.close();
+		getTarget().close();
 	}
 
 	@Override
 	public boolean contains(Object object) {
-		return target.contains(object);
+		return getTarget().contains(object);
 	}
 
 	public Session getTarget() {
@@ -59,7 +57,7 @@ public class SessionProxy extends AbstractSessionFacade {
 	public ICriteria createCriteria(Class<?> persistentClass) {
 		return new CriteriaProxy(
 				getFacadeFactory(),
-				target.createCriteria(persistentClass));
+				getTarget().createCriteria(persistentClass));
 	}
 	
 }
