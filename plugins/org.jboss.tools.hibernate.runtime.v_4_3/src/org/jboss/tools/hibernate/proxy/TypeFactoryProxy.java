@@ -12,17 +12,19 @@ import java.util.TimeZone;
 
 import org.hibernate.type.BasicTypeRegistry;
 import org.hibernate.type.StandardBasicTypes;
+import org.jboss.tools.hibernate.runtime.common.AbstractTypeFactoryFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
-import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 
-public class TypeFactoryProxy implements ITypeFactory {
+public class TypeFactoryProxy extends AbstractTypeFactoryFacade {
 	
 	private Map<IType, String> typeFormats = null;
 	private BasicTypeRegistry typeRegistry = new BasicTypeRegistry();
 
-	public TypeFactoryProxy(IFacadeFactory facadeFactory) {}
+	public TypeFactoryProxy(IFacadeFactory facadeFactory, Object target) {
+		super(facadeFactory, target);
+	}
 
 	@Override
 	public IType getBooleanType() {

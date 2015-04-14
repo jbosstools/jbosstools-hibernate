@@ -213,7 +213,8 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public ITypeFactory newTypeFactory() {
-		return new TypeFactoryProxy(facadeFactory);
+		// target for ITypeFactory is a dummy Object
+		return new TypeFactoryProxy(facadeFactory, new Object());
 	}
 
 	@Override
