@@ -20,6 +20,10 @@ public class QueryProxy extends AbstractQueryFacade {
 		super(facadeFactory, query);
 		target = query;
 	}
+	
+	public Query getTarget() {
+		return (Query)super.getTarget();
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
