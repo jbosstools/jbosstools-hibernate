@@ -3,10 +3,12 @@ package org.jboss.tools.hibernate.proxy;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.sql.Connection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.hibernate.Filter;
 import org.hibernate.Hibernate;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
@@ -25,6 +27,8 @@ import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.resolver.DialectFactory;
 import org.hibernate.ejb.Ejb3Configuration;
+import org.hibernate.engine.query.HQLQueryPlan;
+import org.hibernate.impl.SessionFactoryImpl;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.Column;
@@ -178,7 +182,12 @@ public class ServiceProxy implements IService {
 			String query, 
 			boolean shallow,
 			ISessionFactory sessionFactory) {
-		return new HQLQueryPlanProxy(query, shallow, sessionFactory);
+		assert sessionFactory instanceof SessionFactoryProxy;
+		SessionFactoryImpl factory = 
+				(SessionFactoryImpl) ((SessionFactoryProxy)sessionFactory).getTarget();
+		Map<String, Filter> enabledFilters = Collections.emptyMap();
+		HQLQueryPlan queryPlan = new HQLQueryPlan(query, shallow, enabledFilters, factory);
+		return new HQLQueryPlanProxy(facadeFactory, queryPlan);
 	}
 
 	@Override

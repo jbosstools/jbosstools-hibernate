@@ -6,10 +6,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.hibernate.Filter;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.common.util.StandardClassLoaderDelegateImpl;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -32,6 +34,8 @@ import org.hibernate.engine.jdbc.dialect.spi.DatabaseMetaDataDialectResolutionIn
 import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfoSource;
+import org.hibernate.engine.query.spi.HQLQueryPlan;
+import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
@@ -199,7 +203,12 @@ public class ServiceProxy implements IService {
 			String query, 
 			boolean shallow,
 			ISessionFactory sessionFactory) {
-		return new HQLQueryPlanProxy(query, shallow, sessionFactory);
+		assert sessionFactory instanceof SessionFactoryProxy;
+		SessionFactoryImpl factory = 
+				(SessionFactoryImpl) ((SessionFactoryProxy)sessionFactory).getTarget();
+		Map<String, Filter> enabledFilters = Collections.emptyMap(); 
+		HQLQueryPlan queryPlan = new HQLQueryPlan(query, shallow, enabledFilters, factory);
+		return new HQLQueryPlanProxy(facadeFactory, queryPlan);
 	}
 
 	@Override
