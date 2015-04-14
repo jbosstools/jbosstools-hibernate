@@ -22,7 +22,7 @@ public class PropertyProxy extends AbstractPropertyFacade {
 	}
 	
 	public Property getTarget() {
-		return target;
+		return (Property)super.getTarget();
 	}
 
 	@Override
