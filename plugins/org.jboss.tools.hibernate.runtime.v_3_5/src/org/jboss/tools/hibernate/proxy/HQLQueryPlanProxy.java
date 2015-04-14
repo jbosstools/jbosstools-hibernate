@@ -18,6 +18,10 @@ public class HQLQueryPlanProxy extends AbstractHQLQueryPlanFacade {
 		target = queryPlan;
 	}
 	
+	public HQLQueryPlan getTarget() {
+		return (HQLQueryPlan)super.getTarget();
+	}
+	
 	@Override
 	public IQueryTranslator[] getTranslators() {
 		if (translators == null) {
