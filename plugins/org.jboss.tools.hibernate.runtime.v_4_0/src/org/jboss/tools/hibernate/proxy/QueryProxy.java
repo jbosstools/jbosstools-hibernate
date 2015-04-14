@@ -11,14 +11,12 @@ import org.jboss.tools.hibernate.runtime.spi.IType;
 
 public class QueryProxy extends AbstractQueryFacade {
 	
-	private Query target = null;
 	private IType[] returnTypes = null;
 
 	public QueryProxy(
 			IFacadeFactory facadeFactory, 
 			Query query) {
 		super(facadeFactory, query);
-		target = query;
 	}
 
 	public Query getTarget() {
@@ -28,38 +26,38 @@ public class QueryProxy extends AbstractQueryFacade {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Object> list() {
-		return target.list();
+		return getTarget().list();
 	}
 
 	@Override
 	public void setMaxResults(int value) {
-		target.setMaxResults(value);
+		getTarget().setMaxResults(value);
 	}
 
 	@Override
 	public void setParameter(int pos, Object value, IType type) {
 		if (type instanceof TypeProxy) {
-			target.setParameter(pos, value, ((TypeProxy)type).getTarget());
+			getTarget().setParameter(pos, value, ((TypeProxy)type).getTarget());
 		}
 	}
 
 	@Override
 	public void setParameterList(String name, List<Object> list, IType type) {
 		if (type instanceof TypeProxy) {
-			target.setParameterList(name, list, ((TypeProxy)type).getTarget());
+			getTarget().setParameterList(name, list, ((TypeProxy)type).getTarget());
 		}
 	}
 
 	@Override
 	public void setParameter(String name, Object value, IType type) {
 		if (type instanceof TypeProxy) {
-			target.setParameter(name, value, ((TypeProxy)type).getTarget());
+			getTarget().setParameter(name, value, ((TypeProxy)type).getTarget());
 		}
 	}
 
 	@Override
 	public String[] getReturnAliases() {
-		return target.getReturnAliases();
+		return getTarget().getReturnAliases();
 	}
 
 	@Override
@@ -71,7 +69,7 @@ public class QueryProxy extends AbstractQueryFacade {
 	}
 	
 	private void initializeReturnTypes() {
-		Type[] origin = target.getReturnTypes();
+		Type[] origin = getTarget().getReturnTypes();
 		ArrayList<IType> destination = new ArrayList<IType>(origin.length);
 		for (Type type : origin) {
 			destination.add(new TypeProxy(type));
