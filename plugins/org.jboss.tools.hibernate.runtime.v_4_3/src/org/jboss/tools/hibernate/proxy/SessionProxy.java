@@ -11,14 +11,12 @@ public class SessionProxy extends AbstractSessionFacade {
 	
 	private Session target;
 	private ISessionFactory targetFactory;
-	private IFacadeFactory facadeFactory = null;
 
 	public SessionProxy(
 			IFacadeFactory facadeFactory,
 			Session session) {
 		super(facadeFactory, session);
 		target = session;
-		this.facadeFactory = facadeFactory;
 	}
 
 	@Override
@@ -29,7 +27,7 @@ public class SessionProxy extends AbstractSessionFacade {
 	@Override
 	public ISessionFactory getSessionFactory() {
 		if (targetFactory == null && target.getSessionFactory() != null) {
-			targetFactory = new SessionFactoryProxy(facadeFactory, target.getSessionFactory());
+			targetFactory = new SessionFactoryProxy(getFacadeFactory(), target.getSessionFactory());
 		}
 		return targetFactory;
 	}
@@ -60,7 +58,7 @@ public class SessionProxy extends AbstractSessionFacade {
 	
 	public ICriteria createCriteria(Class<?> persistentClass) {
 		return new CriteriaProxy(
-				facadeFactory,
+				getFacadeFactory(),
 				target.createCriteria(persistentClass));
 	}
 	
