@@ -23,6 +23,10 @@ public class QueryTranslatorProxy extends AbstractQueryTranslatorFacade {
 		target = translator;
 	}
 
+	public QueryTranslator getTarget() {
+		return (QueryTranslator)super.getTarget();
+	}
+
 	@Override
 	public boolean isManipulationStatement() {
 		return target.isManipulationStatement();
