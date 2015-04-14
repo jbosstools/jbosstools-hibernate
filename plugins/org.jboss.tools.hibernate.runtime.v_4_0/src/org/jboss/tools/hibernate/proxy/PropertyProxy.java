@@ -9,7 +9,6 @@ import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public class PropertyProxy extends AbstractPropertyFacade {
 	
-	private Property target = null;
 	private IValue value = null;
 	private IType type = null;
 	private IPersistentClass persistentClass = null;
@@ -18,7 +17,6 @@ public class PropertyProxy extends AbstractPropertyFacade {
 			IFacadeFactory facadeFactory,
 			Property property) {
 		super(facadeFactory, property);
-		target = property;
 	}
 	
 	public Property getTarget() {
@@ -27,60 +25,60 @@ public class PropertyProxy extends AbstractPropertyFacade {
 
 	@Override
 	public IValue getValue() {
-		if (value == null && target.getValue() != null) {
-			value = new ValueProxy(getFacadeFactory(), target.getValue());
+		if (value == null && getTarget().getValue() != null) {
+			value = new ValueProxy(getFacadeFactory(), getTarget().getValue());
 		}
 		return value;
 	}
 
 	@Override
 	public void setName(String name) {
-		target.setName(name);
+		getTarget().setName(name);
 	}
 
 	@Override
 	public void setPersistentClass(IPersistentClass persistentClass) {
 		assert persistentClass instanceof PersistentClassProxy;
-		target.setPersistentClass(((PersistentClassProxy)persistentClass).getTarget());
+		getTarget().setPersistentClass(((PersistentClassProxy)persistentClass).getTarget());
 	}
 
 	@Override
 	public IPersistentClass getPersistentClass() {
-		if (persistentClass == null && target.getPersistentClass() != null) {
-			persistentClass = new PersistentClassProxy(getFacadeFactory(), target.getPersistentClass());
+		if (persistentClass == null && getTarget().getPersistentClass() != null) {
+			persistentClass = new PersistentClassProxy(getFacadeFactory(), getTarget().getPersistentClass());
 		}
 		return persistentClass;
 	}
 
 	@Override
 	public boolean isComposite() {
-		return target.isComposite();
+		return getTarget().isComposite();
 	}
 
 	@Override
 	public String getPropertyAccessorName() {
-		return target.getPropertyAccessorName();
+		return getTarget().getPropertyAccessorName();
 	}
 
 	@Override
 	public String getName() {
-		return target.getName();
+		return getTarget().getName();
 	}
 
 	@Override
 	public boolean classIsPropertyClass() {
-		return target.getClass() == Property.class;
+		return getTarget().getClass() == Property.class;
 	}
 
 	@Override
 	public String getNodeName() {
-		return target.getNodeName();
+		return getTarget().getNodeName();
 	}
 
 	@Override
 	public IType getType() {
-		if (type == null && target.getType() != null) {
-			type = new TypeProxy(target.getType());
+		if (type == null && getTarget().getType() != null) {
+			type = new TypeProxy(getTarget().getType());
 		}
 		return type;
 	}
@@ -88,63 +86,63 @@ public class PropertyProxy extends AbstractPropertyFacade {
 	@Override
 	public void setValue(IValue value) {
 		assert value instanceof ValueProxy;
-		target.setValue(((ValueProxy)value).getTarget());
+		getTarget().setValue(((ValueProxy)value).getTarget());
 		this.value = value;
 	}
 
 	@Override
 	public void setPropertyAccessorName(String string) {
-		target.setPropertyAccessorName(string);
+		getTarget().setPropertyAccessorName(string);
 	}
 
 	@Override
 	public void setCascade(String string) {
-		target.setCascade(string);
+		getTarget().setCascade(string);
 	}
 
 	@Override
 	public boolean isBackRef() {
-		return target.isBackRef();
+		return getTarget().isBackRef();
 	}
 
 	@Override
 	public boolean isSelectable() {
-		return target.isSelectable();
+		return getTarget().isSelectable();
 	}
 
 	@Override
 	public boolean isInsertable() {
-		return target.isInsertable();
+		return getTarget().isInsertable();
 	}
 
 	@Override
 	public boolean isUpdateable() {
-		return target.isUpdateable();
+		return getTarget().isUpdateable();
 	}
 
 	@Override
 	public String getCascade() {
-		return target.getCascade();
+		return getTarget().getCascade();
 	}
 
 	@Override
 	public boolean isLazy() {
-		return target.isLazy();
+		return getTarget().isLazy();
 	}
 
 	@Override
 	public boolean isOptional() {
-		return target.isOptional();
+		return getTarget().isOptional();
 	}
 
 	@Override
 	public boolean isNaturalIdentifier() {
-		return target.isNaturalIdentifier();
+		return getTarget().isNaturalIdentifier();
 	}
 
 	@Override
 	public boolean isOptimisticLocked() {
-		return target.isOptimisticLocked();
+		return getTarget().isOptimisticLocked();
 	}
 	
 	@Override
