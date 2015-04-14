@@ -53,9 +53,9 @@ public class SessionProxy extends AbstractSessionFacade {
 	}
 
 	public Session getTarget() {
-		return target;
+		return (Session)super.getTarget();
 	}
-	
+
 	public ICriteria createCriteria(Class<?> persistentClass) {
 		return new CriteriaProxy(
 				getFacadeFactory(),
