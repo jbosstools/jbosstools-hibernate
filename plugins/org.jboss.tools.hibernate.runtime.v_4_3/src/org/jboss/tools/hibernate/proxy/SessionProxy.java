@@ -53,7 +53,7 @@ public class SessionProxy implements ISession {
 		return target.contains(object);
 	}
 
-	Session getTarget() {
+	public Session getTarget() {
 		return target;
 	}
 	
