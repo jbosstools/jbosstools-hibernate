@@ -14,10 +14,6 @@ public class QueryProxy implements IQuery {
 	private Query target = null;
 	private IType[] returnTypes = null;
 
-	public QueryProxy(Query query) {
-		target = query;
-	}
-
 	public QueryProxy(
 			IFacadeFactory facadeFactory, 
 			Query query) {
