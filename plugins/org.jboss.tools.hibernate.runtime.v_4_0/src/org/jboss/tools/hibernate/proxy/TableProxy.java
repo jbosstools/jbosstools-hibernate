@@ -15,7 +15,6 @@ import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public class TableProxy extends AbstractTableFacade {
 	
-	private Table target = null;
 	private HashSet<IColumn> columns = null;
 	private IValue identifierValue = null;
 	private IPrimaryKey primaryKey = null;
@@ -25,7 +24,6 @@ public class TableProxy extends AbstractTableFacade {
 			IFacadeFactory facadeFactory,
 			Table table) {
 		super(facadeFactory, table);
-		target = table;
 	}
 
 	public Table getTarget() {
@@ -34,13 +32,13 @@ public class TableProxy extends AbstractTableFacade {
 
 	@Override
 	public String getName() {
-		return target.getName();
+		return getTarget().getName();
 	}
 
 	@Override
 	public void addColumn(IColumn column) {
 		assert column instanceof ColumnProxy;
-		target.addColumn(((ColumnProxy)column).getTarget());
+		getTarget().addColumn(((ColumnProxy)column).getTarget());
 		columns = null;
 	}
 
@@ -48,23 +46,23 @@ public class TableProxy extends AbstractTableFacade {
 	public void setPrimaryKey(IPrimaryKey pk) {
 		assert pk instanceof PrimaryKeyProxy;
 		primaryKey = pk;
-		target.setPrimaryKey(((PrimaryKeyProxy)pk).getTarget());
+		getTarget().setPrimaryKey(((PrimaryKeyProxy)pk).getTarget());
 	}
 
 	@Override
 	public String getCatalog() {
-		return target.getCatalog();
+		return getTarget().getCatalog();
 	}
 
 	@Override
 	public String getSchema() {
-		return target.getSchema();
+		return getTarget().getSchema();
 	}
 
 	@Override
 	public IPrimaryKey getPrimaryKey() {
-		if (primaryKey == null && target.getPrimaryKey() != null) {
-			primaryKey = new PrimaryKeyProxy(getFacadeFactory(), target.getPrimaryKey());
+		if (primaryKey == null && getTarget().getPrimaryKey() != null) {
+			primaryKey = new PrimaryKeyProxy(getFacadeFactory(), getTarget().getPrimaryKey());
 		}
 		return primaryKey;
 	}
@@ -80,7 +78,7 @@ public class TableProxy extends AbstractTableFacade {
 	@SuppressWarnings("unchecked")
 	private void initializeColumns() {
 		columns = new HashSet<IColumn>();
-		Iterator<Column> iterator = target.getColumnIterator();
+		Iterator<Column> iterator = getTarget().getColumnIterator();
 		while (iterator.hasNext()) {
 			columns.add(new ColumnProxy(getFacadeFactory(), iterator.next()));
 		}
@@ -96,7 +94,7 @@ public class TableProxy extends AbstractTableFacade {
 	
 	private void initializeForeignKeys() {
 		foreignKeys = new HashSet<IForeignKey>();
-		Iterator<?> origin = target.getForeignKeyIterator();
+		Iterator<?> origin = getTarget().getForeignKeyIterator();
 		while (origin.hasNext()) {
 			foreignKeys.add(new ForeignKeyProxy(getFacadeFactory(), (ForeignKey)origin.next()));
 		}
@@ -104,37 +102,37 @@ public class TableProxy extends AbstractTableFacade {
 
 	@Override
 	public String getComment() {
-		return target.getComment();
+		return getTarget().getComment();
 	}
 
 	@Override
 	public String getRowId() {
-		return target.getRowId();
+		return getTarget().getRowId();
 	}
 
 	@Override
 	public String getSubselect() {
-		return target.getSubselect();
+		return getTarget().getSubselect();
 	}
 
 	@Override
 	public boolean hasDenormalizedTables() {
-		return target.hasDenormalizedTables();
+		return getTarget().hasDenormalizedTables();
 	}
 
 	@Override
 	public boolean isAbstract() {
-		return target.isAbstract();
+		return getTarget().isAbstract();
 	}
 
 	@Override
 	public boolean isAbstractUnionTable() {
-		return target.isAbstractUnionTable();
+		return getTarget().isAbstractUnionTable();
 	}
 
 	@Override
 	public boolean isPhysicalTable() {
-		return target.isPhysicalTable();
+		return getTarget().isPhysicalTable();
 	}
 	
 	@Override
@@ -148,8 +146,8 @@ public class TableProxy extends AbstractTableFacade {
 
 	@Override
 	public IValue getIdentifierValue() {
-		if (identifierValue == null && target.getIdentifierValue() != null) {
-			identifierValue = new ValueProxy(getFacadeFactory(), target.getIdentifierValue());
+		if (identifierValue == null && getTarget().getIdentifierValue() != null) {
+			identifierValue = new ValueProxy(getFacadeFactory(), getTarget().getIdentifierValue());
 		}
 		return identifierValue;
 	}
