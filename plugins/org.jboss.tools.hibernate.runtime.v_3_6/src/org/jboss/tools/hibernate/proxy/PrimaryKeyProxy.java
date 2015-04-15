@@ -13,7 +13,6 @@ import org.jboss.tools.hibernate.runtime.spi.ITable;
 
 public class PrimaryKeyProxy extends AbstractPrimaryKeyFacade {
 
-	private PrimaryKey target = null;
 	private List<IColumn> columns = null;
 	private ITable table = null;
 
@@ -21,7 +20,6 @@ public class PrimaryKeyProxy extends AbstractPrimaryKeyFacade {
 			IFacadeFactory facadeFactory,
 			PrimaryKey primaryKey) {
 		super(facadeFactory, primaryKey);
-		target = primaryKey;
 	}
 
 	public PrimaryKey getTarget() {
@@ -31,12 +29,12 @@ public class PrimaryKeyProxy extends AbstractPrimaryKeyFacade {
 	@Override
 	public void addColumn(IColumn column) {
 		assert column instanceof ColumnProxy;
-		target.addColumn(((ColumnProxy)column).getTarget());
+		getTarget().addColumn(((ColumnProxy)column).getTarget());
 	}
 
 	@Override
 	public int getColumnSpan() {
-		return target.getColumnSpan();
+		return getTarget().getColumnSpan();
 	}
 
 	@Override
@@ -49,7 +47,7 @@ public class PrimaryKeyProxy extends AbstractPrimaryKeyFacade {
 	
 	private void initializeColumns() {
 		columns = new ArrayList<IColumn>();
-		Iterator<?> origin = target.getColumns().iterator();
+		Iterator<?> origin = getTarget().getColumns().iterator();
 		while (origin.hasNext()) {
 			columns.add(new ColumnProxy(getFacadeFactory(), (Column)origin.next()));
 		}
@@ -65,8 +63,8 @@ public class PrimaryKeyProxy extends AbstractPrimaryKeyFacade {
 
 	@Override
 	public ITable getTable() {
-		if (table == null && target.getTable() != null) {
-			table = new TableProxy(getFacadeFactory(), target.getTable());
+		if (table == null && getTarget().getTable() != null) {
+			table = new TableProxy(getFacadeFactory(), getTarget().getTable());
 		}
 		return table;
 	}
@@ -74,7 +72,7 @@ public class PrimaryKeyProxy extends AbstractPrimaryKeyFacade {
 	@Override
 	public boolean containsColumn(IColumn column) {
 		assert column instanceof ColumnProxy;
-		return target.containsColumn(((ColumnProxy)column).getTarget());
+		return getTarget().containsColumn(((ColumnProxy)column).getTarget());
 	}
 
 	@Override
@@ -87,7 +85,7 @@ public class PrimaryKeyProxy extends AbstractPrimaryKeyFacade {
 
 	@Override
 	public String getName() {
-		return target.getName();
+		return getTarget().getName();
 	}
 
 }
