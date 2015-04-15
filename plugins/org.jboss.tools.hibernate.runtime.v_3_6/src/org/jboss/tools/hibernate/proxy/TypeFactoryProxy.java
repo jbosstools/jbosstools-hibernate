@@ -28,122 +28,122 @@ public class TypeFactoryProxy extends AbstractTypeFactoryFacade {
 
 	@Override
 	public IType getBooleanType() {
-		return new TypeProxy(StandardBasicTypes.BOOLEAN);
+		return new TypeProxy(getFacadeFactory(), StandardBasicTypes.BOOLEAN);
 	}
 
 	@Override
 	public IType getByteType() {
-		return new TypeProxy(StandardBasicTypes.BYTE);
+		return new TypeProxy(getFacadeFactory(), StandardBasicTypes.BYTE);
 	}
 
 	@Override
 	public IType getBigIntegerType() {
-		return new TypeProxy(StandardBasicTypes.BIG_INTEGER);
+		return new TypeProxy(getFacadeFactory(), StandardBasicTypes.BIG_INTEGER);
 	}
 
 	@Override
 	public IType getShortType() {
-		return new TypeProxy(StandardBasicTypes.SHORT);
+		return new TypeProxy(getFacadeFactory(), StandardBasicTypes.SHORT);
 	}
 
 	@Override
 	public IType getCalendarType() {
-		return new TypeProxy(StandardBasicTypes.CALENDAR);
+		return new TypeProxy(getFacadeFactory(), StandardBasicTypes.CALENDAR);
 	}
 
 	@Override
 	public IType getCalendarDateType() {
-		return new TypeProxy(StandardBasicTypes.CALENDAR_DATE);
+		return new TypeProxy(getFacadeFactory(), StandardBasicTypes.CALENDAR_DATE);
 	}
 
 	@Override
 	public IType getIntegerType() {
-		return new TypeProxy(StandardBasicTypes.INTEGER);
+		return new TypeProxy(getFacadeFactory(), StandardBasicTypes.INTEGER);
 	}
 
 	@Override
 	public IType getBigDecimalType() {
-		return new TypeProxy(StandardBasicTypes.BIG_DECIMAL);
+		return new TypeProxy(getFacadeFactory(), StandardBasicTypes.BIG_DECIMAL);
 	}
 
 	@Override
 	public IType getCharacterType() {
-		return new TypeProxy(StandardBasicTypes.CHARACTER);
+		return new TypeProxy(getFacadeFactory(), StandardBasicTypes.CHARACTER);
 	}
 
 	@Override
 	public IType getClassType() {
-		return new TypeProxy(StandardBasicTypes.CLASS);
+		return new TypeProxy(getFacadeFactory(), StandardBasicTypes.CLASS);
 	}
 
 	@Override
 	public IType getCurrencyType() {
-		return new TypeProxy(StandardBasicTypes.CURRENCY);
+		return new TypeProxy(getFacadeFactory(), StandardBasicTypes.CURRENCY);
 	}
 
 	@Override
 	public IType getDateType() {
-		return new TypeProxy(StandardBasicTypes.DATE);
+		return new TypeProxy(getFacadeFactory(), StandardBasicTypes.DATE);
 	}
 
 	@Override
 	public IType getDoubleType() {
-		return new TypeProxy(StandardBasicTypes.DOUBLE);
+		return new TypeProxy(getFacadeFactory(), StandardBasicTypes.DOUBLE);
 	}
 
 	@Override
 	public IType getFloatType() {
-		return new TypeProxy(StandardBasicTypes.FLOAT);
+		return new TypeProxy(getFacadeFactory(), StandardBasicTypes.FLOAT);
 	}
 
 	@Override
 	public IType getLocaleType() {
-		return new TypeProxy(StandardBasicTypes.LOCALE);
+		return new TypeProxy(getFacadeFactory(), StandardBasicTypes.LOCALE);
 	}
 
 	@Override
 	public IType getLongType() {
-		return new TypeProxy(StandardBasicTypes.LONG);
+		return new TypeProxy(getFacadeFactory(), StandardBasicTypes.LONG);
 	}
 
 	@Override
 	public IType getStringType() {
-		return new TypeProxy(StandardBasicTypes.STRING);
+		return new TypeProxy(getFacadeFactory(), StandardBasicTypes.STRING);
 	}
 
 	@Override
 	public IType getTextType() {
-		return new TypeProxy(StandardBasicTypes.TEXT);
+		return new TypeProxy(getFacadeFactory(), StandardBasicTypes.TEXT);
 	}
 
 	@Override
 	public IType getTimeType() {
-		return new TypeProxy(StandardBasicTypes.TIME);
+		return new TypeProxy(getFacadeFactory(), StandardBasicTypes.TIME);
 	}
 
 	@Override
 	public IType getTimestampType() {
-		return new TypeProxy(StandardBasicTypes.TIMESTAMP);
+		return new TypeProxy(getFacadeFactory(), StandardBasicTypes.TIMESTAMP);
 	}
 
 	@Override
 	public IType getTimezoneType() {
-		return new TypeProxy(StandardBasicTypes.TIMEZONE);
+		return new TypeProxy(getFacadeFactory(), StandardBasicTypes.TIMEZONE);
 	}
 
 	@Override
 	public IType getTrueFalseType() {
-		return new TypeProxy(StandardBasicTypes.TRUE_FALSE);
+		return new TypeProxy(getFacadeFactory(), StandardBasicTypes.TRUE_FALSE);
 	}
 
 	@Override
 	public IType getYesNoType() {
-		return new TypeProxy(StandardBasicTypes.YES_NO);
+		return new TypeProxy(getFacadeFactory(), StandardBasicTypes.YES_NO);
 	}
 
 	@Override
 	public IType getNamedType(String typeName) {
-		return new TypeProxy(typeRegistry.getRegisteredType(typeName));
+		return new TypeProxy(getFacadeFactory(), typeRegistry.getRegisteredType(typeName));
 	}
 
 	@Override

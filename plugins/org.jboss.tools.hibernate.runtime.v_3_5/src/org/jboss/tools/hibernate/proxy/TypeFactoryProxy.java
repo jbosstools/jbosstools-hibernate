@@ -27,127 +27,127 @@ public class TypeFactoryProxy extends AbstractTypeFactoryFacade {
 
 	@Override
 	public IType getBooleanType() {
-		return new TypeProxy(Hibernate.BOOLEAN);
+		return new TypeProxy(getFacadeFactory(), Hibernate.BOOLEAN);
 	}
 
 	@Override
 	public IType getByteType() {
-		return new TypeProxy(Hibernate.BYTE);
+		return new TypeProxy(getFacadeFactory(), Hibernate.BYTE);
 	}
 
 	@Override
 	public IType getBigIntegerType() {
-		return new TypeProxy(Hibernate.BIG_INTEGER);
+		return new TypeProxy(getFacadeFactory(), Hibernate.BIG_INTEGER);
 	}
 
 	@Override
 	public IType getShortType() {
-		return new TypeProxy(Hibernate.SHORT);
+		return new TypeProxy(getFacadeFactory(), Hibernate.SHORT);
 	}
 
 	@Override
 	public IType getCalendarType() {
-		return new TypeProxy(Hibernate.CALENDAR);
+		return new TypeProxy(getFacadeFactory(), Hibernate.CALENDAR);
 	}
 
 	@Override
 	public IType getCalendarDateType() {
-		return new TypeProxy(Hibernate.CALENDAR_DATE);
+		return new TypeProxy(getFacadeFactory(), Hibernate.CALENDAR_DATE);
 	}
 
 	@Override
 	public IType getIntegerType() {
-		return new TypeProxy(Hibernate.INTEGER);
+		return new TypeProxy(getFacadeFactory(), Hibernate.INTEGER);
 	}
 
 	@Override
 	public IType getBigDecimalType() {
-		return new TypeProxy(Hibernate.BIG_DECIMAL);
+		return new TypeProxy(getFacadeFactory(), Hibernate.BIG_DECIMAL);
 	}
 
 	@Override
 	public IType getCharacterType() {
-		return new TypeProxy(Hibernate.CHARACTER);
+		return new TypeProxy(getFacadeFactory(), Hibernate.CHARACTER);
 	}
 
 	@Override
 	public IType getClassType() {
-		return new TypeProxy(Hibernate.CLASS);
+		return new TypeProxy(getFacadeFactory(), Hibernate.CLASS);
 	}
 
 	@Override
 	public IType getCurrencyType() {
-		return new TypeProxy(Hibernate.CURRENCY);
+		return new TypeProxy(getFacadeFactory(), Hibernate.CURRENCY);
 	}
 
 	@Override
 	public IType getDateType() {
-		return new TypeProxy(Hibernate.DATE);
+		return new TypeProxy(getFacadeFactory(), Hibernate.DATE);
 	}
 
 	@Override
 	public IType getDoubleType() {
-		return new TypeProxy(Hibernate.DOUBLE);
+		return new TypeProxy(getFacadeFactory(), Hibernate.DOUBLE);
 	}
 
 	@Override
 	public IType getFloatType() {
-		return new TypeProxy(Hibernate.FLOAT);
+		return new TypeProxy(getFacadeFactory(), Hibernate.FLOAT);
 	}
 
 	@Override
 	public IType getLocaleType() {
-		return new TypeProxy(Hibernate.LOCALE);
+		return new TypeProxy(getFacadeFactory(), Hibernate.LOCALE);
 	}
 
 	@Override
 	public IType getLongType() {
-		return new TypeProxy(Hibernate.LONG);
+		return new TypeProxy(getFacadeFactory(), Hibernate.LONG);
 	}
 
 	@Override
 	public IType getStringType() {
-		return new TypeProxy(Hibernate.STRING);
+		return new TypeProxy(getFacadeFactory(), Hibernate.STRING);
 	}
 
 	@Override
 	public IType getTextType() {
-		return new TypeProxy(Hibernate.TEXT);
+		return new TypeProxy(getFacadeFactory(), Hibernate.TEXT);
 	}
 
 	@Override
 	public IType getTimeType() {
-		return new TypeProxy(Hibernate.TIME);
+		return new TypeProxy(getFacadeFactory(), Hibernate.TIME);
 	}
 
 	@Override
 	public IType getTimestampType() {
-		return new TypeProxy(Hibernate.TIMESTAMP);
+		return new TypeProxy(getFacadeFactory(), Hibernate.TIMESTAMP);
 	}
 
 	@Override
 	public IType getTimezoneType() {
-		return new TypeProxy(Hibernate.TIMEZONE);
+		return new TypeProxy(getFacadeFactory(), Hibernate.TIMEZONE);
 	}
 
 	@Override
 	public IType getTrueFalseType() {
-		return new TypeProxy(Hibernate.TRUE_FALSE);
+		return new TypeProxy(getFacadeFactory(), Hibernate.TRUE_FALSE);
 	}
 
 	@Override
 	public IType getYesNoType() {
-		return new TypeProxy(Hibernate.YES_NO);
+		return new TypeProxy(getFacadeFactory(), Hibernate.YES_NO);
 	}
 
 	@Override
 	public IType getNamedType(String typeName) {
-		return new TypeProxy(TypeFactory.heuristicType(typeName));
+		return new TypeProxy(getFacadeFactory(), TypeFactory.heuristicType(typeName));
 	}
 
 	@Override
 	public IType getBasicType(String type) {
-		return new TypeProxy(TypeFactory.basic(type));
+		return new TypeProxy(getFacadeFactory(), TypeFactory.basic(type));
 	}
 
 	@Override
