@@ -127,7 +127,7 @@ public class ValueProxy extends AbstractValueFacade {
 	@Override
 	public ITable getTable() {
 		if (getTarget().getTable() != null && table == null) {
-			table = new TableProxy(getTarget().getTable());
+			table = new TableProxy(getFacadeFactory(), getTarget().getTable());
 		}
 		return table;
 	}
@@ -223,7 +223,7 @@ public class ValueProxy extends AbstractValueFacade {
 		if (isCollection() && collectionTable == null) {
 			Table ct = ((Collection)getTarget()).getCollectionTable();
 			if (ct != null) {
-				collectionTable = new TableProxy(ct);
+				collectionTable = new TableProxy(getFacadeFactory(), ct);
 			}
 		}
 		return collectionTable;
