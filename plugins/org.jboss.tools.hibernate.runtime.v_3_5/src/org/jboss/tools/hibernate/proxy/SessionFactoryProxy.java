@@ -14,7 +14,6 @@ import org.jboss.tools.hibernate.runtime.spi.ISession;
 
 public class SessionFactoryProxy extends AbstractSessionFactoryFacade {
 	
-	private SessionFactory target;
 	private Map<String, IClassMetadata> allClassMetadata = null;
 	private Map<String, ICollectionMetadata> allCollectionMetadata = null;
 
@@ -22,7 +21,6 @@ public class SessionFactoryProxy extends AbstractSessionFactoryFacade {
 			IFacadeFactory facadeFactory, 
 			SessionFactory sessionFactory) {
 		super(facadeFactory, sessionFactory);
-		target = sessionFactory;
 	}
 
 	public SessionFactory getTarget() {
@@ -31,7 +29,7 @@ public class SessionFactoryProxy extends AbstractSessionFactoryFacade {
 
 	@Override
 	public void close() {
-		target.close();
+		getTarget().close();
 	}
 
 	@Override
@@ -44,7 +42,7 @@ public class SessionFactoryProxy extends AbstractSessionFactoryFacade {
 	
 	@SuppressWarnings("unchecked")
 	private void initializeAllClassMetadata() {
-		Map<String, ClassMetadata> origin = target.getAllClassMetadata();
+		Map<String, ClassMetadata> origin = getTarget().getAllClassMetadata();
 		allClassMetadata = new HashMap<String, IClassMetadata>(origin.size());
 		for (Map.Entry<String, ClassMetadata> entry : origin.entrySet()) {
 			allClassMetadata.put(
@@ -65,7 +63,7 @@ public class SessionFactoryProxy extends AbstractSessionFactoryFacade {
 	
 	@SuppressWarnings("unchecked")
 	private void initializeAllCollectionMetadata() {
-		Map<String, CollectionMetadata> origin = target.getAllCollectionMetadata();
+		Map<String, CollectionMetadata> origin = getTarget().getAllCollectionMetadata();
 		allCollectionMetadata = new HashMap<String, ICollectionMetadata>(origin.size());
 		for (Map.Entry<String, CollectionMetadata> entry : origin.entrySet()) {
 			String key = entry.getKey();
@@ -80,7 +78,7 @@ public class SessionFactoryProxy extends AbstractSessionFactoryFacade {
 
 	@Override
 	public ISession openSession() {
-		return new SessionProxy(getFacadeFactory(), target.openSession());
+		return new SessionProxy(getFacadeFactory(), getTarget().openSession());
 	}
 	
 	@Override
