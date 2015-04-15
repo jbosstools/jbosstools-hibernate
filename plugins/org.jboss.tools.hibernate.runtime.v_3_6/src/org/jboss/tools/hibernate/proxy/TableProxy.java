@@ -6,14 +6,14 @@ import java.util.Iterator;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
+import org.jboss.tools.hibernate.runtime.common.AbstractTableFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
-import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 
-public class TableProxy implements ITable {
+public class TableProxy extends AbstractTableFacade {
 	
 	private Table target = null;
 	private HashSet<IColumn> columns = null;
@@ -26,6 +26,7 @@ public class TableProxy implements ITable {
 	public TableProxy(
 			IFacadeFactory facadeFactory,
 			Table table) {
+		super(facadeFactory, table);
 		this.facadeFactory = facadeFactory;
 		target = table;
 	}
