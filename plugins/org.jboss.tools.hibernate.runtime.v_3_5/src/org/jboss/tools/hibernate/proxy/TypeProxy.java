@@ -78,7 +78,7 @@ public class TypeProxy extends AbstractTypeFacade {
 	}
 	
 	public Type getTarget() {
-		return target;
+		return (Type)super.getTarget();
 	}
 
 	@Override
