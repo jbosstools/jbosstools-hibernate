@@ -7,13 +7,10 @@ import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 
 public class SettingsProxy extends AbstractSettingsFacade {
 	
-	private Settings target;
-
 	public SettingsProxy(
 			IFacadeFactory facadeFactory, 
 			Settings settings) {
 		super(facadeFactory, settings);
-		target = settings;
 	}
 
 	public Settings getTarget() {
@@ -22,12 +19,12 @@ public class SettingsProxy extends AbstractSettingsFacade {
 
 	@Override
 	public String getDefaultCatalogName() {
-		return target.getDefaultCatalogName();
+		return getTarget().getDefaultCatalogName();
 	}
 
 	@Override
 	public String getDefaultSchemaName() {
-		return target.getDefaultSchemaName();
+		return getTarget().getDefaultSchemaName();
 	}
 	
 	/*
@@ -35,7 +32,7 @@ public class SettingsProxy extends AbstractSettingsFacade {
 	 */
 	@Deprecated
 	public ConnectionProvider getConnectionProvider() {
-		return target.getConnectionProvider();
+		return getTarget().getConnectionProvider();
 	}
 
 }
