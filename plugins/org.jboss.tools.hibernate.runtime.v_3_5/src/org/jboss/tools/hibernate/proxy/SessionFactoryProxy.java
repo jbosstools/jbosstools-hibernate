@@ -25,6 +25,10 @@ public class SessionFactoryProxy extends AbstractSessionFactoryFacade {
 		target = sessionFactory;
 	}
 
+	public SessionFactory getTarget() {
+		return (SessionFactory)super.getTarget();
+	}
+
 	@Override
 	public void close() {
 		target.close();
@@ -79,10 +83,6 @@ public class SessionFactoryProxy extends AbstractSessionFactoryFacade {
 		return new SessionProxy(getFacadeFactory(), target.openSession());
 	}
 	
-	public SessionFactory getTarget() {
-		return target;
-	}
-
 	@Override
 	public IClassMetadata getClassMetadata(Class<?> clazz) {
 		if (allClassMetadata == null) {
