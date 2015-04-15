@@ -24,14 +24,14 @@ public class PrimaryKeyProxy extends AbstractPrimaryKeyFacade {
 		target = primaryKey;
 	}
 
+	public PrimaryKey getTarget() {
+		return (PrimaryKey)super.getTarget();
+	}
+
 	@Override
 	public void addColumn(IColumn column) {
 		assert column instanceof ColumnProxy;
 		target.addColumn(((ColumnProxy)column).getTarget());
-	}
-
-	public PrimaryKey getTarget() {
-		return target;
 	}
 
 	@Override
