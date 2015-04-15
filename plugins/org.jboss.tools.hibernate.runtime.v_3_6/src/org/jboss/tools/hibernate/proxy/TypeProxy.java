@@ -78,7 +78,7 @@ public class TypeProxy implements IType {
 		return target.getReturnedClass();
 	}
 	
-	Type getTarget() {
+	public Type getTarget() {
 		return target;
 	}
 
