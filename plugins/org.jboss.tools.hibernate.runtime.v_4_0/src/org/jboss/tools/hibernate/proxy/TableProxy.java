@@ -23,10 +23,6 @@ public class TableProxy implements ITable {
 	
 	private IFacadeFactory facadeFactory = null;
 	
-	public TableProxy(Table table) {
-		target = table;
-	}
-
 	public TableProxy(
 			IFacadeFactory facadeFactory,
 			Table table) {
