@@ -11,47 +11,48 @@ import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 
 public class TypeProxy extends AbstractTypeFacade {
 	
-	private Type target = null;
-
 	public TypeProxy(
 			IFacadeFactory facadeFactory,
 			Type type) {
 		super(facadeFactory, type);
-		target = type;
 	}	
+
+	public Type getTarget() {
+		return (Type)super.getTarget();
+	}
 
 	@Override
 	public String toString(Object value) {
 		String result = null;
-		if (target instanceof NullableType) {
-			result = ((NullableType)target).toString(value);
+		if (getTarget() instanceof NullableType) {
+			result = ((NullableType)getTarget()).toString(value);
 		}
 		return result;
 	}
 
 	@Override
 	public String getName() {
-		return target.getName();
+		return getTarget().getName();
 	}
 
 	@Override
 	public Object fromStringValue(String value) {
 		Object result = null;
-		if (target instanceof NullableType) {
-			result = ((NullableType)target).fromStringValue(value);
+		if (getTarget() instanceof NullableType) {
+			result = ((NullableType)getTarget()).fromStringValue(value);
 		}
 		return result;
 	}
 
 	@Override
 	public boolean isEntityType() {
-		return target.isEntityType();
+		return getTarget().isEntityType();
 	}
 
 	@Override
 	public boolean isOneToOne() {
-		if (target.isEntityType()) {
-			return ((EntityType)target).isOneToOne();
+		if (getTarget().isEntityType()) {
+			return ((EntityType)getTarget()).isOneToOne();
 		} else {
 			return false;
 		}
@@ -59,32 +60,28 @@ public class TypeProxy extends AbstractTypeFacade {
 
 	@Override
 	public boolean isAnyType() {
-		return target.isAnyType();
+		return getTarget().isAnyType();
 	}
 
 	@Override
 	public boolean isComponentType() {
-		return target.isComponentType();
+		return getTarget().isComponentType();
 	}
 
 	@Override
 	public boolean isCollectionType() {
-		return target.isCollectionType();
+		return getTarget().isCollectionType();
 	}
 
 	@Override
 	public Class<?> getReturnedClass() {
-		return target.getReturnedClass();
+		return getTarget().getReturnedClass();
 	}
 	
-	public Type getTarget() {
-		return (Type)super.getTarget();
-	}
-
 	@Override
 	public String getAssociatedEntityName() {
-		if (target.isEntityType()) {
-			return ((EntityType)target).getAssociatedEntityName();
+		if (getTarget().isEntityType()) {
+			return ((EntityType)getTarget()).getAssociatedEntityName();
 		} else {
 			return null;
 		}
@@ -92,13 +89,13 @@ public class TypeProxy extends AbstractTypeFacade {
 
 	@Override
 	public boolean isIntegerType() {
-		return target instanceof IntegerType;
+		return getTarget() instanceof IntegerType;
 	}
 
 	@Override
 	public boolean isArrayType() {
-		if (target instanceof CollectionType) {
-			return ((CollectionType)target).isArrayType();
+		if (getTarget() instanceof CollectionType) {
+			return ((CollectionType)getTarget()).isArrayType();
 		} else {
 			return false;
 		}
@@ -106,20 +103,20 @@ public class TypeProxy extends AbstractTypeFacade {
 
 	@Override
 	public boolean isInstanceOfPrimitiveType() {
-		return target instanceof PrimitiveType;
+		return getTarget() instanceof PrimitiveType;
 	}
 
 	@Override
 	public Class<?> getPrimitiveClass() {
 		return isInstanceOfPrimitiveType() ? 
-				((PrimitiveType)target).getPrimitiveClass() :
+				((PrimitiveType)getTarget()).getPrimitiveClass() :
 					null;
 	}
 
 	@Override
 	public String getRole() {
-		assert target instanceof CollectionType;
-		return ((CollectionType)target).getRole();
+		assert getTarget() instanceof CollectionType;
+		return ((CollectionType)getTarget()).getRole();
 	}
 
 }
