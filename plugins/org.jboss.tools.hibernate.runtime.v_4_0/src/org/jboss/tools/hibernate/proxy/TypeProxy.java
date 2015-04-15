@@ -13,10 +13,6 @@ public class TypeProxy implements IType {
 	
 	private Type target = null;
 
-	public TypeProxy(Type type) {
-		target = type;
-	}
-
 	public TypeProxy(
 			IFacadeFactory facadeFactory,
 			Type type) {
