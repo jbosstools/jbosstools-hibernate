@@ -6,16 +6,17 @@ import org.hibernate.type.IntegerType;
 import org.hibernate.type.PrimitiveType;
 import org.hibernate.type.StringRepresentableType;
 import org.hibernate.type.Type;
+import org.jboss.tools.hibernate.runtime.common.AbstractTypeFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IType;
 
-public class TypeProxy implements IType {
+public class TypeProxy extends AbstractTypeFacade {
 	
 	private Type target = null;
 
 	public TypeProxy(
 			IFacadeFactory facadeFactory,
 			Type type) {
+		super(facadeFactory, type);
 		target = type;
 	}	
 
