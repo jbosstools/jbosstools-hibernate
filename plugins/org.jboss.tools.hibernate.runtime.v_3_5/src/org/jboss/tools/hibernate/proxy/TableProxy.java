@@ -28,13 +28,13 @@ public class TableProxy extends AbstractTableFacade {
 		target = table;
 	}
 
+	public Table getTarget() {
+		return (Table)super.getTarget();
+	}
+
 	@Override
 	public String getName() {
 		return target.getName();
-	}
-
-	public Table getTarget() {
-		return target;
 	}
 
 	@Override
