@@ -21,13 +21,10 @@ public class TableProxy extends AbstractTableFacade {
 	private IPrimaryKey primaryKey = null;
 	private HashSet<IForeignKey> foreignKeys = null;
 	
-	private IFacadeFactory facadeFactory = null;
-	
 	public TableProxy(
 			IFacadeFactory facadeFactory,
 			Table table) {
 		super(facadeFactory, table);
-		this.facadeFactory = facadeFactory;
 		target = table;
 	}
 
@@ -67,7 +64,7 @@ public class TableProxy extends AbstractTableFacade {
 	@Override
 	public IPrimaryKey getPrimaryKey() {
 		if (primaryKey == null && target.getPrimaryKey() != null) {
-			primaryKey = new PrimaryKeyProxy(facadeFactory, target.getPrimaryKey());
+			primaryKey = new PrimaryKeyProxy(getFacadeFactory(), target.getPrimaryKey());
 		}
 		return primaryKey;
 	}
@@ -85,7 +82,7 @@ public class TableProxy extends AbstractTableFacade {
 		columns = new HashSet<IColumn>();
 		Iterator<Column> iterator = target.getColumnIterator();
 		while (iterator.hasNext()) {
-			columns.add(new ColumnProxy(facadeFactory, iterator.next()));
+			columns.add(new ColumnProxy(getFacadeFactory(), iterator.next()));
 		}
 	}
 
@@ -101,7 +98,7 @@ public class TableProxy extends AbstractTableFacade {
 		foreignKeys = new HashSet<IForeignKey>();
 		Iterator<?> origin = target.getForeignKeyIterator();
 		while (origin.hasNext()) {
-			foreignKeys.add(new ForeignKeyProxy(facadeFactory, (ForeignKey)origin.next()));
+			foreignKeys.add(new ForeignKeyProxy(getFacadeFactory(), (ForeignKey)origin.next()));
 		}
 	}
 
@@ -152,7 +149,7 @@ public class TableProxy extends AbstractTableFacade {
 	@Override
 	public IValue getIdentifierValue() {
 		if (identifierValue == null && target.getIdentifierValue() != null) {
-			identifierValue = new ValueProxy(facadeFactory, target.getIdentifierValue());
+			identifierValue = new ValueProxy(getFacadeFactory(), target.getIdentifierValue());
 		}
 		return identifierValue;
 	}
