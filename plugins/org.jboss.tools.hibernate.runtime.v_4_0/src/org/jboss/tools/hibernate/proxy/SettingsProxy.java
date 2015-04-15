@@ -16,7 +16,7 @@ public class SettingsProxy extends AbstractSettingsFacade {
 	}
 
 	public Settings getTarget() {
-		return target;
+		return (Settings)super.getTarget();
 	}
 
 	@Override
