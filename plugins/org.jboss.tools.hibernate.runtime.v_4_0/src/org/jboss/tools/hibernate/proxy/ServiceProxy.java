@@ -239,7 +239,7 @@ public class ServiceProxy implements IService {
 						((SettingsProxy)settings).getTarget(), 
 						(ReverseEngineeringStrategy)((IFacade)strategy).getTarget(),
 						buildServiceRegistry(configuration));
-		return new JDBCReaderProxy(target);
+		return new JDBCReaderProxy(facadeFactory, target);
 	}
 
 	private ServiceRegistry buildServiceRegistry(IConfiguration configuration) {
