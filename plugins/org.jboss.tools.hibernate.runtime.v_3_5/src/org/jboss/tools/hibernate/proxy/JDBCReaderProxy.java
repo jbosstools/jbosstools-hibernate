@@ -10,12 +10,10 @@ import org.jboss.tools.hibernate.runtime.spi.IProgressListener;
 
 public class JDBCReaderProxy extends AbstractJDBCReaderFacade {
 	
-	private JDBCReader target = null;
 	private IMetaDataDialect metaDataDialect = null;
 
 	public JDBCReaderProxy(IFacadeFactory facadeFactory, JDBCReader reader) {
 		super(facadeFactory, reader);
-		target = reader;
 	}
 	
 	public JDBCReader getTarget() {
@@ -25,7 +23,7 @@ public class JDBCReaderProxy extends AbstractJDBCReaderFacade {
 	@Override
 	public IMetaDataDialect getMetaDataDialect() {
 		if (metaDataDialect == null) {
-			metaDataDialect = new MetaDataDialectProxy(target.getMetaDataDialect());
+			metaDataDialect = new MetaDataDialectProxy(getTarget().getMetaDataDialect());
 		}
 		return metaDataDialect;
 	}
@@ -37,7 +35,7 @@ public class JDBCReaderProxy extends AbstractJDBCReaderFacade {
 			String defaultSchemaName,
 			IProgressListener progressListener) {
 		assert databaseCollector instanceof DatabaseCollectorProxy;
-		target.readDatabaseSchema(
+		getTarget().readDatabaseSchema(
 				((DatabaseCollectorProxy)databaseCollector).getTarget(), 
 				defaultCatalogName, 
 				defaultSchemaName,
