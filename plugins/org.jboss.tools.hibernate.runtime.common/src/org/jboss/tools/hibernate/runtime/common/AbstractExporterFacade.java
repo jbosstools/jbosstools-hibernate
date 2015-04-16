@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.runtime.common;
 
 import java.io.File;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.util.Properties;
 
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
@@ -194,7 +195,7 @@ implements IExporter {
 		Util.invokeMethod(
 				getTarget(), 
 				"setOutput", 
-				new Class[] { StringWriter.class }, 
+				new Class[] { Writer.class }, 
 				new Object[] { stringWriter });
 	}
 
