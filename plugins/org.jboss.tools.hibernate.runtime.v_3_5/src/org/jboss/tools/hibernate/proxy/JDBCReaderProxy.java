@@ -17,6 +17,10 @@ public class JDBCReaderProxy extends AbstractJDBCReaderFacade {
 		super(facadeFactory, reader);
 		target = reader;
 	}
+	
+	public JDBCReader getTarget() {
+		return (JDBCReader)super.getTarget();
+	}
 
 	@Override
 	public IMetaDataDialect getMetaDataDialect() {
