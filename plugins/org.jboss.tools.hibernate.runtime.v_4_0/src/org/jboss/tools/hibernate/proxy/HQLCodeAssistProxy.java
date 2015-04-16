@@ -18,6 +18,10 @@ public class HQLCodeAssistProxy extends AbstractHQLCodeAssistFacade {
 		target = hqlCodeAssist;
 	}
 
+	public HQLCodeAssist getTarget() {
+		return (HQLCodeAssist)super.getTarget();
+	}
+
 	@Override
 	public void codeComplete(String query, int currentOffset,
 			IHQLCompletionHandler handler) {

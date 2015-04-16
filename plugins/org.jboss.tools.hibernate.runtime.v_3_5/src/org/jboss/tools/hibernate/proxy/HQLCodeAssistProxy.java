@@ -17,6 +17,10 @@ public class HQLCodeAssistProxy extends AbstractHQLCodeAssistFacade {
 		super(facadeFactory, hqlCodeAssist);
 		target = hqlCodeAssist;
 	}
+	
+	public HQLCodeAssist getTarget() {
+		return (HQLCodeAssist)super.getTarget();
+	}
 
 	@Override
 	public void codeComplete(String query, int currentOffset,
