@@ -8,13 +8,10 @@ import org.jboss.tools.hibernate.runtime.spi.IProperty;
 public class HQLCompletionProposalProxy 
 extends AbstractHQLCompletionProposalFacade {
 	
-	private HQLCompletionProposal target = null;
-
 	public HQLCompletionProposalProxy(
 			IFacadeFactory facadeFactory,
 			HQLCompletionProposal proposal) {
 		super(facadeFactory, proposal);
-		target = proposal;
 	}
 
 	public HQLCompletionProposal getTarget() {
@@ -23,42 +20,42 @@ extends AbstractHQLCompletionProposalFacade {
 
 	@Override
 	public String getCompletion() {
-		return target.getCompletion();
+		return getTarget().getCompletion();
 	}
 
 	@Override
 	public int getReplaceStart() {
-		return target.getReplaceStart();
+		return getTarget().getReplaceStart();
 	}
 
 	@Override
 	public int getReplaceEnd() {
-		return target.getReplaceEnd();
+		return getTarget().getReplaceEnd();
 	}
 
 	@Override
 	public String getSimpleName() {
-		return target.getSimpleName();
+		return getTarget().getSimpleName();
 	}
 
 	@Override
 	public int getCompletionKind() {
-		return target.getCompletionKind();
+		return getTarget().getCompletionKind();
 	}
 
 	@Override
 	public String getEntityName() {
-		return target.getEntityName();
+		return getTarget().getEntityName();
 	}
 
 	@Override
 	public String getShortEntityName() {
-		return target.getShortEntityName();
+		return getTarget().getShortEntityName();
 	}
 
 	@Override
 	public IProperty getProperty() {
-		return target.getProperty() != null ? new PropertyProxy(getFacadeFactory(), target.getProperty()) : null;
+		return getTarget().getProperty() != null ? new PropertyProxy(getFacadeFactory(), getTarget().getProperty()) : null;
 	}
 
 	@Override
