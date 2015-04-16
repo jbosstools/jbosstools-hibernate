@@ -2,18 +2,19 @@ package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.cfg.reveng.ProgressListener;
+import org.jboss.tools.hibernate.runtime.common.AbstractJDBCReaderFacade;
 import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.IMetaDataDialect;
 import org.jboss.tools.hibernate.runtime.spi.IProgressListener;
 
-public class JDBCReaderProxy implements IJDBCReader {
+public class JDBCReaderProxy extends AbstractJDBCReaderFacade {
 	
 	private JDBCReader target = null;
 	private IMetaDataDialect metaDataDialect = null;
 
 	public JDBCReaderProxy(IFacadeFactory facadeFactory, JDBCReader reader) {
+		super(facadeFactory, reader);
 		target = reader;
 	}
 
