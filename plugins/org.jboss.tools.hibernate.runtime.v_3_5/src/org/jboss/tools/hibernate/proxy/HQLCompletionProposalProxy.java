@@ -16,6 +16,10 @@ extends AbstractHQLCompletionProposalFacade {
 		super(facadeFactory, proposal);
 		target = proposal;
 	}
+	
+	public HQLCompletionProposal getTarget() {
+		return (HQLCompletionProposal)super.getTarget();
+	}
 
 	@Override
 	public String getCompletion() {
