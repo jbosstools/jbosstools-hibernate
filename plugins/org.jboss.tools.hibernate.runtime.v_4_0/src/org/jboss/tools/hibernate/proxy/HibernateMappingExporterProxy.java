@@ -4,20 +4,21 @@ import java.io.File;
 import java.util.Map;
 
 import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
+import org.jboss.tools.hibernate.runtime.common.AbstractHibernateMappingExporterFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingGlobalSettings;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 
-public class HibernateMappingExporterProxy implements IHibernateMappingExporter {
+public class HibernateMappingExporterProxy extends AbstractHibernateMappingExporterFacade {
 	
 	private HibernateMappingExporterExtension target = null;
 
 	public HibernateMappingExporterProxy(
 			IFacadeFactory facadeFactory, 
 			HibernateMappingExporterExtension hibernateMappingExporter) {
+		super(facadeFactory, hibernateMappingExporter);
 		target = hibernateMappingExporter;
 	}
 
