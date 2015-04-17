@@ -156,6 +156,7 @@ public class ServiceProxy implements IService {
 			IConfiguration hcfg, File file) {
 		assert hcfg instanceof ConfigurationProxy;
 		HibernateMappingExporterExtension target = new HibernateMappingExporterExtension(
+				facadeFactory,
 				((ConfigurationProxy)hcfg).getTarget(),
 				file);
 		return new HibernateMappingExporterProxy(facadeFactory, target);
