@@ -9,6 +9,7 @@ import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingGlobalSettings;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
@@ -16,7 +17,7 @@ import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 public class HibernateMappingExporterProxy implements IHibernateMappingExporter {
 	
 	private HibernateMappingExporterWrapper target = null;
-	private IHibernateMappingExporter exportPOJODelegate = null;
+	private IExportPOJODelegate exportPOJODelegate = null;
 
 	public HibernateMappingExporterProxy(IConfiguration configuration, File file) {
 		assert configuration instanceof ConfigurationProxy;
@@ -53,7 +54,7 @@ public class HibernateMappingExporterProxy implements IHibernateMappingExporter 
 	}
 	
 	@Override
-	public void setExportPOJODelegate(IHibernateMappingExporter delegate) {
+	public void setExportPOJODelegate(IExportPOJODelegate delegate) {
 		exportPOJODelegate = delegate;
 	}
 	

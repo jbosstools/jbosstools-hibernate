@@ -10,6 +10,6 @@ public interface IHibernateMappingExporter {
 	File getOutputDirectory();
 	void setOutputDirectory(File directory);
 	void exportPOJO(Map<Object, Object> map, IPOJOClass pojoClass);
-	void setExportPOJODelegate(IHibernateMappingExporter delegate);
+	void setExportPOJODelegate(IExportPOJODelegate delegate);
 
 }
