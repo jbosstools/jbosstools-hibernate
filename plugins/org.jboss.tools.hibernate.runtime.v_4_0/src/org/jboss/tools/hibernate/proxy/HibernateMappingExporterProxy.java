@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
-import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
@@ -15,13 +14,6 @@ import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 public class HibernateMappingExporterProxy implements IHibernateMappingExporter {
 	
 	private HibernateMappingExporterExtension target = null;
-
-	public HibernateMappingExporterProxy(IConfiguration configuration, File file) {
-		assert configuration instanceof ConfigurationProxy;
-		target = new HibernateMappingExporterExtension(
-				((ConfigurationProxy)configuration).getTarget(),
-				file);
-	}
 
 	public HibernateMappingExporterProxy(
 			IFacadeFactory facadeFactory, 
