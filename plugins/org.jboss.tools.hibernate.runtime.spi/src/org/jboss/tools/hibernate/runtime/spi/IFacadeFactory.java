@@ -26,5 +26,6 @@ public interface IFacadeFactory {
 	IConfiguration createConfiguration(Object target);
 	ICriteria createCriteria(Object target);
 	IDatabaseCollector createDatabaseCollector(Object target);
+	IEntityMetamodel createEntityMetamodel(Object target);
 	
 }
