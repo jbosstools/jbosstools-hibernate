@@ -12,7 +12,7 @@ public class MetaDataDialectProxy implements IMetaDataDialect {
 		target = mdd;
 	}
 
-	MetaDataDialect getTarget() {
+	public MetaDataDialect getTarget() {
 		return target ;
 	}
 
