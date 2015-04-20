@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.runtime.v_3_6.internal;
 
 import org.hibernate.Criteria;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.mapping.Column;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
@@ -10,12 +11,14 @@ import org.jboss.tools.hibernate.proxy.CollectionMetadataProxy;
 import org.jboss.tools.hibernate.proxy.ColumnProxy;
 import org.jboss.tools.hibernate.proxy.ConfigurationProxy;
 import org.jboss.tools.hibernate.proxy.CriteriaProxy;
+import org.jboss.tools.hibernate.proxy.DatabaseCollectorProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
+import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
 
 public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	
@@ -46,6 +49,11 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public ICriteria createCriteria(Object target) {
 		return new CriteriaProxy(this, (Criteria)target);
+	}
+	
+	@Override
+	public IDatabaseCollector createDatabaseCollector(Object target) {
+		return new DatabaseCollectorProxy(this, (DefaultDatabaseCollector)target);
 	}
 	
 }

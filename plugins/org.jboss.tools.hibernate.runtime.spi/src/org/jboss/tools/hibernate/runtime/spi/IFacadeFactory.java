@@ -25,5 +25,6 @@ public interface IFacadeFactory {
 	IColumn createColumn(Object target);
 	IConfiguration createConfiguration(Object target);
 	ICriteria createCriteria(Object target);
+	IDatabaseCollector createDatabaseCollector(Object target);
 	
 }
