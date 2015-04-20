@@ -7,6 +7,7 @@ import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.engine.query.HQLQueryPlan;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
+import org.hibernate.mapping.Join;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
@@ -27,6 +28,7 @@ import org.jboss.tools.hibernate.proxy.HQLQueryPlanProxy;
 import org.jboss.tools.hibernate.proxy.HibernateMappingExporterExtension;
 import org.jboss.tools.hibernate.proxy.HibernateMappingExporterProxy;
 import org.jboss.tools.hibernate.proxy.JDBCReaderProxy;
+import org.jboss.tools.hibernate.proxy.JoinProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
@@ -42,6 +44,7 @@ import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
+import org.jboss.tools.hibernate.runtime.spi.IJoin;
 
 public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	
@@ -117,6 +120,11 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public IJDBCReader createJDBCReader(Object target) {
 		return new JDBCReaderProxy(this, (JDBCReader)target);
+	}
+	
+	@Override
+	public IJoin createJoin(Object target) {
+		return new JoinProxy(this, (Join)target);
 	}
 	
 }
