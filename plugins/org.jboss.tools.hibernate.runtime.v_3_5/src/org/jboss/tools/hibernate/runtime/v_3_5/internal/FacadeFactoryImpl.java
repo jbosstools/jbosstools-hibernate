@@ -14,6 +14,7 @@ import org.jboss.tools.hibernate.proxy.ConfigurationProxy;
 import org.jboss.tools.hibernate.proxy.CriteriaProxy;
 import org.jboss.tools.hibernate.proxy.DatabaseCollectorProxy;
 import org.jboss.tools.hibernate.proxy.EntityMetamodelProxy;
+import org.jboss.tools.hibernate.proxy.EnvironmentProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
@@ -22,6 +23,7 @@ import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
 import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
+import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 
 public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	
@@ -62,6 +64,11 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public IEntityMetamodel createEntityMetamodel(Object target) {
 		return new EntityMetamodelProxy(this, (EntityMetamodel)target);
+	}
+
+	@Override
+	public IEnvironment createEnvironment(Object target) {
+		return new EnvironmentProxy(this);
 	}
 	
 }
