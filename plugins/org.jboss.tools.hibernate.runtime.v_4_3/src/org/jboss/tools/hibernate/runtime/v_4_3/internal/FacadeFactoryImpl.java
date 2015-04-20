@@ -3,6 +3,7 @@ package org.jboss.tools.hibernate.runtime.v_4_3.internal;
 import org.hibernate.Criteria;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
+import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.metadata.ClassMetadata;
@@ -21,6 +22,7 @@ import org.jboss.tools.hibernate.proxy.EnvironmentProxy;
 import org.jboss.tools.hibernate.proxy.ForeignKeyProxy;
 import org.jboss.tools.hibernate.proxy.HQLCodeAssistProxy;
 import org.jboss.tools.hibernate.proxy.HQLCompletionProposalProxy;
+import org.jboss.tools.hibernate.proxy.HQLQueryPlanProxy;
 import org.jboss.tools.hibernate.proxy.HibernateMappingExporterExtension;
 import org.jboss.tools.hibernate.proxy.HibernateMappingExporterProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
@@ -35,6 +37,7 @@ import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
+import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 
 public class FacadeFactoryImpl extends AbstractFacadeFactory {
@@ -101,6 +104,11 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public IHQLCompletionProposal createHQLCompletionProposal(Object target) {
 		return new HQLCompletionProposalProxy(this, (HQLCompletionProposal)target);
+	}
+	
+	@Override
+	public IHQLQueryPlan createHQLQueryPlan(Object target) {
+		return new HQLQueryPlanProxy(this, (HQLQueryPlan)target);
 	}
 	
 }
