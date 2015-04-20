@@ -8,6 +8,7 @@ import org.hibernate.mapping.ForeignKey;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
+import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tuple.entity.EntityMetamodel;
 import org.jboss.tools.hibernate.proxy.ClassMetadataProxy;
 import org.jboss.tools.hibernate.proxy.CollectionMetadataProxy;
@@ -19,6 +20,7 @@ import org.jboss.tools.hibernate.proxy.EntityMetamodelProxy;
 import org.jboss.tools.hibernate.proxy.EnvironmentProxy;
 import org.jboss.tools.hibernate.proxy.ForeignKeyProxy;
 import org.jboss.tools.hibernate.proxy.HQLCodeAssistProxy;
+import org.jboss.tools.hibernate.proxy.HQLCompletionProposalProxy;
 import org.jboss.tools.hibernate.proxy.HibernateMappingExporterExtension;
 import org.jboss.tools.hibernate.proxy.HibernateMappingExporterProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
@@ -32,6 +34,7 @@ import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
+import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 
 public class FacadeFactoryImpl extends AbstractFacadeFactory {
@@ -93,6 +96,11 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public IHQLCodeAssist createHQLCodeAssist(Object target) {
 		return new HQLCodeAssistProxy(this, (HQLCodeAssist)target);
+	}
+
+	@Override
+	public IHQLCompletionProposal createHQLCompletionProposal(Object target) {
+		return new HQLCompletionProposalProxy(this, (HQLCompletionProposal)target);
 	}
 	
 }
