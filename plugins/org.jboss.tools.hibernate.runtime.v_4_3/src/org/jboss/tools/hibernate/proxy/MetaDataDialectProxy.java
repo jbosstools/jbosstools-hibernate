@@ -6,15 +6,12 @@ import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 
 public class MetaDataDialectProxy extends AbstractMetaDataDialectFacade {
 
-	private MetaDataDialect target = null;
-
 	public MetaDataDialectProxy(IFacadeFactory facadeFactory, MetaDataDialect mdd) {
 		super(facadeFactory, mdd);
-		target = mdd;
 	}
 
 	public MetaDataDialect getTarget() {
-		return target ;
+		return (MetaDataDialect)super.getTarget() ;
 	}
 
 }
