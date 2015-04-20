@@ -21,5 +21,6 @@ public interface IFacadeFactory {
 	IHibernateMappingGlobalSettings createHibernateMappingGlobalSettings(Object target);
 	IMappings createMappings(Object target);
 	IClassMetadata createClassMetadata(Object target);
+	ICollectionMetadata createCollectionMetadata(Object target);
 	
 }
