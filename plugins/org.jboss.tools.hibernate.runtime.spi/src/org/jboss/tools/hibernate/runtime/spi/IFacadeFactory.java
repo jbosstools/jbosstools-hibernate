@@ -30,5 +30,6 @@ public interface IFacadeFactory {
 	IEnvironment createEnvironment(Object target);
 	IForeignKey createForeignKey(Object target);
 	IHibernateMappingExporter createHibernateMappingExporter(Object target);
+	IHQLCodeAssist createHQLCodeAssist(Object target);
 	
 }
