@@ -22,5 +22,6 @@ public interface IFacadeFactory {
 	IMappings createMappings(Object target);
 	IClassMetadata createClassMetadata(Object target);
 	ICollectionMetadata createCollectionMetadata(Object target);
+	IColumn createColumn(Object target);
 	
 }
