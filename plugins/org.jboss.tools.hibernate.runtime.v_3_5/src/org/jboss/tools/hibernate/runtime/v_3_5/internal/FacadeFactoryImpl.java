@@ -4,6 +4,7 @@ import org.hibernate.Criteria;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.ForeignKey;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.tuple.entity.EntityMetamodel;
@@ -15,6 +16,7 @@ import org.jboss.tools.hibernate.proxy.CriteriaProxy;
 import org.jboss.tools.hibernate.proxy.DatabaseCollectorProxy;
 import org.jboss.tools.hibernate.proxy.EntityMetamodelProxy;
 import org.jboss.tools.hibernate.proxy.EnvironmentProxy;
+import org.jboss.tools.hibernate.proxy.ForeignKeyProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
@@ -24,6 +26,7 @@ import org.jboss.tools.hibernate.runtime.spi.ICriteria;
 import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
+import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
 
 public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	
@@ -69,6 +72,11 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public IEnvironment createEnvironment(Object target) {
 		return new EnvironmentProxy(this);
+	}
+
+	@Override
+	public IForeignKey createForeignKey(Object target) {
+		return new ForeignKeyProxy(this, (ForeignKey)target);
 	}
 	
 }

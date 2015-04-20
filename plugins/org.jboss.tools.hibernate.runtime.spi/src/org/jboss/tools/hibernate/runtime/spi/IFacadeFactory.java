@@ -28,5 +28,6 @@ public interface IFacadeFactory {
 	IDatabaseCollector createDatabaseCollector(Object target);
 	IEntityMetamodel createEntityMetamodel(Object target);
 	IEnvironment createEnvironment(Object target);
+	IForeignKey createForeignKey(Object target);
 	
 }
