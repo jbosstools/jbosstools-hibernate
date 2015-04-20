@@ -24,5 +24,6 @@ public interface IFacadeFactory {
 	ICollectionMetadata createCollectionMetadata(Object target);
 	IColumn createColumn(Object target);
 	IConfiguration createConfiguration(Object target);
+	ICriteria createCriteria(Object target);
 	
 }
