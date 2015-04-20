@@ -23,7 +23,7 @@ public class JDBCReaderProxy extends AbstractJDBCReaderFacade {
 	@Override
 	public IMetaDataDialect getMetaDataDialect() {
 		if (metaDataDialect == null) {
-			metaDataDialect = new MetaDataDialectProxy(getTarget().getMetaDataDialect());
+			metaDataDialect = new MetaDataDialectProxy(getFacadeFactory(), getTarget().getMetaDataDialect());
 		}
 		return metaDataDialect;
 	}
