@@ -33,5 +33,6 @@ public interface IFacadeFactory {
 	IHQLCodeAssist createHQLCodeAssist(Object target);
 	IHQLCompletionProposal createHQLCompletionProposal(Object target);
 	IHQLQueryPlan createHQLQueryPlan(Object target);
+	IJDBCReader createJDBCReader(Object target);
 	
 }
