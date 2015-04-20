@@ -17,6 +17,8 @@ import org.jboss.tools.hibernate.proxy.DatabaseCollectorProxy;
 import org.jboss.tools.hibernate.proxy.EntityMetamodelProxy;
 import org.jboss.tools.hibernate.proxy.EnvironmentProxy;
 import org.jboss.tools.hibernate.proxy.ForeignKeyProxy;
+import org.jboss.tools.hibernate.proxy.HibernateMappingExporterExtension;
+import org.jboss.tools.hibernate.proxy.HibernateMappingExporterProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
@@ -27,6 +29,7 @@ import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
+import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 
 public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	
@@ -77,6 +80,11 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public IForeignKey createForeignKey(Object target) {
 		return new ForeignKeyProxy(this, (ForeignKey)target);
+	}
+
+	@Override
+	public IHibernateMappingExporter createHibernateMappingExporter(Object target) {
+		return new HibernateMappingExporterProxy(this, (HibernateMappingExporterExtension)target);
 	}
 	
 }

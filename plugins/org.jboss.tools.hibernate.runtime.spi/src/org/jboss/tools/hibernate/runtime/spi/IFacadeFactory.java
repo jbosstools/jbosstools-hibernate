@@ -29,5 +29,6 @@ public interface IFacadeFactory {
 	IEntityMetamodel createEntityMetamodel(Object target);
 	IEnvironment createEnvironment(Object target);
 	IForeignKey createForeignKey(Object target);
+	IHibernateMappingExporter createHibernateMappingExporter(Object target);
 	
 }
