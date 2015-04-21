@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.JDBCReader;
@@ -39,6 +40,7 @@ import org.jboss.tools.hibernate.proxy.POJOClassProxy;
 import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.proxy.PrimaryKeyProxy;
 import org.jboss.tools.hibernate.proxy.PropertyProxy;
+import org.jboss.tools.hibernate.proxy.QueryProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
@@ -60,6 +62,7 @@ import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
+import org.jboss.tools.hibernate.runtime.spi.IQuery;
 
 public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	
@@ -165,6 +168,11 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public IProperty createProperty(Object target) {
 		return new PropertyProxy(this, (Property)target);
+	}
+
+	@Override
+	public IQuery createQuery(Object target) {
+		return new QueryProxy(this, (Query)target);
 	}
 	
 }

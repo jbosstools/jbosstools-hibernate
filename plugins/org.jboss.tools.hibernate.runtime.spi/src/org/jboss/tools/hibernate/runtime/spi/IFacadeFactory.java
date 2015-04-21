@@ -40,5 +40,6 @@ public interface IFacadeFactory {
 	IPOJOClass createPOJOClass(Object target);
 	IPrimaryKey createPrimaryKey(Object target);
 	IProperty createProperty(Object target);
+	IQuery createQuery(Object target);
 	
 }
