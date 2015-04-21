@@ -41,5 +41,6 @@ public interface IFacadeFactory {
 	IPrimaryKey createPrimaryKey(Object target);
 	IProperty createProperty(Object target);
 	IQuery createQuery(Object target);
+	IQueryTranslator createQueryTranslator(Object target);
 	
 }

@@ -7,6 +7,7 @@ import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
+import org.hibernate.hql.spi.QueryTranslator;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Join;
@@ -41,6 +42,7 @@ import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.proxy.PrimaryKeyProxy;
 import org.jboss.tools.hibernate.proxy.PropertyProxy;
 import org.jboss.tools.hibernate.proxy.QueryProxy;
+import org.jboss.tools.hibernate.proxy.QueryTranslatorProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
@@ -63,6 +65,7 @@ import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
+import org.jboss.tools.hibernate.runtime.spi.IQueryTranslator;
 
 public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	
@@ -173,6 +176,11 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public IQuery createQuery(Object target) {
 		return new QueryProxy(this, (Query)target);
+	}
+	
+	@Override
+	public IQueryTranslator createQueryTranslator(Object target) {
+		return new QueryTranslatorProxy(this, (QueryTranslator)target);
 	}
 	
 }
