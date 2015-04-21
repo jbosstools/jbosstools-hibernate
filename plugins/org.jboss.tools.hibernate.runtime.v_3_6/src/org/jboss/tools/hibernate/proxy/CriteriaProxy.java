@@ -20,8 +20,7 @@ public class CriteriaProxy extends AbstractCriteriaFacade {
 	}
 	
 	public ICriteria createCriteria(String associationPath, String alias) {
-		return new CriteriaProxy(
-				getFacadeFactory(), 
+		return getFacadeFactory().createCriteria(
 				getTarget().createCriteria(associationPath, alias));
 	}
 
