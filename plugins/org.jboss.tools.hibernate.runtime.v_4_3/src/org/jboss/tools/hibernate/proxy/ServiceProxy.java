@@ -317,8 +317,7 @@ public class ServiceProxy implements IService {
 	@Override
 	public IDatabaseCollector newDatabaseCollector(IMetaDataDialect metaDataDialect) {
 		assert metaDataDialect instanceof MetaDataDialectProxy;
-		return new DatabaseCollectorProxy(
-				facadeFactory,
+		return facadeFactory.createDatabaseCollector(
 				new DefaultDatabaseCollector(
 						((MetaDataDialectProxy)metaDataDialect).getTarget()));
 	}
