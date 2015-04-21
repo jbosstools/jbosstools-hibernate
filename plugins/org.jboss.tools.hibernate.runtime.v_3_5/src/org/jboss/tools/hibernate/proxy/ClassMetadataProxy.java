@@ -108,7 +108,7 @@ public class ClassMetadataProxy extends AbstractClassMetadataFacade {
 	public IEntityMetamodel getEntityMetamodel() {
 		assert getTarget() instanceof AbstractEntityPersister;
 		EntityMetamodel emm = ((AbstractEntityPersister)getTarget()).getEntityMetamodel();
-		return emm != null ? new EntityMetamodelProxy(getFacadeFactory(), emm) : null;
+		return emm != null ? getFacadeFactory().createEntityMetamodel(emm) : null;
 	}
 
 }
