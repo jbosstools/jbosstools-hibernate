@@ -159,7 +159,7 @@ public class ServiceProxy implements IService {
 				facadeFactory,
 				((ConfigurationProxy)hcfg).getTarget(),
 				file);
-		return new HibernateMappingExporterProxy(facadeFactory, target);
+		return facadeFactory.createHibernateMappingExporter(target);
 	}
 
 	@Override
