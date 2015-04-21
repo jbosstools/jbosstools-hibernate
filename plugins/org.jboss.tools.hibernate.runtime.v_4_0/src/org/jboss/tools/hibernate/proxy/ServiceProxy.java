@@ -187,7 +187,7 @@ public class ServiceProxy implements IService {
 				(SessionFactoryImpl) ((SessionFactoryProxy)sessionFactory).getTarget();
 		Map<String, Filter> enabledFilters = Collections.emptyMap();
 		HQLQueryPlan queryPlan = new HQLQueryPlan(query, shallow, enabledFilters, factory);
-		return new HQLQueryPlanProxy(facadeFactory, queryPlan);
+		return facadeFactory.createHQLQueryPlan(queryPlan);
 	}
 
 	@Override
