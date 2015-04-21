@@ -103,7 +103,7 @@ public class ServiceProxy implements IService {
 	@Override
 	public IConfiguration newAnnotationConfiguration() {
 		Configuration configuration = new Configuration();
-		return new ConfigurationProxy(facadeFactory, configuration);
+		return facadeFactory.createConfiguration(configuration);
 	}
 	
 	@Override
@@ -139,7 +139,7 @@ public class ServiceProxy implements IService {
 							"buildHibernateConfiguration", 
 							new Class[] { serviceRegistryClass });		
 			Configuration configuration = (Configuration)buildHibernateConfiguration.invoke(entityManagerFactoryBuilder, new Object[] { serviceRegistry });		
-			result = new ConfigurationProxy(facadeFactory, configuration);
+			result = facadeFactory.createConfiguration(configuration);
 		} catch (SecurityException | NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException  e) {
 			throw new HibernateConsoleRuntimeException(e);
 		}
@@ -148,7 +148,7 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public IConfiguration newDefaultConfiguration() {
-		return new ConfigurationProxy(facadeFactory, new Configuration());
+		return facadeFactory.createConfiguration(new Configuration());
 	}
 
 	@Override
@@ -187,7 +187,7 @@ public class ServiceProxy implements IService {
 	@Override
 	public IConfiguration newJDBCMetaDataConfiguration() {
 		Configuration configuration = new JDBCMetaDataConfiguration();
-		return new ConfigurationProxy(facadeFactory, configuration);
+		return facadeFactory.createConfiguration(configuration);
 	}
 
 	@Override

@@ -97,7 +97,7 @@ public class ServiceProxy implements IService {
 		Configuration configuration = new Configuration();
 		configuration.setProperty("hibernate.validator.autoregister_listeners", "false");
 		configuration.setProperty("hibernate.validator.apply_to_ddl", "false");
-		return new ConfigurationProxy(facadeFactory, configuration);
+		return facadeFactory.createConfiguration(configuration);
 	}
 
 	@Override
@@ -119,7 +119,7 @@ public class ServiceProxy implements IService {
 		ejb3Configuration.setProperty("hibernate.validator.apply_to_ddl", "false");
 		ejb3Configuration.configure(persistenceUnit, overrides);
 		Configuration configuration = ejb3Configuration.getHibernateConfiguration();
-		return new ConfigurationProxy(facadeFactory, configuration);
+		return facadeFactory.createConfiguration(configuration);
 	}
 
 	@Override
@@ -127,7 +127,7 @@ public class ServiceProxy implements IService {
 		Configuration target = new Configuration();
 		target.setProperty("hibernate.validator.autoregister_listeners", "false");
 		target.setProperty("hibernate.validator.apply_to_ddl", "false");
-		return new ConfigurationProxy(facadeFactory, target);
+		return facadeFactory.createConfiguration(target);
 	}
 
 	@Override
@@ -166,7 +166,7 @@ public class ServiceProxy implements IService {
 	@Override
 	public IConfiguration newJDBCMetaDataConfiguration() {
 		Configuration configuration = new JDBCMetaDataConfiguration();
-		return new ConfigurationProxy(facadeFactory, configuration);
+		return facadeFactory.createConfiguration(configuration);
 	}
 
 	@Override

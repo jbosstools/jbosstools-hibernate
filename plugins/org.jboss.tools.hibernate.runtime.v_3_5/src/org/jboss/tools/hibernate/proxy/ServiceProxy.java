@@ -96,7 +96,7 @@ public class ServiceProxy implements IService {
 	@Override
 	public IConfiguration newAnnotationConfiguration() {
 		Configuration configuration = new AnnotationConfiguration();
-		return new ConfigurationProxy(facadeFactory, configuration);
+		return facadeFactory.createConfiguration(configuration);
 	}
 
 	@Override
@@ -116,12 +116,12 @@ public class ServiceProxy implements IService {
 		}
 		ejb3Configuration.configure(persistenceUnit, overrides);
 		Configuration configuration = ejb3Configuration.getHibernateConfiguration();
-		return new ConfigurationProxy(facadeFactory, configuration);
+		return facadeFactory.createConfiguration(configuration);
 	}
 
 	@Override
 	public IConfiguration newDefaultConfiguration() {
-		return new ConfigurationProxy(facadeFactory, new Configuration());
+		return facadeFactory.createConfiguration(new Configuration());
 	}
 
 	@Override
@@ -160,7 +160,7 @@ public class ServiceProxy implements IService {
 	@Override
 	public IConfiguration newJDBCMetaDataConfiguration() {
 		Configuration configuration = new JDBCMetaDataConfiguration();
-		return new ConfigurationProxy(facadeFactory, configuration);
+		return facadeFactory.createConfiguration(configuration);
 	}
 
 	@Override
