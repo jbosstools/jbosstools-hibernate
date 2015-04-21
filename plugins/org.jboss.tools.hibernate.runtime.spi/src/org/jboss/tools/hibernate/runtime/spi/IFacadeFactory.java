@@ -35,5 +35,6 @@ public interface IFacadeFactory {
 	IHQLQueryPlan createHQLQueryPlan(Object target);
 	IJDBCReader createJDBCReader(Object target);
 	IJoin createJoin(Object target);
+	IMetaDataDialect createMetaDataDialect(Object target);
 	
 }
