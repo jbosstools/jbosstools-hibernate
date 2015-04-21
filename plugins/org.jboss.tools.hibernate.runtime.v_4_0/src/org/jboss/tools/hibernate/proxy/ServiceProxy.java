@@ -152,8 +152,7 @@ public class ServiceProxy implements IService {
 	public IHQLCodeAssist newHQLCodeAssist(IConfiguration hcfg) {
 		IHQLCodeAssist result = null;
 		if (hcfg instanceof ConfigurationProxy) {
-			result = new HQLCodeAssistProxy(
-					facadeFactory,
+			result = facadeFactory.createHQLCodeAssist(
 					new HQLCodeAssist(((ConfigurationProxy)hcfg).getTarget()));
 		}
 		return result;
