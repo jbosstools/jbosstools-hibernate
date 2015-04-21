@@ -80,7 +80,7 @@ public class TableProxy extends AbstractTableFacade {
 		columns = new HashSet<IColumn>();
 		Iterator<Column> iterator = getTarget().getColumnIterator();
 		while (iterator.hasNext()) {
-			columns.add(new ColumnProxy(getFacadeFactory(), iterator.next()));
+			columns.add(getFacadeFactory().createColumn(iterator.next()));
 		}
 	}
 

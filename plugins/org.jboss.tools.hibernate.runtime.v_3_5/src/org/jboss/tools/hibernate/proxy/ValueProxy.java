@@ -203,7 +203,7 @@ public class ValueProxy extends AbstractValueFacade {
 		while (iterator.hasNext()) {
 			Object object = iterator.next();
 			if (object instanceof Column) {
-				columns.add(new ColumnProxy(getFacadeFactory(), (Column)object));
+				columns.add(getFacadeFactory().createColumn(object));
 			}
 		}
 	}

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
 import org.jboss.tools.hibernate.runtime.common.AbstractPrimaryKeyFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
@@ -49,7 +48,7 @@ public class PrimaryKeyProxy extends AbstractPrimaryKeyFacade {
 		columns = new ArrayList<IColumn>();
 		Iterator<?> origin = getTarget().getColumns().iterator();
 		while (origin.hasNext()) {
-			columns.add(new ColumnProxy(getFacadeFactory(), (Column)origin.next()));
+			columns.add(getFacadeFactory().createColumn(origin.next()));
 		}
 	}
 

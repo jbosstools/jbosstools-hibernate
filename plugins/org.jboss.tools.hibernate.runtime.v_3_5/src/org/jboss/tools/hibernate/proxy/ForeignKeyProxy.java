@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.jboss.tools.hibernate.runtime.common.AbstractForeignKeyFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
@@ -48,7 +47,7 @@ public class ForeignKeyProxy extends AbstractForeignKeyFacade {
 		columns = new HashSet<IColumn>();
 		Iterator<?> origin = getTarget().columnIterator();
 		while (origin.hasNext()) {
-			columns.add(new ColumnProxy(getFacadeFactory(), (Column)origin.next()));
+			columns.add(getFacadeFactory().createColumn(origin.next()));
 		}
 	}
 
@@ -68,7 +67,7 @@ public class ForeignKeyProxy extends AbstractForeignKeyFacade {
 	private void initializeReferencedColumns() {
 		referencedColumns = new ArrayList<IColumn>();
 		for (Object column : getTarget().getReferencedColumns()) {
-			referencedColumns.add(new ColumnProxy(getFacadeFactory(), (Column)column));
+			referencedColumns.add(getFacadeFactory().createColumn(column));
 		}
 	}
 
