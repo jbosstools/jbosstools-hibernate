@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.runtime.v_3_6.internal;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.JDBCReader;
@@ -43,6 +44,7 @@ import org.jboss.tools.hibernate.proxy.PrimaryKeyProxy;
 import org.jboss.tools.hibernate.proxy.PropertyProxy;
 import org.jboss.tools.hibernate.proxy.QueryProxy;
 import org.jboss.tools.hibernate.proxy.QueryTranslatorProxy;
+import org.jboss.tools.hibernate.proxy.SessionFactoryProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
@@ -66,6 +68,7 @@ import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.IQueryTranslator;
+import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 
 public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	
@@ -181,6 +184,11 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public IQueryTranslator createQueryTranslator(Object target) {
 		return new QueryTranslatorProxy(this, (QueryTranslator)target);
+	}
+	
+	@Override
+	public ISessionFactory createSessionFactory(Object target) {
+		return new SessionFactoryProxy(this, (SessionFactory)target);
 	}
 	
 }
