@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import org.hibernate.mapping.Column;
-import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.runtime.common.AbstractTableFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
@@ -96,7 +95,7 @@ public class TableProxy extends AbstractTableFacade {
 		foreignKeys = new HashSet<IForeignKey>();
 		Iterator<?> origin = getTarget().getForeignKeyIterator();
 		while (origin.hasNext()) {
-			foreignKeys.add(new ForeignKeyProxy(getFacadeFactory(), (ForeignKey)origin.next()));
+			foreignKeys.add(getFacadeFactory().createForeignKey(origin.next()));
 		}
 	}
 
