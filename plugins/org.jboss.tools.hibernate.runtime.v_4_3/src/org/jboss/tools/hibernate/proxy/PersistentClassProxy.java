@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import org.hibernate.mapping.Join;
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PersistentClass;
@@ -192,7 +191,7 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 		joins = new HashSet<IJoin>();
 		Iterator<?> origin = getTarget().getJoinIterator();
 		while (origin.hasNext()) {
-			joins.add(new JoinProxy(getFacadeFactory(), (Join)origin.next()));
+			joins.add(getFacadeFactory().createJoin(origin.next()));
 		}
 	}
 
