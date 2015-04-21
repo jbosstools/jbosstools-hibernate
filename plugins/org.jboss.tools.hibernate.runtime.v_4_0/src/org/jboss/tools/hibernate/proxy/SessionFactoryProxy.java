@@ -46,9 +46,7 @@ public class SessionFactoryProxy extends AbstractSessionFactoryFacade {
 		for (Map.Entry<String, ClassMetadata> entry : origin.entrySet()) {
 			allClassMetadata.put(
 					entry.getKey(), 
-					new ClassMetadataProxy(
-							getFacadeFactory(),
-							entry.getValue()));
+					getFacadeFactory().createClassMetadata(entry.getValue()));
 		}
 	}
 
