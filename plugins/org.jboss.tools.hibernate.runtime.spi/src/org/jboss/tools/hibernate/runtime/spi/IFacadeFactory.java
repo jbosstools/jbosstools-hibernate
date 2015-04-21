@@ -48,5 +48,6 @@ public interface IFacadeFactory {
 	IPersistentClass createSpecialRootClass(IProperty property);
 	ITable createTable(Object target);
 	ITypeFactory createTypeFactory();
+	IType createType(Object target);
 	
 }

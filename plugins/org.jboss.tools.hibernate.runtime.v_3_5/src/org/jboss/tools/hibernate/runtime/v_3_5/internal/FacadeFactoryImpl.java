@@ -24,6 +24,7 @@ import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tuple.entity.EntityMetamodel;
+import org.hibernate.type.Type;
 import org.hibernate.type.TypeFactory;
 import org.jboss.tools.hibernate.proxy.ClassMetadataProxy;
 import org.jboss.tools.hibernate.proxy.CollectionMetadataProxy;
@@ -54,6 +55,7 @@ import org.jboss.tools.hibernate.proxy.SettingsProxy;
 import org.jboss.tools.hibernate.proxy.SpecialRootClassProxy;
 import org.jboss.tools.hibernate.proxy.TableProxy;
 import org.jboss.tools.hibernate.proxy.TypeFactoryProxy;
+import org.jboss.tools.hibernate.proxy.TypeProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
@@ -81,6 +83,7 @@ import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISettings;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
+import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 
 public class FacadeFactoryImpl extends AbstractFacadeFactory {
@@ -227,6 +230,11 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public ITypeFactory createTypeFactory() {
 		return new TypeFactoryProxy(this, (TypeFactory)null);
+	}
+
+	@Override
+	public IType createType(Object target) {
+		return new TypeProxy(this, (Type)target);
 	}
 	
 }
