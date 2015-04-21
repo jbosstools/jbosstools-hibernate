@@ -2,8 +2,10 @@ package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.Settings;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
@@ -45,6 +47,8 @@ import org.jboss.tools.hibernate.proxy.PropertyProxy;
 import org.jboss.tools.hibernate.proxy.QueryProxy;
 import org.jboss.tools.hibernate.proxy.QueryTranslatorProxy;
 import org.jboss.tools.hibernate.proxy.SessionFactoryProxy;
+import org.jboss.tools.hibernate.proxy.SessionProxy;
+import org.jboss.tools.hibernate.proxy.SettingsProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
@@ -68,7 +72,9 @@ import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.IQueryTranslator;
+import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
+import org.jboss.tools.hibernate.runtime.spi.ISettings;
 
 public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	
@@ -189,6 +195,16 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public ISessionFactory createSessionFactory(Object target) {
 		return new SessionFactoryProxy(this, (SessionFactory)target);
+	}
+
+	@Override
+	public ISession createSession(Object target) {
+		return new SessionProxy(this, (Session)target);
+	}
+
+	@Override
+	public ISettings createSettings(Object target) {
+		return new SettingsProxy(this, (Settings)target);
 	}
 	
 }

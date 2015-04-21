@@ -43,5 +43,7 @@ public interface IFacadeFactory {
 	IQuery createQuery(Object target);
 	IQueryTranslator createQueryTranslator(Object target);
 	ISessionFactory createSessionFactory(Object target);
+	ISession createSession(Object target);
+	ISettings createSettings(Object target);
 	
 }
