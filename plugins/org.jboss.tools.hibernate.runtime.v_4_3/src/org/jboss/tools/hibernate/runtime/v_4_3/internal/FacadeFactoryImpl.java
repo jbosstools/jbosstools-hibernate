@@ -10,6 +10,7 @@ import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Join;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
@@ -35,6 +36,7 @@ import org.jboss.tools.hibernate.proxy.JoinProxy;
 import org.jboss.tools.hibernate.proxy.MetaDataDialectProxy;
 import org.jboss.tools.hibernate.proxy.POJOClassProxy;
 import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
+import org.jboss.tools.hibernate.proxy.PrimaryKeyProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
@@ -54,6 +56,7 @@ import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.IMetaDataDialect;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
+import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 
 public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	
@@ -149,6 +152,11 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public IPOJOClass createPOJOClass(Object target) {
 		return new POJOClassProxy(this, (POJOClass)target);
+	}
+	
+	@Override
+	public IPrimaryKey createPrimaryKey(Object target) {
+		return new PrimaryKeyProxy(this, (PrimaryKey)target);
 	}
 	
 }

@@ -38,5 +38,6 @@ public interface IFacadeFactory {
 	IMetaDataDialect createMetaDataDialect(Object target);
 	IPersistentClass createPersistentClass(Object target);
 	IPOJOClass createPOJOClass(Object target);
+	IPrimaryKey createPrimaryKey(Object target);
 	
 }
