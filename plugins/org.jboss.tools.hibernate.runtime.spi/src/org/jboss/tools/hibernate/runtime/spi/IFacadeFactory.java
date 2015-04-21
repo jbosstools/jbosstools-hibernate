@@ -27,7 +27,7 @@ public interface IFacadeFactory {
 	ICriteria createCriteria(Object target);
 	IDatabaseCollector createDatabaseCollector(Object target);
 	IEntityMetamodel createEntityMetamodel(Object target);
-	IEnvironment createEnvironment(Object target);
+	IEnvironment createEnvironment();
 	IForeignKey createForeignKey(Object target);
 	IHibernateMappingExporter createHibernateMappingExporter(Object target);
 	IHQLCodeAssist createHQLCodeAssist(Object target);

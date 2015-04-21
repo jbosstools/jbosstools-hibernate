@@ -131,7 +131,7 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	}
 	
 	@Override
-	public IEnvironment createEnvironment(Object target) {
+	public IEnvironment createEnvironment() {
 		return new EnvironmentProxy(this);
 	}
 	
