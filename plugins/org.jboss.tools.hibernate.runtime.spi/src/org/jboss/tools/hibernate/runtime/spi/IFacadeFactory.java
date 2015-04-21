@@ -37,5 +37,6 @@ public interface IFacadeFactory {
 	IJoin createJoin(Object target);
 	IMetaDataDialect createMetaDataDialect(Object target);
 	IPersistentClass createPersistentClass(Object target);
+	IPOJOClass createPOJOClass(Object target);
 	
 }

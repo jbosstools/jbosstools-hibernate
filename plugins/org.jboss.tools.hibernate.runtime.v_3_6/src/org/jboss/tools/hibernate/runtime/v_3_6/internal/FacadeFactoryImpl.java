@@ -12,6 +12,7 @@ import org.hibernate.mapping.Join;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
+import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tuple.entity.EntityMetamodel;
@@ -32,6 +33,7 @@ import org.jboss.tools.hibernate.proxy.HibernateMappingExporterProxy;
 import org.jboss.tools.hibernate.proxy.JDBCReaderProxy;
 import org.jboss.tools.hibernate.proxy.JoinProxy;
 import org.jboss.tools.hibernate.proxy.MetaDataDialectProxy;
+import org.jboss.tools.hibernate.proxy.POJOClassProxy;
 import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
@@ -50,6 +52,7 @@ import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.IMetaDataDialect;
+import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 
 public class FacadeFactoryImpl extends AbstractFacadeFactory {
@@ -141,6 +144,11 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public IPersistentClass createPersistentClass(Object target) {
 		return new PersistentClassProxy(this, (PersistentClass)target);
+	}
+	
+	@Override
+	public IPOJOClass createPOJOClass(Object target) {
+		return new POJOClassProxy(this, (POJOClass)target);
 	}
 	
 }
