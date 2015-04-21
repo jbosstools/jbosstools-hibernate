@@ -39,5 +39,6 @@ public interface IFacadeFactory {
 	IPersistentClass createPersistentClass(Object target);
 	IPOJOClass createPOJOClass(Object target);
 	IPrimaryKey createPrimaryKey(Object target);
+	IProperty createProperty(Object target);
 	
 }
