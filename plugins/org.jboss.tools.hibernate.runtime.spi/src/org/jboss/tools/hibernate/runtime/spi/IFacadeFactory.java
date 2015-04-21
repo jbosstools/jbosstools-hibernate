@@ -46,5 +46,7 @@ public interface IFacadeFactory {
 	ISession createSession(Object target);
 	ISettings createSettings(Object target);
 	IPersistentClass createSpecialRootClass(IProperty property);
+	ITable createTable(Object target);
+	ITypeFactory createTypeFactory();
 	
 }
