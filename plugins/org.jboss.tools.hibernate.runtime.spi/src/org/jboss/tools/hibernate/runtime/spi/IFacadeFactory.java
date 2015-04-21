@@ -49,5 +49,6 @@ public interface IFacadeFactory {
 	ITable createTable(Object target);
 	ITypeFactory createTypeFactory();
 	IType createType(Object target);
+	IValue createValue(Object target);
 	
 }

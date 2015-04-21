@@ -18,6 +18,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
+import org.hibernate.mapping.Value;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
@@ -56,6 +57,7 @@ import org.jboss.tools.hibernate.proxy.SpecialRootClassProxy;
 import org.jboss.tools.hibernate.proxy.TableProxy;
 import org.jboss.tools.hibernate.proxy.TypeFactoryProxy;
 import org.jboss.tools.hibernate.proxy.TypeProxy;
+import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
@@ -85,6 +87,7 @@ import org.jboss.tools.hibernate.runtime.spi.ISettings;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	
@@ -235,6 +238,11 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public IType createType(Object target) {
 		return new TypeProxy(this, (Type)target);
+	}
+	
+	@Override
+	public IValue createValue(Object target) {
+		return new ValueProxy(this, (Value)target);
 	}
 	
 }
