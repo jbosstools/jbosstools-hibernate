@@ -327,7 +327,7 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public IEnvironment getEnvironment() {
-		return new EnvironmentProxy(facadeFactory);
+		return facadeFactory.createEnvironment();
 	}
 
 	@Override
