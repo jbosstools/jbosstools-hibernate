@@ -9,6 +9,7 @@ import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Join;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
@@ -31,6 +32,7 @@ import org.jboss.tools.hibernate.proxy.HibernateMappingExporterProxy;
 import org.jboss.tools.hibernate.proxy.JDBCReaderProxy;
 import org.jboss.tools.hibernate.proxy.JoinProxy;
 import org.jboss.tools.hibernate.proxy.MetaDataDialectProxy;
+import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
@@ -48,6 +50,7 @@ import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.IMetaDataDialect;
+import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 
 public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	
@@ -133,6 +136,11 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public IMetaDataDialect createMetaDataDialect(Object target) {
 		return new MetaDataDialectProxy(this, (MetaDataDialect)target);
+	}
+	
+	@Override
+	public IPersistentClass createPersistentClass(Object target) {
+		return new PersistentClassProxy(this, (PersistentClass)target);
 	}
 	
 }

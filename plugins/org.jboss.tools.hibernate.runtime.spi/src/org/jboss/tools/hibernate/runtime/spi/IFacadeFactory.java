@@ -36,5 +36,6 @@ public interface IFacadeFactory {
 	IJDBCReader createJDBCReader(Object target);
 	IJoin createJoin(Object target);
 	IMetaDataDialect createMetaDataDialect(Object target);
+	IPersistentClass createPersistentClass(Object target);
 	
 }
