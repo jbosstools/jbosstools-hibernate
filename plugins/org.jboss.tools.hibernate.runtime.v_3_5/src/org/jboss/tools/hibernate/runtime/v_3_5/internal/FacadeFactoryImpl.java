@@ -49,6 +49,7 @@ import org.jboss.tools.hibernate.proxy.QueryTranslatorProxy;
 import org.jboss.tools.hibernate.proxy.SessionFactoryProxy;
 import org.jboss.tools.hibernate.proxy.SessionProxy;
 import org.jboss.tools.hibernate.proxy.SettingsProxy;
+import org.jboss.tools.hibernate.proxy.SpecialRootClassProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
@@ -205,6 +206,11 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public ISettings createSettings(Object target) {
 		return new SettingsProxy(this, (Settings)target);
+	}
+
+	@Override
+	public IPersistentClass createSpecialRootClass(IProperty property) {
+		return new SpecialRootClassProxy(this, property);
 	}
 	
 }
