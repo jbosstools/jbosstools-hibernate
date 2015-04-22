@@ -35,7 +35,7 @@ extends HibernateMappingExporter {
 		} else {
 			delegateExporter.exportPOJO(
 					(Map<Object, Object>)map, 
-					new POJOClassProxy(facadeFactory, pojoClass));
+					facadeFactory.createPOJOClass(pojoClass));
 		}
 	}
 }
