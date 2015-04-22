@@ -55,7 +55,9 @@ extends AbstractHQLCompletionProposalFacade {
 
 	@Override
 	public IProperty getProperty() {
-		return getTarget().getProperty() != null ? new PropertyProxy(getFacadeFactory(), getTarget().getProperty()) : null;
+		return getTarget().getProperty() != null ? 
+				getFacadeFactory().createProperty(getTarget().getProperty()) :
+					null;
 	}
 
 	@Override

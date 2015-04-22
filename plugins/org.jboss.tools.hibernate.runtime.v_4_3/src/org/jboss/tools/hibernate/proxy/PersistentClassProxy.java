@@ -66,7 +66,7 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 	@Override
 	public IProperty getIdentifierProperty() {
 		if (identifierProperty == null  && getTarget().getIdentifierProperty() != null) {
-			identifierProperty = new PropertyProxy(getFacadeFactory(), getTarget().getIdentifierProperty());
+			identifierProperty = getFacadeFactory().createProperty(getTarget().getIdentifierProperty());
 		}
 		return identifierProperty;
 	}
@@ -112,7 +112,7 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 		propertyClosures = new HashSet<IProperty>();
 		Iterator<Property> origin = getTarget().getPropertyClosureIterator();
 		while (origin.hasNext()) {
-			propertyClosures.add(new PropertyProxy(getFacadeFactory(), origin.next()));
+			propertyClosures.add(getFacadeFactory().createProperty(origin.next()));
 		}
 	}
 
@@ -138,7 +138,9 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 		Iterator<Property> origin = getTarget().getPropertyIterator();
 		while (origin.hasNext()) {
 			Property property = origin.next();
-			properties.put(property.getName(), new PropertyProxy(getFacadeFactory(), property));
+			properties.put(
+					property.getName(), 
+					getFacadeFactory().createProperty(property));
 		}
 	}
 
@@ -198,7 +200,7 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 	@Override
 	public IProperty getVersion() {
 		if (version == null && getTarget().getVersion() != null) {
-			version = new PropertyProxy(getFacadeFactory(), getTarget().getVersion());
+			version = getFacadeFactory().createProperty(getTarget().getVersion());
 		}
 		return version;
 	}

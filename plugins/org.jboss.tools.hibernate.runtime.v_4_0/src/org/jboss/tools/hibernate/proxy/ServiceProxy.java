@@ -303,7 +303,7 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public IProperty newProperty() {
-		return new PropertyProxy(facadeFactory, new Property());
+		return facadeFactory.createProperty(new Property());
 	}
 
 	@Override

@@ -336,7 +336,7 @@ public class ValueProxy extends AbstractValueFacade {
 		properties = new HashSet<IProperty>();
 		Iterator<Property> origin = ((Component)getTarget()).getPropertyIterator();
 		while (origin.hasNext()) {
-			properties.add(new PropertyProxy(getFacadeFactory(), origin.next()));
+			properties.add(getFacadeFactory().createProperty(origin.next()));
 		}
 	}
 
