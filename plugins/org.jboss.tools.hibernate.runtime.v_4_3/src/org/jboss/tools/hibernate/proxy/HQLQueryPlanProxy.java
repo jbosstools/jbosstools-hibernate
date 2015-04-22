@@ -33,7 +33,7 @@ public class HQLQueryPlanProxy extends AbstractHQLQueryPlanFacade {
 		ArrayList<IQueryTranslator> destination = 
 				new ArrayList<IQueryTranslator>(origin.length);
 		for (QueryTranslator translator : origin) {
-			destination.add(new QueryTranslatorProxy(getFacadeFactory(), translator));
+			destination.add(getFacadeFactory().createQueryTranslator(translator));
 		}
 		translators = destination.toArray(new IQueryTranslator[origin.length]);
 	}
