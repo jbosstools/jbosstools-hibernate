@@ -413,7 +413,7 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public IPrimaryKey newPrimaryKey() {
-		return new PrimaryKeyProxy(facadeFactory, new PrimaryKey());
+		return facadeFactory.createPrimaryKey(new PrimaryKey());
 	}
 
 	@Override
