@@ -32,7 +32,7 @@ public class SessionProxy extends AbstractSessionFacade {
 
 	@Override
 	public IQuery createQuery(String queryString) {
-		return new QueryProxy(getFacadeFactory(), getTarget().createQuery(queryString));
+		return getFacadeFactory().createQuery(getTarget().createQuery(queryString));
 	}
 
 	@Override
