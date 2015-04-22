@@ -13,7 +13,6 @@ import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.resolver.DialectFactory;
 import org.hibernate.engine.Mapping;
-import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -143,7 +142,7 @@ public class ConfigurationProxy extends AbstractConfigurationFacade {
 		classMappings = new HashMap<String, IPersistentClass>();
 		Iterator<?> origin = getTarget().getClassMappings();
 		while (origin.hasNext()) {
-			IPersistentClass pc = new PersistentClassProxy(getFacadeFactory(), (PersistentClass)origin.next());
+			IPersistentClass pc = getFacadeFactory().createPersistentClass(origin.next());
 			classMappings.put(pc.getEntityName(), pc);
 		}
 	}

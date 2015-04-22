@@ -143,7 +143,7 @@ public class ConfigurationProxy extends AbstractConfigurationFacade {
 		classMappings = new HashMap<String, IPersistentClass>();
 		Iterator<?> origin = getTarget().getClassMappings();
 		while (origin.hasNext()) {
-			IPersistentClass pc = new PersistentClassProxy(getFacadeFactory(), (PersistentClass)origin.next());
+			IPersistentClass pc = getFacadeFactory().createPersistentClass(origin.next());
 			classMappings.put(pc.getEntityName(), pc);
 		}
 	}

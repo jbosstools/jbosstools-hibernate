@@ -363,7 +363,7 @@ public class ValueProxy extends AbstractValueFacade {
 	public IPersistentClass getOwner() {
 		assert getTarget() instanceof Component;
 		if (owner == null && ((Component)getTarget()).getOwner() != null)
-			owner = new PersistentClassProxy(getFacadeFactory(), ((Component)getTarget()).getOwner());
+			owner = getFacadeFactory().createPersistentClass(((Component)getTarget()).getOwner());
 		return owner;
 	}
 
@@ -416,7 +416,7 @@ public class ValueProxy extends AbstractValueFacade {
 	public IPersistentClass getAssociatedClass() {
 		assert getTarget() instanceof OneToMany;
 		return ((OneToMany)getTarget()).getAssociatedClass() != null ? 
-				new PersistentClassProxy(getFacadeFactory(), ((OneToMany)getTarget()).getAssociatedClass()) : 
+				getFacadeFactory().createPersistentClass(((OneToMany)getTarget()).getAssociatedClass()) :
 					null;
 	}
 

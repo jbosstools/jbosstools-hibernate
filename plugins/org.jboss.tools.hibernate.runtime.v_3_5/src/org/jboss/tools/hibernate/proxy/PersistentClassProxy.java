@@ -94,7 +94,7 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 	@Override
 	public IPersistentClass getRootClass() {
 		if (rootClass == null && getTarget().getRootClass() != null) {
-			rootClass = new PersistentClassProxy(getFacadeFactory(), getTarget().getRootClass());
+			rootClass = getFacadeFactory().createPersistentClass(getTarget().getRootClass());
 		}
 		return rootClass;
 	}
@@ -119,7 +119,7 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 	@Override
 	public IPersistentClass getSuperclass() {
 		if (superClass != null) {
-			superClass = new PersistentClassProxy(getFacadeFactory(), getTarget().getSuperclass());
+			superClass = getFacadeFactory().createPersistentClass(getTarget().getSuperclass());
 		}
 		return superClass;
 	}
@@ -314,7 +314,7 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 		Iterator<?> origin = getTarget().getSubclassIterator();
 		subclasses = new HashSet<IPersistentClass>();
 		while (origin.hasNext()) {
-			subclasses.add(new PersistentClassProxy(getFacadeFactory(), (Subclass)origin.next()));
+			subclasses.add(getFacadeFactory().createPersistentClass(origin.next()));
 		}
 	}
 

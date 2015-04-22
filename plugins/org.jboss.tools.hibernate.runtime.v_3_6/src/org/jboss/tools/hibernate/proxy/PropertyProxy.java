@@ -46,7 +46,7 @@ public class PropertyProxy extends AbstractPropertyFacade {
 	@Override
 	public IPersistentClass getPersistentClass() {
 		if (persistentClass == null && getTarget().getPersistentClass() != null) {
-			persistentClass = new PersistentClassProxy(getFacadeFactory(), getTarget().getPersistentClass());
+			persistentClass = getFacadeFactory().createPersistentClass(getTarget().getPersistentClass());
 		}
 		return persistentClass;
 	}
