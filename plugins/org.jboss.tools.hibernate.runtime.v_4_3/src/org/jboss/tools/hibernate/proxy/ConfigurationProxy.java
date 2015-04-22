@@ -14,7 +14,6 @@ import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
 import org.hibernate.engine.spi.Mapping;
-import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
@@ -119,9 +118,7 @@ public class ConfigurationProxy extends AbstractConfigurationFacade {
 		if (serviceRegistry == null) {
 			buildServiceRegistry();
 		}
-		return new SessionFactoryProxy(
-				getFacadeFactory(),
-				getTarget().buildSessionFactory(serviceRegistry));
+		return getFacadeFactory().createSessionFactory(getTarget().buildSessionFactory(serviceRegistry));
 	}
 
 	@Override

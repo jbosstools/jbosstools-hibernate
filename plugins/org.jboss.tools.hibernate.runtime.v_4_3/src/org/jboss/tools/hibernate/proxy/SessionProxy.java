@@ -25,7 +25,7 @@ public class SessionProxy extends AbstractSessionFacade {
 	@Override
 	public ISessionFactory getSessionFactory() {
 		if (targetFactory == null && getTarget().getSessionFactory() != null) {
-			targetFactory = new SessionFactoryProxy(getFacadeFactory(), getTarget().getSessionFactory());
+			targetFactory = getFacadeFactory().createSessionFactory(getTarget().getSessionFactory());
 		}
 		return targetFactory;
 	}

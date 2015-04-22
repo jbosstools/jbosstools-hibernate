@@ -112,9 +112,7 @@ public class ConfigurationProxy extends AbstractConfigurationFacade {
 
 	@Override
 	public ISessionFactory buildSessionFactory() {
-		return new SessionFactoryProxy(
-				getFacadeFactory(),
-				getTarget().buildSessionFactory());
+		return getFacadeFactory().createSessionFactory(getTarget().buildSessionFactory());
 	}
 
 	@Override

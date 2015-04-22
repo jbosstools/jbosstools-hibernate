@@ -13,7 +13,6 @@ import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.resolver.DialectFactory;
 import org.hibernate.engine.Mapping;
-import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -113,9 +112,7 @@ public class ConfigurationProxy extends AbstractConfigurationFacade {
 
 	@Override
 	public ISessionFactory buildSessionFactory() {
-		return new SessionFactoryProxy(
-				getFacadeFactory(),
-				getTarget().buildSessionFactory());
+		return getFacadeFactory().createSessionFactory(getTarget().buildSessionFactory());
 	}
 
 	@Override
