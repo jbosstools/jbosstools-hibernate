@@ -17,9 +17,6 @@ import org.jboss.tools.hibernate.runtime.spi.IType;
 
 public class ClassMetadataProxy extends AbstractClassMetadataFacade {
 	
-	private IType[] propertyTypes = null;
-	private IType identifierType = null;
-
 	public ClassMetadataProxy(
 			IFacadeFactory facadeFactory,
 			ClassMetadata classMetadata) {
