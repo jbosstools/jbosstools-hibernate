@@ -72,7 +72,7 @@ public class ValueProxy extends AbstractValueFacade {
 		if (isCollection() && collectionElement == null) {
 			Value element = ((Collection)getTarget()).getElement();
 			if (element != null) {
-				collectionElement = new ValueProxy(getFacadeFactory(), element);
+				collectionElement = getFacadeFactory().createValue(element);
 			}
 		}
 		return collectionElement;
@@ -234,7 +234,7 @@ public class ValueProxy extends AbstractValueFacade {
 		if (key == null && isCollection()) {
 			Collection collection = (Collection)getTarget();
 			if (collection.getKey() != null) {
-				key = new ValueProxy(getFacadeFactory(), collection.getKey());
+				key = getFacadeFactory().createValue(collection.getKey());
 			}
 		}
 		return key;
@@ -259,7 +259,7 @@ public class ValueProxy extends AbstractValueFacade {
 		if (index == null && isList()) {
 			List list = (List)getTarget();
 			if (list.getIndex() != null) {
-				index = new ValueProxy(getFacadeFactory(), list.getIndex());
+				index = getFacadeFactory().createValue(list.getIndex());
 			}
 		}
 		return index;
@@ -372,7 +372,7 @@ public class ValueProxy extends AbstractValueFacade {
 		assert getTarget() instanceof Collection;
 		IValue result = null;
 		if (((Collection)getTarget()).getElement() != null) {
-			result = new ValueProxy(getFacadeFactory(), ((Collection)getTarget()).getElement());
+			result = getFacadeFactory().createValue(((Collection)getTarget()).getElement());
 		}
 		return result;
 	}

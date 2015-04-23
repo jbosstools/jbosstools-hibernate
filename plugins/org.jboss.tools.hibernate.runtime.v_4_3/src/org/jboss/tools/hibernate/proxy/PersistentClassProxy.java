@@ -168,7 +168,7 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 	@Override
 	public IValue getDiscriminator() {
 		if (discriminator == null && getTarget().getDiscriminator() != null) {
-			discriminator = new ValueProxy(getFacadeFactory(), getTarget().getDiscriminator());
+			discriminator = getFacadeFactory().createValue(getTarget().getDiscriminator());
 		}
 		return discriminator;
 	}
@@ -176,7 +176,7 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 	@Override
 	public IValue getIdentifier() {
 		if (identifier == null && getTarget().getIdentifier() != null) {
-			identifier = new ValueProxy(getFacadeFactory(), getTarget().getIdentifier());
+			identifier = getFacadeFactory().createValue(getTarget().getIdentifier());
 		}
 		return identifier;
 	}

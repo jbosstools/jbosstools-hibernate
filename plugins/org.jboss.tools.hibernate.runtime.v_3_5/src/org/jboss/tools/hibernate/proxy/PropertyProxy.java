@@ -26,7 +26,7 @@ public class PropertyProxy extends AbstractPropertyFacade {
 	@Override
 	public IValue getValue() {
 		if (value == null && getTarget().getValue() != null) {
-			value = new ValueProxy(getFacadeFactory(), getTarget().getValue());
+			value = getFacadeFactory().createValue(getTarget().getValue());
 		}
 		return value;
 	}

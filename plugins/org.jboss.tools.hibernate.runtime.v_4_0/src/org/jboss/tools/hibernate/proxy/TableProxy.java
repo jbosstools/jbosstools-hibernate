@@ -146,7 +146,7 @@ public class TableProxy extends AbstractTableFacade {
 	@Override
 	public IValue getIdentifierValue() {
 		if (identifierValue == null && getTarget().getIdentifierValue() != null) {
-			identifierValue = new ValueProxy(getFacadeFactory(), getTarget().getIdentifierValue());
+			identifierValue = getFacadeFactory().createValue(getTarget().getIdentifierValue());
 		}
 		return identifierValue;
 	}
