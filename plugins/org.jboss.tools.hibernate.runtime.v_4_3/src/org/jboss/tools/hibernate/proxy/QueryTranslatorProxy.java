@@ -47,7 +47,7 @@ public class QueryTranslatorProxy extends AbstractQueryTranslatorFacade {
 		Type[] origin = getTarget().getReturnTypes();
 		ArrayList<IType> returnTypes = new ArrayList<IType>(origin.length);
 		for (Type type : origin) {
-			returnTypes.add(new TypeProxy(getFacadeFactory(), type));
+			returnTypes.add(getFacadeFactory().createType(type));
 		}
 		this.returnTypes = returnTypes.toArray(new IType[origin.length]);
 	}

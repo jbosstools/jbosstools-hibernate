@@ -27,127 +27,127 @@ public class TypeFactoryProxy extends AbstractTypeFactoryFacade {
 
 	@Override
 	public IType getBooleanType() {
-		return new TypeProxy(getFacadeFactory(), Hibernate.BOOLEAN);
+		return getFacadeFactory().createType(Hibernate.BOOLEAN);
 	}
 
 	@Override
 	public IType getByteType() {
-		return new TypeProxy(getFacadeFactory(), Hibernate.BYTE);
+		return getFacadeFactory().createType(Hibernate.BYTE);
 	}
 
 	@Override
 	public IType getBigIntegerType() {
-		return new TypeProxy(getFacadeFactory(), Hibernate.BIG_INTEGER);
+		return getFacadeFactory().createType(Hibernate.BIG_INTEGER);
 	}
 
 	@Override
 	public IType getShortType() {
-		return new TypeProxy(getFacadeFactory(), Hibernate.SHORT);
+		return getFacadeFactory().createType(Hibernate.SHORT);
 	}
 
 	@Override
 	public IType getCalendarType() {
-		return new TypeProxy(getFacadeFactory(), Hibernate.CALENDAR);
+		return getFacadeFactory().createType(Hibernate.CALENDAR);
 	}
 
 	@Override
 	public IType getCalendarDateType() {
-		return new TypeProxy(getFacadeFactory(), Hibernate.CALENDAR_DATE);
+		return getFacadeFactory().createType(Hibernate.CALENDAR_DATE);
 	}
 
 	@Override
 	public IType getIntegerType() {
-		return new TypeProxy(getFacadeFactory(), Hibernate.INTEGER);
+		return getFacadeFactory().createType(Hibernate.INTEGER);
 	}
 
 	@Override
 	public IType getBigDecimalType() {
-		return new TypeProxy(getFacadeFactory(), Hibernate.BIG_DECIMAL);
+		return getFacadeFactory().createType(Hibernate.BIG_DECIMAL);
 	}
 
 	@Override
 	public IType getCharacterType() {
-		return new TypeProxy(getFacadeFactory(), Hibernate.CHARACTER);
+		return getFacadeFactory().createType(Hibernate.CHARACTER);
 	}
 
 	@Override
 	public IType getClassType() {
-		return new TypeProxy(getFacadeFactory(), Hibernate.CLASS);
+		return getFacadeFactory().createType(Hibernate.CLASS);
 	}
 
 	@Override
 	public IType getCurrencyType() {
-		return new TypeProxy(getFacadeFactory(), Hibernate.CURRENCY);
+		return getFacadeFactory().createType(Hibernate.CURRENCY);
 	}
 
 	@Override
 	public IType getDateType() {
-		return new TypeProxy(getFacadeFactory(), Hibernate.DATE);
+		return getFacadeFactory().createType(Hibernate.DATE);
 	}
 
 	@Override
 	public IType getDoubleType() {
-		return new TypeProxy(getFacadeFactory(), Hibernate.DOUBLE);
+		return getFacadeFactory().createType(Hibernate.DOUBLE);
 	}
 
 	@Override
 	public IType getFloatType() {
-		return new TypeProxy(getFacadeFactory(), Hibernate.FLOAT);
+		return getFacadeFactory().createType(Hibernate.FLOAT);
 	}
 
 	@Override
 	public IType getLocaleType() {
-		return new TypeProxy(getFacadeFactory(), Hibernate.LOCALE);
+		return getFacadeFactory().createType(Hibernate.LOCALE);
 	}
 
 	@Override
 	public IType getLongType() {
-		return new TypeProxy(getFacadeFactory(), Hibernate.LONG);
+		return getFacadeFactory().createType(Hibernate.LONG);
 	}
 
 	@Override
 	public IType getStringType() {
-		return new TypeProxy(getFacadeFactory(), Hibernate.STRING);
+		return getFacadeFactory().createType(Hibernate.STRING);
 	}
 
 	@Override
 	public IType getTextType() {
-		return new TypeProxy(getFacadeFactory(), Hibernate.TEXT);
+		return getFacadeFactory().createType(Hibernate.TEXT);
 	}
 
 	@Override
 	public IType getTimeType() {
-		return new TypeProxy(getFacadeFactory(), Hibernate.TIME);
+		return getFacadeFactory().createType(Hibernate.TIME);
 	}
 
 	@Override
 	public IType getTimestampType() {
-		return new TypeProxy(getFacadeFactory(), Hibernate.TIMESTAMP);
+		return getFacadeFactory().createType(Hibernate.TIMESTAMP);
 	}
 
 	@Override
 	public IType getTimezoneType() {
-		return new TypeProxy(getFacadeFactory(), Hibernate.TIMEZONE);
+		return getFacadeFactory().createType(Hibernate.TIMEZONE);
 	}
 
 	@Override
 	public IType getTrueFalseType() {
-		return new TypeProxy(getFacadeFactory(), Hibernate.TRUE_FALSE);
+		return getFacadeFactory().createType(Hibernate.TRUE_FALSE);
 	}
 
 	@Override
 	public IType getYesNoType() {
-		return new TypeProxy(getFacadeFactory(), Hibernate.YES_NO);
+		return getFacadeFactory().createType(Hibernate.YES_NO);
 	}
 
 	@Override
 	public IType getNamedType(String typeName) {
-		return new TypeProxy(getFacadeFactory(), TypeFactory.heuristicType(typeName));
+		return getFacadeFactory().createType(TypeFactory.heuristicType(typeName));
 	}
 
 	@Override
 	public IType getBasicType(String type) {
-		return new TypeProxy(getFacadeFactory(), TypeFactory.basic(type));
+		return getFacadeFactory().createType(TypeFactory.basic(type));
 	}
 
 	@Override

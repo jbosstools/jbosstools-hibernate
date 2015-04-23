@@ -78,7 +78,7 @@ public class PropertyProxy extends AbstractPropertyFacade {
 	@Override
 	public IType getType() {
 		if (type == null && getTarget().getType() != null) {
-			type = new TypeProxy(getFacadeFactory(), getTarget().getType());
+			type = getFacadeFactory().createType(getTarget().getType());
 		}
 		return type;
 	}

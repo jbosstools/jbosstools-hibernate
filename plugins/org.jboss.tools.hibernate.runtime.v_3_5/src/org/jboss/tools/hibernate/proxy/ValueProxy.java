@@ -135,7 +135,7 @@ public class ValueProxy extends AbstractValueFacade {
 	@Override
 	public IType getType() {
 		if (getTarget().getType() != null && type == null) {
-			type = new TypeProxy(getFacadeFactory(), getTarget().getType());
+			type = getFacadeFactory().createType(getTarget().getType());
 		}
 		return type;
 	}

@@ -18,7 +18,7 @@ public class CollectionMetadataProxy extends AbstractCollectionMetadataFacade {
 	@Override
 	public IType getElementType() {
 		if (elementType == null) {
-			elementType = new TypeProxy(getFacadeFactory(), ((CollectionMetadata)getTarget()).getElementType());
+			elementType = getFacadeFactory().createType(((CollectionMetadata)getTarget()).getElementType());
 		}
 		return elementType;
 	}
