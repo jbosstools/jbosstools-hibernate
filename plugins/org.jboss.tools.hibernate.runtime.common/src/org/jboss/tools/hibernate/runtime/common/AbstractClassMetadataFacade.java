@@ -13,4 +13,13 @@ implements IClassMetadata {
 		super(facadeFactory, target);
 	}
 
+	@Override
+	public String getEntityName() {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getEntityName", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 }
