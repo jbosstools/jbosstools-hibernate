@@ -449,7 +449,7 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public IPersistentClass newSpecialRootClass(IProperty ormElement) {
-		return new SpecialRootClassProxy(facadeFactory, ormElement);
+		return facadeFactory.createSpecialRootClass(ormElement);
 	}
 
 	@Override
