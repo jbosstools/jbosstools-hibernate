@@ -28,6 +28,15 @@ implements IClassMetadata {
 				new Object[] {});
 	}
 
+	@Override
+	public String getIdentifierPropertyName() {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getIdentifierPropertyName", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected void initializePropertyTypes() {
 		Object[] originTypes = (Object[])Util.invokeMethod(
 				getTarget(), 

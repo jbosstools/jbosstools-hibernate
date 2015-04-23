@@ -24,11 +24,6 @@ public class ClassMetadataProxy extends AbstractClassMetadataFacade {
 	}
 
 	@Override
-	public String getIdentifierPropertyName() {
-		return getTarget().getIdentifierPropertyName();
-	}
-
-	@Override
 	public String[] getPropertyNames() {
 		return getTarget().getPropertyNames();
 	}
