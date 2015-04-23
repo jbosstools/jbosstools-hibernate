@@ -1,5 +1,7 @@
 package org.jboss.tools.hibernate.runtime.common;
 
+import java.util.ArrayList;
+
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
@@ -24,6 +26,19 @@ implements IClassMetadata {
 				"getEntityName", 
 				new Class[] {}, 
 				new Object[] {});
+	}
+
+	protected void initializePropertyTypes() {
+		Object[] originTypes = (Object[])Util.invokeMethod(
+				getTarget(), 
+				"getPropertyTypes", 
+				new Class[] {}, 
+				new Object[] {});
+		ArrayList<IType> propertyTypes = new ArrayList<IType>(originTypes.length);
+		for (Object type : originTypes) {
+			propertyTypes.add(getFacadeFactory().createType(type));
+		}
+		this.propertyTypes = propertyTypes.toArray(new IType[originTypes.length]);
 	}
 
 }

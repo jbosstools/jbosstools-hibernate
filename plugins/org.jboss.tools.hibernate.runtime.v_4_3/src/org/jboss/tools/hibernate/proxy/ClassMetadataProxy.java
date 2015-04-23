@@ -1,12 +1,9 @@
 package org.jboss.tools.hibernate.proxy;
 
-import java.util.ArrayList;
-
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.persister.entity.AbstractEntityPersister;
 import org.hibernate.tuple.entity.EntityMetamodel;
-import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.AbstractClassMetadataFacade;
 import org.jboss.tools.hibernate.runtime.spi.HibernateException;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
@@ -44,15 +41,6 @@ public class ClassMetadataProxy extends AbstractClassMetadataFacade {
 		return propertyTypes;
 	}
 	
-	private void initializePropertyTypes() {
-		Type[] origin = getTarget().getPropertyTypes();
-		ArrayList<IType> propertyTypes = new ArrayList<IType>(origin.length);
-		for (Type type : origin) {
-			propertyTypes.add(getFacadeFactory().createType(type));
-		}
-		this.propertyTypes = propertyTypes.toArray(new IType[origin.length]);
-	}
-
 	@Override
 	public Class<?> getMappedClass() {
 		return getTarget().getMappedClass();
