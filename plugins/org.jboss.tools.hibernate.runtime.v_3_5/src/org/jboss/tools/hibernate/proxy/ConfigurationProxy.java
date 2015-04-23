@@ -214,7 +214,7 @@ public class ConfigurationProxy extends AbstractConfigurationFacade {
 	private void initializeTableMappings() {
 		Iterator<Table> iterator = ((JDBCMetaDataConfiguration)getTarget()).getTableMappings();
 		while (iterator.hasNext()) {
-			tableMappings.add(new TableProxy(getFacadeFactory(), iterator.next()));
+			tableMappings.add(getFacadeFactory().createTable(iterator.next()));
 		}
 	}
 

@@ -155,7 +155,7 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 	@Override
 	public ITable getTable() {
 		if (table == null && getTarget().getTable() != null) {
-			table = new TableProxy(getFacadeFactory(), getTarget().getTable());
+			table = getFacadeFactory().createTable(getTarget().getTable());
 		}
 		return table;
 	}
@@ -453,7 +453,7 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 	@Override
 	public ITable getRootTable() {
 		if (rootTable == null) {
-			rootTable = new TableProxy(getFacadeFactory(), getTarget().getRootTable());
+			rootTable = getFacadeFactory().createTable(getTarget().getRootTable());
 		}
 		return rootTable;
 	}

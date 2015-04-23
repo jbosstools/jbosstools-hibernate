@@ -333,7 +333,7 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public ITable newTable(String name) {
-		return new TableProxy(facadeFactory, new Table(name));
+		return facadeFactory.createTable(new Table(name));
 	}
 
 	@Override
