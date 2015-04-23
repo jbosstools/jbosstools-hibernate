@@ -128,9 +128,7 @@ public class ConfigurationProxy extends AbstractConfigurationFacade {
 		if (serviceRegistry == null) {
 			buildServiceRegistry();
 		}
-		return new SettingsProxy(
-				getFacadeFactory(),
-				getTarget().buildSettings(serviceRegistry));
+		return getFacadeFactory().createSettings(getTarget().buildSettings(serviceRegistry));
 	}
 	
 	@Override
