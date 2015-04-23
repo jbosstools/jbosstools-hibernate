@@ -193,7 +193,7 @@ public class ServiceProxy implements IService {
 	@Override
 	public ITypeFactory newTypeFactory() {
 		// target for ITypeFactory is a dummy Object
-		return new TypeFactoryProxy(facadeFactory, new Object());
+		return facadeFactory.createTypeFactory();
 	}
 
 	@Override
