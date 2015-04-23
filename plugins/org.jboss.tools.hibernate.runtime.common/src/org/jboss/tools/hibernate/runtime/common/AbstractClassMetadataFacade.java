@@ -46,6 +46,14 @@ implements IClassMetadata {
 				new Object[] {});
 	}
 
+	@Override
+	public IType[] getPropertyTypes() {
+		if (propertyTypes == null) {
+			initializePropertyTypes();
+		}
+		return propertyTypes;
+	}
+	
 	protected void initializePropertyTypes() {
 		Object[] originTypes = (Object[])Util.invokeMethod(
 				getTarget(), 

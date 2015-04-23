@@ -24,14 +24,6 @@ public class ClassMetadataProxy extends AbstractClassMetadataFacade {
 	}
 
 	@Override
-	public IType[] getPropertyTypes() {
-		if (propertyTypes == null) {
-			initializePropertyTypes();
-		}
-		return propertyTypes;
-	}
-	
-	@Override
 	public Class<?> getMappedClass() {
 		return getTarget().getMappedClass();
 	}
