@@ -14,19 +14,16 @@ public class ClassMetadataFacadeImpl extends AbstractClassMetadataFacade {
 		super(facadeFactory, classMetadata);
 	}
 
-	public ClassMetadata getTarget() {
-		return (ClassMetadata)super.getTarget();
-	}
-
 	@Override
 	public Class<?> getMappedClass() {
-		return getTarget().getMappedClass(EntityMode.POJO);
+		return ((ClassMetadata)getTarget()).getMappedClass(EntityMode.POJO);
 	}
 
 	@Override
 	public Object getPropertyValue(Object object, String name) throws HibernateException {
 		try {
-			return getTarget().getPropertyValue(object, name, EntityMode.POJO);
+			return ((ClassMetadata)getTarget()).getPropertyValue(
+					object, name, EntityMode.POJO);
 		} catch (org.hibernate.HibernateException e) {
 			throw new HibernateException(e.getMessage(), e.getCause());
 		}
