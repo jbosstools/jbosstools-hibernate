@@ -54,6 +54,19 @@ implements IClassMetadata {
 		return propertyTypes;
 	}
 	
+	@Override
+	public IType getIdentifierType() {
+		if (identifierType == null) {
+			identifierType = getFacadeFactory().createType(
+					Util.invokeMethod(
+							getTarget(), 
+							"getIdentifierType", 
+							new Class[] {}, 
+							new Object[] {}));
+		}
+		return identifierType;
+	}
+
 	protected void initializePropertyTypes() {
 		Object[] originTypes = (Object[])Util.invokeMethod(
 				getTarget(), 

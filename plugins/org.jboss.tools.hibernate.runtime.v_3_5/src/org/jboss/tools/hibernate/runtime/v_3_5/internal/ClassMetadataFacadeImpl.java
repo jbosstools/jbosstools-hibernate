@@ -11,7 +11,6 @@ import org.jboss.tools.hibernate.runtime.spi.HibernateException;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
-import org.jboss.tools.hibernate.runtime.spi.IType;
 
 public class ClassMetadataFacadeImpl extends AbstractClassMetadataFacade {
 	
@@ -28,14 +27,6 @@ public class ClassMetadataFacadeImpl extends AbstractClassMetadataFacade {
 	@Override
 	public Class<?> getMappedClass() {
 		return getTarget().getMappedClass(EntityMode.POJO);
-	}
-
-	@Override
-	public IType getIdentifierType() {
-		if (identifierType == null) {
-			identifierType = getFacadeFactory().createType(getTarget().getIdentifierType());
-		}
-		return identifierType;
 	}
 
 	@Override
