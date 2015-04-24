@@ -40,14 +40,4 @@ public class ClassMetadataFacadeImpl extends AbstractClassMetadataFacade {
 		return getTarget().hasIdentifierProperty();
 	}
 
-	@Override
-	public Object getIdentifier(Object object, ISession session) {
-		Object result = null;
-		if (session instanceof SessionProxy) {
-			SessionImplementor impl = (SessionImplementor)((SessionProxy)session).getTarget();
-			result = getTarget().getIdentifier(object, impl);
-		}
-		return result;
-	}
-
 }

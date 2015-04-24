@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 
 public abstract class AbstractClassMetadataFacade 
@@ -83,6 +84,28 @@ implements IClassMetadata {
 		return entityMetamodel != null ? 
 				getFacadeFactory().createEntityMetamodel(entityMetamodel) : 
 					null;
+	}
+
+	@Override
+	public Object getIdentifier(Object object, ISession session) {
+		Object sessionImplementor = Util.invokeMethod(
+				session, 
+				"getTarget",
+				new Class[] {}, 
+				new Object[] {});
+		return Util.invokeMethod(
+				getTarget(), 
+				"getIdentifier", 
+				new Class[] { Object.class, getSessionImplementorClass() }, 
+				new Object[] { object, sessionImplementor });
+	}
+	
+	protected Class<?> getSessionImplementorClass() {
+		return Util.getClass(getSessionImplementorClassName(), getFacadeFactoryClassLoader());
+	}
+	
+	protected String getSessionImplementorClassName() {
+		return "org.hibernate.engine.SessionImplementor";
 	}
 
 	protected Class<?> getAbstractEntityPersisterClass() {
