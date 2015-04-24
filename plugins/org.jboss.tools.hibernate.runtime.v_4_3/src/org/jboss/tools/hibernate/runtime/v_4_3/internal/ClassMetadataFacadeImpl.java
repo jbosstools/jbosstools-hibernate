@@ -18,11 +18,6 @@ public class ClassMetadataFacadeImpl extends AbstractClassMetadataFacade {
 	}
 
 	@Override
-	public Class<?> getMappedClass() {
-		return getTarget().getMappedClass();
-	}
-
-	@Override
 	public Object getPropertyValue(Object object, String name) throws HibernateException {
 		try {
 			return getTarget().getPropertyValue(object, name);

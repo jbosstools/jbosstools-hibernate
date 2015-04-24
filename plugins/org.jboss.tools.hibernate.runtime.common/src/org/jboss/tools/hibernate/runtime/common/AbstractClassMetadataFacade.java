@@ -22,6 +22,15 @@ implements IClassMetadata {
 	}
 
 	@Override
+	public Class<?> getMappedClass() {
+		return (Class<?>)Util.invokeMethod(
+				getTarget(), 
+				"getMappedClass", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
+	@Override
 	public String getEntityName() {
 		return (String)Util.invokeMethod(
 				getTarget(), 
