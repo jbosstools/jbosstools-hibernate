@@ -3,6 +3,7 @@ package org.jboss.tools.hibernate.runtime.common;
 import java.util.ArrayList;
 
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
+import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 
@@ -72,6 +73,18 @@ implements IClassMetadata {
 		return getAbstractEntityPersisterClass().isAssignableFrom(getTarget().getClass());
 	}
 	
+	@Override
+	public IEntityMetamodel getEntityMetamodel() {
+		Object entityMetamodel = Util.invokeMethod(
+				getTarget(), 
+				"getEntityMetamodel", 
+				new Class[] {}, 
+				new Object[] {});
+		return entityMetamodel != null ? 
+				getFacadeFactory().createEntityMetamodel(entityMetamodel) : 
+					null;
+	}
+
 	protected Class<?> getAbstractEntityPersisterClass() {
 		return Util.getClass(getAbstractEntityPersisterClassName(), getFacadeFactoryClassLoader());
 	}

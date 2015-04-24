@@ -3,12 +3,9 @@ package org.jboss.tools.hibernate.runtime.v_3_6.internal;
 import org.hibernate.EntityMode;
 import org.hibernate.engine.SessionImplementor;
 import org.hibernate.metadata.ClassMetadata;
-import org.hibernate.persister.entity.AbstractEntityPersister;
-import org.hibernate.tuple.entity.EntityMetamodel;
 import org.jboss.tools.hibernate.proxy.SessionProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractClassMetadataFacade;
 import org.jboss.tools.hibernate.runtime.spi.HibernateException;
-import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 
@@ -51,13 +48,6 @@ public class ClassMetadataFacadeImpl extends AbstractClassMetadataFacade {
 			result = getTarget().getIdentifier(object, impl);
 		}
 		return result;
-	}
-
-	@Override
-	public IEntityMetamodel getEntityMetamodel() {
-		assert getTarget() instanceof AbstractEntityPersister;
-		EntityMetamodel emm = ((AbstractEntityPersister)getTarget()).getEntityMetamodel();
-		return emm != null ? getFacadeFactory().createEntityMetamodel(emm) : null;
 	}
 
 }
