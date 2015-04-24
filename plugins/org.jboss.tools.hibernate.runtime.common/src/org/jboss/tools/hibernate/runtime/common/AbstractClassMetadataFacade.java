@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.runtime.common;
 
 import java.util.ArrayList;
 
+import org.jboss.tools.hibernate.runtime.spi.HibernateException;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
@@ -28,6 +29,19 @@ implements IClassMetadata {
 				"getMappedClass", 
 				new Class[] {}, 
 				new Object[] {});
+	}
+
+	@Override
+	public Object getPropertyValue(Object object, String name) throws HibernateException {
+		try {
+			return Util.invokeMethod(
+					getTarget(), 
+					"getPropertyValue", 
+					new Class[] { Object.class, String.class }, 
+					new Object[] { object, name });
+		} catch (Throwable t) {
+			throw new HibernateException(t.getMessage(), t.getCause());
+		}
 	}
 
 	@Override
