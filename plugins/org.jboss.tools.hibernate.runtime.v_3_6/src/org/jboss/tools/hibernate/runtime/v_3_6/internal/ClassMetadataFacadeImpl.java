@@ -54,11 +54,6 @@ public class ClassMetadataFacadeImpl extends AbstractClassMetadataFacade {
 	}
 
 	@Override
-	public boolean isInstanceOfAbstractEntityPersister() {
-		return getTarget() instanceof AbstractEntityPersister;
-	}
-
-	@Override
 	public IEntityMetamodel getEntityMetamodel() {
 		assert getTarget() instanceof AbstractEntityPersister;
 		EntityMetamodel emm = ((AbstractEntityPersister)getTarget()).getEntityMetamodel();

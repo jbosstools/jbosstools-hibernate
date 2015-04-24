@@ -67,6 +67,19 @@ implements IClassMetadata {
 		return identifierType;
 	}
 
+	@Override
+	public boolean isInstanceOfAbstractEntityPersister() {
+		return getAbstractEntityPersisterClass().isAssignableFrom(getTarget().getClass());
+	}
+	
+	protected Class<?> getAbstractEntityPersisterClass() {
+		return Util.getClass(getAbstractEntityPersisterClassName(), getFacadeFactoryClassLoader());
+	}
+	
+	protected String getAbstractEntityPersisterClassName() {
+		return "org.hibernate.persister.entity.AbstractEntityPersister";
+	}
+
 	protected void initializePropertyTypes() {
 		Object[] originTypes = (Object[])Util.invokeMethod(
 				getTarget(), 
