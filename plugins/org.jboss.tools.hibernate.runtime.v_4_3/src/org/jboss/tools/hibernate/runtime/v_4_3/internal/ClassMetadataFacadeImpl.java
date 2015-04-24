@@ -31,9 +31,4 @@ public class ClassMetadataFacadeImpl extends AbstractClassMetadataFacade {
 		}
 	}
 
-	@Override
-	public boolean hasIdentifierProperty() {
-		return getTarget().hasIdentifierProperty();
-	}
-
 }

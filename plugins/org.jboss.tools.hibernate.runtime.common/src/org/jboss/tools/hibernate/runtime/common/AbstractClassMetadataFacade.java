@@ -100,6 +100,15 @@ implements IClassMetadata {
 				new Object[] { object, sessionImplementor });
 	}
 	
+	@Override
+	public boolean hasIdentifierProperty() {
+		return (Boolean)Util.invokeMethod(
+				getTarget(), 
+				"hasIdentifierProperty", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getSessionImplementorClass() {
 		return Util.getClass(getSessionImplementorClassName(), getFacadeFactoryClassLoader());
 	}
