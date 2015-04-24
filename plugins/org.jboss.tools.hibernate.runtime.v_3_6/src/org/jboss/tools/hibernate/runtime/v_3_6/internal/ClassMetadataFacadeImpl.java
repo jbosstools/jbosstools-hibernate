@@ -1,9 +1,11 @@
-package org.jboss.tools.hibernate.proxy;
+package org.jboss.tools.hibernate.runtime.v_3_6.internal;
 
-import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.EntityMode;
+import org.hibernate.engine.SessionImplementor;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.persister.entity.AbstractEntityPersister;
 import org.hibernate.tuple.entity.EntityMetamodel;
+import org.jboss.tools.hibernate.proxy.SessionProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractClassMetadataFacade;
 import org.jboss.tools.hibernate.runtime.spi.HibernateException;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
@@ -25,7 +27,7 @@ public class ClassMetadataFacadeImpl extends AbstractClassMetadataFacade {
 
 	@Override
 	public Class<?> getMappedClass() {
-		return getTarget().getMappedClass();
+		return getTarget().getMappedClass(EntityMode.POJO);
 	}
 
 	@Override
@@ -39,7 +41,7 @@ public class ClassMetadataFacadeImpl extends AbstractClassMetadataFacade {
 	@Override
 	public Object getPropertyValue(Object object, String name) throws HibernateException {
 		try {
-			return getTarget().getPropertyValue(object, name);
+			return getTarget().getPropertyValue(object, name, EntityMode.POJO);
 		} catch (org.hibernate.HibernateException e) {
 			throw new HibernateException(e.getMessage(), e.getCause());
 		}
