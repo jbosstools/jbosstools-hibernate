@@ -105,7 +105,7 @@ implements IClassMetadata {
 	}
 	
 	protected String getSessionImplementorClassName() {
-		return "org.hibernate.engine.SessionImplementor";
+		return "org.hibernate.engine.spi.SessionImplementor";
 	}
 
 	protected Class<?> getAbstractEntityPersisterClass() {

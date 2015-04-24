@@ -36,8 +36,4 @@ public class ClassMetadataFacadeImpl extends AbstractClassMetadataFacade {
 		return getTarget().hasIdentifierProperty();
 	}
 
-	protected String getSessionImplementorClassName() {
-		return "org.hibernate.engine.spi.SessionImplementor";
-	}
-
 }

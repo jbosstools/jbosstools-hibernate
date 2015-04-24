@@ -1,13 +1,10 @@
 package org.jboss.tools.hibernate.runtime.v_3_6.internal;
 
 import org.hibernate.EntityMode;
-import org.hibernate.engine.SessionImplementor;
 import org.hibernate.metadata.ClassMetadata;
-import org.jboss.tools.hibernate.proxy.SessionProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractClassMetadataFacade;
 import org.jboss.tools.hibernate.runtime.spi.HibernateException;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.ISession;
 
 public class ClassMetadataFacadeImpl extends AbstractClassMetadataFacade {
 	
@@ -38,6 +35,10 @@ public class ClassMetadataFacadeImpl extends AbstractClassMetadataFacade {
 	@Override
 	public boolean hasIdentifierProperty() {
 		return getTarget().hasIdentifierProperty();
+	}
+
+	protected String getSessionImplementorClassName() {
+		return "org.hibernate.engine.SessionImplementor";
 	}
 
 }
