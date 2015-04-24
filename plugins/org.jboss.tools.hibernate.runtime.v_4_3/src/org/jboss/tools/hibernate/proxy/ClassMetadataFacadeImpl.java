@@ -1,7 +1,6 @@
 package org.jboss.tools.hibernate.proxy;
 
-import org.hibernate.EntityMode;
-import org.hibernate.engine.SessionImplementor;
+import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.persister.entity.AbstractEntityPersister;
 import org.hibernate.tuple.entity.EntityMetamodel;
@@ -12,9 +11,9 @@ import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 
-public class ClassMetadataProxy extends AbstractClassMetadataFacade {
+public class ClassMetadataFacadeImpl extends AbstractClassMetadataFacade {
 	
-	public ClassMetadataProxy(
+	public ClassMetadataFacadeImpl(
 			IFacadeFactory facadeFactory,
 			ClassMetadata classMetadata) {
 		super(facadeFactory, classMetadata);
@@ -26,7 +25,7 @@ public class ClassMetadataProxy extends AbstractClassMetadataFacade {
 
 	@Override
 	public Class<?> getMappedClass() {
-		return getTarget().getMappedClass(EntityMode.POJO);
+		return getTarget().getMappedClass();
 	}
 
 	@Override
@@ -40,7 +39,7 @@ public class ClassMetadataProxy extends AbstractClassMetadataFacade {
 	@Override
 	public Object getPropertyValue(Object object, String name) throws HibernateException {
 		try {
-			return getTarget().getPropertyValue(object, name, EntityMode.POJO);
+			return getTarget().getPropertyValue(object, name);
 		} catch (org.hibernate.HibernateException e) {
 			throw new HibernateException(e.getMessage(), e.getCause());
 		}
