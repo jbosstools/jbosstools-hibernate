@@ -26,7 +26,7 @@ import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tuple.entity.EntityMetamodel;
 import org.hibernate.type.Type;
 import org.hibernate.type.TypeFactory;
-import org.jboss.tools.hibernate.proxy.CollectionMetadataProxy;
+import org.jboss.tools.hibernate.proxy.CollectionMetadataFacadeImpl;
 import org.jboss.tools.hibernate.proxy.ColumnProxy;
 import org.jboss.tools.hibernate.proxy.ConfigurationProxy;
 import org.jboss.tools.hibernate.proxy.CriteriaProxy;
@@ -94,7 +94,7 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	
 	@Override
 	public ICollectionMetadata createCollectionMetadata(Object target) {
-		return new CollectionMetadataProxy(this, (CollectionMetadata)target);
+		return new CollectionMetadataFacadeImpl(this, (CollectionMetadata)target);
 	}
 	
 	@Override

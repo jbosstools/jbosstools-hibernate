@@ -5,11 +5,11 @@ import org.jboss.tools.hibernate.runtime.common.AbstractCollectionMetadataFacade
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 
-public class CollectionMetadataProxy extends AbstractCollectionMetadataFacade {
+public class CollectionMetadataFacadeImpl extends AbstractCollectionMetadataFacade {
 	
 	private IType elementType = null;
 
-	public CollectionMetadataProxy(
+	public CollectionMetadataFacadeImpl(
 			IFacadeFactory facadeFactory,
 			CollectionMetadata value) {
 		super(facadeFactory, value);
