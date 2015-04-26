@@ -26,7 +26,6 @@ import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tuple.entity.EntityMetamodel;
 import org.hibernate.type.Type;
 import org.hibernate.type.TypeFactory;
-import org.jboss.tools.hibernate.proxy.CollectionMetadataFacadeImpl;
 import org.jboss.tools.hibernate.proxy.ColumnProxy;
 import org.jboss.tools.hibernate.proxy.ConfigurationProxy;
 import org.jboss.tools.hibernate.proxy.CriteriaProxy;
