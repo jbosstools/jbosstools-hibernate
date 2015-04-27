@@ -36,8 +36,8 @@ public class TableProxy extends AbstractTableFacade {
 
 	@Override
 	public void addColumn(IColumn column) {
-		assert column instanceof ColumnProxy;
-		getTarget().addColumn(((ColumnProxy)column).getTarget());
+		assert column instanceof ColumnFacadeImpl;
+		getTarget().addColumn(((ColumnFacadeImpl)column).getTarget());
 		columns = null;
 	}
 

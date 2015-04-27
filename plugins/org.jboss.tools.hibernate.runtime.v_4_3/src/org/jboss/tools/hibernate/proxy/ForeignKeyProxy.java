@@ -73,8 +73,8 @@ public class ForeignKeyProxy extends AbstractForeignKeyFacade {
 
 	@Override
 	public boolean containsColumn(IColumn column) {
-		assert column instanceof ColumnProxy;
-		return getTarget().containsColumn(((ColumnProxy)column).getTarget());
+		assert column instanceof ColumnFacadeFactory;
+		return getTarget().containsColumn(((ColumnFacadeFactory)column).getTarget());
 	}
 
 }

@@ -342,9 +342,9 @@ public class ValueProxy extends AbstractValueFacade {
 
 	@Override
 	public void addColumn(IColumn column) {
-		assert column instanceof ColumnProxy;
+		assert column instanceof ColumnFacadeImpl;
 		assert getTarget() instanceof SimpleValue;
-		((SimpleValue)getTarget()).addColumn(((ColumnProxy)column).getTarget());
+		((SimpleValue)getTarget()).addColumn(((ColumnFacadeImpl)column).getTarget());
 	}
 
 	@Override

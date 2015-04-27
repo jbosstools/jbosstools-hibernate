@@ -27,8 +27,8 @@ public class PrimaryKeyProxy extends AbstractPrimaryKeyFacade {
 
 	@Override
 	public void addColumn(IColumn column) {
-		assert column instanceof ColumnProxy;
-		getTarget().addColumn(((ColumnProxy)column).getTarget());
+		assert column instanceof ColumnFacadeFactory;
+		getTarget().addColumn(((ColumnFacadeFactory)column).getTarget());
 	}
 
 	@Override
@@ -70,8 +70,8 @@ public class PrimaryKeyProxy extends AbstractPrimaryKeyFacade {
 
 	@Override
 	public boolean containsColumn(IColumn column) {
-		assert column instanceof ColumnProxy;
-		return getTarget().containsColumn(((ColumnProxy)column).getTarget());
+		assert column instanceof ColumnFacadeFactory;
+		return getTarget().containsColumn(((ColumnFacadeFactory)column).getTarget());
 	}
 
 	@Override

@@ -10,11 +10,11 @@ import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IMapping;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 
-public class ColumnProxy extends AbstractColumnFacade {
+public class ColumnFacadeImpl extends AbstractColumnFacade {
 	
 	private IValue value = null;
 	
-	public ColumnProxy(
+	public ColumnFacadeImpl(
 			IFacadeFactory facadeFactory, 
 			Column column) {
 		super(facadeFactory, column);
