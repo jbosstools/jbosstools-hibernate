@@ -91,6 +91,15 @@ implements IColumn {
 				null);
 	}
 
+	@Override
+	public boolean isNullable() {
+		return (Boolean)Util.invokeMethod(
+				getTarget(), 
+				"isNullable", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getColumnClass() {
 		return Util.getClass(getColumnClassName(), getFacadeFactoryClassLoader());
 	}

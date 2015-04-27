@@ -25,11 +25,6 @@ public class ColumnFacadeImpl extends AbstractColumnFacade {
 	}
 
 	@Override
-	public boolean isNullable() {
-		return getTarget().isNullable();
-	}
-
-	@Override
 	public IValue getValue() {
 		if (getTarget().getValue() != null && value == null) {
 			value = getFacadeFactory().createValue(getTarget().getValue());
