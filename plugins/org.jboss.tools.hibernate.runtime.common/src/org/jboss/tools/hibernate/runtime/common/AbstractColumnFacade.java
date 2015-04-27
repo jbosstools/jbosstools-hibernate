@@ -51,7 +51,10 @@ implements IColumn {
 
 	@Override
 	public int getDefaultLength() {
-		return (Integer)Util.getFieldValue(getColumnClass(), "DEFAULT_LENGTH", null);
+		return (Integer)Util.getFieldValue(
+				getColumnClass(), 
+				"DEFAULT_LENGTH", 
+				null);
 	}
 	
 	@Override
@@ -65,7 +68,10 @@ implements IColumn {
 
 	@Override
 	public int getDefaultPrecision() {
-		return (Integer)Util.getFieldValue(getColumnClass(), "DEFAULT_PRECISION", null);
+		return (Integer)Util.getFieldValue(
+				getColumnClass(), 
+				"DEFAULT_PRECISION", 
+				null);
 	}
 
 	@Override
@@ -75,6 +81,14 @@ implements IColumn {
 				"getScale", 
 				new Class[] {}, 
 				new Object[] {});
+	}
+
+	@Override
+	public int getDefaultScale() {
+		return (Integer)Util.getFieldValue(
+				getColumnClass(), 
+				"DEFAULT_SCALE", 
+				null);
 	}
 
 	protected Class<?> getColumnClass() {
