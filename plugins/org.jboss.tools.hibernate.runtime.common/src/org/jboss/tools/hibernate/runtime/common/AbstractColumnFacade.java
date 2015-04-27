@@ -63,6 +63,11 @@ implements IColumn {
 				new Object[] {});
 	}
 
+	@Override
+	public int getDefaultPrecision() {
+		return (Integer)Util.getFieldValue(getColumnClass(), "DEFAULT_PRECISION", null);
+	}
+
 	protected Class<?> getColumnClass() {
 		return Util.getClass(getColumnClassName(), getFacadeFactoryClassLoader());
 	}

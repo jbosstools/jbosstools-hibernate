@@ -25,11 +25,6 @@ public class ColumnFacadeFactory extends AbstractColumnFacade {
 	}
 
 	@Override
-	public int getDefaultPrecision() {
-		return Column.DEFAULT_PRECISION;
-	}
-
-	@Override
 	public int getScale() {
 		return getTarget().getScale();
 	}
