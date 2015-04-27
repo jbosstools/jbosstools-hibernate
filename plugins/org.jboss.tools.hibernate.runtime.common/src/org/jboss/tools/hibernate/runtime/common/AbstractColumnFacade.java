@@ -13,4 +13,13 @@ implements IColumn {
 		super(facadeFactory, target);
 	}
 
+	@Override
+	public String getName() {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getName", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 }

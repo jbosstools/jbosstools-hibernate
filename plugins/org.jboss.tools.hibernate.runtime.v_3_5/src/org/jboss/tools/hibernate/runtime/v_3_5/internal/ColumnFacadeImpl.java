@@ -25,11 +25,6 @@ public class ColumnFacadeImpl extends AbstractColumnFacade {
 	}
 
 	@Override
-	public String getName() {
-		return getTarget().getName();
-	}
-
-	@Override
 	public Integer getSqlTypeCode() {
 		return getTarget().getSqlTypeCode();
 	}
