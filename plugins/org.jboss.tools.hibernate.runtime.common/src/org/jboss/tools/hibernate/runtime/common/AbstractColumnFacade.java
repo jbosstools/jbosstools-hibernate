@@ -1,7 +1,9 @@
 package org.jboss.tools.hibernate.runtime.common;
 
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
+import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IMapping;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public abstract class AbstractColumnFacade 
@@ -121,12 +123,47 @@ implements IColumn {
 				new Object[] {});
 	}
 
+	@Override
+	public String getSqlType(IDialect dialect, IMapping mapping) {
+		Object dialectTarget = Util.invokeMethod(
+				dialect, 
+				"getTarget", 
+				new Class[] {}, 
+				new Object[] {});
+		Object mappingTarget = Util.invokeMethod(
+				mapping, 
+				"getTarget", 
+				new Class[] {}, 
+				new Object[] {});
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getSqlType", 
+				new Class[] { getDialectClass(),  getMappingClass() }, 
+				new Object[] { dialectTarget, mappingTarget });
+	}
+
 	protected Class<?> getColumnClass() {
 		return Util.getClass(getColumnClassName(), getFacadeFactoryClassLoader());
 	}
 	
+	protected Class<?> getDialectClass() {
+		return Util.getClass(getDialectClassName(), getFacadeFactoryClassLoader());
+	}
+	
+	protected Class<?> getMappingClass() {
+		return Util.getClass(getMappingClassName(), getFacadeFactoryClassLoader());
+	}
+	
 	protected String getColumnClassName() {
 		return "org.hibernate.mapping.Column";
+	}
+	
+	protected String getDialectClassName() {
+		return "org.hibernate.dialect.Dialect";
+	}
+	
+	protected String getMappingClassName() {
+		return "org.hibernate.engine.spi.Mapping";
 	}
 	
 	private Object getTargetValue() {
