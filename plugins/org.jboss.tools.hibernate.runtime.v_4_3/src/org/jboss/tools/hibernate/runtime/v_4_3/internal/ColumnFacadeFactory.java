@@ -25,11 +25,6 @@ public class ColumnFacadeFactory extends AbstractColumnFacade {
 	}
 
 	@Override
-	public String getSqlType() {
-		return getTarget().getSqlType();
-	}
-
-	@Override
 	public int getLength() {
 		return getTarget().getLength();
 	}

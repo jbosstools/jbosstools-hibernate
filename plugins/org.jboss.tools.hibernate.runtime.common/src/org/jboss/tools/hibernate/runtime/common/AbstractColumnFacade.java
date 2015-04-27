@@ -31,4 +31,13 @@ implements IColumn {
 				new Object[] {});
 	}
 
+	@Override
+	public String getSqlType() {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getSqlType", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 }
