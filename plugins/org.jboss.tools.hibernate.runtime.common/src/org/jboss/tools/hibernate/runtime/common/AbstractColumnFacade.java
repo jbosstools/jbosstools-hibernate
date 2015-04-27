@@ -54,6 +54,15 @@ implements IColumn {
 		return (Integer)Util.getFieldValue(getColumnClass(), "DEFAULT_LENGTH", null);
 	}
 	
+	@Override
+	public int getPrecision() {
+		return (Integer)Util.invokeMethod(
+				getTarget(), 
+				"getPrecision", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getColumnClass() {
 		return Util.getClass(getColumnClassName(), getFacadeFactoryClassLoader());
 	}
