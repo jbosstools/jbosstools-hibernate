@@ -2,10 +2,13 @@ package org.jboss.tools.hibernate.runtime.common;
 
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public abstract class AbstractColumnFacade 
 extends AbstractFacade 
 implements IColumn {
+
+	private IValue value = null;
 
 	public AbstractColumnFacade(
 			IFacadeFactory facadeFactory, 
@@ -100,12 +103,29 @@ implements IColumn {
 				new Object[] {});
 	}
 
+	@Override
+	public IValue getValue() {
+		Object targetValue = getTargetValue();
+		if (targetValue != null && value == null) {
+			value = getFacadeFactory().createValue(targetValue);
+		}
+		return value;
+	}
+
 	protected Class<?> getColumnClass() {
 		return Util.getClass(getColumnClassName(), getFacadeFactoryClassLoader());
 	}
 	
 	protected String getColumnClassName() {
 		return "org.hibernate.mapping.Column";
+	}
+	
+	private Object getTargetValue() {
+		return Util.invokeMethod(
+				getTarget(), 
+				"getValue", 
+				new Class[] {}, 
+				new Object[] {});
 	}
 
 }

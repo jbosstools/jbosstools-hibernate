@@ -8,11 +8,8 @@ import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IMapping;
-import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public class ColumnFacadeFactory extends AbstractColumnFacade {
-	
-	private IValue value = null;
 	
 	public ColumnFacadeFactory(
 			IFacadeFactory facadeFactory, 
@@ -22,14 +19,6 @@ public class ColumnFacadeFactory extends AbstractColumnFacade {
 
 	public Column getTarget() {
 		return (Column)super.getTarget();
-	}
-
-	@Override
-	public IValue getValue() {
-		if (getTarget().getValue() != null && value == null) {
-			value = getFacadeFactory().createValue(getTarget().getValue());
-		}
-		return value;
 	}
 
 	@Override
