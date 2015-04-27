@@ -22,4 +22,13 @@ implements IColumn {
 				new Object[] {});
 	}
 
+	@Override
+	public Integer getSqlTypeCode() {
+		return (Integer)Util.invokeMethod(
+				getTarget(), 
+				"getSqlTypeCode", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 }
