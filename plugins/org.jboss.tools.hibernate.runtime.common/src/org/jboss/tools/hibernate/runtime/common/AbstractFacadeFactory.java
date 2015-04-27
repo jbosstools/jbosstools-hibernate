@@ -3,6 +3,7 @@ package org.jboss.tools.hibernate.runtime.common;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
+import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
@@ -95,4 +96,9 @@ public abstract class AbstractFacadeFactory implements IFacadeFactory {
 		return new AbstractClassMetadataFacade(this, target) {};
 	}
 	
+	@Override
+	public ICollectionMetadata createCollectionMetadata(Object target) {
+		return new AbstractCollectionMetadataFacade(this, target) {};
+	}
+
 }

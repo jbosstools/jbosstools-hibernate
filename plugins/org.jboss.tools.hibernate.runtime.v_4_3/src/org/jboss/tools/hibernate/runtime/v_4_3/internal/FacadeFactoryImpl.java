@@ -19,7 +19,6 @@ import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
-import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
@@ -56,7 +55,6 @@ import org.jboss.tools.hibernate.proxy.TypeFactoryProxy;
 import org.jboss.tools.hibernate.proxy.TypeProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
@@ -89,11 +87,6 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	
 	public ClassLoader getClassLoader() {
 		return FacadeFactoryImpl.class.getClassLoader();
-	}
-	
-	@Override
-	public ICollectionMetadata createCollectionMetadata(Object target) {
-		return new CollectionMetadataFacadeImpl(this, (CollectionMetadata)target);
 	}
 	
 	@Override
