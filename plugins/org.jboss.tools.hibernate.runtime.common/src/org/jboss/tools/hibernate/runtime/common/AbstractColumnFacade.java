@@ -68,6 +68,15 @@ implements IColumn {
 		return (Integer)Util.getFieldValue(getColumnClass(), "DEFAULT_PRECISION", null);
 	}
 
+	@Override
+	public int getScale() {
+		return (Integer)Util.invokeMethod(
+				getTarget(), 
+				"getScale", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getColumnClass() {
 		return Util.getClass(getColumnClassName(), getFacadeFactoryClassLoader());
 	}

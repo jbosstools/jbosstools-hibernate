@@ -25,11 +25,6 @@ public class ColumnFacadeImpl extends AbstractColumnFacade {
 	}
 
 	@Override
-	public int getScale() {
-		return getTarget().getScale();
-	}
-
-	@Override
 	public int getDefaultScale() {
 		return Column.DEFAULT_SCALE;
 	}
