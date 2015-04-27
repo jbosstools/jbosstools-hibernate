@@ -22,11 +22,6 @@ public class ColumnFacadeFactory extends AbstractColumnFacade {
 	}
 
 	@Override
-	public boolean isUnique() {
-		return getTarget().isUnique();
-	}
-
-	@Override
 	public String getSqlType(IDialect dialect, IMapping mapping) {
 		assert dialect instanceof IFacade;
 		assert mapping instanceof IFacade;

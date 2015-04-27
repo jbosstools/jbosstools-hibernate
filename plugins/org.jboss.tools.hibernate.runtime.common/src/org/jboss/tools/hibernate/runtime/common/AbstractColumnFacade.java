@@ -112,6 +112,15 @@ implements IColumn {
 		return value;
 	}
 
+	@Override
+	public boolean isUnique() {
+		return (Boolean)Util.invokeMethod(
+				getTarget(), 
+				"isUnique", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getColumnClass() {
 		return Util.getClass(getColumnClassName(), getFacadeFactoryClassLoader());
 	}
