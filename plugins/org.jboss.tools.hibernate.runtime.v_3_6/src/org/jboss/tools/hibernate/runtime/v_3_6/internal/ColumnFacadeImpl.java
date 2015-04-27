@@ -16,11 +16,6 @@ public class ColumnFacadeImpl extends AbstractColumnFacade {
 		return (Column)super.getTarget();
 	}
 
-	@Override
-	public void setSqlType(String sqlType) {
-		getTarget().setSqlType(sqlType);
-	}
-
 	protected String getMappingClassName() {
 		return "org.hibernate.engine.Mapping";
 	}

@@ -142,6 +142,15 @@ implements IColumn {
 				new Object[] { dialectTarget, mappingTarget });
 	}
 
+	@Override
+	public void setSqlType(String sqlType) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setSqlType", 
+				new Class[] { String.class }, 
+				new Object[] { sqlType });
+	}
+
 	protected Class<?> getColumnClass() {
 		return Util.getClass(getColumnClassName(), getFacadeFactoryClassLoader());
 	}
