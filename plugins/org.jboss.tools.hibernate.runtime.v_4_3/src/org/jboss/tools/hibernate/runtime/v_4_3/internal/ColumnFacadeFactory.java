@@ -25,11 +25,6 @@ public class ColumnFacadeFactory extends AbstractColumnFacade {
 	}
 
 	@Override
-	public int getLength() {
-		return getTarget().getLength();
-	}
-
-	@Override
 	public int getDefaultLength() {
 		return Column.DEFAULT_LENGTH;
 	}

@@ -40,4 +40,13 @@ implements IColumn {
 				new Object[] {});
 	}
 
+	@Override
+	public int getLength() {
+		return (Integer)Util.invokeMethod(
+				getTarget(), 
+				"getLength", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 }
