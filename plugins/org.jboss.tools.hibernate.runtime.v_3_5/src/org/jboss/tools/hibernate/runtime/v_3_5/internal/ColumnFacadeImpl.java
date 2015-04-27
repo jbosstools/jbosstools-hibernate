@@ -1,7 +1,7 @@
-package org.jboss.tools.hibernate.proxy;
+package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
 import org.hibernate.dialect.Dialect;
-import org.hibernate.engine.spi.Mapping;
+import org.hibernate.engine.Mapping;
 import org.hibernate.mapping.Column;
 import org.jboss.tools.hibernate.runtime.common.AbstractColumnFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -10,11 +10,11 @@ import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IMapping;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 
-public class ColumnFacadeFactory extends AbstractColumnFacade {
+public class ColumnFacadeImpl extends AbstractColumnFacade {
 	
 	private IValue value = null;
 	
-	public ColumnFacadeFactory(
+	public ColumnFacadeImpl(
 			IFacadeFactory facadeFactory, 
 			Column column) {
 		super(facadeFactory, column);

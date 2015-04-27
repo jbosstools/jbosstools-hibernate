@@ -36,6 +36,7 @@ import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.spi.IValueVisitor;
+import org.jboss.tools.hibernate.runtime.v_3_5.internal.ColumnFacadeImpl;
 
 public class ValueProxy extends AbstractValueFacade {
 	

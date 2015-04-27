@@ -10,6 +10,7 @@ import org.jboss.tools.hibernate.runtime.common.AbstractForeignKeyFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
+import org.jboss.tools.hibernate.runtime.v_4_3.internal.ColumnFacadeFactory;
 
 public class ForeignKeyProxy extends AbstractForeignKeyFacade {
 	

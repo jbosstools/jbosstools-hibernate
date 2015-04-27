@@ -9,6 +9,7 @@ import org.jboss.tools.hibernate.runtime.common.AbstractPrimaryKeyFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
+import org.jboss.tools.hibernate.runtime.v_4_3.internal.ColumnFacadeFactory;
 
 public class PrimaryKeyProxy extends AbstractPrimaryKeyFacade {
 
