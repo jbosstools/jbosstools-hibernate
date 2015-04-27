@@ -25,11 +25,6 @@ public class ColumnFacadeImpl extends AbstractColumnFacade {
 	}
 
 	@Override
-	public int getDefaultLength() {
-		return Column.DEFAULT_LENGTH;
-	}
-
-	@Override
 	public int getPrecision() {
 		return getTarget().getPrecision();
 	}

@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.runtime.common;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -34,9 +35,8 @@ public class Util {
 			Class<?>[] parameterTypes, 
 			Object[] arguments) {
 		Object result = null;
-		Method method;
 		try {
-			method = object.getClass().getMethod(name, parameterTypes);
+			Method method = object.getClass().getMethod(name, parameterTypes);
 			method.setAccessible(true);
 			result = method.invoke(object, arguments);
 		} catch (NoSuchMethodException | 
@@ -44,6 +44,21 @@ public class Util {
 				IllegalAccessException | 
 				IllegalArgumentException | 
 				InvocationTargetException e) {
+			HibernateRuntimeCommon.log(e);
+		}
+		return result;
+	}
+	
+	public static Object getFieldValue(Class<?> clazz, String fieldName, Object object) {
+		Object result = null;
+		try {
+			Field field = clazz.getField(fieldName);
+			field.setAccessible(true);
+			result = field.get(object);
+		} catch (IllegalArgumentException | 
+				IllegalAccessException | 
+				NoSuchFieldException | 
+				SecurityException e) {
 			HibernateRuntimeCommon.log(e);
 		}
 		return result;

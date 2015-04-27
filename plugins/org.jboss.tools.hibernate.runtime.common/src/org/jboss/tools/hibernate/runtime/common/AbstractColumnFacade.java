@@ -49,4 +49,17 @@ implements IColumn {
 				new Object[] {});
 	}
 
+	@Override
+	public int getDefaultLength() {
+		return (Integer)Util.getFieldValue(getColumnClass(), "DEFAULT_LENGTH", null);
+	}
+	
+	protected Class<?> getColumnClass() {
+		return Util.getClass(getColumnClassName(), getFacadeFactoryClassLoader());
+	}
+	
+	protected String getColumnClassName() {
+		return "org.hibernate.mapping.Column";
+	}
+
 }
