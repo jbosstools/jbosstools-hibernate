@@ -240,6 +240,19 @@ implements IConfiguration {
 		return classMappings.get(string);
 	}
 
+	@Override
+	public INamingStrategy getNamingStrategy() {
+		if (namingStrategy == null) {
+			Object targetNamingStrategy = Util.invokeMethod(
+					getTarget(), 
+					"getNamingStrategy", 
+					new Class[] {}, 
+					new Object[] {});
+			namingStrategy = getFacadeFactory().createNamingStrategy(targetNamingStrategy);
+		}
+		return namingStrategy;
+	}
+
 	protected Class<?> getNamingStrategyClass() {
 		return Util.getClass(getNamingStrategyClassName(), getFacadeFactoryClassLoader());
 	}

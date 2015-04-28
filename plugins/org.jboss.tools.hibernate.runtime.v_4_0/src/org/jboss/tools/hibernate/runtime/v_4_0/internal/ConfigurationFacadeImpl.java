@@ -13,7 +13,6 @@ import org.hibernate.service.jdbc.dialect.spi.DialectFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
 import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.xml.sax.EntityResolver;
 
@@ -48,14 +47,6 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 		return getTarget().buildSettings(serviceRegistry);
 	}
 	
-	@Override
-	public INamingStrategy getNamingStrategy() {
-		if (namingStrategy == null) {
-			namingStrategy = getFacadeFactory().createNamingStrategy(getTarget().getNamingStrategy());
-		}
-		return namingStrategy;
-	}
-
 	@Override
 	public EntityResolver getEntityResolver() {
 		return getTarget().getEntityResolver();
