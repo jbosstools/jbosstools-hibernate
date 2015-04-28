@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.runtime.common;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Properties;
 
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
@@ -189,5 +190,18 @@ implements IConfiguration {
 				new Class[] {}, 
 				new Object[] {});
 	}	
+
+	protected void initializeClassMappings() {
+		classMappings = new HashMap<String, IPersistentClass>();
+		Iterator<?> origin = (Iterator<?>)Util.invokeMethod(
+				getTarget(), 
+				"getClassMappings", 
+				new Class[] {}, 
+				new Object[] {});
+		while (origin.hasNext()) {
+			IPersistentClass pc = getFacadeFactory().createPersistentClass(origin.next());
+			classMappings.put(pc.getEntityName(), pc);
+		}
+	}
 
 }

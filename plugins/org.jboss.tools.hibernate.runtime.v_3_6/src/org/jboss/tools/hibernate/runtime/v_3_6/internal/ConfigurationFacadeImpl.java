@@ -1,6 +1,5 @@
 package org.jboss.tools.hibernate.runtime.v_3_6.internal;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -46,15 +45,6 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 		return classMappings.values().iterator();
 	}
 	
-	private void initializeClassMappings() {
-		classMappings = new HashMap<String, IPersistentClass>();
-		Iterator<?> origin = getTarget().getClassMappings();
-		while (origin.hasNext()) {
-			IPersistentClass pc = getFacadeFactory().createPersistentClass(origin.next());
-			classMappings.put(pc.getEntityName(), pc);
-		}
-	}
-
 	@Override
 	public void setPreferBasicCompositeIds(boolean preferBasicCompositeids) {
 		if (getTarget() instanceof JDBCMetaDataConfiguration) {
