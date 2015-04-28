@@ -1,12 +1,14 @@
 package org.jboss.tools.hibernate.runtime.common;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.Properties;
 
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
+import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISettings;
 import org.w3c.dom.Document;
@@ -17,6 +19,7 @@ extends AbstractFacade
 implements IConfiguration {
 
 	protected INamingStrategy namingStrategy;
+	protected HashMap<String, IPersistentClass> classMappings = null;	
 
 	public AbstractConfigurationFacade(
 			IFacadeFactory facadeFactory, 
