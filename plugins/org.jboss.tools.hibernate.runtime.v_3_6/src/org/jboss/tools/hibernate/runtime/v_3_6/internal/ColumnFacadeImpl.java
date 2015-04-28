@@ -12,10 +12,6 @@ public class ColumnFacadeImpl extends AbstractColumnFacade {
 		super(facadeFactory, column);
 	}	
 
-	public Column getTarget() {
-		return (Column)super.getTarget();
-	}
-
 	protected String getMappingClassName() {
 		return "org.hibernate.engine.Mapping";
 	}

@@ -12,8 +12,4 @@ public class ColumnFacadeFactory extends AbstractColumnFacade {
 		super(facadeFactory, column);
 	}	
 
-	public Column getTarget() {
-		return (Column)super.getTarget();
-	}
-
 }
