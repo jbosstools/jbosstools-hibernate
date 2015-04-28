@@ -9,7 +9,6 @@ import java.util.Properties;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
-import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
@@ -48,13 +47,6 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	
 	public Configuration getTarget() {
 		return (Configuration)super.getTarget();
-	}
-
-	@Override
-	public void setNamingStrategy(INamingStrategy namingStrategy) {
-		assert namingStrategy instanceof IFacade;
-		this.namingStrategy = namingStrategy;
-		getTarget().setNamingStrategy((NamingStrategy)((IFacade)namingStrategy).getTarget());
 	}
 
 	@Override

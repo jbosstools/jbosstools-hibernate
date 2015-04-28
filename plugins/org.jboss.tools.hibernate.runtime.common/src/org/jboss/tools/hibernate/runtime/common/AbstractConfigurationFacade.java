@@ -67,4 +67,27 @@ implements IConfiguration {
 				new Object[] { entityResolver });
 	}
 
+	@Override
+	public void setNamingStrategy(INamingStrategy namingStrategy) {
+		this.namingStrategy = namingStrategy;
+		Object namingStrategyTarget = Util.invokeMethod(
+				namingStrategy, 
+				"getTarget", 
+				new Class[] {}, 
+				new Object[] {});
+		Util.invokeMethod(
+				getTarget(), 
+				"setNamingStrategy", 
+				new Class[] { getNamingStrategyClass() }, 
+				new Object[] { namingStrategyTarget });
+	}
+	
+	protected Class<?> getNamingStrategyClass() {
+		return Util.getClass(getNamingStrategyClassName(), getFacadeFactoryClassLoader());
+	}
+	
+	protected String getNamingStrategyClassName() {
+		return "org.hibernate.cfg.NamingStrategy";
+	}
+
 }
