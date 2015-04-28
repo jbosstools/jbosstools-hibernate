@@ -147,5 +147,15 @@ implements IConfiguration {
 	protected String getNamingStrategyClassName() {
 		return "org.hibernate.cfg.NamingStrategy";
 	}
+	
+	protected Object buildTargetSessionFactory() {
+		return Util.invokeMethod(
+				getTarget(), 
+				"buildSessionFactory", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
+	
 
 }

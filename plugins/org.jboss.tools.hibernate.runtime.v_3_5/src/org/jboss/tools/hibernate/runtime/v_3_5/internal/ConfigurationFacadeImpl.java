@@ -47,10 +47,6 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 		return getFacadeFactory().createSessionFactory(buildTargetSessionFactory());
 	}
 	
-	protected Object buildTargetSessionFactory() {
-		return getTarget().buildSessionFactory();
-	}
-
 	@Override
 	public ISettings buildSettings() {
 		return getFacadeFactory().createSettings(getTarget().buildSettings());
