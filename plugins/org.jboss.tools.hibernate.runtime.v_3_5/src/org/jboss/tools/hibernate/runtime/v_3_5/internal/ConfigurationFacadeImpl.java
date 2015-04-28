@@ -25,7 +25,6 @@ import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISettings;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
-import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 
 public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
@@ -43,12 +42,6 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	
 	public Configuration getTarget() {
 		return (Configuration)super.getTarget();
-	}
-
-	@Override
-	public IConfiguration configure(Document document) {
-		getTarget().configure(document);
-		return this;
 	}
 
 	@Override

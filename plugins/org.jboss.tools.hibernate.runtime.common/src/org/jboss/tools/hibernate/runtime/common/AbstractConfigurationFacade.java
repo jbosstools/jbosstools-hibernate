@@ -6,6 +6,7 @@ import java.util.Properties;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
+import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 
 public abstract class AbstractConfigurationFacade 
@@ -98,6 +99,16 @@ implements IConfiguration {
 				"addProperties", 
 				new Class[] { Properties.class }, 
 				new Object[] { properties });
+	}
+
+	@Override
+	public IConfiguration configure(Document document) {
+		Util.invokeMethod(
+				getTarget(), 
+				"configure", 
+				new Class[] { Document.class }, 
+				new Object[] { document });
+		return this;
 	}
 
 	protected Class<?> getNamingStrategyClass() {
