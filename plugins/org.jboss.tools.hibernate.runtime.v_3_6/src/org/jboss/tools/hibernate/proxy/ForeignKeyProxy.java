@@ -5,12 +5,13 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.jboss.tools.hibernate.runtime.common.AbstractForeignKeyFacade;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
-import org.jboss.tools.hibernate.runtime.v_3_6.internal.ColumnFacadeImpl;
 
 public class ForeignKeyProxy extends AbstractForeignKeyFacade {
 	
@@ -74,8 +75,8 @@ public class ForeignKeyProxy extends AbstractForeignKeyFacade {
 
 	@Override
 	public boolean containsColumn(IColumn column) {
-		assert column instanceof ColumnFacadeImpl;
-		return getTarget().containsColumn(((ColumnFacadeImpl)column).getTarget());
+		assert column instanceof IFacade;
+		return getTarget().containsColumn((Column)((IFacade)column).getTarget());
 	}
 
 }

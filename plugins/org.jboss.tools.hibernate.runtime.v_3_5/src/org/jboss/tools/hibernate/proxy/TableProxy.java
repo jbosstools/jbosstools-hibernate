@@ -6,12 +6,12 @@ import java.util.Iterator;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.runtime.common.AbstractTableFacade;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
-import org.jboss.tools.hibernate.runtime.v_3_5.internal.ColumnFacadeImpl;
 
 public class TableProxy extends AbstractTableFacade {
 	
@@ -37,8 +37,8 @@ public class TableProxy extends AbstractTableFacade {
 
 	@Override
 	public void addColumn(IColumn column) {
-		assert column instanceof ColumnFacadeImpl;
-		getTarget().addColumn(((ColumnFacadeImpl)column).getTarget());
+		assert column instanceof IFacade;
+		getTarget().addColumn((Column)((IFacade)column).getTarget());
 		columns = null;
 	}
 

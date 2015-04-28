@@ -28,6 +28,7 @@ import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.runtime.common.AbstractValueFacade;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -36,7 +37,6 @@ import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.spi.IValueVisitor;
-import org.jboss.tools.hibernate.runtime.v_4_0.internal.ColumnFacadeImpl;
 
 public class ValueProxy extends AbstractValueFacade {
 	
@@ -343,9 +343,9 @@ public class ValueProxy extends AbstractValueFacade {
 
 	@Override
 	public void addColumn(IColumn column) {
-		assert column instanceof ColumnFacadeImpl;
+		assert column instanceof IFacade;
 		assert getTarget() instanceof SimpleValue;
-		((SimpleValue)getTarget()).addColumn(((ColumnFacadeImpl)column).getTarget());
+		((SimpleValue)getTarget()).addColumn((Column)((IFacade)column).getTarget());
 	}
 
 	@Override
