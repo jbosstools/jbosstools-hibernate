@@ -11,9 +11,11 @@ import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.dialect.Dialect;
-import org.hibernate.dialect.resolver.DialectFactory;
-import org.hibernate.engine.Mapping;
+import org.hibernate.engine.spi.Mapping;
 import org.hibernate.mapping.Table;
+import org.hibernate.service.ServiceRegistry;
+import org.hibernate.service.ServiceRegistryBuilder;
+import org.hibernate.service.jdbc.dialect.spi.DialectFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
@@ -30,15 +32,17 @@ import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 
-public class ConfigurationProxy extends AbstractConfigurationFacade {
+public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	
 	private INamingStrategy namingStrategy;
 	private HashSet<ITable> tableMappings = null;
 	private HashMap<String, IPersistentClass> classMappings = null;
+	private ServiceRegistry serviceRegistry = null;
 	private IMapping mapping = null;
 	private IDialect dialect = null;
+
 	
-	public ConfigurationProxy(
+	public ConfigurationFacadeImpl(
 			IFacadeFactory facadeFactory, 
 			Configuration configuration) {
 		super(facadeFactory, configuration);
@@ -112,12 +116,19 @@ public class ConfigurationProxy extends AbstractConfigurationFacade {
 
 	@Override
 	public ISessionFactory buildSessionFactory() {
-		return getFacadeFactory().createSessionFactory(getTarget().buildSessionFactory());
+		if (serviceRegistry == null) {
+			buildServiceRegistry();
+		}
+		return getFacadeFactory().createSessionFactory(
+				getTarget().buildSessionFactory(serviceRegistry));
 	}
 
 	@Override
 	public ISettings buildSettings() {
-		return getFacadeFactory().createSettings(getTarget().buildSettings());
+		if (serviceRegistry == null) {
+			buildServiceRegistry();
+		}
+		return getFacadeFactory().createSettings(getTarget().buildSettings(serviceRegistry));
 	}
 	
 	@Override
@@ -210,7 +221,6 @@ public class ConfigurationProxy extends AbstractConfigurationFacade {
 		return result;
 	}
 	
-	@SuppressWarnings("unchecked")
 	private void initializeTableMappings() {
 		Iterator<Table> iterator = ((JDBCMetaDataConfiguration)getTarget()).getTableMappings();
 		while (iterator.hasNext()) {
@@ -220,13 +230,20 @@ public class ConfigurationProxy extends AbstractConfigurationFacade {
 
 	@Override
 	public IDialect getDialect() {
-		if (dialect == null) {
-			Dialect d = DialectFactory.buildDialect(getProperties());
+		if (dialect != null) {
+			DialectFactory dialectFactory = serviceRegistry.getService(DialectFactory.class);
+			Dialect d = dialectFactory.buildDialect(getProperties(), null);
 			if (d != null) {
 				dialect = getFacadeFactory().createDialect(d);
 			}
 		}
 		return dialect;
+	}
+	
+	private void buildServiceRegistry() {
+		ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
+		builder.applySettings(getTarget().getProperties());
+		serviceRegistry = builder.buildServiceRegistry();		
 	}
 
 }

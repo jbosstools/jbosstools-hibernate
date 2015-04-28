@@ -30,7 +30,7 @@ import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 
-public class ConfigurationProxy extends AbstractConfigurationFacade {
+public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	
 	private INamingStrategy namingStrategy;
 	private HashSet<ITable> tableMappings = null;
@@ -38,7 +38,7 @@ public class ConfigurationProxy extends AbstractConfigurationFacade {
 	private IMapping mapping = null;
 	private IDialect dialect = null;
 	
-	public ConfigurationProxy(
+	public ConfigurationFacadeImpl(
 			IFacadeFactory facadeFactory, 
 			Configuration configuration) {
 		super(facadeFactory, configuration);
@@ -158,6 +158,7 @@ public class ConfigurationProxy extends AbstractConfigurationFacade {
 					(ReverseEngineeringStrategy)((IFacade)res).getTarget());
 		}
 	}
+
 	@Override
 	public void readFromJDBC() {
 		if (getTarget() instanceof JDBCMetaDataConfiguration) {
@@ -209,6 +210,7 @@ public class ConfigurationProxy extends AbstractConfigurationFacade {
 		return result;
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void initializeTableMappings() {
 		Iterator<Table> iterator = ((JDBCMetaDataConfiguration)getTarget()).getTableMappings();
 		while (iterator.hasNext()) {
