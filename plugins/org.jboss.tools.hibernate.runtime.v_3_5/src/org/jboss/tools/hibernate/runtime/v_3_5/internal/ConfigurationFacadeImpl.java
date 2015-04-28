@@ -20,7 +20,6 @@ import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
-import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISettings;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.xml.sax.EntityResolver;
@@ -42,11 +41,6 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 		return (Configuration)super.getTarget();
 	}
 
-	@Override
-	public ISessionFactory buildSessionFactory() {
-		return getFacadeFactory().createSessionFactory(buildTargetSessionFactory());
-	}
-	
 	@Override
 	public ISettings buildSettings() {
 		return getFacadeFactory().createSettings(getTarget().buildSettings());
