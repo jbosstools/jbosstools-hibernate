@@ -35,13 +35,6 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	}
 
 	@Override
-	public void readFromJDBC() {
-		if (getTarget() instanceof JDBCMetaDataConfiguration) {
-			((JDBCMetaDataConfiguration)getTarget()).readFromJDBC();
-		}
-	}
-
-	@Override
 	public IMapping buildMapping() {
 		if (mapping == null) {
 			Mapping m = getTarget().buildMapping();

@@ -204,6 +204,17 @@ implements IConfiguration {
 		}
 	}
 
+	@Override
+	public void readFromJDBC() {
+		if (getJDBCMetaDataConfigurationClass().isAssignableFrom(getTarget().getClass())) {
+			Util.invokeMethod(
+					getTarget(), 
+					"readFromJDBC", 
+					new Class[] {}, 
+					new Object[] {});
+		}
+	}
+
 	protected Class<?> getNamingStrategyClass() {
 		return Util.getClass(getNamingStrategyClassName(), getFacadeFactoryClassLoader());
 	}
