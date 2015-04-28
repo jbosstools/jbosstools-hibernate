@@ -167,6 +167,14 @@ implements IConfiguration {
 		return getFacadeFactory().createMappings(targetMappings);
 	}
 
+	@Override
+	public Iterator<IPersistentClass> getClassMappings() {
+		if (classMappings == null) {
+			initializeClassMappings();
+		}
+		return classMappings.values().iterator();
+	}
+	
 	protected Class<?> getNamingStrategyClass() {
 		return Util.getClass(getNamingStrategyClassName(), getFacadeFactoryClassLoader());
 	}

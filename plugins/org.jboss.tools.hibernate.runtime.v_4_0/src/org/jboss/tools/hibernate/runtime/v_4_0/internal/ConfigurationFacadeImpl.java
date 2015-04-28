@@ -56,14 +56,6 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	}
 	
 	@Override
-	public Iterator<IPersistentClass> getClassMappings() {
-		if (classMappings == null) {
-			initializeClassMappings();
-		}
-		return classMappings.values().iterator();
-	}
-	
-	@Override
 	public void setPreferBasicCompositeIds(boolean preferBasicCompositeids) {
 		if (getTarget() instanceof JDBCMetaDataConfiguration) {
 			((JDBCMetaDataConfiguration)getTarget()).setPreferBasicCompositeIds(preferBasicCompositeids);
