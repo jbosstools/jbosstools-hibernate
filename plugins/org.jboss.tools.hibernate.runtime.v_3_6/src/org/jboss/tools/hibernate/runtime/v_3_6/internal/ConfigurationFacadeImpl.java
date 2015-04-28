@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate.proxy;
+package org.jboss.tools.hibernate.runtime.v_3_6.internal;
 
 import java.io.File;
 import java.util.HashMap;
@@ -11,11 +11,9 @@ import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.dialect.Dialect;
-import org.hibernate.engine.spi.Mapping;
+import org.hibernate.dialect.resolver.DialectFactory;
+import org.hibernate.engine.Mapping;
 import org.hibernate.mapping.Table;
-import org.hibernate.service.ServiceRegistry;
-import org.hibernate.service.ServiceRegistryBuilder;
-import org.hibernate.service.jdbc.dialect.spi.DialectFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
@@ -37,10 +35,8 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	private INamingStrategy namingStrategy;
 	private HashSet<ITable> tableMappings = null;
 	private HashMap<String, IPersistentClass> classMappings = null;
-	private ServiceRegistry serviceRegistry = null;
 	private IMapping mapping = null;
 	private IDialect dialect = null;
-
 	
 	public ConfigurationFacadeImpl(
 			IFacadeFactory facadeFactory, 
@@ -116,19 +112,12 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 
 	@Override
 	public ISessionFactory buildSessionFactory() {
-		if (serviceRegistry == null) {
-			buildServiceRegistry();
-		}
-		return getFacadeFactory().createSessionFactory(
-				getTarget().buildSessionFactory(serviceRegistry));
+		return getFacadeFactory().createSessionFactory(getTarget().buildSessionFactory());
 	}
 
 	@Override
 	public ISettings buildSettings() {
-		if (serviceRegistry == null) {
-			buildServiceRegistry();
-		}
-		return getFacadeFactory().createSettings(getTarget().buildSettings(serviceRegistry));
+		return getFacadeFactory().createSettings(getTarget().buildSettings());
 	}
 	
 	@Override
@@ -169,7 +158,6 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 					(ReverseEngineeringStrategy)((IFacade)res).getTarget());
 		}
 	}
-
 	@Override
 	public void readFromJDBC() {
 		if (getTarget() instanceof JDBCMetaDataConfiguration) {
@@ -230,20 +218,13 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 
 	@Override
 	public IDialect getDialect() {
-		if (dialect != null) {
-			DialectFactory dialectFactory = serviceRegistry.getService(DialectFactory.class);
-			Dialect d = dialectFactory.buildDialect(getProperties(), null);
+		if (dialect == null) {
+			Dialect d = DialectFactory.buildDialect(getProperties());
 			if (d != null) {
 				dialect = getFacadeFactory().createDialect(d);
 			}
 		}
 		return dialect;
-	}
-	
-	private void buildServiceRegistry() {
-		ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
-		builder.applySettings(getTarget().getProperties());
-		serviceRegistry = builder.buildServiceRegistry();		
 	}
 
 }
