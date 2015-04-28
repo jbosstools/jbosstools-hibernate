@@ -53,10 +53,14 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 
 	@Override
 	public ISettings buildSettings() {
+		return getFacadeFactory().createSettings(buildTargetSettings());
+	}
+	
+	protected Object buildTargetSettings() {
 		if (serviceRegistry == null) {
 			buildServiceRegistry();
 		}
-		return getFacadeFactory().createSettings(getTarget().buildSettings(serviceRegistry));
+		return getTarget().buildSettings(serviceRegistry);
 	}
 	
 	@Override

@@ -43,7 +43,11 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 
 	@Override
 	public ISettings buildSettings() {
-		return getFacadeFactory().createSettings(getTarget().buildSettings());
+		return getFacadeFactory().createSettings(buildTargetSettings());
+	}
+	
+	protected Object buildTargetSettings() {
+		return getTarget().buildSettings();
 	}
 	
 	@Override
