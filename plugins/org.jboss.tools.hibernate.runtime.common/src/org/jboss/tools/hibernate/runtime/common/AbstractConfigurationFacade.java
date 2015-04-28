@@ -289,6 +289,10 @@ implements IConfiguration {
 		return Util.getClass(getReverseEngineeringStrategyClassName(), getFacadeFactoryClassLoader());
 	}
 	
+	protected Class<?> getDialectFactoryClass() {
+		return Util.getClass(getDialectFactoryClassName(), getFacadeFactoryClassLoader());
+	}
+	
 	protected String getNamingStrategyClassName() {
 		return "org.hibernate.cfg.NamingStrategy";
 	}
@@ -299,6 +303,10 @@ implements IConfiguration {
 	
 	protected String getReverseEngineeringStrategyClassName() {
 		return "org.hibernate.cfg.reveng.ReverseEngineeringStrategy";
+	}
+	
+	protected String getDialectFactoryClassName() {
+		return "org.hibernate.dialect.resolver.DialectFactory";
 	}
 	
 	protected Object buildTargetSessionFactory() {
@@ -317,6 +325,14 @@ implements IConfiguration {
 				new Object[] {});
 	}	
 
+	protected Object buildTargetDialect() {
+		return Util.invokeMethod(
+				getDialectFactoryClass(), 
+				"buildDialect", 
+				new Class[] { Properties.class }, 
+				new Object[] { getProperties() });
+	}
+	
 	protected void initializeClassMappings() {
 		classMappings = new HashMap<String, IPersistentClass>();
 		Iterator<?> origin = (Iterator<?>)Util.invokeMethod(

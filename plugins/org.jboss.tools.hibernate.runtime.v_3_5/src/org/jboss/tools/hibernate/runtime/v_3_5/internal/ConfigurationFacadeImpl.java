@@ -1,7 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
 import org.hibernate.cfg.Configuration;
-import org.hibernate.dialect.resolver.DialectFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
 import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
@@ -32,8 +31,4 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 		return dialect;
 	}
 
-	protected Object buildTargetDialect() {
-		return DialectFactory.buildDialect(getProperties());
-	}
-	
 }
