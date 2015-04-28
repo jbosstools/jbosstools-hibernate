@@ -32,7 +32,6 @@ import org.xml.sax.EntityResolver;
 
 public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	
-	private INamingStrategy namingStrategy;
 	private HashSet<ITable> tableMappings = null;
 	private HashMap<String, IPersistentClass> classMappings = null;
 	private IMapping mapping = null;

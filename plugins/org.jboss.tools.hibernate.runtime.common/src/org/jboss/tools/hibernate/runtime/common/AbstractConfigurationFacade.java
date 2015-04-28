@@ -5,11 +5,14 @@ import java.util.Properties;
 
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.xml.sax.EntityResolver;
 
 public abstract class AbstractConfigurationFacade 
 extends AbstractFacade 
 implements IConfiguration {
+
+	protected INamingStrategy namingStrategy;
 
 	public AbstractConfigurationFacade(
 			IFacadeFactory facadeFactory, 
