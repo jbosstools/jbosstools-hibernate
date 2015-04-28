@@ -162,6 +162,12 @@ implements IConfiguration {
 				new Object[] {});
 	}
 
-	
+	protected Object buildTargetSettings() {
+		return Util.invokeMethod(
+				getTarget(), 
+				"buildSettings", 
+				new Class[] {}, 
+				new Object[] {});
+	}	
 
 }

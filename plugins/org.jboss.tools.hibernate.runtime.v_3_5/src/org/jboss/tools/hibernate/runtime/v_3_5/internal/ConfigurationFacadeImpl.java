@@ -46,10 +46,6 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 		return getFacadeFactory().createSettings(buildTargetSettings());
 	}
 	
-	protected Object buildTargetSettings() {
-		return getTarget().buildSettings();
-	}
-	
 	@Override
 	public IMappings createMappings() {
 		return getFacadeFactory().createMappings(
