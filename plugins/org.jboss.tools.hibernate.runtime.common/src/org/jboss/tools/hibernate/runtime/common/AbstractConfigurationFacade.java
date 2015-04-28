@@ -5,8 +5,10 @@ import java.util.Properties;
 
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
+import org.jboss.tools.hibernate.runtime.spi.ISettings;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 
@@ -146,6 +148,21 @@ implements IConfiguration {
 		return getFacadeFactory().createSessionFactory(buildTargetSessionFactory());
 	}
 	
+	@Override
+	public ISettings buildSettings() {
+		return getFacadeFactory().createSettings(buildTargetSettings());
+	}
+	
+	@Override
+	public IMappings createMappings() {
+		Object targetMappings = Util.invokeMethod(
+				getTarget(), 
+				"createMappings", 
+				new Class[] {}, 
+				new Object[] {});
+		return getFacadeFactory().createMappings(targetMappings);
+	}
+
 	protected Class<?> getNamingStrategyClass() {
 		return Util.getClass(getNamingStrategyClassName(), getFacadeFactoryClassLoader());
 	}
