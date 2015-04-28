@@ -318,4 +318,16 @@ implements IConfiguration {
 		}
 	}
 
+	protected void initializeTableMappings() {
+		tableMappings = new HashSet<ITable>();
+		Iterator<?> origin = (Iterator<?>)Util.invokeMethod(
+				getTarget(), 
+				"getTableMappings", 
+				new Class[] {}, 
+				new Object[] {});
+		while (origin.hasNext()) {
+			tableMappings.add(getFacadeFactory().createTable(origin.next()));
+		}
+	}
+
 }

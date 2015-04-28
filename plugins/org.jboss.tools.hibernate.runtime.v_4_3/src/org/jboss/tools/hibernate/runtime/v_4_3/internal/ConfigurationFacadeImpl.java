@@ -7,7 +7,6 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
-import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
 import org.jboss.tools.hibernate.runtime.spi.IDialect;
@@ -55,13 +54,6 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 		return result;
 	}
 	
-	private void initializeTableMappings() {
-		Iterator<Table> iterator = ((JDBCMetaDataConfiguration)getTarget()).getTableMappings();
-		while (iterator.hasNext()) {
-			tableMappings.add(getFacadeFactory().createTable(iterator.next()));
-		}
-	}
-
 	@Override
 	public IDialect getDialect() {
 		if (dialect != null) {
