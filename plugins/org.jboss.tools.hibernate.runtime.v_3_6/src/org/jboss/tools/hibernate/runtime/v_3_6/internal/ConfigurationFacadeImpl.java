@@ -5,19 +5,16 @@ import java.util.Iterator;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
-import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.resolver.DialectFactory;
 import org.hibernate.engine.Mapping;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
-import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IMapping;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
-import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.xml.sax.EntityResolver;
 
@@ -37,14 +34,6 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 		return (Configuration)super.getTarget();
 	}
 
-	@Override
-	public void setReverseEngineeringStrategy(IReverseEngineeringStrategy res) {
-		assert res instanceof IFacade;
-		if (getTarget() instanceof JDBCMetaDataConfiguration) {
-			((JDBCMetaDataConfiguration)getTarget()).setReverseEngineeringStrategy(
-					(ReverseEngineeringStrategy)((IFacade)res).getTarget());
-		}
-	}
 	@Override
 	public void readFromJDBC() {
 		if (getTarget() instanceof JDBCMetaDataConfiguration) {

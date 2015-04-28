@@ -10,6 +10,7 @@ import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
+import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISettings;
 import org.w3c.dom.Document;
@@ -186,6 +187,23 @@ implements IConfiguration {
 		}
 	}
 
+	@Override
+	public void setReverseEngineeringStrategy(IReverseEngineeringStrategy res) {
+		assert res instanceof IFacade;
+		if (getJDBCMetaDataConfigurationClass().isAssignableFrom(getTarget().getClass())) {
+			Object reverseEngineeringStrategyTarget = Util.invokeMethod(
+					res, 
+					"getTarget", 
+					new Class[] {}, 
+					new Object[] {});
+			Util.invokeMethod(
+					getTarget(), 
+					"setReverseEngineeringStrategy", 
+					new Class[] { getReverseEngineeringStrategyClass() }, 
+					new Object[] { reverseEngineeringStrategyTarget });
+		}
+	}
+
 	protected Class<?> getNamingStrategyClass() {
 		return Util.getClass(getNamingStrategyClassName(), getFacadeFactoryClassLoader());
 	}
@@ -194,12 +212,20 @@ implements IConfiguration {
 		return Util.getClass(getJDBCConfigurationClassName(), getFacadeFactoryClassLoader());
 	}
 	
+	protected Class<?> getReverseEngineeringStrategyClass() {
+		return Util.getClass(getReverseEngineeringStrategyClassName(), getFacadeFactoryClassLoader());
+	}
+	
 	protected String getNamingStrategyClassName() {
 		return "org.hibernate.cfg.NamingStrategy";
 	}
 	
 	protected String getJDBCConfigurationClassName() {
 		return "org.hibernate.cfg.JDBCMetaDataConfiguration";
+	}
+	
+	protected String getReverseEngineeringStrategyClassName() {
+		return "org.hibernate.cfg.reveng.ReverseEngineeringStrategy";
 	}
 	
 	protected Object buildTargetSessionFactory() {
