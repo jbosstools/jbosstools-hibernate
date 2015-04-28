@@ -53,12 +53,6 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	}
 
 	@Override
-	public IConfiguration addFile(File file) {
-		getTarget().addFile(file);
-		return this;
-	}
-
-	@Override
 	public void setProperty(String name, String value) {
 		getTarget().setProperty(name, value);
 	}

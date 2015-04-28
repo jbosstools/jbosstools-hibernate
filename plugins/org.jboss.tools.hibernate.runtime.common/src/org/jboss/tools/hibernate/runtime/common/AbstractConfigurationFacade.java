@@ -1,5 +1,7 @@
 package org.jboss.tools.hibernate.runtime.common;
 
+import java.io.File;
+
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 
@@ -20,6 +22,16 @@ implements IConfiguration {
 				"getProperty", 
 				new Class[] { String.class }, 
 				new Object[] { propertyName });
+	}
+
+	@Override
+	public IConfiguration addFile(File file) {
+		Util.invokeMethod(
+				getTarget(), 
+				"addFile", 
+				new Class[] { File.class }, 
+				new Object[] { file });
+		return this;
 	}
 
 }
