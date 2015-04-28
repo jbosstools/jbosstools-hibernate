@@ -121,6 +121,16 @@ implements IConfiguration {
 		return this;
 	}
 
+	@Override
+	public IConfiguration configure() {
+		Util.invokeMethod(
+				getTarget(), 
+				"configure", 
+				new Class[] {}, 
+				new Object[] {});
+		return this;
+	}
+
 	protected Class<?> getNamingStrategyClass() {
 		return Util.getClass(getNamingStrategyClassName(), getFacadeFactoryClassLoader());
 	}

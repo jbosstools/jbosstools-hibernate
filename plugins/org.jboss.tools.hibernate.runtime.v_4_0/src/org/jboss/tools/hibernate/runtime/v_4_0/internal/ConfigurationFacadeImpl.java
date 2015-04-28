@@ -15,7 +15,6 @@ import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.service.jdbc.dialect.spi.DialectFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
-import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IMapping;
@@ -45,12 +44,6 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	
 	public Configuration getTarget() {
 		return (Configuration)super.getTarget();
-	}
-
-	@Override
-	public IConfiguration configure() {
-		getTarget().configure();
-		return this;
 	}
 
 	@Override
