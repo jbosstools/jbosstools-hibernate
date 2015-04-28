@@ -12,8 +12,4 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 		super(facadeFactory, configuration);
 	}
 	
-	public Configuration getTarget() {
-		return (Configuration)super.getTarget();
-	}
-
 }

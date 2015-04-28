@@ -128,10 +128,10 @@ public class ServiceProxy implements IService {
 	@Override
 	public IHibernateMappingExporter newHibernateMappingExporter(
 			IConfiguration hcfg, File file) {
-		assert hcfg instanceof ConfigurationFacadeImpl;
+		assert hcfg instanceof IFacade;
 		HibernateMappingExporterExtension target = new HibernateMappingExporterExtension(
 				facadeFactory,
-				((ConfigurationFacadeImpl)hcfg).getTarget(),
+				(Configuration)((IFacade)hcfg).getTarget(),
 				file);
 		return facadeFactory.createHibernateMappingExporter(target);
 	}
@@ -141,7 +141,7 @@ public class ServiceProxy implements IService {
 		ISchemaExport result = null;
 		if (hcfg instanceof ConfigurationFacadeImpl) {
 			SchemaExport schemaExport = 
-					new SchemaExport(((ConfigurationFacadeImpl)hcfg).getTarget());
+					new SchemaExport((Configuration)((IFacade)hcfg).getTarget());
 			result = facadeFactory.createSchemaExport(schemaExport);
 		}
 		return result;
@@ -150,9 +150,9 @@ public class ServiceProxy implements IService {
 	@Override
 	public IHQLCodeAssist newHQLCodeAssist(IConfiguration hcfg) {
 		IHQLCodeAssist result = null;
-		if (hcfg instanceof ConfigurationFacadeImpl) {
+		if (hcfg instanceof IFacade) {
 			result = facadeFactory.createHQLCodeAssist(
-					new HQLCodeAssist(((ConfigurationFacadeImpl)hcfg).getTarget()));
+					new HQLCodeAssist((Configuration)((IFacade)hcfg).getTarget()));
 		}
 		return result;
 	}

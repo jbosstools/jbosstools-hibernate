@@ -17,22 +17,18 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 		super(facadeFactory, configuration);
 	}
 	
-	public Configuration getTarget() {
-		return (Configuration)super.getTarget();
-	}
-
 	protected Object buildTargetSessionFactory() {
 		if (serviceRegistry == null) {
 			buildServiceRegistry();
 		}
-		return getTarget().buildSessionFactory(serviceRegistry);
+		return ((Configuration)getTarget()).buildSessionFactory(serviceRegistry);
 	}
 
 	protected Object buildTargetSettings() {
 		if (serviceRegistry == null) {
 			buildServiceRegistry();
 		}
-		return getTarget().buildSettings(serviceRegistry);
+		return ((Configuration)getTarget()).buildSettings(serviceRegistry);
 	}
 	
 	protected Object buildTargetDialect() {
@@ -45,7 +41,7 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	
 	private void buildServiceRegistry() {
 		ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
-		builder.applySettings(getTarget().getProperties());
+		builder.applySettings(((Configuration)getTarget()).getProperties());
 		serviceRegistry = builder.buildServiceRegistry();		
 	}
 

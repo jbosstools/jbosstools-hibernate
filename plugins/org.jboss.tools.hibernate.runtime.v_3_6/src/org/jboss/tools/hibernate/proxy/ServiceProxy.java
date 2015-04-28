@@ -84,7 +84,6 @@ import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
-import org.jboss.tools.hibernate.runtime.v_3_6.internal.ConfigurationFacadeImpl;
 import org.jboss.tools.hibernate.runtime.v_3_6.internal.FacadeFactoryImpl;
 import org.jboss.tools.hibernate.util.OpenMappingUtilsEjb3;
 import org.xml.sax.EntityResolver;
@@ -134,10 +133,10 @@ public class ServiceProxy implements IService {
 	@Override
 	public IHibernateMappingExporter newHibernateMappingExporter(
 			IConfiguration hcfg, File file) {
-		assert hcfg instanceof ConfigurationFacadeImpl;
+		assert hcfg instanceof IFacade;
 		HibernateMappingExporterExtension target = new HibernateMappingExporterExtension(
 				facadeFactory,
-				((ConfigurationFacadeImpl)hcfg).getTarget(),
+				(Configuration)((IFacade)hcfg).getTarget(),
 				file);
 		return facadeFactory.createHibernateMappingExporter(target);
 	}
@@ -145,9 +144,9 @@ public class ServiceProxy implements IService {
 	@Override
 	public ISchemaExport newSchemaExport(IConfiguration hcfg) {
 		ISchemaExport result = null;
-		if (hcfg instanceof ConfigurationFacadeImpl) {
+		if (hcfg instanceof IFacade) {
 			SchemaExport schemaExport = 
-					new SchemaExport(((ConfigurationFacadeImpl)hcfg).getTarget());
+					new SchemaExport((Configuration)((IFacade)hcfg).getTarget());
 			result = facadeFactory.createSchemaExport(schemaExport);
 		}
 		return result;
@@ -156,9 +155,9 @@ public class ServiceProxy implements IService {
 	@Override
 	public IHQLCodeAssist newHQLCodeAssist(IConfiguration hcfg) {
 		IHQLCodeAssist result = null;
-		if (hcfg instanceof ConfigurationFacadeImpl) {
+		if (hcfg instanceof IFacade) {
 			result = facadeFactory.createHQLCodeAssist(
-					new HQLCodeAssist(((ConfigurationFacadeImpl)hcfg).getTarget()));
+					new HQLCodeAssist((Configuration)((IFacade)hcfg).getTarget()));
 		}
 		return result;
 	}
