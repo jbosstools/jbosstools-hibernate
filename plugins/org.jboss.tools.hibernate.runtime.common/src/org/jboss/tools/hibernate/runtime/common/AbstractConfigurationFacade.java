@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.common;
 
 import java.io.File;
+import java.util.Properties;
 
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
@@ -41,6 +42,16 @@ implements IConfiguration {
 				"setProperty", 
 				new Class[] { String.class, String.class }, 
 				new Object[] { name, value });
+	}
+
+	@Override
+	public IConfiguration setProperties(Properties properties) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setProperties", 
+				new Class[] { Properties.class }, 
+				new Object[] { properties });
+		return this;
 	}
 
 }

@@ -52,12 +52,6 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	}
 
 	@Override
-	public IConfiguration setProperties(Properties properties) {
-		getTarget().setProperties(properties);
-		return this;
-	}
-
-	@Override
 	public void setEntityResolver(EntityResolver entityResolver) {
 		getTarget().setEntityResolver(entityResolver);
 	}
