@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.runtime.common;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
 
@@ -14,6 +15,7 @@ import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISettings;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 
@@ -24,6 +26,7 @@ implements IConfiguration {
 	protected INamingStrategy namingStrategy;
 	protected HashMap<String, IPersistentClass> classMappings = null;	
 	protected IMapping mapping = null;
+	protected HashSet<ITable> tableMappings = null;
 
 	public AbstractConfigurationFacade(
 			IFacadeFactory facadeFactory, 

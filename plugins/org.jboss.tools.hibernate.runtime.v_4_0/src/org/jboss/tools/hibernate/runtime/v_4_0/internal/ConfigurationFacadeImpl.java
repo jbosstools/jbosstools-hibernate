@@ -1,6 +1,5 @@
 package org.jboss.tools.hibernate.runtime.v_4_0.internal;
 
-import java.util.HashSet;
 import java.util.Iterator;
 
 import org.hibernate.cfg.Configuration;
@@ -17,7 +16,6 @@ import org.jboss.tools.hibernate.runtime.spi.ITable;
 
 public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	
-	private HashSet<ITable> tableMappings = null;
 	private ServiceRegistry serviceRegistry = null;
 	private IDialect dialect = null;
 
