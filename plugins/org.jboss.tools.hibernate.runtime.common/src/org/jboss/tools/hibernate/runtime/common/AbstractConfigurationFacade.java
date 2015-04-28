@@ -5,6 +5,7 @@ import java.util.Properties;
 
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
+import org.xml.sax.EntityResolver;
 
 public abstract class AbstractConfigurationFacade 
 extends AbstractFacade 
@@ -52,6 +53,15 @@ implements IConfiguration {
 				new Class[] { Properties.class }, 
 				new Object[] { properties });
 		return this;
+	}
+
+	@Override
+	public void setEntityResolver(EntityResolver entityResolver) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setEntityResolver", 
+				new Class[] { EntityResolver.class }, 
+				new Object[] { entityResolver });
 	}
 
 }

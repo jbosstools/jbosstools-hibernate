@@ -52,11 +52,6 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	}
 
 	@Override
-	public void setEntityResolver(EntityResolver entityResolver) {
-		getTarget().setEntityResolver(entityResolver);
-	}
-
-	@Override
 	public void setNamingStrategy(INamingStrategy namingStrategy) {
 		assert namingStrategy instanceof IFacade;
 		this.namingStrategy = namingStrategy;
