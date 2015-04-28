@@ -253,6 +253,15 @@ implements IConfiguration {
 		return namingStrategy;
 	}
 
+	@Override
+	public EntityResolver getEntityResolver() {
+		return (EntityResolver)Util.invokeMethod(
+				getTarget(), 
+				"getEntityResolver", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getNamingStrategyClass() {
 		return Util.getClass(getNamingStrategyClassName(), getFacadeFactoryClassLoader());
 	}

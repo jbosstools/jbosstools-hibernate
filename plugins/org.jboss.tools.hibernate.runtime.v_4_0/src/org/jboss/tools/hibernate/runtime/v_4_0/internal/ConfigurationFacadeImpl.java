@@ -14,7 +14,6 @@ import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
 import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
-import org.xml.sax.EntityResolver;
 
 public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	
@@ -47,11 +46,6 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 		return getTarget().buildSettings(serviceRegistry);
 	}
 	
-	@Override
-	public EntityResolver getEntityResolver() {
-		return getTarget().getEntityResolver();
-	}
-
 	@Override
 	public Iterator<ITable> getTableMappings() {
 		Iterator<ITable> result = null;
