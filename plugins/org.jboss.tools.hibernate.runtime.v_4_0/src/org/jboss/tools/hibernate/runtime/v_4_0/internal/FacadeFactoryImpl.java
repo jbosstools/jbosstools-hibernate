@@ -11,7 +11,6 @@ import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.hql.spi.QueryTranslator;
-import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Join;
 import org.hibernate.mapping.PersistentClass;
@@ -54,7 +53,6 @@ import org.jboss.tools.hibernate.proxy.TypeFactoryProxy;
 import org.jboss.tools.hibernate.proxy.TypeProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
 import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
@@ -86,11 +84,6 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	
 	public ClassLoader getClassLoader() {
 		return FacadeFactoryImpl.class.getClassLoader();
-	}
-	
-	@Override
-	public IColumn createColumn(Object target) {
-		return new ColumnFacadeImpl(this, (Column)target);
 	}
 	
 	@Override
