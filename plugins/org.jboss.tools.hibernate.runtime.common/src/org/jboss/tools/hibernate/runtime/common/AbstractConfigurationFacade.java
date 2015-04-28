@@ -91,6 +91,15 @@ implements IConfiguration {
 				new Object[] { namingStrategyTarget });
 	}
 	
+	@Override
+	public void addProperties(Properties properties) {
+		Util.invokeMethod(
+				getTarget(), 
+				"addProperties", 
+				new Class[] { Properties.class }, 
+				new Object[] { properties });
+	}
+
 	protected Class<?> getNamingStrategyClass() {
 		return Util.getClass(getNamingStrategyClassName(), getFacadeFactoryClassLoader());
 	}

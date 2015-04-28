@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Properties;
 
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -47,11 +46,6 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	
 	public Configuration getTarget() {
 		return (Configuration)super.getTarget();
-	}
-
-	@Override
-	public void addProperties(Properties properties) {
-		getTarget().addProperties(properties);
 	}
 
 	@Override
