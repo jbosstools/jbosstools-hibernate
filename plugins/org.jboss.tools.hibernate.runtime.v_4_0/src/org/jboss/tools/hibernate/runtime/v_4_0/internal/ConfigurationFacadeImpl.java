@@ -47,11 +47,6 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	}
 
 	@Override
-	public void buildMappings() {
-		getTarget().buildMappings();
-	}
-
-	@Override
 	public ISessionFactory buildSessionFactory() {
 		if (serviceRegistry == null) {
 			buildServiceRegistry();

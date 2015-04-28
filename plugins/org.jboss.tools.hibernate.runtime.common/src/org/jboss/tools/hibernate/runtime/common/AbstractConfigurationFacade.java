@@ -131,6 +131,15 @@ implements IConfiguration {
 		return this;
 	}
 
+	@Override
+	public void buildMappings() {
+		Util.invokeMethod(
+				getTarget(), 
+				"buildMappings", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getNamingStrategyClass() {
 		return Util.getClass(getNamingStrategyClassName(), getFacadeFactoryClassLoader());
 	}
