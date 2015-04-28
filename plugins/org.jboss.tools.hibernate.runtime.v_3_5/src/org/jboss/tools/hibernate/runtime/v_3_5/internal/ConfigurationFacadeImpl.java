@@ -1,6 +1,5 @@
 package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -42,12 +41,6 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	
 	public Configuration getTarget() {
 		return (Configuration)super.getTarget();
-	}
-
-	@Override
-	public IConfiguration configure(File file) {
-		getTarget().configure(file);
-		return this;
 	}
 
 	@Override

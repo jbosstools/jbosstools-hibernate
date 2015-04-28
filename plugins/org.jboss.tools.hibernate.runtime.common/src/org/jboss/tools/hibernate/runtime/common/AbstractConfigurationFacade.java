@@ -111,6 +111,16 @@ implements IConfiguration {
 		return this;
 	}
 
+	@Override
+	public IConfiguration configure(File file) {
+		Util.invokeMethod(
+				getTarget(), 
+				"configure", 
+				new Class[] { File.class }, 
+				new Object[] { file });
+		return this;
+	}
+
 	protected Class<?> getNamingStrategyClass() {
 		return Util.getClass(getNamingStrategyClassName(), getFacadeFactoryClassLoader());
 	}
