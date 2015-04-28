@@ -41,13 +41,20 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	@Override
 	public IDialect getDialect() {
 		if (dialect != null) {
-			DialectFactory dialectFactory = serviceRegistry.getService(DialectFactory.class);
-			Dialect d = dialectFactory.buildDialect(getProperties(), null);
+			Object d = buildTargetDialect();
 			if (d != null) {
 				dialect = getFacadeFactory().createDialect(d);
 			}
 		}
 		return dialect;
+	}
+	
+	protected Object buildTargetDialect() {
+		if (serviceRegistry == null) {
+			buildServiceRegistry();
+		}
+		return serviceRegistry.getService(DialectFactory.class).buildDialect(
+				getProperties(), null);
 	}
 	
 	private void buildServiceRegistry() {
