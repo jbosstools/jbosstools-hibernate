@@ -34,4 +34,13 @@ implements IConfiguration {
 		return this;
 	}
 
+	@Override
+	public void setProperty(String name, String value) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setProperty", 
+				new Class[] { String.class, String.class }, 
+				new Object[] { name, value });
+	}
+
 }

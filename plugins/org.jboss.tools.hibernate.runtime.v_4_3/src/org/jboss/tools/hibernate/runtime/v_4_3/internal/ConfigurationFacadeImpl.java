@@ -52,11 +52,6 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	}
 
 	@Override
-	public void setProperty(String name, String value) {
-		getTarget().setProperty(name, value);
-	}
-
-	@Override
 	public IConfiguration setProperties(Properties properties) {
 		getTarget().setProperties(properties);
 		return this;
