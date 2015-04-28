@@ -2,7 +2,6 @@ package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
 import org.hibernate.cfg.Configuration;
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
-import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 
 public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
@@ -17,16 +16,5 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 		return (Configuration)super.getTarget();
 	}
 
-
-	@Override
-	public IDialect getDialect() {
-		if (dialect == null) {
-			Object d = buildTargetDialect();
-			if (d != null) {
-				dialect = getFacadeFactory().createDialect(d);
-			}
-		}
-		return dialect;
-	}
 
 }

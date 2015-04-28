@@ -279,6 +279,17 @@ implements IConfiguration {
 		return result;
 	}
 	
+	@Override
+	public IDialect getDialect() {
+		if (dialect != null) {
+			Object d = buildTargetDialect();
+			if (d != null) {
+				dialect = getFacadeFactory().createDialect(d);
+			}
+		}
+		return dialect;
+	}
+	
 	protected Class<?> getNamingStrategyClass() {
 		return Util.getClass(getNamingStrategyClassName(), getFacadeFactoryClassLoader());
 	}

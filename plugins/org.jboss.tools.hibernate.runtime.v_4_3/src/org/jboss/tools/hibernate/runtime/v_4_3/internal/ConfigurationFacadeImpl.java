@@ -5,7 +5,6 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
 import org.hibernate.service.ServiceRegistry;
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
-import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 
 public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
@@ -34,17 +33,6 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 			buildServiceRegistry();
 		}
 		return getTarget().buildSettings(serviceRegistry);
-	}
-	
-	@Override
-	public IDialect getDialect() {
-		if (dialect != null) {
-			Object d = buildTargetDialect();
-			if (d != null) {
-				dialect = getFacadeFactory().createDialect(d);
-			}
-		}
-		return dialect;
 	}
 	
 	protected Object buildTargetDialect() {
