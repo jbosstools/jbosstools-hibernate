@@ -68,6 +68,15 @@ implements IConfiguration {
 	}
 
 	@Override
+	public Properties getProperties() {
+		return (Properties)Util.invokeMethod(
+				getTarget(), 
+				"getProperties", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
+	@Override
 	public void setNamingStrategy(INamingStrategy namingStrategy) {
 		this.namingStrategy = namingStrategy;
 		Object namingStrategyTarget = Util.invokeMethod(

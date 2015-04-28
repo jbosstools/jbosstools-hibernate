@@ -47,11 +47,6 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	}
 
 	@Override
-	public Properties getProperties() {
-		return getTarget().getProperties();
-	}
-
-	@Override
 	public void addProperties(Properties properties) {
 		getTarget().addProperties(properties);
 	}
