@@ -175,12 +175,31 @@ implements IConfiguration {
 		return classMappings.values().iterator();
 	}
 	
+	@Override
+	public void setPreferBasicCompositeIds(boolean preferBasicCompositeids) {
+		if (getJDBCMetaDataConfigurationClass().isAssignableFrom(getTarget().getClass())) {
+			Util.invokeMethod(
+					getTarget(), 
+					"setPreferBasicCompositeIds", 
+					new Class[] { boolean.class }, 
+					new Object[] { preferBasicCompositeids });
+		}
+	}
+
 	protected Class<?> getNamingStrategyClass() {
 		return Util.getClass(getNamingStrategyClassName(), getFacadeFactoryClassLoader());
 	}
 	
+	protected Class<?> getJDBCMetaDataConfigurationClass() {
+		return Util.getClass(getJDBCConfigurationClassName(), getFacadeFactoryClassLoader());
+	}
+	
 	protected String getNamingStrategyClassName() {
 		return "org.hibernate.cfg.NamingStrategy";
+	}
+	
+	protected String getJDBCConfigurationClassName() {
+		return "org.hibernate.cfg.JDBCMetaDataConfiguration";
 	}
 	
 	protected Object buildTargetSessionFactory() {

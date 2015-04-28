@@ -56,13 +56,6 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	}
 	
 	@Override
-	public void setPreferBasicCompositeIds(boolean preferBasicCompositeids) {
-		if (getTarget() instanceof JDBCMetaDataConfiguration) {
-			((JDBCMetaDataConfiguration)getTarget()).setPreferBasicCompositeIds(preferBasicCompositeids);
-		}
-	}
-
-	@Override
 	public void setReverseEngineeringStrategy(IReverseEngineeringStrategy res) {
 		assert res instanceof IFacade;
 		if (getTarget() instanceof JDBCMetaDataConfiguration) {
