@@ -11,8 +11,6 @@ import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	
 	private ServiceRegistry serviceRegistry = null;
-	private IDialect dialect = null;
-
 	
 	public ConfigurationFacadeImpl(
 			IFacadeFactory facadeFactory, 

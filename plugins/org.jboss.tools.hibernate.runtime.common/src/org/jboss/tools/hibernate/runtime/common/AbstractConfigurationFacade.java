@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IMapping;
 import org.jboss.tools.hibernate.runtime.spi.IMappings;
@@ -27,6 +28,7 @@ implements IConfiguration {
 	protected HashMap<String, IPersistentClass> classMappings = null;	
 	protected IMapping mapping = null;
 	protected HashSet<ITable> tableMappings = null;
+	protected IDialect dialect = null;
 
 	public AbstractConfigurationFacade(
 			IFacadeFactory facadeFactory, 

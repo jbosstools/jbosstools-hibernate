@@ -2,7 +2,6 @@ package org.jboss.tools.hibernate.runtime.v_4_3.internal;
 
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
 import org.hibernate.service.ServiceRegistry;
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
@@ -12,8 +11,7 @@ import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	
 	private ServiceRegistry serviceRegistry = null;
-	private IDialect dialect = null;
-	
+
 	public ConfigurationFacadeImpl(
 			IFacadeFactory facadeFactory,
 			Configuration configuration) {

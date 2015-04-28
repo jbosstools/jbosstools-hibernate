@@ -7,8 +7,6 @@ import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 
 public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	
-	private IDialect dialect = null;
-	
 	public ConfigurationFacadeImpl(
 			IFacadeFactory facadeFactory, 
 			Configuration configuration) {
