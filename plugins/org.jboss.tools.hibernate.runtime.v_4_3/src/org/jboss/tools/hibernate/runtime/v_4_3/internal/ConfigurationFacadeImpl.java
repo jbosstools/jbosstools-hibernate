@@ -1,17 +1,13 @@
 package org.jboss.tools.hibernate.runtime.v_4_3.internal;
 
-import java.util.Iterator;
-
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
 import org.hibernate.service.ServiceRegistry;
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
 import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.ITable;
 
 public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	
@@ -40,18 +36,6 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 			buildServiceRegistry();
 		}
 		return getTarget().buildSettings(serviceRegistry);
-	}
-	
-	@Override
-	public Iterator<ITable> getTableMappings() {
-		Iterator<ITable> result = null;
-		if (getTarget() instanceof JDBCMetaDataConfiguration) {
-			if (tableMappings == null) {
-				initializeTableMappings();
-			}
-			result = tableMappings.iterator();
-		}
-		return result;
 	}
 	
 	@Override

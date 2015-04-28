@@ -265,6 +265,18 @@ implements IConfiguration {
 				new Object[] {});
 	}
 
+	@Override
+	public Iterator<ITable> getTableMappings() {
+		Iterator<ITable> result = null;
+		if (getJDBCMetaDataConfigurationClass().isAssignableFrom(getTarget().getClass())) {
+			if (tableMappings == null) {
+				initializeTableMappings();
+			}
+			result = tableMappings.iterator();
+		}
+		return result;
+	}
+	
 	protected Class<?> getNamingStrategyClass() {
 		return Util.getClass(getNamingStrategyClassName(), getFacadeFactoryClassLoader());
 	}
