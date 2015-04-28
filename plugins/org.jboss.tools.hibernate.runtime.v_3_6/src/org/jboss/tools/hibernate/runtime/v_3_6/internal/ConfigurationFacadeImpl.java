@@ -44,7 +44,11 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 
 	@Override
 	public ISessionFactory buildSessionFactory() {
-		return getFacadeFactory().createSessionFactory(getTarget().buildSessionFactory());
+		return getFacadeFactory().createSessionFactory(buildTargetSessionFactory());
+	}
+	
+	protected Object buildTargetSessionFactory() {
+		return getTarget().buildSessionFactory();
 	}
 
 	@Override
