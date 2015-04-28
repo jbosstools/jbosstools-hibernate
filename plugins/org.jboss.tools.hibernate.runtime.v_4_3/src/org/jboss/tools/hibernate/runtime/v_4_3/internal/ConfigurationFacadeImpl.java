@@ -24,7 +24,6 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	
 	private HashSet<ITable> tableMappings = null;
 	private ServiceRegistry serviceRegistry = null;
-	private IMapping mapping = null;
 	private IDialect dialect = null;
 	
 	public ConfigurationFacadeImpl(

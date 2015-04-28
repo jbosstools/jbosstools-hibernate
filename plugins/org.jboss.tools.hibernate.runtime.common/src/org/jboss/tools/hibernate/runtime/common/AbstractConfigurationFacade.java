@@ -7,6 +7,7 @@ import java.util.Properties;
 
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IMapping;
 import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -22,6 +23,7 @@ implements IConfiguration {
 
 	protected INamingStrategy namingStrategy;
 	protected HashMap<String, IPersistentClass> classMappings = null;	
+	protected IMapping mapping = null;
 
 	public AbstractConfigurationFacade(
 			IFacadeFactory facadeFactory, 

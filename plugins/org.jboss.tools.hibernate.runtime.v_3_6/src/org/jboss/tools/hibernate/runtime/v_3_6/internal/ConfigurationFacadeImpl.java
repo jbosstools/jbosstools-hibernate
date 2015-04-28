@@ -21,7 +21,6 @@ import org.xml.sax.EntityResolver;
 public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	
 	private HashSet<ITable> tableMappings = null;
-	private IMapping mapping = null;
 	private IDialect dialect = null;
 	
 	public ConfigurationFacadeImpl(
