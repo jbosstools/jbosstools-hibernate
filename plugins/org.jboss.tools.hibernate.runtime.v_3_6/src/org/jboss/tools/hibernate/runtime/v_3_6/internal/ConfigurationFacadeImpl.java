@@ -12,7 +12,6 @@ import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
 import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
-import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.xml.sax.EntityResolver;
 
@@ -29,14 +28,6 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	
 	public Configuration getTarget() {
 		return (Configuration)super.getTarget();
-	}
-
-	@Override
-	public IPersistentClass getClassMapping(String string) {
-		if (classMappings == null) {
-			initializeClassMappings();
-		}
-		return classMappings.get(string);
 	}
 
 	@Override

@@ -232,6 +232,14 @@ implements IConfiguration {
 		return mapping;
 	}
 
+	@Override
+	public IPersistentClass getClassMapping(String string) {
+		if (classMappings == null) {
+			initializeClassMappings();
+		}
+		return classMappings.get(string);
+	}
+
 	protected Class<?> getNamingStrategyClass() {
 		return Util.getClass(getNamingStrategyClassName(), getFacadeFactoryClassLoader());
 	}
