@@ -5,6 +5,7 @@ import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
+import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
@@ -107,4 +108,9 @@ public abstract class AbstractFacadeFactory implements IFacadeFactory {
 		return new AbstractColumnFacade(this, target) {};
 	}
 	
+	@Override
+	public IConfiguration createConfiguration(Object target) {
+		return new AbstractConfigurationFacade(this, target) {};
+	}
+
 }

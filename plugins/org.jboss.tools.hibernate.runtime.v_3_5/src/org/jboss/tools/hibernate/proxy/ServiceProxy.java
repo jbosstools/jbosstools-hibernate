@@ -139,7 +139,7 @@ public class ServiceProxy implements IService {
 	@Override
 	public ISchemaExport newSchemaExport(IConfiguration hcfg) {
 		ISchemaExport result = null;
-		if (hcfg instanceof ConfigurationFacadeImpl) {
+		if (hcfg instanceof IFacade) {
 			SchemaExport schemaExport = 
 					new SchemaExport((Configuration)((IFacade)hcfg).getTarget());
 			result = facadeFactory.createSchemaExport(schemaExport);
