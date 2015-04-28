@@ -6,7 +6,6 @@ import java.util.Iterator;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.dialect.Dialect;
-import org.hibernate.engine.spi.Mapping;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
@@ -14,7 +13,6 @@ import org.hibernate.service.jdbc.dialect.spi.DialectFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
 import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IMapping;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
@@ -51,17 +49,6 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 		return getTarget().buildSettings(serviceRegistry);
 	}
 	
-	@Override
-	public IMapping buildMapping() {
-		if (mapping == null) {
-			Mapping m = getTarget().buildMapping();
-			if (m != null) {
-				mapping = getFacadeFactory().createMapping(m);
-			}
-		}
-		return mapping;
-	}
-
 	@Override
 	public IPersistentClass getClassMapping(String string) {
 		if (classMappings == null) {

@@ -217,6 +217,21 @@ implements IConfiguration {
 		}
 	}
 
+	@Override
+	public IMapping buildMapping() {
+		if (mapping == null) {
+			Object targetMapping = Util.invokeMethod(
+					getTarget(), 
+					"buildMapping", 
+					new Class[] {}, 
+					new Object[] {});
+			if (targetMapping != null) {
+				mapping = getFacadeFactory().createMapping(targetMapping);
+			}
+		}
+		return mapping;
+	}
+
 	protected Class<?> getNamingStrategyClass() {
 		return Util.getClass(getNamingStrategyClassName(), getFacadeFactoryClassLoader());
 	}
