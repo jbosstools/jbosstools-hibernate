@@ -1,6 +1,5 @@
-package org.jboss.tools.hibernate.proxy;
+package org.jboss.tools.hibernate.runtime.v_4_3.internal;
 
-import org.hibernate.EntityMode;
 import org.hibernate.tuple.entity.EntityMetamodel;
 import org.jboss.tools.hibernate.runtime.common.AbstractEntityMetamodelFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
@@ -24,7 +23,7 @@ public class EntityMetamodelFacadeImpl extends AbstractEntityMetamodelFacade {
 
 	@Override
 	public Object getTuplizerPropertyValue(Object entity, int i) {
-		return getTarget().getTuplizer(EntityMode.POJO).getPropertyValue(entity, i);
+		return getTarget().getTuplizer().getPropertyValue(entity, i);
 	}
 
 }
