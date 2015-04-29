@@ -37,6 +37,14 @@ implements IEnvironment {
 				null);
 	}
 
+	@Override
+	public String getDialect() {
+		return (String) Util.getFieldValue(
+				getEnvironmentClass(), 
+				"DIALECT", 
+				null);
+	}
+
 	protected Class<?> getEnvironmentClass() {
 		return Util.getClass(getEnvironmentClassName(), getFacadeFactoryClassLoader());
 	}

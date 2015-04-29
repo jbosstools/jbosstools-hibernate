@@ -18,11 +18,6 @@ public class EnvironmentFacadeImpl extends AbstractEnvironmentFacade {
 	}
 
 	@Override
-	public String getDialect() {
-		return Environment.DIALECT;
-	}
-
-	@Override
 	public String getDataSource() {
 		return Environment.DATASOURCE;
 	}
