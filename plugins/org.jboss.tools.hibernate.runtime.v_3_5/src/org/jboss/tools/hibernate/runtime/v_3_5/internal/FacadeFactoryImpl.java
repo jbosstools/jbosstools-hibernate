@@ -50,7 +50,6 @@ import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
-import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
@@ -92,11 +91,6 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public IEntityMetamodel createEntityMetamodel(Object target) {
 		return new EntityMetamodelFacadeImpl(this, (EntityMetamodel)target);
-	}
-
-	@Override
-	public IEnvironment createEnvironment() {
-		return new EnvironmentFacadeImpl(this);
 	}
 
 	@Override

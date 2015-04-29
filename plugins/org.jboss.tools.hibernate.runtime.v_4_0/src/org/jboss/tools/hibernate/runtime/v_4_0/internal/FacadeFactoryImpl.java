@@ -46,7 +46,6 @@ import org.jboss.tools.hibernate.proxy.TypeProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
-import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
@@ -78,11 +77,6 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public IConfiguration createConfiguration(Object target) {
 		return new ConfigurationFacadeImpl(this, (Configuration)target);
-	}
-	
-	@Override
-	public IEnvironment createEnvironment() {
-		return new EnvironmentFacadeImpl(this);
 	}
 	
 	@Override
