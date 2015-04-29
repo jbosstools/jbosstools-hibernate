@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate.proxy;
+package org.jboss.tools.hibernate.runtime.v_4_0.internal;
 
 import org.hibernate.cfg.Environment;
 import org.jboss.tools.hibernate.runtime.common.AbstractEnvironmentFacade;
@@ -9,11 +9,6 @@ public class EnvironmentFacadeImpl extends AbstractEnvironmentFacade {
 	public EnvironmentFacadeImpl(
 			IFacadeFactory facadeFactory) {
 		super(facadeFactory, null);
-	}
-
-	@Override
-	public String getTransactionManagerStrategy() {
-		return Environment.TRANSACTION_MANAGER_STRATEGY;
 	}
 
 	@Override

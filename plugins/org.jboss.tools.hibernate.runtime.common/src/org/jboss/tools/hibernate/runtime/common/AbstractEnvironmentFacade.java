@@ -13,4 +13,20 @@ implements IEnvironment {
 		super(facadeFactory, target);
 	}
 
+	@Override
+	public String getTransactionManagerStrategy() {
+		return (String) Util.getFieldValue(
+				getEnvironmentClass(), 
+				"TRANSACTION_MANAGER_STRATEGY", 
+				null);
+	}
+	
+	protected Class<?> getEnvironmentClass() {
+		return Util.getClass(getEnvironmentClassName(), getFacadeFactoryClassLoader());
+	}
+
+	protected String getEnvironmentClassName() {
+		return "org.hibernate.cfg.Environment";
+	}
+	
 }
