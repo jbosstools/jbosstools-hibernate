@@ -1,7 +1,10 @@
 package org.jboss.tools.hibernate.runtime.common;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
@@ -17,6 +20,25 @@ implements IDatabaseCollector {
 			IFacadeFactory facadeFactory, 
 			Object target) {
 		super(facadeFactory, target);
+	}
+
+	@SuppressWarnings("unchecked")
+	protected void initializeQualifierEntries() {
+		qualifierEntries = new HashMap<String, List<ITable>>();
+		Iterator<Entry<String, List<?>>> origin = 
+				(Iterator<Entry<String, List<?>>>)Util.invokeMethod(
+						getTarget(), 
+						"getQualifierEntries", 
+						new Class[] {}, 
+						new Object[] {});
+		while (origin.hasNext()) {
+			Entry<String, List<?>> entry = origin.next();
+			ArrayList<ITable> list = new ArrayList<ITable>();
+			for (Object table : entry.getValue()) {
+				list.add(getFacadeFactory().createTable(table));
+			}
+			qualifierEntries.put(entry.getKey(), list);
+		}
 	}
 
 }
