@@ -14,8 +14,6 @@ import org.jboss.tools.hibernate.runtime.spi.ITable;
 
 public class DatabaseCollectorFacadeImpl extends AbstractDatabaseCollectorFacade {
 	
-	private HashMap<String, List<ITable>> qualifierEntries = null;
-	
 	public DatabaseCollectorFacadeImpl(
 			IFacadeFactory facadeFactory,
 			DefaultDatabaseCollector dbc) {
