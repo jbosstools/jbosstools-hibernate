@@ -17,11 +17,6 @@ public class EntityMetamodelFacadeImpl extends AbstractEntityMetamodelFacade {
 	}
 
 	@Override
-	public Integer getPropertyIndexOrNull(String id) {
-		return getTarget().getPropertyIndexOrNull(id);
-	}
-
-	@Override
 	public Object getTuplizerPropertyValue(Object entity, int i) {
 		return getTarget().getTuplizer().getPropertyValue(entity, i);
 	}
