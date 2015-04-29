@@ -22,6 +22,14 @@ implements IDatabaseCollector {
 		super(facadeFactory, target);
 	}
 
+	@Override
+	public Iterator<Entry<String, List<ITable>>> getQualifierEntries() {
+		if (qualifierEntries == null) {
+			initializeQualifierEntries();
+		}
+		return qualifierEntries.entrySet().iterator();
+	}
+	
 	@SuppressWarnings("unchecked")
 	protected void initializeQualifierEntries() {
 		qualifierEntries = new HashMap<String, List<ITable>>();
