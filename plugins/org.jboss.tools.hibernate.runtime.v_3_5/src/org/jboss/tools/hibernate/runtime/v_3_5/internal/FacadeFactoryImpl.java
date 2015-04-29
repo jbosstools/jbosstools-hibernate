@@ -24,7 +24,7 @@ import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tuple.entity.EntityMetamodel;
 import org.hibernate.type.Type;
 import org.hibernate.type.TypeFactory;
-import org.jboss.tools.hibernate.proxy.DatabaseCollectorProxy;
+import org.jboss.tools.hibernate.proxy.DatabaseCollectorFacadeImpl;
 import org.jboss.tools.hibernate.proxy.EntityMetamodelProxy;
 import org.jboss.tools.hibernate.proxy.EnvironmentProxy;
 import org.jboss.tools.hibernate.proxy.ForeignKeyProxy;
@@ -96,7 +96,7 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 
 	@Override
 	public IDatabaseCollector createDatabaseCollector(Object target) {
-		return new DatabaseCollectorProxy(this, (DefaultDatabaseCollector)target);
+		return new DatabaseCollectorFacadeImpl(this, (DefaultDatabaseCollector)target);
 	}
 
 	@Override

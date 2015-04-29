@@ -12,11 +12,11 @@ import org.jboss.tools.hibernate.runtime.common.AbstractDatabaseCollectorFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 
-public class DatabaseCollectorProxy extends AbstractDatabaseCollectorFacade {
+public class DatabaseCollectorFacadeImpl extends AbstractDatabaseCollectorFacade {
 	
 	private HashMap<String, List<ITable>> qualifierEntries = null;
 	
-	public DatabaseCollectorProxy(
+	public DatabaseCollectorFacadeImpl(
 			IFacadeFactory facadeFactory,
 			DefaultDatabaseCollector dbc) {
 		super(facadeFactory, dbc);

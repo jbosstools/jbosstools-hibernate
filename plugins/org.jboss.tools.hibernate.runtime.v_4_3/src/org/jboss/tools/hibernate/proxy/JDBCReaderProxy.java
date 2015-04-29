@@ -35,9 +35,9 @@ public class JDBCReaderProxy extends AbstractJDBCReaderFacade {
 			String defaultCatalogName, 
 			String defaultSchemaName,
 			IProgressListener progressListener) {
-		assert databaseCollector instanceof DatabaseCollectorProxy;
+		assert databaseCollector instanceof DatabaseCollectorFacadeImpl;
 		getTarget().readDatabaseSchema(
-				((DatabaseCollectorProxy)databaseCollector).getTarget(), 
+				((DatabaseCollectorFacadeImpl)databaseCollector).getTarget(), 
 				defaultCatalogName, 
 				defaultSchemaName,
 				new ProgressListenerImpl(progressListener));
