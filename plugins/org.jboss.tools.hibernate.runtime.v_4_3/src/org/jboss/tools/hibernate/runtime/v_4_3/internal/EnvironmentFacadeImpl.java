@@ -18,11 +18,6 @@ public class EnvironmentFacadeImpl extends AbstractEnvironmentFacade {
 	}
 
 	@Override
-	public String getPass() {
-		return Environment.PASS;
-	}
-
-	@Override
 	public String getSessionFactoryName() {
 		return Environment.SESSION_FACTORY_NAME;
 	}
