@@ -346,7 +346,7 @@ implements IConfiguration {
 				new Object[] { getProperties() });
 	}
 	
-	protected void initializeClassMappings() {
+	private void initializeClassMappings() {
 		classMappings = new HashMap<String, IPersistentClass>();
 		Iterator<?> origin = (Iterator<?>)Util.invokeMethod(
 				getTarget(), 
@@ -359,7 +359,7 @@ implements IConfiguration {
 		}
 	}
 
-	protected void initializeTableMappings() {
+	private void initializeTableMappings() {
 		tableMappings = new HashSet<ITable>();
 		Iterator<?> origin = (Iterator<?>)Util.invokeMethod(
 				getTarget(), 
