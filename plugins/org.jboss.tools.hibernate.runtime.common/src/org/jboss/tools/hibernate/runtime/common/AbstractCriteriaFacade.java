@@ -13,4 +13,13 @@ implements ICriteria {
 		super(facadeFactory, target);
 	}
 
+	public ICriteria createCriteria(String associationPath, String alias) {
+		Object targetCriteria = Util.invokeMethod(
+				getTarget(), 
+				"createCriteria", 
+				new Class[] { String.class,  String.class }, 
+				new Object[] { associationPath, alias });
+		return getFacadeFactory().createCriteria(targetCriteria);
+	}
+
 }
