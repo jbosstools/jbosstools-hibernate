@@ -18,11 +18,6 @@ public class EnvironmentFacadeImpl extends AbstractEnvironmentFacade {
 	}
 
 	@Override
-	public String getDriver() {
-		return Environment.DRIVER;
-	}
-
-	@Override
 	public String getHBM2DDLAuto() {
 		return Environment.HBM2DDL_AUTO;
 	}

@@ -21,6 +21,14 @@ implements IEnvironment {
 				null);
 	}
 	
+	@Override
+	public String getDriver() {
+		return (String) Util.getFieldValue(
+				getEnvironmentClass(), 
+				"DRIVER", 
+				null);
+	}
+
 	protected Class<?> getEnvironmentClass() {
 		return Util.getClass(getEnvironmentClassName(), getFacadeFactoryClassLoader());
 	}
