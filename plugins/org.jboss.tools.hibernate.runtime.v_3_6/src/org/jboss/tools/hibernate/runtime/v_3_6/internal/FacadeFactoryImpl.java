@@ -23,7 +23,7 @@ import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tuple.entity.EntityMetamodel;
 import org.hibernate.type.Type;
 import org.hibernate.type.TypeFactory;
-import org.jboss.tools.hibernate.proxy.EntityMetamodelProxy;
+import org.jboss.tools.hibernate.proxy.EntityMetamodelFacadeImpl;
 import org.jboss.tools.hibernate.proxy.EnvironmentProxy;
 import org.jboss.tools.hibernate.proxy.ForeignKeyProxy;
 import org.jboss.tools.hibernate.proxy.HQLCodeAssistProxy;
@@ -93,7 +93,7 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	
 	@Override
 	public IEntityMetamodel createEntityMetamodel(Object target) {
-		return new EntityMetamodelProxy(this, (EntityMetamodel)target);
+		return new EntityMetamodelFacadeImpl(this, (EntityMetamodel)target);
 	}
 	
 	@Override
