@@ -18,11 +18,6 @@ public class EnvironmentFacadeImpl extends AbstractEnvironmentFacade {
 	}
 
 	@Override
-	public String getURL() {
-		return Environment.URL;
-	}
-
-	@Override
 	public String getUser() {
 		return Environment.USER;
 	}

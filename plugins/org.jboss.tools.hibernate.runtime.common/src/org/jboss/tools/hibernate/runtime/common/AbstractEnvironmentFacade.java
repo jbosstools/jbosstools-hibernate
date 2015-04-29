@@ -61,6 +61,14 @@ implements IEnvironment {
 				null);
 	}
 
+	@Override
+	public String getURL() {
+		return (String) Util.getFieldValue(
+				getEnvironmentClass(), 
+				"URL", 
+				null);
+	}
+
 	protected Class<?> getEnvironmentClass() {
 		return Util.getClass(getEnvironmentClassName(), getFacadeFactoryClassLoader());
 	}
