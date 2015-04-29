@@ -85,6 +85,14 @@ implements IEnvironment {
 				null);
 	}
 
+	@Override
+	public String getSessionFactoryName() {
+		return (String) Util.getFieldValue(
+				getEnvironmentClass(), 
+				"SESSION_FACTORY_NAME", 
+				null);
+	}
+
 	protected Class<?> getEnvironmentClass() {
 		return Util.getClass(getEnvironmentClassName(), getFacadeFactoryClassLoader());
 	}
