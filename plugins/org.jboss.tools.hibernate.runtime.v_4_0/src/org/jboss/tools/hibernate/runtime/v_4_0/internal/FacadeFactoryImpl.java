@@ -24,7 +24,7 @@ import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tuple.entity.EntityMetamodel;
 import org.hibernate.type.Type;
 import org.hibernate.type.TypeFactory;
-import org.jboss.tools.hibernate.proxy.CriteriaProxy;
+import org.jboss.tools.hibernate.proxy.CriteriaFacadeImpl;
 import org.jboss.tools.hibernate.proxy.DatabaseCollectorProxy;
 import org.jboss.tools.hibernate.proxy.EntityMetamodelProxy;
 import org.jboss.tools.hibernate.proxy.EnvironmentProxy;
@@ -92,7 +92,7 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	
 	@Override
 	public ICriteria createCriteria(Object target) {
-		return new CriteriaProxy(this, (Criteria)target);
+		return new CriteriaFacadeImpl(this, (Criteria)target);
 	}
 	
 	@Override

@@ -7,9 +7,9 @@ import org.jboss.tools.hibernate.runtime.common.AbstractCriteriaFacade;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 
-public class CriteriaProxy extends AbstractCriteriaFacade {
-	
-	public CriteriaProxy(
+public class CriteriaFacadeImpl extends AbstractCriteriaFacade {
+
+	public CriteriaFacadeImpl(
 			IFacadeFactory facadeFactory,
 			Criteria criteria) {
 		super(facadeFactory, criteria);
