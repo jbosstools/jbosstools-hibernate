@@ -12,11 +12,6 @@ public class EnvironmentFacadeImpl extends AbstractEnvironmentFacade {
 	}
 
 	@Override
-	public String getUser() {
-		return Environment.USER;
-	}
-
-	@Override
 	public String getPass() {
 		return Environment.PASS;
 	}

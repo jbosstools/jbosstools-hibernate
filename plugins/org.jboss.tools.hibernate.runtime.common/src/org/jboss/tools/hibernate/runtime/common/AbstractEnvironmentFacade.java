@@ -69,6 +69,14 @@ implements IEnvironment {
 				null);
 	}
 
+	@Override
+	public String getUser() {
+		return (String) Util.getFieldValue(
+				getEnvironmentClass(), 
+				"USER", 
+				null);
+	}
+
 	protected Class<?> getEnvironmentClass() {
 		return Util.getClass(getEnvironmentClassName(), getFacadeFactoryClassLoader());
 	}
