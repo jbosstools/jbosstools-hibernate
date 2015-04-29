@@ -12,11 +12,6 @@ public class EnvironmentFacadeImpl extends AbstractEnvironmentFacade {
 	}
 
 	@Override
-	public String getHBM2DDLAuto() {
-		return Environment.HBM2DDL_AUTO;
-	}
-
-	@Override
 	public String getDialect() {
 		return Environment.DIALECT;
 	}
