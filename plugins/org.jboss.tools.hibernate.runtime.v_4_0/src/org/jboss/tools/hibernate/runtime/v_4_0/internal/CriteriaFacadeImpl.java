@@ -12,8 +12,4 @@ public class CriteriaFacadeImpl extends AbstractCriteriaFacade {
 		super(facadeFactory, criteria);
 	}
 	
-	public Criteria getTarget() {
-		return (Criteria)super.getTarget();
-	}
-	
 }
