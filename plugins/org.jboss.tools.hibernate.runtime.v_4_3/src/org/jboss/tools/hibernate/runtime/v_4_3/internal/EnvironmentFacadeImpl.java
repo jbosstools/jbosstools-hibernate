@@ -1,6 +1,5 @@
 package org.jboss.tools.hibernate.runtime.v_4_3.internal;
 
-import org.hibernate.cfg.Environment;
 import org.jboss.tools.hibernate.runtime.common.AbstractEnvironmentFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 
@@ -15,11 +14,6 @@ public class EnvironmentFacadeImpl extends AbstractEnvironmentFacade {
 	public String getTransactionManagerStrategy() {
 		// Unsupported in 4.3 Environment
 		return "hibernate.transaction.manager_lookup_class";
-	}
-
-	@Override
-	public Class<?> getWrappedClass() {
-		return Environment.class;
 	}
 
 }

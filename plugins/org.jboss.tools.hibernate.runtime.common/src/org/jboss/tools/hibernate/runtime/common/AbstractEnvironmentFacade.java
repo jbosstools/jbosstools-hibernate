@@ -109,6 +109,11 @@ implements IEnvironment {
 				null);
 	}
 
+	@Override
+	public Class<?> getWrappedClass() {
+		return getEnvironmentClass();
+	}
+
 	protected Class<?> getEnvironmentClass() {
 		return Util.getClass(getEnvironmentClassName(), getFacadeFactoryClassLoader());
 	}
