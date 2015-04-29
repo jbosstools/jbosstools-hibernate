@@ -12,8 +12,4 @@ public class DatabaseCollectorFacadeImpl extends AbstractDatabaseCollectorFacade
 		super(facadeFactory, dbc);
 	}
 	
-	public DefaultDatabaseCollector getTarget() {
-		return (DefaultDatabaseCollector)super.getTarget();
-	}
-
 }
