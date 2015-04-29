@@ -19,7 +19,6 @@ import org.hibernate.mapping.Value;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
-import org.hibernate.tuple.entity.EntityMetamodel;
 import org.hibernate.type.Type;
 import org.hibernate.type.TypeFactory;
 import org.jboss.tools.hibernate.proxy.EnvironmentProxy;
@@ -48,7 +47,6 @@ import org.jboss.tools.hibernate.proxy.TypeProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
-import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
@@ -81,11 +79,6 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public IConfiguration createConfiguration(Object target) {
 		return new ConfigurationFacadeImpl(this, (Configuration)target);
-	}
-	
-	@Override
-	public IEntityMetamodel createEntityMetamodel(Object target) {
-		return new EntityMetamodelFacadeImpl(this, (EntityMetamodel)target);
 	}
 	
 	@Override
