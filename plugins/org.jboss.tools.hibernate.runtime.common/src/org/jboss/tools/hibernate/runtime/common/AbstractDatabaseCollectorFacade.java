@@ -31,7 +31,7 @@ implements IDatabaseCollector {
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected void initializeQualifierEntries() {
+	private void initializeQualifierEntries() {
 		qualifierEntries = new HashMap<String, List<ITable>>();
 		Iterator<Entry<String, List<?>>> origin = 
 				(Iterator<Entry<String, List<?>>>)Util.invokeMethod(
