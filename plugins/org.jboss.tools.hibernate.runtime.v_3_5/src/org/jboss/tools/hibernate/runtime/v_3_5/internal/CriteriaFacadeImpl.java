@@ -18,11 +18,6 @@ public class CriteriaFacadeImpl extends AbstractCriteriaFacade {
 		return (Criteria)super.getTarget();
 	}
 	
-	@Override
-	public void setMaxResults(int intValue) {
-		getTarget().setMaxResults(intValue);
-	}
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Object> list() {

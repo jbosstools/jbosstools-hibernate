@@ -22,4 +22,13 @@ implements ICriteria {
 		return getFacadeFactory().createCriteria(targetCriteria);
 	}
 
+	@Override
+	public void setMaxResults(int intValue) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setMaxResults", 
+				new Class[] { int.class }, 
+				new Object[] { intValue });
+	}
+
 }
