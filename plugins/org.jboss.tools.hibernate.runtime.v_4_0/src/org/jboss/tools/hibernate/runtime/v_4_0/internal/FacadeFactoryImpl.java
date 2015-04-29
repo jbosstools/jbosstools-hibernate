@@ -21,7 +21,7 @@ import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.type.Type;
 import org.hibernate.type.TypeFactory;
-import org.jboss.tools.hibernate.proxy.EnvironmentProxy;
+import org.jboss.tools.hibernate.proxy.EnvironmentFacadeImpl;
 import org.jboss.tools.hibernate.proxy.ForeignKeyProxy;
 import org.jboss.tools.hibernate.proxy.HQLCodeAssistProxy;
 import org.jboss.tools.hibernate.proxy.HQLCompletionProposalProxy;
@@ -83,7 +83,7 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	
 	@Override
 	public IEnvironment createEnvironment() {
-		return new EnvironmentProxy(this);
+		return new EnvironmentFacadeImpl(this);
 	}
 	
 	@Override

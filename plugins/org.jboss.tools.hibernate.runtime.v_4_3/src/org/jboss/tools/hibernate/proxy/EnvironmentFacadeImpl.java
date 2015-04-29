@@ -4,9 +4,9 @@ import org.hibernate.cfg.Environment;
 import org.jboss.tools.hibernate.runtime.common.AbstractEnvironmentFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 
-public class EnvironmentProxy extends AbstractEnvironmentFacade {
+public class EnvironmentFacadeImpl extends AbstractEnvironmentFacade {
 
-	public EnvironmentProxy(
+	public EnvironmentFacadeImpl(
 			IFacadeFactory facadeFactory) {
 		super(facadeFactory, null);
 	}
