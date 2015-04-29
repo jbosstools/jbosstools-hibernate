@@ -5,7 +5,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Settings;
-import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
@@ -50,7 +49,6 @@ import org.jboss.tools.hibernate.proxy.TypeProxy;
 import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
-import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
@@ -84,11 +82,6 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public IConfiguration createConfiguration(Object target) {
 		return new ConfigurationFacadeImpl(this, (Configuration)target);
-	}
-	
-	@Override
-	public IDatabaseCollector createDatabaseCollector(Object target) {
-		return new DatabaseCollectorFacadeImpl(this, (DefaultDatabaseCollector)target);
 	}
 	
 	@Override
