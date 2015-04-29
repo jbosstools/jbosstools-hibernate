@@ -18,11 +18,6 @@ public class EnvironmentFacadeImpl extends AbstractEnvironmentFacade {
 	}
 
 	@Override
-	public String getDataSource() {
-		return Environment.DATASOURCE;
-	}
-
-	@Override
 	public String getConnectionProvider() {
 		return Environment.CONNECTION_PROVIDER;
 	}

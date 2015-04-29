@@ -45,6 +45,14 @@ implements IEnvironment {
 				null);
 	}
 
+	@Override
+	public String getDataSource() {
+		return (String) Util.getFieldValue(
+				getEnvironmentClass(), 
+				"DATASOURCE", 
+				null);
+	}
+
 	protected Class<?> getEnvironmentClass() {
 		return Util.getClass(getEnvironmentClassName(), getFacadeFactoryClassLoader());
 	}
