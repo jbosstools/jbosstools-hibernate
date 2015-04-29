@@ -1,6 +1,5 @@
 package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
-import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -54,7 +53,6 @@ import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
-import org.jboss.tools.hibernate.runtime.spi.ICriteria;
 import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
@@ -94,11 +92,6 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public IColumn createColumn(Object target) {
 		return new ColumnFacadeImpl(this, (Column)target);
-	}
-
-	@Override
-	public ICriteria createCriteria(Object target) {
-		return new CriteriaFacadeImpl(this, (Criteria)target);
 	}
 
 	@Override
