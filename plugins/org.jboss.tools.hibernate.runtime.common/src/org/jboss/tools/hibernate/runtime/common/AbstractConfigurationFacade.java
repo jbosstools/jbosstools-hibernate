@@ -24,11 +24,11 @@ public abstract class AbstractConfigurationFacade
 extends AbstractFacade 
 implements IConfiguration {
 
-	protected INamingStrategy namingStrategy;
-	protected HashMap<String, IPersistentClass> classMappings = null;	
-	protected IMapping mapping = null;
-	protected HashSet<ITable> tableMappings = null;
-	protected IDialect dialect = null;
+	private INamingStrategy namingStrategy;
+	private HashMap<String, IPersistentClass> classMappings = null;	
+	private IMapping mapping = null;
+	private HashSet<ITable> tableMappings = null;
+	private IDialect dialect = null;
 
 	public AbstractConfigurationFacade(
 			IFacadeFactory facadeFactory, 
