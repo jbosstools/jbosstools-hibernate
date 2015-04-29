@@ -18,11 +18,6 @@ public class EnvironmentFacadeImpl extends AbstractEnvironmentFacade {
 	}
 
 	@Override
-	public String getConnectionProvider() {
-		return Environment.CONNECTION_PROVIDER;
-	}
-
-	@Override
 	public String getURL() {
 		return Environment.URL;
 	}
