@@ -12,8 +12,4 @@ public class EntityMetamodelFacadeImpl extends AbstractEntityMetamodelFacade {
 		super(facadeFactory, emm);
 	}
 
-	public EntityMetamodel getTarget() {
-		return (EntityMetamodel)super.getTarget();
-	}
-
 }
