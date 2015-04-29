@@ -7,6 +7,7 @@ import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IMetaDataDialect;
 import org.jboss.tools.hibernate.runtime.spi.IProgressListener;
+import org.jboss.tools.hibernate.runtime.v_4_3.internal.DatabaseCollectorFacadeImpl;
 
 public class JDBCReaderProxy extends AbstractJDBCReaderFacade {
 	
