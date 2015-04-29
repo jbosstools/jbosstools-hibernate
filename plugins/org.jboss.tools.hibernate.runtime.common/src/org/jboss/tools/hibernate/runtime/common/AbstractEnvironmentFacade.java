@@ -101,6 +101,14 @@ implements IEnvironment {
 				null);
 	}
 
+	@Override
+	public String getDefaultSchema() {
+		return (String) Util.getFieldValue(
+				getEnvironmentClass(), 
+				"DEFAULT_SCHEMA", 
+				null);
+	}
+
 	protected Class<?> getEnvironmentClass() {
 		return Util.getClass(getEnvironmentClassName(), getFacadeFactoryClassLoader());
 	}

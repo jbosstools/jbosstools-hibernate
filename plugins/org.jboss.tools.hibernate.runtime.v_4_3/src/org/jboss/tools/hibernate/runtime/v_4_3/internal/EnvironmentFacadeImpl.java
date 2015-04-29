@@ -18,11 +18,6 @@ public class EnvironmentFacadeImpl extends AbstractEnvironmentFacade {
 	}
 
 	@Override
-	public String getDefaultSchema() {
-		return Environment.DEFAULT_SCHEMA;
-	}
-
-	@Override
 	public Class<?> getWrappedClass() {
 		return Environment.class;
 	}
