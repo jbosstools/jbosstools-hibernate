@@ -93,6 +93,14 @@ implements IEnvironment {
 				null);
 	}
 
+	@Override
+	public String getDefaultCatalog() {
+		return (String) Util.getFieldValue(
+				getEnvironmentClass(), 
+				"DEFAULT_CATALOG", 
+				null);
+	}
+
 	protected Class<?> getEnvironmentClass() {
 		return Util.getClass(getEnvironmentClassName(), getFacadeFactoryClassLoader());
 	}

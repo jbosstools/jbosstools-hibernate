@@ -12,11 +12,6 @@ public class EnvironmentFacadeImpl extends AbstractEnvironmentFacade {
 	}
 
 	@Override
-	public String getDefaultCatalog() {
-		return Environment.DEFAULT_CATALOG;
-	}
-
-	@Override
 	public String getDefaultSchema() {
 		return Environment.DEFAULT_SCHEMA;
 	}
