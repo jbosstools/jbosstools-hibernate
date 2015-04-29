@@ -14,7 +14,7 @@ public abstract class AbstractDatabaseCollectorFacade
 extends AbstractFacade 
 implements IDatabaseCollector {
 
-	protected HashMap<String, List<ITable>> qualifierEntries = null;
+	private HashMap<String, List<ITable>> qualifierEntries = null;
 	
 	public AbstractDatabaseCollectorFacade(
 			IFacadeFactory facadeFactory, 
