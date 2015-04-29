@@ -22,4 +22,18 @@ implements IEntityMetamodel {
 				new Object[] { id });
 	}
 
+	@Override
+	public Object getTuplizerPropertyValue(Object entity, int i) {
+		Object targetTuplizer = Util.invokeMethod(
+				getTarget(), 
+				"getTuplizer", 
+				new Class[] {}, 
+				new Object[] {});
+		return Util.invokeMethod(
+				targetTuplizer, 
+				"getPropertyValue", 
+				new Class[] { Object.class,  int.class }, 
+				new Object[] { entity, i });
+	}
+
 }
