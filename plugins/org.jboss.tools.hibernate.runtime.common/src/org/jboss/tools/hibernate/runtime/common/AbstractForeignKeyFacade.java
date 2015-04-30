@@ -62,6 +62,28 @@ implements IForeignKey {
 		return referencedColumns;
 	}
 	
+	@Override
+	public boolean containsColumn(IColumn column) {
+		Object columnTarget = Util.invokeMethod(
+				column, 
+				"getTarget", 
+				new Class[] {}, 
+				new Object[] {});
+		return (boolean)Util.invokeMethod(
+				getTarget(), 
+				"containsColumn", 
+				new Class[] { getColumnClass() }, 
+				new Object[] { columnTarget });
+	}
+	
+	protected Class<?> getColumnClass() {
+		return Util.getClass(getColumnClassName(), getFacadeFactoryClassLoader());
+	}
+	
+	protected String getColumnClassName() {
+		return "org.hibernate.mapping.Column";
+	}
+
 	protected void initializeColumns() {
 		columns = new HashSet<IColumn>();
 		Iterator<?> origin = (Iterator<?>)Util.invokeMethod(
