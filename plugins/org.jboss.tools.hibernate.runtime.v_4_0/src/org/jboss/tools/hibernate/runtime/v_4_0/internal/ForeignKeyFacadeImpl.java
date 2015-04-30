@@ -12,8 +12,4 @@ public class ForeignKeyFacadeImpl extends AbstractForeignKeyFacade {
 		super(facadeFactory, foreignKey);
 	}
 
-	public ForeignKey getTarget() {
-		return (ForeignKey)super.getTarget();
-	}
-
 }
