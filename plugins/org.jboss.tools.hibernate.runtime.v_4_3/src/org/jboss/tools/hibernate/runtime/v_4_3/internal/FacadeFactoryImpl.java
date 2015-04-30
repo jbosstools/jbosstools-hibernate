@@ -9,7 +9,6 @@ import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.hql.spi.QueryTranslator;
-import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Join;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
@@ -46,7 +45,6 @@ import org.jboss.tools.hibernate.proxy.ValueProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
-import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
@@ -82,11 +80,6 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public IEnvironment createEnvironment() {
 		return new EnvironmentFacadeImpl(this);
-	}
-	
-	@Override
-	public IForeignKey createForeignKey(Object target) {
-		return new ForeignKeyFacadeImpl(this, (ForeignKey)target);
 	}
 	
 	@Override

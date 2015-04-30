@@ -9,7 +9,6 @@ import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.engine.query.HQLQueryPlan;
 import org.hibernate.hql.QueryTranslator;
 import org.hibernate.mapping.Column;
-import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Join;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
@@ -49,7 +48,6 @@ import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
-import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
@@ -90,11 +88,6 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public IEntityMetamodel createEntityMetamodel(Object target) {
 		return new EntityMetamodelFacadeImpl(this, (EntityMetamodel)target);
-	}
-	
-	@Override
-	public IForeignKey createForeignKey(Object target) {
-		return new ForeignKeyFacadeImpl(this, (ForeignKey)target);
 	}
 	
 	@Override
