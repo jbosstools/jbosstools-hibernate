@@ -1,7 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.mapping.Column;
@@ -25,14 +24,6 @@ public class ForeignKeyFacadeImpl extends AbstractForeignKeyFacade {
 		return (ForeignKey)super.getTarget();
 	}
 
-	@Override
-	public Iterator<IColumn> columnIterator() {
-		if (columns == null) {
-			initializeColumns();
-		}
-		return columns.iterator();
-	}
-	
 	@Override
 	public boolean isReferenceToPrimaryKey() {
 		return getTarget().isReferenceToPrimaryKey();

@@ -34,6 +34,14 @@ implements IForeignKey {
 		return referencedTable;
 	}
 
+	@Override
+	public Iterator<IColumn> columnIterator() {
+		if (columns == null) {
+			initializeColumns();
+		}
+		return columns.iterator();
+	}
+	
 	protected void initializeColumns() {
 		columns = new HashSet<IColumn>();
 		Iterator<?> origin = (Iterator<?>)Util.invokeMethod(
