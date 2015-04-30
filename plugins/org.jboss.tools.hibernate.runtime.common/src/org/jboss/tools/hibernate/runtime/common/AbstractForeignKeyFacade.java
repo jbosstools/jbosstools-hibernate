@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.common;
 
 import java.util.HashSet;
+import java.util.Iterator;
 
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
@@ -31,6 +32,18 @@ implements IForeignKey {
 			referencedTable = getFacadeFactory().createTable(targetReferencedTable);
 		}
 		return referencedTable;
+	}
+
+	protected void initializeColumns() {
+		columns = new HashSet<IColumn>();
+		Iterator<?> origin = (Iterator<?>)Util.invokeMethod(
+				getTarget(), 
+				"columnIterator", 
+				new Class[] {}, 
+				new Object[] {});
+		while (origin.hasNext()) {
+			columns.add(getFacadeFactory().createColumn(origin.next()));
+		}
 	}
 
 }

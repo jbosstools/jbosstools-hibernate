@@ -1,7 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_4_0.internal;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -34,14 +33,6 @@ public class ForeignKeyFacadeImpl extends AbstractForeignKeyFacade {
 		return columns.iterator();
 	}
 	
-	private void initializeColumns() {
-		columns = new HashSet<IColumn>();
-		Iterator<?> origin = getTarget().columnIterator();
-		while (origin.hasNext()) {
-			columns.add(getFacadeFactory().createColumn(origin.next()));
-		}
-	}
-
 	@Override
 	public boolean isReferenceToPrimaryKey() {
 		return getTarget().isReferenceToPrimaryKey();
