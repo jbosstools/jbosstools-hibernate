@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.runtime.common;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
@@ -14,6 +15,7 @@ implements IForeignKey {
 
 	protected ITable referencedTable = null;
 	protected HashSet<IColumn> columns = null;
+	protected List<IColumn> referencedColumns = null;
 
 	public AbstractForeignKeyFacade(
 			IFacadeFactory facadeFactory, 

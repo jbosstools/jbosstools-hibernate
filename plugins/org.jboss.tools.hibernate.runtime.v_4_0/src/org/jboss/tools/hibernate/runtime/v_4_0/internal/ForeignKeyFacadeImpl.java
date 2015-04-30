@@ -12,8 +12,6 @@ import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 
 public class ForeignKeyFacadeImpl extends AbstractForeignKeyFacade {
 	
-	private List<IColumn> referencedColumns = null;
-
 	public ForeignKeyFacadeImpl(
 			IFacadeFactory facadeFactory,
 			ForeignKey foreignKey) {
