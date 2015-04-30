@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate.proxy;
+package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -24,7 +24,7 @@ public class ForeignKeyFacadeImpl extends AbstractForeignKeyFacade {
 			ForeignKey foreignKey) {
 		super(facadeFactory, foreignKey);
 	}
-
+	
 	public ForeignKey getTarget() {
 		return (ForeignKey)super.getTarget();
 	}
