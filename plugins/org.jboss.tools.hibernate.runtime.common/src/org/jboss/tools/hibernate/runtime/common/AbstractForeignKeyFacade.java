@@ -54,6 +54,14 @@ implements IForeignKey {
 				new Object[] {});
 	}
 
+	@Override
+	public List<IColumn> getReferencedColumns() {
+		if (referencedColumns == null) {
+			initializeReferencedColumns();
+		}
+		return referencedColumns;
+	}
+	
 	protected void initializeColumns() {
 		columns = new HashSet<IColumn>();
 		Iterator<?> origin = (Iterator<?>)Util.invokeMethod(
