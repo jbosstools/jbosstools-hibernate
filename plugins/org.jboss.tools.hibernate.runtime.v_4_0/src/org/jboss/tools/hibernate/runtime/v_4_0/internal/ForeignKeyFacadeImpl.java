@@ -15,7 +15,6 @@ import org.jboss.tools.hibernate.runtime.spi.ITable;
 
 public class ForeignKeyFacadeImpl extends AbstractForeignKeyFacade {
 	
-	private ITable referencedTable = null;
 	private HashSet<IColumn> columns = null;
 	private List<IColumn> referencedColumns = null;
 
