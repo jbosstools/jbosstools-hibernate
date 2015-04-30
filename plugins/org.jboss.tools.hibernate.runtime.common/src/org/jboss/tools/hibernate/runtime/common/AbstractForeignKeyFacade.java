@@ -16,4 +16,17 @@ implements IForeignKey {
 		super(facadeFactory, target);
 	}	
 
+	@Override
+	public ITable getReferencedTable() {
+		Object targetReferencedTable = Util.invokeMethod(
+				getTarget(), 
+				"getReferencedTable", 
+				new Class[] {}, 
+				new Object[] {});
+		if (referencedTable == null && targetReferencedTable != null) {
+			referencedTable = getFacadeFactory().createTable(targetReferencedTable);
+		}
+		return referencedTable;
+	}
+
 }

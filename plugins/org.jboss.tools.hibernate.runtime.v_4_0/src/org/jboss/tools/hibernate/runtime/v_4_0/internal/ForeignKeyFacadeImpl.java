@@ -11,7 +11,6 @@ import org.jboss.tools.hibernate.runtime.common.AbstractForeignKeyFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.ITable;
 
 public class ForeignKeyFacadeImpl extends AbstractForeignKeyFacade {
 	
@@ -26,14 +25,6 @@ public class ForeignKeyFacadeImpl extends AbstractForeignKeyFacade {
 
 	public ForeignKey getTarget() {
 		return (ForeignKey)super.getTarget();
-	}
-
-	@Override
-	public ITable getReferencedTable() {
-		if (referencedTable == null && getTarget().getReferencedTable() != null) {
-			referencedTable = getFacadeFactory().createTable(getTarget().getReferencedTable());
-		}
-		return referencedTable;
 	}
 
 	@Override
