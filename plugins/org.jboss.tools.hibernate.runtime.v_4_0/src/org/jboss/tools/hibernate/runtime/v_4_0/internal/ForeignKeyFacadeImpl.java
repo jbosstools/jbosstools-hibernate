@@ -1,6 +1,5 @@
 package org.jboss.tools.hibernate.runtime.v_4_0.internal;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.mapping.Column;
@@ -30,13 +29,6 @@ public class ForeignKeyFacadeImpl extends AbstractForeignKeyFacade {
 		return referencedColumns;
 	}
 	
-	private void initializeReferencedColumns() {
-		referencedColumns = new ArrayList<IColumn>();
-		for (Object column : getTarget().getReferencedColumns()) {
-			referencedColumns.add(getFacadeFactory().createColumn(column));
-		}
-	}
-
 	@Override
 	public boolean containsColumn(IColumn column) {
 		assert column instanceof IFacade;

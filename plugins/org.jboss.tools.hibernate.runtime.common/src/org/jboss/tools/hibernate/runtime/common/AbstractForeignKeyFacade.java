@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.runtime.common;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -62,6 +63,18 @@ implements IForeignKey {
 				new Object[] {});
 		while (origin.hasNext()) {
 			columns.add(getFacadeFactory().createColumn(origin.next()));
+		}
+	}
+
+	protected void initializeReferencedColumns() {
+		referencedColumns = new ArrayList<IColumn>();
+		List<?> targetReferencedColumns = (List<?>)Util.invokeMethod(
+				getTarget(), 
+				"getReferencedColumns", 
+				new Class[] {}, 
+				new Object[] {});
+		for (Object column : targetReferencedColumns) {
+			referencedColumns.add(getFacadeFactory().createColumn(column));
 		}
 	}
 
