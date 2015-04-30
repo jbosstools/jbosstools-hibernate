@@ -13,13 +13,13 @@ import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 
-public class ForeignKeyProxy extends AbstractForeignKeyFacade {
+public class ForeignKeyFacadeImpl extends AbstractForeignKeyFacade {
 	
 	private ITable referencedTable = null;
 	private HashSet<IColumn> columns = null;
 	private List<IColumn> referencedColumns = null;
 
-	public ForeignKeyProxy(
+	public ForeignKeyFacadeImpl(
 			IFacadeFactory facadeFactory,
 			ForeignKey foreignKey) {
 		super(facadeFactory, foreignKey);

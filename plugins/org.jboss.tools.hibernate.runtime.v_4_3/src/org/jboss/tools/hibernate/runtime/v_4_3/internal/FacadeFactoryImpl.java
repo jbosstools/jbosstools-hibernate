@@ -21,7 +21,7 @@ import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.type.Type;
 import org.hibernate.type.TypeFactory;
-import org.jboss.tools.hibernate.proxy.ForeignKeyProxy;
+import org.jboss.tools.hibernate.proxy.ForeignKeyFacadeImpl;
 import org.jboss.tools.hibernate.proxy.HQLCodeAssistProxy;
 import org.jboss.tools.hibernate.proxy.HQLCompletionProposalProxy;
 import org.jboss.tools.hibernate.proxy.HQLQueryPlanProxy;
@@ -87,7 +87,7 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	
 	@Override
 	public IForeignKey createForeignKey(Object target) {
-		return new ForeignKeyProxy(this, (ForeignKey)target);
+		return new ForeignKeyFacadeImpl(this, (ForeignKey)target);
 	}
 	
 	@Override
