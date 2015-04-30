@@ -25,11 +25,6 @@ public class ForeignKeyFacadeImpl extends AbstractForeignKeyFacade {
 	}
 
 	@Override
-	public boolean isReferenceToPrimaryKey() {
-		return getTarget().isReferenceToPrimaryKey();
-	}
-
-	@Override
 	public List<IColumn> getReferencedColumns() {
 		if (referencedColumns == null) {
 			initializeReferencedColumns();

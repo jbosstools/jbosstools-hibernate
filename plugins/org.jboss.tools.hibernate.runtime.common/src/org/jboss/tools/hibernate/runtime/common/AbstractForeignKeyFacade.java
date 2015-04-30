@@ -42,6 +42,15 @@ implements IForeignKey {
 		return columns.iterator();
 	}
 	
+	@Override
+	public boolean isReferenceToPrimaryKey() {
+		return (boolean)Util.invokeMethod(
+				getTarget(), 
+				"isReferenceToPrimaryKey", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected void initializeColumns() {
 		columns = new HashSet<IColumn>();
 		Iterator<?> origin = (Iterator<?>)Util.invokeMethod(
