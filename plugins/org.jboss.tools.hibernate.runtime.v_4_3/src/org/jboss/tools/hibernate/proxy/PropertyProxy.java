@@ -85,8 +85,8 @@ public class PropertyProxy extends AbstractPropertyFacade {
 
 	@Override
 	public void setValue(IValue value) {
-		assert value instanceof ValueProxy;
-		getTarget().setValue(((ValueProxy)value).getTarget());
+		assert value instanceof ValueFacadeImpl;
+		getTarget().setValue(((ValueFacadeImpl)value).getTarget());
 		this.value = value;
 	}
 

@@ -252,9 +252,9 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 	@Override
 	public void setKey(IValue value) {
 		assert getTarget() instanceof JoinedSubclass;
-		assert value instanceof ValueProxy;
-		assert ((ValueProxy)value).getTarget() instanceof KeyValue;
-		((JoinedSubclass)getTarget()).setKey((KeyValue)((ValueProxy)value).getTarget());
+		assert value instanceof ValueFacadeImpl;
+		assert ((ValueFacadeImpl)value).getTarget() instanceof KeyValue;
+		((JoinedSubclass)getTarget()).setKey((KeyValue)((ValueFacadeImpl)value).getTarget());
 	}
 
 	public boolean isInstanceOfSpecialRootClass() {
@@ -281,17 +281,17 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 
 	@Override
 	public void setIdentifier(IValue value) {
-		assert value instanceof ValueProxy;
-		assert ((ValueProxy)value).getTarget() instanceof KeyValue;
+		assert value instanceof ValueFacadeImpl;
+		assert ((ValueFacadeImpl)value).getTarget() instanceof KeyValue;
 		assert getTarget() instanceof RootClass;
-		((RootClass)getTarget()).setIdentifier((KeyValue)((ValueProxy)value).getTarget());
+		((RootClass)getTarget()).setIdentifier((KeyValue)((ValueFacadeImpl)value).getTarget());
 	}
 
 	@Override
 	public void setDiscriminator(IValue discr) {
 		assert getTarget() instanceof RootClass;
-		assert discr instanceof ValueProxy;
-		((RootClass)getTarget()).setDiscriminator(((ValueProxy)discr).getTarget());
+		assert discr instanceof ValueFacadeImpl;
+		((RootClass)getTarget()).setDiscriminator(((ValueFacadeImpl)discr).getTarget());
 	}
 
 	@Override

@@ -38,7 +38,7 @@ import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.spi.IValueVisitor;
 
-public class ValueProxy extends AbstractValueFacade {
+public class ValueFacadeImpl extends AbstractValueFacade {
 	
 	private IValue collectionElement = null;
 	private ITable collectionTable = null;
@@ -50,7 +50,7 @@ public class ValueProxy extends AbstractValueFacade {
 	private IPersistentClass owner = null;
 	private HashSet<IProperty> properties = null;
 	
-	public ValueProxy(IFacadeFactory facadeFactory, Value value) {
+	public ValueFacadeImpl(IFacadeFactory facadeFactory, Value value) {
 		super(facadeFactory, value);
 	}
 
@@ -143,9 +143,9 @@ public class ValueProxy extends AbstractValueFacade {
 
 	@Override
 	public void setElement(IValue element) {
-		assert element instanceof ValueProxy;
+		assert element instanceof ValueFacadeImpl;
 		if (isCollection()) {
-			((Collection)getTarget()).setElement(((ValueProxy)element).getTarget());
+			((Collection)getTarget()).setElement(((ValueFacadeImpl)element).getTarget());
 		}
 	}
 
@@ -173,8 +173,8 @@ public class ValueProxy extends AbstractValueFacade {
 
 	@Override
 	public void setIndex(IValue value) {
-		assert value instanceof ValueProxy;
-		((IndexedCollection)getTarget()).setIndex(((ValueProxy)value).getTarget());
+		assert value instanceof ValueFacadeImpl;
+		((IndexedCollection)getTarget()).setIndex(((ValueFacadeImpl)value).getTarget());
 	}
 
 	@Override
@@ -391,10 +391,10 @@ public class ValueProxy extends AbstractValueFacade {
 
 	@Override
 	public void setKey(IValue keyValue) {
-		assert keyValue instanceof ValueProxy;
+		assert keyValue instanceof ValueFacadeImpl;
 		assert getTarget() instanceof Collection;
-		assert ((ValueProxy)keyValue).getTarget() instanceof KeyValue;
-		((Collection)getTarget()).setKey((KeyValue)((ValueProxy)keyValue).getTarget());
+		assert ((ValueFacadeImpl)keyValue).getTarget() instanceof KeyValue;
+		((Collection)getTarget()).setKey((KeyValue)((ValueFacadeImpl)keyValue).getTarget());
 	}
 
 	@Override
