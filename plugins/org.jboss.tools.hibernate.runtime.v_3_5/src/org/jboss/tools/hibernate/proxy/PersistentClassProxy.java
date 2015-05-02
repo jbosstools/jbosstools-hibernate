@@ -17,6 +17,7 @@ import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
+import org.jboss.tools.hibernate.runtime.v_3_5.internal.ValueFacadeImpl;
 
 public class PersistentClassProxy extends AbstractPersistentClassFacade {
 	

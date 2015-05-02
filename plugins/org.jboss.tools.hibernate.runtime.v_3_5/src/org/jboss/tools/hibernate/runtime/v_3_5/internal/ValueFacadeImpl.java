@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate.proxy;
+package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -27,6 +27,8 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
+import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
+import org.jboss.tools.hibernate.proxy.TableProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractValueFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
