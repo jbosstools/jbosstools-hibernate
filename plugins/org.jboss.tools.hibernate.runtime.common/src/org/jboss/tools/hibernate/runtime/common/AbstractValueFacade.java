@@ -13,4 +13,13 @@ implements IValue {
 		super(facadeFactory, target);
 	}
 
+	@Override
+	public boolean isSimpleValue() {
+		return (boolean)Util.invokeMethod(
+				getTarget(), 
+				"isSimpleValue", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 }

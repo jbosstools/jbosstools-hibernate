@@ -61,11 +61,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 	}
 
 	@Override
-	public boolean isSimpleValue() {
-		return getTarget().isSimpleValue();
-	}
-
-	@Override
 	public boolean isCollection() {
 		return getTarget() instanceof Collection;
 	}
