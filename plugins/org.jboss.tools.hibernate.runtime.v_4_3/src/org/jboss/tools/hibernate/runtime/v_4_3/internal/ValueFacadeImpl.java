@@ -59,17 +59,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 	}
 
 	@Override
-	public Boolean isEmbedded() {
-		Boolean result = null;
-		if (isComponent()) {
-			result = ((Component)getTarget()).isEmbedded();
-		} else if (isToOne()) {
-			result = ((ToOne)getTarget()).isEmbedded();
-		}
-		return result;
-	}
-
-	@Override
 	public Object accept(IValueVisitor valueVisitor) {
 		return valueVisitor.accept(this);
 	}

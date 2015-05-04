@@ -74,6 +74,19 @@ implements IValue {
 		return getToOneClass().isAssignableFrom(getTarget().getClass());
 	}
 
+	@Override
+	public Boolean isEmbedded() {
+		Boolean result = null;
+		if (isComponent() || isToOne()) {
+			result = (Boolean)Util.invokeMethod(
+					getTarget(), 
+					"isEmbedded", 
+					new Class[] {}, 
+					new Object[] {});
+		}
+		return result;
+	}
+
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(collectionClassName(), getFacadeFactoryClassLoader());
 	}
