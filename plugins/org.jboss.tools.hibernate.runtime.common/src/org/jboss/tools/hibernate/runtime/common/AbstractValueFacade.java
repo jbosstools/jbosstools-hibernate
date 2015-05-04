@@ -22,4 +22,17 @@ implements IValue {
 				new Object[] {});
 	}
 
+	@Override
+	public boolean isCollection() {
+		return getCollectionClass().isAssignableFrom(getTarget().getClass());
+	}
+	
+	protected Class<?> getCollectionClass() {
+		return Util.getClass(getCollectionClassName(), getFacadeFactoryClassLoader());
+	}
+	
+	protected String getCollectionClassName() {
+		return "org.hibernate.mapping.Collection";
+	}
+
 }

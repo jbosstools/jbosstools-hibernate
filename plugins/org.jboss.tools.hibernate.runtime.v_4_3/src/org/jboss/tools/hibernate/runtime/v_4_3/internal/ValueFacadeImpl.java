@@ -61,11 +61,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 	}
 
 	@Override
-	public boolean isCollection() {
-		return getTarget() instanceof Collection;
-	}
-
-	@Override
 	public IValue getCollectionElement() {
 		if (isCollection() && collectionElement == null) {
 			Value element = ((Collection)getTarget()).getElement();
