@@ -60,11 +60,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 	}
 
 	@Override
-	public boolean isOneToOne() {
-		return getTarget() instanceof OneToOne;
-	}
-
-	@Override
 	public boolean isMap() {
 		return getTarget() instanceof Map;
 	}
