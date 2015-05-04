@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.runtime.common;
 
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
+import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.spi.IValueVisitor;
 
@@ -11,6 +12,7 @@ implements IValue {
 
 	protected IValue collectionElement = null;
 	protected ITable table = null;
+	protected IType type = null;
 
 	public AbstractValueFacade(
 			IFacadeFactory facadeFactory, 

@@ -43,7 +43,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 	private ITable collectionTable = null;
 	private IValue key = null;
 	private IValue index = null;
-	private IType type = null;
 	private HashSet<IColumn> columns = null;
 	private IPersistentClass owner = null;
 	private HashSet<IProperty> properties = null;
