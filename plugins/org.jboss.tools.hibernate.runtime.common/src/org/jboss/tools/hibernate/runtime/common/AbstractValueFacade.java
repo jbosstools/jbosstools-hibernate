@@ -44,12 +44,25 @@ implements IValue {
 		return collectionElement;
 	}
 
+	@Override
+	public boolean isOneToMany() {
+		return getOneToManyClass().isAssignableFrom(getTarget().getClass());
+	}
+
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(getCollectionClassName(), getFacadeFactoryClassLoader());
 	}
 	
+	protected Class<?> getOneToManyClass() {
+		return Util.getClass(getOneToManyClassName(), getFacadeFactoryClassLoader());
+	}
+	
 	protected String getCollectionClassName() {
 		return "org.hibernate.mapping.Collection";
+	}
+	
+	protected String getOneToManyClassName() {
+		return "org.hibernate.mapping.OneToMany";
 	}
 
 }

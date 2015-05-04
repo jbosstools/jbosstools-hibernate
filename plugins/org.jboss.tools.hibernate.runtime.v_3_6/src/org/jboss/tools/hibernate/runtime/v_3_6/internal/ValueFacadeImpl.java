@@ -60,11 +60,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 	}
 
 	@Override
-	public boolean isOneToMany() {
-		return getTarget() instanceof OneToMany;
-	}
-
-	@Override
 	public boolean isManyToOne() {
 		return getTarget() instanceof ManyToOne;
 	}
