@@ -59,6 +59,11 @@ implements IValue {
 		return getOneToOneClass().isAssignableFrom(getTarget().getClass());
 	}
 
+	@Override
+	public boolean isMap() {
+		return getMapClass().isAssignableFrom(getTarget().getClass());
+	}
+
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(getCollectionClassName(), getFacadeFactoryClassLoader());
 	}
@@ -75,6 +80,10 @@ implements IValue {
 		return Util.getClass(getOneToOneClassName(), getFacadeFactoryClassLoader());
 	}
 	
+	protected Class<?> getMapClass() {
+		return Util.getClass(getMapClassName(), getFacadeFactoryClassLoader());
+	}
+	
 	protected String getCollectionClassName() {
 		return "org.hibernate.mapping.Collection";
 	}
@@ -89,6 +98,10 @@ implements IValue {
 
 	protected String getOneToOneClassName() {
 		return "org.hibernate.mapping.OneToOne";
+	}
+
+	protected String getMapClassName() {
+		return "org.hibernate.mapping.Map";
 	}
 
 }
