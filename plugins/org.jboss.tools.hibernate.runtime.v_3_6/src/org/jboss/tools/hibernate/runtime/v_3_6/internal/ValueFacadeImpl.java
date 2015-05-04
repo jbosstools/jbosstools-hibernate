@@ -70,11 +70,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 	}
 
 	@Override
-	public boolean isToOne() {
-		return getTarget() instanceof ToOne;
-	}
-
-	@Override
 	public Object accept(IValueVisitor valueVisitor) {
 		return valueVisitor.accept(this);
 	}
