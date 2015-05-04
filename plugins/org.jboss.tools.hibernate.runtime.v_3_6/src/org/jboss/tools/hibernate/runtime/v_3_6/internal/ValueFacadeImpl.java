@@ -37,7 +37,6 @@ import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
-import org.jboss.tools.hibernate.runtime.spi.IValueVisitor;
 
 public class ValueFacadeImpl extends AbstractValueFacade {
 	
@@ -56,11 +55,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 
 	public Value getTarget() {
 		return (Value)super.getTarget();
-	}
-
-	@Override
-	public Object accept(IValueVisitor valueVisitor) {
-		return valueVisitor.accept(this);
 	}
 
 	@Override

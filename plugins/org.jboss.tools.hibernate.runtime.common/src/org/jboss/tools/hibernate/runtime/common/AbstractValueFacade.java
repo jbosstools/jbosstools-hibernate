@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.runtime.common;
 
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
+import org.jboss.tools.hibernate.runtime.spi.IValueVisitor;
 
 public abstract class AbstractValueFacade 
 extends AbstractFacade 
@@ -85,6 +86,11 @@ implements IValue {
 					new Object[] {});
 		}
 		return result;
+	}
+
+	@Override
+	public Object accept(IValueVisitor valueVisitor) {
+		return valueVisitor.accept(this);
 	}
 
 	protected Class<?> getCollectionClass() {
