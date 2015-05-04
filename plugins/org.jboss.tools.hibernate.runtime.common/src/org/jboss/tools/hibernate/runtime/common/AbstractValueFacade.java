@@ -49,6 +49,11 @@ implements IValue {
 		return getOneToManyClass().isAssignableFrom(getTarget().getClass());
 	}
 
+	@Override
+	public boolean isManyToOne() {
+		return getManyToOneClass().isAssignableFrom(getTarget().getClass());
+	}
+
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(getCollectionClassName(), getFacadeFactoryClassLoader());
 	}
@@ -57,12 +62,20 @@ implements IValue {
 		return Util.getClass(getOneToManyClassName(), getFacadeFactoryClassLoader());
 	}
 	
+	protected Class<?> getManyToOneClass() {
+		return Util.getClass(getManyToOneClassName(), getFacadeFactoryClassLoader());
+	}
+	
 	protected String getCollectionClassName() {
 		return "org.hibernate.mapping.Collection";
 	}
 	
 	protected String getOneToManyClassName() {
 		return "org.hibernate.mapping.OneToMany";
+	}
+
+	protected String getManyToOneClassName() {
+		return "org.hibernate.mapping.ManyToOne";
 	}
 
 }
