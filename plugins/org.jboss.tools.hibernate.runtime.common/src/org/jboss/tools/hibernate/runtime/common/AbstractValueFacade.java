@@ -29,6 +29,21 @@ implements IValue {
 		return getCollectionClass().isAssignableFrom(getTarget().getClass());
 	}
 	
+	@Override
+	public IValue getCollectionElement() {
+		if (isCollection() && collectionElement == null) {
+			Object targetElement = Util.invokeMethod(
+					getTarget(), 
+					"getElement", 
+					new Class[] {}, 
+					new Object[] {});
+			if (targetElement != null) {
+				collectionElement = getFacadeFactory().createValue(targetElement);
+			}
+		}
+		return collectionElement;
+	}
+
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(getCollectionClassName(), getFacadeFactoryClassLoader());
 	}

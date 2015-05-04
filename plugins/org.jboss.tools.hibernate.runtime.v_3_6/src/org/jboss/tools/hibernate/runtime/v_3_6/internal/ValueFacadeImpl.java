@@ -60,17 +60,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 	}
 
 	@Override
-	public IValue getCollectionElement() {
-		if (isCollection() && collectionElement == null) {
-			Value element = ((Collection)getTarget()).getElement();
-			if (element != null) {
-				collectionElement = getFacadeFactory().createValue(element);
-			}
-		}
-		return collectionElement;
-	}
-
-	@Override
 	public boolean isOneToMany() {
 		return getTarget() instanceof OneToMany;
 	}
