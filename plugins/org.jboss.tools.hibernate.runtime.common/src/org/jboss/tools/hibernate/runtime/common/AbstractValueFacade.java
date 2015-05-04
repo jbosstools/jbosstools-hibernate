@@ -112,6 +112,21 @@ implements IValue {
 		return table;
 	}
 
+	@Override
+	public IType getType() {
+		if (type == null) {
+			Object targetType = Util.invokeMethod(
+					getTarget(), 
+					"getType", 
+					new Class[] {}, 
+					new Object[] {});	
+			if (targetType != null) {
+				type = getFacadeFactory().createType(targetType);
+			}
+		}
+		return type;
+	}
+
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(collectionClassName(), getFacadeFactoryClassLoader());
 	}
