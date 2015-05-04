@@ -95,6 +95,21 @@ implements IValue {
 		return valueVisitor.accept(this);
 	}
 
+	@Override
+	public ITable getTable() {
+		if (table == null) {
+			Object targetTable = Util.invokeMethod(
+					getTarget(), 
+					"getTable", 
+					new Class[] {}, 
+					new Object[] {});
+			if (targetTable != null) {
+				table = getFacadeFactory().createTable(targetTable);
+			}
+		}
+		return table;
+	}
+
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(collectionClassName(), getFacadeFactoryClassLoader());
 	}

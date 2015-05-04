@@ -57,14 +57,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 	}
 
 	@Override
-	public ITable getTable() {
-		if (getTarget().getTable() != null && table == null) {
-			table = getFacadeFactory().createTable(getTarget().getTable());
-		}
-		return table;
-	}
-
-	@Override
 	public IType getType() {
 		if (getTarget().getType() != null && type == null) {
 			type = getFacadeFactory().createType(getTarget().getType());
