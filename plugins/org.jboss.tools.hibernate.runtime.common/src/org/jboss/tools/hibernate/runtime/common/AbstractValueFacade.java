@@ -7,6 +7,8 @@ public abstract class AbstractValueFacade
 extends AbstractFacade 
 implements IValue {
 
+	protected IValue collectionElement = null;
+
 	public AbstractValueFacade(
 			IFacadeFactory facadeFactory, 
 			Object target) {

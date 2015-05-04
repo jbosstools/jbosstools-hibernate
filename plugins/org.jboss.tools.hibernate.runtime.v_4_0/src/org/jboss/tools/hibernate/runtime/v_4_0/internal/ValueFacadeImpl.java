@@ -42,7 +42,6 @@ import org.jboss.tools.hibernate.runtime.spi.IValueVisitor;
 
 public class ValueFacadeImpl extends AbstractValueFacade {
 	
-	private IValue collectionElement = null;
 	private ITable collectionTable = null;
 	private ITable table = null;
 	private IValue key = null;
