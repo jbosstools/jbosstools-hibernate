@@ -59,11 +59,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 	}
 
 	@Override
-	public boolean isComponent() {
-		return getTarget() instanceof Component;
-	}
-
-	@Override
 	public Boolean isEmbedded() {
 		Boolean result = null;
 		if (isComponent()) {

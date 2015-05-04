@@ -64,44 +64,57 @@ implements IValue {
 		return getMapClass().isAssignableFrom(getTarget().getClass());
 	}
 
+	@Override
+	public boolean isComponent() {
+		return getComponentClass().isAssignableFrom(getTarget().getClass());
+	}
+
 	protected Class<?> getCollectionClass() {
-		return Util.getClass(getCollectionClassName(), getFacadeFactoryClassLoader());
+		return Util.getClass(collectionClassName(), getFacadeFactoryClassLoader());
 	}
 	
 	protected Class<?> getOneToManyClass() {
-		return Util.getClass(getOneToManyClassName(), getFacadeFactoryClassLoader());
+		return Util.getClass(oneToManyClassName(), getFacadeFactoryClassLoader());
 	}
 	
 	protected Class<?> getManyToOneClass() {
-		return Util.getClass(getManyToOneClassName(), getFacadeFactoryClassLoader());
+		return Util.getClass(manyToOneClassName(), getFacadeFactoryClassLoader());
 	}
 	
 	protected Class<?> getOneToOneClass() {
-		return Util.getClass(getOneToOneClassName(), getFacadeFactoryClassLoader());
+		return Util.getClass(oneToOneClassName(), getFacadeFactoryClassLoader());
 	}
 	
 	protected Class<?> getMapClass() {
-		return Util.getClass(getMapClassName(), getFacadeFactoryClassLoader());
+		return Util.getClass(mapClassName(), getFacadeFactoryClassLoader());
 	}
 	
-	protected String getCollectionClassName() {
+	protected Class<?> getComponentClass() {
+		return Util.getClass(componentClassName(), getFacadeFactoryClassLoader());
+	}
+	
+	protected String collectionClassName() {
 		return "org.hibernate.mapping.Collection";
 	}
 	
-	protected String getOneToManyClassName() {
+	protected String oneToManyClassName() {
 		return "org.hibernate.mapping.OneToMany";
 	}
 
-	protected String getManyToOneClassName() {
+	protected String manyToOneClassName() {
 		return "org.hibernate.mapping.ManyToOne";
 	}
 
-	protected String getOneToOneClassName() {
+	protected String oneToOneClassName() {
 		return "org.hibernate.mapping.OneToOne";
 	}
 
-	protected String getMapClassName() {
+	protected String mapClassName() {
 		return "org.hibernate.mapping.Map";
+	}
+
+	protected String componentClassName() {
+		return "org.hibernate.mapping.Component";
 	}
 
 }
