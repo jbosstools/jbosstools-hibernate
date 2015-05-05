@@ -43,11 +43,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 	}
 
 	@Override
-	public boolean isArray() {
-		return getTarget() instanceof Array;
-	}
-
-	@Override
 	public String getElementClassName() {
 		String result = null;
 		if (isArray()) {

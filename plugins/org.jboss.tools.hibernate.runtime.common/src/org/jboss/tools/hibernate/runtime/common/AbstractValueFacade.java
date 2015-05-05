@@ -312,6 +312,11 @@ implements IValue {
 		return index;
 	}
 
+	@Override
+	public boolean isArray() {
+		return getArrayClass().isAssignableFrom(getTarget().getClass());
+	}
+
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(collectionClassName(), getFacadeFactoryClassLoader());
 	}
@@ -368,6 +373,10 @@ implements IValue {
 		return Util.getClass(setClassName(), getFacadeFactoryClassLoader());
 	}
 	
+	protected Class<?> getArrayClass() {
+		return Util.getClass(arrayClassName(), getFacadeFactoryClassLoader());
+	}
+	
 	protected String collectionClassName() {
 		return "org.hibernate.mapping.Collection";
 	}
@@ -422,6 +431,10 @@ implements IValue {
 
 	protected String setClassName() {
 		return "org.hibernate.mapping.Set";
+	}
+
+	protected String arrayClassName() {
+		return "org.hibernate.mapping.Array";
 	}
 
 	protected void initializeColumns() {
