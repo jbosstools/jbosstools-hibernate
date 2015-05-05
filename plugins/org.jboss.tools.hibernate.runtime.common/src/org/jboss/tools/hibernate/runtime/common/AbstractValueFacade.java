@@ -286,6 +286,11 @@ implements IValue {
 		return getDependantValueClass().isAssignableFrom(getTarget().getClass());
 	}
 
+	@Override
+	public boolean isAny() {
+		return getAnyClass().isAssignableFrom(getTarget().getClass());
+	}
+
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(collectionClassName(), getFacadeFactoryClassLoader());
 	}
@@ -334,6 +339,10 @@ implements IValue {
 		return Util.getClass(dependantValueClassName(), getFacadeFactoryClassLoader());
 	}
 	
+	protected Class<?> getAnyClass() {
+		return Util.getClass(anyClassName(), getFacadeFactoryClassLoader());
+	}
+	
 	protected String collectionClassName() {
 		return "org.hibernate.mapping.Collection";
 	}
@@ -380,6 +389,10 @@ implements IValue {
 
 	protected String dependantValueClassName() {
 		return "org.hibernate.mapping.DependantValue";
+	}
+
+	protected String anyClassName() {
+		return "org.hibernate.mapping.Any";
 	}
 
 	protected void initializeColumns() {

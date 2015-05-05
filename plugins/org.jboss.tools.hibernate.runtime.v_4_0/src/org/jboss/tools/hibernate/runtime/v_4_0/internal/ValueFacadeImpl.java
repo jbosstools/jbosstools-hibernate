@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import org.hibernate.FetchMode;
-import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.Collection;
@@ -44,11 +43,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 
 	public Value getTarget() {
 		return (Value)super.getTarget();
-	}
-
-	@Override
-	public boolean isAny() {
-		return getTarget() instanceof Any;
 	}
 
 	@Override
