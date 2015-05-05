@@ -20,6 +20,7 @@ implements IValue {
 	protected ITable collectionTable = null;
 	protected HashSet<IColumn> columns = null;
 	protected IValue key = null;
+	protected IValue index = null;
 
 	public AbstractValueFacade(
 			IFacadeFactory facadeFactory, 
