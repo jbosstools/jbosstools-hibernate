@@ -246,6 +246,11 @@ implements IValue {
 		return result; 
 	}
 	
+	@Override
+	public String toString() {
+		return getTarget().toString();
+	}
+
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(collectionClassName(), getFacadeFactoryClassLoader());
 	}

@@ -51,11 +51,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 	}
 
 	@Override
-	public String toString() {
-		return getTarget().toString();
-	}
-
-	@Override
 	public ITable getCollectionTable() {
 		if (isCollection() && collectionTable == null) {
 			Table ct = ((Collection)getTarget()).getCollectionTable();
