@@ -127,6 +127,22 @@ implements IValue {
 		return type;
 	}
 
+	@Override
+	public void setElement(IValue element) {
+		if (isCollection()) {
+			Object elementTarget = Util.invokeMethod(
+					element, 
+					"getTarget", 
+					new Class[] {}, 
+					new Object[] {});
+			Util.invokeMethod(
+					getTarget(), 
+					"setElement", 
+					new Class[] { getValueClass() }, 
+					new Object[] { elementTarget });
+		}
+	}
+
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(collectionClassName(), getFacadeFactoryClassLoader());
 	}
@@ -155,6 +171,10 @@ implements IValue {
 		return Util.getClass(toOneClassName(), getFacadeFactoryClassLoader());
 	}
 	
+	protected Class<?> getValueClass() {
+		return Util.getClass(valueClassName(), getFacadeFactoryClassLoader());
+	}
+	
 	protected String collectionClassName() {
 		return "org.hibernate.mapping.Collection";
 	}
@@ -181,6 +201,10 @@ implements IValue {
 
 	protected String toOneClassName() {
 		return "org.hibernate.mapping.ToOne";
+	}
+
+	protected String valueClassName() {
+		return "org.hibernate.mapping.Value";
 	}
 
 }

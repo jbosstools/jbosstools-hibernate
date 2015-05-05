@@ -55,14 +55,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 	}
 
 	@Override
-	public void setElement(IValue element) {
-		assert element instanceof ValueFacadeImpl;
-		if (isCollection()) {
-			((Collection)getTarget()).setElement(((ValueFacadeImpl)element).getTarget());
-		}
-	}
-
-	@Override
 	public void setCollectionTable(ITable table) {
 		assert table instanceof TableProxy;
 		if (isCollection()) {
