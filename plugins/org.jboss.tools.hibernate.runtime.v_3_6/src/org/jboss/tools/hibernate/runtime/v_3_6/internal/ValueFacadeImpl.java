@@ -27,7 +27,6 @@ import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
-import org.jboss.tools.hibernate.proxy.TableProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractValueFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
@@ -51,14 +50,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 
 	public Value getTarget() {
 		return (Value)super.getTarget();
-	}
-
-	@Override
-	public void setTable(ITable table) {
-		assert table instanceof TableProxy;
-		if (isSimpleValue()) {
-			((SimpleValue)getTarget()).setTable(((TableProxy)table).getTarget());
-		}
 	}
 
 	@Override

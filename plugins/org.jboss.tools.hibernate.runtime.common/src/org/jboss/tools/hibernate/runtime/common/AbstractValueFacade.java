@@ -161,6 +161,22 @@ implements IValue {
 		}
 	}
 
+	@Override
+	public void setTable(ITable table) {
+		if (isSimpleValue()) {
+			Object tableTarget = Util.invokeMethod(
+					table, 
+					"getTarget", 
+					new Class[] {}, 
+					new Object[] {});
+			Util.invokeMethod(
+					getTarget(), 
+					"setTable", 
+					new Class[] { getTableClass() }, 
+					new Object[] { tableTarget });
+		}
+	}
+
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(collectionClassName(), getFacadeFactoryClassLoader());
 	}
