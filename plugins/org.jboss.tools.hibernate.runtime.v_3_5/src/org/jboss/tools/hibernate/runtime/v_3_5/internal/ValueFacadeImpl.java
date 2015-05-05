@@ -42,15 +42,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 	}
 
 	@Override
-	public String getTypeName() {
-		String result = null;
-		if (isSimpleValue())  {
-			result = ((SimpleValue)getTarget()).getTypeName();
-		}
-		return result;
-	}
-
-	@Override
 	public boolean isIdentifierBag() {
 		return getTarget() instanceof IdentifierBag;
 	}

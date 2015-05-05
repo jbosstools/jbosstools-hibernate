@@ -335,6 +335,19 @@ implements IValue {
 		return getPrimitiveArrayClass().isAssignableFrom(getTarget().getClass());
 	}
 
+	@Override
+	public String getTypeName() {
+		String result = null;
+		if (isSimpleValue())  {
+			result = (String)Util.invokeMethod(
+					getTarget(), 
+					"getTypeName", 
+					new Class[] {}, 
+					new Object[] {});
+		}
+		return result;
+	}
+
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(collectionClassName(), getFacadeFactoryClassLoader());
 	}
