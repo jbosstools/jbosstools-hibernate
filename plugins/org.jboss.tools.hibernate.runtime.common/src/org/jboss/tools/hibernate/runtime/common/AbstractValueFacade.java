@@ -225,6 +225,14 @@ implements IValue {
 		return result;
 	}
 
+	@Override
+	public Iterator<IColumn> getColumnIterator() {
+		if (columns == null) {
+			initializeColumns();
+		}
+		return columns.iterator();
+	}
+	
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(collectionClassName(), getFacadeFactoryClassLoader());
 	}

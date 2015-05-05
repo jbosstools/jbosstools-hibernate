@@ -51,14 +51,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 	}
 
 	@Override
-	public Iterator<IColumn> getColumnIterator() {
-		if (columns == null) {
-			initializeColumns();
-		}
-		return columns.iterator();
-	}
-	
-	@Override
 	public Boolean isTypeSpecified() {
 		return isSimpleValue() ? ((SimpleValue)getTarget()).isTypeSpecified() : null; 
 	}
