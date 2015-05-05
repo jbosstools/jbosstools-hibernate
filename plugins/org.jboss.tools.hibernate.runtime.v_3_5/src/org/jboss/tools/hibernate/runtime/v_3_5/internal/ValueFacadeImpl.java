@@ -39,7 +39,6 @@ import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public class ValueFacadeImpl extends AbstractValueFacade {
 	
-	private ITable collectionTable = null;
 	private IValue key = null;
 	private IValue index = null;
 	private HashSet<IColumn> columns = null;

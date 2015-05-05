@@ -13,6 +13,7 @@ implements IValue {
 	protected IValue collectionElement = null;
 	protected ITable table = null;
 	protected IType type = null;
+	protected ITable collectionTable = null;
 
 	public AbstractValueFacade(
 			IFacadeFactory facadeFactory, 
