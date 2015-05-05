@@ -1,5 +1,8 @@
 package org.jboss.tools.hibernate.runtime.common;
 
+import java.util.HashSet;
+
+import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
@@ -14,6 +17,7 @@ implements IValue {
 	protected ITable table = null;
 	protected IType type = null;
 	protected ITable collectionTable = null;
+	protected HashSet<IColumn> columns = null;
 
 	public AbstractValueFacade(
 			IFacadeFactory facadeFactory, 
