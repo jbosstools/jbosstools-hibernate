@@ -6,7 +6,6 @@ import java.util.Properties;
 
 import org.hibernate.FetchMode;
 import org.hibernate.mapping.Array;
-import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
@@ -38,11 +37,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 
 	public Value getTarget() {
 		return (Value)super.getTarget();
-	}
-
-	@Override
-	public boolean isBag() {
-		return getTarget() instanceof Bag;
 	}
 
 	@Override
