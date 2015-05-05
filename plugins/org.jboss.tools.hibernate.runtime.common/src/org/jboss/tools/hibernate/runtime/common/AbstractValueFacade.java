@@ -196,6 +196,17 @@ implements IValue {
 				new Object[] { valueTarget });
 	}
 
+	@Override
+	public void setTypeName(String name) {
+		if (isSimpleValue()) {
+			Util.invokeMethod(
+					getTarget(), 
+					"setTypeName", 
+					new Class[] { String.class }, 
+					new Object[] { name });
+		}
+	}
+
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(collectionClassName(), getFacadeFactoryClassLoader());
 	}

@@ -52,13 +52,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 	}
 
 	@Override
-	public void setTypeName(String name) {
-		if (isSimpleValue()) {
-			((SimpleValue)getTarget()).setTypeName(name);
-		}
-	}
-
-	@Override
 	public String getComponentClassName() {
 		return isComponent() ? ((Component)getTarget()).getComponentClassName() : null;
 	}
