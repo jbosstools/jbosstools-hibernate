@@ -58,18 +58,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 		return columns.iterator();
 	}
 	
-	@SuppressWarnings("rawtypes")
-	private void initializeColumns() {
-		columns = new HashSet<IColumn>();
-		Iterator iterator = getTarget().getColumnIterator();
-		while (iterator.hasNext()) {
-			Object object = iterator.next();
-			if (object instanceof Column) {
-				columns.add(getFacadeFactory().createColumn(object));
-			}
-		}
-	}
-
 	@Override
 	public Boolean isTypeSpecified() {
 		return isSimpleValue() ? ((SimpleValue)getTarget()).isTypeSpecified() : null; 

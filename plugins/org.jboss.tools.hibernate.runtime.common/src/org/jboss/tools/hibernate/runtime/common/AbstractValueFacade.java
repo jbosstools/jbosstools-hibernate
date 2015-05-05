@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.common;
 
 import java.util.HashSet;
+import java.util.Iterator;
 
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
@@ -264,6 +265,10 @@ implements IValue {
 		return Util.getClass(listClassName(), getFacadeFactoryClassLoader());
 	}
 	
+	protected Class<?> getColumnClass() {
+		return Util.getClass(columnClassName(), getFacadeFactoryClassLoader());
+	}
+	
 	protected String collectionClassName() {
 		return "org.hibernate.mapping.Collection";
 	}
@@ -302,6 +307,25 @@ implements IValue {
 
 	protected String listClassName() {
 		return "org.hibernate.mapping.List";
+	}
+
+	protected String columnClassName() {
+		return "org.hibernate.mapping.Column";
+	}
+
+	protected void initializeColumns() {
+		columns = new HashSet<IColumn>();
+		Iterator<?> iterator = (Iterator<?>)Util.invokeMethod(
+				getTarget(), 
+				"getColumnIterator", 
+				new Class[] {}, 
+				new Object[] {});
+		while (iterator.hasNext()) {
+			Object object = iterator.next();
+			if (getColumnClass().isAssignableFrom(object.getClass())) {
+				columns.add(getFacadeFactory().createColumn(object));
+			}
+		}
 	}
 
 }
