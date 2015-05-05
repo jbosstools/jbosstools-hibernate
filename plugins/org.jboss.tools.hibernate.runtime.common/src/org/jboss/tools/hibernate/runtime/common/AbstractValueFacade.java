@@ -348,6 +348,11 @@ implements IValue {
 		return result;
 	}
 
+	@Override
+	public boolean isIdentifierBag() {
+		return getIdentifierBagClass().isAssignableFrom(getTarget().getClass());
+	}
+
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(collectionClassName(), getFacadeFactoryClassLoader());
 	}
@@ -412,6 +417,10 @@ implements IValue {
 		return Util.getClass(primitiveArrayClassName(), getFacadeFactoryClassLoader());
 	}
 	
+	protected Class<?> getIdentifierBagClass() {
+		return Util.getClass(identifierBagClassName(), getFacadeFactoryClassLoader());
+	}
+	
 	protected String collectionClassName() {
 		return "org.hibernate.mapping.Collection";
 	}
@@ -474,6 +483,10 @@ implements IValue {
 
 	protected String primitiveArrayClassName() {
 		return "org.hibernate.mapping.PrimitiveArray";
+	}
+
+	protected String identifierBagClassName() {
+		return "org.hibernate.mapping.IdentifierBag";
 	}
 
 	protected void initializeColumns() {
