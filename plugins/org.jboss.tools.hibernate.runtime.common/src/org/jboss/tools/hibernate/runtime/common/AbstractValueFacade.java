@@ -177,6 +177,11 @@ implements IValue {
 		}
 	}
 
+	@Override
+	public boolean isList() {
+		return getListClass().isAssignableFrom(getTarget().getClass());
+	}
+
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(collectionClassName(), getFacadeFactoryClassLoader());
 	}
@@ -213,6 +218,10 @@ implements IValue {
 		return Util.getClass(tableClassName(), getFacadeFactoryClassLoader());
 	}
 	
+	protected Class<?> getListClass() {
+		return Util.getClass(listClassName(), getFacadeFactoryClassLoader());
+	}
+	
 	protected String collectionClassName() {
 		return "org.hibernate.mapping.Collection";
 	}
@@ -247,6 +256,10 @@ implements IValue {
 
 	protected String tableClassName() {
 		return "org.hibernate.mapping.Table";
+	}
+
+	protected String listClassName() {
+		return "org.hibernate.mapping.List";
 	}
 
 }

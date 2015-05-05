@@ -53,11 +53,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 	}
 
 	@Override
-	public boolean isList() {
-		return getTarget() instanceof List;
-	}
-
-	@Override
 	public void setIndex(IValue value) {
 		assert value instanceof ValueFacadeImpl;
 		((IndexedCollection)getTarget()).setIndex(((ValueFacadeImpl)value).getTarget());
