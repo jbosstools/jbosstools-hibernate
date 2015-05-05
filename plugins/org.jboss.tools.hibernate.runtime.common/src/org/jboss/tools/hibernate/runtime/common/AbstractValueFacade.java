@@ -267,6 +267,21 @@ implements IValue {
 		return collectionTable;
 	}
 
+	@Override
+	public IValue getKey() {
+		if (key == null && isCollection()) {
+			Object key = Util.invokeMethod(
+					getTarget(), 
+					"getKey", 
+					new Class[] {}, 
+					new Object[] {});
+			if (key != null) {
+				key = getFacadeFactory().createValue(key);
+			}
+		}
+		return key;
+	}
+
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(collectionClassName(), getFacadeFactoryClassLoader());
 	}

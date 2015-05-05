@@ -47,17 +47,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 		return (Value)super.getTarget();
 	}
 
-	@Override
-	public IValue getKey() {
-		if (key == null && isCollection()) {
-			Collection collection = (Collection)getTarget();
-			if (collection.getKey() != null) {
-				key = getFacadeFactory().createValue(collection.getKey());
-			}
-		}
-		return key;
-	}
-
 	public boolean isDependantValue() {
 		return getTarget() instanceof DependantValue;
 	}
