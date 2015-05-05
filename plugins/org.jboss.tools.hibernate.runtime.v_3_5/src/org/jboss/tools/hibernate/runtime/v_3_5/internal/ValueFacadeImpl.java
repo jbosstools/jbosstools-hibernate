@@ -12,7 +12,6 @@ import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.IdentifierBag;
 import org.hibernate.mapping.KeyValue;
-import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
@@ -41,17 +40,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 
 	public Value getTarget() {
 		return (Value)super.getTarget();
-	}
-
-	@Override
-	public IValue getIndex() {
-		if (index == null && isList()) {
-			List list = (List)getTarget();
-			if (list.getIndex() != null) {
-				index = getFacadeFactory().createValue(list.getIndex());
-			}
-		}
-		return index;
 	}
 
 	@Override

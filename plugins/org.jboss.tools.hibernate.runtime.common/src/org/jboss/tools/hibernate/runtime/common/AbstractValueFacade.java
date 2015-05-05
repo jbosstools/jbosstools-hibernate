@@ -297,6 +297,21 @@ implements IValue {
 		return getSetClass().isAssignableFrom(getTarget().getClass());
 	}
 
+	@Override
+	public IValue getIndex() {
+		if (index == null && isList()) {
+			Object targetIndex = Util.invokeMethod(
+					getTarget(), 
+					"getIndex", 
+					new Class[] {}, 
+					new Object[] {});
+			if (targetIndex != null) {
+				index = getFacadeFactory().createValue(targetIndex);
+			}
+		}
+		return index;
+	}
+
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(collectionClassName(), getFacadeFactoryClassLoader());
 	}
