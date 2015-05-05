@@ -207,6 +207,19 @@ implements IValue {
 		}
 	}
 
+	@Override
+	public String getComponentClassName() {
+		String result = null;
+		if (isComponent()) {
+			result = (String)Util.invokeMethod(
+					getTarget(), 
+					"getComponentClassName", 
+					new Class[] {}, 
+					new Object[] {});
+		}
+		return result;
+	}
+
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(collectionClassName(), getFacadeFactoryClassLoader());
 	}

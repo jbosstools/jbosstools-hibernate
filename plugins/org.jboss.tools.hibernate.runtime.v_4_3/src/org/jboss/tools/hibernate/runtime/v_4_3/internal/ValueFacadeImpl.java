@@ -52,11 +52,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 	}
 
 	@Override
-	public String getComponentClassName() {
-		return isComponent() ? ((Component)getTarget()).getComponentClassName() : null;
-	}
-
-	@Override
 	public Iterator<IColumn> getColumnIterator() {
 		if (columns == null) {
 			initializeColumns();
