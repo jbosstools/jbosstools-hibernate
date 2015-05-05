@@ -182,6 +182,20 @@ implements IValue {
 		return getListClass().isAssignableFrom(getTarget().getClass());
 	}
 
+	@Override
+	public void setIndex(IValue value) {
+		Object valueTarget = Util.invokeMethod(
+				value, 
+				"getTarget", 
+				new Class[] {}, 
+				new Object[] {});
+		Util.invokeMethod(
+				getTarget(), 
+				"setIndex", 
+				new Class[] { getValueClass() }, 
+				new Object[] { valueTarget });
+	}
+
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(collectionClassName(), getFacadeFactoryClassLoader());
 	}

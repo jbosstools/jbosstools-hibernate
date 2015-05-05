@@ -13,7 +13,6 @@ import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.IdentifierBag;
-import org.hibernate.mapping.IndexedCollection;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
@@ -50,12 +49,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 
 	public Value getTarget() {
 		return (Value)super.getTarget();
-	}
-
-	@Override
-	public void setIndex(IValue value) {
-		assert value instanceof ValueFacadeImpl;
-		((IndexedCollection)getTarget()).setIndex(((ValueFacadeImpl)value).getTarget());
 	}
 
 	@Override
