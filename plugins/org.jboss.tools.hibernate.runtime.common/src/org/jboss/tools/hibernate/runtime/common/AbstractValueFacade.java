@@ -19,6 +19,7 @@ implements IValue {
 	protected IType type = null;
 	protected ITable collectionTable = null;
 	protected HashSet<IColumn> columns = null;
+	protected IValue key = null;
 
 	public AbstractValueFacade(
 			IFacadeFactory facadeFactory, 
