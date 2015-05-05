@@ -313,6 +313,19 @@ implements IValue {
 	}
 
 	@Override
+	public String getElementClassName() {
+		String result = null;
+		if (isArray()) {
+			result = (String)Util.invokeMethod(
+					getTarget(), 
+					"getElementClassName", 
+					new Class[] {}, 
+					new Object[] {});
+		}
+		return result;
+	}
+
+	@Override
 	public boolean isArray() {
 		return getArrayClass().isAssignableFrom(getTarget().getClass());
 	}
