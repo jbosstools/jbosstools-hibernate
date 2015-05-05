@@ -22,7 +22,6 @@ import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
-import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
@@ -32,7 +31,6 @@ import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
-import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public class ValueFacadeImpl extends AbstractValueFacade {
@@ -48,17 +46,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 
 	public Value getTarget() {
 		return (Value)super.getTarget();
-	}
-
-	@Override
-	public ITable getCollectionTable() {
-		if (isCollection() && collectionTable == null) {
-			Table ct = ((Collection)getTarget()).getCollectionTable();
-			if (ct != null) {
-				collectionTable = getFacadeFactory().createTable(ct);
-			}
-		}
-		return collectionTable;
 	}
 
 	@Override
