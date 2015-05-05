@@ -233,6 +233,19 @@ implements IValue {
 		return columns.iterator();
 	}
 	
+	@Override
+	public Boolean isTypeSpecified() {
+		Boolean result = null;
+		if (isSimpleValue()) {
+			result = (Boolean)Util.invokeMethod(
+					getTarget(), 
+					"isTypeSpecified", 
+					new Class[] {}, 
+					new Object[] {});
+		}
+		return result; 
+	}
+	
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(collectionClassName(), getFacadeFactoryClassLoader());
 	}

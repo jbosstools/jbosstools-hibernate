@@ -51,11 +51,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 	}
 
 	@Override
-	public Boolean isTypeSpecified() {
-		return isSimpleValue() ? ((SimpleValue)getTarget()).isTypeSpecified() : null; 
-	}
-	
-	@Override
 	public String toString() {
 		return getTarget().toString();
 	}
