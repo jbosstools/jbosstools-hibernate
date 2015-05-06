@@ -17,8 +17,6 @@ import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public class ValueFacadeImpl extends AbstractValueFacade {
 	
-	private IPersistentClass owner = null;
-	
 	public ValueFacadeImpl(IFacadeFactory facadeFactory, Value value) {
 		super(facadeFactory, value);
 	}
