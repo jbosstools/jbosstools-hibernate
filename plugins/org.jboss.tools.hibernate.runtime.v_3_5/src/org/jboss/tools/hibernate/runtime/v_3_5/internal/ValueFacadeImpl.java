@@ -1,12 +1,10 @@
 package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
-import java.util.Iterator;
 import java.util.Properties;
 
 import org.hibernate.FetchMode;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Collection;
-import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.ManyToOne;
@@ -16,11 +14,8 @@ import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractValueFacade;
-import org.jboss.tools.hibernate.runtime.common.IFacade;
-import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
-import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public class ValueFacadeImpl extends AbstractValueFacade {
@@ -33,21 +28,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 
 	public Value getTarget() {
 		return (Value)super.getTarget();
-	}
-
-	@Override
-	public Iterator<IProperty> getPropertyIterator() {
-		if (properties == null) {
-			initializeProperties();
-		}
-		return properties.iterator();
-	}
-	
-	@Override
-	public void addColumn(IColumn column) {
-		assert column instanceof IFacade;
-		assert getTarget() instanceof SimpleValue;
-		((SimpleValue)getTarget()).addColumn((Column)((IFacade)column).getTarget());
 	}
 
 	@Override

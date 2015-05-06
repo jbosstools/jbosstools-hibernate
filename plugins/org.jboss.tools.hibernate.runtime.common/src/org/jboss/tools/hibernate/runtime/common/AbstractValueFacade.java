@@ -386,6 +386,28 @@ implements IValue {
 		return result;
 	}
 
+	@Override
+	public Iterator<IProperty> getPropertyIterator() {
+		if (properties == null) {
+			initializeProperties();
+		}
+		return properties.iterator();
+	}
+	
+	@Override
+	public void addColumn(IColumn column) {
+		Object columnTarget = Util.invokeMethod(
+				column, 
+				"getTarget", 
+				new Class[] {}, 
+				new Object[] {});
+		Util.invokeMethod(
+				getTarget(), 
+				"addColumn", 
+				new Class[] { getColumnClass() }, 
+				new Object[] { columnTarget });
+	}
+
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(collectionClassName(), getFacadeFactoryClassLoader());
 	}
