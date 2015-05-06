@@ -40,17 +40,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 	}
 
 	@Override
-	public String getReferencedEntityName() {
-		String result = null;
-		if (getTarget() instanceof OneToMany) {
-			result = ((OneToMany)getTarget()).getReferencedEntityName();
-		} else if (getTarget() instanceof ToOne) {
-			result = ((ToOne)getTarget()).getReferencedEntityName();
-		}
-		return result;
-	}
-
-	@Override
 	public String getEntityName() {
 		String result = null;
 		if (getTarget() instanceof OneToOne) {

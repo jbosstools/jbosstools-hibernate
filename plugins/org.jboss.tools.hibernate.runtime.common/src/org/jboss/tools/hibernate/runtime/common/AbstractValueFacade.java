@@ -358,6 +358,19 @@ implements IValue {
 		return getBagClass().isAssignableFrom(getTarget().getClass());
 	}
 
+	@Override
+	public String getReferencedEntityName() {
+		String result = null;
+		if (isOneToMany() || isToOne()) {
+			result = (String)Util.invokeMethod(
+					getTable(), 
+					"getReferencedEntityName", 
+					new Class[] {}, 
+					new Object[] {});
+		}
+		return result;
+	}
+
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(collectionClassName(), getFacadeFactoryClassLoader());
 	}
