@@ -7,7 +7,6 @@ import org.hibernate.mapping.Component;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
-import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
@@ -26,12 +25,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 
 	public Value getTarget() {
 		return (Value)super.getTarget();
-	}
-
-	@Override
-	public String getForeignKeyName() {
-		assert getTarget() instanceof SimpleValue;
-		return ((SimpleValue)getTarget()).getForeignKeyName();
 	}
 
 	@Override

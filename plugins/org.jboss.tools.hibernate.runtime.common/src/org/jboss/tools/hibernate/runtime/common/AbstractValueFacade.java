@@ -418,6 +418,15 @@ implements IValue {
 				new Object[] { typeParameters });
 	}
 
+	@Override
+	public String getForeignKeyName() {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getForeignKeyName", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(collectionClassName(), getFacadeFactoryClassLoader());
 	}
