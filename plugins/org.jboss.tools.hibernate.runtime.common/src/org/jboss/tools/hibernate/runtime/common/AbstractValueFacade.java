@@ -429,6 +429,21 @@ implements IValue {
 				new Object[] {});
 	}
 
+	@Override
+	public IPersistentClass getOwner() {
+		if (owner == null) {
+			Object targetOwner = Util.invokeMethod(
+					getTarget(), 
+					"getOwner", 
+					new Class[] {}, 
+					new Object[] {});
+			if (targetOwner != null) {
+				owner = getFacadeFactory().createPersistentClass(targetOwner);
+			}
+		}
+		return owner;
+	}
+
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(collectionClassName(), getFacadeFactoryClassLoader());
 	}

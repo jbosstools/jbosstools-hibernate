@@ -26,14 +26,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 	}
 
 	@Override
-	public IPersistentClass getOwner() {
-		assert getTarget() instanceof Component;
-		if (owner == null && ((Component)getTarget()).getOwner() != null)
-			owner = getFacadeFactory().createPersistentClass(((Component)getTarget()).getOwner());
-		return owner;
-	}
-
-	@Override
 	public IValue getElement() {
 		assert getTarget() instanceof Collection;
 		IValue result = null;
