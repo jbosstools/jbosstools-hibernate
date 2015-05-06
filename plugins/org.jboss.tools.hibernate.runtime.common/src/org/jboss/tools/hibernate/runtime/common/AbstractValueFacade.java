@@ -271,13 +271,13 @@ implements IValue {
 	@Override
 	public IValue getKey() {
 		if (key == null && isCollection()) {
-			Object key = Util.invokeMethod(
+			Object targetKey = Util.invokeMethod(
 					getTarget(), 
 					"getKey", 
 					new Class[] {}, 
 					new Object[] {});
-			if (key != null) {
-				key = getFacadeFactory().createValue(key);
+			if (targetKey != null) {
+				key = getFacadeFactory().createValue(targetKey);
 			}
 		}
 		return key;
