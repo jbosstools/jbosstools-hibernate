@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
@@ -21,6 +22,7 @@ implements IValue {
 	protected HashSet<IColumn> columns = null;
 	protected IValue key = null;
 	protected IValue index = null;
+	protected HashSet<IProperty> properties = null;
 
 	public AbstractValueFacade(
 			IFacadeFactory facadeFactory, 
