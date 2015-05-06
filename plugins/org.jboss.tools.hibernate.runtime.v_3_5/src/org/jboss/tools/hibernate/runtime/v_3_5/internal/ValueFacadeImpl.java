@@ -1,7 +1,5 @@
 package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
-import java.util.Properties;
-
 import org.hibernate.FetchMode;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Collection;
@@ -28,12 +26,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 
 	public Value getTarget() {
 		return (Value)super.getTarget();
-	}
-
-	@Override
-	public void setTypeParameters(Properties typeParameters) {
-		assert getTarget() instanceof SimpleValue;
-		((SimpleValue)getTarget()).setTypeParameters(typeParameters);
 	}
 
 	@Override

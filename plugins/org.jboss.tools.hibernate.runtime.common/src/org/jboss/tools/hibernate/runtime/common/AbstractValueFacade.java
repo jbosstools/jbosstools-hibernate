@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.runtime.common;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Properties;
 
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
@@ -406,6 +407,15 @@ implements IValue {
 				"addColumn", 
 				new Class[] { getColumnClass() }, 
 				new Object[] { columnTarget });
+	}
+
+	@Override
+	public void setTypeParameters(Properties typeParameters) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setTypeParameters", 
+				new Class[] { Properties.class }, 
+				new Object[] { typeParameters });
 	}
 
 	protected Class<?> getCollectionClass() {
