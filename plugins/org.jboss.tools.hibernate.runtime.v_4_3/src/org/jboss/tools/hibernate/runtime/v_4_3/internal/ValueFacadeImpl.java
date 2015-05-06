@@ -1,6 +1,5 @@
 package org.jboss.tools.hibernate.runtime.v_4_3.internal;
 
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
 
@@ -12,7 +11,6 @@ import org.hibernate.mapping.Component;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
-import org.hibernate.mapping.Property;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
@@ -45,15 +43,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 		return properties.iterator();
 	}
 	
-	@SuppressWarnings("unchecked")
-	private void initializeProperties() {
-		properties = new HashSet<IProperty>();
-		Iterator<Property> origin = ((Component)getTarget()).getPropertyIterator();
-		while (origin.hasNext()) {
-			properties.add(getFacadeFactory().createProperty(origin.next()));
-		}
-	}
-
 	@Override
 	public void addColumn(IColumn column) {
 		assert column instanceof IFacade;

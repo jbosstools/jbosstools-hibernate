@@ -545,4 +545,16 @@ implements IValue {
 		}
 	}
 
+	protected void initializeProperties() {
+		properties = new HashSet<IProperty>();
+		Iterator<?> iterator = (Iterator<?>)Util.invokeMethod(
+				getTarget(), 
+				"getPropertyIterator", 
+				new Class[] {}, 
+				new Object[] {});
+		while (iterator.hasNext()) {
+			properties.add(getFacadeFactory().createProperty(iterator.next()));
+		}
+	}
+
 }
