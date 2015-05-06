@@ -371,6 +371,19 @@ implements IValue {
 		return result;
 	}
 
+	@Override
+	public String getEntityName() {
+		String result = null;
+		if (isOneToOne()) {
+		result = (String)Util.invokeMethod(
+				getTable(), 
+				"getEntityName", 
+				new Class[] {}, 
+				new Object[] {});
+		}
+		return result;
+	}
+
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(collectionClassName(), getFacadeFactoryClassLoader());
 	}

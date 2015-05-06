@@ -12,7 +12,6 @@ import org.hibernate.mapping.Component;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
-import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.ToOne;
@@ -37,15 +36,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 
 	public Value getTarget() {
 		return (Value)super.getTarget();
-	}
-
-	@Override
-	public String getEntityName() {
-		String result = null;
-		if (getTarget() instanceof OneToOne) {
-			result = ((OneToOne)getTarget()).getEntityName();
-		}
-		return result;
 	}
 
 	@Override
