@@ -21,14 +21,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 	}
 
 	@Override
-	public IPersistentClass getAssociatedClass() {
-		assert getTarget() instanceof OneToMany;
-		return ((OneToMany)getTarget()).getAssociatedClass() != null ? 
-				getFacadeFactory().createPersistentClass(((OneToMany)getTarget()).getAssociatedClass()) :
-					null;
-	}
-
-	@Override
 	public void setLazy(boolean b) {
 		assert getTarget() instanceof Collection;
 		((Collection)getTarget()).setLazy(b);

@@ -26,6 +26,7 @@ implements IValue {
 	protected IValue index = null;
 	protected HashSet<IProperty> properties = null;
 	protected IPersistentClass owner = null;
+	protected IPersistentClass associatedClass = null;
 
 	public AbstractValueFacade(
 			IFacadeFactory facadeFactory, 
@@ -512,6 +513,23 @@ implements IValue {
 				"isInverse", 
 				new Class[] {}, 
 				new Object[] {});
+	}
+
+	@Override
+	public IPersistentClass getAssociatedClass() {
+		if (associatedClass == null) {
+			Object targetAssociatedClass = Util.invokeMethod(
+					getTarget(), 
+					"getAssociatedClass", 
+					new Class[] {}, 
+					new Object[] {});
+			if (targetAssociatedClass != null) {
+				associatedClass = 
+						getFacadeFactory().createPersistentClass(
+								targetAssociatedClass);
+			}
+		}
+		return associatedClass;
 	}
 
 	protected Class<?> getCollectionClass() {
