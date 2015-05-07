@@ -1,6 +1,5 @@
 package org.jboss.tools.hibernate.runtime.v_4_0.internal;
 
-import org.hibernate.FetchMode;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
@@ -19,16 +18,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 
 	public Value getTarget() {
 		return (Value)super.getTarget();
-	}
-
-	@Override
-	public void setFetchModeJoin() {
-		assert (getTarget() instanceof Collection || getTarget() instanceof ToOne);
-		if (getTarget() instanceof Collection) {
-			((Collection)getTarget()).setFetchMode(FetchMode.JOIN);
-		} else if (getTarget() instanceof ToOne) {
-			((ToOne)getTarget()).setFetchMode(FetchMode.JOIN);
-		}
 	}
 
 	@Override

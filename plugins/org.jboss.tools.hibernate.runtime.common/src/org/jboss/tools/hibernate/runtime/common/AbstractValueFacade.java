@@ -490,6 +490,21 @@ implements IValue {
 				new Object[] { keyValueTarget });
 	}
 
+	@Override
+	public void setFetchModeJoin() {
+		if (isCollection() || isToOne()) {
+			Object fetchModeJoin = Util.getFieldValue(
+					getFetchModeClass(),
+					"JOIN", 
+					null);
+			Util.invokeMethod(
+					getTarget(), 
+					"setFetchMode", 
+					new Class[] { getFetchModeClass() }, 
+					new Object[] { fetchModeJoin });
+		}
+	}
+
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(collectionClassName(), getFacadeFactoryClassLoader());
 	}
@@ -566,6 +581,10 @@ implements IValue {
 		return Util.getClass(keyValueClassName(), getFacadeFactoryClassLoader());
 	}
 	
+	protected Class<?> getFetchModeClass() {
+		return Util.getClass(fetchModeClassName(), getFacadeFactoryClassLoader());
+	}
+	
 	protected String collectionClassName() {
 		return "org.hibernate.mapping.Collection";
 	}
@@ -640,6 +659,10 @@ implements IValue {
 	
 	protected String keyValueClassName() {
 		return "org.hibernate.mapping.KeyValue";
+	}
+	
+	protected String fetchModeClassName() {
+		return "org.hibernate.FetchMode";
 	}
 
 	protected void initializeColumns() {
