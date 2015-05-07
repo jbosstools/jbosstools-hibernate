@@ -2,7 +2,6 @@ package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
 import org.hibernate.FetchMode;
 import org.hibernate.mapping.Collection;
-import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.ToOne;
@@ -11,7 +10,6 @@ import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractValueFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
-import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public class ValueFacadeImpl extends AbstractValueFacade {
 		
@@ -21,14 +19,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 
 	public Value getTarget() {
 		return (Value)super.getTarget();
-	}
-
-	@Override
-	public void setKey(IValue keyValue) {
-		assert keyValue instanceof ValueFacadeImpl;
-		assert getTarget() instanceof Collection;
-		assert ((ValueFacadeImpl)keyValue).getTarget() instanceof KeyValue;
-		((Collection)getTarget()).setKey((KeyValue)((ValueFacadeImpl)keyValue).getTarget());
 	}
 
 	@Override

@@ -476,6 +476,20 @@ implements IValue {
 				new Object[] { name });
 	}
 
+	@Override
+	public void setKey(IValue keyValue) {
+		Object keyValueTarget = Util.invokeMethod(
+				keyValue, 
+				"getTarget", 
+				new Class[] {}, 
+				new Object[] {});
+		Util.invokeMethod(
+				getTarget(), 
+				"setKey", 
+				new Class[] { getKeyValueClass() }, 
+				new Object[] { keyValueTarget });
+	}
+
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(collectionClassName(), getFacadeFactoryClassLoader());
 	}
@@ -548,6 +562,10 @@ implements IValue {
 		return Util.getClass(bagClassName(), getFacadeFactoryClassLoader());
 	}
 	
+	protected Class<?> getKeyValueClass() {
+		return Util.getClass(keyValueClassName(), getFacadeFactoryClassLoader());
+	}
+	
 	protected String collectionClassName() {
 		return "org.hibernate.mapping.Collection";
 	}
@@ -618,6 +636,10 @@ implements IValue {
 
 	protected String bagClassName() {
 		return "org.hibernate.mapping.Bag";
+	}
+	
+	protected String keyValueClassName() {
+		return "org.hibernate.mapping.KeyValue";
 	}
 
 	protected void initializeColumns() {
