@@ -550,6 +550,17 @@ implements IValue {
 				new Object[] { role });
 	}
 
+	@Override
+	public void setReferencedEntityName(String name) {
+		if (isToOne() || isOneToMany()) {
+			Util.invokeMethod(
+					getTarget(), 
+					"setReferencedEntityName", 
+					new Class[] { String.class }, 
+					new Object[] { name });
+		}
+	}
+
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(collectionClassName(), getFacadeFactoryClassLoader());
 	}

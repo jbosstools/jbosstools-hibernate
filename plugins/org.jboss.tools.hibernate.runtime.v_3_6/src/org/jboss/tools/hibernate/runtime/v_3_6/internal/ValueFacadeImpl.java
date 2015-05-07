@@ -1,8 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_3_6.internal;
 
-import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
-import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractValueFacade;
@@ -17,16 +15,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 
 	public Value getTarget() {
 		return (Value)super.getTarget();
-	}
-
-	@Override
-	public void setReferencedEntityName(String name) {
-		assert (getTarget() instanceof ToOne || getTarget() instanceof ManyToOne);
-		if (isToOne()) {
-			((ToOne)getTarget()).setReferencedEntityName(name);
-		} else if (isOneToMany()) {
-			((OneToMany)getTarget()).setReferencedEntityName(name);
-		}
 	}
 
 	@Override
