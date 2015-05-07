@@ -561,6 +561,20 @@ implements IValue {
 		}
 	}
 
+	@Override
+	public void setAssociatedClass(IPersistentClass persistentClass) {
+		Object persistentClassTarget = Util.invokeMethod(
+				persistentClass, 
+				"getTarget", 
+				new Class[] {}, 
+				new Object[] {});
+		Util.invokeMethod(
+				getTarget(), 
+				"setAssociatedClass", 
+				new Class[] { getPersistentClassClass() }, 
+				new Object[] { persistentClassTarget });
+	}
+	
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(collectionClassName(), getFacadeFactoryClassLoader());
 	}
@@ -641,6 +655,10 @@ implements IValue {
 		return Util.getClass(fetchModeClassName(), getFacadeFactoryClassLoader());
 	}
 	
+	protected Class<?> getPersistentClassClass() {
+		return Util.getClass(persistentClassClassName(), getFacadeFactoryClassLoader());
+	}
+	
 	protected String collectionClassName() {
 		return "org.hibernate.mapping.Collection";
 	}
@@ -719,6 +737,10 @@ implements IValue {
 	
 	protected String fetchModeClassName() {
 		return "org.hibernate.FetchMode";
+	}
+	
+	protected String persistentClassClassName() {
+		return "org.hibernate.mapping.PersistentClass";
 	}
 
 	protected void initializeColumns() {

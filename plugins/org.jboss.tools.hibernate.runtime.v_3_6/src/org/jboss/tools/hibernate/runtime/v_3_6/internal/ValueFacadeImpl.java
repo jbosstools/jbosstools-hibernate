@@ -1,11 +1,8 @@
 package org.jboss.tools.hibernate.runtime.v_3_6.internal;
 
-import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.Value;
-import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractValueFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 
 public class ValueFacadeImpl extends AbstractValueFacade {
 	
@@ -15,13 +12,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 
 	public Value getTarget() {
 		return (Value)super.getTarget();
-	}
-
-	@Override
-	public void setAssociatedClass(IPersistentClass persistentClass) {
-		assert getTarget() instanceof OneToMany;
-		assert persistentClass instanceof PersistentClassProxy;
-		((OneToMany)getTarget()).setAssociatedClass(((PersistentClassProxy)persistentClass).getTarget());
 	}
 
 }
