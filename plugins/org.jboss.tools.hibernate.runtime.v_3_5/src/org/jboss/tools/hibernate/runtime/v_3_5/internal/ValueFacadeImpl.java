@@ -21,12 +21,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 	}
 
 	@Override
-	public boolean isInverse() {
-		assert getTarget() instanceof Collection;
-		return ((Collection)getTarget()).isInverse();
-	}
-
-	@Override
 	public IPersistentClass getAssociatedClass() {
 		assert getTarget() instanceof OneToMany;
 		return ((OneToMany)getTarget()).getAssociatedClass() != null ? 

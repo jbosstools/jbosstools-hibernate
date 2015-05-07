@@ -505,6 +505,15 @@ implements IValue {
 		}
 	}
 
+	@Override
+	public boolean isInverse() {
+		return (boolean)Util.invokeMethod(
+				getTarget(), 
+				"isInverse", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(collectionClassName(), getFacadeFactoryClassLoader());
 	}
