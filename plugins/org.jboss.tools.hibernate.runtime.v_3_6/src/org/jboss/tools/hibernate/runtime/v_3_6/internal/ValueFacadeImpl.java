@@ -1,6 +1,5 @@
 package org.jboss.tools.hibernate.runtime.v_3_6.internal;
 
-import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.ToOne;
@@ -18,12 +17,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 
 	public Value getTarget() {
 		return (Value)super.getTarget();
-	}
-
-	@Override
-	public void setRole(String role) {
-		assert getTarget() instanceof Collection;
-		((Collection)getTarget()).setRole(role);
 	}
 
 	@Override

@@ -541,6 +541,15 @@ implements IValue {
 				new Object[] { b });
 	}
 
+	@Override
+	public void setRole(String role) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setRole", 
+				new Class[] { String.class }, 
+				new Object[] { role });
+	}
+
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(collectionClassName(), getFacadeFactoryClassLoader());
 	}
