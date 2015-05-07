@@ -1,7 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
 import org.hibernate.FetchMode;
-import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.ManyToOne;
@@ -22,12 +21,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 
 	public Value getTarget() {
 		return (Value)super.getTarget();
-	}
-
-	@Override
-	public void setElementClassName(String name) {
-		assert getTarget() instanceof Array;
-		((Array)getTarget()).setElementClassName(name);
 	}
 
 	@Override

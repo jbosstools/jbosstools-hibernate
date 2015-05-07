@@ -467,6 +467,15 @@ implements IValue {
 				new Object[] {});
 	}
 
+	@Override
+	public void setElementClassName(String name) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setElementClassName", 
+				new Class[] { String.class }, 
+				new Object[] { name });
+	}
+
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(collectionClassName(), getFacadeFactoryClassLoader());
 	}
