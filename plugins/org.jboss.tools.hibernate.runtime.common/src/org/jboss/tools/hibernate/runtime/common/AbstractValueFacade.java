@@ -444,6 +444,20 @@ implements IValue {
 		return owner;
 	}
 
+	@Override
+	public IValue getElement() {
+		IValue result = null;
+		Object targetElement = Util.invokeMethod(
+				getTarget(), 
+				"getElement", 
+				new Class[] {}, 
+				new Object[] {});
+		if (targetElement != null) {
+			result = getFacadeFactory().createValue(targetElement);
+		}
+		return result;
+	}
+
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(collectionClassName(), getFacadeFactoryClassLoader());
 	}

@@ -26,16 +26,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 	}
 
 	@Override
-	public IValue getElement() {
-		assert getTarget() instanceof Collection;
-		IValue result = null;
-		if (((Collection)getTarget()).getElement() != null) {
-			result = getFacadeFactory().createValue(((Collection)getTarget()).getElement());
-		}
-		return result;
-	}
-
-	@Override
 	public String getParentProperty() {
 		return ((Component)getTarget()).getParentProperty();
 	}
