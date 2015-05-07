@@ -10,8 +10,4 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 		super(facadeFactory, value);
 	}
 
-	public Value getTarget() {
-		return (Value)super.getTarget();
-	}
-
 }

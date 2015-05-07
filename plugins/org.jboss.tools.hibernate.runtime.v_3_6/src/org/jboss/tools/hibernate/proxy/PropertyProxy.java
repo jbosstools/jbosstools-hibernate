@@ -1,7 +1,9 @@
 package org.jboss.tools.hibernate.proxy;
 
 import org.hibernate.mapping.Property;
+import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.runtime.common.AbstractPropertyFacade;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IType;
@@ -88,7 +90,7 @@ public class PropertyProxy extends AbstractPropertyFacade {
 	@Override
 	public void setValue(IValue value) {
 		assert value instanceof ValueFacadeImpl;
-		getTarget().setValue(((ValueFacadeImpl)value).getTarget());
+		getTarget().setValue((Value)((IFacade)value).getTarget());
 		this.value = value;
 	}
 

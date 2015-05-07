@@ -10,7 +10,9 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
+import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.runtime.common.AbstractPersistentClassFacade;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -292,7 +294,7 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 	public void setDiscriminator(IValue discr) {
 		assert getTarget() instanceof RootClass;
 		assert discr instanceof ValueFacadeImpl;
-		((RootClass)getTarget()).setDiscriminator(((ValueFacadeImpl)discr).getTarget());
+		((RootClass)getTarget()).setDiscriminator((Value)((IFacade)discr).getTarget());
 	}
 
 	@Override
