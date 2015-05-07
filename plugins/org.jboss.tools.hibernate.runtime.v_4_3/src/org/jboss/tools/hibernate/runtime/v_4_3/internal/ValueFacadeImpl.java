@@ -3,7 +3,6 @@ package org.jboss.tools.hibernate.runtime.v_4_3.internal;
 import org.hibernate.FetchMode;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Collection;
-import org.hibernate.mapping.Component;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
@@ -23,11 +22,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 
 	public Value getTarget() {
 		return (Value)super.getTarget();
-	}
-
-	@Override
-	public String getParentProperty() {
-		return ((Component)getTarget()).getParentProperty();
 	}
 
 	@Override

@@ -458,6 +458,15 @@ implements IValue {
 		return result;
 	}
 
+	@Override
+	public String getParentProperty() {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getParentProperty", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(collectionClassName(), getFacadeFactoryClassLoader());
 	}
