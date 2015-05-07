@@ -27,6 +27,7 @@ import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
+import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public abstract class AbstractFacadeFactory implements IFacadeFactory {
 
@@ -141,6 +142,11 @@ public abstract class AbstractFacadeFactory implements IFacadeFactory {
 	@Override
 	public IForeignKey createForeignKey(Object target) {
 		return new AbstractForeignKeyFacade(this, target) {};
+	}
+	
+	@Override
+	public IValue createValue(Object target) {
+		return new AbstractValueFacade(this, target) {};
 	}
 	
 }

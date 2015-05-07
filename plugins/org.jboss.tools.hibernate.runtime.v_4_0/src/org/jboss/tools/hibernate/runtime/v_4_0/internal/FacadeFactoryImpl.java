@@ -14,7 +14,6 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
-import org.hibernate.mapping.Value;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
@@ -62,7 +61,6 @@ import org.jboss.tools.hibernate.runtime.spi.ISettings;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	
@@ -173,11 +171,6 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public IType createType(Object target) {
 		return new TypeProxy(this, (Type)target);
-	}
-	
-	@Override
-	public IValue createValue(Object target) {
-		return new ValueFacadeImpl(this, (Value)target);
 	}
 	
 }
