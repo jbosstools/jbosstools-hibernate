@@ -532,6 +532,15 @@ implements IValue {
 		return associatedClass;
 	}
 
+	@Override
+	public void setLazy(boolean b) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setLazy", 
+				new Class[] { boolean.class }, 
+				new Object[] { b });
+	}
+
 	protected Class<?> getCollectionClass() {
 		return Util.getClass(collectionClassName(), getFacadeFactoryClassLoader());
 	}

@@ -21,12 +21,6 @@ public class ValueFacadeImpl extends AbstractValueFacade {
 	}
 
 	@Override
-	public void setLazy(boolean b) {
-		assert getTarget() instanceof Collection;
-		((Collection)getTarget()).setLazy(b);
-	}
-
-	@Override
 	public void setRole(String role) {
 		assert getTarget() instanceof Collection;
 		((Collection)getTarget()).setRole(role);
