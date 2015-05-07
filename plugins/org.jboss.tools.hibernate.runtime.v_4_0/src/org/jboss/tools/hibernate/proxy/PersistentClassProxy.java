@@ -19,7 +19,6 @@ import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
-import org.jboss.tools.hibernate.runtime.v_4_0.internal.ValueFacadeImpl;
 
 public class PersistentClassProxy extends AbstractPersistentClassFacade {
 	
@@ -255,9 +254,9 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 	@Override
 	public void setKey(IValue value) {
 		assert getTarget() instanceof JoinedSubclass;
-		assert value instanceof ValueFacadeImpl;
-		assert ((ValueFacadeImpl)value).getTarget() instanceof KeyValue;
-		((JoinedSubclass)getTarget()).setKey((KeyValue)((ValueFacadeImpl)value).getTarget());
+		assert value instanceof IFacade;
+		assert ((IFacade)value).getTarget() instanceof KeyValue;
+		((JoinedSubclass)getTarget()).setKey((KeyValue)((IFacade)value).getTarget());
 	}
 
 	public boolean isInstanceOfSpecialRootClass() {
@@ -284,16 +283,16 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 
 	@Override
 	public void setIdentifier(IValue value) {
-		assert value instanceof ValueFacadeImpl;
-		assert ((ValueFacadeImpl)value).getTarget() instanceof KeyValue;
+		assert value instanceof IFacade;
+		assert ((IFacade)value).getTarget() instanceof KeyValue;
 		assert getTarget() instanceof RootClass;
-		((RootClass)getTarget()).setIdentifier((KeyValue)((ValueFacadeImpl)value).getTarget());
+		((RootClass)getTarget()).setIdentifier((KeyValue)((IFacade)value).getTarget());
 	}
 
 	@Override
 	public void setDiscriminator(IValue discr) {
 		assert getTarget() instanceof RootClass;
-		assert discr instanceof ValueFacadeImpl;
+		assert discr instanceof IFacade;
 		((RootClass)getTarget()).setDiscriminator((Value)((IFacade)discr).getTarget());
 	}
 
