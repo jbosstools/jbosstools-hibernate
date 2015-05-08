@@ -25,7 +25,7 @@ import org.jboss.tools.hibernate.proxy.HQLQueryPlanProxy;
 import org.jboss.tools.hibernate.proxy.HibernateMappingExporterExtension;
 import org.jboss.tools.hibernate.proxy.HibernateMappingExporterProxy;
 import org.jboss.tools.hibernate.proxy.JDBCReaderProxy;
-import org.jboss.tools.hibernate.proxy.JoinProxy;
+import org.jboss.tools.hibernate.proxy.JoinFacadeImpl;
 import org.jboss.tools.hibernate.proxy.MetaDataDialectProxy;
 import org.jboss.tools.hibernate.proxy.POJOClassProxy;
 import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
@@ -100,7 +100,7 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	
 	@Override
 	public IJoin createJoin(Object target) {
-		return new JoinProxy(this, (Join)target);
+		return new JoinFacadeImpl(this, (Join)target);
 	}
 	
 	@Override

@@ -9,11 +9,11 @@ import org.jboss.tools.hibernate.runtime.common.AbstractJoinFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 
-public class JoinProxy extends AbstractJoinFacade {
+public class JoinFacadeImpl extends AbstractJoinFacade {
 	
 	private HashSet<IProperty> properties = null;
 
-	public JoinProxy(
+	public JoinFacadeImpl(
 			IFacadeFactory facadeFactory,
 			Join join) {
 		super(facadeFactory, join);
