@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.common;
 
 import java.util.HashSet;
+import java.util.Iterator;
 
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
@@ -16,6 +17,18 @@ implements IJoin {
 			IFacadeFactory facadeFactory, 
 			Object target) {
 		super(facadeFactory, target);
+	}
+
+	protected void initializeProperties() {
+		properties = new HashSet<IProperty>();
+		Iterator<?> iterator = (Iterator<?>)Util.invokeMethod(
+				getTarget(), 
+				"getPropertyIterator", 
+				new Class[] {}, 
+				new Object[] {});
+		while (iterator.hasNext()) {
+			properties.add(getFacadeFactory().createProperty(iterator.next()));
+		}
 	}
 
 }

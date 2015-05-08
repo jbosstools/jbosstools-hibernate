@@ -1,10 +1,8 @@
 package org.jboss.tools.hibernate.runtime.v_4_0.internal;
 
-import java.util.HashSet;
 import java.util.Iterator;
 
 import org.hibernate.mapping.Join;
-import org.hibernate.mapping.Property;
 import org.jboss.tools.hibernate.runtime.common.AbstractJoinFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
@@ -25,13 +23,4 @@ public class JoinFacadeImpl extends AbstractJoinFacade {
 		return properties.iterator();
 	}
 	
-	@SuppressWarnings("unchecked")
-	private void initializeProperties() {
-		properties = new HashSet<IProperty>();
-		Iterator<Property> origin = ((Join)getTarget()).getPropertyIterator();
-		while (origin.hasNext()) {
-			properties.add(getFacadeFactory().createProperty(origin.next()));
-		}
-	}
-
 }
