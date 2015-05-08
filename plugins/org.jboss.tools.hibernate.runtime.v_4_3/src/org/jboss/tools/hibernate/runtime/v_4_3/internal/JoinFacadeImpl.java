@@ -1,11 +1,8 @@
 package org.jboss.tools.hibernate.runtime.v_4_3.internal;
 
-import java.util.Iterator;
-
 import org.hibernate.mapping.Join;
 import org.jboss.tools.hibernate.runtime.common.AbstractJoinFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IProperty;
 
 public class JoinFacadeImpl extends AbstractJoinFacade {
 	
@@ -15,12 +12,4 @@ public class JoinFacadeImpl extends AbstractJoinFacade {
 		super(facadeFactory, join);
 	}
 
-	@Override
-	public Iterator<IProperty> getPropertyIterator() {
-		if (properties == null) {
-			initializeProperties();
-		}
-		return properties.iterator();
-	}
-	
 }

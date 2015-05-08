@@ -19,6 +19,14 @@ implements IJoin {
 		super(facadeFactory, target);
 	}
 
+	@Override
+	public Iterator<IProperty> getPropertyIterator() {
+		if (properties == null) {
+			initializeProperties();
+		}
+		return properties.iterator();
+	}
+	
 	protected void initializeProperties() {
 		properties = new HashSet<IProperty>();
 		Iterator<?> iterator = (Iterator<?>)Util.invokeMethod(
