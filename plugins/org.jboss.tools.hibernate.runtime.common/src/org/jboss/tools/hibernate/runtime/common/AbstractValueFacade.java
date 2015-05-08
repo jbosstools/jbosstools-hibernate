@@ -17,16 +17,16 @@ public abstract class AbstractValueFacade
 extends AbstractFacade 
 implements IValue {
 
-	protected IValue collectionElement = null;
-	protected ITable table = null;
-	protected IType type = null;
-	protected ITable collectionTable = null;
-	protected HashSet<IColumn> columns = null;
-	protected IValue key = null;
-	protected IValue index = null;
-	protected HashSet<IProperty> properties = null;
-	protected IPersistentClass owner = null;
-	protected IPersistentClass associatedClass = null;
+	private IValue collectionElement = null;
+	private ITable table = null;
+	private IType type = null;
+	private ITable collectionTable = null;
+	private HashSet<IColumn> columns = null;
+	private IValue key = null;
+	private IValue index = null;
+	private HashSet<IProperty> properties = null;
+	private IPersistentClass owner = null;
+	private IPersistentClass associatedClass = null;
 
 	public AbstractValueFacade(
 			IFacadeFactory facadeFactory, 
