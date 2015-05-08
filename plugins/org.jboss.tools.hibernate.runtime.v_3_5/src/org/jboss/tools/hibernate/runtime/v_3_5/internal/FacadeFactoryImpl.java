@@ -39,7 +39,7 @@ import org.jboss.tools.hibernate.proxy.SettingsProxy;
 import org.jboss.tools.hibernate.proxy.SpecialRootClassProxy;
 import org.jboss.tools.hibernate.proxy.TableProxy;
 import org.jboss.tools.hibernate.proxy.TypeFactoryProxy;
-import org.jboss.tools.hibernate.proxy.TypeProxy;
+import org.jboss.tools.hibernate.proxy.TypeFacadeImpl;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
@@ -176,7 +176,7 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 
 	@Override
 	public IType createType(Object target) {
-		return new TypeProxy(this, (Type)target);
+		return new TypeFacadeImpl(this, (Type)target);
 	}
 
 }

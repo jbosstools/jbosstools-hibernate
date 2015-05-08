@@ -36,22 +36,22 @@ public class QueryProxy extends AbstractQueryFacade {
 
 	@Override
 	public void setParameter(int pos, Object value, IType type) {
-		if (type instanceof TypeProxy) {
-			getTarget().setParameter(pos, value, ((TypeProxy)type).getTarget());
+		if (type instanceof TypeFacadeImpl) {
+			getTarget().setParameter(pos, value, ((TypeFacadeImpl)type).getTarget());
 		}
 	}
 
 	@Override
 	public void setParameterList(String name, List<Object> list, IType type) {
-		if (type instanceof TypeProxy) {
-			getTarget().setParameterList(name, list, ((TypeProxy)type).getTarget());
+		if (type instanceof TypeFacadeImpl) {
+			getTarget().setParameterList(name, list, ((TypeFacadeImpl)type).getTarget());
 		}
 	}
 
 	@Override
 	public void setParameter(String name, Object value, IType type) {
-		if (type instanceof TypeProxy) {
-			getTarget().setParameter(name, value, ((TypeProxy)type).getTarget());
+		if (type instanceof TypeFacadeImpl) {
+			getTarget().setParameter(name, value, ((TypeFacadeImpl)type).getTarget());
 		}
 	}
 
