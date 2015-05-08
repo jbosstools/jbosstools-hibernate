@@ -17,6 +17,7 @@ import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingGlobalSettings;
+import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.IMapping;
 import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
@@ -147,6 +148,11 @@ public abstract class AbstractFacadeFactory implements IFacadeFactory {
 	@Override
 	public IValue createValue(Object target) {
 		return new AbstractValueFacade(this, target) {};
+	}
+	
+	@Override
+	public IJoin createJoin(Object target) {
+		return new AbstractJoinFacade(this, target) {};
 	}
 	
 }
