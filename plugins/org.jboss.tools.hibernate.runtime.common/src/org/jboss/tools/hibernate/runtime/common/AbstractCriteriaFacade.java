@@ -38,7 +38,7 @@ implements ICriteria {
 	public List<Object> list() {
 		return (List<Object>)Util.invokeMethod(
 				getTarget(), 
-				"setMaxResults", 
+				"list", 
 				new Class[] {}, 
 				new Object[] {});
 	}
