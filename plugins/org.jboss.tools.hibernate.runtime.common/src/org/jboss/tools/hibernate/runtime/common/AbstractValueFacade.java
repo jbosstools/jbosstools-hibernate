@@ -743,7 +743,7 @@ implements IValue {
 		return "org.hibernate.mapping.PersistentClass";
 	}
 
-	protected void initializeColumns() {
+	private void initializeColumns() {
 		columns = new HashSet<IColumn>();
 		Iterator<?> iterator = (Iterator<?>)Util.invokeMethod(
 				getTarget(), 
@@ -758,7 +758,7 @@ implements IValue {
 		}
 	}
 
-	protected void initializeProperties() {
+	private void initializeProperties() {
 		properties = new HashSet<IProperty>();
 		Iterator<?> iterator = (Iterator<?>)Util.invokeMethod(
 				getTarget(), 
