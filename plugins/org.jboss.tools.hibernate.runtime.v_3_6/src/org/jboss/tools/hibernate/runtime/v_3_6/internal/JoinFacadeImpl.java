@@ -11,8 +11,6 @@ import org.jboss.tools.hibernate.runtime.spi.IProperty;
 
 public class JoinFacadeImpl extends AbstractJoinFacade {
 	
-	private HashSet<IProperty> properties = null;
-
 	public JoinFacadeImpl(
 			IFacadeFactory facadeFactory,
 			Join join) {
