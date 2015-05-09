@@ -8,6 +8,7 @@ import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.AbstractQueryFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
+import org.jboss.tools.hibernate.runtime.v_3_6.internal.TypeFacadeImpl;
 
 public class QueryProxy extends AbstractQueryFacade {
 	
