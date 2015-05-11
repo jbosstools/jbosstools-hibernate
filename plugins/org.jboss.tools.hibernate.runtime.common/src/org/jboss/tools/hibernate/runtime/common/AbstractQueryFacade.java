@@ -114,7 +114,7 @@ implements IQuery {
 		return "org.hibernate.type.Type";
 	}
 
-	protected void initializeReturnTypes() {
+	private void initializeReturnTypes() {
 		Object[] targetReturnTypes = (Object[])Util.invokeMethod(
 				getTarget(), 
 				"getReturnTypes", 
