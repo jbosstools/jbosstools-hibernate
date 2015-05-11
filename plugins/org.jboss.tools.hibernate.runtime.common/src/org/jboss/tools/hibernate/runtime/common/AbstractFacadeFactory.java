@@ -20,6 +20,7 @@ import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingGlobalSettings;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.IMapping;
 import org.jboss.tools.hibernate.runtime.spi.IMappings;
+import org.jboss.tools.hibernate.runtime.spi.IMetaDataDialect;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
@@ -173,4 +174,9 @@ public abstract class AbstractFacadeFactory implements IFacadeFactory {
 		return new AbstractPOJOClassFacade(this, target) {};
 	}
 
+	@Override
+	public IMetaDataDialect createMetaDataDialect(Object target) {
+		return new AbstractMetaDataDialectFacade(this, target) {};
+	}
+	
 }
