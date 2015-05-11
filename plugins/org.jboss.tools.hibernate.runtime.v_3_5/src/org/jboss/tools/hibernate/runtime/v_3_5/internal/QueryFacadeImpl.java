@@ -25,11 +25,6 @@ public class QueryFacadeImpl extends AbstractQueryFacade {
 	}
 
 	@Override
-	public void setMaxResults(int value) {
-		getTarget().setMaxResults(value);
-	}
-
-	@Override
 	public void setParameter(int pos, Object value, IType type) {
 		if (type instanceof IFacade) {
 			getTarget().setParameter(pos, value, (Type)((IFacade)type).getTarget());

@@ -25,4 +25,13 @@ implements IQuery {
 				new Object[] {});
 	}
 
+	@Override
+	public void setMaxResults(int value) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setMaxResults", 
+				new Class[] { int.class }, 
+				new Object[] {});
+	}
+
 }
