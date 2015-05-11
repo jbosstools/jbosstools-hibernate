@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.runtime.common;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -103,6 +104,19 @@ implements IQuery {
 	
 	protected String getTypeClassName() {
 		return "org.hibernate.type.Type";
+	}
+
+	protected void initializeReturnTypes() {
+		Object[] targetReturnTypes = (Object[])Util.invokeMethod(
+				getTarget(), 
+				"getReturnTypes", 
+				new Class[] {}, 
+				new Object[] {});
+		ArrayList<IType> destination = new ArrayList<IType>(targetReturnTypes.length);
+		for (Object type : targetReturnTypes) {
+			destination.add(getFacadeFactory().createType(type));
+		}
+		this.returnTypes = destination.toArray(new IType[destination.size()]);
 	}
 
 }

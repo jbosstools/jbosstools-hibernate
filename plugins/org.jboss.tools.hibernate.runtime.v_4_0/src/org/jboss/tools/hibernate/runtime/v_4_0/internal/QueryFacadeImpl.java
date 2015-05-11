@@ -1,9 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_4_0.internal;
 
-import java.util.ArrayList;
-
 import org.hibernate.Query;
-import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.AbstractQueryFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
@@ -28,13 +25,5 @@ public class QueryFacadeImpl extends AbstractQueryFacade {
 		return returnTypes;
 	}
 	
-	private void initializeReturnTypes() {
-		Type[] origin = getTarget().getReturnTypes();
-		ArrayList<IType> destination = new ArrayList<IType>(origin.length);
-		for (Type type : origin) {
-			destination.add(getFacadeFactory().createType(type));
-		}
-		this.returnTypes = destination.toArray(new IType[destination.size()]);
-	}
 
 }
