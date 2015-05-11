@@ -21,11 +21,6 @@ public class TypeFacadeImpl extends AbstractTypeFacade {
 		return (Type)super.getTarget();
 	}
 
-	@Override
-	public String getName() {
-		return getTarget().getName();
-	}
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public Object fromStringValue(String value) {

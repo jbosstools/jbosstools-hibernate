@@ -27,6 +27,15 @@ implements IType {
 		return result;
 	}
 	
+	@Override
+	public String getName() {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getName", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getStringRepresentableTypeClass() {
 		return Util.getClass(
 				getStringRepresentableTypeClassName(), 

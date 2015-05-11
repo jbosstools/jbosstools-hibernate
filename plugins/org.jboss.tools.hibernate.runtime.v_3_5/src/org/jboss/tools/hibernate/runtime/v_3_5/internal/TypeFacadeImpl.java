@@ -26,11 +26,6 @@ public class TypeFacadeImpl extends AbstractTypeFacade {
 	}
 
 	@Override
-	public String getName() {
-		return getTarget().getName();
-	}
-
-	@Override
 	public Object fromStringValue(String value) {
 		Object result = null;
 		if (getTarget() instanceof NullableType) {
