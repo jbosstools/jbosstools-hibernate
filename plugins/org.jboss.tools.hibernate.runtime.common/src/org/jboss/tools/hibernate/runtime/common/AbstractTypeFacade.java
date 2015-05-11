@@ -99,6 +99,15 @@ implements IType {
 				new Object[] {});
 	}
 
+	@Override
+	public Class<?> getReturnedClass() {
+		return (Class<?>)Util.invokeMethod(
+				getTarget(), 
+				"getReturnedClass", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+	
 	protected Class<?> getStringRepresentableTypeClass() {
 		return Util.getClass(
 				getStringRepresentableTypeClassName(), 

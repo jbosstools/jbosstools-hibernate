@@ -21,11 +21,6 @@ public class TypeFacadeImpl extends AbstractTypeFacade {
 	}
 
 	@Override
-	public Class<?> getReturnedClass() {
-		return getTarget().getReturnedClass();
-	}
-	
-	@Override
 	public String getAssociatedEntityName() {
 		if (getTarget().isEntityType()) {
 			return ((EntityType)getTarget()).getAssociatedEntityName();
