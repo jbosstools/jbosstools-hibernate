@@ -28,6 +28,7 @@ import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
+import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public abstract class AbstractFacadeFactory implements IFacadeFactory {
@@ -153,6 +154,11 @@ public abstract class AbstractFacadeFactory implements IFacadeFactory {
 	@Override
 	public IJoin createJoin(Object target) {
 		return new AbstractJoinFacade(this, target) {};
+	}
+	
+	@Override
+	public IType createType(Object target) {
+		return new AbstractTypeFacade(this, target) {};
 	}
 	
 }

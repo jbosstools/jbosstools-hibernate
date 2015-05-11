@@ -18,7 +18,6 @@ import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tuple.entity.EntityMetamodel;
-import org.hibernate.type.Type;
 import org.hibernate.type.TypeFactory;
 import org.jboss.tools.hibernate.proxy.HQLCodeAssistProxy;
 import org.jboss.tools.hibernate.proxy.HQLCompletionProposalProxy;
@@ -59,7 +58,6 @@ import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISettings;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
-import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 
 public class FacadeFactoryImpl extends AbstractFacadeFactory {
@@ -171,11 +169,6 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public ITypeFactory createTypeFactory() {
 		return new TypeFactoryProxy(this, (TypeFactory)null);
-	}
-	
-	@Override
-	public IType createType(Object target) {
-		return new TypeFacadeImpl(this, (Type)target);
 	}
 	
 }
