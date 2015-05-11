@@ -10,8 +10,4 @@ public class MetaDataDialectProxy extends AbstractMetaDataDialectFacade {
 		super(facadeFactory, mdd);
 	}
 
-	public MetaDataDialect getTarget() {
-		return (MetaDataDialect)super.getTarget() ;
-	}
-
 }

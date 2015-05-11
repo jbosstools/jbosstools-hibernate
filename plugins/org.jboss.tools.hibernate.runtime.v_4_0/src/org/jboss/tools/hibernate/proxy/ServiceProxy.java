@@ -22,6 +22,7 @@ import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.cfg.reveng.TableIdentifier;
+import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.ejb.Ejb3Configuration;
@@ -293,7 +294,7 @@ public class ServiceProxy implements IService {
 		assert metaDataDialect instanceof MetaDataDialectProxy;
 		return facadeFactory.createDatabaseCollector(
 				new DefaultDatabaseCollector(
-						((MetaDataDialectProxy)metaDataDialect).getTarget()));
+						(MetaDataDialect) ((MetaDataDialectProxy)metaDataDialect).getTarget()));
 	}
 
 	@Override
