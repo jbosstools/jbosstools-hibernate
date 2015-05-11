@@ -17,7 +17,7 @@ public class POJOClassFacadeImpl implements IPOJOClass {
 		return target.getQualifiedDeclarationName();
 	}
 	
-	POJOClass getTarget() {
+	public POJOClass getTarget() {
 		return target;
 	}
 
