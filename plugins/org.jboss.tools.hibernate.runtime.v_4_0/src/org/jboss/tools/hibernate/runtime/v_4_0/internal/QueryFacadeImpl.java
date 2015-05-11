@@ -24,12 +24,6 @@ public class QueryFacadeImpl extends AbstractQueryFacade {
 		return (Query)super.getTarget();
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<Object> list() {
-		return getTarget().list();
-	}
-
 	@Override
 	public void setMaxResults(int value) {
 		getTarget().setMaxResults(value);
