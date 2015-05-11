@@ -96,6 +96,14 @@ implements IQuery {
 				new Object[] {});
 	}
 
+	@Override
+	public IType[] getReturnTypes() {
+		if (returnTypes == null) {
+			initializeReturnTypes();
+		}
+		return returnTypes;
+	}
+	
 	protected Class<?> getTypeClass() {
 		return (Class<?>)Util.getClass(
 				getTypeClassName(), 

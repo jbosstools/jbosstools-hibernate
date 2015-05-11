@@ -3,7 +3,6 @@ package org.jboss.tools.hibernate.runtime.v_4_3.internal;
 import org.hibernate.Query;
 import org.jboss.tools.hibernate.runtime.common.AbstractQueryFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IType;
 
 public class QueryFacadeImpl extends AbstractQueryFacade {
 	
@@ -17,12 +16,4 @@ public class QueryFacadeImpl extends AbstractQueryFacade {
 		return (Query)super.getTarget();
 	}
 
-	@Override
-	public IType[] getReturnTypes() {
-		if (returnTypes == null) {
-			initializeReturnTypes();
-		}
-		return returnTypes;
-	}
-	
 }
