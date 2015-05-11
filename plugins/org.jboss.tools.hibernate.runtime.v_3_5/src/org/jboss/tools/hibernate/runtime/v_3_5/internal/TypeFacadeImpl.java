@@ -1,7 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
 import org.hibernate.type.CollectionType;
-import org.hibernate.type.IntegerType;
 import org.hibernate.type.PrimitiveType;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.AbstractTypeFacade;
@@ -21,20 +20,6 @@ public class TypeFacadeImpl extends AbstractTypeFacade {
 
 	protected String getStringRepresentableTypeClassName() {
 		return "org.hibernate.type.NullableType";
-	}
-
-	@Override
-	public boolean isIntegerType() {
-		return getTarget() instanceof IntegerType;
-	}
-
-	@Override
-	public boolean isArrayType() {
-		if (getTarget() instanceof CollectionType) {
-			return ((CollectionType)getTarget()).isArrayType();
-		} else {
-			return false;
-		}
 	}
 
 	@Override

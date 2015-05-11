@@ -121,14 +121,42 @@ implements IType {
 		return result;
 	}
 
+	@Override
+	public boolean isIntegerType() {
+		return getIntegerTypeClass().isAssignableFrom(getTarget().getClass());
+	}
+
+	@Override
+	public boolean isArrayType() {
+		boolean result = false;
+		if (isCollectionType()) {
+			result = (boolean)Util.invokeMethod(
+					getTarget(), 
+					"isArrayType", 
+					new Class[] {}, 
+					new Object[] {});
+		}
+		return result;
+	}
+
 	protected Class<?> getStringRepresentableTypeClass() {
 		return Util.getClass(
 				getStringRepresentableTypeClassName(), 
 				getFacadeFactoryClassLoader());
 	}
 	
+	protected Class<?> getIntegerTypeClass() {
+		return Util.getClass(
+				getIntegerTypeClassName(), 
+				getFacadeFactoryClassLoader());
+	}
+	
 	protected String getStringRepresentableTypeClassName() {
 		return "org.hibernate.type.StringRepresentableType";
+	}
+	
+	protected String getIntegerTypeClassName() {
+		return "org.hibernate.type.IntegerType";
 	}
 
 }
