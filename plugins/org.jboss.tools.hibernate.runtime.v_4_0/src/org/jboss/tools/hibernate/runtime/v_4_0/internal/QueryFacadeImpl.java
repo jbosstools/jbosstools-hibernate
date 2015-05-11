@@ -12,8 +12,4 @@ public class QueryFacadeImpl extends AbstractQueryFacade {
 		super(facadeFactory, query);
 	}
 
-	public Query getTarget() {
-		return (Query)super.getTarget();
-	}
-
 }
