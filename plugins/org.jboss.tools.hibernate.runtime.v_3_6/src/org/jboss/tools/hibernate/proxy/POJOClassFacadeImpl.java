@@ -4,11 +4,11 @@ import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 
-public class POJOClassProxy implements IPOJOClass {
+public class POJOClassFacadeImpl implements IPOJOClass {
 	
 	private POJOClass target = null;
 	
-	public POJOClassProxy(IFacadeFactory facadeFactory, POJOClass pojoClass) {
+	public POJOClassFacadeImpl(IFacadeFactory facadeFactory, POJOClass pojoClass) {
 		target = pojoClass;
 	}
 

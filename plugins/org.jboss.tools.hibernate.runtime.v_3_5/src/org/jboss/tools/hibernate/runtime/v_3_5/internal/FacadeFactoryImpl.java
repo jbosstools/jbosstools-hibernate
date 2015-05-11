@@ -26,7 +26,7 @@ import org.jboss.tools.hibernate.proxy.HibernateMappingExporterExtension;
 import org.jboss.tools.hibernate.proxy.HibernateMappingExporterProxy;
 import org.jboss.tools.hibernate.proxy.JDBCReaderProxy;
 import org.jboss.tools.hibernate.proxy.MetaDataDialectProxy;
-import org.jboss.tools.hibernate.proxy.POJOClassProxy;
+import org.jboss.tools.hibernate.proxy.POJOClassFacadeImpl;
 import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.proxy.PrimaryKeyProxy;
 import org.jboss.tools.hibernate.proxy.PropertyProxy;
@@ -117,7 +117,7 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 
 	@Override
 	public IPOJOClass createPOJOClass(Object target) {
-		return new POJOClassProxy(this, (POJOClass)target);
+		return new POJOClassFacadeImpl(this, (POJOClass)target);
 	}
 
 	@Override
