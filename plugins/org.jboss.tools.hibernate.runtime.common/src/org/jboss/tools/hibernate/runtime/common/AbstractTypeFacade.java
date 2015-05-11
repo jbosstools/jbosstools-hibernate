@@ -72,6 +72,24 @@ implements IType {
 		return result;
 	}
 
+	@Override
+	public boolean isAnyType() {
+		return (boolean)Util.invokeMethod(
+				getTarget(), 
+				"isAnyType", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
+	@Override
+	public boolean isComponentType() {
+		return (boolean)Util.invokeMethod(
+				getTarget(), 
+				"isComponentType", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getStringRepresentableTypeClass() {
 		return Util.getClass(
 				getStringRepresentableTypeClassName(), 

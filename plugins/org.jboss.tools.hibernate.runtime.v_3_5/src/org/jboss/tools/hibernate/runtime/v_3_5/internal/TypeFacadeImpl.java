@@ -25,16 +25,6 @@ public class TypeFacadeImpl extends AbstractTypeFacade {
 	}
 
 	@Override
-	public boolean isAnyType() {
-		return getTarget().isAnyType();
-	}
-
-	@Override
-	public boolean isComponentType() {
-		return getTarget().isComponentType();
-	}
-
-	@Override
 	public boolean isCollectionType() {
 		return getTarget().isCollectionType();
 	}
