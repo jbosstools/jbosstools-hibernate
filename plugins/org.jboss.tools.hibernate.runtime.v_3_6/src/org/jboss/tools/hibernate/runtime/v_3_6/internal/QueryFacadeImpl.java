@@ -10,8 +10,6 @@ import org.jboss.tools.hibernate.runtime.spi.IType;
 
 public class QueryFacadeImpl extends AbstractQueryFacade {
 	
-	private IType[] returnTypes = null;
-
 	public QueryFacadeImpl(
 			IFacadeFactory facadeFactory, 
 			Query query) {

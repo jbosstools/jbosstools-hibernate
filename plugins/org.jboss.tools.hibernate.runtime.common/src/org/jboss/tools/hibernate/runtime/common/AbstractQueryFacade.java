@@ -11,6 +11,8 @@ public abstract class AbstractQueryFacade
 extends AbstractFacade 
 implements IQuery {
 
+	protected IType[] returnTypes = null;
+
 	public AbstractQueryFacade(
 			IFacadeFactory facadeFactory, 
 			Object target) {
