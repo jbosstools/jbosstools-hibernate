@@ -46,8 +46,8 @@ public class HibernateMappingExporterProxy extends AbstractHibernateMappingExpor
 
 	@Override
 	public void exportPOJO(Map<Object, Object> map, IPOJOClass pojoClass) {
-		assert pojoClass instanceof POJOClassFacadeImpl;
-		target.superExportPOJO(map, (POJOClass)((POJOClassFacadeImpl)pojoClass).getTarget());
+		assert pojoClass instanceof IFacade;
+		target.superExportPOJO(map, (POJOClass)((IFacade)pojoClass).getTarget());
 	}
 	
 	@Override
