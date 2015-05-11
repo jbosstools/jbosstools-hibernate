@@ -139,6 +139,11 @@ implements IType {
 		return result;
 	}
 
+	@Override
+	public boolean isInstanceOfPrimitiveType() {
+		return getPrimitiveTypeClass().isAssignableFrom(getTarget().getClass());
+	}
+
 	protected Class<?> getStringRepresentableTypeClass() {
 		return Util.getClass(
 				getStringRepresentableTypeClassName(), 
@@ -151,12 +156,22 @@ implements IType {
 				getFacadeFactoryClassLoader());
 	}
 	
+	protected Class<?> getPrimitiveTypeClass() {
+		return Util.getClass(
+				getPrimitiveTypeClassName(), 
+				getFacadeFactoryClassLoader());
+	}
+	
 	protected String getStringRepresentableTypeClassName() {
 		return "org.hibernate.type.StringRepresentableType";
 	}
 	
 	protected String getIntegerTypeClassName() {
 		return "org.hibernate.type.IntegerType";
+	}
+	
+	protected String getPrimitiveTypeClassName() {
+		return "org.hibernate.type.PrimitiveType";
 	}
 
 }

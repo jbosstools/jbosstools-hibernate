@@ -19,11 +19,6 @@ public class TypeFacadeImpl extends AbstractTypeFacade {
 	}
 
 	@Override
-	public boolean isInstanceOfPrimitiveType() {
-		return getTarget() instanceof PrimitiveType;
-	}
-
-	@Override
 	public Class<?> getPrimitiveClass() {
 		return isInstanceOfPrimitiveType() ? 
 				((PrimitiveType<?>)getTarget()).getPrimitiveClass() :
