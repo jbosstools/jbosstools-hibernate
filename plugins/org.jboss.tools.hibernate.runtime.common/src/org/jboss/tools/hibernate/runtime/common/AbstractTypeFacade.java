@@ -12,5 +12,29 @@ implements IType {
 			Object target) {
 		super(facadeFactory, target);
 	}
+	
+	@Override
+	public String toString(Object value) {
+		String result = null;
+		if (getStringRepresentableTypeClass().isAssignableFrom(
+				getTarget().getClass())) {
+			result = (String)Util.invokeMethod(
+					getTarget(), 
+					"toString", 
+					new Class[] { Object.class }, 
+					new Object[] { value });
+		}
+		return result;
+	}
+	
+	protected Class<?> getStringRepresentableTypeClass() {
+		return Util.getClass(
+				getStringRepresentableTypeClassName(), 
+				getFacadeFactoryClassLoader());
+	}
+	
+	protected String getStringRepresentableTypeClassName() {
+		return "org.hibernate.type.StringRepresentableType";
+	}
 
 }

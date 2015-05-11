@@ -21,13 +21,8 @@ public class TypeFacadeImpl extends AbstractTypeFacade {
 		return (Type)super.getTarget();
 	}
 
-	@Override
-	public String toString(Object value) {
-		String result = null;
-		if (getTarget() instanceof NullableType) {
-			result = ((NullableType)getTarget()).toString(value);
-		}
-		return result;
+	protected String getStringRepresentableTypeClassName() {
+		return "org.hibernate.type.NullableType";
 	}
 
 	@Override

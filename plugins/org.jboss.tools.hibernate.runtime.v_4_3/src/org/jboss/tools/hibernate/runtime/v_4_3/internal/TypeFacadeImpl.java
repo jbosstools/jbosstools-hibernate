@@ -21,16 +21,6 @@ public class TypeFacadeImpl extends AbstractTypeFacade {
 		return (Type)super.getTarget();
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public String toString(Object value) {
-		String result = null;
-		if (getTarget() instanceof StringRepresentableType) {
-			result = ((StringRepresentableType<Object>)getTarget()).toString(value);
-		}
-		return result;
-	}
-
 	@Override
 	public String getName() {
 		return getTarget().getName();
