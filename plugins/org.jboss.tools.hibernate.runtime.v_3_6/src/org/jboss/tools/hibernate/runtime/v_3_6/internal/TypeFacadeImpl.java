@@ -1,7 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_3_6.internal;
 
 import org.hibernate.type.CollectionType;
-import org.hibernate.type.EntityType;
 import org.hibernate.type.IntegerType;
 import org.hibernate.type.PrimitiveType;
 import org.hibernate.type.Type;
@@ -18,15 +17,6 @@ public class TypeFacadeImpl extends AbstractTypeFacade {
 
 	public Type getTarget() {
 		return (Type)super.getTarget();
-	}
-
-	@Override
-	public String getAssociatedEntityName() {
-		if (getTarget().isEntityType()) {
-			return ((EntityType)getTarget()).getAssociatedEntityName();
-		} else {
-			return null;
-		}
 	}
 
 	@Override

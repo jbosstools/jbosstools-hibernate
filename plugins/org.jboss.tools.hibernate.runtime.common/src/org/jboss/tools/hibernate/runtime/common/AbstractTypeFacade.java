@@ -108,6 +108,19 @@ implements IType {
 				new Object[] {});
 	}
 	
+	@Override
+	public String getAssociatedEntityName() {
+		String result = null;
+		if (isEntityType()) {
+			result = (String)Util.invokeMethod(
+					getTarget(), 
+					"getAssociatedEntityName", 
+					new Class[] {}, 
+					new Object[] {});
+		}
+		return result;
+	}
+
 	protected Class<?> getStringRepresentableTypeClass() {
 		return Util.getClass(
 				getStringRepresentableTypeClassName(), 

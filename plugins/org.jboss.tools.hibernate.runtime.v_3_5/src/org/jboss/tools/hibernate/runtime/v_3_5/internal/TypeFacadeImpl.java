@@ -1,7 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
 import org.hibernate.type.CollectionType;
-import org.hibernate.type.EntityType;
 import org.hibernate.type.IntegerType;
 import org.hibernate.type.PrimitiveType;
 import org.hibernate.type.Type;
@@ -22,15 +21,6 @@ public class TypeFacadeImpl extends AbstractTypeFacade {
 
 	protected String getStringRepresentableTypeClassName() {
 		return "org.hibernate.type.NullableType";
-	}
-
-	@Override
-	public String getAssociatedEntityName() {
-		if (getTarget().isEntityType()) {
-			return ((EntityType)getTarget()).getAssociatedEntityName();
-		} else {
-			return null;
-		}
 	}
 
 	@Override
