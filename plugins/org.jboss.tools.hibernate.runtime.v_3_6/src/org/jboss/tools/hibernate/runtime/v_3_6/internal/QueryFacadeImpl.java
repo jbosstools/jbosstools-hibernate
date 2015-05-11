@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.hibernate.Query;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.AbstractQueryFacade;
-import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 
@@ -21,13 +20,6 @@ public class QueryFacadeImpl extends AbstractQueryFacade {
 
 	public Query getTarget() {
 		return (Query)super.getTarget();
-	}
-
-	@Override
-	public void setParameter(String name, Object value, IType type) {
-		if (type instanceof IFacade) {
-			getTarget().setParameter(name, value, (Type)((IFacade)type).getTarget());
-		}
 	}
 
 	@Override

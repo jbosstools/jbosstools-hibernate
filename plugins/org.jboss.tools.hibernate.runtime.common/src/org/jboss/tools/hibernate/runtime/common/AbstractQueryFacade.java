@@ -68,6 +68,22 @@ implements IQuery {
 		}
 	}
 
+	@Override
+	public void setParameter(String name, Object value, IType type) {
+		if (type instanceof IFacade) {
+			Object typeTarget = Util.invokeMethod(
+					getTarget(), 
+					"getTarget", 
+					new Class[] {}, 
+					new Object[] {});
+			Util.invokeMethod(
+					getTarget(), 
+					"setParameter", 
+					new Class[] { String.class,  Object.class, getTypeClass() }, 
+					new Object[] { name, value, typeTarget });
+		}
+	}
+
 	protected Class<?> getTypeClass() {
 		return (Class<?>)Util.getClass(
 				getTypeClassName(), 
