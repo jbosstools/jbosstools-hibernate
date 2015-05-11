@@ -59,6 +59,19 @@ implements IType {
 				new Object[] {});
 	}
 
+	@Override
+	public boolean isOneToOne() {
+		boolean result = false;
+		if (isEntityType()) {
+			result = (boolean)Util.invokeMethod(
+					getTarget(), 
+					"isOneToOne", 
+					new Class[] {}, 
+					new Object[] {});
+		}
+		return result;
+	}
+
 	protected Class<?> getStringRepresentableTypeClass() {
 		return Util.getClass(
 				getStringRepresentableTypeClassName(), 

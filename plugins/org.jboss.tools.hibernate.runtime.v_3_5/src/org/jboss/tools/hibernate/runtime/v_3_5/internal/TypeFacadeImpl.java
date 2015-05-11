@@ -25,15 +25,6 @@ public class TypeFacadeImpl extends AbstractTypeFacade {
 	}
 
 	@Override
-	public boolean isOneToOne() {
-		if (getTarget().isEntityType()) {
-			return ((EntityType)getTarget()).isOneToOne();
-		} else {
-			return false;
-		}
-	}
-
-	@Override
 	public boolean isAnyType() {
 		return getTarget().isAnyType();
 	}
