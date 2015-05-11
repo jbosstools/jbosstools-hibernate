@@ -1,6 +1,5 @@
 package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
-import org.hibernate.type.CollectionType;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.AbstractTypeFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
@@ -19,12 +18,6 @@ public class TypeFacadeImpl extends AbstractTypeFacade {
 
 	protected String getStringRepresentableTypeClassName() {
 		return "org.hibernate.type.NullableType";
-	}
-
-	@Override
-	public String getRole() {
-		assert getTarget() instanceof CollectionType;
-		return ((CollectionType)getTarget()).getRole();
 	}
 
 }

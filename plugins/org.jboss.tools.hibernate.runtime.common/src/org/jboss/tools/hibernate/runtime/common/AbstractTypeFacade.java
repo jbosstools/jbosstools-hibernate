@@ -156,6 +156,19 @@ implements IType {
 		return result;
 	}
 
+	@Override
+	public String getRole() {
+		String result = null;
+		if (isCollectionType()) {
+			result = (String)Util.invokeMethod(
+					getTarget(), 
+					"getRole", 
+					new Class[] {}, 
+					new Object[] {});
+		}
+		return result;
+	}
+
 	protected Class<?> getStringRepresentableTypeClass() {
 		return Util.getClass(
 				getStringRepresentableTypeClassName(), 
