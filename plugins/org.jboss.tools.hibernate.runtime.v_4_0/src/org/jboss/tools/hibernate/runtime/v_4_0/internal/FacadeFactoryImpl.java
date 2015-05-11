@@ -28,7 +28,6 @@ import org.jboss.tools.hibernate.proxy.POJOClassProxy;
 import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.proxy.PrimaryKeyProxy;
 import org.jboss.tools.hibernate.proxy.PropertyProxy;
-import org.jboss.tools.hibernate.proxy.QueryFacadeImpl;
 import org.jboss.tools.hibernate.proxy.QueryTranslatorProxy;
 import org.jboss.tools.hibernate.proxy.SessionFactoryProxy;
 import org.jboss.tools.hibernate.proxy.SessionProxy;

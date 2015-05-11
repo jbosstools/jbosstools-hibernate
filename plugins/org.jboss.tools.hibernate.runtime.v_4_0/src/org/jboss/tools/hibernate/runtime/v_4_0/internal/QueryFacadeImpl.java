@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate.proxy;
+package org.jboss.tools.hibernate.runtime.v_4_0.internal;
 
 import java.util.ArrayList;
 import java.util.List;
