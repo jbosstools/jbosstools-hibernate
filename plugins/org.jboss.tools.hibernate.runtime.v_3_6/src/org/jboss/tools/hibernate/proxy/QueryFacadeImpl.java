@@ -10,11 +10,11 @@ import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 
-public class QueryProxy extends AbstractQueryFacade {
+public class QueryFacadeImpl extends AbstractQueryFacade {
 	
 	private IType[] returnTypes = null;
 
-	public QueryProxy(
+	public QueryFacadeImpl(
 			IFacadeFactory facadeFactory, 
 			Query query) {
 		super(facadeFactory, query);
