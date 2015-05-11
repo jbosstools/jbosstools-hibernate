@@ -4,7 +4,6 @@ import org.hibernate.type.CollectionType;
 import org.hibernate.type.EntityType;
 import org.hibernate.type.IntegerType;
 import org.hibernate.type.PrimitiveType;
-import org.hibernate.type.StringRepresentableType;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.AbstractTypeFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
@@ -19,16 +18,6 @@ public class TypeFacadeImpl extends AbstractTypeFacade {
 
 	public Type getTarget() {
 		return (Type)super.getTarget();
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public Object fromStringValue(String value) {
-		Object result = null;
-		if (getTarget() instanceof StringRepresentableType) {
-			result = ((StringRepresentableType<Object>)getTarget()).fromStringValue(value);
-		}
-		return result;
 	}
 
 	@Override

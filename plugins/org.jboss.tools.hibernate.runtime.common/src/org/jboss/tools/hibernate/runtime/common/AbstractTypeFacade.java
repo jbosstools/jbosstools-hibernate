@@ -36,6 +36,20 @@ implements IType {
 				new Object[] {});
 	}
 
+	@Override
+	public Object fromStringValue(String value) {
+		Object result = null;
+		if (getStringRepresentableTypeClass().isAssignableFrom(
+				getTarget().getClass())) {
+			result = Util.invokeMethod(
+					getTarget(), 
+					"fromStringValue", 
+					new Class[] { String.class }, 
+					new Object[] { value });
+		}
+		return result;
+	}
+
 	protected Class<?> getStringRepresentableTypeClass() {
 		return Util.getClass(
 				getStringRepresentableTypeClassName(), 
