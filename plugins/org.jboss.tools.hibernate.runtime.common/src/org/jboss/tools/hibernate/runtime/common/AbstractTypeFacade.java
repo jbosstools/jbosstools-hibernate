@@ -144,6 +144,18 @@ implements IType {
 		return getPrimitiveTypeClass().isAssignableFrom(getTarget().getClass());
 	}
 
+	@Override
+	public Class<?> getPrimitiveClass() {
+		Class<?> result = null;
+		if (isInstanceOfPrimitiveType()) {
+			result = (Class<?>)Util.invokeMethod(
+					getTarget(), "getPrimitiveClass", 
+					new Class[] {}, 
+					new Object[] {});
+		}
+		return result;
+	}
+
 	protected Class<?> getStringRepresentableTypeClass() {
 		return Util.getClass(
 				getStringRepresentableTypeClassName(), 

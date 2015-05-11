@@ -1,7 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_4_3.internal;
 
 import org.hibernate.type.CollectionType;
-import org.hibernate.type.PrimitiveType;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.AbstractTypeFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
@@ -16,13 +15,6 @@ public class TypeFacadeImpl extends AbstractTypeFacade {
 
 	public Type getTarget() {
 		return (Type)super.getTarget();
-	}
-
-	@Override
-	public Class<?> getPrimitiveClass() {
-		return isInstanceOfPrimitiveType() ? 
-				((PrimitiveType<?>)getTarget()).getPrimitiveClass() :
-					null;
 	}
 
 	@Override
