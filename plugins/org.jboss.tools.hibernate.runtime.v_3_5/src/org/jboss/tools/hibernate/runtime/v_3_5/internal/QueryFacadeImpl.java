@@ -25,13 +25,6 @@ public class QueryFacadeImpl extends AbstractQueryFacade {
 	}
 
 	@Override
-	public void setParameter(int pos, Object value, IType type) {
-		if (type instanceof IFacade) {
-			getTarget().setParameter(pos, value, (Type)((IFacade)type).getTarget());
-		}
-	}
-
-	@Override
 	public void setParameterList(String name, List<Object> list, IType type) {
 		if (type instanceof IFacade) {
 			getTarget().setParameterList(name, list, (Type)((IFacade)type).getTarget());

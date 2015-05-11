@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
+import org.jboss.tools.hibernate.runtime.spi.IType;
 
 public abstract class AbstractQueryFacade 
 extends AbstractFacade 
@@ -32,6 +33,32 @@ implements IQuery {
 				"setMaxResults", 
 				new Class[] { int.class }, 
 				new Object[] {});
+	}
+
+	@Override
+	public void setParameter(int pos, Object value, IType type) {
+		if (type instanceof IFacade) {
+			Object typeTarget = Util.invokeMethod(
+					getTarget(), 
+					"getTarget", 
+					new Class[] {}, 
+					new Object[] {});
+			Util.invokeMethod(
+					getTarget(), 
+					"setParameter", 
+					new Class[] { int.class,  Object.class, getTypeClass() }, 
+					new Object[] { pos, value, typeTarget });
+		}
+	}
+	
+	protected Class<?> getTypeClass() {
+		return (Class<?>)Util.getClass(
+				getTypeClassName(), 
+				getFacadeFactoryClassLoader());
+	}
+	
+	protected String getTypeClassName() {
+		return "org.hibernate.type.Type";
 	}
 
 }
