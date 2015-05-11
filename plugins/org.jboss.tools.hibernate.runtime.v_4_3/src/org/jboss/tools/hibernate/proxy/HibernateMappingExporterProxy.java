@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Map;
 
 import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
+import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.jboss.tools.hibernate.runtime.common.AbstractHibernateMappingExporterFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
@@ -46,7 +47,7 @@ public class HibernateMappingExporterProxy extends AbstractHibernateMappingExpor
 	@Override
 	public void exportPOJO(Map<Object, Object> map, IPOJOClass pojoClass) {
 		assert pojoClass instanceof POJOClassFacadeImpl;
-		target.superExportPOJO(map, ((POJOClassFacadeImpl)pojoClass).getTarget());
+		target.superExportPOJO(map, (POJOClass)((POJOClassFacadeImpl)pojoClass).getTarget());
 	}
 	
 	@Override
