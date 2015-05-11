@@ -50,6 +50,15 @@ implements IType {
 		return result;
 	}
 
+	@Override
+	public boolean isEntityType() {
+		return (boolean)Util.invokeMethod(
+				getTarget(), 
+				"isEntityType", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getStringRepresentableTypeClass() {
 		return Util.getClass(
 				getStringRepresentableTypeClassName(), 
