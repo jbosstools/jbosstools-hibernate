@@ -22,6 +22,7 @@ import org.jboss.tools.hibernate.runtime.spi.IMapping;
 import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
+import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
@@ -159,6 +160,11 @@ public abstract class AbstractFacadeFactory implements IFacadeFactory {
 	@Override
 	public IType createType(Object target) {
 		return new AbstractTypeFacade(this, target) {};
+	}
+	
+	@Override
+	public IQuery createQuery(Object target) {
+		return new AbstractQueryFacade(this, target) {};
 	}
 	
 }

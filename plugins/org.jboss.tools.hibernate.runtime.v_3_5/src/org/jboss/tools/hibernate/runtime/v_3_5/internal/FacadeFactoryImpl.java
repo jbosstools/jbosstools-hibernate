@@ -1,6 +1,5 @@
 package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Settings;
@@ -52,7 +51,6 @@ import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
-import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.IQueryTranslator;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
@@ -130,11 +128,6 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public IProperty createProperty(Object target) {
 		return new PropertyProxy(this, (Property)target);
-	}
-
-	@Override
-	public IQuery createQuery(Object target) {
-		return new QueryFacadeImpl(this, (Query)target);
 	}
 
 	@Override
