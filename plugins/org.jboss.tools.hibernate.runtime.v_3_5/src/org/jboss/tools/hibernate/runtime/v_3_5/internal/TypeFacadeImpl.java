@@ -25,11 +25,6 @@ public class TypeFacadeImpl extends AbstractTypeFacade {
 	}
 
 	@Override
-	public boolean isCollectionType() {
-		return getTarget().isCollectionType();
-	}
-
-	@Override
 	public Class<?> getReturnedClass() {
 		return getTarget().getReturnedClass();
 	}

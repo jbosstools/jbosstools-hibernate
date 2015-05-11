@@ -90,6 +90,15 @@ implements IType {
 				new Object[] {});
 	}
 
+	@Override
+	public boolean isCollectionType() {
+		return (boolean)Util.invokeMethod(
+				getTarget(), 
+				"isCollectionType", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getStringRepresentableTypeClass() {
 		return Util.getClass(
 				getStringRepresentableTypeClassName(), 
