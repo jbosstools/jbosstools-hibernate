@@ -12,10 +12,6 @@ public class TypeFacadeImpl extends AbstractTypeFacade {
 		super(facadeFactory, type);
 	}	
 
-	public Type getTarget() {
-		return (Type)super.getTarget();
-	}
-
 	protected String getStringRepresentableTypeClassName() {
 		return "org.hibernate.type.NullableType";
 	}

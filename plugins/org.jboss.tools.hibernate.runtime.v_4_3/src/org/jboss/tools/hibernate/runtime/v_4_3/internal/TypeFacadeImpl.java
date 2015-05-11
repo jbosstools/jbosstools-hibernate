@@ -12,8 +12,4 @@ public class TypeFacadeImpl extends AbstractTypeFacade {
 		super(facadeFactory, type);
 	}	
 
-	public Type getTarget() {
-		return (Type)super.getTarget();
-	}
-
 }
