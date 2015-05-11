@@ -84,6 +84,15 @@ implements IQuery {
 		}
 	}
 
+	@Override
+	public String[] getReturnAliases() {
+		return (String[])Util.invokeMethod(
+				getTarget(), 
+				"getReturnAliases", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getTypeClass() {
 		return (Class<?>)Util.getClass(
 				getTypeClassName(), 

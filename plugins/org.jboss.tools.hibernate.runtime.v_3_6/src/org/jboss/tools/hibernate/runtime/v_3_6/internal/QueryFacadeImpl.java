@@ -23,11 +23,6 @@ public class QueryFacadeImpl extends AbstractQueryFacade {
 	}
 
 	@Override
-	public String[] getReturnAliases() {
-		return getTarget().getReturnAliases();
-	}
-
-	@Override
 	public IType[] getReturnTypes() {
 		if (returnTypes == null) {
 			initializeReturnTypes();
