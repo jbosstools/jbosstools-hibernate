@@ -13,11 +13,6 @@ public class POJOClassFacadeImpl extends AbstractPOJOClassFacade {
 		target = pojoClass;
 	}
 
-	@Override
-	public String getQualifiedDeclarationName() {
-		return getTarget().getQualifiedDeclarationName();
-	}
-	
 	public POJOClass getTarget() {
 		return target;
 	}

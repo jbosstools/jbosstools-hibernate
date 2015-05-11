@@ -11,4 +11,13 @@ implements IPOJOClass {
 		super(facadeFactory, target);
 	}
 
+	@Override
+	public String getQualifiedDeclarationName() {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getQualifiedDeclarationName", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+	
 }
