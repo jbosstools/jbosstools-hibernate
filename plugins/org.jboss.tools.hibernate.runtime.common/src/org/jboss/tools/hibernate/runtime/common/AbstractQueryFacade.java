@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.runtime.common;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
@@ -51,6 +52,22 @@ implements IQuery {
 		}
 	}
 	
+	@Override
+	public void setParameterList(String name, List<Object> list, IType type) {
+		if (type instanceof IFacade) {
+			Object typeTarget = Util.invokeMethod(
+					getTarget(), 
+					"getTarget", 
+					new Class[] {}, 
+					new Object[] {});
+			Util.invokeMethod(
+					getTarget(), 
+					"setParameterList", 
+					new Class[] { String.class,  Collection.class, getTypeClass() }, 
+					new Object[] { name, list, typeTarget });
+		}
+	}
+
 	protected Class<?> getTypeClass() {
 		return (Class<?>)Util.getClass(
 				getTypeClassName(), 

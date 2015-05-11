@@ -1,7 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_3_6.internal;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.type.Type;
@@ -22,13 +21,6 @@ public class QueryFacadeImpl extends AbstractQueryFacade {
 
 	public Query getTarget() {
 		return (Query)super.getTarget();
-	}
-
-	@Override
-	public void setParameterList(String name, List<Object> list, IType type) {
-		if (type instanceof IFacade) {
-			getTarget().setParameterList(name, list, (Type)((IFacade)type).getTarget());
-		}
 	}
 
 	@Override
