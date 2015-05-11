@@ -6,9 +6,9 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.AbstractQueryFacade;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
-import org.jboss.tools.hibernate.runtime.v_4_0.internal.TypeFacadeImpl;
 
 public class QueryProxy extends AbstractQueryFacade {
 	
@@ -37,22 +37,22 @@ public class QueryProxy extends AbstractQueryFacade {
 
 	@Override
 	public void setParameter(int pos, Object value, IType type) {
-		if (type instanceof TypeFacadeImpl) {
-			getTarget().setParameter(pos, value, (Type)((TypeFacadeImpl)type).getTarget());
+		if (type instanceof IFacade) {
+			getTarget().setParameter(pos, value, (Type)((IFacade)type).getTarget());
 		}
 	}
 
 	@Override
 	public void setParameterList(String name, List<Object> list, IType type) {
-		if (type instanceof TypeFacadeImpl) {
-			getTarget().setParameterList(name, list, (Type)((TypeFacadeImpl)type).getTarget());
+		if (type instanceof IFacade) {
+			getTarget().setParameterList(name, list, (Type)((IFacade)type).getTarget());
 		}
 	}
 
 	@Override
 	public void setParameter(String name, Object value, IType type) {
-		if (type instanceof TypeFacadeImpl) {
-			getTarget().setParameter(name, value, (Type)((TypeFacadeImpl)type).getTarget());
+		if (type instanceof IFacade) {
+			getTarget().setParameter(name, value, (Type)((IFacade)type).getTarget());
 		}
 	}
 
