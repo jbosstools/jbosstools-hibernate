@@ -15,7 +15,7 @@ public class POJOClassFacadeImpl extends AbstractPOJOClassFacade {
 
 	@Override
 	public String getQualifiedDeclarationName() {
-		return target.getQualifiedDeclarationName();
+		return getTarget().getQualifiedDeclarationName();
 	}
 	
 	public POJOClass getTarget() {
