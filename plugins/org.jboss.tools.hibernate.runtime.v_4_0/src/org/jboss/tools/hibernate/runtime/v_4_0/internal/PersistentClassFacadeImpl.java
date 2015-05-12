@@ -48,14 +48,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 
 
 	@Override
-	public IProperty getIdentifierProperty() {
-		if (identifierProperty == null  && getTarget().getIdentifierProperty() != null) {
-			identifierProperty = getFacadeFactory().createProperty(getTarget().getIdentifierProperty());
-		}
-		return identifierProperty;
-	}
-
-	@Override
 	public boolean hasIdentifierProperty() {
 		return getTarget().hasIdentifierProperty();
 	}

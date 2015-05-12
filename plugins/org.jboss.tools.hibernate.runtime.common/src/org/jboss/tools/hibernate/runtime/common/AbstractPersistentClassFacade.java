@@ -44,6 +44,21 @@ implements IPersistentClass {
 		return getTarget().getClass() == getRootClassClass();
 	}
 
+	@Override
+	public IProperty getIdentifierProperty() {
+		if (identifierProperty == null) {
+			Object targetIdentifierProperty = Util.invokeMethod(
+					getTarget(), 
+					"getIdentifierProperty", 
+					new Class[] {}, 
+					new Object[] {});
+			if (targetIdentifierProperty != null) {
+				identifierProperty = getFacadeFactory().createProperty(targetIdentifierProperty);
+			}
+		}
+		return identifierProperty;
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}
