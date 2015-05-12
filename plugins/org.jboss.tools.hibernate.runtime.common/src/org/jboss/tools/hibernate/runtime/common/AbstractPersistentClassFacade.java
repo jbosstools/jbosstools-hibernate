@@ -116,6 +116,21 @@ implements IPersistentClass {
 		return propertyClosures.iterator();
 	}
 	
+	@Override
+	public IPersistentClass getSuperclass() {
+		if (superClass != null) {
+			Object targetSuperclass = Util.invokeMethod(
+					getTarget(), 
+					"getSuperclass", 
+					new Class[] {}, 
+					new Object[] {});
+			if (targetSuperclass != null) {
+				superClass = getFacadeFactory().createPersistentClass(targetSuperclass);				
+			}
+		}
+		return superClass;
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}
