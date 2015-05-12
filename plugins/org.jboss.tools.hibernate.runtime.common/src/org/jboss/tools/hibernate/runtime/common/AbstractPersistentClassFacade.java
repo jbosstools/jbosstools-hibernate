@@ -9,6 +9,7 @@ extends AbstractFacade
 implements IPersistentClass {
 
 	protected IProperty identifierProperty = null;
+	protected IPersistentClass rootClass = null;
 
 	public AbstractPersistentClassFacade(
 			IFacadeFactory facadeFactory, 

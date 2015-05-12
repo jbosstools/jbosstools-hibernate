@@ -23,7 +23,6 @@ import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	
-	private IPersistentClass rootClass = null;
 	private IPersistentClass superClass = null;
 	private ITable table = null;
 	private ITable rootTable = null;
