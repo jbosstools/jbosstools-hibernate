@@ -25,11 +25,6 @@ public class QueryTranslatorFacadeImpl extends AbstractQueryTranslatorFacade {
 		return (QueryTranslator)super.getTarget();
 	}
 
-	@Override
-	public boolean isManipulationStatement() {
-		return getTarget().isManipulationStatement();
-	}
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public Set<Serializable> getQuerySpaces() {

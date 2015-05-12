@@ -13,4 +13,13 @@ implements IQueryTranslator {
 		super(facadeFactory, target);
 	}
 
+	@Override
+	public boolean isManipulationStatement() {
+		return (boolean)Util.invokeMethod(
+				getTarget(), 
+				"isManipulationStatement", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 }
