@@ -1,13 +1,11 @@
 package org.jboss.tools.hibernate.runtime.v_4_3.internal;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.proxy.PropertyProxy;
@@ -49,18 +47,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 		return properties.values().iterator();
 	}
 	
-	@SuppressWarnings("unchecked")
-	private void initializeProperties() {
-		properties = new HashMap<String, IProperty>();
-		Iterator<Property> origin = getTarget().getPropertyIterator();
-		while (origin.hasNext()) {
-			Property property = origin.next();
-			properties.put(
-					property.getName(), 
-					getFacadeFactory().createProperty(property));
-		}
-	}
-
 	@Override
 	public IProperty getProperty(String string) {
 		if (properties == null) {

@@ -163,4 +163,24 @@ implements IPersistentClass {
 		}
 	}
 
+	protected void initializeProperties() {
+		properties = new HashMap<String, IProperty>();
+		Iterator<?> targetPropertyIterator = (Iterator<?>)Util.invokeMethod(
+				getTarget(), 
+				"getPropertyIterator", 
+				new Class[] {}, 
+				new Object[] {});
+		while (targetPropertyIterator.hasNext()) {
+			Object property = targetPropertyIterator.next();
+			String propertyName = (String)Util.invokeMethod(
+					property, 
+					"getName", 
+					new Class[] {}, 
+					new Object[] {}); 
+			properties.put(
+					propertyName, 
+					getFacadeFactory().createProperty(property));
+		}
+	}
+
 }
