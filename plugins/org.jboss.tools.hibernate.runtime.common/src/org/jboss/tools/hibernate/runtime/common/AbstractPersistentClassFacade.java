@@ -14,6 +14,7 @@ implements IPersistentClass {
 	protected IProperty identifierProperty = null;
 	protected IPersistentClass rootClass = null;
 	protected HashSet<IProperty> propertyClosures = null;
+	protected IPersistentClass superClass = null;
 
 	public AbstractPersistentClassFacade(
 			IFacadeFactory facadeFactory, 
