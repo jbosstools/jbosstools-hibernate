@@ -47,10 +47,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 		return (PersistentClass)super.getTarget();
 	}
 
-	@Override
-	public boolean isAssignableToRootClass() {
-		return RootClass.class.isAssignableFrom(getTarget().getClass());
-	}
 
 	@Override
 	public boolean isRootClass() {
