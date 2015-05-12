@@ -41,8 +41,8 @@ public class PropertyProxy extends AbstractPropertyFacade {
 
 	@Override
 	public void setPersistentClass(IPersistentClass persistentClass) {
-		assert persistentClass instanceof PersistentClassProxy;
-		getTarget().setPersistentClass(((PersistentClassProxy)persistentClass).getTarget());
+		assert persistentClass instanceof PersistentClassFacadeImpl;
+		getTarget().setPersistentClass(((PersistentClassFacadeImpl)persistentClass).getTarget());
 	}
 
 	@Override

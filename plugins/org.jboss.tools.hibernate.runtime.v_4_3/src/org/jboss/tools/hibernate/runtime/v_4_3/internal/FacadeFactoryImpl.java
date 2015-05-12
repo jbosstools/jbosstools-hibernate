@@ -19,7 +19,7 @@ import org.jboss.tools.hibernate.proxy.HQLQueryPlanProxy;
 import org.jboss.tools.hibernate.proxy.HibernateMappingExporterExtension;
 import org.jboss.tools.hibernate.proxy.HibernateMappingExporterProxy;
 import org.jboss.tools.hibernate.proxy.JDBCReaderProxy;
-import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
+import org.jboss.tools.hibernate.proxy.PersistentClassFacadeImpl;
 import org.jboss.tools.hibernate.proxy.PrimaryKeyProxy;
 import org.jboss.tools.hibernate.proxy.PropertyProxy;
 import org.jboss.tools.hibernate.proxy.SessionFactoryProxy;
@@ -88,7 +88,7 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	
 	@Override
 	public IPersistentClass createPersistentClass(Object target) {
-		return new PersistentClassProxy(this, (PersistentClass)target);
+		return new PersistentClassFacadeImpl(this, (PersistentClass)target);
 	}
 	
 	@Override

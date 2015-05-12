@@ -9,7 +9,7 @@ import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 
-public class SpecialRootClassProxy extends PersistentClassProxy {
+public class SpecialRootClassProxy extends PersistentClassFacadeImpl {
 
 	private IProperty property;
 	private IProperty parentProperty;

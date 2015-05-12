@@ -20,7 +20,7 @@ import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 
-public class PersistentClassProxy extends AbstractPersistentClassFacade {
+public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	
 	private IPersistentClass rootClass = null;
 	private IPersistentClass superClass = null;
@@ -34,8 +34,8 @@ public class PersistentClassProxy extends AbstractPersistentClassFacade {
 	private HashSet<IJoin> joins = null;
 	private HashSet<IProperty> propertyClosures = null;
 	private HashMap<String, IProperty> properties = null;
-	
-	public PersistentClassProxy(
+
+	public PersistentClassFacadeImpl(
 			IFacadeFactory facadeFactory,
 			PersistentClass persistentClass) {
 		super(facadeFactory, persistentClass);
