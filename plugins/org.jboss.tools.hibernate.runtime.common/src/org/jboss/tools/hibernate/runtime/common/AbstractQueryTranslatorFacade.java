@@ -39,6 +39,14 @@ implements IQueryTranslator {
 				new Object[] {});
 	}
 
+	@Override
+	public IType[] getReturnTypes() {
+		if (returnTypes == null) {
+			initializeReturnTypes();
+		}
+		return returnTypes;
+	}
+	
 	protected void initializeReturnTypes() {
 		Object[] targetReturnTypes = (Object[])Util.invokeMethod(
 				getTarget(), 
