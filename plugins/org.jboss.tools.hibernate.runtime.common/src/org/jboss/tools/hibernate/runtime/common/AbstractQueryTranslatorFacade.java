@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.common;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Set;
 
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
@@ -36,6 +37,19 @@ implements IQueryTranslator {
 				"getQuerySpaces", 
 				new Class[] {}, 
 				new Object[] {});
+	}
+
+	protected void initializeReturnTypes() {
+		Object[] targetReturnTypes = (Object[])Util.invokeMethod(
+				getTarget(), 
+				"getReturnTypes", 
+				new Class[] {}, 
+				new Object[] {});
+		ArrayList<IType> destination = new ArrayList<IType>(targetReturnTypes.length);
+		for (Object type : targetReturnTypes) {
+			destination.add(getFacadeFactory().createType(type));
+		}
+		returnTypes = destination.toArray(new IType[targetReturnTypes.length]);
 	}
 
 }
