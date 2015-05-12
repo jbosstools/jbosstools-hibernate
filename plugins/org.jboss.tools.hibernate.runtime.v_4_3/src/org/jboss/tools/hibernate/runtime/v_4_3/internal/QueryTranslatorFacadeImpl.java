@@ -11,8 +11,6 @@ import org.jboss.tools.hibernate.runtime.spi.IType;
 
 public class QueryTranslatorFacadeImpl extends AbstractQueryTranslatorFacade {
 	
-	private IType[] returnTypes = null;
-
 	public QueryTranslatorFacadeImpl(
 			IFacadeFactory facadeFactory,
 			QueryTranslator translator) {

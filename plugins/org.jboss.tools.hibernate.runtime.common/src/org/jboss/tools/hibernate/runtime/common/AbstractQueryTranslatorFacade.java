@@ -5,10 +5,13 @@ import java.util.Set;
 
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IQueryTranslator;
+import org.jboss.tools.hibernate.runtime.spi.IType;
 
 public abstract class AbstractQueryTranslatorFacade 
 extends AbstractFacade 
 implements IQueryTranslator {
+
+	protected IType[] returnTypes = null;
 
 	public AbstractQueryTranslatorFacade(
 			IFacadeFactory facadeFactory, 
