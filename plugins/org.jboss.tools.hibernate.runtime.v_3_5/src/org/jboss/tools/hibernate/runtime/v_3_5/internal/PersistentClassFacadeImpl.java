@@ -21,7 +21,6 @@ import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	
-	private ITable table = null;
 	private ITable rootTable = null;
 	private IValue discriminator = null;
 	private IValue identifier = null;
