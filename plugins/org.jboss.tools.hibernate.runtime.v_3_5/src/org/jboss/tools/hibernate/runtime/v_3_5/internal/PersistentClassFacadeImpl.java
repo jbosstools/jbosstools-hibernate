@@ -39,14 +39,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	}
 
 	@Override
-	public ITable getTable() {
-		if (table == null && getTarget().getTable() != null) {
-			table = getFacadeFactory().createTable(getTarget().getTable());
-		}
-		return table;
-	}
-
-	@Override
 	public Boolean isAbstract() {
 		return getTarget().isAbstract();
 	}

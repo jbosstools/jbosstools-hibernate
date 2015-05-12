@@ -151,6 +151,21 @@ implements IPersistentClass {
 		return properties.get(string);
 	}
 
+	@Override
+	public ITable getTable() {
+		if (table == null) {
+			Object targetTable = Util.invokeMethod(
+					getTarget(), 
+					"getTable", 
+					new Class[] {}, 
+					new Object[] {});
+			if (targetTable != null) {
+				table = getFacadeFactory().createTable(targetTable);
+			}
+		}
+		return table;
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}
