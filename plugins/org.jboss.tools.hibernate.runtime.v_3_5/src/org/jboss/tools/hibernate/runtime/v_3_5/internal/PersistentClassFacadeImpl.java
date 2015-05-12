@@ -48,11 +48,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	}
 
 	@Override
-	public String getEntityName() {
-		return getTarget().getEntityName();
-	}
-
-	@Override
 	public boolean isAssignableToRootClass() {
 		return RootClass.class.isAssignableFrom(getTarget().getClass());
 	}
