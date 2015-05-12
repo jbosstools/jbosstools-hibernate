@@ -37,14 +37,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	}
 
 	@Override
-	public IValue getIdentifier() {
-		if (identifier == null && getTarget().getIdentifier() != null) {
-			identifier = getFacadeFactory().createValue(getTarget().getIdentifier());
-		}
-		return identifier;
-	}
-
-	@Override
 	public Iterator<IJoin> getJoinIterator() {
 		if (joins == null) {
 			initializeJoins();

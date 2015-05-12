@@ -193,6 +193,21 @@ implements IPersistentClass {
 		return discriminator;
 	}
 
+	@Override
+	public IValue getIdentifier() {
+		if (identifier == null) {
+			Object targetIdentifier = Util.invokeMethod(
+					getTarget(), 
+					"getIdentifier", 
+					new Class[] {}, 
+					new Object[] {});
+			if (targetIdentifier != null) {
+				identifier = getFacadeFactory().createValue(targetIdentifier);
+			}
+		}
+		return identifier;
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}
