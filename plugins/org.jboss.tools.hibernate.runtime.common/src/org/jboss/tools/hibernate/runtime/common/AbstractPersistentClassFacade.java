@@ -210,6 +210,14 @@ implements IPersistentClass {
 		return identifier;
 	}
 
+	@Override
+	public Iterator<IJoin> getJoinIterator() {
+		if (joins == null) {
+			initializeJoins();
+		}
+		return joins.iterator();
+	}
+	
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}

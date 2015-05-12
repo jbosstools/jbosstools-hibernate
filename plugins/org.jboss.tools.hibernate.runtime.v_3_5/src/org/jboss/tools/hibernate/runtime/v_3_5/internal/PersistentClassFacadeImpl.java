@@ -13,7 +13,6 @@ import org.jboss.tools.hibernate.proxy.TableProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractPersistentClassFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
@@ -35,14 +34,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 		return (PersistentClass)super.getTarget();
 	}
 
-	@Override
-	public Iterator<IJoin> getJoinIterator() {
-		if (joins == null) {
-			initializeJoins();
-		}
-		return joins.iterator();
-	}
-	
 	@Override
 	public IProperty getVersion() {
 		if (version == null && getTarget().getVersion() != null) {
