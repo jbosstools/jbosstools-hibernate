@@ -8,6 +8,7 @@ import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
+import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public abstract class AbstractPersistentClassFacade 
 extends AbstractFacade 
@@ -19,6 +20,7 @@ implements IPersistentClass {
 	protected IPersistentClass superClass = null;
 	protected HashMap<String, IProperty> properties = null;
 	protected ITable table = null;
+	protected IValue discriminator = null;
 
 	public AbstractPersistentClassFacade(
 			IFacadeFactory facadeFactory, 
