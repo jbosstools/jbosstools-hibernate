@@ -240,7 +240,16 @@ implements IPersistentClass {
 				getTarget(), 
 				"setClassName", 
 				new Class[] { String.class }, 
-				new Object[] {});
+				new Object[] { className });
+	}
+
+	@Override
+	public void setEntityName(String entityName) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setEntityName", 
+				new Class[] { String.class }, 
+				new Object[] { entityName });
 	}
 
 	protected Class<?> getRootClassClass() {

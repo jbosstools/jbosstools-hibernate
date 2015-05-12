@@ -34,11 +34,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	}
 
 	@Override
-	public void setEntityName(String entityName) {
-		getTarget().setEntityName(entityName);
-	}
-
-	@Override
 	public void setDiscriminatorValue(String value) {
 		getTarget().setDiscriminatorValue(value);
 	}
