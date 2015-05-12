@@ -25,7 +25,7 @@ import org.jboss.tools.hibernate.proxy.JDBCReaderProxy;
 import org.jboss.tools.hibernate.proxy.PersistentClassProxy;
 import org.jboss.tools.hibernate.proxy.PrimaryKeyProxy;
 import org.jboss.tools.hibernate.proxy.PropertyProxy;
-import org.jboss.tools.hibernate.proxy.QueryTranslatorProxy;
+import org.jboss.tools.hibernate.proxy.QueryTranslatorFacadeImpl;
 import org.jboss.tools.hibernate.proxy.SessionFactoryProxy;
 import org.jboss.tools.hibernate.proxy.SessionProxy;
 import org.jboss.tools.hibernate.proxy.SettingsProxy;
@@ -114,7 +114,7 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	
 	@Override
 	public IQueryTranslator createQueryTranslator(Object target) {
-		return new QueryTranslatorProxy(this, (QueryTranslator)target);
+		return new QueryTranslatorFacadeImpl(this, (QueryTranslator)target);
 	}
 	
 	@Override

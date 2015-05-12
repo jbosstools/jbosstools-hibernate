@@ -5,17 +5,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.hibernate.hql.spi.QueryTranslator;
+import org.hibernate.hql.QueryTranslator;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.AbstractQueryTranslatorFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 
-public class QueryTranslatorProxy extends AbstractQueryTranslatorFacade {
+public class QueryTranslatorFacadeImpl extends AbstractQueryTranslatorFacade {
 	
 	private IType[] returnTypes = null;
 
-	public QueryTranslatorProxy(
+	public QueryTranslatorFacadeImpl(
 			IFacadeFactory facadeFactory,
 			QueryTranslator translator) {
 		super(facadeFactory, translator);
@@ -30,6 +30,7 @@ public class QueryTranslatorProxy extends AbstractQueryTranslatorFacade {
 		return getTarget().isManipulationStatement();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Set<Serializable> getQuerySpaces() {
 		return getTarget().getQuerySpaces();
@@ -52,6 +53,7 @@ public class QueryTranslatorProxy extends AbstractQueryTranslatorFacade {
 		this.returnTypes = returnTypes.toArray(new IType[origin.length]);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<String> collectSqlStrings() {
 		return getTarget().collectSqlStrings();

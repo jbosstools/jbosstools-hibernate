@@ -11,11 +11,11 @@ import org.jboss.tools.hibernate.runtime.common.AbstractQueryTranslatorFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 
-public class QueryTranslatorProxy extends AbstractQueryTranslatorFacade {
+public class QueryTranslatorFacadeImpl extends AbstractQueryTranslatorFacade {
 	
 	private IType[] returnTypes = null;
 
-	public QueryTranslatorProxy(
+	public QueryTranslatorFacadeImpl(
 			IFacadeFactory facadeFactory,
 			QueryTranslator translator) {
 		super(facadeFactory, translator);
