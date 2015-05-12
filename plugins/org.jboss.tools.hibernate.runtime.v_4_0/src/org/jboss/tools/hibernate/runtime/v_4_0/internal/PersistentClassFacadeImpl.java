@@ -31,7 +31,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	private IValue discriminator = null;
 	private IValue identifier = null;
 	private IProperty version = null;
-	private IProperty identifierProperty = null;
 	private HashSet<IPersistentClass> subclasses = null;
 	private HashSet<IJoin> joins = null;
 	private HashSet<IProperty> propertyClosures = null;
