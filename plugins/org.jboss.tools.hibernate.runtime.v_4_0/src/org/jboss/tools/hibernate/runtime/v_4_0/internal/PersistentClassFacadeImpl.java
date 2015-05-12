@@ -24,7 +24,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	private ITable rootTable = null;
 	private IProperty version = null;
 	private HashSet<IPersistentClass> subclasses = null;
-	private HashSet<IJoin> joins = null;
 
 	public PersistentClassFacadeImpl(
 			IFacadeFactory facadeFactory,
