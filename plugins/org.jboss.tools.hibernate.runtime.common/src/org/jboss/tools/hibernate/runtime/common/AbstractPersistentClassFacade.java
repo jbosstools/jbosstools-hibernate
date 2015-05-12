@@ -177,6 +177,21 @@ implements IPersistentClass {
 				new Object[] {});
 	}
 
+	@Override
+	public IValue getDiscriminator() {
+		if (discriminator == null) {
+			Object targetDiscriminator = Util.invokeMethod(
+					getTarget(), 
+					"getDiscriminator", 
+					new Class[] {}, 
+					new Object[] {});
+			if (discriminator != null) {
+				discriminator = getFacadeFactory().createValue(targetDiscriminator);
+			}
+		}
+		return discriminator;
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}

@@ -38,14 +38,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	}
 
 	@Override
-	public IValue getDiscriminator() {
-		if (discriminator == null && getTarget().getDiscriminator() != null) {
-			discriminator = getFacadeFactory().createValue(getTarget().getDiscriminator());
-		}
-		return discriminator;
-	}
-
-	@Override
 	public IValue getIdentifier() {
 		if (identifier == null && getTarget().getIdentifier() != null) {
 			identifier = getFacadeFactory().createValue(getTarget().getIdentifier());
