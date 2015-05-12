@@ -6,7 +6,6 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Settings;
 import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
-import org.hibernate.hql.spi.QueryTranslator;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
@@ -40,7 +39,6 @@ import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
-import org.jboss.tools.hibernate.runtime.spi.IQueryTranslator;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISettings;
@@ -101,11 +99,6 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public IProperty createProperty(Object target) {
 		return new PropertyProxy(this, (Property)target);
-	}
-	
-	@Override
-	public IQueryTranslator createQueryTranslator(Object target) {
-		return new QueryTranslatorFacadeImpl(this, (QueryTranslator)target);
 	}
 	
 	@Override
