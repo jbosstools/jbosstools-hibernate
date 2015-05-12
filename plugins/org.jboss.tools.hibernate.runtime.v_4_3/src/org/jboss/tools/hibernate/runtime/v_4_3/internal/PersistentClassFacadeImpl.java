@@ -48,11 +48,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	}
 
 	@Override
-	public String getClassName() {
-		return getTarget().getClassName();
-	}
-
-	@Override
 	public String getEntityName() {
 		return getTarget().getEntityName();
 	}

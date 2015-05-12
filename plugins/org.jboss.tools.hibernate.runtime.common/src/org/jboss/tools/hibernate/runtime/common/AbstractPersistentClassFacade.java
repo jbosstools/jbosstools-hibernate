@@ -13,4 +13,13 @@ implements IPersistentClass {
 		super(facadeFactory, target);
 	}
 
+	@Override
+	public String getClassName() {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getClassName", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 }
