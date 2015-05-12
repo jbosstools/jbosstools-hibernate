@@ -166,6 +166,15 @@ implements IPersistentClass {
 		return table;
 	}
 
+	@Override
+	public Boolean isAbstract() {
+		return (Boolean)Util.invokeMethod(
+				getTarget(), 
+				"isAbstract", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}
