@@ -47,11 +47,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	}
 
 	@Override
-	public boolean isInstanceOfRootClass() {
-		return getTarget() instanceof RootClass;
-	}
-
-	@Override
 	public boolean isInstanceOfSubclass() {
 		return getTarget() instanceof Subclass;
 	}

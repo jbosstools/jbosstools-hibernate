@@ -68,6 +68,11 @@ implements IPersistentClass {
 				new Object[] {});
 	}
 
+	@Override
+	public boolean isInstanceOfRootClass() {
+		return getRootClassClass().isAssignableFrom(getTarget().getClass());
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}
