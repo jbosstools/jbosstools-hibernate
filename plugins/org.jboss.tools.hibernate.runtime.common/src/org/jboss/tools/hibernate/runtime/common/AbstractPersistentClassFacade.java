@@ -219,6 +219,21 @@ implements IPersistentClass {
 		return joins.iterator();
 	}
 	
+	@Override
+	public IProperty getVersion() {
+		if (version == null) {
+			Object targetVersion = Util.invokeMethod(
+					getTarget(), 
+					"getVersion", 
+					new Class[] {}, 
+					new Object[] {});
+			if (version != null) {
+				version = getFacadeFactory().createProperty(targetVersion);
+			}
+		}
+		return version;
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}

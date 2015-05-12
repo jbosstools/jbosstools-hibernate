@@ -34,14 +34,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	}
 
 	@Override
-	public IProperty getVersion() {
-		if (version == null && getTarget().getVersion() != null) {
-			version = getFacadeFactory().createProperty(getTarget().getVersion());
-		}
-		return version;
-	}
-
-	@Override
 	public void setClassName(String className) {
 		getTarget().setClassName(className);
 	}
