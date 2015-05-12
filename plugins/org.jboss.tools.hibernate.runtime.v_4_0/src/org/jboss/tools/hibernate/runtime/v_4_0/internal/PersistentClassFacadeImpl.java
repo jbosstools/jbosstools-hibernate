@@ -49,11 +49,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 
 
 	@Override
-	public boolean isRootClass() {
-		return getTarget().getClass() == RootClass.class;
-	}
-
-	@Override
 	public IProperty getIdentifierProperty() {
 		if (identifierProperty == null  && getTarget().getIdentifierProperty() != null) {
 			identifierProperty = getFacadeFactory().createProperty(getTarget().getIdentifierProperty());

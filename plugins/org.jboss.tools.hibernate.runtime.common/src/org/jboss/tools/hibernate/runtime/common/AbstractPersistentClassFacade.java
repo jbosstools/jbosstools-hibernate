@@ -36,6 +36,11 @@ implements IPersistentClass {
 		return getRootClassClass().isAssignableFrom(getTarget().getClass());
 	}
 	
+	@Override
+	public boolean isRootClass() {
+		return getTarget().getClass() == getRootClassClass();
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}
