@@ -260,4 +260,16 @@ implements IPersistentClass {
 		}
 	}
 
+	protected void initializeJoins() {
+		joins = new HashSet<IJoin>();
+		Iterator<?> targetJoinIterator = (Iterator<?>)Util.invokeMethod(
+				getTarget(), 
+				"getJoinIterator", 
+				new Class[] {}, 
+				new Object[] {});
+		while (targetJoinIterator.hasNext()) {
+			joins.add(getFacadeFactory().createJoin(targetJoinIterator.next()));
+		}
+	}
+
 }

@@ -43,14 +43,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 		return joins.iterator();
 	}
 	
-	private void initializeJoins() {
-		joins = new HashSet<IJoin>();
-		Iterator<?> origin = getTarget().getJoinIterator();
-		while (origin.hasNext()) {
-			joins.add(getFacadeFactory().createJoin(origin.next()));
-		}
-	}
-
 	@Override
 	public IProperty getVersion() {
 		if (version == null && getTarget().getVersion() != null) {
