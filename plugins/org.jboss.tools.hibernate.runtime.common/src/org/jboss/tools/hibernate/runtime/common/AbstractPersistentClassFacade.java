@@ -107,6 +107,14 @@ implements IPersistentClass {
 		return rootClass;
 	}
 
+	@Override
+	public Iterator<IProperty> getPropertyClosureIterator() {
+		if (propertyClosures == null) {
+			initializePropertyClosures();
+		}
+		return propertyClosures.iterator();
+	}
+	
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}

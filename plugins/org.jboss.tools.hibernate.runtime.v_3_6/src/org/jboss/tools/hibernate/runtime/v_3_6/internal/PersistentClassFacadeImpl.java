@@ -44,14 +44,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	}
 
 	@Override
-	public Iterator<IProperty> getPropertyClosureIterator() {
-		if (propertyClosures == null) {
-			initializePropertyClosures();
-		}
-		return propertyClosures.iterator();
-	}
-	
-	@Override
 	public IPersistentClass getSuperclass() {
 		if (superClass != null) {
 			superClass = getFacadeFactory().createPersistentClass(getTarget().getSuperclass());
