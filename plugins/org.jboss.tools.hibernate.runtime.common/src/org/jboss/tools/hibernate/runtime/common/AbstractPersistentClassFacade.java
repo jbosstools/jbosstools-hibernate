@@ -133,6 +133,14 @@ implements IPersistentClass {
 		return superClass;
 	}
 
+	@Override
+	public Iterator<IProperty> getPropertyIterator() {
+		if (properties == null) {
+			initializeProperties();
+		}
+		return properties.values().iterator();
+	}
+	
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}

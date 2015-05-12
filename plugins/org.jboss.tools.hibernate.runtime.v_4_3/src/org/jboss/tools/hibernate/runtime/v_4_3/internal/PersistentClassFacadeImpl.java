@@ -40,14 +40,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	}
 
 	@Override
-	public Iterator<IProperty> getPropertyIterator() {
-		if (properties == null) {
-			initializeProperties();
-		}
-		return properties.values().iterator();
-	}
-	
-	@Override
 	public IProperty getProperty(String string) {
 		if (properties == null) {
 			initializeProperties();
