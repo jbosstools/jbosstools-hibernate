@@ -88,6 +88,21 @@ implements IPersistentClass {
 				new Object[] {});
 	}
 
+	@Override
+	public IPersistentClass getRootClass() {
+		if (rootClass == null) {
+			Object targetRootClass = Util.invokeMethod(
+					getTarget(), 
+					"getRootClass", 
+					new Class[] {}, 
+					new Object[] {});
+			if (targetRootClass != null) {
+				rootClass = getFacadeFactory().createPersistentClass(targetRootClass);
+			}
+		}
+		return rootClass;
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}

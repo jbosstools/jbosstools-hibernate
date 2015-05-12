@@ -46,14 +46,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 
 
 	@Override
-	public IPersistentClass getRootClass() {
-		if (rootClass == null && getTarget().getRootClass() != null) {
-			rootClass = getFacadeFactory().createPersistentClass(getTarget().getRootClass());
-		}
-		return rootClass;
-	}
-
-	@Override
 	public Iterator<IProperty> getPropertyClosureIterator() {
 		if (propertyClosures == null) {
 			initializePropertyClosures();
