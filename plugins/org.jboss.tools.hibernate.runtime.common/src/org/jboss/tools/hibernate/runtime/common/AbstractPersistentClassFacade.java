@@ -234,6 +234,15 @@ implements IPersistentClass {
 		return version;
 	}
 
+	@Override
+	public void setClassName(String className) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setClassName", 
+				new Class[] { String.class }, 
+				new Object[] {});
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}
