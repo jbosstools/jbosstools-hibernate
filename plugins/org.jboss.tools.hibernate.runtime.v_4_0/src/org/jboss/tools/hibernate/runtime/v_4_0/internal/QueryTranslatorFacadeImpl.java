@@ -12,8 +12,4 @@ public class QueryTranslatorFacadeImpl extends AbstractQueryTranslatorFacade {
 		super(facadeFactory, translator);
 	}
 
-	public QueryTranslator getTarget() {
-		return (QueryTranslator)super.getTarget();
-	}
-
 }
