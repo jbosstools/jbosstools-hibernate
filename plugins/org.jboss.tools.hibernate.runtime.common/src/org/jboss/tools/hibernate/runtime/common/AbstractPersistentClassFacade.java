@@ -1,5 +1,7 @@
 package org.jboss.tools.hibernate.runtime.common;
 
+import java.util.HashSet;
+
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
@@ -10,6 +12,7 @@ implements IPersistentClass {
 
 	protected IProperty identifierProperty = null;
 	protected IPersistentClass rootClass = null;
+	protected HashSet<IProperty> propertyClosures = null;
 
 	public AbstractPersistentClassFacade(
 			IFacadeFactory facadeFactory, 
