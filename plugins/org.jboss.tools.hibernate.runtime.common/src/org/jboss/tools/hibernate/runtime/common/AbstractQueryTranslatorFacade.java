@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.runtime.common;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
@@ -47,6 +48,16 @@ implements IQueryTranslator {
 		return returnTypes;
 	}
 	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<String> collectSqlStrings() {
+		return (List<String>)Util.invokeMethod(
+				getTarget(), 
+				"collectSqlStrings", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected void initializeReturnTypes() {
 		Object[] targetReturnTypes = (Object[])Util.invokeMethod(
 				getTarget(), 
