@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.common;
 
 import java.util.HashSet;
+import java.util.Iterator;
 
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -120,6 +121,20 @@ implements IPersistentClass {
 
 	protected String getSubclassClassName() {
 		return "org.hibernate.mapping.Subclass";
+	}
+
+	protected void initializePropertyClosures() {
+		propertyClosures = new HashSet<IProperty>();
+		Iterator<?> targetPropertyClosures = (Iterator<?>)Util.invokeMethod(
+				getTarget(), 
+				"getPropertyClosureIterator", 
+				new Class[] {}, 
+				new Object[] {});
+		while (targetPropertyClosures.hasNext()) {
+			propertyClosures.add(
+					getFacadeFactory().createProperty(
+							targetPropertyClosures.next()));
+		}
 	}
 
 }

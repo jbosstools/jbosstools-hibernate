@@ -51,15 +51,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 		return propertyClosures.iterator();
 	}
 	
-	@SuppressWarnings("unchecked")
-	private void initializePropertyClosures() {
-		propertyClosures = new HashSet<IProperty>();
-		Iterator<Property> origin = getTarget().getPropertyClosureIterator();
-		while (origin.hasNext()) {
-			propertyClosures.add(getFacadeFactory().createProperty(origin.next()));
-		}
-	}
-
 	@Override
 	public IPersistentClass getSuperclass() {
 		if (superClass != null) {
