@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.runtime.common;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -15,6 +16,7 @@ implements IPersistentClass {
 	protected IPersistentClass rootClass = null;
 	protected HashSet<IProperty> propertyClosures = null;
 	protected IPersistentClass superClass = null;
+	protected HashMap<String, IProperty> properties = null;
 
 	public AbstractPersistentClassFacade(
 			IFacadeFactory facadeFactory, 
