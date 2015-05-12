@@ -21,6 +21,7 @@ implements IPersistentClass {
 	protected HashMap<String, IProperty> properties = null;
 	protected ITable table = null;
 	protected IValue discriminator = null;
+	protected IValue identifier = null;
 
 	public AbstractPersistentClassFacade(
 			IFacadeFactory facadeFactory, 
