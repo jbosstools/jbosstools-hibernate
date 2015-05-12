@@ -40,14 +40,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	}
 
 	@Override
-	public IProperty getProperty(String string) {
-		if (properties == null) {
-			initializeProperties();
-		}
-		return properties.get(string);
-	}
-
-	@Override
 	public ITable getTable() {
 		if (table == null && getTarget().getTable() != null) {
 			table = getFacadeFactory().createTable(getTarget().getTable());

@@ -141,6 +141,14 @@ implements IPersistentClass {
 		return properties.values().iterator();
 	}
 	
+	@Override
+	public IProperty getProperty(String string) {
+		if (properties == null) {
+			initializeProperties();
+		}
+		return properties.get(string);
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}
