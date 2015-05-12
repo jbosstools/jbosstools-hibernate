@@ -13,7 +13,7 @@ public abstract class AbstractQueryTranslatorFacade
 extends AbstractFacade 
 implements IQueryTranslator {
 
-	protected IType[] returnTypes = null;
+	private IType[] returnTypes = null;
 
 	public AbstractQueryTranslatorFacade(
 			IFacadeFactory facadeFactory, 
