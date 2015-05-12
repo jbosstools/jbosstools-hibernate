@@ -1,5 +1,8 @@
 package org.jboss.tools.hibernate.runtime.common;
 
+import java.io.Serializable;
+import java.util.Set;
+
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IQueryTranslator;
 
@@ -18,6 +21,16 @@ implements IQueryTranslator {
 		return (boolean)Util.invokeMethod(
 				getTarget(), 
 				"isManipulationStatement", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Set<Serializable> getQuerySpaces() {
+		return (Set<Serializable>)Util.invokeMethod(
+				getTarget(), 
+				"getQuerySpaces", 
 				new Class[] {}, 
 				new Object[] {});
 	}

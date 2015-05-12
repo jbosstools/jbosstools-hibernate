@@ -1,9 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_4_3.internal;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.hibernate.hql.spi.QueryTranslator;
 import org.hibernate.type.Type;
@@ -23,11 +21,6 @@ public class QueryTranslatorFacadeImpl extends AbstractQueryTranslatorFacade {
 
 	public QueryTranslator getTarget() {
 		return (QueryTranslator)super.getTarget();
-	}
-
-	@Override
-	public Set<Serializable> getQuerySpaces() {
-		return getTarget().getQuerySpaces();
 	}
 
 	@Override
