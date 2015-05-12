@@ -19,7 +19,6 @@ import org.jboss.tools.hibernate.proxy.HQLQueryPlanProxy;
 import org.jboss.tools.hibernate.proxy.HibernateMappingExporterExtension;
 import org.jboss.tools.hibernate.proxy.HibernateMappingExporterProxy;
 import org.jboss.tools.hibernate.proxy.JDBCReaderProxy;
-import org.jboss.tools.hibernate.proxy.PersistentClassFacadeImpl;
 import org.jboss.tools.hibernate.proxy.PrimaryKeyProxy;
 import org.jboss.tools.hibernate.proxy.PropertyProxy;
 import org.jboss.tools.hibernate.proxy.SessionFactoryProxy;

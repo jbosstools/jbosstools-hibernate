@@ -94,6 +94,7 @@ import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_4_3.internal.FacadeFactoryImpl;
+import org.jboss.tools.hibernate.runtime.v_4_3.internal.PersistentClassFacadeImpl;
 import org.jboss.tools.hibernate.util.OpenMappingUtilsEjb3;
 import org.xml.sax.EntityResolver;
 

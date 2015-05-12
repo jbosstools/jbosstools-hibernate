@@ -8,6 +8,7 @@ import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
+import org.jboss.tools.hibernate.runtime.v_4_0.internal.PersistentClassFacadeImpl;
 
 public class SpecialRootClassProxy extends PersistentClassFacadeImpl {
 

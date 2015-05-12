@@ -8,6 +8,7 @@ import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
+import org.jboss.tools.hibernate.runtime.v_3_5.internal.PersistentClassFacadeImpl;
 
 public class PropertyProxy extends AbstractPropertyFacade {
 	

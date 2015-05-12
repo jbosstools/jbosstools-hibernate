@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate.proxy;
+package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,6 +11,8 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Value;
+import org.jboss.tools.hibernate.proxy.PropertyProxy;
+import org.jboss.tools.hibernate.proxy.TableProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractPersistentClassFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
