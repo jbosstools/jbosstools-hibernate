@@ -59,6 +59,15 @@ implements IPersistentClass {
 		return identifierProperty;
 	}
 
+	@Override
+	public boolean hasIdentifierProperty() {
+		return (boolean)Util.invokeMethod(
+				getTarget(), 
+				"hasIdentifierProperty", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}

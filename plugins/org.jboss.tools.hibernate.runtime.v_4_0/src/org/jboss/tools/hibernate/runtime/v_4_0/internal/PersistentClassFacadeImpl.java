@@ -48,11 +48,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 
 
 	@Override
-	public boolean hasIdentifierProperty() {
-		return getTarget().hasIdentifierProperty();
-	}
-
-	@Override
 	public boolean isInstanceOfRootClass() {
 		return getTarget() instanceof RootClass;
 	}
