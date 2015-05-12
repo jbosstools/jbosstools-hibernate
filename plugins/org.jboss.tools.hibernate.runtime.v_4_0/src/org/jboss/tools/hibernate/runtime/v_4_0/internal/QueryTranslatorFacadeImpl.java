@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate.proxy;
+package org.jboss.tools.hibernate.runtime.v_4_0.internal;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -30,6 +30,7 @@ public class QueryTranslatorFacadeImpl extends AbstractQueryTranslatorFacade {
 		return getTarget().isManipulationStatement();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Set<Serializable> getQuerySpaces() {
 		return getTarget().getQuerySpaces();
@@ -52,6 +53,7 @@ public class QueryTranslatorFacadeImpl extends AbstractQueryTranslatorFacade {
 		this.returnTypes = returnTypes.toArray(new IType[origin.length]);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<String> collectSqlStrings() {
 		return getTarget().collectSqlStrings();
