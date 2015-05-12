@@ -73,12 +73,34 @@ implements IPersistentClass {
 		return getRootClassClass().isAssignableFrom(getTarget().getClass());
 	}
 
+	@Override
+	public boolean isInstanceOfSubclass() {
+		return getSubclassClass().isAssignableFrom(getTarget().getClass());
+	}
+
+	@Override
+	public String getNodeName() {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getNodeName", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}
 	
+	protected Class<?> getSubclassClass() {
+		return Util.getClass(getSubclassClassName(), getFacadeFactoryClassLoader());
+	}
+	
 	protected String getRootClassClassName() {
 		return "org.hibernate.mapping.RootClass";
+	}
+
+	protected String getSubclassClassName() {
+		return "org.hibernate.mapping.Subclass";
 	}
 
 }

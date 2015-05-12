@@ -9,7 +9,6 @@ import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
-import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.proxy.PropertyProxy;
 import org.jboss.tools.hibernate.proxy.TableProxy;
@@ -46,16 +45,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 		return (PersistentClass)super.getTarget();
 	}
 
-
-	@Override
-	public boolean isInstanceOfSubclass() {
-		return getTarget() instanceof Subclass;
-	}
-
-	@Override
-	public String getNodeName() {
-		return getTarget().getNodeName();
-	}
 
 	@Override
 	public IPersistentClass getRootClass() {
