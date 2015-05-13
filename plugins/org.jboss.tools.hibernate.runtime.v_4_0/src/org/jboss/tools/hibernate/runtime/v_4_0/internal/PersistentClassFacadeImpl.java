@@ -25,11 +25,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	}
 
 	@Override
-	public void setProxyInterfaceName(String name) {
-		getTarget().setProxyInterfaceName(name);
-	}
-
-	@Override
 	public void setLazy(boolean b) {
 		getTarget().setLazy(b);
 	}

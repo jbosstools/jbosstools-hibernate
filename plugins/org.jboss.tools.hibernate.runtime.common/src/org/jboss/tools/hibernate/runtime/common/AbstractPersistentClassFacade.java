@@ -376,6 +376,15 @@ implements IPersistentClass {
 		discriminator = discr;
 	}
 
+	@Override
+	public void setProxyInterfaceName(String name) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setProxyInterfaceName", 
+				new Class[] { String.class }, 
+				new Object[] { name });
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}
