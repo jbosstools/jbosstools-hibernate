@@ -17,11 +17,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	}
 
 	@Override
-	public boolean isInherited() {
-		return getTarget().isInherited();
-	}
-
-	@Override
 	public boolean isJoinedSubclass() {
 		return getTarget().isJoinedSubclass();
 	}
