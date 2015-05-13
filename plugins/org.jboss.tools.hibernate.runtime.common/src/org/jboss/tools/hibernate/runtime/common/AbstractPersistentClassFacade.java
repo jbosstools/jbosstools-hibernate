@@ -446,6 +446,15 @@ implements IPersistentClass {
 				new Object[] {});
 	}
 
+	@Override
+	public boolean isDiscriminatorInsertable() {
+		return (boolean)Util.invokeMethod(
+				getTarget(), 
+				"isDiscriminatorInsertable", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}

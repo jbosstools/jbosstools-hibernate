@@ -17,11 +17,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	}
 
 	@Override
-	public boolean isDiscriminatorInsertable() {
-		return getTarget().isDiscriminatorInsertable();
-	}
-
-	@Override
 	public boolean isDiscriminatorValueNotNull() {
 		return getTarget().isDiscriminatorValueNotNull();
 	}
