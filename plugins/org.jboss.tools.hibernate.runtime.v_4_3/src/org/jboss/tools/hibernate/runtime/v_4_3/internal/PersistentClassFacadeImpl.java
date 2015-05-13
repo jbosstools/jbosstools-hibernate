@@ -22,11 +22,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	}
 
 	@Override
-	public String getTemporaryIdTableName() {
-		return getTarget().getTemporaryIdTableName();
-	}
-
-	@Override
 	public String getWhere() {
 		return getTarget().getWhere();
 	}
