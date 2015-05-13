@@ -4,14 +4,10 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.RootClass;
-import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.runtime.common.AbstractPersistentClassFacade;
-import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
-import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	
@@ -26,13 +22,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 
 	public PersistentClass getTarget() {
 		return (PersistentClass)super.getTarget();
-	}
-
-	@Override
-	public void setDiscriminator(IValue discr) {
-		assert getTarget() instanceof RootClass;
-		assert discr instanceof IFacade;
-		((RootClass)getTarget()).setDiscriminator((Value)((IFacade)discr).getTarget());
 	}
 
 	@Override

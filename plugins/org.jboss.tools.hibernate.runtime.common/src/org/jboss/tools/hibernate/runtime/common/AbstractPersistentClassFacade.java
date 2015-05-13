@@ -361,6 +361,21 @@ implements IPersistentClass {
 		identifier = value;
 	}
 
+	@Override
+	public void setDiscriminator(IValue discr) {
+		Object discrTarget = Util.invokeMethod(
+				discr, 
+				"getTarget", 
+				new Class[] {}, 
+				new Object[] {});
+		Util.invokeMethod(
+				getTarget(), 
+				"setDiscriminator", 
+				new Class[] { getValueClass() }, 
+				new Object[] { discrTarget });
+		discriminator = discr;
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}
@@ -385,6 +400,10 @@ implements IPersistentClass {
 		return Util.getClass(getKeyValueClassName(), getFacadeFactoryClassLoader());
 	}
 	
+	protected Class<?> getValueClass() {
+		return Util.getClass(getValueClassName(), getFacadeFactoryClassLoader());
+	}
+	
 	protected String getRootClassClassName() {
 		return "org.hibernate.mapping.RootClass";
 	}
@@ -407,6 +426,10 @@ implements IPersistentClass {
 
 	protected String getKeyValueClassName() {
 		return "org.hibernate.mapping.KeyValue";
+	}
+
+	protected String getValueClassName() {
+		return "org.hibernate.mapping.Value";
 	}
 
 	protected void initializePropertyClosures() {
