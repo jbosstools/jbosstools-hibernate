@@ -3,7 +3,6 @@ package org.jboss.tools.hibernate.runtime.v_4_3.internal;
 import org.hibernate.mapping.PersistentClass;
 import org.jboss.tools.hibernate.runtime.common.AbstractPersistentClassFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.ITable;
 
 public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	
@@ -146,15 +145,5 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	public String getWhere() {
 		return getTarget().getWhere();
 	}
-
-	@Override
-	public ITable getRootTable() {
-		if (rootTable == null) {
-			rootTable = getFacadeFactory().createTable(getTarget().getRootTable());
-		}
-		return rootTable;
-	}
-	
-	
 
 }

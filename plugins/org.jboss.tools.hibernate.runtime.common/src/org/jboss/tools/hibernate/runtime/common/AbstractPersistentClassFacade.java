@@ -404,6 +404,21 @@ implements IPersistentClass {
 		return subclasses.iterator();
 	}
 	
+	@Override
+	public ITable getRootTable() {
+		if (rootTable == null) {
+			Object targetRootTable = Util.invokeMethod(
+					getTarget(), 
+					"getRootTable", 
+					new Class[] {}, 
+					new Object[] {});
+			if (targetRootTable != null) {
+				rootTable = getFacadeFactory().createTable(targetRootTable);
+			}
+		}
+		return rootTable;
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}
