@@ -608,6 +608,15 @@ implements IPersistentClass {
 				new Object[] {});
 	}
 
+	@Override
+	public String getLoaderName() {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getLoaderName", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}

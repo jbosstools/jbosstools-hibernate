@@ -17,11 +17,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	}
 
 	@Override
-	public String getLoaderName() {
-		return getTarget().getLoaderName();
-	}
-
-	@Override
 	public int getOptimisticLockMode() {
 		return getTarget().getOptimisticLockMode();
 	}
