@@ -32,11 +32,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	}
 
 	@Override
-	public IProperty getParentProperty() {
-		throw new RuntimeException("getProperty() is only allowed on SpecialRootClass"); //$NON-NLS-1$
-	}
-
-	@Override
 	public void setIdentifierProperty(IProperty property) {
 		assert getTarget() instanceof RootClass;
 		assert property instanceof PropertyProxy;
