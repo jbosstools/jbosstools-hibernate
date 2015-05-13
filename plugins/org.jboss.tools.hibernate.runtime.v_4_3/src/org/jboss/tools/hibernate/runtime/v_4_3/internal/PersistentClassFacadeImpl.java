@@ -17,11 +17,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	}
 
 	@Override
-	public boolean isMutable() {
-		return getTarget().isMutable();
-	}
-
-	@Override
 	public boolean isPolymorphic() {
 		return getTarget().isPolymorphic();
 	}
