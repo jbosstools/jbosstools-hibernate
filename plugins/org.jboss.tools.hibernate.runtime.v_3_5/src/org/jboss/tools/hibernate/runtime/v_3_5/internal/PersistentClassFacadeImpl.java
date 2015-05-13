@@ -17,11 +17,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	}
 
 	@Override
-	public boolean isLazyPropertiesCacheable() {
-		return getTarget().isLazyPropertiesCacheable();
-	}
-
-	@Override
 	public boolean isMutable() {
 		return getTarget().isMutable();
 	}

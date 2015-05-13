@@ -518,6 +518,15 @@ implements IPersistentClass {
 				new Object[] {});
 	}
 
+	@Override
+	public boolean isLazyPropertiesCacheable() {
+		return (boolean)Util.invokeMethod(
+				getTarget(), 
+				"isLazyPropertiesCacheable", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}
