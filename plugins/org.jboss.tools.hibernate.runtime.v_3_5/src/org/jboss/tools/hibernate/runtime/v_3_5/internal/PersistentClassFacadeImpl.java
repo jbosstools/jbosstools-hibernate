@@ -17,11 +17,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	}
 
 	@Override
-	public boolean isJoinedSubclass() {
-		return getTarget().isJoinedSubclass();
-	}
-
-	@Override
 	public boolean isLazy() {
 		return getTarget().isLazy();
 	}

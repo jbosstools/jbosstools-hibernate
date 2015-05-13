@@ -500,6 +500,15 @@ implements IPersistentClass {
 				new Object[] {});
 	}
 
+	@Override
+	public boolean isJoinedSubclass() {
+		return (boolean)Util.invokeMethod(
+				getTarget(), 
+				"isJoinedSubclass", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}
