@@ -17,11 +17,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	}
 
 	@Override
-	public boolean isForceDiscriminator() {
-		return getTarget().isForceDiscriminator();
-	}
-
-	@Override
 	public boolean isInherited() {
 		return getTarget().isInherited();
 	}

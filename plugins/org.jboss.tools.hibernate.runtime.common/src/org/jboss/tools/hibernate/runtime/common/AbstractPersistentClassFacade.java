@@ -482,6 +482,15 @@ implements IPersistentClass {
 				new Object[] {});
 	}
 
+	@Override
+	public boolean isForceDiscriminator() {
+		return (boolean)Util.invokeMethod(
+				getTarget(), 
+				"isForceDiscriminator", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}
