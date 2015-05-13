@@ -17,11 +17,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	}
 
 	@Override
-	public boolean isDiscriminatorValueNull() {
-		return getTarget().isDiscriminatorValueNull();
-	}
-
-	@Override
 	public boolean isExplicitPolymorphism() {
 		return getTarget().isExplicitPolymorphism();
 	}
