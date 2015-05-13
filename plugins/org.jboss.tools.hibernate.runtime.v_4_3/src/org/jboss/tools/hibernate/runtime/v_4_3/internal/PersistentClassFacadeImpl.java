@@ -17,11 +17,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	}
 
 	@Override
-	public boolean isCustomDeleteCallable() {
-		return getTarget().isCustomDeleteCallable();
-	}
-
-	@Override
 	public boolean isCustomInsertCallable() {
 		return getTarget().isCustomInsertCallable();
 	}

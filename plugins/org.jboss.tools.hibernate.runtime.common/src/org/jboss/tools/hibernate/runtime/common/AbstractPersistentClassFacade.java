@@ -419,6 +419,15 @@ implements IPersistentClass {
 		return rootTable;
 	}
 
+	@Override
+	public boolean isCustomDeleteCallable() {
+		return (boolean)Util.invokeMethod(
+				getTarget(), 
+				"isCustomDeleteCallable", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}
