@@ -9,7 +9,6 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.proxy.PropertyProxy;
-import org.jboss.tools.hibernate.proxy.TableProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractPersistentClassFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
@@ -31,17 +30,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 
 	public PersistentClass getTarget() {
 		return (PersistentClass)super.getTarget();
-	}
-
-	@Override
-	public void setTable(ITable table) {
-		assert (getTarget() instanceof JoinedSubclass || getTarget() instanceof RootClass);
-		assert table instanceof TableProxy;
-		if (getTarget() instanceof RootClass) {
-			((RootClass)getTarget()).setTable(((TableProxy)table).getTarget());
-		} else if (getTarget() instanceof JoinedSubclass) {
-			((JoinedSubclass)getTarget()).setTable(((TableProxy)table).getTarget());
-		}
 	}
 
 	@Override
