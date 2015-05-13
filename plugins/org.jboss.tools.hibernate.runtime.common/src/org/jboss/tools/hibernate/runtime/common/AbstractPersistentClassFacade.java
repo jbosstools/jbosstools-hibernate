@@ -437,6 +437,15 @@ implements IPersistentClass {
 				new Object[] {});
 	}
 
+	@Override
+	public boolean isCustomUpdateCallable() {
+		return (boolean)Util.invokeMethod(
+				getTarget(), 
+				"isCustomUpdateCallable", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}
