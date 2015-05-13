@@ -34,11 +34,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	}
 
 	@Override
-	public void setDiscriminatorValue(String value) {
-		getTarget().setDiscriminatorValue(value);
-	}
-
-	@Override
 	public void setAbstract(boolean b) {
 		getTarget().setAbstract(b);
 	}

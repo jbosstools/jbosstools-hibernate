@@ -252,6 +252,15 @@ implements IPersistentClass {
 				new Object[] { entityName });
 	}
 
+	@Override
+	public void setDiscriminatorValue(String value) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setDiscriminatorValue", 
+				new Class[] { String.class }, 
+				new Object[] { value });
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}
