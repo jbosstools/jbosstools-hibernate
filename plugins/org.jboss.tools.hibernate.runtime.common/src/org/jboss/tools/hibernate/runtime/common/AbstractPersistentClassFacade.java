@@ -282,6 +282,11 @@ implements IPersistentClass {
 		propertyClosures = null;
 	}
 
+	@Override
+	public boolean isInstanceOfJoinedSubclass() {
+		return getJoinedSubclassClass().isAssignableFrom(getTarget().getClass());
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}
@@ -294,6 +299,10 @@ implements IPersistentClass {
 		return Util.getClass(getPropertyClassName(), getFacadeFactoryClassLoader());
 	}
 	
+	protected Class<?> getJoinedSubclassClass() {
+		return Util.getClass(getJoinedSubclassClassName(), getFacadeFactoryClassLoader());
+	}
+	
 	protected String getRootClassClassName() {
 		return "org.hibernate.mapping.RootClass";
 	}
@@ -304,6 +313,10 @@ implements IPersistentClass {
 
 	protected String getPropertyClassName() {
 		return "org.hibernate.mapping.Property";
+	}
+
+	protected String getJoinedSubclassClassName() {
+		return "org.hibernate.mapping.JoinedSubclass";
 	}
 
 	protected void initializePropertyClosures() {

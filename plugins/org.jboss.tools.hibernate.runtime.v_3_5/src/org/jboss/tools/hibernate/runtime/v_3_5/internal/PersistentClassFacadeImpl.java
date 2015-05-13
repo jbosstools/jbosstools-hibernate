@@ -34,11 +34,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	}
 
 	@Override
-	public boolean isInstanceOfJoinedSubclass() {
-		return getTarget() instanceof JoinedSubclass;
-	}
-
-	@Override
 	public void setTable(ITable table) {
 		assert (getTarget() instanceof JoinedSubclass || getTarget() instanceof RootClass);
 		assert table instanceof TableProxy;
