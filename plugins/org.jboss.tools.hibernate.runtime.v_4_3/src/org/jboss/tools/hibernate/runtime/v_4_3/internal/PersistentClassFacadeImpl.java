@@ -1,11 +1,8 @@
 package org.jboss.tools.hibernate.runtime.v_4_3.internal;
 
-import java.util.Iterator;
-
 import org.hibernate.mapping.PersistentClass;
 import org.jboss.tools.hibernate.runtime.common.AbstractPersistentClassFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 
 public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
@@ -22,14 +19,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 		return (PersistentClass)super.getTarget();
 	}
 
-	@Override
-	public Iterator<IPersistentClass> getSubclassIterator() {
-		if (subclasses == null) {
-			initializeSubclasses();
-		}
-		return subclasses.iterator();
-	}
-	
 	@Override
 	public boolean isCustomDeleteCallable() {
 		return getTarget().isCustomDeleteCallable();

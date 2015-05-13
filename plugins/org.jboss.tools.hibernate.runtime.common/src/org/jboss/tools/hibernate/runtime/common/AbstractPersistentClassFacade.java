@@ -395,6 +395,14 @@ implements IPersistentClass {
 				new Object[] { b });
 	}
 
+	@Override
+	public Iterator<IPersistentClass> getSubclassIterator() {
+		if (subclasses == null) {
+			initializeSubclasses();
+		}
+		return subclasses.iterator();
+	}
+	
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}
