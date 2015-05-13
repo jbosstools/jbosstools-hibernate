@@ -26,6 +26,7 @@ implements IPersistentClass {
 	protected HashSet<IJoin> joins = null;
 	protected IProperty version = null;
 	protected HashSet<IPersistentClass> subclasses = null;
+	protected ITable rootTable = null;
 
 	public AbstractPersistentClassFacade(
 			IFacadeFactory facadeFactory, 
