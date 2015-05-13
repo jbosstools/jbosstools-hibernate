@@ -497,4 +497,17 @@ implements IPersistentClass {
 		}
 	}
 
+	protected void initializeSubclasses() {
+		subclasses = new HashSet<IPersistentClass>();
+		Iterator<?> targetSubclassIterator = (Iterator<?>)Util.invokeMethod(
+				getTarget(), 
+				"getSubclassIterator", 
+				new Class[] {}, 
+				new Object[] {});
+		while (targetSubclassIterator.hasNext()) {
+			subclasses.add(getFacadeFactory().createPersistentClass(
+					targetSubclassIterator.next()));
+		}
+	}
+
 }

@@ -1,6 +1,5 @@
 package org.jboss.tools.hibernate.runtime.v_4_0.internal;
 
-import java.util.HashSet;
 import java.util.Iterator;
 
 import org.hibernate.mapping.PersistentClass;
@@ -31,14 +30,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 		return subclasses.iterator();
 	}
 	
-	private void initializeSubclasses() {
-		Iterator<?> origin = getTarget().getSubclassIterator();
-		subclasses = new HashSet<IPersistentClass>();
-		while (origin.hasNext()) {
-			subclasses.add(getFacadeFactory().createPersistentClass(origin.next()));
-		}
-	}
-
 	@Override
 	public boolean isCustomDeleteCallable() {
 		return getTarget().isCustomDeleteCallable();
