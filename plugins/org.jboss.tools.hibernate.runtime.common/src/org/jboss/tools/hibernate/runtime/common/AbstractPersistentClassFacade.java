@@ -473,6 +473,15 @@ implements IPersistentClass {
 				new Object[] {});
 	}
 
+	@Override
+	public boolean isExplicitPolymorphism() {
+		return (boolean)Util.invokeMethod(
+				getTarget(), 
+				"isExplicitPolymorphism", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}
