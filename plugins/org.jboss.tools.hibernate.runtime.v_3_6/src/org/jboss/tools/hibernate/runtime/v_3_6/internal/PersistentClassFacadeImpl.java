@@ -17,11 +17,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	}
 
 	@Override
-	public String getCacheConcurrencyStrategy() {
-		return getTarget().getCacheConcurrencyStrategy();
-	}
-
-	@Override
 	public String getCustomSQLDelete() {
 		return getTarget().getCustomSQLDelete();
 	}

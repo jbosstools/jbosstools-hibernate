@@ -563,6 +563,15 @@ implements IPersistentClass {
 				new Object[] {});
 	}
 
+	@Override
+	public String getCacheConcurrencyStrategy() {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getCacheConcurrencyStrategy", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}
