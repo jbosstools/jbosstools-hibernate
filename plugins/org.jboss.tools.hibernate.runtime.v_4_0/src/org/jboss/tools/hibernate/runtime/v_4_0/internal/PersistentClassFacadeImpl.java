@@ -17,11 +17,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	}
 
 	@Override
-	public int getBatchSize() {
-		return getTarget().getBatchSize();
-	}
-
-	@Override
 	public String getCacheConcurrencyStrategy() {
 		return getTarget().getCacheConcurrencyStrategy();
 	}

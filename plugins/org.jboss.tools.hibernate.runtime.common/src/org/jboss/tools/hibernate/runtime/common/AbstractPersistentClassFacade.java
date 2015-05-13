@@ -554,6 +554,15 @@ implements IPersistentClass {
 				new Object[] {});
 	}
 
+	@Override
+	public int getBatchSize() {
+		return (int)Util.invokeMethod(
+				getTarget(), 
+				"getBatchSize", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}
