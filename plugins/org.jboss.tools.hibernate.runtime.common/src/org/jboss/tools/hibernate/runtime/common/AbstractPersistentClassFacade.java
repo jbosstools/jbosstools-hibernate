@@ -321,6 +321,11 @@ implements IPersistentClass {
 		return false;
 	}
 
+	@Override
+	public IProperty getProperty() {
+		throw new RuntimeException("getProperty() is only allowed on SpecialRootClass"); //$NON-NLS-1$
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}
