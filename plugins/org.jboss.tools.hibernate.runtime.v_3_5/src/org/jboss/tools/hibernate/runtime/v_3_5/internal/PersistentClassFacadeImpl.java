@@ -34,11 +34,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	}
 
 	@Override
-	public void setAbstract(boolean b) {
-		getTarget().setAbstract(b);
-	}
-
-	@Override
 	public void addProperty(IProperty property) {
 		assert property instanceof PropertyProxy;
 		getTarget().addProperty(((PropertyProxy)property).getTarget());

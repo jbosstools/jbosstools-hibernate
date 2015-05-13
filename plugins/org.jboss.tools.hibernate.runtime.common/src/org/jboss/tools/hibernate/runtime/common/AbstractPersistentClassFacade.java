@@ -261,6 +261,15 @@ implements IPersistentClass {
 				new Object[] { value });
 	}
 
+	@Override
+	public void setAbstract(boolean b) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setAbstract", 
+				new Class[] { boolean.class }, 
+				new Object[] { b });
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}
