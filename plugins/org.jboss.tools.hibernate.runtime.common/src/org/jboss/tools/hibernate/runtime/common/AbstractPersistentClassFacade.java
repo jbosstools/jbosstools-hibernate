@@ -590,6 +590,15 @@ implements IPersistentClass {
 				new Object[] {});
 	}
 
+	@Override
+	public String getCustomSQLUpdate() {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getCustomSQLUpdate", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}

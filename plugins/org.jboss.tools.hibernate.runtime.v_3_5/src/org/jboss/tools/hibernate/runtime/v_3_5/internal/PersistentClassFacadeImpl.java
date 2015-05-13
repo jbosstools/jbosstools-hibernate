@@ -17,11 +17,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	}
 
 	@Override
-	public String getCustomSQLUpdate() {
-		return getTarget().getCustomSQLUpdate();
-	}
-
-	@Override
 	public String getDiscriminatorValue() {
 		return getTarget().getDiscriminatorValue();
 	}
