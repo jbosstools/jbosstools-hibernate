@@ -346,6 +346,21 @@ implements IPersistentClass {
 		identifierProperty = property;
 	}
 
+	@Override
+	public void setIdentifier(IValue value) {
+		Object valueTarget = Util.invokeMethod(
+				value, 
+				"getTarget", 
+				new Class[] {}, 
+				new Object[] {});
+		Util.invokeMethod(
+				getTarget(), 
+				"setIdentifier", 
+				new Class[] { getKeyValueClass() }, 
+				new Object[] { valueTarget });
+		identifier = value;
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}

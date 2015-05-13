@@ -3,7 +3,6 @@ package org.jboss.tools.hibernate.runtime.v_4_3.internal;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Value;
@@ -27,14 +26,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 
 	public PersistentClass getTarget() {
 		return (PersistentClass)super.getTarget();
-	}
-
-	@Override
-	public void setIdentifier(IValue value) {
-		assert value instanceof IFacade;
-		assert ((IFacade)value).getTarget() instanceof KeyValue;
-		assert getTarget() instanceof RootClass;
-		((RootClass)getTarget()).setIdentifier((KeyValue)((IFacade)value).getTarget());
 	}
 
 	@Override
