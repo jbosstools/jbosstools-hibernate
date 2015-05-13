@@ -572,6 +572,15 @@ implements IPersistentClass {
 				new Object[] {});
 	}
 
+	@Override
+	public String getCustomSQLDelete() {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getCustomSQLDelete", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}

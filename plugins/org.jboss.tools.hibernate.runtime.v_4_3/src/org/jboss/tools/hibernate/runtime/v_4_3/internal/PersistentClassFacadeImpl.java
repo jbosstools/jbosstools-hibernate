@@ -17,11 +17,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	}
 
 	@Override
-	public String getCustomSQLDelete() {
-		return getTarget().getCustomSQLDelete();
-	}
-
-	@Override
 	public String getCustomSQLInsert() {
 		return getTarget().getCustomSQLInsert();
 	}
