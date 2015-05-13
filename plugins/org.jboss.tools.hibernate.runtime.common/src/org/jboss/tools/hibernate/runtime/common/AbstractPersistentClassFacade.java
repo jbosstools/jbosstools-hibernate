@@ -581,6 +581,15 @@ implements IPersistentClass {
 				new Object[] {});
 	}
 
+	@Override
+	public String getCustomSQLInsert() {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getCustomSQLInsert", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}
