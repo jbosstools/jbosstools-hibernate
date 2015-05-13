@@ -617,6 +617,15 @@ implements IPersistentClass {
 				new Object[] {});
 	}
 
+	@Override
+	public String getTemporaryIdTableDDL() {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getTemporaryIdTableDDL", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}
