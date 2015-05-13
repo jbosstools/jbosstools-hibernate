@@ -455,6 +455,15 @@ implements IPersistentClass {
 				new Object[] {});
 	}
 
+	@Override
+	public boolean isDiscriminatorValueNotNull() {
+		return (boolean)Util.invokeMethod(
+				getTarget(), 
+				"isDiscriminatorValueNotNull", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}
