@@ -9,7 +9,6 @@ import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
-import org.jboss.tools.hibernate.runtime.v_4_0.internal.PersistentClassFacadeImpl;
 
 public class PropertyProxy extends AbstractPropertyFacade {
 	
@@ -42,8 +41,8 @@ public class PropertyProxy extends AbstractPropertyFacade {
 
 	@Override
 	public void setPersistentClass(IPersistentClass persistentClass) {
-		assert persistentClass instanceof PersistentClassFacadeImpl;
-		getTarget().setPersistentClass((PersistentClass)((PersistentClassFacadeImpl)persistentClass).getTarget());
+		assert persistentClass instanceof IFacade;
+		getTarget().setPersistentClass((PersistentClass)((IFacade)persistentClass).getTarget());
 	}
 
 	@Override

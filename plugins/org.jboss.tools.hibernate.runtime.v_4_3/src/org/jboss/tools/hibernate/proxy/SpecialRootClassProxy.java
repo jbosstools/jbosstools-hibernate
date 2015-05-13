@@ -4,13 +4,13 @@ import java.util.Iterator;
 
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
+import org.jboss.tools.hibernate.runtime.common.AbstractPersistentClassFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
-import org.jboss.tools.hibernate.runtime.v_4_3.internal.PersistentClassFacadeImpl;
 
-public class SpecialRootClassProxy extends PersistentClassFacadeImpl {
+public class SpecialRootClassProxy extends AbstractPersistentClassFacade {
 
 	private IProperty property;
 	private IProperty parentProperty;
