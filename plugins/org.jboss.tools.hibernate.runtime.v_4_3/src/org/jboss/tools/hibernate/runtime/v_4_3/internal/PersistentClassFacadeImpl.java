@@ -16,9 +16,4 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 		return (PersistentClass)super.getTarget();
 	}
 
-	@Override
-	public int getOptimisticLockMode() {
-		return getTarget().getOptimisticLockStyle().getOldCode();
-	}
-
 }

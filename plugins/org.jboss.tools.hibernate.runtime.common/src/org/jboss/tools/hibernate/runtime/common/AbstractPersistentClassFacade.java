@@ -644,6 +644,15 @@ implements IPersistentClass {
 				new Object[] {});
 	}
 
+	@Override
+	public int getOptimisticLockMode() {
+		return (int)Util.invokeMethod(
+				getTarget(), 
+				"getOptimisticLockMode", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}
