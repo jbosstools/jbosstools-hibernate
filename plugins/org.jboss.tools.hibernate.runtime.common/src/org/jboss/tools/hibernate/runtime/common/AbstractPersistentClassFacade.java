@@ -270,6 +270,18 @@ implements IPersistentClass {
 				new Object[] { b });
 	}
 
+	@Override
+	public void addProperty(IProperty property) {
+		Object propertyTarget = Util.invokeMethod(
+				property, 
+				"getTarget", 
+				new Class[] {}, 
+				new Object[] {});
+		Util.invokeMethod(getTarget(), "addProperty", new Class[] { getPropertyClass() }, new Object[] { propertyTarget });
+		properties = null;
+		propertyClosures = null;
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}
@@ -278,12 +290,20 @@ implements IPersistentClass {
 		return Util.getClass(getSubclassClassName(), getFacadeFactoryClassLoader());
 	}
 	
+	protected Class<?> getPropertyClass() {
+		return Util.getClass(getPropertyClassName(), getFacadeFactoryClassLoader());
+	}
+	
 	protected String getRootClassClassName() {
 		return "org.hibernate.mapping.RootClass";
 	}
 
 	protected String getSubclassClassName() {
 		return "org.hibernate.mapping.Subclass";
+	}
+
+	protected String getPropertyClassName() {
+		return "org.hibernate.mapping.Property";
 	}
 
 	protected void initializePropertyClosures() {

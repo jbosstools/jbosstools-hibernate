@@ -34,14 +34,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	}
 
 	@Override
-	public void addProperty(IProperty property) {
-		assert property instanceof PropertyProxy;
-		getTarget().addProperty(((PropertyProxy)property).getTarget());
-		properties = null;
-		propertyClosures = null;
-	}
-
-	@Override
 	public boolean isInstanceOfJoinedSubclass() {
 		return getTarget() instanceof JoinedSubclass;
 	}
