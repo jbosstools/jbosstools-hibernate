@@ -17,11 +17,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	}
 
 	@Override
-	public String getDiscriminatorValue() {
-		return getTarget().getDiscriminatorValue();
-	}
-
-	@Override
 	public String getLoaderName() {
 		return getTarget().getLoaderName();
 	}
