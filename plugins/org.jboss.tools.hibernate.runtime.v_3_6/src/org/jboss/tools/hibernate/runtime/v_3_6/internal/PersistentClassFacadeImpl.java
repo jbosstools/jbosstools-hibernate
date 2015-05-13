@@ -31,10 +31,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 		return (PersistentClass)super.getTarget();
 	}
 
-	public boolean isInstanceOfSpecialRootClass() {
-		return false;
-	}
-
 	@Override
 	public IProperty getProperty() {
 		throw new RuntimeException("getProperty() is only allowed on SpecialRootClass"); //$NON-NLS-1$

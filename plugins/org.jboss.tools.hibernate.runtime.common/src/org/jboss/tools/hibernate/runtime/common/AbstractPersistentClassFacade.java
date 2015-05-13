@@ -317,6 +317,10 @@ implements IPersistentClass {
 				new Object[] { valueTarget });
 	}
 
+	public boolean isInstanceOfSpecialRootClass() {
+		return false;
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}
