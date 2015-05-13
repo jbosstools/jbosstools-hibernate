@@ -385,6 +385,15 @@ implements IPersistentClass {
 				new Object[] { name });
 	}
 
+	@Override
+	public void setLazy(boolean b) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setLazy", 
+				new Class[] { boolean.class }, 
+				new Object[] { b });
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}

@@ -25,11 +25,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	}
 
 	@Override
-	public void setLazy(boolean b) {
-		getTarget().setLazy(b);
-	}
-
-	@Override
 	public Iterator<IPersistentClass> getSubclassIterator() {
 		if (subclasses == null) {
 			initializeSubclasses();
