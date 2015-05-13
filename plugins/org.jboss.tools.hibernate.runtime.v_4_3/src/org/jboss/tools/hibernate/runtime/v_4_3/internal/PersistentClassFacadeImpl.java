@@ -21,9 +21,4 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 		return getTarget().getOptimisticLockStyle().getOldCode();
 	}
 
-	@Override
-	public String getWhere() {
-		return getTarget().getWhere();
-	}
-
 }

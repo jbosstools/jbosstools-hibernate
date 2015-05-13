@@ -635,6 +635,15 @@ implements IPersistentClass {
 				new Object[] {});
 	}
 
+	@Override
+	public String getWhere() {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getWhere", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}
