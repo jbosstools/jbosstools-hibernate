@@ -45,6 +45,7 @@ import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
@@ -385,37 +386,37 @@ public class ServiceProxy implements IService {
 	@Override
 	public IValue newPrimitiveArray(IPersistentClass persistentClass) {
 		assert persistentClass instanceof PersistentClassFacadeImpl;
-		return facadeFactory.createValue(new PrimitiveArray(null, ((PersistentClassFacadeImpl)persistentClass).getTarget()));
+		return facadeFactory.createValue(new PrimitiveArray(null, (PersistentClass)((PersistentClassFacadeImpl)persistentClass).getTarget()));
 	}
 
 	@Override
 	public IValue newArray(IPersistentClass persistentClass) {
 		assert persistentClass instanceof PersistentClassFacadeImpl;
-		return facadeFactory.createValue(new Array(null, ((PersistentClassFacadeImpl)persistentClass).getTarget()));
+		return facadeFactory.createValue(new Array(null, (PersistentClass)((PersistentClassFacadeImpl)persistentClass).getTarget()));
 	}
 
 	@Override
 	public IValue newBag(IPersistentClass persistentClass) {
 		assert persistentClass instanceof PersistentClassFacadeImpl;
-		return facadeFactory.createValue(new Bag(null, ((PersistentClassFacadeImpl)persistentClass).getTarget()));
+		return facadeFactory.createValue(new Bag(null, (PersistentClass)((PersistentClassFacadeImpl)persistentClass).getTarget()));
 	}
 
 	@Override
 	public IValue newList(IPersistentClass persistentClass) {
 		assert persistentClass instanceof PersistentClassFacadeImpl;
-		return facadeFactory.createValue(new org.hibernate.mapping.List(null, ((PersistentClassFacadeImpl)persistentClass).getTarget()));
+		return facadeFactory.createValue(new org.hibernate.mapping.List(null, (PersistentClass)((PersistentClassFacadeImpl)persistentClass).getTarget()));
 	}
 
 	@Override
 	public IValue newMap(IPersistentClass persistentClass) {
 		assert persistentClass instanceof PersistentClassFacadeImpl;
-		return facadeFactory.createValue(new org.hibernate.mapping.Map(null, ((PersistentClassFacadeImpl)persistentClass).getTarget()));
+		return facadeFactory.createValue(new org.hibernate.mapping.Map(null, (PersistentClass)((PersistentClassFacadeImpl)persistentClass).getTarget()));
 	}
 
 	@Override
 	public IValue newSet(IPersistentClass persistentClass) {
 		assert persistentClass instanceof PersistentClassFacadeImpl;
-		return facadeFactory.createValue(new Set(null, ((PersistentClassFacadeImpl)persistentClass).getTarget()));
+		return facadeFactory.createValue(new Set(null, (PersistentClass)((PersistentClassFacadeImpl)persistentClass).getTarget()));
 	}
 
 	@Override
@@ -427,26 +428,26 @@ public class ServiceProxy implements IService {
 	@Override
 	public IValue newOneToMany(IPersistentClass persistentClass) {
 		assert persistentClass instanceof PersistentClassFacadeImpl;
-		return facadeFactory.createValue(new OneToMany(null, ((PersistentClassFacadeImpl)persistentClass).getTarget()));
+		return facadeFactory.createValue(new OneToMany(null, (PersistentClass)((PersistentClassFacadeImpl)persistentClass).getTarget()));
 	}
 
 	@Override
 	public IValue newOneToOne(IPersistentClass persistentClass) {
 		assert persistentClass instanceof PersistentClassFacadeImpl;
-		return facadeFactory.createValue(new OneToOne(null, ((PersistentClassFacadeImpl)persistentClass).getTarget().getTable(), ((PersistentClassFacadeImpl)persistentClass).getTarget()));
+		return facadeFactory.createValue(new OneToOne(null, ((PersistentClass)((PersistentClassFacadeImpl)persistentClass).getTarget()).getTable(), (PersistentClass)((PersistentClassFacadeImpl)persistentClass).getTarget()));
 	}
 
 	@Override
 	public IPersistentClass newSingleTableSubclass(
 			IPersistentClass persistentClass) {
 		assert persistentClass instanceof PersistentClassFacadeImpl;
-		return facadeFactory.createPersistentClass(new SingleTableSubclass(((PersistentClassFacadeImpl)persistentClass).getTarget()));
+		return facadeFactory.createPersistentClass(new SingleTableSubclass((PersistentClass)((PersistentClassFacadeImpl)persistentClass).getTarget()));
 	}
 
 	@Override
 	public IPersistentClass newJoinedSubclass(IPersistentClass persistentClass) {
 		assert persistentClass instanceof PersistentClassFacadeImpl;
-		return facadeFactory.createPersistentClass(new JoinedSubclass(((PersistentClassFacadeImpl)persistentClass).getTarget()));
+		return facadeFactory.createPersistentClass(new JoinedSubclass((PersistentClass)((PersistentClassFacadeImpl)persistentClass).getTarget()));
 	}
 
 	@Override

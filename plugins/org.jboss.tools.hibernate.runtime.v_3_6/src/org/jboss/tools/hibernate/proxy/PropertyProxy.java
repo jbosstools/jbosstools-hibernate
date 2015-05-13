@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.proxy;
 
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.runtime.common.AbstractPropertyFacade;
@@ -43,7 +44,7 @@ public class PropertyProxy extends AbstractPropertyFacade {
 	@Override
 	public void setPersistentClass(IPersistentClass persistentClass) {
 		assert persistentClass instanceof PersistentClassFacadeImpl;
-		getTarget().setPersistentClass(((PersistentClassFacadeImpl)persistentClass).getTarget());
+		getTarget().setPersistentClass((PersistentClass)((PersistentClassFacadeImpl)persistentClass).getTarget());
 	}
 
 	@Override

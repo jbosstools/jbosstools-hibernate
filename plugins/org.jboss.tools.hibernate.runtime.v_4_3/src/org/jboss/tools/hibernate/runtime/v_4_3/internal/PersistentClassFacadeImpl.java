@@ -12,8 +12,4 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 		super(facadeFactory, persistentClass);
 	}
 
-	public PersistentClass getTarget() {
-		return (PersistentClass)super.getTarget();
-	}
-
 }
