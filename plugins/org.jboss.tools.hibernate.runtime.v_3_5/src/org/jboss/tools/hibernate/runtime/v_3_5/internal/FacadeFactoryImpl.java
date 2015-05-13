@@ -6,7 +6,6 @@ import org.hibernate.cfg.Settings;
 import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.engine.query.HQLQueryPlan;
 import org.hibernate.mapping.Column;
-import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
@@ -93,11 +92,6 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public IJDBCReader createJDBCReader(Object target) {
 		return new JDBCReaderProxy(this, (JDBCReader)target);
-	}
-
-	@Override
-	public IPersistentClass createPersistentClass(Object target) {
-		return new PersistentClassFacadeImpl(this, (PersistentClass)target);
 	}
 
 	@Override

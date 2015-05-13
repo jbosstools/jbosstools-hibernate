@@ -24,6 +24,7 @@ import org.jboss.tools.hibernate.runtime.spi.IMetaDataDialect;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
+import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 import org.jboss.tools.hibernate.runtime.spi.IQueryTranslator;
@@ -183,6 +184,11 @@ public abstract class AbstractFacadeFactory implements IFacadeFactory {
 	@Override
 	public IQueryTranslator createQueryTranslator(Object target) {
 		return new AbstractQueryTranslatorFacade(this, target) {};
+	}
+
+	@Override
+	public IPersistentClass createPersistentClass(Object target) {
+		return new AbstractPersistentClassFacade(this, target) {};
 	}
 
 }
