@@ -12,7 +12,6 @@ import org.jboss.tools.hibernate.runtime.spi.ITable;
 public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	
 	private ITable rootTable = null;
-	private HashSet<IPersistentClass> subclasses = null;
 	
 	public PersistentClassFacadeImpl(
 			IFacadeFactory facadeFactory,

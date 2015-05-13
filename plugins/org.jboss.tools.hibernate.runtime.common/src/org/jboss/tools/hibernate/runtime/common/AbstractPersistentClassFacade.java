@@ -25,6 +25,7 @@ implements IPersistentClass {
 	protected IValue identifier = null;
 	protected HashSet<IJoin> joins = null;
 	protected IProperty version = null;
+	protected HashSet<IPersistentClass> subclasses = null;
 
 	public AbstractPersistentClassFacade(
 			IFacadeFactory facadeFactory, 
