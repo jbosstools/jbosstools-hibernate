@@ -303,6 +303,20 @@ implements IPersistentClass {
 		}
 	}
 
+	@Override
+	public void setKey(IValue value) {
+		Object valueTarget = Util.invokeMethod(
+				value, 
+				"getTarget", 
+				new Class[] {}, 
+				new Object[] {});
+		Util.invokeMethod(
+				getTarget(), 
+				"setKey", 
+				new Class[] { getKeyValueClass() }, 
+				new Object[] { valueTarget });
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}
@@ -323,6 +337,10 @@ implements IPersistentClass {
 		return Util.getClass(getTableClassName(), getFacadeFactoryClassLoader());
 	}
 	
+	protected Class<?> getKeyValueClass() {
+		return Util.getClass(getKeyValueClassName(), getFacadeFactoryClassLoader());
+	}
+	
 	protected String getRootClassClassName() {
 		return "org.hibernate.mapping.RootClass";
 	}
@@ -341,6 +359,10 @@ implements IPersistentClass {
 
 	protected String getTableClassName() {
 		return "org.hibernate.mapping.Table";
+	}
+
+	protected String getKeyValueClassName() {
+		return "org.hibernate.mapping.KeyValue";
 	}
 
 	protected void initializePropertyClosures() {
