@@ -7,12 +7,10 @@ import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Value;
-import org.jboss.tools.hibernate.proxy.PropertyProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractPersistentClassFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
-import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 
@@ -29,14 +27,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 
 	public PersistentClass getTarget() {
 		return (PersistentClass)super.getTarget();
-	}
-
-	@Override
-	public void setIdentifierProperty(IProperty property) {
-		assert getTarget() instanceof RootClass;
-		assert property instanceof PropertyProxy;
-		((RootClass)getTarget()).setIdentifierProperty(((PropertyProxy)property).getTarget());
-		identifierProperty = property;
 	}
 
 	@Override

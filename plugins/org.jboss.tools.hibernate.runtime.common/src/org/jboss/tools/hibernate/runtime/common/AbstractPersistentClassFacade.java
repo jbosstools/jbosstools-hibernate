@@ -331,6 +331,21 @@ implements IPersistentClass {
 		throw new RuntimeException("getProperty() is only allowed on SpecialRootClass"); //$NON-NLS-1$
 	}
 
+	@Override
+	public void setIdentifierProperty(IProperty property) {
+		Object propertyTarget = Util.invokeMethod(
+				property, 
+				"getTarget", 
+				new Class[] {}, 
+				new Object[] {});
+		Util.invokeMethod(
+				getTarget(), 
+				"setIdentifierProperty", 
+				new Class[] { getPropertyClass() }, 
+				new Object[] { propertyTarget });
+		identifierProperty = property;
+	}
+
 	protected Class<?> getRootClassClass() {
 		return Util.getClass(getRootClassClassName(), getFacadeFactoryClassLoader());
 	}
