@@ -17,11 +17,6 @@ public class PersistentClassFacadeImpl extends AbstractPersistentClassFacade {
 	}
 
 	@Override
-	public boolean isVersioned() {
-		return getTarget().isVersioned();
-	}
-
-	@Override
 	public int getBatchSize() {
 		return getTarget().getBatchSize();
 	}
