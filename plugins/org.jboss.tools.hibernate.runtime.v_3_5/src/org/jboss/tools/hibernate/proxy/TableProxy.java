@@ -13,7 +13,6 @@ import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
-import org.jboss.tools.hibernate.runtime.v_3_5.internal.PrimaryKeyFacadeImpl;
 
 public class TableProxy extends AbstractTableFacade {
 	
@@ -46,9 +45,9 @@ public class TableProxy extends AbstractTableFacade {
 
 	@Override
 	public void setPrimaryKey(IPrimaryKey pk) {
-		assert pk instanceof PrimaryKeyFacadeImpl;
+		assert pk instanceof IFacade;
 		primaryKey = pk;
-		getTarget().setPrimaryKey((PrimaryKey)((PrimaryKeyFacadeImpl)pk).getTarget());
+		getTarget().setPrimaryKey((PrimaryKey)((IFacade)pk).getTarget());
 	}
 
 	@Override
