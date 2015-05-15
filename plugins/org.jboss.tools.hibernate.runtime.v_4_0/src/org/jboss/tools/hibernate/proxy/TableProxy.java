@@ -44,9 +44,9 @@ public class TableProxy extends AbstractTableFacade {
 
 	@Override
 	public void setPrimaryKey(IPrimaryKey pk) {
-		assert pk instanceof PrimaryKeyProxy;
+		assert pk instanceof PrimaryKeyFacadeImpl;
 		primaryKey = pk;
-		getTarget().setPrimaryKey(((PrimaryKeyProxy)pk).getTarget());
+		getTarget().setPrimaryKey(((PrimaryKeyFacadeImpl)pk).getTarget());
 	}
 
 	@Override

@@ -12,12 +12,12 @@ import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 
-public class PrimaryKeyProxy extends AbstractPrimaryKeyFacade {
+public class PrimaryKeyFacadeImpl extends AbstractPrimaryKeyFacade {
 
 	private List<IColumn> columns = null;
 	private ITable table = null;
 
-	public PrimaryKeyProxy(
+	public PrimaryKeyFacadeImpl(
 			IFacadeFactory facadeFactory,
 			PrimaryKey primaryKey) {
 		super(facadeFactory, primaryKey);
