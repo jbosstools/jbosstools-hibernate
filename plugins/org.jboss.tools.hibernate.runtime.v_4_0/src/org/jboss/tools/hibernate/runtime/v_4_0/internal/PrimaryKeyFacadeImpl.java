@@ -12,8 +12,4 @@ public class PrimaryKeyFacadeImpl extends AbstractPrimaryKeyFacade {
 		super(facadeFactory, primaryKey);
 	}
 
-	public PrimaryKey getTarget() {
-		return (PrimaryKey)super.getTarget();
-	}
-
 }

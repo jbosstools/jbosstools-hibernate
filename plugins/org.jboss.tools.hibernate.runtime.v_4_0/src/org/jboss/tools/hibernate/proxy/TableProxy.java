@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.runtime.common.AbstractTableFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -47,7 +48,7 @@ public class TableProxy extends AbstractTableFacade {
 	public void setPrimaryKey(IPrimaryKey pk) {
 		assert pk instanceof PrimaryKeyFacadeImpl;
 		primaryKey = pk;
-		getTarget().setPrimaryKey(((PrimaryKeyFacadeImpl)pk).getTarget());
+		getTarget().setPrimaryKey((PrimaryKey)((PrimaryKeyFacadeImpl)pk).getTarget());
 	}
 
 	@Override
