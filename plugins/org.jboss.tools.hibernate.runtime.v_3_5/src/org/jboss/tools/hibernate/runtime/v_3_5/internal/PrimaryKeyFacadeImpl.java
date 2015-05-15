@@ -7,8 +7,6 @@ import org.jboss.tools.hibernate.runtime.spi.ITable;
 
 public class PrimaryKeyFacadeImpl extends AbstractPrimaryKeyFacade {
 
-	private ITable table = null;
-
 	public PrimaryKeyFacadeImpl(
 			IFacadeFactory facadeFactory,
 			PrimaryKey primaryKey) {

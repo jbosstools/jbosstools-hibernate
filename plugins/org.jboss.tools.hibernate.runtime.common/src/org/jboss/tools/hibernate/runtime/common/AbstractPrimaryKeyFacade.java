@@ -7,12 +7,14 @@ import java.util.List;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
 
 public abstract class AbstractPrimaryKeyFacade 
 extends AbstractFacade 
 implements IPrimaryKey {
 
 	protected List<IColumn> columns = null;
+	protected ITable table = null;
 
 	public AbstractPrimaryKeyFacade(
 			IFacadeFactory facadeFactory, 
