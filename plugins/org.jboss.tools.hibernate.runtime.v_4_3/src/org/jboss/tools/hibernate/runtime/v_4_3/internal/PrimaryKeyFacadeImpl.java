@@ -1,6 +1,5 @@
 package org.jboss.tools.hibernate.runtime.v_4_3.internal;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -45,14 +44,6 @@ public class PrimaryKeyFacadeImpl extends AbstractPrimaryKeyFacade {
 		return columns;
 	}
 	
-	private void initializeColumns() {
-		columns = new ArrayList<IColumn>();
-		Iterator<?> origin = getTarget().getColumns().iterator();
-		while (origin.hasNext()) {
-			columns.add(getFacadeFactory().createColumn(origin.next()));
-		}
-	}
-
 	@Override
 	public IColumn getColumn(int i) {
 		if (columns == null) {
