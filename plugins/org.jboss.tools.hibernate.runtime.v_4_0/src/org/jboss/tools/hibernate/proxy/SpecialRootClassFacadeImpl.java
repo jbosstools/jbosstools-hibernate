@@ -10,12 +10,12 @@ import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 
-public class SpecialRootClassProxy extends AbstractSpecialRootClassFacade {
+public class SpecialRootClassFacadeImpl extends AbstractSpecialRootClassFacade {
 
 	private IProperty property;
 	private IProperty parentProperty;
 
-	public SpecialRootClassProxy(
+	public SpecialRootClassFacadeImpl(
 			IFacadeFactory facadeFactory, 
 			IProperty property) {
 		super(facadeFactory, new RootClass());

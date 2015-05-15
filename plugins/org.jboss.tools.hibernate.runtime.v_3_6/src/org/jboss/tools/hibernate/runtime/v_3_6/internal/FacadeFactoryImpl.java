@@ -25,7 +25,7 @@ import org.jboss.tools.hibernate.proxy.PropertyProxy;
 import org.jboss.tools.hibernate.proxy.SessionFactoryProxy;
 import org.jboss.tools.hibernate.proxy.SessionProxy;
 import org.jboss.tools.hibernate.proxy.SettingsProxy;
-import org.jboss.tools.hibernate.proxy.SpecialRootClassProxy;
+import org.jboss.tools.hibernate.proxy.SpecialRootClassFacadeImpl;
 import org.jboss.tools.hibernate.proxy.TableProxy;
 import org.jboss.tools.hibernate.proxy.TypeFactoryProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
@@ -119,7 +119,7 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	
 	@Override
 	public IPersistentClass createSpecialRootClass(IProperty property) {
-		return new SpecialRootClassProxy(this, property);
+		return new SpecialRootClassFacadeImpl(this, property);
 	}
 	
 	@Override
