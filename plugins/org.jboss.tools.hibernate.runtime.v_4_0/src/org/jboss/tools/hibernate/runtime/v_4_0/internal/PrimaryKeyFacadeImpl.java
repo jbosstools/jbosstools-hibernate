@@ -14,7 +14,6 @@ import org.jboss.tools.hibernate.runtime.spi.ITable;
 
 public class PrimaryKeyFacadeImpl extends AbstractPrimaryKeyFacade {
 
-	private List<IColumn> columns = null;
 	private ITable table = null;
 
 	public PrimaryKeyFacadeImpl(
