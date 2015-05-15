@@ -26,11 +26,6 @@ public class PropertyFacadeImpl extends AbstractPropertyFacade {
 	}
 
 	@Override
-	public void setName(String name) {
-		getTarget().setName(name);
-	}
-
-	@Override
 	public void setPersistentClass(IPersistentClass persistentClass) {
 		assert persistentClass instanceof IFacade;
 		getTarget().setPersistentClass((PersistentClass)((IFacade)persistentClass).getTarget());

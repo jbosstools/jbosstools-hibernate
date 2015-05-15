@@ -31,4 +31,13 @@ implements IProperty {
 		return value;
 	}
 
+	@Override
+	public void setName(String name) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setName", 
+				new Class[] { String.class }, 
+				new Object[] { name });
+	}
+
 }
