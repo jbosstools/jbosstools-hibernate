@@ -26,14 +26,6 @@ public class PropertyFacadeImpl extends AbstractPropertyFacade {
 	}
 
 	@Override
-	public IValue getValue() {
-		if (value == null && getTarget().getValue() != null) {
-			value = getFacadeFactory().createValue(getTarget().getValue());
-		}
-		return value;
-	}
-
-	@Override
 	public void setName(String name) {
 		getTarget().setName(name);
 	}

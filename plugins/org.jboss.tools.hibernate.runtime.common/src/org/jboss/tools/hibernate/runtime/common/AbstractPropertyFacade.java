@@ -16,4 +16,19 @@ implements IProperty {
 		super(facadeFactory, target);
 	}
 
+	@Override
+	public IValue getValue() {
+		if (value == null) {
+			Object targetValue = Util.invokeMethod(
+					getTarget(), 
+					"getValue", 
+					new Class[] {}, 
+					new Object[] {});
+			if (targetValue != null) {
+				value = getFacadeFactory().createValue(targetValue);
+			}
+		}
+		return value;
+	}
+
 }
