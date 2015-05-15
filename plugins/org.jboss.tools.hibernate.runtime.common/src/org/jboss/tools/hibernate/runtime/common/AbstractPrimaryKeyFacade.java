@@ -36,6 +36,15 @@ implements IPrimaryKey {
 		columns = null;
 	}
 	
+	@Override
+	public int getColumnSpan() {
+		return (int)Util.invokeMethod(
+				getTarget(), 
+				"getColumnSpan", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getColumnClass() {
 		return Util.getClass(getColumnClassName(), getFacadeFactoryClassLoader());
 	}

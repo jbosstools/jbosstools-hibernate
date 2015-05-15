@@ -26,11 +26,6 @@ public class PrimaryKeyFacadeImpl extends AbstractPrimaryKeyFacade {
 	}
 
 	@Override
-	public int getColumnSpan() {
-		return getTarget().getColumnSpan();
-	}
-
-	@Override
 	public List<IColumn> getColumns() {
 		if (columns == null) {
 			initializeColumns();
