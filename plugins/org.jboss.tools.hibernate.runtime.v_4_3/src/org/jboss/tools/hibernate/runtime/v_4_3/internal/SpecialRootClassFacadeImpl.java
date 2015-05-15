@@ -12,9 +12,6 @@ import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public class SpecialRootClassFacadeImpl extends AbstractSpecialRootClassFacade {
 
-	private IProperty property;
-	private IProperty parentProperty;
-
 	public SpecialRootClassFacadeImpl(
 			IFacadeFactory facadeFactory, 
 			IProperty property) {
