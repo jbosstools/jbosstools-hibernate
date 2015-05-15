@@ -25,7 +25,6 @@ import org.jboss.tools.hibernate.proxy.PropertyProxy;
 import org.jboss.tools.hibernate.proxy.SessionFactoryProxy;
 import org.jboss.tools.hibernate.proxy.SessionProxy;
 import org.jboss.tools.hibernate.proxy.SettingsProxy;
-import org.jboss.tools.hibernate.proxy.SpecialRootClassFacadeImpl;
 import org.jboss.tools.hibernate.proxy.TableProxy;
 import org.jboss.tools.hibernate.proxy.TypeFactoryProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
