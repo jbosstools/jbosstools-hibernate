@@ -1,7 +1,5 @@
 package org.jboss.tools.hibernate.runtime.v_4_3.internal;
 
-import java.util.Iterator;
-
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
 import org.jboss.tools.hibernate.runtime.common.AbstractPrimaryKeyFacade;
@@ -36,14 +34,6 @@ public class PrimaryKeyFacadeImpl extends AbstractPrimaryKeyFacade {
 	public boolean containsColumn(IColumn column) {
 		assert column instanceof IFacade;
 		return getTarget().containsColumn((Column)((IFacade)column).getTarget());
-	}
-
-	@Override
-	public Iterator<IColumn> columnIterator() {
-		if (columns == null) {
-			initializeColumns();
-		}
-		return columns.iterator();
 	}
 
 	@Override

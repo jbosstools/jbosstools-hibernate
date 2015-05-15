@@ -61,6 +61,14 @@ implements IPrimaryKey {
 		return columns.get(i);
 	}
 
+	@Override
+	public Iterator<IColumn> columnIterator() {
+		if (columns == null) {
+			initializeColumns();
+		}
+		return columns.iterator();
+	}
+
 	protected Class<?> getColumnClass() {
 		return Util.getClass(getColumnClassName(), getFacadeFactoryClassLoader());
 	}
