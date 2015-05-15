@@ -1,7 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_3_6.internal;
 
 import java.util.Iterator;
-import java.util.List;
 
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
@@ -25,14 +24,6 @@ public class PrimaryKeyFacadeImpl extends AbstractPrimaryKeyFacade {
 		return (PrimaryKey)super.getTarget();
 	}
 
-	@Override
-	public List<IColumn> getColumns() {
-		if (columns == null) {
-			initializeColumns();
-		}
-		return columns;
-	}
-	
 	@Override
 	public IColumn getColumn(int i) {
 		if (columns == null) {

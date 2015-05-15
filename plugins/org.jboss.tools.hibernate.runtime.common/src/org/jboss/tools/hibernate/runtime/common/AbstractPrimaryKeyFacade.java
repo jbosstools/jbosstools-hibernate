@@ -45,6 +45,14 @@ implements IPrimaryKey {
 				new Object[] {});
 	}
 
+	@Override
+	public List<IColumn> getColumns() {
+		if (columns == null) {
+			initializeColumns();
+		}
+		return columns;
+	}
+	
 	protected Class<?> getColumnClass() {
 		return Util.getClass(getColumnClassName(), getFacadeFactoryClassLoader());
 	}
