@@ -26,12 +26,6 @@ public class PrimaryKeyFacadeImpl extends AbstractPrimaryKeyFacade {
 	}
 
 	@Override
-	public void addColumn(IColumn column) {
-		assert column instanceof IFacade;
-		getTarget().addColumn((Column)((IFacade)column).getTarget());
-	}
-
-	@Override
 	public int getColumnSpan() {
 		return getTarget().getColumnSpan();
 	}
