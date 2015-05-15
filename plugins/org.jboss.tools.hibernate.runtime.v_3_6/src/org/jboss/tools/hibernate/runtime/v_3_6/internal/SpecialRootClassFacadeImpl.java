@@ -15,16 +15,4 @@ public class SpecialRootClassFacadeImpl extends AbstractSpecialRootClassFacade {
 		generate();
 	}
 
-	public IProperty getParentProperty() {
-		return parentProperty;
-	}
-
-	public IProperty getProperty() {
-		return this.property;
-	}
-
-	public boolean isInstanceOfSpecialRootClass() {
-		return true;
-	}
-	
 }

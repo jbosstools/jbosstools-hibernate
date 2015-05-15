@@ -53,6 +53,18 @@ extends AbstractPersistentClassFacade {
 		}
 	}
 
+	public IProperty getParentProperty() {
+		return parentProperty;
+	}
+
+	public IProperty getProperty() {
+		return property;
+	}
+
+	public boolean isInstanceOfSpecialRootClass() {
+		return true;
+	}
+	
 	protected String getPropertyClassName() {
 		return "org.hibernate.mapping.Property";
 	}
