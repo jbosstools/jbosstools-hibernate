@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Hibernate Runtime 4.3 Tests
+Bundle-SymbolicName: org.jboss.tools.hibernate.runtime.v_4_3.test
+Bundle-Version: 5.0.0.qualifier
+Fragment-Host: org.jboss.tools.hibernate.runtime.v_4_3;bundle-version="5.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.junit;bundle-version="4.11.0"
