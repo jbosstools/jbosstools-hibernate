@@ -25,14 +25,6 @@ public class PrimaryKeyFacadeImpl extends AbstractPrimaryKeyFacade {
 	}
 
 	@Override
-	public IColumn getColumn(int i) {
-		if (columns == null) {
-			initializeColumns();
-		}
-		return columns.get(i);
-	}
-
-	@Override
 	public ITable getTable() {
 		if (table == null && getTarget().getTable() != null) {
 			table = getFacadeFactory().createTable(getTarget().getTable());

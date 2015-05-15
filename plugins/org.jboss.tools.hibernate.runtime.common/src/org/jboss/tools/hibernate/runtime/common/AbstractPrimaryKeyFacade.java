@@ -53,6 +53,14 @@ implements IPrimaryKey {
 		return columns;
 	}
 	
+	@Override
+	public IColumn getColumn(int i) {
+		if (columns == null) {
+			initializeColumns();
+		}
+		return columns.get(i);
+	}
+
 	protected Class<?> getColumnClass() {
 		return Util.getClass(getColumnClassName(), getFacadeFactoryClassLoader());
 	}
