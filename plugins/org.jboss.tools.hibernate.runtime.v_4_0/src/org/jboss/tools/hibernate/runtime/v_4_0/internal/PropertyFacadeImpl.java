@@ -1,6 +1,5 @@
 package org.jboss.tools.hibernate.runtime.v_4_0.internal;
 
-import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.runtime.common.AbstractPropertyFacade;
@@ -22,12 +21,6 @@ public class PropertyFacadeImpl extends AbstractPropertyFacade {
 	
 	public Property getTarget() {
 		return (Property)super.getTarget();
-	}
-
-	@Override
-	public void setPersistentClass(IPersistentClass persistentClass) {
-		assert persistentClass instanceof IFacade;
-		getTarget().setPersistentClass((PersistentClass)((IFacade)persistentClass).getTarget());
 	}
 
 	@Override

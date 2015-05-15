@@ -42,4 +42,26 @@ implements IProperty {
 				new Object[] { name });
 	}
 
+	@Override
+	public void setPersistentClass(IPersistentClass persistentClass) {
+		Object persistentClassTarget = Util.invokeMethod(
+				persistentClass, "getTarget", 
+				new Class[] {}, 
+				new Object[] {});
+		Util.invokeMethod(
+				getTarget(), 
+				"setPersistentClass", 
+				new Class[] { getPersistentClassClass() }, 
+				new Object[] { persistentClassTarget });
+		this.persistentClass = persistentClass;
+	}
+	
+	protected Class<?> getPersistentClassClass() {
+		return Util.getClass(getPersistentClassClassName(), getFacadeFactoryClassLoader());
+	}
+	
+	protected String getPersistentClassClassName() {
+		return "org.hibernate.mapping.PersistentClass";
+	}
+
 }
