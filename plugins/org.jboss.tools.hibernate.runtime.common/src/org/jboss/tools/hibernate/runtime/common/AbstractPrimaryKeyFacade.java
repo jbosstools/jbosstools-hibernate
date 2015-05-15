@@ -69,6 +69,21 @@ implements IPrimaryKey {
 		return columns.iterator();
 	}
 
+	@Override
+	public boolean containsColumn(IColumn column) {
+		assert column instanceof IFacade;
+		Object columnTarget = Util.invokeMethod(
+				column, 
+				"getTarget", 
+				new Class[] {}, 
+				new Object[] {});
+		return (boolean)Util.invokeMethod(
+				getTarget(), 
+				"containsColumn", 
+				new Class[] { getColumnClass() }, 
+				new Object[] { columnTarget });
+	}
+
 	protected Class<?> getColumnClass() {
 		return Util.getClass(getColumnClassName(), getFacadeFactoryClassLoader());
 	}

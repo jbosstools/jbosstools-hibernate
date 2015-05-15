@@ -1,10 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_4_3.internal;
 
-import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
 import org.jboss.tools.hibernate.runtime.common.AbstractPrimaryKeyFacade;
-import org.jboss.tools.hibernate.runtime.common.IFacade;
-import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 
@@ -28,12 +25,6 @@ public class PrimaryKeyFacadeImpl extends AbstractPrimaryKeyFacade {
 			table = getFacadeFactory().createTable(getTarget().getTable());
 		}
 		return table;
-	}
-
-	@Override
-	public boolean containsColumn(IColumn column) {
-		assert column instanceof IFacade;
-		return getTarget().containsColumn((Column)((IFacade)column).getTarget());
 	}
 
 	@Override
