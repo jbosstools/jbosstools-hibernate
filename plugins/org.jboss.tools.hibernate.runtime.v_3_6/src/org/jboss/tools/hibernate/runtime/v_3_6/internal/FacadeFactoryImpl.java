@@ -6,7 +6,6 @@ import org.hibernate.cfg.Settings;
 import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.engine.query.HQLQueryPlan;
 import org.hibernate.mapping.Column;
-import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
 import org.hibernate.metadata.ClassMetadata;
@@ -36,7 +35,6 @@ import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
-import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
@@ -88,11 +86,6 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public IJDBCReader createJDBCReader(Object target) {
 		return new JDBCReaderProxy(this, (JDBCReader)target);
-	}
-	
-	@Override
-	public IPrimaryKey createPrimaryKey(Object target) {
-		return new PrimaryKeyFacadeImpl(this, (PrimaryKey)target);
 	}
 	
 	@Override
