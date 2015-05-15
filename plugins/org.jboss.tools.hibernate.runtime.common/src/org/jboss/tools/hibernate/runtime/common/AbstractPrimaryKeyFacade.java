@@ -84,6 +84,15 @@ implements IPrimaryKey {
 				new Object[] { columnTarget });
 	}
 
+	@Override
+	public String getName() {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getName", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getColumnClass() {
 		return Util.getClass(getColumnClassName(), getFacadeFactoryClassLoader());
 	}

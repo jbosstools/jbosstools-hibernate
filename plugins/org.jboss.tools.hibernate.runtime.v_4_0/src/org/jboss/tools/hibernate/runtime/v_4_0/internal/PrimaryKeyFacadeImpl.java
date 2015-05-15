@@ -27,9 +27,4 @@ public class PrimaryKeyFacadeImpl extends AbstractPrimaryKeyFacade {
 		return table;
 	}
 
-	@Override
-	public String getName() {
-		return getTarget().getName();
-	}
-
 }
