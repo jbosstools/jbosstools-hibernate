@@ -20,7 +20,7 @@ import org.jboss.tools.hibernate.proxy.HQLQueryPlanProxy;
 import org.jboss.tools.hibernate.proxy.HibernateMappingExporterExtension;
 import org.jboss.tools.hibernate.proxy.HibernateMappingExporterProxy;
 import org.jboss.tools.hibernate.proxy.JDBCReaderProxy;
-import org.jboss.tools.hibernate.proxy.PropertyProxy;
+import org.jboss.tools.hibernate.proxy.PropertyFacadeImpl;
 import org.jboss.tools.hibernate.proxy.SessionFactoryProxy;
 import org.jboss.tools.hibernate.proxy.SessionProxy;
 import org.jboss.tools.hibernate.proxy.SettingsProxy;
@@ -92,7 +92,7 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 
 	@Override
 	public IProperty createProperty(Object target) {
-		return new PropertyProxy(this, (Property)target);
+		return new PropertyFacadeImpl(this, (Property)target);
 	}
 
 	@Override

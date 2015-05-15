@@ -10,13 +10,13 @@ import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 
-public class PropertyProxy extends AbstractPropertyFacade {
+public class PropertyFacadeImpl extends AbstractPropertyFacade {
 	
 	private IValue value = null;
 	private IType type = null;
 	private IPersistentClass persistentClass = null;
-		
-	public PropertyProxy(
+	
+	public PropertyFacadeImpl(
 			IFacadeFactory facadeFactory,
 			Property property) {
 		super(facadeFactory, property);
@@ -150,8 +150,8 @@ public class PropertyProxy extends AbstractPropertyFacade {
 	
 	@Override
 	public boolean equals(Object o) {
-		if (!(o instanceof PropertyProxy)) return false;
-		return getTarget().equals(((PropertyProxy)o).getTarget());
+		if (!(o instanceof PropertyFacadeImpl)) return false;
+		return getTarget().equals(((PropertyFacadeImpl)o).getTarget());
 	}
 
 }
