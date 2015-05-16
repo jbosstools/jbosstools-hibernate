@@ -5,7 +5,6 @@ import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.runtime.common.AbstractPropertyFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 
@@ -21,14 +20,6 @@ public class PropertyFacadeImpl extends AbstractPropertyFacade {
 	
 	public Property getTarget() {
 		return (Property)super.getTarget();
-	}
-
-	@Override
-	public IPersistentClass getPersistentClass() {
-		if (persistentClass == null && getTarget().getPersistentClass() != null) {
-			persistentClass = getFacadeFactory().createPersistentClass(getTarget().getPersistentClass());
-		}
-		return persistentClass;
 	}
 
 	@Override

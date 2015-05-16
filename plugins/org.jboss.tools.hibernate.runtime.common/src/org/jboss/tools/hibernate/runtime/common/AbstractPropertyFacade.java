@@ -56,6 +56,23 @@ implements IProperty {
 		this.persistentClass = persistentClass;
 	}
 	
+	@Override
+	public IPersistentClass getPersistentClass() {
+		if (persistentClass == null) {
+			Object targetPersistentClass = Util.invokeMethod(
+					getTarget(), 
+					"getPersistentClass", 
+					new Class[] {}, 
+					new Object[] {});
+			if (targetPersistentClass != null) {
+				persistentClass = 
+						getFacadeFactory().createPersistentClass(
+								targetPersistentClass);
+			}
+		}
+		return persistentClass;
+	}
+
 	protected Class<?> getPersistentClassClass() {
 		return Util.getClass(getPersistentClassClassName(), getFacadeFactoryClassLoader());
 	}
