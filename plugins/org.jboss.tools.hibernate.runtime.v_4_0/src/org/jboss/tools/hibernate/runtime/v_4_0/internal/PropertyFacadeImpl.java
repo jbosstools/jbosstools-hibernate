@@ -5,7 +5,6 @@ import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.runtime.common.AbstractPropertyFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public class PropertyFacadeImpl extends AbstractPropertyFacade {
@@ -18,14 +17,6 @@ public class PropertyFacadeImpl extends AbstractPropertyFacade {
 	
 	public Property getTarget() {
 		return (Property)super.getTarget();
-	}
-
-	@Override
-	public IType getType() {
-		if (type == null && getTarget().getType() != null) {
-			type = getFacadeFactory().createType(getTarget().getType());
-		}
-		return type;
 	}
 
 	@Override

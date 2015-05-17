@@ -116,6 +116,21 @@ implements IProperty {
 		return getTarget().getClass() == getPropertyClass();
 	}
 
+	@Override
+	public IType getType() {
+		if (type == null) {
+			Object targetType = Util.invokeMethod(
+					getTarget(), 
+					"getType", 
+					new Class[] {}, 
+					new Object[] {});
+			if (targetType != null) {
+				type = getFacadeFactory().createType(targetType);
+			}
+		}
+		return type;
+	}
+
 	protected Class<?> getPersistentClassClass() {
 		return Util.getClass(getPersistentClassClassName(), getFacadeFactoryClassLoader());
 	}
