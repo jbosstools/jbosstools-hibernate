@@ -18,11 +18,6 @@ public class PropertyFacadeImpl extends AbstractPropertyFacade {
 	}
 
 	@Override
-	public boolean isInsertable() {
-		return getTarget().isInsertable();
-	}
-
-	@Override
 	public boolean isUpdateable() {
 		return getTarget().isUpdateable();
 	}

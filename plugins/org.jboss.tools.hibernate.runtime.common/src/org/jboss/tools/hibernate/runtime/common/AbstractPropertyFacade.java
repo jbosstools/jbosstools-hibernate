@@ -182,6 +182,15 @@ implements IProperty {
 				new Object[] {});
 	}
 
+	@Override
+	public boolean isInsertable() {
+		return (boolean)Util.invokeMethod(
+				getTarget(), 
+				"isInsertable", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getPersistentClassClass() {
 		return Util.getClass(getPersistentClassClassName(), getFacadeFactoryClassLoader());
 	}
