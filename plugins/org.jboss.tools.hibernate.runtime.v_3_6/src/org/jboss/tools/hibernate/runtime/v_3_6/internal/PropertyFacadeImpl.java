@@ -18,11 +18,6 @@ public class PropertyFacadeImpl extends AbstractPropertyFacade {
 	}
 
 	@Override
-	public boolean isLazy() {
-		return getTarget().isLazy();
-	}
-
-	@Override
 	public boolean isOptional() {
 		return getTarget().isOptional();
 	}

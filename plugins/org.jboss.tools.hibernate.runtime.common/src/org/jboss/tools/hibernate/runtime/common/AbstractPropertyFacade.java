@@ -209,6 +209,15 @@ implements IProperty {
 				new Object[] {});
 	}
 
+	@Override
+	public boolean isLazy() {
+		return (boolean)Util.invokeMethod(
+				getTarget(), 
+				"isLazy", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getPersistentClassClass() {
 		return Util.getClass(getPersistentClassClassName(), getFacadeFactoryClassLoader());
 	}
