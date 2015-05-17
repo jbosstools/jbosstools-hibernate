@@ -18,11 +18,6 @@ public class PropertyFacadeImpl extends AbstractPropertyFacade {
 	}
 
 	@Override
-	public boolean isBackRef() {
-		return getTarget().isBackRef();
-	}
-
-	@Override
 	public boolean isSelectable() {
 		return getTarget().isSelectable();
 	}

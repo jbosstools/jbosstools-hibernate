@@ -164,6 +164,15 @@ implements IProperty {
 				new Object[] { string });
 	}
 
+	@Override
+	public boolean isBackRef() {
+		return (boolean)Util.invokeMethod(
+				getTarget(), 
+				"isBackRef", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getPersistentClassClass() {
 		return Util.getClass(getPersistentClassClassName(), getFacadeFactoryClassLoader());
 	}
