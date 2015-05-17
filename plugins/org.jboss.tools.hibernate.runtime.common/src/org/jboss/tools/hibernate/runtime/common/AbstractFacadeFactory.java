@@ -26,6 +26,7 @@ import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
+import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 import org.jboss.tools.hibernate.runtime.spi.IQueryTranslator;
@@ -195,6 +196,11 @@ public abstract class AbstractFacadeFactory implements IFacadeFactory {
 	@Override
 	public IPrimaryKey createPrimaryKey(Object target) {
 		return new AbstractPrimaryKeyFacade(this, target) {};
+	}
+
+	@Override
+	public IProperty createProperty(Object target) {
+		return new AbstractPropertyFacade(this, target) {};
 	}
 
 }
