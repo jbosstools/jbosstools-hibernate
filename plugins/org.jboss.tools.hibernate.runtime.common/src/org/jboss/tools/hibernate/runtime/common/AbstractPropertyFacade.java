@@ -101,6 +101,15 @@ implements IProperty {
 	}
 
 	@Override
+	public String getNodeName() {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getNodeName", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
+	@Override
 	public boolean classIsPropertyClass() {
 		return getTarget().getClass() == getPropertyClass();
 	}

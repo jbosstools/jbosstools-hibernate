@@ -23,11 +23,6 @@ public class PropertyFacadeImpl extends AbstractPropertyFacade {
 	}
 
 	@Override
-	public String getNodeName() {
-		return getTarget().getNodeName();
-	}
-
-	@Override
 	public IType getType() {
 		if (type == null && getTarget().getType() != null) {
 			type = getFacadeFactory().createType(getTarget().getType());
