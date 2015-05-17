@@ -12,8 +12,4 @@ public class PropertyFacadeImpl extends AbstractPropertyFacade {
 		super(facadeFactory, property);
 	}
 	
-	public Property getTarget() {
-		return (Property)super.getTarget();
-	}
-
 }
