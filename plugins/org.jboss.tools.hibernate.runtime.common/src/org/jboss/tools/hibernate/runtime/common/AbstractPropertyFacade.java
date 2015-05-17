@@ -146,6 +146,15 @@ implements IProperty {
 		this.value = value;
 	}
 
+	@Override
+	public void setPropertyAccessorName(String string) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setPropertyAccessorName", 
+				new Class[] { String.class }, 
+				new Object[] { string });
+	}
+
 	protected Class<?> getPersistentClassClass() {
 		return Util.getClass(getPersistentClassClassName(), getFacadeFactoryClassLoader());
 	}

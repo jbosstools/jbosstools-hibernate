@@ -17,11 +17,6 @@ public class PropertyFacadeImpl extends AbstractPropertyFacade {
 	}
 
 	@Override
-	public void setPropertyAccessorName(String string) {
-		getTarget().setPropertyAccessorName(string);
-	}
-
-	@Override
 	public void setCascade(String string) {
 		getTarget().setCascade(string);
 	}
