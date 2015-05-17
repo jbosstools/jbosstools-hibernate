@@ -17,10 +17,4 @@ public class PropertyFacadeImpl extends AbstractPropertyFacade {
 		return (Property)super.getTarget();
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (!(o instanceof PropertyFacadeImpl)) return false;
-		return getTarget().equals(((PropertyFacadeImpl)o).getTarget());
-	}
-
 }

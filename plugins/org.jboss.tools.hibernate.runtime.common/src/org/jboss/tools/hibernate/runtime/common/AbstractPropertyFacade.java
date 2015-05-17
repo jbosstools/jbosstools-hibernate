@@ -245,6 +245,17 @@ implements IProperty {
 				new Object[] {});
 	}
 	
+	@Override
+	public boolean equals(Object o) {
+		if (!(o.getClass().equals(getClass()))) return false;
+		Object target = Util.invokeMethod(
+				o, 
+				"getTarget", 
+				new Class[] {}, 
+				new Object[] {});
+		return getTarget().equals(target);
+	}
+
 	protected Class<?> getPersistentClassClass() {
 		return Util.getClass(getPersistentClassClassName(), getFacadeFactoryClassLoader());
 	}
