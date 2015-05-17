@@ -91,12 +91,25 @@ implements IProperty {
 				new Object[] {});
 	}
 
+	@Override
+	public boolean classIsPropertyClass() {
+		return getTarget().getClass() == getPropertyClass();
+	}
+
 	protected Class<?> getPersistentClassClass() {
 		return Util.getClass(getPersistentClassClassName(), getFacadeFactoryClassLoader());
 	}
 	
+	protected Class<?> getPropertyClass() {
+		return Util.getClass(getPropertyClassName(), getFacadeFactoryClassLoader());
+	}
+	
 	protected String getPersistentClassClassName() {
 		return "org.hibernate.mapping.PersistentClass";
+	}
+
+	protected String getPropertyClassName() {
+		return "org.hibernate.mapping.Property";
 	}
 
 }

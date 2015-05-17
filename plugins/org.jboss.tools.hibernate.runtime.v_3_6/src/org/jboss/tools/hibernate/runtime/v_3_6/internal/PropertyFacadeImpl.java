@@ -28,11 +28,6 @@ public class PropertyFacadeImpl extends AbstractPropertyFacade {
 	}
 
 	@Override
-	public boolean classIsPropertyClass() {
-		return getTarget().getClass() == Property.class;
-	}
-
-	@Override
 	public String getNodeName() {
 		return getTarget().getNodeName();
 	}
