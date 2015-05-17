@@ -236,6 +236,15 @@ implements IProperty {
 				new Object[] {});
 	}
 
+	@Override
+	public boolean isOptimisticLocked() {
+		return (boolean)Util.invokeMethod(
+				getTarget(), 
+				"isOptimisticLocked", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+	
 	protected Class<?> getPersistentClassClass() {
 		return Util.getClass(getPersistentClassClassName(), getFacadeFactoryClassLoader());
 	}

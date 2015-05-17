@@ -17,11 +17,6 @@ public class PropertyFacadeImpl extends AbstractPropertyFacade {
 	}
 
 	@Override
-	public boolean isOptimisticLocked() {
-		return getTarget().isOptimisticLocked();
-	}
-	
-	@Override
 	public boolean equals(Object o) {
 		if (!(o instanceof PropertyFacadeImpl)) return false;
 		return getTarget().equals(((PropertyFacadeImpl)o).getTarget());
