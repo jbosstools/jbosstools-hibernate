@@ -227,6 +227,15 @@ implements IProperty {
 				new Object[] {});
 	}
 
+	@Override
+	public boolean isNaturalIdentifier() {
+		return (boolean)Util.invokeMethod(
+				getTarget(), 
+				"isNaturalIdentifier", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getPersistentClassClass() {
 		return Util.getClass(getPersistentClassClassName(), getFacadeFactoryClassLoader());
 	}

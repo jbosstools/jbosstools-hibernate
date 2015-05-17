@@ -17,11 +17,6 @@ public class PropertyFacadeImpl extends AbstractPropertyFacade {
 	}
 
 	@Override
-	public boolean isNaturalIdentifier() {
-		return getTarget().isNaturalIdentifier();
-	}
-
-	@Override
 	public boolean isOptimisticLocked() {
 		return getTarget().isOptimisticLocked();
 	}
