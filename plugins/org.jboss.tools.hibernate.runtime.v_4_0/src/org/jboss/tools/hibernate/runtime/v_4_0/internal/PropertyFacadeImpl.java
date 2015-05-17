@@ -17,11 +17,6 @@ public class PropertyFacadeImpl extends AbstractPropertyFacade {
 	}
 
 	@Override
-	public void setCascade(String string) {
-		getTarget().setCascade(string);
-	}
-
-	@Override
 	public boolean isBackRef() {
 		return getTarget().isBackRef();
 	}

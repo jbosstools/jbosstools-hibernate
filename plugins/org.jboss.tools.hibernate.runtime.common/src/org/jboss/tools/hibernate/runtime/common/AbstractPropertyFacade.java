@@ -155,6 +155,15 @@ implements IProperty {
 				new Object[] { string });
 	}
 
+	@Override
+	public void setCascade(String string) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setCascade", 
+				new Class[] { String.class }, 
+				new Object[] { string });
+	}
+
 	protected Class<?> getPersistentClassClass() {
 		return Util.getClass(getPersistentClassClassName(), getFacadeFactoryClassLoader());
 	}
