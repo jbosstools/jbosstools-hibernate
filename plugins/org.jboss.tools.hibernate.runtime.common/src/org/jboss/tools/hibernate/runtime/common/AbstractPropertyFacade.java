@@ -218,6 +218,15 @@ implements IProperty {
 				new Object[] {});
 	}
 
+	@Override
+	public boolean isOptional() {
+		return (boolean)Util.invokeMethod(
+				getTarget(), 
+				"isOptional", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getPersistentClassClass() {
 		return Util.getClass(getPersistentClassClassName(), getFacadeFactoryClassLoader());
 	}

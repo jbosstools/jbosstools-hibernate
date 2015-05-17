@@ -18,11 +18,6 @@ public class PropertyFacadeImpl extends AbstractPropertyFacade {
 	}
 
 	@Override
-	public boolean isOptional() {
-		return getTarget().isOptional();
-	}
-
-	@Override
 	public boolean isNaturalIdentifier() {
 		return getTarget().isNaturalIdentifier();
 	}
