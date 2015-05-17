@@ -191,6 +191,15 @@ implements IProperty {
 				new Object[] {});
 	}
 
+	@Override
+	public boolean isUpdateable() {
+		return (boolean)Util.invokeMethod(
+				getTarget(), 
+				"isUpdateable", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getPersistentClassClass() {
 		return Util.getClass(getPersistentClassClassName(), getFacadeFactoryClassLoader());
 	}

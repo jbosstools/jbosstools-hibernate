@@ -17,11 +17,6 @@ public class PropertyFacadeImpl extends AbstractPropertyFacade {
 	}
 
 	@Override
-	public boolean isUpdateable() {
-		return getTarget().isUpdateable();
-	}
-
-	@Override
 	public String getCascade() {
 		return getTarget().getCascade();
 	}
