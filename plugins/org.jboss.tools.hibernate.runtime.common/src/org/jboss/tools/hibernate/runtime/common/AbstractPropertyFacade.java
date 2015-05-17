@@ -82,6 +82,15 @@ implements IProperty {
 				new Object[] {});
 	}
 
+	@Override
+	public String getPropertyAccessorName() {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getPropertyAccessorName", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getPersistentClassClass() {
 		return Util.getClass(getPersistentClassClassName(), getFacadeFactoryClassLoader());
 	}

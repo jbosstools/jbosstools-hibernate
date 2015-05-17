@@ -23,11 +23,6 @@ public class PropertyFacadeImpl extends AbstractPropertyFacade {
 	}
 
 	@Override
-	public String getPropertyAccessorName() {
-		return getTarget().getPropertyAccessorName();
-	}
-
-	@Override
 	public String getName() {
 		return getTarget().getName();
 	}
