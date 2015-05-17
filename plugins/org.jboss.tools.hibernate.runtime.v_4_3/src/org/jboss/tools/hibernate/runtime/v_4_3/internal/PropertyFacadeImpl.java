@@ -1,11 +1,8 @@
 package org.jboss.tools.hibernate.runtime.v_4_3.internal;
 
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.runtime.common.AbstractPropertyFacade;
-import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public class PropertyFacadeImpl extends AbstractPropertyFacade {
 	
@@ -17,13 +14,6 @@ public class PropertyFacadeImpl extends AbstractPropertyFacade {
 	
 	public Property getTarget() {
 		return (Property)super.getTarget();
-	}
-
-	@Override
-	public void setValue(IValue value) {
-		assert value instanceof IFacade;
-		getTarget().setValue((Value)((IFacade)value).getTarget());
-		this.value = value;
 	}
 
 	@Override

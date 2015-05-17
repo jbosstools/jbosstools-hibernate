@@ -131,6 +131,21 @@ implements IProperty {
 		return type;
 	}
 
+	@Override
+	public void setValue(IValue value) {
+		Object valueTarget = Util.invokeMethod(
+				value, 
+				"getTarget", 
+				new Class[] {}, 
+				new Object[] {});
+		Util.invokeMethod(
+				getTarget(), 
+				"setValue", 
+				new Class[] { getValueClass() }, 
+				new Object[] { valueTarget });
+		this.value = value;
+	}
+
 	protected Class<?> getPersistentClassClass() {
 		return Util.getClass(getPersistentClassClassName(), getFacadeFactoryClassLoader());
 	}
@@ -139,12 +154,20 @@ implements IProperty {
 		return Util.getClass(getPropertyClassName(), getFacadeFactoryClassLoader());
 	}
 	
+	protected Class<?> getValueClass() {
+		return Util.getClass(getValueClassName(), getFacadeFactoryClassLoader());
+	}
+	
 	protected String getPersistentClassClassName() {
 		return "org.hibernate.mapping.PersistentClass";
 	}
 
 	protected String getPropertyClassName() {
 		return "org.hibernate.mapping.Property";
+	}
+
+	protected String getValueClassName() {
+		return "org.hibernate.mapping.Value";
 	}
 
 }
