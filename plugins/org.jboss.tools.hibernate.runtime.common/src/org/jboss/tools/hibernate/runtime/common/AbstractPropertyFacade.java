@@ -3,6 +3,7 @@ package org.jboss.tools.hibernate.runtime.common;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
+import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public abstract class AbstractPropertyFacade 
@@ -11,6 +12,7 @@ implements IProperty {
 
 	protected IValue value = null;
 	protected IPersistentClass persistentClass = null;
+	protected IType type = null;	
 
 	public AbstractPropertyFacade(
 			IFacadeFactory facadeFactory, 

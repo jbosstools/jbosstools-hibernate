@@ -10,8 +10,6 @@ import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public class PropertyFacadeImpl extends AbstractPropertyFacade {
 	
-	private IType type = null;
-	
 	public PropertyFacadeImpl(
 			IFacadeFactory facadeFactory,
 			Property property) {
