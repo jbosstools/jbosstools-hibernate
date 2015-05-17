@@ -73,6 +73,15 @@ implements IProperty {
 		return persistentClass;
 	}
 
+	@Override
+	public boolean isComposite() {
+		return (boolean)Util.invokeMethod(
+				getTarget(), 
+				"isComposite", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getPersistentClassClass() {
 		return Util.getClass(getPersistentClassClassName(), getFacadeFactoryClassLoader());
 	}

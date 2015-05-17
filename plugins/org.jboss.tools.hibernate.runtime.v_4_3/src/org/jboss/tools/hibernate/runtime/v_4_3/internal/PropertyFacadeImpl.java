@@ -23,11 +23,6 @@ public class PropertyFacadeImpl extends AbstractPropertyFacade {
 	}
 
 	@Override
-	public boolean isComposite() {
-		return getTarget().isComposite();
-	}
-
-	@Override
 	public String getPropertyAccessorName() {
 		return getTarget().getPropertyAccessorName();
 	}
