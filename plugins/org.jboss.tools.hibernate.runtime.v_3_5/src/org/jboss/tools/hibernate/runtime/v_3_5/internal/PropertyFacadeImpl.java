@@ -17,11 +17,6 @@ public class PropertyFacadeImpl extends AbstractPropertyFacade {
 	}
 
 	@Override
-	public boolean isSelectable() {
-		return getTarget().isSelectable();
-	}
-
-	@Override
 	public boolean isInsertable() {
 		return getTarget().isInsertable();
 	}

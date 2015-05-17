@@ -173,6 +173,15 @@ implements IProperty {
 				new Object[] {});
 	}
 
+	@Override
+	public boolean isSelectable() {
+		return (boolean)Util.invokeMethod(
+				getTarget(), 
+				"isSelectable", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getPersistentClassClass() {
 		return Util.getClass(getPersistentClassClassName(), getFacadeFactoryClassLoader());
 	}
