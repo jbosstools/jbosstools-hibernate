@@ -200,6 +200,15 @@ implements IProperty {
 				new Object[] {});
 	}
 
+	@Override
+	public String getCascade() {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getCascade", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getPersistentClassClass() {
 		return Util.getClass(getPersistentClassClassName(), getFacadeFactoryClassLoader());
 	}

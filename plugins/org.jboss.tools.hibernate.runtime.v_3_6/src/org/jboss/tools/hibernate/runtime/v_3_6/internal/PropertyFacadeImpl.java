@@ -18,11 +18,6 @@ public class PropertyFacadeImpl extends AbstractPropertyFacade {
 	}
 
 	@Override
-	public String getCascade() {
-		return getTarget().getCascade();
-	}
-
-	@Override
 	public boolean isLazy() {
 		return getTarget().isLazy();
 	}
