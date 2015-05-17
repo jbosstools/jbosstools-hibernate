@@ -247,13 +247,8 @@ implements IProperty {
 	
 	@Override
 	public boolean equals(Object o) {
-		if (!(o.getClass().equals(getClass()))) return false;
-		Object target = Util.invokeMethod(
-				o, 
-				"getTarget", 
-				new Class[] {}, 
-				new Object[] {});
-		return getTarget().equals(target);
+		if (!(o instanceof AbstractPropertyFacade)) return false;
+		return getTarget().equals(((AbstractPropertyFacade)o).getTarget());
 	}
 
 	protected Class<?> getPersistentClassClass() {
