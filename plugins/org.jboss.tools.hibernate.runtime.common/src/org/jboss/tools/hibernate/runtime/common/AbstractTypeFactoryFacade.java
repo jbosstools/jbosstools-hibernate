@@ -211,6 +211,14 @@ implements ITypeFactory {
 				null));
 	}
 
+	@Override
+	public Map<IType, String> getTypeFormats() {
+		if (typeFormats == null) {
+			initializeTypeFormats();
+		}
+		return typeFormats;
+	}
+	
 	protected Class<?> getStandardBasicTypesClass() {
 		return Util.getClass(
 				getStandardBasicTypesClassName(), 

@@ -1,7 +1,5 @@
 package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
-import java.util.Map;
-
 import org.hibernate.type.TypeFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractTypeFactoryFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
@@ -27,12 +25,4 @@ public class TypeFactoryFacadeImpl extends AbstractTypeFactoryFacade {
 		return getFacadeFactory().createType(TypeFactory.basic(type));
 	}
 
-	@Override
-	public Map<IType, String> getTypeFormats() {
-		if (typeFormats == null) {
-			initializeTypeFormats();
-		}
-		return typeFormats;
-	}
-	
 }
