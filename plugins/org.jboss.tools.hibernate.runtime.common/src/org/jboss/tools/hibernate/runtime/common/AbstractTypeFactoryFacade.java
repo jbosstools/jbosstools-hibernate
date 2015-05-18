@@ -190,6 +190,14 @@ implements ITypeFactory {
 				null));
 	}
 
+	@Override
+	public IType getYesNoType() {
+		return getFacadeFactory().createType(Util.getFieldValue(
+				getStandardBasicTypesClass(), 
+				"YES_NO", 
+				null));
+	}
+
 	protected Class<?> getStandardBasicTypesClass() {
 		return Util.getClass(
 				getStandardBasicTypesClassName(), 

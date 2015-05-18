@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import org.hibernate.type.BasicTypeRegistry;
-import org.hibernate.type.StandardBasicTypes;
 import org.jboss.tools.hibernate.runtime.common.AbstractTypeFactoryFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
@@ -24,11 +23,6 @@ public class TypeFactoryFacadeImpl extends AbstractTypeFactoryFacade {
 
 	public TypeFactoryFacadeImpl(IFacadeFactory facadeFactory, Object target) {
 		super(facadeFactory, target);
-	}
-
-	@Override
-	public IType getYesNoType() {
-		return getFacadeFactory().createType(StandardBasicTypes.YES_NO);
 	}
 
 	@Override
