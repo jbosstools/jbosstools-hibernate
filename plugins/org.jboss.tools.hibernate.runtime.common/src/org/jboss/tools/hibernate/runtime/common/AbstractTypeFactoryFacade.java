@@ -174,6 +174,14 @@ implements ITypeFactory {
 				null));
 	}
 
+	@Override
+	public IType getTimezoneType() {
+		return getFacadeFactory().createType(Util.getFieldValue(
+				getStandardBasicTypesClass(), 
+				"TIMEZONE", 
+				null));
+	}
+
 	protected Class<?> getStandardBasicTypesClass() {
 		return Util.getClass(
 				getStandardBasicTypesClassName(), 
