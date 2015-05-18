@@ -231,6 +231,11 @@ implements ITypeFactory {
 		return getFacadeFactory().createType(typeTarget);
 	}
 	
+	@Override
+	public IType getBasicType(String typeName) {
+		return getNamedType(typeName);
+	}
+	
 	protected Class<?> getStandardBasicTypesClass() {
 		return Util.getClass(
 				getStandardBasicTypesClassName(), 

@@ -2,7 +2,6 @@ package org.jboss.tools.hibernate.runtime.v_4_0.internal;
 
 import org.jboss.tools.hibernate.runtime.common.AbstractTypeFactoryFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IType;
 
 public class TypeFactoryFacadeImpl extends AbstractTypeFactoryFacade {
 	
@@ -10,9 +9,4 @@ public class TypeFactoryFacadeImpl extends AbstractTypeFactoryFacade {
 		super(facadeFactory, target);
 	}
 
-	@Override
-	public IType getBasicType(String typeName) {
-		return getNamedType(typeName);
-	}
-	
 }
