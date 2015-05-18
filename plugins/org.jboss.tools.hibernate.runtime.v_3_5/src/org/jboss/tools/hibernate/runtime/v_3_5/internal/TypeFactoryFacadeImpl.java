@@ -30,11 +30,6 @@ public class TypeFactoryFacadeImpl extends AbstractTypeFactoryFacade {
 	}
 
 	@Override
-	public IType getShortType() {
-		return getFacadeFactory().createType(Hibernate.SHORT);
-	}
-
-	@Override
 	public IType getCalendarType() {
 		return getFacadeFactory().createType(Hibernate.CALENDAR);
 	}

@@ -27,11 +27,6 @@ public class TypeFactoryFacadeImpl extends AbstractTypeFactoryFacade {
 	}
 
 	@Override
-	public IType getShortType() {
-		return getFacadeFactory().createType(StandardBasicTypes.SHORT);
-	}
-
-	@Override
 	public IType getCalendarType() {
 		return getFacadeFactory().createType(StandardBasicTypes.CALENDAR);
 	}

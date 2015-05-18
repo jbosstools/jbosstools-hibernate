@@ -38,6 +38,14 @@ implements ITypeFactory {
 				null));
 	}
 
+	@Override
+	public IType getShortType() {
+		return getFacadeFactory().createType(Util.getFieldValue(
+				getStandardBasicTypesClass(), 
+				"SHORT", 
+				null));
+	}
+
 	protected Class<?> getStandardBasicTypesClass() {
 		return Util.getClass(
 				getStandardBasicTypesClassName(), 
