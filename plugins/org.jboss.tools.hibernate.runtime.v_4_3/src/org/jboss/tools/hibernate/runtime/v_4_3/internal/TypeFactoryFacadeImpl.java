@@ -27,11 +27,6 @@ public class TypeFactoryFacadeImpl extends AbstractTypeFactoryFacade {
 	}
 
 	@Override
-	public IType getLocaleType() {
-		return getFacadeFactory().createType(StandardBasicTypes.LOCALE);
-	}
-
-	@Override
 	public IType getLongType() {
 		return getFacadeFactory().createType(StandardBasicTypes.LONG);
 	}

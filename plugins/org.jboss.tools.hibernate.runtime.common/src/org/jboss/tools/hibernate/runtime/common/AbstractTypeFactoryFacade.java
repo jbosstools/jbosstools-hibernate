@@ -126,6 +126,14 @@ implements ITypeFactory {
 				null));
 	}
 
+	@Override
+	public IType getLocaleType() {
+		return getFacadeFactory().createType(Util.getFieldValue(
+				getStandardBasicTypesClass(), 
+				"LOCALE", 
+				null));
+	}
+
 	protected Class<?> getStandardBasicTypesClass() {
 		return Util.getClass(
 				getStandardBasicTypesClassName(), 
