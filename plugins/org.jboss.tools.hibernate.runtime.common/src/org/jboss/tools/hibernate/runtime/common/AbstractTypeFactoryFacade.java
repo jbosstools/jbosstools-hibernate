@@ -94,6 +94,22 @@ implements ITypeFactory {
 				null));
 	}
 
+	@Override
+	public IType getCurrencyType() {
+		return getFacadeFactory().createType(Util.getFieldValue(
+				getStandardBasicTypesClass(), 
+				"CURRENCY", 
+				null));
+	}
+
+	@Override
+	public IType getDateType() {
+		return getFacadeFactory().createType(Util.getFieldValue(
+				getStandardBasicTypesClass(), 
+				"DATE", 
+				null));
+	}
+
 	protected Class<?> getStandardBasicTypesClass() {
 		return Util.getClass(
 				getStandardBasicTypesClassName(), 

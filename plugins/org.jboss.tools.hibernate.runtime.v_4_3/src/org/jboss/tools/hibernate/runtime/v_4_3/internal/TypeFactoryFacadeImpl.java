@@ -27,11 +27,6 @@ public class TypeFactoryFacadeImpl extends AbstractTypeFactoryFacade {
 	}
 
 	@Override
-	public IType getCurrencyType() {
-		return getFacadeFactory().createType(StandardBasicTypes.CURRENCY);
-	}
-
-	@Override
 	public IType getDateType() {
 		return getFacadeFactory().createType(StandardBasicTypes.DATE);
 	}
