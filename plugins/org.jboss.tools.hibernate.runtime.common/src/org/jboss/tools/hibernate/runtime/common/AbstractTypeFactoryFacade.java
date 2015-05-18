@@ -78,6 +78,14 @@ implements ITypeFactory {
 				null));
 	}
 
+	@Override
+	public IType getCharacterType() {
+		return getFacadeFactory().createType(Util.getFieldValue(
+				getStandardBasicTypesClass(), 
+				"CHARACTER", 
+				null));
+	}
+
 	protected Class<?> getStandardBasicTypesClass() {
 		return Util.getClass(
 				getStandardBasicTypesClassName(), 

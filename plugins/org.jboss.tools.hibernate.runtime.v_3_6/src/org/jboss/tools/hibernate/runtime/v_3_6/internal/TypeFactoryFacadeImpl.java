@@ -27,11 +27,6 @@ public class TypeFactoryFacadeImpl extends AbstractTypeFactoryFacade {
 	}
 
 	@Override
-	public IType getCharacterType() {
-		return getFacadeFactory().createType(StandardBasicTypes.CHARACTER);
-	}
-
-	@Override
 	public IType getClassType() {
 		return getFacadeFactory().createType(StandardBasicTypes.CLASS);
 	}
