@@ -27,11 +27,6 @@ public class TypeFactoryFacadeImpl extends AbstractTypeFactoryFacade {
 	}
 
 	@Override
-	public IType getTimestampType() {
-		return getFacadeFactory().createType(StandardBasicTypes.TIMESTAMP);
-	}
-
-	@Override
 	public IType getTimezoneType() {
 		return getFacadeFactory().createType(StandardBasicTypes.TIMEZONE);
 	}

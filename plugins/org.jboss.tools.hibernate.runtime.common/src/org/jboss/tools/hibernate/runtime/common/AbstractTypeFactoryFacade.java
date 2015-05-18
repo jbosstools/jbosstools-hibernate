@@ -166,6 +166,14 @@ implements ITypeFactory {
 				null));
 	}
 
+	@Override
+	public IType getTimestampType() {
+		return getFacadeFactory().createType(Util.getFieldValue(
+				getStandardBasicTypesClass(), 
+				"TIMESTAMP", 
+				null));
+	}
+
 	protected Class<?> getStandardBasicTypesClass() {
 		return Util.getClass(
 				getStandardBasicTypesClassName(), 

@@ -30,11 +30,6 @@ public class TypeFactoryFacadeImpl extends AbstractTypeFactoryFacade {
 	}
 
 	@Override
-	public IType getTimestampType() {
-		return getFacadeFactory().createType(Hibernate.TIMESTAMP);
-	}
-
-	@Override
 	public IType getTimezoneType() {
 		return getFacadeFactory().createType(Hibernate.TIMEZONE);
 	}
