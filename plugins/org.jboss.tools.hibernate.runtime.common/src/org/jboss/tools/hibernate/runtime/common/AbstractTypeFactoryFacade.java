@@ -118,6 +118,14 @@ implements ITypeFactory {
 				null));
 	}
 
+	@Override
+	public IType getFloatType() {
+		return getFacadeFactory().createType(Util.getFieldValue(
+				getStandardBasicTypesClass(), 
+				"FLOAT", 
+				null));
+	}
+
 	protected Class<?> getStandardBasicTypesClass() {
 		return Util.getClass(
 				getStandardBasicTypesClassName(), 

@@ -30,11 +30,6 @@ public class TypeFactoryFacadeImpl extends AbstractTypeFactoryFacade {
 	}
 
 	@Override
-	public IType getFloatType() {
-		return getFacadeFactory().createType(Hibernate.FLOAT);
-	}
-
-	@Override
 	public IType getLocaleType() {
 		return getFacadeFactory().createType(Hibernate.LOCALE);
 	}

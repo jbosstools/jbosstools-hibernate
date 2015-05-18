@@ -27,11 +27,6 @@ public class TypeFactoryFacadeImpl extends AbstractTypeFactoryFacade {
 	}
 
 	@Override
-	public IType getFloatType() {
-		return getFacadeFactory().createType(StandardBasicTypes.FLOAT);
-	}
-
-	@Override
 	public IType getLocaleType() {
 		return getFacadeFactory().createType(StandardBasicTypes.LOCALE);
 	}
