@@ -30,11 +30,6 @@ public class TypeFactoryFacadeImpl extends AbstractTypeFactoryFacade {
 	}
 
 	@Override
-	public IType getBigIntegerType() {
-		return getFacadeFactory().createType(Hibernate.BIG_INTEGER);
-	}
-
-	@Override
 	public IType getShortType() {
 		return getFacadeFactory().createType(Hibernate.SHORT);
 	}

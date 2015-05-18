@@ -30,6 +30,14 @@ implements ITypeFactory {
 				null));
 	}
 
+	@Override
+	public IType getBigIntegerType() {
+		return getFacadeFactory().createType(Util.getFieldValue(
+				getStandardBasicTypesClass(), 
+				"BIG_INTEGER", 
+				null));
+	}
+
 	protected Class<?> getStandardBasicTypesClass() {
 		return Util.getClass(
 				getStandardBasicTypesClassName(), 
