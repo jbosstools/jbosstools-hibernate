@@ -30,16 +30,6 @@ public class TypeFactoryFacadeImpl extends AbstractTypeFactoryFacade {
 	}
 
 	@Override
-	public IType getDateType() {
-		return getFacadeFactory().createType(Hibernate.DATE);
-	}
-
-	@Override
-	public IType getDoubleType() {
-		return getFacadeFactory().createType(Hibernate.DOUBLE);
-	}
-
-	@Override
 	public IType getFloatType() {
 		return getFacadeFactory().createType(Hibernate.FLOAT);
 	}

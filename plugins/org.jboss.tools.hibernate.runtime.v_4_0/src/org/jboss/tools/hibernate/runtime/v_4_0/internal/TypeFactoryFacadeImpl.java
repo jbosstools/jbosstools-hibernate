@@ -27,11 +27,6 @@ public class TypeFactoryFacadeImpl extends AbstractTypeFactoryFacade {
 	}
 
 	@Override
-	public IType getDoubleType() {
-		return getFacadeFactory().createType(StandardBasicTypes.DOUBLE);
-	}
-
-	@Override
 	public IType getFloatType() {
 		return getFacadeFactory().createType(StandardBasicTypes.FLOAT);
 	}

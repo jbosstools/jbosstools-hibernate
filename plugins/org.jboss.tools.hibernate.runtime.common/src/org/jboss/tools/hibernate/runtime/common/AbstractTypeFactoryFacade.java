@@ -110,6 +110,14 @@ implements ITypeFactory {
 				null));
 	}
 
+	@Override
+	public IType getDoubleType() {
+		return getFacadeFactory().createType(Util.getFieldValue(
+				getStandardBasicTypesClass(), 
+				"DOUBLE", 
+				null));
+	}
+
 	protected Class<?> getStandardBasicTypesClass() {
 		return Util.getClass(
 				getStandardBasicTypesClassName(), 
