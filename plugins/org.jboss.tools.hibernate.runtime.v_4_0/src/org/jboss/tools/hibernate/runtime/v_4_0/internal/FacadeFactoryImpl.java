@@ -9,7 +9,6 @@ import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
-import org.hibernate.type.TypeFactory;
 import org.jboss.tools.hibernate.proxy.HQLCodeAssistProxy;
 import org.jboss.tools.hibernate.proxy.HQLCompletionProposalProxy;
 import org.jboss.tools.hibernate.proxy.HQLQueryPlanProxy;
@@ -33,7 +32,6 @@ import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISettings;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
-import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 
 public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	
@@ -94,11 +92,6 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public ITable createTable(Object target) {
 		return new TableProxy(this, (Table)target);
-	}
-	
-	@Override
-	public ITypeFactory createTypeFactory() {
-		return new TypeFactoryFacadeImpl(this, (TypeFactory)null);
 	}
 	
 }

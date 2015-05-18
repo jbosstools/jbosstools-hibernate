@@ -36,6 +36,7 @@ import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
 import org.jboss.tools.hibernate.runtime.spi.IType;
+import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public abstract class AbstractFacadeFactory implements IFacadeFactory {
@@ -203,4 +204,9 @@ public abstract class AbstractFacadeFactory implements IFacadeFactory {
 		return new AbstractPropertyFacade(this, target) {};
 	}
 
+	@Override
+	public ITypeFactory createTypeFactory() {
+		return new AbstractTypeFactoryFacade(this, null) {};
+	}
+	
 }
