@@ -212,4 +212,8 @@ implements ITypeFactory {
 		return "org.hibernate.type.StandardBasicTypes";
 	}
 
+	protected void addTypeFormat(IType type, Object value) {
+		typeFormats.put(type, type.toString(value));
+	}
+
 }

@@ -69,7 +69,4 @@ public class TypeFactoryFacadeImpl extends AbstractTypeFactoryFacade {
 		addTypeFormat(getYesNoType(), Boolean.TRUE);
 	}
 	
-	private void addTypeFormat(IType type, Object value) {
-		typeFormats.put(type, type.toString(value));
-	}
 }

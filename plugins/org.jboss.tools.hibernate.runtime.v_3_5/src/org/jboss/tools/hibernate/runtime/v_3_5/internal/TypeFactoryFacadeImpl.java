@@ -10,7 +10,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
-import org.hibernate.Hibernate;
 import org.hibernate.type.TypeFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractTypeFactoryFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
@@ -72,7 +71,4 @@ public class TypeFactoryFacadeImpl extends AbstractTypeFactoryFacade {
 		addTypeFormat(getYesNoType(), Boolean.TRUE);
 	}
 	
-	private void addTypeFormat(IType type, Object value) {
-		typeFormats.put(type, type.toString(value));
-	}
 }
