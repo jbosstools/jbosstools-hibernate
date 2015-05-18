@@ -54,6 +54,14 @@ implements ITypeFactory {
 				null));
 	}
 
+	@Override
+	public IType getCalendarDateType() {
+		return getFacadeFactory().createType(Util.getFieldValue(
+				getStandardBasicTypesClass(), 
+				"CALENDAR_DATE", 
+				null));
+	}
+
 	protected Class<?> getStandardBasicTypesClass() {
 		return Util.getClass(
 				getStandardBasicTypesClassName(), 
