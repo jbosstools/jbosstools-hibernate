@@ -19,8 +19,6 @@ import org.jboss.tools.hibernate.runtime.spi.IType;
 
 public class TypeFactoryFacadeImpl extends AbstractTypeFactoryFacade {
 
-	private Map<IType, String> typeFormats = null;
-	
 	public TypeFactoryFacadeImpl(IFacadeFactory facadeFactory, Object target) {
 		super(facadeFactory, target);
 	}

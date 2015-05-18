@@ -1,5 +1,7 @@
 package org.jboss.tools.hibernate.runtime.common;
 
+import java.util.Map;
+
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
@@ -7,6 +9,8 @@ import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 public abstract class AbstractTypeFactoryFacade 
 extends AbstractFacade 
 implements ITypeFactory {
+
+	protected Map<IType, String> typeFormats = null;
 
 	public AbstractTypeFactoryFacade(
 			IFacadeFactory facadeFactory, 
