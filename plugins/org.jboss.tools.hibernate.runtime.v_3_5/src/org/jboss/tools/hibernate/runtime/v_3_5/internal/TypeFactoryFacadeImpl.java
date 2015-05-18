@@ -30,11 +30,6 @@ public class TypeFactoryFacadeImpl extends AbstractTypeFactoryFacade {
 	}
 
 	@Override
-	public IType getLongType() {
-		return getFacadeFactory().createType(Hibernate.LONG);
-	}
-
-	@Override
 	public IType getStringType() {
 		return getFacadeFactory().createType(Hibernate.STRING);
 	}

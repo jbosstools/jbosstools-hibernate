@@ -134,6 +134,14 @@ implements ITypeFactory {
 				null));
 	}
 
+	@Override
+	public IType getLongType() {
+		return getFacadeFactory().createType(Util.getFieldValue(
+				getStandardBasicTypesClass(), 
+				"LONG", 
+				null));
+	}
+
 	protected Class<?> getStandardBasicTypesClass() {
 		return Util.getClass(
 				getStandardBasicTypesClassName(), 
