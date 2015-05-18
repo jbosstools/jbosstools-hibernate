@@ -22,6 +22,14 @@ implements ITypeFactory {
 				null));
 	}
 	
+	@Override
+	public IType getByteType() {
+		return getFacadeFactory().createType(Util.getFieldValue(
+				getStandardBasicTypesClass(), 
+				"BYTE", 
+				null));
+	}
+
 	protected Class<?> getStandardBasicTypesClass() {
 		return Util.getClass(
 				getStandardBasicTypesClassName(), 
