@@ -142,6 +142,14 @@ implements ITypeFactory {
 				null));
 	}
 
+	@Override
+	public IType getStringType() {
+		return getFacadeFactory().createType(Util.getFieldValue(
+				getStandardBasicTypesClass(), 
+				"STRING", 
+				null));
+	}
+
 	protected Class<?> getStandardBasicTypesClass() {
 		return Util.getClass(
 				getStandardBasicTypesClassName(), 
