@@ -30,11 +30,6 @@ public class TypeFactoryFacadeImpl extends AbstractTypeFactoryFacade {
 	}
 
 	@Override
-	public IType getClassType() {
-		return getFacadeFactory().createType(Hibernate.CLASS);
-	}
-
-	@Override
 	public IType getCurrencyType() {
 		return getFacadeFactory().createType(Hibernate.CURRENCY);
 	}

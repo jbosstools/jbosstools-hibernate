@@ -86,6 +86,14 @@ implements ITypeFactory {
 				null));
 	}
 
+	@Override
+	public IType getClassType() {
+		return getFacadeFactory().createType(Util.getFieldValue(
+				getStandardBasicTypesClass(), 
+				"CLASS", 
+				null));
+	}
+
 	protected Class<?> getStandardBasicTypesClass() {
 		return Util.getClass(
 				getStandardBasicTypesClassName(), 
