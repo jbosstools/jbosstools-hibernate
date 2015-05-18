@@ -70,6 +70,14 @@ implements ITypeFactory {
 				null));
 	}
 
+	@Override
+	public IType getBigDecimalType() {
+		return getFacadeFactory().createType(Util.getFieldValue(
+				getStandardBasicTypesClass(), 
+				"BIG_DECIMAL", 
+				null));
+	}
+
 	protected Class<?> getStandardBasicTypesClass() {
 		return Util.getClass(
 				getStandardBasicTypesClassName(), 

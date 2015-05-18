@@ -30,11 +30,6 @@ public class TypeFactoryFacadeImpl extends AbstractTypeFactoryFacade {
 	}
 
 	@Override
-	public IType getBigDecimalType() {
-		return getFacadeFactory().createType(Hibernate.BIG_DECIMAL);
-	}
-
-	@Override
 	public IType getCharacterType() {
 		return getFacadeFactory().createType(Hibernate.CHARACTER);
 	}
