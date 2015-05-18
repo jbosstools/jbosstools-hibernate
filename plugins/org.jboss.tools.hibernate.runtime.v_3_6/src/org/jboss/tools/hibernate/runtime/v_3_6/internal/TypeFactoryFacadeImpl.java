@@ -27,11 +27,6 @@ public class TypeFactoryFacadeImpl extends AbstractTypeFactoryFacade {
 	}
 
 	@Override
-	public IType getCalendarType() {
-		return getFacadeFactory().createType(StandardBasicTypes.CALENDAR);
-	}
-
-	@Override
 	public IType getCalendarDateType() {
 		return getFacadeFactory().createType(StandardBasicTypes.CALENDAR_DATE);
 	}
