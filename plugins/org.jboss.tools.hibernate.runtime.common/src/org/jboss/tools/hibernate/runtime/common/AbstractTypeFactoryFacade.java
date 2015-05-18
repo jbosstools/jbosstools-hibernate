@@ -158,6 +158,14 @@ implements ITypeFactory {
 				null));
 	}
 
+	@Override
+	public IType getTimeType() {
+		return getFacadeFactory().createType(Util.getFieldValue(
+				getStandardBasicTypesClass(), 
+				"TIME", 
+				null));
+	}
+
 	protected Class<?> getStandardBasicTypesClass() {
 		return Util.getClass(
 				getStandardBasicTypesClassName(), 
