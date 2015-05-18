@@ -25,9 +25,8 @@ public class TypeFactoryProxy extends AbstractTypeFactoryFacade {
 		super(facadeFactory, target);
 	}
 
-	@Override
-	public IType getBooleanType() {
-		return getFacadeFactory().createType(Hibernate.BOOLEAN);
+	protected String getStandardBasicTypesClassName() {
+		return "org.hibernate.Hibernate";
 	}
 
 	@Override

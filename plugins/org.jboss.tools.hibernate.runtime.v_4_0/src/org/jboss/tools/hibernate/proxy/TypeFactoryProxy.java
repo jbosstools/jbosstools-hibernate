@@ -27,11 +27,6 @@ public class TypeFactoryProxy extends AbstractTypeFactoryFacade {
 	}
 
 	@Override
-	public IType getBooleanType() {
-		return getFacadeFactory().createType(StandardBasicTypes.BOOLEAN);
-	}
-
-	@Override
 	public IType getByteType() {
 		return getFacadeFactory().createType(StandardBasicTypes.BYTE);
 	}
