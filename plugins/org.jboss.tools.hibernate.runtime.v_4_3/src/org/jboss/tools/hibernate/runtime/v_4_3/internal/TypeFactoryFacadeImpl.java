@@ -27,11 +27,6 @@ public class TypeFactoryFacadeImpl extends AbstractTypeFactoryFacade {
 	}
 
 	@Override
-	public IType getIntegerType() {
-		return getFacadeFactory().createType(StandardBasicTypes.INTEGER);
-	}
-
-	@Override
 	public IType getBigDecimalType() {
 		return getFacadeFactory().createType(StandardBasicTypes.BIG_DECIMAL);
 	}

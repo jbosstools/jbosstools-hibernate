@@ -62,6 +62,14 @@ implements ITypeFactory {
 				null));
 	}
 
+	@Override
+	public IType getIntegerType() {
+		return getFacadeFactory().createType(Util.getFieldValue(
+				getStandardBasicTypesClass(), 
+				"INTEGER", 
+				null));
+	}
+
 	protected Class<?> getStandardBasicTypesClass() {
 		return Util.getClass(
 				getStandardBasicTypesClassName(), 
