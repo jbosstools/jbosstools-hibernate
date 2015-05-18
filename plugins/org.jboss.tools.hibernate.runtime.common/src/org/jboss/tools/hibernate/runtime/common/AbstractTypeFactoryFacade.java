@@ -182,6 +182,14 @@ implements ITypeFactory {
 				null));
 	}
 
+	@Override
+	public IType getTrueFalseType() {
+		return getFacadeFactory().createType(Util.getFieldValue(
+				getStandardBasicTypesClass(), 
+				"TRUE_FALSE", 
+				null));
+	}
+
 	protected Class<?> getStandardBasicTypesClass() {
 		return Util.getClass(
 				getStandardBasicTypesClassName(), 

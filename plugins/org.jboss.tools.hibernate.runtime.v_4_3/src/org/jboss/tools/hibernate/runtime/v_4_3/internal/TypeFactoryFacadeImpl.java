@@ -27,11 +27,6 @@ public class TypeFactoryFacadeImpl extends AbstractTypeFactoryFacade {
 	}
 
 	@Override
-	public IType getTrueFalseType() {
-		return getFacadeFactory().createType(StandardBasicTypes.TRUE_FALSE);
-	}
-
-	@Override
 	public IType getYesNoType() {
 		return getFacadeFactory().createType(StandardBasicTypes.YES_NO);
 	}

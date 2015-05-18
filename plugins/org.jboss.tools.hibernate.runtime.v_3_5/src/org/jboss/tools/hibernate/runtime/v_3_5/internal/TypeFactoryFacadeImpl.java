@@ -30,11 +30,6 @@ public class TypeFactoryFacadeImpl extends AbstractTypeFactoryFacade {
 	}
 
 	@Override
-	public IType getTrueFalseType() {
-		return getFacadeFactory().createType(Hibernate.TRUE_FALSE);
-	}
-
-	@Override
 	public IType getYesNoType() {
 		return getFacadeFactory().createType(Hibernate.YES_NO);
 	}
