@@ -1,7 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_4_3.internal;
 
 import org.hibernate.type.StandardBasicTypes;
-import org.jboss.tools.hibernate.proxy.TypeFactoryFacadeImpl;
 import org.jboss.tools.hibernate.runtime.common.Util;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.junit.Assert;

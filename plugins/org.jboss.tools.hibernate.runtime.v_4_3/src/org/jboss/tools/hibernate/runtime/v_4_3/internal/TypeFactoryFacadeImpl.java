@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate.proxy;
+package org.jboss.tools.hibernate.runtime.v_4_3.internal;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
