@@ -10,143 +10,140 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
-import org.hibernate.Hibernate;
-import org.hibernate.type.TypeFactory;
+import org.hibernate.type.BasicTypeRegistry;
+import org.hibernate.type.StandardBasicTypes;
 import org.jboss.tools.hibernate.runtime.common.AbstractTypeFactoryFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 
-public class TypeFactoryProxy extends AbstractTypeFactoryFacade {
-
-	private Map<IType, String> typeFormats = null;
+public class TypeFactoryFacadeImpl extends AbstractTypeFactoryFacade {
 	
-	public TypeFactoryProxy(IFacadeFactory facadeFactory, Object target) {
-		super(facadeFactory, target);
-	}
+	private Map<IType, String> typeFormats = null;
+	private BasicTypeRegistry typeRegistry = new BasicTypeRegistry();
 
-	protected String getStandardBasicTypesClassName() {
-		return "org.hibernate.Hibernate";
+	public TypeFactoryFacadeImpl(IFacadeFactory facadeFactory, Object target) {
+		super(facadeFactory, target);
 	}
 
 	@Override
 	public IType getByteType() {
-		return getFacadeFactory().createType(Hibernate.BYTE);
+		return getFacadeFactory().createType(StandardBasicTypes.BYTE);
 	}
 
 	@Override
 	public IType getBigIntegerType() {
-		return getFacadeFactory().createType(Hibernate.BIG_INTEGER);
+		return getFacadeFactory().createType(StandardBasicTypes.BIG_INTEGER);
 	}
 
 	@Override
 	public IType getShortType() {
-		return getFacadeFactory().createType(Hibernate.SHORT);
+		return getFacadeFactory().createType(StandardBasicTypes.SHORT);
 	}
 
 	@Override
 	public IType getCalendarType() {
-		return getFacadeFactory().createType(Hibernate.CALENDAR);
+		return getFacadeFactory().createType(StandardBasicTypes.CALENDAR);
 	}
 
 	@Override
 	public IType getCalendarDateType() {
-		return getFacadeFactory().createType(Hibernate.CALENDAR_DATE);
+		return getFacadeFactory().createType(StandardBasicTypes.CALENDAR_DATE);
 	}
 
 	@Override
 	public IType getIntegerType() {
-		return getFacadeFactory().createType(Hibernate.INTEGER);
+		return getFacadeFactory().createType(StandardBasicTypes.INTEGER);
 	}
 
 	@Override
 	public IType getBigDecimalType() {
-		return getFacadeFactory().createType(Hibernate.BIG_DECIMAL);
+		return getFacadeFactory().createType(StandardBasicTypes.BIG_DECIMAL);
 	}
 
 	@Override
 	public IType getCharacterType() {
-		return getFacadeFactory().createType(Hibernate.CHARACTER);
+		return getFacadeFactory().createType(StandardBasicTypes.CHARACTER);
 	}
 
 	@Override
 	public IType getClassType() {
-		return getFacadeFactory().createType(Hibernate.CLASS);
+		return getFacadeFactory().createType(StandardBasicTypes.CLASS);
 	}
 
 	@Override
 	public IType getCurrencyType() {
-		return getFacadeFactory().createType(Hibernate.CURRENCY);
+		return getFacadeFactory().createType(StandardBasicTypes.CURRENCY);
 	}
 
 	@Override
 	public IType getDateType() {
-		return getFacadeFactory().createType(Hibernate.DATE);
+		return getFacadeFactory().createType(StandardBasicTypes.DATE);
 	}
 
 	@Override
 	public IType getDoubleType() {
-		return getFacadeFactory().createType(Hibernate.DOUBLE);
+		return getFacadeFactory().createType(StandardBasicTypes.DOUBLE);
 	}
 
 	@Override
 	public IType getFloatType() {
-		return getFacadeFactory().createType(Hibernate.FLOAT);
+		return getFacadeFactory().createType(StandardBasicTypes.FLOAT);
 	}
 
 	@Override
 	public IType getLocaleType() {
-		return getFacadeFactory().createType(Hibernate.LOCALE);
+		return getFacadeFactory().createType(StandardBasicTypes.LOCALE);
 	}
 
 	@Override
 	public IType getLongType() {
-		return getFacadeFactory().createType(Hibernate.LONG);
+		return getFacadeFactory().createType(StandardBasicTypes.LONG);
 	}
 
 	@Override
 	public IType getStringType() {
-		return getFacadeFactory().createType(Hibernate.STRING);
+		return getFacadeFactory().createType(StandardBasicTypes.STRING);
 	}
 
 	@Override
 	public IType getTextType() {
-		return getFacadeFactory().createType(Hibernate.TEXT);
+		return getFacadeFactory().createType(StandardBasicTypes.TEXT);
 	}
 
 	@Override
 	public IType getTimeType() {
-		return getFacadeFactory().createType(Hibernate.TIME);
+		return getFacadeFactory().createType(StandardBasicTypes.TIME);
 	}
 
 	@Override
 	public IType getTimestampType() {
-		return getFacadeFactory().createType(Hibernate.TIMESTAMP);
+		return getFacadeFactory().createType(StandardBasicTypes.TIMESTAMP);
 	}
 
 	@Override
 	public IType getTimezoneType() {
-		return getFacadeFactory().createType(Hibernate.TIMEZONE);
+		return getFacadeFactory().createType(StandardBasicTypes.TIMEZONE);
 	}
 
 	@Override
 	public IType getTrueFalseType() {
-		return getFacadeFactory().createType(Hibernate.TRUE_FALSE);
+		return getFacadeFactory().createType(StandardBasicTypes.TRUE_FALSE);
 	}
 
 	@Override
 	public IType getYesNoType() {
-		return getFacadeFactory().createType(Hibernate.YES_NO);
+		return getFacadeFactory().createType(StandardBasicTypes.YES_NO);
 	}
 
 	@Override
 	public IType getNamedType(String typeName) {
-		return getFacadeFactory().createType(TypeFactory.heuristicType(typeName));
+		return getFacadeFactory().createType(typeRegistry.getRegisteredType(typeName));
 	}
 
 	@Override
-	public IType getBasicType(String type) {
-		return getFacadeFactory().createType(TypeFactory.basic(type));
+	public IType getBasicType(String typeName) {
+		return getNamedType(typeName);
 	}
 
 	@Override

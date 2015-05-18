@@ -17,12 +17,12 @@ import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 
-public class TypeFactoryProxy extends AbstractTypeFactoryFacade {
+public class TypeFactoryFacadeImpl extends AbstractTypeFactoryFacade {
 	
 	private Map<IType, String> typeFormats = null;
 	private BasicTypeRegistry typeRegistry = new BasicTypeRegistry();
 
-	public TypeFactoryProxy(IFacadeFactory facadeFactory, Object target) {
+	public TypeFactoryFacadeImpl(IFacadeFactory facadeFactory, Object target) {
 		super(facadeFactory, target);
 	}
 
