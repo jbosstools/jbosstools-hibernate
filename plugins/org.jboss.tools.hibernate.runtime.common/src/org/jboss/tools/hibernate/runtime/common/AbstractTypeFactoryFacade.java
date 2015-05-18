@@ -150,6 +150,14 @@ implements ITypeFactory {
 				null));
 	}
 
+	@Override
+	public IType getTextType() {
+		return getFacadeFactory().createType(Util.getFieldValue(
+				getStandardBasicTypesClass(), 
+				"TEXT", 
+				null));
+	}
+
 	protected Class<?> getStandardBasicTypesClass() {
 		return Util.getClass(
 				getStandardBasicTypesClassName(), 
