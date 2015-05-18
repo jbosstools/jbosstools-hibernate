@@ -1,7 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
-import org.hibernate.type.TypeFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractTypeFactoryFacade;
+import org.jboss.tools.hibernate.runtime.common.Util;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 
@@ -17,12 +17,32 @@ public class TypeFactoryFacadeImpl extends AbstractTypeFactoryFacade {
 
 	@Override
 	public IType getNamedType(String typeName) {
-		return getFacadeFactory().createType(TypeFactory.heuristicType(typeName));
+		Object typeTarget = Util.invokeMethod(
+				getTypeFactoryClass(), 
+				"heuristicType", 
+				new Class[] { String.class }, 
+				new Object[] { typeName });
+		return getFacadeFactory().createType(typeTarget);
 	}
 
 	@Override
 	public IType getBasicType(String type) {
-		return getFacadeFactory().createType(TypeFactory.basic(type));
+		Object typeTarget = Util.invokeMethod(
+				getTypeFactoryClass(), 
+				"basic", 
+				new Class[] { String.class }, 
+				new Object[] { type });
+		return getFacadeFactory().createType(typeTarget);
+	}
+	
+	private Class<?> getTypeFactoryClass() {
+		return Util.getClass(
+				getTypeFactoryClassName(), 
+				getFacadeFactoryClassLoader());
+	}
+	
+	private String getTypeFactoryClassName() {
+		return "org.hibernate.type.TypeFactory";
 	}
 
 }

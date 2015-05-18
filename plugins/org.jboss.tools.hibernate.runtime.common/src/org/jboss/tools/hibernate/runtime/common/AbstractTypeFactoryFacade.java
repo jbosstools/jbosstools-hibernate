@@ -20,6 +20,8 @@ extends AbstractFacade
 implements ITypeFactory {
 
 	protected Map<IType, String> typeFormats = null;
+	protected Object typeRegistry = null;
+
 
 	public AbstractTypeFactoryFacade(
 			IFacadeFactory facadeFactory, 
@@ -219,6 +221,16 @@ implements ITypeFactory {
 		return typeFormats;
 	}
 	
+	@Override
+	public IType getNamedType(String typeName) {
+		Object typeTarget = Util.invokeMethod(
+				getTypeRegistry(), 
+				"getRegisteredType", 
+				new Class[] { String.class }, 
+				new Object[] { typeName });
+		return getFacadeFactory().createType(typeTarget);
+	}
+	
 	protected Class<?> getStandardBasicTypesClass() {
 		return Util.getClass(
 				getStandardBasicTypesClassName(), 
@@ -258,6 +270,19 @@ implements ITypeFactory {
 	
 	protected void addTypeFormat(IType type, Object value) {
 		typeFormats.put(type, type.toString(value));
+	}
+	
+	protected Object getTypeRegistry() {
+		if (typeRegistry == null) {
+			typeRegistry = Util.getInstance(
+					getTypeRegistryClassName(), 
+					getFacadeFactoryClassLoader());
+		}
+		return typeRegistry;
+	}
+	
+	protected String getTypeRegistryClassName() {
+		return "org.hibernate.type.BasicTypeRegistry";
 	}
 
 }

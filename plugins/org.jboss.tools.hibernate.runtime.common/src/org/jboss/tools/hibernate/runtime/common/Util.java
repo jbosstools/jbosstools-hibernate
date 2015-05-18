@@ -49,6 +49,26 @@ public class Util {
 		return result;
 	}
 	
+	public static Object invokeMethod(
+			Class<?> clazz, 
+			String name, 
+			Class<?>[] parameterTypes, 
+			Object[] arguments) {
+		Object result = null;
+		try {
+			Method method = clazz.getMethod(name, parameterTypes);
+			method.setAccessible(true);
+			result = method.invoke(null, arguments);
+		} catch (NoSuchMethodException | 
+				SecurityException | 
+				IllegalAccessException | 
+				IllegalArgumentException | 
+				InvocationTargetException e) {
+			HibernateRuntimeCommon.log(e);
+		}
+		return result;
+	}
+	
 	public static Object getFieldValue(Class<?> clazz, String fieldName, Object object) {
 		Object result = null;
 		try {
