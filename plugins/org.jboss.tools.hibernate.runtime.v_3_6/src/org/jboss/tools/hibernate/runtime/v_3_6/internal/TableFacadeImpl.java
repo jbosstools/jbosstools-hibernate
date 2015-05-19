@@ -20,11 +20,6 @@ public class TableFacadeImpl extends AbstractTableFacade {
 	}
 
 	@Override
-	public boolean isPhysicalTable() {
-		return getTarget().isPhysicalTable();
-	}
-	
-	@Override
 	public boolean equals(Object o) {
 		boolean result = false;
 		if (o != null & o.getClass() == getClass()) {

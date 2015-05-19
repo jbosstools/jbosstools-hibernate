@@ -167,6 +167,15 @@ implements ITable {
 				new Object[] {});
 	}
 
+	@Override
+	public boolean isPhysicalTable() {
+		return (boolean)Util.invokeMethod(
+				getTarget(), 
+				"isPhysicalTable", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+	
 	protected Class<?> getColumnClass() {
 		return Util.getClass(getColumnClassName(), getFacadeFactoryClassLoader());
 	}
