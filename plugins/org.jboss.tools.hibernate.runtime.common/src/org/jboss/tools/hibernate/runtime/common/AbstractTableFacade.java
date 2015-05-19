@@ -95,6 +95,14 @@ implements ITable {
 		return primaryKey;
 	}
 
+	@Override
+	public Iterator<IColumn> getColumnIterator() {
+		if (columns == null) {
+			initializeColumns();
+		}
+		return columns.iterator();
+	}
+	
 	protected Class<?> getColumnClass() {
 		return Util.getClass(getColumnClassName(), getFacadeFactoryClassLoader());
 	}

@@ -5,7 +5,6 @@ import java.util.Iterator;
 
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.runtime.common.AbstractTableFacade;
-import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
@@ -25,14 +24,6 @@ public class TableFacadeImpl extends AbstractTableFacade {
 		return (Table)super.getTarget();
 	}
 
-	@Override
-	public Iterator<IColumn> getColumnIterator() {
-		if (columns == null) {
-			initializeColumns();
-		}
-		return columns.iterator();
-	}
-	
 	@Override
 	public Iterator<IForeignKey> getForeignKeyIterator() {
 		if (foreignKeys == null) {
