@@ -33,6 +33,7 @@ import org.jboss.tools.hibernate.runtime.spi.IQueryTranslator;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
 import org.jboss.tools.hibernate.runtime.spi.IType;
@@ -209,4 +210,9 @@ public abstract class AbstractFacadeFactory implements IFacadeFactory {
 		return new AbstractTypeFactoryFacade(this, null) {};
 	}
 	
+	@Override
+	public ITable createTable(Object target) {
+		return new AbstractTableFacade(this, target) {};
+	}
+
 }

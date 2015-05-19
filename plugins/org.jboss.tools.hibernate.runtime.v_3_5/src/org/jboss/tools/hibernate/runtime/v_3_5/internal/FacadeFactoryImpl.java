@@ -6,7 +6,6 @@ import org.hibernate.cfg.Settings;
 import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.engine.query.HQLQueryPlan;
 import org.hibernate.mapping.Column;
-import org.hibernate.mapping.Table;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
@@ -36,7 +35,6 @@ import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISettings;
-import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 
@@ -104,11 +102,6 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public IPersistentClass createSpecialRootClass(IProperty property) {
 		return new SpecialRootClassFacadeImpl(this, property);
-	}
-
-	@Override
-	public ITable createTable(Object target) {
-		return new TableFacadeImpl(this, (Table)target);
 	}
 
 	@Override
