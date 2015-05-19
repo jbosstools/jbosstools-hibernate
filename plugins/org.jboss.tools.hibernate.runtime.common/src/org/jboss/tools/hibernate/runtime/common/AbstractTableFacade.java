@@ -8,6 +8,7 @@ import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
+import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public abstract class AbstractTableFacade 
 extends AbstractFacade 
@@ -16,6 +17,7 @@ implements ITable {
 	protected HashSet<IColumn> columns = null;
 	protected IPrimaryKey primaryKey = null;
 	protected HashSet<IForeignKey> foreignKeys = null;
+	protected IValue identifierValue = null;
 
 	public AbstractTableFacade(
 			IFacadeFactory facadeFactory, 

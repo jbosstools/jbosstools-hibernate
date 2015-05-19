@@ -6,9 +6,7 @@ import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public class TableFacadeImpl extends AbstractTableFacade {
-	
-	private IValue identifierValue = null;
-	
+		
 	public TableFacadeImpl(
 			IFacadeFactory facadeFactory,
 			Table table) {
