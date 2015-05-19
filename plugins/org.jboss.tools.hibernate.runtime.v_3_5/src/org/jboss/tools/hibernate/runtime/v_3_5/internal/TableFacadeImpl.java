@@ -4,10 +4,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import org.hibernate.mapping.Column;
-import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.runtime.common.AbstractTableFacade;
-import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
@@ -27,13 +25,6 @@ public class TableFacadeImpl extends AbstractTableFacade {
 
 	public Table getTarget() {
 		return (Table)super.getTarget();
-	}
-
-	@Override
-	public void setPrimaryKey(IPrimaryKey pk) {
-		assert pk instanceof IFacade;
-		primaryKey = pk;
-		getTarget().setPrimaryKey((PrimaryKey)((IFacade)pk).getTarget());
 	}
 
 	@Override
