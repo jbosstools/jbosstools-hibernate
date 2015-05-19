@@ -140,6 +140,15 @@ implements ITable {
 				new Object[] {});
 	}
 
+	@Override
+	public boolean hasDenormalizedTables() {
+		return (boolean)Util.invokeMethod(
+				getTarget(), 
+				"hasDenormalizedTables", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getColumnClass() {
 		return Util.getClass(getColumnClassName(), getFacadeFactoryClassLoader());
 	}

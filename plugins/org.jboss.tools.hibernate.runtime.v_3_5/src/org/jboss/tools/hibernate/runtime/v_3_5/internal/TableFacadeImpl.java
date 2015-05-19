@@ -20,11 +20,6 @@ public class TableFacadeImpl extends AbstractTableFacade {
 	}
 
 	@Override
-	public boolean hasDenormalizedTables() {
-		return getTarget().hasDenormalizedTables();
-	}
-
-	@Override
 	public boolean isAbstract() {
 		return getTarget().isAbstract();
 	}
