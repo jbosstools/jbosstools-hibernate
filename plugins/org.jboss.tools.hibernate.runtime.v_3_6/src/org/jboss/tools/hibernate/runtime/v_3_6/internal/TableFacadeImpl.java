@@ -1,6 +1,5 @@
 package org.jboss.tools.hibernate.runtime.v_3_6.internal;
 
-import java.util.HashSet;
 import java.util.Iterator;
 
 import org.hibernate.mapping.Table;
@@ -31,14 +30,6 @@ public class TableFacadeImpl extends AbstractTableFacade {
 		return foreignKeys.iterator();
 	}
 	
-	private void initializeForeignKeys() {
-		foreignKeys = new HashSet<IForeignKey>();
-		Iterator<?> origin = getTarget().getForeignKeyIterator();
-		while (origin.hasNext()) {
-			foreignKeys.add(getFacadeFactory().createForeignKey(origin.next()));
-		}
-	}
-
 	@Override
 	public String getComment() {
 		return getTarget().getComment();

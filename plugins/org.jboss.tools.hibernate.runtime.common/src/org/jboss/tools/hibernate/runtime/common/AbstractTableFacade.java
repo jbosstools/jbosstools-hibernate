@@ -133,4 +133,18 @@ implements ITable {
 		}
 	}
 
+	protected void initializeForeignKeys() {
+		foreignKeys = new HashSet<IForeignKey>();
+		Iterator<?> targetForeignKeyIterator = (Iterator<?>)Util.invokeMethod(
+				getTarget(), 
+				"getForeignKeyIterator", 
+				new Class[] {}, 
+				new Object[] {});
+		while (targetForeignKeyIterator.hasNext()) {
+			foreignKeys.add(
+					getFacadeFactory().createForeignKey(
+							targetForeignKeyIterator.next()));
+		}
+	}
+
 }
