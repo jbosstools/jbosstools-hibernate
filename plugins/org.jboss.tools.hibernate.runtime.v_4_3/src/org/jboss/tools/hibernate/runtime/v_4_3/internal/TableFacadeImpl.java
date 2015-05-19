@@ -9,7 +9,6 @@ import org.jboss.tools.hibernate.runtime.common.AbstractTableFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
-import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public class TableFacadeImpl extends AbstractTableFacade {
@@ -25,19 +24,6 @@ public class TableFacadeImpl extends AbstractTableFacade {
 
 	public Table getTarget() {
 		return (Table)super.getTarget();
-	}
-
-	@Override
-	public String getSchema() {
-		return getTarget().getSchema();
-	}
-
-	@Override
-	public IPrimaryKey getPrimaryKey() {
-		if (primaryKey == null && getTarget().getPrimaryKey() != null) {
-			primaryKey = getFacadeFactory().createPrimaryKey(getTarget().getPrimaryKey());
-		}
-		return primaryKey;
 	}
 
 	@Override

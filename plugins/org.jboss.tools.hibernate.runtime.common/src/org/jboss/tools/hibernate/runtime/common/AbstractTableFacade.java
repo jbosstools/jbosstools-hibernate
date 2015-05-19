@@ -70,6 +70,30 @@ implements ITable {
 				new Object[] {});
 	}
 
+	@Override
+	public String getSchema() {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getSchema", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
+	@Override
+	public IPrimaryKey getPrimaryKey() {
+		if (primaryKey == null) {
+			Object targetPrimaryKey = Util.invokeMethod(
+					getTarget(), 
+					"getPrimaryKey", 
+					new Class[] {}, 
+					new Object[] {});
+			if (targetPrimaryKey != null) {
+				primaryKey = getFacadeFactory().createPrimaryKey(targetPrimaryKey);
+			}
+		}
+		return primaryKey;
+	}
+
 	protected Class<?> getColumnClass() {
 		return Util.getClass(getColumnClassName(), getFacadeFactoryClassLoader());
 	}
