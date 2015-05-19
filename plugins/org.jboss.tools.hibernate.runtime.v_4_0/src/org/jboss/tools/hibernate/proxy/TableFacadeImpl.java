@@ -14,14 +14,14 @@ import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 
-public class TableProxy extends AbstractTableFacade {
+public class TableFacadeImpl extends AbstractTableFacade {
 	
 	private HashSet<IColumn> columns = null;
 	private IValue identifierValue = null;
 	private IPrimaryKey primaryKey = null;
 	private HashSet<IForeignKey> foreignKeys = null;
-	
-	public TableProxy(
+		
+	public TableFacadeImpl(
 			IFacadeFactory facadeFactory,
 			Table table) {
 		super(facadeFactory, table);
@@ -140,7 +140,7 @@ public class TableProxy extends AbstractTableFacade {
 	public boolean equals(Object o) {
 		boolean result = false;
 		if (o != null & o.getClass() == getClass()) {
-			result = ((TableProxy)o).getTarget().equals(getTarget());
+			result = ((TableFacadeImpl)o).getTarget().equals(getTarget());
 		}
 		return result;
 	}

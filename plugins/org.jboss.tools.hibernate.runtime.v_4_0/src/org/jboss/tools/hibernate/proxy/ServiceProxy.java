@@ -379,8 +379,8 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public IValue newManyToOne(ITable table) {
-		assert table instanceof TableProxy;
-		return facadeFactory.createValue(new ManyToOne(null, ((TableProxy)table).getTarget()));
+		assert table instanceof TableFacadeImpl;
+		return facadeFactory.createValue(new ManyToOne(null, ((TableFacadeImpl)table).getTarget()));
 	}
 
 	@Override
@@ -431,10 +431,10 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public ITableIdentifier createTableIdentifier(ITable table) {
-		assert table instanceof TableProxy;
+		assert table instanceof TableFacadeImpl;
 		return facadeFactory.createTableIdentifier(
 				TableIdentifier.create(
-						((TableProxy)table).getTarget()));
+						((TableFacadeImpl)table).getTarget()));
 	}
 
 	@Override
