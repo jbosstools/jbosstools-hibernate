@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.common;
 
 import java.util.HashSet;
+import java.util.Iterator;
 
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
@@ -108,6 +109,18 @@ implements ITable {
 
 	protected String getPrimaryKeyClassName() {
 		return "org.hibernate.mapping.PrimaryKey";
+	}
+
+	protected void initializeColumns() {
+		columns = new HashSet<IColumn>();
+		Iterator<?> targetColumnIterator = (Iterator<?>)Util.invokeMethod(
+				getTarget(), 
+				"getColumnIterator", 
+				new Class[] {}, 
+				new Object[] {});
+		while (targetColumnIterator.hasNext()) {
+			columns.add(getFacadeFactory().createColumn(targetColumnIterator.next()));
+		}
 	}
 
 }
