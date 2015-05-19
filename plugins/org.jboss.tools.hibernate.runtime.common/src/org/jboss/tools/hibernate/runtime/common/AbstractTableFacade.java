@@ -131,6 +131,15 @@ implements ITable {
 				new Object[] {});
 	}
 
+	@Override
+	public String getSubselect() {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getSubselect", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getColumnClass() {
 		return Util.getClass(getColumnClassName(), getFacadeFactoryClassLoader());
 	}

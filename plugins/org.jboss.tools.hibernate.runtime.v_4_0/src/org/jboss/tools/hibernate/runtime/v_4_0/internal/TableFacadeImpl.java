@@ -20,11 +20,6 @@ public class TableFacadeImpl extends AbstractTableFacade {
 	}
 
 	@Override
-	public String getSubselect() {
-		return getTarget().getSubselect();
-	}
-
-	@Override
 	public boolean hasDenormalizedTables() {
 		return getTarget().hasDenormalizedTables();
 	}
