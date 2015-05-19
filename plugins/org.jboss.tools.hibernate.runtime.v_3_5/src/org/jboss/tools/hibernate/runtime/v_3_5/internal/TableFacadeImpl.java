@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate.proxy;
+package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -20,7 +20,7 @@ public class TableFacadeImpl extends AbstractTableFacade {
 	private IValue identifierValue = null;
 	private IPrimaryKey primaryKey = null;
 	private HashSet<IForeignKey> foreignKeys = null;
-		
+	
 	public TableFacadeImpl(
 			IFacadeFactory facadeFactory,
 			Table table) {
