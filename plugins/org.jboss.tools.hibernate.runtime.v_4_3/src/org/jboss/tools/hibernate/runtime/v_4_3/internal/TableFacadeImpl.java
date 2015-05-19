@@ -20,15 +20,6 @@ public class TableFacadeImpl extends AbstractTableFacade {
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		boolean result = false;
-		if (o != null & o.getClass() == getClass()) {
-			result = ((TableFacadeImpl)o).getTarget().equals(getTarget());
-		}
-		return result;
-	}
-
-	@Override
 	public IValue getIdentifierValue() {
 		if (identifierValue == null && getTarget().getIdentifierValue() != null) {
 			identifierValue = getFacadeFactory().createValue(getTarget().getIdentifierValue());

@@ -176,6 +176,15 @@ implements ITable {
 				new Object[] {});
 	}
 	
+	@Override
+	public boolean equals(Object o) {
+		boolean result = false;
+		if (o != null & o.getClass() == getClass()) {
+			result = ((AbstractTableFacade)o).getTarget().equals(getTarget());
+		}
+		return result;
+	}
+
 	protected Class<?> getColumnClass() {
 		return Util.getClass(getColumnClassName(), getFacadeFactoryClassLoader());
 	}
