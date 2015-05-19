@@ -20,11 +20,6 @@ public class TableFacadeImpl extends AbstractTableFacade {
 	}
 
 	@Override
-	public String getComment() {
-		return getTarget().getComment();
-	}
-
-	@Override
 	public String getRowId() {
 		return getTarget().getRowId();
 	}

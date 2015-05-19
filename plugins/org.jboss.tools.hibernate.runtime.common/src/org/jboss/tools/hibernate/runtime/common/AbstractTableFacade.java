@@ -113,6 +113,15 @@ implements ITable {
 		return foreignKeys.iterator();
 	}
 	
+	@Override
+	public String getComment() {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getComment", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getColumnClass() {
 		return Util.getClass(getColumnClassName(), getFacadeFactoryClassLoader());
 	}
