@@ -4,6 +4,7 @@ import java.util.HashSet;
 
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 
 public abstract class AbstractTableFacade 
@@ -11,6 +12,7 @@ extends AbstractFacade
 implements ITable {
 
 	protected HashSet<IColumn> columns = null;
+	protected IPrimaryKey primaryKey = null;
 
 	public AbstractTableFacade(
 			IFacadeFactory facadeFactory, 
