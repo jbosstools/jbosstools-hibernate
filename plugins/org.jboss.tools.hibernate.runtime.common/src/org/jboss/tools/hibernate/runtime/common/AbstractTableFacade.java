@@ -105,6 +105,14 @@ implements ITable {
 		return columns.iterator();
 	}
 	
+	@Override
+	public Iterator<IForeignKey> getForeignKeyIterator() {
+		if (foreignKeys == null) {
+			initializeForeignKeys();
+		}
+		return foreignKeys.iterator();
+	}
+	
 	protected Class<?> getColumnClass() {
 		return Util.getClass(getColumnClassName(), getFacadeFactoryClassLoader());
 	}

@@ -1,11 +1,8 @@
 package org.jboss.tools.hibernate.runtime.v_4_3.internal;
 
-import java.util.Iterator;
-
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.runtime.common.AbstractTableFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public class TableFacadeImpl extends AbstractTableFacade {
@@ -22,14 +19,6 @@ public class TableFacadeImpl extends AbstractTableFacade {
 		return (Table)super.getTarget();
 	}
 
-	@Override
-	public Iterator<IForeignKey> getForeignKeyIterator() {
-		if (foreignKeys == null) {
-			initializeForeignKeys();
-		}
-		return foreignKeys.iterator();
-	}
-	
 	@Override
 	public String getComment() {
 		return getTarget().getComment();
