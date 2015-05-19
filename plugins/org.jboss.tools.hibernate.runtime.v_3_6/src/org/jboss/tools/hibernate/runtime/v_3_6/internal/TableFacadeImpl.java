@@ -16,7 +16,6 @@ import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public class TableFacadeImpl extends AbstractTableFacade {
 	
-	private HashSet<IColumn> columns = null;
 	private IValue identifierValue = null;
 	private IPrimaryKey primaryKey = null;
 	private HashSet<IForeignKey> foreignKeys = null;
