@@ -187,6 +187,22 @@ implements ITable {
 		return result;
 	}
 
+	@Override
+	public IValue getIdentifierValue() {
+		if (identifierValue == null) {
+			Object targetIdentifierValue = Util.invokeMethod(
+					getTarget(), 
+					"getIdentifierValue", 
+					new Class[] {}, 
+					new Object[] {});
+			if (targetIdentifierValue != null) {
+				identifierValue = getFacadeFactory().createValue(
+						targetIdentifierValue);
+			}
+		}
+		return identifierValue;
+	}
+
 	protected Class<?> getColumnClass() {
 		return Util.getClass(getColumnClassName(), getFacadeFactoryClassLoader());
 	}
