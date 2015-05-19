@@ -32,11 +32,6 @@ public class TableFacadeImpl extends AbstractTableFacade {
 	}
 
 	@Override
-	public String getName() {
-		return getTarget().getName();
-	}
-
-	@Override
 	public void addColumn(IColumn column) {
 		assert column instanceof IFacade;
 		getTarget().addColumn((Column)((IFacade)column).getTarget());

@@ -3,9 +3,12 @@ package org.jboss.tools.hibernate.runtime.v_3_6.internal;
 import org.hibernate.mapping.RootClass;
 import org.jboss.tools.hibernate.runtime.common.AbstractSpecialRootClassFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 
-public class SpecialRootClassFacadeImpl extends AbstractSpecialRootClassFacade {
+public class SpecialRootClassFacadeImpl 
+extends AbstractSpecialRootClassFacade 
+implements IPersistentClass {
 
 	public SpecialRootClassFacadeImpl(
 			IFacadeFactory facadeFactory, 
