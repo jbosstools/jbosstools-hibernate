@@ -12,8 +12,4 @@ public class TableFacadeImpl extends AbstractTableFacade {
 		super(facadeFactory, table);
 	}
 
-	public Table getTarget() {
-		return (Table)super.getTarget();
-	}
-
 }

@@ -88,7 +88,6 @@ import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_3_5.internal.FacadeFactoryImpl;
-import org.jboss.tools.hibernate.runtime.v_3_5.internal.TableFacadeImpl;
 import org.jboss.tools.hibernate.util.OpenMappingUtilsEjb3;
 import org.xml.sax.EntityResolver;
 
@@ -375,8 +374,8 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public IValue newManyToOne(ITable table) {
-		assert table instanceof TableFacadeImpl;
-		return facadeFactory.createValue(new ManyToOne(((TableFacadeImpl)table).getTarget()));
+		assert table instanceof IFacade;
+		return facadeFactory.createValue(new ManyToOne((Table)((IFacade)table).getTarget()));
 	}
 
 	@Override
@@ -427,10 +426,10 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public ITableIdentifier createTableIdentifier(ITable table) {
-		assert table instanceof TableFacadeImpl;
+		assert table instanceof IFacade;
 		return facadeFactory.createTableIdentifier(
 				TableIdentifier.create(
-						((TableFacadeImpl)table).getTarget()));
+						(Table)((IFacade)table).getTarget()));
 	}
 
 	@Override
