@@ -20,11 +20,6 @@ public class TableFacadeImpl extends AbstractTableFacade {
 	}
 
 	@Override
-	public boolean isAbstract() {
-		return getTarget().isAbstract();
-	}
-
-	@Override
 	public boolean isAbstractUnionTable() {
 		return getTarget().isAbstractUnionTable();
 	}

@@ -149,6 +149,15 @@ implements ITable {
 				new Object[] {});
 	}
 
+	@Override
+	public boolean isAbstract() {
+		return (boolean)Util.invokeMethod(
+				getTarget(), 
+				"isAbstract", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getColumnClass() {
 		return Util.getClass(getColumnClassName(), getFacadeFactoryClassLoader());
 	}
