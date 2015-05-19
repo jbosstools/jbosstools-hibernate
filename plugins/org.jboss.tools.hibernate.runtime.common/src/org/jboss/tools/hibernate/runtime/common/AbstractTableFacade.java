@@ -61,6 +61,15 @@ implements ITable {
 		primaryKey = pk;
 	}
 
+	@Override
+	public String getCatalog() {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getCatalog", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getColumnClass() {
 		return Util.getClass(getColumnClassName(), getFacadeFactoryClassLoader());
 	}

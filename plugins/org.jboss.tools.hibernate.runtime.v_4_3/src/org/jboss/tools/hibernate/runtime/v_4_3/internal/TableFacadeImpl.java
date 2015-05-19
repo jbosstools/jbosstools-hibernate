@@ -28,11 +28,6 @@ public class TableFacadeImpl extends AbstractTableFacade {
 	}
 
 	@Override
-	public String getCatalog() {
-		return getTarget().getCatalog();
-	}
-
-	@Override
 	public String getSchema() {
 		return getTarget().getSchema();
 	}
