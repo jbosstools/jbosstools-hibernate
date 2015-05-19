@@ -27,4 +27,28 @@ implements ITable {
 				new Object[] {});
 	}
 
+	@Override
+	public void addColumn(IColumn column) {
+		assert column instanceof IFacade;
+		Object columnTarget = Util.invokeMethod(
+				column, 
+				"getTarget", 
+				new Class[] {}, 
+				new Object[] {});
+		Util.invokeMethod(
+				getTarget(), 
+				"addColumn", 
+				new Class[] { getColumnClass() }, 
+				new Object[] { columnTarget });
+		columns = null;
+	}
+	
+	protected Class<?> getColumnClass() {
+		return Util.getClass(getColumnClassName(), getFacadeFactoryClassLoader());
+	}
+	
+	protected String getColumnClassName() {
+		return "org.hibernate.mapping.Column";
+	}
+
 }

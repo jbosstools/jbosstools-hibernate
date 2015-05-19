@@ -31,13 +31,6 @@ public class TableFacadeImpl extends AbstractTableFacade {
 	}
 
 	@Override
-	public void addColumn(IColumn column) {
-		assert column instanceof IFacade;
-		getTarget().addColumn((Column)((IFacade)column).getTarget());
-		columns = null;
-	}
-
-	@Override
 	public void setPrimaryKey(IPrimaryKey pk) {
 		assert pk instanceof IFacade;
 		primaryKey = pk;
