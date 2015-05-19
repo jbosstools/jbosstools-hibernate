@@ -158,6 +158,15 @@ implements ITable {
 				new Object[] {});
 	}
 
+	@Override
+	public boolean isAbstractUnionTable() {
+		return (boolean)Util.invokeMethod(
+				getTarget(), 
+				"isAbstractUnionTable", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getColumnClass() {
 		return Util.getClass(getColumnClassName(), getFacadeFactoryClassLoader());
 	}
