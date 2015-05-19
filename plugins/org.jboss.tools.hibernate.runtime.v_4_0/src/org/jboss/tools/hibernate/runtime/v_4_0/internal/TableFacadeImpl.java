@@ -20,11 +20,6 @@ public class TableFacadeImpl extends AbstractTableFacade {
 	}
 
 	@Override
-	public String getRowId() {
-		return getTarget().getRowId();
-	}
-
-	@Override
 	public String getSubselect() {
 		return getTarget().getSubselect();
 	}

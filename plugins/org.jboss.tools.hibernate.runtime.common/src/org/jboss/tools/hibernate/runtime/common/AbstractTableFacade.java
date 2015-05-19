@@ -122,6 +122,15 @@ implements ITable {
 				new Object[] {});
 	}
 
+	@Override
+	public String getRowId() {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getRowId", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getColumnClass() {
 		return Util.getClass(getColumnClassName(), getFacadeFactoryClassLoader());
 	}
