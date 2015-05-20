@@ -10,8 +10,4 @@ public class HQLQueryPlanFacade extends AbstractHQLQueryPlanFacade {
 		super(facadeFactory, queryPlan);
 	}
 	
-	public HQLQueryPlan getTarget() {
-		return (HQLQueryPlan)super.getTarget();
-	}
-	
 }
