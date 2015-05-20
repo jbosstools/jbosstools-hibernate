@@ -1,9 +1,9 @@
-package org.jboss.tools.hibernate.proxy;
+package org.jboss.tools.hibernate.runtime.v_4_0.internal;
 
 import java.util.ArrayList;
 
-import org.hibernate.engine.query.HQLQueryPlan;
-import org.hibernate.hql.QueryTranslator;
+import org.hibernate.engine.query.spi.HQLQueryPlan;
+import org.hibernate.hql.spi.QueryTranslator;
 import org.jboss.tools.hibernate.runtime.common.AbstractHQLQueryPlanFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IQueryTranslator;
