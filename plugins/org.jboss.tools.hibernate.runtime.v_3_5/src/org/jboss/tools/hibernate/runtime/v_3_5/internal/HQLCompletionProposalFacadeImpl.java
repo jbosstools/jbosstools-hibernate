@@ -18,11 +18,6 @@ extends AbstractHQLCompletionProposalFacade {
 	}
 
 	@Override
-	public int aliasRefKind() {
-		return HQLCompletionProposal.ALIAS_REF;
-	}
-
-	@Override
 	public int entityNameKind() {
 		return HQLCompletionProposal.ENTITY_NAME;
 	}

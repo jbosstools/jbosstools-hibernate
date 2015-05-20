@@ -91,4 +91,22 @@ implements IHQLCompletionProposal {
 		return result;
 	}
 
+	@Override
+	public int aliasRefKind() {
+		return (int)Util.getFieldValue(
+				getHQLCompletionProposalClass(), 
+				"ALIAS_REF", 
+				null);
+	}
+	
+	protected Class<?> getHQLCompletionProposalClass() {
+		return Util.getClass(
+				getHQLCompletionProposalClassName(), 
+				getFacadeFactoryClassLoader());
+	}
+	
+	protected String getHQLCompletionProposalClassName() {
+		return "org.hibernate.tool.ide.completion.HQLCompletionProposal";
+	}
+
 }
