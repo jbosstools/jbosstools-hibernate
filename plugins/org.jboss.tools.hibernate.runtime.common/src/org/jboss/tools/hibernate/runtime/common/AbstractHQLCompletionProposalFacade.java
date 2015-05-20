@@ -107,6 +107,14 @@ implements IHQLCompletionProposal {
 				null);
 	}
 
+	@Override
+	public int propertyKind() {
+		return (int)Util.getFieldValue(
+				getHQLCompletionProposalClass(), 
+				"PROPERTY", 
+				null);
+	}
+
 	protected Class<?> getHQLCompletionProposalClass() {
 		return Util.getClass(
 				getHQLCompletionProposalClassName(), 
