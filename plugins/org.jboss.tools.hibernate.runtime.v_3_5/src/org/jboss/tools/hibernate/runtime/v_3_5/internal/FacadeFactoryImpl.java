@@ -14,7 +14,7 @@ import org.hibernate.type.Type;
 import org.hibernate.type.TypeFactory;
 import org.jboss.tools.hibernate.proxy.HQLCodeAssistProxy;
 import org.jboss.tools.hibernate.proxy.HQLCompletionProposalProxy;
-import org.jboss.tools.hibernate.proxy.HQLQueryPlanProxy;
+import org.jboss.tools.hibernate.proxy.HQLQueryPlanFacade;
 import org.jboss.tools.hibernate.proxy.HibernateMappingExporterExtension;
 import org.jboss.tools.hibernate.proxy.HibernateMappingExporterProxy;
 import org.jboss.tools.hibernate.proxy.JDBCReaderProxy;
@@ -76,7 +76,7 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 
 	@Override
 	public IHQLQueryPlan createHQLQueryPlan(Object target) {
-		return new HQLQueryPlanProxy(this, (HQLQueryPlan)target);
+		return new HQLQueryPlanFacade(this, (HQLQueryPlan)target);
 	}
 
 	@Override
