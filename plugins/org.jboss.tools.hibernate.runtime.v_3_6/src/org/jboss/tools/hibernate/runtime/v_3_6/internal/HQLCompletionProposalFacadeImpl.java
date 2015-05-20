@@ -18,11 +18,6 @@ extends AbstractHQLCompletionProposalFacade {
 	}
 
 	@Override
-	public int entityNameKind() {
-		return HQLCompletionProposal.ENTITY_NAME;
-	}
-
-	@Override
 	public int propertyKind() {
 		return HQLCompletionProposal.PROPERTY;
 	}

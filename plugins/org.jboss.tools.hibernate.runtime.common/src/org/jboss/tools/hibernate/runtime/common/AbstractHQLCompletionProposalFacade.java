@@ -99,6 +99,14 @@ implements IHQLCompletionProposal {
 				null);
 	}
 	
+	@Override
+	public int entityNameKind() {
+		return (int)Util.getFieldValue(
+				getHQLCompletionProposalClass(), 
+				"ENTITY_NAME", 
+				null);
+	}
+
 	protected Class<?> getHQLCompletionProposalClass() {
 		return Util.getClass(
 				getHQLCompletionProposalClassName(), 
