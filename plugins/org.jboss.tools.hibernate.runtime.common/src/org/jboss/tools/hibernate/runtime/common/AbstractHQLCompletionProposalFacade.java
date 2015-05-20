@@ -22,4 +22,13 @@ implements IHQLCompletionProposal {
 				new Object[] {});
 	}
 
+	@Override
+	public int getReplaceStart() {
+		return (int)Util.invokeMethod(
+				getTarget(), 
+				"getReplaceStart", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 }

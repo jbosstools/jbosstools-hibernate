@@ -19,11 +19,6 @@ extends AbstractHQLCompletionProposalFacade {
 	}
 
 	@Override
-	public int getReplaceStart() {
-		return getTarget().getReplaceStart();
-	}
-
-	@Override
 	public int getReplaceEnd() {
 		return getTarget().getReplaceEnd();
 	}
