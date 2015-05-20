@@ -31,4 +31,13 @@ implements IHQLCompletionProposal {
 				new Object[] {});
 	}
 
+	@Override
+	public int getReplaceEnd() {
+		return (int)Util.invokeMethod(
+				getTarget(), 
+				"getReplaceEnd", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 }
