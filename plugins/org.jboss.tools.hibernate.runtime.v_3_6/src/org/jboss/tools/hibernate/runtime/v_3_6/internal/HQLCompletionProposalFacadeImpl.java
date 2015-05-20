@@ -18,11 +18,6 @@ extends AbstractHQLCompletionProposalFacade {
 	}
 
 	@Override
-	public int keywordKind() {
-		return HQLCompletionProposal.KEYWORD;
-	}
-
-	@Override
 	public int functionKind() {
 		return HQLCompletionProposal.FUNCTION;
 	}

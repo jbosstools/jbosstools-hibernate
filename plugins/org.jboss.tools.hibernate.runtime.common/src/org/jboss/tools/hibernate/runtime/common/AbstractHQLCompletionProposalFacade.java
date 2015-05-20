@@ -115,6 +115,14 @@ implements IHQLCompletionProposal {
 				null);
 	}
 
+	@Override
+	public int keywordKind() {
+		return (int)Util.getFieldValue(
+				getHQLCompletionProposalClass(), 
+				"KEYWORD", 
+				null);
+	}
+
 	protected Class<?> getHQLCompletionProposalClass() {
 		return Util.getClass(
 				getHQLCompletionProposalClassName(), 
