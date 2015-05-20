@@ -13,8 +13,4 @@ extends AbstractHQLCompletionProposalFacade {
 		super(facadeFactory, proposal);
 	}
 	
-	public HQLCompletionProposal getTarget() {
-		return (HQLCompletionProposal)super.getTarget();
-	}
-
 }
