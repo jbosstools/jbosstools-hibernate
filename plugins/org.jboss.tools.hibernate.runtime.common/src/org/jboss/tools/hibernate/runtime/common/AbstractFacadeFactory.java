@@ -15,6 +15,7 @@ import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
+import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingGlobalSettings;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
@@ -213,6 +214,11 @@ public abstract class AbstractFacadeFactory implements IFacadeFactory {
 	@Override
 	public ITable createTable(Object target) {
 		return new AbstractTableFacade(this, target) {};
+	}
+
+	@Override
+	public IHQLQueryPlan createHQLQueryPlan(Object target) {
+		return new AbstractHQLQueryPlanFacade(this, target) {};
 	}
 
 }
