@@ -67,4 +67,13 @@ implements IHQLCompletionProposal {
 				new Object[] {});
 	}
 
+	@Override
+	public String getShortEntityName() {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getShortEntityName", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 }

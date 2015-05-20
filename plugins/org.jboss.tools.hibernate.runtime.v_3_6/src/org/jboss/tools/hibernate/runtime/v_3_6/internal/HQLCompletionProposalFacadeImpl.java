@@ -19,11 +19,6 @@ extends AbstractHQLCompletionProposalFacade {
 	}
 
 	@Override
-	public String getShortEntityName() {
-		return getTarget().getShortEntityName();
-	}
-
-	@Override
 	public IProperty getProperty() {
 		return getTarget().getProperty() != null ? 
 				getFacadeFactory().createProperty(getTarget().getProperty()) :
