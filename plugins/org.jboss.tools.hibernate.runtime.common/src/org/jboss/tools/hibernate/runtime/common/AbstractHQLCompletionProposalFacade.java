@@ -13,4 +13,13 @@ implements IHQLCompletionProposal {
 		super(facadeFactory, target);
 	}
 
+	@Override
+	public String getCompletion() {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getCompletion", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 }
