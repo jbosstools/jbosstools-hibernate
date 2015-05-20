@@ -17,9 +17,4 @@ extends AbstractHQLCompletionProposalFacade {
 		return (HQLCompletionProposal)super.getTarget();
 	}
 
-	@Override
-	public int functionKind() {
-		return HQLCompletionProposal.FUNCTION;
-	}
-
 }

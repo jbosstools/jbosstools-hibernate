@@ -123,6 +123,14 @@ implements IHQLCompletionProposal {
 				null);
 	}
 
+	@Override
+	public int functionKind() {
+		return (int)Util.getFieldValue(
+				getHQLCompletionProposalClass(), 
+				"FUNCTION", 
+				null);
+	}
+
 	protected Class<?> getHQLCompletionProposalClass() {
 		return Util.getClass(
 				getHQLCompletionProposalClassName(), 
