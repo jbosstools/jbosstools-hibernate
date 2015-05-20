@@ -18,6 +18,14 @@ implements IHQLQueryPlan {
 		super(facadeFactory, target);
 	}
 
+	@Override
+	public IQueryTranslator[] getTranslators() {
+		if (translators == null) {
+			initializeTranslators();
+		}
+		return translators;
+	}
+	
 	protected void initializeTranslators() {
 		Object[] targetTranslators = (Object[])Util.invokeMethod(
 				getTarget(), 
