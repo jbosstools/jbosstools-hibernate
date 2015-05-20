@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.runtime.common;
 
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
+import org.jboss.tools.hibernate.runtime.spi.IProperty;
 
 public abstract class AbstractHQLCompletionProposalFacade 
 extends AbstractFacade 
@@ -74,6 +75,20 @@ implements IHQLCompletionProposal {
 				"getShortEntityName", 
 				new Class[] {}, 
 				new Object[] {});
+	}
+
+	@Override
+	public IProperty getProperty() {
+		IProperty result = null;
+		Object targetProperty = Util.invokeMethod(
+				getTarget(), 
+				"getProperty", 
+				new Class[] {}, 
+				new Object[] {});
+		if (targetProperty != null) {
+			result = getFacadeFactory().createProperty(targetProperty);
+		}
+		return result;
 	}
 
 }

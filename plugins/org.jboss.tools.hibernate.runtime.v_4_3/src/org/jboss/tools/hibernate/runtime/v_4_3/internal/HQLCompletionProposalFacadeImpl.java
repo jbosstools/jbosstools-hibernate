@@ -3,7 +3,6 @@ package org.jboss.tools.hibernate.runtime.v_4_3.internal;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.common.AbstractHQLCompletionProposalFacade;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IProperty;
 
 public class HQLCompletionProposalFacadeImpl 
 extends AbstractHQLCompletionProposalFacade {
@@ -16,13 +15,6 @@ extends AbstractHQLCompletionProposalFacade {
 
 	public HQLCompletionProposal getTarget() {
 		return (HQLCompletionProposal)super.getTarget();
-	}
-
-	@Override
-	public IProperty getProperty() {
-		return getTarget().getProperty() != null ? 
-				getFacadeFactory().createProperty(getTarget().getProperty()) :
-					null;
 	}
 
 	@Override
