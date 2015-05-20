@@ -7,7 +7,6 @@ import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.mapping.Column;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
-import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tuple.entity.EntityMetamodel;
 import org.jboss.tools.hibernate.proxy.HQLCodeAssistProxy;
 import org.jboss.tools.hibernate.proxy.HibernateMappingExporterExtension;
@@ -21,7 +20,6 @@ import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
-import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -59,11 +57,6 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public IHQLCodeAssist createHQLCodeAssist(Object target) {
 		return new HQLCodeAssistProxy(this, (HQLCodeAssist)target);
-	}
-	
-	@Override
-	public IHQLCompletionProposal createHQLCompletionProposal(Object target) {
-		return new HQLCompletionProposalFacadeImpl(this, (HQLCompletionProposal)target);
 	}
 	
 	@Override
