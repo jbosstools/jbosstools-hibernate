@@ -40,4 +40,13 @@ implements IHQLCompletionProposal {
 				new Object[] {});
 	}
 
+	@Override
+	public String getSimpleName() {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getSimpleName", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 }

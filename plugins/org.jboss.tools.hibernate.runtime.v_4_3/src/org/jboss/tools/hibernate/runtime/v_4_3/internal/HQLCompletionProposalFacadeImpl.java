@@ -19,11 +19,6 @@ extends AbstractHQLCompletionProposalFacade {
 	}
 
 	@Override
-	public String getSimpleName() {
-		return getTarget().getSimpleName();
-	}
-
-	@Override
 	public int getCompletionKind() {
 		return getTarget().getCompletionKind();
 	}
