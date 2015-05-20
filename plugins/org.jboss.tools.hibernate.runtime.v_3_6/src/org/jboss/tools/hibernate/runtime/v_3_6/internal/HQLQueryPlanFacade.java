@@ -10,8 +10,6 @@ import org.jboss.tools.hibernate.runtime.spi.IQueryTranslator;
 
 public class HQLQueryPlanFacade extends AbstractHQLQueryPlanFacade {
 	
-	private IQueryTranslator[] translators = null;
-	
 	public HQLQueryPlanFacade(IFacadeFactory facadeFactory, HQLQueryPlan queryPlan) {
 		super(facadeFactory, queryPlan);
 	}
