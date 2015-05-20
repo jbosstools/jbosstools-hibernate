@@ -5,10 +5,10 @@ import org.jboss.tools.hibernate.runtime.common.AbstractHQLCompletionProposalFac
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 
-public class HQLCompletionProposalProxy 
+public class HQLCompletionProposalFacadeImpl 
 extends AbstractHQLCompletionProposalFacade {
 	
-	public HQLCompletionProposalProxy(
+	public HQLCompletionProposalFacadeImpl(
 			IFacadeFactory facadeFactory,
 			HQLCompletionProposal proposal) {
 		super(facadeFactory, proposal);

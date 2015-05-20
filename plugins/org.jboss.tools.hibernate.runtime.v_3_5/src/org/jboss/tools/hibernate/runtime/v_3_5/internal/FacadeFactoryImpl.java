@@ -12,7 +12,7 @@ import org.hibernate.tuple.entity.EntityMetamodel;
 import org.hibernate.type.Type;
 import org.hibernate.type.TypeFactory;
 import org.jboss.tools.hibernate.proxy.HQLCodeAssistProxy;
-import org.jboss.tools.hibernate.proxy.HQLCompletionProposalProxy;
+import org.jboss.tools.hibernate.proxy.HQLCompletionProposalFacadeImpl;
 import org.jboss.tools.hibernate.proxy.HibernateMappingExporterExtension;
 import org.jboss.tools.hibernate.proxy.HibernateMappingExporterProxy;
 import org.jboss.tools.hibernate.proxy.JDBCReaderProxy;
@@ -68,7 +68,7 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 
 	@Override
 	public IHQLCompletionProposal createHQLCompletionProposal(Object target) {
-		return new HQLCompletionProposalProxy(this, (HQLCompletionProposal)target);
+		return new HQLCompletionProposalFacadeImpl(this, (HQLCompletionProposal)target);
 	}
 
 	@Override
