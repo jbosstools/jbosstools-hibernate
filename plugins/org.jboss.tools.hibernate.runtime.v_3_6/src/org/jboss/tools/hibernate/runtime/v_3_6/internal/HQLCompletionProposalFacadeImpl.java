@@ -19,11 +19,6 @@ extends AbstractHQLCompletionProposalFacade {
 	}
 
 	@Override
-	public String getEntityName() {
-		return getTarget().getEntityName();
-	}
-
-	@Override
 	public String getShortEntityName() {
 		return getTarget().getShortEntityName();
 	}
