@@ -49,4 +49,13 @@ implements IHQLCompletionProposal {
 				new Object[] {});
 	}
 
+	@Override
+	public int getCompletionKind() {
+		return (int)Util.invokeMethod(
+				getTarget(), 
+				"getCompletionKind", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 }
