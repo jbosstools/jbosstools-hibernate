@@ -10,14 +10,14 @@ import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IMetaDataDialect;
 import org.jboss.tools.hibernate.runtime.spi.IProgressListener;
 
-public class JDBCReaderProxy extends AbstractJDBCReaderFacade {
+public class JDBCReaderFacadeImpl extends AbstractJDBCReaderFacade {
 	
 	private IMetaDataDialect metaDataDialect = null;
 
-	public JDBCReaderProxy(IFacadeFactory facadeFactory, JDBCReader reader) {
+	public JDBCReaderFacadeImpl(IFacadeFactory facadeFactory, JDBCReader reader) {
 		super(facadeFactory, reader);
 	}
-	
+
 	public JDBCReader getTarget() {
 		return (JDBCReader)super.getTarget();
 	}
