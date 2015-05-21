@@ -14,7 +14,7 @@ public abstract class AbstractJDBCReaderFacade
 extends AbstractFacade 
 implements IJDBCReader {
 
-	protected IMetaDataDialect metaDataDialect = null;
+	private IMetaDataDialect metaDataDialect = null;
 
 	public AbstractJDBCReaderFacade(
 			IFacadeFactory facadeFactory, 
