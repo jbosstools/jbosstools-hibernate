@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate.proxy;
+package org.jboss.tools.hibernate.runtime.v_3_6.internal;
 
 import org.hibernate.cfg.reveng.DatabaseCollector;
 import org.hibernate.cfg.reveng.JDBCReader;
@@ -17,7 +17,7 @@ public class JDBCReaderFacadeImpl extends AbstractJDBCReaderFacade {
 	public JDBCReaderFacadeImpl(IFacadeFactory facadeFactory, JDBCReader reader) {
 		super(facadeFactory, reader);
 	}
-	
+
 	public JDBCReader getTarget() {
 		return (JDBCReader)super.getTarget();
 	}
