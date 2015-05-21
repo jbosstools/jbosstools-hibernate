@@ -55,9 +55,13 @@ implements IJDBCReader {
 				"readDatabaseSchema", 
 				new Class[] { 
 						getDatabaseCollectorClass(), 
+						String.class,
+						String.class,
 						getProgressListenerClass() }, 
 				new Object[] {
 						databaseCollectorTarget,
+						defaultCatalogName,
+						defaultSchemaName,
 						createProgressListener(progressListener)
 				});
 	}
