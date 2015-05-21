@@ -43,7 +43,7 @@ implements IJDBCReader {
 		@Override
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 			if ("startSubTask".equals(method.getName())) {
-				method.invoke(target, args);
+				Util.invokeMethod(target, "startSubTask", new Class[] { String.class }, args);
 			}
 			return null;
 		}		

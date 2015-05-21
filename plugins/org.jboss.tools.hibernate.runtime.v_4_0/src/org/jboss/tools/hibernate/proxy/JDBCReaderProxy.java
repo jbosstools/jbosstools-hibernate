@@ -42,18 +42,7 @@ public class JDBCReaderProxy extends AbstractJDBCReaderFacade {
 				(DatabaseCollector)((IFacade)databaseCollector).getTarget(), 
 				defaultCatalogName, 
 				defaultSchemaName,
-				new ProgressListenerImpl(progressListener));
+				(ProgressListener)createProgressListener(progressListener));
 	}
 	
-	private class ProgressListenerImpl implements ProgressListener {
-		private IProgressListener target;
-		public ProgressListenerImpl(IProgressListener progressListener) {
-			target = progressListener;
-		}
-		@Override
-		public void startSubTask(String name) {
-			target.startSubTask(name);
-		}		
-	}
-
 }

@@ -135,6 +135,7 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 				} catch (UnsupportedOperationException he) {
 					throw new HibernateException(he);
 				} catch (Exception he) {
+					he.printStackTrace();
 					throw new HibernateException(he.getMessage(), he.getCause());
 				}
 				return db;
