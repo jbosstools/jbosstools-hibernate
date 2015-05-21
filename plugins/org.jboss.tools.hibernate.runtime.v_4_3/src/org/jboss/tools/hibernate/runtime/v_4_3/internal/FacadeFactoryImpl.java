@@ -4,7 +4,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Settings;
-import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.jboss.tools.hibernate.proxy.HQLCodeAssistProxy;
 import org.jboss.tools.hibernate.proxy.HibernateMappingExporterExtension;
@@ -17,7 +16,6 @@ import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
-import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
@@ -48,11 +46,6 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public IHQLCodeAssist createHQLCodeAssist(Object target) {
 		return new HQLCodeAssistProxy(this, (HQLCodeAssist)target);
-	}
-	
-	@Override
-	public IJDBCReader createJDBCReader(Object target) {
-		return new JDBCReaderFacadeImpl(this, (JDBCReader)target);
 	}
 	
 	@Override
