@@ -89,7 +89,7 @@ implements IJDBCReader {
 		return "org.hibernate.cfg.reveng.DatabaseCollector";
 	}
 	
-	public class ProgressListenerInvocationHandler implements InvocationHandler {		
+	private class ProgressListenerInvocationHandler implements InvocationHandler {		
 		public Object target;		
 		public ProgressListenerInvocationHandler(Object target) {
 			this.target = target;
