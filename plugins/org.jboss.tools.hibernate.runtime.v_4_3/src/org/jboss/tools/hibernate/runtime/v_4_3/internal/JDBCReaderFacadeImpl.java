@@ -12,8 +12,6 @@ import org.jboss.tools.hibernate.runtime.spi.IProgressListener;
 
 public class JDBCReaderFacadeImpl extends AbstractJDBCReaderFacade {
 	
-	private IMetaDataDialect metaDataDialect = null;
-
 	public JDBCReaderFacadeImpl(IFacadeFactory facadeFactory, JDBCReader reader) {
 		super(facadeFactory, reader);
 	}

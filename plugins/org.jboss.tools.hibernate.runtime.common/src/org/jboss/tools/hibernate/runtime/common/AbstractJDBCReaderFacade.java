@@ -6,11 +6,14 @@ import java.lang.reflect.Proxy;
 
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
+import org.jboss.tools.hibernate.runtime.spi.IMetaDataDialect;
 import org.jboss.tools.hibernate.runtime.spi.IProgressListener;
 
 public abstract class AbstractJDBCReaderFacade 
 extends AbstractFacade 
 implements IJDBCReader {
+
+	protected IMetaDataDialect metaDataDialect = null;
 
 	public AbstractJDBCReaderFacade(
 			IFacadeFactory facadeFactory, 
