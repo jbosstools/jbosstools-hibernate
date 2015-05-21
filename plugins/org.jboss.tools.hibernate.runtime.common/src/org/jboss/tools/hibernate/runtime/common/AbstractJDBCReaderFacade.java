@@ -62,13 +62,6 @@ implements IJDBCReader {
 				});
 	}
 	
-	public Object createProgressListener(IProgressListener progressListener) {
-		return Proxy.newProxyInstance(
-				getFacadeFactoryClassLoader(), 
-				new Class[] { getProgressListenerClass() }, 
-				new ProgressListenerInvocationHandler(progressListener));
-	}
-	
 	public Class<?> getProgressListenerClass() {
 		return Util.getClass(
 				getProgressListenerClassName(), 
@@ -87,6 +80,13 @@ implements IJDBCReader {
 	
 	public String getDatabaseCollectorClassName() {
 		return "org.hibernate.cfg.reveng.DatabaseCollector";
+	}
+	
+	private Object createProgressListener(IProgressListener progressListener) {
+		return Proxy.newProxyInstance(
+				getFacadeFactoryClassLoader(), 
+				new Class[] { getProgressListenerClass() }, 
+				new ProgressListenerInvocationHandler(progressListener));
 	}
 	
 	private class ProgressListenerInvocationHandler implements InvocationHandler {		
