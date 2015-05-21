@@ -1,13 +1,8 @@
 package org.jboss.tools.hibernate.runtime.v_4_0.internal;
 
-import org.hibernate.cfg.reveng.DatabaseCollector;
 import org.hibernate.cfg.reveng.JDBCReader;
-import org.hibernate.cfg.reveng.ProgressListener;
 import org.jboss.tools.hibernate.runtime.common.AbstractJDBCReaderFacade;
-import org.jboss.tools.hibernate.runtime.common.IFacade;
-import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IProgressListener;
 
 public class JDBCReaderFacadeImpl extends AbstractJDBCReaderFacade {
 	
@@ -19,18 +14,4 @@ public class JDBCReaderFacadeImpl extends AbstractJDBCReaderFacade {
 		return (JDBCReader)super.getTarget();
 	}
 
-	@Override
-	public void readDatabaseSchema(
-			IDatabaseCollector databaseCollector,
-			String defaultCatalogName, 
-			String defaultSchemaName,
-			IProgressListener progressListener) {
-		assert databaseCollector instanceof IFacade;
-		getTarget().readDatabaseSchema(
-				(DatabaseCollector)((IFacade)databaseCollector).getTarget(), 
-				defaultCatalogName, 
-				defaultSchemaName,
-				(ProgressListener)createProgressListener(progressListener));
-	}
-	
 }

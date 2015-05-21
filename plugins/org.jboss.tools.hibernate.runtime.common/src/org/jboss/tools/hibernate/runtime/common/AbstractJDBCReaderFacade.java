@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.IMetaDataDialect;
@@ -38,6 +39,29 @@ implements IJDBCReader {
 		return metaDataDialect;
 	}
 
+	@Override
+	public void readDatabaseSchema(
+			IDatabaseCollector databaseCollector,
+			String defaultCatalogName, 
+			String defaultSchemaName,
+			IProgressListener progressListener) {
+		Object databaseCollectorTarget = Util.invokeMethod(
+				databaseCollector, 
+				"getTarget", 
+				new Class[] {}, 
+				new Object[] {});
+		Util.invokeMethod(
+				getTarget(), 
+				"readDatabaseSchema", 
+				new Class[] { 
+						getDatabaseCollectorClass(), 
+						getProgressListenerClass() }, 
+				new Object[] {
+						databaseCollectorTarget,
+						createProgressListener(progressListener)
+				});
+	}
+	
 	public Object createProgressListener(IProgressListener progressListener) {
 		return Proxy.newProxyInstance(
 				getFacadeFactoryClassLoader(), 
@@ -51,8 +75,18 @@ implements IJDBCReader {
 				getFacadeFactoryClassLoader());
 	}
 	
+	public Class<?> getDatabaseCollectorClass() {
+		return Util.getClass(
+				getDatabaseCollectorClassName(), 
+				getFacadeFactoryClassLoader());
+	}
+	
 	public String getProgressListenerClassName() {
 		return "org.hibernate.cfg.reveng.ProgressListener";
+	}
+	
+	public String getDatabaseCollectorClassName() {
+		return "org.hibernate.cfg.reveng.DatabaseCollector";
 	}
 	
 	public class ProgressListenerInvocationHandler implements InvocationHandler {		
