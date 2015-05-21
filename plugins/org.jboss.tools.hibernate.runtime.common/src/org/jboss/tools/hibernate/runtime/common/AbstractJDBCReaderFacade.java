@@ -21,6 +21,23 @@ implements IJDBCReader {
 		super(facadeFactory, target);
 	}
 
+	@Override
+	public IMetaDataDialect getMetaDataDialect() {
+		if (metaDataDialect == null) {
+			Object targetMetaDataDialect = Util.invokeMethod(
+					getTarget(), 
+					"getMetaDataDialect", 
+					new Class[] {}, 
+					new Object[] {});
+			if (targetMetaDataDialect != null) {
+				metaDataDialect = 
+						getFacadeFactory().createMetaDataDialect(
+								targetMetaDataDialect);
+			}
+		}
+		return metaDataDialect;
+	}
+
 	public Object createProgressListener(IProgressListener progressListener) {
 		return Proxy.newProxyInstance(
 				getFacadeFactoryClassLoader(), 

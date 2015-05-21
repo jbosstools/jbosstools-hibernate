@@ -7,7 +7,6 @@ import org.jboss.tools.hibernate.runtime.common.AbstractJDBCReaderFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IMetaDataDialect;
 import org.jboss.tools.hibernate.runtime.spi.IProgressListener;
 
 public class JDBCReaderFacadeImpl extends AbstractJDBCReaderFacade {
@@ -18,15 +17,6 @@ public class JDBCReaderFacadeImpl extends AbstractJDBCReaderFacade {
 	
 	public JDBCReader getTarget() {
 		return (JDBCReader)super.getTarget();
-	}
-
-	@Override
-	public IMetaDataDialect getMetaDataDialect() {
-		if (metaDataDialect == null) {
-			metaDataDialect = getFacadeFactory().createMetaDataDialect(
-					getTarget().getMetaDataDialect());
-		}
-		return metaDataDialect;
 	}
 
 	@Override
