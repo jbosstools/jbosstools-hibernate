@@ -10,8 +10,4 @@ public class JDBCReaderFacadeImpl extends AbstractJDBCReaderFacade {
 		super(facadeFactory, reader);
 	}
 
-	public JDBCReader getTarget() {
-		return (JDBCReader)super.getTarget();
-	}
-
 }
