@@ -13,4 +13,9 @@ implements ISessionFactory {
 		super(facadeFactory, target);
 	}
 
+	@Override
+	public void close() {
+		Util.invokeMethod(getTarget(), "close", new Class[] {}, new Object[] {});
+	}
+
 }

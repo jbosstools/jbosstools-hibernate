@@ -28,11 +28,6 @@ public class SessionFactoryFacadeImpl extends AbstractSessionFactoryFacade {
 	}
 
 	@Override
-	public void close() {
-		getTarget().close();
-	}
-
-	@Override
 	public Map<String, IClassMetadata> getAllClassMetadata() {
 		if (allClassMetadata == null) {
 			initializeAllClassMetadata();
