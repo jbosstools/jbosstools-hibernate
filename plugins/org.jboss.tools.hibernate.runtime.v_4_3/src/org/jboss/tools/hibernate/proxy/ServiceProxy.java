@@ -209,9 +209,9 @@ public class ServiceProxy implements IService {
 			String query, 
 			boolean shallow,
 			ISessionFactory sessionFactory) {
-		assert sessionFactory instanceof SessionFactoryProxy;
+		assert sessionFactory instanceof SessionFactoryFacadeImpl;
 		SessionFactoryImpl factory = 
-				(SessionFactoryImpl) ((SessionFactoryProxy)sessionFactory).getTarget();
+				(SessionFactoryImpl) ((SessionFactoryFacadeImpl)sessionFactory).getTarget();
 		Map<String, Filter> enabledFilters = Collections.emptyMap(); 
 		HQLQueryPlan queryPlan = new HQLQueryPlan(query, shallow, enabledFilters, factory);
 		return facadeFactory.createHQLQueryPlan(queryPlan);

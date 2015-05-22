@@ -12,12 +12,12 @@ import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 
-public class SessionFactoryProxy extends AbstractSessionFactoryFacade {
+public class SessionFactoryFacadeImpl extends AbstractSessionFactoryFacade {
 	
 	private Map<String, IClassMetadata> allClassMetadata = null;
 	private Map<String, ICollectionMetadata> allCollectionMetadata = null;
 
-	public SessionFactoryProxy(
+	public SessionFactoryFacadeImpl(
 			IFacadeFactory facadeFactory, 
 			SessionFactory sessionFactory) {
 		super(facadeFactory, sessionFactory);

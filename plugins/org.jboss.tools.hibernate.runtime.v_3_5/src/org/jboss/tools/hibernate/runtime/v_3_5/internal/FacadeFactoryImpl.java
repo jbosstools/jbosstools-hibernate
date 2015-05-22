@@ -12,7 +12,7 @@ import org.hibernate.type.TypeFactory;
 import org.jboss.tools.hibernate.proxy.HQLCodeAssistProxy;
 import org.jboss.tools.hibernate.proxy.HibernateMappingExporterExtension;
 import org.jboss.tools.hibernate.proxy.HibernateMappingExporterProxy;
-import org.jboss.tools.hibernate.proxy.SessionFactoryProxy;
+import org.jboss.tools.hibernate.proxy.SessionFactoryFacadeImpl;
 import org.jboss.tools.hibernate.proxy.SessionProxy;
 import org.jboss.tools.hibernate.proxy.SettingsProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
@@ -62,7 +62,7 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 
 	@Override
 	public ISessionFactory createSessionFactory(Object target) {
-		return new SessionFactoryProxy(this, (SessionFactory)target);
+		return new SessionFactoryFacadeImpl(this, (SessionFactory)target);
 	}
 
 	@Override
