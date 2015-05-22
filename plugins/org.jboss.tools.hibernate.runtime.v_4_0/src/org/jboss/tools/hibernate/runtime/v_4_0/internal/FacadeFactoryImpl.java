@@ -7,7 +7,7 @@ import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.jboss.tools.hibernate.proxy.HQLCodeAssistProxy;
 import org.jboss.tools.hibernate.proxy.HibernateMappingExporterExtension;
 import org.jboss.tools.hibernate.proxy.HibernateMappingExporterProxy;
-import org.jboss.tools.hibernate.proxy.SessionProxy;
+import org.jboss.tools.hibernate.proxy.SessionFactoryImpl;
 import org.jboss.tools.hibernate.proxy.SettingsProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
@@ -41,7 +41,7 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	
 	@Override
 	public ISession createSession(Object target) {
-		return new SessionProxy(this, (Session)target);
+		return new SessionFactoryImpl(this, (Session)target);
 	}
 	
 	@Override

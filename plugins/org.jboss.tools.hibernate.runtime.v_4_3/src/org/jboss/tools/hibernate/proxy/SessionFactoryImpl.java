@@ -7,11 +7,11 @@ import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 
-public class SessionProxy extends AbstractSessionFacade {
+public class SessionFactoryImpl extends AbstractSessionFacade {
 	
 	private ISessionFactory targetFactory;
 
-	public SessionProxy(
+	public SessionFactoryImpl(
 			IFacadeFactory facadeFactory,
 			Session session) {
 		super(facadeFactory, session);
@@ -53,7 +53,7 @@ public class SessionProxy extends AbstractSessionFacade {
 	public Session getTarget() {
 		return (Session)super.getTarget();
 	}
-
+	
 	public ICriteria createCriteria(Class<?> persistentClass) {
 		return getFacadeFactory().createCriteria(
 				getTarget().createCriteria(persistentClass));

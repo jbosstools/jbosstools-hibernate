@@ -7,11 +7,11 @@ import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 
-public class SessionProxy extends AbstractSessionFacade {
+public class SessionFacadeImpl extends AbstractSessionFacade {
 	
 	private ISessionFactory targetFactory;
 
-	public SessionProxy(
+	public SessionFacadeImpl(
 			IFacadeFactory facadeFactory,
 			Session session) {
 		super(facadeFactory, session);
