@@ -1,7 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Settings;
 import org.hibernate.mapping.Column;
 import org.hibernate.metadata.ClassMetadata;
@@ -23,7 +22,6 @@ import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
-import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISettings;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
@@ -57,11 +55,6 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public IHQLCodeAssist createHQLCodeAssist(Object target) {
 		return new HQLCodeAssistProxy(this, (HQLCodeAssist)target);
-	}
-
-	@Override
-	public ISessionFactory createSessionFactory(Object target) {
-		return new SessionFactoryFacadeImpl(this, (SessionFactory)target);
 	}
 
 	@Override
