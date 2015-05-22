@@ -14,7 +14,6 @@ import org.jboss.tools.hibernate.runtime.spi.ISession;
 
 public class SessionFactoryFacadeImpl extends AbstractSessionFactoryFacade {
 	
-	private Map<String, IClassMetadata> allClassMetadata = null;
 	private Map<String, ICollectionMetadata> allCollectionMetadata = null;
 
 	public SessionFactoryFacadeImpl(
