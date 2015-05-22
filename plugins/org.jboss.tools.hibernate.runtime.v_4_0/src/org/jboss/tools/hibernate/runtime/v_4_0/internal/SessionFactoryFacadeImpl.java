@@ -1,7 +1,5 @@
 package org.jboss.tools.hibernate.runtime.v_4_0.internal;
 
-import java.util.Map;
-
 import org.hibernate.SessionFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractSessionFactoryFacade;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
@@ -21,14 +19,6 @@ public class SessionFactoryFacadeImpl extends AbstractSessionFactoryFacade {
 		return (SessionFactory)super.getTarget();
 	}
 
-	@Override
-	public Map<String, ICollectionMetadata> getAllCollectionMetadata() {
-		if (allCollectionMetadata == null) {
-			initializeAllCollectionMetadata();
-		}
-		return allCollectionMetadata;
-	}
-	
 	@Override
 	public ISession openSession() {
 		return getFacadeFactory().createSession(getTarget().openSession());

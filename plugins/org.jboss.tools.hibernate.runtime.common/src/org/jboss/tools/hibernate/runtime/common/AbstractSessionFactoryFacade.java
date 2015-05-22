@@ -34,6 +34,14 @@ implements ISessionFactory {
 		return allClassMetadata;
 	}
 	
+	@Override
+	public Map<String, ICollectionMetadata> getAllCollectionMetadata() {
+		if (allCollectionMetadata == null) {
+			initializeAllCollectionMetadata();
+		}
+		return allCollectionMetadata;
+	}
+	
 	protected void initializeAllClassMetadata() {
 		Map<?, ?> targetAllClassMetadata = (Map<?, ?>)Util.invokeMethod(
 				getTarget(), 
