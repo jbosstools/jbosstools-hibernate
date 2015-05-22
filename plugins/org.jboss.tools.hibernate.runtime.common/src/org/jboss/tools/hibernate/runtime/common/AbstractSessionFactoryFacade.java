@@ -49,4 +49,19 @@ implements ISessionFactory {
 		}
 	}
 
+	protected void initializeAllCollectionMetadata() {
+		Map<?, ?> targetAllCollectionMetadata = (Map<?, ?>)Util.invokeMethod(
+				getTarget(), 
+				"getAllCollectionMetadata", 
+				new Class[] {}, 
+				new Object[] {});
+		allCollectionMetadata = new HashMap<String, ICollectionMetadata>(
+				targetAllCollectionMetadata.size());
+		for (Map.Entry<?, ?> entry : targetAllCollectionMetadata.entrySet()) {
+			allCollectionMetadata.put(
+					(String)entry.getKey(), 
+					getFacadeFactory().createCollectionMetadata(entry.getValue()));
+		}
+	}
+
 }

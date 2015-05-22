@@ -1,10 +1,8 @@
 package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.hibernate.SessionFactory;
-import org.hibernate.metadata.CollectionMetadata;
 import org.jboss.tools.hibernate.runtime.common.AbstractSessionFactoryFacade;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
@@ -31,18 +29,6 @@ public class SessionFactoryFacadeImpl extends AbstractSessionFactoryFacade {
 		return allCollectionMetadata;
 	}
 	
-	private void initializeAllCollectionMetadata() {
-		Map<String, CollectionMetadata> origin = getTarget().getAllCollectionMetadata();
-		allCollectionMetadata = new HashMap<String, ICollectionMetadata>(origin.size());
-		for (Map.Entry<String, CollectionMetadata> entry : origin.entrySet()) {
-			String key = entry.getKey();
-			CollectionMetadata value = entry.getValue();
-			allCollectionMetadata.put(
-					key, 
-					getFacadeFactory().createCollectionMetadata(value));
-		}
-	}
-
 	@Override
 	public ISession openSession() {
 		return getFacadeFactory().createSession(getTarget().openSession());
