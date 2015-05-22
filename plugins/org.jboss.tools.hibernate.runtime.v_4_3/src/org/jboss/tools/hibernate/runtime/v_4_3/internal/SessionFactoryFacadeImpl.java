@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.hibernate.SessionFactory;
-import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
 import org.jboss.tools.hibernate.runtime.common.AbstractSessionFactoryFacade;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
@@ -34,16 +33,6 @@ public class SessionFactoryFacadeImpl extends AbstractSessionFactoryFacade {
 		return allClassMetadata;
 	}
 	
-	private void initializeAllClassMetadata() {
-		Map<String, ClassMetadata> origin = getTarget().getAllClassMetadata();
-		allClassMetadata = new HashMap<String, IClassMetadata>(origin.size());
-		for (Map.Entry<String, ClassMetadata> entry : origin.entrySet()) {
-			allClassMetadata.put(
-					entry.getKey(), 
-					getFacadeFactory().createClassMetadata(entry.getValue()));
-		}
-	}
-
 	@Override
 	public Map<String, ICollectionMetadata> getAllCollectionMetadata() {
 		if (allCollectionMetadata == null) {

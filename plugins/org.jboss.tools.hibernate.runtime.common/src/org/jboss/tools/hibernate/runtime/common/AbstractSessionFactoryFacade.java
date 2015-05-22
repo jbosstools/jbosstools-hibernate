@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.runtime.common;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
@@ -21,6 +22,21 @@ implements ISessionFactory {
 	@Override
 	public void close() {
 		Util.invokeMethod(getTarget(), "close", new Class[] {}, new Object[] {});
+	}
+
+	protected void initializeAllClassMetadata() {
+		Map<?, ?> targetAllClassMetadata = (Map<?, ?>)Util.invokeMethod(
+				getTarget(), 
+				"getAllClassMetadata", 
+				new Class[] {}, 
+				new Object[] {});
+		allClassMetadata = new HashMap<String, IClassMetadata>(
+				targetAllClassMetadata.size());
+		for (Map.Entry<?, ?> entry : targetAllClassMetadata.entrySet()) {
+			allClassMetadata.put(
+					(String)entry.getKey(), 
+					getFacadeFactory().createClassMetadata(entry.getValue()));
+		}
 	}
 
 }
