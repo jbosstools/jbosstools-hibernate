@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate.proxy;
+package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,6 +40,7 @@ public class SessionFactoryFacadeImpl extends AbstractSessionFactoryFacade {
 		return allClassMetadata;
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void initializeAllClassMetadata() {
 		Map<String, ClassMetadata> origin = getTarget().getAllClassMetadata();
 		allClassMetadata = new HashMap<String, IClassMetadata>(origin.size());
@@ -63,9 +64,11 @@ public class SessionFactoryFacadeImpl extends AbstractSessionFactoryFacade {
 		Map<String, CollectionMetadata> origin = getTarget().getAllCollectionMetadata();
 		allCollectionMetadata = new HashMap<String, ICollectionMetadata>(origin.size());
 		for (Map.Entry<String, CollectionMetadata> entry : origin.entrySet()) {
+			String key = entry.getKey();
+			CollectionMetadata value = entry.getValue();
 			allCollectionMetadata.put(
-					entry.getKey(), 
-					getFacadeFactory().createCollectionMetadata(entry.getValue()));
+					key, 
+					getFacadeFactory().createCollectionMetadata(value));
 		}
 	}
 
