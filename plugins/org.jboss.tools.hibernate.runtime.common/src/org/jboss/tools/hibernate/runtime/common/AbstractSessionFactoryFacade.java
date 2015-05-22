@@ -69,6 +69,14 @@ implements ISessionFactory {
 		return allClassMetadata.get(entityName);
 	}
 
+	@Override
+	public ICollectionMetadata getCollectionMetadata(String string) {
+		if (allCollectionMetadata == null) {
+			initializeAllCollectionMetadata();
+		}
+		return allCollectionMetadata.get(string);
+	}
+
 	protected void initializeAllClassMetadata() {
 		Map<?, ?> targetAllClassMetadata = (Map<?, ?>)Util.invokeMethod(
 				getTarget(), 
