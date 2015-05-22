@@ -13,8 +13,6 @@ import org.jboss.tools.hibernate.runtime.spi.ISession;
 
 public class SessionFactoryFacadeImpl extends AbstractSessionFactoryFacade {
 	
-	private Map<String, ICollectionMetadata> allCollectionMetadata = null;
-
 	public SessionFactoryFacadeImpl(
 			IFacadeFactory facadeFactory, 
 			SessionFactory sessionFactory) {
