@@ -5,7 +5,6 @@ import org.jboss.tools.hibernate.runtime.common.AbstractSessionFactoryFacade;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.ISession;
 
 public class SessionFactoryFacadeImpl extends AbstractSessionFactoryFacade {
 	
@@ -17,19 +16,6 @@ public class SessionFactoryFacadeImpl extends AbstractSessionFactoryFacade {
 
 	public SessionFactory getTarget() {
 		return (SessionFactory)super.getTarget();
-	}
-
-	@Override
-	public ISession openSession() {
-		return getFacadeFactory().createSession(getTarget().openSession());
-	}
-	
-	@Override
-	public IClassMetadata getClassMetadata(Class<?> clazz) {
-		if (allClassMetadata == null) {
-			initializeAllClassMetadata();
-		}
-		return allClassMetadata.get(clazz.getName());
 	}
 
 	@Override

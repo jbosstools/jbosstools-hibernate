@@ -6,6 +6,7 @@ import java.util.Map;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 
 public abstract class AbstractSessionFactoryFacade 
@@ -42,6 +43,24 @@ implements ISessionFactory {
 		return allCollectionMetadata;
 	}
 	
+	@Override
+	public ISession openSession() {
+		Object targetSession = Util.invokeMethod(
+				getTarget(), 
+				"openSession", 
+				new Class[] {}, 
+				new Object[] {});
+		return getFacadeFactory().createSession(targetSession);
+	}
+	
+	@Override
+	public IClassMetadata getClassMetadata(Class<?> clazz) {
+		if (allClassMetadata == null) {
+			initializeAllClassMetadata();
+		}
+		return allClassMetadata.get(clazz.getName());
+	}
+
 	protected void initializeAllClassMetadata() {
 		Map<?, ?> targetAllClassMetadata = (Map<?, ?>)Util.invokeMethod(
 				getTarget(), 
