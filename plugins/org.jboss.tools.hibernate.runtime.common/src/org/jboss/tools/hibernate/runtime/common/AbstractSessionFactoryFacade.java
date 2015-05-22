@@ -61,6 +61,14 @@ implements ISessionFactory {
 		return allClassMetadata.get(clazz.getName());
 	}
 
+	@Override
+	public IClassMetadata getClassMetadata(String entityName) {
+		if (allClassMetadata == null) {
+			initializeAllClassMetadata();
+		}
+		return allClassMetadata.get(entityName);
+	}
+
 	protected void initializeAllClassMetadata() {
 		Map<?, ?> targetAllClassMetadata = (Map<?, ?>)Util.invokeMethod(
 				getTarget(), 
