@@ -26,14 +26,6 @@ public class SessionFactoryFacadeImpl extends AbstractSessionFactoryFacade {
 	}
 
 	@Override
-	public Map<String, IClassMetadata> getAllClassMetadata() {
-		if (allClassMetadata == null) {
-			initializeAllClassMetadata();
-		}
-		return allClassMetadata;
-	}
-	
-	@Override
 	public Map<String, ICollectionMetadata> getAllCollectionMetadata() {
 		if (allCollectionMetadata == null) {
 			initializeAllCollectionMetadata();

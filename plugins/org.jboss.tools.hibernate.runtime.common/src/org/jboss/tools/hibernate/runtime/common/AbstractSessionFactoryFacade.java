@@ -24,6 +24,14 @@ implements ISessionFactory {
 		Util.invokeMethod(getTarget(), "close", new Class[] {}, new Object[] {});
 	}
 
+	@Override
+	public Map<String, IClassMetadata> getAllClassMetadata() {
+		if (allClassMetadata == null) {
+			initializeAllClassMetadata();
+		}
+		return allClassMetadata;
+	}
+	
 	protected void initializeAllClassMetadata() {
 		Map<?, ?> targetAllClassMetadata = (Map<?, ?>)Util.invokeMethod(
 				getTarget(), 
