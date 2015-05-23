@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate.proxy;
+package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
 import org.hibernate.Session;
 import org.jboss.tools.hibernate.runtime.common.AbstractSessionFacade;
@@ -7,11 +7,11 @@ import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 
-public class SessionFactoryImpl extends AbstractSessionFacade {
+public class SessionFacadeImpl extends AbstractSessionFacade {
 	
 	private ISessionFactory targetFactory;
 
-	public SessionFactoryImpl(
+	public SessionFacadeImpl(
 			IFacadeFactory facadeFactory,
 			Session session) {
 		super(facadeFactory, session);
@@ -53,7 +53,7 @@ public class SessionFactoryImpl extends AbstractSessionFacade {
 	public Session getTarget() {
 		return (Session)super.getTarget();
 	}
-	
+
 	public ICriteria createCriteria(Class<?> persistentClass) {
 		return getFacadeFactory().createCriteria(
 				getTarget().createCriteria(persistentClass));

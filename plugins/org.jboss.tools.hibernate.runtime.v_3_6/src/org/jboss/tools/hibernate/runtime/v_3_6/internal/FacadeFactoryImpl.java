@@ -9,7 +9,6 @@ import org.hibernate.tuple.entity.EntityMetamodel;
 import org.jboss.tools.hibernate.proxy.HQLCodeAssistProxy;
 import org.jboss.tools.hibernate.proxy.HibernateMappingExporterExtension;
 import org.jboss.tools.hibernate.proxy.HibernateMappingExporterProxy;
-import org.jboss.tools.hibernate.proxy.SessionFacadeImpl;
 import org.jboss.tools.hibernate.proxy.SettingsProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
