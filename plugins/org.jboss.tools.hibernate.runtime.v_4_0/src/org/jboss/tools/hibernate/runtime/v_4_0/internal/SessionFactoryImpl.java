@@ -18,11 +18,6 @@ public class SessionFactoryImpl extends AbstractSessionFacade {
 	}
 
 	@Override
-	public String getEntityName(Object o) {
-		return getTarget().getEntityName(o);
-	}
-
-	@Override
 	public ISessionFactory getSessionFactory() {
 		if (targetFactory == null && getTarget().getSessionFactory() != null) {
 			targetFactory = getFacadeFactory().createSessionFactory(getTarget().getSessionFactory());

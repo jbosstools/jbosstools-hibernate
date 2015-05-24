@@ -13,4 +13,13 @@ implements ISession {
 		super(facadeFactory, target);
 	}
 
+	@Override
+	public String getEntityName(Object o) {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getEntityName", 
+				new Class[] { Object.class }, 
+				new Object[] { o });
+	}
+
 }
