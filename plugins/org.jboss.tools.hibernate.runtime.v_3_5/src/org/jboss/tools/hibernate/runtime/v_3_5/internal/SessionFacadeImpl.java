@@ -13,11 +13,6 @@ public class SessionFacadeImpl extends AbstractSessionFacade {
 		super(facadeFactory, session);
 	}
 
-	@Override
-	public boolean contains(Object object) {
-		return getTarget().contains(object);
-	}
-
 	public Session getTarget() {
 		return (Session)super.getTarget();
 	}

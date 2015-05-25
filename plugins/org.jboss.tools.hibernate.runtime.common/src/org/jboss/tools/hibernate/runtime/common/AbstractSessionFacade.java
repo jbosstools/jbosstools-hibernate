@@ -70,4 +70,13 @@ implements ISession {
 				new Object[] {});
 	}
 
+	@Override
+	public boolean contains(Object object) {
+		return (boolean)Util.invokeMethod(
+				getTarget(), 
+				"contains", 
+				new Class[] { Object.class }, 
+				new Object[] { object });
+	}
+
 }
