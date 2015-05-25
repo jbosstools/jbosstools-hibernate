@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.common;
 
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 
@@ -39,6 +40,16 @@ implements ISession {
 			}
 		}
 		return targetFactory;
+	}
+
+	@Override
+	public IQuery createQuery(String queryString) {
+		Object targetQuery = Util.invokeMethod(
+				getTarget(), 
+				"createQuery", 
+				new Class[] { String.class }, 
+				new Object[] { queryString });
+		return getFacadeFactory().createQuery(targetQuery);
 	}
 
 }
