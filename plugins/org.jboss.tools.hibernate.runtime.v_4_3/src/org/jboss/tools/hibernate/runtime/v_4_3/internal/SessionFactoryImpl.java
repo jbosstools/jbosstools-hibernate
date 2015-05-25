@@ -12,8 +12,4 @@ public class SessionFactoryImpl extends AbstractSessionFacade {
 		super(facadeFactory, session);
 	}
 
-	public Session getTarget() {
-		return (Session)super.getTarget();
-	}
-	
 }
