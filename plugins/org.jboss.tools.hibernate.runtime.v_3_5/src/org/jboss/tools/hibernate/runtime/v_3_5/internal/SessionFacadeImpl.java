@@ -9,8 +9,6 @@ import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 
 public class SessionFacadeImpl extends AbstractSessionFacade {
 	
-	private ISessionFactory targetFactory;
-
 	public SessionFacadeImpl(
 			IFacadeFactory facadeFactory,
 			Session session) {
