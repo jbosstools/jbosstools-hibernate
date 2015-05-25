@@ -14,11 +14,6 @@ public class SessionFacadeImpl extends AbstractSessionFacade {
 	}
 
 	@Override
-	public void close() {
-		getTarget().close();
-	}
-
-	@Override
 	public boolean contains(Object object) {
 		return getTarget().contains(object);
 	}

@@ -61,4 +61,13 @@ implements ISession {
 				new Object[] {});
 	}
 
+	@Override
+	public void close() {
+		Util.invokeMethod(
+				getTarget(), 
+				"close", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 }
