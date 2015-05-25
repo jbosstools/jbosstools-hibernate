@@ -25,4 +25,20 @@ implements ISession {
 				new Object[] { o });
 	}
 
+	@Override
+	public ISessionFactory getSessionFactory() {
+		if (targetFactory == null) {
+			Object targetSessionFactory = Util.invokeMethod(
+					getTarget(), 
+					"getSessionFactory", 
+					new Class[] {}, 
+					new Object[] {});
+			if (targetSessionFactory != null) {
+				targetFactory = getFacadeFactory().createSessionFactory(
+						targetSessionFactory);
+			}
+		}
+		return targetFactory;
+	}
+
 }

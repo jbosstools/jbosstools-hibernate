@@ -5,7 +5,6 @@ import org.jboss.tools.hibernate.runtime.common.AbstractSessionFacade;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
-import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 
 public class SessionFacadeImpl extends AbstractSessionFacade {
 	
@@ -13,14 +12,6 @@ public class SessionFacadeImpl extends AbstractSessionFacade {
 			IFacadeFactory facadeFactory,
 			Session session) {
 		super(facadeFactory, session);
-	}
-
-	@Override
-	public ISessionFactory getSessionFactory() {
-		if (targetFactory == null && getTarget().getSessionFactory() != null) {
-			targetFactory = getFacadeFactory().createSessionFactory(getTarget().getSessionFactory());
-		}
-		return targetFactory;
 	}
 
 	@Override
