@@ -14,11 +14,6 @@ public class SessionFacadeImpl extends AbstractSessionFacade {
 	}
 
 	@Override
-	public boolean isOpen() {
-		return getTarget().isOpen();
-	}
-
-	@Override
 	public void close() {
 		getTarget().close();
 	}

@@ -52,4 +52,13 @@ implements ISession {
 		return getFacadeFactory().createQuery(targetQuery);
 	}
 
+	@Override
+	public boolean isOpen() {
+		return (boolean)Util.invokeMethod(
+				getTarget(), 
+				"isOpen", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 }
