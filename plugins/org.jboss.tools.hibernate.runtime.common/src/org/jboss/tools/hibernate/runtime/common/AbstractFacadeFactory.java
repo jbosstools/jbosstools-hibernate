@@ -36,6 +36,7 @@ import org.jboss.tools.hibernate.runtime.spi.IQueryTranslator;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
+import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
@@ -237,6 +238,11 @@ public abstract class AbstractFacadeFactory implements IFacadeFactory {
 	@Override
 	public ISessionFactory createSessionFactory(Object target) {
 		return new AbstractSessionFactoryFacade(this, target) {};
+	}
+	
+	@Override
+	public ISession createSession(Object target) {
+		return new AbstractSessionFacade(this, target) {};
 	}
 	
 }
