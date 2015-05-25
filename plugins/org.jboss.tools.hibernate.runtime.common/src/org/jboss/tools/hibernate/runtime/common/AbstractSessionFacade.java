@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.runtime.common;
 
+import org.jboss.tools.hibernate.runtime.spi.ICriteria;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
@@ -79,4 +80,13 @@ implements ISession {
 				new Object[] { object });
 	}
 
+	public ICriteria createCriteria(Class<?> persistentClass) {
+		Object criteriaTarget = Util.invokeMethod(
+				getTarget(), 
+				"createCriteria", 
+				new Class[] { Class.class }, 
+				new Object[] { persistentClass });
+		return getFacadeFactory().createCriteria(criteriaTarget);
+	}
+	
 }
