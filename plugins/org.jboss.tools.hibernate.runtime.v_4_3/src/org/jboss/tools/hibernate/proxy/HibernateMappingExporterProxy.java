@@ -1,13 +1,8 @@
 package org.jboss.tools.hibernate.proxy;
 
-import java.util.Map;
-
-import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.jboss.tools.hibernate.runtime.common.AbstractHibernateMappingExporterFacade;
-import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.v_4_3.internal.HibernateMappingExporterExtension;
 
 public class HibernateMappingExporterProxy extends AbstractHibernateMappingExporterFacade {
@@ -21,12 +16,6 @@ public class HibernateMappingExporterProxy extends AbstractHibernateMappingExpor
 		target = hibernateMappingExporter;
 	}
 
-	@Override
-	public void exportPOJO(Map<Object, Object> map, IPOJOClass pojoClass) {
-		assert pojoClass instanceof IFacade;
-		target.superExportPOJO(map, (POJOClass)((IFacade)pojoClass).getTarget());
-	}
-	
 	@Override
 	public void setExportPOJODelegate(IExportPOJODelegate delegate) {
 		target.setDelegate(delegate);

@@ -1,10 +1,12 @@
 package org.jboss.tools.hibernate.runtime.common;
 
 import java.io.File;
+import java.util.Map;
 
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingGlobalSettings;
+import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 
 public abstract class AbstractHibernateMappingExporterFacade 
 extends AbstractFacade 
@@ -57,14 +59,38 @@ implements IHibernateMappingExporter {
 				new Object[] { directory });
 	}
 
+	@Override
+	public void exportPOJO(Map<Object, Object> map, IPOJOClass pojoClass) {
+		Object pojoClassTarget = Util.invokeMethod(
+				pojoClass, 
+				"getTarget", 
+				new Class[] {}, 
+				new Object[] {});
+		Util.invokeMethod(
+				getTarget(), 
+				"superExportPOJO", 
+				new Class[] { getPOJOClassClass() }, 
+				new Object[] { pojoClassTarget });
+	}
+
 	protected Class<?> getHibernateMappingGlobalSettingsClass() {
 		return Util.getClass(
 				getHibernateMappingGlobalSettingsClassName(), 
 				getFacadeFactoryClassLoader());
 	}
 	
+	protected Class<?> getPOJOClassClass() {
+		return Util.getClass(
+				getPOJOClassClassName(), 
+				getFacadeFactoryClassLoader());
+	}
+	
 	protected String getHibernateMappingGlobalSettingsClassName() {
 		return "org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings";
+	}
+	
+	protected String getPOJOClassClassName() {
+		return "org.hibernate.tool.hbm2x.pojo.POJOClass";
 	}
 
 }
