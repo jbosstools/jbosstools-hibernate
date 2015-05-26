@@ -23,11 +23,6 @@ public class HibernateMappingExporterProxy extends AbstractHibernateMappingExpor
 	}
 
 	@Override
-	public void start() {
-		target.start();
-	}
-
-	@Override
 	public File getOutputDirectory() {
 		return target.getOutputDirectory();
 	}

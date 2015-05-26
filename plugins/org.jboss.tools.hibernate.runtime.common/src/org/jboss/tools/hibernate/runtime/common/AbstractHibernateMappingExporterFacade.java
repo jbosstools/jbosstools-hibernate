@@ -28,6 +28,15 @@ implements IHibernateMappingExporter {
 				new Object[] { hmgsTarget });
 	}
 	
+	@Override
+	public void start() {
+		Util.invokeMethod(
+				getTarget(), 
+				"start", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 	protected Class<?> getHibernateMappingGlobalSettingsClass() {
 		return Util.getClass(
 				getHibernateMappingGlobalSettingsClassName(), 
