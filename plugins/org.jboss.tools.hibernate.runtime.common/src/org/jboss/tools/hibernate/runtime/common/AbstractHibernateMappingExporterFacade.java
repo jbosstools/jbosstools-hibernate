@@ -1,5 +1,7 @@
 package org.jboss.tools.hibernate.runtime.common;
 
+import java.io.File;
+
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingGlobalSettings;
@@ -33,6 +35,15 @@ implements IHibernateMappingExporter {
 		Util.invokeMethod(
 				getTarget(), 
 				"start", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
+	@Override
+	public File getOutputDirectory() {
+		return (File)Util.invokeMethod(
+				getTarget(), 
+				"getOutputDirectory", 
 				new Class[] {}, 
 				new Object[] {});
 	}
