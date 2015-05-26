@@ -48,6 +48,15 @@ implements IHibernateMappingExporter {
 				new Object[] {});
 	}
 
+	@Override
+	public void setOutputDirectory(File directory) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setOutputDirectory", 
+				new Class[] { File.class }, 
+				new Object[] { directory });
+	}
+
 	protected Class<?> getHibernateMappingGlobalSettingsClass() {
 		return Util.getClass(
 				getHibernateMappingGlobalSettingsClassName(), 

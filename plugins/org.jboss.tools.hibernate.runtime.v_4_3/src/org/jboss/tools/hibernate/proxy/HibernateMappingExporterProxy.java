@@ -1,6 +1,5 @@
 package org.jboss.tools.hibernate.proxy;
 
-import java.io.File;
 import java.util.Map;
 
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
@@ -20,11 +19,6 @@ public class HibernateMappingExporterProxy extends AbstractHibernateMappingExpor
 			HibernateMappingExporterExtension hibernateMappingExporter) {
 		super(facadeFactory, hibernateMappingExporter);
 		target = hibernateMappingExporter;
-	}
-
-	@Override
-	public void setOutputDirectory(File directory) {
-		target.setOutputDirectory(directory);
 	}
 
 	@Override
