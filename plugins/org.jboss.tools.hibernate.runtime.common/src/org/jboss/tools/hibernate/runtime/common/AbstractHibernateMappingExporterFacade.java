@@ -3,6 +3,7 @@ package org.jboss.tools.hibernate.runtime.common;
 import java.io.File;
 import java.util.Map;
 
+import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingGlobalSettings;
@@ -73,6 +74,15 @@ implements IHibernateMappingExporter {
 				new Object[] { pojoClassTarget });
 	}
 
+	@Override
+	public void setExportPOJODelegate(IExportPOJODelegate delegate) {
+		Util.invokeMethod(
+				getTarget(), 
+				"setDelegate", 
+				new Class[] { IExportPOJODelegate.class }, 
+				new Object[] { delegate });
+	}
+	
 	protected Class<?> getHibernateMappingGlobalSettingsClass() {
 		return Util.getClass(
 				getHibernateMappingGlobalSettingsClassName(), 
