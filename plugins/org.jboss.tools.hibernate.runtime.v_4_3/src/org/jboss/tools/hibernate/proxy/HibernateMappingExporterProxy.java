@@ -11,6 +11,7 @@ import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingGlobalSettings;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
+import org.jboss.tools.hibernate.runtime.v_4_3.internal.HibernateMappingExporterExtension;
 
 public class HibernateMappingExporterProxy extends AbstractHibernateMappingExporterFacade {
 	
