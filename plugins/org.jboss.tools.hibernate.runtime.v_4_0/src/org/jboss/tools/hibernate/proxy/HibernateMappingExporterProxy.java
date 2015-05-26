@@ -3,13 +3,11 @@ package org.jboss.tools.hibernate.proxy;
 import java.io.File;
 import java.util.Map;
 
-import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.jboss.tools.hibernate.runtime.common.AbstractHibernateMappingExporterFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingGlobalSettings;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.v_4_0.internal.HibernateMappingExporterExtension;
 
@@ -22,12 +20,6 @@ public class HibernateMappingExporterProxy extends AbstractHibernateMappingExpor
 			HibernateMappingExporterExtension hibernateMappingExporter) {
 		super(facadeFactory, hibernateMappingExporter);
 		target = hibernateMappingExporter;
-	}
-
-	@Override
-	public void setGlobalSettings(IHibernateMappingGlobalSettings hmgs) {
-		assert hmgs instanceof IFacade;
-		target.setGlobalSettings((HibernateMappingGlobalSettings)((IFacade)hmgs).getTarget());
 	}
 
 	@Override
