@@ -12,8 +12,4 @@ public class HQLCodeAssistProxy extends AbstractHQLCodeAssistFacade {
 		super(facadeFactory, hqlCodeAssist);
 	}
 	
-	public HQLCodeAssist getTarget() {
-		return (HQLCodeAssist)super.getTarget();
-	}
-
 }
