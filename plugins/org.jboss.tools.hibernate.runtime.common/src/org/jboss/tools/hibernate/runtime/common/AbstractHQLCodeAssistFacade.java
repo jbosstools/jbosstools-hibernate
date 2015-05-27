@@ -18,6 +18,16 @@ implements IHQLCodeAssist {
 		super(facadeFactory, target);
 	}
 
+	@Override
+	public void codeComplete(String query, int currentOffset,
+			IHQLCompletionHandler handler) {
+		Util.invokeMethod(
+				getTarget(), 
+				"codeComplete", 
+				new Class[] { String.class, int.class, getIHQLCompletionRequestorClass() }, 
+				new Object[] { query, currentOffset, createIHQLCompletionRequestor(handler)});
+	}
+	
 	protected Object createIHQLCompletionRequestor(IHQLCompletionHandler handler) {
 		return Proxy.newProxyInstance(
 				getFacadeFactoryClassLoader(), 
