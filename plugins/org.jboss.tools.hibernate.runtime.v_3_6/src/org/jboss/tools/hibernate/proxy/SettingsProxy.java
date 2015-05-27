@@ -16,9 +16,4 @@ public class SettingsProxy extends AbstractSettingsFacade {
 		return (Settings)super.getTarget();
 	}
 
-	@Override
-	public String getDefaultSchemaName() {
-		return getTarget().getDefaultSchemaName();
-	}
-
 }
