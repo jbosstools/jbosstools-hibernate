@@ -1,5 +1,9 @@
 package org.jboss.tools.hibernate.proxy;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.ide.completion.IHQLCompletionRequestor;
@@ -22,7 +26,36 @@ public class HQLCodeAssistProxy extends AbstractHQLCodeAssistFacade {
 	@Override
 	public void codeComplete(String query, int currentOffset,
 			IHQLCompletionHandler handler) {
-		getTarget().codeComplete(query, currentOffset, new HQLCompletionRequestor(handler));
+		getTarget().codeComplete(
+				query, 
+				currentOffset, 
+				createIHQLCompletionRequestor(handler));
+	}
+	
+	private IHQLCompletionRequestor createIHQLCompletionRequestor(IHQLCompletionHandler handler) {
+		return (IHQLCompletionRequestor)Proxy.newProxyInstance(
+				getFacadeFactoryClassLoader(), 
+				new Class[] { IHQLCompletionRequestor.class }, 
+				new HQLCompletionRequestorInvocationHandler(handler));
+	}
+	
+	private class HQLCompletionRequestorInvocationHandler 
+	implements InvocationHandler {		
+		private HQLCompletionRequestor requestor;		
+		public HQLCompletionRequestorInvocationHandler(IHQLCompletionHandler handler) {
+			requestor = new HQLCompletionRequestor(handler);
+		}
+		@Override
+		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+			Object result = null;
+			String methodName = method.getName();
+			if ("accept".equals(methodName)) {
+				result = method.invoke(requestor, args);
+			} else if ("completionFailure".equals(methodName)) {
+				result = method.invoke(requestor, args);
+			}
+			return result;
+		}		
 	}
 	
 	private class HQLCompletionRequestor implements IHQLCompletionRequestor {		
@@ -40,5 +73,5 @@ public class HQLCodeAssistProxy extends AbstractHQLCodeAssistFacade {
 			handler.completionFailure(errorMessage);			
 		}		
 	}
-
+	
 }
