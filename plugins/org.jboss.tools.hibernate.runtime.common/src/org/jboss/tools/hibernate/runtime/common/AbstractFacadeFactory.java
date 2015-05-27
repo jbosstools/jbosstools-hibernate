@@ -40,6 +40,7 @@ import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
+import org.jboss.tools.hibernate.runtime.spi.ISettings;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
@@ -257,4 +258,9 @@ public abstract class AbstractFacadeFactory implements IFacadeFactory {
 		return new AbstractHQLCodeAssistFacade(this, target) {};
 	}
 	
+	@Override
+	public ISettings createSettings(Object target) {
+		return new AbstractSettingsFacade(this, target) {};
+	}
+
 }

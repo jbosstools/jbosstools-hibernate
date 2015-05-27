@@ -1,19 +1,16 @@
 package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
-import org.hibernate.cfg.Settings;
 import org.hibernate.mapping.Column;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.tuple.entity.EntityMetamodel;
 import org.hibernate.type.Type;
 import org.hibernate.type.TypeFactory;
-import org.jboss.tools.hibernate.proxy.SettingsProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
-import org.jboss.tools.hibernate.runtime.spi.ISettings;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 
@@ -36,11 +33,6 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public IEntityMetamodel createEntityMetamodel(Object target) {
 		return new EntityMetamodelFacadeImpl(this, (EntityMetamodel)target);
-	}
-
-	@Override
-	public ISettings createSettings(Object target) {
-		return new SettingsProxy(this, (Settings)target);
 	}
 
 	@Override

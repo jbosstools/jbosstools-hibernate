@@ -1,13 +1,10 @@
 package org.jboss.tools.hibernate.runtime.v_4_0.internal;
 
 import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.Settings;
-import org.jboss.tools.hibernate.proxy.SettingsProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
-import org.jboss.tools.hibernate.runtime.spi.ISettings;
 
 public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	
@@ -18,11 +15,6 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public IConfiguration createConfiguration(Object target) {
 		return new ConfigurationFacadeImpl(this, (Configuration)target);
-	}
-	
-	@Override
-	public ISettings createSettings(Object target) {
-		return new SettingsProxy(this, (Settings)target);
 	}
 	
 	@Override
