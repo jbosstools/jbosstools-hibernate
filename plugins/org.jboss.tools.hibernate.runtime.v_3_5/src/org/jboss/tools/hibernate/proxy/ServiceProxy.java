@@ -238,11 +238,11 @@ public class ServiceProxy implements IService {
 	public IJDBCReader newJDBCReader(IConfiguration configuration, ISettings settings,
 			IReverseEngineeringStrategy strategy) {
 		assert strategy instanceof IFacade;
-		assert settings instanceof SettingsProxy;
+		assert settings instanceof IFacade;
 		JDBCReader target = 
 				JDBCReaderFactory.newJDBCReader(
 						configuration.getProperties(), 
-						(Settings)((SettingsProxy)settings).getTarget(), 
+						(Settings)((IFacade)settings).getTarget(), 
 						(ReverseEngineeringStrategy)((IFacade)strategy).getTarget());
 		return facadeFactory.createJDBCReader(target);
 	}
