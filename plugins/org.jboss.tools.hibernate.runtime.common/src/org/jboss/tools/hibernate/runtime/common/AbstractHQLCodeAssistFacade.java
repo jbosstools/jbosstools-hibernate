@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.runtime.common;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 
 import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
@@ -17,6 +18,23 @@ implements IHQLCodeAssist {
 		super(facadeFactory, target);
 	}
 
+	protected Object createIHQLCompletionRequestor(IHQLCompletionHandler handler) {
+		return Proxy.newProxyInstance(
+				getFacadeFactoryClassLoader(), 
+				new Class[] { getIHQLCompletionRequestorClass() }, 
+				new HQLCompletionRequestorInvocationHandler(handler));
+	}
+	
+	protected Class<?> getIHQLCompletionRequestorClass() {
+		return Util.getClass(
+				getIHQLCompletionRequestorClassName(), 
+				getFacadeFactoryClassLoader());
+	}
+	
+	protected String getIHQLCompletionRequestorClassName() {
+		return "org.hibernate.tool.ide.completion.IHQLCompletionRequestor";
+	}
+	
 	protected class HQLCompletionRequestorInvocationHandler 
 	implements InvocationHandler {		
 		private IHQLCompletionHandler handler = null;

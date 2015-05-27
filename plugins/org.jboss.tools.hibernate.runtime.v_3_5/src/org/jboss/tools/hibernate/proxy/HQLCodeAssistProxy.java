@@ -1,7 +1,5 @@
 package org.jboss.tools.hibernate.proxy;
 
-import java.lang.reflect.Proxy;
-
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.ide.completion.IHQLCompletionRequestor;
 import org.jboss.tools.hibernate.runtime.common.AbstractHQLCodeAssistFacade;
@@ -26,14 +24,7 @@ public class HQLCodeAssistProxy extends AbstractHQLCodeAssistFacade {
 		getTarget().codeComplete(
 				query, 
 				currentOffset, 
-				createIHQLCompletionRequestor(handler));
-	}
-	
-	private IHQLCompletionRequestor createIHQLCompletionRequestor(IHQLCompletionHandler handler) {
-		return (IHQLCompletionRequestor)Proxy.newProxyInstance(
-				getFacadeFactoryClassLoader(), 
-				new Class[] { IHQLCompletionRequestor.class }, 
-				new HQLCompletionRequestorInvocationHandler(handler));
+				(IHQLCompletionRequestor)createIHQLCompletionRequestor(handler));
 	}
 	
 }
