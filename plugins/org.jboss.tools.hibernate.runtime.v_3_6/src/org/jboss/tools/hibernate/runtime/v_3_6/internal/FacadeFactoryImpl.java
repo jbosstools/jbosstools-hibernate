@@ -3,15 +3,12 @@ package org.jboss.tools.hibernate.runtime.v_3_6.internal;
 import org.hibernate.cfg.Settings;
 import org.hibernate.mapping.Column;
 import org.hibernate.metadata.ClassMetadata;
-import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tuple.entity.EntityMetamodel;
-import org.jboss.tools.hibernate.proxy.HQLCodeAssistProxy;
 import org.jboss.tools.hibernate.proxy.SettingsProxy;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
-import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.ISettings;
@@ -35,11 +32,6 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public IEntityMetamodel createEntityMetamodel(Object target) {
 		return new EntityMetamodelFacadeImpl(this, (EntityMetamodel)target);
-	}
-	
-	@Override
-	public IHQLCodeAssist createHQLCodeAssist(Object target) {
-		return new HQLCodeAssistProxy(this, (HQLCodeAssist)target);
 	}
 	
 	@Override
