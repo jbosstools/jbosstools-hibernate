@@ -19,6 +19,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.JDBCReaderFactory;
 import org.hibernate.cfg.NamingStrategy;
+import org.hibernate.cfg.Settings;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.JDBCReader;
@@ -268,7 +269,7 @@ public class ServiceProxy implements IService {
 		JDBCReader target = 
 				JDBCReaderFactory.newJDBCReader(
 						configuration.getProperties(), 
-						((SettingsProxy)settings).getTarget(), 
+						(Settings)((SettingsProxy)settings).getTarget(), 
 						(ReverseEngineeringStrategy)((IFacade)strategy).getTarget(),
 						buildServiceRegistry(configuration.getProperties()));
 		return facadeFactory.createJDBCReader(target);
