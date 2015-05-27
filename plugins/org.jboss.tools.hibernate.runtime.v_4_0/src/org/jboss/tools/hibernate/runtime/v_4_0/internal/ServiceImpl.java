@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate.runtime.v_3_6.internal;
+package org.jboss.tools.hibernate.runtime.v_4_0.internal;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
@@ -24,13 +24,11 @@ import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
-import org.hibernate.connection.DriverManagerConnectionProvider;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.dialect.Dialect;
-import org.hibernate.dialect.resolver.DialectFactory;
 import org.hibernate.ejb.Ejb3Configuration;
-import org.hibernate.engine.query.HQLQueryPlan;
-import org.hibernate.impl.SessionFactoryImpl;
+import org.hibernate.engine.query.spi.HQLQueryPlan;
+import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.Column;
@@ -48,6 +46,11 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.proxy.HibernateProxyHelper;
+import org.hibernate.service.ServiceRegistry;
+import org.hibernate.service.ServiceRegistryBuilder;
+import org.hibernate.service.classloading.internal.ClassLoaderServiceImpl;
+import org.hibernate.service.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
+import org.hibernate.service.jdbc.dialect.internal.DialectFactoryImpl;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
@@ -90,15 +93,13 @@ import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.util.OpenMappingUtilsEjb3;
 import org.xml.sax.EntityResolver;
 
-public class ServiceProxy implements IService {
+public class ServiceImpl implements IService {
 
 	private IFacadeFactory facadeFactory = new FacadeFactoryImpl();
 
 	@Override
 	public IConfiguration newAnnotationConfiguration() {
 		Configuration configuration = new Configuration();
-		configuration.setProperty("hibernate.validator.autoregister_listeners", "false");
-		configuration.setProperty("hibernate.validator.apply_to_ddl", "false");
 		return facadeFactory.createConfiguration(configuration);
 	}
 
@@ -117,8 +118,6 @@ public class ServiceProxy implements IService {
 				throw new HibernateConsoleRuntimeException(e);
 			}
 		}
-		ejb3Configuration.setProperty("hibernate.validator.autoregister_listeners", "false");
-		ejb3Configuration.setProperty("hibernate.validator.apply_to_ddl", "false");
 		ejb3Configuration.configure(persistenceUnit, overrides);
 		Configuration configuration = ejb3Configuration.getHibernateConfiguration();
 		return facadeFactory.createConfiguration(configuration);
@@ -126,10 +125,7 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public IConfiguration newDefaultConfiguration() {
-		Configuration target = new Configuration();
-		target.setProperty("hibernate.validator.autoregister_listeners", "false");
-		target.setProperty("hibernate.validator.apply_to_ddl", "false");
-		return facadeFactory.createConfiguration(target);
+		return facadeFactory.createConfiguration(new Configuration());
 	}
 
 	@Override
@@ -247,8 +243,15 @@ public class ServiceProxy implements IService {
 				JDBCReaderFactory.newJDBCReader(
 						configuration.getProperties(), 
 						(Settings)((IFacade)settings).getTarget(), 
-						(ReverseEngineeringStrategy)((IFacade)strategy).getTarget());
+						(ReverseEngineeringStrategy)((IFacade)strategy).getTarget(),
+						buildServiceRegistry(configuration));
 		return facadeFactory.createJDBCReader(target);
+	}
+
+	private ServiceRegistry buildServiceRegistry(IConfiguration configuration) {
+		ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
+		builder.applySettings(configuration.getProperties());
+		return builder.buildServiceRegistry();
 	}
 
 	@Override
@@ -286,7 +289,7 @@ public class ServiceProxy implements IService {
 	public String getReverseEngineeringStrategyClassName() {
 		return ReverseEngineeringStrategy.class.getName();
 	}
-
+	
 	@Override
 	public IDatabaseCollector newDatabaseCollector(IMetaDataDialect metaDataDialect) {
 		assert metaDataDialect instanceof IFacade;
@@ -317,18 +320,15 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public IDialect newDialect(Properties properties, Connection connection) {
-		Dialect dialect = null;
-		if (connection == null) {
-			dialect = DialectFactory.buildDialect(properties);
-		} else {
-			dialect = DialectFactory.buildDialect(properties, connection);
-		}
+		DialectFactoryImpl dialectFactory = new DialectFactoryImpl();
+		dialectFactory.setClassLoaderService(new ClassLoaderServiceImpl());
+		Dialect dialect = dialectFactory.buildDialect(properties, connection);
 		return dialect != null ? facadeFactory.createDialect(dialect) : null;
 	}
 
 	@Override
 	public Class<?> getDriverManagerConnectionProviderClass() {
-		return DriverManagerConnectionProvider.class;
+		return DriverManagerConnectionProviderImpl.class;
 	}
 
 	@Override
@@ -462,7 +462,7 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public ClassLoader getClassLoader() {
-		return ServiceProxy.class.getClassLoader();
+		return ServiceImpl.class.getClassLoader();
 	}
 
 }
