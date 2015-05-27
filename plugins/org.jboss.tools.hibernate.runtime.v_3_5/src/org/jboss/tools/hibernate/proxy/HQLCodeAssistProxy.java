@@ -1,7 +1,5 @@
 package org.jboss.tools.hibernate.proxy;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
@@ -38,24 +36,4 @@ public class HQLCodeAssistProxy extends AbstractHQLCodeAssistFacade {
 				new HQLCompletionRequestorInvocationHandler(handler));
 	}
 	
-	private class HQLCompletionRequestorInvocationHandler 
-	implements InvocationHandler {		
-		private IHQLCompletionHandler handler = null;
-		public HQLCompletionRequestorInvocationHandler(IHQLCompletionHandler handler) {
-			this.handler = handler;
-		}
-		@Override
-		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-			Object result = null;
-			String methodName = method.getName();
-			if ("accept".equals(methodName)) {
-				result = handler.accept(
-						getFacadeFactory().createHQLCompletionProposal(args[0]));
-			} else if ("completionFailure".equals(methodName)) {
-				handler.completionFailure((String)args[0]);
-			}
-			return result;
-		}		
-	}
-
 }
