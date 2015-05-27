@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate.util;
+package org.jboss.tools.hibernate.runtime.v_4_3.internal;
 
 import java.util.ArrayList;
 import java.util.List;

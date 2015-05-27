@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate.util;
+package org.jboss.tools.hibernate.runtime.v_3_6.internal;
 
 import java.io.IOException;
 import java.net.URL;
@@ -42,7 +42,7 @@ public class OpenMappingUtilsEjb3 {
 	
 	public static final String META_INF_PERS_XML = "META-INF/persistence.xml"; //$NON-NLS-1$
 	public static final String META_INF_ORM_XML = "META-INF/orm.xml"; //$NON-NLS-1$
-	private static final Map<?,?> EMPTY_MAP = Collections.emptyMap();
+	private static final Map<?, ?> EMPTY_MAP = Collections.emptyMap();
 
 	private OpenMappingUtilsEjb3() {}
 	

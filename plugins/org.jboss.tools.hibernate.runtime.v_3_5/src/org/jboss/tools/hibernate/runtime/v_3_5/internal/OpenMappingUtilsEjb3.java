@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate.util;
+package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
 import java.io.IOException;
 import java.net.URL;
@@ -17,6 +17,7 @@ import javax.persistence.Entity;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.spi.PersistenceUnitTransactionType;
 
+import org.hibernate.ejb.Ejb3Configuration;
 import org.hibernate.ejb.HibernatePersistence;
 import org.hibernate.ejb.packaging.ClassFilter;
 import org.hibernate.ejb.packaging.Entry;
