@@ -1,8 +1,11 @@
-package org.jboss.tools.hibernate.proxy;
+package org.jboss.tools.hibernate.runtime.v_4_3.internal;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +13,8 @@ import java.util.Properties;
 
 import org.hibernate.Filter;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.common.util.StandardClassLoaderDelegateImpl;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.JDBCReaderFactory;
@@ -24,13 +29,16 @@ import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
-import org.hibernate.connection.DriverManagerConnectionProvider;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.dialect.Dialect;
-import org.hibernate.dialect.resolver.DialectFactory;
-import org.hibernate.ejb.Ejb3Configuration;
-import org.hibernate.engine.query.HQLQueryPlan;
-import org.hibernate.impl.SessionFactoryImpl;
+import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
+import org.hibernate.engine.jdbc.dialect.spi.DatabaseMetaDataDialectResolutionInfoAdapter;
+import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
+import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
+import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfoSource;
+import org.hibernate.engine.query.spi.HQLQueryPlan;
+import org.hibernate.internal.SessionFactoryImpl;
+import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.Column;
@@ -48,12 +56,12 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.proxy.HibernateProxyHelper;
+import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.util.xpl.ReflectHelper;
-import org.hibernate.util.xpl.StringHelper;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.Util;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
@@ -87,51 +95,62 @@ import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
-import org.jboss.tools.hibernate.runtime.v_3_6.internal.FacadeFactoryImpl;
-import org.jboss.tools.hibernate.runtime.v_3_6.internal.HibernateMappingExporterExtension;
 import org.jboss.tools.hibernate.util.OpenMappingUtilsEjb3;
 import org.xml.sax.EntityResolver;
 
 public class ServiceProxy implements IService {
-
+	
 	private IFacadeFactory facadeFactory = new FacadeFactoryImpl();
 
 	@Override
 	public IConfiguration newAnnotationConfiguration() {
 		Configuration configuration = new Configuration();
-		configuration.setProperty("hibernate.validator.autoregister_listeners", "false");
-		configuration.setProperty("hibernate.validator.apply_to_ddl", "false");
 		return facadeFactory.createConfiguration(configuration);
 	}
-
+	
 	@Override
 	public IConfiguration newJpaConfiguration(
 			String entityResolver, 
 			String persistenceUnit, 
 			Map<Object, Object> overrides) {
-		Ejb3Configuration ejb3Configuration = new Ejb3Configuration();
-		if (StringHelper.isNotEmpty(entityResolver)) {
-			try {
-				Class<?> resolver = ReflectHelper.classForName(entityResolver, this.getClass());
-				Object object = resolver.newInstance();
-				ejb3Configuration.setEntityResolver((EntityResolver)object);
-			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-				throw new HibernateConsoleRuntimeException(e);
-			}
+		IConfiguration result = null;
+		try {
+			HibernatePersistenceProvider hibernatePersistenceProvider = new HibernatePersistenceProvider();
+			Method getEntityManagerFactoryBuilderOrNull = hibernatePersistenceProvider.getClass().getDeclaredMethod(
+					"getEntityManagerFactoryBuilderOrNull", 
+					new Class[] { String.class, Map.class });
+			getEntityManagerFactoryBuilderOrNull.setAccessible(true);
+			Object entityManagerFactoryBuilder = 
+					getEntityManagerFactoryBuilderOrNull.invoke(
+							hibernatePersistenceProvider, 
+							new Object[] { persistenceUnit, overrides});	
+			if (entityManagerFactoryBuilder == null) {
+				throw new HibernateConsoleRuntimeException(
+						"Persistence unit not found: '" + 
+						persistenceUnit + 
+						"'.");
+			}		
+			Method buildServiceRegistry = 
+					entityManagerFactoryBuilder.getClass().getMethod(
+							"buildServiceRegistry", new Class[0]);
+			Object serviceRegistry = buildServiceRegistry.invoke(entityManagerFactoryBuilder, (Object[])null);		
+			Class<?> serviceRegistryClass = StandardClassLoaderDelegateImpl.INSTANCE.classForName(
+					"org.hibernate.service.ServiceRegistry");
+			Method buildHibernateConfiguration = 
+					entityManagerFactoryBuilder.getClass().getMethod(
+							"buildHibernateConfiguration", 
+							new Class[] { serviceRegistryClass });		
+			Configuration configuration = (Configuration)buildHibernateConfiguration.invoke(entityManagerFactoryBuilder, new Object[] { serviceRegistry });		
+			result = facadeFactory.createConfiguration(configuration);
+		} catch (SecurityException | NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException  e) {
+			throw new HibernateConsoleRuntimeException(e);
 		}
-		ejb3Configuration.setProperty("hibernate.validator.autoregister_listeners", "false");
-		ejb3Configuration.setProperty("hibernate.validator.apply_to_ddl", "false");
-		ejb3Configuration.configure(persistenceUnit, overrides);
-		Configuration configuration = ejb3Configuration.getHibernateConfiguration();
-		return facadeFactory.createConfiguration(configuration);
+		return result;
 	}
 
 	@Override
 	public IConfiguration newDefaultConfiguration() {
-		Configuration target = new Configuration();
-		target.setProperty("hibernate.validator.autoregister_listeners", "false");
-		target.setProperty("hibernate.validator.apply_to_ddl", "false");
-		return facadeFactory.createConfiguration(target);
+		return facadeFactory.createConfiguration(new Configuration());
 	}
 
 	@Override
@@ -193,7 +212,7 @@ public class ServiceProxy implements IService {
 		assert sessionFactory instanceof IFacade;
 		SessionFactoryImpl factory = 
 				(SessionFactoryImpl) ((IFacade)sessionFactory).getTarget();
-		Map<String, Filter> enabledFilters = Collections.emptyMap();
+		Map<String, Filter> enabledFilters = Collections.emptyMap(); 
 		HQLQueryPlan queryPlan = new HQLQueryPlan(query, shallow, enabledFilters, factory);
 		return facadeFactory.createHQLQueryPlan(queryPlan);
 	}
@@ -249,8 +268,15 @@ public class ServiceProxy implements IService {
 				JDBCReaderFactory.newJDBCReader(
 						configuration.getProperties(), 
 						(Settings)((IFacade)settings).getTarget(), 
-						(ReverseEngineeringStrategy)((IFacade)strategy).getTarget());
+						(ReverseEngineeringStrategy)((IFacade)strategy).getTarget(),
+						buildServiceRegistry(configuration.getProperties()));
 		return facadeFactory.createJDBCReader(target);
+	}
+
+	private ServiceRegistry buildServiceRegistry(Properties properties) {
+		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
+		builder.applySettings(properties);
+		return builder.build();
 	}
 
 	@Override
@@ -288,7 +314,7 @@ public class ServiceProxy implements IService {
 	public String getReverseEngineeringStrategyClassName() {
 		return ReverseEngineeringStrategy.class.getName();
 	}
-
+	
 	@Override
 	public IDatabaseCollector newDatabaseCollector(IMetaDataDialect metaDataDialect) {
 		assert metaDataDialect instanceof IFacade;
@@ -318,26 +344,39 @@ public class ServiceProxy implements IService {
 	}
 
 	@Override
-	public IDialect newDialect(Properties properties, Connection connection) {
-		Dialect dialect = null;
-		if (connection == null) {
-			dialect = DialectFactory.buildDialect(properties);
-		} else {
-			dialect = DialectFactory.buildDialect(properties, connection);
-		}
+	public IDialect newDialect(Properties properties, final Connection connection) {
+		ServiceRegistry serviceRegistry = buildServiceRegistry(properties);
+		DialectFactory dialectFactory = serviceRegistry.getService(DialectFactory.class);
+		Dialect dialect = dialectFactory.buildDialect(
+				properties, 
+				new DialectResolutionInfoSource() {
+					@Override
+					public DialectResolutionInfo getDialectResolutionInfo() {
+						try {
+							return new DatabaseMetaDataDialectResolutionInfoAdapter( connection.getMetaData() );
+						}
+						catch ( SQLException sqlException ) {
+							throw new HibernateConsoleRuntimeException(
+									"Unable to access java.sql.DatabaseMetaData to determine appropriate Dialect to use",
+									sqlException
+							);
+						}
+					}
+				}
+		);
 		return dialect != null ? facadeFactory.createDialect(dialect) : null;
 	}
 
 	@Override
 	public Class<?> getDriverManagerConnectionProviderClass() {
-		return DriverManagerConnectionProvider.class;
+		return DriverManagerConnectionProviderImpl.class;
 	}
 
 	@Override
 	public IEnvironment getEnvironment() {
 		return facadeFactory.createEnvironment();
 	}
-
+	
 	@Override
 	public IValue newSimpleValue() {
 		return facadeFactory.createValue(new SimpleValue(null));

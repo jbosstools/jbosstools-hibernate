@@ -4,7 +4,7 @@
    <extension
          point="org.jboss.tools.hibernate.runtime.spi.services">
       <service
-            class="org.jboss.tools.hibernate.proxy.ServiceProxy"
+            class="org.jboss.tools.hibernate.runtime.v_3_5.internal.ServiceProxy"
             name="%hibernate.version">
       </service>
    </extension>

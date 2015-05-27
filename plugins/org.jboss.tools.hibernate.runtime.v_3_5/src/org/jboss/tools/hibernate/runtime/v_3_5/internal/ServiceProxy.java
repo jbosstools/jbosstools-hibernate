@@ -1,11 +1,8 @@
-package org.jboss.tools.hibernate.proxy;
+package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -13,8 +10,7 @@ import java.util.Properties;
 
 import org.hibernate.Filter;
 import org.hibernate.Hibernate;
-import org.hibernate.annotations.common.util.StandardClassLoaderDelegateImpl;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.JDBCReaderFactory;
@@ -29,16 +25,12 @@ import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
-import org.hibernate.console.HibernateConsoleRuntimeException;
+import org.hibernate.connection.DriverManagerConnectionProvider;
 import org.hibernate.dialect.Dialect;
-import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
-import org.hibernate.engine.jdbc.dialect.spi.DatabaseMetaDataDialectResolutionInfoAdapter;
-import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
-import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
-import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfoSource;
-import org.hibernate.engine.query.spi.HQLQueryPlan;
-import org.hibernate.internal.SessionFactoryImpl;
-import org.hibernate.jpa.HibernatePersistenceProvider;
+import org.hibernate.dialect.resolver.DialectFactory;
+import org.hibernate.ejb.Ejb3Configuration;
+import org.hibernate.engine.query.HQLQueryPlan;
+import org.hibernate.impl.SessionFactoryImpl;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.Column;
@@ -56,14 +48,15 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.proxy.HibernateProxyHelper;
-import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
-import org.hibernate.util.xpl.ReflectHelper;
+import org.hibernate.util.ReflectHelper;
+import org.hibernate.util.StringHelper;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.Util;
+import org.jboss.tools.hibernate.runtime.spi.HibernateException;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
@@ -95,8 +88,6 @@ import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
-import org.jboss.tools.hibernate.runtime.v_4_3.internal.FacadeFactoryImpl;
-import org.jboss.tools.hibernate.runtime.v_4_3.internal.HibernateMappingExporterExtension;
 import org.jboss.tools.hibernate.util.OpenMappingUtilsEjb3;
 import org.xml.sax.EntityResolver;
 
@@ -106,48 +97,28 @@ public class ServiceProxy implements IService {
 
 	@Override
 	public IConfiguration newAnnotationConfiguration() {
-		Configuration configuration = new Configuration();
+		Configuration configuration = new AnnotationConfiguration();
 		return facadeFactory.createConfiguration(configuration);
 	}
-	
+
 	@Override
 	public IConfiguration newJpaConfiguration(
 			String entityResolver, 
 			String persistenceUnit, 
 			Map<Object, Object> overrides) {
-		IConfiguration result = null;
-		try {
-			HibernatePersistenceProvider hibernatePersistenceProvider = new HibernatePersistenceProvider();
-			Method getEntityManagerFactoryBuilderOrNull = hibernatePersistenceProvider.getClass().getDeclaredMethod(
-					"getEntityManagerFactoryBuilderOrNull", 
-					new Class[] { String.class, Map.class });
-			getEntityManagerFactoryBuilderOrNull.setAccessible(true);
-			Object entityManagerFactoryBuilder = 
-					getEntityManagerFactoryBuilderOrNull.invoke(
-							hibernatePersistenceProvider, 
-							new Object[] { persistenceUnit, overrides});	
-			if (entityManagerFactoryBuilder == null) {
-				throw new HibernateConsoleRuntimeException(
-						"Persistence unit not found: '" + 
-						persistenceUnit + 
-						"'.");
-			}		
-			Method buildServiceRegistry = 
-					entityManagerFactoryBuilder.getClass().getMethod(
-							"buildServiceRegistry", new Class[0]);
-			Object serviceRegistry = buildServiceRegistry.invoke(entityManagerFactoryBuilder, (Object[])null);		
-			Class<?> serviceRegistryClass = StandardClassLoaderDelegateImpl.INSTANCE.classForName(
-					"org.hibernate.service.ServiceRegistry");
-			Method buildHibernateConfiguration = 
-					entityManagerFactoryBuilder.getClass().getMethod(
-							"buildHibernateConfiguration", 
-							new Class[] { serviceRegistryClass });		
-			Configuration configuration = (Configuration)buildHibernateConfiguration.invoke(entityManagerFactoryBuilder, new Object[] { serviceRegistry });		
-			result = facadeFactory.createConfiguration(configuration);
-		} catch (SecurityException | NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException  e) {
-			throw new HibernateConsoleRuntimeException(e);
+		Ejb3Configuration ejb3Configuration = new Ejb3Configuration();
+		if (StringHelper.isNotEmpty(entityResolver)) {
+			try {
+				Class<?> resolver = ReflectHelper.classForName(entityResolver, this.getClass());
+				Object object = resolver.newInstance();
+				ejb3Configuration.setEntityResolver((EntityResolver)object);
+			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+				throw new HibernateException(e);
+			}
 		}
-		return result;
+		ejb3Configuration.configure(persistenceUnit, overrides);
+		Configuration configuration = ejb3Configuration.getHibernateConfiguration();
+		return facadeFactory.createConfiguration(configuration);
 	}
 
 	@Override
@@ -214,7 +185,7 @@ public class ServiceProxy implements IService {
 		assert sessionFactory instanceof IFacade;
 		SessionFactoryImpl factory = 
 				(SessionFactoryImpl) ((IFacade)sessionFactory).getTarget();
-		Map<String, Filter> enabledFilters = Collections.emptyMap(); 
+		Map<String, Filter> enabledFilters = Collections.emptyMap();
 		HQLQueryPlan queryPlan = new HQLQueryPlan(query, shallow, enabledFilters, factory);
 		return facadeFactory.createHQLQueryPlan(queryPlan);
 	}
@@ -270,15 +241,8 @@ public class ServiceProxy implements IService {
 				JDBCReaderFactory.newJDBCReader(
 						configuration.getProperties(), 
 						(Settings)((IFacade)settings).getTarget(), 
-						(ReverseEngineeringStrategy)((IFacade)strategy).getTarget(),
-						buildServiceRegistry(configuration.getProperties()));
+						(ReverseEngineeringStrategy)((IFacade)strategy).getTarget());
 		return facadeFactory.createJDBCReader(target);
-	}
-
-	private ServiceRegistry buildServiceRegistry(Properties properties) {
-		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
-		builder.applySettings(properties);
-		return builder.build();
 	}
 
 	@Override
@@ -290,6 +254,7 @@ public class ServiceProxy implements IService {
 		return facadeFactory.createReverseEngineeringStrategy(target);
 	}
 	
+
 	@SuppressWarnings("unchecked")
 	private ReverseEngineeringStrategy newReverseEngineeringStrategy(final String className, ReverseEngineeringStrategy delegate) {
         try {
@@ -304,11 +269,11 @@ public class ServiceProxy implements IService {
 				return rev;
 			}
 			catch (Exception eq) {
-				throw new HibernateConsoleRuntimeException(eq);
+				throw new HibernateException(eq);
 			}
 		}
         catch (Exception e) {
-			throw new HibernateConsoleRuntimeException(e);
+			throw new HibernateException(e);
 		}
     }
 
@@ -316,13 +281,13 @@ public class ServiceProxy implements IService {
 	public String getReverseEngineeringStrategyClassName() {
 		return ReverseEngineeringStrategy.class.getName();
 	}
-	
+
 	@Override
 	public IDatabaseCollector newDatabaseCollector(IMetaDataDialect metaDataDialect) {
 		assert metaDataDialect instanceof IFacade;
 		return facadeFactory.createDatabaseCollector(
 				new DefaultDatabaseCollector(
-						(MetaDataDialect) ((IFacade)metaDataDialect).getTarget()));
+						(MetaDataDialect)((IFacade)metaDataDialect).getTarget()));
 	}
 
 	@Override
@@ -346,96 +311,83 @@ public class ServiceProxy implements IService {
 	}
 
 	@Override
-	public IDialect newDialect(Properties properties, final Connection connection) {
-		ServiceRegistry serviceRegistry = buildServiceRegistry(properties);
-		DialectFactory dialectFactory = serviceRegistry.getService(DialectFactory.class);
-		Dialect dialect = dialectFactory.buildDialect(
-				properties, 
-				new DialectResolutionInfoSource() {
-					@Override
-					public DialectResolutionInfo getDialectResolutionInfo() {
-						try {
-							return new DatabaseMetaDataDialectResolutionInfoAdapter( connection.getMetaData() );
-						}
-						catch ( SQLException sqlException ) {
-							throw new HibernateConsoleRuntimeException(
-									"Unable to access java.sql.DatabaseMetaData to determine appropriate Dialect to use",
-									sqlException
-							);
-						}
-					}
-				}
-		);
+	public IDialect newDialect(Properties properties, Connection connection) {
+		Dialect dialect = null;
+		if (connection == null) {
+			dialect = DialectFactory.buildDialect(properties);
+		} else {
+			dialect = DialectFactory.buildDialect(properties, connection);
+		}
 		return dialect != null ? facadeFactory.createDialect(dialect) : null;
 	}
 
 	@Override
 	public Class<?> getDriverManagerConnectionProviderClass() {
-		return DriverManagerConnectionProviderImpl.class;
+		return DriverManagerConnectionProvider.class;
 	}
 
 	@Override
 	public IEnvironment getEnvironment() {
 		return facadeFactory.createEnvironment();
 	}
-	
+
 	@Override
 	public IValue newSimpleValue() {
-		return facadeFactory.createValue(new SimpleValue(null));
+		return facadeFactory.createValue(new SimpleValue());
 	}
 
 	@Override
 	public IValue newPrimitiveArray(IPersistentClass persistentClass) {
 		assert persistentClass instanceof IFacade;
-		return facadeFactory.createValue(new PrimitiveArray(null, (PersistentClass)((IFacade)persistentClass).getTarget()));
+		return facadeFactory.createValue(new PrimitiveArray((PersistentClass)((IFacade)persistentClass).getTarget()));
 	}
 
 	@Override
 	public IValue newArray(IPersistentClass persistentClass) {
 		assert persistentClass instanceof IFacade;
-		return facadeFactory.createValue(new Array(null, (PersistentClass)((IFacade)persistentClass).getTarget()));
+		return facadeFactory.createValue(new Array((PersistentClass)((IFacade)persistentClass).getTarget()));
 	}
 
 	@Override
 	public IValue newBag(IPersistentClass persistentClass) {
 		assert persistentClass instanceof IFacade;
-		return facadeFactory.createValue(new Bag(null, (PersistentClass)((IFacade)persistentClass).getTarget()));
+		return facadeFactory.createValue(new Bag((PersistentClass)((IFacade)persistentClass).getTarget()));
 	}
 
 	@Override
 	public IValue newList(IPersistentClass persistentClass) {
 		assert persistentClass instanceof IFacade;
-		return facadeFactory.createValue(new org.hibernate.mapping.List(null, (PersistentClass)((IFacade)persistentClass).getTarget()));
+		return facadeFactory.createValue(new org.hibernate.mapping.List((PersistentClass)((IFacade)persistentClass).getTarget()));
 	}
 
 	@Override
 	public IValue newMap(IPersistentClass persistentClass) {
 		assert persistentClass instanceof IFacade;
-		return facadeFactory.createValue(new org.hibernate.mapping.Map(null, (PersistentClass)((IFacade)persistentClass).getTarget()));
+		return facadeFactory.createValue(new org.hibernate.mapping.Map((PersistentClass)((IFacade)persistentClass).getTarget()));
 	}
 
 	@Override
 	public IValue newSet(IPersistentClass persistentClass) {
 		assert persistentClass instanceof IFacade;
-		return facadeFactory.createValue(new Set(null, (PersistentClass)((IFacade)persistentClass).getTarget()));
+		return facadeFactory.createValue(new Set((PersistentClass)((IFacade)persistentClass).getTarget()));
 	}
 
 	@Override
 	public IValue newManyToOne(ITable table) {
 		assert table instanceof IFacade;
-		return facadeFactory.createValue(new ManyToOne(null, (Table)((IFacade)table).getTarget()));
+		return facadeFactory.createValue(new ManyToOne((Table)((IFacade)table).getTarget()));
 	}
 
 	@Override
 	public IValue newOneToMany(IPersistentClass persistentClass) {
 		assert persistentClass instanceof IFacade;
-		return facadeFactory.createValue(new OneToMany(null, (PersistentClass)((IFacade)persistentClass).getTarget()));
+		return facadeFactory.createValue(new OneToMany((PersistentClass)((IFacade)persistentClass).getTarget()));
 	}
 
 	@Override
 	public IValue newOneToOne(IPersistentClass persistentClass) {
 		assert persistentClass instanceof IFacade;
-		return facadeFactory.createValue(new OneToOne(null, ((PersistentClass)((IFacade)persistentClass).getTarget()).getTable(), (PersistentClass)((IFacade)persistentClass).getTarget()));
+		return facadeFactory.createValue(new OneToOne(((PersistentClass)((IFacade)persistentClass).getTarget()).getTable(), (PersistentClass)((IFacade)persistentClass).getTarget()));
 	}
 
 	@Override
@@ -507,5 +459,7 @@ public class ServiceProxy implements IService {
 	public ClassLoader getClassLoader() {
 		return ServiceProxy.class.getClassLoader();
 	}
+	
+	
 
 }
