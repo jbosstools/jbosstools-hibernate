@@ -13,4 +13,13 @@ implements ISettings {
 		super(facadeFactory, target);
 	}
 
+	@Override
+	public String getDefaultCatalogName() {
+		return (String)Util.invokeMethod(
+				getTarget(), 
+				"getDefaultCatalogName", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+
 }

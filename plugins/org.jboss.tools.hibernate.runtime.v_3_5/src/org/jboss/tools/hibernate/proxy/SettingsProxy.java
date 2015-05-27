@@ -18,11 +18,6 @@ public class SettingsProxy extends AbstractSettingsFacade {
 	}
 
 	@Override
-	public String getDefaultCatalogName() {
-		return getTarget().getDefaultCatalogName();
-	}
-
-	@Override
 	public String getDefaultSchemaName() {
 		return getTarget().getDefaultSchemaName();
 	}
