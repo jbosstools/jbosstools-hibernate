@@ -17,12 +17,45 @@
       %license
    </license>
 
-   <plugin id="org.hibernate.eclipse.console.test" download-size="0" install-size="0" version="0.0.0"/>
-   <plugin id="org.hibernate.eclipse.jdt.ui.test" download-size="0" install-size="0" version="0.0.0"/>
+   <plugin
+         id="org.hibernate.eclipse.console.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
 
-   <plugin id="org.jboss.tools.hibernate.jpt.core.test" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+   <plugin
+         id="org.hibernate.eclipse.jdt.ui.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
 
-   <plugin id="org.jboss.tools.hibernate.runtime.spi.test" download-size="0" install-size="0" version="0.0.0"      unpack="false" fragment="true"/>
+   <plugin
+         id="org.jboss.tools.hibernate.jpt.core.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
-   <plugin id="org.jboss.tools.hibernate.ui.test" download-size="0" install-size="0" version="0.0.0"/>
+   <plugin
+         id="org.jboss.tools.hibernate.runtime.spi.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.jboss.tools.hibernate.ui.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.jboss.tools.hibernate.runtime.v_4_3.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
 </feature>
