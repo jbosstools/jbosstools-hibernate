@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.Set;
 
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
-import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 
 public abstract class AbstractArtifactCollectorFacade 
 extends AbstractFacade 

@@ -5,7 +5,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
 import org.hibernate.service.ServiceRegistry;
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
-import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 
 public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	

@@ -5,7 +5,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
-import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.IMetaDataDialect;
 import org.jboss.tools.hibernate.runtime.spi.IProgressListener;

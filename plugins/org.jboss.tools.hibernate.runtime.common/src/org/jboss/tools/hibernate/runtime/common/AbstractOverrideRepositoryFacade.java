@@ -2,7 +2,6 @@ package org.jboss.tools.hibernate.runtime.common;
 
 import java.io.File;
 
-import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;

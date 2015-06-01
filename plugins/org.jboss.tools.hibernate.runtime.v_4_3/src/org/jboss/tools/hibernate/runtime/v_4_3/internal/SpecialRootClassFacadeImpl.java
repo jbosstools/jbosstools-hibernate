@@ -2,7 +2,7 @@ package org.jboss.tools.hibernate.runtime.v_4_3.internal;
 
 import org.hibernate.mapping.RootClass;
 import org.jboss.tools.hibernate.runtime.common.AbstractSpecialRootClassFacade;
-import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 
 public class SpecialRootClassFacadeImpl extends AbstractSpecialRootClassFacade {

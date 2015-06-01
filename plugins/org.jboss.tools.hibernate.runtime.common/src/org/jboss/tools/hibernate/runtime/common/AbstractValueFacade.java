@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
-import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.ITable;

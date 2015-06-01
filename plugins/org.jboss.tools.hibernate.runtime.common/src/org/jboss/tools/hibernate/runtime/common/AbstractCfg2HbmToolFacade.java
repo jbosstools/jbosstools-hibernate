@@ -1,7 +1,6 @@
 package org.jboss.tools.hibernate.runtime.common;
 
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
-import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 

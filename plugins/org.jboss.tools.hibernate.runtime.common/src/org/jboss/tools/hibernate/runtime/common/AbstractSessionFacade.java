@@ -1,7 +1,6 @@
 package org.jboss.tools.hibernate.runtime.common;
 
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
-import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;

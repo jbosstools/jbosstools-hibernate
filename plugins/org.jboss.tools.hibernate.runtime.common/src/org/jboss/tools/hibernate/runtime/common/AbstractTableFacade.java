@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
-import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.ITable;

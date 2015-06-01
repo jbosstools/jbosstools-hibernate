@@ -3,7 +3,7 @@ package org.jboss.tools.hibernate.runtime.v_3_6.internal;
 import org.hibernate.EntityMode;
 import org.hibernate.tuple.entity.EntityMetamodel;
 import org.jboss.tools.hibernate.runtime.common.AbstractEntityMetamodelFacade;
-import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 
 public class EntityMetamodelFacadeImpl extends AbstractEntityMetamodelFacade {
 	

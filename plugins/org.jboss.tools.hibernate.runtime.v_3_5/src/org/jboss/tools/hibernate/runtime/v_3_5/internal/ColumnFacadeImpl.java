@@ -2,7 +2,7 @@ package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
 import org.hibernate.mapping.Column;
 import org.jboss.tools.hibernate.runtime.common.AbstractColumnFacade;
-import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 
 public class ColumnFacadeImpl extends AbstractColumnFacade {
 	

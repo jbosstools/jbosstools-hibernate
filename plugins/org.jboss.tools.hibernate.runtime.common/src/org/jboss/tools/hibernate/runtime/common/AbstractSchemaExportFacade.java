@@ -2,7 +2,6 @@ package org.jboss.tools.hibernate.runtime.common;
 
 import java.util.List;
 
-import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 
 public abstract class AbstractSchemaExportFacade 

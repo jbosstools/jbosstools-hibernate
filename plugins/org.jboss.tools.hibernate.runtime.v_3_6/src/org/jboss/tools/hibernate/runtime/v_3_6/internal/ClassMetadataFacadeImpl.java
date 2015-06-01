@@ -3,8 +3,8 @@ package org.jboss.tools.hibernate.runtime.v_3_6.internal;
 import org.hibernate.EntityMode;
 import org.hibernate.metadata.ClassMetadata;
 import org.jboss.tools.hibernate.runtime.common.AbstractClassMetadataFacade;
+import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.HibernateException;
-import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 
 public class ClassMetadataFacadeImpl extends AbstractClassMetadataFacade {
 	

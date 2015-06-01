@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
-import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 
 public abstract class AbstractDatabaseCollectorFacade 

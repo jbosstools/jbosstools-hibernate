@@ -6,8 +6,8 @@ import java.util.Map;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
+import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
-import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 
 public class HibernateMappingExporterExtension 
 extends HibernateMappingExporter {

@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.Map;
 
 import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
-import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingGlobalSettings;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;

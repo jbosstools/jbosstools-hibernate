@@ -2,7 +2,6 @@ package org.jboss.tools.hibernate.runtime.common;
 
 import java.util.Hashtable;
 
-import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 
 public abstract class AbstractHbm2DDLExporterFacade 

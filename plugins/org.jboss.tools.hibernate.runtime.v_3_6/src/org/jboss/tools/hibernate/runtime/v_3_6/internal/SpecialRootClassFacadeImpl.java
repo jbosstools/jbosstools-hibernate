@@ -2,7 +2,7 @@ package org.jboss.tools.hibernate.runtime.v_3_6.internal;
 
 import org.hibernate.mapping.RootClass;
 import org.jboss.tools.hibernate.runtime.common.AbstractSpecialRootClassFacade;
-import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 

@@ -3,7 +3,6 @@ package org.jboss.tools.hibernate.runtime.common;
 import java.util.List;
 
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
-import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 
 public abstract class AbstractCriteriaFacade 
 extends AbstractFacade 

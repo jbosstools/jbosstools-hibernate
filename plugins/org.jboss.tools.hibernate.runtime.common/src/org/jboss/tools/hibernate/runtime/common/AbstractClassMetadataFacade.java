@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.jboss.tools.hibernate.runtime.spi.HibernateException;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
-import org.jboss.tools.hibernate.runtime.spi.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 
