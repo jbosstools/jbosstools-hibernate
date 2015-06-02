@@ -49,8 +49,8 @@ import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public abstract class AbstractFacadeFactory implements IFacadeFactory {
 
-	public IArtifactCollector createArtifactCollector() {
-		return new AbstractArtifactCollectorFacade(this) {};
+	public IArtifactCollector createArtifactCollector(Object target) {
+		return new AbstractArtifactCollectorFacade(this,target) {};
 	}
 	
 	public ICfg2HbmTool createCfg2HbmTool() {

@@ -49,6 +49,7 @@ import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.proxy.HibernateProxyHelper;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
@@ -179,7 +180,7 @@ public class ServiceImpl implements IService {
 
 	@Override
 	public IArtifactCollector newArtifactCollector() {
-		return facadeFactory.createArtifactCollector();
+		return facadeFactory.createArtifactCollector(new ArtifactCollector());
 	}
 
 	@Override

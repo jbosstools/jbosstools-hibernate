@@ -50,7 +50,7 @@ import org.jboss.tools.hibernate.runtime.spi.IValue;
 public interface IFacadeFactory {
 	
 	ClassLoader getClassLoader();
-	IArtifactCollector createArtifactCollector();
+	IArtifactCollector createArtifactCollector(Object target);
 	ICfg2HbmTool createCfg2HbmTool();
 	INamingStrategy createNamingStrategy(Object target);
 	IDialect createDialect(Object target);

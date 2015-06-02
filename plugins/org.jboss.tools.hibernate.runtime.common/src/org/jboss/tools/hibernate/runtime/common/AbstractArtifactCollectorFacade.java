@@ -9,10 +9,8 @@ public abstract class AbstractArtifactCollectorFacade
 extends AbstractFacade 
 implements IArtifactCollector {
 	
-	private static final String TARGET_CLASS_NAME = "org.hibernate.tool.hbm2x.ArtifactCollector";
-	
-	public AbstractArtifactCollectorFacade(IFacadeFactory facadeFactory) {
-		super(facadeFactory, createTarget(TARGET_CLASS_NAME, facadeFactory));
+	public AbstractArtifactCollectorFacade(IFacadeFactory facadeFactory, Object target) {
+		super(facadeFactory, target);
 	}
 	
 	@SuppressWarnings("unchecked")
