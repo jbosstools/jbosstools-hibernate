@@ -4,6 +4,8 @@ import org.hibernate.cfg.Configuration;
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 public class ConfigurationFacadeTest {
 	
@@ -12,12 +14,14 @@ public class ConfigurationFacadeTest {
 	
 	private IConfiguration configuration = null;
 	
+	@Before
 	public void setUp() {
 		methodName = null;
 		arguments = null;
 		configuration = new AbstractConfigurationFacade(null, new TestConfiguration()) {};
 	}
 	
+	@Test
 	public void testGetProperty() {
 		Assert.assertSame(TestConfiguration.PROPERTY, configuration.getProperty("foobar"));
 		Assert.assertEquals("getProperty", methodName);
