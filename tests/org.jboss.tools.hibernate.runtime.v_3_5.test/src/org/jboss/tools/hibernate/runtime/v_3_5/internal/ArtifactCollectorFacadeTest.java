@@ -7,6 +7,7 @@ import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.jboss.tools.hibernate.runtime.common.AbstractArtifactCollectorFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.junit.Assert;
+import org.junit.Test;
 
 public class ArtifactCollectorFacadeTest {
 	
@@ -23,10 +24,12 @@ public class ArtifactCollectorFacadeTest {
 		artifactCollector = new AbstractArtifactCollectorFacade(null, new TestArtifactCollector()) {};
 	}
 	
+	@Test
 	public void testGetFileTypes() {
 		Assert.assertSame(FILE_TYPES, artifactCollector.getFileTypes());
 		Assert.assertEquals("getFileTypes", methodName);
 		Assert.assertArrayEquals(new Object[] {}, arguments);
+		Assert.fail();
 	}
 
 	private class TestArtifactCollector extends ArtifactCollector {
