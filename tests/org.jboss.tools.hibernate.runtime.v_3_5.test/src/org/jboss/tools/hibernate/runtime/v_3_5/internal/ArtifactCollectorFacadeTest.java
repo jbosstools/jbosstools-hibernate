@@ -31,7 +31,6 @@ public class ArtifactCollectorFacadeTest {
 		Assert.assertSame(FILE_TYPES, artifactCollector.getFileTypes());
 		Assert.assertEquals("getFileTypes", methodName);
 		Assert.assertArrayEquals(new Object[] {}, arguments);
-		Assert.fail();
 	}
 
 	private class TestArtifactCollector extends ArtifactCollector {
