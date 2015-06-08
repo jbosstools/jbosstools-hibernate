@@ -7,6 +7,7 @@ import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.jboss.tools.hibernate.runtime.common.AbstractArtifactCollectorFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 public class ArtifactCollectorFacadeTest {
@@ -18,6 +19,7 @@ public class ArtifactCollectorFacadeTest {
 	
 	private IArtifactCollector artifactCollector = null; 
 	
+	@Before
 	public void setUp() {
 		methodName = null;
 		arguments = null;
