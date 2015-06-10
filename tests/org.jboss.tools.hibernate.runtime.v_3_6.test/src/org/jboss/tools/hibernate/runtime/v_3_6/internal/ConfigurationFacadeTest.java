@@ -38,6 +38,13 @@ public class ConfigurationFacadeTest {
 		Assert.assertArrayEquals(new Object[] { testFile }, arguments);
 	}
 	
+	@Test
+	public void testSetProperty() {
+		configuration.setProperty("name", "value");
+		Assert.assertEquals("setProperty", methodName);
+		Assert.assertArrayEquals(new Object[] { "name", "value" },  arguments);
+	}
+	
 	@SuppressWarnings("serial")
 	private class TestConfiguration extends Configuration {
 		static final String PROPERTY = "TestConfiguration.PROPERTY";
@@ -49,6 +56,11 @@ public class ConfigurationFacadeTest {
 		public Configuration addFile(File file) {
 			methodName = "addFile";
 			arguments = new Object[] { file };
+			return this;
+		}
+		public Configuration setProperty(String name, String value) {
+			methodName = "setProperty";
+			arguments = new Object[] { name, value };
 			return this;
 		}
 	}
