@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
 import java.io.File;
+import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
@@ -45,6 +46,14 @@ public class ConfigurationFacadeTest {
 		Assert.assertArrayEquals(new Object[] { "name", "value" },  arguments);
 	}
 	
+	@Test 
+	public void testSetProperties() {
+		Properties testProperties = new Properties();
+		Assert.assertSame(configuration, configuration.setProperties(testProperties));
+		Assert.assertEquals("setProperties", methodName);
+		Assert.assertArrayEquals(new Object[] { testProperties }, arguments);
+	}
+	
 	@SuppressWarnings("serial")
 	private class TestConfiguration extends Configuration {
 		static final String PROPERTY = "TestConfiguration.PROPERTY";
@@ -61,6 +70,11 @@ public class ConfigurationFacadeTest {
 		public Configuration setProperty(String name, String value) {
 			methodName = "setProperty";
 			arguments = new Object[] { name, value };
+			return this;
+		}
+		public Configuration setProperties(Properties properties) {
+			methodName = "setProperties";
+			arguments = new Object[] { properties };
 			return this;
 		}
 	}
