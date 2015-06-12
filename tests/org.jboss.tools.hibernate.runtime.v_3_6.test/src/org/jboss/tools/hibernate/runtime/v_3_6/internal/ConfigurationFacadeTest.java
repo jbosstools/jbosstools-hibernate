@@ -9,6 +9,8 @@ import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.helpers.DefaultHandler;
 
 public class ConfigurationFacadeTest {
 	
@@ -54,6 +56,14 @@ public class ConfigurationFacadeTest {
 		Assert.assertArrayEquals(new Object[] { testProperties }, arguments);
 	}
 	
+	@Test
+	public void testSetEntityResolver() {
+		EntityResolver testResolver = new DefaultHandler();
+		configuration.setEntityResolver(testResolver);
+		Assert.assertEquals("setEntityResolver", methodName);
+		Assert.assertArrayEquals(new Object[] { testResolver }, arguments);
+	}
+	
 	@SuppressWarnings("serial")
 	private class TestConfiguration extends Configuration {
 		static final String PROPERTY = "TestConfiguration.PROPERTY";
@@ -77,7 +87,10 @@ public class ConfigurationFacadeTest {
 			arguments = new Object[] { properties };
 			return this;
 		}
+		public void setEntityResolver(EntityResolver entityResolver) {
+			methodName = "setEntityResolver";
+			arguments = new Object[] { entityResolver };
+		}
 	}
-
 
 }
