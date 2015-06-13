@@ -69,8 +69,8 @@ implements IHibernateMappingExporter {
 		Util.invokeMethod(
 				getTarget(), 
 				"superExportPOJO", 
-				new Class[] { getPOJOClassClass() }, 
-				new Object[] { pojoClassTarget });
+				new Class[] { Map.class, getPOJOClassClass() }, 
+				new Object[] { map, pojoClassTarget });
 	}
 
 	@Override
