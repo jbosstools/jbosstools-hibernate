@@ -14,6 +14,9 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class ConfigurationFacadeTest {
 	
+	private static final String PROPERTY = "TestConfiguration.PROPERTY";
+	private static final Properties PROPERTIES = new Properties();
+
 	private String methodName = null;
 	private Object[] arguments = null;
 	
@@ -28,7 +31,7 @@ public class ConfigurationFacadeTest {
 	
 	@Test
 	public void testGetProperty() {
-		Assert.assertSame(TestConfiguration.PROPERTY, configuration.getProperty("foobar"));
+		Assert.assertSame(PROPERTY, configuration.getProperty("foobar"));
 		Assert.assertEquals("getProperty", methodName);
 		Assert.assertArrayEquals(new Object[] { "foobar" }, arguments);
 	}
@@ -64,9 +67,14 @@ public class ConfigurationFacadeTest {
 		Assert.assertArrayEquals(new Object[] { testResolver }, arguments);
 	}
 	
+	public void testGetProperties() {
+		Assert.assertSame(PROPERTIES, configuration.getProperties());
+		Assert.assertEquals("getProperties", methodName);
+		Assert.assertArrayEquals(new Object[] {}, arguments);
+	}
+	
 	@SuppressWarnings("serial")
 	private class TestConfiguration extends Configuration {
-		static final String PROPERTY = "TestConfiguration.PROPERTY";
 		public String getProperty(String driver) {
 			methodName = "getProperty";
 			arguments = new Object[] { driver };
@@ -90,6 +98,11 @@ public class ConfigurationFacadeTest {
 		public void setEntityResolver(EntityResolver entityResolver) {
 			methodName = "setEntityResolver";
 			arguments = new Object[] { entityResolver };
+		}
+		public Properties getProperties() {
+			methodName = "getProperties";
+			arguments = new Object[] {};
+			return PROPERTIES;
 		}
 	}
 
