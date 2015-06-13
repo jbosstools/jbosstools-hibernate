@@ -27,7 +27,7 @@ public interface IPersistentClass {
 	void setClassName(String className);
 	void setEntityName(String entityName);
 	void setDiscriminatorValue(String value);
-	void setAbstract(boolean b);
+	void setAbstract(Boolean b);
 	void addProperty(IProperty property);
 	boolean isInstanceOfJoinedSubclass();
 	void setTable(ITable table);

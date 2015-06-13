@@ -263,11 +263,11 @@ implements IPersistentClass {
 	}
 
 	@Override
-	public void setAbstract(boolean b) {
+	public void setAbstract(Boolean b) {
 		Util.invokeMethod(
 				getTarget(), 
 				"setAbstract", 
-				new Class[] { boolean.class }, 
+				new Class[] { Boolean.class }, 
 				new Object[] { b });
 	}
 
