@@ -75,30 +75,36 @@ public class ConfigurationFacadeTest {
 	
 	@SuppressWarnings("serial")
 	private class TestConfiguration extends Configuration {
+		@Override
 		public String getProperty(String driver) {
 			methodName = "getProperty";
 			arguments = new Object[] { driver };
 			return PROPERTY;
 		}
+		@Override
 		public Configuration addFile(File file) {
 			methodName = "addFile";
 			arguments = new Object[] { file };
 			return this;
 		}
+		@Override
 		public Configuration setProperty(String name, String value) {
 			methodName = "setProperty";
 			arguments = new Object[] { name, value };
 			return this;
 		}
+		@Override
 		public Configuration setProperties(Properties properties) {
 			methodName = "setProperties";
 			arguments = new Object[] { properties };
 			return this;
 		}
+		@Override
 		public void setEntityResolver(EntityResolver entityResolver) {
 			methodName = "setEntityResolver";
 			arguments = new Object[] { entityResolver };
 		}
+		@Override
 		public Properties getProperties() {
 			methodName = "getProperties";
 			arguments = new Object[] {};
