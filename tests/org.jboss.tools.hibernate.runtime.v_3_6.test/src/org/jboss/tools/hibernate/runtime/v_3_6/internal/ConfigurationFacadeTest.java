@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_3_6.internal;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
@@ -12,11 +13,12 @@ import org.junit.Test;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.helpers.DefaultHandler;
 
+import net.sf.cglib.proxy.Enhancer;
+import net.sf.cglib.proxy.MethodInterceptor;
+import net.sf.cglib.proxy.MethodProxy;
+
 public class ConfigurationFacadeTest {
 	
-	private static final String PROPERTY = "TestConfiguration.PROPERTY";
-	private static final Properties PROPERTIES = new Properties();
-
 	private String methodName = null;
 	private Object[] arguments = null;
 	
@@ -26,14 +28,29 @@ public class ConfigurationFacadeTest {
 	public void setUp() {
 		methodName = null;
 		arguments = null;
-		configuration = new AbstractConfigurationFacade(null, new TestConfiguration()) {};
+		Enhancer enhancer = new Enhancer();
+		enhancer.setSuperclass(Configuration.class);
+		enhancer.setCallback(new MethodInterceptor() {
+			@Override
+			public Object intercept(
+					Object obj, 
+					Method method, 
+					Object[] args, 
+					MethodProxy proxy) throws Throwable {
+				methodName = method.getName();
+				arguments = args;
+				return proxy.invokeSuper(obj, args);
+			}					
+		});
+		configuration = new AbstractConfigurationFacade(null, enhancer.create()) {};
 	}
 	
 	@Test
 	public void testGetProperty() {
-		Assert.assertSame(PROPERTY, configuration.getProperty("foobar"));
+		configuration.setProperty("foo", "bar");
+		Assert.assertEquals("bar", configuration.getProperty("foo"));
 		Assert.assertEquals("getProperty", methodName);
-		Assert.assertArrayEquals(new Object[] { "foobar" }, arguments);
+		Assert.assertArrayEquals(new Object[] { "foo" }, arguments);
 	}
 	
 	@Test
@@ -46,9 +63,10 @@ public class ConfigurationFacadeTest {
 	
 	@Test
 	public void testSetProperty() {
-		configuration.setProperty("name", "value");
+		configuration.setProperty("foo", "bar");
 		Assert.assertEquals("setProperty", methodName);
-		Assert.assertArrayEquals(new Object[] { "name", "value" },  arguments);
+		Assert.assertArrayEquals(new Object[] { "foo", "bar" },  arguments);
+		Assert.assertEquals("bar", configuration.getProperty("foo"));
 	}
 	
 	@Test 
@@ -57,6 +75,7 @@ public class ConfigurationFacadeTest {
 		Assert.assertSame(configuration, configuration.setProperties(testProperties));
 		Assert.assertEquals("setProperties", methodName);
 		Assert.assertArrayEquals(new Object[] { testProperties }, arguments);
+		Assert.assertSame(testProperties, configuration.getProperties());
 	}
 	
 	@Test
@@ -68,48 +87,11 @@ public class ConfigurationFacadeTest {
 	}
 	
 	public void testGetProperties() {
-		Assert.assertSame(PROPERTIES, configuration.getProperties());
+		Properties testProperties = new Properties();
+		configuration.setProperties(testProperties);
+		Assert.assertSame(testProperties, configuration.getProperties());
 		Assert.assertEquals("getProperties", methodName);
 		Assert.assertArrayEquals(new Object[] {}, arguments);
 	}
 	
-	@SuppressWarnings("serial")
-	private class TestConfiguration extends Configuration {
-		@Override
-		public String getProperty(String driver) {
-			methodName = "getProperty";
-			arguments = new Object[] { driver };
-			return PROPERTY;
-		}
-		@Override
-		public Configuration addFile(File file) {
-			methodName = "addFile";
-			arguments = new Object[] { file };
-			return this;
-		}
-		@Override
-		public Configuration setProperty(String name, String value) {
-			methodName = "setProperty";
-			arguments = new Object[] { name, value };
-			return this;
-		}
-		@Override
-		public Configuration setProperties(Properties properties) {
-			methodName = "setProperties";
-			arguments = new Object[] { properties };
-			return this;
-		}
-		@Override
-		public void setEntityResolver(EntityResolver entityResolver) {
-			methodName = "setEntityResolver";
-			arguments = new Object[] { entityResolver };
-		}
-		@Override
-		public Properties getProperties() {
-			methodName = "getProperties";
-			arguments = new Object[] {};
-			return PROPERTIES;
-		}
-	}
-
 }
