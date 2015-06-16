@@ -4,6 +4,8 @@ import java.io.File;
 import java.lang.reflect.Method;
 import java.util.Properties;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
@@ -15,6 +17,7 @@ import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -133,10 +136,18 @@ public class ConfigurationFacadeTest {
 	}
 	
 	@Test
-	public void testConfigure() {
+	public void testConfigure() throws Exception {
 		configuration.configure();
 		Assert.assertEquals("configure", methodName);
 		Assert.assertArrayEquals(new Object[] {}, arguments);
+		reset();
+		Document testDocument = DocumentBuilderFactory
+				.newInstance()
+				.newDocumentBuilder()
+				.newDocument();
+		configuration.configure(testDocument);
+		Assert.assertEquals("configure", methodName);
+		Assert.assertArrayEquals(new Object[] { testDocument }, arguments);
 	}
 	
 	private void reset() {
