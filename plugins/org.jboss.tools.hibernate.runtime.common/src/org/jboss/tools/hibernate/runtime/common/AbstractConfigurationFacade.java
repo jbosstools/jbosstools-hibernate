@@ -116,6 +116,16 @@ implements IConfiguration {
 	}
 
 	@Override
+	public IConfiguration configure() {
+		Util.invokeMethod(
+				getTarget(), 
+				"configure", 
+				new Class[] {}, 
+				new Object[] {});
+		return this;
+	}
+
+	@Override
 	public IConfiguration configure(Document document) {
 		Util.invokeMethod(
 				getTarget(), 
@@ -132,16 +142,6 @@ implements IConfiguration {
 				"configure", 
 				new Class[] { File.class }, 
 				new Object[] { file });
-		return this;
-	}
-
-	@Override
-	public IConfiguration configure() {
-		Util.invokeMethod(
-				getTarget(), 
-				"configure", 
-				new Class[] {}, 
-				new Object[] {});
 		return this;
 	}
 

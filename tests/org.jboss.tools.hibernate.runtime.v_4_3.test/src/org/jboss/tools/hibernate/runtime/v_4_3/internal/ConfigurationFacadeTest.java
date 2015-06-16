@@ -33,8 +33,6 @@ public class ConfigurationFacadeTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		methodName = null;
-		arguments = null;
 		ProxyFactory proxyFactory = new ProxyFactory();
 		proxyFactory.setSuperclass(Configuration.class);
 		Class<?> proxyClass = proxyFactory.createClass();
@@ -42,18 +40,27 @@ public class ConfigurationFacadeTest {
 		proxy.setHandler(new MethodHandler() {		
 			@Override
 			public Object invoke(
-					Object self, Method m, Method proceed, Object[] args) throws Throwable {
-				methodName = m.getName();
-				arguments = args;
+					Object self, 
+					Method m, 
+					Method proceed, 
+					Object[] args) throws Throwable {
+				if (methodName == null) {
+					methodName = m.getName();
+				}
+				if (arguments == null) {
+					arguments = args;
+				}
 				return proceed.invoke(self, args);
 			}
 		});
 		configuration = new AbstractConfigurationFacade(FACADE_FACTORY, proxy) {};
+		reset();
 	}
 	
 	@Test
 	public void testGetProperty() {
 		configuration.setProperty("foo", "bar");
+		reset();
 		Assert.assertEquals("bar", configuration.getProperty("foo"));
 		Assert.assertEquals("getProperty", methodName);
 		Assert.assertArrayEquals(new Object[] { "foo" }, arguments);
@@ -90,12 +97,14 @@ public class ConfigurationFacadeTest {
 		configuration.setEntityResolver(testResolver);
 		Assert.assertEquals("setEntityResolver", methodName);
 		Assert.assertArrayEquals(new Object[] { testResolver }, arguments);
+		Assert.assertSame(testResolver, configuration.getEntityResolver());
 	}
 	
 	@Test
 	public void testGetProperties() {
 		Properties testProperties = new Properties();
 		configuration.setProperties(testProperties);
+		reset();
 		Assert.assertSame(testProperties, configuration.getProperties());
 		Assert.assertEquals("getProperties", methodName);
 		Assert.assertArrayEquals(new Object[] {}, arguments);
@@ -114,6 +123,7 @@ public class ConfigurationFacadeTest {
 	@Test
 	public void testAddProperties() {
 		Assert.assertNull(configuration.getProperty("foo"));
+		reset();
 		Properties testProperties = new Properties();
 		testProperties.put("foo", "bar");
 		configuration.addProperties(testProperties);
@@ -122,4 +132,16 @@ public class ConfigurationFacadeTest {
 		Assert.assertEquals("bar", configuration.getProperty("foo"));
 	}
 	
+	@Test
+	public void testConfigure() {
+		configuration.configure();
+		Assert.assertEquals("configure", methodName);
+		Assert.assertArrayEquals(new Object[] {}, arguments);
+	}
+	
+	private void reset() {
+		methodName = null;
+		arguments = null;
+	}
+
 }

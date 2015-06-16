@@ -33,8 +33,6 @@ public class ConfigurationFacadeTest {
 	
 	@Before
 	public void setUp() {
-		methodName = null;
-		arguments = null;
 		Enhancer enhancer = new Enhancer();
 		enhancer.setSuperclass(Configuration.class);
 		enhancer.setCallback(new MethodInterceptor() {
@@ -44,17 +42,23 @@ public class ConfigurationFacadeTest {
 					Method method, 
 					Object[] args, 
 					MethodProxy proxy) throws Throwable {
-				methodName = method.getName();
-				arguments = args;
+				if (methodName == null) {
+					methodName = method.getName();
+				}
+				if (arguments == null) {
+					arguments = args;
+				}
 				return proxy.invokeSuper(obj, args);
 			}					
 		});
 		configuration = new AbstractConfigurationFacade(FACADE_FACTORY, enhancer.create()) {};
+		reset();
 	}
 	
 	@Test
 	public void testGetProperty() {
 		configuration.setProperty("foo", "bar");
+		reset();
 		Assert.assertEquals("bar", configuration.getProperty("foo"));
 		Assert.assertEquals("getProperty", methodName);
 		Assert.assertArrayEquals(new Object[] { "foo" }, arguments);
@@ -91,12 +95,14 @@ public class ConfigurationFacadeTest {
 		configuration.setEntityResolver(testResolver);
 		Assert.assertEquals("setEntityResolver", methodName);
 		Assert.assertArrayEquals(new Object[] { testResolver }, arguments);
+		Assert.assertSame(testResolver, configuration.getEntityResolver());
 	}
 	
 	@Test
 	public void testGetProperties() {
 		Properties testProperties = new Properties();
 		configuration.setProperties(testProperties);
+		reset();
 		Assert.assertSame(testProperties, configuration.getProperties());
 		Assert.assertEquals("getProperties", methodName);
 		Assert.assertArrayEquals(new Object[] {}, arguments);
@@ -117,10 +123,23 @@ public class ConfigurationFacadeTest {
 		Assert.assertNull(configuration.getProperty("foo"));
 		Properties testProperties = new Properties();
 		testProperties.put("foo", "bar");
+		reset();
 		configuration.addProperties(testProperties);
 		Assert.assertEquals("addProperties", methodName);
 		Assert.assertArrayEquals(new Object[] { testProperties }, arguments);
 		Assert.assertEquals("bar", configuration.getProperty("foo"));
 	}
 	
+	@Test
+	public void testConfigure() {
+		configuration.configure();
+		Assert.assertEquals("configure", methodName);
+		Assert.assertArrayEquals(new Object[] {}, arguments);
+	}
+
+	private void reset() {
+		methodName = null;
+		arguments = null;
+	}
+
 }
