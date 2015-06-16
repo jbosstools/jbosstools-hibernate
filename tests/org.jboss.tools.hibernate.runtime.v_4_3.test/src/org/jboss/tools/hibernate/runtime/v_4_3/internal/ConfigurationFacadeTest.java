@@ -5,8 +5,13 @@ import java.lang.reflect.Method;
 import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.cfg.NamingStrategy;
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
+import org.jboss.tools.hibernate.runtime.common.AbstractNamingStrategyFacade;
+import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,6 +24,8 @@ import javassist.util.proxy.ProxyObject;
 
 public class ConfigurationFacadeTest {
 	
+	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
+
 	private String methodName = null;
 	private Object[] arguments = null;
 	
@@ -41,7 +48,7 @@ public class ConfigurationFacadeTest {
 				return proceed.invoke(self, args);
 			}
 		});
-		configuration = new AbstractConfigurationFacade(null, proxy) {};
+		configuration = new AbstractConfigurationFacade(FACADE_FACTORY, proxy) {};
 	}
 	
 	@Test
@@ -85,12 +92,23 @@ public class ConfigurationFacadeTest {
 		Assert.assertArrayEquals(new Object[] { testResolver }, arguments);
 	}
 	
+	@Test
 	public void testGetProperties() {
 		Properties testProperties = new Properties();
 		configuration.setProperties(testProperties);
 		Assert.assertSame(testProperties, configuration.getProperties());
 		Assert.assertEquals("getProperties", methodName);
 		Assert.assertArrayEquals(new Object[] {}, arguments);
+	}
+	
+	@Test
+	public void testSetNamingStrategy() {
+		NamingStrategy dns = new DefaultNamingStrategy();
+		INamingStrategy namingStrategy = new AbstractNamingStrategyFacade(FACADE_FACTORY, dns) {};
+		configuration.setNamingStrategy(namingStrategy);
+		Assert.assertEquals("setNamingStrategy", methodName);
+		Assert.assertArrayEquals(new Object[] { dns }, arguments);
+		Assert.assertSame(namingStrategy, configuration.getNamingStrategy());
 	}
 	
 }
