@@ -148,6 +148,11 @@ public class ConfigurationFacadeTest {
 		configuration.configure(testDocument);
 		Assert.assertEquals("configure", methodName);
 		Assert.assertArrayEquals(new Object[] { testDocument }, arguments);
+		reset();
+		File testFile = File.createTempFile("test", "tmp");
+		configuration.configure(testFile);
+		Assert.assertEquals("configure", methodName);
+		Assert.assertArrayEquals(new Object[] { testFile }, arguments);
 	}
 
 	private void reset() {
