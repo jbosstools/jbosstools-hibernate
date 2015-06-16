@@ -111,4 +111,15 @@ public class ConfigurationFacadeTest {
 		Assert.assertSame(namingStrategy, configuration.getNamingStrategy());
 	}
 	
+	@Test
+	public void testAddProperties() {
+		Assert.assertNull(configuration.getProperty("foo"));
+		Properties testProperties = new Properties();
+		testProperties.put("foo", "bar");
+		configuration.addProperties(testProperties);
+		Assert.assertEquals("addProperties", methodName);
+		Assert.assertArrayEquals(new Object[] { testProperties }, arguments);
+		Assert.assertEquals("bar", configuration.getProperty("foo"));
+	}
+	
 }
