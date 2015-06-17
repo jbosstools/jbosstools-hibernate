@@ -155,6 +155,13 @@ public class ConfigurationFacadeTest {
 		Assert.assertArrayEquals(new Object[] { testFile }, arguments);
 	}
 	
+	@Test
+	public void testBuildMappings() {
+		configuration.buildMappings();
+		Assert.assertEquals("buildMappings", methodName);
+		Assert.assertArrayEquals(new Object[] {}, arguments);
+	}
+	
 	private void reset() {
 		methodName = null;
 		arguments = null;
