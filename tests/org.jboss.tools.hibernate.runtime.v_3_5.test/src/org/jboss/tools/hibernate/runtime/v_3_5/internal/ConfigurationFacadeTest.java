@@ -160,6 +160,13 @@ public class ConfigurationFacadeTest {
 		Assert.assertArrayEquals(new Object[] {}, arguments);
 	}
 	
+	@Test
+	public void testBuildSessionFactory() {
+		Assert.assertNotNull(configuration.buildSessionFactory());
+		Assert.assertEquals("buildSessionFactory", methodName);
+		Assert.assertArrayEquals(new Object[] {}, arguments);
+	}
+	
 	private void reset() {
 		methodName = null;
 		arguments = null;
