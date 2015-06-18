@@ -167,6 +167,13 @@ public class ConfigurationFacadeTest {
 		Assert.assertArrayEquals(new Object[] {}, arguments);
 	}
 	
+	@Test
+	public void testBuildSettings() {
+		Assert.assertNotNull(configuration.buildSettings());
+		Assert.assertEquals("buildSettings", methodName);
+		Assert.assertArrayEquals(new Object[] {}, arguments);
+	}
+	
 	private void reset() {
 		methodName = null;
 		arguments = null;
