@@ -146,6 +146,16 @@ implements IConfiguration {
 	}
 
 	@Override
+	public IMappings createMappings() {
+		Object targetMappings = Util.invokeMethod(
+				getTarget(), 
+				"createMappings", 
+				new Class[] {}, 
+				new Object[] {});
+		return getFacadeFactory().createMappings(targetMappings);
+	}
+
+	@Override
 	public void buildMappings() {
 		Util.invokeMethod(
 				getTarget(), 
@@ -164,16 +174,6 @@ implements IConfiguration {
 		return getFacadeFactory().createSettings(buildTargetSettings());
 	}
 	
-	@Override
-	public IMappings createMappings() {
-		Object targetMappings = Util.invokeMethod(
-				getTarget(), 
-				"createMappings", 
-				new Class[] {}, 
-				new Object[] {});
-		return getFacadeFactory().createMappings(targetMappings);
-	}
-
 	@Override
 	public Iterator<IPersistentClass> getClassMappings() {
 		if (classMappings == null) {
