@@ -154,7 +154,7 @@ public class ConfigurationFacadeTest {
 	}
 
 	@Test 
-	void testCreateMappings() {
+	public void testCreateMappings() {
 		Assert.assertNotNull(configuration.createMappings());
 		Assert.assertEquals("createMappings", methodName);
 		Assert.assertArrayEquals(new Object[] {}, arguments);
