@@ -102,6 +102,16 @@ public class ConfigurationFacadeTest {
 	}
 	
 	@Test
+	public void testGetEntityResolver() {
+		EntityResolver testResolver = new DefaultHandler();
+		configuration.setEntityResolver(testResolver);
+		reset();
+		Assert.assertSame(testResolver, configuration.getEntityResolver());
+		Assert.assertEquals("getEntityResolver", methodName);
+		Assert.assertArrayEquals(new Object[] {}, arguments);
+	}
+	
+	@Test
 	public void testGetProperties() {
 		Properties testProperties = new Properties();
 		configuration.setProperties(testProperties);
