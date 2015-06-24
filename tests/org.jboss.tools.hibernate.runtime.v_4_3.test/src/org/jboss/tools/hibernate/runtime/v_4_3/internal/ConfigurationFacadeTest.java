@@ -9,10 +9,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
-import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractNamingStrategyFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.junit.Assert;
 import org.junit.Before;
@@ -32,7 +30,7 @@ public class ConfigurationFacadeTest {
 	private String methodName = null;
 	private Object[] arguments = null;
 	
-	private IConfiguration configuration = null;
+	private ConfigurationFacadeImpl configuration = null;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -56,7 +54,7 @@ public class ConfigurationFacadeTest {
 				return proceed.invoke(self, args);
 			}
 		});
-		configuration = new AbstractConfigurationFacade(FACADE_FACTORY, proxy) {};
+		configuration = new ConfigurationFacadeImpl(FACADE_FACTORY, (Configuration)proxy);
 		reset();
 	}
 	
@@ -181,9 +179,17 @@ public class ConfigurationFacadeTest {
 	
 	@Test
 	public void testBuildSessionFactory() {
+		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+		Assert.assertNull(configuration.serviceRegistry);
+		Assert.assertNotNull(configuration.buildSessionFactory());
+		Assert.assertNotNull(configuration.serviceRegistry);
+		configuration.serviceRegistry = null;
+		configuration.buildServiceRegistry();
+		Assert.assertNotNull(configuration.serviceRegistry);
+		reset();
 		Assert.assertNotNull(configuration.buildSessionFactory());
 		Assert.assertEquals("buildSessionFactory", methodName);
-		Assert.assertArrayEquals(new Object[] {}, arguments);
+		Assert.assertArrayEquals(new Object[] { configuration.serviceRegistry }, arguments);
 	}
 	
 	private void reset() {

@@ -9,7 +9,7 @@ import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 
 public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	
-	private ServiceRegistry serviceRegistry = null;
+	ServiceRegistry serviceRegistry = null;
 
 	public ConfigurationFacadeImpl(
 			IFacadeFactory facadeFactory,
@@ -39,7 +39,7 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 				getProperties(), null);
 	}
 	
-	private void buildServiceRegistry() {
+	void buildServiceRegistry() {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySettings(getProperties());
 		serviceRegistry = builder.build();		
