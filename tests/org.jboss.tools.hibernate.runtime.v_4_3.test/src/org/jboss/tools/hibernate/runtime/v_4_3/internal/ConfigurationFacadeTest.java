@@ -179,6 +179,7 @@ public class ConfigurationFacadeTest {
 	
 	@Test
 	public void testBuildSessionFactory() {
+		// need to set 'hibernate.dialect' property for the session factory to properly build 
 		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 		Assert.assertNull(configuration.serviceRegistry);
 		Assert.assertNotNull(configuration.buildSessionFactory());
@@ -189,6 +190,22 @@ public class ConfigurationFacadeTest {
 		reset();
 		Assert.assertNotNull(configuration.buildSessionFactory());
 		Assert.assertEquals("buildSessionFactory", methodName);
+		Assert.assertArrayEquals(new Object[] { configuration.serviceRegistry }, arguments);
+	}
+	
+	@Test
+	public void testBuildSettings() {
+		// need to set 'hibernate.dialect' property for the session factory to properly build 
+		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+		Assert.assertNull(configuration.serviceRegistry);
+		Assert.assertNotNull(configuration.buildSettings());
+		Assert.assertNotNull(configuration.serviceRegistry);
+		configuration.serviceRegistry = null;
+		configuration.buildServiceRegistry();
+		Assert.assertNotNull(configuration.serviceRegistry);
+		reset();
+		Assert.assertNotNull(configuration.buildSettings());
+		Assert.assertEquals("buildSettings", methodName);
 		Assert.assertArrayEquals(new Object[] { configuration.serviceRegistry }, arguments);
 	}
 	
