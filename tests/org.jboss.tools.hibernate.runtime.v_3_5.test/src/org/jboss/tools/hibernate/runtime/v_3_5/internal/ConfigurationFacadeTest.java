@@ -12,7 +12,6 @@ import org.hibernate.cfg.NamingStrategy;
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractNamingStrategyFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.junit.Assert;
 import org.junit.Before;
@@ -32,7 +31,7 @@ public class ConfigurationFacadeTest {
 	private String methodName = null;
 	private Object[] arguments = null;
 	
-	private IConfiguration configuration = null;
+	private AbstractConfigurationFacade configuration = null;
 	
 	@Before
 	public void setUp() {
@@ -188,6 +187,13 @@ public class ConfigurationFacadeTest {
 	public void testBuildSettings() {
 		Assert.assertNotNull(configuration.buildSettings());
 		Assert.assertEquals("buildSettings", methodName);
+		Assert.assertArrayEquals(new Object[] {}, arguments);
+	}
+	
+	@Test
+	public void testGetClassMappings() {
+		Assert.assertNotNull(configuration.getClassMappings());
+		Assert.assertEquals("getClassMappings", methodName);
 		Assert.assertArrayEquals(new Object[] {}, arguments);
 	}
 	

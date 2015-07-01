@@ -209,6 +209,13 @@ public class ConfigurationFacadeTest {
 		Assert.assertArrayEquals(new Object[] { configuration.serviceRegistry }, arguments);
 	}
 	
+	@Test
+	public void testGetClassMappings() {
+		Assert.assertNotNull(configuration.getClassMappings());
+		Assert.assertEquals("getClassMappings", methodName);
+		Assert.assertArrayEquals(new Object[] {}, arguments);
+	}
+	
 	private void reset() {
 		methodName = null;
 		arguments = null;
