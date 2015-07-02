@@ -8,6 +8,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.NamingStrategy;
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractNamingStrategyFacade;
@@ -196,6 +197,19 @@ public class ConfigurationFacadeTest {
 		Assert.assertNotNull(configuration.getClassMappings());
 		Assert.assertEquals("getClassMappings", methodName);
 		Assert.assertArrayEquals(new Object[] {}, arguments);
+	}
+	
+	@Test
+	public void testSetPreferBasicCompositeIds() {
+		configuration.setPreferBasicCompositeIds(true);
+		Assert.assertNull(methodName);
+		Assert.assertNull(arguments);
+		JDBCMetaDataConfiguration jdbcMetaDataConfiguration = new JDBCMetaDataConfiguration();
+		configuration = new AbstractConfigurationFacade(FACADE_FACTORY, jdbcMetaDataConfiguration) {};
+		configuration.setPreferBasicCompositeIds(false);
+		Assert.assertFalse(jdbcMetaDataConfiguration.preferBasicCompositeIds());
+		configuration.setPreferBasicCompositeIds(true);
+		Assert.assertTrue(jdbcMetaDataConfiguration.preferBasicCompositeIds());
 	}
 	
 	private void reset() {
