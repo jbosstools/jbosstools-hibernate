@@ -10,11 +10,15 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.NamingStrategy;
+import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
+import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractNamingStrategyFacade;
+import org.jboss.tools.hibernate.runtime.common.AbstractReverseEngineeringStrategyFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
+import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -210,6 +214,21 @@ public class ConfigurationFacadeTest {
 		Assert.assertFalse(jdbcMetaDataConfiguration.preferBasicCompositeIds());
 		configuration.setPreferBasicCompositeIds(true);
 		Assert.assertTrue(jdbcMetaDataConfiguration.preferBasicCompositeIds());
+	}
+	
+	@Test
+	public void testSetReverseEngineeringStrategy() {
+		ReverseEngineeringStrategy res = new DefaultReverseEngineeringStrategy();
+		IReverseEngineeringStrategy strategy = 
+				new AbstractReverseEngineeringStrategyFacade(FACADE_FACTORY, res) {};
+		configuration.setReverseEngineeringStrategy(strategy);
+		Assert.assertNull(methodName);
+		Assert.assertNull(arguments);
+		JDBCMetaDataConfiguration jdbcMetaDataConfiguration = new JDBCMetaDataConfiguration();
+		configuration = new AbstractConfigurationFacade(FACADE_FACTORY, jdbcMetaDataConfiguration) {};
+		Assert.assertNotSame(res, jdbcMetaDataConfiguration.getReverseEngineeringStrategy());
+		configuration.setReverseEngineeringStrategy(strategy);
+		Assert.assertSame(res, jdbcMetaDataConfiguration.getReverseEngineeringStrategy());
 	}
 	
 	private void reset() {
