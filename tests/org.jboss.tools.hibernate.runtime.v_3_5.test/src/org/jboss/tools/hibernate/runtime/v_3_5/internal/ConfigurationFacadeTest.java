@@ -230,6 +230,24 @@ public class ConfigurationFacadeTest {
 		Assert.assertSame(res, jdbcMetaDataConfiguration.getReverseEngineeringStrategy());
 	}
 	
+	@SuppressWarnings("serial")
+	@Test
+	public void testReadFromJDBC() {
+		configuration.readFromJDBC();
+		Assert.assertNull(methodName);
+		Assert.assertNull(arguments);
+		Configuration target = new JDBCMetaDataConfiguration() {
+			@Override public void readFromJDBC() {
+				methodName = "readFromJDBC";
+				arguments = new Object[] {};
+			}
+		};
+		configuration = new AbstractConfigurationFacade(FACADE_FACTORY, target) {};
+		configuration.readFromJDBC();
+		Assert.assertEquals("readFromJDBC", methodName);
+		Assert.assertArrayEquals(new Object[] {}, arguments);
+	}
+	
 	private void reset() {
 		methodName = null;
 		arguments = null;

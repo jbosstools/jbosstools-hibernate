@@ -12,7 +12,6 @@ import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
-import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractNamingStrategyFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractReverseEngineeringStrategyFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
@@ -248,6 +247,24 @@ public class ConfigurationFacadeTest {
 		Assert.assertNotSame(res, jdbcMetaDataConfiguration.getReverseEngineeringStrategy());
 		configuration.setReverseEngineeringStrategy(strategy);
 		Assert.assertSame(res, jdbcMetaDataConfiguration.getReverseEngineeringStrategy());
+	}
+	
+	@SuppressWarnings("serial")
+	@Test
+	public void testReadFromJDBC() {
+		configuration.readFromJDBC();
+		Assert.assertNull(methodName);
+		Assert.assertNull(arguments);
+		Configuration target = new JDBCMetaDataConfiguration() {
+			@Override public void readFromJDBC() {
+				methodName = "readFromJDBC";
+				arguments = new Object[] {};
+			}
+		};
+		configuration = new ConfigurationFacadeImpl(FACADE_FACTORY, target) {};
+		configuration.readFromJDBC();
+		Assert.assertEquals("readFromJDBC", methodName);
+		Assert.assertArrayEquals(new Object[] {}, arguments);
 	}
 	
 	private void reset() {
