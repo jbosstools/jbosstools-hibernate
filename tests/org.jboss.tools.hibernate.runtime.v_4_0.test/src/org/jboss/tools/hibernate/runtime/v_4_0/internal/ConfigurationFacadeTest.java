@@ -15,6 +15,7 @@ import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.common.AbstractNamingStrategyFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractReverseEngineeringStrategyFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IMapping;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.junit.Assert;
@@ -265,6 +266,18 @@ public class ConfigurationFacadeTest {
 		configuration.readFromJDBC();
 		Assert.assertEquals("readFromJDBC", methodName);
 		Assert.assertArrayEquals(new Object[] {}, arguments);
+	}
+	
+	@Test
+	public void testBuildMapping() {
+		IMapping mapping = configuration.buildMapping();
+		Assert.assertNotNull(mapping);
+		Assert.assertEquals("buildMapping", methodName);
+		Assert.assertArrayEquals(new Object[] {}, arguments);
+		reset();
+		Assert.assertSame(mapping, configuration.buildMapping());
+		Assert.assertNull(methodName);
+		Assert.assertNull(arguments);
 	}
 	
 	private void reset() {
