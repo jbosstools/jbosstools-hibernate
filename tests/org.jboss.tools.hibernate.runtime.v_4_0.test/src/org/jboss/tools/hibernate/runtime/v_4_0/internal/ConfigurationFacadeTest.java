@@ -280,6 +280,17 @@ public class ConfigurationFacadeTest {
 		Assert.assertNull(arguments);
 	}
 	
+	@Test
+	public void testGetClassMapping() {
+		Assert.assertNull(configuration.getClassMapping("blah"));
+		Assert.assertEquals("getClassMappings", methodName);
+		Assert.assertArrayEquals(new Object[] {}, arguments);
+		reset();
+		Assert.assertNull(configuration.getClassMapping("blah"));
+		Assert.assertNull(methodName);
+		Assert.assertNull(arguments);
+	}
+
 	private void reset() {
 		methodName = null;
 		arguments = null;
