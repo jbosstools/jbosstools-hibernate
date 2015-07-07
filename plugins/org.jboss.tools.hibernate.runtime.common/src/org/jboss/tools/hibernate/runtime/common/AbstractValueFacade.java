@@ -368,7 +368,7 @@ implements IValue {
 		String result = null;
 		if (isOneToMany() || isToOne()) {
 			result = (String)Util.invokeMethod(
-					getTable(), 
+					getTarget(), 
 					"getReferencedEntityName", 
 					new Class[] {}, 
 					new Object[] {});
