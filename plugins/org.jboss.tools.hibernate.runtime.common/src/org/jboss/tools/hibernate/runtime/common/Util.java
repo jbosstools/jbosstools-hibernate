@@ -14,6 +14,7 @@ public class Util {
 			result = loader.loadClass(className);
 		} catch (ClassNotFoundException e) {
 			HibernateRuntimeCommon.log(e);
+			throw new RuntimeException(e);
 		}
 		return result;
 	}
@@ -25,6 +26,7 @@ public class Util {
 		} catch (InstantiationException | 
 				IllegalAccessException e) {
 			HibernateRuntimeCommon.log(e);
+			throw new RuntimeException(e);
 		}
 		return result;
 	}
@@ -45,6 +47,7 @@ public class Util {
 				IllegalArgumentException | 
 				InvocationTargetException e) {
 			HibernateRuntimeCommon.log(e);
+			throw new RuntimeException(e);
 		}
 		return result;
 	}
@@ -65,6 +68,7 @@ public class Util {
 				IllegalArgumentException | 
 				InvocationTargetException e) {
 			HibernateRuntimeCommon.log(e);
+			throw new RuntimeException(e);
 		}
 		return result;
 	}
@@ -80,6 +84,7 @@ public class Util {
 				NoSuchFieldException | 
 				SecurityException e) {
 			HibernateRuntimeCommon.log(e);
+			throw new RuntimeException(e);
 		}
 		return result;
 	}
