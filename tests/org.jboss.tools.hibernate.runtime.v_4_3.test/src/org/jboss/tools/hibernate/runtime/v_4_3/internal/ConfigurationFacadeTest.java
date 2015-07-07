@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_4_3.internal;
 
 import java.io.File;
+import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.util.Properties;
 
@@ -22,6 +23,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -32,6 +34,15 @@ import javassist.util.proxy.ProxyObject;
 public class ConfigurationFacadeTest {
 	
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
+	
+	private static final String TEST_CONFIGURATION_STRING =
+			"<!DOCTYPE hibernate-configuration PUBLIC" +
+			"		\"-//Hibernate/Hibernate Configuration DTD 3.0//EN\"" +
+			"		\"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd\">" +
+			"<hibernate-configuration>" +
+			"  <session-factory>" + 
+			"  </session-factory>" + 
+			"</hibernate-configuration>";
 
 	private String methodName = null;
 	private Object[] arguments = null;
@@ -74,8 +85,11 @@ public class ConfigurationFacadeTest {
 	}
 	
 	@Test
-	public void testAddFile() {
-		File testFile = new File("");
+	public void testAddFile() throws Exception {
+		File testFile = File.createTempFile("test", "tmp");
+		PrintWriter printWriter = new PrintWriter(testFile);
+		printWriter.write(TEST_CONFIGURATION_STRING);
+		printWriter.close();
 		Assert.assertSame(configuration, configuration.addFile(testFile));
 		Assert.assertEquals("addFile", methodName);
 		Assert.assertArrayEquals(new Object[] { testFile }, arguments);
@@ -150,7 +164,7 @@ public class ConfigurationFacadeTest {
 	}
 	
 	@Test
-	public void testConfigure() throws Exception {
+	public void testConfigure() throws Throwable {
 		configuration.configure();
 		Assert.assertEquals("configure", methodName);
 		Assert.assertArrayEquals(new Object[] {}, arguments);
@@ -159,11 +173,18 @@ public class ConfigurationFacadeTest {
 				.newInstance()
 				.newDocumentBuilder()
 				.newDocument();
+		Element root = testDocument.createElement("hibernate-configuration");
+		testDocument.appendChild(root);
+		Element child = testDocument.createElement("session-factory");
+		root.appendChild(child);
 		configuration.configure(testDocument);
 		Assert.assertEquals("configure", methodName);
 		Assert.assertArrayEquals(new Object[] { testDocument }, arguments);
 		reset();
 		File testFile = File.createTempFile("test", "tmp");
+		PrintWriter printWriter = new PrintWriter(testFile);
+		printWriter.write(TEST_CONFIGURATION_STRING);
+		printWriter.close();
 		configuration.configure(testFile);
 		Assert.assertEquals("configure", methodName);
 		Assert.assertArrayEquals(new Object[] { testFile }, arguments);

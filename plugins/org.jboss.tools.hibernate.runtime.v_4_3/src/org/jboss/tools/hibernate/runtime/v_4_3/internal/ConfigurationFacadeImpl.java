@@ -6,6 +6,7 @@ import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
 import org.hibernate.service.ServiceRegistry;
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 
 public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	
@@ -17,6 +18,12 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 		super(facadeFactory, configuration);
 	}
 	
+	@Override
+	public IConfiguration configure() {
+		((Configuration)getTarget()).configure();
+		return this;
+	}
+
 	protected Object buildTargetSessionFactory() {
 		if (serviceRegistry == null) {
 			buildServiceRegistry();
