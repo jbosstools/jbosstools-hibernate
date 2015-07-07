@@ -381,7 +381,7 @@ implements IValue {
 		String result = null;
 		if (isOneToOne()) {
 		result = (String)Util.invokeMethod(
-				getTable(), 
+				getTarget(), 
 				"getEntityName", 
 				new Class[] {}, 
 				new Object[] {});
