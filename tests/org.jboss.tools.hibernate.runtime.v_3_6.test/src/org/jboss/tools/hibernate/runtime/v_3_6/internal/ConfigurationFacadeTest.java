@@ -272,6 +272,18 @@ public class ConfigurationFacadeTest {
 		Assert.assertNull(methodName);
 		Assert.assertNull(arguments);
 	}
+	
+	@Test
+	public void testGetNamingStrategy() {
+		Assert.assertNotNull(configuration.getNamingStrategy());
+		Assert.assertEquals("getNamingStrategy", methodName);
+		Assert.assertArrayEquals(new Object[] {}, arguments);
+		reset();
+		Assert.assertNotNull(configuration.getNamingStrategy());
+		Assert.assertNull(methodName);
+		Assert.assertNull(arguments);
+	}
+		
 	private void reset() {
 		methodName = null;
 		arguments = null;
