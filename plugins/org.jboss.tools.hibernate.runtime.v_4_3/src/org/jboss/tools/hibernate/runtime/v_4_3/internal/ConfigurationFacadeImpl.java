@@ -18,12 +18,6 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 		super(facadeFactory, configuration);
 	}
 	
-	@Override
-	public IConfiguration configure() {
-		((Configuration)getTarget()).configure();
-		return this;
-	}
-
 	protected Object buildTargetSessionFactory() {
 		if (serviceRegistry == null) {
 			buildServiceRegistry();
