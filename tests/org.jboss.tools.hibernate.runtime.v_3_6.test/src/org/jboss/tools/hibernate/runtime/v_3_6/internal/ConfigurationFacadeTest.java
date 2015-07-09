@@ -3,6 +3,7 @@ package org.jboss.tools.hibernate.runtime.v_3_6.internal;
 import java.io.File;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
+import java.util.Iterator;
 import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -13,6 +14,7 @@ import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
+import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractNamingStrategyFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractReverseEngineeringStrategyFacade;
@@ -311,6 +313,25 @@ public class ConfigurationFacadeTest {
 		Assert.assertNull(arguments);
 	}
 		
+	@SuppressWarnings("serial")
+	@Test
+	public void testGetTableMappings() {
+		Assert.assertNull(configuration.getTableMappings());
+		Assert.assertNull(methodName);
+		Assert.assertNull(arguments);
+		JDBCMetaDataConfiguration jdbcMetaDataConfiguration = new JDBCMetaDataConfiguration() {
+			@Override public Iterator<Table> getTableMappings() {
+				methodName = "getTableMappings";
+				arguments = new Object[] {};
+				return super.getTableMappings();
+			}
+		};
+		configuration = new AbstractConfigurationFacade(FACADE_FACTORY, jdbcMetaDataConfiguration) {};
+		Assert.assertNotNull(configuration.getTableMappings());
+		Assert.assertEquals("getTableMappings", methodName);
+		Assert.assertArrayEquals(new Object[] {}, arguments);
+	}
+	
 	private void reset() {
 		methodName = null;
 		arguments = null;

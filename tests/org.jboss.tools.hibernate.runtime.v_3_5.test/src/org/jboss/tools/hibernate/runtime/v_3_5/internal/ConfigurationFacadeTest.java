@@ -3,6 +3,7 @@ package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 import java.io.File;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
+import java.util.Iterator;
 import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -308,6 +309,25 @@ public class ConfigurationFacadeTest {
 		Assert.assertNotNull(configuration.getNamingStrategy());
 		Assert.assertNull(methodName);
 		Assert.assertNull(arguments);
+	}
+	
+	@SuppressWarnings("serial")
+	@Test
+	public void testGetTableMappings() {
+		Assert.assertNull(configuration.getTableMappings());
+		Assert.assertNull(methodName);
+		Assert.assertNull(arguments);
+		JDBCMetaDataConfiguration jdbcMetaDataConfiguration = new JDBCMetaDataConfiguration() {
+			@Override public Iterator<?> getTableMappings() {
+				methodName = "getTableMappings";
+				arguments = new Object[] {};
+				return super.getTableMappings();
+			}
+		};
+		configuration = new AbstractConfigurationFacade(FACADE_FACTORY, jdbcMetaDataConfiguration) {};
+		Assert.assertNotNull(configuration.getTableMappings());
+		Assert.assertEquals("getTableMappings", methodName);
+		Assert.assertArrayEquals(new Object[] {}, arguments);
 	}
 	
 	private void reset() {
