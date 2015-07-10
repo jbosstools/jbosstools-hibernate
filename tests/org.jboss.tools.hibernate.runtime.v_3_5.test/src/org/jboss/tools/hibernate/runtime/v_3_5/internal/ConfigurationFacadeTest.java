@@ -330,9 +330,15 @@ public class ConfigurationFacadeTest {
 		Assert.assertArrayEquals(new Object[] {}, arguments);
 	}
 	
+	@Test
+	public void testGetDialect() {
+		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+		Assert.assertNotNull(configuration.getDialect());
+	}
+	
 	private void reset() {
 		methodName = null;
 		arguments = null;
 	}
-
+	
 }

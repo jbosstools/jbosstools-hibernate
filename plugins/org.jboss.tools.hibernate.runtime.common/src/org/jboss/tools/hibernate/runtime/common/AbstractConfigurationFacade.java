@@ -280,7 +280,7 @@ implements IConfiguration {
 	
 	@Override
 	public IDialect getDialect() {
-		if (dialect != null) {
+		if (dialect == null) {
 			Object d = buildTargetDialect();
 			if (d != null) {
 				dialect = getFacadeFactory().createDialect(d);
