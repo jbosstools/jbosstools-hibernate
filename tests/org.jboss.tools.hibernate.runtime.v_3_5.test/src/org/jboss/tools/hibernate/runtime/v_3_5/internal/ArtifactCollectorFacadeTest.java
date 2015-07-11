@@ -1,19 +1,23 @@
 package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
-import java.util.Collections;
-import java.util.Set;
+import java.lang.reflect.Method;
 
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.jboss.tools.hibernate.runtime.common.AbstractArtifactCollectorFacade;
+import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import net.sf.cglib.proxy.Enhancer;
+import net.sf.cglib.proxy.MethodInterceptor;
+import net.sf.cglib.proxy.MethodProxy;
+
 public class ArtifactCollectorFacadeTest {
 	
-	private static Set<String> FILE_TYPES = Collections.emptySet();
-	
+	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
+
 	private String methodName = null;
 	private Object[] arguments = null;
 	
@@ -21,24 +25,38 @@ public class ArtifactCollectorFacadeTest {
 	
 	@Before
 	public void setUp() {
-		methodName = null;
-		arguments = null;
-		artifactCollector = new AbstractArtifactCollectorFacade(null, new TestArtifactCollector()) {};
+		Enhancer enhancer = new Enhancer();
+		enhancer.setSuperclass(ArtifactCollector.class);
+		enhancer.setCallback(new MethodInterceptor() {
+			@Override
+			public Object intercept(
+					Object obj, 
+					Method method, 
+					Object[] args, 
+					MethodProxy proxy) throws Throwable {
+				if (methodName == null) {
+					methodName = method.getName();
+				}
+				if (arguments == null) {
+					arguments = args;
+				}
+				return proxy.invokeSuper(obj, args);
+			}					
+		});
+		artifactCollector = new AbstractArtifactCollectorFacade(FACADE_FACTORY, enhancer.create()) {};
+		reset();
 	}
-	
+
 	@Test
 	public void testGetFileTypes() {
-		Assert.assertSame(FILE_TYPES, artifactCollector.getFileTypes());
+		Assert.assertNotNull(artifactCollector.getFileTypes());
 		Assert.assertEquals("getFileTypes", methodName);
 		Assert.assertArrayEquals(new Object[] {}, arguments);
 	}
 
-	private class TestArtifactCollector extends ArtifactCollector {
-		public Set<String> getFileTypes() {
-			methodName = "getFileTypes";
-			arguments = new Object[] {};
-			return FILE_TYPES;
-		}
+	private void reset() {
+		methodName = null;
+		arguments = null;
 	}
 	
 }
