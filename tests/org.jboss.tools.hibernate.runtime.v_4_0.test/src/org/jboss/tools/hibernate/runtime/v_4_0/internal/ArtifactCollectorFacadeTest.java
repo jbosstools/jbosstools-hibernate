@@ -56,6 +56,13 @@ public class ArtifactCollectorFacadeTest {
 		Assert.assertArrayEquals(new Object[] {}, arguments);
 	}
 
+	@Test
+	public void testFormatFiles() {
+		artifactCollector.formatFiles();
+		Assert.assertEquals("formatFiles", methodName);
+		Assert.assertArrayEquals(new Object[] {}, arguments);
+	}
+
 	private void reset() {
 		methodName = null;
 		arguments = null;
