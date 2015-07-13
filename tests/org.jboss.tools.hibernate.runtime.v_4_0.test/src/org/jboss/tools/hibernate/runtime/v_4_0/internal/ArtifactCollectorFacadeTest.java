@@ -63,6 +63,13 @@ public class ArtifactCollectorFacadeTest {
 		Assert.assertArrayEquals(new Object[] {}, arguments);
 	}
 
+	@Test
+	public void testGetFiles() {
+		Assert.assertNotNull(artifactCollector.getFiles("foobar"));
+		Assert.assertEquals("getFiles", methodName);
+		Assert.assertArrayEquals(new Object[] { "foobar" }, arguments);
+	}
+
 	private void reset() {
 		methodName = null;
 		arguments = null;
