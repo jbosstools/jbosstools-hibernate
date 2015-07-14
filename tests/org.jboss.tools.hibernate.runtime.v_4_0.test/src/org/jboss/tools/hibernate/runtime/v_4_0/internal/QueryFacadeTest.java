@@ -41,6 +41,12 @@ public class QueryFacadeTest {
 	}
 	
 	@Test
+	public void testList() {
+		query.list();
+		Assert.assertEquals("list", methodName);
+	}
+	
+	@Test
 	public void testSetParameterList() {
 		Type typeProxy = (Type)Proxy.newProxyInstance(
 				FACADE_FACTORY.getClassLoader(), 
