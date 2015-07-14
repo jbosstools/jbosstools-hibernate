@@ -54,6 +54,19 @@ public class QueryFacadeTest {
 	}
 	
 	@Test
+	public void testSetParameter() {
+		Type typeProxy = (Type)Proxy.newProxyInstance(
+				FACADE_FACTORY.getClassLoader(), 
+				new Class[] { Type.class }, 
+				new TypeInvocationHandler());
+		IType typeFacade = FACADE_FACTORY.createType(typeProxy);
+		Object object = new Object();
+		query.setParameter(Integer.MAX_VALUE, object, typeFacade);
+		Assert.assertEquals("setParameter", methodName);
+		Assert.assertArrayEquals(new Object[] { Integer.MAX_VALUE, object, typeProxy } , arguments);
+	}
+	
+	@Test
 	public void testSetParameterList() {
 		Type typeProxy = (Type)Proxy.newProxyInstance(
 				FACADE_FACTORY.getClassLoader(), 
