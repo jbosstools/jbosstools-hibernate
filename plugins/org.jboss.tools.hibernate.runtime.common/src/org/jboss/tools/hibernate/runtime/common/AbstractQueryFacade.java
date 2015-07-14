@@ -35,7 +35,7 @@ implements IQuery {
 				getTarget(), 
 				"setMaxResults", 
 				new Class[] { int.class }, 
-				new Object[] {});
+				new Object[] { value });
 	}
 
 	@Override

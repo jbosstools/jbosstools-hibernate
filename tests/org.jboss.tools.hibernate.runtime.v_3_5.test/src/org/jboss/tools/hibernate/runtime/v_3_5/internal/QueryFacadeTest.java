@@ -47,6 +47,13 @@ public class QueryFacadeTest {
 	}
 	
 	@Test
+	public void testSetMaxResults() {
+		query.setMaxResults(Integer.MAX_VALUE);
+		Assert.assertEquals("setMaxResults", methodName);
+		Assert.assertArrayEquals(new Object[] { Integer.MAX_VALUE }, arguments);
+	}
+	
+	@Test
 	public void testSetParameterList() {
 		Type typeProxy = (Type)Proxy.newProxyInstance(
 				FACADE_FACTORY.getClassLoader(), 
