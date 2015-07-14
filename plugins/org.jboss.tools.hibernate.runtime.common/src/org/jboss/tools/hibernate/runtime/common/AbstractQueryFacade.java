@@ -58,7 +58,7 @@ implements IQuery {
 	public void setParameterList(String name, List<Object> list, IType type) {
 		if (type instanceof IFacade) {
 			Object typeTarget = Util.invokeMethod(
-					getTarget(), 
+					type, 
 					"getTarget", 
 					new Class[] {}, 
 					new Object[] {});
