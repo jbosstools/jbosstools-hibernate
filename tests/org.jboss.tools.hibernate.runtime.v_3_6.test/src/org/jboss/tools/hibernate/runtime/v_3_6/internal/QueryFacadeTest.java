@@ -64,6 +64,11 @@ public class QueryFacadeTest {
 		query.setParameter(Integer.MAX_VALUE, object, typeFacade);
 		Assert.assertEquals("setParameter", methodName);
 		Assert.assertArrayEquals(new Object[] { Integer.MAX_VALUE, object, typeProxy } , arguments);
+		methodName = null;
+		arguments = null;
+		query.setParameter("foobar", object, typeFacade);
+		Assert.assertEquals("setParameter", methodName);
+		Assert.assertArrayEquals(new Object[] { "foobar", object, typeProxy }, arguments);
 	}
 	
 	@Test
