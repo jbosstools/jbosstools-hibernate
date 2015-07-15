@@ -44,10 +44,16 @@ public class Util {
 		} catch (NoSuchMethodException | 
 				SecurityException | 
 				IllegalAccessException | 
-				IllegalArgumentException | 
-				InvocationTargetException e) {
+				IllegalArgumentException e) {
 			HibernateRuntimeCommon.log(e);
 			throw new RuntimeException(e);
+		} catch (InvocationTargetException e) {
+			Throwable t = e.getCause();
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			} else {
+				throw new RuntimeException(t);
+			}
 		}
 		return result;
 	}
@@ -65,10 +71,16 @@ public class Util {
 		} catch (NoSuchMethodException | 
 				SecurityException | 
 				IllegalAccessException | 
-				IllegalArgumentException | 
-				InvocationTargetException e) {
+				IllegalArgumentException e) {
 			HibernateRuntimeCommon.log(e);
 			throw new RuntimeException(e);
+		} catch (InvocationTargetException e) {
+			Throwable t = e.getCause();
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			} else {
+				throw new RuntimeException(t);
+			}
 		}
 		return result;
 	}
