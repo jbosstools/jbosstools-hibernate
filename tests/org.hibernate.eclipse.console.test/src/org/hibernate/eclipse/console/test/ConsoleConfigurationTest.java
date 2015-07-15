@@ -25,6 +25,7 @@ import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
+import org.junit.Ignore;
 
 public class ConsoleConfigurationTest extends TestCase {
 
@@ -119,6 +120,7 @@ public class ConsoleConfigurationTest extends TestCase {
 		assertNotNull(qp);
 	}
 	
+	@Ignore
 	public void testHQLListParameters() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 		//fix for https://issues.jboss.org/browse/JBIDE-9392
 		//the view calls jdbc connection
