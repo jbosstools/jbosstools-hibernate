@@ -84,6 +84,13 @@ public class QueryFacadeTest {
 		Assert.assertArrayEquals(new Object[] { "foobar", dummyList, typeProxy }, arguments);
 	}
 	
+	@Test
+	public void testGetReturnAliases() {
+		query.getReturnAliases();
+		Assert.assertEquals("getReturnAliases", methodName);
+		Assert.assertNull(arguments);
+	}
+	
 	private class TypeInvocationHandler implements InvocationHandler {
 		@Override
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
