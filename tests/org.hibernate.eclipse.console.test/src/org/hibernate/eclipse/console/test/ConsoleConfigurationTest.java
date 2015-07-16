@@ -166,15 +166,11 @@ public class ConsoleConfigurationTest extends TestCase {
 		
 		QueryPage qp = consoleCfg.executeHQLQuery("select count(*) from java.awt.Button where 1 in ( ?, :a, :b )", model); //$NON-NLS-1$
 		assertNotNull(qp);
-		
-		
-		/** Comment out because of JBIDE-20256 -- experiment
 		try{
 			qp.getList();//execute the query
 		} catch (Exception e){
 			//ignore - there is fake mapping
 		}
-		**/
 	}
 
 
