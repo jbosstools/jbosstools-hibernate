@@ -19,6 +19,10 @@ public class QueryFacadeTest {
 
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 	
+	private static final String[] RETURN_ALIASES = new String[] { "foo", "bar" };
+	private static final Type[] RETURN_TYPES = new Type[] {};
+	private static final List<Object> LIST = Collections.emptyList();
+	
 	private String methodName = null;
 	private Object[] arguments = null;
 	
@@ -34,7 +38,13 @@ public class QueryFacadeTest {
 					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 						methodName = method.getName();
 						arguments = args;
-						return null;
+						if ("list".equals(method.getName())) {
+							return LIST;
+						} else if ("getReturnAliases".equals(method.getName())) {
+							return RETURN_ALIASES; 
+						} else if ("getReturnTypes".equals(method.getName())) {
+							return RETURN_TYPES;
+						} else return null;
 					}				
 				});
 		query = new AbstractQueryFacade(FACADE_FACTORY, queryProxy) {};
@@ -42,7 +52,7 @@ public class QueryFacadeTest {
 	
 	@Test
 	public void testList() {
-		query.list();
+		Assert.assertEquals(LIST, query.list());
 		Assert.assertEquals("list", methodName);
 	}
 	
@@ -86,8 +96,15 @@ public class QueryFacadeTest {
 	
 	@Test
 	public void testGetReturnAliases() {
-		query.getReturnAliases();
+		Assert.assertArrayEquals(RETURN_ALIASES, query.getReturnAliases());
 		Assert.assertEquals("getReturnAliases", methodName);
+		Assert.assertNull(arguments);
+	}
+	
+	@Test
+	public void testGetReturnTypes() {
+		Assert.assertNotNull(query.getReturnTypes());
+		Assert.assertEquals("getReturnTypes", methodName);
 		Assert.assertNull(arguments);
 	}
 	
