@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate.runtime.v_4_3.internal;
+package org.jboss.tools.hibernate.runtime.v_4_0.internal;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -21,7 +21,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-public class Cfg2HbmToolTest {
+public class Cfg2HbmToolFacadeTest {
 	
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 

@@ -1,5 +1,10 @@
-package org.jboss.tools.hibernate.runtime.v_3_5.internal;
+package org.jboss.tools.hibernate.runtime.v_3_6.internal;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+
+import org.hibernate.cfg.Mappings;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -16,7 +21,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-public class Cfg2HbmToolTest {
+public class Cfg2HbmToolFacadeTest {
 	
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 
@@ -34,16 +39,27 @@ public class Cfg2HbmToolTest {
 		Assert.assertEquals("class", cfg2HbmTool.getTag(persistentClass));
 	}
 	
-	public void testGetPropertyTag() {
+	public void testGetPropertyTag() throws Exception {
 		RootClass rc = new RootClass();
 		Property p = new Property();
-		SimpleValue sv = new SimpleValue();
+		Mappings m = (Mappings)Proxy.newProxyInstance(
+				FACADE_FACTORY.getClassLoader(), 
+				new Class[] { Mappings.class }, 
+				new TestInvocationHandler());
+		SimpleValue sv = new SimpleValue(m);
 		sv.setTypeName("foobar");
 		p.setValue(sv);
 		p.setPersistentClass(rc);
 		rc.setVersion(p);
 		IProperty property = new AbstractPropertyFacade(FACADE_FACTORY, p) {};
 		Assert.assertEquals("version", cfg2HbmTool.getTag(property));
+	}
+	
+	private class TestInvocationHandler implements InvocationHandler {
+		@Override
+		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+			return null;
+		}
 	}
 
 }
