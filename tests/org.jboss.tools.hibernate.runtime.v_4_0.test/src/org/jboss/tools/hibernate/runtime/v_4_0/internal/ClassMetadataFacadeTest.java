@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import org.hibernate.EntityMode;
 import org.hibernate.metadata.ClassMetadata;
 import org.jboss.tools.hibernate.runtime.common.AbstractClassMetadataFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
@@ -36,6 +37,15 @@ public class ClassMetadataFacadeTest {
 		Assert.assertNull(classMetadata.getMappedClass());
 		Assert.assertEquals("getMappedClass", methodName);
 		Assert.assertNull(arguments);
+	}
+	
+	@Test
+	public void testGetPropertyValue() {
+		Object object = new Object();
+		String name = "foobar";
+		Assert.assertNull(classMetadata.getPropertyValue(object, name));
+		Assert.assertEquals("getPropertyValue", methodName);
+		Assert.assertArrayEquals(new Object[] { object, name }, arguments);
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
