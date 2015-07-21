@@ -48,6 +48,13 @@ public class ClassMetadataFacadeTest {
 		Assert.assertArrayEquals(new Object[] { object, name }, arguments);
 	}
 	
+	@Test
+	public void testGetEntityName() {
+		Assert.assertNull(classMetadata.getEntityName());
+		Assert.assertEquals("getEntityName", methodName);
+		Assert.assertNull(arguments);
+	}
+	
 	private class TestInvocationHandler implements InvocationHandler {
 		@Override
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {

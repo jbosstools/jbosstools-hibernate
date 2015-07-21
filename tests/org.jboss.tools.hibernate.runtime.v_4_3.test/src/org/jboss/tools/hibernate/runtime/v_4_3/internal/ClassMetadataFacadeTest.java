@@ -39,6 +39,13 @@ public class ClassMetadataFacadeTest {
 	}
 	
 	@Test
+	public void testGetEntityName() {
+		Assert.assertNull(classMetadata.getEntityName());
+		Assert.assertEquals("getEntityName", methodName);
+		Assert.assertNull(arguments);
+	}
+	
+	@Test
 	public void testGetPropertyValue() {
 		Object object = new Object();
 		String name = "foobar";
