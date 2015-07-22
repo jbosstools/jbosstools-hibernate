@@ -6,8 +6,11 @@ import java.lang.reflect.Proxy;
 
 import org.hibernate.EntityMode;
 import org.hibernate.metadata.ClassMetadata;
+import org.hibernate.type.ShortType;
+import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
+import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -68,12 +71,29 @@ public class ClassMetadataFacadeTest {
 		Assert.assertNull(arguments);
 	}
 	
+	@Test
+	public void testGetPropertyTypes() {
+		IType[] propertyTypes = classMetadata.getPropertyTypes();
+		Assert.assertEquals(1, propertyTypes.length);
+		Assert.assertEquals("getPropertyTypes", methodName);
+		Assert.assertNull(arguments);
+		methodName = null;
+		propertyTypes = classMetadata.getPropertyTypes();
+		Assert.assertEquals(1, propertyTypes.length);
+		Assert.assertNull(methodName);
+		Assert.assertNull(arguments);
+	}
+	
 	private class TestInvocationHandler implements InvocationHandler {
 		@Override
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 			methodName = method.getName();
 			arguments = args;
-			return null;
+			if ("getPropertyTypes".equals(methodName)) {
+				return new Type[] { new ShortType() };
+			} else {
+				return null;
+			}
 		}
 		
 	}
