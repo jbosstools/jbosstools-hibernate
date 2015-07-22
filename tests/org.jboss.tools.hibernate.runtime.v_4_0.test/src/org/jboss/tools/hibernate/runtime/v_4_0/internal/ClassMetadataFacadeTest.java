@@ -3,8 +3,18 @@ package org.jboss.tools.hibernate.runtime.v_4_0.internal;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
 
+import org.hibernate.cfg.Configuration;
+import org.hibernate.engine.spi.SessionFactoryImplementor;
+import org.hibernate.mapping.Column;
+import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.SimpleValue;
+import org.hibernate.mapping.Table;
 import org.hibernate.metadata.ClassMetadata;
+import org.hibernate.persister.entity.SingleTableEntityPersister;
+import org.hibernate.service.ServiceRegistry;
+import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.type.ShortType;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.AbstractClassMetadataFacade;
@@ -93,6 +103,35 @@ public class ClassMetadataFacadeTest {
 		Assert.assertSame(identifierType, classMetadata.getIdentifierType());
 		Assert.assertNull(methodName);
 		Assert.assertNull(arguments);
+	}
+	
+	@Test
+	public void testIsInstanceOfAbstractEntityPersister() {
+		Assert.assertFalse(classMetadata.isInstanceOfAbstractEntityPersister());
+		// now create an instance of AbstractEntityPersister
+		Configuration configuration = new Configuration();
+		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+		ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
+		builder.applySettings(configuration.getProperties());
+		ServiceRegistry serviceRegistry = builder.buildServiceRegistry();
+		SessionFactoryImplementor sfi = (SessionFactoryImplementor)configuration.buildSessionFactory(serviceRegistry);
+		RootClass rc = new RootClass();
+		Table t = new Table("foobar");
+		rc.setTable(t);
+		Column c = new Column("foo");
+		t.addColumn(c);
+		ArrayList<Column> keyList = new ArrayList<>();
+		keyList.add(c);
+		t.createUniqueKey(keyList);
+		SimpleValue sv = new SimpleValue(configuration.createMappings());
+		sv.setNullValue("null");
+		sv.setTypeName(Integer.class.getName());
+		sv.addColumn(c);
+		rc.setEntityName("foobar");
+		rc.setIdentifier(sv);
+		SingleTableEntityPersister step = new SingleTableEntityPersister(rc, null, sfi, null);
+		classMetadata = new AbstractClassMetadataFacade(FACADE_FACTORY, step) {};
+		Assert.assertTrue(classMetadata.isInstanceOfAbstractEntityPersister());
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
