@@ -61,6 +61,13 @@ public class ClassMetadataFacadeTest {
 		Assert.assertNull(arguments);
 	}
 	
+	@Test
+	public void testGetPropertyNames() {
+		Assert.assertNull(classMetadata.getPropertyNames());
+		Assert.assertEquals("getPropertyNames", methodName);
+		Assert.assertNull(arguments);
+	}
+	
 	private class TestInvocationHandler implements InvocationHandler {
 		@Override
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
