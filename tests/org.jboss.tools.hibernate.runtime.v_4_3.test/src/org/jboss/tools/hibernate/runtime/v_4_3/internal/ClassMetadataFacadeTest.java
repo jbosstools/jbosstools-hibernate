@@ -39,19 +39,26 @@ public class ClassMetadataFacadeTest {
 	}
 	
 	@Test
-	public void testGetEntityName() {
-		Assert.assertNull(classMetadata.getEntityName());
-		Assert.assertEquals("getEntityName", methodName);
-		Assert.assertNull(arguments);
-	}
-	
-	@Test
 	public void testGetPropertyValue() {
 		Object object = new Object();
 		String name = "foobar";
 		Assert.assertNull(classMetadata.getPropertyValue(object, name));
 		Assert.assertEquals("getPropertyValue", methodName);
 		Assert.assertArrayEquals(new Object[] { object, name }, arguments);
+	}
+	
+	@Test
+	public void testGetIdentifierPropertyName() {
+		Assert.assertNull(classMetadata.getIdentifierPropertyName());
+		Assert.assertEquals("getIdentifierPropertyName", methodName);
+		Assert.assertNull(arguments);
+	}
+	
+	@Test
+	public void testGetEntityName() {
+		Assert.assertNull(classMetadata.getEntityName());
+		Assert.assertEquals("getEntityName", methodName);
+		Assert.assertNull(arguments);
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {

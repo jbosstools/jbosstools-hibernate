@@ -4,7 +4,6 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import org.hibernate.EntityMode;
 import org.hibernate.metadata.ClassMetadata;
 import org.jboss.tools.hibernate.runtime.common.AbstractClassMetadataFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
@@ -52,6 +51,13 @@ public class ClassMetadataFacadeTest {
 	public void testGetEntityName() {
 		Assert.assertNull(classMetadata.getEntityName());
 		Assert.assertEquals("getEntityName", methodName);
+		Assert.assertNull(arguments);
+	}
+	
+	@Test
+	public void testGetIdentifierPropertyName() {
+		Assert.assertNull(classMetadata.getIdentifierPropertyName());
+		Assert.assertEquals("getIdentifierPropertyName", methodName);
 		Assert.assertNull(arguments);
 	}
 	
