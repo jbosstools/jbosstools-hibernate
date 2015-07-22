@@ -78,8 +78,19 @@ public class ClassMetadataFacadeTest {
 		Assert.assertEquals("getPropertyTypes", methodName);
 		Assert.assertNull(arguments);
 		methodName = null;
-		propertyTypes = classMetadata.getPropertyTypes();
-		Assert.assertEquals(1, propertyTypes.length);
+		Assert.assertSame(propertyTypes, classMetadata.getPropertyTypes());
+		Assert.assertNull(methodName);
+		Assert.assertNull(arguments);
+	}
+	
+	@Test
+	public void testGetIdentifierType() {
+		IType identifierType = classMetadata.getIdentifierType();
+		Assert.assertNotNull(identifierType);
+		Assert.assertEquals("getIdentifierType", methodName);
+		Assert.assertNull(arguments);
+		methodName = null;
+		Assert.assertSame(identifierType, classMetadata.getIdentifierType());
 		Assert.assertNull(methodName);
 		Assert.assertNull(arguments);
 	}
@@ -91,6 +102,8 @@ public class ClassMetadataFacadeTest {
 			arguments = args;
 			if ("getPropertyTypes".equals(methodName)) {
 				return new Type[] { new ShortType() };
+			} else if ("getIdentifierType".equals(methodName)) {
+				return new ShortType();
 			} else {
 				return null;
 			}
