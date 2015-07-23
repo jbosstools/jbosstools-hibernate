@@ -80,7 +80,13 @@ public class DTDEntityResolver implements EntityResolver, Serializable {
 	}
 
 	protected InputStream resolveInHibernateNamespace(String path) {
-		return this.getClass().getClassLoader().getResourceAsStream( path );
+		ClassLoader cl = null;
+		if (service != null) {
+			cl = service.getClassLoader();
+		} else {
+			cl = Thread.currentThread().getContextClassLoader();
+		}
+		return cl.getResourceAsStream( path );
 	}
 
 	protected InputStream resolveInLocalNamespace(String path) {
