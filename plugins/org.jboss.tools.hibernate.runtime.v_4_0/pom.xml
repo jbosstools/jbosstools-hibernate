@@ -13,10 +13,10 @@
 
 	<properties>
 		<commons-logging.version>1.1.1</commons-logging.version>
-		<hibernate.version>4.0.0.Final</hibernate.version>
+		<hibernate.version>4.0.1.Final</hibernate.version>
 		<hibernate-commons-annotations.version>4.0.1.Final</hibernate-commons-annotations.version>
 		<hibernate-jpa-2.0-api.version>1.0.1.Final</hibernate-jpa-2.0-api.version>
-		<hibernate-tools.version>4.0.0-CR1</hibernate-tools.version>
+		<hibernate-tools.version>4.0.0.Final</hibernate-tools.version>
 		<jboss-logging.version>3.1.0.CR2</jboss-logging.version>
 		<jboss-transaction-api_1.1_spec.version>1.0.0.Final</jboss-transaction-api_1.1_spec.version>
 		<javassist.version>3.12.1.GA</javassist.version>
