@@ -108,7 +108,11 @@ public class ClassMetadataFacadeTest {
 	@Test
 	public void testIsInstanceOfAbstractEntityPersister() {
 		Assert.assertFalse(classMetadata.isInstanceOfAbstractEntityPersister());
-		// now create an instance of AbstractEntityPersister
+		classMetadata = createIsInstanceOfAbstractEntityPersister();
+		Assert.assertTrue(classMetadata.isInstanceOfAbstractEntityPersister());
+	}
+	
+	private IClassMetadata createIsInstanceOfAbstractEntityPersister() {
 		Configuration configuration = new Configuration();
 		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
@@ -130,8 +134,7 @@ public class ClassMetadataFacadeTest {
 		rc.setEntityName("foobar");
 		rc.setIdentifier(sv);
 		SingleTableEntityPersister step = new SingleTableEntityPersister(rc, null, null, sfi, null);
-		classMetadata = new AbstractClassMetadataFacade(FACADE_FACTORY, step) {};
-		Assert.assertTrue(classMetadata.isInstanceOfAbstractEntityPersister());
+		return new AbstractClassMetadataFacade(FACADE_FACTORY, step) {};
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {

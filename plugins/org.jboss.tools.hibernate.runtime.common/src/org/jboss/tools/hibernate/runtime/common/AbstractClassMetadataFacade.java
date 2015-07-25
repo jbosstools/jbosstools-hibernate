@@ -98,11 +98,14 @@ implements IClassMetadata {
 	
 	@Override
 	public IEntityMetamodel getEntityMetamodel() {
-		Object entityMetamodel = Util.invokeMethod(
+		Object entityMetamodel = null;
+		if (isInstanceOfAbstractEntityPersister()) {
+			entityMetamodel = Util.invokeMethod(
 				getTarget(), 
 				"getEntityMetamodel", 
 				new Class[] {}, 
 				new Object[] {});
+		}
 		return entityMetamodel != null ? 
 				getFacadeFactory().createEntityMetamodel(entityMetamodel) : 
 					null;

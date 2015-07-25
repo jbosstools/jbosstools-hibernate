@@ -108,7 +108,11 @@ public class ClassMetadataFacadeTest {
 	@Test
 	public void testIsInstanceOfAbstractEntityPersister() {
 		Assert.assertFalse(classMetadata.isInstanceOfAbstractEntityPersister());
-		// now create an instance of AbstractEntityPersister
+		classMetadata = createInstanceOfAbstractEntityPersister();
+		Assert.assertTrue(classMetadata.isInstanceOfAbstractEntityPersister());
+	}
+	
+	private IClassMetadata createInstanceOfAbstractEntityPersister() {
 		Configuration configuration = new Configuration();
 		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 		SessionFactoryImplementor sfi = new SessionFactoryImpl(configuration, null, configuration.buildSettings(), null, null);
@@ -127,8 +131,7 @@ public class ClassMetadataFacadeTest {
 		rc.setEntityName("foobar");
 		rc.setIdentifier(sv);
 		SingleTableEntityPersister step = new SingleTableEntityPersister(rc, null, sfi, null);
-		classMetadata = new AbstractClassMetadataFacade(FACADE_FACTORY, step) {};
-		Assert.assertTrue(classMetadata.isInstanceOfAbstractEntityPersister());
+		return new AbstractClassMetadataFacade(FACADE_FACTORY, step) {};	
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
