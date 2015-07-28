@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import org.hibernate.HibernateException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
+import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
@@ -21,8 +22,10 @@ import org.hibernate.tuple.entity.EntityMetamodel;
 import org.hibernate.type.ShortType;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.AbstractClassMetadataFacade;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
+import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.junit.Assert;
 import org.junit.Before;
@@ -129,6 +132,28 @@ public class ClassMetadataFacadeTest {
 		Assert.assertEquals("getEntityMetamodel", methodName);
 	}
 	
+	@Test
+	public void testGetIdentifier() {
+		ClassLoader cl = FACADE_FACTORY.getClassLoader();
+		final SessionImplementor sessionTarget = (SessionImplementor)Proxy.newProxyInstance(
+				cl, 
+				new Class[] { SessionImplementor.class }, 
+				new TestInvocationHandler()); 
+		ISession session = (ISession)Proxy.newProxyInstance(
+				cl, 
+				new Class[] { ISession.class,  IFacade.class }, 
+				new InvocationHandler() {
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+						return sessionTarget;
+					}					
+				});
+		Object object = Integer.MAX_VALUE;
+		Assert.assertSame(object, classMetadata.getIdentifier(object , session));
+		Assert.assertEquals("getIdentifier", methodName);
+		Assert.assertArrayEquals(new Object[] { object, sessionTarget },  arguments);
+	}
+	
 	private TestEntityPersister createSampleEntityPersister() {
 		Configuration configuration = new Configuration();
 		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
@@ -182,6 +207,8 @@ public class ClassMetadataFacadeTest {
 				return new Type[] { new ShortType() };
 			} else if ("getIdentifierType".equals(methodName)) {
 				return new ShortType();
+			} else if ("getIdentifier".equals(methodName)) {
+				return args[0];
 			} else {
 				return null;
 			}
