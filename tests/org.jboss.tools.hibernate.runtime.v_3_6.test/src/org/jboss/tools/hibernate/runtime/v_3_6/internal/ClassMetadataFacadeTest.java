@@ -40,6 +40,7 @@ public class ClassMetadataFacadeTest {
 	private Object[] arguments = null;
 
 	private IClassMetadata classMetadata = null; 
+	private boolean hasIdentifierProperty = false;
 	
 	@Before
 	public void setUp() {
@@ -154,6 +155,15 @@ public class ClassMetadataFacadeTest {
 		Assert.assertArrayEquals(new Object[] { object, sessionTarget },  arguments);
 	}
 	
+	public void testHasIdentifierProperty() {
+		hasIdentifierProperty = true;
+		Assert.assertTrue(classMetadata.hasIdentifierProperty());
+		hasIdentifierProperty = false;
+		Assert.assertFalse(hasIdentifierProperty);
+		Assert.assertEquals("hasIdentifierProperty", methodName);
+		Assert.assertNull(arguments);
+	}
+	
 	private TestEntityPersister createSampleEntityPersister() {
 		Configuration configuration = new Configuration();
 		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
@@ -206,6 +216,8 @@ public class ClassMetadataFacadeTest {
 				return new ShortType();
 			} else if ("getIdentifier".equals(methodName)) {
 				return args[0];
+			} else if ("hasIdentifierProperty".equals(methodName)) {
+				return hasIdentifierProperty;
 			} else {
 				return null;
 			}
