@@ -5,16 +5,19 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 
+import org.hibernate.HibernateException;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.persister.entity.SingleTableEntityPersister;
 import org.hibernate.service.ServiceRegistry;
+import org.hibernate.tuple.entity.EntityMetamodel;
 import org.hibernate.type.ShortType;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.AbstractClassMetadataFacade;
@@ -108,11 +111,25 @@ public class ClassMetadataFacadeTest {
 	@Test
 	public void testIsInstanceOfAbstractEntityPersister() {
 		Assert.assertFalse(classMetadata.isInstanceOfAbstractEntityPersister());
-		classMetadata = createIsInstanceOfAbstractEntityPersister();
+		classMetadata = new AbstractClassMetadataFacade(FACADE_FACTORY, createSampleEntityPersister()) {};
 		Assert.assertTrue(classMetadata.isInstanceOfAbstractEntityPersister());
 	}
 	
-	private IClassMetadata createIsInstanceOfAbstractEntityPersister() {
+	@Test 
+	public void testGetEntityMetaModel() {
+		Assert.assertNull(classMetadata.getEntityMetamodel());
+		Assert.assertNull(methodName);
+		TestEntityPersister entityPersister = createSampleEntityPersister();
+		classMetadata = new AbstractClassMetadataFacade(FACADE_FACTORY, entityPersister) {};
+		Assert.assertNull(classMetadata.getEntityMetamodel());
+		Assert.assertEquals("getEntityMetamodel", methodName);
+		entityPersister.initializeEntityMetamodel();
+		methodName = null;
+		Assert.assertNotNull(classMetadata.getEntityMetamodel());
+		Assert.assertEquals("getEntityMetamodel", methodName);
+	}
+	
+	private TestEntityPersister createSampleEntityPersister() {
 		Configuration configuration = new Configuration();
 		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
@@ -133,8 +150,27 @@ public class ClassMetadataFacadeTest {
 		sv.addColumn(c);
 		rc.setEntityName("foobar");
 		rc.setIdentifier(sv);
-		SingleTableEntityPersister step = new SingleTableEntityPersister(rc, null, null, sfi, null);
-		return new AbstractClassMetadataFacade(FACADE_FACTORY, step) {};
+		return new TestEntityPersister(rc, sfi);
+	}
+	
+	private class TestEntityPersister extends SingleTableEntityPersister {
+		private EntityMetamodel entityMetaModel;
+		private PersistentClass persistentClass;
+		private SessionFactoryImplementor sessionFactoryImplementor;
+		public TestEntityPersister(
+				PersistentClass pc, 
+				SessionFactoryImplementor sfi) throws HibernateException {
+			super(pc, null, null, sfi, null);
+			persistentClass = pc;
+			sessionFactoryImplementor = sfi;
+		}
+		void initializeEntityMetamodel() {
+			entityMetaModel = new EntityMetamodel(persistentClass, this, sessionFactoryImplementor);
+		}
+		@Override public EntityMetamodel getEntityMetamodel() {
+			methodName = "getEntityMetamodel";
+			return entityMetaModel;
+		}
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
