@@ -21,7 +21,6 @@ import org.hibernate.persister.entity.SingleTableEntityPersister;
 import org.hibernate.tuple.entity.EntityMetamodel;
 import org.hibernate.type.ShortType;
 import org.hibernate.type.Type;
-import org.jboss.tools.hibernate.runtime.common.AbstractClassMetadataFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
@@ -115,7 +114,7 @@ public class ClassMetadataFacadeTest {
 	@Test
 	public void testIsInstanceOfAbstractEntityPersister() {
 		Assert.assertFalse(classMetadata.isInstanceOfAbstractEntityPersister());
-		classMetadata = new AbstractClassMetadataFacade(FACADE_FACTORY, createSampleEntityPersister()) {};
+		classMetadata = new ClassMetadataFacadeImpl(FACADE_FACTORY, createSampleEntityPersister()) {};
 		Assert.assertTrue(classMetadata.isInstanceOfAbstractEntityPersister());
 	}
 	
@@ -124,7 +123,7 @@ public class ClassMetadataFacadeTest {
 		Assert.assertNull(classMetadata.getEntityMetamodel());
 		Assert.assertNull(methodName);
 		TestEntityPersister entityPersister = createSampleEntityPersister();
-		classMetadata = new AbstractClassMetadataFacade(FACADE_FACTORY, entityPersister) {};
+		classMetadata = new ClassMetadataFacadeImpl(FACADE_FACTORY, entityPersister) {};
 		Assert.assertNull(classMetadata.getEntityMetamodel());
 		Assert.assertEquals("getEntityMetamodel", methodName);
 		entityPersister.initializeEntityMetamodel();
