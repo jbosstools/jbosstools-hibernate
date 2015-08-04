@@ -21,6 +21,8 @@
  */
 package org.hibernate.eclipse.console.wizards;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Properties;
 
 import org.eclipse.core.resources.IResource;
@@ -54,6 +56,7 @@ import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.hibernate.console.ConnectionProfileUtil;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.DriverClassHelpers;
+import org.jboss.tools.hibernate.runtime.spi.ServiceLookup;
 
 /**
  * Wizard for creating basic hibernate.cfg.xml
@@ -66,6 +69,9 @@ public class NewConfigurationWizardPage extends WizardPage {
 
     private Label fileText;
 
+    private Combo hibernateVersionCombo;
+    private String hibernateVersion;
+    
     private Text sessionFactoryNameText;
 
     private Combo dialectCombo;
@@ -101,6 +107,13 @@ public class NewConfigurationWizardPage extends WizardPage {
         setTitle(HibernateConsoleMessages.NewConfigurationWizardPage_hibernate_config_file);
         setDescription(HibernateConsoleMessages.NewConfigurationWizardPage_this_wizard_creates);
     }
+    
+    private static final Comparator<String> STRING_REVERSE_ALPHABETICAL = new Comparator<String>() {
+    	@Override
+    	public int compare(String s1, String s2) {
+    		return s2.compareTo(s1);
+    	}		
+    };
 
     /**
      * @see IDialogPage#createControl(Composite)
@@ -150,6 +163,15 @@ public class NewConfigurationWizardPage extends WizardPage {
         gd = new GridData(GridData.FILL_HORIZONTAL);
         fileText.setLayoutData(gd);
 
+        Label hLabel = new Label(container, SWT.NULL);
+        hLabel.setText(HibernateConsoleMessages.NewConfigurationWizardPage_file_hibernate_version);
+        	
+        hibernateVersionCombo = new Combo(container, SWT.READ_ONLY);
+        String[] versions = ServiceLookup.getVersions();
+        Arrays.sort(versions, STRING_REVERSE_ALPHABETICAL);
+        hibernateVersionCombo.setItems(versions);
+        hibernateVersionCombo.select(0);
+    
         label = new Label(container, SWT.NULL);
         label.setText(HibernateConsoleMessages.NewConfigurationWizardPage_session_factory_name);
         sessionFactoryNameText = new Text(container, SWT.BORDER | SWT.SINGLE);
@@ -460,6 +482,13 @@ public class NewConfigurationWizardPage extends WizardPage {
 		this.defaultConnectionProfile = selectedConnectionName;
 	}
 	
+    public void saveHibernateVersion() {
+    	hibernateVersion = hibernateVersionCombo.getText();		
+    }
+    
+    public String getHibernateVersion() {
+    	return hibernateVersion;
+    }
     
     private void fillPropertiesFromConnectionProfile(String cpName){
 		IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(cpName);

@@ -201,6 +201,7 @@ public class HibernateConsoleMessages extends NLS {
 	public static String NewConfigurationWizardPage_file_container_must_be_specified;
 	public static String NewConfigurationWizardPage_file_container_must_exist;
 	public static String NewConfigurationWizardPage_file_extension_should_be_cfgxml;
+	public static String NewConfigurationWizardPage_file_hibernate_version;
 	public static String NewConfigurationWizardPage_file_name;
 	public static String NewConfigurationWizardPage_file_name_must_be_specified;
 	public static String NewConfigurationWizardPage_file_name_must_be_valid;

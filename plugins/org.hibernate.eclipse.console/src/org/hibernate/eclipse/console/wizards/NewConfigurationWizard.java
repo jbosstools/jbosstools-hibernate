@@ -183,6 +183,8 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 	 * using wizard as execution context.
 	 */
 	public boolean performFinish() {
+	    connectionInfoPage.saveHibernateVersion();
+		
 		final Properties props = new Properties();
 		putIfNotNull(props, "hibernate.session_factory_name", connectionInfoPage.getSessionFactoryName() ); //$NON-NLS-1$
 		putIfNotNull(props, "hibernate.dialect", connectionInfoPage.getDialect() ); //$NON-NLS-1$
@@ -192,7 +194,6 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
         putIfNotNull(props, "hibernate.connection.url", connectionInfoPage.getConnectionURL() ); //$NON-NLS-1$
         putIfNotNull(props, "hibernate.connection.username", connectionInfoPage.getUsername() ); //$NON-NLS-1$
         putIfNotNull(props, "hibernate.connection.password", connectionInfoPage.getPassword() ); //$NON-NLS-1$
-
 		
         final IFile file = cPage.createNewFile();
 
@@ -293,9 +294,7 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 	 */
 	private InputStream openContentStream(Properties props) {
         StringWriter stringWriter = new StringWriter();
-        // lookup the hibernate 3.5 service by default
-        // TODO offer user choice of hibernate version here?
-        IService service = ServiceLookup.findService("3.5"); //$NON-NLS-1$
+        IService service = ServiceLookup.findService(connectionInfoPage.getHibernateVersion()); //$NON-NLS-1$
         IExporter hce = service.createExporter("org.hibernate.tool.hbm2x.HibernateConfigurationExporter"); //$NON-NLS-1$
  		hce.setCustomProperties(props);
 		hce.setOutput(stringWriter);
