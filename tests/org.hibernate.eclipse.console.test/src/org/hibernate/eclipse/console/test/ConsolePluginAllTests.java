@@ -21,7 +21,7 @@ public class ConsolePluginAllTests {
 				ConsoleTestMessages.ConsolePluginAllTests_test_for );
 
 		suite.addTestSuite(KnownConfigurationsTest.class);
-//		suite.addTestSuite(QueryParametersTest.class);
+		suite.addTestSuite(QueryParametersTest.class);
 //		suite.addTestSuite(PerspectiveTest.class);
 //		suite.addTestSuite(ConsoleConfigurationTest.class);
 //		suite.addTestSuite(JavaFormattingTest.class);
