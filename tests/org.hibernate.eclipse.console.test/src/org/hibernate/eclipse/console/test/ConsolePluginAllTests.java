@@ -29,8 +29,8 @@ public class ConsolePluginAllTests {
 		suite.addTestSuite(HQLEditorTest.class);
 		suite.addTestSuite(CriteriaEditorTest.class);
 		
-		suite.addTestSuite(MappingTestsCore.class);
-//		suite.addTestSuite(MappingTestsJpa.class);
+//		suite.addTestSuite(MappingTestsCore.class);
+		suite.addTestSuite(MappingTestsJpa.class);
 //		suite.addTestSuite(MappingTestsAnnotations.class);
 //		suite.addTestSuite(HQLEditorPreferencePageTest.class);
 		
