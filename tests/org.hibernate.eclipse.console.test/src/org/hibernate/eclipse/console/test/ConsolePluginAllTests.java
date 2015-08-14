@@ -22,7 +22,7 @@ public class ConsolePluginAllTests {
 
 		suite.addTestSuite(KnownConfigurationsTest.class);
 		suite.addTestSuite(QueryParametersTest.class);
-//		suite.addTestSuite(PerspectiveTest.class);
+		suite.addTestSuite(PerspectiveTest.class);
 //		suite.addTestSuite(ConsoleConfigurationTest.class);
 //		suite.addTestSuite(JavaFormattingTest.class);
 //		suite.addTestSuite(RefactoringTest.class);
