@@ -27,7 +27,7 @@ public class ConsolePluginAllTests {
 		suite.addTestSuite(JavaFormattingTest.class);
 		suite.addTestSuite(RefactoringTest.class);
 		suite.addTestSuite(HQLEditorTest.class);
-//		suite.addTestSuite(CriteriaEditorTest.class);
+		suite.addTestSuite(CriteriaEditorTest.class);
 		
 //		suite.addTestSuite(MappingTestsCore.class);
 //		suite.addTestSuite(MappingTestsJpa.class);
