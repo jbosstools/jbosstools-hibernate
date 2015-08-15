@@ -64,6 +64,8 @@ public abstract class MappingTestsBase extends TestCase {
 		super.setUp();
 		
 		testProject = new ConfigurableTestProject("JUnitTestProj" + System.currentTimeMillis()); //$NON-NLS-1$
+		
+		System.out.println("TestProject '" + testProject.getIProject().getName() + "' was sucesfully created.");
 
 		consoleConfigName = testProject.getIProject().getName();
 		testPackage = null;		

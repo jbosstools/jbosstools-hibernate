@@ -31,8 +31,10 @@ public class MappingTestsJpa extends MappingTestsBase {
 	}
 
 	protected void setUpConsoleConfig() throws Exception {
+		System.out.println("Setting up console config.");
 		ConsoleConfigUtils.createJpaConsoleConfig(consoleConfigName, 
 				testProject.getIProject().getName(), "PetClinic"); //$NON-NLS-1$
+		System.out.println("Console config set up succesfully.");
 	}
 
 	public static final String jpaMarkerStr = TestProject.SRC_FOLDER + File.separator + "jpa"; //$NON-NLS-1$
