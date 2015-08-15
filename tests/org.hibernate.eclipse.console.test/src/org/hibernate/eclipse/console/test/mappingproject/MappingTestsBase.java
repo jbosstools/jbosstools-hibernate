@@ -88,9 +88,7 @@ public abstract class MappingTestsBase extends TestCase {
 		setUpConsoleConfig();
 
 		ProjectUtils.toggleHibernateOnProject(testProject.getIProject(), true, consoleConfigName);
-		System.out.println("About to build test project.");
 		testProject.fullBuild();
-		System.out.println("MappingTestsBase.setUp() finished succesfully.");
 	}
 
 	abstract protected void setUpConsoleConfig() throws Exception;
@@ -122,9 +120,10 @@ public abstract class MappingTestsBase extends TestCase {
 	public void allTestsRunForProject() throws CoreException {
 		System.out.println("Starting MappingTestsBase.allTestsRunForProject()");
 		testProject.fullBuild();
-		System.out.println("Test project built succesfully (again!).");
 		IPackageFragmentRoot[] roots = testProject.getIJavaProject().getAllPackageFragmentRoots();
+		System.out.println("About to execute roots loop; total amount of package fragment roots: " + roots.length);
 		for (int i = 0; i < roots.length; i++) {
+			System.out.println("root looop execution: " + (i+1));
 	    	if (roots[i].getClass() != PackageFragmentRoot.class) {
 	    		continue;
 	    	}
