@@ -123,24 +123,31 @@ public abstract class MappingTestsBase extends TestCase {
 		IPackageFragmentRoot[] roots = testProject.getIJavaProject().getAllPackageFragmentRoots();
 		System.out.println("About to execute roots loop; total amount of package fragment roots: " + roots.length);
 		for (int i = 0; i < roots.length; i++) {
-			System.out.println("root looop execution: " + (i+1));
+			System.out.println("root loop execution: " + (i+1));
 	    	if (roots[i].getClass() != PackageFragmentRoot.class) {
+	    		System.out.println("abandoning root loop");
 	    		continue;
 	    	}
 			PackageFragmentRoot packageFragmentRoot = (PackageFragmentRoot) roots[i];
 			IJavaElement[] els = packageFragmentRoot.getChildren();
+			System.out.println("About to execute java elements loop; total amount of elements: " + els.length);
 			for (int j = 0; j < els.length; j++) {
+				System.out.println("elements loop execution: " + (j+1));
 				IJavaElement javaElement = els[j];
 				if (!(javaElement instanceof IPackageFragment)) {
+					System.out.println("Abandoning elements loop");
 					continue;
 				}
 				testPackage = (IPackageFragment)javaElement;
+				System.out.println("Package to test: " + testPackage.getElementName());
 				// use packages only with compilation units
 				if (testPackage.getCompilationUnits().length == 0) {
+					System.out.println("Abandoning elements loop because of no compilation units");
 					continue;
 				}
 				if (Customization.U_TEST_PACKS_PATTERN) {
 					if (!Pattern.matches(Customization.TEST_PACKS_PATTERN, javaElement.getElementName())) {
+						System.out.println("Abandoning elements loop because of no match");
 						continue;
 					}
 				}
@@ -149,7 +156,9 @@ public abstract class MappingTestsBase extends TestCase {
 				int prev_failCount = result.failureCount();
 				int prev_errCount = result.errorCount();
 				//
+				System.out.println("About to create test suite.");
 				TestSuite suite = TestSet.createTestSuite(consoleConfigName, testPackage, testProject);
+				System.out.println("Test suite created succesfully");
 				//
 				customizeCfgXml(testPackage);
 				//==============================
