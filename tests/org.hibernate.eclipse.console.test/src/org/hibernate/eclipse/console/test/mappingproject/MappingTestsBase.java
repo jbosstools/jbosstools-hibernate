@@ -120,7 +120,9 @@ public abstract class MappingTestsBase extends TestCase {
 	 * @throws CoreException
 	 */
 	public void allTestsRunForProject() throws CoreException {
+		System.out.println("Starting MappingTestsBase.allTestsRunForProject()");
 		testProject.fullBuild();
+		System.out.println("Test project built succesfully (again!).");
 		IPackageFragmentRoot[] roots = testProject.getIJavaProject().getAllPackageFragmentRoots();
 		for (int i = 0; i < roots.length; i++) {
 	    	if (roots[i].getClass() != PackageFragmentRoot.class) {
