@@ -65,8 +65,6 @@ public abstract class MappingTestsBase extends TestCase {
 		
 		testProject = new ConfigurableTestProject("JUnitTestProj" + System.currentTimeMillis()); //$NON-NLS-1$
 		
-		System.out.println("TestProject '" + testProject.getIProject().getName() + "' was sucesfully created.");
-
 		consoleConfigName = testProject.getIProject().getName();
 		testPackage = null;		
 
@@ -90,7 +88,9 @@ public abstract class MappingTestsBase extends TestCase {
 		setUpConsoleConfig();
 
 		ProjectUtils.toggleHibernateOnProject(testProject.getIProject(), true, consoleConfigName);
+		System.out.println("About to build test project.");
 		testProject.fullBuild();
+		System.out.println("MappingTestsBase.setUp() finished succesfully.");
 	}
 
 	abstract protected void setUpConsoleConfig() throws Exception;
