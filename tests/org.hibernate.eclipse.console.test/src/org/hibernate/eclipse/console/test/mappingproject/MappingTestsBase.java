@@ -166,9 +166,13 @@ public abstract class MappingTestsBase extends TestCase {
 				/** /
 				suite.run(result);
 				/**/
+				System.out.println("About to execute test loop execution");
 				for (int k = 0; k < suite.testCount(); k++) {
+					System.out.println("test loop execution: " + (k+1));
 					Test test = suite.testAt(k);
+					System.out.println("about to run test: " + test.getClass().getName());
 					test.run(result);
+					System.out.println("test '" + test.getClass().getName() + "' executed succesfully");
 					closeAllEditors();
 				}
 				/**/
