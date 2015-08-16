@@ -31,9 +31,9 @@ public abstract class HibernateConsoleTest extends TestCase {
 
 
 		waitForJobs();
-//		PlatformUI.getWorkbench()
-//				.getActiveWorkbenchWindow().getActivePage().setPerspective(
-//						PlatformUI.getWorkbench().getPerspectiveRegistry().findPerspectiveWithId(HibernateConsolePerspectiveFactory.ID_CONSOLE_PERSPECTIVE));
+		PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage().setPerspective(
+						PlatformUI.getWorkbench().getPerspectiveRegistry().findPerspectiveWithId(HibernateConsolePerspectiveFactory.ID_CONSOLE_PERSPECTIVE));
 
 
 		IPackagesViewPart packageExplorer = null;
