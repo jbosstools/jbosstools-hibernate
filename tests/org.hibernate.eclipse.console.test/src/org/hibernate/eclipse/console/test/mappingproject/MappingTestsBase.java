@@ -198,9 +198,12 @@ public abstract class MappingTestsBase extends TestCase {
 	abstract public void testEachPackWithTestSet() throws CoreException, IOException;
 
 	protected void customizeCfgXml(IPackageFragment pack) {
+		System.out.println("Executing MappingTestsBase.customizeCfgXml()");
 		assertNotNull(pack);
 		try {
+			System.out.println("About to customize CfgXml for pack: " + pack.getElementName());
 			ConsoleConfigUtils.customizeCfgXmlForPack(pack);
+			System.out.println("CfgXml for pack '" + pack.getElementName() + "' customized succesfully.");
 		} catch (CoreException e) {
 			String out = NLS.bind(ConsoleTestMessages.UpdateConfigurationTest_error_customising_file_for_package,
 					new Object[] { ConsoleConfigUtils.CFG_FILE_NAME, pack.getPath(), e.getMessage() } );
