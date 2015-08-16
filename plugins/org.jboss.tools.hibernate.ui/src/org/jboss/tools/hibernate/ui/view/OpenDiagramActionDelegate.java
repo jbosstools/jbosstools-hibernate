@@ -22,6 +22,7 @@ import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IObjectActionDelegate;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
@@ -109,7 +110,12 @@ public class OpenDiagramActionDelegate implements IObjectActionDelegate {
 	public IEditorPart openEditor(IPersistentClass persClass,
 			ConsoleConfiguration consoleConfig) throws PartInitException {
 		DiagramEditorInput input = new DiagramEditorInput(consoleConfig.getName(), persClass.getRootClass());
-		return IDE.openEditor(UiPlugin.getPage(), input, "org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer");		//$NON-NLS-1$
+		System.out.println("succesfully obtained DiagramEditorInput: " + input.getName());
+		IWorkbenchPage page = UiPlugin.getPage();
+		System.out.println("succesfully obtained IWorkbenchPage: " + page.getLabel());
+		IEditorPart result = IDE.openEditor(UiPlugin.getPage(), input, "org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer");		//$NON-NLS-1$
+		System.out.println("succesfully obtained IEditorPart: " + result.getTitle());
+		return result;
 	}
 
 	public IEditorPart openEditor(Set<IPersistentClass> setPC, ConsoleConfiguration consoleConfig) throws PartInitException {
