@@ -113,7 +113,8 @@ public class OpenDiagramActionDelegate implements IObjectActionDelegate {
 		System.out.println("succesfully obtained DiagramEditorInput: " + input.getName());
 		IWorkbenchPage page = UiPlugin.getPage();
 		System.out.println("succesfully obtained IWorkbenchPage: " + page.getLabel());
-		IEditorPart result = IDE.openEditor(UiPlugin.getPage(), input, "org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer");		//$NON-NLS-1$
+		IEditorPart result = page.openEditor(input, "org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer");
+//		IEditorPart result = IDE.openEditor(UiPlugin.getPage(), input, "org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer");		//$NON-NLS-1$
 		System.out.println("succesfully obtained IEditorPart: " + result.getTitle());
 		return result;
 	}
