@@ -22,26 +22,26 @@ public class ConsolePluginAllTests {
 
 		suite.addTestSuite(KnownConfigurationsTest.class);
 		suite.addTestSuite(QueryParametersTest.class);
-//		suite.addTestSuite(PerspectiveTest.class);
+		suite.addTestSuite(PerspectiveTest.class);
 		suite.addTestSuite(ConsoleConfigurationTest.class);
 		suite.addTestSuite(JavaFormattingTest.class);
 		suite.addTestSuite(RefactoringTest.class);
 		suite.addTestSuite(HQLEditorTest.class);
 		suite.addTestSuite(CriteriaEditorTest.class);
 		
-//		suite.addTestSuite(MappingTestsCore.class);
+		suite.addTestSuite(MappingTestsCore.class);
 		suite.addTestSuite(MappingTestsJpa.class);
-//		suite.addTestSuite(MappingTestsAnnotations.class);
-//		suite.addTestSuite(HQLEditorPreferencePageTest.class);
+		suite.addTestSuite(MappingTestsAnnotations.class);
+		suite.addTestSuite(HQLEditorPreferencePageTest.class);
 		
-//		suite.addTestSuite(QueryPageViewerTest.class);
-//		suite.addTestSuite(HBMInfoExtractorTest.class);
+		suite.addTestSuite(QueryPageViewerTest.class);
+		suite.addTestSuite(HBMInfoExtractorTest.class);
 		
 		// https://jira.jboss.org/browse/JBIDE-6838 
-//		suite.addTestSuite(CodeGenXMLFactoryTest.class);
+		suite.addTestSuite(CodeGenXMLFactoryTest.class);
 
 		// https://jira.jboss.org/browse/JBIDE-7285 
-//		suite.addTestSuite(ExporterAttributesTest.class);
+		suite.addTestSuite(ExporterAttributesTest.class);
 		
 		// core tests
 		//Properties properties = new Properties();
