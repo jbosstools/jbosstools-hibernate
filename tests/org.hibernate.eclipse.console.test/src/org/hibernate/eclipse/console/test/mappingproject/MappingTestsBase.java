@@ -118,36 +118,26 @@ public abstract class MappingTestsBase extends TestCase {
 	 * @throws CoreException
 	 */
 	public void allTestsRunForProject() throws CoreException {
-		System.out.println("Starting MappingTestsBase.allTestsRunForProject()");
 		testProject.fullBuild();
 		IPackageFragmentRoot[] roots = testProject.getIJavaProject().getAllPackageFragmentRoots();
-		System.out.println("About to execute roots loop; total amount of package fragment roots: " + roots.length);
 		for (int i = 0; i < roots.length; i++) {
-			System.out.println("root loop execution: " + (i+1));
 	    	if (roots[i].getClass() != PackageFragmentRoot.class) {
-	    		System.out.println("abandoning root loop");
 	    		continue;
 	    	}
 			PackageFragmentRoot packageFragmentRoot = (PackageFragmentRoot) roots[i];
 			IJavaElement[] els = packageFragmentRoot.getChildren();
-			System.out.println("About to execute java elements loop; total amount of elements: " + els.length);
 			for (int j = 0; j < els.length; j++) {
-				System.out.println("elements loop execution: " + (j+1));
 				IJavaElement javaElement = els[j];
 				if (!(javaElement instanceof IPackageFragment)) {
-					System.out.println("Abandoning elements loop");
 					continue;
 				}
 				testPackage = (IPackageFragment)javaElement;
-				System.out.println("Package to test: " + testPackage.getElementName());
 				// use packages only with compilation units
 				if (testPackage.getCompilationUnits().length == 0) {
-					System.out.println("Abandoning elements loop because of no compilation units");
 					continue;
 				}
 				if (Customization.U_TEST_PACKS_PATTERN) {
 					if (!Pattern.matches(Customization.TEST_PACKS_PATTERN, javaElement.getElementName())) {
-						System.out.println("Abandoning elements loop because of no match");
 						continue;
 					}
 				}
@@ -156,9 +146,7 @@ public abstract class MappingTestsBase extends TestCase {
 				int prev_failCount = result.failureCount();
 				int prev_errCount = result.errorCount();
 				//
-				System.out.println("About to create test suite.");
 				TestSuite suite = TestSet.createTestSuite(consoleConfigName, testPackage, testProject);
-				System.out.println("Test suite created succesfully");
 				//
 				customizeCfgXml(testPackage);
 				//==============================
@@ -166,13 +154,9 @@ public abstract class MappingTestsBase extends TestCase {
 				/** /
 				suite.run(result);
 				/**/
-				System.out.println("About to execute test loop execution");
 				for (int k = 0; k < suite.testCount(); k++) {
-					System.out.println("test loop execution: " + (k+1));
 					Test test = suite.testAt(k);
-					System.out.println("about to run test: " + test.getClass().getName());
 					test.run(result);
-					System.out.println("test '" + test.getClass().getName() + "' executed succesfully");
 					closeAllEditors();
 				}
 				/**/
@@ -202,12 +186,9 @@ public abstract class MappingTestsBase extends TestCase {
 	abstract public void testEachPackWithTestSet() throws CoreException, IOException;
 
 	protected void customizeCfgXml(IPackageFragment pack) {
-		System.out.println("Executing MappingTestsBase.customizeCfgXml()");
 		assertNotNull(pack);
 		try {
-			System.out.println("About to customize CfgXml for pack: " + pack.getElementName());
 			ConsoleConfigUtils.customizeCfgXmlForPack(pack);
-			System.out.println("CfgXml for pack '" + pack.getElementName() + "' customized succesfully.");
 		} catch (CoreException e) {
 			String out = NLS.bind(ConsoleTestMessages.UpdateConfigurationTest_error_customising_file_for_package,
 					new Object[] { ConsoleConfigUtils.CFG_FILE_NAME, pack.getPath(), e.getMessage() } );
