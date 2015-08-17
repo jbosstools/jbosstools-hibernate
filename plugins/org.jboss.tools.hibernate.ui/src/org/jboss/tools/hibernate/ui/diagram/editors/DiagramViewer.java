@@ -108,7 +108,9 @@ public class DiagramViewer extends GraphicalEditor {
 	private DiagramContentOutlinePage outlinePage;
 
 	public DiagramViewer() {
+		System.out.println("Diagram viewer initializing");
 		setEditDomain(new DefaultEditDomain(this));
+		System.out.println("Diagram viewer initialized succesfully");
 	}
 
 	public void doSave(IProgressMonitor monitor) {
