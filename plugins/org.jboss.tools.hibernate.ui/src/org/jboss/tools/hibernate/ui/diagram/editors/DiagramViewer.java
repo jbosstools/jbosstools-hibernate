@@ -349,6 +349,7 @@ public class DiagramViewer extends GraphicalEditor {
 	}
 
 	protected void setInput(IEditorInput input) {
+		System.out.println("Entering DiagramViewer.setInput(IEditorInput)");
 		DiagramEditorInput diagramInput = null;
 		if (input instanceof FileEditorInput) {
 			diagramInput = new DiagramEditorInput((FileEditorInput)input);
@@ -358,6 +359,7 @@ public class DiagramViewer extends GraphicalEditor {
 		setPartName(diagramInput.getName());
 		super.setInput(diagramInput);
 		loadProperties();
+		System.out.println("Exiting DiagramViewer.setInput(IEditorInput");
 	}
 
 	public DiagramEditorInput getDiagramInput() {
