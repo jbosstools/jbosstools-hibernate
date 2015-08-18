@@ -20,6 +20,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
+import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPage;
@@ -113,6 +114,8 @@ public class OpenDiagramActionDelegate implements IObjectActionDelegate {
 		System.out.println("succesfully obtained DiagramEditorInput: " + input.getName());
 		IWorkbenchPage page = UiPlugin.getPage();
 		System.out.println("succesfully obtained IWorkbenchPage: " + page.getLabel());
+		IEditorDescriptor editorDescriptor = IDE.getEditorDescriptor("org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer");
+		System.out.println("succesfully obtained editor descriptor: " + editorDescriptor.getLabel());
 		IEditorPart result = page.openEditor(input, "org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer");
 //		IEditorPart result = IDE.openEditor(UiPlugin.getPage(), input, "org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer");		//$NON-NLS-1$
 		System.out.println("succesfully obtained IEditorPart: " + result.getTitle());
