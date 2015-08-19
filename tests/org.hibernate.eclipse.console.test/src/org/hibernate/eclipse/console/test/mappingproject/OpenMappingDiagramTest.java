@@ -33,36 +33,36 @@ public class OpenMappingDiagramTest extends BaseTestSetCase {
 	}
 
 	public void testOpenMappingDiagram() {
-//		System.out.println("Running OpenMappingDiagramTest.testOpenMappingDiagram()");
-//		final Object[] persClasses = getPersistenceClasses(false);
-//		System.out.println("persistent classes obtained succesfully");
-//		final ConsoleConfiguration consCFG = getConsoleConfig();
-//		System.out.println("about to execute loop for the persistent classes");
-//		for (int i = 0; i < persClasses.length; i++) {
-//			assertTrue(persClasses[i] instanceof IPersistentClass);
-//			IPersistentClass persClass = (IPersistentClass) persClasses[i];
-//			System.out.println("executing persistentClass loop " + (i+1) + " for " + persClass.getEntityName());
-//
-//			IEditorPart editor = null;
-//			Throwable ex = null;
-//			try {
-//				System.out.println("about to open mapping diagram editor");
-//				editor = new OpenDiagramActionDelegate().openEditor(persClass, consCFG);
-//				System.out.println("diagram editor opened succesfully");
-//			} catch (PartInitException e) {
-//				ex = e;
-//			}
-//			if (ex == null ) {
-//				ex = Utils.getExceptionIfItOccured(editor);
-//			}
-//			if (ex != null) {
-//				ex.printStackTrace();
-//				String out = NLS.bind(ConsoleTestMessages.OpenMappingDiagramTest_mapping_diagram_for_not_opened,
-//						new Object[]{persClass.getClassName(), ex.getMessage()});
-//				fail(out);
-//			}
-//		}
-//		System.out.println("Exiting OpenMappingDiagramTest.testOpenMappingDiagram()");
+		System.out.println("Running OpenMappingDiagramTest.testOpenMappingDiagram()");
+		final Object[] persClasses = getPersistenceClasses(false);
+		System.out.println("persistent classes obtained succesfully");
+		final ConsoleConfiguration consCFG = getConsoleConfig();
+		System.out.println("about to execute loop for the persistent classes");
+		for (int i = 0; i < persClasses.length; i++) {
+			assertTrue(persClasses[i] instanceof IPersistentClass);
+			IPersistentClass persClass = (IPersistentClass) persClasses[i];
+			System.out.println("executing persistentClass loop " + (i+1) + " for " + persClass.getEntityName());
+
+			IEditorPart editor = null;
+			Throwable ex = null;
+			try {
+				System.out.println("about to open mapping diagram editor");
+				editor = new OpenDiagramActionDelegate().openEditor(persClass, consCFG);
+				System.out.println("diagram editor opened succesfully");
+			} catch (PartInitException e) {
+				ex = e;
+			}
+			if (ex == null ) {
+				ex = Utils.getExceptionIfItOccured(editor);
+			}
+			if (ex != null) {
+				ex.printStackTrace();
+				String out = NLS.bind(ConsoleTestMessages.OpenMappingDiagramTest_mapping_diagram_for_not_opened,
+						new Object[]{persClass.getClassName(), ex.getMessage()});
+				fail(out);
+			}
+		}
+		System.out.println("Exiting OpenMappingDiagramTest.testOpenMappingDiagram()");
 		//close all editors
 	}
 }
