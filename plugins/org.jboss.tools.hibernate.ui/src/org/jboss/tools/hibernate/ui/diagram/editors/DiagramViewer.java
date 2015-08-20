@@ -422,7 +422,7 @@ public class DiagramViewer extends GraphicalEditor {
 	 */
 	@SuppressWarnings("rawtypes")
 	public Object getAdapter(Class type) {
-		System.out.println("Entering DiagramViewer.getAdapter(Class)");
+		System.out.println("Entering DiagramViewer.getAdapter('" + type.getName() + "')");
 		if (type == IContentOutlinePage.class) {
 			final DiagramContentOutlinePage outline = getDiagramContentOutlinePage();
 			outline.setGraphicalViewer(getGraphicalViewer());
