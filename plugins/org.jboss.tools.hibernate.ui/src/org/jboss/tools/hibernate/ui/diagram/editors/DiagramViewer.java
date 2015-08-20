@@ -355,7 +355,7 @@ public class DiagramViewer extends GraphicalEditor {
 	public void refreshDirty() {
 		System.out.println("Entering DiagramViewer.refreshDirty()");
 		firePropertyChange(IEditorPart.PROP_DIRTY);
-		System.out.println("Entering DiagramViewer.refreshDirty()");
+		System.out.println("Exiting DiagramViewer.refreshDirty()");
 	}
 
 	public boolean isDirty() {
@@ -405,7 +405,7 @@ public class DiagramViewer extends GraphicalEditor {
 		System.out.println("Entering DiagramViewer.refresh()");
 		getOrmDiagram().refresh();
 		setPartName(getDiagramInput().getName());
-		System.out.println("Entering DiagramViewer.refresh()");
+		System.out.println("Exiting DiagramViewer.refresh()");
 	}
 
 	protected DiagramContentOutlinePage getDiagramContentOutlinePage() {
@@ -482,7 +482,7 @@ public class DiagramViewer extends GraphicalEditor {
 
 		IAction showGrid = new ToggleGridAction(getGraphicalViewer());
 		getActionRegistry().registerAction(showGrid);
-		System.out.println("Entering DiagramViewer.configureGraphicalViewer()");
+		System.out.println("Exiting DiagramViewer.configureGraphicalViewer()");
 	}
 	
 	protected boolean loadProperties() {
@@ -637,7 +637,7 @@ public class DiagramViewer extends GraphicalEditor {
 		ActionRegistry registry = getActionRegistry();
 		IAction action = registry.getAction(ToggleAssociationAction.ACTION_ID);
 		action.setChecked(connectionsVisibilityAssociation);
-		System.out.println("Entering DiagramViewer.setConnectionsVisibilityAssociation(boolean)");
+		System.out.println("Exiting DiagramViewer.setConnectionsVisibilityAssociation(boolean)");
 	}
 	
 	public boolean getConnectionsVisibilityClassMapping() {
@@ -651,7 +651,7 @@ public class DiagramViewer extends GraphicalEditor {
 		ActionRegistry registry = getActionRegistry();
 		IAction action = registry.getAction(ToggleClassMappingAction.ACTION_ID);
 		action.setChecked(connectionsVisibilityClassMapping);
-		System.out.println("Entering DiagramViewer.setConnectionsVisibilityClassMapping(boolean)");
+		System.out.println("Exiting DiagramViewer.setConnectionsVisibilityClassMapping(boolean)");
 	}
 	
 	public boolean getConnectionsVisibilityForeignKeyConstraint() {
@@ -665,7 +665,7 @@ public class DiagramViewer extends GraphicalEditor {
 		ActionRegistry registry = getActionRegistry();
 		IAction action = registry.getAction(ToggleForeignKeyConstraintAction.ACTION_ID);
 		action.setChecked(connectionsVisibilityForeignKeyConstraint);
-		System.out.println("Entering DiagramViewer.setConnectionsVisibilityForeignKeyConstraint(boolean)");
+		System.out.println("Exiting DiagramViewer.setConnectionsVisibilityForeignKeyConstraint(boolean)");
 	}
 	
 	public boolean getConnectionsVisibilityPropertyMapping() {
@@ -679,7 +679,7 @@ public class DiagramViewer extends GraphicalEditor {
 		ActionRegistry registry = getActionRegistry();
 		IAction action = registry.getAction(TogglePropertyMappingAction.ACTION_ID);
 		action.setChecked(connectionsVisibilityPropertyMapping);
-		System.out.println("Entering DiagramViewer.setConnectionsVisibilityPropertyMapping(boolean)");
+		System.out.println("Exiting DiagramViewer.setConnectionsVisibilityPropertyMapping(boolean)");
 	}
 	
 	/**
@@ -733,7 +733,7 @@ public class DiagramViewer extends GraphicalEditor {
 	public void updateSelectionActions() {
 		System.out.println("Entering DiagramViewer.updateSelectionActions()");
 		updateActions(getSelectionActions());
-		System.out.println("Entering DiagramViewer.updateSelectionActions()");
+		System.out.println("Exiting DiagramViewer.updateSelectionActions()");
 	}
 	
 	public void updateConnectionRouterActions() {
@@ -744,7 +744,7 @@ public class DiagramViewer extends GraphicalEditor {
 		action.setChecked(res);
 		action = registry.getAction(ConnectionRouterFanAction.ACTION_ID);
 		action.setChecked(!res);
-		System.out.println("Entering DiagramViewer.updateConnectionRouterActions()");
+		System.out.println("Exiting DiagramViewer.updateConnectionRouterActions()");
 	}
 
 	public MenuManager getContextMenu() {
@@ -801,6 +801,6 @@ public class DiagramViewer extends GraphicalEditor {
 			}
 		}
 		updateConnectionRouterActions();
-		System.out.println("Entering DiagramViewer.setManhattanConnectionRouter(boolean)");
+		System.out.println("Exiting DiagramViewer.setManhattanConnectionRouter(boolean)");
 	}
 }
