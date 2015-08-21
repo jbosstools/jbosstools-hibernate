@@ -442,6 +442,7 @@ public class DiagramViewer extends GraphicalEditor {
 		}
 		System.out.println("About to call super.getAdapter(" + type.getName() + ")");
 		Object result = super.getAdapter(type);
+		System.out.println("Returning result from DiagramViewer.getAdapter: " + result);
 		return result;
 	}
 
