@@ -440,7 +440,9 @@ public class DiagramViewer extends GraphicalEditor {
 		if (type == ZoomManager.class) {
 			return getGraphicalViewer().getProperty(ZoomManager.class.toString());
 		}
-		return super.getAdapter(type);
+		System.out.println("About to call super.getAdapter(" + type.getName() + ")");
+		Object result = super.getAdapter(type);
+		return result;
 	}
 
 	public Set<Shape> getSelectedElements() {
