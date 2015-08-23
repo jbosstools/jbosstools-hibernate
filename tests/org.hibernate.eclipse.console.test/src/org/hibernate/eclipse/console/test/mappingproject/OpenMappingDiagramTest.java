@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.hibernate.eclipse.console.test.mappingproject;
 
+import java.util.Map;
+
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PartInitException;
@@ -30,6 +32,13 @@ public class OpenMappingDiagramTest extends BaseTestSetCase {
 
 	public OpenMappingDiagramTest(String name) {
 		super(name);
+	}
+
+	protected void setUp() throws Exception {
+		System.out.println("Setting up OpenMappingDiagramTest");
+		new Thread(new TimeBomb()).start();
+		System.out.println("Timebomb thread is started succesfully");
+		super.setUp();
 	}
 
 	public void testOpenMappingDiagram() {
@@ -64,5 +73,24 @@ public class OpenMappingDiagramTest extends BaseTestSetCase {
 		}
 		System.out.println("Exiting OpenMappingDiagramTest.testOpenMappingDiagram()");
 		//close all editors
+	}
+	
+	private class TimeBomb implements Runnable {
+		@Override
+		public void run() {
+			try {
+				System.out.println("Timebomb is going to sleep");
+				Thread.sleep(300000);
+				System.out.println("Timebomb is waking up");
+				Map<Thread, StackTraceElement[]> m = Thread.getAllStackTraces();
+				for(Map.Entry<Thread,  StackTraceElement[]> e : m.entrySet()) {
+				    System.out.println(e.getKey().toString());
+				    for (StackTraceElement s : e.getValue()) {
+				        System.out.println("  " + s);
+				    }
+				}			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}		
 	}
 }
