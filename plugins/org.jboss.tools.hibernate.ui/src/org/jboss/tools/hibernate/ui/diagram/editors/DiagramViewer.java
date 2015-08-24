@@ -108,22 +108,17 @@ public class DiagramViewer extends GraphicalEditor {
 	private DiagramContentOutlinePage outlinePage;
 
 	public DiagramViewer() {
-		System.out.println("Diagram viewer initializing");
 		setEditDomain(new DefaultEditDomain(this));
-		System.out.println("Diagram viewer initialized succesfully");
 	}
 
 	public void doSave(IProgressMonitor monitor) {
-		System.out.println("Entering DiagramViewer.doSave(IProgressMonitor)");
 		saveProperties();
 		//getOrmDiagram().saveInFile();
 		getOrmDiagram().saveInXmlFile();
 		getOrmDiagram().setDirty(false);
-		System.out.println("Exiting DiagramViewer.doSave(IProgressMonitor)");
 	}
 
 	public void doSaveAs() {
-		System.out.println("Entering DiagramViewer.doSaveAs()");
 		SaveAsDialog saveAsDialog = new SaveAsDialog(getSite().getWorkbenchWindow().getShell());
 		saveAsDialog.setOriginalName(getStoreFileName());
 		saveAsDialog.open();
@@ -139,11 +134,9 @@ public class DiagramViewer extends GraphicalEditor {
 		}
 		getOrmDiagram().saveInWorkspaceFile(pathTmp, true);
 		getOrmDiagram().setDirty(false);
-		System.out.println("Exiting DiagramViewer.doSaveAs()");
 	}
 
 	protected void initializeGraphicalViewer() {
-		System.out.println("Entering DiagramViewer.initializeGraphicalViewer()");
 		final GraphicalViewer viewer = getGraphicalViewer();
 		viewer.setEditPartFactory(new OrmEditPartFactory());
 		//
@@ -188,17 +181,14 @@ public class DiagramViewer extends GraphicalEditor {
 		loadProperties();
 		
 		updateConnectionRouterActions();
-		System.out.println("Exiting DiagramViewer.initializeGraphicalViewer()");
 	}
 
 	public GraphicalViewer getEditPartViewer() {
-		System.out.println("Entering DiagramViewer.getEditPartViewer()");
 		return getGraphicalViewer();
 	}
 
 	@SuppressWarnings("unchecked")
 	protected void createActions() {
-		System.out.println("Entering DiagramViewer.createActions()");
 
 		//super.createActions();
 		// BEGIN: redefine super.createActions
@@ -231,7 +221,7 @@ public class DiagramViewer extends GraphicalEditor {
 		
 		registry.registerAction(new PrintDiagramViewerAction(this));
 		// END: redefine super.createActions
-
+		
 		getEditorSite().getActionBars().setGlobalActionHandler(ActionFactory.PRINT.getId(), 
 				getActionRegistry().getAction(ActionFactory.PRINT.getId()));
 		getEditorSite().getActionBars().setGlobalActionHandler(ActionFactory.SELECT_ALL.getId(), 
@@ -330,11 +320,9 @@ public class DiagramViewer extends GraphicalEditor {
 		//act[0] = (Action)registry.getAction(ShapeShowAction.ACTION_ID);
 		//act[1] = (Action)registry.getAction(ShapeHideAction.ACTION_ID);
 		//actionToggleShapeVisibleState.setMenuCreator(new ActionMenu(act));
-		System.out.println("Exiting DiagramViewer.createActions()");
 	}
 
 	private TransferDropTargetListener createTransferDropTargetListener() {
-		System.out.println("Entering DiagramViewer.createTransferDropTargetListener()");
 		return new TemplateTransferDropTargetListener(getGraphicalViewer()) {
 			protected CreationFactory getFactory(Object template) {
 				return new SimpleFactory((Class<?>) template);
@@ -343,28 +331,22 @@ public class DiagramViewer extends GraphicalEditor {
 	}
 
 	public boolean isSaveAsAllowed() {
-		System.out.println("Entering DiagramViewer.isSaveAsAllowed()");
 		return true;
 	}
 
 	public boolean isSaveOnCloseNeeded() {
-		System.out.println("Entering DiagramViewer.isSaveOnCloseNeeded()");
 		return true;
 	}
 
 	public void refreshDirty() {
-		System.out.println("Entering DiagramViewer.refreshDirty()");
 		firePropertyChange(IEditorPart.PROP_DIRTY);
-		System.out.println("Exiting DiagramViewer.refreshDirty()");
 	}
 
 	public boolean isDirty() {
-		System.out.println("Entering DiagramViewer.isDirty()");
 		return getOrmDiagram().isDirty();
 	}
 
 	protected void setInput(IEditorInput input) {
-		System.out.println("Entering DiagramViewer.setInput(IEditorInput)");
 		DiagramEditorInput diagramInput = null;
 		if (input instanceof FileEditorInput) {
 			diagramInput = new DiagramEditorInput((FileEditorInput)input);
@@ -374,17 +356,14 @@ public class DiagramViewer extends GraphicalEditor {
 		setPartName(diagramInput.getName());
 		super.setInput(diagramInput);
 		loadProperties();
-		System.out.println("Exiting DiagramViewer.setInput(IEditorInput");
 	}
 
 	public DiagramEditorInput getDiagramInput() {
-		System.out.println("Entering DiagramViewer.getDiagramInput()");
 		DiagramEditorInput diagramInput = (DiagramEditorInput)getEditorInput();
 		return diagramInput;
 	}
 
 	public String getDiagramName() {
-		System.out.println("Entering DiagramViewer.getDiagramName()");
 		DiagramEditorInput diagramInput = getDiagramInput();
 		if (diagramInput != null) {
 			return diagramInput.getName();
@@ -393,7 +372,6 @@ public class DiagramViewer extends GraphicalEditor {
 	}
 
 	public String getStoreFileName() {
-		System.out.println("Entering DiagramViewer.getStoreFileName()");
 		DiagramEditorInput diagramInput = getDiagramInput();
 		if (diagramInput != null) {
 			return diagramInput.getStoreFileName();
@@ -402,14 +380,11 @@ public class DiagramViewer extends GraphicalEditor {
 	}
 
 	public void refresh() {
-		System.out.println("Entering DiagramViewer.refresh()");
 		getOrmDiagram().refresh();
 		setPartName(getDiagramInput().getName());
-		System.out.println("Exiting DiagramViewer.refresh()");
 	}
 
 	protected DiagramContentOutlinePage getDiagramContentOutlinePage() {
-		System.out.println("Entering DiagramViewer.getDiagramContentOutlinePage()");
 		if (outlinePage == null) {
 			outlinePage = new DiagramContentOutlinePage(
 				new TreeViewer(), getActionRegistry());
@@ -422,7 +397,6 @@ public class DiagramViewer extends GraphicalEditor {
 	 */
 	@SuppressWarnings("rawtypes")
 	public Object getAdapter(Class type) {
-		System.out.println("Entering DiagramViewer.getAdapter('" + type.getName() + "')");
 		if (type == IContentOutlinePage.class) {
 			final DiagramContentOutlinePage outline = getDiagramContentOutlinePage();
 			outline.setGraphicalViewer(getGraphicalViewer());
@@ -440,15 +414,10 @@ public class DiagramViewer extends GraphicalEditor {
 		if (type == ZoomManager.class) {
 			return getGraphicalViewer().getProperty(ZoomManager.class.toString());
 		}
-		System.out.println("About to call super.getAdapter(" + type.getName() + ")");
-		Object result = super.getAdapter(type);
-		System.out.println("Returning result from DiagramViewer.getAdapter: " + result);
-		new RuntimeException().printStackTrace();
-		return result;
+		return super.getAdapter(type);
 	}
 
 	public Set<Shape> getSelectedElements() {
-		System.out.println("Entering DiagramViewer.getSelectedElements()");
 		Set<Shape> ret = new HashSet<Shape>();
 		List<?> selectedEditParts = getGraphicalViewer().getSelectedEditParts();
 		Iterator<?> iterator = selectedEditParts.iterator();
@@ -463,17 +432,14 @@ public class DiagramViewer extends GraphicalEditor {
 	}
 
 	public OrmDiagram getOrmDiagram() {
-		System.out.println("Entering DiagramViewer.getOrmDiagram()");
 		return getDiagramInput().getOrmDiagram();
 	}
 
 	public DefaultEditDomain getDefaultEditDomain() {
-		System.out.println("Entering DiagramViewer.getDefaultEditDomain()");
 		return getEditDomain();
 	}
 
 	protected void configureGraphicalViewer() {
-		System.out.println("Entering DiagramViewer.configureGraphicalViewer()");
 		super.configureGraphicalViewer();
 		//
 		loadProperties();
@@ -486,11 +452,9 @@ public class DiagramViewer extends GraphicalEditor {
 
 		IAction showGrid = new ToggleGridAction(getGraphicalViewer());
 		getActionRegistry().registerAction(showGrid);
-		System.out.println("Exiting DiagramViewer.configureGraphicalViewer()");
 	}
 	
 	protected boolean loadProperties() {
-		System.out.println("Entering DiagramViewer.loadProperties()");
 		if (getOrmDiagram() == null || getGraphicalViewer() == null) {
 			return false;
 		}
@@ -531,7 +495,6 @@ public class DiagramViewer extends GraphicalEditor {
 	}
 
 	protected boolean saveProperties() {
-		System.out.println("Entering DiagramViewer.saveProperties()");
 		if (getOrmDiagram() == null || getGraphicalViewer() == null) {
 			return false;
 		}
@@ -550,11 +513,9 @@ public class DiagramViewer extends GraphicalEditor {
 	 * @see org.eclipse.gef.ui.parts.GraphicalEditor#createGraphicalViewer(org.eclipse.swt.widgets.Composite)
 	 */
 	protected void createGraphicalViewer(Composite parent) {
-		System.out.println("Entering DiagramViewer.createGraphicalViewer(Composite)");
 		rulerComp = new RulerComposite(parent, SWT.NONE);
 		super.createGraphicalViewer(rulerComp);
 		rulerComp.setGraphicalViewer((ScrollingGraphicalViewer)getGraphicalViewer());
-		System.out.println("Exiting DiagramViewer.createGraphicalViewer(Composite)");
 	}
 
 	/**
@@ -562,7 +523,6 @@ public class DiagramViewer extends GraphicalEditor {
 	 * @return double the zoom level
 	 */
 	public double getZoom() {
-		System.out.println("Entering DiagramViewer.getZoom()");
 		double zoom = 1.0;
 		ZoomManager manager = (ZoomManager)getGraphicalViewer()
 			.getProperty(ZoomManager.class.toString());
@@ -573,7 +533,6 @@ public class DiagramViewer extends GraphicalEditor {
 	}
 	
 	public double getFitHeightZoomValue() {
-		System.out.println("Entering DiagramViewer.getFitHeightZoomValue()");
 		double res = 1.0;
 		ZoomManager manager = (ZoomManager)getGraphicalViewer()
 			.getProperty(ZoomManager.class.toString());
@@ -592,7 +551,6 @@ public class DiagramViewer extends GraphicalEditor {
 	}
 	
 	public double getFitPageZoomValue() {
-		System.out.println("Entering DiagramViewer.getFitPageZoomValue()");
 		double res = 1.0;
 		ZoomManager manager = (ZoomManager)getGraphicalViewer()
 			.getProperty(ZoomManager.class.toString());
@@ -611,7 +569,6 @@ public class DiagramViewer extends GraphicalEditor {
 	}
 	
 	public double getFitWidthZoomValue() {
-		System.out.println("Entering DiagramViewer.getFitWidthZoomValue()");
 		double res = 1.0;
 		ZoomManager manager = (ZoomManager)getGraphicalViewer()
 			.getProperty(ZoomManager.class.toString());
@@ -631,59 +588,47 @@ public class DiagramViewer extends GraphicalEditor {
 	
 	
 	public boolean getConnectionsVisibilityAssociation() {
-		System.out.println("Entering DiagramViewer.getConnectionsVisibilityAssociation()");
 		return getOrmDiagram().getConnectionsVisibilityAssociation();
 	}
 	
 	public void setConnectionsVisibilityAssociation(boolean connectionsVisibilityAssociation) {
-		System.out.println("Entering DiagramViewer.setConnectionsVisibilityAssociation(boolean)");
 		getOrmDiagram().setConnectionsVisibilityAssociation(connectionsVisibilityAssociation);
 		ActionRegistry registry = getActionRegistry();
 		IAction action = registry.getAction(ToggleAssociationAction.ACTION_ID);
 		action.setChecked(connectionsVisibilityAssociation);
-		System.out.println("Exiting DiagramViewer.setConnectionsVisibilityAssociation(boolean)");
 	}
 	
 	public boolean getConnectionsVisibilityClassMapping() {
-		System.out.println("Entering DiagramViewer.isSaveAsAllowed()");
 		return getOrmDiagram().getConnectionsVisibilityClassMapping();
 	}
 	
 	public void setConnectionsVisibilityClassMapping(boolean connectionsVisibilityClassMapping) {
-		System.out.println("Entering DiagramViewer.setConnectionsVisibilityClassMapping(boolean)");
 		getOrmDiagram().setConnectionsVisibilityClassMapping(connectionsVisibilityClassMapping);
 		ActionRegistry registry = getActionRegistry();
 		IAction action = registry.getAction(ToggleClassMappingAction.ACTION_ID);
 		action.setChecked(connectionsVisibilityClassMapping);
-		System.out.println("Exiting DiagramViewer.setConnectionsVisibilityClassMapping(boolean)");
 	}
 	
 	public boolean getConnectionsVisibilityForeignKeyConstraint() {
-		System.out.println("Entering DiagramViewer.getConnectionsVisibilityForeignKeyConstraint()");
 		return getOrmDiagram().getConnectionsVisibilityForeignKeyConstraint();
 	}
 	
 	public void setConnectionsVisibilityForeignKeyConstraint(boolean connectionsVisibilityForeignKeyConstraint) {
-		System.out.println("Entering DiagramViewer.setConnectionsVisibilityForeignKeyConstraint(boolean)");
 		getOrmDiagram().setConnectionsVisibilityForeignKeyConstraint(connectionsVisibilityForeignKeyConstraint);
 		ActionRegistry registry = getActionRegistry();
 		IAction action = registry.getAction(ToggleForeignKeyConstraintAction.ACTION_ID);
 		action.setChecked(connectionsVisibilityForeignKeyConstraint);
-		System.out.println("Exiting DiagramViewer.setConnectionsVisibilityForeignKeyConstraint(boolean)");
 	}
 	
 	public boolean getConnectionsVisibilityPropertyMapping() {
-		System.out.println("Entering DiagramViewer.getConnectionsVisibilityPropertyMapping()");
 		return getOrmDiagram().getConnectionsVisibilityPropertyMapping();
 	}
 	
 	public void setConnectionsVisibilityPropertyMapping(boolean connectionsVisibilityPropertyMapping) {
-		System.out.println("Entering DiagramViewer.setConnectionsVisibilityPropertyMapping(boolean)");
 		getOrmDiagram().setConnectionsVisibilityPropertyMapping(connectionsVisibilityPropertyMapping);
 		ActionRegistry registry = getActionRegistry();
 		IAction action = registry.getAction(TogglePropertyMappingAction.ACTION_ID);
 		action.setChecked(connectionsVisibilityPropertyMapping);
-		System.out.println("Exiting DiagramViewer.setConnectionsVisibilityPropertyMapping(boolean)");
 	}
 	
 	/**
@@ -691,7 +636,6 @@ public class DiagramViewer extends GraphicalEditor {
 	 * For example, delete is a common action.
 	 */
 	protected KeyHandler getCommonKeyHandler(){
-		System.out.println("Entering DiagramViewer.getCommonKeyHandler()");
 		if (sharedKeyHandler == null){
 			sharedKeyHandler = new KeyHandler();
 			sharedKeyHandler.put(
@@ -714,17 +658,14 @@ public class DiagramViewer extends GraphicalEditor {
 	}
 	
 	public IAction getLexicalSortingAction() {
-		System.out.println("Entering DiagramViewer.getLexicalSortingAction()");
 		return getActionRegistry().getAction(LexicalSortingAction.ACTION_ID);
 	}
 	
 	public GEFRootEditPart getRootEditPart() {
-		System.out.println("Entering DiagramViewer.getRootEditPart()");
 		return gefRootEditPart;
 	}
 	
 	public DiagramEditPart getDiagramEditPart() {
-		System.out.println("Entering DiagramViewer.getDiagramEditPart()");
 		if (!gefRootEditPart.getChildren().isEmpty()) {
 			Object obj = gefRootEditPart.getChildren().get(0);
 			if (obj instanceof DiagramEditPart) {
@@ -735,24 +676,19 @@ public class DiagramViewer extends GraphicalEditor {
 	}
 	
 	public void updateSelectionActions() {
-		System.out.println("Entering DiagramViewer.updateSelectionActions()");
 		updateActions(getSelectionActions());
-		System.out.println("Exiting DiagramViewer.updateSelectionActions()");
 	}
 	
 	public void updateConnectionRouterActions() {
-		System.out.println("Entering DiagramViewer.updateConnectionRouterActions()");
 		boolean res = isManhattanConnectionRouter();
 		ActionRegistry registry = getActionRegistry();
 		IAction action = registry.getAction(ConnectionRouterManhattanAction.ACTION_ID);
 		action.setChecked(res);
 		action = registry.getAction(ConnectionRouterFanAction.ACTION_ID);
 		action.setChecked(!res);
-		System.out.println("Exiting DiagramViewer.updateConnectionRouterActions()");
 	}
 
 	public MenuManager getContextMenu() {
-		System.out.println("Entering DiagramViewer.getContextMenu()");
 		final GraphicalViewer viewer = getGraphicalViewer();
 		if (viewer != null) {
 			return viewer.getContextMenu();
@@ -761,7 +697,6 @@ public class DiagramViewer extends GraphicalEditor {
 	}
 	
 	public boolean isFanConnectionRouter() {
-		System.out.println("Entering DiagramViewer.isFanConnectionRouter()");
 		boolean res = false;
 		DiagramEditPart diagramEditPart = getDiagramEditPart();
 		if (diagramEditPart != null) {
@@ -771,7 +706,6 @@ public class DiagramViewer extends GraphicalEditor {
 	}
 	
 	public void setFanConnectionRouter(boolean res) {
-		System.out.println("Entering DiagramViewer.setFanConnectionRouter(boolean)");
 		DiagramEditPart diagramEditPart = getDiagramEditPart();
 		if (diagramEditPart != null) {
 			if (res) {
@@ -781,11 +715,9 @@ public class DiagramViewer extends GraphicalEditor {
 			}
 		}
 		updateConnectionRouterActions();
-		System.out.println("Entering DiagramViewer.setFanConnectionRouter(boolean)");
 	}
 	
 	public boolean isManhattanConnectionRouter() {
-		System.out.println("Entering DiagramViewer.isManhattanConnectionRouter()");
 		boolean res = false;
 		DiagramEditPart diagramEditPart = getDiagramEditPart();
 		if (diagramEditPart != null) {
@@ -795,7 +727,6 @@ public class DiagramViewer extends GraphicalEditor {
 	}
 	
 	public void setManhattanConnectionRouter(boolean res) {
-		System.out.println("Entering DiagramViewer.setManhattanConnectionRouter(boolean)");
 		DiagramEditPart diagramEditPart = getDiagramEditPart();
 		if (diagramEditPart != null) {
 			if (res) {
@@ -805,6 +736,5 @@ public class DiagramViewer extends GraphicalEditor {
 			}
 		}
 		updateConnectionRouterActions();
-		System.out.println("Exiting DiagramViewer.setManhattanConnectionRouter(boolean)");
 	}
 }
