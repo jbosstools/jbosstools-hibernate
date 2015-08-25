@@ -31,6 +31,22 @@ public class PrintDiagramViewerAction extends PrintAction {
 	}
 
 	/**
+	 * @see org.eclipse.gef.ui.actions.WorkbenchPartAction#calculateEnabled()
+	 *
+	 * Do not check for the availability of printers to enable/disable the
+	 * action as the super method would do. E.g. on Linux this might cause
+	 * the UI to be hanging when opening an editor.
+	 * 
+	 * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=449384
+	 * See https://issues.jboss.org/browse/JBIDE-20450
+	 */
+	protected boolean calculateEnabled() {
+		// PrinterData[] printers = Printer.getPrinterList();
+		// return printers != null && printers.length > 0;
+		return true;
+	}
+
+	/**
 	 * @see org.eclipse.jface.action.Action#run()
 	 */
 	public void run() {
