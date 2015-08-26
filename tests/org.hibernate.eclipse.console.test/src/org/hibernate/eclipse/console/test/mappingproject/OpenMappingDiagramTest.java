@@ -10,8 +10,6 @@
  ******************************************************************************/
 package org.hibernate.eclipse.console.test.mappingproject;
 
-import java.util.Map;
-
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PartInitException;
@@ -34,30 +32,16 @@ public class OpenMappingDiagramTest extends BaseTestSetCase {
 		super(name);
 	}
 
-	protected void setUp() throws Exception {
-		System.out.println("Setting up OpenMappingDiagramTest");
-		new Thread(new TimeBomb()).start();
-		System.out.println("Timebomb thread is started succesfully");
-		super.setUp();
-	}
-
 	public void testOpenMappingDiagram() {
-		System.out.println("Running OpenMappingDiagramTest.testOpenMappingDiagram()");
 		final Object[] persClasses = getPersistenceClasses(false);
-		System.out.println("persistent classes obtained succesfully");
 		final ConsoleConfiguration consCFG = getConsoleConfig();
-		System.out.println("about to execute loop for the persistent classes");
 		for (int i = 0; i < persClasses.length; i++) {
 			assertTrue(persClasses[i] instanceof IPersistentClass);
 			IPersistentClass persClass = (IPersistentClass) persClasses[i];
-			System.out.println("executing persistentClass loop " + (i+1) + " for " + persClass.getEntityName());
-
 			IEditorPart editor = null;
 			Throwable ex = null;
 			try {
-				System.out.println("about to open mapping diagram editor");
 				editor = new OpenDiagramActionDelegate().openEditor(persClass, consCFG);
-				System.out.println("diagram editor opened succesfully");
 			} catch (PartInitException e) {
 				ex = e;
 			}
@@ -71,26 +55,6 @@ public class OpenMappingDiagramTest extends BaseTestSetCase {
 				fail(out);
 			}
 		}
-		System.out.println("Exiting OpenMappingDiagramTest.testOpenMappingDiagram()");
-		//close all editors
 	}
 	
-	private class TimeBomb implements Runnable {
-		@Override
-		public void run() {
-			try {
-				System.out.println("Timebomb is going to sleep");
-				Thread.sleep(300000);
-				System.out.println("Timebomb is waking up");
-				Map<Thread, StackTraceElement[]> m = Thread.getAllStackTraces();
-				for(Map.Entry<Thread,  StackTraceElement[]> e : m.entrySet()) {
-				    System.out.println(e.getKey().toString());
-				    for (StackTraceElement s : e.getValue()) {
-				        System.out.println("  " + s);
-				    }
-				}			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}		
-	}
 }
