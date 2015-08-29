@@ -11,7 +11,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
-import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.mapping.Table;
@@ -145,7 +144,7 @@ public class ConfigurationFacadeTest {
 	
 	@Test
 	public void testSetNamingStrategy() {
-		NamingStrategy dns = new DefaultNamingStrategy();
+		DefaultNamingStrategy dns = new DefaultNamingStrategy();
 		INamingStrategy namingStrategy = new AbstractNamingStrategyFacade(FACADE_FACTORY, dns) {};
 		configuration.setNamingStrategy(namingStrategy);
 		Assert.assertEquals("setNamingStrategy", methodName);
