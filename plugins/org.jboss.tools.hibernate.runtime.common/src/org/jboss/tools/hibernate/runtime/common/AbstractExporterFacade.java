@@ -33,16 +33,6 @@ implements IExporter {
 		}
 	}
 	
-	protected Class<?> getConfigurationClass() {
-		return Util.getClass(
-				getConfigurationClassName(), 
-				getFacadeFactoryClassLoader());
-	}
-	
-	protected String getConfigurationClassName() {
-		return "org.hibernate.cfg.Configuration";
-	}
-	
 	@Override
 	public void setProperties(Properties properties) {
 		Util.invokeMethod(
@@ -63,16 +53,6 @@ implements IExporter {
 		}
 	}
 	
-	protected Class<?> getArtifactCollectorClass() {
-		return Util.getClass(
-				getArtifactCollectorClassName(), 
-				getFacadeFactoryClassLoader());
-	}
-	
-	protected String getArtifactCollectorClassName() {
-		return "org.hibernate.tool.hbm2x.ArtifactCollector";
-	}
-
 	@Override
 	public void setOutputDirectory(File file) {
 		Util.invokeMethod(
@@ -118,16 +98,6 @@ implements IExporter {
 		return result;
 	}
 	
-	protected Class<?> getGenericExporterClass() {
-		return Util.getClass(
-				getGenericExporterClassName(), 
-				getFacadeFactoryClassLoader());
-	}
-
-	protected String getGenericExporterClassName() {
-		return "org.hibernate.tool.hbm2x.GenericExporter";
-	}
-
 	@Override
 	public IHbm2DDLExporter getHbm2DDLExporter() {
 		IHbm2DDLExporter result = null;
@@ -137,16 +107,6 @@ implements IExporter {
 		return result;
 	}
 	
-	protected Class<?> getHbm2DDLExporterClass() {
-		return Util.getClass(
-				getHbm2DDLExporterClassName(), 
-				getFacadeFactoryClassLoader());
-	}
-
-	protected String getHbm2DDLExporterClassName() {
-		return "org.hibernate.tool.hbm2x.Hbm2DDLExporter";
-	}
-
 	@Override
 	public IQueryExporter getQueryExporter() {
 		IQueryExporter result = null;
@@ -154,16 +114,6 @@ implements IExporter {
 			result = getFacadeFactory().createQueryExporter(getTarget());
 		}
 		return result;
-	}
-
-	protected Class<?> getQueryExporterClass() {
-		return Util.getClass(
-				getQueryExporterClassName(), 
-				getFacadeFactoryClassLoader());
-	}
-
-	protected String getQueryExporterClassName() {
-		return "org.hibernate.tool.hbm2x.QueryExporter";
 	}
 
 	@Override
@@ -177,6 +127,27 @@ implements IExporter {
 				new Object[] { props });
 	}
 
+	@Override
+	public void setOutput(StringWriter stringWriter) {
+		assert getHibernateConfigurationExporterClass().isAssignableFrom(
+				getTarget().getClass());
+		Util.invokeMethod(
+				getTarget(), 
+				"setOutput", 
+				new Class[] { Writer.class }, 
+				new Object[] { stringWriter });
+	}
+
+	protected Class<?> getConfigurationClass() {
+		return Util.getClass(
+				getConfigurationClassName(), 
+				getFacadeFactoryClassLoader());
+	}
+	
+	protected String getConfigurationClassName() {
+		return "org.hibernate.cfg.Configuration";
+	}
+	
 	protected Class<?> getHibernateConfigurationExporterClass() {
 		return Util.getClass(
 				getHibernateConfigurationExporterClassName(), 
@@ -187,15 +158,44 @@ implements IExporter {
 		return "org.hibernate.tool.hbm2x.QueryExporter";
 	}
 
-	@Override
-	public void setOutput(StringWriter stringWriter) {
-		assert getHibernateConfigurationExporterClass().isAssignableFrom(
-				getTarget().getClass());
-		Util.invokeMethod(
-				getTarget(), 
-				"setOutput", 
-				new Class[] { Writer.class }, 
-				new Object[] { stringWriter });
+	protected Class<?> getArtifactCollectorClass() {
+		return Util.getClass(
+				getArtifactCollectorClassName(), 
+				getFacadeFactoryClassLoader());
+	}
+	
+	protected String getArtifactCollectorClassName() {
+		return "org.hibernate.tool.hbm2x.ArtifactCollector";
+	}
+
+	protected Class<?> getGenericExporterClass() {
+		return Util.getClass(
+				getGenericExporterClassName(), 
+				getFacadeFactoryClassLoader());
+	}
+
+	protected String getGenericExporterClassName() {
+		return "org.hibernate.tool.hbm2x.GenericExporter";
+	}
+
+	protected Class<?> getHbm2DDLExporterClass() {
+		return Util.getClass(
+				getHbm2DDLExporterClassName(), 
+				getFacadeFactoryClassLoader());
+	}
+
+	protected String getHbm2DDLExporterClassName() {
+		return "org.hibernate.tool.hbm2x.Hbm2DDLExporter";
+	}
+
+	protected Class<?> getQueryExporterClass() {
+		return Util.getClass(
+				getQueryExporterClassName(), 
+				getFacadeFactoryClassLoader());
+	}
+
+	protected String getQueryExporterClassName() {
+		return "org.hibernate.tool.hbm2x.QueryExporter";
 	}
 
 }
