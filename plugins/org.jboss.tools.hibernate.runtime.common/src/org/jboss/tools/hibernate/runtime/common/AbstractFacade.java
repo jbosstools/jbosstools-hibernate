@@ -5,10 +5,6 @@ public abstract class AbstractFacade implements IFacade {
 	private Object target = null;	
 	private IFacadeFactory facadeFactory;
 	
-	protected static Object createTarget(String name, IFacadeFactory facadeFactory) {
-		return Util.getInstance(name, facadeFactory.getClassLoader());
-	}
-	
 	public AbstractFacade(IFacadeFactory facadeFactory, Object target) {
 		this.facadeFactory = facadeFactory;
 		this.target = target;

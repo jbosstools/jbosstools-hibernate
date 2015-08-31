@@ -51,7 +51,7 @@ public interface IFacadeFactory {
 	
 	ClassLoader getClassLoader();
 	IArtifactCollector createArtifactCollector(Object target);
-	ICfg2HbmTool createCfg2HbmTool();
+	ICfg2HbmTool createCfg2HbmTool(Object target);
 	INamingStrategy createNamingStrategy(Object target);
 	IDialect createDialect(Object target);
 	IMapping createMapping(Object target);

@@ -50,6 +50,7 @@ import org.hibernate.mapping.Table;
 import org.hibernate.proxy.HibernateProxyHelper;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
+import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
@@ -292,7 +293,7 @@ public class ServiceImpl implements IService {
 
 	@Override
 	public ICfg2HbmTool newCfg2HbmTool() {
-		return facadeFactory.createCfg2HbmTool();
+		return facadeFactory.createCfg2HbmTool(new Cfg2HbmTool());
 	}
 
 	@Override

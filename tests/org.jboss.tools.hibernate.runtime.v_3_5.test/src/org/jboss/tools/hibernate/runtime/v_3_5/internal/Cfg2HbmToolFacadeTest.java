@@ -4,6 +4,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
+import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.common.AbstractCfg2HbmToolFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractPersistentClassFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractPropertyFacade;
@@ -20,18 +21,20 @@ public class Cfg2HbmToolFacadeTest {
 	
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 
-	private ICfg2HbmTool cfg2HbmTool = null; 
+	private ICfg2HbmTool cfg2HbmToolFacade = null; 
+	private Cfg2HbmTool cfg2HbmTool = null;
 	
 	@Before
 	public void setUp() {
-		cfg2HbmTool = new AbstractCfg2HbmToolFacade(FACADE_FACTORY) {};
+		cfg2HbmTool = new Cfg2HbmTool();
+		cfg2HbmToolFacade = new AbstractCfg2HbmToolFacade(FACADE_FACTORY, cfg2HbmTool) {};
 	}
 
 	@Test
 	public void testGetPersistentClassTag() {
 		PersistentClass target = new RootClass();
 		IPersistentClass persistentClass = new AbstractPersistentClassFacade(FACADE_FACTORY, target) {};
-		Assert.assertEquals("class", cfg2HbmTool.getTag(persistentClass));
+		Assert.assertEquals("class", cfg2HbmToolFacade.getTag(persistentClass));
 	}
 	
 	public void testGetPropertyTag() {
@@ -43,7 +46,7 @@ public class Cfg2HbmToolFacadeTest {
 		p.setPersistentClass(rc);
 		rc.setVersion(p);
 		IProperty property = new AbstractPropertyFacade(FACADE_FACTORY, p) {};
-		Assert.assertEquals("version", cfg2HbmTool.getTag(property));
+		Assert.assertEquals("version", cfg2HbmToolFacade.getTag(property));
 	}
 
 }

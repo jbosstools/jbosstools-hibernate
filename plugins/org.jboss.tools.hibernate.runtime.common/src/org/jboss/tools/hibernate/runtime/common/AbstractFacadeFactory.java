@@ -53,8 +53,8 @@ public abstract class AbstractFacadeFactory implements IFacadeFactory {
 		return new AbstractArtifactCollectorFacade(this,target) {};
 	}
 	
-	public ICfg2HbmTool createCfg2HbmTool() {
-		return new AbstractCfg2HbmToolFacade(this) {};
+	public ICfg2HbmTool createCfg2HbmTool(Object target) {
+		return new AbstractCfg2HbmToolFacade(this, target) {};
 	}
 	
 	public INamingStrategy createNamingStrategy(Object target) {
