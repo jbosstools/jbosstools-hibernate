@@ -12,6 +12,7 @@
 	<packaging>eclipse-plugin</packaging>
 	
 	<properties>
+	    <antlr.version>2.7.7</antlr.version>
 		<asm.version>3.1</asm.version>
 		<cglib.version>2.2</cglib.version>
 		<commons-logging.version>1.0.4</commons-logging.version>
@@ -41,6 +42,11 @@
 				</executions>
 				<configuration>
 					<artifactItems>
+	                    <artifactItem>
+	                        <groupId>antlr</groupId>
+	                        <artifactId>antlr</artifactId>
+	                        <version>${antlr.version}</version>
+	                    </artifactItem>
 						<artifactItem>
 							<groupId>asm</groupId>
 							<artifactId>asm</artifactId>
