@@ -59,6 +59,7 @@ import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.util.xpl.ReflectHelper;
 import org.hibernate.util.xpl.StringHelper;
+import org.jboss.tools.hibernate.runtime.common.AbstractService;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.Util;
@@ -94,12 +95,13 @@ import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.xml.sax.EntityResolver;
 
-public class ServiceImpl implements IService {
+public class ServiceImpl extends AbstractService implements IService {
 
 	private IFacadeFactory facadeFactory = new FacadeFactoryImpl();
 
 	@Override
 	public IConfiguration newAnnotationConfiguration() {
+		getUsageTracker().trackNewConfigurationEvent();
 		Configuration configuration = new Configuration();
 		return facadeFactory.createConfiguration(configuration);
 	}
@@ -109,6 +111,7 @@ public class ServiceImpl implements IService {
 			String entityResolver, 
 			String persistenceUnit, 
 			Map<Object, Object> overrides) {
+		getUsageTracker().trackNewConfigurationEvent();
 		Ejb3Configuration ejb3Configuration = new Ejb3Configuration();
 		if (StringHelper.isNotEmpty(entityResolver)) {
 			try {
@@ -126,6 +129,7 @@ public class ServiceImpl implements IService {
 
 	@Override
 	public IConfiguration newDefaultConfiguration() {
+		getUsageTracker().trackNewConfigurationEvent();
 		return facadeFactory.createConfiguration(new Configuration());
 	}
 
