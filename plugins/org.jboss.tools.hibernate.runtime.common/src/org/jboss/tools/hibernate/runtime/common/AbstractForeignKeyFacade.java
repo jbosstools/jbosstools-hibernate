@@ -13,9 +13,9 @@ public abstract class AbstractForeignKeyFacade
 extends AbstractFacade 
 implements IForeignKey {
 
-	protected ITable referencedTable = null;
-	protected HashSet<IColumn> columns = null;
-	protected List<IColumn> referencedColumns = null;
+	private ITable referencedTable = null;
+	private HashSet<IColumn> columns = null;
+	private List<IColumn> referencedColumns = null;
 
 	public AbstractForeignKeyFacade(
 			IFacadeFactory facadeFactory, 
@@ -25,13 +25,15 @@ implements IForeignKey {
 
 	@Override
 	public ITable getReferencedTable() {
-		Object targetReferencedTable = Util.invokeMethod(
-				getTarget(), 
-				"getReferencedTable", 
-				new Class[] {}, 
-				new Object[] {});
-		if (referencedTable == null && targetReferencedTable != null) {
-			referencedTable = getFacadeFactory().createTable(targetReferencedTable);
+		if (referencedTable == null) {
+			Object targetReferencedTable = Util.invokeMethod(
+					getTarget(), 
+					"getReferencedTable", 
+					new Class[] {}, 
+					new Object[] {});
+			if (targetReferencedTable != null) {
+				referencedTable = getFacadeFactory().createTable(targetReferencedTable);
+			}
 		}
 		return referencedTable;
 	}
