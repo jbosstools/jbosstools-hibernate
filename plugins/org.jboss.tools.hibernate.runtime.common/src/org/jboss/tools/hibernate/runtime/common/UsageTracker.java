@@ -1,71 +1,38 @@
 package org.jboss.tools.hibernate.runtime.common;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.jboss.tools.hibernate.runtime.spi.IService;
-import org.jboss.tools.hibernate.runtime.spi.ServiceLookup;
+import org.jboss.tools.hibernate.runtime.common.internal.HibernateRuntimeCommon;
 import org.jboss.tools.usage.event.UsageEventType;
 import org.jboss.tools.usage.event.UsageReporter;
 
 public class UsageTracker {
 	
-	private static Map<IService, UsageTracker> INSTANCES;
+	private static UsageTracker INSTANCE;
 	
-	private static Map<IService, UsageTracker> getInstances() {
-		if (INSTANCES == null) {
-			INSTANCES = new HashMap<IService, UsageTracker>();
+	public static UsageTracker getInstance() {
+		if (INSTANCE == null) {
+			INSTANCE = new UsageTracker();
 		}
-		return INSTANCES;
+		return INSTANCE;
 	}
 	
-	public static UsageTracker getInstance(IService service) {
-		UsageTracker result = getInstances().get(service);
-		if (result == null) {
-			result = create(service);
-			getInstances().put(service, result);
-		}
-		return result;
-	}
-	
-	private static UsageTracker create(IService service) {
-		return new UsageTracker(determineHibernateVersion(service));
-	}
-	
-	private static String determineHibernateVersion(IService service) {
-		for (String version : ServiceLookup.getVersions()) {
-			if (service == ServiceLookup.findService(version)) {
-				return version;
-			}
-		}
-		return "unknown version";
-	}
-	
-	private String hibernateVersion;
-	private UsageReporter usageReporter;
 	private UsageEventType newConfigurationEventType;
 	
-	private UsageTracker(String version) {
-		hibernateVersion = version;
-		initializeUsageReporter();
-		initializeUsageEventTypes();
+	private UsageTracker() {
+		initializeUsageEventType();
 	}
 	
-	private void initializeUsageReporter() {
-		usageReporter = UsageReporter.getInstance();
-	}
-	
-	private void initializeUsageEventTypes() {
+	private void initializeUsageEventType() {
 		newConfigurationEventType = new UsageEventType(
-				"org.jboss.tools.hibernate.runtime", 
-				hibernateVersion, 
+				"hibernate", 
+				UsageEventType.getVersion(HibernateRuntimeCommon.getDefault()), 
 				null, 
-				"new configuration");
-		usageReporter.registerEvent(newConfigurationEventType);
+				"new configuration",
+				"Hibernate runtime version");
+		UsageReporter.getInstance().registerEvent(newConfigurationEventType);
 	}
 	
-	public void trackNewConfigurationEvent() {
-		usageReporter.trackEvent(newConfigurationEventType.event());
+	public void trackNewConfigurationEvent(String hibernateVersion) {
+		UsageReporter.getInstance().trackEvent(newConfigurationEventType.event(hibernateVersion));
 	}
 
 }

@@ -94,11 +94,13 @@ import org.xml.sax.EntityResolver;
 
 public class ServiceImpl extends AbstractService implements IService {
 
+	private static final String HIBERNATE_VERSION = "3.6";
+	
 	private IFacadeFactory facadeFactory = new FacadeFactoryImpl();
 
 	@Override
 	public IConfiguration newAnnotationConfiguration() {
-		getUsageTracker().trackNewConfigurationEvent();
+		getUsageTracker().trackNewConfigurationEvent(HIBERNATE_VERSION);
 		Configuration configuration = new Configuration();
 		configuration.setProperty("hibernate.validator.autoregister_listeners", "false");
 		configuration.setProperty("hibernate.validator.apply_to_ddl", "false");
@@ -110,7 +112,7 @@ public class ServiceImpl extends AbstractService implements IService {
 			String entityResolver, 
 			String persistenceUnit, 
 			Map<Object, Object> overrides) {
-		getUsageTracker().trackNewConfigurationEvent();
+		getUsageTracker().trackNewConfigurationEvent(HIBERNATE_VERSION);
 		Ejb3Configuration ejb3Configuration = new Ejb3Configuration();
 		if (StringHelper.isNotEmpty(entityResolver)) {
 			try {
@@ -130,7 +132,7 @@ public class ServiceImpl extends AbstractService implements IService {
 
 	@Override
 	public IConfiguration newDefaultConfiguration() {
-		getUsageTracker().trackNewConfigurationEvent();
+		getUsageTracker().trackNewConfigurationEvent(HIBERNATE_VERSION);
 		Configuration target = new Configuration();
 		target.setProperty("hibernate.validator.autoregister_listeners", "false");
 		target.setProperty("hibernate.validator.apply_to_ddl", "false");

@@ -95,11 +95,13 @@ import org.xml.sax.EntityResolver;
 
 public class ServiceImpl extends AbstractService implements IService {
 	
+	private static final String HIBERNATE_VERSION = "3.5";
+	
 	private IFacadeFactory facadeFactory = new FacadeFactoryImpl();
 
 	@Override
 	public IConfiguration newAnnotationConfiguration() {
-		getUsageTracker().trackNewConfigurationEvent();
+		getUsageTracker().trackNewConfigurationEvent(HIBERNATE_VERSION);
 		Configuration configuration = new AnnotationConfiguration();
 		return facadeFactory.createConfiguration(configuration);
 	}
@@ -109,7 +111,7 @@ public class ServiceImpl extends AbstractService implements IService {
 			String entityResolver, 
 			String persistenceUnit, 
 			Map<Object, Object> overrides) {
-		getUsageTracker().trackNewConfigurationEvent();
+		getUsageTracker().trackNewConfigurationEvent(HIBERNATE_VERSION);
 		Ejb3Configuration ejb3Configuration = new Ejb3Configuration();
 		if (StringHelper.isNotEmpty(entityResolver)) {
 			try {
@@ -127,7 +129,7 @@ public class ServiceImpl extends AbstractService implements IService {
 
 	@Override
 	public IConfiguration newDefaultConfiguration() {
-		getUsageTracker().trackNewConfigurationEvent();
+		getUsageTracker().trackNewConfigurationEvent(HIBERNATE_VERSION);
 		return facadeFactory.createConfiguration(new Configuration());
 	}
 
