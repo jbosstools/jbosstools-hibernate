@@ -289,6 +289,8 @@ public class NewConfigurationWizardPage extends WizardPage {
         dialogChanged();
 
         setControl(sc);
+        
+        sc.pack();        
     }
 
 
