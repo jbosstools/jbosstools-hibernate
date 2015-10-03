@@ -107,6 +107,8 @@ public class TableFilterWizardPage extends WizardPage {
 			consoleConfigurationName.setText(selectedConfiguratonName);
 		}
 		dialogChanged();
+		
+		sc.pack();
 	}
 
     private void updateWarningStatus(String message) {
