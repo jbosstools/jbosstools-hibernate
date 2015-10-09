@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate.runtime.v_3_5.internal;
+package org.jboss.tools.hibernate.runtime.v_4_3.internal;
 
 import java.io.File;
 import java.lang.reflect.Field;
