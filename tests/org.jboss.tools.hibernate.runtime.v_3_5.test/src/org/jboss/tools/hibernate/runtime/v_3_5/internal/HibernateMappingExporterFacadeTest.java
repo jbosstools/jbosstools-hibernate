@@ -46,7 +46,11 @@ public class HibernateMappingExporterFacadeTest {
 				if (arguments == null) {
 					arguments = args;
 				}
-				return proxy.invokeSuper(obj, args);
+				if ("start".equals(methodName)) {
+					return null;
+				} else {
+					return proxy.invokeSuper(obj, args);
+				}
 			}					
 		});
 		hibernateMappingExporterFacade = new AbstractHibernateMappingExporterFacade(
@@ -75,6 +79,13 @@ public class HibernateMappingExporterFacadeTest {
 		hibernateMappingExporterFacade.setGlobalSettings(hibernateMappingGlobalSettingsFacade);
 		Assert.assertEquals("setGlobalSettings", methodName);
 		Assert.assertArrayEquals(new Object[] { hibernateMappingGlobalSettings }, arguments);
+	}
+	
+	@Test
+	public void testStart() {
+		hibernateMappingExporterFacade.start();
+		Assert.assertEquals("start", methodName);
+		Assert.assertArrayEquals(new Object[] {}, arguments);
 	}
 	
 	private void reset() {
