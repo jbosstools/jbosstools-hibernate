@@ -207,6 +207,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage implements
 		sc.setMinSize(tabFolder.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		setControl(sc);
 		dialogChanged();
+		parent.layout(true, false);
 	}
 
 	protected void initTabs(CTabFolder folder) {
