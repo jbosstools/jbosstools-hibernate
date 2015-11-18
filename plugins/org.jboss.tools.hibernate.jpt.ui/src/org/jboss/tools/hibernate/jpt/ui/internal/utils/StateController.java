@@ -124,7 +124,7 @@ abstract class StateController
 	StateController(PropertyValueModel<Boolean> booleanHolder,
 	                ControlHolder... controlHolders) {
 
-		this(booleanHolder, CollectionTools.collection(controlHolders), false);
+		this(booleanHolder, CollectionTools.identityHashBag(controlHolders), false);
 	}
 
 	/**
@@ -158,7 +158,7 @@ abstract class StateController
 	                boolean defaultValue) {
 
 		this();
-		this.initialize(booleanHolder, CollectionTools.collection(controlHolders), defaultValue);
+		this.initialize(booleanHolder, CollectionTools.identityHashBag(controlHolders), defaultValue);
 	}
 
 	/**
@@ -173,7 +173,7 @@ abstract class StateController
 	StateController(PropertyValueModel<Boolean> booleanHolder,
 	                Iterator<ControlHolder> controlHolders) {
 
-		this(booleanHolder, CollectionTools.collection(controlHolders), false);
+		this(booleanHolder, CollectionTools.identityHashBag(controlHolders), false);
 	}
 
 	/**
@@ -191,7 +191,7 @@ abstract class StateController
 	                boolean defaultValue) {
 
 		this();
-		initialize(booleanHolder, CollectionTools.collection(controlHolders), defaultValue);
+		initialize(booleanHolder, CollectionTools.identityHashBag(controlHolders), defaultValue);
 	}
 
 	/**

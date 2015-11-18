@@ -52,7 +52,7 @@ public class PaneVisibilityEnabler extends StateController
 	public PaneVisibilityEnabler(PropertyValueModel<Boolean> booleanHolder,
 	                             Pane<?>... panes) {
 
-		this(booleanHolder, CollectionTools.collection(panes), false);
+		this(booleanHolder, CollectionTools.identityHashBag(panes), false);
 	}
 
 	/**
@@ -148,7 +148,7 @@ public class PaneVisibilityEnabler extends StateController
 	}
 
 	private static Collection<ControlHolder> wrap(Iterator<? extends Pane<?>> panes) {
-		return CollectionTools.collection(IteratorTools.transform(panes, PANE_HOLDER_TRANSFORMER));
+		return CollectionTools.identityHashBag(IteratorTools.transform(panes, PANE_HOLDER_TRANSFORMER));
 	}
 
 	private static final Transformer<Pane<?>, ControlHolder> PANE_HOLDER_TRANSFORMER = new PaneHolderTransformer();
