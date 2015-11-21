@@ -1,8 +1,11 @@
 package org.jboss.tools.hibernate.runtime.v_4_3.internal;
 
+import java.sql.SQLException;
+
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
+import org.hibernate.exception.GenericJDBCException;
 import org.hibernate.service.ServiceRegistry;
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
@@ -20,6 +23,9 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	protected Object buildTargetSessionFactory() {
 		if (serviceRegistry == null) {
 			buildServiceRegistry();
+		}
+		if (serviceRegistry.getService(org.hibernate.engine.jdbc.spi.JdbcServices.class).getDialect() == null) {
+			throw new GenericJDBCException("Could not open connection", new SQLException());
 		}
 		return ((Configuration)getTarget()).buildSessionFactory(serviceRegistry);
 	}
