@@ -9,8 +9,6 @@ import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 
 public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	
-	ServiceRegistry serviceRegistry = null;
-	
 	public ConfigurationFacadeImpl(
 			IFacadeFactory facadeFactory, 
 			Configuration configuration) {
@@ -18,31 +16,23 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	}
 	
 	protected Object buildTargetSessionFactory() {
-		if (serviceRegistry == null) {
-			buildServiceRegistry();
-		}
-		return ((Configuration)getTarget()).buildSessionFactory(serviceRegistry);
+		return ((Configuration)getTarget()).buildSessionFactory(buildServiceRegistry());
 	}
 
 	protected Object buildTargetSettings() {
-		if (serviceRegistry == null) {
-			buildServiceRegistry();
-		}
-		return ((Configuration)getTarget()).buildSettings(serviceRegistry);
+		return ((Configuration)getTarget()).buildSettings(buildServiceRegistry());
 	}
 	
 	protected Object buildTargetDialect() {
-		if (serviceRegistry == null) {
-			buildServiceRegistry();
-		}
-		return serviceRegistry.getService(DialectFactory.class).buildDialect(
-				getProperties(), null);
+		return buildServiceRegistry()
+				.getService(DialectFactory.class)
+				.buildDialect(getProperties(), null);
 	}
 	
-	void buildServiceRegistry() {
+	private ServiceRegistry buildServiceRegistry() {
 		ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
 		builder.applySettings(((Configuration)getTarget()).getProperties());
-		serviceRegistry = builder.buildServiceRegistry();		
+		return builder.buildServiceRegistry();		
 	}
 
 }

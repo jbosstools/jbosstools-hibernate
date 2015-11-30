@@ -11,15 +11,20 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
+import org.hibernate.cfg.Settings;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
+import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.runtime.common.AbstractNamingStrategyFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractReverseEngineeringStrategyFacade;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IMapping;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
+import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
+import org.jboss.tools.hibernate.runtime.spi.ISettings;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -209,32 +214,24 @@ public class ConfigurationFacadeTest {
 	public void testBuildSessionFactory() {
 		// need to set 'hibernate.dialect' property for the session factory to properly build 
 		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
-		Assert.assertNull(configuration.serviceRegistry);
-		Assert.assertNotNull(configuration.buildSessionFactory());
-		Assert.assertNotNull(configuration.serviceRegistry);
-		configuration.serviceRegistry = null;
-		configuration.buildServiceRegistry();
-		Assert.assertNotNull(configuration.serviceRegistry);
-		reset();
-		Assert.assertNotNull(configuration.buildSessionFactory());
-		Assert.assertEquals("buildSessionFactory", methodName);
-		Assert.assertArrayEquals(new Object[] { configuration.serviceRegistry }, arguments);
+		ISessionFactory sessionFactory = configuration.buildSessionFactory();
+		Assert.assertNotNull(sessionFactory);
+		Assert.assertTrue(sessionFactory instanceof IFacade);
+		Object sessionFactoryTarget = ((IFacade)sessionFactory).getTarget();
+		Assert.assertNotNull(sessionFactoryTarget);
+		Assert.assertTrue(sessionFactoryTarget instanceof SessionFactoryImpl);
 	}
 	
 	@Test
 	public void testBuildSettings() {
 		// need to set 'hibernate.dialect' property for the session factory to properly build 
 		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
-		Assert.assertNull(configuration.serviceRegistry);
-		Assert.assertNotNull(configuration.buildSettings());
-		Assert.assertNotNull(configuration.serviceRegistry);
-		configuration.serviceRegistry = null;
-		configuration.buildServiceRegistry();
-		Assert.assertNotNull(configuration.serviceRegistry);
-		reset();
-		Assert.assertNotNull(configuration.buildSettings());
-		Assert.assertEquals("buildSettings", methodName);
-		Assert.assertArrayEquals(new Object[] { configuration.serviceRegistry }, arguments);
+		ISettings settings = configuration.buildSettings();
+		Assert.assertNotNull(settings);
+		Assert.assertTrue(settings instanceof IFacade);
+		Object settingsTarget = ((IFacade)settings).getTarget();
+		Assert.assertNotNull(settingsTarget);
+		Assert.assertTrue(settingsTarget instanceof Settings);
 	}
 	
 	@Test
