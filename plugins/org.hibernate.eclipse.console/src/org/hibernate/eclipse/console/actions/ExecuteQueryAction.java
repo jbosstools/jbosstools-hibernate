@@ -60,33 +60,39 @@ public class ExecuteQueryAction extends Action {
 	}
 
 	protected void execute(QueryEditor queryEditor) {
+		try {
 
-		ConsoleConfiguration cfg = queryEditor.getConsoleConfiguration();
-		if (cfg != null) {
-			//keep states of ConsoleConfiguration and HibernateExtension synchronized
-			if (!(cfg.isSessionFactoryCreated() && cfg.getHibernateExtension().isSessionFactoryCreated())) {
-				if (ProjectCompilerVersionChecker.validateProjectComplianceLevel(cfg)){
-					if (queryEditor.askUserForConfiguration(cfg.getName())) {
-						if (!(cfg.hasConfiguration() && cfg.getHibernateExtension().hasConfiguration())) {
-		    				try {
-		    					cfg.build();
-		    				} catch (Exception he) {
-		    					HibernateConsolePlugin.getDefault().showError(
-		    						HibernateConsolePlugin.getShell(), 
-		    						HibernateConsoleMessages.LoadConsoleCFGCompletionProposal_could_not_load_configuration +
-		    						' ' + cfg.getName(), he);
-		    				}
-						}
-						if (cfg.hasConfiguration() && cfg.getHibernateExtension().hasConfiguration()) {
-							cfg.buildSessionFactory();
-							queryEditor.executeQuery(cfg);
+			ConsoleConfiguration cfg = queryEditor.getConsoleConfiguration();
+			if (cfg != null) {
+				//keep states of ConsoleConfiguration and HibernateExtension synchronized
+				if (!(cfg.isSessionFactoryCreated() && cfg.getHibernateExtension().isSessionFactoryCreated())) {
+					if (ProjectCompilerVersionChecker.validateProjectComplianceLevel(cfg)){
+						if (queryEditor.askUserForConfiguration(cfg.getName())) {
+							if (!(cfg.hasConfiguration() && cfg.getHibernateExtension().hasConfiguration())) {
+			    				try {
+			    					cfg.build();
+			    				} catch (Exception he) {
+			    					HibernateConsolePlugin.getDefault().showError(
+			    						HibernateConsolePlugin.getShell(), 
+			    						HibernateConsoleMessages.LoadConsoleCFGCompletionProposal_could_not_load_configuration +
+			    						' ' + cfg.getName(), he);
+			    				}
+							}
+							if (cfg.hasConfiguration() && cfg.getHibernateExtension().hasConfiguration()) {
+								cfg.buildSessionFactory();
+								queryEditor.executeQuery(cfg);
+							}
 						}
 					}
+				} else {
+					queryEditor.executeQuery(cfg);
 				}
-			} else {
-				queryEditor.executeQuery(cfg);
-			}
+			} 
+		
+		} catch (Throwable t) {
+			HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.ExecuteQueryAction_problems_while_executing_query, t);
 		}
+		
 	}
 
 	public void initTextAndToolTip(String text) {
