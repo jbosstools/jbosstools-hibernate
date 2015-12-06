@@ -21,9 +21,15 @@
  */
 package org.hibernate.eclipse.console.actions;
 
+import org.eclipse.datatools.connectivity.IConnection;
+import org.eclipse.datatools.connectivity.IConnectionProfile;
+import org.eclipse.datatools.connectivity.ProfileManager;
+import org.eclipse.datatools.connectivity.ui.PingJob;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.ui.PlatformUI;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
@@ -39,6 +45,8 @@ import org.hibernate.eclipse.console.workbench.ProjectCompilerVersionChecker;
 public class ExecuteQueryAction extends Action {
 
 	private QueryEditor editor;
+	
+	private boolean cachedConnectionValid;
 
 	public ExecuteQueryAction() {
 		setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.EXECUTE) );
@@ -60,39 +68,49 @@ public class ExecuteQueryAction extends Action {
 	}
 
 	protected void execute(QueryEditor queryEditor) {
-		try {
-
-			ConsoleConfiguration cfg = queryEditor.getConsoleConfiguration();
-			if (cfg != null) {
-				//keep states of ConsoleConfiguration and HibernateExtension synchronized
-				if (!(cfg.isSessionFactoryCreated() && cfg.getHibernateExtension().isSessionFactoryCreated())) {
-					if (ProjectCompilerVersionChecker.validateProjectComplianceLevel(cfg)){
-						if (queryEditor.askUserForConfiguration(cfg.getName())) {
-							if (!(cfg.hasConfiguration() && cfg.getHibernateExtension().hasConfiguration())) {
-			    				try {
-			    					cfg.build();
-			    				} catch (Exception he) {
-			    					HibernateConsolePlugin.getDefault().showError(
-			    						HibernateConsolePlugin.getShell(), 
-			    						HibernateConsoleMessages.LoadConsoleCFGCompletionProposal_could_not_load_configuration +
-			    						' ' + cfg.getName(), he);
-			    				}
-							}
-							if (cfg.hasConfiguration() && cfg.getHibernateExtension().hasConfiguration()) {
+		ConsoleConfiguration cfg = queryEditor.getConsoleConfiguration();
+		if (cfg != null) {
+			//keep states of ConsoleConfiguration and HibernateExtension synchronized
+			if (!(cfg.isSessionFactoryCreated() && cfg.getHibernateExtension().isSessionFactoryCreated())) {
+				if (ProjectCompilerVersionChecker.validateProjectComplianceLevel(cfg)){
+					if (queryEditor.askUserForConfiguration(cfg.getName())) {
+						if (!(cfg.hasConfiguration() && cfg.getHibernateExtension().hasConfiguration())) {
+		    				try {
+		    					cfg.build();
+		    				} catch (Exception he) {
+		    					HibernateConsolePlugin.getDefault().showError(
+		    						HibernateConsolePlugin.getShell(), 
+		    						HibernateConsoleMessages.LoadConsoleCFGCompletionProposal_could_not_load_configuration +
+		    						' ' + cfg.getName(), he);
+		    				}
+						}
+						if (cfg.hasConfiguration() && cfg.getHibernateExtension().hasConfiguration()) {
+							if (cachedConnectionValid || isConnectionValid(cfg)) {
 								cfg.buildSessionFactory();
 								queryEditor.executeQuery(cfg);
 							}
 						}
 					}
-				} else {
+				}
+			} else {
+				if (cachedConnectionValid || isConnectionValid(cfg)) {
 					queryEditor.executeQuery(cfg);
 				}
-			} 
-		
-		} catch (Throwable t) {
-			HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.ExecuteQueryAction_problems_while_executing_query, t);
+			}
+		}		
+	}
+	
+	private boolean isConnectionValid(ConsoleConfiguration cfg) {
+		String connProfileName = cfg.getPreferences().getConnectionProfileName();
+		IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(connProfileName);
+		IConnection conn = PingJob.createTestConnection(profile);
+		this.cachedConnectionValid = conn.getConnectException() == null;
+		if (!this.cachedConnectionValid) {
+			MessageDialog.openError(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), 
+					HibernateConsoleMessages.ExecuteQueryAction_problems_while_executing_query, 
+					conn.getConnectException().getLocalizedMessage());
 		}
-		
+		return this.cachedConnectionValid;
 	}
 
 	public void initTextAndToolTip(String text) {
