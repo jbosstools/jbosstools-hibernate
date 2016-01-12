@@ -15,13 +15,13 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jpa.core.JpaDataSource;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.Orderable;
-import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType.Parent;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
@@ -100,7 +100,7 @@ public class HibernateJpaFactory2_0 extends HibernateAbstractJpaFactory implemen
 
 	// ********** Java Context Model **********
 	@Override
-	public JavaPersistentType buildJavaPersistentType(PersistentType.Parent owner,
+	public JavaPersistentType buildJavaPersistentType(Parent owner,
 			JavaResourceType jrt) {
 		return new GenericJavaPersistentType2_0(owner, jrt);
 	}
