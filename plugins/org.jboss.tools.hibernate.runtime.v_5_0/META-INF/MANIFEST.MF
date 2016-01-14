@@ -9,3 +9,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: .,
  lib/hibernate-core-5.0.6.Final.jar,
  lib/hibernate-tools-5.0.0.Alpha1.jar
+Require-Bundle: org.jboss.tools.hibernate.runtime.common,
+ org.jboss.tools.hibernate.runtime.spi
