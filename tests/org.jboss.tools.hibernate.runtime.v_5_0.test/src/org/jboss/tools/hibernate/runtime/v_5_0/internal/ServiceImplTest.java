@@ -8,7 +8,7 @@ public class ServiceImplTest {
 	private ServiceImpl service = new ServiceImpl();
 	
 	@Test
-	public void test() {
+	public void testServiceCreation() {
 		Assert.assertNotNull(service);
 	}
 	
