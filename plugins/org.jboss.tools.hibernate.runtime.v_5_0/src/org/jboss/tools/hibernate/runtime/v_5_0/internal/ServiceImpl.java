@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.hibernate.cfg.Configuration;
 import org.jboss.tools.hibernate.runtime.common.AbstractService;
+import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
@@ -36,14 +38,20 @@ import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
+import org.jboss.tools.hibernate.runtime.v_5_0.internal.FacadeFactoryImpl;
 import org.xml.sax.EntityResolver;
 
 public class ServiceImpl extends AbstractService {
 
+	private static final String HIBERNATE_VERSION = "4.3";
+	
+	private IFacadeFactory facadeFactory = new FacadeFactoryImpl();
+
 	@Override
 	public IConfiguration newAnnotationConfiguration() {
-		// TODO Auto-generated method stub
-		return null;
+		getUsageTracker().trackNewConfigurationEvent(HIBERNATE_VERSION);
+		Configuration configuration = new Configuration();
+		return facadeFactory.createConfiguration(configuration);
 	}
 
 	@Override

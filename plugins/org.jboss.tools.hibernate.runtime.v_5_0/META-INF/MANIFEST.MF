@@ -8,6 +8,9 @@ Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: .,
  lib/hibernate-core-5.0.6.Final.jar,
- lib/hibernate-tools-5.0.0.Alpha1.jar
+ lib/hibernate-tools-5.0.0.Alpha1.jar,
+ lib/jboss-logging-3.3.0.Final.jar,
+ lib/geronimo-jta_1.1_spec-1.1.1.jar
 Require-Bundle: org.jboss.tools.hibernate.runtime.common,
- org.jboss.tools.hibernate.runtime.spi
+ org.jboss.tools.hibernate.runtime.spi,
+ org.jboss.tools.hibernate.libs.dom4j.v_1_6_1
