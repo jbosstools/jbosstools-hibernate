@@ -49,9 +49,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IConfiguration newAnnotationConfiguration() {
-		getUsageTracker().trackNewConfigurationEvent(HIBERNATE_VERSION);
-		Configuration configuration = new Configuration();
-		return facadeFactory.createConfiguration(configuration);
+		return newDefaultConfiguration();
 	}
 
 	@Override
@@ -63,8 +61,8 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IConfiguration newDefaultConfiguration() {
-		// TODO Auto-generated method stub
-		return null;
+		getUsageTracker().trackNewConfigurationEvent(HIBERNATE_VERSION);
+		return facadeFactory.createConfiguration(new Configuration());
 	}
 
 	@Override

@@ -24,4 +24,13 @@ public class ServiceImplTest {
 		Assert.assertTrue(target instanceof Configuration);
 	}
 	
+	@Test
+	public void testNewDefaultConfiguration() {
+		IConfiguration configuration = service.newDefaultConfiguration();
+		Assert.assertNotNull(configuration);
+		Object target = ((IFacade)configuration).getTarget();
+		Assert.assertNotNull(target);
+		Assert.assertTrue(target instanceof Configuration);
+	}
+	
 }
