@@ -339,8 +339,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public ClassLoader getClassLoader() {
-		// TODO Auto-generated method stub
-		return null;
+		return ServiceImpl.class.getClassLoader();
 	}
 
 }

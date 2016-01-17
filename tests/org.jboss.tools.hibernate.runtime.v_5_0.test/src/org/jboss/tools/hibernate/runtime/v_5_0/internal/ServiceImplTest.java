@@ -33,4 +33,9 @@ public class ServiceImplTest {
 		Assert.assertTrue(target instanceof Configuration);
 	}
 	
+	@Test
+	public void testGetClassLoader(){
+		Assert.assertSame(ServiceImpl.class.getClassLoader(), service.getClassLoader());
+	}
+	
 }
