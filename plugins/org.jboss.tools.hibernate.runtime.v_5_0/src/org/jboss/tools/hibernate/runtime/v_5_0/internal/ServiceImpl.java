@@ -347,8 +347,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public List<String> getJPAMappingFilePaths(String persistenceUnitName, EntityResolver entityResolver) {
-		// TODO Auto-generated method stub
-		return null;
+		return OpenMappingUtilsEjb3.enumDocuments(persistenceUnitName, entityResolver);
 	}
 
 	@Override

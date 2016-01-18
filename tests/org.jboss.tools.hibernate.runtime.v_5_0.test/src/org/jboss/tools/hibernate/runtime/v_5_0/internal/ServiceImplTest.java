@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_5_0.internal;
 
 import java.io.File;
+import java.util.List;
 
 import org.hibernate.cfg.Configuration;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -56,6 +57,12 @@ public class ServiceImplTest {
 				(HibernateMappingExporterExtension)((IFacade)hibernateMappingExporter).getTarget();
 		Assert.assertSame(file, hmee.getOutputDirectory());
 		Assert.assertSame(cfg, hmee.getConfiguration());
+	}
+	
+	@Test
+	public void testGetJPAMappingFilePaths() {
+		List<String> result = service.getJPAMappingFilePaths("test", null);
+		Assert.assertEquals(0, result.size());
 	}
 	
 	@Test
