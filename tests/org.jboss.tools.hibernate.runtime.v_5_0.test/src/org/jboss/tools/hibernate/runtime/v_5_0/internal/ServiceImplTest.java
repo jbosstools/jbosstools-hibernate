@@ -1,8 +1,11 @@
 package org.jboss.tools.hibernate.runtime.v_5_0.internal;
 
+import java.io.File;
+
 import org.hibernate.cfg.Configuration;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -40,6 +43,19 @@ public class ServiceImplTest {
 		Object target = ((IFacade)configuration).getTarget();
 		Assert.assertNotNull(target);
 		Assert.assertTrue(target instanceof Configuration);
+	}
+	
+	@Test
+	public void testNewHibernateMappingExporter() {
+		IConfiguration configuration = service.newDefaultConfiguration();
+		File file = new File("");
+		IHibernateMappingExporter hibernateMappingExporter = 
+				service.newHibernateMappingExporter(configuration, file);
+		Configuration cfg = (Configuration)((IFacade)configuration).getTarget();
+		HibernateMappingExporterExtension hmee = 
+				(HibernateMappingExporterExtension)((IFacade)hibernateMappingExporter).getTarget();
+		Assert.assertSame(file, hmee.getOutputDirectory());
+		Assert.assertSame(cfg, hmee.getConfiguration());
 	}
 	
 	@Test

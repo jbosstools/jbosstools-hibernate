@@ -11,6 +11,7 @@ import org.hibernate.cfg.JPAConfiguration;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.proxy.HibernateProxyHelper;
 import org.jboss.tools.hibernate.runtime.common.AbstractService;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
@@ -80,9 +81,14 @@ public class ServiceImpl extends AbstractService {
 	}
 
 	@Override
-	public IHibernateMappingExporter newHibernateMappingExporter(IConfiguration hcfg, File file) {
-		// TODO Auto-generated method stub
-		return null;
+	public IHibernateMappingExporter newHibernateMappingExporter(
+			IConfiguration hcfg, File file) {
+		assert hcfg instanceof IFacade;
+		HibernateMappingExporterExtension target = new HibernateMappingExporterExtension(
+				facadeFactory,
+				(Configuration)((IFacade)hcfg).getTarget(),
+				file);
+		return facadeFactory.createHibernateMappingExporter(target);
 	}
 
 	@Override

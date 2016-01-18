@@ -13,7 +13,8 @@ Bundle-ClassPath: .,
  lib/hibernate-entitymanager-5.0.6.Final.jar,
  lib/hibernate-jpa-2.1-api-1.0.0.Final.jar,
  lib/hibernate-tools-5.0.0.Alpha1.jar,
- lib/jboss-logging-3.3.0.Final.jar
+ lib/jboss-logging-3.3.0.Final.jar,
+ lib/slf4j-api-1.6.1.jar
 Require-Bundle: org.jboss.tools.hibernate.runtime.common,
  org.jboss.tools.hibernate.runtime.spi,
  org.jboss.tools.hibernate.libs.dom4j.v_1_6_1
