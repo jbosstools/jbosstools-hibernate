@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.JPAConfiguration;
+import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.jboss.tools.hibernate.runtime.common.AbstractService;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
@@ -38,7 +40,6 @@ import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
-import org.jboss.tools.hibernate.runtime.v_5_0.internal.FacadeFactoryImpl;
 import org.xml.sax.EntityResolver;
 
 public class ServiceImpl extends AbstractService {
@@ -53,10 +54,22 @@ public class ServiceImpl extends AbstractService {
 	}
 
 	@Override
-	public IConfiguration newJpaConfiguration(String entityResolver, String persistenceUnit,
+	public IConfiguration newJpaConfiguration(
+			String entityResolver, 
+			String persistenceUnit,
 			Map<Object, Object> overrides) {
-		// TODO Auto-generated method stub
-		return null;
+		IConfiguration result = null;
+		EntityManagerFactoryBuilderImpl entityManagerFactoryBuilder = 
+			HibernateToolsPersistenceProvider
+				.createEntityManagerFactoryBuilder(
+						persistenceUnit, 
+						overrides);
+		if (entityManagerFactoryBuilder != null) {
+			result = facadeFactory.createConfiguration(
+					new JPAConfiguration(
+							entityManagerFactoryBuilder));
+		}
+		return result;
 	}
 
 	@Override
