@@ -43,8 +43,17 @@ public class ServiceImplTest {
 	}
 	
 	@Test
+	public void testGetClassWithoutInitializingProxy() {
+		Assert.assertSame(
+				Object.class, 
+				service.getClassWithoutInitializingProxy(new Object()));
+	}
+	
+	@Test
 	public void testGetClassLoader(){
-		Assert.assertSame(ServiceImpl.class.getClassLoader(), service.getClassLoader());
+		Assert.assertSame(
+				ServiceImpl.class.getClassLoader(), 
+				service.getClassLoader());
 	}
 	
 }
