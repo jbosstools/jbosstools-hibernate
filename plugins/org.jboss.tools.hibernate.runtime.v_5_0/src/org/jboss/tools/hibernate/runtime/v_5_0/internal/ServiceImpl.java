@@ -10,6 +10,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JPAConfiguration;
+import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.proxy.HibernateProxyHelper;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
@@ -349,9 +350,9 @@ public class ServiceImpl extends AbstractService {
 	}
 
 	@Override
-	public ITableIdentifier newTableIdentifier(String catalog, String schema, String typename) {
-		// TODO Auto-generated method stub
-		return null;
+	public ITableIdentifier newTableIdentifier(String catalog, String schema, String name) {
+		return facadeFactory.createTableIdentifier(
+				new TableIdentifier(catalog, schema, name));
 	}
 
 	@Override

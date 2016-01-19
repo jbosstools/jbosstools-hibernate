@@ -3,13 +3,14 @@ package org.jboss.tools.hibernate.runtime.v_5_0.internal;
 import java.io.File;
 import java.util.List;
 
-import org.hibernate.Hibernate;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.reveng.TableIdentifier;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
+import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -76,6 +77,16 @@ public class ServiceImplTest {
 		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 		IHQLCodeAssist hqlCodeAssist = service.newHQLCodeAssist(configuration);
 		Assert.assertNotNull(hqlCodeAssist);
+	}
+	
+	@Test
+	public void testNewTableIdentifier() {
+		ITableIdentifier tableIdentifier = service.newTableIdentifier(
+				"catalog", "schema", "typeName");
+		Assert.assertNotNull(tableIdentifier);
+		Object target = ((IFacade)tableIdentifier).getTarget();
+		Assert.assertNotNull(target);
+		Assert.assertTrue(target instanceof TableIdentifier);
 	}
 	
 	@Test
