@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.mapping.PrimaryKey;
+import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
@@ -16,6 +17,7 @@ import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingGlobalSettings;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
+import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
@@ -85,6 +87,15 @@ public class ServiceImplTest {
 		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 		IHQLCodeAssist hqlCodeAssist = service.newHQLCodeAssist(configuration);
 		Assert.assertNotNull(hqlCodeAssist);
+	}
+	
+	@Test
+	public void testNewProperty() {
+		IProperty property = service.newProperty();
+		Assert.assertNotNull(property);
+		Object target = ((IFacade)property).getTarget();
+		Assert.assertNotNull(target);
+		Assert.assertTrue(target instanceof Property);
 	}
 	
 	@Test
