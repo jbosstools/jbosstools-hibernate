@@ -109,6 +109,17 @@ public class ServiceImplTest {
 	}
 	
 	@Test
+	public void testNewSpecialRootClass() {
+		IProperty property = service.newProperty();
+		IPersistentClass specialRootClass = service.newSpecialRootClass(property);
+		Assert.assertNotNull(specialRootClass);
+		Object target = ((IFacade)specialRootClass).getTarget();
+		Assert.assertNotNull(target);
+		Assert.assertTrue(target instanceof RootClass);
+		Assert.assertSame(property, specialRootClass.getProperty());
+	}
+	
+	@Test
 	public void testNewRootClass() {
 		IPersistentClass rootClass = service.newRootClass();
 		Assert.assertNotNull(rootClass);
