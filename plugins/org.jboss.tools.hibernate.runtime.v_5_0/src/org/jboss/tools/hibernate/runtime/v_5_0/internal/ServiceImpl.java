@@ -345,8 +345,10 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public ITableIdentifier createTableIdentifier(ITable table) {
-		// TODO Auto-generated method stub
-		return null;
+		assert table instanceof IFacade;
+		return facadeFactory.createTableIdentifier(
+				TableIdentifier.create(
+						(Table)((IFacade)table).getTarget()));
 	}
 
 	@Override
