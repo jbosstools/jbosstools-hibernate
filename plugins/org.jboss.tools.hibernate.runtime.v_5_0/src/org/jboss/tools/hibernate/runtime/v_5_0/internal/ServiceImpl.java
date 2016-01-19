@@ -12,6 +12,8 @@ import org.hibernate.cfg.JPAConfiguration;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.proxy.HibernateProxyHelper;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.hibernate.tool.ide.completion.HQLCodeAssist;
+import org.hibernate.tool.util.MetadataHelper;
 import org.jboss.tools.hibernate.runtime.common.AbstractService;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
@@ -107,8 +109,12 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IHQLCodeAssist newHQLCodeAssist(IConfiguration hcfg) {
-		// TODO Auto-generated method stub
-		return null;
+		IHQLCodeAssist result = null;
+		if (hcfg instanceof IFacade) {
+			result = facadeFactory.createHQLCodeAssist(
+					new HQLCodeAssist((Configuration)((IFacade)hcfg).getTarget()));
+		}
+		return result;
 	}
 
 	@Override
