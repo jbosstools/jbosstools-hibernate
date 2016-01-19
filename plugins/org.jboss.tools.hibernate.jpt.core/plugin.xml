@@ -54,7 +54,10 @@
 						<test property="org.eclipse.jpt.common.core.extendsId" value="jpa-user-library-provider"/>
 					</with>
 					<with variable="config">
-						<test property="org.eclipse.jpt.jpa.core.jpaPlatformGroup" value="hibernate.group"/>
+						<adapt type = "org.eclipse.jpt.jpa.core.JpaPlatform$Config">
+							<test property="org.eclipse.jpt.jpa.core.jpaPlatformGroup"
+								value="hibernate.group"/>
+						</adapt>
 					</with>
 				</and>
 			</enablement>
