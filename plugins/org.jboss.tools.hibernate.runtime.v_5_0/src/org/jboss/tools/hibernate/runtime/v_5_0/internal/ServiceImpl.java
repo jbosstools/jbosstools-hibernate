@@ -15,6 +15,7 @@ import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.mapping.Table;
 import org.hibernate.proxy.HibernateProxyHelper;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.util.MetadataHelper;
 import org.jboss.tools.hibernate.runtime.common.AbstractService;
@@ -339,8 +340,8 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IHibernateMappingGlobalSettings newHibernateMappingGlobalSettings() {
-		// TODO Auto-generated method stub
-		return null;
+		return facadeFactory.createHibernateMappingGlobalSettings(
+				new HibernateMappingGlobalSettings());
 	}
 
 	@Override

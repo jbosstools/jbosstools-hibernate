@@ -6,10 +6,12 @@ import java.util.List;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
+import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingGlobalSettings;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
@@ -89,6 +91,16 @@ public class ServiceImplTest {
 		Assert.assertNotNull(target);
 		Assert.assertTrue(target instanceof Table);
 		Assert.assertEquals("foo", ((Table)target).getName());
+	}
+	
+	@Test
+	public void testNewHibernateMappingGlobalSettings() {
+		IHibernateMappingGlobalSettings hibernateMappingGlobalSettings =
+				service.newHibernateMappingGlobalSettings();
+		Assert.assertNotNull(hibernateMappingGlobalSettings);
+		Object target = ((IFacade)hibernateMappingGlobalSettings).getTarget();
+		Assert.assertNotNull(target);
+		Assert.assertTrue(target instanceof HibernateMappingGlobalSettings);
 	}
 	
 	@Test
