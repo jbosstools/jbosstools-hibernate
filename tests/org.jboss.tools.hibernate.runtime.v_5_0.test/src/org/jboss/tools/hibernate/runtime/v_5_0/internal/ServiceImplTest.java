@@ -7,6 +7,7 @@ import org.hibernate.cfg.Configuration;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
+import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -57,6 +58,14 @@ public class ServiceImplTest {
 				(HibernateMappingExporterExtension)((IFacade)hibernateMappingExporter).getTarget();
 		Assert.assertSame(file, hmee.getOutputDirectory());
 		Assert.assertSame(cfg, hmee.getConfiguration());
+	}
+	
+	@Test
+	public void testNewSchemaExport() {
+		IConfiguration configuration = service.newDefaultConfiguration();
+		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+		ISchemaExport schemaExport = service.newSchemaExport(configuration);
+		Assert.assertNotNull(schemaExport);
 	}
 	
 	@Test

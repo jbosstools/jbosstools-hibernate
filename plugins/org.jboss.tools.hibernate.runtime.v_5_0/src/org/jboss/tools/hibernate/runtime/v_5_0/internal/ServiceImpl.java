@@ -6,10 +6,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JPAConfiguration;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.proxy.HibernateProxyHelper;
+import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.jboss.tools.hibernate.runtime.common.AbstractService;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
@@ -93,8 +95,14 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public ISchemaExport newSchemaExport(IConfiguration hcfg) {
-		// TODO Auto-generated method stub
-		return null;
+		ISchemaExport result = null;
+		if (hcfg instanceof IFacade) {
+			Configuration configuration = (Configuration)((IFacade)hcfg).getTarget();
+			MetadataImplementor metadata = (MetadataImplementor)MetadataHelper.getMetadata(configuration);
+			SchemaExport schemaExport = new SchemaExport(metadata);
+			result = facadeFactory.createSchemaExport(schemaExport);
+		}
+		return result;
 	}
 
 	@Override
