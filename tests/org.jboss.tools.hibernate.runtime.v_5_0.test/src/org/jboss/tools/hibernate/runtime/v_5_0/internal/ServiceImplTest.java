@@ -5,11 +5,13 @@ import java.util.List;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.reveng.TableIdentifier;
+import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
 import org.junit.Assert;
 import org.junit.Test;
@@ -77,6 +79,16 @@ public class ServiceImplTest {
 		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 		IHQLCodeAssist hqlCodeAssist = service.newHQLCodeAssist(configuration);
 		Assert.assertNotNull(hqlCodeAssist);
+	}
+	
+	@Test
+	public void testNewTable() {
+		ITable table = service.newTable("foo");
+		Assert.assertNotNull(table);
+		Object target = ((IFacade)table).getTarget();
+		Assert.assertNotNull(target);
+		Assert.assertTrue(target instanceof Table);
+		Assert.assertEquals("foo", ((Table)target).getName());
 	}
 	
 	@Test

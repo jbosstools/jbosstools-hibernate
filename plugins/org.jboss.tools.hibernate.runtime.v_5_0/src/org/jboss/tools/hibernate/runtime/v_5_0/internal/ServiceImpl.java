@@ -12,6 +12,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JPAConfiguration;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
+import org.hibernate.mapping.Table;
 import org.hibernate.proxy.HibernateProxyHelper;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
@@ -219,8 +220,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public ITable newTable(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		return facadeFactory.createTable(new Table(name));
 	}
 
 	@Override
