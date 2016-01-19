@@ -12,6 +12,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JPAConfiguration;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
+import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
 import org.hibernate.proxy.HibernateProxyHelper;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
@@ -334,8 +335,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IPrimaryKey newPrimaryKey() {
-		// TODO Auto-generated method stub
-		return null;
+		return facadeFactory.createPrimaryKey(new PrimaryKey(null));
 	}
 
 	@Override
