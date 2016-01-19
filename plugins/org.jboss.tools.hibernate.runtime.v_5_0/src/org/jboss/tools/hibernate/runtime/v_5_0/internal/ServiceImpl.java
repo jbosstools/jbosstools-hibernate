@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.hibernate.Hibernate;
 import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JPAConfiguration;
@@ -355,8 +356,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public boolean isInitialized(Object object) {
-		// TODO Auto-generated method stub
-		return false;
+		return Hibernate.isInitialized(object);
 	}
 
 	@Override

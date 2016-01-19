@@ -3,6 +3,7 @@ package org.jboss.tools.hibernate.runtime.v_5_0.internal;
 import java.io.File;
 import java.util.List;
 
+import org.hibernate.Hibernate;
 import org.hibernate.cfg.Configuration;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
@@ -75,6 +76,11 @@ public class ServiceImplTest {
 		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 		IHQLCodeAssist hqlCodeAssist = service.newHQLCodeAssist(configuration);
 		Assert.assertNotNull(hqlCodeAssist);
+	}
+	
+	@Test
+	public void testIsInitialized() {
+		Assert.assertTrue(service.isInitialized(new Object()));
 	}
 	
 	@Test
