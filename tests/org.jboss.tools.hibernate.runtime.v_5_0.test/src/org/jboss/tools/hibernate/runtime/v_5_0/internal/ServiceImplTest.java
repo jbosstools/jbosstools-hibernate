@@ -9,6 +9,7 @@ import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -107,6 +108,20 @@ public class ServiceImplTest {
 		Assert.assertNotNull(target);
 		Assert.assertTrue(target instanceof Table);
 		Assert.assertEquals("foo", ((Table)target).getName());
+	}
+	
+	@Test
+	public void testNewSingleTableSubclass() {
+		IPersistentClass persistentClass = service.newRootClass();
+		IPersistentClass singleTableSublass = service.newSingleTableSubclass(persistentClass);
+		Assert.assertNotNull(singleTableSublass);
+		Object target = ((IFacade)singleTableSublass).getTarget();
+		Assert.assertNotNull(target);
+		Assert.assertTrue(target instanceof SingleTableSubclass);
+		Assert.assertSame(persistentClass, singleTableSublass.getSuperclass());
+		Assert.assertSame(
+				((IFacade)persistentClass).getTarget(), 
+				((SingleTableSubclass)target).getSuperclass());
 	}
 	
 	@Test
