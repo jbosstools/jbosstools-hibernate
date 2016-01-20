@@ -13,6 +13,7 @@ import org.hibernate.cfg.JPAConfiguration;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.mapping.JoinedSubclass;
+import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
@@ -300,8 +301,11 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IValue newManyToOne(ITable table) {
-		// TODO Auto-generated method stub
-		return null;
+		assert table instanceof IFacade;
+		return facadeFactory.createValue(
+				new ManyToOne(
+						null, 
+						(Table)((IFacade)table).getTarget()));
 	}
 
 	@Override
