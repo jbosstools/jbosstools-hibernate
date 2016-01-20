@@ -27,8 +27,10 @@ import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
+import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IDialect;
@@ -109,6 +111,15 @@ public class ServiceImplTest {
 		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 		IHQLCodeAssist hqlCodeAssist = service.newHQLCodeAssist(configuration);
 		Assert.assertNotNull(hqlCodeAssist);
+	}
+	
+	@Test
+	public void testNewCfg2HbmTool() {
+		ICfg2HbmTool cfg2HbmTool = service.newCfg2HbmTool();
+		Assert.assertNotNull(cfg2HbmTool);
+		Object target = ((IFacade)cfg2HbmTool).getTarget();
+		Assert.assertNotNull(target);
+		Assert.assertTrue(target instanceof Cfg2HbmTool);
 	}
 	
 	@Test

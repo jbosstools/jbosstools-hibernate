@@ -40,6 +40,7 @@ import org.hibernate.mapping.Table;
 import org.hibernate.proxy.HibernateProxyHelper;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.util.MetadataHelper;
@@ -235,8 +236,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public ICfg2HbmTool newCfg2HbmTool() {
-		// TODO Auto-generated method stub
-		return null;
+		return facadeFactory.createCfg2HbmTool(new Cfg2HbmTool());
 	}
 
 	@Override
