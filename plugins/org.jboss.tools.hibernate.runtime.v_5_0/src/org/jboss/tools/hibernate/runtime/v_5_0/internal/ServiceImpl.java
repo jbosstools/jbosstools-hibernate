@@ -13,6 +13,7 @@ import org.hibernate.cfg.JPAConfiguration;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.mapping.JoinedSubclass;
+import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
@@ -310,8 +311,12 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IValue newOneToOne(IPersistentClass persistentClass) {
-		// TODO Auto-generated method stub
-		return null;
+		assert persistentClass instanceof IFacade;
+		return facadeFactory.createValue(
+				new OneToOne(
+						null, 
+						((PersistentClass)((IFacade)persistentClass).getTarget()).getTable(), 
+						(PersistentClass)((IFacade)persistentClass).getTarget()));
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.mapping.JoinedSubclass;
+import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -23,6 +24,7 @@ import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
+import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -108,6 +110,16 @@ public class ServiceImplTest {
 		Assert.assertNotNull(target);
 		Assert.assertTrue(target instanceof Table);
 		Assert.assertEquals("foo", ((Table)target).getName());
+	}
+	
+	@Test
+	public void testNewOneToOne() {
+		IPersistentClass persistentClass = service.newRootClass();
+		IValue oneToOne = service.newOneToOne(persistentClass);
+		Assert.assertNotNull(oneToOne);
+		Object target = ((IFacade)oneToOne).getTarget();
+		Assert.assertNotNull(target);
+		Assert.assertTrue(target instanceof OneToOne);
 	}
 	
 	@Test
