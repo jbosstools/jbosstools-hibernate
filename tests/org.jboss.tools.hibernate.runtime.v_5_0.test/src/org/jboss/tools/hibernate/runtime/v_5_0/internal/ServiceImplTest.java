@@ -7,6 +7,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.ManyToOne;
+import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PrimaryKey;
@@ -113,6 +114,16 @@ public class ServiceImplTest {
 		Assert.assertNotNull(target);
 		Assert.assertTrue(target instanceof Table);
 		Assert.assertEquals("foo", ((Table)target).getName());
+	}
+	
+	@Test
+	public void testNewMap() {
+		IPersistentClass persistentClass = service.newRootClass();
+		IValue map = service.newMap(persistentClass);
+		Assert.assertNotNull(map);
+		Object target = ((IFacade)map).getTarget();
+		Assert.assertNotNull(target);
+		Assert.assertTrue(target instanceof Map);
 	}
 	
 	@Test
