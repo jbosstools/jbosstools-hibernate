@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.reveng.TableIdentifier;
+import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
@@ -114,6 +115,16 @@ public class ServiceImplTest {
 		Assert.assertNotNull(target);
 		Assert.assertTrue(target instanceof Table);
 		Assert.assertEquals("foo", ((Table)target).getName());
+	}
+	
+	@Test
+	public void testNewBag() {
+		IPersistentClass persistentClass = service.newRootClass();
+		IValue bag = service.newBag(persistentClass);
+		Assert.assertNotNull(bag);
+		Object target = ((IFacade)bag).getTarget();
+		Assert.assertNotNull(target);
+		Assert.assertTrue(target instanceof Bag);
 	}
 	
 	@Test
