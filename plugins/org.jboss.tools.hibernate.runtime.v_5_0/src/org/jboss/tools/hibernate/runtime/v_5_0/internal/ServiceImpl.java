@@ -12,6 +12,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JPAConfiguration;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
+import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.ManyToOne;
@@ -273,8 +274,11 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IValue newArray(IPersistentClass persistentClass) {
-		// TODO Auto-generated method stub
-		return null;
+		assert persistentClass instanceof IFacade;
+		return facadeFactory.createValue(
+				new Array(
+						null, 
+						(PersistentClass)((IFacade)persistentClass).getTarget()));
 	}
 
 	@Override
