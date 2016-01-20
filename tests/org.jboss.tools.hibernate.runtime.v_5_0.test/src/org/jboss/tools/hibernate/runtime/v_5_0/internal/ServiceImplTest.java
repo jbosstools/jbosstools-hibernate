@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.reveng.TableIdentifier;
+import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -106,6 +107,20 @@ public class ServiceImplTest {
 		Assert.assertNotNull(target);
 		Assert.assertTrue(target instanceof Table);
 		Assert.assertEquals("foo", ((Table)target).getName());
+	}
+	
+	@Test
+	public void testNewJoinedSubclass() {
+		IPersistentClass persistentClass = service.newRootClass();
+		IPersistentClass joinedSubclass = service.newJoinedSubclass(persistentClass);
+		Assert.assertNotNull(joinedSubclass);
+		Object target = ((IFacade)joinedSubclass).getTarget();
+		Assert.assertNotNull(target);
+		Assert.assertTrue(target instanceof JoinedSubclass);
+		Assert.assertSame(persistentClass, joinedSubclass.getSuperclass());
+		Assert.assertSame(
+				((IFacade)persistentClass).getTarget(), 
+				((JoinedSubclass)target).getSuperclass());
 	}
 	
 	@Test

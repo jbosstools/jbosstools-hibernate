@@ -12,6 +12,8 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JPAConfiguration;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
+import org.hibernate.mapping.JoinedSubclass;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -21,6 +23,7 @@ import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.util.MetadataHelper;
+import org.jboss.tools.hibernate.runtime.common.AbstractPersistentClassFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractService;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
@@ -57,7 +60,7 @@ import org.xml.sax.EntityResolver;
 
 public class ServiceImpl extends AbstractService {
 
-	private static final String HIBERNATE_VERSION = "4.3";
+	private static final String HIBERNATE_VERSION = "5.0";
 	
 	private IFacadeFactory facadeFactory = new FacadeFactoryImpl();
 
@@ -318,8 +321,13 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IPersistentClass newJoinedSubclass(IPersistentClass persistentClass) {
-		// TODO Auto-generated method stub
-		return null;
+		assert persistentClass instanceof IFacade;
+		IPersistentClass result = facadeFactory.createPersistentClass(
+				new JoinedSubclass(
+						(PersistentClass)((IFacade)persistentClass).getTarget(),
+						null));
+		((AbstractPersistentClassFacade)result).setSuperClass(persistentClass);
+		return result;
 	}
 
 	@Override

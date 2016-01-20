@@ -129,7 +129,7 @@ implements IPersistentClass {
 	
 	@Override
 	public IPersistentClass getSuperclass() {
-		if (superClass != null) {
+		if (superClass == null) {
 			Object targetSuperclass = Util.invokeMethod(
 					getTarget(), 
 					"getSuperclass", 
@@ -140,6 +140,10 @@ implements IPersistentClass {
 			}
 		}
 		return superClass;
+	}
+	
+	public void setSuperClass(IPersistentClass superClass) {
+		this.superClass = superClass;
 	}
 
 	@Override
