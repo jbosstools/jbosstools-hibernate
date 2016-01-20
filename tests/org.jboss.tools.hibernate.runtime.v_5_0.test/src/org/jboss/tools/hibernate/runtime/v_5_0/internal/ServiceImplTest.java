@@ -13,6 +13,7 @@ import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PrimaryKey;
+import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Set;
@@ -116,6 +117,16 @@ public class ServiceImplTest {
 		Assert.assertNotNull(target);
 		Assert.assertTrue(target instanceof Table);
 		Assert.assertEquals("foo", ((Table)target).getName());
+	}
+	
+	@Test
+	public void testNewPrimitiveArray() {
+		IPersistentClass persistentClass = service.newRootClass();
+		IValue primitiveArray = service.newPrimitiveArray(persistentClass);
+		Assert.assertNotNull(primitiveArray);
+		Object target = ((IFacade)primitiveArray).getTarget();
+		Assert.assertNotNull(target);
+		Assert.assertTrue(target instanceof PrimitiveArray);
 	}
 	
 	@Test
