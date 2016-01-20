@@ -23,6 +23,7 @@ import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfoSource;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
@@ -250,8 +251,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IColumn newColumn(String string) {
-		// TODO Auto-generated method stub
-		return null;
+		return facadeFactory.createColumn(new Column(string));
 	}
 
 	@Override

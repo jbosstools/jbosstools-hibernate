@@ -13,6 +13,7 @@ import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
@@ -28,6 +29,7 @@ import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
+import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
@@ -126,6 +128,16 @@ public class ServiceImplTest {
 		Assert.assertNotNull(target);
 		Assert.assertTrue(target instanceof Table);
 		Assert.assertEquals("foo", ((Table)target).getName());
+	}
+	
+	@Test
+	public void testNewColumn() {
+		IColumn column = service.newColumn("foo");
+		Assert.assertNotNull(column);
+		Object target = ((IFacade)column).getTarget();
+		Assert.assertNotNull(target);
+		Assert.assertTrue(target instanceof Column);
+		Assert.assertEquals("foo", ((Column)target).getName());
 	}
 	
 	@Test
