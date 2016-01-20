@@ -117,6 +117,16 @@ public class ServiceImplTest {
 	}
 	
 	@Test
+	public void testNewList() {
+		IPersistentClass persistentClass = service.newRootClass();
+		IValue list = service.newList(persistentClass);
+		Assert.assertNotNull(list);
+		Object target = ((IFacade)list).getTarget();
+		Assert.assertNotNull(target);
+		Assert.assertTrue(target instanceof org.hibernate.mapping.List);
+	}
+	
+	@Test
 	public void testNewMap() {
 		IPersistentClass persistentClass = service.newRootClass();
 		IValue map = service.newMap(persistentClass);
