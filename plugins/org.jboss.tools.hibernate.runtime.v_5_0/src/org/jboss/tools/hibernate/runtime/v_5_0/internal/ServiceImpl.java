@@ -24,6 +24,7 @@ import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Set;
+import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.proxy.HibernateProxyHelper;
@@ -263,8 +264,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IValue newSimpleValue() {
-		// TODO Auto-generated method stub
-		return null;
+		return facadeFactory.createValue(new SimpleValue(null));
 	}
 
 	@Override

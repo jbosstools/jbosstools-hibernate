@@ -17,6 +17,7 @@ import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Set;
+import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
@@ -117,6 +118,15 @@ public class ServiceImplTest {
 		Assert.assertNotNull(target);
 		Assert.assertTrue(target instanceof Table);
 		Assert.assertEquals("foo", ((Table)target).getName());
+	}
+	
+	@Test
+	public void testSimpleValue() {
+		IValue simpleValue = service.newSimpleValue();
+		Assert.assertNotNull(simpleValue);
+		Object target = ((IFacade)simpleValue).getTarget();
+		Assert.assertNotNull(target);
+		Assert.assertTrue(target instanceof SimpleValue);
 	}
 	
 	@Test
