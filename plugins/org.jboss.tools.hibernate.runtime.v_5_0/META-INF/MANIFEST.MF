@@ -17,4 +17,5 @@ Bundle-ClassPath: .,
  lib/slf4j-api-1.6.1.jar
 Require-Bundle: org.jboss.tools.hibernate.runtime.common,
  org.jboss.tools.hibernate.runtime.spi,
- org.jboss.tools.hibernate.libs.dom4j.v_1_6_1
+ org.jboss.tools.hibernate.libs.dom4j.v_1_6_1,
+ org.hibernate.eclipse;bundle-version="5.1.0"
