@@ -20,6 +20,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.proxy.HibernateProxyHelper;
@@ -295,8 +296,11 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IValue newSet(IPersistentClass persistentClass) {
-		// TODO Auto-generated method stub
-		return null;
+		assert persistentClass instanceof IFacade;
+		return facadeFactory.createValue(
+				new Set(
+						null, 
+						(PersistentClass)((IFacade)persistentClass).getTarget()));
 	}
 
 	@Override

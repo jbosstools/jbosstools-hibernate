@@ -12,6 +12,7 @@ import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
@@ -112,6 +113,16 @@ public class ServiceImplTest {
 		Assert.assertNotNull(target);
 		Assert.assertTrue(target instanceof Table);
 		Assert.assertEquals("foo", ((Table)target).getName());
+	}
+	
+	@Test
+	public void testNewSet() {
+		IPersistentClass persistentClass = service.newRootClass();
+		IValue set = service.newSet(persistentClass);
+		Assert.assertNotNull(set);
+		Object target = ((IFacade)set).getTarget();
+		Assert.assertNotNull(target);
+		Assert.assertTrue(target instanceof Set);
 	}
 	
 	@Test
