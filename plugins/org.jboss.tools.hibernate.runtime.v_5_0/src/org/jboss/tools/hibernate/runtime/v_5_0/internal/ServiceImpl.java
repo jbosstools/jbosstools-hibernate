@@ -11,6 +11,7 @@ import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JPAConfiguration;
 import org.hibernate.cfg.reveng.TableIdentifier;
+import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
@@ -252,8 +253,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public Class<?> getDriverManagerConnectionProviderClass() {
-		// TODO Auto-generated method stub
-		return null;
+		return DriverManagerConnectionProviderImpl.class;
 	}
 
 	@Override

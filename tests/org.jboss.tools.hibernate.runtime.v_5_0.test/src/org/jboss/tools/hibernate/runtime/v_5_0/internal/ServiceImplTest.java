@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.reveng.TableIdentifier;
+import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.JoinedSubclass;
@@ -120,6 +121,13 @@ public class ServiceImplTest {
 		Assert.assertNotNull(target);
 		Assert.assertTrue(target instanceof Table);
 		Assert.assertEquals("foo", ((Table)target).getName());
+	}
+	
+	@Test
+	public void testGetDriverManagerManagerConnectionProviderClass() {
+		Assert.assertSame(
+				DriverManagerConnectionProviderImpl.class, 
+				service.getDriverManagerConnectionProviderClass());
 	}
 	
 	@Test
