@@ -26,6 +26,13 @@ public class FacadeFactoryTest {
 	}
 	
 	@Test
+	public void testGetClassLoader() {
+		Assert.assertSame(
+				FacadeFactoryImpl.class.getClassLoader(), 
+				facadeFactory.getClassLoader());
+	}
+	
+	@Test
 	public void testCreateEnvironment() {
 		IEnvironment environment = facadeFactory.createEnvironment();
 		Assert.assertNotNull(environment);
