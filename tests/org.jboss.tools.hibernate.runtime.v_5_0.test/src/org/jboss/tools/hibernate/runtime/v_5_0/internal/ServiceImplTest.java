@@ -12,6 +12,7 @@ import java.util.Properties;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.reveng.DatabaseCollector;
+import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.dialect.Dialect;
@@ -48,6 +49,7 @@ import org.jboss.tools.hibernate.runtime.spi.IMetaDataDialect;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
+import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
@@ -118,6 +120,16 @@ public class ServiceImplTest {
 		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 		IHQLCodeAssist hqlCodeAssist = service.newHQLCodeAssist(configuration);
 		Assert.assertNotNull(hqlCodeAssist);
+	}
+	
+	@Test
+	public void testNewDefaultReverseEngineeringStrategy() {
+		IReverseEngineeringStrategy reverseEngineeringStrategy = 
+				service.newDefaultReverseEngineeringStrategy();
+		Assert.assertNotNull(reverseEngineeringStrategy);
+		Object target = ((IFacade)reverseEngineeringStrategy).getTarget();
+		Assert.assertNotNull(target);
+		Assert.assertTrue(target instanceof DefaultReverseEngineeringStrategy);
 	}
 	
 	@Test
