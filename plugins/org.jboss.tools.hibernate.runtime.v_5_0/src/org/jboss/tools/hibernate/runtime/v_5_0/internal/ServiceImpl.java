@@ -13,6 +13,7 @@ import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JPAConfiguration;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
+import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.console.HibernateConsoleRuntimeException;
@@ -218,7 +219,8 @@ public class ServiceImpl extends AbstractService {
 	}
 
 	@Override
-	public IReverseEngineeringStrategy newReverseEngineeringStrategy(String strategyName,
+	public IReverseEngineeringStrategy newReverseEngineeringStrategy(
+			String strategyName,
 			IReverseEngineeringStrategy delegate) {
 		// TODO Auto-generated method stub
 		return null;
@@ -226,8 +228,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public String getReverseEngineeringStrategyClassName() {
-		// TODO Auto-generated method stub
-		return null;
+		return ReverseEngineeringStrategy.class.getName();
 	}
 
 	@Override
