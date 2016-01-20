@@ -12,7 +12,9 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JPAConfiguration;
+import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.TableIdentifier;
+import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
@@ -230,8 +232,10 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IDatabaseCollector newDatabaseCollector(IMetaDataDialect metaDataDialect) {
-		// TODO Auto-generated method stub
-		return null;
+		assert metaDataDialect instanceof IFacade;
+		return facadeFactory.createDatabaseCollector(
+				new DefaultDatabaseCollector(
+						(MetaDataDialect) ((IFacade)metaDataDialect).getTarget()));
 	}
 
 	@Override

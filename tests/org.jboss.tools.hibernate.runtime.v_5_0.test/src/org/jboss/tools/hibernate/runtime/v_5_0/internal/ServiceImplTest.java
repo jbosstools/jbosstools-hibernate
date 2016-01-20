@@ -1,6 +1,9 @@
 package org.jboss.tools.hibernate.runtime.v_5_0.internal;
 
 import java.io.File;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.List;
@@ -8,6 +11,7 @@ import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
+import org.hibernate.cfg.reveng.DatabaseCollector;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
@@ -33,11 +37,13 @@ import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingGlobalSettings;
+import org.jboss.tools.hibernate.runtime.spi.IMetaDataDialect;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
@@ -111,6 +117,26 @@ public class ServiceImplTest {
 		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 		IHQLCodeAssist hqlCodeAssist = service.newHQLCodeAssist(configuration);
 		Assert.assertNotNull(hqlCodeAssist);
+	}
+	
+	@Test
+	public void testNewDatabaseCollector() {
+		IMetaDataDialect metaDataDialect = 
+				(IMetaDataDialect)Proxy.newProxyInstance(
+						service.getClassLoader(), 
+						new Class[] { IMetaDataDialect.class, IFacade.class }, 
+						new InvocationHandler() {				
+							@Override
+							public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+								return null;
+							}
+						});
+		IDatabaseCollector databaseCollector = 
+				service.newDatabaseCollector(metaDataDialect);
+		Assert.assertNotNull(databaseCollector);
+		Object target = ((IFacade)databaseCollector).getTarget();
+		Assert.assertNotNull(target);
+		Assert.assertTrue(target instanceof DatabaseCollector);
 	}
 	
 	@Test
