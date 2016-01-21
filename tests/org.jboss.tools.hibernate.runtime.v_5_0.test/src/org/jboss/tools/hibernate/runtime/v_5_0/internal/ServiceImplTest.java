@@ -63,6 +63,7 @@ import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
+import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.junit.Assert;
 import org.junit.Test;
@@ -140,6 +141,12 @@ public class ServiceImplTest {
 		Object target = ((IFacade)reverseEngineeringStrategy).getTarget();
 		Assert.assertNotNull(target);
 		Assert.assertTrue(target instanceof ReverseEngineeringStrategy);
+	}
+	
+	@Test 
+	public void testNewTypeFactory() {
+		ITypeFactory typeFactory = service.newTypeFactory();
+		Assert.assertNotNull(typeFactory);
 	}
 	
 	@Test
