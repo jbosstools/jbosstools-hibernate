@@ -1,12 +1,17 @@
 package org.jboss.tools.hibernate.runtime.v_5_0.internal;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
-import org.jboss.tools.hibernate.runtime.v_5_0.internal.FacadeFactoryImpl;
+import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,6 +54,23 @@ public class FacadeFactoryTest {
 		Assert.assertNotNull(object);
 		Assert.assertTrue(object instanceof RootClass);
 		Assert.assertSame(property, specialRootClass.getProperty());
+	}
+	
+	@Test
+	public void testCreateValue() {
+		Value value = (Value)Proxy.newProxyInstance(
+				facadeFactory.getClassLoader(), 
+				new Class[] { Value.class }, 
+				new TestInvocationHandler());
+		IValue facade = facadeFactory.createValue(value);
+		Assert.assertSame(value, ((IFacade)facade).getTarget());
+	}
+	
+	private class TestInvocationHandler implements InvocationHandler {
+		@Override
+		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+			return null;
+		}	
 	}
 	
 }
