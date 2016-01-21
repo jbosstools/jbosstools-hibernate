@@ -12,9 +12,11 @@ import org.hibernate.Hibernate;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.JDBCReaderFactory;
 import org.hibernate.cfg.JPAConfiguration;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
+import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
@@ -218,8 +220,14 @@ public class ServiceImpl extends AbstractService {
 	@Override
 	public IJDBCReader newJDBCReader(IConfiguration configuration, ISettings settings,
 			IReverseEngineeringStrategy strategy) {
-		// TODO Auto-generated method stub
-		return null;
+		assert strategy instanceof IFacade;
+		assert settings instanceof IFacade;
+		JDBCReader target = 
+				JDBCReaderFactory.newJDBCReader(
+						configuration.getProperties(), 
+						(ReverseEngineeringStrategy)((IFacade)strategy).getTarget(),
+						buildServiceRegistry(configuration.getProperties()));
+		return facadeFactory.createJDBCReader(target);
 	}
 
 	@Override

@@ -13,6 +13,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.reveng.DatabaseCollector;
 import org.hibernate.cfg.reveng.DelegatingReverseEngineeringStrategy;
+import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.dialect.Dialect;
@@ -45,6 +46,7 @@ import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingGlobalSettings;
+import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.IMetaDataDialect;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
@@ -130,6 +132,21 @@ public class ServiceImplTest {
 		Object target = ((IFacade)reverseEngineeringStrategy).getTarget();
 		Assert.assertNotNull(target);
 		Assert.assertTrue(target instanceof ReverseEngineeringStrategy);
+	}
+	
+	@Test
+	public void testNewJDBCReader() {
+		IConfiguration configuration = service.newDefaultConfiguration();
+		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+		IReverseEngineeringStrategy strategy = service.newDefaultReverseEngineeringStrategy();
+		IJDBCReader jdbcReader = service.newJDBCReader(
+				configuration, 
+				null, 
+				strategy);
+		Assert.assertNotNull(jdbcReader);
+		Object target = ((IFacade)jdbcReader).getTarget();
+		Assert.assertNotNull(target);
+		Assert.assertTrue(target instanceof JDBCReader);
 	}
 	
 	@Test
