@@ -12,7 +12,7 @@ import java.util.Properties;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.reveng.DatabaseCollector;
-import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
+import org.hibernate.cfg.reveng.DelegatingReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.dialect.Dialect;
@@ -123,19 +123,42 @@ public class ServiceImplTest {
 	}
 	
 	@Test
-	public void testNewDefaultReverseEngineeringStrategy() {
+	public void testNewDefaultReverseEngineeringStrategy() throws Exception {
 		IReverseEngineeringStrategy reverseEngineeringStrategy = 
 				service.newDefaultReverseEngineeringStrategy();
 		Assert.assertNotNull(reverseEngineeringStrategy);
 		Object target = ((IFacade)reverseEngineeringStrategy).getTarget();
 		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof DefaultReverseEngineeringStrategy);
+		Assert.assertTrue(target instanceof ReverseEngineeringStrategy);
+	}
+	
+	@Test
+	public void testNewReverseEngineeringStrategy() throws Exception {
+		String defaultRevEngStratClassName = 
+				"org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy";
+		IReverseEngineeringStrategy defaultStrategy = 
+				service.newDefaultReverseEngineeringStrategy();
+		IReverseEngineeringStrategy newStrategy = 
+				service.newReverseEngineeringStrategy(
+						defaultRevEngStratClassName, 
+						defaultStrategy);
+		Assert.assertNotNull(newStrategy);
+		Object target = ((IFacade)newStrategy).getTarget();
+		Assert.assertNotNull(target);
+		Assert.assertFalse(target instanceof DelegatingReverseEngineeringStrategy);
+		newStrategy = service.newReverseEngineeringStrategy(
+				"org.hibernate.cfg.reveng.DelegatingReverseEngineeringStrategy", 
+				defaultStrategy);
+		Assert.assertNotNull(newStrategy);
+		target = ((IFacade)newStrategy).getTarget();
+		Assert.assertNotNull(target);
+		Assert.assertTrue(target instanceof DelegatingReverseEngineeringStrategy);
 	}
 	
 	@Test
 	public void testGetReverseEngineeringStrategyClassName() {
 		Assert.assertEquals(
-				ReverseEngineeringStrategy.class.getName(), 
+				"org.hibernate.cfg.reveng.ReverseEngineeringStrategy", 
 				service.getReverseEngineeringStrategyClassName());
 	}
 	
