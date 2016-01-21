@@ -17,6 +17,7 @@ import org.hibernate.cfg.JPAConfiguration;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.JDBCReader;
+import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
@@ -207,8 +208,10 @@ public class ServiceImpl extends AbstractService {
 	@Override
 	public IReverseEngineeringSettings newReverseEngineeringSettings(
 			IReverseEngineeringStrategy res) {
-		// TODO Auto-generated method stub
-		return null;
+		assert res instanceof IFacade;
+		return facadeFactory.createReverseEngineeringSettings(
+				new ReverseEngineeringSettings(
+						(ReverseEngineeringStrategy)((IFacade)res).getTarget()));
 	}
 
 	@Override

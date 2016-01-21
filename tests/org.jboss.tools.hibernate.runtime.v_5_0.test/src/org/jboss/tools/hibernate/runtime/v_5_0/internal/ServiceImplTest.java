@@ -14,6 +14,7 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.reveng.DatabaseCollector;
 import org.hibernate.cfg.reveng.DelegatingReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.JDBCReader;
+import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.dialect.Dialect;
@@ -51,6 +52,7 @@ import org.jboss.tools.hibernate.runtime.spi.IMetaDataDialect;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
+import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
@@ -132,6 +134,18 @@ public class ServiceImplTest {
 		Object target = ((IFacade)reverseEngineeringStrategy).getTarget();
 		Assert.assertNotNull(target);
 		Assert.assertTrue(target instanceof ReverseEngineeringStrategy);
+	}
+	
+	@Test
+	public void testNewReverseEngineeringSettings() {
+		IReverseEngineeringStrategy strategy = 
+				service.newDefaultReverseEngineeringStrategy();
+		IReverseEngineeringSettings reverseEngineeringSettings = 
+				service.newReverseEngineeringSettings(strategy);
+		Assert.assertNotNull(reverseEngineeringSettings);
+		Object target = ((IFacade)reverseEngineeringSettings).getTarget();
+		Assert.assertNotNull(target);
+		Assert.assertTrue(target instanceof ReverseEngineeringSettings);
 	}
 	
 	@Test
