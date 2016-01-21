@@ -125,7 +125,7 @@ public class ConfigurationFactory {
 		// to make hibernate tools diff hibernate versions compatible:
 		// if the property not set get NoSuchMethodError with FullTextIndexEventListener
 		if (localCfg.getProperty("hibernate.search.autoregister_listeners") == null) { //$NON-NLS-1$
-			localCfg.setProperty("hibernate.search.autoregister_listeners", "false"); //$NON-NLS-1$ //$NON-NLS-2$
+			localCfg.setProperty("hibernate.search.autoregister_listeners", "true"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		if (localCfg.getProperty("hibernate.validator.apply_to_ddl") == null) { //$NON-NLS-1$
 			localCfg.setProperty("hibernate.validator.apply_to_ddl", "false"); //$NON-NLS-1$ //$NON-NLS-2$
