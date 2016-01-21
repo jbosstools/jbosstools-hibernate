@@ -17,8 +17,10 @@ import org.hibernate.cfg.JPAConfiguration;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.JDBCReader;
+import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
+import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.console.HibernateConsoleRuntimeException;
@@ -195,14 +197,12 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IOverrideRepository newOverrideRepository() {
-		// TODO Auto-generated method stub
-		return null;
+		return facadeFactory.createOverrideRepository(new OverrideRepository());
 	}
 
 	@Override
 	public ITableFilter newTableFilter() {
-		// TODO Auto-generated method stub
-		return null;
+		return facadeFactory.createTableFilter(new TableFilter());
 	}
 
 	@Override

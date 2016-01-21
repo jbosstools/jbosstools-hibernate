@@ -14,8 +14,10 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.reveng.DatabaseCollector;
 import org.hibernate.cfg.reveng.DelegatingReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.JDBCReader;
+import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
+import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
@@ -49,6 +51,7 @@ import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingGlobalSettings;
 import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.IMetaDataDialect;
+import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
@@ -56,6 +59,7 @@ import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
+import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.junit.Assert;
@@ -134,6 +138,24 @@ public class ServiceImplTest {
 		Object target = ((IFacade)reverseEngineeringStrategy).getTarget();
 		Assert.assertNotNull(target);
 		Assert.assertTrue(target instanceof ReverseEngineeringStrategy);
+	}
+	
+	@Test
+	public void testNewOverrideRepository() {
+		IOverrideRepository overrideRepository = service.newOverrideRepository();
+		Assert.assertNotNull(overrideRepository);
+		Object target = ((IFacade)overrideRepository).getTarget();
+		Assert.assertNotNull(target);
+		Assert.assertTrue(target instanceof OverrideRepository);
+	}
+	
+	@Test
+	public void testNewTableFilter() {
+		ITableFilter tableFilter = service.newTableFilter();
+		Assert.assertNotNull(tableFilter);
+		Object target = ((IFacade)tableFilter).getTarget();
+		Assert.assertNotNull(target);
+		Assert.assertTrue(target instanceof TableFilter);
 	}
 	
 	@Test
