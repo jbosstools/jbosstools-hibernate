@@ -9,6 +9,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
+import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
+import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.hql.spi.QueryTranslator;
 import org.hibernate.mapping.Join;
@@ -22,6 +24,7 @@ import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
+import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.IMetaDataDialect;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
@@ -67,6 +70,13 @@ public class FacadeFactoryTest {
 		IEnvironment environment = facadeFactory.createEnvironment();
 		Assert.assertNotNull(environment);
 		Assert.assertTrue(environment instanceof EnvironmentFacadeImpl);
+	}
+	
+	@Test
+	public void testCreateJDBCReader() {
+		JDBCReader jdbcReader = new JDBCReader(null, null, null, null, null, new DefaultReverseEngineeringStrategy());
+		IJDBCReader facade = facadeFactory.createJDBCReader(jdbcReader);
+		Assert.assertSame(jdbcReader, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
