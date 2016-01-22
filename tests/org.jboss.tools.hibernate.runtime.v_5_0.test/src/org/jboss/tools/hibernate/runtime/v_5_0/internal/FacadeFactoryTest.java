@@ -9,6 +9,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
+import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.hql.spi.QueryTranslator;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
@@ -20,6 +21,7 @@ import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
+import org.jboss.tools.hibernate.runtime.spi.IMetaDataDialect;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
@@ -63,6 +65,16 @@ public class FacadeFactoryTest {
 		IEnvironment environment = facadeFactory.createEnvironment();
 		Assert.assertNotNull(environment);
 		Assert.assertTrue(environment instanceof EnvironmentFacadeImpl);
+	}
+	
+	@Test
+	public void testCreateMetaDataDialect() {
+		MetaDataDialect metaDataDialect = (MetaDataDialect)Proxy.newProxyInstance(
+				facadeFactory.getClassLoader(), 
+				new Class[] { MetaDataDialect.class }, 
+				new TestInvocationHandler());
+		IMetaDataDialect facade = facadeFactory.createMetaDataDialect(metaDataDialect);
+		Assert.assertSame(metaDataDialect, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
