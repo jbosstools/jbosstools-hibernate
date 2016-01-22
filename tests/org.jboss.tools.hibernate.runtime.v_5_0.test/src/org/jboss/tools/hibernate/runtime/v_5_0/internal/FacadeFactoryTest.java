@@ -8,6 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
+import org.hibernate.hql.spi.QueryTranslator;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
@@ -17,6 +18,7 @@ import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
+import org.jboss.tools.hibernate.runtime.spi.IQueryTranslator;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISettings;
@@ -54,6 +56,16 @@ public class FacadeFactoryTest {
 		IEnvironment environment = facadeFactory.createEnvironment();
 		Assert.assertNotNull(environment);
 		Assert.assertTrue(environment instanceof EnvironmentFacadeImpl);
+	}
+	
+	@Test
+	public void testCreateQueryTranslator() {
+		QueryTranslator queryTranslator = (QueryTranslator)Proxy.newProxyInstance(
+				facadeFactory.getClassLoader(), 
+				new Class[] { QueryTranslator.class }, 
+				new TestInvocationHandler());
+		IQueryTranslator facade = facadeFactory.createQueryTranslator(queryTranslator);
+		Assert.assertSame(queryTranslator, ((IFacade)facade).getTarget());
 	}
 	
 	@Test
