@@ -10,6 +10,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
 import org.hibernate.hql.spi.QueryTranslator;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -62,6 +63,13 @@ public class FacadeFactoryTest {
 		IEnvironment environment = facadeFactory.createEnvironment();
 		Assert.assertNotNull(environment);
 		Assert.assertTrue(environment instanceof EnvironmentFacadeImpl);
+	}
+	
+	@Test
+	public void testCreatePersistentClass() {
+		PersistentClass persistentClass = new RootClass(null);
+		IPersistentClass facade = facadeFactory.createPersistentClass(persistentClass);
+		Assert.assertSame(persistentClass, ((IFacade)facade).getTarget());
 	}
 	
 	@Test
