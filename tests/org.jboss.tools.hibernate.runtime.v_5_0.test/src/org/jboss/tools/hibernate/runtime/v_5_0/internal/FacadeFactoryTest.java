@@ -13,6 +13,7 @@ import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IType;
+import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.junit.Assert;
 import org.junit.Before;
@@ -56,6 +57,13 @@ public class FacadeFactoryTest {
 		Assert.assertNotNull(object);
 		Assert.assertTrue(object instanceof RootClass);
 		Assert.assertSame(property, specialRootClass.getProperty());
+	}
+	
+	@Test
+	public void testCreateTypeFactory() {
+		ITypeFactory facade = facadeFactory.createTypeFactory();
+		Assert.assertNotNull(facade);
+		Assert.assertNull(((IFacade)facade).getTarget());
 	}
 	
 	@Test
