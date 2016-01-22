@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import org.hibernate.Session;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
 import org.hibernate.mapping.Property;
@@ -15,6 +16,7 @@ import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
+import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISettings;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
@@ -50,6 +52,16 @@ public class FacadeFactoryTest {
 		IEnvironment environment = facadeFactory.createEnvironment();
 		Assert.assertNotNull(environment);
 		Assert.assertTrue(environment instanceof EnvironmentFacadeImpl);
+	}
+	
+	@Test
+	public void testCreateSession() {
+		Session session = (Session)Proxy.newProxyInstance(
+				facadeFactory.getClassLoader(), 
+				new Class[] { Session.class }, 
+				new TestInvocationHandler());
+		ISession facade = facadeFactory.createSession(session);
+		Assert.assertSame(session, ((IFacade)facade).getTarget());
 	}
 	
 	@Test
