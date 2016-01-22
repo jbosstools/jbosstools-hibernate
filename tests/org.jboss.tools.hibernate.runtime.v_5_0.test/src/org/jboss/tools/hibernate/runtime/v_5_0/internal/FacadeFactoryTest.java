@@ -61,6 +61,13 @@ public class FacadeFactoryTest {
 	}
 	
 	@Test
+	public void testCreateProperty() {
+		Property property = new Property();
+		IProperty facade = facadeFactory.createProperty(property);
+		Assert.assertSame(property, ((IFacade)facade).getTarget());
+	}
+	
+	@Test
 	public void testCreateQuery() {
 		Query query = (Query)Proxy.newProxyInstance(
 				facadeFactory.getClassLoader(), 
