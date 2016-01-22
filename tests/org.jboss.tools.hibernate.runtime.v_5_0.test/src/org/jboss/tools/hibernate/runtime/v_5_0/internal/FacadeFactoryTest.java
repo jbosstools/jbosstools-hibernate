@@ -6,12 +6,14 @@ import java.lang.reflect.Proxy;
 
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
@@ -57,6 +59,13 @@ public class FacadeFactoryTest {
 		Assert.assertNotNull(object);
 		Assert.assertTrue(object instanceof RootClass);
 		Assert.assertSame(property, specialRootClass.getProperty());
+	}
+	
+	@Test
+	public void testCreateTable() {
+		Table table = new Table();
+		ITable facade = facadeFactory.createTable(table);
+		Assert.assertSame(table, ((IFacade)facade).getTarget());
 	}
 	
 	@Test
