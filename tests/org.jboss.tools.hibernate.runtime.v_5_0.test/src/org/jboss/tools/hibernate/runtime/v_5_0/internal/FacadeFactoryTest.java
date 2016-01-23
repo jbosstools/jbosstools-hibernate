@@ -3,27 +3,44 @@ package org.jboss.tools.hibernate.runtime.v_5_0.internal;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
 
+import org.hibernate.Filter;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.internal.SessionFactoryBuilderImpl;
+import org.hibernate.boot.internal.SessionFactoryOptionsImpl;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.boot.spi.MetadataImplementor;
+import org.hibernate.boot.spi.SessionFactoryOptions;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
+import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.hql.spi.QueryTranslator;
+import org.hibernate.internal.SessionFactoryImpl;
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Join;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
+import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.IMetaDataDialect;
@@ -72,6 +89,63 @@ public class FacadeFactoryTest {
 		Assert.assertTrue(environment instanceof EnvironmentFacadeImpl);
 	}
 	
+	@Test
+	public void testCreateHQLQueryPlan() {
+		final Collection<PersistentClass> entityBindings = 
+				new ArrayList<PersistentClass>();
+		final StandardServiceRegistryBuilder standardServiceRegistryBuilder = 
+				new StandardServiceRegistryBuilder();
+		standardServiceRegistryBuilder.applySetting(
+				"hibernate.dialect", 
+				"org.hibernate.dialect.H2Dialect");
+		final StandardServiceRegistry serviceRegistry = 
+				standardServiceRegistryBuilder.build();
+		final MetadataSources metadataSources = new MetadataSources(serviceRegistry);
+		final MetadataImplementor metadata = (MetadataImplementor)metadataSources.buildMetadata();	
+		Table t = new Table("FOO");
+		Column c = new Column("foo");
+		t.addColumn(c);
+		PrimaryKey key = new PrimaryKey(t);
+		key.addColumn(c);
+		t.setPrimaryKey(key);
+		SimpleValue sv = new SimpleValue(metadata);
+		sv.setNullValue("null");
+		sv.setTypeName(Integer.class.getName());
+		sv.setTable(t);
+		sv.addColumn(c);
+		final RootClass rc  = new RootClass(null);
+		rc.setEntityName("foo");
+		rc.setJpaEntityName("foo");
+		rc.setIdentifier(sv);
+		rc.setTable(t);
+		entityBindings.add(rc);
+		MetadataImplementor wrapper = (MetadataImplementor)Proxy.newProxyInstance(
+				facadeFactory.getClassLoader(), 
+				new Class[] { MetadataImplementor.class }, 
+				new InvocationHandler() {					
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+						if ("getEntityBinding".equals(method.getName()) 
+								&& args != null
+								&& args.length == 1
+								&& "foo".equals(args[0])) {
+							return rc;
+						} else if ("getEntityBindings".equals(method.getName())) {
+							return entityBindings;
+						}
+						return method.invoke(metadata, args);
+					}
+				}); 
+		SessionFactoryBuilderImpl sessionFactoryBuilder = 
+				(SessionFactoryBuilderImpl)metadata.getSessionFactoryBuilder();
+		SessionFactoryOptions sessionFactoryOptions = new SessionFactoryOptionsImpl(sessionFactoryBuilder);
+		SessionFactoryImpl sfi = new SessionFactoryImpl(wrapper, sessionFactoryOptions);
+		Map<String, Filter> filters = Collections.emptyMap();
+		HQLQueryPlan hqlQueryPlan = new HQLQueryPlan("from foo", false, filters, sfi);
+		IHQLQueryPlan facade = facadeFactory.createHQLQueryPlan(hqlQueryPlan);
+		Assert.assertSame(hqlQueryPlan, ((IFacade)facade).getTarget());		
+	}
+
 	@Test
 	public void testCreateJDBCReader() {
 		JDBCReader jdbcReader = new JDBCReader(null, null, null, null, null, new DefaultReverseEngineeringStrategy());

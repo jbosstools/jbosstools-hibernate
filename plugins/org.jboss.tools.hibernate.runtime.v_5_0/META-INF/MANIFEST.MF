@@ -18,6 +18,7 @@ Bundle-ClassPath: .,
  lib/slf4j-api-1.6.1.jar
 Require-Bundle: org.apache.commons.logging;bundle-version="1.1.1",
  org.hibernate.eclipse,
+ org.jboss.tools.hibernate.libs.antlr.v_2_7_7,
  org.jboss.tools.hibernate.libs.dom4j.v_1_6_1,
  org.jboss.tools.hibernate.libs.freemarker.v_2_3_8,
  org.jboss.tools.hibernate.runtime.common,
