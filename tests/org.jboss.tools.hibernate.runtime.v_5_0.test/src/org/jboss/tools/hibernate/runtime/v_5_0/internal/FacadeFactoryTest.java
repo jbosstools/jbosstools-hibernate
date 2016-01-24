@@ -36,10 +36,12 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
+import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
+import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
@@ -82,6 +84,13 @@ public class FacadeFactoryTest {
 		Assert.assertSame(
 				FacadeFactoryImpl.class.getClassLoader(), 
 				facadeFactory.getClassLoader());
+	}
+	
+	@Test
+	public void testCreateArtifactCollector() {
+		ArtifactCollector artifactCollector = new ArtifactCollector();
+		IArtifactCollector facade = facadeFactory.createArtifactCollector(artifactCollector);
+		Assert.assertSame(artifactCollector, ((IFacade)facade).getTarget());
 	}
 	
 	@Test
