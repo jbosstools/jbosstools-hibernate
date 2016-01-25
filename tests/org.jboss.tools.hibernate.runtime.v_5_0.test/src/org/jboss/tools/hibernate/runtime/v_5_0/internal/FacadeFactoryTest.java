@@ -28,6 +28,7 @@ import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
+import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
@@ -82,6 +83,7 @@ import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISettings;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
+import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
@@ -200,6 +202,13 @@ public class FacadeFactoryTest {
 		QueryExporter queryExporter = new QueryExporter();
 		IQueryExporter facade = facadeFactory.createQueryExporter(queryExporter);
 		Assert.assertSame(queryExporter, ((IFacade)facade).getTarget());		
+	}
+	
+	@Test
+	public void testCreateTableFilter() {
+		TableFilter tableFilter = new TableFilter();
+		ITableFilter facade = facadeFactory.createTableFilter(tableFilter);
+		Assert.assertSame(tableFilter, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
