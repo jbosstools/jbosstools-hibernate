@@ -24,6 +24,7 @@ import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.JDBCReader;
+import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
@@ -58,6 +59,7 @@ import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.IMapping;
 import org.jboss.tools.hibernate.runtime.spi.IMetaDataDialect;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
+import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
@@ -151,6 +153,13 @@ public class FacadeFactoryTest {
 				new TestInvocationHandler());
 		IReverseEngineeringStrategy facade = facadeFactory.createReverseEngineeringStrategy(res);
 		Assert.assertSame(res, ((IFacade)facade).getTarget());		
+	}
+	
+	@Test
+	public void testCreateOverrideRepository() {
+		OverrideRepository overrideRepository = new OverrideRepository();
+		IOverrideRepository facade = facadeFactory.createOverrideRepository(overrideRepository);
+		Assert.assertSame(overrideRepository, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
