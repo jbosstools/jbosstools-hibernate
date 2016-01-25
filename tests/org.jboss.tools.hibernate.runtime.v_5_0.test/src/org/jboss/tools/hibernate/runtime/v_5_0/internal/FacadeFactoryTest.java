@@ -37,11 +37,13 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
+import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
+import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
@@ -91,6 +93,13 @@ public class FacadeFactoryTest {
 		ArtifactCollector artifactCollector = new ArtifactCollector();
 		IArtifactCollector facade = facadeFactory.createArtifactCollector(artifactCollector);
 		Assert.assertSame(artifactCollector, ((IFacade)facade).getTarget());
+	}
+	
+	@Test
+	public void testCreateCfg2HbmTool() {
+		Cfg2HbmTool cfg2HbmTool = new Cfg2HbmTool();
+		ICfg2HbmTool facade = facadeFactory.createCfg2HbmTool(cfg2HbmTool);
+		Assert.assertSame(cfg2HbmTool,  ((IFacade)facade).getTarget());
 	}
 	
 	@Test
