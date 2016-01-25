@@ -25,6 +25,7 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
+import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.hql.spi.QueryTranslator;
 import org.hibernate.internal.SessionFactoryImpl;
@@ -45,6 +46,7 @@ import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
+import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
@@ -109,6 +111,13 @@ public class FacadeFactoryTest {
 		DefaultNamingStrategy namingStrategy = new DefaultNamingStrategy();
 		INamingStrategy facade = facadeFactory.createNamingStrategy(namingStrategy);
 		Assert.assertSame(namingStrategy, ((IFacade)facade).getTarget());
+	}
+	
+	@Test
+	public void testCreateDialect() {
+		Dialect dialect = new Dialect() {};
+		IDialect facade = facadeFactory.createDialect(dialect);
+		Assert.assertSame(dialect, ((IFacade)facade).getTarget());
 	}
 	
 	@Test
