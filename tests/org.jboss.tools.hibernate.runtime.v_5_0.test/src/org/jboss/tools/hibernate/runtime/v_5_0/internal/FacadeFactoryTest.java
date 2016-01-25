@@ -29,6 +29,7 @@ import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
+import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
@@ -86,6 +87,7 @@ import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISettings;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
+import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
@@ -221,6 +223,13 @@ public class FacadeFactoryTest {
 				new TestInvocationHandler());
 		IExporter facade = facadeFactory.createExporter(exporter);
 		Assert.assertSame(exporter, ((IFacade)facade).getTarget());		
+	}
+	
+	@Test
+	public void testCreateTableIdentifier() {
+		TableIdentifier tableIdentifier = new TableIdentifier("foo");
+		ITableIdentifier facade = facadeFactory.createTableIdentifier(tableIdentifier);
+		Assert.assertSame(tableIdentifier, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
