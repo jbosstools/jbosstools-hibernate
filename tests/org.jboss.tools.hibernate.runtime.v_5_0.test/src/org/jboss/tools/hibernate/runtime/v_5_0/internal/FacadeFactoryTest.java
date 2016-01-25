@@ -47,6 +47,7 @@ import org.hibernate.mapping.Value;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
+import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.GenericExporter;
 import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
 import org.hibernate.tool.hbm2x.QueryExporter;
@@ -59,6 +60,7 @@ import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
+import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
@@ -209,6 +211,16 @@ public class FacadeFactoryTest {
 		TableFilter tableFilter = new TableFilter();
 		ITableFilter facade = facadeFactory.createTableFilter(tableFilter);
 		Assert.assertSame(tableFilter, ((IFacade)facade).getTarget());		
+	}
+	
+	@Test
+	public void testCreateExporter() {
+		Exporter exporter = (Exporter)Proxy.newProxyInstance(
+				facadeFactory.getClassLoader(), 
+				new Class[] { Exporter.class }, 
+				new TestInvocationHandler());
+		IExporter facade = facadeFactory.createExporter(exporter);
+		Assert.assertSame(exporter, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
