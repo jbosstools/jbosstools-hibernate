@@ -48,6 +48,7 @@ import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.hibernate.tool.hbm2x.GenericExporter;
 import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
+import org.hibernate.tool.hbm2x.QueryExporter;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.util.MetadataHelper;
@@ -72,6 +73,7 @@ import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
+import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 import org.jboss.tools.hibernate.runtime.spi.IQueryTranslator;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
@@ -191,6 +193,13 @@ public class FacadeFactoryTest {
 		Hbm2DDLExporter hbm2ddlExporter = new Hbm2DDLExporter();
 		IHbm2DDLExporter facade = facadeFactory.createHbm2DDLExporter(hbm2ddlExporter);
 		Assert.assertSame(hbm2ddlExporter, ((IFacade)facade).getTarget());		
+	}
+	
+	@Test
+	public void testCreateQueryExporter() {
+		QueryExporter queryExporter = new QueryExporter();
+		IQueryExporter facade = facadeFactory.createQueryExporter(queryExporter);
+		Assert.assertSame(queryExporter, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
