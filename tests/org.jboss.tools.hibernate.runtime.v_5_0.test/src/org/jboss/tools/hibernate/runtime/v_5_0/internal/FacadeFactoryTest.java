@@ -20,6 +20,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.boot.spi.SessionFactoryOptions;
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
@@ -42,10 +43,12 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
+import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
+import org.hibernate.tool.util.MetadataHelper;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
@@ -68,6 +71,7 @@ import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.IQueryTranslator;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
+import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISettings;
@@ -160,6 +164,15 @@ public class FacadeFactoryTest {
 		OverrideRepository overrideRepository = new OverrideRepository();
 		IOverrideRepository facade = facadeFactory.createOverrideRepository(overrideRepository);
 		Assert.assertSame(overrideRepository, ((IFacade)facade).getTarget());		
+	}
+	
+	@Test
+	public void testCreateSchemaExport() {
+		Configuration configuration = new Configuration();
+		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+		SchemaExport schemaExport = new SchemaExport((MetadataImplementor)MetadataHelper.getMetadata(configuration));
+		ISchemaExport facade = facadeFactory.createSchemaExport(schemaExport);
+		Assert.assertSame(schemaExport, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
