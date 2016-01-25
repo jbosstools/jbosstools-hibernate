@@ -47,6 +47,7 @@ import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.hibernate.tool.hbm2x.GenericExporter;
+import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.util.MetadataHelper;
@@ -59,6 +60,7 @@ import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
+import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.IMapping;
@@ -182,6 +184,13 @@ public class FacadeFactoryTest {
 		GenericExporter genericExporter = new GenericExporter();
 		IGenericExporter facade = facadeFactory.createGenericExporter(genericExporter);
 		Assert.assertSame(genericExporter, ((IFacade)facade).getTarget());		
+	}
+	
+	@Test
+	public void testCreateHbm2DDLExporter() {
+		Hbm2DDLExporter hbm2ddlExporter = new Hbm2DDLExporter();
+		IHbm2DDLExporter facade = facadeFactory.createHbm2DDLExporter(hbm2ddlExporter);
+		Assert.assertSame(hbm2ddlExporter, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
