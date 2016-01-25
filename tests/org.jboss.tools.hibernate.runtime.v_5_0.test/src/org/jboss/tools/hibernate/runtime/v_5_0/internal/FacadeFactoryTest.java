@@ -20,6 +20,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.boot.spi.SessionFactoryOptions;
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.JDBCReader;
@@ -50,6 +51,7 @@ import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.IMetaDataDialect;
+import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
@@ -100,6 +102,13 @@ public class FacadeFactoryTest {
 		Cfg2HbmTool cfg2HbmTool = new Cfg2HbmTool();
 		ICfg2HbmTool facade = facadeFactory.createCfg2HbmTool(cfg2HbmTool);
 		Assert.assertSame(cfg2HbmTool,  ((IFacade)facade).getTarget());
+	}
+	
+	@Test
+	public void testCreateNamingStrategy() {
+		DefaultNamingStrategy namingStrategy = new DefaultNamingStrategy();
+		INamingStrategy facade = facadeFactory.createNamingStrategy(namingStrategy);
+		Assert.assertSame(namingStrategy, ((IFacade)facade).getTarget());
 	}
 	
 	@Test
