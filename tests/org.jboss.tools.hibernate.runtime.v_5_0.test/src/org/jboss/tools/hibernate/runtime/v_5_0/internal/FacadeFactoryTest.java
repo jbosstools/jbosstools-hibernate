@@ -24,6 +24,7 @@ import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.JDBCReader;
+import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
@@ -62,6 +63,7 @@ import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.IQueryTranslator;
+import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISettings;
@@ -130,6 +132,13 @@ public class FacadeFactoryTest {
 				new TestInvocationHandler());
 		IMapping facade = facadeFactory.createMapping(mapping);
 		Assert.assertSame(mapping, ((IFacade)facade).getTarget());
+	}
+	
+	@Test
+	public void testCreateReverseEngineeringSettings() {
+		ReverseEngineeringSettings res = new ReverseEngineeringSettings(null);
+		IReverseEngineeringSettings facade = facadeFactory.createReverseEngineeringSettings(res);
+		Assert.assertSame(res, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
