@@ -409,7 +409,7 @@ public class FacadeFactoryTest {
 	
 	@Test
 	public void testCreateSettings() {
-		ISettings facade = facadeFactory.createSettings(null);
+		ISettings facade = facadeFactory.createSettings(new Settings());
 		Assert.assertNotNull(facade);
 		Assert.assertEquals(
 				Environment.getProperties().getProperty(
