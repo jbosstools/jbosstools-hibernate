@@ -89,4 +89,13 @@ public class ConfigurationFacadeTest {
 		Assert.assertSame(testResolver, configurationFacade.getEntityResolver());
 	}
 	
+	@Test
+	public void testGetProperties() {
+		Properties testProperties = new Properties();
+		configuration.setProperties(testProperties);
+		Assert.assertSame(
+				testProperties, 
+				configurationFacade.getProperties());
+	}
+	
 }
