@@ -2,11 +2,8 @@ package org.jboss.tools.hibernate.runtime.v_5_0.internal;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.util.List;
 
 import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.jaxb.hbm.spi.JaxbHbmHibernateMapping;
 import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.cfg.Configuration;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
@@ -58,6 +55,12 @@ public class ConfigurationFacadeTest {
 		Assert.assertEquals(
 				testFile.getAbsolutePath(), 
 				binding.getOrigin().getName());
+	}
+	
+	@Test
+	public void testSetProperty() {
+		configurationFacade.setProperty("foo", "bar");
+		Assert.assertEquals("bar", configuration.getProperty("foo"));
 	}
 	
 }
