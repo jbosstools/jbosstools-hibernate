@@ -17,5 +17,11 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 		// Only caching the EntityResolver for bookkeeping purposes
 		this.entityResolver = entityResolver;
 	}
+	
+	public EntityResolver getEntityResolver() {
+		// This method is not supported anymore from Hibernate 5+
+		// Returning the cached EntityResolver for bookkeeping purposes
+		return this.entityResolver;
+	}
 
 }
