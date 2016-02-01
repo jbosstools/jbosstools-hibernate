@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.runtime.v_5_0.internal;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.util.Properties;
 
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.jaxb.spi.Binding;
@@ -61,6 +62,15 @@ public class ConfigurationFacadeTest {
 	public void testSetProperty() {
 		configurationFacade.setProperty("foo", "bar");
 		Assert.assertEquals("bar", configuration.getProperty("foo"));
+	}
+	
+	@Test 
+	public void testSetProperties() {
+		Properties testProperties = new Properties();
+		Assert.assertSame(
+				configurationFacade, 
+				configurationFacade.setProperties(testProperties));
+		Assert.assertSame(testProperties, configuration.getProperties());
 	}
 	
 }
