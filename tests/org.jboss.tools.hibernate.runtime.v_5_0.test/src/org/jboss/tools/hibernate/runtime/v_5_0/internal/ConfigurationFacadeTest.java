@@ -12,6 +12,8 @@ import org.jboss.tools.hibernate.runtime.v_5_0.test.MetadataHelper;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.helpers.DefaultHandler;
 
 public class ConfigurationFacadeTest {
 
@@ -71,6 +73,13 @@ public class ConfigurationFacadeTest {
 				configurationFacade, 
 				configurationFacade.setProperties(testProperties));
 		Assert.assertSame(testProperties, configuration.getProperties());
+	}
+	
+	@Test
+	public void testSetEntityResolver() {
+		EntityResolver testResolver = new DefaultHandler();
+		configurationFacade.setEntityResolver(testResolver);
+		Assert.assertSame(testResolver, configurationFacade.entityResolver);
 	}
 	
 }
