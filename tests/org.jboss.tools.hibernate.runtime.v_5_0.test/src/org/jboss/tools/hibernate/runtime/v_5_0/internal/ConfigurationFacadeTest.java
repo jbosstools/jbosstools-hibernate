@@ -7,7 +7,10 @@ import java.util.Properties;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.DefaultNamingStrategy;
+import org.jboss.tools.hibernate.runtime.common.AbstractNamingStrategyFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.v_5_0.test.MetadataHelper;
 import org.junit.Assert;
 import org.junit.Before;
@@ -96,6 +99,16 @@ public class ConfigurationFacadeTest {
 		Assert.assertSame(
 				testProperties, 
 				configurationFacade.getProperties());
+	}
+	
+	@Test
+	public void testSetNamingStrategy() {
+		DefaultNamingStrategy dns = new DefaultNamingStrategy();
+		INamingStrategy namingStrategy = new AbstractNamingStrategyFacade(FACADE_FACTORY, dns) {};
+		configurationFacade.setNamingStrategy(namingStrategy);
+		Assert.assertSame(
+				namingStrategy, 
+				configurationFacade.namingStrategy);
 	}
 	
 }
