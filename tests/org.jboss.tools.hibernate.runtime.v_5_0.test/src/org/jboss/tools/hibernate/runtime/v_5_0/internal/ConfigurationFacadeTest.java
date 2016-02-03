@@ -111,4 +111,13 @@ public class ConfigurationFacadeTest {
 				configurationFacade.namingStrategy);
 	}
 	
+	@Test
+	public void testAddProperties() {
+		Assert.assertNull(configuration.getProperty("foo"));
+		Properties testProperties = new Properties();
+		testProperties.put("foo", "bar");
+		configurationFacade.addProperties(testProperties);
+		Assert.assertEquals("bar", configuration.getProperty("foo"));
+	}
+	
 }
