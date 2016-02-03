@@ -1,8 +1,21 @@
 package org.jboss.tools.hibernate.runtime.v_5_0.internal;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.StringWriter;
+
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
+import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 
 public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
@@ -36,6 +49,30 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 		// AvailableSettings.IMPLICIT_NAMING_STRATEGY property.
 		// Only caching the EntityResolver for bookkeeping purposes
 		this.namingStrategy = namingStrategy;
+	}
+	
+	@Override
+	public IConfiguration configure(Document document) {
+		File tempFile = null;
+		IConfiguration result = null;
+		try {
+			tempFile = File.createTempFile(document.toString(), "cfg.xml");
+			DOMSource domSource = new DOMSource(document);
+			StringWriter stringWriter = new StringWriter();
+			StreamResult stream = new StreamResult(stringWriter);
+		    TransformerFactory tf = TransformerFactory.newInstance();
+		    Transformer transformer = tf.newTransformer();
+		    transformer.transform(domSource, stream);
+		    FileWriter fileWriter = new FileWriter(tempFile);
+		    fileWriter.write(stringWriter.toString());
+		    fileWriter.close();
+			result = configure(tempFile);
+		} catch(IOException | TransformerException e) {
+			throw new RuntimeException("Problem while configuring", e);
+		} finally {
+			tempFile.delete();
+		}
+		return result;
 	}
 
 }
