@@ -196,12 +196,29 @@ public class ConfigurationFacadeTest {
 		configurationFacade.setProperty(
 				"hibernate.dialect", 
 				"org.hibernate.dialect.H2Dialect");
+		Assert.assertNull(configurationFacade.mappings);
 		IMappings mappings = configurationFacade.createMappings();
 		Assert.assertNotNull(mappings);
 		Assert.assertTrue(MappingsFacadeImpl.class.isInstance(mappings));
 		MappingsFacadeImpl mappingsFacade = (MappingsFacadeImpl)mappings;
 		Assert.assertSame(configurationFacade, mappingsFacade.configuration);
 		Assert.assertSame(mappings, configurationFacade.mappings);
+	}
+	
+	@Test
+	public void testBuildMappings() {
+		configurationFacade.setProperty(
+				"hibernate.dialect", 
+				"org.hibernate.dialect.H2Dialect");
+		Assert.assertNull(configurationFacade.mappings);
+		configurationFacade.buildMappings();
+		Assert.assertNotNull(configurationFacade.mappings);
+		Assert.assertTrue(
+				MappingsFacadeImpl.class.isInstance(
+						configurationFacade.mappings));
+		MappingsFacadeImpl mappingsFacade = 
+				(MappingsFacadeImpl)configurationFacade.mappings;
+		Assert.assertSame(configurationFacade, mappingsFacade.configuration);
 	}
 	
 }

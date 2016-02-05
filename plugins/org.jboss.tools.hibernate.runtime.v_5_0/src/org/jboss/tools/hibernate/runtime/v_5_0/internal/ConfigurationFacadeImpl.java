@@ -81,9 +81,14 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	
 	@Override
 	public IMappings createMappings() {
+		buildMappings();
+		return mappings;
+	}
+	
+	@Override 
+	public void buildMappings() {
 		MetadataHelper.getMetadata(((Configuration)getTarget()));
 		mappings = new MappingsFacadeImpl(this);
-		return mappings;
 	}
 
 }
