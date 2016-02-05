@@ -11,9 +11,12 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.hibernate.cfg.Configuration;
+import org.hibernate.tool.util.MetadataHelper;
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
@@ -22,6 +25,7 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	
 	EntityResolver entityResolver = null;
 	INamingStrategy namingStrategy = null;
+	IMappings mappings = null;
 
 	public ConfigurationFacadeImpl(IFacadeFactory facadeFactory, Object target) {
 		super(facadeFactory, target);
@@ -73,6 +77,13 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 			tempFile.delete();
 		}
 		return result;
+	}
+	
+	@Override
+	public IMappings createMappings() {
+		MetadataHelper.getMetadata(((Configuration)getTarget()));
+		mappings = new MappingsFacadeImpl(this);
+		return mappings;
 	}
 
 }

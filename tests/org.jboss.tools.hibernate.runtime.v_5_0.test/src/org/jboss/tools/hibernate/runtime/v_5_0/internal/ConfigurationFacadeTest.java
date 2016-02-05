@@ -13,6 +13,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.jboss.tools.hibernate.runtime.common.AbstractNamingStrategyFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.v_5_0.test.MetadataHelper;
 import org.junit.Assert;
@@ -188,6 +189,19 @@ public class ConfigurationFacadeTest {
 		Assert.assertTrue(File.class.isInstance(arg));
 		File file = (File)arg;
 		Assert.assertFalse(file.exists());
+	}
+	
+	@Test 
+	public void testCreateMappings() {
+		configurationFacade.setProperty(
+				"hibernate.dialect", 
+				"org.hibernate.dialect.H2Dialect");
+		IMappings mappings = configurationFacade.createMappings();
+		Assert.assertNotNull(mappings);
+		Assert.assertTrue(MappingsFacadeImpl.class.isInstance(mappings));
+		MappingsFacadeImpl mappingsFacade = (MappingsFacadeImpl)mappings;
+		Assert.assertSame(configurationFacade, mappingsFacade.configuration);
+		Assert.assertSame(mappings, configurationFacade.mappings);
 	}
 	
 }
