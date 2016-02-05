@@ -11,10 +11,13 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.internal.SessionFactoryImpl;
 import org.jboss.tools.hibernate.runtime.common.AbstractNamingStrategyFacade;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
+import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.v_5_0.test.MetadataHelper;
 import org.junit.Assert;
 import org.junit.Before;
@@ -219,6 +222,18 @@ public class ConfigurationFacadeTest {
 		MappingsFacadeImpl mappingsFacade = 
 				(MappingsFacadeImpl)configurationFacade.mappings;
 		Assert.assertSame(configurationFacade, mappingsFacade.configuration);
+	}
+	
+	@Test
+	public void testBuildSessionFactory() {
+		// need to set 'hibernate.dialect' property for the session factory to properly build 
+		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+		ISessionFactory sessionFactory = configurationFacade.buildSessionFactory();
+		Assert.assertNotNull(sessionFactory);
+		Assert.assertTrue(sessionFactory instanceof IFacade);
+		Object sessionFactoryTarget = ((IFacade)sessionFactory).getTarget();
+		Assert.assertNotNull(sessionFactoryTarget);
+		Assert.assertTrue(sessionFactoryTarget instanceof SessionFactoryImpl);
 	}
 	
 }
