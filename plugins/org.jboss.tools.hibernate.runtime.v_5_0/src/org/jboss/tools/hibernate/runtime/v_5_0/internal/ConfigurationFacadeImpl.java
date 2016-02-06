@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -11,7 +13,9 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.util.MetadataHelper;
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractSettingsFacade;
@@ -19,6 +23,7 @@ import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
+import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.ISettings;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
@@ -96,6 +101,17 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	@Override
 	public ISettings buildSettings() {
 		return new AbstractSettingsFacade(getFacadeFactory(), new Settings()) {};
+	}
+
+	protected void initializeClassMappings() {
+		HashMap<String, IPersistentClass> classMappings = new HashMap<String, IPersistentClass>();
+		Metadata metadata = MetadataHelper.getMetadata(((Configuration)getTarget()));
+		Iterator<PersistentClass> origin = metadata.getEntityBindings().iterator();
+		while (origin.hasNext()) {
+			IPersistentClass pc = getFacadeFactory().createPersistentClass(origin.next());
+			classMappings.put(pc.getEntityName(), pc);
+		}
+		setClassMappings(classMappings);
 	}
 
 }

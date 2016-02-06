@@ -3,6 +3,7 @@ package org.jboss.tools.hibernate.runtime.v_5_0.internal;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -17,6 +18,7 @@ import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
+import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISettings;
 import org.jboss.tools.hibernate.runtime.v_5_0.test.MetadataHelper;
@@ -30,11 +32,13 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class ConfigurationFacadeTest {
 
+	static class Foo { public int id; }
+	
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 
 	private static final String TEST_HBM_STRING =
-			"<hibernate-mapping>" +
-			"  <class name='Foo'>" + 
+			"<hibernate-mapping package='org.jboss.tools.hibernate.runtime.v_5_0.internal'>" +
+			"  <class name='ConfigurationFacadeTest$Foo'>" + 
 			"    <id name='id'/>" + 
 			"  </class>" + 
 			"</hibernate-mapping>";
@@ -247,6 +251,32 @@ public class ConfigurationFacadeTest {
 		Object settingsTarget = ((IFacade)settings).getTarget();
 		Assert.assertNotNull(settingsTarget);
 		Assert.assertTrue(settingsTarget instanceof Settings);
+	}
+	
+	@Test
+	public void testGetClassMappings() throws Exception {
+		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+		Iterator<IPersistentClass> classMappings = 
+				configurationFacade.getClassMappings();
+		Assert.assertNotNull(configurationFacade.getClassMappings());
+		Assert.assertFalse(classMappings.hasNext());
+
+		File testFile = File.createTempFile("test", "tmp");
+		testFile.deleteOnExit();
+		FileWriter fileWriter = new FileWriter(testFile);
+		fileWriter.write(TEST_HBM_STRING);
+		fileWriter.close();
+		configuration.addFile(testFile);
+		configurationFacade = new ConfigurationFacadeImpl(
+				FACADE_FACTORY, 
+				configuration);
+		classMappings = configurationFacade.getClassMappings();
+		Assert.assertNotNull(configurationFacade.getClassMappings());
+		Assert.assertTrue(classMappings.hasNext());
+		IPersistentClass persistentClass = classMappings.next();
+		Assert.assertEquals(
+				"org.jboss.tools.hibernate.runtime.v_5_0.internal.ConfigurationFacadeTest$Foo", 
+				persistentClass.getEntityName());
 	}
 	
 }

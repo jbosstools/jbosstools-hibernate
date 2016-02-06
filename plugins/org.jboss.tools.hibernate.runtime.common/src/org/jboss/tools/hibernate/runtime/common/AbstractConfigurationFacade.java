@@ -345,8 +345,12 @@ implements IConfiguration {
 				new Object[] { getProperties() });
 	}
 	
-	private void initializeClassMappings() {
-		classMappings = new HashMap<String, IPersistentClass>();
+	protected void setClassMappings(HashMap<String, IPersistentClass> classMappings) {
+		this.classMappings = classMappings;
+	}
+	
+	protected void initializeClassMappings() {
+		HashMap<String, IPersistentClass> classMappings = new HashMap<String, IPersistentClass>();
 		Iterator<?> origin = (Iterator<?>)Util.invokeMethod(
 				getTarget(), 
 				"getClassMappings", 
@@ -356,6 +360,7 @@ implements IConfiguration {
 			IPersistentClass pc = getFacadeFactory().createPersistentClass(origin.next());
 			classMappings.put(pc.getEntityName(), pc);
 		}
+		setClassMappings(classMappings);
 	}
 
 	private void initializeTableMappings() {
