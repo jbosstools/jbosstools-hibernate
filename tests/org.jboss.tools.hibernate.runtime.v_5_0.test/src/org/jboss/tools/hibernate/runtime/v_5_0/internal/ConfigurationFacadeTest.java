@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.runtime.v_5_0.internal;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
@@ -12,6 +13,7 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.internal.SessionFactoryImpl;
 import org.jboss.tools.hibernate.runtime.common.AbstractNamingStrategyFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -29,6 +31,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.helpers.DefaultHandler;
+
+import javassist.util.proxy.MethodHandler;
+import javassist.util.proxy.ProxyFactory;
+import javassist.util.proxy.ProxyObject;
 
 public class ConfigurationFacadeTest {
 
@@ -277,6 +283,37 @@ public class ConfigurationFacadeTest {
 		Assert.assertEquals(
 				"org.jboss.tools.hibernate.runtime.v_5_0.internal.ConfigurationFacadeTest$Foo", 
 				persistentClass.getEntityName());
+	}
+	
+	@Test
+	public void testSetPreferBasicCompositeIds() throws Exception {
+		final HashMap<String, Object> calledElements = new HashMap<String, Object>();
+		ProxyFactory proxyFactory = new ProxyFactory();
+		proxyFactory.setSuperclass(Configuration.class);
+		Class<?> proxyClass = proxyFactory.createClass();
+		ProxyObject proxy = (ProxyObject)proxyClass.newInstance();
+		proxy.setHandler(new MethodHandler() {		
+			@Override
+			public Object invoke(
+					Object self, 
+					Method m, 
+					Method proceed, 
+					Object[] args) throws Throwable {
+				calledElements.put("methodName", m.getName());
+				calledElements.put("arguments", args);
+				return proceed.invoke(self, args);
+			}
+		});
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, (Configuration)proxy);
+		configurationFacade.setPreferBasicCompositeIds(true);
+		Assert.assertTrue(calledElements.isEmpty());
+		
+		JDBCMetaDataConfiguration jdbcMetaDataConfiguration = new JDBCMetaDataConfiguration();
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, jdbcMetaDataConfiguration);
+		configurationFacade.setPreferBasicCompositeIds(false);
+		Assert.assertFalse(jdbcMetaDataConfiguration.preferBasicCompositeIds());
+		configurationFacade.setPreferBasicCompositeIds(true);
+		Assert.assertTrue(jdbcMetaDataConfiguration.preferBasicCompositeIds());
 	}
 	
 }
