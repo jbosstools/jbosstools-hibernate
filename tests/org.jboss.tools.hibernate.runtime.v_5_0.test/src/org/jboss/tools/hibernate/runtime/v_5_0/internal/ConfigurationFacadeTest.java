@@ -65,6 +65,8 @@ public class ConfigurationFacadeTest {
 	private ConfigurationFacadeImpl configurationFacade = null;
 	private Configuration configuration = null;
 
+	private HashMap<String, Object> called = null;
+
 	@Before
 	public void setUp() throws Exception {
 		configuration = new Configuration();
@@ -155,41 +157,30 @@ public class ConfigurationFacadeTest {
 	
 	@Test
 	public void testConfigure() throws Exception {
-		final HashMap<String, Object[]> invoked = new HashMap<String, Object[]>();
-		configuration = new Configuration() {
-			@Override
-			public Configuration configure() {
-				invoked.put("configure", new Object[] {});
-				return super.configure();
-			}
-			@Override
-			public Configuration configure(File file) {
-				invoked.put("configure", new Object[] { file });
-				return super.configure(file);
-			}
-		};
+		called = new HashMap<String, Object>();
+		configuration = (Configuration)createProxy(Configuration.class);
 		configurationFacade = new ConfigurationFacadeImpl(
 				FACADE_FACTORY, 
 				configuration);
 		
-		Assert.assertNull(invoked.get("configure"));
 		configurationFacade.configure();
-		Assert.assertArrayEquals(new Object[] {}, invoked.get("configure"));
+		Assert.assertEquals("configure", called.get("method"));
+		Assert.assertArrayEquals(new Object[] {}, (Object[])called.get("args"));
 		
-		invoked.clear();
+		called.clear();
 		File tempFile = File.createTempFile("temp.cfg", "xml");
 		tempFile.deleteOnExit();
 		FileWriter fw = new FileWriter(tempFile);
 		fw.write(TEST_CONFIGURATION_STRING);
 		fw.close();
-		Assert.assertNull(invoked.get("configure"));
 		configurationFacade.configure(tempFile);
+		Assert.assertEquals("configure", called.get("method"));
 		Assert.assertArrayEquals(
 				new Object[] { tempFile }, 
-				invoked.get("configure"));
+				(Object[])called.get("args"));
 		tempFile.delete();
 		
-		invoked.clear();
+		called.clear();
 		Document testDocument = DocumentBuilderFactory
 				.newInstance()
 				.newDocumentBuilder()
@@ -198,9 +189,9 @@ public class ConfigurationFacadeTest {
 		testDocument.appendChild(root);
 		Element child = testDocument.createElement("session-factory");
 		root.appendChild(child);
-		Assert.assertNull(invoked.get("configure"));
 		configurationFacade.configure(testDocument);
-		Object[] arguments = invoked.get("configure");
+		Assert.assertEquals("configure", called.get("method"));
+		Object[] arguments = (Object[])called.get("args");
 		Assert.assertNotNull(arguments);
 		Assert.assertTrue(arguments.length == 1);
 		Object arg = arguments[0];
@@ -291,41 +282,61 @@ public class ConfigurationFacadeTest {
 	
 	@Test
 	public void testSetPreferBasicCompositeIds() throws Exception {
-		final HashMap<String, Object> called = new HashMap<String, Object>();
-		called.put("called", false);
-		ProxyFactory proxyFactory = new ProxyFactory();
-		proxyFactory.setSuperclass(Configuration.class);
-		Class<?> proxyClass = proxyFactory.createClass();
-		ProxyObject proxy = (ProxyObject)proxyClass.newInstance();
-		proxy.setHandler(new MethodHandler() {		
-			@Override
-			public Object invoke(
-					Object self, 
-					Method m, 
-					Method proceed, 
-					Object[] args) throws Throwable {
-				called.put("called", true);
-				return proceed.invoke(self, args);
-			}
-		});
-		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, (Configuration)proxy);
+		called = new HashMap<String, Object>();
+		configurationFacade = new ConfigurationFacadeImpl(
+				FACADE_FACTORY, 
+				(Configuration)createProxy(Configuration.class));
 		configurationFacade.setPreferBasicCompositeIds(true);
-		Assert.assertFalse((Boolean)called.get("called"));
-		
-		JDBCMetaDataConfiguration jdbcMetaDataConfiguration = new JDBCMetaDataConfiguration();
+		Assert.assertNull(called.get("method"));
+		JDBCMetaDataConfiguration jdbcMetaDataConfiguration = 
+				(JDBCMetaDataConfiguration)createProxy(JDBCMetaDataConfiguration.class);
 		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, jdbcMetaDataConfiguration);
 		configurationFacade.setPreferBasicCompositeIds(false);
+		Assert.assertEquals("setPreferBasicCompositeIds", called.get("method"));
+		Assert.assertArrayEquals(
+				new Object[] { false }, 
+				(Object[])called.get("args"));
 		Assert.assertFalse(jdbcMetaDataConfiguration.preferBasicCompositeIds());
+		called.clear();
 		configurationFacade.setPreferBasicCompositeIds(true);
+		Assert.assertEquals("setPreferBasicCompositeIds", called.get("method"));
+		Assert.assertArrayEquals(
+				new Object[] { true }, 
+				(Object[])called.get("args"));
 		Assert.assertTrue(jdbcMetaDataConfiguration.preferBasicCompositeIds());
 	}
 	
 	@Test
 	public void testSetReverseEngineeringStrategy() throws Exception {
-		final HashMap<String, Object> called = new HashMap<String, Object>();
-		called.put("called", false);
+		called = new HashMap<String, Object>();
+		configurationFacade = new ConfigurationFacadeImpl(
+				FACADE_FACTORY, 
+				(Configuration)createProxy(Configuration.class));
+		ReverseEngineeringStrategy res = new DefaultReverseEngineeringStrategy();
+		IReverseEngineeringStrategy strategy = 
+				new AbstractReverseEngineeringStrategyFacade(FACADE_FACTORY, res) {};
+		configurationFacade.setReverseEngineeringStrategy(strategy);
+		Assert.assertNull(called.get("method"));
+		Assert.assertNull(called.get("args"));
+
+		JDBCMetaDataConfiguration jdbcMetaDataConfiguration = 
+				(JDBCMetaDataConfiguration)createProxy(JDBCMetaDataConfiguration.class);
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, jdbcMetaDataConfiguration);
+		Assert.assertNotSame(res, jdbcMetaDataConfiguration.getReverseEngineeringStrategy());
+		called.clear();
+		configurationFacade.setReverseEngineeringStrategy(strategy);
+		Assert.assertEquals(
+				"setReverseEngineeringStrategy", 
+				called.get("method"));
+		Assert.assertArrayEquals(
+				new Object[] { ((IFacade)strategy).getTarget() }, 
+				(Object[])called.get("args"));
+		Assert.assertSame(res, jdbcMetaDataConfiguration.getReverseEngineeringStrategy());
+	}
+	
+	private Object createProxy(Class<?> clazz) throws Exception {
 		ProxyFactory proxyFactory = new ProxyFactory();
-		proxyFactory.setSuperclass(Configuration.class);
+		proxyFactory.setSuperclass(clazz);
 		Class<?> proxyClass = proxyFactory.createClass();
 		ProxyObject proxy = (ProxyObject)proxyClass.newInstance();
 		proxy.setHandler(new MethodHandler() {		
@@ -335,21 +346,18 @@ public class ConfigurationFacadeTest {
 					Method m, 
 					Method proceed, 
 					Object[] args) throws Throwable {
-				called.put("called", true);
+				if (called.get("method") == null) {
+					called.put("method", m.getName());
+				}
+				if (called.get("args") == null) {
+					called.put("args", args);
+				}
 				return proceed.invoke(self, args);
 			}
 		});
-		ReverseEngineeringStrategy res = new DefaultReverseEngineeringStrategy();
-		IReverseEngineeringStrategy strategy = 
-				new AbstractReverseEngineeringStrategyFacade(FACADE_FACTORY, res) {};
-		configurationFacade.setReverseEngineeringStrategy(strategy);
-		Assert.assertFalse((Boolean)called.get("called"));
-
-		JDBCMetaDataConfiguration jdbcMetaDataConfiguration = new JDBCMetaDataConfiguration();
-		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, jdbcMetaDataConfiguration);
-		Assert.assertNotSame(res, jdbcMetaDataConfiguration.getReverseEngineeringStrategy());
-		configurationFacade.setReverseEngineeringStrategy(strategy);
-		Assert.assertSame(res, jdbcMetaDataConfiguration.getReverseEngineeringStrategy());
+		return proxy;
 	}
 	
 }
+	
+	
