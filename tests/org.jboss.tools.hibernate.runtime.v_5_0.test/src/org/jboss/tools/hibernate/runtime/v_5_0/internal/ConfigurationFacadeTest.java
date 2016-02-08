@@ -14,13 +14,17 @@ import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
+import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
+import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.internal.SessionFactoryImpl;
 import org.jboss.tools.hibernate.runtime.common.AbstractNamingStrategyFacade;
+import org.jboss.tools.hibernate.runtime.common.AbstractReverseEngineeringStrategyFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
+import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISettings;
 import org.jboss.tools.hibernate.runtime.v_5_0.test.MetadataHelper;
@@ -287,7 +291,8 @@ public class ConfigurationFacadeTest {
 	
 	@Test
 	public void testSetPreferBasicCompositeIds() throws Exception {
-		final HashMap<String, Object> calledElements = new HashMap<String, Object>();
+		final HashMap<String, Object> called = new HashMap<String, Object>();
+		called.put("called", false);
 		ProxyFactory proxyFactory = new ProxyFactory();
 		proxyFactory.setSuperclass(Configuration.class);
 		Class<?> proxyClass = proxyFactory.createClass();
@@ -299,14 +304,13 @@ public class ConfigurationFacadeTest {
 					Method m, 
 					Method proceed, 
 					Object[] args) throws Throwable {
-				calledElements.put("methodName", m.getName());
-				calledElements.put("arguments", args);
+				called.put("called", true);
 				return proceed.invoke(self, args);
 			}
 		});
 		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, (Configuration)proxy);
 		configurationFacade.setPreferBasicCompositeIds(true);
-		Assert.assertTrue(calledElements.isEmpty());
+		Assert.assertFalse((Boolean)called.get("called"));
 		
 		JDBCMetaDataConfiguration jdbcMetaDataConfiguration = new JDBCMetaDataConfiguration();
 		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, jdbcMetaDataConfiguration);
@@ -314,6 +318,38 @@ public class ConfigurationFacadeTest {
 		Assert.assertFalse(jdbcMetaDataConfiguration.preferBasicCompositeIds());
 		configurationFacade.setPreferBasicCompositeIds(true);
 		Assert.assertTrue(jdbcMetaDataConfiguration.preferBasicCompositeIds());
+	}
+	
+	@Test
+	public void testSetReverseEngineeringStrategy() throws Exception {
+		final HashMap<String, Object> called = new HashMap<String, Object>();
+		called.put("called", false);
+		ProxyFactory proxyFactory = new ProxyFactory();
+		proxyFactory.setSuperclass(Configuration.class);
+		Class<?> proxyClass = proxyFactory.createClass();
+		ProxyObject proxy = (ProxyObject)proxyClass.newInstance();
+		proxy.setHandler(new MethodHandler() {		
+			@Override
+			public Object invoke(
+					Object self, 
+					Method m, 
+					Method proceed, 
+					Object[] args) throws Throwable {
+				called.put("called", true);
+				return proceed.invoke(self, args);
+			}
+		});
+		ReverseEngineeringStrategy res = new DefaultReverseEngineeringStrategy();
+		IReverseEngineeringStrategy strategy = 
+				new AbstractReverseEngineeringStrategyFacade(FACADE_FACTORY, res) {};
+		configurationFacade.setReverseEngineeringStrategy(strategy);
+		Assert.assertFalse((Boolean)called.get("called"));
+
+		JDBCMetaDataConfiguration jdbcMetaDataConfiguration = new JDBCMetaDataConfiguration();
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, jdbcMetaDataConfiguration);
+		Assert.assertNotSame(res, jdbcMetaDataConfiguration.getReverseEngineeringStrategy());
+		configurationFacade.setReverseEngineeringStrategy(strategy);
+		Assert.assertSame(res, jdbcMetaDataConfiguration.getReverseEngineeringStrategy());
 	}
 	
 }
