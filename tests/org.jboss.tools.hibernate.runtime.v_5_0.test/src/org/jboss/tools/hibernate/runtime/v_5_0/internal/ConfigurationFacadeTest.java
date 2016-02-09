@@ -334,6 +334,29 @@ public class ConfigurationFacadeTest {
 		Assert.assertSame(res, jdbcMetaDataConfiguration.getReverseEngineeringStrategy());
 	}
 	
+	@Test
+	public void testReadFromJDBC() throws Exception {
+		called = new HashMap<String, Object>();
+		configurationFacade = new ConfigurationFacadeImpl(
+				FACADE_FACTORY, 
+				(Configuration)createProxy(Configuration.class));
+		configurationFacade.readFromJDBC();
+		Assert.assertNull(called.get("method"));
+		Assert.assertNull(called.get("args"));
+
+		Configuration jdbcMetaDataConfiguration = new JDBCMetaDataConfiguration() {
+			@Override public void readFromJDBC() {
+				called.put("method", "readFromJDBC");
+				called.put("args", new Object[] {});
+			}
+		};
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, jdbcMetaDataConfiguration);
+		configurationFacade.readFromJDBC();
+		Assert.assertEquals("readFromJDBC", called.get("method"));
+		Assert.assertArrayEquals(new Object[] {}, (Object[])called.get("args"));
+	}
+	
+	
 	private Object createProxy(Class<?> clazz) throws Exception {
 		ProxyFactory proxyFactory = new ProxyFactory();
 		proxyFactory.setSuperclass(clazz);
