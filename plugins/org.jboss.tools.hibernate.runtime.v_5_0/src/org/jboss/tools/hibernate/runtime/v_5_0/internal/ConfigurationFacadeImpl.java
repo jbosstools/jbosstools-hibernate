@@ -102,7 +102,13 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	public ISettings buildSettings() {
 		return new AbstractSettingsFacade(getFacadeFactory(), new Settings()) {};
 	}
+	
+	@Override
+	protected Object createTargetMapping() {
+		return MetadataHelper.getMetadata(((Configuration)getTarget()));
+	}
 
+	@Override
 	protected void initializeClassMappings() {
 		HashMap<String, IPersistentClass> classMappings = new HashMap<String, IPersistentClass>();
 		Metadata metadata = MetadataHelper.getMetadata(((Configuration)getTarget()));

@@ -224,11 +224,7 @@ implements IConfiguration {
 	@Override
 	public IMapping buildMapping() {
 		if (mapping == null) {
-			Object targetMapping = Util.invokeMethod(
-					getTarget(), 
-					"buildMapping", 
-					new Class[] {}, 
-					new Object[] {});
+			Object targetMapping = createTargetMapping();
 			if (targetMapping != null) {
 				mapping = getFacadeFactory().createMapping(targetMapping);
 			}
@@ -347,6 +343,14 @@ implements IConfiguration {
 	
 	protected void setClassMappings(HashMap<String, IPersistentClass> classMappings) {
 		this.classMappings = classMappings;
+	}
+	
+	protected Object createTargetMapping() {
+		return Util.invokeMethod(
+				getTarget(), 
+				"buildMapping", 
+				new Class[] {}, 
+				new Object[] {});
 	}
 	
 	protected void initializeClassMappings() {

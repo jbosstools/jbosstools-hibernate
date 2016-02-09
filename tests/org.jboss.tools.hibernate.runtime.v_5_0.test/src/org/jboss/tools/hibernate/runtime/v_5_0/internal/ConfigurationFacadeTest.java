@@ -2,13 +2,16 @@ package org.jboss.tools.hibernate.runtime.v_5_0.internal;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.cfg.Configuration;
@@ -21,6 +24,7 @@ import org.jboss.tools.hibernate.runtime.common.AbstractNamingStrategyFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractReverseEngineeringStrategyFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IMapping;
 import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -354,6 +358,31 @@ public class ConfigurationFacadeTest {
 		configurationFacade.readFromJDBC();
 		Assert.assertEquals("readFromJDBC", called.get("method"));
 		Assert.assertArrayEquals(new Object[] {}, (Object[])called.get("args"));
+	}
+	
+	@Test
+	public void testBuildMapping() throws Exception {
+		final Metadata md = (Metadata)Proxy.newProxyInstance(
+				FACADE_FACTORY.getClassLoader(), 
+				new Class[] { Metadata.class }, 
+				new InvocationHandler() {
+					@Override
+					public Object invoke(
+							Object proxy, 
+							Method method, 
+							Object[] args) throws Throwable {
+						return null;
+					}				
+				});
+		configuration = new Configuration() {
+			@SuppressWarnings("unused")
+			public Metadata metadata = md;
+		};
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
+		IMapping mapping = configurationFacade.buildMapping();
+		Assert.assertNotNull(mapping);
+		Assert.assertSame(md, ((IFacade)mapping).getTarget());
+		Assert.assertSame(mapping, configurationFacade.buildMapping());
 	}
 	
 	
