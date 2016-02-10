@@ -104,6 +104,11 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	}
 	
 	@Override
+	public INamingStrategy getNamingStrategy() {
+		return namingStrategy;
+	}
+	
+	@Override
 	protected Object createTargetMapping() {
 		return MetadataHelper.getMetadata(((Configuration)getTarget()));
 	}

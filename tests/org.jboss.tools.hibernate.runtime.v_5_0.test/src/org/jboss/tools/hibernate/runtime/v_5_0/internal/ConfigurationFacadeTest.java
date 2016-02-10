@@ -385,7 +385,15 @@ public class ConfigurationFacadeTest {
 		Assert.assertSame(mapping, configurationFacade.buildMapping());
 	}
 	
-	
+	@Test
+	public void testGetNamingStrategy() {
+		Assert.assertNull(configurationFacade.getNamingStrategy());
+		INamingStrategy namingStrategy = 
+				new AbstractNamingStrategyFacade(FACADE_FACTORY,null) {};
+		configurationFacade.namingStrategy = namingStrategy;
+		Assert.assertSame(namingStrategy, configurationFacade.getNamingStrategy());
+	}
+		
 	private Object createProxy(Class<?> clazz) throws Exception {
 		ProxyFactory proxyFactory = new ProxyFactory();
 		proxyFactory.setSuperclass(clazz);
