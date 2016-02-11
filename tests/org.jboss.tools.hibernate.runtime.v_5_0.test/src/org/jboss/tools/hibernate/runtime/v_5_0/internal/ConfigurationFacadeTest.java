@@ -31,6 +31,7 @@ import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISettings;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.v_5_0.test.MetadataHelper;
 import org.junit.Assert;
 import org.junit.Before;
@@ -394,6 +395,21 @@ public class ConfigurationFacadeTest {
 		Assert.assertSame(namingStrategy, configurationFacade.getNamingStrategy());
 	}
 		
+	@Test
+	public void testGetTableMappings() throws Exception {
+		Iterator<ITable> tableMappings = 
+				configurationFacade.getTableMappings();
+		Assert.assertNull(tableMappings);
+
+		JDBCMetaDataConfiguration jdbcMetaDataConfiguration = new JDBCMetaDataConfiguration();
+		configurationFacade = new ConfigurationFacadeImpl(
+				FACADE_FACTORY, 
+				jdbcMetaDataConfiguration);
+		tableMappings = configurationFacade.getTableMappings();
+		Assert.assertNotNull(tableMappings);
+	}
+	
+	
 	private Object createProxy(Class<?> clazz) throws Exception {
 		ProxyFactory proxyFactory = new ProxyFactory();
 		proxyFactory.setSuperclass(clazz);

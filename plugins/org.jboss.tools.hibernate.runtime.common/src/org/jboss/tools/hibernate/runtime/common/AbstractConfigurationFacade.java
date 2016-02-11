@@ -344,6 +344,10 @@ implements IConfiguration {
 	protected void setClassMappings(HashMap<String, IPersistentClass> classMappings) {
 		this.classMappings = classMappings;
 	}
+
+	protected void setTableMappings(HashSet<ITable> tableMappings) {
+		this.tableMappings = tableMappings;
+	}
 	
 	protected Object createTargetMapping() {
 		return Util.invokeMethod(
@@ -367,8 +371,8 @@ implements IConfiguration {
 		setClassMappings(classMappings);
 	}
 
-	private void initializeTableMappings() {
-		tableMappings = new HashSet<ITable>();
+	protected void initializeTableMappings() {
+		HashSet<ITable> tableMappings = new HashSet<ITable>();
 		Iterator<?> origin = (Iterator<?>)Util.invokeMethod(
 				getTarget(), 
 				"getTableMappings", 
@@ -377,6 +381,7 @@ implements IConfiguration {
 		while (origin.hasNext()) {
 			tableMappings.add(getFacadeFactory().createTable(origin.next()));
 		}
+		setTableMappings(tableMappings);
 	}
 
 }
