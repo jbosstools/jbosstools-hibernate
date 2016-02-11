@@ -54,6 +54,7 @@ import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
 import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
 import org.hibernate.tool.hbm2x.QueryExporter;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
+import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.util.MetadataHelper;
 import org.hibernate.type.Type;
@@ -64,6 +65,7 @@ import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
+import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
@@ -246,6 +248,13 @@ public class FacadeFactoryTest {
 		IEnvironment environment = facadeFactory.createEnvironment();
 		Assert.assertNotNull(environment);
 		Assert.assertTrue(environment instanceof EnvironmentFacadeImpl);
+	}
+	
+	@Test
+	public void testCreateHQLCodeAssist() {
+		HQLCodeAssist hqlCodeAssist = new HQLCodeAssist(new Configuration());
+		IHQLCodeAssist facade = facadeFactory.createHQLCodeAssist(hqlCodeAssist);
+		Assert.assertSame(hqlCodeAssist, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
