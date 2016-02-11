@@ -410,6 +410,11 @@ public class ConfigurationFacadeTest {
 	}
 	
 	
+	@Test
+	public void testGetDialect() {
+		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+		Assert.assertNotNull(configurationFacade.getDialect());
+	}
 	private Object createProxy(Class<?> clazz) throws Exception {
 		ProxyFactory proxyFactory = new ProxyFactory();
 		proxyFactory.setSuperclass(clazz);

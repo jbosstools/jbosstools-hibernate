@@ -15,9 +15,12 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.hibernate.boot.Metadata;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
+import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.util.MetadataHelper;
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractSettingsFacade;
@@ -138,6 +141,18 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 			tableMappings.add(table);
 		}
 		setTableMappings(tableMappings);
+	}
+
+	protected Object buildTargetDialect() {
+		return buildServiceRegistry()
+				.getService(DialectFactory.class)
+				.buildDialect(getProperties(), null);
+	}
+	
+	private ServiceRegistry buildServiceRegistry() {
+		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
+		builder.applySettings(((Configuration)getTarget()).getProperties());
+		return builder.build();		
 	}
 
 }
