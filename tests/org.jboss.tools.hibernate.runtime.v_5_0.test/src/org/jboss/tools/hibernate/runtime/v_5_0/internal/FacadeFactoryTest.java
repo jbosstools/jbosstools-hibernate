@@ -37,6 +37,7 @@ import org.hibernate.engine.spi.Mapping;
 import org.hibernate.hql.spi.QueryTranslator;
 import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Join;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
@@ -65,6 +66,7 @@ import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
+import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
@@ -250,6 +252,13 @@ public class FacadeFactoryTest {
 		IEnvironment environment = facadeFactory.createEnvironment();
 		Assert.assertNotNull(environment);
 		Assert.assertTrue(environment instanceof EnvironmentFacadeImpl);
+	}
+	
+	@Test
+	public void testCreateForeignKey() {
+		ForeignKey foreignKey = new ForeignKey();
+		IForeignKey facade = facadeFactory.createForeignKey(foreignKey);
+		Assert.assertSame(foreignKey, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
