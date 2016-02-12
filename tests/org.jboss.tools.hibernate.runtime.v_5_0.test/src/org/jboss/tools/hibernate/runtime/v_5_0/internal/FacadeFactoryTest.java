@@ -13,6 +13,7 @@ import org.hibernate.Filter;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.internal.SessionFactoryBuilderImpl;
 import org.hibernate.boot.internal.SessionFactoryOptionsImpl;
@@ -91,6 +92,7 @@ import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingGlobalSettings;
 import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.IMapping;
+import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.IMetaDataDialect;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
@@ -259,6 +261,16 @@ public class FacadeFactoryTest {
 		HibernateMappingGlobalSettings hibernateMappingGlobalSettings = new HibernateMappingGlobalSettings();
 		IHibernateMappingGlobalSettings facade = facadeFactory.createHibernateMappingGlobalSettings(hibernateMappingGlobalSettings);
 		Assert.assertSame(hibernateMappingGlobalSettings, ((IFacade)facade).getTarget());		
+	}
+	
+	@Test
+	public void testCreateMappings() {
+		Metadata mappings = (Metadata)Proxy.newProxyInstance(
+				facadeFactory.getClassLoader(), 
+				new Class[] { Metadata.class }, 
+				new TestInvocationHandler());
+		IMappings facade = facadeFactory.createMappings(mappings);
+		Assert.assertSame(mappings, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
