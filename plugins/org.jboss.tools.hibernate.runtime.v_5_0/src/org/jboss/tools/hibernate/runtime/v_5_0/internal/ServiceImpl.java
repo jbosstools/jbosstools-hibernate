@@ -12,6 +12,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.JDBCReaderFactory;
 import org.hibernate.cfg.JPAConfiguration;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
@@ -161,8 +162,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IConfiguration newJDBCMetaDataConfiguration() {
-		// TODO Auto-generated method stub
-		return null;
+		return facadeFactory.createConfiguration(new JDBCMetaDataConfiguration());
 	}
 
 	@Override

@@ -12,6 +12,7 @@ import java.util.Properties;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.Environment;
+import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.DatabaseCollector;
 import org.hibernate.cfg.reveng.DelegatingReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.JDBCReader;
@@ -131,6 +132,15 @@ public class ServiceImplTest {
 		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 		IHQLCodeAssist hqlCodeAssist = service.newHQLCodeAssist(configuration);
 		Assert.assertNotNull(hqlCodeAssist);
+	}
+	
+	@Test
+	public void testNewJDBCMetaDataConfiguration() {
+		IConfiguration configuration = service.newJDBCMetaDataConfiguration();
+		Assert.assertNotNull(configuration);
+		Object target = ((IFacade)configuration).getTarget();
+		Assert.assertNotNull(target);
+		Assert.assertTrue(target instanceof JDBCMetaDataConfiguration);
 	}
 	
 	@Test
