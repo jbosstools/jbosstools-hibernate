@@ -49,6 +49,7 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
+import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
@@ -68,6 +69,7 @@ import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
+import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
@@ -255,6 +257,16 @@ public class FacadeFactoryTest {
 		HibernateMappingGlobalSettings hibernateMappingGlobalSettings = new HibernateMappingGlobalSettings();
 		IHibernateMappingGlobalSettings facade = facadeFactory.createHibernateMappingGlobalSettings(hibernateMappingGlobalSettings);
 		Assert.assertSame(hibernateMappingGlobalSettings, ((IFacade)facade).getTarget());		
+	}
+	
+	@Test
+	public void testCreateCollectionMetadata() {
+		CollectionMetadata collectionMetadata = (CollectionMetadata)Proxy.newProxyInstance(
+				facadeFactory.getClassLoader(), 
+				new Class[] { CollectionMetadata.class }, 
+				new TestInvocationHandler());
+		ICollectionMetadata facade = facadeFactory.createCollectionMetadata(collectionMetadata);
+		Assert.assertSame(collectionMetadata, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
