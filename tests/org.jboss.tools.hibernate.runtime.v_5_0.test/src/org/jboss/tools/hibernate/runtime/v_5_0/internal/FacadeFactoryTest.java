@@ -49,6 +49,7 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
+import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
@@ -69,6 +70,7 @@ import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
+import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
@@ -257,6 +259,16 @@ public class FacadeFactoryTest {
 		HibernateMappingGlobalSettings hibernateMappingGlobalSettings = new HibernateMappingGlobalSettings();
 		IHibernateMappingGlobalSettings facade = facadeFactory.createHibernateMappingGlobalSettings(hibernateMappingGlobalSettings);
 		Assert.assertSame(hibernateMappingGlobalSettings, ((IFacade)facade).getTarget());		
+	}
+	
+	@Test
+	public void testCreateClassMetadata() {
+		ClassMetadata classMetadata = (ClassMetadata)Proxy.newProxyInstance(
+				facadeFactory.getClassLoader(), 
+				new Class[] { ClassMetadata.class }, 
+				new TestInvocationHandler());
+		IClassMetadata facade = facadeFactory.createClassMetadata(classMetadata);
+		Assert.assertSame(classMetadata, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
