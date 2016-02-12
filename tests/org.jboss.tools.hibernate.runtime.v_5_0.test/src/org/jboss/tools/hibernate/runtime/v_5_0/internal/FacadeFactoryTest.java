@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
+import org.hibernate.Criteria;
 import org.hibernate.Filter;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -67,6 +68,7 @@ import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
+import org.jboss.tools.hibernate.runtime.spi.ICriteria;
 import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
@@ -251,6 +253,16 @@ public class FacadeFactoryTest {
 		HibernateMappingGlobalSettings hibernateMappingGlobalSettings = new HibernateMappingGlobalSettings();
 		IHibernateMappingGlobalSettings facade = facadeFactory.createHibernateMappingGlobalSettings(hibernateMappingGlobalSettings);
 		Assert.assertSame(hibernateMappingGlobalSettings, ((IFacade)facade).getTarget());		
+	}
+	
+	@Test
+	public void testCreateCriteria() {
+		Criteria criteria = (Criteria)Proxy.newProxyInstance(
+				facadeFactory.getClassLoader(), 
+				new Class[] { Criteria.class }, 
+				new TestInvocationHandler());
+		ICriteria facade = facadeFactory.createCriteria(criteria);
+		Assert.assertSame(criteria, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
