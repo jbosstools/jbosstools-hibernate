@@ -39,10 +39,12 @@ import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
 import org.hibernate.tool.hbm2x.POJOExporter;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
+import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
@@ -152,6 +154,15 @@ public class ServiceImplTest {
 		Object target = ((IFacade)exporter).getTarget();
 		Assert.assertNotNull(target);
 		Assert.assertTrue(target instanceof POJOExporter);
+	}
+	
+	@Test
+	public void testNewArtifactCollector() {
+		IArtifactCollector artifactCollector = service.newArtifactCollector();
+		Assert.assertNotNull(artifactCollector);
+		Object target = ((IFacade)artifactCollector).getTarget();
+		Assert.assertNotNull(target);
+		Assert.assertTrue(target instanceof ArtifactCollector);
 	}
 	
 	@Test

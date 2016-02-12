@@ -51,6 +51,7 @@ import org.hibernate.mapping.Table;
 import org.hibernate.proxy.HibernateProxyHelper;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
@@ -177,8 +178,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IArtifactCollector newArtifactCollector() {
-		// TODO Auto-generated method stub
-		return null;
+		return facadeFactory.createArtifactCollector(new ArtifactCollector());
 	}
 
 	@Override
