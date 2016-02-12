@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_5_0.internal;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -23,6 +24,7 @@ import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
+import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.Column;
@@ -53,6 +55,7 @@ import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
+import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingGlobalSettings;
 import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
@@ -65,6 +68,7 @@ import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
+import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
@@ -75,6 +79,19 @@ import org.junit.Test;
 
 public class ServiceImplTest {
 	
+	static class Foo { 
+		private int id; 
+		public void setId(int id) { }
+		public int getId() { return id; }
+	}
+	
+	private static final String TEST_HBM_STRING =
+			"<hibernate-mapping package='org.jboss.tools.hibernate.runtime.v_5_0.internal'>" +
+			"  <class name='ServiceImplTest$Foo'>" + 
+			"    <id name='id'/>" + 
+			"  </class>" + 
+			"</hibernate-mapping>";
+
 	private ServiceImpl service = new ServiceImpl();
 	
 	@Test
@@ -154,6 +171,23 @@ public class ServiceImplTest {
 		Object target = ((IFacade)exporter).getTarget();
 		Assert.assertNotNull(target);
 		Assert.assertTrue(target instanceof POJOExporter);
+	}
+	
+	@Test
+	public void testNewHQLQueryPlan() throws Exception {
+		IConfiguration configuration = service.newDefaultConfiguration();
+		File testFile = File.createTempFile("test", "tmp");
+		testFile.deleteOnExit();
+		FileWriter fileWriter = new FileWriter(testFile);
+		fileWriter.write(TEST_HBM_STRING);
+		fileWriter.close();
+		configuration.addFile(testFile);
+		ISessionFactory sfi = configuration.buildSessionFactory();
+		IHQLQueryPlan queryPlan = service.newHQLQueryPlan("from ServiceImplTest$Foo", true, sfi);
+		Assert.assertNotNull(queryPlan);
+		Object target = ((IFacade)queryPlan).getTarget();
+		Assert.assertNotNull(target);
+		Assert.assertTrue(target instanceof HQLQueryPlan);
 	}
 	
 	@Test

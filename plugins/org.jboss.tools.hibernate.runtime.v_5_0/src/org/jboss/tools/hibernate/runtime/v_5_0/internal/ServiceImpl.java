@@ -4,10 +4,12 @@ import java.io.File;
 import java.lang.reflect.Constructor;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.hibernate.Filter;
 import org.hibernate.Hibernate;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.spi.MetadataImplementor;
@@ -31,6 +33,8 @@ import org.hibernate.engine.jdbc.dialect.spi.DatabaseMetaDataDialectResolutionIn
 import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfoSource;
+import org.hibernate.engine.query.spi.HQLQueryPlan;
+import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
@@ -183,8 +187,11 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IHQLQueryPlan newHQLQueryPlan(String query, boolean shallow, ISessionFactory sessionFactory) {
-		// TODO Auto-generated method stub
-		return null;
+		SessionFactoryImpl factory = 
+				(SessionFactoryImpl) ((IFacade)sessionFactory).getTarget();
+		Map<String, Filter> enabledFilters = Collections.emptyMap(); 
+		HQLQueryPlan queryPlan = new HQLQueryPlan(query, shallow, enabledFilters, factory);
+		return facadeFactory.createHQLQueryPlan(queryPlan);
 	}
 
 	@Override
