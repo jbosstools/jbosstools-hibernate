@@ -41,6 +41,7 @@ import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
+import org.hibernate.tool.hbm2x.POJOExporter;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
@@ -48,6 +49,7 @@ import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
+import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingGlobalSettings;
@@ -141,6 +143,15 @@ public class ServiceImplTest {
 		Object target = ((IFacade)configuration).getTarget();
 		Assert.assertNotNull(target);
 		Assert.assertTrue(target instanceof JDBCMetaDataConfiguration);
+	}
+	
+	@Test
+	public void testCreateExporter() {
+		IExporter exporter = service.createExporter("org.hibernate.tool.hbm2x.POJOExporter");
+		Assert.assertNotNull(exporter);
+		Object target = ((IFacade)exporter).getTarget();
+		Assert.assertNotNull(target);
+		Assert.assertTrue(target instanceof POJOExporter);
 	}
 	
 	@Test

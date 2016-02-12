@@ -52,6 +52,7 @@ import org.hibernate.proxy.HibernateProxyHelper;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
+import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.util.MetadataHelper;
@@ -60,6 +61,7 @@ import org.jboss.tools.hibernate.runtime.common.AbstractPersistentClassFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractService;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.common.Util;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
@@ -167,8 +169,10 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IExporter createExporter(String exporterClassName) {
-		// TODO Auto-generated method stub
-		return null;
+		Exporter exporter = (Exporter)Util.getInstance(
+				exporterClassName, 
+				facadeFactory.getClassLoader());
+		return facadeFactory.createExporter(exporter);
 	}
 
 	@Override
