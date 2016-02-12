@@ -305,6 +305,7 @@ public class FacadeFactoryTest {
 		Configuration configuration = new Configuration();
 		IConfiguration facade = facadeFactory.createConfiguration(configuration);
 		Assert.assertSame(configuration, ((IFacade)facade).getTarget());		
+		Assert.assertSame(ConfigurationFacadeImpl.class, facade.getClass());
 	}
 	
 	@Test
