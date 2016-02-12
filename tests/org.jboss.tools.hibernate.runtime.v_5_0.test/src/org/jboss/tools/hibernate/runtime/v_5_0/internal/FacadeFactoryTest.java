@@ -34,6 +34,7 @@ import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.engine.spi.Mapping;
+import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.hql.spi.QueryTranslator;
 import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.mapping.Column;
@@ -46,6 +47,7 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
+import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
@@ -59,11 +61,13 @@ import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.util.MetadataHelper;
+import org.hibernate.tuple.entity.EntityMetamodel;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IDialect;
+import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
@@ -245,6 +249,25 @@ public class FacadeFactoryTest {
 		HibernateMappingGlobalSettings hibernateMappingGlobalSettings = new HibernateMappingGlobalSettings();
 		IHibernateMappingGlobalSettings facade = facadeFactory.createHibernateMappingGlobalSettings(hibernateMappingGlobalSettings);
 		Assert.assertSame(hibernateMappingGlobalSettings, ((IFacade)facade).getTarget());		
+	}
+	
+	@Test
+	public void testCreateEntityMetamodel() {
+		Configuration configuration = new Configuration();
+		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
+		builder.applySettings(configuration.getProperties());
+		ServiceRegistry serviceRegistry = builder.build();		
+		SessionFactoryImplementor sfi = (SessionFactoryImplementor)configuration.buildSessionFactory(serviceRegistry);
+		RootClass rc = new RootClass(null);
+		MetadataImplementor m = (MetadataImplementor)MetadataHelper.getMetadata(configuration);
+		SimpleValue sv = new SimpleValue(m);
+		sv.setNullValue("null");
+		sv.setTypeName(Integer.class.getName());
+		rc.setIdentifier(sv);
+		EntityMetamodel entityMetamodel = new EntityMetamodel(rc, null, sfi);
+		IEntityMetamodel facade = facadeFactory.createEntityMetamodel(entityMetamodel);
+		Assert.assertSame(entityMetamodel, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
