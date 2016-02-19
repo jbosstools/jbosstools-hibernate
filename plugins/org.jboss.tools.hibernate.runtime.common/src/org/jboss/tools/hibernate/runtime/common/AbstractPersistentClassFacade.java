@@ -96,15 +96,6 @@ implements IPersistentClass {
 	}
 
 	@Override
-	public String getNodeName() {
-		return (String)Util.invokeMethod(
-				getTarget(), 
-				"getNodeName", 
-				new Class[] {}, 
-				new Object[] {});
-	}
-
-	@Override
 	public IPersistentClass getRootClass() {
 		if (rootClass == null) {
 			Object targetRootClass = Util.invokeMethod(

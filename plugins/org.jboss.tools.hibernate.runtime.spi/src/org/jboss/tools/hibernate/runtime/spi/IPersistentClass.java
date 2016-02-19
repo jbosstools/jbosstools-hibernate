@@ -12,7 +12,6 @@ public interface IPersistentClass {
 	boolean hasIdentifierProperty();
 	boolean isInstanceOfRootClass();
 	boolean isInstanceOfSubclass();
-	String getNodeName();
 	IPersistentClass getRootClass();
 	Iterator<IProperty> getPropertyClosureIterator();
 	IPersistentClass getSuperclass();

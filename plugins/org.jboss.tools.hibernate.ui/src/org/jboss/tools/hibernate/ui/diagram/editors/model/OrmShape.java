@@ -71,7 +71,6 @@ public class OrmShape extends ExpandableShape {
 	private static final String ENTITY_discriminatorValue = "discriminatorValue"; //$NON-NLS-1$
 	private static final String ENTITY_entityName = "entityName"; //$NON-NLS-1$
 	private static final String ENTITY_loaderName = "loaderName"; //$NON-NLS-1$
-	private static final String ENTITY_nodeName = "nodeName"; //$NON-NLS-1$
 	private static final String ENTITY_optimisticLockMode = "optimisticLockMode"; //$NON-NLS-1$
 	private static final String ENTITY_table = "table"; //$NON-NLS-1$
 	private static final String ENTITY_temporaryIdTableDDL = "temporaryIdTableDDL"; //$NON-NLS-1$
@@ -119,7 +118,6 @@ public class OrmShape extends ExpandableShape {
 			new TextPropertyDescriptor(ENTITY_discriminatorValue, ENTITY_discriminatorValue),
 			new TextPropertyDescriptor(ENTITY_entityName, ENTITY_entityName),
 			new TextPropertyDescriptor(ENTITY_loaderName, ENTITY_loaderName),
-			new TextPropertyDescriptor(ENTITY_nodeName, ENTITY_nodeName),
 			new TextPropertyDescriptor(ENTITY_optimisticLockMode, ENTITY_optimisticLockMode),
 			new TextPropertyDescriptor(ENTITY_table, ENTITY_table),
 			new TextPropertyDescriptor(ENTITY_temporaryIdTableDDL, ENTITY_temporaryIdTableDDL),
@@ -521,8 +519,6 @@ public class OrmShape extends ExpandableShape {
 				res = rootClass.getEntityName();
 			} else if (ENTITY_loaderName.equals(propertyId)) {
 				res = rootClass.getLoaderName();
-			} else if (ENTITY_nodeName.equals(propertyId)) {
-				res = rootClass.getNodeName();
 			} else if (ENTITY_optimisticLockMode.equals(propertyId)) {
 				res = Integer.valueOf(rootClass.getOptimisticLockMode()).toString();
 			} else if (ENTITY_table.equals(propertyId)) {
