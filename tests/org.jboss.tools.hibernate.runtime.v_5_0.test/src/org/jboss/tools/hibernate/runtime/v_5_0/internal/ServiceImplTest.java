@@ -514,6 +514,8 @@ public class ServiceImplTest {
 	@Test
 	public void testNewSpecialRootClass() {
 		IProperty property = service.newProperty();
+		IPersistentClass pc = service.newRootClass();
+		property.setPersistentClass(pc);
 		IPersistentClass specialRootClass = service.newSpecialRootClass(property);
 		Assert.assertNotNull(specialRootClass);
 		Object target = ((IFacade)specialRootClass).getTarget();

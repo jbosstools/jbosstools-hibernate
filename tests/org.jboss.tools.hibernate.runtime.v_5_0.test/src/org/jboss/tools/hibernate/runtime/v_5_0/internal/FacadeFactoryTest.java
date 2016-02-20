@@ -551,6 +551,8 @@ public class FacadeFactoryTest {
 	@Test
 	public void testCreateSpecialRootClass() {
 		Property target = new Property();
+		PersistentClass pc = new RootClass(null);
+		target.setPersistentClass(pc);
 		IProperty property = facadeFactory.createProperty(target);
 		IPersistentClass specialRootClass = facadeFactory.createSpecialRootClass(property);
 		Assert.assertNotNull(specialRootClass);
