@@ -37,6 +37,8 @@ import org.xml.sax.EntityResolver;
 public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	
 	EntityResolver entityResolver = null;
+	Metadata metadata = null;
+	
 	INamingStrategy namingStrategy = null;
 	IMappings mappings = null;
 
@@ -100,7 +102,7 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	
 	@Override 
 	public void buildMappings() {
-		MetadataHelper.getMetadata(((Configuration)getTarget()));
+		getMetadata();
 		mappings = new MappingsFacadeImpl(this);
 	}
 	
@@ -116,14 +118,13 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	
 	@Override
 	protected Object createTargetMapping() {
-		return MetadataHelper.getMetadata(((Configuration)getTarget()));
+		return getMetadata();
 	}
 
 	@Override
 	protected void initializeClassMappings() {
 		HashMap<String, IPersistentClass> classMappings = new HashMap<String, IPersistentClass>();
-		Metadata metadata = MetadataHelper.getMetadata(((Configuration)getTarget()));
-		Iterator<PersistentClass> origin = metadata.getEntityBindings().iterator();
+		Iterator<PersistentClass> origin = getMetadata().getEntityBindings().iterator();
 		while (origin.hasNext()) {
 			IPersistentClass pc = getFacadeFactory().createPersistentClass(origin.next());
 			classMappings.put(pc.getEntityName(), pc);
@@ -134,8 +135,7 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	@Override
 	protected void initializeTableMappings() {
 		HashSet<ITable> tableMappings = new HashSet<ITable>();
-		Metadata metadata = MetadataHelper.getMetadata(((Configuration)getTarget()));
-		Iterator<Table> origin = metadata.collectTableMappings().iterator();
+		Iterator<Table> origin = getMetadata().collectTableMappings().iterator();
 		while (origin.hasNext()) {
 			ITable table = getFacadeFactory().createTable(origin.next());
 			tableMappings.add(table);
@@ -153,6 +153,13 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySettings(((Configuration)getTarget()).getProperties());
 		return builder.build();		
+	}
+	
+	private Metadata getMetadata() {
+		if (metadata == null) {
+			metadata = MetadataHelper.getMetadata((Configuration)getTarget());
+		}
+		return metadata;
 	}
 
 }
