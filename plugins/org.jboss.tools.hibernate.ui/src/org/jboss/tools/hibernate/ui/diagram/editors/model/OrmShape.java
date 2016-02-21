@@ -527,8 +527,6 @@ public class OrmShape extends ExpandableShape {
 				}
 			} else if (ENTITY_temporaryIdTableDDL.equals(propertyId)) {
 				res = rootClass.getTemporaryIdTableDDL();
-			} else if (ENTITY_temporaryIdTableName.equals(propertyId)) {
-				res = rootClass.getTemporaryIdTableName();
 			} else if (ENTITY_where.equals(propertyId)) {
 				res = rootClass.getWhere();
 			}

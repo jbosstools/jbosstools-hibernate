@@ -64,7 +64,6 @@ public interface IPersistentClass {
 	String getLoaderName();
 	int getOptimisticLockMode();
 	String getTemporaryIdTableDDL();
-	String getTemporaryIdTableName();
 	String getWhere();
 	ITable getRootTable();
 

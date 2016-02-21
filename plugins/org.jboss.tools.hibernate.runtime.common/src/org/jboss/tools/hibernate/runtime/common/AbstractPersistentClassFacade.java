@@ -621,15 +621,6 @@ implements IPersistentClass {
 	}
 
 	@Override
-	public String getTemporaryIdTableName() {
-		return (String)Util.invokeMethod(
-				getTarget(), 
-				"getTemporaryIdTableName", 
-				new Class[] {}, 
-				new Object[] {});
-	}
-
-	@Override
 	public String getWhere() {
 		return (String)Util.invokeMethod(
 				getTarget(), 
