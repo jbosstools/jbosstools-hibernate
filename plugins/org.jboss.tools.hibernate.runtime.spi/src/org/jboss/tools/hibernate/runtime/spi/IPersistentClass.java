@@ -63,7 +63,6 @@ public interface IPersistentClass {
 	String getDiscriminatorValue();
 	String getLoaderName();
 	int getOptimisticLockMode();
-	String getTemporaryIdTableDDL();
 	String getWhere();
 	ITable getRootTable();
 
