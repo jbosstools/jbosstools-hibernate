@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Hibernate 5.1 libraries
+Bundle-SymbolicName: org.jboss.tools.hibernate.runtime.v_5_1
+Bundle-Version: 5.1.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ClassPath: lib/hibernate-core-5.1.0.Final.jar,
+ .
