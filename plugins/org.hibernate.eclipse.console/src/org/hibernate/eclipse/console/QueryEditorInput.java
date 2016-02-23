@@ -38,7 +38,7 @@ public abstract class QueryEditorInput  implements IStorageEditorInput, IPersist
         return false;
     }
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Object getAdapter( Class adapter ) {
         return null;
     }

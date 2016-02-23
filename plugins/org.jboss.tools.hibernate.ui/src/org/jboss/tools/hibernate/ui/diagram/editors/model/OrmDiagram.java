@@ -195,9 +195,6 @@ public class OrmDiagram extends BaseElement {
 		if (res == null) {
 			res = rootClass.getClassName();
 		}
-		if (res == null) {
-			res = rootClass.getNodeName();
-		}
 		return res;
 	}
 	
@@ -282,7 +279,7 @@ public class OrmDiagram extends BaseElement {
 	protected class OrmElCompare implements Comparator<IPersistentClass> {
 
 		public int compare(IPersistentClass o1, IPersistentClass o2) {
-			return o1.getNodeName().compareTo(o2.getNodeName());
+			return o1.getEntityName().compareTo(o2.getEntityName());
 		}
 		
 	}
