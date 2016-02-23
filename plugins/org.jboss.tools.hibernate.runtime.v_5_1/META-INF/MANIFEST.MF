@@ -5,4 +5,8 @@ Bundle-SymbolicName: org.jboss.tools.hibernate.runtime.v_5_1
 Bundle-Version: 5.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: lib/hibernate-core-5.1.0.Final.jar,
+ lib/hibernate-tools-5.0.0.Alpha3.jar,
+ lib/javassist-3.18.1-GA.jar,
  .
+Require-Bundle: org.jboss.tools.hibernate.runtime.common;bundle-version="5.1.0",
+ org.jboss.tools.hibernate.runtime.spi;bundle-version="5.1.0"

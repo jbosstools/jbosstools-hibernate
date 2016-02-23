@@ -13,6 +13,8 @@
 
 	<properties>
 		<hibernate.version>5.1.0.Final</hibernate.version>
+		<hibernate-tools.version>5.0.0.Alpha3</hibernate-tools.version>
+		<javassist.version>3.18.1-GA</javassist.version>
 	</properties>
 
 	<build>
@@ -35,6 +37,16 @@
 							<groupId>org.hibernate</groupId>
 							<artifactId>hibernate-core</artifactId>
 							<version>${hibernate.version}</version>
+						</artifactItem>
+						<artifactItem>
+							<groupId>org.hibernate</groupId>
+							<artifactId>hibernate-tools</artifactId>
+							<version>${hibernate-tools.version}</version>
+						</artifactItem>
+						<artifactItem>
+							<groupId>org.javassist</groupId>
+							<artifactId>javassist</artifactId>
+							<version>${javassist.version}</version>
 						</artifactItem>
 					</artifactItems>
 					<skip>false</skip>
