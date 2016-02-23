@@ -12,7 +12,6 @@ public interface IPersistentClass {
 	boolean hasIdentifierProperty();
 	boolean isInstanceOfRootClass();
 	boolean isInstanceOfSubclass();
-	String getNodeName();
 	IPersistentClass getRootClass();
 	Iterator<IProperty> getPropertyClosureIterator();
 	IPersistentClass getSuperclass();
@@ -64,8 +63,6 @@ public interface IPersistentClass {
 	String getDiscriminatorValue();
 	String getLoaderName();
 	int getOptimisticLockMode();
-	String getTemporaryIdTableDDL();
-	String getTemporaryIdTableName();
 	String getWhere();
 	ITable getRootTable();
 

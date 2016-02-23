@@ -26,21 +26,13 @@ package org.hibernate.tool.hbm2ddl;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.Writer;
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.SQLWarning;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-
-import org.hibernate.internal.util.StringHelper;
-import org.jboss.logging.Logger;
 
 import org.hibernate.HibernateException;
 import org.hibernate.cfg.AvailableSettings;
@@ -56,14 +48,15 @@ import org.hibernate.engine.jdbc.spi.SqlStatementLogger;
 import org.hibernate.internal.CoreMessageLogger;
 import org.hibernate.internal.util.ConfigHelper;
 import org.hibernate.internal.util.ReflectHelper;
+import org.hibernate.internal.util.StringHelper;
 import org.hibernate.internal.util.config.ConfigurationHelper;
 import org.hibernate.metamodel.source.MetadataImplementor;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
-import org.hibernate.service.classloading.spi.ClassLoaderService;
 import org.hibernate.service.config.spi.ConfigurationService;
 import org.hibernate.service.internal.StandardServiceRegistryImpl;
 import org.hibernate.service.jdbc.connections.spi.ConnectionProvider;
+import org.jboss.logging.Logger;
 
 /**
  * Commandline tool to export table schema to the database. This class may also be called from inside an application.
@@ -475,33 +468,6 @@ public class SchemaExport {
 		}
 	}
 
-	private void execute(boolean script, boolean export, Writer fileOutput, Statement statement, final String sql)
-			throws IOException, SQLException {
-		final SqlExceptionHelper sqlExceptionHelper = new SqlExceptionHelper();
-
-		String formatted = formatter.format( sql );
-        if (delimiter != null) formatted += delimiter;
-        if (script) System.out.println(formatted);
-        LOG.debug(formatted);
-		if ( outputFile != null ) {
-			fileOutput.write( formatted + "\n" );
-		}
-		if ( export ) {
-
-			statement.executeUpdate( sql );
-			try {
-				SQLWarning warnings = statement.getWarnings();
-				if ( warnings != null) {
-					sqlExceptionHelper.logAndClearWarnings( connectionHelper.getConnection() );
-				}
-			}
-			catch( SQLException sqle ) {
-                LOG.unableToLogSqlWarnings(sqle);
-			}
-		}
-
-	}
-
 	private static StandardServiceRegistryImpl createServiceRegistry(Properties properties) {
 		Environment.verifyProperties( properties );
 		ConfigurationHelper.resolvePlaceHolders( properties );
@@ -615,7 +581,7 @@ public class SchemaExport {
 	 *
 	 * @return A List containig the Exceptions occured during the export
 	 */
-	public List getExceptions() {
+	public List<?> getExceptions() {
 		return exceptions;
 	}
 

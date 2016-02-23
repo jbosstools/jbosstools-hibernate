@@ -57,7 +57,7 @@ public class OpenMappingFileTest extends BaseTestSetCase {
 						continue;
 					}
 					final IProperty prop = (IProperty)compProperties[k];
-					if (testClass.equals(prop.getNodeName()) || testClass.equals(prop.getName())) {
+					if (testClass.equals(prop.getName()) || testClass.equals(prop.getName())) {
 						continue;
 					}
 					openPropertyTest((IProperty)compProperties[k], (IProperty) props[j], consCFG);
@@ -75,7 +75,7 @@ public class OpenMappingFileTest extends BaseTestSetCase {
 			boolean highlighted = Utils.hasSelection(editor);
 			if (!highlighted) {
 				String out = NLS.bind(ConsoleTestMessages.OpenMappingFileTest_highlighted_region_for_property_is_empty_package,
-						new Object[]{compositeProperty.getNodeName(), testPackage.getElementName()});
+						new Object[]{compositeProperty.getName(), testPackage.getElementName()});
 				if (Customization.USE_CONSOLE_OUTPUT)
 					System.err.println(out);
 				fail(out);
@@ -99,7 +99,7 @@ public class OpenMappingFileTest extends BaseTestSetCase {
 		}
 		if (ex != null) {
 			String out = NLS.bind(ConsoleTestMessages.OpenMappingFileTest_mapping_file_for_property_not_opened_package,
-					new Object[]{compositeProperty.getNodeName(), testPackage.getElementName(), ex.getMessage()});
+					new Object[]{compositeProperty.getName(), testPackage.getElementName(), ex.getMessage()});
 			fail(out);
 		}
 	}

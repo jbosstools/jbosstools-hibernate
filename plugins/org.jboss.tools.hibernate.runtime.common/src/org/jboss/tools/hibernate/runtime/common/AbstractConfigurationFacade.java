@@ -224,11 +224,7 @@ implements IConfiguration {
 	@Override
 	public IMapping buildMapping() {
 		if (mapping == null) {
-			Object targetMapping = Util.invokeMethod(
-					getTarget(), 
-					"buildMapping", 
-					new Class[] {}, 
-					new Object[] {});
+			Object targetMapping = createTargetMapping();
 			if (targetMapping != null) {
 				mapping = getFacadeFactory().createMapping(targetMapping);
 			}
@@ -345,8 +341,24 @@ implements IConfiguration {
 				new Object[] { getProperties() });
 	}
 	
-	private void initializeClassMappings() {
-		classMappings = new HashMap<String, IPersistentClass>();
+	protected void setClassMappings(HashMap<String, IPersistentClass> classMappings) {
+		this.classMappings = classMappings;
+	}
+
+	protected void setTableMappings(HashSet<ITable> tableMappings) {
+		this.tableMappings = tableMappings;
+	}
+	
+	protected Object createTargetMapping() {
+		return Util.invokeMethod(
+				getTarget(), 
+				"buildMapping", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+	
+	protected void initializeClassMappings() {
+		HashMap<String, IPersistentClass> classMappings = new HashMap<String, IPersistentClass>();
 		Iterator<?> origin = (Iterator<?>)Util.invokeMethod(
 				getTarget(), 
 				"getClassMappings", 
@@ -356,10 +368,11 @@ implements IConfiguration {
 			IPersistentClass pc = getFacadeFactory().createPersistentClass(origin.next());
 			classMappings.put(pc.getEntityName(), pc);
 		}
+		setClassMappings(classMappings);
 	}
 
-	private void initializeTableMappings() {
-		tableMappings = new HashSet<ITable>();
+	protected void initializeTableMappings() {
+		HashSet<ITable> tableMappings = new HashSet<ITable>();
 		Iterator<?> origin = (Iterator<?>)Util.invokeMethod(
 				getTarget(), 
 				"getTableMappings", 
@@ -368,6 +381,7 @@ implements IConfiguration {
 		while (origin.hasNext()) {
 			tableMappings.add(getFacadeFactory().createTable(origin.next()));
 		}
+		setTableMappings(tableMappings);
 	}
 
 }
