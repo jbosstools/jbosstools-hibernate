@@ -96,15 +96,6 @@ implements IPersistentClass {
 	}
 
 	@Override
-	public String getNodeName() {
-		return (String)Util.invokeMethod(
-				getTarget(), 
-				"getNodeName", 
-				new Class[] {}, 
-				new Object[] {});
-	}
-
-	@Override
 	public IPersistentClass getRootClass() {
 		if (rootClass == null) {
 			Object targetRootClass = Util.invokeMethod(
@@ -129,7 +120,7 @@ implements IPersistentClass {
 	
 	@Override
 	public IPersistentClass getSuperclass() {
-		if (superClass != null) {
+		if (superClass == null) {
 			Object targetSuperclass = Util.invokeMethod(
 					getTarget(), 
 					"getSuperclass", 
@@ -140,6 +131,10 @@ implements IPersistentClass {
 			}
 		}
 		return superClass;
+	}
+	
+	public void setSuperClass(IPersistentClass superClass) {
+		this.superClass = superClass;
 	}
 
 	@Override
@@ -612,24 +607,6 @@ implements IPersistentClass {
 		return (String)Util.invokeMethod(
 				getTarget(), 
 				"getLoaderName", 
-				new Class[] {}, 
-				new Object[] {});
-	}
-
-	@Override
-	public String getTemporaryIdTableDDL() {
-		return (String)Util.invokeMethod(
-				getTarget(), 
-				"getTemporaryIdTableDDL", 
-				new Class[] {}, 
-				new Object[] {});
-	}
-
-	@Override
-	public String getTemporaryIdTableName() {
-		return (String)Util.invokeMethod(
-				getTarget(), 
-				"getTemporaryIdTableName", 
 				new Class[] {}, 
 				new Object[] {});
 	}

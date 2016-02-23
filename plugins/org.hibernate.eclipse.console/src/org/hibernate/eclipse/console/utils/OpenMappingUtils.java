@@ -760,7 +760,7 @@ public class OpenMappingUtils {
 			//ignore
 		}
 		if (classRegion != null) {
-			int length = persistentClass.getNodeName().length();
+			int length = persistentClass.getEntityName().length();
 			int offset = classRegion.getOffset() + classRegion.getLength() - length - 1;
 			res = new Region(offset, length);
 		}
