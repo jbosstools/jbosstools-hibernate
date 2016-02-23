@@ -301,7 +301,7 @@ public class Shape extends BaseElement {
 				} else {
 					IType type = getTypeUsingExecContext(value);
 					if (type != null) {
-						res = type.getReturnedClass().getName();
+						res = type.getAssociatedEntityName();
 					}
 				}
 			} else if (PROPERTY_VALUE.equals(propertyId)) {
