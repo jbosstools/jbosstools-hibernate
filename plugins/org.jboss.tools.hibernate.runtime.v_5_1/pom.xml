@@ -12,9 +12,11 @@
 	<packaging>eclipse-plugin</packaging>
 
 	<properties>
+		<geronimo-jta_1.1_spec.version>1.1.1</geronimo-jta_1.1_spec.version>
 		<hibernate.version>5.1.0.Final</hibernate.version>
-		<hibernate-tools.version>5.0.0.Alpha3</hibernate-tools.version>
-		<javassist.version>3.18.1-GA</javassist.version>
+		<hibernate-tools.version>5.1.0.Alpha1</hibernate-tools.version>
+		<javassist.version>3.20.0-GA</javassist.version>
+		<jboss-logging.version>3.3.0.Final</jboss-logging.version>
 	</properties>
 
 	<build>
@@ -34,6 +36,11 @@
 				<configuration>
 					<artifactItems>
 						<artifactItem>
+							<groupId>org.apache.geronimo.specs</groupId>
+							<artifactId>geronimo-jta_1.1_spec</artifactId>
+							<version>${geronimo-jta_1.1_spec.version}</version>
+						</artifactItem>
+						<artifactItem>
 							<groupId>org.hibernate</groupId>
 							<artifactId>hibernate-core</artifactId>
 							<version>${hibernate.version}</version>
@@ -47,6 +54,11 @@
 							<groupId>org.javassist</groupId>
 							<artifactId>javassist</artifactId>
 							<version>${javassist.version}</version>
+						</artifactItem>
+						<artifactItem>
+							<groupId>org.jboss.logging</groupId>
+							<artifactId>jboss-logging</artifactId>
+							<version>${jboss-logging.version}</version>
 						</artifactItem>
 					</artifactItems>
 					<skip>false</skip>
