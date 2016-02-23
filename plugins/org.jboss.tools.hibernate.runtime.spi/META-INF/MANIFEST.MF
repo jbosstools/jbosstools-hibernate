@@ -6,6 +6,6 @@ Bundle-SymbolicName: org.jboss.tools.hibernate.runtime.spi;singleton:=true
 Bundle-Version: 5.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.jboss.tools.hibernate.runtime.spi
-Require-Bundle: org.eclipse.core.runtime;bundle-version="3.10.0"
+Require-Bundle: org.eclipse.core.runtime
 Bundle-Activator: org.jboss.tools.hibernate.spi.internal.HibernateServicePlugin
 Bundle-ActivationPolicy: lazy

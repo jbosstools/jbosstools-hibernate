@@ -10,7 +10,6 @@ public interface IProperty {
 	String getPropertyAccessorName();
 	String getName();
 	boolean classIsPropertyClass();
-	String getNodeName();
 	IType getType();
 	void setValue(IValue value);
 	void setPropertyAccessorName(String string);
