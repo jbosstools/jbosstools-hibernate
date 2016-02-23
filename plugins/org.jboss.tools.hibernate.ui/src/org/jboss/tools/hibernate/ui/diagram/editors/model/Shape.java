@@ -75,7 +75,6 @@ public class Shape extends BaseElement {
 	private static final String PROPERTY_LAZY = "lazy"; //$NON-NLS-1$
 	private static final String PROPERTY_OPTIONAL = "optional"; //$NON-NLS-1$
 	private static final String PROPERTY_NATURAL_IDENTIFIER = "naturalIdentifier"; //$NON-NLS-1$
-	private static final String PROPERTY_NODE_NAME = "nodeName"; //$NON-NLS-1$
 	private static final String PROPERTY_OPTIMISTIC_LOCKED = "optimisticLocked"; //$NON-NLS-1$
 	private static final String PROPERTY_NULLABLE = "nullable"; //$NON-NLS-1$
 	private static final String PROPERTY_UNIQUE = "unique"; //$NON-NLS-1$
@@ -94,7 +93,6 @@ public class Shape extends BaseElement {
 			new TextPropertyDescriptor(PROPERTY_LAZY, PROPERTY_LAZY),
 			new TextPropertyDescriptor(PROPERTY_OPTIONAL, PROPERTY_OPTIONAL),
 			new TextPropertyDescriptor(PROPERTY_NATURAL_IDENTIFIER, PROPERTY_NATURAL_IDENTIFIER),
-			new TextPropertyDescriptor(PROPERTY_NODE_NAME, PROPERTY_NODE_NAME),
 			new TextPropertyDescriptor(PROPERTY_OPTIMISTIC_LOCKED, PROPERTY_OPTIMISTIC_LOCKED),
 		};
 
@@ -303,7 +301,7 @@ public class Shape extends BaseElement {
 				} else {
 					IType type = getTypeUsingExecContext(value);
 					if (type != null) {
-						res = type.getReturnedClass().getName();
+						res = type.getAssociatedEntityName();
 					}
 				}
 			} else if (PROPERTY_VALUE.equals(propertyId)) {
@@ -326,8 +324,6 @@ public class Shape extends BaseElement {
 				res = Boolean.valueOf(prop.isOptional()).toString(); 
 			} else if (PROPERTY_NATURAL_IDENTIFIER.equals(propertyId)) {
 				res = Boolean.valueOf(prop.isNaturalIdentifier()).toString(); 
-			} else if (PROPERTY_NODE_NAME.equals(propertyId)) {
-				res = prop.getNodeName();
 			} else if (PROPERTY_OPTIMISTIC_LOCKED.equals(propertyId)) {
 				res = Boolean.valueOf(prop.isOptimisticLocked()).toString(); 
 			}

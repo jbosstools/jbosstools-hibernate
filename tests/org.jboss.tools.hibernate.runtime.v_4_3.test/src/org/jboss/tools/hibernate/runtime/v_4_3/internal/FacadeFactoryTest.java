@@ -91,6 +91,7 @@ import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
+import org.jboss.tools.hibernate.runtime.spi.IQueryTranslator;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
@@ -465,7 +466,7 @@ public class FacadeFactoryTest {
 				facadeFactory.getClassLoader(), 
 				new Class[] { QueryTranslator.class }, 
 				new TestInvocationHandler());
-		IQuery facade = facadeFactory.createQuery(queryTranslator);
+		IQueryTranslator facade = facadeFactory.createQueryTranslator(queryTranslator);
 		Assert.assertSame(queryTranslator, ((IFacade)facade).getTarget());
 	}
 	

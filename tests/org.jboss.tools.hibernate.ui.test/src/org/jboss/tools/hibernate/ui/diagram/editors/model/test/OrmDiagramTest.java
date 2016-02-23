@@ -90,9 +90,6 @@ public class OrmDiagramTest extends TestCase {
 				oneOf(ioe).getJoinIterator();
 				will(returnValue(emptyListIterator));
 				
-				allowing(ioe).getNodeName();
-				will(returnValue("NodeName")); //$NON-NLS-1$
-				
 				allowing(ioe).getClassName();
 				will(returnValue("ClassName")); //$NON-NLS-1$
 				

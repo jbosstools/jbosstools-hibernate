@@ -193,7 +193,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 	    }
    		if (editorPart == null) {
 			final String title = HibernateConsoleMessages.OpenMappingAction_open_mapping_file;
-			final String msg = NLS.bind(HibernateConsoleMessages.OpenMappingAction_mapping_file_for_property_not_found, compositeProperty.getNodeName());
+			final String msg = NLS.bind(HibernateConsoleMessages.OpenMappingAction_mapping_file_for_property_not_found, compositeProperty.getName());
 			MessageDialog.openError(null, title, msg);
    			throw new FileNotFoundException(msg);
    		}
@@ -303,7 +303,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 		if (propRegion == null) {
 			return false;
 		}
-		int length = compositeProperty.getNodeName().length();
+		int length = compositeProperty.getName().length();
 		int offset = propRegion.getOffset() + propRegion.getLength() - length - 1;
 		propRegion = new Region(offset, length);
 		if (editorPart instanceof MultiPageEditorPart) {

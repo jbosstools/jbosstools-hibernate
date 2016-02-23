@@ -32,7 +32,7 @@ public class QueryEditorStorage implements IStorage {
 		setContents(source);
 	}
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Object getAdapter( Class key ) {
         return null;
     }
