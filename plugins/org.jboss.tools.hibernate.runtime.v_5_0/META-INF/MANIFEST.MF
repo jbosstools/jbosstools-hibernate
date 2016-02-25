@@ -20,6 +20,7 @@ Require-Bundle: org.apache.commons.logging;bundle-version="1.1.1",
  org.hibernate.eclipse,
  org.jboss.tools.hibernate.libs.antlr.v_2_7_7,
  org.jboss.tools.hibernate.libs.dom4j.v_1_6_1,
+ org.jboss.tools.hibernate.libs.jtidy.v_r8-20060801,
  org.jboss.tools.hibernate.libs.freemarker.v_2_3_8,
  org.jboss.tools.hibernate.runtime.common,
  org.jboss.tools.hibernate.runtime.spi
