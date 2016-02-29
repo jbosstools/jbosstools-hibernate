@@ -27,7 +27,7 @@ extends AbstractPersistentClassFacade {
 		if (propVal != null && propVal.isCollection()) {
 			IValue collection = propVal;
 			component = collection.getElement();
-		} else if (propVal.isComponent()) {
+		} else if (propVal != null && propVal.isComponent()) {
 			component = propVal;
 		}
 		if (component != null) {

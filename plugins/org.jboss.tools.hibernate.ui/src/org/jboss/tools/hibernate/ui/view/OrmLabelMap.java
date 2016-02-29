@@ -85,8 +85,8 @@ public class OrmLabelMap {
 		String typeString = null;
 		IValue v = field.getValue();
 		IType type = UtilTypeExtract.getTypeUsingExecContext(v, cfg);
-		if (type != null && type.getReturnedClass() != null) {
-			typeString = type.getReturnedClass().getName();
+		if (type != null && type.getAssociatedEntityName() != null) {
+			typeString = type.getAssociatedEntityName();
 		} else {
 			IValue fieldValue = field.getValue();
 			if (fieldValue != null && fieldValue.isComponent()) {

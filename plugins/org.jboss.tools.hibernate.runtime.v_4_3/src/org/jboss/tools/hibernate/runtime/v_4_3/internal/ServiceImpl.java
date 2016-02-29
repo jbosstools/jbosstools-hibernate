@@ -18,7 +18,6 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.JDBCReaderFactory;
-import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.cfg.Settings;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
@@ -233,7 +232,7 @@ public class ServiceImpl extends AbstractService implements IService {
 	@Override
 	public INamingStrategy newNamingStrategy(String strategyClassName) {
 		try {
-			NamingStrategy ns = (NamingStrategy) ReflectHelper.classForName(
+			Object ns = ReflectHelper.classForName(
 					strategyClassName).newInstance();
 			return facadeFactory.createNamingStrategy(ns);
 		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
