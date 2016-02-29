@@ -16,7 +16,6 @@ import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.JDBCReaderFactory;
-import org.hibernate.cfg.JPAConfiguration;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.JDBCReader;
@@ -35,7 +34,6 @@ import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfoSource;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.internal.SessionFactoryImpl;
-import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.Column;
@@ -114,18 +112,8 @@ public class ServiceImpl extends AbstractService {
 			String entityResolver, 
 			String persistenceUnit,
 			Map<Object, Object> overrides) {
-		IConfiguration result = null;
-		EntityManagerFactoryBuilderImpl entityManagerFactoryBuilder = 
-			HibernateToolsPersistenceProvider
-				.createEntityManagerFactoryBuilder(
-						persistenceUnit, 
-						overrides);
-		if (entityManagerFactoryBuilder != null) {
-			result = facadeFactory.createConfiguration(
-					new JPAConfiguration(
-							entityManagerFactoryBuilder));
-		}
-		return result;
+		return facadeFactory.createConfiguration(
+				new JPAConfiguration(persistenceUnit, overrides));
 	}
 
 	@Override
