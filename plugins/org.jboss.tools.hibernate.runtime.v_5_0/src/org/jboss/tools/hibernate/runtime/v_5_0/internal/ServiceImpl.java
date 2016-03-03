@@ -34,6 +34,7 @@ import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfoSource;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.internal.SessionFactoryImpl;
+import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.Column;
@@ -112,8 +113,13 @@ public class ServiceImpl extends AbstractService {
 			String entityResolver, 
 			String persistenceUnit,
 			Map<Object, Object> overrides) {
-		return facadeFactory.createConfiguration(
-				new JPAConfiguration(persistenceUnit, overrides));
+
+		JPAConfiguration jpaConfig = new JPAConfiguration(persistenceUnit, overrides);
+		//try building EntityManagerFactory
+		jpaConfig.getMetadata();
+		
+		return facadeFactory.createConfiguration(jpaConfig);
+				
 	}
 
 	@Override
