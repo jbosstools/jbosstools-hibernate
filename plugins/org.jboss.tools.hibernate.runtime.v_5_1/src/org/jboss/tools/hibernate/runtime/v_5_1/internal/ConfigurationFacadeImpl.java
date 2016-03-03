@@ -16,6 +16,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
 import org.hibernate.mapping.PersistentClass;
@@ -37,7 +38,7 @@ import org.xml.sax.EntityResolver;
 public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	
 	EntityResolver entityResolver = null;
-	Metadata metadata = null;
+//	Metadata metadata = null;
 	
 	INamingStrategy namingStrategy = null;
 	IMappings mappings = null;
@@ -117,6 +118,14 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	}
 	
 	@Override
+	public void setProperty(String name, String value) {
+		if (AvailableSettings.HBM2DDL_AUTO.equals(name) && "false".equals(value)) {
+			return;
+		}
+		super.setProperty(name, value);
+	}
+	
+	@Override
 	protected Object createTargetMapping() {
 		return getMetadata();
 	}
@@ -156,10 +165,7 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	}
 	
 	private Metadata getMetadata() {
-		if (metadata == null) {
-			metadata = MetadataHelper.getMetadata((Configuration)getTarget());
-		}
-		return metadata;
+		return MetadataHelper.getMetadata((Configuration)getTarget());
 	}
 
 }
