@@ -697,7 +697,6 @@ public class AllEntitiesInfoCollector {
 	 * @param icu - startup point entity compilation unit
 	 * @param depth - process depth
 	 */
-	@SuppressWarnings("unchecked")
 	public void collect(ICompilationUnit icu, int depth) {
 		
 		if (icu == null || depth < 0) {
@@ -711,7 +710,7 @@ public class AllEntitiesInfoCollector {
 			return;
 		}
 		boolean hasTypeDeclaration = false;
-		Iterator it = cu.types().iterator();
+		Iterator<?> it = cu.types().iterator();
 		while (it.hasNext()) {
 			Object tmp = it.next();
 			if (tmp instanceof TypeDeclaration) {
