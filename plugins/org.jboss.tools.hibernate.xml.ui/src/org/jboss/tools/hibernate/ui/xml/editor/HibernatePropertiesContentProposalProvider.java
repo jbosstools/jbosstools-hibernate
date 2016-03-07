@@ -16,19 +16,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.fieldassist.IContentProposal;
-import org.eclipse.jface.fieldassist.IContentProposalProvider;
 import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.meta.constraint.XAttributeConstraint;
 import org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintAList;
-import org.jboss.tools.common.model.XModelObjectConstants;
-import org.jboss.tools.common.model.loaders.impl.PropertiesLoader;
 import org.jboss.tools.common.model.ui.attribute.AttributeContentProposalProviderFactory;
-import org.jboss.tools.common.model.ui.attribute.adapter.JavaClassContentAssistProvider;
 import org.jboss.tools.common.model.ui.attribute.adapter.PropertiesContentProposalProvider;
-import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.hibernate.xml.model.impl.HibConfigComplexPropertyImpl;
 
 /**
