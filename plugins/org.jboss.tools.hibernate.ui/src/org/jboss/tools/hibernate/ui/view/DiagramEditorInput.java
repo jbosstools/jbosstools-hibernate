@@ -103,7 +103,7 @@ public class DiagramEditorInput implements IEditorInput, IStorageEditorInput, IP
 		return getName();
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Object getAdapter(Class adapter) {
 		return null;
 	}
