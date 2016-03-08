@@ -20,11 +20,8 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
-import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IObjectActionDelegate;
-import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
@@ -48,7 +45,6 @@ public class OpenDiagramActionDelegate implements IObjectActionDelegate {
 	public void selectionChanged(IAction action, ISelection selection) {
 	}
 
-	@SuppressWarnings("unchecked")
 	public void run(IAction action) {
     	ObjectPluginAction objectPluginAction = (ObjectPluginAction)action;
     	Map<ConsoleConfiguration, Set<IPersistentClass>> mapCC_PCs = new HashMap<ConsoleConfiguration, Set<IPersistentClass>>();
@@ -112,7 +108,6 @@ public class OpenDiagramActionDelegate implements IObjectActionDelegate {
 	public IEditorPart openEditor(IPersistentClass persClass,
 			ConsoleConfiguration consoleConfig) throws PartInitException {
 		DiagramEditorInput input = new DiagramEditorInput(consoleConfig.getName(), persClass.getRootClass());
-		IWorkbenchPage page = UiPlugin.getPage();
 		IEditorPart result = IDE.openEditor(UiPlugin.getPage(), input, "org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer");		//$NON-NLS-1$
 		return result;
 	}
