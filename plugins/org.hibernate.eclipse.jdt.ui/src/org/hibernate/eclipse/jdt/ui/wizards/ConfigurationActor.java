@@ -496,8 +496,8 @@ class TypeVisitor extends ASTVisitor{
 	@Override
 	public boolean visit(ArrayType type) {
 		IValue array = null;
-		Type componentType = type.getComponentType();
-		ITypeBinding tb = componentType.resolveBinding();
+		Type elementType = type.getElementType();
+		ITypeBinding tb = elementType.resolveBinding();
 		if (tb == null) return false;//Unresolved binding. Omit the property.
 		if (tb.isPrimitive()){
 			array = service.newPrimitiveArray(rootClass);

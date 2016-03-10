@@ -12,8 +12,8 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.persistence;
 
 import java.util.List;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IPackageFragment;
-import org.eclipse.jpt.common.core.internal.utility.ValidationMessageTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
@@ -76,17 +76,17 @@ public class HibernateClassRef extends GenericClassRef implements PackageInfoRef
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		if (this.javaPackageInfo != null) {
-			this.javaPackageInfo.synchronizeWithResourceModel();
+			this.javaPackageInfo.synchronizeWithResourceModel(monitor);
 		}
 	}
 	
 	@Override
-	public void update() {
-		super.update();
-		this.updateJavaPackageInfo();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
+		this.updateJavaPackageInfo(monitor);
 	}
 	
 	// ********** java persistent type **********
@@ -101,7 +101,7 @@ public class HibernateClassRef extends GenericClassRef implements PackageInfoRef
 		this.firePropertyChanged(JAVA_PACKAGE_INFO_PROPERTY, old, javaPackageInfo);
 	}
 
-	protected void updateJavaPackageInfo() {
+	protected void updateJavaPackageInfo(IProgressMonitor monitor) {
 		JavaResourcePackage resourcePackage = this.resolveJavaResourcePackage();
 		if (resourcePackage == null) {
 			if (this.javaPackageInfo != null) {
@@ -113,7 +113,7 @@ public class HibernateClassRef extends GenericClassRef implements PackageInfoRef
 				this.setJavaPackageInfo(this.buildJavaPackageInfo(resourcePackage));
 			} else {
 				if (this.javaPackageInfo.getResourcePackage() == resourcePackage) {
-					this.javaPackageInfo.update();
+					this.javaPackageInfo.update(monitor);
 				} else {
 //					this.javaPackageInfo.dispose();
 					this.setJavaPackageInfo(this.buildJavaPackageInfo(resourcePackage));

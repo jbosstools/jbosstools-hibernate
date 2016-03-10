@@ -12,6 +12,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.List;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaIdMapping;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -58,20 +59,20 @@ implements HibernateJavaIdMapping {
 	}
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.syncIndex();
-		this.syncType();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.syncIndex(monitor);
+		this.syncType(monitor);
 	}
 
 	@Override
-	public void update() {
-		super.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
 		if (this.index != null){
-			this.index.update();
+			this.index.update(monitor);
 		}
 		if (this.type != null){
-			this.type.update();
+			this.type.update(monitor);
 		}
 	}
 
@@ -125,7 +126,7 @@ implements HibernateJavaIdMapping {
 		return this.getJpaFactory().buildIndex(this, annotation);
 	}
 
-	protected void syncIndex() {
+	protected void syncIndex(IProgressMonitor monitor) {
 		IndexAnnotation annotation = getIndexAnnotation();
 		if (annotation == null) {
 			if (getIndex() != null) {
@@ -134,7 +135,7 @@ implements HibernateJavaIdMapping {
 		}
 		else {
 			if ((getIndex() != null) && (getIndex().getIndexAnnotation() == annotation)) {
-				this.index.synchronizeWithResourceModel();
+				this.index.synchronizeWithResourceModel(monitor);
 			} else {
 				this.setIndex(this.buildIndex(annotation));
 			}
@@ -189,7 +190,7 @@ implements HibernateJavaIdMapping {
 		return this.getJpaFactory().buildType(this, generatedValueAnnotation);
 	}
 
-	protected void syncType() {
+	protected void syncType(IProgressMonitor monitor) {
 		TypeAnnotation annotation = this.getTypeAnnotation();
 		if (annotation == null) {
 			if (this.type != null) {
@@ -198,7 +199,7 @@ implements HibernateJavaIdMapping {
 		}
 		else {
 			if ((this.type != null) && (this.type.getTypeAnnotation() == annotation)) {
-				this.type.synchronizeWithResourceModel();
+				this.type.synchronizeWithResourceModel(monitor);
 			} else {
 				this.setType(this.buildType(annotation));
 			}

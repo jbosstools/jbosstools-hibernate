@@ -11,6 +11,7 @@
 package org.jboss.tools.hibernate.jpt.core.internal.jpa2;
 
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jpa.core.JpaDataSource;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -82,11 +83,11 @@ public class HibernateJpaFactory2_0 extends HibernateAbstractJpaFactory implemen
 	// ********** Core Model **********
 
 	@Override
-	public JpaProject buildJpaProject(JpaProject.Config config) {
+	public JpaProject buildJpaProject(JpaProject.Config config, IProgressMonitor monitor) {
 		if ( ! (config instanceof JpaProject2_0.Config)) {
 			throw new IllegalArgumentException("config must be 2.0-compatible: " + config); //$NON-NLS-1$
 		}
-		return super.buildJpaProject(config);
+		return super.buildJpaProject(config, monitor);
 	}
 
 	public MetamodelSourceType2_0.Synchronizer buildMetamodelSynchronizer(MetamodelSourceType2_0 sourceType) {

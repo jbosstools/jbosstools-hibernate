@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaQuery;
@@ -59,8 +59,8 @@ public abstract class AbstractHibernateNamedQueryImpl<T extends HibernateQueryAn
 	}
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		setSpecifiedFlushMode_(this.getResourceFlushMode(this.queryAnnotation));
 		setSpecifiedCacheMode_(this.getResourceCacheMode(this.queryAnnotation));
 		setSpecifiedCacheable_(this.queryAnnotation.isCacheable());

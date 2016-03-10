@@ -13,6 +13,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
 import java.util.ListIterator;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -60,15 +61,15 @@ implements HibernateOrmEntity {
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.cacheable.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.cacheable.synchronizeWithResourceModel(monitor);
 	}
 
 	@Override
-	public void update() {
-		super.update();
-		this.cacheable.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
+		this.cacheable.update(monitor);
 	}
 
 	@Override

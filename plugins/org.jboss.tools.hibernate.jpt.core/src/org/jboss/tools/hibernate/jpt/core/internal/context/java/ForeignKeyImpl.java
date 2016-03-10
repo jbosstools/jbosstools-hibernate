@@ -14,6 +14,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
@@ -46,8 +47,8 @@ public class ForeignKeyImpl extends AbstractJavaContextModel<JpaContextModel> im
 	}
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setName_(annotation.getName());
 		this.setInverseName_(annotation.getInverseName());
 	}

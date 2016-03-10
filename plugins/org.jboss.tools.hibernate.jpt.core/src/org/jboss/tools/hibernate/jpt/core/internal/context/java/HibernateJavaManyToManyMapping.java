@@ -13,6 +13,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.List;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappingRelationship;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaManyToManyMapping;
@@ -49,22 +50,22 @@ AbstractJavaManyToManyMapping implements ForeignKeyHolder{
 	}
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.syncForeignKey();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.syncForeignKey(monitor);
 	}
 
 	@Override
-	public void update() {
-		super.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
 		if (foreignKey != null){
-			this.foreignKey.update();
+			this.foreignKey.update(monitor);
 		}
 	}
 
 	// ********************* foreignKey **************
 
-	protected void syncForeignKey() {
+	protected void syncForeignKey(IProgressMonitor monitor) {
 		ForeignKeyAnnotation annotation = getForeignKeyAnnotation();
 		if (annotation == null) {
 			if (getForeignKey() != null) {
@@ -77,7 +78,7 @@ AbstractJavaManyToManyMapping implements ForeignKeyHolder{
 			}
 			else {
 				if ((this.foreignKey != null) && (this.foreignKey.getForeignKeyAnnotation() == annotation)) {
-					this.foreignKey.synchronizeWithResourceModel();
+					this.foreignKey.synchronizeWithResourceModel(monitor);
 				} else {
 					this.setForeignKey(this.buildForeignKey(annotation));
 				}

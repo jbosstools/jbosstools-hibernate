@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SubListIterableWrapper;
@@ -43,15 +44,14 @@ public class HibernateJavaGeneratorContainerImpl extends
 
 	// ********** synchronize/update **********
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.syncGenericGenerators();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		this.syncGenericGenerators(monitor);
 	}
 
 	@Override
-	public void update() {
-		super.update();
-		this.updateModels(this.getGenericGenerators());
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
+		this.updateModels(this.getGenericGenerators(), monitor);
 	}
 	
 	@Override
@@ -102,8 +102,8 @@ public class HibernateJavaGeneratorContainerImpl extends
 		return this.getJpaFactory().buildJavaGenericGenerator(this, genericGeneratorAnnotation);
 	}
 
-	protected void syncGenericGenerators() {
-		this.genericGeneratorContainer.synchronizeWithResourceModel();
+	protected void syncGenericGenerators(IProgressMonitor monitor) {
+		this.genericGeneratorContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<GenericGeneratorAnnotation> getGenericGeneratorAnnotations() {

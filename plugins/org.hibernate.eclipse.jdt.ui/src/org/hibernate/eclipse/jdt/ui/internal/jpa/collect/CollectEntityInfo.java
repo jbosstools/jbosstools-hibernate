@@ -536,11 +536,8 @@ public class CollectEntityInfo extends ASTVisitor {
 		}
 		else if (type.isArrayType()) {
 			ArrayType at = (ArrayType)type;
-			Type componentType = at;
-			while (componentType.isArrayType()){
-				componentType = ((ArrayType)componentType).getComponentType();
-			}
-			ITypeBinding tb = componentType.resolveBinding();
+			Type elementType = at.getElementType();
+			ITypeBinding tb = elementType.resolveBinding();
 			if (tb != null) {
 				if (tb.getJavaElement() instanceof SourceType) {
 					String entityFullyQualifiedName = ""; //$NON-NLS-1$

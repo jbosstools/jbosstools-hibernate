@@ -12,6 +12,7 @@
 package org.jboss.tools.hibernate.jpt.core.internal;
 
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -103,8 +104,8 @@ public abstract class HibernateAbstractJpaFactory extends AbstractJpaFactory {
 
 	// ********** Core Model **********
 	@Override
-	public JpaProject buildJpaProject(JpaProject.Config config){
-		return new HibernateJpaProject(config);
+	public JpaProject buildJpaProject(JpaProject.Config config, IProgressMonitor monitor){
+		return new HibernateJpaProject(config, monitor);
 	}
 
 	// ********** Java Context Model **********

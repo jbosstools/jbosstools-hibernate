@@ -14,6 +14,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.utility.internal.iterator.TransformationIterator;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.Table;
@@ -48,14 +49,14 @@ public class HibernateOrmTableImpl extends GenericOrmTable implements HibernateO
 
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.defaultDBTableName = buildDefaultDBTableName();
 	}
 
 	@Override
-	public void update() {
-		super.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
 		setDefaultDBTableName(buildDefaultDBTableName());
 	}
 

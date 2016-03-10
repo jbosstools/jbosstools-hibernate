@@ -14,14 +14,12 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
 
-import javax.swing.event.ListSelectionEvent;
-
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextModel;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
@@ -73,19 +71,19 @@ public class JavaTypeDefImpl extends AbstractJavaContextModel<JpaContextModel> i
 	
 	// ********** synchronize/update **********
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setName_(this.typeDefAnnotation.getName());
 		this.setTypeClass_(typeDefAnnotation.getTypeClass());
 		this.setDefaultForTypeClass_(typeDefAnnotation.getDefaultForType());
-		this.syncParameters();
+		this.syncParameters(monitor);
 	}
 	
 	@Override
-	public void update() {
-		super.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
 		this.getPersistenceUnit().addTypeDef(this);
-		this.updateModels(this.getParameters());
+		this.updateModels(this.getParameters(), monitor);
 	}
 		
 	
@@ -203,8 +201,8 @@ public class JavaTypeDefImpl extends AbstractJavaContextModel<JpaContextModel> i
 		return this.getJpaFactory().buildJavaParameter(this, parameterAnnotation);
 	}
 
-	protected void syncParameters() {
-		ContextContainerTools.synchronizeWithResourceModel(this.parameterContainerAdapter);
+	protected void syncParameters(IProgressMonitor monitor) {
+		ContextContainerTools.synchronizeWithResourceModel(this.parameterContainerAdapter, monitor);
 	}
 
 	protected Iterable<ParameterAnnotation> getParameterAnnotations() {

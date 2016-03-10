@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterable.SubListIterableWrapper;
@@ -50,17 +51,17 @@ implements HibernateJavaQueryContainer{
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.syncHibernateNamedQueries();
-		this.syncHibernateNamedNativeQueries();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.syncHibernateNamedQueries(monitor);
+		this.syncHibernateNamedNativeQueries(monitor);
 	}
 
 	@Override
-	public void update() {
-		super.update();
-		this.updateModels(this.getHibernateNamedQueries());
-		this.updateModels(this.getHibernateNamedNativeQueries());
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
+		this.updateModels(this.getHibernateNamedQueries(), monitor);
+		this.updateModels(this.getHibernateNamedNativeQueries(), monitor);
 	}
 	
 	// ********** queries **********
@@ -117,8 +118,8 @@ implements HibernateJavaQueryContainer{
 		return this.getJpaFactory().buildHibernateJavaNamedQuery(this, hibernateNamedQueryAnnotation);
 	}
 
-	protected void syncHibernateNamedQueries() {
-		this.hibernateNamedQueryContainer.synchronizeWithResourceModel();
+	protected void syncHibernateNamedQueries(IProgressMonitor monitor) {
+		this.hibernateNamedQueryContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<HibernateNamedQueryAnnotation> getHibernateNamedQueryAnnotations() {
@@ -202,8 +203,8 @@ implements HibernateJavaQueryContainer{
 		return this.getJpaFactory().buildHibernateJavaNamedNativeQuery(this, hibernateNamedNativeQueryAnnotation);
 	}
 
-	protected void syncHibernateNamedNativeQueries() {
-		this.hibernateNamedNativeQueryContainer.synchronizeWithResourceModel();
+	protected void syncHibernateNamedNativeQueries(IProgressMonitor monitor) {
+		this.hibernateNamedNativeQueryContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<HibernateNamedNativeQueryAnnotation> getHibernateNamedNativeQueryAnnotations() {

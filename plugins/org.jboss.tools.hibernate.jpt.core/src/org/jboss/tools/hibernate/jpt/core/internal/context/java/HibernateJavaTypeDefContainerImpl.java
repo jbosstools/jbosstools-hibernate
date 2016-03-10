@@ -12,6 +12,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.List;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -52,15 +53,15 @@ public class HibernateJavaTypeDefContainerImpl extends
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.syncTypeDefs();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.syncTypeDefs(monitor);
 	}
 
 	@Override
-	public void update() {
-		super.update();
-		this.updateModels(this.getTypeDefs());
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
+		this.updateModels(this.getTypeDefs(), monitor);
 	}
 
 	// ********** type defs **********
@@ -103,8 +104,8 @@ public class HibernateJavaTypeDefContainerImpl extends
 		return this.getJpaFactory().buildJavaTypeDef(this, namedQueryAnnotation);
 	}
 
-	protected void syncTypeDefs() {
-		this.typeDefContainer.synchronizeWithResourceModel();
+	protected void syncTypeDefs(IProgressMonitor monitor) {
+		this.typeDefContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	protected ListIterable<TypeDefAnnotation> getTypeDefAnnotations() {

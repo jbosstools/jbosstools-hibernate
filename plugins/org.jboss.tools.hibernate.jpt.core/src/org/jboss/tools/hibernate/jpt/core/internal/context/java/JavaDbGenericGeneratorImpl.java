@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.internal.utility.EmptyTextRange;
@@ -76,16 +77,16 @@ implements JavaDbGenericGenerator, Messages {
 	}
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setStrategy_(this.generatorAnnotation.getStrategy());
-		this.syncParameters();
+		this.syncParameters(monitor);
 	}
 
 	@Override
-	public void update() {
-		super.update();
-		this.updateModels(this.getParameters());
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
+		this.updateModels(this.getParameters(), monitor);
 	}
 	
 	// ********** metadata conversion **********
@@ -236,8 +237,8 @@ implements JavaDbGenericGenerator, Messages {
 		return this.getJpaFactory().buildJavaParameter(this, parameterAnnotation);
 	}
 
-	protected void syncParameters() {
-		ContextContainerTools.synchronizeWithResourceModel(this.parameterContainerAdapter);
+	protected void syncParameters(IProgressMonitor monitor) {
+		ContextContainerTools.synchronizeWithResourceModel(this.parameterContainerAdapter, monitor);
 	}
 
 	protected Iterable<ParameterAnnotation> getParameterAnnotations() {

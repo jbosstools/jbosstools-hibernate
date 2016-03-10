@@ -12,6 +12,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.List;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
@@ -45,16 +46,16 @@ public class HibernateNamedNativeQueryImpl extends AbstractHibernateNamedQueryIm
 	}
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setResultClass_(this.queryAnnotation.getResultClass());
 		this.setResultSetMapping_(this.queryAnnotation.getResultSetMapping());
 		this.setSpecifiedReadOnly_(this.queryAnnotation.isCallable());
 	}
 
 	@Override
-	public void update() {
-		super.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
 		this.setFullyQualifiedResultClass(this.buildFullyQualifiedResultClass());
 	}
 	// ********** metadata conversion *********

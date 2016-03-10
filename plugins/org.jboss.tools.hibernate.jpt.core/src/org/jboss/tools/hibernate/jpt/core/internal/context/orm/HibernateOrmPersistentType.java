@@ -43,4 +43,9 @@ public class HibernateOrmPersistentType extends GenericOrmPersistentType {
 	}
 
 
+	protected boolean javaPersistentTypeHasSpecifiedAccess() {
+		return (this.getJavaPersistentType().getSpecifiedAccess() != null) ||
+				this.getJavaPersistentType().hasAnyAnnotatedAttributes();
+	}
+	
 }

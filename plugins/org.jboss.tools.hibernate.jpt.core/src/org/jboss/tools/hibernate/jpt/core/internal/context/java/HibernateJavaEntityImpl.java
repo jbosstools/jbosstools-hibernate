@@ -12,6 +12,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.List;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
@@ -69,20 +70,20 @@ implements HibernateJavaEntity {
 	}
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.cacheable.synchronizeWithResourceModel();
-		this.typeDefContainer.synchronizeWithResourceModel();
-		this.syncDiscriminatorFormula();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
+		this.cacheable.synchronizeWithResourceModel(monitor);
+		this.typeDefContainer.synchronizeWithResourceModel(monitor);
+		this.syncDiscriminatorFormula(monitor);
 	}
 
 	@Override
-	public void update() {
-		super.update();
-		this.cacheable.update();
-		this.typeDefContainer.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
+		this.cacheable.update(monitor);
+		this.typeDefContainer.update(monitor);
 		if (discriminatorFormula != null){
-			this.discriminatorFormula.update();
+			this.discriminatorFormula.update(monitor);
 		}
 	}
 
@@ -150,7 +151,7 @@ implements HibernateJavaEntity {
 		return getJpaFactory().buildJavaDiscriminatorFormula(this, annotation);
 	}
 
-	protected void syncDiscriminatorFormula() {
+	protected void syncDiscriminatorFormula(IProgressMonitor monitor) {
 		DiscriminatorFormulaAnnotation annotation = getDiscriminatorFormulaAnnotation();
 		if (annotation == null) {
 			if (getDiscriminatorFormula() != null) {
@@ -160,7 +161,7 @@ implements HibernateJavaEntity {
 		else {
 			if ((getDiscriminatorFormula() != null)
 					&& (getDiscriminatorFormula().getDiscriminatorFormulaAnnotation() == annotation)) {
-				this.discriminatorFormula.synchronizeWithResourceModel();
+				this.discriminatorFormula.synchronizeWithResourceModel(monitor);
 			} else {
 				this.setDiscriminatorFormula(this.buildDiscriminatorFormula(annotation));
 			}

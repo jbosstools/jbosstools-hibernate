@@ -67,8 +67,8 @@ public class HibernateJpaProject extends AbstractJpaProject {
 	
 	private IEnvironment environment;
 
-	public HibernateJpaProject(JpaProject.Config config){
-		super(config);
+	public HibernateJpaProject(JpaProject.Config config, IProgressMonitor monitor){
+		super(config, monitor);
 		revalidateCommand = new RevalidateProjectCommand();
 	}
 	

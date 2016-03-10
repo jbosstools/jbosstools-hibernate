@@ -13,8 +13,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.List;
 
-import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter.Adapter;
@@ -62,22 +61,22 @@ implements HibernateJavaBasicMapping {
 	}
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.specifiedGenerationTime = this.getResourceGenerationTime();
-		this.syncIndex();
-		this.syncType();
+		this.syncIndex(monitor);
+		this.syncType(monitor);
 	}
 
 	@Override
-	public void update() {
-		super.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
 		this.setGenerationTime_(this.getResourceGenerationTime());
 		if (this.index != null){
-			this.index.update();
+			this.index.update(monitor);
 		}
 		if (this.type != null){
-			this.type.update();
+			this.type.update(monitor);
 		}
 	}
 
@@ -162,7 +161,7 @@ implements HibernateJavaBasicMapping {
 		return this.getJpaFactory().buildIndex(this, annotation);
 	}
 
-	protected void syncIndex() {
+	protected void syncIndex(IProgressMonitor monitor) {
 		IndexAnnotation annotation = getIndexAnnotation();
 		if (annotation == null) {
 			if (getIndex() != null) {
@@ -171,7 +170,7 @@ implements HibernateJavaBasicMapping {
 		}
 		else {
 			if ((getIndex() != null) && (getIndex().getIndexAnnotation() == annotation)) {
-				this.index.synchronizeWithResourceModel();
+				this.index.synchronizeWithResourceModel(monitor);
 			} else {
 				this.setIndex(this.buildIndex(annotation));
 			}
@@ -226,7 +225,7 @@ implements HibernateJavaBasicMapping {
 		return this.getJpaFactory().buildType(this, generatedValueAnnotation);
 	}
 
-	protected void syncType() {
+	protected void syncType(IProgressMonitor monitor) {
 		TypeAnnotation annotation = this.getTypeAnnotation();
 		if (annotation == null) {
 			if (this.type != null) {
@@ -235,7 +234,7 @@ implements HibernateJavaBasicMapping {
 		}
 		else {
 			if ((this.type != null) && (this.type.getTypeAnnotation() == annotation)) {
-				this.type.synchronizeWithResourceModel();
+				this.type.synchronizeWithResourceModel(monitor);
 			} else {
 				this.setType(this.buildType(annotation));
 			}

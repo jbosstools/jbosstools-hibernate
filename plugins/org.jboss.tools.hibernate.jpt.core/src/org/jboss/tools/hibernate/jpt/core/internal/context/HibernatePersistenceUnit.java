@@ -20,6 +20,7 @@ import java.util.Vector;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
@@ -89,9 +90,9 @@ implements Messages, Hibernate {
 	}
 
 	@Override
-	public void update() {
+	public void update(IProgressMonitor monitor) {
 		this.typeDefs.clear();
-		super.update();
+		super.update(monitor);
 		this.fireListChanged(this.TYPE_DEF_LIST, this.typeDefs);
 	}
 

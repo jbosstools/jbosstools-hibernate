@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.jpa.core.context.JpaContextModel;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.jpa.core.context.java.JavaSpecifiedColumn;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaColumn;
 import org.eclipse.jpt.jpa.db.Column;
@@ -38,8 +38,8 @@ public class HibernateJavaColumnImpl extends GenericJavaColumn implements Hibern
 	}
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 	}
 
 	//********* DB Column name ******************

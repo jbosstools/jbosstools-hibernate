@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceModel;
@@ -79,20 +80,20 @@ public class HibernatePackageInfoImpl extends AbstractJavaContextModel<Persisten
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.setName(this.resourcePackage.getName());
-		this.typeDefContainer.synchronizeWithResourceModel();
-		this.generatorContainer.synchronizeWithResourceModel();
-		this.queryContainer.synchronizeWithResourceModel();
+		this.typeDefContainer.synchronizeWithResourceModel(monitor);
+		this.generatorContainer.synchronizeWithResourceModel(monitor);
+		this.queryContainer.synchronizeWithResourceModel(monitor);
 	}
 
 	@Override
-	public void update() {
-		super.update();
-		this.typeDefContainer.update();
-		this.generatorContainer.update();
-		this.queryContainer.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
+		this.typeDefContainer.update(monitor);
+		this.generatorContainer.update(monitor);
+		this.queryContainer.update(monitor);
 //		this.registerRootStructureNode();
 	}
 	

@@ -12,7 +12,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.List;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.jpa.core.context.java.JavaTable;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaTable;
 import org.eclipse.jpt.jpa.core.validation.JptJpaCoreValidationMessages;
@@ -37,14 +37,14 @@ public class HibernateJavaTableImpl extends GenericJavaTable implements Hibernat
 	}
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
+	public void synchronizeWithResourceModel(IProgressMonitor monitor) {
+		super.synchronizeWithResourceModel(monitor);
 		this.defaultDBTableName = buildDefaultDBTableName();
 	}
 
 	@Override
-	public void update() {
-		super.update();
+	public void update(IProgressMonitor monitor) {
+		super.update(monitor);
 		setDefaultDBTableName(buildDefaultDBTableName());
 	}
 

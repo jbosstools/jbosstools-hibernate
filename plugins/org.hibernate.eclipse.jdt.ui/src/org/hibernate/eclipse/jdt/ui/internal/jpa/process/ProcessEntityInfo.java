@@ -602,12 +602,9 @@ public class ProcessEntityInfo extends ASTVisitor {
 		}
 		else if (type.isArrayType()) {
 			ArrayType at = (ArrayType)type;
-			Type componentType = at;
-			while (componentType.isArrayType()){
-				componentType = ((ArrayType)componentType).getComponentType();
-			}
-			if (componentType.isSimpleType()) {
-				SimpleType st = (SimpleType)componentType;
+			Type elementType = at.getElementType();
+			if (elementType.isSimpleType()) {
+				SimpleType st = (SimpleType)elementType;
 				typeName = st.getName().getFullyQualifiedName();
 			}
 		}
