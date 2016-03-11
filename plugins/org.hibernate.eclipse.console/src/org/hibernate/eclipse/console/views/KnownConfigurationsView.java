@@ -239,14 +239,13 @@ public class KnownConfigurationsView extends ViewPart {
 		viewer.getTree().setFocus();
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public Object getAdapter(Class adapter) {
+	public <T> T getAdapter(Class<T> adapter) {
 		if (adapter.equals(IPropertySheetPage.class) )
 		{
 			PropertySheetPage page = new PropertySheetPage();
 			page.setPropertySourceProvider(new ConsoleConfigurationPropertySourceProvider() );
-			return page;
+			return adapter.cast(page);
 		}
 		
 		return super.getAdapter( adapter );
