@@ -24,22 +24,22 @@ package org.hibernate.eclipse.console.views.navigator;
 import org.eclipse.core.runtime.IAdaptable;
 
 public class AdaptableWrapper implements IAdaptable {
-
+	
 	private Object element;
 	
 	public AdaptableWrapper(Object element) {
 		this.element = element;
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public Object getAdapter(Class adapter) {
+	public <T> T getAdapter(Class<T> adapter) {
 		if(adapter.isInstance(element)) {
-			return element;
+			return adapter.cast(element);
 		}
 		if(element instanceof IAdaptable) {
 			return ((IAdaptable)element).getAdapter(adapter);
 		}
 		return null;
 	}
+	
 }
