@@ -189,13 +189,12 @@ public class QueryPageTabView extends ViewPart implements ISelectionProvider {
 	}
 	
 	@Override
-	@SuppressWarnings("rawtypes")
-	public Object getAdapter(Class adapter) {
+	public <T> T getAdapter(Class<T> adapter) {
 		if (adapter.equals(IPropertySheetPage.class) )
 		{
 			PropertySheetPage page = new PropertySheetPage();
 			page.setPropertySourceProvider(new HibernatePropertySourceProvider(this) );
-			return page;
+			return adapter.cast(page);
 		}
 		return super.getAdapter(adapter);
 	}
