@@ -92,18 +92,18 @@ public class ConfigurationAdapterFactory implements IAdapterFactory {
 		}
 	}
 	
-	@SuppressWarnings("rawtypes")
-	public Object getAdapter(Object adaptableObject, Class adapterType) {
+	public <T> T getAdapter(Object adaptableObject, Class<T> adapterType) {
+		Object result = null;
 		if(adapterType==IDeferredWorkbenchAdapter.class){
-			return getDeferredAdapter( adaptableObject );
+			result = getDeferredAdapter( adaptableObject );
 		} else if (adapterType==IWorkbenchAdapter.class){
 			Object adapter = getAdapter( adaptableObject );
-			return adapter != null ? adapter : getDeferredAdapter( adaptableObject );
+			result = adapter != null ? adapter : getDeferredAdapter( adaptableObject );
 		}
-		if(adapterType==IPropertySource2.class || adapterType==IPropertySource.class) {
-			return getPropertySource(adaptableObject);
+		else if(adapterType==IPropertySource2.class || adapterType==IPropertySource.class) {
+			result = getPropertySource(adaptableObject);
 		}
-		return null;
+		return adapterType.cast(result);
 	}
 
 	
