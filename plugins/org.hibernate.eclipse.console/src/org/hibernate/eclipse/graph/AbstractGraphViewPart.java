@@ -125,10 +125,9 @@ public abstract class AbstractGraphViewPart extends ViewPart {
 		}
 	}
 
-	@SuppressWarnings("rawtypes")
-	public Object getAdapter(Class adapter) {
+	public <T> T getAdapter(Class<T> adapter) {
 		if(adapter.equals(GraphicalViewer.class)) {
-			return viewer;
+			return adapter.cast(viewer);
 		}
 		return super.getAdapter( adapter );
 	}
