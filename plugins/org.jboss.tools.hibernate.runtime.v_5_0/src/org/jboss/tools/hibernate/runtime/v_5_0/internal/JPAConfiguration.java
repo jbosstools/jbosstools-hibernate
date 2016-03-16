@@ -9,6 +9,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
+import org.jboss.tools.hibernate.runtime.spi.HibernateException;
 
 public class JPAConfiguration extends Configuration {
 	
@@ -32,8 +33,15 @@ public class JPAConfiguration extends Configuration {
 						.createEntityManagerFactoryBuilder(
 								persistenceUnit, 
 								getProperties());
-			EntityManagerFactory entityManagerFactory = 
-					entityManagerFactoryBuilder.build();
+			if(entityManagerFactoryBuilder == null){
+				return metadata;
+			}
+			EntityManagerFactory entityManagerFactory = null;
+			try{
+				entityManagerFactory = entityManagerFactoryBuilder.build();
+			} catch (Throwable t){
+				throw new HibernateException(t);
+			}
 			metadata = entityManagerFactoryBuilder.getMetadata();
 			getProperties().putAll(entityManagerFactory.getProperties());
 		}
