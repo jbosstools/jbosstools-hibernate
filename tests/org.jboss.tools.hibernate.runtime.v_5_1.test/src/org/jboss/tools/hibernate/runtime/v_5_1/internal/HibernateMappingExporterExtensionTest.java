@@ -77,7 +77,7 @@ public class HibernateMappingExporterExtensionTest {
 		hibernateMappingExporterExtension.setArtifactCollector(artifactCollector);
 		File[] hbmXmlFiles = artifactCollector.getFiles("hbm.xml");
 		Assert.assertTrue(hbmXmlFiles.length == 0);
-		Assert.assertFalse(new File("foo/Bar.hbm.xml").exists());
+		Assert.assertFalse(new File("foo" + File.separator + "Bar.hbm.xml").exists());
 		Map<String, Object> additionalContext = new HashMap<String, Object>();
 		Cfg2HbmTool c2h = new Cfg2HbmTool();
 		additionalContext.put("date", new Date().toString());
@@ -86,8 +86,8 @@ public class HibernateMappingExporterExtensionTest {
 		hibernateMappingExporterExtension.superExportPOJO(additionalContext, pojoClass);
 		hbmXmlFiles = artifactCollector.getFiles("hbm.xml");
 		Assert.assertTrue(hbmXmlFiles.length == 1);
-		Assert.assertEquals("foo/Bar.hbm.xml", hbmXmlFiles[0].getPath());
-		Assert.assertTrue(new File("foo/Bar.hbm.xml").exists());
+		Assert.assertEquals("foo" + File.separator + "Bar.hbm.xml", hbmXmlFiles[0].getPath());
+		Assert.assertTrue(new File("foo" + File.separator + "Bar.hbm.xml").exists());
 	}
 	
 	@Test
@@ -97,7 +97,7 @@ public class HibernateMappingExporterExtensionTest {
 		hibernateMappingExporterExtension.setArtifactCollector(artifactCollector);
 		File[] hbmXmlFiles = artifactCollector.getFiles("hbm.xml");
 		Assert.assertTrue(hbmXmlFiles.length == 0);
-		Assert.assertFalse(new File("foo/Bar.hbm.xml").exists());
+		Assert.assertFalse(new File("foo" + File.separator + "Bar.hbm.xml").exists());
 		Map<Object, Object> additionalContext = new HashMap<Object, Object>();
 		Cfg2HbmTool c2h = new Cfg2HbmTool();
 		additionalContext.put("date", new Date().toString());
@@ -106,8 +106,8 @@ public class HibernateMappingExporterExtensionTest {
 		hibernateMappingExporterExtension.exportPOJO(additionalContext, pojoClass);
 		hbmXmlFiles = artifactCollector.getFiles("hbm.xml");
 		Assert.assertTrue(hbmXmlFiles.length == 1);
-		Assert.assertEquals("foo/Bar.hbm.xml", hbmXmlFiles[0].getPath());
-		Assert.assertTrue(new File("foo/Bar.hbm.xml").exists());
+		Assert.assertEquals("foo" + File.separator + "Bar.hbm.xml", hbmXmlFiles[0].getPath());
+		Assert.assertTrue(new File("foo" + File.separator + "Bar.hbm.xml").exists());
 		Assert.assertNull(methodName);
 		Assert.assertNull(arguments);
 		// then with a delegate exporter
@@ -127,7 +127,7 @@ public class HibernateMappingExporterExtensionTest {
 	
 	@After
 	public void tearDown() {
-		new File("foo/Bar.hbm.xml").delete();
+		new File("foo" + File.separator + "Bar.hbm.xml").delete();
 		new File("foo").delete();
 	}
 	
