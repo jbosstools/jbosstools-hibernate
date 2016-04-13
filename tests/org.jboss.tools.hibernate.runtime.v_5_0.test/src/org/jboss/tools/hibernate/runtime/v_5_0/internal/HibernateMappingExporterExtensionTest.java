@@ -106,7 +106,7 @@ public class HibernateMappingExporterExtensionTest {
 		hibernateMappingExporterExtension.exportPOJO(additionalContext, pojoClass);
 		hbmXmlFiles = artifactCollector.getFiles("hbm.xml");
 		Assert.assertTrue(hbmXmlFiles.length == 1);
-		Assert.assertEquals("foo/Bar.hbm.xml", hbmXmlFiles[0].getPath());
+		Assert.assertEquals("foo" + File.separator + "Bar.hbm.xml", hbmXmlFiles[0].getPath());
 		Assert.assertTrue(new File("foo" + File.separator + "Bar.hbm.xml").exists());
 		Assert.assertNull(methodName);
 		Assert.assertNull(arguments);
