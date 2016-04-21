@@ -76,7 +76,7 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 		File tempFile = null;
 		IConfiguration result = null;
 		try {
-			tempFile = File.createTempFile(document.toString() + ".cfg", "xml");
+			tempFile = File.createTempFile(document.toString(), "cfg.xml");
 			DOMSource domSource = new DOMSource(document);
 			StringWriter stringWriter = new StringWriter();
 			StreamResult stream = new StreamResult(stringWriter);
@@ -89,12 +89,8 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 			result = configure(tempFile);
 		} catch(IOException | TransformerException e) {
 			throw new RuntimeException("Problem while configuring", e);
-		}
-		System.out.println("*********** Checking for tempFile: " + tempFile.getAbsolutePath() + " ***************************");
-		if (tempFile.exists()) {
-			System.out.println("*********** Deleting tempFile: " + tempFile.getAbsolutePath() + " ***************************");
-			boolean success = tempFile.delete();
-			System.out.println("*********** ===> " + success + "*************");
+		} finally {
+			tempFile.delete();
 		}
 		return result;
 	}
