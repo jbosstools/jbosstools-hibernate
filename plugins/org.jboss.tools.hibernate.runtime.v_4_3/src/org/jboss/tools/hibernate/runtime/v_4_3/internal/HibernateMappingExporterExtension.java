@@ -24,7 +24,7 @@ extends HibernateMappingExporter {
 		delegateExporter = delegate;
 	}
 
-	public void superExportPOJO(Map<Object, Object> map, POJOClass pojoClass) {
+	public void superExportPOJO(Map<String, Object> map, POJOClass pojoClass) {
 		super.exportPOJO(map, pojoClass);
 	}
 	@SuppressWarnings({ "rawtypes", "unchecked" })

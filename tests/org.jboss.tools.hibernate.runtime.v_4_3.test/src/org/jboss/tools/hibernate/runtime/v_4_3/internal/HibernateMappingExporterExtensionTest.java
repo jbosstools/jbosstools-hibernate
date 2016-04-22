@@ -78,7 +78,7 @@ public class HibernateMappingExporterExtensionTest {
 		File[] hbmXmlFiles = artifactCollector.getFiles("hbm.xml");
 		Assert.assertTrue(hbmXmlFiles.length == 0);
 		Assert.assertFalse(new File("foo" + File.separator + "Bar.hbm.xml").exists());
-		Map<Object, Object> additionalContext = new HashMap<Object, Object>();
+		Map<String, Object> additionalContext = new HashMap<String, Object>();
 		Cfg2HbmTool c2h = new Cfg2HbmTool();
 		additionalContext.put("date", new Date().toString());
 		additionalContext.put("version", Version.getDefault().toString());
