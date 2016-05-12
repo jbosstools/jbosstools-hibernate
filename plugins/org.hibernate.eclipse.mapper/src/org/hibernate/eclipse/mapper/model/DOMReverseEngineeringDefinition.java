@@ -32,6 +32,7 @@ import org.eclipse.wst.sse.core.internal.provisional.INodeAdapterFactory;
 import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
+import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.model.IRevEngColumn;
 import org.hibernate.eclipse.console.model.IRevEngGenerator;
 import org.hibernate.eclipse.console.model.IRevEngParameter;
@@ -97,7 +98,7 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 		factory.adapt(document);
 	}
 
-	public ITableFilter createTableFilter() {
+	public ITableFilter createTableFilter(ConsoleConfiguration cc) {
 		return (ITableFilter) factory.adapt((INodeNotifier) getDocument().createElement("table-filter")); //$NON-NLS-1$
 	}
 

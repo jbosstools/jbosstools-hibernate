@@ -27,8 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.console.KnownConfigurations;
-import org.hibernate.eclipse.console.model.IConsoleConfigurationNameProvider;
 import org.hibernate.eclipse.console.model.IRevEngColumn;
 import org.hibernate.eclipse.console.model.IRevEngGenerator;
 import org.hibernate.eclipse.console.model.IRevEngParameter;
@@ -42,12 +40,6 @@ import org.jboss.tools.hibernate.runtime.spi.IService;
 public class ReverseEngineeringDefinitionImpl implements
 		IReverseEngineeringDefinition {
 	
-	private IConsoleConfigurationNameProvider consoleConfigurationNameProvider;
-	
-	public ReverseEngineeringDefinitionImpl(IConsoleConfigurationNameProvider ccnp) {
-		consoleConfigurationNameProvider = ccnp;
-	}
-
 	private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 		
 	public void addPropertyChangeListener(PropertyChangeListener pcl) {
@@ -66,18 +58,12 @@ public class ReverseEngineeringDefinitionImpl implements
 		pcs.removePropertyChangeListener(property, pcl);
 	}
 
-	public ITableFilter createTableFilter() {		
-		return new TableFilterImpl(this);
+	public ITableFilter createTableFilter(ConsoleConfiguration cc) {
+		if (cc == null) return null;
+		IService service = cc.getHibernateExtension().getHibernateService();
+		return new TableFilterImpl(this, service);
 	}
 	
-	IService getService() {
-		String consoleConfigurationName = consoleConfigurationNameProvider.getConsoleConfigurationName();
-		if (consoleConfigurationName == null || "".equals(consoleConfigurationName)) return null; //$NON-NLS-1$
-		ConsoleConfiguration cc = KnownConfigurations.getInstance().find(consoleConfigurationName);
-		if (cc == null) return null;
-		return cc.getHibernateExtension().getHibernateService();
-	}
-
 	List<ITableFilter> tableFilters = new ArrayList<ITableFilter>();
 	private List<ITypeMapping> typeMappings = new ArrayList<ITypeMapping>();
 	

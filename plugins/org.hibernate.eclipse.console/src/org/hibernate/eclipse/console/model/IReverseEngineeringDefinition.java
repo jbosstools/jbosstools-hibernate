@@ -23,6 +23,8 @@ package org.hibernate.eclipse.console.model;
 
 import java.beans.PropertyChangeListener;
 
+import org.hibernate.console.ConsoleConfiguration;
+
 public interface IReverseEngineeringDefinition {
 
 	public static final String TABLEFILTER_STRUCTURE = "tableFilterStructure"; //$NON-NLS-1$
@@ -35,7 +37,7 @@ public interface IReverseEngineeringDefinition {
 	void removePropertyChangeListener(PropertyChangeListener pcl);
 	void removePropertyChangeListener(String property, PropertyChangeListener pcl);
 	
-	ITableFilter createTableFilter();
+	ITableFilter createTableFilter(ConsoleConfiguration cc);
 	void addTableFilter(ITableFilter filter);
 	
 	ITableFilter[] getTableFilters();

@@ -30,9 +30,9 @@ public class TableFilterImpl implements org.hibernate.eclipse.console.model.ITab
 	private final ReverseEngineeringDefinitionImpl revModel;
 	
 	protected TableFilterImpl(
-			ReverseEngineeringDefinitionImpl reverseEngineeringDefinitionImpl) {
+			ReverseEngineeringDefinitionImpl reverseEngineeringDefinitionImpl,
+			IService service) {
 		this.revModel = reverseEngineeringDefinitionImpl;	
-		IService service = reverseEngineeringDefinitionImpl.getService();
 		tf = service.newTableFilter();
 	}
 

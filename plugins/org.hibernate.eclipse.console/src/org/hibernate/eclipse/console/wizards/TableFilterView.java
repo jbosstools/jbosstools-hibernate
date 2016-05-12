@@ -129,8 +129,18 @@ public abstract class TableFilterView extends TreeToTableComposite {
 	ITableFilter[] getTableFilterList() {
 		return revEngDef.getTableFilters();
 	}
+	
+	private ConsoleConfiguration getConsoleConfiguration() {
+		String ccName = getConsoleConfigurationName();
+		if (ccName == null || "".equals(ccName)) return null; //$NON-NLS-1$
+		return KnownConfigurations.getInstance().find(ccName);
+	}
 
 	protected void toggle(boolean exclude) {
+		
+		ConsoleConfiguration cc = getConsoleConfiguration();
+		if (cc == null) return;
+		
 		ISelection selection = viewer.getSelection();
 
 		if ( !selection.isEmpty() ) {
@@ -142,7 +152,7 @@ public abstract class TableFilterView extends TreeToTableComposite {
 
 				if ( sel instanceof ITable ) {
 					ITable table = (ITable) sel;
-					filter = revEngDef.createTableFilter();
+					filter = revEngDef.createTableFilter(cc);
 					if ( StringHelper.isNotEmpty( table.getName() ) ) {
 						filter.setMatchName( table.getName() );
 					}
@@ -157,7 +167,7 @@ public abstract class TableFilterView extends TreeToTableComposite {
 				else if ( sel instanceof TableContainer ) { // assume its a
 															// schema!
 					TableContainer tc = (TableContainer) sel;
-					filter = revEngDef.createTableFilter();
+					filter = revEngDef.createTableFilter(cc);
 					String schema = tc.getName();
 					if(schema==null || "".equals(schema)) { //$NON-NLS-1$
 						filter.setMatchCatalog(".*"); //$NON-NLS-1$
@@ -174,14 +184,14 @@ public abstract class TableFilterView extends TreeToTableComposite {
 					// we ignore column since at the moment we dont know which table is there.
 					return;
 				} else {
-					filter = revEngDef.createTableFilter();
+					filter = revEngDef.createTableFilter(cc);
 					filter.setExclude( Boolean.valueOf( exclude ) );
 				}
 				if ( filter != null )
 					revEngDef.addTableFilter( filter );
 			}
 		} else {
-			ITableFilter filter = revEngDef.createTableFilter();
+			ITableFilter filter = revEngDef.createTableFilter(cc);
 			filter.setMatchName(".*"); //$NON-NLS-1$
 			filter.setExclude( Boolean.valueOf( exclude ) );
 			revEngDef.addTableFilter( filter );

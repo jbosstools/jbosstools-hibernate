@@ -36,7 +36,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
-import org.hibernate.eclipse.console.model.IConsoleConfigurationNameProvider;
 import org.hibernate.eclipse.console.model.IReverseEngineeringDefinition;
 import org.hibernate.eclipse.console.model.ITableFilter;
 import org.hibernate.eclipse.console.model.impl.ReverseEngineeringDefinitionImpl;
@@ -154,14 +153,7 @@ public class TableFilterWizardPage extends WizardPage {
 			}
 
 		};		
-		IConsoleConfigurationNameProvider ccnp = new IConsoleConfigurationNameProvider() {
-			
-			@Override
-			public String getConsoleConfigurationName() {
-				return consoleConfigurationName.getText();
-			}
-		};
-		IReverseEngineeringDefinition model = new ReverseEngineeringDefinitionImpl(ccnp);
+		IReverseEngineeringDefinition model = new ReverseEngineeringDefinitionImpl();
 		model.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				dialogChanged();
