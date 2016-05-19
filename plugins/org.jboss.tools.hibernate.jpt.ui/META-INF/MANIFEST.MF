@@ -25,7 +25,9 @@ Require-Bundle:
  org.eclipse.ui.views.properties.tabbed;bundle-version="3.6.0",
  org.eclipse.wst.web.ui;bundle-version="1.1.600",
  org.eclipse.wst.common.frameworks.ui;bundle-version="1.2.300",
- org.jboss.tools.hibernate.runtime.spi;bundle-version="5.0.0"
+ org.jboss.tools.hibernate.runtime.spi;bundle-version="5.0.0",
+ org.eclipse.wst.common.modulecore,
+ org.eclipse.jst.common.project.facet.core
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Vendor: %Bundle-Vendor.0

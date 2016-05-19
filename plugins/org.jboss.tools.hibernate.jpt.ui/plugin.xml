@@ -19,6 +19,15 @@
             jpaPlatform="hibernate2_1"
             id="hibernate2_1">
       </jpaPlatformUi>
-      
+    </extension>
+    
+    <extension point="org.eclipse.ui.ide.projectConfigurators">
+      <projectConfigurator
+            class="org.jboss.tools.hibernate.jpt.ui.internal.importer.JPAProjectConfigurator"
+            label="Java EE JPA">
+        <activeWhen>
+          <hasFileRecursively filename="persistence.xml"/>
+       	</activeWhen>
+      </projectConfigurator>
     </extension>
 </plugin>
