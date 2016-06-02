@@ -8,7 +8,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/hibernate-core-5.1.0.Final.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate-entitymanager-5.1.0.Final.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate-jpa-2.1-api-1.0.0.Final.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/hibernate-tools-5.1.0.Alpha3.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate-tools-5.1.0.Beta1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/javassist-3.20.0-GA.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jboss-logging-3.3.0.Final.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/slf4j-api-1.6.1.jar"/>
