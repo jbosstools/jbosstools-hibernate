@@ -11,8 +11,38 @@
 
 	<packaging>eclipse-test-plugin</packaging>
 	
+	<properties>
+		<coverage.filter>org.jboss.tools.hibernate.runtime*</coverage.filter>
+		<emma.instrument.bundles>org.jboss.tools.hibernate.runtime.v_5_2</emma.instrument.bundles>
+		<h2.version>1.4.190</h2.version>
+	</properties>
+
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>get-libs</id>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<phase>generate-resources</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<artifactItems>
+						<artifactItem>
+							<groupId>com.h2database</groupId>
+							<artifactId>h2</artifactId>
+							<version>${h2.version}</version>
+						</artifactItem>
+					</artifactItems>
+					<skip>false</skip>
+					<outputDirectory>${basedir}/lib</outputDirectory>
+				</configuration>
+			</plugin>
 			<plugin> 
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
