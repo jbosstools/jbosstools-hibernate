@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_5_2.internal;
 
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
@@ -22,4 +23,9 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 		return new SpecialRootClassFacadeImpl(this, property);
 	}
 
+	@Override
+	public IClassMetadata createClassMetadata(Object target) {
+		return new ClassMetadataFacadeImpl(this, target);
+	}
+	
 }
