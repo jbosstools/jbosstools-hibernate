@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.jboss.tools.hibernate.runtime.spi.services">
+      <service
+            class="org.jboss.tools.hibernate.runtime.v_5_2.internal.ServiceImpl"
+            name="%hibernate.version">
+      </service>
+   </extension>
+</plugin>
