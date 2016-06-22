@@ -8,6 +8,7 @@ import java.lang.reflect.Proxy;
 import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
+import org.hibernate.tool.hbm2x.AbstractExporter;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.GenericExporter;
@@ -92,10 +93,19 @@ public class ExporterFacadeTest {
 	}
 	
 	@Test
-	public void testStart() {
+	public void testStart() throws Exception {
+		Exporter exporter = new AbstractExporter() {
+			@Override
+			protected void doStart() {
+				methodName = "start";
+			}		
+		};
+		ArtifactCollector artifactCollector = new ArtifactCollector();
+		artifactCollector.addFile(File.createTempFile("test", "xml"), "xml");
+		exporter.setArtifactCollector(artifactCollector);
+		exporterFacade = new AbstractExporterFacade(FACADE_FACTORY, exporter) {};
 		exporterFacade.start();
 		Assert.assertEquals("start", methodName);
-		Assert.assertNull(arguments);
 	}
 	
 	@Test
