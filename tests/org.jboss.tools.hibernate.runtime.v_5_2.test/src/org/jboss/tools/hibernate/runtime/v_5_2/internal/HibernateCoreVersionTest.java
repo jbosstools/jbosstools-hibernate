@@ -8,7 +8,7 @@ public class HibernateCoreVersionTest {
 	
 	@Test
 	public void testHibernateCoreVersion() {
-		Assert.assertEquals("5.2.0.Final", Version.getVersionString());
+		Assert.assertEquals("5.2.1.Final", Version.getVersionString());
 	}
 	
 }
