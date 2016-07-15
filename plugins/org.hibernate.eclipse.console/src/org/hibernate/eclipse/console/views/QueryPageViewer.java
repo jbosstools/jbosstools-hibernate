@@ -267,7 +267,8 @@ public class QueryPageViewer {
 		int columnCount = columns.size();
 		for (int i = 0; i < columnCount; i++) {
 			TableColumn column = new TableColumn(table, SWT.NONE);
-			column.setText(columns.get(i).toString() );
+			String text = columns.get(i) == null ? "" : columns.get(i); //$NON-NLS-1$
+			column.setText(text);
 		}
 		return columnCount;
 	}
