@@ -10,6 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal;
 
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -28,7 +31,10 @@ import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.internal.core.LaunchConfiguration;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
@@ -173,13 +179,20 @@ public class JPAPostInstallFasetListener implements IFacetedProjectListener {
 			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, true );
 			wc.setAttribute(IConsoleConfigurationLaunchConstants.FILE_MAPPINGS, (List<String>)null);
 			wc.setAttribute(IConsoleConfigurationLaunchConstants.USE_JPA_PROJECT_PROFILE, Boolean.toString(true));
-			if (HibernateJpaPlatform.HIBERNATE2_1_PLATFORM_ID.equals(platformId)) {
-				wc.setAttribute(IConsoleConfigurationLaunchConstants.HIBERNATE_VERSION, "4.3"); //$NON-NLS-1$
+			String hibernateVersion = lookupHibernateVersion(project);
+			if  (HibernateJpaPlatform.HIBERNATE2_1_PLATFORM_ID.equals(platformId)) {
 				wc.setAttribute(IConsoleConfigurationLaunchConstants.PERSISTENCE_UNIT_NAME, getPersistenceUnitName(project));
-			} else if (HibernateJpaPlatform.HIBERNATE2_0_PLATFORM_ID.equals(platformId)) {
-				wc.setAttribute(IConsoleConfigurationLaunchConstants.HIBERNATE_VERSION, "4.0"); //$NON-NLS-1$
+			}
+			if (hibernateVersion != null) {
+				wc.setAttribute(IConsoleConfigurationLaunchConstants.HIBERNATE_VERSION, hibernateVersion);
 			} else {
-				wc.setAttribute(IConsoleConfigurationLaunchConstants.HIBERNATE_VERSION, "3.6"); //$NON-NLS-1$
+				if (HibernateJpaPlatform.HIBERNATE2_1_PLATFORM_ID.equals(platformId)) {
+					wc.setAttribute(IConsoleConfigurationLaunchConstants.HIBERNATE_VERSION, "4.3"); //$NON-NLS-1$
+				} else if (HibernateJpaPlatform.HIBERNATE2_0_PLATFORM_ID.equals(platformId)) {
+					wc.setAttribute(IConsoleConfigurationLaunchConstants.HIBERNATE_VERSION, "4.0"); //$NON-NLS-1$
+				} else {
+					wc.setAttribute(IConsoleConfigurationLaunchConstants.HIBERNATE_VERSION, "3.6"); //$NON-NLS-1$
+				}
 			}
 
 			wc.doSave();
@@ -197,6 +210,31 @@ public class JPAPostInstallFasetListener implements IFacetedProjectListener {
 		if (persistence.getPersistenceUnits().size() > 0) {
 			XmlPersistenceUnit persistenceUnit = persistence.getPersistenceUnits().get(0);
 			result = persistenceUnit.getName();
+		}
+		return result;
+	}
+	
+	private String lookupHibernateVersion(IProject project) {
+		String result = null;
+		try {
+			IJavaProject javaProject = JavaCore.create(project);
+			IType type = javaProject.findType("org.hibernate.Version"); //$NON-NLS-1$
+			IJavaElement element = type.getPackageFragment();
+			IPackageFragmentRoot fragmentRoot = null;
+			while (!(element instanceof IPackageFragmentRoot)) {
+				element = element.getParent();
+			}
+			fragmentRoot = (IPackageFragmentRoot)element; 
+			URL url = fragmentRoot.getResolvedClasspathEntry().getPath().toFile().toURI().toURL();
+			URLClassLoader loader = new URLClassLoader(new URL[] { url });
+			Class<?> versionClass = loader.loadClass("org.hibernate.Version"); //$NON-NLS-1$
+			Method getVersionString = versionClass.getMethod("getVersionString", new Class<?>[] {}); //$NON-NLS-1$
+			result = (String)getVersionString.invoke(null, new Object[] {});
+			int endIndex = result.indexOf('.', result.indexOf('.') + 1);
+			result = result.substring(0, endIndex);
+			loader.close();
+		} catch (Exception e) {
+			HibernateJptPlugin.logException(e);
 		}
 		return result;
 	}
