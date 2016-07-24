@@ -179,7 +179,7 @@ public class JPAMapTest extends TestCase {
 		ICompilationUnit icu = Utils.findCompilationUnit(project.getIJavaProject(),
 				"test.annotated." + testSelection + //$NON-NLS-1$ 
 				"." + strName); //$NON-NLS-1$
-		ASTParser parser = ASTParser.newParser(AST.JLS3);
+		ASTParser parser = ASTParser.newParser(AST.JLS8);
 		parser.setSource(icu);
 		ASTNode astNode = parser.createAST(null);
 		return astNode;
@@ -194,7 +194,7 @@ public class JPAMapTest extends TestCase {
 		if (!resourceFile.exists()) {
 			return null;
 		}
-		ASTParser parser = ASTParser.newParser(AST.JLS3);
+		ASTParser parser = ASTParser.newParser(AST.JLS8);
 		StringBuffer cbuf = new StringBuffer((int) resourceFile.length());
 		try {
 			String ls = System.getProperties().getProperty("line.separator", "\n");  //$NON-NLS-1$//$NON-NLS-2$
