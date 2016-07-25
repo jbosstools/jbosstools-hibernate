@@ -57,14 +57,13 @@ public class ToggleShapeExpandStateAction extends SelectionAction {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public Command getCommand() {
 		CompoundCommand cc = new CompoundCommand();
 		if (getSelectedObjects().isEmpty()) {
 			return cc;
 		}
 		List<ExpandableShape> selectedShape = new ArrayList<ExpandableShape>();
-		Iterator it = getSelectedObjects().iterator();
+		Iterator<?> it = getSelectedObjects().iterator();
 		while (it.hasNext()) {
 			Object firstElement = it.next();
 			Object obj = null;
@@ -101,13 +100,12 @@ public class ToggleShapeExpandStateAction extends SelectionAction {
 		return canPerformAction();
 	}
 
-	@SuppressWarnings("unchecked")
 	private boolean canPerformAction() {
 		boolean res = false;
 		if (getSelectedObjects().isEmpty()) {
 			return res;
 		}
-		Iterator it = getSelectedObjects().iterator();
+		Iterator<?> it = getSelectedObjects().iterator();
 		while (it.hasNext() && !res) {
 			Object firstElement = it.next();
 			Object obj = null;
