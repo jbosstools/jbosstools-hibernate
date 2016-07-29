@@ -10,7 +10,9 @@
   ******************************************************************************/
 package org.hibernate.eclipse.jdt.ui.wizards;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -42,6 +44,7 @@ import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.WildcardType;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.eclipse.console.common.HibernateExtension;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.collect.AllEntitiesInfoCollector;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefEntityInfo;
@@ -114,46 +117,64 @@ public class ConfigurationActor {
 			}
 			collector.resolveRelations();
 			//I don't check here if any non abstract class selected
-			configs.put(javaProject, createConfiguration(javaProject, collector.getMapCUs_Info()));
-
+			IConfiguration config = createConfiguration(javaProject, collector.getMapCUs_Info());
+			if (config != null) {
+				configs.put(javaProject, config);
+			}
 		}
 		return configs;
 	}
 	
 	private IService getService(IJavaProject project) {
+		IService result = null;
 		HibernateNature hibnat = HibernateNature.getHibernateNature(project);
 		if (hibnat != null) {
 			ConsoleConfiguration cc = hibnat.getDefaultConsoleConfiguration();
-			return cc.getHibernateExtension().getHibernateService();
-		} else {
-			return ServiceLookup.findService("3.5"); //$NON-NLS-1$
+			if (cc != null) {
+				HibernateExtension ext = cc.getHibernateExtension();
+				if (ext != null) {
+					result = ext.getHibernateService();
+				}
+			}
 		}
+		if (result == null) {
+			List<String> versions = new ArrayList<>();
+			for (String version : ServiceLookup.getVersions()) {
+				versions.add(version);
+			}
+			Collections.sort(versions);
+			result = ServiceLookup.findService(versions.get(versions.size() - 1));
+		}
+		return result;
 	}
 	
 	protected IConfiguration createConfiguration(IJavaProject project, Map<String, EntityInfo> entities) {
+		IConfiguration result = null;
 		IService service = getService(project);
-		IConfiguration config = service.newDefaultConfiguration();
-		
-		ProcessEntityInfo processor = new ProcessEntityInfo(service);
-		processor.setEntities(entities);
-		
-		for (Entry<String, EntityInfo> entry : entities.entrySet()) {			
-			String fullyQualifiedName = entry.getValue().getFullyQualifiedName();
-			ICompilationUnit icu = Utils.findCompilationUnit(project, fullyQualifiedName);
-			if (icu != null){
-				CompilationUnit cu = Utils.getCompilationUnit(icu, true);
-				
-				processor.setEntityInfo(entry.getValue());			
-				cu.accept(processor);
+		if (service != null) {
+			result = service.newDefaultConfiguration();
+			
+			ProcessEntityInfo processor = new ProcessEntityInfo(service);
+			processor.setEntities(entities);
+			
+			for (Entry<String, EntityInfo> entry : entities.entrySet()) {			
+				String fullyQualifiedName = entry.getValue().getFullyQualifiedName();
+				ICompilationUnit icu = Utils.findCompilationUnit(project, fullyQualifiedName);
+				if (icu != null){
+					CompilationUnit cu = Utils.getCompilationUnit(icu, true);
+					
+					processor.setEntityInfo(entry.getValue());			
+					cu.accept(processor);
+				}
+			}
+			
+			IMappings mappings = result.createMappings();
+			Collection<IPersistentClass> classesCollection = createHierarhyStructure(project, processor.getRootClasses());
+			for (IPersistentClass persistentClass : classesCollection) {
+				mappings.addClass(persistentClass);
 			}
 		}
-		
-		IMappings mappings = config.createMappings();
-		Collection<IPersistentClass> classesCollection = createHierarhyStructure(project, processor.getRootClasses());
-		for (IPersistentClass persistentClass : classesCollection) {
-			mappings.addClass(persistentClass);
-		}
-		return config;
+		return result;
 	}
 	
 	/**
