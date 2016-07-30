@@ -294,7 +294,7 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 	 */
 	private InputStream openContentStream(Properties props) {
         StringWriter stringWriter = new StringWriter();
-        IService service = ServiceLookup.findService(connectionInfoPage.getHibernateVersion()); //$NON-NLS-1$
+        IService service = ServiceLookup.findService(connectionInfoPage.getHibernateVersion()); 
         IExporter hce = service.createExporter("org.hibernate.tool.hbm2x.HibernateConfigurationExporter"); //$NON-NLS-1$
  		hce.setCustomProperties(props);
 		hce.setOutput(stringWriter);
