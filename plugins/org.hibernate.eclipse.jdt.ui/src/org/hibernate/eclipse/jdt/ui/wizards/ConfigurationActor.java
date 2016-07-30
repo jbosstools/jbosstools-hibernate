@@ -637,10 +637,10 @@ class TypeVisitor extends ASTVisitor{
 			}
 			prop.setCascade("none");//$NON-NLS-1$
 		} else if (tb.isEnum()){
-			value = buildSimpleValue("org.hibernate.type.EnumType");
+			value = buildSimpleValue("org.hibernate.type.EnumType"); //$NON-NLS-1$
 			Properties typeParameters = new Properties();
-			typeParameters.put("enumClass", tb.getBinaryName());
-			typeParameters.put("type", java.sql.Types.VARCHAR);
+			typeParameters.put("enumClass", tb.getBinaryName()); //$NON-NLS-1$
+			typeParameters.put("type", java.sql.Types.VARCHAR); //$NON-NLS-1$
 			value.setTypeParameters(typeParameters);
 			buildProperty(value);
 		} else if (ref != null /*&& ref.fullyQualifiedName.indexOf('$') < 0*/){
