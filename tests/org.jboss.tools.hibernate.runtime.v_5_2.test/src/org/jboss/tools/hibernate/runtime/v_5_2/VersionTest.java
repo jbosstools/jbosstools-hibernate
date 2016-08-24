@@ -6,8 +6,13 @@ import org.junit.Test;
 public class VersionTest {
 	
 	@Test
-	public void testVersion() {
-		Assert.assertEquals("5.2.0.Alpha3", org.hibernate.tool.Version.VERSION);
+	public void testToolsVersion() {
+		Assert.assertEquals("5.2.0.Beta1", org.hibernate.tool.Version.VERSION);
+	}
+
+	@Test
+	public void testCoreVersion() {
+		Assert.assertEquals("5.2.2.Final", org.hibernate.Version.getVersionString());
 	}
 
 }
