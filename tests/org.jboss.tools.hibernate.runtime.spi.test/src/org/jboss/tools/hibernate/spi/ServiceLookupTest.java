@@ -14,5 +14,11 @@ public class ServiceLookupTest {
 		Assert.assertNotNull(service);
 		Assert.assertEquals(TestService.class, service.getClass());
 	}
+	
+	@Test
+	public void testGetDefault() {
+		IService service = ServiceLookup.getDefault();
+		Assert.assertSame(ServiceLookup.findService("0.0.0.Test"), service);
+	}
 
 }

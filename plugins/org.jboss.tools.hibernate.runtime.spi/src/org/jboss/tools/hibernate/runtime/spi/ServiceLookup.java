@@ -33,6 +33,10 @@ public class ServiceLookup {
 		}
 		return versions;
 	}
+	
+	public static IService getDefault() {
+		return null;
+	}
 
 	private static void initializeServices() {
 		services = new HashMap<String, IService>();
