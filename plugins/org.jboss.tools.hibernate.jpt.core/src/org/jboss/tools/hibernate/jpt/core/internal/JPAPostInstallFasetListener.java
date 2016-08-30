@@ -219,20 +219,22 @@ public class JPAPostInstallFasetListener implements IFacetedProjectListener {
 		try {
 			IJavaProject javaProject = JavaCore.create(project);
 			IType type = javaProject.findType("org.hibernate.Version"); //$NON-NLS-1$
-			IJavaElement element = type.getPackageFragment();
-			IPackageFragmentRoot fragmentRoot = null;
-			while (!(element instanceof IPackageFragmentRoot)) {
-				element = element.getParent();
+			if (type != null) {
+				IJavaElement element = type.getPackageFragment();
+				IPackageFragmentRoot fragmentRoot = null;
+				while (!(element instanceof IPackageFragmentRoot)) {
+					element = element.getParent();
+				}
+				fragmentRoot = (IPackageFragmentRoot)element; 
+				URL url = fragmentRoot.getResolvedClasspathEntry().getPath().toFile().toURI().toURL();
+				URLClassLoader loader = new URLClassLoader(new URL[] { url });
+				Class<?> versionClass = loader.loadClass("org.hibernate.Version"); //$NON-NLS-1$
+				Method getVersionString = versionClass.getMethod("getVersionString", new Class<?>[] {}); //$NON-NLS-1$
+				result = (String)getVersionString.invoke(null, new Object[] {});
+				int endIndex = result.indexOf('.', result.indexOf('.') + 1);
+				result = result.substring(0, endIndex);
+				loader.close();
 			}
-			fragmentRoot = (IPackageFragmentRoot)element; 
-			URL url = fragmentRoot.getResolvedClasspathEntry().getPath().toFile().toURI().toURL();
-			URLClassLoader loader = new URLClassLoader(new URL[] { url });
-			Class<?> versionClass = loader.loadClass("org.hibernate.Version"); //$NON-NLS-1$
-			Method getVersionString = versionClass.getMethod("getVersionString", new Class<?>[] {}); //$NON-NLS-1$
-			result = (String)getVersionString.invoke(null, new Object[] {});
-			int endIndex = result.indexOf('.', result.indexOf('.') + 1);
-			result = result.substring(0, endIndex);
-			loader.close();
 		} catch (Exception e) {
 			HibernateJptPlugin.logException(e);
 		}
