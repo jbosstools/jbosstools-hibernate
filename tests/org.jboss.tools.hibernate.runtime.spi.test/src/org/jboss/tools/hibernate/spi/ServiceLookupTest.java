@@ -10,7 +10,7 @@ public class ServiceLookupTest {
 
 	@Test
 	public void testFindService() {
-		IService service = ServiceLookup.findService("test");
+		IService service = ServiceLookup.findService("0.0.0.Test");
 		Assert.assertNotNull(service);
 		Assert.assertEquals(TestService.class, service.getClass());
 	}
