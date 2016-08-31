@@ -35,7 +35,10 @@ public class ServiceLookup {
 	}
 	
 	public static IService getDefault() {
-		return null;
+		if (services == null) {
+			initializeServices();
+		}
+		return services.get(versions[versions.length - 1]);
 	}
 
 	private static void initializeServices() {

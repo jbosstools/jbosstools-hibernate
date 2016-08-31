@@ -10,9 +10,7 @@
   ******************************************************************************/
 package org.hibernate.eclipse.jdt.ui.wizards;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -138,12 +136,7 @@ public class ConfigurationActor {
 			}
 		}
 		if (result == null) {
-			List<String> versions = new ArrayList<>();
-			for (String version : ServiceLookup.getVersions()) {
-				versions.add(version);
-			}
-			Collections.sort(versions);
-			result = ServiceLookup.findService(versions.get(versions.size() - 1));
+			result = ServiceLookup.getDefault();
 		}
 		return result;
 	}

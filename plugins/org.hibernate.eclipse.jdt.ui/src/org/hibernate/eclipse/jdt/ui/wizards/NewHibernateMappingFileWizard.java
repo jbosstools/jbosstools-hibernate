@@ -307,7 +307,7 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 			ConsoleConfiguration cc = hibnat.getDefaultConsoleConfiguration();
 			return cc.getHibernateExtension().getHibernateService();
 		} else {
-			return ServiceLookup.findService("3.5"); //$NON-NLS-1$
+			return ServiceLookup.getDefault();
 		}
 	}
 	

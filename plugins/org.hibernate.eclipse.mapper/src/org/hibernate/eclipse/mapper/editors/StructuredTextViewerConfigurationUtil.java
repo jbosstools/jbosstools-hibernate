@@ -123,9 +123,7 @@ public class StructuredTextViewerConfigurationUtil {
 				}
 			}
 		} 
-		// return hibernate 3.5 service by default
-		// TODO find a way to return the correct service
-		return ServiceLookup.findService("3.5"); //$NON-NLS-1$
+		return ServiceLookup.getDefault();
 	}
 	
 }
