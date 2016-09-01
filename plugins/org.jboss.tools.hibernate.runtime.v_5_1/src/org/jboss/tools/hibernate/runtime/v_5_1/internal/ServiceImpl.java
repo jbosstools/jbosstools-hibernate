@@ -12,7 +12,6 @@ import java.util.Properties;
 import org.hibernate.Filter;
 import org.hibernate.Hibernate;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.JDBCReaderFactory;
@@ -58,7 +57,6 @@ import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
-import org.hibernate.tool.util.MetadataHelper;
 import org.hibernate.util.xpl.ReflectHelper;
 import org.jboss.tools.hibernate.runtime.common.AbstractPersistentClassFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractService;
@@ -135,14 +133,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public ISchemaExport newSchemaExport(IConfiguration hcfg) {
-		ISchemaExport result = null;
-		if (hcfg instanceof IFacade) {
-			Configuration configuration = (Configuration)((IFacade)hcfg).getTarget();
-			MetadataImplementor metadata = (MetadataImplementor)MetadataHelper.getMetadata(configuration);
-			SchemaExport schemaExport = new SchemaExport();
-			result = facadeFactory.createSchemaExport(schemaExport);
-		}
-		return result;
+		return facadeFactory.createSchemaExport(new SchemaExport());
 	}
 
 	@Override
