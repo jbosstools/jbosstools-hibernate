@@ -96,7 +96,7 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 	private Map<IJavaProject, Collection<EntityInfo>> project_infos = new HashMap<IJavaProject, Collection<EntityInfo>>();
 
 	private IStructuredSelection selection;
-	// process depth of current selection
+
 	private int processDepth = Integer.MIN_VALUE;
 	
 	private NewHibernateMappingElementsSelectionPage2 page0 = null;
@@ -226,13 +226,8 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 				IType[] types;
 				try {
 					types = cu.getTypes();
-					//remove java extension.
-					//String typeName = cu.getElementName().substring(0, cu.getElementName().length() - 5);
 					for (int j = 0; j < types.length; j++) {
-						//if (types[j].getElementName().equals(typeName)){
 							filteredElements.add(types[j]);
-						//	break;
-						//}
 					}
 				} catch (JavaModelException e) {
 					e.printStackTrace();
@@ -317,9 +312,6 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 		Map<IJavaProject, IPath> places2Gen = new HashMap<IJavaProject, IPath>();
 		for (Entry<IJavaProject, IConfiguration> entry : configs.entrySet()) {
 			IConfiguration config = entry.getValue();
-			IHibernateMappingGlobalSettings hmgs = getService(entry.getKey()).newHibernateMappingGlobalSettings();
-
-			//final IPath projPath = entry.getKey().getProject().getLocation();
 			IPath place2Gen = previewPage.getRootPlace2Gen().append(entry.getKey().getElementName());
 			places2Gen.put(entry.getKey(), place2Gen);
 			
@@ -331,9 +323,6 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 			HibernateMappingExporterWrapper hce = new HibernateMappingExporterWrapper(
 					entry.getKey(), config, folder2Gen);
 
-			hce.setGlobalSettings(hmgs);
-			//hce.setForEach("entity");
-			//hce.setFilePattern(file.getName());
 			try {
 				hce.start();
 			} catch (Exception e){
@@ -346,8 +335,6 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 	protected void cleanUpGenFolders() {
 		Set<IJavaProject> projs = previewPage.getJavaProjects();
 		for (IJavaProject proj : projs) {
-			// cleanup gen folder
-			//final IPath projPath = proj.getProject().getLocation();
 			IPath place2Gen = previewPage.getRootPlace2Gen().append(proj.getElementName());
 			File folder2Gen = new File(place2Gen.toOSString());
 			FileUtils.delete(folder2Gen);
