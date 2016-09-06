@@ -75,7 +75,6 @@ import org.hibernate.eclipse.nature.HibernateNature;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
-import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingGlobalSettings;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.spi.IService;
 import org.jboss.tools.hibernate.runtime.spi.ServiceLookup;
@@ -267,7 +266,6 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 					if (resource != null) {
 						final IPath projPath = proj.getResource().getLocation();
 						IPath place2Gen = previewPage.getRootPlace2Gen().append(proj.getElementName());
-						//
 						IPath tmpPath = resource.getLocation();
 						tmpPath = tmpPath.makeRelativeTo(projPath);
 						place2Gen = place2Gen.append(tmpPath);
@@ -288,9 +286,6 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 	    	target.setExportPOJODelegate(delegate);
 	    	this.proj = proj;
 	    }
-		public void setGlobalSettings(IHibernateMappingGlobalSettings hmgs) {
-			target.setGlobalSettings(hmgs);
-		}
 		public void start() {
 			target.start();
 		}
