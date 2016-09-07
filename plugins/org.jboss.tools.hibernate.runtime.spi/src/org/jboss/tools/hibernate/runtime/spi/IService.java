@@ -109,8 +109,6 @@ public interface IService {
 
 	IPrimaryKey newPrimaryKey();
 
-	IHibernateMappingGlobalSettings newHibernateMappingGlobalSettings();
-	
 	ITableIdentifier createTableIdentifier(ITable table);
 
 	ITableIdentifier newTableIdentifier(String catalog, String schema, String typename);

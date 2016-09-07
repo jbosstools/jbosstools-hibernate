@@ -52,7 +52,6 @@ import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.hibernate.tool.hbm2x.Exporter;
-import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.util.ReflectHelper;
 import org.hibernate.util.StringHelper;
@@ -72,7 +71,6 @@ import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
-import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingGlobalSettings;
 import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.IMetaDataDialect;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
@@ -423,12 +421,6 @@ public class ServiceImpl extends AbstractService implements IService {
 	@Override
 	public IPrimaryKey newPrimaryKey() {
 		return facadeFactory.createPrimaryKey(new PrimaryKey());
-	}
-
-	@Override
-	public IHibernateMappingGlobalSettings newHibernateMappingGlobalSettings() {
-		return facadeFactory.createHibernateMappingGlobalSettings(
-				new HibernateMappingGlobalSettings());
 	}
 
 	@Override
