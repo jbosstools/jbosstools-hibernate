@@ -29,7 +29,6 @@ import org.hibernate.eclipse.console.test.utils.ConsoleConfigUtils;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
-import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingGlobalSettings;
 import org.jboss.tools.hibernate.runtime.spi.IService;
 import org.jboss.tools.hibernate.runtime.spi.ServiceLookup;
 
@@ -82,12 +81,7 @@ public class HbmExportExceptionTest extends BaseTestSetCase {
 				}
 			}
 			
-			IHibernateMappingGlobalSettings hmgs = service.newHibernateMappingGlobalSettings();
-			
 			IHibernateMappingExporter hce = service.newHibernateMappingExporter(config, getSrcFolder());
-
-			
-			hce.setGlobalSettings(hmgs);
 			try {
 				hce.start();
 				IArtifactCollector collector = service.newArtifactCollector();
