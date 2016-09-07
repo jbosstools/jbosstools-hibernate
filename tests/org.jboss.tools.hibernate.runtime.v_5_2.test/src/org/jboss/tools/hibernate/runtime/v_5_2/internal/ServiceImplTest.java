@@ -43,7 +43,6 @@ import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
-import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
 import org.hibernate.tool.hbm2x.POJOExporter;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
@@ -57,7 +56,6 @@ import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
-import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingGlobalSettings;
 import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.IMetaDataDialect;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
@@ -541,16 +539,6 @@ public class ServiceImplTest {
 		Object target = ((IFacade)primaryKey).getTarget();
 		Assert.assertNotNull(target);
 		Assert.assertTrue(target instanceof PrimaryKey);
-	}
-	
-	@Test
-	public void testNewHibernateMappingGlobalSettings() {
-		IHibernateMappingGlobalSettings hibernateMappingGlobalSettings =
-				service.newHibernateMappingGlobalSettings();
-		Assert.assertNotNull(hibernateMappingGlobalSettings);
-		Object target = ((IFacade)hibernateMappingGlobalSettings).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof HibernateMappingGlobalSettings);
 	}
 	
 	@Test
