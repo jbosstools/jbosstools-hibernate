@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
-import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingGlobalSettings;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 
 public abstract class AbstractHibernateMappingExporterFacade 
@@ -18,20 +17,6 @@ implements IHibernateMappingExporter {
 		super(facadeFactory, target);
 	}
 
-	@Override
-	public void setGlobalSettings(IHibernateMappingGlobalSettings hmgs) {
-		Object hmgsTarget = Util.invokeMethod(
-				hmgs, 
-				"getTarget", 
-				new Class[] {}, 
-				new Object[] {});
-		Util.invokeMethod(
-				getTarget(), 
-				"setGlobalSettings", 
-				new Class[] { getHibernateMappingGlobalSettingsClass() }, 
-				new Object[] { hmgsTarget });
-	}
-	
 	@Override
 	public void start() {
 		Util.invokeMethod(

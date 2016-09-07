@@ -5,7 +5,6 @@ import java.util.Map;
 
 public interface IHibernateMappingExporter {
 
-	void setGlobalSettings(IHibernateMappingGlobalSettings hmgs);
 	void start();
 	File getOutputDirectory();
 	void setOutputDirectory(File directory);
