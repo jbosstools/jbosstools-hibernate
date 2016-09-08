@@ -19,7 +19,6 @@ import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
-import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingGlobalSettings;
 import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.IMapping;
@@ -107,10 +106,6 @@ public abstract class AbstractFacadeFactory implements IFacadeFactory {
 	
 	public ITableIdentifier createTableIdentifier(Object target) {
 		return new AbstractTableIdentifierFacade(this, target) {};
-	}
-	
-	public IHibernateMappingGlobalSettings createHibernateMappingGlobalSettings(Object target) {
-		return new AbstractHibernateMappingGlobalSettingsFacade(this, target) {};
 	}
 	
 	public IMappings createMappings(Object target) {

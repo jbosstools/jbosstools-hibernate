@@ -19,7 +19,6 @@ import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
-import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingGlobalSettings;
 import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.IMapping;
@@ -65,7 +64,6 @@ public interface IFacadeFactory {
 	ITableFilter createTableFilter(Object target);
 	IExporter createExporter(Object target);
 	ITableIdentifier createTableIdentifier(Object target);
-	IHibernateMappingGlobalSettings createHibernateMappingGlobalSettings(Object target);
 	IMappings createMappings(Object target);
 	IClassMetadata createClassMetadata(Object target);
 	ICollectionMetadata createCollectionMetadata(Object target);
