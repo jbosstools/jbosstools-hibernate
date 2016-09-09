@@ -17,32 +17,33 @@ public class ServiceLookup {
 	
 	private static final String SERVICES_EXTENSION_ID = "org.jboss.tools.hibernate.runtime.spi.services"; //$NON-NLS-1$
 
-	private static Map<String, IService> services = null;
-	private static String[] versions = null;
+	private static IService DEFAULT_SERVICE = null;
+	private static Map<String, IService> SERVICES_MAP = null;
+	private static String[] VERSIONS = null;
 	
 	public static IService findService(String hibernateVersion) {
-		if (services == null) {
-			initializeServices();
+		if (SERVICES_MAP == null) {
+			initialize();
 		}
-		return services.get(hibernateVersion);
+		return SERVICES_MAP.get(hibernateVersion);
 	}
 	
 	public static String[] getVersions() {
-		if (services == null) {
-			initializeServices();
+		if (SERVICES_MAP == null) {
+			initialize();
 		}
-		return versions;
+		return VERSIONS;
 	}
 	
 	public static IService getDefault() {
-		if (services == null) {
-			initializeServices();
+		if (DEFAULT_SERVICE == null) {
+			initialize();
 		}
-		return services.get(versions[versions.length - 1]);
+		return DEFAULT_SERVICE;
 	}
 
-	private static void initializeServices() {
-		services = new HashMap<String, IService>();
+	private static void initialize() {
+		SERVICES_MAP = new HashMap<String, IService>();
 		IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
 		IExtensionPoint extensionPoint = extensionRegistry.getExtensionPoint(SERVICES_EXTENSION_ID);
 		for (IExtension extension : extensionPoint.getExtensions()) {
@@ -51,16 +52,17 @@ public class ServiceLookup {
 					Object object = configurationElement.createExecutableExtension("class");
 					String name = configurationElement.getAttribute("name");
 					if (object != null && name != null && object instanceof IService) {
-						services.put(name, (IService)object);
+						SERVICES_MAP.put(name, (IService)object);
 					}
 				} catch (CoreException e) {
 					HibernateServicePlugin.getDefault().log(e);
 				}
 			}
 		}
-		ArrayList<String> list = new ArrayList<String>(services.keySet());
+		ArrayList<String> list = new ArrayList<String>(SERVICES_MAP.keySet());
 		Collections.sort(list);
-		versions = list.toArray(new String[list.size()]);
+		VERSIONS = list.toArray(new String[list.size()]);
+		DEFAULT_SERVICE = SERVICES_MAP.get(VERSIONS[VERSIONS.length - 1]);
 	}
 	
 }
