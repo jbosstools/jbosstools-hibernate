@@ -116,8 +116,8 @@ public class HibernatePropertiesContentAssistProcessor extends
 		if(!key.endsWith(dot)) key += dot;
 		key += "description"; //$NON-NLS-1$
 		String description = WizardKeys.getString(key);
-		if("@NULL_KEY@".equals(description) || description == null) {
-			description = propertyName + "<p>TODO - add description into keys-hibernate-config.properties";
+		if("@NULL_KEY@".equals(description) || description == null) { //$NON-NLS-1$
+			description = propertyName + "<p>TODO - add description into keys-hibernate-config.properties"; //$NON-NLS-1$
 		}
 		return description;
 	}
