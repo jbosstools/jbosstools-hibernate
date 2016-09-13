@@ -61,7 +61,6 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.ui.ide.IDE;
-import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
@@ -71,7 +70,6 @@ import org.hibernate.eclipse.jdt.ui.internal.JdtUiMessages;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.collect.AllEntitiesInfoCollector;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
-import org.hibernate.eclipse.nature.HibernateNature;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
@@ -292,13 +290,17 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 	}
 
 	private IService getService(IJavaProject project) {
-		HibernateNature hibnat = HibernateNature.getHibernateNature(project);
+		// Since generating HBM files does not work (yet) with the 5.x runtimes, we always use 3.5 (for now) 
+		// See JBIDE-23066 and JBIDE-21766
+/**		HibernateNature hibnat = HibernateNature.getHibernateNature(project);
 		if (hibnat != null) {
 			ConsoleConfiguration cc = hibnat.getDefaultConsoleConfiguration();
 			return cc.getHibernateExtension().getHibernateService();
 		} else {
 			return ServiceLookup.getDefault();
 		}
+**/
+		return ServiceLookup.findService("3.5"); //$NON-NLS-1$
 	}
 	
 	protected Map<IJavaProject, IPath> getPlaces2Gen() {

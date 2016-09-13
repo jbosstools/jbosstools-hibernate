@@ -40,15 +40,12 @@ import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.WildcardType;
-import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
-import org.hibernate.eclipse.console.common.HibernateExtension;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.collect.AllEntitiesInfoCollector;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefEntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefType;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
-import org.hibernate.eclipse.nature.HibernateNature;
 import org.hibernate.util.xpl.StringHelper;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
@@ -124,7 +121,9 @@ public class ConfigurationActor {
 	}
 	
 	private IService getService(IJavaProject project) {
-		IService result = null;
+		// Since generating HBM files does not work (yet) with the 5.x runtimes, we always use 3.5 (for now) 
+		// See JBIDE-23066 and JBIDE-21766
+/**		IService result = null;
 		HibernateNature hibnat = HibernateNature.getHibernateNature(project);
 		if (hibnat != null) {
 			ConsoleConfiguration cc = hibnat.getDefaultConsoleConfiguration();
@@ -139,6 +138,8 @@ public class ConfigurationActor {
 			result = ServiceLookup.getDefault();
 		}
 		return result;
+**/
+		return ServiceLookup.findService("3.5"); //$NON-NLS-1$
 	}
 	
 	protected IConfiguration createConfiguration(IJavaProject project, Map<String, EntityInfo> entities) {
