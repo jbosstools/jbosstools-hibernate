@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.jboss.tools.hibernatetools</groupId>
 		<artifactId>plugins</artifactId>
-		<version>5.1.1-SNAPSHOT</version>
+		<version>5.1.2-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.hibernatetools.plugins</groupId>
 	<artifactId>org.jboss.tools.hibernate.libs.antlr.v_2_7_7</artifactId> 
