@@ -12,7 +12,6 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
 import org.eclipse.jpt.jpa.core.context.SpecifiedTable;
-import org.eclipse.jpt.jpa.core.context.Table;
 
 /**
  * @author Dmitry Geraskov
