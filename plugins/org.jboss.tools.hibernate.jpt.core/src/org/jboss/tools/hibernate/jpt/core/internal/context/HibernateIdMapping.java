@@ -10,7 +10,6 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
-import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.IdMapping2_0;
 
 /**
