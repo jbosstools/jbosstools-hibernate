@@ -222,8 +222,10 @@ public class HibernateRefactoringUtil {
 			IRuntimeClasspathEntry[] entries = JavaRuntime.computeUnresolvedRuntimeClasspath(config);
 			List<String> oldMementos = config.getAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, Collections.EMPTY_LIST);
 			List<String> newMementos = new ArrayList<String>();
-			boolean isChanged = updateClasspathEntries(entries, oldMementos, newMementos, oldPath, newPath);
-			if (isChanged) wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, newMementos);
+			if (entries.length == oldMementos.size()) {
+				boolean isChanged = updateClasspathEntries(entries, oldMementos, newMementos, oldPath, newPath);
+				if (isChanged) wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, newMementos);
+			}
 		}
 		catch (CoreException e) {
 			HibernateConsolePlugin.getDefault().log( e );
@@ -283,7 +285,7 @@ public class HibernateRefactoringUtil {
 	public static boolean updateClasspathEntries(IRuntimeClasspathEntry[] entries, List<String> oldMementos, List<String> newMementos, IPath oldPath, IPath newPath)
 			throws CoreException {
 		Assert.isNotNull(newMementos);
-		Assert.isNotNull(entries.length == oldMementos.size());
+		Assert.isTrue(entries.length == oldMementos.size());
 		boolean isChanged = false;
 		String attrib;
 		String projName;
