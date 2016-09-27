@@ -52,7 +52,7 @@ public class JPAProjectConfigurator implements ProjectConfigurator {
 	@Override
 	public boolean canConfigure(IProject project, Set<IPath> ignoredDirectories, IProgressMonitor monitor) {
 		try {
-			RecursiveFileFinder finder = new RecursiveFileFinder("persistence.xml", ignoredDirectories);
+			RecursiveFileFinder finder = new RecursiveFileFinder("persistence.xml", ignoredDirectories); //$NON-NLS-1$
 			project.accept(finder);
 			return finder.getFile() != null;
 		} catch (CoreException ex) {
@@ -94,7 +94,7 @@ public class JPAProjectConfigurator implements ProjectConfigurator {
 				// TODO improve platform detection
 
 				LibraryInstallDelegate libraryDelegate = new LibraryInstallDelegate(facetedProject, version);
-				ILibraryProvider libraryProvider = LibraryProviderFramework.getProvider("jpa-no-op-library-provider");
+				ILibraryProvider libraryProvider = LibraryProviderFramework.getProvider("jpa-no-op-library-provider"); //$NON-NLS-1$
 				libraryDelegate.setLibraryProvider(libraryProvider);
 
 				IDataModel dm = DataModelFactory.createDataModel(new JpaFacetInstallDataModelProvider());
