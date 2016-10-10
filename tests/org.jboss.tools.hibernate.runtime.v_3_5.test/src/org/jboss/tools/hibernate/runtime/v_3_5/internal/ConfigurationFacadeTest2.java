@@ -1,5 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
+import java.util.Properties;
+
 import org.hibernate.cfg.Configuration;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
@@ -27,4 +29,14 @@ public class ConfigurationFacadeTest2 {
 		Assert.assertEquals("bar", configurationFacade.getProperty("foo"));
 	}
 
+	@Test 
+	public void testSetProperties() {
+		Properties testProperties = new Properties();
+		Assert.assertNotSame(testProperties, configuration.getProperties());
+		Assert.assertSame(
+				configurationFacade, 
+				configurationFacade.setProperties(testProperties));
+		Assert.assertSame(testProperties, configuration.getProperties());
+	}
+	
 }
