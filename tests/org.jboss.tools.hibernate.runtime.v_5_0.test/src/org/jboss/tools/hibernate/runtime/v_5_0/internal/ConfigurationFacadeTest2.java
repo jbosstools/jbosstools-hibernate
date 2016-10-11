@@ -13,6 +13,8 @@ import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.helpers.DefaultHandler;
 
 public class ConfigurationFacadeTest2 {
 	
@@ -73,6 +75,15 @@ public class ConfigurationFacadeTest2 {
 		Binding<?> binding = metadataSources.getXmlBindings().iterator().next();
 		Assert.assertEquals(testFile.getAbsolutePath(), binding.getOrigin().getName());
 		Assert.assertTrue(testFile.delete());
+	}
+	
+	@Test
+	public void testSetEntityResolver() {
+		EntityResolver testResolver = new DefaultHandler();
+		ConfigurationFacadeImpl facade = (ConfigurationFacadeImpl)configurationFacade;
+		Assert.assertNull(facade.entityResolver);
+		configurationFacade.setEntityResolver(testResolver);
+		Assert.assertSame(testResolver, facade.entityResolver);
 	}
 	
 }

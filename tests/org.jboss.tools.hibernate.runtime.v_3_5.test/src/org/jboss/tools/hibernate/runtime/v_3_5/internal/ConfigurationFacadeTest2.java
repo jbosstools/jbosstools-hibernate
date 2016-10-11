@@ -10,6 +10,8 @@ import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.helpers.DefaultHandler;
 
 public class ConfigurationFacadeTest2 {
 	
@@ -70,6 +72,14 @@ public class ConfigurationFacadeTest2 {
 				configurationFacade.addFile(testFile));
 		Assert.assertNotNull(configuration.getClassMapping(fooClassName));
 		Assert.assertTrue(testFile.delete());
+	}
+	
+	@Test
+	public void testSetEntityResolver() {
+		EntityResolver testResolver = new DefaultHandler();
+		Assert.assertNotSame(testResolver, configuration.getEntityResolver());
+		configurationFacade.setEntityResolver(testResolver);
+		Assert.assertSame(testResolver, configuration.getEntityResolver());
 	}
 	
 }
