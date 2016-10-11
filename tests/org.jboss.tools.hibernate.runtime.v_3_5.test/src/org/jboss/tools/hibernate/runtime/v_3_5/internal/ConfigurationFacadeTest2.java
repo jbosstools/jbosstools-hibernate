@@ -1,5 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
+import java.io.File;
+import java.io.PrintWriter;
 import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
@@ -10,6 +12,21 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class ConfigurationFacadeTest2 {
+	
+	private static final String TEST_HBM_XML_STRING =
+			"<!DOCTYPE hibernate-mapping PUBLIC" +
+			"		'-//Hibernate/Hibernate Mapping DTD 3.0//EN'" +
+			"		'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>" +
+			"<hibernate-mapping package='org.jboss.tools.hibernate.runtime.v_3_5.internal'>" +
+			"  <class name='ConfigurationFacadeTest2$Foo'>" + 
+			"    <id name='id'/>" +
+			"  </class>" +
+			"</hibernate-mapping>";
+	
+	static class Foo {
+		public String id;
+	}
+
 
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 
@@ -37,6 +54,24 @@ public class ConfigurationFacadeTest2 {
 				configurationFacade, 
 				configurationFacade.setProperties(testProperties));
 		Assert.assertSame(testProperties, configuration.getProperties());
+	}
+	
+	@Test
+	public void testAddFile() throws Exception {
+		File testFile = File.createTempFile("test", "hbm.xml");
+		PrintWriter printWriter = new PrintWriter(testFile);
+		printWriter.write(TEST_HBM_XML_STRING);
+		printWriter.close();
+		Configuration cfg = new Configuration();
+		cfg.addFile(testFile);
+		String fooClassName = 
+				"org.jboss.tools.hibernate.runtime.v_3_5.internal.ConfigurationFacadeTest2$Foo";
+		Assert.assertNull(configuration.getClassMapping(fooClassName));
+		Assert.assertSame(
+				configurationFacade,
+				configurationFacade.addFile(testFile));
+		Assert.assertNotNull(configuration.getClassMapping(fooClassName));
+		Assert.assertTrue(testFile.delete());
 	}
 	
 }
