@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate.runtime.v_3_5.internal;
+package org.jboss.tools.hibernate.runtime.v_3_6.internal;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -17,7 +17,7 @@ public class ConfigurationFacadeTest2 {
 			"<!DOCTYPE hibernate-mapping PUBLIC" +
 			"		'-//Hibernate/Hibernate Mapping DTD 3.0//EN'" +
 			"		'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>" +
-			"<hibernate-mapping package='org.jboss.tools.hibernate.runtime.v_3_5.internal'>" +
+			"<hibernate-mapping package='org.jboss.tools.hibernate.runtime.v_3_6.internal'>" +
 			"  <class name='ConfigurationFacadeTest2$Foo'>" + 
 			"    <id name='id'/>" +
 			"  </class>" +
@@ -26,8 +26,7 @@ public class ConfigurationFacadeTest2 {
 	static class Foo {
 		public String id;
 	}
-
-
+	
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 
 	private IConfiguration configurationFacade = null;
@@ -63,11 +62,16 @@ public class ConfigurationFacadeTest2 {
 		printWriter.write(TEST_HBM_XML_STRING);
 		printWriter.close();
 		String fooClassName = 
-				"org.jboss.tools.hibernate.runtime.v_3_5.internal.ConfigurationFacadeTest2$Foo";
+				"org.jboss.tools.hibernate.runtime.v_3_6.internal.ConfigurationFacadeTest2$Foo";
+		// make sure the mappings are built before checking whether the class exists
+		configuration.buildMappings();
 		Assert.assertNull(configuration.getClassMapping(fooClassName));
 		Assert.assertSame(
 				configurationFacade,
 				configurationFacade.addFile(testFile));
+		// now that the file has been added, rebuild the mappings 
+		configuration.buildMappings();
+		// now the class should exist 
 		Assert.assertNotNull(configuration.getClassMapping(fooClassName));
 		Assert.assertTrue(testFile.delete());
 	}
