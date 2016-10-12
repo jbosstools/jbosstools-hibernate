@@ -5,8 +5,12 @@ import java.io.PrintWriter;
 import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.cfg.NamingStrategy;
+import org.jboss.tools.hibernate.runtime.common.AbstractNamingStrategyFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -80,6 +84,14 @@ public class ConfigurationFacadeTest2 {
 		Assert.assertNotSame(testResolver, configuration.getEntityResolver());
 		configurationFacade.setEntityResolver(testResolver);
 		Assert.assertSame(testResolver, configuration.getEntityResolver());
+	}
+	
+	@Test
+	public void testGetEntityResolver() {
+		EntityResolver testResolver = new DefaultHandler();
+		Assert.assertNotSame(testResolver, configurationFacade.getEntityResolver());
+		configuration.setEntityResolver(testResolver);
+		Assert.assertSame(testResolver, configurationFacade.getEntityResolver());
 	}
 	
 }

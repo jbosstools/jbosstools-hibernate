@@ -86,4 +86,12 @@ public class ConfigurationFacadeTest2 {
 		Assert.assertSame(testResolver, configuration.getEntityResolver());
 	}
 	
+	@Test
+	public void testGetEntityResolver() {
+		EntityResolver testResolver = new DefaultHandler();
+		Assert.assertNotSame(testResolver, configurationFacade.getEntityResolver());
+		configuration.setEntityResolver(testResolver);
+		Assert.assertSame(testResolver, configurationFacade.getEntityResolver());
+	}
+	
 }
