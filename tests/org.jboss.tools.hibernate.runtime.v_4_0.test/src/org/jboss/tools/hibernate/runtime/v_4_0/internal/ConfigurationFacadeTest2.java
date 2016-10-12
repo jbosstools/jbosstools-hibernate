@@ -5,8 +5,11 @@ import java.io.PrintWriter;
 import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.cfg.NamingStrategy;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -92,6 +95,15 @@ public class ConfigurationFacadeTest2 {
 		Assert.assertNotSame(testResolver, configurationFacade.getEntityResolver());
 		configuration.setEntityResolver(testResolver);
 		Assert.assertSame(testResolver, configurationFacade.getEntityResolver());
+	}
+	
+	@Test
+	public void testSetNamingStrategy() {
+		NamingStrategy dns = new DefaultNamingStrategy();
+		INamingStrategy namingStrategy = FACADE_FACTORY.createNamingStrategy(dns);
+		Assert.assertNotSame(dns, configuration.getNamingStrategy());
+		configurationFacade.setNamingStrategy(namingStrategy);
+		Assert.assertSame(dns, configuration.getNamingStrategy());
 	}
 	
 }

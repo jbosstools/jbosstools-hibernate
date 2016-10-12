@@ -7,9 +7,11 @@ import java.util.Properties;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.tool.util.MetadataHelper;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -93,6 +95,16 @@ public class ConfigurationFacadeTest2 {
 		Assert.assertNotSame(testResolver, configurationFacade.getEntityResolver());
 		facade.entityResolver = testResolver;
 		Assert.assertSame(testResolver, configurationFacade.getEntityResolver());
+	}
+	
+	@Test
+	public void testSetNamingStrategy() {
+		DefaultNamingStrategy dns = new DefaultNamingStrategy();
+		INamingStrategy namingStrategy = FACADE_FACTORY.createNamingStrategy(dns);
+		ConfigurationFacadeImpl facade = (ConfigurationFacadeImpl)configurationFacade;
+		Assert.assertNotSame(dns, facade.namingStrategy);
+		configurationFacade.setNamingStrategy(namingStrategy);
+		Assert.assertSame(dns, facade.namingStrategy);
 	}
 	
 }
