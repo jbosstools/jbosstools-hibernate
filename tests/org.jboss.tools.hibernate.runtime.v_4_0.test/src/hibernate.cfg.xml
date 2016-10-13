@@ -3,6 +3,7 @@
 		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
 		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
-    <session-factory>
+    <session-factory name='bar'>
+    	<mapping resource="org/jboss/tools/hibernate/runtime/v_4_0/internal/test/Foo.hbm.xml" />
     </session-factory>
 </hibernate-configuration>

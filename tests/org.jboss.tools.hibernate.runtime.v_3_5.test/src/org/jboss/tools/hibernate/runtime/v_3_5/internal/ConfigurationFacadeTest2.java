@@ -111,4 +111,13 @@ public class ConfigurationFacadeTest2 {
 		Assert.assertEquals("bar", configuration.getProperty("foo"));
 	}
 	
+	@Test
+	public void testConfigure() {
+		String fooClassName = 
+				"org.jboss.tools.hibernate.runtime.v_3_5.internal.test.Foo";
+		Assert.assertNull(configuration.getClassMapping(fooClassName));
+		configurationFacade.configure();
+		Assert.assertNotNull(configuration.getClassMapping(fooClassName));
+	}
+	
 }
