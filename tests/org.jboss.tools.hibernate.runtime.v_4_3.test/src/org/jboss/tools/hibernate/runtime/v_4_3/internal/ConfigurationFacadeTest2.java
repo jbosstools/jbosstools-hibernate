@@ -6,8 +6,11 @@ import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.cfg.Mappings;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.junit.Assert;
 import org.junit.Before;
@@ -123,4 +126,17 @@ public class ConfigurationFacadeTest2 {
 		Assert.assertNotNull(configuration.getClassMapping(fooClassName));
 	}
 	
+	@Test 
+	public void testCreateMappings() {
+		configuration.setProperty("createMappingsProperty", "a lot of blabla");
+		IMappings mappingsFacade = configurationFacade.createMappings();
+		Assert.assertNotNull(mappingsFacade);
+		Object object = ((IFacade)mappingsFacade).getTarget();
+		Assert.assertTrue(object instanceof Mappings);
+		Mappings mappings = (Mappings)object;
+		Assert.assertEquals(
+				"a lot of blabla", 
+				mappings.getConfigurationProperties().get("createMappingsProperty"));
+	}
+
 }

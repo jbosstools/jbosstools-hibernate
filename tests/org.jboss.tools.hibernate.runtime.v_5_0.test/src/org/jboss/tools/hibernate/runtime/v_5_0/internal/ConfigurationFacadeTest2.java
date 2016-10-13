@@ -10,8 +10,10 @@ import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.tool.util.MetadataHelper;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.junit.Assert;
 import org.junit.Before;
@@ -128,4 +130,12 @@ public class ConfigurationFacadeTest2 {
 		Assert.assertNotNull(metadata.getEntityBinding(fooClassName));
 	}
 	
+	@Test 
+	public void testCreateMappings() {
+		IMappings mappingsFacade = configurationFacade.createMappings();
+		Assert.assertNotNull(mappingsFacade);
+		Object object = ((IFacade)mappingsFacade).getTarget();
+		Assert.assertNull(object);
+	}
+
 }
