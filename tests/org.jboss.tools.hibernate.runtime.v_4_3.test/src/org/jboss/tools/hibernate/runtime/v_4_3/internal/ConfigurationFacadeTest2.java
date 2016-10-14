@@ -7,9 +7,11 @@ import java.util.Properties;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.Mappings;
+import org.hibernate.dialect.Dialect;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.junit.Assert;
@@ -139,4 +141,13 @@ public class ConfigurationFacadeTest2 {
 				mappings.getConfigurationProperties().get("createMappingsProperty"));
 	}
 
+	@Test
+	public void testGetDialect() {
+		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+		IDialect dialectFacade = configurationFacade.getDialect();
+		Assert.assertNotNull(dialectFacade);
+		Dialect dialect = (Dialect)((IFacade)dialectFacade).getTarget();
+		Assert.assertEquals("org.hibernate.dialect.H2Dialect", dialect.getClass().getName());
+	}
+	
 }

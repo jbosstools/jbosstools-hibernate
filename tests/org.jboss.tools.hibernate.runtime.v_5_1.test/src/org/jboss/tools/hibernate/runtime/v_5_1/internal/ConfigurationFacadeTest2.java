@@ -9,10 +9,12 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.dialect.Dialect;
 import org.hibernate.tool.util.MetadataHelper;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.junit.Assert;
@@ -138,4 +140,13 @@ public class ConfigurationFacadeTest2 {
 		Assert.assertNull(object);
 	}
 
+	@Test
+	public void testGetDialect() {
+		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+		IDialect dialectFacade = configurationFacade.getDialect();
+		Assert.assertNotNull(dialectFacade);
+		Dialect dialect = (Dialect)((IFacade)dialectFacade).getTarget();
+		Assert.assertEquals("org.hibernate.dialect.H2Dialect", dialect.getClass().getName());
+	}
+	
 }

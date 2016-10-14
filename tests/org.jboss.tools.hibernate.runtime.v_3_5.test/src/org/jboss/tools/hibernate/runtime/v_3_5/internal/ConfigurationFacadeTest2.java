@@ -8,9 +8,11 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.Mappings;
 import org.hibernate.cfg.NamingStrategy;
+import org.hibernate.dialect.Dialect;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.junit.Assert;
@@ -21,7 +23,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class ConfigurationFacadeTest2 {
 	
-	private static final String TEST_HBM_XML_STRING =
+	private static final String FOO_HBM_XML_STRING =
 			"<!DOCTYPE hibernate-mapping PUBLIC" +
 			"		'-//Hibernate/Hibernate Mapping DTD 3.0//EN'" +
 			"		'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>" +
@@ -31,8 +33,24 @@ public class ConfigurationFacadeTest2 {
 			"  </class>" +
 			"</hibernate-mapping>";
 	
+	private static final String BAR_HBM_XML_STRING =
+			"<!DOCTYPE hibernate-mapping PUBLIC" +
+			"		'-//Hibernate/Hibernate Mapping DTD 3.0//EN'" +
+			"		'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>" +
+			"<hibernate-mapping package='org.jboss.tools.hibernate.runtime.v_3_5.internal'>" +
+			"  <class name='ConfigurationFacadeTest2$Foo'>" + 
+			"    <id name='id'/>" +
+			"    <property name='foo'/>" +
+			"  </class>" +
+			"</hibernate-mapping>";
+	
 	static class Foo {
 		public String id;
+	}
+	
+	static class Bar {
+		public String id;
+		public Foo foo;
 	}
 
 
@@ -68,7 +86,7 @@ public class ConfigurationFacadeTest2 {
 	public void testAddFile() throws Exception {
 		File testFile = File.createTempFile("test", "hbm.xml");
 		PrintWriter printWriter = new PrintWriter(testFile);
-		printWriter.write(TEST_HBM_XML_STRING);
+		printWriter.write(FOO_HBM_XML_STRING);
 		printWriter.close();
 		String fooClassName = 
 				"org.jboss.tools.hibernate.runtime.v_3_5.internal.ConfigurationFacadeTest2$Foo";
@@ -134,6 +152,15 @@ public class ConfigurationFacadeTest2 {
 		Assert.assertEquals(
 				"a lot of blabla", 
 				mappings.getConfigurationProperties().get("createMappingsProperty"));
+	}
+	
+	@Test
+	public void testGetDialect() {
+		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+		IDialect dialectFacade = configurationFacade.getDialect();
+		Assert.assertNotNull(dialectFacade);
+		Dialect dialect = (Dialect)((IFacade)dialectFacade).getTarget();
+		Assert.assertEquals("org.hibernate.dialect.H2Dialect", dialect.getClass().getName());
 	}
 	
 }
