@@ -3,12 +3,15 @@ package org.jboss.tools.hibernate.runtime.v_3_6.internal;
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.Properties;
+import java.util.Set;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.Mappings;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.dialect.Dialect;
+import org.hibernate.mapping.Collection;
+import org.hibernate.mapping.OneToMany;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
@@ -23,18 +26,37 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class ConfigurationFacadeTest2 {
 	
-	private static final String TEST_HBM_XML_STRING =
+	private static final String FOO_HBM_XML_STRING =
 			"<!DOCTYPE hibernate-mapping PUBLIC" +
 			"		'-//Hibernate/Hibernate Mapping DTD 3.0//EN'" +
 			"		'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>" +
 			"<hibernate-mapping package='org.jboss.tools.hibernate.runtime.v_3_6.internal'>" +
 			"  <class name='ConfigurationFacadeTest2$Foo'>" + 
-			"    <id name='id'/>" +
+			"    <id name='fooId'/>" +
+			"  </class>" +
+			"</hibernate-mapping>";
+	
+	private static final String BAR_HBM_XML_STRING =
+			"<!DOCTYPE hibernate-mapping PUBLIC" +
+			"		'-//Hibernate/Hibernate Mapping DTD 3.0//EN'" +
+			"		'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>" +
+			"<hibernate-mapping package='org.jboss.tools.hibernate.runtime.v_3_6.internal'>" +
+			"  <class name='ConfigurationFacadeTest2$Bar'>" + 
+			"    <id name='barId'/>" +
+			"    <set name='fooSet' inverse='true'>" +
+			"      <key column='fooId'/>" +
+			"      <one-to-many class='ConfigurationFacadeTest2$Foo'/>" +
+			"    </set>" +
 			"  </class>" +
 			"</hibernate-mapping>";
 	
 	static class Foo {
-		public String id;
+		public String fooId;
+	}
+	
+	static class Bar {
+		public String barId;
+		public Set<Foo> fooSet;
 	}
 	
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
@@ -69,7 +91,7 @@ public class ConfigurationFacadeTest2 {
 	public void testAddFile() throws Exception {
 		File testFile = File.createTempFile("test", "hbm.xml");
 		PrintWriter printWriter = new PrintWriter(testFile);
-		printWriter.write(TEST_HBM_XML_STRING);
+		printWriter.write(FOO_HBM_XML_STRING);
 		printWriter.close();
 		String fooClassName = 
 				"org.jboss.tools.hibernate.runtime.v_3_6.internal.ConfigurationFacadeTest2$Foo";
@@ -142,6 +164,29 @@ public class ConfigurationFacadeTest2 {
 				mappings.getConfigurationProperties().get("createMappingsProperty"));
 	}
 
+	@Test
+	public void testBuildMappings() throws Exception {
+		File fooFile = File.createTempFile("foo", "hbm.xml");
+		PrintWriter fooWriter = new PrintWriter(fooFile);
+		fooWriter.write(FOO_HBM_XML_STRING);
+		fooWriter.close();
+		configuration.addFile(fooFile);
+		File barFile = File.createTempFile("bar", "hbm.xml");
+		PrintWriter barWriter = new PrintWriter(barFile);
+		barWriter.write(BAR_HBM_XML_STRING);
+		barWriter.close();
+		configuration.addFile(barFile);
+		String collectionName = 
+			"org.jboss.tools.hibernate.runtime.v_3_6.internal.ConfigurationFacadeTest2$Bar.fooSet";
+		Assert.assertNull(configuration.getCollectionMapping(collectionName));
+		configurationFacade.buildMappings();
+		Collection collection = configuration.getCollectionMapping(collectionName);
+		OneToMany element = (OneToMany)collection.getElement();
+		Assert.assertEquals(
+				"org.jboss.tools.hibernate.runtime.v_3_6.internal.ConfigurationFacadeTest2$Foo",
+				element.getAssociatedClass().getClassName());
+	}
+	
 	@Test
 	public void testGetDialect() {
 		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");

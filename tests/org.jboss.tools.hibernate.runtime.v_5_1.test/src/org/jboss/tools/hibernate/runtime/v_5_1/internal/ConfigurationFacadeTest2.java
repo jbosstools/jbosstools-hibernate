@@ -141,6 +141,16 @@ public class ConfigurationFacadeTest2 {
 	}
 
 	@Test
+	public void testBuildMappings() throws Exception {
+		ConfigurationFacadeImpl facade = (ConfigurationFacadeImpl)configurationFacade;
+		Assert.assertNull(facade.mappings);
+		configurationFacade.buildMappings();
+		Assert.assertNotNull(facade.mappings);
+		MappingsFacadeImpl mappings = (MappingsFacadeImpl)facade.mappings;
+		Assert.assertSame(configurationFacade, mappings.configuration);
+	}
+	
+	@Test
 	public void testGetDialect() {
 		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 		IDialect dialectFacade = configurationFacade.getDialect();
