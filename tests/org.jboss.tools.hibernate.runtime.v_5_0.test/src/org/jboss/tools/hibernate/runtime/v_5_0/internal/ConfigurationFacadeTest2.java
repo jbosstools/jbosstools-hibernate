@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.Properties;
 import java.util.Set;
 
+import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.jaxb.spi.Binding;
@@ -20,6 +21,7 @@ import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
+import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -186,6 +188,15 @@ public class ConfigurationFacadeTest2 {
 		Assert.assertEquals(
 				"org.jboss.tools.hibernate.runtime.v_5_0.internal.ConfigurationFacadeTest2$Foo",
 				element.getAssociatedClass().getClassName());
+	}
+	
+	@Test
+	public void testBuildSessionFactory() throws Throwable {
+		ISessionFactory sessionFactoryFacade = 
+				configurationFacade.buildSessionFactory();
+		Assert.assertNotNull(sessionFactoryFacade);
+		Object object = ((IFacade)sessionFactoryFacade).getTarget();
+		Assert.assertTrue(object instanceof SessionFactory);
 	}
 	
 	@Test
