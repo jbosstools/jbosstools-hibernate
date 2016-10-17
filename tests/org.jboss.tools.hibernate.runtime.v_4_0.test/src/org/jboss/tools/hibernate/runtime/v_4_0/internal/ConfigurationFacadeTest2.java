@@ -10,6 +10,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.Mappings;
 import org.hibernate.cfg.NamingStrategy;
+import org.hibernate.cfg.Settings;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.OneToMany;
@@ -20,6 +21,7 @@ import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
+import org.jboss.tools.hibernate.runtime.spi.ISettings;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -194,8 +196,18 @@ public class ConfigurationFacadeTest2 {
 		ISessionFactory sessionFactoryFacade = 
 				configurationFacade.buildSessionFactory();
 		Assert.assertNotNull(sessionFactoryFacade);
-		Object object = ((IFacade)sessionFactoryFacade).getTarget();
-		Assert.assertTrue(object instanceof SessionFactory);
+		Object sessionFactory = ((IFacade)sessionFactoryFacade).getTarget();
+		Assert.assertNotNull(sessionFactory);
+		Assert.assertTrue(sessionFactory instanceof SessionFactory);
+	}
+	
+	@Test
+	public void testBuildSettings() {
+		ISettings settingsFacade = configurationFacade.buildSettings();
+		Assert.assertNotNull(settingsFacade);
+		Object settings = ((IFacade)settingsFacade).getTarget();
+		Assert.assertNotNull(settings);
+		Assert.assertTrue(settings instanceof Settings);
 	}
 	
 	@Test
