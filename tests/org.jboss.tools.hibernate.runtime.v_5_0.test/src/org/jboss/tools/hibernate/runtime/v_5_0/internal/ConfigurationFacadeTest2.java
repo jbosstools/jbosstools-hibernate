@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.runtime.v_5_0.internal;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.util.Iterator;
 import java.util.Properties;
 import java.util.Set;
 
@@ -21,6 +22,7 @@ import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
+import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISettings;
 import org.junit.Assert;
@@ -199,6 +201,20 @@ public class ConfigurationFacadeTest2 {
 		Object sessionFactory = ((IFacade)sessionFactoryFacade).getTarget();
 		Assert.assertNotNull(sessionFactory);
 		Assert.assertTrue(sessionFactory instanceof SessionFactory);
+	}
+	
+	@Test
+	public void testGetClassMappings() {
+		configurationFacade = FACADE_FACTORY.createConfiguration(configuration);
+		Iterator<IPersistentClass> iterator = configurationFacade.getClassMappings();
+		Assert.assertFalse(iterator.hasNext());
+		configuration.configure();
+		configurationFacade = FACADE_FACTORY.createConfiguration(configuration);
+		iterator = configurationFacade.getClassMappings();
+		IPersistentClass persistentClassFacade = iterator.next();
+		Assert.assertEquals(
+				"org.jboss.tools.hibernate.runtime.v_5_0.internal.test.Foo",
+				persistentClassFacade.getClassName());
 	}
 	
 	@Test
