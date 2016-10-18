@@ -12,6 +12,7 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.OneToMany;
@@ -204,6 +205,15 @@ public class ConfigurationFacadeTest2 {
 	}
 	
 	@Test
+	public void testBuildSettings() {
+		ISettings settingsFacade = configurationFacade.buildSettings();
+		Assert.assertNotNull(settingsFacade);
+		Object settings = ((IFacade)settingsFacade).getTarget();
+		Assert.assertNotNull(settings);
+		Assert.assertTrue(settings instanceof Settings);
+	}
+	
+	@Test
 	public void testGetClassMappings() {
 		configurationFacade = FACADE_FACTORY.createConfiguration(configuration);
 		Iterator<IPersistentClass> iterator = configurationFacade.getClassMappings();
@@ -218,12 +228,13 @@ public class ConfigurationFacadeTest2 {
 	}
 	
 	@Test
-	public void testBuildSettings() {
-		ISettings settingsFacade = configurationFacade.buildSettings();
-		Assert.assertNotNull(settingsFacade);
-		Object settings = ((IFacade)settingsFacade).getTarget();
-		Assert.assertNotNull(settings);
-		Assert.assertTrue(settings instanceof Settings);
+	public void testSetPreferBasicCompositeIds() {
+		JDBCMetaDataConfiguration configuration = new JDBCMetaDataConfiguration();
+		configurationFacade = FACADE_FACTORY.createConfiguration(configuration);
+		// the default is false
+		Assert.assertTrue(configuration.preferBasicCompositeIds());
+		configurationFacade.setPreferBasicCompositeIds(false);
+		Assert.assertFalse(configuration.preferBasicCompositeIds());
 	}
 	
 	@Test

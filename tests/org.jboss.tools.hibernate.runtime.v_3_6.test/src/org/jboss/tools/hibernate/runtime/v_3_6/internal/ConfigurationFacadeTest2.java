@@ -9,6 +9,7 @@ import java.util.Set;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.Mappings;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.cfg.Settings;
@@ -225,6 +226,16 @@ public class ConfigurationFacadeTest2 {
 		Assert.assertEquals(
 				"org.jboss.tools.hibernate.runtime.v_3_6.internal.test.Foo",
 				persistentClassFacade.getClassName());
+	}
+	
+	@Test
+	public void testSetPreferBasicCompositeIds() {
+		JDBCMetaDataConfiguration configuration = new JDBCMetaDataConfiguration();
+		configurationFacade = FACADE_FACTORY.createConfiguration(configuration);
+		// the default is false
+		Assert.assertTrue(configuration.preferBasicCompositeIds());
+		configurationFacade.setPreferBasicCompositeIds(false);
+		Assert.assertFalse(configuration.preferBasicCompositeIds());
 	}
 	
 	@Test

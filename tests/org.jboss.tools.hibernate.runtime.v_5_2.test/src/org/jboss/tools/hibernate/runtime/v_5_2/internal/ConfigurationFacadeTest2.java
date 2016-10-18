@@ -11,6 +11,7 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.tool.util.MetadataHelper;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -186,6 +187,16 @@ public class ConfigurationFacadeTest2 {
 		Assert.assertEquals(
 				"org.jboss.tools.hibernate.runtime.v_5_2.internal.test.Foo",
 				persistentClassFacade.getClassName());
+	}
+	
+	@Test
+	public void testSetPreferBasicCompositeIds() {
+		JDBCMetaDataConfiguration configuration = new JDBCMetaDataConfiguration();
+		configurationFacade = FACADE_FACTORY.createConfiguration(configuration);
+		// the default is false
+		Assert.assertTrue(configuration.preferBasicCompositeIds());
+		configurationFacade.setPreferBasicCompositeIds(false);
+		Assert.assertFalse(configuration.preferBasicCompositeIds());
 	}
 	
 	@Test
