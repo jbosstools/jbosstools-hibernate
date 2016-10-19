@@ -16,6 +16,7 @@ import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.dialect.Dialect;
+import org.hibernate.engine.spi.Mapping;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.tool.util.MetadataHelper;
@@ -23,6 +24,7 @@ import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IDialect;
+import org.jboss.tools.hibernate.runtime.spi.IMapping;
 import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -254,6 +256,17 @@ public class ConfigurationFacadeTest2 {
 		Assert.assertSame(
 				reverseEngineeringStrategy, 
 				configuration.getReverseEngineeringStrategy());
+	}
+	
+	@Test
+	public void testBuildMapping() {
+		configuration.configure();
+		IMapping mappingFacade = configurationFacade.buildMapping();
+		Mapping mapping = (Mapping)((IFacade)mappingFacade).getTarget();
+		Assert.assertEquals(
+				"id", 
+				mapping.getIdentifierPropertyName(
+						"org.jboss.tools.hibernate.runtime.v_5_0.internal.test.Foo"));
 	}
 	
 	@Test
