@@ -271,6 +271,18 @@ public class ConfigurationFacadeTest2 {
 	}
 	
 	@Test
+	public void testGetClassMapping() {
+		configurationFacade = FACADE_FACTORY.createConfiguration(configuration);
+		Assert.assertNull(configurationFacade.getClassMapping(
+				"org.jboss.tools.hibernate.runtime.v_4_3.internal.test.Foo"));
+		configuration.configure();
+		configuration.buildMappings();
+		configurationFacade = FACADE_FACTORY.createConfiguration(configuration);
+		Assert.assertNotNull(configurationFacade.getClassMapping(
+				"org.jboss.tools.hibernate.runtime.v_4_3.internal.test.Foo"));
+	}
+	
+	@Test
 	public void testGetDialect() {
 		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 		IDialect dialectFacade = configurationFacade.getDialect();
