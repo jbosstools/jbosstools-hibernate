@@ -275,6 +275,18 @@ public class ConfigurationFacadeTest2 {
 	}
 	
 	@Test
+	public void testGetNamingStrategy() {
+		NamingStrategy firstStrategy = new DefaultNamingStrategy();
+		configuration.setNamingStrategy(firstStrategy);
+		INamingStrategy firstStrategyFacade = configurationFacade.getNamingStrategy();
+		Assert.assertSame(firstStrategy, ((IFacade)firstStrategyFacade).getTarget());
+		NamingStrategy secondStrategy = new DefaultNamingStrategy();
+		configuration.setNamingStrategy(secondStrategy);
+		INamingStrategy secondStrategyFacade = configurationFacade.getNamingStrategy();
+		Assert.assertNotSame(secondStrategy, ((IFacade)secondStrategyFacade).getTarget());
+	}
+	
+	@Test
 	public void testGetDialect() {
 		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 		IDialect dialectFacade = configurationFacade.getDialect();
