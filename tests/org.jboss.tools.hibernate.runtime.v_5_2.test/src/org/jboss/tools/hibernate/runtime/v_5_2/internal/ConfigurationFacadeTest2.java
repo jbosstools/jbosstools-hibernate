@@ -20,6 +20,7 @@ import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.spi.Mapping;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Table;
 import org.hibernate.tool.util.MetadataHelper;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
@@ -32,6 +33,7 @@ import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISettings;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -275,6 +277,24 @@ public class ConfigurationFacadeTest2 {
 		Assert.assertNull(facade.getNamingStrategy());
 		facade.namingStrategy = strategy;
 		Assert.assertSame(strategy, facade.getNamingStrategy());
+	}
+	
+	@Test
+	public void testGetTableMappings() throws Exception {
+		Connection connection = DriverManager.getConnection("jdbc:h2:mem:test");
+		Statement statement = connection.createStatement();
+		statement.execute("CREATE TABLE FOO(id int primary key, bar varchar(255))");
+		connection.commit();		
+		JDBCMetaDataConfiguration jdbcMdCfg = new JDBCMetaDataConfiguration();
+		jdbcMdCfg.setProperty("hibernate.connection.url", "jdbc:h2:mem:test");
+		configurationFacade = FACADE_FACTORY.createConfiguration(jdbcMdCfg);
+		Iterator<ITable> iterator = configurationFacade.getTableMappings();
+		Assert.assertFalse(iterator.hasNext());
+		jdbcMdCfg.readFromJDBC();
+		configurationFacade = FACADE_FACTORY.createConfiguration(jdbcMdCfg);
+		iterator = configurationFacade.getTableMappings();
+		Table table = (Table)((IFacade)iterator.next()).getTarget();
+		Assert.assertEquals("FOO", table.getName());
 	}
 	
 	@Test
