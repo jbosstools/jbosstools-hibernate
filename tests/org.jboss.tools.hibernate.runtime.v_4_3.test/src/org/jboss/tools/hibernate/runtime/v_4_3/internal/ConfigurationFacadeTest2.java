@@ -2,6 +2,9 @@ package org.jboss.tools.hibernate.runtime.v_4_3.internal;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.Set;
@@ -18,6 +21,7 @@ import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.spi.Mapping;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.OneToMany;
+import org.hibernate.mapping.PersistentClass;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
@@ -256,6 +260,23 @@ public class ConfigurationFacadeTest2 {
 		Assert.assertSame(
 				reverseEngineeringStrategy, 
 				configuration.getReverseEngineeringStrategy());
+	}
+	
+	@Test
+	public void testReadFromJDBC() throws Exception {
+		Connection connection = DriverManager.getConnection("jdbc:h2:mem:test");
+		Statement statement = connection.createStatement();
+		statement.execute("CREATE TABLE FOO(id int primary key, bar varchar(255))");
+		connection.commit();		
+		JDBCMetaDataConfiguration jdbcMdCfg = new JDBCMetaDataConfiguration();
+		jdbcMdCfg.setProperty("hibernate.connection.url", "jdbc:h2:mem:test");
+		configurationFacade = FACADE_FACTORY.createConfiguration(jdbcMdCfg);
+		Iterator<?> iterator = jdbcMdCfg.getClassMappings();
+		Assert.assertFalse(iterator.hasNext());		
+		configurationFacade.readFromJDBC();
+		iterator = jdbcMdCfg.getClassMappings();
+		PersistentClass persistentClass = (PersistentClass)iterator.next();
+		Assert.assertEquals("Foo", persistentClass.getClassName());
 	}
 	
 	@Test
