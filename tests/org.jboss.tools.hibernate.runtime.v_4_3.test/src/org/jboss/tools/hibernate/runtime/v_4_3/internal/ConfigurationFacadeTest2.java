@@ -95,6 +95,13 @@ public class ConfigurationFacadeTest2 {
 	}
 
 	@Test 
+	public void testSetProperty() {
+		Assert.assertNull(configuration.getProperty("foo"));
+		configurationFacade.setProperty("foo", "bar");
+		Assert.assertEquals("bar", configuration.getProperty("foo"));
+	}
+
+	@Test 
 	public void testSetProperties() {
 		Properties testProperties = new Properties();
 		Assert.assertNotSame(testProperties, configuration.getProperties());
