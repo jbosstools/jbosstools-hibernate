@@ -2,353 +2,352 @@ package org.jboss.tools.hibernate.runtime.v_4_3.internal;
 
 import java.io.File;
 import java.io.PrintWriter;
-import java.lang.reflect.Method;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.Set;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
+import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
+import org.hibernate.cfg.Mappings;
 import org.hibernate.cfg.Settings;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
-import org.hibernate.internal.SessionFactoryImpl;
+import org.hibernate.dialect.Dialect;
+import org.hibernate.engine.spi.Mapping;
+import org.hibernate.mapping.Collection;
+import org.hibernate.mapping.OneToMany;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
-import org.jboss.tools.hibernate.runtime.common.AbstractNamingStrategyFacade;
-import org.jboss.tools.hibernate.runtime.common.AbstractReverseEngineeringStrategyFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IMapping;
+import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
+import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISettings;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.helpers.DefaultHandler;
 
-import javassist.util.proxy.MethodHandler;
-import javassist.util.proxy.ProxyFactory;
-import javassist.util.proxy.ProxyObject;
-
 public class ConfigurationFacadeTest {
 	
+	private static final String FOO_HBM_XML_STRING =
+			"<!DOCTYPE hibernate-mapping PUBLIC" +
+			"		'-//Hibernate/Hibernate Mapping DTD 3.0//EN'" +
+			"		'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>" +
+			"<hibernate-mapping package='org.jboss.tools.hibernate.runtime.v_4_3.internal'>" +
+			"  <class name='ConfigurationFacadeTest$Foo'>" + 
+			"    <id name='fooId'/>" +
+			"  </class>" +
+			"</hibernate-mapping>";
+	
+	private static final String BAR_HBM_XML_STRING =
+			"<!DOCTYPE hibernate-mapping PUBLIC" +
+			"		'-//Hibernate/Hibernate Mapping DTD 3.0//EN'" +
+			"		'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>" +
+			"<hibernate-mapping package='org.jboss.tools.hibernate.runtime.v_4_3.internal'>" +
+			"  <class name='ConfigurationFacadeTest$Bar'>" + 
+			"    <id name='barId'/>" +
+			"    <set name='fooSet' inverse='true'>" +
+			"      <key column='fooId'/>" +
+			"      <one-to-many class='ConfigurationFacadeTest$Foo'/>" +
+			"    </set>" +
+			"  </class>" +
+			"</hibernate-mapping>";
+	
+	static class Foo {
+		public String fooId;
+	}
+	
+	static class Bar {
+		public String barId;
+		public Set<Foo> fooSet;
+	}
+			
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
-	
-	private static final String TEST_CONFIGURATION_STRING =
-			"<!DOCTYPE hibernate-configuration PUBLIC" +
-			"		\"-//Hibernate/Hibernate Configuration DTD 3.0//EN\"" +
-			"		\"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd\">" +
-			"<hibernate-configuration>" +
-			"  <session-factory>" + 
-			"  </session-factory>" + 
-			"</hibernate-configuration>";
 
-	private String methodName = null;
-	private Object[] arguments = null;
-	
-	private ConfigurationFacadeImpl configuration = null;
-	
+	private IConfiguration configurationFacade = null;
+	private Configuration configuration = null;
+
 	@Before
-	public void setUp() throws Exception {
-		ProxyFactory proxyFactory = new ProxyFactory();
-		proxyFactory.setSuperclass(Configuration.class);
-		Class<?> proxyClass = proxyFactory.createClass();
-		ProxyObject proxy = (ProxyObject)proxyClass.newInstance();
-		proxy.setHandler(new MethodHandler() {		
-			@Override
-			public Object invoke(
-					Object self, 
-					Method m, 
-					Method proceed, 
-					Object[] args) throws Throwable {
-				if (methodName == null) {
-					methodName = m.getName();
-				}
-				if (arguments == null) {
-					arguments = args;
-				}
-				return proceed.invoke(self, args);
-			}
-		});
-		configuration = new ConfigurationFacadeImpl(FACADE_FACTORY, (Configuration)proxy);
-		reset();
+	public void setUp() {
+		configuration = new Configuration();
+		configurationFacade = FACADE_FACTORY.createConfiguration(configuration);
 	}
 	
 	@Test
 	public void testGetProperty() {
+		Assert.assertNull(configurationFacade.getProperty("foo"));
 		configuration.setProperty("foo", "bar");
-		reset();
+		Assert.assertEquals("bar", configurationFacade.getProperty("foo"));
+	}
+
+	@Test 
+	public void testSetProperty() {
+		Assert.assertNull(configuration.getProperty("foo"));
+		configurationFacade.setProperty("foo", "bar");
 		Assert.assertEquals("bar", configuration.getProperty("foo"));
-		Assert.assertEquals("getProperty", methodName);
-		Assert.assertArrayEquals(new Object[] { "foo" }, arguments);
+	}
+
+	@Test 
+	public void testSetProperties() {
+		Properties testProperties = new Properties();
+		Assert.assertNotSame(testProperties, configuration.getProperties());
+		Assert.assertSame(
+				configurationFacade, 
+				configurationFacade.setProperties(testProperties));
+		Assert.assertSame(testProperties, configuration.getProperties());
 	}
 	
 	@Test
 	public void testAddFile() throws Exception {
-		File testFile = File.createTempFile("test", "tmp");
+		File testFile = File.createTempFile("test", "hbm.xml");
 		PrintWriter printWriter = new PrintWriter(testFile);
-		printWriter.write(TEST_CONFIGURATION_STRING);
+		printWriter.write(FOO_HBM_XML_STRING);
 		printWriter.close();
-		Assert.assertSame(configuration, configuration.addFile(testFile));
-		Assert.assertEquals("addFile", methodName);
-		Assert.assertArrayEquals(new Object[] { testFile }, arguments);
-	}
-	
-	@Test
-	public void testSetProperty() {
-		configuration.setProperty("foo", "bar");
-		Assert.assertEquals("setProperty", methodName);
-		Assert.assertArrayEquals(new Object[] { "foo", "bar" },  arguments);
-		Assert.assertEquals("bar", configuration.getProperty("foo"));
-	}
-	
-	@Test 
-	public void testSetProperties() {
-		Properties testProperties = new Properties();
-		Assert.assertSame(configuration, configuration.setProperties(testProperties));
-		Assert.assertEquals("setProperties", methodName);
-		Assert.assertArrayEquals(new Object[] { testProperties }, arguments);
-		Assert.assertSame(testProperties, configuration.getProperties());
+		String fooClassName = 
+				"org.jboss.tools.hibernate.runtime.v_4_3.internal.ConfigurationFacadeTest$Foo";
+		// make sure the mappings are built before checking whether the class exists
+		configuration.buildMappings();
+		Assert.assertNull(configuration.getClassMapping(fooClassName));
+		Assert.assertSame(
+				configurationFacade,
+				configurationFacade.addFile(testFile));
+		// now that the file has been added, rebuild the mappings 
+		configuration.buildMappings();
+		// now the class should exist 
+		Assert.assertNotNull(configuration.getClassMapping(fooClassName));
+		Assert.assertTrue(testFile.delete());
 	}
 	
 	@Test
 	public void testSetEntityResolver() {
 		EntityResolver testResolver = new DefaultHandler();
-		configuration.setEntityResolver(testResolver);
-		Assert.assertEquals("setEntityResolver", methodName);
-		Assert.assertArrayEquals(new Object[] { testResolver }, arguments);
+		Assert.assertNotSame(testResolver, configuration.getEntityResolver());
+		configurationFacade.setEntityResolver(testResolver);
 		Assert.assertSame(testResolver, configuration.getEntityResolver());
 	}
 	
 	@Test
 	public void testGetEntityResolver() {
 		EntityResolver testResolver = new DefaultHandler();
+		Assert.assertNotSame(testResolver, configurationFacade.getEntityResolver());
 		configuration.setEntityResolver(testResolver);
-		reset();
-		Assert.assertSame(testResolver, configuration.getEntityResolver());
-		Assert.assertEquals("getEntityResolver", methodName);
-		Assert.assertArrayEquals(new Object[] {}, arguments);
-	}
-	
-	@Test
-	public void testGetProperties() {
-		Properties testProperties = new Properties();
-		configuration.setProperties(testProperties);
-		reset();
-		Assert.assertSame(testProperties, configuration.getProperties());
-		Assert.assertEquals("getProperties", methodName);
-		Assert.assertArrayEquals(new Object[] {}, arguments);
+		Assert.assertSame(testResolver, configurationFacade.getEntityResolver());
 	}
 	
 	@Test
 	public void testSetNamingStrategy() {
 		DefaultNamingStrategy dns = new DefaultNamingStrategy();
-		INamingStrategy namingStrategy = new AbstractNamingStrategyFacade(FACADE_FACTORY, dns) {};
-		configuration.setNamingStrategy(namingStrategy);
-		Assert.assertEquals("setNamingStrategy", methodName);
-		Assert.assertArrayEquals(new Object[] { dns }, arguments);
-		Assert.assertSame(namingStrategy, configuration.getNamingStrategy());
+		INamingStrategy namingStrategy = FACADE_FACTORY.createNamingStrategy(dns);
+		Assert.assertNotSame(dns, configuration.getNamingStrategy());
+		configurationFacade.setNamingStrategy(namingStrategy);
+		Assert.assertSame(dns, configuration.getNamingStrategy());
 	}
 	
 	@Test
 	public void testAddProperties() {
 		Assert.assertNull(configuration.getProperty("foo"));
-		reset();
 		Properties testProperties = new Properties();
 		testProperties.put("foo", "bar");
-		configuration.addProperties(testProperties);
-		Assert.assertEquals("addProperties", methodName);
-		Assert.assertArrayEquals(new Object[] { testProperties }, arguments);
+		configurationFacade.addProperties(testProperties);
 		Assert.assertEquals("bar", configuration.getProperty("foo"));
 	}
 	
 	@Test
-	public void testConfigure() throws Throwable {
-		configuration.configure();
-		Assert.assertEquals("configure", methodName);
-		Assert.assertArrayEquals(new Object[] {}, arguments);
-		reset();
-		Document testDocument = DocumentBuilderFactory
-				.newInstance()
-				.newDocumentBuilder()
-				.newDocument();
-		Element root = testDocument.createElement("hibernate-configuration");
-		testDocument.appendChild(root);
-		Element child = testDocument.createElement("session-factory");
-		root.appendChild(child);
-		configuration.configure(testDocument);
-		Assert.assertEquals("configure", methodName);
-		Assert.assertArrayEquals(new Object[] { testDocument }, arguments);
-		reset();
-		File testFile = File.createTempFile("test", "tmp");
-		PrintWriter printWriter = new PrintWriter(testFile);
-		printWriter.write(TEST_CONFIGURATION_STRING);
-		printWriter.close();
-		configuration.configure(testFile);
-		Assert.assertEquals("configure", methodName);
-		Assert.assertArrayEquals(new Object[] { testFile }, arguments);
+	public void testConfigure() {
+		Assert.assertNull(configuration.getProperty(Environment.SESSION_FACTORY_NAME));
+		configurationFacade.configure();
+		Assert.assertEquals("bar", configuration.getProperty(Environment.SESSION_FACTORY_NAME));
 	}
 	
 	@Test 
 	public void testCreateMappings() {
-		Assert.assertNotNull(configuration.createMappings());
-		Assert.assertEquals("createMappings", methodName);
-		Assert.assertArrayEquals(new Object[] {}, arguments);
+		configuration.setProperty("createMappingsProperty", "a lot of blabla");
+		IMappings mappingsFacade = configurationFacade.createMappings();
+		Assert.assertNotNull(mappingsFacade);
+		Object object = ((IFacade)mappingsFacade).getTarget();
+		Assert.assertTrue(object instanceof Mappings);
+		Mappings mappings = (Mappings)object;
+		Assert.assertEquals(
+				"a lot of blabla", 
+				mappings.getConfigurationProperties().get("createMappingsProperty"));
+	}
+
+	@Test
+	public void testBuildMappings() throws Exception {
+		File fooFile = File.createTempFile("foo", "hbm.xml");
+		PrintWriter fooWriter = new PrintWriter(fooFile);
+		fooWriter.write(FOO_HBM_XML_STRING);
+		fooWriter.close();
+		configuration.addFile(fooFile);
+		File barFile = File.createTempFile("bar", "hbm.xml");
+		PrintWriter barWriter = new PrintWriter(barFile);
+		barWriter.write(BAR_HBM_XML_STRING);
+		barWriter.close();
+		configuration.addFile(barFile);
+		String collectionName = 
+			"org.jboss.tools.hibernate.runtime.v_4_3.internal.ConfigurationFacadeTest$Bar.fooSet";
+		Assert.assertNull(configuration.getCollectionMapping(collectionName));
+		configurationFacade.buildMappings();
+		Collection collection = configuration.getCollectionMapping(collectionName);
+		OneToMany element = (OneToMany)collection.getElement();
+		Assert.assertEquals(
+				"org.jboss.tools.hibernate.runtime.v_4_3.internal.ConfigurationFacadeTest$Foo",
+				element.getAssociatedClass().getClassName());
 	}
 	
 	@Test
-	public void testBuildMappings() {
-		configuration.buildMappings();
-		Assert.assertEquals("buildMappings", methodName);
-		Assert.assertArrayEquals(new Object[] {}, arguments);
-	}
-	
-	@Test
-	public void testBuildSessionFactory() {
-		// need to set 'hibernate.dialect' property for the session factory to properly build 
-		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
-		ISessionFactory sessionFactory = configuration.buildSessionFactory();
+	public void testBuildSessionFactory() throws Throwable {
+		ISessionFactory sessionFactoryFacade = 
+				configurationFacade.buildSessionFactory();
+		Assert.assertNotNull(sessionFactoryFacade);
+		Object sessionFactory = ((IFacade)sessionFactoryFacade).getTarget();
 		Assert.assertNotNull(sessionFactory);
-		Assert.assertTrue(sessionFactory instanceof IFacade);
-		Object sessionFactoryTarget = ((IFacade)sessionFactory).getTarget();
-		Assert.assertNotNull(sessionFactoryTarget);
-		Assert.assertTrue(sessionFactoryTarget instanceof SessionFactoryImpl);
+		Assert.assertTrue(sessionFactory instanceof SessionFactory);
 	}
 	
 	@Test
 	public void testBuildSettings() {
-		// need to set 'hibernate.dialect' property for the session factory to properly build 
-		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
-		ISettings settings = configuration.buildSettings();
+		ISettings settingsFacade = configurationFacade.buildSettings();
+		Assert.assertNotNull(settingsFacade);
+		Object settings = ((IFacade)settingsFacade).getTarget();
 		Assert.assertNotNull(settings);
-		Assert.assertTrue(settings instanceof IFacade);
-		Object settingsTarget = ((IFacade)settings).getTarget();
-		Assert.assertNotNull(settingsTarget);
-		Assert.assertTrue(settingsTarget instanceof Settings);
+		Assert.assertTrue(settings instanceof Settings);
 	}
-	
+
 	@Test
 	public void testGetClassMappings() {
-		Assert.assertNotNull(configuration.getClassMappings());
-		Assert.assertEquals("getClassMappings", methodName);
-		Assert.assertArrayEquals(new Object[] {}, arguments);
+		configurationFacade = FACADE_FACTORY.createConfiguration(configuration);
+		Iterator<IPersistentClass> iterator = configurationFacade.getClassMappings();
+		Assert.assertFalse(iterator.hasNext());
+		configuration.configure();
+		configuration.buildMappings();
+		configurationFacade = FACADE_FACTORY.createConfiguration(configuration);
+		iterator = configurationFacade.getClassMappings();
+		IPersistentClass persistentClassFacade = iterator.next();
+		Assert.assertEquals(
+				"org.jboss.tools.hibernate.runtime.v_4_3.internal.test.Foo",
+				persistentClassFacade.getClassName());
 	}
 	
 	@Test
 	public void testSetPreferBasicCompositeIds() {
-		configuration.setPreferBasicCompositeIds(true);
-		Assert.assertNull(methodName);
-		Assert.assertNull(arguments);
-		JDBCMetaDataConfiguration jdbcMetaDataConfiguration = new JDBCMetaDataConfiguration();
-		configuration = new ConfigurationFacadeImpl(FACADE_FACTORY, jdbcMetaDataConfiguration);
-		configuration.setPreferBasicCompositeIds(false);
-		Assert.assertFalse(jdbcMetaDataConfiguration.preferBasicCompositeIds());
-		configuration.setPreferBasicCompositeIds(true);
-		Assert.assertTrue(jdbcMetaDataConfiguration.preferBasicCompositeIds());
+		JDBCMetaDataConfiguration configuration = new JDBCMetaDataConfiguration();
+		configurationFacade = FACADE_FACTORY.createConfiguration(configuration);
+		// the default is false
+		Assert.assertTrue(configuration.preferBasicCompositeIds());
+		configurationFacade.setPreferBasicCompositeIds(false);
+		Assert.assertFalse(configuration.preferBasicCompositeIds());
 	}
 	
 	@Test
 	public void testSetReverseEngineeringStrategy() {
-		ReverseEngineeringStrategy res = new DefaultReverseEngineeringStrategy();
-		IReverseEngineeringStrategy strategy = 
-				new AbstractReverseEngineeringStrategyFacade(FACADE_FACTORY, res) {};
-		configuration.setReverseEngineeringStrategy(strategy);
-		Assert.assertNull(methodName);
-		Assert.assertNull(arguments);
-		JDBCMetaDataConfiguration jdbcMetaDataConfiguration = new JDBCMetaDataConfiguration();
-		configuration = new ConfigurationFacadeImpl(FACADE_FACTORY, jdbcMetaDataConfiguration);
-		Assert.assertNotSame(res, jdbcMetaDataConfiguration.getReverseEngineeringStrategy());
-		configuration.setReverseEngineeringStrategy(strategy);
-		Assert.assertSame(res, jdbcMetaDataConfiguration.getReverseEngineeringStrategy());
+		JDBCMetaDataConfiguration configuration = new JDBCMetaDataConfiguration();
+		configurationFacade = FACADE_FACTORY.createConfiguration(configuration);
+		ReverseEngineeringStrategy reverseEngineeringStrategy = new DefaultReverseEngineeringStrategy();
+		IReverseEngineeringStrategy strategyFacade = 
+				FACADE_FACTORY.createReverseEngineeringStrategy(reverseEngineeringStrategy);
+		Assert.assertNotSame(
+				reverseEngineeringStrategy,
+				configuration.getReverseEngineeringStrategy());
+		configurationFacade.setReverseEngineeringStrategy(strategyFacade);
+		Assert.assertSame(
+				reverseEngineeringStrategy, 
+				configuration.getReverseEngineeringStrategy());
 	}
 	
-	@SuppressWarnings("serial")
 	@Test
-	public void testReadFromJDBC() {
-		configuration.readFromJDBC();
-		Assert.assertNull(methodName);
-		Assert.assertNull(arguments);
-		Configuration target = new JDBCMetaDataConfiguration() {
-			@Override public void readFromJDBC() {
-				methodName = "readFromJDBC";
-				arguments = new Object[] {};
-			}
-		};
-		configuration = new ConfigurationFacadeImpl(FACADE_FACTORY, target);
-		configuration.readFromJDBC();
-		Assert.assertEquals("readFromJDBC", methodName);
-		Assert.assertArrayEquals(new Object[] {}, arguments);
+	public void testReadFromJDBC() throws Exception {
+		Connection connection = DriverManager.getConnection("jdbc:h2:mem:test");
+		Statement statement = connection.createStatement();
+		statement.execute("CREATE TABLE FOO(id int primary key, bar varchar(255))");
+		JDBCMetaDataConfiguration jdbcMdCfg = new JDBCMetaDataConfiguration();
+		jdbcMdCfg.setProperty("hibernate.connection.url", "jdbc:h2:mem:test");
+		configurationFacade = FACADE_FACTORY.createConfiguration(jdbcMdCfg);
+		Iterator<?> iterator = jdbcMdCfg.getClassMappings();
+		Assert.assertFalse(iterator.hasNext());		
+		configurationFacade.readFromJDBC();
+		iterator = jdbcMdCfg.getClassMappings();
+		PersistentClass persistentClass = (PersistentClass)iterator.next();
+		Assert.assertEquals("Foo", persistentClass.getClassName());
+		statement.execute("DROP TABLE FOO");
 	}
 	
 	@Test
 	public void testBuildMapping() {
-		IMapping mapping = configuration.buildMapping();
-		Assert.assertNotNull(mapping);
-		Assert.assertEquals("buildMapping", methodName);
-		Assert.assertArrayEquals(new Object[] {}, arguments);
-		reset();
-		Assert.assertSame(mapping, configuration.buildMapping());
-		Assert.assertNull(methodName);
-		Assert.assertNull(arguments);
+		configuration.configure();
+		configuration.buildMappings();
+		IMapping mappingFacade = configurationFacade.buildMapping();
+		Mapping mapping = (Mapping)((IFacade)mappingFacade).getTarget();
+		Assert.assertEquals(
+				"id", 
+				mapping.getIdentifierPropertyName(
+						"org.jboss.tools.hibernate.runtime.v_4_3.internal.test.Foo"));
 	}
 	
 	@Test
 	public void testGetClassMapping() {
-		Assert.assertNull(configuration.getClassMapping("blah"));
-		Assert.assertEquals("getClassMappings", methodName);
-		Assert.assertArrayEquals(new Object[] {}, arguments);
-		reset();
-		Assert.assertNull(configuration.getClassMapping("blah"));
-		Assert.assertNull(methodName);
-		Assert.assertNull(arguments);
+		configurationFacade = FACADE_FACTORY.createConfiguration(configuration);
+		Assert.assertNull(configurationFacade.getClassMapping(
+				"org.jboss.tools.hibernate.runtime.v_4_3.internal.test.Foo"));
+		configuration.configure();
+		configuration.buildMappings();
+		configurationFacade = FACADE_FACTORY.createConfiguration(configuration);
+		Assert.assertNotNull(configurationFacade.getClassMapping(
+				"org.jboss.tools.hibernate.runtime.v_4_3.internal.test.Foo"));
 	}
 	
 	@Test
 	public void testGetNamingStrategy() {
-		Assert.assertNotNull(configuration.getNamingStrategy());
-		Assert.assertEquals("getNamingStrategy", methodName);
-		Assert.assertArrayEquals(new Object[] {}, arguments);
-		reset();
-		Assert.assertNotNull(configuration.getNamingStrategy());
-		Assert.assertNull(methodName);
-		Assert.assertNull(arguments);
+		DefaultNamingStrategy firstStrategy = new DefaultNamingStrategy();
+		configuration.setNamingStrategy(firstStrategy);
+		INamingStrategy firstStrategyFacade = configurationFacade.getNamingStrategy();
+		Assert.assertSame(firstStrategy, ((IFacade)firstStrategyFacade).getTarget());
+		DefaultNamingStrategy secondStrategy = new DefaultNamingStrategy();
+		configuration.setNamingStrategy(secondStrategy);
+		INamingStrategy secondStrategyFacade = configurationFacade.getNamingStrategy();
+		Assert.assertNotSame(secondStrategy, ((IFacade)secondStrategyFacade).getTarget());
 	}
 	
-	@SuppressWarnings("serial")
 	@Test
-	public void testGetTableMappings() {
-		Assert.assertNull(configuration.getTableMappings());
-		Assert.assertNull(methodName);
-		Assert.assertNull(arguments);
-		JDBCMetaDataConfiguration jdbcMetaDataConfiguration = new JDBCMetaDataConfiguration() {
-			@Override public Iterator<Table> getTableMappings() {
-				methodName = "getTableMappings";
-				arguments = new Object[] {};
-				return super.getTableMappings();
-			}
-		};
-		configuration = new ConfigurationFacadeImpl(FACADE_FACTORY, jdbcMetaDataConfiguration);
-		Assert.assertNotNull(configuration.getTableMappings());
-		Assert.assertEquals("getTableMappings", methodName);
-		Assert.assertArrayEquals(new Object[] {}, arguments);
+	public void testGetTableMappings() throws Exception {
+		Connection connection = DriverManager.getConnection("jdbc:h2:mem:test");
+		Statement statement = connection.createStatement();
+		statement.execute("CREATE TABLE FOO(id int primary key, bar varchar(255))");
+		JDBCMetaDataConfiguration jdbcMdCfg = new JDBCMetaDataConfiguration();
+		jdbcMdCfg.setProperty("hibernate.connection.url", "jdbc:h2:mem:test");
+		configurationFacade = FACADE_FACTORY.createConfiguration(jdbcMdCfg);
+		Iterator<ITable> iterator = configurationFacade.getTableMappings();
+		Assert.assertFalse(iterator.hasNext());
+		jdbcMdCfg.readFromJDBC();
+		configurationFacade = FACADE_FACTORY.createConfiguration(jdbcMdCfg);
+		iterator = configurationFacade.getTableMappings();
+		Table table = (Table)((IFacade)iterator.next()).getTarget();
+		Assert.assertEquals("FOO", table.getName());
+		statement.execute("DROP TABLE FOO");
 	}
 	
 	@Test
 	public void testGetDialect() {
 		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
-		Assert.assertNotNull(configuration.getDialect());
+		IDialect dialectFacade = configurationFacade.getDialect();
+		Assert.assertNotNull(dialectFacade);
+		Dialect dialect = (Dialect)((IFacade)dialectFacade).getTarget();
+		Assert.assertEquals("org.hibernate.dialect.H2Dialect", dialect.getClass().getName());
 	}
 	
-	private void reset() {
-		methodName = null;
-		arguments = null;
-	}
-
 }
