@@ -5,7 +5,6 @@ Bundle-SymbolicName: org.jboss.tools.hibernate.runtime.v_4_0.test
 Bundle-Version: 5.1.2.qualifier
 Fragment-Host: org.jboss.tools.hibernate.runtime.v_4_0;bundle-version="5.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Require-Bundle: org.junit;bundle-version="4.12.0",
- org.jboss.tools.hibernate.libs.h2.v_1_4_192
+Require-Bundle: org.junit;bundle-version="4.12.0"
 Bundle-ClassPath: lib/h2-1.4.192.jar,
  .
