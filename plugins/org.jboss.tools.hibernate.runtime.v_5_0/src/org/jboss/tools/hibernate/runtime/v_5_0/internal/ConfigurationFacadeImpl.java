@@ -16,7 +16,9 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.Environment;
 import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
@@ -116,6 +118,12 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 		return namingStrategy;
 	}
 	
+	@Override
+	public String getDefaultCatalogName() {
+		return Environment.getProperties().getProperty(
+				AvailableSettings.DEFAULT_CATALOG);
+	}
+
 	@Override
 	protected Object createTargetMapping() {
 		return getMetadata();

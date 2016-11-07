@@ -34,5 +34,6 @@ public interface IConfiguration {
 	EntityResolver getEntityResolver();
 	Iterator<ITable> getTableMappings();
 	IDialect getDialect();
+	String getDefaultCatalogName();
 
 }

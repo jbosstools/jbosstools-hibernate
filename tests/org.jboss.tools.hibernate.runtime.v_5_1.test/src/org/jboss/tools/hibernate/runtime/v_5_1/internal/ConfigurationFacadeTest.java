@@ -314,4 +314,9 @@ public class ConfigurationFacadeTest {
 		Assert.assertEquals("org.hibernate.dialect.H2Dialect", dialect.getClass().getName());
 	}
 	
+	@Test
+	public void testGetDefaultCatalogName() {
+		Assert.assertNull(configurationFacade.getDefaultCatalogName());
+	}
+	
 }

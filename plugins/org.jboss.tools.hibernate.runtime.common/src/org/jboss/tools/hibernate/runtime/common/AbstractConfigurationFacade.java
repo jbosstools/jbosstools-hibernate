@@ -285,6 +285,15 @@ implements IConfiguration {
 		return dialect;
 	}
 	
+	@Override
+	public String getDefaultCatalogName() {
+		return (String)Util.invokeMethod(
+				buildTargetSettings(), 
+				"getDefaultCatalogName", 
+				new Class[] {}, 
+				new Object[] {});
+	}
+	
 	protected Class<?> getNamingStrategyClass() {
 		return Util.getClass(getNamingStrategyClassName(), getFacadeFactoryClassLoader());
 	}
