@@ -360,4 +360,11 @@ public class ConfigurationFacadeTest {
 		Assert.assertEquals("foo", configurationFacade.getDefaultCatalogName());
 	}
 	
+	@Test
+	public void testGetDefaultSchemaName() {
+		Assert.assertNull(configurationFacade.getDefaultSchemaName());
+		configuration.setProperty(Environment.DEFAULT_SCHEMA, "bar");
+		Assert.assertEquals("bar", configurationFacade.getDefaultSchemaName());
+	}
+	
 }

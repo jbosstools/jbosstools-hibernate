@@ -35,5 +35,6 @@ public interface IConfiguration {
 	Iterator<ITable> getTableMappings();
 	IDialect getDialect();
 	String getDefaultCatalogName();
+	String getDefaultSchemaName();
 
 }

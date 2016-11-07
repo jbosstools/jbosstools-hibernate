@@ -319,4 +319,9 @@ public class ConfigurationFacadeTest {
 		Assert.assertNull(configurationFacade.getDefaultCatalogName());
 	}
 	
+	@Test
+	public void testGetDefaultSchemaName() {
+		Assert.assertNull(configurationFacade.getDefaultSchemaName());
+	}
+	
 }
