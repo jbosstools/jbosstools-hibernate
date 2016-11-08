@@ -21,10 +21,8 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.boot.spi.SessionFactoryOptions;
-import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
-import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.reveng.DatabaseCollector;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.JDBCReader;
@@ -106,7 +104,6 @@ import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
-import org.jboss.tools.hibernate.runtime.spi.ISettings;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
@@ -526,16 +523,6 @@ public class FacadeFactoryTest {
 				new TestInvocationHandler());
 		ISession facade = facadeFactory.createSession(session);
 		Assert.assertSame(session, ((IFacade)facade).getTarget());
-	}
-	
-	@Test
-	public void testCreateSettings() {
-		ISettings facade = facadeFactory.createSettings(new Settings());
-		Assert.assertNotNull(facade);
-		Assert.assertEquals(
-				Environment.getProperties().getProperty(
-						AvailableSettings.DEFAULT_SCHEMA), 
-				facade.getDefaultSchemaName());
 	}
 	
 	@Test

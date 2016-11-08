@@ -12,13 +12,4 @@ implements ISettings {
 		super(facadeFactory, target);
 	}
 
-	@Override
-	public String getDefaultSchemaName() {
-		return (String)Util.invokeMethod(
-				getTarget(), 
-				"getDefaultSchemaName", 
-				new Class[] {}, 
-				new Object[] {});
-	}
-
 }
