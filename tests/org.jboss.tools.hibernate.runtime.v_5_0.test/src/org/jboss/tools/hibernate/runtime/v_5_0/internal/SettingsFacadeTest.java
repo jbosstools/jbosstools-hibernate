@@ -21,14 +21,6 @@ public class SettingsFacadeTest {
 	}
 	
 	@Test
-	public void testGetDefaultCatalogName() {
-		Assert.assertEquals(
-				Environment.getProperties().getProperty(
-						AvailableSettings.DEFAULT_CATALOG), 
-				settingsFacade.getDefaultCatalogName());
-	}
-
-	@Test
 	public void testGetDefaultSchemaName() {
 		Assert.assertEquals(
 				Environment.getProperties().getProperty(

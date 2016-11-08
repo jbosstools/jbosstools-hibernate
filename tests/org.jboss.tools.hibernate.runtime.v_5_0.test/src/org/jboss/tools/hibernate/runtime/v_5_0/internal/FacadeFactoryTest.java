@@ -531,10 +531,6 @@ public class FacadeFactoryTest {
 		Assert.assertNotNull(facade);
 		Assert.assertEquals(
 				Environment.getProperties().getProperty(
-						AvailableSettings.DEFAULT_CATALOG), 
-				facade.getDefaultCatalogName());
-		Assert.assertEquals(
-				Environment.getProperties().getProperty(
 						AvailableSettings.DEFAULT_SCHEMA), 
 				facade.getDefaultSchemaName());
 	}

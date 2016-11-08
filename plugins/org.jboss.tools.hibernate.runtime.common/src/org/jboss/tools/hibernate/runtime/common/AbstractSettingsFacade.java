@@ -13,15 +13,6 @@ implements ISettings {
 	}
 
 	@Override
-	public String getDefaultCatalogName() {
-		return (String)Util.invokeMethod(
-				getTarget(), 
-				"getDefaultCatalogName", 
-				new Class[] {}, 
-				new Object[] {});
-	}
-
-	@Override
 	public String getDefaultSchemaName() {
 		return (String)Util.invokeMethod(
 				getTarget(), 
