@@ -266,7 +266,6 @@ public class ServiceImpl extends AbstractService implements IService {
 	public IJDBCReader newJDBCReader(IConfiguration configuration, ISettings settings,
 			IReverseEngineeringStrategy strategy) {
 		assert strategy instanceof IFacade;
-		assert settings instanceof IFacade;
 		JDBCReader target = 
 				JDBCReaderFactory.newJDBCReader(
 						configuration.getProperties(), 
