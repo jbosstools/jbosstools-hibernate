@@ -15,7 +15,6 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.JDBCReaderFactory;
 import org.hibernate.cfg.NamingStrategy;
-import org.hibernate.cfg.Settings;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.JDBCReader;
@@ -241,11 +240,10 @@ public class ServiceImpl extends AbstractService implements IService {
 	public IJDBCReader newJDBCReader(IConfiguration configuration, ISettings settings,
 			IReverseEngineeringStrategy strategy) {
 		assert strategy instanceof IFacade;
-		assert settings instanceof IFacade;
 		JDBCReader target = 
 				JDBCReaderFactory.newJDBCReader(
 						configuration.getProperties(), 
-						(Settings)((IFacade)settings).getTarget(), 
+						((Configuration)((IFacade)configuration).getTarget()).buildSettings(), 
 						(ReverseEngineeringStrategy)((IFacade)strategy).getTarget());
 		return facadeFactory.createJDBCReader(target);
 	}
