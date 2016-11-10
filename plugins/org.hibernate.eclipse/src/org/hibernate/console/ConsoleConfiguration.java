@@ -45,7 +45,6 @@ import org.hibernate.eclipse.console.common.HibernateExtension;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
-import org.jboss.tools.hibernate.runtime.spi.ISettings;
 
 public class ConsoleConfiguration implements ExecutionContextHolder {
 
@@ -432,12 +431,4 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		return resetted;
 	}
 
-	public ISettings getSettings(final IConfiguration cfg) {
-		return (ISettings) execute(new Command() {
-				public Object execute() {
-					return cfg.buildSettings();
-				}
-			}
-		);
-	}
 }
