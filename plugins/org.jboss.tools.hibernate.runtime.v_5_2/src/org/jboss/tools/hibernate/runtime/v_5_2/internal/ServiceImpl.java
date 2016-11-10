@@ -83,7 +83,6 @@ import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
-import org.jboss.tools.hibernate.runtime.spi.ISettings;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
@@ -217,7 +216,8 @@ public class ServiceImpl extends AbstractService {
 	}
 
 	@Override
-	public IJDBCReader newJDBCReader(IConfiguration configuration, ISettings settings,
+	public IJDBCReader newJDBCReader(
+			IConfiguration configuration,
 			IReverseEngineeringStrategy strategy) {
 		assert strategy instanceof IFacade;
 		JDBCReader target = 

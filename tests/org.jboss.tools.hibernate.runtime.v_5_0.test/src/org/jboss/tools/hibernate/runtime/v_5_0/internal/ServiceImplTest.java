@@ -260,7 +260,6 @@ public class ServiceImplTest {
 		IReverseEngineeringStrategy strategy = service.newDefaultReverseEngineeringStrategy();
 		IJDBCReader jdbcReader = service.newJDBCReader(
 				configuration, 
-				null, 
 				strategy);
 		Assert.assertNotNull(jdbcReader);
 		Object target = ((IFacade)jdbcReader).getTarget();
