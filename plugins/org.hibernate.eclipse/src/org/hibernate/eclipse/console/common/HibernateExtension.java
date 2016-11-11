@@ -26,7 +26,6 @@ import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IService;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
-import org.jboss.tools.hibernate.runtime.spi.ISettings;
 import org.jboss.tools.hibernate.runtime.spi.ServiceLookup;
 
 public class HibernateExtension {
@@ -252,14 +251,6 @@ public class HibernateExtension {
 		return configuration;
 	}
 	
-	public ISettings getSettings(final IConfiguration cfg) {
-		return (ISettings) execute(new Command() {
-			public Object execute() {
-				return cfg.buildSettings();
-			}
-		});
-	}
-
 	public boolean isSessionFactoryCreated() {
 		return sessionFactory != null;
 	}
