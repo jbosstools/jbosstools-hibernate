@@ -25,13 +25,11 @@ import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.util.MetadataHelper;
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
-import org.jboss.tools.hibernate.runtime.common.AbstractSettingsFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
-import org.jboss.tools.hibernate.runtime.spi.ISettings;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
@@ -106,11 +104,6 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	public void buildMappings() {
 		getMetadata();
 		mappings = new MappingsFacadeImpl(this);
-	}
-	
-	@Override
-	public ISettings buildSettings() {
-		return new AbstractSettingsFacade(getFacadeFactory(), new Settings()) {};
 	}
 	
 	@Override

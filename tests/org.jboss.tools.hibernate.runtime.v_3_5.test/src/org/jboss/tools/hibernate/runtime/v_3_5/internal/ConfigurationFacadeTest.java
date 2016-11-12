@@ -16,7 +16,6 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.Mappings;
 import org.hibernate.cfg.NamingStrategy;
-import org.hibernate.cfg.Settings;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.dialect.Dialect;
@@ -35,7 +34,6 @@ import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
-import org.jboss.tools.hibernate.runtime.spi.ISettings;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.junit.Assert;
 import org.junit.Before;
@@ -213,15 +211,6 @@ public class ConfigurationFacadeTest {
 		Object sessionFactory = ((IFacade)sessionFactoryFacade).getTarget();
 		Assert.assertNotNull(sessionFactory);
 		Assert.assertTrue(sessionFactory instanceof SessionFactory);
-	}
-	
-	@Test
-	public void testBuildSettings() {
-		ISettings settingsFacade = configurationFacade.buildSettings();
-		Assert.assertNotNull(settingsFacade);
-		Object settings = ((IFacade)settingsFacade).getTarget();
-		Assert.assertNotNull(settings);
-		Assert.assertTrue(settings instanceof Settings);
 	}
 	
 	@Test

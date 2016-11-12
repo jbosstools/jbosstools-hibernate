@@ -22,7 +22,6 @@ public interface IConfiguration {
 	IConfiguration configure();
 	void buildMappings();
 	ISessionFactory buildSessionFactory();
-	ISettings buildSettings();
 	IMappings createMappings();
 	Iterator<IPersistentClass> getClassMappings();
 	void setPreferBasicCompositeIds(boolean preferBasicCompositeids);
