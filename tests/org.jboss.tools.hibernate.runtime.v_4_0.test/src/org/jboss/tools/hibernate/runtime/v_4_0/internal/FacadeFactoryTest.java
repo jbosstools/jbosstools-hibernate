@@ -13,7 +13,6 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.Mappings;
 import org.hibernate.cfg.NamingStrategy;
-import org.hibernate.cfg.Settings;
 import org.hibernate.cfg.reveng.DatabaseCollector;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.JDBCReader;
@@ -94,7 +93,6 @@ import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
-import org.jboss.tools.hibernate.runtime.spi.ISettings;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
@@ -476,18 +474,6 @@ public class FacadeFactoryTest {
 				new TestInvocationHandler());
 		ISession facade = facadeFactory.createSession(session);
 		Assert.assertSame(session, ((IFacade)facade).getTarget());
-	}
-	
-	@Test
-	public void testCreateSettings() {
-		Configuration configuration = new Configuration();
-		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
-		ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
-		builder.applySettings(configuration.getProperties());
-		ServiceRegistry serviceRegistry = builder.buildServiceRegistry();
-		Settings settings = configuration.buildSettings(serviceRegistry);
-		ISettings facade = facadeFactory.createSettings(settings);
-		Assert.assertSame(settings, ((IFacade)facade).getTarget());
 	}
 	
 	@Test

@@ -38,7 +38,6 @@ import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
-import org.jboss.tools.hibernate.runtime.spi.ISettings;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
@@ -89,7 +88,6 @@ public interface IFacadeFactory {
 	IQueryTranslator createQueryTranslator(Object target);
 	ISessionFactory createSessionFactory(Object target);
 	ISession createSession(Object target);
-	ISettings createSettings(Object target);
 	IPersistentClass createSpecialRootClass(IProperty property);
 	ITable createTable(Object target);
 	ITypeFactory createTypeFactory();
