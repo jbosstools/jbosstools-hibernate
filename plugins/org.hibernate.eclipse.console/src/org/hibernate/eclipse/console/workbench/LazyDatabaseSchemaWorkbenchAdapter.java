@@ -128,7 +128,7 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 				try {
 					IService service = consoleConfiguration.getHibernateExtension().getHibernateService();
 					IJDBCReader reader = service.newJDBCReader(configuration, strategy);
-					db = service.newDatabaseCollector(reader.getMetaDataDialect());
+					db = service.newDatabaseCollector(reader);
 					reader.readDatabaseSchema(
 							db, 
 							configuration.getDefaultCatalogName(), 

@@ -64,7 +64,7 @@ public interface IService {
 
 	String getReverseEngineeringStrategyClassName();
 
-	IDatabaseCollector newDatabaseCollector(IMetaDataDialect metaDataDialect);
+	IDatabaseCollector newDatabaseCollector(IJDBCReader jdbcReader);
 
 	ICfg2HbmTool newCfg2HbmTool();
 	

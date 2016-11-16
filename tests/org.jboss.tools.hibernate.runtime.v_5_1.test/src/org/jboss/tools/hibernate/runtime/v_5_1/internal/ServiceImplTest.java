@@ -2,19 +2,19 @@ package org.jboss.tools.hibernate.runtime.v_5_1.internal;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.List;
 import java.util.Properties;
 
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
+import org.hibernate.cfg.JDBCReaderFactory;
 import org.hibernate.cfg.reveng.DatabaseCollector;
+import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.DelegatingReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.cfg.reveng.OverrideRepository;
@@ -45,6 +45,7 @@ import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.hibernate.tool.hbm2x.POJOExporter;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
+import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
@@ -57,7 +58,6 @@ import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
-import org.jboss.tools.hibernate.runtime.spi.IMetaDataDialect;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -77,6 +77,8 @@ import org.junit.Test;
 
 public class ServiceImplTest {
 	
+	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
+
 	static class Foo { 
 		private int id; 
 		public void setId(int id) { }
@@ -299,24 +301,19 @@ public class ServiceImplTest {
 	
 	@Test
 	public void testNewDatabaseCollector() {
-		IMetaDataDialect metaDataDialect = 
-				(IMetaDataDialect)Proxy.newProxyInstance(
-						service.getClassLoader(), 
-						new Class[] { IMetaDataDialect.class, IFacade.class }, 
-						new InvocationHandler() {				
-							@Override
-							public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-								return null;
-							}
-						});
-		IDatabaseCollector databaseCollector = 
-				service.newDatabaseCollector(metaDataDialect);
+		IJDBCReader jdbcReader = FACADE_FACTORY.createJDBCReader(
+				JDBCReaderFactory.newJDBCReader(
+						new Configuration().getProperties(), 
+						new DefaultReverseEngineeringStrategy(),
+						new StandardServiceRegistryBuilder().build()));
+		IDatabaseCollector databaseCollectorFacade = 
+				service.newDatabaseCollector(jdbcReader);
+		Assert.assertNotNull(databaseCollectorFacade);
+		DatabaseCollector databaseCollector = 
+				(DatabaseCollector)((IFacade)databaseCollectorFacade).getTarget();
 		Assert.assertNotNull(databaseCollector);
-		Object target = ((IFacade)databaseCollector).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof DatabaseCollector);
 	}
-	
+		
 	@Test
 	public void testNewCfg2HbmTool() {
 		ICfg2HbmTool cfg2HbmTool = service.newCfg2HbmTool();

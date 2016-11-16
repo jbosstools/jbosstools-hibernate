@@ -77,7 +77,6 @@ import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
-import org.jboss.tools.hibernate.runtime.spi.IMetaDataDialect;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -317,11 +316,12 @@ public class ServiceImpl extends AbstractService implements IService {
 	}
 	
 	@Override
-	public IDatabaseCollector newDatabaseCollector(IMetaDataDialect metaDataDialect) {
-		assert metaDataDialect instanceof IFacade;
+	public IDatabaseCollector newDatabaseCollector(IJDBCReader jdbcReader) {
+		assert jdbcReader instanceof IFacade;
+		JDBCReader jdbcReaderTarget = (JDBCReader)((IFacade)jdbcReader).getTarget();
+		MetaDataDialect metadataDialect = jdbcReaderTarget.getMetaDataDialect();
 		return facadeFactory.createDatabaseCollector(
-				new DefaultDatabaseCollector(
-						(MetaDataDialect) ((IFacade)metaDataDialect).getTarget()));
+				new DefaultDatabaseCollector(metadataDialect));
 	}
 
 	@Override
