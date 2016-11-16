@@ -79,7 +79,6 @@ public interface IFacadeFactory {
 	IHQLQueryPlan createHQLQueryPlan(Object target);
 	IJDBCReader createJDBCReader(Object target);
 	IJoin createJoin(Object target);
-	IMetaDataDialect createMetaDataDialect(Object target);
 	IPersistentClass createPersistentClass(Object target);
 	IPOJOClass createPOJOClass(Object target);
 	IPrimaryKey createPrimaryKey(Object target);

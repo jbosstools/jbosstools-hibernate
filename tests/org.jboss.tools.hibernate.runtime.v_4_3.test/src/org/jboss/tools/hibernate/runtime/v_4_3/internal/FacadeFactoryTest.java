@@ -23,7 +23,6 @@ import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.cfg.reveng.TableIdentifier;
-import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.engine.spi.Mapping;
@@ -79,7 +78,6 @@ import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.IMapping;
 import org.jboss.tools.hibernate.runtime.spi.IMappings;
-import org.jboss.tools.hibernate.runtime.spi.IMetaDataDialect;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
@@ -396,16 +394,6 @@ public class FacadeFactoryTest {
 		Join join = new Join();
 		IJoin facade = facadeFactory.createJoin(join);
 		Assert.assertSame(join, ((IFacade)facade).getTarget());		
-	}
-	
-	@Test
-	public void testCreateMetaDataDialect() {
-		MetaDataDialect metaDataDialect = (MetaDataDialect)Proxy.newProxyInstance(
-				facadeFactory.getClassLoader(), 
-				new Class[] { MetaDataDialect.class }, 
-				new TestInvocationHandler());
-		IMetaDataDialect facade = facadeFactory.createMetaDataDialect(metaDataDialect);
-		Assert.assertSame(metaDataDialect, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
