@@ -31,7 +31,6 @@ import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
-import org.jboss.tools.hibernate.runtime.spi.IMapping;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IService;
@@ -45,7 +44,6 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 	private IService service = null;
 	
 	protected String consoleConfigName;
-	protected IMapping mapping = null;
 	protected IDialect dialect = null;
 
 	public OrmLabelProvider() {
@@ -72,7 +70,6 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 				}
 			});
 		}
-		mapping = null;
 		dialect = null;
 	}
 
@@ -157,14 +154,6 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 			return false;
 		}
 		final IConfiguration config = getConfig();
-		if (mapping == null && config != null) {
-			final ConsoleConfiguration consoleConfig = getConsoleConfig();
-			mapping = (IMapping)consoleConfig.execute(new ExecutionContext.Command() {
-				public Object execute() {
-					return config.buildMapping();
-				}
-			} );
-		}
 		if (dialect == null && config != null) {
 			final String dialectName = config.getProperty(environment.getDialect());
 			if (dialectName != null) {

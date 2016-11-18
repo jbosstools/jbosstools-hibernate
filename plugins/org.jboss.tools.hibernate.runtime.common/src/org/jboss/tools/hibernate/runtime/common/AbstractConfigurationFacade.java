@@ -8,7 +8,6 @@ import java.util.Properties;
 
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IDialect;
-import org.jboss.tools.hibernate.runtime.spi.IMapping;
 import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -24,7 +23,6 @@ implements IConfiguration {
 
 	private INamingStrategy namingStrategy;
 	private HashMap<String, IPersistentClass> classMappings = null;	
-	private IMapping mapping = null;
 	private HashSet<ITable> tableMappings = null;
 	private IDialect dialect = null;
 
@@ -213,17 +211,6 @@ implements IConfiguration {
 					new Class[] {}, 
 					new Object[] {});
 		}
-	}
-
-	@Override
-	public IMapping buildMapping() {
-		if (mapping == null) {
-			Object targetMapping = createTargetMapping();
-			if (targetMapping != null) {
-				mapping = getFacadeFactory().createMapping(targetMapping);
-			}
-		}
-		return mapping;
 	}
 
 	@Override
