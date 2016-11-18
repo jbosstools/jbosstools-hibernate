@@ -175,12 +175,12 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 				}
 			}
 		}
-		if (dialect != null) {
+		if (dialect != null && config != null) {
 			final ConsoleConfiguration consoleConfig = getConsoleConfig();
 			try {
 				sqlType = (String)consoleConfig.execute(new ExecutionContext.Command() {
 					public Object execute() {
-						return column.getSqlType(dialect, mapping);
+						return column.getSqlType(dialect, config);
 					}
 				} );
 			} catch (Exception e) {

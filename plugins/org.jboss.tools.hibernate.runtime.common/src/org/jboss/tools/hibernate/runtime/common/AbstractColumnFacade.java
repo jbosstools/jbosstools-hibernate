@@ -1,8 +1,8 @@
 package org.jboss.tools.hibernate.runtime.common;
 
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
+import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IDialect;
-import org.jboss.tools.hibernate.runtime.spi.IMapping;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public abstract class AbstractColumnFacade 
@@ -123,15 +123,20 @@ implements IColumn {
 	}
 
 	@Override
-	public String getSqlType(IDialect dialect, IMapping mapping) {
+	public String getSqlType(IDialect dialect, IConfiguration configuration) {
 		Object dialectTarget = Util.invokeMethod(
 				dialect, 
 				"getTarget", 
 				new Class[] {}, 
 				new Object[] {});
-		Object mappingTarget = Util.invokeMethod(
-				mapping, 
+		Object configurationTarget = Util.invokeMethod(
+				configuration, 
 				"getTarget", 
+				new Class[] {}, 
+				new Object[] {});
+		Object mappingTarget = Util.invokeMethod(
+				configurationTarget, 
+				"buildMapping", 
 				new Class[] {}, 
 				new Object[] {});
 		return (String)Util.invokeMethod(
