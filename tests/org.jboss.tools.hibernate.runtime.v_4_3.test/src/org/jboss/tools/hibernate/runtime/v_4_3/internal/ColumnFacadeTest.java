@@ -1,14 +1,11 @@
 package org.jboss.tools.hibernate.runtime.v_4_3.internal;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-
+import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.Dialect;
-import org.hibernate.engine.spi.Mapping;
+import org.hibernate.dialect.H2Dialect;
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Value;
-import org.jboss.tools.hibernate.runtime.common.AbstractColumnFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
@@ -27,15 +24,10 @@ public class ColumnFacadeTest {
 	private IColumn columnFacade = null; 
 	private Column column = null;
 	
-	@SuppressWarnings("serial")
 	@Before
 	public void setUp() {
-		column = new Column() { 
-			@Override public String getSqlType(Dialect dialect, Mapping mapping) {
-				return "dummy";
-			}
-		};
-		columnFacade = new AbstractColumnFacade(FACADE_FACTORY, column) {};
+		column = new Column();
+		columnFacade = FACADE_FACTORY.createColumn(column);
 	}
 	
 	@Test
@@ -57,15 +49,15 @@ public class ColumnFacadeTest {
 		Assert.assertNull(columnFacade.getSqlType());
 		column.setSqlType("foobar");
 		Assert.assertEquals("foobar", columnFacade.getSqlType());
-		Dialect targetDialect = new Dialect() {};
-		Mapping targetMapping = (Mapping)Proxy.newProxyInstance(
-				FACADE_FACTORY.getClassLoader(), 
-				new Class[] { Mapping.class }, 
-				new TestInvocationHandler());
+		Dialect targetDialect = new H2Dialect();
+		SimpleValue value = new SimpleValue(new Configuration().createMappings());
+		value.setTypeName("int");
+		column.setValue(value);
+		Configuration configuration = new Configuration();
 		IDialect dialect = FACADE_FACTORY.createDialect(targetDialect);
-		IMapping mapping = FACADE_FACTORY.createMapping(targetMapping);
+		IMapping mapping = FACADE_FACTORY.createMapping(configuration.buildMapping());
 		column.setSqlType(null);
-		Assert.assertEquals("dummy", columnFacade.getSqlType(dialect, mapping));
+		Assert.assertEquals("integer", columnFacade.getSqlType(dialect, mapping));
 	}
 	
 	@Test
@@ -116,14 +108,11 @@ public class ColumnFacadeTest {
 		Value targetValue = null;
 		column.setValue(targetValue);
 		Assert.assertNull(columnFacade.getValue());
-		targetValue = (Value)Proxy.newProxyInstance(
-				FACADE_FACTORY.getClassLoader(), 
-				new Class[] { Value.class }, 
-				new TestInvocationHandler());
+		targetValue = new SimpleValue(new Configuration().createMappings());
 		column.setValue(targetValue);
 		IValue value = columnFacade.getValue();
 		Assert.assertNotNull(value);
-		Assert.assertEquals(targetValue, ((IFacade)value).getTarget());
+		Assert.assertSame(targetValue, ((IFacade)value).getTarget());
 	}
 	
 	public void testIsUnique() {
@@ -137,13 +126,6 @@ public class ColumnFacadeTest {
 		Assert.assertNull(column.getSqlType());
 		columnFacade.setSqlType("blah");
 		Assert.assertEquals("blah", column.getSqlType());
-	}
-	
-	private class TestInvocationHandler implements InvocationHandler {
-		@Override
-		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-			return null;
-		}		
 	}
 	
 }
