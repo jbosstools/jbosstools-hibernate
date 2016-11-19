@@ -22,7 +22,6 @@ import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.dialect.Dialect;
-import org.hibernate.engine.Mapping;
 import org.hibernate.engine.SessionFactoryImplementor;
 import org.hibernate.engine.query.HQLQueryPlan;
 import org.hibernate.hql.QueryTranslator;
@@ -74,7 +73,6 @@ import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
-import org.jboss.tools.hibernate.runtime.spi.IMapping;
 import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
@@ -141,16 +139,6 @@ public class FacadeFactoryTest {
 		Dialect dialect = new Dialect() {};
 		IDialect facade = facadeFactory.createDialect(dialect);
 		Assert.assertSame(dialect, ((IFacade)facade).getTarget());
-	}
-	
-	@Test
-	public void testCreateMapping() {
-		Mapping mapping = (Mapping)Proxy.newProxyInstance(
-				facadeFactory.getClassLoader(), 
-				new Class[] { Mapping.class }, 
-				new TestInvocationHandler());
-		IMapping facade = facadeFactory.createMapping(mapping);
-		Assert.assertSame(mapping, ((IFacade)facade).getTarget());
 	}
 	
 	@Test

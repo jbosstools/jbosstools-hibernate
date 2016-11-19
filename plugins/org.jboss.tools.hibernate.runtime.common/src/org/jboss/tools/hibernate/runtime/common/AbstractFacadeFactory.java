@@ -21,7 +21,6 @@ import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
-import org.jboss.tools.hibernate.runtime.spi.IMapping;
 import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
@@ -60,10 +59,6 @@ public abstract class AbstractFacadeFactory implements IFacadeFactory {
 	
 	public IDialect createDialect(Object target) {
 		return new AbstractDialectFacade(this, target) {};
-	}
-	
-	public IMapping createMapping(Object target ) {
-		return new AbstractMappingFacade(this, target) {};
 	}
 	
 	public IReverseEngineeringSettings createReverseEngineeringSettings(Object target) {

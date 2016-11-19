@@ -144,16 +144,6 @@ public class FacadeFactoryTest {
 	}
 	
 	@Test
-	public void testCreateMapping() {
-		Mapping mapping = (Mapping)Proxy.newProxyInstance(
-				facadeFactory.getClassLoader(), 
-				new Class[] { Mapping.class }, 
-				new TestInvocationHandler());
-		IMapping facade = facadeFactory.createMapping(mapping);
-		Assert.assertSame(mapping, ((IFacade)facade).getTarget());
-	}
-	
-	@Test
 	public void testCreateReverseEngineeringSettings() {
 		ReverseEngineeringSettings res = new ReverseEngineeringSettings(null);
 		IReverseEngineeringSettings facade = facadeFactory.createReverseEngineeringSettings(res);

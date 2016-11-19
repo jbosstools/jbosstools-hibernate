@@ -21,7 +21,6 @@ import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
-import org.jboss.tools.hibernate.runtime.spi.IMapping;
 import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
@@ -51,7 +50,6 @@ public interface IFacadeFactory {
 	ICfg2HbmTool createCfg2HbmTool(Object target);
 	INamingStrategy createNamingStrategy(Object target);
 	IDialect createDialect(Object target);
-	IMapping createMapping(Object target);
 	IReverseEngineeringSettings createReverseEngineeringSettings(Object target);
 	IReverseEngineeringStrategy createReverseEngineeringStrategy(Object target);
 	IOverrideRepository createOverrideRepository(Object target);
