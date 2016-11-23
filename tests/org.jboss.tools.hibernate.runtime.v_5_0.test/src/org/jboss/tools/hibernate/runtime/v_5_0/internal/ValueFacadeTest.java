@@ -25,4 +25,14 @@ public class ValueFacadeTest {
 		Assert.assertFalse(valueFacade.isSimpleValue());
 	}
 
+	@Test
+	public void testIsCollection() {
+		valueTarget = new SimpleValue(null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		Assert.assertFalse(valueFacade.isCollection());
+		valueTarget = new Set(null, null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		Assert.assertTrue(valueFacade.isCollection());
+	}
+
 }
