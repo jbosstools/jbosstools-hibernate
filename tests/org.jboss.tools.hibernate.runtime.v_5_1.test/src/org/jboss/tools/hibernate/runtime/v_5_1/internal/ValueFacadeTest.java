@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_5_1.internal;
 
+import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Value;
@@ -48,6 +49,16 @@ public class ValueFacadeTest {
 		collectionElement = valueFacade.getCollectionElement();
 		Assert.assertNotNull(collectionElement);
 		Assert.assertSame(valueTarget, ((IFacade)collectionElement).getTarget());
+	}
+
+	@Test 
+	public void testIsOneToMany() {
+		valueTarget = new SimpleValue(null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		Assert.assertFalse(valueFacade.isOneToMany());
+		OneToMany oneToMany = new OneToMany(null, null);
+		valueFacade = FACADE_FACTORY.createValue(oneToMany);
+		Assert.assertTrue(valueFacade.isOneToMany());
 	}
 
 }
