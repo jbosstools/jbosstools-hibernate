@@ -2,6 +2,8 @@ package org.jboss.tools.hibernate.runtime.v_4_0.internal;
 
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
+import org.hibernate.mapping.OneToOne;
+import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Value;
@@ -70,6 +72,16 @@ public class ValueFacadeTest {
 		ManyToOne manyToOne = new ManyToOne(null, null);
 		valueFacade = FACADE_FACTORY.createValue(manyToOne);
 		Assert.assertTrue(valueFacade.isManyToOne());
+	}
+
+	@Test 
+	public void testIsOneToOne() {
+		valueTarget = new SimpleValue(null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		Assert.assertFalse(valueFacade.isOneToOne());
+		OneToOne oneToOne = new OneToOne(null, null, new RootClass());
+		valueFacade = FACADE_FACTORY.createValue(oneToOne);
+		Assert.assertTrue(valueFacade.isOneToOne());
 	}
 
 }
