@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_4_0.internal;
 
+import org.hibernate.mapping.Component;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
@@ -93,6 +94,16 @@ public class ValueFacadeTest {
 		Map map = new Map(null, null);
 		valueFacade = FACADE_FACTORY.createValue(map);
 		Assert.assertTrue(valueFacade.isMap());
+	}
+
+	@Test
+	public void testIsComponent() {
+		valueTarget = new SimpleValue(null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		Assert.assertFalse(valueFacade.isComponent());
+		Component component = new Component(null, new RootClass());
+		valueFacade = FACADE_FACTORY.createValue(component);
+		Assert.assertTrue(valueFacade.isComponent());
 	}
 
 }
