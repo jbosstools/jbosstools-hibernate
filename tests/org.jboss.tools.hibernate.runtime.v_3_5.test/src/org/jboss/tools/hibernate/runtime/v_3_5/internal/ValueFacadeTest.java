@@ -106,4 +106,17 @@ public class ValueFacadeTest {
 		Assert.assertTrue(valueFacade.isComponent());
 	}
 
+	@Test
+	public void testIsEmbedded() {
+		valueTarget = new SimpleValue();
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		Assert.assertNull(valueFacade.isEmbedded());
+		Component component = new Component(new RootClass());
+		valueFacade = FACADE_FACTORY.createValue(component);
+		component.setEmbedded(true);
+		Assert.assertTrue(valueFacade.isEmbedded());
+		component.setEmbedded(false);
+		Assert.assertFalse(valueFacade.isEmbedded());
+	}
+
 }
