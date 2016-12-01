@@ -13,6 +13,7 @@ import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
+import org.jboss.tools.hibernate.runtime.spi.IValueVisitor;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -128,6 +129,26 @@ public class ValueFacadeTest {
 		ToOne toOne = new OneToOne(null, null, new RootClass(null));
 		valueFacade = FACADE_FACTORY.createValue(toOne);
 		Assert.assertTrue(valueFacade.isToOne());
+	}
+
+	@Test
+	public void testAccept() {
+		valueTarget = new SimpleValue(null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		TestValueVisitor visitor = new TestValueVisitor();
+		Assert.assertFalse(visitor.visited);
+		Object object = valueFacade.accept(visitor);
+		Assert.assertSame(visitor, object);
+		Assert.assertTrue(visitor.visited);
+	}
+	
+	private class TestValueVisitor implements IValueVisitor {
+		boolean visited = false;
+		@Override
+		public Object accept(IValue value) {
+			visited = true;
+			return this;
+		}		
 	}
 
 }
