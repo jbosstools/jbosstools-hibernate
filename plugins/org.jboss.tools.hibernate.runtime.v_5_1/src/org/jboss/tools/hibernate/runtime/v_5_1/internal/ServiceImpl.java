@@ -469,14 +469,9 @@ public class ServiceImpl extends AbstractService {
 
 	private Object newReverseEngineeringStrategy(final String className, Object delegate) {
         try {
-            Class<?> clazz = Class.forName(
-            		className, 
-            		true, 
-            		delegate.getClass().getClassLoader());
-            Class<?> revEngClass = Class.forName(
-            		"org.hibernate.cfg.reveng.ReverseEngineeringStrategy", 
-            		true, 
-            		clazz.getClassLoader());
+            Class<?> clazz = ReflectHelper.classForName(className);
+            Class<?> revEngClass =  ReflectHelper.classForName(
+            		"org.hibernate.cfg.reveng.ReverseEngineeringStrategy");
 			Constructor<?> constructor = 
 					clazz.getConstructor(
 							new Class[] { revEngClass });

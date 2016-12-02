@@ -56,6 +56,7 @@ import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
+import org.hibernate.tool.util.ReflectHelper;
 import org.jboss.tools.hibernate.runtime.common.AbstractPersistentClassFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractService;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -473,14 +474,9 @@ public class ServiceImpl extends AbstractService {
 
 	private Object newReverseEngineeringStrategy(final String className, Object delegate) {
         try {
-            Class<?> clazz = Class.forName(
-            		className, 
-            		true, 
-            		delegate.getClass().getClassLoader());
-            Class<?> revEngClass = Class.forName(
-            		"org.hibernate.cfg.reveng.ReverseEngineeringStrategy", 
-            		true, 
-            		clazz.getClassLoader());
+            Class<?> clazz = ReflectHelper.classForName(className);
+            Class<?> revEngClass =  ReflectHelper.classForName(
+            		"org.hibernate.cfg.reveng.ReverseEngineeringStrategy");
 			Constructor<?> constructor = 
 					clazz.getConstructor(
 							new Class[] { revEngClass });
