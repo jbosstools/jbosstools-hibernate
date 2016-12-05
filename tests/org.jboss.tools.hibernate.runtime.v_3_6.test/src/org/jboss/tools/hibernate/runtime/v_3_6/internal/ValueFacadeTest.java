@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_3_6.internal;
 
+import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
@@ -14,6 +15,7 @@ import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
+import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.spi.IValueVisitor;
 import org.junit.Assert;
@@ -151,6 +153,18 @@ public class ValueFacadeTest {
 		valueFacade = FACADE_FACTORY.createValue(valueTarget);
 		ITable tableFacade = valueFacade.getTable();
 		Assert.assertSame(tableTarget, ((IFacade)tableFacade).getTarget());
+	}
+	
+	@Test
+	public void testGetType() {
+		SimpleValue valueTarget = new SimpleValue(
+				new Configuration().createMappings());
+		valueTarget.setTypeName("java.lang.Integer");
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		IType typeFacade = valueFacade.getType();
+		Assert.assertEquals(
+				"org.hibernate.type.IntegerType", 
+				((IFacade)typeFacade).getTarget().getClass().getName());
 	}
 	
 	private class TestValueVisitor implements IValueVisitor {
