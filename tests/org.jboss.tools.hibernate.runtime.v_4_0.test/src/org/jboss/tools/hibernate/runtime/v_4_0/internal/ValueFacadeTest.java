@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_4_0.internal;
 
 import org.hibernate.cfg.Configuration;
+import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
@@ -176,6 +177,17 @@ public class ValueFacadeTest {
 		Assert.assertNull(valueTarget.getElement());
 		valueFacade.setElement(elementFacade);
 		Assert.assertSame(elementTarget, valueTarget.getElement());
+	}
+	
+	@Test
+	public void testSetCollectionTable() {
+		Table tableTarget = new Table();
+		ITable tableFacade = FACADE_FACTORY.createTable(tableTarget);
+		Collection valueTarget = new Set(null, null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		Assert.assertNull(valueTarget.getCollectionTable());
+		valueFacade.setCollectionTable(tableFacade);
+		Assert.assertSame(tableTarget, valueTarget.getCollectionTable());
 	}
 	
 	private class TestValueVisitor implements IValueVisitor {
