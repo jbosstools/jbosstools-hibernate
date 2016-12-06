@@ -170,6 +170,17 @@ public class ValueFacadeTest {
 				((IFacade)typeFacade).getTarget().getClass().getName());
 	}
 	
+	@Test
+	public void testSetElement() {
+		SimpleValue elementTarget = new SimpleValue(null);
+		IValue elementFacade = FACADE_FACTORY.createValue(elementTarget);
+		Set valueTarget = new Set(null, null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		Assert.assertNull(valueTarget.getElement());
+		valueFacade.setElement(elementFacade);
+		Assert.assertSame(elementTarget, valueTarget.getElement());
+	}
+	
 	private class TestValueVisitor implements IValueVisitor {
 		boolean visited = false;
 		@Override
