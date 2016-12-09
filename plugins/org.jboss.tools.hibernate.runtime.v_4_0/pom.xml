@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.jboss.tools.hibernatetools</groupId>
 		<artifactId>plugins</artifactId>
-		<version>5.1.2-SNAPSHOT</version>
+		<version>5.1.3-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.hibernatetools.plugins</groupId>
 	<artifactId>org.jboss.tools.hibernate.runtime.v_4_0</artifactId> 
