@@ -268,6 +268,18 @@ public class ValueFacadeTest {
 		Assert.assertTrue(valueFacade.isTypeSpecified());
 	}
 	
+	@Test
+	public void testGetCollectionTable() {
+		Table tableTarget = new Table();
+		Collection valueTarget = new Set(null, null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		Assert.assertNull(valueFacade.getCollectionTable());
+		valueTarget.setCollectionTable(tableTarget);
+		Assert.assertSame(
+				tableTarget, 
+				((IFacade)valueFacade.getCollectionTable()).getTarget());
+	}
+	
 	private class TestValueVisitor implements IValueVisitor {
 		boolean visited = false;
 		@Override
