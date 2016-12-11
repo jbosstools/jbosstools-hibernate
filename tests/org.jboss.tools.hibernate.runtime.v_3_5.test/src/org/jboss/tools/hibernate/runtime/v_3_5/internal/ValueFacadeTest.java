@@ -188,6 +188,17 @@ public class ValueFacadeTest {
 		Assert.assertSame(tableTarget, valueTarget.getCollectionTable());
 	}
 	
+	@Test
+	public void testSetTable() {
+		Table tableTarget = new Table();
+		ITable tableFacade = FACADE_FACTORY.createTable(tableTarget);
+		SimpleValue valueTarget = new SimpleValue();
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		Assert.assertNull(valueTarget.getTable());
+		valueFacade.setTable(tableFacade);
+		Assert.assertSame(tableTarget, valueTarget.getTable());
+	}
+	
 	private class TestValueVisitor implements IValueVisitor {
 		boolean visited = false;
 		@Override
