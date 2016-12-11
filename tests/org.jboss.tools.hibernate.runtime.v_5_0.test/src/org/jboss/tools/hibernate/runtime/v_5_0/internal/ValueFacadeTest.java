@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
@@ -302,6 +303,15 @@ public class ValueFacadeTest {
 		SimpleValue indexValue = new SimpleValue(null);
 		valueTarget.setIndex(indexValue);
 		Assert.assertSame(indexValue, ((IFacade)valueFacade.getIndex()).getTarget());
+	}
+	
+	@Test
+	public void testGetElementClassName() {
+		Array valueTarget = new Array(null, null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		Assert.assertNull(valueFacade.getElementClassName());
+		valueTarget.setElementClassName("org.foo.Bar");
+		Assert.assertEquals("org.foo.Bar", valueFacade.getElementClassName());;
 	}
 	
 	private class TestValueVisitor implements IValueVisitor {
