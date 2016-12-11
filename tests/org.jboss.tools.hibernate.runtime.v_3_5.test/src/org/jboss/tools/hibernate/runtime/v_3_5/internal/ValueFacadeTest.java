@@ -7,6 +7,7 @@ import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
@@ -228,6 +229,15 @@ public class ValueFacadeTest {
 		Assert.assertNull(valueTarget.getTypeName());
 		valueFacade.setTypeName("java.lang.Integer");
 		Assert.assertEquals("java.lang.Integer", valueTarget.getTypeName());
+	}
+	
+	@Test
+	public void testGetComponentClassName() {
+		Component valueTarget = new Component(new RootClass());
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		Assert.assertNull(valueFacade.getComponentClassName());
+		valueTarget.setComponentClassName("org.foo.Bar");
+		Assert.assertEquals("org.foo.Bar", valueFacade.getComponentClassName());
 	}
 	
 	private class TestValueVisitor implements IValueVisitor {

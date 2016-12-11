@@ -232,6 +232,15 @@ public class ValueFacadeTest {
 		Assert.assertEquals("java.lang.Integer", valueTarget.getTypeName());
 	}
 	
+	@Test
+	public void testGetComponentClassName() {
+		Component valueTarget = new Component(null, new RootClass());
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		Assert.assertNull(valueFacade.getComponentClassName());
+		valueTarget.setComponentClassName("org.foo.Bar");
+		Assert.assertEquals("org.foo.Bar", valueFacade.getComponentClassName());
+	}
+	
 	private class TestValueVisitor implements IValueVisitor {
 		boolean visited = false;
 		@Override
