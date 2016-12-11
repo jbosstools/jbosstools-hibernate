@@ -6,6 +6,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
+import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
@@ -278,6 +279,16 @@ public class ValueFacadeTest {
 		Assert.assertSame(
 				tableTarget, 
 				((IFacade)valueFacade.getCollectionTable()).getTarget());
+	}
+	
+	@Test
+	public void testGetKey() {
+		Map valueTarget = new Map(null, null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		Assert.assertNull(valueFacade.getKey());
+		KeyValue keyValue = new SimpleValue(null);
+		valueTarget.setKey(keyValue);
+		Assert.assertSame(keyValue, ((IFacade)valueFacade.getKey()).getTarget());
 	}
 	
 	private class TestValueVisitor implements IValueVisitor {
