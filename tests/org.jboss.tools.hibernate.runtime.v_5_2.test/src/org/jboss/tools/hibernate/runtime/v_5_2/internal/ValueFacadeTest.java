@@ -226,6 +226,15 @@ public class ValueFacadeTest {
 		Assert.assertSame(indexTarget, valueTarget.getIndex());
 	}
 	
+	@Test
+	public void testSetTypeName() {
+		SimpleValue valueTarget = new SimpleValue(null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		Assert.assertNull(valueTarget.getTypeName());
+		valueFacade.setTypeName("java.lang.Integer");
+		Assert.assertEquals("java.lang.Integer", valueTarget.getTypeName());
+	}
+	
 	private class TestValueVisitor implements IValueVisitor {
 		boolean visited = false;
 		@Override
