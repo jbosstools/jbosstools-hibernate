@@ -1,7 +1,10 @@
 package org.jboss.tools.hibernate.runtime.v_4_3.internal;
 
+import java.util.Iterator;
+
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Collection;
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
@@ -16,6 +19,7 @@ import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
@@ -239,6 +243,20 @@ public class ValueFacadeTest {
 		Assert.assertNull(valueFacade.getComponentClassName());
 		valueTarget.setComponentClassName("org.foo.Bar");
 		Assert.assertEquals("org.foo.Bar", valueFacade.getComponentClassName());
+	}
+	
+	@Test
+	public void testGetColumnIterator() {
+		SimpleValue valueTarget = new SimpleValue(null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		Iterator<IColumn> columnIterator = valueFacade.getColumnIterator();
+		Assert.assertFalse(columnIterator.hasNext());
+		Column columnTarget = new Column();
+		valueTarget.addColumn(columnTarget);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		columnIterator = valueFacade.getColumnIterator();
+		Assert.assertTrue(columnIterator.hasNext());
+		Assert.assertSame(columnTarget, ((IFacade)columnIterator.next()).getTarget());
 	}
 	
 	private class TestValueVisitor implements IValueVisitor {
