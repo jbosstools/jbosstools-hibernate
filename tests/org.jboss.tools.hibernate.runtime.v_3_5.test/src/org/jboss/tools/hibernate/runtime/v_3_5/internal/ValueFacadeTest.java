@@ -257,6 +257,15 @@ public class ValueFacadeTest {
 		Assert.assertSame(columnTarget, ((IFacade)columnIterator.next()).getTarget());
 	}
 	
+	@Test
+	public void testIsTypeSpecified() {
+		SimpleValue valueTarget = new SimpleValue();
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		Assert.assertFalse(valueFacade.isTypeSpecified());
+		valueTarget.setTypeName("org.foo.Bar");
+		Assert.assertTrue(valueFacade.isTypeSpecified());
+	}
+	
 	private class TestValueVisitor implements IValueVisitor {
 		boolean visited = false;
 		@Override
