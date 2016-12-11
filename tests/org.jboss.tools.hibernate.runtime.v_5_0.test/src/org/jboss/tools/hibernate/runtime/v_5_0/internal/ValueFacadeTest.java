@@ -294,6 +294,16 @@ public class ValueFacadeTest {
 		Assert.assertSame(keyValue, ((IFacade)valueFacade.getKey()).getTarget());
 	}
 	
+	@Test
+	public void testGetIndex() {
+		List valueTarget = new List(null, null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		Assert.assertNull(valueFacade.getIndex());
+		SimpleValue indexValue = new SimpleValue(null);
+		valueTarget.setIndex(indexValue);
+		Assert.assertSame(indexValue, ((IFacade)valueFacade.getIndex()).getTarget());
+	}
+	
 	private class TestValueVisitor implements IValueVisitor {
 		boolean visited = false;
 		@Override
