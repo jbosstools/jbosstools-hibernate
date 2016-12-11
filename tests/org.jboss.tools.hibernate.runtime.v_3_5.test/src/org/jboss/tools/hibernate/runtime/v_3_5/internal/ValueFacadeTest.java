@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Component;
+import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
@@ -197,6 +198,16 @@ public class ValueFacadeTest {
 		Assert.assertNull(valueTarget.getTable());
 		valueFacade.setTable(tableFacade);
 		Assert.assertSame(tableTarget, valueTarget.getTable());
+	}
+	
+	@Test
+	public void testIsList() {
+		valueTarget = new SimpleValue();
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		Assert.assertFalse(valueFacade.isList());
+		valueTarget = new List(null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		Assert.assertTrue(valueFacade.isList());
 	}
 	
 	private class TestValueVisitor implements IValueVisitor {
