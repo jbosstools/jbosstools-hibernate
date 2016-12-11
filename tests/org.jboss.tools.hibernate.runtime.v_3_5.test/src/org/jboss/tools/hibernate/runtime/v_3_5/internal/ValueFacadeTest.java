@@ -210,6 +210,17 @@ public class ValueFacadeTest {
 		Assert.assertTrue(valueFacade.isList());
 	}
 	
+	@Test
+	public void testSetIndex() {
+		List valueTarget = new List(null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		Assert.assertNull(valueTarget.getIndex());
+		SimpleValue indexTarget = new SimpleValue();
+		IValue indexFacade = FACADE_FACTORY.createValue(indexTarget);
+		valueFacade.setIndex(indexFacade);
+		Assert.assertSame(indexTarget, valueTarget.getIndex());
+	}
+	
 	private class TestValueVisitor implements IValueVisitor {
 		boolean visited = false;
 		@Override
