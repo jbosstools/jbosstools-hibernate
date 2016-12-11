@@ -314,6 +314,15 @@ public class ValueFacadeTest {
 		Assert.assertEquals("org.foo.Bar", valueFacade.getElementClassName());;
 	}
 	
+	@Test
+	public void testGetTypeName() {
+		SimpleValue valueTarget = new SimpleValue(null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		Assert.assertNull(valueFacade.getTypeName());
+		valueTarget.setTypeName("org.foo.Bar");
+		Assert.assertEquals("org.foo.Bar", valueFacade.getTypeName());
+	}
+	
 	private class TestValueVisitor implements IValueVisitor {
 		boolean visited = false;
 		@Override
