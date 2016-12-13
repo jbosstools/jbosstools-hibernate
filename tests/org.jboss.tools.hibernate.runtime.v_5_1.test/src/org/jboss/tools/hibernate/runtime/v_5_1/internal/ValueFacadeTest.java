@@ -366,6 +366,16 @@ public class ValueFacadeTest {
 		Assert.assertTrue(valueFacade.isPrimitiveArray());
 	}
 	
+	@Test
+	public void testIsArray() {
+		SimpleValue simpleValueTarget = new SimpleValue(null);
+		valueFacade = FACADE_FACTORY.createValue(simpleValueTarget);
+		Assert.assertFalse(valueFacade.isArray());
+		Array arrayTarget = new Array(null, null);
+		valueFacade = FACADE_FACTORY.createValue(arrayTarget);
+		Assert.assertTrue(valueFacade.isArray());
+	}
+	
 	private class TestValueVisitor implements IValueVisitor {
 		boolean visited = false;
 		@Override
