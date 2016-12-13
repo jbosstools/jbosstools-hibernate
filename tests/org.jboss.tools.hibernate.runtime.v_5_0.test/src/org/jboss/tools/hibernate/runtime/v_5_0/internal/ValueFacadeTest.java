@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
@@ -332,6 +333,16 @@ public class ValueFacadeTest {
 		DependantValue dependantValueTarget = new DependantValue(null, null, null);
 		valueFacade = FACADE_FACTORY.createValue(dependantValueTarget);
 		Assert.assertTrue(valueFacade.isDependantValue());
+	}
+	
+	@Test
+	public void testIsAny() {
+		SimpleValue simpleValueTarget = new SimpleValue(null);
+		valueFacade = FACADE_FACTORY.createValue(simpleValueTarget);
+		Assert.assertFalse(valueFacade.isAny());
+		Any anyTarget = new Any(null, null);
+		valueFacade = FACADE_FACTORY.createValue(anyTarget);
+		Assert.assertTrue(valueFacade.isAny());
 	}
 	
 	private class TestValueVisitor implements IValueVisitor {
