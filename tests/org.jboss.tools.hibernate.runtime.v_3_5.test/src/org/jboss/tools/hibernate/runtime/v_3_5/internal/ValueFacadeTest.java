@@ -340,6 +340,16 @@ public class ValueFacadeTest {
 		Assert.assertTrue(valueFacade.isAny());
 	}
 	
+	@Test
+	public void testIsSet() {
+		SimpleValue simpleValueTarget = new SimpleValue();
+		valueFacade = FACADE_FACTORY.createValue(simpleValueTarget);
+		Assert.assertFalse(valueFacade.isSet());
+		Set setTarget = new Set(null);
+		valueFacade = FACADE_FACTORY.createValue(setTarget);
+		Assert.assertTrue(valueFacade.isSet());
+	}
+	
 	private class TestValueVisitor implements IValueVisitor {
 		boolean visited = false;
 		@Override
