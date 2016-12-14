@@ -8,6 +8,7 @@ import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
+import org.hibernate.mapping.IdentifierBag;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
@@ -369,6 +370,16 @@ public class ValueFacadeTest {
 		Array arrayTarget = new Array(null);
 		valueFacade = FACADE_FACTORY.createValue(arrayTarget);
 		Assert.assertTrue(valueFacade.isArray());
+	}
+	
+	@Test
+	public void testIsIdentifierBag() {
+		SimpleValue simpleValueTarget = new SimpleValue();
+		valueFacade = FACADE_FACTORY.createValue(simpleValueTarget);
+		Assert.assertFalse(valueFacade.isIdentifierBag());
+		IdentifierBag identifierBagTarget = new IdentifierBag(null);
+		valueFacade = FACADE_FACTORY.createValue(identifierBagTarget);
+		Assert.assertTrue(valueFacade.isIdentifierBag());
 	}
 	
 	private class TestValueVisitor implements IValueVisitor {
