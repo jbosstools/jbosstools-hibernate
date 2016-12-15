@@ -6,6 +6,7 @@ import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
+import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
@@ -385,6 +386,16 @@ public class ValueFacadeTest {
 		IdentifierBag identifierBagTarget = new IdentifierBag(null, null);
 		valueFacade = FACADE_FACTORY.createValue(identifierBagTarget);
 		Assert.assertTrue(valueFacade.isIdentifierBag());
+	}
+	
+	@Test
+	public void testIsBag() {
+		SimpleValue simpleValueTarget = new SimpleValue(null);
+		valueFacade = FACADE_FACTORY.createValue(simpleValueTarget);
+		Assert.assertFalse(valueFacade.isBag());
+		Bag bagTarget = new Bag(null, null);
+		valueFacade = FACADE_FACTORY.createValue(bagTarget);
+		Assert.assertTrue(valueFacade.isBag());
 	}
 	
 	private class TestValueVisitor implements IValueVisitor {
