@@ -395,6 +395,15 @@ public class ValueFacadeTest {
 		Assert.assertTrue(valueFacade.isBag());
 	}
 	
+	@Test
+	public void testGetReferencedEntityName() {
+		ManyToOne valueTarget = new ManyToOne(null, null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		Assert.assertNull(valueFacade.getReferencedEntityName());
+		valueTarget.setReferencedEntityName("Foo");
+		Assert.assertEquals("Foo", valueFacade.getReferencedEntityName());
+	}
+	
 	private class TestValueVisitor implements IValueVisitor {
 		boolean visited = false;
 		@Override
