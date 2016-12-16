@@ -402,6 +402,18 @@ public class ValueFacadeTest {
 		Assert.assertEquals("Foo", valueFacade.getReferencedEntityName());
 	}
 	
+	@Test
+	public void testGetEntityName() {
+		SimpleValue simpleValueTarget = new SimpleValue();
+		valueFacade = FACADE_FACTORY.createValue(simpleValueTarget);
+		Assert.assertNull(valueFacade.getEntityName());
+		RootClass pc = new RootClass();
+		pc.setEntityName("foobar");
+		OneToOne oneToOneTarget = new OneToOne(null, pc);
+		valueFacade = FACADE_FACTORY.createValue(oneToOneTarget);
+		Assert.assertEquals("foobar", valueFacade.getEntityName());
+	}
+	
 	private class TestValueVisitor implements IValueVisitor {
 		boolean visited = false;
 		@Override
