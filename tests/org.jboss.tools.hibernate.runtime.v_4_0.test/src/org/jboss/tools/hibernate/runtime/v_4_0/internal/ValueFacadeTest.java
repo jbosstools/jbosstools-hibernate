@@ -433,6 +433,20 @@ public class ValueFacadeTest {
 		Assert.assertSame(propertyTarget, ((IFacade)propertyFacade).getTarget());
 	}
 	
+	@Test
+	public void testAddColumn() {
+		SimpleValue simpleValueTarget = new SimpleValue(null);
+		valueFacade = FACADE_FACTORY.createValue(simpleValueTarget);
+		Iterator<?> columnIterator = simpleValueTarget.getColumnIterator();
+		Assert.assertFalse(columnIterator.hasNext());
+		Column columnTarget = new Column();
+		IColumn columnFacade = FACADE_FACTORY.createColumn(columnTarget);
+		valueFacade.addColumn(columnFacade);
+		columnIterator = simpleValueTarget.getColumnIterator();
+		Assert.assertTrue(columnIterator.hasNext());
+		Assert.assertSame(columnTarget, columnIterator.next());
+	}
+	
 	private class TestValueVisitor implements IValueVisitor {
 		boolean visited = false;
 		@Override
