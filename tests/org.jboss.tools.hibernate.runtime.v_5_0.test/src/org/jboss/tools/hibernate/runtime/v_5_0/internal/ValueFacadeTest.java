@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_5_0.internal;
 
 import java.util.Iterator;
+import java.util.Properties;
 
 import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.cfg.Configuration;
@@ -448,6 +449,16 @@ public class ValueFacadeTest {
 		columnIterator = simpleValueTarget.getColumnIterator();
 		Assert.assertTrue(columnIterator.hasNext());
 		Assert.assertSame(columnTarget, columnIterator.next());
+	}
+	
+	@Test
+	public void testGetTypeParameters() {
+		SimpleValue simpleValueTarget = new SimpleValue(null);
+		valueFacade = FACADE_FACTORY.createValue(simpleValueTarget);
+		Assert.assertNull(simpleValueTarget.getTypeParameters());
+		Properties properties = new Properties();
+		valueFacade.setTypeParameters(properties);
+		Assert.assertSame(properties, simpleValueTarget.getTypeParameters());		
 	}
 	
 	private class TestValueVisitor implements IValueVisitor {
