@@ -465,6 +465,14 @@ public class ValueFacadeTest {
 		Assert.assertEquals("foobar", valueFacade.getForeignKeyName());
 	}
 	
+	@Test
+	public void testGetOwner() {
+		RootClass rc = new RootClass();
+		Component componentTarget = new Component(rc);
+		valueFacade = FACADE_FACTORY.createValue(componentTarget);
+		Assert.assertSame(rc, ((IFacade)valueFacade.getOwner()).getTarget());
+	}
+	
 	private class TestValueVisitor implements IValueVisitor {
 		boolean visited = false;
 		@Override
