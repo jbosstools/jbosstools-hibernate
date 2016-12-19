@@ -456,6 +456,15 @@ public class ValueFacadeTest {
 		Assert.assertSame(properties, simpleValueTarget.getTypeParameters());		
 	}
 	
+	@Test
+	public void testGetForeignKeyName() {
+		SimpleValue simpleValueTarget = new SimpleValue();
+		valueFacade = FACADE_FACTORY.createValue(simpleValueTarget);
+		Assert.assertNull(valueFacade.getForeignKeyName());
+		simpleValueTarget.setForeignKeyName("foobar");
+		Assert.assertEquals("foobar", valueFacade.getForeignKeyName());
+	}
+	
 	private class TestValueVisitor implements IValueVisitor {
 		boolean visited = false;
 		@Override
