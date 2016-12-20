@@ -478,6 +478,18 @@ public class ValueFacadeTest {
 		Assert.assertSame(rc, ((IFacade)valueFacade.getOwner()).getTarget());
 	}
 	
+	@Test
+	public void testGetElement() {
+		Bag bagValueTarget = new Bag(null, null);
+		IValue bagValueFacade = FACADE_FACTORY.createValue(bagValueTarget);
+		Assert.assertNull(bagValueFacade.getElement());
+		SimpleValue simpleValueTarget = new SimpleValue(null);
+		bagValueTarget.setElement(simpleValueTarget);
+		Assert.assertSame(
+				simpleValueTarget, 
+				((IFacade)bagValueFacade.getElement()).getTarget());
+	}
+	
 	private class TestValueVisitor implements IValueVisitor {
 		boolean visited = false;
 		@Override
