@@ -485,6 +485,17 @@ public class ValueFacadeTest {
 				((IFacade)bagValueFacade.getElement()).getTarget());
 	}
 	
+	@Test
+	public void testSetKey() {
+		KeyValue keyValueTarget = new SimpleValue();
+		IValue keyValueFacade = FACADE_FACTORY.createValue(keyValueTarget);
+		Collection collectionTarget = new Bag(null);
+		IValue collectionFacade = FACADE_FACTORY.createValue(collectionTarget);
+		Assert.assertNull(collectionTarget.getKey());
+		collectionFacade.setKey(keyValueFacade);
+		Assert.assertSame(keyValueTarget, collectionTarget.getKey());
+	}
+	
 	private class TestValueVisitor implements IValueVisitor {
 		boolean visited = false;
 		@Override
