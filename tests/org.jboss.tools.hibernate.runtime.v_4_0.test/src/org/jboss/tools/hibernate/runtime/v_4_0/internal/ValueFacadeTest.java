@@ -3,6 +3,7 @@ package org.jboss.tools.hibernate.runtime.v_4_0.internal;
 import java.util.Iterator;
 import java.util.Properties;
 
+import org.hibernate.FetchMode;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
@@ -514,6 +515,25 @@ public class ValueFacadeTest {
 		Assert.assertNull(collectionTarget.getKey());
 		collectionFacade.setKey(keyValueFacade);
 		Assert.assertSame(keyValueTarget, collectionTarget.getKey());
+	}
+	
+	@Test
+	public void testSetFetchModeJoin() {
+		SimpleValue simpleValueTarget = new SimpleValue(null);
+		Assert.assertNotEquals(FetchMode.JOIN, simpleValueTarget.getFetchMode());
+		valueFacade = FACADE_FACTORY.createValue(simpleValueTarget);
+		valueFacade.setFetchModeJoin();
+		Assert.assertNotEquals(FetchMode.JOIN, simpleValueTarget.getFetchMode());
+		Collection collectionTarget = new Bag(null, null);
+		Assert.assertNotEquals(FetchMode.JOIN, collectionTarget.getFetchMode());
+		valueFacade = FACADE_FACTORY.createValue(collectionTarget);
+		valueFacade.setFetchModeJoin();
+		Assert.assertEquals(FetchMode.JOIN, collectionTarget.getFetchMode());
+		ManyToOne manyToOneTarget = new ManyToOne(null, null);
+		Assert.assertNotEquals(FetchMode.JOIN, manyToOneTarget.getFetchMode());
+		valueFacade = FACADE_FACTORY.createValue(manyToOneTarget);
+		valueFacade.setFetchModeJoin();
+		Assert.assertEquals(FetchMode.JOIN, manyToOneTarget.getFetchMode());
 	}
 	
 	private class TestValueVisitor implements IValueVisitor {
