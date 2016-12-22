@@ -534,6 +534,15 @@ public class ValueFacadeTest {
 		Assert.assertEquals(FetchMode.JOIN, manyToOneTarget.getFetchMode());
 	}
 	
+	@Test
+	public void testIsInverse() {
+		Collection collectionTarget = new Bag(null);
+		valueFacade = FACADE_FACTORY.createValue(collectionTarget);
+		Assert.assertFalse(valueFacade.isInverse());
+		collectionTarget.setInverse(true);
+		Assert.assertTrue(valueFacade.isInverse());
+	}
+	
 	private class TestValueVisitor implements IValueVisitor {
 		boolean visited = false;
 		@Override
