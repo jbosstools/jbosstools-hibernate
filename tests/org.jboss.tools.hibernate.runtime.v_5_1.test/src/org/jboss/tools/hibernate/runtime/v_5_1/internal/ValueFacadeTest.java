@@ -500,6 +500,15 @@ public class ValueFacadeTest {
 	}
 	
 	@Test
+	public void testSetElementClassName() {
+		Array arrayTarget = new Array(null, null);
+		valueFacade = FACADE_FACTORY.createValue(arrayTarget);
+		Assert.assertNull(arrayTarget.getElementClassName());
+		valueFacade.setElementClassName("foobar");
+		Assert.assertEquals("foobar", arrayTarget.getElementClassName());
+	}
+	
+	@Test
 	public void testSetKey() {
 		KeyValue keyValueTarget = new SimpleValue(null);
 		IValue keyValueFacade = FACADE_FACTORY.createValue(keyValueTarget);
