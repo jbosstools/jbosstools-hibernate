@@ -491,6 +491,15 @@ public class ValueFacadeTest {
 	}
 	
 	@Test
+	public void testGetParentProperty() {
+		Component componentTarget = new Component(null, new RootClass(null));
+		IValue valueFacade = FACADE_FACTORY.createValue(componentTarget);
+		Assert.assertNull(valueFacade.getParentProperty());
+		componentTarget.setParentProperty("foobar");
+		Assert.assertEquals("foobar", valueFacade.getParentProperty());
+	}
+	
+	@Test
 	public void testSetKey() {
 		KeyValue keyValueTarget = new SimpleValue(null);
 		IValue keyValueFacade = FACADE_FACTORY.createValue(keyValueTarget);
