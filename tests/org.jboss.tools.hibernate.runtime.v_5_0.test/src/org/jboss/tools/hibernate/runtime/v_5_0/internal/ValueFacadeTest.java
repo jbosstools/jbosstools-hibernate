@@ -548,6 +548,18 @@ public class ValueFacadeTest {
 		Assert.assertTrue(valueFacade.isInverse());
 	}
 	
+	@Test
+	public void testGetAssociatedClass() {
+		RootClass rootClass = new RootClass(null);
+		OneToMany oneToManyTarget = new OneToMany(null, null);
+		valueFacade = FACADE_FACTORY.createValue(oneToManyTarget);
+		Assert.assertNull(valueFacade.getAssociatedClass());
+		oneToManyTarget.setAssociatedClass(rootClass);
+		Assert.assertSame(
+				rootClass, 
+				((IFacade)valueFacade.getAssociatedClass()).getTarget());
+	}
+	
 	private class TestValueVisitor implements IValueVisitor {
 		boolean visited = false;
 		@Override
