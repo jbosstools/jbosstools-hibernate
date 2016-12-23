@@ -560,6 +560,16 @@ public class ValueFacadeTest {
 				((IFacade)valueFacade.getAssociatedClass()).getTarget());
 	}
 	
+	@Test
+	public void testSetLazy() {
+		Collection collectionTarget = new Bag(null, null);
+		valueFacade = FACADE_FACTORY.createValue(collectionTarget);
+		valueFacade.setLazy(true);
+		Assert.assertTrue(collectionTarget.isLazy());
+		valueFacade.setLazy(false);
+		Assert.assertFalse(collectionTarget.isLazy());
+	}
+	
 	private class TestValueVisitor implements IValueVisitor {
 		boolean visited = false;
 		@Override
