@@ -29,6 +29,7 @@ import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
+import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
@@ -581,6 +582,20 @@ public class ValueFacadeTest {
 		Assert.assertNull(valueTarget.getReferencedEntityName());
 		valueFacade.setReferencedEntityName("Foo");
 		Assert.assertEquals("Foo", valueTarget.getReferencedEntityName());
+	}
+	
+	@Test
+	public void testSetAssociatedClass() {
+		RootClass rootClassTarget = new RootClass();
+		IPersistentClass rootClassFacade = 
+				FACADE_FACTORY.createPersistentClass(rootClassTarget);
+		OneToMany oneToManyTarget = new OneToMany(null);
+		valueFacade = FACADE_FACTORY.createValue(oneToManyTarget);
+		Assert.assertNull(oneToManyTarget.getAssociatedClass());
+		valueFacade.setAssociatedClass(rootClassFacade);
+		Assert.assertSame(
+				rootClassTarget, 
+				oneToManyTarget.getAssociatedClass());
 	}
 	
 	private class TestValueVisitor implements IValueVisitor {
