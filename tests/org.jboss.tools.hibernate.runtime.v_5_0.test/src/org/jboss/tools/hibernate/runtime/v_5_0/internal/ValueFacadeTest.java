@@ -570,6 +570,15 @@ public class ValueFacadeTest {
 		Assert.assertFalse(collectionTarget.isLazy());
 	}
 	
+	@Test
+	public void testSetRole() {
+		Collection collectionTarget = new Bag(null, null);
+		valueFacade = FACADE_FACTORY.createValue(collectionTarget);
+		Assert.assertNull(collectionTarget.getRole());
+		valueFacade.setRole("foobar");
+		Assert.assertEquals("foobar", collectionTarget.getRole());
+	}
+	
 	private class TestValueVisitor implements IValueVisitor {
 		boolean visited = false;
 		@Override
