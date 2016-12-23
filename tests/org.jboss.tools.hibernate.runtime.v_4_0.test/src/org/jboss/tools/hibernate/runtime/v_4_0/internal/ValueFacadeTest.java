@@ -576,6 +576,15 @@ public class ValueFacadeTest {
 		Assert.assertEquals("foobar", collectionTarget.getRole());
 	}
 	
+	@Test
+	public void testSetReferencedEntityName() {
+		ManyToOne valueTarget = new ManyToOne(null, null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		Assert.assertNull(valueTarget.getReferencedEntityName());
+		valueFacade.setReferencedEntityName("Foo");
+		Assert.assertEquals("Foo", valueTarget.getReferencedEntityName());
+	}
+	
 	private class TestValueVisitor implements IValueVisitor {
 		boolean visited = false;
 		@Override
