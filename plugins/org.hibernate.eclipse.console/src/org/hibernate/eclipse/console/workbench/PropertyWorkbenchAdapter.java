@@ -25,54 +25,43 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
-import org.jboss.tools.hibernate.runtime.spi.IValueVisitor;
 
 public class PropertyWorkbenchAdapter implements IWorkbenchAdapter {
 	
 	final static Object[] NO_CHILDREN = new Object[0];
 
 	public Object[] getChildren(Object o) {
-		IProperty p = (IProperty) o;
-		
-		Object[] result = (Object[])(p.getValue()).accept(new IValueVisitor() {
-			
-			@Override
-			public Object accept(IValue value) {
-				if (value.isOneToOne()) {
-					return NO_CHILDREN;
-				} else if (value.isManyToOne()) {
-					return NO_CHILDREN;
-				} else if (value.isComponent()) {
-					return BasicWorkbenchAdapter.toArray(value.getPropertyIterator(), IProperty.class, null);
-				} else if (value.isDependantValue()) {
-					return NO_CHILDREN;
-				} else if (value.isAny()) {
-					return NO_CHILDREN;
-				} else if (value.isSimpleValue()) {
-					return NO_CHILDREN;
-				} else if (value.isSet()) {
-					return NO_CHILDREN;
-				} else if (value.isOneToMany()) {
-					return NO_CHILDREN;
-				} else if (value.isMap()) {
-					return NO_CHILDREN;
-				} else if (value.isPrimitiveArray()) {
-					return NO_CHILDREN;
-				} else if (value.isArray()) {
-					return NO_CHILDREN;
-				} else if (value.isList()) {
-					return NO_CHILDREN;
-				} else if (value.isIdentifierBag()) {
-					return NO_CHILDREN;
-				} else if (value.isBag()) {
-					return NO_CHILDREN;
-				}
-				return null;
-			}
-		
-		});
-		
-		return result;
+		IValue value = ((IProperty) o).getValue();
+		if (value.isOneToOne()) {
+			return NO_CHILDREN;
+		} else if (value.isManyToOne()) {
+			return NO_CHILDREN;
+		} else if (value.isComponent()) {
+			return BasicWorkbenchAdapter.toArray(value.getPropertyIterator(), IProperty.class, null);
+		} else if (value.isDependantValue()) {
+			return NO_CHILDREN;
+		} else if (value.isAny()) {
+			return NO_CHILDREN;
+		} else if (value.isSimpleValue()) {
+			return NO_CHILDREN;
+		} else if (value.isSet()) {
+			return NO_CHILDREN;
+		} else if (value.isOneToMany()) {
+			return NO_CHILDREN;
+		} else if (value.isMap()) {
+			return NO_CHILDREN;
+		} else if (value.isPrimitiveArray()) {
+			return NO_CHILDREN;
+		} else if (value.isArray()) {
+			return NO_CHILDREN;
+		} else if (value.isList()) {
+			return NO_CHILDREN;
+		} else if (value.isIdentifierBag()) {
+			return NO_CHILDREN;
+		} else if (value.isBag()) {
+			return NO_CHILDREN;
+		}
+		return null;
 	}
 
 	public ImageDescriptor getImageDescriptor(Object object) {
