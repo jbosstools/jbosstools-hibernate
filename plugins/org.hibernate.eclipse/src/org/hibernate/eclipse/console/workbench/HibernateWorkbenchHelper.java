@@ -55,17 +55,6 @@ public class HibernateWorkbenchHelper {
 		return EclipseImages.getImage(iconNameForValue);
 	}
 	
-	static private String getIconNameForValue(IValue value) {
-		String result;
-		
-		result = (String) value.accept(new IconNameValueVisitor());
-		
-		if(result==null) {
-			result = ImageConstants.UNKNOWNPROPERTY;
-		}
-		return result;
-	}
-
 	public static String getLabelForClassName(String classOrEntityName) {
 		if(classOrEntityName.indexOf('.')>=0) {
 			classOrEntityName = StringHelper.unqualify(classOrEntityName);
@@ -73,4 +62,38 @@ public class HibernateWorkbenchHelper {
 		return classOrEntityName;
 	}
 
+
+	private static String getIconNameForValue(IValue value) {
+		if (value.isOneToOne()) {
+			return ImageConstants.ONETOONE;
+		} else if (value.isManyToOne()) {
+			return ImageConstants.MANYTOONE;
+		} else if (value.isComponent()) {
+			return ImageConstants.COMPONENT;
+		} else if (value.isDependantValue()) {
+			return ImageConstants.UNKNOWNPROPERTY;
+		} else if (value.isAny()) {
+			return ImageConstants.PROPERTY;
+		} else if (value.isSimpleValue()) {
+			return ImageConstants.PROPERTY;
+		} else if (value.isSet()) {
+			return ImageConstants.MANYTOONE;
+		} else if (value.isOneToMany()) {
+			return ImageConstants.ONETOMANY;
+		} else if (value.isMap()) {
+			return ImageConstants.MANYTOONE;
+		} else if (value.isPrimitiveArray()) {
+			return ImageConstants.MANYTOONE;
+		} else if (value.isArray()) {
+			return ImageConstants.MANYTOONE;
+		} else if (value.isList()) {
+			return ImageConstants.MANYTOONE;
+		} else if (value.isIdentifierBag()) {
+			return ImageConstants.MANYTOONE;
+		} else if (value.isBag()) {
+			return ImageConstants.MANYTOONE;
+		}
+		return ImageConstants.UNKNOWNPROPERTY;
+	}
+	
 }
