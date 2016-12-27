@@ -104,7 +104,7 @@ public class OrmLabelMap {
 		IValue value = field.getValue();
 		String typeName = null;
 		if (value != null) {
-			typeName = (String) value.accept(new TypeNameValueVisitor(false));
+			typeName = (String) new TypeNameValueVisitor(false).accept(value);
 			if (typeName != null) {
 				return field.getName() + " : " + typeName; //$NON-NLS-1$
 			}

@@ -22,9 +22,8 @@
 package org.hibernate.eclipse.console.workbench;
 
 import org.jboss.tools.hibernate.runtime.spi.IValue;
-import org.jboss.tools.hibernate.runtime.spi.IValueVisitor;
 
-public class TypeNameValueVisitor implements IValueVisitor {
+public class TypeNameValueVisitor {
 
 	/** if true then only return the classname, not the fully qualified classname */
 	final boolean dequalify; 
@@ -34,27 +33,27 @@ public class TypeNameValueVisitor implements IValueVisitor {
 	}
 	
 	private Object acceptBag(IValue bag) {
-		return "Bag <" + bag.getCollectionElement().accept(this) + ">";  //$NON-NLS-1$//$NON-NLS-2$
+		return "Bag <" + accept(bag.getCollectionElement()) + ">";  //$NON-NLS-1$//$NON-NLS-2$
 	}
 
 	private Object acceptIdBag(IValue bag) {
-		return "IdBag <" + bag.getCollectionElement().accept(this) + ">";  //$NON-NLS-1$//$NON-NLS-2$
+		return "IdBag <" + accept(bag.getCollectionElement()) + ">";  //$NON-NLS-1$//$NON-NLS-2$
 	}
 
 	private Object acceptList(IValue list) {
-		return "List <" + list.getCollectionElement().accept(this) + ">"; //$NON-NLS-1$ //$NON-NLS-2$
+		return "List <" + accept(list.getCollectionElement()) + ">"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	private Object acceptPrimitiveArray(IValue primitiveArray) {
-		return primitiveArray.getCollectionElement().accept(this) + "[]"; //$NON-NLS-1$
+		return accept(primitiveArray.getCollectionElement()) + "[]"; //$NON-NLS-1$
 	}
 
 	private Object acceptArray(IValue list) {
-		return list.getCollectionElement().accept(this) + "[]"; //$NON-NLS-1$
+		return accept(list.getCollectionElement()) + "[]"; //$NON-NLS-1$
 	}
 
 	private Object acceptMap(IValue map) {
-		return "Map<" + map.getCollectionElement().accept(this) + ">"; //$NON-NLS-1$ //$NON-NLS-2$
+		return "Map<" + accept(map.getCollectionElement()) + ">"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	private Object acceptOneToMany(IValue many) {
@@ -69,7 +68,7 @@ public class TypeNameValueVisitor implements IValueVisitor {
 	}
 
 	private Object acceptSet(IValue set) {
-		return "Set<" + set.getCollectionElement().accept(this) + ">"; //$NON-NLS-1$ //$NON-NLS-2$
+		return "Set<" + accept(set.getCollectionElement()) + ">"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	private Object acceptAny(IValue any) {
@@ -96,7 +95,6 @@ public class TypeNameValueVisitor implements IValueVisitor {
 		return dequalify(oto.getEntityName());
 	}
 
-	@Override
 	public Object accept(IValue value) {
 		if (value.isOneToOne()) {
 			return acceptOneToOne(value);
