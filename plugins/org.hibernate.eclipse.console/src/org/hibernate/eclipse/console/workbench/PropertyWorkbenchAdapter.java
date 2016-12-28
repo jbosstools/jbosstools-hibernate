@@ -72,7 +72,7 @@ public class PropertyWorkbenchAdapter implements IWorkbenchAdapter {
 	public String getLabel(Object o) {
 		IProperty property = ((IProperty)o);
 		IValue value = property.getValue();
-		String typeName = (String) (new TypeNameValueVisitor(true).accept(value));
+		String typeName = (String) (new ValueTypeNameHelper(true).getTypeName(value));
 		
 		if (typeName!=null) {
 			return property.getName() + " : " + typeName; //$NON-NLS-1$

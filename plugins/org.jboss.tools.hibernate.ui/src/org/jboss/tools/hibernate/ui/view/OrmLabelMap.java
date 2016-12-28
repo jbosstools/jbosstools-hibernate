@@ -11,7 +11,7 @@
 package org.jboss.tools.hibernate.ui.view;
 
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.eclipse.console.workbench.TypeNameValueVisitor;
+import org.hibernate.eclipse.console.workbench.ValueTypeNameHelper;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
@@ -104,7 +104,7 @@ public class OrmLabelMap {
 		IValue value = field.getValue();
 		String typeName = null;
 		if (value != null) {
-			typeName = (String) new TypeNameValueVisitor(false).accept(value);
+			typeName = (String) new ValueTypeNameHelper(false).getTypeName(value);
 			if (typeName != null) {
 				return field.getName() + " : " + typeName; //$NON-NLS-1$
 			}
