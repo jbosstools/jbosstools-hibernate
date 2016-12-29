@@ -35,7 +35,6 @@ import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
-import org.jboss.tools.hibernate.runtime.spi.IValueVisitor;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -153,17 +152,6 @@ public class ValueFacadeTest {
 		Assert.assertTrue(valueFacade.isToOne());
 	}
 
-	@Test
-	public void testAccept() {
-		valueTarget = new SimpleValue(null);
-		valueFacade = FACADE_FACTORY.createValue(valueTarget);
-		TestValueVisitor visitor = new TestValueVisitor();
-		Assert.assertFalse(visitor.visited);
-		Object object = valueFacade.accept(visitor);
-		Assert.assertSame(visitor, object);
-		Assert.assertTrue(visitor.visited);
-	}
-	
 	@Test 
 	public void testGetTable() {
 		Table tableTarget = new Table();
@@ -600,13 +588,4 @@ public class ValueFacadeTest {
 				oneToManyTarget.getAssociatedClass());
 	}
 	
-	private class TestValueVisitor implements IValueVisitor {
-		boolean visited = false;
-		@Override
-		public Object accept(IValue value) {
-			visited = true;
-			return this;
-		}		
-	}
-
 }
