@@ -15,7 +15,6 @@ public interface IValue {
 	boolean isComponent();
 	Boolean isEmbedded();
 	boolean isToOne();
-	Object accept(IValueVisitor valueVisitor);
 	ITable getTable();
 	IType getType();
 	void setElement(IValue element);
