@@ -26,4 +26,11 @@ public class TypeFactoryFacadeTest {
 		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
 	
+	@Test
+	public void testgetBigIntegerType() {
+		Type typeTarget = StandardBasicTypes.BIG_INTEGER;
+		IType typeFacade = typeFactoryFacade.getBigIntegerType();
+		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
+	}
+	
 }
