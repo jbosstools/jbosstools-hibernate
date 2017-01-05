@@ -1,6 +1,5 @@
 package org.jboss.tools.hibernate.runtime.v_4_0.internal;
 
-import org.hibernate.Hibernate;
 import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -31,6 +30,13 @@ public class TypeFactoryFacadeTest {
 	public void testgetBigIntegerType() {
 		Type typeTarget = StandardBasicTypes.BIG_INTEGER;
 		IType typeFacade = typeFactoryFacade.getBigIntegerType();
+		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
+	}
+	
+	@Test
+	public void testgetShortType() {
+		Type typeTarget = StandardBasicTypes.SHORT;
+		IType typeFacade = typeFactoryFacade.getShortType();
 		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
 	
