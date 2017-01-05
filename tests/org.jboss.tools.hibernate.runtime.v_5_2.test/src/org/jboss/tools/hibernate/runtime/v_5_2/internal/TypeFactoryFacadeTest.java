@@ -40,4 +40,11 @@ public class TypeFactoryFacadeTest {
 		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
 	
+	@Test
+	public void testgetCalendarType() {
+		Type typeTarget = StandardBasicTypes.CALENDAR;
+		IType typeFacade = typeFactoryFacade.getCalendarType();
+		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
+	}
+	
 }

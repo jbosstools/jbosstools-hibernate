@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_4_0.internal;
 
+import org.hibernate.Hibernate;
 import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -37,6 +38,13 @@ public class TypeFactoryFacadeTest {
 	public void testgetShortType() {
 		Type typeTarget = StandardBasicTypes.SHORT;
 		IType typeFacade = typeFactoryFacade.getShortType();
+		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
+	}
+	
+	@Test
+	public void testgetCalendarType() {
+		Type typeTarget = StandardBasicTypes.CALENDAR;
+		IType typeFacade = typeFactoryFacade.getCalendarType();
 		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
 	
