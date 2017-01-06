@@ -14,7 +14,7 @@ public class TypeFactoryFacadeTest {
 	
 	@SuppressWarnings("deprecation")
 	@Test
-	public void testgetBooleanType() {
+	public void testGetBooleanType() {
 		Type typeTarget = Hibernate.BOOLEAN;
 		IType typeFacade = typeFactoryFacade.getBooleanType();
 		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
@@ -22,7 +22,7 @@ public class TypeFactoryFacadeTest {
 	
 	@SuppressWarnings("deprecation")
 	@Test
-	public void testgetByteType() {
+	public void testGetByteType() {
 		Type typeTarget = Hibernate.BYTE;
 		IType typeFacade = typeFactoryFacade.getByteType();
 		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
@@ -30,7 +30,7 @@ public class TypeFactoryFacadeTest {
 	
 	@SuppressWarnings("deprecation")
 	@Test
-	public void testgetBigIntegerType() {
+	public void testGetBigIntegerType() {
 		Type typeTarget = Hibernate.BIG_INTEGER;
 		IType typeFacade = typeFactoryFacade.getBigIntegerType();
 		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
@@ -38,7 +38,7 @@ public class TypeFactoryFacadeTest {
 	
 	@SuppressWarnings("deprecation")
 	@Test
-	public void testgetShortType() {
+	public void testGetShortType() {
 		Type typeTarget = Hibernate.SHORT;
 		IType typeFacade = typeFactoryFacade.getShortType();
 		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
@@ -46,7 +46,7 @@ public class TypeFactoryFacadeTest {
 	
 	@SuppressWarnings("deprecation")
 	@Test
-	public void testgetCalendarType() {
+	public void testGetCalendarType() {
 		Type typeTarget = Hibernate.CALENDAR;
 		IType typeFacade = typeFactoryFacade.getCalendarType();
 		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
@@ -54,9 +54,17 @@ public class TypeFactoryFacadeTest {
 	
 	@SuppressWarnings("deprecation")
 	@Test
-	public void testgetCalendarDateType() {
+	public void testGetCalendarDateType() {
 		Type typeTarget = Hibernate.CALENDAR_DATE;
 		IType typeFacade = typeFactoryFacade.getCalendarDateType();
+		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
+	}
+	
+	@SuppressWarnings("deprecation")
+	@Test
+	public void testGetIntegerType() {
+		Type typeTarget = Hibernate.INTEGER;
+		IType typeFacade = typeFactoryFacade.getIntegerType();
 		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
 	
