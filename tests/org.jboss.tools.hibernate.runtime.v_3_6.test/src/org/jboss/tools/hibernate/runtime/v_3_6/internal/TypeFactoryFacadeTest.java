@@ -52,4 +52,12 @@ public class TypeFactoryFacadeTest {
 		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
 	
+	@SuppressWarnings("deprecation")
+	@Test
+	public void testgetCalendarDateType() {
+		Type typeTarget = Hibernate.CALENDAR_DATE;
+		IType typeFacade = typeFactoryFacade.getCalendarDateType();
+		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
+	}
+	
 }
