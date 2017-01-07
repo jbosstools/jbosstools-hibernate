@@ -68,4 +68,12 @@ public class TypeFactoryFacadeTest {
 		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
 	
+	@SuppressWarnings("deprecation")
+	@Test
+	public void testGetBigDecimalType() {
+		Type typeTarget = Hibernate.BIG_DECIMAL;
+		IType typeFacade = typeFactoryFacade.getBigDecimalType();
+		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
+	}
+	
 }
