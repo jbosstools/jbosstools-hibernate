@@ -76,4 +76,12 @@ public class TypeFactoryFacadeTest {
 		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
 	
+	@SuppressWarnings("deprecation")
+	@Test
+	public void testGetCharacterType() {
+		Type typeTarget = Hibernate.CHARACTER;
+		IType typeFacade = typeFactoryFacade.getCharacterType();
+		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
+	}
+	
 }
