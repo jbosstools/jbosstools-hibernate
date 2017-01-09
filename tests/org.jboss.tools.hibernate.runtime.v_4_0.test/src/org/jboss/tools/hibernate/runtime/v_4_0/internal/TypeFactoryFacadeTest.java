@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_4_0.internal;
 
+import org.hibernate.Hibernate;
 import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -72,6 +73,13 @@ public class TypeFactoryFacadeTest {
 	public void testGetCharacterType() {
 		Type typeTarget = StandardBasicTypes.CHARACTER;
 		IType typeFacade = typeFactoryFacade.getCharacterType();
+		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
+	}
+	
+	@Test
+	public void testGetClassType() {
+		Type typeTarget = StandardBasicTypes.CLASS;
+		IType typeFacade = typeFactoryFacade.getClassType();
 		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
 	
