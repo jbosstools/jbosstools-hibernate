@@ -92,4 +92,12 @@ public class TypeFactoryFacadeTest {
 		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
 	
+	@SuppressWarnings("deprecation")
+	@Test
+	public void testGetCurrencyType() {
+		Type typeTarget = Hibernate.CURRENCY;
+		IType typeFacade = typeFactoryFacade.getCurrencyType();
+		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
+	}
+	
 }

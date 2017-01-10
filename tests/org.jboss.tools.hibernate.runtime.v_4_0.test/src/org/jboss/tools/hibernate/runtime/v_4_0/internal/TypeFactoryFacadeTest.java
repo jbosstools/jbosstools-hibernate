@@ -83,4 +83,11 @@ public class TypeFactoryFacadeTest {
 		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
 	
+	@Test
+	public void testGetCurrencyType() {
+		Type typeTarget = StandardBasicTypes.CURRENCY;
+		IType typeFacade = typeFactoryFacade.getCurrencyType();
+		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
+	}
+	
 }
