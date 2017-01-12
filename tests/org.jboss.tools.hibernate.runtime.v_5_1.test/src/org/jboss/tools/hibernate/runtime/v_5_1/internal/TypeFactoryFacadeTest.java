@@ -96,4 +96,11 @@ public class TypeFactoryFacadeTest {
 		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
 	
+	@Test
+	public void testGetDoubleType() {
+		Type typeTarget = StandardBasicTypes.DOUBLE;
+		IType typeFacade = typeFactoryFacade.getDoubleType();
+		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
+	}
+	
 }

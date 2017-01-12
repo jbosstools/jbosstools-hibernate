@@ -108,4 +108,12 @@ public class TypeFactoryFacadeTest {
 		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
 	
+	@SuppressWarnings("deprecation")
+	@Test
+	public void testGetDoubleType() {
+		Type typeTarget = Hibernate.DOUBLE;
+		IType typeFacade = typeFactoryFacade.getDoubleType();
+		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
+	}
+	
 }
