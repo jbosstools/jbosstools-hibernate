@@ -116,4 +116,12 @@ public class TypeFactoryFacadeTest {
 		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
 	
+	@SuppressWarnings("deprecation")
+	@Test
+	public void testGetFloatType() {
+		Type typeTarget = Hibernate.FLOAT;
+		IType typeFacade = typeFactoryFacade.getFloatType();
+		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
+	}
+	
 }
