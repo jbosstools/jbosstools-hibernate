@@ -124,4 +124,12 @@ public class TypeFactoryFacadeTest {
 		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
 	
+	@SuppressWarnings("deprecation")
+	@Test
+	public void testGetLocaleType() {
+		Type typeTarget = Hibernate.LOCALE;
+		IType typeFacade = typeFactoryFacade.getLocaleType();
+		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
+	}
+	
 }
