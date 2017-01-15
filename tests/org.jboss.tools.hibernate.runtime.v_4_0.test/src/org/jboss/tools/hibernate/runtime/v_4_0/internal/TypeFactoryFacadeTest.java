@@ -117,4 +117,11 @@ public class TypeFactoryFacadeTest {
 		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
 	
+	@Test
+	public void testGetLongType() {
+		Type typeTarget = StandardBasicTypes.LONG;
+		IType typeFacade = typeFactoryFacade.getLongType();
+		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
+	}
+	
 }

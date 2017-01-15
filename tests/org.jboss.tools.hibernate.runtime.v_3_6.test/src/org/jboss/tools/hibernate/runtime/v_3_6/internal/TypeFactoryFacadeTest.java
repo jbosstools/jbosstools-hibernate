@@ -132,4 +132,12 @@ public class TypeFactoryFacadeTest {
 		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
 	
+	@SuppressWarnings("deprecation")
+	@Test
+	public void testGetLongType() {
+		Type typeTarget = Hibernate.LONG;
+		IType typeFacade = typeFactoryFacade.getLongType();
+		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
+	}
+	
 }
