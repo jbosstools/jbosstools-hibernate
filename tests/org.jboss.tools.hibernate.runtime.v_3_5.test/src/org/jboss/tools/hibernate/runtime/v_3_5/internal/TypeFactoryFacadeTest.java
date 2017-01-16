@@ -140,4 +140,12 @@ public class TypeFactoryFacadeTest {
 		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
 	
+	@SuppressWarnings("deprecation")
+	@Test
+	public void testGetStringType() {
+		Type typeTarget = Hibernate.STRING;
+		IType typeFacade = typeFactoryFacade.getStringType();
+		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
+	}
+	
 }
