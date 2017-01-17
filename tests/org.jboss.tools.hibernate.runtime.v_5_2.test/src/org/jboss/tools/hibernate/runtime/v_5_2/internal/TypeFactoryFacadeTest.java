@@ -131,4 +131,11 @@ public class TypeFactoryFacadeTest {
 		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
 	
+	@Test
+	public void testGetTextType() {
+		Type typeTarget = StandardBasicTypes.TEXT;
+		IType typeFacade = typeFactoryFacade.getTextType();
+		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
+	}
+	
 }
