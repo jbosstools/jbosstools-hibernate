@@ -138,4 +138,11 @@ public class TypeFactoryFacadeTest {
 		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
 	
+	@Test
+	public void testGetTimeType() {
+		Type typeTarget = StandardBasicTypes.TIME;
+		IType typeFacade = typeFactoryFacade.getTimeType();
+		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
+	}
+	
 }
