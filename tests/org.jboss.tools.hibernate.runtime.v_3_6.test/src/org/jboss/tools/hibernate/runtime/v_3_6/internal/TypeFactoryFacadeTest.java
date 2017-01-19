@@ -164,4 +164,12 @@ public class TypeFactoryFacadeTest {
 		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
 	
+	@SuppressWarnings("deprecation")
+	@Test
+	public void testGetTimestampType() {
+		Type typeTarget = Hibernate.TIMESTAMP;
+		IType typeFacade = typeFactoryFacade.getTimestampType();
+		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
+	}
+	
 }
