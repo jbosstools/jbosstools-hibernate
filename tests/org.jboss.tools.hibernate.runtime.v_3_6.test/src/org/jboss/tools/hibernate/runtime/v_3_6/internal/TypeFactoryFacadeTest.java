@@ -172,4 +172,12 @@ public class TypeFactoryFacadeTest {
 		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
 	
+	@SuppressWarnings("deprecation")
+	@Test
+	public void testGetTimezoneType() {
+		Type typeTarget = Hibernate.TIMEZONE;
+		IType typeFacade = typeFactoryFacade.getTimezoneType();
+		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
+	}
+	
 }
