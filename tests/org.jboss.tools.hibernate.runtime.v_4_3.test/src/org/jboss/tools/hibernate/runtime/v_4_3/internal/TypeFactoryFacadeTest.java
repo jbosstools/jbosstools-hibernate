@@ -159,4 +159,11 @@ public class TypeFactoryFacadeTest {
 		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
 	
+	@Test
+	public void testGetTrueFalseType() {
+		Type typeTarget = StandardBasicTypes.TRUE_FALSE;
+		IType typeFacade = typeFactoryFacade.getTrueFalseType();
+		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
+	}
+	
 }

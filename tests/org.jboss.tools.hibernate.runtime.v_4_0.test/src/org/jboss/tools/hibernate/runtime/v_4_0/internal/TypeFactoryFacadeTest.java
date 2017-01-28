@@ -1,6 +1,5 @@
 package org.jboss.tools.hibernate.runtime.v_4_0.internal;
 
-import org.hibernate.Hibernate;
 import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -157,6 +156,13 @@ public class TypeFactoryFacadeTest {
 	public void testGetTimezoneType() {
 		Type typeTarget = StandardBasicTypes.TIMEZONE;
 		IType typeFacade = typeFactoryFacade.getTimezoneType();
+		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
+	}
+	
+	@Test
+	public void testGetTrueFalseType() {
+		Type typeTarget = StandardBasicTypes.TRUE_FALSE;
+		IType typeFacade = typeFactoryFacade.getTrueFalseType();
 		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
 	

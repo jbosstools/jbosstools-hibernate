@@ -180,4 +180,12 @@ public class TypeFactoryFacadeTest {
 		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
 	
+	@SuppressWarnings("deprecation")
+	@Test
+	public void testGetTrueFalseType() {
+		Type typeTarget = Hibernate.TRUE_FALSE;
+		IType typeFacade = typeFactoryFacade.getTrueFalseType();
+		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
+	}
+	
 }
