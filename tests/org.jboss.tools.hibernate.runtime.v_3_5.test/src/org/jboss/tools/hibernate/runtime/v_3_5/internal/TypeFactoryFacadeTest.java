@@ -196,4 +196,11 @@ public class TypeFactoryFacadeTest {
 		Assert.assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
 	
+	@SuppressWarnings("deprecation")
+	@Test
+	public void testGetNamedType() {
+		IType typeFacade = typeFactoryFacade.getNamedType(String.class.getName());
+		Assert.assertSame(Hibernate.STRING, ((IFacade)typeFacade).getTarget());
+	}
+	
 }
