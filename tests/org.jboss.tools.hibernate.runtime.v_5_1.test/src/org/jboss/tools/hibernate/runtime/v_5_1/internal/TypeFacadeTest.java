@@ -19,9 +19,20 @@ public class TypeFacadeTest {
 		Assert.assertEquals(
 				TypeFacadeTest.class.getName(), 
 				typeFacade.toString(TypeFacadeTest.class));
-		ArrayType arrayType = new ArrayType(null, null, null, String.class);
+		ArrayType arrayType = new ArrayType(null, "foo", "bar", String.class);
 		typeFacade = FACADE_FACTORY.createType(arrayType);
 		Assert.assertNull(typeFacade.toString(new String[] { "foo", "bar" }));
+	}
+	
+	@Test
+	public void testGetName() {
+		IType typeFacade = null;
+		ClassType classType = new ClassType();
+		typeFacade = FACADE_FACTORY.createType(classType);
+		Assert.assertEquals("class", typeFacade.getName());
+		ArrayType arrayType = new ArrayType(null, "foo", "bar", String.class);
+		typeFacade = FACADE_FACTORY.createType(arrayType);
+		Assert.assertEquals("[Ljava.lang.String;(foo)", typeFacade.getName());
 	}
 	
 }
