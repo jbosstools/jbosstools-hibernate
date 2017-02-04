@@ -35,4 +35,17 @@ public class TypeFacadeTest {
 		Assert.assertEquals("[Ljava.lang.String;(foo)", typeFacade.getName());
 	}
 	
+	@Test
+	public void testFromStringValue() {
+		IType typeFacade = null;
+		ClassType classType = new ClassType();
+		typeFacade = FACADE_FACTORY.createType(classType);
+		Assert.assertEquals(
+				TypeFacadeTest.class, 
+				typeFacade.fromStringValue(TypeFacadeTest.class.getName()));
+		ArrayType arrayType = new ArrayType("foo", "bar", String.class, false);
+		typeFacade = FACADE_FACTORY.createType(arrayType);
+		Assert.assertNull(typeFacade.fromStringValue("just a random string"));
+	}
+	
 }
