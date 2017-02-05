@@ -2,6 +2,8 @@ package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
 import org.hibernate.type.ArrayType;
 import org.hibernate.type.ClassType;
+import org.hibernate.type.EntityType;
+import org.hibernate.type.ManyToOneType;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.junit.Assert;
@@ -46,6 +48,17 @@ public class TypeFacadeTest {
 		ArrayType arrayType = new ArrayType("foo", "bar", String.class, false);
 		typeFacade = FACADE_FACTORY.createType(arrayType);
 		Assert.assertNull(typeFacade.fromStringValue("just a random string"));
+	}
+	
+	@Test
+	public void testIsEntityType() {
+		IType typeFacade = null;
+		ClassType classType = new ClassType();
+		typeFacade = FACADE_FACTORY.createType(classType);
+		Assert.assertFalse(typeFacade.isEntityType());
+		EntityType entityType = new ManyToOneType(null);
+		typeFacade = FACADE_FACTORY.createType(entityType);
+		Assert.assertTrue(entityType.isEntityType());
 	}
 	
 }
