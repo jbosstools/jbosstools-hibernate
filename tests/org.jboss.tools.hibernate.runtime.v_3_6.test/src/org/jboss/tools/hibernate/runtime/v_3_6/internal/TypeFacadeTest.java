@@ -4,6 +4,7 @@ import org.hibernate.type.ArrayType;
 import org.hibernate.type.ClassType;
 import org.hibernate.type.EntityType;
 import org.hibernate.type.ManyToOneType;
+import org.hibernate.type.OneToOneType;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.junit.Assert;
@@ -59,6 +60,21 @@ public class TypeFacadeTest {
 		EntityType entityType = new ManyToOneType(null, null);
 		typeFacade = FACADE_FACTORY.createType(entityType);
 		Assert.assertTrue(entityType.isEntityType());
+	}
+	
+	@Test
+	public void testIsOneToOne() {
+		IType typeFacade = null;
+		ClassType classType = new ClassType();
+		typeFacade = FACADE_FACTORY.createType(classType);
+		Assert.assertFalse(typeFacade.isOneToOne());
+		EntityType entityType = new ManyToOneType(null, null);
+		typeFacade = FACADE_FACTORY.createType(entityType);
+		Assert.assertFalse(entityType.isOneToOne());
+		OneToOneType oneToOneType = new OneToOneType(
+				null, null, null, null, false, false, false, null, null);
+		typeFacade = FACADE_FACTORY.createType(oneToOneType);
+		Assert.assertTrue(oneToOneType.isOneToOne());
 	}
 	
 }
