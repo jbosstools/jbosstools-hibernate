@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
+import org.hibernate.type.AnyType;
 import org.hibernate.type.ArrayType;
 import org.hibernate.type.ClassType;
 import org.hibernate.type.EntityType;
@@ -75,6 +76,17 @@ public class TypeFacadeTest {
 				null, null, null, false, false, false, null, null);
 		typeFacade = FACADE_FACTORY.createType(oneToOneType);
 		Assert.assertTrue(oneToOneType.isOneToOne());
+	}
+	
+	@Test
+	public void testIsAnyType() {
+		IType typeFacade = null;
+		ClassType classType = new ClassType();
+		typeFacade = FACADE_FACTORY.createType(classType);
+		Assert.assertFalse(typeFacade.isAnyType());
+		AnyType anyType = new AnyType();
+		typeFacade = FACADE_FACTORY.createType(anyType);
+		Assert.assertTrue(typeFacade.isAnyType());
 	}
 	
 }
