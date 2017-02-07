@@ -117,4 +117,15 @@ public class TypeFacadeTest {
 		Assert.assertTrue(typeFacade.isCollectionType());
 	}
 	
+	@Test
+	public void testGetReturnedClass() {
+		IType typeFacade = null;
+		ClassType classType = new ClassType();
+		typeFacade = FACADE_FACTORY.createType(classType);
+		Assert.assertEquals(Class.class, typeFacade.getReturnedClass());
+		ArrayType arrayType = new ArrayType(null, null, String.class, false);
+		typeFacade = FACADE_FACTORY.createType(arrayType);
+		Assert.assertEquals(String[].class, typeFacade.getReturnedClass());
+	}
+	
 }
