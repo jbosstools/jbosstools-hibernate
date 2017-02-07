@@ -106,4 +106,15 @@ public class TypeFacadeTest {
 		Assert.assertTrue(typeFacade.isComponentType());
 	}
 	
+	@Test
+	public void testIsCollectionType() {
+		IType typeFacade = null;
+		ClassType classType = new ClassType();
+		typeFacade = FACADE_FACTORY.createType(classType);
+		Assert.assertFalse(typeFacade.isCollectionType());
+		ArrayType arrayType = new ArrayType(null, null, String.class, false);
+		typeFacade = FACADE_FACTORY.createType(arrayType);
+		Assert.assertTrue(typeFacade.isCollectionType());
+	}
+	
 }
