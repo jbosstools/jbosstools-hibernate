@@ -1,8 +1,12 @@
 package org.jboss.tools.hibernate.runtime.v_4_0.internal;
 
+import org.hibernate.mapping.Component;
+import org.hibernate.mapping.RootClass;
+import org.hibernate.tuple.component.ComponentMetamodel;
 import org.hibernate.type.AnyType;
 import org.hibernate.type.ArrayType;
 import org.hibernate.type.ClassType;
+import org.hibernate.type.ComponentType;
 import org.hibernate.type.EntityType;
 import org.hibernate.type.ManyToOneType;
 import org.hibernate.type.OneToOneType;
@@ -87,6 +91,21 @@ public class TypeFacadeTest {
 		AnyType anyType = new AnyType(null, null);
 		typeFacade = FACADE_FACTORY.createType(anyType);
 		Assert.assertTrue(typeFacade.isAnyType());
+	}
+	
+	@Test
+	public void testIsComponentType() {
+		IType typeFacade = null;
+		ClassType classType = new ClassType();
+		typeFacade = FACADE_FACTORY.createType(classType);
+		Assert.assertFalse(typeFacade.isComponentType());
+		ComponentType componentType = 
+				new ComponentType(
+						null,
+						new ComponentMetamodel(
+								new Component(null, new RootClass())));
+		typeFacade = FACADE_FACTORY.createType(componentType);
+		Assert.assertTrue(typeFacade.isComponentType());
 	}
 	
 }
