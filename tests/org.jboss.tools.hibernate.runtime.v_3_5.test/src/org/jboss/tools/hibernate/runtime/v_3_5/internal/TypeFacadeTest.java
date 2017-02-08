@@ -8,6 +8,7 @@ import org.hibernate.type.ArrayType;
 import org.hibernate.type.ClassType;
 import org.hibernate.type.ComponentType;
 import org.hibernate.type.EntityType;
+import org.hibernate.type.IntegerType;
 import org.hibernate.type.ManyToOneType;
 import org.hibernate.type.OneToOneType;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
@@ -137,6 +138,17 @@ public class TypeFacadeTest {
 		EntityType entityType = new ManyToOneType("foo");
 		typeFacade = FACADE_FACTORY.createType(entityType);
 		Assert.assertEquals("foo", typeFacade.getAssociatedEntityName());
+	}
+	
+	@Test
+	public void testIsIntegerType() {
+		IType typeFacade = null;
+		ClassType classType = new ClassType();
+		typeFacade = FACADE_FACTORY.createType(classType);
+		Assert.assertFalse(typeFacade.isIntegerType());
+		IntegerType integerType = new IntegerType();
+		typeFacade = FACADE_FACTORY.createType(integerType);
+		Assert.assertTrue(typeFacade.isIntegerType());
 	}
 	
 }
