@@ -12,7 +12,6 @@ import org.hibernate.type.EntityType;
 import org.hibernate.type.IntegerType;
 import org.hibernate.type.ManyToOneType;
 import org.hibernate.type.OneToOneType;
-import org.hibernate.type.PrimitiveType;
 import org.hibernate.type.StringType;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
@@ -191,6 +190,17 @@ public class TypeFacadeTest {
 		IntegerType integerType = new IntegerType();
 		typeFacade = FACADE_FACTORY.createType(integerType);
 		Assert.assertEquals(int.class, typeFacade.getPrimitiveClass());
+	}
+	
+	@Test
+	public void testGetRole() {
+		IType typeFacade = null;
+		ClassType classType = new ClassType();
+		typeFacade = FACADE_FACTORY.createType(classType);
+		Assert.assertNull(typeFacade.getRole());
+		ArrayType arrayType = new ArrayType("foo", null, String.class, false);
+		typeFacade = FACADE_FACTORY.createType(arrayType);
+		Assert.assertEquals("foo", typeFacade.getRole());
 	}
 	
 }

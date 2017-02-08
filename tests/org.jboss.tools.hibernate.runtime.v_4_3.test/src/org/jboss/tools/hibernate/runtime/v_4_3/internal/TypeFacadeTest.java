@@ -194,4 +194,15 @@ public class TypeFacadeTest {
 		Assert.assertEquals(int.class, typeFacade.getPrimitiveClass());
 	}
 	
+	@Test
+	public void testGetRole() {
+		IType typeFacade = null;
+		ClassType classType = new ClassType();
+		typeFacade = FACADE_FACTORY.createType(classType);
+		Assert.assertNull(typeFacade.getRole());
+		ArrayType arrayType = new ArrayType(null, "foo", null, String.class);
+		typeFacade = FACADE_FACTORY.createType(arrayType);
+		Assert.assertEquals("foo", typeFacade.getRole());
+	}
+	
 }
