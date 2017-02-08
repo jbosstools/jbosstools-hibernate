@@ -183,4 +183,15 @@ public class TypeFacadeTest {
 		Assert.assertTrue(typeFacade.isInstanceOfPrimitiveType());
 	}
 	
+	@Test
+	public void testGetPrimitiveClass() {
+		IType typeFacade = null;
+		ClassType classType = new ClassType();
+		typeFacade = FACADE_FACTORY.createType(classType);
+		Assert.assertNull(typeFacade.getPrimitiveClass());
+		IntegerType integerType = new IntegerType();
+		typeFacade = FACADE_FACTORY.createType(integerType);
+		Assert.assertEquals(int.class, typeFacade.getPrimitiveClass());
+	}
+	
 }
