@@ -5,6 +5,7 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.tuple.component.ComponentMetamodel;
 import org.hibernate.type.AnyType;
 import org.hibernate.type.ArrayType;
+import org.hibernate.type.BagType;
 import org.hibernate.type.ClassType;
 import org.hibernate.type.ComponentType;
 import org.hibernate.type.EntityType;
@@ -151,6 +152,20 @@ public class TypeFacadeTest {
 		IntegerType integerType = new IntegerType();
 		typeFacade = FACADE_FACTORY.createType(integerType);
 		Assert.assertTrue(typeFacade.isIntegerType());
+	}
+	
+	@Test
+	public void testIsArrayType() {
+		IType typeFacade = null;
+		ClassType classType = new ClassType();
+		typeFacade = FACADE_FACTORY.createType(classType);
+		Assert.assertFalse(typeFacade.isArrayType());
+		BagType bagType = new BagType(null, null, null);
+		typeFacade = FACADE_FACTORY.createType(bagType);
+		Assert.assertFalse(typeFacade.isArrayType());
+		ArrayType arrayType = new ArrayType(null, null, null, String.class);
+		typeFacade = FACADE_FACTORY.createType(arrayType);
+		Assert.assertTrue(typeFacade.isArrayType());
 	}
 	
 }
