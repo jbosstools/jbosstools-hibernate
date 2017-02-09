@@ -55,8 +55,6 @@ import org.eclipse.ui.forms.SectionPart;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
-import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.model.IRevEngColumn;
 import org.hibernate.eclipse.console.model.IRevEngGenerator;
 import org.hibernate.eclipse.console.model.IRevEngParameter;
@@ -76,9 +74,7 @@ import org.hibernate.eclipse.mapper.model.RevEngPrimaryKeyAdapter;
 import org.hibernate.eclipse.mapper.model.RevEngTableAdapter;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
-import org.jboss.tools.hibernate.runtime.spi.IService;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
-import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
 
 public class TablePropertiesBlock extends MasterDetailsBlock {
 
@@ -167,8 +163,8 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 
 		LazyDatabaseSchema lds = editor.getLazyDatabaseSchema();
 
-		Map<ITableIdentifier, ITable> tables = new HashMap<ITableIdentifier, ITable>();
-		Map<ITableIdentifier, List<IColumn>> columns = new HashMap<ITableIdentifier, List<IColumn>>();
+		List<ITable> tables = new ArrayList<ITable>();
+		Map<ITable, List<IColumn>> columns = new HashMap<ITable, List<IColumn>>();
 
 		if (lds == null) {
 			String tableName = "", namePrefix = "TABLE_";  //$NON-NLS-1$  //$NON-NLS-2$
@@ -197,14 +193,14 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 			dialog.setContainerMode(true);
 			dialog.open();
 			Object[] result = dialog.getResult();
-			ITableIdentifier lastTable = null;
+			ITable lastTable = null;
 			if(result!=null) {
 				for (int i = 0; i < result.length; i++) {
 					Object object = result[i];
 					if(object instanceof ITable) {
 						ITable table = (ITable) object;
-						tables.put(getService().createTableIdentifier(table), table);
-						lastTable = getService().createTableIdentifier(table);
+						tables.add(table);
+						lastTable = table;
 					} else if (object instanceof IColumn) {
 						IColumn column = (IColumn)object;
 						List<IColumn> existing = columns.get(lastTable);
@@ -224,10 +220,9 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 				}
 			}
 
-			Iterator<Map.Entry<ITableIdentifier, ITable>> iterator = tables.entrySet().iterator();
+			Iterator<ITable> iterator = tables.iterator();
 			while ( iterator.hasNext() ) {
-				Map.Entry<ITableIdentifier, ITable> element = iterator.next();
-				ITable table = (ITable) element.getValue();
+				ITable table = iterator.next();
 				IRevEngTable retable = null;
 				//	editor.getReverseEngineeringDefinition().findTable(TableIdentifier.create(table));
 				if(retable==null) {
@@ -238,7 +233,7 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 					editor.getReverseEngineeringDefinition().addTable(retable);
 				}
 
-				List<IColumn> columnList = columns.get(element.getKey());
+				List<IColumn> columnList = columns.get(table);
 				if(columnList!=null) {
 					Iterator<IColumn> colIterator = columnList.iterator();
 					while ( colIterator.hasNext() ) {
@@ -388,9 +383,4 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 		//dp.registerPage( org.hibernate.mapping.Table.class, new TypeOneDetailsPage() );
 	}
 	
-	private IService getService() {
-		String consoleConfigurationName = editor.getConsoleConfigurationName();
-		ConsoleConfiguration consoleConfiguration = KnownConfigurations.getInstance().find(consoleConfigurationName);
-		return consoleConfiguration.getHibernateExtension().getHibernateService();		
-	}
 }
