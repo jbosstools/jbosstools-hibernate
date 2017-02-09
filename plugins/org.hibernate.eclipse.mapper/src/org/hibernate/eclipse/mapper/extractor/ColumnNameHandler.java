@@ -52,7 +52,7 @@ public class ColumnNameHandler implements HBMInfoHandler {
 		
 		HibernateNature nature = HibernateNature.getHibernateNature( javaProject );
 		if(nature!=null) {
-			ITableIdentifier nearestTableName = extractor.getNearestTableName(node);
+			String nearestTableName = extractor.getNearestTableName(node);
 			if(nearestTableName!=null) {
 				ITable table = nature.getTable(nearestTableName);
 				if (table!=null) {

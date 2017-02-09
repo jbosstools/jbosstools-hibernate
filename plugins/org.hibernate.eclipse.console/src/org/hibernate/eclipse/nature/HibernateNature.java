@@ -51,7 +51,6 @@ import org.hibernate.eclipse.console.properties.HibernatePropertiesConstants;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IService;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
-import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
 import org.osgi.service.prefs.Preferences;
 
 public class HibernateNature implements IProjectNature {
@@ -194,11 +193,11 @@ public class HibernateNature implements IProjectNature {
 		return result;
 	}
 
-	public ITable getTable(ITableIdentifier nearestTableName) {
+	public ITable getTable(String nearestTableName) {
 		// TODO: can be made MUCH more efficient with proper indexing of the tables.
 		// TODO: handle catalog/schema properly
 		for (ITable table : getTables()) {
-			if(nearestTableName.getName().equals(table.getName())) {
+			if(nearestTableName.equals(table.getName())) {
 				return table;
 			}
 		}

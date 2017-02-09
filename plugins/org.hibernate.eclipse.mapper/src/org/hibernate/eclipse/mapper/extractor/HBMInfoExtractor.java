@@ -613,7 +613,7 @@ public class HBMInfoExtractor {
 		return typename;
 	}
 
-	public ITableIdentifier getNearestTableName(Node node) {
+	public String getNearestTableName(Node node) {
 		Map map = tableProvider;
 
 		if(node==null) return null;
@@ -628,21 +628,7 @@ public class HBMInfoExtractor {
 
 		Node att = attributes.getNamedItem(attributeName);
 		if(att!=null && attributeName.equals(att.getNodeName() ) ) {
-			String typename = att.getNodeValue();
-			String catalog = null;
-			String schema = null;
-
-			Node namedItem = attributes.getNamedItem("catalog"); //$NON-NLS-1$
-			if(namedItem!=null) {
-				catalog = namedItem.getNodeValue();
-			}
-
-			namedItem = attributes.getNamedItem("schema"); //$NON-NLS-1$
-			if(namedItem!=null) {
-				schema = namedItem.getNodeValue();
-			}
-
-			return service.newTableIdentifier(catalog,schema,typename);
+			return att.getNodeValue();
 		}
 
 		return null;
