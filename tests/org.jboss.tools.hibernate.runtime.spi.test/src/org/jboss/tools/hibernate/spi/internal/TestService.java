@@ -257,11 +257,6 @@ public class TestService implements IService {
 	}
 
 	@Override
-	public ITableIdentifier createTableIdentifier(ITable table) {
-		return null;
-	}
-
-	@Override
 	public ITableIdentifier newTableIdentifier(String catalog, String schema,
 			String typename) {
 		return null;

@@ -427,14 +427,6 @@ public class ServiceImpl extends AbstractService implements IService {
 	}
 
 	@Override
-	public ITableIdentifier createTableIdentifier(ITable table) {
-		assert table instanceof IFacade;
-		return facadeFactory.createTableIdentifier(
-				TableIdentifier.create(
-						(Table)((IFacade)table).getTarget()));
-	}
-
-	@Override
 	public ITableIdentifier newTableIdentifier(String catalog, String schema,
 			String name) {
 		return facadeFactory.createTableIdentifier(

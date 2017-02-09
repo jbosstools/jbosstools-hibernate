@@ -110,8 +110,6 @@ public interface IService {
 
 	IPrimaryKey newPrimaryKey();
 
-	ITableIdentifier createTableIdentifier(ITable table);
-
 	ITableIdentifier newTableIdentifier(String catalog, String schema, String typename);
 	
 	boolean isInitialized(Object object);

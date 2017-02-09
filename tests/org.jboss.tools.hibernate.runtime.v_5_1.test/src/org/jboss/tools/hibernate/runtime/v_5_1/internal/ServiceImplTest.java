@@ -537,16 +537,6 @@ public class ServiceImplTest {
 	}
 	
 	@Test
-	public void testCreateTableIdentifier() {
-		ITable table = service.newTable("foo");
-		ITableIdentifier tableIdentifier = service.createTableIdentifier(table);
-		Assert.assertNotNull(tableIdentifier);
-		Object target = ((IFacade)tableIdentifier).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof TableIdentifier);
-	}
-	
-	@Test
 	public void testNewTableIdentifier() {
 		ITableIdentifier tableIdentifier = service.newTableIdentifier(
 				"catalog", "schema", "typeName");
