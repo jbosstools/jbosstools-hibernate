@@ -38,7 +38,6 @@ import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
-import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
@@ -95,10 +94,6 @@ public abstract class AbstractFacadeFactory implements IFacadeFactory {
 	
 	public IExporter createExporter(Object target) {
 		return new AbstractExporterFacade(this, target) {};
-	}
-	
-	public ITableIdentifier createTableIdentifier(Object target) {
-		return new AbstractTableIdentifierFacade(this, target) {};
 	}
 	
 	public IMappings createMappings(Object target) {

@@ -38,7 +38,6 @@ import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
-import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
@@ -59,7 +58,6 @@ public interface IFacadeFactory {
 	IQueryExporter createQueryExporter(Object target);
 	ITableFilter createTableFilter(Object target);
 	IExporter createExporter(Object target);
-	ITableIdentifier createTableIdentifier(Object target);
 	IMappings createMappings(Object target);
 	IClassMetadata createClassMetadata(Object target);
 	ICollectionMetadata createCollectionMetadata(Object target);
