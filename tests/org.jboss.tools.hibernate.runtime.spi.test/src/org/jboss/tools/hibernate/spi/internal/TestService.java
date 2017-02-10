@@ -30,7 +30,6 @@ import org.jboss.tools.hibernate.runtime.spi.IService;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
-import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.xml.sax.EntityResolver;
@@ -253,12 +252,6 @@ public class TestService implements IService {
 
 	@Override
 	public IPrimaryKey newPrimaryKey() {
-		return null;
-	}
-
-	@Override
-	public ITableIdentifier newTableIdentifier(String catalog, String schema,
-			String typename) {
 		return null;
 	}
 

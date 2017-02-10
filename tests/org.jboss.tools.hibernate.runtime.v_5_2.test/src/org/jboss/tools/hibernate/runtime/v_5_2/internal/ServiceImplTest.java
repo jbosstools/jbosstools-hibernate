@@ -21,7 +21,6 @@ import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
-import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
@@ -69,7 +68,6 @@ import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
-import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.junit.Assert;
@@ -535,16 +533,6 @@ public class ServiceImplTest {
 		Object target = ((IFacade)primaryKey).getTarget();
 		Assert.assertNotNull(target);
 		Assert.assertTrue(target instanceof PrimaryKey);
-	}
-	
-	@Test
-	public void testNewTableIdentifier() {
-		ITableIdentifier tableIdentifier = service.newTableIdentifier(
-				"catalog", "schema", "typeName");
-		Assert.assertNotNull(tableIdentifier);
-		Object target = ((IFacade)tableIdentifier).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof TableIdentifier);
 	}
 	
 	@Test

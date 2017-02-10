@@ -110,8 +110,6 @@ public interface IService {
 
 	IPrimaryKey newPrimaryKey();
 
-	ITableIdentifier newTableIdentifier(String catalog, String schema, String typename);
-	
 	boolean isInitialized(Object object);
 
 	List<String> getJPAMappingFilePaths(String persistenceUnitName,

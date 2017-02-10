@@ -25,7 +25,6 @@ import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
-import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.dialect.Dialect;
@@ -89,7 +88,6 @@ import org.jboss.tools.hibernate.runtime.spi.IService;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
-import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.xml.sax.EntityResolver;
@@ -463,13 +461,6 @@ public class ServiceImpl extends AbstractService implements IService {
 	@Override
 	public IPrimaryKey newPrimaryKey() {
 		return facadeFactory.createPrimaryKey(new PrimaryKey());
-	}
-
-	@Override
-	public ITableIdentifier newTableIdentifier(String catalog, String schema,
-			String name) {
-		return facadeFactory.createTableIdentifier(
-				new TableIdentifier(catalog, schema, name));
 	}
 
 	@Override
