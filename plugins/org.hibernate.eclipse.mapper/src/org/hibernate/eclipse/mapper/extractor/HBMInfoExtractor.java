@@ -44,7 +44,6 @@ import org.hibernate.eclipse.mapper.MapperMessages;
 import org.hibernate.util.xpl.StringHelper;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IService;
-import org.jboss.tools.hibernate.runtime.spi.ITableIdentifier;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
