@@ -2,8 +2,11 @@ package org.jboss.tools.hibernate.runtime.v_5_2.internal;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.lang.reflect.Field;
+import java.util.List;
 
 import org.hibernate.cfg.reveng.OverrideRepository;
+import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.runtime.common.AbstractOverrideRepositoryFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
@@ -20,7 +23,9 @@ public class OverrideRepositoryFacadeTest {
 			"<!DOCTYPE hibernate-reverse-engineering PUBLIC                                 "+
 			"      '-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN'                 "+
 			"      'http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd'>"+
-			"<hibernate-reverse-engineering/>                                               ";
+			"<hibernate-reverse-engineering>                                                "+
+			"    <table name='FOO'/>                                                        "+
+			"</hibernate-reverse-engineering>                                               ";
 
 	private IOverrideRepository overrideRepositoryFacade = null; 
 	private OverrideRepository overrideRepository;
@@ -41,9 +46,13 @@ public class OverrideRepositoryFacadeTest {
 		fileWriter.write(HIBERNATE_REVERSE_ENGINEERING_XML);
 		fileWriter.close();
 		overrideRepositoryFacade.addFile(file);
-		// addFile() should be processed without exceptions
-		Assert.assertTrue(true);
+		Field tablesField = overrideRepository.getClass().getDeclaredField("tables");
+		tablesField.setAccessible(true);
+		Object object = tablesField.get(overrideRepository);
+		List<?> tables = (List<?>)object;
+		Table table = (Table)tables.get(0);
+		Assert.assertNotNull(table);
+		Assert.assertEquals("FOO", table.getName());
 	}
-
-
+	
 }
