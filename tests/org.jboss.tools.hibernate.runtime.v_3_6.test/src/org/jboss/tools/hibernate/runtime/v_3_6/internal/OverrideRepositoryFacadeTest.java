@@ -5,11 +5,16 @@ import java.io.FileWriter;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
+import org.hibernate.cfg.reveng.DelegatingReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
+import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.runtime.common.AbstractOverrideRepositoryFacade;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
+import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,6 +58,18 @@ public class OverrideRepositoryFacadeTest {
 		Table table = (Table)tables.get(0);
 		Assert.assertNotNull(table);
 		Assert.assertEquals("FOO", table.getName());
+	}
+	
+	@Test
+	public void testGetReverseEngineeringStrategy() throws Exception {
+		ReverseEngineeringStrategy res = new DefaultReverseEngineeringStrategy();
+		IReverseEngineeringStrategy resFacade = FACADE_FACTORY.createReverseEngineeringStrategy(res);
+		IReverseEngineeringStrategy result = overrideRepositoryFacade.getReverseEngineeringStrategy(resFacade);
+		DelegatingReverseEngineeringStrategy resultTarget = 
+				(DelegatingReverseEngineeringStrategy)((IFacade)result).getTarget();
+		Field delegateField = DelegatingReverseEngineeringStrategy.class.getDeclaredField("delegate");
+		delegateField.setAccessible(true);
+		Assert.assertSame(res, delegateField.get(resultTarget));
 	}
 	
 }
