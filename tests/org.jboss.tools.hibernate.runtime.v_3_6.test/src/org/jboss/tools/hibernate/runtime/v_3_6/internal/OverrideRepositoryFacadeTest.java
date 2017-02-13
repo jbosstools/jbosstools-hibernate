@@ -9,12 +9,14 @@ import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.DelegatingReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
+import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.runtime.common.AbstractOverrideRepositoryFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
+import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -70,6 +72,19 @@ public class OverrideRepositoryFacadeTest {
 		Field delegateField = DelegatingReverseEngineeringStrategy.class.getDeclaredField("delegate");
 		delegateField.setAccessible(true);
 		Assert.assertSame(res, delegateField.get(resultTarget));
+	}
+	
+	@Test
+	public void testAddTableFilter() throws Exception {
+		TableFilter tableFilter = new TableFilter();
+		ITableFilter tableFilterFacade = FACADE_FACTORY.createTableFilter(tableFilter);
+		Field tableFiltersField = OverrideRepository.class.getDeclaredField("tableFilters");
+		tableFiltersField.setAccessible(true);
+		List<?> tableFilters = (List<?>)tableFiltersField.get(overrideRepository);
+		Assert.assertTrue(tableFilters.isEmpty());
+		overrideRepositoryFacade.addTableFilter(tableFilterFacade);
+		tableFilters = (List<?>)tableFiltersField.get(overrideRepository);
+		Assert.assertSame(tableFilter, tableFilters.get(0));		
 	}
 	
 }
