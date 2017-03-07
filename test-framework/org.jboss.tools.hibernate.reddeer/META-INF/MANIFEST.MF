@@ -1,0 +1,35 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: RedDeer API for Hibernate UI Tests
+Bundle-SymbolicName: org.jboss.tools.hibernate.reddeer
+Bundle-Version: 5.1.4.qualifier
+Bundle-Activator: org.jboss.tools.hibernate.reddeer.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.hamcrest.core,
+ org.junit,
+ org.eclipse.core.resources,
+ org.jboss.reddeer.go;bundle-version="[1.2.0,2.0.0)",
+ org.jboss.tools.common.reddeer;bundle-version="[3.8.3,3.9.0)"
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.jboss.tools.hibernate.reddeer,
+ org.jboss.tools.hibernate.reddeer.console,
+ org.jboss.tools.hibernate.reddeer.dialog,
+ org.jboss.tools.hibernate.reddeer.editor,
+ org.jboss.tools.hibernate.reddeer.perspective,
+ org.jboss.tools.hibernate.reddeer.view,
+ org.jboss.tools.hibernate.reddeer.wizard,
+ org.jboss.tools.hibernate.reddeer.condition,
+ org.jboss.tools.hibernate.reddeer.console.wizards,
+ org.jboss.tools.hibernate.reddeer.criteriaeditor,
+ org.jboss.tools.hibernate.reddeer.ui.xml.editor,
+ org.jboss.tools.hibernate.reddeer.console.views,
+ org.jboss.tools.hibernate.reddeer.hqleditor,
+ org.jboss.tools.hibernate.reddeer.mapper.editors,
+ org.jboss.tools.hibernate.reddeer.jdt.ui.wizards,
+ org.jboss.tools.hibernate.reddeer.codegen,
+ org.jboss.tools.hibernate.reddeer.jdt.ui.jpa.process.wizard,
+ org.jboss.tools.hibernate.reddeer.jpt.ui.wizard
+Eclipse-BundleShape: jar
+Bundle-Vendor: JBoss by Red Hat
