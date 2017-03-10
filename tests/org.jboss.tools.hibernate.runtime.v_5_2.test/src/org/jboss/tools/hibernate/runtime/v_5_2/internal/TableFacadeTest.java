@@ -45,4 +45,13 @@ public class TableFacadeTest {
 		Assert.assertSame(primaryKey, table.getPrimaryKey());
 	}
 	
+	@Test
+	public void testGetCatalog() {
+		Table table = new Table();
+		ITable tableFacade = FACADE_FACTORY.createTable(table);
+		Assert.assertNull(tableFacade.getCatalog());
+		table.setCatalog("foo");
+		Assert.assertEquals("foo", tableFacade.getCatalog());
+	}
+	
 }
