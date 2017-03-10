@@ -1,9 +1,11 @@
 package org.jboss.tools.hibernate.runtime.v_5_0.internal;
 
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
+import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.junit.Assert;
 import org.junit.Test;
@@ -30,6 +32,17 @@ public class TableFacadeTest {
 		Assert.assertNull(table.getColumn(column));
 		tableFacade.addColumn(columnFacade);
 		Assert.assertSame(column, table.getColumn(column));
+	}
+	
+	@Test
+	public void testSetPrimaryKey() {
+		Table table = new Table();
+		PrimaryKey primaryKey = new PrimaryKey(table);
+		IPrimaryKey primaryKeyFacade = FACADE_FACTORY.createPrimaryKey(primaryKey);
+		ITable tableFacade = FACADE_FACTORY.createTable(table);
+		Assert.assertNull(table.getPrimaryKey());
+		tableFacade.setPrimaryKey(primaryKeyFacade);
+		Assert.assertSame(primaryKey, table.getPrimaryKey());
 	}
 	
 }
