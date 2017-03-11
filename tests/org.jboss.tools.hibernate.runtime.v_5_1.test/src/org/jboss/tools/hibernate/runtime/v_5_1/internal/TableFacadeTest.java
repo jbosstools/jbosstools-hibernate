@@ -54,4 +54,13 @@ public class TableFacadeTest {
 		Assert.assertEquals("foo", tableFacade.getCatalog());
 	}
 	
+	@Test
+	public void testGetSchema() {
+		Table table = new Table();
+		ITable tableFacade = FACADE_FACTORY.createTable(table);
+		Assert.assertNull(tableFacade.getSchema());
+		table.setSchema("foo");
+		Assert.assertEquals("foo", tableFacade.getSchema());
+	}
+	
 }
