@@ -3,6 +3,7 @@ package org.jboss.tools.hibernate.runtime.v_4_0.internal;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
@@ -61,6 +62,17 @@ public class TableFacadeTest {
 		Assert.assertNull(tableFacade.getSchema());
 		table.setSchema("foo");
 		Assert.assertEquals("foo", tableFacade.getSchema());
+	}
+	
+	@Test
+	public void testGetPrimaryKey() {
+		PrimaryKey primaryKey = new PrimaryKey();
+		Table table = new Table();
+		ITable tableFacade = FACADE_FACTORY.createTable(table);
+		Assert.assertNull(tableFacade.getPrimaryKey());
+		table.setPrimaryKey(primaryKey);
+		IPrimaryKey primaryKeyFacade = tableFacade.getPrimaryKey();
+		Assert.assertSame(primaryKey, ((IFacade)primaryKeyFacade).getTarget());
 	}
 	
 }
