@@ -95,9 +95,18 @@ public class TableFacadeTest {
 	public void testGetComment() {
 		Table table = new Table();
 		ITable tableFacade = FACADE_FACTORY.createTable(table);
-		Assert.assertNull(tableFacade.getCatalog());
+		Assert.assertNull(tableFacade.getComment());
 		table.setComment("foo");
 		Assert.assertEquals("foo", tableFacade.getComment());
+	}
+	
+	@Test
+	public void testGetRowId() {
+		Table table = new Table();
+		ITable tableFacade = FACADE_FACTORY.createTable(table);
+		Assert.assertNull(tableFacade.getRowId());
+		table.setRowId("foo");
+		Assert.assertEquals("foo", tableFacade.getRowId());
 	}
 	
 }
