@@ -109,4 +109,13 @@ public class TableFacadeTest {
 		Assert.assertEquals("foo", tableFacade.getRowId());
 	}
 	
+	@Test
+	public void testGetSubselect() {
+		Table table = new Table();
+		ITable tableFacade = FACADE_FACTORY.createTable(table);
+		Assert.assertNull(tableFacade.getSubselect());		
+		table.setSubselect("foo");
+		Assert.assertEquals("foo", tableFacade.getSubselect());
+	}
+	
 }
