@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_5_0.internal;
 
+import java.lang.reflect.Method;
 import java.util.Iterator;
 
 import org.hibernate.mapping.Column;
@@ -116,6 +117,19 @@ public class TableFacadeTest {
 		Assert.assertNull(tableFacade.getSubselect());		
 		table.setSubselect("foo");
 		Assert.assertEquals("foo", tableFacade.getSubselect());
+	}
+	
+	@Test
+	public void testHasDenormalizedTables() throws Exception {
+		Table table = new Table();
+		ITable tableFacade = FACADE_FACTORY.createTable(table);
+		Assert.assertFalse(tableFacade.hasDenormalizedTables());
+		Method method = Table.class.getDeclaredMethod(
+				"setHasDenormalizedTables", 
+				new Class[] { });
+		method.setAccessible(true);
+		method.invoke(table, new Object[] { });
+		Assert.assertTrue(tableFacade.hasDenormalizedTables());
 	}
 	
 }
