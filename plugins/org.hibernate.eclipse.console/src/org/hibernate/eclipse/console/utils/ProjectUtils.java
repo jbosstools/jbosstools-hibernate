@@ -399,7 +399,7 @@ public class ProjectUtils {
 	 * @return
 	 */
 	public static String[] availablePersistenceUnits(IJavaProject javaProject) {
-		if (javaProject.isOpen()){
+		if (javaProject != null && javaProject.isOpen()){
 			Set<IJavaProject> projects = new HashSet<IJavaProject>();
 			projects.add(javaProject);
 			try {
