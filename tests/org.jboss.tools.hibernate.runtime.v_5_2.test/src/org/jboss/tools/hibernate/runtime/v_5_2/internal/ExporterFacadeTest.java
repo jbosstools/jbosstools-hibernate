@@ -156,38 +156,28 @@ public class ExporterFacadeTest {
 	
 	@Test
 	public void testSetCustomProperties() {
+		Exporter exporter = new GenericExporter();
+		exporterFacade = FACADE_FACTORY.createExporter(exporter);
 		Properties properties = new Properties();
-//		TODO: JBIDE-22579 - Implement this test the proper way when solving
-//		try {
-//			exporterFacade.setCustomProperties(properties);
-//			Assert.fail();
-//		} catch (RuntimeException e) {
-//			Assert.assertTrue(e.getCause() instanceof NoSuchMethodException);
-//		}
+		exporterFacade.setCustomProperties(properties);
 		exporter = new HibernateConfigurationExporter();
-// 		TODO: JBIDE-22579 - Use AbstractExporterFacade again
-		exporterFacade = new ExporterFacadeImpl(FACADE_FACTORY, exporter);
+		exporterFacade = FACADE_FACTORY.createExporter(exporter);
 		exporterFacade.setCustomProperties(properties);
 		Assert.assertSame(properties, ((HibernateConfigurationExporter)exporter).getCustomProperties());
 	}
 	
 	@Test
 	public void testSetOutput() {
+		Exporter exporter = new GenericExporter();
+		exporterFacade = FACADE_FACTORY.createExporter(exporter);
 		StringWriter stringWriter = new StringWriter();
-//		TODO: JBIDE-22579 - Implement this test the proper way when solving
-//		try {
-//			exporterFacade.setOutput(stringWriter);
-//			Assert.fail();
-//		} catch (RuntimeException e) {
-//			Assert.assertTrue(e.getCause() instanceof NoSuchMethodException);
-//		}
+		exporterFacade.setOutput(stringWriter);
 		exporter = new HibernateConfigurationExporter();
-// 		TODO: JBIDE-22579 - Use AbstractExporterFacade again
-		exporterFacade = new ExporterFacadeImpl(FACADE_FACTORY, exporter);
+		exporterFacade = FACADE_FACTORY.createExporter(exporter);
 		exporterFacade.setOutput(stringWriter);
 		Assert.assertSame(stringWriter, ((HibernateConfigurationExporter)exporter).getOutput());
 	}
-	
+		
 	private class TestInvocationHandler implements InvocationHandler {
 		@Override
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {

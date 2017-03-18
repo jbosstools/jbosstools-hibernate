@@ -118,24 +118,26 @@ implements IExporter {
 
 	@Override
 	public void setCustomProperties(Properties props) {
-		assert getHibernateConfigurationExporterClass().isAssignableFrom(
-				getTarget().getClass());
-		Util.invokeMethod(
-				getTarget(), 
-				"setCustomProperties", 
-				new Class[] { Properties.class }, 
-				new Object[] { props });
+		if (getHibernateConfigurationExporterClass().isAssignableFrom(
+				getTarget().getClass())) {
+			Util.invokeMethod(
+					getTarget(), 
+					"setCustomProperties", 
+					new Class[] { Properties.class }, 
+					new Object[] { props });
+		}	
 	}
 
 	@Override
 	public void setOutput(StringWriter stringWriter) {
-		assert getHibernateConfigurationExporterClass().isAssignableFrom(
-				getTarget().getClass());
-		Util.invokeMethod(
-				getTarget(), 
-				"setOutput", 
-				new Class[] { Writer.class }, 
-				new Object[] { stringWriter });
+		if (getHibernateConfigurationExporterClass().isAssignableFrom(
+				getTarget().getClass())) {
+			Util.invokeMethod(
+					getTarget(), 
+					"setOutput", 
+					new Class[] { Writer.class }, 
+					new Object[] { stringWriter });
+		}
 	}
 
 	protected Class<?> getConfigurationClass() {
@@ -155,7 +157,7 @@ implements IExporter {
 	}
 
 	protected String getHibernateConfigurationExporterClassName() {
-		return "org.hibernate.tool.hbm2x.QueryExporter";
+		return "org.hibernate.tool.hbm2x.HibernateConfigurationExporter";
 	}
 
 	protected Class<?> getArtifactCollectorClass() {
