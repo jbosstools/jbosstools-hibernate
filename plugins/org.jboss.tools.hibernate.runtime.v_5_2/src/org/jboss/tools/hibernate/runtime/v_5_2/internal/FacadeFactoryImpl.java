@@ -1,12 +1,10 @@
 package org.jboss.tools.hibernate.runtime.v_5_2.internal;
 
-import org.jboss.tools.hibernate.runtime.common.AbstractExporterFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
-import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
@@ -32,12 +30,6 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public IClassMetadata createClassMetadata(Object target) {
 		return new ClassMetadataFacadeImpl(this, target);
-	}
-	
-	// TODO: JBIDE-22579 - Remove this method
-	@Override
-	public IExporter createExporter(Object target) {
-		return new AbstractExporterFacade(this, target) {};
 	}
 	
 	@Override
