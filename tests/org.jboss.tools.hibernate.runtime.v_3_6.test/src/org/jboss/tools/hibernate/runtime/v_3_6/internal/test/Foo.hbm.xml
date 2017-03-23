@@ -4,6 +4,6 @@
 	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="org.jboss.tools.hibernate.runtime.v_3_6.internal.test">
     <class name="Foo">    
-    	<id name="id" />		
+    	<id name="id" access="field"/>		
 	</class>	
 </hibernate-mapping>

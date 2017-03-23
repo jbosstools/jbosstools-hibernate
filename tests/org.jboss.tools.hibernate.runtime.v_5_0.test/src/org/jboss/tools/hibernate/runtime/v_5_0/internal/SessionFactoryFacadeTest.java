@@ -1,7 +1,5 @@
 package org.jboss.tools.hibernate.runtime.v_5_0.internal;
 
-import java.io.File;
-import java.io.PrintWriter;
 import java.util.Map;
 
 import org.hibernate.SessionFactory;
@@ -10,25 +8,12 @@ import org.hibernate.cfg.Configuration;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
+import org.jboss.tools.hibernate.runtime.v_5_0.internal.test.Foo;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class SessionFactoryFacadeTest {
 
-	private static final String FOO_HBM_XML_STRING =
-			"<!DOCTYPE hibernate-mapping PUBLIC" +
-			"		'-//Hibernate/Hibernate Mapping DTD 3.0//EN'" +
-			"		'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>" +
-			"<hibernate-mapping package='org.jboss.tools.hibernate.runtime.v_5_0.internal'>" +
-			"  <class name='ConfigurationFacadeTest$Foo'>" + 
-			"    <id name='fooId' access='field' />" +
-			"  </class>" +
-			"</hibernate-mapping>";
-	
-	static class Foo {
-		public String fooId;
-	}
-	
 	private static IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 	
 	@Test
@@ -55,11 +40,7 @@ public class SessionFactoryFacadeTest {
 				FACADE_FACTORY.createSessionFactory(sessionFactory);
 		Assert.assertTrue(sessionFactoryFacade.getAllClassMetadata().isEmpty());
 		sessionFactory.close();
-		File fooFile = File.createTempFile("foo", "hbm.xml");
-		PrintWriter printWriter = new PrintWriter(fooFile);
-		printWriter.write(FOO_HBM_XML_STRING);
-		printWriter.close();
-		configuration.addFile(fooFile);
+		configuration.addClass(Foo.class);
 		sessionFactory = 
 				configuration.buildSessionFactory(
 						new StandardServiceRegistryBuilder().build());
@@ -69,8 +50,7 @@ public class SessionFactoryFacadeTest {
 				sessionFactoryFacade.getAllClassMetadata();
 		Assert.assertNotNull(
 				allClassMetaData.get(
-						"org.jboss.tools.hibernate.runtime.v_5_0.internal.ConfigurationFacadeTest$Foo"));
-		Assert.assertTrue(fooFile.delete());
+						"org.jboss.tools.hibernate.runtime.v_5_0.internal.test.Foo"));
 	}
 	
 }
