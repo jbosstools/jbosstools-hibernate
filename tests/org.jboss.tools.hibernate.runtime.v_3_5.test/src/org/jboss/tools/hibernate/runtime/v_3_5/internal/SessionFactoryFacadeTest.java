@@ -6,6 +6,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
+import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.v_3_5.internal.test.Foo;
 import org.junit.Assert;
@@ -46,6 +47,27 @@ public class SessionFactoryFacadeTest {
 		Assert.assertNotNull(
 				allClassMetaData.get(
 						"org.jboss.tools.hibernate.runtime.v_3_5.internal.test.Foo"));
+	}
+	
+	@Test
+	public void testGetAllCollectionMetadata() {
+		Configuration configuration = new Configuration();
+		SessionFactory sessionFactory = 
+				configuration.buildSessionFactory();
+		ISessionFactory sessionFactoryFacade = 
+				FACADE_FACTORY.createSessionFactory(sessionFactory);
+		Assert.assertTrue(sessionFactoryFacade.getAllCollectionMetadata().isEmpty());
+		sessionFactory.close();
+		configuration.addClass(Foo.class);
+		sessionFactory = 
+				configuration.buildSessionFactory();
+		sessionFactoryFacade = 
+				FACADE_FACTORY.createSessionFactory(sessionFactory);
+		Map<String, ICollectionMetadata> allCollectionMetaData = 
+				sessionFactoryFacade.getAllCollectionMetadata();
+		Assert.assertNotNull(
+				allCollectionMetaData.get(
+						"org.jboss.tools.hibernate.runtime.v_3_5.internal.test.Foo.bars"));
 	}
 	
 }

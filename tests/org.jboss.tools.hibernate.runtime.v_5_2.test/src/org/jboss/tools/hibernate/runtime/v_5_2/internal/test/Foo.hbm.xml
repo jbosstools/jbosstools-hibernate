@@ -5,5 +5,9 @@
 <hibernate-mapping package="org.jboss.tools.hibernate.runtime.v_5_2.internal.test">
     <class name="Foo">    
     	<id name="id" access="field"/>		
+    	<set name="bars" access="field">
+    	  <key column="barId"/>
+    	  <element column="barVal" type="string"/>
+    	</set>
 	</class>	
 </hibernate-mapping>

@@ -4,6 +4,10 @@
 	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="org.jboss.tools.hibernate.runtime.v_3_5.internal.test">
     <class name="Foo">    
-    	<id name="id" access="field"/>		
+    	<id name="fooId" access="field"/>	
+    	<set name="bars" access="field">
+    	  <key column="barId"/>
+    	  <element column="barVal" type="string"/>
+    	</set>
 	</class>	
 </hibernate-mapping>
