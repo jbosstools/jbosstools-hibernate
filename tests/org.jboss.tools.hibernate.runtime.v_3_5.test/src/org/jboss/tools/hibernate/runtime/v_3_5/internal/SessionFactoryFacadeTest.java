@@ -2,11 +2,14 @@ package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
 import java.util.Map;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
+import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.v_3_5.internal.test.Foo;
 import org.junit.Assert;
@@ -68,6 +71,18 @@ public class SessionFactoryFacadeTest {
 		Assert.assertNotNull(
 				allCollectionMetaData.get(
 						"org.jboss.tools.hibernate.runtime.v_3_5.internal.test.Foo.bars"));
+	}
+	
+	@Test
+	public void testOpenSession() {
+		Configuration configuration = new Configuration();
+		SessionFactory sessionFactory = 
+				configuration.buildSessionFactory();
+		ISessionFactory sessionFactoryFacade = 
+				FACADE_FACTORY.createSessionFactory(sessionFactory);
+		ISession sessionFacade = sessionFactoryFacade.openSession();
+		Session session = (Session)((IFacade)sessionFacade).getTarget();
+		Assert.assertSame(sessionFactory, session.getSessionFactory());
 	}
 	
 }
