@@ -5,6 +5,7 @@ import java.util.Map;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -93,6 +94,22 @@ public class SessionFactoryFacadeTest {
 		ISession sessionFacade = sessionFactoryFacade.openSession();
 		Session session = (Session)((IFacade)sessionFacade).getTarget();
 		Assert.assertSame(sessionFactory, session.getSessionFactory());
+	}
+	
+	@Test
+	public void testGetClassMetadata() {
+		Configuration configuration = new Configuration();
+		configuration.addClass(Foo.class);
+		ServiceRegistry serviceRegistry = 
+				new ServiceRegistryBuilder().buildServiceRegistry();
+		SessionFactory sessionFactory = 
+				configuration.buildSessionFactory(serviceRegistry);
+		ClassMetadata classMetadata = sessionFactory.getClassMetadata(Foo.class);
+		ISessionFactory sessionFactoryFacade = 
+				FACADE_FACTORY.createSessionFactory(sessionFactory);
+		Assert.assertSame(
+				classMetadata, 
+				((IFacade)sessionFactoryFacade.getClassMetadata(Foo.class)).getTarget());
 	}
 	
 }
