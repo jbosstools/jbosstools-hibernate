@@ -107,6 +107,11 @@ public class SessionFactoryFacadeTest {
 		Assert.assertSame(
 				classMetadata, 
 				((IFacade)sessionFactoryFacade.getClassMetadata(Foo.class)).getTarget());
+		Assert.assertSame(
+				classMetadata, 
+				((IFacade)sessionFactoryFacade.getClassMetadata(
+						"org.jboss.tools.hibernate.runtime.v_5_0.internal.test.Foo"))
+					.getTarget());
 	}
 	
 }

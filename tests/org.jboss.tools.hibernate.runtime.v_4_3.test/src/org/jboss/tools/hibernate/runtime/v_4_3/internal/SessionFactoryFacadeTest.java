@@ -7,8 +7,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.metadata.ClassMetadata;
-import org.hibernate.service.ServiceRegistry;
-import org.hibernate.service.ServiceRegistryBuilder;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
@@ -109,6 +107,11 @@ public class SessionFactoryFacadeTest {
 		Assert.assertSame(
 				classMetadata, 
 				((IFacade)sessionFactoryFacade.getClassMetadata(Foo.class)).getTarget());
+		Assert.assertSame(
+				classMetadata, 
+				((IFacade)sessionFactoryFacade.getClassMetadata(
+						"org.jboss.tools.hibernate.runtime.v_4_3.internal.test.Foo"))
+					.getTarget());
 	}
 	
 }
