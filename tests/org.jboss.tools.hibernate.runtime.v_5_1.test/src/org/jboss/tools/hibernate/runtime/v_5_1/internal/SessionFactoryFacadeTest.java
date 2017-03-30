@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.metadata.ClassMetadata;
+import org.hibernate.metadata.CollectionMetadata;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
@@ -112,6 +113,24 @@ public class SessionFactoryFacadeTest {
 				classMetadata, 
 				((IFacade)sessionFactoryFacade.getClassMetadata(
 						"org.jboss.tools.hibernate.runtime.v_5_1.internal.test.Foo"))
+					.getTarget());
+	}
+	
+	@Test
+	public void testGetCollectionMetadata() {
+		Configuration configuration = new Configuration();
+		configuration.addClass(Foo.class);
+		SessionFactory sessionFactory = 
+				configuration.buildSessionFactory(
+						new StandardServiceRegistryBuilder().build());
+		ISessionFactory sessionFactoryFacade = 
+				FACADE_FACTORY.createSessionFactory(sessionFactory);
+		CollectionMetadata collectionMetadata = sessionFactory.getCollectionMetadata(
+				"org.jboss.tools.hibernate.runtime.v_5_1.internal.test.Foo.bars");
+		Assert.assertSame(
+				collectionMetadata, 
+				((IFacade)sessionFactoryFacade.getCollectionMetadata(
+						"org.jboss.tools.hibernate.runtime.v_5_1.internal.test.Foo.bars"))
 					.getTarget());
 	}
 	
