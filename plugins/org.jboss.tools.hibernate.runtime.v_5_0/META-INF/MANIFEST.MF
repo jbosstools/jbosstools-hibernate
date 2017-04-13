@@ -12,10 +12,10 @@ Bundle-ClassPath: .,
  lib/hibernate-core-5.0.12.Final.jar,
  lib/hibernate-entitymanager-5.0.12.Final.jar,
  lib/hibernate-jpa-2.1-api-1.0.0.Final.jar,
- lib/hibernate-tools-5.0.5.Final.jar,
  lib/javassist-3.18.1-GA.jar,
  lib/jboss-logging-3.3.0.Final.jar,
- lib/slf4j-api-1.6.1.jar
+ lib/slf4j-api-1.6.1.jar,
+ lib/hibernate-tools-5.0.6.Final.jar
 Require-Bundle: org.apache.commons.collections,
  org.apache.commons.logging,
  org.hibernate.eclipse,
