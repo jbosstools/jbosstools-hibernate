@@ -13,7 +13,9 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	<packaging>pom</packaging>
 	<modules>
 		<module>org.hibernate.eclipse.feature</module>
+		<module>org.hibernate.search.eclipse.feature</module>
 		<module>org.hibernate.eclipse.test.feature</module>
+		<module>org.jboss.tools.hibernate.search.test.feature</module>
 	</modules>
 	<build>
 		<plugins>

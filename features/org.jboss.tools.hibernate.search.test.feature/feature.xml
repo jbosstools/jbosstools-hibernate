@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.jboss.tools.hibernate.search.test.feature"
+      label="JBoss Tools Hibernate Search Tests"
+      version="5.2.0.qualifier"
+      license-feature="org.jboss.tools.foundation.license.feature"
+      license-feature-version="1.4.0.qualifier">
+
+   <description url="http://www.jboss.org/tools">
+      [Enter Feature Description here.]
+   </description>
+
+   <copyright url="http://www.example.com/copyright">
+      [Enter Copyright Description here.]
+   </copyright>
+
+   <license url="http://www.example.com/license">
+      [Enter License Description here.]
+   </license>
+
+   <plugin
+         id="org.jboss.tools.hibernate.search.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

@@ -1,21 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-	<description>To install these features, point Eclipse at this site.</description>
-	<!-- JBoss Tools hibernatetools Nightly Build Update Site -->
-	<category-def label="JBoss Tools hibernatetools Nightly Build Update Site" name="JBoss Tools hibernatetools Nightly Build Update Site">
-		<description>JBoss Tools hibernatetools Nightly Build Update Site: contains all features in this build.</description>
-	</category-def>
-	<feature url="features/org.hibernate.eclipse.feature_0.0.0.jar" id="org.hibernate.eclipse.feature" version="0.0.0">
-		<category name="JBoss Tools hibernatetools Nightly Build Update Site"/>
-	</feature>
-	<feature url="features/org.hibernate.eclipse.test.feature_0.0.0.jar" id="org.hibernate.eclipse.test.feature" version="0.0.0">
-		<category name="JBoss Tools hibernatetools Nightly Build Update Site"/>
-	</feature>
-	<!-- Sources -->
-	<feature url="features/org.hibernate.eclipse.feature.source_0.0.0.jar" id="org.hibernate.eclipse.feature.source" version="0.0.0">
-		<category name="JBoss Tools hibernatetools Nightly Build Update Site"/>
-	</feature>
-	<feature url="features/org.hibernate.eclipse.test.feature.source_0.0.0.jar" id="org.hibernate.eclipse.test.feature.source" version="0.0.0">
-		<category name="JBoss Tools hibernatetools Nightly Build Update Site"/>
-	</feature>
+   <description>
+      To install these features, point Eclipse at this site.
+   </description>
+   <feature url="features/org.hibernate.eclipse.feature_0.0.0.jar" id="org.hibernate.eclipse.feature" version="0.0.0">
+      <category name="JBoss Tools hibernatetools Nightly Build Update Site"/>
+   </feature>
+   <feature url="features/org.hibernate.search.eclipse.feature_5.2.0.qualifier.jar" id="org.hibernate.search.eclipse.feature" version="5.2.0.qualifier">
+      <category name="JBoss Tools hibernatetools Nightly Build Update Site"/>
+   </feature>
+   <feature url="features/org.hibernate.eclipse.test.feature_0.0.0.jar" id="org.hibernate.eclipse.test.feature" version="0.0.0">
+      <category name="JBoss Tools hibernatetools Nightly Build Update Site"/>
+   </feature>
+   <feature url="features/org.hibernate.eclipse.feature.source_0.0.0.jar" id="org.hibernate.eclipse.feature.source" version="0.0.0">
+      <category name="JBoss Tools hibernatetools Nightly Build Update Site"/>
+   </feature>
+   <feature url="features/org.hibernate.eclipse.test.feature.source_0.0.0.jar" id="org.hibernate.eclipse.test.feature.source" version="0.0.0">
+      <category name="JBoss Tools hibernatetools Nightly Build Update Site"/>
+   </feature>
+   <feature url="features/org.jboss.tools.hibernate.search.test.feature_5.2.0.qualifier.jar" id="org.jboss.tools.hibernate.search.test.feature" version="5.2.0.qualifier">
+      <category name="JBoss Tools hibernatetools Nightly Build Update Site"/>
+   </feature>
+   <category-def name="JBoss Tools hibernatetools Nightly Build Update Site" label="JBoss Tools hibernatetools Nightly Build Update Site">
+      <description>
+         JBoss Tools hibernatetools Nightly Build Update Site: contains all features in this build.
+      </description>
+   </category-def>
 </site>

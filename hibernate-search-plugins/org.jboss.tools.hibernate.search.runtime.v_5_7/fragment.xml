@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<fragment>
+   <extension
+         point="org.jboss.tools.hibernate.search.runtime.spi.services">
+      <serivce
+            class="org.jboss.tools.hibernate.search.HSearchServiceImpl"
+            name="5.7">
+      </serivce>
+   </extension>
+
+</fragment>
