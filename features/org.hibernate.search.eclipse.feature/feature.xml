@@ -18,7 +18,7 @@
 
    <license url="http://www.eclipse.org/legal/epl-v10.html">
       This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution.
-Also this plugin is an addition to Jboss Tools Hibernate plugin which is licensed under certain open source licenses (or aggregations of such licenses), which in a particular case may include the Eclipse Public License, the GNU Lesser General Public License, and/or certain other open source licenses
+Also this plugin is an addition to JBoss Tools Hibernate plugin which is licensed under certain open source licenses (or aggregations of such licenses), which in a particular case may include the Eclipse Public License, the GNU Lesser General Public License, and/or certain other open source licenses
    </license>
 
    <requires>

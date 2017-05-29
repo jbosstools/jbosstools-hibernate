@@ -39,7 +39,7 @@ public class AnalyzersCombo {
 			ILaunchConfiguration launchConfiguration = LaunchHelper.findHibernateLaunchConfig(this.consoleConfigName);
 			projName = launchConfiguration.getAttribute(IConsoleConfigurationLaunchConstants.PROJECT_NAME, ""); //$NON-NLS-1$
 		} catch (CoreException e) {
-			HibernateSearchConsolePlugin.getDefault().log(e);
+			HibernateSearchConsolePlugin.getDefault().logError(e);
 		}
 		IJavaProject project = ProjectUtils.findJavaProject(projName);
 		final IType analyzersType = ProjectUtils.findType(project, "org.apache.lucene.analysis.Analyzer");
@@ -58,6 +58,8 @@ public class AnalyzersCombo {
 							}
 							
 						} catch (JavaModelException e) {
+							HibernateSearchConsolePlugin.getDefault().logInfo(
+									"Analuzer " + type.getFullyQualifiedName() + " doesn't have constrcutor with no parameters", e);
 						}
 						
 						try {
@@ -66,6 +68,8 @@ public class AnalyzersCombo {
 								continue;
 							}
 						} catch (JavaModelException e) {
+							HibernateSearchConsolePlugin.getDefault().logWarning(
+									"Analuzer " + type.getFullyQualifiedName() + " doesn't have constrcutor with Version as a parameter", e);
 						}
 						
 					}

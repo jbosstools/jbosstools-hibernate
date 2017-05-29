@@ -82,6 +82,7 @@ public class IndexToolkitView extends ViewPart {
 		AnalyzersTabBuilder.getInstance().disposeAll();
 		ExploreDocsTabBuilder.getInstance().disposeAll();
 		SearchTabBuilder.getInstance().disposeAll();
+		super.dispose();
 	}
 
 	@Override

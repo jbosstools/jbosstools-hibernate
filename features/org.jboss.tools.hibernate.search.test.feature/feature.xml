@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.jboss.tools.hibernate.search.test.feature"
-      label="JBoss Tools Hibernate Search Tests"
+      label="%featureName"
       version="5.2.0.qualifier"
+      provider-name="%providerName"
       license-feature="org.jboss.tools.foundation.license.feature"
       license-feature-version="1.4.0.qualifier">
 
    <description url="http://www.jboss.org/tools">
-      [Enter Feature Description here.]
+      %description
    </description>
 
-   <copyright url="http://www.example.com/copyright">
-      [Enter Copyright Description here.]
+   <copyright>
+      %copyright
    </copyright>
 
    <license url="http://www.example.com/license">

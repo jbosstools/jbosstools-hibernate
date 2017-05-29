@@ -41,8 +41,20 @@ public class HibernateSearchConsolePlugin extends AbstractUIPlugin {
 		return plugin;
 	}
 	
-	public void log(Throwable e) {
-		getLog().log(new Status(IStatus.ERROR, PLUGIN_ID, 150, "Hibernate Search Internal Error", e) );
+	public void log(int status, String message, Throwable e) {
+		getLog().log(new Status(status, PLUGIN_ID, message, e));
+	}
+	
+	public void logError(Throwable e) {
+		log(IStatus.ERROR, "Hibernate Search Internal Error", e);
+	}
+	
+	public void logWarning(String message, Throwable e) {
+		log(IStatus.WARNING, message, e);
+	}
+	
+	public void logInfo(String message, Throwable e) {
+		log(IStatus.INFO, message, e);
 	}
 
 }

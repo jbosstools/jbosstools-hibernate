@@ -11,7 +11,8 @@ Export-Package: org.jboss.tools.hibernate.search,
  org.jboss.tools.hibernate.search.property.testers,
  org.jboss.tools.hibernate.search.toolkit;uses:="org.hibernate.eclipse.console",
  org.jboss.tools.hibernate.search.toolkit.analyzers;uses:="org.hibernate.eclipse.console",
- org.jboss.tools.hibernate.search.toolkit.docs
+ org.jboss.tools.hibernate.search.toolkit.docs,
+ org.jboss.tools.hibernate.search.toolkit.search
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui.workbench,
  org.eclipse.jdt.core,
