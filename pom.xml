@@ -18,6 +18,8 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<module>hibernate-search-plugins</module>
 		<module>tests</module>
 		<module>hibernate-search-tests</module>
+		<module>test-framework</module>
+		<module>itests</module>
 		<module>features</module>
 		<module>site</module>
 	</modules>
@@ -40,5 +42,18 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 			<layout>p2</layout>
 			<url>${jbosstools-base-site}</url>
 		</repository>
+
+		<repository>
+			<id>jbosstools-central</id>
+			<layout>p2</layout>
+			<url>${jbosstools-central-site}</url>
+		</repository>
+		
+		<repository>
+			<id>jbosstools-jst</id>
+			<layout>p2</layout>
+			<url>${jbosstools-jst-site}</url>
+		</repository>
+
 	</repositories>
 </project>
