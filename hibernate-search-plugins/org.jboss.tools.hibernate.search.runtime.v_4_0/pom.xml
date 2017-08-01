@@ -19,30 +19,8 @@
 		<emma.instrument.bundles>org.jboss.tools.hibernate.proxy</emma.instrument.bundles>
 	</properties>
 	
-	<!-- <build>
-		<plugins>
-			<plugin> 
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-surefire-plugin</artifactId>
-				<version>${tychoVersion}</version>
-				<dependencies>
-                 	<dependency>
-	                    <groupId>org.hibernate</groupId>
-						<artifactId>hibernate-search-orm</artifactId>
-						<version>${hibernate.search.version}</version>
-                 	</dependency>
-            	</dependencies>
-			</plugin>
-		</plugins>
-	</build> -->
-	
 	<build>
 		<plugins>
-			<plugin> 
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-surefire-plugin</artifactId>
-				<version>${tychoVersion}</version>
-			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
