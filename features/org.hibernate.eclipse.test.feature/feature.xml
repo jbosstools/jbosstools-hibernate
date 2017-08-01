@@ -21,102 +21,74 @@
 
    <plugin
          id="org.jboss.tools.hibernate.ui.bot.test"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
+         download-size="0" install-size="0" version="0.0.0"/>
 
    <plugin
          id="org.jboss.tools.hibernate.reddeer"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
+         download-size="0" install-size="0" version="0.0.0"/>
 
    <plugin
          id="org.hibernate.eclipse.console.test"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
+         download-size="0" install-size="0" version="0.0.0"/>
 
    <plugin
          id="org.hibernate.eclipse.jdt.ui.test"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
+         download-size="0" install-size="0" version="0.0.0"/>
 
    <plugin
          id="org.jboss.tools.hibernate.jpt.core.test"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
+         download-size="0" install-size="0" version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.jboss.tools.hibernate.runtime.spi.test"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
+         download-size="0" install-size="0" version="0.0.0"
          fragment="true"
          unpack="false"/>
 
    <plugin
          id="org.jboss.tools.hibernate.ui.test"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
+         download-size="0" install-size="0" version="0.0.0"/>
 
    <plugin
          id="org.jboss.tools.hibernate.runtime.v_5_0.test"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
+         download-size="0" install-size="0" version="0.0.0"
          fragment="true"
          unpack="false"/>
 
    <plugin
          id="org.jboss.tools.hibernate.runtime.v_4_3.test"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
+         download-size="0" install-size="0" version="0.0.0"
          fragment="true"
          unpack="false"/>
 
    <plugin
          id="org.jboss.tools.hibernate.runtime.v_4_0.test"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
+         download-size="0" install-size="0" version="0.0.0"
          fragment="true"
          unpack="false"/>
 
    <plugin
          id="org.jboss.tools.hibernate.runtime.v_3_6.test"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
+         download-size="0" install-size="0" version="0.0.0"
          fragment="true"
          unpack="false"/>
 
    <plugin
          id="org.jboss.tools.hibernate.runtime.v_3_5.test"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
+         download-size="0" install-size="0" version="0.0.0"
          fragment="true"
          unpack="false"/>
 
    <plugin
          id="org.jboss.tools.hibernate.runtime.v_5_1.test"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
+         download-size="0" install-size="0" version="0.0.0"
          fragment="true"
          unpack="false"/>
 
    <plugin
          id="org.jboss.tools.hibernate.runtime.v_5_2.test"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
+         download-size="0" install-size="0" version="0.0.0"
          fragment="true"
          unpack="false"/>
 
