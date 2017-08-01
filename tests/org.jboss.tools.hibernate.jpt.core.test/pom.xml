@@ -32,6 +32,7 @@
 							<version>0.0.0</version>
 						</dependency>
 					</dependencies>
+					<skip>${skipTestsOrITests}</skip>
 				</configuration>
 			</plugin>
 		</plugins>

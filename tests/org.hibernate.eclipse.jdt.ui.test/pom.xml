@@ -25,6 +25,7 @@
 					<explodedBundles>
 						<bundle>org.hibernate.eclipse.jdt.ui.test</bundle>
 					</explodedBundles>
+					<skip>${skipTestsOrITests}</skip>
 				</configuration>
 			</plugin>
 		</plugins>

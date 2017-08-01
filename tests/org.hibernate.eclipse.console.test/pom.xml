@@ -29,6 +29,7 @@
 						<bundle>org.hibernate.eclipse</bundle>
 						<bundle>org.hibernate.eclipse.libs</bundle>
 					</explodedBundles>
+					<skip>${skipTestsOrITests}</skip>
 				</configuration>
 			</plugin>
 		</plugins>
