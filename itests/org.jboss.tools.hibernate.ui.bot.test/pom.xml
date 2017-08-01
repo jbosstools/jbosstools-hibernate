@@ -20,8 +20,6 @@
 		<surefire.timeout>14400</surefire.timeout>
 		<suiteClass>org.jboss.tools.hibernate.ui.bot.test.HibernateAllTest</suiteClass>
 	</properties>
-	
-	
 
 	<build>
 		<resources>
@@ -99,9 +97,9 @@
 				<configuration>
 					<testSuite>org.jboss.tools.hibernate.ui.bot.test</testSuite>
 					<testClass>${suiteClass}</testClass>
-					<skipTests>${skipITests}</skipTests>
 					<useUIThread>false</useUIThread>
 					<appArgLine>-pluginCustomization ${requirementsDirectory}/pluginCustomization.ini</appArgLine>
+					<skip>${skipITests}</skip>
 				</configuration>
 			</plugin>
 		</plugins>
