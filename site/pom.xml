@@ -8,7 +8,9 @@
 	</parent>
 	<groupId>org.jboss.tools.hibernatetools</groupId>
 	<artifactId>hibernatetools.site</artifactId> 
-	<name>hibernatetools.site</name>
 	
 	<packaging>eclipse-repository</packaging>
+	<properties>
+		<skipDeployToJBossOrg>false</skipDeployToJBossOrg>
+	</properties>
 </project>
