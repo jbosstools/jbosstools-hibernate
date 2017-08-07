@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Hibernate Search Runtime Plugin Test for v_5_3
+Bundle-SymbolicName: org.jboss.tools.hibernate.search.runtime.v_5_3.test;singleton:=true
+Bundle-Version: 5.2.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: lib/byte-buddy-1.6.14.jar,
+ lib/byte-buddy-agent-1.6.14.jar,
+ lib/mockito-core-2.8.9.jar,
+ lib/objenesis-2.5.jar,
+ .
+Require-Bundle: org.junit;bundle-version="4.12.0",
+ org.eclipse.core.resources;bundle-version="3.12.0",
+ org.eclipse.core.runtime;bundle-version="3.13.0",
+ org.hibernate.eclipse;bundle-version="5.2.0",
+ org.jboss.tools.hibernate.search.runtime.common;bundle-version="5.2.0",
+ org.jboss.tools.hibernate.search.runtime.spi;bundle-version="5.2.0",
+ org.jboss.tools.tests;bundle-version="3.7.100",
+ org.jboss.tools.hibernate.runtime.spi;bundle-version="5.2.0",
+ org.jboss.tools.common.base.test;bundle-version="3.9.0",
+ org.jboss.tools.hibernate.search.test;bundle-version="5.2.0"

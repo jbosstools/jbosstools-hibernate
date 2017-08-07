@@ -123,7 +123,7 @@ public abstract class AbstractHSearchService implements IHSearchService {
 					"close", 
 					new Class[] { }, 
 					new Object[] { });
-			return result.toString();
+			return result.toString().trim();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "Exception happened while analyzing " + e.getMessage();

@@ -9,10 +9,10 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.jboss.tools.hibernate.search.runtime.spi;bundle-version="2.0.0",
  org.jboss.tools.hibernate.search.runtime.common;bundle-version="2.0.0"
 Bundle-ClassPath: .,
- lib/hibernate-search-engine-5.7.0.Beta2.jar,
- lib/hibernate-search-orm-5.7.0.Beta2.jar,
- lib/lucene-analyzers-common-5.5.2.jar,
- lib/lucene-core-5.5.2.jar,
- lib/lucene-facet-5.5.2.jar,
- lib/lucene-queries-5.5.2.jar,
- lib/lucene-queryparser-5.5.2.jar
+ lib/hibernate-search-engine-5.7.1.Final.jar,
+ lib/hibernate-search-orm-5.7.1.Final.jar,
+ lib/lucene-analyzers-common-5.5.4.jar,
+ lib/lucene-core-5.5.4.jar,
+ lib/lucene-facet-5.5.4.jar,
+ lib/lucene-queries-5.5.4.jar,
+ lib/lucene-queryparser-5.5.4.jar
