@@ -65,6 +65,16 @@
 					</filesets>
 				</configuration>
 			</plugin>
+			<plugin> 
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<version>${tychoVersion}</version>
+				<configuration>
+					<includes>
+						<include>**/*Test.class</include>
+					</includes>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
