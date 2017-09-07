@@ -12,24 +12,24 @@ package org.jboss.tools.hibernate.reddeer.test;
 
 import static org.junit.Assert.fail;
 
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.eclipse.m2e.core.ui.wizard.MavenImportWizard;
-import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement;
-import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
-import org.jboss.reddeer.requirements.db.DatabaseRequirement;
-import org.jboss.reddeer.swt.api.Shell;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.ShellIsAvailable;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.eclipse.m2e.core.ui.wizard.MavenImportWizard;
+import org.eclipse.reddeer.eclipse.ui.views.properties.PropertySheet;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
+import org.eclipse.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement;
+import org.eclipse.reddeer.requirements.db.DatabaseConfiguration;
+import org.eclipse.reddeer.requirements.db.DatabaseRequirement;
+import org.eclipse.reddeer.swt.api.Shell;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.hibernate.reddeer.console.views.KnownConfigurationsView;
 import org.jboss.tools.hibernate.ui.bot.test.Activator;
 import org.jboss.tools.hibernate.ui.bot.test.DatabaseUtils;
@@ -63,9 +63,9 @@ public class HibernateRedDeerTest {
 		}
 		
 		//https://bugs.eclipse.org/bugs/show_bug.cgi?id=470094
-		PropertiesView pw = new PropertiesView();
-		if(pw.isOpened()){
-			pw.close();
+		PropertySheet ps = new PropertySheet();
+		if(ps.isOpen()){
+			ps.close();
 		}
 	}
 	
@@ -130,8 +130,8 @@ public class HibernateRedDeerTest {
 			wizard.getWizardPage().waitUntilProjectIsLoaded(TimePeriod.LONG);
 			Shell shell = new DefaultShell("Import Maven Projects");
 			new PushButton("Finish").click();
-			new WaitWhile(new ShellIsAvailable(shell), TimePeriod.NORMAL);
-			new WaitUntil(new JobIsRunning(), TimePeriod.NORMAL, false);
+			new WaitWhile(new ShellIsAvailable(shell), TimePeriod.DEFAULT);
+			new WaitUntil(new JobIsRunning(), TimePeriod.DEFAULT, false);
 			new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 			
 		} catch (IOException e) {
@@ -163,7 +163,7 @@ public class HibernateRedDeerTest {
 		while(v.getConsoleConfigurations() != null && !v.getConsoleConfigurations().isEmpty()){
 			TreeItem i =  v.getConsoleConfigurations().get(0);
 			i.select();
-			ContextMenu closeConfig = new ContextMenu("Close Configuration");
+			ContextMenuItem closeConfig = new ContextMenuItem("Close Configuration");
 			if(closeConfig.isEnabled()){
 				closeConfig.select();
 				new WaitWhile(new JobIsRunning());

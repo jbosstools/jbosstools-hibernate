@@ -15,14 +15,14 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
-import org.jboss.reddeer.requirements.db.DatabaseRequirement;
-import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.eclipse.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
+import org.eclipse.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.db.DatabaseConfiguration;
+import org.eclipse.reddeer.requirements.db.DatabaseRequirement;
+import org.eclipse.reddeer.requirements.db.DatabaseRequirement.Database;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.hibernate.reddeer.console.views.KnownConfigurationsView;
 import org.jboss.tools.hibernate.reddeer.console.wizards.NewConfigurationFirstPage;
 import org.jboss.tools.hibernate.reddeer.console.wizards.NewConfigurationWizard;
@@ -40,7 +40,7 @@ import org.junit.runners.Parameterized.UseParametersRunnerFactory;
 
 @RunWith(RedDeerSuite.class)
 @UseParametersRunnerFactory(ParameterizedRequirementsRunnerFactory.class)
-@Database(name="testdb")
+@Database
 public class ConsoleConfigurationFileTest extends HibernateRedDeerTest {
 
 	
@@ -90,11 +90,11 @@ public class ConsoleConfigurationFileTest extends HibernateRedDeerTest {
 		NewConfigurationWizard wizard = new NewConfigurationWizard();
 		wizard.open();
 		
-		NewConfigurationFirstPage p1 = new NewConfigurationFirstPage();		
+		NewConfigurationFirstPage p1 = new NewConfigurationFirstPage(wizard);		
 		p1.setLocation(prjName,"src");		
 		wizard.next();
 		
-		NewConfigurationWizardPage p2 = new NewConfigurationWizardPage();
+		NewConfigurationWizardPage p2 = new NewConfigurationWizardPage(wizard);
 		SelectConnectionProfileDialog connectionDialog = p2.getValuesFromConnection();
 		connectionDialog.setProfileName(cfg.getProfileName());
 		connectionDialog.ok();
@@ -122,7 +122,7 @@ public class ConsoleConfigurationFileTest extends HibernateRedDeerTest {
 	public void testCreateConfigurationFileWithConsole() {
 		NewConfigurationWizard wizard = createConfigFile();	
 		
-		NewConfigurationWizardPage p2 = new NewConfigurationWizardPage();
+		NewConfigurationWizardPage p2 = new NewConfigurationWizardPage(wizard);
 		p2.setCreateConsoleConfiguration(true);
 		wizard.finish();
 		
@@ -132,12 +132,12 @@ public class ConsoleConfigurationFileTest extends HibernateRedDeerTest {
 	private NewConfigurationWizard createConfigFile(){
 		NewConfigurationWizard wizard = new NewConfigurationWizard();
 		wizard.open();
-		NewConfigurationFirstPage p1 = new NewConfigurationFirstPage();
+		NewConfigurationFirstPage p1 = new NewConfigurationFirstPage(wizard);
 		p1.setLocation(prjName,"src");		
 		wizard.next();
 
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		NewConfigurationWizardPage p2 = new NewConfigurationWizardPage();
+		NewConfigurationWizardPage p2 = new NewConfigurationWizardPage(wizard);
 		p2.setHibernateVersion(hbVersion);
 		p2.setConnectionURL(cfg.getJdbcString());
 		p2.setUsername(cfg.getUsername());	
@@ -145,7 +145,7 @@ public class ConsoleConfigurationFileTest extends HibernateRedDeerTest {
 	}
 	
 	private void checkFile(boolean generateConsole) {
-		PackageExplorer pe = new PackageExplorer();
+		PackageExplorerPart pe = new PackageExplorerPart();
 		pe.open();
 		pe.getProject(prjName).getProjectItem("src",HIBERNATE_CFG_FILE).open();
 		new DefaultEditor(HIBERNATE_CFG_FILE);

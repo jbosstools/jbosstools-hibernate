@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.bot.test;
 
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.hibernate.reddeer.test.AntFileExportTest;
 import org.jboss.tools.hibernate.reddeer.test.CodeGenerationConfigurationTest;
 import org.jboss.tools.hibernate.reddeer.test.CodeGenerationKeyWordsTest;

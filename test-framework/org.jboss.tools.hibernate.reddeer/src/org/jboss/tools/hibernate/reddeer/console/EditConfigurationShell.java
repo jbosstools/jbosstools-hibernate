@@ -10,14 +10,14 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.console;
 
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.tab.DefaultTabItem;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.common.wait.WaitWhile;
 
 /**
  * Hibernate Console Configuration shell
@@ -38,7 +38,7 @@ public class EditConfigurationShell extends DefaultShell {
 	 * @return main page
 	 */
 	public EditConfigurationMainPage getMainPage() {
-		new DefaultCTabItem("Main").activate();
+		new DefaultCTabItem(this, "Main").activate();
 		return new EditConfigurationMainPage();
 	}
 
@@ -47,7 +47,7 @@ public class EditConfigurationShell extends DefaultShell {
 	 * @return options page
 	 */
 	public EditConfigurationOptionsPage getOptionsPage() {
-		new DefaultTabItem("Options").activate();
+		new DefaultTabItem(this, "Options").activate();
 		return new EditConfigurationOptionsPage();
 	}
 	
@@ -56,7 +56,7 @@ public class EditConfigurationShell extends DefaultShell {
 	 * @return classpath page
 	 */
 	public EditorConfigurationClassPathPage getClassPathPage() {
-		new DefaultTabItem("ClassPath").activate();
+		new DefaultTabItem(this, "ClassPath").activate();
 		return new EditorConfigurationClassPathPage();
 	}
 
@@ -65,7 +65,7 @@ public class EditConfigurationShell extends DefaultShell {
 	 * @return classpath page
 	 */	
 	public EditConfigurationMappingsPage getCommonPage() {
-		new DefaultTabItem("Mappings").activate();
+		new DefaultTabItem(this, "Mappings").activate();
 		return new EditConfigurationMappingsPage();
 	}
 
@@ -73,9 +73,8 @@ public class EditConfigurationShell extends DefaultShell {
 	 * Click ok on Hibernate Configuration Console shell
 	 */
 	public void ok() {
-		String title = getText();
-		new PushButton("OK").click();
-		new WaitWhile(new ShellWithTextIsAvailable(title));
+		new PushButton(this, "OK").click();
+		new WaitWhile(new ShellIsAvailable(this));
 		new WaitWhile(new JobIsRunning());		
 	}
 
@@ -84,6 +83,6 @@ public class EditConfigurationShell extends DefaultShell {
 	 * @param name given name
 	 */
 	public void setName(String name) {
-		new LabeledText("Name:").setText(name);		
+		new LabeledText(this, "Name:").setText(name);		
 	}	
 }

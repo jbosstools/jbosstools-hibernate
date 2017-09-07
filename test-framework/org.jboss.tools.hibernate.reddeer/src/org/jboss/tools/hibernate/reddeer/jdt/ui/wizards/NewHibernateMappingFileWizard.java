@@ -10,19 +10,19 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.jdt.ui.wizards;
 
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
+import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
 
 /**
  * New Hibernate xml mapping file wizard
  * @author Jiri Peterka
  *
  */
-public class NewHibernateMappingFileWizard extends NewWizardDialog {
+public class NewHibernateMappingFileWizard extends NewMenuWizard {
 
 	/**
 	 * Initializes wizard
 	 */
 	public NewHibernateMappingFileWizard() {
-		super("Hibernate", "Hibernate XML Mapping file (hbm.xml)");
+		super("New Hibernate XML Mapping files (hbm.xml)", "Hibernate", "Hibernate XML Mapping file (hbm.xml)");
 	}
 }

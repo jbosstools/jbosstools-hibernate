@@ -12,19 +12,20 @@ package org.jboss.tools.hibernate.ui.bot.test.factory;
 
 import java.util.List;
 
-import org.jboss.reddeer.eclipse.datatools.ui.DatabaseProfile;
-import org.jboss.reddeer.eclipse.datatools.ui.view.DataSourceExplorer;
-import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileWizard;
-import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.impl.button.YesButton;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.core.matcher.TreeItemRegexMatcher;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.requirements.db.DatabaseConfiguration;
+import org.eclipse.reddeer.swt.api.Shell;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.YesButton;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.core.matcher.TreeItemRegexMatcher;
+import org.eclipse.reddeer.eclipse.datatools.connectivity.ui.dse.views.DataSourceExplorerView;
+import org.eclipse.reddeer.eclipse.datatools.connectivity.ui.wizards.NewCPWizard;
+import org.eclipse.reddeer.eclipse.datatools.ui.DatabaseProfile;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
 
 /**
  * Driver Definition Factory helps to create driver definition based on 
@@ -40,20 +41,20 @@ public class ConnectionProfileFactory {
 	 */
 	public static void createConnectionProfile(DatabaseConfiguration cfg) {
 		
-		DataSourceExplorer dse = new DataSourceExplorer();
+		DataSourceExplorerView dse = new DataSourceExplorerView();
 		dse.open();
 		
 		//TODO implement this in explorer
 		//TODO fix explorer name
 		DefaultTreeItem item = new DefaultTreeItem("Database Connections");
-		item.expand(TimePeriod.NORMAL);
+		item.expand(TimePeriod.DEFAULT);
 		List<TreeItem> items = item.getItems();
 		for (TreeItem i : items) {
 			i.select();
-			new ContextMenu("Delete").select();
-			new DefaultShell("Delete confirmation");
-			new YesButton().click();
-			new WaitWhile(new ShellWithTextIsAvailable("Delete confirmation"));				
+			new ContextMenuItem("Delete").select();
+			Shell delete = new DefaultShell("Delete confirmation");
+			new YesButton(delete).click();
+			new WaitWhile(new ShellIsAvailable(delete));				
 		}
 
 		DatabaseProfile dbProfile = new DatabaseProfile();
@@ -66,7 +67,7 @@ public class ConnectionProfileFactory {
 		dbProfile.setVendor(cfg.getDriverVendor());
 
 		// Driver Definition creation
-		ConnectionProfileWizard cpw = new ConnectionProfileWizard();
+		NewCPWizard cpw = new NewCPWizard();
 		cpw.open();
 		cpw.createDatabaseProfile(dbProfile);
 	}
@@ -77,28 +78,28 @@ public class ConnectionProfileFactory {
 	 */
 	@SuppressWarnings("unchecked")
 	public static void deleteConnectionProfile(String profileName) {
-		DataSourceExplorer explorer = new DataSourceExplorer();
+		DataSourceExplorerView explorer = new DataSourceExplorerView();
 		explorer.open();
 		new DefaultTreeItem(new TreeItemRegexMatcher("Database Connections"), new TreeItemRegexMatcher(profileName + ".*")).select();
-		new ContextMenu("Delete").select();
-		new DefaultShell("Delete confirmation");
-		new YesButton().click();
-		new WaitWhile(new ShellWithTextIsAvailable("Delete confirmation"));
+		new ContextMenuItem("Delete").select();
+		Shell delete =new DefaultShell("Delete confirmation");
+		new YesButton(delete).click();
+		new WaitWhile(new ShellIsAvailable(delete));
 	}
 	
 	/***
 	 * Method deletes all connection profiles via Data Source Explorer
 	 */
 	public static void deleteAllConnectionProfiles() {
-		DataSourceExplorer dse = new DataSourceExplorer();
+		DataSourceExplorerView dse = new DataSourceExplorerView();
 		dse.open();
 		List<TreeItem> items = new DefaultTreeItem("Database Connections").getItems();
 		for (TreeItem i : items) {
 			i.select();
-			new ContextMenu("Delete").select();;
-			new DefaultShell("Delete confirmation");
-			new YesButton().click();
-			new WaitWhile(new ShellWithTextIsAvailable("Delete confirmation"));		
+			new ContextMenuItem("Delete").select();;
+			Shell delete = new DefaultShell("Delete confirmation");
+			new YesButton(delete).click();
+			new WaitWhile(new ShellIsAvailable(delete));		
 		}
 	}	
 }

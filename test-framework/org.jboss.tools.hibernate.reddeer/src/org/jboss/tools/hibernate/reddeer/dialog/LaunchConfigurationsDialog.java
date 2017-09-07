@@ -11,24 +11,26 @@
 package org.jboss.tools.hibernate.reddeer.dialog;
 
 import org.eclipse.swt.widgets.Shell;
-import org.jboss.reddeer.swt.condition.ShellIsAvailable;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.core.lookup.ShellLookup;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenu;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.table.DefaultTableItem;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.core.lookup.ShellLookup;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.hibernate.reddeer.perspective.HibernatePerspective;
 
 /**
@@ -47,20 +49,20 @@ public class LaunchConfigurationsDialog extends DefaultShell{
 		HibernatePerspective p = new HibernatePerspective();
     	p.open();
     	
-    	new ShellMenu("Run", "Hibernate Code Generation...","Hibernate Code Generation Configurations...").select();
-    	swtShell = new DefaultShell(DIALOG_TITLE).getSWTWidget();
+    	new ShellMenuItem("Run", "Hibernate Code Generation...","Hibernate Code Generation Configurations...").select();
+    	swtWidget = new DefaultShell(DIALOG_TITLE).getSWTWidget();
 	}
 
 	/**
 	 * Creates new hibernate launch configuration
 	 */
 	public void createNewConfiguration() {
-		new DefaultTreeItem("Hibernate Code Generation").select();
-		new DefaultToolItem("New launch configuration").click();
+		new DefaultTreeItem(new DefaultTree(this),"Hibernate Code Generation").select();
+		new DefaultToolItem(this, "New launch configuration").click();
 	}
 	
 	public void selectHibernateCodeGeneration(String genName){
-		new DefaultTreeItem("Hibernate Code Generation", genName).select();
+		new DefaultTreeItem(new DefaultTree(this), "Hibernate Code Generation", genName).select();
 	}
 		
 	/**
@@ -68,7 +70,7 @@ public class LaunchConfigurationsDialog extends DefaultShell{
 	 * @param confName configuration name
 	 */
 	public void selectConfiguration(String confName) {
-		new LabeledCombo("Console configuration:").setSelection(confName);
+		new LabeledCombo(this, "Console configuration:").setSelection(confName);
 	}
 	
 	/**
@@ -76,7 +78,7 @@ public class LaunchConfigurationsDialog extends DefaultShell{
 	 * @param dir given dir
 	 */
 	public void setOutputDir(String dir) {
-		new LabeledText("Output directory:").setText(dir);
+		new LabeledText(this, "Output directory:").setText(dir);
 	}
 
 	/**
@@ -84,8 +86,8 @@ public class LaunchConfigurationsDialog extends DefaultShell{
 	 * @param enable if true JDBC will be used
 	 */
 	public void setReverseFromJDBC(boolean enable) {
-		boolean state = new CheckBox("Reverse engineer from JDBC Connection").isChecked();
-		if (state != enable) new CheckBox("Reverse engineer from JDBC Connection").click();
+		boolean state = new CheckBox(this, "Reverse engineer from JDBC Connection").isChecked();
+		if (state != enable) new CheckBox(this, "Reverse engineer from JDBC Connection").click();
 	}
 		
 	/**
@@ -93,7 +95,7 @@ public class LaunchConfigurationsDialog extends DefaultShell{
 	 * @param pkg package name
 	 */
 	public void setPackage(String pkg) {
-		new LabeledText("Package:").setText(pkg);
+		new LabeledText(this, "Package:").setText(pkg);
 	}
 
 	/**
@@ -101,16 +103,16 @@ public class LaunchConfigurationsDialog extends DefaultShell{
 	 * @param index index of the exporter
 	 */
 	public void selectExporter(int index) {
-		new DefaultCTabItem("Exporters").activate();
-		new DefaultTableItem(index).setChecked(true);
+		new DefaultCTabItem(this, "Exporters").activate();
+		new DefaultTableItem(new DefaultTable(this), index).setChecked(true);
 	}
 	
 	/**
 	 * Executes configuration
 	 */
 	public void run() {
-		new PushButton("Run").click();
-    	new WaitWhile(new ShellWithTextIsAvailable("Hibernate Code Generation Configurations"));
+		new PushButton(this, "Run").click();
+    	new WaitWhile(new ShellIsAvailable(this));
     	new WaitUntil(new JobIsRunning());
     	new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
@@ -120,13 +122,14 @@ public class LaunchConfigurationsDialog extends DefaultShell{
 	 * @param path path to existing reveng file
 	 */
 	public void setRevengFile(String... path) {
-		new PushButton("Setup...").click();
-		new WaitUntil(new ShellWithTextIsAvailable("Setup reverse engineering"));
-		new DefaultShell("Setup reverse engineering");
-		new PushButton("Use existing...").click();
-		new WaitUntil(new ShellWithTextIsAvailable("Select reverse engineering settings file"));
-		new DefaultTreeItem(path).select();
-		new OkButton().click();
+		new PushButton(this, "Setup...").click();
+		org.eclipse.reddeer.swt.api.Shell setupShell = new DefaultShell("Setup reverse engineering");
+		new PushButton(setupShell, "Use existing...").click();
+		org.eclipse.reddeer.swt.api.Shell selectShell = new DefaultShell("Select reverse engineering settings file");
+		new DefaultTreeItem(new DefaultTree(selectShell), path).select();
+		new OkButton(selectShell).click();
+		new WaitWhile(new ShellIsAvailable(selectShell));
+		new WaitWhile(new ShellIsAvailable(setupShell));
 	}
 
 	
@@ -134,7 +137,7 @@ public class LaunchConfigurationsDialog extends DefaultShell{
 	 * Click apply
 	 */
 	public void apply() {
-		new PushButton("Apply").click();
+		new PushButton(this, "Apply").click();
 		new WaitWhile(new JobIsRunning());
 	}
 
@@ -142,7 +145,7 @@ public class LaunchConfigurationsDialog extends DefaultShell{
 	 * Presses Close button on the Dialog. 
 	 */
 	public void close() {
-		new PushButton("Close").click();
+		new PushButton(this, "Close").click();
 		new WaitWhile(new ShellIsAvailable(this)); 
 		new WaitWhile(new JobIsRunning());
 	}

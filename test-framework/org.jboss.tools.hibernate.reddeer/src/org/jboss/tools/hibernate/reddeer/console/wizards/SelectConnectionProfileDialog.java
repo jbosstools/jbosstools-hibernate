@@ -10,12 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.console.wizards;
 
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.swt.condition.ShellIsAvailable;
-import org.jboss.reddeer.swt.impl.button.CancelButton;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.CancelButton;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 
 public class SelectConnectionProfileDialog extends DefaultShell{
 	
@@ -25,17 +25,17 @@ public class SelectConnectionProfileDialog extends DefaultShell{
 	}
 	
 	public void setProfileName(String profileName){
-		new DefaultCombo().setSelection(profileName);
+		new DefaultCombo(this).setSelection(profileName);
 	}
 	
 	public void ok(){
-		new OkButton().click();
+		new OkButton(this).click();
 		new WaitWhile(new ShellIsAvailable(this));
 		new DefaultShell("");
 	}
 	
 	public void cancel(){
-		new CancelButton().click();
+		new CancelButton(this).click();
 		new WaitWhile(new ShellIsAvailable(this));
 		new DefaultShell("");
 	}

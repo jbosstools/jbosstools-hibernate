@@ -10,8 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.wizard;
 
-import org.jboss.reddeer.eclipse.jdt.ui.ide.NewJavaProjectWizardPage;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewJavaProjectWizardPageOne;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
 
 /**
  * JPA Project wizard page
@@ -19,13 +20,19 @@ import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
  * TODO move to reddeer
  *
  */
-public class JPAProjectWizardFirstPage extends NewJavaProjectWizardPage {
+public class JPAProjectWizardFirstPage extends NewJavaProjectWizardPageOne {
 	
+	
+	
+	public JPAProjectWizardFirstPage(ReferencedComposite referencedComposite) {
+		super(referencedComposite);
+	}
+
 	/**
 	 * Select JPA version
 	 * @param version given JPA version
 	 */
 	public void setJPAVersion(String version) {
-		new DefaultCombo(1).setSelection(version.toString());
+		new DefaultCombo(referencedComposite, 1).setSelection(version.toString());
 	}
 }

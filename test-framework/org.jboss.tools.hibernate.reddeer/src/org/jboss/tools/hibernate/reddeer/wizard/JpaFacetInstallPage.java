@@ -10,17 +10,18 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.wizard;
 
-import org.jboss.reddeer.jface.wizard.WizardPage;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.group.DefaultGroup;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.jface.wizard.WizardPage;
+import org.eclipse.reddeer.swt.condition.ControlIsEnabled;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
 
 /**
  * JPA Facets wizard page reddeer implementation
@@ -30,12 +31,16 @@ import org.jboss.reddeer.common.wait.WaitWhile;
  */
 public class JpaFacetInstallPage extends WizardPage {
 	
+	public JpaFacetInstallPage(ReferencedComposite referencedComposite) {
+		super(referencedComposite);
+	}
+
 	/**
 	 * Sets JPA platform
 	 * @param platform given platform
 	 */
 	public void setPlatform(String platform) {
-		new DefaultCombo(0).setSelection(platform);
+		new DefaultCombo(referencedComposite, 0).setSelection(platform);
 	}	
 
 	/**
@@ -43,7 +48,7 @@ public class JpaFacetInstallPage extends WizardPage {
 	 * @param impl given implementation
 	 */
 	public void setJpaImplementation(String impl) {
-		new DefaultCombo(1).setSelection(impl.toString());
+		new DefaultCombo(referencedComposite, 1).setSelection(impl.toString());
 	}
 
 	/**
@@ -51,13 +56,13 @@ public class JpaFacetInstallPage extends WizardPage {
 	 * @param profileName given connection profile
 	 */
 	public void setConnectionProfile(String profileName) {
-		DefaultGroup group = new DefaultGroup("Connection");
-		new WaitUntil(new WidgetIsEnabled(new DefaultCombo(group)));
+		DefaultGroup group = new DefaultGroup(referencedComposite, "Connection");
+		new WaitUntil(new ControlIsEnabled(new DefaultCombo(group)));
 		new DefaultCombo(group).setSelection(profileName);
-		PushButton apply = new PushButton("Apply");
+		PushButton apply = new PushButton(referencedComposite, "Apply");
 		apply.click();
 		new WaitWhile(new JobIsRunning());
-		new WaitWhile(new ShellWithTextIsAvailable("Progress Information"), TimePeriod.LONG);
+		new WaitWhile(new ShellIsAvailable("Progress Information"), TimePeriod.LONG);
 	}
 
 	/**
@@ -66,7 +71,7 @@ public class JpaFacetInstallPage extends WizardPage {
 	 */
 	public void setAutoDiscovery(boolean autoDiscovery) {
 		if (autoDiscovery) {
-			new RadioButton("Discover annotated classes automatically").click();
+			new RadioButton(referencedComposite, "Discover annotated classes automatically").click();
 		}
 		
 	}

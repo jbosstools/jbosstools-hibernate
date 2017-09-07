@@ -10,9 +10,11 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.console.wizards;
 
-import org.jboss.reddeer.jface.wizard.WizardPage;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.wizard.WizardPage;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 
 /**
  * Hibernate Console Configuration Location page
@@ -20,12 +22,16 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
  *
  */public class NewConfigurationFirstPage extends WizardPage {
 
+	public NewConfigurationFirstPage(ReferencedComposite referencedComposite) {
+		super(referencedComposite);
+	}
+
 	/**
 	 * Sets location
 	 * @param location given location
 	 */
 	public void setLocation(String... location) {
-		new DefaultTreeItem(location).select();
+		new DefaultTreeItem(new DefaultTree(referencedComposite), location).select();
 	}
 	
 	/**
@@ -33,7 +39,7 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 	 * @param filename given file name
 	 */
 	public void setFilenName(String filename) {
-		new DefaultText("File name:").setText(filename);
+		new DefaultText(referencedComposite, "File name:").setText(filename);
 	}
 		
 }

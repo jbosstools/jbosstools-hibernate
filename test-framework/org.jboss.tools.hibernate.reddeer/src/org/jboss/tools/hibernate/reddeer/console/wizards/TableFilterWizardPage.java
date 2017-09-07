@@ -10,15 +10,15 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.console.wizards;
 
-import org.jboss.reddeer.jface.wizard.WizardPage;
-import org.jboss.reddeer.swt.condition.TreeHasChildren;
-import org.jboss.reddeer.swt.impl.button.FinishButton;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.group.DefaultGroup;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.jface.wizard.WizardPage;
+import org.eclipse.reddeer.swt.condition.TreeHasChildren;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
 
 /**
  * New Reverse Engineering Table wizard page
@@ -27,20 +27,24 @@ import org.jboss.reddeer.common.wait.WaitUntil;
  */
 public class TableFilterWizardPage extends WizardPage {
 
+	public TableFilterWizardPage(ReferencedComposite referencedComposite) {
+		super(referencedComposite);
+	}
+
 	/**
 	 * Sets console configuration for reveng 
 	 * @param cfgName console name
 	 */
 	public void setConsoleConfiguration(String cfgName) {
-		new LabeledCombo("Console configuration:").setSelection(cfgName);
+		new LabeledCombo(referencedComposite, "Console configuration:").setSelection(cfgName);
 	}
 	
 	/**
 	 * Refreshes database schema
 	 */
 	public void refreshDatabaseSchema() {
-		new PushButton("Refresh").click();
-		DefaultGroup group = new DefaultGroup("Database schema:");
+		new PushButton(referencedComposite, "Refresh").click();
+		DefaultGroup group = new DefaultGroup(referencedComposite, "Database schema:");
 		DefaultTree tree = new DefaultTree(group);
 		new WaitUntil(new TreeHasChildren(tree));
 	}
@@ -50,20 +54,13 @@ public class TableFilterWizardPage extends WizardPage {
 	 * @param folder given folder name
 	 */
 	public void setParentFolder(String folder) {
-		new LabeledText("Parent folder:").setText(folder);
-	}
-	
-	/**
-	 * Clicks finish button
-	 */
-	public void finish() {
-		new FinishButton().click(); 
+		new LabeledText(referencedComposite, "Parent folder:").setText(folder);
 	}
 
 	/**
 	 * Press include button
 	 */
 	public void pressInclude() {
-		new PushButton("Include...").click();	
+		new PushButton(referencedComposite, "Include...").click();	
 	}
 }

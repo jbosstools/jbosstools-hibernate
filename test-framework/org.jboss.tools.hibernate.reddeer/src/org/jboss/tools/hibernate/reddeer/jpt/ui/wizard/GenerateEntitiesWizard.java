@@ -10,21 +10,18 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.jpt.ui.wizard;
 
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.impl.button.FinishButton;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.core.matcher.WithTextMatcher;
+import org.eclipse.reddeer.jface.window.Openable;
+import org.eclipse.reddeer.jface.wizard.WizardDialog;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 
 /**
  * Wizard for JPA Entities generation
  * @author Jiri Peterka
  *
  */
-public class GenerateEntitiesWizard {
+public class GenerateEntitiesWizard extends WizardDialog{
 
 	/**
 	 * Initializes Generate Entities Wizard 
@@ -32,21 +29,29 @@ public class GenerateEntitiesWizard {
 	public GenerateEntitiesWizard() {
 	}
 	
-	/**
-	 * Opens Wizard for JPA entities generation
-	 */
-	public void open() {
-		new ContextMenu("JPA Tools","Generate Entities from Tables...").select();
-		new WaitUntil(new ShellWithTextIsAvailable("Generate Entities"));
-		new DefaultShell("Generate Entities");
+	@Override
+	protected Openable getOpenAction() {
+		return new OpenEngitiesWizardAction();
+	}
+	
+	class OpenEngitiesWizardAction extends Openable {
+		
+		public OpenEngitiesWizardAction() {
+			super(new WithTextMatcher("Generate Entities"));
+		}
+
+		@Override
+		public void run() {
+			new ContextMenuItem("JPA Tools","Generate Entities from Tables...").select();
+			
+		}
+		
 	}
 	
 	/**
 	 * Clicks finish button
 	 */
-	public void finish() {	
-		new FinishButton().click();
-		new WaitWhile(new ShellWithTextIsAvailable("Generate Entities"),TimePeriod.LONG);
-		new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
+	public void finish() {
+		super.finish(TimePeriod.LONG);
 	}
 }

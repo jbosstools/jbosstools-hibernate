@@ -10,8 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.bot.test.factory;
 
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.requirements.db.DatabaseConfiguration;
 import org.jboss.tools.hibernate.reddeer.jpt.ui.wizard.GenerateEntitiesWizard;
 import org.jboss.tools.hibernate.reddeer.jpt.ui.wizard.GenerateEntitiesWizardPage;
 
@@ -38,7 +38,7 @@ public class EntityGenerationFactory {
     	GenerateEntitiesWizard w = new GenerateEntitiesWizard();
     	w.open();
     		
-    	GenerateEntitiesWizardPage p = new GenerateEntitiesWizardPage();    	
+    	GenerateEntitiesWizardPage p = new GenerateEntitiesWizardPage(w);    	
     	p.setUseConsole(useConsole);
     	p.setPackage(pkg);
     	if (!useConsole) {

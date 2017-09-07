@@ -12,15 +12,14 @@ package org.jboss.tools.hibernate.reddeer.test;
 
 import static org.junit.Assert.fail;
 
-import org.jboss.reddeer.common.exception.RedDeerException;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
-import org.jboss.reddeer.requirements.db.DatabaseRequirement;
-import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
-import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.common.exception.RedDeerException;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.db.DatabaseConfiguration;
+import org.eclipse.reddeer.requirements.db.DatabaseRequirement;
+import org.eclipse.reddeer.requirements.db.DatabaseRequirement.Database;
+import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.hibernate.reddeer.view.JPADetailsView;
 import org.jboss.tools.hibernate.ui.bot.test.ProjectUtils;
 import org.jboss.tools.hibernate.ui.bot.test.factory.ConnectionProfileFactory;
@@ -37,7 +36,7 @@ import org.junit.runner.RunWith;
  * @author Jiri Peterka
  */
 @RunWith(RedDeerSuite.class)
-@Database(name = "testdb")
+@Database
 public class JPADetailsViewTest extends HibernateRedDeerTest {
 
 	//TODO use latest

@@ -17,15 +17,15 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
-import org.jboss.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
-import org.jboss.reddeer.requirements.db.DatabaseRequirement;
-import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.eclipse.reddeer.jface.text.contentassist.ContentAssistant;
+import org.eclipse.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.db.DatabaseConfiguration;
+import org.eclipse.reddeer.requirements.db.DatabaseRequirement;
+import org.eclipse.reddeer.requirements.db.DatabaseRequirement.Database;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.jboss.tools.hibernate.reddeer.console.EditConfigurationMainPage;
 import org.jboss.tools.hibernate.reddeer.console.EditConfigurationShell;
 import org.jboss.tools.hibernate.reddeer.console.views.KnownConfigurationsView;
@@ -46,7 +46,7 @@ import org.junit.runners.Parameterized.UseParametersRunnerFactory;
  */
 @RunWith(RedDeerSuite.class)
 @UseParametersRunnerFactory(ParameterizedRequirementsRunnerFactory.class)
-@Database(name="testdb")
+@Database
 public class CriteriaEditorCodeAssistTest extends HibernateRedDeerTest {
 
 	@Parameter
@@ -114,7 +114,7 @@ public class CriteriaEditorCodeAssistTest extends HibernateRedDeerTest {
 		KnownConfigurationsView v = new KnownConfigurationsView();
 		v.open();
 		v.selectConsole(prj);
-		new ContextMenu("Hibernate Criteria Editor").select();
+		new ContextMenuItem("Hibernate Criteria Editor").select();
 
 		String expression = "ses";
 		CriteriaEditor criteriaEditor = new CriteriaEditor(prj);

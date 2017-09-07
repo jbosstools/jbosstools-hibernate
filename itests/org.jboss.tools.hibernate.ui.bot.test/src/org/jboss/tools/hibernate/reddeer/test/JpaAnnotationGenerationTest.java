@@ -20,15 +20,15 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
-import org.jboss.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
+import org.eclipse.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.db.DatabaseRequirement.Database;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.hibernate.reddeer.jdt.ui.jpa.process.wizard.HibernateJPAWizard;
 import org.jboss.tools.hibernate.ui.bot.test.ProjectUtils;
 import org.junit.After;
@@ -46,7 +46,7 @@ import org.junit.runners.Parameterized.UseParametersRunnerFactory;
  */
 @RunWith(RedDeerSuite.class)
 @UseParametersRunnerFactory(ParameterizedRequirementsRunnerFactory.class)
-@Database(name="testdb")
+@Database
 public class JpaAnnotationGenerationTest extends HibernateRedDeerTest {
 	
 	private final String PCKG = "org.test";
@@ -98,10 +98,10 @@ public class JpaAnnotationGenerationTest extends HibernateRedDeerTest {
 	@Test
 	public void testGenerateJPAHibernateAnnotations() {		
 		ProjectUtils.getItem(prj, PCKG, "Dog.java").select();
-		new ContextMenu("Source","Generate Hibernate/JPA annotations...").select();
+		new ContextMenuItem("Source","Generate Hibernate/JPA annotations...").select();
 		postCheck("Dog");
 		ProjectUtils.getItem(prj, PCKG, "Owner.java").select();
-		new ShellMenu("Source","Generate Hibernate/JPA annotations...").select();		
+		new ShellMenuItem("Source","Generate Hibernate/JPA annotations...").select();		
 		postCheck("Owner");
 		
 	}

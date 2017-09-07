@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.view;
 
-import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
+import org.eclipse.reddeer.workbench.impl.view.WorkbenchView;
 
 /**
  * JPA Structure View RedDeer implementation

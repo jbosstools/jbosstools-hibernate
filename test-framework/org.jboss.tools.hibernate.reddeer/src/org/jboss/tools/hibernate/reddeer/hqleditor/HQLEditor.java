@@ -10,15 +10,15 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.hqleditor;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
-import org.jboss.reddeer.swt.api.Shell;
-import org.jboss.reddeer.swt.condition.ShellIsAvailable;
-import org.jboss.reddeer.swt.impl.button.YesButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.eclipse.reddeer.swt.api.Shell;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.YesButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 
 /**
  * HQL Editor RedDeer implementation
@@ -45,7 +45,7 @@ public class HQLEditor extends TextEditor {
 		
 		try {
 			Shell s= new DefaultShell("Open Session factory");
-			new YesButton().click();
+			new YesButton(s).click();
 			new WaitWhile(new ShellIsAvailable(s));
 		}
 		catch (WaitTimeoutExpiredException e) {

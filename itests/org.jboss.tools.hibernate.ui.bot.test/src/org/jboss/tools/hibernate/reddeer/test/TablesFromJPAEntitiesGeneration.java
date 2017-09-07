@@ -15,14 +15,14 @@ import static org.junit.Assert.*;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.jboss.reddeer.common.exception.RedDeerException;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
-import org.jboss.reddeer.requirements.db.DatabaseRequirement;
-import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.common.exception.RedDeerException;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.db.DatabaseConfiguration;
+import org.eclipse.reddeer.requirements.db.DatabaseRequirement;
+import org.eclipse.reddeer.requirements.db.DatabaseRequirement.Database;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.hibernate.reddeer.jpt.ui.wizard.GenerateDdlWizard;
 import org.jboss.tools.hibernate.reddeer.jpt.ui.wizard.GenerateDdlWizardPage;
 import org.jboss.tools.hibernate.ui.bot.test.ProjectUtils;
@@ -36,7 +36,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 import org.junit.runners.Parameterized.UseParametersRunnerFactory;
-import org.jboss.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
+import org.eclipse.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
 
 /**
  * Generates ddl and tables from Entities
@@ -45,7 +45,7 @@ import org.jboss.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFa
  */
 @RunWith(RedDeerSuite.class)
 @UseParametersRunnerFactory(ParameterizedRequirementsRunnerFactory.class)
-@Database(name = "testdb")
+@Database
 public class TablesFromJPAEntitiesGeneration extends HibernateRedDeerTest {
 	
 	@InjectRequirement
@@ -100,7 +100,7 @@ public class TablesFromJPAEntitiesGeneration extends HibernateRedDeerTest {
 		pe.selectProjects(prj);
 		GenerateDdlWizard w = new GenerateDdlWizard();
 		w.open();
-		GenerateDdlWizardPage p = new GenerateDdlWizardPage();
+		GenerateDdlWizardPage p = new GenerateDdlWizardPage(w);
 		p.setFileName(DDL_FILE);
 		p.setUseConsoleConfiguration(useConsole);
 		if(useConsole){

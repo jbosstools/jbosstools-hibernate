@@ -12,8 +12,8 @@ package org.jboss.tools.hibernate.reddeer.test;
 
 import static org.junit.Assert.*;
 
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
-import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaPerspective;
+import org.eclipse.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.hibernate.reddeer.console.views.DynamicSQLPreviewView;
 import org.jboss.tools.hibernate.reddeer.console.views.KnownConfigurationsView;
 import org.jboss.tools.hibernate.reddeer.console.views.QueryPageTabView;

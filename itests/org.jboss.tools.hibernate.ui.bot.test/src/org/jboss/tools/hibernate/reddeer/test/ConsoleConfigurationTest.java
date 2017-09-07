@@ -13,17 +13,17 @@ package org.jboss.tools.hibernate.reddeer.test;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
-import org.jboss.reddeer.requirements.db.DatabaseRequirement;
-import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.db.DatabaseConfiguration;
+import org.eclipse.reddeer.requirements.db.DatabaseRequirement;
+import org.eclipse.reddeer.requirements.db.DatabaseRequirement.Database;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.jboss.tools.hibernate.reddeer.console.EditConfigurationMainPage;
 import org.jboss.tools.hibernate.reddeer.console.EditConfigurationMainPage.PredefinedConnection;
 import org.jboss.tools.hibernate.reddeer.console.views.KnownConfigurationsView;
@@ -47,7 +47,7 @@ import org.junit.runners.Parameterized.UseParametersRunnerFactory;
  */
 @RunWith(RedDeerSuite.class)
 @UseParametersRunnerFactory(ParameterizedRequirementsRunnerFactory.class)
-@Database(name="testdb")
+@Database
 public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 	
 	private Logger log = Logger.getLogger(ConsoleConfigurationTest.class);
@@ -107,11 +107,11 @@ public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 		
 		NewConfigurationWizard wizard = new NewConfigurationWizard();
 		wizard.open();
-		NewConfigurationFirstPage p1 = new NewConfigurationFirstPage();
+		NewConfigurationFirstPage p1 = new NewConfigurationFirstPage(wizard);
 		p1.setLocation(prjName,"src");
 		wizard.next();
 
-		NewConfigurationWizardPage p2 = new NewConfigurationWizardPage();
+		NewConfigurationWizardPage p2 = new NewConfigurationWizardPage(wizard);
 		p2.setDatabaseDialect("H2");
 		p2.setDriverClass(cfg.getDriverClass());
 		p2.setConnectionURL(cfg.getJdbcString());
@@ -146,7 +146,7 @@ public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 		} catch (WaitTimeoutExpiredException e) {
 			log.info("Wait timeout occured, try rebuilding console config");
 			v.selectConsole(CONSOLE_NAME);
-			new ContextMenu("Rebuild configuration").select();
+			new ContextMenuItem("Rebuild configuration").select();
 			new WaitWhile(new JobIsRunning());
 			v.selectNode(CONSOLE_NAME,"Database","SAKILA.PUBLIC","ACTOR");
 		}

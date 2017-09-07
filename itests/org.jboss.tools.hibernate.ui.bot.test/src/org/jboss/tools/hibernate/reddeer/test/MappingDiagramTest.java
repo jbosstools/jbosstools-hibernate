@@ -14,21 +14,21 @@ import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.jboss.reddeer.common.exception.RedDeerException;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement;
-import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
-import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
-import org.jboss.reddeer.requirements.db.DatabaseRequirement;
-import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.eclipse.reddeer.common.exception.RedDeerException;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.autobuilding.AutoBuildingRequirement;
+import org.eclipse.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
+import org.eclipse.reddeer.requirements.db.DatabaseConfiguration;
+import org.eclipse.reddeer.requirements.db.DatabaseRequirement;
+import org.eclipse.reddeer.requirements.db.DatabaseRequirement.Database;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.hibernate.reddeer.console.EditConfigurationMainPage;
 import org.jboss.tools.hibernate.reddeer.console.EditConfigurationShell;
 import org.jboss.tools.hibernate.reddeer.console.views.KnownConfigurationsView;
@@ -49,7 +49,7 @@ import org.junit.runners.Parameterized.UseParametersRunnerFactory;
  */
 @RunWith(RedDeerSuite.class)
 @UseParametersRunnerFactory(ParameterizedRequirementsRunnerFactory.class)
-@Database(name="testdb")
+@Database
 public class MappingDiagramTest extends HibernateRedDeerTest {
 
 	@Parameter
@@ -135,9 +135,9 @@ public class MappingDiagramTest extends HibernateRedDeerTest {
 			new DefaultEditor(prj+": Actor and 15 others");
 		} catch (RedDeerException e) { //workaroud due to buggy auto building
 			abr.fulfill();
-			PackageExplorer pe = new PackageExplorer();
+			PackageExplorerPart pe = new PackageExplorerPart();
 			pe.getProject(prj).select();
-			new ShellMenu("Project","Build Project").select();
+			new ShellMenuItem("Project","Build Project").select();
 			new WaitWhile(new JobIsRunning());
 			openMappingDiagram();
 			new DefaultEditor(prj+": Actor and 15 others");
@@ -152,7 +152,7 @@ public class MappingDiagramTest extends HibernateRedDeerTest {
 		v.open();
 		v.selectConsole(prj);
 		
-		ContextMenu mappingMenu = new ContextMenu("Mapping Diagram");
+		ContextMenuItem mappingMenu = new ContextMenuItem("Mapping Diagram");
 		mappingMenu.select();
 	}
 }

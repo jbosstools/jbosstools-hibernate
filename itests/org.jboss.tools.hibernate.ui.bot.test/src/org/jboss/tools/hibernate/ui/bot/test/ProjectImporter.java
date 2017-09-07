@@ -16,16 +16,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.jboss.reddeer.eclipse.ui.problems.Problem;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
-import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
-import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.ui.problems.Problem;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
+import org.eclipse.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
+import org.eclipse.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.common.reddeer.utils.ProjectHelper;
 import org.jboss.tools.hibernate.ui.bot.test.factory.ResourceFactory;
 
@@ -83,7 +83,7 @@ public class ProjectImporter {
 	public static void importProject(String pluginId, String prjName) {
 		ExternalProjectImportWizardDialog w = new ExternalProjectImportWizardDialog();
 		w.open();
-		WizardProjectsImportPage p1 = new WizardProjectsImportPage();
+		WizardProjectsImportPage p1 = new WizardProjectsImportPage(w);
 		p1.setRootDirectory(ResourceFactory.getResourcesLocation(pluginId, "prj"));
 		p1.copyProjectsIntoWorkspace(true);
 		p1.deselectAllProjects();

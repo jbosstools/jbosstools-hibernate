@@ -12,13 +12,13 @@ package org.jboss.tools.hibernate.reddeer.test;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
-import org.jboss.reddeer.requirements.db.DatabaseRequirement;
-import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.db.DatabaseConfiguration;
+import org.eclipse.reddeer.requirements.db.DatabaseRequirement;
+import org.eclipse.reddeer.requirements.db.DatabaseRequirement.Database;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.hibernate.reddeer.codegen.ExportAntCodeGenWizard;
 import org.jboss.tools.hibernate.reddeer.codegen.ExportAntCodeGenWizardPage;
 import org.jboss.tools.hibernate.reddeer.dialog.LaunchConfigurationsDialog;
@@ -34,7 +34,7 @@ import org.junit.runner.RunWith;
  * @author Jiri Peterka
  */
 @RunWith(RedDeerSuite.class)
-@Database(name="testdb")
+@Database
 public class AntFileExportTest extends HibernateRedDeerTest {
 
 	private final String PRJ = "antconfiguration";
@@ -65,13 +65,13 @@ public class AntFileExportTest extends HibernateRedDeerTest {
     	launchDialog.apply();
     	launchDialog.close();
     	    	
-    	PackageExplorer pe = new PackageExplorer();    
+    	PackageExplorerPart pe = new PackageExplorerPart();    
     	pe.open();
     	pe.selectProjects(PRJ);
     	
     	ExportAntCodeGenWizard w = new ExportAntCodeGenWizard();
     	w.open();
-    	ExportAntCodeGenWizardPage page = new ExportAntCodeGenWizardPage();
+    	ExportAntCodeGenWizardPage page = new ExportAntCodeGenWizardPage(w);
     	page.setHibernateGenConfiguration(GEN_NAME);
     	page.setAntFileName(ANTFILE_NAME);
     	

@@ -10,22 +10,21 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.console.wizards;
 
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
-
+import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
 
 /**
  * New Hibernate Reverse Engineering File RedDeer Wizard
  * @author Jiri Peterka
  *
  */
-public class NewReverseEngineeringFileWizard extends NewWizardDialog {
+public class NewReverseEngineeringFileWizard extends NewMenuWizard {
 
 	
 	/**
 	 * Initialize Reveng file wizard
 	 */
 	public NewReverseEngineeringFileWizard() {
-		super("Hibernate", "Hibernate Reverse Engineering File (reveng.xml)");
+		super("", "Hibernate", "Hibernate Reverse Engineering File (reveng.xml)");
 	}
 
 }

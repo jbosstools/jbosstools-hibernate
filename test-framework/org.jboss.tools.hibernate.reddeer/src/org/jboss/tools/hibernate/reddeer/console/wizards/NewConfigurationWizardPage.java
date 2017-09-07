@@ -10,12 +10,13 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.console.wizards;
 
-import org.jboss.reddeer.jface.wizard.WizardPage;
-import org.jboss.reddeer.swt.api.Link;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.link.DefaultLink;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.wizard.WizardPage;
+import org.eclipse.reddeer.swt.api.Link;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.link.DefaultLink;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 /**
  * New Hibernate Configuration Wizard page for Hibernate Configuration File
@@ -24,6 +25,10 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  */
 public class NewConfigurationWizardPage extends WizardPage {
 	
+	public NewConfigurationWizardPage(ReferencedComposite referencedComposite) {
+		super(referencedComposite);
+	}
+
 	private final String CONNECTION_URL = "Connection URL:";
 	private final String DRIVER_CLASS = "Driver class:";
 	private final String USERNAME = "Username:";
@@ -36,7 +41,7 @@ public class NewConfigurationWizardPage extends WizardPage {
 	 * @param hibernateVersion hibernate version for Hibernate configuration
 	 */
 	public void setHibernateVersion(String hibernateVersion) {
-		new LabeledCombo(HIBERNATE_VERSION).setSelection(hibernateVersion);
+		new LabeledCombo(referencedComposite, HIBERNATE_VERSION).setSelection(hibernateVersion);
 	}
 	
 	/**
@@ -44,12 +49,12 @@ public class NewConfigurationWizardPage extends WizardPage {
 	 * @return hibernate version string
 	 */
 	public String getHibernateVersion() {
-		String version = new LabeledCombo(HIBERNATE_VERSION).getSelection();
+		String version = new LabeledCombo(referencedComposite, HIBERNATE_VERSION).getSelection();
 		return version;
 	}
 	
 	public SelectConnectionProfileDialog getValuesFromConnection(){
-		Link link = new DefaultLink("Get values from Connection");
+		Link link = new DefaultLink(referencedComposite, "Get values from Connection");
 		link.click();
 		return new SelectConnectionProfileDialog();
 	}
@@ -60,7 +65,7 @@ public class NewConfigurationWizardPage extends WizardPage {
 	 * @param dialect given dialect
 	 */
 	public void setDatabaseDialect(String dialect) {
-		new LabeledCombo("Database dialect:").setText(dialect);
+		new LabeledCombo(referencedComposite, "Database dialect:").setText(dialect);
 	}
 	
 	/**
@@ -68,7 +73,7 @@ public class NewConfigurationWizardPage extends WizardPage {
 	 * @param driverClass given driver class
 	 */
 	public void setDriverClass(String driverClass) {
-		new LabeledCombo(DRIVER_CLASS).setText(driverClass);
+		new LabeledCombo(referencedComposite, DRIVER_CLASS).setText(driverClass);
 	}
 	
 	/**
@@ -76,7 +81,7 @@ public class NewConfigurationWizardPage extends WizardPage {
 	 * @param url given connection url
 	 */
 	public void setConnectionURL(String url) {
-		new LabeledCombo(CONNECTION_URL).setText(url);
+		new LabeledCombo(referencedComposite, CONNECTION_URL).setText(url);
 	}
 	
 	/**
@@ -84,7 +89,7 @@ public class NewConfigurationWizardPage extends WizardPage {
 	 * @param username given database username
 	 */
 	public void setUsername(String username) {
-		new LabeledText(USERNAME).setText(username);
+		new LabeledText(referencedComposite, USERNAME).setText(username);
 	}
 	
 	/**
@@ -92,7 +97,7 @@ public class NewConfigurationWizardPage extends WizardPage {
 	 * @param username given connection password
 	 */
 	public void setPassword(String username) {
-		new LabeledText(PASSWORD).setText(username);
+		new LabeledText(referencedComposite, PASSWORD).setText(username);
 	}	
 	
 	/**
@@ -100,7 +105,7 @@ public class NewConfigurationWizardPage extends WizardPage {
 	 * @param create if true configuration will be created
 	 */
 	public void setCreateConsoleConfiguration(boolean create) {
-		CheckBox cb = new CheckBox();
+		CheckBox cb = new CheckBox(referencedComposite);
 		boolean status = cb.isChecked();
 		if (status != create) {
 			cb.click();
@@ -112,7 +117,7 @@ public class NewConfigurationWizardPage extends WizardPage {
 	 * @return db driver class
 	 */
 	public String getDriveClass() {
-		String driveClass = new LabeledCombo(DRIVER_CLASS).getSelection();
+		String driveClass = new LabeledCombo(referencedComposite, DRIVER_CLASS).getSelection();
 		return driveClass;		
 	}
 	
@@ -121,7 +126,7 @@ public class NewConfigurationWizardPage extends WizardPage {
 	 * @return db connection jdbc string
 	 */
 	public String getConnectionURL() {
-		String url  = new LabeledCombo(CONNECTION_URL).getText();
+		String url  = new LabeledCombo(referencedComposite, CONNECTION_URL).getText();
 		return url;
 	}
 	
@@ -130,7 +135,7 @@ public class NewConfigurationWizardPage extends WizardPage {
 	 * @return db username
 	 */
 	public String getUsername() {
-		String username = new LabeledText(USERNAME).getText();
+		String username = new LabeledText(referencedComposite, USERNAME).getText();
 		return username;
 	}
 	
@@ -139,7 +144,7 @@ public class NewConfigurationWizardPage extends WizardPage {
 	 * @return db password
 	 */
 	public String getPassword() {
-		String password = new LabeledText(PASSWORD).getText();
+		String password = new LabeledText(referencedComposite, PASSWORD).getText();
 		return password;
 	}
 }

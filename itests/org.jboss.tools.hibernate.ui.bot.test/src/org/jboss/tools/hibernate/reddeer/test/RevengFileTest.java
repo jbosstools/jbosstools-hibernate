@@ -10,13 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.test;
 
-
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
-import org.jboss.reddeer.requirements.db.DatabaseRequirement;
-import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.db.DatabaseConfiguration;
+import org.eclipse.reddeer.requirements.db.DatabaseRequirement;
+import org.eclipse.reddeer.requirements.db.DatabaseRequirement.Database;
 import org.jboss.tools.hibernate.reddeer.console.wizards.NewConfigurationFirstPage;
 import org.jboss.tools.hibernate.reddeer.console.wizards.NewConfigurationWizard;
 import org.jboss.tools.hibernate.reddeer.console.wizards.NewConfigurationWizardPage;
@@ -35,7 +34,7 @@ import org.junit.runner.RunWith;
  *
  */
 @RunWith(RedDeerSuite.class)
-@Database(name="testdb")
+@Database
 public class RevengFileTest extends HibernateRedDeerTest {
 
 	
@@ -54,12 +53,12 @@ public class RevengFileTest extends HibernateRedDeerTest {
 	public void prepareConsoleConfiguration() {
 		NewConfigurationWizard wizard = new NewConfigurationWizard();
 		wizard.open();
-		NewConfigurationFirstPage p1 = new NewConfigurationFirstPage();
+		NewConfigurationFirstPage p1 = new NewConfigurationFirstPage(wizard);
 		p1.setLocation(PROJECT_NAME,"src","main","java");		
 		wizard.next();
 
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		NewConfigurationWizardPage p2 = new NewConfigurationWizardPage();
+		NewConfigurationWizardPage p2 = new NewConfigurationWizardPage(wizard);
 		p2.setDatabaseDialect("H2");
 		p2.setDriverClass(cfg.getDriverClass());
 		p2.setConnectionURL(cfg.getJdbcString());
@@ -79,7 +78,7 @@ public class RevengFileTest extends HibernateRedDeerTest {
 		NewReverseEngineeringFileWizard wizard = new NewReverseEngineeringFileWizard();
 		wizard.open();
 		wizard.next();
-		TableFilterWizardPage page = new TableFilterWizardPage();
+		TableFilterWizardPage page = new TableFilterWizardPage(wizard);
 		page.setConsoleConfiguration(PROJECT_NAME);
 		page.refreshDatabaseSchema();
 		page.pressInclude();

@@ -10,8 +10,10 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.jpt.ui.wizard;
 
-import org.jboss.reddeer.jface.wizard.WizardDialog;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.eclipse.reddeer.core.matcher.WithTextMatcher;
+import org.eclipse.reddeer.jface.window.Openable;
+import org.eclipse.reddeer.jface.wizard.WizardDialog;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 
 /**
  * Wizard for DDL generation
@@ -19,17 +21,23 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
  *
  */
 public class GenerateDdlWizard extends WizardDialog{
-
-	/**
-	 * Initialzie DDL generation wizard
-	 */
-	public GenerateDdlWizard() {
+	
+	@Override
+	protected Openable getOpenAction() {
+		return new OpenDDLWizardAction();
 	}
 	
-	/**
-	 * Opens ddl generation wizard
-	 */
-	public void open() {
-		new ContextMenu("JPA Tools","Generate Tables from Entities...").select();
+	class OpenDDLWizardAction extends Openable {
+		
+		public OpenDDLWizardAction() {
+			super(new WithTextMatcher("Generate Tables from Entities"));
+		}
+
+		@Override
+		public void run() {
+			new ContextMenuItem("JPA Tools","Generate Tables from Entities...").select();
+			
+		}
+		
 	}
 }

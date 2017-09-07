@@ -10,9 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.ui.xml.editor;
 
-import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
-import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.workbench.impl.editor.AbstractEditor;
+import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.eclipse.reddeer.workbench.impl.editor.AbstractEditor;
 
 /**
  * Hibernate mapping file editor (Hibernate 3. XML Editor)
@@ -34,7 +34,7 @@ public class Hibernate3CompoundEditor extends AbstractEditor {
 	 */
 	public String getSourceText() {
 		activateSourceTab();
-		DefaultStyledText dst = new DefaultStyledText();		
+		DefaultStyledText dst = new DefaultStyledText(this);		
 		String source = dst.getText();
 		return source;
 	}
@@ -43,13 +43,13 @@ public class Hibernate3CompoundEditor extends AbstractEditor {
 	 * Activates editor's Source tab
 	 */
 	public void activateSourceTab() {
-		new DefaultCTabItem("Source").activate();
+		new DefaultCTabItem(this, "Source").activate();
 	}
 
 	/**
 	 * Activates editor's Tree tab
 	 */
 	public void activateTreeTab() {
-		new DefaultCTabItem("Tree").activate();
+		new DefaultCTabItem(this, "Tree").activate();
 	}	
 }

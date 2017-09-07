@@ -24,8 +24,8 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-import org.jboss.reddeer.common.platform.OS;
-import org.jboss.reddeer.common.platform.RunningPlatform;
+import org.eclipse.reddeer.common.platform.OS;
+import org.eclipse.reddeer.common.platform.RunningPlatform;
 
 /**
  * Utility class for manipulating with test database

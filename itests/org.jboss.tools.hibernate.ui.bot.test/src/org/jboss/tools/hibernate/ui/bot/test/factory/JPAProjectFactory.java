@@ -14,12 +14,12 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.eclipse.ui.problems.Problem;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.eclipse.ui.problems.Problem;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.jboss.tools.hibernate.reddeer.wizard.JpaFacetInstallPage;
 import org.jboss.tools.hibernate.reddeer.wizard.JPAProjectWizard;
 import org.jboss.tools.hibernate.reddeer.wizard.JPAProjectWizardFirstPage;
@@ -46,7 +46,7 @@ public class JPAProjectFactory {
 		JPAProjectWizard wizard = new JPAProjectWizard();
 		wizard.open();
 
-		JPAProjectWizardFirstPage firstPage = new JPAProjectWizardFirstPage();
+		JPAProjectWizardFirstPage firstPage = new JPAProjectWizardFirstPage(wizard);
 		firstPage.setProjectName(prj);
 		firstPage.setJPAVersion(version);
 
@@ -54,7 +54,7 @@ public class JPAProjectFactory {
 		wizard.next();
 
 		log.step("Disable hibernate configuration");
-		JpaFacetInstallPage facetPage = new JpaFacetInstallPage();
+		JpaFacetInstallPage facetPage = new JpaFacetInstallPage(wizard);
 		facetPage.setPlatform(platform);
 		facetPage.setJpaImplementation("Disable Library Configuration");
 

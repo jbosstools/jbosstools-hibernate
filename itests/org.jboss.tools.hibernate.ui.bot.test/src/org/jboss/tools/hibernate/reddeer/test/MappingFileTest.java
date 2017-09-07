@@ -18,12 +18,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.dialogs.ExplorerItemPropertyDialog;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.eclipse.ui.dialogs.PropertyDialog;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.db.DatabaseRequirement.Database;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.tools.hibernate.reddeer.jdt.ui.wizards.NewHibernateMappingElementsSelectionPage2;
 import org.jboss.tools.hibernate.reddeer.jdt.ui.wizards.NewHibernateMappingFilePage;
 import org.jboss.tools.hibernate.reddeer.jdt.ui.wizards.NewHibernateMappingFileWizard;
@@ -42,7 +41,7 @@ import org.junit.runner.RunWith;
  *
  */
 @RunWith(RedDeerSuite.class)
-@Database(name="testdb")
+@Database
 public class MappingFileTest extends HibernateRedDeerTest {
 	
 	//TODO use latest
@@ -84,13 +83,13 @@ public class MappingFileTest extends HibernateRedDeerTest {
 		
 		NewHibernateMappingFileWizard wizard = new NewHibernateMappingFileWizard();
 		wizard.open();
-		NewHibernateMappingElementsSelectionPage2 selPage = new NewHibernateMappingElementsSelectionPage2();
+		NewHibernateMappingElementsSelectionPage2 selPage = new NewHibernateMappingElementsSelectionPage2(wizard);
 		selPage.selectItem(PCKG);
 		wizard.next();
-		NewHibernateMappingFilePage files = new NewHibernateMappingFilePage();
+		NewHibernateMappingFilePage files = new NewHibernateMappingFilePage(wizard);
 		assertEquals(2, files.getClasses().size());
 		wizard.next();
-		NewHibernateMappingPreviewPage preview = new NewHibernateMappingPreviewPage();
+		NewHibernateMappingPreviewPage preview = new NewHibernateMappingPreviewPage(wizard);
 		assertTrue("Preview text cannot be empty", !preview.getPreviewText().equals(""));
 		wizard.finish();
 		
@@ -123,10 +122,10 @@ public class MappingFileTest extends HibernateRedDeerTest {
 	private boolean containsItem(String pckg, String item){
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		if(pe.getProject(PRJ).containsItem("Java Resources")){
-			return pe.getProject(PRJ).containsItem("Java Resources","src/main/java",pckg,item);
+		if(pe.getProject(PRJ).containsResource("Java Resources")){
+			return pe.getProject(PRJ).containsResource("Java Resources","src/main/java",pckg,item);
 		}
-		return pe.getProject(PRJ).containsItem("src/main/java",pckg,item);
+		return pe.getProject(PRJ).containsResource("src/main/java",pckg,item);
 	}
 	
 	@Test
@@ -136,13 +135,13 @@ public class MappingFileTest extends HibernateRedDeerTest {
 		
 		NewHibernateMappingFileWizard wizard = new NewHibernateMappingFileWizard();
 		wizard.open();
-		NewHibernateMappingElementsSelectionPage2 selPage = new NewHibernateMappingElementsSelectionPage2();
+		NewHibernateMappingElementsSelectionPage2 selPage = new NewHibernateMappingElementsSelectionPage2(wizard);
 		selPage.selectItem("Owner");
 		wizard.next();
-		NewHibernateMappingFilePage files = new NewHibernateMappingFilePage();
+		NewHibernateMappingFilePage files = new NewHibernateMappingFilePage(wizard);
 		files.selectClasses("Owner");
 		wizard.next();
-		NewHibernateMappingPreviewPage preview = new NewHibernateMappingPreviewPage();
+		NewHibernateMappingPreviewPage preview = new NewHibernateMappingPreviewPage(wizard);
 		assertTrue("Preview text cannot be empty", !preview.getPreviewText().equals(""));
 		wizard.finish();
 		
@@ -169,10 +168,9 @@ public class MappingFileTest extends HibernateRedDeerTest {
 	public void createMappingFilePackageWithNoConfig(){
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		ExplorerItemPropertyDialog pd = new ExplorerItemPropertyDialog(pe.getProject(PRJ));
-		pd.open();
-		new DefaultTreeItem("Hibernate Settings").select();
-		new DefaultCombo().setSelection("<None>");
+		PropertyDialog pd = pe.getProject(PRJ).openProperties();
+		pd.select("Hibernate Settings");
+		new DefaultCombo(pd).setSelection("<None>");
 		pd.ok();
 		createMappingFileFromPackage();
 	}
@@ -182,10 +180,9 @@ public class MappingFileTest extends HibernateRedDeerTest {
 	public void createMappingFileWithNoConfig(){
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		ExplorerItemPropertyDialog pd = new ExplorerItemPropertyDialog(pe.getProject(PRJ));
-		pd.open();
-		new DefaultTreeItem("Hibernate Settings").select();
-		new DefaultCombo().setSelection("<None>");
+		PropertyDialog pd = pe.getProject(PRJ).openProperties();
+		pd.select("Hibernate Settings");
+		new DefaultCombo(pd).setSelection("<None>");
 		pd.ok();
 		createMappingFileFromFile();
 	}

@@ -10,14 +10,13 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.jdt.ui.jpa.process.wizard;
 
-import org.jboss.reddeer.jface.wizard.WizardDialog;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.jface.wizard.WizardDialog;
 
 public class HibernateJPAWizard extends WizardDialog{
 	
 	
 	public HibernateJPAWizard() {
-		new DefaultShell("Hibernate: add JPA annotations");
+		super("Hibernate: add JPA annotations");
 	}
 
 }
