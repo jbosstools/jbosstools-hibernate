@@ -12,13 +12,13 @@ package org.jboss.tools.hibernate.reddeer.test;
 
 import static org.junit.Assert.*;
 
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
-import org.jboss.reddeer.requirements.db.DatabaseRequirement;
-import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.db.DatabaseConfiguration;
+import org.eclipse.reddeer.requirements.db.DatabaseRequirement;
+import org.eclipse.reddeer.requirements.db.DatabaseRequirement.Database;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.hibernate.reddeer.wizard.NewDSXMLWizard;
 import org.jboss.tools.hibernate.reddeer.wizard.WizardNewDSXMLFileCreationPage;
 import org.jboss.tools.hibernate.ui.bot.test.factory.ConnectionProfileFactory;
@@ -35,7 +35,7 @@ import org.junit.runner.RunWith;
  *
  */
 @RunWith(RedDeerSuite.class)
-@Database(name="testdb")
+@Database
 public class JBossDatasourceTest extends HibernateRedDeerTest {
 	
 	
@@ -65,7 +65,7 @@ public class JBossDatasourceTest extends HibernateRedDeerTest {
 
 		NewDSXMLWizard wizard = new NewDSXMLWizard();
 		wizard.open();
-		WizardNewDSXMLFileCreationPage page =  new WizardNewDSXMLFileCreationPage();
+		WizardNewDSXMLFileCreationPage page =  new WizardNewDSXMLFileCreationPage(wizard);
 		page.setConnectionProfile(cfg.getProfileName());
 		page.setParentFolder("/" + PRJ + "/src/main/resources");
 		wizard.finish();
@@ -75,7 +75,7 @@ public class JBossDatasourceTest extends HibernateRedDeerTest {
 		assertFalse(new DefaultEditor(dsFileName).isDirty());
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		assertTrue(pe.getProject(PRJ).containsItem("src","main","resources",dsFileName));
+		assertTrue(pe.getProject(PRJ).containsResource("src","main","resources",dsFileName));
 	
 	}
 		

@@ -10,8 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.jdt.ui.wizards;
 
-import org.jboss.reddeer.jface.wizard.WizardPage;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.wizard.WizardPage;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
 
 
 /**
@@ -22,11 +23,15 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
  */
 public class NewHibernateMappingElementsSelectionPage2 extends WizardPage {
 
+	public NewHibernateMappingElementsSelectionPage2(ReferencedComposite referencedComposite) {
+		super(referencedComposite);
+	}
+
 	/**
 	 * Select items in the list for hbm.xml generation
 	 */
 	public void selectItem(String... items) {
-		new DefaultTable().select(items);
+		new DefaultTable(referencedComposite).select(items);
 	}
 	
 }

@@ -12,9 +12,9 @@ package org.jboss.tools.hibernate.reddeer.test;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.eclipse.ui.perspectives.JPAPerspective;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
-import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JPAPerspective;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaPerspective;
+import org.eclipse.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.hibernate.reddeer.view.JPADetailsView;
 import org.jboss.tools.hibernate.reddeer.view.JPAStructureView;
 import org.junit.After;

@@ -10,8 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.jdt.ui.wizards;
 
-import org.jboss.reddeer.jface.wizard.WizardPage;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.wizard.WizardPage;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
 
 
 /**
@@ -22,12 +23,16 @@ import org.jboss.reddeer.swt.impl.text.DefaultText;
  */
 public class NewHibernateMappingPreviewPage extends WizardPage {
 	
+	public NewHibernateMappingPreviewPage(ReferencedComposite referencedComposite) {
+		super(referencedComposite);
+	}
+
 	/**
 	 * Gets preview page text for hbm xml file wizard
 	 * @return preview text
 	 */
 	public String getPreviewText() {
-		String ret = new DefaultText().getText();
+		String ret = new DefaultText(referencedComposite).getText();
 		return ret;
 	}
 }

@@ -16,21 +16,20 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.dialogs.ExplorerItemPropertyDialog;
-import org.jboss.reddeer.eclipse.wst.common.project.facet.ui.FacetsPropertyPage;
-import org.jboss.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
-import org.jboss.reddeer.swt.api.Shell;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.ShellIsAvailable;
-import org.jboss.reddeer.swt.impl.button.NextButton;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.link.DefaultLink;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.uiforms.impl.hyperlink.DefaultHyperlink;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.ui.dialogs.PropertyDialog;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.wst.common.project.facet.ui.FacetsPropertyPage;
+import org.eclipse.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.db.DatabaseRequirement.Database;
+import org.eclipse.reddeer.swt.api.Shell;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.NextButton;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.uiforms.impl.hyperlink.DefaultHyperlink;
 import org.jboss.tools.hibernate.reddeer.editor.JpaXmlEditor;
 import org.jboss.tools.hibernate.reddeer.wizard.JpaFacetInstallPage;
 import org.jboss.tools.hibernate.ui.bot.test.XPathHelper;
@@ -48,7 +47,7 @@ import org.junit.runners.Parameterized.UseParametersRunnerFactory;
  */
 @RunWith(RedDeerSuite.class)
 @UseParametersRunnerFactory(ParameterizedRequirementsRunnerFactory.class)
-@Database(name = "testdb")
+@Database
 public class PersistenceXMLFileTest extends HibernateRedDeerTest {
 
 	@Parameter
@@ -72,9 +71,8 @@ public class PersistenceXMLFileTest extends HibernateRedDeerTest {
 		importProject(prj, null);
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		ExplorerItemPropertyDialog pd = new ExplorerItemPropertyDialog(pe.getProject(prj));
-		pd.open();
-		FacetsPropertyPage fp = new FacetsPropertyPage();
+		PropertyDialog pd = pe.getProject(prj).openProperties();
+		FacetsPropertyPage fp = new FacetsPropertyPage(pd);
 		pd.select(fp);
 		List<TreeItem> facets = fp.getSelectedFacets();
 		boolean javaFacet = false;
@@ -88,20 +86,20 @@ public class PersistenceXMLFileTest extends HibernateRedDeerTest {
 		}
 		if(!javaFacet){
 			fp.selectFacet("Java");
-			new DefaultHyperlink().activate();
+			new DefaultHyperlink(pd).activate();
 			Shell s = new DefaultShell("Modify Faceted Project");
-			new OkButton().click();
+			new OkButton(s).click();
 			new WaitWhile(new ShellIsAvailable(s));
 		}
 		if(!jpaFacet){
 			fp.selectFacet("JPA");
-			new DefaultHyperlink().activate();
+			new DefaultHyperlink(pd).activate();
 			Shell s = new DefaultShell("Modify Faceted Project");
-			new NextButton().click();
-			JpaFacetInstallPage installPage = new JpaFacetInstallPage();
+			new NextButton(s).click();
+			JpaFacetInstallPage installPage = new JpaFacetInstallPage(s);
 			installPage.setPlatform("Hibernate (JPA 2.1)");
 			installPage.setJpaImplementation("Disable Library Configuration");
-			new OkButton().click();
+			new OkButton(s).click();
 			new WaitWhile(new ShellIsAvailable(s));
 		}
 		pd.ok();

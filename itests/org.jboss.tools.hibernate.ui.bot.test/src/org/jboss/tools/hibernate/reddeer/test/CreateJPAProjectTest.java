@@ -13,10 +13,10 @@ package org.jboss.tools.hibernate.reddeer.test;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.jboss.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement;
-import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
+import org.eclipse.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement;
+import org.eclipse.reddeer.requirements.db.DatabaseRequirement.Database;
 import org.jboss.tools.hibernate.ui.bot.test.factory.JPAProjectFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +33,7 @@ import org.junit.runners.Parameterized.UseParametersRunnerFactory;
  */
 @RunWith(RedDeerSuite.class)
 @UseParametersRunnerFactory(ParameterizedRequirementsRunnerFactory.class)
-@Database(name="testdb")
+@Database
 public class CreateJPAProjectTest extends HibernateRedDeerTest {	
 	
 	@Parameter

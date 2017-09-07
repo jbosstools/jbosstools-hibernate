@@ -15,21 +15,21 @@ import static org.junit.Assert.*;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.jboss.reddeer.common.exception.RedDeerException;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement;
-import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
-import org.jboss.reddeer.requirements.db.DatabaseRequirement;
-import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.workbench.impl.editor.Marker;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.common.exception.RedDeerException;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement;
+import org.eclipse.reddeer.requirements.db.DatabaseConfiguration;
+import org.eclipse.reddeer.requirements.db.DatabaseRequirement;
+import org.eclipse.reddeer.requirements.db.DatabaseRequirement.Database;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.eclipse.reddeer.workbench.impl.editor.Marker;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.hibernate.reddeer.condition.EntityIsGenerated;
 import org.jboss.tools.hibernate.reddeer.console.wizards.NewReverseEngineeringFileWizard;
 import org.jboss.tools.hibernate.reddeer.console.wizards.TableFilterWizardPage;
@@ -45,7 +45,7 @@ import org.junit.runners.Parameterized.UseParametersRunnerFactory;
 
 @RunWith(RedDeerSuite.class)
 @UseParametersRunnerFactory(ParameterizedRequirementsRunnerFactory.class)
-@Database(name = "testdb")
+@Database
 
 //https://issues.jboss.org/browse/JBIDE-22283 works for hibernate >= 4.3
 public class CodeGenerationKeyWordsTest extends HibernateRedDeerTest {
@@ -108,7 +108,7 @@ public class CodeGenerationKeyWordsTest extends HibernateRedDeerTest {
 	}
 
 	private void checkGeneratedEntities(String src) {
-		PackageExplorer pe = new PackageExplorer();
+		PackageExplorerPart pe = new PackageExplorerPart();
 		pe.open();
 		try {
 			new WaitUntil(new EntityIsGenerated(prj, src, "org.gen", "Actor.java"));
@@ -134,7 +134,7 @@ public class CodeGenerationKeyWordsTest extends HibernateRedDeerTest {
 		NewReverseEngineeringFileWizard wizard = new NewReverseEngineeringFileWizard();
 		wizard.open();
 		wizard.next();
-		TableFilterWizardPage page = new TableFilterWizardPage();
+		TableFilterWizardPage page = new TableFilterWizardPage(wizard);
 		page.setConsoleConfiguration(prj);
 		page.refreshDatabaseSchema();
 		page.pressInclude();

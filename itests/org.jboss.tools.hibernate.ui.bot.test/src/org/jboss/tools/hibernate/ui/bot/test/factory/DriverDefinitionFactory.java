@@ -12,22 +12,21 @@ package org.jboss.tools.hibernate.ui.bot.test.factory;
 
 import java.util.List;
 
-import org.jboss.reddeer.eclipse.datatools.ui.DriverDefinition;
-import org.jboss.reddeer.eclipse.datatools.ui.DriverTemplate;
-import org.jboss.reddeer.eclipse.datatools.ui.preference.DriverDefinitionPreferencePage;
-import org.jboss.reddeer.eclipse.datatools.ui.wizard.DriverDefinitionPage;
-import org.jboss.reddeer.eclipse.datatools.ui.wizard.DriverDefinitionWizard;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
-import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
-import org.jboss.reddeer.swt.api.Shell;
-import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.condition.ShellIsAvailable;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.button.YesButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
-import org.jboss.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.datatools.connectivity.ui.dialogs.DriverDialog;
+import org.eclipse.reddeer.eclipse.datatools.connectivity.ui.preferences.DriverPreferences;
+import org.eclipse.reddeer.eclipse.datatools.ui.DriverDefinition;
+import org.eclipse.reddeer.eclipse.datatools.ui.DriverTemplate;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.eclipse.reddeer.requirements.db.DatabaseConfiguration;
+import org.eclipse.reddeer.swt.api.Shell;
+import org.eclipse.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.button.YesButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.table.DefaultTableItem;
+import org.eclipse.reddeer.common.wait.WaitWhile;
 
 /**
  * Driver Definition Factory helps to create driver definition based on 
@@ -49,7 +48,7 @@ public class DriverDefinitionFactory {
 		// Driver Definition creation
 		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
 		preferenceDialog.open();
-		DriverDefinitionPreferencePage preferencePage = new DriverDefinitionPreferencePage();
+		DriverPreferences preferencePage = new DriverPreferences(preferenceDialog);
 		preferenceDialog.select(preferencePage);
 		
 		
@@ -66,14 +65,13 @@ public class DriverDefinitionFactory {
 		}
 		
 		
-		DriverDefinitionWizard ddw = preferencePage.addDriverDefinition();
-		DriverDefinitionPage page = new DriverDefinitionPage();
-		page.selectDriverTemplate(dt.getType(),dt.getVersion());
-		page.setName(cfg.getDriverName());
-		page.addDriverLibrary(dd.getDriverLibrary());
-		page.setDriverClass(cfg.getDriverClass());
-
-		ddw.finish();
+		DriverDialog ddw = preferencePage.addDriverDefinition();
+		ddw.selectDriverTemplate(dt.getType(),dt.getVersion());
+		ddw.setName(cfg.getDriverName());
+		ddw.addDriverLibrary(dd.getDriverLibrary());
+		ddw.setDriverClass(cfg.getDriverClass());
+		
+		ddw.ok();
 		preferenceDialog.ok();
 	}
 

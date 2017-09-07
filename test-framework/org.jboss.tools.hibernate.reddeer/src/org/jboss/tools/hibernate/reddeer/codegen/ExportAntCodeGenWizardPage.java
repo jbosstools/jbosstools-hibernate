@@ -10,9 +10,10 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.codegen;
 
-import org.jboss.reddeer.jface.wizard.WizardPage;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.wizard.WizardPage;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 /**
  * Export Hibernate Code Generation Configuration to Ant Script wizard page
@@ -20,19 +21,23 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  *
  */
 public class ExportAntCodeGenWizardPage extends WizardPage {
+	
+	public ExportAntCodeGenWizardPage(ReferencedComposite composite) {
+		super(composite);
+	}
 
 	/**
 	 * Sets given generation configuration
 	 */
 	public void setHibernateGenConfiguration(String genConfiguration) {
-		new LabeledCombo("Hibernate Code Generation Configurations:").setSelection(genConfiguration);
+		new LabeledCombo(referencedComposite, "Hibernate Code Generation Configurations:").setSelection(genConfiguration);
 	}
 
 	/**
 	 * Sets given generation configuration
 	 */
 	public void setAntFileName(String fileName) {
-		new LabeledText("File name:").setText(fileName);
+		new LabeledText(referencedComposite, "File name:").setText(fileName);
 	}
 
 }

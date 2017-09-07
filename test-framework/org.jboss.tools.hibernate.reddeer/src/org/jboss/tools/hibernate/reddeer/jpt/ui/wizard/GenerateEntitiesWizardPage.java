@@ -10,31 +10,31 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.jpt.ui.wizard;
 
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.wizard.WizardPage;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 /**
  * Generate JPA Entities Wizard page implementation
  * @author jpeterka
  *
  */
-public class GenerateEntitiesWizardPage  {
+public class GenerateEntitiesWizardPage  extends WizardPage{
 
-	/**
-	 * Initalizae Generate Entities Wizard
-	 */
-	public GenerateEntitiesWizardPage() {
-		new DefaultShell("Generate Entities");
-	}
 	
+	
+	public GenerateEntitiesWizardPage(ReferencedComposite referencedComposite) {
+		super(referencedComposite);
+	}
+
 	/**
 	 * Sets if to use console configuration or not
 	 * @param useConsole if true use hibernate console
 	 */
 	public void setUseConsole(boolean useConsole) {
-		CheckBox cbUseConsole = new CheckBox("Use Console Configuration");
+		CheckBox cbUseConsole = new CheckBox(referencedComposite, "Use Console Configuration");
 		if (cbUseConsole.isEnabled() != useConsole) {
 			cbUseConsole.click();
 		}
@@ -45,7 +45,7 @@ public class GenerateEntitiesWizardPage  {
 	 * @param pkg given package location
 	 */
 	public void setPackage(String pkg) {
-		new LabeledText("Package:").setText(pkg);
+		new LabeledText(referencedComposite, "Package:").setText(pkg);
 	}
 	
 	/**
@@ -53,7 +53,7 @@ public class GenerateEntitiesWizardPage  {
 	 * @param version given hibernte version
 	 */
 	public void setHibernateVersion(String version) {
-		new LabeledCombo("Hibernate Version:").setSelection(version);
+		new LabeledCombo(referencedComposite, "Hibernate Version:").setSelection(version);
 	}
 	
 	/**
@@ -61,7 +61,7 @@ public class GenerateEntitiesWizardPage  {
 	 * @param profileName given profile name
 	 */
 	public void setDatabaseConnection(String profileName) {
-		new LabeledCombo("Database Connection").setSelection(profileName);
+		new LabeledCombo(referencedComposite, "Database Connection").setSelection(profileName);
 	}
 		
 }

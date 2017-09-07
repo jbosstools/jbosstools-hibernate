@@ -10,9 +10,10 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.wizard;
 
-import org.jboss.reddeer.jface.wizard.WizardPage;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.wizard.WizardPage;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 /**
  * Datasource wizard page
@@ -22,12 +23,16 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  */
 public class WizardNewDSXMLFileCreationPage extends WizardPage {
 
+	public WizardNewDSXMLFileCreationPage(ReferencedComposite referencedComposite) {
+		super(referencedComposite);
+	}
+
 	/**
 	 * Sets connection profile for jboss ds wizard
 	 * @param profileName given db profile
 	 */
 	public void setConnectionProfile(String profileName) {
-		new LabeledCombo("Connection profile:").setSelection(profileName);
+		new LabeledCombo(referencedComposite, "Connection profile:").setSelection(profileName);
 	}
 	
 	/**
@@ -35,6 +40,6 @@ public class WizardNewDSXMLFileCreationPage extends WizardPage {
 	 * @param folder given folder name
 	 */
 	public void setParentFolder(String folder) {
-		new LabeledText("Parent folder:").setText(folder);
+		new LabeledText(referencedComposite,"Parent folder:").setText(folder);
 	}
 }

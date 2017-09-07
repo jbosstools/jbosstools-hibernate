@@ -10,11 +10,11 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.editor;
 
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
-import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.workbench.impl.editor.AbstractEditor;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.workbench.impl.editor.AbstractEditor;
 
 /**
  * Multipage Persistence XML Editor with Hibernate Tab
@@ -37,7 +37,7 @@ public class JpaXmlEditor extends AbstractEditor {
 	 */
 	public void setHibernateUsername(String username) {
 		activateHibernateTab();
-		new LabeledText("Username:").setText(username);
+		new LabeledText(this, "Username:").setText(username);
 	}
 		
 	/**
@@ -46,7 +46,7 @@ public class JpaXmlEditor extends AbstractEditor {
 	 */
 	public void setHibernateDialect(String dialect) {
 		activateHibernateTab();
-		new LabeledCombo("Database dialect:").setSelection(dialect);
+		new LabeledCombo(this, "Database dialect:").setSelection(dialect);
 	}
 
 	/**
@@ -55,7 +55,7 @@ public class JpaXmlEditor extends AbstractEditor {
 	 */
 	public String getSourceText() {
 		activateSourceTab();
-		DefaultStyledText dst = new DefaultStyledText();		
+		DefaultStyledText dst = new DefaultStyledText(this);		
 		String source = dst.getText();
 		return source;
 	}
@@ -64,48 +64,48 @@ public class JpaXmlEditor extends AbstractEditor {
 	 * Activates editor's Overview tab
 	 */
 	public void activateOverviewTab() {
-		new DefaultCTabItem("Overview").activate();
+		new DefaultCTabItem(this, "Overview").activate();
 	}
 
 	/**
 	 * Activates editor's Type Mappings tab
 	 */
 	public void activateGeneralTab() {
-		new DefaultCTabItem("General").activate();
+		new DefaultCTabItem(this, "General").activate();
 	}
 
 	/**
 	 * Activates editor's Type Filters tab
 	 */
 	public void activateConnectionsTab() {
-		new DefaultCTabItem("Connections").activate();
+		new DefaultCTabItem(this, "Connections").activate();
 	}
 
 	/**
 	 * Activates editor's Table and Columns tab
 	 */	
 	public void  activateOptionsTab() {
-		new DefaultCTabItem("Options").activate();
+		new DefaultCTabItem(this, "Options").activate();
 	}
 	
 	/**
 	 * Activates editor's Properties tab
 	 */
 	public void activatePropertiesTab() {
-		new DefaultCTabItem("Properties").activate();
+		new DefaultCTabItem(this, "Properties").activate();
 	}
 	
 	/**
 	 * Activates editor's Hibernate tab
 	 */
 	public void activateHibernateTab() {
-		new DefaultCTabItem("Hibernate").activate();
+		new DefaultCTabItem(this, "Hibernate").activate();
 	}
 
 	/**
 	 * Activates editor's Source tab
 	 */
 	public void activateSourceTab() {
-		new DefaultCTabItem("Source").activate();
+		new DefaultCTabItem(this, "Source").activate();
 	}	
 }

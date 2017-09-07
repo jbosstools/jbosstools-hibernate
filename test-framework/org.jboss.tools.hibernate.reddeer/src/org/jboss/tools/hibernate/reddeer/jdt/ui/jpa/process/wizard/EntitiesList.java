@@ -10,8 +10,13 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.jdt.ui.jpa.process.wizard;
 
-import org.jboss.reddeer.jface.wizard.WizardPage;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.wizard.WizardPage;
 
 public class EntitiesList extends WizardPage {
+
+	public EntitiesList(ReferencedComposite referencedComposite) {
+		super(referencedComposite);
+	}
 
 }

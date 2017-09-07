@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.console.views;
 
-import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
+import org.eclipse.reddeer.workbench.impl.view.WorkbenchView;
 
 /**
  * Hibernate Dynamic SQL Preview View implementation

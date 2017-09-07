@@ -10,18 +10,18 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.mapper.editors;
 
-import org.jboss.reddeer.swt.api.Shell;
-import org.jboss.reddeer.swt.condition.ShellIsAvailable;
-import org.jboss.reddeer.swt.condition.TreeContainsItem;
-import org.jboss.reddeer.swt.condition.TreeHasChildren;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.eclipse.reddeer.swt.api.Shell;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.condition.TreeContainsItem;
+import org.eclipse.reddeer.swt.condition.TreeHasChildren;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 
 /**
  * Reverse engineer editor RedDeer implementation
@@ -38,42 +38,42 @@ public class ReverseEngineeringEditor extends DefaultEditor {
 	 * Activates editor's Overview tab
 	 */
 	public void activateOverviewTab() {
-		new DefaultCTabItem("Overview").activate();
+		new DefaultCTabItem(this, "Overview").activate();
 	}
 
 	/**
 	 * Activates editor's Type Mappings tab
 	 */
 	public void activateTypeMappingsTab() {
-		new DefaultCTabItem("Type Mappings").activate();
+		new DefaultCTabItem(this, "Type Mappings").activate();
 	}
 
 	/**
 	 * Activates editor's Type Filters tab
 	 */
 	public void activateTableFiltersTab() {
-		new DefaultCTabItem("Table Filters").activate();
+		new DefaultCTabItem(this, "Table Filters").activate();
 	}
 
 	/**
 	 * Activates editor's Table and Columns tab
 	 */	
 	public void  activateTableAndColumnsTab() {
-		new DefaultCTabItem("Table  Columns").activate();
+		new DefaultCTabItem(this, "Table  Columns").activate();
 	}
 	
 	/**
 	 * Activates editor's Design tab
 	 */
 	public void activateDesignTab() {
-		new DefaultCTabItem("Design").activate();
+		new DefaultCTabItem(this, "Design").activate();
 	}
 	
 	/**
 	 * Activates editor's Source tab
 	 */
 	public void activateSourceTab() {
-		new DefaultCTabItem("Source").activate();
+		new DefaultCTabItem(this, "Source").activate();
 	}
 
 	/**
@@ -81,14 +81,14 @@ public class ReverseEngineeringEditor extends DefaultEditor {
 	 */
 	public void selectAllTables(String databaseName) {
 		activateTableAndColumnsTab();
-		new PushButton("Add...").click();
+		new PushButton(this, "Add...").click();
 		Shell s= new DefaultShell("Add Tables & Columns");
-		DefaultTree dbTree = new DefaultTree();
+		DefaultTree dbTree = new DefaultTree(s);
 		new WaitUntil(new TreeHasChildren(dbTree));
 		new WaitUntil(new TreeContainsItem(dbTree, databaseName));
-		new DefaultTreeItem(databaseName).select();
-		new PushButton("Select all children").click();
-		new PushButton("OK").click();
+		new DefaultTreeItem(dbTree, databaseName).select();
+		new PushButton(s, "Select all children").click();
+		new PushButton(s, "OK").click();
 		new WaitWhile(new ShellIsAvailable(s));
 	}
 

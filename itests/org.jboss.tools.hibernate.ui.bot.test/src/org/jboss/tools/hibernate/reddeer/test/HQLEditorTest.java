@@ -15,13 +15,13 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.jboss.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
-import org.jboss.reddeer.requirements.db.DatabaseRequirement;
-import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.eclipse.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.db.DatabaseConfiguration;
+import org.eclipse.reddeer.requirements.db.DatabaseRequirement;
+import org.eclipse.reddeer.requirements.db.DatabaseRequirement.Database;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.jboss.tools.hibernate.reddeer.console.EditConfigurationMainPage;
 import org.jboss.tools.hibernate.reddeer.console.EditConfigurationShell;
 import org.jboss.tools.hibernate.reddeer.console.views.KnownConfigurationsView;
@@ -44,7 +44,7 @@ import org.junit.runners.Parameterized.UseParametersRunnerFactory;
  */
 @RunWith(RedDeerSuite.class)
 @UseParametersRunnerFactory(ParameterizedRequirementsRunnerFactory.class)
-@Database(name="testdb")
+@Database
 public class HQLEditorTest extends HibernateRedDeerTest {
 
 	@Parameter
@@ -103,7 +103,7 @@ public class HQLEditorTest extends HibernateRedDeerTest {
 				
 		v.open();		
 		v.selectConsole(prj);
-		new ContextMenu("HQL Editor").select();
+		new ContextMenuItem("HQL Editor").select();
 				
 		HQLEditor hqlEditor = new HQLEditor(prj);
 		hqlEditor.setText("from Actor");

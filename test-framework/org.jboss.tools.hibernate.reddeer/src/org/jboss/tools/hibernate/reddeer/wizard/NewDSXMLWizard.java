@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.wizard;
 
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
+import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
 
 
 /**
@@ -18,13 +18,13 @@ import org.jboss.reddeer.jface.wizard.NewWizardDialog;
  * @author Jiri Peterka
  * TODO move to jbosstools.JST
  */
-public class NewDSXMLWizard extends NewWizardDialog {
+public class NewDSXMLWizard extends NewMenuWizard {
 
 	/**
 	 * Initialize JBoss Datasource wizard
 	 */
 	public NewDSXMLWizard() {
-		super("JBoss Tools", "JBoss Datasource (-ds.xml)");
+		super("New JBoss Datasource","JBoss Tools", "JBoss Datasource (-ds.xml)");
 	}
 
 }

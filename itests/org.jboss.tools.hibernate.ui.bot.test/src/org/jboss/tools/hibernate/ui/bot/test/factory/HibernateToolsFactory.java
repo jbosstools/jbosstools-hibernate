@@ -11,10 +11,10 @@
 package org.jboss.tools.hibernate.ui.bot.test.factory;
 
 
-import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.eclipse.reddeer.requirements.db.DatabaseConfiguration;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.hibernate.reddeer.console.views.KnownConfigurationsView;
 import org.jboss.tools.hibernate.reddeer.console.wizards.NewConfigurationFirstPage;
 import org.jboss.tools.hibernate.reddeer.console.wizards.NewConfigurationWizard;
@@ -38,11 +38,11 @@ public class HibernateToolsFactory {
 	public static void createConfigurationFile(DatabaseConfiguration cfg, String project, String cfgFile, boolean generateConsole) {		
 		NewConfigurationWizard wizard = new NewConfigurationWizard();
 		wizard.open();
-		NewConfigurationFirstPage p1 = new NewConfigurationFirstPage();
+		NewConfigurationFirstPage p1 = new NewConfigurationFirstPage(wizard);
 		p1.setLocation(project,"src");		
 		wizard.next();
 
-		NewConfigurationWizardPage p2 = new NewConfigurationWizardPage();
+		NewConfigurationWizardPage p2 = new NewConfigurationWizardPage(wizard);
 		p2.setDatabaseDialect("H2");
 		p2.setDriverClass(cfg.getDriverClass());
 		p2.setConnectionURL(cfg.getJdbcString());

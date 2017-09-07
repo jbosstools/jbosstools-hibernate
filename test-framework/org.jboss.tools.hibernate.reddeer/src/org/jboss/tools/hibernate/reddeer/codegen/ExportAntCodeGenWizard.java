@@ -10,15 +10,14 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.codegen;
 
-import org.jboss.reddeer.jface.wizard.ExportWizardDialog;
-
+import org.eclipse.reddeer.eclipse.selectionwizard.ExportMenuWizard;
 
 /**
  * RedDeer dialog for Ant Hibernate Code Generation configuration export
  * @author Jiri Peterka
  *
  */
-public class ExportAntCodeGenWizard extends ExportWizardDialog {
+public class ExportAntCodeGenWizard extends ExportMenuWizard {
 
 	public static final String CATEGORY = "Hibernate";
 	
@@ -28,7 +27,7 @@ public class ExportAntCodeGenWizard extends ExportWizardDialog {
 	 * Initialize Export Ang Code Generation wizard
 	 */
 	public ExportAntCodeGenWizard() {
-		super(CATEGORY, NAME);
+		super("Export Hibernate Code Generation Configuration to Ant Script",CATEGORY, NAME);
 	}
 
 }

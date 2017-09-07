@@ -12,9 +12,9 @@ package org.jboss.tools.hibernate.reddeer.console.views;
 
 import java.util.List;
 
-import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
+import org.eclipse.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.workbench.impl.view.WorkbenchView;
 
 
 /**
@@ -36,7 +36,7 @@ public class QueryPageTabView extends WorkbenchView {
 	 * Return Hibernate Query Result table items
 	 */
 	public List<TableItem> getResultItems() {
-		return new DefaultTable().getItems();
+		return new DefaultTable(this).getItems();
 	}
 
 }

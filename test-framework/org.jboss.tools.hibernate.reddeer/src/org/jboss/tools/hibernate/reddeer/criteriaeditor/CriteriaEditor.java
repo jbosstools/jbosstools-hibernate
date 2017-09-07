@@ -10,14 +10,16 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.criteriaeditor;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.common.exception.RedDeerException;
-import org.jboss.reddeer.swt.impl.button.YesButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.common.exception.RedDeerException;
+import org.eclipse.reddeer.swt.api.Shell;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.YesButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 
 /**
  * Hibernate Criteria Editor RedDeer implementation
@@ -43,8 +45,9 @@ public class CriteriaEditor extends TextEditor {
 		new DefaultToolItem("Run criteria").click();
 		
 		try {
-			new DefaultShell("Open Session factory");
-			new YesButton().click();
+			Shell s = new DefaultShell("Open Session factory");
+			new YesButton(s).click();
+			new WaitWhile(new ShellIsAvailable(s));
 		}
 		catch (RedDeerException e) {
 			log.warn("Open Session factory question dialog was expected");

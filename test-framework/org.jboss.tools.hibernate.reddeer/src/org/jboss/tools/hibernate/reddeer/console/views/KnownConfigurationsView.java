@@ -10,25 +10,25 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.console.views;
 
-import org.jboss.reddeer.swt.api.Shell;
-import org.jboss.reddeer.swt.api.Tree;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.ShellIsAvailable;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.swt.api.Shell;
+import org.eclipse.reddeer.swt.api.Tree;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 
 import java.util.Arrays;
 import java.util.List;
 
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.common.exception.RedDeerException;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.common.exception.RedDeerException;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.hibernate.reddeer.condition.ConfigrationsAreLoaded;
 import org.jboss.tools.hibernate.reddeer.console.EditConfigurationShell;
 
@@ -37,8 +37,7 @@ import org.jboss.tools.hibernate.reddeer.console.EditConfigurationShell;
  * @author jpeterka
  *
  */
-public class KnownConfigurationsView extends WorkbenchView
-{
+public class KnownConfigurationsView extends WorkbenchView {
 	
 	/**
 	 * View implementation
@@ -52,7 +51,7 @@ public class KnownConfigurationsView extends WorkbenchView
 	 */
 	public EditConfigurationShell addConfiguration() {
 		open();
-		new ContextMenu("Add Configuration...").select();
+		new ContextMenuItem("Add Configuration...").select();
 		return new EditConfigurationShell();
 	}
 
@@ -62,7 +61,7 @@ public class KnownConfigurationsView extends WorkbenchView
 	 */
 	public void selectConsole(String name) {
 		open();
-		new DefaultTreeItem(name).select();
+		new DefaultTreeItem(new DefaultTree(this), name).select();
 	}
 
 	/**
@@ -73,7 +72,7 @@ public class KnownConfigurationsView extends WorkbenchView
 	public EditConfigurationShell openConsoleConfiguration(String name) {
 		selectConsole(name);
 		String title = "Edit Configuration";
-		new ContextMenu(title).select();
+		new ContextMenuItem(title).select();
 		return new EditConfigurationShell();
 	}
 
@@ -96,10 +95,10 @@ public class KnownConfigurationsView extends WorkbenchView
 	 * @param console hibernate console configuration name
 	 */
 	public void deleteConsoleConfiguration(String console) {
-		new DefaultTreeItem(console).select();
-		new ContextMenu("Delete Configuration").select();
+		new DefaultTreeItem(new DefaultTree(this), console).select();
+		new ContextMenuItem("Delete Configuration").select();
 		Shell deleteShell = new DefaultShell("Delete console configuration");
-		new OkButton().click();
+		new OkButton(deleteShell).click();
 		new WaitWhile(new ShellIsAvailable(deleteShell));
 		new WaitWhile(new JobIsRunning());
 	}
@@ -107,7 +106,7 @@ public class KnownConfigurationsView extends WorkbenchView
 	public List<TreeItem> getConsoleConfigurations(){
 		Tree tree = null;
 		try {
-			tree = new DefaultTree();
+			tree = new DefaultTree(this);
 		} catch (RedDeerException e) {
 			return null;
 		}
@@ -126,7 +125,7 @@ public class KnownConfigurationsView extends WorkbenchView
 		@Override
 		public boolean test() {
 			try{
-				new DefaultTreeItem(path);
+				new DefaultTreeItem(new DefaultTree(KnownConfigurationsView.this), path);
 				return true;
 			} catch (RedDeerException e) {
 				return false;

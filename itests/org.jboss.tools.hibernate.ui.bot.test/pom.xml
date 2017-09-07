@@ -13,7 +13,7 @@
 
 	<properties>	
 		<!-- Tycho surefire arguments -->
-		<runtimesProperties>-Drd.config=target/classes -Dtest.database=${test.database}</runtimesProperties>
+		<runtimesProperties>-Drd.config=target/classes/sakila.json -Dtest.database=${test.database}</runtimesProperties>
 		<!-- don't wrap this -->		
 		<systemProperties>${runtimesProperties}</systemProperties>
 		<testDatabase>${project.build.directory}${file.separator}requirements</testDatabase>

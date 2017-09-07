@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.wizard;
 
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
+import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
 
 /**
  * New JPA Project Wizard
@@ -18,12 +18,12 @@ import org.jboss.reddeer.jface.wizard.NewWizardDialog;
  * TODO move to reddeer
  *
  */
-public class JPAProjectWizard extends NewWizardDialog {
+public class JPAProjectWizard extends NewMenuWizard {
 
 	/**
 	 * Initialize New JPA project wizard
 	 */
 	public JPAProjectWizard() {
-		super("JPA", "JPA Project");
+		super("New JPA Project", "JPA", "JPA Project");
 	}
 }

@@ -10,19 +10,20 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.console.wizards;
 
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
+import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
+
 /**
  * New Hibernate Configuration File Wizard RedDeer implemenation
  * @author jpeterka
  *
  */
-public class NewConfigurationWizard extends NewWizardDialog{
+public class NewConfigurationWizard extends NewMenuWizard{
 
 	/**
 	 * Initializes wizard
 	 */
 	public NewConfigurationWizard() {
-		super("Hibernate","Hibernate Configuration File (cfg.xml)");
+		super("", "Hibernate","Hibernate Configuration File (cfg.xml)");
 	}
 
 }

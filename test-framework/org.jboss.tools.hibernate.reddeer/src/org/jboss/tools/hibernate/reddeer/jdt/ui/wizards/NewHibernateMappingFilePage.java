@@ -13,9 +13,10 @@ package org.jboss.tools.hibernate.reddeer.jdt.ui.wizards;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.reddeer.jface.wizard.WizardPage;
-import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.wizard.WizardPage;
+import org.eclipse.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
 
 /**
  * New Hibernate Mapping File Page
@@ -25,19 +26,23 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
  */
 public class NewHibernateMappingFilePage extends WizardPage {
 	
+	public NewHibernateMappingFilePage(ReferencedComposite referencedComposite) {
+		super(referencedComposite);
+	}
+
 	/**
 	 * Select class for further hbm.xml generation
 	 * @param clazz class name
 	 */
 	public void selectClasses(String clazz) {
-		int headerIndex = new DefaultTable().getHeaderIndex("Class name");
-		TableItem item = new DefaultTable().getItem(clazz,headerIndex);
+		int headerIndex = new DefaultTable(referencedComposite).getHeaderIndex("Class name");
+		TableItem item = new DefaultTable(referencedComposite).getItem(clazz,headerIndex);
 		item.select();
 	}
 	
 	public List<String> getClasses(){
 		List<String> classes = new ArrayList<>();
-		for(TableItem i: new DefaultTable().getItems()){
+		for(TableItem i: new DefaultTable(referencedComposite).getItems()){
 			classes.add(i.getText());
 		}
 		return classes;
