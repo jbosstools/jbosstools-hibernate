@@ -29,7 +29,6 @@ import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
-import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IService;
@@ -43,7 +42,6 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 	private IService service = null;
 	
 	protected String consoleConfigName;
-	protected IDialect dialect = null;
 
 	public OrmLabelProvider() {
 	}
@@ -69,7 +67,6 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 				}
 			});
 		}
-		dialect = null;
 	}
 
 	protected IConfiguration getConfig() {
