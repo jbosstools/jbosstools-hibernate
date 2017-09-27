@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
-import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -24,7 +23,6 @@ implements IConfiguration {
 	private INamingStrategy namingStrategy;
 	private HashMap<String, IPersistentClass> classMappings = null;	
 	private HashSet<ITable> tableMappings = null;
-	private IDialect dialect = null;
 
 	public AbstractConfigurationFacade(
 			IFacadeFactory facadeFactory, 
@@ -253,17 +251,6 @@ implements IConfiguration {
 			result = tableMappings.iterator();
 		}
 		return result;
-	}
-	
-	@Override
-	public IDialect getDialect() {
-		if (dialect == null) {
-			Object d = buildTargetDialect();
-			if (d != null) {
-				dialect = getFacadeFactory().createDialect(d);
-			}
-		}
-		return dialect;
 	}
 	
 	@Override

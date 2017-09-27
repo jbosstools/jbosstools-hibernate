@@ -31,7 +31,6 @@ public interface IConfiguration {
 	INamingStrategy getNamingStrategy();
 	EntityResolver getEntityResolver();
 	Iterator<ITable> getTableMappings();
-	IDialect getDialect();
 	String getDefaultCatalogName();
 	String getDefaultSchemaName();
 
