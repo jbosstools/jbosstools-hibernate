@@ -180,7 +180,7 @@ public class NewReverseEngineeringFileWizard extends Wizard implements INewWizar
 	private InputStream openContentStream() {
         StringWriter sw = new StringWriter();
         sw.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" +  //$NON-NLS-1$
-        		"<!DOCTYPE hibernate-reverse-engineering PUBLIC \"-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN\" \"http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd\" >\r\n" +  //$NON-NLS-1$
+        		"<!DOCTYPE hibernate-reverse-engineering PUBLIC \"-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN\" \"http://hibernate.org/dtd/hibernate-reverse-engineering-3.0.dtd\" >\r\n" +  //$NON-NLS-1$
         		"\r\n" +  //$NON-NLS-1$
         		"<hibernate-reverse-engineering>\r\n"); //$NON-NLS-1$
         ITableFilter[] filters = tableFilterWizardPage.getTableFilters();
