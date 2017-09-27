@@ -21,7 +21,6 @@ import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
-import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.mapping.Array;
@@ -50,7 +49,6 @@ import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
-import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
@@ -353,11 +351,8 @@ public class ServiceImplTest {
 	@Test
 	public void testNewDialect() throws Exception {
 		Connection connection = DriverManager.getConnection("jdbc:h2:mem:");
-		IDialect dialect = service.newDialect(new Properties(), connection);
-		Assert.assertEquals("org.hibernate.dialect.H2Dialect", dialect.toString());
-		Object target = ((IFacade)dialect).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof Dialect);
+		String dialect = service.newDialect(new Properties(), connection);
+		Assert.assertEquals("org.hibernate.dialect.H2Dialect", dialect);
 	}
 
 	@Test

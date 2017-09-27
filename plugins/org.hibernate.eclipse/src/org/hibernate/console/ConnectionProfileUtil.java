@@ -31,7 +31,6 @@ import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.datatools.connectivity.ProfileManager;
 import org.eclipse.datatools.connectivity.drivers.DriverInstance;
 import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
-import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IService;
 
@@ -120,8 +119,7 @@ public class ConnectionProfileUtil {
 				//note this code potentially could throw class cast exception
 				//see https://issues.jboss.org/browse/JBIDE-8192
 				//probably when not Hiberante3.5 is used
-				IDialect dialect = service.newDialect(properties, connection);
-				return dialect.toString();
+				return service.newDialect(properties, connection);
 			} catch (SQLException e) {
 				// can't determine dialect
 			} finally {

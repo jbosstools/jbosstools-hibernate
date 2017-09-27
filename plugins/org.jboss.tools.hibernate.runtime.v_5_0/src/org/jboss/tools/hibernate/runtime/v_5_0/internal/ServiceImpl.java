@@ -68,7 +68,6 @@ import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
-import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
@@ -277,7 +276,7 @@ public class ServiceImpl extends AbstractService {
 	}
 
 	@Override
-	public IDialect newDialect(Properties properties, final Connection connection) {
+	public String newDialect(Properties properties, final Connection connection) {
 		ServiceRegistry serviceRegistry = buildServiceRegistry(properties);
 		DialectFactory dialectFactory = serviceRegistry.getService(DialectFactory.class);
 		Dialect dialect = dialectFactory.buildDialect(
@@ -297,7 +296,7 @@ public class ServiceImpl extends AbstractService {
 					}
 				}
 		);
-		return dialect != null ? facadeFactory.createDialect(dialect) : null;
+		return dialect != null ? dialect.toString() : null;
 	}
 
 	@Override

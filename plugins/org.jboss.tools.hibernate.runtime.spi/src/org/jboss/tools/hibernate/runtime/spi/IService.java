@@ -74,7 +74,7 @@ public interface IService {
 
 	IColumn newColumn(String string);
 	
-	IDialect newDialect(Properties properties, Connection connection);
+	String newDialect(Properties properties, Connection connection);
 	
 	Class<?> getDriverManagerConnectionProviderClass();
 
