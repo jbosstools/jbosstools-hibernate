@@ -8,7 +8,6 @@ import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
 import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
-import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
@@ -48,7 +47,6 @@ public interface IFacadeFactory {
 	IArtifactCollector createArtifactCollector(Object target);
 	ICfg2HbmTool createCfg2HbmTool(Object target);
 	INamingStrategy createNamingStrategy(Object target);
-	IDialect createDialect(Object target);
 	IReverseEngineeringSettings createReverseEngineeringSettings(Object target);
 	IReverseEngineeringStrategy createReverseEngineeringStrategy(Object target);
 	IOverrideRepository createOverrideRepository(Object target);

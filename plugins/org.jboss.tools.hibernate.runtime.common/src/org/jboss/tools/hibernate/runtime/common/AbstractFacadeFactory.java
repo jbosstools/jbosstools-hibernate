@@ -8,7 +8,6 @@ import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
 import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
-import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
@@ -54,10 +53,6 @@ public abstract class AbstractFacadeFactory implements IFacadeFactory {
 	
 	public INamingStrategy createNamingStrategy(Object target) {
 		return new AbstractNamingStrategyFacade(this, target) {};
-	}
-	
-	public IDialect createDialect(Object target) {
-		return new AbstractDialectFacade(this, target) {};
 	}
 	
 	public IReverseEngineeringSettings createReverseEngineeringSettings(Object target) {
