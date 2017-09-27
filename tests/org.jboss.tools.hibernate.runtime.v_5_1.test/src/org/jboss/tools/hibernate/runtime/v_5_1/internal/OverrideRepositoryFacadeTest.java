@@ -26,13 +26,13 @@ public class OverrideRepositoryFacadeTest {
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 	
 	private static final String HIBERNATE_REVERSE_ENGINEERING_XML =
-			"<?xml version='1.0' encoding='UTF-8'?>                                         "+
-			"<!DOCTYPE hibernate-reverse-engineering PUBLIC                                 "+
-			"      '-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN'                 "+
-			"      'http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd'>"+
-			"<hibernate-reverse-engineering>                                                "+
-			"    <table name='FOO'/>                                                        "+
-			"</hibernate-reverse-engineering>                                               ";
+			"<?xml version='1.0' encoding='UTF-8'?>                                 "+
+			"<!DOCTYPE hibernate-reverse-engineering PUBLIC                         "+
+			"      '-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN'         "+
+			"      'http://hibernate.org/dtd/hibernate-reverse-engineering-3.0.dtd'>"+
+			"<hibernate-reverse-engineering>                                        "+
+			"    <table name='FOO'/>                                                "+
+			"</hibernate-reverse-engineering>                                       ";
 
 	private IOverrideRepository overrideRepositoryFacade = null; 
 	private OverrideRepository overrideRepository;
