@@ -354,12 +354,12 @@ public class ServiceImplTest {
 	public void testNewDialect() throws Exception {
 		Connection connection = DriverManager.getConnection("jdbc:h2:mem:");
 		IDialect dialect = service.newDialect(new Properties(), connection);
-		Assert.assertNotNull(dialect);
+		Assert.assertEquals("org.hibernate.dialect.H2Dialect", dialect.toString());
 		Object target = ((IFacade)dialect).getTarget();
 		Assert.assertNotNull(target);
 		Assert.assertTrue(target instanceof Dialect);
 	}
-	
+
 	@Test
 	public void testGetDriverManagerManagerConnectionProviderClass() {
 		Assert.assertSame(

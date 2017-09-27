@@ -50,6 +50,7 @@ import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.service.classloading.internal.ClassLoaderServiceImpl;
 import org.hibernate.service.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.service.jdbc.dialect.internal.DialectFactoryImpl;
+import org.hibernate.service.jdbc.dialect.internal.StandardDialectResolver;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
@@ -324,6 +325,7 @@ public class ServiceImpl extends AbstractService implements IService {
 	public IDialect newDialect(Properties properties, Connection connection) {
 		DialectFactoryImpl dialectFactory = new DialectFactoryImpl();
 		dialectFactory.setClassLoaderService(new ClassLoaderServiceImpl());
+		dialectFactory.setDialectResolver(new StandardDialectResolver());
 		Dialect dialect = dialectFactory.buildDialect(properties, connection);
 		return dialect != null ? facadeFactory.createDialect(dialect) : null;
 	}

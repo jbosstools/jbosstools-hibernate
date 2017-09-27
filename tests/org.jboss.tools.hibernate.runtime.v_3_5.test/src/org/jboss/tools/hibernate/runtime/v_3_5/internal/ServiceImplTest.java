@@ -1,15 +1,21 @@
 package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.util.Properties;
+
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCReaderFactory;
 import org.hibernate.cfg.reveng.DatabaseCollector;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.JDBCReader;
+import org.hibernate.dialect.Dialect;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
+import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.junit.Assert;
@@ -62,4 +68,14 @@ public class ServiceImplTest {
 		Assert.assertNotNull(databaseCollector);
 	}
 	
+	@Test
+	public void testNewDialect() throws Exception {
+		Connection connection = DriverManager.getConnection("jdbc:h2:mem:");
+		IDialect dialect = service.newDialect(new Properties(), connection);
+		Assert.assertEquals("org.hibernate.dialect.H2Dialect", dialect.toString());
+		Object target = ((IFacade)dialect).getTarget();
+		Assert.assertNotNull(target);
+		Assert.assertTrue(target instanceof Dialect);
+	}
+
 }
