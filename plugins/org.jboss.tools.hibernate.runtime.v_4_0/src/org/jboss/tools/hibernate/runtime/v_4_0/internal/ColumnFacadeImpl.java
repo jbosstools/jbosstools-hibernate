@@ -1,14 +1,13 @@
-package org.jboss.tools.hibernate.runtime.v_5_2.internal;
+package org.jboss.tools.hibernate.runtime.v_4_0.internal;
 
 import java.util.Properties;
 
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.Dialect;
-import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
 import org.hibernate.mapping.Column;
-import org.hibernate.tool.util.MetadataHelper;
+import org.hibernate.service.ServiceRegistry;
+import org.hibernate.service.ServiceRegistryBuilder;
+import org.hibernate.service.jdbc.dialect.spi.DialectFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractColumnFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
@@ -26,14 +25,14 @@ public class ColumnFacadeImpl extends AbstractColumnFacade {
 		Configuration configurationTarget = 
 				(Configuration)((IFacade)configuration).getTarget();
 		Properties properties = configurationTarget.getProperties();
-		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
+		ServiceRegistryBuilder ssrb = new ServiceRegistryBuilder();
 		ssrb.applySettings(properties);
-		StandardServiceRegistry ssr = ssrb.build();
+		ServiceRegistry ssr = ssrb.buildServiceRegistry();
 		DialectFactory df = ssr.getService(DialectFactory.class);
 		Dialect dialectTarget = df.buildDialect(properties, null);
 		return targetColumn.getSqlType(
 				dialectTarget, 
-				MetadataHelper.getMetadata(configurationTarget));
+				configurationTarget.buildMapping());
 	}
 	
 }

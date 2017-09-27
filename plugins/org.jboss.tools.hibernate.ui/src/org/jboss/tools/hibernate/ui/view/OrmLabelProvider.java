@@ -30,7 +30,6 @@ import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IDialect;
-import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IService;
@@ -148,28 +147,17 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 	 * @return
 	 */
 	public boolean updateColumnSqlType(final IColumn column) {
-		IEnvironment environment = getService().getEnvironment();
 		String sqlType = column.getSqlType();
 		if (sqlType != null) {
 			return false;
 		}
 		final IConfiguration config = getConfig();
-		if (dialect == null && config != null) {
-			final String dialectName = config.getProperty(environment.getDialect());
-			if (dialectName != null) {
-				try {
-					dialect = config.getDialect();
-				} catch (Exception e) {
-					HibernateConsolePlugin.getDefault().logErrorMessage("Exception: ", e); //$NON-NLS-1$
-				}
-			}
-		}
-		if (dialect != null && config != null) {
+		if (config != null) {
 			final ConsoleConfiguration consoleConfig = getConsoleConfig();
 			try {
 				sqlType = (String)consoleConfig.execute(new ExecutionContext.Command() {
 					public Object execute() {
-						return column.getSqlType(dialect, config);
+						return column.getSqlType(config);
 					}
 				} );
 			} catch (Exception e) {

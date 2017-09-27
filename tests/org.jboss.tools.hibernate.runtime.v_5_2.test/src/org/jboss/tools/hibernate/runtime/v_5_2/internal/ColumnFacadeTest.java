@@ -2,8 +2,7 @@ package org.jboss.tools.hibernate.runtime.v_5_2.internal;
 
 import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.dialect.Dialect;
-import org.hibernate.dialect.H2Dialect;
+import org.hibernate.cfg.Environment;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Value;
@@ -12,7 +11,6 @@ import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
-import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.junit.Assert;
 import org.junit.Before;
@@ -51,17 +49,16 @@ public class ColumnFacadeTest {
 		Assert.assertNull(columnFacade.getSqlType());
 		column.setSqlType("foobar");
 		Assert.assertEquals("foobar", columnFacade.getSqlType());
-		Dialect dialect = new H2Dialect();
 		Configuration configuration = new Configuration();
+		configuration.setProperty(Environment.DIALECT, "org.hibernate.dialect.H2Dialect");
 		MetadataImplementor metadata = 
 				(MetadataImplementor)MetadataHelper.getMetadata(configuration);
 		SimpleValue value = new SimpleValue(metadata);
 		value.setTypeName("int");
 		column.setValue(value);
-		IDialect dialectFacade = FACADE_FACTORY.createDialect(dialect);
 		IConfiguration configurationFacade = FACADE_FACTORY.createConfiguration(configuration);
 		column.setSqlType(null);
-		Assert.assertEquals("integer", columnFacade.getSqlType(dialectFacade, configurationFacade));
+		Assert.assertEquals("integer", columnFacade.getSqlType(configurationFacade));
 	}
 	
 	@Test

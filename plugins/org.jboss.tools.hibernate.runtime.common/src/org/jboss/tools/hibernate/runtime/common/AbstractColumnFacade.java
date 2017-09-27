@@ -1,8 +1,9 @@
 package org.jboss.tools.hibernate.runtime.common;
 
+import java.util.Properties;
+
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
-import org.jboss.tools.hibernate.runtime.spi.IDialect;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public abstract class AbstractColumnFacade 
@@ -122,28 +123,38 @@ implements IColumn {
 				new Object[] {});
 	}
 
-	@Override
-	public String getSqlType(IDialect dialect, IConfiguration configuration) {
-		Object dialectTarget = Util.invokeMethod(
-				dialect, 
-				"getTarget", 
-				new Class[] {}, 
-				new Object[] {});
-		Object configurationTarget = Util.invokeMethod(
-				configuration, 
-				"getTarget", 
-				new Class[] {}, 
-				new Object[] {});
-		Object mappingTarget = Util.invokeMethod(
-				configurationTarget, 
-				"buildMapping", 
-				new Class[] {}, 
-				new Object[] {});
-		return (String)Util.invokeMethod(
-				getTarget(), 
-				"getSqlType", 
-				new Class[] { getDialectClass(),  getMappingClass() }, 
-				new Object[] { dialectTarget, mappingTarget });
+	public String getSqlType(IConfiguration configuration) {
+		String result = null;
+		String dialectKey = (String) Util.getFieldValue(
+				getEnvironmentClass(), 
+				"DIALECT", 
+				null);		
+		String dialectName = configuration.getProperty(dialectKey);
+		if (dialectName != null) {
+			Object dialectTarget = Util.invokeMethod(
+					getDialectFactoryClass(), 
+					"buildDialect", 
+					new Class[] { Properties.class },	 
+					new Object[] { configuration.getProperties() });
+			if (dialectTarget != null) {
+				Object configurationTarget = Util.invokeMethod(
+						configuration, 
+						"getTarget", 
+						new Class[] {}, 
+						new Object[] {});
+				Object mappingTarget = Util.invokeMethod(
+						configurationTarget, 
+						"buildMapping", 
+						new Class[] {}, 
+						new Object[] {});
+				result = (String)Util.invokeMethod(
+						getTarget(), 
+						"getSqlType", 
+						new Class[] { getDialectClass(),  getMappingClass() }, 
+						new Object[] { dialectTarget, mappingTarget });
+			}
+		}
+		return result;
 	}
 
 	@Override
@@ -163,6 +174,14 @@ implements IColumn {
 		return Util.getClass(getDialectClassName(), getFacadeFactoryClassLoader());
 	}
 	
+	protected Class<?> getDialectFactoryClass() {
+		return Util.getClass(getDialectFactoryClassName(), getFacadeFactoryClassLoader());
+	}
+	
+	protected Class<?> getEnvironmentClass() {
+		return Util.getClass(getEnvironmentClassName(), getFacadeFactoryClassLoader());
+	}
+	
 	protected Class<?> getMappingClass() {
 		return Util.getClass(getMappingClassName(), getFacadeFactoryClassLoader());
 	}
@@ -173,6 +192,14 @@ implements IColumn {
 	
 	protected String getDialectClassName() {
 		return "org.hibernate.dialect.Dialect";
+	}
+	
+	protected String getDialectFactoryClassName() {
+		return "org.hibernate.dialect.resolver.DialectFactory";
+	}
+	
+	protected String getEnvironmentClassName() {
+		return "org.hibernate.cfg.Environment";
 	}
 	
 	protected String getMappingClassName() {

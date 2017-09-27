@@ -14,7 +14,7 @@ public interface IColumn {
 	boolean isNullable();
 	IValue getValue();
 	boolean isUnique();
-	String getSqlType(IDialect dialect, IConfiguration configuration);
+	String getSqlType(IConfiguration configuration);
 	void setSqlType(String sqlType);
 
 }

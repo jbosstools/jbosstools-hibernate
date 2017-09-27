@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate.runtime.v_5_2.internal;
+package org.jboss.tools.hibernate.runtime.v_4_3.internal;
 
 import java.util.Properties;
 
@@ -8,7 +8,6 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
 import org.hibernate.mapping.Column;
-import org.hibernate.tool.util.MetadataHelper;
 import org.jboss.tools.hibernate.runtime.common.AbstractColumnFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
@@ -33,7 +32,7 @@ public class ColumnFacadeImpl extends AbstractColumnFacade {
 		Dialect dialectTarget = df.buildDialect(properties, null);
 		return targetColumn.getSqlType(
 				dialectTarget, 
-				MetadataHelper.getMetadata(configurationTarget));
+				configurationTarget.buildMapping());
 	}
 	
 }
