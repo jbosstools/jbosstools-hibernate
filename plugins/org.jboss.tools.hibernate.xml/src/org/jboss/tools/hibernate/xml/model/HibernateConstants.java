@@ -22,7 +22,7 @@ public interface HibernateConstants {
 	public static String CFG_DOC_SYSTEMID_2_0 = "http://hibernate.sourceforge.net/hibernate-configuration-2.0.dtd"; //$NON-NLS-1$
 
 	public static String RVE_DOC_PUBLICID_3_0 = "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN"; //$NON-NLS-1$
-	public static String RVE_DOC_SYSTEMID_3_0 = "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd"; //$NON-NLS-1$
+	public static String RVE_DOC_SYSTEMID_3_0 = "http://hibernate.org/dtd/hibernate-reverse-engineering-3.0.dtd"; //$NON-NLS-1$
 
 	public static String ENTITY_FILE_HIBERNATE_3_0 = "FileHibernate3"; //$NON-NLS-1$
 	public static String ENTITY_HIBERNATE_CACHE_3_0 = "Hibernate3Cache"; //$NON-NLS-1$
