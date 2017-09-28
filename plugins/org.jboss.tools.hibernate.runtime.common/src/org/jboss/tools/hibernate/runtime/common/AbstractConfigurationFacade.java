@@ -23,6 +23,7 @@ implements IConfiguration {
 	private INamingStrategy namingStrategy;
 	private HashMap<String, IPersistentClass> classMappings = null;	
 	private HashSet<ITable> tableMappings = null;
+	private IMappings mappings = null;
 
 	public AbstractConfigurationFacade(
 			IFacadeFactory facadeFactory, 
@@ -142,12 +143,15 @@ implements IConfiguration {
 
 	@Override
 	public IMappings createMappings() {
-		Object targetMappings = Util.invokeMethod(
-				getTarget(), 
-				"createMappings", 
-				new Class[] {}, 
-				new Object[] {});
-		return getFacadeFactory().createMappings(targetMappings);
+		if (mappings == null) {
+			Object targetMappings = Util.invokeMethod(
+					getTarget(), 
+					"createMappings", 
+					new Class[] {}, 
+					new Object[] {});
+			mappings = getFacadeFactory().createMappings(targetMappings);
+		}
+		return mappings;
 	}
 
 	@Override

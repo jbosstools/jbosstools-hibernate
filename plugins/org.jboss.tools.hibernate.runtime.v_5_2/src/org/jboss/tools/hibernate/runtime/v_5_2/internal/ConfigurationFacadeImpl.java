@@ -96,7 +96,9 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	
 	@Override
 	public IMappings createMappings() {
-		buildMappings();
+		if (mappings == null) {
+			buildMappings();
+		}
 		return mappings;
 	}
 	
