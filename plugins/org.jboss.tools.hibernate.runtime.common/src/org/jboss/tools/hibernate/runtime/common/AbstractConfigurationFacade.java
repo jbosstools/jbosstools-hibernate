@@ -150,19 +150,6 @@ implements IConfiguration {
 	}
 	
 	@Override
-	public IMappings createMappings() {
-		if (mappings == null) {
-			Object targetMappings = Util.invokeMethod(
-					getTarget(), 
-					"createMappings", 
-					new Class[] {}, 
-					new Object[] {});
-			mappings = getFacadeFactory().createMappings(targetMappings);
-		}
-		return mappings;
-	}
-
-	@Override
 	public void buildMappings() {
 		Util.invokeMethod(
 				getTarget(), 
@@ -380,6 +367,18 @@ implements IConfiguration {
 			tableMappings.add(getFacadeFactory().createTable(origin.next()));
 		}
 		setTableMappings(tableMappings);
+	}
+
+	private IMappings createMappings() {
+		if (mappings == null) {
+			Object targetMappings = Util.invokeMethod(
+					getTarget(), 
+					"createMappings", 
+					new Class[] {}, 
+					new Object[] {});
+			mappings = getFacadeFactory().createMappings(targetMappings);
+		}
+		return mappings;
 	}
 
 }

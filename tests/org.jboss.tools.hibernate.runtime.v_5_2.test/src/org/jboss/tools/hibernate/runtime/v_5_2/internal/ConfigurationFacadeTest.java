@@ -23,7 +23,6 @@ import org.hibernate.tool.util.MetadataHelper;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
-import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
@@ -150,14 +149,6 @@ public class ConfigurationFacadeTest {
 		Assert.assertNotNull(metadata.getEntityBinding(fooClassName));
 	}
 	
-	@Test 
-	public void testCreateMappings() {
-		IMappings mappingsFacade = configurationFacade.createMappings();
-		Assert.assertNotNull(mappingsFacade);
-		Object object = ((IFacade)mappingsFacade).getTarget();
-		Assert.assertNull(object);
-	}
-
 	@Test
 	public void testBuildMappings() throws Exception {
 		ConfigurationFacadeImpl facade = (ConfigurationFacadeImpl)configurationFacade;

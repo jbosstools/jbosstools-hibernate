@@ -14,7 +14,6 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
-import org.hibernate.cfg.Mappings;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
@@ -25,7 +24,6 @@ import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
-import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
@@ -169,19 +167,6 @@ public class ConfigurationFacadeTest {
 		Assert.assertEquals("bar", configuration.getProperty(Environment.SESSION_FACTORY_NAME));
 	}
 	
-	@Test 
-	public void testCreateMappings() {
-		configuration.setProperty("createMappingsProperty", "a lot of blabla");
-		IMappings mappingsFacade = configurationFacade.createMappings();
-		Assert.assertNotNull(mappingsFacade);
-		Object object = ((IFacade)mappingsFacade).getTarget();
-		Assert.assertTrue(object instanceof Mappings);
-		Mappings mappings = (Mappings)object;
-		Assert.assertEquals(
-				"a lot of blabla", 
-				mappings.getConfigurationProperties().get("createMappingsProperty"));
-	}
-
 	@Test
 	public void testBuildMappings() throws Exception {
 		File fooFile = File.createTempFile("foo", "hbm.xml");

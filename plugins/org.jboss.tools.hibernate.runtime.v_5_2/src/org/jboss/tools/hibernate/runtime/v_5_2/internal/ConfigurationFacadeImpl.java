@@ -102,14 +102,6 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 		mappings.addClass(persistentClass);
 	}
 	
-	@Override
-	public IMappings createMappings() {
-		if (mappings == null) {
-			buildMappings();
-		}
-		return mappings;
-	}
-	
 	@Override 
 	public void buildMappings() {
 		getMetadata();

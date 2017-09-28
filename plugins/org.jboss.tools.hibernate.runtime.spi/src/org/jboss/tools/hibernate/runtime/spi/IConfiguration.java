@@ -23,7 +23,6 @@ public interface IConfiguration {
 	void addClass(IPersistentClass persistentClass);
 	void buildMappings();
 	ISessionFactory buildSessionFactory();
-	IMappings createMappings();
 	Iterator<IPersistentClass> getClassMappings();
 	void setPreferBasicCompositeIds(boolean preferBasicCompositeids);
 	void setReverseEngineeringStrategy(IReverseEngineeringStrategy res);
