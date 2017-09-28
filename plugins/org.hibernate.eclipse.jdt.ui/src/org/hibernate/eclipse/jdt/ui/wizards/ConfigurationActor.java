@@ -49,7 +49,6 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
 import org.hibernate.util.xpl.StringHelper;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
-import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IService;
@@ -162,10 +161,9 @@ public class ConfigurationActor {
 				}
 			}
 			
-			IMappings mappings = result.createMappings();
 			Collection<IPersistentClass> classesCollection = createHierarhyStructure(project, processor.getRootClasses());
 			for (IPersistentClass persistentClass : classesCollection) {
-				mappings.addClass(persistentClass);
+				result.addClass(persistentClass);
 			}
 		}
 		return result;

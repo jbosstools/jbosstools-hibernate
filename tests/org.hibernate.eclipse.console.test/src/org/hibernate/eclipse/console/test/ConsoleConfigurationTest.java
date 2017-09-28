@@ -131,7 +131,6 @@ public class ConsoleConfigurationTest extends TestCase {
 		
 		consoleCfg.build();
 		IConfiguration c = consoleCfg.getConfiguration();
-		IMappings mappings = c.createMappings();
 		IPersistentClass rc = service.newRootClass();
 		rc.setEntityName("java.awt.Button");
 		rc.setClassName( "java.awt.Button" );
@@ -151,7 +150,7 @@ public class ConsoleConfigurationTest extends TestCase {
 		fakeProp.setValue(sv);
 		rc.setIdentifierProperty(fakeProp);
 		rc.setIdentifier(fakeProp.getValue());
-		mappings.addClass(rc);
+		c.addClass(rc);
 
 		consoleCfg.buildSessionFactory();
 		
