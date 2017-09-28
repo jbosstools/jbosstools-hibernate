@@ -142,6 +142,14 @@ implements IConfiguration {
 	}
 
 	@Override
+	public void addClass(IPersistentClass persistentClass) {
+		if (mappings == null) {
+			createMappings();
+		}
+		mappings.addClass(persistentClass);
+	}
+	
+	@Override
 	public IMappings createMappings() {
 		if (mappings == null) {
 			Object targetMappings = Util.invokeMethod(

@@ -95,6 +95,14 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	}
 	
 	@Override
+	public void addClass(IPersistentClass persistentClass) {
+		if (mappings == null) {
+			buildMappings();
+		}
+		mappings.addClass(persistentClass);
+	}
+	
+	@Override
 	public IMappings createMappings() {
 		if (mappings == null) {
 			buildMappings();

@@ -20,6 +20,7 @@ public interface IConfiguration {
 	IConfiguration configure(Document document);
 	IConfiguration configure(File file);
 	IConfiguration configure();
+	void addClass(IPersistentClass persistentClass);
 	void buildMappings();
 	ISessionFactory buildSessionFactory();
 	IMappings createMappings();
