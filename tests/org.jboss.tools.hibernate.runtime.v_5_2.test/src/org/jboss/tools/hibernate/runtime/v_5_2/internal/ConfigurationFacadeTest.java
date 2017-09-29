@@ -18,6 +18,7 @@ import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.util.MetadataHelper;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -279,6 +280,19 @@ public class ConfigurationFacadeTest {
 	@Test
 	public void testGetDefaultSchemaName() {
 		Assert.assertNull(configurationFacade.getDefaultSchemaName());
+	}
+	
+	@Test
+	public void testAddClass() {
+		PersistentClass persistentClass = new RootClass(null);
+		persistentClass.setEntityName("Foo");
+		IPersistentClass persistentClassFacade = 
+				FACADE_FACTORY.createPersistentClass(persistentClass);	
+		Assert.assertNull(configurationFacade.getClassMapping("Foo"));
+		configurationFacade = 
+				FACADE_FACTORY.createConfiguration(configuration);
+		configurationFacade.addClass(persistentClassFacade);
+		Assert.assertEquals(persistentClassFacade, configurationFacade.getClassMapping("Foo"));
 	}
 	
 }

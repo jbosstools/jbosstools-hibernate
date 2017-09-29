@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -41,6 +42,7 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	
 	INamingStrategy namingStrategy = null;
 	IMappings mappings = null;
+	ArrayList<IPersistentClass> addedClasses = new ArrayList<IPersistentClass>();
 
 	public ConfigurationFacadeImpl(IFacadeFactory facadeFactory, Object target) {
 		super(facadeFactory, target);
@@ -96,10 +98,7 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	
 	@Override
 	public void addClass(IPersistentClass persistentClass) {
-		if (mappings == null) {
-			buildMappings();
-		}
-		mappings.addClass(persistentClass);
+		addedClasses.add(persistentClass);
 	}
 	
 	@Override 
@@ -136,6 +135,9 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 		Iterator<PersistentClass> origin = getMetadata().getEntityBindings().iterator();
 		while (origin.hasNext()) {
 			IPersistentClass pc = getFacadeFactory().createPersistentClass(origin.next());
+			classMappings.put(pc.getEntityName(), pc);
+		}
+		for (IPersistentClass pc : addedClasses) {
 			classMappings.put(pc.getEntityName(), pc);
 		}
 		setClassMappings(classMappings);

@@ -19,6 +19,7 @@ import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
@@ -311,6 +312,17 @@ public class ConfigurationFacadeTest {
 		Assert.assertNull(configurationFacade.getDefaultSchemaName());
 		configuration.setProperty(Environment.DEFAULT_SCHEMA, "bar");
 		Assert.assertEquals("bar", configurationFacade.getDefaultSchemaName());
+	}
+	
+	@Test
+	public void testAddClass() {
+		PersistentClass persistentClass = new RootClass();
+		persistentClass.setEntityName("Foo");
+		IPersistentClass persistentClassFacade = 
+				FACADE_FACTORY.createPersistentClass(persistentClass);	
+		Assert.assertNull(configuration.getClassMapping("Foo"));
+		configurationFacade.addClass(persistentClassFacade);
+		Assert.assertEquals(persistentClass, configuration.getClassMapping("Foo"));
 	}
 	
 }

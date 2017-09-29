@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
-import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
@@ -23,7 +22,7 @@ implements IConfiguration {
 	private INamingStrategy namingStrategy;
 	private HashMap<String, IPersistentClass> classMappings = null;	
 	private HashSet<ITable> tableMappings = null;
-	private IMappings mappings = null;
+	private Object mappings = null;
 
 	public AbstractConfigurationFacade(
 			IFacadeFactory facadeFactory, 
@@ -146,7 +145,12 @@ implements IConfiguration {
 		if (mappings == null) {
 			createMappings();
 		}
-		mappings.addClass(persistentClass);
+		Object persistentClassTarget = ((IFacade)persistentClass).getTarget();
+		Util.invokeMethod(
+				mappings,
+				"addClass", 
+				new Class[] { getPersistentClassClass() }, 
+				new Object[] { persistentClassTarget });
 	}
 	
 	@Override
@@ -369,16 +373,22 @@ implements IConfiguration {
 		setTableMappings(tableMappings);
 	}
 
-	private IMappings createMappings() {
-		if (mappings == null) {
-			Object targetMappings = Util.invokeMethod(
+	protected Class<?> getPersistentClassClass() {
+		return Util.getClass(
+				getPersistentClassClassName(), 
+				getFacadeFactoryClassLoader());
+	}
+	
+	protected String getPersistentClassClassName() {
+		return "org.hibernate.mapping.PersistentClass";
+	}
+
+	private void createMappings() {
+		mappings = Util.invokeMethod(
 					getTarget(), 
 					"createMappings", 
 					new Class[] {}, 
 					new Object[] {});
-			mappings = getFacadeFactory().createMappings(targetMappings);
-		}
-		return mappings;
 	}
 
 }
