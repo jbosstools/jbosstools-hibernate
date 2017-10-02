@@ -152,12 +152,7 @@ public class ConfigurationFacadeTest {
 	
 	@Test
 	public void testBuildMappings() throws Exception {
-		ConfigurationFacadeImpl facade = (ConfigurationFacadeImpl)configurationFacade;
-		Assert.assertNull(facade.mappings);
 		configurationFacade.buildMappings();
-		Assert.assertNotNull(facade.mappings);
-		MappingsFacadeImpl mappings = (MappingsFacadeImpl)facade.mappings;
-		Assert.assertSame(configurationFacade, mappings.configuration);
 	}
 	
 	@Test

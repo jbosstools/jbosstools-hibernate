@@ -28,7 +28,6 @@ import org.hibernate.tool.util.MetadataHelper;
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
-import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
@@ -40,7 +39,6 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	EntityResolver entityResolver = null;
 	
 	INamingStrategy namingStrategy = null;
-	IMappings mappings = null;
 	ArrayList<IPersistentClass> addedClasses = new ArrayList<IPersistentClass>();
 
 	public ConfigurationFacadeImpl(IFacadeFactory facadeFactory, Object target) {
@@ -103,7 +101,6 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	@Override 
 	public void buildMappings() {
 		getMetadata();
-		mappings = new MappingsFacadeImpl(this);
 	}
 	
 	@Override
