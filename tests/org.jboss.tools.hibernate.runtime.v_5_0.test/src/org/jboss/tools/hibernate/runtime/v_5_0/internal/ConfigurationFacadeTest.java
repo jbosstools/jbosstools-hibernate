@@ -185,10 +185,8 @@ public class ConfigurationFacadeTest {
 		barWriter.close();
 		configuration.addFile(barFile);
 		ConfigurationFacadeImpl facade = (ConfigurationFacadeImpl)configurationFacade;
-		Assert.assertNull(facade.mappings);
 		Assert.assertNull(facade.metadata);
 		configurationFacade.buildMappings();
-		Assert.assertNotNull(facade.mappings);
 		String collectionName = 
 				"org.jboss.tools.hibernate.runtime.v_5_0.internal.ConfigurationFacadeTest$Bar.fooSet";
 		Collection collection = facade.metadata.getCollectionBinding(collectionName);
