@@ -20,7 +20,6 @@ import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
-import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
@@ -89,10 +88,6 @@ public abstract class AbstractFacadeFactory implements IFacadeFactory {
 	
 	public IExporter createExporter(Object target) {
 		return new AbstractExporterFacade(this, target) {};
-	}
-	
-	public IMappings createMappings(Object target) {
-		return new AbstractMappingsFacade(this, target) {};
 	}
 	
 	@Override

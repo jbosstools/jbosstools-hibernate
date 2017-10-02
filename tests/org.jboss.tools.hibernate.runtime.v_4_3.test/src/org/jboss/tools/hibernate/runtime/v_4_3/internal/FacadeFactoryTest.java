@@ -72,7 +72,6 @@ import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
-import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
@@ -201,16 +200,6 @@ public class FacadeFactoryTest {
 				new TestInvocationHandler());
 		IExporter facade = facadeFactory.createExporter(exporter);
 		Assert.assertSame(exporter, ((IFacade)facade).getTarget());		
-	}
-	
-	@Test
-	public void testCreateMappings() {
-		Mappings mappings = (Mappings)Proxy.newProxyInstance(
-				facadeFactory.getClassLoader(), 
-				new Class[] { Mappings.class }, 
-				new TestInvocationHandler());
-		IMappings facade = facadeFactory.createMappings(mappings);
-		Assert.assertSame(mappings, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test

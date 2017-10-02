@@ -13,7 +13,6 @@ import org.hibernate.Filter;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.internal.SessionFactoryBuilderImpl;
 import org.hibernate.boot.internal.SessionFactoryOptionsImpl;
@@ -82,7 +81,6 @@ import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
-import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
@@ -217,16 +215,6 @@ public class FacadeFactoryTest {
 				new TestInvocationHandler());
 		IExporter facade = facadeFactory.createExporter(exporter);
 		Assert.assertSame(exporter, ((IFacade)facade).getTarget());		
-	}
-	
-	@Test
-	public void testCreateMappings() {
-		Metadata mappings = (Metadata)Proxy.newProxyInstance(
-				facadeFactory.getClassLoader(), 
-				new Class[] { Metadata.class }, 
-				new TestInvocationHandler());
-		IMappings facade = facadeFactory.createMappings(mappings);
-		Assert.assertSame(mappings, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
