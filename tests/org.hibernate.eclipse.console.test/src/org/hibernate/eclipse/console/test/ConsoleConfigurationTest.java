@@ -16,7 +16,6 @@ import org.hibernate.eclipse.console.test.launchcfg.TestConsoleConfigurationPref
 import org.hibernate.eclipse.console.views.QueryPageTabView;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
-import org.jboss.tools.hibernate.runtime.spi.IMappings;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
