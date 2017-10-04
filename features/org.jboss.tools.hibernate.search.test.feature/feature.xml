@@ -26,4 +26,39 @@
          version="0.0.0"
          unpack="false"/>
 
+   <plugin
+         id="org.jboss.tools.hibernate.search.runtime.v_4_0.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.jboss.tools.hibernate.search.runtime.v_5_3.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.jboss.tools.hibernate.search.runtime.v_5_5.1.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.jboss.tools.hibernate.search.runtime.v_5_5.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.jboss.tools.hibernate.search.runtime.v_5_7.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
 </feature>

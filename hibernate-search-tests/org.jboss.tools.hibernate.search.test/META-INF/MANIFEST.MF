@@ -18,3 +18,4 @@ Bundle-ClassPath: .,
  lib/objenesis-2.5.jar
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.jboss.tools.hibernate.search.test.HibernateSearchTestPluginActivator
+Export-Package: org.jboss.tools.hibernate.search.test.db
