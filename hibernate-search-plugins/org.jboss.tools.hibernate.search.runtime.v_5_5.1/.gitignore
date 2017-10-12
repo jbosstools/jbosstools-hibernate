@@ -1,2 +1,4 @@
-/target/
-/lib/
+.classpath
+.project
+.settings/
+lib/
