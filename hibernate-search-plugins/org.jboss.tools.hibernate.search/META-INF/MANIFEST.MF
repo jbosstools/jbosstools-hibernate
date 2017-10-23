@@ -26,6 +26,5 @@ Require-Bundle: org.eclipse.core.runtime,
  org.jboss.tools.hibernate.runtime.spi;bundle-version="5.1.2",
  org.jboss.tools.hibernate.search.runtime.spi;bundle-version="2.0.0",
  org.eclipse.ui;bundle-version="3.109.0"
-Bundle-ClassPath: org.jboss.tools.hibernate.search.jar
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.jboss.tools.hibernate.search.HibernateSearchConsolePlugin
