@@ -10,6 +10,9 @@
 	<name>hibernatetools.docs</name>
 	<packaging>pom</packaging>
 	<modules>
-		<module>reference</module>
+		<!-- <module>reference</module> -->
+		<!-- 
+			[ERROR] Failed to execute goal org.jboss.maven.plugins:maven-jdocbook-plugin:2.3.6:generate (default-generate) on project Hibernatetools_Reference_Guide-en-US: XSLT problem: error rendering [org.apache.fop.fo.ValidationException: "fo:flow" is missing child elements. Required content model: marker* (%block;)+ (See position -1:-1); SystemID: jar:file:/home/nboldt/.m2/repository1/net/sf/docbook/docbook/1.74.0/docbook-1.74.0.jar!/fo/component.xsl; Line#: 798; Column#: -1] on master.xml -> [Help 1]
+		-->
 	</modules>
 </project>
