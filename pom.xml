@@ -14,7 +14,6 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-hibernate.git</tycho.scmUrl>
 	</properties>
 	<modules>
-		<module>docs</module>
 		<module>plugins</module>
 		<module>hibernate-search-plugins</module>
 		<module>tests</module>
@@ -23,6 +22,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<module>itests</module>
 		<module>features</module>
 		<module>site</module>
+		<module>docs</module>
 	</modules>
 	<repositories>
 		<!-- To resolve parent artifact -->
