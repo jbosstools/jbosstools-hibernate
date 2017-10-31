@@ -26,15 +26,21 @@ import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 public class HibernateMappingExporterFacadeTest {
 	
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
-	private static final File TMP_DIR = new File(System.getProperty("java.io.tmpdir"));
+
+	@Rule
+	public TemporaryFolder temporaryFolder = new TemporaryFolder();
 	
 	private IHibernateMappingExporter hibernateMappingExporterFacade = null; 
 	private HibernateMappingExporterExtension hibernateMappingExporter = null;
+	
+	private File outputDir = null;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -42,6 +48,7 @@ public class HibernateMappingExporterFacadeTest {
 				FACADE_FACTORY, null, null);
 		hibernateMappingExporterFacade = 
 				FACADE_FACTORY.createHibernateMappingExporter(hibernateMappingExporter);
+		outputDir = temporaryFolder.getRoot();
 	}
 	
 	@Test
@@ -61,8 +68,6 @@ public class HibernateMappingExporterFacadeTest {
 		persistentClass.setIdentifier(key);
 		configuration.addClass(persistentClass);	
 		hibernateMappingExporter.setConfiguration(configuration);
-		final File outputDir = new File(TMP_DIR, "HibernateMappingExporterFacadeTest.testStart");
-		outputDir.mkdir();
 		hibernateMappingExporter.setOutputDirectory(outputDir);
 		final File fooHbmXml = new File(outputDir, "Foo.hbm.xml");
 		// First without a 'delegate' exporter
@@ -141,8 +146,6 @@ public class HibernateMappingExporterFacadeTest {
 		additionalContext.put("date", new Date().toString());
 		additionalContext.put("version", Version.getDefault().toString());
 		additionalContext.put("c2h", c2h);
-		final File outputDir = new File(TMP_DIR, "HibernateMappingExporterFacadeTest.testExportPOJO");
-		outputDir.mkdir();
 		hibernateMappingExporter.setOutputDirectory(outputDir);
 		Method setTemplateHelperMethod = AbstractExporter.class.getDeclaredMethod(
 				"setTemplateHelper", 
