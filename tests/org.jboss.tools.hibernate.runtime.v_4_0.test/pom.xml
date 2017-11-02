@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.jboss.tools.hibernatetools</groupId>
 		<artifactId>tests</artifactId>
-		<version>5.2.1-SNAPSHOT</version>
+		<version>5.2.2-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.hibernatetools.tests</groupId>
 	<artifactId>org.jboss.tools.hibernate.runtime.v_4_0.test</artifactId> 
