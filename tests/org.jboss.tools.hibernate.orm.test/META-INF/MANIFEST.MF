@@ -6,6 +6,10 @@ Bundle-Version: 5.2.2.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %Bundle-Vendor.0
 Bundle-Localization: plugin
-Require-Bundle: org.junit;bundle-version="4.12.0"
+Require-Bundle: org.junit;bundle-version="4.12.0",
+ org.hibernate.eclipse.console;bundle-version="5.2.2",
+ org.jboss.tools.hibernate.runtime.spi;bundle-version="5.2.2",
+ org.hibernate.eclipse
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Import-Package: org.eclipse.osgi.util
