@@ -54,7 +54,7 @@ public class TestConsoleConfigurationPreferences implements ConsoleConfiguration
 	}
 
 	public String getName() {
-		return ConsoleTestMessages.ConsoleConfigurationTest_fake_prefs;
+		return TestConsoleMessages.ConsoleConfigurationTest_fake_prefs;
 	}
 
 	public String getEntityResolverName() {

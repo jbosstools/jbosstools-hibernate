@@ -2,8 +2,8 @@ package org.jboss.tools.hibernate.orm.test.utils;
 
 import org.eclipse.osgi.util.NLS;
 
-public class ConsoleTestMessages extends NLS {
-	private static final String BUNDLE_NAME = "org.hibernate.eclipse.console.test.ConsoleTestMessages"; //$NON-NLS-1$
+public class TestConsoleMessages extends NLS {
+	private static final String BUNDLE_NAME = "org.jboss.tools.hibernate.orm.test.utils.ConsoleTestMessages"; //$NON-NLS-1$
 	public static String BeanShellIntegrationTest_result;
 	public static String ConsoleConfigurationTest_factory_already_exists;
 	public static String ConsoleConfigurationTest_fake_prefs;
@@ -47,9 +47,9 @@ public class ConsoleTestMessages extends NLS {
 	public static String UpdateConfigurationTest_error_customising_file_for_package;
 	static {
 		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, ConsoleTestMessages.class);
+		NLS.initializeMessages(BUNDLE_NAME, TestConsoleMessages.class);
 	}
 
-	private ConsoleTestMessages() {
+	private TestConsoleMessages() {
 	}
 }

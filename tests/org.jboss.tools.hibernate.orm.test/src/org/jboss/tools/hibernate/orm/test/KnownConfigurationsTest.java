@@ -10,7 +10,7 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.KnownConfigurationsAdapter;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
-import org.jboss.tools.hibernate.orm.test.utils.ConsoleTestMessages;
+import org.jboss.tools.hibernate.orm.test.utils.TestConsoleMessages;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.junit.Assert;
 import org.junit.Test;
@@ -24,14 +24,14 @@ public class KnownConfigurationsTest {
 			added.add(root);
 		}
 		public void sessionFactoryBuilt(ConsoleConfiguration ccfg, ISessionFactory builtFactory) {
-			Assert.fail(ConsoleTestMessages.KnownConfigurationsTest_no_sf_should_be_build);
+			Assert.fail(TestConsoleMessages.KnownConfigurationsTest_no_sf_should_be_build);
 		}
 		public void sessionFactoryClosing(ConsoleConfiguration configuration, ISessionFactory closingFactory) {
-			Assert.fail(ConsoleTestMessages.KnownConfigurationsTest_no_sf_should_be_closed);
+			Assert.fail(TestConsoleMessages.KnownConfigurationsTest_no_sf_should_be_closed);
 		}
 		public void configurationRemoved(ConsoleConfiguration root, boolean forUpdate) {
 			if(!added.remove(root)) {
-				Assert.fail(ConsoleTestMessages.KnownConfigurationsTest_trying_remove_non_existing_console);
+				Assert.fail(TestConsoleMessages.KnownConfigurationsTest_trying_remove_non_existing_console);
 			}
 		}
 	}
@@ -61,7 +61,7 @@ public class KnownConfigurationsTest {
 			public File[] getMappingFiles() {return null;}
 			public URL[] getCustomClassPathURLS() {return null;}
 			public String getName() {
-				return ConsoleTestMessages.KnownConfigurationsTest_fake_prefs;
+				return TestConsoleMessages.KnownConfigurationsTest_fake_prefs;
 			}
 			public String getEntityResolverName() {return null;}
 			public ConfigurationMode getConfigurationMode() {return null;}
@@ -73,7 +73,7 @@ public class KnownConfigurationsTest {
 		};
 
 		ConsoleConfigurationPreferences preferences2 = new ConsoleConfigurationPreferences() {
-			String name = ConsoleTestMessages.KnownConfigurationsTest_new_test;
+			String name = TestConsoleMessages.KnownConfigurationsTest_new_test;
 			public void setName(String name) {this.name = name;}
 			public void readStateFrom(Element element) {}
 			public void writeStateTo(Element node) {}
