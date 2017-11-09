@@ -20,7 +20,6 @@ public class ConsolePluginAllTests {
 		TestSuite suite = new TestSuite(
 				ConsoleTestMessages.ConsolePluginAllTests_test_for );
 
-		suite.addTestSuite(QueryParametersTest.class);
 		suite.addTestSuite(PerspectiveTest.class);
 		suite.addTestSuite(ConsoleConfigurationTest.class);
 		suite.addTestSuite(JavaFormattingTest.class);
