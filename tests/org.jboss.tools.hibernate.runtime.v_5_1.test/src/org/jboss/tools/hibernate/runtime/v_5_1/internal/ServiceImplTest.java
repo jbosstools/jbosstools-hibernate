@@ -336,6 +336,7 @@ public class ServiceImplTest {
 		Assert.assertNotNull(target);
 		Assert.assertTrue(target instanceof Table);
 		Assert.assertEquals("foo", ((Table)target).getName());
+		Assert.assertNotNull(((Table)target).getPrimaryKey());
 	}
 	
 	@Test

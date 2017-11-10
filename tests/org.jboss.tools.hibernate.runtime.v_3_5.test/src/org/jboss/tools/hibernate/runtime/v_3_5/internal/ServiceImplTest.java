@@ -10,12 +10,14 @@ import org.hibernate.cfg.JDBCReaderFactory;
 import org.hibernate.cfg.reveng.DatabaseCollector;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.JDBCReader;
+import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -73,4 +75,15 @@ public class ServiceImplTest {
 		Assert.assertEquals("org.hibernate.dialect.H2Dialect", dialect);
 	}
 
+	@Test
+	public void testNewTable() {
+		ITable table = service.newTable("foo");
+		Assert.assertNotNull(table);
+		Object target = ((IFacade)table).getTarget();
+		Assert.assertNotNull(target);
+		Assert.assertTrue(target instanceof Table);
+		Assert.assertEquals("foo", ((Table)target).getName());
+		Assert.assertNotNull(((Table)target).getPrimaryKey());
+	}
+	
 }

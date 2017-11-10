@@ -267,7 +267,9 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public ITable newTable(String name) {
-		return facadeFactory.createTable(new Table(name));
+		Table target = new Table(name);
+		target.setPrimaryKey(new PrimaryKey(target));
+		return facadeFactory.createTable(target);
 	}
 
 	@Override
