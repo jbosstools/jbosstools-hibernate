@@ -108,8 +108,6 @@ public interface IService {
 
 	IPersistentClass newRootClass();
 
-	IPrimaryKey newPrimaryKey();
-
 	boolean isInitialized(Object object);
 
 	List<String> getJPAMappingFilePaths(String persistenceUnitName,

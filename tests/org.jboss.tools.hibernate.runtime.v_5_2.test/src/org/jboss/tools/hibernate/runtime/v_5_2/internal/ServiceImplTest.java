@@ -31,7 +31,6 @@ import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
-import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -58,7 +57,6 @@ import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
-import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
@@ -520,15 +518,6 @@ public class ServiceImplTest {
 		Object target = ((IFacade)rootClass).getTarget();
 		Assert.assertNotNull(target);
 		Assert.assertTrue(target instanceof RootClass);
-	}
-	
-	@Test
-	public void testNewPrimaryKey() {
-		IPrimaryKey primaryKey = service.newPrimaryKey();
-		Assert.assertNotNull(primaryKey);
-		Object target = ((IFacade)primaryKey).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof PrimaryKey);
 	}
 	
 	@Test

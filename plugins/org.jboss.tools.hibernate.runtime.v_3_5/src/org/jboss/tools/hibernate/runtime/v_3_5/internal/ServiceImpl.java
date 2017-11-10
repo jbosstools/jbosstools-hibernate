@@ -72,7 +72,6 @@ import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
-import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
@@ -413,11 +412,6 @@ public class ServiceImpl extends AbstractService implements IService {
 	@Override
 	public IPersistentClass newRootClass() {
 		return facadeFactory.createPersistentClass(new RootClass());
-	}
-
-	@Override
-	public IPrimaryKey newPrimaryKey() {
-		return facadeFactory.createPrimaryKey(new PrimaryKey());
 	}
 
 	@Override
