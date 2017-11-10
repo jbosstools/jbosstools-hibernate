@@ -50,22 +50,6 @@ implements ITable {
 	}
 	
 	@Override
-	public void setPrimaryKey(IPrimaryKey pk) {
-		assert pk instanceof IFacade;
-		Object pkTarget = Util.invokeMethod(
-				pk, 
-				"getTarget", 
-				new Class[] {}, 
-				new Object[] {});
-		Util.invokeMethod(
-				getTarget(), 
-				"setPrimaryKey", 
-				new Class[] { getPrimaryKeyClass() }, 
-				new Object[] { pkTarget });
-		primaryKey = pk;
-	}
-
-	@Override
 	public String getCatalog() {
 		return (String)Util.invokeMethod(
 				getTarget(), 

@@ -166,7 +166,6 @@ public class ConsoleConfigurationTest {
 		pk.addColumn(column);
 		rc.setTable(table);
 		table.addColumn(column);
-		table.setPrimaryKey(pk);
 		IProperty fakeProp = service.newProperty();
 		fakeProp.setName("label");
 		IValue sv = service.newSimpleValue();

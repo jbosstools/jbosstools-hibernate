@@ -6,7 +6,6 @@ public interface ITable {
 
 	String getName();
 	void addColumn(IColumn column);
-	void setPrimaryKey(IPrimaryKey pk);
 	String getCatalog();
 	String getSchema();
 	IPrimaryKey getPrimaryKey();

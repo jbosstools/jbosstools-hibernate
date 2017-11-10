@@ -42,17 +42,6 @@ public class TableFacadeTest {
 	}
 	
 	@Test
-	public void testSetPrimaryKey() {
-		PrimaryKey primaryKey = new PrimaryKey();
-		IPrimaryKey primaryKeyFacade = FACADE_FACTORY.createPrimaryKey(primaryKey);
-		Table table = new Table();
-		ITable tableFacade = FACADE_FACTORY.createTable(table);
-		Assert.assertNull(table.getPrimaryKey());
-		tableFacade.setPrimaryKey(primaryKeyFacade);
-		Assert.assertSame(primaryKey, table.getPrimaryKey());
-	}
-	
-	@Test
 	public void testGetCatalog() {
 		Table table = new Table();
 		ITable tableFacade = FACADE_FACTORY.createTable(table);
