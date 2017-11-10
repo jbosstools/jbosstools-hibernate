@@ -1,6 +1,7 @@
-package org.hibernate.eclipse.console.test;
+package org.jboss.tools.hibernate.orm.test;
 
-import junit.framework.TestCase;
+import java.io.File;
+import java.io.FileWriter;
 
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
@@ -12,8 +13,9 @@ import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.QueryInputModel;
 import org.hibernate.console.QueryPage;
-import org.hibernate.eclipse.console.test.launchcfg.TestConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.views.QueryPageTabView;
+import org.jboss.tools.hibernate.orm.test.utils.TestConsoleConfigurationPreferences;
+import org.jboss.tools.hibernate.orm.test.utils.TestConsoleMessages;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -24,29 +26,51 @@ import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
-public class ConsoleConfigurationTest extends TestCase {
+public class ConsoleConfigurationTest {
 
+	private static final String HIBERNATE_CFG_XML = 
+			"<!DOCTYPE hibernate-configuration PUBLIC                               " +
+			"	'-//Hibernate/Hibernate Configuration DTD 3.0//EN'                  " +
+			"	'http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd'> " +
+			"                                                                       " +
+			"<hibernate-configuration>                                              " +
+			"	<session-factory/>                                                  " + 
+			"</hibernate-configuration>                                             " ;		
+		
+	@Rule
+	public TemporaryFolder temporaryFolder = new TemporaryFolder();
+		
+	private File cfgXmlFile = null;
 	private ConsoleConfiguration consoleCfg;
 	private IService service;
 	private ITypeFactory typeFactory;
 
-	public ConsoleConfigurationTest(String name) {
-		super( name );
-	}
-
-	protected void setUp() throws Exception {
-		super.setUp();
-		TestConsoleConfigurationPreferences cfgprefs = new TestConsoleConfigurationPreferences();
+	@Before
+	public void setUp() throws Exception {
+		cfgXmlFile = new File(temporaryFolder.getRoot(), "hibernate.cfg.xml");
+		FileWriter fw = new FileWriter(cfgXmlFile);
+		fw.write(HIBERNATE_CFG_XML);
+		fw.close();
+		TestConsoleConfigurationPreferences cfgprefs = 
+				new TestConsoleConfigurationPreferences(cfgXmlFile);
 		consoleCfg = new ConsoleConfiguration(cfgprefs);
 		service = consoleCfg.getHibernateExtension().getHibernateService();
 		typeFactory = service.newTypeFactory();
 		KnownConfigurations.getInstance().addConfiguration(consoleCfg, true);
 	}
 
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		KnownConfigurations.getInstance().removeAllConfigurations();
 		consoleCfg = null;
+		cfgXmlFile = null;
 	}
 
 	static class MockCCListener extends ConcoleConfigurationAdapter {
@@ -74,50 +98,53 @@ public class ConsoleConfigurationTest extends TestCase {
 		}
 	}
 
+	@Test
 	public void testBuildConfiguration() {
 
 		MockCCListener listener = new MockCCListener();
-		assertTrue(consoleCfg.getConsoleConfigurationListeners().length==1);
+		Assert.assertTrue(consoleCfg.getConsoleConfigurationListeners().length==1);
 		consoleCfg.addConsoleConfigurationListener(listener);
 
 		consoleCfg.build();
 		
-		assertEquals(0, listener.factoryBuilt);
+		Assert.assertEquals(0, listener.factoryBuilt);
 		consoleCfg.buildSessionFactory();
-		assertEquals(1, listener.factoryBuilt);
+		Assert.assertEquals(1, listener.factoryBuilt);
 
 		try {
 			consoleCfg.buildSessionFactory();
-			fail(ConsoleTestMessages.ConsoleConfigurationTest_factory_already_exists);
+			Assert.fail(TestConsoleMessages.ConsoleConfigurationTest_factory_already_exists);
 		} catch (HibernateConsoleRuntimeException hcre) {
 
 		}
 
 		QueryPage qp = consoleCfg.executeHQLQuery("from java.lang.Object"); //$NON-NLS-1$
-		assertNotNull(qp);
-		assertEquals(1, listener.queryCreated);
+		Assert.assertNotNull(qp);
+		Assert.assertEquals(1, listener.queryCreated);
 
 		consoleCfg.closeSessionFactory();
-		assertEquals(1, listener.factoryClosing);
+		Assert.assertEquals(1, listener.factoryClosing);
 
 
 	}
 	
+	@Test
 	public void testHQLComments() {
 		consoleCfg.build();
 		consoleCfg.buildSessionFactory();
 
 		try {
 			consoleCfg.buildSessionFactory();
-			fail(ConsoleTestMessages.ConsoleConfigurationTest_factory_already_exists);
+			Assert.fail(TestConsoleMessages.ConsoleConfigurationTest_factory_already_exists);
 		} catch (HibernateConsoleRuntimeException hcre) {
 
 		}
 
 		QueryPage qp = consoleCfg.executeHQLQuery("from java.lang.Object --this is my comment"); //$NON-NLS-1$
-		assertNotNull(qp);
+		Assert.assertNotNull(qp);
 	}
 	
+	@Test
 	public void testHQLListParameters() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 		//fix for https://issues.jboss.org/browse/JBIDE-9392
 		//the view calls jdbc connection
@@ -134,9 +161,9 @@ public class ConsoleConfigurationTest extends TestCase {
 		rc.setEntityName("java.awt.Button");
 		rc.setClassName( "java.awt.Button" );
 		IColumn column = service.newColumn("label");
-		IPrimaryKey pk = service.newPrimaryKey();
-		pk.addColumn(column);
 		ITable table = service.newTable("faketable");
+		IPrimaryKey pk = table.getPrimaryKey();
+		pk.addColumn(column);
 		rc.setTable(table);
 		table.addColumn(column);
 		table.setPrimaryKey(pk);
@@ -163,7 +190,7 @@ public class ConsoleConfigurationTest extends TestCase {
 		model.addParameter(paramOrdered);
 		
 		QueryPage qp = consoleCfg.executeHQLQuery("select count(*) from java.awt.Button where 1 in ( ?, :a, :b )", model); //$NON-NLS-1$
-		assertNotNull(qp);
+		Assert.assertNotNull(qp);
 		try{
 			qp.getList();//execute the query
 		} catch (Exception e){
