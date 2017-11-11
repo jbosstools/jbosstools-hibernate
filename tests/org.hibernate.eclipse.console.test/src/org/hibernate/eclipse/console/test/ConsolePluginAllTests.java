@@ -20,7 +20,6 @@ public class ConsolePluginAllTests {
 		TestSuite suite = new TestSuite(
 				ConsoleTestMessages.ConsolePluginAllTests_test_for );
 
-		suite.addTestSuite(JavaFormattingTest.class);
 		suite.addTestSuite(RefactoringTest.class);
 		suite.addTestSuite(HQLEditorTest.class);
 		suite.addTestSuite(CriteriaEditorTest.class);
