@@ -8,7 +8,7 @@
   * Contributor:
   *     Red Hat, Inc. - initial API and implementation
   ******************************************************************************/
-package org.hibernate.eclipse.console.test;
+package org.jboss.tools.hibernate.orm.test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,8 +16,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -27,18 +25,23 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.internal.launching.DefaultProjectClasspathEntry;
 import org.eclipse.jdt.internal.launching.RuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
-import org.hibernate.eclipse.console.test.launchcfg.TestLaunchConfig;
-import org.hibernate.eclipse.console.test.project.SimpleTestProject;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
 import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
 import org.hibernate.eclipse.launch.core.refactoring.HibernateRefactoringUtil;
+import org.jboss.tools.hibernate.orm.test.utils.TestConsoleMessages;
+import org.jboss.tools.hibernate.orm.test.utils.TestLaunchConfig;
+import org.jboss.tools.hibernate.orm.test.utils.project.SimpleTestProject;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * @author Dmitry Geraskov
- *
+ * @author koen
  */
 @SuppressWarnings("restriction")
-public class RefactoringTest extends TestCase {
+public class RefactoringTest {
 
 	private static final String HBMTEMPLATE0 = "hbmtemplate0"; //$NON-NLS-1$
 	private static final String HBMTEMPLATE0_PROPERTIES = HibernateLaunchConstants.ATTR_EXPORTERS + '.' + HBMTEMPLATE0 + ".properties"; //$NON-NLS-1$
@@ -60,8 +63,8 @@ public class RefactoringTest extends TestCase {
 
 	private String oldPathStr = null;
 
-	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		oldPathStr = oldPathElements[0];
 		String notChangedPathStr = oldPathElements[0] + 1;
 		for (int i = 1; i < oldPathElements.length; i++) {
@@ -124,98 +127,8 @@ public class RefactoringTest extends TestCase {
 		}
 	}
 
-	public void testFindChanged(){
-		for (int i = 0; i < oldPathElements.length - 1; i++) {
-			IPath oldPathPart = generateOldPathForSegment(i);
-			try {
-				assertTrue(HibernateRefactoringUtil.isConsoleConfigAffected(testStrConfig, oldPathPart));
-				assertTrue(HibernateRefactoringUtil.isConsoleConfigAffected(testStrListConfig, oldPathPart));
-				assertFalse(HibernateRefactoringUtil.isConsoleConfigAffected(testNotChangedConfig, oldPathPart));
-				assertTrue(HibernateRefactoringUtil.isCodeGenerationConfigAffected(testCodeGenerationConfig, oldPathPart));
-				assertFalse(HibernateRefactoringUtil.isConsoleConfigAffected(testNotChangedCodeGenerationConfig, oldPathPart));
-			} catch (CoreException e) {
-				fail(ConsoleTestMessages.RefactoringTest_exception_while_findchange_launch_config_processing + e.getMessage());
-			}
-		}
-	}
-
-	public void testClassPathChanges(){
-		for (int i = 0; i < oldPathElements.length - 1; i++) {
-			IPath oldPathPart = generateOldPathForSegment(i);
-			for (int j = 0; j < runtimeClasspathEntries.length; j++) {
-				if (i <= affectSegmentsCount[j]){
-					assertTrue(HibernateRefactoringUtil.isRuntimeClassPathEntriesAffected(new IRuntimeClasspathEntry[]{runtimeClasspathEntries[j]}, oldPathPart));
-					try {
-						IPath newPath = generateNewPathForSegment(i);
-						String oldMemento = runtimeClasspathEntries[j].getMemento();
-						List<String> oldMementos = new ArrayList<String>();
-						List<String> newMementos = new ArrayList<String>();
-						oldMementos.add(runtimeClasspathEntries[j].getMemento());
-						boolean isChanged = HibernateRefactoringUtil.updateClasspathEntries(new IRuntimeClasspathEntry[]{runtimeClasspathEntries[j]}, oldMementos, newMementos, oldPathPart, newPath);
-						assertTrue(isChanged);
-						String newMemento = newMementos.get(0);
-						checkMementoChanged(oldMemento, newMemento, oldPathPart, newPath);
-					} catch (CoreException e) {
-						fail(ConsoleTestMessages.RefactoringTest_coreexception_occurred_work_with_memento + e.getMessage());
-					}
-				} else {
-					assertFalse(HibernateRefactoringUtil.isRuntimeClassPathEntriesAffected(new IRuntimeClasspathEntry[]{runtimeClasspathEntries[j]}, oldPathPart));
-				}
-			}
-		}
-	}
-
-	public void testProjectNameChange(){
-		int segmentNum = 0;
-		try {
-			updatePaths(generateOldPathForSegment(segmentNum), generateNewPathForSegment(segmentNum));
-			Path truePath = generateTruePathForSegment(segmentNum);
-			checkPaths(truePath);
-			checkAdditional(truePath);	
-		} catch (CoreException e) {
-			fail(ConsoleTestMessages.RefactoringTest_exception_while_projnamechange_refactor);
-		}
-	}
-
-	public void testSrcNameChange(){
-		int segmentNum = 1;
-		try {
-			updatePaths(generateOldPathForSegment(segmentNum), generateNewPathForSegment(segmentNum));
-			Path truePath = generateTruePathForSegment(segmentNum);
-			checkPaths(truePath);
-			checkAdditional(truePath);		
-		} catch (CoreException e) {
-			fail(ConsoleTestMessages.RefactoringTest_exception_while_srcnamechange_refactor);
-		}
-	}
-
-	public void testPackNameChange(){
-		int segmentNum = 2;
-		try {
-			updatePaths(generateOldPathForSegment(segmentNum), generateNewPathForSegment(segmentNum));
-			Path truePath = generateTruePathForSegment(segmentNum);
-			checkPaths(truePath);
-			checkAdditional(truePath);
-		} catch (CoreException e) {
-			fail(ConsoleTestMessages.RefactoringTest_exception_while_packnamechange_refactor);
-		}
-	}
-
-	public void testFileNameChange(){
-		int segmentNum = 3;
-		try {
-			updatePaths(generateOldPathForSegment(segmentNum), generateNewPathForSegment(segmentNum));
-			checkPaths(generateTruePathForSegment(segmentNum));
-		} catch (CoreException e) {
-			fail(ConsoleTestMessages.RefactoringTest_exception_while_filenamechange_refactor);
-		}
-	}
-
-	/* (non-Javadoc)
-	 * @see junit.framework.TestCase#tearDown()
-	 */
-	@Override
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		project.deleteIProject();
 		project = null;
 		testStrConfig  = null;
@@ -224,6 +137,99 @@ public class RefactoringTest extends TestCase {
 		runtimeClasspathEntries = null;
 		affectSegmentsCount = null;
 		oldPathStr = null;
+	}
+
+	@Test
+	public void testFindChanged(){
+		for (int i = 0; i < oldPathElements.length - 1; i++) {
+			IPath oldPathPart = generateOldPathForSegment(i);
+			try {
+				Assert.assertTrue(HibernateRefactoringUtil.isConsoleConfigAffected(testStrConfig, oldPathPart));
+				Assert.assertTrue(HibernateRefactoringUtil.isConsoleConfigAffected(testStrListConfig, oldPathPart));
+				Assert.assertFalse(HibernateRefactoringUtil.isConsoleConfigAffected(testNotChangedConfig, oldPathPart));
+				Assert.assertTrue(HibernateRefactoringUtil.isCodeGenerationConfigAffected(testCodeGenerationConfig, oldPathPart));
+				Assert.assertFalse(HibernateRefactoringUtil.isConsoleConfigAffected(testNotChangedCodeGenerationConfig, oldPathPart));
+			} catch (CoreException e) {
+				Assert.fail(TestConsoleMessages.RefactoringTest_exception_while_findchange_launch_config_processing + e.getMessage());
+			}
+		}
+	}
+
+	@Test
+	public void testClassPathChanges(){
+		for (int i = 0; i < oldPathElements.length - 1; i++) {
+			IPath oldPathPart = generateOldPathForSegment(i);
+			for (int j = 0; j < runtimeClasspathEntries.length; j++) {
+				if (i <= affectSegmentsCount[j]){
+					Assert.assertTrue(HibernateRefactoringUtil.isRuntimeClassPathEntriesAffected(new IRuntimeClasspathEntry[]{runtimeClasspathEntries[j]}, oldPathPart));
+					try {
+						IPath newPath = generateNewPathForSegment(i);
+						String oldMemento = runtimeClasspathEntries[j].getMemento();
+						List<String> oldMementos = new ArrayList<String>();
+						List<String> newMementos = new ArrayList<String>();
+						oldMementos.add(runtimeClasspathEntries[j].getMemento());
+						boolean isChanged = HibernateRefactoringUtil.updateClasspathEntries(new IRuntimeClasspathEntry[]{runtimeClasspathEntries[j]}, oldMementos, newMementos, oldPathPart, newPath);
+						Assert.assertTrue(isChanged);
+						String newMemento = newMementos.get(0);
+						checkMementoChanged(oldMemento, newMemento, oldPathPart, newPath);
+					} catch (CoreException e) {
+						Assert.fail(TestConsoleMessages.RefactoringTest_coreexception_occurred_work_with_memento + e.getMessage());
+					}
+				} else {
+					Assert.assertFalse(HibernateRefactoringUtil.isRuntimeClassPathEntriesAffected(new IRuntimeClasspathEntry[]{runtimeClasspathEntries[j]}, oldPathPart));
+				}
+			}
+		}
+	}
+
+	@Test
+	public void testProjectNameChange(){
+		int segmentNum = 0;
+		try {
+			updatePaths(generateOldPathForSegment(segmentNum), generateNewPathForSegment(segmentNum));
+			Path truePath = generateTruePathForSegment(segmentNum);
+			checkPaths(truePath);
+			checkAdditional(truePath);	
+		} catch (CoreException e) {
+			Assert.fail(TestConsoleMessages.RefactoringTest_exception_while_projnamechange_refactor);
+		}
+	}
+
+	@Test
+	public void testSrcNameChange(){
+		int segmentNum = 1;
+		try {
+			updatePaths(generateOldPathForSegment(segmentNum), generateNewPathForSegment(segmentNum));
+			Path truePath = generateTruePathForSegment(segmentNum);
+			checkPaths(truePath);
+			checkAdditional(truePath);		
+		} catch (CoreException e) {
+			Assert.fail(TestConsoleMessages.RefactoringTest_exception_while_srcnamechange_refactor);
+		}
+	}
+
+	@Test
+	public void testPackNameChange(){
+		int segmentNum = 2;
+		try {
+			updatePaths(generateOldPathForSegment(segmentNum), generateNewPathForSegment(segmentNum));
+			Path truePath = generateTruePathForSegment(segmentNum);
+			checkPaths(truePath);
+			checkAdditional(truePath);
+		} catch (CoreException e) {
+			Assert.fail(TestConsoleMessages.RefactoringTest_exception_while_packnamechange_refactor);
+		}
+	}
+
+	@Test
+	public void testFileNameChange(){
+		int segmentNum = 3;
+		try {
+			updatePaths(generateOldPathForSegment(segmentNum), generateNewPathForSegment(segmentNum));
+			checkPaths(generateTruePathForSegment(segmentNum));
+		} catch (CoreException e) {
+			Assert.fail(TestConsoleMessages.RefactoringTest_exception_while_filenamechange_refactor);
+		}
 	}
 
 	private void updatePaths(Path oldPath, Path newPath) throws CoreException{
@@ -264,33 +270,32 @@ public class RefactoringTest extends TestCase {
 				++last_index;
 			}
 		}
-		assertTrue(count_new == count_old);
+		Assert.assertTrue(count_new == count_old);
 	}
 
 	@SuppressWarnings("unchecked")
 	private void checkPaths(Path truePath) throws CoreException{
 		String newPath = (String) testStrConfig.getNewAttribute(IConsoleConfigurationLaunchConstants.CFG_XML_FILE);
-		assertEquals(truePath.makeAbsolute(), new Path(newPath).makeAbsolute());
+		Assert.assertEquals(truePath.makeAbsolute(), new Path(newPath).makeAbsolute());
 		newPath = ((List<String>) testStrListConfig.getNewAttribute(IConsoleConfigurationLaunchConstants.FILE_MAPPINGS)).get(0);
-		assertEquals(truePath.makeAbsolute(), new Path(newPath).makeAbsolute());
+		Assert.assertEquals(truePath.makeAbsolute(), new Path(newPath).makeAbsolute());
 		
 		newPath = (String) testCodeGenerationConfig.getNewAttribute(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER_SETTINGS);
-		assertEquals(truePath.makeAbsolute(), new Path(newPath).makeAbsolute());
+		Assert.assertEquals(truePath.makeAbsolute(), new Path(newPath).makeAbsolute());
 	}
 	
-	@SuppressWarnings("unchecked")
 	private void checkAdditional(Path truePath) throws CoreException {
 		String newPath = (String) testCodeGenerationConfig.getNewAttribute(HibernateLaunchConstants.ATTR_TEMPLATE_DIR);
-		assertEquals(truePath.removeLastSegments(1).makeAbsolute(), new Path(newPath).makeAbsolute());
+		Assert.assertEquals(truePath.removeLastSegments(1).makeAbsolute(), new Path(newPath).makeAbsolute());
 		newPath = (String) testCodeGenerationConfig.getNewAttribute(HibernateLaunchConstants.ATTR_OUTPUT_DIR);
-		assertEquals(truePath.removeLastSegments(1).makeAbsolute(), new Path(newPath).makeAbsolute());
+		Assert.assertEquals(truePath.removeLastSegments(1).makeAbsolute(), new Path(newPath).makeAbsolute());
 		Map<String, String> props = testCodeGenerationConfig.getAttribute(HBMTEMPLATE0_PROPERTIES,
 				new HashMap<String, String>());
-		assertEquals(truePath.removeLastSegments(1).makeAbsolute(), new Path(props.get(OUTDIR)).makeAbsolute());
+		Assert.assertEquals(truePath.removeLastSegments(1).makeAbsolute(), new Path(props.get(OUTDIR)).makeAbsolute());
 	}
 
 	private Path generateNewPathForSegment(int segmentNum){
-		assertTrue(ConsoleTestMessages.RefactoringTest_segmentnum_too_match, segmentNum < oldPathElements.length);
+		Assert.assertTrue(TestConsoleMessages.RefactoringTest_segmentnum_too_match, segmentNum < oldPathElements.length);
 		String newPath = ""; //$NON-NLS-1$
 		for (int i = 0; i < segmentNum; i++) {
 			newPath += oldPathElements[i] + "/"; //$NON-NLS-1$
@@ -300,7 +305,7 @@ public class RefactoringTest extends TestCase {
 	}
 
 	private Path generateOldPathForSegment(int segmentNum){
-		assertTrue(ConsoleTestMessages.RefactoringTest_segmentnum_too_match, segmentNum < oldPathElements.length);
+		Assert.assertTrue(TestConsoleMessages.RefactoringTest_segmentnum_too_match, segmentNum < oldPathElements.length);
 		String oldPathPart = ""; //$NON-NLS-1$
 		for (int i = 0; i <= segmentNum; i++) {
 			oldPathPart += oldPathElements[i] + "/"; //$NON-NLS-1$
@@ -309,7 +314,7 @@ public class RefactoringTest extends TestCase {
 	}
 
 	private Path generateTruePathForSegment(int segmentNum){
-		assertTrue(ConsoleTestMessages.RefactoringTest_segmentnum_too_match, segmentNum < oldPathElements.length);
+		Assert.assertTrue(TestConsoleMessages.RefactoringTest_segmentnum_too_match, segmentNum < oldPathElements.length);
 		String newPath = ""; //$NON-NLS-1$
 		for (int i = 0; i < oldPathElements.length; i++) {
 			if (i != segmentNum){
