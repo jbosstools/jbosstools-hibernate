@@ -1,26 +1,26 @@
-package org.hibernate.eclipse.console.test;
+package org.jboss.tools.hibernate.orm.test;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import junit.framework.TestCase;
 
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.hibernate.eclipse.console.model.impl.ExporterDefinition;
 import org.hibernate.eclipse.console.model.impl.ExporterFactory;
 import org.hibernate.eclipse.console.model.impl.ExporterProperty;
 import org.hibernate.eclipse.launch.ExporterFactoryPropertySource;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-public class ExporterTest extends TestCase {
+public class ExporterTest {
 
 	private HashMap<String, ExporterProperty> map;
 	private ExporterFactory factory;
 	private ExporterDefinition definition;
 	
-	
-	protected void setUp() throws Exception {
-		super.setUp();
-		
+	@Before
+	public void setUp() throws Exception {
 		map = new HashMap<String, ExporterProperty>();
 		map.put("ejb3", new ExporterProperty("ejb3", "Use ejb3 syntax", "true", true)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		definition = new ExporterDefinition("exporterClass",  //$NON-NLS-1$
@@ -34,71 +34,76 @@ public class ExporterTest extends TestCase {
 
 	}
 
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		map = null;
 		factory = null;
 		definition = null;
 	}
 
+	@Test
 	public void testExporters() {
 		
 		Map<String, ExporterProperty> properties = definition.getExporterProperties();
 		
-		assertEquals(properties, map);
+		Assert.assertEquals(properties, map);
 		
 		
 		Map<String, ExporterProperty> defaultProperties = factory.getDefaultExporterProperties();
-		assertEquals(defaultProperties, map);
+		Assert.assertEquals(defaultProperties, map);
 		
 		
 		// pure local manipulation 
-		assertNull(factory.setProperty("localValue", "true")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals("true", factory.getPropertyValue("localValue"));  //$NON-NLS-1$//$NON-NLS-2$
-		assertTrue(factory.hasLocalValueFor("localValue")); //$NON-NLS-1$
+		Assert.assertNull(factory.setProperty("localValue", "true")); //$NON-NLS-1$ //$NON-NLS-2$
+		Assert.assertEquals("true", factory.getPropertyValue("localValue"));  //$NON-NLS-1$//$NON-NLS-2$
+		Assert.assertTrue(factory.hasLocalValueFor("localValue")); //$NON-NLS-1$
 		factory.removeProperty( "localValue" ); //$NON-NLS-1$
-		assertNull(factory.getPropertyValue( "localValue" )); //$NON-NLS-1$
-		assertFalse(factory.hasLocalValueFor("localValue")); //$NON-NLS-1$
+		Assert.assertNull(factory.getPropertyValue( "localValue" )); //$NON-NLS-1$
+		Assert.assertFalse(factory.hasLocalValueFor("localValue")); //$NON-NLS-1$
 		
 	}
 	
+	@Test
 	public void testDefaultValues() {
 		
-		assertEquals("true", factory.getPropertyValue( "ejb3" ));  //$NON-NLS-1$//$NON-NLS-2$
+		Assert.assertEquals("true", factory.getPropertyValue( "ejb3" ));  //$NON-NLS-1$//$NON-NLS-2$
 		
-		assertFalse(factory.hasLocalValueFor("ejb3")); //$NON-NLS-1$
+		Assert.assertFalse(factory.hasLocalValueFor("ejb3")); //$NON-NLS-1$
 		
 		factory.setProperty( "ejb3", "false");  //$NON-NLS-1$//$NON-NLS-2$
-		assertEquals("false", factory.getPropertyValue( "ejb3" ));  //$NON-NLS-1$//$NON-NLS-2$
+		Assert.assertEquals("false", factory.getPropertyValue( "ejb3" ));  //$NON-NLS-1$//$NON-NLS-2$
 		
 		factory.removeProperty( "ejb3" ); //$NON-NLS-1$
 		
-		assertEquals("true", factory.getPropertyValue( "ejb3" ));  //$NON-NLS-1$//$NON-NLS-2$
+		Assert.assertEquals("true", factory.getPropertyValue( "ejb3" ));  //$NON-NLS-1$//$NON-NLS-2$
 	}
 	
+	@Test
 	public void testExporterEnablement() {
 		
-		assertTrue(factory.isEnabled());
+		Assert.assertTrue(factory.isEnabled());
 		
 		factory.setEnabled(false);
 		
-		assertFalse(factory.isEnabled());
+		Assert.assertFalse(factory.isEnabled());
 	}
 	
+	@Test
 	public void testPropertySource() {
 		
 		ExporterFactoryPropertySource ips = new ExporterFactoryPropertySource(factory); 
 		
 		IPropertyDescriptor[] propertyDescriptors = ips.getPropertyDescriptors();
 		
-		assertNotNull(propertyDescriptors);
+		Assert.assertNotNull(propertyDescriptors);
 		
-		assertEquals(0, propertyDescriptors.length);
+		Assert.assertEquals(0, propertyDescriptors.length);
 		
 		factory.setProperty( "something", "true" ); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		propertyDescriptors = ips.getPropertyDescriptors();
 		
-		assertEquals(1, propertyDescriptors.length);		
+		Assert.assertEquals(1, propertyDescriptors.length);		
 		
 	}
 }
