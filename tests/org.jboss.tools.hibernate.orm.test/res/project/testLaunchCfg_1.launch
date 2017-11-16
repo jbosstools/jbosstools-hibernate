@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.hibernate.eclipse.launch.CodeGenerationLaunchConfigurationType">
+<listAttribute key="org.eclipse.debug.ui.favoriteGroups">
+<listEntry value="org.hibernate.eclipse.launch.CodeGenerationLaunchGroup"/>
+<listEntry value="org.hibernate.eclipse.launch.ConsoleConfigurationLaunchGroup"/>
+</listAttribute>
+<stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="org.eclipse.ant.ui.AntClasspathProvider"/>
+<booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="true"/>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.hibernate.codegen.CodeGenMain"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="...../AppData/Local/Temp/codegenbuildxml/4fbe6bbb-9013-4ef2-8175-5b13f714ae00/build.xml"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="qwert"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-cp ..../hibernate_eclipse_plugins_short/z-codegen/target/org.hibernate.codegen-1.0.0.GA.jar"/>
+<stringAttribute key="org.hibernate.tools.buildXml" value="/qwert/target/build.xml"/>
+<stringAttribute key="org.hibernate.tools.codeGenLaunchJar" value="..../trunk/hibernatetools/plugins/org.hibernate.eclipse/lib/extern/org.hibernate.codegen.jar"/>
+<stringAttribute key="org.hibernate.tools.configurationname" value="qwert"/>
+<booleanAttribute key="org.hibernate.tools.ejb3" value="true"/>
+<listAttribute key="org.hibernate.tools.exporters">
+<listEntry value="org.hibernate.tools.hbm2java"/>
+<listEntry value="org.hibernate.tools.hbm2hbmxml"/>
+<listEntry value="org.hibernate.tools.hbm2dao"/>
+<listEntry value="org.hibernate.tools.hbmtemplate"/>
+<listEntry value="org.hibernate.tools.hbm2cfgxml"/>
+<listEntry value="org.hibernate.tools.hbm2doc"/>
+<listEntry value="org.hibernate.tools.hbm2ddl"/>
+<listEntry value="8"/>
+<listEntry value="9"/>
+<listEntry value="10"/>
+<listEntry value="11"/>
+<listEntry value="12"/>
+<listEntry value="13"/>
+<listEntry value="14"/>
+<listEntry value="15"/>
+</listAttribute>
+<booleanAttribute key="org.hibernate.tools.exporters.10" value="true"/>
+<stringAttribute key="org.hibernate.tools.exporters.10.extension_id" value="org.hibernate.tools.hbm2java"/>
+<booleanAttribute key="org.hibernate.tools.exporters.11" value="true"/>
+<stringAttribute key="org.hibernate.tools.exporters.11.extension_id" value="org.hibernate.tools.hbmtemplate"/>
+<booleanAttribute key="org.hibernate.tools.exporters.12" value="true"/>
+<stringAttribute key="org.hibernate.tools.exporters.12.extension_id" value="org.hibernate.tools.hbm2cfgxml"/>
+<booleanAttribute key="org.hibernate.tools.exporters.13" value="true"/>
+<stringAttribute key="org.hibernate.tools.exporters.13.extension_id" value="org.hibernate.tools.hbm2hbmxml"/>
+<booleanAttribute key="org.hibernate.tools.exporters.14" value="true"/>
+<stringAttribute key="org.hibernate.tools.exporters.14.extension_id" value="org.hibernate.tools.hbm2doc"/>
+<booleanAttribute key="org.hibernate.tools.exporters.15" value="true"/>
+<stringAttribute key="org.hibernate.tools.exporters.15.extension_id" value="org.hibernate.tools.hbm2ddl"/>
+<booleanAttribute key="org.hibernate.tools.exporters.8" value="true"/>
+<stringAttribute key="org.hibernate.tools.exporters.8.extension_id" value="org.hibernate.tools.hbmtemplate"/>
+<mapAttribute key="org.hibernate.tools.exporters.8.properties">
+<mapEntry key="file_pattern" value="{package-name}/{class-name}.java"/>
+<mapEntry key="for_each" value="11111111111111"/>
+<mapEntry key="outputdir" value="temp_test_out_folder"/>
+<mapEntry key="template_name" value="pojo/Pojo.ftl"/>
+<mapEntry key="template_path" value="/LaunchConfigTestProject/temp_test_out_folder"/>
+</mapAttribute>
+<booleanAttribute key="org.hibernate.tools.exporters.9" value="true"/>
+<stringAttribute key="org.hibernate.tools.exporters.9.extension_id" value="org.hibernate.tools.hbm2dao"/>
+<booleanAttribute key="org.hibernate.tools.exporters.org.hibernate.tools.hbm2cfgxml" value="true"/>
+<stringAttribute key="org.hibernate.tools.exporters.org.hibernate.tools.hbm2cfgxml.extension_id" value="org.hibernate.tools.hbm2cfgxml"/>
+<mapAttribute key="org.hibernate.tools.exporters.org.hibernate.tools.hbm2cfgxml.properties">
+<mapEntry key="outputdir" value="/LaunchConfigTestProject/temp_test_out_folder"/>
+</mapAttribute>
+<booleanAttribute key="org.hibernate.tools.exporters.org.hibernate.tools.hbm2dao" value="true"/>
+<stringAttribute key="org.hibernate.tools.exporters.org.hibernate.tools.hbm2dao.extension_id" value="org.hibernate.tools.hbm2dao"/>
+<mapAttribute key="org.hibernate.tools.exporters.org.hibernate.tools.hbm2dao.properties">
+<mapEntry key="outputdir" value="/LaunchConfigTestProject/temp_test_out_folder"/>
+</mapAttribute>
+<booleanAttribute key="org.hibernate.tools.exporters.org.hibernate.tools.hbm2ddl" value="true"/>
+<stringAttribute key="org.hibernate.tools.exporters.org.hibernate.tools.hbm2ddl.extension_id" value="org.hibernate.tools.hbm2ddl"/>
+<mapAttribute key="org.hibernate.tools.exporters.org.hibernate.tools.hbm2ddl.properties">
+<mapEntry key="outputFileName" value="schema.sql"/>
+<mapEntry key="outputdir" value="/LaunchConfigTestProject/temp_test_out_folder"/>
+<mapEntry key="schemaUpdate" value="true"/>
+<mapEntry key="scriptToConsole" value="true"/>
+</mapAttribute>
+<booleanAttribute key="org.hibernate.tools.exporters.org.hibernate.tools.hbm2doc" value="true"/>
+<stringAttribute key="org.hibernate.tools.exporters.org.hibernate.tools.hbm2doc.extension_id" value="org.hibernate.tools.hbm2doc"/>
+<mapAttribute key="org.hibernate.tools.exporters.org.hibernate.tools.hbm2doc.properties">
+<mapEntry key="outputdir" value="/LaunchConfigTestProject/temp_test_out_folder"/>
+</mapAttribute>
+<booleanAttribute key="org.hibernate.tools.exporters.org.hibernate.tools.hbm2hbmxml" value="true"/>
+<stringAttribute key="org.hibernate.tools.exporters.org.hibernate.tools.hbm2hbmxml.extension_id" value="org.hibernate.tools.hbm2hbmxml"/>
+<mapAttribute key="org.hibernate.tools.exporters.org.hibernate.tools.hbm2hbmxml.properties">
+<mapEntry key="outputdir" value="/LaunchConfigTestProject/temp_test_out_folder"/>
+</mapAttribute>
+<booleanAttribute key="org.hibernate.tools.exporters.org.hibernate.tools.hbm2java" value="true"/>
+<stringAttribute key="org.hibernate.tools.exporters.org.hibernate.tools.hbm2java.extension_id" value="org.hibernate.tools.hbm2java"/>
+<mapAttribute key="org.hibernate.tools.exporters.org.hibernate.tools.hbm2java.properties">
+<mapEntry key="destdir" value="qwerty"/>
+<mapEntry key="destdir2" value="qw"/>
+<mapEntry key="ejb3" value="true"/>
+<mapEntry key="jdk5" value="true"/>
+<mapEntry key="outputdir" value="/LaunchConfigTestProject/temp_test_out_folder"/>
+</mapAttribute>
+<booleanAttribute key="org.hibernate.tools.exporters.org.hibernate.tools.hbmtemplate" value="true"/>
+<stringAttribute key="org.hibernate.tools.exporters.org.hibernate.tools.hbmtemplate.extension_id" value="org.hibernate.tools.hbmtemplate"/>
+<mapAttribute key="org.hibernate.tools.exporters.org.hibernate.tools.hbmtemplate.properties">
+<mapEntry key="file_pattern" value="${package-name}/${class-name}.java"/>
+<mapEntry key="for_each" value="entity"/>
+<mapEntry key="outputdir" value="/LaunchConfigTestProject/temp_test_out_folder"/>
+<mapEntry key="template_name" value="pojo/Pojo.ftl"/>
+</mapAttribute>
+<booleanAttribute key="org.hibernate.tools.jdk5" value="true"/>
+<stringAttribute key="org.hibernate.tools.outputdir" value="temp_test_out_folder_not_exist"/>
+<stringAttribute key="org.hibernate.tools.package" value="qqqqqqqqqqqqqqqqqqqqqqqqqqqq"/>
+<booleanAttribute key="org.hibernate.tools.prefercompositeids" value="true"/>
+<booleanAttribute key="org.hibernate.tools.reveng.detect_many_to_many" value="false"/>
+<booleanAttribute key="org.hibernate.tools.reveng.detect_one_to_one" value="false"/>
+<booleanAttribute key="org.hibernate.tools.reveng.detect_optimistc_lock" value="false"/>
+<stringAttribute key="org.hibernate.tools.revengfile" value="/qwert/src/hibernate.reveng.xml"/>
+<booleanAttribute key="org.hibernate.tools.schema2hbm" value="true"/>
+<booleanAttribute key="org.hibernate.tools.useExternalProcess" value="true"/>
+<booleanAttribute key="org.hibernate.tools.useOwnTemplates" value="false"/>
+</launchConfiguration>
