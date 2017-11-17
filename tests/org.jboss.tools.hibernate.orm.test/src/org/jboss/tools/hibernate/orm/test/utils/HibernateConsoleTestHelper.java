@@ -55,5 +55,9 @@ public class HibernateConsoleTestHelper {
 		this.project = null;
 
 	}
+	
+	public SimpleTestProject getProject() {
+		return this.project;
+	}
 
 }
