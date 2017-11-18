@@ -1,17 +1,25 @@
-package org.hibernate.eclipse.console.test;
+package org.jboss.tools.hibernate.orm.test;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import org.junit.Assert;
+import org.junit.Test;
 
 import bsh.EvalError;
 import bsh.Interpreter;
-import junit.framework.TestCase;
 
-public class BeanShellIntegrationTest extends TestCase {
+public class BeanShellIntegrationTest {
+	
+	private Set<Integer> lines = new HashSet<Integer>(3);
 
-	public static class CallBack {
+	public class CallBack {
 		public void line(int number) {
-			System.out.println(number + ":"); //$NON-NLS-1$
+			lines.add(number);
 		}
 	}
 
+	@Test
 	public void testBsh() {
 
 		Interpreter bsh = new Interpreter();
@@ -24,11 +32,18 @@ public class BeanShellIntegrationTest extends TestCase {
 			buf.append( "callback.line(1);\r\n" ); //$NON-NLS-1$
 			buf.append( "int j = 23;\r\n" ); //$NON-NLS-1$
 			buf.append( "callback.line(2);\r\n" ); //$NON-NLS-1$
-			buf.append( "i+j;" ); //$NON-NLS-1$
+			buf.append( "int k = i+j;" ); //$NON-NLS-1$
 			buf.append( "callback.line(3);" ); //$NON-NLS-1$
+			buf.append( "k;");
+
+			Assert.assertTrue(lines.isEmpty());
+			
 			Object object = bsh.eval( buf.toString() );
 
-			System.out.println(ConsoleTestMessages.BeanShellIntegrationTest_result + object);
+			Assert.assertEquals(48, object);
+			Assert.assertTrue(lines.contains(1));
+			Assert.assertTrue(lines.contains(2));
+			Assert.assertTrue(lines.contains(3));
 
 		}
 		catch (EvalError e) {
