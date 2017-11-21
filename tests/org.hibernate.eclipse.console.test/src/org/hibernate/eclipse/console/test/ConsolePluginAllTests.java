@@ -6,7 +6,6 @@ import org.hibernate.eclipse.console.test.mappingproject.MappingTestsAnnotations
 import org.hibernate.eclipse.console.test.mappingproject.MappingTestsCore;
 import org.hibernate.eclipse.console.test.mappingproject.MappingTestsJpa;
 import org.hibernate.eclipse.console.views.test.QueryPageViewerTest;
-import org.hibernate.eclipse.criteriaeditor.CriteriaEditorTest;
 import org.hibernate.eclipse.hqleditor.HQLEditorTest;
 import org.hibernate.eclipse.hqleditor.preferences.HQLEditorPreferencePageTest;
 import org.hibernate.eclipse.mapper.HBMInfoExtractorTest;
@@ -20,9 +19,7 @@ public class ConsolePluginAllTests {
 		TestSuite suite = new TestSuite(
 				ConsoleTestMessages.ConsolePluginAllTests_test_for );
 
-		suite.addTestSuite(HQLEditorTest.class);
-		suite.addTestSuite(CriteriaEditorTest.class);
-		
+		suite.addTestSuite(HQLEditorTest.class);		
 		suite.addTestSuite(MappingTestsCore.class);
 		suite.addTestSuite(MappingTestsJpa.class);
 		suite.addTestSuite(MappingTestsAnnotations.class);
@@ -33,16 +30,6 @@ public class ConsolePluginAllTests {
 		
 		// https://jira.jboss.org/browse/JBIDE-6838 
 		suite.addTestSuite(CodeGenXMLFactoryTest.class);
-
-		// core tests
-		//Properties properties = new Properties();
-		//properties.load(ConsolePluginAllTests.class.getResourceAsStream("plugintest-hibernate.properties"));
-		
-		//System.getProperties().putAll(properties);
-		
-		//suite.addTest(org.hibernate.tool.ToolAllTests.suite() );
-		
-
 		return suite;
 	}
 

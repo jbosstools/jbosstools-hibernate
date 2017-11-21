@@ -8,14 +8,13 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.hibernate.eclipse.criteriaeditor;
+package org.jboss.tools.hibernate.orm.test;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -28,57 +27,80 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.QueryInputModel;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
-import org.hibernate.eclipse.console.test.launchcfg.TestConsoleConfigurationPreferences;
-import org.hibernate.eclipse.console.test.project.SimpleTestProject;
-import org.hibernate.eclipse.console.test.project.SimpleTestProjectWithMapping;
-import org.hibernate.eclipse.console.test.project.TestProject;
-import org.hibernate.eclipse.console.test.utils.ConsoleConfigUtils;
+import org.hibernate.eclipse.criteriaeditor.CriteriaEditor;
+import org.hibernate.eclipse.criteriaeditor.JavaCompletionProcessor;
+import org.jboss.tools.hibernate.orm.test.utils.ConsoleConfigUtils;
+import org.jboss.tools.hibernate.orm.test.utils.TestConsoleConfigurationPreferences;
+import org.jboss.tools.hibernate.orm.test.utils.project.SimpleTestProject;
+import org.jboss.tools.hibernate.orm.test.utils.project.SimpleTestProjectWithMapping;
+import org.jboss.tools.hibernate.orm.test.utils.project.TestProject;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public class CriteriaEditorTest extends TestCase {
+public class CriteriaEditorTest {
 	
+	private static final String HIBERNATE_CFG_XML = 
+			"<!DOCTYPE hibernate-configuration PUBLIC                               " +
+			"	'-//Hibernate/Hibernate Configuration DTD 3.0//EN'                  " +
+			"	'http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd'> " +
+			"                                                                       " +
+			"<hibernate-configuration>                                              " +
+			"	<session-factory/>                                                  " + 
+			"</hibernate-configuration>                                             " ;		
+		
 	private static final String PROJ_NAME = "CriteriaTest"; //$NON-NLS-1$
 	private static final String CONSOLE_NAME = PROJ_NAME;
 	
+	@Rule
+	public TemporaryFolder temporaryFolder = new TemporaryFolder();
+		
+	private File cfgXmlFile = null;
 	private SimpleTestProjectWithMapping project = null;
 	
 	private TestConsoleConfigurationPreferences consolePrefs;
 	private ConsoleConfiguration consoleConfiguration;
 
-	protected void setUp() throws Exception {
-		consolePrefs = new TestConsoleConfigurationPreferences();
+	@Before
+	public void setUp() throws Exception {
+		cfgXmlFile = new File(temporaryFolder.getRoot(), "hibernate.cfg.xml");
+		FileWriter fw = new FileWriter(cfgXmlFile);
+		fw.write(HIBERNATE_CFG_XML);
+		fw.close();
+		consolePrefs = new TestConsoleConfigurationPreferences(cfgXmlFile);
 		consoleConfiguration = new ConsoleConfiguration(consolePrefs);
 		KnownConfigurations.getInstance().addConfiguration(consoleConfiguration, false);
 	}
 
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		consolePrefs = null;
 		consoleConfiguration = null;
 		KnownConfigurations.getInstance().removeAllConfigurations();
 		cleanUpProject();
+		cfgXmlFile = null;
 	}
 	
-	protected void cleanUpProject() {
-		if (project != null) {
-			project.deleteIProject();
-			project = null;
-		}
-	}
-	
+	@Test
 	public void testCriteriaEditorOpen(){
 		IEditorPart editorPart = HibernateConsolePlugin.getDefault()
 			.openCriteriaEditor(consoleConfiguration.getName(), ""); //$NON-NLS-1$
-		assertNotNull("Criteria Editor was not opened", editorPart); //$NON-NLS-1$
-		assertTrue("Opened editor is not CriteriaEditor", editorPart instanceof CriteriaEditor); //$NON-NLS-1$
+		Assert.assertNotNull("Criteria Editor was not opened", editorPart); //$NON-NLS-1$
+		Assert.assertTrue("Opened editor is not CriteriaEditor", editorPart instanceof CriteriaEditor); //$NON-NLS-1$
 		
 		CriteriaEditor editor = (CriteriaEditor)editorPart;		
 		QueryInputModel model = editor.getQueryInputModel();
-		assertNotNull("Model is NULL", model); //$NON-NLS-1$
+		Assert.assertNotNull("Model is NULL", model); //$NON-NLS-1$
 	}
 	
+	@Test
 	public void testCriteriaCodeCompletion() throws CoreException, NoSuchFieldException, IllegalAccessException, IOException{
 		cleanUpProject();
 		project = new SimpleTestProjectWithMapping(PROJ_NAME);
@@ -95,20 +117,20 @@ public class CriteriaEditorTest extends TestCase {
 			TestProject.SRC_FOLDER + File.separator + ConsoleConfigUtils.CFG_FILE_NAME);
 		ConsoleConfigUtils.createConsoleConfig(PROJ_NAME, cfgFilePath, CONSOLE_NAME);
 		ConsoleConfiguration cc = KnownConfigurations.getInstance().find(CONSOLE_NAME);
-		assertNotNull("Console Configuration not found", cc); //$NON-NLS-1$
+		Assert.assertNotNull("Console Configuration not found", cc); //$NON-NLS-1$
 		cc.build();
 		
 		String query = "Object o = new Object();\n" +  //$NON-NLS-1$
 			"System.out.print(o.toString());"; //$NON-NLS-1$
 		IEditorPart editorPart = HibernateConsolePlugin.getDefault()
 			.openCriteriaEditor(CONSOLE_NAME, query);
-		assertTrue("Opened editor is not CriteriaEditor", editorPart instanceof CriteriaEditor); //$NON-NLS-1$
+		Assert.assertTrue("Opened editor is not CriteriaEditor", editorPart instanceof CriteriaEditor); //$NON-NLS-1$
 		
 		CriteriaEditor editor = (CriteriaEditor)editorPart;
-		assertEquals(editor.getEditorText(), query);
+		Assert.assertEquals(editor.getEditorText(), query);
 		
 		QueryInputModel model = editor.getQueryInputModel();
-		assertTrue(model.getParameterCount() == 0);
+		Assert.assertTrue(model.getParameterCount() == 0);
 		
 		editor.setConsoleConfigurationName(CONSOLE_NAME);
 		
@@ -116,9 +138,16 @@ public class CriteriaEditorTest extends TestCase {
 		
 		int position = query.indexOf("toString()"); //$NON-NLS-1$
 		ICompletionProposal[] proposals = processor.computeCompletionProposals(null, position);
-		assertTrue("Class java.lang.Object has at least 9 methods. But " + proposals.length //$NON-NLS-1$
+		Assert.assertTrue("Class java.lang.Object has at least 9 methods. But " + proposals.length //$NON-NLS-1$
 			+ " code completion proposals where provided.", proposals.length >= 9); //$NON-NLS-1$
 		cc.reset();
 	}
 
+	private void cleanUpProject() {
+		if (project != null) {
+			project.deleteIProject();
+			project = null;
+		}
+	}
+	
 }

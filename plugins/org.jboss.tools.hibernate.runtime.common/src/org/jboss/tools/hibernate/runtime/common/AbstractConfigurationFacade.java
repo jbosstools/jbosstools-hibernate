@@ -117,6 +117,7 @@ implements IConfiguration {
 				"configure", 
 				new Class[] {}, 
 				new Object[] {});
+		buildMappings();
 		return this;
 	}
 
@@ -127,6 +128,7 @@ implements IConfiguration {
 				"configure", 
 				new Class[] { Document.class }, 
 				new Object[] { document });
+		buildMappings();
 		return this;
 	}
 
@@ -137,6 +139,7 @@ implements IConfiguration {
 				"configure", 
 				new Class[] { File.class }, 
 				new Object[] { file });
+		buildMappings();
 		return this;
 	}
 
