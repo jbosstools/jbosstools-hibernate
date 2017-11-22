@@ -7,7 +7,6 @@ import org.hibernate.eclipse.console.test.mappingproject.MappingTestsCore;
 import org.hibernate.eclipse.console.test.mappingproject.MappingTestsJpa;
 import org.hibernate.eclipse.console.views.test.QueryPageViewerTest;
 import org.hibernate.eclipse.hqleditor.HQLEditorTest;
-import org.hibernate.eclipse.hqleditor.preferences.HQLEditorPreferencePageTest;
 import org.hibernate.eclipse.mapper.HBMInfoExtractorTest;
 
 import junit.framework.Test;
@@ -23,7 +22,6 @@ public class ConsolePluginAllTests {
 		suite.addTestSuite(MappingTestsCore.class);
 		suite.addTestSuite(MappingTestsJpa.class);
 		suite.addTestSuite(MappingTestsAnnotations.class);
-		suite.addTestSuite(HQLEditorPreferencePageTest.class);
 		
 		suite.addTestSuite(QueryPageViewerTest.class);
 		suite.addTestSuite(HBMInfoExtractorTest.class);

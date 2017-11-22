@@ -1,30 +1,21 @@
-package org.hibernate.eclipse.hqleditor.preferences;
+package org.jboss.tools.hibernate.orm.test;
 
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
-
-import junit.framework.TestCase;
+import org.hibernate.eclipse.hqleditor.preferences.HQLEditorPreferencePage;
+import org.junit.Assert;
+import org.junit.Test;
 /**
  * TODO Get rid of copy paste code
  * 
  * @author eskimo
  *
  */
-public class HQLEditorPreferencePageTest extends TestCase {
+public class HQLEditorPreferencePageTest {
 
-	public static Shell getActiveShell() {
-		return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-	}
-
-	public static PreferenceDialog createPreferenceDialog(String pageId) {
-		PreferenceDialog dialog = PreferencesUtil.createPreferenceDialogOn(
-			getActiveShell(), pageId, new String[] {pageId}, null);
-		dialog.setBlockOnOpen(false);
-		return dialog;
-	}
-	
+	@Test
 	public void testHQLEditorPreferencePageShow() {
 		PreferenceDialog prefDialog = 
 			createPreferenceDialog(HQLEditorPreferencePage.class.getName());
@@ -34,12 +25,13 @@ public class HQLEditorPreferencePageTest extends TestCase {
 			prefDialog.open();
 			
 			Object selectedPage = prefDialog.getSelectedPage();
-			assertTrue("Selected page is not an instance of HQLEditorPreferencePage", selectedPage instanceof HQLEditorPreferencePage); //$NON-NLS-1$
+			Assert.assertTrue("Selected page is not an instance of HQLEditorPreferencePage", selectedPage instanceof HQLEditorPreferencePage); //$NON-NLS-1$
 		} finally {
 			prefDialog.close();
 		}
 	}
 	
+	@Test
 	public void testHQLEditorPreferencePagePerformOk() {
 		PreferenceDialog prefDialog = 
 			createPreferenceDialog(HQLEditorPreferencePage.class.getName());
@@ -55,4 +47,15 @@ public class HQLEditorPreferencePageTest extends TestCase {
 		}
 	}
 
+	private Shell getActiveShell() {
+		return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+	}
+
+	private PreferenceDialog createPreferenceDialog(String pageId) {
+		PreferenceDialog dialog = PreferencesUtil.createPreferenceDialogOn(
+			getActiveShell(), pageId, new String[] {pageId}, null);
+		dialog.setBlockOnOpen(false);
+		return dialog;
+	}
+	
 }
