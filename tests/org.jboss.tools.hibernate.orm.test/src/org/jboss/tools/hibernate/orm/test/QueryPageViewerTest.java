@@ -8,23 +8,27 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.hibernate.eclipse.console.views.test;
+package org.jboss.tools.hibernate.orm.test;
 
 import org.hibernate.eclipse.console.views.QueryPageViewer;
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Test;
 
-public class QueryPageViewerTest extends TestCase {
+public class QueryPageViewerTest {
 	
+	@Test
 	public void testLabelProviderImpl() {
 		
 		QueryPageViewer.LabelProviderImpl labelProvider = 
 			new QueryPageViewer.LabelProviderImpl();
 		String res = labelProvider.getColumnText(null, 0);
-		assertTrue("".equals(res)); //$NON-NLS-1$
+		Assert.assertTrue("".equals(res)); //$NON-NLS-1$
 		String[] arr = new String[1];
 		final String testStr = "testVal"; //$NON-NLS-1$
 		arr[0] = testStr;
 		res = labelProvider.getColumnText(arr, 0);
-		assertTrue(testStr.equals(res));
+		Assert.assertTrue(testStr.equals(res));
+
 	}
+
 }

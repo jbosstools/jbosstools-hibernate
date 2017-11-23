@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.hibernate.eclipse.console.test.mappingproject.MappingTestsAnnotations;
 import org.hibernate.eclipse.console.test.mappingproject.MappingTestsCore;
 import org.hibernate.eclipse.console.test.mappingproject.MappingTestsJpa;
-import org.hibernate.eclipse.console.views.test.QueryPageViewerTest;
 import org.hibernate.eclipse.hqleditor.HQLEditorTest;
 import org.hibernate.eclipse.mapper.HBMInfoExtractorTest;
 
@@ -23,7 +22,6 @@ public class ConsolePluginAllTests {
 		suite.addTestSuite(MappingTestsJpa.class);
 		suite.addTestSuite(MappingTestsAnnotations.class);
 		
-		suite.addTestSuite(QueryPageViewerTest.class);
 		suite.addTestSuite(HBMInfoExtractorTest.class);
 		
 		// https://jira.jboss.org/browse/JBIDE-6838 
