@@ -14,10 +14,35 @@
 	<properties>
 		<coverage.filter>org.jboss.tools.hibernate.orm*</coverage.filter>
 		<emma.instrument.bundles>org.hibernate.eclipse.console</emma.instrument.bundles>
+		<hsqldb.version>2.4.0</hsqldb.version>
 	</properties>
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>get-libs</id>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<phase>generate-resources</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<artifactItems>
+						<artifactItem>
+							<groupId>org.hsqldb</groupId>
+							<artifactId>hsqldb</artifactId>
+							<version>${hsqldb.version}</version>
+						</artifactItem>
+					</artifactItems>
+					<skip>false</skip>
+					<outputDirectory>${basedir}/lib</outputDirectory>
+				</configuration>
+			</plugin>
 			<plugin> 
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
