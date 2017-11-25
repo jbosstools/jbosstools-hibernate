@@ -1,4 +1,4 @@
-package org.hibernate.eclipse.console.utils;
+package org.jboss.tools.hibernate.orm.test;
 
 import java.io.ByteArrayInputStream;
 
@@ -9,6 +9,7 @@ import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -30,6 +31,7 @@ public class ProjectUtilsTest {
 		project.setDescription(description, null);
 		IJavaProject javaProject = JavaCore.create(project);
 		javaProject.setOutputLocation(project.getFullPath(), null);
+		javaProject.open(null);
 		Assert.assertArrayEquals(
 				new String[] { "foo" },
 				ProjectUtils.availablePersistenceUnits(javaProject));
