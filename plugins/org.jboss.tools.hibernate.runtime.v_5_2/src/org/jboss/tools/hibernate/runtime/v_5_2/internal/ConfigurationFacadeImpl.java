@@ -172,7 +172,7 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	}
 	
 	private Metadata metadata = null;
-	private Metadata getMetadata() {
+	Metadata getMetadata() {
 		if (metadata == null) {
 			metadata = MetadataHelper.getMetadata((Configuration)getTarget());
 		}

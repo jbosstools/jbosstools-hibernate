@@ -136,9 +136,9 @@ public class ServiceImpl extends AbstractService {
 	@Override
 	public IHQLCodeAssist newHQLCodeAssist(IConfiguration hcfg) {
 		IHQLCodeAssist result = null;
-		if (hcfg instanceof IFacade) {
+		if (hcfg instanceof ConfigurationFacadeImpl) {
 			result = facadeFactory.createHQLCodeAssist(
-					new HQLCodeAssist((Configuration)((IFacade)hcfg).getTarget()));
+					new HQLCodeAssist(((ConfigurationFacadeImpl)hcfg).getMetadata()));
 		}
 		return result;
 	}
