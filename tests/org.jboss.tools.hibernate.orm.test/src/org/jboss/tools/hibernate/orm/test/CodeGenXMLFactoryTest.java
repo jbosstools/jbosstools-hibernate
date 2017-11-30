@@ -8,13 +8,12 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.hibernate.eclipse.console.test;
+package org.jboss.tools.hibernate.orm.test;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,8 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.TreeMap;
-
-import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -35,18 +32,34 @@ import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.ExtensionManager;
 import org.hibernate.eclipse.console.model.impl.ExporterDefinition;
 import org.hibernate.eclipse.console.model.impl.ExporterFactoryStrings;
-import org.hibernate.eclipse.console.test.launchcfg.TestConsoleConfigurationPreferences;
-import org.hibernate.eclipse.console.test.launchcfg.TestLaunchConfig;
-import org.hibernate.eclipse.console.test.utils.ResourceReadUtils;
 import org.hibernate.eclipse.launch.CodeGenXMLFactory;
 import org.hibernate.eclipse.launch.CodeGenerationStrings;
 import org.hibernate.eclipse.launch.ExporterAttributes;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
+import org.jboss.tools.hibernate.orm.test.utils.ResourceReadUtils;
+import org.jboss.tools.hibernate.orm.test.utils.TestConsoleConfigurationPreferences;
+import org.jboss.tools.hibernate.orm.test.utils.TestLaunchConfig;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 /**
  * @author Vitali Yemialyanchyk
  */
-public class CodeGenXMLFactoryTest extends TestCase {
+public class CodeGenXMLFactoryTest {
+	
+	private static final String HIBERNATE_CFG_XML = 
+			"<!DOCTYPE hibernate-configuration PUBLIC                               " +
+			"	'-//Hibernate/Hibernate Configuration DTD 3.0//EN'                  " +
+			"	'http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd'> " +
+			"                                                                       " +
+			"<hibernate-configuration>                                              " +
+			"	<session-factory/>                                                  " + 
+			"</hibernate-configuration>                                             " ;		
+		
 	public static final String SAMPLE_PATH = "res/sample/"; //$NON-NLS-1$
 	public static final String PROJECT_LIB_PATH = "res/project/lib/"; //$NON-NLS-1$
 
@@ -62,6 +75,10 @@ public class CodeGenXMLFactoryTest extends TestCase {
 	public static final String OUTDIR_PATH = "outputdir/test"; //$NON-NLS-1$
 
 	public class TestConsoleConfigPref extends TestConsoleConfigurationPreferences {
+		public TestConsoleConfigPref(File file) {
+			super(file);
+		}
+
 		public File getConfigXMLFile() {
 			final File xmlConfig = new File("project/src/hibernate.cfg.xml"); //$NON-NLS-1$
 			return xmlConfig;
@@ -74,23 +91,27 @@ public class CodeGenXMLFactoryTest extends TestCase {
 	}
 
 	public class TestConsoleConfigPrefJpa extends TestConsoleConfigurationPreferences {
+		public TestConsoleConfigPrefJpa(File file) {
+			super(file);
+		}
+
 		public File getConfigXMLFile() {
 			return null;
 		}
 
 		public File[] getMappingFiles() {
 			File[] files = new File[2];
-			files[0] = new File("xxx.hbm.xml"); //$NON-NLS-1$
-			files[1] = new File("yyy.hbm.xml"); //$NON-NLS-1$
+			files[0] = new File("xxx.hbm.xml"); 
+			files[1] = new File("yyy.hbm.xml"); 
 			return files;
 		}
 
 		public URL[] getCustomClassPathURLS() {
 			URL[] urls = new URL[3];
 			try {
-				urls[0] = new File("ejb3-persistence.jar").toURL(); //$NON-NLS-1$
-				urls[1] = new File("hibernate3.jar").toURL(); //$NON-NLS-1$
-				urls[2] = new File("hsqldb.jar").toURL(); //$NON-NLS-1$
+				urls[0] = new File("ejb3-persistence.jar").toURI().toURL();
+				urls[1] = new File("hibernate3.jar").toURI().toURL();
+				urls[2] = new File("hsqldb.jar").toURI().toURL();
 			} catch (IOException e) {
 			}
 			return urls;
@@ -121,6 +142,10 @@ public class CodeGenXMLFactoryTest extends TestCase {
 	}
 
 	public class TestConsoleConfigPref3 extends TestConsoleConfigPref {
+		public TestConsoleConfigPref3(File file) {
+			super(file);
+		}
+
 		public String getConnectionProfileName() {
 			return "connectionProfileName"; //$NON-NLS-1$
 		}
@@ -144,7 +169,7 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		}
 		
 		public String getDriverClass(String connProfileName) {
-			return ""; //$NON-NLS-1$
+			return ""; 
 		}
 	}
 
@@ -164,7 +189,7 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		}
 
 		public ConsoleConfigurationPreferences getConsoleConfigPreferences(String consoleConfigName) {
-			return new TestConsoleConfigPref();
+			return new TestConsoleConfigPref(cfgXmlFile);
 		}
 
 		public String getResLocation(String path) {
@@ -178,7 +203,7 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		}
 
 		public ConsoleConfigurationPreferences getConsoleConfigPreferences(String consoleConfigName) {
-			return new TestConsoleConfigPref();
+			return new TestConsoleConfigPref(cfgXmlFile);
 		}
 	}
 
@@ -188,7 +213,7 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		}
 
 		public ConsoleConfigurationPreferences getConsoleConfigPreferences(String consoleConfigName) {
-			return new TestConsoleConfigPrefJpa();
+			return new TestConsoleConfigPrefJpa(cfgXmlFile);
 		}
 
 		public String getResLocation(String path) {
@@ -202,7 +227,7 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		}
 
 		public ConsoleConfigurationPreferences getConsoleConfigPreferences(String consoleConfigName) {
-			return new TestConsoleConfigPref3();
+			return new TestConsoleConfigPref3(cfgXmlFile);
 		}
 
 		public String getResLocation(String path) {
@@ -227,26 +252,47 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		}
 	}
 	
+	@Rule
+	public TemporaryFolder temporaryFolder = new TemporaryFolder();
+		
+  	private File cfgXmlFile = null;
+	
+	@Before
+	public void setUp() throws Exception {
+		cfgXmlFile = new File(temporaryFolder.getRoot(), "hibernate.cfg.xml");
+		FileWriter fw = new FileWriter(cfgXmlFile);
+		fw.write(HIBERNATE_CFG_XML);
+		fw.close();
+	}
+	
+	@After
+	public void tearDown() throws Exception {
+		cfgXmlFile = null;
+	}
+
+	@Test
 	public void testCodeGenXMLFactoryRevengAll() {
 		TestLaunchConfig testLaunchConfig = createTestLaunchConfig(true, true, false);
 		CodeGenXMLFactory codeGenFactory = new CodeGenXMLFactory4TestSimple(testLaunchConfig);
 		String codeGen = adjustXmlText(codeGenFactory.createCodeGenXML());
 		String codeGenProperties = codeGenFactory.getPropFileContentPreSave();
 		String sample = getSample("AntCodeGenReveng_test1.xml"); //$NON-NLS-1$
-		assertEquals(sample, codeGen);
-		assertEquals(codeGenProperties.length(), 0);
+		Assert.assertEquals(sample, codeGen);
+		Assert.assertEquals(codeGenProperties.length(), 0);
 	}
 
+	@Test
 	public void testCodeGenXMLFactoryRevengOne() {
 		TestLaunchConfig testLaunchConfig = createTestLaunchConfig(true, false, false);
 		CodeGenXMLFactory codeGenFactory = new CodeGenXMLFactory4TestSimple(testLaunchConfig);
 		String codeGen = adjustXmlText(codeGenFactory.createCodeGenXML());
 		String codeGenProperties = codeGenFactory.getPropFileContentPreSave();
 		String sample = getSample("AntCodeGenReveng_test2.xml"); //$NON-NLS-1$
-		assertEquals(sample, codeGen);
-		assertEquals(codeGenProperties.length(), 0);
+		Assert.assertEquals(sample, codeGen);
+		Assert.assertEquals(codeGenProperties.length(), 0);
 	}
 
+	@Test
 	public void testCodeGenXMLFactoryAll() {
 		TestLaunchConfig testLaunchConfig = createTestLaunchConfig(false, true, false);
 		CodeGenXMLFactory codeGenFactory = new CodeGenXMLFactory4TestRelative(testLaunchConfig);
@@ -258,10 +304,11 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		String codeGen = adjustXmlText(codeGenFactory.createCodeGenXML());
 		String codeGenProperties = codeGenFactory.getPropFileContentPreSave();
 		String sample = getSample("AntCodeGen_test1.xml"); //$NON-NLS-1$
-		assertEquals(sample, codeGen);
-		assertEquals(codeGenProperties.length(), 0);
+		Assert.assertEquals(sample, codeGen);
+		Assert.assertEquals(codeGenProperties.length(), 0);
 	}
 
+	@Test
 	public void testCodeGenXMLFactoryOne() {
 		TestLaunchConfig testLaunchConfig = createTestLaunchConfig(false, false, false);
 		CodeGenXMLFactory codeGenFactory = new CodeGenXMLFactory4TestRelative(testLaunchConfig);
@@ -273,10 +320,11 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		String codeGen = adjustXmlText(codeGenFactory.createCodeGenXML());
 		String codeGenProperties = codeGenFactory.getPropFileContentPreSave();
 		String sample = getSample("AntCodeGen_test2.xml"); //$NON-NLS-1$
-		assertEquals(sample, codeGen);
-		assertEquals(codeGenProperties.length(), 0);
+		Assert.assertEquals(sample, codeGen);
+		Assert.assertEquals(codeGenProperties.length(), 0);
 	}
 
+	@Test
 	public void testCodeGenXMLFactoryJpaAll() {
 		TestLaunchConfig testLaunchConfig = createTestLaunchConfig(false, true, true);
 		CodeGenXMLFactory codeGenFactory = new CodeGenXMLFactory4TestJpa(testLaunchConfig);
@@ -284,10 +332,11 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		String codeGenProperties = codeGenFactory.getPropFileContentPreSave();
 		codeGen = updatePaths(codeGen);
 		String sample = getSample("AntCodeGenJpa_test1.xml"); //$NON-NLS-1$
-		assertEquals(sample, codeGen);
-		assertEquals(codeGenProperties.length(), 0);
+		Assert.assertEquals(sample, codeGen);
+		Assert.assertEquals(codeGenProperties.length(), 0);
 	}
 
+	@Test
 	public void testCodeGenXMLFactoryJpaOne() {
 		TestLaunchConfig testLaunchConfig = createTestLaunchConfig(false, false, true);
 		CodeGenXMLFactory codeGenFactory = new CodeGenXMLFactory4TestJpa(testLaunchConfig);
@@ -295,10 +344,11 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		String codeGenProperties = codeGenFactory.getPropFileContentPreSave();
 		codeGen = updatePaths(codeGen);
 		String sample = getSample("AntCodeGenJpa_test2.xml"); //$NON-NLS-1$
-		assertEquals(sample, codeGen);
-		assertEquals(codeGenProperties.length(), 0);
+		Assert.assertEquals(sample, codeGen);
+		Assert.assertEquals(codeGenProperties.length(), 0);
 	}
 
+	@Test
 	public void testCodeGenXMLFactoryNullableAll() {
 		TestLaunchConfig testLaunchConfig = createTestLaunchConfig(false, true, false);
 		CodeGenXMLFactory codeGenFactory = new CodeGenXMLFactory4TestNullable(testLaunchConfig);
@@ -306,10 +356,11 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		String codeGenProperties = codeGenFactory.getPropFileContentPreSave();
 		codeGen = updatePaths(codeGen);
 		String sample = getSample("AntCodeGenNullable_test1.xml"); //$NON-NLS-1$
-		assertEquals(sample, codeGen);
-		assertEquals(codeGenProperties.length(), 0);
+		Assert.assertEquals(sample, codeGen);
+		Assert.assertEquals(codeGenProperties.length(), 0);
 	}
 
+	@Test
 	public void testCodeGenXMLFactoryNullableOne() {
 		TestLaunchConfig testLaunchConfig = createTestLaunchConfig(false, false, false);
 		CodeGenXMLFactory codeGenFactory = new CodeGenXMLFactory4TestNullable(testLaunchConfig);
@@ -317,10 +368,11 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		String codeGenProperties = codeGenFactory.getPropFileContentPreSave();
 		codeGen = updatePaths(codeGen);
 		String sample = getSample("AntCodeGenNullable_test2.xml"); //$NON-NLS-1$
-		assertEquals(sample, codeGen);
-		assertEquals(codeGenProperties.length(), 0);
+		Assert.assertEquals(sample, codeGen);
+		Assert.assertEquals(codeGenProperties.length(), 0);
 	}
 
+	@Test
 	public void testCodeGenXMLFactoryPropertiesAll() {
 		TestLaunchConfig testLaunchConfig = createTestLaunchConfig(false, true, false);
 		CodeGenXMLFactory codeGenFactory = new CodeGenXMLFactory4TestProperties(testLaunchConfig);
@@ -329,10 +381,11 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		codeGen = updatePaths(codeGen);
 		String sample = getSample("AntCodeGenProps_test1.xml"); //$NON-NLS-1$
 		String sampleProperties = getSample("AntCodeGenProps.hibernate.properties"); //$NON-NLS-1$
-		assertEquals(sample, codeGen);
-		assertEquals(sampleProperties.trim(), codeGenProperties);
+		Assert.assertEquals(sample, codeGen);
+		Assert.assertEquals(sampleProperties.trim(), codeGenProperties);
 	}
 
+	@Test
 	public void testCodeGenXMLFactoryPropertiesOne() {
 		TestLaunchConfig testLaunchConfig = createTestLaunchConfig(false, false, false);
 		CodeGenXMLFactory codeGenFactory = new CodeGenXMLFactory4TestProperties(testLaunchConfig);
@@ -341,10 +394,11 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		codeGen = updatePaths(codeGen);
 		String sample = getSample("AntCodeGenProps_test2.xml"); //$NON-NLS-1$
 		String sampleProperties = getSample("AntCodeGenProps.hibernate.properties"); //$NON-NLS-1$
-		assertEquals(sample, codeGen);
-		assertEquals(sampleProperties.trim(), codeGenProperties);
+		Assert.assertEquals(sample, codeGen);
+		Assert.assertEquals(sampleProperties.trim(), codeGenProperties);
 	}
 
+	@Test
 	public void testCodeGenXMLFactoryInternalPropertiesAll() {
 		TestLaunchConfig testLaunchConfig = createTestLaunchConfig(false, true, false);
 		CodeGenXMLFactory codeGenFactory = new CodeGenXMLFactory4TestProperties(testLaunchConfig);
@@ -354,10 +408,11 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		codeGen = updatePaths(codeGen);
 		String sample = getSample("AntCodeGenInternalProps_test1.xml"); //$NON-NLS-1$
 		String sampleProperties = getSample("AntCodeGenPropsInternal.hibernate.properties"); //$NON-NLS-1$
-		assertEquals(sample, codeGen);
-		assertEquals(sampleProperties.trim(), codeGenProperties);
+		Assert.assertEquals(sample, codeGen);
+		Assert.assertEquals(sampleProperties.trim(), codeGenProperties);
 	}
 
+	@Test
 	public void testCodeGenXMLFactoryInternalPropertiesOne() {
 		TestLaunchConfig testLaunchConfig = createTestLaunchConfig(false, false, false);
 		CodeGenXMLFactory codeGenFactory = new CodeGenXMLFactory4TestProperties(testLaunchConfig);
@@ -367,23 +422,19 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		codeGen = updatePaths(codeGen);
 		String sample = getSample("AntCodeGenInternalProps_test2.xml"); //$NON-NLS-1$
 		String sampleProperties = getSample("AntCodeGenPropsInternal.hibernate.properties"); //$NON-NLS-1$
-		assertEquals(sample, codeGen);
-		assertEquals(sampleProperties.trim(), codeGenProperties);
+		Assert.assertEquals(sample, codeGen);
+		Assert.assertEquals(sampleProperties.trim(), codeGenProperties);
 	}
 	
-	public String updatePaths(String codeGen) {
-		String repl = ""; //$NON-NLS-1$
-		try {
-			URI uri = new File("").toURL().toURI(); //$NON-NLS-1$
-			repl = (new File(uri)).getPath();
-			repl = (new Path(repl)).toString();
-		} catch (MalformedURLException e) {
-		} catch (URISyntaxException e) {
-		}
-		return codeGen.replace(repl + IPath.SEPARATOR, ""); //$NON-NLS-1$
+	private String updatePaths(String codeGen) {
+		String repl = ""; 
+		URI uri = new File("").toURI(); 
+		repl = (new File(uri)).getPath();
+		repl = (new Path(repl)).toString();
+		return codeGen.replace(repl + IPath.SEPARATOR, ""); 
 	}
 	
-	public Map<String, Object> getTestLaunchConfigAttr(boolean reveng, boolean exportersAll, boolean jpa) {
+	private Map<String, Object> getTestLaunchConfigAttr(boolean reveng, boolean exportersAll, boolean jpa) {
 		Map<String, ExporterDefinition> exDefinitions = ExtensionManager.findExporterDefinitionsAsMap();
 		Map<String, Object> testLaunchConfigAttr = new HashMap<String, Object>();
 		String tmp = "12345678901234567890"; //$NON-NLS-1$
@@ -451,17 +502,17 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		return testLaunchConfigAttr;
 	}
 	
-	public TestLaunchConfig createTestLaunchConfig(boolean reveng, boolean exportersAll, boolean jpa) {
+	private TestLaunchConfig createTestLaunchConfig(boolean reveng, boolean exportersAll, boolean jpa) {
 		Map<String, Object> testLaunchConfigAttr = getTestLaunchConfigAttr(reveng, exportersAll, jpa);
 		TestLaunchConfig testLaunchConfig = new TestLaunchConfig(testLaunchConfigAttr);
 		return testLaunchConfig;
 	}
 
-	public String getSample(String fileName) {
+	private String getSample(String fileName) {
 		return ResourceReadUtils.getSample(SAMPLE_PATH + fileName);
 	}
 
-	public String adjustXmlText(String sample) {
+	private String adjustXmlText(String sample) {
 		return ResourceReadUtils.adjustXmlText(sample);
 	}
 

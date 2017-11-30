@@ -1,0 +1,57 @@
+<project name="CodeGen" default="hibernateAntCodeGeneration">
+  <property name="build.dir" location="reslocation/test"/>
+  <property name="hibernate.connection.driver_class" value="driverClass"/>  
+  <property name="hibernate.connection.password" value="passw"/>  
+  <property name="hibernate.connection.url" value="url"/>  
+  <property name="hibernate.connection.username" value="username"/>  
+  <property name="hibernate.dialect" value="testDialect"/>  
+  <property name="hibernatePropFile" value="${java.io.tmpdir}${ant.project.name}-hibernate.properties"/>  
+  <target name="generateHibernatePropeties"> 
+    <echo file="${hibernatePropFile}">hibernate.connection.driver_class=${hibernate.connection.driver_class}
+hibernate.connection.password=${hibernate.connection.password}
+hibernate.connection.url=${hibernate.connection.url}
+hibernate.connection.username=${hibernate.connection.username}
+hibernate.dialect=${hibernate.dialect}</echo> 
+  </target>  
+  <path id="toolslib"/>
+  <target name="hibernateAntCodeGeneration" depends="generateHibernatePropeties">
+    <taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="toolslib"/>
+    <hibernatetool destdir="${build.dir}">
+      <configuration configurationFile="project/src/hibernate.cfg.xml" propertyFile="${hibernatePropFile}"/>
+      <classpath>
+        <path location="${build.dir}"/>
+      </classpath>
+      <hbm2cfgxml>
+        <property key="jdk5" value="false"/>
+      </hbm2cfgxml>
+      <hbm2dao/>
+      <hbm2ddl console="false" create="false" delimiter="@" destdir="outputdir/test_test_suffix" drop="true" export="false" format="true" haltonerror="true" templatepath="outputdir/test" update="true"> 
+        <property key="ejb3" value="true"/>
+        <property key="jdk5" value="true"/>
+      </hbm2ddl>
+      <hbm2doc>
+        <property key="ejb3" value="false"/>
+        <property key="jdk5" value="false"/>
+      </hbm2doc>
+      <hbm2hbmxml>
+        <property key="ejb3" value="false"/>
+        <property key="jdk5" value="false"/>
+      </hbm2hbmxml>
+      <hbm2java destdir="outputdir/test">
+        <property key="keyAAA" value="valueYYY"/>
+        <property key="keyCCC" value="valueYYY"/>
+        <property key="keyDDD" value="valueYYY"/>
+        <property key="keyXXX" value="valueYYY"/>
+      </hbm2java>
+      <hbmtemplate>
+        <property key="ejb3" value="false"/>
+        <property key="jdk5" value="false"/>
+      </hbmtemplate>
+      <query>
+        <hql>from testQuery</hql>
+        <property key="ejb3" value="false"/>
+        <property key="jdk5" value="false"/>
+      </query>
+    </hibernatetool>
+  </target>
+</project>
