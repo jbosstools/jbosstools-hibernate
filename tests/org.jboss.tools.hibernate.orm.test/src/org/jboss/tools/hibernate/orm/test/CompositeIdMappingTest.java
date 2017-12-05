@@ -228,10 +228,13 @@ public class CompositeIdMappingTest {
 		//close all editors
 	}
 
+	@Test
 	public void testHbmExportExceptionTest() throws Exception {
+		String projectName = testProject.getIProject().getName();
+		String pathName = "/" + projectName + "/src/" + packageName.replace('.', '/');
 		IPackageFragment testPackage = testProject
 				.getIJavaProject()
-				.findPackageFragment(new Path(packageName));
+				.findPackageFragment(new Path(pathName));
 		try {
 			Object[] persClassesInit = getPersistenceClasses(true);
 			final ConsoleConfiguration consCFG = getConsoleConfig();
@@ -252,8 +255,13 @@ public class CompositeIdMappingTest {
 				}
 			}
 			String[] versions = ServiceLookup.getVersions();
-			IService service = ServiceLookup.findService(versions[versions.length - 1]);
-			IHibernateMappingExporter hce = service.newHibernateMappingExporter(config, testProject.getFolder(TestProject.SRC_FOLDER));
+			IService service = ServiceLookup.findService(versions[0]);
+			File srcFolder = testProject
+					.getIProject()
+					.getFolder(TestProject.SRC_FOLDER)
+					.getLocation().toFile();
+			IHibernateMappingExporter hce = service
+					.newHibernateMappingExporter(config,srcFolder);
 			try {
 				hce.start();
 				IArtifactCollector collector = service.newArtifactCollector();
