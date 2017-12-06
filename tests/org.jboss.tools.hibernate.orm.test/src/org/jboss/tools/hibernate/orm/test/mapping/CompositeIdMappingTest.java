@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate.orm.test;
+package org.jboss.tools.hibernate.orm.test.mapping;
 
 import org.jboss.tools.hibernate.orm.test.utils.MappingTestHelper;
 import org.junit.After;
