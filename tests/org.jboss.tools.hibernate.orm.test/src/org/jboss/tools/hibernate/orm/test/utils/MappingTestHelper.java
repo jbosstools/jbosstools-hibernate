@@ -337,7 +337,8 @@ public class MappingTestHelper {
 	}
 	
 	private void copyHbmXmlAndJavaFiles() throws Exception {
-		File source = ResourceReadUtils.getResourceItem("res/project/src/mapping/abstractembeddedcomponents/cid");
+		String path = "res/project/src/" + packageName.replace('.', '/');
+		File source = ResourceReadUtils.getResourceItem(path);
 		IFolder destination = createPackage(packageName);
 		FilesTransfer.copyFolder(source, destination);
 	}
