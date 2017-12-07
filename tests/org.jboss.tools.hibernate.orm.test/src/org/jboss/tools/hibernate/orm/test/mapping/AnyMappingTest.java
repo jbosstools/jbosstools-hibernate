@@ -7,7 +7,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 
-public class PropertyRefMappingTest {
+public class AnyMappingTest {
 	
 	private static final String CFG_XML = 
 		"<!DOCTYPE hibernate-configuration PUBLIC                                                                     \n" +
@@ -16,13 +16,12 @@ public class PropertyRefMappingTest {
 		"                                                                                                             \n" +
 		"<hibernate-configuration>                                                                                    \n" +
 		"	<session-factory>                                                                                         \n" +
-		"       <property name='dialect'>org.hibernate.dialect.HSQLDialect</property>                                 \n" +
-		"       <mapping resource='/mapping/any/Person.hbm.xml' />                                                    \n" +
-		"       <mapping resource='/mapping/any/Properties.hbm.xml' />                                                    \n" +
+		"       <property name='dialect'>org.hibernate.dialect.HSQLDialect</property>                                \n" +
+		"       <mapping resource='/mapping/abstractembeddedcomponents/propertyref/mappings.hbm.xml' /> \n" +
 		"	</session-factory>                                                                                        \n" +
 		"</hibernate-configuration>                                                                                    " ;
 	
-	private static final String packageName = "mapping.any";
+	private static final String packageName = "mapping.abstractembeddedcomponents.propertyref";
 	
 	@Rule
 	public TestName testName = new TestName();
