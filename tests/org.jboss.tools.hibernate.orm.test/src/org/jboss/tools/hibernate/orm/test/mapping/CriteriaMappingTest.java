@@ -7,7 +7,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 
-public class ComponentCompositeElementMappingTest {
+public class CriteriaMappingTest {
 	
 	private static final String CFG_XML = 
 		"<!DOCTYPE hibernate-configuration PUBLIC                                                                     \n" +
@@ -17,11 +17,11 @@ public class ComponentCompositeElementMappingTest {
 		"<hibernate-configuration>                                                                                    \n" +
 		"	<session-factory>                                                                                         \n" +
 		"       <property name='dialect'>org.hibernate.dialect.HSQLDialect</property>                                \n" +
-		"       <mapping resource='/mapping/compositeelement/Parent.hbm.xml' /> \n" +
+		"       <mapping resource='/mapping/criteria/Enrolment.hbm.xml' /> \n" +
 		"	</session-factory>                                                                                        \n" +
 		"</hibernate-configuration>                                                                                    " ;
 	
-	private static final String packageName = "mapping.compositeelement";
+	private static final String packageName = "mapping.criteria";
 	
 	@Rule
 	public TestName testName = new TestName();

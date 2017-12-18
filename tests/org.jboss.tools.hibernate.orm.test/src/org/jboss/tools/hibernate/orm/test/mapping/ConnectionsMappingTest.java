@@ -7,7 +7,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 
-public class ComponentConnectionsMappingTest {
+public class ConnectionsMappingTest {
 	
 	private static final String CFG_XML = 
 		"<!DOCTYPE hibernate-configuration PUBLIC                                                                     \n" +
