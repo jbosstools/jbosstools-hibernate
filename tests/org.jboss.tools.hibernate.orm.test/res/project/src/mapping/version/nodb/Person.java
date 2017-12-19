@@ -1,5 +1,5 @@
 //$Id$
-package mapping.version;
+package mapping.version.nodb;
 
 import java.util.ArrayList;
 import java.util.List;

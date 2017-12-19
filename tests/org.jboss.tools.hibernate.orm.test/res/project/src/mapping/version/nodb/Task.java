@@ -1,11 +1,10 @@
 //$Id$
-package mapping.version;
+package mapping.version.nodb;
 
-public class Thing {
+public class Task {
 	private String description;
 	private Person person;
 	private int version;
-	private String longDescription;
 	
 	public int getVersion() {
 		return version;
@@ -13,11 +12,11 @@ public class Thing {
 	public void setVersion(int version) {
 		this.version = version;
 	}
-	Thing() {}
-	public Thing(String description, Person person) {
+	Task() {}
+	public Task(String description, Person person) {
 		this.description = description;
 		this.person = person;
-		person.getThings().add(this);
+		person.getTasks().add(this);
 	}
 	public String getDescription() {
 		return description;
@@ -30,11 +29,5 @@ public class Thing {
 	}
 	public void setPerson(Person person) {
 		this.person = person;
-	}
-	public String getLongDescription() {
-		return longDescription;
-	}
-	public void setLongDescription(String longDescription) {
-		this.longDescription = longDescription;
 	}
 }

@@ -9,7 +9,7 @@
     a version increment on the owning instance)
  -->
 <hibernate-mapping 
-		package="mapping.version">
+		package="mapping.version.nodb">
 
 	<class name="Person">
 		<id name="name"/>
