@@ -17,7 +17,7 @@ public class CUTMappingTest {
 		"<hibernate-configuration>                                                                                    \n" +
 		"	<session-factory>                                                                                         \n" +
 		"       <property name='dialect'>org.hibernate.dialect.HSQLDialect</property>                                \n" +
-		"       <mapping resource='/mapping/cut/ATypes.hbm.xml' /> \n" +
+		"       <mapping resource='/mapping/cut/Atypes.hbm.xml' /> \n" +
 		"       <mapping resource='/mapping/cut/Transaction.hbm.xml' /> \n" +
 		"	</session-factory>                                                                                        \n" +
 		"</hibernate-configuration>                                                                                    " ;
