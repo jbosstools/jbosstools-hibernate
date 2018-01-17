@@ -1,9 +1,9 @@
 package org.jboss.tools.hibernate.orm.test.mapping;
 
 import org.jboss.tools.hibernate.orm.test.utils.MappingTestHelper;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 
@@ -23,19 +23,19 @@ public class DiscriminatorMappingTest {
 	
 	private static final String packageName = "mapping.discriminator";
 	
-	@Rule
-	public TestName testName = new TestName();
+	@ClassRule
+	public static TestName testName = new TestName();
 	
-	private MappingTestHelper mappingTestHelper = null;
+	private static MappingTestHelper mappingTestHelper = null;
 	
-	@Before
-	public void setUp() throws Exception {
+	@BeforeClass
+	public static void setUp() throws Exception {
 		mappingTestHelper = new MappingTestHelper(CFG_XML, packageName, testName);
 		mappingTestHelper.setUp();
 	}
 	
-	@After
-	public void tearDown() {
+	@AfterClass
+	public static void tearDown() {
 		mappingTestHelper.tearDown();
 		mappingTestHelper = null;
 	}
