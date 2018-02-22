@@ -19,11 +19,11 @@ public class MappingTest {
 		"<hibernate-configuration>                                                                                    \n" +
 		"	<session-factory>                                                                                         \n" +
 		"       <property name='dialect'>org.hibernate.dialect.HSQLDialect</property>                                \n" +
-		"       <mapping resource='/mapping/propertyref/basic/Person.hbm.xml' /> \n" +
+		"       <mapping resource='/mapping/unconstrained/Person.hbm.xml' /> \n" +
 		"	</session-factory>                                                                                        \n" +
 		"</hibernate-configuration>                                                                                    " ;
 	
-	private static final String packageName = "mapping.propertyref.basic";
+	private static final String packageName = "mapping.unconstrained";
 	
 	@ClassRule
 	public static TestName testName = new TestName();
@@ -42,7 +42,6 @@ public class MappingTest {
 		mappingTestHelper = null;
 	}
 	
-	@Ignore
 	@Test
 	public void testCheckConsoleConfiguration() {
 		mappingTestHelper.testCheckConsoleConfiguration();

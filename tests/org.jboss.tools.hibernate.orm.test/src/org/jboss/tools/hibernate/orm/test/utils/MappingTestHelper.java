@@ -259,7 +259,8 @@ public class MappingTestHelper {
 					Assert.fail(out);
 				}
 			} catch (Exception e){
-				throw (Exception)e.getCause();
+//				throw (Exception)e.getCause();
+				throw e;
 			}
 			//
 			Object[] persClassesReInit = getPersistenceClasses(false);

@@ -1,5 +1,5 @@
 //$Id$
-package mapping.unconstrained;
+package core.unconstrained;
 
 /**
  * @author Gavin King

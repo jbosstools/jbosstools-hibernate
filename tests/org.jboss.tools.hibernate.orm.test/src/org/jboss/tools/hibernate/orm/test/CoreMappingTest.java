@@ -112,6 +112,7 @@ public class CoreMappingTest {
         		{"core.tool"},
         		{"core.typedonetoone"},
         		{"core.typeparameters"},
+        		{"core.unconstrained"},
         		{"core.unidir"},
         		{"core.unionsubclass"},
         		{"core.unionsubclass2"},
