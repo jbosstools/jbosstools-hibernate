@@ -1,5 +1,5 @@
 //$Id$
-package mapping.sorted;
+package core.sorted;
 
 import java.util.SortedSet;
 import java.util.TreeSet;

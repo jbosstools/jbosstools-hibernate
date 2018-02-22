@@ -19,11 +19,11 @@ public class MappingTest {
 		"<hibernate-configuration>                                                                                    \n" +
 		"	<session-factory>                                                                                         \n" +
 		"       <property name='dialect'>org.hibernate.dialect.HSQLDialect</property>                                \n" +
-		"       <mapping resource='/mapping/unconstrained/Person.hbm.xml' /> \n" +
+		"       <mapping resource='/mapping/sorted/Search.hbm.xml' /> \n" +
 		"	</session-factory>                                                                                        \n" +
 		"</hibernate-configuration>                                                                                    " ;
 	
-	private static final String packageName = "mapping.unconstrained";
+	private static final String packageName = "mapping.sorted";
 	
 	@ClassRule
 	public static TestName testName = new TestName();

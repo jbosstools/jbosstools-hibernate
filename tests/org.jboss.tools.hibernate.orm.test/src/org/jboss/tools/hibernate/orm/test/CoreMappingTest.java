@@ -104,6 +104,7 @@ public class CoreMappingTest {
         		{"core.querycache"},
         		{"core.readonly"},
         		{"core.reattachment"},
+        		{"core.sorted"},
         		{"core.stateless"},
         		{"core.subselect"},
         		{"core.subselectfetch"},
