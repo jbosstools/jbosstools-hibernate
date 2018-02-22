@@ -1,5 +1,5 @@
 //$Id$
-package mapping.rowid;
+package core.rowid;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
