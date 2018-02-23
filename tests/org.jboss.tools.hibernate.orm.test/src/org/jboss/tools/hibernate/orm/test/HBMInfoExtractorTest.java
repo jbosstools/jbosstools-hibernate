@@ -8,39 +8,52 @@
   * Contributor:
   *     Red Hat, Inc. - initial API and implementation
   ******************************************************************************/
-package org.hibernate.eclipse.mapper;
+package org.jboss.tools.hibernate.orm.test;
 
-import junit.framework.TestCase;
+import java.util.List;
 
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
-import org.hibernate.eclipse.console.test.project.ConfigurableTestProject;
+import org.hibernate.eclipse.mapper.extractor.HBMInfoExtractor;
 import org.hibernate.eclipse.mapper.extractor.JavaTypeHandler;
 import org.hibernate.eclipse.mapper.extractor.PackageHandler;
+import org.jboss.tools.hibernate.orm.test.utils.project.TestProject;
 import org.jboss.tools.hibernate.runtime.spi.IService;
 import org.jboss.tools.hibernate.runtime.spi.ServiceLookup;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.w3c.dom.Node;
 
 /**
  * @author Vitali
- *
+ * @author koen
  */
-public class HBMInfoExtractorTest extends TestCase {
+public class HBMInfoExtractorTest {
 	private HBMInfoExtractorStub sourceLocator = null;
-	private ConfigurableTestProject testProj = null;
+	private TestProject testProj = null;
 
-	protected void setUp() throws Exception {
-		testProj = new ConfigurableTestProject("HBMInfoProj" + System.currentTimeMillis()); //$NON-NLS-1$
-		IService service = ServiceLookup.findService("3.5");
-		sourceLocator = new HBMInfoExtractorStub(service);
+	@Before
+	public void setUp() throws Exception {
+		testProj = new TestProject("HBMInfoProj" + System.currentTimeMillis()); //$NON-NLS-1$
+		IPackageFragmentRoot sourcePackageFragment = testProj.createSourceFolder();
+		List<IPath> libs = testProj.copyLibs(testProj.getFolder("lib"));
+		testProj.generateClassPath(libs, sourcePackageFragment);
+		testProj.fullBuild();
+		sourceLocator = new HBMInfoExtractorStub(ServiceLookup.getDefault());
 	}
 
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		testProj.deleteIProject();
 		testProj = null;
 		sourceLocator = null;
 	}
 
-	public void executeJavaTypeHandlerTest(String start, String attributeName) {
+	private void executeJavaTypeHandlerTest(String start, String attributeName) {
 		sourceLocator.setPackageName("org"); //$NON-NLS-1$
 	    IJavaProject project = testProj.getIJavaProject();
 		JavaTypeHandler javaTypeHandler = new JavaTypeHandler(sourceLocator);
@@ -48,26 +61,30 @@ public class HBMInfoExtractorTest extends TestCase {
 			javaTypeHandler.attributeCompletionProposals(project, null, 
 				attributeName, start, 0);
 		
-	    assertTrue( res.length > 0 );
+	    Assert.assertTrue( res.length > 0 );
 	}
 
+	@Test
 	public void testJavaTypeHandler1() {
 		executeJavaTypeHandlerTest("a", "name");  //$NON-NLS-1$//$NON-NLS-2$
 	}
 
+	@Test
 	public void testJavaTypeHandler2() {
 		executeJavaTypeHandlerTest("", "name");  //$NON-NLS-1$//$NON-NLS-2$
 	}
-
+	
+	@Test
 	public void testJavaTypeHandler3() {
 		executeJavaTypeHandlerTest("a", "class"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
+	@Test
 	public void testJavaTypeHandler4() {
 		executeJavaTypeHandlerTest("", "class"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
-	public void executePackageHandlerTest(String start, String attributeName) {
+	private void executePackageHandlerTest(String start, String attributeName) {
 		sourceLocator.setPackageName("org"); //$NON-NLS-1$
 	    IJavaProject project = testProj.getIJavaProject();
 	    PackageHandler packageHandler = new PackageHandler(sourceLocator);
@@ -75,15 +92,35 @@ public class HBMInfoExtractorTest extends TestCase {
 			packageHandler.attributeCompletionProposals(project, null, 
 				attributeName, start, 0);
 		
-	    assertTrue( res.length > 0 );
+	    Assert.assertTrue( res.length > 0 );
 	}
 
+	@Test
 	public void testPackageHandler1() {
 		executePackageHandlerTest("o", "package");  //$NON-NLS-1$//$NON-NLS-2$
 	}
 
+	@Test
 	public void testPackageHandler2() {
 		executePackageHandlerTest("", "package"); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	
+	public class HBMInfoExtractorStub extends HBMInfoExtractor {
+
+		public HBMInfoExtractorStub(IService service) {
+			super(service);
+		}
+
+		protected String packageName = null;
+		
+		protected String getPackageName(Node root) {
+			return packageName;		
+		}
+
+		public void setPackageName(String packageName) {
+			this.packageName = packageName;		
+		}
+
 	}
 	
 }
