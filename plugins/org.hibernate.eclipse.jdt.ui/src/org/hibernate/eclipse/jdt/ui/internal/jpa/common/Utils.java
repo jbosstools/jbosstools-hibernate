@@ -37,7 +37,7 @@ public class Utils {
 
 	static public org.eclipse.jdt.core.dom.CompilationUnit getCompilationUnit(
 			ICompilationUnit source, boolean bindings) {
-		ASTParser parser = ASTParser.newParser(AST.JLS8);
+		ASTParser parser = ASTParser.newParser(AST.JLS9);
 		parser.setSource(source);
 		parser.setResolveBindings(bindings);
 		org.eclipse.jdt.core.dom.CompilationUnit result = (org.eclipse.jdt.core.dom.CompilationUnit) parser.createAST(null);
