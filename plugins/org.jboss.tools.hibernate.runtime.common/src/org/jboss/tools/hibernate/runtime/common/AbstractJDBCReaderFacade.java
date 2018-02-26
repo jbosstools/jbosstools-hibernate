@@ -3,6 +3,7 @@ package org.jboss.tools.hibernate.runtime.common;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.Properties;
 
 import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
@@ -21,14 +22,25 @@ implements IJDBCReader {
 	@Override
 	public void readDatabaseSchema(
 			IDatabaseCollector databaseCollector,
-			String defaultCatalogName, 
-			String defaultSchemaName,
 			IProgressListener progressListener) {
 		Object databaseCollectorTarget = Util.invokeMethod(
 				databaseCollector, 
 				"getTarget", 
 				new Class[] {}, 
 				new Object[] {});
+		Properties properties = (Properties)Util.invokeMethod(
+				getEnvironmentClass(), 
+				"getProperties", 
+				new Class[] {}, 
+				new Object[] {});
+		String defaultCatalog = (String)Util.getFieldValue(
+				getEnvironmentClass(), 
+				"DEFAULT_CATALOG", 
+				null);
+		String defaultSchema = (String)Util.getFieldValue(
+				getEnvironmentClass(), 
+				"DEFAULT_SCHEMA", 
+				null);
 		Util.invokeMethod(
 				getTarget(), 
 				"readDatabaseSchema", 
@@ -39,8 +51,8 @@ implements IJDBCReader {
 						getProgressListenerClass() }, 
 				new Object[] {
 						databaseCollectorTarget,
-						defaultCatalogName,
-						defaultSchemaName,
+						properties.getProperty(defaultCatalog),
+						properties.getProperty(defaultSchema),
 						createProgressListener(progressListener)
 				});
 	}
@@ -63,6 +75,16 @@ implements IJDBCReader {
 	
 	public String getDatabaseCollectorClassName() {
 		return "org.hibernate.cfg.reveng.DatabaseCollector";
+	}
+	
+	protected Class<?> getEnvironmentClass() {
+		return Util.getClass(
+				getEnvironmentClassName(), 
+				getFacadeFactoryClassLoader());
+	}
+	
+	protected String getEnvironmentClassName() {
+		return "org.hibernate.cfg.Environment";
 	}
 	
 	private Object createProgressListener(IProgressListener progressListener) {

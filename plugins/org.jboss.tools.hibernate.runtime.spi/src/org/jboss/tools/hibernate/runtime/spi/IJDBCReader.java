@@ -5,8 +5,6 @@ public interface IJDBCReader {
 
 	void readDatabaseSchema(
 			IDatabaseCollector databaseCollector,
-			String defaultCatalogName, 
-			String defaultSchemaName,
 			IProgressListener progressListener);
 
 }
