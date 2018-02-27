@@ -116,12 +116,6 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	}
 
 	@Override
-	public String getDefaultSchemaName() {
-		return Environment.getProperties().getProperty(
-				AvailableSettings.DEFAULT_SCHEMA);
-	}
-
-	@Override
 	protected Object createTargetMapping() {
 		return getMetadata();
 	}

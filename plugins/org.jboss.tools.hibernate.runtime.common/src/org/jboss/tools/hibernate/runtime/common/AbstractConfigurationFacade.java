@@ -268,15 +268,6 @@ implements IConfiguration {
 				new Object[] {});
 	}
 	
-	@Override
-	public String getDefaultSchemaName() {
-		return (String)Util.invokeMethod(
-				buildTargetSettings(), 
-				"getDefaultSchemaName", 
-				new Class[] {}, 
-				new Object[] {});
-	}
-	
 	protected Class<?> getNamingStrategyClass() {
 		return Util.getClass(getNamingStrategyClassName(), getFacadeFactoryClassLoader());
 	}

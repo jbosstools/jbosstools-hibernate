@@ -311,13 +311,6 @@ public class ConfigurationFacadeTest {
 	}
 	
 	@Test
-	public void testGetDefaultSchemaName() {
-		Assert.assertNull(configurationFacade.getDefaultSchemaName());
-		configuration.setProperty(Environment.DEFAULT_SCHEMA, "bar");
-		Assert.assertEquals("bar", configurationFacade.getDefaultSchemaName());
-	}
-	
-	@Test
 	public void testAddClass() {
 		PersistentClass persistentClass = new RootClass();
 		persistentClass.setEntityName("Foo");

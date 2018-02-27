@@ -32,6 +32,5 @@ public interface IConfiguration {
 	EntityResolver getEntityResolver();
 	Iterator<ITable> getTableMappings();
 	String getDefaultCatalogName();
-	String getDefaultSchemaName();
 
 }
