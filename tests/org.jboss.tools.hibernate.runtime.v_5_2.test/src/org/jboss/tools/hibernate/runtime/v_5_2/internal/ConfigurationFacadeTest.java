@@ -268,11 +268,6 @@ public class ConfigurationFacadeTest {
 	}
 	
 	@Test
-	public void testGetDefaultCatalogName() {
-		Assert.assertNull(configurationFacade.getDefaultCatalogName());
-	}
-	
-	@Test
 	public void testAddClass() {
 		PersistentClass persistentClass = new RootClass(null);
 		persistentClass.setEntityName("Foo");
