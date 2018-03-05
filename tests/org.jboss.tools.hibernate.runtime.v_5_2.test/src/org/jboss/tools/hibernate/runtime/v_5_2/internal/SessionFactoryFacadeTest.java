@@ -2,12 +2,16 @@ package org.jboss.tools.hibernate.runtime.v_5_2.internal;
 
 import java.util.Map;
 
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.metamodel.Metamodel;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
+import org.hibernate.metamodel.spi.MetamodelImplementor;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
@@ -102,7 +106,8 @@ public class SessionFactoryFacadeTest {
 		SessionFactory sessionFactory = 
 				configuration.buildSessionFactory(
 						new StandardServiceRegistryBuilder().build());
-		ClassMetadata classMetadata = sessionFactory.getClassMetadata(Foo.class);
+		Metamodel metamodel = ((EntityManagerFactory)sessionFactory).getMetamodel();	
+		ClassMetadata classMetadata = (ClassMetadata)((MetamodelImplementor)metamodel).entityPersister(Foo.class);
 		ISessionFactory sessionFactoryFacade = 
 				FACADE_FACTORY.createSessionFactory(sessionFactory);
 		Assert.assertSame(
@@ -124,8 +129,9 @@ public class SessionFactoryFacadeTest {
 						new StandardServiceRegistryBuilder().build());
 		ISessionFactory sessionFactoryFacade = 
 				FACADE_FACTORY.createSessionFactory(sessionFactory);
-		CollectionMetadata collectionMetadata = sessionFactory.getCollectionMetadata(
-				"org.jboss.tools.hibernate.runtime.v_5_2.internal.test.Foo.bars");
+		Metamodel metamodel = ((EntityManagerFactory)sessionFactory).getMetamodel();	
+		CollectionMetadata collectionMetadata = (CollectionMetadata)((MetamodelImplementor)metamodel)
+				.collectionPersister("org.jboss.tools.hibernate.runtime.v_5_2.internal.test.Foo.bars");
 		Assert.assertSame(
 				collectionMetadata, 
 				((IFacade)sessionFactoryFacade.getCollectionMetadata(
