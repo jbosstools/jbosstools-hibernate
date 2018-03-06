@@ -213,11 +213,11 @@ public class ExporterFactory {
 		props.putAll(globalProperties);
 		props.putAll(getProperties());
 
-		exporter.setProperties(props);
-		exporter.setArtifactCollector(collector);
-
 		extractExporterProperties(getExporterDefinitionId(), props, extract);
 		
+		cfg.addProperties(props);
+		exporter.setArtifactCollector(collector);
+
 		String outputPath = defaultOutputDirectory;
 		if (extract.containsKey(ExporterFactoryStrings.OUTPUTDIR)) {
 			outputPath = extract.getProperty(ExporterFactoryStrings.OUTPUTDIR);
