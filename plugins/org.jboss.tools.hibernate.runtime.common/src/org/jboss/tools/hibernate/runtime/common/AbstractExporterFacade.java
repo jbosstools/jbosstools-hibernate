@@ -27,21 +27,17 @@ implements IExporter {
 		if (configuration instanceof IFacade) {
 			Util.invokeMethod(
 					getTarget(), 
+					"setProperties", 
+					new Class[] { Properties.class }, 
+					new Object[] { configuration.getProperties() });
+			Util.invokeMethod(
+					getTarget(), 
 					"setConfiguration", 
 					new Class[] { getConfigurationClass() }, 
 					new Object[] { ((IFacade)configuration).getTarget() });
 		}
 	}
 	
-	@Override
-	public void setProperties(Properties properties) {
-		Util.invokeMethod(
-				getTarget(), 
-				"setProperties", 
-				new Class[] { Properties.class }, 
-				new Object[] { properties });
-	}
-
 	@Override
 	public void setArtifactCollector(IArtifactCollector collector) {
 		if (collector instanceof IFacade) {

@@ -8,7 +8,6 @@ import java.util.Properties;
 public interface IExporter {
 
 	void setConfiguration(IConfiguration configuration);
-	void setProperties(Properties properties);
 	void setArtifactCollector(IArtifactCollector collector);
 	void setOutputDirectory(File file);
 	void setTemplatePath(String[] strings);
