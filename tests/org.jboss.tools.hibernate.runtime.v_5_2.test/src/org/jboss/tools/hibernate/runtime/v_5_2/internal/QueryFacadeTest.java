@@ -6,7 +6,7 @@ import java.lang.reflect.Proxy;
 import java.util.Collections;
 import java.util.List;
 
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.AbstractQueryFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
@@ -30,7 +30,7 @@ public class QueryFacadeTest {
 	
 	@Before
 	public void setUp() {
-		Query queryProxy = (Query)Proxy.newProxyInstance(
+		Query<?> queryProxy = (Query<?>)Proxy.newProxyInstance(
 				FACADE_FACTORY.getClassLoader(), 
 				new Class[] { Query.class }, 
 				new InvocationHandler() {

@@ -10,7 +10,6 @@ import java.util.Map;
 
 import org.hibernate.Criteria;
 import org.hibernate.Filter;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
@@ -45,6 +44,7 @@ import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
+import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
@@ -432,7 +432,7 @@ public class FacadeFactoryTest {
 	
 	@Test
 	public void testCreateQuery() {
-		Query query = (Query)Proxy.newProxyInstance(
+		Query<?> query = (Query<?>)Proxy.newProxyInstance(
 				facadeFactory.getClassLoader(), 
 				new Class[] { Query.class }, 
 				new TestInvocationHandler());
