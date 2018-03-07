@@ -59,14 +59,6 @@ public class ExporterFacadeTest {
 	}
 	
 	@Test
-	public void testSetProperties() {
-		Properties properties = new Properties();
-		exporterFacade.setProperties(properties);
-		Assert.assertEquals("setProperties", methodName);
-		Assert.assertArrayEquals(new Object[] { properties }, arguments);
-	}
-	
-	@Test
 	public void testSetArtifactCollector() {
 		ArtifactCollector ac = new ArtifactCollector();
 		IArtifactCollector artifactCollector = new AbstractArtifactCollectorFacade(FACADE_FACTORY, ac) {};
