@@ -28,7 +28,7 @@ public class SchemaExportFacadeImpl extends AbstractSchemaExportFacade {
 	}
 	
 	@Override
-	public void create(boolean script, boolean export) {
+	public void create() {
 		target.create(EnumSet.of(TargetType.DATABASE), metadata);
 	}
 

@@ -15,12 +15,12 @@ implements ISchemaExport {
 	}
 
 	@Override
-	public void create(boolean script, boolean export) {
+	public void create() {
 		Util.invokeMethod(
 				getTarget(), 
 				"create", 
 				new Class[] { boolean.class, boolean.class }, 
-				new Object[] { script, export });
+				new Object[] { Boolean.FALSE, Boolean.TRUE });
 	}
 
 	@SuppressWarnings("unchecked")

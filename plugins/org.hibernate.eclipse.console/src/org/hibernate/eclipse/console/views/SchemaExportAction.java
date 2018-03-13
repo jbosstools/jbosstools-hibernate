@@ -102,7 +102,7 @@ public class SchemaExportAction extends ConsoleConfigReadyUseBaseAction {
 						}
 						IService service = config.getHibernateExtension().getHibernateService();
 						ISchemaExport export = service.newSchemaExport(cfg);
-						export.create(false, true);
+						export.create();
 						if (!export.getExceptions().isEmpty()) {
 							Iterator<Throwable> iterator = export.getExceptions().iterator();
 							int cnt = 1;

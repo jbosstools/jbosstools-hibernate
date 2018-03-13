@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface ISchemaExport {
 
-	void create(boolean b, boolean c);
+	void create();
 	List<Throwable> getExceptions();
 
 }
