@@ -176,6 +176,7 @@ public class FacadeFactoryTest {
 		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 		SchemaExport schemaExport = new SchemaExport();
 		ISchemaExport facade = facadeFactory.createSchemaExport(schemaExport);
+		Assert.assertTrue(facade instanceof SchemaExportFacadeImpl);
 		Assert.assertSame(schemaExport, ((IFacade)facade).getTarget());		
 	}
 	

@@ -125,7 +125,10 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public ISchemaExport newSchemaExport(IConfiguration hcfg) {
-		return facadeFactory.createSchemaExport(new SchemaExport());
+		SchemaExportFacadeImpl result = (SchemaExportFacadeImpl)facadeFactory
+				.createSchemaExport(new SchemaExport());
+		result.setConfiguration(hcfg);
+		return result;
 	}
 
 	@Override
