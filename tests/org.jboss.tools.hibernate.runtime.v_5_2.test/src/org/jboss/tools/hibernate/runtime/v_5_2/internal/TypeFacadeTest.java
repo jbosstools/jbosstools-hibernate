@@ -18,6 +18,7 @@ import org.hibernate.type.IntegerType;
 import org.hibernate.type.ManyToOneType;
 import org.hibernate.type.OneToOneType;
 import org.hibernate.type.StringType;
+import org.hibernate.type.TypeFactory.TypeScope;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.junit.Assert;
@@ -70,7 +71,7 @@ public class TypeFacadeTest {
 		ClassType classType = new ClassType();
 		typeFacade = FACADE_FACTORY.createType(classType);
 		Assert.assertFalse(typeFacade.isEntityType());
-		EntityType entityType = new ManyToOneType(null, null);
+		EntityType entityType = new ManyToOneType((TypeScope)null, null);
 		typeFacade = FACADE_FACTORY.createType(entityType);
 		Assert.assertTrue(entityType.isEntityType());
 	}
@@ -81,7 +82,7 @@ public class TypeFacadeTest {
 		ClassType classType = new ClassType();
 		typeFacade = FACADE_FACTORY.createType(classType);
 		Assert.assertFalse(typeFacade.isOneToOne());
-		EntityType entityType = new ManyToOneType(null, null);
+		EntityType entityType = new ManyToOneType((TypeScope)null, null);
 		typeFacade = FACADE_FACTORY.createType(entityType);
 		Assert.assertFalse(entityType.isOneToOne());
 		OneToOneType oneToOneType = new OneToOneType(
@@ -151,7 +152,7 @@ public class TypeFacadeTest {
 		ClassType classType = new ClassType();
 		typeFacade = FACADE_FACTORY.createType(classType);
 		Assert.assertNull(typeFacade.getAssociatedEntityName());
-		EntityType entityType = new ManyToOneType(null, "foo");
+		EntityType entityType = new ManyToOneType((TypeScope)null, "foo");
 		typeFacade = FACADE_FACTORY.createType(entityType);
 		Assert.assertEquals("foo", typeFacade.getAssociatedEntityName());
 	}
