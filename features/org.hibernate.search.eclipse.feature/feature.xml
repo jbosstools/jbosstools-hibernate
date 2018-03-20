@@ -39,6 +39,7 @@ Also this plugin is an addition to JBoss Tools Hibernate plugin which is license
       <import plugin="org.jboss.tools.hibernate.runtime.v_5_1" version="5.1.2.qualifier" match="greaterOrEqual"/>
       <import plugin="org.jboss.tools.hibernate.runtime.common" version="5.1.2" match="greaterOrEqual"/>
       <import plugin="org.jboss.tools.hibernate.runtime.v_5_2" version="5.1.2.qualifier" match="greaterOrEqual"/>
+      <import plugin="org.jboss.tools.hibernate.runtime.v_5_3" version="5.2.3.qualifier" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui" version="3.109.0" match="greaterOrEqual"/>
       <import feature="org.hibernate.eclipse.feature" version="5.1.2.qualifier" match="greaterOrEqual"/>
    </requires>
