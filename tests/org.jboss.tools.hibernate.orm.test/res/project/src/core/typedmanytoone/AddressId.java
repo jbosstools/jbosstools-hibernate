@@ -1,5 +1,5 @@
 //$Id$
-package mapping.typedmanytoone;
+package core.typedmanytoone;
 
 import java.io.Serializable;
 

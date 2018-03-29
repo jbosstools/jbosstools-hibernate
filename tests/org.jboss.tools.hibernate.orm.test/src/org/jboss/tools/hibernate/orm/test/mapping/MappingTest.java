@@ -19,11 +19,11 @@ public class MappingTest {
 		"<hibernate-configuration>                                                                                    \n" +
 		"	<session-factory>                                                                                         \n" +
 		"       <property name='dialect'>org.hibernate.dialect.HSQLDialect</property>                                \n" +
-		"       <mapping resource='/mapping/rowid/Point.hbm.xml' /> \n" +
+		"       <mapping resource='/mapping/typedmanytoone/Customer.hbm.xml' /> \n" +
 		"	</session-factory>                                                                                        \n" +
 		"</hibernate-configuration>                                                                                    " ;
 	
-	private static final String packageName = "mapping.rowid";
+	private static final String packageName = "mapping.typedmanytoone";
 	
 	@ClassRule
 	public static TestName testName = new TestName();

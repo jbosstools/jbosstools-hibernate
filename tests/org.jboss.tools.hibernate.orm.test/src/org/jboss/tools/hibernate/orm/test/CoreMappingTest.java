@@ -112,6 +112,7 @@ public class CoreMappingTest {
         		{"core.ternary"},
         		{"core.timestamp"},
         		{"core.tool"},
+        		{"core.typedmanytoone"},
         		{"core.typedonetoone"},
         		{"core.typeparameters"},
         		{"core.unconstrained"},
