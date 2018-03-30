@@ -1,5 +1,5 @@
 //$Id$
-package mapping.formulajoin;
+package core.formulajoin;
 
 import java.io.Serializable;
 

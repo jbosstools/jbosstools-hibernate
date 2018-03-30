@@ -56,6 +56,7 @@ public class CoreMappingTest {
         		{"core.exception"},
         		{"core.extralazy"},
         		{"core.filter"},
+        		{"core.formulajoin"},
         		{"core.generatedkeys.identity"},
         		{"core.generatedkeys.select"},
         		{"core.generatedkeys.seqidentity"},
