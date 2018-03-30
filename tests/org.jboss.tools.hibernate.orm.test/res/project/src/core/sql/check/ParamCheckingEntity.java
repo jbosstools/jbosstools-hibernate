@@ -1,4 +1,4 @@
-package mapping.sql.check;
+package core.sql.check;
 
 /**
  * An entity which is expected to be mapped to each database using stored

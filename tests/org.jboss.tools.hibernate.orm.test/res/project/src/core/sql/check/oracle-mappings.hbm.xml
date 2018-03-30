@@ -1,7 +1,9 @@
 <?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
-<hibernate-mapping package="mapping.sql.check">
+<hibernate-mapping package="core.sql.check">
 
     <class name="ExceptionCheckingEntity" table="ENTITY_E">
         <id name="id" unsaved-value="0" column="ID">

@@ -107,6 +107,7 @@ public class CoreMappingTest {
         		{"core.reattachment"},
         		{"core.rowid"},
         		{"core.sorted"},
+        		{"core.sql.check"},
         		{"core.stateless"},
         		{"core.subselect"},
         		{"core.subselectfetch"},
