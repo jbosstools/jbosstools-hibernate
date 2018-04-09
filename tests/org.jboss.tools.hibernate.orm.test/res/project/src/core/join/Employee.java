@@ -1,5 +1,5 @@
 //$Id$
-package mapping.join;
+package core.join;
 
 import java.math.BigDecimal;
 

@@ -1,5 +1,5 @@
 //$Id$
-package mapping.join;
+package core.join;
 
 /**
  * @author Mike Dillon

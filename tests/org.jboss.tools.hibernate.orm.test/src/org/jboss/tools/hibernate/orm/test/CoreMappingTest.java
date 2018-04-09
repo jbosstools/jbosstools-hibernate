@@ -70,6 +70,7 @@ public class CoreMappingTest {
         		{"core.interceptor"},
         		{"core.interfaceproxy"},
         		{"core.iterate"},
+        		{"core.join"},
         		{"core.joinedsubclass"},
         		{"core.joinfetch"},
         		{"core.jpa"},
