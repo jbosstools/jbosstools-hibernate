@@ -87,6 +87,7 @@ public class CoreMappingTest {
         		{"core.mixed"},
         		{"core.naturalid"},
         		{"core.ondelete"},
+        		{"core.onetomany"},
         		{"core.onetoone.formula"},
         		{"core.onetoone.joined"},
         		{"core.onetoone.optional"},

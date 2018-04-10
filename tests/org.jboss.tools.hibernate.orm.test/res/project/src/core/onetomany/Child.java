@@ -1,28 +1,13 @@
 //$Id$
-package mapping.onetomany;
-
-import java.util.Collection;
-import java.util.HashSet;
+package core.onetomany;
 
 /**
  * @author gavin
  */
-public class Parent {
+public class Child {
 	private Long id;
 	private String name;
-	private Collection children = new HashSet();
-	/**
-	 * @return Returns the children.
-	 */
-	public Collection getChildren() {
-		return children;
-	}
-	/**
-	 * @param children The children to set.
-	 */
-	public void setChildren(Collection children) {
-		this.children = children;
-	}
+	private Parent parent;
 	/**
 	 * @return Returns the id.
 	 */
@@ -46,5 +31,17 @@ public class Parent {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+	/**
+	 * @return Returns the parent.
+	 */
+	public Parent getParent() {
+		return parent;
+	}
+	/**
+	 * @param parent The parent to set.
+	 */
+	public void setParent(Parent parent) {
+		this.parent = parent;
 	}
 }
