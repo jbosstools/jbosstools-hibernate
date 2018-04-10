@@ -90,6 +90,7 @@ public class CoreMappingTest {
         		{"core.onetomany"},
         		{"core.onetoone.formula"},
         		{"core.onetoone.joined"},
+        		{"core.onetoone.link"},
         		{"core.onetoone.optional"},
         		{"core.onetoone.singletable"},
         		{"core.ops"},

@@ -1,5 +1,5 @@
 //$Id$
-package mapping.onetoone.link;
+package core.onetoone.link;
 
 import java.util.Date;
 

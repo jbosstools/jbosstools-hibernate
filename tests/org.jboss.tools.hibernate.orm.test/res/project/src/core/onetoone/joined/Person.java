@@ -1,5 +1,5 @@
 //$Id$
-package mapping.onetoone.joined;
+package core.onetoone.joined;
 
 /**
  * @author Gavin King

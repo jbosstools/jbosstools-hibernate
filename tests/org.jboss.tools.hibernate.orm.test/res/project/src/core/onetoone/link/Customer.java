@@ -1,10 +1,10 @@
 //$Id$
-package mapping.onetoone.link;
+package core.onetoone.link;
 
 /**
  * @author Gavin King
  */
-public class Employee {
+public class Customer {
 	private Long id;
 	private Person person;
 	public Person getPerson() {
