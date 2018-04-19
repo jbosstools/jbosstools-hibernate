@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Hibernate 5.3 libraries
 Bundle-SymbolicName: org.jboss.tools.hibernate.runtime.v_5_3;singleton:=true
-Bundle-Version: 5.2.3.qualifier
+Bundle-Version: 5.2.4.qualifier
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ClassPath: .,
@@ -10,7 +10,7 @@ Bundle-ClassPath: .,
  lib/geronimo-jta_1.1_spec-1.1.1.jar,
  lib/hibernate-commons-annotations-5.0.1.Final.jar,
  lib/hibernate-core-5.3.0.Beta2.jar,
- lib/hibernate-tools-5.3.0.Beta2.jar,
+ lib/hibernate-tools-5.3.0.Beta3.jar,
  lib/javassist-3.20.0-GA.jar,
  lib/javax.persistence-api-2.2.jar,
  lib/jboss-logging-3.3.0.Final.jar,
