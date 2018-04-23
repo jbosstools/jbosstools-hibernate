@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.hibernate.eclipse.console.test.launchcfg;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +57,10 @@ public class TestLaunchConfig implements ILaunchConfiguration {
 
 	public void delete() throws CoreException {
 
+	}
+
+	@Override
+	public void delete(int flag) throws CoreException {
 	}
 
 	public boolean exists() {
@@ -195,4 +201,37 @@ public class TestLaunchConfig implements ILaunchConfiguration {
 		return null;
 	}
 
+	@Override
+	public ILaunchConfiguration getPrototype() throws CoreException {
+		return null;
+	}
+
+	@Override
+	public boolean isAttributeModified(String attribute) throws CoreException {
+		return false;
+	}
+
+	@Override
+	public boolean isPrototype() {
+		return false;
+	}
+
+	@Override
+	public Collection<ILaunchConfiguration> getPrototypeChildren() throws CoreException {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public int getKind() throws CoreException {
+		return CONFIGURATION;
+	}
+
+	@Override
+	public Set<String> getPrototypeVisibleAttributes() throws CoreException {
+		return null;
+	}
+
+	@Override
+	public void setPrototypeAttributeVisibility(String attribute, boolean visible) throws CoreException {
+	}
 };
