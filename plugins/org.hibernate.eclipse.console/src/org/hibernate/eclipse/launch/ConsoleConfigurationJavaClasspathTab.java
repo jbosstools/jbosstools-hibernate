@@ -20,7 +20,6 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.eclipse.console.EclipseLaunchConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
-import org.hibernate.eclipse.console.HibernateConsolePlugin;
 
 /**
  * 
@@ -62,7 +61,8 @@ public class ConsoleConfigurationJavaClasspathTab extends JavaClasspathTab {
 			entries = JavaRuntime.computeUnresolvedRuntimeClasspath(launchConfig);
 			for (int i = 0; i < entries.length; i++) {
 				IRuntimeClasspathEntry entry = entries[i];
-				if (entry.getClasspathProperty() == IRuntimeClasspathEntry.USER_CLASSES) {
+				if (entry.getClasspathProperty() == IRuntimeClasspathEntry.USER_CLASSES 
+						|| entry.getClasspathProperty() == IRuntimeClasspathEntry.OTHER) {
 					resUserClasses = true;
 					if (entry.getType() == IRuntimeClasspathEntry.ARCHIVE) {
 						if (!entry.getPath().toFile().exists()) {
