@@ -63,6 +63,14 @@ public class ProjectCompilerVersionChecker {
 		if (versionID instanceof String) {
 			String version = (String) versionID;
 			// verification is optimized for all versions with same length and same "1." prefix
+			if (version.length() == 1) {
+				switch (version.charAt(0)) {
+					case '9':
+						return ClassFileConstants.JDK9;
+					default:
+						return 0;
+				}
+			}
 			if (version.length() == 3 && version.charAt(0) == '1' && version.charAt(1) == '.') {
 				switch (version.charAt(2)) {
 					case '1':

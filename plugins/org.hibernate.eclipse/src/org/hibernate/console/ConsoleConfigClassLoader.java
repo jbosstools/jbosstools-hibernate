@@ -39,10 +39,10 @@ public class ConsoleConfigClassLoader extends URLClassLoader {
 	}
 
 	public void close() {
-		setJarFileNames2Close.clear();
-		closeClassLoader(this);
-		finalizeNativeLibs(this);
-		cleanupJarFileFactory();
+//		setJarFileNames2Close.clear();
+//		closeClassLoader(this);
+//		finalizeNativeLibs(this);
+//		cleanupJarFileFactory();
 	}
 
 	/**
