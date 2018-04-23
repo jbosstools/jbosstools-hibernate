@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.hibernate.eclipse.console.test.launchcfg;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +49,11 @@ public class TestWorkingCopy implements ILaunchConfigurationWorkingCopy {
 	public ILaunchConfiguration doSave() throws CoreException {
 		parent.updatedAttributes.putAll(attributes);
 		return parent;
+	}
+
+	@Override
+	public ILaunchConfiguration doSave(int flag) throws CoreException {
+		return doSave();
 	}
 
 	public boolean hasAttribute(String attributeName) throws CoreException {
@@ -100,6 +107,11 @@ public class TestWorkingCopy implements ILaunchConfigurationWorkingCopy {
 		attributes.putAll(attribs);
 	}
 
+	@Override
+	public void setAttribute(String attributeName, Object value) {
+		attributes.put(attributeName, value);
+	}
+
 	public void setContainer(IContainer container) {
 		Assert.fail(ConsoleTestMessages.RefactoringTest_method_not_tested);
 	}
@@ -126,6 +138,10 @@ public class TestWorkingCopy implements ILaunchConfigurationWorkingCopy {
 	}
 
 	public void delete() throws CoreException {
+	}
+
+	@Override
+	public void delete(int flag) throws CoreException {
 	}
 
 	public boolean exists() {
@@ -246,5 +262,47 @@ public class TestWorkingCopy implements ILaunchConfigurationWorkingCopy {
 	public void setAttribute(String attributeName, Set value) {
 		attributes.put(attributeName, value);
 	}
+	@Override
+	public ILaunchConfiguration getPrototype() throws CoreException {
+		return null;
+	}
+
+	@Override
+	public boolean isAttributeModified(String attribute) throws CoreException {
+		return false;
+	}
+
+	@Override
+	public boolean isPrototype() {
+		return false;
+	}
+
+	@Override
+	public Collection<ILaunchConfiguration> getPrototypeChildren() throws CoreException {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public int getKind() throws CoreException {
+		return CONFIGURATION;
+	}
+
+	@Override
+	public Set<String> getPrototypeVisibleAttributes() throws CoreException {
+		return null;
+	}
+
+	@Override
+	public void setPrototypeAttributeVisibility(String attribute, boolean visible) throws CoreException {
+	}
+
+	@Override
+	public void setPrototype(ILaunchConfiguration prototype, boolean copy) throws CoreException {
+	}
+
+	@Override
+	public void copyAttributes(ILaunchConfiguration prototype) throws CoreException {
+	}
+
 
 }
