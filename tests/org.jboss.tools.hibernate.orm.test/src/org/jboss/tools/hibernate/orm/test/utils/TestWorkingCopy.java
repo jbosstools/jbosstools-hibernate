@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.orm.test.utils;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +48,11 @@ public class TestWorkingCopy implements ILaunchConfigurationWorkingCopy {
 		return parent;
 	}
 
+	@Override
+	public ILaunchConfiguration doSave(int flag) throws CoreException {
+		return doSave();
+	}
+
 	public boolean hasAttribute(String attributeName) throws CoreException {
 		Assert.fail(TestConsoleMessages.RefactoringTest_method_not_tested);
 		return false;
@@ -78,6 +85,11 @@ public class TestWorkingCopy implements ILaunchConfigurationWorkingCopy {
 	}
 
 	public void setAttribute(String attributeName, String value) {
+		attributes.put(attributeName, value);
+	}
+
+	@Override
+	public void setAttribute(String attributeName, Object value) {
 		attributes.put(attributeName, value);
 	}
 
@@ -123,6 +135,10 @@ public class TestWorkingCopy implements ILaunchConfigurationWorkingCopy {
 	}
 
 	public void delete() throws CoreException {
+	}
+
+	@Override
+	public void delete(int flag) throws CoreException {
 	}
 
 	public boolean exists() {
@@ -244,4 +260,45 @@ public class TestWorkingCopy implements ILaunchConfigurationWorkingCopy {
 		attributes.put(attributeName, value);
 	}
 
+	@Override
+	public ILaunchConfiguration getPrototype() throws CoreException {
+		return null;
+	}
+
+	@Override
+	public boolean isAttributeModified(String attribute) throws CoreException {
+		return false;
+	}
+
+	@Override
+	public boolean isPrototype() {
+		return false;
+	}
+
+	@Override
+	public Collection<ILaunchConfiguration> getPrototypeChildren() throws CoreException {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public int getKind() throws CoreException {
+		return CONFIGURATION;
+	}
+
+	@Override
+	public Set<String> getPrototypeVisibleAttributes() throws CoreException {
+		return null;
+	}
+
+	@Override
+	public void setPrototypeAttributeVisibility(String attribute, boolean visible) throws CoreException {
+	}
+
+	@Override
+	public void setPrototype(ILaunchConfiguration prototype, boolean copy) throws CoreException {
+	}
+
+	@Override
+	public void copyAttributes(ILaunchConfiguration prototype) throws CoreException {
+	}
 }

@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.orm.test.utils;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +55,10 @@ public class TestLaunchConfig implements ILaunchConfiguration {
 
 	public void delete() throws CoreException {
 
+	}
+
+	@Override
+	public void delete(int flag) throws CoreException {
 	}
 
 	public boolean exists() {
@@ -194,5 +200,41 @@ public class TestLaunchConfig implements ILaunchConfiguration {
 	public <T> T getAdapter(final Class<T> adapter) {
 		return null;
 	}
+
+	@Override
+	public int getKind() throws CoreException {
+		return CONFIGURATION;
+	}
+
+	@Override
+	public boolean isPrototype() {
+		return false;
+	}
+
+	@Override
+	public ILaunchConfiguration getPrototype() throws CoreException {
+		return null;
+	}
+
+	@Override
+	public Set<String> getPrototypeVisibleAttributes() throws CoreException {
+		return null;
+	}
+
+	@Override
+	public Collection<ILaunchConfiguration> getPrototypeChildren() throws CoreException {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public boolean isAttributeModified(String attribute) throws CoreException {
+		return false;
+	}
+
+	@Override
+	public void setPrototypeAttributeVisibility(String attribute, boolean visible) throws CoreException {
+	}
+	
+	
 
 };
