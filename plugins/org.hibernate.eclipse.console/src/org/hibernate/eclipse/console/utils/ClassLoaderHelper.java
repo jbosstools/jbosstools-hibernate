@@ -148,7 +148,8 @@ public class ClassLoaderHelper {
 		List<String> userEntries = new ArrayList<String>(entries.length);
 		for (int i = 0; i < entries.length; i++) {
 			IRuntimeClasspathEntry runtimeClasspathEntry = entries[i];
-			if (runtimeClasspathEntry.getClasspathProperty() == IRuntimeClasspathEntry.USER_CLASSES) {
+			if (runtimeClasspathEntry.getClasspathProperty() == IRuntimeClasspathEntry.USER_CLASSES 
+					|| runtimeClasspathEntry.getClasspathProperty() == IRuntimeClasspathEntry.OTHER) {
 				String location = runtimeClasspathEntry.getLocation();
 				if (location != null) {
 					userEntries.add(location);
