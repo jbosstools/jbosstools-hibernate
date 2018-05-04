@@ -36,6 +36,7 @@ import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
+import org.jboss.tools.hibernate.runtime.v_5_3.internal.util.DummyMetadataBuildingContext;
 import org.jboss.tools.hibernate.runtime.v_5_3.internal.util.MetadataHelper;
 import org.junit.Assert;
 import org.junit.Test;
@@ -49,31 +50,31 @@ public class ValueFacadeTest {
 	
 	@Test
 	public void testIsSimpleValue() {
-		valueTarget = new SimpleValue(null);
+		valueTarget = new SimpleValue(new DummyMetadataBuildingContext());
 		valueFacade = FACADE_FACTORY.createValue(valueTarget);
 		Assert.assertTrue(valueFacade.isSimpleValue());
-		valueTarget = new Set(null, null);
+		valueTarget = new Set(new DummyMetadataBuildingContext(), null);
 		valueFacade = FACADE_FACTORY.createValue(valueTarget);
 		Assert.assertFalse(valueFacade.isSimpleValue());
 	}
 
 	@Test
 	public void testIsCollection() {
-		valueTarget = new SimpleValue(null);
+		valueTarget = new SimpleValue(new DummyMetadataBuildingContext());
 		valueFacade = FACADE_FACTORY.createValue(valueTarget);
 		Assert.assertFalse(valueFacade.isCollection());
-		valueTarget = new Set(null, null);
+		valueTarget = new Set(new DummyMetadataBuildingContext(), null);
 		valueFacade = FACADE_FACTORY.createValue(valueTarget);
 		Assert.assertTrue(valueFacade.isCollection());
 	}
 
 	@Test
 	public void testGetCollectionElement() {
-		valueTarget = new SimpleValue(null);
+		valueTarget = new SimpleValue(new DummyMetadataBuildingContext());
 		valueFacade = FACADE_FACTORY.createValue(valueTarget);
 		IValue collectionElement = valueFacade.getCollectionElement();
 		Assert.assertNull(collectionElement);
-		Set set = new Set(null, null);
+		Set set = new Set(new DummyMetadataBuildingContext(), null);
 		set.setElement(valueTarget);
 		valueFacade = FACADE_FACTORY.createValue(set);
 		collectionElement = valueFacade.getCollectionElement();
@@ -83,60 +84,60 @@ public class ValueFacadeTest {
 
 	@Test 
 	public void testIsOneToMany() {
-		valueTarget = new SimpleValue(null);
+		valueTarget = new SimpleValue(new DummyMetadataBuildingContext());
 		valueFacade = FACADE_FACTORY.createValue(valueTarget);
 		Assert.assertFalse(valueFacade.isOneToMany());
-		OneToMany oneToMany = new OneToMany(null, null);
+		OneToMany oneToMany = new OneToMany(new DummyMetadataBuildingContext(), null);
 		valueFacade = FACADE_FACTORY.createValue(oneToMany);
 		Assert.assertTrue(valueFacade.isOneToMany());
 	}
 
 	@Test 
 	public void testIsManyToOne() {
-		valueTarget = new SimpleValue(null);
+		valueTarget = new SimpleValue(new DummyMetadataBuildingContext());
 		valueFacade = FACADE_FACTORY.createValue(valueTarget);
 		Assert.assertFalse(valueFacade.isManyToOne());
-		ManyToOne manyToOne = new ManyToOne(null, null);
+		ManyToOne manyToOne = new ManyToOne(new DummyMetadataBuildingContext(), null);
 		valueFacade = FACADE_FACTORY.createValue(manyToOne);
 		Assert.assertTrue(valueFacade.isManyToOne());
 	}
 
 	@Test 
 	public void testIsOneToOne() {
-		valueTarget = new SimpleValue(null);
+		valueTarget = new SimpleValue(new DummyMetadataBuildingContext());
 		valueFacade = FACADE_FACTORY.createValue(valueTarget);
 		Assert.assertFalse(valueFacade.isOneToOne());
-		OneToOne oneToOne = new OneToOne(null, null, new RootClass(null));
+		OneToOne oneToOne = new OneToOne(new DummyMetadataBuildingContext(), null, new RootClass(null));
 		valueFacade = FACADE_FACTORY.createValue(oneToOne);
 		Assert.assertTrue(valueFacade.isOneToOne());
 	}
 
 	@Test
 	public void testIsMap() {
-		valueTarget = new SimpleValue(null);
+		valueTarget = new SimpleValue(new DummyMetadataBuildingContext());
 		valueFacade = FACADE_FACTORY.createValue(valueTarget);
 		Assert.assertFalse(valueFacade.isMap());
-		Map map = new Map(null, null);
+		Map map = new Map(new DummyMetadataBuildingContext(), null);
 		valueFacade = FACADE_FACTORY.createValue(map);
 		Assert.assertTrue(valueFacade.isMap());
 	}
 
 	@Test
 	public void testIsComponent() {
-		valueTarget = new SimpleValue(null);
+		valueTarget = new SimpleValue(new DummyMetadataBuildingContext());
 		valueFacade = FACADE_FACTORY.createValue(valueTarget);
 		Assert.assertFalse(valueFacade.isComponent());
-		Component component = new Component(null, new RootClass(null));
+		Component component = new Component(new DummyMetadataBuildingContext(), new RootClass(null));
 		valueFacade = FACADE_FACTORY.createValue(component);
 		Assert.assertTrue(valueFacade.isComponent());
 	}
 
 	@Test
 	public void testIsEmbedded() {
-		valueTarget = new SimpleValue(null);
+		valueTarget = new SimpleValue(new DummyMetadataBuildingContext());
 		valueFacade = FACADE_FACTORY.createValue(valueTarget);
 		Assert.assertNull(valueFacade.isEmbedded());
-		Component component = new Component(null, new RootClass(null));
+		Component component = new Component(new DummyMetadataBuildingContext(), new RootClass(null));
 		valueFacade = FACADE_FACTORY.createValue(component);
 		component.setEmbedded(true);
 		Assert.assertTrue(valueFacade.isEmbedded());
@@ -146,10 +147,10 @@ public class ValueFacadeTest {
 
 	@Test
 	public void testIsToOne() {
-		valueTarget = new SimpleValue(null);
+		valueTarget = new SimpleValue(new DummyMetadataBuildingContext());
 		valueFacade = FACADE_FACTORY.createValue(valueTarget);
 		Assert.assertFalse(valueFacade.isToOne());
-		ToOne toOne = new OneToOne(null, null, new RootClass(null));
+		ToOne toOne = new OneToOne(new DummyMetadataBuildingContext(), null, new RootClass(null));
 		valueFacade = FACADE_FACTORY.createValue(toOne);
 		Assert.assertTrue(valueFacade.isToOne());
 	}
@@ -157,7 +158,7 @@ public class ValueFacadeTest {
 	@Test 
 	public void testGetTable() {
 		Table tableTarget = new Table();
-		valueTarget = new SimpleValue(null, tableTarget);
+		valueTarget = new SimpleValue(new DummyMetadataBuildingContext(), tableTarget);
 		valueFacade = FACADE_FACTORY.createValue(valueTarget);
 		ITable tableFacade = valueFacade.getTable();
 		Assert.assertSame(tableTarget, ((IFacade)tableFacade).getTarget());
@@ -178,9 +179,9 @@ public class ValueFacadeTest {
 	
 	@Test
 	public void testSetElement() {
-		SimpleValue elementTarget = new SimpleValue(null);
+		SimpleValue elementTarget = new SimpleValue(new DummyMetadataBuildingContext());
 		IValue elementFacade = FACADE_FACTORY.createValue(elementTarget);
-		Set valueTarget = new Set(null, null);
+		Set valueTarget = new Set(new DummyMetadataBuildingContext(), null);
 		valueFacade = FACADE_FACTORY.createValue(valueTarget);
 		Assert.assertNull(valueTarget.getElement());
 		valueFacade.setElement(elementFacade);
@@ -191,7 +192,7 @@ public class ValueFacadeTest {
 	public void testSetCollectionTable() {
 		Table tableTarget = new Table();
 		ITable tableFacade = FACADE_FACTORY.createTable(tableTarget);
-		Collection valueTarget = new Set(null, null);
+		Collection valueTarget = new Set(new DummyMetadataBuildingContext(), null);
 		valueFacade = FACADE_FACTORY.createValue(valueTarget);
 		Assert.assertNull(valueTarget.getCollectionTable());
 		valueFacade.setCollectionTable(tableFacade);
@@ -202,7 +203,7 @@ public class ValueFacadeTest {
 	public void testSetTable() {
 		Table tableTarget = new Table();
 		ITable tableFacade = FACADE_FACTORY.createTable(tableTarget);
-		SimpleValue valueTarget = new SimpleValue(null);
+		SimpleValue valueTarget = new SimpleValue(new DummyMetadataBuildingContext());
 		valueFacade = FACADE_FACTORY.createValue(valueTarget);
 		Assert.assertNull(valueTarget.getTable());
 		valueFacade.setTable(tableFacade);
@@ -211,20 +212,20 @@ public class ValueFacadeTest {
 	
 	@Test
 	public void testIsList() {
-		valueTarget = new SimpleValue(null);
+		valueTarget = new SimpleValue(new DummyMetadataBuildingContext());
 		valueFacade = FACADE_FACTORY.createValue(valueTarget);
 		Assert.assertFalse(valueFacade.isList());
-		valueTarget = new List(null, null);
+		valueTarget = new List(new DummyMetadataBuildingContext(), null);
 		valueFacade = FACADE_FACTORY.createValue(valueTarget);
 		Assert.assertTrue(valueFacade.isList());
 	}
 	
 	@Test
 	public void testSetIndex() {
-		List valueTarget = new List(null, null);
+		List valueTarget = new List(new DummyMetadataBuildingContext(), null);
 		valueFacade = FACADE_FACTORY.createValue(valueTarget);
 		Assert.assertNull(valueTarget.getIndex());
-		SimpleValue indexTarget = new SimpleValue(null);
+		SimpleValue indexTarget = new SimpleValue(new DummyMetadataBuildingContext());
 		IValue indexFacade = FACADE_FACTORY.createValue(indexTarget);
 		valueFacade.setIndex(indexFacade);
 		Assert.assertSame(indexTarget, valueTarget.getIndex());
@@ -232,7 +233,7 @@ public class ValueFacadeTest {
 	
 	@Test
 	public void testSetTypeName() {
-		SimpleValue valueTarget = new SimpleValue(null);
+		SimpleValue valueTarget = new SimpleValue(new DummyMetadataBuildingContext());
 		valueFacade = FACADE_FACTORY.createValue(valueTarget);
 		Assert.assertNull(valueTarget.getTypeName());
 		valueFacade.setTypeName("java.lang.Integer");
@@ -241,7 +242,7 @@ public class ValueFacadeTest {
 	
 	@Test
 	public void testGetComponentClassName() {
-		Component valueTarget = new Component(null, new RootClass(null));
+		Component valueTarget = new Component(new DummyMetadataBuildingContext(), new RootClass(null));
 		valueFacade = FACADE_FACTORY.createValue(valueTarget);
 		Assert.assertNull(valueFacade.getComponentClassName());
 		valueTarget.setComponentClassName("org.foo.Bar");
@@ -250,7 +251,7 @@ public class ValueFacadeTest {
 	
 	@Test
 	public void testGetColumnIterator() {
-		SimpleValue valueTarget = new SimpleValue(null);
+		SimpleValue valueTarget = new SimpleValue(new DummyMetadataBuildingContext());
 		valueFacade = FACADE_FACTORY.createValue(valueTarget);
 		Iterator<IColumn> columnIterator = valueFacade.getColumnIterator();
 		Assert.assertFalse(columnIterator.hasNext());
@@ -264,7 +265,7 @@ public class ValueFacadeTest {
 	
 	@Test
 	public void testIsTypeSpecified() {
-		SimpleValue valueTarget = new SimpleValue(null);
+		SimpleValue valueTarget = new SimpleValue(new DummyMetadataBuildingContext());
 		valueFacade = FACADE_FACTORY.createValue(valueTarget);
 		Assert.assertFalse(valueFacade.isTypeSpecified());
 		valueTarget.setTypeName("org.foo.Bar");
@@ -274,7 +275,7 @@ public class ValueFacadeTest {
 	@Test
 	public void testGetCollectionTable() {
 		Table tableTarget = new Table();
-		Collection valueTarget = new Set(null, null);
+		Collection valueTarget = new Set(new DummyMetadataBuildingContext(), null);
 		valueFacade = FACADE_FACTORY.createValue(valueTarget);
 		Assert.assertNull(valueFacade.getCollectionTable());
 		valueTarget.setCollectionTable(tableTarget);
@@ -285,27 +286,27 @@ public class ValueFacadeTest {
 	
 	@Test
 	public void testGetKey() {
-		Map valueTarget = new Map(null, null);
+		Map valueTarget = new Map(new DummyMetadataBuildingContext(), null);
 		valueFacade = FACADE_FACTORY.createValue(valueTarget);
 		Assert.assertNull(valueFacade.getKey());
-		KeyValue keyValue = new SimpleValue(null);
+		KeyValue keyValue = new SimpleValue(new DummyMetadataBuildingContext());
 		valueTarget.setKey(keyValue);
 		Assert.assertSame(keyValue, ((IFacade)valueFacade.getKey()).getTarget());
 	}
 	
 	@Test
 	public void testGetIndex() {
-		List valueTarget = new List(null, null);
+		List valueTarget = new List(new DummyMetadataBuildingContext(), null);
 		valueFacade = FACADE_FACTORY.createValue(valueTarget);
 		Assert.assertNull(valueFacade.getIndex());
-		SimpleValue indexValue = new SimpleValue(null);
+		SimpleValue indexValue = new SimpleValue(new DummyMetadataBuildingContext());
 		valueTarget.setIndex(indexValue);
 		Assert.assertSame(indexValue, ((IFacade)valueFacade.getIndex()).getTarget());
 	}
 	
 	@Test
 	public void testGetElementClassName() {
-		Array valueTarget = new Array(null, null);
+		Array valueTarget = new Array(new DummyMetadataBuildingContext(), null);
 		valueFacade = FACADE_FACTORY.createValue(valueTarget);
 		Assert.assertNull(valueFacade.getElementClassName());
 		valueTarget.setElementClassName("org.foo.Bar");
@@ -314,7 +315,7 @@ public class ValueFacadeTest {
 	
 	@Test
 	public void testGetTypeName() {
-		SimpleValue valueTarget = new SimpleValue(null);
+		SimpleValue valueTarget = new SimpleValue(new DummyMetadataBuildingContext());
 		valueFacade = FACADE_FACTORY.createValue(valueTarget);
 		Assert.assertNull(valueFacade.getTypeName());
 		valueTarget.setTypeName("org.foo.Bar");
@@ -323,77 +324,77 @@ public class ValueFacadeTest {
 	
 	@Test
 	public void testIsDependantValue() {
-		SimpleValue simpleValueTarget = new SimpleValue(null);
+		SimpleValue simpleValueTarget = new SimpleValue(new DummyMetadataBuildingContext());
 		valueFacade = FACADE_FACTORY.createValue(simpleValueTarget);
 		Assert.assertFalse(valueFacade.isDependantValue());
-		DependantValue dependantValueTarget = new DependantValue(null, null, null);
+		DependantValue dependantValueTarget = new DependantValue(new DummyMetadataBuildingContext(), null, null);
 		valueFacade = FACADE_FACTORY.createValue(dependantValueTarget);
 		Assert.assertTrue(valueFacade.isDependantValue());
 	}
 	
 	@Test
 	public void testIsAny() {
-		SimpleValue simpleValueTarget = new SimpleValue(null);
+		SimpleValue simpleValueTarget = new SimpleValue(new DummyMetadataBuildingContext());
 		valueFacade = FACADE_FACTORY.createValue(simpleValueTarget);
 		Assert.assertFalse(valueFacade.isAny());
-		Any anyTarget = new Any(null, null);
+		Any anyTarget = new Any(new DummyMetadataBuildingContext(), null);
 		valueFacade = FACADE_FACTORY.createValue(anyTarget);
 		Assert.assertTrue(valueFacade.isAny());
 	}
 	
 	@Test
 	public void testIsSet() {
-		SimpleValue simpleValueTarget = new SimpleValue(null);
+		SimpleValue simpleValueTarget = new SimpleValue(new DummyMetadataBuildingContext());
 		valueFacade = FACADE_FACTORY.createValue(simpleValueTarget);
 		Assert.assertFalse(valueFacade.isSet());
-		Set setTarget = new Set(null, null);
+		Set setTarget = new Set(new DummyMetadataBuildingContext(), null);
 		valueFacade = FACADE_FACTORY.createValue(setTarget);
 		Assert.assertTrue(valueFacade.isSet());
 	}
 	
 	@Test
 	public void testIsPrimitiveArray() {
-		SimpleValue simpleValueTarget = new SimpleValue(null);
+		SimpleValue simpleValueTarget = new SimpleValue(new DummyMetadataBuildingContext());
 		valueFacade = FACADE_FACTORY.createValue(simpleValueTarget);
 		Assert.assertFalse(valueFacade.isPrimitiveArray());
-		PrimitiveArray primitiveArrayTarget = new PrimitiveArray(null, null);
+		PrimitiveArray primitiveArrayTarget = new PrimitiveArray(new DummyMetadataBuildingContext(), null);
 		valueFacade = FACADE_FACTORY.createValue(primitiveArrayTarget);
 		Assert.assertTrue(valueFacade.isPrimitiveArray());
 	}
 	
 	@Test
 	public void testIsArray() {
-		SimpleValue simpleValueTarget = new SimpleValue(null);
+		SimpleValue simpleValueTarget = new SimpleValue(new DummyMetadataBuildingContext());
 		valueFacade = FACADE_FACTORY.createValue(simpleValueTarget);
 		Assert.assertFalse(valueFacade.isArray());
-		Array arrayTarget = new Array(null, null);
+		Array arrayTarget = new Array(new DummyMetadataBuildingContext(), null);
 		valueFacade = FACADE_FACTORY.createValue(arrayTarget);
 		Assert.assertTrue(valueFacade.isArray());
 	}
 	
 	@Test
 	public void testIsIdentifierBag() {
-		SimpleValue simpleValueTarget = new SimpleValue(null);
+		SimpleValue simpleValueTarget = new SimpleValue(new DummyMetadataBuildingContext());
 		valueFacade = FACADE_FACTORY.createValue(simpleValueTarget);
 		Assert.assertFalse(valueFacade.isIdentifierBag());
-		IdentifierBag identifierBagTarget = new IdentifierBag(null, null);
+		IdentifierBag identifierBagTarget = new IdentifierBag(new DummyMetadataBuildingContext(), null);
 		valueFacade = FACADE_FACTORY.createValue(identifierBagTarget);
 		Assert.assertTrue(valueFacade.isIdentifierBag());
 	}
 	
 	@Test
 	public void testIsBag() {
-		SimpleValue simpleValueTarget = new SimpleValue(null);
+		SimpleValue simpleValueTarget = new SimpleValue(new DummyMetadataBuildingContext());
 		valueFacade = FACADE_FACTORY.createValue(simpleValueTarget);
 		Assert.assertFalse(valueFacade.isBag());
-		Bag bagTarget = new Bag(null, null);
+		Bag bagTarget = new Bag(new DummyMetadataBuildingContext(), null);
 		valueFacade = FACADE_FACTORY.createValue(bagTarget);
 		Assert.assertTrue(valueFacade.isBag());
 	}
 	
 	@Test
 	public void testGetReferencedEntityName() {
-		ManyToOne valueTarget = new ManyToOne(null, null);
+		ManyToOne valueTarget = new ManyToOne(new DummyMetadataBuildingContext(), null);
 		valueFacade = FACADE_FACTORY.createValue(valueTarget);
 		Assert.assertNull(valueFacade.getReferencedEntityName());
 		valueTarget.setReferencedEntityName("Foo");
@@ -402,19 +403,19 @@ public class ValueFacadeTest {
 	
 	@Test
 	public void testGetEntityName() {
-		SimpleValue simpleValueTarget = new SimpleValue(null);
+		SimpleValue simpleValueTarget = new SimpleValue(new DummyMetadataBuildingContext());
 		valueFacade = FACADE_FACTORY.createValue(simpleValueTarget);
 		Assert.assertNull(valueFacade.getEntityName());
 		RootClass pc = new RootClass(null);
 		pc.setEntityName("foobar");
-		OneToOne oneToOneTarget = new OneToOne(null, null, pc);
+		OneToOne oneToOneTarget = new OneToOne(new DummyMetadataBuildingContext(), null, pc);
 		valueFacade = FACADE_FACTORY.createValue(oneToOneTarget);
 		Assert.assertEquals("foobar", valueFacade.getEntityName());
 	}
 	
 	@Test
 	public void testGetPropertyIterator() {
-		Component componentTarget = new Component(null, new RootClass(null));
+		Component componentTarget = new Component(new DummyMetadataBuildingContext(), new RootClass(null));
 		valueFacade = FACADE_FACTORY.createValue(componentTarget);
 		Iterator<IProperty> iter = valueFacade.getPropertyIterator();
 		Assert.assertFalse(iter.hasNext());
@@ -429,7 +430,7 @@ public class ValueFacadeTest {
 	
 	@Test
 	public void testAddColumn() {
-		SimpleValue simpleValueTarget = new SimpleValue(null);
+		SimpleValue simpleValueTarget = new SimpleValue(new DummyMetadataBuildingContext());
 		valueFacade = FACADE_FACTORY.createValue(simpleValueTarget);
 		Iterator<?> columnIterator = simpleValueTarget.getColumnIterator();
 		Assert.assertFalse(columnIterator.hasNext());
@@ -443,7 +444,7 @@ public class ValueFacadeTest {
 	
 	@Test
 	public void testGetTypeParameters() {
-		SimpleValue simpleValueTarget = new SimpleValue(null);
+		SimpleValue simpleValueTarget = new SimpleValue(new DummyMetadataBuildingContext());
 		valueFacade = FACADE_FACTORY.createValue(simpleValueTarget);
 		Assert.assertNull(simpleValueTarget.getTypeParameters());
 		Properties properties = new Properties();
@@ -453,7 +454,7 @@ public class ValueFacadeTest {
 	
 	@Test
 	public void testGetForeignKeyName() {
-		SimpleValue simpleValueTarget = new SimpleValue(null);
+		SimpleValue simpleValueTarget = new SimpleValue(new DummyMetadataBuildingContext());
 		valueFacade = FACADE_FACTORY.createValue(simpleValueTarget);
 		Assert.assertNull(valueFacade.getForeignKeyName());
 		simpleValueTarget.setForeignKeyName("foobar");
@@ -463,17 +464,17 @@ public class ValueFacadeTest {
 	@Test
 	public void testGetOwner() {
 		RootClass rc = new RootClass(null);
-		Component componentTarget = new Component(null, rc);
+		Component componentTarget = new Component(new DummyMetadataBuildingContext(), rc);
 		valueFacade = FACADE_FACTORY.createValue(componentTarget);
 		Assert.assertSame(rc, ((IFacade)valueFacade.getOwner()).getTarget());
 	}
 	
 	@Test
 	public void testGetElement() {
-		Bag bagValueTarget = new Bag(null, null);
+		Bag bagValueTarget = new Bag(new DummyMetadataBuildingContext(), null);
 		IValue bagValueFacade = FACADE_FACTORY.createValue(bagValueTarget);
 		Assert.assertNull(bagValueFacade.getElement());
-		SimpleValue simpleValueTarget = new SimpleValue(null);
+		SimpleValue simpleValueTarget = new SimpleValue(new DummyMetadataBuildingContext());
 		bagValueTarget.setElement(simpleValueTarget);
 		Assert.assertSame(
 				simpleValueTarget, 
@@ -482,7 +483,7 @@ public class ValueFacadeTest {
 	
 	@Test
 	public void testGetParentProperty() {
-		Component componentTarget = new Component(null, new RootClass(null));
+		Component componentTarget = new Component(new DummyMetadataBuildingContext(), new RootClass(null));
 		IValue valueFacade = FACADE_FACTORY.createValue(componentTarget);
 		Assert.assertNull(valueFacade.getParentProperty());
 		componentTarget.setParentProperty("foobar");
@@ -491,7 +492,7 @@ public class ValueFacadeTest {
 	
 	@Test
 	public void testSetElementClassName() {
-		Array arrayTarget = new Array(null, null);
+		Array arrayTarget = new Array(new DummyMetadataBuildingContext(), null);
 		valueFacade = FACADE_FACTORY.createValue(arrayTarget);
 		Assert.assertNull(arrayTarget.getElementClassName());
 		valueFacade.setElementClassName("foobar");
@@ -500,9 +501,9 @@ public class ValueFacadeTest {
 	
 	@Test
 	public void testSetKey() {
-		KeyValue keyValueTarget = new SimpleValue(null);
+		KeyValue keyValueTarget = new SimpleValue(new DummyMetadataBuildingContext());
 		IValue keyValueFacade = FACADE_FACTORY.createValue(keyValueTarget);
-		Collection collectionTarget = new Bag(null, null);
+		Collection collectionTarget = new Bag(new DummyMetadataBuildingContext(), null);
 		IValue collectionFacade = FACADE_FACTORY.createValue(collectionTarget);
 		Assert.assertNull(collectionTarget.getKey());
 		collectionFacade.setKey(keyValueFacade);
@@ -511,17 +512,17 @@ public class ValueFacadeTest {
 	
 	@Test
 	public void testSetFetchModeJoin() {
-		SimpleValue simpleValueTarget = new SimpleValue(null);
+		SimpleValue simpleValueTarget = new SimpleValue(new DummyMetadataBuildingContext());
 		Assert.assertNotEquals(FetchMode.JOIN, simpleValueTarget.getFetchMode());
 		valueFacade = FACADE_FACTORY.createValue(simpleValueTarget);
 		valueFacade.setFetchModeJoin();
 		Assert.assertNotEquals(FetchMode.JOIN, simpleValueTarget.getFetchMode());
-		Collection collectionTarget = new Bag(null, null);
+		Collection collectionTarget = new Bag(new DummyMetadataBuildingContext(), null);
 		Assert.assertNotEquals(FetchMode.JOIN, collectionTarget.getFetchMode());
 		valueFacade = FACADE_FACTORY.createValue(collectionTarget);
 		valueFacade.setFetchModeJoin();
 		Assert.assertEquals(FetchMode.JOIN, collectionTarget.getFetchMode());
-		ManyToOne manyToOneTarget = new ManyToOne(null, null);
+		ManyToOne manyToOneTarget = new ManyToOne(new DummyMetadataBuildingContext(), null);
 		Assert.assertNotEquals(FetchMode.JOIN, manyToOneTarget.getFetchMode());
 		valueFacade = FACADE_FACTORY.createValue(manyToOneTarget);
 		valueFacade.setFetchModeJoin();
@@ -530,7 +531,7 @@ public class ValueFacadeTest {
 	
 	@Test
 	public void testIsInverse() {
-		Collection collectionTarget = new Bag(null, null);
+		Collection collectionTarget = new Bag(new DummyMetadataBuildingContext(), null);
 		valueFacade = FACADE_FACTORY.createValue(collectionTarget);
 		Assert.assertFalse(valueFacade.isInverse());
 		collectionTarget.setInverse(true);
@@ -540,7 +541,7 @@ public class ValueFacadeTest {
 	@Test
 	public void testGetAssociatedClass() {
 		RootClass rootClass = new RootClass(null);
-		OneToMany oneToManyTarget = new OneToMany(null, null);
+		OneToMany oneToManyTarget = new OneToMany(new DummyMetadataBuildingContext(), null);
 		valueFacade = FACADE_FACTORY.createValue(oneToManyTarget);
 		Assert.assertNull(valueFacade.getAssociatedClass());
 		oneToManyTarget.setAssociatedClass(rootClass);
@@ -551,7 +552,7 @@ public class ValueFacadeTest {
 	
 	@Test
 	public void testSetLazy() {
-		Collection collectionTarget = new Bag(null, null);
+		Collection collectionTarget = new Bag(new DummyMetadataBuildingContext(), null);
 		valueFacade = FACADE_FACTORY.createValue(collectionTarget);
 		valueFacade.setLazy(true);
 		Assert.assertTrue(collectionTarget.isLazy());
@@ -561,7 +562,7 @@ public class ValueFacadeTest {
 	
 	@Test
 	public void testSetRole() {
-		Collection collectionTarget = new Bag(null, null);
+		Collection collectionTarget = new Bag(new DummyMetadataBuildingContext(), null);
 		valueFacade = FACADE_FACTORY.createValue(collectionTarget);
 		Assert.assertNull(collectionTarget.getRole());
 		valueFacade.setRole("foobar");
@@ -570,7 +571,7 @@ public class ValueFacadeTest {
 	
 	@Test
 	public void testSetReferencedEntityName() {
-		ManyToOne valueTarget = new ManyToOne(null, null);
+		ManyToOne valueTarget = new ManyToOne(new DummyMetadataBuildingContext(), null);
 		valueFacade = FACADE_FACTORY.createValue(valueTarget);
 		Assert.assertNull(valueTarget.getReferencedEntityName());
 		valueFacade.setReferencedEntityName("Foo");
@@ -582,7 +583,7 @@ public class ValueFacadeTest {
 		RootClass rootClassTarget = new RootClass(null);
 		IPersistentClass rootClassFacade = 
 				FACADE_FACTORY.createPersistentClass(rootClassTarget);
-		OneToMany oneToManyTarget = new OneToMany(null, null);
+		OneToMany oneToManyTarget = new OneToMany(new DummyMetadataBuildingContext(), null);
 		valueFacade = FACADE_FACTORY.createValue(oneToManyTarget);
 		Assert.assertNull(oneToManyTarget.getAssociatedClass());
 		valueFacade.setAssociatedClass(rootClassFacade);

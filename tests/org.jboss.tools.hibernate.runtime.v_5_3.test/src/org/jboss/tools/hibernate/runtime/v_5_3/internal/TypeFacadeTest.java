@@ -1,8 +1,11 @@
 package org.jboss.tools.hibernate.runtime.v_5_3.internal;
 
 import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.internal.BootstrapContextImpl;
 import org.hibernate.boot.internal.MetadataBuilderImpl;
+import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.boot.spi.BootstrapContext;
 import org.hibernate.boot.spi.MetadataBuildingOptions;
 import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.mapping.Component;
@@ -18,6 +21,7 @@ import org.hibernate.type.IntegerType;
 import org.hibernate.type.ManyToOneType;
 import org.hibernate.type.OneToOneType;
 import org.hibernate.type.StringType;
+import org.hibernate.type.TypeFactory.TypeScope;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.junit.Assert;
@@ -70,7 +74,7 @@ public class TypeFacadeTest {
 		ClassType classType = new ClassType();
 		typeFacade = FACADE_FACTORY.createType(classType);
 		Assert.assertFalse(typeFacade.isEntityType());
-		EntityType entityType = new ManyToOneType(null, null);
+		EntityType entityType = new ManyToOneType((TypeScope)null, null);
 		typeFacade = FACADE_FACTORY.createType(entityType);
 		Assert.assertTrue(entityType.isEntityType());
 	}
@@ -81,7 +85,7 @@ public class TypeFacadeTest {
 		ClassType classType = new ClassType();
 		typeFacade = FACADE_FACTORY.createType(classType);
 		Assert.assertFalse(typeFacade.isOneToOne());
-		EntityType entityType = new ManyToOneType(null, null);
+		EntityType entityType = new ManyToOneType((TypeScope)null, null);
 		typeFacade = FACADE_FACTORY.createType(entityType);
 		Assert.assertFalse(entityType.isOneToOne());
 		OneToOneType oneToOneType = new OneToOneType(
@@ -107,18 +111,19 @@ public class TypeFacadeTest {
 		ClassType classType = new ClassType();
 		typeFacade = FACADE_FACTORY.createType(classType);
 		Assert.assertFalse(typeFacade.isComponentType());
+		StandardServiceRegistry ssr = new StandardServiceRegistryBuilder().build();
 		MetadataBuildingOptions mdbo = 
-				new MetadataBuilderImpl.MetadataBuildingOptionsImpl(
-						new StandardServiceRegistryBuilder().build());
+				new MetadataBuilderImpl.MetadataBuildingOptionsImpl(ssr);
 		MetadataImplementor mdi = 
 				(MetadataImplementor)new MetadataBuilderImpl(
 						new MetadataSources()).build();
+		BootstrapContext bc = new BootstrapContextImpl(ssr, mdbo);
 		ComponentType componentType = 
 				new ComponentType(
 						null,
 						new ComponentMetamodel(
 								new Component(mdi, new RootClass(null)),
-								mdbo));
+								bc));
 		typeFacade = FACADE_FACTORY.createType(componentType);
 		Assert.assertTrue(typeFacade.isComponentType());
 	}
@@ -151,7 +156,7 @@ public class TypeFacadeTest {
 		ClassType classType = new ClassType();
 		typeFacade = FACADE_FACTORY.createType(classType);
 		Assert.assertNull(typeFacade.getAssociatedEntityName());
-		EntityType entityType = new ManyToOneType(null, "foo");
+		EntityType entityType = new ManyToOneType((TypeScope)null, "foo");
 		typeFacade = FACADE_FACTORY.createType(entityType);
 		Assert.assertEquals("foo", typeFacade.getAssociatedEntityName());
 	}

@@ -14,6 +14,7 @@ import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
+import org.jboss.tools.hibernate.runtime.v_5_3.internal.util.DummyMetadataBuildingContext;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -166,7 +167,7 @@ public class TableFacadeTest {
 		ITable tableFacade = FACADE_FACTORY.createTable(table);
 		IValue valueFacade = tableFacade.getIdentifierValue();
 		Assert.assertNull(valueFacade);
-		KeyValue value = new SimpleValue(null);
+		KeyValue value = new SimpleValue(new DummyMetadataBuildingContext());
 		table.setIdentifierValue(value);
 		valueFacade = tableFacade.getIdentifierValue();
 		Assert.assertSame(value, ((IFacade)valueFacade).getTarget());

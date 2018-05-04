@@ -12,6 +12,7 @@ import java.util.Properties;
 import org.hibernate.Filter;
 import org.hibernate.Hibernate;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCReaderFactory;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
@@ -84,6 +85,7 @@ import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_5_3.internal.util.ConfigurationMetadataDescriptor;
+import org.jboss.tools.hibernate.runtime.v_5_3.internal.util.DummyMetadataBuildingContext;
 import org.jboss.tools.hibernate.runtime.v_5_3.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_5_3.internal.util.JpaConfiguration;
 import org.xml.sax.EntityResolver;
@@ -310,7 +312,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IValue newSimpleValue() {
-		return facadeFactory.createValue(new SimpleValue(null));
+		return facadeFactory.createValue(new SimpleValue(new DummyMetadataBuildingContext()));
 	}
 
 	@Override
@@ -318,7 +320,7 @@ public class ServiceImpl extends AbstractService {
 		assert persistentClass instanceof IFacade;
 		return facadeFactory.createValue(
 				new PrimitiveArray(
-						null, 
+						new DummyMetadataBuildingContext(), 
 						(PersistentClass)((IFacade)persistentClass).getTarget()));
 	}
 
@@ -327,7 +329,7 @@ public class ServiceImpl extends AbstractService {
 		assert persistentClass instanceof IFacade;
 		return facadeFactory.createValue(
 				new Array(
-						null, 
+						new DummyMetadataBuildingContext(), 
 						(PersistentClass)((IFacade)persistentClass).getTarget()));
 	}
 
@@ -336,7 +338,7 @@ public class ServiceImpl extends AbstractService {
 		assert persistentClass instanceof IFacade;
 		return facadeFactory.createValue(
 				new Bag(
-						null, 
+						new DummyMetadataBuildingContext(), 
 						(PersistentClass)((IFacade)persistentClass).getTarget()));
 	}
 
@@ -345,7 +347,7 @@ public class ServiceImpl extends AbstractService {
 		assert persistentClass instanceof IFacade;
 		return facadeFactory.createValue(
 				new org.hibernate.mapping.List(
-						null, 
+						new DummyMetadataBuildingContext(), 
 						(PersistentClass)((IFacade)persistentClass).getTarget()));
 	}
 
@@ -354,7 +356,7 @@ public class ServiceImpl extends AbstractService {
 		assert persistentClass instanceof IFacade;
 		return facadeFactory.createValue(
 				new org.hibernate.mapping.Map(
-						null, 
+						new DummyMetadataBuildingContext(), 
 						(PersistentClass)((IFacade)persistentClass).getTarget()));
 	}
 
@@ -363,7 +365,7 @@ public class ServiceImpl extends AbstractService {
 		assert persistentClass instanceof IFacade;
 		return facadeFactory.createValue(
 				new Set(
-						null, 
+						new DummyMetadataBuildingContext(), 
 						(PersistentClass)((IFacade)persistentClass).getTarget()));
 	}
 
@@ -372,7 +374,7 @@ public class ServiceImpl extends AbstractService {
 		assert table instanceof IFacade;
 		return facadeFactory.createValue(
 				new ManyToOne(
-						null, 
+						new DummyMetadataBuildingContext(), 
 						(Table)((IFacade)table).getTarget()));
 	}
 
@@ -381,7 +383,7 @@ public class ServiceImpl extends AbstractService {
 		assert persistentClass instanceof IFacade;
 		return facadeFactory.createValue(
 				new OneToMany(
-						null, 
+						new DummyMetadataBuildingContext(), 
 						(PersistentClass)((IFacade)persistentClass).getTarget()));
 	}
 
@@ -390,7 +392,7 @@ public class ServiceImpl extends AbstractService {
 		assert persistentClass instanceof IFacade;
 		return facadeFactory.createValue(
 				new OneToOne(
-						null, 
+						new DummyMetadataBuildingContext(), 
 						((PersistentClass)((IFacade)persistentClass).getTarget()).getTable(), 
 						(PersistentClass)((IFacade)persistentClass).getTarget()));
 	}

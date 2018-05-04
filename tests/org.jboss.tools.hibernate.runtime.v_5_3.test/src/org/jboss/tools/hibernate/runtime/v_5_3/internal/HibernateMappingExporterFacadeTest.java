@@ -32,6 +32,7 @@ import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
+import org.jboss.tools.hibernate.runtime.v_5_3.internal.util.DummyMetadataBuildingContext;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -180,7 +181,7 @@ public class HibernateMappingExporterFacadeTest {
 			RootClass persistentClass = new RootClass(null);
 			Table table = new Table("FOO");
 			Column keyColumn = new Column("BAR");
-			SimpleValue key = new SimpleValue(null);
+			SimpleValue key = new SimpleValue(new DummyMetadataBuildingContext());
 			key.setTypeName("String");
 			key.addColumn(keyColumn);
 			key.setTable(table);
