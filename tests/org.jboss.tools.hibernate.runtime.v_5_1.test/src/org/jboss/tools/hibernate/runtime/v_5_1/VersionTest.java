@@ -7,12 +7,12 @@ public class VersionTest {
 	
 	@Test
 	public void testToolsVersion() {
-		Assert.assertEquals("5.1.7.Final", org.hibernate.tool.Version.VERSION);
+		Assert.assertEquals("5.1.8.Final", org.hibernate.tool.Version.VERSION);
 	}
 	
 	@Test
 	public void testCoreVersion() {
-		Assert.assertEquals("5.1.12.Final", org.hibernate.Version.getVersionString());
+		Assert.assertEquals("5.1.14.Final", org.hibernate.Version.getVersionString());
 	}
 
 }
