@@ -365,8 +365,10 @@ public class CoreMappingTestHelper {
 	}
 	
 	private void copyHbmXmlAndJavaFiles() throws Exception {
-		File source = ResourceReadUtils.getResourceItem("res/project/src/");
-		IFolder destination = testProject.getIProject().getFolder("src");
+		File source = ResourceReadUtils.getResourceItem("res/core/");
+		IFolder sourceFolder = testProject.getIProject().getFolder("src");
+		IFolder destination = sourceFolder.getFolder("core");
+		destination.create(true, true, null);
 		FilesTransfer.copyFolder(source, destination);
 	}
 	
