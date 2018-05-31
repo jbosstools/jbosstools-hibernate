@@ -56,8 +56,8 @@ public class DriverDeleteTest {
 	private static final String CONNECTION_PASSWORD = ""; 
 	private static final String CONNECTION_URL = "jdbc:hsqldb:."; 
 	private static final String DRIVER_GET_PATH = "lib/" + DRIVER_TEST_NAME; 
-	private static final String DRIVER_PUT_PATH = "res/" + DRIVER_TEST_NAME; 
-	private static final String PUT_PATH = "res"; 
+	private static final String DRIVER_PUT_PATH = "target/" + DRIVER_TEST_NAME; 
+	private static final String PUT_PATH = "target"; 
 
 	@Rule 
 	public TestName testName = new TestName();
