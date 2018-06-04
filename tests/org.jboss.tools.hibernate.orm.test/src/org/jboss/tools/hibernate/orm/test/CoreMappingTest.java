@@ -9,6 +9,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
@@ -174,6 +175,8 @@ public class CoreMappingTest {
 		mappingTestHelper.testCheckConsoleConfiguration();
 	}
 
+	// TODO BIDE-25553 - Reenable the test 
+	@Ignore
 	@Test
 	public void testOpenMappingDiagram() {
 		mappingTestHelper.testOpenMappingDiagram();
