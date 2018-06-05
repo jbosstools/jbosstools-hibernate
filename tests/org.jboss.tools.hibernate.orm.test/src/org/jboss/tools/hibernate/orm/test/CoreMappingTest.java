@@ -16,6 +16,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
+// TODO BIDE-25553 - Reenable the test 
+@Ignore
 @RunWith(Parameterized.class)
 public class CoreMappingTest {
 	
@@ -175,8 +177,6 @@ public class CoreMappingTest {
 		mappingTestHelper.testCheckConsoleConfiguration();
 	}
 
-	// TODO BIDE-25553 - Reenable the test 
-	@Ignore
 	@Test
 	public void testOpenMappingDiagram() {
 		mappingTestHelper.testOpenMappingDiagram();
