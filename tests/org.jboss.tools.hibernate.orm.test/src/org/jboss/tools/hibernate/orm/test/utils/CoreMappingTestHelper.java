@@ -85,7 +85,7 @@ public class CoreMappingTestHelper {
 		Integer count = countMap.get(packageName);
 		if (count == null) {
 			doBefore(packageName);
-			countMap.put(packageName, 3);
+			countMap.put(packageName, 4);
 		} else {
 			countMap.put(packageName, count - 1);
 		}
