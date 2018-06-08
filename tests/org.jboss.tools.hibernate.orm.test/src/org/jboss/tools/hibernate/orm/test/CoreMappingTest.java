@@ -23,8 +23,8 @@ public class CoreMappingTest {
         return Arrays.asList(new Object[][]{
     			{"core.abstractembeddedcomponents.cid"},
     			{"core.abstractembeddedcomponents.propertyref"},
+    			{"core.any"},
     			// TODO BIDE-25553 - uncomment the commented parameters 
-//    			{"core.any"},
 //    			{"core.array"},
 //    			{"core.batch"},
 //    			{"core.batchfetch"},
@@ -131,7 +131,7 @@ public class CoreMappingTest {
 //        		{"core.value.type.collection.list"},
 //        		{"core.value.type.collection.map"},
 //        		{"core.value.type.collection.set"},
-//        		{"core.version.db"},
+        		{"core.version.db"},
         		{"core.version.nodb"},
         		{"core.where"} 
         });
