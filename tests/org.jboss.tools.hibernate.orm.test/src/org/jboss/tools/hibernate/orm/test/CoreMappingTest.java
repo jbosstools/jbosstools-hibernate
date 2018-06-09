@@ -25,8 +25,8 @@ public class CoreMappingTest {
     			{"core.abstractembeddedcomponents.propertyref"},
     			{"core.any"},
     			{"core.array"},
+    			{"core.batch"},
     			// TODO BIDE-25553 - uncomment the commented parameters 
-//    			{"core.batch"},
 //    			{"core.batchfetch"},
 //    			{"core.bytecode"},
 //    			{"core.cache"},
@@ -129,7 +129,7 @@ public class CoreMappingTest {
 //        		{"core.usercollection.parameterized"},
 //        		{"core.value.type.basic"},
 //        		{"core.value.type.collection.list"},
-//        		{"core.value.type.collection.map"},
+        		{"core.value.type.collection.map"},
         		{"core.value.type.collection.set"},
         		{"core.version.db"},
         		{"core.version.nodb"},
