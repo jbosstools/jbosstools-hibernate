@@ -27,8 +27,8 @@ public class CoreMappingTest {
     			{"core.array"},
     			{"core.batch"},
     			{"core.batchfetch"},
+    			{"core.bytecode"},
     			// TODO BIDE-25553 - uncomment the commented parameters 
-//    			{"core.bytecode"},
 //    			{"core.cache"},
 //    			{"core.cascade"},
 //    			{"core.cid"},
@@ -127,7 +127,7 @@ public class CoreMappingTest {
 //        		{"core.unionsubclass2"},
 //        		{"core.usercollection.basic"},
 //        		{"core.usercollection.parameterized"},
-//        		{"core.value.type.basic"},
+        		{"core.value.type.basic"},
         		{"core.value.type.collection.list"},
         		{"core.value.type.collection.map"},
         		{"core.value.type.collection.set"},
