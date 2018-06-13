@@ -31,8 +31,8 @@ public class CoreMappingTest {
     			{"core.cache"},
     			{"core.cascade"},
     			{"core.cid"},
+        		{"core.collection.bag"},
     			// TODO BIDE-25553 - uncomment the commented parameters 
-//        		{"core.collection.bag"},
 //        		{"core.collection.idbag"},
 //        		{"core.collection.list"},
 //        		{"core.collection.map"},
@@ -123,7 +123,7 @@ public class CoreMappingTest {
 //        		{"core.typeparameters"},
 //        		{"core.unconstrained"},
 //        		{"core.unidir"},
-//        		{"core.unionsubclass"},
+        		{"core.unionsubclass"},
         		{"core.unionsubclass2"},
         		{"core.usercollection.basic"},
         		{"core.usercollection.parameterized"},
