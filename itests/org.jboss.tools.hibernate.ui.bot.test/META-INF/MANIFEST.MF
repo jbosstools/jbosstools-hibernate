@@ -78,4 +78,4 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-BundleShape: jar
 Bundle-Localization: plugin
-Bundle-Vendor: JBoss by Red Hat
+Bundle-Vendor: Red Hat
