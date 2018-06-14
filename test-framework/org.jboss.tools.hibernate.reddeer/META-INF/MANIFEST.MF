@@ -33,4 +33,4 @@ Export-Package: org.jboss.tools.hibernate.reddeer,
  org.jboss.tools.hibernate.reddeer.jdt.ui.jpa.process.wizard,
  org.jboss.tools.hibernate.reddeer.jpt.ui.wizard
 Eclipse-BundleShape: jar
-Bundle-Vendor: JBoss by Red Hat
+Bundle-Vendor: Red Hat
