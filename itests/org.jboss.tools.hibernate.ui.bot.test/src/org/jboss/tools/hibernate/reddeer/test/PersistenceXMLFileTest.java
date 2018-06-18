@@ -16,7 +16,12 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.condition.ProjectContainsProjectItem;
+import org.eclipse.reddeer.eclipse.core.resources.DefaultProject;
+import org.eclipse.reddeer.eclipse.core.resources.Project;
 import org.eclipse.reddeer.eclipse.ui.dialogs.PropertyDialog;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.eclipse.wst.common.project.facet.ui.FacetsPropertyPage;
@@ -112,7 +117,11 @@ public class PersistenceXMLFileTest extends HibernateRedDeerTest {
 
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.getProject(prj).getProjectItem("src", "META-INF","persistence.xml").open();
+		DefaultProject project = pe.getProject(prj);
+		ProjectContainsProjectItem persistenceFileCondition = 
+				new ProjectContainsProjectItem(project, "src", "META-INF","persistence.xml");
+		new WaitUntil(persistenceFileCondition, TimePeriod.DEFAULT);
+		persistenceFileCondition.getResult().open();
 		
 		JpaXmlEditor pexml = new JpaXmlEditor();
 		pexml.setHibernateUsername("sa");
