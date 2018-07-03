@@ -33,8 +33,8 @@ public class CoreMappingTest {
     			{"core.cid"},
         		{"core.collection.bag"},
         		{"core.collection.idbag"},
+        		{"core.collection.list"},
     			// TODO BIDE-25553 - uncomment the commented parameters 
-//        		{"core.collection.list"},
 //        		{"core.collection.map"},
 //        		{"core.collection.original"},
 //        		{"core.collection.set"},
@@ -121,7 +121,7 @@ public class CoreMappingTest {
 //        		{"core.typedmanytoone"},
 //        		{"core.typedonetoone"},
 //        		{"core.typeparameters"},
-//        		{"core.unconstrained"},
+        		{"core.unconstrained"},
         		{"core.unidir"},
         		{"core.unionsubclass"},
         		{"core.unionsubclass2"},
