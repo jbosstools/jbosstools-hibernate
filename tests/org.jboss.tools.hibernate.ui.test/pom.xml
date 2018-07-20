@@ -16,4 +16,5 @@
 		<emma.instrument.bundles>org.jboss.tools.hibernate.ui</emma.instrument.bundles>
 	</properties>
 
+<version>5.3.100-SNAPSHOT</version>
 </project>
