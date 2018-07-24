@@ -3,16 +3,19 @@ package org.jboss.tools.hibernate.orm.test.utils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.Collections;
+import java.util.List;
 
+import org.apache.tools.ant.filters.StringInputStream;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.ui.IPackagesViewPart;
 import org.eclipse.jdt.ui.JavaUI;
@@ -42,9 +45,32 @@ import org.jboss.tools.hibernate.ui.view.OpenDiagramActionDelegate;
 import org.junit.Assert;
 import org.junit.rules.TestName;
 
-public class JpaMappingTestHelper {
+public class AnnotationsMappingTestHelper {
 	
-	public JpaMappingTestHelper(TestName testName) {
+	private static final String ANNOTATIONS_CFG_XML = 
+		"<?xml version='1.0' encoding='UTF-8'?>                                                                \n" +
+		"<!DOCTYPE hibernate-configuration PUBLIC                                                              \n" +
+		"    '-//Hibernate/Hibernate Configuration DTD 3.0//EN'                                                \n" +
+	    "    'http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd'>                               \n" +
+	    "<hibernate-configuration>                                                                             \n" +
+	    "    <session-factory>                                                                                 \n" +
+	    "        <property name='dialect'>org.hibernate.dialect.HSQLDialect</property>                         \n" +
+	    "        <mapping class='annotations.database.schema.GeneNames'/>                                      \n" +
+	    "        <mapping class='annotations.database.schema.GeneNamesId'/>                                    \n" +
+	    "        <mapping class='annotations.database.schema.PhysicalGeneGenericIdType'/>                      \n" + 
+	    "        <mapping class='annotations.database.schema.ReferenceOrganism'/>                              \n" +
+	    "        <mapping class='annotations.database.schema.ReferencePhysicalGene'/>                          \n" +
+	    "        <mapping class='annotations.database.schema.ReferenceSystemProcess'/>                         \n" +
+	    "        <mapping class='annotations.database.schema.ReferenceGeneProduct'/>                           \n" +
+	    "        <mapping class='annotations.database.schema.CVgeneric'/>                                      \n" +
+	    "        <mapping class='annotations.database.schema.OrganismRoleId'/>                                 \n" +
+	    "        <mapping class='annotations.database.schema.OrganismRoleInReferenceSystemProcess'/>           \n" +
+	    "        <mapping class='annotations.database.schema.OrganismRoleInReferenceSystemProcess$ROLE_TYPE'/> \n" +
+	    "    </session-factory>                                                                                \n" +
+	    "</hibernate-configuration>                                                                              ";
+			
+	
+	public AnnotationsMappingTestHelper(TestName testName) {
 		this.testName = testName;
 	}
 
@@ -71,8 +97,12 @@ public class JpaMappingTestHelper {
 			throw new RuntimeException(e);
 		}
 		packageExplorer.selectAndReveal(testProject.getIJavaProject());		
-		configureTestProject();
+		IPackageFragmentRoot sourcePackageFragment = testProject.createSourceFolder();
+		createCfgXMLFile();
 		copyHbmXmlAndJavaFiles();
+		List<IPath> libs = testProject.copyLibs(testProject.getFolder("lib"));
+		testProject.generateClassPath(libs, sourcePackageFragment);
+		testProject.fullBuild();		
 	}
 	
 	public void before(String packageName) throws Exception {
@@ -85,14 +115,22 @@ public class JpaMappingTestHelper {
 	
 	private void doBefore(String packageName) throws Exception {
 		String projectName = testProject.getIProject().getName();
-		ConsoleConfigUtils.createJpaConsoleConfig(
-				testProject.getIProject().getName(), 
-				testProject.getIProject().getName(), 
-				"PetClinic");
+		IPath cfgFilePath = new Path(
+				TestProject.SRC_FOLDER + 
+				File.separator + 
+				ConsoleConfigUtils.CFG_FILE_NAME);	
+		IFile cfgFile = testProject.getIProject().getFile(cfgFilePath);
+		ConsoleConfigUtils.createAnnotationsConsoleConfig(
+				projectName, 
+				projectName, 
+				cfgFile.getFullPath().toFile().getAbsolutePath());
 		ProjectUtils.toggleHibernateOnProject(
 				testProject.getIProject(), 
 				true, 
 				projectName);
+		IPackageFragmentRoot sourcePackageFragment = testProject.createSourceFolder();
+		List<IPath> libs = testProject.copyLibs(testProject.getFolder("lib"));
+		testProject.generateClassPath(libs, sourcePackageFragment);
 		testProject.fullBuild();		
 	}
 	
@@ -341,22 +379,21 @@ public class JpaMappingTestHelper {
 		return consCFG;
 	}
 	
-	private void configureTestProject() throws Exception {
-		testProject.generateClassPath(
-				Collections.emptyList(), 
-				testProject.createSourceFolder());
+	private void createCfgXMLFile() throws Exception {
+		IPath cfgFilePath = new Path(
+				TestProject.SRC_FOLDER + 
+				File.separator + 
+				ConsoleConfigUtils.CFG_FILE_NAME);	
+		IFile cfgFile = testProject.getIProject().getFile(cfgFilePath);
+		cfgFile.create(new StringInputStream(ANNOTATIONS_CFG_XML), true, null);
 	}
 	
 	private void copyHbmXmlAndJavaFiles() throws Exception {
 		IFolder sourceFolder = testProject.getIProject().getFolder("src");
-		File jpaSource = ResourceReadUtils.getResourceItem("res/jpa/");
-		IFolder jpaDestination = sourceFolder.getFolder("jpa");
-		jpaDestination.create(true, true, null);
-		FilesTransfer.copyFolder(jpaSource, jpaDestination);
-		File metaInfSource = ResourceReadUtils.getResourceItem("res/META-INF");
-		IFolder metaInfDestination = sourceFolder.getFolder("META-INF");
-		metaInfDestination.create(true, true, null);
-		FilesTransfer.copyFolder(metaInfSource, metaInfDestination);
+		File annotationsSource = ResourceReadUtils.getResourceItem("res/annotations/");
+		IFolder annotationsDestination = sourceFolder.getFolder("annotations");
+		annotationsDestination.create(true, true, null);
+		FilesTransfer.copyFolder(annotationsSource, annotationsDestination);
 	}
 	
 	private void openPropertyTestForPackage(IProperty compositeProperty, IProperty parentProperty, ConsoleConfiguration consCFG, String packageName){

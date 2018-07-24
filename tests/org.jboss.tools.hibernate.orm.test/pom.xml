@@ -15,6 +15,7 @@
 		<coverage.filter>org.jboss.tools.hibernate.orm*</coverage.filter>
 		<emma.instrument.bundles>org.hibernate.eclipse.console</emma.instrument.bundles>
 		<hsqldb.version>2.4.0</hsqldb.version>
+		<javax.persistence-api.version>2.2</javax.persistence-api.version>
 	</properties>
 
 	<build>
@@ -37,6 +38,11 @@
 							<groupId>org.hsqldb</groupId>
 							<artifactId>hsqldb</artifactId>
 							<version>${hsqldb.version}</version>
+						</artifactItem>
+						<artifactItem>
+							<groupId>javax.persistence</groupId>
+							<artifactId>javax.persistence-api</artifactId>
+							<version>${javax.persistence-api.version}</version>
 						</artifactItem>
 					</artifactItems>
 					<skip>false</skip>

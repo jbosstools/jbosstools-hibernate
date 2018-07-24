@@ -230,7 +230,7 @@ public class ConsoleConfigUtils {
 		final ConsoleConfiguration consoleConfig = knownConfigurations.find(name);
 		if (consoleConfig != null) {
 			consoleConfig.reset();
+			knownConfigurations.removeConfiguration(consoleConfig, false);
 		}
-		knownConfigurations.removeConfiguration(consoleConfig, false);
 	}
 }
