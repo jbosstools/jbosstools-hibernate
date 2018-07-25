@@ -149,10 +149,6 @@ public class ConfigurableTestProject extends TestProject {
 		}
 	};
 	
-	public boolean createTestFoldersList() {
-		return createTestFoldersList(FilesTransfer.filterFilesJava, filterFoldersOnlyCore);
-	}
-
 	public boolean useAllSources() {
 		activePackage = -1;
 		foldersList = new ArrayList<String>();
