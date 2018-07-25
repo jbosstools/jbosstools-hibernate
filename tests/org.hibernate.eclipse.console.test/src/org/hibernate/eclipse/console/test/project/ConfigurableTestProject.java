@@ -29,8 +29,6 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 import org.hibernate.eclipse.console.test.mappingproject.Customization;
-import org.hibernate.eclipse.console.test.mappingproject.MappingTestsAnnotations;
-import org.hibernate.eclipse.console.test.mappingproject.MappingTestsJpa;
 import org.hibernate.eclipse.console.test.utils.FilesTransfer;
 
 /**
@@ -140,15 +138,6 @@ public class ConfigurableTestProject extends TestProject {
 		return true;
 	}
 
-	public static final FileFilter filterFoldersOnlyCore = new FileFilter() {
-		public boolean accept(File f) {
-			return f.exists() && f.isDirectory() && !f.isHidden() &&
-				(!f.getAbsolutePath().toLowerCase().contains(MappingTestsAnnotations.annotationsMarkerStr)) &&
-				(!f.getAbsolutePath().toLowerCase().contains(MappingTestsJpa.jpaMarkerStr)) && 
-				(!f.getAbsolutePath().toLowerCase().contains(MappingTestsJpa.jpaMarkerMetaInf));
-		}
-	};
-	
 	public boolean useAllSources() {
 		activePackage = -1;
 		foldersList = new ArrayList<String>();
