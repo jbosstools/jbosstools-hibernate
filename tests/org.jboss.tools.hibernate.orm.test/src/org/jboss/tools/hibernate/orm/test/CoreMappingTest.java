@@ -37,8 +37,8 @@ public class CoreMappingTest {
         		{"core.collection.map"},
         		{"core.collection.original"},
         		{"core.collection.set"},
+        		{"core.component.basic"},
     			// TODO BIDE-25553 - uncomment the commented parameters 
-//        		{"core.component.basic"},
 //        		{"core.component.cascading.collection"},
 //        		{"core.component.cascading.toone"},
 //        		{"core.compositeelement"},
@@ -117,7 +117,7 @@ public class CoreMappingTest {
 //        		{"core.subselectfetch"},
 //        		{"core.ternary"},
 //        		{"core.timestamp"},
-//        		{"core.tool"},
+        		{"core.tool"},
         		{"core.typedmanytoone"},
         		{"core.typedonetoone"},
         		{"core.typeparameters"},
