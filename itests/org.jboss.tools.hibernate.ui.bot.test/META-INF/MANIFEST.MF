@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Hibernate UI tests
 Bundle-SymbolicName: org.jboss.tools.hibernate.ui.bot.test
-Bundle-Version: 5.4.0.qualifier
+Bundle-Version: 5.4.1.qualifier
 Bundle-Activator: org.jboss.tools.hibernate.ui.bot.test.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
