@@ -43,8 +43,8 @@ public class CoreMappingTest {
         		{"core.compositeelement"},
     			{"core.connections"},
         		{"core.criteria"},
+        		{"core.cuk"},
     			// TODO BIDE-25553 - uncomment the commented parameters 
-//        		{"core.cuk"},
 //        		{"core.cut"},
 //        		{"core.deletetransient"},
 //        		{"core.dialect.functional.cache"},
@@ -111,7 +111,7 @@ public class CoreMappingTest {
 //        		{"core.reattachment"},
 //        		{"core.rowid"},
 //        		{"core.sorted"},
-//        		{"core.sql.check"},
+        		{"core.sql.check"},
         		{"core.stateless"},
         		{"core.subselect"},
         		{"core.subselectfetch"},
