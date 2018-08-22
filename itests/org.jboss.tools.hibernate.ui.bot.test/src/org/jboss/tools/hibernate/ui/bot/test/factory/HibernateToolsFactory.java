@@ -43,6 +43,7 @@ public class HibernateToolsFactory {
 		wizard.next();
 
 		NewConfigurationWizardPage p2 = new NewConfigurationWizardPage(wizard);
+		p2.setHibernateVersion("5.2");
 		p2.setDatabaseDialect("H2");
 		p2.setDriverClass(cfg.getDriverClass());
 		p2.setConnectionURL(cfg.getJdbcString());
