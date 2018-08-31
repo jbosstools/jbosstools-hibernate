@@ -48,8 +48,8 @@ public class CoreMappingTest {
         		{"core.deletetransient"},
         		{"core.dialect.functional.cache"},
         		{"core.discriminator"},
+        		{"core.discriminator"},
     			// TODO BIDE-25553 - uncomment the commented parameters 
-//        		{"core.discriminator"},
 //        		{"core.dynamicentity.interceptor"},
 //        		{"core.dynamicentity.tuplizer"},
 //        		{"core.ecid"},
@@ -107,7 +107,7 @@ public class CoreMappingTest {
 //        		{"core.propertyref.inheritence.joined"},
 //        		{"core.propertyref.inheritence.union"},
 //        		{"core.proxy"},
-//        		{"core.querycache"},
+        		{"core.querycache"},
         		{"core.readonly"},
         		{"core.reattachment"},
         		{"core.rowid"},
