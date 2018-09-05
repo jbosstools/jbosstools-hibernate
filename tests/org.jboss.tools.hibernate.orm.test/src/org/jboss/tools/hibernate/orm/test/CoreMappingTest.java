@@ -54,8 +54,8 @@ public class CoreMappingTest {
         		{"core.ecid"},
         		{"core.entitymode.dom4j.many2one"},
         		{"core.entitymode.multi"},
+        		{"core.exception"},
     			// TODO BIDE-25553 - uncomment the commented parameters 
-//        		{"core.exception"},
 //        		{"core.extralazy"},
 //        		{"core.filter"},
 //        		{"core.formulajoin"},
@@ -101,7 +101,7 @@ public class CoreMappingTest {
 //        		{"core.orphan"},
 //        		{"core.pagination"},
 //        		{"core.propertyref.basic"},
-//        		{"core.propertyref.component.complete"},
+        		{"core.propertyref.component.complete"},
         		{"core.propertyref.component.partial"},
         		{"core.propertyref.inheritence.discrim"},
         		{"core.propertyref.inheritence.joined"},
