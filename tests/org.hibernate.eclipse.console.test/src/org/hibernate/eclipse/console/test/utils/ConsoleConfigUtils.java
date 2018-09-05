@@ -19,7 +19,6 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
-import org.hibernate.eclipse.console.test.mappingproject.Customization;
 import org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard;
 import org.hibernate.eclipse.console.wizards.ConsoleConfigurationWizardPage;
 import org.hibernate.eclipse.launch.ConsoleConfigurationMainTab;
@@ -41,7 +40,7 @@ public class ConsoleConfigUtils {
 	private static final String XML_CFG_START = new StringBuilder("<hibernate-configuration>\n") //$NON-NLS-1$
 													.append("<session-factory>\n") //$NON-NLS-1$
 													.append("<property name=\"hibernate.dialect\">") //$NON-NLS-1$
-													.append(Customization.HIBERNATE_DIALECT)
+													.append("org.hibernate.dialect.HSQLDialect") //$NON-NLS-1$
 													.append("</property>").toString(); //$NON-NLS-1$
 
 	private static final String XML_CFG_END = new StringBuilder("</session-factory>\n") //$NON-NLS-1$
