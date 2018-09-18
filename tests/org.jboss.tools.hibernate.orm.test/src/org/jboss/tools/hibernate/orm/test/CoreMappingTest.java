@@ -57,8 +57,8 @@ public class CoreMappingTest {
         		{"core.exception"},
         		{"core.extralazy"},
         		{"core.filter"},
+        		{"core.formulajoin"},
     			// TODO BIDE-25553 - uncomment the commented parameters 
-//        		{"core.formulajoin"},
 //        		{"core.generatedkeys.identity"},
 //        		{"core.generatedkeys.select"},
 //        		{"core.generatedkeys.seqidentity"},
@@ -98,7 +98,7 @@ public class CoreMappingTest {
 //        		{"core.ops"},
 //        		{"core.optlock"},
 //        		{"core.ordered"},
-//        		{"core.orphan"},
+        		{"core.orphan"},
         		{"core.pagination"},
         		{"core.propertyref.basic"},
         		{"core.propertyref.component.complete"},
