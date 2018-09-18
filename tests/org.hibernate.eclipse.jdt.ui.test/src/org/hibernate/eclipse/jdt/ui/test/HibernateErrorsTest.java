@@ -18,8 +18,8 @@ import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
 import org.hibernate.eclipse.console.test.HibernateConsoleTest;
+import org.hibernate.eclipse.console.test.project.JavaProjectHelper;
 import org.hibernate.eclipse.console.test.project.SimpleTestProject;
-import org.hibernate.eclipse.console.test.project.xpl.JavaProjectHelper;
 import org.hibernate.eclipse.console.test.utils.FilesTransfer;
 
 public class HibernateErrorsTest extends HibernateConsoleTest {

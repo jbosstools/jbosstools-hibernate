@@ -21,7 +21,6 @@ Bundle-ClassPath: .,
 Bundle-Vendor: %Bundle-Vendor.0
 Bundle-Localization: plugin
 Export-Package: org.hibernate.eclipse.console.test,
- org.hibernate.eclipse.console.test.project.xpl,
  org.hibernate.eclipse.console.test.utils,
  org.jmock,
  org.jmock.api,

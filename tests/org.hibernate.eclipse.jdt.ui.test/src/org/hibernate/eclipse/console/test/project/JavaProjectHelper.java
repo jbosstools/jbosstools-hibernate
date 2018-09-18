@@ -10,7 +10,7 @@
  *     Ferenc Hechler, ferenc_hechler@users.sourceforge.net - 83258 [jar exporter] Deploy java application as executable jar
  *     Max Rydahl Andersen, made more general for usage in Hibernate tests.
  *******************************************************************************/
-package org.hibernate.eclipse.console.test.project.xpl;
+package org.hibernate.eclipse.console.test.project;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -55,7 +55,6 @@ import org.eclipse.ui.dialogs.IOverwriteQuery;
 import org.eclipse.ui.wizards.datatransfer.ImportOperation;
 import org.eclipse.ui.wizards.datatransfer.ZipFileStructureProvider;
 import org.hibernate.eclipse.console.test.HibernateConsoleTestPlugin;
-
 /**
  * Helper methods to set up a IJavaProject.
  */

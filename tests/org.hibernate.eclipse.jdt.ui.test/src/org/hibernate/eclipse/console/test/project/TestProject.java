@@ -37,7 +37,6 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 import org.hibernate.eclipse.console.test.HibernateConsoleTestPlugin;
-import org.hibernate.eclipse.console.test.project.xpl.JavaProjectHelper;
 import org.hibernate.eclipse.console.test.utils.FilesTransfer;
 
 /**
