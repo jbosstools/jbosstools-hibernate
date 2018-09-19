@@ -17,9 +17,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipFile;
@@ -54,7 +52,6 @@ import org.eclipse.jdt.internal.ui.util.CoreUtility;
 import org.eclipse.ui.dialogs.IOverwriteQuery;
 import org.eclipse.ui.wizards.datatransfer.ImportOperation;
 import org.eclipse.ui.wizards.datatransfer.ZipFileStructureProvider;
-import org.hibernate.eclipse.console.test.HibernateConsoleTestPlugin;
 /**
  * Helper methods to set up a IJavaProject.
  */
@@ -568,33 +565,6 @@ public class JavaProjectHelper {
 		}
 	}
 	
-	/**
-	 * Imports resources from <code>bundleSourcePath</code> to <code>importTarget</code>.
-	 * 
-	 * @param importTarget the parent container
-	 * @param bundleSourcePath the path to a folder containing resources
-	 * 
-	 * @throws CoreException import failed
-	 * @throws IOException import failed
-	 */
-	@SuppressWarnings("unchecked")
-	public static void importResources(IContainer importTarget, String bundleSourcePath) throws CoreException, IOException {
-		Enumeration<String> entryPaths= HibernateConsoleTestPlugin.getDefault().getBundle().getEntryPaths(bundleSourcePath);
-		while (entryPaths.hasMoreElements()) {
-			String path= entryPaths.nextElement();
-			IPath name= new Path(path.substring(bundleSourcePath.length()));
-			if (path.endsWith("/")) { //$NON-NLS-1$
-				IFolder folder= importTarget.getFolder(name);
-				folder.create(false, true, null);
-				importResources(folder, path);
-			} else {
-				URL url= HibernateConsoleTestPlugin.getDefault().getBundle().getEntry(path);
-				IFile file= importTarget.getFile(name);
-				file.create(url.openStream(), true, null);
-			}
-		}
-	}
-
 	private static class ImportOverwriteQuery implements IOverwriteQuery {
 		public String queryOverwrite(String file) {
 			return ALL;
