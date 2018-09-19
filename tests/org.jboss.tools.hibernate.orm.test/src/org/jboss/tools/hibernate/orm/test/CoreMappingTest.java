@@ -59,8 +59,8 @@ public class CoreMappingTest {
         		{"core.filter"},
         		{"core.formulajoin"},
         		{"core.generatedkeys.identity"},
+        		{"core.generatedkeys.select"},
     			// TODO BIDE-25553 - uncomment the commented parameters 
-//        		{"core.generatedkeys.select"},
 //        		{"core.generatedkeys.seqidentity"},
 //        		{"core.id"},
 //        		{"core.idbag"},
@@ -96,7 +96,7 @@ public class CoreMappingTest {
 //        		{"core.onetoone.optional"},
 //        		{"core.onetoone.singletable"},
 //        		{"core.ops"},
-//        		{"core.optlock"},
+        		{"core.optlock"},
         		{"core.ordered"},
         		{"core.orphan"},
         		{"core.pagination"},
