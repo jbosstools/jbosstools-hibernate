@@ -11,8 +11,7 @@ import junit.framework.TestSuite;
 public class ConsolePluginAllTests {
 
 	public static Test suite() throws IOException {
-		TestSuite suite = new TestSuite(
-				ConsoleTestMessages.ConsolePluginAllTests_test_for );
+		TestSuite suite = new TestSuite();
 		suite.addTest(new JUnit4TestAdapter(DummyTest.class));
 		return suite;
 	}
