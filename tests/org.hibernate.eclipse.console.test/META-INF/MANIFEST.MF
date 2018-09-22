@@ -4,9 +4,6 @@ Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.hibernate.eclipse.console.test;singleton:=true
 Bundle-Version: 5.4.2.qualifier
 Bundle-ClassPath: .,
- lib/hibernate-tools-tests.jar,
- lib/hsqldb.jar,
- lib/jaxen-1.1-beta-7.jar,
  lib/jmock-2.5.1/bsh-core-2.0b4.jar,
  lib/jmock-2.5.1/cglib-2.1_3-src.jar,
  lib/jmock-2.5.1/cglib-nodep-2.1_3.jar,
@@ -20,8 +17,7 @@ Bundle-ClassPath: .,
  lib/jmock-2.5.1/objenesis-1.0.jar
 Bundle-Vendor: %Bundle-Vendor.0
 Bundle-Localization: plugin
-Export-Package: org.hibernate.eclipse.console.test,
- org.jmock,
+Export-Package: org.jmock,
  org.jmock.api,
  org.jmock.integration.junit3,
  org.jmock.integration.junit4,
