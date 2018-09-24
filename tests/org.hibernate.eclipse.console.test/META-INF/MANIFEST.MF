@@ -4,8 +4,6 @@ Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.hibernate.eclipse.console.test;singleton:=true
 Bundle-Version: 5.4.2.qualifier
 Bundle-ClassPath: .,
- lib/jmock-2.5.1/bsh-core-2.0b4.jar,
- lib/jmock-2.5.1/cglib-2.1_3-src.jar,
  lib/jmock-2.5.1/cglib-nodep-2.1_3.jar,
  lib/jmock-2.5.1/hamcrest-core-1.1.jar,
  lib/jmock-2.5.1/hamcrest-library-1.1.jar,
