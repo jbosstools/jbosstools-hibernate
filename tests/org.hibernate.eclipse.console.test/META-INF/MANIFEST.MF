@@ -52,7 +52,5 @@ Require-Bundle: org.junit;bundle-version="4.12.0",
  org.jboss.tools.hibernate.runtime.v_3_5;bundle-version="5.0.0",
  org.jboss.tools.hibernate.runtime.spi;bundle-version="5.0.0",
  org.jboss.tools.hibernate.libs.dom4j.v_1_6_1;bundle-version="5.0.0"
-Bundle-ActivationPolicy: lazy
-Bundle-Activator: org.hibernate.eclipse.console.test.HibernateConsoleTestPlugin
 Eclipse-RegisterBuddy: org.hibernate.eclipse
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
