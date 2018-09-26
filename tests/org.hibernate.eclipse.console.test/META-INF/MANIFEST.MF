@@ -1,9 +1,0 @@
-Manifest-Version: 1.0 
-Bundle-ManifestVersion: 2
-Bundle-Name: %Bundle-Name.0
-Bundle-SymbolicName: org.hibernate.eclipse.console.test;singleton:=true
-Bundle-Version: 5.4.2.qualifier
-Bundle-Vendor: %Bundle-Vendor.0
-Bundle-Localization: plugin
-Eclipse-RegisterBuddy: org.hibernate.eclipse
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
