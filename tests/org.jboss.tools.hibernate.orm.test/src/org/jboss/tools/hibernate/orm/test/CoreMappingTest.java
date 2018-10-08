@@ -67,8 +67,8 @@ public class CoreMappingTest {
         		{"core.idprops"},
         		{"core.immutable"},
         		{"core.insertordering"},
+        		{"core.instrument.domain"},
     			// TODO BIDE-25553 - uncomment the commented parameters 
-//        		{"core.instrument.domain"},
 //        		{"core.interceptor"},
 //        		{"core.interfaceproxy"},
 //        		{"core.iterate"},
@@ -88,7 +88,7 @@ public class CoreMappingTest {
 //        		{"core.mapelemformula"},
 //        		{"core.mixed"},
 //        		{"core.naturalid"},
-//        		{"core.ondelete"},
+        		{"core.ondelete"},
         		{"core.onetomany"},
         		{"core.onetoone.formula"},
         		{"core.onetoone.joined"},
