@@ -149,7 +149,9 @@ public class ClassLoaderHelper {
 		for (int i = 0; i < entries.length; i++) {
 			IRuntimeClasspathEntry runtimeClasspathEntry = entries[i];
 			if (runtimeClasspathEntry.getClasspathProperty() == IRuntimeClasspathEntry.USER_CLASSES 
-					|| runtimeClasspathEntry.getClasspathProperty() == IRuntimeClasspathEntry.OTHER) {
+					|| (runtimeClasspathEntry.getClasspathProperty() == IRuntimeClasspathEntry.MODULE_PATH 
+						&& runtimeClasspathEntry.getType() == IRuntimeClasspathEntry.PROJECT)
+					|| runtimeClasspathEntry.getClasspathProperty() == IRuntimeClasspathEntry.CLASS_PATH) {
 				String location = runtimeClasspathEntry.getLocation();
 				if (location != null) {
 					userEntries.add(location);

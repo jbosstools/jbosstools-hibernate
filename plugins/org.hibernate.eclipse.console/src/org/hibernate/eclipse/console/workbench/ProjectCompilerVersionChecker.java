@@ -71,6 +71,16 @@ public class ProjectCompilerVersionChecker {
 						return 0;
 				}
 			}
+			if (version.length() == 2 && version.charAt(0) == '1') {
+				switch (version.charAt(1)) {
+					case '0': 
+						return ClassFileConstants.JDK10;
+					case '1':
+						return 3604480; //ClassFileConstants.JDK11;  => this only works when the JDK11 support is installed
+					default:
+						return 0;
+				}
+			}
 			if (version.length() == 3 && version.charAt(0) == '1' && version.charAt(1) == '.') {
 				switch (version.charAt(2)) {
 					case '1':
