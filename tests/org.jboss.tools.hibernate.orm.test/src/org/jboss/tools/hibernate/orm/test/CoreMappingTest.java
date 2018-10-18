@@ -71,8 +71,8 @@ public class CoreMappingTest {
         		{"core.interceptor"},
         		{"core.interfaceproxy"},
         		{"core.iterate"},
+        		{"core.join"},
     			// TODO BIDE-25553 - uncomment the commented parameters 
-//        		{"core.join"},
 //        		{"core.joinedsubclass"},
 //        		{"core.joinfetch"},
 //        		{"core.jpa"},
@@ -84,7 +84,7 @@ public class CoreMappingTest {
 //        		{"core.manytomany"},
 //        		{"core.manytomany.ordered"},
 //        		{"core.map"},
-//        		{"core.mapcompelem"},
+        		{"core.mapcompelem"},
         		{"core.mapelemformula"},
         		{"core.mixed"},
         		{"core.naturalid"},
