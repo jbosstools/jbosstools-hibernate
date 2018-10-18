@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Activation API for JBoss Tools Hibernate
+Bundle-SymbolicName: org.jboss.tools.hibernate.libs.jaxb-api.v_2_3_0
+Bundle-Version: 5.4.3.qualifier
+Bundle-Vendor: Red Hat
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ClassPath: lib/jaxb-api-2.3.0.jar
+Export-Package: javax.xml.bind,
+ javax.xml.bind.annotation,
+ javax.xml.bind.annotation.adapters,
+ javax.xml.bind.attachment,
+ javax.xml.bind.helpers,
+ javax.xml.bind.util
