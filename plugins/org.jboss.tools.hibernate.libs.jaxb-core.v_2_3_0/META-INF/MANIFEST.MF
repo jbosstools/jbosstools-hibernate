@@ -1,0 +1,32 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Activation API for JBoss Tools Hibernate
+Bundle-SymbolicName: org.jboss.tools.hibernate.libs.jaxb-core.v_2_3_0
+Bundle-Version: 5.4.3.qualifier
+Bundle-Vendor: Red Hat
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ClassPath: lib/jaxb-core-2.3.0.jar
+Export-Package: com.sun.istack,
+ com.sun.istack.localization,
+ com.sun.istack.logging,
+ com.sun.xml.bind,
+ com.sun.xml.bind.annotation,
+ com.sun.xml.bind.api,
+ com.sun.xml.bind.api.impl,
+ com.sun.xml.bind.marshaller,
+ com.sun.xml.bind.unmarshaller,
+ com.sun.xml.bind.util,
+ com.sun.xml.bind.v2,
+ com.sun.xml.bind.v2.model.annotation,
+ com.sun.xml.bind.v2.model.core,
+ com.sun.xml.bind.v2.model.impl,
+ com.sun.xml.bind.v2.model.nav,
+ com.sun.xml.bind.v2.model.util,
+ com.sun.xml.bind.v2.runtime,
+ com.sun.xml.bind.v2.runtime.unmarshaller,
+ com.sun.xml.bind.v2.schemagen.episode,
+ com.sun.xml.bind.v2.util,
+ com.sun.xml.txw2,
+ com.sun.xml.txw2.annotation,
+ com.sun.xml.txw2.output
+Require-Bundle: org.jboss.tools.hibernate.libs.jaxb-api.v_2_3_0;bundle-version="5.4.3"
