@@ -73,8 +73,8 @@ public class CoreMappingTest {
         		{"core.iterate"},
         		{"core.join"},
         		{"core.joinedsubclass"},
+        		{"core.joinfetch"},
     			// TODO BIDE-25553 - uncomment the commented parameters 
-//        		{"core.joinfetch"},
 //        		{"core.jpa"},
 //        		{"core.jpa.cascade"},
 //        		{"core.jpa.fetch"},
@@ -82,7 +82,7 @@ public class CoreMappingTest {
 //        		{"core.lazyonetoone"},
 //        		{"core.lob"},
 //        		{"core.manytomany"},
-//        		{"core.manytomany.ordered"},
+        		{"core.manytomany.ordered"},
         		{"core.map"},
         		{"core.mapcompelem"},
         		{"core.mapelemformula"},
