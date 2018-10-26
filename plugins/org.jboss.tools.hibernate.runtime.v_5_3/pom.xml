@@ -19,6 +19,7 @@
 		<javax.persistence-api.version>2.2</javax.persistence-api.version>
 		<hibernate-tools.version>5.3.7.Final</hibernate-tools.version>
 		<javassist.version>3.20.0-GA</javassist.version>
+	    <jaxb.version>2.3.0</jaxb.version>
 		<bytebuddy.version>1.8.0</bytebuddy.version>
 		<jboss-logging.version>3.3.0.Final</jboss-logging.version>
 		<slf4j.version>1.6.1</slf4j.version>
@@ -90,6 +91,11 @@
 							<artifactId>slf4j-api</artifactId>
 							<version>${slf4j.version}</version>
 						</artifactItem>
+ 						<artifactItem>
+							<groupId>com.sun.xml.bind</groupId>
+							<artifactId>jaxb-impl</artifactId>
+							<version>${jaxb.version}</version>
+						</artifactItem> 
 					</artifactItems>
 					<skip>false</skip>
 					<outputDirectory>${basedir}/lib</outputDirectory>
