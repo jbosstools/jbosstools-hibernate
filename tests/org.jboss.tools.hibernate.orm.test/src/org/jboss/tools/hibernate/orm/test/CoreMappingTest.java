@@ -76,10 +76,9 @@ public class CoreMappingTest {
         		{"core.joinfetch"},
         		{"core.jpa"},
         		{"core.jpa.cascade"},
-    			// TODO BIDE-25553 - uncomment the commented parameters 
-//        		{"core.jpa.fetch"},
-//        		{"core.lazycache"},
-//        		{"core.lazyonetoone"},
+        		{"core.jpa.fetch"},
+        		{"core.lazycache"},
+        		{"core.lazyonetoone"},
         		{"core.lob"},
         		{"core.manytomany"},
         		{"core.manytomany.ordered"},
