@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Hibernate Runtime 5.3 Tests
+Bundle-Name: Hibernate Runtime 5.4 Tests
 Bundle-SymbolicName: org.jboss.tools.hibernate.runtime.v_5_4.test
 Bundle-Version: 5.4.3.qualifier
 Fragment-Host: org.jboss.tools.hibernate.runtime.v_5_4
