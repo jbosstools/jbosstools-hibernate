@@ -23,7 +23,6 @@ import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.connection.DriverManagerConnectionProvider;
-import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.resolver.DialectFactory;
 import org.hibernate.ejb.Ejb3Configuration;
@@ -51,12 +50,13 @@ import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
-import org.hibernate.util.xpl.ReflectHelper;
-import org.hibernate.util.xpl.StringHelper;
+import org.hibernate.util.ReflectHelper;
+import org.hibernate.util.StringHelper;
 import org.jboss.tools.hibernate.runtime.common.AbstractService;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.Util;
+import org.jboss.tools.hibernate.runtime.spi.HibernateException;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
@@ -111,7 +111,7 @@ public class ServiceImpl extends AbstractService implements IService {
 				Object object = resolver.newInstance();
 				ejb3Configuration.setEntityResolver((EntityResolver)object);
 			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-				throw new HibernateConsoleRuntimeException(e);
+				throw new HibernateException(e);
 			}
 		}
 		ejb3Configuration.setProperty("hibernate.validator.autoregister_listeners", "false");
@@ -272,11 +272,11 @@ public class ServiceImpl extends AbstractService implements IService {
 				return rev;
 			}
 			catch (Exception eq) {
-				throw new HibernateConsoleRuntimeException(eq);
+				throw new HibernateException(eq);
 			}
 		}
         catch (Exception e) {
-			throw new HibernateConsoleRuntimeException(e);
+			throw new HibernateException(e);
 		}
     }
 
