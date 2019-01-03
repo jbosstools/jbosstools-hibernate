@@ -26,7 +26,6 @@ import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
-import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.engine.jdbc.dialect.spi.DatabaseMetaDataDialectResolutionInfoAdapter;
@@ -35,6 +34,7 @@ import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfoSource;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.internal.SessionFactoryImpl;
+import org.hibernate.internal.util.ReflectHelper;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
@@ -59,11 +59,11 @@ import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
-import org.hibernate.util.xpl.ReflectHelper;
 import org.jboss.tools.hibernate.runtime.common.AbstractService;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.Util;
+import org.jboss.tools.hibernate.runtime.spi.HibernateException;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
@@ -121,7 +121,7 @@ public class ServiceImpl extends AbstractService implements IService {
 							hibernatePersistenceProvider, 
 							new Object[] { persistenceUnit, overrides});	
 			if (entityManagerFactoryBuilder == null) {
-				throw new HibernateConsoleRuntimeException(
+				throw new HibernateException(
 						"Persistence unit not found: '" + 
 						persistenceUnit + 
 						"'.");
@@ -139,7 +139,7 @@ public class ServiceImpl extends AbstractService implements IService {
 			Configuration configuration = (Configuration)buildHibernateConfiguration.invoke(entityManagerFactoryBuilder, new Object[] { serviceRegistry });		
 			result = facadeFactory.createConfiguration(configuration);
 		} catch (SecurityException | NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException  e) {
-			throw new HibernateConsoleRuntimeException(e);
+			throw new HibernateException(e);
 		}
 		return result;
 	}
@@ -298,11 +298,11 @@ public class ServiceImpl extends AbstractService implements IService {
 				return rev;
 			}
 			catch (Exception eq) {
-				throw new HibernateConsoleRuntimeException(eq);
+				throw new HibernateException(eq);
 			}
 		}
         catch (Exception e) {
-			throw new HibernateConsoleRuntimeException(e);
+			throw new HibernateException(e);
 		}
     }
 
@@ -355,7 +355,7 @@ public class ServiceImpl extends AbstractService implements IService {
 							return new DatabaseMetaDataDialectResolutionInfoAdapter( connection.getMetaData() );
 						}
 						catch ( SQLException sqlException ) {
-							throw new HibernateConsoleRuntimeException(
+							throw new HibernateException(
 									"Unable to access java.sql.DatabaseMetaData to determine appropriate Dialect to use",
 									sqlException
 							);
