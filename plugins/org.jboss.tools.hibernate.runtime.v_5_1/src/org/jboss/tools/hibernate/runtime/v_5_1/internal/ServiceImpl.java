@@ -23,7 +23,6 @@ import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
-import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.engine.jdbc.dialect.spi.DatabaseMetaDataDialectResolutionInfoAdapter;
@@ -55,12 +54,13 @@ import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
-import org.hibernate.util.xpl.ReflectHelper;
+import org.hibernate.tool.util.ReflectHelper;
 import org.jboss.tools.hibernate.runtime.common.AbstractPersistentClassFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractService;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.Util;
+import org.jboss.tools.hibernate.runtime.spi.HibernateException;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
@@ -283,7 +283,7 @@ public class ServiceImpl extends AbstractService {
 							return new DatabaseMetaDataDialectResolutionInfoAdapter( connection.getMetaData() );
 						}
 						catch ( SQLException sqlException ) {
-							throw new HibernateConsoleRuntimeException(
+							throw new HibernateException(
 									"Unable to access java.sql.DatabaseMetaData to determine appropriate Dialect to use",
 									sqlException
 							);
@@ -465,11 +465,11 @@ public class ServiceImpl extends AbstractService {
 				return clazz.newInstance();
 			}
 			catch (Exception eq) {
-				throw new HibernateConsoleRuntimeException(eq);
+				throw new HibernateException(eq);
 			}
 		}
         catch (Exception e) {
-			throw new HibernateConsoleRuntimeException(e);
+			throw new HibernateException(e);
 		}
     }
 
