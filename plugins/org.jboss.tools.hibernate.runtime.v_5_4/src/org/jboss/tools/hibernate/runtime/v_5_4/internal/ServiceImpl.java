@@ -12,7 +12,6 @@ import java.util.Properties;
 import org.hibernate.Filter;
 import org.hibernate.Hibernate;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCReaderFactory;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
@@ -23,7 +22,6 @@ import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
-import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.engine.jdbc.dialect.spi.DatabaseMetaDataDialectResolutionInfoAdapter;
@@ -61,6 +59,7 @@ import org.jboss.tools.hibernate.runtime.common.AbstractService;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.Util;
+import org.jboss.tools.hibernate.runtime.spi.HibernateException;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
@@ -289,7 +288,7 @@ public class ServiceImpl extends AbstractService {
 							return new DatabaseMetaDataDialectResolutionInfoAdapter( connection.getMetaData() );
 						}
 						catch ( SQLException sqlException ) {
-							throw new HibernateConsoleRuntimeException(
+							throw new HibernateException(
 									"Unable to access java.sql.DatabaseMetaData to determine appropriate Dialect to use",
 									sqlException
 							);
@@ -477,15 +476,15 @@ public class ServiceImpl extends AbstractService {
 				if (clazz != null) {
 					return clazz.newInstance();
 				} else {
-					throw new HibernateConsoleRuntimeException("Class " + className + " could not be found.");
+					throw new HibernateException("Class " + className + " could not be found.");
 				}
 			}
 			catch (Exception eq) {
-				throw new HibernateConsoleRuntimeException(eq);
+				throw new HibernateException(eq);
 			}
 		}
         catch (Exception e) {
-			throw new HibernateConsoleRuntimeException(e);
+			throw new HibernateException(e);
 		}
     }
 
