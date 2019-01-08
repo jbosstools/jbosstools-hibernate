@@ -18,10 +18,12 @@
 		<hibernate-commons-annotations.version>5.1.0.Final</hibernate-commons-annotations.version>
 		<javax.persistence-api.version>2.2</javax.persistence-api.version>
 		<javassist.version>3.24.0-GA</javassist.version>
-	    <jaxb.version>2.3.0</jaxb.version>
+	    <jaxb.version>2.3.1</jaxb.version>
+	    <jaxb-core.version>2.3.0.1</jaxb-core.version>
 		<bytebuddy.version>1.9.5</bytebuddy.version>
 		<jboss-logging.version>3.3.0.Final</jboss-logging.version>
 		<slf4j.version>1.6.1</slf4j.version>
+		<istack-commons-runtime.version>3.0.7</istack-commons-runtime.version>
 	</properties>
 
 	<build>
@@ -91,9 +93,24 @@
 							<version>${slf4j.version}</version>
 						</artifactItem>
  						<artifactItem>
-							<groupId>com.sun.xml.bind</groupId>
-							<artifactId>jaxb-impl</artifactId>
+							<groupId>javax.xml.bind</groupId>
+							<artifactId>jaxb-api</artifactId>
 							<version>${jaxb.version}</version>
+						</artifactItem> 
+ 						<artifactItem>
+							<groupId>org.glassfish.jaxb</groupId>
+							<artifactId>jaxb-runtime</artifactId>
+							<version>${jaxb.version}</version>
+						</artifactItem> 
+ 						<artifactItem>
+							<groupId>org.glassfish.jaxb</groupId>
+							<artifactId>jaxb-core</artifactId>
+							<version>${jaxb-core.version}</version>
+						</artifactItem> 
+ 						<artifactItem>
+							<groupId>com.sun.istack</groupId>
+							<artifactId>istack-commons-runtime</artifactId>
+							<version>${istack-commons-runtime.version}</version>
 						</artifactItem> 
 					</artifactItems>
 					<skip>false</skip>
