@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.jboss.tools.hibernatetools</groupId>
 		<artifactId>test-framework</artifactId>
-		<version>5.4.3-SNAPSHOT</version>
+		<version>5.4.4-SNAPSHOT</version>
 	</parent>
 	<artifactId>org.jboss.tools.hibernate.reddeer</artifactId>
 	<packaging>eclipse-plugin</packaging>
