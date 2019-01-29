@@ -14,10 +14,12 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.internal.BootstrapContextImpl;
+import org.hibernate.boot.internal.MetadataBuilderImpl;
 import org.hibernate.boot.internal.SessionFactoryOptionsBuilder;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.spi.BootstrapContext;
+import org.hibernate.boot.spi.MetadataBuildingOptions;
 import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
@@ -370,7 +372,8 @@ public class FacadeFactoryTest {
 						return method.invoke(metadata, args);
 					}
 				}); 
-		BootstrapContext bc = new BootstrapContextImpl(serviceRegistry, null);
+		MetadataBuildingOptions mbo = new MetadataBuilderImpl.MetadataBuildingOptionsImpl(serviceRegistry);
+		BootstrapContext bc = new BootstrapContextImpl(serviceRegistry, mbo);
 		SessionFactoryImpl sfi = new SessionFactoryImpl(wrapper, new SessionFactoryOptionsBuilder(serviceRegistry, bc));
 		Map<String, Filter> filters = Collections.emptyMap();
 		HQLQueryPlan hqlQueryPlan = new HQLQueryPlan("from foo", false, filters, sfi);

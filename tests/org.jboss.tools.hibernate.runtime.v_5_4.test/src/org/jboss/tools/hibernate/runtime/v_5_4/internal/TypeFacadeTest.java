@@ -100,7 +100,7 @@ public class TypeFacadeTest {
 		ClassType classType = new ClassType();
 		typeFacade = FACADE_FACTORY.createType(classType);
 		Assert.assertFalse(typeFacade.isAnyType());
-		AnyType anyType = new AnyType(null, null, null);
+		AnyType anyType = new AnyType(null, null, null, true);
 		typeFacade = FACADE_FACTORY.createType(anyType);
 		Assert.assertTrue(typeFacade.isAnyType());
 	}
