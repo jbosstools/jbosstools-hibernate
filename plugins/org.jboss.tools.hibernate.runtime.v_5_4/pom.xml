@@ -19,7 +19,6 @@
 		<javax.persistence-api.version>2.2</javax.persistence-api.version>
 		<javassist.version>3.24.0-GA</javassist.version>
 	    <jaxb.version>2.3.1</jaxb.version>
-	    <jaxb-core.version>2.3.0.1</jaxb-core.version>
 		<bytebuddy.version>1.9.5</bytebuddy.version>
 		<jboss-logging.version>3.3.0.Final</jboss-logging.version>
 		<slf4j.version>1.6.1</slf4j.version>
@@ -101,11 +100,6 @@
 							<groupId>org.glassfish.jaxb</groupId>
 							<artifactId>jaxb-runtime</artifactId>
 							<version>${jaxb.version}</version>
-						</artifactItem> 
- 						<artifactItem>
-							<groupId>org.glassfish.jaxb</groupId>
-							<artifactId>jaxb-core</artifactId>
-							<version>${jaxb-core.version}</version>
 						</artifactItem> 
  						<artifactItem>
 							<groupId>com.sun.istack</groupId>
