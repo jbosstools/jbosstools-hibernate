@@ -14,6 +14,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 
 	<modules>
     	<module>org.jboss.tools.hibernate.libs.activation.v_1_2_0</module>
+		<module>org.jboss.tools.hibernate.libs.antlr.v_2_7_7</module>
 	</modules>
 
 </project>
