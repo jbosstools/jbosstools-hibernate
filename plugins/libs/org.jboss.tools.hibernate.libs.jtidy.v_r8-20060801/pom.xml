@@ -3,11 +3,11 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.jboss.tools.hibernatetools</groupId>
-		<artifactId>plugins</artifactId>
+		<groupId>org.jboss.tools.hibernatetools.plugins</groupId>
+		<artifactId>libs</artifactId>
 		<version>5.4.4-SNAPSHOT</version>
 	</parent>
-	<groupId>org.jboss.tools.hibernatetools.plugins</groupId>
+	<groupId>org.jboss.tools.hibernatetools.plugins.libs</groupId>
 	<artifactId>org.jboss.tools.hibernate.libs.jtidy.v_r8-20060801</artifactId>
 
 	<packaging>eclipse-plugin</packaging>
