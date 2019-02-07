@@ -18,6 +18,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<module>org.jboss.tools.hibernate.libs.bsh.v_2_0_b4</module>
 		<module>org.jboss.tools.hibernate.libs.dom4j.v_1_6_1</module>
 		<module>org.jboss.tools.hibernate.libs.jaxb-api.v_2_3_0</module>
+		<module>org.jboss.tools.hibernate.libs.jaxb-core.v_2_3_0</module>
 	</modules>
 
 </project>
