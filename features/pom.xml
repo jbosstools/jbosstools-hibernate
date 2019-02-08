@@ -16,6 +16,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<module>org.hibernate.search.eclipse.feature</module>
 		<module>org.hibernate.eclipse.test.feature</module>
 		<module>org.jboss.tools.hibernate.search.test.feature</module>
+		<module>org.jboss.tools.hibernate.libs.freemarker.v_2_3_23</module>
 	</modules>
 	<build>
 		<plugins>
