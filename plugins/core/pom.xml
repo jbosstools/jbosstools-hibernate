@@ -7,8 +7,8 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<version>5.4.4-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.hibernatetools.plugins</groupId>
-	<artifactId>orm</artifactId>
-	<name>Hibernate ORM Plugins</name>
+	<artifactId>core</artifactId>
+	<name>Hibernate ORM Core Plugins</name>
 	
 	<packaging>pom</packaging>
 	

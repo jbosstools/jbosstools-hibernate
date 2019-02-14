@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion> 
 	<parent>
 		<groupId>org.jboss.tools.hibernatetools.plugins</groupId>
-		<artifactId>orm</artifactId>
+		<artifactId>core</artifactId>
 		<version>5.4.4-SNAPSHOT</version>
 	</parent>
-	<groupId>org.jboss.tools.hibernatetools.plugins.orm</groupId>
-	<artifactId>org.hibernate.eclipse.mapper</artifactId> 
+	<groupId>org.jboss.tools.hibernatetools.plugins.core</groupId>
+	<artifactId>org.jboss.tools.hibernate.jpt.ui</artifactId> 
 	
 	<packaging>eclipse-plugin</packaging>
 </project>

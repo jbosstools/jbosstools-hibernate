@@ -12,8 +12,8 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	
 	<packaging>pom</packaging>
 	<modules>
+		<module>core</module>
 	    <module>libs</module>
-		<module>orm</module>
 		<module>runtimes</module>
 	</modules>
 </project>
