@@ -2,24 +2,25 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion> 
 	<parent>
-		<groupId>org.jboss.tools.hibernatetools.plugins</groupId>
-		<artifactId>runtimes</artifactId>
+		<groupId>org.jboss.tools.hibernatetools.orm.plugin</groupId>
+		<artifactId>runtime</artifactId>
 		<version>5.4.4-SNAPSHOT</version>
 	</parent>
-	<groupId>org.jboss.tools.hibernatetools.plugins.runtimes</groupId>
-	<artifactId>org.jboss.tools.hibernate.runtime.v_4_0</artifactId> 
+	<groupId>org.jboss.tools.hibernatetools.orm.plugin.runtime</groupId>
+	<artifactId>org.jboss.tools.hibernate.runtime.v_3_5</artifactId> 
 	
 	<packaging>eclipse-plugin</packaging>
-
+	
 	<properties>
-		<commons-logging.version>1.1.1</commons-logging.version>
-		<hibernate.version>4.0.1.Final</hibernate.version>
-		<hibernate-commons-annotations.version>4.0.1.Final</hibernate-commons-annotations.version>
-		<hibernate-jpa-2.0-api.version>1.0.1.Final</hibernate-jpa-2.0-api.version>
-		<hibernate-tools.version>4.0.1.Final</hibernate-tools.version>
-		<jboss-logging.version>3.1.0.CR2</jboss-logging.version>
-		<jboss-transaction-api_1.1_spec.version>1.0.0.Final</jboss-transaction-api_1.1_spec.version>
-		<javassist.version>3.12.1.GA</javassist.version>
+		<asm.version>3.1</asm.version>
+		<cglib.version>2.2</cglib.version>
+		<commons-logging.version>1.0.4</commons-logging.version>
+		<hibernate.version>3.5.6-Final</hibernate.version>
+		<hibernate-commons-annotations.version>3.2.0.Final</hibernate-commons-annotations.version>
+		<hibernate-jpa-2.0-api.version>1.0.0.Final</hibernate-jpa-2.0-api.version>
+		<hibernate-tools.version>3.5.1.Final</hibernate-tools.version>
+		<javassist.version>3.9.0.GA</javassist.version>
+		<jta.version>1.1</jta.version>
 		<log4j.version>1.2.15</log4j.version>
 		<slf4j.version>1.5.8</slf4j.version>
 	</properties>
@@ -41,12 +42,27 @@
 				<configuration>
 					<artifactItems>
 						<artifactItem>
+							<groupId>asm</groupId>
+							<artifactId>asm</artifactId>
+							<version>${asm.version}</version>
+						</artifactItem>
+						<artifactItem>
+							<groupId>cglib</groupId>
+							<artifactId>cglib</artifactId>
+							<version>${cglib.version}</version>
+						</artifactItem>
+						<artifactItem>
 							<groupId>commons-logging</groupId>
 							<artifactId>commons-logging</artifactId>
 							<version>${commons-logging.version}</version>
 						</artifactItem>
 						<artifactItem>
-							<groupId>org.hibernate.common</groupId>
+							<groupId>org.hibernate</groupId>
+							<artifactId>hibernate-annotations</artifactId>
+							<version>${hibernate.version}</version>
+						</artifactItem>
+						<artifactItem>
+							<groupId>org.hibernate</groupId>
 							<artifactId>hibernate-commons-annotations</artifactId>
 							<version>${hibernate-commons-annotations.version}</version>
 						</artifactItem>
@@ -71,19 +87,14 @@
 							<version>${hibernate-tools.version}</version>
 						</artifactItem>
 						<artifactItem>
-							<groupId>org.jboss.logging</groupId>
-							<artifactId>jboss-logging</artifactId>
-							<version>${jboss-logging.version}</version>
-						</artifactItem>
-						<artifactItem>
-							<groupId>org.jboss.spec.javax.transaction</groupId>
-							<artifactId>jboss-transaction-api_1.1_spec</artifactId>
-							<version>${jboss-transaction-api_1.1_spec.version}</version>
-						</artifactItem>
-						<artifactItem>
 							<groupId>javassist</groupId>
 							<artifactId>javassist</artifactId>
 							<version>${javassist.version}</version>
+						</artifactItem>
+						<artifactItem>
+							<groupId>javax.transaction</groupId>
+							<artifactId>jta</artifactId>
+							<version>${jta.version}</version>
 						</artifactItem>
 						<artifactItem>
 							<groupId>log4j</groupId>
