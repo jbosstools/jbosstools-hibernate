@@ -2,17 +2,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion> 
 	<parent>
-		<groupId>org.jboss.tools.hibernatetools.plugins</groupId>
-		<artifactId>libs</artifactId>
+		<groupId>org.jboss.tools.hibernatetools.common.plugin</groupId>
+		<artifactId>lib</artifactId>
 		<version>5.4.4-SNAPSHOT</version>
 	</parent>
-	<groupId>org.jboss.tools.hibernatetools.plugins.libs</groupId>
-	<artifactId>org.jboss.tools.hibernate.libs.bsh.v_2_0_b4</artifactId> 
+	<groupId>org.jboss.tools.hibernatetools.common.plugin.lib</groupId>
+	<artifactId>org.jboss.tools.hibernate.libs.activation.v_1_2_0</artifactId> 
 	
 	<packaging>eclipse-plugin</packaging>
-
+	
 	<properties>
-	    <beanshell.version>2.0b4</beanshell.version>
+	    <activation.version>1.2.0</activation.version>
 	</properties>
 	
 	<build>
@@ -31,11 +31,11 @@
 	            </executions>
 	            <configuration>
 	                <artifactItems>
-	                    <artifactItem>
-	                        <groupId>org.beanshell</groupId>
-	                        <artifactId>bsh-core</artifactId>
-	                        <version>${beanshell.version}</version>
-	                    </artifactItem>
+						<artifactItem>
+							<groupId>javax.activation</groupId>
+							<artifactId>javax.activation-api</artifactId>
+							<version>${activation.version}</version>
+						</artifactItem>
 	                </artifactItems>
 	                <skip>false</skip>
 	                <outputDirectory>${basedir}/lib</outputDirectory>
@@ -53,5 +53,4 @@
 	        </plugin>
 	    </plugins>
 	</build>
-
 </project>

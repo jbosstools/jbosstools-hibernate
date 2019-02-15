@@ -2,17 +2,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion> 
 	<parent>
-		<groupId>org.jboss.tools.hibernatetools.plugins</groupId>
-		<artifactId>libs</artifactId>
+		<groupId>org.jboss.tools.hibernatetools.common.plugin</groupId>
+		<artifactId>lib</artifactId>
 		<version>5.4.4-SNAPSHOT</version>
 	</parent>
-	<groupId>org.jboss.tools.hibernatetools.plugins.libs</groupId>
-	<artifactId>org.jboss.tools.hibernate.libs.jaxb-core.v_2_3_0</artifactId> 
+	<groupId>org.jboss.tools.hibernatetools.common.plugin.lib</groupId>
+	<artifactId>org.jboss.tools.hibernate.libs.dom4j.v_1_6_1</artifactId> 
 	
 	<packaging>eclipse-plugin</packaging>
-	
+
 	<properties>
-	    <jaxb.version>2.3.0</jaxb.version>
+	    <dom4j.version>1.6.1</dom4j.version>
 	</properties>
 	
 	<build>
@@ -31,11 +31,11 @@
 	            </executions>
 	            <configuration>
 	                <artifactItems>
- 						<artifactItem>
-							<groupId>com.sun.xml.bind</groupId>
-							<artifactId>jaxb-core</artifactId>
-							<version>${jaxb.version}</version>
-						</artifactItem> 
+	                    <artifactItem>
+	                        <groupId>dom4j</groupId>
+	                        <artifactId>dom4j</artifactId>
+	                        <version>${dom4j.version}</version>
+	                    </artifactItem>
 	                </artifactItems>
 	                <skip>false</skip>
 	                <outputDirectory>${basedir}/lib</outputDirectory>
@@ -53,4 +53,5 @@
 	        </plugin>
 	    </plugins>
 	</build>
+
 </project>
