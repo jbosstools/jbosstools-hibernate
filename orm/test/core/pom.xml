@@ -2,18 +2,17 @@
 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.jboss.tools</groupId>
-		<artifactId>hibernatetools</artifactId>
+		<groupId>org.jboss.tools.hibernatetools.orm</groupId>
+		<artifactId>test</artifactId>
 		<version>5.4.4-SNAPSHOT</version>
 	</parent>
-	<groupId>org.jboss.tools.hibernatetools</groupId>
-	<artifactId>orm</artifactId>
-	<name>Hibernate ORM Tooling</name>
+	<groupId>org.jboss.tools.hibernatetools.orm.test</groupId>
+	<artifactId>core</artifactId>
+	<name>Hibernate ORM Tooling Core Test Plugins</name>
 	
 	<packaging>pom</packaging>
 	<modules>
-		<module>plugin</module>
-		<module>test</module>
+		<module>org.hibernate.eclipse.jdt.ui.test</module>
 	</modules>
 
 </project>
