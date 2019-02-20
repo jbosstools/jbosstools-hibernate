@@ -1,0 +1,28 @@
+<project
+xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.jboss.tools.hibernatetools.orm</groupId>
+		<artifactId>test</artifactId>
+		<version>5.4.4-SNAPSHOT</version>
+	</parent>
+	<groupId>org.jboss.tools.hibernatetools.orm.test</groupId>
+	<artifactId>runtime</artifactId>
+	<name>Hibernate ORM Tooling Runtime Test Plugins</name>
+	
+	<packaging>pom</packaging>
+	<modules>
+        <module>org.jboss.tools.hibernate.runtime.spi.test</module>
+        <module>org.jboss.tools.hibernate.runtime.v_3_5.test</module>
+        <module>org.jboss.tools.hibernate.runtime.v_3_6.test</module>
+        <module>org.jboss.tools.hibernate.runtime.v_4_0.test</module>
+        <module>org.jboss.tools.hibernate.runtime.v_4_3.test</module>
+        <module>org.jboss.tools.hibernate.runtime.v_5_0.test</module>
+	    <module>org.jboss.tools.hibernate.runtime.v_5_1.test</module>
+	    <module>org.jboss.tools.hibernate.runtime.v_5_2.test</module>
+	    <module>org.jboss.tools.hibernate.runtime.v_5_3.test</module>
+	    <module>org.jboss.tools.hibernate.runtime.v_5_4.test</module>
+	</modules>
+
+</project>
+	
