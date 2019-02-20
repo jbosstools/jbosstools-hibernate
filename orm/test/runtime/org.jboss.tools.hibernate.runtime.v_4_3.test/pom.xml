@@ -2,19 +2,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion> 
 	<parent>
-		<groupId>org.jboss.tools.hibernatetools</groupId>
-		<artifactId>tests</artifactId>
+		<groupId>org.jboss.tools.hibernatetools.orm.test</groupId>
+		<artifactId>runtime</artifactId>
 		<version>5.4.4-SNAPSHOT</version>
 	</parent>
-	<groupId>org.jboss.tools.hibernatetools.tests</groupId>
-	<artifactId>org.jboss.tools.hibernate.runtime.v_5_3.test</artifactId> 
-
+	<groupId>org.jboss.tools.hibernatetools.orm.test.runtime</groupId>
+	<artifactId>org.jboss.tools.hibernate.runtime.v_4_3.test</artifactId> 
+	
 	<packaging>eclipse-test-plugin</packaging>
 	
 	<properties>
 		<coverage.filter>org.jboss.tools.hibernate.runtime*</coverage.filter>
-		<emma.instrument.bundles>org.jboss.tools.hibernate.runtime.v_5_2</emma.instrument.bundles>
-		<h2.version>1.4.190</h2.version>
+		<emma.instrument.bundles>org.jboss.tools.hibernate.runtime.v_4_3</emma.instrument.bundles>
+		<h2.version>1.4.192</h2.version>
 	</properties>
 
 	<build>
