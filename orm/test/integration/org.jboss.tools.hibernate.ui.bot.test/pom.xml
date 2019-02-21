@@ -3,11 +3,11 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.jboss.tools.hibernatetools</groupId>
-		<artifactId>itests</artifactId>
+		<groupId>org.jboss.tools.hibernatetools.orm.test</groupId>
+		<artifactId>integration</artifactId>
 		<version>5.4.4-SNAPSHOT</version>
 	</parent>
-	<groupId>org.jboss.tools.hibernatetools.itests</groupId>
+	<groupId>org.jboss.tools.hibernatetools.orm.test.integration</groupId>
 	<artifactId>org.jboss.tools.hibernate.ui.bot.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
 
