@@ -14,6 +14,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -135,30 +136,32 @@ public class DatabaseUtils {
 		}
 	}
 	
-	public static boolean isAcceptingConnections(String driverJar){		
-		try{
-			File driverJarFile = new File(driverJar); 
-			URL[] urls = new URL[]{driverJarFile.toURL()};
+	public static boolean isAcceptingConnections(String driverJar) {
+		try {
+			File driverJarFile = new File(driverJar);
+			URL[] urls = new URL[] { driverJarFile.toURI().toURL() };
 			ClassLoader cl = new URLClassLoader(urls, ClassLoader.getSystemClassLoader());
-			Driver driver = (Driver) Class.forName("org.h2.Driver", true, cl).newInstance();
+			Driver driver = (Driver) Class.forName("org.h2.Driver", true, cl).getDeclaredConstructor().newInstance();
 			Properties props = new Properties();
 			props.put("user", USER);
 			props.put("password", PASS);
 			driver.connect(DB_URL, props);
-		}
-		catch (ClassNotFoundException e) {
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			return false;
-		}
-		catch (MalformedURLException e) {
+		} catch (NoSuchMethodException e) {
 			e.printStackTrace();
 			return false;
-		}
-		catch (SQLException e) {
-	    	LOG.info(e.getMessage());
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
 			return false;
-		} 
-		catch (InstantiationException e) {
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+			return false;
+		} catch (SQLException e) {
+			LOG.info(e.getMessage());
+			return false;
+		} catch (InstantiationException e) {
 			e.printStackTrace();
 			return false;
 		} catch (IllegalAccessException e) {
