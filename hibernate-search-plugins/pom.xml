@@ -14,7 +14,6 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<module>org.jboss.tools.hibernate.search.runtime.spi</module>
 		<module>org.jboss.tools.hibernate.search.runtime.common</module>
 		<module>org.jboss.tools.hibernate.search.runtime.v_4_0</module>
-		<module>org.jboss.tools.hibernate.search.runtime.v_5_3</module>
 	</modules>
 	<name>hibernatesearchtools.plugins</name>
 </project>
