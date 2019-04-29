@@ -17,6 +17,7 @@ import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.eclipse.reddeer.common.logging.Logger;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.eclipse.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
@@ -74,7 +75,9 @@ public class ConsoleConfigurationTest extends HibernateRedDeerTest {
         		{"mvn-hibernate43", "4.3"}, 
         		{"mvn-hibernate50", "5.0"}, 
         		{"mvn-hibernate51", "5.1"},
-        		{"mvn-hibernate52", "5.2"}
+        		{"mvn-hibernate52", "5.2"},
+        		{"mvn-hibernate53", "5.3"},
+        		{"mvn-hibernate54", "5.4"},
            });
     }
 	
@@ -94,6 +97,8 @@ public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 		v.deleteConsoleConfiguration(CONSOLE_NAME);
 		
 		deleteAllProjects();
+		//Close all shells if test fails (could interfere next tests)
+		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 	}
 	
 	@Test 

@@ -16,6 +16,7 @@ import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.eclipse.reddeer.eclipse.m2e.core.ui.wizard.MavenImportWizard;
 import org.eclipse.reddeer.eclipse.ui.views.properties.PropertySheet;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
@@ -79,7 +80,8 @@ public class HibernateRedDeerTest {
 	public static void afterClass() {
 		DatabaseUtils.stopSakilaDB();
 		deleteAllProjects();
-		
+		//Close all shells if test fails (could interfere next tests)
+		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 	}
 	
 	public static void importProject(String prjName, Map<String,String> libraryPathMap) {

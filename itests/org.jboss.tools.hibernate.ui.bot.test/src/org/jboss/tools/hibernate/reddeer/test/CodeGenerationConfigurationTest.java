@@ -71,6 +71,8 @@ public class CodeGenerationConfigurationTest extends HibernateRedDeerTest {
         		{"mvn-hibernate50","5.0"},
         		{"mvn-hibernate51","5.1"},
         		{"mvn-hibernate52","5.2"},
+        		{"mvn-hibernate53","5.3"},
+        		{"mvn-hibernate54","5.4"},
            });
     }
 	

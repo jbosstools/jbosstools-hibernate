@@ -22,6 +22,7 @@ import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.db.DatabaseConfiguration;
 import org.eclipse.reddeer.requirements.db.DatabaseRequirement;
 import org.eclipse.reddeer.requirements.db.DatabaseRequirement.Database;
+import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.hibernate.reddeer.console.views.KnownConfigurationsView;
 import org.jboss.tools.hibernate.reddeer.console.wizards.NewConfigurationFirstPage;
@@ -62,6 +63,8 @@ public class ConsoleConfigurationFileTest extends HibernateRedDeerTest {
         		{"mvn-hibernate50","5.0"}, 
         		{"mvn-hibernate51","5.1"}, 
         		{"mvn-hibernate52","5.2"},
+        		{"mvn-hibernate53","5.3"},
+        		{"mvn-hibernate54","5.4"},
            });
     }
 	
@@ -77,6 +80,8 @@ public class ConsoleConfigurationFileTest extends HibernateRedDeerTest {
 	@After 
 	public void clean() {			
 		deleteAllProjects();
+		//Close all shells if test fails (could interfere next tests)
+		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 	}
 	
 	

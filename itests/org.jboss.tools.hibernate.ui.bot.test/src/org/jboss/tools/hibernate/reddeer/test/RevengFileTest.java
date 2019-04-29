@@ -39,8 +39,8 @@ public class RevengFileTest extends HibernateRedDeerTest {
 
 	
 	//TODO use latest
-	private String PROJECT_NAME = "mvn-hibernate52";
-	private String hbVersion = "5.2";
+	private String PROJECT_NAME = "mvn-hibernate54";
+	private String hbVersion = "5.4";
 	@InjectRequirement
     private DatabaseRequirement dbRequirement;
 	

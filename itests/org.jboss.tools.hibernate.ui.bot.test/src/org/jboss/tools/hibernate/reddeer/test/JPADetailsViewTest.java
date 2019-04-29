@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 public class JPADetailsViewTest extends HibernateRedDeerTest {
 
 	//TODO use latest
-	private final String PRJ = "mvn-hibernate52-ent";
+	private final String PRJ = "mvn-hibernate54-ent";
 	@InjectRequirement
 	private DatabaseRequirement dbRequirement;
 
