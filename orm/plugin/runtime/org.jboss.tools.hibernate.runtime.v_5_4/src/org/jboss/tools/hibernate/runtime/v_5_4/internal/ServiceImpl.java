@@ -85,6 +85,7 @@ import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_5_4.internal.util.ConfigurationMetadataDescriptor;
 import org.jboss.tools.hibernate.runtime.v_5_4.internal.util.DummyMetadataBuildingContext;
+import org.jboss.tools.hibernate.runtime.v_5_4.internal.util.DummyMetadataDescriptor;
 import org.jboss.tools.hibernate.runtime.v_5_4.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_5_4.internal.util.JpaConfiguration;
 import org.xml.sax.EntityResolver;
@@ -154,8 +155,12 @@ public class ServiceImpl extends AbstractService {
 		Exporter exporter = (Exporter)Util.getInstance(
 				exporterClassName, 
 				facadeFactory.getClassLoader());
-		exporter.setMetadataDescriptor(
+		if ("org.hibernate.tool.hbm2x.HibernateConfigurationExporter".equals(exporterClassName)) {
+			exporter.setMetadataDescriptor(new DummyMetadataDescriptor());
+		} else {
+		  exporter.setMetadataDescriptor(
 				new ConfigurationMetadataDescriptor(newDefaultConfiguration()));
+		}
 		return facadeFactory.createExporter(exporter);
 	}
 
