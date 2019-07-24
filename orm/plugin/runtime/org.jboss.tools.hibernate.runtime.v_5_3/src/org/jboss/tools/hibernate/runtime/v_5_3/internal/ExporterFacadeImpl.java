@@ -15,6 +15,7 @@ public class ExporterFacadeImpl extends AbstractExporterFacade {
 	@Override
 	public void setConfiguration(IConfiguration configuration) {
 		Exporter exporter = (Exporter)getTarget();
+		setCustomProperties(configuration.getProperties());
 		exporter.setMetadataDescriptor(new ConfigurationMetadataDescriptor(configuration));
 	}
 
