@@ -558,5 +558,9 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 		confbutton.setEnabled(false);
 		configurationFileText.setEnabled(false);
 	}
+	
+	public Combo getHibernateVersionCombo() {
+		return hibernateVersion;
+	}
 
 }

@@ -530,6 +530,8 @@ public class NewConfigurationWizardPage extends WizardPage {
 		return props;
 	}
 	
-	
+	public int getHibernateVersionComboSelectionIndex() {
+		return hibernateVersionCombo.getSelectionIndex();
+	}
     
 }

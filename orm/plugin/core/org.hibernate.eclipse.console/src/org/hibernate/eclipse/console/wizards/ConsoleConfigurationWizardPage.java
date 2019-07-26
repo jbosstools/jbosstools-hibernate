@@ -61,6 +61,7 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -605,6 +606,10 @@ public class ConsoleConfigurationWizardPage extends WizardPage implements
 			firstShow = false;
 		}
 		super.setPreviousPage(page);
+	}
+	
+	public Combo getHibernateVersionCombo() {
+		return tabGroup.getHibernateVersionCombo();
 	}
 
 }

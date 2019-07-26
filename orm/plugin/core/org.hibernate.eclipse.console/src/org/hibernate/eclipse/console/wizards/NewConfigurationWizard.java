@@ -348,6 +348,8 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 				return null;
 			}
 			confPage.setConfigurationFilePath(cPage.getContainerFullPath().append(cPage.getFileName()));
+			confPage.getHibernateVersionCombo().select(connectionInfoPage.getHibernateVersionComboSelectionIndex());
+			confPage.getHibernateVersionCombo().setEnabled(false);
 		}
 		return super.getNextPage( page );
 	}
