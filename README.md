@@ -75,7 +75,7 @@ You can then push your topic branch and its changes into your public fork reposi
 
 	$ git push origin jbide-1234         # pushes your topic branch into your public fork of Hibernate Eclipse Tools
 
-And then [generate a pull-request](http://help.github.com/pull-requests/) where we can
+And then [generate a pull-request](https://help.github.com/articles/about-pull-requests) where we can
 review the proposed changes, comment on them, discuss them with you,
 and if everything is good merge the changes right into the official
 repository.
