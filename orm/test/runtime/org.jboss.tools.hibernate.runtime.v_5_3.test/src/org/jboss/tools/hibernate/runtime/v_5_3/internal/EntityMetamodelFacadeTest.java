@@ -13,6 +13,7 @@ import org.hibernate.mapping.Column;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
+import org.hibernate.persister.spi.PersisterCreationContext;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tuple.entity.EntityMetamodel;
 import org.hibernate.tuple.entity.EntityTuplizer;
@@ -44,7 +45,7 @@ public class EntityMetamodelFacadeTest {
 		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySettings(configuration.getProperties());
-		ServiceRegistry serviceRegistry = builder.build();		
+		ServiceRegistry serviceRegistry = builder.build();	
 		SessionFactoryImplementor sfi = (SessionFactoryImplementor)configuration.buildSessionFactory(serviceRegistry);
 		RootClass rc = new RootClass(null);
 		Table t = new Table("foobar");
@@ -55,13 +56,17 @@ public class EntityMetamodelFacadeTest {
 		keyList.add(c);
 		t.createUniqueKey(keyList);
 		MetadataImplementor m = (MetadataImplementor)MetadataHelper.getMetadata(configuration);
+		PersisterCreationContext pcc = new PersisterCreationContext() {
+			@Override public SessionFactoryImplementor getSessionFactory() { return sfi; }			
+			@Override public MetadataImplementor getMetadata() { return m; }
+		};
 		SimpleValue sv = new SimpleValue(m);
 		sv.setNullValue("null");
 		sv.setTypeName(Integer.class.getName());
 		sv.addColumn(c);
 		rc.setEntityName("foobar");
 		rc.setIdentifier(sv);
-		entityMetamodel = new EntityMetamodel(rc, null, sfi) {
+		entityMetamodel = new EntityMetamodel(rc, null, pcc) {
 			@Override public EntityTuplizer getTuplizer() {
 				return (EntityTuplizer)Proxy.newProxyInstance(
 						FACADE_FACTORY.getClassLoader(), 

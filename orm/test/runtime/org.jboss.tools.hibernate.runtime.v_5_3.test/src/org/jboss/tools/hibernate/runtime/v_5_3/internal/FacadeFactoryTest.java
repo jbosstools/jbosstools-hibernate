@@ -44,6 +44,7 @@ import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
+import org.hibernate.persister.spi.PersisterCreationContext;
 import org.hibernate.query.Query;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
@@ -276,12 +277,16 @@ public class FacadeFactoryTest {
 		ssrb.applySetting("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 		MetadataImplementor m = (MetadataImplementor)metadataSources.buildMetadata(ssrb.build());
 		SessionFactoryImplementor sfi = (SessionFactoryImplementor)m.buildSessionFactory();
+		PersisterCreationContext pcc = new PersisterCreationContext() {
+			@Override public SessionFactoryImplementor getSessionFactory() { return sfi; }			
+			@Override public MetadataImplementor getMetadata() { return m; }
+		};
 		RootClass rc = new RootClass(null);
 		SimpleValue sv = new SimpleValue(m);
 		sv.setNullValue("null");
 		sv.setTypeName(Integer.class.getName());
 		rc.setIdentifier(sv);
-		EntityMetamodel entityMetamodel = new EntityMetamodel(rc, null, sfi);
+		EntityMetamodel entityMetamodel = new EntityMetamodel(rc, null, pcc);
 		IEntityMetamodel facade = facadeFactory.createEntityMetamodel(entityMetamodel);
 		Assert.assertSame(entityMetamodel, ((IFacade)facade).getTarget());		
 	}
