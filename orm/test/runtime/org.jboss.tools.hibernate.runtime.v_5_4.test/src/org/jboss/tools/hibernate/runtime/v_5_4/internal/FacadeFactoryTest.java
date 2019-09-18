@@ -46,8 +46,8 @@ import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
-import org.hibernate.persister.spi.PersisterCreationContext;
 import org.hibernate.query.Query;
+import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
@@ -101,6 +101,7 @@ import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
+import org.jboss.tools.hibernate.runtime.v_5_4.internal.util.MetadataHelper;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -274,21 +275,19 @@ public class FacadeFactoryTest {
 	
 	@Test
 	public void testCreateEntityMetamodel() {
-		MetadataSources metadataSources = new MetadataSources();
-		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
-		ssrb.applySetting("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
-		MetadataImplementor m = (MetadataImplementor)metadataSources.buildMetadata(ssrb.build());
-		SessionFactoryImplementor sfi = (SessionFactoryImplementor)m.buildSessionFactory();
-		PersisterCreationContext pcc = new PersisterCreationContext() {
-			@Override public SessionFactoryImplementor getSessionFactory() { return sfi; }			
-			@Override public MetadataImplementor getMetadata() { return m; }
-		};
+		Configuration configuration = new Configuration();
+		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
+		builder.applySettings(configuration.getProperties());
+		ServiceRegistry serviceRegistry = builder.build();		
+		SessionFactoryImplementor sfi = (SessionFactoryImplementor)configuration.buildSessionFactory(serviceRegistry);
 		RootClass rc = new RootClass(null);
+		MetadataImplementor m = (MetadataImplementor)MetadataHelper.getMetadata(configuration);
 		SimpleValue sv = new SimpleValue(m);
 		sv.setNullValue("null");
 		sv.setTypeName(Integer.class.getName());
 		rc.setIdentifier(sv);
-		EntityMetamodel entityMetamodel = new EntityMetamodel(rc, null, pcc);
+		EntityMetamodel entityMetamodel = new EntityMetamodel(rc, null, sfi);
 		IEntityMetamodel facade = facadeFactory.createEntityMetamodel(entityMetamodel);
 		Assert.assertSame(entityMetamodel, ((IFacade)facade).getTarget());		
 	}
