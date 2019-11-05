@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Hibernate 3.6 libraries
 Bundle-SymbolicName: org.jboss.tools.hibernate.runtime.v_3_6;singleton:=true
-Bundle-Version: 5.4.6.qualifier
+Bundle-Version: 5.4.7.qualifier
 Bundle-Localization: plugin
 Require-Bundle: org.apache.commons.collections,
  org.jboss.tools.hibernate.libs.antlr.v_2_7_7,

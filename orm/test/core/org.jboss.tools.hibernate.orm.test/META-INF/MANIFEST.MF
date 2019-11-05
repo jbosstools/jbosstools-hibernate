@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.jboss.tools.hibernate.orm.test;singleton:=true
-Bundle-Version: 5.4.6.qualifier
+Bundle-Version: 5.4.7.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %Bundle-Vendor.0
 Bundle-Localization: plugin

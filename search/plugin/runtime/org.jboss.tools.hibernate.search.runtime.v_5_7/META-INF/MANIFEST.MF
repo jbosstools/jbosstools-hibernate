@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: hibernate.search.runtime.v_5_7
 Bundle-SymbolicName: org.jboss.tools.hibernate.search.runtime.v_5_7;singleton:=true
-Bundle-Version: 5.4.6.qualifier
+Bundle-Version: 5.4.7.qualifier
 Fragment-Host: org.jboss.tools.hibernate.runtime.v_5_2;bundle-version="5.1.2"
 Bundle-Vendor: bdshadow
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
