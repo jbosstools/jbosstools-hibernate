@@ -36,8 +36,8 @@ public class DatabaseUtils {
 
 	private static final Logger LOG = Logger.getLogger(DatabaseUtils.class.getName());
 	private static Process sakila;
-	private static String jarName = "h2-1.3.161.jar";
-	private static final String DB_URL = "jdbc:h2:tcp://localhost/sakila";
+	private static String jarName = "h2-1.4.200.jar";
+	private static final String DB_URL = "jdbc:h2:tcp://localhost/./sakila";
 	private static final String USER = "sa";
 	private static final String PASS = "";
 	/**
