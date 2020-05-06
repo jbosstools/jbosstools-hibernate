@@ -2,6 +2,6 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Hibernate Dummy Test
 Bundle-SymbolicName: org.jboss.tools.hibernate.dummy.test;singleton:=true
-Bundle-Version: 5.4.8.qualifier
+Bundle-Version: 5.4.9.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.junit;bundle-version="4.11.0"

@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.jboss.tools.hibernatetools.orm.plugin</groupId>
 		<artifactId>core</artifactId>
-		<version>5.4.8-SNAPSHOT</version>
+		<version>5.4.9-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.hibernatetools.orm.plugin.core</groupId>
 	<artifactId>org.hibernate.eclipse.help</artifactId> 
