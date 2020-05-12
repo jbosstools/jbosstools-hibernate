@@ -11,7 +11,6 @@
 package org.jboss.tools.hibernate.ui.test;
 
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.test.ExportImageActionTest;
-import org.jboss.tools.hibernate.ui.diagram.editors.model.test.OrmDiagramTest;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -24,7 +23,6 @@ public class HibernateUiTestSuite {
 	public static Test suite() {
 		TestSuite suite = new TestSuite();
 		suite.addTestSuite(ExportImageActionTest.class);
-		suite.addTestSuite(OrmDiagramTest.class);
 		return suite;
 	}
 }

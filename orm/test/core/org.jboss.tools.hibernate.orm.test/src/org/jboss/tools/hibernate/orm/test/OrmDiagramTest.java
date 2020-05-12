@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2009 Red Hat, Inc.
+ * Copyright (c) 2007-220 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -8,7 +8,9 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.ui.diagram.editors.model.test;
+package org.jboss.tools.hibernate.orm.test;
+
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -22,15 +24,15 @@ import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmDiagram;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.lib.legacy.ClassImposteriser;
-
-import junit.framework.TestCase;
+import org.junit.Test;
 
 /**
  * for OrmDiagram class functionality test
  * 
  * @author Vitali Yemialyanchyk
+ * @author koen
  */
-public class OrmDiagramTest extends TestCase {
+public class OrmDiagramTest {
 	
 	public Mockery context = new Mockery() {
 		{
@@ -38,6 +40,7 @@ public class OrmDiagramTest extends TestCase {
 		}
 	};
 
+	@Test
 	public void testLoadAndSave() {
 		
 		final ConsoleConfiguration consoleConfig = context.mock(ConsoleConfiguration.class);
