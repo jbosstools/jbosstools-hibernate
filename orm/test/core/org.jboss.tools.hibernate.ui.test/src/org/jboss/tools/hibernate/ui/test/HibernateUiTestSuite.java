@@ -10,9 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.test;
 
-import org.jboss.tools.hibernate.ui.diagram.editors.actions.test.ExportImageActionTest;
-
 import junit.framework.Test;
+import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 /**
@@ -21,8 +20,10 @@ import junit.framework.TestSuite;
  */
 public class HibernateUiTestSuite {
 	public static Test suite() {
-		TestSuite suite = new TestSuite();
-		suite.addTestSuite(ExportImageActionTest.class);
-		return suite;
+		return new TestSuite(MyTest.class);
+	}
+	
+	public static class MyTest extends TestCase {
+		public void test() {}
 	}
 }

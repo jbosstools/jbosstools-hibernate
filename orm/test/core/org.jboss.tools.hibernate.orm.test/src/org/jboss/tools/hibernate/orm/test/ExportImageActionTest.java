@@ -8,7 +8,9 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.ui.diagram.editors.actions.test;
+package org.jboss.tools.hibernate.orm.test;
+
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
@@ -24,12 +26,15 @@ import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.dialogs.SaveAsDialog;
-import org.hibernate.eclipse.console.test.project.TestProject;
+import org.jboss.tools.hibernate.orm.test.utils.project.TestProject;
 import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ExportImageAction;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.lib.legacy.ClassImposteriser;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import junit.framework.TestCase;
 
@@ -38,17 +43,19 @@ import junit.framework.TestCase;
  * 
  * @author Vitali Yemialyanchyk
  */
-public class ExportImageActionTest extends TestCase {
+public class ExportImageActionTest {
 
 	public static final String PROJECT_NAME = "TestProject"; //$NON-NLS-1$
 	
 	protected TestProject project = null;
 
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		project = new TestProject(PROJECT_NAME);
 	}
 
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		project.deleteIProject();
 		project = null;
 	}
@@ -59,6 +66,7 @@ public class ExportImageActionTest extends TestCase {
 		}
 	};
 
+	@Test
 	public void testAction() {
 		
 		final DiagramViewer editor = context.mock(DiagramViewer.class);
