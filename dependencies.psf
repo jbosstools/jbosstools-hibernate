@@ -41,7 +41,6 @@
 <project reference="1.0,git://github.com/jbosstools/jbosstools-hibernate,master,plugins/org.jboss.tools.hibernate.runtime.v_4_0"/>
 <project reference="1.0,git://github.com/jbosstools/jbosstools-hibernate,master,plugins/org.jboss.tools.hibernate.runtime.v_4_3"/>
 <project reference="1.0,git://github.com/jbosstools/jbosstools-hibernate,master,plugins/org.jboss.tools.hibernate.ui"/>
-<project reference="1.0,git://github.com/jbosstools/jbosstools-hibernate,master,tests/org.jboss.tools.hibernate.ui.test"/>
 <project reference="1.0,git://github.com/jbosstools/jbosstools-hibernate,master,plugins/org.jboss.tools.hibernate.xml"/>
 <project reference="1.0,git://github.com/jbosstools/jbosstools-hibernate,master,plugins/org.jboss.tools.hibernate.xml.ui"/>
 <project reference="1.0,git://github.com/jbosstools/jbosstools-base,master,tests/plugins/org.jboss.tools.tests"/>
