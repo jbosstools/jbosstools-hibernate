@@ -1,11 +1,13 @@
-package org.hibernate.eclipse.jdt.ui.test;
+package org.jboss.tools.hibernate.orm.test;
+
+import static org.junit.Assert.assertEquals;
 
 import org.hibernate.eclipse.jdt.ui.internal.ELTransformer;
+import org.junit.Test;
 
-import junit.framework.TestCase;
+public class ELTransformerTest {
 
-public class ELTransformerTest extends TestCase {
-
+	@Test
 	public void testTransformer() {
 		
 		assertEquals("from Test", ELTransformer.removeEL("from Test"));  //$NON-NLS-1$//$NON-NLS-2$

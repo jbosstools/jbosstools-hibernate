@@ -14,7 +14,6 @@ public class JDTuiAllTests {
 		//suite.addTestSuite(HibernateErrorsTest.class);
 		//suite.addTestSuite(HibernateErrorsTest2.class);
 		suite.addTestSuite(HQLQueryValidatorTest.class);
-		suite.addTestSuite(ELTransformerTest.class);
 		suite.addTestSuite(HbmExporterTest.class);
 		suite.addTestSuite(JPAMapMockTests.class);
 		suite.addTestSuite(JPAMapTest.class);
