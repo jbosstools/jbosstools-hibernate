@@ -13,7 +13,6 @@ public class JDTuiAllTests {
 		//$JUnit-BEGIN$
 		suite.addTestSuite(HQLQueryValidatorTest.class);
 		suite.addTestSuite(HbmExporterTest.class);
-		suite.addTestSuite(JPAMapMockTests.class);
 		suite.addTestSuite(JPAMapTest.class);
 		//$JUnit-END$
 		return suite;

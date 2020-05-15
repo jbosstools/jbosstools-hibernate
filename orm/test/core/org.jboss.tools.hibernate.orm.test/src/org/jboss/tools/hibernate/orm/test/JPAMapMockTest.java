@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2009 Red Hat, Inc.
+ * Copyright (c) 2007-2020 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -8,7 +8,7 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.hibernate.eclipse.jdt.ui.test;
+package org.jboss.tools.hibernate.orm.test;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -29,6 +29,7 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.Sequence;
 import org.jmock.lib.legacy.ClassImposteriser;
+import org.junit.Test;
 
 import junit.framework.TestCase;
 
@@ -37,13 +38,14 @@ import junit.framework.TestCase;
  * 
  * @author Vitali Yemialyanchyk
  */
-public class JPAMapMockTests extends TestCase {
+public class JPAMapMockTest {
 
 
 	public Mockery context = new Mockery() {{
 		setImposteriser(ClassImposteriser.INSTANCE);
 	}};
 	
+	@Test
 	public void testMockSave() {
 		final IPreferenceStore preferenceStore = context.mock(IPreferenceStore.class);
 
@@ -69,6 +71,7 @@ public class JPAMapMockTests extends TestCase {
         context.assertIsSatisfied();
 	}
 
+	@Test
 	public void testJPAMapToolActor() {
 
 		final JPAMapToolActor jpaMapToolActor = new JPAMapToolActor();
@@ -139,20 +142,5 @@ public class JPAMapMockTests extends TestCase {
 		}});
 		jpaMapToolActor.updateSelected(Integer.MAX_VALUE);
         context.assertIsSatisfied();
-
-        /** /
-		jpaMapToolActor.clearSelectionCU();
-		jpaMapToolActor.addCompilationUnit(compilationUnit);
-		jpaMapToolActor.addCompilationUnit(compilationUnit);
-        context.checking(new Expectations() {{
-        	jpaMapToolActor.expects(once()).method("updateSelectedItems").with(eq(selection));
-            one(authorizedPurchaserManager).retrievePurchasers(user.getId());
-            will(returnValue(Collections.emptyList()));
-
-            allowing(securityContext).getAuthentication();
-            will(returnValue(authentication));
-        }});
-        jpaMapToolActor.updateOpen();
-        /**/
 	}
 }
