@@ -378,7 +378,7 @@ public class FacadeFactoryTest {
 				}); 
 		MetadataBuildingOptions mbo = new MetadataBuilderImpl.MetadataBuildingOptionsImpl(serviceRegistry);
 		BootstrapContext bc = new BootstrapContextImpl(serviceRegistry, mbo);
-		SessionFactoryImpl sfi = new SessionFactoryImpl(wrapper, new SessionFactoryOptionsBuilder(serviceRegistry, bc));
+		SessionFactoryImpl sfi = new SessionFactoryImpl(wrapper, new SessionFactoryOptionsBuilder(serviceRegistry, bc), HQLQueryPlan::new);
 		Map<String, Filter> filters = Collections.emptyMap();
 		HQLQueryPlan hqlQueryPlan = new HQLQueryPlan("from foo", false, filters, sfi);
 		IHQLQueryPlan facade = facadeFactory.createHQLQueryPlan(hqlQueryPlan);
