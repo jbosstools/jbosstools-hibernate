@@ -21,6 +21,7 @@ import org.hibernate.tool.hbm2x.pojo.EntityPOJOClass;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
@@ -39,13 +40,20 @@ public class HibernateMappingExporterFacadeTest {
 	
 	private IHibernateMappingExporter hibernateMappingExporterFacade = null; 
 	private HibernateMappingExporterExtension hibernateMappingExporter = null;
+	private PojoMetaDataConfiguration pmdcfg = null;
+
+	private IConfiguration configuration = null;
 	
 	private File outputDir = null;
 	
 	@Before
 	public void setUp() throws Exception {
+		pmdcfg = new PojoMetaDataConfiguration();
+		configuration = FACADE_FACTORY.createConfiguration(pmdcfg);
 		hibernateMappingExporter = new HibernateMappingExporterExtension(
-				FACADE_FACTORY, null, null);
+				FACADE_FACTORY,
+				configuration, 
+				null);
 		hibernateMappingExporterFacade = 
 				FACADE_FACTORY.createHibernateMappingExporter(hibernateMappingExporter);
 		outputDir = temporaryFolder.getRoot();
@@ -53,11 +61,10 @@ public class HibernateMappingExporterFacadeTest {
 	
 	@Test
 	public void testStart() throws Exception {
-		PojoMetaDataConfiguration configuration = new PojoMetaDataConfiguration();
 		RootClass persistentClass = new RootClass(null);
 		Table table = new Table("FOO");
 		Column keyColumn = new Column("BAR");
-		SimpleValue key = new SimpleValue(configuration.getMetadataImplementor());
+		SimpleValue key = new SimpleValue(pmdcfg.getMetadataImplementor());
 		key.setTypeName("String");
 		key.addColumn(keyColumn);
 		key.setTable(table);
@@ -66,8 +73,8 @@ public class HibernateMappingExporterFacadeTest {
 		persistentClass.setJpaEntityName("Foo");
 		persistentClass.setTable(table);
 		persistentClass.setIdentifier(key);
-		configuration.addClass(persistentClass);	
-		hibernateMappingExporter.setConfiguration(configuration);
+		configuration.addClass(FACADE_FACTORY.createPersistentClass(persistentClass));	
+		hibernateMappingExporter.createMetadata(configuration);
 		hibernateMappingExporter.setOutputDirectory(outputDir);
 		final File fooHbmXml = new File(outputDir, "Foo.hbm.xml");
 		// First without a 'delegate' exporter

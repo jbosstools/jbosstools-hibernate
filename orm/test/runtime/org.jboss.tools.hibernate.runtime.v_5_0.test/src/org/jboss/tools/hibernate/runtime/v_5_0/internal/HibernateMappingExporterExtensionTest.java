@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.Version;
@@ -41,7 +42,10 @@ public class HibernateMappingExporterExtensionTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		hibernateMappingExporterExtension = new HibernateMappingExporterExtension(FACADE_FACTORY, null, null);
+		hibernateMappingExporterExtension = new HibernateMappingExporterExtension(
+				FACADE_FACTORY, 
+				FACADE_FACTORY.createConfiguration(new Configuration()), 
+				null);
 		Method setTemplateHelperMethod = AbstractExporter.class.getDeclaredMethod(
 				"setTemplateHelper", 
 				new Class[] { TemplateHelper.class });

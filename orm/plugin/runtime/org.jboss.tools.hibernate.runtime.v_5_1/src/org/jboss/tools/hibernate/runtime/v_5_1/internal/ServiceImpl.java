@@ -118,7 +118,7 @@ public class ServiceImpl extends AbstractService {
 		assert hcfg instanceof IFacade;
 		HibernateMappingExporterExtension target = new HibernateMappingExporterExtension(
 				facadeFactory,
-				(Configuration)((IFacade)hcfg).getTarget(),
+				hcfg,
 				file);
 		return facadeFactory.createHibernateMappingExporter(target);
 	}

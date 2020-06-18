@@ -2,7 +2,6 @@ package org.jboss.tools.hibernate.runtime.v_5_2.internal;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collections;
@@ -12,7 +11,6 @@ import java.util.Properties;
 
 import org.hibernate.Filter;
 import org.hibernate.Hibernate;
-import org.hibernate.boot.Metadata;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
@@ -52,7 +50,6 @@ import org.hibernate.mapping.Table;
 import org.hibernate.proxy.HibernateProxyHelper;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
-import org.hibernate.tool.hbm2x.AbstractExporter;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.hibernate.tool.hbm2x.Exporter;
@@ -120,24 +117,13 @@ public class ServiceImpl extends AbstractService {
 	public IHibernateMappingExporter newHibernateMappingExporter(
 			IConfiguration hcfg, File file) {
 		assert hcfg instanceof IFacade;
-		ConfigurationFacadeImpl configuration = (ConfigurationFacadeImpl)hcfg;
-		Metadata metadata = configuration.getMetadata();
 		HibernateMappingExporterExtension target = new HibernateMappingExporterExtension(
 				facadeFactory,
-				(Configuration)((IFacade)hcfg).getTarget(),
+				hcfg,
 				file);
-		try {
-			Field metadataField = AbstractExporter.class.getDeclaredField("metadata");
-			metadataField.setAccessible(true);
-			metadataField.set(target, metadata);
-		} catch(NoSuchFieldException | 
-				SecurityException | 
-				IllegalArgumentException | 
-				IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
 		return facadeFactory.createHibernateMappingExporter(target);
 	}
+
 
 	@Override
 	public ISchemaExport newSchemaExport(IConfiguration hcfg) {
