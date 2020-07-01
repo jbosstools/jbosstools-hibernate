@@ -86,6 +86,7 @@ import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
+import org.jboss.tools.hibernate.runtime.v_4_0.internal.util.DummyMappings;
 import org.xml.sax.EntityResolver;
 
 public class ServiceImpl extends AbstractService implements IService {
@@ -342,7 +343,7 @@ public class ServiceImpl extends AbstractService implements IService {
 
 	@Override
 	public IValue newSimpleValue() {
-		return facadeFactory.createValue(new SimpleValue(null));
+		return facadeFactory.createValue(new SimpleValue(DummyMappings.INSTANCE));
 	}
 
 	@Override
