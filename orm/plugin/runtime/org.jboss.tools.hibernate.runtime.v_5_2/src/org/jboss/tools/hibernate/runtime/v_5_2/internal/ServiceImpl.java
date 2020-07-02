@@ -84,6 +84,7 @@ import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
+import org.jboss.tools.hibernate.runtime.v_5_2.internal.util.DummyMetadataImplementor;
 import org.xml.sax.EntityResolver;
 
 public class ServiceImpl extends AbstractService {
@@ -308,7 +309,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IValue newSimpleValue() {
-		return facadeFactory.createValue(new SimpleValue(null));
+		return facadeFactory.createValue(new SimpleValue(DummyMetadataImplementor.INSTANCE));
 	}
 
 	@Override
