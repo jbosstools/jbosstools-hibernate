@@ -82,6 +82,7 @@ public class HbmExporterTest extends TestCase {
 		Map<IJavaProject, IConfiguration> configurations = actor.createConfigurations(Integer.MAX_VALUE);
 		assertEquals(1, configurations.size());
 		IConfiguration config = configurations.get(project.getIJavaProject());
+		config.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
 		assertNotNull(config);
 		return config;
 	}
