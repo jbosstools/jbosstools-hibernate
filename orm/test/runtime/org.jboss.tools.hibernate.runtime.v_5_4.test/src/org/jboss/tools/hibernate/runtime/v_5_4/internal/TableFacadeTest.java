@@ -167,7 +167,7 @@ public class TableFacadeTest {
 		ITable tableFacade = FACADE_FACTORY.createTable(table);
 		IValue valueFacade = tableFacade.getIdentifierValue();
 		Assert.assertNull(valueFacade);
-		KeyValue value = new SimpleValue(new DummyMetadataBuildingContext());
+		KeyValue value = new SimpleValue(DummyMetadataBuildingContext.INSTANCE, null);
 		table.setIdentifierValue(value);
 		valueFacade = tableFacade.getIdentifierValue();
 		Assert.assertSame(value, ((IFacade)valueFacade).getTarget());

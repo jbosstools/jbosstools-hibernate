@@ -124,7 +124,7 @@ public class HQLQueryValidatorTest extends HibernateConsoleTest {
 		String prjName = getProject().getIProject().getName();
 		
 		EclipseConsoleConfigurationPreferences preferences = new EclipseConsoleConfigurationPreferences(prjName,
-				ConfigurationMode.JPA, "5.3", prjName, true, null, null, null, new IPath[0], new IPath[0], null, null, null, null);
+				ConfigurationMode.JPA, "5.4", prjName, true, null, null, null, new IPath[0], new IPath[0], null, null, null, null);
 		
 		ccfg = KnownConfigurations.getInstance().addConfiguration(new EclipseConsoleConfiguration(preferences), false);
 		

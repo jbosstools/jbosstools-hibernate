@@ -316,7 +316,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IValue newSimpleValue() {
-		return facadeFactory.createValue(new SimpleValue(new DummyMetadataBuildingContext()));
+		return facadeFactory.createValue(new SimpleValue(DummyMetadataBuildingContext.INSTANCE, null));
 	}
 
 	@Override
@@ -324,7 +324,7 @@ public class ServiceImpl extends AbstractService {
 		assert persistentClass instanceof IFacade;
 		return facadeFactory.createValue(
 				new PrimitiveArray(
-						new DummyMetadataBuildingContext(), 
+						DummyMetadataBuildingContext.INSTANCE, 
 						(PersistentClass)((IFacade)persistentClass).getTarget()));
 	}
 
@@ -333,7 +333,7 @@ public class ServiceImpl extends AbstractService {
 		assert persistentClass instanceof IFacade;
 		return facadeFactory.createValue(
 				new Array(
-						new DummyMetadataBuildingContext(), 
+						DummyMetadataBuildingContext.INSTANCE, 
 						(PersistentClass)((IFacade)persistentClass).getTarget()));
 	}
 
@@ -342,7 +342,7 @@ public class ServiceImpl extends AbstractService {
 		assert persistentClass instanceof IFacade;
 		return facadeFactory.createValue(
 				new Bag(
-						new DummyMetadataBuildingContext(), 
+						DummyMetadataBuildingContext.INSTANCE, 
 						(PersistentClass)((IFacade)persistentClass).getTarget()));
 	}
 
@@ -351,7 +351,7 @@ public class ServiceImpl extends AbstractService {
 		assert persistentClass instanceof IFacade;
 		return facadeFactory.createValue(
 				new org.hibernate.mapping.List(
-						new DummyMetadataBuildingContext(), 
+						DummyMetadataBuildingContext.INSTANCE, 
 						(PersistentClass)((IFacade)persistentClass).getTarget()));
 	}
 
@@ -360,7 +360,7 @@ public class ServiceImpl extends AbstractService {
 		assert persistentClass instanceof IFacade;
 		return facadeFactory.createValue(
 				new org.hibernate.mapping.Map(
-						new DummyMetadataBuildingContext(), 
+						DummyMetadataBuildingContext.INSTANCE, 
 						(PersistentClass)((IFacade)persistentClass).getTarget()));
 	}
 
@@ -369,7 +369,7 @@ public class ServiceImpl extends AbstractService {
 		assert persistentClass instanceof IFacade;
 		return facadeFactory.createValue(
 				new Set(
-						new DummyMetadataBuildingContext(), 
+						DummyMetadataBuildingContext.INSTANCE, 
 						(PersistentClass)((IFacade)persistentClass).getTarget()));
 	}
 
@@ -378,7 +378,7 @@ public class ServiceImpl extends AbstractService {
 		assert table instanceof IFacade;
 		return facadeFactory.createValue(
 				new ManyToOne(
-						new DummyMetadataBuildingContext(), 
+						DummyMetadataBuildingContext.INSTANCE, 
 						(Table)((IFacade)table).getTarget()));
 	}
 
@@ -387,7 +387,7 @@ public class ServiceImpl extends AbstractService {
 		assert persistentClass instanceof IFacade;
 		return facadeFactory.createValue(
 				new OneToMany(
-						new DummyMetadataBuildingContext(), 
+						DummyMetadataBuildingContext.INSTANCE, 
 						(PersistentClass)((IFacade)persistentClass).getTarget()));
 	}
 
@@ -396,7 +396,7 @@ public class ServiceImpl extends AbstractService {
 		assert persistentClass instanceof IFacade;
 		return facadeFactory.createValue(
 				new OneToOne(
-						new DummyMetadataBuildingContext(), 
+						DummyMetadataBuildingContext.INSTANCE, 
 						((PersistentClass)((IFacade)persistentClass).getTarget()).getTable(), 
 						(PersistentClass)((IFacade)persistentClass).getTarget()));
 	}
