@@ -32,7 +32,6 @@ import org.hibernate.eclipse.console.test.project.SimpleTestProject;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.eclipse.jdt.ui.internal.HQLDetector;
 import org.hibernate.eclipse.jdt.ui.internal.HQLProblem;
-import org.junit.Ignore;
 
 public class HQLQueryValidatorTest extends HibernateConsoleTest {
 
@@ -125,7 +124,7 @@ public class HQLQueryValidatorTest extends HibernateConsoleTest {
 		String prjName = getProject().getIProject().getName();
 		
 		EclipseConsoleConfigurationPreferences preferences = new EclipseConsoleConfigurationPreferences(prjName,
-				ConfigurationMode.JPA, "5.2", prjName, true, null, null, null, new IPath[0], new IPath[0], null, null, null, null);
+				ConfigurationMode.JPA, "5.3", prjName, true, null, null, null, new IPath[0], new IPath[0], null, null, null, null);
 		
 		ccfg = KnownConfigurations.getInstance().addConfiguration(new EclipseConsoleConfiguration(preferences), false);
 		
@@ -139,7 +138,6 @@ public class HQLQueryValidatorTest extends HibernateConsoleTest {
 	@Override
 	protected void tearDown() throws Exception {
 		ccfg.reset();
-		waitForJobs();
 
 		// This code overrides super method to handle error during deleting project with contents.
 		// A deletion of content isn't really necessary because project name is unique
@@ -150,7 +148,6 @@ public class HQLQueryValidatorTest extends HibernateConsoleTest {
 				PlatformUI.getWorkbench().getPerspectiveRegistry().findPerspectiveWithId("org.eclipse.ui.resourcePerspective")); //$NON-NLS-1$
 
 		getProject().deleteIProject(false);
-		waitForJobs();
 	}
 	public void testHQLDetector() throws JavaModelException {
 

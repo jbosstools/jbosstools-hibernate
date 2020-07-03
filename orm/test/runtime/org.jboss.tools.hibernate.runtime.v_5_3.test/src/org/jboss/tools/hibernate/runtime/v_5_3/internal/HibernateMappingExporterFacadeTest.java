@@ -181,7 +181,7 @@ public class HibernateMappingExporterFacadeTest {
 			RootClass persistentClass = new RootClass(null);
 			Table table = new Table("FOO");
 			Column keyColumn = new Column("BAR");
-			SimpleValue key = new SimpleValue(new DummyMetadataBuildingContext());
+			SimpleValue key = new SimpleValue(DummyMetadataBuildingContext.INSTANCE);
 			key.setTypeName("String");
 			key.addColumn(keyColumn);
 			key.setTable(table);

@@ -13,6 +13,7 @@ import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 public class JpaConfiguration extends Configuration {
 	
 	private Metadata metadata = null;
+	private SessionFactory sessionFactory;
 	
 	private String persistenceUnit;
 	
@@ -27,28 +28,24 @@ public class JpaConfiguration extends Configuration {
 	
 	public Metadata getMetadata() {
 		if (metadata == null) {
-			EntityManagerFactoryBuilderImpl entityManagerFactoryBuilder = 
-					HibernateToolsPersistenceProvider
-						.createEntityManagerFactoryBuilder(
-								persistenceUnit, 
-								getProperties());
-			EntityManagerFactory entityManagerFactory = 
-					entityManagerFactoryBuilder.build();
-			metadata = entityManagerFactoryBuilder.getMetadata();
-			getProperties().putAll(entityManagerFactory.getProperties());
+			initialize();
 		}
 		return metadata;
 	}
 	
 	@Override
 	public SessionFactory buildSessionFactory() {
-		return getMetadata().buildSessionFactory();
+		if (sessionFactory == null) {
+			initialize();
+		}
+		return sessionFactory;
 	}
 	
 	@Override
 	public Configuration setProperties(Properties properties) {
 		super.setProperties(properties);
 		metadata = null;
+		sessionFactory = null;
 		return this;
 	}
 	
@@ -56,11 +53,25 @@ public class JpaConfiguration extends Configuration {
 	public Configuration addProperties(Properties properties) {
 		super.addProperties(properties);
 		metadata = null;
+		sessionFactory = null;
 		return this;
 	}
 	
 	public String getPersistenceUnit() {
 		return persistenceUnit;
+	}
+	
+	private void initialize() {
+		EntityManagerFactoryBuilderImpl entityManagerFactoryBuilder = 
+				HibernateToolsPersistenceProvider
+					.createEntityManagerFactoryBuilder(
+							persistenceUnit, 
+							getProperties());
+		EntityManagerFactory entityManagerFactory = 
+				entityManagerFactoryBuilder.build();
+		sessionFactory = (SessionFactory)entityManagerFactory;
+		metadata = entityManagerFactoryBuilder.getMetadata();
+		getProperties().putAll(entityManagerFactory.getProperties());
 	}
 	
 }
