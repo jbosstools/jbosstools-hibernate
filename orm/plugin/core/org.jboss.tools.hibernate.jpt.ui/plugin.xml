@@ -19,6 +19,11 @@
             jpaPlatform="hibernate2_1"
             id="hibernate2_1">
       </jpaPlatformUi>
+      <jpaPlatformUi
+            factoryClass="org.jboss.tools.hibernate.jpt.ui.internal.platform.HibernateJpa2_2PlatformUiFactory"
+            jpaPlatform="hibernate2_2"
+            id="hibernate2_2">
+      </jpaPlatformUi>
     </extension>
     
     <extension point="org.eclipse.ui.ide.projectConfigurators">
