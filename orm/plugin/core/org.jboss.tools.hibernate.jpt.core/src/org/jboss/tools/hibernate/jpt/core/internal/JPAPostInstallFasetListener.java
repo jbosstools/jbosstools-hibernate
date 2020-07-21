@@ -72,8 +72,9 @@ public class JPAPostInstallFasetListener implements IFacetedProjectListener {
 				String platformId = HibernateEclipseUtils.getJpaPlatformID(project);
 				if (platformId != null && 
 						(platformId.equals(HibernateJpaPlatform.HIBERNATE_PLATFORM_ID) || 
-								platformId.equals(HibernateJpaPlatform.HIBERNATE2_0_PLATFORM_ID) || 
-								platformId.equals(HibernateJpaPlatform.HIBERNATE2_1_PLATFORM_ID))) {
+								platformId.equals(HibernateJpaPlatform.HIBERNATE2_0_PLATFORM_ID) ||
+								platformId.equals(HibernateJpaPlatform.HIBERNATE2_1_PLATFORM_ID) ||
+								platformId.equals(HibernateJpaPlatform.HIBERNATE2_2_PLATFORM_ID))) {
 					if (checkPreConditions(project)) {
 						exportConnectionProfilePropertiesToPersistenceXml(project);
 						buildConsoleConfiguration(project, platformId);
@@ -180,13 +181,15 @@ public class JPAPostInstallFasetListener implements IFacetedProjectListener {
 			wc.setAttribute(IConsoleConfigurationLaunchConstants.FILE_MAPPINGS, (List<String>)null);
 			wc.setAttribute(IConsoleConfigurationLaunchConstants.USE_JPA_PROJECT_PROFILE, Boolean.toString(true));
 			String hibernateVersion = lookupHibernateVersion(project);
-			if  (HibernateJpaPlatform.HIBERNATE2_1_PLATFORM_ID.equals(platformId)) {
+			if  (HibernateJpaPlatform.HIBERNATE2_1_PLATFORM_ID.equals(platformId) || HibernateJpaPlatform.HIBERNATE2_2_PLATFORM_ID.equals(platformId)) {
 				wc.setAttribute(IConsoleConfigurationLaunchConstants.PERSISTENCE_UNIT_NAME, getPersistenceUnitName(project));
 			}
 			if (hibernateVersion != null) {
 				wc.setAttribute(IConsoleConfigurationLaunchConstants.HIBERNATE_VERSION, hibernateVersion);
 			} else {
-				if (HibernateJpaPlatform.HIBERNATE2_1_PLATFORM_ID.equals(platformId)) {
+				if (HibernateJpaPlatform.HIBERNATE2_2_PLATFORM_ID.equals(platformId)) {
+					wc.setAttribute(IConsoleConfigurationLaunchConstants.HIBERNATE_VERSION, "5.2"); //$NON-NLS-1$
+				} else if (HibernateJpaPlatform.HIBERNATE2_1_PLATFORM_ID.equals(platformId)) {
 					wc.setAttribute(IConsoleConfigurationLaunchConstants.HIBERNATE_VERSION, "4.3"); //$NON-NLS-1$
 				} else if (HibernateJpaPlatform.HIBERNATE2_0_PLATFORM_ID.equals(platformId)) {
 					wc.setAttribute(IConsoleConfigurationLaunchConstants.HIBERNATE_VERSION, "4.0"); //$NON-NLS-1$

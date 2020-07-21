@@ -16,8 +16,8 @@ Require-Bundle:
  org.eclipse.ui.forms;bundle-version="3.6.100",
  org.jboss.tools.hibernate.jpt.core;bundle-version="5.0.0",
  org.eclipse.ui.ide;bundle-version="3.10.100",
- org.eclipse.jpt.jpa.core;bundle-version="3.4.0",
- org.eclipse.jpt.jpa.ui;bundle-version="3.4.0",
+ org.eclipse.jpt.jpa.core;bundle-version="3.6.0",
+ org.eclipse.jpt.jpa.ui;bundle-version="3.6.0",
  org.eclipse.jpt.common.utility;bundle-version="2.3.0",
  org.eclipse.jpt.common.core;bundle-version="1.4.0",
  org.eclipse.jpt.common.ui;bundle-version="1.4.0",
@@ -29,7 +29,7 @@ Require-Bundle:
  org.eclipse.wst.common.modulecore,
  org.eclipse.jst.common.project.facet.core
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: %Bundle-Vendor.0
 Export-Package: org.jboss.tools.hibernate.jpt.ui,
  org.jboss.tools.hibernate.jpt.ui.internal.platform,

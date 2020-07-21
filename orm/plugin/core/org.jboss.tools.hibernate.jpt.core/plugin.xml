@@ -32,6 +32,14 @@
 	        jpaFacetVersion="2.1"
 	        label="Hibernate (JPA 2.1)">
 		</jpaPlatform>
+		<jpaPlatform
+	        default="false"
+	        factoryClass="org.jboss.tools.hibernate.jpt.core.internal.jpa2_2.HibernateJpa2_2PlatformFactory"
+	        id="hibernate2_2"
+	        group="hibernate.group"
+	        jpaFacetVersion="2.2"
+	        label="Hibernate (JPA 2.2)">
+		</jpaPlatform>
 
 	</extension>
  <extension
