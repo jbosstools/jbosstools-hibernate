@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: hibernate.search.runtime.spi
 Bundle-SymbolicName: org.jboss.tools.hibernate.search.runtime.spi;singleton:=true
-Bundle-Version: 5.4.9.qualifier
+Bundle-Version: 5.4.10.qualifier
 Bundle-Activator: org.jboss.tools.hibernate.search.runtime.spi.internal.HibernateSearchServicePlugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.core.runtime,

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.jboss.tools.hibernate.orm.test;singleton:=true
-Bundle-Version: 5.4.9.qualifier
+Bundle-Version: 5.4.10.qualifier
 Bundle-ClassPath: .,
  lib/jmock-2.5.1.jar,
  lib/jmock-legacy-2.5.1.jar,
