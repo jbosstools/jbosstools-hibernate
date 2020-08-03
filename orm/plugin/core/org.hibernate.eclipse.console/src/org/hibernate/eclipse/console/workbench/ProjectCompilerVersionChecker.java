@@ -76,7 +76,13 @@ public class ProjectCompilerVersionChecker {
 					case '0': 
 						return ClassFileConstants.JDK10;
 					case '1':
-						return 3604480; //ClassFileConstants.JDK11;  => this only works when the JDK11 support is installed
+						return ClassFileConstants.JDK11;
+					case '2':
+						return ClassFileConstants.JDK12;
+					case '3':
+						return ClassFileConstants.JDK13;
+					case '4':
+						return ClassFileConstants.JDK14;
 					default:
 						return 0;
 				}
