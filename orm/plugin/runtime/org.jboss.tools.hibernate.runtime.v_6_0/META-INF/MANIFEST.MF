@@ -1,8 +1,9 @@
 Manifest-Version: 1.0
+Automatic-Module-Name: org.jboss.tools.hibernate.runtime.v.6.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Hibernate 6.0 libraries
 Bundle-SymbolicName: org.jboss.tools.hibernate.runtime.v_6_0;singleton:=true
 Bundle-Version: 5.4.10.qualifier
-Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Bundle-ClassPath: .
+Bundle-ClassPath: .,
+ lib/hibernate-tools-orm-6.0.0.Alpha1.jar
