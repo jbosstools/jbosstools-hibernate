@@ -7,3 +7,5 @@ Bundle-Version: 5.4.10.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ClassPath: .,
  lib/hibernate-tools-orm-6.0.0.Alpha1.jar
+Require-Bundle: org.jboss.tools.hibernate.runtime.common,
+ org.jboss.tools.hibernate.runtime.spi
