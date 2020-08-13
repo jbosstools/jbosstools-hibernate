@@ -18,4 +18,11 @@ public class FacadeFactoryTest {
 		Assert.assertNotNull(facadeFactory);
 	}
 	
+	@Test
+	public void testGetClassLoader() {
+		Assert.assertSame(
+				FacadeFactoryImpl.class.getClassLoader(), 
+				facadeFactory.getClassLoader());
+	}
+	
 }
