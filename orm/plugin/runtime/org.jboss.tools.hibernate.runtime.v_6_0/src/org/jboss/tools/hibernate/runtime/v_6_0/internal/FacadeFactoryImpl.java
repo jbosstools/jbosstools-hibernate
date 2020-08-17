@@ -48,12 +48,6 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	}
 
 	@Override
-	public ICfg2HbmTool createCfg2HbmTool(Object target) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public INamingStrategy createNamingStrategy(Object target) {
 		// TODO Auto-generated method stub
 		return null;
