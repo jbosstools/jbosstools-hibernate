@@ -2,12 +2,14 @@ package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.tool.api.export.ArtifactCollector;
+import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
+import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -52,6 +54,13 @@ public class FacadeFactoryTest {
 		DefaultNamingStrategy namingStrategy = new DefaultNamingStrategy();
 		INamingStrategy facade = facadeFactory.createNamingStrategy(namingStrategy);
 		Assert.assertSame(namingStrategy, ((IFacade)facade).getTarget());
+	}
+	
+	@Test
+	public void testCreateReverseEngineeringSettings() {
+		RevengSettings res = new RevengSettings(null);
+		IReverseEngineeringSettings facade = facadeFactory.createReverseEngineeringSettings(res);
+		Assert.assertSame(res, ((IFacade)facade).getTarget());		
 	}
 	
 }
