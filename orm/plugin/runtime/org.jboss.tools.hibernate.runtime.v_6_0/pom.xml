@@ -14,6 +14,8 @@
 	<properties>
 		<hibernate.core.version>6.0.0.Alpha5</hibernate.core.version>
 		<hibernate.tools.version>6.0.0.Alpha1</hibernate.tools.version>
+		<javax.persistence-api.version>2.2</javax.persistence-api.version>
+		<jboss-logging.version>3.4.1.Final</jboss-logging.version>
 	</properties>
 
 	<build>
@@ -33,6 +35,11 @@
 				<configuration>
 					<artifactItems>
 						<artifactItem>
+							<groupId>javax.persistence</groupId>
+							<artifactId>javax.persistence-api</artifactId>
+							<version>${javax.persistence-api.version}</version>
+						</artifactItem>
+						<artifactItem>
 							<groupId>org.hibernate.tool</groupId>
 							<artifactId>hibernate-tools-orm</artifactId>
 							<version>${hibernate.tools.version}</version>
@@ -41,6 +48,11 @@
 							<groupId>org.hibernate</groupId>
 							<artifactId>hibernate-core</artifactId>
 							<version>${hibernate.core.version}</version>
+						</artifactItem>
+						<artifactItem>
+							<groupId>org.jboss.logging</groupId>
+							<artifactId>jboss-logging</artifactId>
+							<version>${jboss-logging.version}</version>
 						</artifactItem>
 					</artifactItems>
 					<skip>false</skip>

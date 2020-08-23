@@ -7,6 +7,8 @@ Bundle-Version: 5.4.10.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ClassPath: .,
  lib/hibernate-core-6.0.0.Alpha5.jar,
- lib/hibernate-tools-orm-6.0.0.Alpha1.jar
+ lib/hibernate-tools-orm-6.0.0.Alpha1.jar,
+ lib/javax.persistence-api-2.2.jar,
+ lib/jboss-logging-3.4.1.Final.jar
 Require-Bundle: org.jboss.tools.hibernate.runtime.common,
  org.jboss.tools.hibernate.runtime.spi
