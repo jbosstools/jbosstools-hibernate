@@ -19,7 +19,6 @@ import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
-import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
@@ -41,12 +40,6 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	@Override
 	public ClassLoader getClassLoader() {
 		return FacadeFactoryImpl.class.getClassLoader();
-	}
-
-	@Override
-	public IOverrideRepository createOverrideRepository(Object target) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
