@@ -13,6 +13,8 @@ import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.MetadataHelper;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.helpers.DefaultHandler;
 
 public class ConfigurationFacadeTest {
 
@@ -81,4 +83,14 @@ public class ConfigurationFacadeTest {
 		Assert.assertEquals(testFile.getAbsolutePath(), binding.getOrigin().getName());
 		Assert.assertTrue(testFile.delete());
 	}
+	
+	@Test
+	public void testSetEntityResolver() {
+		EntityResolver testResolver = new DefaultHandler();
+		ConfigurationFacadeImpl facade = (ConfigurationFacadeImpl)configurationFacade;
+		Assert.assertNull(facade.entityResolver);
+		configurationFacade.setEntityResolver(testResolver);
+		Assert.assertSame(testResolver, facade.entityResolver);
+	}
+	
 }
