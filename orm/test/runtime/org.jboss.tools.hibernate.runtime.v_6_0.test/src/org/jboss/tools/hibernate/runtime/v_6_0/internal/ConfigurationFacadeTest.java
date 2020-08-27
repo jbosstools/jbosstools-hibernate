@@ -27,4 +27,11 @@ public class ConfigurationFacadeTest {
 		Assert.assertEquals("bar", configurationFacade.getProperty("foo"));
 	}
 
+	@Test 
+	public void testSetProperty() {
+		Assert.assertNull(configuration.getProperty("foo"));
+		configurationFacade.setProperty("foo", "bar");
+		Assert.assertEquals("bar", configuration.getProperty("foo"));
+	}
+
 }
