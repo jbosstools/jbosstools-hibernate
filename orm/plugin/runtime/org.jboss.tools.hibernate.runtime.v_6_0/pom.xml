@@ -15,7 +15,9 @@
 		<classmate.version>1.5.1</classmate.version>
 		<hibernate.core.version>6.0.0.Alpha5</hibernate.core.version>
 		<hibernate.tools.version>6.0.0.Alpha1</hibernate.tools.version>
+		<istack-commons-runtime.version>3.0.11</istack-commons-runtime.version>
 		<javax.persistence-api.version>2.2</javax.persistence-api.version>
+	    <jaxb.version>2.3.1</jaxb.version>
 		<jboss-logging.version>3.4.1.Final</jboss-logging.version>
 		<jboss-transaction-api_1.2_spec.version>1.1.1.Final</jboss-transaction-api_1.2_spec.version>
 		<bytebuddy.version>1.10.14</bytebuddy.version>
@@ -43,15 +45,30 @@
 							<version>${classmate.version}</version>
 						</artifactItem>
 						<artifactItem>
+							<groupId>com.sun.istack</groupId>
+							<artifactId>istack-commons-runtime</artifactId>
+							<version>${istack-commons-runtime.version}</version>
+						</artifactItem> 
+						<artifactItem>
 							<groupId>javax.persistence</groupId>
 							<artifactId>javax.persistence-api</artifactId>
 							<version>${javax.persistence-api.version}</version>
 						</artifactItem>
+ 						<artifactItem>
+							<groupId>javax.xml.bind</groupId>
+							<artifactId>jaxb-api</artifactId>
+							<version>${jaxb.version}</version>
+						</artifactItem> 
 						<artifactItem>
 							<groupId>net.bytebuddy</groupId>
 							<artifactId>byte-buddy</artifactId>
 							<version>${bytebuddy.version}</version>
 						</artifactItem>
+ 						<artifactItem>
+							<groupId>org.glassfish.jaxb</groupId>
+							<artifactId>jaxb-runtime</artifactId>
+							<version>${jaxb.version}</version>
+						</artifactItem> 
 						<artifactItem>
 							<groupId>org.hibernate.tool</groupId>
 							<artifactId>hibernate-tools-orm</artifactId>

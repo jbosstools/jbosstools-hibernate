@@ -10,8 +10,13 @@ Bundle-ClassPath: .,
  lib/classmate-1.5.1.jar,
  lib/hibernate-core-6.0.0.Alpha5.jar,
  lib/hibernate-tools-orm-6.0.0.Alpha1.jar,
+ lib/istack-commons-runtime-3.0.11.jar,
+ lib/jaxb-api-2.3.1.jar,
+ lib/jaxb-runtime-2.3.1.jar,
  lib/javax.persistence-api-2.2.jar,
  lib/jboss-logging-3.4.1.Final.jar,
  lib/jboss-transaction-api_1.2_spec-1.1.1.Final.jar
-Require-Bundle: org.jboss.tools.hibernate.runtime.common,
- org.jboss.tools.hibernate.runtime.spi
+Require-Bundle: org.jboss.tools.hibernate.libs.dom4j.v_1_6_1,
+ org.jboss.tools.hibernate.runtime.common,
+ org.jboss.tools.hibernate.runtime.spi,
+ org.jboss.tools.hibernate.libs.activation.v_1_2_0
