@@ -4,10 +4,12 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.util.Properties;
 
+import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.dialect.Dialect;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
@@ -120,6 +122,17 @@ public class ConfigurationFacadeTest {
 		testProperties.put("foo", "bar");
 		configurationFacade.addProperties(testProperties);
 		Assert.assertEquals("bar", configuration.getProperty("foo"));
+	}
+	
+	@Test
+	public void testConfigure() {
+		String fooClassName = 
+				"org.jboss.tools.hibernate.runtime.v_6_0.internal.test.Foo";
+		Metadata metadata = MetadataHelper.getMetadata(configuration);
+		Assert.assertNull(metadata.getEntityBinding(fooClassName));
+		configurationFacade.configure();
+		metadata = MetadataHelper.getMetadata(configuration);
+		Assert.assertNotNull(metadata.getEntityBinding(fooClassName));
 	}
 	
 }
