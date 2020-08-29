@@ -1,7 +1,9 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.net.URL;
 import java.util.Properties;
 
 import org.hibernate.boot.Metadata;
@@ -23,18 +25,24 @@ import org.xml.sax.helpers.DefaultHandler;
 public class ConfigurationFacadeTest {
 
 	private static final String TEST_HBM_XML_STRING =
-			"<!DOCTYPE hibernate-mapping PUBLIC" +
-			"		'-//Hibernate/Hibernate Mapping DTD 3.0//EN'" +
-			"		'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>" +
-			"<hibernate-mapping package='org.jboss.tools.hibernate.runtime.v_5_4.internal'>" +
+			"<hibernate-mapping package='org.jboss.tools.hibernate.runtime.v_6_0.internal'>" +
 			"  <class name='ConfigurationFacadeTest$Foo'>" + 
 			"    <id name='id'/>" +
 			"  </class>" +
 			"</hibernate-mapping>";
 	
+	private static final String TEST_CFG_XML_STRING =
+			"<hibernate-configuration>" +
+			"  <session-factory name='bar'>" + 
+			"    <mapping resource='Foo.hbm.xml' />" +
+			"  </session-factory>" +
+			"</hibernate-configuration>";
+	
 	static class Foo {
 		public String id;
 	}
+	
+	public static class TestDialect extends Dialect {}
 	
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 
@@ -125,14 +133,30 @@ public class ConfigurationFacadeTest {
 	}
 	
 	@Test
-	public void testConfigure() {
+	public void testConfigure() throws Exception {
+		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
+
+		File cfgXmlFile = new File(new File(url.toURI()), "hibernate.cfg.xml");
+		cfgXmlFile.deleteOnExit();
+		FileWriter fileWriter = new FileWriter(cfgXmlFile);
+		fileWriter.write(TEST_CFG_XML_STRING);
+		fileWriter.close();
+
+		File hbmXmlFile = new File(new File(url.toURI()), "Foo.hbm.xml");
+		hbmXmlFile.deleteOnExit();
+		fileWriter = new FileWriter(hbmXmlFile);
+		fileWriter.write(TEST_HBM_XML_STRING);
+		fileWriter.close();
+
 		String fooClassName = 
-				"org.jboss.tools.hibernate.runtime.v_6_0.internal.test.Foo";
+				"org.jboss.tools.hibernate.runtime.v_6_0.internal.ConfigurationFacadeTest$Foo";
+		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
 		Metadata metadata = MetadataHelper.getMetadata(configuration);
 		Assert.assertNull(metadata.getEntityBinding(fooClassName));
 		configurationFacade.configure();
 		metadata = MetadataHelper.getMetadata(configuration);
 		Assert.assertNotNull(metadata.getEntityBinding(fooClassName));
 	}
+
 	
 }
