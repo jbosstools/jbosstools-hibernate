@@ -6,4 +6,8 @@ public class JdbcMetadataConfiguration {
 	
 	Properties properties = new Properties();
 
+	public Properties getProperties() {
+		return properties;
+	}
+	
 }
