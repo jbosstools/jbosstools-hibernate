@@ -14,4 +14,8 @@ public class JdbcMetadataConfiguration {
 		this.properties = properties;
 	}
 	
+	public Object getProperty(String key) {
+		return this.properties.get(key);
+	}
+	
 }

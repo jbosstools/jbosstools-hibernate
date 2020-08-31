@@ -1,7 +1,9 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal.util;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
 import java.util.Properties;
@@ -34,6 +36,13 @@ public class JdbcMetadataConfigurationTest {
 		assertNotSame(properties,  jdbcMetadataConfiguration.getProperties());
 		jdbcMetadataConfiguration.setProperties(properties);
 		assertSame(properties, jdbcMetadataConfiguration.getProperties());
+	}
+	
+	@Test
+	public void testGetProperty() {
+		assertNull(jdbcMetadataConfiguration.getProperty("foo"));
+		jdbcMetadataConfiguration.properties.put("foo", "bar");
+		assertEquals("bar", jdbcMetadataConfiguration.getProperty("foo"));
 	}
 
 }
