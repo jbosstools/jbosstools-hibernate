@@ -6,6 +6,8 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.util.Properties;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.jaxb.spi.Binding;
@@ -19,6 +21,8 @@ import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.MetadataHelper;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -133,15 +137,13 @@ public class ConfigurationFacadeTest {
 	}
 	
 	@Test
-	public void testConfigure() throws Exception {
+	public void testConfigureDefault() throws Exception {
 		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
-
 		File cfgXmlFile = new File(new File(url.toURI()), "hibernate.cfg.xml");
 		cfgXmlFile.deleteOnExit();
 		FileWriter fileWriter = new FileWriter(cfgXmlFile);
 		fileWriter.write(TEST_CFG_XML_STRING);
 		fileWriter.close();
-
 		File hbmXmlFile = new File(new File(url.toURI()), "Foo.hbm.xml");
 		hbmXmlFile.deleteOnExit();
 		fileWriter = new FileWriter(hbmXmlFile);
@@ -154,6 +156,38 @@ public class ConfigurationFacadeTest {
 		Metadata metadata = MetadataHelper.getMetadata(configuration);
 		Assert.assertNull(metadata.getEntityBinding(fooClassName));
 		configurationFacade.configure();
+		metadata = MetadataHelper.getMetadata(configuration);
+		Assert.assertNotNull(metadata.getEntityBinding(fooClassName));
+	}
+	
+	@Test
+	public void testConfigureDocument() throws Exception {
+		Document document = DocumentBuilderFactory
+				.newInstance()
+				.newDocumentBuilder()
+				.newDocument();
+		Element hibernateConfiguration = document.createElement("hibernate-configuration");
+		document.appendChild(hibernateConfiguration);
+		Element sessionFactory = document.createElement("session-factory");
+		sessionFactory.setAttribute("name", "bar");
+		hibernateConfiguration.appendChild(sessionFactory);
+		Element mapping = document.createElement("mapping");
+		mapping.setAttribute("resource", "Foo.hbm.xml");
+		sessionFactory.appendChild(mapping);
+		
+		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
+		File hbmXmlFile = new File(new File(url.toURI()), "Foo.hbm.xml");
+		hbmXmlFile.deleteOnExit();
+		FileWriter fileWriter = new FileWriter(hbmXmlFile);
+		fileWriter.write(TEST_HBM_XML_STRING);
+		fileWriter.close();
+
+		String fooClassName = 
+				"org.jboss.tools.hibernate.runtime.v_6_0.internal.ConfigurationFacadeTest$Foo";
+		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
+		Metadata metadata = MetadataHelper.getMetadata(configuration);
+		Assert.assertNull(metadata.getEntityBinding(fooClassName));
+		configurationFacade.configure(document);
 		metadata = MetadataHelper.getMetadata(configuration);
 		Assert.assertNotNull(metadata.getEntityBinding(fooClassName));
 	}
