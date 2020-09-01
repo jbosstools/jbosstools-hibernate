@@ -88,5 +88,17 @@ public class JdbcMetadataConfigurationTest {
 		jdbcMetadataConfiguration.properties.put(MetadataConstants.PREFER_BASIC_COMPOSITE_IDS, true);
 		assertTrue(jdbcMetadataConfiguration.preferBasicCompositeIds());
 	}
+	
+	@Test
+	public void testSetPreferBasicCompositeIds() {
+		assertNull(
+				jdbcMetadataConfiguration.properties.get(
+						MetadataConstants.PREFER_BASIC_COMPOSITE_IDS));
+		jdbcMetadataConfiguration.setPreferBasicCompositeIds(true);
+		assertEquals(
+				true, 
+				jdbcMetadataConfiguration.properties.get(
+						MetadataConstants.PREFER_BASIC_COMPOSITE_IDS));
+	}
 
 }

@@ -42,5 +42,11 @@ public class JdbcMetadataConfiguration {
 		Object preferBasicCompositeIds = properties.get(MetadataConstants.PREFER_BASIC_COMPOSITE_IDS);
 		return preferBasicCompositeIds == null ? false : ((Boolean)preferBasicCompositeIds).booleanValue();
 	}
+
+	public void setPreferBasicCompositeIds(boolean preferBasicCompositeIds) {
+		properties.put(
+				MetadataConstants.PREFER_BASIC_COMPOSITE_IDS, 
+				Boolean.valueOf(preferBasicCompositeIds));
+	}
 	
 }
