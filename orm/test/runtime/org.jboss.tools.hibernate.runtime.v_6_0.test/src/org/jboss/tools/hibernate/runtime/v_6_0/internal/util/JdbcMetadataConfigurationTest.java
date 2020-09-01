@@ -70,5 +70,14 @@ public class JdbcMetadataConfigurationTest {
 		jdbcMetadataConfiguration.revengStrategy = strategy;
 		assertSame(strategy, jdbcMetadataConfiguration.getReverseEngineeringStrategy());
 	}
+	
+	@Test
+	public void testSetReverseEngineeringStrategy() {
+		RevengStrategy strategy = new DefaultStrategy();
+		assertNull(jdbcMetadataConfiguration.revengStrategy);
+		jdbcMetadataConfiguration.setReverseEngineeringStrategy(strategy);
+		assertSame(strategy, jdbcMetadataConfiguration.revengStrategy);
+		
+	}
 
 }
