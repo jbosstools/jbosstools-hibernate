@@ -8,8 +8,12 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.Properties;
 
+import org.hibernate.boot.Metadata;
 import org.hibernate.tool.api.metadata.MetadataConstants;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
@@ -99,6 +103,22 @@ public class JdbcMetadataConfigurationTest {
 				true, 
 				jdbcMetadataConfiguration.properties.get(
 						MetadataConstants.PREFER_BASIC_COMPOSITE_IDS));
+	}
+	
+	@Test
+	public void testGetMetadata() {
+		Metadata metadata = (Metadata)Proxy.newProxyInstance(
+				getClass().getClassLoader(), 
+				new Class[] { Metadata.class }, 
+				new InvocationHandler() {					
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+						return null;
+					}
+				});
+		assertNull(jdbcMetadataConfiguration.getMetadata());
+		jdbcMetadataConfiguration.metadata = metadata;
+		assertSame(metadata, jdbcMetadataConfiguration.getMetadata());
 	}
 
 }
