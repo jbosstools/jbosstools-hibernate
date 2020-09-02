@@ -6,4 +6,5 @@ Bundle-Version: 5.4.10.qualifier
 Fragment-Host: org.jboss.tools.hibernate.runtime.v_6_0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.junit
-Bundle-ClassPath: .
+Bundle-ClassPath: .,
+ lib/h2-1.4.200.jar
