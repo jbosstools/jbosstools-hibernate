@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import org.hibernate.SessionFactory;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.tool.api.export.ArtifactCollector;
 import org.hibernate.tool.api.reveng.RevengSettings;
@@ -17,7 +18,9 @@ import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
-import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;import org.junit.Assert;
+import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
+import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -86,6 +89,16 @@ public class FacadeFactoryTest {
 		OverrideRepository overrideRepository = new OverrideRepository();
 		IOverrideRepository facade = facadeFactory.createOverrideRepository(overrideRepository);
 		Assert.assertSame(overrideRepository, ((IFacade)facade).getTarget());		
+	}
+	
+	@Test
+	public void testCreateSessionFactory() {
+		SessionFactory sessionFactory = (SessionFactory)Proxy.newProxyInstance(
+				facadeFactory.getClassLoader(), 
+				new Class[] { SessionFactory.class }, 
+				new TestInvocationHandler());
+		ISessionFactory facade = facadeFactory.createSessionFactory(sessionFactory);
+		Assert.assertSame(sessionFactory, ((IFacade)facade).getTarget());
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
