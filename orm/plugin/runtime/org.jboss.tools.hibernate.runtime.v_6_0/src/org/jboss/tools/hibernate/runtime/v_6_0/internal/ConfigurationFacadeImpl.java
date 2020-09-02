@@ -92,4 +92,9 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 		return metadata;
 	}
 	
+	@Override 
+	public void buildMappings() {
+		getMetadata();
+	}
+	
 }

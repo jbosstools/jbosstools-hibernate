@@ -220,6 +220,14 @@ public class ConfigurationFacadeTest {
 		assertNotNull(jdbcFacade.metadata);
 		assertSame(jdbcFacade.metadata, JdbcMetadataTestConfiguration.METADATA);
 	}
+	
+	@Test
+	public void testBuildMappings() {
+		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
+		assertNull(((ConfigurationFacadeImpl)configurationFacade).metadata);
+		configurationFacade.buildMappings();
+		assertNotNull(((ConfigurationFacadeImpl)configurationFacade).metadata);
+	}
 
 	
 	private static class NativeTestConfiguration extends Configuration {
