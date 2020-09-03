@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
@@ -11,6 +12,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -26,6 +28,7 @@ import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
+import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.MetadataHelper;
@@ -243,6 +246,15 @@ public class ConfigurationFacadeTest {
 		Assert.assertNotNull(sessionFactory);
 		Assert.assertTrue(sessionFactory instanceof SessionFactory);
 	}
+	
+	@Test
+	public void testGetAddedClasses() {
+		ArrayList<IPersistentClass> list = new ArrayList<IPersistentClass>();
+		assertNotNull(((ConfigurationFacadeImpl)configurationFacade).getAddedClasses());
+		assertNotSame(((ConfigurationFacadeImpl)configurationFacade).getAddedClasses(), list);
+		((ConfigurationFacadeImpl)configurationFacade).addedClasses = list;
+		assertSame(((ConfigurationFacadeImpl)configurationFacade).getAddedClasses(), list);
+	} 
 	
 	private static class NativeTestConfiguration extends Configuration {
 		static Metadata METADATA = createMetadata();
