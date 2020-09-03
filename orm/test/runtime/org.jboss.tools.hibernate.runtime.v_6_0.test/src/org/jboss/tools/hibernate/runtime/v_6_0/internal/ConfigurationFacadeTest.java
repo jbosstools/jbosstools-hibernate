@@ -61,7 +61,9 @@ public class ConfigurationFacadeTest {
 		public String id;
 	}
 	
-	public static class TestDialect extends Dialect {}
+	public static class TestDialect extends Dialect {
+		@Override public int getVersion() { return 0; }
+	}
 	
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 

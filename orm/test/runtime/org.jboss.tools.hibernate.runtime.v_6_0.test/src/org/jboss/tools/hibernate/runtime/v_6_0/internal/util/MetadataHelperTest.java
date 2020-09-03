@@ -81,7 +81,9 @@ public class MetadataHelperTest {
 		return result;
 	}
 	
-	public static class TestDialect extends Dialect {}
+	public static class TestDialect extends Dialect {
+		@Override public int getVersion() { return 0; }
+	}
 	
 	@SuppressWarnings("unused")
 	private static class Foo {
