@@ -8,7 +8,7 @@ public class VersionTest {
 	
 	@Test
 	public void testToolsVersion() {
-		Assert.assertEquals("6.0.0.Alpha1", Version.CURRENT_VERSION);
+		Assert.assertEquals("6.0.0.Alpha2", Version.CURRENT_VERSION);
 	}
 
 }
