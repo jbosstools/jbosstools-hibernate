@@ -12,6 +12,7 @@
 	<packaging>eclipse-plugin</packaging>
 
 	<properties>
+		<antlr.version>4.8-1</antlr.version>
 		<classmate.version>1.5.1</classmate.version>
 		<hibernate.core.version>6.0.0.Alpha5</hibernate.core.version>
 		<hibernate.tools.version>6.0.0.Alpha1</hibernate.tools.version>
@@ -69,6 +70,11 @@
 							<groupId>org.glassfish.jaxb</groupId>
 							<artifactId>jaxb-runtime</artifactId>
 							<version>${jaxb.version}</version>
+						</artifactItem> 
+ 						<artifactItem>
+							<groupId>org.antlr</groupId>
+							<artifactId>antlr4-runtime</artifactId>
+							<version>${antlr.version}</version>
 						</artifactItem> 
 						<artifactItem>
 							<groupId>org.hibernate.tool</groupId>

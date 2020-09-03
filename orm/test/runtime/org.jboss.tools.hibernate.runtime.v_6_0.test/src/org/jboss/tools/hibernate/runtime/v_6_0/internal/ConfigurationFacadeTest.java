@@ -15,15 +15,18 @@ import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.dialect.Dialect;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
+import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.MetadataHelper;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.MetadataHelperTest;
@@ -229,6 +232,17 @@ public class ConfigurationFacadeTest {
 		assertNotNull(((ConfigurationFacadeImpl)configurationFacade).metadata);
 	}
 
+	
+	@Test
+	public void testBuildSessionFactory() throws Throwable {
+		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
+		ISessionFactory sessionFactoryFacade = 
+				configurationFacade.buildSessionFactory();
+		Assert.assertNotNull(sessionFactoryFacade);
+		Object sessionFactory = ((IFacade)sessionFactoryFacade).getTarget();
+		Assert.assertNotNull(sessionFactory);
+		Assert.assertTrue(sessionFactory instanceof SessionFactory);
+	}
 	
 	private static class NativeTestConfiguration extends Configuration {
 		static Metadata METADATA = createMetadata();
