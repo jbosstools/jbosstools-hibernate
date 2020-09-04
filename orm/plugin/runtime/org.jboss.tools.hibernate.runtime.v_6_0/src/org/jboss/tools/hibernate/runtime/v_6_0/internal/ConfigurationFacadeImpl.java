@@ -104,4 +104,9 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 		return addedClasses;
 	}
 	
+	@Override
+	public void addClass(IPersistentClass persistentClass) {
+		addedClasses.add(persistentClass);
+	}
+	
 }
