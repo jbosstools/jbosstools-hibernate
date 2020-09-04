@@ -273,6 +273,15 @@ public class ConfigurationFacadeTest {
 		assertTrue(((ConfigurationFacadeImpl)configurationFacade).addedClasses.contains(persistentClassFacade));
 	}
 	
+	@Test
+	public void testGetNamingStrategy() {
+		INamingStrategy strategy = FACADE_FACTORY.createNamingStrategy(new DefaultNamingStrategy());
+		ConfigurationFacadeImpl facade = (ConfigurationFacadeImpl)configurationFacade;
+		Assert.assertNull(facade.getNamingStrategy());
+		facade.namingStrategy = strategy;
+		Assert.assertSame(strategy, facade.getNamingStrategy());
+	}
+	
 	private static class NativeTestConfiguration extends Configuration {
 		static Metadata METADATA = createMetadata();
 		@SuppressWarnings("unused")

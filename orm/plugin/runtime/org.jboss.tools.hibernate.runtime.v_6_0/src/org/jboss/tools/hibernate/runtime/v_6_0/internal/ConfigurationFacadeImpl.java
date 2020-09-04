@@ -60,6 +60,11 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	}
 	
 	@Override
+	public INamingStrategy getNamingStrategy() {
+		return namingStrategy;
+	}
+	
+	@Override
 	public IConfiguration configure(Document document) {
 		File tempFile = null;
 		IConfiguration result = null;
