@@ -168,12 +168,6 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	}
 
 	@Override
-	public IPersistentClass createPersistentClass(Object target) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public IPOJOClass createPOJOClass(Object target) {
 		// TODO Auto-generated method stub
 		return null;

@@ -6,6 +6,8 @@ import java.lang.reflect.Proxy;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.RootClass;
 import org.hibernate.tool.api.export.ArtifactCollector;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
@@ -17,6 +19,7 @@ import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
+import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
@@ -83,7 +86,6 @@ public class FacadeFactoryTest {
 		Assert.assertSame(res, ((IFacade)facade).getTarget());		
 	}
 	
-
 	@Test
 	public void testCreateOverrideRepository() {
 		OverrideRepository overrideRepository = new OverrideRepository();
@@ -99,6 +101,13 @@ public class FacadeFactoryTest {
 				new TestInvocationHandler());
 		ISessionFactory facade = facadeFactory.createSessionFactory(sessionFactory);
 		Assert.assertSame(sessionFactory, ((IFacade)facade).getTarget());
+	}
+	
+	@Test
+	public void testCreatePersistentClass() {
+		PersistentClass persistentClass = new RootClass(null);
+		IPersistentClass facade = facadeFactory.createPersistentClass(persistentClass);
+		Assert.assertSame(persistentClass, ((IFacade)facade).getTarget());
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
