@@ -5,6 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -14,6 +16,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.mapping.PersistentClass;
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
@@ -114,4 +117,18 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 		addedClasses.add(persistentClass);
 	}
 	
+	@Override
+	protected void initializeClassMappings() {
+		HashMap<String, IPersistentClass> classMappings = new HashMap<String, IPersistentClass>();
+		Iterator<PersistentClass> origin = getMetadata().getEntityBindings().iterator();
+		while (origin.hasNext()) {
+			IPersistentClass pc = getFacadeFactory().createPersistentClass(origin.next());
+			classMappings.put(pc.getEntityName(), pc);
+		}
+		for (IPersistentClass pc : addedClasses) {
+			classMappings.put(pc.getEntityName(), pc);
+		}
+		setClassMappings(classMappings);
+	}
+
 }

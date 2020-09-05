@@ -282,6 +282,20 @@ public class ConfigurationFacadeTest {
 		Assert.assertSame(strategy, facade.getNamingStrategy());
 	}
 	
+	@Test
+	public void testGetClassMapping() {
+		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
+		PersistentClass persistentClass = new RootClass(null);
+		persistentClass.setEntityName("Foo");
+		IPersistentClass persistentClassFacade = 
+				FACADE_FACTORY.createPersistentClass(persistentClass);	
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
+		assertNull(configurationFacade.getClassMapping("Foo"));
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
+		((ConfigurationFacadeImpl)configurationFacade).addedClasses.add(persistentClassFacade);
+		assertNotNull(configurationFacade.getClassMapping("Foo"));
+	}
+	
 	private static class NativeTestConfiguration extends Configuration {
 		static Metadata METADATA = createMetadata();
 		@SuppressWarnings("unused")
