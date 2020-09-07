@@ -29,11 +29,14 @@ import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.tool.api.reveng.RevengStrategy;
+import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
+import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.MetadataHelper;
@@ -321,6 +324,22 @@ public class ConfigurationFacadeTest {
 		Assert.assertTrue(configuration.preferBasicCompositeIds());
 		configurationFacade.setPreferBasicCompositeIds(false);
 		Assert.assertFalse(configuration.preferBasicCompositeIds());
+	}
+	
+	@Test
+	public void testSetReverseEngineeringStrategy() {
+		JdbcMetadataConfiguration configuration = new JdbcMetadataConfiguration();
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
+		RevengStrategy reverseEngineeringStrategy = new DefaultStrategy();
+		IReverseEngineeringStrategy strategyFacade = 
+				FACADE_FACTORY.createReverseEngineeringStrategy(reverseEngineeringStrategy);
+		assertNotSame(
+				reverseEngineeringStrategy,
+				configuration.getReverseEngineeringStrategy());
+		configurationFacade.setReverseEngineeringStrategy(strategyFacade);
+		assertSame(
+				reverseEngineeringStrategy, 
+				configuration.getReverseEngineeringStrategy());
 	}
 	
 	private static class NativeTestConfiguration extends Configuration {
