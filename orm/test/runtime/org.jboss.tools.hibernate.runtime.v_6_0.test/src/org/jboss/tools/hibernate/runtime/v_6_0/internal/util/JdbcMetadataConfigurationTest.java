@@ -17,7 +17,6 @@ import java.sql.Statement;
 import java.util.Properties;
 
 import org.hibernate.boot.Metadata;
-import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.api.metadata.MetadataConstants;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
@@ -135,9 +134,9 @@ public class JdbcMetadataConfigurationTest {
 		assertNull(jdbcMetadataConfiguration.metadata);
 		jdbcMetadataConfiguration.readFromJdbc();
 		assertNotNull(jdbcMetadataConfiguration.metadata);
-		for (PersistentClass pc : jdbcMetadataConfiguration.metadata.getEntityBindings()) {
-			System.out.println(pc.getEntityName());
-		}
+		statement.execute("DROP TABLE FOO");
+		statement.close();
+		connection.close();
 	}
 
 }

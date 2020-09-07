@@ -82,6 +82,11 @@
 							<version>${hibernate.tools.version}</version>
 						</artifactItem>
 						<artifactItem>
+							<groupId>org.hibernate.tool</groupId>
+							<artifactId>hibernate-tools-utils</artifactId>
+							<version>${hibernate.tools.version}</version>
+						</artifactItem>
+						<artifactItem>
 							<groupId>org.hibernate</groupId>
 							<artifactId>hibernate-core</artifactId>
 							<version>${hibernate.core.version}</version>
