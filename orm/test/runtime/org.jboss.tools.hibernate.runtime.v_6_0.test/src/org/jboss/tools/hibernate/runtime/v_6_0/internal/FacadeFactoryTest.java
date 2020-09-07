@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.export.ArtifactCollector;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
@@ -23,6 +24,7 @@ import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -108,6 +110,13 @@ public class FacadeFactoryTest {
 		PersistentClass persistentClass = new RootClass(null);
 		IPersistentClass facade = facadeFactory.createPersistentClass(persistentClass);
 		Assert.assertSame(persistentClass, ((IFacade)facade).getTarget());
+	}
+	
+	@Test
+	public void testCreateTable() {
+		Table table = new Table();
+		ITable facade = facadeFactory.createTable(table);
+		Assert.assertSame(table, ((IFacade)facade).getTarget());
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
