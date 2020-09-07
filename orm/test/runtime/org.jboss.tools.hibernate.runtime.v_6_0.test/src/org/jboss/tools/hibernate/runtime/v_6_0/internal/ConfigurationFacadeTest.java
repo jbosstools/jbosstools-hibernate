@@ -313,6 +313,16 @@ public class ConfigurationFacadeTest {
 		assertSame(iterator.next(), persistentClassFacade);		
 	}
 	
+	@Test
+	public void testSetPreferBasicCompositeIds() {
+		JdbcMetadataConfiguration configuration = new JdbcMetadataConfiguration();
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
+		// the default is true
+		Assert.assertTrue(configuration.preferBasicCompositeIds());
+		configurationFacade.setPreferBasicCompositeIds(false);
+		Assert.assertFalse(configuration.preferBasicCompositeIds());
+	}
+	
 	private static class NativeTestConfiguration extends Configuration {
 		static Metadata METADATA = createMetadata();
 		@SuppressWarnings("unused")

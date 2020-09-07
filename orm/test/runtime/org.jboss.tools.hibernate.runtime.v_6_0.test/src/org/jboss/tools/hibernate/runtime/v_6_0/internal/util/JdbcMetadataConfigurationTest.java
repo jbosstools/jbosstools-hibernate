@@ -92,9 +92,9 @@ public class JdbcMetadataConfigurationTest {
 	
 	@Test
 	public void testPreferBasicCompositeIds() {
-		assertFalse(jdbcMetadataConfiguration.preferBasicCompositeIds());
-		jdbcMetadataConfiguration.properties.put(MetadataConstants.PREFER_BASIC_COMPOSITE_IDS, true);
 		assertTrue(jdbcMetadataConfiguration.preferBasicCompositeIds());
+		jdbcMetadataConfiguration.properties.put(MetadataConstants.PREFER_BASIC_COMPOSITE_IDS, false);
+		assertFalse(jdbcMetadataConfiguration.preferBasicCompositeIds());
 	}
 	
 	@Test
