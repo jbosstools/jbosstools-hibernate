@@ -15,6 +15,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -293,7 +294,23 @@ public class ConfigurationFacadeTest {
 		assertNull(configurationFacade.getClassMapping("Foo"));
 		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
 		((ConfigurationFacadeImpl)configurationFacade).addedClasses.add(persistentClassFacade);
-		assertNotNull(configurationFacade.getClassMapping("Foo"));
+		assertSame(configurationFacade.getClassMapping("Foo"), persistentClassFacade);
+	}
+	
+	@Test
+	public void testGetClassMappings() {
+		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
+		assertFalse(configurationFacade.getClassMappings().hasNext());		
+		PersistentClass persistentClass = new RootClass(null);
+		persistentClass.setEntityName("Foo");
+		IPersistentClass persistentClassFacade = 
+				FACADE_FACTORY.createPersistentClass(persistentClass);	
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
+		((ConfigurationFacadeImpl)configurationFacade).addedClasses.add(persistentClassFacade);
+		Iterator<IPersistentClass> iterator = configurationFacade.getClassMappings();
+		assertTrue(iterator.hasNext());
+		assertSame(iterator.next(), persistentClassFacade);		
 	}
 	
 	private static class NativeTestConfiguration extends Configuration {
