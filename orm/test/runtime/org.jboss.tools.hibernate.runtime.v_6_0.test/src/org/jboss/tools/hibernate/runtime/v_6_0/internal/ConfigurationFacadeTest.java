@@ -33,6 +33,7 @@ import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -42,6 +43,7 @@ import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.MetadataHelper;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.MetadataHelperTest;
@@ -366,6 +368,26 @@ public class ConfigurationFacadeTest {
 		assertEquals("Foo", persistentClass.getClassName());
 		statement.execute("DROP TABLE FOO");
 		statement.close();
+		connection.close();
+	}
+	
+	@Test
+	public void testGetTableMappings() throws Exception {
+		Connection connection = DriverManager.getConnection("jdbc:h2:mem:test");
+		Statement statement = connection.createStatement();
+		statement.execute("CREATE TABLE FOO(id int primary key, bar varchar(255))");
+		JdbcMetadataConfiguration jdbcMdCfg = new JdbcMetadataConfiguration();
+		jdbcMdCfg.setProperty("hibernate.connection.url", "jdbc:h2:mem:test");
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, jdbcMdCfg);
+		Iterator<ITable> iterator = configurationFacade.getTableMappings();
+		assertFalse(iterator.hasNext());
+		jdbcMdCfg.readFromJdbc();
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, jdbcMdCfg);
+		iterator = configurationFacade.getTableMappings();
+		IFacade facade = (IFacade)iterator.next();
+		Table table = (Table)facade.getTarget();
+		assertEquals("FOO", table.getName());
+		statement.execute("DROP TABLE FOO");
 		connection.close();
 	}
 	
