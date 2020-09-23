@@ -4,6 +4,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
+import org.hibernate.boot.Metadata;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.dialect.Dialect;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.junit.Before;
@@ -28,6 +31,24 @@ public class SchemaExportFacadeTest {
 		assertNotNull(schemaExportFacade);
 		assertNull(schemaExportFacade.metadata);
 		assertSame(schemaExportFacade.target, schemaExportTarget);
+	}
+	
+	@Test
+	public void testSetConfiguration() {
+		Configuration configurationTarget = new Configuration();
+		configurationTarget.setProperty("hibernate.dialect", TestDialect.class.getName());
+		ConfigurationFacadeImpl configuration = new ConfigurationFacadeImpl(FACADE_FACTORY, configurationTarget);
+		Metadata metadata = configuration.getMetadata();
+		assertNull(schemaExportFacade.metadata);
+		schemaExportFacade.setConfiguration(configuration);
+		assertSame(metadata, schemaExportFacade.metadata);
+	}
+	
+	public static class TestDialect extends Dialect {
+		@Override
+		public int getVersion() {
+			return 0;
+		}
 	}
 
 }
