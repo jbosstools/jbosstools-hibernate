@@ -42,10 +42,9 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 
 	@Override
 	public ISchemaExport createSchemaExport(Object target) {
-		// TODO Auto-generated method stub
-		return null;
+		return new SchemaExportFacadeImpl(this, target);
 	}
-
+	
 	@Override
 	public IGenericExporter createGenericExporter(Object target) {
 		// TODO Auto-generated method stub
