@@ -25,4 +25,11 @@ public class GenericExporterFacadeImpl extends AbstractGenericExporterFacade {
 				templateName);
 	}
 
+	@Override 
+	public void setForEach(String forEach) {
+		((GenericExporter)getTarget()).getProperties().setProperty(
+				ExporterConstants.FOR_EACH, 
+				forEach);
+	}
+
 }

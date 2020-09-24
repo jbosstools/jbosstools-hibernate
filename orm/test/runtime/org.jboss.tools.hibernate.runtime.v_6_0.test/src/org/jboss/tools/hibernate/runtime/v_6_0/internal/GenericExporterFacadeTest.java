@@ -37,4 +37,11 @@ public class GenericExporterFacadeTest {
 		assertEquals("barfoo", genericExporter.getProperties().get(ExporterConstants.TEMPLATE_NAME));
 	}
 	
+	@Test
+	public void testSetForEach() {
+		assertNull(genericExporter.getProperties().get(ExporterConstants.FOR_EACH));
+		genericExporterFacade.setForEach("foobar");
+		assertEquals("foobar", genericExporter.getProperties().get(ExporterConstants.FOR_EACH));
+	}
+	
 }
