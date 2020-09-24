@@ -18,4 +18,11 @@ public class GenericExporterFacadeImpl extends AbstractGenericExporterFacade {
 				filePattern);
 	}
 
+	@Override 
+	public void setTemplateName(String templateName) {
+		((GenericExporter)getTarget()).getProperties().setProperty(
+				ExporterConstants.TEMPLATE_NAME, 
+				templateName);
+	}
+
 }
