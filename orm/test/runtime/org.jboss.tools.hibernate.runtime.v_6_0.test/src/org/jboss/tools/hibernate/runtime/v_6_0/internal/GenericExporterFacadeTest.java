@@ -7,6 +7,7 @@ import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -42,6 +43,13 @@ public class GenericExporterFacadeTest {
 		assertNull(genericExporter.getProperties().get(ExporterConstants.FOR_EACH));
 		genericExporterFacade.setForEach("foobar");
 		assertEquals("foobar", genericExporter.getProperties().get(ExporterConstants.FOR_EACH));
+	}
+	
+	@Test
+	public void testGetFilePattern() {
+		assertNull(genericExporterFacade.getFilePattern());
+		genericExporter.getProperties().put(ExporterConstants.FILE_PATTERN, "foobar");
+		Assert.assertEquals("foobar", genericExporterFacade.getFilePattern());
 	}
 	
 }
