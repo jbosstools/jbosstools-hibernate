@@ -142,6 +142,7 @@ public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 		s.ok();
 		
 		v.open();
+		v.activate();
 		EditConfigurationShell s2 = v.openConsoleConfiguration(CONSOLE_NAME);
 		s2.close();
 		

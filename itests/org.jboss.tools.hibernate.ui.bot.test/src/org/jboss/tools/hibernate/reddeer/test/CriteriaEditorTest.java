@@ -98,6 +98,7 @@ public class CriteriaEditorTest extends HibernateRedDeerTest {
 				v.deleteConsoleConfiguration(i.getText());
 			}
 		}
+		v.activate();
 		EditConfigurationShell confShell = v.addConfiguration();
 		confShell.setName(prj);
 		EditConfigurationMainPage mainPage = confShell.getMainPage();
@@ -105,6 +106,7 @@ public class CriteriaEditorTest extends HibernateRedDeerTest {
 		mainPage.setType("JPA (jdk 1.5+)");
 		mainPage.setDatabaseConnection("[JPA Project Configured Connection]");
 		mainPage.setHibernateVersion(hbVersion);
+		confShell.setFocus();
 		confShell.ok();
 	}
 		
