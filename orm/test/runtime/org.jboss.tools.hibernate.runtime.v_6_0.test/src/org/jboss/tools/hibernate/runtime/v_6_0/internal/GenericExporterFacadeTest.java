@@ -52,4 +52,11 @@ public class GenericExporterFacadeTest {
 		Assert.assertEquals("foobar", genericExporterFacade.getFilePattern());
 	}
 	
+	@Test
+	public void testGetTemplateName() {
+		assertNull(genericExporterFacade.getTemplateName());
+		genericExporter.getProperties().put(ExporterConstants.TEMPLATE_NAME, "foobar");
+		Assert.assertEquals("foobar", genericExporterFacade.getTemplateName());
+	}
+	
 }

@@ -36,5 +36,10 @@ public class GenericExporterFacadeImpl extends AbstractGenericExporterFacade {
 	public String getFilePattern() {
 		return ((GenericExporter)getTarget()).getProperties().getProperty(ExporterConstants.FILE_PATTERN);
 	}
+	
+	@Override
+	public String getTemplateName() {
+		return ((GenericExporter)getTarget()).getProperties().getProperty(ExporterConstants.TEMPLATE_NAME);
+	}
 
 }
