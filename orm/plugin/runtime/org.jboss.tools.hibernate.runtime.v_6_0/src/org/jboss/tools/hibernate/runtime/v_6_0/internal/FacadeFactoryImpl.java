@@ -47,8 +47,7 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	
 	@Override
 	public IGenericExporter createGenericExporter(Object target) {
-		// TODO Auto-generated method stub
-		return null;
+		return new GenericExporterFacadeImpl(this, target);
 	}
 
 	@Override
