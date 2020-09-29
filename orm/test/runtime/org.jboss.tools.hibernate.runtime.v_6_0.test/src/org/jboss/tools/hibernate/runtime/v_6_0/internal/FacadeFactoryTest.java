@@ -20,6 +20,7 @@ import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tool.internal.export.ddl.DdlExporter;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
+import org.hibernate.tool.internal.export.query.QueryExporter;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
@@ -29,6 +30,7 @@ import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
+import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
@@ -117,6 +119,13 @@ public class FacadeFactoryTest {
 		GenericExporter genericExporter = new GenericExporter();
 		IGenericExporter facade = facadeFactory.createGenericExporter(genericExporter);
 		assertSame(genericExporter, ((IFacade)facade).getTarget());		
+	}
+	
+	@Test
+	public void testCreateQueryExporter() {
+		QueryExporter queryExporter = new QueryExporter();
+		IQueryExporter facade = facadeFactory.createQueryExporter(queryExporter);
+		Assert.assertSame(queryExporter, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test

@@ -1,5 +1,6 @@
 .project
 .classpath
+.java-version
 .settings/
 lib/
 target/
