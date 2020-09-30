@@ -22,8 +22,7 @@ public class ConfigurationMetadataDescriptor implements MetadataDescriptor {
 
 	@Override
 	public Properties getProperties() {
-		// TODO Auto-generated method stub
-		return null;
+		return configurationFacade.getProperties();
 	}
 
 }

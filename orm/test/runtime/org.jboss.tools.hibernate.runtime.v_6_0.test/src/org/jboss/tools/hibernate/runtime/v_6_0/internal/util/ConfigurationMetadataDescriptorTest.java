@@ -3,6 +3,8 @@ package org.jboss.tools.hibernate.runtime.v_6_0.internal.util;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 
+import java.util.Properties;
+
 import org.hibernate.cfg.Configuration;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.ConfigurationFacadeImpl;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.FacadeFactoryImpl;
@@ -30,5 +32,12 @@ public class ConfigurationMetadataDescriptorTest {
 		assertNotNull(configurationMetadataDescriptor);
 		assertSame(configurationFacade, configurationMetadataDescriptor.configurationFacade);
 	}
-
+	
+	@Test 
+	public void testGetProperties() {
+		Properties properties = new Properties();
+		configurationTarget.setProperties(properties);
+		assertSame(properties, configurationMetadataDescriptor.getProperties());
+	}
+	
 }
