@@ -3,7 +3,9 @@ package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.jboss.tools.hibernate.runtime.common.AbstractExporterFacade;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.ConfigurationMetadataDescriptor;
 
@@ -15,16 +17,22 @@ public class ExporterFacadeImpl extends AbstractExporterFacade {
 
 	@Override
 	public void setConfiguration(IConfiguration configuration) {
-		Exporter exporter = (Exporter)getTarget();
 		setCustomProperties(configuration.getProperties());
-		exporter.getProperties().put(
+		((Exporter)getTarget()).getProperties().put(
 				ExporterConstants.METADATA_DESCRIPTOR, 
 				new ConfigurationMetadataDescriptor((ConfigurationFacadeImpl)configuration));
+	}
+	
+	@Override
+	public void setArtifactCollector(IArtifactCollector artifactCollector) {
+		((Exporter)getTarget()).getProperties().put(
+				ExporterConstants.ARTIFACT_COLLECTOR,
+				((IFacade)artifactCollector).getTarget());
 	}
 
 	@Override
 	protected String getHibernateConfigurationExporterClassName() {
 		return "org.hibernate.tool.internal.export.cfg.CfgExporter";
 	}
-
+	
 }

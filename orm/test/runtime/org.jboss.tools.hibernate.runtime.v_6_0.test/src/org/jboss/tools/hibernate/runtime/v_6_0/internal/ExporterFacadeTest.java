@@ -8,9 +8,13 @@ import java.lang.reflect.Field;
 import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
+import org.hibernate.tool.api.export.ArtifactCollector;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
+import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
+import org.jboss.tools.hibernate.runtime.common.AbstractArtifactCollectorFacade;
+import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.ConfigurationMetadataDescriptor;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,11 +59,24 @@ public class ExporterFacadeTest {
 		assertSame(object, configurationFacade);
 	}
 	
-	private static class TestExporter implements Exporter {
+	@Test
+	public void testSetArtifactCollector() {
+		ArtifactCollector artifactCollectorTarget = new DefaultArtifactCollector();
+		IArtifactCollector artifactCollectorFacade = 
+				new AbstractArtifactCollectorFacade(FACADE_FACTORY, artifactCollectorTarget) {};
+		exporterFacade.setArtifactCollector(artifactCollectorFacade);
+		assertSame(
+				exporterTarget.getProperties().get(ExporterConstants.ARTIFACT_COLLECTOR), 
+				artifactCollectorTarget);
+	}
+	
+	private static class TestExporter implements Exporter {		
+
+		Properties properties = new Properties();
 
 		@Override
 		public Properties getProperties() {
-			return null;
+			return properties;
 		}
 
 		@Override
