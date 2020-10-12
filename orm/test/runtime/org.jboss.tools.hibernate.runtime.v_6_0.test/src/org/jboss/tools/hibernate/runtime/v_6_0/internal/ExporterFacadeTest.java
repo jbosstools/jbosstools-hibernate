@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -89,9 +90,17 @@ public class ExporterFacadeTest {
 				templatePath);
 	}
 	
+	@Test
+	public void testStart() throws Exception {
+		assertFalse(((TestExporter)exporterTarget).started);
+		exporterFacade.start();
+		assertTrue(((TestExporter)exporterTarget).started);
+	}
+	
 	private static class TestExporter implements Exporter {		
 
 		Properties properties = new Properties();
+		boolean started = false;
 
 		@Override
 		public Properties getProperties() {
@@ -100,6 +109,7 @@ public class ExporterFacadeTest {
 
 		@Override
 		public void start() {
+			started = true;
 		}
 		
 	}
