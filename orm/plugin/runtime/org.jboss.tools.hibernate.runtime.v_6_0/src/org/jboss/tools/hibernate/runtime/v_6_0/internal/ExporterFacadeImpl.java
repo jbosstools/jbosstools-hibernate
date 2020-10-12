@@ -38,6 +38,11 @@ public class ExporterFacadeImpl extends AbstractExporterFacade {
 	}
 
 	@Override
+	public void setTemplatePath(String[] templatePath) {
+		((Exporter)getTarget()).getProperties().put(ExporterConstants.TEMPLATE_PATH, templatePath);
+	}
+
+	@Override
 	protected String getHibernateConfigurationExporterClassName() {
 		return "org.hibernate.tool.internal.export.cfg.CfgExporter";
 	}

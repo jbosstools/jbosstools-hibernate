@@ -77,8 +77,16 @@ public class ExporterFacadeTest {
 		exporterFacade.setOutputDirectory(file);
 		assertSame(
 				exporterTarget.getProperties().get(ExporterConstants.DESTINATION_FOLDER),
-				file);
-		
+				file);		
+	}
+	
+	@Test
+	public void testSetTemplatePath() {
+		String[] templatePath = new String[] {};
+		exporterFacade.setTemplatePath(templatePath);
+		assertSame(
+				exporterTarget.getProperties().get(ExporterConstants.TEMPLATE_PATH),
+				templatePath);
 	}
 	
 	private static class TestExporter implements Exporter {		
