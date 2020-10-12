@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
@@ -95,6 +96,15 @@ public class ExporterFacadeTest {
 		assertFalse(((TestExporter)exporterTarget).started);
 		exporterFacade.start();
 		assertTrue(((TestExporter)exporterTarget).started);
+	}
+	
+	@Test
+	public void testGetProperties() {
+		Properties properties = new Properties();
+		assertNotNull(exporterFacade.getProperties());
+		assertNotSame(properties, exporterFacade.getProperties());
+		((TestExporter)exporterTarget).properties = properties;
+		assertSame(properties, exporterFacade.getProperties());
 	}
 	
 	private static class TestExporter implements Exporter {		
