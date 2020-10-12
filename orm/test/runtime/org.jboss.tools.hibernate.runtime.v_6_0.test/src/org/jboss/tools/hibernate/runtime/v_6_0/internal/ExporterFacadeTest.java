@@ -4,6 +4,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Properties;
 
@@ -68,6 +69,16 @@ public class ExporterFacadeTest {
 		assertSame(
 				exporterTarget.getProperties().get(ExporterConstants.ARTIFACT_COLLECTOR), 
 				artifactCollectorTarget);
+	}
+	
+	@Test
+	public void testSetOutputDirectory() {
+		File file = new File("");
+		exporterFacade.setOutputDirectory(file);
+		assertSame(
+				exporterTarget.getProperties().get(ExporterConstants.DESTINATION_FOLDER),
+				file);
+		
 	}
 	
 	private static class TestExporter implements Exporter {		

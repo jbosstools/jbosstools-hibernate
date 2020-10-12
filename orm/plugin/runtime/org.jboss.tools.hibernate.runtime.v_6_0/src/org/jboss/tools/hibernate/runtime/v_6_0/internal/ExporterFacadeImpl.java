@@ -1,5 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
+import java.io.File;
+
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.jboss.tools.hibernate.runtime.common.AbstractExporterFacade;
@@ -28,6 +30,11 @@ public class ExporterFacadeImpl extends AbstractExporterFacade {
 		((Exporter)getTarget()).getProperties().put(
 				ExporterConstants.ARTIFACT_COLLECTOR,
 				((IFacade)artifactCollector).getTarget());
+	}
+
+	@Override
+	public void setOutputDirectory(File file) {
+		((Exporter)getTarget()).getProperties().put(ExporterConstants.DESTINATION_FOLDER, file);
 	}
 
 	@Override
