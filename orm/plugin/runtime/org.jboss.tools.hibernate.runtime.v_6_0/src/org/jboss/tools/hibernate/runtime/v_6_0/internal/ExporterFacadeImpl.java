@@ -47,4 +47,9 @@ public class ExporterFacadeImpl extends AbstractExporterFacade {
 		return "org.hibernate.tool.internal.export.cfg.CfgExporter";
 	}
 	
+	@Override
+	protected String getGenericExporterClassName() {
+		return "org.hibernate.tool.internal.export.common.GenericExporter";
+	}
+
 }

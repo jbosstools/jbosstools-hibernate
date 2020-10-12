@@ -3,6 +3,7 @@ package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
@@ -16,8 +17,11 @@ import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
+import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.jboss.tools.hibernate.runtime.common.AbstractArtifactCollectorFacade;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
+import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.ConfigurationMetadataDescriptor;
 import org.junit.Before;
 import org.junit.Test;
@@ -105,6 +109,17 @@ public class ExporterFacadeTest {
 		assertNotSame(properties, exporterFacade.getProperties());
 		((TestExporter)exporterTarget).properties = properties;
 		assertSame(properties, exporterFacade.getProperties());
+	}
+	
+	@Test
+	public void testGetGenericExporter() {
+		IGenericExporter genericExporter = exporterFacade.getGenericExporter();
+		assertNull(genericExporter);
+		exporterTarget = new GenericExporter();
+		exporterFacade = new ExporterFacadeImpl(FACADE_FACTORY, exporterTarget);
+		genericExporter = exporterFacade.getGenericExporter();
+		assertNotNull(genericExporter);
+		assertSame(exporterTarget, ((IFacade)genericExporter).getTarget());
 	}
 	
 	private static class TestExporter implements Exporter {		
