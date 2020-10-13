@@ -148,6 +148,18 @@ public class ExporterFacadeTest {
 		assertSame(exporterTarget, ((IFacade)queryExporter).getTarget());
 	}
 	
+	@Test
+	public void testSetCustomProperties() {
+		Properties properties = new Properties();
+		exporterFacade.setCustomProperties(properties);
+		assertNotSame(properties, ((TestExporter)exporterTarget).properties);
+		exporterTarget = new CfgExporter();
+		exporterFacade = new ExporterFacadeImpl(FACADE_FACTORY, exporterTarget);
+		assertNotSame(properties, ((CfgExporter)exporterTarget).getCustomProperties());
+		exporterFacade.setCustomProperties(properties);
+		assertSame(properties, ((CfgExporter)exporterTarget).getCustomProperties());
+	}
+	
 	private static class TestExporter implements Exporter {		
 
 		Properties properties = new Properties();
@@ -161,6 +173,11 @@ public class ExporterFacadeTest {
 		@Override
 		public void start() {
 			started = true;
+		}
+		
+		@SuppressWarnings("unused")
+		public void setCustomProperties(Properties p) {
+			properties = p;
 		}
 		
 	}
