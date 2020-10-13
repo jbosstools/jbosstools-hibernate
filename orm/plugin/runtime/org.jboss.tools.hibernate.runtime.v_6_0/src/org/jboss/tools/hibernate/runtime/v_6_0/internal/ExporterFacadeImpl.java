@@ -52,4 +52,9 @@ public class ExporterFacadeImpl extends AbstractExporterFacade {
 		return "org.hibernate.tool.internal.export.common.GenericExporter";
 	}
 
+	@Override
+	protected String getHbm2DDLExporterClassName() {
+		return "org.hibernate.tool.internal.export.ddl.DdlExporter";
+	}
+
 }
