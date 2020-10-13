@@ -8,6 +8,8 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.lang.reflect.Field;
 import java.util.Properties;
 
@@ -160,8 +162,20 @@ public class ExporterFacadeTest {
 		assertSame(properties, ((CfgExporter)exporterTarget).getCustomProperties());
 	}
 	
+	@Test
+	public void testSetOutput() {
+		StringWriter stringWriter = new StringWriter();
+		exporterFacade.setOutput(stringWriter);
+		assertNotSame(stringWriter, ((TestExporter)exporterTarget).writer);
+		exporterTarget = new CfgExporter();
+		exporterFacade = new ExporterFacadeImpl(FACADE_FACTORY, exporterTarget);
+		exporterFacade.setOutput(stringWriter);
+		assertSame(stringWriter, ((CfgExporter)exporterTarget).getOutput());
+	}
+		
 	private static class TestExporter implements Exporter {		
 
+		Writer writer = null;
 		Properties properties = new Properties();
 		boolean started = false;
 
@@ -178,6 +192,11 @@ public class ExporterFacadeTest {
 		@SuppressWarnings("unused")
 		public void setCustomProperties(Properties p) {
 			properties = p;
+		}
+		
+		@SuppressWarnings("unused")
+		public void setOutput(Writer w) {
+			writer = w;
 		}
 		
 	}
