@@ -57,4 +57,9 @@ public class ExporterFacadeImpl extends AbstractExporterFacade {
 		return "org.hibernate.tool.internal.export.ddl.DdlExporter";
 	}
 
+	@Override
+	protected String getQueryExporterClassName() {
+		return "org.hibernate.tool.internal.export.query.QueryExporter";
+	}
+
 }
