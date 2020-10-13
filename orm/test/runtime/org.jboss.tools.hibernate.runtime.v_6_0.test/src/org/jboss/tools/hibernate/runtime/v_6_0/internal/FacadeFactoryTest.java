@@ -13,6 +13,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.export.ArtifactCollector;
+import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
@@ -26,6 +27,7 @@ import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
+import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
@@ -142,6 +144,17 @@ public class FacadeFactoryTest {
 		TableFilter tableFilter = new TableFilter();
 		ITableFilter facade = facadeFactory.createTableFilter(tableFilter);
 		assertSame(tableFilter, ((IFacade)facade).getTarget());		
+	}
+	
+	@Test
+	public void testCreateExporter() {
+		Exporter exporter = (Exporter)Proxy.newProxyInstance(
+				facadeFactory.getClassLoader(), 
+				new Class[] { Exporter.class }, 
+				new TestInvocationHandler());
+		IExporter facade = facadeFactory.createExporter(exporter);
+		Assert.assertTrue(facade instanceof ExporterFacadeImpl);
+		Assert.assertSame(exporter, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
