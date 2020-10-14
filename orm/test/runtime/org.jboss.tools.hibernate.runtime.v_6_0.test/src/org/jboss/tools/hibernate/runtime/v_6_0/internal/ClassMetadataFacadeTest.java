@@ -20,11 +20,11 @@ import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
-import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
+import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metamodel.MappingMetamodel;
 import org.hibernate.metamodel.spi.RuntimeModelCreationContext;
-import org.hibernate.persister.entity.EntityPersister;
+import org.hibernate.persister.entity.AbstractEntityPersister;
 import org.hibernate.persister.entity.SingleTableEntityPersister;
 import org.hibernate.persister.spi.PersisterCreationContext;
 import org.junit.Before;
@@ -34,7 +34,7 @@ public class ClassMetadataFacadeTest {
 	
 	private static final FacadeFactoryImpl FACADE_FACTORY = new FacadeFactoryImpl();
 	
-	private EntityPersister classMetadataTarget;
+	private ClassMetadata classMetadataTarget;
 	private ClassMetadataFacadeImpl classMetadataFacade;
 	
 	@Before
@@ -47,8 +47,13 @@ public class ClassMetadataFacadeTest {
 	public void testGetMappedClass() {
 		assertSame(FooBar.class, classMetadataFacade.getMappedClass());
 	}
+	
+	@Test
+	public void testGetPropertyValue() {
+		assertSame(PROPERTY_VALUE, classMetadataFacade.getPropertyValue(null, null));
+	}
 
-	private EntityPersister setupFooBarPersister() {
+	private ClassMetadata setupFooBarPersister() {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySetting("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 		StandardServiceRegistry serviceRegistry = builder.build();		
@@ -67,13 +72,12 @@ public class ClassMetadataFacadeTest {
 						bootstrapContext, 
 						metadataBuildingOptions, 
 						inFlightMetadataCollector);
-		return new SingleTableEntityPersister(
+		AbstractEntityPersister result = new TestEntityPersister(
 				createPersistentClass(metadataBuildingContext), 
-				null,
-				null,
 				createPersisterCreationContext(
 						serviceRegistry,
 						bootstrapContext));
+		return result;
 	}
 	
 	private PersisterCreationContext createPersisterCreationContext(
@@ -95,7 +99,7 @@ public class ClassMetadataFacadeTest {
 		ArrayList<Column> keyList = new ArrayList<>();
 		keyList.add(c);
 		t.createUniqueKey(keyList);
-		SimpleValue sv = new BasicValue(metadataBuildingContext, t);
+		BasicValue sv = new BasicValue(metadataBuildingContext, t);
 		sv.setNullValue("null");
 		sv.setTypeName(Integer.class.getName());
 		sv.addColumn(c);
@@ -149,6 +153,26 @@ public class ClassMetadataFacadeTest {
 		
 	}
 	
-	public class FooBar {}
+	
+	private static final Object PROPERTY_VALUE = new Object();
+
+	private static class TestEntityPersister extends SingleTableEntityPersister {
+		
+		public TestEntityPersister(
+				PersistentClass persistentClass, 
+				PersisterCreationContext creationContext) {
+			super(persistentClass, null, null, creationContext);
+		}
+		
+		@Override
+		public Object getPropertyValue(Object object, String propertyName) {
+			return PROPERTY_VALUE;
+		}
+		
+	}
+	
+	public class FooBar {
+		public int id = 1967;
+	}
 	
 }
