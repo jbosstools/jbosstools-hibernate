@@ -58,6 +58,11 @@ public class ClassMetadataFacadeTest {
 	public void testGetIdentifierPropertyName() {
 		assertEquals("foo", classMetadataFacade.getIdentifierPropertyName());
 	}
+	
+	@Test
+	public void testGetEntityName() {
+		assertEquals("foobar", classMetadataFacade.getEntityName());
+	}
 
 	private ClassMetadata setupFooBarPersister() {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
