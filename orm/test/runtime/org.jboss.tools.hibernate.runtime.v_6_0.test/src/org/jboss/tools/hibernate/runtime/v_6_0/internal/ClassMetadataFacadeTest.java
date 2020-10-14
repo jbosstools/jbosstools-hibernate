@@ -63,6 +63,11 @@ public class ClassMetadataFacadeTest {
 	public void testGetEntityName() {
 		assertEquals("foobar", classMetadataFacade.getEntityName());
 	}
+	
+	@Test
+	public void testGetPropertyNames() {
+		assertSame(PROPERTY_NAMES, classMetadataFacade.getPropertyNames());
+	}
 
 	private ClassMetadata setupFooBarPersister() {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
@@ -166,6 +171,7 @@ public class ClassMetadataFacadeTest {
 	
 	
 	private static final Object PROPERTY_VALUE = new Object();
+	private static final String[] PROPERTY_NAMES = new String[] {};
 
 	private static class TestEntityPersister extends SingleTableEntityPersister {
 		
@@ -183,6 +189,11 @@ public class ClassMetadataFacadeTest {
 		@Override
 		public String getIdentifierPropertyName() {
 			return "foo";
+		}
+		
+		@Override
+		public String[] getPropertyNames() {
+			return PROPERTY_NAMES;
 		}
 		
 	}
