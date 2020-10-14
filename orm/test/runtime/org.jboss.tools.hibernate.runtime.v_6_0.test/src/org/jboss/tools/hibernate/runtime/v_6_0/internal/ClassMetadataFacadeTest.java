@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
 import java.util.ArrayList;
@@ -51,6 +52,11 @@ public class ClassMetadataFacadeTest {
 	@Test
 	public void testGetPropertyValue() {
 		assertSame(PROPERTY_VALUE, classMetadataFacade.getPropertyValue(null, null));
+	}
+	
+	@Test
+	public void testGetIdentifierPropertyName() {
+		assertEquals("foo", classMetadataFacade.getIdentifierPropertyName());
 	}
 
 	private ClassMetadata setupFooBarPersister() {
@@ -167,6 +173,11 @@ public class ClassMetadataFacadeTest {
 		@Override
 		public Object getPropertyValue(Object object, String propertyName) {
 			return PROPERTY_VALUE;
+		}
+		
+		@Override
+		public String getIdentifierPropertyName() {
+			return "foo";
 		}
 		
 	}
