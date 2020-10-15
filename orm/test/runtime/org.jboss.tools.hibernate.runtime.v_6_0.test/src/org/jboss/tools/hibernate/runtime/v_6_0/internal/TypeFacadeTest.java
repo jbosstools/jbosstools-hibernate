@@ -1,10 +1,15 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.hibernate.type.ArrayType;
 import org.hibernate.type.ClassType;
+import org.hibernate.type.EntityType;
+import org.hibernate.type.ManyToOneType;
+import org.hibernate.type.spi.TypeConfiguration;
 import org.jboss.tools.hibernate.runtime.common.AbstractTypeFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
@@ -51,6 +56,19 @@ public class TypeFacadeTest {
 		ArrayType arrayType = new ArrayType(null, "foo", "bar", String.class);
 		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, arrayType){};
 		assertNull(typeFacade.fromStringValue("just a random string"));
+	}
+	
+	@Test
+	public void testIsEntityType() {
+		IType typeFacade = null;
+		// first try type that is not an entity type
+		ClassType classType = new ClassType();
+		typeFacade =  new AbstractTypeFacade(FACADE_FACTORY, classType){};
+		assertFalse(typeFacade.isEntityType());
+		// next try type that is an entity type
+		EntityType entityType = new ManyToOneType((TypeConfiguration)null, null);
+		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, entityType){};
+		assertTrue(entityType.isEntityType());
 	}
 	
 	
