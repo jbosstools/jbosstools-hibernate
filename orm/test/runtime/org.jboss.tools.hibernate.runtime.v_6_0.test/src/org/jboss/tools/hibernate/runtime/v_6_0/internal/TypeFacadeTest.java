@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import org.hibernate.type.AnyType;
 import org.hibernate.type.ArrayType;
 import org.hibernate.type.ClassType;
 import org.hibernate.type.EntityType;
@@ -14,7 +15,6 @@ import org.hibernate.type.spi.TypeConfiguration;
 import org.jboss.tools.hibernate.runtime.common.AbstractTypeFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
-import org.junit.Assert;
 import org.junit.Test;
 
 public class TypeFacadeTest {
@@ -88,7 +88,20 @@ public class TypeFacadeTest {
 		OneToOneType oneToOneType = new OneToOneType(
 				null, null, null, false, null, false, false, null, null, false);
 		typeFacade =  new AbstractTypeFacade(FACADE_FACTORY, oneToOneType){};
-		Assert.assertTrue(oneToOneType.isOneToOne());
+		assertTrue(oneToOneType.isOneToOne());
+	}
+	
+	@Test
+	public void testIsAnyType() {
+		IType typeFacade = null;
+		// first try type that is not a any type
+		ClassType classType = new ClassType();
+		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, classType){};
+		assertFalse(typeFacade.isAnyType());
+		// next try a any type
+		AnyType anyType = new AnyType(null, null, null, true);
+		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, anyType){};
+		assertTrue(typeFacade.isAnyType());
 	}
 	
 	
