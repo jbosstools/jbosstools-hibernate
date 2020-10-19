@@ -21,6 +21,7 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.tuple.component.ComponentMetamodel;
 import org.hibernate.type.AnyType;
 import org.hibernate.type.ArrayType;
+import org.hibernate.type.BagType;
 import org.hibernate.type.ClassType;
 import org.hibernate.type.ComponentType;
 import org.hibernate.type.EntityType;
@@ -31,7 +32,6 @@ import org.hibernate.type.spi.TypeConfiguration;
 import org.jboss.tools.hibernate.runtime.common.AbstractTypeFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
-import org.junit.Assert;
 import org.junit.Test;
 
 public class TypeFacadeTest {
@@ -191,6 +191,20 @@ public class TypeFacadeTest {
 		IntegerType integerType = new IntegerType();
 		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, integerType){};
 		assertTrue(typeFacade.isIntegerType());
+	}
+	
+	@Test
+	public void testIsArrayType() {
+		IType typeFacade = null;
+		ClassType classType = new ClassType();
+		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, classType){};
+		assertFalse(typeFacade.isArrayType());
+		BagType bagType = new BagType(null, null, null);
+		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, bagType){};
+		assertFalse(typeFacade.isArrayType());
+		ArrayType arrayType = new ArrayType(null, null, null, String.class);
+		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, arrayType){};
+		assertTrue(typeFacade.isArrayType());
 	}
 	
 	public static class TestDialect extends Dialect {
