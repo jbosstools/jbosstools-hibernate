@@ -30,6 +30,7 @@ import org.hibernate.type.spi.TypeConfiguration;
 import org.jboss.tools.hibernate.runtime.common.AbstractTypeFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class TypeFacadeTest {
@@ -167,6 +168,17 @@ public class TypeFacadeTest {
 		ArrayType arrayType = new ArrayType(null, null, null, String.class);
 		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, arrayType){};
 		assertEquals(String[].class, typeFacade.getReturnedClass());
+	}
+	
+	@Test
+	public void testGetAssociatedEntityName() {
+		IType typeFacade = null;
+		ClassType classType = new ClassType();
+		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, classType){};
+		Assert.assertNull(typeFacade.getAssociatedEntityName());
+		EntityType entityType = new ManyToOneType((TypeConfiguration)null, "foo");
+		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, entityType){};
+		Assert.assertEquals("foo", typeFacade.getAssociatedEntityName());
 	}
 	
 	public static class TestDialect extends Dialect {
