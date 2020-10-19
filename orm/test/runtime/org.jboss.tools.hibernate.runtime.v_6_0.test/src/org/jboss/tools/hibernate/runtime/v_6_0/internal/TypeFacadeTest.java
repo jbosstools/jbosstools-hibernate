@@ -28,10 +28,12 @@ import org.hibernate.type.EntityType;
 import org.hibernate.type.IntegerType;
 import org.hibernate.type.ManyToOneType;
 import org.hibernate.type.OneToOneType;
+import org.hibernate.type.StringType;
 import org.hibernate.type.spi.TypeConfiguration;
 import org.jboss.tools.hibernate.runtime.common.AbstractTypeFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class TypeFacadeTest {
@@ -205,6 +207,20 @@ public class TypeFacadeTest {
 		ArrayType arrayType = new ArrayType(null, null, null, String.class);
 		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, arrayType){};
 		assertTrue(typeFacade.isArrayType());
+	}
+	
+	@Test
+	public void testIsInstanceOfPrimitiveType() {
+		IType typeFacade = null;
+		ClassType classType = new ClassType();
+		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, classType){};
+		assertFalse(typeFacade.isInstanceOfPrimitiveType());
+		StringType stringType = new StringType();
+		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, stringType){};
+		assertFalse(typeFacade.isInstanceOfPrimitiveType());
+		IntegerType integerType = new IntegerType();
+		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, integerType){};
+		assertTrue(typeFacade.isInstanceOfPrimitiveType());
 	}
 	
 	public static class TestDialect extends Dialect {
