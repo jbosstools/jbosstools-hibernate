@@ -30,6 +30,7 @@ import org.hibernate.type.spi.TypeConfiguration;
 import org.jboss.tools.hibernate.runtime.common.AbstractTypeFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class TypeFacadeTest {
@@ -143,6 +144,19 @@ public class TypeFacadeTest {
 								btc));
 		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, componentType){};
 		assertTrue(typeFacade.isComponentType());
+	}
+	
+	@Test
+	public void testIsCollectionType() {
+		IType typeFacade = null;
+		// first try type that is not a collection type
+		ClassType classType = new ClassType();
+		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, classType){};
+		Assert.assertFalse(typeFacade.isCollectionType());
+		// next try a collection type
+		ArrayType arrayType = new ArrayType(null, null, null, String.class);
+		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, arrayType){};
+		Assert.assertTrue(typeFacade.isCollectionType());
 	}
 	
 	public static class TestDialect extends Dialect {
