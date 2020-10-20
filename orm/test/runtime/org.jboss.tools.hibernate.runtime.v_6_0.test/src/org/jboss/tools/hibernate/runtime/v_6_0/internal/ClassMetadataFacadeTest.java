@@ -28,6 +28,10 @@ import org.hibernate.metamodel.spi.RuntimeModelCreationContext;
 import org.hibernate.persister.entity.AbstractEntityPersister;
 import org.hibernate.persister.entity.SingleTableEntityPersister;
 import org.hibernate.persister.spi.PersisterCreationContext;
+import org.hibernate.type.StringType;
+import org.hibernate.type.Type;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
+import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -68,6 +72,12 @@ public class ClassMetadataFacadeTest {
 	public void testGetPropertyNames() {
 		assertSame(PROPERTY_NAMES, classMetadataFacade.getPropertyNames());
 	}
+	
+	@Test
+	public void testGetPropertyTypes() {
+		IType[] typeFacades = classMetadataFacade.getPropertyTypes();
+		assertSame(PROPERTY_TYPE, ((IFacade)typeFacades[0]).getTarget());
+ 	}
 
 	private ClassMetadata setupFooBarPersister() {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
@@ -142,13 +152,11 @@ public class ClassMetadataFacadeTest {
 
 		@Override
 		public MetadataImplementor getBootModel() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public MappingMetamodel getDomainModel() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
@@ -172,6 +180,8 @@ public class ClassMetadataFacadeTest {
 	
 	private static final Object PROPERTY_VALUE = new Object();
 	private static final String[] PROPERTY_NAMES = new String[] {};
+	private static final Type PROPERTY_TYPE = new StringType();
+	
 
 	private static class TestEntityPersister extends SingleTableEntityPersister {
 		
@@ -194,6 +204,11 @@ public class ClassMetadataFacadeTest {
 		@Override
 		public String[] getPropertyNames() {
 			return PROPERTY_NAMES;
+		}
+		
+		@Override
+		public Type[] getPropertyTypes() {
+			return new Type[] { PROPERTY_TYPE };
 		}
 		
 	}
