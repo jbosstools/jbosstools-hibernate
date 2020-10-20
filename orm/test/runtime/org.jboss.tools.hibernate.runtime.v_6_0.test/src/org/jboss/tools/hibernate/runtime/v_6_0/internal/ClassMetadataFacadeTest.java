@@ -1,8 +1,13 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 
 import org.hibernate.boot.MetadataSources;
@@ -82,6 +87,22 @@ public class ClassMetadataFacadeTest {
 	@Test
 	public void testGetIdentifierType() {
 		assertSame(TYPE_INSTANCE, ((IFacade)classMetadataFacade.getIdentifierType()).getTarget());
+	}
+	
+	@Test
+	public void testIsInstanceOfAbstractEntityPersister() {
+		assertTrue(classMetadataFacade.isInstanceOfAbstractEntityPersister());
+		classMetadataTarget = (ClassMetadata)Proxy.newProxyInstance(
+				getClass().getClassLoader(), 
+				new Class[] { ClassMetadata.class }, 
+				new InvocationHandler() {
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+						return null;
+					}
+				});	
+		classMetadataFacade = new ClassMetadataFacadeImpl(FACADE_FACTORY, classMetadataTarget);
+		assertFalse(classMetadataFacade.isInstanceOfAbstractEntityPersister());
 	}
 
 	private ClassMetadata setupFooBarPersister() {
