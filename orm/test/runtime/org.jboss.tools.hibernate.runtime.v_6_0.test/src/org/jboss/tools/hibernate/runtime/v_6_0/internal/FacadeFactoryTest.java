@@ -24,6 +24,7 @@ import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.hibernate.tool.internal.export.query.QueryExporter;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
+import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
@@ -40,6 +41,7 @@ import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
+import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -179,6 +181,16 @@ public class FacadeFactoryTest {
 		Table table = new Table();
 		ITable facade = facadeFactory.createTable(table);
 		assertSame(table, ((IFacade)facade).getTarget());
+	}
+	
+	@Test
+	public void testCreateType() {
+		Type type = (Type)Proxy.newProxyInstance(
+				facadeFactory.getClassLoader(), 
+				new Class[] { Type.class }, 
+				new TestInvocationHandler());
+		IType facade = facadeFactory.createType(type);
+		Assert.assertSame(type, ((IFacade)facade).getTarget());
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {

@@ -232,11 +232,6 @@ import org.junit.Test;public class TypeFacadeTest {
 		assertEquals(int.class, typeFacade.getPrimitiveClass());
 	}
 	
-	public static class TestDialect extends Dialect {
-		@Override
-		public int getVersion() { return 0; }	
-	}
-
 	@Test
 	public void testGetRole() {
 		IType typeFacade = null;
@@ -248,4 +243,9 @@ import org.junit.Test;public class TypeFacadeTest {
 		Assert.assertEquals("foo", typeFacade.getRole());
 	}
 	
+	public static class TestDialect extends Dialect {
+		@Override
+		public int getVersion() { return 0; }	
+	}
+
 }

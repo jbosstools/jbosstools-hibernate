@@ -26,7 +26,6 @@ import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.IQueryTranslator;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
-import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 
@@ -186,12 +185,6 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 
 	@Override
 	public ITypeFactory createTypeFactory() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public IType createType(Object target) {
 		// TODO Auto-generated method stub
 		return null;
 	}
