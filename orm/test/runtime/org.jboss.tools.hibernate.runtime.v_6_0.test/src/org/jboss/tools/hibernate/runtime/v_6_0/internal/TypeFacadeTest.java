@@ -34,9 +34,7 @@ import org.jboss.tools.hibernate.runtime.common.AbstractTypeFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.junit.Assert;
-import org.junit.Test;
-
-public class TypeFacadeTest {
+import org.junit.Test;public class TypeFacadeTest {
 	
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 	
@@ -239,4 +237,15 @@ public class TypeFacadeTest {
 		public int getVersion() { return 0; }	
 	}
 
+	@Test
+	public void testGetRole() {
+		IType typeFacade = null;
+		ClassType classType = new ClassType();
+		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, classType){};
+		Assert.assertNull(typeFacade.getRole());
+		ArrayType arrayType = new ArrayType(null, "foo", null, String.class);
+		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, arrayType){};
+		Assert.assertEquals("foo", typeFacade.getRole());
+	}
+	
 }
