@@ -76,8 +76,13 @@ public class ClassMetadataFacadeTest {
 	@Test
 	public void testGetPropertyTypes() {
 		IType[] typeFacades = classMetadataFacade.getPropertyTypes();
-		assertSame(PROPERTY_TYPE, ((IFacade)typeFacades[0]).getTarget());
+		assertSame(TYPE_INSTANCE, ((IFacade)typeFacades[0]).getTarget());
  	}
+	
+	@Test
+	public void testGetIdentifierType() {
+		assertSame(TYPE_INSTANCE, ((IFacade)classMetadataFacade.getIdentifierType()).getTarget());
+	}
 
 	private ClassMetadata setupFooBarPersister() {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
@@ -180,7 +185,7 @@ public class ClassMetadataFacadeTest {
 	
 	private static final Object PROPERTY_VALUE = new Object();
 	private static final String[] PROPERTY_NAMES = new String[] {};
-	private static final Type PROPERTY_TYPE = new StringType();
+	private static final Type TYPE_INSTANCE = new StringType();
 	
 
 	private static class TestEntityPersister extends SingleTableEntityPersister {
@@ -208,8 +213,13 @@ public class ClassMetadataFacadeTest {
 		
 		@Override
 		public Type[] getPropertyTypes() {
-			return new Type[] { PROPERTY_TYPE };
+			return new Type[] { TYPE_INSTANCE };
 		}
+		
+		@Override
+		public Type getIdentifierType() {
+			return TYPE_INSTANCE;
+ 		}
 		
 	}
 	
