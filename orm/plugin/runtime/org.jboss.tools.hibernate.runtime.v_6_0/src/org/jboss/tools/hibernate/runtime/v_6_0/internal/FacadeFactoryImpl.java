@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
+import org.hibernate.persister.entity.EntityPersister;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
@@ -89,8 +90,8 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 
 	@Override
 	public IEntityMetamodel createEntityMetamodel(Object target) {
-		// TODO Auto-generated method stub
-		return null;
+		assert target instanceof EntityPersister;
+		return new EntityMetamodelFacadeImpl(this, target);
 	}
 
 	@Override
