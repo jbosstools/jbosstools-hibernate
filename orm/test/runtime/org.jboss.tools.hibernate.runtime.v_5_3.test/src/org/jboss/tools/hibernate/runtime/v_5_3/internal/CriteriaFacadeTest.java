@@ -6,7 +6,6 @@ import java.lang.reflect.Proxy;
 
 import org.hibernate.Criteria;
 import org.jboss.tools.hibernate.runtime.common.AbstractCriteriaFacade;
-import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
 import org.junit.Assert;
@@ -31,14 +30,6 @@ public class CriteriaFacadeTest {
 				new Class[] { Criteria.class }, 
 				new TestInvocationHandler());
 		criteriaFacade = new AbstractCriteriaFacade(FACADE_FACTORY, criteria) {};
-	}
-	
-	@Test
-	public void testCreateCriteria() {
-		ICriteria criteria = criteriaFacade.createCriteria("foo", "bar");
-		Assert.assertNull(((IFacade)criteria).getTarget());
-		Assert.assertEquals("createCriteria", methodName);
-		Assert.assertArrayEquals(new Object[] { "foo", "bar"}, arguments);
 	}
 	
 	@Test
