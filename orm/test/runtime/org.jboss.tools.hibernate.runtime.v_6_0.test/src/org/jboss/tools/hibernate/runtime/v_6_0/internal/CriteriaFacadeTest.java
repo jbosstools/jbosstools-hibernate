@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -10,7 +11,6 @@ import java.util.List;
 
 import javax.persistence.Query;
 
-import org.jboss.tools.hibernate.runtime.common.AbstractCriteriaFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
 import org.junit.Before;
@@ -28,7 +28,7 @@ public class CriteriaFacadeTest {
 	
 	@Before
 	public void before() {
-		criteriaFacade = new AbstractCriteriaFacade(FACADE_FACTORY, createTestQuery()) {};		
+		criteriaFacade = new CriteriaFacadeImpl(FACADE_FACTORY, createTestQuery());		
 	}
 	
 	@Test
@@ -36,6 +36,11 @@ public class CriteriaFacadeTest {
 		assertEquals(maxResults, Integer.MIN_VALUE);
 		criteriaFacade.setMaxResults(Integer.MAX_VALUE);
 		assertEquals(maxResults, Integer.MAX_VALUE);
+	}
+	
+	@Test 
+	public void testList() {
+		assertSame(RESULT_LIST, criteriaFacade.list());
 	}
 	
 	private Query createTestQuery() {
