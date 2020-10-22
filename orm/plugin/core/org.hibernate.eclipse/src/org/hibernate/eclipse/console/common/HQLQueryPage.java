@@ -42,13 +42,13 @@ public class HQLQueryPage extends AbstractQueryPage {
 	private IQuery query;
 	private String queryString;
 	
-	public List<Object> getList() {
+	public List<?> getList() {
 		if (query==null) return Collections.emptyList();
 		if (list == null) {
 			try {
 				
 				//list = query.list();
-				list = new ArrayList<Object>();
+				ArrayList<Object> list = new ArrayList<Object>();
 				setupParameters(query, model);
 				long startTime = System.currentTimeMillis();
 				Iterator<?> iter = query.list().iterator(); // need to be user-controllable to toggle between iterate, scroll etc.
@@ -57,6 +57,7 @@ public class HQLQueryPage extends AbstractQueryPage {
 					Object element = iter.next();
 					list.add(element);
 				}
+				this.list = list;
 				pcs.firePropertyChange("list", null, list); //$NON-NLS-1$
 			} 
 			catch (RuntimeException e) {

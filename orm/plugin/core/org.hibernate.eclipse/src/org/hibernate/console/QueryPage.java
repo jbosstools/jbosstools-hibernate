@@ -38,7 +38,7 @@ public interface QueryPage {
 	 */
 	public abstract long getQueryTime();
 		
-    public abstract List<Object> getList();
+    public abstract List<?> getList();
     /**
      * @param i
      */

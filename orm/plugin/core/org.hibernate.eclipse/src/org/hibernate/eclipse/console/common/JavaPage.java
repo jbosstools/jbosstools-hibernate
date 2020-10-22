@@ -83,8 +83,9 @@ public class JavaPage extends AbstractQueryPage {
                 	list = list.subList( 0, Math.min( list.size(), model.getMaxResults().intValue() ) );
                 }
             } else {
-                list = new ArrayList<Object>();
+                ArrayList<Object> list = new ArrayList<Object>();
                 list.add(o);
+                this.list = list;
             }
         }
         catch (EvalError e) {
@@ -119,7 +120,7 @@ public class JavaPage extends AbstractQueryPage {
         return interpreter;
     }
 
-	public List<Object> getList() {
+	public List<?> getList() {
         if(list!=null) return list;
         try {
             if(criteria!=null) {

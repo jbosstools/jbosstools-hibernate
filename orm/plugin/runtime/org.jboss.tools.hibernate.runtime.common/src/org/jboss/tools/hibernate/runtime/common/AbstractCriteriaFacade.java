@@ -23,10 +23,9 @@ implements ICriteria {
 				new Object[] { intValue });
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<Object> list() {
-		return (List<Object>)Util.invokeMethod(
+	public List<?> list() {
+		return (List<?>)Util.invokeMethod(
 				getTarget(), 
 				"list", 
 				new Class[] {}, 

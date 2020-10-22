@@ -39,7 +39,7 @@ public abstract class AbstractQueryPage implements QueryPage {
     private int id;
     private ISession session;
 	private final HibernateExtension extension;
-    protected List<Object> list;
+    protected List<?> list;
     protected long queryTime = -1;				//shows how long query runs
     protected boolean sticky = true;
     protected List<Throwable> exceptions = new ArrayList<Throwable>();
