@@ -7,6 +7,8 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import javax.persistence.Query;
+
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.mapping.PersistentClass;
@@ -29,6 +31,7 @@ import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
+import org.jboss.tools.hibernate.runtime.spi.ICriteria;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
@@ -159,6 +162,17 @@ public class FacadeFactoryTest {
 		IExporter facade = facadeFactory.createExporter(exporter);
 		Assert.assertTrue(facade instanceof ExporterFacadeImpl);
 		Assert.assertSame(exporter, ((IFacade)facade).getTarget());		
+	}
+	
+	@Test
+	public void testCreateCriteria() {
+		Query query = (Query)Proxy.newProxyInstance(
+				facadeFactory.getClassLoader(), 
+				new Class[] { Query.class }, 
+				new TestInvocationHandler());
+		ICriteria facade = facadeFactory.createCriteria(query);
+		Assert.assertTrue(facade instanceof CriteriaFacadeImpl);
+		Assert.assertSame(query, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
