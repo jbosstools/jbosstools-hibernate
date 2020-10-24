@@ -2,7 +2,6 @@ package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
 import org.hibernate.persister.entity.EntityPersister;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
@@ -50,12 +49,6 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	@Override
 	public IExporter createExporter(Object target) {
 		return new ExporterFacadeImpl(this, target);
-	}
-
-	@Override
-	public IClassMetadata createClassMetadata(Object target) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
