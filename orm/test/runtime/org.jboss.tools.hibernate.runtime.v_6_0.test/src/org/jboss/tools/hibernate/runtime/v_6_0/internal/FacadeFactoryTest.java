@@ -16,6 +16,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.metadata.ClassMetadata;
+import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.tool.api.export.ArtifactCollector;
 import org.hibernate.tool.api.export.Exporter;
@@ -34,6 +35,7 @@ import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
+import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
@@ -50,7 +52,6 @@ import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.IType;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -124,7 +125,7 @@ public class FacadeFactoryTest {
 	public void testCreateSchemaExport() {
 		SchemaExport schemaExport = new SchemaExport();
 		ISchemaExport facade = facadeFactory.createSchemaExport(schemaExport);
-		Assert.assertTrue(facade instanceof SchemaExportFacadeImpl);
+		assertTrue(facade instanceof SchemaExportFacadeImpl);
 		assertSame(schemaExport, ((IFacade)facade).getTarget());		
 	}
 	
@@ -164,8 +165,8 @@ public class FacadeFactoryTest {
 				new Class[] { Exporter.class }, 
 				new TestInvocationHandler());
 		IExporter facade = facadeFactory.createExporter(exporter);
-		Assert.assertTrue(facade instanceof ExporterFacadeImpl);
-		Assert.assertSame(exporter, ((IFacade)facade).getTarget());		
+		assertTrue(facade instanceof ExporterFacadeImpl);
+		assertSame(exporter, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
@@ -175,7 +176,17 @@ public class FacadeFactoryTest {
 				new Class[] { ClassMetadata.class }, 
 				new TestInvocationHandler());
 		IClassMetadata facade = facadeFactory.createClassMetadata(classMetadata);
-		Assert.assertSame(classMetadata, ((IFacade)facade).getTarget());		
+		assertSame(classMetadata, ((IFacade)facade).getTarget());		
+	}
+	
+	@Test
+	public void testCreateCollectionMetadata() {
+		CollectionMetadata collectionMetadata = (CollectionMetadata)Proxy.newProxyInstance(
+				facadeFactory.getClassLoader(), 
+				new Class[] { CollectionMetadata.class }, 
+				new TestInvocationHandler());
+		ICollectionMetadata facade = facadeFactory.createCollectionMetadata(collectionMetadata);
+		assertSame(collectionMetadata, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
@@ -185,8 +196,8 @@ public class FacadeFactoryTest {
 				new Class[] { Query.class }, 
 				new TestInvocationHandler());
 		ICriteria facade = facadeFactory.createCriteria(query);
-		Assert.assertTrue(facade instanceof CriteriaFacadeImpl);
-		Assert.assertSame(query, ((IFacade)facade).getTarget());		
+		assertTrue(facade instanceof CriteriaFacadeImpl);
+		assertSame(query, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
@@ -231,7 +242,7 @@ public class FacadeFactoryTest {
 				new Class[] { Type.class }, 
 				new TestInvocationHandler());
 		IType facade = facadeFactory.createType(type);
-		Assert.assertSame(type, ((IFacade)facade).getTarget());
+		assertSame(type, ((IFacade)facade).getTarget());
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {

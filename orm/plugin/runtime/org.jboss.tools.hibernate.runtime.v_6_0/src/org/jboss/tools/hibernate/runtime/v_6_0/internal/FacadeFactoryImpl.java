@@ -58,12 +58,6 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	}
 
 	@Override
-	public ICollectionMetadata createCollectionMetadata(Object target) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public IColumn createColumn(Object target) {
 		// TODO Auto-generated method stub
 		return null;
