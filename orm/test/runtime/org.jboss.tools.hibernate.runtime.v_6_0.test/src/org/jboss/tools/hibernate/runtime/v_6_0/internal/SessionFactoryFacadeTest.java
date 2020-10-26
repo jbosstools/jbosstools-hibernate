@@ -14,6 +14,7 @@ import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.hibernate.Session;
 import org.hibernate.engine.spi.SessionFactoryDelegatingImpl;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.metadata.ClassMetadata;
@@ -23,6 +24,7 @@ import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
+import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -80,12 +82,21 @@ public class SessionFactoryFacadeTest {
 				((IFacade)allCollectionMetadata.get("parent")).getTarget());
 	}
 	
+	@Test
+	public void testOpenSession() throws Exception {
+		assertNull(sessionFactoryTarget.session);
+		ISession sessionFacade = sessionFactoryFacade.openSession();
+		assertNotNull(sessionFactoryTarget.session);
+		assertSame(sessionFactoryTarget.session, ((IFacade)sessionFacade).getTarget());
+	}
+	
 	
 	private class TestSessionFactory extends SessionFactoryDelegatingImpl {
 
 		private static final long serialVersionUID = 1L;
 		
 		private boolean closed = false;
+		private Session session = null;
 		private ClassMetadata fooClassMetadataTarget = null;
 		private ClassMetadata barClassMetadataTarget = null;
 		private Map<String, ClassMetadata> allClassMetadata = new HashMap<String, ClassMetadata>();
@@ -114,6 +125,11 @@ public class SessionFactoryFacadeTest {
 		@Override
 		public Map<String, CollectionMetadata> getAllCollectionMetadata() {
 			return allCollectionMetadata;
+		}
+		
+		@Override
+		public Session openSession() {
+			return session = createSession();
 		}
 
 	}
@@ -155,6 +171,18 @@ public class SessionFactoryFacadeTest {
 				TestSessionFactory.class.getClassLoader(), 
 				new Class[] { SessionFactoryImplementor.class }, 
 				new InvocationHandler() {						
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+						return null;
+					}
+				});
+	}
+	
+	private Session createSession() {
+		return (Session)Proxy.newProxyInstance(
+				getClass().getClassLoader(), 
+				new Class[] { Session.class }, 
+				new InvocationHandler() {				
 					@Override
 					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 						return null;
