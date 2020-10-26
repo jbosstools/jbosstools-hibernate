@@ -10,6 +10,7 @@ import java.lang.reflect.Proxy;
 
 import javax.persistence.Query;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.mapping.PersistentClass;
@@ -48,6 +49,7 @@ import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
+import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
@@ -219,6 +221,17 @@ public class FacadeFactoryTest {
 				new TestInvocationHandler());
 		ISessionFactory facade = facadeFactory.createSessionFactory(sessionFactory);
 		assertSame(sessionFactory, ((IFacade)facade).getTarget());
+	}
+	
+	@Test
+	public void testCreateSession() {
+		Session session = (Session)Proxy.newProxyInstance(
+				facadeFactory.getClassLoader(), 
+				new Class[] { Session.class }, 
+				new TestInvocationHandler());
+		ISession facade = facadeFactory.createSession(session);
+		assertTrue(facade instanceof SessionFacadeImpl);
+		assertSame(session, ((IFacade)facade).getTarget());
 	}
 	
 	@Test
