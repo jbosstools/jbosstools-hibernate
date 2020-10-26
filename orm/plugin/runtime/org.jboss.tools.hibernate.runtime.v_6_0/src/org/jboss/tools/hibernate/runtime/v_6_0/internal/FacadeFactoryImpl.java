@@ -15,6 +15,7 @@ import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
+import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
@@ -49,6 +50,11 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	@Override
 	public IExporter createExporter(Object target) {
 		return new ExporterFacadeImpl(this, target);
+	}
+	
+	@Override
+	public IHbm2DDLExporter createHbm2DDLExporter(Object target) {
+		return new Hbm2DDLExporterFacadeImpl(this, target);
 	}
 
 	@Override

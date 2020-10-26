@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -138,6 +139,7 @@ public class FacadeFactoryTest {
 	public void testCreateHbm2DDLExporter() {
 		DdlExporter ddlExporter = new DdlExporter();
 		IHbm2DDLExporter facade = facadeFactory.createHbm2DDLExporter(ddlExporter);
+		assertTrue(facade instanceof Hbm2DDLExporterFacadeImpl);
 		assertSame(ddlExporter, ((IFacade)facade).getTarget());		
 	}
 	
