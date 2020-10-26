@@ -57,7 +57,7 @@ public class SessionFactoryFacadeTest {
 		assertNull(field.get(sessionFactoryFacade));
 		Map<String, IClassMetadata> allClassMetadata = sessionFactoryFacade.getAllClassMetadata();
 		assertNotNull(field.get(sessionFactoryFacade));
-		assertEquals(2, allClassMetadata.size());
+		assertEquals(3, allClassMetadata.size());
 		assertSame(
 				((TestSessionFactory)sessionFactoryTarget).fooClassMetadataTarget, 
 				((IFacade)allClassMetadata.get("foo")).getTarget());
@@ -90,6 +90,22 @@ public class SessionFactoryFacadeTest {
 		assertSame(sessionFactoryTarget.session, ((IFacade)sessionFacade).getTarget());
 	}
 	
+	@Test
+	public void testGetClassMetadata() throws Exception {
+		Field field = AbstractSessionFactoryFacade.class.getDeclaredField("allClassMetadata");
+		field.setAccessible(true);
+		assertNull(field.get(sessionFactoryFacade));
+		assertSame(
+				sessionFactoryTarget.objectClassMetadataTarget,
+				((IFacade)sessionFactoryFacade.getClassMetadata(Object.class)).getTarget());
+		assertNotNull(field.get(sessionFactoryFacade));
+		field.set(sessionFactoryFacade, null);
+		assertSame(
+				sessionFactoryTarget.fooClassMetadataTarget,
+				((IFacade)sessionFactoryFacade.getClassMetadata("foo")).getTarget());
+		assertNotNull(field.get(sessionFactoryFacade));
+	}
+	
 	
 	private class TestSessionFactory extends SessionFactoryDelegatingImpl {
 
@@ -99,6 +115,7 @@ public class SessionFactoryFacadeTest {
 		private Session session = null;
 		private ClassMetadata fooClassMetadataTarget = null;
 		private ClassMetadata barClassMetadataTarget = null;
+		private ClassMetadata objectClassMetadataTarget = null;
 		private Map<String, ClassMetadata> allClassMetadata = new HashMap<String, ClassMetadata>();
 		private CollectionMetadata childCollectionMetadataTarget = null;
 		private CollectionMetadata parentCollectionMetadataTarget = null;
@@ -108,6 +125,7 @@ public class SessionFactoryFacadeTest {
 			super(createDelegate());
 			allClassMetadata.put("foo", fooClassMetadataTarget = createClassMetadata("foo"));
 			allClassMetadata.put("bar", barClassMetadataTarget = createClassMetadata("bar"));
+			allClassMetadata.put(Object.class.getName(), objectClassMetadataTarget = createClassMetadata(Object.class.getName()));
 			allCollectionMetadata.put("child", childCollectionMetadataTarget = createCollectionMetadata("child"));
 			allCollectionMetadata.put("parent", parentCollectionMetadataTarget = createCollectionMetadata("parent"));
 		}
