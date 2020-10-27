@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
 import java.lang.reflect.InvocationHandler;
@@ -14,6 +15,7 @@ import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.query.Query;
 import org.hibernate.query.internal.ParameterMetadataImpl;
 import org.hibernate.query.internal.QueryImpl;
+import org.hibernate.query.spi.QueryImplementor;
 import org.jboss.tools.hibernate.runtime.common.AbstractQueryFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
@@ -38,9 +40,17 @@ public class QueryFacadeTest {
 		assertSame(((TestQuery<?>)queryTarget).theList, queryFacade.list());
 	}
 	
+	@Test
+	public void testSetMaxResults() {
+		assertEquals(Integer.MIN_VALUE, ((TestQuery<?>)queryTarget).maxResults);
+		queryFacade.setMaxResults(Integer.MAX_VALUE);
+		assertEquals(Integer.MAX_VALUE, ((TestQuery<?>)queryTarget).maxResults);
+	}
+	
 	private class TestQuery<R> extends QueryImpl<R> {
 		
 		private List<R> theList = new ArrayList<R>();
+		int maxResults = Integer.MIN_VALUE;
 
 		public TestQuery() {
 			super(
@@ -52,6 +62,12 @@ public class QueryFacadeTest {
 		@Override
 		public List<R> list() {
 			return theList;
+		}
+		
+		@Override
+		public QueryImplementor<?> setMaxResults(int i) {
+			maxResults = i;
+			return this;
 		}
 
 	}
