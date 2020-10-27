@@ -7,9 +7,10 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import org.hibernate.Session;
-import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
+import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.engine.spi.SessionImplementor;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,6 +20,7 @@ public class SessionFacadeTest {
 	private static IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 	
 	private static final String ENTITY_NAME = "entity_name";
+	private static final SessionFactoryImplementor SESSION_FACTORY = createSessionFactory();
 	
 	private Session sessionTarget = null;
 	private SessionFacadeImpl sessionFacade = null;
@@ -32,6 +34,11 @@ public class SessionFacadeTest {
 	@Test
 	public void testGetEntityName() {
 		assertSame(ENTITY_NAME, sessionFacade.getEntityName(new Object()));
+	}
+	
+	@Test
+	public void testGetSessionFactory() {
+		assertSame(SESSION_FACTORY, ((IFacade)sessionFacade.getSessionFactory()).getTarget());
 	}
 	
 	private static class TestSession extends SessionDelegatorBaseImpl {
@@ -58,12 +65,25 @@ public class SessionFacadeTest {
 		public String getEntityName(Object o) {
 			return ENTITY_NAME;
 		}
+		
+		@Override
+		public SessionFactoryImplementor getSessionFactory() {
+			return SESSION_FACTORY;
+		}
 
 	}
 	
-	public static class TestDialect extends Dialect {
-		@Override public int getVersion() { return 0; }	
+	private static SessionFactoryImplementor createSessionFactory() {
+		return (SessionFactoryImplementor)Proxy.newProxyInstance(
+				SessionFactoryFacadeTest.class.getClassLoader(), 
+				new Class[] { SessionFactoryImplementor.class }, 
+				new InvocationHandler() {
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+						// TODO Auto-generated method stub
+						return null;
+					}
+		});
 	}
 	
-
 }
