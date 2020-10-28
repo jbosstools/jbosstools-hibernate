@@ -139,6 +139,11 @@ public class QueryFacadeTest {
 		assertNull(((TestQuery<?>)queryTarget).allowableParameterType);
 	}
 	
+	public void testGetReturnAliases() {
+		// TODO JBIDE-27532: Review the Query Page Viewer as the used APIs have completely changed
+		assertNull(queryFacade.getReturnAliases());
+	}
+	
 	private class TestQuery<R> extends QueryImpl<R> {
 		
 		private List<R> theList = new ArrayList<R>();

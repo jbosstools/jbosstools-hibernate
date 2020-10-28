@@ -50,5 +50,12 @@ public class QueryFacadeImpl extends AbstractQueryFacade {
 			((Query<?>)getTarget()).setParameter(name, list);
 		}
 	}
+	
+	// TODO JBIDE-27532: Review the Query Page Viewer as the used APIs have completely changed
+	@Override
+	@Deprecated
+	public String[] getReturnAliases() {
+		return new String[0];
+	}
 
 }
