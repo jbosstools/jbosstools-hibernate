@@ -10,6 +10,7 @@ import org.hibernate.Session;
 import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.query.spi.QueryImplementor;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.junit.Before;
@@ -21,6 +22,7 @@ public class SessionFacadeTest {
 	
 	private static final String ENTITY_NAME = "entity_name";
 	private static final SessionFactoryImplementor SESSION_FACTORY = createSessionFactory();
+	private static final QueryImplementor<?> QUERY_IMPLEMENTOR = createQueryImplementor();
 	
 	private Session sessionTarget = null;
 	private SessionFacadeImpl sessionFacade = null;
@@ -39,6 +41,11 @@ public class SessionFacadeTest {
 	@Test
 	public void testGetSessionFactory() {
 		assertSame(SESSION_FACTORY, ((IFacade)sessionFacade.getSessionFactory()).getTarget());
+	}
+	
+	@Test
+	public void testCreateQuery() {
+		assertSame(QUERY_IMPLEMENTOR, ((IFacade)sessionFacade.createQuery("foobar")).getTarget());
 	}
 	
 	private static class TestSession extends SessionDelegatorBaseImpl {
@@ -70,6 +77,11 @@ public class SessionFacadeTest {
 		public SessionFactoryImplementor getSessionFactory() {
 			return SESSION_FACTORY;
 		}
+		
+		@Override
+		public QueryImplementor<?> createQuery(String queryString) {
+			return QUERY_IMPLEMENTOR;
+		}
 
 	}
 	
@@ -80,10 +92,21 @@ public class SessionFacadeTest {
 				new InvocationHandler() {
 					@Override
 					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-						// TODO Auto-generated method stub
 						return null;
 					}
 		});
+	}
+	
+	private static QueryImplementor<?> createQueryImplementor() {
+		return (QueryImplementor<?>)Proxy.newProxyInstance(
+				SessionFactoryFacadeTest.class.getClassLoader(), 
+				new Class[] { QueryImplementor.class }, 
+				new InvocationHandler() {		
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+						return null;
+					}
+				});
 	}
 	
 }
