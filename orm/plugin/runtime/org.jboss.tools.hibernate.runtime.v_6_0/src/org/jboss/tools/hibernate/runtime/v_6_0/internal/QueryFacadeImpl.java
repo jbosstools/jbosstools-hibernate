@@ -58,4 +58,11 @@ public class QueryFacadeImpl extends AbstractQueryFacade {
 		return new String[0];
 	}
 
+	// TODO JBIDE-27532: Review the Query Page Viewer as the used APIs have completely changed
+	@Override
+	@Deprecated
+	public IType[] getReturnTypes() {
+		return new IType[0];
+	}
+
 }
