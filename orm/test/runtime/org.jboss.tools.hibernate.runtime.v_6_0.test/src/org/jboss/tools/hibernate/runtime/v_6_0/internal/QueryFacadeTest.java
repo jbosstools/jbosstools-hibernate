@@ -8,6 +8,8 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -49,6 +51,33 @@ public class QueryFacadeTest {
 		assertEquals(Integer.MIN_VALUE, ((TestQuery<?>)queryTarget).maxResults);
 		queryFacade.setMaxResults(Integer.MAX_VALUE);
 		assertEquals(Integer.MAX_VALUE, ((TestQuery<?>)queryTarget).maxResults);
+	}
+	
+	@Test
+	public void testSetParameterList() {
+		List<Object> list = Arrays.asList(new Object());
+		AllowableParameterType<?> allowableParameterTypeTarget = createAllowableParameterType();
+		IType allowableParameterTypeFacade = FACADE_FACTORY.createType(allowableParameterTypeTarget);
+		IType dummyTypeFacade = FACADE_FACTORY.createType(new Object());
+		assertEquals(Integer.MIN_VALUE, ((TestQuery<?>)queryTarget).position);
+		assertNull(((TestQuery<?>)queryTarget).name);
+		assertNull(((TestQuery<?>)queryTarget).value);
+		assertNull(((TestQuery<?>)queryTarget).allowableParameterType);
+		assertNull(((TestQuery<?>)queryTarget).temporalType);
+		queryFacade.setParameterList("foo", list, allowableParameterTypeFacade);
+		assertEquals(Integer.MIN_VALUE, ((TestQuery<?>)queryTarget).position);
+		assertEquals("foo", ((TestQuery<?>)queryTarget).name);
+		assertSame(list, ((TestQuery<?>)queryTarget).value);
+		assertSame(allowableParameterTypeTarget, ((TestQuery<?>)queryTarget).allowableParameterType);
+		assertNull(((TestQuery<?>)queryTarget).temporalType);
+		((TestQuery<?>)queryTarget).allowableParameterType = null;
+		((TestQuery<?>)queryTarget).value = null;
+		queryFacade.setParameter("bar", list, dummyTypeFacade);
+		assertEquals(Integer.MIN_VALUE, ((TestQuery<?>)queryTarget).position);
+		assertEquals("bar", ((TestQuery<?>)queryTarget).name);
+		assertSame(list, ((TestQuery<?>)queryTarget).value);
+		assertNull(((TestQuery<?>)queryTarget).allowableParameterType);
+		assertNull(((TestQuery<?>)queryTarget).temporalType);
 	}
 	
 	@Test
@@ -183,6 +212,23 @@ public class QueryFacadeTest {
 			name = n;
 			value = v;
 			temporalType = t;
+			return this;
+		}
+		
+		@SuppressWarnings("rawtypes")
+		@Override
+		public QueryImplementor<R> setParameterList(String n, Collection c) {
+			name = n;
+			value = c;
+			return this;
+		}
+		
+		@SuppressWarnings("rawtypes")
+		@Override
+		public QueryImplementor<R> setParameterList(String n, Collection c, AllowableParameterType t) {
+			name = n;
+			value = c;
+			allowableParameterType = t;
 			return this;
 		}
 		

@@ -1,5 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
+import java.util.List;
+
 import javax.persistence.TemporalType;
 
 import org.hibernate.metamodel.model.domain.AllowableParameterType;
@@ -36,6 +38,16 @@ public class QueryFacadeImpl extends AbstractQueryFacade {
 			((Query<?>)getTarget()).setParameter(name, value, (TemporalType)typeTarget); 
 		} else {
 			((Query<?>)getTarget()).setParameter(name, value);
+		}
+	}
+	
+	@Override
+	public void setParameterList(String name, List<Object> list, IType type) {
+		Object typeTarget = ((IFacade)type).getTarget();
+		if (typeTarget instanceof AllowableParameterType<?>) {
+			((Query<?>)getTarget()).setParameter(name, list, (AllowableParameterType<?>)typeTarget);
+		} else {
+			((Query<?>)getTarget()).setParameter(name, list);
 		}
 	}
 
