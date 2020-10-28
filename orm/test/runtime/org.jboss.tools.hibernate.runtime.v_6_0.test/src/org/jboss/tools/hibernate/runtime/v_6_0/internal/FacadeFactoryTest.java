@@ -45,6 +45,7 @@ import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
+import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
@@ -213,6 +214,17 @@ public class FacadeFactoryTest {
 	}
 	
 
+	@Test
+	public void testCreateQuery() {
+		Query query = (Query)Proxy.newProxyInstance(
+				facadeFactory.getClassLoader(), 
+				new Class[] { Query.class }, 
+				new TestInvocationHandler());
+		IQuery facade = facadeFactory.createQuery(query);
+		assertTrue(facade instanceof QueryFacadeImpl);
+		assertSame(query, ((IFacade)facade).getTarget());
+	}
+	
 	@Test
 	public void testCreateSessionFactory() {
 		SessionFactory sessionFactory = (SessionFactory)Proxy.newProxyInstance(
