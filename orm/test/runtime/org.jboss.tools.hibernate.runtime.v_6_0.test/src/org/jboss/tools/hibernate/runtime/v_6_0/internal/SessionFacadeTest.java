@@ -1,6 +1,8 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -48,6 +50,13 @@ public class SessionFacadeTest {
 		assertSame(QUERY_IMPLEMENTOR, ((IFacade)sessionFacade.createQuery("foobar")).getTarget());
 	}
 	
+	@Test
+	public void testIsOpen() {
+		assertFalse(sessionFacade.isOpen());
+		((TestSession)sessionTarget).isOpen = true;
+		assertTrue(sessionFacade.isOpen());		
+	}
+	
 	private static class TestSession extends SessionDelegatorBaseImpl {
 
 		private static final long serialVersionUID = 1L;
@@ -63,6 +72,8 @@ public class SessionFacadeTest {
 						}
 					});
 		}
+		
+		private boolean isOpen = false;
 		
 		public TestSession() {
 			super(createDelegate());
@@ -81,6 +92,11 @@ public class SessionFacadeTest {
 		@Override
 		public QueryImplementor<?> createQuery(String queryString) {
 			return QUERY_IMPLEMENTOR;
+		}
+		
+		@Override
+		public boolean isOpen() {
+			return isOpen;
 		}
 
 	}
