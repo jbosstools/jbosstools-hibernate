@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -9,6 +10,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import org.hibernate.Session;
+import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.engine.spi.SessionImplementor;
@@ -64,6 +66,18 @@ public class SessionFacadeTest {
 		assertFalse(((TestSession)sessionTarget).isOpen);
 	}
 	
+	@Test
+	public void testContains() {
+		assertFalse(sessionFacade.contains("foo"));
+		assertTrue(sessionFacade.contains("someFakeEntity"));
+		assertFalse(sessionFacade.contains("anotherFakeEntity"));
+		try { 
+			sessionFacade.contains("bar");
+		} catch (IllegalArgumentException e) {
+			assertEquals("illegal", e.getMessage());
+		}
+	}
+	
 	private static class TestSession extends SessionDelegatorBaseImpl {
 
 		private static final long serialVersionUID = 1L;
@@ -110,7 +124,20 @@ public class SessionFacadeTest {
 		public void close() {
 			isOpen = false;
 		}
-
+		
+		@Override
+		public boolean contains(Object object) {
+			if (object.equals("foo")) {
+				throw new IllegalArgumentException("Not an entity [" + object + "]");
+			} else if (object.equals("bar")) {
+				throw new IllegalArgumentException("illegal");
+			} else if (object.equals("someFakeEntity")) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+		
 	}
 	
 	private static SessionFactoryImplementor createSessionFactory() {
@@ -135,6 +162,11 @@ public class SessionFacadeTest {
 						return null;
 					}
 				});
+	}
+	
+	public static class TestDialect extends Dialect {
+		@Override
+		public int getVersion() { return 0; }
 	}
 	
 }

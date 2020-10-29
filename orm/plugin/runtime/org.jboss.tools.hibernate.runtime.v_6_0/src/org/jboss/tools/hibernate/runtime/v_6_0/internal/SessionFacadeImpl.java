@@ -9,4 +9,17 @@ public class SessionFacadeImpl extends AbstractSessionFacade {
 		super(facadeFactory, target);
 	}
 
+	@Override
+	public boolean contains(Object object) {
+		boolean result = false;
+		try {
+			result = super.contains(object);
+		} catch (IllegalArgumentException e) {
+			if (!e.getMessage().startsWith("Not an entity [")) {
+				throw e;
+			}
+		}
+		return result;
+	}
+
 }
