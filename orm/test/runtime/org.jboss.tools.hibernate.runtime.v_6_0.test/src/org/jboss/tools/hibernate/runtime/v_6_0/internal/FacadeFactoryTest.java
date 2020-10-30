@@ -55,6 +55,7 @@ import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.IType;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -215,6 +216,13 @@ public class FacadeFactoryTest {
 	
 
 	@Test
+	public void testCreatePersistentClass() {
+		PersistentClass persistentClass = new RootClass(null);
+		IPersistentClass facade = facadeFactory.createPersistentClass(persistentClass);
+		Assert.assertSame(persistentClass, ((IFacade)facade).getTarget());
+	}
+	
+	@Test
 	public void testCreateQuery() {
 		Query query = (Query)Proxy.newProxyInstance(
 				facadeFactory.getClassLoader(), 
@@ -244,13 +252,6 @@ public class FacadeFactoryTest {
 		ISession facade = facadeFactory.createSession(session);
 		assertTrue(facade instanceof SessionFacadeImpl);
 		assertSame(session, ((IFacade)facade).getTarget());
-	}
-	
-	@Test
-	public void testCreatePersistentClass() {
-		PersistentClass persistentClass = new RootClass(null);
-		IPersistentClass facade = facadeFactory.createPersistentClass(persistentClass);
-		assertSame(persistentClass, ((IFacade)facade).getTarget());
 	}
 	
 	@Test
