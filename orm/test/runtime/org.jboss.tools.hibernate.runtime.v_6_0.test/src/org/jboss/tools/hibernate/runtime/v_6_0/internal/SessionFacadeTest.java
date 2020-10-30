@@ -2,12 +2,18 @@ package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
 import org.hibernate.dialect.Dialect;
@@ -17,6 +23,7 @@ import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.query.spi.QueryImplementor;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.ICriteria;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,6 +34,7 @@ public class SessionFacadeTest {
 	private static final String ENTITY_NAME = "entity_name";
 	private static final SessionFactoryImplementor SESSION_FACTORY = createSessionFactory();
 	private static final QueryImplementor<?> QUERY_IMPLEMENTOR = createQueryImplementor();
+	private static final Root<?> ROOT = createRoot();
 	
 	private Session sessionTarget = null;
 	private SessionFacadeImpl sessionFacade = null;
@@ -78,6 +86,20 @@ public class SessionFacadeTest {
 		}
 	}
 	
+	@Test
+	public void testCreateCriteria() {
+		assertNull(((TestSession)sessionTarget).criteriaBuilder);
+		assertNull(((TestSession)sessionTarget).fromClass);
+		assertNull(((TestSession)sessionTarget).root);
+		assertNull(((TestSession)sessionTarget).criteriaQuery);
+		ICriteria criteria = sessionFacade.createCriteria(Object.class);
+		assertNotNull(((TestSession)sessionTarget).criteriaBuilder);
+		assertSame(Object.class, ((TestSession)sessionTarget).fromClass);
+		assertSame(ROOT, ((TestSession)sessionTarget).root);
+		assertNotNull(((TestSession)sessionTarget).criteriaQuery);
+		assertSame(QUERY_IMPLEMENTOR, ((IFacade)criteria).getTarget());
+	}
+	
 	private static class TestSession extends SessionDelegatorBaseImpl {
 
 		private static final long serialVersionUID = 1L;
@@ -95,6 +117,10 @@ public class SessionFacadeTest {
 		}
 		
 		private boolean isOpen = false;
+		private CriteriaBuilder criteriaBuilder = null;
+		private CriteriaQuery<?> criteriaQuery = null;
+		private Class<?> fromClass = null;
+		private Root<?> root = null;
 		
 		public TestSession() {
 			super(createDelegate());
@@ -112,6 +138,13 @@ public class SessionFacadeTest {
 		
 		@Override
 		public QueryImplementor<?> createQuery(String queryString) {
+			return QUERY_IMPLEMENTOR;
+		}
+		
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		@Override
+		public QueryImplementor<?> createQuery(CriteriaQuery criteria) {
+			criteriaQuery = criteria;
 			return QUERY_IMPLEMENTOR;
 		}
 		
@@ -138,6 +171,45 @@ public class SessionFacadeTest {
 			}
 		}
 		
+		@Override
+		public CriteriaBuilder getCriteriaBuilder() {
+			criteriaBuilder = createCriteriaBuilder();
+			return criteriaBuilder;
+		}
+		
+		private CriteriaBuilder createCriteriaBuilder() {
+			return (CriteriaBuilder)Proxy.newProxyInstance(
+					SessionFactoryFacadeTest.class.getClassLoader(), 
+					new Class[] { CriteriaBuilder.class }, 
+					new InvocationHandler() {
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+						if ("createQuery".equals(method.getName())) {
+							return createCriteriaQuery();
+						}
+						return null;
+					}
+			});
+		}
+		
+		private CriteriaQuery<?> createCriteriaQuery() {
+			return (CriteriaQuery<?>)Proxy.newProxyInstance(
+					SessionFactoryFacadeTest.class.getClassLoader(), 
+					new Class[] { CriteriaQuery.class }, 
+					new InvocationHandler() {
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+						if ("from".equals(method.getName())) {
+							fromClass = (Class<?>)args[0];
+							return ROOT;
+						} else if ("select".equals(method.getName())) {
+							root = (Root<?>)args[0];							
+						}
+						return null;
+					}
+			});
+		}
+		
 	}
 	
 	private static SessionFactoryImplementor createSessionFactory() {
@@ -156,6 +228,18 @@ public class SessionFacadeTest {
 		return (QueryImplementor<?>)Proxy.newProxyInstance(
 				SessionFactoryFacadeTest.class.getClassLoader(), 
 				new Class[] { QueryImplementor.class }, 
+				new InvocationHandler() {		
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+						return null;
+					}
+				});
+	}
+	
+	private static Root<?> createRoot() {
+		return (Root<?>)Proxy.newProxyInstance(
+				SessionFactoryFacadeTest.class.getClassLoader(), 
+				new Class[] { Root.class }, 
 				new InvocationHandler() {		
 					@Override
 					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
