@@ -1,13 +1,23 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
+import static org.junit.Assert.assertEquals;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+
+import org.hibernate.boot.spi.MetadataBuildingContext;
+import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.common.AbstractCfg2HbmToolFacade;
+import org.jboss.tools.hibernate.runtime.common.AbstractPropertyFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
-import org.junit.Assert;
+import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,7 +38,31 @@ public class Cfg2HbmToolFacadeTest {
 	public void testGetTagPersistentClass() {
 		PersistentClass target = new RootClass(null);
 		IPersistentClass persistentClass = FACADE_FACTORY.createPersistentClass(target);
-		Assert.assertEquals("class", cfg2HbmToolFacade.getTag(persistentClass));
+		assertEquals("class", cfg2HbmToolFacade.getTag(persistentClass));
 	}
 
+	public void testGetTagProperty() throws Exception {
+		RootClass rc = new RootClass(null);
+		Property p = new Property();
+		BasicValue basicValue = new BasicValue(createMetadaBuildingContext());
+		basicValue.setTypeName("foobar");
+		p.setValue(basicValue);
+		p.setPersistentClass(rc);
+		rc.setVersion(p);
+		IProperty property = new AbstractPropertyFacade(FACADE_FACTORY, p) {};
+		assertEquals("version", cfg2HbmToolFacade.getTag(property));
+	}
+	
+	private MetadataBuildingContext createMetadaBuildingContext() {
+		return (MetadataBuildingContext)Proxy.newProxyInstance(
+				getClass().getClassLoader(), 
+				new Class[] { MetadataBuildingContext.class }, 
+				new InvocationHandler() {			
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+						return null;
+					}
+		});
+	}
+	
 }
