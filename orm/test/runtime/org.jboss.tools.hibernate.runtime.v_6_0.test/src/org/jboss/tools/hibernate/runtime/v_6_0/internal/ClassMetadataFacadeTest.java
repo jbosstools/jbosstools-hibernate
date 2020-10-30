@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
@@ -22,6 +23,7 @@ import org.hibernate.boot.spi.InFlightMetadataCollector;
 import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PersistentClass;
@@ -37,6 +39,7 @@ import org.hibernate.type.StringType;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
+import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.junit.Before;
 import org.junit.Test;
@@ -95,6 +98,17 @@ public class ClassMetadataFacadeTest {
 		assertFalse(classMetadataFacade.hasIdentifierProperty());
 		((TestEntityPersister)classMetadataTarget).hasIdentifierProperty = true;
 		assertTrue(classMetadataFacade.hasIdentifierProperty());
+	}
+	
+	@Test 
+	public void testGetIdentifier() {
+		assertNull(((TestEntityPersister)classMetadataTarget).session);
+		final SharedSessionContractImplementor sessionTarget = createSession();
+		ISession sessionFacade = FACADE_FACTORY.createSession(sessionTarget);
+		Object theObject = new Object();
+		Object anotherObject = classMetadataFacade.getIdentifier(theObject, sessionFacade);
+		assertSame(theObject, anotherObject);
+		assertSame(sessionTarget, ((TestEntityPersister)classMetadataTarget).session);
 	}
 	
 	@Test
@@ -226,6 +240,7 @@ public class ClassMetadataFacadeTest {
 	private static class TestEntityPersister extends SingleTableEntityPersister {
 		
 		private boolean hasIdentifierProperty = false;
+		private SharedSessionContractImplementor session = null;
 		
 		public TestEntityPersister(
 				PersistentClass persistentClass, 
@@ -263,6 +278,25 @@ public class ClassMetadataFacadeTest {
 			return hasIdentifierProperty;
 		}
 		
+		@Override
+		public Object getIdentifier(Object object, SharedSessionContractImplementor s) {
+			session = s;
+			return object;
+		}
+		
+	}
+	
+	public static SharedSessionContractImplementor createSession() {
+		return (SharedSessionContractImplementor)Proxy.newProxyInstance(
+				ClassMetadataFacadeTest.class.getClassLoader(), 
+				new Class[] { SharedSessionContractImplementor.class },
+				new InvocationHandler() {
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+						// TODO Auto-generated method stub
+						return null;
+					}
+		});
 	}
 	
 	public class FooBar {

@@ -10,8 +10,14 @@ public class ClassMetadataFacadeImpl extends AbstractClassMetadataFacade {
 		super(facadeFactory, target);
 	}
 	
+	@Override
 	public IEntityMetamodel getEntityMetamodel() {
 		return new EntityMetamodelFacadeImpl(getFacadeFactory(), getTarget());
+	}
+
+	@Override
+	protected String getSessionImplementorClassName() {
+		return "org.hibernate.engine.spi.SharedSessionContractImplementor";
 	}
 
 }
