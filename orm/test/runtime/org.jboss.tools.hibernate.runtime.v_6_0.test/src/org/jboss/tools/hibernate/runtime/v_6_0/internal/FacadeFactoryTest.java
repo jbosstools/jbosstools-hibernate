@@ -12,6 +12,7 @@ import javax.persistence.Query;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
@@ -37,6 +38,7 @@ import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
+import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
@@ -191,6 +193,14 @@ public class FacadeFactoryTest {
 				new TestInvocationHandler());
 		ICollectionMetadata facade = facadeFactory.createCollectionMetadata(collectionMetadata);
 		assertSame(collectionMetadata, ((IFacade)facade).getTarget());		
+	}
+	
+	@Test
+	public void testCreateConfiguration() {
+		Configuration configuration = new Configuration();
+		IConfiguration facade = facadeFactory.createConfiguration(configuration);
+		assertTrue(facade instanceof ConfigurationFacadeImpl);
+		assertSame(configuration, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test

@@ -64,8 +64,7 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 
 	@Override
 	public IConfiguration createConfiguration(Object target) {
-		// TODO Auto-generated method stub
-		return null;
+		return new ConfigurationFacadeImpl(this, target);
 	}
 
 	@Override
