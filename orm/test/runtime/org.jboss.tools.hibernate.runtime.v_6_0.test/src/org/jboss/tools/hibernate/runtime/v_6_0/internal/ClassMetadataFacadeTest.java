@@ -55,23 +55,13 @@ public class ClassMetadataFacadeTest {
 	}
 	
 	@Test
-	public void testGetMappedClass() {
-		assertSame(FooBar.class, classMetadataFacade.getMappedClass());
-	}
-	
-	@Test
-	public void testGetPropertyValue() {
-		assertSame(PROPERTY_VALUE, classMetadataFacade.getPropertyValue(null, null));
+	public void testGetEntityName() {
+		assertEquals("foobar", classMetadataFacade.getEntityName());
 	}
 	
 	@Test
 	public void testGetIdentifierPropertyName() {
 		assertEquals("foo", classMetadataFacade.getIdentifierPropertyName());
-	}
-	
-	@Test
-	public void testGetEntityName() {
-		assertEquals("foobar", classMetadataFacade.getEntityName());
 	}
 	
 	@Test
@@ -86,8 +76,25 @@ public class ClassMetadataFacadeTest {
  	}
 	
 	@Test
+	public void testGetMappedClass() {
+		assertSame(FooBar.class, classMetadataFacade.getMappedClass());
+	}
+	
+	@Test
 	public void testGetIdentifierType() {
 		assertSame(TYPE_INSTANCE, ((IFacade)classMetadataFacade.getIdentifierType()).getTarget());
+	}
+	
+	@Test
+	public void testGetPropertyValue() {
+		assertSame(PROPERTY_VALUE, classMetadataFacade.getPropertyValue(null, null));
+	}
+	
+	@Test
+	public void testHasIdentifierProperty() {
+		assertFalse(classMetadataFacade.hasIdentifierProperty());
+		((TestEntityPersister)classMetadataTarget).hasIdentifierProperty = true;
+		assertTrue(classMetadataFacade.hasIdentifierProperty());
 	}
 	
 	@Test
@@ -218,6 +225,8 @@ public class ClassMetadataFacadeTest {
 
 	private static class TestEntityPersister extends SingleTableEntityPersister {
 		
+		private boolean hasIdentifierProperty = false;
+		
 		public TestEntityPersister(
 				PersistentClass persistentClass, 
 				PersisterCreationContext creationContext) {
@@ -248,6 +257,11 @@ public class ClassMetadataFacadeTest {
 		public Type getIdentifierType() {
 			return TYPE_INSTANCE;
  		}
+		
+		@Override
+		public boolean hasIdentifierProperty() {
+			return hasIdentifierProperty;
+		}
 		
 	}
 	
