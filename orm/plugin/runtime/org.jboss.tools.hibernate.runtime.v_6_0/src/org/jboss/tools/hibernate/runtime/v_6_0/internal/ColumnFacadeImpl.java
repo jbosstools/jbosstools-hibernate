@@ -35,4 +35,13 @@ public class ColumnFacadeImpl extends AbstractColumnFacade {
 				((ConfigurationFacadeImpl)configuration).getMetadata());
 	}
 	
+	@Override
+	public int getLength() {
+		Long length = ((Column)getTarget()).getLength();
+		if (length == null) {
+			return Integer.MIN_VALUE;
+		}
+		return length.intValue();
+	}
+	
 }
