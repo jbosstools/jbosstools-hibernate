@@ -71,6 +71,11 @@ public class ColumnFacadeTest {
 		assertEquals(Integer.MAX_VALUE, columnFacade.getLength());
 	}
 	
+	@Test
+	public void testGetDefaultLength() {
+		assertEquals(255, columnFacade.getDefaultLength());
+	}
+	
 	private MetadataBuildingContext createMetadataBuildingContext() {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySetting("hibernate.dialect", TestDialect.class.getName());
