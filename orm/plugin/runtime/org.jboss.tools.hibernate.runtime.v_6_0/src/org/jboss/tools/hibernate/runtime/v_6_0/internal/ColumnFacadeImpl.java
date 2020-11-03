@@ -51,4 +51,13 @@ public class ColumnFacadeImpl extends AbstractColumnFacade {
 		return DEFAULT_LENGTH;
 	}
 	
+	@Override
+	public int getPrecision() {
+		Integer precision = ((Column)getTarget()).getPrecision();
+		if (precision == null) {
+			return Integer.MIN_VALUE;
+		}
+		return precision.intValue();
+	}
+	
 }
