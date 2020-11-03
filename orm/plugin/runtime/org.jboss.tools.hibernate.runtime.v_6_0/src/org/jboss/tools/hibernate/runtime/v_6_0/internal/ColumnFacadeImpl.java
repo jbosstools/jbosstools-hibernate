@@ -17,6 +17,7 @@ public class ColumnFacadeImpl extends AbstractColumnFacade {
 	
 	final static int DEFAULT_LENGTH = 255;
 	final static int DEFAULT_PRECISION = 19;
+	static final int DEFAULT_SCALE = 2;
 
 	public ColumnFacadeImpl(IFacadeFactory facadeFactory, Object target) {
 		super(facadeFactory, target);
@@ -73,6 +74,11 @@ public class ColumnFacadeImpl extends AbstractColumnFacade {
 			return Integer.MIN_VALUE;
 		}
 		return scale.intValue();
+	}
+	
+	@Override
+	public int getDefaultScale() {
+		return DEFAULT_SCALE;
 	}
 	
 }

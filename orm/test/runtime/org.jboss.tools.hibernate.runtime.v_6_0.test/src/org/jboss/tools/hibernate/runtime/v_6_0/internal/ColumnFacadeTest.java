@@ -19,6 +19,7 @@ import org.hibernate.mapping.Column;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -93,6 +94,11 @@ public class ColumnFacadeTest {
 		assertEquals(Integer.MIN_VALUE, columnFacade.getScale());
 		column.setScale(999);
 		assertEquals(999, columnFacade.getScale());
+	}
+	
+	@Test
+	public void testGetDefaultScale() {
+		assertEquals(ColumnFacadeImpl.DEFAULT_SCALE, columnFacade.getDefaultScale());
 	}
 	
 	private MetadataBuildingContext createMetadataBuildingContext() {
