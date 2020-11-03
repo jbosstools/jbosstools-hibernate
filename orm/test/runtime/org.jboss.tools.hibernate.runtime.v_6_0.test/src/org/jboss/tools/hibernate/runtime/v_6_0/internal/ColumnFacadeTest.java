@@ -73,7 +73,7 @@ public class ColumnFacadeTest {
 	
 	@Test
 	public void testGetDefaultLength() {
-		assertEquals(255, columnFacade.getDefaultLength());
+		assertEquals(ColumnFacadeImpl.DEFAULT_LENGTH, columnFacade.getDefaultLength());
 	}
 	
 	@Test
@@ -85,7 +85,14 @@ public class ColumnFacadeTest {
 	
 	@Test
 	public void testGetDefaultPrecision() {
-		assertEquals(19, columnFacade.getDefaultPrecision());
+		assertEquals(ColumnFacadeImpl.DEFAULT_PRECISION, columnFacade.getDefaultPrecision());
+	}
+	
+	@Test
+	public void testGetScale() {
+		assertEquals(Integer.MIN_VALUE, columnFacade.getScale());
+		column.setScale(999);
+		assertEquals(999, columnFacade.getScale());
 	}
 	
 	private MetadataBuildingContext createMetadataBuildingContext() {

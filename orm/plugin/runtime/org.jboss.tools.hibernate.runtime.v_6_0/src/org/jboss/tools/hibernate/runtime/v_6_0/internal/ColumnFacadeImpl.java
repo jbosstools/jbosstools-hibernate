@@ -15,8 +15,8 @@ import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 
 public class ColumnFacadeImpl extends AbstractColumnFacade {
 	
-	private final static int DEFAULT_LENGTH = 255;
-	private final static int DEFAULT_PRECISION = 19;
+	final static int DEFAULT_LENGTH = 255;
+	final static int DEFAULT_PRECISION = 19;
 
 	public ColumnFacadeImpl(IFacadeFactory facadeFactory, Object target) {
 		super(facadeFactory, target);
@@ -53,17 +53,26 @@ public class ColumnFacadeImpl extends AbstractColumnFacade {
 	}
 	
 	@Override
-	public int getDefaultPrecision() {
-		return DEFAULT_PRECISION;
-	}
-	
-	@Override
 	public int getPrecision() {
 		Integer precision = ((Column)getTarget()).getPrecision();
 		if (precision == null) {
 			return Integer.MIN_VALUE;
 		}
 		return precision.intValue();
+	}
+	
+	@Override
+	public int getDefaultPrecision() {
+		return DEFAULT_PRECISION;
+	}
+	
+	@Override
+	public int getScale() {
+		Integer scale = ((Column)getTarget()).getScale();
+		if (scale == null) {
+			return Integer.MIN_VALUE;
+		}
+		return scale.intValue();
 	}
 	
 }
