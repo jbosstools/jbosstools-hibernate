@@ -17,6 +17,7 @@ import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
+import org.hibernate.mapping.Value;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.persister.entity.EntityPersister;
@@ -57,6 +58,7 @@ import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.IType;
+import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -279,6 +281,16 @@ public class FacadeFactoryTest {
 				new TestInvocationHandler());
 		IType facade = facadeFactory.createType(type);
 		assertSame(type, ((IFacade)facade).getTarget());
+	}
+	
+	@Test
+	public void testCreateValue() {
+		Value value = (Value)Proxy.newProxyInstance(
+				facadeFactory.getClassLoader(), 
+				new Class[] { Value.class }, 
+				new TestInvocationHandler());
+		IValue facade = facadeFactory.createValue(value);
+		assertSame(value, ((IFacade)facade).getTarget());
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
