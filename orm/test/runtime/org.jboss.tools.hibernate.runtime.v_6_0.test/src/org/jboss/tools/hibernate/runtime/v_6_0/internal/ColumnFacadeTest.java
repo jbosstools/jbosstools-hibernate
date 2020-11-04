@@ -1,7 +1,9 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.hibernate.boot.internal.BootstrapContextImpl;
 import org.hibernate.boot.internal.InFlightMetadataCollectorImpl;
@@ -19,7 +21,6 @@ import org.hibernate.mapping.Column;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -92,13 +93,21 @@ public class ColumnFacadeTest {
 	@Test
 	public void testGetScale() {
 		assertEquals(Integer.MIN_VALUE, columnFacade.getScale());
-		column.setScale(999);
-		assertEquals(999, columnFacade.getScale());
+		column.setScale(Integer.MAX_VALUE);
+		assertEquals(Integer.MAX_VALUE, columnFacade.getScale());
 	}
 	
 	@Test
 	public void testGetDefaultScale() {
 		assertEquals(ColumnFacadeImpl.DEFAULT_SCALE, columnFacade.getDefaultScale());
+	}
+	
+	@Test
+	public void testIsNullable() {
+		column.setNullable(true);
+		assertTrue(columnFacade.isNullable());
+		column.setNullable(false);
+		assertFalse(columnFacade.isNullable());
 	}
 	
 	private MetadataBuildingContext createMetadataBuildingContext() {
