@@ -276,15 +276,6 @@ public class ConfigurationFacadeTest {
 	}
 	
 	@Test
-	public void testGetNamingStrategy() {
-		INamingStrategy strategy = FACADE_FACTORY.createNamingStrategy(new DefaultNamingStrategy());
-		ConfigurationFacadeImpl facade = (ConfigurationFacadeImpl)configurationFacade;
-		Assert.assertNull(facade.getNamingStrategy());
-		facade.namingStrategy = strategy;
-		Assert.assertSame(strategy, facade.getNamingStrategy());
-	}
-	
-	@Test
 	public void testGetClassMappings() {
 		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
 		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
@@ -361,6 +352,15 @@ public class ConfigurationFacadeTest {
 		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
 		((ConfigurationFacadeImpl)configurationFacade).addedClasses.add(persistentClassFacade);
 		assertSame(configurationFacade.getClassMapping("Foo"), persistentClassFacade);
+	}
+	
+	@Test
+	public void testGetNamingStrategy() {
+		INamingStrategy strategy = FACADE_FACTORY.createNamingStrategy(new DefaultNamingStrategy());
+		ConfigurationFacadeImpl facade = (ConfigurationFacadeImpl)configurationFacade;
+		Assert.assertNull(facade.getNamingStrategy());
+		facade.namingStrategy = strategy;
+		Assert.assertSame(strategy, facade.getNamingStrategy());
 	}
 	
 	@Test
