@@ -169,11 +169,4 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 		return false;
 	}
 	
-	private IService getService() {
-		if (service == null) {
-			service = getConsoleConfig().getHibernateExtension().getHibernateService();
-		}
-		return service;
-	}
-
 }
