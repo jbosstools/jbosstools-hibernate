@@ -9,6 +9,8 @@ import static org.junit.Assert.assertTrue;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
+import org.hibernate.mapping.OneToOne;
+import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.runtime.common.AbstractValueFacade;
@@ -77,6 +79,16 @@ public class ValueFacadeTest {
 		ManyToOne manyToOne = new ManyToOne(DummyMetadataBuildingContext.INSTANCE, null);
 		valueFacade = new AbstractValueFacade(FACADE_FACTORY, manyToOne) {};
 		assertTrue(valueFacade.isManyToOne());
+	}
+
+	@Test 
+	public void testIsOneToOne() {
+		valueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, valueTarget) {};
+		assertFalse(valueFacade.isOneToOne());
+		OneToOne oneToOne = new OneToOne(DummyMetadataBuildingContext.INSTANCE, null, new RootClass(null));
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, oneToOne) {};
+		assertTrue(valueFacade.isOneToOne());
 	}
 
 }
