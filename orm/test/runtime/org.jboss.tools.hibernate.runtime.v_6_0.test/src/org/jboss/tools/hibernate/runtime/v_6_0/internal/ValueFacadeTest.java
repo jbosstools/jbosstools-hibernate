@@ -7,6 +7,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import org.hibernate.mapping.BasicValue;
+import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.runtime.common.AbstractValueFacade;
@@ -55,6 +56,16 @@ public class ValueFacadeTest {
 		collectionElement = valueFacade.getCollectionElement();
 		assertNotNull(collectionElement);
 		assertSame(valueTarget, ((IFacade)collectionElement).getTarget());
+	}
+
+	@Test 
+	public void testIsOneToMany() {
+		valueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, valueTarget) {};
+		assertFalse(valueFacade.isOneToMany());
+		OneToMany oneToMany = new OneToMany(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, oneToMany) {};
+		assertTrue(valueFacade.isOneToMany());
 	}
 
 }
