@@ -7,6 +7,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import org.hibernate.mapping.BasicValue;
+import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.Value;
@@ -46,7 +47,7 @@ public class ValueFacadeTest {
 
 	@Test
 	public void testGetCollectionElement() {
-		valueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE, null);
+		valueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
 		valueFacade = new AbstractValueFacade(FACADE_FACTORY, valueTarget) {};
 		IValue collectionElement = valueFacade.getCollectionElement();
 		assertNull(collectionElement);
@@ -60,12 +61,22 @@ public class ValueFacadeTest {
 
 	@Test 
 	public void testIsOneToMany() {
-		valueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE, null);
+		valueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
 		valueFacade = new AbstractValueFacade(FACADE_FACTORY, valueTarget) {};
 		assertFalse(valueFacade.isOneToMany());
 		OneToMany oneToMany = new OneToMany(DummyMetadataBuildingContext.INSTANCE, null);
 		valueFacade = new AbstractValueFacade(FACADE_FACTORY, oneToMany) {};
 		assertTrue(valueFacade.isOneToMany());
+	}
+
+	@Test 
+	public void testIsManyToOne() {
+		valueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, valueTarget) {};
+		assertFalse(valueFacade.isManyToOne());
+		ManyToOne manyToOne = new ManyToOne(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, manyToOne) {};
+		assertTrue(valueFacade.isManyToOne());
 	}
 
 }
