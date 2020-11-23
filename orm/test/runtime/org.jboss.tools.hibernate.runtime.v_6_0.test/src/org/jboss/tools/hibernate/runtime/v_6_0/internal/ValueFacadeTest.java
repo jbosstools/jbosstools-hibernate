@@ -8,6 +8,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import org.hibernate.mapping.BasicValue;
+import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
@@ -172,5 +173,17 @@ public class ValueFacadeTest {
 		valueFacade.setElement(elementFacade);
 		assertSame(elementTarget, valueTarget.getElement());
 	}
+	
+	@Test
+	public void testSetCollectionTable() {
+		Table tableTarget = new Table();
+		ITable tableFacade = FACADE_FACTORY.createTable(tableTarget);
+		Collection valueTarget = new Set(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, valueTarget) {};
+		assertNull(valueTarget.getCollectionTable());
+		valueFacade.setCollectionTable(tableFacade);
+		assertSame(tableTarget, valueTarget.getCollectionTable());
+	}
+	
 }	
 
