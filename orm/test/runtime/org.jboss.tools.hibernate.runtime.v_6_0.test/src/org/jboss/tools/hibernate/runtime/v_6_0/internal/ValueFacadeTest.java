@@ -7,6 +7,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import org.hibernate.mapping.BasicValue;
+import org.hibernate.mapping.Component;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
@@ -100,6 +101,16 @@ public class ValueFacadeTest {
 		Map map = new Map(DummyMetadataBuildingContext.INSTANCE, null);
 		valueFacade = new AbstractValueFacade(FACADE_FACTORY, map) {};
 		assertTrue(valueFacade.isMap());
+	}
+
+	@Test
+	public void testIsComponent() {
+		valueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, valueTarget) {};
+		assertFalse(valueFacade.isComponent());
+		Component component = new Component(DummyMetadataBuildingContext.INSTANCE, new RootClass(null));
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, component) {};
+		assertTrue(valueFacade.isComponent());
 	}
 
 }
