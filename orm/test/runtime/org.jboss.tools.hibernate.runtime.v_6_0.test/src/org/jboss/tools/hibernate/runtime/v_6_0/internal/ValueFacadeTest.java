@@ -14,6 +14,7 @@ import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Set;
+import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.runtime.common.AbstractValueFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -124,6 +125,16 @@ public class ValueFacadeTest {
 		assertTrue(valueFacade.isEmbedded());
 		component.setEmbedded(false);
 		assertFalse(valueFacade.isEmbedded());
+	}
+
+	@Test
+	public void testIsToOne() {
+		valueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, valueTarget) {};
+		assertFalse(valueFacade.isToOne());
+		ToOne toOne = new OneToOne(DummyMetadataBuildingContext.INSTANCE, null, new RootClass(null));
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, toOne) {};
+		assertTrue(valueFacade.isToOne());
 	}
 
 }
