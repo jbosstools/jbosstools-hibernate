@@ -14,13 +14,17 @@ import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Set;
+import org.hibernate.mapping.SimpleValue;
+import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.runtime.common.AbstractValueFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.DummyMetadataBuildingContext;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class ValueFacadeTest {
@@ -137,4 +141,13 @@ public class ValueFacadeTest {
 		assertTrue(valueFacade.isToOne());
 	}
 
+	@Test 
+	public void testGetTable() {
+		Table tableTarget = new Table();
+		valueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE, tableTarget);
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, valueTarget) {};
+		ITable tableFacade = valueFacade.getTable();
+		assertSame(tableTarget, ((IFacade)tableFacade).getTarget());
+	}
+	
 }
