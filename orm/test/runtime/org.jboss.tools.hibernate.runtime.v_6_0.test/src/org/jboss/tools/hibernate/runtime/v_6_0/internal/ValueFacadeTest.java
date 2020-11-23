@@ -22,6 +22,7 @@ import org.jboss.tools.hibernate.runtime.common.AbstractValueFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
+import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.DummyMetadataBuildingContext;
 import org.junit.Assert;
@@ -150,4 +151,15 @@ public class ValueFacadeTest {
 		assertSame(tableTarget, ((IFacade)tableFacade).getTarget());
 	}
 	
-}
+	@Test
+	public void testGetType() {
+		SimpleValue valueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		valueTarget.setTypeName("java.lang.Integer");
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		IType typeFacade = valueFacade.getType();
+		Assert.assertEquals(
+				"org.hibernate.type.IntegerType", 
+				((IFacade)typeFacade).getTarget().getClass().getName());
+	}
+}	
+
