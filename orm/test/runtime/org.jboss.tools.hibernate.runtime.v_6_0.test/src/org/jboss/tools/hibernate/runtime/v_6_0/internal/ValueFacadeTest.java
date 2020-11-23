@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -25,7 +26,6 @@ import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.DummyMetadataBuildingContext;
-import org.junit.Assert;
 import org.junit.Test;
 
 public class ValueFacadeTest {
@@ -155,11 +155,22 @@ public class ValueFacadeTest {
 	public void testGetType() {
 		SimpleValue valueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
 		valueTarget.setTypeName("java.lang.Integer");
-		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, valueTarget) {};
 		IType typeFacade = valueFacade.getType();
-		Assert.assertEquals(
+		assertEquals(
 				"org.hibernate.type.IntegerType", 
 				((IFacade)typeFacade).getTarget().getClass().getName());
+	}
+	
+	@Test
+	public void testSetElement() {
+		SimpleValue elementTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		IValue elementFacade = new AbstractValueFacade(FACADE_FACTORY, elementTarget) {};
+		Set valueTarget = new Set(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, valueTarget) {};
+		assertNull(valueTarget.getElement());
+		valueFacade.setElement(elementFacade);
+		assertSame(elementTarget, valueTarget.getElement());
 	}
 }	
 
