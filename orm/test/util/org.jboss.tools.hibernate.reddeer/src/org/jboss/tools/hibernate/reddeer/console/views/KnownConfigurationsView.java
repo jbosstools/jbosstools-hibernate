@@ -51,6 +51,7 @@ public class KnownConfigurationsView extends WorkbenchView {
 	 */
 	public EditConfigurationShell addConfiguration() {
 		open();
+		this.activate();
 		new ContextMenuItem("Add Configuration...").select();
 		return new EditConfigurationShell();
 	}
@@ -61,6 +62,7 @@ public class KnownConfigurationsView extends WorkbenchView {
 	 */
 	public void selectConsole(String name) {
 		open();
+		this.activate();
 		new DefaultTreeItem(new DefaultTree(this), name).select();
 	}
 

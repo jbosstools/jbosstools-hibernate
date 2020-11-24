@@ -65,8 +65,7 @@ import org.junit.runners.Suite;
 	MappingFileTest.class,
 	PersistenceXMLFileTest.class, 
 	RevengFileTest.class,
-	TablesFromJPAEntitiesGeneration.class
-	
+	TablesFromJPAEntitiesGeneration.class	
 
 })
 public class HibernateAllTest {

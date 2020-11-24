@@ -71,7 +71,9 @@ public class DriverDefinitionFactory {
 		ddw.addDriverLibrary(dd.getDriverLibrary());
 		ddw.setDriverClass(cfg.getDriverClass());
 		
+		ddw.setFocus();
 		ddw.ok();
+		preferenceDialog.activate();
 		preferenceDialog.ok();
 	}
 

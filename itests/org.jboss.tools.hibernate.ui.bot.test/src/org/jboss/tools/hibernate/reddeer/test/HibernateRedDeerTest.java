@@ -165,11 +165,13 @@ public class HibernateRedDeerTest {
 		while(v.getConsoleConfigurations() != null && !v.getConsoleConfigurations().isEmpty()){
 			TreeItem i =  v.getConsoleConfigurations().get(0);
 			i.select();
+			v.activate();
 			ContextMenuItem closeConfig = new ContextMenuItem("Close Configuration");
 			if(closeConfig.isEnabled()){
 				closeConfig.select();
 				new WaitWhile(new JobIsRunning());
 			}
+			v.activate();
 			v.deleteConsoleConfiguration(i.getText());
 		}
 	}
