@@ -227,5 +227,14 @@ public class ValueFacadeTest {
 		assertEquals("java.lang.Integer", valueTarget.getTypeName());
 	}
 	
+	@Test
+	public void testGetComponentClassName() {
+		Component valueTarget = new Component(DummyMetadataBuildingContext.INSTANCE, new RootClass(null));
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, valueTarget) {};
+		assertNull(valueFacade.getComponentClassName());
+		valueTarget.setComponentClassName("org.foo.Bar");
+		assertEquals("org.foo.Bar", valueFacade.getComponentClassName());
+	}
+	
 }	
 
