@@ -28,7 +28,6 @@ import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.DummyMetadataBuildingContext;
-import org.junit.Assert;
 import org.junit.Test;
 
 public class ValueFacadeTest {
@@ -202,10 +201,21 @@ public class ValueFacadeTest {
 	public void testIsList() {
 		valueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
 		valueFacade = new AbstractValueFacade(FACADE_FACTORY, valueTarget) {};
-		Assert.assertFalse(valueFacade.isList());
+		assertFalse(valueFacade.isList());
 		valueTarget = new List(DummyMetadataBuildingContext.INSTANCE, null);
 		valueFacade = new AbstractValueFacade(FACADE_FACTORY, valueTarget) {};
-		Assert.assertTrue(valueFacade.isList());
+		assertTrue(valueFacade.isList());
+	}
+	
+	@Test
+	public void testSetIndex() {
+		List valueTarget = new List(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, valueTarget) {};
+		assertNull(valueTarget.getIndex());
+		SimpleValue indexTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		IValue indexFacade = new AbstractValueFacade(FACADE_FACTORY, indexTarget) {};
+		valueFacade.setIndex(indexFacade);
+		assertSame(indexTarget, valueTarget.getIndex());
 	}
 	
 }	
