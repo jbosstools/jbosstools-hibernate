@@ -307,5 +307,14 @@ public class ValueFacadeTest {
 		assertEquals("org.foo.Bar", valueFacade.getElementClassName());;
 	}
 	
+	@Test
+	public void testGetTypeName() {
+		SimpleValue valueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, valueTarget) {};
+		assertNull(valueFacade.getTypeName());
+		valueTarget.setTypeName("org.foo.Bar");
+		assertEquals("org.foo.Bar", valueFacade.getTypeName());
+	}
+	
 }	
 
