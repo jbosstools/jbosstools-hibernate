@@ -27,7 +27,6 @@ import org.jboss.tools.hibernate.runtime.spi.IQueryTranslator;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 
@@ -58,8 +57,7 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 
 	@Override
 	public IColumn createColumn(Object target) {
-		// TODO Auto-generated method stub
-		return null;
+		return new ColumnFacadeImpl(this, target);
 	}
 
 	@Override

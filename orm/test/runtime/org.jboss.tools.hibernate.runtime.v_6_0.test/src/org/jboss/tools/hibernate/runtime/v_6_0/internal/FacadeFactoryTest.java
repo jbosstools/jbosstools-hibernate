@@ -14,6 +14,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
@@ -39,6 +40,7 @@ import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
+import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
@@ -195,6 +197,13 @@ public class FacadeFactoryTest {
 				new TestInvocationHandler());
 		ICollectionMetadata facade = facadeFactory.createCollectionMetadata(collectionMetadata);
 		assertSame(collectionMetadata, ((IFacade)facade).getTarget());		
+	}
+	
+	@Test
+	public void testCreateColumn() {
+		Column column = new Column();
+		IColumn facade = facadeFactory.createColumn(column);
+		assertSame(column, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
