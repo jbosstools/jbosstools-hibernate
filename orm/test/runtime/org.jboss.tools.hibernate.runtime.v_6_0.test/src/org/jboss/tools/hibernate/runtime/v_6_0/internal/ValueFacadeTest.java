@@ -9,6 +9,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Iterator;
 
+import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Collection;
@@ -325,6 +326,16 @@ public class ValueFacadeTest {
 		DependantValue dependantValueTarget = new DependantValue(DummyMetadataBuildingContext.INSTANCE, null, null);
 		valueFacade = new AbstractValueFacade(FACADE_FACTORY, dependantValueTarget) {};
 		assertTrue(valueFacade.isDependantValue());
+	}
+	
+	@Test
+	public void testIsAny() {
+		SimpleValue simpleValueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, simpleValueTarget) {};
+		assertFalse(valueFacade.isAny());
+		Any anyTarget = new Any(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, anyTarget) {};
+		assertTrue(valueFacade.isAny());
 	}
 	
 }	
