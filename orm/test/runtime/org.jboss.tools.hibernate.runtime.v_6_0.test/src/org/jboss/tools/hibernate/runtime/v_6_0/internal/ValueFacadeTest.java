@@ -39,6 +39,7 @@ import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.DummyMetadataBuildingContext;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class ValueFacadeTest {
@@ -389,6 +390,15 @@ public class ValueFacadeTest {
 		Bag bagTarget = new Bag(DummyMetadataBuildingContext.INSTANCE, null);
 		valueFacade = new AbstractValueFacade(FACADE_FACTORY, bagTarget) {};
 		assertTrue(valueFacade.isBag());
+	}
+	
+	@Test
+	public void testGetReferencedEntityName() {
+		ManyToOne valueTarget = new ManyToOne(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, valueTarget) {};
+		Assert.assertNull(valueFacade.getReferencedEntityName());
+		valueTarget.setReferencedEntityName("Foo");
+		Assert.assertEquals("Foo", valueFacade.getReferencedEntityName());
 	}
 	
 }	
