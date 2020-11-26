@@ -16,6 +16,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
@@ -50,6 +51,7 @@ import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
+import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
@@ -61,7 +63,6 @@ import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -240,7 +241,14 @@ public class FacadeFactoryTest {
 	public void testCreatePersistentClass() {
 		PersistentClass persistentClass = new RootClass(null);
 		IPersistentClass facade = facadeFactory.createPersistentClass(persistentClass);
-		Assert.assertSame(persistentClass, ((IFacade)facade).getTarget());
+		assertSame(persistentClass, ((IFacade)facade).getTarget());
+	}
+	
+	@Test
+	public void testCreateProperty() {
+		Property property = new Property();
+		IProperty facade = facadeFactory.createProperty(property);
+		assertSame(property, ((IFacade)facade).getTarget());
 	}
 	
 	@Test
