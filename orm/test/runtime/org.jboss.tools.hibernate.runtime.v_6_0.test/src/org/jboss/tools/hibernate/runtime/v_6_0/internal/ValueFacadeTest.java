@@ -359,5 +359,15 @@ public class ValueFacadeTest {
 		assertTrue(valueFacade.isPrimitiveArray());
 	}
 	
+	@Test
+	public void testIsArray() {
+		SimpleValue simpleValueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, simpleValueTarget) {};
+		assertFalse(valueFacade.isArray());
+		Array arrayTarget = new Array(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, arrayTarget) {};
+		assertTrue(valueFacade.isArray());
+	}
+	
 }	
 
