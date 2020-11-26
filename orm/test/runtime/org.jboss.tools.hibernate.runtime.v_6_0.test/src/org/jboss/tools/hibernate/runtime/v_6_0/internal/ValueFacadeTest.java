@@ -39,7 +39,6 @@ import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.DummyMetadataBuildingContext;
-import org.junit.Assert;
 import org.junit.Test;
 
 public class ValueFacadeTest {
@@ -396,9 +395,21 @@ public class ValueFacadeTest {
 	public void testGetReferencedEntityName() {
 		ManyToOne valueTarget = new ManyToOne(DummyMetadataBuildingContext.INSTANCE, null);
 		valueFacade = new AbstractValueFacade(FACADE_FACTORY, valueTarget) {};
-		Assert.assertNull(valueFacade.getReferencedEntityName());
+		assertNull(valueFacade.getReferencedEntityName());
 		valueTarget.setReferencedEntityName("Foo");
-		Assert.assertEquals("Foo", valueFacade.getReferencedEntityName());
+		assertEquals("Foo", valueFacade.getReferencedEntityName());
+	}
+	
+	@Test
+	public void testGetEntityName() {
+		SimpleValue simpleValueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, simpleValueTarget) {};
+		assertNull(valueFacade.getEntityName());
+		RootClass pc = new RootClass(null);
+		pc.setEntityName("foobar");
+		OneToOne oneToOneTarget = new OneToOne(DummyMetadataBuildingContext.INSTANCE, null, pc);
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, oneToOneTarget) {};
+		assertEquals("foobar", valueFacade.getEntityName());
 	}
 	
 }	
