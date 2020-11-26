@@ -338,5 +338,15 @@ public class ValueFacadeTest {
 		assertTrue(valueFacade.isAny());
 	}
 	
+	@Test
+	public void testIsSet() {
+		SimpleValue simpleValueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, simpleValueTarget) {};
+		assertFalse(valueFacade.isSet());
+		Set setTarget = new Set(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, setTarget) {};
+		assertTrue(valueFacade.isSet());
+	}
+	
 }	
 
