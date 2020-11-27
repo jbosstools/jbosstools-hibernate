@@ -455,5 +455,14 @@ public class ValueFacadeTest {
 		assertSame(properties, simpleValueTarget.getTypeParameters());		
 	}
 	
+	@Test
+	public void testGetForeignKeyName() {
+		SimpleValue simpleValueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, simpleValueTarget) {};
+		assertNull(valueFacade.getForeignKeyName());
+		simpleValueTarget.setForeignKeyName("foobar");
+		assertEquals("foobar", valueFacade.getForeignKeyName());
+	}
+	
 }	
 
