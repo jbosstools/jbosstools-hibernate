@@ -472,5 +472,17 @@ public class ValueFacadeTest {
 		assertSame(rc, ((IFacade)valueFacade.getOwner()).getTarget());
 	}
 	
+	@Test
+	public void testGetElement() {
+		Bag bagValueTarget = new Bag(DummyMetadataBuildingContext.INSTANCE, null);
+		IValue bagValueFacade = new AbstractValueFacade(FACADE_FACTORY, bagValueTarget) {};
+		assertNull(bagValueFacade.getElement());
+		SimpleValue simpleValueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		bagValueTarget.setElement(simpleValueTarget);
+		assertSame(
+				simpleValueTarget, 
+				((IFacade)bagValueFacade.getElement()).getTarget());
+	}
+	
 }	
 
