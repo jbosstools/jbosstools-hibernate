@@ -8,6 +8,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Iterator;
+import java.util.Properties;
 
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
@@ -41,7 +42,6 @@ import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.DummyMetadataBuildingContext;
-import org.junit.Assert;
 import org.junit.Test;
 
 public class ValueFacadeTest {
@@ -443,6 +443,16 @@ public class ValueFacadeTest {
 		columnIterator = simpleValueTarget.getColumnIterator();
 		assertTrue(columnIterator.hasNext());
 		assertSame(columnTarget, columnIterator.next());
+	}
+	
+	@Test
+	public void testGetTypeParameters() {
+		SimpleValue simpleValueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, simpleValueTarget) {};
+		assertNull(simpleValueTarget.getTypeParameters());
+		Properties properties = new Properties();
+		valueFacade.setTypeParameters(properties);
+		assertSame(properties, simpleValueTarget.getTypeParameters());		
 	}
 	
 }	
