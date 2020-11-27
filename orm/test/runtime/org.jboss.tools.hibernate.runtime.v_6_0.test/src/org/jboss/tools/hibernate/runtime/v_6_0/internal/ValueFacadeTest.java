@@ -41,6 +41,7 @@ import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.DummyMetadataBuildingContext;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class ValueFacadeTest {
@@ -427,6 +428,21 @@ public class ValueFacadeTest {
 		assertTrue(iter.hasNext());
 		IProperty propertyFacade = iter.next();
 		assertSame(propertyTarget, ((IFacade)propertyFacade).getTarget());
+	}
+	
+	@Test
+	public void testAddColumn() {
+		SimpleValue simpleValueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		simpleValueTarget.setTable(new Table());
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, simpleValueTarget) {};
+		Iterator<?> columnIterator = simpleValueTarget.getColumnIterator();
+		assertFalse(columnIterator.hasNext());
+		Column columnTarget = new Column();
+		IColumn columnFacade = FACADE_FACTORY.createColumn(columnTarget);
+		valueFacade.addColumn(columnFacade);
+		columnIterator = simpleValueTarget.getColumnIterator();
+		assertTrue(columnIterator.hasNext());
+		assertSame(columnTarget, columnIterator.next());
 	}
 	
 }	
