@@ -25,6 +25,7 @@ import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PrimitiveArray;
+import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
@@ -35,6 +36,7 @@ import org.jboss.tools.hibernate.runtime.common.AbstractValueFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
+import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
@@ -410,6 +412,21 @@ public class ValueFacadeTest {
 		OneToOne oneToOneTarget = new OneToOne(DummyMetadataBuildingContext.INSTANCE, null, pc);
 		valueFacade = new AbstractValueFacade(FACADE_FACTORY, oneToOneTarget) {};
 		assertEquals("foobar", valueFacade.getEntityName());
+	}
+	
+	@Test
+	public void testGetPropertyIterator() {
+		Component componentTarget = new Component(DummyMetadataBuildingContext.INSTANCE, new RootClass(null));
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, componentTarget) {};
+		Iterator<IProperty> iter = valueFacade.getPropertyIterator();
+		assertFalse(iter.hasNext());
+		Property propertyTarget = new Property();
+		componentTarget.addProperty(propertyTarget);
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, componentTarget) {};
+		iter = valueFacade.getPropertyIterator();
+		assertTrue(iter.hasNext());
+		IProperty propertyFacade = iter.next();
+		assertSame(propertyTarget, ((IFacade)propertyFacade).getTarget());
 	}
 	
 }	
