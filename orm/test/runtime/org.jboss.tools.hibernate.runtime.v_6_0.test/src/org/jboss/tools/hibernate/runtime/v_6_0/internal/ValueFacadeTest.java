@@ -464,5 +464,13 @@ public class ValueFacadeTest {
 		assertEquals("foobar", valueFacade.getForeignKeyName());
 	}
 	
+	@Test
+	public void testGetOwner() {
+		RootClass rc = new RootClass(null);
+		Component componentTarget = new Component(DummyMetadataBuildingContext.INSTANCE, rc);
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, componentTarget) {};
+		assertSame(rc, ((IFacade)valueFacade.getOwner()).getTarget());
+	}
+	
 }	
 
