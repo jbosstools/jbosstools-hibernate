@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
@@ -10,6 +11,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Iterator;
 import java.util.Properties;
 
+import org.hibernate.FetchMode;
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
@@ -511,6 +513,25 @@ public class ValueFacadeTest {
 		assertNull(collectionTarget.getKey());
 		collectionFacade.setKey(keyValueFacade);
 		assertSame(keyValueTarget, collectionTarget.getKey());
+	}
+	
+	@Test
+	public void testSetFetchModeJoin() {
+		SimpleValue simpleValueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		assertNotEquals(FetchMode.JOIN, simpleValueTarget.getFetchMode());
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, simpleValueTarget) {};
+		valueFacade.setFetchModeJoin();
+		assertNotEquals(FetchMode.JOIN, simpleValueTarget.getFetchMode());
+		Collection collectionTarget = new Bag(DummyMetadataBuildingContext.INSTANCE, null);
+		assertNotEquals(FetchMode.JOIN, collectionTarget.getFetchMode());
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, collectionTarget) {};
+		valueFacade.setFetchModeJoin();
+		assertEquals(FetchMode.JOIN, collectionTarget.getFetchMode());
+		ManyToOne manyToOneTarget = new ManyToOne(DummyMetadataBuildingContext.INSTANCE, null);
+		assertNotEquals(FetchMode.JOIN, manyToOneTarget.getFetchMode());
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, manyToOneTarget) {};
+		valueFacade.setFetchModeJoin();
+		assertEquals(FetchMode.JOIN, manyToOneTarget.getFetchMode());
 	}
 	
 }	
