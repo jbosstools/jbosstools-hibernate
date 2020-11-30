@@ -555,5 +555,15 @@ public class ValueFacadeTest {
 				((IFacade)valueFacade.getAssociatedClass()).getTarget());
 	}
 	
+	@Test
+	public void testSetLazy() {
+		Collection collectionTarget = new Bag(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, collectionTarget) {};
+		valueFacade.setLazy(true);
+		assertTrue(collectionTarget.isLazy());
+		valueFacade.setLazy(false);
+		assertFalse(collectionTarget.isLazy());
+	}
+	
 }	
 
