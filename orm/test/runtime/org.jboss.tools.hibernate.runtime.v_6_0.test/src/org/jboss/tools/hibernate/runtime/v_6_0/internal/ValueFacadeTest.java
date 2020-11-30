@@ -487,7 +487,7 @@ public class ValueFacadeTest {
 	@Test
 	public void testGetParentProperty() {
 		Component componentTarget = new Component(DummyMetadataBuildingContext.INSTANCE, new RootClass(null));
-		IValue valueFacade = FACADE_FACTORY.createValue(componentTarget);
+		IValue valueFacade = new AbstractValueFacade(FACADE_FACTORY, componentTarget) {};
 		assertNull(valueFacade.getParentProperty());
 		componentTarget.setParentProperty("foobar");
 		assertEquals("foobar", valueFacade.getParentProperty());
@@ -496,10 +496,21 @@ public class ValueFacadeTest {
 	@Test
 	public void testSetElementClassName() {
 		Array arrayTarget = new Array(DummyMetadataBuildingContext.INSTANCE, null);
-		valueFacade = FACADE_FACTORY.createValue(arrayTarget);
+		valueFacade = new AbstractValueFacade(FACADE_FACTORY, arrayTarget) {};
 		assertNull(arrayTarget.getElementClassName());
 		valueFacade.setElementClassName("foobar");
 		assertEquals("foobar", arrayTarget.getElementClassName());
+	}
+	
+	@Test
+	public void testSetKey() {
+		KeyValue keyValueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		IValue keyValueFacade = new AbstractValueFacade(FACADE_FACTORY, keyValueTarget) {};
+		Collection collectionTarget = new Bag(DummyMetadataBuildingContext.INSTANCE, null);
+		IValue collectionFacade = new AbstractValueFacade(FACADE_FACTORY, collectionTarget) {};
+		assertNull(collectionTarget.getKey());
+		collectionFacade.setKey(keyValueFacade);
+		assertSame(keyValueTarget, collectionTarget.getKey());
 	}
 	
 }	
