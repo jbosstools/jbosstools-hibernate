@@ -166,8 +166,7 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 
 	@Override
 	public ITypeFactory createTypeFactory() {
-		// TODO Auto-generated method stub
-		return null;
+		return new TypeFactoryFacadeImpl(this, null);
 	}
 
 }

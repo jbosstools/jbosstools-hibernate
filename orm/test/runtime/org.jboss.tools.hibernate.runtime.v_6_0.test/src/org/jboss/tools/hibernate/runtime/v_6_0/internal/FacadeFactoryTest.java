@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
@@ -62,6 +63,7 @@ import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.IType;
+import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.junit.Before;
 import org.junit.Test;
@@ -288,6 +290,14 @@ public class FacadeFactoryTest {
 		Table table = new Table();
 		ITable facade = facadeFactory.createTable(table);
 		assertSame(table, ((IFacade)facade).getTarget());
+	}
+	
+	@Test
+	public void testCreateTypeFactory() {
+		ITypeFactory facade = facadeFactory.createTypeFactory();
+		assertNotNull(facade);
+		assertTrue(facade instanceof TypeFactoryFacadeImpl);
+		assertNull(((IFacade)facade).getTarget());
 	}
 	
 	@Test
