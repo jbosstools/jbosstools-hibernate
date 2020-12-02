@@ -20,7 +20,6 @@ import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
-import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.IQueryTranslator;
@@ -132,12 +131,6 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 
 	@Override
 	public IPOJOClass createPOJOClass(Object target) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public IPrimaryKey createPrimaryKey(Object target) {
 		// TODO Auto-generated method stub
 		return null;
 	}

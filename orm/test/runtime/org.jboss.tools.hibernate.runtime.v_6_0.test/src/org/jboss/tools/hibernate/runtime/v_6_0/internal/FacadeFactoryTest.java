@@ -17,6 +17,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
@@ -52,6 +53,7 @@ import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
+import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
@@ -244,6 +246,13 @@ public class FacadeFactoryTest {
 		PersistentClass persistentClass = new RootClass(null);
 		IPersistentClass facade = facadeFactory.createPersistentClass(persistentClass);
 		assertSame(persistentClass, ((IFacade)facade).getTarget());
+	}
+	
+	@Test
+	public void testCreatePrimaryKey() {
+		PrimaryKey primaryKey = new PrimaryKey(null);
+		IPrimaryKey facade = facadeFactory.createPrimaryKey(primaryKey);
+		assertSame(primaryKey, ((IFacade)facade).getTarget());
 	}
 	
 	@Test
