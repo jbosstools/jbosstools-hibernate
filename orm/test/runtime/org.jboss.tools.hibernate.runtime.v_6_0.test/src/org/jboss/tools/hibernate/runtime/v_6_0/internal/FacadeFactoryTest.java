@@ -126,6 +126,7 @@ public class FacadeFactoryTest {
 				new Class[] { RevengStrategy.class }, 
 				new TestInvocationHandler());
 		IReverseEngineeringStrategy facade = facadeFactory.createReverseEngineeringStrategy(res);
+		assertTrue(facade instanceof ReverseEngineeringStrategyFacadeImpl);
 		assertSame(res, ((IFacade)facade).getTarget());		
 	}
 	
