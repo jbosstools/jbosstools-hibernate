@@ -3,8 +3,8 @@ package org.jboss.tools.hibernate.runtime.spi;
 
 public interface IJDBCReader {
 
-	void readDatabaseSchema(
+	IDatabaseCollector readDatabaseSchema(
 			IDatabaseCollector databaseCollector,
 			IProgressListener progressListener);
-
+	
 }

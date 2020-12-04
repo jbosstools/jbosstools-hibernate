@@ -20,7 +20,7 @@ implements IJDBCReader {
 	}
 
 	@Override
-	public void readDatabaseSchema(
+	public IDatabaseCollector readDatabaseSchema(
 			IDatabaseCollector databaseCollector,
 			IProgressListener progressListener) {
 		Object databaseCollectorTarget = Util.invokeMethod(
@@ -55,6 +55,7 @@ implements IJDBCReader {
 						properties.getProperty(defaultSchema),
 						createProgressListener(progressListener)
 				});
+		return databaseCollector;
 	}
 	
 	public Class<?> getProgressListenerClass() {
