@@ -246,7 +246,9 @@ public class ServiceImpl extends AbstractService implements IService {
 						(Settings)((ConfigurationFacadeImpl)configuration).buildTargetSettings(),
 						(ReverseEngineeringStrategy)((IFacade)strategy).getTarget(),
 						buildServiceRegistry(configuration));
-		return facadeFactory.createJDBCReader(target);
+		IJDBCReader result = facadeFactory.createJDBCReader(target);
+		result.setDatabaseCollector(newDatabaseCollector(result));
+		return result;
 	}
 
 	private ServiceRegistry buildServiceRegistry(IConfiguration configuration) {
