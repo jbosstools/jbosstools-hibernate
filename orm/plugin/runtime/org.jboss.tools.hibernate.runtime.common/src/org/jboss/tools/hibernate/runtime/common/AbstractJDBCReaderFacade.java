@@ -12,6 +12,8 @@ import org.jboss.tools.hibernate.runtime.spi.IProgressListener;
 public abstract class AbstractJDBCReaderFacade 
 extends AbstractFacade 
 implements IJDBCReader {
+	
+	private IDatabaseCollector databaseCollector = null;
 
 	public AbstractJDBCReaderFacade(
 			IFacadeFactory facadeFactory, 
@@ -20,9 +22,7 @@ implements IJDBCReader {
 	}
 
 	@Override
-	public IDatabaseCollector readDatabaseSchema(
-			IDatabaseCollector databaseCollector,
-			IProgressListener progressListener) {
+	public IDatabaseCollector readDatabaseSchema(IProgressListener progressListener) {
 		Object databaseCollectorTarget = Util.invokeMethod(
 				databaseCollector, 
 				"getTarget", 
@@ -56,6 +56,10 @@ implements IJDBCReader {
 						createProgressListener(progressListener)
 				});
 		return databaseCollector;
+	}
+	
+	public void setDatabaseCollector(IDatabaseCollector databaseCollector) {
+		this.databaseCollector = databaseCollector;
 	}
 	
 	public Class<?> getProgressListenerClass() {
