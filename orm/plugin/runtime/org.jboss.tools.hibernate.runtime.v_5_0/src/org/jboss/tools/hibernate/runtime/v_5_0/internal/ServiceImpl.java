@@ -249,15 +249,6 @@ public class ServiceImpl extends AbstractService {
 	}
 
 	@Override
-	public IDatabaseCollector newDatabaseCollector(IJDBCReader jdbcReader) {
-		assert jdbcReader instanceof IFacade;
-		JDBCReader jdbcReaderTarget = (JDBCReader)((IFacade)jdbcReader).getTarget();
-		MetaDataDialect metadataDialect = jdbcReaderTarget.getMetaDataDialect();
-		return facadeFactory.createDatabaseCollector(
-				new DefaultDatabaseCollector(metadataDialect));
-	}
-
-	@Override
 	public ICfg2HbmTool newCfg2HbmTool() {
 		return facadeFactory.createCfg2HbmTool(new Cfg2HbmTool());
 	}
@@ -481,5 +472,13 @@ public class ServiceImpl extends AbstractService {
 			throw new HibernateException(e);
 		}
     }
+
+	private IDatabaseCollector newDatabaseCollector(IJDBCReader jdbcReader) {
+		assert jdbcReader instanceof IFacade;
+		JDBCReader jdbcReaderTarget = (JDBCReader)((IFacade)jdbcReader).getTarget();
+		MetaDataDialect metadataDialect = jdbcReaderTarget.getMetaDataDialect();
+		return facadeFactory.createDatabaseCollector(
+				new DefaultDatabaseCollector(metadataDialect));
+	}
 
 }

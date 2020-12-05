@@ -7,14 +7,10 @@ import java.sql.DriverManager;
 import java.util.List;
 import java.util.Properties;
 
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
-import org.hibernate.cfg.JDBCReaderFactory;
-import org.hibernate.cfg.reveng.DatabaseCollector;
-import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.DelegatingReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.cfg.reveng.OverrideRepository;
@@ -42,12 +38,10 @@ import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.hibernate.tool.hbm2x.POJOExporter;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
-import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
-import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
@@ -70,8 +64,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class ServiceImplTest {
-
-	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 
 	static class Foo { 
 		private int id; 
@@ -292,21 +284,6 @@ public class ServiceImplTest {
 		Assert.assertEquals(
 				"org.hibernate.cfg.reveng.ReverseEngineeringStrategy", 
 				service.getReverseEngineeringStrategyClassName());
-	}
-	
-	@Test
-	public void testNewDatabaseCollector() {
-		IJDBCReader jdbcReader = FACADE_FACTORY.createJDBCReader(
-				JDBCReaderFactory.newJDBCReader(
-						new Configuration().getProperties(), 
-						new DefaultReverseEngineeringStrategy(),
-						new StandardServiceRegistryBuilder().build()));
-		IDatabaseCollector databaseCollectorFacade = 
-				service.newDatabaseCollector(jdbcReader);
-		Assert.assertNotNull(databaseCollectorFacade);
-		DatabaseCollector databaseCollector = 
-				(DatabaseCollector)((IFacade)databaseCollectorFacade).getTarget();
-		Assert.assertNotNull(databaseCollector);
 	}
 	
 	@Test

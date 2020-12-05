@@ -85,9 +85,9 @@ import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_5_3.internal.util.ConfigurationMetadataDescriptor;
 import org.jboss.tools.hibernate.runtime.v_5_3.internal.util.DummyMetadataBuildingContext;
+import org.jboss.tools.hibernate.runtime.v_5_3.internal.util.DummyMetadataDescriptor;
 import org.jboss.tools.hibernate.runtime.v_5_3.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_5_3.internal.util.JpaConfiguration;
-import org.jboss.tools.hibernate.runtime.v_5_3.internal.util.DummyMetadataDescriptor;
 import org.xml.sax.EntityResolver;
 
 public class ServiceImpl extends AbstractService {
@@ -249,15 +249,6 @@ public class ServiceImpl extends AbstractService {
 	@Override
 	public String getReverseEngineeringStrategyClassName() {
 		return ReverseEngineeringStrategy.class.getName();
-	}
-
-	@Override
-	public IDatabaseCollector newDatabaseCollector(IJDBCReader jdbcReader) {
-		assert jdbcReader instanceof IFacade;
-		JDBCReader jdbcReaderTarget = (JDBCReader)((IFacade)jdbcReader).getTarget();
-		MetaDataDialect metadataDialect = jdbcReaderTarget.getMetaDataDialect();
-		return facadeFactory.createDatabaseCollector(
-				new DefaultDatabaseCollector(metadataDialect));
 	}
 
 	@Override
@@ -494,5 +485,13 @@ public class ServiceImpl extends AbstractService {
 			throw new HibernateException(e);
 		}
     }
+
+	private IDatabaseCollector newDatabaseCollector(IJDBCReader jdbcReader) {
+		assert jdbcReader instanceof IFacade;
+		JDBCReader jdbcReaderTarget = (JDBCReader)((IFacade)jdbcReader).getTarget();
+		MetaDataDialect metadataDialect = jdbcReaderTarget.getMetaDataDialect();
+		return facadeFactory.createDatabaseCollector(
+				new DefaultDatabaseCollector(metadataDialect));
+	}
 
 }

@@ -75,7 +75,6 @@ import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
-import org.jboss.tools.hibernate.runtime.spi.IService;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
@@ -84,7 +83,7 @@ import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_3_6.internal.util.DummyMappings;
 import org.xml.sax.EntityResolver;
 
-public class ServiceImpl extends AbstractService implements IService {
+public class ServiceImpl extends AbstractService {
 
 	private static final String HIBERNATE_VERSION = "3.6";
 	
@@ -289,15 +288,6 @@ public class ServiceImpl extends AbstractService implements IService {
 	}
 
 	@Override
-	public IDatabaseCollector newDatabaseCollector(IJDBCReader jdbcReader) {
-		assert jdbcReader instanceof IFacade;
-		JDBCReader jdbcReaderTarget = (JDBCReader)((IFacade)jdbcReader).getTarget();
-		MetaDataDialect metadataDialect = jdbcReaderTarget.getMetaDataDialect();
-		return facadeFactory.createDatabaseCollector(
-				new DefaultDatabaseCollector(metadataDialect));
-	}
-
-	@Override
 	public ICfg2HbmTool newCfg2HbmTool() {
 		return facadeFactory.createCfg2HbmTool(new Cfg2HbmTool());
 	}
@@ -441,6 +431,14 @@ public class ServiceImpl extends AbstractService implements IService {
 	@Override
 	public ClassLoader getClassLoader() {
 		return ServiceImpl.class.getClassLoader();
+	}
+
+	private IDatabaseCollector newDatabaseCollector(IJDBCReader jdbcReader) {
+		assert jdbcReader instanceof IFacade;
+		JDBCReader jdbcReaderTarget = (JDBCReader)((IFacade)jdbcReader).getTarget();
+		MetaDataDialect metadataDialect = jdbcReaderTarget.getMetaDataDialect();
+		return facadeFactory.createDatabaseCollector(
+				new DefaultDatabaseCollector(metadataDialect));
 	}
 
 }
