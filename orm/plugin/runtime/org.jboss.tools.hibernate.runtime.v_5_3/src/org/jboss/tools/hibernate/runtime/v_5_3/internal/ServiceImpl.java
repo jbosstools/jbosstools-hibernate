@@ -14,14 +14,12 @@ import org.hibernate.Hibernate;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCReaderFactory;
-import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
-import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.engine.jdbc.dialect.spi.DatabaseMetaDataDialectResolutionInfoAdapter;
@@ -64,7 +62,6 @@ import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
-import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
@@ -483,13 +480,5 @@ public class ServiceImpl extends AbstractService {
 			throw new HibernateException(e);
 		}
     }
-
-	private IDatabaseCollector newDatabaseCollector(IJDBCReader jdbcReader) {
-		assert jdbcReader instanceof IFacade;
-		JDBCReader jdbcReaderTarget = (JDBCReader)((IFacade)jdbcReader).getTarget();
-		MetaDataDialect metadataDialect = jdbcReaderTarget.getMetaDataDialect();
-		return facadeFactory.createDatabaseCollector(
-				new DefaultDatabaseCollector(metadataDialect));
-	}
 
 }
