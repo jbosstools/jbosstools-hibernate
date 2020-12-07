@@ -1,10 +1,13 @@
 package org.jboss.tools.hibernate.runtime.common;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Properties;
 
+import org.jboss.tools.hibernate.runtime.common.internal.HibernateRuntimeCommon;
 import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.IProgressListener;
@@ -19,6 +22,7 @@ implements IJDBCReader {
 			IFacadeFactory facadeFactory, 
 			Object target) {
 		super(facadeFactory, target);
+		setDatabaseCollector(getFacadeFactory().createDatabaseCollector(createDatabaseCollector()));
 	}
 
 	@Override
@@ -90,6 +94,47 @@ implements IJDBCReader {
 	
 	protected String getEnvironmentClassName() {
 		return "org.hibernate.cfg.Environment";
+	}
+	
+	protected String getDefaultDatabaseCollectorClassName() {
+		return "org.hibernate.cfg.reveng.DefaultDatabaseCollector";
+	}
+	
+	public Class<?> getDefaultDatabaseCollectorClass() {
+		return Util.getClass(
+				getDefaultDatabaseCollectorClassName(), 
+				getFacadeFactoryClassLoader());
+	}
+	
+	protected String getMetaDataDialectClassName() {
+		return "org.hibernate.cfg.reveng.dialect.MetaDataDialect";
+	}
+	
+	public Class<?> getMetaDataDialectClass() {
+		return Util.getClass(
+				getMetaDataDialectClassName(), 
+				getFacadeFactoryClassLoader());
+	}
+	
+	private Object createDatabaseCollector() {
+		Object result = null;
+		try {
+			Object metadataDialect = Util.invokeMethod(
+					getTarget(), 
+					"getMetaDataDialect", 
+					new Class[] {}, 
+					new Object[] {});
+			Constructor<?> constructor = getDefaultDatabaseCollectorClass()
+					.getConstructor(getMetaDataDialectClass());
+			result = constructor.newInstance(metadataDialect);
+		} catch (NoSuchMethodException | 
+				InvocationTargetException | 
+				IllegalAccessException | 
+				InstantiationException e) {
+			HibernateRuntimeCommon.log(e);
+			throw new RuntimeException(e);
+		}
+		return result;
 	}
 	
 	private Object createProgressListener(IProgressListener progressListener) {
