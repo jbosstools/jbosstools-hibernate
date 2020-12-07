@@ -5,13 +5,15 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.jboss.tools.hibernate.runtime.common.internal.HibernateRuntimeCommon;
-import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.IProgressListener;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
@@ -20,19 +22,17 @@ public abstract class AbstractJDBCReaderFacade
 extends AbstractFacade 
 implements IJDBCReader {
 	
-	private IDatabaseCollector databaseCollector = null;
-
 	public AbstractJDBCReaderFacade(
 			IFacadeFactory facadeFactory, 
 			Object target) {
 		super(facadeFactory, target);
-		this.databaseCollector = getFacadeFactory().createDatabaseCollector(createDatabaseCollector());
 	}
 
 	@Override
 	public Iterator<Entry<String, List<ITable>>> collectDatabaseTables(IProgressListener progressListener) {
-		IDatabaseCollector databaseCollector = readDatabaseSchema(progressListener);
-		return databaseCollector.getQualifierEntries();
+		Object databaseCollector = createDatabaseCollector();
+		readDatabaseSchema(databaseCollector, progressListener);
+		return collectDatabaseTables(databaseCollector).entrySet().iterator();
 	}
 	
 	public Class<?> getProgressListenerClass() {
@@ -85,12 +85,9 @@ implements IJDBCReader {
 				getFacadeFactoryClassLoader());
 	}
 	
-	private IDatabaseCollector readDatabaseSchema(IProgressListener progressListener) {
-		Object databaseCollectorTarget = Util.invokeMethod(
-				databaseCollector, 
-				"getTarget", 
-				new Class[] {}, 
-				new Object[] {});
+	private void readDatabaseSchema(
+			Object databaseCollector,
+			IProgressListener progressListener) {
 		Properties properties = (Properties)Util.invokeMethod(
 				getEnvironmentClass(), 
 				"getProperties", 
@@ -113,12 +110,11 @@ implements IJDBCReader {
 						String.class,
 						getProgressListenerClass() }, 
 				new Object[] {
-						databaseCollectorTarget,
+						databaseCollector,
 						properties.getProperty(defaultCatalog),
 						properties.getProperty(defaultSchema),
 						createProgressListener(progressListener)
 				});
-		return databaseCollector;
 	}
 	
 	private Object createDatabaseCollector() {
@@ -138,6 +134,25 @@ implements IJDBCReader {
 				InstantiationException e) {
 			HibernateRuntimeCommon.log(e);
 			throw new RuntimeException(e);
+		}
+		return result;
+	}
+	
+	private Map<String, List<ITable>> collectDatabaseTables(Object databaseCollector) {
+		Map<String, List<ITable>> result = new HashMap<String, List<ITable>>();
+		Iterator<?> origin = 
+				(Iterator<?>)Util.invokeMethod(
+						databaseCollector, 
+						"getQualifierEntries", 
+						new Class[] {}, 
+						new Object[] {});
+		while (origin.hasNext()) {
+			Entry<?, ?> entry = (Entry<?, ?>)origin.next();
+			ArrayList<ITable> list = new ArrayList<ITable>();
+			for (Object table : (Iterable<?>)entry.getValue()) {
+				list.add(getFacadeFactory().createTable(table));
+			}
+			result.put((String)entry.getKey(), list);
 		}
 		return result;
 	}
