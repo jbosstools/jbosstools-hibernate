@@ -54,6 +54,7 @@ import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.util.ReflectHelper;
+import org.jboss.tools.hibernate.runtime.common.AbstractJDBCReaderFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractPersistentClassFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractService;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -230,7 +231,7 @@ public class ServiceImpl extends AbstractService {
 						(ReverseEngineeringStrategy)((IFacade)strategy).getTarget(),
 						buildServiceRegistry(configuration.getProperties()));
 		IJDBCReader result = facadeFactory.createJDBCReader(target);
-		result.setDatabaseCollector(newDatabaseCollector(result));
+		((AbstractJDBCReaderFacade)result).setDatabaseCollector(newDatabaseCollector(result));
 		return result;
 	}
 

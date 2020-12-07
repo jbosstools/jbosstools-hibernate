@@ -53,6 +53,7 @@ import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.util.ReflectHelper;
 import org.hibernate.util.StringHelper;
+import org.jboss.tools.hibernate.runtime.common.AbstractJDBCReaderFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractService;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
@@ -76,7 +77,6 @@ import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
-import org.jboss.tools.hibernate.runtime.spi.IService;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
@@ -241,7 +241,7 @@ public class ServiceImpl extends AbstractService {
 						((Configuration)((IFacade)configuration).getTarget()).buildSettings(), 
 						(ReverseEngineeringStrategy)((IFacade)strategy).getTarget());
 		IJDBCReader result = facadeFactory.createJDBCReader(target);
-		result.setDatabaseCollector(newDatabaseCollector(result));
+		((AbstractJDBCReaderFacade)result).setDatabaseCollector(newDatabaseCollector(result));
 		return result;
 	}
 

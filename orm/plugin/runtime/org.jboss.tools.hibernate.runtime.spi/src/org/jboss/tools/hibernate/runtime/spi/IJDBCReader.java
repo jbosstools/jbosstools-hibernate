@@ -5,6 +5,4 @@ public interface IJDBCReader {
 
 	IDatabaseCollector readDatabaseSchema(IProgressListener progressListener);
 	
-	void setDatabaseCollector(IDatabaseCollector databaseCollector);
-	
 }
