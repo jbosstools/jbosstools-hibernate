@@ -41,7 +41,6 @@ import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.jboss.tools.hibernate.runtime.spi.HibernateException;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
-import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.IProgressListener;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
@@ -61,14 +60,13 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 		ConsoleConfiguration consoleConfiguration = dbs.getConsoleConfiguration();
 		Object[] res;
 		try {
-			IDatabaseCollector db = readDatabaseSchema(monitor, consoleConfiguration, dbs.getReverseEngineeringStrategy());
+			Iterator<?> qualifierEntries = readDatabaseSchema(monitor, consoleConfiguration, dbs.getReverseEngineeringStrategy());
 
 			List<TableContainer> result = new ArrayList<TableContainer>();
 
-			Iterator<Map.Entry<String, List<ITable>>> qualifierEntries = db.getQualifierEntries();
 			while (qualifierEntries.hasNext()) {
-				Map.Entry<String, List<ITable>> entry = qualifierEntries.next();
-				result.add(new TableContainer(entry.getKey(), entry.getValue()));
+				Map.Entry<?, ?> entry = (Map.Entry<?,?>)qualifierEntries.next();
+				result.add(new TableContainer((String)entry.getKey(), (List<ITable>)entry.getValue()));
 			}
 			res = toArray(result.iterator(), Object.class, new Comparator<Object>() {
 				public int compare(Object arg0, Object arg1) {
@@ -119,23 +117,23 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 		return getLazyDatabaseSchema(o).getConsoleConfiguration();
 	}
 
-	protected IDatabaseCollector readDatabaseSchema(final IProgressMonitor monitor, final ConsoleConfiguration consoleConfiguration, final IReverseEngineeringStrategy strategy) {
+	protected Iterator<?> readDatabaseSchema(final IProgressMonitor monitor, final ConsoleConfiguration consoleConfiguration, final IReverseEngineeringStrategy strategy) {
 		final IConfiguration configuration = consoleConfiguration.buildWith(null, false);
-		return (IDatabaseCollector) consoleConfiguration.execute(new ExecutionContext.Command() {
+		return (Iterator<?>) consoleConfiguration.execute(new ExecutionContext.Command() {
 
 			public Object execute() {
-				IDatabaseCollector db = null;
+				Iterator<?> iterator = null;
 				try {
 					IService service = consoleConfiguration.getHibernateExtension().getHibernateService();
 					IJDBCReader reader = service.newJDBCReader(configuration, strategy);
-					db = reader.readDatabaseSchema(new ProgressListener(monitor));
+					iterator = reader.collectDatabaseTables(new ProgressListener(monitor));
 				} catch (UnsupportedOperationException he) {
 					throw new HibernateException(he);
 				} catch (Exception he) {
 					he.printStackTrace();
 					throw new HibernateException(he.getMessage(), he.getCause());
 				}
-				return db;
+				return iterator;
 			}
 		});
 	}

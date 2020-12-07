@@ -5,12 +5,16 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.jboss.tools.hibernate.runtime.common.internal.HibernateRuntimeCommon;
 import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
 import org.jboss.tools.hibernate.runtime.spi.IProgressListener;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
 
 public abstract class AbstractJDBCReaderFacade 
 extends AbstractFacade 
@@ -22,48 +26,13 @@ implements IJDBCReader {
 			IFacadeFactory facadeFactory, 
 			Object target) {
 		super(facadeFactory, target);
-		setDatabaseCollector(getFacadeFactory().createDatabaseCollector(createDatabaseCollector()));
+		this.databaseCollector = getFacadeFactory().createDatabaseCollector(createDatabaseCollector());
 	}
 
 	@Override
-	public IDatabaseCollector readDatabaseSchema(IProgressListener progressListener) {
-		Object databaseCollectorTarget = Util.invokeMethod(
-				databaseCollector, 
-				"getTarget", 
-				new Class[] {}, 
-				new Object[] {});
-		Properties properties = (Properties)Util.invokeMethod(
-				getEnvironmentClass(), 
-				"getProperties", 
-				new Class[] {}, 
-				new Object[] {});
-		String defaultCatalog = (String)Util.getFieldValue(
-				getEnvironmentClass(), 
-				"DEFAULT_CATALOG", 
-				null);
-		String defaultSchema = (String)Util.getFieldValue(
-				getEnvironmentClass(), 
-				"DEFAULT_SCHEMA", 
-				null);
-		Util.invokeMethod(
-				getTarget(), 
-				"readDatabaseSchema", 
-				new Class[] { 
-						getDatabaseCollectorClass(), 
-						String.class,
-						String.class,
-						getProgressListenerClass() }, 
-				new Object[] {
-						databaseCollectorTarget,
-						properties.getProperty(defaultCatalog),
-						properties.getProperty(defaultSchema),
-						createProgressListener(progressListener)
-				});
-		return databaseCollector;
-	}
-	
-	public void setDatabaseCollector(IDatabaseCollector databaseCollector) {
-		this.databaseCollector = databaseCollector;
+	public Iterator<Entry<String, List<ITable>>> collectDatabaseTables(IProgressListener progressListener) {
+		IDatabaseCollector databaseCollector = readDatabaseSchema(progressListener);
+		return databaseCollector.getQualifierEntries();
 	}
 	
 	public Class<?> getProgressListenerClass() {
@@ -114,6 +83,42 @@ implements IJDBCReader {
 		return Util.getClass(
 				getMetaDataDialectClassName(), 
 				getFacadeFactoryClassLoader());
+	}
+	
+	private IDatabaseCollector readDatabaseSchema(IProgressListener progressListener) {
+		Object databaseCollectorTarget = Util.invokeMethod(
+				databaseCollector, 
+				"getTarget", 
+				new Class[] {}, 
+				new Object[] {});
+		Properties properties = (Properties)Util.invokeMethod(
+				getEnvironmentClass(), 
+				"getProperties", 
+				new Class[] {}, 
+				new Object[] {});
+		String defaultCatalog = (String)Util.getFieldValue(
+				getEnvironmentClass(), 
+				"DEFAULT_CATALOG", 
+				null);
+		String defaultSchema = (String)Util.getFieldValue(
+				getEnvironmentClass(), 
+				"DEFAULT_SCHEMA", 
+				null);
+		Util.invokeMethod(
+				getTarget(), 
+				"readDatabaseSchema", 
+				new Class[] { 
+						getDatabaseCollectorClass(), 
+						String.class,
+						String.class,
+						getProgressListenerClass() }, 
+				new Object[] {
+						databaseCollectorTarget,
+						properties.getProperty(defaultCatalog),
+						properties.getProperty(defaultSchema),
+						createProgressListener(progressListener)
+				});
+		return databaseCollector;
 	}
 	
 	private Object createDatabaseCollector() {
