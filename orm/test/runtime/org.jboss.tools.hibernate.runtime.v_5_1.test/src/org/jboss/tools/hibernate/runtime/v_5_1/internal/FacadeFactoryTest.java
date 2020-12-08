@@ -77,7 +77,7 @@ import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
-import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
+import org.jboss.tools.hibernate.runtime.spi.IDatabaseReader;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
@@ -375,8 +375,8 @@ public class FacadeFactoryTest {
 	@Test
 	public void testCreateJDBCReader() {
 		JDBCReader jdbcReader = new JDBCReader(null, null, null, null, null, new DefaultReverseEngineeringStrategy());
-		IJDBCReader facade = facadeFactory.createJDBCReader(jdbcReader);
-		Assert.assertSame(jdbcReader, ((IFacade)facade).getTarget());		
+		IDatabaseReader databaseReaderFacade = facadeFactory.createJDBCReader(jdbcReader);
+		Assert.assertSame(jdbcReader, ((IFacade)databaseReaderFacade).getTarget());		
 	}
 	
 	@Test

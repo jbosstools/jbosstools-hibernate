@@ -47,7 +47,7 @@ import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
-import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
+import org.jboss.tools.hibernate.runtime.spi.IDatabaseReader;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -247,11 +247,11 @@ public class ServiceImplTest {
 		IConfiguration configuration = service.newDefaultConfiguration();
 		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 		IReverseEngineeringStrategy strategy = service.newDefaultReverseEngineeringStrategy();
-		IJDBCReader jdbcReader = service.newJDBCReader(
+		IDatabaseReader databaseReaderFacade = service.newJDBCReader(
 				configuration, 
 				strategy);
-		Assert.assertNotNull(jdbcReader);
-		Object target = ((IFacade)jdbcReader).getTarget();
+		Assert.assertNotNull(databaseReaderFacade);
+		Object target = ((IFacade)databaseReaderFacade).getTarget();
 		Assert.assertNotNull(target);
 		Assert.assertTrue(target instanceof JDBCReader);
 	}

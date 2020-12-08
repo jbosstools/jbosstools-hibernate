@@ -17,7 +17,7 @@ import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
-import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
+import org.jboss.tools.hibernate.runtime.spi.IDatabaseReader;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
@@ -66,7 +66,7 @@ public interface IFacadeFactory {
 	IHQLCodeAssist createHQLCodeAssist(Object target);
 	IHQLCompletionProposal createHQLCompletionProposal(Object target);
 	IHQLQueryPlan createHQLQueryPlan(Object target);
-	IJDBCReader createJDBCReader(Object target);
+	IDatabaseReader createJDBCReader(Object target);
 	IJoin createJoin(Object target);
 	IPersistentClass createPersistentClass(Object target);
 	IPOJOClass createPOJOClass(Object target);

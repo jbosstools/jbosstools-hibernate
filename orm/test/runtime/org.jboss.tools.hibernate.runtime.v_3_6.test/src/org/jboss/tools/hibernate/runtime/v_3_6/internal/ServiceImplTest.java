@@ -11,7 +11,7 @@ import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
-import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
+import org.jboss.tools.hibernate.runtime.spi.IDatabaseReader;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.junit.Assert;
@@ -40,11 +40,11 @@ public class ServiceImplTest {
 		IReverseEngineeringStrategy engineeringStrategy = 
 				FACADE_FACTORY.createReverseEngineeringStrategy(
 						new DefaultReverseEngineeringStrategy());
-		IJDBCReader jdbcReaderFacade = service.newJDBCReader(
+		IDatabaseReader databaseReaderFacade = service.newJDBCReader(
 				configuration, 
 				engineeringStrategy);
-		Assert.assertNotNull(jdbcReaderFacade);
-		JDBCReader reader = (JDBCReader)((IFacade)jdbcReaderFacade).getTarget();
+		Assert.assertNotNull(databaseReaderFacade);
+		JDBCReader reader = (JDBCReader)((IFacade)databaseReaderFacade).getTarget();
 		Assert.assertNotNull(reader);		
 	}
 	

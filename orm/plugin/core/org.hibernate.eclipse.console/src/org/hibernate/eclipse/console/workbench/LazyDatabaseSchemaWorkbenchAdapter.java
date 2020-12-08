@@ -41,7 +41,7 @@ import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.jboss.tools.hibernate.runtime.spi.HibernateException;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
-import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
+import org.jboss.tools.hibernate.runtime.spi.IDatabaseReader;
 import org.jboss.tools.hibernate.runtime.spi.IProgressListener;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IService;
@@ -125,8 +125,8 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 				Iterator<?> iterator = null;
 				try {
 					IService service = consoleConfiguration.getHibernateExtension().getHibernateService();
-					IJDBCReader reader = service.newJDBCReader(configuration, strategy);
-					iterator = reader.collectDatabaseTables(new ProgressListener(monitor)).entrySet().iterator();
+					IDatabaseReader databaseReader = service.newJDBCReader(configuration, strategy);
+					iterator = databaseReader.collectDatabaseTables(new ProgressListener(monitor)).entrySet().iterator();
 				} catch (UnsupportedOperationException he) {
 					throw new HibernateException(he);
 				} catch (Exception he) {

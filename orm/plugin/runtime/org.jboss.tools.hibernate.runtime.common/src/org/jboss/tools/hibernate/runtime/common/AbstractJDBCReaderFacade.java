@@ -14,13 +14,13 @@ import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.jboss.tools.hibernate.runtime.common.internal.HibernateRuntimeCommon;
-import org.jboss.tools.hibernate.runtime.spi.IJDBCReader;
+import org.jboss.tools.hibernate.runtime.spi.IDatabaseReader;
 import org.jboss.tools.hibernate.runtime.spi.IProgressListener;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 
 public abstract class AbstractJDBCReaderFacade 
 extends AbstractFacade 
-implements IJDBCReader {
+implements IDatabaseReader {
 	
 	public AbstractJDBCReaderFacade(
 			IFacadeFactory facadeFactory, 
