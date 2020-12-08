@@ -1,11 +1,10 @@
 package org.jboss.tools.hibernate.runtime.spi;
 
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map.Entry;
+import java.util.Map;
 
 public interface IJDBCReader {
 
-	Iterator<Entry<String, List<ITable>>> collectDatabaseTables(IProgressListener progressListener);
+	Map<String, List<ITable>> collectDatabaseTables(IProgressListener progressListener);
 	
 }

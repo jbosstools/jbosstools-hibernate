@@ -29,10 +29,10 @@ implements IJDBCReader {
 	}
 
 	@Override
-	public Iterator<Entry<String, List<ITable>>> collectDatabaseTables(IProgressListener progressListener) {
+	public Map<String, List<ITable>> collectDatabaseTables(IProgressListener progressListener) {
 		Object databaseCollector = createDatabaseCollector();
 		readDatabaseSchema(databaseCollector, progressListener);
-		return collectDatabaseTables(databaseCollector).entrySet().iterator();
+		return collectDatabaseTables(databaseCollector);
 	}
 	
 	public Class<?> getProgressListenerClass() {
