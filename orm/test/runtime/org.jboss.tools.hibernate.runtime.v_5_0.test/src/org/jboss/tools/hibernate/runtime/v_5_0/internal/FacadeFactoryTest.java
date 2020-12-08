@@ -22,7 +22,6 @@ import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.boot.spi.SessionFactoryOptions;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
-import org.hibernate.cfg.reveng.DatabaseCollector;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.cfg.reveng.OverrideRepository;
@@ -68,7 +67,6 @@ import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
-import org.jboss.tools.hibernate.runtime.spi.IDatabaseCollector;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
@@ -260,16 +258,6 @@ public class FacadeFactoryTest {
 				new TestInvocationHandler());
 		ICriteria facade = facadeFactory.createCriteria(criteria);
 		Assert.assertSame(criteria, ((IFacade)facade).getTarget());		
-	}
-	
-	@Test
-	public void testCreateDatabaseCollector() {
-		DatabaseCollector databaseCollector = (DatabaseCollector)Proxy.newProxyInstance(
-				facadeFactory.getClassLoader(), 
-				new Class[] { DatabaseCollector.class }, 
-				new TestInvocationHandler());
-		IDatabaseCollector facade = facadeFactory.createDatabaseCollector(databaseCollector);
-		Assert.assertSame(databaseCollector, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
