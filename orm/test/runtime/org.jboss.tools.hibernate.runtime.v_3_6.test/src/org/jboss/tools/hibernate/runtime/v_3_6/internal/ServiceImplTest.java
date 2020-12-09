@@ -40,7 +40,7 @@ public class ServiceImplTest {
 		IReverseEngineeringStrategy engineeringStrategy = 
 				FACADE_FACTORY.createReverseEngineeringStrategy(
 						new DefaultReverseEngineeringStrategy());
-		IDatabaseReader databaseReaderFacade = service.newJDBCReader(
+		IDatabaseReader databaseReaderFacade = service.newDatabaseReader(
 				configuration, 
 				engineeringStrategy);
 		Assert.assertNotNull(databaseReaderFacade);

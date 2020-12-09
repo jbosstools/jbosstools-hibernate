@@ -214,7 +214,7 @@ public class ServiceImpl extends AbstractService {
 	}
 
 	@Override
-	public IDatabaseReader newJDBCReader(
+	public IDatabaseReader newDatabaseReader(
 			IConfiguration configuration,
 			IReverseEngineeringStrategy strategy) {
 		assert strategy instanceof IFacade;

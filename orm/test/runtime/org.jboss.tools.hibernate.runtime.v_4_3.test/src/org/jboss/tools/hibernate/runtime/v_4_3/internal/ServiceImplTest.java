@@ -33,14 +33,14 @@ public class ServiceImplTest {
 	}
 	
 	@Test
-	public void testNewJDBCReader() {
+	public void testNewDatabaseReader() {
 		IConfiguration configuration = 
 				FACADE_FACTORY.createConfiguration(
 						new Configuration());
 		IReverseEngineeringStrategy engineeringStrategy = 
 				FACADE_FACTORY.createReverseEngineeringStrategy(
 						new DefaultReverseEngineeringStrategy());
-		IDatabaseReader databaseReaderFacade = service.newJDBCReader(
+		IDatabaseReader databaseReaderFacade = service.newDatabaseReader(
 				configuration, 
 				engineeringStrategy);
 		Assert.assertNotNull(databaseReaderFacade);

@@ -118,7 +118,7 @@ public class TestService implements IService {
 	}
 
 	@Override
-	public IDatabaseReader newJDBCReader(
+	public IDatabaseReader newDatabaseReader(
 			IConfiguration configuration,
 			IReverseEngineeringStrategy strategy) {
 		return null;
