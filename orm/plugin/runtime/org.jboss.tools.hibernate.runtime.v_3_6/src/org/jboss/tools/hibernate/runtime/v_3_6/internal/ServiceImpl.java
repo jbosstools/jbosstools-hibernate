@@ -243,7 +243,7 @@ public class ServiceImpl extends AbstractService {
 						configuration.getProperties(), 
 						((Configuration)((IFacade)configuration).getTarget()).buildSettings(), 
 						(ReverseEngineeringStrategy)((IFacade)strategy).getTarget());
-		return facadeFactory.createJDBCReader(target);
+		return facadeFactory.createDatabaseReader(target);
 	}
 
 	@Override

@@ -377,7 +377,7 @@ public class FacadeFactoryTest {
 	@Test
 	public void testCreateJDBCReader() {
 		JDBCReader jdbcReader = new JDBCReader(null, null, null, null, null, new DefaultReverseEngineeringStrategy());
-		IDatabaseReader databaseReaderFacade = facadeFactory.createJDBCReader(jdbcReader);
+		IDatabaseReader databaseReaderFacade = facadeFactory.createDatabaseReader(jdbcReader);
 		Assert.assertSame(jdbcReader, ((IFacade)databaseReaderFacade).getTarget());		
 	}
 	

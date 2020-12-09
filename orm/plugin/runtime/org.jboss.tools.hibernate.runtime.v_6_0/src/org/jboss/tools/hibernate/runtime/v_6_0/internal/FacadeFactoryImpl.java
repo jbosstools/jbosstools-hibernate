@@ -112,7 +112,7 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	}
 
 	@Override
-	public IDatabaseReader createJDBCReader(Object target) {
+	public IDatabaseReader createDatabaseReader(Object target) {
 		// TODO Auto-generated method stub
 		return null;
 	}
