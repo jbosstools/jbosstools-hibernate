@@ -196,7 +196,7 @@ public abstract class AbstractFacadeFactory implements IFacadeFactory {
 
 	@Override
 	public IDatabaseReader createJDBCReader(Object target) {
-		return new AbstractJDBCReaderFacade(this, target) {};
+		return new AbstractDatabaseReaderFacade(this, target) {};
 	}
 
 	@Override

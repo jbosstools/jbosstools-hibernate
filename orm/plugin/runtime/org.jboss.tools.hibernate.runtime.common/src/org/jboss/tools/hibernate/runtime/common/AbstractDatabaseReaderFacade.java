@@ -18,11 +18,11 @@ import org.jboss.tools.hibernate.runtime.spi.IDatabaseReader;
 import org.jboss.tools.hibernate.runtime.spi.IProgressListener;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 
-public abstract class AbstractJDBCReaderFacade 
+public abstract class AbstractDatabaseReaderFacade 
 extends AbstractFacade 
 implements IDatabaseReader {
 	
-	public AbstractJDBCReaderFacade(
+	public AbstractDatabaseReaderFacade(
 			IFacadeFactory facadeFactory, 
 			Object target) {
 		super(facadeFactory, target);
