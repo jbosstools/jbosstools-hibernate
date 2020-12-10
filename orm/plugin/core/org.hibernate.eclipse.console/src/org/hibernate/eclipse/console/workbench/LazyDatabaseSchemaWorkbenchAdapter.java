@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -41,7 +42,6 @@ import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.jboss.tools.hibernate.runtime.spi.HibernateException;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
-import org.jboss.tools.hibernate.runtime.spi.IDatabaseReader;
 import org.jboss.tools.hibernate.runtime.spi.IProgressListener;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IService;
@@ -124,17 +124,21 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 			public Object execute() {
 				Iterator<?> iterator = null;
 				try {
-					IService service = consoleConfiguration.getHibernateExtension().getHibernateService();
-					IDatabaseReader databaseReader = service.newDatabaseReader(configuration.getProperties(), strategy);
-					iterator = databaseReader.collectDatabaseTables(new ProgressListener(monitor)).entrySet().iterator();
-				} catch (UnsupportedOperationException he) {
-					throw new HibernateException(he);
+					iterator = collectDatabaseTables(configuration.getProperties(), strategy, new ProgressListener(monitor)).entrySet().iterator();
 				} catch (Exception he) {
-					he.printStackTrace();
 					throw new HibernateException(he.getMessage(), he.getCause());
 				}
 				return iterator;
 			}
+			
+			private IService getService() {
+				return consoleConfiguration.getHibernateExtension().getHibernateService();
+			}
+			
+			private Map<String, List<ITable>> collectDatabaseTables(Properties properties, IReverseEngineeringStrategy strategy, IProgressListener progressListener) {
+				return getService().newDatabaseReader(properties, strategy).collectDatabaseTables(progressListener);
+			}
+			
 		});
 	}
 	
