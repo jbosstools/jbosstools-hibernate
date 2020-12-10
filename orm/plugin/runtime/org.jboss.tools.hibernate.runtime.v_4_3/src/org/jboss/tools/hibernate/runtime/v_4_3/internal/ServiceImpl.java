@@ -66,12 +66,12 @@ import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IDatabaseReader;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
-import org.jboss.tools.hibernate.runtime.spi.IDatabaseReader;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -255,14 +255,14 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IDatabaseReader newDatabaseReader(
-			IConfiguration configuration,
+			Properties properties,
 			IReverseEngineeringStrategy strategy) {
 		assert strategy instanceof IFacade;
 		JDBCReader target = 
 				JDBCReaderFactory.newJDBCReader(
-						configuration.getProperties(), 
+						properties, 
 						(ReverseEngineeringStrategy)((IFacade)strategy).getTarget(),
-						buildServiceRegistry(configuration.getProperties()));
+						buildServiceRegistry(properties));
 		return facadeFactory.createDatabaseReader(target);
 	}
 

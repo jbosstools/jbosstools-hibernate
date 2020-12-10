@@ -209,14 +209,14 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IDatabaseReader newDatabaseReader(
-			IConfiguration configuration,
+			Properties properties,
 			IReverseEngineeringStrategy strategy) {
 		assert strategy instanceof IFacade;
 		JDBCReader target = 
 				JDBCReaderFactory.newJDBCReader(
-						configuration.getProperties(), 
+						properties, 
 						(ReverseEngineeringStrategy)((IFacade)strategy).getTarget(),
-						buildServiceRegistry(configuration.getProperties()));
+						buildServiceRegistry(properties));
 		return facadeFactory.createDatabaseReader(target);
 	}
 

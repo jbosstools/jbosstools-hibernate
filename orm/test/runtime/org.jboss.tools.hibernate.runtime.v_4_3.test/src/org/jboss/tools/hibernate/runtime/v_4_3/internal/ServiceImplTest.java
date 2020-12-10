@@ -41,7 +41,7 @@ public class ServiceImplTest {
 				FACADE_FACTORY.createReverseEngineeringStrategy(
 						new DefaultReverseEngineeringStrategy());
 		IDatabaseReader databaseReaderFacade = service.newDatabaseReader(
-				configuration, 
+				configuration.getProperties(), 
 				engineeringStrategy);
 		Assert.assertNotNull(databaseReaderFacade);
 		JDBCReader reader = (JDBCReader)((IFacade)databaseReaderFacade).getTarget();

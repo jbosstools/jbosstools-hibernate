@@ -247,7 +247,7 @@ public class ServiceImplTest {
 		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 		IReverseEngineeringStrategy strategy = service.newDefaultReverseEngineeringStrategy();
 		IDatabaseReader databaseReaderFacade = service.newDatabaseReader(
-				configuration, 
+				configuration.getProperties(), 
 				strategy);
 		Assert.assertNotNull(databaseReaderFacade);
 		Object target = ((IFacade)databaseReaderFacade).getTarget();

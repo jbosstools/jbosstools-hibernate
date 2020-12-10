@@ -55,7 +55,7 @@ public interface IService {
 	IReverseEngineeringStrategy newDefaultReverseEngineeringStrategy();
 
 	IDatabaseReader newDatabaseReader(
-			IConfiguration configuration,
+			Properties properties,
 			IReverseEngineeringStrategy strategy);
 
 	IReverseEngineeringStrategy newReverseEngineeringStrategy(

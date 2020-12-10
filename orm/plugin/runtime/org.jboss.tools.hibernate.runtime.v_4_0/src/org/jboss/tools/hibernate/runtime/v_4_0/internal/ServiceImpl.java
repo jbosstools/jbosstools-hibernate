@@ -64,12 +64,12 @@ import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IDatabaseReader;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
-import org.jboss.tools.hibernate.runtime.spi.IDatabaseReader;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -233,21 +233,25 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IDatabaseReader newDatabaseReader(
-			IConfiguration configuration,
+			Properties properties,
 			IReverseEngineeringStrategy strategy) {
 		assert strategy instanceof IFacade;
+		Configuration cfg = new Configuration();
+		cfg.setProperties(properties);
+		ServiceRegistry serviceRegistry = buildServiceRegistry(properties);
+		Settings settings = cfg.buildSettings(serviceRegistry);
 		JDBCReader target = 
 				JDBCReaderFactory.newJDBCReader(
-						configuration.getProperties(), 
-						(Settings)((ConfigurationFacadeImpl)configuration).buildTargetSettings(),
+						properties, 
+						settings,
 						(ReverseEngineeringStrategy)((IFacade)strategy).getTarget(),
-						buildServiceRegistry(configuration));
+						serviceRegistry);
 		return facadeFactory.createDatabaseReader(target);
 	}
 
-	private ServiceRegistry buildServiceRegistry(IConfiguration configuration) {
+	private ServiceRegistry buildServiceRegistry(Properties properties) {
 		ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
-		builder.applySettings(configuration.getProperties());
+		builder.applySettings(properties);
 		return builder.buildServiceRegistry();
 	}
 

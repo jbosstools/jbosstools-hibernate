@@ -119,7 +119,7 @@ public class TestService implements IService {
 
 	@Override
 	public IDatabaseReader newDatabaseReader(
-			IConfiguration configuration,
+			Properties properties,
 			IReverseEngineeringStrategy strategy) {
 		return null;
 	}
