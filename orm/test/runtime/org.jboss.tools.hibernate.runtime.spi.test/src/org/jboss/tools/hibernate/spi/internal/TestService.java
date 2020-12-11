@@ -19,6 +19,7 @@ import org.jboss.tools.hibernate.runtime.spi.IDatabaseReader;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
+import org.jboss.tools.hibernate.runtime.spi.IProgressListener;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
@@ -259,6 +260,13 @@ public class TestService implements IService {
 
 	@Override
 	public ClassLoader getClassLoader() {
+		return null;
+	}
+
+	@Override
+	public Map<String, List<ITable>> collectDatabaseTables(Properties properties, IReverseEngineeringStrategy strategy,
+			IProgressListener progressListener) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -25,10 +25,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -44,7 +42,6 @@ import org.jboss.tools.hibernate.runtime.spi.HibernateException;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IProgressListener;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
-import org.jboss.tools.hibernate.runtime.spi.IService;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 
 public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
@@ -60,14 +57,14 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 		ConsoleConfiguration consoleConfiguration = dbs.getConsoleConfiguration();
 		Object[] res;
 		try {
-			Iterator<?> qualifierEntries = readDatabaseSchema(monitor, consoleConfiguration, dbs.getReverseEngineeringStrategy());
+			Map<?, ?> qualifiedEntries = readDatabaseSchema(monitor, consoleConfiguration, dbs.getReverseEngineeringStrategy());
 
 			List<TableContainer> result = new ArrayList<TableContainer>();
-
-			while (qualifierEntries.hasNext()) {
-				Map.Entry<?, ?> entry = (Map.Entry<?,?>)qualifierEntries.next();
-				result.add(new TableContainer((String)entry.getKey(), (List<ITable>)entry.getValue()));
+			
+			for (Object key : qualifiedEntries.keySet()) {
+				result.add(new TableContainer((String)key, (List<ITable>)qualifiedEntries.get(key)));
 			}
+
 			res = toArray(result.iterator(), Object.class, new Comparator<Object>() {
 				public int compare(Object arg0, Object arg1) {
 					return getName(arg0).compareTo(getName(arg1));
@@ -117,26 +114,24 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 		return getLazyDatabaseSchema(o).getConsoleConfiguration();
 	}
 
-	protected Iterator<?> readDatabaseSchema(final IProgressMonitor monitor, final ConsoleConfiguration consoleConfiguration, final IReverseEngineeringStrategy strategy) {
+	protected Map<?, ?> readDatabaseSchema(final IProgressMonitor monitor, final ConsoleConfiguration consoleConfiguration, final IReverseEngineeringStrategy strategy) {
 		final IConfiguration configuration = consoleConfiguration.buildWith(null, false);
-		return (Iterator<?>) consoleConfiguration.execute(new ExecutionContext.Command() {
+		return (Map<?, ?>) consoleConfiguration.execute(new ExecutionContext.Command() {
 
 			public Object execute() {
-				Iterator<?> iterator = null;
+				Map<String, List<ITable>> result = null;
 				try {
-					iterator = collectDatabaseTables(configuration.getProperties(), strategy, new ProgressListener(monitor)).entrySet().iterator();
+					result = consoleConfiguration
+							.getHibernateExtension()
+							.getHibernateService()
+							.collectDatabaseTables(
+									configuration.getProperties(), 
+									strategy, 
+									new ProgressListener(monitor));
 				} catch (Exception he) {
 					throw new HibernateException(he.getMessage(), he.getCause());
 				}
-				return iterator;
-			}
-			
-			private IService getService() {
-				return consoleConfiguration.getHibernateExtension().getHibernateService();
-			}
-			
-			private Map<String, List<ITable>> collectDatabaseTables(Properties properties, IReverseEngineeringStrategy strategy, IProgressListener progressListener) {
-				return getService().newDatabaseReader(properties, strategy).collectDatabaseTables(progressListener);
+				return result;
 			}
 			
 		});

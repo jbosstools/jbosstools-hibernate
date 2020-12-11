@@ -7,5 +7,5 @@ public abstract class AbstractService implements IService {
 	protected UsageTracker getUsageTracker() {
 		return UsageTracker.getInstance();
 	}
-
+	
 }
