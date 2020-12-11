@@ -11,10 +11,6 @@
 
 	<packaging>eclipse-test-plugin</packaging>
 	
-	<properties>
-		<h2.version>1.4.200</h2.version>
-	</properties>
-
 	<build>
 		<plugins>
 			<plugin>

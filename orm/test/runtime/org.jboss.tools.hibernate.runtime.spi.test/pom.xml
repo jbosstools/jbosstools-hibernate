@@ -11,11 +11,6 @@
 	
 	<packaging>eclipse-test-plugin</packaging>
 	
-	<properties>
-		<coverage.filter>org.jboss.tools.hibernate.spi*</coverage.filter>
-		<emma.instrument.bundles>org.jboss.tools.hibernate.spi</emma.instrument.bundles>
-	</properties>
-
 	<build>
 		<plugins>
 			<plugin> 

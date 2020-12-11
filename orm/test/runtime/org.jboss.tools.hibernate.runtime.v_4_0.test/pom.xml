@@ -11,12 +11,6 @@
 	
 	<packaging>eclipse-test-plugin</packaging>
 	
-	<properties>
-		<coverage.filter>org.jboss.tools.hibernate.runtime.v_4_0*</coverage.filter>
-		<emma.instrument.bundles>org.jboss.tools.hibernate.runtime.v_4_0</emma.instrument.bundles>
-		<h2.version>1.4.192</h2.version>
-	</properties>
-
 	<build>
 		<plugins>
 			<plugin>
