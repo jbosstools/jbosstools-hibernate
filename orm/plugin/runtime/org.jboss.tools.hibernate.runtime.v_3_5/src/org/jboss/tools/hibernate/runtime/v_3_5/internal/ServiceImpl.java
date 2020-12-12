@@ -3,24 +3,32 @@ package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.hibernate.Filter;
 import org.hibernate.Hibernate;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.JDBCReaderFactory;
 import org.hibernate.cfg.NamingStrategy;
+import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.cfg.reveng.OverrideRepository;
+import org.hibernate.cfg.reveng.ProgressListener;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
+import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.connection.DriverManagerConnectionProvider;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.resolver.DialectFactory;
@@ -241,6 +249,42 @@ public class ServiceImpl extends AbstractService {
 	}
 
 	@Override
+	public Map<String, List<ITable>> collectDatabaseTables(
+			Properties properties, 
+			IReverseEngineeringStrategy strategy,
+			final IProgressListener progressListener) {
+		Map<String, List<ITable>> result = new HashMap<String, List<ITable>>();
+		JDBCReader jdbcReader = 
+				JDBCReaderFactory.newJDBCReader(
+						properties, 
+						new Configuration().setProperties(properties).buildSettings(), 
+						(ReverseEngineeringStrategy)((IFacade)strategy).getTarget());
+		MetaDataDialect metadataDialect = jdbcReader.getMetaDataDialect();
+		DefaultDatabaseCollector databaseCollector = new DefaultDatabaseCollector(metadataDialect);
+		ProgressListener progressListenerWrapper = new ProgressListener() {			
+			@Override
+			public void startSubTask(String name) {
+				progressListener.startSubTask(name);
+			}
+		};
+		jdbcReader.readDatabaseSchema(
+				databaseCollector, 
+				properties.getProperty(Environment.DEFAULT_CATALOG), 
+				properties.getProperty(Environment.DEFAULT_SCHEMA),
+				progressListenerWrapper);
+		Iterator<?> iterator = databaseCollector.getQualifierEntries();
+		while (iterator.hasNext()) {
+			Entry<?, ?> entry = (Entry<?, ?>)iterator.next();
+			ArrayList<ITable> list = new ArrayList<ITable>();
+			for (Object table : (Iterable<?>)entry.getValue()) {
+				list.add(facadeFactory.createTable(table));
+			}
+			result.put((String)entry.getKey(), list);
+		}
+		return result;
+	}
+	
+	@Override
 	public IReverseEngineeringStrategy newReverseEngineeringStrategy(
 			String strategyName, IReverseEngineeringStrategy delegate) {
 		assert delegate instanceof IFacade;
@@ -423,13 +467,4 @@ public class ServiceImpl extends AbstractService {
 		return ServiceImpl.class.getClassLoader();
 	}
 
-	@Override
-	public Map<String, List<ITable>> collectDatabaseTables(
-			Properties properties, 
-			IReverseEngineeringStrategy strategy,
-			IProgressListener progressListener) {
-		IDatabaseReader databaseReader = newDatabaseReader(properties, strategy);
-		return databaseReader.collectDatabaseTables(progressListener);
-	}
-	
 }
