@@ -72,7 +72,6 @@ import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
-import org.jboss.tools.hibernate.runtime.spi.IDatabaseReader;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
@@ -238,24 +237,6 @@ public class ServiceImpl extends AbstractService {
 	public IReverseEngineeringStrategy newDefaultReverseEngineeringStrategy() {
 		return facadeFactory.createReverseEngineeringStrategy(
 				new DefaultReverseEngineeringStrategy());
-	}
-
-	@Override
-	public IDatabaseReader newDatabaseReader(
-			Properties properties,
-			IReverseEngineeringStrategy strategy) {
-		assert strategy instanceof IFacade;
-		Configuration cfg = new Configuration();
-		cfg.setProperties(properties);
-		ServiceRegistry serviceRegistry = buildServiceRegistry(properties);
-		Settings settings = cfg.buildSettings(serviceRegistry);
-		JDBCReader target = 
-				JDBCReaderFactory.newJDBCReader(
-						properties, 
-						settings,
-						(ReverseEngineeringStrategy)((IFacade)strategy).getTarget(),
-						serviceRegistry);
-		return facadeFactory.createDatabaseReader(target);
 	}
 
 	@Override

@@ -54,10 +54,6 @@ public interface IService {
 
 	IReverseEngineeringStrategy newDefaultReverseEngineeringStrategy();
 
-	IDatabaseReader newDatabaseReader(
-			Properties properties,
-			IReverseEngineeringStrategy strategy);
-	
 	Map<String, List<ITable>> collectDatabaseTables(
 			Properties properties, 
 			IReverseEngineeringStrategy strategy, 

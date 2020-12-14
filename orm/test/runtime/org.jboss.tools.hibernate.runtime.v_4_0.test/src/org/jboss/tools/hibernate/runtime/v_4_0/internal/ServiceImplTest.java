@@ -11,14 +11,11 @@ import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
-import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
-import org.jboss.tools.hibernate.runtime.spi.IDatabaseReader;
 import org.jboss.tools.hibernate.runtime.spi.IProgressListener;
-import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.junit.Assert;
 import org.junit.Test;
@@ -36,22 +33,6 @@ public class ServiceImplTest {
 		Object target = ((IFacade)configuration).getTarget();
 		Assert.assertNotNull(target);
 		Assert.assertTrue(target instanceof Configuration);
-	}
-	
-	@Test
-	public void testNewDatabaseReader() {
-		IConfiguration configuration = 
-				FACADE_FACTORY.createConfiguration(
-						new Configuration());
-		IReverseEngineeringStrategy engineeringStrategy = 
-				FACADE_FACTORY.createReverseEngineeringStrategy(
-						new DefaultReverseEngineeringStrategy());
-		IDatabaseReader databaseReaderFacade = service.newDatabaseReader(
-				configuration.getProperties(), 
-				engineeringStrategy);
-		Assert.assertNotNull(databaseReaderFacade);
-		JDBCReader reader = (JDBCReader)((IFacade)databaseReaderFacade).getTarget();
-		Assert.assertNotNull(reader);		
 	}
 	
 	@Test

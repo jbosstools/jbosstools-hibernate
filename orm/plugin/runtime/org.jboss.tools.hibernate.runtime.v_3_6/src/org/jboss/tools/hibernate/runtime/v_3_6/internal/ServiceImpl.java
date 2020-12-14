@@ -9,8 +9,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Map.Entry;
+import java.util.Properties;
 
 import org.hibernate.Filter;
 import org.hibernate.Hibernate;
@@ -67,7 +67,6 @@ import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
-import org.jboss.tools.hibernate.runtime.spi.IDatabaseReader;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
@@ -240,19 +239,6 @@ public class ServiceImpl extends AbstractService {
 	public IReverseEngineeringStrategy newDefaultReverseEngineeringStrategy() {
 		return facadeFactory.createReverseEngineeringStrategy(
 				new DefaultReverseEngineeringStrategy());
-	}
-
-	@Override
-	public IDatabaseReader newDatabaseReader(
-			Properties properties,
-			IReverseEngineeringStrategy strategy) {
-		assert strategy instanceof IFacade;
-		JDBCReader target = 
-				JDBCReaderFactory.newJDBCReader(
-						properties, 
-						new Configuration().setProperties(properties).buildSettings(), 
-						(ReverseEngineeringStrategy)((IFacade)strategy).getTarget());
-		return facadeFactory.createDatabaseReader(target);
 	}
 
 	@Override
