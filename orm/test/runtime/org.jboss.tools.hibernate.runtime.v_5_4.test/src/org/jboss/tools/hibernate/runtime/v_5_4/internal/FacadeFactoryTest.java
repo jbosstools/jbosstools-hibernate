@@ -23,8 +23,6 @@ import org.hibernate.boot.spi.MetadataBuildingOptions;
 import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
-import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
-import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
@@ -78,7 +76,6 @@ import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
-import org.jboss.tools.hibernate.runtime.spi.IDatabaseReader;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
@@ -373,13 +370,6 @@ public class FacadeFactoryTest {
 		Assert.assertSame(hqlQueryPlan, ((IFacade)facade).getTarget());		
 	}
 
-	@Test
-	public void testCreateDatabaseReader() {
-		JDBCReader jdbcReader = new JDBCReader(null, null, null, null, null, new DefaultReverseEngineeringStrategy());
-		IDatabaseReader databaseReaderFacade = facadeFactory.createDatabaseReader(jdbcReader);
-		Assert.assertSame(jdbcReader, ((IFacade)databaseReaderFacade).getTarget());		
-	}
-	
 	@Test
 	public void testCreateJoin() {
 		Join join = new Join();

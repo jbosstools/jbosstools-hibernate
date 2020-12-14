@@ -195,11 +195,6 @@ public abstract class AbstractFacadeFactory implements IFacadeFactory {
 	}
 
 	@Override
-	public IDatabaseReader createDatabaseReader(Object target) {
-		return new AbstractDatabaseReaderFacade(this, target) {};
-	}
-
-	@Override
 	public ISessionFactory createSessionFactory(Object target) {
 		return new AbstractSessionFactoryFacade(this, target) {};
 	}

@@ -66,7 +66,6 @@ public interface IFacadeFactory {
 	IHQLCodeAssist createHQLCodeAssist(Object target);
 	IHQLCompletionProposal createHQLCompletionProposal(Object target);
 	IHQLQueryPlan createHQLQueryPlan(Object target);
-	IDatabaseReader createDatabaseReader(Object target);
 	IJoin createJoin(Object target);
 	IPersistentClass createPersistentClass(Object target);
 	IPOJOClass createPOJOClass(Object target);
