@@ -18,8 +18,13 @@ public class EnvironmentFacadeTest {
 	}
 	
 	@Test
+	public void testGetDefaultSchema() {
+		assertSame(Environment.DEFAULT_SCHEMA, environmentFacade.getDefaultSchema());
+	}
+	
+	@Test
 	public void testGetWrappedClass() {
 		assertSame(Environment.class, environmentFacade.getWrappedClass());
 	}
-
+	
 }
