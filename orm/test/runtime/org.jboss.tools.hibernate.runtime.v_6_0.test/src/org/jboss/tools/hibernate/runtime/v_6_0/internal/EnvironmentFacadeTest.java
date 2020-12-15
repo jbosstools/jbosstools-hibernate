@@ -18,6 +18,11 @@ public class EnvironmentFacadeTest {
 	}
 	
 	@Test
+	public void testGetSessionFactoryName() {
+		assertSame(Environment.SESSION_FACTORY_NAME, environmentFacade.getSessionFactoryName());
+	}
+	
+	@Test
 	public void testGetDefaultCatalog() {
 		assertSame(Environment.DEFAULT_CATALOG, environmentFacade.getDefaultCatalog());
 	}
