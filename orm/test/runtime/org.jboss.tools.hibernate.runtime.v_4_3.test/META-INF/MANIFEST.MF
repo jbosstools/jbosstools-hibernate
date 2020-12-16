@@ -7,4 +7,4 @@ Fragment-Host: org.jboss.tools.hibernate.runtime.v_4_3;bundle-version="5.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.junit;bundle-version="4.11.0"
 Bundle-ClassPath: .,
- lib/h2-1.4.192.jar
+ lib/h2-1.4.200.jar
