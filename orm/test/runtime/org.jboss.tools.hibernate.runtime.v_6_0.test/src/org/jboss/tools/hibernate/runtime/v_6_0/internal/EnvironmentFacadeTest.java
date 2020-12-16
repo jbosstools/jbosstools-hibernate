@@ -18,6 +18,11 @@ public class EnvironmentFacadeTest {
 	}
 	
 	@Test
+	public void testGetPass() {
+		assertSame(Environment.PASS, environmentFacade.getPass());
+	}
+	
+	@Test
 	public void testGetSessionFactoryName() {
 		assertSame(Environment.SESSION_FACTORY_NAME, environmentFacade.getSessionFactoryName());
 	}
