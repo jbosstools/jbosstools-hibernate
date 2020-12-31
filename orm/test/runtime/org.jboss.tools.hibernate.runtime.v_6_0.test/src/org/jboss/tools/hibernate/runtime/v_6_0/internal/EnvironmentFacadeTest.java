@@ -18,6 +18,11 @@ public class EnvironmentFacadeTest {
 	}
 	
 	@Test
+	public void testGetURL() {
+		assertSame(Environment.URL, environmentFacade.getURL());
+	}
+	
+	@Test
 	public void testGetUser() {
 		assertSame(Environment.USER, environmentFacade.getUser());
 	}
