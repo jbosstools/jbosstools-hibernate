@@ -5,6 +5,7 @@ import static org.junit.Assert.assertSame;
 import org.hibernate.cfg.Environment;
 import org.jboss.tools.hibernate.runtime.common.AbstractEnvironmentFacade;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,6 +16,11 @@ public class EnvironmentFacadeTest {
 	@Before
 	public void before() {
 		environmentFacade = new AbstractEnvironmentFacade(new FacadeFactoryImpl(), null) {};		
+	}
+	
+	@Test
+	public void testGetConnectionProvider() {
+		assertSame(Environment.CONNECTION_PROVIDER, environmentFacade.getConnectionProvider());
 	}
 	
 	@Test
