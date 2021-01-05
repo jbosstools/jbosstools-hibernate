@@ -18,6 +18,11 @@ public class EnvironmentFacadeTest {
 	}
 	
 	@Test
+	public void testGetDialect() {
+		assertSame(Environment.DIALECT, environmentFacade.getDialect());
+	}
+	
+	@Test
 	public void testGetDataSource() {
 		assertSame(Environment.DATASOURCE, environmentFacade.getDataSource());
 	}
