@@ -18,6 +18,11 @@ public class EnvironmentFacadeTest {
 	}
 	
 	@Test
+	public void testGetHBM2DDLAuto() {
+		assertSame(Environment.HBM2DDL_AUTO, environmentFacade.getHBM2DDLAuto());
+	}
+	
+	@Test
 	public void testGetDialect() {
 		assertSame(Environment.DIALECT, environmentFacade.getDialect());
 	}
