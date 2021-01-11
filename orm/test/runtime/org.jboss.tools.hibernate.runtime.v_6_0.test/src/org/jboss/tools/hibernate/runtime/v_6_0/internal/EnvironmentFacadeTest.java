@@ -3,7 +3,6 @@ package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 import static org.junit.Assert.assertSame;
 
 import org.hibernate.cfg.Environment;
-import org.jboss.tools.hibernate.runtime.common.AbstractEnvironmentFacade;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +13,12 @@ public class EnvironmentFacadeTest {
 	
 	@Before
 	public void before() {
-		environmentFacade = new AbstractEnvironmentFacade(new FacadeFactoryImpl(), null) {};		
+		environmentFacade = new EnvironmentFacadeImpl(new FacadeFactoryImpl());		
+	}
+	
+	@Test
+	public void testGetTransactionManagerStrategy() {
+		assertSame("hibernate.transaction.coordinator_class", environmentFacade.getTransactionManagerStrategy());
 	}
 	
 	@Test
