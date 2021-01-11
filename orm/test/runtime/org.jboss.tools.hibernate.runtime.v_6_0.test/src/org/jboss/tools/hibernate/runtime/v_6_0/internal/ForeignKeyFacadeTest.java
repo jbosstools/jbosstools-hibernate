@@ -1,12 +1,16 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 
+import java.util.Iterator;
+
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
-import org.jboss.tools.hibernate.runtime.common.AbstractForeignKeyFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.junit.Before;
@@ -22,7 +26,7 @@ public class ForeignKeyFacadeTest {
 	@Before
 	public void before() {
 		foreignKey = new ForeignKey();
-		foreignKeyFacade = new AbstractForeignKeyFacade(FACADE_FACTORY, foreignKey) {};
+		foreignKeyFacade = new ForeignKeyFacadeImpl(FACADE_FACTORY, foreignKey);
 	}
 	
 	@Test
@@ -31,6 +35,16 @@ public class ForeignKeyFacadeTest {
 		foreignKey.setReferencedTable(tableTarget);
 		ITable table = foreignKeyFacade.getReferencedTable();
 		assertSame(tableTarget, ((IFacade)table).getTarget());
+	}
+	
+	@Test
+	public void testColumnIterator() {
+		Column column = new Column();
+		foreignKey.addColumn(column);
+		Iterator<IColumn> iterator = foreignKeyFacade.columnIterator();
+		IColumn columnFacade = iterator.next();
+		assertSame(column, ((IFacade)columnFacade).getTarget());
+		assertFalse(iterator.hasNext());
 	}
 	
 }
