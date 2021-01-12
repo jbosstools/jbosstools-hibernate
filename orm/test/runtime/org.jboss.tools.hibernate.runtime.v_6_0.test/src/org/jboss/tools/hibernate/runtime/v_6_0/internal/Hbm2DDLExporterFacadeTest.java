@@ -11,7 +11,7 @@ import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.junit.Before;
 import org.junit.Test;
 
-public class DdlExporterFacadeTest {
+public class Hbm2DDLExporterFacadeTest {
 	
 	private static final FacadeFactoryImpl FACADE_FACTORY = new FacadeFactoryImpl();
 	
