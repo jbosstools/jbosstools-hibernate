@@ -23,4 +23,5 @@ Bundle-ClassPath: .,
 Require-Bundle: org.jboss.tools.hibernate.libs.dom4j.v_1_6_1,
  org.jboss.tools.hibernate.runtime.common,
  org.jboss.tools.hibernate.runtime.spi,
- org.jboss.tools.hibernate.libs.activation.v_1_2_0
+ org.jboss.tools.hibernate.libs.activation.v_1_2_0,
+ org.jboss.tools.hibernate.libs.freemarker.v_2_3_23

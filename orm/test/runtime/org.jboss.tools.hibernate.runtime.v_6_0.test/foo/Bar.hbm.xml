@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<!-- Generated Tue Jan 12 20:55:59 CET 2021 by Hibernate Tools 6.0.0.Alpha2 -->
+<hibernate-mapping>
+
+<class
+    name="foo.Bar"
+    entity-name="Bar"
+    table="table"
+    lazy="false"
+    optimistic-lock="version"
+>
+
+
+
+
+
+
+
+</class>
+
+</hibernate-mapping>
