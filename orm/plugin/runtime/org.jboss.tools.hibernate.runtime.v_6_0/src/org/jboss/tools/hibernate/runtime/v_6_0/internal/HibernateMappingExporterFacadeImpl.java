@@ -17,5 +17,11 @@ public class HibernateMappingExporterFacadeImpl extends AbstractHibernateMapping
 	public File getOutputDirectory() {
 		return (File)((Exporter)getTarget()).getProperties().get(ExporterConstants.DESTINATION_FOLDER);
 	}
+	
+	@Override
+	public void setOutputDirectory(File directory) {
+		((Exporter)getTarget()).getProperties().put(ExporterConstants.DESTINATION_FOLDER, directory);
+	}
+
 
 }

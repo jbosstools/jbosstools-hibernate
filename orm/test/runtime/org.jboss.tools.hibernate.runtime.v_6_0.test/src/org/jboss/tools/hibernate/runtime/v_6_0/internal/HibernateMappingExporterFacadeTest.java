@@ -1,6 +1,8 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -31,7 +33,6 @@ import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.DummyMetadataBuildingContext;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -97,10 +98,18 @@ public class HibernateMappingExporterFacadeTest {
 	
 	@Test
 	public void testGetOutputDirectory() {
-		Assert.assertNull(hibernateMappingExporterFacade.getOutputDirectory());
+		assertNull(hibernateMappingExporterFacade.getOutputDirectory());
 		File file = new File("testGetOutputDirectory");
 		hibernateMappingExporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, file);
-		Assert.assertSame(file, hibernateMappingExporterFacade.getOutputDirectory());
+		assertSame(file, hibernateMappingExporterFacade.getOutputDirectory());
+	}
+	
+	@Test
+	public void testSetOutputDirectory() {
+		assertNull(hibernateMappingExporter.getProperties().get(ExporterConstants.DESTINATION_FOLDER));
+		File file = new File("testSetOutputDirectory");
+		hibernateMappingExporterFacade.setOutputDirectory(file);
+		assertSame(file, hibernateMappingExporter.getProperties().get(ExporterConstants.DESTINATION_FOLDER));
 	}
 	
 	private class TestMetadataDescriptor implements MetadataDescriptor {
