@@ -13,8 +13,10 @@ import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.ConfigurationMetada
 public class HibernateMappingExporterExtension extends HbmExporter {
 	
 	private IExportPOJODelegate delegateExporter;
+	private IFacadeFactory facadeFactory;
 
 	public HibernateMappingExporterExtension(IFacadeFactory facadeFactory, IConfiguration cfg, File file) {
+		this.facadeFactory = facadeFactory;
 		getProperties().put(
 				METADATA_DESCRIPTOR, 
 				new ConfigurationMetadataDescriptor((ConfigurationFacadeImpl)cfg));
@@ -31,4 +33,15 @@ public class HibernateMappingExporterExtension extends HbmExporter {
 		super.exportPOJO(map, pojoClass);
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	protected void exportPOJO(Map map, POJOClass pojoClass) {
+		if (delegateExporter == null) {
+			super.exportPOJO(map, pojoClass);
+		} else {
+			delegateExporter.exportPOJO(
+					(Map<Object, Object>)map, 
+					facadeFactory.createPOJOClass(pojoClass));
+		}
+	}
 }
