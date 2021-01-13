@@ -34,6 +34,7 @@ import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tool.internal.export.ddl.DdlExporter;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
+import org.hibernate.tool.internal.export.java.POJOClass;
 import org.hibernate.tool.internal.export.query.QueryExporter;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
@@ -52,6 +53,7 @@ import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
+import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
@@ -67,6 +69,7 @@ import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -247,6 +250,16 @@ public class FacadeFactoryTest {
 		PersistentClass persistentClass = new RootClass(null);
 		IPersistentClass facade = facadeFactory.createPersistentClass(persistentClass);
 		assertSame(persistentClass, ((IFacade)facade).getTarget());
+	}
+	
+	@Test
+	public void testCreatePOJOClass() {
+		POJOClass pojoClass = (POJOClass)Proxy.newProxyInstance(
+				facadeFactory.getClassLoader(), 
+				new Class[] { POJOClass.class }, 
+				new TestInvocationHandler());
+		IPOJOClass facade = facadeFactory.createPOJOClass(pojoClass);
+		Assert.assertSame(pojoClass, ((IFacade)facade).getTarget());
 	}
 	
 	@Test
