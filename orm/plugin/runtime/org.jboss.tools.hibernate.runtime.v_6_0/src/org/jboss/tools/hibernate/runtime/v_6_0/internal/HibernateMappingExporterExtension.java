@@ -1,8 +1,10 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
 import java.io.File;
+import java.util.Map;
 
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
+import org.hibernate.tool.internal.export.java.POJOClass;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
@@ -23,6 +25,10 @@ public class HibernateMappingExporterExtension extends HbmExporter {
 	
 	public void setDelegate(IExportPOJODelegate delegate) {
 		delegateExporter = delegate;
+	}
+
+	public void superExportPOJO(Map<String, Object> map, POJOClass pojoClass) {
+		super.exportPOJO(map, pojoClass);
 	}
 
 }
