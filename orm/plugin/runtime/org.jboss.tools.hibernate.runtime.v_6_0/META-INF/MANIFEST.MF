@@ -3,7 +3,7 @@ Automatic-Module-Name: org.jboss.tools.hibernate.runtime.v.6.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Hibernate 6.0 libraries
 Bundle-SymbolicName: org.jboss.tools.hibernate.runtime.v_6_0;singleton:=true
-Bundle-Version: 5.4.11.qualifier
+Bundle-Version: 5.4.12.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ClassPath: .,
  lib/antlr4-runtime-4.8-1.jar,

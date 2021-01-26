@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.jboss.tools.hibernatetools</groupId>
 		<artifactId>features</artifactId>
-		<version>5.4.11-SNAPSHOT</version>
+		<version>5.4.12-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.hibernatesearchtools.features</groupId>
 	<artifactId>org.jboss.tools.hibernate.search.test.feature</artifactId>

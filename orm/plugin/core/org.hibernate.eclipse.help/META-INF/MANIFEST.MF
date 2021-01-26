@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.hibernate.eclipse.help; singleton:=true
-Bundle-Version: 5.4.11.qualifier
+Bundle-Version: 5.4.12.qualifier
 Bundle-Activator: org.hibernate.eclipse.help.HelpPlugin
 Bundle-Vendor: %Bundle-Vendor.0
 Bundle-Localization: plugin

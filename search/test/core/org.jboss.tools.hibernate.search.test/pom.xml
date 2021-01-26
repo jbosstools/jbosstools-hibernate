@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.jboss.tools.hibernatetools.search.test</groupId>
 		<artifactId>core</artifactId>
-		<version>5.4.11-SNAPSHOT</version>
+		<version>5.4.12-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.hibernatesearchtools.search.test.core</groupId>
 	<artifactId>org.jboss.tools.hibernate.search.test</artifactId>

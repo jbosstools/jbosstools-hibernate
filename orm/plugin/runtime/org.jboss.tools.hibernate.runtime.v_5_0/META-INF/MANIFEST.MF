@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Hibernate 5.0 libraries
 Bundle-Vendor: Red Hat
 Bundle-SymbolicName: org.jboss.tools.hibernate.runtime.v_5_0;singleton:=true
-Bundle-Version: 5.4.11.qualifier
+Bundle-Version: 5.4.12.qualifier
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: .,
