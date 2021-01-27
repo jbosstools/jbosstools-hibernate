@@ -4,6 +4,7 @@ import java.io.File;
 
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
+import org.hibernate.tool.internal.export.java.POJOClass;
 import org.jboss.tools.hibernate.runtime.common.AbstractHibernateMappingExporterFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 
@@ -23,5 +24,9 @@ public class HibernateMappingExporterFacadeImpl extends AbstractHibernateMapping
 		((Exporter)getTarget()).getProperties().put(ExporterConstants.DESTINATION_FOLDER, directory);
 	}
 
+	@Override
+	protected String getPOJOClassClassName() {
+		return POJOClass.class.getName();
+	}
 
 }
