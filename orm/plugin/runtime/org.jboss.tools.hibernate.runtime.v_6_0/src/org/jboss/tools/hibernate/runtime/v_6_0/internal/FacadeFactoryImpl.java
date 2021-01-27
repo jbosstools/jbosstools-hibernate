@@ -85,8 +85,7 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 
 	@Override
 	public IHibernateMappingExporter createHibernateMappingExporter(Object target) {
-		// TODO Auto-generated method stub
-		return null;
+		return new HibernateMappingExporterFacadeImpl(this, target);
 	}
 
 	@Override
