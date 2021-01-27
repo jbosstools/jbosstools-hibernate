@@ -75,8 +75,7 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 
 	@Override
 	public IEnvironment createEnvironment() {
-		// TODO Auto-generated method stub
-		return null;
+		return new EnvironmentFacadeImpl(this);
 	}
 
 	@Override
