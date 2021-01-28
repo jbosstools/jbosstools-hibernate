@@ -1,7 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotEquals;
 
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.common.AbstractHQLCompletionProposalFacade;
@@ -28,6 +28,13 @@ public class HQLCompletionProposalFacadeTest {
 		assertEquals("", hqlCompletionProposalFacade.getCompletion());
 		hqlCompletionProposalTarget.setCompletion("foo");
 		assertEquals("foo", hqlCompletionProposalFacade.getCompletion());
+	}
+	
+	@Test
+	public void testGetReplaceStart() {
+		assertNotEquals(Integer.MAX_VALUE, hqlCompletionProposalFacade.getReplaceStart());
+		hqlCompletionProposalTarget.setReplaceStart(Integer.MAX_VALUE);
+		assertEquals(Integer.MAX_VALUE, hqlCompletionProposalFacade.getReplaceStart());
 	}
 	
 }
