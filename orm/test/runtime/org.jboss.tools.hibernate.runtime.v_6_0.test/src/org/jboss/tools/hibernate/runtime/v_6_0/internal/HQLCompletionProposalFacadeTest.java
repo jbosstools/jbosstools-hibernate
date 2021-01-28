@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
@@ -23,8 +24,10 @@ public class HQLCompletionProposalFacadeTest {
 	}
 	
 	@Test
-	public void testCreation() {
-		assertNotNull(hqlCompletionProposalFacade);
+	public void testGetCompletion() {
+		assertEquals("", hqlCompletionProposalFacade.getCompletion());
+		hqlCompletionProposalTarget.setCompletion("foo");
+		assertEquals("foo", hqlCompletionProposalFacade.getCompletion());
 	}
 	
 }
