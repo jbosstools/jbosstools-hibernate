@@ -2,9 +2,13 @@ package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 
+import org.hibernate.mapping.Property;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.common.AbstractHQLCompletionProposalFacade;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.junit.Before;
@@ -70,6 +74,14 @@ public class HQLCompletionProposalFacadeTest {
 		assertNotEquals("foo", hqlCompletionProposalFacade.getShortEntityName());
 		hqlCompletionProposalTarget.setShortEntityName("foo");
 		assertEquals("foo", hqlCompletionProposalFacade.getShortEntityName());
+	}
+	
+	@Test
+	public void testGetProperty() {
+		Property propertyTarget = new Property();
+		assertNull(hqlCompletionProposalFacade.getProperty());
+		hqlCompletionProposalTarget.setProperty(propertyTarget);
+		assertSame(propertyTarget, ((IFacade)hqlCompletionProposalFacade.getProperty()).getTarget());
 	}
 	
 }
