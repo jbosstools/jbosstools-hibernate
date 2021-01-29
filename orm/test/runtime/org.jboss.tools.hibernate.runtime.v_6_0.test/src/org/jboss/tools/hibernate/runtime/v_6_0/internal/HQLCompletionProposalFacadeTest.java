@@ -65,4 +65,11 @@ public class HQLCompletionProposalFacadeTest {
 		assertEquals("foo", hqlCompletionProposalFacade.getEntityName());
 	}
 	
+	@Test
+	public void testGetShortEntityName() {
+		assertNotEquals("foo", hqlCompletionProposalFacade.getShortEntityName());
+		hqlCompletionProposalTarget.setShortEntityName("foo");
+		assertEquals("foo", hqlCompletionProposalFacade.getShortEntityName());
+	}
+	
 }
