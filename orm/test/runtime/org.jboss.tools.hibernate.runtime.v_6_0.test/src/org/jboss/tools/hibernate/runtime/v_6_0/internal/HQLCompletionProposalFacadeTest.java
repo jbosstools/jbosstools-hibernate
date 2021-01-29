@@ -25,7 +25,7 @@ public class HQLCompletionProposalFacadeTest {
 	
 	@Test
 	public void testGetCompletion() {
-		assertEquals("", hqlCompletionProposalFacade.getCompletion());
+		assertNotEquals("foo", hqlCompletionProposalFacade.getCompletion());
 		hqlCompletionProposalTarget.setCompletion("foo");
 		assertEquals("foo", hqlCompletionProposalFacade.getCompletion());
 	}
@@ -42,6 +42,13 @@ public class HQLCompletionProposalFacadeTest {
 		assertNotEquals(Integer.MIN_VALUE, hqlCompletionProposalFacade.getReplaceEnd());
 		hqlCompletionProposalTarget.setReplaceEnd(Integer.MIN_VALUE);
 		assertEquals(Integer.MIN_VALUE, hqlCompletionProposalFacade.getReplaceEnd());
+	}
+	
+	@Test
+	public void testGetSimpleName() {
+		assertNotEquals("foo", hqlCompletionProposalFacade.getSimpleName());
+		hqlCompletionProposalTarget.setSimpleName("foo");
+		assertEquals("foo", hqlCompletionProposalFacade.getSimpleName());
 	}
 	
 }
