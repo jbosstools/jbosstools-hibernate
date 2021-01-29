@@ -58,4 +58,11 @@ public class HQLCompletionProposalFacadeTest {
 		assertEquals(HQLCompletionProposal.KEYWORD, hqlCompletionProposalFacade.getCompletionKind());
 	}
 	
+	@Test
+	public void testGetEntityName() {
+		assertNotEquals("foo", hqlCompletionProposalFacade.getEntityName());
+		hqlCompletionProposalTarget.setEntityName("foo");
+		assertEquals("foo", hqlCompletionProposalFacade.getEntityName());
+	}
+	
 }
