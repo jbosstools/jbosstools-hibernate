@@ -89,4 +89,9 @@ public class HQLCompletionProposalFacadeTest {
 		assertSame(HQLCompletionProposal.ALIAS_REF, hqlCompletionProposalFacade.aliasRefKind());
 	}
 	
+	@Test
+	public void testEntityNameKind() {
+		assertSame(HQLCompletionProposal.ENTITY_NAME, hqlCompletionProposalFacade.entityNameKind());
+	}
+	
 }
