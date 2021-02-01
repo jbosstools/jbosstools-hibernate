@@ -104,4 +104,9 @@ public class HQLCompletionProposalFacadeTest {
 		assertSame(HQLCompletionProposal.KEYWORD, hqlCompletionProposalFacade.keywordKind());
 	}
 	
+	@Test
+	public void testFunctionKind() {
+		assertSame(HQLCompletionProposal.FUNCTION, hqlCompletionProposalFacade.functionKind());
+	}
+	
 }
