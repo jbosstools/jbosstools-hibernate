@@ -11,7 +11,6 @@ import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
-import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
@@ -90,12 +89,6 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 
 	@Override
 	public IHQLCodeAssist createHQLCodeAssist(Object target) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public IHQLCompletionProposal createHQLCompletionProposal(Object target) {
 		// TODO Auto-generated method stub
 		return null;
 	}
