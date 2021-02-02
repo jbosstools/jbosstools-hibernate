@@ -34,7 +34,9 @@ import org.jboss.tools.hibernate.runtime.common.AbstractTypeFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.junit.Assert;
-import org.junit.Test;public class TypeFacadeTest {
+import org.junit.Test;
+
+public class TypeFacadeTest {
 	
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 	
