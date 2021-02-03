@@ -17,6 +17,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
+import org.hibernate.mapping.Join;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
@@ -60,6 +61,7 @@ import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
+import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
@@ -78,7 +80,6 @@ import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -281,15 +282,22 @@ public class FacadeFactoryTest {
 	public void testCreateHQLCodeAssist() {
 		HQLCodeAssist hqlCodeAssist = new HQLCodeAssist(null);
 		IHQLCodeAssist facade = facadeFactory.createHQLCodeAssist(hqlCodeAssist);
-		Assert.assertSame(hqlCodeAssist, ((IFacade)facade).getTarget());		
+		assertSame(hqlCodeAssist, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
 	public void testCreateHQLCompletionProposal() {
 		HQLCompletionProposal hqlCompletionProposal = new HQLCompletionProposal(0, 0);
 		IHQLCompletionProposal facade = facadeFactory.createHQLCompletionProposal(hqlCompletionProposal);
-		Assert.assertSame(hqlCompletionProposal, ((IFacade)facade).getTarget());		
+		assertSame(hqlCompletionProposal, ((IFacade)facade).getTarget());		
 	}	
+	
+	@Test
+	public void testCreateJoin() {
+		Join join = new Join();
+		IJoin facade = facadeFactory.createJoin(join);
+		assertSame(join, ((IFacade)facade).getTarget());		
+	}
 	
 	@Test
 	public void testCreatePersistentClass() {
@@ -305,7 +313,7 @@ public class FacadeFactoryTest {
 				new Class[] { POJOClass.class }, 
 				new TestInvocationHandler());
 		IPOJOClass facade = facadeFactory.createPOJOClass(pojoClass);
-		Assert.assertSame(pojoClass, ((IFacade)facade).getTarget());
+		assertSame(pojoClass, ((IFacade)facade).getTarget());
 	}
 	
 	@Test
