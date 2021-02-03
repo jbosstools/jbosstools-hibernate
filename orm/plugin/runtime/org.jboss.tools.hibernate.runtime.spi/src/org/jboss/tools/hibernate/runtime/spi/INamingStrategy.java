@@ -3,11 +3,11 @@ package org.jboss.tools.hibernate.runtime.spi;
 public interface INamingStrategy {
 
 	String collectionTableName(
-			String ownerEntityName, 
-			String name,
-			String targetEntityName, 
-			String name2, 
-			String propName);
+			String ownerEntity, 
+			String ownerEntityTable, 
+			String associatedEntity, 
+			String associatedEntityTable,
+			String propertyName);
 	String columnName(String specifiedName);
 	String propertyToColumnName(String buildDefaultName);
 	String tableName(String specifiedTableName);
