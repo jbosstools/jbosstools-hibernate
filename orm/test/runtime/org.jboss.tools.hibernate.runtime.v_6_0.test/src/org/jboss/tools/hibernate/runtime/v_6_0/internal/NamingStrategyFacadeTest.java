@@ -39,6 +39,11 @@ public class NamingStrategyFacadeTest {
 		assertEquals("FooBarColumnName", namingStrategyFacade.columnName("foo"));
 	}
 	
+	@Test
+	public void testPropertyToColumnName() {
+		assertEquals("BarFooPropertyColumn", namingStrategyFacade.propertyToColumnName("bar"));
+	}
+	
 	private class TestNamingStrategy extends DefaultNamingStrategy {
 		private static final long serialVersionUID = 1L;
 		@Override
@@ -53,6 +58,10 @@ public class NamingStrategyFacadeTest {
 		@Override
 		public String columnName(String columnName) {
 			return "FooBarColumnName";
+		}
+		@Override
+		public String propertyToColumnName(String propertyName) {
+			return "BarFooPropertyColumn";
 		}
 	}
 
