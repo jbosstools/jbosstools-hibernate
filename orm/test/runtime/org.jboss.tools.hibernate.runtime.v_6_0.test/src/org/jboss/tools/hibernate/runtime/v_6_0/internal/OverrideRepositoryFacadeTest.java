@@ -1,16 +1,23 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.lang.reflect.Field;
 import java.util.List;
 
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.api.reveng.RevengStrategy;
+import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
+import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
-import org.jboss.tools.hibernate.runtime.common.AbstractOverrideRepositoryFacade;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
-import org.junit.Assert;
+import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,9 +40,7 @@ public class OverrideRepositoryFacadeTest {
 	@Before
 	public void setUp() {
 		overrideRepository = new OverrideRepository();
-		overrideRepositoryFacade = new AbstractOverrideRepositoryFacade(
-				FACADE_FACTORY, 
-				overrideRepository) {};
+		overrideRepositoryFacade = new OverrideRepositoryFacadeImpl(FACADE_FACTORY, overrideRepository);
 	}
 	
 	@Test
@@ -51,8 +56,20 @@ public class OverrideRepositoryFacadeTest {
 		Object object = tablesField.get(overrideRepository);
 		List<?> tables = (List<?>)object;
 		Table table = (Table)tables.get(0);
-		Assert.assertNotNull(table);
-		Assert.assertEquals("FOO", table.getName());
+		assertNotNull(table);
+		assertEquals("FOO", table.getName());
+	}
+	
+	@Test
+	public void testGetReverseEngineeringStrategy() throws Exception {
+		RevengStrategy res = new DefaultStrategy();
+		IReverseEngineeringStrategy resFacade = FACADE_FACTORY.createReverseEngineeringStrategy(res);
+		IReverseEngineeringStrategy result = overrideRepositoryFacade.getReverseEngineeringStrategy(resFacade);
+		DelegatingStrategy resultTarget = 
+				(DelegatingStrategy)((IFacade)result).getTarget();
+		Field delegateField = DelegatingStrategy.class.getDeclaredField("delegate");
+		delegateField.setAccessible(true);
+		assertSame(res, delegateField.get(resultTarget));
 	}
 	
 }
