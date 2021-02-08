@@ -22,4 +22,9 @@ public class OverrideRepositoryFacadeImpl extends AbstractOverrideRepositoryFaca
 				((OverrideRepository)getTarget()).getReverseEngineeringStrategy(resTarget));
 	}
 	
+	@Override
+	protected String getTableFilterClassName() {
+		return "org.hibernate.tool.internal.reveng.strategy.TableFilter";
+	}
+	
 }
