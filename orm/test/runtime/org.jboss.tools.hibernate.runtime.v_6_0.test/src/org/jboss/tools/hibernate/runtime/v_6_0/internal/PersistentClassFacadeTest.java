@@ -40,4 +40,11 @@ public class PersistentClassFacadeTest {
 		assertEquals("Foo", persistentClassFacade.getClassName());
 	}
 	
+	@Test
+	public void testGetEntityName() {
+		assertNotEquals("Foo", persistentClassFacade.getEntityName());
+		persistentClassTarget.setEntityName("Foo");
+		assertEquals("Foo", persistentClassFacade.getEntityName());
+	}
+	
 }
