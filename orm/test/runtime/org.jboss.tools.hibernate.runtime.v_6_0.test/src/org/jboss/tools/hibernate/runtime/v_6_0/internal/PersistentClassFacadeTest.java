@@ -4,16 +4,19 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.jboss.tools.hibernate.runtime.common.AbstractPersistentClassFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
+import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -68,6 +71,16 @@ public class PersistentClassFacadeTest {
 		persistentClassTarget = new RootClass(null);
 		persistentClassFacade = new AbstractPersistentClassFacade(FACADE_FACTORY, persistentClassTarget) {};
 		assertTrue(persistentClassFacade.isRootClass());
+	}
+	
+	@Test
+	public void testGetIdentifierProperty() {
+		Property propertyTarget = new Property();
+		assertNull(persistentClassFacade.getIdentifierProperty());
+		((RootClass)persistentClassTarget).setIdentifierProperty(propertyTarget);
+		IProperty propertyFacade = persistentClassFacade.getIdentifierProperty();
+		assertNotNull(propertyFacade);
+		assertSame(propertyTarget, ((IFacade)propertyFacade).getTarget());
 	}
 	
 }
