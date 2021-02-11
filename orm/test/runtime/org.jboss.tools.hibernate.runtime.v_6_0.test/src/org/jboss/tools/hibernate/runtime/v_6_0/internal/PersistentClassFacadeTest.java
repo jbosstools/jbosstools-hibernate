@@ -60,4 +60,14 @@ public class PersistentClassFacadeTest {
 		assertTrue(persistentClassFacade.isAssignableToRootClass());
 	}
 	
+	@Test
+	public void testIsRootClass() {
+		persistentClassTarget = new SingleTableSubclass(new RootClass(null), null);
+		persistentClassFacade = new AbstractPersistentClassFacade(FACADE_FACTORY, persistentClassTarget) {};
+		assertFalse(persistentClassFacade.isRootClass());
+		persistentClassTarget = new RootClass(null);
+		persistentClassFacade = new AbstractPersistentClassFacade(FACADE_FACTORY, persistentClassTarget) {};
+		assertTrue(persistentClassFacade.isRootClass());
+	}
+	
 }
