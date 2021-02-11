@@ -1,12 +1,15 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.SingleTableSubclass;
 import org.jboss.tools.hibernate.runtime.common.AbstractPersistentClassFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
@@ -45,6 +48,16 @@ public class PersistentClassFacadeTest {
 		assertNotEquals("Foo", persistentClassFacade.getEntityName());
 		persistentClassTarget.setEntityName("Foo");
 		assertEquals("Foo", persistentClassFacade.getEntityName());
+	}
+	
+	@Test
+	public void testIsAssignableToRootClass() {
+		persistentClassTarget = new SingleTableSubclass(new RootClass(null), null);
+		persistentClassFacade = new AbstractPersistentClassFacade(FACADE_FACTORY, persistentClassTarget) {};
+		assertFalse(persistentClassFacade.isAssignableToRootClass());
+		persistentClassTarget = new RootClass(null);
+		persistentClassFacade = new AbstractPersistentClassFacade(FACADE_FACTORY, persistentClassTarget) {};
+		assertTrue(persistentClassFacade.isAssignableToRootClass());
 	}
 	
 }
