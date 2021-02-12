@@ -12,6 +12,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
+import org.hibernate.mapping.Subclass;
 import org.jboss.tools.hibernate.runtime.common.AbstractPersistentClassFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
@@ -88,6 +89,14 @@ public class PersistentClassFacadeTest {
 		assertFalse(persistentClassFacade.hasIdentifierProperty());
 		((RootClass)persistentClassTarget).setIdentifierProperty(new Property());
 		assertTrue(persistentClassFacade.hasIdentifierProperty());
+	}
+	
+	@Test
+	public void testIsInstanceOfRootClass() {
+		assertTrue(persistentClassFacade.isInstanceOfRootClass());
+		PersistentClass subClassTarget = new Subclass(persistentClassTarget, null);
+		IPersistentClass subClassFacade = new AbstractPersistentClassFacade(FACADE_FACTORY, subClassTarget) {};
+		assertFalse(subClassFacade.isInstanceOfRootClass());
 	}
 	
 }
