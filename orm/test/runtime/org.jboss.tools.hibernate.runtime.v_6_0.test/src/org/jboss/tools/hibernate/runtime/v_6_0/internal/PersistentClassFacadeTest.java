@@ -9,6 +9,8 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Field;
+import java.util.HashSet;
+import java.util.Iterator;
 
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
@@ -118,7 +120,28 @@ public class PersistentClassFacadeTest {
 		assertNotNull(rootFacade);
 		assertSame(rootFacade, field.get(persistentClassFacade));
 		assertSame(((IFacade)rootFacade).getTarget(), persistentClassTarget);
-		
+	}
+	
+	@Test
+	public void testGetPropertyClosureIterator() throws Exception {
+		Property propertyTarget = new Property();
+		PersistentClass persistentClass = new RootClass(null) {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public Iterator<?> getPropertyClosureIterator() {
+				HashSet<Property> set = new HashSet<Property>();
+				set.add(propertyTarget);
+				return set.iterator();
+			}
+		};
+		persistentClassFacade = new AbstractPersistentClassFacade(FACADE_FACTORY, persistentClass) {};
+		Field field = AbstractPersistentClassFacade.class.getDeclaredField("propertyClosures");
+		field.setAccessible(true);
+		assertNull(field.get(persistentClassFacade));
+		Iterator<IProperty> iterator = persistentClassFacade.getPropertyClosureIterator();
+		assertNotNull(field.get(persistentClassFacade));
+		assertTrue(iterator.hasNext());
+		assertSame(propertyTarget, ((IFacade)iterator.next()).getTarget());
 	}
 	
 }
