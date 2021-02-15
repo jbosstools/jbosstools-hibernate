@@ -8,6 +8,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import java.lang.reflect.Field;
+
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -105,6 +107,18 @@ public class PersistentClassFacadeTest {
 		PersistentClass subClassTarget = new Subclass(persistentClassTarget, null);
 		IPersistentClass subClassFacade = new AbstractPersistentClassFacade(FACADE_FACTORY, subClassTarget) {};
 		assertTrue(subClassFacade.isInstanceOfSubclass());
+	}
+	
+	@Test
+	public void testGetRootClass() throws Exception {
+		Field field = AbstractPersistentClassFacade.class.getDeclaredField("rootClass");
+		field.setAccessible(true);
+		assertNull(field.get(persistentClassFacade));
+		IPersistentClass rootFacade = persistentClassFacade.getRootClass();
+		assertNotNull(rootFacade);
+		assertSame(rootFacade, field.get(persistentClassFacade));
+		assertSame(((IFacade)rootFacade).getTarget(), persistentClassTarget);
+		
 	}
 	
 }
