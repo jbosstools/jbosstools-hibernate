@@ -175,4 +175,17 @@ public class PersistentClassFacadeTest {
 		assertSame(propertyTarget, ((IFacade)propertyIterator.next()).getTarget());
 	}
 	
+	@Test
+	public void testGetProperty() throws Exception {
+		Property propertyTarget = new Property();
+		propertyTarget.setName("foo");
+		persistentClassTarget.addProperty(propertyTarget);
+		Field field = AbstractPersistentClassFacade.class.getDeclaredField("properties");
+		field.setAccessible(true);
+		assertNull(field.get(persistentClassFacade));
+		assertNull(persistentClassFacade.getProperty("bar"));
+		assertNotNull(field.get(persistentClassFacade));
+		assertSame(propertyTarget, ((IFacade)persistentClassFacade.getProperty("foo")).getTarget());		
+	}
+	
 }
