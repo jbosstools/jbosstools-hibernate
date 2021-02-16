@@ -144,4 +144,21 @@ public class PersistentClassFacadeTest {
 		assertSame(propertyTarget, ((IFacade)iterator.next()).getTarget());
 	}
 	
+	@Test
+	public void testGetSuperclass() throws Exception {
+		Field field = AbstractPersistentClassFacade.class.getDeclaredField("superClass");
+		field.setAccessible(true);
+		assertNull(field.get(persistentClassFacade));
+		IPersistentClass superclassFacade = persistentClassFacade.getSuperclass();
+		assertNull(field.get(persistentClassFacade));
+		assertNull(superclassFacade);
+		Subclass subclassTarget = new Subclass(persistentClassTarget, null);
+		IPersistentClass subclassFacade = new AbstractPersistentClassFacade(FACADE_FACTORY, subclassTarget) {};
+		assertNull(field.get(subclassFacade));
+		superclassFacade = subclassFacade.getSuperclass();
+		assertNotNull(superclassFacade);
+		assertSame(superclassFacade, field.get(subclassFacade));
+		assertSame(persistentClassTarget, ((IFacade)superclassFacade).getTarget());
+	}
+	
 }
