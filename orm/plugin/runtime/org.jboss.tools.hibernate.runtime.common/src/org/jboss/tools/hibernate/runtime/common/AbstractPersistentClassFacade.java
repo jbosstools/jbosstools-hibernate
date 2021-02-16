@@ -185,7 +185,7 @@ implements IPersistentClass {
 					"getDiscriminator", 
 					new Class[] {}, 
 					new Object[] {});
-			if (discriminator != null) {
+			if (targetDiscriminator != null) {
 				discriminator = getFacadeFactory().createValue(targetDiscriminator);
 			}
 		}
