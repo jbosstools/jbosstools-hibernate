@@ -207,4 +207,12 @@ public class PersistentClassFacadeTest {
 		assertNotNull(field.get(persistentClassFacade));
 	}
 	
+	@Test 
+	public void testIsAbstract() {
+		persistentClassTarget.setAbstract(true);
+		assertTrue(persistentClassFacade.isAbstract());
+		persistentClassTarget.setAbstract(false);
+		assertFalse(persistentClassFacade.isAbstract());
+	}
+	
 }
