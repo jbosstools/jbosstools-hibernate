@@ -7,6 +7,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.lang.reflect.Field;
 import java.util.HashSet;
@@ -17,6 +18,7 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Subclass;
+import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.runtime.common.AbstractPersistentClassFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
@@ -185,7 +187,24 @@ public class PersistentClassFacadeTest {
 		assertNull(field.get(persistentClassFacade));
 		assertNull(persistentClassFacade.getProperty("bar"));
 		assertNotNull(field.get(persistentClassFacade));
-		assertSame(propertyTarget, ((IFacade)persistentClassFacade.getProperty("foo")).getTarget());		
+		assertSame(propertyTarget, ((IFacade)persistentClassFacade.getProperty("foo")).getTarget());
+		try {
+			persistentClassFacade.getProperty();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals("getProperty() is only allowed on SpecialRootClass", e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testGetTable() throws Exception {
+		Table table = new Table();
+		((RootClass)persistentClassTarget).setTable(table);
+		Field field = AbstractPersistentClassFacade.class.getDeclaredField("table");
+		field.setAccessible(true);
+		assertNull(field.get(persistentClassFacade));
+		assertSame(table, ((IFacade)persistentClassFacade.getTable()).getTarget());
+		assertNotNull(field.get(persistentClassFacade));
 	}
 	
 }
