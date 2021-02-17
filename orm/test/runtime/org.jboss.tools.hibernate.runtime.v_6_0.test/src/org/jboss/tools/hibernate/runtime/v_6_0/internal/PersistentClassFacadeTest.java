@@ -271,6 +271,20 @@ public class PersistentClassFacadeTest {
 		assertFalse(joinIterator.hasNext());
 	}
 	
+	@Test
+	public void testGetVersion() throws Exception {
+		assertNull(persistentClassFacade.getVersion());
+		Property versionTarget = new Property();
+		Field field = AbstractPersistentClassFacade.class.getDeclaredField("version");
+		field.setAccessible(true);
+		assertNull(field.get(persistentClassFacade));
+		((RootClass)persistentClassTarget).setVersion(versionTarget);
+		IProperty versionFacade = persistentClassFacade.getVersion();
+		assertNotNull(versionFacade);
+		assertSame(versionFacade, field.get(persistentClassFacade));
+		assertSame(versionTarget, ((IFacade)versionFacade).getTarget());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 

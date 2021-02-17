@@ -223,7 +223,7 @@ implements IPersistentClass {
 					"getVersion", 
 					new Class[] {}, 
 					new Object[] {});
-			if (version != null) {
+			if (targetVersion != null) {
 				version = getFacadeFactory().createProperty(targetVersion);
 			}
 		}
