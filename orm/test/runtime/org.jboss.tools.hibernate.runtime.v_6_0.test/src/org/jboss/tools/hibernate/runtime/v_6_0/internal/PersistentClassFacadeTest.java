@@ -16,6 +16,7 @@ import java.lang.reflect.Proxy;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import org.hibernate.mapping.Join;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
@@ -27,6 +28,7 @@ import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.runtime.common.AbstractPersistentClassFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
@@ -249,6 +251,24 @@ public class PersistentClassFacadeTest {
 		assertNotNull(valueFacade);
 		assertSame(valueFacade, field.get(persistentClassFacade));
 		assertSame(valueTarget, ((IFacade)valueFacade).getTarget());
+	}
+	
+	@Test
+	public void testGetJoinIterator() throws Exception {
+		Join join = new Join();
+		Field field = AbstractPersistentClassFacade.class.getDeclaredField("joins");
+		field.setAccessible(true);
+		assertNull(field.get(persistentClassFacade));
+		Iterator<IJoin> joinIterator = persistentClassFacade.getJoinIterator();
+		assertNotNull(field.get(persistentClassFacade));
+		assertTrue(((HashSet<?>)field.get(persistentClassFacade)).isEmpty());
+		assertFalse(joinIterator.hasNext());
+		field.set(persistentClassFacade, null);
+		((RootClass)persistentClassTarget).addJoin(join);
+		joinIterator = persistentClassFacade.getJoinIterator();
+		assertTrue(joinIterator.hasNext());
+		assertSame(join, ((IFacade)joinIterator.next()).getTarget());
+		assertFalse(joinIterator.hasNext());
 	}
 	
 	private KeyValue createValue() {
