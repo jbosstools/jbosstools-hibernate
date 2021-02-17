@@ -16,6 +16,7 @@ import java.lang.reflect.Proxy;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -235,10 +236,25 @@ public class PersistentClassFacadeTest {
 		assertSame(valueTarget, ((IFacade)valueFacade).getTarget());
 	}
 	
-	private Value createValue() {
-		return (Value)Proxy.newProxyInstance(
+	@Test
+	public void testGetIdentifier() throws Exception {
+		KeyValue valueTarget = createValue();
+		Field field = AbstractPersistentClassFacade.class.getDeclaredField("identifier");
+		field.setAccessible(true);
+		assertNull(field.get(persistentClassFacade));
+		assertNull(persistentClassFacade.getIdentifier());
+		assertNull(field.get(persistentClassFacade));
+		((RootClass)persistentClassTarget).setIdentifier(valueTarget);
+		IValue valueFacade = persistentClassFacade.getIdentifier();
+		assertNotNull(valueFacade);
+		assertSame(valueFacade, field.get(persistentClassFacade));
+		assertSame(valueTarget, ((IFacade)valueFacade).getTarget());
+	}
+	
+	private KeyValue createValue() {
+		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
-				new Class[] { Value.class }, 
+				new Class[] { KeyValue.class }, 
 				new InvocationHandler() {	
 					@Override
 					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
