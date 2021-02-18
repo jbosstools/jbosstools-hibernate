@@ -306,6 +306,14 @@ public class PersistentClassFacadeTest {
 		assertEquals("foo", persistentClassTarget.getDiscriminatorValue());
 	}
 	
+	@Test
+	public void testSetAbstract() {
+		persistentClassFacade.setAbstract(true);
+		assertTrue(persistentClassTarget.isAbstract());
+		persistentClassFacade.setAbstract(false);
+		assertFalse(persistentClassTarget.isAbstract());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
