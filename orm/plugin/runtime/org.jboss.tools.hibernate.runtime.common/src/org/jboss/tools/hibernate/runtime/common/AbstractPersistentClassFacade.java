@@ -324,7 +324,7 @@ implements IPersistentClass {
 
 	@Override
 	public IProperty getParentProperty() {
-		throw new RuntimeException("getProperty() is only allowed on SpecialRootClass"); //$NON-NLS-1$
+		throw new RuntimeException("getParentProperty() is only allowed on SpecialRootClass"); //$NON-NLS-1$
 	}
 
 	@Override
