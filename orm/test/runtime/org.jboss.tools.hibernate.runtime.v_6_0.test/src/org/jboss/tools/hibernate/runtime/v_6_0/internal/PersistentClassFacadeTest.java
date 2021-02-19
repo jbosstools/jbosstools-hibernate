@@ -379,6 +379,15 @@ public class PersistentClassFacadeTest {
 		}
 	}
 	
+	@Test
+	public void testSetIdentifierProperty() {
+		Property propertyTarget = new Property();
+		IProperty propertyFacade = FACADE_FACTORY.createProperty(propertyTarget);
+		assertNull(persistentClassTarget.getIdentifierProperty());
+		persistentClassFacade.setIdentifierProperty(propertyFacade);
+		assertSame(propertyTarget, persistentClassTarget.getIdentifierProperty());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
