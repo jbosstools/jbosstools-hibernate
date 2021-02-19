@@ -48,12 +48,13 @@ public class PersistentClassFacadeTest {
 	@Before
 	public void before() {
 		persistentClassTarget = new RootClass(null);
-		persistentClassFacade = new AbstractPersistentClassFacade(FACADE_FACTORY, persistentClassTarget) {};
+		persistentClassFacade = new PersistentClassFacadeImpl(FACADE_FACTORY, persistentClassTarget);
 	}
 	
 	@Test
 	public void testConstruction() {
 		assertNotNull(persistentClassFacade);
+		assertTrue(persistentClassFacade instanceof PersistentClassFacadeImpl);
 		assertSame(persistentClassTarget, ((IFacade)persistentClassFacade).getTarget());
 	}
 	
@@ -74,20 +75,20 @@ public class PersistentClassFacadeTest {
 	@Test
 	public void testIsAssignableToRootClass() {
 		persistentClassTarget = new SingleTableSubclass(new RootClass(null), null);
-		persistentClassFacade = new AbstractPersistentClassFacade(FACADE_FACTORY, persistentClassTarget) {};
+		persistentClassFacade = new PersistentClassFacadeImpl(FACADE_FACTORY, persistentClassTarget);
 		assertFalse(persistentClassFacade.isAssignableToRootClass());
 		persistentClassTarget = new RootClass(null);
-		persistentClassFacade = new AbstractPersistentClassFacade(FACADE_FACTORY, persistentClassTarget) {};
+		persistentClassFacade = new PersistentClassFacadeImpl(FACADE_FACTORY, persistentClassTarget);
 		assertTrue(persistentClassFacade.isAssignableToRootClass());
 	}
 	
 	@Test
 	public void testIsRootClass() {
 		persistentClassTarget = new SingleTableSubclass(new RootClass(null), null);
-		persistentClassFacade = new AbstractPersistentClassFacade(FACADE_FACTORY, persistentClassTarget) {};
+		persistentClassFacade = new PersistentClassFacadeImpl(FACADE_FACTORY, persistentClassTarget);
 		assertFalse(persistentClassFacade.isRootClass());
 		persistentClassTarget = new RootClass(null);
-		persistentClassFacade = new AbstractPersistentClassFacade(FACADE_FACTORY, persistentClassTarget) {};
+		persistentClassFacade = new PersistentClassFacadeImpl(FACADE_FACTORY, persistentClassTarget);
 		assertTrue(persistentClassFacade.isRootClass());
 	}
 	
@@ -112,7 +113,7 @@ public class PersistentClassFacadeTest {
 	public void testIsInstanceOfRootClass() {
 		assertTrue(persistentClassFacade.isInstanceOfRootClass());
 		PersistentClass subClassTarget = new Subclass(persistentClassTarget, null);
-		IPersistentClass subClassFacade = new AbstractPersistentClassFacade(FACADE_FACTORY, subClassTarget) {};
+		IPersistentClass subClassFacade = new PersistentClassFacadeImpl(FACADE_FACTORY, subClassTarget);
 		assertFalse(subClassFacade.isInstanceOfRootClass());
 	}
 	
@@ -120,7 +121,7 @@ public class PersistentClassFacadeTest {
 	public void testIsInstanceOfSubclass() {
 		assertFalse(persistentClassFacade.isInstanceOfSubclass());
 		PersistentClass subClassTarget = new Subclass(persistentClassTarget, null);
-		IPersistentClass subClassFacade = new AbstractPersistentClassFacade(FACADE_FACTORY, subClassTarget) {};
+		IPersistentClass subClassFacade = new PersistentClassFacadeImpl(FACADE_FACTORY, subClassTarget);
 		assertTrue(subClassFacade.isInstanceOfSubclass());
 	}
 	
@@ -147,7 +148,7 @@ public class PersistentClassFacadeTest {
 				return set.iterator();
 			}
 		};
-		persistentClassFacade = new AbstractPersistentClassFacade(FACADE_FACTORY, persistentClass) {};
+		persistentClassFacade = new PersistentClassFacadeImpl(FACADE_FACTORY, persistentClass);
 		Field field = AbstractPersistentClassFacade.class.getDeclaredField("propertyClosures");
 		field.setAccessible(true);
 		assertNull(field.get(persistentClassFacade));
@@ -166,7 +167,7 @@ public class PersistentClassFacadeTest {
 		assertNull(field.get(persistentClassFacade));
 		assertNull(superclassFacade);
 		Subclass subclassTarget = new Subclass(persistentClassTarget, null);
-		IPersistentClass subclassFacade = new AbstractPersistentClassFacade(FACADE_FACTORY, subclassTarget) {};
+		IPersistentClass subclassFacade = new PersistentClassFacadeImpl(FACADE_FACTORY, subclassTarget);
 		assertNull(field.get(subclassFacade));
 		superclassFacade = subclassFacade.getSuperclass();
 		assertNotNull(superclassFacade);
@@ -341,17 +342,26 @@ public class PersistentClassFacadeTest {
 	public void testIsInstanceOfJoinedSubclass() {
 		assertFalse(persistentClassFacade.isInstanceOfJoinedSubclass());
 		JoinedSubclass joinedSubclassTarget = new JoinedSubclass(persistentClassTarget, null);
-		IPersistentClass joinedSubclassFacade = new AbstractPersistentClassFacade(FACADE_FACTORY, joinedSubclassTarget) {};
+		IPersistentClass joinedSubclassFacade = new PersistentClassFacadeImpl(FACADE_FACTORY, joinedSubclassTarget);
 		assertTrue(joinedSubclassFacade.isInstanceOfJoinedSubclass());
 	}
 	
 	@Test
-	public void testSetTable() throws Exception {
+	public void testSetTable() {
 		Table tableTarget = new Table();
 		ITable tableFacade = FACADE_FACTORY.createTable(tableTarget);
 		assertNull(persistentClassTarget.getTable());
 		persistentClassFacade.setTable(tableFacade);
 		assertSame(tableTarget, persistentClassTarget.getTable());
+	}
+	
+	@Test
+	public void testSetKey() {
+		Value valueTarget = createValue();
+		IValue valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		assertNull(persistentClassTarget.getKey());
+		persistentClassFacade.setKey(valueFacade);
+		assertSame(valueTarget, persistentClassTarget.getKey());
 	}
 	
 	private KeyValue createValue() {
