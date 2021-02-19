@@ -13,6 +13,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -312,6 +313,26 @@ public class PersistentClassFacadeTest {
 		assertTrue(persistentClassTarget.isAbstract());
 		persistentClassFacade.setAbstract(false);
 		assertFalse(persistentClassTarget.isAbstract());
+	}
+	
+	@Test
+	public void testAddProperty() throws Exception {
+		Field propertiesField = AbstractPersistentClassFacade.class.getDeclaredField("properties");
+		propertiesField.setAccessible(true);
+		propertiesField.set(persistentClassFacade, new HashMap<String, IProperty>());
+		Field propertyClosuresField = AbstractPersistentClassFacade.class.getDeclaredField("propertyClosures");
+		propertyClosuresField.setAccessible(true);
+		propertyClosuresField.set(persistentClassFacade, new HashSet<IProperty>());
+		Property propertyTarget = new Property();
+		IProperty propertyFacade = FACADE_FACTORY.createProperty(propertyTarget);
+		assertFalse(persistentClassTarget.getPropertyIterator().hasNext());
+		assertNull(propertyTarget.getPersistentClass());
+		persistentClassFacade.addProperty(propertyFacade);
+		assertNull(propertiesField.get(persistentClassFacade));
+		assertNull(propertyClosuresField.get(persistentClassFacade));
+		assertTrue(persistentClassTarget.getPropertyIterator().hasNext());
+		assertSame(propertyTarget, persistentClassTarget.getPropertyIterator().next());
+		assertSame(persistentClassTarget, propertyTarget.getPersistentClass());
 	}
 	
 	private KeyValue createValue() {
