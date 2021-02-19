@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import org.hibernate.mapping.Join;
+import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
@@ -333,6 +334,14 @@ public class PersistentClassFacadeTest {
 		assertTrue(persistentClassTarget.getPropertyIterator().hasNext());
 		assertSame(propertyTarget, persistentClassTarget.getPropertyIterator().next());
 		assertSame(persistentClassTarget, propertyTarget.getPersistentClass());
+	}
+	
+	@Test
+	public void testIsInstanceOfJoinedSubclass() {
+		assertFalse(persistentClassFacade.isInstanceOfJoinedSubclass());
+		JoinedSubclass joinedSubclassTarget = new JoinedSubclass(persistentClassTarget, null);
+		IPersistentClass joinedSubclassFacade = new AbstractPersistentClassFacade(FACADE_FACTORY, joinedSubclassTarget) {};
+		assertTrue(joinedSubclassFacade.isInstanceOfJoinedSubclass());
 	}
 	
 	private KeyValue createValue() {
