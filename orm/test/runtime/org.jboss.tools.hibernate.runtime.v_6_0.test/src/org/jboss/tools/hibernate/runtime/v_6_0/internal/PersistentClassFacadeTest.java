@@ -93,13 +93,17 @@ public class PersistentClassFacadeTest {
 	}
 	
 	@Test
-	public void testGetIdentifierProperty() {
+	public void testGetIdentifierProperty() throws Exception {
+		Field field = AbstractPersistentClassFacade.class.getDeclaredField("identifierProperty");
+		field.setAccessible(true);
+		assertNull(field.get(persistentClassFacade));
 		Property propertyTarget = new Property();
 		assertNull(persistentClassFacade.getIdentifierProperty());
 		((RootClass)persistentClassTarget).setIdentifierProperty(propertyTarget);
 		IProperty propertyFacade = persistentClassFacade.getIdentifierProperty();
 		assertNotNull(propertyFacade);
 		assertSame(propertyTarget, ((IFacade)propertyFacade).getTarget());
+		assertSame(propertyFacade, field.get(persistentClassFacade));
 	}
 	
 	@Test
@@ -380,12 +384,28 @@ public class PersistentClassFacadeTest {
 	}
 	
 	@Test
-	public void testSetIdentifierProperty() {
+	public void testSetIdentifierProperty() throws Exception {
+		Field field = AbstractPersistentClassFacade.class.getDeclaredField("identifierProperty");
+		field.setAccessible(true);
+		assertNull(field.get(persistentClassFacade));
 		Property propertyTarget = new Property();
 		IProperty propertyFacade = FACADE_FACTORY.createProperty(propertyTarget);
 		assertNull(persistentClassTarget.getIdentifierProperty());
 		persistentClassFacade.setIdentifierProperty(propertyFacade);
 		assertSame(propertyTarget, persistentClassTarget.getIdentifierProperty());
+		assertSame(propertyFacade, field.get(persistentClassFacade));
+	}
+	
+	@Test
+	public void testSetIdentifier() throws Exception {
+		Field field = AbstractPersistentClassFacade.class.getDeclaredField("identifier");
+		field.setAccessible(true);
+		assertNull(field.get(persistentClassFacade));
+		Value valueTarget = createValue();
+		IValue valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		persistentClassFacade.setIdentifier(valueFacade);
+		assertSame(valueTarget, persistentClassTarget.getIdentifier());
+		assertSame(valueFacade, field.get(persistentClassFacade));
 	}
 	
 	private KeyValue createValue() {
