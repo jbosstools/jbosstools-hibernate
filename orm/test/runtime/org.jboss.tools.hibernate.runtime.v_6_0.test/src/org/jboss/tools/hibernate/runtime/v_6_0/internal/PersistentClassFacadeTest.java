@@ -454,6 +454,14 @@ public class PersistentClassFacadeTest {
 		assertSame(subclassTarget, ((IFacade)iterator.next()).getTarget());
 	}
 	
+	@Test
+	public void testIsCustomDeleteCallable() {
+		persistentClassTarget.setCustomSQLDelete("foo", false, null);
+		assertFalse(persistentClassFacade.isCustomDeleteCallable());
+		persistentClassTarget.setCustomSQLDelete("bar", true, null);
+		assertTrue(persistentClassFacade.isCustomDeleteCallable());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
