@@ -427,6 +427,14 @@ public class PersistentClassFacadeTest {
 		assertEquals("foo", persistentClassTarget.getProxyInterfaceName());
 	}
 	
+	@Test
+	public void testSetLazy() {
+		persistentClassFacade.setLazy(true);
+		assertTrue(persistentClassTarget.isLazy());
+		persistentClassFacade.setLazy(false);
+		assertFalse(persistentClassTarget.isLazy());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
