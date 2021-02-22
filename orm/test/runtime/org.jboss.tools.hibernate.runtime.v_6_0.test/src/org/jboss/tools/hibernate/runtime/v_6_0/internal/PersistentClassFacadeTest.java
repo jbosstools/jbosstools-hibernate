@@ -420,6 +420,13 @@ public class PersistentClassFacadeTest {
 		assertSame(valueFacade, field.get(persistentClassFacade));
 	}
 	
+	@Test
+	public void testSetProxyInterfaceName() {
+		assertNull(persistentClassTarget.getProxyInterfaceName());
+		persistentClassFacade.setProxyInterfaceName("foo");
+		assertEquals("foo", persistentClassTarget.getProxyInterfaceName());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
