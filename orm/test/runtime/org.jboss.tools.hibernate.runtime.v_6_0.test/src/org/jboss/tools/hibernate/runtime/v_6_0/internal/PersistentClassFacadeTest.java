@@ -462,6 +462,14 @@ public class PersistentClassFacadeTest {
 		assertTrue(persistentClassFacade.isCustomDeleteCallable());
 	}
 	
+	@Test
+	public void testIsCustomInsertCallable() {
+		persistentClassTarget.setCustomSQLInsert("bar", false, null);
+		assertFalse(persistentClassFacade.isCustomInsertCallable());
+		persistentClassTarget.setCustomSQLInsert("foo", true, null);
+		assertTrue(persistentClassFacade.isCustomInsertCallable());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
