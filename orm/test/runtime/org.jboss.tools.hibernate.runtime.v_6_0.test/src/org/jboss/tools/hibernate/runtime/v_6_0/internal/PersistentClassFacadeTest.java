@@ -435,6 +435,25 @@ public class PersistentClassFacadeTest {
 		assertFalse(persistentClassTarget.isLazy());
 	}
 	
+	@Test
+	public void testGetSubclassIterator() throws Exception {
+		Field field = AbstractPersistentClassFacade.class.getDeclaredField("subclasses");
+		field.setAccessible(true);
+		assertNull(field.get(persistentClassFacade));
+		Iterator<?> iterator = persistentClassFacade.getSubclassIterator();
+		assertFalse(iterator.hasNext());
+		HashSet<?> subclasses = (HashSet<?>)field.get(persistentClassFacade);
+		assertTrue(subclasses.isEmpty());
+		field.set(persistentClassFacade, null);
+		Subclass subclassTarget = new Subclass(persistentClassTarget, null);
+		persistentClassTarget.addSubclass(subclassTarget);
+		iterator = persistentClassFacade.getSubclassIterator();
+		assertTrue(iterator.hasNext());
+		subclasses = (HashSet<?>)field.get(persistentClassFacade);
+		assertEquals(1, subclasses.size());
+		assertSame(subclassTarget, ((IFacade)iterator.next()).getTarget());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
