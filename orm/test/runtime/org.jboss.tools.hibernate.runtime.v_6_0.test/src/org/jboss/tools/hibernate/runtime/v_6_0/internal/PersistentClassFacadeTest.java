@@ -478,6 +478,14 @@ public class PersistentClassFacadeTest {
 		assertTrue(persistentClassFacade.isCustomUpdateCallable());
 	}
 	
+	@Test
+	public void testIsDiscriminatorValueInsertable() {
+		((RootClass)persistentClassTarget).setDiscriminatorInsertable(true);
+		assertTrue(persistentClassFacade.isDiscriminatorInsertable());
+		((RootClass)persistentClassTarget).setDiscriminatorInsertable(false);
+		assertFalse(persistentClassFacade.isDiscriminatorInsertable());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
