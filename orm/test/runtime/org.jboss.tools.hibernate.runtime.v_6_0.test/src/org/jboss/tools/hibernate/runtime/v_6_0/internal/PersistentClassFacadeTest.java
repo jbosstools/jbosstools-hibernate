@@ -494,6 +494,14 @@ public class PersistentClassFacadeTest {
 		assertTrue(persistentClassFacade.isDiscriminatorValueNotNull());
 	}
 	
+	@Test
+	public void testIsDiscriminatorValueNull() {
+		persistentClassTarget.setDiscriminatorValue("not null");
+		assertFalse(persistentClassFacade.isDiscriminatorValueNull());
+		persistentClassTarget.setDiscriminatorValue("null");
+		assertTrue(persistentClassFacade.isDiscriminatorValueNull());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
