@@ -502,6 +502,14 @@ public class PersistentClassFacadeTest {
 		assertTrue(persistentClassFacade.isDiscriminatorValueNull());
 	}
 	
+	@Test
+	public void testIsExplicitPolymorphism() {
+		((RootClass)persistentClassTarget).setExplicitPolymorphism(true);
+		assertTrue(persistentClassFacade.isExplicitPolymorphism());
+		((RootClass)persistentClassTarget).setExplicitPolymorphism(false);
+		assertFalse(persistentClassFacade.isExplicitPolymorphism());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
