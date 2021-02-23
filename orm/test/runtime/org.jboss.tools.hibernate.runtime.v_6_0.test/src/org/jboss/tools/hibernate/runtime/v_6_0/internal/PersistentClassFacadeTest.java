@@ -518,6 +518,14 @@ public class PersistentClassFacadeTest {
 		assertFalse(persistentClassFacade.isForceDiscriminator());
 	}
 	
+	@Test
+	public void testIsInherited() {
+		persistentClassFacade = new AbstractPersistentClassFacade(FACADE_FACTORY, new RootClass(null)) {};
+		assertFalse(persistentClassFacade.isInherited());
+		persistentClassFacade = new AbstractPersistentClassFacade(FACADE_FACTORY, new Subclass(new RootClass(null), null)) {};
+		assertTrue(persistentClassFacade.isInherited());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
