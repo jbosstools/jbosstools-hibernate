@@ -574,6 +574,14 @@ public class PersistentClassFacadeTest {
 		assertFalse(persistentClassFacade.isPolymorphic());
 	}
 	
+	@Test
+	public void testIsVersioned() {
+		((RootClass)persistentClassTarget).setVersion(new Property());
+		assertTrue(persistentClassFacade.isVersioned());
+		((RootClass)persistentClassTarget).setVersion(null);
+		assertFalse(persistentClassFacade.isVersioned());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
