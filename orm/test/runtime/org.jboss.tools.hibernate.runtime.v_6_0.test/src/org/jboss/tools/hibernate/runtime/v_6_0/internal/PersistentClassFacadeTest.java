@@ -618,6 +618,13 @@ public class PersistentClassFacadeTest {
 		assertEquals("foo", persistentClassFacade.getCustomSQLUpdate());
 	}
 	
+	@Test
+	public void testGetDiscriminatorValue() {
+		assertNotEquals("bar", persistentClassFacade.getDiscriminatorValue());
+		((RootClass)persistentClassTarget).setDiscriminatorValue("bar");
+		assertEquals("bar", persistentClassFacade.getDiscriminatorValue());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
