@@ -582,6 +582,14 @@ public class PersistentClassFacadeTest {
 		assertFalse(persistentClassFacade.isVersioned());
 	}
 	
+	@Test
+	public void testGetBatchSize() {
+		persistentClassTarget.setBatchSize(Integer.MAX_VALUE);
+		assertEquals(Integer.MAX_VALUE, persistentClassFacade.getBatchSize());
+		persistentClassTarget.setBatchSize(Integer.MIN_VALUE);
+		assertEquals(Integer.MIN_VALUE, persistentClassFacade.getBatchSize());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
