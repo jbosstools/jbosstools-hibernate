@@ -597,6 +597,13 @@ public class PersistentClassFacadeTest {
 		assertEquals("foo", persistentClassFacade.getCacheConcurrencyStrategy());
 	}
 	
+	@Test
+	public void testGetCustomSQLDelete() {
+		assertNotEquals("foo", persistentClassFacade.getCustomSQLDelete());
+		((RootClass)persistentClassTarget).setCustomSQLDelete("foo", false, null);
+		assertEquals("foo", persistentClassFacade.getCustomSQLDelete());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
