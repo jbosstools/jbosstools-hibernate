@@ -590,6 +590,13 @@ public class PersistentClassFacadeTest {
 		assertEquals(Integer.MIN_VALUE, persistentClassFacade.getBatchSize());
 	}
 	
+	@Test
+	public void testGetCacheConcurrencyStrategy() {
+		assertNotEquals("foo", persistentClassFacade.getCacheConcurrencyStrategy());
+		((RootClass)persistentClassTarget).setCacheConcurrencyStrategy("foo");
+		assertEquals("foo", persistentClassFacade.getCacheConcurrencyStrategy());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
