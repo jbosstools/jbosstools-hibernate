@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import org.hibernate.engine.OptimisticLockStyle;
 import org.hibernate.mapping.Join;
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.KeyValue;
@@ -630,6 +631,12 @@ public class PersistentClassFacadeTest {
 		assertNotEquals("foo",persistentClassFacade.getLoaderName());
 		persistentClassTarget.setLoaderName("foo");
 		assertEquals("foo", persistentClassFacade.getLoaderName());
+	}
+	
+	@Test
+	public void testGetOptimisticLockMode() {
+		persistentClassTarget.setOptimisticLockStyle(OptimisticLockStyle.NONE);
+		assertEquals(-1, persistentClassFacade.getOptimisticLockMode());
 	}
 	
 	private KeyValue createValue() {
