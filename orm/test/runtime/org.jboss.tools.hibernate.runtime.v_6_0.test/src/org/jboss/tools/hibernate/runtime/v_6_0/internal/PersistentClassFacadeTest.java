@@ -639,6 +639,13 @@ public class PersistentClassFacadeTest {
 		assertEquals(-1, persistentClassFacade.getOptimisticLockMode());
 	}
 	
+	@Test
+	public void testGetWhere() {
+		assertNotEquals("foo", persistentClassFacade.getWhere());
+		((RootClass)persistentClassTarget).setWhere("foo");
+		assertEquals("foo", persistentClassFacade.getWhere());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
