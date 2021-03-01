@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
@@ -100,6 +101,15 @@ public class PrimaryKeyFacadeTest {
 		assertNotNull(tableFacade);
 		assertSame(tableFacade, field.get(primaryKeyFacade));
 		assertSame(tableTarget, ((IFacade)tableFacade).getTarget());
+	}
+	
+	@Test
+	public void testContainsColumn() {
+		Column columnTarget = new Column();
+		IColumn columnFacade = FACADE_FACTORY.createColumn(columnTarget);
+		assertFalse(primaryKeyFacade.containsColumn(columnFacade));
+		primaryKeyTarget.addColumn(columnTarget);
+		assertTrue(primaryKeyFacade.containsColumn(columnFacade));
 	}
 	
 }
