@@ -18,6 +18,7 @@ import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -83,6 +84,22 @@ public class PrimaryKeyFacadeTest {
 		assertNotNull(field.get(primaryKeyFacade));
 		assertNotNull(columnFacade);
 		assertSame(columnTarget, ((IFacade)columnFacade).getTarget());
+	}
+	
+	@Test
+	public void testGetTable() throws Exception {
+		Field field = AbstractPrimaryKeyFacade.class.getDeclaredField("table");
+		field.setAccessible(true);
+		assertNull(field.get(primaryKeyFacade));
+		assertNotNull(primaryKeyFacade.getTable());
+		assertNotNull(field.get(primaryKeyFacade));
+		field.set(primaryKeyFacade, null);
+		Table tableTarget = new Table();
+		primaryKeyTarget.setTable(tableTarget);
+		ITable tableFacade = primaryKeyFacade.getTable();
+		assertNotNull(tableFacade);
+		assertSame(tableFacade, field.get(primaryKeyFacade));
+		assertSame(tableTarget, ((IFacade)tableFacade).getTarget());
 	}
 	
 }
