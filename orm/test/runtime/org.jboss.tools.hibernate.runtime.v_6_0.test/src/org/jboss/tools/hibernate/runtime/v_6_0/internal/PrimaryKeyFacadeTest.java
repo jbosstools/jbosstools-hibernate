@@ -72,4 +72,17 @@ public class PrimaryKeyFacadeTest {
 		assertSame(columnTarget, ((IFacade)columnFacades.get(0)).getTarget());
 	}
 	
+	@Test
+	public void testGetColumn() throws Exception {
+		Field field = AbstractPrimaryKeyFacade.class.getDeclaredField("columns");
+		field.setAccessible(true);
+		assertNull(field.get(primaryKeyFacade));
+		Column columnTarget = new Column();
+		primaryKeyTarget.addColumn(columnTarget);
+		IColumn columnFacade = primaryKeyFacade.getColumn(0);
+		assertNotNull(field.get(primaryKeyFacade));
+		assertNotNull(columnFacade);
+		assertSame(columnTarget, ((IFacade)columnFacade).getTarget());
+	}
+	
 }
