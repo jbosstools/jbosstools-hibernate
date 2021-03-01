@@ -1,17 +1,20 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Field;
 import java.util.Collections;
+import java.util.List;
 
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.runtime.common.AbstractPrimaryKeyFacade;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
@@ -51,6 +54,22 @@ public class PrimaryKeyFacadeTest {
 		assertEquals(0, primaryKeyFacade.getColumnSpan());
 		primaryKeyTarget.addColumn(new Column());
 		assertEquals(1, primaryKeyFacade.getColumnSpan());
+	}
+	
+	@Test
+	public void testGetColumns() throws Exception {
+		Field field = AbstractPrimaryKeyFacade.class.getDeclaredField("columns");
+		field.setAccessible(true);
+		assertNull(field.get(primaryKeyFacade));
+		assertTrue(primaryKeyFacade.getColumns().isEmpty());
+		assertNotNull(field.get(primaryKeyFacade));
+		field.set(primaryKeyFacade, null);
+		Column columnTarget = new Column();
+		primaryKeyTarget.addColumn(columnTarget);
+		List<IColumn> columnFacades = primaryKeyFacade.getColumns();
+		assertNotNull(columnFacades);
+		assertSame(columnFacades, field.get(primaryKeyFacade));
+		assertSame(columnTarget, ((IFacade)columnFacades.get(0)).getTarget());
 	}
 	
 }
