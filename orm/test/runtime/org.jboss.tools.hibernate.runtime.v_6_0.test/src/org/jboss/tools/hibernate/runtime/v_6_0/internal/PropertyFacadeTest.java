@@ -1,19 +1,24 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import org.hibernate.boot.spi.MetadataBuildingContext;
+import org.hibernate.mapping.Component;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.runtime.common.AbstractPropertyFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -71,11 +76,33 @@ public class PropertyFacadeTest {
 		assertSame(persistentClassFacade, field.get(propertyFacade));
 		assertSame(persistentClassTarget, propertyTarget.getPersistentClass());
 	}
+	
+	@Test
+	public void testIsComposite() {
+		propertyTarget.setValue(createValue());
+		assertFalse(propertyFacade.isComposite());
+		MetadataBuildingContext metadataBuildingContext = createMetadataBuildingContext();
+		Component component = new Component(metadataBuildingContext, new Table(), new RootClass(metadataBuildingContext));
+		propertyTarget.setValue(component);
+		assertTrue(propertyFacade.isComposite());
+	}
 
 	private Value createValue() {
 		return (Value)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
 				new Class[] { Value.class }, 
+				new InvocationHandler() {	
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+						return null;
+					}
+		});
+	}
+	
+	private MetadataBuildingContext createMetadataBuildingContext() {
+		return (MetadataBuildingContext)Proxy.newProxyInstance(
+				getClass().getClassLoader(), 
+				new Class[] { MetadataBuildingContext.class }, 
 				new InvocationHandler() {	
 					@Override
 					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
