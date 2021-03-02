@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
@@ -126,6 +127,13 @@ public class PrimaryKeyFacadeTest {
 		Iterator<IColumn> columnIterator = primaryKeyFacade.columnIterator();
 		assertTrue(columnIterator.hasNext());
 		assertSame(columnTarget, ((IFacade)columnIterator.next()).getTarget());
+	}
+	
+	@Test
+	public void testGetName() {
+		assertNotEquals("foo", primaryKeyFacade.getName());
+		primaryKeyTarget.setName("foo");
+		assertEquals("foo", primaryKeyFacade.getName());
 	}
 	
 }
