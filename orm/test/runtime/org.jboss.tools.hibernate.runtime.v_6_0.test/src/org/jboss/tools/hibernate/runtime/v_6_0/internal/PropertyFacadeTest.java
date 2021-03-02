@@ -11,11 +11,14 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
+import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.runtime.common.AbstractPropertyFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.junit.Before;
@@ -53,6 +56,20 @@ public class PropertyFacadeTest {
 		assertNotEquals("foo", propertyTarget.getName());
 		propertyFacade.setName("foo");
 		assertEquals("foo", propertyTarget.getName());
+	}
+	
+	@Test
+	public void testSetPersistentClass() throws Exception {
+		Field field = AbstractPropertyFacade.class.getDeclaredField("persistentClass");
+		field.setAccessible(true);
+		assertNull(field.get(propertyFacade));
+		assertNull(propertyTarget.getPersistentClass());
+		PersistentClass persistentClassTarget = new RootClass(null);
+		IPersistentClass persistentClassFacade = 
+				FACADE_FACTORY.createPersistentClass(persistentClassTarget);
+		propertyFacade.setPersistentClass(persistentClassFacade);
+		assertSame(persistentClassFacade, field.get(propertyFacade));
+		assertSame(persistentClassTarget, propertyTarget.getPersistentClass());
 	}
 
 	private Value createValue() {
