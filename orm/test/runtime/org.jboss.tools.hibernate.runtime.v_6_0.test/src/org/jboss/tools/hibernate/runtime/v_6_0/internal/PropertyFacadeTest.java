@@ -1,5 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
@@ -44,6 +46,13 @@ public class PropertyFacadeTest {
 		assertNotNull(valueFacade);
 		assertSame(valueFacade, field.get(propertyFacade));
 		assertSame(valueTarget, ((IFacade)valueFacade).getTarget());
+	}
+	
+	@Test
+	public void testSetName() {
+		assertNotEquals("foo", propertyTarget.getName());
+		propertyFacade.setName("foo");
+		assertEquals("foo", propertyTarget.getName());
 	}
 
 	private Value createValue() {
