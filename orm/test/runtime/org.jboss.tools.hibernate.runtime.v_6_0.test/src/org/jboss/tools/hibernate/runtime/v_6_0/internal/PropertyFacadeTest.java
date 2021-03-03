@@ -20,11 +20,14 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
+import org.hibernate.type.StringType;
+import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.AbstractPropertyFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
+import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,6 +35,8 @@ import org.junit.Test;
 public class PropertyFacadeTest {
 
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
+	
+	private static final Type TYPE = new StringType();
 	
 	private Property propertyTarget = null;
 	private IProperty propertyFacade = null;
@@ -120,6 +125,17 @@ public class PropertyFacadeTest {
 		assertTrue(propertyFacade.classIsPropertyClass());
 		assertFalse((new AbstractPropertyFacade(FACADE_FACTORY, new Object()) {}).classIsPropertyClass());
 	}
+	
+	@Test
+	public void testGetType() throws Exception {
+		Field field = AbstractPropertyFacade.class.getDeclaredField("type");
+		field.setAccessible(true);
+		assertNull(field.get(propertyFacade));
+		propertyTarget.setValue(createValue());
+		IType typeFacade = propertyFacade.getType();
+		assertSame(TYPE, ((IFacade)typeFacade).getTarget());
+		assertSame(typeFacade, field.get(propertyFacade));
+	}
 
 	private Value createValue() {
 		return (Value)Proxy.newProxyInstance(
@@ -128,6 +144,9 @@ public class PropertyFacadeTest {
 				new InvocationHandler() {	
 					@Override
 					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+						if ("getType".equals(method.getName())) {
+							return TYPE;
+						}
 						return null;
 					}
 		});
