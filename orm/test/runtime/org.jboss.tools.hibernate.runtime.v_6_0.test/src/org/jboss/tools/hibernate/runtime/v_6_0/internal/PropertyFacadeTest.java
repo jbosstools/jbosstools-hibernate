@@ -172,6 +172,14 @@ public class PropertyFacadeTest {
 		propertyFacade = FACADE_FACTORY.createProperty(propertyTarget);
 		assertTrue(propertyFacade.isBackRef());
 	}
+	
+	@Test
+	public void testIsSelectable() {
+		propertyTarget.setSelectable(true);
+		assertTrue(propertyFacade.isSelectable());
+		propertyTarget.setSelectable(false);
+		assertFalse(propertyFacade.isSelectable());
+	}
 
 	private Value createValue() {
 		return (Value)Proxy.newProxyInstance(
