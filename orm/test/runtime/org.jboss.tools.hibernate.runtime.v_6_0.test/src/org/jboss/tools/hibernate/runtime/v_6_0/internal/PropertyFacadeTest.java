@@ -156,6 +156,13 @@ public class PropertyFacadeTest {
 		propertyFacade.setPropertyAccessorName("foo");
 		assertEquals("foo", propertyTarget.getPropertyAccessorName());
 	}
+	
+	@Test
+	public void testSetCascade() {
+		assertNotEquals("foo", propertyTarget.getCascade());
+		propertyFacade.setCascade("foo");
+		assertEquals("foo", propertyTarget.getCascade());
+	}
 
 	private Value createValue() {
 		return (Value)Proxy.newProxyInstance(
