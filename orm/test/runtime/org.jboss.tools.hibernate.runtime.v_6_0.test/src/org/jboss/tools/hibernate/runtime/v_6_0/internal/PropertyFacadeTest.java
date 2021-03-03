@@ -136,6 +136,19 @@ public class PropertyFacadeTest {
 		assertSame(TYPE, ((IFacade)typeFacade).getTarget());
 		assertSame(typeFacade, field.get(propertyFacade));
 	}
+	
+	@Test
+	public void testSetValue() throws Exception {
+		Field field = AbstractPropertyFacade.class.getDeclaredField("value");
+		field.setAccessible(true);
+		assertNull(field.get(propertyFacade));
+		assertNull(propertyTarget.getValue());
+		Value valueTarget = createValue();
+		IValue valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		propertyFacade.setValue(valueFacade);
+		assertSame(valueFacade, field.get(propertyFacade));
+		assertSame(valueTarget, propertyTarget.getValue());
+	}
 
 	private Value createValue() {
 		return (Value)Proxy.newProxyInstance(
