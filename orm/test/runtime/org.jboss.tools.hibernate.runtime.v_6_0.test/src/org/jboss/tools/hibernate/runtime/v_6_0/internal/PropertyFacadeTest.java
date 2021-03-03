@@ -41,6 +41,7 @@ public class PropertyFacadeTest {
 	
 	private Property propertyTarget = null;
 	private IProperty propertyFacade = null;
+	private Boolean hasInsertableColumns = false;
 
 	@Before
 	public void before() {
@@ -180,6 +181,18 @@ public class PropertyFacadeTest {
 		propertyTarget.setSelectable(false);
 		assertFalse(propertyFacade.isSelectable());
 	}
+	
+	@Test
+	public void testIsInsertable() {
+		propertyTarget.setValue(createValue());
+		propertyTarget.setInsertable(true);
+		hasInsertableColumns = false;
+		assertFalse(propertyFacade.isInsertable());
+		hasInsertableColumns = true;
+		assertTrue(propertyFacade.isInsertable());
+		propertyTarget.setInsertable(false);
+		assertFalse(propertyFacade.isInsertable());
+	}
 
 	private Value createValue() {
 		return (Value)Proxy.newProxyInstance(
@@ -190,6 +203,9 @@ public class PropertyFacadeTest {
 					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 						if ("getType".equals(method.getName())) {
 							return TYPE;
+						}
+						if ("hasAnyInsertableColumns".equals(method.getName())) {
+							return hasInsertableColumns;
 						}
 						return null;
 					}
