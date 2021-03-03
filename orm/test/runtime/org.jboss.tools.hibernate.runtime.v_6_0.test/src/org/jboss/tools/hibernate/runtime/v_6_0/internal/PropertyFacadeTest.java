@@ -114,6 +114,12 @@ public class PropertyFacadeTest {
 		propertyTarget.setName("foo");
 		assertEquals("foo", propertyFacade.getName());
 	}
+	
+	@Test
+	public void testClassIsPropertyClass() {
+		assertTrue(propertyFacade.classIsPropertyClass());
+		assertFalse((new AbstractPropertyFacade(FACADE_FACTORY, new Object()) {}).classIsPropertyClass());
+	}
 
 	private Value createValue() {
 		return (Value)Proxy.newProxyInstance(
