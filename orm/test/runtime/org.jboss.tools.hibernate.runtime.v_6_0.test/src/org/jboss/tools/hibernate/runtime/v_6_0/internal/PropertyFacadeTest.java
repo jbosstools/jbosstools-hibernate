@@ -212,6 +212,15 @@ public class PropertyFacadeTest {
 		propertyTarget.setCascade("foo");
 		assertEquals("foo", propertyFacade.getCascade());
 	}
+	
+	@Test
+	public void testIsLazy() {
+		propertyTarget.setLazy(true);
+		assertTrue(propertyFacade.isLazy());
+		propertyTarget.setLazy(false);
+		assertFalse(propertyFacade.isLazy());
+	}
+	
 
 	private Value createValue() {
 		return (Value)Proxy.newProxyInstance(
