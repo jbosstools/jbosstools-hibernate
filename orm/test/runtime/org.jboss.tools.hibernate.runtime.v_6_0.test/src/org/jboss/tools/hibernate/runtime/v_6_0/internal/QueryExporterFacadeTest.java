@@ -1,5 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 
@@ -8,7 +10,6 @@ import java.util.List;
 
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.query.QueryExporter;
-import org.jboss.tools.hibernate.runtime.common.AbstractQueryExporterFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 import org.junit.Before;
@@ -24,7 +25,7 @@ public class QueryExporterFacadeTest {
 	@Before
 	public void before() {
 		queryExporterTarget = new QueryExporter();
-		queryExporterFacade = new AbstractQueryExporterFacade(FACADE_FACTORY, queryExporterTarget) {};
+		queryExporterFacade = new QueryExporterFacadeImpl(FACADE_FACTORY, queryExporterTarget);
 	}
 	
 	@Test
@@ -33,6 +34,13 @@ public class QueryExporterFacadeTest {
 		assertNotSame(queries, queryExporterTarget.getProperties().get(ExporterConstants.QUERY_LIST));
 		queryExporterFacade.setQueries(queries);
 		assertSame(queries, queryExporterTarget.getProperties().get(ExporterConstants.QUERY_LIST));
+	}
+	
+	@Test
+	public void testSetFileName() {
+		assertNotEquals("foo", queryExporterTarget.getProperties().get(ExporterConstants.OUTPUT_FILE_NAME));
+		queryExporterFacade.setFilename("foo");
+		assertEquals("foo", queryExporterTarget.getProperties().get(ExporterConstants.OUTPUT_FILE_NAME));
 	}
 	
 }
