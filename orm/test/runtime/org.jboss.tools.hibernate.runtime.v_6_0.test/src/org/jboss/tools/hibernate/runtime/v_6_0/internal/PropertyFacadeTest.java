@@ -41,7 +41,7 @@ public class PropertyFacadeTest {
 	
 	private Property propertyTarget = null;
 	private IProperty propertyFacade = null;
-	private Boolean hasInsertableColumns = false;
+	private Boolean valueBoolean = false;
 
 	@Before
 	public void before() {
@@ -186,12 +186,24 @@ public class PropertyFacadeTest {
 	public void testIsInsertable() {
 		propertyTarget.setValue(createValue());
 		propertyTarget.setInsertable(true);
-		hasInsertableColumns = false;
+		valueBoolean = false;
 		assertFalse(propertyFacade.isInsertable());
-		hasInsertableColumns = true;
+		valueBoolean = true;
 		assertTrue(propertyFacade.isInsertable());
 		propertyTarget.setInsertable(false);
 		assertFalse(propertyFacade.isInsertable());
+	}
+	
+	@Test
+	public void testIsUpdateable() {
+		propertyTarget.setValue(createValue());
+		propertyTarget.setUpdateable(true);
+		valueBoolean = false;
+		assertFalse(propertyFacade.isUpdateable());
+		valueBoolean = true;
+		assertTrue(propertyFacade.isUpdateable());
+		propertyTarget.setUpdateable(false);
+		assertFalse(propertyFacade.isUpdateable());
 	}
 
 	private Value createValue() {
@@ -205,7 +217,10 @@ public class PropertyFacadeTest {
 							return TYPE;
 						}
 						if ("hasAnyInsertableColumns".equals(method.getName())) {
-							return hasInsertableColumns;
+							return valueBoolean;
+						}
+						if ("hasAnyUpdatableColumns".equals(method.getName())) {
+							return valueBoolean;
 						}
 						return null;
 					}
