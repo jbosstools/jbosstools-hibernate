@@ -177,6 +177,7 @@ public class FacadeFactoryTest {
 	public void testCreateQueryExporter() {
 		QueryExporter queryExporter = new QueryExporter();
 		IQueryExporter facade = facadeFactory.createQueryExporter(queryExporter);
+		assertTrue(facade instanceof QueryExporterFacadeImpl);
 		assertSame(queryExporter, ((IFacade)facade).getTarget());		
 	}
 	
