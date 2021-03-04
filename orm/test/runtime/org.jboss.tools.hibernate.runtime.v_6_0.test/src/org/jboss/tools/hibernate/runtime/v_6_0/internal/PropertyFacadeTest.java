@@ -205,6 +205,13 @@ public class PropertyFacadeTest {
 		propertyTarget.setUpdateable(false);
 		assertFalse(propertyFacade.isUpdateable());
 	}
+	
+	@Test
+	public void testGetCascade() {
+		assertNotEquals("foo", propertyFacade.getCascade());
+		propertyTarget.setCascade("foo");
+		assertEquals("foo", propertyFacade.getCascade());
+	}
 
 	private Value createValue() {
 		return (Value)Proxy.newProxyInstance(
