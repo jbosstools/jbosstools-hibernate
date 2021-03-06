@@ -22,4 +22,8 @@ public class JpaConfiguration extends Configuration {
 		}
 	}
 	
+	public String getPersistenceUnit() {
+		return persistenceUnit;
+	}
+	
 }

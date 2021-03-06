@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal.util;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.Properties;
@@ -17,6 +18,14 @@ public class JpaConfigurationTest {
 		assertNotNull(jpaConfiguration);
 		assertEquals("barfoo", jpaConfiguration.persistenceUnit);
 		assertEquals("bar", jpaConfiguration.getProperties().get("foo"));
+	}
+	
+	@Test
+	public void testGetPersistenceUnit() {
+		JpaConfiguration jpaConfiguration = new JpaConfiguration("barfoo", null);
+		assertNotEquals("foobar", jpaConfiguration.getPersistenceUnit());
+		jpaConfiguration.persistenceUnit = "foobar";
+		assertEquals("foobar", jpaConfiguration.getPersistenceUnit());
 	}
 
 }
