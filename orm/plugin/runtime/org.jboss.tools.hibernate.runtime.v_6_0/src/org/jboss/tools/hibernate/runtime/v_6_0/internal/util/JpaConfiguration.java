@@ -25,6 +25,13 @@ public class JpaConfiguration extends Configuration {
 		}
 	}
 	
+	public Metadata getMetadata() {
+		if (metadata == null) {
+			initialize();
+		}
+		return metadata;
+	}
+	
 	public String getPersistenceUnit() {
 		return persistenceUnit;
 	}

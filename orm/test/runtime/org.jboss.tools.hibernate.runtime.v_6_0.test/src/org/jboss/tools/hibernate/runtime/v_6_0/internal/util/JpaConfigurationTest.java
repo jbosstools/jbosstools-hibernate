@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -14,6 +15,7 @@ import java.util.Properties;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import org.hibernate.boot.Metadata;
 import org.hibernate.dialect.Dialect;
 import org.junit.After;
 import org.junit.Before;
@@ -73,6 +75,15 @@ public class JpaConfigurationTest {
 		assertNotNull(jpaConfiguration);
 		assertEquals("barfoo", jpaConfiguration.persistenceUnit);
 		assertEquals("bar", jpaConfiguration.getProperties().get("foo"));
+	}
+	
+	@Test
+	public void testGetMetadata() {
+		JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", null);
+		assertNull(jpaConfiguration.metadata);
+		Metadata metadata = jpaConfiguration.getMetadata();
+		assertNotNull(metadata.getEntityBinding(FooBar.class.getName()));
+		assertSame(metadata, jpaConfiguration.metadata);
 	}
 	
 	@Test
