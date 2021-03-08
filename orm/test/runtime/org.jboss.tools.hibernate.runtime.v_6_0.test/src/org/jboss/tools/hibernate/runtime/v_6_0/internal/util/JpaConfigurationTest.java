@@ -8,6 +8,9 @@ import static org.junit.Assert.assertSame;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Properties;
@@ -94,6 +97,30 @@ public class JpaConfigurationTest {
 		SessionFactory sessionFactory = jpaConfiguration.buildSessionFactory();
 		assertNotNull(sessionFactory);
 		assertSame(sessionFactory, jpaConfiguration.sessionFactory);
+	}
+	
+	@Test
+	public void testSetProperties() {
+		Object dummy = Proxy.newProxyInstance(
+				getClass().getClassLoader(), 
+				new Class[] { Metadata.class, SessionFactory.class },
+				new InvocationHandler() {					
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+						return null;
+					}
+				});
+		JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", null);
+		jpaConfiguration.metadata = (Metadata)dummy;
+		jpaConfiguration.sessionFactory = (SessionFactory)dummy;
+		assertNull(jpaConfiguration.getProperty("foo"));
+		Properties properties = new Properties();
+		properties.put("foo", "bar");
+		Object result = jpaConfiguration.setProperties(properties);
+		assertSame(result, jpaConfiguration);
+		assertNull(jpaConfiguration.metadata);
+		assertNull(jpaConfiguration.sessionFactory);
+		assertEquals("bar", jpaConfiguration.getProperty("foo"));
 	}
 	
 	@Test

@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal.util;
 
 import java.util.Map;
+import java.util.Properties;
 
 import javax.persistence.EntityManagerFactory;
 
@@ -32,16 +33,24 @@ public class JpaConfiguration extends Configuration {
 		return metadata;
 	}
 	
-	public String getPersistenceUnit() {
-		return persistenceUnit;
-	}
-	
 	@Override
 	public SessionFactory buildSessionFactory() {
 		if (sessionFactory == null) {
 			initialize();
 		}
 		return sessionFactory;
+	}
+	
+	@Override
+	public Configuration setProperties(Properties properties) {
+		super.setProperties(properties);
+		metadata = null;
+		sessionFactory = null;
+		return this;
+	}
+	
+	public String getPersistenceUnit() {
+		return persistenceUnit;
 	}
 	
 	void initialize() {
