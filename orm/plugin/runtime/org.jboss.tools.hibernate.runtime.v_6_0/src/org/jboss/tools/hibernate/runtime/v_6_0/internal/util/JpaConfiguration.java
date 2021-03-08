@@ -36,6 +36,14 @@ public class JpaConfiguration extends Configuration {
 		return persistenceUnit;
 	}
 	
+	@Override
+	public SessionFactory buildSessionFactory() {
+		if (sessionFactory == null) {
+			initialize();
+		}
+		return sessionFactory;
+	}
+	
 	void initialize() {
 		EntityManagerFactoryBuilderImpl entityManagerFactoryBuilder = 
 				HibernateToolsPersistenceProvider

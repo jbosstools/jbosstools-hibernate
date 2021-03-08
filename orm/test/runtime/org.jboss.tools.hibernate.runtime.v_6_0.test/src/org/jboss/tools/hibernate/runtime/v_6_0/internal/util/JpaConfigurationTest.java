@@ -15,6 +15,7 @@ import java.util.Properties;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.dialect.Dialect;
 import org.junit.After;
@@ -84,6 +85,15 @@ public class JpaConfigurationTest {
 		Metadata metadata = jpaConfiguration.getMetadata();
 		assertNotNull(metadata.getEntityBinding(FooBar.class.getName()));
 		assertSame(metadata, jpaConfiguration.metadata);
+	}
+	
+	@Test
+	public void testBuildSessionFactory() {
+		JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", null);
+		assertNull(jpaConfiguration.sessionFactory);
+		SessionFactory sessionFactory = jpaConfiguration.buildSessionFactory();
+		assertNotNull(sessionFactory);
+		assertSame(sessionFactory, jpaConfiguration.sessionFactory);
 	}
 	
 	@Test
