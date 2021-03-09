@@ -124,6 +124,33 @@ public class JpaConfigurationTest {
 	}
 	
 	@Test
+	public void testAddProperties() {
+		Object dummy = Proxy.newProxyInstance(
+				getClass().getClassLoader(), 
+				new Class[] { Metadata.class, SessionFactory.class },
+				new InvocationHandler() {					
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+						return null;
+					}
+				});
+		Properties properties = new Properties();
+		properties.put("foo", "bar");
+		JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", properties);
+		jpaConfiguration.metadata = (Metadata)dummy;
+		jpaConfiguration.sessionFactory = (SessionFactory)dummy;
+		assertEquals("bar", jpaConfiguration.getProperty("foo"));
+		assertNull(jpaConfiguration.getProperty("bar"));
+		properties = new Properties();
+		properties.put("bar", "foo");
+		Object result = jpaConfiguration.addProperties(properties);
+		assertSame(result, jpaConfiguration);
+		assertNull(jpaConfiguration.metadata);
+		assertNull(jpaConfiguration.sessionFactory);
+		assertEquals("foo", jpaConfiguration.getProperty("bar"));
+	}
+	
+	@Test
 	public void testGetPersistenceUnit() {
 		JpaConfiguration jpaConfiguration = new JpaConfiguration("barfoo", null);
 		assertNotEquals("foobar", jpaConfiguration.getPersistenceUnit());

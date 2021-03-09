@@ -49,6 +49,14 @@ public class JpaConfiguration extends Configuration {
 		return this;
 	}
 	
+	@Override
+	public Configuration addProperties(Properties properties) {
+		super.addProperties(properties);
+		metadata = null;
+		sessionFactory = null;
+		return this;
+	}
+	
 	public String getPersistenceUnit() {
 		return persistenceUnit;
 	}
