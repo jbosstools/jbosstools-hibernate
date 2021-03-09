@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.engine.OptimisticLockStyle;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.RootClass;
@@ -61,6 +62,7 @@ public class EntityMetamodelFacadeTest {
 		sv.addColumn(c);
 		rc.setEntityName("foobar");
 		rc.setIdentifier(sv);
+		rc.setOptimisticLockStyle(OptimisticLockStyle.NONE);
 		entityMetamodel = new EntityMetamodel(rc, null, sfi) {
 			@Override public EntityTuplizer getTuplizer() {
 				return (EntityTuplizer)Proxy.newProxyInstance(

@@ -9,6 +9,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.spi.MetadataImplementor;
+import org.hibernate.engine.OptimisticLockStyle;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.mapping.Column;
@@ -184,6 +185,7 @@ public class ClassMetadataFacadeTest {
 		sv.addColumn(c);
 		rc.setEntityName("foobar");
 		rc.setIdentifier(sv);
+		rc.setOptimisticLockStyle(OptimisticLockStyle.NONE);
 		return new TestEntityPersister(rc, sfi, metadata);
 	}
 	

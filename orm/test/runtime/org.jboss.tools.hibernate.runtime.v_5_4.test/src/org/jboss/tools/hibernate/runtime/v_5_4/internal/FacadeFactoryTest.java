@@ -27,6 +27,7 @@ import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
+import org.hibernate.engine.OptimisticLockStyle;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.hql.spi.QueryTranslator;
@@ -272,6 +273,7 @@ public class FacadeFactoryTest {
 		sv.setNullValue("null");
 		sv.setTypeName(Integer.class.getName());
 		rc.setIdentifier(sv);
+		rc.setOptimisticLockStyle(OptimisticLockStyle.NONE);
 		EntityMetamodel entityMetamodel = new EntityMetamodel(rc, null, sfi);
 		IEntityMetamodel facade = facadeFactory.createEntityMetamodel(entityMetamodel);
 		Assert.assertSame(entityMetamodel, ((IFacade)facade).getTarget());		
@@ -343,6 +345,7 @@ public class FacadeFactoryTest {
 		rc.setJpaEntityName("foo");
 		rc.setIdentifier(sv);
 		rc.setTable(t);
+		rc.setOptimisticLockStyle(OptimisticLockStyle.NONE);
 		entityBindings.add(rc);
 		MetadataImplementor wrapper = (MetadataImplementor)Proxy.newProxyInstance(
 				facadeFactory.getClassLoader(), 
