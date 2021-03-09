@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -12,8 +13,8 @@ import org.hibernate.tool.api.export.ExporterConstants;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
+import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JpaConfiguration;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -60,10 +61,18 @@ public class ServiceImplTest {
 				service.newHibernateMappingExporter(configuration, file);
 		HibernateMappingExporterExtension hmee = 
 				(HibernateMappingExporterExtension)((IFacade)hibernateMappingExporter).getTarget();
-		Assert.assertSame(file, hmee.getProperties().get(ExporterConstants.OUTPUT_FILE_NAME));
-		Assert.assertSame(
+		assertSame(file, hmee.getProperties().get(ExporterConstants.OUTPUT_FILE_NAME));
+		assertSame(
 				((ConfigurationFacadeImpl)configuration).getMetadata(), 
 				hmee.getMetadata());
+	}
+	
+	@Test
+	public void testNewSchemaExport() {
+		IConfiguration configuration = service.newDefaultConfiguration();
+		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
+		ISchemaExport schemaExport = service.newSchemaExport(configuration);
+		assertNotNull(schemaExport);
 	}
 	
 	public static class TestDialect extends Dialect {
