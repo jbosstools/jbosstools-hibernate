@@ -15,7 +15,6 @@ public class DummyMetadataDescriptor implements MetadataDescriptor {
 
 	@Override
 	public Properties getProperties() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
