@@ -15,6 +15,7 @@ import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
+import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JpaConfiguration;
 import org.junit.Before;
 import org.junit.Test;
@@ -82,6 +83,15 @@ public class ServiceImplTest {
 		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
 		IHQLCodeAssist hqlCodeAssist = service.newHQLCodeAssist(configuration);
 		assertNotNull(hqlCodeAssist);
+	}
+	
+	@Test
+	public void testNewJDBCMetaDataConfiguration() {
+		IConfiguration configuration = service.newJDBCMetaDataConfiguration();
+		assertNotNull(configuration);
+		Object target = ((IFacade)configuration).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof JdbcMetadataConfiguration);
 	}
 	
 	public static class TestDialect extends Dialect {
