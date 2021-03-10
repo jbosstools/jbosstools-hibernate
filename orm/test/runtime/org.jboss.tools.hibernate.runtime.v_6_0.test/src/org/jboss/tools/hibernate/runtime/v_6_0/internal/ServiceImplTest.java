@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
@@ -10,8 +11,12 @@ import java.io.File;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.tool.api.export.ExporterConstants;
+import org.hibernate.tool.api.metadata.MetadataDescriptor;
+import org.hibernate.tool.internal.export.cfg.CfgExporter;
+import org.hibernate.tool.internal.export.java.JavaExporter;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
@@ -92,6 +97,30 @@ public class ServiceImplTest {
 		Object target = ((IFacade)configuration).getTarget();
 		assertNotNull(target);
 		assertTrue(target instanceof JdbcMetadataConfiguration);
+	}
+	
+	@Test
+	public void testCreateExporter() {
+		IExporter exporter = service.createExporter(JavaExporter.class.getName());
+		assertNotNull(exporter);
+		Object target = ((IFacade)exporter).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof JavaExporter);
+		MetadataDescriptor metadataDescriptor = 
+				(MetadataDescriptor)((JavaExporter)target)
+					.getProperties()
+					.get(ExporterConstants.METADATA_DESCRIPTOR);
+		assertNotNull(metadataDescriptor.getProperties()); // Normal metadata descriptor
+		exporter = service.createExporter(CfgExporter.class.getName());
+		assertNotNull(exporter);
+		target = ((IFacade)exporter).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof CfgExporter);
+		metadataDescriptor = 
+				(MetadataDescriptor)((CfgExporter)target)
+					.getProperties()
+					.get(ExporterConstants.METADATA_DESCRIPTOR);
+		assertNull(metadataDescriptor.getProperties()); // Dummy metadata descriptor
 	}
 	
 	public static class TestDialect extends Dialect {
