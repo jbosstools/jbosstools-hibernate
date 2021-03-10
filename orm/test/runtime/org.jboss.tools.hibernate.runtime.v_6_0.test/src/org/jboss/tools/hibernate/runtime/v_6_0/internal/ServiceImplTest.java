@@ -12,6 +12,7 @@ import org.hibernate.dialect.Dialect;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JpaConfiguration;
@@ -73,6 +74,14 @@ public class ServiceImplTest {
 		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
 		ISchemaExport schemaExport = service.newSchemaExport(configuration);
 		assertNotNull(schemaExport);
+	}
+	
+	@Test
+	public void testNewHQLCodeAssist() {
+		IConfiguration configuration = service.newDefaultConfiguration();
+		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
+		IHQLCodeAssist hqlCodeAssist = service.newHQLCodeAssist(configuration);
+		assertNotNull(hqlCodeAssist);
 	}
 	
 	public static class TestDialect extends Dialect {
