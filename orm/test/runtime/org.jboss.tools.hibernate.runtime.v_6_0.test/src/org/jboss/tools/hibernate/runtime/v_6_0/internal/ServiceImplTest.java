@@ -22,6 +22,7 @@ import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
+import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JpaConfiguration;
 import org.junit.Before;
@@ -132,6 +133,12 @@ public class ServiceImplTest {
 		Object target = ((IFacade)artifactCollector).getTarget();
 		assertNotNull(target);
 		assertTrue(target instanceof ArtifactCollector);
+	}
+	
+	@Test 
+	public void testNewTypeFactory() {
+		ITypeFactory typeFactory = service.newTypeFactory();
+		assertNotNull(typeFactory);
 	}
 	
 	public static class TestDialect extends Dialect {
