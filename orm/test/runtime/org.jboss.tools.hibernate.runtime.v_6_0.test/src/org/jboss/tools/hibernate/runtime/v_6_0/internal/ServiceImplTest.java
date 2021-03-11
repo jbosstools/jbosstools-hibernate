@@ -35,7 +35,6 @@ import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JpaConfiguration;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -197,10 +196,17 @@ public class ServiceImplTest {
 	public void testNewDefaultReverseEngineeringStrategy() throws Exception {
 		IReverseEngineeringStrategy reverseEngineeringStrategy = 
 				service.newDefaultReverseEngineeringStrategy();
-		Assert.assertNotNull(reverseEngineeringStrategy);
+		assertNotNull(reverseEngineeringStrategy);
 		Object target = ((IFacade)reverseEngineeringStrategy).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof RevengStrategy);
+		assertNotNull(target);
+		assertTrue(target instanceof RevengStrategy);
+	}
+	
+	@Test
+	public void testGetReverseEngineeringStrategyClassName() {
+		assertEquals(
+				RevengStrategy.class.getName(), 
+				service.getReverseEngineeringStrategyClassName());
 	}
 	
 	public static class TestDialect extends Dialect {
