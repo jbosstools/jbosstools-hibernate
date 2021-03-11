@@ -17,6 +17,7 @@ import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.internal.export.java.JavaExporter;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
+import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
@@ -26,6 +27,7 @@ import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
+import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JpaConfiguration;
@@ -163,6 +165,15 @@ public class ServiceImplTest {
 		Object target = ((IFacade)overrideRepository).getTarget();
 		assertNotNull(target);
 		assertTrue(target instanceof OverrideRepository);
+	}
+	
+	@Test
+	public void testNewTableFilter() {
+		ITableFilter tableFilter = service.newTableFilter();
+		assertNotNull(tableFilter);
+		Object target = ((IFacade)tableFilter).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof TableFilter);
 	}
 	
 	public static class TestDialect extends Dialect {
