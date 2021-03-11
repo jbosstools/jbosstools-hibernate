@@ -14,6 +14,7 @@ import org.hibernate.dialect.Dialect;
 import org.hibernate.tool.api.export.ArtifactCollector;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
+import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.internal.export.java.JavaExporter;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
@@ -26,11 +27,13 @@ import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
+import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JpaConfiguration;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -174,6 +177,16 @@ public class ServiceImplTest {
 		Object target = ((IFacade)tableFilter).getTarget();
 		assertNotNull(target);
 		assertTrue(target instanceof TableFilter);
+	}
+	
+	@Test
+	public void testNewDefaultReverseEngineeringStrategy() throws Exception {
+		IReverseEngineeringStrategy reverseEngineeringStrategy = 
+				service.newDefaultReverseEngineeringStrategy();
+		Assert.assertNotNull(reverseEngineeringStrategy);
+		Object target = ((IFacade)reverseEngineeringStrategy).getTarget();
+		Assert.assertNotNull(target);
+		Assert.assertTrue(target instanceof RevengStrategy);
 	}
 	
 	public static class TestDialect extends Dialect {
