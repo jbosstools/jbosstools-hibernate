@@ -13,6 +13,7 @@ import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
+import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.jboss.tools.hibernate.runtime.common.AbstractService;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.Util;
@@ -149,8 +150,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IOverrideRepository newOverrideRepository() {
-		// TODO Auto-generated method stub
-		return null;
+		return facadeFactory.createOverrideRepository(new OverrideRepository());
 	}
 
 	@Override

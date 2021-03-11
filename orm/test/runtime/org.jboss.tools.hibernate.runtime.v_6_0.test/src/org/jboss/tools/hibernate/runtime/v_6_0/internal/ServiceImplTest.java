@@ -16,6 +16,7 @@ import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.internal.export.java.JavaExporter;
+import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
@@ -23,6 +24,7 @@ import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
+import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JdbcMetadataConfiguration;
@@ -152,6 +154,15 @@ public class ServiceImplTest {
 		assertNotNull(target);
 		assertTrue(target instanceof DefaultNamingStrategy);
 		assertNull(service.newNamingStrategy("some unexistant class"));
+	}
+	
+	@Test
+	public void testNewOverrideRepository() {
+		IOverrideRepository overrideRepository = service.newOverrideRepository();
+		assertNotNull(overrideRepository);
+		Object target = ((IFacade)overrideRepository).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof OverrideRepository);
 	}
 	
 	public static class TestDialect extends Dialect {
