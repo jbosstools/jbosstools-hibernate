@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
+import org.hibernate.mapping.Property;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.reveng.RevengSettings;
@@ -211,8 +212,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IProperty newProperty() {
-		// TODO Auto-generated method stub
-		return null;
+		return facadeFactory.createProperty(new Property());
 	}
 
 	@Override
