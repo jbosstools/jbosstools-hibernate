@@ -8,7 +8,9 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
+import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
+import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.reveng.RevengSettings;
@@ -217,8 +219,9 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public ITable newTable(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		Table target = new Table(name);
+		target.setPrimaryKey(new PrimaryKey(target));
+		return facadeFactory.createTable(target);
 	}
 
 	@Override
