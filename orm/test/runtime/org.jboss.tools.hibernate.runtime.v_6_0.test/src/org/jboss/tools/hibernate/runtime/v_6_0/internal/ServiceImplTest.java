@@ -18,6 +18,7 @@ import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
+import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.hibernate.tool.internal.export.java.JavaExporter;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
@@ -25,6 +26,7 @@ import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
+import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
@@ -38,7 +40,6 @@ import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JpaConfiguration;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -214,17 +215,26 @@ public class ServiceImplTest {
 				service.newReverseEngineeringStrategy(
 						DefaultStrategy.class.getName(), 
 						defaultStrategy);
-		Assert.assertNotNull(newStrategy);
+		assertNotNull(newStrategy);
 		Object target = ((IFacade)newStrategy).getTarget();
 		assertNotNull(target);
 		assertFalse(target instanceof DelegatingStrategy);
 		newStrategy = service.newReverseEngineeringStrategy(
 				DelegatingStrategy.class.getName(), 
 				defaultStrategy);
-		Assert.assertNotNull(newStrategy);
+		assertNotNull(newStrategy);
 		target = ((IFacade)newStrategy).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof DelegatingStrategy);
+		assertNotNull(target);
+		assertTrue(target instanceof DelegatingStrategy);
+	}
+	
+	@Test
+	public void testNewCfg2HbmTool() {
+		ICfg2HbmTool cfg2HbmTool = service.newCfg2HbmTool();
+		assertNotNull(cfg2HbmTool);
+		Object target = ((IFacade)cfg2HbmTool).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof Cfg2HbmTool);
 	}
 	
 	@Test
