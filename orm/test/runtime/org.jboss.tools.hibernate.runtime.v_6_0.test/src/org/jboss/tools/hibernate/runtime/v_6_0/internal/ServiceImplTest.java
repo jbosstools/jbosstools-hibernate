@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
@@ -18,6 +19,8 @@ import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.internal.export.java.JavaExporter;
+import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
+import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -35,6 +38,7 @@ import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JpaConfiguration;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -199,7 +203,28 @@ public class ServiceImplTest {
 		assertNotNull(reverseEngineeringStrategy);
 		Object target = ((IFacade)reverseEngineeringStrategy).getTarget();
 		assertNotNull(target);
-		assertTrue(target instanceof RevengStrategy);
+		assertTrue(target instanceof DefaultStrategy);
+	}
+	
+	@Test
+	public void testNewReverseEngineeringStrategy() throws Exception {
+		IReverseEngineeringStrategy defaultStrategy = 
+				service.newDefaultReverseEngineeringStrategy();
+		IReverseEngineeringStrategy newStrategy = 
+				service.newReverseEngineeringStrategy(
+						DefaultStrategy.class.getName(), 
+						defaultStrategy);
+		Assert.assertNotNull(newStrategy);
+		Object target = ((IFacade)newStrategy).getTarget();
+		assertNotNull(target);
+		assertFalse(target instanceof DelegatingStrategy);
+		newStrategy = service.newReverseEngineeringStrategy(
+				DelegatingStrategy.class.getName(), 
+				defaultStrategy);
+		Assert.assertNotNull(newStrategy);
+		target = ((IFacade)newStrategy).getTarget();
+		Assert.assertNotNull(target);
+		Assert.assertTrue(target instanceof DelegatingStrategy);
 	}
 	
 	@Test
