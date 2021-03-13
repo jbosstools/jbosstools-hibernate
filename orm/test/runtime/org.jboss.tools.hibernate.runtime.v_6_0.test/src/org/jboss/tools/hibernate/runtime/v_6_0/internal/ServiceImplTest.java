@@ -8,6 +8,9 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
@@ -273,6 +276,13 @@ public class ServiceImplTest {
 		assertEquals("foo", ((Column)target).getName());
 	}
 	
+	@Test
+	public void testNewDialect() throws Exception {
+		Connection connection = DriverManager.getConnection("jdbc:h2:mem:");
+		String dialect = service.newDialect(new Properties(), connection);
+		assertEquals("org.hibernate.dialect.H2Dialect", dialect);
+	}
+
 	@Test
 	public void testGetReverseEngineeringStrategyClassName() {
 		assertEquals(

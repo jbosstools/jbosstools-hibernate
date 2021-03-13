@@ -3,15 +3,23 @@ package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.dialect.Dialect;
+import org.hibernate.engine.jdbc.dialect.spi.DatabaseMetaDataDialectResolutionInfoAdapter;
+import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
+import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
+import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfoSource;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
+import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.reveng.RevengSettings;
@@ -231,9 +239,27 @@ public class ServiceImpl extends AbstractService {
 	}
 
 	@Override
-	public String newDialect(Properties properties, Connection connection) {
-		// TODO Auto-generated method stub
-		return null;
+	public String newDialect(Properties properties, final Connection connection) {
+		ServiceRegistry serviceRegistry = buildServiceRegistry(properties);
+		DialectFactory dialectFactory = serviceRegistry.getService(DialectFactory.class);
+		Dialect dialect = dialectFactory.buildDialect(
+				properties, 
+				new DialectResolutionInfoSource() {
+					@Override
+					public DialectResolutionInfo getDialectResolutionInfo() {
+						try {
+							return new DatabaseMetaDataDialectResolutionInfoAdapter( connection.getMetaData() );
+						}
+						catch ( SQLException sqlException ) {
+							throw new HibernateException(
+									"Unable to access java.sql.DatabaseMetaData to determine appropriate Dialect to use",
+									sqlException
+							);
+						}
+					}
+				}
+		);
+		return dialect != null ? dialect.toString() : null;
 	}
 
 	@Override
@@ -354,6 +380,12 @@ public class ServiceImpl extends AbstractService {
 	public ClassLoader getClassLoader() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	private ServiceRegistry buildServiceRegistry(Properties properties) {
+		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
+		builder.applySettings(properties);
+		return builder.build();
 	}
 
 	private Object newReverseEngineeringStrategy(final String className, Object delegate) {
