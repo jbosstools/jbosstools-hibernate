@@ -25,6 +25,7 @@ import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.Set;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.api.export.Exporter;
@@ -327,8 +328,10 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IValue newSet(IPersistentClass persistentClass) {
-		// TODO Auto-generated method stub
-		return null;
+		return facadeFactory.createValue(
+				new Set(
+						DummyMetadataBuildingContext.INSTANCE, 
+						(PersistentClass)((IFacade)persistentClass).getTarget()));
 	}
 
 	@Override
