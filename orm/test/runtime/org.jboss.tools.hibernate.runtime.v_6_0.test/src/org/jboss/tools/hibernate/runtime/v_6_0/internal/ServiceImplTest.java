@@ -19,6 +19,7 @@ import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Property;
+import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.export.ArtifactCollector;
 import org.hibernate.tool.api.export.ExporterConstants;
@@ -50,6 +51,7 @@ import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JpaConfiguration;
 import org.junit.Before;
@@ -307,6 +309,15 @@ public class ServiceImplTest {
 		assertEquals(
 				RevengStrategy.class.getName(), 
 				service.getReverseEngineeringStrategyClassName());
+	}
+	
+	@Test
+	public void testSimpleValue() {
+		IValue simpleValue = service.newSimpleValue();
+		assertNotNull(simpleValue);
+		Object target = ((IFacade)simpleValue).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof SimpleValue);
 	}
 	
 	public static class TestDialect extends Dialect {
