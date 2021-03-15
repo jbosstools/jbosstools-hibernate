@@ -14,6 +14,7 @@ import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.cfg.Environment;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.mapping.Column;
@@ -36,6 +37,7 @@ import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
@@ -50,7 +52,6 @@ import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JpaConfiguration;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -287,9 +288,18 @@ public class ServiceImplTest {
 
 	@Test
 	public void testGetDriverManagerManagerConnectionProviderClass() {
-		Assert.assertSame(
+		assertSame(
 				DriverManagerConnectionProviderImpl.class, 
 				service.getDriverManagerConnectionProviderClass());
+	}
+	
+	@Test
+	public void testGetEnvironment() {
+		IEnvironment environment = service.getEnvironment();
+		assertNotNull(environment);
+		assertEquals(
+				environment.getTransactionManagerStrategy(), 
+				Environment.TRANSACTION_COORDINATOR_STRATEGY);
 	}
 	
 	@Test
