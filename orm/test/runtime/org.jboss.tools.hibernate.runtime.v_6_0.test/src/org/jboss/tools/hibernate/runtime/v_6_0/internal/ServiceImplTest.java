@@ -15,6 +15,7 @@ import java.util.Properties;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.dialect.Dialect;
+import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
@@ -49,6 +50,7 @@ import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JpaConfiguration;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -283,6 +285,13 @@ public class ServiceImplTest {
 		assertEquals("org.hibernate.dialect.H2Dialect", dialect);
 	}
 
+	@Test
+	public void testGetDriverManagerManagerConnectionProviderClass() {
+		Assert.assertSame(
+				DriverManagerConnectionProviderImpl.class, 
+				service.getDriverManagerConnectionProviderClass());
+	}
+	
 	@Test
 	public void testGetReverseEngineeringStrategyClassName() {
 		assertEquals(

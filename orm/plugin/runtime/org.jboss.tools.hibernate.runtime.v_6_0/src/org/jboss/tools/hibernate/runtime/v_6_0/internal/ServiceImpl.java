@@ -11,6 +11,7 @@ import java.util.Properties;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.Dialect;
+import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.engine.jdbc.dialect.spi.DatabaseMetaDataDialectResolutionInfoAdapter;
 import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
@@ -264,8 +265,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public Class<?> getDriverManagerConnectionProviderClass() {
-		// TODO Auto-generated method stub
-		return null;
+		return DriverManagerConnectionProviderImpl.class;
 	}
 
 	@Override
