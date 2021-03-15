@@ -18,6 +18,7 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
@@ -56,6 +57,7 @@ import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JpaConfiguration;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -320,6 +322,16 @@ public class ServiceImplTest {
 		Object target = ((IFacade)simpleValue).getTarget();
 		assertNotNull(target);
 		assertTrue(target instanceof SimpleValue);
+	}
+	
+	@Test
+	public void testNewPrimitiveArray() {
+		IPersistentClass persistentClass = service.newRootClass();
+		IValue primitiveArray = service.newPrimitiveArray(persistentClass);
+		assertNotNull(primitiveArray);
+		Object target = ((IFacade)primitiveArray).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof PrimitiveArray);
 	}
 	
 	@Test
