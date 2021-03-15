@@ -19,6 +19,7 @@ import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Property;
+import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.export.ArtifactCollector;
@@ -44,6 +45,7 @@ import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
+import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
@@ -318,6 +320,15 @@ public class ServiceImplTest {
 		Object target = ((IFacade)simpleValue).getTarget();
 		assertNotNull(target);
 		assertTrue(target instanceof SimpleValue);
+	}
+	
+	@Test
+	public void testNewRootClass() {
+		IPersistentClass rootClass = service.newRootClass();
+		assertNotNull(rootClass);
+		Object target = ((IFacade)rootClass).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof RootClass);
 	}
 	
 	public static class TestDialect extends Dialect {
