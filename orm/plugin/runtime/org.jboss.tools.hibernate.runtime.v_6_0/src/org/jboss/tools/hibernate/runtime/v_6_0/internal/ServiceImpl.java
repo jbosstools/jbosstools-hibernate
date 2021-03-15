@@ -319,8 +319,10 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IValue newMap(IPersistentClass persistentClass) {
-		// TODO Auto-generated method stub
-		return null;
+		return facadeFactory.createValue(
+				new org.hibernate.mapping.Map(
+						DummyMetadataBuildingContext.INSTANCE, 
+						(PersistentClass)((IFacade)persistentClass).getTarget()));
 	}
 
 	@Override
