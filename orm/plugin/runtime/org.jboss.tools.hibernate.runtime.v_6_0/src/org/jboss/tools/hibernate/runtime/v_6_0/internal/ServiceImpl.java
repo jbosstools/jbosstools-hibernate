@@ -17,6 +17,7 @@ import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfoSource;
 import org.hibernate.mapping.Array;
+import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PersistentClass;
@@ -286,7 +287,6 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IValue newPrimitiveArray(IPersistentClass persistentClass) {
-		assert persistentClass instanceof IFacade;
 		return facadeFactory.createValue(
 				new PrimitiveArray(
 						DummyMetadataBuildingContext.INSTANCE, 
@@ -303,10 +303,11 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IValue newBag(IPersistentClass persistentClass) {
-		// TODO Auto-generated method stub
-		return null;
+		return facadeFactory.createValue(
+				new Bag(
+						DummyMetadataBuildingContext.INSTANCE, 
+						(PersistentClass)((IFacade)persistentClass).getTarget()));
 	}
-
 	@Override
 	public IValue newList(IPersistentClass persistentClass) {
 		// TODO Auto-generated method stub

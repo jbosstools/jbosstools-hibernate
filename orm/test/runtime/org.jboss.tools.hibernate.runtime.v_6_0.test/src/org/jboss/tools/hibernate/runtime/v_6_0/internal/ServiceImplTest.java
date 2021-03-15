@@ -18,6 +18,7 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.mapping.Array;
+import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
@@ -351,6 +352,16 @@ public class ServiceImplTest {
 		Object target = ((IFacade)array).getTarget();
 		assertNotNull(target);
 		assertTrue(target instanceof Array);
+	}
+	
+	@Test
+	public void testNewBag() {
+		IPersistentClass persistentClass = service.newRootClass();
+		IValue bag = service.newBag(persistentClass);
+		assertNotNull(bag);
+		Object target = ((IFacade)bag).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof Bag);
 	}
 	
 	public static class TestDialect extends Dialect {
