@@ -20,6 +20,7 @@ import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.PrimitiveArray;
@@ -336,9 +337,12 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IValue newManyToOne(ITable table) {
-		// TODO Auto-generated method stub
-		return null;
+		return facadeFactory.createValue(
+				new ManyToOne(
+						DummyMetadataBuildingContext.INSTANCE, 
+						(Table)((IFacade)table).getTarget()));
 	}
+
 
 	@Override
 	public IValue newOneToMany(IPersistentClass persistentClass) {

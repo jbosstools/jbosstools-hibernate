@@ -20,6 +20,7 @@ import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionPro
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
@@ -394,6 +395,16 @@ public class ServiceImplTest {
 		Object target = ((IFacade)set).getTarget();
 		assertNotNull(target);
 		assertTrue(target instanceof Set);
+	}
+	
+	@Test
+	public void testNewManyToOne() {
+		ITable table = service.newTable("foo");
+		IValue manyToOne = service.newManyToOne(table);
+		assertNotNull(manyToOne);
+		Object target = ((IFacade)manyToOne).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof ManyToOne);
 	}
 	
 	public static class TestDialect extends Dialect {
