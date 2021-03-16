@@ -20,6 +20,7 @@ import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
@@ -377,8 +378,13 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IPersistentClass newJoinedSubclass(IPersistentClass persistentClass) {
-		// TODO Auto-generated method stub
-		return null;
+		assert persistentClass instanceof IFacade;
+		IPersistentClass result = facadeFactory.createPersistentClass(
+				new JoinedSubclass(
+						(PersistentClass)((IFacade)persistentClass).getTarget(),
+						null));
+		((AbstractPersistentClassFacade)result).setSuperClass(persistentClass);
+		return result;
 	}
 
 	@Override

@@ -20,6 +20,7 @@ import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionPro
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
@@ -442,6 +443,20 @@ public class ServiceImplTest {
 		assertSame(
 				((IFacade)persistentClass).getTarget(), 
 				((SingleTableSubclass)target).getSuperclass());
+	}
+	
+	@Test
+	public void testNewJoinedSubclass() {
+		IPersistentClass persistentClass = service.newRootClass();
+		IPersistentClass joinedSubclass = service.newJoinedSubclass(persistentClass);
+		assertNotNull(joinedSubclass);
+		Object target = ((IFacade)joinedSubclass).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof JoinedSubclass);
+		assertSame(persistentClass, joinedSubclass.getSuperclass());
+		assertSame(
+				((IFacade)persistentClass).getTarget(), 
+				((JoinedSubclass)target).getSuperclass());
 	}
 	
 	public static class TestDialect extends Dialect {
