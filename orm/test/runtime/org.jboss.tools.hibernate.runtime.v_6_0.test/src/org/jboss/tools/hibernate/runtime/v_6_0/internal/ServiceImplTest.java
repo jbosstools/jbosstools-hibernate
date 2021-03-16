@@ -29,6 +29,7 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
+import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.export.ArtifactCollector;
 import org.hibernate.tool.api.export.ExporterConstants;
@@ -427,6 +428,20 @@ public class ServiceImplTest {
 		Object target = ((IFacade)oneToOne).getTarget();
 		assertNotNull(target);
 		assertTrue(target instanceof OneToOne);
+	}
+	
+	@Test
+	public void testNewSingleTableSubclass() {
+		IPersistentClass persistentClass = service.newRootClass();
+		IPersistentClass singleTableSublass = service.newSingleTableSubclass(persistentClass);
+		assertNotNull(singleTableSublass);
+		Object target = ((IFacade)singleTableSublass).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof SingleTableSubclass);
+		assertSame(persistentClass, singleTableSublass.getSuperclass());
+		assertSame(
+				((IFacade)persistentClass).getTarget(), 
+				((SingleTableSubclass)target).getSuperclass());
 	}
 	
 	public static class TestDialect extends Dialect {
