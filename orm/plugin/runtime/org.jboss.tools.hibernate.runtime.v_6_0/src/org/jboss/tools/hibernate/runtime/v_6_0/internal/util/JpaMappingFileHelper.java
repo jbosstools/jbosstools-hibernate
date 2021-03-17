@@ -7,7 +7,7 @@ import java.util.Properties;
 import org.hibernate.jpa.boot.internal.ParsedPersistenceXmlDescriptor;
 import org.hibernate.jpa.boot.internal.PersistenceXmlParser;
 
-public class MappingFileHelper {
+public class JpaMappingFileHelper {
 
 	public static List<String> findMappingFiles(String persistenceUnitName) {
 		List<String> result = new ArrayList<String>();

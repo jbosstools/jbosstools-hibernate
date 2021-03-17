@@ -13,7 +13,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-public class MappingFileHelperTest {
+public class JpaMappingFileHelperTest {
 
 	private static final String PERSISTENCE_XML = 
 			"<persistence version='2.2'" +
@@ -55,7 +55,7 @@ public class MappingFileHelperTest {
 	
 	@Test
 	public void testFindMappingFiles() {
-		assertTrue(MappingFileHelper.findMappingFiles("bar").isEmpty());
-		assertTrue(MappingFileHelper.findMappingFiles("foo").contains("bar"));
+		assertTrue(JpaMappingFileHelper.findMappingFiles("bar").isEmpty());
+		assertTrue(JpaMappingFileHelper.findMappingFiles("foo").contains("bar"));
 	}
 }

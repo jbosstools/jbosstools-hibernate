@@ -10,6 +10,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.List;
 import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
@@ -462,6 +463,12 @@ public class ServiceImplTest {
 	@Test
 	public void testIsInitialized() {
 		assertTrue(service.isInitialized(new Object()));
+	}
+	
+	@Test
+	public void testGetJPAMappingFilePaths() {
+		List<String> result = service.getJPAMappingFilePaths("test", null);
+		assertEquals(0, result.size());
 	}
 	
 	@Test
