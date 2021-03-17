@@ -66,7 +66,6 @@ import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JpaConfiguration;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -462,12 +461,19 @@ public class ServiceImplTest {
 	
 	@Test
 	public void testIsInitialized() {
-		Assert.assertTrue(service.isInitialized(new Object()));
+		assertTrue(service.isInitialized(new Object()));
+	}
+	
+	@Test
+	public void testGetClassWithoutInitializingProxy() {
+		assertSame(
+				Object.class, 
+				service.getClassWithoutInitializingProxy(new Object()));
 	}
 	
 	@Test
 	public void testGetClassLoader(){
-		Assert.assertSame(
+		assertSame(
 				ServiceImpl.class.getClassLoader(), 
 				service.getClassLoader());
 	}
