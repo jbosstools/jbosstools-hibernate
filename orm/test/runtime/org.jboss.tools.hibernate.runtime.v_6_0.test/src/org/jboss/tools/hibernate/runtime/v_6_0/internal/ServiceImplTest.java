@@ -66,6 +66,7 @@ import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JpaConfiguration;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -343,15 +344,6 @@ public class ServiceImplTest {
 	}
 	
 	@Test
-	public void testNewRootClass() {
-		IPersistentClass rootClass = service.newRootClass();
-		assertNotNull(rootClass);
-		Object target = ((IFacade)rootClass).getTarget();
-		assertNotNull(target);
-		assertTrue(target instanceof RootClass);
-	}
-	
-	@Test
 	public void testNewArray() {
 		IPersistentClass persistentClass = service.newRootClass();
 		IValue array = service.newArray(persistentClass);
@@ -457,6 +449,20 @@ public class ServiceImplTest {
 		assertSame(
 				((IFacade)persistentClass).getTarget(), 
 				((JoinedSubclass)target).getSuperclass());
+	}
+	
+	@Test
+	public void testNewRootClass() {
+		IPersistentClass rootClass = service.newRootClass();
+		assertNotNull(rootClass);
+		Object target = ((IFacade)rootClass).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof RootClass);
+	}
+	
+	@Test
+	public void testIsInitialized() {
+		Assert.assertTrue(service.isInitialized(new Object()));
 	}
 	
 	public static class TestDialect extends Dialect {
