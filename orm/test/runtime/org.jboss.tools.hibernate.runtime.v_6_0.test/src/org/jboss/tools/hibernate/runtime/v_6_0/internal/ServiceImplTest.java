@@ -465,6 +465,13 @@ public class ServiceImplTest {
 		Assert.assertTrue(service.isInitialized(new Object()));
 	}
 	
+	@Test
+	public void testGetClassLoader(){
+		Assert.assertSame(
+				ServiceImpl.class.getClassLoader(), 
+				service.getClassLoader());
+	}
+	
 	public static class TestDialect extends Dialect {
 		@Override public int getVersion() { return 0; }	
 	}
