@@ -43,5 +43,15 @@ public class SpecialRootClassFacadeTest {
 		assertSame(property, specialRootClassFacade.getProperty());
 	}
 	
+	@Test
+	public void testGetParentProperty() throws Exception {
+		IProperty property = FACADE_FACTORY.createProperty(new Property());
+		Field field = AbstractSpecialRootClassFacade.class.getDeclaredField("parentProperty");
+		field.setAccessible(true);
+		assertNotSame(property, specialRootClassFacade.getParentProperty());
+		field.set(specialRootClassFacade, property);
+		assertSame(property, specialRootClassFacade.getParentProperty());
+	}
+	
 
 }
