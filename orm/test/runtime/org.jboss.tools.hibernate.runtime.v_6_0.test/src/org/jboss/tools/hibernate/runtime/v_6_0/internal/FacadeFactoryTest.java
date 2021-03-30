@@ -364,6 +364,20 @@ public class FacadeFactoryTest {
 	}
 	
 	@Test
+	public void testCreateSpecialRootClass() {
+		Property target = new Property();
+		PersistentClass pc = new RootClass(null);
+		target.setPersistentClass(pc);
+		IProperty property = facadeFactory.createProperty(target);
+		IPersistentClass specialRootClass = facadeFactory.createSpecialRootClass(property);
+		assertNotNull(specialRootClass);
+		Object object = ((IFacade)specialRootClass).getTarget();
+		assertTrue(specialRootClass instanceof SpecialRootClassFacadeImpl);
+		assertTrue(object instanceof RootClass);
+		assertSame(property, specialRootClass.getProperty());
+	}
+	
+	@Test
 	public void testCreateTable() {
 		Table table = new Table();
 		ITable facade = facadeFactory.createTable(table);
