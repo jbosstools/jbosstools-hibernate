@@ -1,8 +1,8 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.util.HashSet;
@@ -13,8 +13,8 @@ import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.jboss.tools.hibernate.runtime.common.AbstractArtifactCollectorFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class ArtifactCollectorFacadeTest {
 	
@@ -26,8 +26,8 @@ public class ArtifactCollectorFacadeTest {
 	private IArtifactCollector artifactCollectorFacade = null;
 	private ArtifactCollector artifactCollectorTarget = null;
 		
-	@Before
-	public void before() {
+	@BeforeEach
+	public void beforeEach() {
 		artifactCollectorTarget = new TestArtifactCollector();
 		artifactCollectorFacade = new AbstractArtifactCollectorFacade(FACADE_FACTORY, artifactCollectorTarget) {};
 	}
