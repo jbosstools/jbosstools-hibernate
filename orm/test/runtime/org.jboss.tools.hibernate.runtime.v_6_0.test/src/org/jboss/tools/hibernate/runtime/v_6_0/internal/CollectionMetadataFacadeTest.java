@@ -1,6 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -12,8 +12,8 @@ import org.jboss.tools.hibernate.runtime.common.AbstractCollectionMetadataFacade
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class CollectionMetadataFacadeTest {
 	
@@ -22,8 +22,8 @@ public class CollectionMetadataFacadeTest {
 	private CollectionMetadata collectionMetadataTarget = null;
 	private ICollectionMetadata collectionMetadataFacade = null;
 	
-	@Before
-	public void before() {
+	@BeforeEach
+	public void beforeEach() {
 		collectionMetadataTarget = createCollectionMetadata();
 		collectionMetadataFacade = new AbstractCollectionMetadataFacade(
 				FACADE_FACTORY, collectionMetadataTarget) {};
