@@ -1,12 +1,12 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -47,9 +47,8 @@ import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.MetadataHelper;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.MetadataHelperTest;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.EntityResolver;
@@ -84,8 +83,8 @@ public class ConfigurationFacadeTest {
 	private IConfiguration configurationFacade = null;
 	private Configuration configuration = null;
 
-	@Before
-	public void setUp() {
+	@BeforeEach
+	public void beforeEach() {
 		configuration = new Configuration();
 		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
 	}	
@@ -269,10 +268,10 @@ public class ConfigurationFacadeTest {
 		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
 		ISessionFactory sessionFactoryFacade = 
 				configurationFacade.buildSessionFactory();
-		Assert.assertNotNull(sessionFactoryFacade);
+		assertNotNull(sessionFactoryFacade);
 		Object sessionFactory = ((IFacade)sessionFactoryFacade).getTarget();
-		Assert.assertNotNull(sessionFactory);
-		Assert.assertTrue(sessionFactory instanceof SessionFactory);
+		assertNotNull(sessionFactory);
+		assertTrue(sessionFactory instanceof SessionFactory);
 	}
 	
 	@Test
@@ -358,18 +357,18 @@ public class ConfigurationFacadeTest {
 	public void testGetNamingStrategy() {
 		INamingStrategy strategy = FACADE_FACTORY.createNamingStrategy(new DefaultNamingStrategy());
 		ConfigurationFacadeImpl facade = (ConfigurationFacadeImpl)configurationFacade;
-		Assert.assertNull(facade.getNamingStrategy());
+		assertNull(facade.getNamingStrategy());
 		facade.namingStrategy = strategy;
-		Assert.assertSame(strategy, facade.getNamingStrategy());
+		assertSame(strategy, facade.getNamingStrategy());
 	}
 	
 	@Test
 	public void testGetEntityResolver() {
 		EntityResolver testResolver = new DefaultHandler();
 		ConfigurationFacadeImpl facade = (ConfigurationFacadeImpl)configurationFacade;
-		Assert.assertNotSame(testResolver, configurationFacade.getEntityResolver());
+		assertNotSame(testResolver, configurationFacade.getEntityResolver());
 		facade.entityResolver = testResolver;
-		Assert.assertSame(testResolver, configurationFacade.getEntityResolver());
+		assertSame(testResolver, configurationFacade.getEntityResolver());
 	}
 	
 	@Test
