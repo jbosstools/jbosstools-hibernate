@@ -1,8 +1,8 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Iterator;
 
@@ -13,8 +13,8 @@ import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class JoinFacadeTest {
 
@@ -23,8 +23,8 @@ public class JoinFacadeTest {
 	private IJoin joinFacade = null;
 	private Join joinTarget = null;
 	
-	@Before
-	public void before() {
+	@BeforeEach
+	public void beforeEach() {
 		joinTarget = new Join();
 	}
 	
