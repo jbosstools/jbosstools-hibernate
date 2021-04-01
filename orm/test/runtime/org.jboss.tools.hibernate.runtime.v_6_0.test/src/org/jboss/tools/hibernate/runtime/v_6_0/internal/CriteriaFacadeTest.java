@@ -1,7 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -13,8 +13,8 @@ import javax.persistence.Query;
 
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class CriteriaFacadeTest {
 	
@@ -26,8 +26,8 @@ public class CriteriaFacadeTest {
 	
 	private ICriteria criteriaFacade = null;
 	
-	@Before
-	public void before() {
+	@BeforeEach
+	public void beforeEach() {
 		criteriaFacade = new CriteriaFacadeImpl(FACADE_FACTORY, createTestQuery());		
 	}
 	
