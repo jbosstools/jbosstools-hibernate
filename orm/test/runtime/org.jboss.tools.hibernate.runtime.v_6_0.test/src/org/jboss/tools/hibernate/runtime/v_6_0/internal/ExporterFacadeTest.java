@@ -1,11 +1,11 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.StringWriter;
@@ -29,8 +29,8 @@ import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.ConfigurationMetadataDescriptor;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class ExporterFacadeTest {
 	
@@ -39,8 +39,8 @@ public class ExporterFacadeTest {
 	private Exporter exporterTarget = null;
 	private ExporterFacadeImpl exporterFacade = null;
 	
-	@Before
-	public void before() {
+	@BeforeEach
+	public void beforeEach() {
 		exporterTarget = new TestExporter();
 		exporterFacade = new ExporterFacadeImpl(FACADE_FACTORY, exporterTarget);
 	}
