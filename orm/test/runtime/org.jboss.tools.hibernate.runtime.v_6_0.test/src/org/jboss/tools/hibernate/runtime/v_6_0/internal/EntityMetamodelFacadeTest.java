@@ -1,6 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -24,8 +24,8 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.tuple.entity.EntityMetamodel;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class EntityMetamodelFacadeTest {
 	
@@ -36,8 +36,8 @@ public class EntityMetamodelFacadeTest {
 	
 	private EntityMetamodelFacadeImpl entityMetamodelFacade = null;
 	
-	@Before
-	public void before() {
+	@BeforeEach
+	public void beforeEach() {
 		entityMetamodelFacade = new EntityMetamodelFacadeImpl(
 				FACADE_FACTORY, 
 				createFooBarPersister());
