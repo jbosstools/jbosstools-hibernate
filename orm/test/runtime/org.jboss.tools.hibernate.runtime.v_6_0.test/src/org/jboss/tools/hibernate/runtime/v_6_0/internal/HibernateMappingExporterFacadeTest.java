@@ -1,9 +1,9 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -40,30 +40,25 @@ import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.DummyMetadataBuildingContext;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 public class HibernateMappingExporterFacadeTest {
 
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 
-	@Rule
-	public TemporaryFolder temporaryFolder = new TemporaryFolder();
+	@TempDir
+	public File outputDir = new File("output");
 	
 	private IHibernateMappingExporter hibernateMappingExporterFacade = null; 
 	private HibernateMappingExporterExtension hibernateMappingExporter = null;
-	
-	private File outputDir = null;
-	
-	@Before
-	public void setUp() throws Exception {
+		
+	@BeforeEach
+	public void beforeEacy() throws Exception {
 		hibernateMappingExporter = new HibernateMappingExporterExtension(FACADE_FACTORY, null, null);
 		hibernateMappingExporterFacade = 
 				new HibernateMappingExporterFacadeImpl(FACADE_FACTORY, hibernateMappingExporter);
-		outputDir = temporaryFolder.getRoot();
 	}
 	
 	@Test
@@ -158,9 +153,9 @@ public class HibernateMappingExporterFacadeTest {
 		templateHelper.init(null, new String[0]);
 		setTemplateHelperMethod.invoke(hibernateMappingExporter, new Object[] { templateHelper });
 		final File fooHbmXml = new File(outputDir, "Foo.hbm.xml");
-		Assert.assertFalse(fooHbmXml.exists());
+		assertFalse(fooHbmXml.exists());
 		hibernateMappingExporterFacade.exportPOJO(additionalContext, pojoClass);
-		Assert.assertTrue(fooHbmXml.exists());
+		assertTrue(fooHbmXml.exists());
 		fooHbmXml.delete();
 		outputDir.delete();		
 	}
