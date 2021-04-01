@@ -1,15 +1,15 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.ddl.DdlExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class Hbm2DDLExporterFacadeTest {
 	
@@ -18,7 +18,7 @@ public class Hbm2DDLExporterFacadeTest {
 	private IHbm2DDLExporter ddlExporterFacade = null;
 	private DdlExporter ddlExporterTarget = null;
 	
-	@Before
+	@BeforeEach
 	public void before() {
 		ddlExporterTarget = new DdlExporter();
 		ddlExporterFacade = new Hbm2DDLExporterFacadeImpl(FACADE_FACTORY, ddlExporterTarget) {};
