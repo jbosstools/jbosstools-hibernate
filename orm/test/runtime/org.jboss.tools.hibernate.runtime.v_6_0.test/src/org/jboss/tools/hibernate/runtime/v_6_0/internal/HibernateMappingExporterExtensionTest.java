@@ -1,10 +1,10 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -29,9 +29,9 @@ import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class HibernateMappingExporterExtensionTest {
 
@@ -39,8 +39,8 @@ public class HibernateMappingExporterExtensionTest {
 	
 	private HibernateMappingExporterExtension hibernateMappingExporterExtension;
 
-	@Before
-	public void setUp() throws Exception {
+	@BeforeEach
+	public void beforeEach() throws Exception {
 		hibernateMappingExporterExtension = new HibernateMappingExporterExtension(FACADE_FACTORY, null, null);
 	}
 	
@@ -127,8 +127,8 @@ public class HibernateMappingExporterExtensionTest {
 		assertSame(pojoClass, ((IFacade)arguments.get("pojoClass")).getTarget());
 	}
 	
-	@After
-	public void tearDown() {
+	@AfterEach
+	public void afterEach() {
 		new File("foo" + File.separator + "Bar.hbm.xml").delete();
 		new File("foo").delete();
 	}
