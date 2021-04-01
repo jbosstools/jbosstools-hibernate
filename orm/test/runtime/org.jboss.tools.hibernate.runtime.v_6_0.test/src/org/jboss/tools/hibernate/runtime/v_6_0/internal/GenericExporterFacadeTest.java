@@ -1,15 +1,14 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class GenericExporterFacadeTest {
 
@@ -18,8 +17,8 @@ public class GenericExporterFacadeTest {
 	private IGenericExporter genericExporterFacade = null; 
 	private GenericExporter genericExporter = null;
 	
-	@Before
-	public void setUp() throws Exception {
+	@BeforeEach
+	public void beforeEach() throws Exception {
 		genericExporter = new GenericExporter();
 		genericExporterFacade = new GenericExporterFacadeImpl(FACADE_FACTORY, genericExporter) {};
 	}
@@ -49,14 +48,14 @@ public class GenericExporterFacadeTest {
 	public void testGetFilePattern() {
 		assertNull(genericExporterFacade.getFilePattern());
 		genericExporter.getProperties().put(ExporterConstants.FILE_PATTERN, "foobar");
-		Assert.assertEquals("foobar", genericExporterFacade.getFilePattern());
+		assertEquals("foobar", genericExporterFacade.getFilePattern());
 	}
 	
 	@Test
 	public void testGetTemplateName() {
 		assertNull(genericExporterFacade.getTemplateName());
 		genericExporter.getProperties().put(ExporterConstants.TEMPLATE_NAME, "foobar");
-		Assert.assertEquals("foobar", genericExporterFacade.getTemplateName());
+		assertEquals("foobar", genericExporterFacade.getTemplateName());
 	}
 	
 }
