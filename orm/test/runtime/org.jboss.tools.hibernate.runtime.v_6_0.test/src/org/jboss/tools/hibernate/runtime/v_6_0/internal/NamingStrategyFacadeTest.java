@@ -1,14 +1,14 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
 import org.jboss.tools.hibernate.runtime.common.AbstractNamingStrategyFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class NamingStrategyFacadeTest {
 
@@ -17,8 +17,8 @@ public class NamingStrategyFacadeTest {
 	private NamingStrategy namingStrategyTarget = null;
 	private INamingStrategy namingStrategyFacade = null;
 	
-	@Before
-	public void before() {
+	@BeforeEach
+	public void beforeEach() {
 		namingStrategyTarget = new TestNamingStrategy();
 		namingStrategyFacade = new AbstractNamingStrategyFacade(FACADE_FACTORY, namingStrategyTarget) {};
 	}
