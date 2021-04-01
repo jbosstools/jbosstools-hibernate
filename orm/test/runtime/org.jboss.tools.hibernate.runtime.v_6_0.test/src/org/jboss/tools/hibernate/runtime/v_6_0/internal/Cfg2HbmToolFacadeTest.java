@@ -1,6 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -18,8 +18,8 @@ import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class Cfg2HbmToolFacadeTest {
 	
@@ -28,7 +28,7 @@ public class Cfg2HbmToolFacadeTest {
 	private ICfg2HbmTool cfg2HbmToolFacade = null;
 	private Cfg2HbmTool cfg2HbmToolTarget = null;
 	
-	@Before
+	@BeforeEach
 	public void before() {
 		cfg2HbmToolTarget = new Cfg2HbmTool();
 		cfg2HbmToolFacade = new AbstractCfg2HbmToolFacade(FACADE_FACTORY, cfg2HbmToolTarget) {};
