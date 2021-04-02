@@ -1,7 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.text.SimpleDateFormat;
 import java.util.Currency;
@@ -17,8 +17,8 @@ import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 public class TypeFactoryFacadeTest {
 	
@@ -200,7 +200,7 @@ public class TypeFactoryFacadeTest {
 	}
 		
 	// TODO: JBIDE-27557 Reenable the following test when the associated issue is solved
-	@Ignore
+	@Disabled
 	@Test
 	public void testGetTypeFormats() {
 		Map<IType, String> typeFormats = typeFactoryFacade.getTypeFormats();
