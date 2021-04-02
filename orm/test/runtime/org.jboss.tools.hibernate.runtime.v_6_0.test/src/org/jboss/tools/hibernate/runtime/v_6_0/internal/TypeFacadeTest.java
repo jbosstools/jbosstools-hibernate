@@ -1,9 +1,9 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.boot.internal.BootstrapContextImpl;
 import org.hibernate.boot.internal.InFlightMetadataCollectorImpl;
@@ -33,8 +33,7 @@ import org.hibernate.type.spi.TypeConfiguration;
 import org.jboss.tools.hibernate.runtime.common.AbstractTypeFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class TypeFacadeTest {
 	
@@ -239,10 +238,10 @@ public class TypeFacadeTest {
 		IType typeFacade = null;
 		ClassType classType = new ClassType();
 		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, classType){};
-		Assert.assertNull(typeFacade.getRole());
+		assertNull(typeFacade.getRole());
 		ArrayType arrayType = new ArrayType(null, "foo", null, String.class);
 		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, arrayType){};
-		Assert.assertEquals("foo", typeFacade.getRole());
+		assertEquals("foo", typeFacade.getRole());
 	}
 	
 	public static class TestDialect extends Dialect {
