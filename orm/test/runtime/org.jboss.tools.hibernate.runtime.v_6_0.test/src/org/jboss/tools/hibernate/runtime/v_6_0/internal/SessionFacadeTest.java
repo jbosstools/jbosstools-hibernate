@@ -1,11 +1,11 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -24,8 +24,8 @@ import org.hibernate.query.spi.QueryImplementor;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class SessionFacadeTest {
 	
@@ -39,8 +39,8 @@ public class SessionFacadeTest {
 	private Session sessionTarget = null;
 	private SessionFacadeImpl sessionFacade = null;
 	
-	@Before
-	public void before() {
+	@BeforeEach
+	public void beforeEach() {
 		sessionTarget = new TestSession();
 		sessionFacade = new SessionFacadeImpl(FACADE_FACTORY, sessionTarget);
 	}
