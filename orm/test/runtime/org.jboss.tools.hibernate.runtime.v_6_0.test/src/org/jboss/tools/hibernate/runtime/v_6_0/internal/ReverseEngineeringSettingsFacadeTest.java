@@ -1,16 +1,16 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.jboss.tools.hibernate.runtime.common.AbstractReverseEngineeringSettingsFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class ReverseEngineeringSettingsFacadeTest {
 
@@ -19,8 +19,8 @@ public class ReverseEngineeringSettingsFacadeTest {
 	private RevengSettings revengSettingsTarget = null;
 	private IReverseEngineeringSettings revengSettingsFacade = null;
 	
-	@Before
-	public void before() {
+	@BeforeEach
+	public void beforeEach() {
 		revengSettingsTarget = new RevengSettings(new DefaultStrategy());
 		revengSettingsFacade = 
 				new AbstractReverseEngineeringSettingsFacade(FACADE_FACTORY, revengSettingsTarget) {};		
