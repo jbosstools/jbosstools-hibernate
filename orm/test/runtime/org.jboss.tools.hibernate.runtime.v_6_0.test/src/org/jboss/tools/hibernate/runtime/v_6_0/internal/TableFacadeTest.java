@@ -1,10 +1,10 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Method;
 import java.util.Iterator;
@@ -22,7 +22,7 @@ import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.DummyMetadataBuildingContext;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class TableFacadeTest {
 
