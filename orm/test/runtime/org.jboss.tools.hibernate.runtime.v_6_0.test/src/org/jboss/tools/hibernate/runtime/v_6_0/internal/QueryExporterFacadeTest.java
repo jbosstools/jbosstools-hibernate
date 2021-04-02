@@ -1,9 +1,9 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.util.Collections;
 import java.util.List;
@@ -12,8 +12,8 @@ import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.query.QueryExporter;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class QueryExporterFacadeTest {
 
@@ -22,8 +22,8 @@ public class QueryExporterFacadeTest {
 	private QueryExporter queryExporterTarget = null;
 	private IQueryExporter queryExporterFacade = null;
 
-	@Before
-	public void before() {
+	@BeforeEach
+	public void beforeEach() {
 		queryExporterTarget = new QueryExporter();
 		queryExporterFacade = new QueryExporterFacadeImpl(FACADE_FACTORY, queryExporterTarget);
 	}
