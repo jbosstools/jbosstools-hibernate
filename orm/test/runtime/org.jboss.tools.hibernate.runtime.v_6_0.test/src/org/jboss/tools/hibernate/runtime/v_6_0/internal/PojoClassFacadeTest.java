@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
-import static org.junit.Assert.assertSame;
+
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -10,8 +11,8 @@ import org.hibernate.tool.internal.export.java.POJOClass;
 import org.jboss.tools.hibernate.runtime.common.AbstractPOJOClassFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class PojoClassFacadeTest {
 
@@ -22,8 +23,8 @@ public class PojoClassFacadeTest {
 	private IPOJOClass pojoClassFacade = null; 
 	private POJOClass pojoClassTarget = null;
 	
-	@Before
-	public void before() {
+	@BeforeEach
+	public void beforeEach() {
 		pojoClassTarget = createPojoClass();
 		pojoClassFacade = new AbstractPOJOClassFacade(FACADE_FACTORY, pojoClassTarget) {};
 	}
