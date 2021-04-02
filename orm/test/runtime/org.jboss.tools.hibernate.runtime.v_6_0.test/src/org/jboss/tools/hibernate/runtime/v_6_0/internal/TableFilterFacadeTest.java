@@ -1,15 +1,15 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.jboss.tools.hibernate.runtime.common.AbstractTableFilterFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class TableFilterFacadeTest {
 
