@@ -1,7 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal.util;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.io.ByteArrayInputStream;
 import java.util.Properties;
@@ -15,8 +15,8 @@ import org.hibernate.mapping.RootClass;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.ConfigurationFacadeImpl;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.FacadeFactoryImpl;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class ConfigurationMetadataDescriptorTest {
 	
@@ -42,8 +42,8 @@ public class ConfigurationMetadataDescriptorTest {
 	private Configuration configurationTarget = null;
 	private ConfigurationFacadeImpl configurationFacade = null;
 	
-	@Before
-	public void before() {
+	@BeforeEach
+	public void beforeEach() {
 		configurationTarget = new Configuration();
 		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configurationTarget);
 		configurationMetadataDescriptor = new ConfigurationMetadataDescriptor(configurationFacade);
