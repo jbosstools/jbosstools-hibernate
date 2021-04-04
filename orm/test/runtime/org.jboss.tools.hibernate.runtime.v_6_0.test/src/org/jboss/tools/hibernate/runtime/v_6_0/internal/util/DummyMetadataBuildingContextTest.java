@@ -1,12 +1,12 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal.util;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class DummyMetadataBuildingContextTest {
 	
