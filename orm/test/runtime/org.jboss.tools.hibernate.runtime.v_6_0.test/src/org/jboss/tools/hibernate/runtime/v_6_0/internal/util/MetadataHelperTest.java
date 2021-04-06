@@ -1,8 +1,8 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal.util;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.io.ByteArrayInputStream;
 import java.lang.reflect.InvocationHandler;
@@ -13,7 +13,7 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.Dialect;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class MetadataHelperTest {
 	
