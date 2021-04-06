@@ -1,14 +1,17 @@
 package org.jboss.tools.hibernate.runtime.v_5_4.internal;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.lang.reflect.Method;
 
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.jboss.tools.hibernate.runtime.common.AbstractArtifactCollectorFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javassist.util.proxy.MethodHandler;
 import javassist.util.proxy.ProxyFactory;
@@ -23,8 +26,8 @@ public class ArtifactCollectorFacadeTest {
 	
 	private IArtifactCollector artifactCollector = null; 
 	
-	@Before
-	public void setUp() throws Exception {
+	@BeforeEach
+	public void beforeEach() throws Exception {
 		ProxyFactory proxyFactory = new ProxyFactory();
 		proxyFactory.setSuperclass(ArtifactCollector.class);
 		Class<?> proxyClass = proxyFactory.createClass();
@@ -51,23 +54,23 @@ public class ArtifactCollectorFacadeTest {
 
 	@Test
 	public void testGetFileTypes() {
-		Assert.assertNotNull(artifactCollector.getFileTypes());
-		Assert.assertEquals("getFileTypes", methodName);
-		Assert.assertArrayEquals(new Object[] {}, arguments);
+		assertNotNull(artifactCollector.getFileTypes());
+		assertEquals("getFileTypes", methodName);
+		assertArrayEquals(new Object[] {}, arguments);
 	}
 
 	@Test
 	public void testFormatFiles() {
 		artifactCollector.formatFiles();
-		Assert.assertEquals("formatFiles", methodName);
-		Assert.assertArrayEquals(new Object[] {}, arguments);
+		assertEquals("formatFiles", methodName);
+		assertArrayEquals(new Object[] {}, arguments);
 	}
 
 	@Test
 	public void testGetFiles() {
-		Assert.assertNotNull(artifactCollector.getFiles("foobar"));
-		Assert.assertEquals("getFiles", methodName);
-		Assert.assertArrayEquals(new Object[] { "foobar" }, arguments);
+		assertNotNull(artifactCollector.getFiles("foobar"));
+		assertEquals("getFiles", methodName);
+		assertArrayEquals(new Object[] { "foobar" }, arguments);
 	}
 
 	private void reset() {
