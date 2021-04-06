@@ -1,5 +1,13 @@
 package org.jboss.tools.hibernate.runtime.v_5_4.internal;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -30,10 +38,8 @@ import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.IType;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class ClassMetadataFacadeTest {
 
@@ -45,8 +51,8 @@ public class ClassMetadataFacadeTest {
 	private IClassMetadata classMetadata = null; 
 	private boolean hasIdentifierProperty = false;
 	
-	@Before
-	public void setUp() {
+	@BeforeEach
+	public void beforeEach() {
 		ClassMetadata target = (ClassMetadata)Proxy.newProxyInstance(
 				FACADE_FACTORY.getClassLoader(), 
 				new Class[] { ClassMetadata.class }, 
@@ -56,81 +62,81 @@ public class ClassMetadataFacadeTest {
 	
 	@Test
 	public void testGetMappedClass() {
-		Assert.assertNull(classMetadata.getMappedClass());
-		Assert.assertEquals("getMappedClass", methodName);
-		Assert.assertNull(arguments);
+		assertNull(classMetadata.getMappedClass());
+		assertEquals("getMappedClass", methodName);
+		assertNull(arguments);
 	}
 	
 	@Test
 	public void testGetPropertyValue() {
 		Object object = new Object();
 		String name = "foobar";
-		Assert.assertNull(classMetadata.getPropertyValue(object, name));
-		Assert.assertEquals("getPropertyValue", methodName);
-		Assert.assertArrayEquals(new Object[] { object, name }, arguments);
+		assertNull(classMetadata.getPropertyValue(object, name));
+		assertEquals("getPropertyValue", methodName);
+		assertArrayEquals(new Object[] { object, name }, arguments);
 	}
 	
 	@Test
 	public void testGetIdentifierPropertyName() {
-		Assert.assertNull(classMetadata.getIdentifierPropertyName());
-		Assert.assertEquals("getIdentifierPropertyName", methodName);
-		Assert.assertNull(arguments);
+		assertNull(classMetadata.getIdentifierPropertyName());
+		assertEquals("getIdentifierPropertyName", methodName);
+		assertNull(arguments);
 	}
 	
 	@Test
 	public void testGetEntityName() {
-		Assert.assertNull(classMetadata.getEntityName());
-		Assert.assertEquals("getEntityName", methodName);
-		Assert.assertNull(arguments);
+		assertNull(classMetadata.getEntityName());
+		assertEquals("getEntityName", methodName);
+		assertNull(arguments);
 	}
 	
 	@Test
 	public void testGetPropertyNames() {
-		Assert.assertNull(classMetadata.getPropertyNames());
-		Assert.assertEquals("getPropertyNames", methodName);
-		Assert.assertNull(arguments);
+		assertNull(classMetadata.getPropertyNames());
+		assertEquals("getPropertyNames", methodName);
+		assertNull(arguments);
 	}
 	
 	@Test
 	public void testGetPropertyTypes() {
 		IType[] propertyTypes = classMetadata.getPropertyTypes();
-		Assert.assertEquals(1, propertyTypes.length);
-		Assert.assertEquals("getPropertyTypes", methodName);
-		Assert.assertNull(arguments);
+		assertEquals(1, propertyTypes.length);
+		assertEquals("getPropertyTypes", methodName);
+		assertNull(arguments);
 		methodName = null;
-		Assert.assertSame(propertyTypes, classMetadata.getPropertyTypes());
-		Assert.assertNull(methodName);
-		Assert.assertNull(arguments);
+		assertSame(propertyTypes, classMetadata.getPropertyTypes());
+		assertNull(methodName);
+		assertNull(arguments);
 	}
 	
 	@Test
 	public void testGetIdentifierType() {
 		IType identifierType = classMetadata.getIdentifierType();
-		Assert.assertNotNull(identifierType);
-		Assert.assertEquals("getIdentifierType", methodName);
-		Assert.assertNull(arguments);
+		assertNotNull(identifierType);
+		assertEquals("getIdentifierType", methodName);
+		assertNull(arguments);
 		methodName = null;
-		Assert.assertSame(identifierType, classMetadata.getIdentifierType());
-		Assert.assertNull(methodName);
-		Assert.assertNull(arguments);
+		assertSame(identifierType, classMetadata.getIdentifierType());
+		assertNull(methodName);
+		assertNull(arguments);
 	}
 	
 	@Test
 	public void testIsInstanceOfAbstractEntityPersister() {
-		Assert.assertFalse(classMetadata.isInstanceOfAbstractEntityPersister());
+		assertFalse(classMetadata.isInstanceOfAbstractEntityPersister());
 		classMetadata = new AbstractClassMetadataFacade(FACADE_FACTORY, createSampleEntityPersister()) {};
-		Assert.assertTrue(classMetadata.isInstanceOfAbstractEntityPersister());
+		assertTrue(classMetadata.isInstanceOfAbstractEntityPersister());
 	}
 	
 	@Test 
 	public void testGetEntityMetaModel() {
-		Assert.assertNull(classMetadata.getEntityMetamodel());
-		Assert.assertNull(methodName);
+		assertNull(classMetadata.getEntityMetamodel());
+		assertNull(methodName);
 		TestEntityPersister entityPersister = createSampleEntityPersister();
 		classMetadata = new AbstractClassMetadataFacade(FACADE_FACTORY, entityPersister) {};
 		methodName = null;
-		Assert.assertNotNull(classMetadata.getEntityMetamodel());
-		Assert.assertEquals("getEntityMetamodel", methodName);
+		assertNotNull(classMetadata.getEntityMetamodel());
+		assertEquals("getEntityMetamodel", methodName);
 	}
 	
 	@Test
@@ -150,18 +156,18 @@ public class ClassMetadataFacadeTest {
 					}					
 				});
 		Object object = Integer.MAX_VALUE;
-		Assert.assertSame(object, classMetadata.getIdentifier(object , session));
-		Assert.assertEquals("getIdentifier", methodName);
-		Assert.assertArrayEquals(new Object[] { object, sessionTarget },  arguments);
+		assertSame(object, classMetadata.getIdentifier(object , session));
+		assertEquals("getIdentifier", methodName);
+		assertArrayEquals(new Object[] { object, sessionTarget },  arguments);
 	}
 	
 	public void testHasIdentifierProperty() {
 		hasIdentifierProperty = true;
-		Assert.assertTrue(classMetadata.hasIdentifierProperty());
+		assertTrue(classMetadata.hasIdentifierProperty());
 		hasIdentifierProperty = false;
-		Assert.assertFalse(hasIdentifierProperty);
-		Assert.assertEquals("hasIdentifierProperty", methodName);
-		Assert.assertNull(arguments);
+		assertFalse(hasIdentifierProperty);
+		assertEquals("hasIdentifierProperty", methodName);
+		assertNull(arguments);
 	}
 	
 	private TestEntityPersister createSampleEntityPersister() {
