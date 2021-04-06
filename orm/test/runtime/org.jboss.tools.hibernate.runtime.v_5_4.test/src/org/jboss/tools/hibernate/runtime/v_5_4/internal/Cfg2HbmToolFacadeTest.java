@@ -1,5 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_5_4.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -17,10 +19,8 @@ import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class Cfg2HbmToolFacadeTest {
 	
@@ -29,8 +29,8 @@ public class Cfg2HbmToolFacadeTest {
 	private ICfg2HbmTool cfg2HbmToolFacade = null; 
 	private Cfg2HbmTool cfg2HbmTool = null;
 	
-	@Before
-	public void setUp() {
+	@BeforeEach
+	public void beforeEach() {
 		cfg2HbmTool = new Cfg2HbmTool();
 		cfg2HbmToolFacade = new AbstractCfg2HbmToolFacade(FACADE_FACTORY, cfg2HbmTool) {};
 	}
@@ -39,7 +39,7 @@ public class Cfg2HbmToolFacadeTest {
 	public void testGetPersistentClassTag() {
 		PersistentClass target = new RootClass(null);
 		IPersistentClass persistentClass = new AbstractPersistentClassFacade(FACADE_FACTORY, target) {};
-		Assert.assertEquals("class", cfg2HbmToolFacade.getTag(persistentClass));
+		assertEquals("class", cfg2HbmToolFacade.getTag(persistentClass));
 	}
 	
 	public void testGetPropertyTag() throws Exception {
@@ -55,7 +55,7 @@ public class Cfg2HbmToolFacadeTest {
 		p.setPersistentClass(rc);
 		rc.setVersion(p);
 		IProperty property = new AbstractPropertyFacade(FACADE_FACTORY, p) {};
-		Assert.assertEquals("version", cfg2HbmToolFacade.getTag(property));
+		assertEquals("version", cfg2HbmToolFacade.getTag(property));
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
