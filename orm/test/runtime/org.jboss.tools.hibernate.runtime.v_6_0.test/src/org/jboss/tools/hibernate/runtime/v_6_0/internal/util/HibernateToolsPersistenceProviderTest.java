@@ -1,8 +1,8 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -11,11 +11,10 @@ import java.net.URLClassLoader;
 import java.util.Properties;
 
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 public class HibernateToolsPersistenceProviderTest {
 	
@@ -29,13 +28,11 @@ public class HibernateToolsPersistenceProviderTest {
 	
 	private ClassLoader original = null;
 	
-	@Rule
-	public TemporaryFolder tempFolder = new TemporaryFolder();
+	@TempDir
+	public File tempRoot = new File("temproot");
 	
-	@Before
-	public void before() throws Exception {
-		tempFolder.create();
-		File tempRoot = tempFolder.getRoot();
+	@BeforeEach
+	public void beforeEach() throws Exception {
 		File metaInf = new File(tempRoot, "META-INF");
 		metaInf.mkdirs();
 		File persistenceXml = new File(metaInf, "persistence.xml");
@@ -50,8 +47,8 @@ public class HibernateToolsPersistenceProviderTest {
 		Thread.currentThread().setContextClassLoader(urlCl);
 	}
 	
-	@After
-	public void after() {
+	@AfterEach
+	public void afterEach() {
 		Thread.currentThread().setContextClassLoader(original);
 	}
 	
