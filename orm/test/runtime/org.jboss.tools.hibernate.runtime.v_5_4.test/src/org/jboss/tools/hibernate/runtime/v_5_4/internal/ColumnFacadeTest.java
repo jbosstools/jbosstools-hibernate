@@ -1,5 +1,11 @@
 package org.jboss.tools.hibernate.runtime.v_5_4.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -15,10 +21,8 @@ import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_5_4.internal.util.MetadataHelper;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class ColumnFacadeTest {
 
@@ -27,31 +31,31 @@ public class ColumnFacadeTest {
 	private IColumn columnFacade = null; 
 	private Column column = null;
 	
-	@Before
-	public void setUp() {
+	@BeforeEach
+	public void beforeEach() {
 		column = new Column();
 		columnFacade = FACADE_FACTORY.createColumn(column);
 	}
 	
 	@Test
 	public void testGetMappedClass() {
-		Assert.assertNull(columnFacade.getName());
+		assertNull(columnFacade.getName());
 		column.setName("foobar");
-		Assert.assertEquals("foobar", columnFacade.getName());
+		assertEquals("foobar", columnFacade.getName());
 	}
 	
 	@Test
 	public void testGetSqlTypeCode() {
-		Assert.assertNull(columnFacade.getSqlTypeCode());
+		assertNull(columnFacade.getSqlTypeCode());
 		column.setSqlTypeCode(Integer.MAX_VALUE);
-		Assert.assertEquals(Integer.MAX_VALUE, columnFacade.getSqlTypeCode().intValue());
+		assertEquals(Integer.MAX_VALUE, columnFacade.getSqlTypeCode().intValue());
 	}
 	
 	@Test
 	public void testGetSqlType() {
-		Assert.assertNull(columnFacade.getSqlType());
+		assertNull(columnFacade.getSqlType());
 		column.setSqlType("foobar");
-		Assert.assertEquals("foobar", columnFacade.getSqlType());
+		assertEquals("foobar", columnFacade.getSqlType());
 		Configuration configuration = new Configuration();
 		configuration.setProperty(Environment.DIALECT, "org.hibernate.dialect.H2Dialect");
 		MetadataImplementor metadata = 
@@ -61,57 +65,57 @@ public class ColumnFacadeTest {
 		column.setValue(value);
 		IConfiguration configurationFacade = FACADE_FACTORY.createConfiguration(configuration);
 		column.setSqlType(null);
-		Assert.assertEquals("integer", columnFacade.getSqlType(configurationFacade));
+		assertEquals("integer", columnFacade.getSqlType(configurationFacade));
 	}
 	
 	@Test
 	public void testGetLength() {
-		Assert.assertEquals(Column.DEFAULT_LENGTH, columnFacade.getLength());
+		assertEquals(Column.DEFAULT_LENGTH, columnFacade.getLength());
 		column.setLength(999);
-		Assert.assertEquals(999, columnFacade.getLength());
+		assertEquals(999, columnFacade.getLength());
 	}
 	
 	@Test
 	public void testGetDefaultLength() {
-		Assert.assertEquals(Column.DEFAULT_LENGTH, columnFacade.getDefaultLength());
+		assertEquals(Column.DEFAULT_LENGTH, columnFacade.getDefaultLength());
 	}
 	
 	@Test
 	public void testGetPrecision() {
-		Assert.assertEquals(Column.DEFAULT_PRECISION, columnFacade.getPrecision());
+		assertEquals(Column.DEFAULT_PRECISION, columnFacade.getPrecision());
 		column.setPrecision(999);
-		Assert.assertEquals(999, columnFacade.getPrecision());
+		assertEquals(999, columnFacade.getPrecision());
 	}
 	
 	@Test
 	public void testGetDefaultPrecision() {
-		Assert.assertEquals(Column.DEFAULT_PRECISION, columnFacade.getDefaultPrecision());
+		assertEquals(Column.DEFAULT_PRECISION, columnFacade.getDefaultPrecision());
 	}
 	
 	@Test
 	public void testGetScale() {
-		Assert.assertEquals(Column.DEFAULT_SCALE, columnFacade.getScale());
+		assertEquals(Column.DEFAULT_SCALE, columnFacade.getScale());
 		column.setScale(999);
-		Assert.assertEquals(999, columnFacade.getScale());
+		assertEquals(999, columnFacade.getScale());
 	}
 	
 	@Test
 	public void testGetDefaultScale() {
-		Assert.assertEquals(Column.DEFAULT_SCALE, columnFacade.getDefaultScale());
+		assertEquals(Column.DEFAULT_SCALE, columnFacade.getDefaultScale());
 	}
 	
 	@Test
 	public void testIsNullable() {
 		column.setNullable(true);
-		Assert.assertTrue(columnFacade.isNullable());
+		assertTrue(columnFacade.isNullable());
 		column.setNullable(false);
-		Assert.assertFalse(columnFacade.isNullable());
+		assertFalse(columnFacade.isNullable());
 	}
 	
 	public void testGetValue() throws Exception {
 		Value targetValue = null;
 		column.setValue(targetValue);
-		Assert.assertNull(columnFacade.getValue());
+		assertNull(columnFacade.getValue());
 		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
 		ssrb.applySetting(Environment.DIALECT, "org.hibernate.dialect.H2Dialect");
 		StandardServiceRegistry ssr = ssrb.build();
@@ -120,21 +124,21 @@ public class ColumnFacadeTest {
 		targetValue = new SimpleValue(metadata);
 		column.setValue(targetValue);
 		IValue value = columnFacade.getValue();
-		Assert.assertNotNull(value);
-		Assert.assertEquals(targetValue, ((IFacade)value).getTarget());
+		assertNotNull(value);
+		assertEquals(targetValue, ((IFacade)value).getTarget());
 	}
 	
 	public void testIsUnique() {
 		column.setUnique(true);
-		Assert.assertFalse(columnFacade.isUnique());
+		assertFalse(columnFacade.isUnique());
 		column.setUnique(true);
-		Assert.assertTrue(columnFacade.isUnique());
+		assertTrue(columnFacade.isUnique());
 	}
 	
 	public void testSetSqlType() {
-		Assert.assertNull(column.getSqlType());
+		assertNull(column.getSqlType());
 		columnFacade.setSqlType("blah");
-		Assert.assertEquals("blah", column.getSqlType());
+		assertEquals("blah", column.getSqlType());
 	}
 	
 }
