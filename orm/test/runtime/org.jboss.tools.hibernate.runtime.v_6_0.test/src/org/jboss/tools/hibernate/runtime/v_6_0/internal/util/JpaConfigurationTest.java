@@ -1,10 +1,10 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -21,11 +21,10 @@ import javax.persistence.Id;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.dialect.Dialect;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 public class JpaConfigurationTest {
 	
@@ -45,13 +44,11 @@ public class JpaConfigurationTest {
 	
 	private ClassLoader original = null;
 	
-	@Rule
-	public TemporaryFolder tempFolder = new TemporaryFolder();
+	@TempDir
+	public File tempRoot = new File("temproot");
 	
-	@Before
-	public void before() throws Exception {
-		tempFolder.create();
-		File tempRoot = tempFolder.getRoot();
+	@BeforeEach
+	public void beforeEach() throws Exception {
 		File metaInf = new File(tempRoot, "META-INF");
 		metaInf.mkdirs();
 		File persistenceXml = new File(metaInf, "persistence.xml");
@@ -66,8 +63,8 @@ public class JpaConfigurationTest {
 		Thread.currentThread().setContextClassLoader(urlCl);
 	}
 	
-	@After
-	public void after() {
+	@AfterEach
+	public void afterEach() {
 		Thread.currentThread().setContextClassLoader(original);
 	}
 	
