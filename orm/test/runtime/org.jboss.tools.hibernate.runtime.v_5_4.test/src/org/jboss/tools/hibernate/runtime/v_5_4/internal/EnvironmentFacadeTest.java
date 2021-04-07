@@ -1,12 +1,13 @@
 package org.jboss.tools.hibernate.runtime.v_5_4.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+
 import org.hibernate.cfg.Environment;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class EnvironmentFacadeTest {
 
@@ -14,98 +15,98 @@ public class EnvironmentFacadeTest {
 	
 	private IEnvironment environmentFacade = null; 
 	
-	@Before
-	public void setUp() throws Exception {
+	@BeforeEach
+	public void beforeEach() throws Exception {
 		environmentFacade = new EnvironmentFacadeImpl(FACADE_FACTORY);
 	}
 	
 	@Test
 	public void testGetTransactionManagerStrategy() {
-		Assert.assertEquals(
+		assertEquals(
 				"hibernate.transaction.coordinator_class", 
 				environmentFacade.getTransactionManagerStrategy());
 	}
 	
 	@Test
 	public void testGetDriver() {
-		Assert.assertEquals(
+		assertEquals(
 				Environment.DRIVER, 
 				environmentFacade.getDriver());
 	}
 	
 	@Test
 	public void testGetHBM2DDLAuto() {
-		Assert.assertEquals(
+		assertEquals(
 				Environment.HBM2DDL_AUTO, 
 				environmentFacade.getHBM2DDLAuto());
 	}
 	
 	@Test
 	public void testGetDialect() {
-		Assert.assertEquals(
+		assertEquals(
 				Environment.DIALECT, 
 				environmentFacade.getDialect());
 	}
 	
 	@Test
 	public void testGetDataSource() {
-		Assert.assertEquals(
+		assertEquals(
 				Environment.DATASOURCE, 
 				environmentFacade.getDataSource());
 	}
 	
 	@Test
 	public void testGetConnectionProvider() {
-		Assert.assertEquals(
+		assertEquals(
 				Environment.CONNECTION_PROVIDER, 
 				environmentFacade.getConnectionProvider());
 	}
 	
 	@Test
 	public void testGetURL() {
-		Assert.assertEquals(
+		assertEquals(
 				Environment.URL, 
 				environmentFacade.getURL());
 	}
 	
 	@Test
 	public void testGetUser() {
-		Assert.assertEquals(
+		assertEquals(
 				Environment.USER, 
 				environmentFacade.getUser());
 	}
 	
 	@Test
 	public void testGetPass() {
-		Assert.assertEquals(
+		assertEquals(
 				Environment.PASS, 
 				environmentFacade.getPass());
 	}
 	
 	@Test
 	public void testGetSessionFactoryName() {
-		Assert.assertEquals(
+		assertEquals(
 				Environment.SESSION_FACTORY_NAME, 
 				environmentFacade.getSessionFactoryName());
 	}
 	
 	@Test
 	public void testGetDefaultCatalog() {
-		Assert.assertEquals(
+		assertEquals(
 				Environment.DEFAULT_CATALOG, 
 				environmentFacade.getDefaultCatalog());
 	}
 	
 	@Test
 	public void testGetDefaultSchema() {
-		Assert.assertEquals(
+		assertEquals(
 				Environment.DEFAULT_SCHEMA, 
 				environmentFacade.getDefaultSchema());
 	}
 	
 	@Test
 	public void testWrappedClass() {
-		Assert.assertSame(
+		assertSame(
 				Environment.class, 
 				environmentFacade.getWrappedClass());
 	}
