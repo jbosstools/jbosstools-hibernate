@@ -1,5 +1,10 @@
 package org.jboss.tools.hibernate.runtime.v_5_4.internal;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
@@ -33,31 +38,26 @@ import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.v_5_4.internal.util.DummyMetadataBuildingContext;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 public class HibernateMappingExporterFacadeTest {
 	
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 
-	@Rule
-	public TemporaryFolder temporaryFolder = new TemporaryFolder();
+	@TempDir
+	public File outputDir = new File("output");
 	
 	private IHibernateMappingExporter hibernateMappingExporterFacade = null; 
 	private HibernateMappingExporterExtension hibernateMappingExporter = null;
-	
-	private File outputDir = null;
-	
-	@Before
+		
+	@BeforeEach
 	public void setUp() throws Exception {
 		hibernateMappingExporter = new HibernateMappingExporterExtension(
 				FACADE_FACTORY, null, null);
 		hibernateMappingExporterFacade = 
 				FACADE_FACTORY.createHibernateMappingExporter(hibernateMappingExporter);
-		outputDir = temporaryFolder.getRoot();
 	}
 	
 	@Test
@@ -67,18 +67,18 @@ public class HibernateMappingExporterFacadeTest {
 		hibernateMappingExporter.setOutputDirectory(outputDir);
 		final File fooHbmXml = new File(outputDir, "Foo.hbm.xml");
 		// First without a 'delegate' exporter
-		Assert.assertFalse(fooHbmXml.exists());
+		assertFalse(fooHbmXml.exists());
 		hibernateMappingExporterFacade.start();
-		Assert.assertTrue(fooHbmXml.exists());
-		Assert.assertTrue(fooHbmXml.delete());
+		assertTrue(fooHbmXml.exists());
+		assertTrue(fooHbmXml.delete());
 		// Now set a 'delegate' and invoke 'start' again
 		final File dummyDir = new File(outputDir, "dummy");
 		dummyDir.mkdir();
-		Assert.assertTrue(dummyDir.exists());
+		assertTrue(dummyDir.exists());
 		IExportPOJODelegate delegate = new IExportPOJODelegate() {			
 			@Override
 			public void exportPOJO(Map<Object, Object> map, IPOJOClass pojoClass) {
-				Assert.assertTrue(dummyDir.delete());
+				assertTrue(dummyDir.delete());
 				Map<String, Object> m = new HashMap<>();
 				for (Object key : map.keySet()) {
 					m.put((String)key, map.get(key));
@@ -91,26 +91,26 @@ public class HibernateMappingExporterFacadeTest {
 		delegateField.setAccessible(true);
 		delegateField.set(hibernateMappingExporter, delegate);
 		hibernateMappingExporterFacade.start();
-		Assert.assertFalse(dummyDir.exists());
-		Assert.assertTrue(fooHbmXml.exists());
-		Assert.assertTrue(fooHbmXml.delete());
-		Assert.assertTrue(outputDir.exists());
+		assertFalse(dummyDir.exists());
+		assertTrue(fooHbmXml.exists());
+		assertTrue(fooHbmXml.delete());
+		assertTrue(outputDir.exists());
 	}
 	
 	@Test
 	public void testGetOutputDirectory() {
-		Assert.assertNull(hibernateMappingExporterFacade.getOutputDirectory());
+		assertNull(hibernateMappingExporterFacade.getOutputDirectory());
 		File file = new File("testGetOutputDirectory");
 		hibernateMappingExporter.setOutputDirectory(file);
-		Assert.assertSame(file, hibernateMappingExporterFacade.getOutputDirectory());
+		assertSame(file, hibernateMappingExporterFacade.getOutputDirectory());
 	}
 	
 	@Test
 	public void testSetOutputDirectory() {
-		Assert.assertNull(hibernateMappingExporter.getOutputDirectory());
+		assertNull(hibernateMappingExporter.getOutputDirectory());
 		File file = new File("testSetOutputDirectory");
 		hibernateMappingExporterFacade.setOutputDirectory(file);
-		Assert.assertSame(file, hibernateMappingExporter.getOutputDirectory());
+		assertSame(file, hibernateMappingExporter.getOutputDirectory());
 	}
 	
 	@Test
@@ -121,9 +121,9 @@ public class HibernateMappingExporterFacadeTest {
 		};
 		Field delegateField = HibernateMappingExporterExtension.class.getDeclaredField("delegateExporter");
 		delegateField.setAccessible(true);
-		Assert.assertNull(delegateField.get(hibernateMappingExporter));
+		assertNull(delegateField.get(hibernateMappingExporter));
 		hibernateMappingExporterFacade.setExportPOJODelegate(delegate);
-		Assert.assertSame(delegate, delegateField.get(hibernateMappingExporter));
+		assertSame(delegate, delegateField.get(hibernateMappingExporter));
 	}
 	
 	@Test
@@ -151,9 +151,9 @@ public class HibernateMappingExporterFacadeTest {
 		templateHelper.init(null, new String[0]);
 		setTemplateHelperMethod.invoke(hibernateMappingExporter, new Object[] { templateHelper });
 		final File fooHbmXml = new File(outputDir, "Foo.hbm.xml");
-		Assert.assertFalse(fooHbmXml.exists());
+		assertFalse(fooHbmXml.exists());
 		hibernateMappingExporterFacade.exportPOJO(additionalContext, pojoClass);
-		Assert.assertTrue(fooHbmXml.exists());
+		assertTrue(fooHbmXml.exists());
 		fooHbmXml.delete();
 		outputDir.delete();		
 	}
