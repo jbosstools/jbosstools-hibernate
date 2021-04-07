@@ -1,5 +1,9 @@
 package org.jboss.tools.hibernate.runtime.v_5_4.internal;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -21,10 +25,8 @@ import org.jboss.tools.hibernate.runtime.common.AbstractEntityMetamodelFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.v_5_4.internal.util.MetadataHelper;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class EntityMetamodelFacadeTest {
 
@@ -39,8 +41,8 @@ public class EntityMetamodelFacadeTest {
 	private Object[] arguments = null;
 	
 	@SuppressWarnings("serial")
-	@Before
-	public void setUp() throws Exception {
+	@BeforeEach
+	public void beforeEach() throws Exception {
 		Configuration configuration = new Configuration();
 		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
@@ -82,16 +84,16 @@ public class EntityMetamodelFacadeTest {
 		
 	@Test
 	public void testGetTuplizerPropertyValue() {
-		Assert.assertSame(OBJECT, entityMetamodelFacade.getTuplizerPropertyValue(OBJECT, Integer.MAX_VALUE));
-		Assert.assertEquals("getPropertyValue", methodName);
-		Assert.assertArrayEquals(new Object[] { OBJECT,  Integer.MAX_VALUE }, arguments);
+		assertSame(OBJECT, entityMetamodelFacade.getTuplizerPropertyValue(OBJECT, Integer.MAX_VALUE));
+		assertEquals("getPropertyValue", methodName);
+		assertArrayEquals(new Object[] { OBJECT,  Integer.MAX_VALUE }, arguments);
 	}
 	
 	@Test
 	public void testGetPropertyIndexOrNull() {
-		Assert.assertSame(INDEX, entityMetamodelFacade.getPropertyIndexOrNull("foobar"));
-		Assert.assertEquals("getPropertyIndexOrNull", methodName);
-		Assert.assertArrayEquals(arguments, new Object[] { "foobar" });
+		assertSame(INDEX, entityMetamodelFacade.getPropertyIndexOrNull("foobar"));
+		assertEquals("getPropertyIndexOrNull", methodName);
+		assertArrayEquals(arguments, new Object[] { "foobar" });
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
