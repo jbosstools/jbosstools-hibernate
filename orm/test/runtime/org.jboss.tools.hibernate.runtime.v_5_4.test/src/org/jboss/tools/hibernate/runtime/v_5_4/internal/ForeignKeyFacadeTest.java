@@ -1,5 +1,13 @@
 package org.jboss.tools.hibernate.runtime.v_5_4.internal;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -14,9 +22,8 @@ import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javassist.util.proxy.MethodHandler;
 import javassist.util.proxy.ProxyFactory;
@@ -33,8 +40,8 @@ public class ForeignKeyFacadeTest {
 	private String methodName = null;
 	private Object[] arguments = null;
 	
-	@Before
-	public void setUp() throws Exception {
+	@BeforeEach
+	public void beforeEach() throws Exception {
 		ProxyFactory proxyFactory = new ProxyFactory();
 		proxyFactory.setSuperclass(ForeignKey.class);
 		Class<?> proxyClass = proxyFactory.createClass();
@@ -62,22 +69,22 @@ public class ForeignKeyFacadeTest {
 	@Test
 	public void testGetReferencedTable() {
 		ITable first = foreignKeyFacade.getReferencedTable();
-		Assert.assertEquals("getReferencedTable", methodName);
-		Assert.assertArrayEquals(new Object[] {}, arguments);
-		Assert.assertNull(first);
+		assertEquals("getReferencedTable", methodName);
+		assertArrayEquals(new Object[] {}, arguments);
+		assertNull(first);
 		Table table = new Table();
 		foreignKey.setReferencedTable(table);
 		reset();
 		ITable second = foreignKeyFacade.getReferencedTable();
-		Assert.assertEquals("getReferencedTable", methodName);
-		Assert.assertArrayEquals(new Object[] {}, arguments);
-		Assert.assertNotNull(second);
-		Assert.assertSame(table, ((IFacade)second).getTarget());
+		assertEquals("getReferencedTable", methodName);
+		assertArrayEquals(new Object[] {}, arguments);
+		assertNotNull(second);
+		assertSame(table, ((IFacade)second).getTarget());
 		reset();
 		ITable third = foreignKeyFacade.getReferencedTable();
-		Assert.assertNull(methodName);
-		Assert.assertNull(arguments);
-		Assert.assertSame(second, third);
+		assertNull(methodName);
+		assertNull(arguments);
+		assertSame(second, third);
 	}
 	
 	@Test
@@ -86,34 +93,34 @@ public class ForeignKeyFacadeTest {
 		foreignKey.addColumn(column);
 		reset();
 		Iterator<IColumn> iterator = foreignKeyFacade.columnIterator();
-		Assert.assertEquals("columnIterator", methodName);
-		Assert.assertArrayEquals(new Object[] {}, arguments);
+		assertEquals("columnIterator", methodName);
+		assertArrayEquals(new Object[] {}, arguments);
 		IColumn columnFacade = iterator.next();
-		Assert.assertSame(column, ((IFacade)columnFacade).getTarget());
-		Assert.assertFalse(iterator.hasNext());
+		assertSame(column, ((IFacade)columnFacade).getTarget());
+		assertFalse(iterator.hasNext());
 	}
 	
 	@Test
 	public void testIsReferenceToPrimaryKey() {
-		Assert.assertTrue(foreignKeyFacade.isReferenceToPrimaryKey());
-		Assert.assertEquals("isReferenceToPrimaryKey", methodName);
-		Assert.assertArrayEquals(new Object[] {}, arguments);
+		assertTrue(foreignKeyFacade.isReferenceToPrimaryKey());
+		assertEquals("isReferenceToPrimaryKey", methodName);
+		assertArrayEquals(new Object[] {}, arguments);
 		Column column = new Column();
 		ArrayList<Column> list = new ArrayList<Column>();
 		list.add(column);
 		foreignKey.addReferencedColumns(list.iterator());
 		reset();
-		Assert.assertFalse(foreignKeyFacade.isReferenceToPrimaryKey());
-		Assert.assertEquals("isReferenceToPrimaryKey", methodName);
-		Assert.assertArrayEquals(new Object[] {}, arguments);
+		assertFalse(foreignKeyFacade.isReferenceToPrimaryKey());
+		assertEquals("isReferenceToPrimaryKey", methodName);
+		assertArrayEquals(new Object[] {}, arguments);
 	}
 	
 	@Test
 	public void testGetReferencedColumns() {
 		List<IColumn> list = foreignKeyFacade.getReferencedColumns();
-		Assert.assertTrue(list.isEmpty());
-		Assert.assertEquals("getReferencedColumns", methodName);
-		Assert.assertArrayEquals(new Object[] {}, arguments);
+		assertTrue(list.isEmpty());
+		assertEquals("getReferencedColumns", methodName);
+		assertArrayEquals(new Object[] {}, arguments);
 		// recreate facade to reinitialize the instance variables
 		foreignKeyFacade = new AbstractForeignKeyFacade(FACADE_FACTORY, foreignKey) {};
 		Column column = new Column();
@@ -122,23 +129,23 @@ public class ForeignKeyFacadeTest {
 		foreignKey.addReferencedColumns(columns.iterator());
 		reset();
 		list = foreignKeyFacade.getReferencedColumns();
-		Assert.assertFalse(list.isEmpty());
-		Assert.assertEquals("getReferencedColumns", methodName);
-		Assert.assertArrayEquals(new Object[] {}, arguments);
+		assertFalse(list.isEmpty());
+		assertEquals("getReferencedColumns", methodName);
+		assertArrayEquals(new Object[] {}, arguments);
 	}
 	
 	@Test
 	public void testContainsColumn() {
 		Column column = new Column();
 		IColumn columnFacade = FACADE_FACTORY.createColumn(column);
-		Assert.assertFalse(foreignKeyFacade.containsColumn(columnFacade));
-		Assert.assertEquals("containsColumn", methodName);
-		Assert.assertArrayEquals(new Object[] { column }, arguments);
+		assertFalse(foreignKeyFacade.containsColumn(columnFacade));
+		assertEquals("containsColumn", methodName);
+		assertArrayEquals(new Object[] { column }, arguments);
 		foreignKey.addColumn(column);
 		reset();
-		Assert.assertTrue(foreignKeyFacade.containsColumn(columnFacade));
-		Assert.assertEquals("containsColumn", methodName);
-		Assert.assertArrayEquals(new Object[] { column }, arguments);
+		assertTrue(foreignKeyFacade.containsColumn(columnFacade));
+		assertEquals("containsColumn", methodName);
+		assertArrayEquals(new Object[] { column }, arguments);
 	}
 	
 	private void reset() {
