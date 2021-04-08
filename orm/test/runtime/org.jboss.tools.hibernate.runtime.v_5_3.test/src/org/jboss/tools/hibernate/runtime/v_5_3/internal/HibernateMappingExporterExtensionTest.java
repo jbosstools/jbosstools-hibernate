@@ -1,5 +1,11 @@
 package org.jboss.tools.hibernate.runtime.v_5_3.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
@@ -22,10 +28,9 @@ import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class HibernateMappingExporterExtensionTest {
 	
@@ -39,8 +44,8 @@ public class HibernateMappingExporterExtensionTest {
 	private String methodName = null;
 	private Object[] arguments = null;
 	
-	@Before
-	public void setUp() throws Exception {
+	@BeforeEach
+	public void beforeEach() throws Exception {
 		hibernateMappingExporterExtension = new HibernateMappingExporterExtension(FACADE_FACTORY, null, null);
 		Method setTemplateHelperMethod = AbstractExporter.class.getDeclaredMethod(
 				"setTemplateHelper", 
@@ -66,9 +71,9 @@ public class HibernateMappingExporterExtensionTest {
 	public void testSetDelegate() throws Exception {
 		Field delegateField = HibernateMappingExporterExtension.class.getDeclaredField("delegateExporter");
 		delegateField.setAccessible(true);
-		Assert.assertNull(delegateField.get(hibernateMappingExporterExtension));
+		assertNull(delegateField.get(hibernateMappingExporterExtension));
 		hibernateMappingExporterExtension.setDelegate(exportPojoDelegate);
-		Assert.assertSame(exportPojoDelegate, delegateField.get(hibernateMappingExporterExtension));
+		assertSame(exportPojoDelegate, delegateField.get(hibernateMappingExporterExtension));
 	}
 	
 	@Test
@@ -76,8 +81,8 @@ public class HibernateMappingExporterExtensionTest {
 		ArtifactCollector artifactCollector = new ArtifactCollector();
 		hibernateMappingExporterExtension.setArtifactCollector(artifactCollector);
 		File[] hbmXmlFiles = artifactCollector.getFiles("hbm.xml");
-		Assert.assertTrue(hbmXmlFiles.length == 0);
-		Assert.assertFalse(new File("foo" + File.separator + "Bar.hbm.xml").exists());
+		assertTrue(hbmXmlFiles.length == 0);
+		assertFalse(new File("foo" + File.separator + "Bar.hbm.xml").exists());
 		Map<String, Object> additionalContext = new HashMap<String, Object>();
 		Cfg2HbmTool c2h = new Cfg2HbmTool();
 		additionalContext.put("date", new Date().toString());
@@ -85,9 +90,9 @@ public class HibernateMappingExporterExtensionTest {
 		additionalContext.put("c2h", c2h);
 		hibernateMappingExporterExtension.superExportPOJO(additionalContext, pojoClass);
 		hbmXmlFiles = artifactCollector.getFiles("hbm.xml");
-		Assert.assertTrue(hbmXmlFiles.length == 1);
-		Assert.assertEquals("foo" + File.separator + "Bar.hbm.xml", hbmXmlFiles[0].getPath());
-		Assert.assertTrue(new File("foo" + File.separator + "Bar.hbm.xml").exists());
+		assertTrue(hbmXmlFiles.length == 1);
+		assertEquals("foo" + File.separator + "Bar.hbm.xml", hbmXmlFiles[0].getPath());
+		assertTrue(new File("foo" + File.separator + "Bar.hbm.xml").exists());
 	}
 	
 	@Test
@@ -96,8 +101,8 @@ public class HibernateMappingExporterExtensionTest {
 		ArtifactCollector artifactCollector = new ArtifactCollector();
 		hibernateMappingExporterExtension.setArtifactCollector(artifactCollector);
 		File[] hbmXmlFiles = artifactCollector.getFiles("hbm.xml");
-		Assert.assertTrue(hbmXmlFiles.length == 0);
-		Assert.assertFalse(new File("foo" + File.separator + "Bar.hbm.xml").exists());
+		assertTrue(hbmXmlFiles.length == 0);
+		assertFalse(new File("foo" + File.separator + "Bar.hbm.xml").exists());
 		Map<Object, Object> additionalContext = new HashMap<Object, Object>();
 		Cfg2HbmTool c2h = new Cfg2HbmTool();
 		additionalContext.put("date", new Date().toString());
@@ -105,28 +110,28 @@ public class HibernateMappingExporterExtensionTest {
 		additionalContext.put("c2h", c2h);
 		hibernateMappingExporterExtension.exportPOJO(additionalContext, pojoClass);
 		hbmXmlFiles = artifactCollector.getFiles("hbm.xml");
-		Assert.assertTrue(hbmXmlFiles.length == 1);
-		Assert.assertEquals("foo" + File.separator + "Bar.hbm.xml", hbmXmlFiles[0].getPath());
-		Assert.assertTrue(new File("foo" + File.separator + "Bar.hbm.xml").exists());
-		Assert.assertNull(methodName);
-		Assert.assertNull(arguments);
+		assertTrue(hbmXmlFiles.length == 1);
+		assertEquals("foo" + File.separator + "Bar.hbm.xml", hbmXmlFiles[0].getPath());
+		assertTrue(new File("foo" + File.separator + "Bar.hbm.xml").exists());
+		assertNull(methodName);
+		assertNull(arguments);
 		// then with a delegate exporter
 		artifactCollector = new ArtifactCollector();
 		hibernateMappingExporterExtension.setArtifactCollector(artifactCollector);
 		hbmXmlFiles = artifactCollector.getFiles("hbm.xml");
-		Assert.assertTrue(hbmXmlFiles.length == 0);
+		assertTrue(hbmXmlFiles.length == 0);
 		Field delegateField = HibernateMappingExporterExtension.class.getDeclaredField("delegateExporter");
 		delegateField.setAccessible(true);
 		delegateField.set(hibernateMappingExporterExtension, exportPojoDelegate);
 		hibernateMappingExporterExtension.exportPOJO(additionalContext, pojoClass);
-		Assert.assertTrue(hbmXmlFiles.length == 0);
-		Assert.assertEquals("exportPOJO", methodName);
-		Assert.assertSame(additionalContext, arguments[0]);
-		Assert.assertSame(pojoClass, ((IFacade)arguments[1]).getTarget());
+		assertTrue(hbmXmlFiles.length == 0);
+		assertEquals("exportPOJO", methodName);
+		assertSame(additionalContext, arguments[0]);
+		assertSame(pojoClass, ((IFacade)arguments[1]).getTarget());
 	}
 	
-	@After
-	public void tearDown() {
+	@AfterEach
+	public void afterEach() {
 		new File("foo" + File.separator + "Bar.hbm.xml").delete();
 		new File("foo").delete();
 	}
