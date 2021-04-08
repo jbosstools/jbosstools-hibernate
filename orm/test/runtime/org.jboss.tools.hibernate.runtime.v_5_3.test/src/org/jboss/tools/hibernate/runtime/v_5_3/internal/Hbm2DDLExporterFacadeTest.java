@@ -1,14 +1,16 @@
 package org.jboss.tools.hibernate.runtime.v_5_3.internal;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.lang.reflect.Method;
 
 import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.common.AbstractHbm2DDLExporterFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javassist.util.proxy.MethodHandler;
 import javassist.util.proxy.ProxyFactory;
@@ -25,7 +27,7 @@ public class Hbm2DDLExporterFacadeTest {
 	private String methodName = null;
 	private Object[] arguments = null;
 	
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		ProxyFactory proxyFactory = new ProxyFactory();
 		proxyFactory.setSuperclass(Hbm2DDLExporter.class);
@@ -54,15 +56,15 @@ public class Hbm2DDLExporterFacadeTest {
 	@Test
 	public void testSetExport() {
 		hbm2DDLExporterFacade.setExport(true);
-		Assert.assertEquals("setExport", methodName);
-		Assert.assertArrayEquals(new Object[] { true }, arguments);
+		assertEquals("setExport", methodName);
+		assertArrayEquals(new Object[] { true }, arguments);
 	}
 	
 	@Test
 	public void testGetProperties() {
 		hbm2DDLExporterFacade.getProperties();
-		Assert.assertEquals("getProperties", methodName);
-		Assert.assertArrayEquals(new Object[] {}, arguments);
+		assertEquals("getProperties", methodName);
+		assertArrayEquals(new Object[] {}, arguments);
 	}
 	
 	private void reset() {
