@@ -1,5 +1,9 @@
 package org.jboss.tools.hibernate.runtime.v_5_2.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -9,10 +13,8 @@ import org.hibernate.type.ShortType;
 import org.jboss.tools.hibernate.runtime.common.AbstractCollectionMetadataFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class CollectionMetadataFacadeTest {
 
@@ -23,8 +25,8 @@ public class CollectionMetadataFacadeTest {
 
 	private ICollectionMetadata collectionMetadata = null; 
 	
-	@Before
-	public void setUp() {
+	@BeforeEach
+	public void beforeEach() {
 		CollectionMetadata target = (CollectionMetadata)Proxy.newProxyInstance(
 				FACADE_FACTORY.getClassLoader(), 
 				new Class[] { CollectionMetadata.class }, 
@@ -34,13 +36,13 @@ public class CollectionMetadataFacadeTest {
 	
 	@Test
 	public void testGetElementType() {
-		Assert.assertNotNull(collectionMetadata.getElementType());
-		Assert.assertEquals("getElementType", methodName);
-		Assert.assertNull(arguments);
+		assertNotNull(collectionMetadata.getElementType());
+		assertEquals("getElementType", methodName);
+		assertNull(arguments);
 		methodName = null;
-		Assert.assertNotNull(collectionMetadata.getElementType());
-		Assert.assertNull(methodName);
-		Assert.assertNull(arguments);
+		assertNotNull(collectionMetadata.getElementType());
+		assertNull(methodName);
+		assertNull(arguments);
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
