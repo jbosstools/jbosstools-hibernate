@@ -158,7 +158,7 @@ public class ServiceImpl extends AbstractService {
 		Exporter exporter = (Exporter)Util.getInstance(
 				exporterClassName, 
 				facadeFactory.getClassLoader());
-		if (CfgExporter.class.getName().equals(exporterClassName)) {
+		if (CfgExporter.class.isAssignableFrom(exporter.getClass())) {
 			exporter.getProperties().put(
 					ExporterConstants.METADATA_DESCRIPTOR, 
 					new DummyMetadataDescriptor());
