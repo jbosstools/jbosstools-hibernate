@@ -1,5 +1,9 @@
 package org.jboss.tools.hibernate.runtime.v_5_2.internal;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -8,10 +12,8 @@ import org.hibernate.Criteria;
 import org.jboss.tools.hibernate.runtime.common.AbstractCriteriaFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class CriteriaFacadeTest {
 
@@ -23,8 +25,8 @@ public class CriteriaFacadeTest {
 	private String methodName = null;
 	private Object[] arguments = null;
 	
-	@Before
-	public void setUp() throws Exception {
+	@BeforeEach
+	public void beforeEach() throws Exception {
 		criteria = (Criteria)Proxy.newProxyInstance(
 				FACADE_FACTORY.getClassLoader(), 
 				new Class[] { Criteria.class }, 
@@ -35,15 +37,15 @@ public class CriteriaFacadeTest {
 	@Test
 	public void testSetMaxResults()  {
 		criteriaFacade.setMaxResults(Integer.MAX_VALUE);
-		Assert.assertEquals("setMaxResults", methodName);
-		Assert.assertArrayEquals(new Object[] { Integer.MAX_VALUE }, arguments);
+		assertEquals("setMaxResults", methodName);
+		assertArrayEquals(new Object[] { Integer.MAX_VALUE }, arguments);
 	}
 	
 	@Test
 	public void testList() {
-		Assert.assertNull(criteriaFacade.list());
-		Assert.assertEquals("list", methodName);
-		Assert.assertNull(arguments);
+		assertNull(criteriaFacade.list());
+		assertEquals("list", methodName);
+		assertNull(arguments);
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
