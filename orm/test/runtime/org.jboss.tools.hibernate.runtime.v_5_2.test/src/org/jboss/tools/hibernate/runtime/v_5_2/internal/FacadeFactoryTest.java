@@ -1,5 +1,10 @@
 package org.jboss.tools.hibernate.runtime.v_5_2.internal;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -95,27 +100,26 @@ import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class FacadeFactoryTest {
 
 	private FacadeFactoryImpl facadeFactory;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		facadeFactory = new FacadeFactoryImpl();
 	}
 	
 	@Test
 	public void testFacadeFactoryCreation() {
-		Assert.assertNotNull(facadeFactory);
+		assertNotNull(facadeFactory);
 	}
 	
 	@Test
 	public void testGetClassLoader() {
-		Assert.assertSame(
+		assertSame(
 				FacadeFactoryImpl.class.getClassLoader(), 
 				facadeFactory.getClassLoader());
 	}
@@ -124,28 +128,28 @@ public class FacadeFactoryTest {
 	public void testCreateArtifactCollector() {
 		ArtifactCollector artifactCollector = new ArtifactCollector();
 		IArtifactCollector facade = facadeFactory.createArtifactCollector(artifactCollector);
-		Assert.assertSame(artifactCollector, ((IFacade)facade).getTarget());
+		assertSame(artifactCollector, ((IFacade)facade).getTarget());
 	}
 	
 	@Test
 	public void testCreateCfg2HbmTool() {
 		Cfg2HbmTool cfg2HbmTool = new Cfg2HbmTool();
 		ICfg2HbmTool facade = facadeFactory.createCfg2HbmTool(cfg2HbmTool);
-		Assert.assertSame(cfg2HbmTool,  ((IFacade)facade).getTarget());
+		assertSame(cfg2HbmTool,  ((IFacade)facade).getTarget());
 	}
 	
 	@Test
 	public void testCreateNamingStrategy() {
 		DefaultNamingStrategy namingStrategy = new DefaultNamingStrategy();
 		INamingStrategy facade = facadeFactory.createNamingStrategy(namingStrategy);
-		Assert.assertSame(namingStrategy, ((IFacade)facade).getTarget());
+		assertSame(namingStrategy, ((IFacade)facade).getTarget());
 	}
 	
 	@Test
 	public void testCreateReverseEngineeringSettings() {
 		ReverseEngineeringSettings res = new ReverseEngineeringSettings(null);
 		IReverseEngineeringSettings facade = facadeFactory.createReverseEngineeringSettings(res);
-		Assert.assertSame(res, ((IFacade)facade).getTarget());		
+		assertSame(res, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
@@ -155,14 +159,14 @@ public class FacadeFactoryTest {
 				new Class[] { ReverseEngineeringStrategy.class }, 
 				new TestInvocationHandler());
 		IReverseEngineeringStrategy facade = facadeFactory.createReverseEngineeringStrategy(res);
-		Assert.assertSame(res, ((IFacade)facade).getTarget());		
+		assertSame(res, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
 	public void testCreateOverrideRepository() {
 		OverrideRepository overrideRepository = new OverrideRepository();
 		IOverrideRepository facade = facadeFactory.createOverrideRepository(overrideRepository);
-		Assert.assertSame(overrideRepository, ((IFacade)facade).getTarget());		
+		assertSame(overrideRepository, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
@@ -171,36 +175,36 @@ public class FacadeFactoryTest {
 		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 		SchemaExport schemaExport = new SchemaExport();
 		ISchemaExport facade = facadeFactory.createSchemaExport(schemaExport);
-		Assert.assertTrue(facade instanceof SchemaExportFacadeImpl);
-		Assert.assertSame(schemaExport, ((IFacade)facade).getTarget());		
+		assertTrue(facade instanceof SchemaExportFacadeImpl);
+		assertSame(schemaExport, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
 	public void testCreateGenericExporter() {
 		GenericExporter genericExporter = new GenericExporter();
 		IGenericExporter facade = facadeFactory.createGenericExporter(genericExporter);
-		Assert.assertSame(genericExporter, ((IFacade)facade).getTarget());		
+		assertSame(genericExporter, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
 	public void testCreateHbm2DDLExporter() {
 		Hbm2DDLExporter hbm2ddlExporter = new Hbm2DDLExporter();
 		IHbm2DDLExporter facade = facadeFactory.createHbm2DDLExporter(hbm2ddlExporter);
-		Assert.assertSame(hbm2ddlExporter, ((IFacade)facade).getTarget());		
+		assertSame(hbm2ddlExporter, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
 	public void testCreateQueryExporter() {
 		QueryExporter queryExporter = new QueryExporter();
 		IQueryExporter facade = facadeFactory.createQueryExporter(queryExporter);
-		Assert.assertSame(queryExporter, ((IFacade)facade).getTarget());		
+		assertSame(queryExporter, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
 	public void testCreateTableFilter() {
 		TableFilter tableFilter = new TableFilter();
 		ITableFilter facade = facadeFactory.createTableFilter(tableFilter);
-		Assert.assertSame(tableFilter, ((IFacade)facade).getTarget());		
+		assertSame(tableFilter, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
@@ -210,7 +214,7 @@ public class FacadeFactoryTest {
 				new Class[] { Exporter.class }, 
 				new TestInvocationHandler());
 		IExporter facade = facadeFactory.createExporter(exporter);
-		Assert.assertSame(exporter, ((IFacade)facade).getTarget());		
+		assertSame(exporter, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
@@ -220,7 +224,7 @@ public class FacadeFactoryTest {
 				new Class[] { ClassMetadata.class }, 
 				new TestInvocationHandler());
 		IClassMetadata facade = facadeFactory.createClassMetadata(classMetadata);
-		Assert.assertSame(classMetadata, ((IFacade)facade).getTarget());		
+		assertSame(classMetadata, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
@@ -230,22 +234,22 @@ public class FacadeFactoryTest {
 				new Class[] { CollectionMetadata.class }, 
 				new TestInvocationHandler());
 		ICollectionMetadata facade = facadeFactory.createCollectionMetadata(collectionMetadata);
-		Assert.assertSame(collectionMetadata, ((IFacade)facade).getTarget());		
+		assertSame(collectionMetadata, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
 	public void testCreateColumn() {
 		Column column = new Column();
 		IColumn facade = facadeFactory.createColumn(column);
-		Assert.assertSame(column, ((IFacade)facade).getTarget());		
+		assertSame(column, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
 	public void testCreateConfiguration() {
 		Configuration configuration = new Configuration();
 		IConfiguration facade = facadeFactory.createConfiguration(configuration);
-		Assert.assertSame(configuration, ((IFacade)facade).getTarget());		
-		Assert.assertSame(ConfigurationFacadeImpl.class, facade.getClass());
+		assertSame(configuration, ((IFacade)facade).getTarget());		
+		assertSame(ConfigurationFacadeImpl.class, facade.getClass());
 	}
 	
 	@Test
@@ -255,7 +259,7 @@ public class FacadeFactoryTest {
 				new Class[] { Criteria.class }, 
 				new TestInvocationHandler());
 		ICriteria facade = facadeFactory.createCriteria(criteria);
-		Assert.assertSame(criteria, ((IFacade)facade).getTarget());		
+		assertSame(criteria, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
@@ -274,28 +278,28 @@ public class FacadeFactoryTest {
 		rc.setIdentifier(sv);
 		EntityMetamodel entityMetamodel = new EntityMetamodel(rc, null, sfi);
 		IEntityMetamodel facade = facadeFactory.createEntityMetamodel(entityMetamodel);
-		Assert.assertSame(entityMetamodel, ((IFacade)facade).getTarget());		
+		assertSame(entityMetamodel, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
 	public void testCreateEnvironment() {
 		IEnvironment environment = facadeFactory.createEnvironment();
-		Assert.assertNotNull(environment);
-		Assert.assertTrue(environment instanceof EnvironmentFacadeImpl);
+		assertNotNull(environment);
+		assertTrue(environment instanceof EnvironmentFacadeImpl);
 	}
 	
 	@Test
 	public void testCreateForeignKey() {
 		ForeignKey foreignKey = new ForeignKey();
 		IForeignKey facade = facadeFactory.createForeignKey(foreignKey);
-		Assert.assertSame(foreignKey, ((IFacade)facade).getTarget());		
+		assertSame(foreignKey, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
 	public void testCreateHibernateMappingExporter() {
 		HibernateMappingExporter hibernateMappingExporter = new HibernateMappingExporter();
 		IHibernateMappingExporter facade = facadeFactory.createHibernateMappingExporter(hibernateMappingExporter);
-		Assert.assertSame(hibernateMappingExporter, ((IFacade)facade).getTarget());		
+		assertSame(hibernateMappingExporter, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
@@ -304,14 +308,14 @@ public class FacadeFactoryTest {
 		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 		HQLCodeAssist hqlCodeAssist = new HQLCodeAssist(configuration);
 		IHQLCodeAssist facade = facadeFactory.createHQLCodeAssist(hqlCodeAssist);
-		Assert.assertSame(hqlCodeAssist, ((IFacade)facade).getTarget());		
+		assertSame(hqlCodeAssist, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
 	public void testCreateHQLCompletionProposal() {
 		HQLCompletionProposal hqlCompletionProposal = new HQLCompletionProposal(0, 0);
 		IHQLCompletionProposal facade = facadeFactory.createHQLCompletionProposal(hqlCompletionProposal);
-		Assert.assertSame(hqlCompletionProposal, ((IFacade)facade).getTarget());		
+		assertSame(hqlCompletionProposal, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
@@ -368,21 +372,21 @@ public class FacadeFactoryTest {
 		Map<String, Filter> filters = Collections.emptyMap();
 		HQLQueryPlan hqlQueryPlan = new HQLQueryPlan("from foo", false, filters, sfi);
 		IHQLQueryPlan facade = facadeFactory.createHQLQueryPlan(hqlQueryPlan);
-		Assert.assertSame(hqlQueryPlan, ((IFacade)facade).getTarget());		
+		assertSame(hqlQueryPlan, ((IFacade)facade).getTarget());		
 	}
 
 	@Test
 	public void testCreateJoin() {
 		Join join = new Join();
 		IJoin facade = facadeFactory.createJoin(join);
-		Assert.assertSame(join, ((IFacade)facade).getTarget());		
+		assertSame(join, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
 	public void testCreatePersistentClass() {
 		PersistentClass persistentClass = new RootClass(null);
 		IPersistentClass facade = facadeFactory.createPersistentClass(persistentClass);
-		Assert.assertSame(persistentClass, ((IFacade)facade).getTarget());
+		assertSame(persistentClass, ((IFacade)facade).getTarget());
 	}
 	
 	@Test
@@ -392,21 +396,21 @@ public class FacadeFactoryTest {
 				new Class[] { POJOClass.class }, 
 				new TestInvocationHandler());
 		IPOJOClass facade = facadeFactory.createPOJOClass(pojoClass);
-		Assert.assertSame(pojoClass, ((IFacade)facade).getTarget());
+		assertSame(pojoClass, ((IFacade)facade).getTarget());
 	}
 	
 	@Test
 	public void testCreatePrimaryKey() {
 		PrimaryKey primaryKey = new PrimaryKey(null);
 		IPrimaryKey facade = facadeFactory.createPrimaryKey(primaryKey);
-		Assert.assertSame(primaryKey, ((IFacade)facade).getTarget());
+		assertSame(primaryKey, ((IFacade)facade).getTarget());
 	}
 	
 	@Test
 	public void testCreateProperty() {
 		Property property = new Property();
 		IProperty facade = facadeFactory.createProperty(property);
-		Assert.assertSame(property, ((IFacade)facade).getTarget());
+		assertSame(property, ((IFacade)facade).getTarget());
 	}
 	
 	@Test
@@ -416,7 +420,7 @@ public class FacadeFactoryTest {
 				new Class[] { Query.class }, 
 				new TestInvocationHandler());
 		IQuery facade = facadeFactory.createQuery(query);
-		Assert.assertSame(query, ((IFacade)facade).getTarget());
+		assertSame(query, ((IFacade)facade).getTarget());
 	}
 	
 	@Test
@@ -426,7 +430,7 @@ public class FacadeFactoryTest {
 				new Class[] { QueryTranslator.class }, 
 				new TestInvocationHandler());
 		IQueryTranslator facade = facadeFactory.createQueryTranslator(queryTranslator);
-		Assert.assertSame(queryTranslator, ((IFacade)facade).getTarget());
+		assertSame(queryTranslator, ((IFacade)facade).getTarget());
 	}
 	
 	@Test
@@ -436,8 +440,8 @@ public class FacadeFactoryTest {
 				new Class[] { SessionFactory.class }, 
 				new TestInvocationHandler());
 		ISessionFactory facade = facadeFactory.createSessionFactory(sessionFactory);
-		Assert.assertSame(sessionFactory, ((IFacade)facade).getTarget());
-		Assert.assertTrue(SessionFactoryFacadeImpl.class.isInstance(facade));
+		assertSame(sessionFactory, ((IFacade)facade).getTarget());
+		assertTrue(SessionFactoryFacadeImpl.class.isInstance(facade));
 	}
 	
 	@Test
@@ -447,7 +451,7 @@ public class FacadeFactoryTest {
 				new Class[] { Session.class }, 
 				new TestInvocationHandler());
 		ISession facade = facadeFactory.createSession(session);
-		Assert.assertSame(session, ((IFacade)facade).getTarget());
+		assertSame(session, ((IFacade)facade).getTarget());
 	}
 	
 	@Test
@@ -457,25 +461,25 @@ public class FacadeFactoryTest {
 		target.setPersistentClass(pc);
 		IProperty property = facadeFactory.createProperty(target);
 		IPersistentClass specialRootClass = facadeFactory.createSpecialRootClass(property);
-		Assert.assertNotNull(specialRootClass);
+		assertNotNull(specialRootClass);
 		Object object = ((IFacade)specialRootClass).getTarget();
-		Assert.assertNotNull(object);
-		Assert.assertTrue(object instanceof RootClass);
-		Assert.assertSame(property, specialRootClass.getProperty());
+		assertNotNull(object);
+		assertTrue(object instanceof RootClass);
+		assertSame(property, specialRootClass.getProperty());
 	}
 	
 	@Test
 	public void testCreateTable() {
 		Table table = new Table();
 		ITable facade = facadeFactory.createTable(table);
-		Assert.assertSame(table, ((IFacade)facade).getTarget());
+		assertSame(table, ((IFacade)facade).getTarget());
 	}
 	
 	@Test
 	public void testCreateTypeFactory() {
 		ITypeFactory facade = facadeFactory.createTypeFactory();
-		Assert.assertNotNull(facade);
-		Assert.assertNull(((IFacade)facade).getTarget());
+		assertNotNull(facade);
+		assertNull(((IFacade)facade).getTarget());
 	}
 	
 	@Test
@@ -485,7 +489,7 @@ public class FacadeFactoryTest {
 				new Class[] { Type.class }, 
 				new TestInvocationHandler());
 		IType facade = facadeFactory.createType(type);
-		Assert.assertSame(type, ((IFacade)facade).getTarget());
+		assertSame(type, ((IFacade)facade).getTarget());
 	}
 	
 	@Test
@@ -495,7 +499,7 @@ public class FacadeFactoryTest {
 				new Class[] { Value.class }, 
 				new TestInvocationHandler());
 		IValue facade = facadeFactory.createValue(value);
-		Assert.assertSame(value, ((IFacade)facade).getTarget());
+		assertSame(value, ((IFacade)facade).getTarget());
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
