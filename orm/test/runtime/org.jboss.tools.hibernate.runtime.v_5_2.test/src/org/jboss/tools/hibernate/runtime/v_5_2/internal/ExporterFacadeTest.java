@@ -1,5 +1,11 @@
 package org.jboss.tools.hibernate.runtime.v_5_2.internal;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.StringWriter;
@@ -27,10 +33,8 @@ import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class ExporterFacadeTest {
 
@@ -42,8 +46,8 @@ public class ExporterFacadeTest {
 	private String methodName = null;
 	private Object[] arguments = null;
 	
-	@Before
-	public void setUp() throws Exception {
+	@BeforeEach
+	public void beforeEach() throws Exception {
 		exporter = (Exporter)Proxy.newProxyInstance(
 				FACADE_FACTORY.getClassLoader(), 
 				new Class[] { Exporter.class }, 
@@ -56,8 +60,8 @@ public class ExporterFacadeTest {
 		Configuration cfg = new Configuration();
 		IConfiguration configuration = new AbstractConfigurationFacade(FACADE_FACTORY, cfg) {};
 		exporterFacade.setConfiguration(configuration);
-		Assert.assertEquals("setConfiguration", methodName);
-		Assert.assertArrayEquals(new Object[] { cfg }, arguments);
+		assertEquals("setConfiguration", methodName);
+		assertArrayEquals(new Object[] { cfg }, arguments);
 	}
 	
 	@Test
@@ -65,24 +69,24 @@ public class ExporterFacadeTest {
 		ArtifactCollector ac = new ArtifactCollector();
 		IArtifactCollector artifactCollector = new AbstractArtifactCollectorFacade(FACADE_FACTORY, ac) {};
 		exporterFacade.setArtifactCollector(artifactCollector);
-		Assert.assertEquals("setArtifactCollector", methodName);
-		Assert.assertArrayEquals(new Object[] { ac }, arguments);
+		assertEquals("setArtifactCollector", methodName);
+		assertArrayEquals(new Object[] { ac }, arguments);
 	}
 	
 	@Test
 	public void testSetOutputDirectory() {
 		File file = new File("");
 		exporterFacade.setOutputDirectory(file);
-		Assert.assertEquals("setOutputDirectory", methodName);
-		Assert.assertArrayEquals(new Object[] { file }, arguments);
+		assertEquals("setOutputDirectory", methodName);
+		assertArrayEquals(new Object[] { file }, arguments);
 	}
 	
 	@Test
 	public void testSetTemplatePath() {
 		String[] templatePath = new String[] {};
 		exporterFacade.setTemplatePath(templatePath);
-		Assert.assertEquals("setTemplatePath", methodName);
-		Assert.assertArrayEquals(new Object[] { templatePath }, arguments);
+		assertEquals("setTemplatePath", methodName);
+		assertArrayEquals(new Object[] { templatePath }, arguments);
 	}
 	
 	@Test
@@ -103,47 +107,47 @@ public class ExporterFacadeTest {
 		exporter.setArtifactCollector(artifactCollector);
 		exporterFacade = new AbstractExporterFacade(FACADE_FACTORY, exporter) {};
 		exporterFacade.start();
-		Assert.assertEquals("start", methodName);
+		assertEquals("start", methodName);
 	}
 	
 	@Test
 	public void testGetProperties() {
-		Assert.assertNull(exporterFacade.getProperties());
-		Assert.assertEquals("getProperties", methodName);
-		Assert.assertNull(arguments);
+		assertNull(exporterFacade.getProperties());
+		assertEquals("getProperties", methodName);
+		assertNull(arguments);
 	}
 	
 	@Test
 	public void testGetGenericExporter() {
 		IGenericExporter genericExporter = exporterFacade.getGenericExporter();
-		Assert.assertNull(genericExporter);
+		assertNull(genericExporter);
 		exporter = new GenericExporter();
 		exporterFacade = new AbstractExporterFacade(FACADE_FACTORY, exporter) {};
 		genericExporter = exporterFacade.getGenericExporter();
-		Assert.assertNotNull(genericExporter);
-		Assert.assertSame(exporter, ((IFacade)genericExporter).getTarget());
+		assertNotNull(genericExporter);
+		assertSame(exporter, ((IFacade)genericExporter).getTarget());
 	}
 	
 	@Test
 	public void testGetHbm2DDLExporter() {
 		IHbm2DDLExporter hbm2DDLExporter = exporterFacade.getHbm2DDLExporter();
-		Assert.assertNull(hbm2DDLExporter);
+		assertNull(hbm2DDLExporter);
 		exporter = new Hbm2DDLExporter();
 		exporterFacade = new AbstractExporterFacade(FACADE_FACTORY, exporter) {};
 		hbm2DDLExporter = exporterFacade.getHbm2DDLExporter();
-		Assert.assertNotNull(hbm2DDLExporter);
-		Assert.assertSame(exporter, ((IFacade)hbm2DDLExporter).getTarget());
+		assertNotNull(hbm2DDLExporter);
+		assertSame(exporter, ((IFacade)hbm2DDLExporter).getTarget());
 	}
 	
 	@Test
 	public void testGetQueryExporter() {
 		IQueryExporter queryExporter = exporterFacade.getQueryExporter();
-		Assert.assertNull(queryExporter);
+		assertNull(queryExporter);
 		exporter = new QueryExporter();
 		exporterFacade = new AbstractExporterFacade(FACADE_FACTORY, exporter) {};
 		queryExporter = exporterFacade.getQueryExporter();
-		Assert.assertNotNull(queryExporter);
-		Assert.assertSame(exporter, ((IFacade)queryExporter).getTarget());
+		assertNotNull(queryExporter);
+		assertSame(exporter, ((IFacade)queryExporter).getTarget());
 	}
 	
 	@Test
@@ -155,7 +159,7 @@ public class ExporterFacadeTest {
 		exporter = new HibernateConfigurationExporter();
 		exporterFacade = FACADE_FACTORY.createExporter(exporter);
 		exporterFacade.setCustomProperties(properties);
-		Assert.assertSame(properties, ((HibernateConfigurationExporter)exporter).getCustomProperties());
+		assertSame(properties, ((HibernateConfigurationExporter)exporter).getCustomProperties());
 	}
 	
 	@Test
@@ -167,7 +171,7 @@ public class ExporterFacadeTest {
 		exporter = new HibernateConfigurationExporter();
 		exporterFacade = FACADE_FACTORY.createExporter(exporter);
 		exporterFacade.setOutput(stringWriter);
-		Assert.assertSame(stringWriter, ((HibernateConfigurationExporter)exporter).getOutput());
+		assertSame(stringWriter, ((HibernateConfigurationExporter)exporter).getOutput());
 	}
 		
 	private class TestInvocationHandler implements InvocationHandler {
