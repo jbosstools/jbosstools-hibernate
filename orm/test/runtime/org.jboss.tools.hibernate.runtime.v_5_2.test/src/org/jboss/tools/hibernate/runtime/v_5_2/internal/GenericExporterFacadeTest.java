@@ -1,14 +1,16 @@
 package org.jboss.tools.hibernate.runtime.v_5_2.internal;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.lang.reflect.Method;
 
 import org.hibernate.tool.hbm2x.GenericExporter;
 import org.jboss.tools.hibernate.runtime.common.AbstractGenericExporterFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javassist.util.proxy.MethodHandler;
 import javassist.util.proxy.ProxyFactory;
@@ -25,7 +27,7 @@ public class GenericExporterFacadeTest {
 	private String methodName = null;
 	private Object[] arguments = null;
 	
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		ProxyFactory proxyFactory = new ProxyFactory();
 		proxyFactory.setSuperclass(GenericExporter.class);
@@ -54,48 +56,48 @@ public class GenericExporterFacadeTest {
 	@Test
 	public void testSetFilePattern() {
 		genericExporter.setFilePattern("barfoo");
-		Assert.assertEquals("barfoo", genericExporter.getFilePattern());
+		assertEquals("barfoo", genericExporter.getFilePattern());
 		reset();
 		genericExporterFacade.setFilePattern("foobar");
-		Assert.assertEquals("setFilePattern", methodName);
-		Assert.assertArrayEquals(new Object[] { "foobar" }, arguments);
-		Assert.assertEquals("foobar", genericExporter.getFilePattern());
+		assertEquals("setFilePattern", methodName);
+		assertArrayEquals(new Object[] { "foobar" }, arguments);
+		assertEquals("foobar", genericExporter.getFilePattern());
 	}
 	
 	@Test
 	public void testSetTemplate() {
 		genericExporter.setTemplateName("barfoo");
-		Assert.assertEquals("barfoo", genericExporter.getTemplateName());
+		assertEquals("barfoo", genericExporter.getTemplateName());
 		reset();
 		genericExporterFacade.setTemplateName("foobar");
-		Assert.assertEquals("setTemplateName", methodName);
-		Assert.assertArrayEquals(new Object[] { "foobar" }, arguments);
-		Assert.assertEquals("foobar", genericExporter.getTemplateName());
+		assertEquals("setTemplateName", methodName);
+		assertArrayEquals(new Object[] { "foobar" }, arguments);
+		assertEquals("foobar", genericExporter.getTemplateName());
 	}
 	
 	@Test
 	public void testSetForEach() {
 		genericExporterFacade.setForEach("foobar");
-		Assert.assertEquals("setForEach", methodName);
-		Assert.assertArrayEquals(new Object[] { "foobar" }, arguments);
+		assertEquals("setForEach", methodName);
+		assertArrayEquals(new Object[] { "foobar" }, arguments);
 	}
 	
 	@Test
 	public void testGetFilePattern() {
 		genericExporter.setFilePattern("foobar");
 		reset();
-		Assert.assertEquals("foobar", genericExporterFacade.getFilePattern());
-		Assert.assertEquals("getFilePattern", methodName);
-		Assert.assertArrayEquals(new Object[] {}, arguments);
+		assertEquals("foobar", genericExporterFacade.getFilePattern());
+		assertEquals("getFilePattern", methodName);
+		assertArrayEquals(new Object[] {}, arguments);
 	}
 	
 	@Test
 	public void testGetTemplateName() {
 		genericExporter.setTemplateName("foobar");
 		reset();
-		Assert.assertEquals("foobar", genericExporterFacade.getTemplateName());
-		Assert.assertEquals("getTemplateName", methodName);
-		Assert.assertArrayEquals(new Object[] {}, arguments);
+		assertEquals("foobar", genericExporterFacade.getTemplateName());
+		assertEquals("getTemplateName", methodName);
+		assertArrayEquals(new Object[] {}, arguments);
 	}
 	
 	private void reset() {
