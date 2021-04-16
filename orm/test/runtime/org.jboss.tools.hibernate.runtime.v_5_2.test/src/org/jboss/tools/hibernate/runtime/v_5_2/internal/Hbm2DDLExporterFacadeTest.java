@@ -1,5 +1,9 @@
 package org.jboss.tools.hibernate.runtime.v_5_2.internal;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+
 import java.lang.reflect.Method;
 import java.util.Hashtable;
 import java.util.Properties;
@@ -8,9 +12,8 @@ import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.common.AbstractHbm2DDLExporterFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javassist.util.proxy.MethodHandler;
 import javassist.util.proxy.ProxyFactory;
@@ -27,8 +30,8 @@ public class Hbm2DDLExporterFacadeTest {
 	private String methodName = null;
 	private Object[] arguments = null;
 	
-	@Before
-	public void setUp() throws Exception {
+	@BeforeEach
+	public void beforeEach() throws Exception {
 		ProxyFactory proxyFactory = new ProxyFactory();
 		proxyFactory.setSuperclass(Hbm2DDLExporter.class);
 		Class<?> proxyClass = proxyFactory.createClass();
@@ -56,8 +59,8 @@ public class Hbm2DDLExporterFacadeTest {
 	@Test
 	public void testSetExport() {
 		hbm2DDLExporterFacade.setExport(true);
-		Assert.assertEquals("setExport", methodName);
-		Assert.assertArrayEquals(new Object[] { true }, arguments);
+		assertEquals("setExport", methodName);
+		assertArrayEquals(new Object[] { true }, arguments);
 	}
 	
 	@Test
@@ -66,9 +69,9 @@ public class Hbm2DDLExporterFacadeTest {
 		hbm2ddlExporter.setProperties((Properties)first);
 		reset();
 		Hashtable<Object, Object> second = hbm2DDLExporterFacade.getProperties();
-		Assert.assertEquals("getProperties", methodName);
-		Assert.assertArrayEquals(new Object[] {}, arguments);
-		Assert.assertSame(first, second);
+		assertEquals("getProperties", methodName);
+		assertArrayEquals(new Object[] {}, arguments);
+		assertSame(first, second);
 	}
 	
 	private void reset() {
