@@ -1,5 +1,8 @@
 package org.jboss.tools.hibernate.runtime.v_5_2.internal;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.File;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -12,11 +15,9 @@ import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.HibernateException;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 public class SchemaExportFacadeTest {
 
@@ -36,16 +37,15 @@ public class SchemaExportFacadeTest {
 	
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 	
-	@Rule
-	public TemporaryFolder temporaryFolder = new TemporaryFolder();
+	@TempDir
+	public File tempDir = new File("tempDir");
 	
 	private File fooFile;
 	private Configuration configuration;
 	
-	@Before
-	public void before() throws Exception {
-		File folder = temporaryFolder.getRoot();
-		fooFile = new File(folder, "foo.hbm.xml");
+	@BeforeEach
+	public void beforeEach() throws Exception {
+		fooFile = new File(tempDir, "foo.hbm.xml");
 		PrintWriter fooWriter = new PrintWriter(fooFile);
 		fooWriter.write(FOO_HBM_XML_STRING);
 		fooWriter.close();
@@ -64,9 +64,9 @@ public class SchemaExportFacadeTest {
 		SchemaExportFacadeImpl schemaExportFacade = 
 				new SchemaExportFacadeImpl(FACADE_FACTORY, schemaExport);
 		schemaExportFacade.setConfiguration(configurationFacade);
-		Assert.assertFalse(connection.getMetaData().getTables(null, null, "FOO", null).next());
+		assertFalse(connection.getMetaData().getTables(null, null, "FOO", null).next());
 		schemaExportFacade.create();
-		Assert.assertTrue(connection.getMetaData().getTables(null, null, "FOO", null).next());
+		assertTrue(connection.getMetaData().getTables(null, null, "FOO", null).next());
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -75,9 +75,9 @@ public class SchemaExportFacadeTest {
 		SchemaExport schemaExport = new SchemaExport();
 		ISchemaExport schemaExportFacade = 
 				new SchemaExportFacadeImpl(FACADE_FACTORY, schemaExport);
-		Assert.assertTrue(schemaExportFacade.getExceptions().isEmpty());
+		assertTrue(schemaExportFacade.getExceptions().isEmpty());
 		schemaExport.getExceptions().add(new HibernateException("blah"));
-		Assert.assertFalse(schemaExportFacade.getExceptions().isEmpty());
+		assertFalse(schemaExportFacade.getExceptions().isEmpty());
 	}
 
 }
