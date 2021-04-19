@@ -1,5 +1,10 @@
 package org.jboss.tools.hibernate.runtime.v_5_2.internal;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.Map;
 
 import javax.persistence.EntityManagerFactory;
@@ -19,8 +24,7 @@ import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.v_5_2.internal.test.Foo;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class SessionFactoryFacadeTest {
 
@@ -35,9 +39,9 @@ public class SessionFactoryFacadeTest {
 		sessionFactory.openSession();
 		ISessionFactory sessionFactoryFacade = 
 				FACADE_FACTORY.createSessionFactory(sessionFactory);
-		Assert.assertFalse(sessionFactory.isClosed());
+		assertFalse(sessionFactory.isClosed());
 		sessionFactoryFacade.close();
-		Assert.assertTrue(sessionFactory.isClosed());
+		assertTrue(sessionFactory.isClosed());
 	}
 	
 	@Test
@@ -48,7 +52,7 @@ public class SessionFactoryFacadeTest {
 						new StandardServiceRegistryBuilder().build());
 		ISessionFactory sessionFactoryFacade = 
 				FACADE_FACTORY.createSessionFactory(sessionFactory);
-		Assert.assertTrue(sessionFactoryFacade.getAllClassMetadata().isEmpty());
+		assertTrue(sessionFactoryFacade.getAllClassMetadata().isEmpty());
 		sessionFactory.close();
 		configuration.addClass(Foo.class);
 		sessionFactory = 
@@ -58,7 +62,7 @@ public class SessionFactoryFacadeTest {
 				FACADE_FACTORY.createSessionFactory(sessionFactory);
 		Map<String, IClassMetadata> allClassMetaData = 
 				sessionFactoryFacade.getAllClassMetadata();
-		Assert.assertNotNull(
+		assertNotNull(
 				allClassMetaData.get(
 						"org.jboss.tools.hibernate.runtime.v_5_2.internal.test.Foo"));
 	}
@@ -71,7 +75,7 @@ public class SessionFactoryFacadeTest {
 						new StandardServiceRegistryBuilder().build());
 		ISessionFactory sessionFactoryFacade = 
 				FACADE_FACTORY.createSessionFactory(sessionFactory);
-		Assert.assertTrue(sessionFactoryFacade.getAllCollectionMetadata().isEmpty());
+		assertTrue(sessionFactoryFacade.getAllCollectionMetadata().isEmpty());
 		sessionFactory.close();
 		configuration.addClass(Foo.class);
 		sessionFactory = 
@@ -81,7 +85,7 @@ public class SessionFactoryFacadeTest {
 				FACADE_FACTORY.createSessionFactory(sessionFactory);
 		Map<String, ICollectionMetadata> allCollectionMetaData = 
 				sessionFactoryFacade.getAllCollectionMetadata();
-		Assert.assertNotNull(
+		assertNotNull(
 				allCollectionMetaData.get(
 						"org.jboss.tools.hibernate.runtime.v_5_2.internal.test.Foo.bars"));
 	}
@@ -96,7 +100,7 @@ public class SessionFactoryFacadeTest {
 				FACADE_FACTORY.createSessionFactory(sessionFactory);
 		ISession sessionFacade = sessionFactoryFacade.openSession();
 		Session session = (Session)((IFacade)sessionFacade).getTarget();
-		Assert.assertSame(sessionFactory, session.getSessionFactory());
+		assertSame(sessionFactory, session.getSessionFactory());
 	}
 	
 	@Test
@@ -110,10 +114,10 @@ public class SessionFactoryFacadeTest {
 		ClassMetadata classMetadata = (ClassMetadata)((MetamodelImplementor)metamodel).entityPersister(Foo.class);
 		ISessionFactory sessionFactoryFacade = 
 				FACADE_FACTORY.createSessionFactory(sessionFactory);
-		Assert.assertSame(
+		assertSame(
 				classMetadata, 
 				((IFacade)sessionFactoryFacade.getClassMetadata(Foo.class)).getTarget());
-		Assert.assertSame(
+		assertSame(
 				classMetadata, 
 				((IFacade)sessionFactoryFacade.getClassMetadata(
 						"org.jboss.tools.hibernate.runtime.v_5_2.internal.test.Foo"))
@@ -132,7 +136,7 @@ public class SessionFactoryFacadeTest {
 		Metamodel metamodel = ((EntityManagerFactory)sessionFactory).getMetamodel();	
 		CollectionMetadata collectionMetadata = (CollectionMetadata)((MetamodelImplementor)metamodel)
 				.collectionPersister("org.jboss.tools.hibernate.runtime.v_5_2.internal.test.Foo.bars");
-		Assert.assertSame(
+		assertSame(
 				collectionMetadata, 
 				((IFacade)sessionFactoryFacade.getCollectionMetadata(
 						"org.jboss.tools.hibernate.runtime.v_5_2.internal.test.Foo.bars"))
