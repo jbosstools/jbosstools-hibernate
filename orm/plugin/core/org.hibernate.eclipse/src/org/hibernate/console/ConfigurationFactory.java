@@ -120,7 +120,7 @@ public class ConfigurationFactory {
 		}
 		// TODO: HBX-
 		localCfg.setProperty("hibernate.temp.use_jdbc_metadata_defaults", "false"); //$NON-NLS-1$//$NON-NLS-2$
-		localCfg.setProperty(environment.getHBM2DDLAuto(), "false"); //$NON-NLS-1$
+		localCfg.setProperty(environment.getHBM2DDLAuto(), "none"); //$NON-NLS-1$
 		// to fix: JBIDE-5839 & JBIDE-5997 - setup this property: false is default value
 		// to make hibernate tools diff hibernate versions compatible:
 		// if the property not set get NoSuchMethodError with FullTextIndexEventListener
