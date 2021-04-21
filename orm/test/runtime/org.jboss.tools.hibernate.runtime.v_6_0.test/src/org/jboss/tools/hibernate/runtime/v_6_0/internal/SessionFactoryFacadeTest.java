@@ -7,48 +7,90 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.spi.SessionFactoryDelegatingImpl;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
-import org.hibernate.metadata.ClassMetadata;
-import org.hibernate.metadata.CollectionMetadata;
 import org.jboss.tools.hibernate.runtime.common.AbstractSessionFactoryFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
+import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 public class SessionFactoryFacadeTest {
 	
+	public static class TestDialect extends Dialect {
+		@Override public int getVersion() { return 0; }		
+	}
+	
+	private static final String TEST_CFG_XML_STRING =
+			"<hibernate-configuration>" +
+			"  <session-factory name='bar'>" + 
+			"    <property name='hibernate.dialect'>" + TestDialect.class.getName() + "</property>" +
+			"  </session-factory>" +
+			"</hibernate-configuration>";
+	
+	private static final String TEST_HBM_XML_STRING =
+			"<hibernate-mapping package='org.jboss.tools.hibernate.runtime.v_6_0.internal'>" +
+			"  <class name='SessionFactoryFacadeTest$Foo'>" + 
+			"    <id name='id' access='field' />" +
+			"    <set name='bars' access='field' >" +
+			"      <key column='barId' />" +
+			"      <element column='barVal' type='string' />" +
+			"    </set>" +
+			"  </class>" +
+			"</hibernate-mapping>";
+	
+	static class Foo {
+		public String id;
+		public Set<String> bars = new HashSet<String>();
+	}
+	
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 	
-	private TestSessionFactory sessionFactoryTarget = null;
-	private SessionFactoryFacadeImpl sessionFactoryFacade = null;
-		
+	@TempDir
+	public File tempDir = new File("tempDir");
+	
+	private SessionFactory sessionFactoryTarget = null;
+	private ISessionFactory sessionFactoryFacade = null;
+	
 	@BeforeEach
-	public void before() {
-		sessionFactoryTarget = new TestSessionFactory();
+	public void beforeEach() throws Exception {
+		File cfgXmlFile = new File(tempDir, "hibernate.cfg.xml");
+		FileWriter fileWriter = new FileWriter(cfgXmlFile);
+		fileWriter.write(TEST_CFG_XML_STRING);
+		fileWriter.close();
+		File hbmXmlFile = new File(tempDir, "Foo.hbm.xml");
+		fileWriter = new FileWriter(hbmXmlFile);
+		fileWriter.write(TEST_HBM_XML_STRING);
+		fileWriter.close();
+		Configuration configuration = new Configuration();
+		configuration.addFile(hbmXmlFile);
+		configuration.configure(cfgXmlFile);
+		sessionFactoryTarget = new TestSessionFactory(configuration.buildSessionFactory());
 		sessionFactoryFacade = new SessionFactoryFacadeImpl(FACADE_FACTORY, sessionFactoryTarget);
 	}
 	
 	@Test
 	public void testClose() {
-		assertFalse(sessionFactoryTarget.closed);
+		assertFalse(sessionFactoryTarget.isClosed());
 		sessionFactoryFacade.close();
-		assertTrue(sessionFactoryTarget.closed);
+		assertTrue(sessionFactoryTarget.isClosed());
 	}
-	
-	private Map<String, ClassMetadata> allClassMetadataTargets = new HashMap<String, ClassMetadata>();
 	
 	@Test
 	public void testGetAllClassMetadata() throws Exception {
@@ -57,13 +99,8 @@ public class SessionFactoryFacadeTest {
 		assertNull(field.get(sessionFactoryFacade));
 		Map<String, IClassMetadata> allClassMetadata = sessionFactoryFacade.getAllClassMetadata();
 		assertNotNull(field.get(sessionFactoryFacade));
-		assertEquals(3, allClassMetadata.size());
-		assertSame(
-				((TestSessionFactory)sessionFactoryTarget).fooClassMetadataTarget, 
-				((IFacade)allClassMetadata.get("foo")).getTarget());
-		assertSame(
-				((TestSessionFactory)sessionFactoryTarget).barClassMetadataTarget, 
-				((IFacade)allClassMetadata.get("bar")).getTarget());
+		assertEquals(1, allClassMetadata.size());
+		assertNotNull(allClassMetadata.get(Foo.class.getName()));
 	}
 	
 	@Test
@@ -73,21 +110,16 @@ public class SessionFactoryFacadeTest {
 		assertNull(field.get(sessionFactoryFacade));
 		Map<String, ICollectionMetadata> allCollectionMetadata = sessionFactoryFacade.getAllCollectionMetadata();
 		assertNotNull(field.get(sessionFactoryFacade));
-		assertEquals(2, allCollectionMetadata.size());
-		assertSame(
-				((TestSessionFactory)sessionFactoryTarget).childCollectionMetadataTarget, 
-				((IFacade)allCollectionMetadata.get("child")).getTarget());
-		assertSame(
-				((TestSessionFactory)sessionFactoryTarget).parentCollectionMetadataTarget, 
-				((IFacade)allCollectionMetadata.get("parent")).getTarget());
+		assertEquals(1, allCollectionMetadata.size());
+		assertNotNull(allCollectionMetadata.get(Foo.class.getName() + ".bars"));
 	}
 	
 	@Test
 	public void testOpenSession() throws Exception {
-		assertNull(sessionFactoryTarget.session);
+		assertNull(((TestSessionFactory)sessionFactoryTarget).session);
 		ISession sessionFacade = sessionFactoryFacade.openSession();
-		assertNotNull(sessionFactoryTarget.session);
-		assertSame(sessionFactoryTarget.session, ((IFacade)sessionFacade).getTarget());
+		assertNotNull(((TestSessionFactory)sessionFactoryTarget).session);
+		assertSame(((TestSessionFactory)sessionFactoryTarget).session, ((IFacade)sessionFacade).getTarget());
 	}
 	
 	@Test
@@ -95,14 +127,16 @@ public class SessionFactoryFacadeTest {
 		Field field = AbstractSessionFactoryFacade.class.getDeclaredField("allClassMetadata");
 		field.setAccessible(true);
 		assertNull(field.get(sessionFactoryFacade));
-		assertSame(
-				sessionFactoryTarget.objectClassMetadataTarget,
-				((IFacade)sessionFactoryFacade.getClassMetadata(Object.class)).getTarget());
+		assertNull(sessionFactoryFacade.getClassMetadata("foo"));
 		assertNotNull(field.get(sessionFactoryFacade));
 		field.set(sessionFactoryFacade, null);
-		assertSame(
-				sessionFactoryTarget.fooClassMetadataTarget,
-				((IFacade)sessionFactoryFacade.getClassMetadata("foo")).getTarget());
+		assertNotNull(sessionFactoryFacade.getClassMetadata(Foo.class.getName()));
+		assertNotNull(field.get(sessionFactoryFacade));
+		field.set(sessionFactoryFacade, null);
+		assertNull(sessionFactoryFacade.getClassMetadata(Object.class));
+		assertNotNull(field.get(sessionFactoryFacade));
+		field.set(sessionFactoryFacade, null);
+		assertNotNull(sessionFactoryFacade.getClassMetadata(Foo.class));
 		assertNotNull(field.get(sessionFactoryFacade));
 	}
 	
@@ -111,111 +145,24 @@ public class SessionFactoryFacadeTest {
 		Field field = AbstractSessionFactoryFacade.class.getDeclaredField("allCollectionMetadata");
 		field.setAccessible(true);
 		assertNull(field.get(sessionFactoryFacade));
-		assertSame(
-				sessionFactoryTarget.childCollectionMetadataTarget,
-				((IFacade)sessionFactoryFacade.getCollectionMetadata("child")).getTarget());
+		assertNull(sessionFactoryFacade.getCollectionMetadata("bars"));
+		assertNotNull(field.get(sessionFactoryFacade));
+		field.set(sessionFactoryFacade, null);
+		assertNotNull(sessionFactoryFacade.getCollectionMetadata(Foo.class.getName() + ".bars"));
 		assertNotNull(field.get(sessionFactoryFacade));
 	}	
 	
 	private class TestSessionFactory extends SessionFactoryDelegatingImpl {
-
 		private static final long serialVersionUID = 1L;
-		
-		private boolean closed = false;
-		private Session session = null;
-		private ClassMetadata fooClassMetadataTarget = null;
-		private ClassMetadata barClassMetadataTarget = null;
-		private ClassMetadata objectClassMetadataTarget = null;
-		private Map<String, ClassMetadata> allClassMetadata = new HashMap<String, ClassMetadata>();
-		private CollectionMetadata childCollectionMetadataTarget = null;
-		private CollectionMetadata parentCollectionMetadataTarget = null;
-		private Map<String, CollectionMetadata> allCollectionMetadata = new HashMap<String, CollectionMetadata>();
-		
-		public TestSessionFactory() {
-			super(createDelegate());
-			allClassMetadata.put("foo", fooClassMetadataTarget = createClassMetadata("foo"));
-			allClassMetadata.put("bar", barClassMetadataTarget = createClassMetadata("bar"));
-			allClassMetadata.put(Object.class.getName(), objectClassMetadataTarget = createClassMetadata(Object.class.getName()));
-			allCollectionMetadata.put("child", childCollectionMetadataTarget = createCollectionMetadata("child"));
-			allCollectionMetadata.put("parent", parentCollectionMetadataTarget = createCollectionMetadata("parent"));
+		Session session = null;
+		public TestSessionFactory(SessionFactory delegate) {
+			super((SessionFactoryImplementor)delegate);
 		}
-		
-		@Override
-		public void close() {
-			closed = true;
-		}
-		
-		@Override
-		public Map<String, ClassMetadata> getAllClassMetadata() {
-			return allClassMetadata;
-		}
-		
-		@Override
-		public Map<String, CollectionMetadata> getAllCollectionMetadata() {
-			return allCollectionMetadata;
-		}
-		
 		@Override
 		public Session openSession() {
-			return session = createSession();
+			this.session = super.openSession();
+			return this.session;
 		}
-
-	}
-	
-	private ClassMetadata createClassMetadata(final String entityName) {
-		ClassMetadata result = (ClassMetadata)Proxy.newProxyInstance(
-				SessionFactoryFacadeTest.class.getClassLoader(), 
-				new Class[] { ClassMetadata.class },  
-				new InvocationHandler() {
-					@Override
-					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-						if (method.getName().equals("getEntityName")) {
-							return entityName;
-						}
-						return this;
-					}
-				});
-		return result;
-	}
-	
-	private CollectionMetadata createCollectionMetadata(final String role) {
-		CollectionMetadata result = (CollectionMetadata)Proxy.newProxyInstance(
-				SessionFactoryFacadeTest.class.getClassLoader(), 
-				new Class[] { CollectionMetadata.class },  
-				new InvocationHandler() {
-					@Override
-					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-						if (method.getName().equals("getRole")) {
-							return role;
-						}
-						return this;
-					}
-				});
-		return result;
-	}
-	
-	private SessionFactoryImplementor createDelegate() {
-		return (SessionFactoryImplementor)Proxy.newProxyInstance(
-				TestSessionFactory.class.getClassLoader(), 
-				new Class[] { SessionFactoryImplementor.class }, 
-				new InvocationHandler() {						
-					@Override
-					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-						return null;
-					}
-				});
-	}
-	
-	private Session createSession() {
-		return (Session)Proxy.newProxyInstance(
-				getClass().getClassLoader(), 
-				new Class[] { Session.class }, 
-				new InvocationHandler() {				
-					@Override
-					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-						return null;
-					}
-				});
 	}
 	
 }
