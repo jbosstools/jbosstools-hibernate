@@ -21,6 +21,7 @@ import org.jboss.tools.hibernate.runtime.spi.IQueryTranslator;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
+import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 
 public class FacadeFactoryImpl  extends AbstractFacadeFactory {
@@ -113,6 +114,11 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 		return new ReverseEngineeringStrategyFacadeImpl(this, target);
 	}
 
+	@Override
+	public ISessionFactory createSessionFactory(Object target) {
+		return new SessionFactoryFacadeImpl(this, target);
+	}
+	
 	@Override
 	public ISession createSession(Object target) {
 		return new SessionFacadeImpl(this, target);
