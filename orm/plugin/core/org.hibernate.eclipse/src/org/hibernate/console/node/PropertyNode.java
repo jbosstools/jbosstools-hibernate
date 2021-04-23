@@ -27,7 +27,7 @@ class PropertyNode extends TypeNode {
 
 	IClassMetadata baseMetaData;
 	public PropertyNode(NodeFactory factory, BaseNode parent, int idx, IClassMetadata metadata,Object baseObject, boolean objectGraph) {
-        super(factory, parent, metadata.getPropertyTypes()[idx], factory.getMetaData(metadata.getPropertyTypes()[idx].getReturnedClass() ), baseObject, objectGraph);
+        super(factory, parent, metadata.getPropertyTypes()[idx], factory.getMetaData(metadata.getPropertyTypes()[idx].getReturnedClassName() ), baseObject, objectGraph);
         name = metadata.getPropertyNames()[idx];
         baseMetaData = metadata;
 	}

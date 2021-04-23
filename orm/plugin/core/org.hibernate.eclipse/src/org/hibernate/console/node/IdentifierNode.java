@@ -36,7 +36,7 @@ class IdentifierNode extends TypeNode {
 	 * @param md
 	 */
 	public IdentifierNode(NodeFactory factory, BaseNode parent, IClassMetadata md) {
-        super(factory, parent, md.getIdentifierType(), factory.getMetaData(md.getIdentifierType().getReturnedClass() ), null, false);
+        super(factory, parent, md.getIdentifierType(), factory.getMetaData(md.getIdentifierType().getReturnedClassName() ), null, false);
         name = md.getIdentifierPropertyName();
         iconName = ImageConstants.IDPROPERTY;
 	}

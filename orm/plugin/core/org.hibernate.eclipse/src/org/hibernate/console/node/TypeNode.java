@@ -33,7 +33,7 @@ class TypeNode extends ClassNode implements TypedNode{
 
 	IType type;
 	public TypeNode(NodeFactory factory, BaseNode parent, IType type, IClassMetadata metadata, Object baseObject, boolean objectGraph) {
-		super(factory, parent, type.getReturnedClass().getName(), metadata, baseObject, objectGraph);
+		super(factory, parent, type.getReturnedClassName(), metadata, baseObject, objectGraph);
 		this.type = type;
 				
 		iconName = factory.getIconNameForType(type);
@@ -67,7 +67,7 @@ class TypeNode extends ClassNode implements TypedNode{
 	}
 	
 	public String renderLabel(boolean b) {
-		return super.renderLabel(b) + " : " + getLabel(type.getReturnedClass().getName(),b); //$NON-NLS-1$
+		return super.renderLabel(b) + " : " + getLabel(type.getReturnedClassName(),b); //$NON-NLS-1$
 	}
 
 	/**
