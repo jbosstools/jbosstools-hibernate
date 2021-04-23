@@ -63,7 +63,7 @@ class PersistentCollectionNode extends BaseNode implements TypedNode{
 		if(objectGraph) {
 			//
 		} else {
-			virtualNode = factory.createNode(null, elementType.getReturnedClass() );
+			virtualNode = factory.createNode(null, elementType.getAssociatedEntityName() );
 		}
 	}
 

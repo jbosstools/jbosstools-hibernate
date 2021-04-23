@@ -133,10 +133,10 @@ public class NodeFactory {
 		return new IdentifierNode(this, parent, md);
 	}
 
-	public BaseNode createNode(BaseNode parent, final Class<?> clazz) {
-		IClassMetadata metadata = getMetaData(clazz);
+	public BaseNode createNode(BaseNode parent, final String className) {
+		IClassMetadata metadata = getMetaData(className);
 		if(metadata!=null) {
-			return createClassNode(parent, clazz.getName() );
+			return createClassNode(parent, className );
 		}
 
 		return new BaseNode(this, parent) {
@@ -145,7 +145,7 @@ public class NodeFactory {
 			}
 
 			public String getName() {
-				return ConsoleMessages.NodeFactory_unknown + clazz;
+				return ConsoleMessages.NodeFactory_unknown + className;
 			}
 
 			protected void checkChildren() {
