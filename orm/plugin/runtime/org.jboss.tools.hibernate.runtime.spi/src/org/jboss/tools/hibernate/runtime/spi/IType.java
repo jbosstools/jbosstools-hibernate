@@ -17,5 +17,6 @@ public interface IType {
 	boolean isInstanceOfPrimitiveType();
 	Class<?> getPrimitiveClass();
 	String getRole();
+	String getReturnedClassName();
 
 }

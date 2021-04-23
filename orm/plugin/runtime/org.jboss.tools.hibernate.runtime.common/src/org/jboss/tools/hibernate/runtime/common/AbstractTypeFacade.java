@@ -108,6 +108,16 @@ implements IType {
 	}
 	
 	@Override
+	public String getReturnedClassName() {
+		Class<?> returnedClass = getReturnedClass();
+		if (returnedClass != null) {
+			return returnedClass.getName();
+		} else {
+			return null;
+		}
+	}
+	
+	@Override
 	public String getAssociatedEntityName() {
 		String result = null;
 		if (isEntityType()) {
