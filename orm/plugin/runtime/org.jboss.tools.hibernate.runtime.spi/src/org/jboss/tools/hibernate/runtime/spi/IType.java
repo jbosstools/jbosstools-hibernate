@@ -10,7 +10,6 @@ public interface IType {
 	boolean isAnyType();
 	boolean isComponentType();
 	boolean isCollectionType();
-	Class<?> getReturnedClass();
 	String getAssociatedEntityName();
 	boolean isIntegerType();
 	boolean isArrayType();

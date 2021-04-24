@@ -173,11 +173,11 @@ class PersistentCollectionNode extends BaseNode implements TypedNode{
 	}
 
 	private BaseNode createNode(int idx, Object element, IType type) { // TODO: use a common way to create these darn nodes!
-		return new ClassNode(factory, this,type.getReturnedClassName(), factory.getMetaData(type.getReturnedClass() ),element,objectGraph);
+		return new ClassNode(factory, this,type.getReturnedClassName(), factory.getMetaData(type.getReturnedClassName() ),element,objectGraph);
 	}
 
 	public String renderLabel(boolean b) {
-		return getLabel(getName(),b) + " : " + getLabel(type.getReturnedClassName(),b) + "<" + getLabel(elementType.getReturnedClass().getName(),b) + ">";  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+		return getLabel(getName(),b) + " : " + getLabel(type.getReturnedClassName(),b) + "<" + getLabel(elementType.getReturnedClassName(),b) + ">";  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	public IType getType() {

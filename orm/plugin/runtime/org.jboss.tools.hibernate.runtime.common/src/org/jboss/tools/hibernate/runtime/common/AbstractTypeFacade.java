@@ -99,17 +99,12 @@ implements IType {
 	}
 
 	@Override
-	public Class<?> getReturnedClass() {
-		return (Class<?>)Util.invokeMethod(
+	public String getReturnedClassName() {
+		Class<?> returnedClass = (Class<?>)Util.invokeMethod(
 				getTarget(), 
 				"getReturnedClass", 
 				new Class[] {}, 
 				new Object[] {});
-	}
-	
-	@Override
-	public String getReturnedClassName() {
-		Class<?> returnedClass = getReturnedClass();
 		if (returnedClass != null) {
 			return returnedClass.getName();
 		} else {

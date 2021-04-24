@@ -125,10 +125,10 @@ public class TypeFacadeTest {
 		IType typeFacade = null;
 		ClassType classType = new ClassType();
 		typeFacade = FACADE_FACTORY.createType(classType);
-		Assert.assertEquals(Class.class, typeFacade.getReturnedClass());
+		Assert.assertEquals(Class.class.getName(), typeFacade.getReturnedClassName());
 		ArrayType arrayType = new ArrayType(null, null, String.class, false);
 		typeFacade = FACADE_FACTORY.createType(arrayType);
-		Assert.assertEquals(String[].class, typeFacade.getReturnedClass());
+		Assert.assertEquals(String[].class.getName(), typeFacade.getReturnedClassName());
 	}
 	
 	@Test
