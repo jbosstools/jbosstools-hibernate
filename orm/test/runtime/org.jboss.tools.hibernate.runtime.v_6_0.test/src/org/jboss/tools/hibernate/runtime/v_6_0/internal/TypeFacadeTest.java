@@ -30,7 +30,6 @@ import org.hibernate.type.ManyToOneType;
 import org.hibernate.type.OneToOneType;
 import org.hibernate.type.StringType;
 import org.hibernate.type.spi.TypeConfiguration;
-import org.jboss.tools.hibernate.runtime.common.AbstractTypeFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.junit.jupiter.api.Test;
@@ -43,12 +42,12 @@ public class TypeFacadeTest {
 	public void testToString() {
 		IType typeFacade = null;
 		ClassType classType = new ClassType();
-		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, classType){};
+		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, classType){};
 		assertEquals(
 				TypeFacadeTest.class.getName(), 
 				typeFacade.toString(TypeFacadeTest.class));
 		ArrayType arrayType = new ArrayType(null, "foo", "bar", String.class);
-		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, arrayType){};
+		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, arrayType){};
 		assertNull(typeFacade.toString(new String[] { "foo", "bar" }));
 	}
 	
@@ -56,10 +55,10 @@ public class TypeFacadeTest {
 	public void testGetName() {
 		IType typeFacade = null;
 		ClassType classType = new ClassType();
-		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, classType){};
+		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, classType){};
 		assertEquals("class", typeFacade.getName());
 		ArrayType arrayType = new ArrayType(null, "foo", "bar", String.class);
-		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, arrayType){};
+		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, arrayType){};
 		assertEquals("[Ljava.lang.String;(foo)", typeFacade.getName());
 	}
 	
@@ -68,13 +67,13 @@ public class TypeFacadeTest {
 		IType typeFacade = null;
 		// first try type that is string representable
 		ClassType classType = new ClassType();
-		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, classType){};
+		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, classType){};
 		assertEquals(
 				TypeFacadeTest.class, 
 				typeFacade.fromStringValue(TypeFacadeTest.class.getName()));
 		// next try type that is not string representable
 		ArrayType arrayType = new ArrayType(null, "foo", "bar", String.class);
-		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, arrayType){};
+		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, arrayType){};
 		assertNull(typeFacade.fromStringValue("just a random string"));
 	}
 	
@@ -83,11 +82,11 @@ public class TypeFacadeTest {
 		IType typeFacade = null;
 		// first try type that is not an entity type
 		ClassType classType = new ClassType();
-		typeFacade =  new AbstractTypeFacade(FACADE_FACTORY, classType){};
+		typeFacade =  new TypeFacadeImpl(FACADE_FACTORY, classType){};
 		assertFalse(typeFacade.isEntityType());
 		// next try type that is an entity type
 		EntityType entityType = new ManyToOneType((TypeConfiguration)null, null);
-		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, entityType){};
+		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, entityType){};
 		assertTrue(entityType.isEntityType());
 	}
 	
@@ -96,16 +95,16 @@ public class TypeFacadeTest {
 		IType typeFacade = null;
 		// first try type that is not a one to one type
 		ClassType classType = new ClassType();
-		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, classType){};
+		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, classType){};
 		assertFalse(typeFacade.isOneToOne());
 		// next try another type that is not a one to one type
 		EntityType entityType = new ManyToOneType((TypeConfiguration)null, null);
-		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, entityType){};
+		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, entityType){};
 		assertFalse(entityType.isOneToOne());
 		// finally try a type that is a one to one type
 		OneToOneType oneToOneType = new OneToOneType(
 				null, null, null, false, null, false, false, null, null, false);
-		typeFacade =  new AbstractTypeFacade(FACADE_FACTORY, oneToOneType){};
+		typeFacade =  new TypeFacadeImpl(FACADE_FACTORY, oneToOneType){};
 		assertTrue(oneToOneType.isOneToOne());
 	}
 	
@@ -114,11 +113,11 @@ public class TypeFacadeTest {
 		IType typeFacade = null;
 		// first try type that is not a any type
 		ClassType classType = new ClassType();
-		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, classType){};
+		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, classType){};
 		assertFalse(typeFacade.isAnyType());
 		// next try a any type
 		AnyType anyType = new AnyType(null, null, null, true);
-		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, anyType){};
+		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, anyType){};
 		assertTrue(typeFacade.isAnyType());
 	}
 	
@@ -127,7 +126,7 @@ public class TypeFacadeTest {
 		IType typeFacade = null;
 		// first try type that is not a component type
 		ClassType classType = new ClassType();
-		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, classType){};
+		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, classType){};
 		assertFalse(typeFacade.isComponentType());
 		// next try a component type
 		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
@@ -144,7 +143,7 @@ public class TypeFacadeTest {
 						new ComponentMetamodel(
 								new Component(mdbc, new RootClass(null)),
 								btc));
-		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, componentType){};
+		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, componentType){};
 		assertTrue(typeFacade.isComponentType());
 	}
 	
@@ -153,11 +152,11 @@ public class TypeFacadeTest {
 		IType typeFacade = null;
 		// first try type that is not a collection type
 		ClassType classType = new ClassType();
-		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, classType){};
+		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, classType){};
 		assertFalse(typeFacade.isCollectionType());
 		// next try a collection type
 		ArrayType arrayType = new ArrayType(null, null, null, String.class);
-		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, arrayType){};
+		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, arrayType){};
 		assertTrue(typeFacade.isCollectionType());
 	}
 	
@@ -165,21 +164,24 @@ public class TypeFacadeTest {
 	public void testGetReturnedClass() {
 		IType typeFacade = null;
 		ClassType classType = new ClassType();
-		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, classType){};
+		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, classType){};
 		assertEquals(Class.class.getName(), typeFacade.getReturnedClassName());
 		ArrayType arrayType = new ArrayType(null, null, null, String.class);
-		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, arrayType){};
+		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, arrayType){};
 		assertEquals(String[].class.getName(), typeFacade.getReturnedClassName());
+		EntityType entityType = new ManyToOneType((TypeConfiguration)null, "org.foo.bar");
+		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, entityType);
+		assertEquals("org.foo.bar", typeFacade.getReturnedClassName());
 	}
 	
 	@Test
 	public void testGetAssociatedEntityName() {
 		IType typeFacade = null;
 		ClassType classType = new ClassType();
-		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, classType){};
+		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, classType){};
 		assertNull(typeFacade.getAssociatedEntityName());
 		EntityType entityType = new ManyToOneType((TypeConfiguration)null, "foo");
-		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, entityType){};
+		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, entityType){};
 		assertEquals("foo", typeFacade.getAssociatedEntityName());
 	}
 	
@@ -187,10 +189,10 @@ public class TypeFacadeTest {
 	public void testIsIntegerType() {
 		IType typeFacade = null;
 		ClassType classType = new ClassType();
-		typeFacade =  new AbstractTypeFacade(FACADE_FACTORY, classType){};
+		typeFacade =  new TypeFacadeImpl(FACADE_FACTORY, classType){};
 		assertFalse(typeFacade.isIntegerType());
 		IntegerType integerType = new IntegerType();
-		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, integerType){};
+		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, integerType){};
 		assertTrue(typeFacade.isIntegerType());
 	}
 	
@@ -198,13 +200,13 @@ public class TypeFacadeTest {
 	public void testIsArrayType() {
 		IType typeFacade = null;
 		ClassType classType = new ClassType();
-		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, classType){};
+		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, classType){};
 		assertFalse(typeFacade.isArrayType());
 		BagType bagType = new BagType(null, null, null);
-		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, bagType){};
+		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, bagType){};
 		assertFalse(typeFacade.isArrayType());
 		ArrayType arrayType = new ArrayType(null, null, null, String.class);
-		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, arrayType){};
+		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, arrayType){};
 		assertTrue(typeFacade.isArrayType());
 	}
 	
@@ -212,13 +214,13 @@ public class TypeFacadeTest {
 	public void testIsInstanceOfPrimitiveType() {
 		IType typeFacade = null;
 		ClassType classType = new ClassType();
-		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, classType){};
+		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, classType){};
 		assertFalse(typeFacade.isInstanceOfPrimitiveType());
 		StringType stringType = new StringType();
-		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, stringType){};
+		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, stringType){};
 		assertFalse(typeFacade.isInstanceOfPrimitiveType());
 		IntegerType integerType = new IntegerType();
-		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, integerType){};
+		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, integerType){};
 		assertTrue(typeFacade.isInstanceOfPrimitiveType());
 	}
 	
@@ -226,10 +228,10 @@ public class TypeFacadeTest {
 	public void testGetPrimitiveClass() {
 		IType typeFacade = null;
 		ClassType classType = new ClassType();
-		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, classType){};
+		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, classType){};
 		assertNull(typeFacade.getPrimitiveClass());
 		IntegerType integerType = new IntegerType();
-		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, integerType){};
+		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, integerType){};
 		assertEquals(int.class, typeFacade.getPrimitiveClass());
 	}
 	
@@ -237,10 +239,10 @@ public class TypeFacadeTest {
 	public void testGetRole() {
 		IType typeFacade = null;
 		ClassType classType = new ClassType();
-		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, classType){};
+		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, classType){};
 		assertNull(typeFacade.getRole());
 		ArrayType arrayType = new ArrayType(null, "foo", null, String.class);
-		typeFacade = new AbstractTypeFacade(FACADE_FACTORY, arrayType){};
+		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, arrayType){};
 		assertEquals("foo", typeFacade.getRole());
 	}
 	
