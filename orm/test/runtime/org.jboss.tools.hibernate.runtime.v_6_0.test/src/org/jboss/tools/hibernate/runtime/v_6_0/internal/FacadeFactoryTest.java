@@ -400,6 +400,7 @@ public class FacadeFactoryTest {
 				new Class[] { Type.class }, 
 				new TestInvocationHandler());
 		IType facade = facadeFactory.createType(type);
+		assertTrue(facade instanceof TypeFacadeImpl);
 		assertSame(type, ((IFacade)facade).getTarget());
 	}
 	
