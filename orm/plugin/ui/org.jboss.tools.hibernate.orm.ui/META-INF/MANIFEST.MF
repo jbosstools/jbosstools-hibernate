@@ -5,3 +5,5 @@ Bundle-SymbolicName: org.jboss.tools.hibernate.orm.ui;singleton:=true
 Bundle-Version: 5.4.13.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: org.jboss.tools.hibernate.orm.ui
+Require-Bundle: org.eclipse.ui
