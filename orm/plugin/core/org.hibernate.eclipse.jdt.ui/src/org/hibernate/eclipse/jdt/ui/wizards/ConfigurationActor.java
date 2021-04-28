@@ -57,7 +57,7 @@ import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IService;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
-import org.jboss.tools.hibernate.runtime.spi.ServiceLookup;
+import org.jboss.tools.hibernate.runtime.spi.RuntimeServiceManager;
 
 /**
  * @author Dmitry Geraskov
@@ -135,7 +135,7 @@ public class ConfigurationActor {
 			}
 		}
 		if (result == null) {
-			result = ServiceLookup.getDefault();
+			result = RuntimeServiceManager.getDefault();
 		}
 		return result;
 	}

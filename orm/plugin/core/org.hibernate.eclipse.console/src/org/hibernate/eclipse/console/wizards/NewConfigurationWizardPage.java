@@ -56,7 +56,7 @@ import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.hibernate.console.ConnectionProfileUtil;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.DriverClassHelpers;
-import org.jboss.tools.hibernate.runtime.spi.ServiceLookup;
+import org.jboss.tools.hibernate.runtime.spi.RuntimeServiceManager;
 
 /**
  * Wizard for creating basic hibernate.cfg.xml
@@ -167,7 +167,7 @@ public class NewConfigurationWizardPage extends WizardPage {
         hLabel.setText(HibernateConsoleMessages.NewConfigurationWizardPage_file_hibernate_version);
         	
         hibernateVersionCombo = new Combo(container, SWT.READ_ONLY);
-        String[] versions = ServiceLookup.getVersions();
+        String[] versions = RuntimeServiceManager.getVersions();
         Arrays.sort(versions, STRING_REVERSE_ALPHABETICAL);
         hibernateVersionCombo.setItems(versions);
         hibernateVersionCombo.select(0);

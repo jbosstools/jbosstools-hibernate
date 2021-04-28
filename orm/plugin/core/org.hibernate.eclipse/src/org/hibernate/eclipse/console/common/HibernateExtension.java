@@ -26,7 +26,7 @@ import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IService;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
-import org.jboss.tools.hibernate.runtime.spi.ServiceLookup;
+import org.jboss.tools.hibernate.runtime.spi.RuntimeServiceManager;
 
 public class HibernateExtension {
 
@@ -277,7 +277,7 @@ public class HibernateExtension {
 	}
 
 	public IService getHibernateService() {
-		return ServiceLookup.findService(getHibernateVersion());
+		return RuntimeServiceManager.findService(getHibernateVersion());
 	}
 
 }

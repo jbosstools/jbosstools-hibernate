@@ -21,7 +21,7 @@ import org.hibernate.eclipse.mapper.extractor.JavaTypeHandler;
 import org.hibernate.eclipse.mapper.extractor.PackageHandler;
 import org.jboss.tools.hibernate.orm.test.utils.project.TestProject;
 import org.jboss.tools.hibernate.runtime.spi.IService;
-import org.jboss.tools.hibernate.runtime.spi.ServiceLookup;
+import org.jboss.tools.hibernate.runtime.spi.RuntimeServiceManager;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -43,7 +43,7 @@ public class HBMInfoExtractorTest {
 		List<IPath> libs = testProj.copyLibs(testProj.getFolder("lib"));
 		testProj.generateClassPath(libs, sourcePackageFragment);
 		testProj.fullBuild();
-		sourceLocator = new HBMInfoExtractorStub(ServiceLookup.getDefault());
+		sourceLocator = new HBMInfoExtractorStub(RuntimeServiceManager.getDefault());
 	}
 
 	@After

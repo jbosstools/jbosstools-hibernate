@@ -13,7 +13,7 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.jboss.tools.hibernate.spi.internal.HibernateServicePlugin;
 
-public class ServiceLookup {
+public class RuntimeServiceManager {
 	
 	private static final String SERVICES_EXTENSION_ID = "org.jboss.tools.hibernate.runtime.spi.services"; //$NON-NLS-1$
 

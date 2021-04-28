@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.resource.java.EmbeddableAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEmbeddable;
 import org.jboss.tools.hibernate.runtime.spi.IService;
-import org.jboss.tools.hibernate.runtime.spi.ServiceLookup;
+import org.jboss.tools.hibernate.runtime.spi.RuntimeServiceManager;
 
 
 /**
@@ -33,7 +33,7 @@ public class HibernateJpaFactory extends HibernateAbstractJpaFactory {
 
 	@Override
 	public IService getHibernateService() {
-		return ServiceLookup.findService("3.6");
+		return RuntimeServiceManager.findService("3.6");
 	}
 
 }

@@ -41,7 +41,7 @@ import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IService;
-import org.jboss.tools.hibernate.runtime.spi.ServiceLookup;
+import org.jboss.tools.hibernate.runtime.spi.RuntimeServiceManager;
 import org.jboss.tools.hibernate.ui.view.OpenDiagramActionDelegate;
 import org.junit.Assert;
 import org.junit.rules.TestName;
@@ -256,8 +256,8 @@ public class CoreMappingTestHelper {
 					}
 				}
 			}
-			String[] versions = ServiceLookup.getVersions();
-			IService service = ServiceLookup.findService(versions[0]);
+			String[] versions = RuntimeServiceManager.getVersions();
+			IService service = RuntimeServiceManager.findService(versions[0]);
 			File srcFolder = testProject
 					.getIProject()
 					.getFolder(TestProject.SRC_FOLDER)

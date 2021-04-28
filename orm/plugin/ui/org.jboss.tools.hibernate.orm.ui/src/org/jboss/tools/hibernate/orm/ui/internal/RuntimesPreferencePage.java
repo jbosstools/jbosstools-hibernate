@@ -11,7 +11,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-import org.jboss.tools.hibernate.runtime.spi.ServiceLookup;
+import org.jboss.tools.hibernate.runtime.spi.RuntimeServiceManager;
 
 public class RuntimesPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
@@ -26,10 +26,10 @@ public class RuntimesPreferencePage extends PreferencePage implements IWorkbench
 		Label label = new Label(composite, SWT.NONE);
 		label.setText("Check to enable or uncheck to disable the Hibernate runtime");
 		Table table = new Table(composite, SWT.CHECK | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-		for (String version : ServiceLookup.getVersions()) {
+		for (String version : RuntimeServiceManager.getVersions()) {
 			TableItem tableItem = new TableItem(table, SWT.FILL);
 			tableItem.setText(version);
-			tableItem.setChecked(ServiceLookup.isServiceEnabled(version));
+			tableItem.setChecked(RuntimeServiceManager.isServiceEnabled(version));
 		}
 		table.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		return composite;

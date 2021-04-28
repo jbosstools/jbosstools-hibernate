@@ -62,7 +62,7 @@ import org.hibernate.eclipse.console.actions.AddConfigurationAction;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IService;
-import org.jboss.tools.hibernate.runtime.spi.ServiceLookup;
+import org.jboss.tools.hibernate.runtime.spi.RuntimeServiceManager;
 
 /**
  * Creates a new hibernate.cfg.xml
@@ -294,7 +294,7 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 	 */
 	private InputStream openContentStream(Properties props) {
         StringWriter stringWriter = new StringWriter();
-        IService service = ServiceLookup.findService(connectionInfoPage.getHibernateVersion()); 
+        IService service = RuntimeServiceManager.findService(connectionInfoPage.getHibernateVersion()); 
         IExporter hce = service.createExporter("org.hibernate.tool.hbm2x.HibernateConfigurationExporter"); //$NON-NLS-1$
  		hce.setCustomProperties(props);
 		hce.setOutput(stringWriter);

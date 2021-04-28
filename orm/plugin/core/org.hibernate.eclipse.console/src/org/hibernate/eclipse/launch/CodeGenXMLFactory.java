@@ -48,7 +48,7 @@ import org.hibernate.eclipse.launch.ExportersXMLAttributeDescription.AttributeDe
 import org.hibernate.util.xpl.StringHelper;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IService;
-import org.jboss.tools.hibernate.runtime.spi.ServiceLookup;
+import org.jboss.tools.hibernate.runtime.spi.RuntimeServiceManager;
 
 /**
  * XML document part creation factory,
@@ -172,10 +172,10 @@ public class CodeGenXMLFactory {
 		boolean bPropFile = profile != null;
 		// update property with fake tm
 		Properties propsTmp = null;
-		String[] versions = ServiceLookup.getVersions();
+		String[] versions = RuntimeServiceManager.getVersions();
 		String maxVersion = versions[versions.length - 1];
 		String hibernateVersion = consoleConfigPrefs == null ? maxVersion : consoleConfigPrefs.getHibernateVersion();
-		IService service = ServiceLookup.findService(hibernateVersion);
+		IService service = RuntimeServiceManager.findService(hibernateVersion);
 		IEnvironment environment = service.getEnvironment();
 		if (consoleConfigPrefs != null && consoleConfigPrefs.getPropertyFile() != null) {
 			propsTmp = consoleConfigPrefs.getProperties();

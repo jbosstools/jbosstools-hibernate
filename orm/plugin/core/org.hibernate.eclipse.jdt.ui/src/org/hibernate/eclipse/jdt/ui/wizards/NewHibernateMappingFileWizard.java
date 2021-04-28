@@ -77,7 +77,7 @@ import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.spi.IService;
-import org.jboss.tools.hibernate.runtime.spi.ServiceLookup;
+import org.jboss.tools.hibernate.runtime.spi.RuntimeServiceManager;
 
 /**
  * @author Dmitry Geraskov
@@ -299,7 +299,7 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 			ConsoleConfiguration cc = hibnat.getDefaultConsoleConfiguration();
 			return cc.getHibernateExtension().getHibernateService();
 		} else {
-			return ServiceLookup.getDefault();
+			return RuntimeServiceManager.getDefault();
 		}
 
 //		return ServiceLookup.findService("3.5"); //$NON-NLS-1$

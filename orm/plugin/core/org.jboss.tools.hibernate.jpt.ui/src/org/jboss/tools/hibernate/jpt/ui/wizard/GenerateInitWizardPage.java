@@ -53,7 +53,7 @@ import org.hibernate.eclipse.launch.PathHelper;
 import org.hibernate.util.xpl.StringHelper;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
 import org.jboss.tools.hibernate.jpt.ui.HibernateJptUIPlugin;
-import org.jboss.tools.hibernate.runtime.spi.ServiceLookup;
+import org.jboss.tools.hibernate.runtime.spi.RuntimeServiceManager;
 
 /**
  * @author Dmitry Geraskov
@@ -164,7 +164,7 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 
         hibernateVersion = new ComboDialogField(SWT.READ_ONLY);
         hibernateVersion.setLabelText(HibernateConsoleMessages.ConsoleConfigurationMainTab_0);
-		hibernateVersion.setItems(ServiceLookup.getVersions());
+		hibernateVersion.setItems(RuntimeServiceManager.getVersions());
 		hibernateVersion.selectItem(0);
 		hibernateVersion.setDialogFieldListener(fieldlistener);
 		hibernateVersion.doFillIntoGrid(container, numColumns);

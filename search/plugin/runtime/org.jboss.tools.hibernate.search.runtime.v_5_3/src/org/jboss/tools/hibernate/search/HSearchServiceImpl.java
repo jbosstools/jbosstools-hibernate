@@ -2,7 +2,7 @@ package org.jboss.tools.hibernate.search;
 
 import org.apache.lucene.util.Version;
 import org.jboss.tools.hibernate.runtime.spi.IService;
-import org.jboss.tools.hibernate.runtime.spi.ServiceLookup;
+import org.jboss.tools.hibernate.runtime.spi.RuntimeServiceManager;
 import org.jboss.tools.hibernate.search.runtime.common.AbstractHSearchService;
 import org.jboss.tools.hibernate.search.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.search.runtime.spi.IAnalyzer;
@@ -14,7 +14,7 @@ public class HSearchServiceImpl extends AbstractHSearchService implements IHSear
 	
 	@Override
 	public IService getHibernateService() {
-		return ServiceLookup.findService("4.3");
+		return RuntimeServiceManager.findService("4.3");
 	}
 	
 	@Override

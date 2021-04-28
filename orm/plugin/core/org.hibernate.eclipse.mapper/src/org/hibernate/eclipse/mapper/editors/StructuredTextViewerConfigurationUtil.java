@@ -20,7 +20,7 @@ import org.hibernate.eclipse.console.common.HibernateExtension;
 import org.hibernate.eclipse.mapper.MapperPlugin;
 import org.hibernate.eclipse.nature.HibernateNature;
 import org.jboss.tools.hibernate.runtime.spi.IService;
-import org.jboss.tools.hibernate.runtime.spi.ServiceLookup;
+import org.jboss.tools.hibernate.runtime.spi.RuntimeServiceManager;
 
 public class StructuredTextViewerConfigurationUtil {
 
@@ -123,7 +123,7 @@ public class StructuredTextViewerConfigurationUtil {
 				}
 			}
 		} 
-		return ServiceLookup.getDefault();
+		return RuntimeServiceManager.getDefault();
 	}
 	
 }

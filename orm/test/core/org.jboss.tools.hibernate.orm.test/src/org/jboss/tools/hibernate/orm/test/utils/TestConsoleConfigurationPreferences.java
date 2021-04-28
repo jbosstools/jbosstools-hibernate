@@ -7,7 +7,7 @@ import java.util.Properties;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IService;
-import org.jboss.tools.hibernate.runtime.spi.ServiceLookup;
+import org.jboss.tools.hibernate.runtime.spi.RuntimeServiceManager;
 import org.w3c.dom.Element;
 
 public class TestConsoleConfigurationPreferences implements ConsoleConfigurationPreferences {
@@ -90,12 +90,12 @@ public class TestConsoleConfigurationPreferences implements ConsoleConfiguration
 	 */
 	@Override
 	public String getHibernateVersion() {
-		String[] versions = ServiceLookup.getVersions();
+		String[] versions = RuntimeServiceManager.getVersions();
 		return versions[versions.length - 1];
 	}
 	
 	private IService getService() {
-		return ServiceLookup.findService(getHibernateVersion());
+		return RuntimeServiceManager.findService(getHibernateVersion());
 	}
 
 }

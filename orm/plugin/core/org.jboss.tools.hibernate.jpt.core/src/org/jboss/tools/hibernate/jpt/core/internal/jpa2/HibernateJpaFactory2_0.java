@@ -64,7 +64,7 @@ import org.eclipse.jpt.jpa.db.DatabaseIdentifierAdapter;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.jpa2.HibernateJavaElementCollectionMapping2_0;
 import org.jboss.tools.hibernate.runtime.spi.IService;
-import org.jboss.tools.hibernate.runtime.spi.ServiceLookup;
+import org.jboss.tools.hibernate.runtime.spi.RuntimeServiceManager;
 
 
 
@@ -168,6 +168,6 @@ public class HibernateJpaFactory2_0 extends HibernateAbstractJpaFactory implemen
 
 	@Override
 	public IService getHibernateService() {
-		return ServiceLookup.findService("4.0"); //$NON-NLS-1$
+		return RuntimeServiceManager.findService("4.0"); //$NON-NLS-1$
 	}
 }

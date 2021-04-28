@@ -53,7 +53,7 @@ import org.hibernate.eclipse.console.wizards.NewConfigurationWizard;
 import org.hibernate.eclipse.console.wizards.NewConfigurationWizardPage;
 import org.hibernate.eclipse.utils.HibernateEclipseUtils;
 import org.hibernate.util.xpl.StringHelper;
-import org.jboss.tools.hibernate.runtime.spi.ServiceLookup;
+import org.jboss.tools.hibernate.runtime.spi.RuntimeServiceManager;
 
 @SuppressWarnings("restriction")
 public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
@@ -138,7 +138,7 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 		Label hLabel = new Label(comp2, SWT.NULL);
 		hLabel.setText(HibernateConsoleMessages.ConsoleConfigurationMainTab_0);
 		hibernateVersion = new Combo(comp2, SWT.READ_ONLY);
-		String[] versions = ServiceLookup.getVersions();
+		String[] versions = RuntimeServiceManager.getVersions();
 		Arrays.sort(versions, STRING_REVERSE_ALPHABETICAL);
 		hibernateVersion.setItems(versions);
 		hibernateVersion.select(0);
