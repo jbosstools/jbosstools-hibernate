@@ -42,6 +42,10 @@ public class ServiceLookup {
 		return DEFAULT_SERVICE;
 	}
 
+	public static boolean isServiceEnabled(String serviceName) {
+		return true;
+	}
+	
 	private static void initialize() {
 		SERVICES_MAP = new HashMap<String, IService>();
 		IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();

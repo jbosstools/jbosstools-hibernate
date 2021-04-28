@@ -29,9 +29,10 @@ public class RuntimesPreferencePage extends PreferencePage implements IWorkbench
 		for (String version : ServiceLookup.getVersions()) {
 			TableItem tableItem = new TableItem(table, SWT.FILL);
 			tableItem.setText(version);
+			tableItem.setChecked(ServiceLookup.isServiceEnabled(version));
 		}
 		table.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		return composite;
 	}
-
+	
 }
