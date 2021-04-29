@@ -46,6 +46,15 @@ public class RuntimeServiceManager {
 		}
 		return DEFAULT_SERVICE;
 	}
+	
+	public void enableService(String version, boolean enabled) {
+		getPreferences().putBoolean(version, enabled);
+		if (enabled) {
+			ENABLED_VERSIONS.add(version);
+		} else {
+			ENABLED_VERSIONS.remove(version);
+		}
+	}
 
 	public static boolean isServiceEnabled(String version) {
 		return ENABLED_VERSIONS.contains(version);
