@@ -15,6 +15,7 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.jboss.tools.hibernate.spi.internal.HibernateServicePlugin;
+import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
 public class RuntimeServiceManager {
@@ -47,12 +48,17 @@ public class RuntimeServiceManager {
 		return DEFAULT_SERVICE;
 	}
 	
-	public void enableService(String version, boolean enabled) {
+	public static void enableService(String version, boolean enabled) {
 		getPreferences().putBoolean(version, enabled);
 		if (enabled) {
 			ENABLED_VERSIONS.add(version);
 		} else {
 			ENABLED_VERSIONS.remove(version);
+		}
+		try {
+			getPreferences().flush();
+		} catch (BackingStoreException bse) {
+			throw new RuntimeException(bse);
 		}
 	}
 
