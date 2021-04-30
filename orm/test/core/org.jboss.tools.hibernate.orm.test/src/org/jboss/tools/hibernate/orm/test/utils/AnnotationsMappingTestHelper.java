@@ -271,7 +271,7 @@ public class AnnotationsMappingTestHelper {
 					}
 				}
 			}
-			String[] versions = RuntimeServiceManager.getVersions();
+			String[] versions = RuntimeServiceManager.getAllVersions();
 			IService service = RuntimeServiceManager.findService(versions[0]);
 			File srcFolder = testProject
 					.getIProject()

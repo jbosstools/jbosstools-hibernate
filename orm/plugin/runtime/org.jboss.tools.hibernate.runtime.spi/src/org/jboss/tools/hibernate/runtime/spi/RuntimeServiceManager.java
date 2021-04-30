@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.spi;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -22,7 +23,6 @@ public class RuntimeServiceManager {
 	
 	private static final String SERVICES_EXTENSION_ID = "org.jboss.tools.hibernate.runtime.spi.services"; //$NON-NLS-1$
 
-	private static IService DEFAULT_SERVICE = null;
 	private static Map<String, IService> SERVICES_MAP = null;
 	private static String[] ALL_VERSIONS = null;
 	private static Set<String> ENABLED_VERSIONS = null;
@@ -34,18 +34,22 @@ public class RuntimeServiceManager {
 		return SERVICES_MAP.get(hibernateVersion);
 	}
 	
-	public static String[] getVersions() {
+	public static String[] getAllVersions() {
 		if (ALL_VERSIONS == null) {
 			initialize();
 		}
-		return ALL_VERSIONS;
+		return Arrays.copyOf(ALL_VERSIONS, ALL_VERSIONS.length);
 	}
 	
 	public static IService getDefaultService() {
-		if (DEFAULT_SERVICE == null) {
+		return findService(getDefaultVersion());
+	}
+	
+	public static String getDefaultVersion() {
+		if (ALL_VERSIONS == null) {
 			initialize();
 		}
-		return DEFAULT_SERVICE;
+		return ALL_VERSIONS[ALL_VERSIONS.length - 1];
 	}
 	
 	public static void enableService(String version, boolean enabled) {
@@ -70,7 +74,6 @@ public class RuntimeServiceManager {
 		initializeServicesMap();
 		initializeAllVersions();
 		initializeEnabledVersions();
-		initializeDefaultService();
 	}
 	
 	private static void initializeServicesMap() {
@@ -105,10 +108,6 @@ public class RuntimeServiceManager {
 				ENABLED_VERSIONS.add(version);
 			}
 		}		
-	}
-	
-	private static void initializeDefaultService() {
-		DEFAULT_SERVICE = SERVICES_MAP.get(ALL_VERSIONS[ALL_VERSIONS.length - 1]);
 	}
 	
 	private static Preferences getPreferences() {

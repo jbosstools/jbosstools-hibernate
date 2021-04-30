@@ -164,7 +164,7 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 
         hibernateVersion = new ComboDialogField(SWT.READ_ONLY);
         hibernateVersion.setLabelText(HibernateConsoleMessages.ConsoleConfigurationMainTab_0);
-		hibernateVersion.setItems(RuntimeServiceManager.getVersions());
+		hibernateVersion.setItems(RuntimeServiceManager.getAllVersions());
 		hibernateVersion.selectItem(0);
 		hibernateVersion.setDialogFieldListener(fieldlistener);
 		hibernateVersion.doFillIntoGrid(container, numColumns);

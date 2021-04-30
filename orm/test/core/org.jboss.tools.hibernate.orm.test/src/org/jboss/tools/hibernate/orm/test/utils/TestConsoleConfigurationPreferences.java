@@ -90,7 +90,7 @@ public class TestConsoleConfigurationPreferences implements ConsoleConfiguration
 	 */
 	@Override
 	public String getHibernateVersion() {
-		String[] versions = RuntimeServiceManager.getVersions();
+		String[] versions = RuntimeServiceManager.getAllVersions();
 		return versions[versions.length - 1];
 	}
 	
