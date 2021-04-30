@@ -43,7 +43,7 @@ public class HBMInfoExtractorTest {
 		List<IPath> libs = testProj.copyLibs(testProj.getFolder("lib"));
 		testProj.generateClassPath(libs, sourcePackageFragment);
 		testProj.fullBuild();
-		sourceLocator = new HBMInfoExtractorStub(RuntimeServiceManager.getDefault());
+		sourceLocator = new HBMInfoExtractorStub(RuntimeServiceManager.getDefaultService());
 	}
 
 	@After

@@ -123,7 +123,7 @@ public class StructuredTextViewerConfigurationUtil {
 				}
 			}
 		} 
-		return RuntimeServiceManager.getDefault();
+		return RuntimeServiceManager.getDefaultService();
 	}
 	
 }

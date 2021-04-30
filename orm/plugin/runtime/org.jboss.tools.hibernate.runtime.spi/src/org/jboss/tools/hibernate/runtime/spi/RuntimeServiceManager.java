@@ -41,7 +41,7 @@ public class RuntimeServiceManager {
 		return ALL_VERSIONS;
 	}
 	
-	public static IService getDefault() {
+	public static IService getDefaultService() {
 		if (DEFAULT_SERVICE == null) {
 			initialize();
 		}

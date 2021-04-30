@@ -135,7 +135,7 @@ public class ConfigurationActor {
 			}
 		}
 		if (result == null) {
-			result = RuntimeServiceManager.getDefault();
+			result = RuntimeServiceManager.getDefaultService();
 		}
 		return result;
 	}

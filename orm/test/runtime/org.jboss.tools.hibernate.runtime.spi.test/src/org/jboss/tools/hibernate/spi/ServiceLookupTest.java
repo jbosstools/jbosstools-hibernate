@@ -17,7 +17,7 @@ public class ServiceLookupTest {
 	
 	@Test
 	public void testGetDefault() {
-		IService service = RuntimeServiceManager.getDefault();
+		IService service = RuntimeServiceManager.getDefaultService();
 		Assert.assertSame(RuntimeServiceManager.findService("0.0.0.Test"), service);
 	}
 
