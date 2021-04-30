@@ -55,9 +55,9 @@ public class RuntimeServiceManager {
 	public static void enableService(String version, boolean enabled) {
 		getPreferences().putBoolean(version, enabled);
 		if (enabled) {
-			ENABLED_VERSIONS.add(version);
+			getEnabledVersons().add(version);
 		} else {
-			ENABLED_VERSIONS.remove(version);
+			getEnabledVersons().remove(version);
 		}
 		try {
 			getPreferences().flush();
@@ -67,7 +67,18 @@ public class RuntimeServiceManager {
 	}
 
 	public static boolean isServiceEnabled(String version) {
-		return ENABLED_VERSIONS.contains(version);
+		return getEnabledVersons().contains(version);
+	}
+	
+	private static Preferences getPreferences() {
+		return InstanceScope.INSTANCE.getNode("org.jboss.tools.hibernate.runtime.spi");
+	}
+	
+	private static Set<String> getEnabledVersons() {
+		if (ENABLED_VERSIONS == null) {
+			initialize();
+		}
+		return ENABLED_VERSIONS;
 	}
 	
 	private static void initialize() {
@@ -108,10 +119,6 @@ public class RuntimeServiceManager {
 				ENABLED_VERSIONS.add(version);
 			}
 		}		
-	}
-	
-	private static Preferences getPreferences() {
-		return InstanceScope.INSTANCE.getNode("org.jboss.tools.hibernate.runtime.spi");
 	}
 	
 }
