@@ -6,7 +6,7 @@ import org.jboss.tools.hibernate.spi.internal.TestService;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class ServiceLookupTest {
+public class RuntimeServiceManagerTest {
 
 	@Test
 	public void testFindService() {
@@ -20,5 +20,6 @@ public class ServiceLookupTest {
 		IService service = RuntimeServiceManager.getDefaultService();
 		Assert.assertSame(RuntimeServiceManager.findService("0.0.0.Test"), service);
 	}
+	
 
 }
