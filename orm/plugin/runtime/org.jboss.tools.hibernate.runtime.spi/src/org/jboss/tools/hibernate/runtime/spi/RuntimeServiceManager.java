@@ -22,10 +22,16 @@ import org.osgi.service.prefs.Preferences;
 public class RuntimeServiceManager {
 	
 	private static final String SERVICES_EXTENSION_ID = "org.jboss.tools.hibernate.runtime.spi.services"; //$NON-NLS-1$
+	
+	private static final RuntimeServiceManager INSTANCE = new RuntimeServiceManager();
 
 	private static Map<String, IService> SERVICES_MAP = null;
 	private static String[] ALL_VERSIONS = null;
 	private static Set<String> ENABLED_VERSIONS = null;
+	
+	public static RuntimeServiceManager getInstance() {
+		return INSTANCE;
+	}
 	
 	public static IService findService(String hibernateVersion) {
 		if (SERVICES_MAP == null) {
@@ -39,10 +45,6 @@ public class RuntimeServiceManager {
 			initialize();
 		}
 		return Arrays.copyOf(ALL_VERSIONS, ALL_VERSIONS.length);
-	}
-	
-	public static IService getDefaultService() {
-		return findService(getDefaultVersion());
 	}
 	
 	public static String getDefaultVersion() {
@@ -119,6 +121,13 @@ public class RuntimeServiceManager {
 				ENABLED_VERSIONS.add(version);
 			}
 		}		
+	}
+	
+	private RuntimeServiceManager() {		
+	}
+	
+	public IService getDefaultService() {
+		return findService(getDefaultVersion());
 	}
 	
 }
