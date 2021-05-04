@@ -47,10 +47,6 @@ public class RuntimeServiceManager {
 		}
 	}
 
-	public static boolean isServiceEnabled(String version) {
-		return getEnabledVersons().contains(version);
-	}
-	
 	private static Preferences getPreferences() {
 		return InstanceScope.INSTANCE.getNode("org.jboss.tools.hibernate.runtime.spi");
 	}
@@ -128,6 +124,10 @@ public class RuntimeServiceManager {
 			initialize();
 		}
 		return SERVICES_MAP.get(hibernateVersion);
+	}
+	
+	public boolean isServiceEnabled(String version) {
+		return getEnabledVersons().contains(version);
 	}
 	
 }

@@ -2,6 +2,8 @@ package org.jboss.tools.hibernate.spi;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.jboss.tools.hibernate.runtime.spi.IService;
 import org.jboss.tools.hibernate.runtime.spi.RuntimeServiceManager;
@@ -54,6 +56,17 @@ public class RuntimeServiceManagerTest {
 		IService service = runtimeServiceManager.findService("0.0.0.Test");
 		Assert.assertNotNull(service);
 		Assert.assertEquals(TestService.class, service.getClass());
+	}
+	
+	@Test
+	public void testIsServiceEnabled() throws Exception {
+		Assert.assertFalse(runtimeServiceManager.isServiceEnabled("foobar"));
+		Field enabledVersionsField = RuntimeServiceManager.class.getDeclaredField("ENABLED_VERSIONS");
+		enabledVersionsField.setAccessible(true);
+		Set<String> enabledVersions = new HashSet<String>();
+		enabledVersions.add("foobar");
+		enabledVersionsField.set(null, enabledVersions);
+		Assert.assertTrue(runtimeServiceManager.isServiceEnabled("foobar"));
 	}
 	
 }

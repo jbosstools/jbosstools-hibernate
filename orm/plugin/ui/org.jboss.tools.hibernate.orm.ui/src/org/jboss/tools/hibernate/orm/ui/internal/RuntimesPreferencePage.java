@@ -56,7 +56,7 @@ public class RuntimesPreferencePage extends PreferencePage implements IWorkbench
 			String version = RuntimeServiceManager.getInstance().getAllVersions()[i];
 			tableItems[i] = new TableItem(allRuntimesTable, SWT.FILL);
 			tableItems[i].setText(version);
-			tableItems[i].setChecked(RuntimeServiceManager.isServiceEnabled(version));	
+			tableItems[i].setChecked(RuntimeServiceManager.getInstance().isServiceEnabled(version));	
 		}
 		GridData gridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
 		gridData.horizontalSpan = 2;
