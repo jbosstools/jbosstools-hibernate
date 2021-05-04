@@ -40,20 +40,6 @@ public class RuntimeServiceManager {
 		return SERVICES_MAP.get(hibernateVersion);
 	}
 	
-	public static String[] getAllVersions() {
-		if (ALL_VERSIONS == null) {
-			initialize();
-		}
-		return Arrays.copyOf(ALL_VERSIONS, ALL_VERSIONS.length);
-	}
-	
-	public static String getDefaultVersion() {
-		if (ALL_VERSIONS == null) {
-			initialize();
-		}
-		return ALL_VERSIONS[ALL_VERSIONS.length - 1];
-	}
-	
 	public static void enableService(String version, boolean enabled) {
 		getPreferences().putBoolean(version, enabled);
 		if (enabled) {
@@ -128,6 +114,20 @@ public class RuntimeServiceManager {
 	
 	public IService getDefaultService() {
 		return findService(getDefaultVersion());
+	}
+	
+	public String[] getAllVersions() {
+		if (ALL_VERSIONS == null) {
+			initialize();
+		}
+		return Arrays.copyOf(ALL_VERSIONS, ALL_VERSIONS.length);
+	}
+	
+	public String getDefaultVersion() {
+		if (ALL_VERSIONS == null) {
+			initialize();
+		}
+		return ALL_VERSIONS[ALL_VERSIONS.length - 1];
 	}
 	
 }

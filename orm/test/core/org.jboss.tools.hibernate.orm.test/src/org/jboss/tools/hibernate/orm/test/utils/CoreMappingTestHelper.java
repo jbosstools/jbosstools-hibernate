@@ -256,7 +256,7 @@ public class CoreMappingTestHelper {
 					}
 				}
 			}
-			String[] versions = RuntimeServiceManager.getAllVersions();
+			String[] versions = RuntimeServiceManager.getInstance().getAllVersions();
 			IService service = RuntimeServiceManager.findService(versions[0]);
 			File srcFolder = testProject
 					.getIProject()

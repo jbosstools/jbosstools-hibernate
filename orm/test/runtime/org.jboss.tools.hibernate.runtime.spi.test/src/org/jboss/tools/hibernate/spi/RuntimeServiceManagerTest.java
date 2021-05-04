@@ -45,6 +45,13 @@ public class RuntimeServiceManagerTest {
 	}
 	
 	@Test
+	public void testGetAllVersions() {
+		String[] allVersions = runtimeServiceManager.getAllVersions();
+		Assert.assertEquals(1, allVersions.length);
+		Assert.assertEquals("0.0.0.Test", allVersions[0]);
+	}
+	
+	@Test
 	public void testGetDefaultVersion() throws Exception {
 		Assert.assertEquals("0.0.0.Test", runtimeServiceManager.getDefaultVersion());
 	}

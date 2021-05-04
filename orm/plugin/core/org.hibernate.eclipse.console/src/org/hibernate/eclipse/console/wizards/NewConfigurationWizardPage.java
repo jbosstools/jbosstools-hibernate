@@ -167,7 +167,7 @@ public class NewConfigurationWizardPage extends WizardPage {
         hLabel.setText(HibernateConsoleMessages.NewConfigurationWizardPage_file_hibernate_version);
         	
         hibernateVersionCombo = new Combo(container, SWT.READ_ONLY);
-        String[] versions = RuntimeServiceManager.getAllVersions();
+        String[] versions = RuntimeServiceManager.getInstance().getAllVersions();
         Arrays.sort(versions, STRING_REVERSE_ALPHABETICAL);
         hibernateVersionCombo.setItems(versions);
         hibernateVersionCombo.select(0);

@@ -172,7 +172,7 @@ public class CodeGenXMLFactory {
 		boolean bPropFile = profile != null;
 		// update property with fake tm
 		Properties propsTmp = null;
-		String[] versions = RuntimeServiceManager.getAllVersions();
+		String[] versions = RuntimeServiceManager.getInstance().getAllVersions();
 		String maxVersion = versions[versions.length - 1];
 		String hibernateVersion = consoleConfigPrefs == null ? maxVersion : consoleConfigPrefs.getHibernateVersion();
 		IService service = RuntimeServiceManager.findService(hibernateVersion);

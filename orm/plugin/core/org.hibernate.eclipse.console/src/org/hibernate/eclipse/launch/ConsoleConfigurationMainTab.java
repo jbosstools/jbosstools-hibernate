@@ -138,7 +138,7 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 		Label hLabel = new Label(comp2, SWT.NULL);
 		hLabel.setText(HibernateConsoleMessages.ConsoleConfigurationMainTab_0);
 		hibernateVersion = new Combo(comp2, SWT.READ_ONLY);
-		String[] versions = RuntimeServiceManager.getAllVersions();
+		String[] versions = RuntimeServiceManager.getInstance().getAllVersions();
 		Arrays.sort(versions, STRING_REVERSE_ALPHABETICAL);
 		hibernateVersion.setItems(versions);
 		hibernateVersion.select(0);

@@ -16,7 +16,7 @@ import org.jboss.tools.hibernate.runtime.spi.RuntimeServiceManager;
 
 public class RuntimesPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 	
-	private TableItem[] tableItems = new TableItem[RuntimeServiceManager.getAllVersions().length];
+	private TableItem[] tableItems = new TableItem[RuntimeServiceManager.getInstance().getAllVersions().length];
 	private Combo defaultRuntimeCombo = null;
 
 	@Override
@@ -53,7 +53,7 @@ public class RuntimesPreferencePage extends PreferencePage implements IWorkbench
 	private void createAllRuntimesTable(Composite parent) {
 		Table allRuntimesTable = new Table(parent, SWT.CHECK | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		for (int i = 0; i < tableItems.length; i++) {
-			String version = RuntimeServiceManager.getAllVersions()[i];
+			String version = RuntimeServiceManager.getInstance().getAllVersions()[i];
 			tableItems[i] = new TableItem(allRuntimesTable, SWT.FILL);
 			tableItems[i].setText(version);
 			tableItems[i].setChecked(RuntimeServiceManager.isServiceEnabled(version));	
@@ -79,7 +79,7 @@ public class RuntimesPreferencePage extends PreferencePage implements IWorkbench
 			if (tableItems[i].getChecked()) {
 				defaultRuntimeCombo.add(tableItems[i].getText());
 			}
-			defaultRuntimeCombo.setText(RuntimeServiceManager.getAllVersions()[RuntimeServiceManager.getAllVersions().length - 1]);
+			defaultRuntimeCombo.setText(RuntimeServiceManager.getInstance().getDefaultVersion());
 		}
 	}
 	
