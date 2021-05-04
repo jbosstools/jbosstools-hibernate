@@ -231,7 +231,7 @@ public class MappingTestHelper {
 				}
 			}
 			String[] versions = RuntimeServiceManager.getInstance().getAllVersions();
-			IService service = RuntimeServiceManager.findService(versions[0]);
+			IService service = RuntimeServiceManager.getInstance().findService(versions[0]);
 			File srcFolder = testProject
 					.getIProject()
 					.getFolder(TestProject.SRC_FOLDER)

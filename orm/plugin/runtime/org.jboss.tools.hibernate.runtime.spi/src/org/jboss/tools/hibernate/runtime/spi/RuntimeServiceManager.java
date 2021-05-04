@@ -33,13 +33,6 @@ public class RuntimeServiceManager {
 		return INSTANCE;
 	}
 	
-	public static IService findService(String hibernateVersion) {
-		if (SERVICES_MAP == null) {
-			initialize();
-		}
-		return SERVICES_MAP.get(hibernateVersion);
-	}
-	
 	public static void enableService(String version, boolean enabled) {
 		getPreferences().putBoolean(version, enabled);
 		if (enabled) {
@@ -128,6 +121,13 @@ public class RuntimeServiceManager {
 			initialize();
 		}
 		return ALL_VERSIONS[ALL_VERSIONS.length - 1];
+	}
+	
+	public IService findService(String hibernateVersion) {
+		if (SERVICES_MAP == null) {
+			initialize();
+		}
+		return SERVICES_MAP.get(hibernateVersion);
 	}
 	
 }

@@ -175,7 +175,7 @@ public class CodeGenXMLFactory {
 		String[] versions = RuntimeServiceManager.getInstance().getAllVersions();
 		String maxVersion = versions[versions.length - 1];
 		String hibernateVersion = consoleConfigPrefs == null ? maxVersion : consoleConfigPrefs.getHibernateVersion();
-		IService service = RuntimeServiceManager.findService(hibernateVersion);
+		IService service = RuntimeServiceManager.getInstance().findService(hibernateVersion);
 		IEnvironment environment = service.getEnvironment();
 		if (consoleConfigPrefs != null && consoleConfigPrefs.getPropertyFile() != null) {
 			propsTmp = consoleConfigPrefs.getProperties();

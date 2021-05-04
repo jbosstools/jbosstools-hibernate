@@ -23,13 +23,6 @@ public class RuntimeServiceManagerTest {
 	}
 
 	@Test
-	public void testFindService() {
-		IService service = RuntimeServiceManager.findService("0.0.0.Test");
-		Assert.assertNotNull(service);
-		Assert.assertEquals(TestService.class, service.getClass());
-	}
-	
-	@Test
 	public void testGetInstance() throws Exception {
 		Field instanceField = RuntimeServiceManager.class.getDeclaredField("INSTANCE");
 		instanceField.setAccessible(true);
@@ -41,7 +34,7 @@ public class RuntimeServiceManagerTest {
 	@Test
 	public void testGetDefaultService() {
 		IService service = runtimeServiceManager.getDefaultService();
-		Assert.assertSame(RuntimeServiceManager.findService("0.0.0.Test"), service);
+		Assert.assertSame(runtimeServiceManager.findService("0.0.0.Test"), service);
 	}
 	
 	@Test
@@ -56,5 +49,11 @@ public class RuntimeServiceManagerTest {
 		Assert.assertEquals("0.0.0.Test", runtimeServiceManager.getDefaultVersion());
 	}
 	
-
+	@Test
+	public void testFindService() {
+		IService service = runtimeServiceManager.findService("0.0.0.Test");
+		Assert.assertNotNull(service);
+		Assert.assertEquals(TestService.class, service.getClass());
+	}
+	
 }

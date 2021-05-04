@@ -95,7 +95,7 @@ public class TestConsoleConfigurationPreferences implements ConsoleConfiguration
 	}
 	
 	private IService getService() {
-		return RuntimeServiceManager.findService(getHibernateVersion());
+		return RuntimeServiceManager.getInstance().findService(getHibernateVersion());
 	}
 
 }

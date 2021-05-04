@@ -277,7 +277,7 @@ public class HibernateExtension {
 	}
 
 	public IService getHibernateService() {
-		return RuntimeServiceManager.findService(getHibernateVersion());
+		return RuntimeServiceManager.getInstance().findService(getHibernateVersion());
 	}
 
 }

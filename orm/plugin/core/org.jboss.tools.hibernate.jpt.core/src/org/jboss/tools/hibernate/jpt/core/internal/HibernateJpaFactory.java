@@ -33,7 +33,7 @@ public class HibernateJpaFactory extends HibernateAbstractJpaFactory {
 
 	@Override
 	public IService getHibernateService() {
-		return RuntimeServiceManager.findService("3.6");
+		return RuntimeServiceManager.getInstance().findService("3.6");
 	}
 
 }

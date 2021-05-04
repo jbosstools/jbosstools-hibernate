@@ -23,7 +23,7 @@ public class HSearchServiceImpl extends AbstractHSearchService implements IHSear
 	
 	@Override
 	public IService getHibernateService() {
-		return RuntimeServiceManager.findService("4.0");
+		return RuntimeServiceManager.getInstance().findService("4.0");
 	}
 	
 	@Override
