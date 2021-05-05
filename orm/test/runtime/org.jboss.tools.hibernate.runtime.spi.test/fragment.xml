@@ -4,7 +4,7 @@
    <extension
          point="org.jboss.tools.hibernate.runtime.spi.services">
       <service
-            class="org.jboss.tools.hibernate.spi.internal.TestService"
+            class="org.jboss.tools.hibernate.runtime.spi.internal.TestService"
             name="0.0.0.Test">
       </service>
    </extension>

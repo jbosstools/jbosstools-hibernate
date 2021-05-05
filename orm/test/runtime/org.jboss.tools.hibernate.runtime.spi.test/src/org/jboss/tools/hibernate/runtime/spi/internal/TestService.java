@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate.spi.internal;
+package org.jboss.tools.hibernate.runtime.spi.internal;
 
 import java.io.File;
 import java.sql.Connection;

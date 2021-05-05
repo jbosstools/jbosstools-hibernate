@@ -33,18 +33,21 @@ public class RuntimeServiceManager {
 		return INSTANCE;
 	}
 	
-	private RuntimeServiceManager() {		
+	private Preferences servicePreferences = null;
+	
+	private RuntimeServiceManager() {	
+		initializePreferences();
 	}
 	
 	public void enableService(String version, boolean enabled) {
-		getPreferences().putBoolean(version, enabled);
+		servicePreferences.putBoolean(version, enabled);
 		if (enabled) {
 			getEnabledVersons().add(version);
 		} else {
 			getEnabledVersons().remove(version);
 		}
 		try {
-			getPreferences().flush();
+			servicePreferences.flush();
 		} catch (BackingStoreException bse) {
 			throw new RuntimeException(bse);
 		}
@@ -79,10 +82,6 @@ public class RuntimeServiceManager {
 		return getEnabledVersons().contains(version);
 	}
 	
-	private Preferences getPreferences() {
-		return InstanceScope.INSTANCE.getNode("org.jboss.tools.hibernate.runtime.spi");
-	}
-	
 	private Set<String> getEnabledVersons() {
 		if (ENABLED_VERSIONS == null) {
 			initialize();
@@ -94,6 +93,10 @@ public class RuntimeServiceManager {
 		initializeServicesMap();
 		initializeAllVersions();
 		initializeEnabledVersions();
+	}
+	
+	private void initializePreferences() {
+		servicePreferences = InstanceScope.INSTANCE.getNode(SERVICES_EXTENSION_ID);
 	}
 	
 	private void initializeServicesMap() {
@@ -124,7 +127,7 @@ public class RuntimeServiceManager {
 	private void initializeEnabledVersions() {
 		ENABLED_VERSIONS = new HashSet<String>();
 		for (String version : ALL_VERSIONS) {
-			if ((getPreferences().getBoolean(version, true))) {
+			if (servicePreferences.getBoolean(version, true)) {
 				ENABLED_VERSIONS.add(version);
 			}
 		}		
