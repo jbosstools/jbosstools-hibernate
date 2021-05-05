@@ -35,6 +35,9 @@ public class RuntimeServiceManagerTest {
 		Field servicesMapField = RuntimeServiceManager.class.getDeclaredField("servicesMap");
 		servicesMapField.setAccessible(true);
 		Assert.assertNotNull(servicesMapField.get(runtimeServiceManager));
+		Field allVersionsField = RuntimeServiceManager.class.getDeclaredField("allVersions");
+		allVersionsField.setAccessible(true);
+		Assert.assertNotNull(allVersionsField.get(runtimeServiceManager));
 	}
 
 	@Test
