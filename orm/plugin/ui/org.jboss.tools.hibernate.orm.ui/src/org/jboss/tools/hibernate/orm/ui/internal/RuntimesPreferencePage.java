@@ -37,7 +37,7 @@ public class RuntimesPreferencePage extends PreferencePage implements IWorkbench
 	@Override
 	public boolean performOk() {
 		for (TableItem tableItem : tableItems) {
-			RuntimeServiceManager.enableService(tableItem.getText(), tableItem.getChecked());
+			RuntimeServiceManager.getInstance().enableService(tableItem.getText(), tableItem.getChecked());
 		}
 		return super.performOk();
 	}

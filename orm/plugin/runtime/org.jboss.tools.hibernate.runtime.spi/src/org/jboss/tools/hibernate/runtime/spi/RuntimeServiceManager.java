@@ -33,20 +33,6 @@ public class RuntimeServiceManager {
 		return INSTANCE;
 	}
 	
-	public static void enableService(String version, boolean enabled) {
-		getPreferences().putBoolean(version, enabled);
-		if (enabled) {
-			getEnabledVersons().add(version);
-		} else {
-			getEnabledVersons().remove(version);
-		}
-		try {
-			getPreferences().flush();
-		} catch (BackingStoreException bse) {
-			throw new RuntimeException(bse);
-		}
-	}
-
 	private static Preferences getPreferences() {
 		return InstanceScope.INSTANCE.getNode("org.jboss.tools.hibernate.runtime.spi");
 	}
@@ -101,8 +87,25 @@ public class RuntimeServiceManager {
 	private RuntimeServiceManager() {		
 	}
 	
-	public IService getDefaultService() {
-		return findService(getDefaultVersion());
+	public void enableService(String version, boolean enabled) {
+		getPreferences().putBoolean(version, enabled);
+		if (enabled) {
+			getEnabledVersons().add(version);
+		} else {
+			getEnabledVersons().remove(version);
+		}
+		try {
+			getPreferences().flush();
+		} catch (BackingStoreException bse) {
+			throw new RuntimeException(bse);
+		}
+	}
+
+	public IService findService(String hibernateVersion) {
+		if (SERVICES_MAP == null) {
+			initialize();
+		}
+		return SERVICES_MAP.get(hibernateVersion);
 	}
 	
 	public String[] getAllVersions() {
@@ -112,18 +115,15 @@ public class RuntimeServiceManager {
 		return Arrays.copyOf(ALL_VERSIONS, ALL_VERSIONS.length);
 	}
 	
+	public IService getDefaultService() {
+		return findService(getDefaultVersion());
+	}
+	
 	public String getDefaultVersion() {
 		if (ALL_VERSIONS == null) {
 			initialize();
 		}
 		return ALL_VERSIONS[ALL_VERSIONS.length - 1];
-	}
-	
-	public IService findService(String hibernateVersion) {
-		if (SERVICES_MAP == null) {
-			initialize();
-		}
-		return SERVICES_MAP.get(hibernateVersion);
 	}
 	
 	public boolean isServiceEnabled(String version) {
