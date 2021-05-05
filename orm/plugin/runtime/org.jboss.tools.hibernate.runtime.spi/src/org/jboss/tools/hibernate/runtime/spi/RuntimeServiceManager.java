@@ -25,7 +25,6 @@ public class RuntimeServiceManager {
 	
 	private static final RuntimeServiceManager INSTANCE = new RuntimeServiceManager();
 
-	private static Map<String, IService> SERVICES_MAP = null;
 	private static String[] ALL_VERSIONS = null;
 	private static Set<String> ENABLED_VERSIONS = null;
 	
@@ -34,9 +33,11 @@ public class RuntimeServiceManager {
 	}
 	
 	private Preferences servicePreferences = null;
+	private Map<String, IService> servicesMap = null;
 	
 	private RuntimeServiceManager() {	
 		initializePreferences();
+		initializeServicesMap();
 	}
 	
 	public void enableService(String version, boolean enabled) {
@@ -54,10 +55,7 @@ public class RuntimeServiceManager {
 	}
 
 	public IService findService(String hibernateVersion) {
-		if (SERVICES_MAP == null) {
-			initialize();
-		}
-		return SERVICES_MAP.get(hibernateVersion);
+		return servicesMap.get(hibernateVersion);
 	}
 	
 	public String[] getAllVersions() {
@@ -100,7 +98,7 @@ public class RuntimeServiceManager {
 	}
 	
 	private void initializeServicesMap() {
-		SERVICES_MAP = new HashMap<String, IService>();
+		servicesMap = new HashMap<String, IService>();
 		IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
 		IExtensionPoint extensionPoint = extensionRegistry.getExtensionPoint(SERVICES_EXTENSION_ID);
 		for (IExtension extension : extensionPoint.getExtensions()) {
@@ -109,7 +107,7 @@ public class RuntimeServiceManager {
 					Object object = configurationElement.createExecutableExtension("class");
 					String name = configurationElement.getAttribute("name");
 					if (object != null && name != null && object instanceof IService) {
-						SERVICES_MAP.put(name, (IService)object);
+						servicesMap.put(name, (IService)object);
 					}
 				} catch (CoreException e) {
 					HibernateServicePlugin.getDefault().log(e);
@@ -119,7 +117,7 @@ public class RuntimeServiceManager {
 	}
 	
 	private void initializeAllVersions() {
-		ArrayList<String> list = new ArrayList<String>(SERVICES_MAP.keySet());
+		ArrayList<String> list = new ArrayList<String>(servicesMap.keySet());
 		Collections.sort(list);
 		ALL_VERSIONS = list.toArray(new String[list.size()]);
 	}

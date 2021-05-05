@@ -32,6 +32,9 @@ public class RuntimeServiceManagerTest {
 		servicePreferencesField.setAccessible(true);
 		Preferences preferences = (Preferences)servicePreferencesField.get(runtimeServiceManager);
 		Assert.assertEquals("org.jboss.tools.hibernate.runtime.spi.services", preferences.name());
+		Field servicesMapField = RuntimeServiceManager.class.getDeclaredField("servicesMap");
+		servicesMapField.setAccessible(true);
+		Assert.assertNotNull(servicesMapField.get(runtimeServiceManager));
 	}
 
 	@Test
