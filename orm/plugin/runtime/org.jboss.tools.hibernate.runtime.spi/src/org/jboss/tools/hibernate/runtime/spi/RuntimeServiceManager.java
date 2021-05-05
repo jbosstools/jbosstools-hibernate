@@ -33,57 +33,6 @@ public class RuntimeServiceManager {
 		return INSTANCE;
 	}
 	
-	private static Preferences getPreferences() {
-		return InstanceScope.INSTANCE.getNode("org.jboss.tools.hibernate.runtime.spi");
-	}
-	
-	private static Set<String> getEnabledVersons() {
-		if (ENABLED_VERSIONS == null) {
-			initialize();
-		}
-		return ENABLED_VERSIONS;
-	}
-	
-	private static void initialize() {
-		initializeServicesMap();
-		initializeAllVersions();
-		initializeEnabledVersions();
-	}
-	
-	private static void initializeServicesMap() {
-		SERVICES_MAP = new HashMap<String, IService>();
-		IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
-		IExtensionPoint extensionPoint = extensionRegistry.getExtensionPoint(SERVICES_EXTENSION_ID);
-		for (IExtension extension : extensionPoint.getExtensions()) {
-			for (IConfigurationElement configurationElement : extension.getConfigurationElements()) {
-				try {
-					Object object = configurationElement.createExecutableExtension("class");
-					String name = configurationElement.getAttribute("name");
-					if (object != null && name != null && object instanceof IService) {
-						SERVICES_MAP.put(name, (IService)object);
-					}
-				} catch (CoreException e) {
-					HibernateServicePlugin.getDefault().log(e);
-				}
-			}
-		}		
-	}
-	
-	private static void initializeAllVersions() {
-		ArrayList<String> list = new ArrayList<String>(SERVICES_MAP.keySet());
-		Collections.sort(list);
-		ALL_VERSIONS = list.toArray(new String[list.size()]);
-	}
-	
-	private static void initializeEnabledVersions() {
-		ENABLED_VERSIONS = new HashSet<String>();
-		for (String version : ALL_VERSIONS) {
-			if ((getPreferences().getBoolean(version, true))) {
-				ENABLED_VERSIONS.add(version);
-			}
-		}		
-	}
-	
 	private RuntimeServiceManager() {		
 	}
 	
@@ -128,6 +77,57 @@ public class RuntimeServiceManager {
 	
 	public boolean isServiceEnabled(String version) {
 		return getEnabledVersons().contains(version);
+	}
+	
+	private Preferences getPreferences() {
+		return InstanceScope.INSTANCE.getNode("org.jboss.tools.hibernate.runtime.spi");
+	}
+	
+	private Set<String> getEnabledVersons() {
+		if (ENABLED_VERSIONS == null) {
+			initialize();
+		}
+		return ENABLED_VERSIONS;
+	}
+	
+	private void initialize() {
+		initializeServicesMap();
+		initializeAllVersions();
+		initializeEnabledVersions();
+	}
+	
+	private void initializeServicesMap() {
+		SERVICES_MAP = new HashMap<String, IService>();
+		IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
+		IExtensionPoint extensionPoint = extensionRegistry.getExtensionPoint(SERVICES_EXTENSION_ID);
+		for (IExtension extension : extensionPoint.getExtensions()) {
+			for (IConfigurationElement configurationElement : extension.getConfigurationElements()) {
+				try {
+					Object object = configurationElement.createExecutableExtension("class");
+					String name = configurationElement.getAttribute("name");
+					if (object != null && name != null && object instanceof IService) {
+						SERVICES_MAP.put(name, (IService)object);
+					}
+				} catch (CoreException e) {
+					HibernateServicePlugin.getDefault().log(e);
+				}
+			}
+		}		
+	}
+	
+	private void initializeAllVersions() {
+		ArrayList<String> list = new ArrayList<String>(SERVICES_MAP.keySet());
+		Collections.sort(list);
+		ALL_VERSIONS = list.toArray(new String[list.size()]);
+	}
+	
+	private void initializeEnabledVersions() {
+		ENABLED_VERSIONS = new HashSet<String>();
+		for (String version : ALL_VERSIONS) {
+			if ((getPreferences().getBoolean(version, true))) {
+				ENABLED_VERSIONS.add(version);
+			}
+		}		
 	}
 	
 }
