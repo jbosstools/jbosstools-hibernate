@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -80,10 +81,29 @@ public class RuntimeServiceManagerTest {
 	
 	@Test
 	public void testGetDefaultVersion() throws Exception {
-		Field allVersionsField = RuntimeServiceManager.class.getDeclaredField("allVersions");
-		allVersionsField.setAccessible(true);
-		allVersionsField.set(runtimeServiceManager, new String[] { "foo", "bar", "baz" });
+		Preferences preferences = InstanceScope.INSTANCE.getNode(testPreferencesName);
+		Field preferencesField = RuntimeServiceManager.class.getDeclaredField("servicePreferences");
+		preferencesField.setAccessible(true);
+		preferencesField.set(runtimeServiceManager, preferences);
+		Field enabledVersionsField = RuntimeServiceManager.class.getDeclaredField("enabledVersions");
+		enabledVersionsField.setAccessible(true);
+		enabledVersionsField.set(
+				runtimeServiceManager, 
+				new HashSet<String> (Arrays.asList("foo", "bar", "baz")));
+		// first: if a preference is found, take that one 
+		preferences.put("default", "baz");
 		Assert.assertEquals("baz", runtimeServiceManager.getDefaultVersion());
+		// second: if there is no preference, take the alphabetically highest enabled version
+		preferences.remove("default");
+		Assert.assertEquals("foo", runtimeServiceManager.getDefaultVersion());
+		// third: throw exception if no version is enabled
+		enabledVersionsField.set(runtimeServiceManager, new HashSet<String> ());
+		try {
+			runtimeServiceManager.getDefaultVersion();
+			Assert.fail();
+		} catch (Exception e) {
+			Assert.assertEquals("No Hibernate runtimes are enabled.", e.getMessage());
+		}
 	}
 	
 	@Test
