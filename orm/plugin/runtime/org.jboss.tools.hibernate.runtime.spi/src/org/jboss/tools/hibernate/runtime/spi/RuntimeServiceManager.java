@@ -25,8 +25,6 @@ public class RuntimeServiceManager {
 	
 	private static final RuntimeServiceManager INSTANCE = new RuntimeServiceManager();
 
-	private static Set<String> ENABLED_VERSIONS = null;
-	
 	public static RuntimeServiceManager getInstance() {
 		return INSTANCE;
 	}
@@ -34,19 +32,21 @@ public class RuntimeServiceManager {
 	private Preferences servicePreferences = null;
 	private Map<String, IService> servicesMap = null;
 	private String[] allVersions = null;
-	
+	private Set<String> enabledVersions = null;
+		
 	private RuntimeServiceManager() {	
 		initializePreferences();
 		initializeServicesMap();
 		initializeAllVersions();
+		initializeEnabledVersions();
 	}
 	
 	public void enableService(String version, boolean enabled) {
 		servicePreferences.putBoolean(version, enabled);
 		if (enabled) {
-			getEnabledVersons().add(version);
+			enabledVersions.add(version);
 		} else {
-			getEnabledVersons().remove(version);
+			enabledVersions.remove(version);
 		}
 		try {
 			servicePreferences.flush();
@@ -72,20 +72,7 @@ public class RuntimeServiceManager {
 	}
 	
 	public boolean isServiceEnabled(String version) {
-		return getEnabledVersons().contains(version);
-	}
-	
-	private Set<String> getEnabledVersons() {
-		if (ENABLED_VERSIONS == null) {
-			initialize();
-		}
-		return ENABLED_VERSIONS;
-	}
-	
-	private void initialize() {
-		initializeServicesMap();
-		initializeAllVersions();
-		initializeEnabledVersions();
+		return enabledVersions.contains(version);
 	}
 	
 	private void initializePreferences() {
@@ -118,10 +105,10 @@ public class RuntimeServiceManager {
 	}
 	
 	private void initializeEnabledVersions() {
-		ENABLED_VERSIONS = new HashSet<String>();
+		enabledVersions = new HashSet<String>();
 		for (String version : allVersions) {
 			if (servicePreferences.getBoolean(version, true)) {
-				ENABLED_VERSIONS.add(version);
+				enabledVersions.add(version);
 			}
 		}		
 	}

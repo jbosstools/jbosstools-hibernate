@@ -38,6 +38,9 @@ public class RuntimeServiceManagerTest {
 		Field allVersionsField = RuntimeServiceManager.class.getDeclaredField("allVersions");
 		allVersionsField.setAccessible(true);
 		Assert.assertNotNull(allVersionsField.get(runtimeServiceManager));
+		Field enabledVersionsField = RuntimeServiceManager.class.getDeclaredField("enabledVersions");
+		enabledVersionsField.setAccessible(true);
+		Assert.assertNotNull(enabledVersionsField.get(runtimeServiceManager));
 	}
 
 	@Test
@@ -56,8 +59,8 @@ public class RuntimeServiceManagerTest {
 	}
 	
 	@Test
-	public void testGetAllVersions() {
-		String[] allVersions = runtimeServiceManager.getAllVersions();
+	public void testGetAllVersions() throws Exception {
+ 		String[] allVersions = runtimeServiceManager.getAllVersions();
 		Assert.assertEquals(1, allVersions.length);
 		Assert.assertEquals("0.0.0.Test", allVersions[0]);
 	}
@@ -77,20 +80,20 @@ public class RuntimeServiceManagerTest {
 	@Test
 	public void testIsServiceEnabled() throws Exception {
 		Assert.assertFalse(runtimeServiceManager.isServiceEnabled("foobar"));
-		Field enabledVersionsField = RuntimeServiceManager.class.getDeclaredField("ENABLED_VERSIONS");
+		Field enabledVersionsField = RuntimeServiceManager.class.getDeclaredField("enabledVersions");
 		enabledVersionsField.setAccessible(true);
 		Set<String> enabledVersions = new HashSet<String>();
 		enabledVersions.add("foobar");
-		enabledVersionsField.set(null, enabledVersions);
+		enabledVersionsField.set(runtimeServiceManager, enabledVersions);
 		Assert.assertTrue(runtimeServiceManager.isServiceEnabled("foobar"));
 	}
 	
 	@Test
 	public void testEnableService() throws Exception {
-		Field enabledVersionsField = RuntimeServiceManager.class.getDeclaredField("ENABLED_VERSIONS");
+		Field enabledVersionsField = RuntimeServiceManager.class.getDeclaredField("enabledVersions");
 		enabledVersionsField.setAccessible(true);	
 		Set<String> enabledVersions = new HashSet<String>();
-		enabledVersionsField.set(null, enabledVersions);
+		enabledVersionsField.set(runtimeServiceManager, enabledVersions);
 		Preferences preferences = InstanceScope.INSTANCE.getNode(testPreferencesName);
 		Field preferencesField = RuntimeServiceManager.class.getDeclaredField("servicePreferences");
 		preferencesField.setAccessible(true);
