@@ -136,6 +136,7 @@ public class RuntimeServiceManagerTest {
 		Field enabledVersionsField = RuntimeServiceManager.class.getDeclaredField("enabledVersions");
 		enabledVersionsField.setAccessible(true);	
 		Set<String> enabledVersions = new HashSet<String>();
+		enabledVersions.add("zanzibar");
 		enabledVersionsField.set(runtimeServiceManager, enabledVersions);
 		Preferences preferences = InstanceScope.INSTANCE.getNode(testPreferencesName);
 		Field preferencesField = RuntimeServiceManager.class.getDeclaredField("servicePreferences");
@@ -149,6 +150,14 @@ public class RuntimeServiceManagerTest {
 		runtimeServiceManager.enableService("foobar", false);
 		Assert.assertFalse(preferences.getBoolean("foobar", false));
 		Assert.assertFalse(enabledVersions.contains("foobar"));
+		try {
+			runtimeServiceManager.enableService("zanzibar", false);
+			Assert.fail();
+		} catch (Exception e) {
+			Assert.assertEquals(
+					"Disabliing the default Hibernate runtime is not allowed", 
+					e.getMessage());
+		}
 	}
 	
 	private IService createService() {
