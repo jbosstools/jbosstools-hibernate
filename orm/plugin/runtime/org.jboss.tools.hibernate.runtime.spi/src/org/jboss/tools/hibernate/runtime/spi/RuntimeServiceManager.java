@@ -79,6 +79,18 @@ public class RuntimeServiceManager {
 		return enabled[enabled.length - 1];
 	}
 	
+	public void setDefaultVersion(String version) {
+		if (!enabledVersions.contains(version)) {
+			throw new RuntimeException("Setting a disabled Hibernate runtime as the default is not allowed");
+		}
+		servicePreferences.put("default", version);
+		try {
+			servicePreferences.flush();
+		} catch (BackingStoreException bse) {
+			throw new RuntimeException(bse);
+		}
+	}
+	
 	public boolean isServiceEnabled(String version) {
 		return enabledVersions.contains(version);
 	}

@@ -80,6 +80,35 @@ public class RuntimeServiceManagerTest {
 	}
 	
 	@Test
+	public void testSetDefaultVersion() throws Exception {
+		Preferences preferences = InstanceScope.INSTANCE.getNode(testPreferencesName);
+		Field preferencesField = RuntimeServiceManager.class.getDeclaredField("servicePreferences");
+		preferencesField.setAccessible(true);
+		preferencesField.set(runtimeServiceManager, preferences);
+		Field enabledVersionsField = RuntimeServiceManager.class.getDeclaredField("enabledVersions");
+		enabledVersionsField.setAccessible(true);
+		enabledVersionsField.set(
+				runtimeServiceManager, 
+				new HashSet<String> (Arrays.asList("foo", "bar")));
+		Assert.assertNull(preferences.get("default", null));
+		// first: trying to set a disabled runtime as the default should fail
+		try {
+			runtimeServiceManager.setDefaultVersion("baz");
+			Assert.fail();
+		} catch (Exception e) {
+			Assert.assertEquals(
+					"Setting a disabled Hibernate runtime as the default is not allowed", 
+					e.getMessage());
+		}
+		// second: choosing an enabled runtime
+		Assert.assertNull(preferences.get("default", null));
+		runtimeServiceManager.setDefaultVersion("foo");
+		Assert.assertEquals("foo", preferences.get("default", null));
+		runtimeServiceManager.setDefaultVersion("bar");
+		Assert.assertEquals("bar", preferences.get("default", null));
+	}
+	
+	@Test
 	public void testGetDefaultVersion() throws Exception {
 		Preferences preferences = InstanceScope.INSTANCE.getNode(testPreferencesName);
 		Field preferencesField = RuntimeServiceManager.class.getDeclaredField("servicePreferences");
