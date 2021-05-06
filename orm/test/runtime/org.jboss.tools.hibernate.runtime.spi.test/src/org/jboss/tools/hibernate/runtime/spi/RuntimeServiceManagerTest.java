@@ -2,11 +2,15 @@ package org.jboss.tools.hibernate.runtime.spi;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.jboss.tools.hibernate.runtime.spi.internal.TestService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,28 +57,47 @@ public class RuntimeServiceManagerTest {
 	}
 	
 	@Test
-	public void testGetDefaultService() {
-		IService service = runtimeServiceManager.getDefaultService();
-		Assert.assertSame(runtimeServiceManager.findService("0.0.0.Test"), service);
+	public void testGetDefaultService() throws Exception {
+		Field servicesMapField = RuntimeServiceManager.class.getDeclaredField("servicesMap");
+		servicesMapField.setAccessible(true);
+		Map<String, IService> servicesMap = new HashMap<String, IService>();
+		IService bazService = createService();
+		servicesMap.put("baz", bazService);
+		Field allVersionsField = RuntimeServiceManager.class.getDeclaredField("allVersions");
+		allVersionsField.setAccessible(true);
+		allVersionsField.set(runtimeServiceManager, new String[] { "foo", "bar", "baz" });
 	}
 	
 	@Test
 	public void testGetAllVersions() throws Exception {
- 		String[] allVersions = runtimeServiceManager.getAllVersions();
-		Assert.assertEquals(1, allVersions.length);
-		Assert.assertEquals("0.0.0.Test", allVersions[0]);
+		Field allVersionsField = RuntimeServiceManager.class.getDeclaredField("allVersions");
+		allVersionsField.setAccessible(true);
+		String[] allVersions = new String[] { "foo", "bar" };
+		allVersionsField.set(runtimeServiceManager, allVersions);
+		Assert.assertArrayEquals(allVersions, runtimeServiceManager.getAllVersions());
+		Assert.assertNotSame(allVersions, runtimeServiceManager.getAllVersions());
 	}
 	
 	@Test
 	public void testGetDefaultVersion() throws Exception {
-		Assert.assertEquals("0.0.0.Test", runtimeServiceManager.getDefaultVersion());
+		Field allVersionsField = RuntimeServiceManager.class.getDeclaredField("allVersions");
+		allVersionsField.setAccessible(true);
+		allVersionsField.set(runtimeServiceManager, new String[] { "foo", "bar", "baz" });
+		Assert.assertEquals("baz", runtimeServiceManager.getDefaultVersion());
 	}
 	
 	@Test
-	public void testFindService() {
-		IService service = runtimeServiceManager.findService("0.0.0.Test");
-		Assert.assertNotNull(service);
-		Assert.assertEquals(TestService.class, service.getClass());
+	public void testFindService() throws Exception {
+		Field servicesMapField = RuntimeServiceManager.class.getDeclaredField("servicesMap");
+		servicesMapField.setAccessible(true);
+		Map<String, IService> servicesMap = new HashMap<String, IService>();
+		IService fooService = createService();
+		IService barService = createService();
+		servicesMap.put("foo", fooService);
+		servicesMap.put("bar", barService);
+		servicesMapField.set(runtimeServiceManager, servicesMap);
+		Assert.assertSame(fooService, runtimeServiceManager.findService("foo"));
+		Assert.assertSame(barService, runtimeServiceManager.findService("bar"));
 	}
 	
 	@Test
@@ -106,6 +129,18 @@ public class RuntimeServiceManagerTest {
 		runtimeServiceManager.enableService("foobar", false);
 		Assert.assertFalse(preferences.getBoolean("foobar", false));
 		Assert.assertFalse(enabledVersions.contains("foobar"));
+	}
+	
+	private IService createService() {
+		return (IService)Proxy.newProxyInstance(
+				getClass().getClassLoader(), 
+				new Class[] { IService.class }, 
+				new InvocationHandler() {				
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+						return null;
+					}
+				});
 	}
 	
 }
