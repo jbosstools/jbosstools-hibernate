@@ -194,7 +194,7 @@ public class RuntimeServiceManagerTest {
 			Assert.fail();
 		} catch (Exception e) {
 			Assert.assertEquals(
-					"Disabliing the default Hibernate runtime is not allowed", 
+					"Disabling the default Hibernate runtime is not allowed", 
 					e.getMessage());
 		}
 	}

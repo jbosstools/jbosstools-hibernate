@@ -31,6 +31,7 @@ public class RuntimesPreferencePage extends PreferencePage implements IWorkbench
 		createAllRuntimesTable(composite);
 		createDefaultRuntimeLabel(composite);
 		createDefaultRuntimeCombo(composite);
+		refreshPage();
 		return composite;
 	}
 	
@@ -39,6 +40,7 @@ public class RuntimesPreferencePage extends PreferencePage implements IWorkbench
 		for (TableItem tableItem : tableItems) {
 			RuntimeServiceManager.getInstance().enableService(tableItem.getText(), tableItem.getChecked());
 		}
+		RuntimeServiceManager.getInstance().setDefaultVersion(defaultRuntimeCombo.getText());
 		return super.performOk();
 	}
 	
@@ -52,11 +54,11 @@ public class RuntimesPreferencePage extends PreferencePage implements IWorkbench
 	
 	private void createAllRuntimesTable(Composite parent) {
 		Table allRuntimesTable = new Table(parent, SWT.CHECK | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-		for (int i = 0; i < tableItems.length; i++) {
-			String version = RuntimeServiceManager.getInstance().getAllVersions()[i];
-			tableItems[i] = new TableItem(allRuntimesTable, SWT.FILL);
-			tableItems[i].setText(version);
-			tableItems[i].setChecked(RuntimeServiceManager.getInstance().isServiceEnabled(version));	
+		int index = 0;
+		for (String version : RuntimeServiceManager.getInstance().getAllVersions()) {
+			tableItems[index] = new TableItem(allRuntimesTable, SWT.FILL);
+			tableItems[index].setText(version);
+			index++;
 		}
 		GridData gridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
 		gridData.horizontalSpan = 2;
@@ -71,16 +73,25 @@ public class RuntimesPreferencePage extends PreferencePage implements IWorkbench
 	private void createDefaultRuntimeCombo(Composite parent) {
 		defaultRuntimeCombo = new Combo(parent, SWT.DROP_DOWN | SWT.BORDER);
 		defaultRuntimeCombo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+	}
+	
+	private void refreshPage() {
+		refreshAllRuntimesTable();
 		refreshDefaultRuntimeCombo();
 	}
 	
-	private void refreshDefaultRuntimeCombo() {
-		for (int i = 0; i < tableItems.length; i++) {
-			if (tableItems[i].getChecked()) {
-				defaultRuntimeCombo.add(tableItems[i].getText());
-			}
-			defaultRuntimeCombo.setText(RuntimeServiceManager.getInstance().getDefaultVersion());
+	private void refreshAllRuntimesTable() {
+		for (TableItem tableItem : tableItems) {
+			tableItem.setChecked(
+					RuntimeServiceManager.getInstance().isServiceEnabled(tableItem.getText()));	
 		}
+	}
+	
+	private void refreshDefaultRuntimeCombo() {
+		for (String version : RuntimeServiceManager.getInstance().getEnabledVersions()) {
+			defaultRuntimeCombo.add(version);
+		}
+		defaultRuntimeCombo.setText(RuntimeServiceManager.getInstance().getDefaultVersion());
 	}
 	
 }
