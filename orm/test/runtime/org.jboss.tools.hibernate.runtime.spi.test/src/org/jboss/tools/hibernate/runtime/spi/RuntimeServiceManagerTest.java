@@ -80,6 +80,16 @@ public class RuntimeServiceManagerTest {
 	}
 	
 	@Test
+	public void testGetEnabledVersions() throws Exception {
+		Field enabledVersionsField = RuntimeServiceManager.class.getDeclaredField("enabledVersions");
+		enabledVersionsField.setAccessible(true);
+		enabledVersionsField.set(
+				runtimeServiceManager, 
+				new HashSet<String> (Arrays.asList("foo", "bar")));
+		Assert.assertArrayEquals(new String[] {"bar", "foo" }, runtimeServiceManager.getEnabledVersions());
+	}
+	
+	@Test
 	public void testSetDefaultVersion() throws Exception {
 		Preferences preferences = InstanceScope.INSTANCE.getNode(testPreferencesName);
 		Field preferencesField = RuntimeServiceManager.class.getDeclaredField("servicePreferences");

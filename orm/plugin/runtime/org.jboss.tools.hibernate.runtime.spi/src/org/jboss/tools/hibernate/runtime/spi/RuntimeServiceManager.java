@@ -66,6 +66,12 @@ public class RuntimeServiceManager {
 		return Arrays.copyOf(allVersions, allVersions.length);
 	}
 	
+	public String[] getEnabledVersions() {
+		String[] enabled = enabledVersions.toArray(new String[enabledVersions.size()]);
+		Arrays.sort(enabled);
+		return enabled;
+	}
+	
 	public IService getDefaultService() {
 		return findService(getDefaultVersion());
 	}
@@ -74,8 +80,7 @@ public class RuntimeServiceManager {
 		String defaultVersion = servicePreferences.get("default", null);
 		if (defaultVersion != null) return defaultVersion;
 		if (enabledVersions.isEmpty()) throw new RuntimeException("No Hibernate runtimes are enabled.");
-		String[] enabled = enabledVersions.toArray(new String[enabledVersions.size()]);
-		Arrays.sort(enabled);
+		String[] enabled = getEnabledVersions();
 		return enabled[enabled.length - 1];
 	}
 	
