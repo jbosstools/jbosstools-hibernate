@@ -1,7 +1,13 @@
 package org.jboss.tools.hibernate.orm.ui.internal;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
@@ -54,6 +60,7 @@ public class RuntimesPreferencePage extends PreferencePage implements IWorkbench
 	
 	private void createAllRuntimesTable(Composite parent) {
 		Table allRuntimesTable = new Table(parent, SWT.CHECK | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		allRuntimesTable.addSelectionListener(createSelectionListener());
 		int index = 0;
 		for (String version : RuntimeServiceManager.getInstance().getAllVersions()) {
 			tableItems[index] = new TableItem(allRuntimesTable, SWT.FILL);
@@ -83,7 +90,8 @@ public class RuntimesPreferencePage extends PreferencePage implements IWorkbench
 	private void refreshAllRuntimesTable() {
 		for (TableItem tableItem : tableItems) {
 			tableItem.setChecked(
-					RuntimeServiceManager.getInstance().isServiceEnabled(tableItem.getText()));	
+					RuntimeServiceManager.getInstance().isServiceEnabled(
+							tableItem.getText()));	
 		}
 	}
 	
@@ -92,6 +100,33 @@ public class RuntimesPreferencePage extends PreferencePage implements IWorkbench
 			defaultRuntimeCombo.add(version);
 		}
 		defaultRuntimeCombo.setText(RuntimeServiceManager.getInstance().getDefaultVersion());
+	}
+	
+	private SelectionListener createSelectionListener() {
+		return new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+				updatePageValidity();
+			}
+		};
+	}
+	
+	private void updatePageValidity() {
+		List<String> enabledRuntimes = new ArrayList<String>();
+		String defaultRuntime = defaultRuntimeCombo.getText();
+		for (TableItem tableItem : tableItems) {
+			if (!tableItem.getChecked() && defaultRuntime.equals(tableItem.getText())) {
+				setErrorMessage("The default Hibernate runtime should be enabled");
+				setValid(false);
+				return;
+			} else if (tableItem.getChecked()) {
+				enabledRuntimes.add(tableItem.getText());
+			}
+		}
+		defaultRuntimeCombo.setItems(enabledRuntimes.toArray(new String[enabledRuntimes.size()]));
+		defaultRuntimeCombo.setText(defaultRuntime);
+		setErrorMessage(null);
+		setValid(true);
 	}
 	
 }
