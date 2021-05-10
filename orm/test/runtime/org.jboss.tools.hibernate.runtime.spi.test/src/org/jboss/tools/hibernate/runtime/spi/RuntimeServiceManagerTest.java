@@ -206,50 +206,6 @@ public class RuntimeServiceManagerTest {
 		}
 	}
 	
-	@Test
-	public void testRestoreDefaults() throws Exception {
-		Field servicesMapField = RuntimeServiceManager.class.getDeclaredField("servicesMap");
-		servicesMapField.setAccessible(true);
-		Map<String, IService> servicesMap = new HashMap<String, IService>();
-		servicesMap.put("foo", createService());
-		servicesMap.put("bar", createService());
-		servicesMap.put("baz", createService());
-		servicesMap.put("zanzibar", createService());
-		servicesMapField.set(runtimeServiceManager, servicesMap);
-		Preferences preferences = InstanceScope.INSTANCE.getNode(testPreferencesName + ".testRestoreDefaults");
-		preferences.putBoolean("foo", true);
-		preferences.putBoolean("bar", false);
-		preferences.putBoolean("baz", true);
-		preferences.putBoolean("zanzibar", true);
-		preferences.put("default", "zanzibar");
-		Field preferencesField = RuntimeServiceManager.class.getDeclaredField("servicePreferences");
-		preferencesField.setAccessible(true);
-		preferencesField.set(runtimeServiceManager, preferences);
-		Field initiallyEnabledVersionsField = 
-				RuntimeServiceManager.class.getDeclaredField("initiallyEnabledVersions");
-		initiallyEnabledVersionsField.setAccessible(true);
-		initiallyEnabledVersionsField.set(
-				runtimeServiceManager, 
-				new HashSet<String>(Arrays.asList("bar", "baz", "foo" )));
-		Field enabledVersionsField = RuntimeServiceManager.class.getDeclaredField("enabledVersions");
-		enabledVersionsField.setAccessible(true);
-		enabledVersionsField.set(
-				runtimeServiceManager, 
-				new HashSet<String>(Arrays.asList("foo", "baz", "zanzibar")));
-		Assert.assertEquals("zanzibar", runtimeServiceManager.getDefaultVersion());
-		Assert.assertFalse(runtimeServiceManager.isServiceEnabled("bar"));
-		Assert.assertTrue(runtimeServiceManager.isServiceEnabled("baz"));
-		Assert.assertTrue(runtimeServiceManager.isServiceEnabled("foo"));
-		Assert.assertTrue(runtimeServiceManager.isServiceEnabled("zanzibar"));
-		runtimeServiceManager.restoreDefaults();
-		Assert.assertEquals("foo", runtimeServiceManager.getDefaultVersion());
-		Assert.assertTrue(runtimeServiceManager.isServiceEnabled("bar"));
-		Assert.assertTrue(runtimeServiceManager.isServiceEnabled("baz"));
-		Assert.assertTrue(runtimeServiceManager.isServiceEnabled("foo"));
-		Assert.assertFalse(runtimeServiceManager.isServiceEnabled("zanzibar"));
-		Assert.assertEquals(0, preferences.keys().length);
-	}
-	
 	private IService createService() {
 		return (IService)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 

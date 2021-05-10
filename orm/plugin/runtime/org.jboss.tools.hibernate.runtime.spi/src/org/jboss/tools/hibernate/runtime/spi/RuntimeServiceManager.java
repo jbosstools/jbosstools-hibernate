@@ -73,6 +73,10 @@ public class RuntimeServiceManager {
 		return enabled;
 	}
 	
+	public Set<String> getInitiallyEnabledVersions() {
+		return new HashSet<String>(initiallyEnabledVersions);
+	}
+	
 	public IService getDefaultService() {
 		return findService(getDefaultVersion());
 	}
@@ -99,19 +103,6 @@ public class RuntimeServiceManager {
 	
 	public boolean isServiceEnabled(String version) {
 		return enabledVersions.contains(version);
-	}
-	
-	public void restoreDefaults() {
-		try {
-			for (String key : servicePreferences.keys()) {
-				servicePreferences.remove(key);
-			}
-			servicePreferences.flush();
-			enabledVersions.clear();
-			enabledVersions.addAll(initiallyEnabledVersions);
-		} catch (BackingStoreException e) {
-			throw new RuntimeException(e);
-		}
 	}
 	
 	private void initializePreferences() {
