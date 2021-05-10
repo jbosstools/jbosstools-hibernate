@@ -46,6 +46,9 @@ public class RuntimeServiceManagerTest {
 		Field enabledVersionsField = RuntimeServiceManager.class.getDeclaredField("enabledVersions");
 		enabledVersionsField.setAccessible(true);
 		Assert.assertNotNull(enabledVersionsField.get(runtimeServiceManager));
+		Field initiallyEnabledVersionsField = RuntimeServiceManager.class.getDeclaredField("initiallyEnabledVersions");
+		initiallyEnabledVersionsField.setAccessible(true);
+		Assert.assertNotNull(initiallyEnabledVersionsField.get(runtimeServiceManager));
 	}
 
 	@Test
@@ -62,11 +65,15 @@ public class RuntimeServiceManagerTest {
 		Field servicesMapField = RuntimeServiceManager.class.getDeclaredField("servicesMap");
 		servicesMapField.setAccessible(true);
 		Map<String, IService> servicesMap = new HashMap<String, IService>();
-		IService bazService = createService();
-		servicesMap.put("baz", bazService);
-		Field allVersionsField = RuntimeServiceManager.class.getDeclaredField("allVersions");
-		allVersionsField.setAccessible(true);
-		allVersionsField.set(runtimeServiceManager, new String[] { "foo", "bar", "baz" });
+		IService fooService = createService();
+		servicesMap.put("foo", fooService);
+		servicesMapField.set(runtimeServiceManager, servicesMap);
+		Field enabledVersionsField = RuntimeServiceManager.class.getDeclaredField("enabledVersions");
+		enabledVersionsField.setAccessible(true);
+		enabledVersionsField.set(
+				runtimeServiceManager, 
+				new HashSet<String> (Arrays.asList("foo", "baz")));
+		Assert.assertSame(fooService, runtimeServiceManager.getDefaultService());
 	}
 	
 	@Test
@@ -91,7 +98,7 @@ public class RuntimeServiceManagerTest {
 	
 	@Test
 	public void testSetDefaultVersion() throws Exception {
-		Preferences preferences = InstanceScope.INSTANCE.getNode(testPreferencesName);
+		Preferences preferences = InstanceScope.INSTANCE.getNode(testPreferencesName + ".testSetDefaultVersion");
 		Field preferencesField = RuntimeServiceManager.class.getDeclaredField("servicePreferences");
 		preferencesField.setAccessible(true);
 		preferencesField.set(runtimeServiceManager, preferences);
@@ -120,7 +127,7 @@ public class RuntimeServiceManagerTest {
 	
 	@Test
 	public void testGetDefaultVersion() throws Exception {
-		Preferences preferences = InstanceScope.INSTANCE.getNode(testPreferencesName);
+		Preferences preferences = InstanceScope.INSTANCE.getNode(testPreferencesName + ".testGetDefaultVersion");
 		Field preferencesField = RuntimeServiceManager.class.getDeclaredField("servicePreferences");
 		preferencesField.setAccessible(true);
 		preferencesField.set(runtimeServiceManager, preferences);
@@ -177,7 +184,7 @@ public class RuntimeServiceManagerTest {
 		Set<String> enabledVersions = new HashSet<String>();
 		enabledVersions.add("zanzibar");
 		enabledVersionsField.set(runtimeServiceManager, enabledVersions);
-		Preferences preferences = InstanceScope.INSTANCE.getNode(testPreferencesName);
+		Preferences preferences = InstanceScope.INSTANCE.getNode(testPreferencesName + ".testEnableService");
 		Field preferencesField = RuntimeServiceManager.class.getDeclaredField("servicePreferences");
 		preferencesField.setAccessible(true);
 		preferencesField.set(runtimeServiceManager, preferences);
@@ -197,6 +204,50 @@ public class RuntimeServiceManagerTest {
 					"Disabling the default Hibernate runtime is not allowed", 
 					e.getMessage());
 		}
+	}
+	
+	@Test
+	public void testRestoreDefaults() throws Exception {
+		Field servicesMapField = RuntimeServiceManager.class.getDeclaredField("servicesMap");
+		servicesMapField.setAccessible(true);
+		Map<String, IService> servicesMap = new HashMap<String, IService>();
+		servicesMap.put("foo", createService());
+		servicesMap.put("bar", createService());
+		servicesMap.put("baz", createService());
+		servicesMap.put("zanzibar", createService());
+		servicesMapField.set(runtimeServiceManager, servicesMap);
+		Preferences preferences = InstanceScope.INSTANCE.getNode(testPreferencesName + ".testRestoreDefaults");
+		preferences.putBoolean("foo", true);
+		preferences.putBoolean("bar", false);
+		preferences.putBoolean("baz", true);
+		preferences.putBoolean("zanzibar", true);
+		preferences.put("default", "zanzibar");
+		Field preferencesField = RuntimeServiceManager.class.getDeclaredField("servicePreferences");
+		preferencesField.setAccessible(true);
+		preferencesField.set(runtimeServiceManager, preferences);
+		Field initiallyEnabledVersionsField = 
+				RuntimeServiceManager.class.getDeclaredField("initiallyEnabledVersions");
+		initiallyEnabledVersionsField.setAccessible(true);
+		initiallyEnabledVersionsField.set(
+				runtimeServiceManager, 
+				new HashSet<String>(Arrays.asList("bar", "baz", "foo" )));
+		Field enabledVersionsField = RuntimeServiceManager.class.getDeclaredField("enabledVersions");
+		enabledVersionsField.setAccessible(true);
+		enabledVersionsField.set(
+				runtimeServiceManager, 
+				new HashSet<String>(Arrays.asList("foo", "baz", "zanzibar")));
+		Assert.assertEquals("zanzibar", runtimeServiceManager.getDefaultVersion());
+		Assert.assertFalse(runtimeServiceManager.isServiceEnabled("bar"));
+		Assert.assertTrue(runtimeServiceManager.isServiceEnabled("baz"));
+		Assert.assertTrue(runtimeServiceManager.isServiceEnabled("foo"));
+		Assert.assertTrue(runtimeServiceManager.isServiceEnabled("zanzibar"));
+		runtimeServiceManager.restoreDefaults();
+		Assert.assertEquals("foo", runtimeServiceManager.getDefaultVersion());
+		Assert.assertTrue(runtimeServiceManager.isServiceEnabled("bar"));
+		Assert.assertTrue(runtimeServiceManager.isServiceEnabled("baz"));
+		Assert.assertTrue(runtimeServiceManager.isServiceEnabled("foo"));
+		Assert.assertFalse(runtimeServiceManager.isServiceEnabled("zanzibar"));
+		Assert.assertEquals(0, preferences.keys().length);
 	}
 	
 	private IService createService() {

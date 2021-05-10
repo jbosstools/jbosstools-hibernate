@@ -32,6 +32,7 @@ public class RuntimeServiceManager {
 	private Preferences servicePreferences = null;
 	private Map<String, IService> servicesMap = null;
 	private String[] allVersions = null;
+	private Set<String> initiallyEnabledVersions = null;
 	private Set<String> enabledVersions = null;
 		
 	private RuntimeServiceManager() {	
@@ -100,12 +101,26 @@ public class RuntimeServiceManager {
 		return enabledVersions.contains(version);
 	}
 	
+	public void restoreDefaults() {
+		try {
+			for (String key : servicePreferences.keys()) {
+				servicePreferences.remove(key);
+			}
+			servicePreferences.flush();
+			enabledVersions.clear();
+			enabledVersions.addAll(initiallyEnabledVersions);
+		} catch (BackingStoreException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 	private void initializePreferences() {
 		servicePreferences = InstanceScope.INSTANCE.getNode(SERVICES_EXTENSION_ID);
 	}
 	
 	private void initializeServicesMap() {
 		servicesMap = new HashMap<String, IService>();
+		initiallyEnabledVersions = new HashSet<String>();
 		IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
 		IExtensionPoint extensionPoint = extensionRegistry.getExtensionPoint(SERVICES_EXTENSION_ID);
 		for (IExtension extension : extensionPoint.getExtensions()) {
@@ -115,12 +130,15 @@ public class RuntimeServiceManager {
 					String name = configurationElement.getAttribute("name");
 					if (object != null && name != null && object instanceof IService) {
 						servicesMap.put(name, (IService)object);
+						if (!Boolean.valueOf(configurationElement.getAttribute("disabled", "false"))) {
+							initiallyEnabledVersions.add(name);
+						}
 					}
 				} catch (CoreException e) {
 					HibernateServicePlugin.getDefault().log(e);
 				}
 			}
-		}		
+		}
 	}
 	
 	private void initializeAllVersions() {
@@ -132,7 +150,7 @@ public class RuntimeServiceManager {
 	private void initializeEnabledVersions() {
 		enabledVersions = new HashSet<String>();
 		for (String version : allVersions) {
-			if (servicePreferences.getBoolean(version, true)) {
+			if (servicePreferences.getBoolean(version, initiallyEnabledVersions.contains(version))) {
 				enabledVersions.add(version);
 			}
 		}		
