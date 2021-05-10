@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.orm.ui.internal;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
@@ -48,6 +49,22 @@ public class RuntimesPreferencePage extends PreferencePage implements IWorkbench
 		}
 		RuntimeServiceManager.getInstance().setDefaultVersion(defaultRuntimeCombo.getText());
 		return super.performOk();
+	}
+	
+	@Override
+	protected void performDefaults() {
+		Set<String> initiallyEnabled = RuntimeServiceManager.getInstance().getInitiallyEnabledVersions();
+		defaultRuntimeCombo.removeAll();
+		for (TableItem tableItem : tableItems) {
+			String runtime = tableItem.getText();
+			boolean checked = initiallyEnabled.contains(runtime);
+			tableItem.setChecked(checked);
+			if (checked) {
+				defaultRuntimeCombo.add(runtime);
+				defaultRuntimeCombo.setText(runtime);
+			}
+		}
+		super.performDefaults();
 	}
 	
 	private void createAllRuntimesLabel(Composite parent) {
