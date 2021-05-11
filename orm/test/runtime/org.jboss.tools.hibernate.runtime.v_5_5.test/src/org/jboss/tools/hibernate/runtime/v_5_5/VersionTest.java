@@ -1,14 +1,20 @@
 package org.jboss.tools.hibernate.runtime.v_5_5;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class VersionTest {
 	
 	@Test
-	public void dummy() {
-		assertTrue(true);
+	public void testToolsVersion() {
+		assertEquals("5.5.0.Alpha1", org.hibernate.tool.Version.VERSION);
 	}
+
+	@Test
+	public void testCoreVersion() {
+		assertEquals("5.5.0.Alpha1", org.hibernate.Version.getVersionString());
+	}
+
 
 }

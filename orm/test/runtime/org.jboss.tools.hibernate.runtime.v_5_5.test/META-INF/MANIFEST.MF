@@ -1,9 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Hibernate Runtime 5.5 Tests
+Automatic-Module-Name: org.jboss.tools.hibernate.runtime.v.5.5.test
 Bundle-SymbolicName: org.jboss.tools.hibernate.runtime.v_5_5.test
-Bundle-Version: 5.4.9.qualifier
+Bundle-Version: 5.4.13.qualifier
 Fragment-Host: org.jboss.tools.hibernate.runtime.v_5_5
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: org.junit
+Require-Bundle: org.junit.jupiter.api
 Bundle-ClassPath: .
