@@ -17,6 +17,7 @@ import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.hibernate.tool.hbm2x.GenericExporter;
 import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
+import org.hibernate.tool.hbm2x.QueryExporter;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
@@ -24,6 +25,7 @@ import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
+import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
@@ -116,6 +118,13 @@ public class FacadeFactoryTest {
 		Hbm2DDLExporter hbm2ddlExporter = new Hbm2DDLExporter();
 		IHbm2DDLExporter facade = facadeFactory.createHbm2DDLExporter(hbm2ddlExporter);
 		assertSame(hbm2ddlExporter, ((IFacade)facade).getTarget());		
+	}
+	
+	@Test
+	public void testCreateQueryExporter() {
+		QueryExporter queryExporter = new QueryExporter();
+		IQueryExporter facade = facadeFactory.createQueryExporter(queryExporter);
+		assertSame(queryExporter, ((IFacade)facade).getTarget());		
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
