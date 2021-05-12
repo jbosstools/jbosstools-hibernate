@@ -33,6 +33,7 @@ import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.GenericExporter;
 import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
+import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.QueryExporter;
 import org.hibernate.tuple.entity.EntityMetamodel;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -49,6 +50,7 @@ import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
+import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
@@ -260,6 +262,13 @@ public class FacadeFactoryTest {
 		ForeignKey foreignKey = new ForeignKey();
 		IForeignKey facade = facadeFactory.createForeignKey(foreignKey);
 		assertSame(foreignKey, ((IFacade)facade).getTarget());		
+	}
+	
+	@Test
+	public void testCreateHibernateMappingExporter() {
+		HibernateMappingExporter hibernateMappingExporter = new HibernateMappingExporter();
+		IHibernateMappingExporter facade = facadeFactory.createHibernateMappingExporter(hibernateMappingExporter);
+		assertSame(hibernateMappingExporter, ((IFacade)facade).getTarget());		
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
