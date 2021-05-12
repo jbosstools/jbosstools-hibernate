@@ -12,6 +12,7 @@ import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
+import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
@@ -29,6 +30,7 @@ import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
+import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -125,6 +127,13 @@ public class FacadeFactoryTest {
 		QueryExporter queryExporter = new QueryExporter();
 		IQueryExporter facade = facadeFactory.createQueryExporter(queryExporter);
 		assertSame(queryExporter, ((IFacade)facade).getTarget());		
+	}
+	
+	@Test
+	public void testCreateTableFilter() {
+		TableFilter tableFilter = new TableFilter();
+		ITableFilter facade = facadeFactory.createTableFilter(tableFilter);
+		assertSame(tableFilter, ((IFacade)facade).getTarget());		
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
