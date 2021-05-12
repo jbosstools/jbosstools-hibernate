@@ -43,6 +43,7 @@ import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
+import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
@@ -243,6 +244,13 @@ public class FacadeFactoryTest {
 		EntityMetamodel entityMetamodel = new EntityMetamodel(rc, null, pcc);
 		IEntityMetamodel facade = facadeFactory.createEntityMetamodel(entityMetamodel);
 		assertSame(entityMetamodel, ((IFacade)facade).getTarget());		
+	}
+	
+	@Test
+	public void testCreateEnvironment() {
+		IEnvironment environment = facadeFactory.createEnvironment();
+		assertNotNull(environment);
+		assertTrue(environment instanceof EnvironmentFacadeImpl);
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
