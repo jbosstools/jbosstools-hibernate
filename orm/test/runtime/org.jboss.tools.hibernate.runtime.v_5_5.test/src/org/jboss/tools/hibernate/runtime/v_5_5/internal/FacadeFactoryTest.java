@@ -8,6 +8,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
@@ -16,6 +17,7 @@ import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
+import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.junit.jupiter.api.BeforeEach;
@@ -78,6 +80,13 @@ public class FacadeFactoryTest {
 				new TestInvocationHandler());
 		IReverseEngineeringStrategy facade = facadeFactory.createReverseEngineeringStrategy(res);
 		assertSame(res, ((IFacade)facade).getTarget());		
+	}
+	
+	@Test
+	public void testCreateOverrideRepository() {
+		OverrideRepository overrideRepository = new OverrideRepository();
+		IOverrideRepository facade = facadeFactory.createOverrideRepository(overrideRepository);
+		assertSame(overrideRepository, ((IFacade)facade).getTarget());		
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
