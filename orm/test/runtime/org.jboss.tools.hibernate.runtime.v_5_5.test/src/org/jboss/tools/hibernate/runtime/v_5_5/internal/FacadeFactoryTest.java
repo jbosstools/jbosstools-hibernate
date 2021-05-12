@@ -8,6 +8,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import org.hibernate.Criteria;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
@@ -31,6 +32,7 @@ import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.ICriteria;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
@@ -189,6 +191,16 @@ public class FacadeFactoryTest {
 		Configuration configuration = new Configuration();
 		IConfiguration facade = facadeFactory.createConfiguration(configuration);
 		assertSame(configuration, ((IFacade)facade).getTarget());		
+	}
+	
+	@Test
+	public void testCreateCriteria() {
+		Criteria criteria = (Criteria)Proxy.newProxyInstance(
+				facadeFactory.getClassLoader(), 
+				new Class[] { Criteria.class }, 
+				new TestInvocationHandler());
+		ICriteria facade = facadeFactory.createCriteria(criteria);
+		assertSame(criteria, ((IFacade)facade).getTarget());		
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
