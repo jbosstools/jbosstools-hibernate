@@ -15,9 +15,11 @@ import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
+import org.hibernate.tool.hbm2x.GenericExporter;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
+import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
@@ -98,6 +100,13 @@ public class FacadeFactoryTest {
 		ISchemaExport facade = facadeFactory.createSchemaExport(schemaExport);
 		assertTrue(facade instanceof SchemaExportFacadeImpl);
 		assertSame(schemaExport, ((IFacade)facade).getTarget());		
+	}
+	
+	@Test
+	public void testCreateGenericExporter() {
+		GenericExporter genericExporter = new GenericExporter();
+		IGenericExporter facade = facadeFactory.createGenericExporter(genericExporter);
+		assertSame(genericExporter, ((IFacade)facade).getTarget());		
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
