@@ -4,12 +4,14 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
+import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -53,6 +55,13 @@ public class FacadeFactoryTest {
 		DefaultNamingStrategy namingStrategy = new DefaultNamingStrategy();
 		INamingStrategy facade = facadeFactory.createNamingStrategy(namingStrategy);
 		assertSame(namingStrategy, ((IFacade)facade).getTarget());
+	}
+	
+	@Test
+	public void testCreateReverseEngineeringSettings() {
+		ReverseEngineeringSettings res = new ReverseEngineeringSettings(null);
+		IReverseEngineeringSettings facade = facadeFactory.createReverseEngineeringSettings(res);
+		assertSame(res, ((IFacade)facade).getTarget());		
 	}
 	
 }
