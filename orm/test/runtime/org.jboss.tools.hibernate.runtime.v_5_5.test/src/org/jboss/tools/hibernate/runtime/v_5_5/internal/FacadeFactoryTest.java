@@ -7,10 +7,21 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
 
 import org.hibernate.Criteria;
+import org.hibernate.Filter;
 import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.internal.BootstrapContextImpl;
+import org.hibernate.boot.internal.MetadataBuilderImpl;
+import org.hibernate.boot.internal.SessionFactoryOptionsBuilder;
+import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.boot.spi.BootstrapContext;
+import org.hibernate.boot.spi.MetadataBuildingOptions;
 import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
@@ -20,11 +31,16 @@ import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.OptimisticLockStyle;
+import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
+import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
+import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
+import org.hibernate.mapping.Table;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.persister.spi.PersisterCreationContext;
@@ -55,6 +71,7 @@ import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
+import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
@@ -293,6 +310,64 @@ public class FacadeFactoryTest {
 		assertSame(hqlCompletionProposal, ((IFacade)facade).getTarget());		
 	}
 	
+	@Test
+	public void testCreateHQLQueryPlan() {
+		final Collection<PersistentClass> entityBindings = 
+				new ArrayList<PersistentClass>();
+		final StandardServiceRegistryBuilder standardServiceRegistryBuilder = 
+				new StandardServiceRegistryBuilder();
+		standardServiceRegistryBuilder.applySetting(
+				"hibernate.dialect", 
+				TestDialect.class.getName());
+		final StandardServiceRegistry serviceRegistry = 
+				standardServiceRegistryBuilder.build();
+		final MetadataSources metadataSources = new MetadataSources(serviceRegistry);
+		final MetadataImplementor metadata = (MetadataImplementor)metadataSources.buildMetadata();	
+		Table t = new Table("FOO");
+		Column c = new Column("foo");
+		t.addColumn(c);
+		PrimaryKey key = new PrimaryKey(t);
+		key.addColumn(c);
+		t.setPrimaryKey(key);
+		@SuppressWarnings("deprecation")
+		SimpleValue sv = new SimpleValue(metadata);
+		sv.setNullValue("null");
+		sv.setTypeName(Integer.class.getName());
+		sv.setTable(t);
+		sv.addColumn(c);
+		final RootClass rc  = new RootClass(null);
+		rc.setEntityName("foo");
+		rc.setJpaEntityName("foo");
+		rc.setIdentifier(sv);
+		rc.setTable(t);
+		rc.setOptimisticLockStyle(OptimisticLockStyle.NONE);
+		entityBindings.add(rc);
+		MetadataImplementor wrapper = (MetadataImplementor)Proxy.newProxyInstance(
+				facadeFactory.getClassLoader(), 
+				new Class[] { MetadataImplementor.class }, 
+				new InvocationHandler() {					
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+						if ("getEntityBinding".equals(method.getName()) 
+								&& args != null
+								&& args.length == 1
+								&& "foo".equals(args[0])) {
+							return rc;
+						} else if ("getEntityBindings".equals(method.getName())) {
+							return entityBindings;
+						}
+						return method.invoke(metadata, args);
+					}
+				}); 
+		MetadataBuildingOptions mbo = new MetadataBuilderImpl.MetadataBuildingOptionsImpl(serviceRegistry);
+		BootstrapContext bc = new BootstrapContextImpl(serviceRegistry, mbo);
+		SessionFactoryImpl sfi = new SessionFactoryImpl(wrapper, new SessionFactoryOptionsBuilder(serviceRegistry, bc), HQLQueryPlan::new);
+		Map<String, Filter> filters = Collections.emptyMap();
+		HQLQueryPlan hqlQueryPlan = new HQLQueryPlan("from foo", false, filters, sfi);
+		IHQLQueryPlan facade = facadeFactory.createHQLQueryPlan(hqlQueryPlan);
+		assertSame(hqlQueryPlan, ((IFacade)facade).getTarget());		
+	}
+
 	private class TestInvocationHandler implements InvocationHandler {
 		@Override
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
