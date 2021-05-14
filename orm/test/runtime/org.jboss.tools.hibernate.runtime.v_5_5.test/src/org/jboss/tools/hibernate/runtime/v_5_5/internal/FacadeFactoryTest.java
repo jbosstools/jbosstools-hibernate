@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -98,6 +99,7 @@ import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
+import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.MetadataHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -485,6 +487,13 @@ public class FacadeFactoryTest {
 		Table table = new Table();
 		ITable facade = facadeFactory.createTable(table);
 		assertSame(table, ((IFacade)facade).getTarget());
+	}
+	
+	@Test
+	public void testCreateTypeFactory() {
+		ITypeFactory facade = facadeFactory.createTypeFactory();
+		assertNotNull(facade);
+		assertNull(((IFacade)facade).getTarget());
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
