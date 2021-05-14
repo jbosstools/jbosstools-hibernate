@@ -78,6 +78,7 @@ import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
+import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
@@ -375,6 +376,13 @@ public class FacadeFactoryTest {
 		Join join = new Join();
 		IJoin facade = facadeFactory.createJoin(join);
 		assertSame(join, ((IFacade)facade).getTarget());		
+	}
+	
+	@Test
+	public void testCreatePersistentClass() {
+		PersistentClass persistentClass = new RootClass(null);
+		IPersistentClass facade = facadeFactory.createPersistentClass(persistentClass);
+		assertSame(persistentClass, ((IFacade)facade).getTarget());
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
