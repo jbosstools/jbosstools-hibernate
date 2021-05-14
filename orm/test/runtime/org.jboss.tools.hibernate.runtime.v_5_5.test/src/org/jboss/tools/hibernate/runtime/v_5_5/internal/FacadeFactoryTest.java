@@ -64,6 +64,7 @@ import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tuple.entity.EntityMetamodel;
+import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
@@ -99,6 +100,7 @@ import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
+import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.MetadataHelper;
 import org.junit.jupiter.api.BeforeEach;
@@ -494,6 +496,16 @@ public class FacadeFactoryTest {
 		ITypeFactory facade = facadeFactory.createTypeFactory();
 		assertNotNull(facade);
 		assertNull(((IFacade)facade).getTarget());
+	}
+	
+	@Test
+	public void testCreateType() {
+		Type type = (Type)Proxy.newProxyInstance(
+				facadeFactory.getClassLoader(), 
+				new Class[] { Type.class }, 
+				new TestInvocationHandler());
+		IType facade = facadeFactory.createType(type);
+		assertSame(type, ((IFacade)facade).getTarget());
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
