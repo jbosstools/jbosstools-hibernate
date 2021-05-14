@@ -96,6 +96,7 @@ import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.MetadataHelper;
 import org.junit.jupiter.api.BeforeEach;
@@ -477,6 +478,13 @@ public class FacadeFactoryTest {
 		assertTrue(specialRootClass instanceof SpecialRootClassFacadeImpl);
 		assertTrue(object instanceof RootClass);
 		assertSame(property, specialRootClass.getProperty());
+	}
+	
+	@Test
+	public void testCreateTable() {
+		Table table = new Table();
+		ITable facade = facadeFactory.createTable(table);
+		assertSame(table, ((IFacade)facade).getTarget());
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
