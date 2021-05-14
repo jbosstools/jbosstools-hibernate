@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -52,6 +53,12 @@ public class SpecialRootClassFacadeTest {
 		Field propertyField = AbstractSpecialRootClassFacade.class.getDeclaredField("property");
 		propertyField.setAccessible(true);
 		assertSame(propertyField.get(specialRootClassFacade), propertyFacade);
+	}
+	
+	@Test
+	public void testIsInstanceOfSpecialRootClass() {
+		assertTrue(specialRootClassFacade.isInstanceOfSpecialRootClass());
+		assertFalse(specialRootClassFacade.isInstanceOfSubclass());
 	}
 	
 }
