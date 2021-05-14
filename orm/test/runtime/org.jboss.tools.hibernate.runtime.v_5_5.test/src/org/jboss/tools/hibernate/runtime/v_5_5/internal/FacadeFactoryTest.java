@@ -451,6 +451,7 @@ public class FacadeFactoryTest {
 				new Class[] { SessionFactory.class }, 
 				new TestInvocationHandler());
 		ISessionFactory facade = facadeFactory.createSessionFactory(sessionFactory);
+		assertTrue(facade instanceof SessionFactoryFacadeImpl);
 		assertSame(sessionFactory, ((IFacade)facade).getTarget());
 	}
 	

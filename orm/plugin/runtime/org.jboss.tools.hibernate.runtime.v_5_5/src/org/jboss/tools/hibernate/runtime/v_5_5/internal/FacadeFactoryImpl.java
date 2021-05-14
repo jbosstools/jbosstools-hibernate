@@ -8,6 +8,7 @@ import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
+import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 
 public class FacadeFactoryImpl extends AbstractFacadeFactory {
 
@@ -39,6 +40,11 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public ISchemaExport createSchemaExport(Object target) {
 		return new SchemaExportFacadeImpl(this, target);
+	}
+	
+	@Override
+	public ISessionFactory createSessionFactory(Object target) {
+		return new SessionFactoryFacadeImpl(this, target);
 	}
 	
 	@Override
