@@ -246,6 +246,7 @@ public class FacadeFactoryTest {
 	public void testCreateConfiguration() {
 		Configuration configuration = new Configuration();
 		IConfiguration facade = facadeFactory.createConfiguration(configuration);
+		assertTrue(facade instanceof ConfigurationFacadeImpl);
 		assertSame(configuration, ((IFacade)facade).getTarget());		
 	}
 	
