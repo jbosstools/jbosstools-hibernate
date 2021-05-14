@@ -238,6 +238,7 @@ public class FacadeFactoryTest {
 	public void testCreateColumn() {
 		Column column = new Column();
 		IColumn facade = facadeFactory.createColumn(column);
+		assertTrue(facade instanceof ColumnFacadeImpl);
 		assertSame(column, ((IFacade)facade).getTarget());		
 	}
 	
