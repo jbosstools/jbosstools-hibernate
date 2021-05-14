@@ -14,6 +14,7 @@ import java.util.Map;
 
 import org.hibernate.Criteria;
 import org.hibernate.Filter;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.internal.BootstrapContextImpl;
@@ -93,6 +94,7 @@ import org.jboss.tools.hibernate.runtime.spi.IQueryTranslator;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
+import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.MetadataHelper;
@@ -448,6 +450,16 @@ public class FacadeFactoryTest {
 				new TestInvocationHandler());
 		ISessionFactory facade = facadeFactory.createSessionFactory(sessionFactory);
 		assertSame(sessionFactory, ((IFacade)facade).getTarget());
+	}
+	
+	@Test
+	public void testCreateSession() {
+		Session session = (Session)Proxy.newProxyInstance(
+				facadeFactory.getClassLoader(), 
+				new Class[] { Session.class }, 
+				new TestInvocationHandler());
+		ISession facade = facadeFactory.createSession(session);
+		assertSame(session, ((IFacade)facade).getTarget());
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
