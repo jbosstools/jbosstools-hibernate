@@ -33,6 +33,7 @@ import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.OptimisticLockStyle;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
+import org.hibernate.hql.spi.QueryTranslator;
 import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
@@ -87,6 +88,7 @@ import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
+import org.jboss.tools.hibernate.runtime.spi.IQueryTranslator;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
@@ -424,6 +426,16 @@ public class FacadeFactoryTest {
 				new TestInvocationHandler());
 		IQuery facade = facadeFactory.createQuery(query);
 		assertSame(query, ((IFacade)facade).getTarget());
+	}
+	
+	@Test
+	public void testCreateQueryTranslator() {
+		QueryTranslator queryTranslator = (QueryTranslator)Proxy.newProxyInstance(
+				facadeFactory.getClassLoader(), 
+				new Class[] { QueryTranslator.class }, 
+				new TestInvocationHandler());
+		IQueryTranslator facade = facadeFactory.createQueryTranslator(queryTranslator);
+		assertSame(queryTranslator, ((IFacade)facade).getTarget());
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
