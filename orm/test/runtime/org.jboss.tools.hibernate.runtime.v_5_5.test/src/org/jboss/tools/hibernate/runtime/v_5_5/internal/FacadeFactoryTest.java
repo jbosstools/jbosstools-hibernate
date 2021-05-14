@@ -46,6 +46,7 @@ import org.hibernate.mapping.Table;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.persister.spi.PersisterCreationContext;
+import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
@@ -84,6 +85,7 @@ import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
+import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
@@ -412,6 +414,16 @@ public class FacadeFactoryTest {
 		Property property = new Property();
 		IProperty facade = facadeFactory.createProperty(property);
 		assertSame(property, ((IFacade)facade).getTarget());
+	}
+	
+	@Test
+	public void testCreateQuery() {
+		Query<?> query = (Query<?>)Proxy.newProxyInstance(
+				facadeFactory.getClassLoader(), 
+				new Class[] { Query.class }, 
+				new TestInvocationHandler());
+		IQuery facade = facadeFactory.createQuery(query);
+		assertSame(query, ((IFacade)facade).getTarget());
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
