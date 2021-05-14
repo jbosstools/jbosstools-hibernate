@@ -465,6 +465,20 @@ public class FacadeFactoryTest {
 		assertSame(session, ((IFacade)facade).getTarget());
 	}
 	
+	@Test
+	public void testCreateSpecialRootClass() {
+		Property target = new Property();
+		PersistentClass pc = new RootClass(null);
+		target.setPersistentClass(pc);
+		IProperty property = facadeFactory.createProperty(target);
+		IPersistentClass specialRootClass = facadeFactory.createSpecialRootClass(property);
+		assertNotNull(specialRootClass);
+		Object object = ((IFacade)specialRootClass).getTarget();
+		assertTrue(specialRootClass instanceof SpecialRootClassFacadeImpl);
+		assertTrue(object instanceof RootClass);
+		assertSame(property, specialRootClass.getProperty());
+	}
+	
 	private class TestInvocationHandler implements InvocationHandler {
 		@Override
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {

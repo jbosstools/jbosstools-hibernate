@@ -49,8 +49,7 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	
 	@Override
 	public IPersistentClass createSpecialRootClass(IProperty property) {
-		// TODO Auto-generated method stub
-		return null;
+		return new SpecialRootClassFacadeImpl(this, property);
 	}
 
 }
