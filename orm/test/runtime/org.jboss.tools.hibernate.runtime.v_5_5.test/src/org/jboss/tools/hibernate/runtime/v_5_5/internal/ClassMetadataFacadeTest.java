@@ -35,6 +35,8 @@ import org.hibernate.persister.entity.SingleTableEntityPersister;
 import org.hibernate.persister.spi.PersisterCreationContext;
 import org.hibernate.type.StringType;
 import org.hibernate.type.Type;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
+import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -66,9 +68,15 @@ public class ClassMetadataFacadeTest {
 		assertSame(PROPERTY_NAMES, classMetadataFacade.getPropertyNames());
 	}
 	
+	@Test
+	public void testGetPropertyTypes() {
+		IType[] typeFacades = classMetadataFacade.getPropertyTypes();
+		assertSame(TYPE_INSTANCE, ((IFacade)typeFacades[0]).getTarget());
+ 	}
+	
 	private ClassMetadata setupFooBarPersister() {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
-		builder.applySetting("hibernate.dialect", Dialect.class.getName());
+		builder.applySetting("hibernate.dialect", TestDialect.class.getName());
 		StandardServiceRegistry serviceRegistry = builder.build();		
 		MetadataBuildingOptionsImpl metadataBuildingOptions = 
 				new MetadataBuildingOptionsImpl(serviceRegistry);	
