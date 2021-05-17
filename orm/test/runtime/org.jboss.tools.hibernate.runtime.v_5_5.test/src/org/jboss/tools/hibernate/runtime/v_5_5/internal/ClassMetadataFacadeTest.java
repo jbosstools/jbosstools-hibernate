@@ -1,7 +1,9 @@
 package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
@@ -87,6 +89,13 @@ public class ClassMetadataFacadeTest {
 	@Test
 	public void testGetPropertyValue() {
 		assertSame(PROPERTY_VALUE, classMetadataFacade.getPropertyValue(null, null));
+	}
+	
+	@Test
+	public void testHasIdentifierProperty() {
+		assertFalse(classMetadataFacade.hasIdentifierProperty());
+		((TestEntityPersister)classMetadataTarget).hasIdentifierProperty = true;
+		assertTrue(classMetadataFacade.hasIdentifierProperty());
 	}
 	
 	private ClassMetadata setupFooBarPersister() {
