@@ -1,7 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
@@ -20,6 +20,7 @@ import org.hibernate.boot.spi.BootstrapContext;
 import org.hibernate.boot.spi.InFlightMetadataCollector;
 import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.boot.spi.MetadataImplementor;
+import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.OptimisticLockStyle;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
@@ -60,9 +61,14 @@ public class ClassMetadataFacadeTest {
 		assertEquals("foo", classMetadataFacade.getIdentifierPropertyName());
 	}
 	
+	@Test
+	public void testGetPropertyNames() {
+		assertSame(PROPERTY_NAMES, classMetadataFacade.getPropertyNames());
+	}
+	
 	private ClassMetadata setupFooBarPersister() {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
-		builder.applySetting("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+		builder.applySetting("hibernate.dialect", Dialect.class.getName());
 		StandardServiceRegistry serviceRegistry = builder.build();		
 		MetadataBuildingOptionsImpl metadataBuildingOptions = 
 				new MetadataBuildingOptionsImpl(serviceRegistry);	
@@ -208,5 +214,7 @@ public class ClassMetadataFacadeTest {
 	public class FooBar {
 		public int id = 1967;
 	}
+	
+	public static class TestDialect extends Dialect {}
 	
 }
