@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.Serializable;
@@ -52,6 +53,11 @@ public class ClassMetadataFacadeTest {
 	@Test
 	public void testConstruction() {
 		assertNotNull(classMetadataFacade);
+	}
+	
+	@Test
+	public void testGetEntityName() {
+		assertEquals("foobar", classMetadataFacade.getEntityName());
 	}
 	
 	private ClassMetadata setupFooBarPersister() {
