@@ -51,13 +51,13 @@ public class ClassMetadataFacadeTest {
 	}
 	
 	@Test
-	public void testConstruction() {
-		assertNotNull(classMetadataFacade);
+	public void testGetEntityName() {
+		assertEquals("foobar", classMetadataFacade.getEntityName());
 	}
 	
 	@Test
-	public void testGetEntityName() {
-		assertEquals("foobar", classMetadataFacade.getEntityName());
+	public void testGetIdentifierPropertyName() {
+		assertEquals("foo", classMetadataFacade.getIdentifierPropertyName());
 	}
 	
 	private ClassMetadata setupFooBarPersister() {
