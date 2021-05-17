@@ -161,6 +161,7 @@ public class ClassMetadataFacadeTest {
 		assertArrayEquals(new Object[] { object, sessionTarget },  arguments);
 	}
 	
+	@Test
 	public void testHasIdentifierProperty() {
 		hasIdentifierProperty = true;
 		assertTrue(classMetadata.hasIdentifierProperty());
