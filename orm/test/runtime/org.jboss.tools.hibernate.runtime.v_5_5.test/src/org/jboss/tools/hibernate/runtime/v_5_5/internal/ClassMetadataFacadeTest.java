@@ -79,6 +79,11 @@ public class ClassMetadataFacadeTest {
 		assertSame(FooBar.class, classMetadataFacade.getMappedClass());
 	}
 	
+	@Test
+	public void testGetIdentifierType() {
+		assertSame(TYPE_INSTANCE, ((IFacade)classMetadataFacade.getIdentifierType()).getTarget());
+	}
+	
 	private ClassMetadata setupFooBarPersister() {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySetting("hibernate.dialect", TestDialect.class.getName());
