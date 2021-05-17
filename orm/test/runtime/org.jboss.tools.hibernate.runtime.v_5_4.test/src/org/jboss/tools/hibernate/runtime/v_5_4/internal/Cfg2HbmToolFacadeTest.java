@@ -42,6 +42,7 @@ public class Cfg2HbmToolFacadeTest {
 		assertEquals("class", cfg2HbmToolFacade.getTag(persistentClass));
 	}
 	
+	@Test
 	public void testGetPropertyTag() throws Exception {
 		RootClass rc = new RootClass(null);
 		Property p = new Property();
