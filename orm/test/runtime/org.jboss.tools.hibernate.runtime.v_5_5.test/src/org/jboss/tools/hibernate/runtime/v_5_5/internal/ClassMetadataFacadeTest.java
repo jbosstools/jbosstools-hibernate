@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -38,6 +39,7 @@ import org.hibernate.persister.spi.PersisterCreationContext;
 import org.hibernate.type.StringType;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
+import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -96,6 +98,18 @@ public class ClassMetadataFacadeTest {
 		assertFalse(classMetadataFacade.hasIdentifierProperty());
 		((TestEntityPersister)classMetadataTarget).hasIdentifierProperty = true;
 		assertTrue(classMetadataFacade.hasIdentifierProperty());
+	}
+	
+	@Test 
+	public void testGetIdentifier() {
+		assertNull(((TestEntityPersister)classMetadataTarget).session);
+		final SharedSessionContractImplementor sessionTarget = createSession();
+		ISession sessionFacade = FACADE_FACTORY.createSession(sessionTarget);
+		@SuppressWarnings("serial")
+		Serializable theObject = new Serializable() {};
+		Object anotherObject = classMetadataFacade.getIdentifier(theObject, sessionFacade);
+		assertSame(theObject, anotherObject);
+		assertSame(sessionTarget, ((TestEntityPersister)classMetadataTarget).session);
 	}
 	
 	private ClassMetadata setupFooBarPersister() {
@@ -187,6 +201,7 @@ public class ClassMetadataFacadeTest {
 	private static class TestEntityPersister extends SingleTableEntityPersister {
 		
 		private boolean hasIdentifierProperty = false;
+		private SharedSessionContractImplementor session = null;
 		
 		public TestEntityPersister(
 				PersistentClass persistentClass, 
@@ -226,6 +241,7 @@ public class ClassMetadataFacadeTest {
 		
 		@Override
 		public Serializable getIdentifier(Object object, SharedSessionContractImplementor s) {
+			session = s;
 			return (Serializable)object;
 		}
 		
