@@ -6,21 +6,26 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.internal.BootstrapContextImpl;
+import org.hibernate.boot.internal.InFlightMetadataCollectorImpl;
+import org.hibernate.boot.internal.MetadataBuilderImpl.MetadataBuildingOptionsImpl;
+import org.hibernate.boot.internal.MetadataBuildingContextRootImpl;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.boot.spi.MetadataImplementor;
+import org.hibernate.boot.spi.InFlightMetadataCollector;
+import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
+import org.hibernate.dialect.Dialect;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.SimpleValue;
+import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
-import org.jboss.tools.hibernate.runtime.v_5_4.internal.util.MetadataHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -34,11 +39,11 @@ public class ColumnFacadeTest {
 	@BeforeEach
 	public void beforeEach() {
 		column = new Column();
-		columnFacade = FACADE_FACTORY.createColumn(column);
+		columnFacade = new ColumnFacadeImpl(FACADE_FACTORY, column);
 	}
 	
 	@Test
-	public void testGetMappedClass() {
+	public void testGetName() {
 		assertNull(columnFacade.getName());
 		column.setName("foobar");
 		assertEquals("foobar", columnFacade.getName());
@@ -50,17 +55,15 @@ public class ColumnFacadeTest {
 		column.setSqlTypeCode(Integer.MAX_VALUE);
 		assertEquals(Integer.MAX_VALUE, columnFacade.getSqlTypeCode().intValue());
 	}
-	
+
 	@Test
 	public void testGetSqlType() {
 		assertNull(columnFacade.getSqlType());
 		column.setSqlType("foobar");
 		assertEquals("foobar", columnFacade.getSqlType());
 		Configuration configuration = new Configuration();
-		configuration.setProperty(Environment.DIALECT, "org.hibernate.dialect.H2Dialect");
-		MetadataImplementor metadata = 
-				(MetadataImplementor)MetadataHelper.getMetadata(configuration);
-		SimpleValue value = new SimpleValue(metadata);
+		configuration.setProperty(Environment.DIALECT, TestDialect.class.getName());
+		SimpleValue value = new SimpleValue(createMetadataBuildingContext(), new Table());
 		value.setTypeName("int");
 		column.setValue(value);
 		IConfiguration configurationFacade = FACADE_FACTORY.createConfiguration(configuration);
@@ -112,33 +115,53 @@ public class ColumnFacadeTest {
 		assertFalse(columnFacade.isNullable());
 	}
 	
+	@Test
 	public void testGetValue() throws Exception {
 		Value targetValue = null;
 		column.setValue(targetValue);
 		assertNull(columnFacade.getValue());
-		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
-		ssrb.applySetting(Environment.DIALECT, "org.hibernate.dialect.H2Dialect");
-		StandardServiceRegistry ssr = ssrb.build();
-		MetadataSources metadataSources = new MetadataSources(ssr);
-		MetadataImplementor metadata = (MetadataImplementor)metadataSources.buildMetadata();
-		targetValue = new SimpleValue(metadata);
+		targetValue = new SimpleValue(createMetadataBuildingContext(), new Table());
 		column.setValue(targetValue);
 		IValue value = columnFacade.getValue();
 		assertNotNull(value);
 		assertEquals(targetValue, ((IFacade)value).getTarget());
 	}
 	
+	@Test
 	public void testIsUnique() {
-		column.setUnique(true);
+		column.setUnique(false);
 		assertFalse(columnFacade.isUnique());
 		column.setUnique(true);
 		assertTrue(columnFacade.isUnique());
 	}
 	
+	@Test
 	public void testSetSqlType() {
 		assertNull(column.getSqlType());
 		columnFacade.setSqlType("blah");
 		assertEquals("blah", column.getSqlType());
 	}
+
+	private MetadataBuildingContext createMetadataBuildingContext() {
+		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
+		builder.applySetting("hibernate.dialect", TestDialect.class.getName());
+		StandardServiceRegistry serviceRegistry = builder.build();		
+		MetadataBuildingOptionsImpl metadataBuildingOptions = 
+				new MetadataBuildingOptionsImpl(serviceRegistry);	
+		BootstrapContextImpl bootstrapContext = new BootstrapContextImpl(
+				serviceRegistry, 
+				metadataBuildingOptions);
+		metadataBuildingOptions.setBootstrapContext(bootstrapContext);
+		InFlightMetadataCollector inFlightMetadataCollector = 
+				new InFlightMetadataCollectorImpl(
+						bootstrapContext,
+						metadataBuildingOptions);
+		return new MetadataBuildingContextRootImpl(
+						bootstrapContext, 
+						metadataBuildingOptions, 
+						inFlightMetadataCollector);
+	}
 	
+	public static class TestDialect extends Dialect {}
+
 }
