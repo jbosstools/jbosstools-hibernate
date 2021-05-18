@@ -253,6 +253,7 @@ public class FacadeFactoryTest {
 				new Class[] { EntityPersister.class }, 
 				new TestInvocationHandler());
 		IEntityMetamodel entityMetamodel = facadeFactory.createEntityMetamodel(entityPersister);
+		assertTrue(entityMetamodel instanceof EntityMetamodelFacadeImpl);
 		assertSame(entityPersister, ((IFacade)entityMetamodel).getTarget());
 	}
 	
