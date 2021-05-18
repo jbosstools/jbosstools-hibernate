@@ -206,6 +206,7 @@ public class FacadeFactoryTest {
 				new Class[] { ClassMetadata.class }, 
 				new TestInvocationHandler());
 		IClassMetadata facade = facadeFactory.createClassMetadata(classMetadata);
+		assertTrue(facade instanceof ClassMetadataFacadeImpl);
 		assertSame(classMetadata, ((IFacade)facade).getTarget());		
 	}
 	
