@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
 import org.hibernate.persister.entity.EntityPersister;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
@@ -88,6 +89,11 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 		return new HibernateMappingExporterFacadeImpl(this, target);
 	}
 
+	@Override
+	public IClassMetadata createClassMetadata(Object target) {
+		return new ClassMetadataFacadeImpl(this, target);
+	}
+	
 	@Override
 	public IHQLQueryPlan createHQLQueryPlan(Object target) {
 		// TODO Auto-generated method stub
