@@ -77,6 +77,13 @@ public class ColumnFacadeTest {
 		assertEquals(Column.DEFAULT_LENGTH, columnFacade.getDefaultLength());
 	}
 	
+	@Test
+	public void testGetPrecision() {
+		assertEquals(Column.DEFAULT_PRECISION, columnFacade.getPrecision());
+		column.setPrecision(999);
+		assertEquals(999, columnFacade.getPrecision());
+	}
+	
 	private MetadataBuildingContext createMetadataBuildingContext() {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySetting("hibernate.dialect", TestDialect.class.getName());
