@@ -127,6 +127,14 @@ public class ColumnFacadeTest {
 		assertEquals(targetValue, ((IFacade)value).getTarget());
 	}
 	
+	@Test
+	public void testIsUnique() {
+		column.setUnique(false);
+		assertFalse(columnFacade.isUnique());
+		column.setUnique(true);
+		assertTrue(columnFacade.isUnique());
+	}
+	
 	private MetadataBuildingContext createMetadataBuildingContext() {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySetting("hibernate.dialect", TestDialect.class.getName());
