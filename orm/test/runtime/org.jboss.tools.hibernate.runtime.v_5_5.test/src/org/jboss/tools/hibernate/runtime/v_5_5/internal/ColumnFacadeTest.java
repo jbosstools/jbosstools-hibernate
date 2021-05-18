@@ -135,6 +135,13 @@ public class ColumnFacadeTest {
 		assertTrue(columnFacade.isUnique());
 	}
 	
+	@Test
+	public void testSetSqlType() {
+		assertNull(column.getSqlType());
+		columnFacade.setSqlType("blah");
+		assertEquals("blah", column.getSqlType());
+	}
+
 	private MetadataBuildingContext createMetadataBuildingContext() {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySetting("hibernate.dialect", TestDialect.class.getName());
