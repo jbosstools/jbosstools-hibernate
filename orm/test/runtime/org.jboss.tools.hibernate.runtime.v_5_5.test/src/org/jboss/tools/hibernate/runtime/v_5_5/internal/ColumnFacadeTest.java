@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -19,9 +20,12 @@ import org.hibernate.dialect.Dialect;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
+import org.hibernate.mapping.Value;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -109,6 +113,18 @@ public class ColumnFacadeTest {
 		assertTrue(columnFacade.isNullable());
 		column.setNullable(false);
 		assertFalse(columnFacade.isNullable());
+	}
+	
+	@Test
+	public void testGetValue() throws Exception {
+		Value targetValue = null;
+		column.setValue(targetValue);
+		assertNull(columnFacade.getValue());
+		targetValue = new SimpleValue(createMetadataBuildingContext(), new Table());
+		column.setValue(targetValue);
+		IValue value = columnFacade.getValue();
+		assertNotNull(value);
+		assertEquals(targetValue, ((IFacade)value).getTarget());
 	}
 	
 	private MetadataBuildingContext createMetadataBuildingContext() {
