@@ -39,6 +39,7 @@ import org.hibernate.persister.spi.PersisterCreationContext;
 import org.hibernate.type.StringType;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
+import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.junit.jupiter.api.BeforeEach;
@@ -128,6 +129,13 @@ public class ClassMetadataFacadeTest {
 		assertFalse(classMetadataFacade.isInstanceOfAbstractEntityPersister());
 	}
 	
+	@Test
+	public void testGetEntityMetamodel() {
+		IEntityMetamodel entityMetamodel = classMetadataFacade.getEntityMetamodel();
+		assertTrue(entityMetamodel instanceof EntityMetamodelFacadeImpl);
+		assertSame(classMetadataTarget, ((IFacade)entityMetamodel).getTarget());
+	}
+
 	private ClassMetadata setupFooBarPersister() {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySetting("hibernate.dialect", TestDialect.class.getName());
