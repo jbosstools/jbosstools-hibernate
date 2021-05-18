@@ -96,6 +96,11 @@ public class ColumnFacadeTest {
 		assertEquals(999, columnFacade.getScale());
 	}
 	
+	@Test
+	public void testGetDefaultScale() {
+		assertEquals(Column.DEFAULT_SCALE, columnFacade.getDefaultScale());
+	}
+	
 	private MetadataBuildingContext createMetadataBuildingContext() {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySetting("hibernate.dialect", TestDialect.class.getName());
