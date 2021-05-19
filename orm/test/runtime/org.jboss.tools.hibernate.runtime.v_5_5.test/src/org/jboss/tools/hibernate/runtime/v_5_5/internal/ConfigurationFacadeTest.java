@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.lang.reflect.Field;
 import java.util.Properties;
 
 import org.hibernate.boot.MetadataSources;
@@ -19,6 +20,8 @@ import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.MetadataHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.helpers.DefaultHandler;
 
 public class ConfigurationFacadeTest {
 	
@@ -79,6 +82,17 @@ public class ConfigurationFacadeTest {
 				configurationFacade, 
 				configurationFacade.setProperties(testProperties));
 		assertSame(testProperties, configuration.getProperties());
+	}
+	
+	@Test
+	public void testSetEntityResolver() throws Exception {
+		EntityResolver testResolver = new DefaultHandler();
+		ConfigurationFacadeImpl facade = (ConfigurationFacadeImpl)configurationFacade;
+		Field entityResolverField = ConfigurationFacadeImpl.class.getDeclaredField("entityResolver");
+		entityResolverField.setAccessible(true);
+		assertNull(entityResolverField.get(facade));
+		configurationFacade.setEntityResolver(testResolver);
+		assertSame(testResolver, entityResolverField.get(facade));
 	}
 	
 }
