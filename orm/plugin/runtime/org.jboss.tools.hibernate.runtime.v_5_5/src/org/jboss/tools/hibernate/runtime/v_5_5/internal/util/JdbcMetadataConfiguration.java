@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.runtime.v_5_5.internal.util;
 
 import java.util.Properties;
 
+import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 
 public class JdbcMetadataConfiguration {
@@ -9,6 +10,7 @@ public class JdbcMetadataConfiguration {
 	private Properties properties = new Properties();
 	private ReverseEngineeringStrategy revengStrategy = null;
 	private boolean preferBasicCompositeIds = true;
+	private Metadata metadata = null;
 
 	public Object getProperties() {
 		return properties;
@@ -44,6 +46,10 @@ public class JdbcMetadataConfiguration {
 
 	public void setPreferBasicCompositeIds(boolean b) {
 		preferBasicCompositeIds = b;
+	}
+
+	public Object getMetadata() {
+		return metadata;
 	}
 		
 }

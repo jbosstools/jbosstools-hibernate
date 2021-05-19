@@ -9,8 +9,12 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.Properties;
 
+import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.junit.jupiter.api.BeforeEach;
@@ -113,8 +117,26 @@ public class JdbcMetadataConfigurationTest {
 		Field preferBasicCompositeField = JdbcMetadataConfiguration.class.getDeclaredField("preferBasicCompositeIds");
 		preferBasicCompositeField.setAccessible(true);
 		assertTrue((boolean)preferBasicCompositeField.get(jdbcMetadataConfiguration));
-		jdbcMetadataConfiguration.setPreferBasicCompositeIds(true);
+		jdbcMetadataConfiguration.setPreferBasicCompositeIds(false);
 		assertFalse((boolean)preferBasicCompositeField.get(jdbcMetadataConfiguration));
+	}
+	
+	@Test
+	public void testGetMetadata() throws Exception {
+		Field metadataField = JdbcMetadataConfiguration.class.getDeclaredField("metadata");
+		metadataField.setAccessible(true);
+		Metadata metadata = (Metadata)Proxy.newProxyInstance(
+				getClass().getClassLoader(), 
+				new Class[] { Metadata.class }, 
+				new InvocationHandler() {					
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+						return null;
+					}
+				});
+		assertNull(jdbcMetadataConfiguration.getMetadata());
+		metadataField.set(jdbcMetadataConfiguration, metadata);
+		assertSame(metadata, jdbcMetadataConfiguration.getMetadata());
 	}
 	
 }
