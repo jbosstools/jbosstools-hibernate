@@ -94,6 +94,17 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 		return namingStrategy;
 	}
 	
+	public Metadata getMetadata() {
+		if (metadata == null) {
+			Object target = getTarget();
+			if (target instanceof Configuration) { 
+				metadata = MetadataHelper.getMetadata((Configuration)target);
+			} else if (target instanceof JdbcMetadataConfiguration) {
+				metadata = ((JdbcMetadataConfiguration)target).getMetadata();
+			}
+		}
+		return metadata;
+	}
 	@Override
 	protected void initializeClassMappings() {
 		HashMap<String, IPersistentClass> classMappings = new HashMap<String, IPersistentClass>();
@@ -108,15 +119,9 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 		setClassMappings(classMappings);
 	}
 
-	public Metadata getMetadata() {
-		if (metadata == null) {
-			Object target = getTarget();
-			if (target instanceof Configuration) { 
-				metadata = MetadataHelper.getMetadata((Configuration)target);
-			} else if (target instanceof JdbcMetadataConfiguration) {
-				metadata = ((JdbcMetadataConfiguration)target).getMetadata();
-			}
-		}
-		return metadata;
+	@Override
+	protected String getJDBCConfigurationClassName() {
+		return "org.jboss.tools.hibernate.runtime.v_5_5.internal.util.JdbcMetadataConfiguration";
 	}
+	
 }

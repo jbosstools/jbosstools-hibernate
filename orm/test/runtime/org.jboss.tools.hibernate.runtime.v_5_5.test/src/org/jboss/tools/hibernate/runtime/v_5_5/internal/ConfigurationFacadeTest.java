@@ -316,6 +316,16 @@ public class ConfigurationFacadeTest {
 	}
 	
 	@Test
+	public void testSetPreferBasicCompositeIds() {
+		JdbcMetadataConfiguration configuration = new JdbcMetadataConfiguration();
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
+		// the default is true
+		assertTrue(configuration.preferBasicCompositeIds());
+		configurationFacade.setPreferBasicCompositeIds(false);
+		assertFalse(configuration.preferBasicCompositeIds());
+	}
+	
+	@Test
 	public void testGetNamingStrategy() throws Exception {
 		INamingStrategy strategy = FACADE_FACTORY.createNamingStrategy(new DefaultNamingStrategy());
 		Field namingStrategyField = ConfigurationFacadeImpl.class.getDeclaredField("namingStrategy");
