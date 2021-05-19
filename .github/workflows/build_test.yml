@@ -57,6 +57,5 @@ jobs:
       with: 
         name: ${{ matrix.os }}-test-reports
         path: |
-          *tests/*/target/surefire-reports/
-          */*tests/*/target/surefire-reports/
+          */*target/surefire-reports/
           **/*.log
