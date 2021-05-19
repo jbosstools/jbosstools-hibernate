@@ -9,6 +9,8 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import java.lang.reflect.Field;
 import java.util.Properties;
 
+import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
+import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -73,6 +75,16 @@ public class JdbcMetadataConfigurationTest {
 		assertNull(properties.get("foo"));
 		jdbcMetadataConfiguration.addProperties(addedProperties);
 		assertEquals("bar", properties.get("foo"));
+	}
+	
+	@Test
+	public void testGetReverseEngineeringStrategy() throws Exception {
+		Field revengStrategyField = JdbcMetadataConfiguration.class.getDeclaredField("revengStrategy");
+		revengStrategyField.setAccessible(true);
+		ReverseEngineeringStrategy strategy = new DefaultReverseEngineeringStrategy();
+		assertNull(jdbcMetadataConfiguration.getReverseEngineeringStrategy());
+		revengStrategyField.set(jdbcMetadataConfiguration, strategy);
+		assertSame(strategy, jdbcMetadataConfiguration.getReverseEngineeringStrategy());
 	}
 	
 }

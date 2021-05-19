@@ -2,9 +2,12 @@ package org.jboss.tools.hibernate.runtime.v_5_5.internal.util;
 
 import java.util.Properties;
 
+import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
+
 public class JdbcMetadataConfiguration {
 
 	private Properties properties = new Properties();
+	private ReverseEngineeringStrategy revengStrategy = null;
 
 	public Object getProperties() {
 		return properties;
@@ -24,6 +27,10 @@ public class JdbcMetadataConfiguration {
 
 	public void addProperties(Properties properties) {
 		this.properties.putAll(properties);
+	}
+
+	public Object getReverseEngineeringStrategy() {
+		return revengStrategy;
 	}
 		
 }
