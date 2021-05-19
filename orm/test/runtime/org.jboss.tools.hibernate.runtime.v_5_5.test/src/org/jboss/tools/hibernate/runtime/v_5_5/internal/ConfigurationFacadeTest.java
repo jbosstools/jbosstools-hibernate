@@ -2,26 +2,35 @@ package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
+import java.net.URL;
 import java.util.Properties;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.dialect.Dialect;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.MetadataHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -33,6 +42,12 @@ public class ConfigurationFacadeTest {
 			"    <id name='id'/>" +
 			"  </class>" +
 			"</hibernate-mapping>";
+	
+	public static class TestDialect extends Dialect {}
+	
+	static class Foo {
+		public String id;
+	}
 	
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 
@@ -123,6 +138,38 @@ public class ConfigurationFacadeTest {
 		testProperties.put("foo", "bar");
 		configurationFacade.addProperties(testProperties);
 		assertEquals("bar", configuration.getProperty("foo"));
+	}
+	
+	@Test
+	public void testConfigureDocument() throws Exception {
+		Document document = DocumentBuilderFactory
+				.newInstance()
+				.newDocumentBuilder()
+				.newDocument();
+		Element hibernateConfiguration = document.createElement("hibernate-configuration");
+		document.appendChild(hibernateConfiguration);
+		Element sessionFactory = document.createElement("session-factory");
+		sessionFactory.setAttribute("name", "bar");
+		hibernateConfiguration.appendChild(sessionFactory);
+		Element mapping = document.createElement("mapping");
+		mapping.setAttribute("resource", "Foo.hbm.xml");
+		sessionFactory.appendChild(mapping);
+		
+		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
+		File hbmXmlFile = new File(new File(url.toURI()), "Foo.hbm.xml");
+		hbmXmlFile.deleteOnExit();
+		FileWriter fileWriter = new FileWriter(hbmXmlFile);
+		fileWriter.write(TEST_HBM_XML_STRING);
+		fileWriter.close();
+
+		String fooClassName = 
+				"org.jboss.tools.hibernate.runtime.v_5_5.internal.ConfigurationFacadeTest$Foo";
+		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
+		Metadata metadata = MetadataHelper.getMetadata(configuration);
+		assertNull(metadata.getEntityBinding(fooClassName));
+		configurationFacade.configure(document);
+		metadata = MetadataHelper.getMetadata(configuration);
+		assertNotNull(metadata.getEntityBinding(fooClassName));
 	}
 	
 }
