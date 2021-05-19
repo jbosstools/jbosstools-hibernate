@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.ArrayList;
 
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -15,6 +16,7 @@ import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
+import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 
@@ -22,6 +24,7 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 
 	private EntityResolver entityResolver = null;
 	private INamingStrategy namingStrategy = null;
+	private ArrayList<IPersistentClass> addedClasses = new ArrayList<IPersistentClass>();
 
 	public ConfigurationFacadeImpl(IFacadeFactory facadeFactory, Object target) {
 		super(facadeFactory, target);
@@ -66,6 +69,11 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 			tempFile.delete();
 		}
 		return result;
+	}
+	
+	@Override
+	public void addClass(IPersistentClass persistentClass) {
+		addedClasses.add(persistentClass);
 	}
 	
 }

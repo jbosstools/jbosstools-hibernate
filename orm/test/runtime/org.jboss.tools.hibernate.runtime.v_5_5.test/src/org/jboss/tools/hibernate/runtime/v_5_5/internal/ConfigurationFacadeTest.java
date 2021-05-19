@@ -13,6 +13,7 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.net.URL;
+import java.util.Collection;
 import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -23,9 +24,12 @@ import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.dialect.Dialect;
+import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.RootClass;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
+import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.MetadataHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -223,6 +227,20 @@ public class ConfigurationFacadeTest {
 		configurationFacade.configure();
 		metadata = MetadataHelper.getMetadata(configuration);
 		assertNotNull(metadata.getEntityBinding(fooClassName));
+	}
+	
+	@Test
+	public void testAddClass() throws Exception {
+		PersistentClass persistentClass = new RootClass(null);
+		persistentClass.setEntityName("Foo");
+		IPersistentClass persistentClassFacade = 
+				FACADE_FACTORY.createPersistentClass(persistentClass);	
+		Field addedClassesField = ConfigurationFacadeImpl.class.getDeclaredField("addedClasses");
+		addedClassesField.setAccessible(true);
+		Collection<?> addedClasses = (Collection<?>)addedClassesField.get(configurationFacade);
+		assertFalse(addedClasses.contains(persistentClassFacade));
+		configurationFacade.addClass(persistentClassFacade);
+		assertTrue(addedClasses.contains(persistentClassFacade));
 	}
 	
 }
