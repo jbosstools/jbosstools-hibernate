@@ -1,10 +1,12 @@
 package org.jboss.tools.hibernate.runtime.v_5_5.internal.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Field;
 import java.util.Properties;
@@ -95,6 +97,15 @@ public class JdbcMetadataConfigurationTest {
 		assertNull(revengStrategyField.get(jdbcMetadataConfiguration));
 		jdbcMetadataConfiguration.setReverseEngineeringStrategy(strategy);
 		assertSame(strategy, revengStrategyField.get(jdbcMetadataConfiguration));
+	}
+	
+	@Test
+	public void testPreferBasicCompositeIds() throws Exception {
+		Field preferBasicCompositeIds = JdbcMetadataConfiguration.class.getDeclaredField("preferBasicCompositeIds");
+		preferBasicCompositeIds.setAccessible(true);
+		assertTrue(jdbcMetadataConfiguration.preferBasicCompositeIds());
+		preferBasicCompositeIds.set(jdbcMetadataConfiguration, false);
+		assertFalse(jdbcMetadataConfiguration.preferBasicCompositeIds());
 	}
 	
 }

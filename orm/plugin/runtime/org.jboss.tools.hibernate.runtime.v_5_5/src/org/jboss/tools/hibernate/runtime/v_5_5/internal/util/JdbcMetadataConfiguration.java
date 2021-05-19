@@ -8,6 +8,7 @@ public class JdbcMetadataConfiguration {
 
 	private Properties properties = new Properties();
 	private ReverseEngineeringStrategy revengStrategy = null;
+	private boolean preferBasicCompositeIds = true;
 
 	public Object getProperties() {
 		return properties;
@@ -35,6 +36,10 @@ public class JdbcMetadataConfiguration {
 
 	public void setReverseEngineeringStrategy(ReverseEngineeringStrategy strategy) {
 		this.revengStrategy = strategy;
+	}
+
+	public boolean preferBasicCompositeIds() {
+		return preferBasicCompositeIds;
 	}
 		
 }
