@@ -1,7 +1,9 @@
 package org.jboss.tools.hibernate.runtime.v_5_5.internal.util;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.lang.reflect.Field;
@@ -41,4 +43,14 @@ public class JdbcMetadataConfigurationTest {
 		assertSame(properties, propertiesField.get(jdbcMetadataConfiguration));
 	}
 	
+	@Test
+	public void testGetProperty() throws Exception {
+		assertNull(jdbcMetadataConfiguration.getProperty("foo"));
+		Field propertiesField = JdbcMetadataConfiguration.class.getDeclaredField("properties");
+		propertiesField.setAccessible(true);
+		Properties properties = (Properties)propertiesField.get(jdbcMetadataConfiguration);
+		properties.put("foo", "bar");
+		assertEquals("bar", jdbcMetadataConfiguration.getProperty("foo"));
+	}
+
 }
