@@ -16,6 +16,9 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -342,6 +345,29 @@ public class ConfigurationFacadeTest {
 		assertSame(
 				reverseEngineeringStrategy, 
 				configuration.getReverseEngineeringStrategy());
+	}
+	
+	@Test
+	public void testReadFromJDBC() throws Exception {
+		Connection connection = DriverManager.getConnection("jdbc:h2:mem:test");
+		Statement statement = connection.createStatement();
+		statement.execute("CREATE TABLE FOO(id int primary key, bar varchar(255))");
+		JdbcMetadataConfiguration jdbcMdCfg = new JdbcMetadataConfiguration();
+		jdbcMdCfg.setProperty("hibernate.connection.url", "jdbc:h2:mem:test");
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, jdbcMdCfg);
+		Metadata metadata = jdbcMdCfg.getMetadata();
+		assertNull(metadata);
+		jdbcMdCfg = new JdbcMetadataConfiguration();
+		jdbcMdCfg.setProperty("hibernate.connection.url", "jdbc:h2:mem:test");
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, jdbcMdCfg);
+		configurationFacade.readFromJDBC();
+		metadata = jdbcMdCfg.getMetadata();
+		Iterator<PersistentClass> iterator = metadata.getEntityBindings().iterator();
+		PersistentClass persistentClass = iterator.next();
+		assertEquals("Foo", persistentClass.getClassName());
+		statement.execute("DROP TABLE FOO");
+		statement.close();
+		connection.close();
 	}
 	
 	@Test
