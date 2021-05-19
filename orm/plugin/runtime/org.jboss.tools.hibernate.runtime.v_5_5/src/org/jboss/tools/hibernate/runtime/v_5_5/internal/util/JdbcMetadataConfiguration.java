@@ -21,5 +21,9 @@ public class JdbcMetadataConfiguration {
 	public void setProperty(String key, String value) {
 		properties.put(key, value);
 	}
-	
+
+	public void addProperties(Properties properties) {
+		this.properties.putAll(properties);
+	}
+		
 }

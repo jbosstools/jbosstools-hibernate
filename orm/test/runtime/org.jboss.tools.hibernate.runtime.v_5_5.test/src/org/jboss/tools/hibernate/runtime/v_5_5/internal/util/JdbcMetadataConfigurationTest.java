@@ -63,4 +63,16 @@ public class JdbcMetadataConfigurationTest {
 		assertEquals("bar", properties.get("foo"));
 	}
 	
+	@Test
+	public void testAddProperties() throws Exception {
+		Field propertiesField = JdbcMetadataConfiguration.class.getDeclaredField("properties");
+		propertiesField.setAccessible(true);
+		Properties properties = (Properties)propertiesField.get(jdbcMetadataConfiguration);
+		Properties addedProperties = new Properties();
+		addedProperties.put("foo", "bar");
+		assertNull(properties.get("foo"));
+		jdbcMetadataConfiguration.addProperties(addedProperties);
+		assertEquals("bar", properties.get("foo"));
+	}
+	
 }
