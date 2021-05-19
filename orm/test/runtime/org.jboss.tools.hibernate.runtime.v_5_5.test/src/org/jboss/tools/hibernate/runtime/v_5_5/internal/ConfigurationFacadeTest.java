@@ -371,6 +371,24 @@ public class ConfigurationFacadeTest {
 	}
 	
 	@Test
+	public void testGetClassMapping() throws Exception {
+		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
+		PersistentClass persistentClass = new RootClass(null);
+		persistentClass.setEntityName("Foo");
+		IPersistentClass persistentClassFacade = 
+				FACADE_FACTORY.createPersistentClass(persistentClass);	
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
+		assertNull(configurationFacade.getClassMapping("Foo"));
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
+		Field addedClassesField = ConfigurationFacadeImpl.class.getDeclaredField("addedClasses");
+		addedClassesField.setAccessible(true);
+		@SuppressWarnings("unchecked")
+		List<IPersistentClass> addedClasses = (List<IPersistentClass>)addedClassesField.get(configurationFacade);
+		addedClasses.add(persistentClassFacade);
+		assertSame(configurationFacade.getClassMapping("Foo"), persistentClassFacade);
+	}
+	
+	@Test
 	public void testGetNamingStrategy() throws Exception {
 		INamingStrategy strategy = FACADE_FACTORY.createNamingStrategy(new DefaultNamingStrategy());
 		Field namingStrategyField = ConfigurationFacadeImpl.class.getDeclaredField("namingStrategy");
