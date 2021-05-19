@@ -17,6 +17,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.net.URL;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -291,6 +293,26 @@ public class ConfigurationFacadeTest {
 		Object sessionFactory = ((IFacade)sessionFactoryFacade).getTarget();
 		assertNotNull(sessionFactory);
 		assertTrue(sessionFactory instanceof SessionFactory);
+	}
+	
+	@Test
+	public void testGetClassMappings() throws Exception {
+		Field addedClassesField = ConfigurationFacadeImpl.class.getDeclaredField("addedClasses");
+		addedClassesField.setAccessible(true);
+		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
+		assertFalse(configurationFacade.getClassMappings().hasNext());		
+		PersistentClass persistentClass = new RootClass(null);
+		persistentClass.setEntityName("Foo");
+		IPersistentClass persistentClassFacade = 
+				FACADE_FACTORY.createPersistentClass(persistentClass);	
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
+		@SuppressWarnings("unchecked")
+		List<IPersistentClass> addedClasses = (List<IPersistentClass>)addedClassesField.get(configurationFacade);
+		addedClasses.add(persistentClassFacade);
+		Iterator<IPersistentClass> iterator = configurationFacade.getClassMappings();
+		assertTrue(iterator.hasNext());
+		assertSame(iterator.next(), persistentClassFacade);		
 	}
 	
 	private static class NativeTestConfiguration extends Configuration {
