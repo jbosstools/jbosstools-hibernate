@@ -19,6 +19,7 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -430,6 +431,17 @@ public class ConfigurationFacadeTest {
 		statement.execute("DROP TABLE FOO");
 		connection.close();
 	}
+	
+	@Test
+	public void testGetAddedClasses() throws Exception {
+		Field addedClassesField = ConfigurationFacadeImpl.class.getDeclaredField("addedClasses");
+		addedClassesField.setAccessible(true);
+		ArrayList<IPersistentClass> list = new ArrayList<IPersistentClass>();
+		assertNotNull(((ConfigurationFacadeImpl)configurationFacade).getAddedClasses());
+		assertNotSame(((ConfigurationFacadeImpl)configurationFacade).getAddedClasses(), list);
+		addedClassesField.set(configurationFacade, list);
+		assertSame(((ConfigurationFacadeImpl)configurationFacade).getAddedClasses(), list);
+	} 
 	
 	private static class NativeTestConfiguration extends Configuration {
 		static Metadata METADATA = createMetadata();

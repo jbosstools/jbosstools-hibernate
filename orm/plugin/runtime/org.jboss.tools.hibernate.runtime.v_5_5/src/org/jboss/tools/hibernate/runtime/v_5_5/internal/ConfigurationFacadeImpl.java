@@ -104,6 +104,10 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 		return namingStrategy;
 	}
 	
+	public ArrayList<IPersistentClass> getAddedClasses() {
+		return addedClasses;
+	}
+	
 	public Metadata getMetadata() {
 		if (metadata == null) {
 			Object target = getTarget();
