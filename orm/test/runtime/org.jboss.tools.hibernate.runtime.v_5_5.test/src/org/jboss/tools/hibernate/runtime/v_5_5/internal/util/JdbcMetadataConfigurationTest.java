@@ -101,11 +101,20 @@ public class JdbcMetadataConfigurationTest {
 	
 	@Test
 	public void testPreferBasicCompositeIds() throws Exception {
-		Field preferBasicCompositeIds = JdbcMetadataConfiguration.class.getDeclaredField("preferBasicCompositeIds");
-		preferBasicCompositeIds.setAccessible(true);
+		Field preferBasicCompositeField = JdbcMetadataConfiguration.class.getDeclaredField("preferBasicCompositeIds");
+		preferBasicCompositeField.setAccessible(true);
 		assertTrue(jdbcMetadataConfiguration.preferBasicCompositeIds());
-		preferBasicCompositeIds.set(jdbcMetadataConfiguration, false);
+		preferBasicCompositeField.set(jdbcMetadataConfiguration, false);
 		assertFalse(jdbcMetadataConfiguration.preferBasicCompositeIds());
+	}
+	
+	@Test
+	public void testSetPreferBasicCompositeIds() throws Exception {
+		Field preferBasicCompositeField = JdbcMetadataConfiguration.class.getDeclaredField("preferBasicCompositeIds");
+		preferBasicCompositeField.setAccessible(true);
+		assertTrue((boolean)preferBasicCompositeField.get(jdbcMetadataConfiguration));
+		jdbcMetadataConfiguration.setPreferBasicCompositeIds(true);
+		assertFalse((boolean)preferBasicCompositeField.get(jdbcMetadataConfiguration));
 	}
 	
 }

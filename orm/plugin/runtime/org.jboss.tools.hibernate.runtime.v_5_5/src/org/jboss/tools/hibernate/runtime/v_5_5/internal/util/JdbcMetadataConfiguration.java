@@ -41,5 +41,9 @@ public class JdbcMetadataConfiguration {
 	public boolean preferBasicCompositeIds() {
 		return preferBasicCompositeIds;
 	}
+
+	public void setPreferBasicCompositeIds(boolean b) {
+		preferBasicCompositeIds = b;
+	}
 		
 }
