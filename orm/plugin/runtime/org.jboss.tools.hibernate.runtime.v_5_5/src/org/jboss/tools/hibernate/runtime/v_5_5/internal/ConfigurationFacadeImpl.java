@@ -90,6 +90,11 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	}
 	
 	@Override
+	public INamingStrategy getNamingStrategy() {
+		return namingStrategy;
+	}
+	
+	@Override
 	protected void initializeClassMappings() {
 		HashMap<String, IPersistentClass> classMappings = new HashMap<String, IPersistentClass>();
 		Iterator<PersistentClass> origin = getMetadata().getEntityBindings().iterator();

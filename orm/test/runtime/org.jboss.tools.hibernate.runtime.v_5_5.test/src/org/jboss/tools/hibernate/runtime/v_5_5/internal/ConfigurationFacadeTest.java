@@ -315,6 +315,16 @@ public class ConfigurationFacadeTest {
 		assertSame(iterator.next(), persistentClassFacade);		
 	}
 	
+	@Test
+	public void testGetNamingStrategy() throws Exception {
+		INamingStrategy strategy = FACADE_FACTORY.createNamingStrategy(new DefaultNamingStrategy());
+		Field namingStrategyField = ConfigurationFacadeImpl.class.getDeclaredField("namingStrategy");
+		namingStrategyField.setAccessible(true);
+		assertNull(configurationFacade.getNamingStrategy());
+		namingStrategyField.set(configurationFacade, strategy);
+		assertSame(strategy, configurationFacade.getNamingStrategy());
+	}
+	
 	private static class NativeTestConfiguration extends Configuration {
 		static Metadata METADATA = createMetadata();
 		@SuppressWarnings("unused")
