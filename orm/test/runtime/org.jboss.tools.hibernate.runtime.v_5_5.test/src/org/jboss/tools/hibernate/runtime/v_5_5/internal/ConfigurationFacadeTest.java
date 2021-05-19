@@ -12,6 +12,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Properties;
@@ -30,6 +33,7 @@ import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
+import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.MetadataHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -243,4 +247,58 @@ public class ConfigurationFacadeTest {
 		assertTrue(addedClasses.contains(persistentClassFacade));
 	}
 	
+	@Test
+	public void testGetMetadata() throws Exception {
+		Field metadataField = ConfigurationFacadeImpl.class.getDeclaredField("metadata");
+		metadataField.setAccessible(true);
+		NativeTestConfiguration nativeConfiguration = new NativeTestConfiguration();
+		ConfigurationFacadeImpl nativeFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, nativeConfiguration);
+		assertNull(metadataField.get(nativeFacade));
+		Metadata nativeMetadata = nativeFacade.getMetadata();
+		assertNotNull(nativeMetadata);
+		assertSame(nativeMetadata, NativeTestConfiguration.METADATA);
+		assertNotNull(metadataField.get(nativeFacade));
+		assertSame(metadataField.get(nativeFacade), NativeTestConfiguration.METADATA);
+		JdbcMetadataTestConfiguration jdbcConfiguration = new JdbcMetadataTestConfiguration();
+		ConfigurationFacadeImpl jdbcFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, jdbcConfiguration);
+		assertNull(metadataField.get(jdbcFacade));
+		Metadata jdbcMetadata = jdbcFacade.getMetadata();
+		assertNotNull(jdbcMetadata);
+		assertSame(jdbcMetadata, JdbcMetadataTestConfiguration.METADATA);
+		assertNotNull(metadataField.get(jdbcFacade));
+		assertSame(metadataField.get(jdbcFacade), JdbcMetadataTestConfiguration.METADATA);
+	}
+	
+	private static class NativeTestConfiguration extends Configuration {
+		static Metadata METADATA = createMetadata();
+		@SuppressWarnings("unused")
+		public Metadata getMetadata() {
+			return METADATA;
+		}
+	}
+	
+	private static class JdbcMetadataTestConfiguration extends JdbcMetadataConfiguration {
+		static Metadata METADATA = createMetadata();
+		public Metadata getMetadata() {
+			return METADATA;
+		}
+	}
+	
+	private static Metadata createMetadata() {
+		Metadata result = null;
+		result = (Metadata) Proxy.newProxyInstance(
+				ConfigurationFacadeTest.class.getClassLoader(), 
+				new Class[] { Metadata.class },  
+				new InvocationHandler() {				
+					@Override
+					public Object invoke(
+							Object proxy, 
+							Method method, 
+							Object[] args) throws Throwable {
+						return null;
+					}
+				});
+		return result;
+	}
+		
 }

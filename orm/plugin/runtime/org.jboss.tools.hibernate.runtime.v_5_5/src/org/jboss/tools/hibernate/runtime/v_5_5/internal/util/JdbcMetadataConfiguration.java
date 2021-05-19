@@ -49,7 +49,7 @@ public class JdbcMetadataConfiguration {
 		preferBasicCompositeIds = b;
 	}
 
-	public Object getMetadata() {
+	public Metadata getMetadata() {
 		return metadata;
 	}
 
