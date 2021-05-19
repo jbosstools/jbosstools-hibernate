@@ -398,6 +398,17 @@ public class ConfigurationFacadeTest {
 		assertSame(strategy, configurationFacade.getNamingStrategy());
 	}
 	
+	@Test
+	public void testGetEntityResolver() throws Exception {
+		EntityResolver testResolver = new DefaultHandler();
+		ConfigurationFacadeImpl facade = (ConfigurationFacadeImpl)configurationFacade;
+		Field entityResolverField = ConfigurationFacadeImpl.class.getDeclaredField("entityResolver");
+		entityResolverField.setAccessible(true);
+		assertNotSame(testResolver, configurationFacade.getEntityResolver());
+		entityResolverField.set(facade, testResolver);
+		assertSame(testResolver, configurationFacade.getEntityResolver());
+	}
+	
 	private static class NativeTestConfiguration extends Configuration {
 		static Metadata METADATA = createMetadata();
 		@SuppressWarnings("unused")
