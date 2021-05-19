@@ -30,4 +30,15 @@ public class JdbcMetadataConfigurationTest {
 		assertSame(properties, jdbcMetadataConfiguration.getProperties());
 	}
 	
+	@Test
+	public void testSetProperties() throws Exception {
+		Properties properties = new Properties();
+		Field propertiesField = JdbcMetadataConfiguration.class.getDeclaredField("properties");
+		propertiesField.setAccessible(true);	
+		assertNotNull(propertiesField.get(jdbcMetadataConfiguration));
+		assertNotSame(properties,  propertiesField.get(jdbcMetadataConfiguration));
+		jdbcMetadataConfiguration.setProperties(properties);
+		assertSame(properties, propertiesField.get(jdbcMetadataConfiguration));
+	}
+	
 }

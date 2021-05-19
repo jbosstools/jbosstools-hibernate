@@ -10,4 +10,8 @@ public class JdbcMetadataConfiguration {
 		return properties;
 	}
 
+	public void setProperties(Properties properties) {
+		this.properties = properties;
+	}
+	
 }
