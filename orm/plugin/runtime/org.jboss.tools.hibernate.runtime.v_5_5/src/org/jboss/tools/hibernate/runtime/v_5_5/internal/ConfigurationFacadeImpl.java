@@ -81,6 +81,11 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 		addedClasses.add(persistentClass);
 	}
 
+	@Override 
+	public void buildMappings() {
+		getMetadata();
+	}
+	
 	public Metadata getMetadata() {
 		if (metadata == null) {
 			Object target = getTarget();

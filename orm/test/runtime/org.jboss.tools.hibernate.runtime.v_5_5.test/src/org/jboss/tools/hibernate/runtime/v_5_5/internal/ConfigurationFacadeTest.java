@@ -269,6 +269,16 @@ public class ConfigurationFacadeTest {
 		assertSame(metadataField.get(jdbcFacade), JdbcMetadataTestConfiguration.METADATA);
 	}
 	
+	@Test
+	public void testBuildMappings() throws Exception {
+		Field metadataField = ConfigurationFacadeImpl.class.getDeclaredField("metadata");
+		metadataField.setAccessible(true);
+		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
+		assertNull(metadataField.get(configurationFacade));
+		configurationFacade.buildMappings();
+		assertNotNull(metadataField.get(configurationFacade));
+	}
+
 	private static class NativeTestConfiguration extends Configuration {
 		static Metadata METADATA = createMetadata();
 		@SuppressWarnings("unused")
