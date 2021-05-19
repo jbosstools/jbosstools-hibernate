@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 
 import javax.xml.transform.Transformer;
@@ -17,11 +18,13 @@ import javax.xml.transform.stream.StreamResult;
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.MetadataHelper;
 import org.w3c.dom.Document;
@@ -112,6 +115,7 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 		}
 		return metadata;
 	}
+	
 	@Override
 	protected void initializeClassMappings() {
 		HashMap<String, IPersistentClass> classMappings = new HashMap<String, IPersistentClass>();
@@ -124,6 +128,20 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 			classMappings.put(pc.getEntityName(), pc);
 		}
 		setClassMappings(classMappings);
+	}
+
+	@Override
+	protected void initializeTableMappings() {
+		HashSet<ITable> tableMappings = new HashSet<ITable>();
+		Metadata metadata = getMetadata();
+		if (metadata != null) {
+			Iterator<Table> origin = metadata.collectTableMappings().iterator();
+			while (origin.hasNext()) {
+				ITable table = getFacadeFactory().createTable(origin.next());
+				tableMappings.add(table);
+			}
+		}
+		setTableMappings(tableMappings);
 	}
 
 	@Override
