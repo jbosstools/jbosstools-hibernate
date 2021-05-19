@@ -4,6 +4,7 @@ import java.util.Properties;
 
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
+import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 
 public class JdbcMetadataConfiguration {
 
@@ -51,5 +52,11 @@ public class JdbcMetadataConfiguration {
 	public Object getMetadata() {
 		return metadata;
 	}
-		
+
+	public void readFromJDBC() {
+		metadata = MetadataDescriptorFactory
+				.createJdbcDescriptor(revengStrategy, properties, preferBasicCompositeIds)
+				.createMetadata();
+	}
+	
 }

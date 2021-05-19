@@ -12,6 +12,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.util.Properties;
 
 import org.hibernate.boot.Metadata;
@@ -139,4 +142,21 @@ public class JdbcMetadataConfigurationTest {
 		assertSame(metadata, jdbcMetadataConfiguration.getMetadata());
 	}
 	
+	@Test
+	public void testReadFromJdbc() throws Exception {
+		Field metadataField = JdbcMetadataConfiguration.class.getDeclaredField("metadata");
+		metadataField.setAccessible(true);
+		Connection connection = DriverManager.getConnection("jdbc:h2:mem:test");
+		Statement statement = connection.createStatement();
+		statement.execute("CREATE TABLE FOO(id int primary key, bar varchar(255))");
+		jdbcMetadataConfiguration.setProperty("hibernate.connection.url", "jdbc:h2:mem:test");
+		jdbcMetadataConfiguration.setReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
+		assertNull(metadataField.get(jdbcMetadataConfiguration));
+		jdbcMetadataConfiguration.readFromJDBC();
+		assertNotNull(metadataField.get(jdbcMetadataConfiguration));
+		statement.execute("DROP TABLE FOO");
+		statement.close();
+		connection.close();
+	}
+
 }
