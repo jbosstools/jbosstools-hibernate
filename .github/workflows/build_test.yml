@@ -49,7 +49,7 @@ jobs:
     - name: Build/Compile and run unit tests
       uses: GabrielBB/xvfb-action@v1
       with:
-        run: mvn clean verify -U -fae --settings build-ci/maven-settings.xml -DskipITests=true -Dmaven.test.error.ignore=true -Dmaven.test.failure.ignore=true --quiet --no-transfer-progress
+        run: mvn clean verify -U -fae --settings build-ci/maven-settings.xml -DskipITests=true -Dmaven.test.error.ignore=true -Dmaven.test.failure.ignore=true --no-transfer-progress
 
     # Archive artifacts to be applied in Publish Reports workflow
     - name: Archiving test artifacts
@@ -57,5 +57,5 @@ jobs:
       with: 
         name: ${{ matrix.os }}-test-reports
         path: |
-          */*target/surefire-reports/
+          **/*target/surefire-reports/
           **/*.log
