@@ -15,8 +15,10 @@ import java.util.Properties;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.DefaultNamingStrategy;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.MetadataHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -93,6 +95,17 @@ public class ConfigurationFacadeTest {
 		assertNull(entityResolverField.get(facade));
 		configurationFacade.setEntityResolver(testResolver);
 		assertSame(testResolver, entityResolverField.get(facade));
+	}
+	
+	@Test
+	public void testSetNamingStrategy() throws Exception {
+		INamingStrategy namingStrategy = FACADE_FACTORY.createNamingStrategy(new DefaultNamingStrategy());
+		ConfigurationFacadeImpl facade = (ConfigurationFacadeImpl)configurationFacade;
+		Field namingStrategyField = ConfigurationFacadeImpl.class.getDeclaredField("namingStrategy");
+		namingStrategyField.setAccessible(true);
+		assertNotSame(namingStrategy, namingStrategyField.get(facade));
+		configurationFacade.setNamingStrategy(namingStrategy);
+		assertSame(namingStrategy, namingStrategyField.get(facade));
 	}
 	
 }
