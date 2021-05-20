@@ -34,7 +34,6 @@ import org.hibernate.tuple.entity.EntityTuplizer;
 import org.jboss.tools.hibernate.runtime.common.AbstractEntityMetamodelFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
-import org.jboss.tools.hibernate.runtime.v_5_5.internal.ClassMetadataFacadeTest.FooBar;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -42,6 +41,7 @@ public class EntityMetamodelFacadeTest {
 
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 	private static final Object OBJECT = new Object();
+	private static final Integer INDEX = Integer.MAX_VALUE;
 	
 	private IEntityMetamodel entityMetamodelFacade = null; 
 	private EntityMetamodel entityMetamodel = null;
@@ -60,6 +60,13 @@ public class EntityMetamodelFacadeTest {
 		assertSame(OBJECT, entityMetamodelFacade.getTuplizerPropertyValue(OBJECT, Integer.MAX_VALUE));
 		assertEquals("getPropertyValue", methodName);
 		assertArrayEquals(new Object[] { OBJECT,  Integer.MAX_VALUE }, arguments);
+	}
+	
+	@Test
+	public void testGetPropertyIndexOrNull() {
+		assertSame(INDEX, entityMetamodelFacade.getPropertyIndexOrNull("foobar"));
+		assertEquals("getPropertyIndexOrNull", methodName);
+		assertArrayEquals(arguments, new Object[] { "foobar" });
 	}
 	
 	private PersisterCreationContext createPersisterCreationContext(
@@ -147,10 +154,19 @@ public class EntityMetamodelFacadeTest {
 						new Class[] { EntityTuplizer.class }, 
 						new TestInvocationHandler());
 			}
+			@Override public Integer getPropertyIndexOrNull(String id) {
+				methodName = "getPropertyIndexOrNull";
+				arguments = new Object[] { id };
+				return INDEX;
+			}
 		};
 	}
 		
 	public static class TestDialect extends Dialect {}
+	
+	public class FooBar {
+		public int id = 1967;
+	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
 		@Override
