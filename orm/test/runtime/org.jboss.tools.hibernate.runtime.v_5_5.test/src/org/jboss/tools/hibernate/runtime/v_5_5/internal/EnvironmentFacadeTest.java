@@ -46,4 +46,9 @@ public class EnvironmentFacadeTest {
 		assertSame(Environment.CONNECTION_PROVIDER, environmentFacade.getConnectionProvider());
 	}
 	
+	@Test
+	public void testGetURL() {
+		assertSame(Environment.URL, environmentFacade.getURL());
+	}
+	
 }
