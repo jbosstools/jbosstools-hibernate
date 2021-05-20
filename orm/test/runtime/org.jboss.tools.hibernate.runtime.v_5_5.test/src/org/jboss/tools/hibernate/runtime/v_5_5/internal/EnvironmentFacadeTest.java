@@ -71,4 +71,9 @@ public class EnvironmentFacadeTest {
 		assertSame(Environment.DEFAULT_CATALOG, environmentFacade.getDefaultCatalog());
 	}
 	
+	@Test
+	public void testGetDefaultSchema() {
+		assertSame(Environment.DEFAULT_SCHEMA, environmentFacade.getDefaultSchema());
+	}
+	
 }
