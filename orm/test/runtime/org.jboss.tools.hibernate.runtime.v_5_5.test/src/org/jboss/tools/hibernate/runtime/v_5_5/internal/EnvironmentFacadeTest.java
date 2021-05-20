@@ -56,4 +56,9 @@ public class EnvironmentFacadeTest {
 		assertSame(Environment.USER, environmentFacade.getUser());
 	}
 	
+	@Test
+	public void testGetPass() {
+		assertSame(Environment.PASS, environmentFacade.getPass());
+	}
+	
 }
