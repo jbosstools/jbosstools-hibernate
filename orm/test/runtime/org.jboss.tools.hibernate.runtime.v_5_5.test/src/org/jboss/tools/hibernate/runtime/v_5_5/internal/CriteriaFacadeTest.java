@@ -1,6 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -19,14 +19,18 @@ public class CriteriaFacadeTest {
 	
 	private ICriteria criteriaFacade = null;
 	
+	private int maxResults = Integer.MIN_VALUE;
+
 	@BeforeEach
 	public void beforeEach() {
 		criteriaFacade = new CriteriaFacadeImpl(FACADE_FACTORY, createTestQuery());		
 	}
 	
 	@Test
-	public void testConstruction() {
-		assertNotNull(criteriaFacade);
+	public void testSetMaxResults() {
+		assertEquals(maxResults, Integer.MIN_VALUE);
+		criteriaFacade.setMaxResults(Integer.MAX_VALUE);
+		assertEquals(maxResults, Integer.MAX_VALUE);
 	}
 	
 	private Query createTestQuery() {
@@ -39,6 +43,10 @@ public class CriteriaFacadeTest {
 	private class TestInvocationHandler implements InvocationHandler {
 		@Override
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+			String methodName = method.getName();
+			if ("setMaxResults".equals(methodName)) {
+				maxResults = (int)args[0];
+			}
 			return null;
 		}	
 	}
