@@ -1,6 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,8 +16,8 @@ public class EnvironmentFacadeTest {
 	}
 	
 	@Test
-	public void testConstruction() {
-		assertNotNull(environmentFacade);
+	public void testGetTransactionManagerStrategy() {
+		assertSame("hibernate.transaction.coordinator_class", environmentFacade.getTransactionManagerStrategy());
 	}
 	
 }
