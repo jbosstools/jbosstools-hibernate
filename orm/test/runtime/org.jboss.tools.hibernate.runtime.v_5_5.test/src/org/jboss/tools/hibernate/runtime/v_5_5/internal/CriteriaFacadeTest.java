@@ -1,10 +1,13 @@
 package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.persistence.Query;
 
@@ -19,6 +22,8 @@ public class CriteriaFacadeTest {
 	
 	private ICriteria criteriaFacade = null;
 	
+	private static final List<Object> RESULT_LIST = Arrays.asList();
+
 	private int maxResults = Integer.MIN_VALUE;
 
 	@BeforeEach
@@ -31,6 +36,11 @@ public class CriteriaFacadeTest {
 		assertEquals(maxResults, Integer.MIN_VALUE);
 		criteriaFacade.setMaxResults(Integer.MAX_VALUE);
 		assertEquals(maxResults, Integer.MAX_VALUE);
+	}
+	
+	@Test 
+	public void testList() {
+		assertSame(RESULT_LIST, criteriaFacade.list());
 	}
 	
 	private Query createTestQuery() {
@@ -46,6 +56,8 @@ public class CriteriaFacadeTest {
 			String methodName = method.getName();
 			if ("setMaxResults".equals(methodName)) {
 				maxResults = (int)args[0];
+			} else if ("getResultList".equals(methodName)) {
+				return RESULT_LIST;
 			}
 			return null;
 		}	
