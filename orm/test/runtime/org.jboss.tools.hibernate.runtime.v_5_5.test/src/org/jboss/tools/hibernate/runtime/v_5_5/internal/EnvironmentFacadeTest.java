@@ -26,4 +26,9 @@ public class EnvironmentFacadeTest {
 		assertSame(Environment.DRIVER, environmentFacade.getDriver());
 	}
 	
+	@Test
+	public void testGetHBM2DDLAuto() {
+		assertSame(Environment.HBM2DDL_AUTO, environmentFacade.getHBM2DDLAuto());
+	}
+	
 }
