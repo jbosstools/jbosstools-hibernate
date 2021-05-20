@@ -41,4 +41,9 @@ public class EnvironmentFacadeTest {
 		assertSame(Environment.DATASOURCE, environmentFacade.getDataSource());
 	}
 	
+	@Test
+	public void testGetConnectionProvider() {
+		assertSame(Environment.CONNECTION_PROVIDER, environmentFacade.getConnectionProvider());
+	}
+	
 }
