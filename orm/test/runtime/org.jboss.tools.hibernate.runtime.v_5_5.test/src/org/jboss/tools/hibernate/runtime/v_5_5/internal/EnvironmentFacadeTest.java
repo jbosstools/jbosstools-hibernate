@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 
+import org.hibernate.cfg.Environment;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,6 +19,11 @@ public class EnvironmentFacadeTest {
 	@Test
 	public void testGetTransactionManagerStrategy() {
 		assertSame("hibernate.transaction.coordinator_class", environmentFacade.getTransactionManagerStrategy());
+	}
+	
+	@Test
+	public void testGetDriver() {
+		assertSame(Environment.DRIVER, environmentFacade.getDriver());
 	}
 	
 }
