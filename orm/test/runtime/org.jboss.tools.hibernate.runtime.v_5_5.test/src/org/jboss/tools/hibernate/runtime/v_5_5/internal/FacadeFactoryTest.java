@@ -265,6 +265,7 @@ public class FacadeFactoryTest {
 				new Class[] { Criteria.class }, 
 				new TestInvocationHandler());
 		ICriteria facade = facadeFactory.createCriteria(criteria);
+		assertTrue(facade instanceof CriteriaFacadeImpl);
 		assertSame(criteria, ((IFacade)facade).getTarget());		
 	}
 	
