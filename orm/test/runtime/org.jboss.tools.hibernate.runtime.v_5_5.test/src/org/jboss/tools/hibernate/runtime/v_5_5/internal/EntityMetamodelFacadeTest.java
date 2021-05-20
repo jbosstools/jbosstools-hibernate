@@ -1,7 +1,12 @@
 package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 
 import org.hibernate.boot.MetadataSources;
@@ -25,6 +30,7 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.persister.spi.PersisterCreationContext;
 import org.hibernate.tuple.entity.EntityMetamodel;
+import org.hibernate.tuple.entity.EntityTuplizer;
 import org.jboss.tools.hibernate.runtime.common.AbstractEntityMetamodelFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
@@ -35,10 +41,14 @@ import org.junit.jupiter.api.Test;
 public class EntityMetamodelFacadeTest {
 
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
+	private static final Object OBJECT = new Object();
 	
 	private IEntityMetamodel entityMetamodelFacade = null; 
 	private EntityMetamodel entityMetamodel = null;
 
+	private String methodName = null;
+	private Object[] arguments = null;
+	
 	@BeforeEach
 	public void beforeEach() throws Exception {
 		entityMetamodel = createFooBarModel();
@@ -46,8 +56,10 @@ public class EntityMetamodelFacadeTest {
 	}
 	
 	@Test
-	public void testConstruction() {
-		assertNotNull(entityMetamodelFacade);
+	public void testGetTuplizerPropertyValue() {
+		assertSame(OBJECT, entityMetamodelFacade.getTuplizerPropertyValue(OBJECT, Integer.MAX_VALUE));
+		assertEquals("getPropertyValue", methodName);
+		assertArrayEquals(new Object[] { OBJECT,  Integer.MAX_VALUE }, arguments);
 	}
 	
 	private PersisterCreationContext createPersisterCreationContext(
@@ -127,9 +139,25 @@ public class EntityMetamodelFacadeTest {
 		PersisterCreationContext persisterCreationContext = 
 				createPersisterCreationContext(serviceRegistry, bootstrapContext);
 		PersistentClass persistentClass = createPersistentClass(metadataBuildingContext);
-		return  new EntityMetamodel(persistentClass, null, persisterCreationContext);
+		return  new EntityMetamodel(persistentClass, null, persisterCreationContext) {
+			private static final long serialVersionUID = 1L;
+			@Override public EntityTuplizer getTuplizer() {
+				return (EntityTuplizer)Proxy.newProxyInstance(
+						FACADE_FACTORY.getClassLoader(), 
+						new Class[] { EntityTuplizer.class }, 
+						new TestInvocationHandler());
+			}
+		};
 	}
 		
 	public static class TestDialect extends Dialect {}
 	
+	private class TestInvocationHandler implements InvocationHandler {
+		@Override
+		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+			methodName = method.getName();
+			arguments = args;
+			return OBJECT;
+		}
+	}
 }
