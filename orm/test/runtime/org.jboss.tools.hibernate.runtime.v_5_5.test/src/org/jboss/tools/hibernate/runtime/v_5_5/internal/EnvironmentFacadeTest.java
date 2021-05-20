@@ -36,4 +36,9 @@ public class EnvironmentFacadeTest {
 		assertSame(Environment.DIALECT, environmentFacade.getDialect());
 	}
 	
+	@Test
+	public void testGetDataSource() {
+		assertSame(Environment.DATASOURCE, environmentFacade.getDataSource());
+	}
+	
 }
