@@ -3,6 +3,7 @@ package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Properties;
 
@@ -63,6 +64,13 @@ public class ExporterFacadeTest {
 		assertSame(
 				exporterTarget.getArtifactCollector(), 
 				artifactCollectorTarget);
+	}
+	
+	@Test
+	public void testSetOutputDirectory() {
+		File file = new File("");
+		exporterFacade.setOutputDirectory(file);
+		assertSame(exporterTarget.getOutputDirectory(), file);		
 	}
 	
 	private static class TestExporter extends AbstractExporter {
