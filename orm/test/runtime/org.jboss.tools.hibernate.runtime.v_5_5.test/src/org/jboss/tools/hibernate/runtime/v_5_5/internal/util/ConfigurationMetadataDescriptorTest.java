@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.lang.reflect.Field;
+import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
 import org.jboss.tools.hibernate.runtime.v_5_5.internal.ConfigurationFacadeImpl;
@@ -34,6 +35,13 @@ public class ConfigurationMetadataDescriptorTest {
 		configurationFacadeField.setAccessible(true);
 		assertNotNull(configurationMetadataDescriptor);
 		assertSame(configurationFacade, configurationFacadeField.get(configurationMetadataDescriptor));
+	}
+	
+	@Test 
+	public void testGetProperties() {
+		Properties properties = new Properties();
+		configurationTarget.setProperties(properties);
+		assertSame(properties, configurationMetadataDescriptor.getProperties());
 	}
 	
 }
