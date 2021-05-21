@@ -3,6 +3,7 @@ package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -14,8 +15,11 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2x.AbstractExporter;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Exporter;
+import org.hibernate.tool.hbm2x.GenericExporter;
 import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
+import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.ConfigurationMetadataDescriptor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -99,6 +103,17 @@ public class ExporterFacadeTest {
 		propertiesField.setAccessible(true);
 		propertiesField.set(exporterTarget, properties);
 		assertSame(properties, exporterFacade.getProperties());
+	}
+	
+	@Test
+	public void testGetGenericExporter() {
+		IGenericExporter genericExporter = exporterFacade.getGenericExporter();
+		assertNull(genericExporter);
+		exporterTarget = new GenericExporter();
+		exporterFacade = new ExporterFacadeImpl(FACADE_FACTORY, exporterTarget);
+		genericExporter = exporterFacade.getGenericExporter();
+		assertNotNull(genericExporter);
+		assertSame(exporterTarget, ((IFacade)genericExporter).getTarget());
 	}
 	
 	private static class TestExporter extends AbstractExporter {
