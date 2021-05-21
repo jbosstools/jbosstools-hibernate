@@ -77,4 +77,13 @@ public class ForeignKeyFacadeTest {
 		assertSame(column, ((IFacade)list.get(0)).getTarget());
 	}
 	
+	@Test
+	public void testContainsColumn() {
+		Column column = new Column();
+		IColumn columnFacade = FACADE_FACTORY.createColumn(column);
+		assertFalse(foreignKeyFacade.containsColumn(columnFacade));
+		foreignKey.addColumn(column);
+		assertTrue(foreignKeyFacade.containsColumn(columnFacade));
+	}
+	
 }
