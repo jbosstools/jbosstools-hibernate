@@ -18,10 +18,12 @@ import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.GenericExporter;
 import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
 import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
+import org.hibernate.tool.hbm2x.QueryExporter;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
+import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.ConfigurationMetadataDescriptor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -127,6 +129,17 @@ public class ExporterFacadeTest {
 		hbm2DDLExporter = exporterFacade.getHbm2DDLExporter();
 		assertNotNull(hbm2DDLExporter);
 		assertSame(exporterTarget, ((IFacade)hbm2DDLExporter).getTarget());
+	}
+	
+	@Test
+	public void testGetQueryExporter() {
+		IQueryExporter queryExporter = exporterFacade.getQueryExporter();
+		assertNull(queryExporter);
+		exporterTarget = new QueryExporter();
+		exporterFacade = new ExporterFacadeImpl(FACADE_FACTORY, exporterTarget);
+		queryExporter = exporterFacade.getQueryExporter();
+		assertNotNull(queryExporter);
+		assertSame(exporterTarget, ((IFacade)queryExporter).getTarget());
 	}
 	
 	private static class TestExporter extends AbstractExporter {
