@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.lang.reflect.Field;
 import java.util.Properties;
 
@@ -154,10 +156,25 @@ public class ExporterFacadeTest {
 		assertSame(properties, ((HibernateConfigurationExporter)exporterTarget).getCustomProperties());
 	}
 	
+	@Test
+	public void testSetOutput() {
+		StringWriter stringWriter = new StringWriter();
+		exporterFacade.setOutput(stringWriter);
+		assertNotSame(stringWriter, ((TestExporter)exporterTarget).writer);
+		exporterTarget = new HibernateConfigurationExporter();
+		exporterFacade = new ExporterFacadeImpl(FACADE_FACTORY, exporterTarget);
+		assertNotSame(stringWriter, ((HibernateConfigurationExporter)exporterTarget).getOutput());
+		exporterFacade.setOutput(stringWriter);
+		assertSame(stringWriter, ((HibernateConfigurationExporter)exporterTarget).getOutput());
+	}
+		
 	private static class TestExporter extends AbstractExporter {
+		Writer writer = new StringWriter();
 		boolean started = false;
 		@Override public void start() { started = true; }	
-		@Override protected void doStart() {}		
+		@Override protected void doStart() {}
+		@SuppressWarnings("unused")
+		public void setOutput(Writer w) { writer = w; }
 	}
 
 }
