@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -87,6 +88,17 @@ public class ExporterFacadeTest {
 		assertFalse(((TestExporter)exporterTarget).started);
 		exporterFacade.start();
 		assertTrue(((TestExporter)exporterTarget).started);
+	}
+	
+	@Test
+	public void testGetProperties() throws Exception {
+		Properties properties = new Properties();
+		assertNotNull(exporterFacade.getProperties());
+		assertNotSame(properties, exporterFacade.getProperties());
+		Field propertiesField = AbstractExporter.class.getDeclaredField("properties");
+		propertiesField.setAccessible(true);
+		propertiesField.set(exporterTarget, properties);
+		assertSame(properties, exporterFacade.getProperties());
 	}
 	
 	private static class TestExporter extends AbstractExporter {
