@@ -142,15 +142,21 @@ public class ExporterFacadeTest {
 		assertSame(exporterTarget, ((IFacade)queryExporter).getTarget());
 	}
 	
+	@Test
+	public void testSetCustomProperties() {
+		Properties properties = new Properties();
+		exporterFacade.setCustomProperties(properties);
+		assertNotSame(properties, ((TestExporter)exporterTarget).getProperties());
+		exporterTarget = new HibernateConfigurationExporter();
+		exporterFacade = new ExporterFacadeImpl(FACADE_FACTORY, exporterTarget);
+		assertNotSame(properties, ((HibernateConfigurationExporter)exporterTarget).getCustomProperties());
+		exporterFacade.setCustomProperties(properties);
+		assertSame(properties, ((HibernateConfigurationExporter)exporterTarget).getCustomProperties());
+	}
+	
 	private static class TestExporter extends AbstractExporter {
-
 		boolean started = false;
-
-		@Override
-		public void start() {
-			started = true;
-		}
-		
+		@Override public void start() { started = true; }	
 		@Override protected void doStart() {}		
 	}
 
