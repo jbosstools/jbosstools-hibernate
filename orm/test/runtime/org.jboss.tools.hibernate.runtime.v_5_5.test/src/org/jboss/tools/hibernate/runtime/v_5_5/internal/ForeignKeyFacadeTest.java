@@ -1,11 +1,13 @@
 package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
@@ -58,6 +60,21 @@ public class ForeignKeyFacadeTest {
 		list.add(column);
 		foreignKey.addReferencedColumns(list.iterator());
 		assertFalse(foreignKeyFacade.isReferenceToPrimaryKey());
+	}
+	
+	@Test
+	public void testGetReferencedColumns() {
+		List<IColumn> list = foreignKeyFacade.getReferencedColumns();
+		assertTrue(list.isEmpty());		
+		Column column = new Column();
+		ArrayList<Column> columns = new ArrayList<Column>();
+		columns.add(column);
+		foreignKey.addReferencedColumns(columns.iterator());
+		// recreate facade to reinitialize the instance variables
+		foreignKeyFacade = new AbstractForeignKeyFacade(FACADE_FACTORY, foreignKey) {};
+		list = foreignKeyFacade.getReferencedColumns();
+		assertEquals(1, list.size());
+		assertSame(column, ((IFacade)list.get(0)).getTarget());
 	}
 	
 }
