@@ -8,8 +8,10 @@ import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2x.AbstractExporter;
+import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
+import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.ConfigurationMetadataDescriptor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,12 +55,18 @@ public class ExporterFacadeTest {
 		assertSame(configurationFacade1, configurationFacade2);
 	}
 	
+	@Test
+	public void testSetArtifactCollector() {
+		ArtifactCollector artifactCollectorTarget = new ArtifactCollector();
+		IArtifactCollector artifactCollectorFacade = FACADE_FACTORY.createArtifactCollector(artifactCollectorTarget);
+		exporterFacade.setArtifactCollector(artifactCollectorFacade);
+		assertSame(
+				exporterTarget.getArtifactCollector(), 
+				artifactCollectorTarget);
+	}
+	
 	private static class TestExporter extends AbstractExporter {
-
-		@Override
-		protected void doStart() {
-		}		
-
+		@Override protected void doStart() {}		
 	}
 
 }
