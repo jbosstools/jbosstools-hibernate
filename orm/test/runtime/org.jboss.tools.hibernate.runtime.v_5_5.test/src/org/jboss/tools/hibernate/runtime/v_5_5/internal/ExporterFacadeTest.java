@@ -1,7 +1,9 @@
 package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -80,7 +82,22 @@ public class ExporterFacadeTest {
 		assertSame(exporterTarget.getTemplatePath(), templatePath);
 	}
 	
+	@Test
+	public void testStart() throws Exception {
+		assertFalse(((TestExporter)exporterTarget).started);
+		exporterFacade.start();
+		assertTrue(((TestExporter)exporterTarget).started);
+	}
+	
 	private static class TestExporter extends AbstractExporter {
+
+		boolean started = false;
+
+		@Override
+		public void start() {
+			started = true;
+		}
+		
 		@Override protected void doStart() {}		
 	}
 
