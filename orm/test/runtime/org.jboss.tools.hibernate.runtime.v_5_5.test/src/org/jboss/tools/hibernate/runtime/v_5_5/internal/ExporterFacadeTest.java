@@ -73,6 +73,13 @@ public class ExporterFacadeTest {
 		assertSame(exporterTarget.getOutputDirectory(), file);		
 	}
 	
+	@Test
+	public void testSetTemplatePath() {
+		String[] templatePath = new String[] {};
+		exporterFacade.setTemplatePath(templatePath);
+		assertSame(exporterTarget.getTemplatePath(), templatePath);
+	}
+	
 	private static class TestExporter extends AbstractExporter {
 		@Override protected void doStart() {}		
 	}
