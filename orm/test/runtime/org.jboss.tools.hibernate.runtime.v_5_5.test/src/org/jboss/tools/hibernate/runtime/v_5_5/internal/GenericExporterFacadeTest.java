@@ -1,6 +1,9 @@
 package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
+import java.lang.reflect.Field;
 
 import org.hibernate.tool.hbm2x.GenericExporter;
 import org.jboss.tools.hibernate.runtime.common.AbstractGenericExporterFacade;
@@ -23,8 +26,12 @@ public class GenericExporterFacadeTest {
 	}
 	
 	@Test
-	public void testConstruction() {
-		assertNotNull(genericExporterFacade);
+	public void testSetFilePattern() throws Exception {
+		Field filePatternField = GenericExporter.class.getDeclaredField("filePattern");
+		filePatternField.setAccessible(true);
+		assertNotEquals("foobar", filePatternField.get(genericExporter));
+		genericExporterFacade.setFilePattern("foobar");
+		assertEquals("foobar", filePatternField.get(genericExporter));
 	}
 	
 }
