@@ -34,4 +34,13 @@ public class GenericExporterFacadeTest {
 		assertEquals("foobar", filePatternField.get(genericExporter));
 	}
 	
+	@Test
+	public void testSetTemplate() throws Exception {
+		Field templateNameField = GenericExporter.class.getDeclaredField("templateName");
+		templateNameField.setAccessible(true);
+		assertNotEquals("barfoo", templateNameField.get(genericExporter));
+		genericExporterFacade.setTemplateName("barfoo");
+		assertEquals("barfoo", templateNameField.get(genericExporter));
+	}
+	
 }
