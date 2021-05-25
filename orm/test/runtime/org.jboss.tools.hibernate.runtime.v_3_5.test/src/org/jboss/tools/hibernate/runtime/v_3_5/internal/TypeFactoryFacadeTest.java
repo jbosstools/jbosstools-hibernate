@@ -220,6 +220,8 @@ public class TypeFactoryFacadeTest {
 	
 	@Test
 	public void testGetTypeFormats() {
+		try {
+			System.out.println("typeFactoryFacade:"+typeFactoryFacade);
 		Map<IType, String> typeFormats = typeFactoryFacade.getTypeFormats();
 		Assert.assertEquals(23, typeFormats.size());
 		Assert.assertEquals("true", typeFormats.get(typeFactoryFacade.getBooleanType()));
@@ -261,6 +263,10 @@ public class TypeFactoryFacadeTest {
 				typeFormats.get(typeFactoryFacade.getTimezoneType()));
 		Assert.assertEquals("true", typeFormats.get(typeFactoryFacade.getTrueFalseType()));
 		Assert.assertEquals("true", typeFormats.get(typeFactoryFacade.getYesNoType()));
+		} catch (IllegalArgumentException e) {
+			System.err.println(e.getMessage());
+			e.printStackTrace();
+		}
 	}
 	
 }
