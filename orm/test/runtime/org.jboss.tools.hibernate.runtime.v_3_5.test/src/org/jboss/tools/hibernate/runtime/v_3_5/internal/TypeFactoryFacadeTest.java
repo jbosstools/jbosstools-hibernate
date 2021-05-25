@@ -221,7 +221,8 @@ public class TypeFactoryFacadeTest {
 	@Test
 	public void testGetTypeFormats() {
 		try {
-			System.out.println("typeFactoryFacade:"+typeFactoryFacade);
+			System.out.println(Locale.getDefault());
+			System.out.println(Currency.getInstance(Locale.getDefault()));
 		Map<IType, String> typeFormats = typeFactoryFacade.getTypeFormats();
 		Assert.assertEquals(23, typeFormats.size());
 		Assert.assertEquals("true", typeFormats.get(typeFactoryFacade.getBooleanType()));
