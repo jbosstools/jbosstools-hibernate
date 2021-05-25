@@ -43,4 +43,13 @@ public class GenericExporterFacadeTest {
 		assertEquals("barfoo", templateNameField.get(genericExporter));
 	}
 	
+	@Test
+	public void testSetForEach() throws Exception {
+		Field forEachField = GenericExporter.class.getDeclaredField("forEach");
+		forEachField.setAccessible(true);
+		assertNotEquals("foobar", forEachField.get(genericExporter));
+		genericExporterFacade.setForEach("foobar");
+		assertEquals("foobar", forEachField.get(genericExporter));
+	}
+	
 }
