@@ -52,4 +52,13 @@ public class GenericExporterFacadeTest {
 		assertEquals("foobar", forEachField.get(genericExporter));
 	}
 	
+	@Test
+	public void testGetFilePattern() throws Exception {
+		Field filePatternField = GenericExporter.class.getDeclaredField("filePattern");
+		filePatternField.setAccessible(true);
+		assertNotEquals("foobar", genericExporterFacade.getFilePattern());
+		filePatternField.set(genericExporter, "foobar");
+		assertEquals("foobar", genericExporterFacade.getFilePattern());
+	}
+	
 }
