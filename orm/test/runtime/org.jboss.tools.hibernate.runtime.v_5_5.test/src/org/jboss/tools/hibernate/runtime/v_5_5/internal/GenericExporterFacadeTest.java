@@ -61,4 +61,13 @@ public class GenericExporterFacadeTest {
 		assertEquals("foobar", genericExporterFacade.getFilePattern());
 	}
 	
+	@Test
+	public void testGetTemplateName() throws Exception {
+		Field templateNameField = GenericExporter.class.getDeclaredField("templateName");
+		templateNameField.setAccessible(true);
+		assertNotEquals("foobar", genericExporterFacade.getTemplateName());
+		templateNameField.set(genericExporter, "foobar");
+		assertEquals("foobar", genericExporterFacade.getTemplateName());
+	}
+	
 }
