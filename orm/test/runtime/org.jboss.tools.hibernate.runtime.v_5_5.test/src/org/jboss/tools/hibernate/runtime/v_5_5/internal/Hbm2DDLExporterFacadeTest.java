@@ -1,7 +1,12 @@
 package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
+import java.lang.reflect.Field;
+import java.util.Properties;
+
+import org.hibernate.tool.hbm2x.AbstractExporter;
 import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,8 +26,13 @@ public class Hbm2DDLExporterFacadeTest {
 	}
 	
 	@Test 
-	public void testConstruction() {
-		assertNotNull(ddlExporterFacade);
+	public void testGetProperties() throws Exception {
+		Field propertiesField = AbstractExporter.class.getDeclaredField("properties");
+		propertiesField.setAccessible(true);
+		Properties properties = new Properties();
+		assertNotSame(properties, ddlExporterFacade.getProperties());
+		propertiesField.set(ddlExporterTarget, properties);
+		assertSame(properties, ddlExporterFacade.getProperties());
 	}
 	
 }
