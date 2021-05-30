@@ -1,7 +1,9 @@
 package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Field;
 import java.util.Properties;
@@ -35,4 +37,12 @@ public class Hbm2DDLExporterFacadeTest {
 		assertSame(properties, ddlExporterFacade.getProperties());
 	}
 	
+	@Test
+	public void testSetExport() throws Exception {
+		Field exportToDatabaseField = Hbm2DDLExporter.class.getDeclaredField("exportToDatabase");
+		exportToDatabaseField.setAccessible(true);
+		assertTrue((Boolean)exportToDatabaseField.get(ddlExporterTarget));
+		ddlExporterFacade.setExport(false);
+		assertFalse((Boolean)exportToDatabaseField.get(ddlExporterTarget));
+	}
 }
