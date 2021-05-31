@@ -1,14 +1,18 @@
 package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.util.Map;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2x.AbstractExporter;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
+import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.ConfigurationMetadataDescriptor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,6 +50,19 @@ public class HibernateMappingExporterExtensionTest {
 		Field outputDirField = AbstractExporter.class.getDeclaredField("outputdir");
 		outputDirField.setAccessible(true);
 		assertSame(file, outputDirField.get(hibernateMappingExporterExtension));
+	}
+	
+	@Test
+	public void testSetDelegate() throws Exception {
+		Field delegateField = HibernateMappingExporterExtension.class.getDeclaredField("delegateExporter");
+		delegateField.setAccessible(true);
+		IExportPOJODelegate exportPojoDelegate = new IExportPOJODelegate() {			
+			@Override
+			public void exportPOJO(Map<Object, Object> map, IPOJOClass pojoClass) { }
+		};
+		assertNull(delegateField.get(hibernateMappingExporterExtension));
+		hibernateMappingExporterExtension.setDelegate(exportPojoDelegate);
+		assertSame(exportPojoDelegate, delegateField.get(hibernateMappingExporterExtension));
 	}
 	
 }
