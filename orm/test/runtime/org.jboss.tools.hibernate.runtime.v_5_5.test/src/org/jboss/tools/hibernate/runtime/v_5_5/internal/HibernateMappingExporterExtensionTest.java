@@ -24,6 +24,7 @@ import org.hibernate.tool.hbm2x.Cfg2JavaTool;
 import org.hibernate.tool.hbm2x.TemplateHelper;
 import org.hibernate.tool.hbm2x.pojo.EntityPOJOClass;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
@@ -102,6 +103,50 @@ public class HibernateMappingExporterExtensionTest {
 		assertTrue(hbmXmlFiles.length == 1);
 		assertEquals(tempDir.getPath() + File.separator + "foo" + File.separator + "Bar.hbm.xml", hbmXmlFiles[0].getPath());
 		assertTrue(new File(tempDir, "foo" + File.separator + "Bar.hbm.xml").exists());
+	}
+	
+	@Test
+	public void testExportPOJO() throws Exception {
+		initializeTemplateHelper();
+		POJOClass pojoClass = createPojoClass();
+		// first without a delegate exporter
+		ArtifactCollector artifactCollector = new ArtifactCollector();
+		hibernateMappingExporterExtension.setArtifactCollector(artifactCollector);
+		File[] hbmXmlFiles = artifactCollector.getFiles("hbm.xml");
+		Map<Object, Object> additionalContext = new HashMap<Object, Object>();
+		Cfg2HbmTool c2h = new Cfg2HbmTool();
+		additionalContext.put("date", new Date().toString());
+		additionalContext.put("version", Version.VERSION);
+		additionalContext.put("c2h", c2h);
+		assertTrue(hbmXmlFiles.length == 0);
+		assertFalse(new File(tempDir, "foo" + File.separator + "Bar.hbm.xml").exists());
+		hibernateMappingExporterExtension.exportPOJO(additionalContext, pojoClass);
+		hbmXmlFiles = artifactCollector.getFiles("hbm.xml");
+		assertTrue(hbmXmlFiles.length == 1);
+		assertEquals(tempDir.getPath() + File.separator + "foo" + File.separator + "Bar.hbm.xml", hbmXmlFiles[0].getPath());
+		assertTrue(new File(tempDir, "foo" + File.separator + "Bar.hbm.xml").exists());
+		// then with a delegate exporter
+		artifactCollector = new ArtifactCollector();
+		hibernateMappingExporterExtension.setArtifactCollector(artifactCollector);
+		final HashMap<Object, Object> arguments = new HashMap<Object, Object>();
+		IExportPOJODelegate exportPojoDelegate = new IExportPOJODelegate() {			
+			@Override
+			public void exportPOJO(Map<Object, Object> map, IPOJOClass pojoClass) {
+				arguments.put("map", map);
+				arguments.put("pojoClass", pojoClass);
+			}
+		};
+		hbmXmlFiles = artifactCollector.getFiles("hbm.xml");
+		Field delegateField = HibernateMappingExporterExtension.class.getDeclaredField("delegateExporter");
+		delegateField.setAccessible(true);
+		delegateField.set(hibernateMappingExporterExtension, exportPojoDelegate);
+		assertTrue(hbmXmlFiles.length == 0);
+		assertNull(arguments.get("map"));
+		assertNull(arguments.get("pojoClass"));
+		hibernateMappingExporterExtension.exportPOJO(additionalContext, pojoClass);
+		assertTrue(hbmXmlFiles.length == 0);
+		assertSame(additionalContext, arguments.get("map"));
+		assertSame(pojoClass, ((IFacade)arguments.get("pojoClass")).getTarget());
 	}
 	
 	private POJOClass createPojoClass() {

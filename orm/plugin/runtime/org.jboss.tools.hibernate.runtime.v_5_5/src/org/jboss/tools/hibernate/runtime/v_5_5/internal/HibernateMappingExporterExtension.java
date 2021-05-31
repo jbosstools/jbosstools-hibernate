@@ -29,4 +29,16 @@ public class HibernateMappingExporterExtension extends HibernateMappingExporter 
 		super.exportPOJO(map, pojoClass);
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	protected void exportPOJO(Map map, POJOClass pojoClass) {
+		if (delegateExporter == null) {
+			super.exportPOJO(map, pojoClass);
+		} else {
+			delegateExporter.exportPOJO(
+					(Map<Object, Object>)map, 
+					facadeFactory.createPOJOClass(pojoClass));
+		}
+	}
+	
 }
