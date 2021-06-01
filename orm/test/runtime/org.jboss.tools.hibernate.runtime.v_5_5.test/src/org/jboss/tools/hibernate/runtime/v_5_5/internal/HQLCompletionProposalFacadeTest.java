@@ -61,4 +61,13 @@ public class HQLCompletionProposalFacadeTest {
 		assertEquals("foo", hqlCompletionProposalFacade.getSimpleName());
 	}
 	
+	@Test
+	public void testGetCompletionKind() throws Exception {
+		Field completionKindField = HQLCompletionProposal.class.getDeclaredField("completionKind");
+		completionKindField.setAccessible(true);
+		assertEquals(HQLCompletionProposal.PROPERTY, hqlCompletionProposalFacade.getCompletionKind());
+		completionKindField.set(hqlCompletionProposalTarget, HQLCompletionProposal.KEYWORD);
+		assertEquals(HQLCompletionProposal.KEYWORD, hqlCompletionProposalFacade.getCompletionKind());
+	}
+	
 }
