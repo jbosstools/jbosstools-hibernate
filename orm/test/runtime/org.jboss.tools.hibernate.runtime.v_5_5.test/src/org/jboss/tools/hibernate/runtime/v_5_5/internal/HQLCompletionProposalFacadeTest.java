@@ -102,4 +102,9 @@ public class HQLCompletionProposalFacadeTest {
 		assertSame(propertyTarget, ((IFacade)hqlCompletionProposalFacade.getProperty()).getTarget());
 	}
 	
+	@Test
+	public void testAliasRefKind() {
+		assertSame(HQLCompletionProposal.ALIAS_REF, hqlCompletionProposalFacade.aliasRefKind());
+	}
+	
 }
