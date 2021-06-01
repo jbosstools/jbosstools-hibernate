@@ -104,6 +104,16 @@ public class HibernateMappingExporterFacadeTest {
 		assertSame(file, hibernateMappingExporterFacade.getOutputDirectory());
 	}
 	
+	@Test
+	public void testSetOutputDirectory() throws Exception {
+		Field outputdirField = AbstractExporter.class.getDeclaredField("outputdir");
+		outputdirField.setAccessible(true);
+		assertNull(outputdirField.get(hibernateMappingExporter));
+		File file = new File("testSetOutputDirectory");
+		hibernateMappingExporterFacade.setOutputDirectory(file);
+		assertSame(file, outputdirField.get(hibernateMappingExporter));
+	}
+	
 	private class TestMetadataDescriptor implements MetadataDescriptor {
 		@Override
 		public Metadata createMetadata() {
