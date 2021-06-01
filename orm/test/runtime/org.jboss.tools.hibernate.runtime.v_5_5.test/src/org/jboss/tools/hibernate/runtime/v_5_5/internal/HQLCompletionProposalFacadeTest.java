@@ -2,11 +2,15 @@ package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.lang.reflect.Field;
 
+import org.hibernate.mapping.Property;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.common.AbstractHQLCompletionProposalFacade;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.junit.jupiter.api.BeforeEach;
@@ -86,6 +90,16 @@ public class HQLCompletionProposalFacadeTest {
 		assertNotEquals("foo", hqlCompletionProposalFacade.getShortEntityName());
 		shortEntityNameField.set(hqlCompletionProposalTarget, "foo");
 		assertEquals("foo", hqlCompletionProposalFacade.getShortEntityName());
+	}
+	
+	@Test
+	public void testGetProperty() throws Exception {
+		Field propertyField = HQLCompletionProposal.class.getDeclaredField("property");
+		propertyField.setAccessible(true);
+		Property propertyTarget = new Property();
+		assertNull(hqlCompletionProposalFacade.getProperty());
+		propertyField.set(hqlCompletionProposalTarget, propertyTarget);
+		assertSame(propertyTarget, ((IFacade)hqlCompletionProposalFacade.getProperty()).getTarget());
 	}
 	
 }
