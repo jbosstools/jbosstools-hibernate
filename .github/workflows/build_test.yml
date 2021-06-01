@@ -49,7 +49,7 @@ jobs:
     - name: Build/Compile and run unit tests
       uses: GabrielBB/xvfb-action@v1
       with:
-        run: mvn clean verify -U -fae --settings build-ci/maven-settings.xml -DskipITests=true -Dmaven.test.error.ignore=true -Dmaven.test.failure.ignore=true -Duser.language=en --no-transfer-progress
+        run: mvn clean verify -U -fae --settings build-ci/maven-settings.xml -DskipITests=true -Dmaven.test.error.ignore=true -Dmaven.test.failure.ignore=true -Duser.language=en -Duser.country=US --no-transfer-progress
 
     # Archive artifacts to be applied in Publish Reports workflow
     - name: Archiving test artifacts
