@@ -114,6 +114,19 @@ public class HibernateMappingExporterFacadeTest {
 		assertSame(file, outputdirField.get(hibernateMappingExporter));
 	}
 	
+	@Test
+	public void testSetExportPOJODelegate() throws Exception {
+		IExportPOJODelegate delegate = new IExportPOJODelegate() {			
+			@Override
+			public void exportPOJO(Map<Object, Object> map, IPOJOClass pojoClass) {}
+		};
+		Field delegateField = HibernateMappingExporterExtension.class.getDeclaredField("delegateExporter");
+		delegateField.setAccessible(true);
+		assertNull(delegateField.get(hibernateMappingExporter));
+		hibernateMappingExporterFacade.setExportPOJODelegate(delegate);
+		assertSame(delegate, delegateField.get(hibernateMappingExporter));
+	}
+	
 	private class TestMetadataDescriptor implements MetadataDescriptor {
 		@Override
 		public Metadata createMetadata() {
