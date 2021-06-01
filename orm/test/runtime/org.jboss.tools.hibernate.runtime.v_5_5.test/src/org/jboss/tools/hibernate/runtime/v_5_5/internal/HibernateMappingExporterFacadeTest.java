@@ -1,6 +1,8 @@
 package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
@@ -90,6 +92,16 @@ public class HibernateMappingExporterFacadeTest {
 		assertTrue(fooHbmXml.exists());
 		assertTrue(fooHbmXml.delete());
 		assertTrue(outputDir.exists());
+	}
+	
+	@Test
+	public void testGetOutputDirectory() throws Exception {
+		assertNull(hibernateMappingExporterFacade.getOutputDirectory());
+		Field outputdirField = AbstractExporter.class.getDeclaredField("outputdir");
+		outputdirField.setAccessible(true);
+		File file = new File("testGetOutputDirectory");
+		outputdirField.set(hibernateMappingExporter, file);
+		assertSame(file, hibernateMappingExporterFacade.getOutputDirectory());
 	}
 	
 	private class TestMetadataDescriptor implements MetadataDescriptor {
