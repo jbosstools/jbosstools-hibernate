@@ -8,6 +8,7 @@ import org.jboss.tools.hibernate.runtime.spi.ICriteria;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
+import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
@@ -48,6 +49,11 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	@Override
 	public IExporter createExporter(Object target) {
 		return new ExporterFacadeImpl(this, target);
+	}
+	
+	@Override
+	public IHbm2DDLExporter createHbm2DDLExporter(Object target) {
+		return new Hbm2DDLExporterFacadeImpl(this, target);
 	}
 	
 	@Override
