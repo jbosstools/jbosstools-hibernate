@@ -70,4 +70,13 @@ public class HQLCompletionProposalFacadeTest {
 		assertEquals(HQLCompletionProposal.KEYWORD, hqlCompletionProposalFacade.getCompletionKind());
 	}
 	
+	@Test
+	public void testGetEntityName() throws Exception {
+		Field entityNameField = HQLCompletionProposal.class.getDeclaredField("entityName");
+		entityNameField.setAccessible(true);
+		assertNotEquals("foo", hqlCompletionProposalFacade.getEntityName());
+		entityNameField.set(hqlCompletionProposalTarget, "foo");
+		assertEquals("foo", hqlCompletionProposalFacade.getEntityName());
+	}
+	
 }
