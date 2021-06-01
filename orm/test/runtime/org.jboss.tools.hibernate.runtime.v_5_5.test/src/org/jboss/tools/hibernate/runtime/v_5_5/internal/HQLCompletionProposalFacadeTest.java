@@ -79,4 +79,13 @@ public class HQLCompletionProposalFacadeTest {
 		assertEquals("foo", hqlCompletionProposalFacade.getEntityName());
 	}
 	
+	@Test
+	public void testGetShortEntityName() throws Exception {
+		Field shortEntityNameField = HQLCompletionProposal.class.getDeclaredField("shortEntityName");
+		shortEntityNameField.setAccessible(true);
+		assertNotEquals("foo", hqlCompletionProposalFacade.getShortEntityName());
+		shortEntityNameField.set(hqlCompletionProposalTarget, "foo");
+		assertEquals("foo", hqlCompletionProposalFacade.getShortEntityName());
+	}
+	
 }
