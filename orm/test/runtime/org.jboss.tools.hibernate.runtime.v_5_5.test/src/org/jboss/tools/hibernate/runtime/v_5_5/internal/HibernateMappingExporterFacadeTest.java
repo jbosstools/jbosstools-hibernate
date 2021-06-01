@@ -12,6 +12,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -23,8 +24,13 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.Version;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.hbm2x.AbstractExporter;
+import org.hibernate.tool.hbm2x.Cfg2HbmTool;
+import org.hibernate.tool.hbm2x.Cfg2JavaTool;
+import org.hibernate.tool.hbm2x.TemplateHelper;
+import org.hibernate.tool.hbm2x.pojo.EntityPOJOClass;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.jboss.tools.hibernate.runtime.common.AbstractHibernateMappingExporterFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -125,6 +131,38 @@ public class HibernateMappingExporterFacadeTest {
 		assertNull(delegateField.get(hibernateMappingExporter));
 		hibernateMappingExporterFacade.setExportPOJODelegate(delegate);
 		assertSame(delegate, delegateField.get(hibernateMappingExporter));
+	}
+	
+	@Test
+	public void testExportPOJO() throws Exception {
+		RootClass persistentClass = new RootClass(null);
+		Table rootTable = new Table();
+		rootTable.setName("FOO");
+		persistentClass.setTable(rootTable);
+		persistentClass.setEntityName("Foo");
+		persistentClass.setClassName("Foo");
+		IPOJOClass pojoClass = 
+				FACADE_FACTORY.createPOJOClass(
+						new EntityPOJOClass(persistentClass, new Cfg2JavaTool()));		
+		Map<Object, Object> additionalContext = new HashMap<Object, Object>();
+		Cfg2HbmTool c2h = new Cfg2HbmTool();
+		additionalContext.put("date", new Date().toString());
+		additionalContext.put("version", Version.getDefault().toString());
+		additionalContext.put("c2h", c2h);
+		hibernateMappingExporter.setOutputDirectory(outputDir);
+		Method setTemplateHelperMethod = AbstractExporter.class.getDeclaredMethod(
+				"setTemplateHelper", 
+				new Class[] { TemplateHelper.class });
+		setTemplateHelperMethod.setAccessible(true);
+		TemplateHelper templateHelper = new TemplateHelper();
+		templateHelper.init(null, new String[0]);
+		setTemplateHelperMethod.invoke(hibernateMappingExporter, new Object[] { templateHelper });
+		final File fooHbmXml = new File(outputDir, "Foo.hbm.xml");
+		assertFalse(fooHbmXml.exists());
+		hibernateMappingExporterFacade.exportPOJO(additionalContext, pojoClass);
+		assertTrue(fooHbmXml.exists());
+		fooHbmXml.delete();
+		outputDir.delete();		
 	}
 	
 	private class TestMetadataDescriptor implements MetadataDescriptor {
