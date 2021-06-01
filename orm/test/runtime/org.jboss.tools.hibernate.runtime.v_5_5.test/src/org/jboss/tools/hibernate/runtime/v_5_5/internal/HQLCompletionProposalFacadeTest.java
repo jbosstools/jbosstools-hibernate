@@ -43,4 +43,13 @@ public class HQLCompletionProposalFacadeTest {
 		assertEquals(Integer.MAX_VALUE, hqlCompletionProposalFacade.getReplaceStart());
 	}
 	
+	@Test
+	public void testGetReplaceEnd() throws Exception {
+		Field replaceEndField = HQLCompletionProposal.class.getDeclaredField("replaceEnd");
+		replaceEndField.setAccessible(true);
+		assertNotEquals(Integer.MIN_VALUE, hqlCompletionProposalFacade.getReplaceEnd());
+		replaceEndField.set(hqlCompletionProposalTarget, Integer.MIN_VALUE);
+		assertEquals(Integer.MIN_VALUE, hqlCompletionProposalFacade.getReplaceEnd());
+	}
+	
 }
