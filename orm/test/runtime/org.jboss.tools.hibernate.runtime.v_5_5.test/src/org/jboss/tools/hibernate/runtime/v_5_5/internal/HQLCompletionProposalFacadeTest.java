@@ -52,4 +52,13 @@ public class HQLCompletionProposalFacadeTest {
 		assertEquals(Integer.MIN_VALUE, hqlCompletionProposalFacade.getReplaceEnd());
 	}
 	
+	@Test
+	public void testGetSimpleName() throws Exception {
+		Field simpleNameField = HQLCompletionProposal.class.getDeclaredField("simpleName");
+		simpleNameField.setAccessible(true);
+		assertNotEquals("foo", hqlCompletionProposalFacade.getSimpleName());
+		simpleNameField.set(hqlCompletionProposalTarget, "foo");
+		assertEquals("foo", hqlCompletionProposalFacade.getSimpleName());
+	}
+	
 }
