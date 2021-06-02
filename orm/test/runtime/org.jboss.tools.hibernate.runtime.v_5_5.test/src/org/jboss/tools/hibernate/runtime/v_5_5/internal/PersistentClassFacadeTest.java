@@ -303,6 +303,13 @@ public class PersistentClassFacadeTest {
 		assertEquals("bar", persistentClassTarget.getEntityName());
 	}
 	
+	@Test
+	public void testSetDiscriminatorValue() {
+		assertNull(persistentClassTarget.getDiscriminatorValue());
+		persistentClassFacade.setDiscriminatorValue("foo");
+		assertEquals("foo", persistentClassTarget.getDiscriminatorValue());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
