@@ -193,6 +193,7 @@ public class FacadeFactoryTest {
 	public void testCreateHbm2DDLExporter() {
 		Hbm2DDLExporter hbm2ddlExporter = new Hbm2DDLExporter();
 		IHbm2DDLExporter facade = facadeFactory.createHbm2DDLExporter(hbm2ddlExporter);
+		assertTrue(facade instanceof Hbm2DDLExporterFacadeImpl);
 		assertSame(hbm2ddlExporter, ((IFacade)facade).getTarget());		
 	}
 	
