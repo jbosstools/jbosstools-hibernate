@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.lang.reflect.Field;
 import java.util.HashSet;
@@ -177,6 +178,25 @@ public class PersistentClassFacadeTest {
 		assertNotNull(field.get(persistentClassFacade));
 		assertTrue(propertyIterator.hasNext());
 		assertSame(propertyTarget, ((IFacade)propertyIterator.next()).getTarget());
+	}
+	
+	@Test
+	public void testGetProperty() throws Exception {
+		Property propertyTarget = new Property();
+		propertyTarget.setName("foo");
+		persistentClassTarget.addProperty(propertyTarget);
+		Field field = AbstractPersistentClassFacade.class.getDeclaredField("properties");
+		field.setAccessible(true);
+		assertNull(field.get(persistentClassFacade));
+		assertNull(persistentClassFacade.getProperty("bar"));
+		assertNotNull(field.get(persistentClassFacade));
+		assertSame(propertyTarget, ((IFacade)persistentClassFacade.getProperty("foo")).getTarget());
+		try {
+			persistentClassFacade.getProperty();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals("getProperty() is only allowed on SpecialRootClass", e.getMessage());
+		}
 	}
 	
 }
