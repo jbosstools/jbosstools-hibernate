@@ -289,6 +289,13 @@ public class PersistentClassFacadeTest {
 		assertSame(versionTarget, ((IFacade)versionFacade).getTarget());
 	}
 	
+	@Test
+	public void testSetClassName() {
+		assertNull(persistentClassTarget.getClassName());
+		persistentClassFacade.setClassName("foo");
+		assertEquals("foo", persistentClassTarget.getClassName());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
