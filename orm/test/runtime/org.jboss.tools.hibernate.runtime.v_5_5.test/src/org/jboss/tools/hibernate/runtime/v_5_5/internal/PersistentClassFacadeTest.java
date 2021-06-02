@@ -33,6 +33,7 @@ import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -346,6 +347,15 @@ public class PersistentClassFacadeTest {
 		JoinedSubclass joinedSubclassTarget = new JoinedSubclass(persistentClassTarget, null);
 		IPersistentClass joinedSubclassFacade = new AbstractPersistentClassFacade(FACADE_FACTORY, joinedSubclassTarget) {};
 		assertTrue(joinedSubclassFacade.isInstanceOfJoinedSubclass());
+	}
+	
+	@Test
+	public void testSetTable() {
+		Table tableTarget = new Table();
+		ITable tableFacade = FACADE_FACTORY.createTable(tableTarget);
+		assertNull(persistentClassTarget.getTable());
+		persistentClassFacade.setTable(tableFacade);
+		assertSame(tableTarget, persistentClassTarget.getTable());
 	}
 	
 	private KeyValue createValue() {
