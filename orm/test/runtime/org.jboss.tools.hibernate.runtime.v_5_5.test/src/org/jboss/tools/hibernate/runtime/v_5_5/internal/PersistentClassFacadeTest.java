@@ -105,4 +105,12 @@ public class PersistentClassFacadeTest {
 		assertFalse(subClassFacade.isInstanceOfRootClass());
 	}
 	
+	@Test
+	public void testIsInstanceOfSubclass() {
+		assertFalse(persistentClassFacade.isInstanceOfSubclass());
+		PersistentClass subClassTarget = new Subclass(persistentClassTarget, null);
+		IPersistentClass subClassFacade = new AbstractPersistentClassFacade(FACADE_FACTORY, subClassTarget) {};
+		assertTrue(subClassFacade.isInstanceOfSubclass());
+	}
+	
 }
