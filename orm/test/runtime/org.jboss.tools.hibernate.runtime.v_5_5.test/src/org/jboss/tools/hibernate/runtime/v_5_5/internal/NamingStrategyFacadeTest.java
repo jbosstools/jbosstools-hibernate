@@ -54,6 +54,11 @@ public class NamingStrategyFacadeTest {
 		assertEquals("FooBarJoinKeyColumnName", namingStrategyFacade.joinKeyColumnName("foo", "bar"));
 	}
 	
+	@Test
+	public void testClassToTableName() {
+		assertEquals("FooBarClassTable", namingStrategyFacade.classToTableName("foobar"));
+	}
+	
 	private class TestNamingStrategy extends DefaultNamingStrategy {
 		private static final long serialVersionUID = 1L;
 		@Override
