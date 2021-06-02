@@ -296,6 +296,13 @@ public class PersistentClassFacadeTest {
 		assertEquals("foo", persistentClassTarget.getClassName());
 	}
 	
+	@Test
+	public void testSetEntityName() {
+		assertNull(persistentClassTarget.getEntityName());
+		persistentClassFacade.setEntityName("bar");
+		assertEquals("bar", persistentClassTarget.getEntityName());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
