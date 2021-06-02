@@ -10,20 +10,26 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
+import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.runtime.common.AbstractPersistentClassFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
+import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -217,6 +223,33 @@ public class PersistentClassFacadeTest {
 		assertTrue(persistentClassFacade.isAbstract());
 		persistentClassTarget.setAbstract(false);
 		assertFalse(persistentClassFacade.isAbstract());
+	}
+	
+	@Test
+	public void testGetDiscriminator() throws Exception {
+		Value valueTarget = createValue();
+		Field field = AbstractPersistentClassFacade.class.getDeclaredField("discriminator");
+		field.setAccessible(true);
+		assertNull(field.get(persistentClassFacade));
+		assertNull(persistentClassFacade.getDiscriminator());
+		assertNull(field.get(persistentClassFacade));
+		((RootClass)persistentClassTarget).setDiscriminator(valueTarget);
+		IValue valueFacade = persistentClassFacade.getDiscriminator();
+		assertNotNull(valueFacade);
+		assertSame(valueFacade, field.get(persistentClassFacade));
+		assertSame(valueTarget, ((IFacade)valueFacade).getTarget());
+	}
+	
+	private KeyValue createValue() {
+		return (KeyValue)Proxy.newProxyInstance(
+				getClass().getClassLoader(), 
+				new Class[] { KeyValue.class }, 
+				new InvocationHandler() {	
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+						return null;
+					}
+		});
 	}
 	
 }
