@@ -3,6 +3,7 @@ package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -13,12 +14,14 @@ import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.DelegatingReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
+import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.runtime.common.AbstractOverrideRepositoryFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
+import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -73,6 +76,19 @@ public class OverrideRepositoryFacadeTest {
 		Field delegateField = DelegatingReverseEngineeringStrategy.class.getDeclaredField("delegate");
 		delegateField.setAccessible(true);
 		assertSame(res, delegateField.get(resultTarget));
+	}
+	
+	@Test
+	public void testAddTableFilter() throws Exception {
+		TableFilter tableFilter = new TableFilter();
+		ITableFilter tableFilterFacade = FACADE_FACTORY.createTableFilter(tableFilter);
+		Field tableFiltersField = OverrideRepository.class.getDeclaredField("tableFilters");
+		tableFiltersField.setAccessible(true);
+		List<?> tableFilters = (List<?>)tableFiltersField.get(overrideRepository);
+		assertTrue(tableFilters.isEmpty());
+		overrideRepositoryFacade.addTableFilter(tableFilterFacade);
+		tableFilters = (List<?>)tableFiltersField.get(overrideRepository);
+		assertSame(tableFilter, tableFilters.get(0));		
 	}
 	
 }
