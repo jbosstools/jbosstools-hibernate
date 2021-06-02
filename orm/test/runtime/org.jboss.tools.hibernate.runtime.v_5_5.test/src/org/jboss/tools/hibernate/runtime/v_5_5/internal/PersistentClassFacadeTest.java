@@ -1,5 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
@@ -29,6 +31,13 @@ public class PersistentClassFacadeTest {
 	public void testConstruction() {
 		assertNotNull(persistentClassFacade);
 		assertSame(persistentClassTarget, ((IFacade)persistentClassFacade).getTarget());
+	}
+	
+	@Test
+	public void testGetClassName() {
+		assertNotEquals("Foo", persistentClassFacade.getClassName());
+		persistentClassTarget.setClassName("Foo");
+		assertEquals("Foo", persistentClassFacade.getClassName());
 	}
 	
 }
