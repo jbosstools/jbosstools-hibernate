@@ -89,4 +89,11 @@ public class PersistentClassFacadeTest {
 		assertSame(propertyFacade, field.get(persistentClassFacade));
 	}
 	
+	@Test
+	public void testHasIdentifierProperty() {
+		assertFalse(persistentClassFacade.hasIdentifierProperty());
+		((RootClass)persistentClassTarget).setIdentifierProperty(new Property());
+		assertTrue(persistentClassFacade.hasIdentifierProperty());
+	}
+	
 }
