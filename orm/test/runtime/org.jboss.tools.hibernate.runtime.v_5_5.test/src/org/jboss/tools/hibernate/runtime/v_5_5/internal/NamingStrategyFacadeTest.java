@@ -34,6 +34,11 @@ public class NamingStrategyFacadeTest {
 		assertEquals("FooBarCollectionTableName", tableName);
 	}
 	
+	@Test
+	public void testColumnName() {
+		assertEquals("FooBarColumnName", namingStrategyFacade.columnName("foo"));
+	}
+	
 	private class TestNamingStrategy extends DefaultNamingStrategy {
 		private static final long serialVersionUID = 1L;
 		@Override
