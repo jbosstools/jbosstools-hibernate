@@ -113,4 +113,15 @@ public class PersistentClassFacadeTest {
 		assertTrue(subClassFacade.isInstanceOfSubclass());
 	}
 	
+	@Test
+	public void testGetRootClass() throws Exception {
+		Field field = AbstractPersistentClassFacade.class.getDeclaredField("rootClass");
+		field.setAccessible(true);
+		assertNull(field.get(persistentClassFacade));
+		IPersistentClass rootFacade = persistentClassFacade.getRootClass();
+		assertNotNull(rootFacade);
+		assertSame(rootFacade, field.get(persistentClassFacade));
+		assertSame(((IFacade)rootFacade).getTarget(), persistentClassTarget);
+	}
+	
 }
