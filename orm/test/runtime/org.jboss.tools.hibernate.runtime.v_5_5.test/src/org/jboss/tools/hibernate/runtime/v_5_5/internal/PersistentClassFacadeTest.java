@@ -367,6 +367,11 @@ public class PersistentClassFacadeTest {
 		assertSame(valueTarget, persistentClassTarget.getKey());
 	}
 	
+	@Test
+	public void testIsInstanceOfSpecialRootClass() {
+		assertFalse(persistentClassFacade.isInstanceOfSpecialRootClass());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
