@@ -509,6 +509,14 @@ public class PersistentClassFacadeTest {
 		assertFalse(persistentClassFacade.isExplicitPolymorphism());
 	}
 	
+	@Test
+	public void testIsForceDiscriminator() {
+		((RootClass)persistentClassTarget).setForceDiscriminator(true);
+		assertTrue(persistentClassFacade.isForceDiscriminator());
+		((RootClass)persistentClassTarget).setForceDiscriminator(false);
+		assertFalse(persistentClassFacade.isForceDiscriminator());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
