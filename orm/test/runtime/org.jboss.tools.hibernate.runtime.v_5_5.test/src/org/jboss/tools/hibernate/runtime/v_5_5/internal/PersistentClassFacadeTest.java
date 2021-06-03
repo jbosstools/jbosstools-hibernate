@@ -382,6 +382,19 @@ public class PersistentClassFacadeTest {
 		}
 	}
 	
+	@Test
+	public void testSetIdentifierProperty() throws Exception {
+		Field field = AbstractPersistentClassFacade.class.getDeclaredField("identifierProperty");
+		field.setAccessible(true);
+		assertNull(field.get(persistentClassFacade));
+		Property propertyTarget = new Property();
+		IProperty propertyFacade = FACADE_FACTORY.createProperty(propertyTarget);
+		assertNull(persistentClassTarget.getIdentifierProperty());
+		persistentClassFacade.setIdentifierProperty(propertyFacade);
+		assertSame(propertyTarget, persistentClassTarget.getIdentifierProperty());
+		assertSame(propertyFacade, field.get(persistentClassFacade));
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
