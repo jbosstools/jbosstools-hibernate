@@ -407,6 +407,18 @@ public class PersistentClassFacadeTest {
 		assertSame(valueFacade, field.get(persistentClassFacade));
 	}
 	
+	@Test
+	public void testSetDiscriminator() throws Exception {
+		Field field = AbstractPersistentClassFacade.class.getDeclaredField("discriminator");
+		field.setAccessible(true);
+		assertNull(field.get(persistentClassFacade));
+		Value valueTarget = createValue();
+		IValue valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		persistentClassFacade.setDiscriminator(valueFacade);
+		assertSame(valueTarget, persistentClassTarget.getDiscriminator());
+		assertSame(valueFacade, field.get(persistentClassFacade));
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
