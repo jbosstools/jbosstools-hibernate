@@ -541,6 +541,14 @@ public class PersistentClassFacadeTest {
 		assertFalse(persistentClassFacade.isJoinedSubclass());
 	}
 	
+	@Test
+	public void testIsLazy() {
+		persistentClassTarget.setLazy(true);
+		assertTrue(persistentClassFacade.isLazy());
+		persistentClassTarget.setLazy(false);
+		assertFalse(persistentClassFacade.isLazy());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
