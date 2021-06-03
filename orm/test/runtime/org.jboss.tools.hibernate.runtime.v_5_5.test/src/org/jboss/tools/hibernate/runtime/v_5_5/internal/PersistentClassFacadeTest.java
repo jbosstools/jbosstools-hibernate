@@ -525,6 +525,22 @@ public class PersistentClassFacadeTest {
 		assertTrue(persistentClassFacade.isInherited());
 	}
 	
+	@Test
+	public void testIsJoinedSubclass() {
+		persistentClassFacade = new AbstractPersistentClassFacade(FACADE_FACTORY, new RootClass(null)) {};
+		assertFalse(persistentClassFacade.isJoinedSubclass());
+		Table rootTable = new Table();
+		Table subTable = new Table();
+		RootClass rootClass = new RootClass(null);
+		rootClass.setTable(rootTable);
+		JoinedSubclass subclass = new JoinedSubclass(rootClass, null);
+		subclass.setTable(subTable);
+		persistentClassFacade = new AbstractPersistentClassFacade(FACADE_FACTORY, subclass) {};
+		assertTrue(persistentClassFacade.isJoinedSubclass());
+		subclass.setTable(rootTable);
+		assertFalse(persistentClassFacade.isJoinedSubclass());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
