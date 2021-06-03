@@ -603,6 +603,13 @@ public class PersistentClassFacadeTest {
 		assertEquals("foo", persistentClassFacade.getCustomSQLDelete());
 	}
 	
+	@Test
+	public void testGetCustomSQLInsert() {
+		assertNotEquals("bar", persistentClassFacade.getCustomSQLInsert());
+		((RootClass)persistentClassTarget).setCustomSQLInsert("bar", false, null);
+		assertEquals("bar", persistentClassFacade.getCustomSQLInsert());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
