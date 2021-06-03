@@ -624,6 +624,13 @@ public class PersistentClassFacadeTest {
 		assertEquals("bar", persistentClassFacade.getDiscriminatorValue());
 	}
 	
+	@Test
+	public void testGetLoaderName() {
+		assertNotEquals("foo",persistentClassFacade.getLoaderName());
+		persistentClassTarget.setLoaderName("foo");
+		assertEquals("foo", persistentClassFacade.getLoaderName());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
