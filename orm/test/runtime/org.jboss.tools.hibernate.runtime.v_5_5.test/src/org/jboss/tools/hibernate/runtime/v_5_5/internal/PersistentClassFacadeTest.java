@@ -372,6 +372,16 @@ public class PersistentClassFacadeTest {
 		assertFalse(persistentClassFacade.isInstanceOfSpecialRootClass());
 	}
 	
+	@Test
+	public void testGetParentProperty() {
+		try {
+			persistentClassFacade.getParentProperty();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals("getParentProperty() is only allowed on SpecialRootClass", e.getMessage());
+		}
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
