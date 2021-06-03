@@ -27,6 +27,7 @@ import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
+import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -124,6 +125,17 @@ public class PropertyFacadeTest {
 	public void testClassIsPropertyClass() {
 		assertTrue(propertyFacade.classIsPropertyClass());
 		assertFalse((new AbstractPropertyFacade(FACADE_FACTORY, new Object()) {}).classIsPropertyClass());
+	}
+	
+	@Test
+	public void testGetType() throws Exception {
+		Field field = AbstractPropertyFacade.class.getDeclaredField("type");
+		field.setAccessible(true);
+		assertNull(field.get(propertyFacade));
+		propertyTarget.setValue(createValue());
+		IType typeFacade = propertyFacade.getType();
+		assertSame(TYPE, ((IFacade)typeFacade).getTarget());
+		assertSame(typeFacade, field.get(propertyFacade));
 	}
 	
 	private Value createValue() {
