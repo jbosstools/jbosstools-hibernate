@@ -645,6 +645,18 @@ public class PersistentClassFacadeTest {
 		assertEquals("foo", persistentClassFacade.getWhere());
 	}
 	
+	@Test
+	public void testGetRootTable() throws Exception {
+		Field field = AbstractPersistentClassFacade.class.getDeclaredField("rootTable");
+		field.setAccessible(true);
+		assertNull(field.get(persistentClassFacade));
+		Table tableTarget = new Table();
+		((RootClass)persistentClassTarget).setTable(tableTarget);
+		ITable tableFacade = persistentClassFacade.getRootTable();
+		assertSame(tableTarget, ((IFacade)tableFacade).getTarget());
+		assertSame(tableFacade, field.get(persistentClassFacade));
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
