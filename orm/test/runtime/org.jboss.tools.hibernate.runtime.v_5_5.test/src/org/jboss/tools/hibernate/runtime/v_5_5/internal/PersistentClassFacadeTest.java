@@ -610,6 +610,13 @@ public class PersistentClassFacadeTest {
 		assertEquals("bar", persistentClassFacade.getCustomSQLInsert());
 	}
 	
+	@Test
+	public void testGetCustomSQLUpdate() {
+		assertNotEquals("foo", persistentClassFacade.getCustomSQLUpdate());
+		((RootClass)persistentClassTarget).setCustomSQLUpdate("foo", false, null);
+		assertEquals("foo", persistentClassFacade.getCustomSQLUpdate());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
