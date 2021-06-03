@@ -565,6 +565,14 @@ public class PersistentClassFacadeTest {
 		assertTrue(persistentClassFacade.isMutable());
 	}
 	
+	@Test
+	public void testIsPolymorphic() {
+		((RootClass)persistentClassTarget).setPolymorphic(true);
+		assertTrue(persistentClassFacade.isPolymorphic());
+		((RootClass)persistentClassTarget).setPolymorphic(false);
+		assertFalse(persistentClassFacade.isPolymorphic());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
