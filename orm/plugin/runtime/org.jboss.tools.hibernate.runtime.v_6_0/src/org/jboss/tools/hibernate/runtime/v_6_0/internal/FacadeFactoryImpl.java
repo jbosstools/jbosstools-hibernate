@@ -117,6 +117,11 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	}
 	
 	@Override
+	public IPersistentClass createPersistentClass(Object target) {
+		return new PersistentClassFacadeImpl(this, target);
+	}
+	
+	@Override
 	public IReverseEngineeringStrategy createReverseEngineeringStrategy(Object target) {
 		return new ReverseEngineeringStrategyFacadeImpl(this, target);
 	}
