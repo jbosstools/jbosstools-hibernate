@@ -549,6 +549,14 @@ public class PersistentClassFacadeTest {
 		assertFalse(persistentClassFacade.isLazy());
 	}
 	
+	@Test
+	public void testIsLazyPropertiesCacheable() {
+		((RootClass)persistentClassTarget).setLazyPropertiesCacheable(true);
+		assertTrue(persistentClassFacade.isLazyPropertiesCacheable());
+		((RootClass)persistentClassTarget).setLazyPropertiesCacheable(false);
+		assertFalse(persistentClassFacade.isLazyPropertiesCacheable());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
