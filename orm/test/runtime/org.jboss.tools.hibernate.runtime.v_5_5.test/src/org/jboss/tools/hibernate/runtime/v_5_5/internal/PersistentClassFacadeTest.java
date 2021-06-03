@@ -557,6 +557,14 @@ public class PersistentClassFacadeTest {
 		assertFalse(persistentClassFacade.isLazyPropertiesCacheable());
 	}
 	
+	@Test
+	public void testIsMutable() {
+		((RootClass)persistentClassTarget).setMutable(false);
+		assertFalse(persistentClassFacade.isMutable());
+		((RootClass)persistentClassTarget).setMutable(true);
+		assertTrue(persistentClassFacade.isMutable());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
