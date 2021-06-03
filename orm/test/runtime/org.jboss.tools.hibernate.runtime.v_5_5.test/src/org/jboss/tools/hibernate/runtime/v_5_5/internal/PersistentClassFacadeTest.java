@@ -395,6 +395,18 @@ public class PersistentClassFacadeTest {
 		assertSame(propertyFacade, field.get(persistentClassFacade));
 	}
 	
+	@Test
+	public void testSetIdentifier() throws Exception {
+		Field field = AbstractPersistentClassFacade.class.getDeclaredField("identifier");
+		field.setAccessible(true);
+		assertNull(field.get(persistentClassFacade));
+		Value valueTarget = createValue();
+		IValue valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		persistentClassFacade.setIdentifier(valueFacade);
+		assertSame(valueTarget, persistentClassTarget.getIdentifier());
+		assertSame(valueFacade, field.get(persistentClassFacade));
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
