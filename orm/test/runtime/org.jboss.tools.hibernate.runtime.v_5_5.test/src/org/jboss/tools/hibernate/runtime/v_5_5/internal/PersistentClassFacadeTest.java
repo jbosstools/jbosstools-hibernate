@@ -358,6 +358,15 @@ public class PersistentClassFacadeTest {
 		assertSame(tableTarget, persistentClassTarget.getTable());
 	}
 	
+	@Test
+	public void testSetKey() {
+		Value valueTarget = createValue();
+		IValue valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		assertNull(persistentClassTarget.getKey());
+		persistentClassFacade.setKey(valueFacade);
+		assertSame(valueTarget, persistentClassTarget.getKey());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
