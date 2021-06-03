@@ -22,6 +22,11 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	}
 
 	@Override
+	public IClassMetadata createClassMetadata(Object target) {
+		return new ClassMetadataFacadeImpl(this, target);
+	}
+	
+	@Override
 	public IColumn createColumn(Object target) {
 		return new ColumnFacadeImpl(this, target);
 	}
@@ -57,8 +62,8 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	}
 	
 	@Override
-	public IClassMetadata createClassMetadata(Object target) {
-		return new ClassMetadataFacadeImpl(this, target);
+	public IPersistentClass createPersistentClass(Object target) {
+		return new PersistentClassFacadeImpl(this, target);
 	}
 	
 	@Override
