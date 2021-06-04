@@ -231,6 +231,14 @@ public class PropertyFacadeTest {
 		assertFalse(propertyFacade.isNaturalIdentifier());
 	}
 	
+	@Test
+	public void testIsOptimisticLocked() {
+		propertyTarget.setOptimisticLocked(true);
+		assertTrue(propertyFacade.isOptimisticLocked());
+		propertyTarget.setOptimisticLocked(false);
+		assertFalse(propertyFacade.isOptimisticLocked());
+	}
+	
 	private Value createValue() {
 		return (Value)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
