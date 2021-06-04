@@ -214,6 +214,15 @@ public class PropertyFacadeTest {
 		assertFalse(propertyFacade.isLazy());
 	}
 	
+	@Test
+	public void testIsOptional() {
+		propertyTarget.setOptional(true);
+		assertTrue(propertyFacade.isOptional());
+		propertyTarget.setOptional(false);
+		propertyTarget.setValue(createValue());
+		assertFalse(propertyFacade.isOptional());
+	}
+	
 	private Value createValue() {
 		return (Value)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
@@ -229,6 +238,9 @@ public class PropertyFacadeTest {
 						}
 						if ("getColumnUpdateability".equals(method.getName())) {
 							return new boolean[] { true };
+						}
+						if ("isNullable".equals(method.getName())) {
+							return false;
 						}
 						return null;
 					}
