@@ -27,7 +27,7 @@ implements IQueryExporter {
 	public void setFilename(String filename) {
 		Util.invokeMethod(
 				getTarget(), 
-				"setFileName", 
+				"setFilename", 
 				new Class[] { String.class }, 
 				new Object[] { filename });
 	}
