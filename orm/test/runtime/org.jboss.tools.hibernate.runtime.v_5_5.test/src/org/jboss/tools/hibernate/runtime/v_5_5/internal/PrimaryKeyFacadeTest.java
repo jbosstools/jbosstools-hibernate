@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Field;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.mapping.Column;
@@ -110,6 +111,21 @@ public class PrimaryKeyFacadeTest {
 		assertFalse(primaryKeyFacade.containsColumn(columnFacade));
 		primaryKeyTarget.addColumn(columnTarget);
 		assertTrue(primaryKeyFacade.containsColumn(columnFacade));
+	}
+	
+	@Test
+	public void testColumnIterator() throws Exception {
+		Field field = AbstractPrimaryKeyFacade.class.getDeclaredField("columns");
+		field.setAccessible(true);
+		assertNull(field.get(primaryKeyFacade));
+		assertFalse(primaryKeyFacade.columnIterator().hasNext());
+		assertNotNull(field.get(primaryKeyFacade));
+		field.set(primaryKeyFacade, null);
+		Column columnTarget = new Column();
+		primaryKeyTarget.addColumn(columnTarget);
+		Iterator<IColumn> columnIterator = primaryKeyFacade.columnIterator();
+		assertTrue(columnIterator.hasNext());
+		assertSame(columnTarget, ((IFacade)columnIterator.next()).getTarget());
 	}
 	
 }
