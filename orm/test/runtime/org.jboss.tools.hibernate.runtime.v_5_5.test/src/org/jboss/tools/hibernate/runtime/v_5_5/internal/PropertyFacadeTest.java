@@ -190,6 +190,15 @@ public class PropertyFacadeTest {
 		assertTrue(propertyFacade.isInsertable());
 	}
 	
+	@Test
+	public void testIsUpdateable() {
+		propertyTarget.setValue(createValue());
+		propertyTarget.setUpdateable(false);
+		assertFalse(propertyFacade.isUpdateable());
+		propertyTarget.setUpdateable(true);
+		assertTrue(propertyFacade.isUpdateable());
+	}
+	
 	private Value createValue() {
 		return (Value)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
@@ -202,6 +211,9 @@ public class PropertyFacadeTest {
 						}
 						if ("getColumnInsertability".equals(method.getName())) {
 							return new boolean[0];
+						}
+						if ("getColumnUpdateability".equals(method.getName())) {
+							return new boolean[] { true };
 						}
 						return null;
 					}
