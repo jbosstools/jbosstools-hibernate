@@ -46,4 +46,11 @@ public class PrimaryKeyFacadeTest {
 		assertNull(field.get(primaryKeyFacade));
 	}
 
+	@Test
+	public void testGetColumnSpan() {
+		assertEquals(0, primaryKeyFacade.getColumnSpan());
+		primaryKeyTarget.addColumn(new Column());
+		assertEquals(1, primaryKeyFacade.getColumnSpan());
+	}
+	
 }
