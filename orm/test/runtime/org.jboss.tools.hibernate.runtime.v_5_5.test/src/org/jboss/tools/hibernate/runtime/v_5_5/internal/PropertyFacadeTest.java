@@ -14,6 +14,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import org.hibernate.boot.spi.MetadataBuildingContext;
+import org.hibernate.mapping.Backref;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
@@ -163,6 +164,14 @@ public class PropertyFacadeTest {
 		assertNotEquals("foo", propertyTarget.getCascade());
 		propertyFacade.setCascade("foo");
 		assertEquals("foo", propertyTarget.getCascade());
+	}
+	
+	@Test
+	public void testIsBackRef() {
+		assertFalse(propertyFacade.isBackRef());
+		propertyTarget = new Backref();
+		propertyFacade = FACADE_FACTORY.createProperty(propertyTarget);
+		assertTrue(propertyFacade.isBackRef());
 	}
 	
 	private Value createValue() {
