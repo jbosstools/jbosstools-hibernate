@@ -151,6 +151,13 @@ public class PropertyFacadeTest {
 		assertSame(valueTarget, propertyTarget.getValue());
 	}
 	
+	@Test
+	public void testSetPropertyAccessorName() {
+		assertNotEquals("foo", propertyTarget.getPropertyAccessorName());
+		propertyFacade.setPropertyAccessorName("foo");
+		assertEquals("foo", propertyTarget.getPropertyAccessorName());
+	}
+	
 	private Value createValue() {
 		return (Value)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
