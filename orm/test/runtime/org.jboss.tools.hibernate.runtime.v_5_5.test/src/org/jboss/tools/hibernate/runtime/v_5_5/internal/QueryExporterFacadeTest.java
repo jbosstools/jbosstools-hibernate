@@ -1,5 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
@@ -35,6 +37,15 @@ public class QueryExporterFacadeTest {
 		assertNotSame(queries, queryStringsField.get(queryExporterTarget));
 		queryExporterFacade.setQueries(queries);
 		assertSame(queries, queryStringsField.get(queryExporterTarget));
+	}
+	
+	@Test
+	public void testSetFileName() throws Exception {
+		Field fileNameField = QueryExporter.class.getDeclaredField("filename");
+		fileNameField.setAccessible(true);
+		assertNotEquals("foo", fileNameField.get(queryExporterTarget));
+		queryExporterFacade.setFilename("foo");
+		assertEquals("foo", fileNameField.get(queryExporterTarget));
 	}
 	
 }
