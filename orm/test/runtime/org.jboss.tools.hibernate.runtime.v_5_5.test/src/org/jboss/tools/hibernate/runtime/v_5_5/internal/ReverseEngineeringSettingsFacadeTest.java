@@ -1,6 +1,8 @@
 package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
@@ -29,6 +31,13 @@ public class ReverseEngineeringSettingsFacadeTest {
 		assertEquals("", revengSettingsTarget.getDefaultPackageName());
 		revengSettingsFacade.setDefaultPackageName("foo");
 		assertEquals("foo", revengSettingsTarget.getDefaultPackageName());
+	}
+	
+	@Test
+	public void testSetDetectManyToMany() {
+		assertTrue(revengSettingsTarget.getDetectManyToMany());
+		revengSettingsFacade.setDetectManyToMany(false);
+		assertFalse(revengSettingsTarget.getDetectManyToMany());
 	}
 	
 }
