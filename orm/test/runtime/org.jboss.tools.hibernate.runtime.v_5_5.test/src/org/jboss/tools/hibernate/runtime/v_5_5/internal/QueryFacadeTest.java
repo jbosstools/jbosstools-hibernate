@@ -83,6 +83,19 @@ public class QueryFacadeTest {
 		assertArrayEquals(new Object[] { "foobar", object, typeProxy }, arguments);
 	}
 	
+	@Test
+	public void testSetParameterList() {
+		Type typeProxy = (Type)Proxy.newProxyInstance(
+				FACADE_FACTORY.getClassLoader(), 
+				new Class[] { Type.class }, 
+				new TypeInvocationHandler());
+		IType typeFacade = FACADE_FACTORY.createType(typeProxy);
+		List<Object> dummyList = Collections.emptyList();
+		query.setParameterList("foobar", dummyList, typeFacade);
+		assertEquals("setParameterList", methodName);
+		assertArrayEquals(new Object[] { "foobar", dummyList, typeProxy }, arguments);
+	}
+	
 	private class TypeInvocationHandler implements InvocationHandler {
 		@Override
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
