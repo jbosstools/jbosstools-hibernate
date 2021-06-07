@@ -31,6 +31,7 @@ import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
+import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.JpaConfiguration;
 import org.xml.sax.EntityResolver;
 
 public class ServiceImpl extends AbstractService {
@@ -45,10 +46,12 @@ public class ServiceImpl extends AbstractService {
 	}
 
 	@Override
-	public IConfiguration newJpaConfiguration(String entityResolver, String persistenceUnit,
+	public IConfiguration newJpaConfiguration(
+			String entityResolver, 
+			String persistenceUnit,
 			Map<Object, Object> overrides) {
-		// TODO Auto-generated method stub
-		return null;
+		return facadeFactory.createConfiguration(
+				new JpaConfiguration(persistenceUnit, overrides));
 	}
 
 	@Override
