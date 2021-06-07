@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -9,7 +10,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.Collections;
 import java.util.EnumSet;
+import java.util.List;
 
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
@@ -69,6 +72,16 @@ public class SchemaExportFacadeTest {
 		schemaExportFacade.create();	
 		assertSame(target.metadata, metadataField.get(schemaExportFacade));
 		assertTrue(target.targetTypes.contains(TargetType.DATABASE));
+	}
+	
+	@Test
+	public void testGetExceptions() throws Exception {
+		List<Throwable> exceptions = Collections.emptyList();
+		Field exceptionsField = SchemaExport.class.getDeclaredField("exceptions");
+		exceptionsField.setAccessible(true);
+		assertNotSame(exceptions, schemaExportFacade.getExceptions());
+		exceptionsField.set(schemaExportTarget, exceptions);
+		assertSame(exceptions, schemaExportFacade.getExceptions());
 	}
 	
 	public static class TestDialect extends Dialect {}
