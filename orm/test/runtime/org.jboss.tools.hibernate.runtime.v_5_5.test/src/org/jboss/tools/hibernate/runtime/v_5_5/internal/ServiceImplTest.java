@@ -12,6 +12,7 @@ import org.hibernate.dialect.Dialect;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
+import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.JpaConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -63,6 +64,14 @@ public class ServiceImplTest {
 		assertSame(
 				((ConfigurationFacadeImpl)configuration).getMetadata(), 
 				hmee.getMetadata());
+	}
+	
+	@Test
+	public void testNewSchemaExport() {
+		IConfiguration configuration = service.newDefaultConfiguration();
+		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
+		ISchemaExport schemaExport = service.newSchemaExport(configuration);
+		assertNotNull(schemaExport);
 	}
 	
 	public static class TestDialect extends Dialect {}
