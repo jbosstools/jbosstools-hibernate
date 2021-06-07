@@ -40,4 +40,11 @@ public class ReverseEngineeringSettingsFacadeTest {
 		assertFalse(revengSettingsTarget.getDetectManyToMany());
 	}
 	
+	@Test
+	public void testSetDetectOneToOne() {
+		assertTrue(revengSettingsTarget.getDetectOneToOne());
+		revengSettingsFacade.setDetectOneToOne(false);
+		assertFalse(revengSettingsTarget.getDetectOneToOne());
+	}
+	
 }
