@@ -2,11 +2,16 @@ package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.File;
+
 import org.hibernate.cfg.Configuration;
+import org.hibernate.dialect.Dialect;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.JpaConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,4 +50,21 @@ public class ServiceImplTest {
 		assertTrue(((IFacade)defaultConfiguration).getTarget() instanceof Configuration);
 	}
 
+	@Test
+	public void testNewHibernateMappingExporter() {
+		IConfiguration configuration = service.newDefaultConfiguration();
+		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
+		File file = new File("");
+		IHibernateMappingExporter hibernateMappingExporter = 
+				service.newHibernateMappingExporter(configuration, file);
+		HibernateMappingExporterExtension hmee = 
+				(HibernateMappingExporterExtension)((IFacade)hibernateMappingExporter).getTarget();
+		assertSame(file, hmee.getOutputDirectory());
+		assertSame(
+				((ConfigurationFacadeImpl)configuration).getMetadata(), 
+				hmee.getMetadata());
+	}
+	
+	public static class TestDialect extends Dialect {}
+	
 }
