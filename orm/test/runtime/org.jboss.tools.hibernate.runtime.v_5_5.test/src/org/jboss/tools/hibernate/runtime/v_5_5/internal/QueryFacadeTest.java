@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.lang.reflect.InvocationHandler;
@@ -101,6 +102,13 @@ public class QueryFacadeTest {
 	public void testGetReturnAliases() {
 		assertArrayEquals(RETURN_ALIASES, query.getReturnAliases());
 		assertEquals("getReturnAliases", methodName);
+		assertNull(arguments);
+	}
+	
+	@Test
+	public void testGetReturnTypes() {
+		assertNotNull(query.getReturnTypes());
+		assertEquals("getReturnTypes", methodName);
 		assertNull(arguments);
 	}
 	
