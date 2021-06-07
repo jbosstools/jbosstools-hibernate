@@ -47,4 +47,11 @@ public class ReverseEngineeringSettingsFacadeTest {
 		assertFalse(revengSettingsTarget.getDetectOneToOne());
 	}
 	
+	@Test
+	public void testSetDetectOptimisticLock() {
+		assertTrue(revengSettingsTarget.getDetectOptimsticLock());
+		revengSettingsFacade.setDetectOptimisticLock(false);
+		assertFalse(revengSettingsTarget.getDetectOptimsticLock());
+	}
+	
 }
