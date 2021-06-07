@@ -13,6 +13,7 @@ import org.hibernate.query.Query;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.AbstractQueryFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -64,4 +65,28 @@ public class QueryFacadeTest {
 		assertArrayEquals(new Object[] { Integer.MAX_VALUE }, arguments);
 	}
 	
+	@Test
+	public void testSetParameter() {
+		Type typeProxy = (Type)Proxy.newProxyInstance(
+				FACADE_FACTORY.getClassLoader(), 
+				new Class[] { Type.class }, 
+				new TypeInvocationHandler());
+		IType typeFacade = FACADE_FACTORY.createType(typeProxy);
+		Object object = new Object();
+		query.setParameter(Integer.MAX_VALUE, object, typeFacade);
+		assertEquals("setParameter", methodName);
+		assertArrayEquals(new Object[] { Integer.MAX_VALUE, object, typeProxy } , arguments);
+		methodName = null;
+		arguments = null;
+		query.setParameter("foobar", object, typeFacade);
+		assertEquals("setParameter", methodName);
+		assertArrayEquals(new Object[] { "foobar", object, typeProxy }, arguments);
+	}
+	
+	private class TypeInvocationHandler implements InvocationHandler {
+		@Override
+		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+			return null;
+		}		
+	}
 }
