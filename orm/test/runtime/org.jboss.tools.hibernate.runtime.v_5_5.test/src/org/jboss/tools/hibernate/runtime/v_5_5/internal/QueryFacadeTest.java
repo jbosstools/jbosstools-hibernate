@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.lang.reflect.InvocationHandler;
@@ -54,6 +55,13 @@ public class QueryFacadeTest {
 	public void testList() {
 		assertEquals(LIST, query.list());
 		assertEquals("list", methodName);
+	}
+	
+	@Test
+	public void testSetMaxResults() {
+		query.setMaxResults(Integer.MAX_VALUE);
+		assertEquals("setMaxResults", methodName);
+		assertArrayEquals(new Object[] { Integer.MAX_VALUE }, arguments);
 	}
 	
 }
