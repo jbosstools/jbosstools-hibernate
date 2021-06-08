@@ -8,9 +8,12 @@ import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.hibernate.tool.hbm2x.Exporter;
+import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.common.AbstractService;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.common.Util;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
@@ -33,6 +36,8 @@ import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
+import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.ConfigurationMetadataDescriptor;
+import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.DummyMetadataDescriptor;
 import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.JpaConfiguration;
 import org.xml.sax.EntityResolver;
@@ -98,8 +103,17 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IExporter createExporter(String exporterClassName) {
-		// TODO Auto-generated method stub
-		return null;
+		Exporter exporter = (Exporter)Util.getInstance(
+				exporterClassName, 
+				facadeFactory.getClassLoader());
+		if (HibernateConfigurationExporter.class.isAssignableFrom(exporter.getClass())) {
+			exporter.setMetadataDescriptor(new DummyMetadataDescriptor());
+		} else {
+			exporter.setMetadataDescriptor(
+					new ConfigurationMetadataDescriptor(
+							(ConfigurationFacadeImpl)newDefaultConfiguration()));
+		}
+		return facadeFactory.createExporter(exporter);
 	}
 
 	@Override
