@@ -13,6 +13,7 @@ import java.lang.reflect.Field;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
+import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
@@ -31,6 +32,7 @@ import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
+import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.JpaConfiguration;
@@ -195,6 +197,15 @@ public class ServiceImplTest {
 		Object target = ((IFacade)overrideRepository).getTarget();
 		assertNotNull(target);
 		assertTrue(target instanceof OverrideRepository);
+	}
+	
+	@Test
+	public void testNewTableFilter() {
+		ITableFilter tableFilter = service.newTableFilter();
+		assertNotNull(tableFilter);
+		Object target = ((IFacade)tableFilter).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof TableFilter);
 	}
 	
 	public static class TestDialect extends Dialect {}
