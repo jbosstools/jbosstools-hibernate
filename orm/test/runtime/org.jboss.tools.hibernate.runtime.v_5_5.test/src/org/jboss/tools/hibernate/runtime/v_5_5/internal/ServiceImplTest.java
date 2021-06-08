@@ -544,6 +544,13 @@ public class ServiceImplTest {
 		assertEquals(0, result.size());
 	}
 	
+	@Test
+	public void testGetClassWithoutInitializingProxy() {
+		assertSame(
+				Object.class, 
+				service.getClassWithoutInitializingProxy(new Object()));
+	}
+	
 	public static class TestDialect extends Dialect {}
 	
 }
