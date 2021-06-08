@@ -25,6 +25,7 @@ import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
+import org.hibernate.mapping.Property;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.hbm2x.AbstractExporter;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
@@ -42,6 +43,7 @@ import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IProgressListener;
+import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
@@ -307,6 +309,15 @@ public class ServiceImplTest {
 		Object target = ((IFacade)cfg2HbmTool).getTarget();
 		assertNotNull(target);
 		assertTrue(target instanceof Cfg2HbmTool);
+	}
+	
+	@Test
+	public void testNewProperty() {
+		IProperty property = service.newProperty();
+		assertNotNull(property);
+		Object target = ((IFacade)property).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof Property);
 	}
 	
 	public static class TestDialect extends Dialect {}

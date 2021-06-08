@@ -28,6 +28,7 @@ import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.internal.SessionFactoryImpl;
+import org.hibernate.mapping.Property;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
@@ -257,8 +258,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IProperty newProperty() {
-		// TODO Auto-generated method stub
-		return null;
+		return facadeFactory.createProperty(new Property());
 	}
 
 	@Override
