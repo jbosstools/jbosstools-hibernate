@@ -29,6 +29,7 @@ import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionPro
 import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Property;
+import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.hbm2x.AbstractExporter;
@@ -57,6 +58,7 @@ import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.JpaConfiguration;
 import org.junit.jupiter.api.BeforeEach;
@@ -368,6 +370,15 @@ public class ServiceImplTest {
 		assertEquals(
 				environment.getTransactionManagerStrategy(), 
 				Environment.TRANSACTION_COORDINATOR_STRATEGY);
+	}
+	
+	@Test
+	public void testSimpleValue() {
+		IValue simpleValue = service.newSimpleValue();
+		assertNotNull(simpleValue);
+		Object target = ((IFacade)simpleValue).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof SimpleValue);
 	}
 	
 	public static class TestDialect extends Dialect {}
