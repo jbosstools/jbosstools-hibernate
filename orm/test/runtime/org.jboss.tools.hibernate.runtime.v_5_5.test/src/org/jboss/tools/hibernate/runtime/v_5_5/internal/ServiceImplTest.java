@@ -33,6 +33,7 @@ import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
+import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -468,6 +469,16 @@ public class ServiceImplTest {
 		Object target = ((IFacade)oneToMany).getTarget();
 		assertNotNull(target);
 		assertTrue(target instanceof OneToMany);
+	}
+	
+	@Test
+	public void testNewOneToOne() {
+		IPersistentClass persistentClass = service.newRootClass();
+		IValue oneToOne = service.newOneToOne(persistentClass);
+		assertNotNull(oneToOne);
+		Object target = ((IFacade)oneToOne).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof OneToOne);
 	}
 	
 	@Test
