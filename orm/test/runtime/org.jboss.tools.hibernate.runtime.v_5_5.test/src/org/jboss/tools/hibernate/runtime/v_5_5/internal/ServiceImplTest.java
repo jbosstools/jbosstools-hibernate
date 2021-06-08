@@ -11,6 +11,7 @@ import java.io.FileWriter;
 import java.lang.reflect.Field;
 
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
@@ -25,6 +26,7 @@ import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
+import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
@@ -171,6 +173,17 @@ public class ServiceImplTest {
 	public void testNewTypeFactory() {
 		ITypeFactory typeFactory = service.newTypeFactory();
 		assertNotNull(typeFactory);
+	}
+	
+	@Test
+	public void testNewNamingStrategy() {
+		String strategyClassName = DefaultNamingStrategy.class.getName();
+		INamingStrategy namingStrategy = service.newNamingStrategy(strategyClassName);
+		assertNotNull(namingStrategy);
+		Object target = ((IFacade)namingStrategy).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof DefaultNamingStrategy);
+		assertNull(service.newNamingStrategy("some unexistant class"));
 	}
 	
 	public static class TestDialect extends Dialect {}

@@ -144,8 +144,12 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public INamingStrategy newNamingStrategy(String strategyClassName) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			return facadeFactory.createNamingStrategy(
+					Class.forName(strategyClassName).newInstance());
+		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+			return null;
+		}
 	}
 
 	@Override
