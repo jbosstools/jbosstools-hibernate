@@ -24,6 +24,7 @@ import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.dialect.Dialect;
+import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Property;
@@ -351,6 +352,13 @@ public class ServiceImplTest {
 		assertEquals("org.hibernate.dialect.H2Dialect", dialect);
 	}
 
+	@Test
+	public void testGetDriverManagerManagerConnectionProviderClass() {
+		assertSame(
+				DriverManagerConnectionProviderImpl.class, 
+				service.getDriverManagerConnectionProviderClass());
+	}
+	
 	public static class TestDialect extends Dialect {}
 	
 }
