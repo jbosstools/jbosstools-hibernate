@@ -291,6 +291,13 @@ public class ServiceImplTest {
 		assertTrue(target instanceof DelegatingReverseEngineeringStrategy);
 	}
 	
+	@Test
+	public void testGetReverseEngineeringStrategyClassName() {
+		assertEquals(
+				"org.hibernate.cfg.reveng.ReverseEngineeringStrategy", 
+				service.getReverseEngineeringStrategyClassName());
+	}
+	
 	public static class TestDialect extends Dialect {}
 	
 }

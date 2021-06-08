@@ -246,8 +246,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public String getReverseEngineeringStrategyClassName() {
-		// TODO Auto-generated method stub
-		return null;
+		return ReverseEngineeringStrategy.class.getName();
 	}
 
 	@Override
