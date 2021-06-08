@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,10 +34,12 @@ import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
+import org.hibernate.tool.util.ReflectHelper;
 import org.jboss.tools.hibernate.runtime.common.AbstractService;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.Util;
+import org.jboss.tools.hibernate.runtime.spi.HibernateException;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
@@ -230,10 +233,15 @@ public class ServiceImpl extends AbstractService {
 	}
 	
 	@Override
-	public IReverseEngineeringStrategy newReverseEngineeringStrategy(String strategyName,
+	public IReverseEngineeringStrategy newReverseEngineeringStrategy(
+			String strategyName,
 			IReverseEngineeringStrategy delegate) {
-		// TODO Auto-generated method stub
-		return null;
+		assert delegate instanceof IFacade;
+		ReverseEngineeringStrategy delegateTarget = 
+				(ReverseEngineeringStrategy)((IFacade)delegate).getTarget();
+		Object target = 
+				newReverseEngineeringStrategy(strategyName, delegateTarget);
+		return facadeFactory.createReverseEngineeringStrategy(target);
 	}
 
 	@Override
@@ -397,5 +405,39 @@ public class ServiceImpl extends AbstractService {
 		builder.applySettings(properties);
 		return builder.build();
 	}
+
+	private Object newReverseEngineeringStrategy(final String className, Object delegate) {
+        try {
+            Class<?> clazz = ReflectHelper.classForName(className);
+            Class<?> revEngClass =  ReflectHelper.classForName(
+            		"org.hibernate.cfg.reveng.ReverseEngineeringStrategy");
+			Constructor<?> constructor = 
+					clazz.getConstructor(
+							new Class[] { revEngClass });
+            return constructor.newInstance(new Object[] { delegate });
+        }
+        catch (NoSuchMethodException e) {
+			try {
+				ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+				Class<?> clazz = null;
+				if ( contextClassLoader != null ) {
+					clazz = contextClassLoader.loadClass(className);
+				} else {
+					clazz = Class.forName( className );
+				}
+				if (clazz != null) {
+					return clazz.newInstance();
+				} else {
+					throw new HibernateException("Class " + className + " could not be found.");
+				}
+			}
+			catch (Exception eq) {
+				throw new HibernateException(eq);
+			}
+		}
+        catch (Exception e) {
+			throw new HibernateException(e);
+		}
+    }
 
 }

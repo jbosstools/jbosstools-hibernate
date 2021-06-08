@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -18,6 +19,7 @@ import java.util.Properties;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
+import org.hibernate.cfg.reveng.DelegatingReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.TableFilter;
@@ -264,6 +266,29 @@ public class ServiceImplTest {
 		statement.execute("DROP TABLE FOO");
 		statement.close();
 		connection.close();
+	}
+	
+	@Test
+	public void testNewReverseEngineeringStrategy() throws Exception {
+		String defaultRevEngStratClassName = 
+				"org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy";
+		IReverseEngineeringStrategy defaultStrategy = 
+				service.newDefaultReverseEngineeringStrategy();
+		IReverseEngineeringStrategy newStrategy = 
+				service.newReverseEngineeringStrategy(
+						defaultRevEngStratClassName, 
+						defaultStrategy);
+		assertNotNull(newStrategy);
+		Object target = ((IFacade)newStrategy).getTarget();
+		assertNotNull(target);
+		assertFalse(target instanceof DelegatingReverseEngineeringStrategy);
+		newStrategy = service.newReverseEngineeringStrategy(
+				"org.hibernate.cfg.reveng.DelegatingReverseEngineeringStrategy", 
+				defaultStrategy);
+		assertNotNull(newStrategy);
+		target = ((IFacade)newStrategy).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof DelegatingReverseEngineeringStrategy);
 	}
 	
 	public static class TestDialect extends Dialect {}
