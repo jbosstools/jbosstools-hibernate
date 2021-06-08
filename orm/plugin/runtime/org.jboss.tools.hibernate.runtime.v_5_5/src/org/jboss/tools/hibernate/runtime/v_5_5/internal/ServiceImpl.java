@@ -9,6 +9,7 @@ import java.util.Properties;
 
 import org.hibernate.Filter;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
@@ -172,8 +173,8 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IReverseEngineeringStrategy newDefaultReverseEngineeringStrategy() {
-		// TODO Auto-generated method stub
-		return null;
+		return facadeFactory.createReverseEngineeringStrategy(
+				new DefaultReverseEngineeringStrategy());
 	}
 
 	@Override
