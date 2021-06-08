@@ -48,6 +48,7 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
+import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
@@ -57,6 +58,7 @@ import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.util.ReflectHelper;
+import org.jboss.tools.hibernate.runtime.common.AbstractPersistentClassFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractService;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
@@ -418,8 +420,13 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IPersistentClass newSingleTableSubclass(IPersistentClass persistentClass) {
-		// TODO Auto-generated method stub
-		return null;
+		assert persistentClass instanceof IFacade;
+		IPersistentClass result = facadeFactory.createPersistentClass(
+				new SingleTableSubclass(
+						(PersistentClass)((IFacade)persistentClass).getTarget(),
+						null));
+		((AbstractPersistentClassFacade)result).setSuperClass(persistentClass);
+		return result;
 	}
 
 	@Override
