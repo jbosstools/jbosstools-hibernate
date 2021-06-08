@@ -551,6 +551,13 @@ public class ServiceImplTest {
 				service.getClassWithoutInitializingProxy(new Object()));
 	}
 	
+	@Test
+	public void testGetClassLoader(){
+		assertSame(
+				ServiceImpl.class.getClassLoader(), 
+				service.getClassLoader());
+	}
+
 	public static class TestDialect extends Dialect {}
 	
 }
