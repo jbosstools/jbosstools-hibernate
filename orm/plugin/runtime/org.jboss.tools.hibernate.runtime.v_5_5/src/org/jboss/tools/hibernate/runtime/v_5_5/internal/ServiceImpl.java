@@ -36,7 +36,9 @@ import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfoSource;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
+import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
@@ -328,8 +330,11 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IValue newPrimitiveArray(IPersistentClass persistentClass) {
-		// TODO Auto-generated method stub
-		return null;
+		assert persistentClass instanceof IFacade;
+		return facadeFactory.createValue(
+				new PrimitiveArray(
+						DummyMetadataBuildingContext.INSTANCE, 
+						(PersistentClass)((IFacade)persistentClass).getTarget()));
 	}
 
 	@Override
