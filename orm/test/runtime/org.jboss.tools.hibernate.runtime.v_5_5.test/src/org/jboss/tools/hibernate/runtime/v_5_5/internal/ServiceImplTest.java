@@ -26,6 +26,7 @@ import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.mapping.Property;
+import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.hbm2x.AbstractExporter;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
@@ -318,6 +319,17 @@ public class ServiceImplTest {
 		Object target = ((IFacade)property).getTarget();
 		assertNotNull(target);
 		assertTrue(target instanceof Property);
+	}
+	
+	@Test
+	public void testNewTable() {
+		ITable table = service.newTable("foo");
+		assertNotNull(table);
+		Object target = ((IFacade)table).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof Table);
+		assertEquals("foo", ((Table)target).getName());
+		assertNotNull(((Table)target).getPrimaryKey());
 	}
 	
 	public static class TestDialect extends Dialect {}
