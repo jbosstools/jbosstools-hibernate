@@ -11,6 +11,8 @@ import org.hibernate.Filter;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
+import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
+import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.internal.SessionFactoryImpl;
@@ -166,15 +168,17 @@ public class ServiceImpl extends AbstractService {
 	}
 
 	@Override
-	public IReverseEngineeringSettings newReverseEngineeringSettings(IReverseEngineeringStrategy res) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public IReverseEngineeringStrategy newDefaultReverseEngineeringStrategy() {
 		return facadeFactory.createReverseEngineeringStrategy(
 				new DefaultReverseEngineeringStrategy());
+	}
+
+	@Override
+	public IReverseEngineeringSettings newReverseEngineeringSettings(
+			IReverseEngineeringStrategy res) {
+		return facadeFactory.createReverseEngineeringSettings(
+				new ReverseEngineeringSettings(
+						(ReverseEngineeringStrategy)((IFacade)res).getTarget()));
 	}
 
 	@Override

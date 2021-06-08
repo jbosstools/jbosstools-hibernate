@@ -14,6 +14,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
+import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
@@ -31,6 +32,7 @@ import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
+import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
@@ -218,6 +220,18 @@ public class ServiceImplTest {
 		Object target = ((IFacade)reverseEngineeringStrategy).getTarget();
 		assertNotNull(target);
 		assertTrue(target instanceof DefaultReverseEngineeringStrategy);
+	}
+	
+	@Test
+	public void testNewReverseEngineeringSettings() {
+		IReverseEngineeringStrategy strategy = 
+				service.newDefaultReverseEngineeringStrategy();
+		IReverseEngineeringSettings reverseEngineeringSettings = 
+				service.newReverseEngineeringSettings(strategy);
+		assertNotNull(reverseEngineeringSettings);
+		Object target = ((IFacade)reverseEngineeringSettings).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof ReverseEngineeringSettings);
 	}
 	
 	public static class TestDialect extends Dialect {}
