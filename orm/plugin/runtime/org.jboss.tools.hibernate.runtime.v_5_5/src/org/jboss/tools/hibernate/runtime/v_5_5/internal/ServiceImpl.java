@@ -443,8 +443,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IPersistentClass newSpecialRootClass(IProperty ormElement) {
-		// TODO Auto-generated method stub
-		return null;
+		return facadeFactory.createSpecialRootClass(ormElement);
 	}
 
 	@Override
