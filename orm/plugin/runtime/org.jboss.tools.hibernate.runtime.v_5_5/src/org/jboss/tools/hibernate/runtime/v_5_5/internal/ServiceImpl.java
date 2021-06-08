@@ -2,17 +2,22 @@ package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
 import java.io.File;
 import java.sql.Connection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.hibernate.Filter;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.engine.query.spi.HQLQueryPlan;
+import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.common.AbstractService;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.Util;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
@@ -124,8 +129,11 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IHQLQueryPlan newHQLQueryPlan(String query, boolean shallow, ISessionFactory sessionFactory) {
-		// TODO Auto-generated method stub
-		return null;
+		SessionFactoryImpl factory = 
+				(SessionFactoryImpl) ((IFacade)sessionFactory).getTarget();
+		Map<String, Filter> enabledFilters = Collections.emptyMap(); 
+		HQLQueryPlan queryPlan = new HQLQueryPlan(query, shallow, enabledFilters, factory);
+		return facadeFactory.createHQLQueryPlan(queryPlan);
 	}
 
 	@Override

@@ -7,10 +7,12 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.lang.reflect.Field;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.Dialect;
+import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.hbm2x.AbstractExporter;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
@@ -21,14 +23,29 @@ import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
+import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
+import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.JpaConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class ServiceImplTest {
+
+	static class Foo { 
+		private int id; 
+		public void setId(int id) { }
+		public int getId() { return id; }
+	}
+	
+	private static final String TEST_HBM_STRING =
+			"<hibernate-mapping package='org.jboss.tools.hibernate.runtime.v_5_5.internal'>" +
+			"  <class name='ServiceImplTest$Foo'>" + 
+			"    <id name='id'/>" + 
+			"  </class>" + 
+			"</hibernate-mapping>";
 
 	private ServiceImpl service = null;
 	
@@ -129,6 +146,24 @@ public class ServiceImplTest {
 		Object target = ((IFacade)artifactCollector).getTarget();
 		assertNotNull(target);
 		assertTrue(target instanceof ArtifactCollector);
+	}
+	
+	@Test
+	public void testNewHQLQueryPlan() throws Exception {
+		IConfiguration configuration = service.newDefaultConfiguration();
+		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+		File testFile = File.createTempFile("test", "tmp");
+		testFile.deleteOnExit();
+		FileWriter fileWriter = new FileWriter(testFile);
+		fileWriter.write(TEST_HBM_STRING);
+		fileWriter.close();
+		configuration.addFile(testFile);
+		ISessionFactory sfi = configuration.buildSessionFactory();
+		IHQLQueryPlan queryPlan = service.newHQLQueryPlan("from ServiceImplTest$Foo", true, sfi);
+		assertNotNull(queryPlan);
+		Object target = ((IFacade)queryPlan).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof HQLQueryPlan);
 	}
 	
 	public static class TestDialect extends Dialect {}
