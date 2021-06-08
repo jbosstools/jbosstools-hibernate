@@ -3,6 +3,7 @@ package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -26,6 +27,11 @@ import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
+import org.hibernate.dialect.Dialect;
+import org.hibernate.engine.jdbc.dialect.spi.DatabaseMetaDataDialectResolutionInfoAdapter;
+import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
+import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
+import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfoSource;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.mapping.Column;
@@ -277,9 +283,27 @@ public class ServiceImpl extends AbstractService {
 	}
 
 	@Override
-	public String newDialect(Properties properties, Connection connection) {
-		// TODO Auto-generated method stub
-		return null;
+	public String newDialect(Properties properties, final Connection connection) {
+		ServiceRegistry serviceRegistry = buildServiceRegistry(properties);
+		DialectFactory dialectFactory = serviceRegistry.getService(DialectFactory.class);
+		Dialect dialect = dialectFactory.buildDialect(
+				properties, 
+				new DialectResolutionInfoSource() {
+					@Override
+					public DialectResolutionInfo getDialectResolutionInfo() {
+						try {
+							return new DatabaseMetaDataDialectResolutionInfoAdapter( connection.getMetaData() );
+						}
+						catch ( SQLException sqlException ) {
+							throw new HibernateException(
+									"Unable to access java.sql.DatabaseMetaData to determine appropriate Dialect to use",
+									sqlException
+							);
+						}
+					}
+				}
+		);
+		return dialect != null ? dialect.toString() : null;
 	}
 
 	@Override

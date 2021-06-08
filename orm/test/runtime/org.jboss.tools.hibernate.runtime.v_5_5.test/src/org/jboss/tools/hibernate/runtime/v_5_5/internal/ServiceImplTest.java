@@ -344,6 +344,13 @@ public class ServiceImplTest {
 		assertEquals("foo", ((Column)target).getName());
 	}
 	
+	@Test
+	public void testNewDialect() throws Exception {
+		Connection connection = DriverManager.getConnection("jdbc:h2:mem:");
+		String dialect = service.newDialect(new Properties(), connection);
+		assertEquals("org.hibernate.dialect.H2Dialect", dialect);
+	}
+
 	public static class TestDialect extends Dialect {}
 	
 }
