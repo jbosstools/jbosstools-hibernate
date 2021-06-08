@@ -8,6 +8,7 @@ import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
@@ -118,8 +119,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IArtifactCollector newArtifactCollector() {
-		// TODO Auto-generated method stub
-		return null;
+		return facadeFactory.createArtifactCollector(new ArtifactCollector());
 	}
 
 	@Override

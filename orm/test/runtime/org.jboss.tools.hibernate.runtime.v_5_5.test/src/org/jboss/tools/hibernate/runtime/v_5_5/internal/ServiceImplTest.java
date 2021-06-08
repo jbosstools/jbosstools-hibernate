@@ -13,9 +13,11 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.hbm2x.AbstractExporter;
+import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
+import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
@@ -118,6 +120,15 @@ public class ServiceImplTest {
 		assertTrue(target instanceof HibernateConfigurationExporter);
 		metadataDescriptor = (MetadataDescriptor)metadataDescriptorField.get(target);
 		assertNull(metadataDescriptor.getProperties()); // Dummy metadata descriptor
+	}
+	
+	@Test
+	public void testNewArtifactCollector() {
+		IArtifactCollector artifactCollector = service.newArtifactCollector();
+		assertNotNull(artifactCollector);
+		Object target = ((IFacade)artifactCollector).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof ArtifactCollector);
 	}
 	
 	public static class TestDialect extends Dialect {}
