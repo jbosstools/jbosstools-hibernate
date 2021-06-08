@@ -533,6 +533,11 @@ public class ServiceImplTest {
 		assertTrue(target instanceof RootClass);
 	}
 	
+	@Test
+	public void testIsInitialized() {
+		assertTrue(service.isInitialized(new Object()));
+	}
+	
 	public static class TestDialect extends Dialect {}
 	
 }

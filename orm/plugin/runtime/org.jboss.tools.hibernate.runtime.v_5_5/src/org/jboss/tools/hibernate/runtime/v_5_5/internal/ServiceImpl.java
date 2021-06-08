@@ -14,6 +14,7 @@ import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.hibernate.Filter;
+import org.hibernate.Hibernate;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
@@ -453,8 +454,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public boolean isInitialized(Object object) {
-		// TODO Auto-generated method stub
-		return false;
+		return Hibernate.isInitialized(object);
 	}
 
 	@Override
