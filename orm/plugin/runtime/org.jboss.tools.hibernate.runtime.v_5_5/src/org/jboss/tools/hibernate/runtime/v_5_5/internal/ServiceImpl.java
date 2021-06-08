@@ -93,6 +93,7 @@ import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.DummyMetadataBuildi
 import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.DummyMetadataDescriptor;
 import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.JpaConfiguration;
+import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.JpaMappingFileHelper;
 import org.xml.sax.EntityResolver;
 
 public class ServiceImpl extends AbstractService {
@@ -459,10 +460,9 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public List<String> getJPAMappingFilePaths(String persistenceUnitName, EntityResolver entityResolver) {
-		// TODO Auto-generated method stub
-		return null;
+		return JpaMappingFileHelper.findMappingFiles(persistenceUnitName);
 	}
-
+	
 	@Override
 	public Class<?> getClassWithoutInitializingProxy(Object reflectedObject) {
 		// TODO Auto-generated method stub
