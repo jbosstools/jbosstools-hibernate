@@ -38,6 +38,7 @@ import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
+import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
@@ -399,8 +400,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IPersistentClass newRootClass() {
-		// TODO Auto-generated method stub
-		return null;
+		return facadeFactory.createPersistentClass(new RootClass(null));
 	}
 
 	@Override
