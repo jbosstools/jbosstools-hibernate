@@ -28,6 +28,7 @@ import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.internal.SessionFactoryImpl;
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
@@ -272,8 +273,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IColumn newColumn(String string) {
-		// TODO Auto-generated method stub
-		return null;
+		return facadeFactory.createColumn(new Column(string));
 	}
 
 	@Override
