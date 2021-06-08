@@ -9,6 +9,7 @@ import java.util.Properties;
 
 import org.hibernate.Filter;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
@@ -154,8 +155,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IOverrideRepository newOverrideRepository() {
-		// TODO Auto-generated method stub
-		return null;
+		return facadeFactory.createOverrideRepository(new OverrideRepository());
 	}
 
 	@Override
