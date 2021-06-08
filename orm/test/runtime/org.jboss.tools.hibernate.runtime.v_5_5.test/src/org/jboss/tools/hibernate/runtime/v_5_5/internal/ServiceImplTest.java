@@ -9,6 +9,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.File;
 import java.io.FileWriter;
 import java.lang.reflect.Field;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+import java.util.List;
+import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
@@ -32,10 +37,12 @@ import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
+import org.jboss.tools.hibernate.runtime.spi.IProgressListener;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.JdbcMetadataConfiguration;
@@ -232,6 +239,31 @@ public class ServiceImplTest {
 		Object target = ((IFacade)reverseEngineeringSettings).getTarget();
 		assertNotNull(target);
 		assertTrue(target instanceof ReverseEngineeringSettings);
+	}
+	
+	@Test
+	public void testCollectDatabaseTables() throws Exception {
+		Connection connection = DriverManager.getConnection("jdbc:h2:mem:test");
+		Statement statement = connection.createStatement();
+		statement.execute("CREATE TABLE FOO(id int primary key, bar varchar(255))");
+		Properties properties = new Properties();
+		properties.put("hibernate.connection.url", "jdbc:h2:mem:test");
+		java.util.Map<String, List<ITable>> tableMap = service.collectDatabaseTables(
+				properties, 
+				service.newDefaultReverseEngineeringStrategy(),
+				new IProgressListener() {				
+					@Override public void startSubTask(String name) {}
+				});
+		assertEquals(1, tableMap.size());
+		List<ITable> tables = tableMap.get("TEST.PUBLIC");
+		assertEquals(1, tables.size());
+		ITable table = tables.get(0);
+		assertEquals("TEST", table.getCatalog());
+		assertEquals("PUBLIC", table.getSchema());
+		assertEquals("FOO", table.getName());
+		statement.execute("DROP TABLE FOO");
+		statement.close();
+		connection.close();
 	}
 	
 	public static class TestDialect extends Dialect {}
