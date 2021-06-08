@@ -27,6 +27,7 @@ import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
+import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.JpaConfiguration;
 import org.junit.jupiter.api.BeforeEach;
@@ -164,6 +165,12 @@ public class ServiceImplTest {
 		Object target = ((IFacade)queryPlan).getTarget();
 		assertNotNull(target);
 		assertTrue(target instanceof HQLQueryPlan);
+	}
+	
+	@Test 
+	public void testNewTypeFactory() {
+		ITypeFactory typeFactory = service.newTypeFactory();
+		assertNotNull(typeFactory);
 	}
 	
 	public static class TestDialect extends Dialect {}

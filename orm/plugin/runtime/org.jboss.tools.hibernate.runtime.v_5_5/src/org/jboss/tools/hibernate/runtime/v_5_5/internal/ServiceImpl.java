@@ -138,8 +138,8 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public ITypeFactory newTypeFactory() {
-		// TODO Auto-generated method stub
-		return null;
+		// target for ITypeFactory is a dummy Object
+		return facadeFactory.createTypeFactory();
 	}
 
 	@Override
