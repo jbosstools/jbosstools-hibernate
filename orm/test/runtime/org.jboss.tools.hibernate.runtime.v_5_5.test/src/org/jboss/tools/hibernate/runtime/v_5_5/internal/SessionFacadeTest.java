@@ -1,11 +1,6 @@
-package org.jboss.tools.hibernate.runtime.v_6_0.internal;
+package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -16,22 +11,19 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
-import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.query.spi.QueryImplementor;
-import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.ICriteria;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class SessionFacadeTest {
-	
+
 	private static IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
-	
-	private static final String ENTITY_NAME = "entity_name";
+
+    private static final String ENTITY_NAME = "entity_name";
 	private static final SessionFactoryImplementor SESSION_FACTORY = createSessionFactory();
 	private static final QueryImplementor<?> QUERY_IMPLEMENTOR = createQueryImplementor();
 	private static final Root<?> ROOT = createRoot();
@@ -48,56 +40,6 @@ public class SessionFacadeTest {
 	@Test
 	public void testGetEntityName() {
 		assertSame(ENTITY_NAME, sessionFacade.getEntityName(new Object()));
-	}
-	
-	@Test
-	public void testGetSessionFactory() {
-		assertSame(SESSION_FACTORY, ((IFacade)sessionFacade.getSessionFactory()).getTarget());
-	}
-	
-	@Test
-	public void testCreateQuery() {
-		assertSame(QUERY_IMPLEMENTOR, ((IFacade)sessionFacade.createQuery("foobar")).getTarget());
-	}
-	
-	@Test
-	public void testIsOpen() {
-		assertFalse(sessionFacade.isOpen());
-		((TestSession)sessionTarget).isOpen = true;
-		assertTrue(sessionFacade.isOpen());		
-	}
-	
-	@Test
-	public void testClose() {
-		((TestSession)sessionTarget).isOpen = true;
-		sessionFacade.close();
-		assertFalse(((TestSession)sessionTarget).isOpen);
-	}
-	
-	@Test
-	public void testContains() {
-		assertFalse(sessionFacade.contains("foo"));
-		assertTrue(sessionFacade.contains("someFakeEntity"));
-		assertFalse(sessionFacade.contains("anotherFakeEntity"));
-		try { 
-			sessionFacade.contains("bar");
-		} catch (IllegalArgumentException e) {
-			assertEquals("illegal", e.getMessage());
-		}
-	}
-	
-	@Test
-	public void testCreateCriteria() {
-		assertNull(((TestSession)sessionTarget).criteriaBuilder);
-		assertNull(((TestSession)sessionTarget).fromClass);
-		assertNull(((TestSession)sessionTarget).root);
-		assertNull(((TestSession)sessionTarget).criteriaQuery);
-		ICriteria criteria = sessionFacade.createCriteria(Object.class);
-		assertNotNull(((TestSession)sessionTarget).criteriaBuilder);
-		assertSame(Object.class, ((TestSession)sessionTarget).fromClass);
-		assertSame(ROOT, ((TestSession)sessionTarget).root);
-		assertNotNull(((TestSession)sessionTarget).criteriaQuery);
-		assertSame(QUERY_IMPLEMENTOR, ((IFacade)criteria).getTarget());
 	}
 	
 	private static class TestSession extends SessionDelegatorBaseImpl {
@@ -246,11 +188,6 @@ public class SessionFacadeTest {
 						return null;
 					}
 				});
-	}
-	
-	public static class TestDialect extends Dialect {
-		@Override
-		public int getVersion() { return 0; }
 	}
 	
 }
