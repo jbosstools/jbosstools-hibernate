@@ -62,6 +62,13 @@ public class SessionFacadeTest {
 		assertTrue(sessionFacade.isOpen());		
 	}
 	
+	@Test
+	public void testClose() {
+		((TestSession)sessionTarget).isOpen = true;
+		sessionFacade.close();
+		assertFalse(((TestSession)sessionTarget).isOpen);
+	}
+	
 	private static class TestSession extends SessionDelegatorBaseImpl {
 
 		private static final long serialVersionUID = 1L;
