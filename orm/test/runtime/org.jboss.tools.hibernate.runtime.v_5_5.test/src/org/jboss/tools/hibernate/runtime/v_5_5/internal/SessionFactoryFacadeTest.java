@@ -120,6 +120,24 @@ public class SessionFactoryFacadeTest {
 		assertSame(((TestSessionFactory)sessionFactoryTarget).session, ((IFacade)sessionFacade).getTarget());
 	}
 	
+	@Test
+	public void testGetClassMetadata() throws Exception {
+		Field field = AbstractSessionFactoryFacade.class.getDeclaredField("allClassMetadata");
+		field.setAccessible(true);
+		assertNull(field.get(sessionFactoryFacade));
+		assertNull(sessionFactoryFacade.getClassMetadata("foo"));
+		assertNotNull(field.get(sessionFactoryFacade));
+		field.set(sessionFactoryFacade, null);
+		assertNotNull(sessionFactoryFacade.getClassMetadata(Foo.class.getName()));
+		assertNotNull(field.get(sessionFactoryFacade));
+		field.set(sessionFactoryFacade, null);
+		assertNull(sessionFactoryFacade.getClassMetadata(Object.class));
+		assertNotNull(field.get(sessionFactoryFacade));
+		field.set(sessionFactoryFacade, null);
+		assertNotNull(sessionFactoryFacade.getClassMetadata(Foo.class));
+		assertNotNull(field.get(sessionFactoryFacade));
+	}
+	
 	private class TestSessionFactory extends SessionFactoryDelegatingImpl {
 		private static final long serialVersionUID = 1L;
 		Session session = null;
