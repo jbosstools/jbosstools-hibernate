@@ -48,6 +48,11 @@ public class SessionFacadeTest {
 		assertSame(SESSION_FACTORY, ((IFacade)sessionFacade.getSessionFactory()).getTarget());
 	}
 	
+	@Test
+	public void testCreateQuery() {
+		assertSame(QUERY_IMPLEMENTOR, ((IFacade)sessionFacade.createQuery("foobar")).getTarget());
+	}
+	
 	private static class TestSession extends SessionDelegatorBaseImpl {
 
 		private static final long serialVersionUID = 1L;
