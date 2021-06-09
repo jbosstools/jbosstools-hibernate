@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -70,6 +71,18 @@ public class SessionFacadeTest {
 		((TestSession)sessionTarget).isOpen = true;
 		sessionFacade.close();
 		assertFalse(((TestSession)sessionTarget).isOpen);
+	}
+	
+	@Test
+	public void testContains() {
+		assertFalse(sessionFacade.contains("foo"));
+		assertTrue(sessionFacade.contains("someFakeEntity"));
+		assertFalse(sessionFacade.contains("anotherFakeEntity"));
+		try { 
+			sessionFacade.contains("bar");
+		} catch (IllegalArgumentException e) {
+			assertEquals("illegal", e.getMessage());
+		}
 	}
 	
 	@Test
