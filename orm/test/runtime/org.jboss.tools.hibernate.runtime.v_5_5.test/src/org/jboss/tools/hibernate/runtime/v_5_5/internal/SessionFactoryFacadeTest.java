@@ -22,6 +22,7 @@ import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.jboss.tools.hibernate.runtime.common.AbstractSessionFactoryFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
+import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -95,6 +96,17 @@ public class SessionFactoryFacadeTest {
 		assertNotNull(field.get(sessionFactoryFacade));
 		assertEquals(1, allClassMetadata.size());
 		assertNotNull(allClassMetadata.get(Foo.class.getName()));
+	}
+	
+	@Test
+	public void testGetAllCollectionMetadata() throws Exception {
+		Field field = AbstractSessionFactoryFacade.class.getDeclaredField("allCollectionMetadata");
+		field.setAccessible(true);
+		assertNull(field.get(sessionFactoryFacade));
+		Map<String, ICollectionMetadata> allCollectionMetadata = sessionFactoryFacade.getAllCollectionMetadata();
+		assertNotNull(field.get(sessionFactoryFacade));
+		assertEquals(1, allCollectionMetadata.size());
+		assertNotNull(allCollectionMetadata.get(Foo.class.getName() + ".bars"));
 	}
 	
 	private class TestSessionFactory extends SessionFactoryDelegatingImpl {

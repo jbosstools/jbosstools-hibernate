@@ -6,10 +6,12 @@ import java.util.Map.Entry;
 
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.metamodel.spi.MetamodelImplementor;
+import org.hibernate.persister.collection.CollectionPersister;
 import org.hibernate.persister.entity.EntityPersister;
 import org.jboss.tools.hibernate.runtime.common.AbstractSessionFactoryFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
+import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 
 public class SessionFactoryFacadeImpl extends AbstractSessionFactoryFacade {
 
@@ -31,4 +33,18 @@ public class SessionFactoryFacadeImpl extends AbstractSessionFactoryFacade {
 		}
 	}
 	
+	@Override
+	protected void initializeAllCollectionMetadata() {
+		SessionFactoryImplementor sessionFactory = (SessionFactoryImplementor)getTarget();
+		MetamodelImplementor metamodel = (MetamodelImplementor)sessionFactory.getMetamodel();   
+		Map<String, CollectionPersister> collectionPersisters = metamodel.collectionPersisters();
+		allCollectionMetadata = new HashMap<String, ICollectionMetadata>(
+				collectionPersisters.size());
+		for (Entry<String, CollectionPersister> entry : collectionPersisters.entrySet()) {
+			allCollectionMetadata.put(
+					(String)entry.getKey(), 
+					getFacadeFactory().createCollectionMetadata(entry.getValue()));
+		}
+	}
+
 }
