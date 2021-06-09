@@ -1,6 +1,8 @@
 package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -19,6 +21,7 @@ import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.query.spi.QueryImplementor;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.ICriteria;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -67,6 +70,20 @@ public class SessionFacadeTest {
 		((TestSession)sessionTarget).isOpen = true;
 		sessionFacade.close();
 		assertFalse(((TestSession)sessionTarget).isOpen);
+	}
+	
+	@Test
+	public void testCreateCriteria() {
+		assertNull(((TestSession)sessionTarget).criteriaBuilder);
+		assertNull(((TestSession)sessionTarget).fromClass);
+		assertNull(((TestSession)sessionTarget).root);
+		assertNull(((TestSession)sessionTarget).criteriaQuery);
+		ICriteria criteria = sessionFacade.createCriteria(Object.class);
+		assertNotNull(((TestSession)sessionTarget).criteriaBuilder);
+		assertSame(Object.class, ((TestSession)sessionTarget).fromClass);
+		assertSame(ROOT, ((TestSession)sessionTarget).root);
+		assertNotNull(((TestSession)sessionTarget).criteriaQuery);
+		assertSame(QUERY_IMPLEMENTOR, ((IFacade)criteria).getTarget());
 	}
 	
 	private static class TestSession extends SessionDelegatorBaseImpl {
