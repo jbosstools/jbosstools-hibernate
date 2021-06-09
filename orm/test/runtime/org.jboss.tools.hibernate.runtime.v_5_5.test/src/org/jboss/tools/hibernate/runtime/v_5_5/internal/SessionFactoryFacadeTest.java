@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
@@ -20,9 +21,11 @@ import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.spi.SessionFactoryDelegatingImpl;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.jboss.tools.hibernate.runtime.common.AbstractSessionFactoryFacade;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
+import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -107,6 +110,14 @@ public class SessionFactoryFacadeTest {
 		assertNotNull(field.get(sessionFactoryFacade));
 		assertEquals(1, allCollectionMetadata.size());
 		assertNotNull(allCollectionMetadata.get(Foo.class.getName() + ".bars"));
+	}
+	
+	@Test
+	public void testOpenSession() throws Exception {
+		assertNull(((TestSessionFactory)sessionFactoryTarget).session);
+		ISession sessionFacade = sessionFactoryFacade.openSession();
+		assertNotNull(((TestSessionFactory)sessionFactoryTarget).session);
+		assertSame(((TestSessionFactory)sessionFactoryTarget).session, ((IFacade)sessionFacade).getTarget());
 	}
 	
 	private class TestSessionFactory extends SessionFactoryDelegatingImpl {
