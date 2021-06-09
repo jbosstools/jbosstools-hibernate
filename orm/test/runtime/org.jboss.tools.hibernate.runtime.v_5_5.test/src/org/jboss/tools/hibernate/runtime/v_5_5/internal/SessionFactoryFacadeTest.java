@@ -1,11 +1,16 @@
 package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.lang.reflect.Field;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.hibernate.Session;
@@ -14,7 +19,9 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.spi.SessionFactoryDelegatingImpl;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
+import org.jboss.tools.hibernate.runtime.common.AbstractSessionFactoryFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -77,6 +84,17 @@ public class SessionFactoryFacadeTest {
 		assertFalse(sessionFactoryTarget.isClosed());
 		sessionFactoryFacade.close();
 		assertTrue(sessionFactoryTarget.isClosed());
+	}
+	
+	@Test
+	public void testGetAllClassMetadata() throws Exception {
+		Field field = AbstractSessionFactoryFacade.class.getDeclaredField("allClassMetadata");
+		field.setAccessible(true);
+		assertNull(field.get(sessionFactoryFacade));
+		Map<String, IClassMetadata> allClassMetadata = sessionFactoryFacade.getAllClassMetadata();
+		assertNotNull(field.get(sessionFactoryFacade));
+		assertEquals(1, allClassMetadata.size());
+		assertNotNull(allClassMetadata.get(Foo.class.getName()));
 	}
 	
 	private class TestSessionFactory extends SessionFactoryDelegatingImpl {
