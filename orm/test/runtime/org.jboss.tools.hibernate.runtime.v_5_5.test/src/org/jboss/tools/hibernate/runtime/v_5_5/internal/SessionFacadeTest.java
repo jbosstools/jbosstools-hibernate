@@ -1,6 +1,8 @@
 package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -51,6 +53,13 @@ public class SessionFacadeTest {
 	@Test
 	public void testCreateQuery() {
 		assertSame(QUERY_IMPLEMENTOR, ((IFacade)sessionFacade.createQuery("foobar")).getTarget());
+	}
+	
+	@Test
+	public void testIsOpen() {
+		assertFalse(sessionFacade.isOpen());
+		((TestSession)sessionTarget).isOpen = true;
+		assertTrue(sessionFacade.isOpen());		
 	}
 	
 	private static class TestSession extends SessionDelegatorBaseImpl {
