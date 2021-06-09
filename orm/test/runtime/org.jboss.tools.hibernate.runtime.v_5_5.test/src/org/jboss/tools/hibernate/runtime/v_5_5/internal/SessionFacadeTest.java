@@ -15,6 +15,7 @@ import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.query.spi.QueryImplementor;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,6 +41,11 @@ public class SessionFacadeTest {
 	@Test
 	public void testGetEntityName() {
 		assertSame(ENTITY_NAME, sessionFacade.getEntityName(new Object()));
+	}
+	
+	@Test
+	public void testGetSessionFactory() {
+		assertSame(SESSION_FACTORY, ((IFacade)sessionFacade.getSessionFactory()).getTarget());
 	}
 	
 	private static class TestSession extends SessionDelegatorBaseImpl {
