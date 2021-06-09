@@ -138,6 +138,18 @@ public class SessionFactoryFacadeTest {
 		assertNotNull(field.get(sessionFactoryFacade));
 	}
 	
+	@Test
+	public void testGetCollectionMetadata() throws Exception {
+		Field field = AbstractSessionFactoryFacade.class.getDeclaredField("allCollectionMetadata");
+		field.setAccessible(true);
+		assertNull(field.get(sessionFactoryFacade));
+		assertNull(sessionFactoryFacade.getCollectionMetadata("bars"));
+		assertNotNull(field.get(sessionFactoryFacade));
+		field.set(sessionFactoryFacade, null);
+		assertNotNull(sessionFactoryFacade.getCollectionMetadata(Foo.class.getName() + ".bars"));
+		assertNotNull(field.get(sessionFactoryFacade));
+	}	
+	
 	private class TestSessionFactory extends SessionFactoryDelegatingImpl {
 		private static final long serialVersionUID = 1L;
 		Session session = null;
