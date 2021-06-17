@@ -1,8 +1,11 @@
 package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+
+import java.util.Iterator;
 
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
@@ -65,6 +68,20 @@ public class TableFacadeTest {
 		table.setPrimaryKey(primaryKey);
 		IPrimaryKey primaryKeyFacade = tableFacade.getPrimaryKey();
 		assertSame(primaryKey, ((IFacade)primaryKeyFacade).getTarget());
+	}
+	
+	@Test
+	public void testGetColumnIterator() {
+		Table table = new Table();
+		ITable tableFacade = FACADE_FACTORY.createTable(table);
+		Iterator<IColumn> columnIterator = tableFacade.getColumnIterator();
+		assertFalse(columnIterator.hasNext());
+		Column column = new Column("foo");
+		table.addColumn(column);
+		tableFacade = FACADE_FACTORY.createTable(table);
+		columnIterator = tableFacade.getColumnIterator();
+		IColumn columnFacade = columnIterator.next();
+		assertSame(column, ((IFacade)columnFacade).getTarget());
 	}
 	
 }
