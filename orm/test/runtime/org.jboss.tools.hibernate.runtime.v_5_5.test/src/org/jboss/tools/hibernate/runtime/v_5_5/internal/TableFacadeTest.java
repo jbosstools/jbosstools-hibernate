@@ -84,4 +84,13 @@ public class TableFacadeTest {
 		assertSame(column, ((IFacade)columnFacade).getTarget());
 	}
 	
+	@Test
+	public void testGetComment() {
+		Table table = new Table();
+		ITable tableFacade = FACADE_FACTORY.createTable(table);
+		assertNull(tableFacade.getComment());
+		table.setComment("foo");
+		assertEquals("foo", tableFacade.getComment());
+	}
+	
 }
