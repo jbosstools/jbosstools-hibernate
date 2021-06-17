@@ -12,7 +12,9 @@ import java.util.Iterator;
 
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
+import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PrimaryKey;
+import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
@@ -20,6 +22,8 @@ import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
+import org.jboss.tools.hibernate.runtime.spi.IValue;
+import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.DummyMetadataBuildingContext;
 import org.junit.jupiter.api.Test;
 
 public class TableFacadeTest {
@@ -178,6 +182,18 @@ public class TableFacadeTest {
 		assertFalse(tableFacade.isPhysicalTable());	
 		table.setSubselect(null);
 		assertTrue(tableFacade.isPhysicalTable());
+	}
+	
+	@Test
+	public void testGetIdentifierValue() {
+		Table table = new Table();
+		ITable tableFacade = FACADE_FACTORY.createTable(table);
+		IValue valueFacade = tableFacade.getIdentifierValue();
+		assertNull(valueFacade);
+		KeyValue value = new SimpleValue(DummyMetadataBuildingContext.INSTANCE, null);
+		table.setIdentifierValue(value);
+		valueFacade = tableFacade.getIdentifierValue();
+		assertSame(value, ((IFacade)valueFacade).getTarget());
 	}
 	
 }
