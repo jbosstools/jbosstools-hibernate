@@ -35,4 +35,13 @@ public class TableFacadeTest {
 		assertSame(column, table.getColumn(column));
 	}
 	
+	@Test
+	public void testGetCatalog() {
+		Table table = new Table();
+		ITable tableFacade = FACADE_FACTORY.createTable(table);
+		assertNull(tableFacade.getCatalog());
+		table.setCatalog("foo");
+		assertEquals("foo", tableFacade.getCatalog());
+	}
+	
 }
