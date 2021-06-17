@@ -41,4 +41,13 @@ public class TableFilterFacadeTest {
 		assertEquals("foo", tableFilter.getMatchSchema());
 	}
 		
+	@Test
+	public void testSetMatchName() {
+		TableFilter tableFilter = new TableFilter();
+		ITableFilter tableFilterFacade = FACADE_FACTORY.createTableFilter(tableFilter);
+		assertNotEquals("foo", tableFilter.getMatchName());
+		tableFilterFacade.setMatchName("foo");
+		assertEquals("foo", tableFilter.getMatchName());
+	}
+		
 }
