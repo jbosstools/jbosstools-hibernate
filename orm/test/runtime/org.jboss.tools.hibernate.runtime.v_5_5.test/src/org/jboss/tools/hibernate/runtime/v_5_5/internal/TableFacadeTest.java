@@ -5,9 +5,12 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
+import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.junit.jupiter.api.Test;
 
@@ -51,6 +54,17 @@ public class TableFacadeTest {
 		assertNull(tableFacade.getSchema());
 		table.setSchema("foo");
 		assertEquals("foo", tableFacade.getSchema());
+	}
+	
+	@Test
+	public void testGetPrimaryKey() {
+		Table table = new Table();
+		PrimaryKey primaryKey = new PrimaryKey(table);
+		ITable tableFacade = FACADE_FACTORY.createTable(table);
+		assertNull(tableFacade.getPrimaryKey());
+		table.setPrimaryKey(primaryKey);
+		IPrimaryKey primaryKeyFacade = tableFacade.getPrimaryKey();
+		assertSame(primaryKey, ((IFacade)primaryKeyFacade).getTarget());
 	}
 	
 }
