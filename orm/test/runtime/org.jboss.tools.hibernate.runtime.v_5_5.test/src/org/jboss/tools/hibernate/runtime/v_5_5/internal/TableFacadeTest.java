@@ -4,7 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.Iterator;
 
@@ -127,6 +129,19 @@ public class TableFacadeTest {
 		assertNull(tableFacade.getSubselect());		
 		table.setSubselect("foo");
 		assertEquals("foo", tableFacade.getSubselect());
+	}
+	
+	@Test
+	public void testHasDenormalizedTables() throws Exception {
+		Table table = new Table();
+		ITable tableFacade = FACADE_FACTORY.createTable(table);
+		assertFalse(tableFacade.hasDenormalizedTables());
+		Method method = Table.class.getDeclaredMethod(
+				"setHasDenormalizedTables", 
+				new Class[] { });
+		method.setAccessible(true);
+		method.invoke(table, new Object[] { });
+		assertTrue(tableFacade.hasDenormalizedTables());
 	}
 	
 }
