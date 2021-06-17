@@ -1,5 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -21,4 +23,13 @@ public class TableFilterFacadeTest {
 		assertTrue(tableFilter.getExclude());
 	}
 	
+	@Test
+	public void testSetMatchCatalog() {
+		TableFilter tableFilter = new TableFilter();
+		ITableFilter tableFilterFacade = FACADE_FACTORY.createTableFilter(tableFilter);
+		assertNotEquals("foo", tableFilter.getMatchCatalog());
+		tableFilterFacade.setMatchCatalog("foo");
+		assertEquals("foo", tableFilter.getMatchCatalog());
+	}
+		
 }
