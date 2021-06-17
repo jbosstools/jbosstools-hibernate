@@ -59,4 +59,13 @@ public class TableFilterFacadeTest {
 		assertTrue(tableFilterFacade.getExclude());
 	}
 		
+	@Test
+	public void testGetMatchCatalog() {
+		TableFilter tableFilter = new TableFilter();
+		ITableFilter tableFilterFacade = FACADE_FACTORY.createTableFilter(tableFilter);
+		assertNotEquals("foo", tableFilterFacade.getMatchCatalog());
+		tableFilter.setMatchCatalog("foo");
+		assertEquals("foo", tableFilterFacade.getMatchCatalog());
+	}
+		
 }
