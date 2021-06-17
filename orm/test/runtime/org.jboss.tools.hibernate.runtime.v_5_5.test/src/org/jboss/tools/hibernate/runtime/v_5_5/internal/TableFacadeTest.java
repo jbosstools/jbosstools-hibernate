@@ -144,4 +144,14 @@ public class TableFacadeTest {
 		assertTrue(tableFacade.hasDenormalizedTables());
 	}
 	
+	@Test
+	public void testIsAbstract() {
+		Table table = new Table();
+		ITable tableFacade = FACADE_FACTORY.createTable(table);
+		table.setAbstract(true);
+		assertTrue(tableFacade.isAbstract());		
+		table.setAbstract(false);
+		assertFalse(tableFacade.isAbstract());		
+	}
+	
 }
