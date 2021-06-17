@@ -111,4 +111,13 @@ public class TableFacadeTest {
 		assertEquals("foo", tableFacade.getComment());
 	}
 	
+	@Test
+	public void testGetRowId() {
+		Table table = new Table();
+		ITable tableFacade = FACADE_FACTORY.createTable(table);
+		assertNull(tableFacade.getRowId());
+		table.setRowId("foo");
+		assertEquals("foo", tableFacade.getRowId());
+	}
+	
 }
