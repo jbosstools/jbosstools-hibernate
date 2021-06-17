@@ -5,14 +5,17 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
+import java.util.Collections;
 import java.util.Iterator;
 
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
+import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.junit.jupiter.api.Test;
@@ -82,6 +85,21 @@ public class TableFacadeTest {
 		columnIterator = tableFacade.getColumnIterator();
 		IColumn columnFacade = columnIterator.next();
 		assertSame(column, ((IFacade)columnFacade).getTarget());
+	}
+	
+	@Test
+	public void testGetForeignKeyIterator() {
+		Table table = new Table();
+		ITable tableFacade = FACADE_FACTORY.createTable(table);
+		Iterator<IForeignKey> foreignKeyIterator = tableFacade.getForeignKeyIterator();
+		assertFalse(foreignKeyIterator.hasNext());
+		Column column = new Column("foo");
+		table.addColumn(column);
+		ForeignKey foreignKey = table.createForeignKey("fooKey", Collections.singletonList(column), "bar", null);
+		tableFacade = FACADE_FACTORY.createTable(table);
+		foreignKeyIterator = tableFacade.getForeignKeyIterator();
+		IForeignKey foreignKeyFacade = foreignKeyIterator.next();
+		assertSame(foreignKey, ((IFacade)foreignKeyFacade).getTarget());
 	}
 	
 	@Test
