@@ -170,4 +170,14 @@ public class TableFacadeTest {
 		assertTrue(tableFacade.isAbstractUnionTable());
 	}
 	
+	@Test
+	public void testIsPhysicalTable() {
+		Table table = new Table();
+		ITable tableFacade = FACADE_FACTORY.createTable(table);
+		table.setSubselect("foo");
+		assertFalse(tableFacade.isPhysicalTable());	
+		table.setSubselect(null);
+		assertTrue(tableFacade.isPhysicalTable());
+	}
+	
 }
