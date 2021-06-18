@@ -76,4 +76,11 @@ public class TypeFactoryFacadeTest {
 		assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
 	
+	@Test
+	public void testGetClassType() {
+		Type typeTarget = StandardBasicTypes.CLASS;
+		IType typeFacade = typeFactoryFacade.getClassType();
+		assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
+	}
+	
 }
