@@ -34,4 +34,11 @@ public class TypeFactoryFacadeTest {
 		assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
 	
+	@Test
+	public void testGetShortType() {
+		Type typeTarget = StandardBasicTypes.SHORT;
+		IType typeFacade = typeFactoryFacade.getShortType();
+		assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
+	}
+	
 }
