@@ -210,6 +210,17 @@ public class TypeFacadeTest {
 		assertTrue(typeFacade.isInstanceOfPrimitiveType());
 	}
 	
+	@Test
+	public void testGetPrimitiveClass() {
+		IType typeFacade = null;
+		ClassType classType = new ClassType();
+		typeFacade = FACADE_FACTORY.createType(classType);
+		assertNull(typeFacade.getPrimitiveClass());
+		IntegerType integerType = new IntegerType();
+		typeFacade = FACADE_FACTORY.createType(integerType);
+		assertEquals(int.class, typeFacade.getPrimitiveClass());
+	}
+	
 	public static class TestDialect extends Dialect {}
 
 }
