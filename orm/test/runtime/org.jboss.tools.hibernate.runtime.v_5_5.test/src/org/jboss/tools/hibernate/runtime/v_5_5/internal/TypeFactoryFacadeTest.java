@@ -20,4 +20,11 @@ public class TypeFactoryFacadeTest {
 		assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
 	
+	@Test
+	public void testGetByteType() {
+		Type typeTarget = StandardBasicTypes.BYTE;
+		IType typeFacade = typeFactoryFacade.getByteType();
+		assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
+	}
+	
 }
