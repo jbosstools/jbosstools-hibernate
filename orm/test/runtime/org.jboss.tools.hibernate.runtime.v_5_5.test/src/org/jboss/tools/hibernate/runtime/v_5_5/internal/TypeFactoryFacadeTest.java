@@ -90,4 +90,11 @@ public class TypeFactoryFacadeTest {
 		assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
 	
+	@Test
+	public void testGetDateType() {
+		Type typeTarget = StandardBasicTypes.DATE;
+		IType typeFacade = typeFactoryFacade.getDateType();
+		assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
+	}
+	
 }
