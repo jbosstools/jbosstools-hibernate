@@ -153,4 +153,11 @@ public class TypeFactoryFacadeTest {
 		assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
 	
+	@Test
+	public void testGetTimezoneType() {
+		Type typeTarget = StandardBasicTypes.TIMEZONE;
+		IType typeFacade = typeFactoryFacade.getTimezoneType();
+		assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
+	}
+	
 }
