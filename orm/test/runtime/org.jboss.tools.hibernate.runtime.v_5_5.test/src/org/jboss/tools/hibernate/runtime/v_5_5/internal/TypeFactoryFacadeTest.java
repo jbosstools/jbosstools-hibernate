@@ -111,4 +111,11 @@ public class TypeFactoryFacadeTest {
 		assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
 	
+	@Test
+	public void testGetLocaleType() {
+		Type typeTarget = StandardBasicTypes.LOCALE;
+		IType typeFacade = typeFactoryFacade.getLocaleType();
+		assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
+	}
+	
 }
