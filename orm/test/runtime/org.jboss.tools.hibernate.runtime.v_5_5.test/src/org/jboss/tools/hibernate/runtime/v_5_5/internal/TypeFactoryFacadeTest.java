@@ -104,4 +104,11 @@ public class TypeFactoryFacadeTest {
 		assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
 	
+	@Test
+	public void testGetFloatType() {
+		Type typeTarget = StandardBasicTypes.FLOAT;
+		IType typeFacade = typeFactoryFacade.getFloatType();
+		assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
+	}
+	
 }
