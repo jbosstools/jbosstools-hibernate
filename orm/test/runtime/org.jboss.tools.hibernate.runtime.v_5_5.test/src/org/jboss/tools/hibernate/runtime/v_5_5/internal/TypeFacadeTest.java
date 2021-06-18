@@ -5,9 +5,24 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.hibernate.boot.internal.BootstrapContextImpl;
+import org.hibernate.boot.internal.InFlightMetadataCollectorImpl;
+import org.hibernate.boot.internal.MetadataBuilderImpl;
+import org.hibernate.boot.internal.MetadataBuildingContextRootImpl;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.boot.spi.BootstrapContext;
+import org.hibernate.boot.spi.InFlightMetadataCollector;
+import org.hibernate.boot.spi.MetadataBuildingContext;
+import org.hibernate.boot.spi.MetadataBuildingOptions;
+import org.hibernate.dialect.Dialect;
+import org.hibernate.mapping.Component;
+import org.hibernate.mapping.RootClass;
+import org.hibernate.tuple.component.ComponentMetamodel;
 import org.hibernate.type.AnyType;
 import org.hibernate.type.ArrayType;
 import org.hibernate.type.ClassType;
+import org.hibernate.type.ComponentType;
 import org.hibernate.type.EntityType;
 import org.hibernate.type.ManyToOneType;
 import org.hibernate.type.OneToOneType;
@@ -94,4 +109,32 @@ public class TypeFacadeTest {
 		assertTrue(typeFacade.isAnyType());
 	}
 	
+	@Test
+	public void testIsComponentType() {
+		IType typeFacade = null;
+		// first try type that is not a component type
+		ClassType classType = new ClassType();
+		typeFacade =  FACADE_FACTORY.createType(classType);
+		assertFalse(typeFacade.isComponentType());
+		// next try a component type
+		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
+		ssrb.applySetting("hibernate.dialect", TestDialect.class.getName());
+		StandardServiceRegistry ssr = ssrb.build();
+		MetadataBuildingOptions mdbo = 
+				new MetadataBuilderImpl.MetadataBuildingOptionsImpl(ssr);
+		BootstrapContext btc = new BootstrapContextImpl(ssr, mdbo);
+		InFlightMetadataCollector ifmdc = new InFlightMetadataCollectorImpl(btc, mdbo);
+		MetadataBuildingContext mdbc = new MetadataBuildingContextRootImpl(btc, mdbo, ifmdc);
+		ComponentType componentType = 
+				new ComponentType(
+						null,
+						new ComponentMetamodel(
+								new Component(mdbc, new RootClass(null)),
+								btc));
+		typeFacade = FACADE_FACTORY.createType(componentType);
+		assertTrue(typeFacade.isComponentType());
+	}
+	
+	public static class TestDialect extends Dialect {}
+
 }
