@@ -221,6 +221,17 @@ public class TypeFacadeTest {
 		assertEquals(int.class, typeFacade.getPrimitiveClass());
 	}
 	
+	@Test
+	public void testGetRole() {
+		IType typeFacade = null;
+		ClassType classType = new ClassType();
+		typeFacade = FACADE_FACTORY.createType(classType);
+		assertNull(typeFacade.getRole());
+		ArrayType arrayType = new ArrayType("foo", null, String.class);
+		typeFacade = FACADE_FACTORY.createType(arrayType);
+		assertEquals("foo", typeFacade.getRole());
+	}
+	
 	public static class TestDialect extends Dialect {}
 
 }
