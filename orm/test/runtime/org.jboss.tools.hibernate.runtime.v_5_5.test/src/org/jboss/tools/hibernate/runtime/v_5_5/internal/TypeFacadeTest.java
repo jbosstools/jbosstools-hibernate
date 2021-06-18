@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.hibernate.type.AnyType;
 import org.hibernate.type.ArrayType;
 import org.hibernate.type.ClassType;
 import org.hibernate.type.EntityType;
@@ -80,6 +81,17 @@ public class TypeFacadeTest {
 				null, null, null, false, null, false, false, null, null);
 		typeFacade = FACADE_FACTORY.createType(oneToOneType);
 		assertTrue(oneToOneType.isOneToOne());
+	}
+	
+	@Test
+	public void testIsAnyType() {
+		IType typeFacade = null;
+		ClassType classType = new ClassType();
+		typeFacade = FACADE_FACTORY.createType(classType);
+		assertFalse(typeFacade.isAnyType());
+		AnyType anyType = new AnyType(null, null, null, true);
+		typeFacade = FACADE_FACTORY.createType(anyType);
+		assertTrue(typeFacade.isAnyType());
 	}
 	
 }
