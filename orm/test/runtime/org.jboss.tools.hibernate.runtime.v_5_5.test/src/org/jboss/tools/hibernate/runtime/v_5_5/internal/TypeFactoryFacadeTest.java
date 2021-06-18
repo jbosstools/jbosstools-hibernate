@@ -1,10 +1,19 @@
 package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
+
+import java.text.SimpleDateFormat;
+import java.util.Currency;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Map;
+import java.util.TimeZone;
 
 import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.junit.jupiter.api.Test;
@@ -184,6 +193,51 @@ public class TypeFactoryFacadeTest {
 	public void testGetBasicType() {
 		IType typeFacade = typeFactoryFacade.getBasicType(String.class.getName());
 		assertSame(StandardBasicTypes.STRING, ((IFacade)typeFacade).getTarget());
+	}
+	
+	@Test
+	public void testGetTypeFormats() {
+		Map<IType, String> typeFormats = typeFactoryFacade.getTypeFormats();
+		assertEquals(23, typeFormats.size());
+		assertEquals("true", typeFormats.get(typeFactoryFacade.getBooleanType()));
+		assertEquals("42", typeFormats.get(typeFactoryFacade.getByteType()));
+		assertEquals("42", typeFormats.get(typeFactoryFacade.getBigIntegerType()));
+		assertEquals("42", typeFormats.get(typeFactoryFacade.getShortType()));
+		assertEquals(
+				new SimpleDateFormat("dd MMMM yyyy").format(new Date()), 
+				typeFormats.get(typeFactoryFacade.getCalendarType()));
+		assertEquals(
+				new SimpleDateFormat("dd MMMM yyyy").format(new Date()), 
+				typeFormats.get(typeFactoryFacade.getCalendarDateType()));
+		assertEquals("42", typeFormats.get(typeFactoryFacade.getIntegerType()));
+		assertEquals("42", typeFormats.get(typeFactoryFacade.getBigDecimalType()));
+		assertEquals("h", typeFormats.get(typeFactoryFacade.getCharacterType()));
+		assertEquals(
+				ITable.class.getName(), 
+				typeFormats.get(typeFactoryFacade.getClassType()));
+		assertEquals(
+				Currency.getInstance(Locale.getDefault()).toString(), 
+				typeFormats.get(typeFactoryFacade.getCurrencyType()));
+		assertEquals(
+				new SimpleDateFormat("dd MMMM yyyy").format(new Date()), 
+				typeFormats.get(typeFactoryFacade.getDateType()));
+		assertEquals("42.42", typeFormats.get(typeFactoryFacade.getDoubleType()));
+		assertEquals("42.42", typeFormats.get(typeFactoryFacade.getFloatType()));
+		assertEquals(
+				Locale.getDefault().toString(), 
+				typeFormats.get(typeFactoryFacade.getLocaleType()));
+		assertEquals("42", typeFormats.get(typeFactoryFacade.getLongType()));
+		assertEquals("a string", typeFormats.get(typeFactoryFacade.getStringType()));
+		assertEquals("a text", typeFormats.get(typeFactoryFacade.getTextType()));
+		assertEquals(12, typeFormats.get(typeFactoryFacade.getTimeType()).length());
+		assertEquals(
+				new SimpleDateFormat("yyyy-MM-dd").format(new Date()), 
+				typeFormats.get(typeFactoryFacade.getTimestampType()).substring(0, 10));
+		assertEquals(
+				TimeZone.getDefault().getID(), 
+				typeFormats.get(typeFactoryFacade.getTimezoneType()));
+		assertEquals("true", typeFormats.get(typeFactoryFacade.getTrueFalseType()));
+		assertEquals("true", typeFormats.get(typeFactoryFacade.getYesNoType()));
 	}
 	
 }
