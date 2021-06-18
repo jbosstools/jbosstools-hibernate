@@ -1,10 +1,15 @@
 package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.type.ArrayType;
 import org.hibernate.type.ClassType;
+import org.hibernate.type.EntityType;
+import org.hibernate.type.ManyToOneType;
+import org.hibernate.type.TypeFactory.TypeScope;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.junit.jupiter.api.Test;
@@ -48,6 +53,17 @@ public class TypeFacadeTest {
 		ArrayType arrayType = new ArrayType("foo", "bar", String.class);
 		typeFacade = FACADE_FACTORY.createType(arrayType);
 		assertNull(typeFacade.fromStringValue("just a random string"));
+	}
+	
+	@Test
+	public void testIsEntityType() {
+		IType typeFacade = null;
+		ClassType classType = new ClassType();
+		typeFacade = FACADE_FACTORY.createType(classType);
+		assertFalse(typeFacade.isEntityType());
+		EntityType entityType = new ManyToOneType((TypeScope)null, null);
+		typeFacade = FACADE_FACTORY.createType(entityType);
+		assertTrue(entityType.isEntityType());
 	}
 	
 }
