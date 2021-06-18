@@ -24,6 +24,7 @@ import org.hibernate.type.ArrayType;
 import org.hibernate.type.ClassType;
 import org.hibernate.type.ComponentType;
 import org.hibernate.type.EntityType;
+import org.hibernate.type.IntegerType;
 import org.hibernate.type.ManyToOneType;
 import org.hibernate.type.OneToOneType;
 import org.hibernate.type.TypeFactory.TypeScope;
@@ -166,6 +167,17 @@ public class TypeFacadeTest {
 		EntityType entityType = new ManyToOneType((TypeScope)null, "foo");
 		typeFacade = FACADE_FACTORY.createType(entityType);
 		assertEquals("foo", typeFacade.getAssociatedEntityName());
+	}
+	
+	@Test
+	public void testIsIntegerType() {
+		IType typeFacade = null;
+		ClassType classType = new ClassType();
+		typeFacade = FACADE_FACTORY.createType(classType);
+		assertFalse(typeFacade.isIntegerType());
+		IntegerType integerType = new IntegerType();
+		typeFacade = FACADE_FACTORY.createType(integerType);
+		assertTrue(typeFacade.isIntegerType());
 	}
 	
 	public static class TestDialect extends Dialect {}
