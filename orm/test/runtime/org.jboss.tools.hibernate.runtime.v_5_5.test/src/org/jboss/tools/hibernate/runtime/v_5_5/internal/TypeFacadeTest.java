@@ -135,6 +135,17 @@ public class TypeFacadeTest {
 		assertTrue(typeFacade.isComponentType());
 	}
 	
+	@Test
+	public void testIsCollectionType() {
+		IType typeFacade = null;
+		ClassType classType = new ClassType();
+		typeFacade = FACADE_FACTORY.createType(classType);
+		assertFalse(typeFacade.isCollectionType());
+		ArrayType arrayType = new ArrayType(null, null, String.class);
+		typeFacade = FACADE_FACTORY.createType(arrayType);
+		assertTrue(typeFacade.isCollectionType());
+	}
+	
 	public static class TestDialect extends Dialect {}
 
 }
