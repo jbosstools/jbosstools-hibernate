@@ -167,4 +167,11 @@ public class TypeFactoryFacadeTest {
 		assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
 	
+	@Test
+	public void testGetYesNoType() {
+		Type typeTarget = StandardBasicTypes.YES_NO;
+		IType typeFacade = typeFactoryFacade.getYesNoType();
+		assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
+	}
+	
 }
