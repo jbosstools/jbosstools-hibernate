@@ -157,6 +157,17 @@ public class TypeFacadeTest {
 		assertEquals(String[].class.getName(), typeFacade.getReturnedClassName());
 	}
 	
+	@Test
+	public void testGetAssociatedEntityName() {
+		IType typeFacade = null;
+		ClassType classType = new ClassType();
+		typeFacade = FACADE_FACTORY.createType(classType);
+		assertNull(typeFacade.getAssociatedEntityName());
+		EntityType entityType = new ManyToOneType((TypeScope)null, "foo");
+		typeFacade = FACADE_FACTORY.createType(entityType);
+		assertEquals("foo", typeFacade.getAssociatedEntityName());
+	}
+	
 	public static class TestDialect extends Dialect {}
 
 }
