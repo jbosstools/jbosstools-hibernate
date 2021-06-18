@@ -62,4 +62,11 @@ public class TypeFactoryFacadeTest {
 		assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
 	
+	@Test
+	public void testGetBigDecimalType() {
+		Type typeTarget = StandardBasicTypes.BIG_DECIMAL;
+		IType typeFacade = typeFactoryFacade.getBigDecimalType();
+		assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
+	}
+	
 }
