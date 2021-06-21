@@ -11,6 +11,7 @@ import java.util.Iterator;
 
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
+import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
@@ -375,6 +376,16 @@ public class ValueFacadeTest {
 		IdentifierBag identifierBagTarget = new IdentifierBag(DummyMetadataBuildingContext.INSTANCE, null);
 		valueFacade = FACADE_FACTORY.createValue(identifierBagTarget);
 		assertTrue(valueFacade.isIdentifierBag());
+	}
+	
+	@Test
+	public void testIsBag() {
+		SimpleValue simpleValueTarget = new SimpleValue(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = FACADE_FACTORY.createValue(simpleValueTarget);
+		assertFalse(valueFacade.isBag());
+		Bag bagTarget = new Bag(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = FACADE_FACTORY.createValue(bagTarget);
+		assertTrue(valueFacade.isBag());
 	}
 	
 }
