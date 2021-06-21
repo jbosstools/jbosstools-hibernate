@@ -12,6 +12,7 @@ import java.util.Iterator;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
+import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
@@ -271,6 +272,16 @@ public class ValueFacadeTest {
 		assertSame(
 				tableTarget, 
 				((IFacade)valueFacade.getCollectionTable()).getTarget());
+	}
+	
+	@Test
+	public void testGetKey() {
+		Map valueTarget = new Map(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		assertNull(valueFacade.getKey());
+		KeyValue keyValue = new SimpleValue(DummyMetadataBuildingContext.INSTANCE, null);
+		valueTarget.setKey(keyValue);
+		assertSame(keyValue, ((IFacade)valueFacade.getKey()).getTarget());
 	}
 	
 }
