@@ -28,4 +28,14 @@ public class ValueFacadeTest {
 		assertFalse(valueFacade.isSimpleValue());
 	}
 
+	@Test
+	public void testIsCollection() {
+		valueTarget = new SimpleValue(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		assertFalse(valueFacade.isCollection());
+		valueTarget = new Set(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		assertTrue(valueFacade.isCollection());
+	}
+
 }
