@@ -205,4 +205,15 @@ public class ValueFacadeTest {
 		assertTrue(valueFacade.isList());
 	}
 	
+	@Test
+	public void testSetIndex() {
+		List valueTarget = new List(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		assertNull(valueTarget.getIndex());
+		SimpleValue indexTarget = new SimpleValue(DummyMetadataBuildingContext.INSTANCE, null);
+		IValue indexFacade = FACADE_FACTORY.createValue(indexTarget);
+		valueFacade.setIndex(indexFacade);
+		assertSame(indexTarget, valueTarget.getIndex());
+	}
+	
 }
