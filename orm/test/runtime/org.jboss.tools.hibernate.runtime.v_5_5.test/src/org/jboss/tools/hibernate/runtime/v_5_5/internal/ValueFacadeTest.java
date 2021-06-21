@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.hibernate.mapping.Component;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
@@ -99,6 +100,16 @@ public class ValueFacadeTest {
 		Map map = new Map(DummyMetadataBuildingContext.INSTANCE, null);
 		valueFacade = FACADE_FACTORY.createValue(map);
 		assertTrue(valueFacade.isMap());
+	}
+
+	@Test
+	public void testIsComponent() {
+		valueTarget = new SimpleValue(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		assertFalse(valueFacade.isComponent());
+		Component component = new Component(DummyMetadataBuildingContext.INSTANCE, new RootClass(null));
+		valueFacade = FACADE_FACTORY.createValue(component);
+		assertTrue(valueFacade.isComponent());
 	}
 
 }
