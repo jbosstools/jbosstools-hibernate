@@ -112,4 +112,17 @@ public class ValueFacadeTest {
 		assertTrue(valueFacade.isComponent());
 	}
 
+	@Test
+	public void testIsEmbedded() {
+		valueTarget = new SimpleValue(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		assertNull(valueFacade.isEmbedded());
+		Component component = new Component(DummyMetadataBuildingContext.INSTANCE, new RootClass(null));
+		valueFacade = FACADE_FACTORY.createValue(component);
+		component.setEmbedded(true);
+		assertTrue(valueFacade.isEmbedded());
+		component.setEmbedded(false);
+		assertFalse(valueFacade.isEmbedded());
+	}
+
 }
