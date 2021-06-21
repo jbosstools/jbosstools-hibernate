@@ -160,4 +160,15 @@ public class ValueFacadeTest {
 				((IFacade)typeFacade).getTarget().getClass().getName());
 	}
 	
+	@Test
+	public void testSetElement() {
+		SimpleValue elementTarget = new SimpleValue(DummyMetadataBuildingContext.INSTANCE, null);
+		IValue elementFacade = FACADE_FACTORY.createValue(elementTarget);
+		Set valueTarget = new Set(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		assertNull(valueTarget.getElement());
+		valueFacade.setElement(elementFacade);
+		assertSame(elementTarget, valueTarget.getElement());
+	}
+	
 }
