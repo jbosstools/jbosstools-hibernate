@@ -13,6 +13,7 @@ import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
+import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
@@ -311,6 +312,16 @@ public class ValueFacadeTest {
 		assertNull(valueFacade.getTypeName());
 		valueTarget.setTypeName("org.foo.Bar");
 		assertEquals("org.foo.Bar", valueFacade.getTypeName());
+	}
+	
+	@Test
+	public void testIsDependantValue() {
+		SimpleValue simpleValueTarget = new SimpleValue(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = FACADE_FACTORY.createValue(simpleValueTarget);
+		assertFalse(valueFacade.isDependantValue());
+		DependantValue dependantValueTarget = new DependantValue(DummyMetadataBuildingContext.INSTANCE, null, null);
+		valueFacade = FACADE_FACTORY.createValue(dependantValueTarget);
+		assertTrue(valueFacade.isDependantValue());
 	}
 	
 }
