@@ -216,4 +216,13 @@ public class ValueFacadeTest {
 		assertSame(indexTarget, valueTarget.getIndex());
 	}
 	
+	@Test
+	public void testSetTypeName() {
+		SimpleValue valueTarget = new SimpleValue(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		assertNull(valueTarget.getTypeName());
+		valueFacade.setTypeName("java.lang.Integer");
+		assertEquals("java.lang.Integer", valueTarget.getTypeName());
+	}
+	
 }
