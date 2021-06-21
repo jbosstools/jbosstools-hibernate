@@ -388,4 +388,13 @@ public class ValueFacadeTest {
 		assertTrue(valueFacade.isBag());
 	}
 	
+	@Test
+	public void testGetReferencedEntityName() {
+		ManyToOne valueTarget = new ManyToOne(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		assertNull(valueFacade.getReferencedEntityName());
+		valueTarget.setReferencedEntityName("Foo");
+		assertEquals("Foo", valueFacade.getReferencedEntityName());
+	}
+	
 }
