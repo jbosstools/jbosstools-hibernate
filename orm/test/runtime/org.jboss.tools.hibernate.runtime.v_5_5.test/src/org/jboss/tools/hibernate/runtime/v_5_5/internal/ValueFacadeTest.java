@@ -21,6 +21,7 @@ import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
+import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
@@ -343,6 +344,16 @@ public class ValueFacadeTest {
 		Set setTarget = new Set(DummyMetadataBuildingContext.INSTANCE, null);
 		valueFacade = FACADE_FACTORY.createValue(setTarget);
 		assertTrue(valueFacade.isSet());
+	}
+	
+	@Test
+	public void testIsPrimitiveArray() {
+		SimpleValue simpleValueTarget = new SimpleValue(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = FACADE_FACTORY.createValue(simpleValueTarget);
+		assertFalse(valueFacade.isPrimitiveArray());
+		PrimitiveArray primitiveArrayTarget = new PrimitiveArray(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = FACADE_FACTORY.createValue(primitiveArrayTarget);
+		assertTrue(valueFacade.isPrimitiveArray());
 	}
 	
 }
