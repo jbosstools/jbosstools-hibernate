@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Iterator;
 
+import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
@@ -292,6 +293,15 @@ public class ValueFacadeTest {
 		SimpleValue indexValue = new SimpleValue(DummyMetadataBuildingContext.INSTANCE, null);
 		valueTarget.setIndex(indexValue);
 		assertSame(indexValue, ((IFacade)valueFacade.getIndex()).getTarget());
+	}
+	
+	@Test
+	public void testGetElementClassName() {
+		Array valueTarget = new Array(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		assertNull(valueFacade.getElementClassName());
+		valueTarget.setElementClassName("org.foo.Bar");
+		assertEquals("org.foo.Bar", valueFacade.getElementClassName());;
 	}
 	
 }
