@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
@@ -65,6 +66,16 @@ public class ValueFacadeTest {
 		OneToMany oneToMany = new OneToMany(DummyMetadataBuildingContext.INSTANCE, null);
 		valueFacade = FACADE_FACTORY.createValue(oneToMany);
 		assertTrue(valueFacade.isOneToMany());
+	}
+
+	@Test 
+	public void testIsManyToOne() {
+		valueTarget = new SimpleValue(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		assertFalse(valueFacade.isManyToOne());
+		ManyToOne manyToOne = new ManyToOne(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = FACADE_FACTORY.createValue(manyToOne);
+		assertTrue(valueFacade.isManyToOne());
 	}
 
 }
