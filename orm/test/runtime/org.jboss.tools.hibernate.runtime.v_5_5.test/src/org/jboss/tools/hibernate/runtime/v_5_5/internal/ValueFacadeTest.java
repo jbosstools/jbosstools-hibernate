@@ -183,4 +183,15 @@ public class ValueFacadeTest {
 		assertSame(tableTarget, valueTarget.getCollectionTable());
 	}
 	
+	@Test
+	public void testSetTable() {
+		Table tableTarget = new Table();
+		ITable tableFacade = FACADE_FACTORY.createTable(tableTarget);
+		SimpleValue valueTarget = new SimpleValue(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		assertNull(valueTarget.getTable());
+		valueFacade.setTable(tableFacade);
+		assertSame(tableTarget, valueTarget.getTable());
+	}
+	
 }
