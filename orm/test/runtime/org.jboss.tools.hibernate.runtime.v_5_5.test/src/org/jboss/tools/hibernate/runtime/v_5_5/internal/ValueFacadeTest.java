@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Component;
+import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
@@ -192,6 +193,16 @@ public class ValueFacadeTest {
 		assertNull(valueTarget.getTable());
 		valueFacade.setTable(tableFacade);
 		assertSame(tableTarget, valueTarget.getTable());
+	}
+	
+	@Test
+	public void testIsList() {
+		valueTarget = new SimpleValue(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		assertFalse(valueFacade.isList());
+		valueTarget = new List(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		assertTrue(valueFacade.isList());
 	}
 	
 }
