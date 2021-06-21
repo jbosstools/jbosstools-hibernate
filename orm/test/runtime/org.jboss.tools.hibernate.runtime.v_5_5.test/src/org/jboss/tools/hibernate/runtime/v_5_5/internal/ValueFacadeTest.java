@@ -7,7 +7,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Iterator;
+
 import org.hibernate.mapping.Collection;
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
@@ -22,6 +25,7 @@ import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
@@ -232,6 +236,20 @@ public class ValueFacadeTest {
 		assertNull(valueFacade.getComponentClassName());
 		valueTarget.setComponentClassName("org.foo.Bar");
 		assertEquals("org.foo.Bar", valueFacade.getComponentClassName());
+	}
+	
+	@Test
+	public void testGetColumnIterator() {
+		SimpleValue valueTarget = new SimpleValue(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		Iterator<IColumn> columnIterator = valueFacade.getColumnIterator();
+		assertFalse(columnIterator.hasNext());
+		Column columnTarget = new Column();
+		valueTarget.addColumn(columnTarget);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		columnIterator = valueFacade.getColumnIterator();
+		assertTrue(columnIterator.hasNext());
+		assertSame(columnTarget, ((IFacade)columnIterator.next()).getTarget());
 	}
 	
 }
