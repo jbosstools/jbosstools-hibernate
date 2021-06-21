@@ -284,4 +284,14 @@ public class ValueFacadeTest {
 		assertSame(keyValue, ((IFacade)valueFacade.getKey()).getTarget());
 	}
 	
+	@Test
+	public void testGetIndex() {
+		List valueTarget = new List(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		assertNull(valueFacade.getIndex());
+		SimpleValue indexValue = new SimpleValue(DummyMetadataBuildingContext.INSTANCE, null);
+		valueTarget.setIndex(indexValue);
+		assertSame(indexValue, ((IFacade)valueFacade.getIndex()).getTarget());
+	}
+	
 }
