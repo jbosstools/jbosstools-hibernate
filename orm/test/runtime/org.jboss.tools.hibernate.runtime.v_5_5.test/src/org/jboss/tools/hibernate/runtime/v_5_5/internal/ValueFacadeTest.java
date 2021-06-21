@@ -261,4 +261,16 @@ public class ValueFacadeTest {
 		assertTrue(valueFacade.isTypeSpecified());
 	}
 	
+	@Test
+	public void testGetCollectionTable() {
+		Table tableTarget = new Table();
+		Collection valueTarget = new Set(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		assertNull(valueFacade.getCollectionTable());
+		valueTarget.setCollectionTable(tableTarget);
+		assertSame(
+				tableTarget, 
+				((IFacade)valueFacade.getCollectionTable()).getTarget());
+	}
+	
 }
