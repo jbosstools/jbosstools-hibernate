@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -20,6 +21,7 @@ import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
+import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.DummyMetadataBuildingContext;
 import org.junit.jupiter.api.Test;
@@ -145,6 +147,17 @@ public class ValueFacadeTest {
 		valueFacade = FACADE_FACTORY.createValue(valueTarget);
 		ITable tableFacade = valueFacade.getTable();
 		assertSame(tableTarget, ((IFacade)tableFacade).getTarget());
+	}
+	
+	@Test
+	public void testGetType() {
+		SimpleValue valueTarget = new SimpleValue(DummyMetadataBuildingContext.INSTANCE, new Table());
+		valueTarget.setTypeName("java.lang.Integer");
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		IType typeFacade = valueFacade.getType();
+		assertEquals(
+				"org.hibernate.type.IntegerType", 
+				((IFacade)typeFacade).getTarget().getClass().getName());
 	}
 	
 }
