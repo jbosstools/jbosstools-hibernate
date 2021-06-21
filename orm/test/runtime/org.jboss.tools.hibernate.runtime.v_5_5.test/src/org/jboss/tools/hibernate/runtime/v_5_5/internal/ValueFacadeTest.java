@@ -252,4 +252,13 @@ public class ValueFacadeTest {
 		assertSame(columnTarget, ((IFacade)columnIterator.next()).getTarget());
 	}
 	
+	@Test
+	public void testIsTypeSpecified() {
+		SimpleValue valueTarget = new SimpleValue(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		assertFalse(valueFacade.isTypeSpecified());
+		valueTarget.setTypeName("org.foo.Bar");
+		assertTrue(valueFacade.isTypeSpecified());
+	}
+	
 }
