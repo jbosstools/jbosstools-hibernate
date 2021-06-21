@@ -397,4 +397,16 @@ public class ValueFacadeTest {
 		assertEquals("Foo", valueFacade.getReferencedEntityName());
 	}
 	
+	@Test
+	public void testGetEntityName() {
+		SimpleValue simpleValueTarget = new SimpleValue(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = FACADE_FACTORY.createValue(simpleValueTarget);
+		assertNull(valueFacade.getEntityName());
+		RootClass pc = new RootClass(null);
+		pc.setEntityName("foobar");
+		OneToOne oneToOneTarget = new OneToOne(DummyMetadataBuildingContext.INSTANCE, null, pc);
+		valueFacade = FACADE_FACTORY.createValue(oneToOneTarget);
+		assertEquals("foobar", valueFacade.getEntityName());
+	}
+	
 }
