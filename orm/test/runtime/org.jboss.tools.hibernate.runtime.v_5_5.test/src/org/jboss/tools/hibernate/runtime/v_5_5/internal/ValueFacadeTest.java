@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
@@ -169,6 +170,17 @@ public class ValueFacadeTest {
 		assertNull(valueTarget.getElement());
 		valueFacade.setElement(elementFacade);
 		assertSame(elementTarget, valueTarget.getElement());
+	}
+	
+	@Test
+	public void testSetCollectionTable() {
+		Table tableTarget = new Table();
+		ITable tableFacade = FACADE_FACTORY.createTable(tableTarget);
+		Collection valueTarget = new Set(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		assertNull(valueTarget.getCollectionTable());
+		valueFacade.setCollectionTable(tableFacade);
+		assertSame(tableTarget, valueTarget.getCollectionTable());
 	}
 	
 }
