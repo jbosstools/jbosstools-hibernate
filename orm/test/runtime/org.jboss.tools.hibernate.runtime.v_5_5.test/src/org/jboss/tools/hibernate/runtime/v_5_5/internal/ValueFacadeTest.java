@@ -570,4 +570,13 @@ public class ValueFacadeTest {
 		assertEquals("foobar", collectionTarget.getRole());
 	}
 	
+	@Test
+	public void testSetReferencedEntityName() {
+		ManyToOne valueTarget = new ManyToOne(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		assertNull(valueTarget.getReferencedEntityName());
+		valueFacade.setReferencedEntityName("Foo");
+		assertEquals("Foo", valueTarget.getReferencedEntityName());
+	}
+	
 }
