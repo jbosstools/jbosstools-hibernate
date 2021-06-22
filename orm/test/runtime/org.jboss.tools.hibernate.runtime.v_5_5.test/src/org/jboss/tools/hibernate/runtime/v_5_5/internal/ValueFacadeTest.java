@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.runtime.v_5_5.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -10,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Iterator;
 import java.util.Properties;
 
+import org.hibernate.FetchMode;
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
@@ -507,6 +509,25 @@ public class ValueFacadeTest {
 		assertNull(collectionTarget.getKey());
 		collectionFacade.setKey(keyValueFacade);
 		assertSame(keyValueTarget, collectionTarget.getKey());
+	}
+	
+	@Test
+	public void testSetFetchModeJoin() {
+		SimpleValue simpleValueTarget = new SimpleValue(DummyMetadataBuildingContext.INSTANCE, null);
+		assertNotEquals(FetchMode.JOIN, simpleValueTarget.getFetchMode());
+		valueFacade = FACADE_FACTORY.createValue(simpleValueTarget);
+		valueFacade.setFetchModeJoin();
+		assertNotEquals(FetchMode.JOIN, simpleValueTarget.getFetchMode());
+		Collection collectionTarget = new Bag(DummyMetadataBuildingContext.INSTANCE, null);
+		assertNotEquals(FetchMode.JOIN, collectionTarget.getFetchMode());
+		valueFacade = FACADE_FACTORY.createValue(collectionTarget);
+		valueFacade.setFetchModeJoin();
+		assertEquals(FetchMode.JOIN, collectionTarget.getFetchMode());
+		ManyToOne manyToOneTarget = new ManyToOne(DummyMetadataBuildingContext.INSTANCE, null);
+		assertNotEquals(FetchMode.JOIN, manyToOneTarget.getFetchMode());
+		valueFacade = FACADE_FACTORY.createValue(manyToOneTarget);
+		valueFacade.setFetchModeJoin();
+		assertEquals(FetchMode.JOIN, manyToOneTarget.getFetchMode());
 	}
 	
 }
