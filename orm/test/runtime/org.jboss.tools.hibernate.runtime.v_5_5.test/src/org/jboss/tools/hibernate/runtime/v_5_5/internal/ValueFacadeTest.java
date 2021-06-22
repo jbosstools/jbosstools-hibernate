@@ -530,4 +530,13 @@ public class ValueFacadeTest {
 		assertEquals(FetchMode.JOIN, manyToOneTarget.getFetchMode());
 	}
 	
+	@Test
+	public void testIsInverse() {
+		Collection collectionTarget = new Bag(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = FACADE_FACTORY.createValue(collectionTarget);
+		assertFalse(valueFacade.isInverse());
+		collectionTarget.setInverse(true);
+		assertTrue(valueFacade.isInverse());
+	}
+	
 }
