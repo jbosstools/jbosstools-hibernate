@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Iterator;
+import java.util.Properties;
 
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
@@ -438,6 +439,16 @@ public class ValueFacadeTest {
 		columnIterator = simpleValueTarget.getColumnIterator();
 		assertTrue(columnIterator.hasNext());
 		assertSame(columnTarget, columnIterator.next());
+	}
+	
+	@Test
+	public void testGetTypeParameters() {
+		SimpleValue simpleValueTarget = new SimpleValue(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = FACADE_FACTORY.createValue(simpleValueTarget);
+		assertNull(simpleValueTarget.getTypeParameters());
+		Properties properties = new Properties();
+		valueFacade.setTypeParameters(properties);
+		assertSame(properties, simpleValueTarget.getTypeParameters());		
 	}
 	
 }
