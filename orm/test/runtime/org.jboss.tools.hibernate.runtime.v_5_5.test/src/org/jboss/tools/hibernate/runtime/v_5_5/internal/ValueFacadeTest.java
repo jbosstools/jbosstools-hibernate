@@ -426,4 +426,18 @@ public class ValueFacadeTest {
 		assertSame(propertyTarget, ((IFacade)propertyFacade).getTarget());
 	}
 	
+	@Test
+	public void testAddColumn() {
+		SimpleValue simpleValueTarget = new SimpleValue(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = FACADE_FACTORY.createValue(simpleValueTarget);
+		Iterator<?> columnIterator = simpleValueTarget.getColumnIterator();
+		assertFalse(columnIterator.hasNext());
+		Column columnTarget = new Column();
+		IColumn columnFacade = FACADE_FACTORY.createColumn(columnTarget);
+		valueFacade.addColumn(columnFacade);
+		columnIterator = simpleValueTarget.getColumnIterator();
+		assertTrue(columnIterator.hasNext());
+		assertSame(columnTarget, columnIterator.next());
+	}
+	
 }
