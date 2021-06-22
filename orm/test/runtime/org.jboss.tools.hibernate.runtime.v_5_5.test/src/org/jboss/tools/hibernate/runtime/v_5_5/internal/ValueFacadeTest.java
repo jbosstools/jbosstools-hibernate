@@ -561,4 +561,13 @@ public class ValueFacadeTest {
 		assertFalse(collectionTarget.isLazy());
 	}
 	
+	@Test
+	public void testSetRole() {
+		Collection collectionTarget = new Bag(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = FACADE_FACTORY.createValue(collectionTarget);
+		assertNull(collectionTarget.getRole());
+		valueFacade.setRole("foobar");
+		assertEquals("foobar", collectionTarget.getRole());
+	}
+	
 }
