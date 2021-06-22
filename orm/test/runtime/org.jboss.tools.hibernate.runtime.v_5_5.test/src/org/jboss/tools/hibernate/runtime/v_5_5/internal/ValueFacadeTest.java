@@ -37,6 +37,7 @@ import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
+import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
@@ -577,6 +578,20 @@ public class ValueFacadeTest {
 		assertNull(valueTarget.getReferencedEntityName());
 		valueFacade.setReferencedEntityName("Foo");
 		assertEquals("Foo", valueTarget.getReferencedEntityName());
+	}
+	
+	@Test
+	public void testSetAssociatedClass() {
+		RootClass rootClassTarget = new RootClass(null);
+		IPersistentClass rootClassFacade = 
+				FACADE_FACTORY.createPersistentClass(rootClassTarget);
+		OneToMany oneToManyTarget = new OneToMany(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = FACADE_FACTORY.createValue(oneToManyTarget);
+		assertNull(oneToManyTarget.getAssociatedClass());
+		valueFacade.setAssociatedClass(rootClassFacade);
+		assertSame(
+				rootClassTarget, 
+				oneToManyTarget.getAssociatedClass());
 	}
 	
 }
