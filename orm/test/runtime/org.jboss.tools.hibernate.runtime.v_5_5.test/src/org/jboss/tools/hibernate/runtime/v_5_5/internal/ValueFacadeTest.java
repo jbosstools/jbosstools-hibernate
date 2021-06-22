@@ -498,4 +498,15 @@ public class ValueFacadeTest {
 		assertEquals("foobar", arrayTarget.getElementClassName());
 	}
 	
+	@Test
+	public void testSetKey() {
+		KeyValue keyValueTarget = new SimpleValue(DummyMetadataBuildingContext.INSTANCE, null);
+		IValue keyValueFacade = FACADE_FACTORY.createValue(keyValueTarget);
+		Collection collectionTarget = new Bag(DummyMetadataBuildingContext.INSTANCE, null);
+		IValue collectionFacade = FACADE_FACTORY.createValue(collectionTarget);
+		assertNull(collectionTarget.getKey());
+		collectionFacade.setKey(keyValueFacade);
+		assertSame(keyValueTarget, collectionTarget.getKey());
+	}
+	
 }
