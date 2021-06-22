@@ -67,7 +67,8 @@ public class PersistenceXMLFileTest extends HibernateRedDeerTest {
 		return Arrays.asList(new Object[][] { 
 			{ "ecl-jpa10" },
 			{ "ecl-jpa20" },
-			{ "ecl-jpa21" }
+			{ "ecl-jpa21" },
+			{ "ecl-jpa22" }
 		});
 	}
 

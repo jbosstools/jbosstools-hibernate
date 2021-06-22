@@ -31,7 +31,9 @@ import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.hibernate.reddeer.console.views.KnownConfigurationsView;
+import org.jboss.tools.hibernate.reddeer.preference.HibernatePreferencePage;
 import org.jboss.tools.hibernate.ui.bot.test.Activator;
 import org.jboss.tools.hibernate.ui.bot.test.DatabaseUtils;
 import org.jboss.tools.hibernate.ui.bot.test.ProjectImporter;
@@ -68,6 +70,13 @@ public class HibernateRedDeerTest {
 		if(ps.isOpen()){
 			ps.close();
 		}
+		
+		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
+		preferenceDialog.open();
+		HibernatePreferencePage hibernatePreferencePage = new HibernatePreferencePage(preferenceDialog);
+		preferenceDialog.select(hibernatePreferencePage);
+		hibernatePreferencePage.enableAllRuntimes();
+		preferenceDialog.ok();
 	}
 	
 	@Before

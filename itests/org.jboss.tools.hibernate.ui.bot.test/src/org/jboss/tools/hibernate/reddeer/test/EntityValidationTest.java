@@ -44,7 +44,7 @@ import org.junit.runner.RunWith;
 public class EntityValidationTest extends HibernateRedDeerTest {
 
 	//TODO filter pom to add newest deps
-	private String PROJECT_NAME = "mvn-jpa21-hibernate43";
+	private String PROJECT_NAME = "mvn-jpa21-hibernate55";
 		
 	@Before 
 	public void prepare() {
