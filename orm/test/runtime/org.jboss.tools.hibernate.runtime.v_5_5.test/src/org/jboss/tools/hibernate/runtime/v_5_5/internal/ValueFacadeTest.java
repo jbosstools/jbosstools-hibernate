@@ -489,4 +489,13 @@ public class ValueFacadeTest {
 		assertEquals("foobar", valueFacade.getParentProperty());
 	}
 	
+	@Test
+	public void testSetElementClassName() {
+		Array arrayTarget = new Array(DummyMetadataBuildingContext.INSTANCE, null);
+		valueFacade = FACADE_FACTORY.createValue(arrayTarget);
+		assertNull(arrayTarget.getElementClassName());
+		valueFacade.setElementClassName("foobar");
+		assertEquals("foobar", arrayTarget.getElementClassName());
+	}
+	
 }
