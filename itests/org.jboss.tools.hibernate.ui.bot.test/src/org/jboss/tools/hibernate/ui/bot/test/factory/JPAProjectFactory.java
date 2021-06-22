@@ -16,13 +16,13 @@ import java.util.List;
 
 import org.eclipse.reddeer.common.logging.Logger;
 import org.eclipse.reddeer.common.wait.WaitWhile;
-import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.eclipse.ui.problems.Problem;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
-import org.jboss.tools.hibernate.reddeer.wizard.JpaFacetInstallPage;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.hibernate.reddeer.wizard.JPAProjectWizard;
 import org.jboss.tools.hibernate.reddeer.wizard.JPAProjectWizardFirstPage;
+import org.jboss.tools.hibernate.reddeer.wizard.JpaFacetInstallPage;
 
 /**
  * JPA Project RedDeer factory
@@ -48,6 +48,7 @@ public class JPAProjectFactory {
 
 		JPAProjectWizardFirstPage firstPage = new JPAProjectWizardFirstPage(wizard);
 		firstPage.setProjectName(prj);
+		selectTargetRuntime(firstPage);
 		firstPage.setJPAVersion(version);
 
 		wizard.next();
@@ -67,6 +68,16 @@ public class JPAProjectFactory {
 		List<Problem> allErrors = problemsView.getProblems(ProblemType.ERROR);
 		problemsView.open();
 		assertTrue("No problems are expected (JBIDE-17855)", allErrors.size() == 0);
+	}
+	
+	private static void selectTargetRuntime(JPAProjectWizardFirstPage firstPage) {
+		List<String> runtimes = firstPage.getTargetRuntimes();
+		for (String runtime : runtimes) {
+			if (runtime.contains("11")) {
+				firstPage.setTargetRuntime(runtime);
+				break;
+			}
+		}
 	}
 	
 }

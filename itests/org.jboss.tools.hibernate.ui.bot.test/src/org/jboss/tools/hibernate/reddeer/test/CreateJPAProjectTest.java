@@ -49,6 +49,7 @@ public class CreateJPAProjectTest extends HibernateRedDeerTest {
         		{"jpa10test","1.0","Hibernate (JPA 1.x)"},
         		{"jpa20test","2.0","Hibernate (JPA 2.0)"},
         		{"jpa21test","2.1","Hibernate (JPA 2.1)"},
+        		{"jpa22test","2.2","Generic 2.2"},
            });
     }
 	
