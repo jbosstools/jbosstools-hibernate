@@ -480,4 +480,13 @@ public class ValueFacadeTest {
 				((IFacade)bagValueFacade.getElement()).getTarget());
 	}
 	
+	@Test
+	public void testGetParentProperty() {
+		Component componentTarget = new Component(DummyMetadataBuildingContext.INSTANCE, new RootClass(null));
+		IValue valueFacade = FACADE_FACTORY.createValue(componentTarget);
+		assertNull(valueFacade.getParentProperty());
+		componentTarget.setParentProperty("foobar");
+		assertEquals("foobar", valueFacade.getParentProperty());
+	}
+	
 }
