@@ -25,11 +25,11 @@ import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.IPropertySourceProvider;
 import org.hibernate.console.QueryPage;
 import org.hibernate.eclipse.console.common.ConsoleExtension;
+import org.hibernate.eclipse.console.common.HibernateExtension;
 import org.hibernate.eclipse.console.views.QueryPageTabView;
 
-public class HibernatePropertySourceProvider implements IPropertySourceProvider
-{	
-	// TODO: refactor to be some interface that can provide currentsession and currentconfiguration
+public class HibernatePropertySourceProvider implements IPropertySourceProvider {	
+
 	private final QueryPageTabView view;
 
 	public HibernatePropertySourceProvider(QueryPageTabView view) {
@@ -37,6 +37,7 @@ public class HibernatePropertySourceProvider implements IPropertySourceProvider
 	}
 
 	public IPropertySource getPropertySource(Object object) {
+		IPropertySource result = null;
 		if (object==null) {
 			return null;
 		}
@@ -49,20 +50,17 @@ public class HibernatePropertySourceProvider implements IPropertySourceProvider
 		}
 		else {
 			QueryPage selectedQueryPage = view.getSelectedQueryPage();
-			ConsoleExtension consoleExtension = selectedQueryPage.getHibernateExtension().getConsoleExtension();
-			return consoleExtension.getPropertySource(object, selectedQueryPage);
-			/*return (IPropertySource) selectedQueryPage.getAdapter(IPropertySource.class);
-			//			 maybe we should be hooked up with the queryview to get this ?
-			Session currentSession = .getSession();
-			String consoleConfigName = view.getSelectedQueryPage().getConsoleConfiguration().getName();
-			if((currentSession.isOpen() && currentSession.contains(object)) || hasMetaData( object, currentSession) ) {
-				return new EntityPropertySource(object, currentSession, consoleConfigName);	
-			} else {*/
-				//return null;
-			//}
-			
-		}
-		
+			if (selectedQueryPage != null) {
+				HibernateExtension hibernateExtension = selectedQueryPage.getHibernateExtension();
+				if (hibernateExtension != null) {
+					ConsoleExtension consoleExtension = hibernateExtension.getConsoleExtension();
+					if (consoleExtension != null) {
+						result = consoleExtension.getPropertySource(object, selectedQueryPage);
+					}
+				}
+			}
+			return result;
+		}		
 	}
 
 }
