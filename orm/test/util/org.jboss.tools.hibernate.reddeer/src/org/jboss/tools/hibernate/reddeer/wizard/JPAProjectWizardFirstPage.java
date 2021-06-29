@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.wizard;
 
+import java.util.List;
+
 import org.eclipse.reddeer.core.reference.ReferencedComposite;
 import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewJavaProjectWizardPageOne;
 import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
@@ -34,5 +36,22 @@ public class JPAProjectWizardFirstPage extends NewJavaProjectWizardPageOne {
 	 */
 	public void setJPAVersion(String version) {
 		new DefaultCombo(referencedComposite, 1).setSelection(version.toString());
+	}
+	
+	/**
+	 * Set target runtime
+	 * @param runtime runtime version to set
+	 */
+	public void setTargetRuntime(String runtime) {
+		new DefaultCombo(referencedComposite, 0).setSelection(runtime.toString());
+		
+	}
+
+	/**
+	 * Get list of available runtimes
+	 * @return list of runtimes
+	 */
+	public List<String> getTargetRuntimes() {
+		return new DefaultCombo(referencedComposite, 0).getItems();
 	}
 }
