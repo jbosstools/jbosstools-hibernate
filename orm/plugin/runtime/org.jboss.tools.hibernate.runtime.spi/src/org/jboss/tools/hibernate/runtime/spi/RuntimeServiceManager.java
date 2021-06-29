@@ -121,7 +121,7 @@ public class RuntimeServiceManager {
 					String name = configurationElement.getAttribute("name");
 					if (object != null && name != null && object instanceof IService) {
 						servicesMap.put(name, (IService)object);
-						if (!Boolean.valueOf(configurationElement.getAttribute("disabled", "false"))) {
+						if (!"true".equals(configurationElement.getAttribute("disabled"))) {
 							initiallyEnabledVersions.add(name);
 						}
 					}
