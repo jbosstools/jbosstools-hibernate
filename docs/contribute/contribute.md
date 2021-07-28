@@ -8,7 +8,7 @@ Using our own dogfood, we use JBoss Tools as our development environment. JBoss 
 
 Download the latest Eclipse platform for your OS from the Eclipse website. We will use the Eclipse IDE for Enterprise Java and Web Developers. You will find the most current download URL for this on the [Eclipse packages page](https://www.eclipse.org/downloads/packages/).
 
-<img src="images/eclipse-packages-page.png" width="1000" />
+<img src="images/eclipse-packages-page.png" width="800" />
 
 Install the downloaded artifact according to the instructions for your OS and launch Eclipse using the workspace of your choice.
 
@@ -16,7 +16,7 @@ Install the downloaded artifact according to the instructions for your OS and la
 
 After closing the welcome screen your Eclipse window should look more or less (depending on the OS on which you are working) like the screenshot below.
 
-<img src="images/initial-eclipse-window.png" width="1000" />
+<img src="images/initial-eclipse-window.png" width="800" />
 
 Now we are ready to add the JBoss Tools plugins.
 
@@ -107,3 +107,40 @@ Building the project is as simple as issuing `mvn clean install` or `mvn clean v
 
 Now we are ready to import the project into our JBoss Tools installation.
 
+## Import the JBoss Tools Hibernate Code Base
+
+In the fresh JBoss Tools workbench that you installed earlier, open the Eclipse import wizard e.g. using the 'File > Import...' menu. On the 'Select' page of the wizard, select the 'Maven -> Existing Maven Projects' and afterwards push the 'Next >' button. 
+
+<img src="images/import-select.png" width="400" />
+
+On the 'Maven Projects' page of the wizard, use the 'Browse...' button to navigate to the root folder of your local JBoss Tools Hibernate clone that you created previously.
+
+<img src="images/import-maven-projects.png" width="400" />
+
+Just accept the defaults and make sure everything is selected. Push the 'Finish' button to start the import. At the end of the process a new popup window will appear inviting you to set up Maven plugin connectors that are lacking. 
+
+<img src="images/m2e-connectors-discover.png" width="400" />
+
+A m2e connector for the Maven Dependency plugin is not installed. Push the 'Finish' button to launch the discovery process for this plugin. After some time the 'Install' wizard appears.
+
+<img src="images/m2e-connectors-install.png" width="600" />
+
+Push the 'Next >' button to arrive at the 'Install Details' page of the wizard.
+
+<img src="images/m2e-connectors-install-details.png" width="600" />
+
+Push the 'Next >' button again to arrive at the 'Review Licenses' page of the wizard.
+
+<img src="images/m2e-connectors-review-licenses.png" width="600" />
+
+Accept the license and push the 'Finish' button to launch the installation of the plugin in the workbench. After a while, we get the security warning that we still know from the JBoss Tools installation earlier.
+
+<img src="images/security-warning.png" width="400" />
+
+Push the 'Install anyway' button and when invited restart the workbench to apply the changes by pushing the 'Restart Now' button.
+
+When the workbench reopens, you will need to wait some time for the Maven projects to be updated and rebuild. After that you will be ready to work on the source code. 
+
+<img src="images/final-eclipse-window.png" width="800" />
+
+Congratulations! You have succesfully imported the JBoss Tools Hibernate code base. In the next section, we will talk more about how to contribute the changes you make.
