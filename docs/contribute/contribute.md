@@ -1,9 +1,11 @@
 # Contribution guide
 
 ## Install JBoss Tools
+
 Using our own dogfood, we use JBoss Tools as our development environment. JBoss Tools is a set of plugins for the Eclipse platform, so we'll start by obtaining that.
 
 ### Get the Eclipse Platform
+
 Download the latest Eclipse platform for your OS from the Eclipse website. We will use the Eclipse IDE for Enterprise Java and Web Developers. You will find the most current download URL for this on the [Eclipse packages page](https://www.eclipse.org/downloads/packages/).
 
 <img src="images/eclipse-packages-page.png" width="1000" />
@@ -57,3 +59,51 @@ Press 'Next >' again to review and accept the licenses.
 <img src="images/review-licenses-core-tests.png" width="600" />
 
 Press 'Finish' to launch the installation and 'Install anyway' in the security warning popup. After restarting, the JBoss Tools test plugins are installed as well and we are ready to import the JBoss Tools Hibernate code base.
+
+## Prepare the JBoss Tools Hibernate Code Base
+
+### Fork the JBoss Tools Hibernate GitHub Repository
+
+Navigate to the [JBoss Tools Hibernate](https://github.com/jbosstools/jbosstools-hibernate) repository on GitHub and use the 'Fork' button in the topright corner of your screen to create a fork in your own github account.
+
+<img src="images/fork-from-github.png" width="400" />
+ 
+### Create a Local Clone
+
+In a command-line window, navigate to the parent folder of where you want the JBoss Tools Hibernate code base to be cloned and issue the following command :
+
+```
+git clone https://github.com/jbosstools/jbosstools-hibernate
+```
+
+<img src="images/create-local-clone.png" width="600" />
+
+### Add Your Personal Repository as Remote
+
+Use the command-line to navigate to your fresh local clone and issue the following command :
+
+```
+git remote add <remote-name> https://github.com/<your-github-account-name>/jbosstools-hibernate
+```
+
+Make sure to replace `<your-github-account-name>` by your GitHub account name and `<remote-name>` with a name of your choice (a good suggestion is to also use your GitHub account name). 
+
+One more thing to do is to fetch the branches of your newly added personal remote repository by issuing the command :
+
+```
+git fetch <remote-name>
+```
+<img src="images/add-personal-repo.png" width="600" />
+
+### Build the Project
+
+We are using [Tycho](https://projects.eclipse.org/projects/technology) and [Maven](https://maven.apache.org) to build the project. Make sure that Maven is installed and that your Java version is at least 11. You can check your configuration by issuing `mvn version`.
+
+<img src="images/mvn-version.png" width="600" />
+
+Building the project is as simple as issuing `mvn clean install` or `mvn clean verify`. This will include running all the tests of the project. Because this takes a while, you might want to skip this step. Do this by adding the 'skipTests' parameter: `mvn clean install -DskipTests=true`.
+
+<img src="images/mvn-clean-install.png" width="600" />
+
+Now we are ready to import the project into our JBoss Tools installation.
+
