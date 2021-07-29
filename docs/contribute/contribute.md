@@ -144,3 +144,36 @@ When the workbench reopens, you will need to wait some time for the Maven projec
 <img src="images/final-eclipse-window.png" width="800" />
 
 Congratulations! You have succesfully imported the JBoss Tools Hibernate code base. In the next section, we will talk more about how to contribute the changes you make.
+
+## Contributing Code
+
+### Create a Topic Branch
+
+All changes to the JBoss Tools Hibernate code base have to be related to a bug, task or new feature that was registered in the [JBoss Tools JIRA repository](https://issues.redhat.com/projects/JBIDE). All the issues in this repository are identified by an identifier of the form 'JBIDE-XXXXX' where the X's represent the issue number. A good practice is to create a topic branch in your local code base with the same name as the identifier of the issue you are working on. You can do this in from a command-line prompt. When you are on the master branch, use:
+
+```
+git checkout -b JBIDE-XXXXX
+```
+
+Now you are ready to do the modifications you need. 
+
+### Modify or Add Some Code
+
+The main thing to think about when you are adding code or doing modifications is that the increments should be small and sizable. Ideally and in line with the test driven development methodology, you write a test that illustrates the changes you are making of the new feature that you are implementing along with the proposed changes. When you are happy with your changes, you create a commit on your topic branch making sure that you use the -s flag to sign off the commit and the -m flag to add a comment. This comment should always begin with the identifier of the JIRA issue that you are working on and include the title of the issue. If the one commit does not completely solve or implement the issue, you can add a description of the particular changes in the commit comment.
+
+```
+git add .
+git commit -s -s "JBIDE-XXXXX: <JBoss Tools Hibernate issue summary> - <Description of the changes>"
+```
+
+### Create a Pull Request
+
+Ideally, you only submit one commit per pull request. You can always can squash multiple commits into one if needed. To create the pull request, push your changes to your personal remote repository on GitHub.
+
+```
+git push <remote-name> JBIDE-XXXXX
+```
+
+You can then use a browser to navigate to your GitHub page (https://github.com/koentsje/jbosstools-hibernate/pulls). The recently pushed branch should be listed. Push the 'Compare & pull request' button and on the next page the 'Create pull request' button to create the pull request.
+
+One of the JBoss Tools Hibernate developers will then review your pull request and accept it when everything is OK or give some feedback when there are things that need to be adapted.
