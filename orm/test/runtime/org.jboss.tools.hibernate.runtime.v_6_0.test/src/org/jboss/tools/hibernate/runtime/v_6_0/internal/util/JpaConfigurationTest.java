@@ -23,6 +23,7 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.dialect.Dialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -78,6 +79,7 @@ public class JpaConfigurationTest {
 		assertEquals("bar", jpaConfiguration.getProperties().get("foo"));
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetMetadata() {
 		JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", null);
@@ -87,6 +89,7 @@ public class JpaConfigurationTest {
 		assertSame(metadata, jpaConfiguration.metadata);
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testBuildSessionFactory() {
 		JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", null);
@@ -155,6 +158,7 @@ public class JpaConfigurationTest {
 		assertEquals("foobar", jpaConfiguration.getPersistenceUnit());
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testInitialize() {
 		JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", null);

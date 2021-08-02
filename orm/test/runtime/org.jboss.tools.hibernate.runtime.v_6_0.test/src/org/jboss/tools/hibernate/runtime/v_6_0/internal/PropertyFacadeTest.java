@@ -31,6 +31,7 @@ import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class PropertyFacadeTest {
@@ -70,6 +71,7 @@ public class PropertyFacadeTest {
 		assertEquals("foo", propertyTarget.getName());
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testSetPersistentClass() throws Exception {
 		Field field = AbstractPropertyFacade.class.getDeclaredField("persistentClass");
@@ -84,6 +86,7 @@ public class PropertyFacadeTest {
 		assertSame(persistentClassTarget, propertyTarget.getPersistentClass());
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetPersistentClass() throws Exception {
 		Field field = AbstractPropertyFacade.class.getDeclaredField("persistentClass");
@@ -98,6 +101,7 @@ public class PropertyFacadeTest {
 		assertSame(persistentClassTarget, ((IFacade)persistentClassFacade).getTarget());
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testIsComposite() {
 		propertyTarget.setValue(createValue());

@@ -28,6 +28,7 @@ import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -85,6 +86,7 @@ public class SessionFactoryFacadeTest {
 		sessionFactoryFacade = new SessionFactoryFacadeImpl(FACADE_FACTORY, sessionFactoryTarget);
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testClose() {
 		assertFalse(sessionFactoryTarget.isClosed());
@@ -92,6 +94,7 @@ public class SessionFactoryFacadeTest {
 		assertTrue(sessionFactoryTarget.isClosed());
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetAllClassMetadata() throws Exception {
 		Field field = AbstractSessionFactoryFacade.class.getDeclaredField("allClassMetadata");
@@ -103,6 +106,7 @@ public class SessionFactoryFacadeTest {
 		assertNotNull(allClassMetadata.get(Foo.class.getName()));
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetAllCollectionMetadata() throws Exception {
 		Field field = AbstractSessionFactoryFacade.class.getDeclaredField("allCollectionMetadata");
@@ -114,6 +118,7 @@ public class SessionFactoryFacadeTest {
 		assertNotNull(allCollectionMetadata.get(Foo.class.getName() + ".bars"));
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testOpenSession() throws Exception {
 		assertNull(((TestSessionFactory)sessionFactoryTarget).session);
@@ -122,6 +127,7 @@ public class SessionFactoryFacadeTest {
 		assertSame(((TestSessionFactory)sessionFactoryTarget).session, ((IFacade)sessionFacade).getTarget());
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetClassMetadata() throws Exception {
 		Field field = AbstractSessionFactoryFacade.class.getDeclaredField("allClassMetadata");
@@ -140,6 +146,7 @@ public class SessionFactoryFacadeTest {
 		assertNotNull(field.get(sessionFactoryFacade));
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetCollectionMetadata() throws Exception {
 		Field field = AbstractSessionFactoryFacade.class.getDeclaredField("allCollectionMetadata");

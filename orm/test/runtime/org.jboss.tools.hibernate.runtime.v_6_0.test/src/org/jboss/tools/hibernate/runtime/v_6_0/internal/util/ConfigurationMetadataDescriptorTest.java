@@ -16,6 +16,7 @@ import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.ConfigurationFacadeImpl;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.FacadeFactoryImpl;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class ConfigurationMetadataDescriptorTest {
@@ -62,6 +63,7 @@ public class ConfigurationMetadataDescriptorTest {
 		assertSame(properties, configurationMetadataDescriptor.getProperties());
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testCreateMetadata() {
 		MetadataSources metadataSources = new MetadataSources();

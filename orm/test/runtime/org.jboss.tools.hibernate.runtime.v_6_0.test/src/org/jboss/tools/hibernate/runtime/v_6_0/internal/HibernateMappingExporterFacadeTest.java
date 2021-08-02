@@ -41,6 +41,7 @@ import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.DummyMetadataBuildingContext;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -61,6 +62,7 @@ public class HibernateMappingExporterFacadeTest {
 				new HibernateMappingExporterFacadeImpl(FACADE_FACTORY, hibernateMappingExporter);
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testStart() throws Exception {
 		MetadataDescriptor descriptor = new TestMetadataDescriptor();
@@ -128,6 +130,7 @@ public class HibernateMappingExporterFacadeTest {
 		assertSame(delegate, delegateField.get(hibernateMappingExporter));
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testExportPOJO() throws Exception {
 		RootClass persistentClass = new RootClass(null);

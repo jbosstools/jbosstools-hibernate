@@ -14,8 +14,10 @@ import org.hibernate.Hibernate;
 import org.hibernate.boot.internal.BootstrapContextImpl;
 import org.hibernate.boot.internal.InFlightMetadataCollectorImpl;
 import org.hibernate.boot.internal.MetadataBuilderImpl.MetadataBuildingOptionsImpl;
+import org.hibernate.boot.internal.MetadataBuildingContextRootImpl;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
@@ -245,7 +247,8 @@ public class ServiceImpl extends AbstractService {
 						properties );
 		RevengStrategy revengStrategy = (RevengStrategy)((IFacade)strategy).getTarget();
 	    DatabaseReader reader = DatabaseReader.create(properties,revengStrategy,mdd, serviceRegistry);
-	    RevengMetadataCollector revengMetadataCollector = new RevengMetadataCollector(metadataCollector);
+	    MetadataBuildingContext metadataBuildingContext = new MetadataBuildingContextRootImpl("JBoss Tools", bootstrapContext, metadataBuildingOptions, metadataCollector);
+	    RevengMetadataCollector revengMetadataCollector = new RevengMetadataCollector(metadataBuildingContext);
 		reader.readDatabaseSchema(revengMetadataCollector);
 		Map<String, List<ITable>> result = new HashMap<String, List<ITable>>();
 		for (Table table : revengMetadataCollector.getTables()) {

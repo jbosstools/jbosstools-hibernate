@@ -81,6 +81,7 @@ import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class FacadeFactoryTest {
@@ -302,6 +303,7 @@ public class FacadeFactoryTest {
 		assertSame(join, ((IFacade)facade).getTarget());		
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testCreatePersistentClass() {
 		PersistentClass persistentClass = new RootClass(null);
@@ -367,6 +369,7 @@ public class FacadeFactoryTest {
 		assertSame(session, ((IFacade)facade).getTarget());
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testCreateSpecialRootClass() {
 		Property target = new Property();

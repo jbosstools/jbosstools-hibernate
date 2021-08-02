@@ -45,6 +45,7 @@ import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.DummyMetadataBuildingContext;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class ValueFacadeTest {
@@ -108,6 +109,7 @@ public class ValueFacadeTest {
 		assertTrue(valueFacade.isManyToOne());
 	}
 
+	@Disabled //TODO: JBIDE-27958
 	@Test 
 	public void testIsOneToOne() {
 		valueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
@@ -128,6 +130,7 @@ public class ValueFacadeTest {
 		assertTrue(valueFacade.isMap());
 	}
 
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testIsComponent() {
 		valueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
@@ -138,6 +141,7 @@ public class ValueFacadeTest {
 		assertTrue(valueFacade.isComponent());
 	}
 
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testIsEmbedded() {
 		valueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
@@ -151,6 +155,7 @@ public class ValueFacadeTest {
 		assertFalse(valueFacade.isEmbedded());
 	}
 
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testIsToOne() {
 		valueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
@@ -244,6 +249,7 @@ public class ValueFacadeTest {
 		assertEquals("java.lang.Integer", valueTarget.getTypeName());
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetComponentClassName() {
 		Component valueTarget = new Component(DummyMetadataBuildingContext.INSTANCE, new RootClass(null));
@@ -406,6 +412,7 @@ public class ValueFacadeTest {
 		assertEquals("Foo", valueFacade.getReferencedEntityName());
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetEntityName() {
 		SimpleValue simpleValueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
@@ -418,6 +425,7 @@ public class ValueFacadeTest {
 		assertEquals("foobar", valueFacade.getEntityName());
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetPropertyIterator() {
 		Component componentTarget = new Component(DummyMetadataBuildingContext.INSTANCE, new RootClass(null));
@@ -467,6 +475,7 @@ public class ValueFacadeTest {
 		assertEquals("foobar", valueFacade.getForeignKeyName());
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetOwner() {
 		RootClass rc = new RootClass(null);
@@ -487,6 +496,7 @@ public class ValueFacadeTest {
 				((IFacade)bagValueFacade.getElement()).getTarget());
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetParentProperty() {
 		Component componentTarget = new Component(DummyMetadataBuildingContext.INSTANCE, new RootClass(null));
@@ -544,6 +554,7 @@ public class ValueFacadeTest {
 		assertTrue(valueFacade.isInverse());
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetAssociatedClass() {
 		RootClass rootClass = new RootClass(null);
@@ -584,6 +595,7 @@ public class ValueFacadeTest {
 		assertEquals("Foo", valueTarget.getReferencedEntityName());
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testSetAssociatedClass() {
 		RootClass rootClassTarget = new RootClass(null);

@@ -23,7 +23,7 @@ public class DummyMetadataBuildingContext {
 		MetadataBuildingOptions metadataBuildingOptions = new MetadataBuilderImpl.MetadataBuildingOptionsImpl(serviceRegistry);
 		BootstrapContext bootstrapContext = new BootstrapContextImpl(serviceRegistry, metadataBuildingOptions);
 		InFlightMetadataCollector inflightMetadataCollector = new InFlightMetadataCollectorImpl(bootstrapContext, metadataBuildingOptions);
-		return new MetadataBuildingContextRootImpl(bootstrapContext, metadataBuildingOptions, inflightMetadataCollector);
+		return new MetadataBuildingContextRootImpl("JBoss Tools", bootstrapContext, metadataBuildingOptions, inflightMetadataCollector);
 	}
 
 	public static class DummyDialect extends Dialect {

@@ -164,6 +164,7 @@ public class ColumnFacadeTest {
 						bootstrapContext,
 						metadataBuildingOptions);
 		return new MetadataBuildingContextRootImpl(
+						"JBoss Tools",
 						bootstrapContext, 
 						metadataBuildingOptions, 
 						inFlightMetadataCollector);

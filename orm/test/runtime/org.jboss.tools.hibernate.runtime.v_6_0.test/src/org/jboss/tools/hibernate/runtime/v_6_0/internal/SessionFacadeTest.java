@@ -20,6 +20,7 @@ import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 import org.hibernate.query.spi.QueryImplementor;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
@@ -117,7 +118,7 @@ public class SessionFacadeTest {
 		}
 		
 		private boolean isOpen = false;
-		private CriteriaBuilder criteriaBuilder = null;
+		private HibernateCriteriaBuilder criteriaBuilder = null;
 		private CriteriaQuery<?> criteriaQuery = null;
 		private Class<?> fromClass = null;
 		private Root<?> root = null;
@@ -172,15 +173,15 @@ public class SessionFacadeTest {
 		}
 		
 		@Override
-		public CriteriaBuilder getCriteriaBuilder() {
+		public HibernateCriteriaBuilder getCriteriaBuilder() {
 			criteriaBuilder = createCriteriaBuilder();
 			return criteriaBuilder;
 		}
 		
-		private CriteriaBuilder createCriteriaBuilder() {
-			return (CriteriaBuilder)Proxy.newProxyInstance(
+		private HibernateCriteriaBuilder createCriteriaBuilder() {
+			return (HibernateCriteriaBuilder)Proxy.newProxyInstance(
 					SessionFacadeTest.class.getClassLoader(), 
-					new Class[] { CriteriaBuilder.class }, 
+					new Class[] { HibernateCriteriaBuilder.class }, 
 					new InvocationHandler() {
 					@Override
 					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {

@@ -15,6 +15,7 @@ import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.DummyMetadataBuildingContext;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class Cfg2HbmToolFacadeTest {
@@ -30,6 +31,7 @@ public class Cfg2HbmToolFacadeTest {
 		cfg2HbmToolFacade = new AbstractCfg2HbmToolFacade(FACADE_FACTORY, cfg2HbmToolTarget) {};
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetTagPersistentClass() {
 		PersistentClass target = new RootClass(null);
@@ -37,6 +39,7 @@ public class Cfg2HbmToolFacadeTest {
 		assertEquals("class", cfg2HbmToolFacade.getTag(persistentClass));
 	}
 
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetTagProperty() throws Exception {
 		RootClass rc = new RootClass(null);

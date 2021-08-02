@@ -48,6 +48,7 @@ import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JdbcMetadataConfigu
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.MetadataHelper;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.MetadataHelperTest;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -243,6 +244,7 @@ public class ConfigurationFacadeTest {
 		assertNotNull(metadata.getEntityBinding(fooClassName));
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testAddClass() {
 		PersistentClass persistentClass = new RootClass(null);
@@ -263,6 +265,7 @@ public class ConfigurationFacadeTest {
 	}
 
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testBuildSessionFactory() throws Throwable {
 		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
@@ -274,6 +277,7 @@ public class ConfigurationFacadeTest {
 		assertTrue(sessionFactory instanceof SessionFactory);
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetClassMappings() {
 		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
@@ -339,6 +343,7 @@ public class ConfigurationFacadeTest {
 		connection.close();
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetClassMapping() {
 		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());

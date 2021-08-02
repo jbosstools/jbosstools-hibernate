@@ -42,6 +42,7 @@ import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class ClassMetadataFacadeTest {
@@ -57,42 +58,50 @@ public class ClassMetadataFacadeTest {
 		classMetadataFacade = new ClassMetadataFacadeImpl(FACADE_FACTORY, classMetadataTarget);
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetEntityName() {
 		assertEquals("foobar", classMetadataFacade.getEntityName());
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetIdentifierPropertyName() {
 		assertEquals("foo", classMetadataFacade.getIdentifierPropertyName());
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetPropertyNames() {
 		assertSame(PROPERTY_NAMES, classMetadataFacade.getPropertyNames());
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetPropertyTypes() {
 		IType[] typeFacades = classMetadataFacade.getPropertyTypes();
 		assertSame(TYPE_INSTANCE, ((IFacade)typeFacades[0]).getTarget());
  	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetMappedClass() {
 		assertSame(FooBar.class, classMetadataFacade.getMappedClass());
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetIdentifierType() {
 		assertSame(TYPE_INSTANCE, ((IFacade)classMetadataFacade.getIdentifierType()).getTarget());
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetPropertyValue() {
 		assertSame(PROPERTY_VALUE, classMetadataFacade.getPropertyValue(null, null));
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testHasIdentifierProperty() {
 		assertFalse(classMetadataFacade.hasIdentifierProperty());
@@ -100,6 +109,7 @@ public class ClassMetadataFacadeTest {
 		assertTrue(classMetadataFacade.hasIdentifierProperty());
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test 
 	public void testGetIdentifier() {
 		assertNull(((TestEntityPersister)classMetadataTarget).session);
@@ -111,6 +121,7 @@ public class ClassMetadataFacadeTest {
 		assertSame(sessionTarget, ((TestEntityPersister)classMetadataTarget).session);
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testIsInstanceOfAbstractEntityPersister() {
 		assertTrue(classMetadataFacade.isInstanceOfAbstractEntityPersister());
@@ -127,6 +138,7 @@ public class ClassMetadataFacadeTest {
 		assertFalse(classMetadataFacade.isInstanceOfAbstractEntityPersister());
 	}
 	
+	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetEntityMetamodel() {
 		IEntityMetamodel entityMetamodel = classMetadataFacade.getEntityMetamodel();
@@ -149,6 +161,7 @@ public class ClassMetadataFacadeTest {
 						metadataBuildingOptions);
 		MetadataBuildingContext metadataBuildingContext = 
 				new MetadataBuildingContextRootImpl(
+						"JBoss Tools",
 						bootstrapContext, 
 						metadataBuildingOptions, 
 						inFlightMetadataCollector);
