@@ -251,10 +251,11 @@ public class ValueFacadeTest {
 		assertEquals("java.lang.Integer", valueTarget.getTypeName());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetComponentClassName() {
-		Component valueTarget = new Component(DummyMetadataBuildingContext.INSTANCE, new RootClass(null));
+		Component valueTarget = new Component(
+				DummyMetadataBuildingContext.INSTANCE, 
+				new RootClass(DummyMetadataBuildingContext.INSTANCE));
 		valueFacade = new AbstractValueFacade(FACADE_FACTORY, valueTarget) {};
 		assertNull(valueFacade.getComponentClassName());
 		valueTarget.setComponentClassName("org.foo.Bar");
