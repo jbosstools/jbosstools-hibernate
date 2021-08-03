@@ -157,13 +157,15 @@ public class ValueFacadeTest {
 		assertFalse(valueFacade.isEmbedded());
 	}
 
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testIsToOne() {
 		valueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
 		valueFacade = new AbstractValueFacade(FACADE_FACTORY, valueTarget) {};
 		assertFalse(valueFacade.isToOne());
-		ToOne toOne = new OneToOne(DummyMetadataBuildingContext.INSTANCE, null, new RootClass(null));
+		ToOne toOne = new OneToOne(
+				DummyMetadataBuildingContext.INSTANCE, 
+				null, 
+				new RootClass(DummyMetadataBuildingContext.INSTANCE));
 		valueFacade = new AbstractValueFacade(FACADE_FACTORY, toOne) {};
 		assertTrue(valueFacade.isToOne());
 	}
