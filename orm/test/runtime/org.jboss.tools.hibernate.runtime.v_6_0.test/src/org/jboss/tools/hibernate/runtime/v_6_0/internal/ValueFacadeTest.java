@@ -599,10 +599,9 @@ public class ValueFacadeTest {
 		assertEquals("Foo", valueTarget.getReferencedEntityName());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testSetAssociatedClass() {
-		RootClass rootClassTarget = new RootClass(null);
+		RootClass rootClassTarget = new RootClass(DummyMetadataBuildingContext.INSTANCE);
 		IPersistentClass rootClassFacade = 
 				FACADE_FACTORY.createPersistentClass(rootClassTarget);
 		OneToMany oneToManyTarget = new OneToMany(DummyMetadataBuildingContext.INSTANCE, null);
