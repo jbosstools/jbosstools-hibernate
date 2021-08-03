@@ -66,7 +66,8 @@ public class CodeGenerationKeyWordsTest extends HibernateRedDeerTest {
         		{"mvn-hibernate51","5.1"},
         		{"mvn-hibernate52","5.2"},
         		{"mvn-hibernate53","5.3"},
-        		{"mvn-hibernate54","5.4"}
+        		{"mvn-hibernate54","5.4"},
+        		{"mvn-hibernate55","5.5"},
            });
     }
     

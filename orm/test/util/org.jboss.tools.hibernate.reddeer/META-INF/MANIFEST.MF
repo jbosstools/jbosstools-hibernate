@@ -13,25 +13,26 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.tools.common.reddeer,
  org.eclipse.ui.editors
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: org.jboss.tools.hibernate.reddeer,
- org.jboss.tools.hibernate.reddeer.console,
- org.jboss.tools.hibernate.reddeer.dialog,
- org.jboss.tools.hibernate.reddeer.editor,
- org.jboss.tools.hibernate.reddeer.perspective,
- org.jboss.tools.hibernate.reddeer.view,
- org.jboss.tools.hibernate.reddeer.wizard,
+ org.jboss.tools.hibernate.reddeer.codegen,
  org.jboss.tools.hibernate.reddeer.condition,
+ org.jboss.tools.hibernate.reddeer.console,
+ org.jboss.tools.hibernate.reddeer.console.views,
  org.jboss.tools.hibernate.reddeer.console.wizards,
  org.jboss.tools.hibernate.reddeer.criteriaeditor,
- org.jboss.tools.hibernate.reddeer.ui.xml.editor,
- org.jboss.tools.hibernate.reddeer.console.views,
+ org.jboss.tools.hibernate.reddeer.dialog,
+ org.jboss.tools.hibernate.reddeer.editor,
  org.jboss.tools.hibernate.reddeer.hqleditor,
- org.jboss.tools.hibernate.reddeer.mapper.editors,
- org.jboss.tools.hibernate.reddeer.jdt.ui.wizards,
- org.jboss.tools.hibernate.reddeer.codegen,
  org.jboss.tools.hibernate.reddeer.jdt.ui.jpa.process.wizard,
- org.jboss.tools.hibernate.reddeer.jpt.ui.wizard
+ org.jboss.tools.hibernate.reddeer.jdt.ui.wizards,
+ org.jboss.tools.hibernate.reddeer.jpt.ui.wizard,
+ org.jboss.tools.hibernate.reddeer.mapper.editors,
+ org.jboss.tools.hibernate.reddeer.perspective,
+ org.jboss.tools.hibernate.reddeer.preference,
+ org.jboss.tools.hibernate.reddeer.ui.xml.editor,
+ org.jboss.tools.hibernate.reddeer.view,
+ org.jboss.tools.hibernate.reddeer.wizard
 Eclipse-BundleShape: jar
 Bundle-Vendor: Red Hat
 Automatic-Module-Name: org.jboss.tools.hibernate.reddeer

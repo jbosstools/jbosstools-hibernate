@@ -68,6 +68,7 @@ public class JPAEntityGenerationTest extends HibernateRedDeerTest {
         		{"mvn-hibernate52-ent","5.2","2.1", true}, {"mvn-hibernate52-ent","5.2","2.1", false},
         		{"mvn-hibernate53-ent","5.3","2.1", true}, {"mvn-hibernate53-ent","5.3","2.1", false},//TODO change to JPA 2.2 when https://issues.jboss.org/browse/JBIDE-26566 is resolved
         		{"mvn-hibernate54-ent","5.4","2.1", true}, {"mvn-hibernate54-ent","5.4","2.1", false},//TODO change to JPA 2.2 when https://issues.jboss.org/browse/JBIDE-26566 is resolved
+        		{"mvn-hibernate55-ent","5.5","2.1", true}, {"mvn-hibernate55-ent","5.5","2.1", false},//TODO change to JPA 2.2 when https://issues.jboss.org/browse/JBIDE-26566 is resolved
            });
     }
 	 

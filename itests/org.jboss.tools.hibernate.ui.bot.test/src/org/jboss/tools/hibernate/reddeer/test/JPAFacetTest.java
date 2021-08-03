@@ -59,6 +59,7 @@ public class JPAFacetTest extends HibernateRedDeerTest {
         		{"mvn-hibernate52","5.2","2.1"},
         		{"mvn-hibernate53","5.3","2.1"},//TODO change to JPA 2.2 when https://issues.jboss.org/browse/JBIDE-26566 is resolved
         		{"mvn-hibernate54","5.4","2.1"},//TODO change to JPA 2.2 when https://issues.jboss.org/browse/JBIDE-26566 is resolved
+        		{"mvn-hibernate55","5.5","2.1"},//TODO change to JPA 2.2 when https://issues.jboss.org/browse/JBIDE-26566 is resolved
            });
     }
     

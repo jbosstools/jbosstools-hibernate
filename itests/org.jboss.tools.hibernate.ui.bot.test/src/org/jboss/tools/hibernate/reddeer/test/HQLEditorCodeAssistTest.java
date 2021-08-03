@@ -67,6 +67,7 @@ public class HQLEditorCodeAssistTest extends HibernateRedDeerTest {
         		{"mvn-hibernate52-ent","5.2","2.1"},
         		{"mvn-hibernate53-ent","5.3","2.1"},//TODO change to JPA 2.2 when https://issues.jboss.org/browse/JBIDE-26566 is resolved
         		{"mvn-hibernate54-ent","5.4","2.1"},//TODO change to JPA 2.2 when https://issues.jboss.org/browse/JBIDE-26566 is resolved
+        		{"mvn-hibernate55-ent","5.5","2.1"},//TODO change to JPA 2.2 when https://issues.jboss.org/browse/JBIDE-26566 is resolved
            });
     }
 	
@@ -104,9 +105,9 @@ public class HQLEditorCodeAssistTest extends HibernateRedDeerTest {
 		mainPage.setHibernateVersion(hbVersion);		
 		confShell.ok();
 				
-		v.open();		
+		v.open();
 		v.selectConsole(prj);
-		new ContextMenuItem("HQL Editor").select();
+		new ContextMenuItem(v.getConsole(prj), "HQL Editor").select();
 				
 		HQLEditor hqlEditor = new HQLEditor(prj);
 		hqlEditor.setText("from ");

@@ -65,6 +65,16 @@ public class KnownConfigurationsView extends WorkbenchView {
 		this.activate();
 		new DefaultTreeItem(new DefaultTree(this), name).select();
 	}
+	
+	/**
+	 * Gets console
+	 * @param name given console name
+	 */
+	public TreeItem getConsole(String name) {
+		open();
+		this.activate();
+		 return new DefaultTreeItem(new DefaultTree(this), name);
+	}
 
 	/**
 	 * Open console configuration
