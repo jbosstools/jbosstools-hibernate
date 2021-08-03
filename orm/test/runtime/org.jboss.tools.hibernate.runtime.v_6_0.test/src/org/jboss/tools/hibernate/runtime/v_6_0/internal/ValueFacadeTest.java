@@ -142,13 +142,14 @@ public class ValueFacadeTest {
 		assertTrue(valueFacade.isComponent());
 	}
 
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testIsEmbedded() {
 		valueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
 		valueFacade = new AbstractValueFacade(FACADE_FACTORY, valueTarget) {};
 		assertNull(valueFacade.isEmbedded());
-		Component component = new Component(DummyMetadataBuildingContext.INSTANCE, new RootClass(null));
+		Component component = new Component(
+				DummyMetadataBuildingContext.INSTANCE, 
+				new RootClass(DummyMetadataBuildingContext.INSTANCE));
 		valueFacade = new AbstractValueFacade(FACADE_FACTORY, component) {};
 		component.setEmbedded(true);
 		assertTrue(valueFacade.isEmbedded());
