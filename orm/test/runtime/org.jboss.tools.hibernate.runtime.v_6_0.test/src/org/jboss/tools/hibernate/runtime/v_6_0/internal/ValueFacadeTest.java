@@ -496,10 +496,11 @@ public class ValueFacadeTest {
 				((IFacade)bagValueFacade.getElement()).getTarget());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetParentProperty() {
-		Component componentTarget = new Component(DummyMetadataBuildingContext.INSTANCE, new RootClass(null));
+		Component componentTarget = new Component(
+				DummyMetadataBuildingContext.INSTANCE, 
+				new RootClass(DummyMetadataBuildingContext.INSTANCE));
 		IValue valueFacade = new AbstractValueFacade(FACADE_FACTORY, componentTarget) {};
 		assertNull(valueFacade.getParentProperty());
 		componentTarget.setParentProperty("foobar");
