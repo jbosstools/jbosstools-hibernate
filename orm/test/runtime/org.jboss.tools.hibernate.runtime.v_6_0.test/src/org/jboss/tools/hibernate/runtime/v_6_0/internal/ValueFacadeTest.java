@@ -557,10 +557,9 @@ public class ValueFacadeTest {
 		assertTrue(valueFacade.isInverse());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetAssociatedClass() {
-		RootClass rootClass = new RootClass(null);
+		RootClass rootClass = new RootClass(DummyMetadataBuildingContext.INSTANCE);
 		OneToMany oneToManyTarget = new OneToMany(DummyMetadataBuildingContext.INSTANCE, null);
 		valueFacade = new AbstractValueFacade(FACADE_FACTORY, oneToManyTarget) {};
 		assertNull(valueFacade.getAssociatedClass());
