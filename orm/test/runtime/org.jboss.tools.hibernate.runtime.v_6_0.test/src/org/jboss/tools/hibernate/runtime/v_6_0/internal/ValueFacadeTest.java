@@ -130,13 +130,14 @@ public class ValueFacadeTest {
 		assertTrue(valueFacade.isMap());
 	}
 
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testIsComponent() {
 		valueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
 		valueFacade = new AbstractValueFacade(FACADE_FACTORY, valueTarget) {};
 		assertFalse(valueFacade.isComponent());
-		Component component = new Component(DummyMetadataBuildingContext.INSTANCE, new RootClass(null));
+		Component component = new Component(
+				DummyMetadataBuildingContext.INSTANCE, 
+				new RootClass(DummyMetadataBuildingContext.INSTANCE));
 		valueFacade = new AbstractValueFacade(FACADE_FACTORY, component) {};
 		assertTrue(valueFacade.isComponent());
 	}
