@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import org.hibernate.FetchMode;
+import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
@@ -475,10 +476,9 @@ public class ValueFacadeTest {
 		assertEquals("foobar", valueFacade.getForeignKeyName());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetOwner() {
-		RootClass rc = new RootClass(null);
+		RootClass rc = new RootClass(DummyMetadataBuildingContext.INSTANCE);		
 		Component componentTarget = new Component(DummyMetadataBuildingContext.INSTANCE, rc);
 		valueFacade = new AbstractValueFacade(FACADE_FACTORY, componentTarget) {};
 		assertSame(rc, ((IFacade)valueFacade.getOwner()).getTarget());
