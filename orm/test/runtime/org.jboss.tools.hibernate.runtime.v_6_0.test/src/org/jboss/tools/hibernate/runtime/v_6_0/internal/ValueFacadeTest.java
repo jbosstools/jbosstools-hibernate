@@ -12,7 +12,6 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import org.hibernate.FetchMode;
-import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
@@ -426,10 +425,11 @@ public class ValueFacadeTest {
 		assertEquals("foobar", valueFacade.getEntityName());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetPropertyIterator() {
-		Component componentTarget = new Component(DummyMetadataBuildingContext.INSTANCE, new RootClass(null));
+		Component componentTarget = new Component(
+				DummyMetadataBuildingContext.INSTANCE, 
+				new RootClass(DummyMetadataBuildingContext.INSTANCE));
 		valueFacade = new AbstractValueFacade(FACADE_FACTORY, componentTarget) {};
 		Iterator<IProperty> iter = valueFacade.getPropertyIterator();
 		assertFalse(iter.hasNext());
