@@ -414,13 +414,12 @@ public class ValueFacadeTest {
 		assertEquals("Foo", valueFacade.getReferencedEntityName());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetEntityName() {
 		SimpleValue simpleValueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
 		valueFacade = new AbstractValueFacade(FACADE_FACTORY, simpleValueTarget) {};
 		assertNull(valueFacade.getEntityName());
-		RootClass pc = new RootClass(null);
+		RootClass pc = new RootClass(DummyMetadataBuildingContext.INSTANCE);
 		pc.setEntityName("foobar");
 		OneToOne oneToOneTarget = new OneToOne(DummyMetadataBuildingContext.INSTANCE, null, pc);
 		valueFacade = new AbstractValueFacade(FACADE_FACTORY, oneToOneTarget) {};
