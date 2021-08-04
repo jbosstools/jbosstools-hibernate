@@ -63,7 +63,6 @@ public class ConfigurationMetadataDescriptorTest {
 		assertSame(properties, configurationMetadataDescriptor.getProperties());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testCreateMetadata() {
 		MetadataSources metadataSources = new MetadataSources();
@@ -71,7 +70,7 @@ public class ConfigurationMetadataDescriptorTest {
 		Configuration configuration = new Configuration(metadataSources);
 		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
 		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
-		PersistentClass persistentClass = new RootClass(null);
+		PersistentClass persistentClass = new RootClass(DummyMetadataBuildingContext.INSTANCE);
 		persistentClass.setEntityName("Bar");
 		IPersistentClass persistentClassFacade = 
 				FACADE_FACTORY.createPersistentClass(persistentClass);	
