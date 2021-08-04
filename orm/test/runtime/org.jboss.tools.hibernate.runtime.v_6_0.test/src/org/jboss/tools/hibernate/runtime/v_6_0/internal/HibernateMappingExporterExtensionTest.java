@@ -29,6 +29,7 @@ import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
+import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.DummyMetadataBuildingContext;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -81,7 +82,6 @@ public class HibernateMappingExporterExtensionTest {
 		assertTrue(new File("foo" + File.separator + "Bar.hbm.xml").exists());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testExportPOJO() throws Exception {
 		initializeTemplateHelper();
@@ -137,7 +137,7 @@ public class HibernateMappingExporterExtensionTest {
 	}
 		
 	private POJOClass createPojoClass() {
-		RootClass persistentClass = new RootClass(null);
+		RootClass persistentClass = new RootClass(DummyMetadataBuildingContext.INSTANCE);
 		Table rootTable = new Table();
 		rootTable.setName("table");
 		persistentClass.setTable(rootTable);

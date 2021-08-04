@@ -16,7 +16,6 @@ import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.ConfigurationFacadeImpl;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.FacadeFactoryImpl;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class ConfigurationMetadataDescriptorTest {
