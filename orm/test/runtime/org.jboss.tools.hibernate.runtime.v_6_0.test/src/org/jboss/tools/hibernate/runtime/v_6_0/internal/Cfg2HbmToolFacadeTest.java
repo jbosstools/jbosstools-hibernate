@@ -39,10 +39,9 @@ public class Cfg2HbmToolFacadeTest {
 		assertEquals("class", cfg2HbmToolFacade.getTag(persistentClass));
 	}
 
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetTagProperty() throws Exception {
-		RootClass rc = new RootClass(null);
+		RootClass rc = new RootClass(DummyMetadataBuildingContext.INSTANCE);
 		Property p = new Property();
 		BasicValue basicValue = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
 		basicValue.setTypeName("foobar");
