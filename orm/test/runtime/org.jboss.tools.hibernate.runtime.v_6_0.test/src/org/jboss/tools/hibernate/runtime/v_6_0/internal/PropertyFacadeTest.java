@@ -30,6 +30,7 @@ import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
+import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.DummyMetadataBuildingContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -71,14 +72,13 @@ public class PropertyFacadeTest {
 		assertEquals("foo", propertyTarget.getName());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testSetPersistentClass() throws Exception {
 		Field field = AbstractPropertyFacade.class.getDeclaredField("persistentClass");
 		field.setAccessible(true);
 		assertNull(field.get(propertyFacade));
 		assertNull(propertyTarget.getPersistentClass());
-		PersistentClass persistentClassTarget = new RootClass(null);
+		PersistentClass persistentClassTarget = new RootClass(DummyMetadataBuildingContext.INSTANCE);
 		IPersistentClass persistentClassFacade = 
 				FACADE_FACTORY.createPersistentClass(persistentClassTarget);
 		propertyFacade.setPersistentClass(persistentClassFacade);
