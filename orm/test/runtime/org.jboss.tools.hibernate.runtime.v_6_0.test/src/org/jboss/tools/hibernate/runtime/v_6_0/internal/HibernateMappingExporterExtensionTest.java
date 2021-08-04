@@ -32,7 +32,6 @@ import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.DummyMetadataBuildingContext;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class HibernateMappingExporterExtensionTest {
@@ -59,7 +58,6 @@ public class HibernateMappingExporterExtensionTest {
 		assertSame(exportPojoDelegate, delegateField.get(hibernateMappingExporterExtension));
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testSuperExportPOJO() throws Exception {
 		initializeTemplateHelper();
