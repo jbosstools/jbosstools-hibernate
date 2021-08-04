@@ -100,13 +100,14 @@ public class PropertyFacadeTest {
 		assertSame(persistentClassTarget, ((IFacade)persistentClassFacade).getTarget());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testIsComposite() {
 		propertyTarget.setValue(createValue());
 		assertFalse(propertyFacade.isComposite());
-		MetadataBuildingContext metadataBuildingContext = createMetadataBuildingContext();
-		Component component = new Component(metadataBuildingContext, new Table(), new RootClass(metadataBuildingContext));
+		Component component = new Component(
+				DummyMetadataBuildingContext.INSTANCE, 
+				new Table(), 
+				new RootClass(DummyMetadataBuildingContext.INSTANCE));
 		propertyTarget.setValue(component);
 		assertTrue(propertyFacade.isComposite());
 	}
@@ -274,15 +275,4 @@ public class PropertyFacadeTest {
 		});
 	}
 	
-	private MetadataBuildingContext createMetadataBuildingContext() {
-		return (MetadataBuildingContext)Proxy.newProxyInstance(
-				getClass().getClassLoader(), 
-				new Class[] { MetadataBuildingContext.class }, 
-				new InvocationHandler() {	
-					@Override
-					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-						return null;
-					}
-		});
-	}
 }
