@@ -86,14 +86,13 @@ public class PropertyFacadeTest {
 		assertSame(persistentClassTarget, propertyTarget.getPersistentClass());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetPersistentClass() throws Exception {
 		Field field = AbstractPropertyFacade.class.getDeclaredField("persistentClass");
 		field.setAccessible(true);
 		assertNull(field.get(propertyFacade));
 		assertNull(propertyFacade.getPersistentClass());
-		PersistentClass persistentClassTarget = new RootClass(null);
+		PersistentClass persistentClassTarget = new RootClass(DummyMetadataBuildingContext.INSTANCE);
 		propertyTarget.setPersistentClass(persistentClassTarget);
 		IPersistentClass persistentClassFacade = propertyFacade.getPersistentClass();
 		assertNotNull(persistentClassFacade);
