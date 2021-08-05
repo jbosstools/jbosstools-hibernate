@@ -32,6 +32,7 @@ import org.hibernate.type.StringType;
 import org.hibernate.type.spi.TypeConfiguration;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
+import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.DummyMetadataBuildingContext;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -122,7 +123,6 @@ public class TypeFacadeTest {
 		assertTrue(typeFacade.isAnyType());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testIsComponentType() {
 		IType typeFacade = null;
@@ -143,7 +143,7 @@ public class TypeFacadeTest {
 				new ComponentType(
 						null,
 						new ComponentMetamodel(
-								new Component(mdbc, new RootClass(null)),
+								new Component(mdbc, new RootClass(DummyMetadataBuildingContext.INSTANCE)),
 								btc),
 						new int[] {});
 		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, componentType){};
