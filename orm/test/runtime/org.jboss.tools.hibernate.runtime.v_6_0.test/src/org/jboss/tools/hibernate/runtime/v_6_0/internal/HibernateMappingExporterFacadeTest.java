@@ -62,7 +62,6 @@ public class HibernateMappingExporterFacadeTest {
 				new HibernateMappingExporterFacadeImpl(FACADE_FACTORY, hibernateMappingExporter);
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testStart() throws Exception {
 		MetadataDescriptor descriptor = new TestMetadataDescriptor();
@@ -183,8 +182,8 @@ public class HibernateMappingExporterFacadeTest {
 		private ArrayList<PersistentClass> entities = new ArrayList<PersistentClass>();
 		private ArrayList<Table> tables = new ArrayList<Table>();
 		private TestInvocationHandler() {
-			RootClass persistentClass = new RootClass(null);
-			Table table = new Table("FOO");
+			RootClass persistentClass = new RootClass(DummyMetadataBuildingContext.INSTANCE);
+			Table table = new Table("JBoss Tools", "FOO");
 			Column keyColumn = new Column("BAR");
 			SimpleValue key = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
 			key.setTable(table);
