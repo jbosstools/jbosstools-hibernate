@@ -129,10 +129,9 @@ public class HibernateMappingExporterFacadeTest {
 		assertSame(delegate, delegateField.get(hibernateMappingExporter));
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testExportPOJO() throws Exception {
-		RootClass persistentClass = new RootClass(null);
+		RootClass persistentClass = new RootClass(DummyMetadataBuildingContext.INSTANCE);
 		Table rootTable = new Table();
 		rootTable.setName("FOO");
 		persistentClass.setTable(rootTable);
