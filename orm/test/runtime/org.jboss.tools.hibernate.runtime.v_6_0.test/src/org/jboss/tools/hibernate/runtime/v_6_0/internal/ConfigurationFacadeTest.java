@@ -44,6 +44,7 @@ import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
+import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.DummyMetadataBuildingContext;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.MetadataHelper;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.MetadataHelperTest;
@@ -277,13 +278,12 @@ public class ConfigurationFacadeTest {
 		assertTrue(sessionFactory instanceof SessionFactory);
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetClassMappings() {
 		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
 		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
 		assertFalse(configurationFacade.getClassMappings().hasNext());		
-		PersistentClass persistentClass = new RootClass(null);
+		PersistentClass persistentClass = new RootClass(DummyMetadataBuildingContext.INSTANCE);
 		persistentClass.setEntityName("Foo");
 		IPersistentClass persistentClassFacade = 
 				FACADE_FACTORY.createPersistentClass(persistentClass);	
