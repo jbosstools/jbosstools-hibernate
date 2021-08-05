@@ -245,10 +245,9 @@ public class ConfigurationFacadeTest {
 		assertNotNull(metadata.getEntityBinding(fooClassName));
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testAddClass() {
-		PersistentClass persistentClass = new RootClass(null);
+		PersistentClass persistentClass = new RootClass(DummyMetadataBuildingContext.INSTANCE);
 		persistentClass.setEntityName("Foo");
 		IPersistentClass persistentClassFacade = 
 				FACADE_FACTORY.createPersistentClass(persistentClass);	
