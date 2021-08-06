@@ -270,7 +270,6 @@ public class PersistentClassFacadeTest {
 		assertSame(valueTarget, ((IFacade)valueFacade).getTarget());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetJoinIterator() throws Exception {
 		Join join = new Join();
