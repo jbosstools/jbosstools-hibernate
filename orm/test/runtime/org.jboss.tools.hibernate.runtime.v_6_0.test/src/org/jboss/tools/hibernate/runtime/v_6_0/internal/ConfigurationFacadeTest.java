@@ -265,7 +265,6 @@ public class ConfigurationFacadeTest {
 	}
 
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testBuildSessionFactory() throws Throwable {
 		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
