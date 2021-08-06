@@ -232,7 +232,6 @@ public class PersistentClassFacadeTest {
 		assertNotNull(field.get(persistentClassFacade));
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test 
 	public void testIsAbstract() {
 		persistentClassTarget.setAbstract(true);
