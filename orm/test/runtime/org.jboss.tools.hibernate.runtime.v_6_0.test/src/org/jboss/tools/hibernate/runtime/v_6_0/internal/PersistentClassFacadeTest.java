@@ -221,7 +221,6 @@ public class PersistentClassFacadeTest {
 		}
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetTable() throws Exception {
 		Table table = new Table();
