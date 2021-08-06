@@ -171,7 +171,6 @@ public class PersistentClassFacadeTest {
 		assertSame(propertyTarget, ((IFacade)iterator.next()).getTarget());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetSuperclass() throws Exception {
 		Field field = AbstractPersistentClassFacade.class.getDeclaredField("superClass");
@@ -180,7 +179,7 @@ public class PersistentClassFacadeTest {
 		IPersistentClass superclassFacade = persistentClassFacade.getSuperclass();
 		assertNull(field.get(persistentClassFacade));
 		assertNull(superclassFacade);
-		Subclass subclassTarget = new Subclass(persistentClassTarget, null);
+		Subclass subclassTarget = new Subclass(persistentClassTarget, DummyMetadataBuildingContext.INSTANCE);
 		IPersistentClass subclassFacade = new PersistentClassFacadeImpl(FACADE_FACTORY, subclassTarget);
 		assertNull(field.get(subclassFacade));
 		superclassFacade = subclassFacade.getSuperclass();
