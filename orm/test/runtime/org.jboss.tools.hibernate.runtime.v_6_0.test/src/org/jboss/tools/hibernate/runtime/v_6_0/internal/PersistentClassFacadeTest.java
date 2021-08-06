@@ -138,7 +138,6 @@ public class PersistentClassFacadeTest {
 		assertTrue(subClassFacade.isInstanceOfSubclass());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetRootClass() throws Exception {
 		Field field = AbstractPersistentClassFacade.class.getDeclaredField("rootClass");
