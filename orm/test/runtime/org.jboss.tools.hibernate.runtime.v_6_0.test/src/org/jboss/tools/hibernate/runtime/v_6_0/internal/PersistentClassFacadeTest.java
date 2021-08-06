@@ -202,7 +202,6 @@ public class PersistentClassFacadeTest {
 		assertSame(propertyTarget, ((IFacade)propertyIterator.next()).getTarget());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetProperty() throws Exception {
 		Property propertyTarget = new Property();
