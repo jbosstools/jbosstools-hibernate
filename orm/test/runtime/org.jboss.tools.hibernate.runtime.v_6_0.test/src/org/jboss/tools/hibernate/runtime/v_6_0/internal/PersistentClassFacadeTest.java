@@ -288,7 +288,6 @@ public class PersistentClassFacadeTest {
 		assertFalse(joinIterator.hasNext());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetVersion() throws Exception {
 		assertNull(persistentClassFacade.getVersion());
