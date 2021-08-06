@@ -255,7 +255,6 @@ public class PersistentClassFacadeTest {
 		assertSame(valueTarget, ((IFacade)valueFacade).getTarget());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetIdentifier() throws Exception {
 		KeyValue valueTarget = createValue();
