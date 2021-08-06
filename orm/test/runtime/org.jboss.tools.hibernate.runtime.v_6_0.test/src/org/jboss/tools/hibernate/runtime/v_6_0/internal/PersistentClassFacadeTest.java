@@ -240,7 +240,6 @@ public class PersistentClassFacadeTest {
 		assertFalse(persistentClassFacade.isAbstract());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetDiscriminator() throws Exception {
 		Value valueTarget = createValue();
