@@ -149,11 +149,10 @@ public class PersistentClassFacadeTest {
 		assertSame(((IFacade)rootFacade).getTarget(), persistentClassTarget);
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetPropertyClosureIterator() throws Exception {
 		Property propertyTarget = new Property();
-		PersistentClass persistentClass = new RootClass(null) {
+		PersistentClass persistentClass = new RootClass(DummyMetadataBuildingContext.INSTANCE) {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public Iterator<Property> getPropertyClosureIterator() {
