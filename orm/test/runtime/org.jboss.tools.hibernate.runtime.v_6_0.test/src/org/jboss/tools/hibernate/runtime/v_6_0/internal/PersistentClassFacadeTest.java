@@ -88,13 +88,15 @@ public class PersistentClassFacadeTest {
 		assertTrue(persistentClassFacade.isAssignableToRootClass());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testIsRootClass() {
-		persistentClassTarget = new SingleTableSubclass(new RootClass(null), null);
+		persistentClassTarget = 
+				new SingleTableSubclass(
+						new RootClass(DummyMetadataBuildingContext.INSTANCE), 
+						DummyMetadataBuildingContext.INSTANCE);
 		persistentClassFacade = new PersistentClassFacadeImpl(FACADE_FACTORY, persistentClassTarget);
 		assertFalse(persistentClassFacade.isRootClass());
-		persistentClassTarget = new RootClass(null);
+		persistentClassTarget = new RootClass(DummyMetadataBuildingContext.INSTANCE);
 		persistentClassFacade = new PersistentClassFacadeImpl(FACADE_FACTORY, persistentClassTarget);
 		assertTrue(persistentClassFacade.isRootClass());
 	}
