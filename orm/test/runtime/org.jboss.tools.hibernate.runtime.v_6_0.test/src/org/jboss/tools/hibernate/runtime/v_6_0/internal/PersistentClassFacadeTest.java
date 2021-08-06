@@ -122,11 +122,10 @@ public class PersistentClassFacadeTest {
 		assertTrue(persistentClassFacade.hasIdentifierProperty());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testIsInstanceOfRootClass() {
 		assertTrue(persistentClassFacade.isInstanceOfRootClass());
-		PersistentClass subClassTarget = new Subclass(persistentClassTarget, null);
+		PersistentClass subClassTarget = new Subclass(persistentClassTarget, DummyMetadataBuildingContext.INSTANCE);
 		IPersistentClass subClassFacade = new PersistentClassFacadeImpl(FACADE_FACTORY, subClassTarget);
 		assertFalse(subClassFacade.isInstanceOfRootClass());
 	}
