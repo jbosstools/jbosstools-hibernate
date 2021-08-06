@@ -101,7 +101,6 @@ public class PersistentClassFacadeTest {
 		assertTrue(persistentClassFacade.isRootClass());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetIdentifierProperty() throws Exception {
 		Field field = AbstractPersistentClassFacade.class.getDeclaredField("identifierProperty");
