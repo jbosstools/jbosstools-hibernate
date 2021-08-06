@@ -61,7 +61,6 @@ public class PersistentClassFacadeTest {
 		assertSame(persistentClassTarget, ((IFacade)persistentClassFacade).getTarget());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetClassName() {
 		assertNotEquals("Foo", persistentClassFacade.getClassName());
