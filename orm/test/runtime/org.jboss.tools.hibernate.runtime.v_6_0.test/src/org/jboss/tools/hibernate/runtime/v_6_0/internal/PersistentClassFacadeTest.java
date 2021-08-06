@@ -36,6 +36,7 @@ import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
+import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.DummyMetadataBuildingContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -49,11 +50,10 @@ public class PersistentClassFacadeTest {
 	
 	@BeforeEach
 	public void beforeEach() {
-		persistentClassTarget = new RootClass(null);
+		persistentClassTarget = new RootClass(DummyMetadataBuildingContext.INSTANCE);
 		persistentClassFacade = new PersistentClassFacadeImpl(FACADE_FACTORY, persistentClassTarget);
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testConstruction() {
 		assertNotNull(persistentClassFacade);
