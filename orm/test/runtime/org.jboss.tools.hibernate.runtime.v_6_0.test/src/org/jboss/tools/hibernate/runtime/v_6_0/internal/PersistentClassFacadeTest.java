@@ -302,7 +302,6 @@ public class PersistentClassFacadeTest {
 		assertSame(versionTarget, ((IFacade)versionFacade).getTarget());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testSetClassName() {
 		assertNull(persistentClassTarget.getClassName());
