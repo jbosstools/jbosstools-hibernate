@@ -309,7 +309,6 @@ public class PersistentClassFacadeTest {
 		assertEquals("foo", persistentClassTarget.getClassName());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testSetEntityName() {
 		assertNull(persistentClassTarget.getEntityName());
