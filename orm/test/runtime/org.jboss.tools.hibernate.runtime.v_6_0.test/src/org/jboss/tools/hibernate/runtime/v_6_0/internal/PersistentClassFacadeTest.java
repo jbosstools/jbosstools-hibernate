@@ -369,7 +369,6 @@ public class PersistentClassFacadeTest {
 		assertSame(tableTarget, persistentClassTarget.getTable());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testSetKey() {
 		Value valueTarget = createValue();
