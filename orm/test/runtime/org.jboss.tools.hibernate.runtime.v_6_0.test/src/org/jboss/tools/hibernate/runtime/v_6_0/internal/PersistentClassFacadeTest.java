@@ -383,7 +383,6 @@ public class PersistentClassFacadeTest {
 		assertFalse(persistentClassFacade.isInstanceOfSpecialRootClass());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetParentProperty() {
 		try {
