@@ -528,12 +528,19 @@ public class PersistentClassFacadeTest {
 		assertFalse(persistentClassFacade.isForceDiscriminator());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testIsInherited() {
-		persistentClassFacade = new AbstractPersistentClassFacade(FACADE_FACTORY, new RootClass(null)) {};
+		persistentClassFacade = 
+				new AbstractPersistentClassFacade(
+						FACADE_FACTORY, 
+						new RootClass(DummyMetadataBuildingContext.INSTANCE)) {};
 		assertFalse(persistentClassFacade.isInherited());
-		persistentClassFacade = new AbstractPersistentClassFacade(FACADE_FACTORY, new Subclass(new RootClass(null), null)) {};
+		persistentClassFacade = 
+				new AbstractPersistentClassFacade(
+						FACADE_FACTORY,
+						new Subclass(
+								new RootClass(DummyMetadataBuildingContext.INSTANCE), 
+								DummyMetadataBuildingContext.INSTANCE)) {};
 		assertTrue(persistentClassFacade.isInherited());
 	}
 	
