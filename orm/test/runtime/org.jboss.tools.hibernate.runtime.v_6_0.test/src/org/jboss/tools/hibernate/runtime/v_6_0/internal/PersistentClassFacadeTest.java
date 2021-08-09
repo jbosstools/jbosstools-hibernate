@@ -38,7 +38,6 @@ import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.DummyMetadataBuildingContext;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class PersistentClassFacadeTest {
@@ -666,7 +665,6 @@ public class PersistentClassFacadeTest {
 		assertEquals("foo", persistentClassFacade.getWhere());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetRootTable() throws Exception {
 		Field field = AbstractPersistentClassFacade.class.getDeclaredField("rootTable");
