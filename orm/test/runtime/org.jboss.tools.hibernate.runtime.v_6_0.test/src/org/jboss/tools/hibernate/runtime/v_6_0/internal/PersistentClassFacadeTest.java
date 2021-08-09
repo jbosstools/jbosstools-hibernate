@@ -632,7 +632,6 @@ public class PersistentClassFacadeTest {
 		assertEquals("bar", persistentClassFacade.getCustomSQLInsert());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetCustomSQLUpdate() {
 		assertNotEquals("foo", persistentClassFacade.getCustomSQLUpdate());
