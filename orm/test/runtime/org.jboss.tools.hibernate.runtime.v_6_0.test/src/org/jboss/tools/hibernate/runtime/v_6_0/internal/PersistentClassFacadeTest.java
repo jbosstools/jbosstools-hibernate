@@ -618,7 +618,6 @@ public class PersistentClassFacadeTest {
 		assertEquals("foo", persistentClassFacade.getCacheConcurrencyStrategy());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetCustomSQLDelete() {
 		assertNotEquals("foo", persistentClassFacade.getCustomSQLDelete());
