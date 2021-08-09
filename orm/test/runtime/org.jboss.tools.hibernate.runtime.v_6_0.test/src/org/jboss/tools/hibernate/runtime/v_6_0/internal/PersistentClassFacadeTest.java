@@ -595,7 +595,6 @@ public class PersistentClassFacadeTest {
 		assertFalse(persistentClassFacade.isPolymorphic());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testIsVersioned() {
 		((RootClass)persistentClassTarget).setVersion(new Property());
