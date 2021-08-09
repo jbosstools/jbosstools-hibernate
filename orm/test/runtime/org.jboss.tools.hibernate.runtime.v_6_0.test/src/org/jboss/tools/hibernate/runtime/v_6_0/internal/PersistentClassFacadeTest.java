@@ -393,7 +393,6 @@ public class PersistentClassFacadeTest {
 		}
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testSetIdentifierProperty() throws Exception {
 		Field field = AbstractPersistentClassFacade.class.getDeclaredField("identifierProperty");
