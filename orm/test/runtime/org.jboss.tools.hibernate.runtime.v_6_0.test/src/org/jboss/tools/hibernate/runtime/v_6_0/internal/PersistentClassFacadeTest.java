@@ -331,7 +331,6 @@ public class PersistentClassFacadeTest {
 		assertFalse(persistentClassTarget.isAbstract());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testAddProperty() throws Exception {
 		Field propertiesField = AbstractPersistentClassFacade.class.getDeclaredField("properties");
