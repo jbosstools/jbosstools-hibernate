@@ -611,7 +611,6 @@ public class PersistentClassFacadeTest {
 		assertEquals(Integer.MIN_VALUE, persistentClassFacade.getBatchSize());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetCacheConcurrencyStrategy() {
 		assertNotEquals("foo", persistentClassFacade.getCacheConcurrencyStrategy());
