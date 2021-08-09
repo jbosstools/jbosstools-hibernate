@@ -378,7 +378,6 @@ public class PersistentClassFacadeTest {
 		assertSame(valueTarget, persistentClassTarget.getKey());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testIsInstanceOfSpecialRootClass() {
 		assertFalse(persistentClassFacade.isInstanceOfSpecialRootClass());
