@@ -360,7 +360,6 @@ public class PersistentClassFacadeTest {
 		assertTrue(joinedSubclassFacade.isInstanceOfJoinedSubclass());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testSetTable() {
 		Table tableTarget = new Table();
