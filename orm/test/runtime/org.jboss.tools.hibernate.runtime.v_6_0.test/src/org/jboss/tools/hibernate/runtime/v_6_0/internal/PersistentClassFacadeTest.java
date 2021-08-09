@@ -464,7 +464,6 @@ public class PersistentClassFacadeTest {
 		assertSame(subclassTarget, ((IFacade)iterator.next()).getTarget());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testIsCustomDeleteCallable() {
 		persistentClassTarget.setCustomSQLDelete("foo", false, null);
