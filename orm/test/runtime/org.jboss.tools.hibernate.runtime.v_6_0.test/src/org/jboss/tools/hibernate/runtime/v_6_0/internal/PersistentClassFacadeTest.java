@@ -323,7 +323,6 @@ public class PersistentClassFacadeTest {
 		assertEquals("foo", persistentClassTarget.getDiscriminatorValue());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testSetAbstract() {
 		persistentClassFacade.setAbstract(true);
