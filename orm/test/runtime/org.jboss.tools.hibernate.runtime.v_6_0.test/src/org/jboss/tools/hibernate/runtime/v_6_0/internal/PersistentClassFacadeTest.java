@@ -563,7 +563,6 @@ public class PersistentClassFacadeTest {
 		assertFalse(persistentClassFacade.isJoinedSubclass());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testIsLazy() {
 		persistentClassTarget.setLazy(true);
