@@ -496,7 +496,6 @@ public class PersistentClassFacadeTest {
 		assertFalse(persistentClassFacade.isDiscriminatorInsertable());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testIsDiscriminatorValueNotNull() {
 		persistentClassTarget.setDiscriminatorValue("null");
