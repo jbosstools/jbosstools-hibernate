@@ -603,7 +603,6 @@ public class PersistentClassFacadeTest {
 		assertFalse(persistentClassFacade.isVersioned());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetBatchSize() {
 		persistentClassTarget.setBatchSize(Integer.MAX_VALUE);
