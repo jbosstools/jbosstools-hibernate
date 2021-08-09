@@ -418,7 +418,6 @@ public class PersistentClassFacadeTest {
 		assertSame(valueFacade, field.get(persistentClassFacade));
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testSetDiscriminator() throws Exception {
 		Field field = AbstractPersistentClassFacade.class.getDeclaredField("discriminator");
