@@ -445,7 +445,6 @@ public class PersistentClassFacadeTest {
 		assertFalse(persistentClassTarget.isLazy());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetSubclassIterator() throws Exception {
 		Field field = AbstractPersistentClassFacade.class.getDeclaredField("subclasses");
@@ -456,7 +455,7 @@ public class PersistentClassFacadeTest {
 		HashSet<?> subclasses = (HashSet<?>)field.get(persistentClassFacade);
 		assertTrue(subclasses.isEmpty());
 		field.set(persistentClassFacade, null);
-		Subclass subclassTarget = new Subclass(persistentClassTarget, null);
+		Subclass subclassTarget = new Subclass(persistentClassTarget, DummyMetadataBuildingContext.INSTANCE);
 		persistentClassTarget.addSubclass(subclassTarget);
 		iterator = persistentClassFacade.getSubclassIterator();
 		assertTrue(iterator.hasNext());
