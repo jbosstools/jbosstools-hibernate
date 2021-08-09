@@ -571,7 +571,6 @@ public class PersistentClassFacadeTest {
 		assertFalse(persistentClassFacade.isLazy());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testIsLazyPropertiesCacheable() {
 		((RootClass)persistentClassTarget).setLazyPropertiesCacheable(true);
