@@ -639,7 +639,6 @@ public class PersistentClassFacadeTest {
 		assertEquals("foo", persistentClassFacade.getCustomSQLUpdate());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetDiscriminatorValue() {
 		assertNotEquals("bar", persistentClassFacade.getDiscriminatorValue());
