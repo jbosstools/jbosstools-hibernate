@@ -437,7 +437,6 @@ public class PersistentClassFacadeTest {
 		assertEquals("foo", persistentClassTarget.getProxyInterfaceName());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testSetLazy() {
 		persistentClassFacade.setLazy(true);
