@@ -512,7 +512,6 @@ public class PersistentClassFacadeTest {
 		assertTrue(persistentClassFacade.isDiscriminatorValueNull());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testIsExplicitPolymorphism() {
 		((RootClass)persistentClassTarget).setExplicitPolymorphism(true);
