@@ -544,16 +544,18 @@ public class PersistentClassFacadeTest {
 		assertTrue(persistentClassFacade.isInherited());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testIsJoinedSubclass() {
-		persistentClassFacade = new AbstractPersistentClassFacade(FACADE_FACTORY, new RootClass(null)) {};
+		persistentClassFacade = 
+				new AbstractPersistentClassFacade(
+						FACADE_FACTORY, 
+						new RootClass(DummyMetadataBuildingContext.INSTANCE)) {};
 		assertFalse(persistentClassFacade.isJoinedSubclass());
 		Table rootTable = new Table();
 		Table subTable = new Table();
-		RootClass rootClass = new RootClass(null);
+		RootClass rootClass = new RootClass(DummyMetadataBuildingContext.INSTANCE);
 		rootClass.setTable(rootTable);
-		JoinedSubclass subclass = new JoinedSubclass(rootClass, null);
+		JoinedSubclass subclass = new JoinedSubclass(rootClass, DummyMetadataBuildingContext.INSTANCE);
 		subclass.setTable(subTable);
 		persistentClassFacade = new AbstractPersistentClassFacade(FACADE_FACTORY, subclass) {};
 		assertTrue(persistentClassFacade.isJoinedSubclass());
