@@ -659,7 +659,6 @@ public class PersistentClassFacadeTest {
 		assertEquals(-1, persistentClassFacade.getOptimisticLockMode());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetWhere() {
 		assertNotEquals("foo", persistentClassFacade.getWhere());
