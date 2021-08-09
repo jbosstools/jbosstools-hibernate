@@ -472,7 +472,6 @@ public class PersistentClassFacadeTest {
 		assertTrue(persistentClassFacade.isCustomDeleteCallable());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testIsCustomInsertCallable() {
 		persistentClassTarget.setCustomSQLInsert("bar", false, null);
