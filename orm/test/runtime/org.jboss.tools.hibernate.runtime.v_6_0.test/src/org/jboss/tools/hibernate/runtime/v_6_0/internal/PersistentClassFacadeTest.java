@@ -646,7 +646,6 @@ public class PersistentClassFacadeTest {
 		assertEquals("bar", persistentClassFacade.getDiscriminatorValue());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetLoaderName() {
 		assertNotEquals("foo",persistentClassFacade.getLoaderName());
