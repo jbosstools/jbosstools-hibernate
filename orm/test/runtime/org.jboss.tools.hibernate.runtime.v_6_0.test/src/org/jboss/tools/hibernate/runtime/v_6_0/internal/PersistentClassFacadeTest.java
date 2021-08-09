@@ -406,7 +406,6 @@ public class PersistentClassFacadeTest {
 		assertSame(propertyFacade, field.get(persistentClassFacade));
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testSetIdentifier() throws Exception {
 		Field field = AbstractPersistentClassFacade.class.getDeclaredField("identifier");
