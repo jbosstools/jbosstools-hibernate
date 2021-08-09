@@ -316,7 +316,6 @@ public class PersistentClassFacadeTest {
 		assertEquals("bar", persistentClassTarget.getEntityName());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testSetDiscriminatorValue() {
 		assertNull(persistentClassTarget.getDiscriminatorValue());
