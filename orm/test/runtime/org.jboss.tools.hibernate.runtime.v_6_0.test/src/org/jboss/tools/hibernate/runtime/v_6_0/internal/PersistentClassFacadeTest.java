@@ -430,7 +430,6 @@ public class PersistentClassFacadeTest {
 		assertSame(valueFacade, field.get(persistentClassFacade));
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testSetProxyInterfaceName() {
 		assertNull(persistentClassTarget.getProxyInterfaceName());
