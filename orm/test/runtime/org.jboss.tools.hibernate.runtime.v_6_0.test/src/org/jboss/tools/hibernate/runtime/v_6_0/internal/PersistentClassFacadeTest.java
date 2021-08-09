@@ -488,7 +488,6 @@ public class PersistentClassFacadeTest {
 		assertTrue(persistentClassFacade.isCustomUpdateCallable());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testIsDiscriminatorValueInsertable() {
 		((RootClass)persistentClassTarget).setDiscriminatorInsertable(true);
