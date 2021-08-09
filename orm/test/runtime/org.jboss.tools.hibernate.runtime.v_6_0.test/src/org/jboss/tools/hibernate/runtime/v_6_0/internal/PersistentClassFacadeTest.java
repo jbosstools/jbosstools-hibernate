@@ -351,11 +351,11 @@ public class PersistentClassFacadeTest {
 		assertSame(persistentClassTarget, propertyTarget.getPersistentClass());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testIsInstanceOfJoinedSubclass() {
 		assertFalse(persistentClassFacade.isInstanceOfJoinedSubclass());
-		JoinedSubclass joinedSubclassTarget = new JoinedSubclass(persistentClassTarget, null);
+		JoinedSubclass joinedSubclassTarget = 
+				new JoinedSubclass(persistentClassTarget, DummyMetadataBuildingContext.INSTANCE);
 		IPersistentClass joinedSubclassFacade = new PersistentClassFacadeImpl(FACADE_FACTORY, joinedSubclassTarget);
 		assertTrue(joinedSubclassFacade.isInstanceOfJoinedSubclass());
 	}
