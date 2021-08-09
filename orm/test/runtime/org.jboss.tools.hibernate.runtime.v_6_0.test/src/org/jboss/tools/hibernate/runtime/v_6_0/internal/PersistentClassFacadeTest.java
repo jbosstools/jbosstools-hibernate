@@ -653,7 +653,6 @@ public class PersistentClassFacadeTest {
 		assertEquals("foo", persistentClassFacade.getLoaderName());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetOptimisticLockMode() {
 		persistentClassTarget.setOptimisticLockStyle(OptimisticLockStyle.NONE);
