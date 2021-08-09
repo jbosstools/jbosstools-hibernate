@@ -587,7 +587,6 @@ public class PersistentClassFacadeTest {
 		assertTrue(persistentClassFacade.isMutable());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testIsPolymorphic() {
 		((RootClass)persistentClassTarget).setPolymorphic(true);
