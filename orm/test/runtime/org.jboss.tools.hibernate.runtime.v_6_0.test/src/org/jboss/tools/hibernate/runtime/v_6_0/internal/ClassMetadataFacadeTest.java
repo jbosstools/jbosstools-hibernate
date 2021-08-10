@@ -102,7 +102,6 @@ public class ClassMetadataFacadeTest {
 		assertTrue(classMetadataFacade.hasIdentifierProperty());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test 
 	public void testGetIdentifier() {
 		assertNull(((TestEntityPersister)classMetadataTarget).session);
