@@ -301,7 +301,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public ITable newTable(String name) {
-		Table target = new Table(name);
+		Table target = new Table("jboss tools", name);
 		target.setPrimaryKey(new PrimaryKey(target));
 		return facadeFactory.createTable(target);
 	}

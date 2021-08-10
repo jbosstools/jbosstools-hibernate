@@ -301,7 +301,6 @@ public class ServiceImplTest {
 		assertTrue(target instanceof Property);
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testNewTable() {
 		ITable table = service.newTable("foo");
