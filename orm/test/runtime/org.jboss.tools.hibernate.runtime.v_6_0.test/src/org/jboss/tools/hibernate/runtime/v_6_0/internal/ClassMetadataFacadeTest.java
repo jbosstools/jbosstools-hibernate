@@ -74,7 +74,6 @@ public class ClassMetadataFacadeTest {
 		assertSame(PROPERTY_NAMES, classMetadataFacade.getPropertyNames());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetPropertyTypes() {
 		IType[] typeFacades = classMetadataFacade.getPropertyTypes();
