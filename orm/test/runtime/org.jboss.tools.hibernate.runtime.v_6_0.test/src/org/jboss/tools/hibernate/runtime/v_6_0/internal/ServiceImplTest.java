@@ -401,7 +401,6 @@ public class ServiceImplTest {
 		assertTrue(target instanceof org.hibernate.mapping.List);
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testNewMap() {
 		IPersistentClass persistentClass = service.newRootClass();
