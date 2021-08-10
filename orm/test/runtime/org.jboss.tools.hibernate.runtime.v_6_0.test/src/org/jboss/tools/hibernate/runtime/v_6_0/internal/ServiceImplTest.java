@@ -451,7 +451,6 @@ public class ServiceImplTest {
 		assertTrue(target instanceof OneToOne);
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testNewSingleTableSubclass() {
 		IPersistentClass persistentClass = service.newRootClass();

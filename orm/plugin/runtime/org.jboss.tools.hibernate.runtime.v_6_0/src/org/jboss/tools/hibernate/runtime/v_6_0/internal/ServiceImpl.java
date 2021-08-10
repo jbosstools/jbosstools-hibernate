@@ -429,7 +429,7 @@ public class ServiceImpl extends AbstractService {
 		IPersistentClass result = facadeFactory.createPersistentClass(
 				new SingleTableSubclass(
 						(PersistentClass)((IFacade)persistentClass).getTarget(),
-						null));
+						DummyMetadataBuildingContext.INSTANCE));
 		((AbstractPersistentClassFacade)result).setSuperClass(persistentClass);
 		return result;
 	}
