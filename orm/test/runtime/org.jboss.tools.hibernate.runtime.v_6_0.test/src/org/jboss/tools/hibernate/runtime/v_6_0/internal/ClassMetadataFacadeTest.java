@@ -64,7 +64,6 @@ public class ClassMetadataFacadeTest {
 		assertEquals("foobar", classMetadataFacade.getEntityName());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetIdentifierPropertyName() {
 		assertEquals("foo", classMetadataFacade.getIdentifierPropertyName());
