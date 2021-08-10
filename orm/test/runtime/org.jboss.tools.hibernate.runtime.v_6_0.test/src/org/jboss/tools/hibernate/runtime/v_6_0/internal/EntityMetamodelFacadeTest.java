@@ -18,6 +18,7 @@ import org.hibernate.boot.spi.InFlightMetadataCollector;
 import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.dialect.Dialect;
+import org.hibernate.engine.OptimisticLockStyle;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.PersistentClass;
@@ -28,8 +29,8 @@ import org.hibernate.metamodel.spi.RuntimeModelCreationContext;
 import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.tuple.entity.EntityMetamodel;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.DummyMetadataBuildingContext;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class EntityMetamodelFacadeTest {
@@ -53,7 +54,6 @@ public class EntityMetamodelFacadeTest {
 		assertSame(PROPERTY_VALUE, entityMetamodelFacade.getTuplizerPropertyValue(null, 0));
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetPropertyIndexOrNull() {
 		assertSame(PROPERTY_INDEX, entityMetamodelFacade.getPropertyIndexOrNull("foo"));
@@ -96,10 +96,11 @@ public class EntityMetamodelFacadeTest {
 					new TestCreationContext(
 							bootstrapContext, 
 							(MetadataImplementor)metadataSources.buildMetadata());
-			RootClass rootClass = new RootClass(null);
+			RootClass rootClass = new RootClass(DummyMetadataBuildingContext.INSTANCE);
 			SimpleValue basicValue = new BasicValue(metadataBuildingContext);
 			basicValue.setTypeName(Integer.class.getName());
 			rootClass.setIdentifier(basicValue);
+			rootClass.setOptimisticLockStyle(OptimisticLockStyle.NONE);
 			return new FooBarMetamodel(rootClass, runtimeModelCreationContext);
 		}
 		
