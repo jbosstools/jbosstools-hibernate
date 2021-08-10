@@ -431,7 +431,6 @@ public class ServiceImplTest {
 		assertTrue(target instanceof ManyToOne);
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testNewOneToMany() {
 		IPersistentClass persistentClass = service.newRootClass();
