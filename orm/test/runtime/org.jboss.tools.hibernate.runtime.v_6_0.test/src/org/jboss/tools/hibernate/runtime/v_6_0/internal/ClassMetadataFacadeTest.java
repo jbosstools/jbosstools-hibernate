@@ -69,7 +69,6 @@ public class ClassMetadataFacadeTest {
 		assertEquals("foo", classMetadataFacade.getIdentifierPropertyName());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetPropertyNames() {
 		assertSame(PROPERTY_NAMES, classMetadataFacade.getPropertyNames());
