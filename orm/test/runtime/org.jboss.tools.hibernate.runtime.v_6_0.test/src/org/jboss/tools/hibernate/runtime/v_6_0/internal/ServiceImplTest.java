@@ -411,7 +411,6 @@ public class ServiceImplTest {
 		assertTrue(target instanceof Map);
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testNewSet() {
 		IPersistentClass persistentClass = service.newRootClass();
