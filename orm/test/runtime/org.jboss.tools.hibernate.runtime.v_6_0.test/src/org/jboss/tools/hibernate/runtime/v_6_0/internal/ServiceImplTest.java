@@ -391,7 +391,6 @@ public class ServiceImplTest {
 		assertTrue(target instanceof Bag);
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testNewList() {
 		IPersistentClass persistentClass = service.newRootClass();
