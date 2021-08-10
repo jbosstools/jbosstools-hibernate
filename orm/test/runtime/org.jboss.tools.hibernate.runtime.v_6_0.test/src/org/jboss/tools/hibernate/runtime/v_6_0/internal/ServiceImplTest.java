@@ -70,7 +70,6 @@ import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JpaConfiguration;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class ServiceImplTest {
@@ -492,7 +491,6 @@ public class ServiceImplTest {
 		assertSame(property, specialRootClass.getProperty());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testNewRootClass() {
 		IPersistentClass rootClass = service.newRootClass();
