@@ -129,7 +129,6 @@ public class ClassMetadataFacadeTest {
 		assertFalse(classMetadataFacade.isInstanceOfAbstractEntityPersister());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetEntityMetamodel() {
 		IEntityMetamodel entityMetamodel = classMetadataFacade.getEntityMetamodel();
