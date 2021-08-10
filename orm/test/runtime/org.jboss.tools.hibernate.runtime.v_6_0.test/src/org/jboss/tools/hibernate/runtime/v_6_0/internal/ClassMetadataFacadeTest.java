@@ -95,7 +95,6 @@ public class ClassMetadataFacadeTest {
 		assertSame(PROPERTY_VALUE, classMetadataFacade.getPropertyValue(null, null));
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testHasIdentifierProperty() {
 		assertFalse(classMetadataFacade.hasIdentifierProperty());
