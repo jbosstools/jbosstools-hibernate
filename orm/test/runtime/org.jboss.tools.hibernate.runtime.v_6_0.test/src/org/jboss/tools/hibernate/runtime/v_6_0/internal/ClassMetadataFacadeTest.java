@@ -113,7 +113,6 @@ public class ClassMetadataFacadeTest {
 		assertSame(sessionTarget, ((TestEntityPersister)classMetadataTarget).session);
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testIsInstanceOfAbstractEntityPersister() {
 		assertTrue(classMetadataFacade.isInstanceOfAbstractEntityPersister());
