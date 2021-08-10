@@ -465,7 +465,6 @@ public class ServiceImplTest {
 				((SingleTableSubclass)target).getSuperclass());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testNewJoinedSubclass() {
 		IPersistentClass persistentClass = service.newRootClass();
