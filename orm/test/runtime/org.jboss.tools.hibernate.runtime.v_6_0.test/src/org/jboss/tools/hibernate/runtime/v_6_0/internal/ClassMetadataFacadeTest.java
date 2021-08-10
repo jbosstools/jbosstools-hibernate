@@ -22,6 +22,7 @@ import org.hibernate.boot.spi.BootstrapContext;
 import org.hibernate.boot.spi.InFlightMetadataCollector;
 import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.boot.spi.MetadataImplementor;
+import org.hibernate.engine.OptimisticLockStyle;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.mapping.BasicValue;
@@ -58,7 +59,6 @@ public class ClassMetadataFacadeTest {
 		classMetadataFacade = new ClassMetadataFacadeImpl(FACADE_FACTORY, classMetadataTarget);
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetEntityName() {
 		assertEquals("foobar", classMetadataFacade.getEntityName());
@@ -185,7 +185,7 @@ public class ClassMetadataFacadeTest {
 	private PersistentClass createPersistentClass(
 			MetadataBuildingContext metadataBuildingContext) {
 		RootClass rc = new RootClass(metadataBuildingContext);
-		Table t = new Table("foobar");
+		Table t = new Table("tools", "foobar");
 		rc.setTable(t);
 		Column c = new Column("foo");
 		t.addColumn(c);
@@ -199,6 +199,7 @@ public class ClassMetadataFacadeTest {
 		rc.setEntityName("foobar");
 		rc.setIdentifier(sv);
 		rc.setClassName(FooBar.class.getName());
+		rc.setOptimisticLockStyle(OptimisticLockStyle.NONE);
 		return rc;
 	}
 	
