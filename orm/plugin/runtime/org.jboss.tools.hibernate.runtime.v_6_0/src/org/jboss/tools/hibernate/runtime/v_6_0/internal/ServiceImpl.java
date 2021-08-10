@@ -452,7 +452,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IPersistentClass newRootClass() {
-		return facadeFactory.createPersistentClass(new RootClass(null));
+		return facadeFactory.createPersistentClass(new RootClass(DummyMetadataBuildingContext.INSTANCE));
 	}
 
 	@Override

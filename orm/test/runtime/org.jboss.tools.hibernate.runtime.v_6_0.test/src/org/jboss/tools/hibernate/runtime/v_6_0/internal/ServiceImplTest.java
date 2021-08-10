@@ -361,7 +361,6 @@ public class ServiceImplTest {
 		assertTrue(target instanceof SimpleValue);
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testNewPrimitiveArray() {
 		IPersistentClass persistentClass = service.newRootClass();
