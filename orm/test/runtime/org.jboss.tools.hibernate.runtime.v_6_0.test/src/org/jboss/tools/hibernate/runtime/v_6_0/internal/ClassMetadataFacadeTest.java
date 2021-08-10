@@ -80,7 +80,6 @@ public class ClassMetadataFacadeTest {
 		assertSame(TYPE_INSTANCE, ((IFacade)typeFacades[0]).getTarget());
  	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetMappedClass() {
 		assertSame(FooBar.class, classMetadataFacade.getMappedClass());
