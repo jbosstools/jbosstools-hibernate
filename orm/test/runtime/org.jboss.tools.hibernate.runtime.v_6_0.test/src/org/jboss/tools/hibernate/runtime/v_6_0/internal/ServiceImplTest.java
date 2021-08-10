@@ -479,7 +479,6 @@ public class ServiceImplTest {
 				((JoinedSubclass)target).getSuperclass());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testNewSpecialRootClass() {
 		IProperty property = service.newProperty();
