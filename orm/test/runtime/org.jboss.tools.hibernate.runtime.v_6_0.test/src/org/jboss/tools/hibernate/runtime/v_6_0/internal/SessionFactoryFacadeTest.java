@@ -123,7 +123,6 @@ public class SessionFactoryFacadeTest {
 		assertSame(((TestSessionFactory)sessionFactoryTarget).session, ((IFacade)sessionFacade).getTarget());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetClassMetadata() throws Exception {
 		Field field = AbstractSessionFactoryFacade.class.getDeclaredField("allClassMetadata");
