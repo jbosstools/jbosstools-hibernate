@@ -88,7 +88,6 @@ public class JpaConfigurationTest {
 		assertSame(metadata, jpaConfiguration.metadata);
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testBuildSessionFactory() {
 		JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", null);
