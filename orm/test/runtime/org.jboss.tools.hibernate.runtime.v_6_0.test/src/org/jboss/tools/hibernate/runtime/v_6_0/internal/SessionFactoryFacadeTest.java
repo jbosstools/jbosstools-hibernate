@@ -141,7 +141,6 @@ public class SessionFactoryFacadeTest {
 		assertNotNull(field.get(sessionFactoryFacade));
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetCollectionMetadata() throws Exception {
 		Field field = AbstractSessionFactoryFacade.class.getDeclaredField("allCollectionMetadata");
