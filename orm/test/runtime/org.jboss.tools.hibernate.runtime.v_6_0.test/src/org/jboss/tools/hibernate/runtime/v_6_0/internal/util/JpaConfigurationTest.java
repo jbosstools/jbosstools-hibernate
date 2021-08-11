@@ -156,7 +156,6 @@ public class JpaConfigurationTest {
 		assertEquals("foobar", jpaConfiguration.getPersistenceUnit());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testInitialize() {
 		JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", null);
