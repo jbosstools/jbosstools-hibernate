@@ -93,7 +93,6 @@ public class SessionFactoryFacadeTest {
 		assertTrue(sessionFactoryTarget.isClosed());
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetAllClassMetadata() throws Exception {
 		Field field = AbstractSessionFactoryFacade.class.getDeclaredField("allClassMetadata");
