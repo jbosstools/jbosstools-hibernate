@@ -79,7 +79,6 @@ public class JpaConfigurationTest {
 		assertEquals("bar", jpaConfiguration.getProperties().get("foo"));
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testGetMetadata() {
 		JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", null);
