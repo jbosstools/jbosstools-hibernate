@@ -115,7 +115,6 @@ public class SessionFactoryFacadeTest {
 		assertNotNull(allCollectionMetadata.get(Foo.class.getName() + ".bars"));
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testOpenSession() throws Exception {
 		assertNull(((TestSessionFactory)sessionFactoryTarget).session);
