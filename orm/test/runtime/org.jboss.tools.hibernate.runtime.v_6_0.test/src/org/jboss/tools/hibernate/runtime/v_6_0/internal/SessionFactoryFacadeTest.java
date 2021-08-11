@@ -86,7 +86,6 @@ public class SessionFactoryFacadeTest {
 		sessionFactoryFacade = new SessionFactoryFacadeImpl(FACADE_FACTORY, sessionFactoryTarget);
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testClose() {
 		assertFalse(sessionFactoryTarget.isClosed());
