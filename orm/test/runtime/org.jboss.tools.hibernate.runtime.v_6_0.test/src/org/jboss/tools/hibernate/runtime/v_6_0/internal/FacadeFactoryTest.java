@@ -80,6 +80,7 @@ import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
+import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.DummyMetadataBuildingContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -303,10 +304,9 @@ public class FacadeFactoryTest {
 		assertSame(join, ((IFacade)facade).getTarget());		
 	}
 	
-	@Disabled //TODO: JBIDE-27958
 	@Test
 	public void testCreatePersistentClass() {
-		PersistentClass persistentClass = new RootClass(null);
+		PersistentClass persistentClass = new RootClass(DummyMetadataBuildingContext.INSTANCE);
 		IPersistentClass facade = facadeFactory.createPersistentClass(persistentClass);
 		assertTrue(facade instanceof PersistentClassFacadeImpl);
 		assertSame(persistentClass, ((IFacade)facade).getTarget());
