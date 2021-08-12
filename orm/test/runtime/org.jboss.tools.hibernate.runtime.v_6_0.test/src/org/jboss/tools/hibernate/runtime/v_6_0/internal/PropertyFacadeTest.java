@@ -13,7 +13,6 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.mapping.Backref;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.PersistentClass;
@@ -32,7 +31,6 @@ import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.DummyMetadataBuildingContext;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class PropertyFacadeTest {

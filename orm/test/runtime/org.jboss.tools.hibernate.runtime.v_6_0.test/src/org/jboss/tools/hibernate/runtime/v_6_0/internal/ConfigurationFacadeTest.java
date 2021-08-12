@@ -49,7 +49,6 @@ import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JdbcMetadataConfigu
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.MetadataHelper;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.MetadataHelperTest;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
