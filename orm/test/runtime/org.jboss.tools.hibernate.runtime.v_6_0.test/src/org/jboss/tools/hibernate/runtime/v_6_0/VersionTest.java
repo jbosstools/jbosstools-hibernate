@@ -8,12 +8,12 @@ public class VersionTest {
 	
 	@Test
 	public void testToolsVersion() {
-		assertEquals("6.0.0.Alpha4", org.hibernate.tool.api.version.Version.CURRENT_VERSION);
+		assertEquals("6.0.0.Alpha5", org.hibernate.tool.api.version.Version.CURRENT_VERSION);
 	}
 	
 	@Test 
 	public void testCoreVersion() {
-		assertEquals("6.0.0.Alpha8", org.hibernate.Version.getVersionString());
+		assertEquals("6.0.0.Alpha9", org.hibernate.Version.getVersionString());
 	}
 
 }
