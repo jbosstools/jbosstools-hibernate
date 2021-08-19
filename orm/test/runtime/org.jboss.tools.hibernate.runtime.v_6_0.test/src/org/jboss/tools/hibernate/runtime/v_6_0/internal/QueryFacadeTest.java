@@ -31,7 +31,6 @@ import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class QueryFacadeTest {
@@ -47,7 +46,6 @@ public class QueryFacadeTest {
 		queryFacade = new QueryFacadeImpl(FACADE_FACTORY, queryTarget) {};
 	}
 	
-	@Disabled
 	@Test
 	public void testList() {
 		assertSame(((TestQuery<?>)queryTarget).theList, queryFacade.list());
@@ -174,6 +172,9 @@ public class QueryFacadeTest {
 
 		@Override
 		protected void beforeQuery(boolean requiresTxn) {}
+		
+		@Override
+		protected void afterQuery(boolean success) {}
 		
 		@Override
 		public QueryParameterBindings getParameterBindings() {
