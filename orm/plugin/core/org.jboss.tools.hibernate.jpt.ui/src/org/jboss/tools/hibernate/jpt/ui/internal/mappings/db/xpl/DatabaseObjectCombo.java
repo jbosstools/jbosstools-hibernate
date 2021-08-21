@@ -11,7 +11,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.mappings.db.xpl;
 
-import org.eclipse.core.commands.util.Tracing;
+import org.eclipse.core.commands.internal.util.Tracing;
 import org.eclipse.jpt.common.ui.internal.swt.listeners.SWTListenerTools;
 import org.eclipse.jpt.common.ui.internal.widgets.ComboPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
