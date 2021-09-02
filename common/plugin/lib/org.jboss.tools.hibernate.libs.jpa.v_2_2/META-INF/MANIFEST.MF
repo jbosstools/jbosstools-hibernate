@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Java Persistence API for JBoss Tools Hibernate
+Bundle-SymbolicName: org.jboss.tools.hibernate.libs.jpa.v_2_2
+Bundle-Version: 5.4.14.qualifier
+Bundle-Vendor: Red Hat
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ClassPath: lib/javax.persistence-api-2.2.jar
+Export-Package: javax.persistence,
+ javax.persistence.criteria,
+ javax.persistence.metamodel,
+ javax.persistence.spi
