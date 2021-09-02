@@ -23,6 +23,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<module>org.jboss.tools.hibernate.libs.jboss-logging.v_3_4</module>
 		<module>org.jboss.tools.hibernate.libs.jpa.v_2_2</module>
 		<module>org.jboss.tools.hibernate.libs.jtidy.v_r8-20060801</module>
+		<module>org.jboss.tools.hibernate.libs.transaction-api.v_1_2</module>
 	</modules>
 
 </project>
