@@ -13,3 +13,4 @@ Export-Package: org.hibernate.annotations.common,
  org.hibernate.annotations.common.reflection.java.generics,
  org.hibernate.annotations.common.util,
  org.hibernate.annotations.common.util.impl
+Require-Bundle: org.jboss.tools.hibernate.libs.jboss-logging.v_3_4
