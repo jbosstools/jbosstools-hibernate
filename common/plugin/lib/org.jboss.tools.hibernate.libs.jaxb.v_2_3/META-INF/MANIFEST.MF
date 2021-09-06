@@ -131,3 +131,4 @@ Export-Package: com.sun.codemodel,
  org.jvnet.fastinfoset.stax,
  org.jvnet.staxex,
  org.jvnet.staxex.util
+Require-Bundle: org.jboss.tools.hibernate.libs.activation.v_1_2_0
