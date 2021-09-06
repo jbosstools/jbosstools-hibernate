@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Classmate 1.5.x for JBoss Tools Hibernate
+Bundle-SymbolicName: org.jboss.tools.hibernate.libs.classmate.v_1_5
+Bundle-Version: 5.4.14.qualifier
+Bundle-Vendor: Red Hat
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ClassPath: lib/classmate-1.5.1.jar
+Export-Package: com.fasterxml.classmate,
+ com.fasterxml.classmate.members,
+ com.fasterxml.classmate.types,
+ com.fasterxml.classmate.util
