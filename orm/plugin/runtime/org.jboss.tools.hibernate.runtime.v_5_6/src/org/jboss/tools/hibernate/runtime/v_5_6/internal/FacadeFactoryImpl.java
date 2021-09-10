@@ -8,8 +8,7 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 
 	@Override
 	public ClassLoader getClassLoader() {
-		// TODO Auto-generated method stub
-		return null;
+		return FacadeFactoryImpl.class.getClassLoader();
 	}
 
 	@Override
