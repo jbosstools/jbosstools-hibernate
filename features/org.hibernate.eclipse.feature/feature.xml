@@ -312,4 +312,10 @@
          install-size="0"
          version="0.0.0"/>
 
+   <plugin
+         id="org.jboss.tools.hibernate.libs.commons-collections4.v_4_4"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
 </feature>

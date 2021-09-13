@@ -1,0 +1,27 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Commons Collections4 for JBoss Tools Hibernate
+Bundle-SymbolicName: org.jboss.tools.hibernate.libs.commons-collections4.v_4_4
+Bundle-Version: 5.4.14.qualifier
+Bundle-Vendor: Red Hat
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ClassPath: lib/commons-collections4-4.4.jar
+Export-Package: org.apache.commons.collections4,
+ org.apache.commons.collections4.bag,
+ org.apache.commons.collections4.bidimap,
+ org.apache.commons.collections4.collection,
+ org.apache.commons.collections4.comparators,
+ org.apache.commons.collections4.functors,
+ org.apache.commons.collections4.iterators,
+ org.apache.commons.collections4.keyvalue,
+ org.apache.commons.collections4.list,
+ org.apache.commons.collections4.map,
+ org.apache.commons.collections4.multimap,
+ org.apache.commons.collections4.multiset,
+ org.apache.commons.collections4.properties,
+ org.apache.commons.collections4.queue,
+ org.apache.commons.collections4.sequence,
+ org.apache.commons.collections4.set,
+ org.apache.commons.collections4.splitmap,
+ org.apache.commons.collections4.trie,
+ org.apache.commons.collections4.trie.analyzer
