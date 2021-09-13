@@ -16,9 +16,12 @@ import java.util.List;
 
 import org.eclipse.reddeer.common.logging.Logger;
 import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.ui.dialogs.PropertyDialog;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.eclipse.ui.problems.Problem;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
+import org.eclipse.reddeer.eclipse.wst.common.project.facet.ui.FacetsPropertyPage;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.hibernate.reddeer.wizard.JPAProjectWizard;
 import org.jboss.tools.hibernate.reddeer.wizard.JPAProjectWizardFirstPage;
@@ -63,6 +66,8 @@ public class JPAProjectFactory {
 		wizard.finish();
 
 		new WaitWhile(new JobIsRunning());
+		setJavaFacet(prj);
+		new WaitWhile(new JobIsRunning());
 		ProblemsView problemsView = new ProblemsView();
 		problemsView.open();
 		List<Problem> allErrors = problemsView.getProblems(ProblemType.ERROR);
@@ -78,6 +83,17 @@ public class JPAProjectFactory {
 				break;
 			}
 		}
+	}
+	
+	private static void setJavaFacet(String prj){	
+		PropertyDialog projectPropertiesDialog = 
+				new ProjectExplorer().getProject(prj).openProperties();
+		projectPropertiesDialog.open();
+		FacetsPropertyPage facetsPage = new FacetsPropertyPage(projectPropertiesDialog);
+		projectPropertiesDialog.select(facetsPage);
+		facetsPage.selectVersion("Java", "11");
+		facetsPage.apply();
+		projectPropertiesDialog.cancel();
 	}
 	
 }

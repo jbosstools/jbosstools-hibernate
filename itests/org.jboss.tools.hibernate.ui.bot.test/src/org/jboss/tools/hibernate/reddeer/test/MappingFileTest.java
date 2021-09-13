@@ -45,7 +45,7 @@ import org.junit.runner.RunWith;
 public class MappingFileTest extends HibernateRedDeerTest {
 	
 	//TODO use latest
-	public static final String PRJ = "mvn-hibernate54";
+	public static final String PRJ = "mvn-hibernate55";
 	public static final String PCKG = "org.test";
 	public static final String PCKG_CLZ = "org.test.clazz";
     
@@ -77,6 +77,7 @@ public class MappingFileTest extends HibernateRedDeerTest {
 		deleteAllProjects();
 	}
 	
+	//https://issues.redhat.com/browse/JBIDE-23066
 	@Test
 	public void createMappingFileFromPackage() {
 		ProjectUtils.getPackage(PRJ, PCKG).select();
