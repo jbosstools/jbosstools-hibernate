@@ -324,4 +324,11 @@
          install-size="0"
          version="0.0.0"/>
 
+   <plugin
+         id="org.jboss.tools.hibernate.runtime.v_5_6"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
 </feature>
