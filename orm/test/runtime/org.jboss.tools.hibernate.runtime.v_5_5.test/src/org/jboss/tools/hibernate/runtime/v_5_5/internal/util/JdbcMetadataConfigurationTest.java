@@ -17,9 +17,11 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 import java.util.Properties;
 
+import org.h2.Driver;
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -27,6 +29,11 @@ public class JdbcMetadataConfigurationTest {
 
 	private JdbcMetadataConfiguration jdbcMetadataConfiguration = null;
 	
+	@BeforeAll
+	public static void beforeAll() throws Exception {
+		DriverManager.registerDriver(new Driver());		
+	}
+
 	@BeforeEach
 	public void beforeEach() {
 		jdbcMetadataConfiguration = new JdbcMetadataConfiguration();
