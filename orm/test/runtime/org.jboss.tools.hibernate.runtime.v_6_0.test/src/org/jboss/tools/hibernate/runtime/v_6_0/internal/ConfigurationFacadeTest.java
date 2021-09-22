@@ -24,6 +24,7 @@ import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.h2.Driver;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
@@ -48,6 +49,7 @@ import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.DummyMetadataBuildi
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.MetadataHelper;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.MetadataHelperTest;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
@@ -83,6 +85,11 @@ public class ConfigurationFacadeTest {
 
 	private IConfiguration configurationFacade = null;
 	private Configuration configuration = null;
+
+	@BeforeAll
+	public static void beforeAll() throws Exception {
+		DriverManager.registerDriver(new Driver());		
+	}
 
 	@BeforeEach
 	public void beforeEach() {
