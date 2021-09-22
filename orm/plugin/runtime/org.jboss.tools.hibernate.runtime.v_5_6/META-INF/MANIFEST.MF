@@ -7,8 +7,8 @@ Bundle-Version: 5.4.14.qualifier
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ClassPath: .,
- lib/hibernate-core-5.6.0.Beta1.jar,
- lib/hibernate-tools-5.6.0.Beta1.jar
+ lib/hibernate-core-5.6.0.Beta2.jar,
+ lib/hibernate-tools-5.6.0.Beta2.jar
 Require-Bundle: org.jboss.tools.hibernate.libs.antlr.v_2_7_7,
  org.jboss.tools.hibernate.libs.byte-buddy.v_1_11,
  org.jboss.tools.hibernate.libs.classmate.v_1_5,
