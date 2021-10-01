@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Activation API for JBoss Tools Hibernate
 Bundle-SymbolicName: org.jboss.tools.hibernate.libs.activation.v_1_2_0
-Bundle-Version: 5.4.14.qualifier
+Bundle-Version: 5.4.15.qualifier
 Bundle-Vendor: Red Hat
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: lib/javax.activation-api-1.2.0.jar

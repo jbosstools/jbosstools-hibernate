@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Byte Buddy 1.11.x for JBoss Tools Hibernate
 Bundle-SymbolicName: org.jboss.tools.hibernate.libs.byte-buddy.v_1_11
-Bundle-Version: 5.4.14.qualifier
+Bundle-Version: 5.4.15.qualifier
 Bundle-Vendor: Red Hat
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ClassPath: lib/byte-buddy-1.11.14.jar
