@@ -13,7 +13,6 @@
 
 	<properties>
 		<antlr.version>4.8-1</antlr.version>
-		<classmate.version>1.5.1</classmate.version>
 		<commons-collections.version>4.4</commons-collections.version>
 		<hibernate.core.version>6.0.0.Alpha9</hibernate.core.version>
 		<hibernate.tools.version>6.0.0.Alpha5</hibernate.tools.version>
@@ -43,11 +42,6 @@
 				</executions>
 				<configuration>
 					<artifactItems>
-						<artifactItem>
-							<groupId>com.fasterxml</groupId>
-							<artifactId>classmate</artifactId>
-							<version>${classmate.version}</version>
-						</artifactItem>
 						<artifactItem>
 							<groupId>com.sun.istack</groupId>
 							<artifactId>istack-commons-runtime</artifactId>
