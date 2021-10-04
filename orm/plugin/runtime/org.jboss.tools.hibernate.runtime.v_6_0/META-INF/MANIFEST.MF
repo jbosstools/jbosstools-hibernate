@@ -18,7 +18,6 @@ Bundle-ClassPath: .,
  lib/jandex-2.2.3.Final.jar,
  lib/jaxb-api-2.3.1.jar,
  lib/jaxb-runtime-2.3.1.jar,
- lib/javax.persistence-api-2.2.jar,
  lib/jboss-logging-3.4.1.Final.jar
 Require-Bundle: org.jboss.tools.hibernate.libs.dom4j.v_1_6_1,
  org.jboss.tools.hibernate.runtime.common,
@@ -26,4 +25,5 @@ Require-Bundle: org.jboss.tools.hibernate.libs.dom4j.v_1_6_1,
  org.jboss.tools.hibernate.libs.activation.v_1_2_0,
  org.jboss.tools.hibernate.libs.classmate.v_1_5,
  org.jboss.tools.hibernate.libs.freemarker.v_2_3_23,
- org.jboss.tools.hibernate.libs.transaction-api.v_1_2
+ org.jboss.tools.hibernate.libs.transaction-api.v_1_2,
+ org.jboss.tools.hibernate.libs.jpa.v_2_2
