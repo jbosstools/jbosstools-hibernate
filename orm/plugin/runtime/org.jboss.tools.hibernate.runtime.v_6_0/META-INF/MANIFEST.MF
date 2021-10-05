@@ -12,9 +12,7 @@ Bundle-ClassPath: .,
  lib/hibernate-core-6.0.0.Alpha9.jar,
  lib/hibernate-tools-orm-6.0.0.Alpha5.jar,
  lib/hibernate-tools-utils-6.0.0.Alpha5.jar,
- lib/istack-commons-runtime-3.0.11.jar,
- lib/jaxb-api-2.3.1.jar,
- lib/jaxb-runtime-2.3.1.jar
+ lib/istack-commons-runtime-3.0.11.jar
 Require-Bundle: org.jboss.tools.hibernate.libs.dom4j.v_1_6_1,
  org.jboss.tools.hibernate.runtime.common,
  org.jboss.tools.hibernate.runtime.spi,
@@ -26,4 +24,5 @@ Require-Bundle: org.jboss.tools.hibernate.libs.dom4j.v_1_6_1,
  org.jboss.tools.hibernate.libs.jandex.v_2_4,
  org.jboss.tools.hibernate.libs.jboss-logging.v_3_4,
  org.jboss.tools.hibernate.libs.jpa.v_2_2,
- org.jboss.tools.hibernate.libs.transaction-api.v_1_2
+ org.jboss.tools.hibernate.libs.transaction-api.v_1_2,
+ org.jboss.tools.hibernate.libs.jaxb.v_2_3
