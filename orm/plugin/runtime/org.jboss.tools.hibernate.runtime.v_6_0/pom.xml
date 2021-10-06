@@ -12,7 +12,6 @@
 	<packaging>eclipse-plugin</packaging>
 
 	<properties>
-		<antlr.version>4.8-1</antlr.version>
 		<hibernate.core.version>6.0.0.Alpha9</hibernate.core.version>
 		<hibernate.tools.version>6.0.0.Alpha5</hibernate.tools.version>
 	</properties>
@@ -33,11 +32,6 @@
 				</executions>
 				<configuration>
 					<artifactItems>
- 						<artifactItem>
-							<groupId>org.antlr</groupId>
-							<artifactId>antlr4-runtime</artifactId>
-							<version>${antlr.version}</version>
-						</artifactItem> 
 						<artifactItem>
 							<groupId>org.hibernate.tool</groupId>
 							<artifactId>hibernate-tools-orm</artifactId>

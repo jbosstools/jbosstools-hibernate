@@ -7,7 +7,6 @@ Bundle-Version: 5.4.15.qualifier
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: .,
- lib/antlr4-runtime-4.8-1.jar,
  lib/hibernate-core-6.0.0.Alpha9.jar,
  lib/hibernate-tools-orm-6.0.0.Alpha5.jar,
  lib/hibernate-tools-utils-6.0.0.Alpha5.jar
@@ -23,4 +22,5 @@ Require-Bundle: org.jboss.tools.hibernate.runtime.common,
  org.jboss.tools.hibernate.libs.jboss-logging.v_3_4,
  org.jboss.tools.hibernate.libs.jpa.v_2_2,
  org.jboss.tools.hibernate.libs.transaction-api.v_1_2,
- org.jboss.tools.hibernate.libs.jaxb.v_2_3
+ org.jboss.tools.hibernate.libs.jaxb.v_2_3,
+ org.jboss.tools.hibernate.libs.antlr4-runtime.v_4_9
