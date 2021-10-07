@@ -9,6 +9,7 @@ import java.util.Properties;
 
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.mapping.PersistentClass;
@@ -69,7 +70,8 @@ public class ConfigurationMetadataDescriptorTest {
 		MetadataSources metadataSources = new MetadataSources();
 		metadataSources.addInputStream(new ByteArrayInputStream(TEST_HBM_XML_STRING.getBytes()));
 		Configuration configuration = new Configuration(metadataSources);
-		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
+		configuration.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
+		configuration.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
 		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
 		PersistentClass persistentClass = new RootClass(null);
 		persistentClass.setEntityName("Bar");
