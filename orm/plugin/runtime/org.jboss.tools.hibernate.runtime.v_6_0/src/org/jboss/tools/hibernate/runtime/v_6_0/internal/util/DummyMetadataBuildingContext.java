@@ -10,7 +10,7 @@ import org.hibernate.boot.spi.BootstrapContext;
 import org.hibernate.boot.spi.InFlightMetadataCollector;
 import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.boot.spi.MetadataBuildingOptions;
-import org.hibernate.dialect.Dialect;
+import org.hibernate.cfg.AvailableSettings;
 
 public class DummyMetadataBuildingContext {
 	
@@ -18,16 +18,13 @@ public class DummyMetadataBuildingContext {
 	
 	private static MetadataBuildingContext createInstance() {
 		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
-		ssrb.applySetting("hibernate.dialect", DummyDialect.class.getName());
+		ssrb.applySetting(AvailableSettings.DIALECT, MockDialect.class.getName());
+		ssrb.applySetting(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
 		StandardServiceRegistry serviceRegistry = ssrb.build();
 		MetadataBuildingOptions metadataBuildingOptions = new MetadataBuilderImpl.MetadataBuildingOptionsImpl(serviceRegistry);
 		BootstrapContext bootstrapContext = new BootstrapContextImpl(serviceRegistry, metadataBuildingOptions);
 		InFlightMetadataCollector inflightMetadataCollector = new InFlightMetadataCollectorImpl(bootstrapContext, metadataBuildingOptions);
 		return new MetadataBuildingContextRootImpl("JBoss Tools", bootstrapContext, metadataBuildingOptions, inflightMetadataCollector);
-	}
-
-	public static class DummyDialect extends Dialect {
-		@Override public int getVersion() {return 0;}		
 	}
 
 }
