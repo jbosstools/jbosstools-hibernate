@@ -29,9 +29,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.jaxb.spi.Binding;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
-import org.hibernate.dialect.Dialect;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
@@ -49,6 +49,8 @@ import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.DummyMetadataBuildi
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.MetadataHelper;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.MetadataHelperTest;
+import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.MockConnectionProvider;
+import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.MockDialect;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -77,10 +79,6 @@ public class ConfigurationFacadeTest {
 		public String id;
 	}
 	
-	public static class TestDialect extends Dialect {
-		@Override public int getVersion() { return 0; }
-	}
-	
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 
 	private IConfiguration configurationFacade = null;
@@ -94,6 +92,8 @@ public class ConfigurationFacadeTest {
 	@BeforeEach
 	public void beforeEach() {
 		configuration = new Configuration();
+		configuration.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
+		configuration.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
 		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
 	}	
 	
@@ -197,7 +197,6 @@ public class ConfigurationFacadeTest {
 
 		String fooClassName = 
 				"org.jboss.tools.hibernate.runtime.v_6_0.internal.ConfigurationFacadeTest$Foo";
-		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
 		Metadata metadata = MetadataHelper.getMetadata(configuration);
 		assertNull(metadata.getEntityBinding(fooClassName));
 		configurationFacade.configure(document);
@@ -220,7 +219,8 @@ public class ConfigurationFacadeTest {
 		fileWriter.close();
 		String fooClassName = 
 				"org.jboss.tools.hibernate.runtime.v_6_0.internal.ConfigurationFacadeTest$Foo";
-		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
+		configuration.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
+		configuration.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
 		Metadata metadata = MetadataHelper.getMetadata(configuration);
 		assertNull(metadata.getEntityBinding(fooClassName));
 		configurationFacade.configure(cfgXmlFile);
@@ -243,7 +243,6 @@ public class ConfigurationFacadeTest {
 		fileWriter.close();
 		String fooClassName = 
 				"org.jboss.tools.hibernate.runtime.v_6_0.internal.ConfigurationFacadeTest$Foo";
-		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
 		Metadata metadata = MetadataHelper.getMetadata(configuration);
 		assertNull(metadata.getEntityBinding(fooClassName));
 		configurationFacade.configure();
@@ -264,7 +263,6 @@ public class ConfigurationFacadeTest {
 	
 	@Test
 	public void testBuildMappings() {
-		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
 		assertNull(((ConfigurationFacadeImpl)configurationFacade).metadata);
 		configurationFacade.buildMappings();
 		assertNotNull(((ConfigurationFacadeImpl)configurationFacade).metadata);
@@ -273,7 +271,6 @@ public class ConfigurationFacadeTest {
 	
 	@Test
 	public void testBuildSessionFactory() throws Throwable {
-		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
 		ISessionFactory sessionFactoryFacade = 
 				configurationFacade.buildSessionFactory();
 		assertNotNull(sessionFactoryFacade);
@@ -284,7 +281,6 @@ public class ConfigurationFacadeTest {
 	
 	@Test
 	public void testGetClassMappings() {
-		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
 		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
 		assertFalse(configurationFacade.getClassMappings().hasNext());		
 		PersistentClass persistentClass = new RootClass(DummyMetadataBuildingContext.INSTANCE);
@@ -349,7 +345,6 @@ public class ConfigurationFacadeTest {
 	
 	@Test
 	public void testGetClassMapping() {
-		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
 		PersistentClass persistentClass = new RootClass(DummyMetadataBuildingContext.INSTANCE);
 		persistentClass.setEntityName("Foo");
 		IPersistentClass persistentClassFacade = 
