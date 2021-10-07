@@ -11,11 +11,13 @@ import java.lang.reflect.Proxy;
 import java.util.EnumSet;
 
 import org.hibernate.boot.Metadata;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.dialect.Dialect;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.schema.TargetType;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.MockConnectionProvider;
+import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.MockDialect;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -43,7 +45,8 @@ public class SchemaExportFacadeTest {
 	@Test
 	public void testSetConfiguration() {
 		Configuration configurationTarget = new Configuration();
-		configurationTarget.setProperty("hibernate.dialect", TestDialect.class.getName());
+		configurationTarget.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
+		configurationTarget.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
 		ConfigurationFacadeImpl configuration = new ConfigurationFacadeImpl(FACADE_FACTORY, configurationTarget);
 		Metadata metadata = configuration.getMetadata();
 		assertNull(schemaExportFacade.metadata);
@@ -61,13 +64,6 @@ public class SchemaExportFacadeTest {
 		schemaExportFacade.create();	
 		assertSame(target.metadata, schemaExportFacade.metadata);
 		assertTrue(target.targetTypes.contains(TargetType.DATABASE));
-	}
-	
-	public static class TestDialect extends Dialect {
-		@Override
-		public int getVersion() {
-			return 0;
-		}
 	}
 	
 	private static class TestSchemaExport extends SchemaExport {
