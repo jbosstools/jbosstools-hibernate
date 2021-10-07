@@ -20,6 +20,7 @@ import javax.persistence.Id;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.dialect.Dialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -80,7 +81,9 @@ public class JpaConfigurationTest {
 	
 	@Test
 	public void testGetMetadata() {
-		JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", null);
+		Properties properties = new Properties();
+		properties.put(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
+		JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", properties);
 		assertNull(jpaConfiguration.metadata);
 		Metadata metadata = jpaConfiguration.getMetadata();
 		assertNotNull(metadata.getEntityBinding(FooBar.class.getName()));
@@ -89,7 +92,9 @@ public class JpaConfigurationTest {
 	
 	@Test
 	public void testBuildSessionFactory() {
-		JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", null);
+		Properties properties = new Properties();
+		properties.put(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
+		JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", properties);
 		assertNull(jpaConfiguration.sessionFactory);
 		SessionFactory sessionFactory = jpaConfiguration.buildSessionFactory();
 		assertNotNull(sessionFactory);
@@ -157,7 +162,9 @@ public class JpaConfigurationTest {
 	
 	@Test
 	public void testInitialize() {
-		JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", null);
+		Properties properties = new Properties();
+		properties.put(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
+		JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", properties);
 		assertNull(jpaConfiguration.metadata);
 		assertNull(jpaConfiguration.sessionFactory);
 		assertNull(jpaConfiguration.getProperties().get("foo"));
