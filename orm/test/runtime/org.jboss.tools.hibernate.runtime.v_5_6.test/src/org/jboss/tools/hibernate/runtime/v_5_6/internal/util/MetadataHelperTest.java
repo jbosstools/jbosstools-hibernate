@@ -11,8 +11,8 @@ import java.lang.reflect.Proxy;
 
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.dialect.Dialect;
 import org.junit.jupiter.api.Test;
 
 public class MetadataHelperTest {
@@ -43,9 +43,8 @@ public class MetadataHelperTest {
 	     MetadataSources metadataSources = new MetadataSources();
 	     metadataSources.addInputStream(new ByteArrayInputStream(TEST_HBM_XML_STRING.getBytes()));
 	     Configuration configuration = new Configuration(metadataSources);
-	     configuration.setProperty(
-	    		 "hibernate.dialect", 
-	    		 TestDialect.class.getName());
+	     configuration.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
+	     configuration.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
 	     Metadata metadata = MetadataHelper.getMetadata(configuration);
 	     assertNotNull(metadata.getEntityBinding("org.jboss.tools.hibernate.runtime.v_5_6.internal.util.MetadataHelperTest$Foo"));
 	}
@@ -80,8 +79,6 @@ public class MetadataHelperTest {
 				});
 		return result;
 	}
-	
-	public static class TestDialect extends Dialect {}
 	
 	@SuppressWarnings("unused")
 	private static class Foo {
