@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Properties;
 
 import org.h2.Driver;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.Environment;
@@ -25,7 +26,6 @@ import org.hibernate.cfg.reveng.DelegatingReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.TableFilter;
-import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.mapping.Array;
@@ -74,6 +74,8 @@ import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_5_6.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_5_6.internal.util.JpaConfiguration;
+import org.jboss.tools.hibernate.runtime.v_5_6.internal.util.MockConnectionProvider;
+import org.jboss.tools.hibernate.runtime.v_5_6.internal.util.MockDialect;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -133,7 +135,8 @@ public class ServiceImplTest {
 	@Test
 	public void testNewHibernateMappingExporter() {
 		IConfiguration configuration = service.newDefaultConfiguration();
-		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
+		configuration.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
+		configuration.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
 		File file = new File("");
 		IHibernateMappingExporter hibernateMappingExporter = 
 				service.newHibernateMappingExporter(configuration, file);
@@ -148,7 +151,8 @@ public class ServiceImplTest {
 	@Test
 	public void testNewSchemaExport() {
 		IConfiguration configuration = service.newDefaultConfiguration();
-		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
+		configuration.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
+		configuration.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
 		ISchemaExport schemaExport = service.newSchemaExport(configuration);
 		assertNotNull(schemaExport);
 	}
@@ -156,7 +160,8 @@ public class ServiceImplTest {
 	@Test
 	public void testNewHQLCodeAssist() {
 		IConfiguration configuration = service.newDefaultConfiguration();
-		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
+		configuration.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
+		configuration.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
 		IHQLCodeAssist hqlCodeAssist = service.newHQLCodeAssist(configuration);
 		assertNotNull(hqlCodeAssist);
 	}
@@ -202,7 +207,8 @@ public class ServiceImplTest {
 	@Test
 	public void testNewHQLQueryPlan() throws Exception {
 		IConfiguration configuration = service.newDefaultConfiguration();
-		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+		configuration.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
+		configuration.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
 		File testFile = File.createTempFile("test", "tmp");
 		testFile.deleteOnExit();
 		FileWriter fileWriter = new FileWriter(testFile);
@@ -565,6 +571,4 @@ public class ServiceImplTest {
 				service.getClassLoader());
 	}
 
-	public static class TestDialect extends Dialect {}
-	
 }
