@@ -17,7 +17,7 @@ public class DummyMetadataBuildingContextTest {
 				.getBootstrapContext().getServiceRegistry();
 		JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
 		Dialect dialect = jdbcServices.getDialect();
-		assertTrue(dialect instanceof DummyMetadataBuildingContext.DummyDialect);
+		assertTrue(dialect instanceof MockDialect);
 	}
 
 }
