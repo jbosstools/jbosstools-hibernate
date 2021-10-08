@@ -20,7 +20,7 @@ import javax.persistence.Id;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
-import org.hibernate.dialect.Dialect;
+import org.hibernate.cfg.AvailableSettings;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,7 +36,8 @@ public class JpaConfigurationTest {
 	        "  <persistence-unit name='foobar'>" +
 	        "    <class>"+ FooBar.class.getName()  +"</class>" +
 	        "    <properties>" +
-	        "      <property name='hibernate.dialect' value='" + TestDialect.class.getName() + "'/>" +
+	        "      <property name='" + AvailableSettings.DIALECT + "' value='" + MockDialect.class.getName() + "'/>" +
+	        "      <property name='" + AvailableSettings.CONNECTION_PROVIDER + "' value='" + MockConnectionProvider.class.getName() + "'/>" +
 	        "      <property name='foo' value='bar'/>" +
 	        "    </properties>" +
 	        "  </persistence-unit>" +
@@ -168,8 +169,6 @@ public class JpaConfigurationTest {
 		assertEquals("bar", jpaConfiguration.sessionFactory.getProperties().get("foo"));
 		assertEquals("bar", jpaConfiguration.getProperties().get("foo"));
 	}
-	
-	public static final class TestDialect extends Dialect {}
 	
 	@Entity public class FooBar {
 		@Id public int id;
