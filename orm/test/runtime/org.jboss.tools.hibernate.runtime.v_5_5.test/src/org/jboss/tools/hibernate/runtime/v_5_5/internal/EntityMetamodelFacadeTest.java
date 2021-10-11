@@ -20,7 +20,7 @@ import org.hibernate.boot.spi.BootstrapContext;
 import org.hibernate.boot.spi.InFlightMetadataCollector;
 import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.boot.spi.MetadataImplementor;
-import org.hibernate.dialect.Dialect;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.engine.OptimisticLockStyle;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.mapping.Column;
@@ -34,6 +34,8 @@ import org.hibernate.tuple.entity.EntityTuplizer;
 import org.jboss.tools.hibernate.runtime.common.AbstractEntityMetamodelFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
+import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.MockConnectionProvider;
+import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.MockDialect;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -126,7 +128,8 @@ public class EntityMetamodelFacadeTest {
 		
 	private EntityMetamodel createFooBarModel() {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
-		builder.applySetting("hibernate.dialect", TestDialect.class.getName());
+		builder.applySetting(AvailableSettings.DIALECT, MockDialect.class.getName());
+		builder.applySetting(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
 		StandardServiceRegistry serviceRegistry = builder.build();		
 		MetadataBuildingOptionsImpl metadataBuildingOptions = 
 				new MetadataBuildingOptionsImpl(serviceRegistry);	
@@ -162,8 +165,6 @@ public class EntityMetamodelFacadeTest {
 		};
 	}
 		
-	public static class TestDialect extends Dialect {}
-	
 	public class FooBar {
 		public int id = 1967;
 	}
