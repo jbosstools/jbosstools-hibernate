@@ -15,12 +15,14 @@ import java.util.EnumSet;
 import java.util.List;
 
 import org.hibernate.boot.Metadata;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.dialect.Dialect;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.schema.TargetType;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.MockConnectionProvider;
+import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.MockDialect;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -50,7 +52,8 @@ public class SchemaExportFacadeTest {
 		Field metadataField = SchemaExportFacadeImpl.class.getDeclaredField("metadata");
 		metadataField.setAccessible(true);
 		Configuration configurationTarget = new Configuration();
-		configurationTarget.setProperty("hibernate.dialect", TestDialect.class.getName());
+		configurationTarget.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
+		configurationTarget.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
 		ConfigurationFacadeImpl configuration = new ConfigurationFacadeImpl(FACADE_FACTORY, configurationTarget);
 		Metadata metadata = configuration.getMetadata();
 		assertNull(metadataField.get(schemaExportFacade));
@@ -83,8 +86,6 @@ public class SchemaExportFacadeTest {
 		exceptionsField.set(schemaExportTarget, exceptions);
 		assertSame(exceptions, schemaExportFacade.getExceptions());
 	}
-	
-	public static class TestDialect extends Dialect {}
 	
 	private static class TestSchemaExport extends SchemaExport {
 		Metadata metadata = null;
