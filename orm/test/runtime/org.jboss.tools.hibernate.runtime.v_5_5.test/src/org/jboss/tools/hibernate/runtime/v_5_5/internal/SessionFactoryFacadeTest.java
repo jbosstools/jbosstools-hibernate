@@ -16,8 +16,8 @@ import java.util.Set;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.spi.SessionFactoryDelegatingImpl;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.jboss.tools.hibernate.runtime.common.AbstractSessionFactoryFacade;
@@ -27,18 +27,19 @@ import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
+import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.MockConnectionProvider;
+import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.MockDialect;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 public class SessionFactoryFacadeTest {
 
-	public static class TestDialect extends Dialect {}
-	
 	private static final String TEST_CFG_XML_STRING =
 			"<hibernate-configuration>" +
-			"  <session-factory name='bar'>" + 
-			"    <property name='hibernate.dialect'>" + TestDialect.class.getName() + "</property>" +
+			"  <session-factory>" + 
+			"    <property name='" + AvailableSettings.DIALECT + "'>" + MockDialect.class.getName() + "</property>" +
+			"    <property name='" + AvailableSettings.CONNECTION_PROVIDER + "'>" + MockConnectionProvider.class.getName() + "</property>" +
 			"  </session-factory>" +
 			"</hibernate-configuration>";
 	
