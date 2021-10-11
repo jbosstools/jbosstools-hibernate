@@ -15,7 +15,7 @@ import org.hibernate.boot.spi.BootstrapContext;
 import org.hibernate.boot.spi.InFlightMetadataCollector;
 import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.boot.spi.MetadataBuildingOptions;
-import org.hibernate.dialect.Dialect;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.tuple.component.ComponentMetamodel;
@@ -32,6 +32,8 @@ import org.hibernate.type.StringType;
 import org.hibernate.type.TypeFactory.TypeScope;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
+import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.MockConnectionProvider;
+import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.MockDialect;
 import org.junit.jupiter.api.Test;
 
 public class TypeFacadeTest {
@@ -121,7 +123,8 @@ public class TypeFacadeTest {
 		assertFalse(typeFacade.isComponentType());
 		// next try a component type
 		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
-		ssrb.applySetting("hibernate.dialect", TestDialect.class.getName());
+		ssrb.applySetting(AvailableSettings.DIALECT, MockDialect.class.getName());
+		ssrb.applySetting(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
 		StandardServiceRegistry ssr = ssrb.build();
 		MetadataBuildingOptions mdbo = 
 				new MetadataBuilderImpl.MetadataBuildingOptionsImpl(ssr);
@@ -232,6 +235,4 @@ public class TypeFacadeTest {
 		assertEquals("foo", typeFacade.getRole());
 	}
 	
-	public static class TestDialect extends Dialect {}
-
 }
