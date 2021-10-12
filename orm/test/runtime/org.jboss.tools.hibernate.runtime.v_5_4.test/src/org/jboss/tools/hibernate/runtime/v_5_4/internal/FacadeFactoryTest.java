@@ -26,6 +26,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.spi.BootstrapContext;
 import org.hibernate.boot.spi.MetadataBuildingOptions;
 import org.hibernate.boot.spi.MetadataImplementor;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
@@ -103,6 +104,8 @@ import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_5_4.internal.util.MetadataHelper;
+import org.jboss.tools.hibernate.runtime.v_5_4.internal.util.MockConnectionProvider;
+import org.jboss.tools.hibernate.runtime.v_5_4.internal.util.MockDialect;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -266,7 +269,8 @@ public class FacadeFactoryTest {
 	@Test
 	public void testCreateEntityMetamodel() {
 		Configuration configuration = new Configuration();
-		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+		configuration.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
+		configuration.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySettings(configuration.getProperties());
 		ServiceRegistry serviceRegistry = builder.build();		
@@ -307,7 +311,8 @@ public class FacadeFactoryTest {
 	@Test
 	public void testCreateHQLCodeAssist() {
 		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
-		ssrb.applySetting("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+		ssrb.applySetting(AvailableSettings.DIALECT, MockDialect.class.getName());
+		ssrb.applySetting(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
 		HQLCodeAssist hqlCodeAssist = new HQLCodeAssist(new MetadataSources().buildMetadata(ssrb.build()));
 		IHQLCodeAssist facade = facadeFactory.createHQLCodeAssist(hqlCodeAssist);
 		assertSame(hqlCodeAssist, ((IFacade)facade).getTarget());		
@@ -326,9 +331,8 @@ public class FacadeFactoryTest {
 				new ArrayList<PersistentClass>();
 		final StandardServiceRegistryBuilder standardServiceRegistryBuilder = 
 				new StandardServiceRegistryBuilder();
-		standardServiceRegistryBuilder.applySetting(
-				"hibernate.dialect", 
-				"org.hibernate.dialect.H2Dialect");
+		standardServiceRegistryBuilder.applySetting(AvailableSettings.DIALECT, MockDialect.class.getName());
+		standardServiceRegistryBuilder.applySetting(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
 		final StandardServiceRegistry serviceRegistry = 
 				standardServiceRegistryBuilder.build();
 		final MetadataSources metadataSources = new MetadataSources(serviceRegistry);
