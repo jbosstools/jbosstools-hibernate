@@ -13,6 +13,7 @@ import javax.persistence.metamodel.Metamodel;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
@@ -24,6 +25,8 @@ import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.v_5_4.internal.test.Foo;
+import org.jboss.tools.hibernate.runtime.v_5_4.internal.util.MockConnectionProvider;
+import org.jboss.tools.hibernate.runtime.v_5_4.internal.util.MockDialect;
 import org.junit.jupiter.api.Test;
 
 public class SessionFactoryFacadeTest {
@@ -33,12 +36,12 @@ public class SessionFactoryFacadeTest {
 	@Test
 	public void testClose() {
 		Configuration configuration = new Configuration();
-		SessionFactory sessionFactory = 
-				configuration.buildSessionFactory(
-						new StandardServiceRegistryBuilder().build());
+		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
+		ssrb.applySetting(AvailableSettings.DIALECT, MockDialect.class.getName());
+		ssrb.applySetting(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
+		SessionFactory sessionFactory = configuration.buildSessionFactory(ssrb.build());
 		sessionFactory.openSession();
-		ISessionFactory sessionFactoryFacade = 
-				FACADE_FACTORY.createSessionFactory(sessionFactory);
+		ISessionFactory sessionFactoryFacade = FACADE_FACTORY.createSessionFactory(sessionFactory);
 		assertFalse(sessionFactory.isClosed());
 		sessionFactoryFacade.close();
 		assertTrue(sessionFactory.isClosed());
@@ -47,17 +50,18 @@ public class SessionFactoryFacadeTest {
 	@Test
 	public void testGetAllClassMetadata() throws Exception {
 		Configuration configuration = new Configuration();
-		SessionFactory sessionFactory = 
-				configuration.buildSessionFactory(
-						new StandardServiceRegistryBuilder().build());
-		ISessionFactory sessionFactoryFacade = 
-				FACADE_FACTORY.createSessionFactory(sessionFactory);
+		StandardServiceRegistryBuilder ssrb1 = new StandardServiceRegistryBuilder();
+		ssrb1.applySetting(AvailableSettings.DIALECT, MockDialect.class.getName());
+		ssrb1.applySetting(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
+		SessionFactory sessionFactory = configuration.buildSessionFactory(ssrb1.build());
+		ISessionFactory sessionFactoryFacade = FACADE_FACTORY.createSessionFactory(sessionFactory);
 		assertTrue(sessionFactoryFacade.getAllClassMetadata().isEmpty());
 		sessionFactory.close();
 		configuration.addClass(Foo.class);
-		sessionFactory = 
-				configuration.buildSessionFactory(
-						new StandardServiceRegistryBuilder().build());
+		StandardServiceRegistryBuilder ssrb2 = new StandardServiceRegistryBuilder();
+		ssrb2.applySetting(AvailableSettings.DIALECT, MockDialect.class.getName());
+		ssrb2.applySetting(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
+		sessionFactory = configuration.buildSessionFactory(ssrb2.build());
 		sessionFactoryFacade = 
 				FACADE_FACTORY.createSessionFactory(sessionFactory);
 		Map<String, IClassMetadata> allClassMetaData = 
@@ -70,17 +74,18 @@ public class SessionFactoryFacadeTest {
 	@Test
 	public void testGetAllCollectionMetadata() {
 		Configuration configuration = new Configuration();
-		SessionFactory sessionFactory = 
-				configuration.buildSessionFactory(
-						new StandardServiceRegistryBuilder().build());
-		ISessionFactory sessionFactoryFacade = 
-				FACADE_FACTORY.createSessionFactory(sessionFactory);
+		StandardServiceRegistryBuilder ssrb1 = new StandardServiceRegistryBuilder();
+		ssrb1.applySetting(AvailableSettings.DIALECT, MockDialect.class.getName());
+		ssrb1.applySetting(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
+		SessionFactory sessionFactory = configuration.buildSessionFactory(ssrb1.build());
+		ISessionFactory sessionFactoryFacade = FACADE_FACTORY.createSessionFactory(sessionFactory);
 		assertTrue(sessionFactoryFacade.getAllCollectionMetadata().isEmpty());
 		sessionFactory.close();
 		configuration.addClass(Foo.class);
-		sessionFactory = 
-				configuration.buildSessionFactory(
-						new StandardServiceRegistryBuilder().build());
+		StandardServiceRegistryBuilder ssrb2 = new StandardServiceRegistryBuilder();
+		ssrb2.applySetting(AvailableSettings.DIALECT, MockDialect.class.getName());
+		ssrb2.applySetting(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
+		sessionFactory = configuration.buildSessionFactory(ssrb2.build());
 		sessionFactoryFacade = 
 				FACADE_FACTORY.createSessionFactory(sessionFactory);
 		Map<String, ICollectionMetadata> allCollectionMetaData = 
@@ -92,12 +97,11 @@ public class SessionFactoryFacadeTest {
 	
 	@Test
 	public void testOpenSession() {
-		Configuration configuration = new Configuration();
-		SessionFactory sessionFactory = 
-				configuration.buildSessionFactory(
-						new StandardServiceRegistryBuilder().build());
-		ISessionFactory sessionFactoryFacade = 
-				FACADE_FACTORY.createSessionFactory(sessionFactory);
+		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
+		ssrb.applySetting(AvailableSettings.DIALECT, MockDialect.class.getName());
+		ssrb.applySetting(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
+		SessionFactory sessionFactory = new Configuration().buildSessionFactory(ssrb.build());		
+		ISessionFactory sessionFactoryFacade = FACADE_FACTORY.createSessionFactory(sessionFactory);
 		ISession sessionFacade = sessionFactoryFacade.openSession();
 		Session session = (Session)((IFacade)sessionFacade).getTarget();
 		assertSame(sessionFactory, session.getSessionFactory());
@@ -107,9 +111,10 @@ public class SessionFactoryFacadeTest {
 	public void testGetClassMetadata() {
 		Configuration configuration = new Configuration();
 		configuration.addClass(Foo.class);
-		SessionFactory sessionFactory = 
-				configuration.buildSessionFactory(
-						new StandardServiceRegistryBuilder().build());
+		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
+		ssrb.applySetting(AvailableSettings.DIALECT, MockDialect.class.getName());
+		ssrb.applySetting(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
+		SessionFactory sessionFactory = configuration.buildSessionFactory(ssrb.build());
 		Metamodel metamodel = ((EntityManagerFactory)sessionFactory).getMetamodel();	
 		ClassMetadata classMetadata = (ClassMetadata)((MetamodelImplementor)metamodel).entityPersister(Foo.class);
 		ISessionFactory sessionFactoryFacade = 
@@ -128,9 +133,10 @@ public class SessionFactoryFacadeTest {
 	public void testGetCollectionMetadata() {
 		Configuration configuration = new Configuration();
 		configuration.addClass(Foo.class);
-		SessionFactory sessionFactory = 
-				configuration.buildSessionFactory(
-						new StandardServiceRegistryBuilder().build());
+		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
+		ssrb.applySetting(AvailableSettings.DIALECT, MockDialect.class.getName());
+		ssrb.applySetting(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
+		SessionFactory sessionFactory = configuration.buildSessionFactory(ssrb.build());
 		ISessionFactory sessionFactoryFacade = 
 				FACADE_FACTORY.createSessionFactory(sessionFactory);
 		Metamodel metamodel = ((EntityManagerFactory)sessionFactory).getMetamodel();	
