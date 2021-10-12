@@ -17,6 +17,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.spi.MetadataImplementor;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.engine.OptimisticLockStyle;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.engine.spi.SessionImplementor;
@@ -38,6 +39,8 @@ import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.IType;
+import org.jboss.tools.hibernate.runtime.v_5_4.internal.util.MockConnectionProvider;
+import org.jboss.tools.hibernate.runtime.v_5_4.internal.util.MockDialect;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -173,7 +176,8 @@ public class ClassMetadataFacadeTest {
 	
 	private TestEntityPersister createSampleEntityPersister() {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
-		builder.applySetting("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+		builder.applySetting(AvailableSettings.DIALECT, MockDialect.class.getName());
+		builder.applySetting(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
 		ServiceRegistry serviceRegistry = builder.build();		
 		MetadataSources metadataSources = new MetadataSources(serviceRegistry);
 		MetadataImplementor metadata = (MetadataImplementor)metadataSources.buildMetadata();
