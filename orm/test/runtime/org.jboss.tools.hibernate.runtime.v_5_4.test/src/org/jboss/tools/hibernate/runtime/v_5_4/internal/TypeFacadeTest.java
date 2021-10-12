@@ -7,12 +7,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.internal.BootstrapContextImpl;
+import org.hibernate.boot.internal.InFlightMetadataCollectorImpl;
 import org.hibernate.boot.internal.MetadataBuilderImpl;
+import org.hibernate.boot.internal.MetadataBuildingContextRootImpl;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.spi.BootstrapContext;
+import org.hibernate.boot.spi.InFlightMetadataCollector;
+import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.boot.spi.MetadataBuildingOptions;
 import org.hibernate.boot.spi.MetadataImplementor;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.tuple.component.ComponentMetamodel;
@@ -29,6 +34,8 @@ import org.hibernate.type.StringType;
 import org.hibernate.type.TypeFactory.TypeScope;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
+import org.jboss.tools.hibernate.runtime.v_5_4.internal.util.MockConnectionProvider;
+import org.jboss.tools.hibernate.runtime.v_5_4.internal.util.MockDialect;
 import org.junit.jupiter.api.Test;
 
 public class TypeFacadeTest {
@@ -112,22 +119,26 @@ public class TypeFacadeTest {
 	@Test
 	public void testIsComponentType() {
 		IType typeFacade = null;
+		// first try type that is not a component type
 		ClassType classType = new ClassType();
-		typeFacade = FACADE_FACTORY.createType(classType);
+		typeFacade =  FACADE_FACTORY.createType(classType);
 		assertFalse(typeFacade.isComponentType());
-		StandardServiceRegistry ssr = new StandardServiceRegistryBuilder().build();
+		// next try a component type
+		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
+		ssrb.applySetting(AvailableSettings.DIALECT, MockDialect.class.getName());
+		ssrb.applySetting(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
+		StandardServiceRegistry ssr = ssrb.build();
 		MetadataBuildingOptions mdbo = 
 				new MetadataBuilderImpl.MetadataBuildingOptionsImpl(ssr);
-		MetadataImplementor mdi = 
-				(MetadataImplementor)new MetadataBuilderImpl(
-						new MetadataSources()).build();
-		BootstrapContext bc = new BootstrapContextImpl(ssr, mdbo);
+		BootstrapContext btc = new BootstrapContextImpl(ssr, mdbo);
+		InFlightMetadataCollector ifmdc = new InFlightMetadataCollectorImpl(btc, mdbo);
+		MetadataBuildingContext mdbc = new MetadataBuildingContextRootImpl(btc, mdbo, ifmdc);
 		ComponentType componentType = 
 				new ComponentType(
 						null,
 						new ComponentMetamodel(
-								new Component(mdi, new RootClass(null)),
-								bc));
+								new Component(mdbc, new RootClass(null)),
+								btc));
 		typeFacade = FACADE_FACTORY.createType(componentType);
 		assertTrue(typeFacade.isComponentType());
 	}
