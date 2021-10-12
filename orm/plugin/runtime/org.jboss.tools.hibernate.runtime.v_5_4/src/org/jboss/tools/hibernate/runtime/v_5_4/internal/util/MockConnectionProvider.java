@@ -1,5 +1,8 @@
 package org.jboss.tools.hibernate.runtime.v_5_4.internal.util;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.sql.Array;
 import java.sql.Blob;
 import java.sql.CallableStatement;
@@ -27,10 +30,27 @@ public class MockConnectionProvider extends UserSuppliedConnectionProviderImpl {
 	
 	static Connection CONNECTION = new Connection();
 	static DatabaseMetaData DATABASE_META_DATA = new DatabaseMetaData();
+	static ResultSet EMPTY_RESULT_SET = emptyResultSet();
 
 	@Override public java.sql.Connection getConnection() throws SQLException { return CONNECTION; }
 	
 	@Override public void closeConnection(java.sql.Connection conn) throws SQLException {}
+	
+	private static ResultSet emptyResultSet() {
+		return (ResultSet)Proxy.newProxyInstance(
+				MockConnectionProvider.class.getClassLoader(), 
+				new Class[] { ResultSet.class }, 
+				new InvocationHandler() {					
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+						if ("next".equals(method.getName())) {
+							return false;
+						}
+						return null;
+					}
+				});
+				
+	}
 	
 	private static class Connection implements java.sql.Connection {
 		@Override public <T> T unwrap(Class<T> iface) throws SQLException { return null; }
@@ -225,7 +245,7 @@ public class MockConnectionProvider extends UserSuppliedConnectionProviderImpl {
 		@Override public ResultSet getImportedKeys(String catalog, String schema, String table) throws SQLException { return null; }
 		@Override public ResultSet getExportedKeys(String catalog, String schema, String table) throws SQLException { return null; }
 		@Override public ResultSet getCrossReference(String parentCatalog, String parentSchema, String parentTable, String foreignCatalog, String foreignSchema, String foreignTable) throws SQLException { return null; } 
-		@Override public ResultSet getTypeInfo() throws SQLException { return null; }
+		@Override public ResultSet getTypeInfo() throws SQLException { return EMPTY_RESULT_SET; }
 		@Override public ResultSet getIndexInfo(String catalog, String schema, String table, boolean unique, boolean approximate) throws SQLException { return null; }
 		@Override public boolean supportsResultSetType(int type) throws SQLException { return false; }
 		@Override public boolean supportsResultSetConcurrency(int type, int concurrency) throws SQLException { return false; }

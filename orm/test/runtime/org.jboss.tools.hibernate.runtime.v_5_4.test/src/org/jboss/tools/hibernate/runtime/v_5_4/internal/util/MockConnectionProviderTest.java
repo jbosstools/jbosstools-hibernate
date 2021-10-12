@@ -14,10 +14,12 @@ public class MockConnectionProviderTest {
 	public void testGetConnection() throws Exception {
 		assertNotNull(MockConnectionProvider.CONNECTION);
 		assertNotNull(MockConnectionProvider.DATABASE_META_DATA);
+		assertNotNull(MockConnectionProvider.EMPTY_RESULT_SET);
 		ConnectionProvider connectionProvider = new MockConnectionProvider();
 		Connection connection = connectionProvider.getConnection();
 		assertSame(MockConnectionProvider.CONNECTION, connection);
 		assertSame(MockConnectionProvider.DATABASE_META_DATA, connection.getMetaData());
+		assertSame(MockConnectionProvider.EMPTY_RESULT_SET, connection.getMetaData().getTypeInfo());
 	}
 
 }
