@@ -4,7 +4,7 @@ Bundle-Name: Hibernate 5.4 libraries
 Bundle-SymbolicName: org.jboss.tools.hibernate.runtime.v_5_4;singleton:=true
 Bundle-Version: 5.4.15.qualifier
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: .,
  lib/byte-buddy-1.9.5.jar,
  lib/classmate-1.3.4.jar,
