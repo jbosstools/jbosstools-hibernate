@@ -16,7 +16,6 @@
 		<hibernate.version>5.5.7.Final</hibernate.version>
 		<hibernate-commons-annotations.version>5.1.2.Final</hibernate-commons-annotations.version>
 		<istack-commons-runtime.version>3.0.11</istack-commons-runtime.version>
-		<jandex.version>2.2.3.Final</jandex.version>
 		<javax.persistence-api.version>2.2</javax.persistence-api.version>
 	    <jaxb.version>2.3.1</jaxb.version>
 	</properties>
@@ -76,11 +75,6 @@
 							<groupId>org.hibernate.common</groupId>
 							<artifactId>hibernate-commons-annotations</artifactId>
 							<version>${hibernate-commons-annotations.version}</version>
-						</artifactItem>
-						<artifactItem>
-						    <groupId>org.jboss</groupId>
-						    <artifactId>jandex</artifactId>
-						    <version>${jandex.version}</version>
 						</artifactItem>
 					</artifactItems>
 					<skip>false</skip>
