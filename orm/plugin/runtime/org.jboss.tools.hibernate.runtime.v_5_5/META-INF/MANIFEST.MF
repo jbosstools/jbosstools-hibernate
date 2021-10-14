@@ -16,12 +16,12 @@ Bundle-ClassPath: .,
  lib/javax.persistence-api-2.2.jar,
  lib/jaxb-api-2.3.1.jar,
  lib/jaxb-runtime-2.3.1.jar,
- lib/jboss-logging-3.4.1.Final.jar,
- lib/jboss-transaction-api_1.2_spec-1.1.1.Final.jar
+ lib/jboss-logging-3.4.1.Final.jar
 Require-Bundle: org.jboss.tools.hibernate.libs.activation.v_1_2_0,
  org.jboss.tools.hibernate.libs.antlr.v_2_7_7,
  org.jboss.tools.hibernate.libs.byte-buddy.v_1_11,
  org.jboss.tools.hibernate.libs.classmate.v_1_5,
  org.jboss.tools.hibernate.libs.freemarker.v_2_3_23,
+ org.jboss.tools.hibernate.libs.transaction-api.v_1_2,
  org.jboss.tools.hibernate.runtime.common,
  org.jboss.tools.hibernate.runtime.spi

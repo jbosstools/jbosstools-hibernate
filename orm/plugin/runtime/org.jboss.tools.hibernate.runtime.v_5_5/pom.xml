@@ -20,7 +20,6 @@
 		<javax.persistence-api.version>2.2</javax.persistence-api.version>
 	    <jaxb.version>2.3.1</jaxb.version>
 		<jboss-logging.version>3.4.1.Final</jboss-logging.version>
-		<jboss-transaction-api_1.2_spec.version>1.1.1.Final</jboss-transaction-api_1.2_spec.version>
 	</properties>
 
 	<build>
@@ -88,11 +87,6 @@
 							<groupId>org.jboss.logging</groupId>
 							<artifactId>jboss-logging</artifactId>
 							<version>${jboss-logging.version}</version>
-						</artifactItem>
-						<artifactItem>
-							<groupId>org.jboss.spec.javax.transaction</groupId>
-							<artifactId>jboss-transaction-api_1.2_spec</artifactId>
-							<version>${jboss-transaction-api_1.2_spec.version}</version>
 						</artifactItem>
 					</artifactItems>
 					<skip>false</skip>
