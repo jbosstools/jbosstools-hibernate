@@ -351,4 +351,10 @@
          version="0.0.0"
          unpack="false"/>
 
+   <plugin
+         id="org.jboss.tools.hibernate.libs.jakarta-xml-bind-api.v_3_0"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
 </feature>

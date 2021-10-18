@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Jakarta Transaction API for JBoss Tools Hibernate
+Bundle-SymbolicName: org.jboss.tools.hibernate.libs.jakarta-xml-bind-api.v_3_0
+Bundle-Version: 5.4.15.qualifier
+Bundle-Vendor: Red Hat
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ClassPath: lib/jakarta.xml.bind-api-3.0.1.jar
+Export-Package: jakarta.xml.bind,
+ jakarta.xml.bind.annotation,
+ jakarta.xml.bind.annotation.adapters,
+ jakarta.xml.bind.attachment,
+ jakarta.xml.bind.helpers,
+ jakarta.xml.bind.util
