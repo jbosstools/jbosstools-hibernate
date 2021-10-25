@@ -9,8 +9,8 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: .,
  lib/istack-commons-runtime-3.0.11.jar,
  lib/hibernate-commons-annotations-5.1.2.Final.jar,
- lib/hibernate-core-5.5.7.Final.jar,
- lib/hibernate-tools-5.5.7.Final.jar
+ lib/hibernate-core-5.5.8.Final.jar,
+ lib/hibernate-tools-5.5.8.Final.jar
 Require-Bundle: org.jboss.tools.hibernate.libs.activation.v_1_2_0,
  org.jboss.tools.hibernate.libs.antlr.v_2_7_7,
  org.jboss.tools.hibernate.libs.byte-buddy.v_1_11,
