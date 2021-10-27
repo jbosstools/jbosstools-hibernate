@@ -9,7 +9,7 @@ import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.persistence.Query;
+import jakarta.persistence.Query;
 
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;

@@ -2,7 +2,7 @@ package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
 import java.util.List;
 
-import javax.persistence.TemporalType;
+import jakarta.persistence.TemporalType;
 
 import org.hibernate.metamodel.model.domain.AllowableParameterType;
 import org.hibernate.query.Query;

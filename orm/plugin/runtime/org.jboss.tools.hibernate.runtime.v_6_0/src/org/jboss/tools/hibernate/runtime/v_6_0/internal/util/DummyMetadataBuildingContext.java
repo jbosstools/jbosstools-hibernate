@@ -23,6 +23,7 @@ public class DummyMetadataBuildingContext {
 		StandardServiceRegistry serviceRegistry = ssrb.build();
 		MetadataBuildingOptions metadataBuildingOptions = new MetadataBuilderImpl.MetadataBuildingOptionsImpl(serviceRegistry);
 		BootstrapContext bootstrapContext = new BootstrapContextImpl(serviceRegistry, metadataBuildingOptions);
+		((MetadataBuilderImpl.MetadataBuildingOptionsImpl)metadataBuildingOptions).setBootstrapContext(bootstrapContext);
 		InFlightMetadataCollector inflightMetadataCollector = new InFlightMetadataCollectorImpl(bootstrapContext, metadataBuildingOptions);
 		return new MetadataBuildingContextRootImpl("JBoss Tools", bootstrapContext, metadataBuildingOptions, inflightMetadataCollector);
 	}

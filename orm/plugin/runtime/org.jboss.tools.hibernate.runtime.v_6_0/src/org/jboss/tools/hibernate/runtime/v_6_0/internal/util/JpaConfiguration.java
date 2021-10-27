@@ -3,7 +3,7 @@ package org.jboss.tools.hibernate.runtime.v_6_0.internal.util;
 import java.util.Map;
 import java.util.Properties;
 
-import javax.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityManagerFactory;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;

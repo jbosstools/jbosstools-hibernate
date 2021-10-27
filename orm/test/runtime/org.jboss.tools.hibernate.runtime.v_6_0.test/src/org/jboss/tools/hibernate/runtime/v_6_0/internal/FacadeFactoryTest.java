@@ -9,7 +9,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import javax.persistence.Query;
+import jakarta.persistence.Query;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

@@ -19,5 +19,5 @@ public class DummyMetadataBuildingContextTest {
 		Dialect dialect = jdbcServices.getDialect();
 		assertTrue(dialect instanceof MockDialect);
 	}
-
+	
 }
