@@ -6,7 +6,6 @@ Bundle-Version: 5.4.15.qualifier
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: .,
- lib/commons-collections4-4.4.jar,
  lib/hibernate-commons-annotations-5.1.2.Final.jar,
  lib/hibernate-core-5.4.32.Final.jar,
  lib/hibernate-tools-5.4.32.Final.jar,
@@ -19,12 +18,12 @@ Bundle-ClassPath: .,
  lib/jboss-logging-3.3.0.Final.jar,
  lib/jboss-transaction-api_1.2_spec-1.1.1.Final.jar,
  lib/slf4j-api-1.6.1.jar
-Require-Bundle: org.apache.commons.collections,
- org.apache.commons.logging,
+Require-Bundle: org.apache.commons.logging,
  org.jboss.tools.hibernate.libs.activation.v_1_2_0,
  org.jboss.tools.hibernate.libs.antlr.v_2_7_7,
  org.jboss.tools.hibernate.libs.byte-buddy.v_1_11,
  org.jboss.tools.hibernate.libs.classmate.v_1_5,
+ org.jboss.tools.hibernate.libs.commons-collections4.v_4_4,
  org.jboss.tools.hibernate.libs.dom4j.v_1_6_1,
  org.jboss.tools.hibernate.libs.freemarker.v_2_3_23,
  org.jboss.tools.hibernate.runtime.common,
