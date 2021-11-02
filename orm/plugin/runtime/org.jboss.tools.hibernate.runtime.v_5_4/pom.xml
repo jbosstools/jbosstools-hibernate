@@ -20,7 +20,6 @@
 		<javassist.version>3.24.0-GA</javassist.version>
 	    <jaxb.version>2.3.1</jaxb.version>
 		<jboss-logging.version>3.3.0.Final</jboss-logging.version>
-		<slf4j.version>1.6.1</slf4j.version>
 		<istack-commons-runtime.version>3.0.7</istack-commons-runtime.version>
 	</properties>
 
@@ -79,11 +78,6 @@
 							<groupId>org.jboss.logging</groupId>
 							<artifactId>jboss-logging</artifactId>
 							<version>${jboss-logging.version}</version>
-						</artifactItem>
-						<artifactItem>
-							<groupId>org.slf4j</groupId>
-							<artifactId>slf4j-api</artifactId>
-							<version>${slf4j.version}</version>
 						</artifactItem>
  						<artifactItem>
 							<groupId>javax.xml.bind</groupId>
