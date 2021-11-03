@@ -14,8 +14,7 @@ Bundle-ClassPath: .,
  lib/javassist-3.24.0-GA.jar,
  lib/javax.persistence-api-2.2.jar,
  lib/jaxb-api-2.3.1.jar,
- lib/jaxb-runtime-2.3.1.jar,
- lib/jboss-logging-3.3.0.Final.jar
+ lib/jaxb-runtime-2.3.1.jar
 Require-Bundle: org.apache.commons.logging,
  org.jboss.tools.hibernate.libs.activation.v_1_2_0,
  org.jboss.tools.hibernate.libs.antlr.v_2_7_7,
@@ -24,6 +23,7 @@ Require-Bundle: org.apache.commons.logging,
  org.jboss.tools.hibernate.libs.commons-collections4.v_4_4,
  org.jboss.tools.hibernate.libs.dom4j.v_1_6_1,
  org.jboss.tools.hibernate.libs.freemarker.v_2_3_23,
+ org.jboss.tools.hibernate.libs.jboss-logging.v_3_4,
  org.jboss.tools.hibernate.libs.transaction-api.v_1_2,
  org.jboss.tools.hibernate.runtime.common,
  org.jboss.tools.hibernate.runtime.spi

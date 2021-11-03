@@ -18,7 +18,6 @@
 		<javax.persistence-api.version>2.2</javax.persistence-api.version>
 		<javassist.version>3.24.0-GA</javassist.version>
 	    <jaxb.version>2.3.1</jaxb.version>
-		<jboss-logging.version>3.3.0.Final</jboss-logging.version>
 		<istack-commons-runtime.version>3.0.7</istack-commons-runtime.version>
 	</properties>
 
@@ -67,11 +66,6 @@
 							<groupId>org.jboss</groupId>
 							<artifactId>jandex</artifactId>
 							<version>${jandex.version}</version>
-						</artifactItem>
-						<artifactItem>
-							<groupId>org.jboss.logging</groupId>
-							<artifactId>jboss-logging</artifactId>
-							<version>${jboss-logging.version}</version>
 						</artifactItem>
  						<artifactItem>
 							<groupId>javax.xml.bind</groupId>
