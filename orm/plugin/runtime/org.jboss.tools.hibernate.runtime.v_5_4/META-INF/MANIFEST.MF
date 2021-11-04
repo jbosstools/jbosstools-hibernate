@@ -11,8 +11,7 @@ Bundle-ClassPath: .,
  lib/hibernate-tools-5.4.32.Final.jar,
  lib/istack-commons-runtime-3.0.7.jar,
  lib/jandex-2.1.2.Final.jar,
- lib/javassist-3.24.0-GA.jar,
- lib/javax.persistence-api-2.2.jar
+ lib/javassist-3.24.0-GA.jar
 Require-Bundle: org.apache.commons.logging,
  org.jboss.tools.hibernate.libs.activation.v_1_2_0,
  org.jboss.tools.hibernate.libs.antlr.v_2_7_7,
@@ -23,6 +22,7 @@ Require-Bundle: org.apache.commons.logging,
  org.jboss.tools.hibernate.libs.freemarker.v_2_3_23,
  org.jboss.tools.hibernate.libs.jaxb.v_2_3,
  org.jboss.tools.hibernate.libs.jboss-logging.v_3_4,
+ org.jboss.tools.hibernate.libs.jpa.v_2_2,
  org.jboss.tools.hibernate.libs.transaction-api.v_1_2,
  org.jboss.tools.hibernate.runtime.common,
  org.jboss.tools.hibernate.runtime.spi
