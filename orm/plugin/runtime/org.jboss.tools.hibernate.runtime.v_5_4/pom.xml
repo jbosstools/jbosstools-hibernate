@@ -17,7 +17,6 @@
 		<jandex.version>2.1.2.Final</jandex.version>
 		<javax.persistence-api.version>2.2</javax.persistence-api.version>
 		<javassist.version>3.24.0-GA</javassist.version>
-	    <jaxb.version>2.3.1</jaxb.version>
 		<istack-commons-runtime.version>3.0.7</istack-commons-runtime.version>
 	</properties>
 
@@ -67,16 +66,6 @@
 							<artifactId>jandex</artifactId>
 							<version>${jandex.version}</version>
 						</artifactItem>
- 						<artifactItem>
-							<groupId>javax.xml.bind</groupId>
-							<artifactId>jaxb-api</artifactId>
-							<version>${jaxb.version}</version>
-						</artifactItem> 
- 						<artifactItem>
-							<groupId>org.glassfish.jaxb</groupId>
-							<artifactId>jaxb-runtime</artifactId>
-							<version>${jaxb.version}</version>
-						</artifactItem> 
  						<artifactItem>
 							<groupId>com.sun.istack</groupId>
 							<artifactId>istack-commons-runtime</artifactId>
