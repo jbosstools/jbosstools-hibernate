@@ -38,7 +38,7 @@ Require-Bundle: org.hibernate.eclipse,
  org.hibernate.eclipse.mapper,
  org.eclipse.gef,
  org.hibernate.eclipse.jdt.ui,
- org.jboss.tools.hibernate.runtime.v_5_5
+ org.jboss.tools.hibernate.runtime.v_5_6
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: org.eclipse.osgi.util
