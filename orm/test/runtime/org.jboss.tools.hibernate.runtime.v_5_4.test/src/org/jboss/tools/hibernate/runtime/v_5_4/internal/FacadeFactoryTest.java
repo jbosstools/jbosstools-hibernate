@@ -33,6 +33,7 @@ import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
+import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.OptimisticLockStyle;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
@@ -114,7 +115,7 @@ public class FacadeFactoryTest {
 	private FacadeFactoryImpl facadeFactory;
 
 	@BeforeEach
-	public void setUp() throws Exception {
+	public void beforeEach() throws Exception {
 		facadeFactory = new FacadeFactoryImpl();
 	}
 	
@@ -136,7 +137,7 @@ public class FacadeFactoryTest {
 		IArtifactCollector facade = facadeFactory.createArtifactCollector(artifactCollector);
 		assertSame(artifactCollector, ((IFacade)facade).getTarget());
 	}
-	
+		
 	@Test
 	public void testCreateCfg2HbmTool() {
 		Cfg2HbmTool cfg2HbmTool = new Cfg2HbmTool();
@@ -229,6 +230,7 @@ public class FacadeFactoryTest {
 				new Class[] { ClassMetadata.class }, 
 				new TestInvocationHandler());
 		IClassMetadata facade = facadeFactory.createClassMetadata(classMetadata);
+		assertTrue(facade instanceof ClassMetadataFacadeImpl);
 		assertSame(classMetadata, ((IFacade)facade).getTarget());		
 	}
 	
@@ -246,6 +248,7 @@ public class FacadeFactoryTest {
 	public void testCreateColumn() {
 		Column column = new Column();
 		IColumn facade = facadeFactory.createColumn(column);
+		assertTrue(facade instanceof ColumnFacadeImpl);
 		assertSame(column, ((IFacade)facade).getTarget());		
 	}
 	
@@ -253,6 +256,7 @@ public class FacadeFactoryTest {
 	public void testCreateConfiguration() {
 		Configuration configuration = new Configuration();
 		IConfiguration facade = facadeFactory.createConfiguration(configuration);
+		assertTrue(facade instanceof ConfigurationFacadeImpl);
 		assertSame(configuration, ((IFacade)facade).getTarget());		
 	}
 	
@@ -277,6 +281,7 @@ public class FacadeFactoryTest {
 		SessionFactoryImplementor sfi = (SessionFactoryImplementor)configuration.buildSessionFactory(serviceRegistry);
 		RootClass rc = new RootClass(null);
 		MetadataImplementor m = (MetadataImplementor)MetadataHelper.getMetadata(configuration);
+		@SuppressWarnings("deprecation")
 		SimpleValue sv = new SimpleValue(m);
 		sv.setNullValue("null");
 		sv.setTypeName(Integer.class.getName());
@@ -343,6 +348,7 @@ public class FacadeFactoryTest {
 		PrimaryKey key = new PrimaryKey(t);
 		key.addColumn(c);
 		t.setPrimaryKey(key);
+		@SuppressWarnings("deprecation")
 		SimpleValue sv = new SimpleValue(metadata);
 		sv.setNullValue("null");
 		sv.setTypeName(Integer.class.getName());
@@ -446,6 +452,7 @@ public class FacadeFactoryTest {
 				new Class[] { SessionFactory.class }, 
 				new TestInvocationHandler());
 		ISessionFactory facade = facadeFactory.createSessionFactory(sessionFactory);
+		assertTrue(facade instanceof SessionFactoryFacadeImpl);
 		assertSame(sessionFactory, ((IFacade)facade).getTarget());
 	}
 	
@@ -514,5 +521,7 @@ public class FacadeFactoryTest {
 			return null;
 		}	
 	}
+	
+	public static class TestDialect extends Dialect {};
 	
 }
