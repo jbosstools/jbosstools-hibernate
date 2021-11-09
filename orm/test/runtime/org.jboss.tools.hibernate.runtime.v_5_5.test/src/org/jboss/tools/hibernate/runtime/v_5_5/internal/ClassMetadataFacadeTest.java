@@ -134,7 +134,6 @@ public class ClassMetadataFacadeTest {
 	@Test
 	public void testGetEntityMetamodel() {
 		IEntityMetamodel entityMetamodel = classMetadataFacade.getEntityMetamodel();
-		assertTrue(entityMetamodel instanceof EntityMetamodelFacadeImpl);
 		assertSame(classMetadataTarget, ((IFacade)entityMetamodel).getTarget());
 	}
 

@@ -302,7 +302,6 @@ public class FacadeFactoryTest {
 		};
 		EntityMetamodel entityMetamodel = new EntityMetamodel(rc, null, pcc);
 		IEntityMetamodel facade = facadeFactory.createEntityMetamodel(entityMetamodel);
-		assertTrue(facade instanceof EntityMetamodelFacadeImpl);
 		assertSame(entityMetamodel, ((IFacade)facade).getTarget());		
 	}
 	
