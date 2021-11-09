@@ -11,11 +11,11 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 
 public class JpaConfiguration extends Configuration {
+
+	Metadata metadata = null;
+	SessionFactory sessionFactory;
 	
-	private Metadata metadata = null;
-	private SessionFactory sessionFactory;
-	
-	private String persistenceUnit;
+	String persistenceUnit;
 	
 	public JpaConfiguration(
 			String persistenceUnit, 
@@ -61,7 +61,7 @@ public class JpaConfiguration extends Configuration {
 		return persistenceUnit;
 	}
 	
-	private void initialize() {
+	void initialize() {
 		EntityManagerFactoryBuilderImpl entityManagerFactoryBuilder = 
 				HibernateToolsPersistenceProvider
 					.createEntityManagerFactoryBuilder(
@@ -73,5 +73,4 @@ public class JpaConfiguration extends Configuration {
 		metadata = entityManagerFactoryBuilder.getMetadata();
 		getProperties().putAll(entityManagerFactory.getProperties());
 	}
-	
 }
