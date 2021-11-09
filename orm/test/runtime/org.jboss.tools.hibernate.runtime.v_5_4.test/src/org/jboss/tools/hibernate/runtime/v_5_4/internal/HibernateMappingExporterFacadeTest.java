@@ -32,6 +32,7 @@ import org.hibernate.tool.hbm2x.Cfg2JavaTool;
 import org.hibernate.tool.hbm2x.TemplateHelper;
 import org.hibernate.tool.hbm2x.pojo.EntityPOJOClass;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
+import org.jboss.tools.hibernate.runtime.common.AbstractHibernateMappingExporterFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
@@ -43,7 +44,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 public class HibernateMappingExporterFacadeTest {
-	
+
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 
 	@TempDir
@@ -53,18 +54,20 @@ public class HibernateMappingExporterFacadeTest {
 	private HibernateMappingExporterExtension hibernateMappingExporter = null;
 		
 	@BeforeEach
-	public void setUp() throws Exception {
-		hibernateMappingExporter = new HibernateMappingExporterExtension(
-				FACADE_FACTORY, null, null);
+	public void beforeEach() throws Exception {
+		hibernateMappingExporter = new HibernateMappingExporterExtension(FACADE_FACTORY, null, null);
 		hibernateMappingExporterFacade = 
-				FACADE_FACTORY.createHibernateMappingExporter(hibernateMappingExporter);
+				new AbstractHibernateMappingExporterFacade(FACADE_FACTORY, hibernateMappingExporter) {};
 	}
 	
 	@Test
 	public void testStart() throws Exception {
-		MetadataDescriptor descriptor = new TestMetadataDescriptor();
-		hibernateMappingExporter.setMetadataDescriptor(descriptor);
-		hibernateMappingExporter.setOutputDirectory(outputDir);
+		Field metadataDescriptorField = AbstractExporter.class.getDeclaredField("metadataDescriptor");
+		metadataDescriptorField.setAccessible(true);
+		metadataDescriptorField.set(hibernateMappingExporter, new TestMetadataDescriptor());
+		Field outputDirectoryField = AbstractExporter.class.getDeclaredField("outputdir");
+		outputDirectoryField.setAccessible(true);
+		outputDirectoryField.set(hibernateMappingExporter, outputDir);
 		final File fooHbmXml = new File(outputDir, "Foo.hbm.xml");
 		// First without a 'delegate' exporter
 		assertFalse(fooHbmXml.exists());
@@ -98,19 +101,23 @@ public class HibernateMappingExporterFacadeTest {
 	}
 	
 	@Test
-	public void testGetOutputDirectory() {
+	public void testGetOutputDirectory() throws Exception {
 		assertNull(hibernateMappingExporterFacade.getOutputDirectory());
+		Field outputdirField = AbstractExporter.class.getDeclaredField("outputdir");
+		outputdirField.setAccessible(true);
 		File file = new File("testGetOutputDirectory");
-		hibernateMappingExporter.setOutputDirectory(file);
+		outputdirField.set(hibernateMappingExporter, file);
 		assertSame(file, hibernateMappingExporterFacade.getOutputDirectory());
 	}
 	
 	@Test
-	public void testSetOutputDirectory() {
-		assertNull(hibernateMappingExporter.getOutputDirectory());
+	public void testSetOutputDirectory() throws Exception {
+		Field outputdirField = AbstractExporter.class.getDeclaredField("outputdir");
+		outputdirField.setAccessible(true);
+		assertNull(outputdirField.get(hibernateMappingExporter));
 		File file = new File("testSetOutputDirectory");
 		hibernateMappingExporterFacade.setOutputDirectory(file);
-		assertSame(file, hibernateMappingExporter.getOutputDirectory());
+		assertSame(file, outputdirField.get(hibernateMappingExporter));
 	}
 	
 	@Test
