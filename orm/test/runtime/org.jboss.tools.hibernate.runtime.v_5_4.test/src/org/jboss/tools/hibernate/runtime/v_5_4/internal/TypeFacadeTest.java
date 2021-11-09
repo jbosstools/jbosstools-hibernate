@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.internal.BootstrapContextImpl;
 import org.hibernate.boot.internal.InFlightMetadataCollectorImpl;
 import org.hibernate.boot.internal.MetadataBuilderImpl;
@@ -16,7 +15,6 @@ import org.hibernate.boot.spi.BootstrapContext;
 import org.hibernate.boot.spi.InFlightMetadataCollector;
 import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.boot.spi.MetadataBuildingOptions;
-import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.RootClass;
@@ -50,7 +48,7 @@ public class TypeFacadeTest {
 		assertEquals(
 				TypeFacadeTest.class.getName(), 
 				typeFacade.toString(TypeFacadeTest.class));
-		ArrayType arrayType = new ArrayType(null, "foo", "bar", String.class);
+		ArrayType arrayType = new ArrayType("foo", "bar", String.class);
 		typeFacade = FACADE_FACTORY.createType(arrayType);
 		assertNull(typeFacade.toString(new String[] { "foo", "bar" }));
 	}
@@ -61,7 +59,7 @@ public class TypeFacadeTest {
 		ClassType classType = new ClassType();
 		typeFacade = FACADE_FACTORY.createType(classType);
 		assertEquals("class", typeFacade.getName());
-		ArrayType arrayType = new ArrayType(null, "foo", "bar", String.class);
+		ArrayType arrayType = new ArrayType("foo", "bar", String.class);
 		typeFacade = FACADE_FACTORY.createType(arrayType);
 		assertEquals("[Ljava.lang.String;(foo)", typeFacade.getName());
 	}
@@ -74,7 +72,7 @@ public class TypeFacadeTest {
 		assertEquals(
 				TypeFacadeTest.class, 
 				typeFacade.fromStringValue(TypeFacadeTest.class.getName()));
-		ArrayType arrayType = new ArrayType(null, "foo", "bar", String.class);
+		ArrayType arrayType = new ArrayType("foo", "bar", String.class);
 		typeFacade = FACADE_FACTORY.createType(arrayType);
 		assertNull(typeFacade.fromStringValue("just a random string"));
 	}
@@ -149,7 +147,7 @@ public class TypeFacadeTest {
 		ClassType classType = new ClassType();
 		typeFacade = FACADE_FACTORY.createType(classType);
 		assertFalse(typeFacade.isCollectionType());
-		ArrayType arrayType = new ArrayType(null, null, null, String.class);
+		ArrayType arrayType = new ArrayType(null, null, String.class);
 		typeFacade = FACADE_FACTORY.createType(arrayType);
 		assertTrue(typeFacade.isCollectionType());
 	}
@@ -160,7 +158,7 @@ public class TypeFacadeTest {
 		ClassType classType = new ClassType();
 		typeFacade = FACADE_FACTORY.createType(classType);
 		assertEquals(Class.class.getName(), typeFacade.getReturnedClassName());
-		ArrayType arrayType = new ArrayType(null, null, null, String.class);
+		ArrayType arrayType = new ArrayType(null, null, String.class);
 		typeFacade = FACADE_FACTORY.createType(arrayType);
 		assertEquals(String[].class.getName(), typeFacade.getReturnedClassName());
 	}
@@ -193,10 +191,10 @@ public class TypeFacadeTest {
 		ClassType classType = new ClassType();
 		typeFacade = FACADE_FACTORY.createType(classType);
 		assertFalse(typeFacade.isArrayType());
-		BagType bagType = new BagType(null, null, null);
+		BagType bagType = new BagType(null, null);
 		typeFacade = FACADE_FACTORY.createType(bagType);
 		assertFalse(typeFacade.isArrayType());
-		ArrayType arrayType = new ArrayType(null, null, null, String.class);
+		ArrayType arrayType = new ArrayType(null, null, String.class);
 		typeFacade = FACADE_FACTORY.createType(arrayType);
 		assertTrue(typeFacade.isArrayType());
 	}
@@ -232,7 +230,7 @@ public class TypeFacadeTest {
 		ClassType classType = new ClassType();
 		typeFacade = FACADE_FACTORY.createType(classType);
 		assertNull(typeFacade.getRole());
-		ArrayType arrayType = new ArrayType(null, "foo", null, String.class);
+		ArrayType arrayType = new ArrayType("foo", null, String.class);
 		typeFacade = FACADE_FACTORY.createType(arrayType);
 		assertEquals("foo", typeFacade.getRole());
 	}
