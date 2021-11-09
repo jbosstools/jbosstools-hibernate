@@ -12,9 +12,6 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import org.hibernate.FetchMode;
-import org.hibernate.boot.spi.MetadataImplementor;
-import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
@@ -46,13 +43,10 @@ import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_5_4.internal.util.DummyMetadataBuildingContext;
-import org.jboss.tools.hibernate.runtime.v_5_4.internal.util.MetadataHelper;
-import org.jboss.tools.hibernate.runtime.v_5_4.internal.util.MockConnectionProvider;
-import org.jboss.tools.hibernate.runtime.v_5_4.internal.util.MockDialect;
 import org.junit.jupiter.api.Test;
 
 public class ValueFacadeTest {
-	
+
 	private static IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 	
 	private Value valueTarget = null;
@@ -176,12 +170,7 @@ public class ValueFacadeTest {
 	
 	@Test
 	public void testGetType() {
-		Configuration configuration = new Configuration();
-		configuration.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
-		configuration.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
-		SimpleValue valueTarget = new SimpleValue(
-				(MetadataImplementor) MetadataHelper.getMetadata(
-						configuration));
+		SimpleValue valueTarget = new SimpleValue(DummyMetadataBuildingContext.INSTANCE, new Table());
 		valueTarget.setTypeName("java.lang.Integer");
 		valueFacade = FACADE_FACTORY.createValue(valueTarget);
 		IType typeFacade = valueFacade.getType();
