@@ -30,6 +30,8 @@ import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
+import org.hibernate.dialect.Dialect;
+import org.hibernate.engine.OptimisticLockStyle;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.hql.spi.QueryTranslator;
@@ -130,7 +132,7 @@ public class FacadeFactoryTest {
 		IArtifactCollector facade = facadeFactory.createArtifactCollector(artifactCollector);
 		assertSame(artifactCollector, ((IFacade)facade).getTarget());
 	}
-	
+		
 	@Test
 	public void testCreateCfg2HbmTool() {
 		Cfg2HbmTool cfg2HbmTool = new Cfg2HbmTool();
@@ -223,6 +225,7 @@ public class FacadeFactoryTest {
 				new Class[] { ClassMetadata.class }, 
 				new TestInvocationHandler());
 		IClassMetadata facade = facadeFactory.createClassMetadata(classMetadata);
+		assertTrue(facade instanceof ClassMetadataFacadeImpl);
 		assertSame(classMetadata, ((IFacade)facade).getTarget());		
 	}
 	
@@ -240,6 +243,7 @@ public class FacadeFactoryTest {
 	public void testCreateColumn() {
 		Column column = new Column();
 		IColumn facade = facadeFactory.createColumn(column);
+		assertTrue(facade instanceof ColumnFacadeImpl);
 		assertSame(column, ((IFacade)facade).getTarget());		
 	}
 	
@@ -247,6 +251,7 @@ public class FacadeFactoryTest {
 	public void testCreateConfiguration() {
 		Configuration configuration = new Configuration();
 		IConfiguration facade = facadeFactory.createConfiguration(configuration);
+		assertTrue(facade instanceof ConfigurationFacadeImpl);
 		assertSame(configuration, ((IFacade)facade).getTarget());		
 	}
 	
@@ -263,17 +268,18 @@ public class FacadeFactoryTest {
 	@Test
 	public void testCreateEntityMetamodel() {
 		Configuration configuration = new Configuration();
-		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySettings(configuration.getProperties());
 		ServiceRegistry serviceRegistry = builder.build();		
 		SessionFactoryImplementor sfi = (SessionFactoryImplementor)configuration.buildSessionFactory(serviceRegistry);
 		RootClass rc = new RootClass(null);
 		MetadataImplementor m = (MetadataImplementor)MetadataHelper.getMetadata(configuration);
+		@SuppressWarnings("deprecation")
 		SimpleValue sv = new SimpleValue(m);
 		sv.setNullValue("null");
 		sv.setTypeName(Integer.class.getName());
 		rc.setIdentifier(sv);
+		rc.setOptimisticLockStyle(OptimisticLockStyle.NONE);
 		EntityMetamodel entityMetamodel = new EntityMetamodel(rc, null, sfi);
 		IEntityMetamodel facade = facadeFactory.createEntityMetamodel(entityMetamodel);
 		assertSame(entityMetamodel, ((IFacade)facade).getTarget());		
@@ -303,7 +309,6 @@ public class FacadeFactoryTest {
 	@Test
 	public void testCreateHQLCodeAssist() {
 		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
-		ssrb.applySetting("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 		HQLCodeAssist hqlCodeAssist = new HQLCodeAssist(new MetadataSources().buildMetadata(ssrb.build()));
 		IHQLCodeAssist facade = facadeFactory.createHQLCodeAssist(hqlCodeAssist);
 		assertSame(hqlCodeAssist, ((IFacade)facade).getTarget());		
@@ -371,6 +376,7 @@ public class FacadeFactoryTest {
 		assertSame(hqlQueryPlan, ((IFacade)facade).getTarget());		
 	}
 
+
 	@Test
 	public void testCreateJoin() {
 		Join join = new Join();
@@ -436,6 +442,7 @@ public class FacadeFactoryTest {
 				new Class[] { SessionFactory.class }, 
 				new TestInvocationHandler());
 		ISessionFactory facade = facadeFactory.createSessionFactory(sessionFactory);
+		assertTrue(facade instanceof SessionFactoryFacadeImpl);
 		assertSame(sessionFactory, ((IFacade)facade).getTarget());
 	}
 	
@@ -504,5 +511,7 @@ public class FacadeFactoryTest {
 			return null;
 		}	
 	}
+	
+	public static class TestDialect extends Dialect {};
 	
 }
