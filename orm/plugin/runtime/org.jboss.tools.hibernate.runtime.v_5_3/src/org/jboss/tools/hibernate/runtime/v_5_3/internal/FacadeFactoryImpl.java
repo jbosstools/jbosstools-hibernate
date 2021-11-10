@@ -45,6 +45,11 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 	}
 	
 	@Override
+	public IPersistentClass createPersistentClass(Object target) {
+		return new PersistentClassFacadeImpl(this, target);
+	}
+	
+	@Override
 	public ISchemaExport createSchemaExport(Object target) {
 		return new SchemaExportFacadeImpl(this, target);
 	}
