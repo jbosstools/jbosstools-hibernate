@@ -89,11 +89,6 @@ public class EntityMetamodelFacadeTest {
 		return rc;
 	}
 	
-	private SessionFactoryImplementor createSessionFactoryImplementor() {
-		MetadataSources metadataSources = new MetadataSources();
-		return (SessionFactoryImplementor)metadataSources.buildMetadata().buildSessionFactory();
-	}
-		
 	private EntityMetamodel createFooBarModel() {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySetting(AvailableSettings.DIALECT, MockDialect.class.getName());
@@ -115,7 +110,11 @@ public class EntityMetamodelFacadeTest {
 						metadataBuildingOptions, 
 						inFlightMetadataCollector);
 		PersistentClass persistentClass = createPersistentClass(metadataBuildingContext);
-		SessionFactoryImplementor sessionFactoryImplementor = createSessionFactoryImplementor();
+		MetadataSources metadataSources = new MetadataSources(serviceRegistry);
+		SessionFactoryImplementor sessionFactoryImplementor = 
+				(SessionFactoryImplementor)metadataSources
+					.buildMetadata()
+					.buildSessionFactory();
 		return  new EntityMetamodel(persistentClass, null, sessionFactoryImplementor) {
 			private static final long serialVersionUID = 1L;
 			@Override public EntityTuplizer getTuplizer() {
