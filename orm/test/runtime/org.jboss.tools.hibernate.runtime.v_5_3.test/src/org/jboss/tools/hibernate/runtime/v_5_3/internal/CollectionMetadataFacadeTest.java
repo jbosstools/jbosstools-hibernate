@@ -1,63 +1,62 @@
 package org.jboss.tools.hibernate.runtime.v_5_3.internal;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import org.hibernate.metadata.CollectionMetadata;
-import org.hibernate.type.ShortType;
+import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.AbstractCollectionMetadataFacade;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-
 public class CollectionMetadataFacadeTest {
-
+	
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 	
-	private String methodName = null;
-	private Object[] arguments = null;
-
-	private ICollectionMetadata collectionMetadata = null; 
+	private CollectionMetadata collectionMetadataTarget = null;
+	private ICollectionMetadata collectionMetadataFacade = null;
 	
 	@BeforeEach
-	public void setUp() {
-		CollectionMetadata target = (CollectionMetadata)Proxy.newProxyInstance(
-				FACADE_FACTORY.getClassLoader(), 
-				new Class[] { CollectionMetadata.class }, 
-				new TestInvocationHandler());
-		collectionMetadata = new AbstractCollectionMetadataFacade(FACADE_FACTORY, target) {};
+	public void beforeEach() {
+		collectionMetadataTarget = createCollectionMetadata();
+		collectionMetadataFacade = new AbstractCollectionMetadataFacade(
+				FACADE_FACTORY, collectionMetadataTarget) {};
 	}
 	
 	@Test
 	public void testGetElementType() {
-		assertNotNull(collectionMetadata.getElementType());
-		assertEquals("getElementType", methodName);
-		assertNull(arguments);
-		methodName = null;
-		assertNotNull(collectionMetadata.getElementType());
-		assertNull(methodName);
-		assertNull(arguments);
+		assertSame(elementType, ((IFacade)collectionMetadataFacade.getElementType()).getTarget());
 	}
 	
-	private class TestInvocationHandler implements InvocationHandler {
-		@Override
-		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-			methodName = method.getName();
-			arguments = args;
-			if ("getElementType".equals(methodName)) {
-				return new ShortType();
-			} else {
-				return null;
-			}
-		}
-		
+	private final Type elementType = (Type)Proxy.newProxyInstance(
+			getClass().getClassLoader(), 
+			new Class[] { Type.class },
+			new InvocationHandler() {		
+				@Override
+				public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+					return null;
+				}
+			});
+	
+	private CollectionMetadata createCollectionMetadata() {
+		return (CollectionMetadata)Proxy.newProxyInstance(
+				getClass().getClassLoader(), 
+				new Class[] { CollectionMetadata.class }, 
+				new InvocationHandler() {
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+						if ("getElementType".equals(method.getName())) {
+							
+						}
+						return elementType;
+					}
+				});
 	}
-
+	
 }
