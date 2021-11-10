@@ -16,7 +16,7 @@ public class EnvironmentFacadeTest {
 	private IEnvironment environmentFacade = null; 
 	
 	@BeforeEach
-	public void setUp() throws Exception {
+	public void beforeEach() throws Exception {
 		environmentFacade = new EnvironmentFacadeImpl(FACADE_FACTORY);
 	}
 	
