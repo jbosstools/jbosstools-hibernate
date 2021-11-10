@@ -1,75 +1,52 @@
 package org.jboss.tools.hibernate.runtime.v_5_3.internal;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.lang.reflect.Method;
+import java.lang.reflect.Field;
+import java.util.Properties;
 
+import org.hibernate.tool.hbm2x.AbstractExporter;
 import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.common.AbstractHbm2DDLExporterFacade;
-import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javassist.util.proxy.MethodHandler;
-import javassist.util.proxy.ProxyFactory;
-import javassist.util.proxy.ProxyObject;
-
 
 public class Hbm2DDLExporterFacadeTest {
 
-	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
+	private static final FacadeFactoryImpl FACADE_FACTORY = new FacadeFactoryImpl();
 	
-	private IHbm2DDLExporter hbm2DDLExporterFacade = null; 
-	private Hbm2DDLExporter hbm2ddlExporter = null;
+	private IHbm2DDLExporter ddlExporterFacade = null;
+	private Hbm2DDLExporter ddlExporterTarget = null;
 	
-	private String methodName = null;
-	private Object[] arguments = null;
 	
 	@BeforeEach
-	public void setUp() throws Exception {
-		ProxyFactory proxyFactory = new ProxyFactory();
-		proxyFactory.setSuperclass(Hbm2DDLExporter.class);
-		Class<?> proxyClass = proxyFactory.createClass();
-		hbm2ddlExporter = (Hbm2DDLExporter)proxyClass.newInstance();
-		((ProxyObject)hbm2ddlExporter).setHandler(new MethodHandler() {		
-			@Override
-			public Object invoke(
-					Object self, 
-					Method m, 
-					Method proceed, 
-					Object[] args) throws Throwable {
-				if (methodName == null) {
-					methodName = m.getName();
-				}
-				if (arguments == null) {
-					arguments = args;
-				}
-				return proceed.invoke(self, args);
-			}
-		});
-		hbm2DDLExporterFacade = new AbstractHbm2DDLExporterFacade(FACADE_FACTORY, hbm2ddlExporter) {};
-		reset();
+	public void before() {
+		ddlExporterTarget = new Hbm2DDLExporter();
+		ddlExporterFacade = new AbstractHbm2DDLExporterFacade(FACADE_FACTORY, ddlExporterTarget) {};
+	}
+	
+	@Test 
+	public void testGetProperties() throws Exception {
+		Field propertiesField = AbstractExporter.class.getDeclaredField("properties");
+		propertiesField.setAccessible(true);
+		Properties properties = new Properties();
+		assertNotSame(properties, ddlExporterFacade.getProperties());
+		propertiesField.set(ddlExporterTarget, properties);
+		assertSame(properties, ddlExporterFacade.getProperties());
 	}
 	
 	@Test
-	public void testSetExport() {
-		hbm2DDLExporterFacade.setExport(true);
-		assertEquals("setExport", methodName);
-		assertArrayEquals(new Object[] { true }, arguments);
+	public void testSetExport() throws Exception {
+		Field exportToDatabaseField = Hbm2DDLExporter.class.getDeclaredField("exportToDatabase");
+		exportToDatabaseField.setAccessible(true);
+		assertTrue((Boolean)exportToDatabaseField.get(ddlExporterTarget));
+		ddlExporterFacade.setExport(false);
+		assertFalse((Boolean)exportToDatabaseField.get(ddlExporterTarget));
 	}
-	
-	@Test
-	public void testGetProperties() {
-		hbm2DDLExporterFacade.getProperties();
-		assertEquals("getProperties", methodName);
-		assertArrayEquals(new Object[] {}, arguments);
-	}
-	
-	private void reset() {
-		methodName = null;
-		arguments = null;
-	}
-	
+
 }
