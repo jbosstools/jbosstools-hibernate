@@ -31,6 +31,7 @@ public class MockConnectionProvider extends UserSuppliedConnectionProviderImpl {
 	static Connection CONNECTION = new Connection();
 	static DatabaseMetaData DATABASE_META_DATA = new DatabaseMetaData();
 	static ResultSet EMPTY_RESULT_SET = emptyResultSet();
+	static Statement MOCK_STATEMENT = createMockStatement();
 
 	@Override public java.sql.Connection getConnection() throws SQLException { return CONNECTION; }
 	
@@ -52,10 +53,22 @@ public class MockConnectionProvider extends UserSuppliedConnectionProviderImpl {
 				
 	}
 	
+	private static Statement createMockStatement() {
+		return (Statement)Proxy.newProxyInstance(
+				MockConnectionProvider.class.getClassLoader(), 
+				new Class[] { Statement.class } , 
+				new InvocationHandler() {		
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+						return null;
+					}
+		});
+	}
+	
 	private static class Connection implements java.sql.Connection {
 		@Override public <T> T unwrap(Class<T> iface) throws SQLException { return null; }
 		@Override public boolean isWrapperFor(Class<?> iface) throws SQLException { return false; }
-		@Override public Statement createStatement() throws SQLException { return null; }
+		@Override public Statement createStatement() throws SQLException { return MOCK_STATEMENT; }
 		@Override public PreparedStatement prepareStatement(String sql) throws SQLException { return null; }
 		@Override public CallableStatement prepareCall(String sql) throws SQLException { return null; }
 		@Override public String nativeSQL(String sql) throws SQLException { return null; }

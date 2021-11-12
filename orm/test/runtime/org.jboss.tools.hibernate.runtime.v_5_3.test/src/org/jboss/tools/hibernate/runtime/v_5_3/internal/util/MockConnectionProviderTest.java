@@ -15,11 +15,13 @@ public class MockConnectionProviderTest {
 		assertNotNull(MockConnectionProvider.CONNECTION);
 		assertNotNull(MockConnectionProvider.DATABASE_META_DATA);
 		assertNotNull(MockConnectionProvider.EMPTY_RESULT_SET);
+		assertNotNull(MockConnectionProvider.MOCK_STATEMENT);
 		ConnectionProvider connectionProvider = new MockConnectionProvider();
 		Connection connection = connectionProvider.getConnection();
 		assertSame(MockConnectionProvider.CONNECTION, connection);
 		assertSame(MockConnectionProvider.DATABASE_META_DATA, connection.getMetaData());
 		assertSame(MockConnectionProvider.EMPTY_RESULT_SET, connection.getMetaData().getTypeInfo());
+		assertSame(MockConnectionProvider.MOCK_STATEMENT, connection.createStatement());
 	}
 
 }
