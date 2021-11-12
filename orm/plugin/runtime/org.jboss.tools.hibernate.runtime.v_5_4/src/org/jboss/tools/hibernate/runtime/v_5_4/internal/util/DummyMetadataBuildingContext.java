@@ -11,7 +11,6 @@ import org.hibernate.boot.spi.InFlightMetadataCollector;
 import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.boot.spi.MetadataBuildingOptions;
 import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.dialect.Dialect;
 
 public class DummyMetadataBuildingContext {
 	
@@ -27,7 +26,5 @@ public class DummyMetadataBuildingContext {
 		InFlightMetadataCollector inflightMetadataCollector = new InFlightMetadataCollectorImpl(bootstrapContext, metadataBuildingOptions);
 		return new MetadataBuildingContextRootImpl(bootstrapContext, metadataBuildingOptions, inflightMetadataCollector);
 	}
-
-	public static class DummyDialect extends Dialect {}
 
 }
