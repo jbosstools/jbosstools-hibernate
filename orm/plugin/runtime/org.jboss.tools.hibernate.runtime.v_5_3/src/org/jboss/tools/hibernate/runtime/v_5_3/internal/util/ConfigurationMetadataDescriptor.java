@@ -6,7 +6,6 @@ import java.util.Properties;
 
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.internal.MetadataImpl;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -27,13 +26,8 @@ public class ConfigurationMetadataDescriptor implements MetadataDescriptor {
 		Metadata result = null;
 		if (this.configuration instanceof ConfigurationFacadeImpl) {
 			result = ((ConfigurationFacadeImpl)configuration).getMetadata();
-			if (result == null) {
-				Object target = ((ConfigurationFacadeImpl)configuration).getTarget();
-				if (target instanceof Configuration) {
-					result = patch(MetadataHelper.getMetadata((Configuration)configuration));
-				} else if (target instanceof JdbcMetadataConfiguration) {
-					result = ((JdbcMetadataConfiguration)target).getMetadata();
-				}
+			if (result != null) {
+				result = patch(result);
 			}
 		}
 		return result;
@@ -43,15 +37,18 @@ public class ConfigurationMetadataDescriptor implements MetadataDescriptor {
 		try {
 			if (metadata instanceof MetadataImpl ) {
 				MetadataImpl metadataImpl = (MetadataImpl)metadata;
-				HashMap<String, PersistentClass> map = new HashMap<String, PersistentClass>();
-				for (IPersistentClass ipc : ((ConfigurationFacadeImpl)this.configuration).getAddedClasses()) {
-					PersistentClass pc = (PersistentClass)((IFacade)ipc).getTarget();
-					map.put(pc.getEntityName(), pc);
-				}
 				Field entityBindingMapField = metadataImpl.getClass().getDeclaredField("entityBindingMap");
 				if (entityBindingMapField != null) {
 					entityBindingMapField.setAccessible(true);
-					entityBindingMapField.set(metadataImpl, map);
+					Object object = entityBindingMapField.get(metadataImpl);
+					if (object instanceof HashMap<?, ?>) {
+						@SuppressWarnings("unchecked")
+						HashMap<String, PersistentClass> map = (HashMap<String, PersistentClass>)object;
+						for (IPersistentClass ipc : ((ConfigurationFacadeImpl)this.configuration).getAddedClasses()) {
+							PersistentClass pc = (PersistentClass)((IFacade)ipc).getTarget();
+							map.put(pc.getEntityName(), pc);
+						}
+					}
 				}
 			}
 			return metadata;
@@ -60,7 +57,7 @@ public class ConfigurationMetadataDescriptor implements MetadataDescriptor {
 			throw new RuntimeException("Problem while creating metadata", t);
 		}
 	} 
-
+	
 	@Override
 	public Properties getProperties() {
 		return configuration.getProperties();
