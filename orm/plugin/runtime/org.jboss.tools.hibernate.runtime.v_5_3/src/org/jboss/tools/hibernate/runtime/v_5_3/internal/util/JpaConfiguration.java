@@ -12,10 +12,9 @@ import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 
 public class JpaConfiguration extends Configuration {
 	
-	private Metadata metadata = null;
-	private SessionFactory sessionFactory;
-	
-	private String persistenceUnit;
+	Metadata metadata = null;
+	SessionFactory sessionFactory;	
+	String persistenceUnit;
 	
 	public JpaConfiguration(
 			String persistenceUnit, 
@@ -61,7 +60,7 @@ public class JpaConfiguration extends Configuration {
 		return persistenceUnit;
 	}
 	
-	private void initialize() {
+	void initialize() {
 		EntityManagerFactoryBuilderImpl entityManagerFactoryBuilder = 
 				HibernateToolsPersistenceProvider
 					.createEntityManagerFactoryBuilder(
