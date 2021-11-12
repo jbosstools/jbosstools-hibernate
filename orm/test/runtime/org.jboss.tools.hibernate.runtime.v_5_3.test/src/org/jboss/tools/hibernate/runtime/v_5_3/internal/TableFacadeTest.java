@@ -7,9 +7,11 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Method;
+import java.util.Collections;
 import java.util.Iterator;
 
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.SimpleValue;
@@ -17,6 +19,7 @@ import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
+import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
@@ -88,6 +91,21 @@ public class TableFacadeTest {
 		columnIterator = tableFacade.getColumnIterator();
 		IColumn columnFacade = columnIterator.next();
 		assertSame(column, ((IFacade)columnFacade).getTarget());
+	}
+	
+	@Test
+	public void testGetForeignKeyIterator() {
+		Table table = new Table();
+		ITable tableFacade = FACADE_FACTORY.createTable(table);
+		Iterator<IForeignKey> foreignKeyIterator = tableFacade.getForeignKeyIterator();
+		assertFalse(foreignKeyIterator.hasNext());
+		Column column = new Column("foo");
+		table.addColumn(column);
+		ForeignKey foreignKey = table.createForeignKey("fooKey", Collections.singletonList(column), "bar", null);
+		tableFacade = FACADE_FACTORY.createTable(table);
+		foreignKeyIterator = tableFacade.getForeignKeyIterator();
+		IForeignKey foreignKeyFacade = foreignKeyIterator.next();
+		assertSame(foreignKey, ((IFacade)foreignKeyFacade).getTarget());
 	}
 	
 	@Test
@@ -172,7 +190,7 @@ public class TableFacadeTest {
 		ITable tableFacade = FACADE_FACTORY.createTable(table);
 		IValue valueFacade = tableFacade.getIdentifierValue();
 		assertNull(valueFacade);
-		KeyValue value = new SimpleValue(DummyMetadataBuildingContext.INSTANCE);
+		KeyValue value = new SimpleValue(DummyMetadataBuildingContext.INSTANCE, null);
 		table.setIdentifierValue(value);
 		valueFacade = tableFacade.getIdentifierValue();
 		assertSame(value, ((IFacade)valueFacade).getTarget());
