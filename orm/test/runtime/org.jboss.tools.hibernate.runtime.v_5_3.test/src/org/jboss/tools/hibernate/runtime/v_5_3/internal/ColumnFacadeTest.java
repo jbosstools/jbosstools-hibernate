@@ -14,6 +14,7 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.spi.InFlightMetadataCollector;
 import org.hibernate.boot.spi.MetadataBuildingContext;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.SimpleValue;
@@ -24,6 +25,7 @@ import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
+import org.jboss.tools.hibernate.runtime.v_5_3.internal.util.MockDialect;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -60,6 +62,7 @@ public class ColumnFacadeTest {
 		column.setSqlType("foobar");
 		assertEquals("foobar", columnFacade.getSqlType());
 		Configuration configuration = new Configuration();
+		configuration.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
 		SimpleValue value = new SimpleValue(createMetadataBuildingContext(), new Table());
 		value.setTypeName("int");
 		column.setValue(value);
@@ -141,6 +144,7 @@ public class ColumnFacadeTest {
 
 	private MetadataBuildingContext createMetadataBuildingContext() {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
+		builder.applySetting(AvailableSettings.DIALECT, MockDialect.class.getName());
 		StandardServiceRegistry serviceRegistry = builder.build();		
 		MetadataBuildingOptionsImpl metadataBuildingOptions = 
 				new MetadataBuildingOptionsImpl(serviceRegistry);	

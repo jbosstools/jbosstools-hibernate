@@ -13,6 +13,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.spi.BootstrapContext;
 import org.hibernate.boot.spi.MetadataBuildingOptions;
 import org.hibernate.boot.spi.MetadataImplementor;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.tuple.component.ComponentMetamodel;
@@ -29,6 +30,7 @@ import org.hibernate.type.StringType;
 import org.hibernate.type.TypeFactory.TypeScope;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
+import org.jboss.tools.hibernate.runtime.v_5_3.internal.util.MockDialect;
 import org.junit.jupiter.api.Test;
 
 public class TypeFacadeTest {
@@ -115,12 +117,14 @@ public class TypeFacadeTest {
 		ClassType classType = new ClassType();
 		typeFacade = FACADE_FACTORY.createType(classType);
 		assertFalse(typeFacade.isComponentType());
-		StandardServiceRegistry ssr = new StandardServiceRegistryBuilder().build();
+		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
+		ssrb.applySetting(AvailableSettings.DIALECT, MockDialect.class.getName());
+		StandardServiceRegistry ssr = ssrb.build();
 		MetadataBuildingOptions mdbo = 
 				new MetadataBuilderImpl.MetadataBuildingOptionsImpl(ssr);
 		MetadataImplementor mdi = 
 				(MetadataImplementor)new MetadataBuilderImpl(
-						new MetadataSources()).build();
+						new MetadataSources(ssr)).build();
 		BootstrapContext bc = new BootstrapContextImpl(ssr, mdbo);
 		ComponentType componentType = 
 				new ComponentType(

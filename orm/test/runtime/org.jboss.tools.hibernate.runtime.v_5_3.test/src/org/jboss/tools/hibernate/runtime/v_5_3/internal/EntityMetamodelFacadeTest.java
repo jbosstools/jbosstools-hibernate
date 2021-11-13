@@ -18,6 +18,7 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.spi.InFlightMetadataCollector;
 import org.hibernate.boot.spi.MetadataBuildingContext;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.engine.OptimisticLockStyle;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.mapping.Column;
@@ -30,6 +31,7 @@ import org.hibernate.tuple.entity.EntityTuplizer;
 import org.jboss.tools.hibernate.runtime.common.AbstractEntityMetamodelFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
+import org.jboss.tools.hibernate.runtime.v_5_3.internal.util.MockDialect;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -88,6 +90,7 @@ public class EntityMetamodelFacadeTest {
 	
 	private EntityMetamodel createFooBarModel() {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
+		builder.applySetting(AvailableSettings.DIALECT, MockDialect.class.getName());
 		StandardServiceRegistry serviceRegistry = builder.build();		
 		MetadataBuildingOptionsImpl metadataBuildingOptions = 
 				new MetadataBuildingOptionsImpl(serviceRegistry);	

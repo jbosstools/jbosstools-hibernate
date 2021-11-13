@@ -12,8 +12,6 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import org.hibernate.FetchMode;
-import org.hibernate.boot.spi.MetadataImplementor;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
@@ -45,7 +43,6 @@ import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_5_3.internal.util.DummyMetadataBuildingContext;
-import org.jboss.tools.hibernate.runtime.v_5_3.internal.util.MetadataHelper;
 import org.junit.jupiter.api.Test;
 
 public class ValueFacadeTest {
@@ -173,9 +170,7 @@ public class ValueFacadeTest {
 	
 	@Test
 	public void testGetType() {
-		SimpleValue valueTarget = new SimpleValue(
-				(MetadataImplementor) MetadataHelper.getMetadata(
-						new Configuration()));
+		SimpleValue valueTarget = new SimpleValue(DummyMetadataBuildingContext.INSTANCE);
 		valueTarget.setTypeName("java.lang.Integer");
 		valueFacade = FACADE_FACTORY.createValue(valueTarget);
 		IType typeFacade = valueFacade.getType();

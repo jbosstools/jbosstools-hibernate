@@ -32,6 +32,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.jaxb.spi.Binding;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
@@ -49,6 +50,7 @@ import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.v_5_3.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_5_3.internal.util.MetadataHelper;
+import org.jboss.tools.hibernate.runtime.v_5_3.internal.util.MockDialect;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -90,6 +92,7 @@ public class ConfigurationFacadeTest {
 	@BeforeEach
 	public void beforeEach() {
 		configuration = new Configuration();
+		configuration.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
 		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
 	}	
 	
