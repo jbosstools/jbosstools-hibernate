@@ -17,7 +17,6 @@
 		<javax.persistence-api.version>2.2</javax.persistence-api.version>
 		<javassist.version>3.20.0-GA</javassist.version>
 	    <jaxb.version>2.3.0</jaxb.version>
-		<jboss-logging.version>3.3.0.Final</jboss-logging.version>
 	</properties>
 
 	<build>
@@ -60,11 +59,6 @@
 							<groupId>org.javassist</groupId>
 							<artifactId>javassist</artifactId>
 							<version>${javassist.version}</version>
-						</artifactItem>
-						<artifactItem>
-							<groupId>org.jboss.logging</groupId>
-							<artifactId>jboss-logging</artifactId>
-							<version>${jboss-logging.version}</version>
 						</artifactItem>
  						<artifactItem>
 							<groupId>com.sun.xml.bind</groupId>
