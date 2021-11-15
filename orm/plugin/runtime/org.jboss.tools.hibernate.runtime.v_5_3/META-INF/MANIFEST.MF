@@ -8,8 +8,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: .,
  lib/hibernate-commons-annotations-5.0.1.Final.jar,
  lib/hibernate-core-5.3.23.Final.jar,
- lib/hibernate-tools-5.3.23.Final.jar,
- lib/javassist-3.20.0-GA.jar
+ lib/hibernate-tools-5.3.23.Final.jar
 Require-Bundle: org.apache.commons.logging,
  org.jboss.tools.hibernate.libs.activation.v_1_2_0,
  org.jboss.tools.hibernate.libs.antlr.v_2_7_7,
