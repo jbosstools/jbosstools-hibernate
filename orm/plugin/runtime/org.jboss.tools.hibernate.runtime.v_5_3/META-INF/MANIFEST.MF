@@ -6,7 +6,6 @@ Bundle-Version: 5.4.15.qualifier
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: .,
- lib/geronimo-jta_1.1_spec-1.1.1.jar,
  lib/hibernate-commons-annotations-5.0.1.Final.jar,
  lib/hibernate-core-5.3.23.Final.jar,
  lib/hibernate-tools-5.3.23.Final.jar,
@@ -25,5 +24,6 @@ Require-Bundle: org.apache.commons.logging,
  org.jboss.tools.hibernate.libs.freemarker.v_2_3_23,
  org.jboss.tools.hibernate.libs.jaxb-api.v_2_3_0,
  org.jboss.tools.hibernate.libs.jaxb-core.v_2_3_0,
+ org.jboss.tools.hibernate.libs.transaction-api.v_1_2,
  org.jboss.tools.hibernate.runtime.common,
  org.jboss.tools.hibernate.runtime.spi
