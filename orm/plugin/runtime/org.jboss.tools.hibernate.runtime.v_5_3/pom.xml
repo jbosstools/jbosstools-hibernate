@@ -16,7 +16,6 @@
 		<hibernate-commons-annotations.version>5.0.1.Final</hibernate-commons-annotations.version>
 		<javax.persistence-api.version>2.2</javax.persistence-api.version>
 		<javassist.version>3.20.0-GA</javassist.version>
-	    <jaxb.version>2.3.0</jaxb.version>
 	</properties>
 
 	<build>
@@ -60,11 +59,6 @@
 							<artifactId>javassist</artifactId>
 							<version>${javassist.version}</version>
 						</artifactItem>
- 						<artifactItem>
-							<groupId>com.sun.xml.bind</groupId>
-							<artifactId>jaxb-impl</artifactId>
-							<version>${jaxb.version}</version>
-						</artifactItem> 
 					</artifactItems>
 					<skip>false</skip>
 					<outputDirectory>${basedir}/lib</outputDirectory>
