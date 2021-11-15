@@ -9,8 +9,7 @@ Bundle-ClassPath: .,
  lib/hibernate-commons-annotations-5.0.1.Final.jar,
  lib/hibernate-core-5.3.23.Final.jar,
  lib/hibernate-tools-5.3.23.Final.jar,
- lib/javassist-3.20.0-GA.jar,
- lib/javax.persistence-api-2.2.jar
+ lib/javassist-3.20.0-GA.jar
 Require-Bundle: org.apache.commons.logging,
  org.jboss.tools.hibernate.libs.activation.v_1_2_0,
  org.jboss.tools.hibernate.libs.antlr.v_2_7_7,
@@ -21,6 +20,7 @@ Require-Bundle: org.apache.commons.logging,
  org.jboss.tools.hibernate.libs.freemarker.v_2_3_23,
  org.jboss.tools.hibernate.libs.jaxb.v_2_3,
  org.jboss.tools.hibernate.libs.jboss-logging.v_3_4,
+ org.jboss.tools.hibernate.libs.jpa.v_2_2,
  org.jboss.tools.hibernate.libs.transaction-api.v_1_2,
  org.jboss.tools.hibernate.runtime.common,
  org.jboss.tools.hibernate.runtime.spi
