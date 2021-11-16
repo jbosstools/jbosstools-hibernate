@@ -1,90 +1,107 @@
 package org.jboss.tools.hibernate.runtime.v_5_2.internal;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.File;
-import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.List;
 
-import org.h2.Driver;
+import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.Environment;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.hibernate.tool.schema.TargetType;
+import org.jboss.tools.hibernate.runtime.common.AbstractFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.HibernateException;
-import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
-import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
 public class SchemaExportFacadeTest {
 
-	private static final String FOO_HBM_XML_STRING =
-			"<!DOCTYPE hibernate-mapping PUBLIC" +
-			"		'-//Hibernate/Hibernate Mapping DTD 3.0//EN'" +
-			"		'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>" +
-			"<hibernate-mapping package='org.jboss.tools.hibernate.runtime.v_5_2.internal'>" +
-			"  <class name='ConfigurationFacadeTest$Foo' table='FOO' >" + 
-			"    <id name='fooId' type='string' column='ID' />" +
-			"  </class>" +
-			"</hibernate-mapping>";
-	
-	static class Foo {
-		public String fooId;
-	}
-	
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
-	
-	@TempDir
-	public File tempDir = new File("tempDir");
-	
-	private File fooFile;
-	private Configuration configuration;
-	
-	@BeforeAll
-	public static void beforeAll() throws Exception {
-		DriverManager.registerDriver(new Driver());		
-	}
 
+	private SchemaExportFacadeImpl schemaExportFacade = null;
+	private SchemaExport schemaExportTarget = null;
+	
 	@BeforeEach
-	public void beforeEach() throws Exception {
-		fooFile = new File(tempDir, "foo.hbm.xml");
-		PrintWriter fooWriter = new PrintWriter(fooFile);
-		fooWriter.write(FOO_HBM_XML_STRING);
-		fooWriter.close();
-		configuration = new Configuration();
-		configuration.addFile(fooFile);
+	public void before() {
+		schemaExportTarget = new SchemaExport();
+		schemaExportFacade = new SchemaExportFacadeImpl(FACADE_FACTORY, schemaExportTarget);
+	}
+	
+	@Test
+	public void testCreation() throws Exception {
+		assertNotNull(schemaExportFacade);
+		Field metadataField = SchemaExportFacadeImpl.class.getDeclaredField("metadata");
+		metadataField.setAccessible(true);
+		assertNull(metadataField.get(schemaExportFacade));
+	}
+	
+	@Test
+	public void testSetConfiguration() throws Exception {
+		Field metadataField = SchemaExportFacadeImpl.class.getDeclaredField("metadata");
+		metadataField.setAccessible(true);
+		Configuration configurationTarget = new Configuration();
+		ConfigurationFacadeImpl configuration = new ConfigurationFacadeImpl(FACADE_FACTORY, configurationTarget);
+		Metadata metadata = configuration.getMetadata();
+		assertNull(metadataField.get(schemaExportFacade));
+		schemaExportFacade.setConfiguration(configuration);
+		assertSame(metadata, metadataField.get(schemaExportFacade));
 	}
 	
 	@Test
 	public void testCreate() throws Exception {
-		String urlString = "jdbc:h2:mem:create_test";
-		Connection connection = DriverManager.getConnection(urlString);
-		configuration.setProperty(Environment.URL, urlString);
-		IConfiguration configurationFacade = 
-				FACADE_FACTORY.createConfiguration(configuration);
-		SchemaExport schemaExport = new SchemaExport();
-		SchemaExportFacadeImpl schemaExportFacade = 
-				new SchemaExportFacadeImpl(FACADE_FACTORY, schemaExport);
-		schemaExportFacade.setConfiguration(configurationFacade);
-		assertFalse(connection.getMetaData().getTables(null, null, "FOO", null).next());
-		schemaExportFacade.create();
-		assertTrue(connection.getMetaData().getTables(null, null, "FOO", null).next());
+		TestSchemaExport target = new TestSchemaExport();
+		Field targetField = AbstractFacade.class.getDeclaredField("target");
+		targetField.setAccessible(true);
+		targetField.set(schemaExportFacade, target);
+		Field metadataField = SchemaExportFacadeImpl.class.getDeclaredField("metadata");
+		metadataField.setAccessible(true);
+		metadataField.set(schemaExportFacade, createTestMetadata());
+		assertNull(target.metadata);
+		assertNull(target.targetTypes);
+		schemaExportFacade.create();	
+		assertSame(target.metadata, metadataField.get(schemaExportFacade));
+		assertTrue(target.targetTypes.contains(TargetType.DATABASE));
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Test
-	public void testGetExceptions() throws Throwable {
-		SchemaExport schemaExport = new SchemaExport();
-		ISchemaExport schemaExportFacade = 
-				new SchemaExportFacadeImpl(FACADE_FACTORY, schemaExport);
-		assertTrue(schemaExportFacade.getExceptions().isEmpty());
-		schemaExport.getExceptions().add(new HibernateException("blah"));
-		assertFalse(schemaExportFacade.getExceptions().isEmpty());
+	public void testGetExceptions() throws Exception {
+		List<Throwable> exceptions = Collections.emptyList();
+		Field exceptionsField = SchemaExport.class.getDeclaredField("exceptions");
+		exceptionsField.setAccessible(true);
+		assertNotSame(exceptions, schemaExportFacade.getExceptions());
+		exceptionsField.set(schemaExportTarget, exceptions);
+		assertSame(exceptions, schemaExportFacade.getExceptions());
+	}
+	
+	private static class TestSchemaExport extends SchemaExport {
+		Metadata metadata = null;
+		EnumSet<TargetType> targetTypes = null;
+		@Override
+		public void create(EnumSet<TargetType> targetTypes, Metadata metadata) {
+			this.targetTypes = targetTypes;
+			this.metadata = metadata;
+		}
+	}
+	
+	private static Metadata createTestMetadata() {
+		return (Metadata)Proxy.newProxyInstance(
+				SchemaExportFacadeTest.class.getClassLoader(), 
+				new Class[] { Metadata.class },  
+				new InvocationHandler() {					
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+						return null;
+					}
+				});
 	}
 
 }
