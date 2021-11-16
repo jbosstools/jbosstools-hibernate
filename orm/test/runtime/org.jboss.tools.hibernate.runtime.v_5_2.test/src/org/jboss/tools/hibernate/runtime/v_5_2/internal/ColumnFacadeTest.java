@@ -8,9 +8,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.Environment;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.SimpleValue;
+import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.util.MetadataHelper;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -29,13 +29,13 @@ public class ColumnFacadeTest {
 	private Column column = null;
 	
 	@BeforeEach
-	public void setUp() {
+	public void beforeEach() {
 		column = new Column();
-		columnFacade = FACADE_FACTORY.createColumn(column);
+		columnFacade = new ColumnFacadeImpl(FACADE_FACTORY, column);
 	}
 	
 	@Test
-	public void testGetMappedClass() {
+	public void testGetName() {
 		assertNull(columnFacade.getName());
 		column.setName("foobar");
 		assertEquals("foobar", columnFacade.getName());
@@ -47,17 +47,14 @@ public class ColumnFacadeTest {
 		column.setSqlTypeCode(Integer.MAX_VALUE);
 		assertEquals(Integer.MAX_VALUE, columnFacade.getSqlTypeCode().intValue());
 	}
-	
+
 	@Test
 	public void testGetSqlType() {
 		assertNull(columnFacade.getSqlType());
 		column.setSqlType("foobar");
 		assertEquals("foobar", columnFacade.getSqlType());
 		Configuration configuration = new Configuration();
-		configuration.setProperty(Environment.DIALECT, "org.hibernate.dialect.H2Dialect");
-		MetadataImplementor metadata = 
-				(MetadataImplementor)MetadataHelper.getMetadata(configuration);
-		SimpleValue value = new SimpleValue(metadata);
+		SimpleValue value = new SimpleValue((MetadataImplementor)MetadataHelper.getMetadata(configuration), new Table());
 		value.setTypeName("int");
 		column.setValue(value);
 		IConfiguration configurationFacade = FACADE_FACTORY.createConfiguration(configuration);
@@ -109,29 +106,31 @@ public class ColumnFacadeTest {
 		assertFalse(columnFacade.isNullable());
 	}
 	
+	@Test
 	public void testGetValue() throws Exception {
 		Value targetValue = null;
 		column.setValue(targetValue);
 		assertNull(columnFacade.getValue());
-		targetValue = new SimpleValue(
-				(MetadataImplementor)MetadataHelper.getMetadata(new Configuration()));
+		targetValue = new SimpleValue((MetadataImplementor)MetadataHelper.getMetadata(new Configuration()), new Table());
 		column.setValue(targetValue);
 		IValue value = columnFacade.getValue();
 		assertNotNull(value);
 		assertEquals(targetValue, ((IFacade)value).getTarget());
 	}
 	
+	@Test
 	public void testIsUnique() {
-		column.setUnique(true);
+		column.setUnique(false);
 		assertFalse(columnFacade.isUnique());
 		column.setUnique(true);
 		assertTrue(columnFacade.isUnique());
 	}
 	
+	@Test
 	public void testSetSqlType() {
 		assertNull(column.getSqlType());
 		columnFacade.setSqlType("blah");
 		assertEquals("blah", column.getSqlType());
 	}
-	
+
 }
