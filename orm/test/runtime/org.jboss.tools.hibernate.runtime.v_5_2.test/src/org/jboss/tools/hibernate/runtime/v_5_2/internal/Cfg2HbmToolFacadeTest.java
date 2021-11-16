@@ -11,9 +11,9 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
+import org.hibernate.mapping.Table;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.common.AbstractCfg2HbmToolFacade;
-import org.jboss.tools.hibernate.runtime.common.AbstractPersistentClassFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractPropertyFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
@@ -23,7 +23,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class Cfg2HbmToolFacadeTest {
-	
+
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 
 	private ICfg2HbmTool cfg2HbmToolFacade = null; 
@@ -36,20 +36,18 @@ public class Cfg2HbmToolFacadeTest {
 	}
 
 	@Test
-	public void testGetPersistentClassTag() {
+	public void testGetTagPersistentClass() {
 		PersistentClass target = new RootClass(null);
-		IPersistentClass persistentClass = new AbstractPersistentClassFacade(FACADE_FACTORY, target) {};
+		IPersistentClass persistentClass = FACADE_FACTORY.createPersistentClass(target);
 		assertEquals("class", cfg2HbmToolFacade.getTag(persistentClass));
 	}
-	
-	public void testGetPropertyTag() throws Exception {
+
+	@Test
+	public void testGetTagProperty() throws Exception {
 		RootClass rc = new RootClass(null);
 		Property p = new Property();
-		MetadataImplementor m = (MetadataImplementor)Proxy.newProxyInstance(
-				FACADE_FACTORY.getClassLoader(), 
-				new Class[] { MetadataImplementor.class }, 
-				new TestInvocationHandler());
-		SimpleValue sv = new SimpleValue(m);
+		Table t = new Table();
+		SimpleValue sv = new SimpleValue(createMetadaImplementor(), t);
 		sv.setTypeName("foobar");
 		p.setValue(sv);
 		p.setPersistentClass(rc);
@@ -58,11 +56,16 @@ public class Cfg2HbmToolFacadeTest {
 		assertEquals("version", cfg2HbmToolFacade.getTag(property));
 	}
 	
-	private class TestInvocationHandler implements InvocationHandler {
-		@Override
-		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-			return null;
-		}
+	private MetadataImplementor createMetadaImplementor() {
+		return (MetadataImplementor)Proxy.newProxyInstance(
+				getClass().getClassLoader(), 
+				new Class[] { MetadataImplementor.class }, 
+				new InvocationHandler() {			
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+						return null;
+					}
+		});
 	}
-
+	
 }
