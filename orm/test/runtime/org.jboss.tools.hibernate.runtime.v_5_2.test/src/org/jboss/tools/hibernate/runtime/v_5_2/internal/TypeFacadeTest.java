@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.internal.MetadataBuilderImpl;
+import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.spi.MetadataBuildingOptions;
 import org.hibernate.boot.spi.MetadataImplementor;
@@ -112,12 +113,13 @@ public class TypeFacadeTest {
 		ClassType classType = new ClassType();
 		typeFacade = FACADE_FACTORY.createType(classType);
 		assertFalse(typeFacade.isComponentType());
+		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
+		StandardServiceRegistry ssr = ssrb.build();
 		MetadataBuildingOptions mdbo = 
-				new MetadataBuilderImpl.MetadataBuildingOptionsImpl(
-						new StandardServiceRegistryBuilder().build());
+				new MetadataBuilderImpl.MetadataBuildingOptionsImpl(ssr);
 		MetadataImplementor mdi = 
 				(MetadataImplementor)new MetadataBuilderImpl(
-						new MetadataSources()).build();
+						new MetadataSources(ssr)).build();
 		ComponentType componentType = 
 				new ComponentType(
 						null,
