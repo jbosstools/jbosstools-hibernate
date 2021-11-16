@@ -33,7 +33,7 @@ public class QueryFacadeTest {
 	private AbstractQueryFacade query = null;
 	
 	@BeforeEach
-	public void setUp() {
+	public void beforeEach() {
 		Query<?> queryProxy = (Query<?>)Proxy.newProxyInstance(
 				FACADE_FACTORY.getClassLoader(), 
 				new Class[] { Query.class }, 
