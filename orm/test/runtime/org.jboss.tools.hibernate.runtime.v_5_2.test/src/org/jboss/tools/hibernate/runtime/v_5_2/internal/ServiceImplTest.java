@@ -3,11 +3,13 @@ package org.jboss.tools.hibernate.runtime.v_5_2.internal;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -19,10 +21,10 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
+import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.DelegatingReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
-import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
@@ -41,8 +43,10 @@ import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.hbm2x.AbstractExporter;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
+import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
@@ -68,6 +72,7 @@ import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class ServiceImplTest {
@@ -85,62 +90,64 @@ public class ServiceImplTest {
 			"  </class>" + 
 			"</hibernate-mapping>";
 
-	private ServiceImpl service = new ServiceImpl();
+	private ServiceImpl service = null;
 	
 	@BeforeAll
 	public static void beforeAll() throws Exception {
 		DriverManager.registerDriver(new Driver());		
 	}
 
-	@Test
-	public void testServiceCreation() {
-		assertNotNull(service);
+	@BeforeEach
+	public void beforeEach() {
+		service = new ServiceImpl();
 	}
 	
 	@Test
 	public void testNewAnnotationConfiguration() {
-		IConfiguration configuration = service.newAnnotationConfiguration();
-		assertNotNull(configuration);
-		Object target = ((IFacade)configuration).getTarget();
-		assertNotNull(target);
-		assertTrue(target instanceof Configuration);
+		IConfiguration annotationConfiguration = service.newAnnotationConfiguration();
+		assertNotNull(annotationConfiguration);
+		assertTrue(((IFacade)annotationConfiguration).getTarget() instanceof Configuration);
 	}
-	
+
 	@Test
-	public void testNewJpaConfiguration() {
-		IConfiguration configuration = service.newJpaConfiguration(null, "test", null);
-		assertNotNull(configuration);
-		Object target = ((IFacade)configuration).getTarget();
+	public void testNewJpaConfiguration() throws Exception {
+		IConfiguration jpaConfiguration = service.newJpaConfiguration(null, "test", null);
+		assertNotNull(jpaConfiguration);
+		Object target = ((IFacade)jpaConfiguration).getTarget();
 		assertNotNull(target);
-		assertTrue(target instanceof Configuration);
+		assertTrue(target instanceof JPAConfiguration);
+		Field persistenceUnitField = JPAConfiguration.class.getDeclaredField("persistenceUnit");
+		persistenceUnitField.setAccessible(true);
+		assertEquals("test", persistenceUnitField.get(target));
+		
 	}
 	
 	@Test
 	public void testNewDefaultConfiguration() {
-		IConfiguration configuration = service.newDefaultConfiguration();
-		assertNotNull(configuration);
-		Object target = ((IFacade)configuration).getTarget();
-		assertNotNull(target);
-		assertTrue(target instanceof Configuration);
+		IConfiguration defaultConfiguration = service.newDefaultConfiguration();
+		assertNotNull(defaultConfiguration);
+		assertTrue(((IFacade)defaultConfiguration).getTarget() instanceof Configuration);
 	}
-	
+
 	@Test
-	public void testNewHibernateMappingExporter() {
+	public void testNewHibernateMappingExporter() throws Exception {
 		IConfiguration configuration = service.newDefaultConfiguration();
 		File file = new File("");
 		IHibernateMappingExporter hibernateMappingExporter = 
 				service.newHibernateMappingExporter(configuration, file);
-		Configuration cfg = (Configuration)((IFacade)configuration).getTarget();
 		HibernateMappingExporterExtension hmee = 
 				(HibernateMappingExporterExtension)((IFacade)hibernateMappingExporter).getTarget();
 		assertSame(file, hmee.getOutputDirectory());
-		assertSame(cfg, hmee.getConfiguration());
+		Field metadataField = AbstractExporter.class.getDeclaredField("metadata");
+		metadataField.setAccessible(true);
+		assertSame(
+				((ConfigurationFacadeImpl)configuration).getMetadata(), 
+				metadataField.get(hmee));
 	}
 	
 	@Test
 	public void testNewSchemaExport() {
 		IConfiguration configuration = service.newDefaultConfiguration();
-		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 		ISchemaExport schemaExport = service.newSchemaExport(configuration);
 		assertNotNull(schemaExport);
 	}
@@ -148,7 +155,6 @@ public class ServiceImplTest {
 	@Test
 	public void testNewHQLCodeAssist() {
 		IConfiguration configuration = service.newDefaultConfiguration();
-		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 		IHQLCodeAssist hqlCodeAssist = service.newHQLCodeAssist(configuration);
 		assertNotNull(hqlCodeAssist);
 	}
@@ -163,30 +169,17 @@ public class ServiceImplTest {
 	}
 	
 	@Test
-	public void testCreateExporter() {
-		IExporter exporter = service.createExporter("org.hibernate.tool.hbm2x.POJOExporter");
+	public void testCreateExporter() throws Exception {
+		IExporter exporter = service.createExporter(POJOExporter.class.getName());
 		assertNotNull(exporter);
 		Object target = ((IFacade)exporter).getTarget();
 		assertNotNull(target);
 		assertTrue(target instanceof POJOExporter);
-	}
-	
-	@Test
-	public void testNewHQLQueryPlan() throws Exception {
-		IConfiguration configuration = service.newDefaultConfiguration();
-		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
-		File testFile = File.createTempFile("test", "tmp");
-		testFile.deleteOnExit();
-		FileWriter fileWriter = new FileWriter(testFile);
-		fileWriter.write(TEST_HBM_STRING);
-		fileWriter.close();
-		configuration.addFile(testFile);
-		ISessionFactory sfi = configuration.buildSessionFactory();
-		IHQLQueryPlan queryPlan = service.newHQLQueryPlan("from ServiceImplTest$Foo", true, sfi);
-		assertNotNull(queryPlan);
-		Object target = ((IFacade)queryPlan).getTarget();
+		exporter = service.createExporter(HibernateConfigurationExporter.class.getName());
+		assertNotNull(exporter);
+		target = ((IFacade)exporter).getTarget();
 		assertNotNull(target);
-		assertTrue(target instanceof HQLQueryPlan);
+		assertTrue(target instanceof HibernateConfigurationExporter);
 	}
 	
 	@Test
@@ -199,13 +192,20 @@ public class ServiceImplTest {
 	}
 	
 	@Test
-	public void testNewDefaultReverseEngineeringStrategy() throws Exception {
-		IReverseEngineeringStrategy reverseEngineeringStrategy = 
-				service.newDefaultReverseEngineeringStrategy();
-		assertNotNull(reverseEngineeringStrategy);
-		Object target = ((IFacade)reverseEngineeringStrategy).getTarget();
+	public void testNewHQLQueryPlan() throws Exception {
+		IConfiguration configuration = service.newDefaultConfiguration();
+		File testFile = File.createTempFile("test", "tmp");
+		testFile.deleteOnExit();
+		FileWriter fileWriter = new FileWriter(testFile);
+		fileWriter.write(TEST_HBM_STRING);
+		fileWriter.close();
+		configuration.addFile(testFile);
+		ISessionFactory sfi = configuration.buildSessionFactory();
+		IHQLQueryPlan queryPlan = service.newHQLQueryPlan("from ServiceImplTest$Foo", true, sfi);
+		assertNotNull(queryPlan);
+		Object target = ((IFacade)queryPlan).getTarget();
 		assertNotNull(target);
-		assertTrue(target instanceof ReverseEngineeringStrategy);
+		assertTrue(target instanceof HQLQueryPlan);
 	}
 	
 	@Test 
@@ -222,6 +222,7 @@ public class ServiceImplTest {
 		Object target = ((IFacade)namingStrategy).getTarget();
 		assertNotNull(target);
 		assertTrue(target instanceof DefaultNamingStrategy);
+		assertNull(service.newNamingStrategy("some unexistant class"));
 	}
 	
 	@Test
@@ -240,6 +241,16 @@ public class ServiceImplTest {
 		Object target = ((IFacade)tableFilter).getTarget();
 		assertNotNull(target);
 		assertTrue(target instanceof TableFilter);
+	}
+	
+	@Test
+	public void testNewDefaultReverseEngineeringStrategy() throws Exception {
+		IReverseEngineeringStrategy reverseEngineeringStrategy = 
+				service.newDefaultReverseEngineeringStrategy();
+		assertNotNull(reverseEngineeringStrategy);
+		Object target = ((IFacade)reverseEngineeringStrategy).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof DefaultReverseEngineeringStrategy);
 	}
 	
 	@Test
@@ -544,5 +555,5 @@ public class ServiceImplTest {
 				ServiceImpl.class.getClassLoader(), 
 				service.getClassLoader());
 	}
-	
+
 }
