@@ -52,9 +52,9 @@ public class CollectionMetadataFacadeTest {
 					@Override
 					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 						if ("getElementType".equals(method.getName())) {
-							
+							return elementType;
 						}
-						return elementType;
+						return null;
 					}
 				});
 	}
