@@ -17,19 +17,21 @@ import org.hibernate.Criteria;
 import org.hibernate.Filter;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.SessionFactoryBuilder;
 import org.hibernate.boot.internal.SessionFactoryBuilderImpl;
-import org.hibernate.boot.internal.SessionFactoryOptionsImpl;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.spi.MetadataImplementor;
-import org.hibernate.boot.spi.SessionFactoryOptions;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
+import org.hibernate.dialect.Dialect;
+import org.hibernate.engine.OptimisticLockStyle;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.hql.spi.QueryTranslator;
@@ -47,7 +49,6 @@ import org.hibernate.mapping.Value;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.query.Query;
-import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
@@ -59,7 +60,6 @@ import org.hibernate.tool.hbm2x.QueryExporter;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
-import org.hibernate.tool.util.MetadataHelper;
 import org.hibernate.tuple.entity.EntityMetamodel;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -108,7 +108,7 @@ public class FacadeFactoryTest {
 	private FacadeFactoryImpl facadeFactory;
 
 	@BeforeEach
-	public void setUp() throws Exception {
+	public void beforeEach() throws Exception {
 		facadeFactory = new FacadeFactoryImpl();
 	}
 	
@@ -130,7 +130,7 @@ public class FacadeFactoryTest {
 		IArtifactCollector facade = facadeFactory.createArtifactCollector(artifactCollector);
 		assertSame(artifactCollector, ((IFacade)facade).getTarget());
 	}
-	
+		
 	@Test
 	public void testCreateCfg2HbmTool() {
 		Cfg2HbmTool cfg2HbmTool = new Cfg2HbmTool();
@@ -171,8 +171,6 @@ public class FacadeFactoryTest {
 	
 	@Test
 	public void testCreateSchemaExport() {
-		Configuration configuration = new Configuration();
-		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 		SchemaExport schemaExport = new SchemaExport();
 		ISchemaExport facade = facadeFactory.createSchemaExport(schemaExport);
 		assertTrue(facade instanceof SchemaExportFacadeImpl);
@@ -224,6 +222,7 @@ public class FacadeFactoryTest {
 				new Class[] { ClassMetadata.class }, 
 				new TestInvocationHandler());
 		IClassMetadata facade = facadeFactory.createClassMetadata(classMetadata);
+		assertTrue(facade instanceof ClassMetadataFacadeImpl);
 		assertSame(classMetadata, ((IFacade)facade).getTarget());		
 	}
 	
@@ -241,6 +240,7 @@ public class FacadeFactoryTest {
 	public void testCreateColumn() {
 		Column column = new Column();
 		IColumn facade = facadeFactory.createColumn(column);
+		assertTrue(facade instanceof ColumnFacadeImpl);
 		assertSame(column, ((IFacade)facade).getTarget());		
 	}
 	
@@ -248,8 +248,8 @@ public class FacadeFactoryTest {
 	public void testCreateConfiguration() {
 		Configuration configuration = new Configuration();
 		IConfiguration facade = facadeFactory.createConfiguration(configuration);
+		assertTrue(facade instanceof ConfigurationFacadeImpl);
 		assertSame(configuration, ((IFacade)facade).getTarget());		
-		assertSame(ConfigurationFacadeImpl.class, facade.getClass());
 	}
 	
 	@Test
@@ -264,18 +264,15 @@ public class FacadeFactoryTest {
 	
 	@Test
 	public void testCreateEntityMetamodel() {
-		Configuration configuration = new Configuration();
-		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
-		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
-		builder.applySettings(configuration.getProperties());
-		ServiceRegistry serviceRegistry = builder.build();		
-		SessionFactoryImplementor sfi = (SessionFactoryImplementor)configuration.buildSessionFactory(serviceRegistry);
+		MetadataSources mds = new MetadataSources();
+		Metadata md = mds.buildMetadata();
+		SessionFactoryImplementor sfi = (SessionFactoryImplementor)md.buildSessionFactory();
 		RootClass rc = new RootClass(null);
-		MetadataImplementor m = (MetadataImplementor)MetadataHelper.getMetadata(configuration);
-		SimpleValue sv = new SimpleValue(m);
+		SimpleValue sv = new SimpleValue((MetadataImplementor)md);
 		sv.setNullValue("null");
 		sv.setTypeName(Integer.class.getName());
 		rc.setIdentifier(sv);
+		rc.setOptimisticLockStyle(OptimisticLockStyle.NONE);
 		EntityMetamodel entityMetamodel = new EntityMetamodel(rc, null, sfi);
 		IEntityMetamodel facade = facadeFactory.createEntityMetamodel(entityMetamodel);
 		assertSame(entityMetamodel, ((IFacade)facade).getTarget());		
@@ -304,9 +301,8 @@ public class FacadeFactoryTest {
 	
 	@Test
 	public void testCreateHQLCodeAssist() {
-		Configuration configuration = new Configuration();
-		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
-		HQLCodeAssist hqlCodeAssist = new HQLCodeAssist(configuration);
+		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
+		HQLCodeAssist hqlCodeAssist = new HQLCodeAssist(new MetadataSources().buildMetadata(ssrb.build()));
 		IHQLCodeAssist facade = facadeFactory.createHQLCodeAssist(hqlCodeAssist);
 		assertSame(hqlCodeAssist, ((IFacade)facade).getTarget());		
 	}
@@ -324,9 +320,6 @@ public class FacadeFactoryTest {
 				new ArrayList<PersistentClass>();
 		final StandardServiceRegistryBuilder standardServiceRegistryBuilder = 
 				new StandardServiceRegistryBuilder();
-		standardServiceRegistryBuilder.applySetting(
-				"hibernate.dialect", 
-				"org.hibernate.dialect.H2Dialect");
 		final StandardServiceRegistry serviceRegistry = 
 				standardServiceRegistryBuilder.build();
 		final MetadataSources metadataSources = new MetadataSources(serviceRegistry);
@@ -365,15 +358,14 @@ public class FacadeFactoryTest {
 						return method.invoke(metadata, args);
 					}
 				}); 
-		SessionFactoryBuilderImpl sessionFactoryBuilder = 
-				(SessionFactoryBuilderImpl)metadata.getSessionFactoryBuilder();
-		SessionFactoryOptions sessionFactoryOptions = new SessionFactoryOptionsImpl(sessionFactoryBuilder);
-		SessionFactoryImpl sfi = new SessionFactoryImpl(wrapper, sessionFactoryOptions);
+		SessionFactoryBuilder sfb = new SessionFactoryBuilderImpl(wrapper);
+		SessionFactoryImpl sfi = (SessionFactoryImpl)sfb.build();
 		Map<String, Filter> filters = Collections.emptyMap();
 		HQLQueryPlan hqlQueryPlan = new HQLQueryPlan("from foo", false, filters, sfi);
 		IHQLQueryPlan facade = facadeFactory.createHQLQueryPlan(hqlQueryPlan);
 		assertSame(hqlQueryPlan, ((IFacade)facade).getTarget());		
 	}
+
 
 	@Test
 	public void testCreateJoin() {
@@ -440,8 +432,8 @@ public class FacadeFactoryTest {
 				new Class[] { SessionFactory.class }, 
 				new TestInvocationHandler());
 		ISessionFactory facade = facadeFactory.createSessionFactory(sessionFactory);
+		assertTrue(facade instanceof SessionFactoryFacadeImpl);
 		assertSame(sessionFactory, ((IFacade)facade).getTarget());
-		assertTrue(SessionFactoryFacadeImpl.class.isInstance(facade));
 	}
 	
 	@Test
@@ -464,7 +456,7 @@ public class FacadeFactoryTest {
 		IPersistentClass specialRootClass = facadeFactory.createSpecialRootClass(property);
 		assertNotNull(specialRootClass);
 		Object object = ((IFacade)specialRootClass).getTarget();
-		assertNotNull(object);
+		assertTrue(specialRootClass instanceof SpecialRootClassFacadeImpl);
 		assertTrue(object instanceof RootClass);
 		assertSame(property, specialRootClass.getProperty());
 	}
@@ -509,5 +501,7 @@ public class FacadeFactoryTest {
 			return null;
 		}	
 	}
+	
+	public static class TestDialect extends Dialect {};
 	
 }
