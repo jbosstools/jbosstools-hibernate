@@ -9,18 +9,28 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.internal.ClassLoaderAccessImpl;
+import org.hibernate.boot.internal.InFlightMetadataCollectorImpl;
+import org.hibernate.boot.internal.MetadataBuilderImpl.MetadataBuildingOptionsImpl;
+import org.hibernate.boot.internal.MetadataBuildingContextRootImpl;
+import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.boot.registry.classloading.spi.ClassLoaderService;
+import org.hibernate.boot.spi.ClassLoaderAccess;
+import org.hibernate.boot.spi.InFlightMetadataCollector;
+import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.boot.spi.MetadataImplementor;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.engine.OptimisticLockStyle;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
-import org.hibernate.service.ServiceRegistry;
-import org.hibernate.tool.util.MetadataHelper;
 import org.hibernate.tuple.entity.EntityMetamodel;
 import org.hibernate.tuple.entity.EntityTuplizer;
+import org.hibernate.type.TypeResolver;
 import org.jboss.tools.hibernate.runtime.common.AbstractEntityMetamodelFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
@@ -35,48 +45,13 @@ public class EntityMetamodelFacadeTest {
 	
 	private IEntityMetamodel entityMetamodelFacade = null; 
 	private EntityMetamodel entityMetamodel = null;
-	
+
 	private String methodName = null;
 	private Object[] arguments = null;
 	
-	@SuppressWarnings("serial")
 	@BeforeEach
 	public void beforeEach() throws Exception {
-		Configuration configuration = new Configuration();
-		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
-		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
-		builder.applySettings(configuration.getProperties());
-		ServiceRegistry serviceRegistry = builder.build();		
-		SessionFactoryImplementor sfi = (SessionFactoryImplementor)configuration.buildSessionFactory(serviceRegistry);
-		RootClass rc = new RootClass(null);
-		Table t = new Table("foobar");
-		rc.setTable(t);
-		Column c = new Column("foo");
-		t.addColumn(c);
-		ArrayList<Column> keyList = new ArrayList<>();
-		keyList.add(c);
-		t.createUniqueKey(keyList);
-		MetadataImplementor m = (MetadataImplementor)MetadataHelper.getMetadata(configuration);
-		SimpleValue sv = new SimpleValue(m);
-		sv.setNullValue("null");
-		sv.setTypeName(Integer.class.getName());
-		sv.addColumn(c);
-		rc.setEntityName("foobar");
-		rc.setIdentifier(sv);
-		entityMetamodel = new EntityMetamodel(rc, null, sfi) {
-			@Override public EntityTuplizer getTuplizer() {
-				return (EntityTuplizer)Proxy.newProxyInstance(
-						FACADE_FACTORY.getClassLoader(), 
-						new Class[] { EntityTuplizer.class }, 
-						new TestInvocationHandler());
-			}
-			@Override public Integer getPropertyIndexOrNull(String id) {
-				methodName = "getPropertyIndexOrNull";
-				arguments = new Object[] { id };
-				return INDEX;
-			}
-			
-		};
+		entityMetamodel = createFooBarModel();
 		entityMetamodelFacade = new AbstractEntityMetamodelFacade(FACADE_FACTORY, entityMetamodel) {};
 	}
 	
@@ -94,6 +69,73 @@ public class EntityMetamodelFacadeTest {
 		assertArrayEquals(arguments, new Object[] { "foobar" });
 	}
 	
+	private PersistentClass createPersistentClass(
+			MetadataBuildingContext metadataBuildingContext,
+			MetadataImplementor metadataImplementor) {
+		RootClass rc = new RootClass(metadataBuildingContext);
+		Table t = new Table("foobar");
+		rc.setTable(t);
+		Column c = new Column("foo");
+		t.addColumn(c);
+		ArrayList<Column> keyList = new ArrayList<>();
+		keyList.add(c);
+		t.createUniqueKey(keyList);
+		SimpleValue sv = new SimpleValue(metadataImplementor, t);
+		sv.setNullValue("null");
+		sv.setTypeName(Integer.class.getName());
+		sv.addColumn(c);
+		rc.setEntityName("foobar");
+		rc.setIdentifier(sv);
+		rc.setClassName(FooBar.class.getName());
+		rc.setOptimisticLockStyle(OptimisticLockStyle.NONE);
+		return rc;
+	}
+	
+	private EntityMetamodel createFooBarModel() {
+		StandardServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().build();		
+		MetadataBuildingOptionsImpl metadataBuildingOptions = 
+				new MetadataBuildingOptionsImpl(serviceRegistry);	
+		InFlightMetadataCollector inFlightMetadataCollector = 
+				new InFlightMetadataCollectorImpl(
+						metadataBuildingOptions, new TypeResolver());
+		ClassLoaderService classLoaderService = metadataBuildingOptions.getServiceRegistry().getService( ClassLoaderService.class );
+		ClassLoaderAccess classLoaderAccess = new ClassLoaderAccessImpl(
+				metadataBuildingOptions.getTempClassLoader(),
+				classLoaderService
+		);
+		MetadataBuildingContext metadataBuildingContext = 
+				new MetadataBuildingContextRootImpl(
+						metadataBuildingOptions, 
+						classLoaderAccess,
+						inFlightMetadataCollector);
+		MetadataSources metadataSources = new MetadataSources(serviceRegistry);
+		PersistentClass persistentClass = createPersistentClass(
+				metadataBuildingContext, 
+				(MetadataImplementor)metadataSources.buildMetadata());
+		SessionFactoryImplementor sessionFactoryImplementor = 
+				(SessionFactoryImplementor)metadataSources
+					.buildMetadata()
+					.buildSessionFactory();
+		return  new EntityMetamodel(persistentClass, null, sessionFactoryImplementor) {
+			private static final long serialVersionUID = 1L;
+			@Override public EntityTuplizer getTuplizer() {
+				return (EntityTuplizer)Proxy.newProxyInstance(
+						FACADE_FACTORY.getClassLoader(), 
+						new Class[] { EntityTuplizer.class }, 
+						new TestInvocationHandler());
+			}
+			@Override public Integer getPropertyIndexOrNull(String id) {
+				methodName = "getPropertyIndexOrNull";
+				arguments = new Object[] { id };
+				return INDEX;
+			}
+		};
+	}
+		
+	public class FooBar {
+		public int id = 1967;
+	}
+	
 	private class TestInvocationHandler implements InvocationHandler {
 		@Override
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -102,5 +144,4 @@ public class EntityMetamodelFacadeTest {
 			return OBJECT;
 		}
 	}
-	
 }
