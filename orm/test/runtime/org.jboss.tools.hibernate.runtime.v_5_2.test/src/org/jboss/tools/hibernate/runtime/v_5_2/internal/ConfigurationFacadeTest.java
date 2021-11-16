@@ -9,12 +9,22 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
+
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.h2.Driver;
 import org.hibernate.SessionFactory;
@@ -41,20 +51,26 @@ import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.helpers.DefaultHandler;
 
 public class ConfigurationFacadeTest {
 	
 	private static final String TEST_HBM_XML_STRING =
-			"<!DOCTYPE hibernate-mapping PUBLIC" +
-			"		'-//Hibernate/Hibernate Mapping DTD 3.0//EN'" +
-			"		'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>" +
 			"<hibernate-mapping package='org.jboss.tools.hibernate.runtime.v_5_2.internal'>" +
 			"  <class name='ConfigurationFacadeTest$Foo'>" + 
 			"    <id name='id'/>" +
 			"  </class>" +
 			"</hibernate-mapping>";
+	
+	private static final String TEST_CFG_XML_STRING =
+			"<hibernate-configuration>" +
+			"  <session-factory name='bar'>" + 
+			"    <mapping resource='Foo.hbm.xml' />" +
+			"  </session-factory>" +
+			"</hibernate-configuration>";
 	
 	static class Foo {
 		public String id;
@@ -73,8 +89,8 @@ public class ConfigurationFacadeTest {
 	@BeforeEach
 	public void beforeEach() {
 		configuration = new Configuration();
-		configurationFacade = FACADE_FACTORY.createConfiguration(configuration);
-	}
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
+	}	
 	
 	@Test
 	public void testGetProperty() {
@@ -83,6 +99,23 @@ public class ConfigurationFacadeTest {
 		assertEquals("bar", configurationFacade.getProperty("foo"));
 	}
 
+	@Test
+	public void testAddFile() throws Exception {
+		File testFile = File.createTempFile("test", "hbm.xml");
+		PrintWriter printWriter = new PrintWriter(testFile);
+		printWriter.write(TEST_HBM_XML_STRING);
+		printWriter.close();
+		MetadataSources metadataSources = MetadataHelper.getMetadataSources(configuration);
+		assertTrue(metadataSources.getXmlBindings().isEmpty());
+		assertSame(
+				configurationFacade,
+				configurationFacade.addFile(testFile));
+		assertFalse(metadataSources.getXmlBindings().isEmpty());
+		Binding<?> binding = metadataSources.getXmlBindings().iterator().next();
+		assertEquals(testFile.getAbsolutePath(), binding.getOrigin().getName());
+		assertTrue(testFile.delete());
+	}
+	
 	@Test 
 	public void testSetProperty() {
 		assertNull(configuration.getProperty("foo"));
@@ -101,47 +134,33 @@ public class ConfigurationFacadeTest {
 	}
 	
 	@Test
-	public void testAddFile() throws Exception {
-		File testFile = File.createTempFile("test", "hbm.xml");
-		PrintWriter printWriter = new PrintWriter(testFile);
-		printWriter.write(TEST_HBM_XML_STRING);
-		printWriter.close();
-		MetadataSources metadataSources = MetadataHelper.getMetadataSources(configuration);
-		assertTrue(metadataSources.getXmlBindings().isEmpty());
-		assertSame(
-				configurationFacade,
-				configurationFacade.addFile(testFile));
-		assertFalse(metadataSources.getXmlBindings().isEmpty());
-		Binding<?> binding = metadataSources.getXmlBindings().iterator().next();
-		assertEquals(testFile.getAbsolutePath(), binding.getOrigin().getName());
-		assertTrue(testFile.delete());
-	}
-	
-	@Test
-	public void testSetEntityResolver() {
+	public void testSetEntityResolver() throws Exception {
 		EntityResolver testResolver = new DefaultHandler();
 		ConfigurationFacadeImpl facade = (ConfigurationFacadeImpl)configurationFacade;
-		assertNull(facade.entityResolver);
+		Field entityResolverField = ConfigurationFacadeImpl.class.getDeclaredField("entityResolver");
+		entityResolverField.setAccessible(true);
+		assertNull(entityResolverField.get(facade));
 		configurationFacade.setEntityResolver(testResolver);
-		assertSame(testResolver, facade.entityResolver);
+		assertSame(testResolver, entityResolverField.get(facade));
 	}
 	
 	@Test
-	public void testGetEntityResolver() {
-		EntityResolver testResolver = new DefaultHandler();
-		ConfigurationFacadeImpl facade = (ConfigurationFacadeImpl)configurationFacade;
-		assertNotSame(testResolver, configurationFacade.getEntityResolver());
-		facade.entityResolver = testResolver;
-		assertSame(testResolver, configurationFacade.getEntityResolver());
-	}
-	
-	@Test
-	public void testSetNamingStrategy() {
+	public void testSetNamingStrategy() throws Exception {
 		INamingStrategy namingStrategy = FACADE_FACTORY.createNamingStrategy(new DefaultNamingStrategy());
 		ConfigurationFacadeImpl facade = (ConfigurationFacadeImpl)configurationFacade;
-		assertNotSame(namingStrategy, facade.namingStrategy);
+		Field namingStrategyField = ConfigurationFacadeImpl.class.getDeclaredField("namingStrategy");
+		namingStrategyField.setAccessible(true);
+		assertNotSame(namingStrategy, namingStrategyField.get(facade));
 		configurationFacade.setNamingStrategy(namingStrategy);
-		assertSame(namingStrategy, facade.namingStrategy);
+		assertSame(namingStrategy, namingStrategyField.get(facade));
+	}
+	
+	@Test
+	public void testGetProperties() {
+		Properties testProperties = new Properties();
+		assertNotSame(testProperties, configurationFacade.getProperties());
+		configuration.setProperties(testProperties);
+		assertSame(testProperties, configurationFacade.getProperties());
 	}
 	
 	@Test
@@ -154,9 +173,73 @@ public class ConfigurationFacadeTest {
 	}
 	
 	@Test
-	public void testConfigure() {
+	public void testConfigureDocument() throws Exception {
+		Document document = DocumentBuilderFactory
+				.newInstance()
+				.newDocumentBuilder()
+				.newDocument();
+		Element hibernateConfiguration = document.createElement("hibernate-configuration");
+		document.appendChild(hibernateConfiguration);
+		Element sessionFactory = document.createElement("session-factory");
+		sessionFactory.setAttribute("name", "bar");
+		hibernateConfiguration.appendChild(sessionFactory);
+		Element mapping = document.createElement("mapping");
+		mapping.setAttribute("resource", "Foo.hbm.xml");
+		sessionFactory.appendChild(mapping);
+		
+		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
+		File hbmXmlFile = new File(new File(url.toURI()), "Foo.hbm.xml");
+		hbmXmlFile.deleteOnExit();
+		FileWriter fileWriter = new FileWriter(hbmXmlFile);
+		fileWriter.write(TEST_HBM_XML_STRING);
+		fileWriter.close();
+
 		String fooClassName = 
-				"org.jboss.tools.hibernate.runtime.v_5_2.internal.test.Foo";
+				"org.jboss.tools.hibernate.runtime.v_5_2.internal.ConfigurationFacadeTest$Foo";
+		Metadata metadata = MetadataHelper.getMetadata(configuration);
+		assertNull(metadata.getEntityBinding(fooClassName));
+		configurationFacade.configure(document);
+		metadata = MetadataHelper.getMetadata(configuration);
+		assertNotNull(metadata.getEntityBinding(fooClassName));
+	}
+	
+	@Test
+	public void testConfigureFile() throws Exception {
+		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
+		File cfgXmlFile = new File(new File(url.toURI()), "foobarfile.cfg.xml");
+		cfgXmlFile.deleteOnExit();
+		FileWriter fileWriter = new FileWriter(cfgXmlFile);
+		fileWriter.write(TEST_CFG_XML_STRING);
+		fileWriter.close();
+		File hbmXmlFile = new File(new File(url.toURI()), "Foo.hbm.xml");
+		hbmXmlFile.deleteOnExit();
+		fileWriter = new FileWriter(hbmXmlFile);
+		fileWriter.write(TEST_HBM_XML_STRING);
+		fileWriter.close();
+		String fooClassName = 
+				"org.jboss.tools.hibernate.runtime.v_5_2.internal.ConfigurationFacadeTest$Foo";
+		Metadata metadata = MetadataHelper.getMetadata(configuration);
+		assertNull(metadata.getEntityBinding(fooClassName));
+		configurationFacade.configure(cfgXmlFile);
+		metadata = MetadataHelper.getMetadata(configuration);
+		assertNotNull(metadata.getEntityBinding(fooClassName));
+	}
+	
+	@Test
+	public void testConfigureDefault() throws Exception {
+		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
+		File cfgXmlFile = new File(new File(url.toURI()), "hibernate.cfg.xml");
+		cfgXmlFile.deleteOnExit();
+		FileWriter fileWriter = new FileWriter(cfgXmlFile);
+		fileWriter.write(TEST_CFG_XML_STRING);
+		fileWriter.close();
+		File hbmXmlFile = new File(new File(url.toURI()), "Foo.hbm.xml");
+		hbmXmlFile.deleteOnExit();
+		fileWriter = new FileWriter(hbmXmlFile);
+		fileWriter.write(TEST_HBM_XML_STRING);
+		fileWriter.close();
+		String fooClassName = 
+				"org.jboss.tools.hibernate.runtime.v_5_2.internal.ConfigurationFacadeTest$Foo";
 		Metadata metadata = MetadataHelper.getMetadata(configuration);
 		assertNull(metadata.getEntityBinding(fooClassName));
 		configurationFacade.configure();
@@ -165,10 +248,50 @@ public class ConfigurationFacadeTest {
 	}
 	
 	@Test
-	public void testBuildMappings() throws Exception {
-		configurationFacade.buildMappings();
+	public void testAddClass() throws Exception {
+		PersistentClass persistentClass = new RootClass(null);
+		persistentClass.setEntityName("Foo");
+		IPersistentClass persistentClassFacade = 
+				FACADE_FACTORY.createPersistentClass(persistentClass);	
+		Field addedClassesField = ConfigurationFacadeImpl.class.getDeclaredField("addedClasses");
+		addedClassesField.setAccessible(true);
+		Collection<?> addedClasses = (Collection<?>)addedClassesField.get(configurationFacade);
+		assertFalse(addedClasses.contains(persistentClassFacade));
+		configurationFacade.addClass(persistentClassFacade);
+		assertTrue(addedClasses.contains(persistentClassFacade));
 	}
 	
+	@Test
+	public void testGetMetadata() throws Exception {
+		Field metadataField = ConfigurationFacadeImpl.class.getDeclaredField("metadata");
+		metadataField.setAccessible(true);
+		NativeTestConfiguration nativeConfiguration = new NativeTestConfiguration();
+		ConfigurationFacadeImpl nativeFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, nativeConfiguration);
+		assertNull(metadataField.get(nativeFacade));
+		Metadata nativeMetadata = nativeFacade.getMetadata();
+		assertNotNull(nativeMetadata);
+		assertSame(nativeMetadata, NativeTestConfiguration.METADATA);
+		assertNotNull(metadataField.get(nativeFacade));
+		assertSame(metadataField.get(nativeFacade), NativeTestConfiguration.METADATA);
+		JdbcMetadataTestConfiguration jdbcConfiguration = new JdbcMetadataTestConfiguration();
+		ConfigurationFacadeImpl jdbcFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, jdbcConfiguration);
+		assertNull(metadataField.get(jdbcFacade));
+		Metadata jdbcMetadata = jdbcFacade.getMetadata();
+		assertNotNull(jdbcMetadata);
+		assertSame(jdbcMetadata, JdbcMetadataTestConfiguration.METADATA);
+		assertNotNull(metadataField.get(jdbcFacade));
+		assertSame(metadataField.get(jdbcFacade), JdbcMetadataTestConfiguration.METADATA);
+	}
+	
+	@Test
+	public void testBuildMappings() throws Exception {
+		Field metadataField = ConfigurationFacadeImpl.class.getDeclaredField("metadata");
+		metadataField.setAccessible(true);
+		assertNull(metadataField.get(configurationFacade));
+		configurationFacade.buildMappings();
+		assertNotNull(metadataField.get(configurationFacade));
+	}
+
 	@Test
 	public void testBuildSessionFactory() throws Throwable {
 		ISessionFactory sessionFactoryFacade = 
@@ -180,24 +303,29 @@ public class ConfigurationFacadeTest {
 	}
 	
 	@Test
-	public void testGetClassMappings() {
-		configurationFacade = FACADE_FACTORY.createConfiguration(configuration);
+	public void testGetClassMappings() throws Exception {
+		Field addedClassesField = ConfigurationFacadeImpl.class.getDeclaredField("addedClasses");
+		addedClassesField.setAccessible(true);
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
+		assertFalse(configurationFacade.getClassMappings().hasNext());		
+		PersistentClass persistentClass = new RootClass(null);
+		persistentClass.setEntityName("Foo");
+		IPersistentClass persistentClassFacade = 
+				FACADE_FACTORY.createPersistentClass(persistentClass);	
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
+		@SuppressWarnings("unchecked")
+		List<IPersistentClass> addedClasses = (List<IPersistentClass>)addedClassesField.get(configurationFacade);
+		addedClasses.add(persistentClassFacade);
 		Iterator<IPersistentClass> iterator = configurationFacade.getClassMappings();
-		assertFalse(iterator.hasNext());
-		configuration.configure();
-		configurationFacade = FACADE_FACTORY.createConfiguration(configuration);
-		iterator = configurationFacade.getClassMappings();
-		IPersistentClass persistentClassFacade = iterator.next();
-		assertEquals(
-				"org.jboss.tools.hibernate.runtime.v_5_2.internal.test.Foo",
-				persistentClassFacade.getClassName());
+		assertTrue(iterator.hasNext());
+		assertSame(iterator.next(), persistentClassFacade);		
 	}
 	
 	@Test
 	public void testSetPreferBasicCompositeIds() {
 		JDBCMetaDataConfiguration configuration = new JDBCMetaDataConfiguration();
-		configurationFacade = FACADE_FACTORY.createConfiguration(configuration);
-		// the default is false
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
+		// the default is true
 		assertTrue(configuration.preferBasicCompositeIds());
 		configurationFacade.setPreferBasicCompositeIds(false);
 		assertFalse(configuration.preferBasicCompositeIds());
@@ -206,7 +334,7 @@ public class ConfigurationFacadeTest {
 	@Test
 	public void testSetReverseEngineeringStrategy() {
 		JDBCMetaDataConfiguration configuration = new JDBCMetaDataConfiguration();
-		configurationFacade = FACADE_FACTORY.createConfiguration(configuration);
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
 		ReverseEngineeringStrategy reverseEngineeringStrategy = new DefaultReverseEngineeringStrategy();
 		IReverseEngineeringStrategy strategyFacade = 
 				FACADE_FACTORY.createReverseEngineeringStrategy(reverseEngineeringStrategy);
@@ -226,40 +354,53 @@ public class ConfigurationFacadeTest {
 		statement.execute("CREATE TABLE FOO(id int primary key, bar varchar(255))");
 		JDBCMetaDataConfiguration jdbcMdCfg = new JDBCMetaDataConfiguration();
 		jdbcMdCfg.setProperty("hibernate.connection.url", "jdbc:h2:mem:test");
-		configurationFacade = FACADE_FACTORY.createConfiguration(jdbcMdCfg);
-		Metadata metadata = jdbcMdCfg.getMetadata();
-		Iterator<?> iterator = metadata.getEntityBindings().iterator();
-		jdbcMdCfg = new JDBCMetaDataConfiguration();
-		jdbcMdCfg.setProperty("hibernate.connection.url", "jdbc:h2:mem:test");
-		configurationFacade = FACADE_FACTORY.createConfiguration(jdbcMdCfg);
-		assertFalse(iterator.hasNext());		
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, jdbcMdCfg);
 		configurationFacade.readFromJDBC();
-		metadata = jdbcMdCfg.getMetadata();
-		iterator = metadata.getEntityBindings().iterator();
-		PersistentClass persistentClass = (PersistentClass)iterator.next();
+		Metadata metadata = jdbcMdCfg.getMetadata();
+		Iterator<PersistentClass> iterator = metadata.getEntityBindings().iterator();
+		PersistentClass persistentClass = iterator.next();
 		assertEquals("Foo", persistentClass.getClassName());
 		statement.execute("DROP TABLE FOO");
+		statement.close();
 		connection.close();
 	}
 	
 	@Test
-	public void testGetClassMapping() {
-		configurationFacade = FACADE_FACTORY.createConfiguration(configuration);
-		assertNull(configurationFacade.getClassMapping(
-				"org.jboss.tools.hibernate.runtime.v_5_2.internal.test.Foo"));
-		configuration.configure();
-		configurationFacade = FACADE_FACTORY.createConfiguration(configuration);
-		assertNotNull(configurationFacade.getClassMapping(
-				"org.jboss.tools.hibernate.runtime.v_5_2.internal.test.Foo"));
+	public void testGetClassMapping() throws Exception {
+		PersistentClass persistentClass = new RootClass(null);
+		persistentClass.setEntityName("Foo");
+		IPersistentClass persistentClassFacade = 
+				FACADE_FACTORY.createPersistentClass(persistentClass);	
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
+		assertNull(configurationFacade.getClassMapping("Foo"));
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
+		Field addedClassesField = ConfigurationFacadeImpl.class.getDeclaredField("addedClasses");
+		addedClassesField.setAccessible(true);
+		@SuppressWarnings("unchecked")
+		List<IPersistentClass> addedClasses = (List<IPersistentClass>)addedClassesField.get(configurationFacade);
+		addedClasses.add(persistentClassFacade);
+		assertSame(configurationFacade.getClassMapping("Foo"), persistentClassFacade);
 	}
 	
 	@Test
-	public void testGetNamingStrategy() {
+	public void testGetNamingStrategy() throws Exception {
 		INamingStrategy strategy = FACADE_FACTORY.createNamingStrategy(new DefaultNamingStrategy());
+		Field namingStrategyField = ConfigurationFacadeImpl.class.getDeclaredField("namingStrategy");
+		namingStrategyField.setAccessible(true);
+		assertNull(configurationFacade.getNamingStrategy());
+		namingStrategyField.set(configurationFacade, strategy);
+		assertSame(strategy, configurationFacade.getNamingStrategy());
+	}
+	
+	@Test
+	public void testGetEntityResolver() throws Exception {
+		EntityResolver testResolver = new DefaultHandler();
 		ConfigurationFacadeImpl facade = (ConfigurationFacadeImpl)configurationFacade;
-		assertNull(facade.getNamingStrategy());
-		facade.namingStrategy = strategy;
-		assertSame(strategy, facade.getNamingStrategy());
+		Field entityResolverField = ConfigurationFacadeImpl.class.getDeclaredField("entityResolver");
+		entityResolverField.setAccessible(true);
+		assertNotSame(testResolver, configurationFacade.getEntityResolver());
+		entityResolverField.set(facade, testResolver);
+		assertSame(testResolver, configurationFacade.getEntityResolver());
 	}
 	
 	@Test
@@ -269,29 +410,49 @@ public class ConfigurationFacadeTest {
 		statement.execute("CREATE TABLE FOO(id int primary key, bar varchar(255))");
 		JDBCMetaDataConfiguration jdbcMdCfg = new JDBCMetaDataConfiguration();
 		jdbcMdCfg.setProperty("hibernate.connection.url", "jdbc:h2:mem:test");
-		configurationFacade = FACADE_FACTORY.createConfiguration(jdbcMdCfg);
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, jdbcMdCfg);
 		Iterator<ITable> iterator = configurationFacade.getTableMappings();
 		assertFalse(iterator.hasNext());
 		jdbcMdCfg.readFromJDBC();
-		configurationFacade = FACADE_FACTORY.createConfiguration(jdbcMdCfg);
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, jdbcMdCfg);
 		iterator = configurationFacade.getTableMappings();
-		Table table = (Table)((IFacade)iterator.next()).getTarget();
+		IFacade facade = (IFacade)iterator.next();
+		Table table = (Table)facade.getTarget();
 		assertEquals("FOO", table.getName());
 		statement.execute("DROP TABLE FOO");
 		connection.close();
 	}
 	
-	@Test
-	public void testAddClass() {
-		PersistentClass persistentClass = new RootClass(null);
-		persistentClass.setEntityName("Foo");
-		IPersistentClass persistentClassFacade = 
-				FACADE_FACTORY.createPersistentClass(persistentClass);	
-		assertNull(configurationFacade.getClassMapping("Foo"));
-		configurationFacade = 
-				FACADE_FACTORY.createConfiguration(configuration);
-		configurationFacade.addClass(persistentClassFacade);
-		assertEquals(persistentClassFacade, configurationFacade.getClassMapping("Foo"));
+	private static class NativeTestConfiguration extends Configuration {
+		static Metadata METADATA = createMetadata();
+		@SuppressWarnings("unused")
+		public Metadata getMetadata() {
+			return METADATA;
+		}
 	}
 	
+	private static class JdbcMetadataTestConfiguration extends JDBCMetaDataConfiguration {
+		static Metadata METADATA = createMetadata();
+		public Metadata getMetadata() {
+			return METADATA;
+		}
+	}
+	
+	private static Metadata createMetadata() {
+		Metadata result = null;
+		result = (Metadata) Proxy.newProxyInstance(
+				ConfigurationFacadeTest.class.getClassLoader(), 
+				new Class[] { Metadata.class },  
+				new InvocationHandler() {				
+					@Override
+					public Object invoke(
+							Object proxy, 
+							Method method, 
+							Object[] args) throws Throwable {
+						return null;
+					}
+				});
+		return result;
+	}
+		
 }
