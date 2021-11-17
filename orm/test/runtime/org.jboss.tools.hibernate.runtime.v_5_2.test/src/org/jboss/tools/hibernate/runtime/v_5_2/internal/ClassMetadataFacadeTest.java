@@ -24,6 +24,8 @@ import org.hibernate.boot.spi.ClassLoaderAccess;
 import org.hibernate.boot.spi.InFlightMetadataCollector;
 import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.boot.spi.MetadataImplementor;
+import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.OptimisticLockStyle;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
@@ -138,7 +140,9 @@ public class ClassMetadataFacadeTest {
 	}
 	
 	private ClassMetadata setupFooBarPersister() {
-		StandardServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().build();		
+		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
+		ssrb.applySetting(AvailableSettings.DIALECT, TestDialect.class.getName());
+		StandardServiceRegistry serviceRegistry = ssrb.build();		
 		MetadataBuildingOptionsImpl metadataBuildingOptions = 
 				new MetadataBuildingOptionsImpl(serviceRegistry);	
 		InFlightMetadataCollector inFlightMetadataCollector = 
@@ -275,5 +279,7 @@ public class ClassMetadataFacadeTest {
 	public class FooBar {
 		public int id = 1967;
 	}
+	
+	public static class TestDialect extends Dialect {}
 	
 }

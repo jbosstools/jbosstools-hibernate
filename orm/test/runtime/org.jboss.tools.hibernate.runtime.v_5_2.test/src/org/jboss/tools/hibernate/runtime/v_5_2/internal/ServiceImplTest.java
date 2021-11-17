@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Properties;
 
 import org.h2.Driver;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.Environment;
@@ -26,6 +27,7 @@ import org.hibernate.cfg.reveng.DelegatingReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.TableFilter;
+import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.mapping.Array;
@@ -83,6 +85,8 @@ public class ServiceImplTest {
 		public int getId() { return id; }
 	}
 	
+	public static class TestDialect extends Dialect {}
+	
 	private static final String TEST_HBM_STRING =
 			"<hibernate-mapping package='org.jboss.tools.hibernate.runtime.v_5_2.internal'>" +
 			"  <class name='ServiceImplTest$Foo'>" + 
@@ -132,6 +136,7 @@ public class ServiceImplTest {
 	@Test
 	public void testNewHibernateMappingExporter() throws Exception {
 		IConfiguration configuration = service.newDefaultConfiguration();
+		configuration.setProperty(AvailableSettings.DIALECT, TestDialect.class.getName());
 		File file = new File("");
 		IHibernateMappingExporter hibernateMappingExporter = 
 				service.newHibernateMappingExporter(configuration, file);
@@ -148,6 +153,7 @@ public class ServiceImplTest {
 	@Test
 	public void testNewSchemaExport() {
 		IConfiguration configuration = service.newDefaultConfiguration();
+		configuration.setProperty(AvailableSettings.DIALECT, TestDialect.class.getName());
 		ISchemaExport schemaExport = service.newSchemaExport(configuration);
 		assertNotNull(schemaExport);
 	}
@@ -155,6 +161,7 @@ public class ServiceImplTest {
 	@Test
 	public void testNewHQLCodeAssist() {
 		IConfiguration configuration = service.newDefaultConfiguration();
+		configuration.setProperty(AvailableSettings.DIALECT, TestDialect.class.getName());
 		IHQLCodeAssist hqlCodeAssist = service.newHQLCodeAssist(configuration);
 		assertNotNull(hqlCodeAssist);
 	}
@@ -194,6 +201,7 @@ public class ServiceImplTest {
 	@Test
 	public void testNewHQLQueryPlan() throws Exception {
 		IConfiguration configuration = service.newDefaultConfiguration();
+		configuration.setProperty(AvailableSettings.DIALECT, TestDialect.class.getName());
 		File testFile = File.createTempFile("test", "tmp");
 		testFile.deleteOnExit();
 		FileWriter fileWriter = new FileWriter(testFile);

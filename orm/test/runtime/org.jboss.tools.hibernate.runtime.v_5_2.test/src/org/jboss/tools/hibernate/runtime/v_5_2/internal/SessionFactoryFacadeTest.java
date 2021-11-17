@@ -16,7 +16,9 @@ import java.util.Set;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.spi.SessionFactoryDelegatingImpl;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.jboss.tools.hibernate.runtime.common.AbstractSessionFactoryFacade;
@@ -54,6 +56,8 @@ public class SessionFactoryFacadeTest {
 		public Set<String> bars = new HashSet<String>();
 	}
 	
+	public static class TestDialect extends Dialect {}
+	
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 
 	@TempDir
@@ -73,6 +77,7 @@ public class SessionFactoryFacadeTest {
 		fileWriter.write(TEST_HBM_XML_STRING);
 		fileWriter.close();
 		Configuration configuration = new Configuration();
+		configuration.setProperty(AvailableSettings.DIALECT, TestDialect.class.getName());
 		configuration.addFile(hbmXmlFile);
 		configuration.configure(cfgXmlFile);
 		sessionFactoryTarget = new TestSessionFactory(configuration.buildSessionFactory());

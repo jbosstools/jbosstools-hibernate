@@ -24,6 +24,7 @@ import org.hibernate.boot.internal.SessionFactoryBuilderImpl;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.spi.MetadataImplementor;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
@@ -104,6 +105,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class FacadeFactoryTest {
+	
+	public static class TestDialect extends Dialect {}
 
 	private FacadeFactoryImpl facadeFactory;
 
@@ -264,7 +267,12 @@ public class FacadeFactoryTest {
 	
 	@Test
 	public void testCreateEntityMetamodel() {
-		MetadataSources mds = new MetadataSources();
+		final StandardServiceRegistryBuilder standardServiceRegistryBuilder = 
+				new StandardServiceRegistryBuilder();
+		standardServiceRegistryBuilder.applySetting(AvailableSettings.DIALECT, TestDialect.class.getName());
+		final StandardServiceRegistry serviceRegistry = 
+				standardServiceRegistryBuilder.build();
+		final MetadataSources mds = new MetadataSources(serviceRegistry);
 		Metadata md = mds.buildMetadata();
 		SessionFactoryImplementor sfi = (SessionFactoryImplementor)md.buildSessionFactory();
 		RootClass rc = new RootClass(null);
@@ -302,6 +310,7 @@ public class FacadeFactoryTest {
 	@Test
 	public void testCreateHQLCodeAssist() {
 		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
+		ssrb.applySetting(AvailableSettings.DIALECT, TestDialect.class.getName());
 		HQLCodeAssist hqlCodeAssist = new HQLCodeAssist(new MetadataSources().buildMetadata(ssrb.build()));
 		IHQLCodeAssist facade = facadeFactory.createHQLCodeAssist(hqlCodeAssist);
 		assertSame(hqlCodeAssist, ((IFacade)facade).getTarget());		
@@ -320,6 +329,7 @@ public class FacadeFactoryTest {
 				new ArrayList<PersistentClass>();
 		final StandardServiceRegistryBuilder standardServiceRegistryBuilder = 
 				new StandardServiceRegistryBuilder();
+		standardServiceRegistryBuilder.applySetting(AvailableSettings.DIALECT, TestDialect.class.getName());
 		final StandardServiceRegistry serviceRegistry = 
 				standardServiceRegistryBuilder.build();
 		final MetadataSources metadataSources = new MetadataSources(serviceRegistry);
@@ -502,7 +512,5 @@ public class FacadeFactoryTest {
 			return null;
 		}	
 	}
-	
-	public static class TestDialect extends Dialect {};
 	
 }

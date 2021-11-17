@@ -12,7 +12,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.PojoMetaDataConfiguration;
+import org.hibernate.dialect.Dialect;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
@@ -36,6 +38,8 @@ import org.junit.jupiter.api.io.TempDir;
 public class HibernateMappingExporterFacadeTest {
 	
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
+	
+	public static class TestDialect extends Dialect {}
 
 	@TempDir
 	public File outputDir = new File("output");
@@ -49,6 +53,7 @@ public class HibernateMappingExporterFacadeTest {
 	@BeforeEach
 	public void beforeEach() throws Exception {
 		pmdcfg = new PojoMetaDataConfiguration();
+		pmdcfg.setProperty(AvailableSettings.DIALECT, TestDialect.class.getName());
 		configuration = FACADE_FACTORY.createConfiguration(pmdcfg);
 		hibernateMappingExporter = new HibernateMappingExporterExtension(
 				FACADE_FACTORY,

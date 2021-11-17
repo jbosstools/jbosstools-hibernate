@@ -31,11 +31,13 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.jaxb.spi.Binding;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
+import org.hibernate.dialect.Dialect;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
@@ -76,6 +78,8 @@ public class ConfigurationFacadeTest {
 		public String id;
 	}
 	
+	public static class TestDialect extends Dialect {}
+	
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 
 	private IConfiguration configurationFacade = null;
@@ -89,6 +93,7 @@ public class ConfigurationFacadeTest {
 	@BeforeEach
 	public void beforeEach() {
 		configuration = new Configuration();
+		configuration.setProperty(AvailableSettings.DIALECT, TestDialect.class.getName());
 		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
 	}	
 	

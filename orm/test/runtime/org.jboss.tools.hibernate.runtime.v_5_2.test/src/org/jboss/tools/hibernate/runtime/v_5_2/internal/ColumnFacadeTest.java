@@ -7,7 +7,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.boot.spi.MetadataImplementor;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.dialect.Dialect;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
@@ -24,6 +26,8 @@ import org.junit.jupiter.api.Test;
 public class ColumnFacadeTest {
 
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
+	
+	public static class TestDialect extends Dialect {}
 	
 	private IColumn columnFacade = null; 
 	private Column column = null;
@@ -54,6 +58,7 @@ public class ColumnFacadeTest {
 		column.setSqlType("foobar");
 		assertEquals("foobar", columnFacade.getSqlType());
 		Configuration configuration = new Configuration();
+		configuration.setProperty(AvailableSettings.DIALECT, TestDialect.class.getName());
 		SimpleValue value = new SimpleValue((MetadataImplementor)MetadataHelper.getMetadata(configuration), new Table());
 		value.setTypeName("int");
 		column.setValue(value);
@@ -111,7 +116,9 @@ public class ColumnFacadeTest {
 		Value targetValue = null;
 		column.setValue(targetValue);
 		assertNull(columnFacade.getValue());
-		targetValue = new SimpleValue((MetadataImplementor)MetadataHelper.getMetadata(new Configuration()), new Table());
+		Configuration configuration = new Configuration();
+		configuration.setProperty(AvailableSettings.DIALECT, TestDialect.class.getName());
+		targetValue = new SimpleValue((MetadataImplementor)MetadataHelper.getMetadata(configuration), new Table());
 		column.setValue(targetValue);
 		IValue value = columnFacade.getValue();
 		assertNotNull(value);

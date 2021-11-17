@@ -14,7 +14,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.hibernate.boot.Metadata;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.dialect.Dialect;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.Version;
@@ -38,6 +40,8 @@ public class HibernateMappingExporterExtensionTest {
 
 	private static IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 	
+	public static class TestDialect extends Dialect {}
+	
 	private HibernateMappingExporterExtension hibernateMappingExporterExtension = null;
 	private IConfiguration configurationFacade = null;
 	
@@ -46,7 +50,9 @@ public class HibernateMappingExporterExtensionTest {
 	
 	@BeforeEach
 	public void beforeEach() throws Exception {
-		configurationFacade = FACADE_FACTORY.createConfiguration(new Configuration());
+		Configuration configurationTarget = new Configuration();
+		configurationTarget.setProperty(AvailableSettings.DIALECT, TestDialect.class.getName());
+		configurationFacade = FACADE_FACTORY.createConfiguration(configurationTarget);
 		hibernateMappingExporterExtension = 
 				new HibernateMappingExporterExtension(
 						FACADE_FACTORY, 

@@ -11,6 +11,8 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.spi.MetadataBuildingOptions;
 import org.hibernate.boot.spi.MetadataImplementor;
+import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.dialect.Dialect;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.tuple.component.ComponentMetamodel;
@@ -32,6 +34,8 @@ import org.junit.jupiter.api.Test;
 public class TypeFacadeTest {
 
 	private static IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
+	
+	public static class TestDialect extends Dialect {}
 	
 	@Test
 	public void testToString() {
@@ -114,6 +118,7 @@ public class TypeFacadeTest {
 		typeFacade = FACADE_FACTORY.createType(classType);
 		assertFalse(typeFacade.isComponentType());
 		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
+		ssrb.applySetting(AvailableSettings.DIALECT, TestDialect.class.getName());
 		StandardServiceRegistry ssr = ssrb.build();
 		MetadataBuildingOptions mdbo = 
 				new MetadataBuilderImpl.MetadataBuildingOptionsImpl(ssr);

@@ -13,7 +13,9 @@ import java.util.Properties;
 
 import org.hibernate.FetchMode;
 import org.hibernate.boot.spi.MetadataImplementor;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.dialect.Dialect;
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
@@ -50,6 +52,8 @@ import org.junit.jupiter.api.Test;
 public class ValueFacadeTest {
 	
 	private static IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
+	
+	public static class TestDialect extends Dialect {}
 	
 	private Value valueTarget = null;
 	private IValue valueFacade = null;
@@ -172,9 +176,11 @@ public class ValueFacadeTest {
 	
 	@Test
 	public void testGetType() {
+		Configuration configuration = new Configuration();
+		configuration.setProperty(AvailableSettings.DIALECT, TestDialect.class.getName());
 		SimpleValue valueTarget = new SimpleValue(
 				(MetadataImplementor) MetadataHelper.getMetadata(
-						new Configuration()));
+						configuration));
 		valueTarget.setTypeName("java.lang.Integer");
 		valueFacade = FACADE_FACTORY.createValue(valueTarget);
 		IType typeFacade = valueFacade.getType();

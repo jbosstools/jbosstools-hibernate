@@ -15,7 +15,9 @@ import java.util.EnumSet;
 import java.util.List;
 
 import org.hibernate.boot.Metadata;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.dialect.Dialect;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.schema.TargetType;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacade;
@@ -26,6 +28,8 @@ import org.junit.jupiter.api.Test;
 public class SchemaExportFacadeTest {
 
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
+	
+	public static class TestDialect extends Dialect {}
 
 	private SchemaExportFacadeImpl schemaExportFacade = null;
 	private SchemaExport schemaExportTarget = null;
@@ -49,6 +53,7 @@ public class SchemaExportFacadeTest {
 		Field metadataField = SchemaExportFacadeImpl.class.getDeclaredField("metadata");
 		metadataField.setAccessible(true);
 		Configuration configurationTarget = new Configuration();
+		configurationTarget.setProperty(AvailableSettings.DIALECT, TestDialect.class.getName());
 		ConfigurationFacadeImpl configuration = new ConfigurationFacadeImpl(FACADE_FACTORY, configurationTarget);
 		Metadata metadata = configuration.getMetadata();
 		assertNull(metadataField.get(schemaExportFacade));
