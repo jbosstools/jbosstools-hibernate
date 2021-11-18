@@ -19,7 +19,6 @@
 		<hibernate-jpa-2.1-api.version>1.0.0.Final</hibernate-jpa-2.1-api.version>
 		<hibernate-tools.version>5.2.12.Final</hibernate-tools.version>
 		<javassist.version>3.20.0-GA</javassist.version>
-	    <jaxb.version>2.3.0</jaxb.version>
 	</properties>
 
 	<build>
@@ -73,12 +72,7 @@
 							<artifactId>javassist</artifactId>
 							<version>${javassist.version}</version>
 						</artifactItem>
- 						<artifactItem>
-							<groupId>com.sun.xml.bind</groupId>
-							<artifactId>jaxb-impl</artifactId>
-							<version>${jaxb.version}</version>
-						</artifactItem> 
-					</artifactItems>
+ 					</artifactItems>
 					<skip>false</skip>
 					<outputDirectory>${basedir}/lib</outputDirectory>
 				</configuration>
