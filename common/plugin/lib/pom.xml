@@ -30,6 +30,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<module>org.jboss.tools.hibernate.libs.jakarta-transaction-api.v_2_0</module>
 		<module>org.jboss.tools.hibernate.libs.jakarta-xml-bind-api.v_3_0</module>
 		<module>org.jboss.tools.hibernate.libs.jandex.v_2_4</module>
+		<module>org.jboss.tools.hibernate.libs.javassist.v_3_28</module>
 		<module>org.jboss.tools.hibernate.libs.jaxb-api.v_2_3_0</module>
 		<module>org.jboss.tools.hibernate.libs.jaxb-core.v_2_3_0</module>
 		<module>org.jboss.tools.hibernate.libs.jaxb.v_2_3</module>
