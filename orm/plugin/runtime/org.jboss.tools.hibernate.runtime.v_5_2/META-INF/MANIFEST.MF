@@ -5,14 +5,14 @@ Bundle-SymbolicName: org.jboss.tools.hibernate.runtime.v_5_2;singleton:=true
 Bundle-Version: 5.4.15.qualifier
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-11
-Bundle-ClassPath: lib/classmate-1.3.1.jar,
- lib/hibernate-core-5.2.18.Final.jar,
+Bundle-ClassPath: lib/hibernate-core-5.2.18.Final.jar,
  lib/hibernate-tools-5.2.12.Final.jar,
  .
 Require-Bundle: org.apache.commons.collections,
  org.apache.commons.logging,
  org.jboss.tools.hibernate.libs.activation.v_1_2_0,
  org.jboss.tools.hibernate.libs.antlr.v_2_7_7,
+ org.jboss.tools.hibernate.libs.classmate.v_1_5,
  org.jboss.tools.hibernate.libs.dom4j.v_1_6_1,
  org.jboss.tools.hibernate.libs.freemarker.v_2_3_23,
  org.jboss.tools.hibernate.libs.hibernate-commons-annotations.v_5_1,
