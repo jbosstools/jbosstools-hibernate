@@ -16,7 +16,6 @@
 		<geronimo-jta_1.1_spec.version>1.1.1</geronimo-jta_1.1_spec.version>
 		<hibernate.version>5.2.18.Final</hibernate.version>
 		<hibernate-commons-annotations.version>5.0.1.Final</hibernate-commons-annotations.version>
-		<hibernate-jpa-2.1-api.version>1.0.0.Final</hibernate-jpa-2.1-api.version>
 		<hibernate-tools.version>5.2.12.Final</hibernate-tools.version>
 	</properties>
 
@@ -60,11 +59,6 @@
 							<groupId>org.hibernate.common</groupId>
 							<artifactId>hibernate-commons-annotations</artifactId>
 							<version>${hibernate-commons-annotations.version}</version>
-						</artifactItem>
-						<artifactItem>
-							<groupId>org.hibernate.javax.persistence</groupId>
-							<artifactId>hibernate-jpa-2.1-api</artifactId>
-							<version>${hibernate-jpa-2.1-api.version}</version>
 						</artifactItem>
  					</artifactItems>
 					<skip>false</skip>
