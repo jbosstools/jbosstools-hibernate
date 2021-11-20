@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.jboss.tools.hibernate.libs.javassist.v_3_28
 Bundle-Version: 5.4.15.qualifier
 Bundle-Vendor: Red Hat
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Bundle-ClassPath: lib/
+Bundle-ClassPath: lib/javassist-3.28.0-GA.jar
 Export-Package: javassist,
  javassist.bytecode,
  javassist.bytecode.analysis,
