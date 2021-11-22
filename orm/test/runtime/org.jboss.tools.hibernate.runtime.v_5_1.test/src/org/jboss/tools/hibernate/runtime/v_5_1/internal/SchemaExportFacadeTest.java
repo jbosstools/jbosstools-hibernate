@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+import org.h2.Driver;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
@@ -14,6 +15,7 @@ import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -41,6 +43,11 @@ public class SchemaExportFacadeTest {
 	
 	private File fooFile;
 	private Configuration configuration;
+	
+	@BeforeClass
+	public static void beforeClass() throws Exception {
+		DriverManager.registerDriver(new Driver());		
+	}
 	
 	@Before
 	public void before() throws Exception {

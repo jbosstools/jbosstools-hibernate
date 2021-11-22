@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.Iterator;
 import java.util.Properties;
 
+import org.h2.Driver;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
@@ -31,6 +32,7 @@ import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.helpers.DefaultHandler;
@@ -56,6 +58,11 @@ public class ConfigurationFacadeTest {
 	private IConfiguration configurationFacade = null;
 	private Configuration configuration = null;
 
+	@BeforeClass
+	public static void beforeClass() throws Exception {
+		DriverManager.registerDriver(new Driver());		
+	}
+	
 	@Before
 	public void setUp() {
 		configuration = new Configuration();

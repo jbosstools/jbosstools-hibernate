@@ -10,6 +10,7 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.Properties;
 
+import org.h2.Driver;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.Environment;
@@ -63,6 +64,7 @@ import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class ServiceImplTest {
@@ -81,6 +83,11 @@ public class ServiceImplTest {
 			"</hibernate-mapping>";
 
 	private ServiceImpl service = new ServiceImpl();
+	
+	@BeforeClass
+	public static void beforeClass() throws Exception {
+		DriverManager.registerDriver(new Driver());		
+	}
 	
 	@Test
 	public void testServiceCreation() {
