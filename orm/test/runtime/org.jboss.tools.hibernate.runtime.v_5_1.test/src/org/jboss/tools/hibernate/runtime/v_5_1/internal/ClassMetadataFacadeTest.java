@@ -1,14 +1,32 @@
 package org.jboss.tools.hibernate.runtime.v_5_1.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 
-import org.hibernate.HibernateException;
 import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.internal.ClassLoaderAccessImpl;
+import org.hibernate.boot.internal.InFlightMetadataCollectorImpl;
+import org.hibernate.boot.internal.MetadataBuilderImpl.MetadataBuildingOptionsImpl;
+import org.hibernate.boot.internal.MetadataBuildingContextRootImpl;
+import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.boot.registry.classloading.spi.ClassLoaderService;
+import org.hibernate.boot.spi.ClassLoaderAccess;
+import org.hibernate.boot.spi.InFlightMetadataCollector;
+import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.boot.spi.MetadataImplementor;
+import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.dialect.Dialect;
+import org.hibernate.engine.OptimisticLockStyle;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.mapping.Column;
@@ -19,158 +37,141 @@ import org.hibernate.mapping.Table;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.persister.entity.SingleTableEntityPersister;
 import org.hibernate.persister.spi.PersisterCreationContext;
-import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tuple.entity.EntityMetamodel;
-import org.hibernate.type.ShortType;
+import org.hibernate.type.StringType;
 import org.hibernate.type.Type;
+import org.hibernate.type.TypeResolver;
 import org.jboss.tools.hibernate.runtime.common.AbstractClassMetadataFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
-import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
+import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.IType;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class ClassMetadataFacadeTest {
 
-	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
+	private static final FacadeFactoryImpl FACADE_FACTORY = new FacadeFactoryImpl();
 	
-	private String methodName = null;
-	private Object[] arguments = null;
-
-	private IClassMetadata classMetadata = null; 
-	private boolean hasIdentifierProperty = false;
+	private ClassMetadata classMetadataTarget;
+	private IClassMetadata classMetadataFacade;
 	
-	@Before
-	public void setUp() {
-		ClassMetadata target = (ClassMetadata)Proxy.newProxyInstance(
-				FACADE_FACTORY.getClassLoader(), 
-				new Class[] { ClassMetadata.class }, 
-				new TestInvocationHandler());
-		classMetadata = new AbstractClassMetadataFacade(FACADE_FACTORY, target) {};
-	}
-	
-	@Test
-	public void testGetMappedClass() {
-		Assert.assertNull(classMetadata.getMappedClass());
-		Assert.assertEquals("getMappedClass", methodName);
-		Assert.assertNull(arguments);
-	}
-	
-	@Test
-	public void testGetPropertyValue() {
-		Object object = new Object();
-		String name = "foobar";
-		Assert.assertNull(classMetadata.getPropertyValue(object, name));
-		Assert.assertEquals("getPropertyValue", methodName);
-		Assert.assertArrayEquals(new Object[] { object, name }, arguments);
-	}
-	
-	@Test
-	public void testGetIdentifierPropertyName() {
-		Assert.assertNull(classMetadata.getIdentifierPropertyName());
-		Assert.assertEquals("getIdentifierPropertyName", methodName);
-		Assert.assertNull(arguments);
+	@BeforeEach
+	public void beforeEach() throws Exception {
+		classMetadataTarget = setupFooBarPersister();
+		classMetadataFacade = new AbstractClassMetadataFacade(FACADE_FACTORY, classMetadataTarget) {};
 	}
 	
 	@Test
 	public void testGetEntityName() {
-		Assert.assertNull(classMetadata.getEntityName());
-		Assert.assertEquals("getEntityName", methodName);
-		Assert.assertNull(arguments);
+		assertEquals("foobar", classMetadataFacade.getEntityName());
+	}
+	
+	@Test
+	public void testGetIdentifierPropertyName() {
+		assertEquals("foo", classMetadataFacade.getIdentifierPropertyName());
 	}
 	
 	@Test
 	public void testGetPropertyNames() {
-		Assert.assertNull(classMetadata.getPropertyNames());
-		Assert.assertEquals("getPropertyNames", methodName);
-		Assert.assertNull(arguments);
+		assertSame(PROPERTY_NAMES, classMetadataFacade.getPropertyNames());
 	}
 	
 	@Test
 	public void testGetPropertyTypes() {
-		IType[] propertyTypes = classMetadata.getPropertyTypes();
-		Assert.assertEquals(1, propertyTypes.length);
-		Assert.assertEquals("getPropertyTypes", methodName);
-		Assert.assertNull(arguments);
-		methodName = null;
-		Assert.assertSame(propertyTypes, classMetadata.getPropertyTypes());
-		Assert.assertNull(methodName);
-		Assert.assertNull(arguments);
+		IType[] typeFacades = classMetadataFacade.getPropertyTypes();
+		assertSame(TYPE_INSTANCE, ((IFacade)typeFacades[0]).getTarget());
+ 	}
+	
+	@Test
+	public void testGetMappedClass() {
+		assertSame(FooBar.class, classMetadataFacade.getMappedClass());
 	}
 	
 	@Test
 	public void testGetIdentifierType() {
-		IType identifierType = classMetadata.getIdentifierType();
-		Assert.assertNotNull(identifierType);
-		Assert.assertEquals("getIdentifierType", methodName);
-		Assert.assertNull(arguments);
-		methodName = null;
-		Assert.assertSame(identifierType, classMetadata.getIdentifierType());
-		Assert.assertNull(methodName);
-		Assert.assertNull(arguments);
+		assertSame(TYPE_INSTANCE, ((IFacade)classMetadataFacade.getIdentifierType()).getTarget());
+	}
+	
+	@Test
+	public void testGetPropertyValue() {
+		assertSame(PROPERTY_VALUE, classMetadataFacade.getPropertyValue(null, null));
+	}
+	
+	@Test
+	public void testHasIdentifierProperty() {
+		assertFalse(classMetadataFacade.hasIdentifierProperty());
+		((TestEntityPersister)classMetadataTarget).hasIdentifierProperty = true;
+		assertTrue(classMetadataFacade.hasIdentifierProperty());
+	}
+	
+	@Test 
+	public void testGetIdentifier() {
+		assertNull(((TestEntityPersister)classMetadataTarget).session);
+		final SessionImplementor sessionTarget = createSession();
+		ISession sessionFacade = FACADE_FACTORY.createSession(sessionTarget);
+		@SuppressWarnings("serial")
+		Serializable theObject = new Serializable() {};
+		Object anotherObject = classMetadataFacade.getIdentifier(theObject, sessionFacade);
+		assertSame(theObject, anotherObject);
+		assertSame(sessionTarget, ((TestEntityPersister)classMetadataTarget).session);
 	}
 	
 	@Test
 	public void testIsInstanceOfAbstractEntityPersister() {
-		Assert.assertFalse(classMetadata.isInstanceOfAbstractEntityPersister());
-		classMetadata = new AbstractClassMetadataFacade(FACADE_FACTORY, createSampleEntityPersister()) {};
-		Assert.assertTrue(classMetadata.isInstanceOfAbstractEntityPersister());
-	}
-	
-	@Test 
-	public void testGetEntityMetaModel() {
-		Assert.assertNull(classMetadata.getEntityMetamodel());
-		Assert.assertNull(methodName);
-		TestEntityPersister entityPersister = createSampleEntityPersister();
-		classMetadata = new AbstractClassMetadataFacade(FACADE_FACTORY, entityPersister) {};
-		methodName = null;
-		Assert.assertNotNull(classMetadata.getEntityMetamodel());
-		Assert.assertEquals("getEntityMetamodel", methodName);
-	}
-	
-	@Test
-	public void testGetIdentifier() {
-		ClassLoader cl = FACADE_FACTORY.getClassLoader();
-		final SessionImplementor sessionTarget = (SessionImplementor)Proxy.newProxyInstance(
-				cl, 
-				new Class[] { SessionImplementor.class }, 
-				new TestInvocationHandler()); 
-		ISession session = (ISession)Proxy.newProxyInstance(
-				cl, 
-				new Class[] { ISession.class,  IFacade.class }, 
+		assertTrue(classMetadataFacade.isInstanceOfAbstractEntityPersister());
+		classMetadataTarget = (ClassMetadata)Proxy.newProxyInstance(
+				getClass().getClassLoader(), 
+				new Class[] { ClassMetadata.class }, 
 				new InvocationHandler() {
 					@Override
 					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-						return sessionTarget;
-					}					
-				});
-		Object object = Integer.MAX_VALUE;
-		Assert.assertSame(object, classMetadata.getIdentifier(object , session));
-		Assert.assertEquals("getIdentifier", methodName);
-		Assert.assertArrayEquals(new Object[] { object, sessionTarget },  arguments);
+						return null;
+					}
+				});	
+		classMetadataFacade = new AbstractClassMetadataFacade(FACADE_FACTORY, classMetadataTarget) {};
+		assertFalse(classMetadataFacade.isInstanceOfAbstractEntityPersister());
 	}
 	
-	public void testHasIdentifierProperty() {
-		hasIdentifierProperty = true;
-		Assert.assertTrue(classMetadata.hasIdentifierProperty());
-		hasIdentifierProperty = false;
-		Assert.assertFalse(hasIdentifierProperty);
-		Assert.assertEquals("hasIdentifierProperty", methodName);
-		Assert.assertNull(arguments);
+	@Test
+	public void testGetEntityMetamodel() {
+		IEntityMetamodel entityMetamodel = classMetadataFacade.getEntityMetamodel();
+		EntityMetamodel entityMetamodelTarget = (EntityMetamodel)((IFacade)entityMetamodel).getTarget();
+		assertEquals("foobar", entityMetamodelTarget.getName());
 	}
 	
-	private TestEntityPersister createSampleEntityPersister() {
-		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
-		builder.applySetting("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
-		ServiceRegistry serviceRegistry = builder.build();		
-		MetadataSources metadataSources = new MetadataSources(serviceRegistry);
-		MetadataImplementor metadata = (MetadataImplementor)metadataSources.buildMetadata();
-		SessionFactoryImplementor sfi = (SessionFactoryImplementor)metadata.buildSessionFactory();
-		RootClass rc = new RootClass(null);
+	private ClassMetadata setupFooBarPersister() {
+		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
+		ssrb.applySetting(AvailableSettings.DIALECT, TestDialect.class.getName());
+		StandardServiceRegistry serviceRegistry = ssrb.build();		
+		MetadataBuildingOptionsImpl metadataBuildingOptions = 
+				new MetadataBuildingOptionsImpl(serviceRegistry);	
+		InFlightMetadataCollector inFlightMetadataCollector = 
+				new InFlightMetadataCollectorImpl(
+						metadataBuildingOptions,
+						new TypeResolver());
+		ClassLoaderService classLoaderService = metadataBuildingOptions.getServiceRegistry().getService( ClassLoaderService.class );
+		ClassLoaderAccess classLoaderAccess = new ClassLoaderAccessImpl(
+				metadataBuildingOptions.getTempClassLoader(),
+				classLoaderService
+		);
+		MetadataBuildingContext metadataBuildingContext = 
+				new MetadataBuildingContextRootImpl(
+						metadataBuildingOptions, 
+						classLoaderAccess,
+						inFlightMetadataCollector);
+		MetadataImplementor metadataImplementor =
+				(MetadataImplementor)new MetadataSources(serviceRegistry).buildMetadata();
+		return new TestEntityPersister(
+				createPersistentClass(metadataBuildingContext, metadataImplementor),
+				new TestCreationContext(metadataImplementor));
+	}
+
+	private PersistentClass createPersistentClass(
+			MetadataBuildingContext metadataBuildingContext,
+			MetadataImplementor metadataImplementor) {
+		RootClass rc = new RootClass(metadataBuildingContext);
 		Table t = new Table("foobar");
 		rc.setTable(t);
 		Column c = new Column("foo");
@@ -178,65 +179,109 @@ public class ClassMetadataFacadeTest {
 		ArrayList<Column> keyList = new ArrayList<>();
 		keyList.add(c);
 		t.createUniqueKey(keyList);
-		SimpleValue sv = new SimpleValue(metadata);
+		SimpleValue sv = new SimpleValue(metadataImplementor, t);
 		sv.setNullValue("null");
 		sv.setTypeName(Integer.class.getName());
 		sv.addColumn(c);
 		rc.setEntityName("foobar");
 		rc.setIdentifier(sv);
-		return new TestEntityPersister(rc, sfi, metadata);
+		rc.setClassName(FooBar.class.getName());
+		rc.setOptimisticLockStyle(OptimisticLockStyle.NONE);
+		return rc;
 	}
 	
-	private class TestPersisterCreationContext implements PersisterCreationContext {
-		final private SessionFactoryImplementor sfi;
-		final private MetadataImplementor md;
-		private TestPersisterCreationContext(
-				SessionFactoryImplementor sfi,
-				MetadataImplementor md) {
-			this.sfi = sfi;
-			this.md = md;
+	private class TestCreationContext implements PersisterCreationContext {
+		
+		private final MetadataImplementor metadataImplementor;
+		private final SessionFactoryImplementor sessionFactoryImplementor;
+		
+		TestCreationContext(MetadataImplementor metadataImplementor) {
+			this.metadataImplementor = metadataImplementor;
+			this.sessionFactoryImplementor = 
+					(SessionFactoryImplementor)metadataImplementor.buildSessionFactory();
 		}
+
 		@Override
 		public SessionFactoryImplementor getSessionFactory() {
-			return sfi;
+			return sessionFactoryImplementor;
 		}
+
 		@Override
 		public MetadataImplementor getMetadata() {
-			return md;
-		}		
-	}
-	
-	private class TestEntityPersister extends SingleTableEntityPersister {
-		public TestEntityPersister(
-				PersistentClass pc, 
-				SessionFactoryImplementor sfi,
-				MetadataImplementor md) throws HibernateException {
-			super(pc, null, null, new TestPersisterCreationContext(sfi, md));
-		}
-		@Override public EntityMetamodel getEntityMetamodel() {
-			methodName = "getEntityMetamodel";
-			return super.getEntityMetamodel();
-		}
-	}
-	
-	private class TestInvocationHandler implements InvocationHandler {
-		@Override
-		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-			methodName = method.getName();
-			arguments = args;
-			if ("getPropertyTypes".equals(methodName)) {
-				return new Type[] { new ShortType() };
-			} else if ("getIdentifierType".equals(methodName)) {
-				return new ShortType();
-			} else if ("getIdentifier".equals(methodName)) {
-				return args[0];
-			} else if ("hasIdentifierProperty".equals(methodName)) {
-				return hasIdentifierProperty;
-			} else {
-				return null;
-			}
+			return metadataImplementor;
 		}
 		
 	}
-
+		
+	private static final Object PROPERTY_VALUE = new Object();
+	private static final String[] PROPERTY_NAMES = new String[] {};
+	private static final Type TYPE_INSTANCE = new StringType();
+	
+	private static class TestEntityPersister extends SingleTableEntityPersister {
+		
+		private boolean hasIdentifierProperty = false;
+		private SessionImplementor session = null;
+		
+		public TestEntityPersister(
+				PersistentClass persistentClass, 
+				PersisterCreationContext creationContext) {
+			super(persistentClass, null, null, creationContext);
+		}
+		
+		@Override
+		public Object getPropertyValue(Object object, String propertyName) {
+			return PROPERTY_VALUE;
+		}
+		
+		@Override
+		public String getIdentifierPropertyName() {
+			return "foo";
+		}
+		
+		@Override
+		public String[] getPropertyNames() {
+			return PROPERTY_NAMES;
+		}
+		
+		@Override
+		public Type[] getPropertyTypes() {
+			return new Type[] { TYPE_INSTANCE };
+		}
+		
+		@Override
+		public Type getIdentifierType() {
+			return TYPE_INSTANCE;
+ 		}
+		
+		@Override
+		public boolean hasIdentifierProperty() {
+			return hasIdentifierProperty;
+		}
+		
+		@Override
+		public Serializable getIdentifier(Object object, SessionImplementor s) {
+			session = s;
+			return (Serializable)object;
+		}
+		
+	}
+	
+	public static SessionImplementor createSession() {
+		return (SessionImplementor)Proxy.newProxyInstance(
+				ClassMetadataFacadeTest.class.getClassLoader(), 
+				new Class[] { SessionImplementor.class },
+				new InvocationHandler() {
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+						return null;
+					}
+		});
+	}
+	
+	public class FooBar {
+		public int id = 1967;
+	}
+	
+	public static class TestDialect extends Dialect {}
+	
 }
