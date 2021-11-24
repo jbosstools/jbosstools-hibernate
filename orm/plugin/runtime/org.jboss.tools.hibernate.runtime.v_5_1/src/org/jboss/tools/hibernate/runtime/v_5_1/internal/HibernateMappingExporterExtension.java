@@ -12,7 +12,6 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.hbm2x.AbstractExporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
-import org.hibernate.tool.util.MetadataHelper;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
@@ -53,7 +52,7 @@ extends HibernateMappingExporter {
 		try {
 			if (cfg instanceof ConfigurationFacadeImpl) {
 				ConfigurationFacadeImpl configuration = (ConfigurationFacadeImpl)cfg;
-				Metadata metadata = MetadataHelper.getMetadata((Configuration)configuration.getTarget());
+				Metadata metadata = configuration.getMetadata();
 				if (metadata instanceof MetadataImpl ) {
 					MetadataImpl metadataImpl = (MetadataImpl)metadata;
 					HashMap<String, PersistentClass> map = new HashMap<String, PersistentClass>();
