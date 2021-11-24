@@ -1,15 +1,22 @@
 package org.jboss.tools.hibernate.runtime.v_5_1.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.File;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.hibernate.boot.Metadata;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.dialect.Dialect;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.Version;
@@ -22,126 +29,151 @@ import org.hibernate.tool.hbm2x.pojo.EntityPOJOClass;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 public class HibernateMappingExporterExtensionTest {
-	
+
 	private static IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 	
-	private HibernateMappingExporterExtension hibernateMappingExporterExtension;
-
-	private IExportPOJODelegate exportPojoDelegate;
-	private POJOClass pojoClass;
+	public static class TestDialect extends Dialect {}
 	
-	private String methodName = null;
-	private Object[] arguments = null;
+	private HibernateMappingExporterExtension hibernateMappingExporterExtension = null;
+	private IConfiguration configurationFacade = null;
 	
-	@Before
-	public void setUp() throws Exception {
-		hibernateMappingExporterExtension = new HibernateMappingExporterExtension(
-				FACADE_FACTORY, 
-				FACADE_FACTORY.createConfiguration(new Configuration()), 
-				null);
-		Method setTemplateHelperMethod = AbstractExporter.class.getDeclaredMethod(
-				"setTemplateHelper", 
-				new Class[] { TemplateHelper.class });
-		setTemplateHelperMethod.setAccessible(true);
-		TemplateHelper templateHelper = new TemplateHelper();
-		templateHelper.init(null, new String[0]);
-		setTemplateHelperMethod.invoke(hibernateMappingExporterExtension, new Object[] { templateHelper });
-		RootClass persistentClass = new RootClass(null);
-		Table rootTable = new Table();
-		rootTable.setName("table");
-		persistentClass.setTable(rootTable);
-		persistentClass.setEntityName("Bar");
-		persistentClass.setClassName("foo.Bar");
-		pojoClass = new EntityPOJOClass(persistentClass, new Cfg2JavaTool());
-		exportPojoDelegate = (IExportPOJODelegate)Proxy.newProxyInstance(
-				HibernateMappingExporterExtension.class.getClassLoader(), 
-				new Class[] { IExportPOJODelegate.class }, 
-				new TestInvocationHandler());
+	@TempDir
+	public File tempDir = new File("temp");
+	
+	@BeforeEach
+	public void beforeEach() throws Exception {
+		Configuration configurationTarget = new Configuration();
+		configurationTarget.setProperty(AvailableSettings.DIALECT, TestDialect.class.getName());
+		configurationFacade = FACADE_FACTORY.createConfiguration(configurationTarget);
+		hibernateMappingExporterExtension = 
+				new HibernateMappingExporterExtension(
+						FACADE_FACTORY, 
+						configurationFacade, 
+						tempDir);
+	}
+	
+	@Test
+	public void testConstruction() throws Exception {
+		Field facadeFactoryField = HibernateMappingExporterExtension.class.getDeclaredField("facadeFactory");
+		facadeFactoryField.setAccessible(true);
+		assertSame(FACADE_FACTORY, facadeFactoryField.get(hibernateMappingExporterExtension));
+		Metadata metadata = ((ConfigurationFacadeImpl)configurationFacade).getMetadata();
+		Field metadataField = AbstractExporter.class.getDeclaredField("metadata");
+		metadataField.setAccessible(true);
+		assertSame(metadata, metadataField.get(hibernateMappingExporterExtension));
+		assertSame(((IFacade)configurationFacade).getTarget(), hibernateMappingExporterExtension.getConfiguration());
+		Field outputDirField = AbstractExporter.class.getDeclaredField("outputdir");
+		outputDirField.setAccessible(true);
+		assertSame(tempDir, outputDirField.get(hibernateMappingExporterExtension));
 	}
 	
 	@Test
 	public void testSetDelegate() throws Exception {
 		Field delegateField = HibernateMappingExporterExtension.class.getDeclaredField("delegateExporter");
 		delegateField.setAccessible(true);
-		Assert.assertNull(delegateField.get(hibernateMappingExporterExtension));
+		IExportPOJODelegate exportPojoDelegate = new IExportPOJODelegate() {			
+			@Override
+			public void exportPOJO(Map<Object, Object> map, IPOJOClass pojoClass) { }
+		};
+		assertNull(delegateField.get(hibernateMappingExporterExtension));
 		hibernateMappingExporterExtension.setDelegate(exportPojoDelegate);
-		Assert.assertSame(exportPojoDelegate, delegateField.get(hibernateMappingExporterExtension));
+		assertSame(exportPojoDelegate, delegateField.get(hibernateMappingExporterExtension));
 	}
 	
 	@Test
-	public void testSuperExportPOJO() {
+	public void testSuperExportPOJO() throws Exception {
+		initializeTemplateHelper();
 		ArtifactCollector artifactCollector = new ArtifactCollector();
 		hibernateMappingExporterExtension.setArtifactCollector(artifactCollector);
 		File[] hbmXmlFiles = artifactCollector.getFiles("hbm.xml");
-		Assert.assertTrue(hbmXmlFiles.length == 0);
-		Assert.assertFalse(new File("foo" + File.separator + "Bar.hbm.xml").exists());
+		assertTrue(hbmXmlFiles.length == 0);
+		assertFalse(new File(tempDir, "foo" + File.separator + "Bar.hbm.xml").exists());
 		Map<String, Object> additionalContext = new HashMap<String, Object>();
 		Cfg2HbmTool c2h = new Cfg2HbmTool();
 		additionalContext.put("date", new Date().toString());
 		additionalContext.put("version", Version.getDefault().toString());
 		additionalContext.put("c2h", c2h);
-		hibernateMappingExporterExtension.superExportPOJO(additionalContext, pojoClass);
+		hibernateMappingExporterExtension.superExportPOJO(
+				additionalContext, 
+				createPojoClass());
 		hbmXmlFiles = artifactCollector.getFiles("hbm.xml");
-		Assert.assertTrue(hbmXmlFiles.length == 1);
-		Assert.assertEquals("foo" + File.separator + "Bar.hbm.xml", hbmXmlFiles[0].getPath());
-		Assert.assertTrue(new File("foo" + File.separator + "Bar.hbm.xml").exists());
+		assertTrue(hbmXmlFiles.length == 1);
+		assertEquals(tempDir.getPath() + File.separator + "foo" + File.separator + "Bar.hbm.xml", hbmXmlFiles[0].getPath());
+		assertTrue(new File(tempDir, "foo" + File.separator + "Bar.hbm.xml").exists());
 	}
 	
 	@Test
 	public void testExportPOJO() throws Exception {
+		initializeTemplateHelper();
+		POJOClass pojoClass = createPojoClass();
 		// first without a delegate exporter
 		ArtifactCollector artifactCollector = new ArtifactCollector();
 		hibernateMappingExporterExtension.setArtifactCollector(artifactCollector);
 		File[] hbmXmlFiles = artifactCollector.getFiles("hbm.xml");
-		Assert.assertTrue(hbmXmlFiles.length == 0);
-		Assert.assertFalse(new File("foo" + File.separator + "Bar.hbm.xml").exists());
 		Map<Object, Object> additionalContext = new HashMap<Object, Object>();
 		Cfg2HbmTool c2h = new Cfg2HbmTool();
 		additionalContext.put("date", new Date().toString());
-		additionalContext.put("version", Version.getDefault().toString());
+		additionalContext.put("version", Version.VERSION);
 		additionalContext.put("c2h", c2h);
+		assertTrue(hbmXmlFiles.length == 0);
+		assertFalse(new File(tempDir, "foo" + File.separator + "Bar.hbm.xml").exists());
 		hibernateMappingExporterExtension.exportPOJO(additionalContext, pojoClass);
 		hbmXmlFiles = artifactCollector.getFiles("hbm.xml");
-		Assert.assertTrue(hbmXmlFiles.length == 1);
-		Assert.assertEquals("foo" + File.separator + "Bar.hbm.xml", hbmXmlFiles[0].getPath());
-		Assert.assertTrue(new File("foo" + File.separator + "Bar.hbm.xml").exists());
-		Assert.assertNull(methodName);
-		Assert.assertNull(arguments);
+		assertTrue(hbmXmlFiles.length == 1);
+		assertEquals(tempDir.getPath() + File.separator + "foo" + File.separator + "Bar.hbm.xml", hbmXmlFiles[0].getPath());
+		assertTrue(new File(tempDir, "foo" + File.separator + "Bar.hbm.xml").exists());
 		// then with a delegate exporter
 		artifactCollector = new ArtifactCollector();
 		hibernateMappingExporterExtension.setArtifactCollector(artifactCollector);
+		final HashMap<Object, Object> arguments = new HashMap<Object, Object>();
+		IExportPOJODelegate exportPojoDelegate = new IExportPOJODelegate() {			
+			@Override
+			public void exportPOJO(Map<Object, Object> map, IPOJOClass pojoClass) {
+				arguments.put("map", map);
+				arguments.put("pojoClass", pojoClass);
+			}
+		};
 		hbmXmlFiles = artifactCollector.getFiles("hbm.xml");
-		Assert.assertTrue(hbmXmlFiles.length == 0);
 		Field delegateField = HibernateMappingExporterExtension.class.getDeclaredField("delegateExporter");
 		delegateField.setAccessible(true);
 		delegateField.set(hibernateMappingExporterExtension, exportPojoDelegate);
+		assertTrue(hbmXmlFiles.length == 0);
+		assertNull(arguments.get("map"));
+		assertNull(arguments.get("pojoClass"));
 		hibernateMappingExporterExtension.exportPOJO(additionalContext, pojoClass);
-		Assert.assertTrue(hbmXmlFiles.length == 0);
-		Assert.assertEquals("exportPOJO", methodName);
-		Assert.assertSame(additionalContext, arguments[0]);
-		Assert.assertSame(pojoClass, ((IFacade)arguments[1]).getTarget());
+		assertTrue(hbmXmlFiles.length == 0);
+		assertSame(additionalContext, arguments.get("map"));
+		assertSame(pojoClass, ((IFacade)arguments.get("pojoClass")).getTarget());
 	}
 	
-	@After
-	public void tearDown() {
-		new File("foo" + File.separator + "Bar.hbm.xml").delete();
-		new File("foo").delete();
+	private POJOClass createPojoClass() {
+		RootClass persistentClass = new RootClass(null);
+		Table rootTable = new Table();
+		rootTable.setName("table");
+		persistentClass.setTable(rootTable);
+		persistentClass.setEntityName("Bar");
+		persistentClass.setClassName("foo.Bar");
+		return new EntityPOJOClass(persistentClass, new Cfg2JavaTool());		
 	}
 	
-	private class TestInvocationHandler implements InvocationHandler {
-		@Override
-		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-			methodName = method.getName();
-			arguments = args;
-			return null;
-		}	
+	private void initializeTemplateHelper() throws Exception {
+		Method setTemplateHelperMethod = AbstractExporter.class.getDeclaredMethod(
+				"setTemplateHelper", 
+				new Class[] { TemplateHelper.class });
+		setTemplateHelperMethod.setAccessible(true);
+		TemplateHelper templateHelper = new TemplateHelper();
+		templateHelper.init(null, new String[0]);
+		setTemplateHelperMethod.invoke(
+				hibernateMappingExporterExtension, 
+				new Object[] { templateHelper });		
 	}
-
+	
 }
