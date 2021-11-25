@@ -1,9 +1,15 @@
 package org.jboss.tools.hibernate.runtime.v_5_1.internal;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -11,15 +17,17 @@ import java.util.List;
 import java.util.Properties;
 
 import org.h2.Driver;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
+import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.DelegatingReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
-import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
+import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.mapping.Array;
@@ -37,8 +45,10 @@ import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.hbm2x.AbstractExporter;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
+import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
@@ -63,17 +73,19 @@ import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class ServiceImplTest {
-	
+
 	static class Foo { 
 		private int id; 
 		public void setId(int id) { }
 		public int getId() { return id; }
 	}
+	
+	public static class TestDialect extends Dialect {}
 	
 	private static final String TEST_HBM_STRING =
 			"<hibernate-mapping package='org.jboss.tools.hibernate.runtime.v_5_1.internal'>" +
@@ -82,95 +94,114 @@ public class ServiceImplTest {
 			"  </class>" + 
 			"</hibernate-mapping>";
 
-	private ServiceImpl service = new ServiceImpl();
+	private ServiceImpl service = null;
 	
-	@BeforeClass
-	public static void beforeClass() throws Exception {
+	@BeforeAll
+	public static void beforeAll() throws Exception {
 		DriverManager.registerDriver(new Driver());		
 	}
-	
-	@Test
-	public void testServiceCreation() {
-		Assert.assertNotNull(service);
+
+	@BeforeEach
+	public void beforeEach() {
+		service = new ServiceImpl();
 	}
 	
 	@Test
 	public void testNewAnnotationConfiguration() {
-		IConfiguration configuration = service.newAnnotationConfiguration();
-		Assert.assertNotNull(configuration);
-		Object target = ((IFacade)configuration).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof Configuration);
+		IConfiguration annotationConfiguration = service.newAnnotationConfiguration();
+		assertNotNull(annotationConfiguration);
+		assertTrue(((IFacade)annotationConfiguration).getTarget() instanceof Configuration);
 	}
-	
+
 	@Test
-	public void testNewJpaConfiguration() {
-		IConfiguration configuration = service.newJpaConfiguration(null, "test", null);
-		Assert.assertNotNull(configuration);
-		Object target = ((IFacade)configuration).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof Configuration);
+	public void testNewJpaConfiguration() throws Exception {
+		IConfiguration jpaConfiguration = service.newJpaConfiguration(null, "test", null);
+		assertNotNull(jpaConfiguration);
+		Object target = ((IFacade)jpaConfiguration).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof JPAConfiguration);
+		Field persistenceUnitField = JPAConfiguration.class.getDeclaredField("persistenceUnit");
+		persistenceUnitField.setAccessible(true);
+		assertEquals("test", persistenceUnitField.get(target));
+		
 	}
 	
 	@Test
 	public void testNewDefaultConfiguration() {
-		IConfiguration configuration = service.newDefaultConfiguration();
-		Assert.assertNotNull(configuration);
-		Object target = ((IFacade)configuration).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof Configuration);
+		IConfiguration defaultConfiguration = service.newDefaultConfiguration();
+		assertNotNull(defaultConfiguration);
+		assertTrue(((IFacade)defaultConfiguration).getTarget() instanceof Configuration);
 	}
-	
+
 	@Test
-	public void testNewHibernateMappingExporter() {
+	public void testNewHibernateMappingExporter() throws Exception {
 		IConfiguration configuration = service.newDefaultConfiguration();
+		configuration.setProperty(AvailableSettings.DIALECT, TestDialect.class.getName());
 		File file = new File("");
 		IHibernateMappingExporter hibernateMappingExporter = 
 				service.newHibernateMappingExporter(configuration, file);
-		Configuration cfg = (Configuration)((IFacade)configuration).getTarget();
 		HibernateMappingExporterExtension hmee = 
 				(HibernateMappingExporterExtension)((IFacade)hibernateMappingExporter).getTarget();
-		Assert.assertSame(file, hmee.getOutputDirectory());
-		Assert.assertSame(cfg, hmee.getConfiguration());
+		assertSame(file, hmee.getOutputDirectory());
+		Field metadataField = AbstractExporter.class.getDeclaredField("metadata");
+		metadataField.setAccessible(true);
+		assertSame(
+				((ConfigurationFacadeImpl)configuration).getMetadata(), 
+				metadataField.get(hmee));
 	}
 	
 	@Test
 	public void testNewSchemaExport() {
 		IConfiguration configuration = service.newDefaultConfiguration();
-		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+		configuration.setProperty(AvailableSettings.DIALECT, TestDialect.class.getName());
 		ISchemaExport schemaExport = service.newSchemaExport(configuration);
-		Assert.assertNotNull(schemaExport);
+		assertNotNull(schemaExport);
 	}
 	
 	@Test
 	public void testNewHQLCodeAssist() {
 		IConfiguration configuration = service.newDefaultConfiguration();
-		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+		configuration.setProperty(AvailableSettings.DIALECT, TestDialect.class.getName());
 		IHQLCodeAssist hqlCodeAssist = service.newHQLCodeAssist(configuration);
-		Assert.assertNotNull(hqlCodeAssist);
+		assertNotNull(hqlCodeAssist);
 	}
 	
 	@Test
 	public void testNewJDBCMetaDataConfiguration() {
 		IConfiguration configuration = service.newJDBCMetaDataConfiguration();
-		Assert.assertNotNull(configuration);
+		assertNotNull(configuration);
 		Object target = ((IFacade)configuration).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof JDBCMetaDataConfiguration);
+		assertNotNull(target);
+		assertTrue(target instanceof JDBCMetaDataConfiguration);
 	}
 	
 	@Test
-	public void testCreateExporter() {
-		IExporter exporter = service.createExporter("org.hibernate.tool.hbm2x.POJOExporter");
-		Assert.assertNotNull(exporter);
+	public void testCreateExporter() throws Exception {
+		IExporter exporter = service.createExporter(POJOExporter.class.getName());
+		assertNotNull(exporter);
 		Object target = ((IFacade)exporter).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof POJOExporter);
+		assertNotNull(target);
+		assertTrue(target instanceof POJOExporter);
+		exporter = service.createExporter(HibernateConfigurationExporter.class.getName());
+		assertNotNull(exporter);
+		target = ((IFacade)exporter).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof HibernateConfigurationExporter);
+	}
+	
+	@Test
+	public void testNewArtifactCollector() {
+		IArtifactCollector artifactCollector = service.newArtifactCollector();
+		assertNotNull(artifactCollector);
+		Object target = ((IFacade)artifactCollector).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof ArtifactCollector);
 	}
 	
 	@Test
 	public void testNewHQLQueryPlan() throws Exception {
 		IConfiguration configuration = service.newDefaultConfiguration();
+		configuration.setProperty(AvailableSettings.DIALECT, TestDialect.class.getName());
 		File testFile = File.createTempFile("test", "tmp");
 		testFile.deleteOnExit();
 		FileWriter fileWriter = new FileWriter(testFile);
@@ -179,63 +210,55 @@ public class ServiceImplTest {
 		configuration.addFile(testFile);
 		ISessionFactory sfi = configuration.buildSessionFactory();
 		IHQLQueryPlan queryPlan = service.newHQLQueryPlan("from ServiceImplTest$Foo", true, sfi);
-		Assert.assertNotNull(queryPlan);
+		assertNotNull(queryPlan);
 		Object target = ((IFacade)queryPlan).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof HQLQueryPlan);
-	}
-	
-	@Test
-	public void testNewArtifactCollector() {
-		IArtifactCollector artifactCollector = service.newArtifactCollector();
-		Assert.assertNotNull(artifactCollector);
-		Object target = ((IFacade)artifactCollector).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof ArtifactCollector);
-	}
-	
-	@Test
-	public void testNewDefaultReverseEngineeringStrategy() throws Exception {
-		IReverseEngineeringStrategy reverseEngineeringStrategy = 
-				service.newDefaultReverseEngineeringStrategy();
-		Assert.assertNotNull(reverseEngineeringStrategy);
-		Object target = ((IFacade)reverseEngineeringStrategy).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof ReverseEngineeringStrategy);
+		assertNotNull(target);
+		assertTrue(target instanceof HQLQueryPlan);
 	}
 	
 	@Test 
 	public void testNewTypeFactory() {
 		ITypeFactory typeFactory = service.newTypeFactory();
-		Assert.assertNotNull(typeFactory);
+		assertNotNull(typeFactory);
 	}
 	
 	@Test
 	public void testNewNamingStrategy() {
 		String strategyClassName = DefaultNamingStrategy.class.getName();
 		INamingStrategy namingStrategy = service.newNamingStrategy(strategyClassName);
-		Assert.assertNotNull(namingStrategy);
+		assertNotNull(namingStrategy);
 		Object target = ((IFacade)namingStrategy).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof DefaultNamingStrategy);
+		assertNotNull(target);
+		assertTrue(target instanceof DefaultNamingStrategy);
+		assertNull(service.newNamingStrategy("some unexistant class"));
 	}
 	
 	@Test
 	public void testNewOverrideRepository() {
 		IOverrideRepository overrideRepository = service.newOverrideRepository();
-		Assert.assertNotNull(overrideRepository);
+		assertNotNull(overrideRepository);
 		Object target = ((IFacade)overrideRepository).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof OverrideRepository);
+		assertNotNull(target);
+		assertTrue(target instanceof OverrideRepository);
 	}
 	
 	@Test
 	public void testNewTableFilter() {
 		ITableFilter tableFilter = service.newTableFilter();
-		Assert.assertNotNull(tableFilter);
+		assertNotNull(tableFilter);
 		Object target = ((IFacade)tableFilter).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof TableFilter);
+		assertNotNull(target);
+		assertTrue(target instanceof TableFilter);
+	}
+	
+	@Test
+	public void testNewDefaultReverseEngineeringStrategy() throws Exception {
+		IReverseEngineeringStrategy reverseEngineeringStrategy = 
+				service.newDefaultReverseEngineeringStrategy();
+		assertNotNull(reverseEngineeringStrategy);
+		Object target = ((IFacade)reverseEngineeringStrategy).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof DefaultReverseEngineeringStrategy);
 	}
 	
 	@Test
@@ -244,10 +267,10 @@ public class ServiceImplTest {
 				service.newDefaultReverseEngineeringStrategy();
 		IReverseEngineeringSettings reverseEngineeringSettings = 
 				service.newReverseEngineeringSettings(strategy);
-		Assert.assertNotNull(reverseEngineeringSettings);
+		assertNotNull(reverseEngineeringSettings);
 		Object target = ((IFacade)reverseEngineeringSettings).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof ReverseEngineeringSettings);
+		assertNotNull(target);
+		assertTrue(target instanceof ReverseEngineeringSettings);
 	}
 	
 	@Test
@@ -285,22 +308,22 @@ public class ServiceImplTest {
 				service.newReverseEngineeringStrategy(
 						defaultRevEngStratClassName, 
 						defaultStrategy);
-		Assert.assertNotNull(newStrategy);
+		assertNotNull(newStrategy);
 		Object target = ((IFacade)newStrategy).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertFalse(target instanceof DelegatingReverseEngineeringStrategy);
+		assertNotNull(target);
+		assertFalse(target instanceof DelegatingReverseEngineeringStrategy);
 		newStrategy = service.newReverseEngineeringStrategy(
 				"org.hibernate.cfg.reveng.DelegatingReverseEngineeringStrategy", 
 				defaultStrategy);
-		Assert.assertNotNull(newStrategy);
+		assertNotNull(newStrategy);
 		target = ((IFacade)newStrategy).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof DelegatingReverseEngineeringStrategy);
+		assertNotNull(target);
+		assertTrue(target instanceof DelegatingReverseEngineeringStrategy);
 	}
 	
 	@Test
 	public void testGetReverseEngineeringStrategyClassName() {
-		Assert.assertEquals(
+		assertEquals(
 				"org.hibernate.cfg.reveng.ReverseEngineeringStrategy", 
 				service.getReverseEngineeringStrategyClassName());
 	}
@@ -308,52 +331,52 @@ public class ServiceImplTest {
 	@Test
 	public void testNewCfg2HbmTool() {
 		ICfg2HbmTool cfg2HbmTool = service.newCfg2HbmTool();
-		Assert.assertNotNull(cfg2HbmTool);
+		assertNotNull(cfg2HbmTool);
 		Object target = ((IFacade)cfg2HbmTool).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof Cfg2HbmTool);
+		assertNotNull(target);
+		assertTrue(target instanceof Cfg2HbmTool);
 	}
 	
 	@Test
 	public void testNewProperty() {
 		IProperty property = service.newProperty();
-		Assert.assertNotNull(property);
+		assertNotNull(property);
 		Object target = ((IFacade)property).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof Property);
+		assertNotNull(target);
+		assertTrue(target instanceof Property);
 	}
 	
 	@Test
 	public void testNewTable() {
 		ITable table = service.newTable("foo");
-		Assert.assertNotNull(table);
+		assertNotNull(table);
 		Object target = ((IFacade)table).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof Table);
-		Assert.assertEquals("foo", ((Table)target).getName());
-		Assert.assertNotNull(((Table)target).getPrimaryKey());
+		assertNotNull(target);
+		assertTrue(target instanceof Table);
+		assertEquals("foo", ((Table)target).getName());
+		assertNotNull(((Table)target).getPrimaryKey());
 	}
 	
 	@Test
 	public void testNewColumn() {
 		IColumn column = service.newColumn("foo");
-		Assert.assertNotNull(column);
+		assertNotNull(column);
 		Object target = ((IFacade)column).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof Column);
-		Assert.assertEquals("foo", ((Column)target).getName());
+		assertNotNull(target);
+		assertTrue(target instanceof Column);
+		assertEquals("foo", ((Column)target).getName());
 	}
 	
 	@Test
 	public void testNewDialect() throws Exception {
 		Connection connection = DriverManager.getConnection("jdbc:h2:mem:");
 		String dialect = service.newDialect(new Properties(), connection);
-		Assert.assertEquals("org.hibernate.dialect.H2Dialect", dialect);
+		assertEquals("org.hibernate.dialect.H2Dialect", dialect);
 	}
 
 	@Test
 	public void testGetDriverManagerManagerConnectionProviderClass() {
-		Assert.assertSame(
+		assertSame(
 				DriverManagerConnectionProviderImpl.class, 
 				service.getDriverManagerConnectionProviderClass());
 	}
@@ -361,8 +384,8 @@ public class ServiceImplTest {
 	@Test
 	public void testGetEnvironment() {
 		IEnvironment environment = service.getEnvironment();
-		Assert.assertNotNull(environment);
-		Assert.assertEquals(
+		assertNotNull(environment);
+		assertEquals(
 				environment.getTransactionManagerStrategy(), 
 				Environment.TRANSACTION_COORDINATOR_STRATEGY);
 	}
@@ -370,112 +393,112 @@ public class ServiceImplTest {
 	@Test
 	public void testSimpleValue() {
 		IValue simpleValue = service.newSimpleValue();
-		Assert.assertNotNull(simpleValue);
+		assertNotNull(simpleValue);
 		Object target = ((IFacade)simpleValue).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof SimpleValue);
+		assertNotNull(target);
+		assertTrue(target instanceof SimpleValue);
 	}
 	
 	@Test
 	public void testNewPrimitiveArray() {
 		IPersistentClass persistentClass = service.newRootClass();
 		IValue primitiveArray = service.newPrimitiveArray(persistentClass);
-		Assert.assertNotNull(primitiveArray);
+		assertNotNull(primitiveArray);
 		Object target = ((IFacade)primitiveArray).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof PrimitiveArray);
+		assertNotNull(target);
+		assertTrue(target instanceof PrimitiveArray);
 	}
 	
 	@Test
 	public void testNewArray() {
 		IPersistentClass persistentClass = service.newRootClass();
 		IValue array = service.newArray(persistentClass);
-		Assert.assertNotNull(array);
+		assertNotNull(array);
 		Object target = ((IFacade)array).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof Array);
+		assertNotNull(target);
+		assertTrue(target instanceof Array);
 	}
 	
 	@Test
 	public void testNewBag() {
 		IPersistentClass persistentClass = service.newRootClass();
 		IValue bag = service.newBag(persistentClass);
-		Assert.assertNotNull(bag);
+		assertNotNull(bag);
 		Object target = ((IFacade)bag).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof Bag);
+		assertNotNull(target);
+		assertTrue(target instanceof Bag);
 	}
 	
 	@Test
 	public void testNewList() {
 		IPersistentClass persistentClass = service.newRootClass();
 		IValue list = service.newList(persistentClass);
-		Assert.assertNotNull(list);
+		assertNotNull(list);
 		Object target = ((IFacade)list).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof org.hibernate.mapping.List);
+		assertNotNull(target);
+		assertTrue(target instanceof org.hibernate.mapping.List);
 	}
 	
 	@Test
 	public void testNewMap() {
 		IPersistentClass persistentClass = service.newRootClass();
 		IValue map = service.newMap(persistentClass);
-		Assert.assertNotNull(map);
+		assertNotNull(map);
 		Object target = ((IFacade)map).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof Map);
+		assertNotNull(target);
+		assertTrue(target instanceof Map);
 	}
 	
 	@Test
 	public void testNewSet() {
 		IPersistentClass persistentClass = service.newRootClass();
 		IValue set = service.newSet(persistentClass);
-		Assert.assertNotNull(set);
+		assertNotNull(set);
 		Object target = ((IFacade)set).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof Set);
+		assertNotNull(target);
+		assertTrue(target instanceof Set);
 	}
 	
 	@Test
 	public void testNewManyToOne() {
 		ITable table = service.newTable("foo");
 		IValue manyToOne = service.newManyToOne(table);
-		Assert.assertNotNull(manyToOne);
+		assertNotNull(manyToOne);
 		Object target = ((IFacade)manyToOne).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof ManyToOne);
+		assertNotNull(target);
+		assertTrue(target instanceof ManyToOne);
 	}
 	
 	@Test
 	public void testNewOneToMany() {
 		IPersistentClass persistentClass = service.newRootClass();
 		IValue oneToMany = service.newOneToMany(persistentClass);
-		Assert.assertNotNull(oneToMany);
+		assertNotNull(oneToMany);
 		Object target = ((IFacade)oneToMany).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof OneToMany);
+		assertNotNull(target);
+		assertTrue(target instanceof OneToMany);
 	}
 	
 	@Test
 	public void testNewOneToOne() {
 		IPersistentClass persistentClass = service.newRootClass();
 		IValue oneToOne = service.newOneToOne(persistentClass);
-		Assert.assertNotNull(oneToOne);
+		assertNotNull(oneToOne);
 		Object target = ((IFacade)oneToOne).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof OneToOne);
+		assertNotNull(target);
+		assertTrue(target instanceof OneToOne);
 	}
 	
 	@Test
 	public void testNewSingleTableSubclass() {
 		IPersistentClass persistentClass = service.newRootClass();
 		IPersistentClass singleTableSublass = service.newSingleTableSubclass(persistentClass);
-		Assert.assertNotNull(singleTableSublass);
+		assertNotNull(singleTableSublass);
 		Object target = ((IFacade)singleTableSublass).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof SingleTableSubclass);
-		Assert.assertSame(persistentClass, singleTableSublass.getSuperclass());
-		Assert.assertSame(
+		assertNotNull(target);
+		assertTrue(target instanceof SingleTableSubclass);
+		assertSame(persistentClass, singleTableSublass.getSuperclass());
+		assertSame(
 				((IFacade)persistentClass).getTarget(), 
 				((SingleTableSubclass)target).getSuperclass());
 	}
@@ -484,12 +507,12 @@ public class ServiceImplTest {
 	public void testNewJoinedSubclass() {
 		IPersistentClass persistentClass = service.newRootClass();
 		IPersistentClass joinedSubclass = service.newJoinedSubclass(persistentClass);
-		Assert.assertNotNull(joinedSubclass);
+		assertNotNull(joinedSubclass);
 		Object target = ((IFacade)joinedSubclass).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof JoinedSubclass);
-		Assert.assertSame(persistentClass, joinedSubclass.getSuperclass());
-		Assert.assertSame(
+		assertNotNull(target);
+		assertTrue(target instanceof JoinedSubclass);
+		assertSame(persistentClass, joinedSubclass.getSuperclass());
+		assertSame(
 				((IFacade)persistentClass).getTarget(), 
 				((JoinedSubclass)target).getSuperclass());
 	}
@@ -500,45 +523,45 @@ public class ServiceImplTest {
 		IPersistentClass pc = service.newRootClass();
 		property.setPersistentClass(pc);
 		IPersistentClass specialRootClass = service.newSpecialRootClass(property);
-		Assert.assertNotNull(specialRootClass);
+		assertNotNull(specialRootClass);
 		Object target = ((IFacade)specialRootClass).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof RootClass);
-		Assert.assertSame(property, specialRootClass.getProperty());
+		assertNotNull(target);
+		assertTrue(target instanceof RootClass);
+		assertSame(property, specialRootClass.getProperty());
 	}
 	
 	@Test
 	public void testNewRootClass() {
 		IPersistentClass rootClass = service.newRootClass();
-		Assert.assertNotNull(rootClass);
+		assertNotNull(rootClass);
 		Object target = ((IFacade)rootClass).getTarget();
-		Assert.assertNotNull(target);
-		Assert.assertTrue(target instanceof RootClass);
+		assertNotNull(target);
+		assertTrue(target instanceof RootClass);
 	}
 	
 	@Test
 	public void testIsInitialized() {
-		Assert.assertTrue(service.isInitialized(new Object()));
+		assertTrue(service.isInitialized(new Object()));
 	}
 	
 	@Test
 	public void testGetJPAMappingFilePaths() {
 		List<String> result = service.getJPAMappingFilePaths("test", null);
-		Assert.assertEquals(0, result.size());
+		assertEquals(0, result.size());
 	}
 	
 	@Test
 	public void testGetClassWithoutInitializingProxy() {
-		Assert.assertSame(
+		assertSame(
 				Object.class, 
 				service.getClassWithoutInitializingProxy(new Object()));
 	}
 	
 	@Test
 	public void testGetClassLoader(){
-		Assert.assertSame(
+		assertSame(
 				ServiceImpl.class.getClassLoader(), 
 				service.getClassLoader());
 	}
-	
+
 }
