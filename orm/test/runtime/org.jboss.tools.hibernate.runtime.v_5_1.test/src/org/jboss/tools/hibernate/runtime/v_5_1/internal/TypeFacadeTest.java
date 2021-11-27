@@ -1,10 +1,18 @@
 package org.jboss.tools.hibernate.runtime.v_5_1.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.internal.MetadataBuilderImpl;
+import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.spi.MetadataBuildingOptions;
 import org.hibernate.boot.spi.MetadataImplementor;
+import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.dialect.Dialect;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.tuple.component.ComponentMetamodel;
@@ -18,26 +26,28 @@ import org.hibernate.type.IntegerType;
 import org.hibernate.type.ManyToOneType;
 import org.hibernate.type.OneToOneType;
 import org.hibernate.type.StringType;
+import org.hibernate.type.TypeFactory.TypeScope;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class TypeFacadeTest {
 
 	private static IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
+	
+	public static class TestDialect extends Dialect {}
 	
 	@Test
 	public void testToString() {
 		IType typeFacade = null;
 		ClassType classType = new ClassType();
 		typeFacade = FACADE_FACTORY.createType(classType);
-		Assert.assertEquals(
+		assertEquals(
 				TypeFacadeTest.class.getName(), 
 				typeFacade.toString(TypeFacadeTest.class));
 		ArrayType arrayType = new ArrayType(null, "foo", "bar", String.class);
 		typeFacade = FACADE_FACTORY.createType(arrayType);
-		Assert.assertNull(typeFacade.toString(new String[] { "foo", "bar" }));
+		assertNull(typeFacade.toString(new String[] { "foo", "bar" }));
 	}
 	
 	@Test
@@ -45,10 +55,10 @@ public class TypeFacadeTest {
 		IType typeFacade = null;
 		ClassType classType = new ClassType();
 		typeFacade = FACADE_FACTORY.createType(classType);
-		Assert.assertEquals("class", typeFacade.getName());
+		assertEquals("class", typeFacade.getName());
 		ArrayType arrayType = new ArrayType(null, "foo", "bar", String.class);
 		typeFacade = FACADE_FACTORY.createType(arrayType);
-		Assert.assertEquals("[Ljava.lang.String;(foo)", typeFacade.getName());
+		assertEquals("[Ljava.lang.String;(foo)", typeFacade.getName());
 	}
 	
 	@Test
@@ -56,12 +66,12 @@ public class TypeFacadeTest {
 		IType typeFacade = null;
 		ClassType classType = new ClassType();
 		typeFacade = FACADE_FACTORY.createType(classType);
-		Assert.assertEquals(
+		assertEquals(
 				TypeFacadeTest.class, 
 				typeFacade.fromStringValue(TypeFacadeTest.class.getName()));
 		ArrayType arrayType = new ArrayType(null, "foo", "bar", String.class);
 		typeFacade = FACADE_FACTORY.createType(arrayType);
-		Assert.assertNull(typeFacade.fromStringValue("just a random string"));
+		assertNull(typeFacade.fromStringValue("just a random string"));
 	}
 	
 	@Test
@@ -69,10 +79,10 @@ public class TypeFacadeTest {
 		IType typeFacade = null;
 		ClassType classType = new ClassType();
 		typeFacade = FACADE_FACTORY.createType(classType);
-		Assert.assertFalse(typeFacade.isEntityType());
-		EntityType entityType = new ManyToOneType(null, null);
+		assertFalse(typeFacade.isEntityType());
+		EntityType entityType = new ManyToOneType((TypeScope)null, null);
 		typeFacade = FACADE_FACTORY.createType(entityType);
-		Assert.assertTrue(entityType.isEntityType());
+		assertTrue(entityType.isEntityType());
 	}
 	
 	@Test
@@ -80,14 +90,14 @@ public class TypeFacadeTest {
 		IType typeFacade = null;
 		ClassType classType = new ClassType();
 		typeFacade = FACADE_FACTORY.createType(classType);
-		Assert.assertFalse(typeFacade.isOneToOne());
-		EntityType entityType = new ManyToOneType(null, null);
+		assertFalse(typeFacade.isOneToOne());
+		EntityType entityType = new ManyToOneType((TypeScope)null, null);
 		typeFacade = FACADE_FACTORY.createType(entityType);
-		Assert.assertFalse(entityType.isOneToOne());
+		assertFalse(entityType.isOneToOne());
 		OneToOneType oneToOneType = new OneToOneType(
 				null, null, null, false, null, false, false, null, null);
 		typeFacade = FACADE_FACTORY.createType(oneToOneType);
-		Assert.assertTrue(oneToOneType.isOneToOne());
+		assertTrue(oneToOneType.isOneToOne());
 	}
 	
 	@Test
@@ -95,10 +105,10 @@ public class TypeFacadeTest {
 		IType typeFacade = null;
 		ClassType classType = new ClassType();
 		typeFacade = FACADE_FACTORY.createType(classType);
-		Assert.assertFalse(typeFacade.isAnyType());
+		assertFalse(typeFacade.isAnyType());
 		AnyType anyType = new AnyType(null, null, null);
 		typeFacade = FACADE_FACTORY.createType(anyType);
-		Assert.assertTrue(typeFacade.isAnyType());
+		assertTrue(typeFacade.isAnyType());
 	}
 	
 	@Test
@@ -106,13 +116,15 @@ public class TypeFacadeTest {
 		IType typeFacade = null;
 		ClassType classType = new ClassType();
 		typeFacade = FACADE_FACTORY.createType(classType);
-		Assert.assertFalse(typeFacade.isComponentType());
+		assertFalse(typeFacade.isComponentType());
+		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
+		ssrb.applySetting(AvailableSettings.DIALECT, TestDialect.class.getName());
+		StandardServiceRegistry ssr = ssrb.build();
 		MetadataBuildingOptions mdbo = 
-				new MetadataBuilderImpl.MetadataBuildingOptionsImpl(
-						new StandardServiceRegistryBuilder().build());
+				new MetadataBuilderImpl.MetadataBuildingOptionsImpl(ssr);
 		MetadataImplementor mdi = 
 				(MetadataImplementor)new MetadataBuilderImpl(
-						new MetadataSources()).build();
+						new MetadataSources(ssr)).build();
 		ComponentType componentType = 
 				new ComponentType(
 						null,
@@ -120,7 +132,7 @@ public class TypeFacadeTest {
 								new Component(mdi, new RootClass(null)),
 								mdbo));
 		typeFacade = FACADE_FACTORY.createType(componentType);
-		Assert.assertTrue(typeFacade.isComponentType());
+		assertTrue(typeFacade.isComponentType());
 	}
 	
 	@Test
@@ -128,10 +140,10 @@ public class TypeFacadeTest {
 		IType typeFacade = null;
 		ClassType classType = new ClassType();
 		typeFacade = FACADE_FACTORY.createType(classType);
-		Assert.assertFalse(typeFacade.isCollectionType());
+		assertFalse(typeFacade.isCollectionType());
 		ArrayType arrayType = new ArrayType(null, null, null, String.class);
 		typeFacade = FACADE_FACTORY.createType(arrayType);
-		Assert.assertTrue(typeFacade.isCollectionType());
+		assertTrue(typeFacade.isCollectionType());
 	}
 	
 	@Test
@@ -139,10 +151,10 @@ public class TypeFacadeTest {
 		IType typeFacade = null;
 		ClassType classType = new ClassType();
 		typeFacade = FACADE_FACTORY.createType(classType);
-		Assert.assertEquals(Class.class.getName(), typeFacade.getReturnedClassName());
+		assertEquals(Class.class.getName(), typeFacade.getReturnedClassName());
 		ArrayType arrayType = new ArrayType(null, null, null, String.class);
 		typeFacade = FACADE_FACTORY.createType(arrayType);
-		Assert.assertEquals(String[].class.getName(), typeFacade.getReturnedClassName());
+		assertEquals(String[].class.getName(), typeFacade.getReturnedClassName());
 	}
 	
 	@Test
@@ -150,10 +162,10 @@ public class TypeFacadeTest {
 		IType typeFacade = null;
 		ClassType classType = new ClassType();
 		typeFacade = FACADE_FACTORY.createType(classType);
-		Assert.assertNull(typeFacade.getAssociatedEntityName());
-		EntityType entityType = new ManyToOneType(null, "foo");
+		assertNull(typeFacade.getAssociatedEntityName());
+		EntityType entityType = new ManyToOneType((TypeScope)null, "foo");
 		typeFacade = FACADE_FACTORY.createType(entityType);
-		Assert.assertEquals("foo", typeFacade.getAssociatedEntityName());
+		assertEquals("foo", typeFacade.getAssociatedEntityName());
 	}
 	
 	@Test
@@ -161,10 +173,10 @@ public class TypeFacadeTest {
 		IType typeFacade = null;
 		ClassType classType = new ClassType();
 		typeFacade = FACADE_FACTORY.createType(classType);
-		Assert.assertFalse(typeFacade.isIntegerType());
+		assertFalse(typeFacade.isIntegerType());
 		IntegerType integerType = new IntegerType();
 		typeFacade = FACADE_FACTORY.createType(integerType);
-		Assert.assertTrue(typeFacade.isIntegerType());
+		assertTrue(typeFacade.isIntegerType());
 	}
 	
 	@Test
@@ -172,13 +184,13 @@ public class TypeFacadeTest {
 		IType typeFacade = null;
 		ClassType classType = new ClassType();
 		typeFacade = FACADE_FACTORY.createType(classType);
-		Assert.assertFalse(typeFacade.isArrayType());
+		assertFalse(typeFacade.isArrayType());
 		BagType bagType = new BagType(null, null, null);
 		typeFacade = FACADE_FACTORY.createType(bagType);
-		Assert.assertFalse(typeFacade.isArrayType());
+		assertFalse(typeFacade.isArrayType());
 		ArrayType arrayType = new ArrayType(null, null, null, String.class);
 		typeFacade = FACADE_FACTORY.createType(arrayType);
-		Assert.assertTrue(typeFacade.isArrayType());
+		assertTrue(typeFacade.isArrayType());
 	}
 	
 	@Test
@@ -186,13 +198,13 @@ public class TypeFacadeTest {
 		IType typeFacade = null;
 		ClassType classType = new ClassType();
 		typeFacade = FACADE_FACTORY.createType(classType);
-		Assert.assertFalse(typeFacade.isInstanceOfPrimitiveType());
+		assertFalse(typeFacade.isInstanceOfPrimitiveType());
 		StringType stringType = new StringType();
 		typeFacade = FACADE_FACTORY.createType(stringType);
-		Assert.assertFalse(typeFacade.isInstanceOfPrimitiveType());
+		assertFalse(typeFacade.isInstanceOfPrimitiveType());
 		IntegerType integerType = new IntegerType();
 		typeFacade = FACADE_FACTORY.createType(integerType);
-		Assert.assertTrue(typeFacade.isInstanceOfPrimitiveType());
+		assertTrue(typeFacade.isInstanceOfPrimitiveType());
 	}
 	
 	@Test
@@ -200,10 +212,10 @@ public class TypeFacadeTest {
 		IType typeFacade = null;
 		ClassType classType = new ClassType();
 		typeFacade = FACADE_FACTORY.createType(classType);
-		Assert.assertNull(typeFacade.getPrimitiveClass());
+		assertNull(typeFacade.getPrimitiveClass());
 		IntegerType integerType = new IntegerType();
 		typeFacade = FACADE_FACTORY.createType(integerType);
-		Assert.assertEquals(int.class, typeFacade.getPrimitiveClass());
+		assertEquals(int.class, typeFacade.getPrimitiveClass());
 	}
 	
 	@Test
@@ -211,10 +223,10 @@ public class TypeFacadeTest {
 		IType typeFacade = null;
 		ClassType classType = new ClassType();
 		typeFacade = FACADE_FACTORY.createType(classType);
-		Assert.assertNull(typeFacade.getRole());
+		assertNull(typeFacade.getRole());
 		ArrayType arrayType = new ArrayType(null, "foo", null, String.class);
 		typeFacade = FACADE_FACTORY.createType(arrayType);
-		Assert.assertEquals("foo", typeFacade.getRole());
+		assertEquals("foo", typeFacade.getRole());
 	}
 	
 }
