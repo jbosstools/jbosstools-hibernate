@@ -8,7 +8,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: lib/hibernate-core-5.1.16.Final.jar,
  lib/hibernate-entitymanager-5.1.16.Final.jar,
  lib/hibernate-tools-5.1.10.Final.jar,
- lib/slf4j-api-1.6.1.jar,
  .
 Require-Bundle: org.apache.commons.collections,
  org.apache.commons.logging,
@@ -25,4 +24,5 @@ Require-Bundle: org.apache.commons.collections,
  org.jboss.tools.hibernate.libs.jtidy.v_r8-20060801,
  org.jboss.tools.hibernate.libs.transaction-api.v_1_2,
  org.jboss.tools.hibernate.runtime.common,
- org.jboss.tools.hibernate.runtime.spi
+ org.jboss.tools.hibernate.runtime.spi,
+ org.slf4j.api
