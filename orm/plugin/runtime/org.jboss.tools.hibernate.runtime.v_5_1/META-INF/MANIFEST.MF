@@ -11,7 +11,6 @@ Bundle-ClassPath: lib/hibernate-core-5.1.16.Final.jar,
  .
 Require-Bundle: org.apache.commons.collections,
  org.apache.commons.logging,
- org.jboss.tools.hibernate.libs.activation.v_1_2_0,
  org.jboss.tools.hibernate.libs.antlr.v_2_7_7,
  org.jboss.tools.hibernate.libs.classmate.v_1_5,
  org.jboss.tools.hibernate.libs.dom4j.v_1_6_1,
