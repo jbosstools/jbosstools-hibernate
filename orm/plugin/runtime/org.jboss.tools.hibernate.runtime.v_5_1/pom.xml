@@ -13,7 +13,6 @@
 
 	<properties>
 		<hibernate.version>5.1.16.Final</hibernate.version>
-		<hibernate-jpa-2.1-api.version>1.0.0.Final</hibernate-jpa-2.1-api.version>
 		<hibernate-tools.version>5.1.10.Final</hibernate-tools.version>
 		<javassist.version>3.20.0-GA</javassist.version>
 	    <jaxb.version>2.3.0</jaxb.version>
@@ -51,11 +50,6 @@
 							<groupId>org.hibernate</groupId>
 							<artifactId>hibernate-tools</artifactId>
 							<version>${hibernate-tools.version}</version>
-						</artifactItem>
-						<artifactItem>
-							<groupId>org.hibernate.javax.persistence</groupId>
-							<artifactId>hibernate-jpa-2.1-api</artifactId>
-							<version>${hibernate-jpa-2.1-api.version}</version>
 						</artifactItem>
 						<artifactItem>
 							<groupId>org.javassist</groupId>
