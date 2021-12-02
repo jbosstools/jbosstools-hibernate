@@ -4,7 +4,7 @@ Bundle-Name: Hibernate Runtime 5.0 Tests
 Bundle-SymbolicName: org.jboss.tools.hibernate.runtime.v_5_0.test
 Bundle-Version: 5.4.15.qualifier
 Fragment-Host: org.jboss.tools.hibernate.runtime.v_5_0
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.junit
 Bundle-ClassPath: .,
  lib/h2-1.4.200.jar
