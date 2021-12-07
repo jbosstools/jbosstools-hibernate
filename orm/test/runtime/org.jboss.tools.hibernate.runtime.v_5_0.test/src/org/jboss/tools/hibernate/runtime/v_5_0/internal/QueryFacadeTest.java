@@ -1,5 +1,10 @@
 package org.jboss.tools.hibernate.runtime.v_5_0.internal;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -11,9 +16,8 @@ import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.AbstractQueryFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class QueryFacadeTest {
 
@@ -28,8 +32,8 @@ public class QueryFacadeTest {
 	
 	private AbstractQueryFacade query = null;
 	
-	@Before
-	public void setUp() {
+	@BeforeEach
+	public void beforeEach() {
 		Query queryProxy = (Query)Proxy.newProxyInstance(
 				FACADE_FACTORY.getClassLoader(), 
 				new Class[] { Query.class }, 
@@ -52,15 +56,15 @@ public class QueryFacadeTest {
 	
 	@Test
 	public void testList() {
-		Assert.assertEquals(LIST, query.list());
-		Assert.assertEquals("list", methodName);
+		assertEquals(LIST, query.list());
+		assertEquals("list", methodName);
 	}
 	
 	@Test
 	public void testSetMaxResults() {
 		query.setMaxResults(Integer.MAX_VALUE);
-		Assert.assertEquals("setMaxResults", methodName);
-		Assert.assertArrayEquals(new Object[] { Integer.MAX_VALUE }, arguments);
+		assertEquals("setMaxResults", methodName);
+		assertArrayEquals(new Object[] { Integer.MAX_VALUE }, arguments);
 	}
 	
 	@Test
@@ -72,13 +76,13 @@ public class QueryFacadeTest {
 		IType typeFacade = FACADE_FACTORY.createType(typeProxy);
 		Object object = new Object();
 		query.setParameter(Integer.MAX_VALUE, object, typeFacade);
-		Assert.assertEquals("setParameter", methodName);
-		Assert.assertArrayEquals(new Object[] { Integer.MAX_VALUE, object, typeProxy } , arguments);
+		assertEquals("setParameter", methodName);
+		assertArrayEquals(new Object[] { Integer.MAX_VALUE, object, typeProxy } , arguments);
 		methodName = null;
 		arguments = null;
 		query.setParameter("foobar", object, typeFacade);
-		Assert.assertEquals("setParameter", methodName);
-		Assert.assertArrayEquals(new Object[] { "foobar", object, typeProxy }, arguments);
+		assertEquals("setParameter", methodName);
+		assertArrayEquals(new Object[] { "foobar", object, typeProxy }, arguments);
 	}
 	
 	@Test
@@ -90,22 +94,22 @@ public class QueryFacadeTest {
 		IType typeFacade = FACADE_FACTORY.createType(typeProxy);
 		List<Object> dummyList = Collections.emptyList();
 		query.setParameterList("foobar", dummyList, typeFacade);
-		Assert.assertEquals("setParameterList", methodName);
-		Assert.assertArrayEquals(new Object[] { "foobar", dummyList, typeProxy }, arguments);
+		assertEquals("setParameterList", methodName);
+		assertArrayEquals(new Object[] { "foobar", dummyList, typeProxy }, arguments);
 	}
 	
 	@Test
 	public void testGetReturnAliases() {
-		Assert.assertArrayEquals(RETURN_ALIASES, query.getReturnAliases());
-		Assert.assertEquals("getReturnAliases", methodName);
-		Assert.assertNull(arguments);
+		assertArrayEquals(RETURN_ALIASES, query.getReturnAliases());
+		assertEquals("getReturnAliases", methodName);
+		assertNull(arguments);
 	}
 	
 	@Test
 	public void testGetReturnTypes() {
-		Assert.assertNotNull(query.getReturnTypes());
-		Assert.assertEquals("getReturnTypes", methodName);
-		Assert.assertNull(arguments);
+		assertNotNull(query.getReturnTypes());
+		assertEquals("getReturnTypes", methodName);
+		assertNull(arguments);
 	}
 	
 	private class TypeInvocationHandler implements InvocationHandler {
