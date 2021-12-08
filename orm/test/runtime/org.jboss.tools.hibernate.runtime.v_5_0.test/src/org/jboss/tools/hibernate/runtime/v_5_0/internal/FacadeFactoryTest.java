@@ -174,7 +174,9 @@ public class FacadeFactoryTest {
 	
 	@Test
 	public void testCreateSchemaExport() {
-		Metadata metadata = new MetadataSources().buildMetadata();
+		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
+		ssrb.applySetting(AvailableSettings.DIALECT, TestDialect.class.getName());
+		Metadata metadata = new MetadataSources(ssrb.build()).buildMetadata();
 		SchemaExport schemaExport = new SchemaExport((MetadataImplementor)metadata);
 		ISchemaExport facade = facadeFactory.createSchemaExport(schemaExport);
 		assertSame(schemaExport, ((IFacade)facade).getTarget());		
@@ -308,9 +310,9 @@ public class FacadeFactoryTest {
 	
 	@Test
 	public void testCreateHQLCodeAssist() {
-		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
-		ssrb.applySetting(AvailableSettings.DIALECT, TestDialect.class.getName());
-		HQLCodeAssist hqlCodeAssist = new HQLCodeAssist(new Configuration());
+		Configuration configuration = new Configuration();
+		configuration.setProperty(AvailableSettings.DIALECT, TestDialect.class.getName());
+		HQLCodeAssist hqlCodeAssist = new HQLCodeAssist(configuration);
 		IHQLCodeAssist facade = facadeFactory.createHQLCodeAssist(hqlCodeAssist);
 		assertSame(hqlCodeAssist, ((IFacade)facade).getTarget());		
 	}
