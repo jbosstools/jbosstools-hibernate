@@ -83,6 +83,12 @@ public class ProjectCompilerVersionChecker {
 						return ClassFileConstants.JDK13;
 					case '4':
 						return ClassFileConstants.JDK14;
+					case '5':
+						return ClassFileConstants.JDK15;
+					case '6':
+						return ClassFileConstants.JDK16;
+					case '7':
+						return ClassFileConstants.JDK17;
 					default:
 						return 0;
 				}
