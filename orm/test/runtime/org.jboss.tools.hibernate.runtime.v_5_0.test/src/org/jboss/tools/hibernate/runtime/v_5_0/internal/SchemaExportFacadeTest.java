@@ -19,9 +19,12 @@ import org.jboss.tools.hibernate.runtime.spi.HibernateException;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+// TODO JBIDE-28083: Hibernate Java 17 compability - Reenable test and investigate error
+@Disabled
 public class SchemaExportFacadeTest {
 
 	private static final String FOO_HBM_XML_STRING =
