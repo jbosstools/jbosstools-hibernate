@@ -52,7 +52,6 @@ import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -105,8 +104,6 @@ public class ConfigurationFacadeTest {
 		assertEquals("bar", configurationFacade.getProperty("foo"));
 	}
 
-	// TODO JBIDE-28083: Hibernate Java 17 compability - Reenable test and investigate error
-	@Disabled
 	@Test
 	public void testAddFile() throws Exception {
 		File testFile = File.createTempFile("test", "hbm.xml");
@@ -180,8 +177,6 @@ public class ConfigurationFacadeTest {
 		assertEquals("bar", configuration.getProperty("foo"));
 	}
 	
-	// TODO JBIDE-28083: Hibernate Java 17 compability - Reenable test and investigate error
-	@Disabled
 	@Test
 	public void testConfigureDocument() throws Exception {
 		Document document = DocumentBuilderFactory
@@ -213,8 +208,6 @@ public class ConfigurationFacadeTest {
 		assertNotNull(metadata.getEntityBinding(fooClassName));
 	}
 	
-	// TODO JBIDE-28083: Hibernate Java 17 compability - Reenable test and investigate error
-	@Disabled
 	@Test
 	public void testConfigureFile() throws Exception {
 		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
@@ -237,8 +230,6 @@ public class ConfigurationFacadeTest {
 		assertNotNull(metadata.getEntityBinding(fooClassName));
 	}
 	
-	// TODO JBIDE-28083: Hibernate Java 17 compability - Reenable test and investigate error
-	@Disabled
 	@Test
 	public void testConfigureDefault() throws Exception {
 		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();

@@ -75,7 +75,6 @@ import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class ServiceImplTest {
@@ -199,8 +198,6 @@ public class ServiceImplTest {
 		assertTrue(target instanceof ArtifactCollector);
 	}
 	
-	// TODO JBIDE-28083: Hibernate Java 17 compability - Reenable test and investigate error
-	@Disabled
 	@Test
 	public void testNewHQLQueryPlan() throws Exception {
 		IConfiguration configuration = service.newDefaultConfiguration();

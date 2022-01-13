@@ -29,12 +29,9 @@ import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-// TODO JBIDE-28083: Hibernate Java 17 compability - Reenable test and investigate error
-@Disabled
 public class SessionFactoryFacadeTest {
 
 	private static final String TEST_CFG_XML_STRING =
