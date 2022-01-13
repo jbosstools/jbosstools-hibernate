@@ -12,7 +12,7 @@ Require-Bundle: org.apache.commons.collections;bundle-version="3.2.0",
  org.jboss.tools.hibernate.libs.jtidy.v_r8-20060801;bundle-version="5.0.0",
  org.jboss.tools.hibernate.runtime.common;bundle-version="5.0.0",
  org.jboss.tools.hibernate.runtime.spi;bundle-version="5.0.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: .,
  lib/commons-logging-1.1.1.jar,
  lib/hibernate-commons-annotations-4.0.5.Final.jar,
