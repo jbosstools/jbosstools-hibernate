@@ -9,7 +9,7 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.boot.internal.MetadataImpl;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.PersistentClass;
-import org.hibernate.tool.hbm2x.GenericExporter;
+import org.hibernate.tool.hbm2x.AbstractExporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -67,7 +67,7 @@ extends HibernateMappingExporter {
 						entityBindingMapField.set(metadataImpl, map);
 					}
 				}
-				Field metadataField = GenericExporter.class.getDeclaredField("metadata");
+				Field metadataField = AbstractExporter.class.getDeclaredField("metadata");
 				if (metadataField != null) {
 					metadataField.setAccessible(true);
 					metadataField.set(this, metadata);

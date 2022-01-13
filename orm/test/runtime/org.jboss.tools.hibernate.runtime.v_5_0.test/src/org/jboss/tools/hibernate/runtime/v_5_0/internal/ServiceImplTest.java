@@ -45,9 +45,9 @@ import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.hbm2x.AbstractExporter;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
-import org.hibernate.tool.hbm2x.GenericExporter;
 import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -144,7 +144,7 @@ public class ServiceImplTest {
 		HibernateMappingExporterExtension hmee = 
 				(HibernateMappingExporterExtension)((IFacade)hibernateMappingExporter).getTarget();
 		assertSame(file, hmee.getOutputDirectory());
-		Field metadataField = GenericExporter.class.getDeclaredField("metadata");
+		Field metadataField = AbstractExporter.class.getDeclaredField("metadata");
 		metadataField.setAccessible(true);
 		assertSame(
 				((ConfigurationFacadeImpl)configuration).getMetadata(), 

@@ -24,7 +24,6 @@ import org.hibernate.tool.hbm2x.AbstractExporter;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.hibernate.tool.hbm2x.Cfg2JavaTool;
-import org.hibernate.tool.hbm2x.GenericExporter;
 import org.hibernate.tool.hbm2x.TemplateHelper;
 import org.hibernate.tool.hbm2x.pojo.EntityPOJOClass;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
@@ -67,7 +66,7 @@ public class HibernateMappingExporterExtensionTest {
 		facadeFactoryField.setAccessible(true);
 		assertSame(FACADE_FACTORY, facadeFactoryField.get(hibernateMappingExporterExtension));
 		Metadata metadata = ((ConfigurationFacadeImpl)configurationFacade).getMetadata();
-		Field metadataField = GenericExporter.class.getDeclaredField("metadata");
+		Field metadataField = AbstractExporter.class.getDeclaredField("metadata");
 		metadataField.setAccessible(true);
 		assertSame(metadata, metadataField.get(hibernateMappingExporterExtension));
 		assertSame(((IFacade)configurationFacade).getTarget(), hibernateMappingExporterExtension.getConfiguration());
