@@ -12,9 +12,8 @@
 	<packaging>eclipse-plugin</packaging>
 
 	<properties>
-		<hibernate.version>5.0.12.Final</hibernate.version>
-		<hibernate-tools.version>5.0.7.Final</hibernate-tools.version>
-	    <jaxb.version>2.3.0</jaxb.version>
+		<hibernate.core.version>5.0.12.Final</hibernate.core.version>
+		<hibernate.tools.version>5.0.7.Final</hibernate.tools.version>
 	</properties>
 
 	<build>
@@ -36,23 +35,18 @@
 						<artifactItem>
 							<groupId>org.hibernate</groupId>
 							<artifactId>hibernate-core</artifactId>
-							<version>${hibernate.version}</version>
+							<version>${hibernate.core.version}</version>
 						</artifactItem>
 						<artifactItem>
 							<groupId>org.hibernate</groupId>
 							<artifactId>hibernate-entitymanager</artifactId>
-							<version>${hibernate.version}</version>
+							<version>${hibernate.core.version}</version>
 						</artifactItem>
 						<artifactItem>
 							<groupId>org.hibernate</groupId>
 							<artifactId>hibernate-tools</artifactId>
-							<version>${hibernate-tools.version}</version>
+							<version>${hibernate.tools.version}</version>
 						</artifactItem>
- 						<artifactItem>
-							<groupId>com.sun.xml.bind</groupId>
-							<artifactId>jaxb-impl</artifactId>
-							<version>${jaxb.version}</version>
-						</artifactItem> 
 					</artifactItems>
 					<skip>false</skip>
 					<outputDirectory>${basedir}/lib</outputDirectory>
