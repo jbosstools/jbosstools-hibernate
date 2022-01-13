@@ -14,8 +14,7 @@ Bundle-ClassPath: .,
  lib/hibernate-tools-5.0.7.Final.jar,
  lib/javassist-3.18.1-GA.jar,
  lib/jaxb-impl-2.3.0.jar,
- lib/jboss-logging-3.3.0.Final.jar,
- lib/slf4j-api-1.6.1.jar
+ lib/jboss-logging-3.3.0.Final.jar
 Require-Bundle: org.apache.commons.logging,
  org.jboss.tools.hibernate.libs.activation.v_1_2_0,
  org.jboss.tools.hibernate.libs.antlr.v_2_7_7,
