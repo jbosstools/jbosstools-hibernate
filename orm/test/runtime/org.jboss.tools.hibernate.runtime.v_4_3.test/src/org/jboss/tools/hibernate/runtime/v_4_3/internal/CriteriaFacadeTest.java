@@ -1,58 +1,63 @@
 package org.jboss.tools.hibernate.runtime.v_4_3.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.hibernate.Criteria;
+import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.internal.CriteriaImpl;
 import org.jboss.tools.hibernate.runtime.common.AbstractCriteriaFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 
 public class CriteriaFacadeTest {
 
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
+	private static final List<?> EMPTY_LIST = new ArrayList<>();
 	
 	private ICriteria criteriaFacade = null; 
-	private Criteria criteria = null;
+	private CriteriaImpl criteria = null;
 	
-	private String methodName = null;
-	private Object[] arguments = null;
-	
-	@Before
-	public void setUp() throws Exception {
-		criteria = (Criteria)Proxy.newProxyInstance(
-				FACADE_FACTORY.getClassLoader(), 
-				new Class[] { Criteria.class }, 
-				new TestInvocationHandler());
+	@BeforeEach
+	public void beforeEach() throws Exception {
+		criteria = new CriteriaImpl("foobar", createFoobarSessionContractImplementor());
 		criteriaFacade = new AbstractCriteriaFacade(FACADE_FACTORY, criteria) {};
 	}
 	
 	@Test
 	public void testSetMaxResults()  {
+		assertNotEquals(Integer.MAX_VALUE, criteria.getMaxResults());
 		criteriaFacade.setMaxResults(Integer.MAX_VALUE);
-		Assert.assertEquals("setMaxResults", methodName);
-		Assert.assertArrayEquals(new Object[] { Integer.MAX_VALUE }, arguments);
+		assertEquals(Integer.MAX_VALUE, criteria.getMaxResults());
 	}
 	
 	@Test
 	public void testList() {
-		Assert.assertNull(criteriaFacade.list());
-		Assert.assertEquals("list", methodName);
-		Assert.assertNull(arguments);
+		assertSame(EMPTY_LIST, criteriaFacade.list());
 	}
 	
-	private class TestInvocationHandler implements InvocationHandler {
-		@Override
-		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-			methodName = method.getName();
-			arguments = args;
-			return null;
-		}		
+	private SessionImplementor createFoobarSessionContractImplementor() {
+		return (SessionImplementor)Proxy.newProxyInstance(
+				getClass().getClassLoader(), 
+				new Class[] { SessionImplementor.class }, 
+				new InvocationHandler() {				
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+						if ("list".equals(method.getName())) {
+							return EMPTY_LIST;
+						}
+						return null;
+					}
+				});
 	}
 	
 }
