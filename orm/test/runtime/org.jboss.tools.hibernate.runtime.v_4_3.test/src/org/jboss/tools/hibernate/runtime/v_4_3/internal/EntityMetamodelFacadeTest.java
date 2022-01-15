@@ -10,7 +10,9 @@ import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.RootClass;
@@ -38,11 +40,30 @@ public class EntityMetamodelFacadeTest {
 	private String methodName = null;
 	private Object[] arguments = null;
 	
-	@SuppressWarnings("serial")
 	@BeforeEach
 	public void setUp() throws Exception {
+		entityMetamodel = createFoobarModel();
+		entityMetamodelFacade = new AbstractEntityMetamodelFacade(FACADE_FACTORY, entityMetamodel) {};
+	}
+	
+	@Test
+	public void testGetTuplizerPropertyValue() {
+		assertSame(OBJECT, entityMetamodelFacade.getTuplizerPropertyValue(OBJECT, Integer.MAX_VALUE));
+		assertEquals("getPropertyValue", methodName);
+		assertArrayEquals(new Object[] { OBJECT,  Integer.MAX_VALUE }, arguments);
+	}
+	
+	@Test
+	public void testGetPropertyIndexOrNull() {
+		assertSame(INDEX, entityMetamodelFacade.getPropertyIndexOrNull("foobar"));
+		assertEquals("getPropertyIndexOrNull", methodName);
+		assertArrayEquals(arguments, new Object[] { "foobar" });
+	}
+	
+	@SuppressWarnings("serial")
+	private EntityMetamodel createFoobarModel() {
 		Configuration configuration = new Configuration();
-		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+		configuration.setProperty(AvailableSettings.DIALECT, TestDialect.class.getName());
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySettings(configuration.getProperties());
 		ServiceRegistry serviceRegistry = builder.build();		
@@ -61,7 +82,7 @@ public class EntityMetamodelFacadeTest {
 		sv.addColumn(c);
 		rc.setEntityName("foobar");
 		rc.setIdentifier(sv);
-		entityMetamodel = new EntityMetamodel(rc, null, sfi) {
+		return entityMetamodel = new EntityMetamodel(rc, null, sfi) {
 			@Override public EntityTuplizer getTuplizer() {
 				return (EntityTuplizer)Proxy.newProxyInstance(
 						FACADE_FACTORY.getClassLoader(), 
@@ -75,21 +96,6 @@ public class EntityMetamodelFacadeTest {
 			}
 			
 		};
-		entityMetamodelFacade = new AbstractEntityMetamodelFacade(FACADE_FACTORY, entityMetamodel) {};
-	}
-	
-	@Test
-	public void testGetTuplizerPropertyValue() {
-		assertSame(OBJECT, entityMetamodelFacade.getTuplizerPropertyValue(OBJECT, Integer.MAX_VALUE));
-		assertEquals("getPropertyValue", methodName);
-		assertArrayEquals(new Object[] { OBJECT,  Integer.MAX_VALUE }, arguments);
-	}
-	
-	@Test
-	public void testGetPropertyIndexOrNull() {
-		assertSame(INDEX, entityMetamodelFacade.getPropertyIndexOrNull("foobar"));
-		assertEquals("getPropertyIndexOrNull", methodName);
-		assertArrayEquals(arguments, new Object[] { "foobar" });
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
@@ -100,5 +106,7 @@ public class EntityMetamodelFacadeTest {
 			return OBJECT;
 		}
 	}
+	
+	public static class TestDialect extends Dialect {}
 	
 }
