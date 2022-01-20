@@ -10,6 +10,10 @@
 	<artifactId>org.jboss.tools.hibernate.runtime.v_4_3.test</artifactId> 
 	
 	<packaging>eclipse-test-plugin</packaging>
+
+	<properties>
+		<systemProperties>--add-opens=java.base/java.lang=ALL-UNNAMED</systemProperties>
+	</properties>
 	
 	<build>
 		<plugins>
