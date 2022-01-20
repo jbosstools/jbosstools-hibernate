@@ -530,25 +530,25 @@ public class PersistentClassFacadeTest {
 	@Test
 	public void testIsInherited() {
 		persistentClassFacade = 
-				new AbstractPersistentClassFacade(
+				new PersistentClassFacadeImpl(
 						FACADE_FACTORY, 
-						new RootClass(DummyMetadataBuildingContext.INSTANCE)) {};
+						new RootClass(DummyMetadataBuildingContext.INSTANCE));
 		assertFalse(persistentClassFacade.isInherited());
 		persistentClassFacade = 
-				new AbstractPersistentClassFacade(
+				new PersistentClassFacadeImpl(
 						FACADE_FACTORY,
 						new Subclass(
 								new RootClass(DummyMetadataBuildingContext.INSTANCE), 
-								DummyMetadataBuildingContext.INSTANCE)) {};
+								DummyMetadataBuildingContext.INSTANCE));
 		assertTrue(persistentClassFacade.isInherited());
 	}
 	
 	@Test
 	public void testIsJoinedSubclass() {
 		persistentClassFacade = 
-				new AbstractPersistentClassFacade(
+				new PersistentClassFacadeImpl(
 						FACADE_FACTORY, 
-						new RootClass(DummyMetadataBuildingContext.INSTANCE)) {};
+						new RootClass(DummyMetadataBuildingContext.INSTANCE));
 		assertFalse(persistentClassFacade.isJoinedSubclass());
 		Table rootTable = new Table();
 		Table subTable = new Table();
@@ -556,7 +556,7 @@ public class PersistentClassFacadeTest {
 		rootClass.setTable(rootTable);
 		JoinedSubclass subclass = new JoinedSubclass(rootClass, DummyMetadataBuildingContext.INSTANCE);
 		subclass.setTable(subTable);
-		persistentClassFacade = new AbstractPersistentClassFacade(FACADE_FACTORY, subclass) {};
+		persistentClassFacade = new PersistentClassFacadeImpl(FACADE_FACTORY, subclass);
 		assertTrue(persistentClassFacade.isJoinedSubclass());
 		subclass.setTable(rootTable);
 		assertFalse(persistentClassFacade.isJoinedSubclass());
