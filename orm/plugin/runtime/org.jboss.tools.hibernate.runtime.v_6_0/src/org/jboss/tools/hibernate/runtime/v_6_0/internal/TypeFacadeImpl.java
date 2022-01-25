@@ -1,8 +1,10 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
+import org.hibernate.type.BasicType;
 import org.hibernate.type.EntityType;
 import org.jboss.tools.hibernate.runtime.common.AbstractTypeFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.v_6_0.internal.legacy.IntegerType;
 
 public class TypeFacadeImpl extends AbstractTypeFacade {
 
@@ -19,4 +21,19 @@ public class TypeFacadeImpl extends AbstractTypeFacade {
 		}
 	}
 
+	@Override
+	public String toString(Object value) {
+		String result = null;
+		Object target = getTarget();
+		if (target instanceof BasicType) {
+			return ((BasicType)target).getJavaTypeDescriptor().toString(value);
+		}
+		return result;
+	}
+	
+	@Override
+	protected String getIntegerTypeClassName() {
+		return IntegerType.class.getName();
+	}
+	
 }
