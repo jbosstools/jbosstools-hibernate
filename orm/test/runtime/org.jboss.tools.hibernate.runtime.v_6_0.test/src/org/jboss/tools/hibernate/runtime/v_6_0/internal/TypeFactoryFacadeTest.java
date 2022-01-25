@@ -39,6 +39,7 @@ import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.legacy.BigDecimalType;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.legacy.BigIntegerType;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.legacy.BooleanType;
+import org.jboss.tools.hibernate.runtime.v_6_0.internal.legacy.ByteType;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -55,11 +56,9 @@ public class TypeFactoryFacadeTest {
 		assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
 	
-	// TODO JBIDE-28154: Investigate failure 
-	@Disabled
 	@Test
 	public void testGetByteType() {
-		Type typeTarget = BooleanType.INSTANCE;
+		Type typeTarget = ByteType.INSTANCE;
 		IType typeFacade = typeFactoryFacade.getByteType();
 		assertSame(typeTarget, ((IFacade)typeFacade).getTarget());
 	}
