@@ -10,7 +10,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
-import org.hibernate.type.DoubleType;
 import org.hibernate.type.FloatType;
 import org.hibernate.type.IntegerType;
 import org.hibernate.type.LocaleType;
@@ -40,6 +39,7 @@ import org.jboss.tools.hibernate.runtime.v_6_0.internal.legacy.CharacterType;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.legacy.ClassType;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.legacy.CurrencyType;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.legacy.DateType;
+import org.jboss.tools.hibernate.runtime.v_6_0.internal.legacy.DoubleType;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
