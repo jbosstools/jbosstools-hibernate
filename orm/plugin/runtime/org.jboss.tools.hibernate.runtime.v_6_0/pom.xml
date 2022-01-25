@@ -12,8 +12,7 @@
 	<packaging>eclipse-plugin</packaging>
 
 	<properties>
-		<hibernate.core.version>6.0.0.Beta1</hibernate.core.version>
-		<hibernate.tools.version>6.0.0.Beta1</hibernate.tools.version>
+		<hibernate.version>6.0.0.Beta2</hibernate.version>
 	</properties>
 
 	<build>
@@ -35,22 +34,22 @@
 						<artifactItem>
 							<groupId>org.hibernate.tool</groupId>
 							<artifactId>hibernate-tools-orm</artifactId>
-							<version>${hibernate.tools.version}</version>
+							<version>${hibernate.version}</version>
 						</artifactItem>
 						<artifactItem>
 							<groupId>org.hibernate.tool</groupId>
 							<artifactId>hibernate-tools-utils</artifactId>
-							<version>${hibernate.tools.version}</version>
+							<version>${hibernate.version}</version>
 						</artifactItem>
 						<artifactItem>
 							<groupId>org.hibernate.orm</groupId>
 							<artifactId>hibernate-ant</artifactId>
-							<version>${hibernate.core.version}</version>
+							<version>${hibernate.version}</version>
 						</artifactItem>
 						<artifactItem>
 							<groupId>org.hibernate.orm</groupId>
 							<artifactId>hibernate-core</artifactId>
-							<version>${hibernate.core.version}</version>
+							<version>${hibernate.version}</version>
 						</artifactItem>
 					</artifactItems>
 					<skip>false</skip>

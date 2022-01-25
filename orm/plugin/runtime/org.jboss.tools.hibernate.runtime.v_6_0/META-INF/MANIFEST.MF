@@ -7,10 +7,10 @@ Bundle-Version: 5.4.15.qualifier
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: .,
- lib/hibernate-ant-6.0.0.Beta1.jar,
- lib/hibernate-core-6.0.0.Beta1.jar,
- lib/hibernate-tools-orm-6.0.0.Beta1.jar,
- lib/hibernate-tools-utils-6.0.0.Beta1.jar
+ lib/hibernate-ant-6.0.0.Beta2.jar,
+ lib/hibernate-core-6.0.0.Beta2.jar,
+ lib/hibernate-tools-orm-6.0.0.Beta2.jar,
+ lib/hibernate-tools-utils-6.0.0.Beta2.jar
 Require-Bundle: org.jboss.tools.hibernate.libs.activation.v_1_2_0,
  org.jboss.tools.hibernate.libs.antlr4-runtime.v_4_9,
  org.jboss.tools.hibernate.libs.byte-buddy.v_1_11,
