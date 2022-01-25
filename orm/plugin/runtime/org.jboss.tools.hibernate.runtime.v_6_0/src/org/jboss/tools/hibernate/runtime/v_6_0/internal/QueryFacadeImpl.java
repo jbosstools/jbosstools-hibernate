@@ -20,8 +20,8 @@ public class QueryFacadeImpl extends AbstractQueryFacade {
 	@Override
 	public void setParameter(int position, Object value, IType type) {
 		Object typeTarget = ((IFacade)type).getTarget();
-		if (typeTarget instanceof AllowableParameterType<?>) {
-			((Query<?>)getTarget()).setParameter(position, value, (AllowableParameterType<?>)typeTarget);
+		if (typeTarget instanceof AllowableParameterType) {
+			((Query<?>)getTarget()).setParameter(position, value, (AllowableParameterType)typeTarget);
 		} else if (typeTarget instanceof TemporalType) {
 			((Query<?>)getTarget()).setParameter(position, value, (TemporalType)typeTarget); 
 		} else {
@@ -32,8 +32,8 @@ public class QueryFacadeImpl extends AbstractQueryFacade {
 	@Override
 	public void setParameter(String name, Object value, IType type) {
 		Object typeTarget = ((IFacade)type).getTarget();
-		if (typeTarget instanceof AllowableParameterType<?>) {
-			((Query<?>)getTarget()).setParameter(name, value, (AllowableParameterType<?>)typeTarget);
+		if (typeTarget instanceof AllowableParameterType) {
+			((Query<?>)getTarget()).setParameter(name, value, (AllowableParameterType)typeTarget);
 		} else if (typeTarget instanceof TemporalType) {
 			((Query<?>)getTarget()).setParameter(name, value, (TemporalType)typeTarget); 
 		} else {
@@ -44,8 +44,8 @@ public class QueryFacadeImpl extends AbstractQueryFacade {
 	@Override
 	public void setParameterList(String name, List<Object> list, IType type) {
 		Object typeTarget = ((IFacade)type).getTarget();
-		if (typeTarget instanceof AllowableParameterType<?>) {
-			((Query<?>)getTarget()).setParameter(name, list, (AllowableParameterType<?>)typeTarget);
+		if (typeTarget instanceof AllowableParameterType) {
+			((Query<?>)getTarget()).setParameter(name, list, (AllowableParameterType)typeTarget);
 		} else {
 			((Query<?>)getTarget()).setParameter(name, list);
 		}
