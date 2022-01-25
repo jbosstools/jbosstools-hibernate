@@ -22,16 +22,16 @@ import org.hibernate.tuple.component.ComponentMetamodel;
 import org.hibernate.type.AnyType;
 import org.hibernate.type.ArrayType;
 import org.hibernate.type.BagType;
-import org.hibernate.type.ClassType;
 import org.hibernate.type.ComponentType;
 import org.hibernate.type.EntityType;
-import org.hibernate.type.IntegerType;
 import org.hibernate.type.ManyToOneType;
 import org.hibernate.type.OneToOneType;
-import org.hibernate.type.StringType;
 import org.hibernate.type.spi.TypeConfiguration;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
+import org.jboss.tools.hibernate.runtime.v_6_0.internal.legacy.ClassType;
+import org.jboss.tools.hibernate.runtime.v_6_0.internal.legacy.IntegerType;
+import org.jboss.tools.hibernate.runtime.v_6_0.internal.legacy.StringType;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.DummyMetadataBuildingContext;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.MockConnectionProvider;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.MockDialect;
@@ -151,7 +151,7 @@ public class TypeFacadeTest {
 						null,
 						new ComponentMetamodel(
 								new Component(mdbc, new RootClass(DummyMetadataBuildingContext.INSTANCE)),
-								btc),
+								mdbo),
 						new int[] {});
 		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, componentType){};
 		assertTrue(typeFacade.isComponentType());
