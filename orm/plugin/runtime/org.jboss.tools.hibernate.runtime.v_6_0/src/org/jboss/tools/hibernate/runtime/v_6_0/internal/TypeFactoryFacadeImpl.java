@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import org.hibernate.type.LocaleType;
 import org.hibernate.type.LongType;
 import org.hibernate.type.ShortType;
 import org.hibernate.type.StringType;
@@ -36,6 +35,7 @@ import org.jboss.tools.hibernate.runtime.v_6_0.internal.legacy.DateType;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.legacy.DoubleType;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.legacy.FloatType;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.legacy.IntegerType;
+import org.jboss.tools.hibernate.runtime.v_6_0.internal.legacy.LocaleType;
 
 public class TypeFactoryFacadeImpl extends AbstractTypeFactoryFacade {
 
