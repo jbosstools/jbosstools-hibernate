@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import org.hibernate.type.StandardBasicTypes;
-import org.hibernate.type.TimeType;
 import org.hibernate.type.TimeZoneType;
 import org.hibernate.type.TrueFalseType;
 import org.hibernate.type.Type;
@@ -39,6 +38,7 @@ import org.jboss.tools.hibernate.runtime.v_6_0.internal.legacy.LongType;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.legacy.ShortType;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.legacy.StringType;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.legacy.TextType;
+import org.jboss.tools.hibernate.runtime.v_6_0.internal.legacy.TimeType;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.legacy.TimestampType;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
