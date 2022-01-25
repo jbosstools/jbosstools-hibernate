@@ -1,0 +1,25 @@
+package org.jboss.tools.hibernate.runtime.v_6_0.internal.legacy;
+
+import java.math.BigDecimal;
+
+import org.hibernate.type.AbstractSingleColumnStandardBasicType;
+import org.hibernate.type.descriptor.java.BigDecimalJavaTypeDescriptor;
+import org.hibernate.type.descriptor.jdbc.NumericJdbcType;
+
+public class BigDecimalType extends AbstractSingleColumnStandardBasicType<BigDecimal> {
+	public static final BigDecimalType INSTANCE = new BigDecimalType();
+
+	public BigDecimalType() {
+		super( NumericJdbcType.INSTANCE, BigDecimalJavaTypeDescriptor.INSTANCE );
+	}
+
+	@Override
+	public String getName() {
+		return "big_decimal";
+	}
+
+	@Override
+	protected boolean registerUnderJavaType() {
+		return true;
+	}
+}
