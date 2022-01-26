@@ -9,8 +9,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 import org.h2.Driver;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
+import org.hibernate.dialect.Dialect;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.HibernateException;
@@ -36,6 +38,8 @@ public class SchemaExportFacadeTest {
 		public String fooId;
 	}
 	
+	public static class TestDialect extends Dialect {}
+	
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 	
 	@TempDir
@@ -56,6 +60,7 @@ public class SchemaExportFacadeTest {
 		fooWriter.write(FOO_HBM_XML_STRING);
 		fooWriter.close();
 		configuration = new Configuration();
+		configuration.setProperty(AvailableSettings.DIALECT, TestDialect.class.getName());
 		configuration.addFile(fooFile);
 	}
 	
