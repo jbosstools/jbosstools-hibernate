@@ -65,6 +65,7 @@ import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
+import org.jboss.tools.hibernate.runtime.common.AbstractPersistentClassFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractService;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
@@ -458,13 +459,19 @@ public class ServiceImpl extends AbstractService {
 	public IPersistentClass newSingleTableSubclass(
 			IPersistentClass persistentClass) {
 		assert persistentClass instanceof IFacade;
-		return facadeFactory.createPersistentClass(new SingleTableSubclass((PersistentClass)((IFacade)persistentClass).getTarget()));
+		IPersistentClass result = facadeFactory.createPersistentClass(
+				new SingleTableSubclass((PersistentClass)((IFacade)persistentClass).getTarget()));
+		((AbstractPersistentClassFacade)result).setSuperClass(persistentClass);
+		return result;
 	}
 
 	@Override
 	public IPersistentClass newJoinedSubclass(IPersistentClass persistentClass) {
 		assert persistentClass instanceof IFacade;
-		return facadeFactory.createPersistentClass(new JoinedSubclass((PersistentClass)((IFacade)persistentClass).getTarget()));
+		IPersistentClass result = facadeFactory.createPersistentClass(
+				new JoinedSubclass((PersistentClass)((IFacade)persistentClass).getTarget()));
+		((AbstractPersistentClassFacade)result).setSuperClass(persistentClass);
+		return result;
 	}
 
 	@Override
