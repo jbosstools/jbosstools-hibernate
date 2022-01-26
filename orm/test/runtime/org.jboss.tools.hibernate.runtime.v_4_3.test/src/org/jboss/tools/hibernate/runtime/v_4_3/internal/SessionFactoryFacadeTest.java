@@ -84,11 +84,11 @@ public class SessionFactoryFacadeTest {
 		fileWriter.write(TEST_HBM_XML_STRING);
 		fileWriter.close();
 		Configuration configuration = new Configuration();
-		configuration.setProperty(AvailableSettings.DIALECT, TestDialect.class.getName());
 		configuration.addFile(hbmXmlFile);
 		configuration.configure(cfgXmlFile);
-		sessionFactoryTarget = configuration.buildSessionFactory(
-				new StandardServiceRegistryBuilder().build());
+		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
+		ssrb.applySetting(AvailableSettings.DIALECT, TestDialect.class.getName());
+		sessionFactoryTarget = configuration.buildSessionFactory(ssrb.build());
 		sessionFactoryFacade = new AbstractSessionFactoryFacade(FACADE_FACTORY, sessionFactoryTarget) {};
 	}
 	
