@@ -14,7 +14,6 @@
 	<properties>
 		<hibernate.version>4.3.11.Final</hibernate.version>
 		<hibernate-commons-annotations.version>4.0.5.Final</hibernate-commons-annotations.version>
-		<hibernate-jpa-2.1-api.version>1.0.0.Final</hibernate-jpa-2.1-api.version>
 		<hibernate-tools.version>4.3.5.Final</hibernate-tools.version>
 	</properties>
 
@@ -48,11 +47,6 @@
 							<groupId>org.hibernate</groupId>
 							<artifactId>hibernate-entitymanager</artifactId>
 							<version>${hibernate.version}</version>
-						</artifactItem>
-						<artifactItem>
-							<groupId>org.hibernate.javax.persistence</groupId>
-							<artifactId>hibernate-jpa-2.1-api</artifactId>
-							<version>${hibernate-jpa-2.1-api.version}</version>
 						</artifactItem>
 						<artifactItem>
 							<groupId>org.hibernate</groupId>
