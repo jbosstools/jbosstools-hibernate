@@ -18,7 +18,6 @@ import org.hibernate.boot.spi.MetadataBuildingOptions;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.RootClass;
-import org.hibernate.tuple.component.ComponentMetamodel;
 import org.hibernate.type.AnyType;
 import org.hibernate.type.ArrayType;
 import org.hibernate.type.BagType;
@@ -32,7 +31,6 @@ import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.legacy.ClassType;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.legacy.IntegerType;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.legacy.StringType;
-import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.DummyMetadataBuildingContext;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.MockConnectionProvider;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.MockDialect;
 import org.junit.jupiter.api.Disabled;
@@ -148,11 +146,9 @@ public class TypeFacadeTest {
 		MetadataBuildingContext mdbc = new MetadataBuildingContextRootImpl("JBoss Tools", btc, mdbo, ifmdc);
 		ComponentType componentType = 
 				new ComponentType(
-						null,
-						new ComponentMetamodel(
-								new Component(mdbc, new RootClass(DummyMetadataBuildingContext.INSTANCE)),
-								mdbo),
-						new int[] {});
+						new Component(mdbc, new RootClass(mdbc)),
+						new int[] {},
+						mdbc);
 		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, componentType){};
 		assertTrue(typeFacade.isComponentType());
 	}

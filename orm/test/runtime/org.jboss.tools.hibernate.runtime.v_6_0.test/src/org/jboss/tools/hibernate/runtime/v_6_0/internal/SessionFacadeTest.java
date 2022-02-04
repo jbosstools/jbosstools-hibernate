@@ -11,11 +11,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
-
 import org.hibernate.Session;
-import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.engine.spi.SessionImplementor;
@@ -26,6 +22,9 @@ import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 
 public class SessionFacadeTest {
 	
@@ -246,11 +245,6 @@ public class SessionFacadeTest {
 						return null;
 					}
 				});
-	}
-	
-	public static class TestDialect extends Dialect {
-		@Override
-		public int getVersion() { return 0; }
 	}
 	
 }

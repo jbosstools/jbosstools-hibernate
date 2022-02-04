@@ -2,13 +2,16 @@ package org.jboss.tools.hibernate.runtime.v_6_0.internal.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.hibernate.dialect.DatabaseVersion;
 import org.junit.jupiter.api.Test;
 
 public class MockDialectTest {
 	
 	@Test
 	public void testGetVersion() {
-		assertEquals(0, new MockDialect().getVersion());
+		DatabaseVersion version = new MockDialect().getVersion();
+		assertEquals(Integer.MAX_VALUE, version.getDatabaseMajorVersion());
+		assertEquals(Integer.MIN_VALUE, version.getDatabaseMinorVersion());
 	}
 
 }
