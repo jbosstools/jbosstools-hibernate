@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Hibernate Runtime 6.0 Tests
 Bundle-SymbolicName: org.jboss.tools.hibernate.runtime.v_6_0.test
 Automatic-Module-Name: org.jboss.tools.hibernate.runtime.v.6.0.test
-Bundle-Version: 5.4.15.qualifier
+Bundle-Version: 5.4.16.qualifier
 Fragment-Host: org.jboss.tools.hibernate.runtime.v_6_0
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.junit.jupiter.api,

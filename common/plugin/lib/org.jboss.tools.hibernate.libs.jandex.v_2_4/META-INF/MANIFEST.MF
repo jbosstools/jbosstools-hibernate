@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Java Persistence API for JBoss Tools Hibernate
 Bundle-SymbolicName: org.jboss.tools.hibernate.libs.jandex.v_2_4
-Bundle-Version: 5.4.15.qualifier
+Bundle-Version: 5.4.16.qualifier
 Bundle-Vendor: Red Hat
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ClassPath: lib/jandex-2.4.0.Final.jar

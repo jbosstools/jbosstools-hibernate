@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Hibernate 5.2 libraries
 Bundle-SymbolicName: org.jboss.tools.hibernate.runtime.v_5_2;singleton:=true
-Bundle-Version: 5.4.15.qualifier
+Bundle-Version: 5.4.16.qualifier
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: lib/hibernate-core-5.2.18.Final.jar,
