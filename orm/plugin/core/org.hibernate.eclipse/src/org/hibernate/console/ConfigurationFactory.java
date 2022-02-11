@@ -83,16 +83,6 @@ public class ConfigurationFactory {
 
 	public IConfiguration createConfiguration(IConfiguration localCfg, boolean includeMappings) {
 		Properties properties = prefs.getProperties();
-
-		if (properties != null) {
-			// in case the transaction manager is empty then we need to inject a faketm since
-			// hibernate will still try and instantiate it.
-			String str = properties.getProperty(environment.getTransactionManagerStrategy());
-			if (str != null && StringHelper.isEmpty(str)) {
-				properties.setProperty(environment.getTransactionManagerStrategy(), FAKE_TM_LOOKUP);
-				// properties.setProperty( "hibernate.transaction.factory_class", "");
-			}
-		}
 		if (localCfg == null) {
 			localCfg = buildConfiguration(properties, includeMappings);
 		} else {
