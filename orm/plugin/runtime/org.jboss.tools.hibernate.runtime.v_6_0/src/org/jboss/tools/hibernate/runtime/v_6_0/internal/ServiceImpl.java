@@ -42,7 +42,8 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
-import org.hibernate.proxy.HibernateProxyHelper;
+import org.hibernate.proxy.HibernateProxy;
+import org.hibernate.proxy.LazyInitializer;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
@@ -316,7 +317,7 @@ public class ServiceImpl extends AbstractService {
 		ServiceRegistry serviceRegistry = buildServiceRegistry(properties);
 		DialectFactory dialectFactory = serviceRegistry.getService(DialectFactory.class);
 		Dialect dialect = dialectFactory.buildDialect(
-				properties, 
+				transform(properties), 
 				new DialectResolutionInfoSource() {
 					@Override
 					public DialectResolutionInfo getDialectResolutionInfo() {
@@ -467,7 +468,14 @@ public class ServiceImpl extends AbstractService {
 	
 	@Override
 	public Class<?> getClassWithoutInitializingProxy(Object reflectedObject) {
-		return HibernateProxyHelper.getClassWithoutInitializingProxy(reflectedObject);
+		if (reflectedObject instanceof HibernateProxy) {
+			HibernateProxy proxy = (HibernateProxy) reflectedObject;
+			LazyInitializer li = proxy.getHibernateLazyInitializer();
+			return li.getPersistentClass();
+		}
+		else {
+			return (Class<?>) reflectedObject.getClass();
+		}
 	}
 
 	@Override
@@ -523,6 +531,14 @@ public class ServiceImpl extends AbstractService {
 		catch ( Throwable ignore ) {
 		}
 		return Class.forName( name );
+	}
+	
+	private Map<String, Object> transform(Properties properties) {
+		Map<String, Object> result = new HashMap<String, Object>(properties.size());
+		for (Object key : properties.keySet()) {
+			result.put((String)key, properties.get(key));
+		}
+		return result;
 	}
 
 }

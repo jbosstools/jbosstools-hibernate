@@ -3,7 +3,7 @@ package org.jboss.tools.hibernate.runtime.v_6_0.internal.legacy;
 import org.hibernate.Incubating;
 import org.hibernate.type.AbstractSingleColumnStandardBasicType;
 import org.hibernate.type.AdjustableBasicType;
-import org.hibernate.type.descriptor.java.BooleanJavaTypeDescriptor;
+import org.hibernate.type.descriptor.java.BooleanJavaType;
 import org.hibernate.type.descriptor.java.JavaType;
 import org.hibernate.type.descriptor.jdbc.BooleanJdbcType;
 import org.hibernate.type.descriptor.jdbc.JdbcType;
@@ -13,10 +13,10 @@ public class BooleanType extends AbstractSingleColumnStandardBasicType<Boolean>
 	public static final BooleanType INSTANCE = new BooleanType();
 
 	public BooleanType() {
-		this(BooleanJdbcType.INSTANCE, BooleanJavaTypeDescriptor.INSTANCE);
+		this(BooleanJdbcType.INSTANCE, BooleanJavaType.INSTANCE);
 	}
 
-	protected BooleanType(JdbcType jdbcType, BooleanJavaTypeDescriptor javaTypeDescriptor) {
+	protected BooleanType(JdbcType jdbcType, BooleanJavaType javaTypeDescriptor) {
 		super(jdbcType, javaTypeDescriptor);
 	}
 

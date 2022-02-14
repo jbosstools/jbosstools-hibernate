@@ -1,5 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import org.hibernate.boot.registry.StandardServiceRegistry;
@@ -37,7 +39,7 @@ public class ColumnFacadeImpl extends AbstractColumnFacade {
 		ssrb.applySettings(properties);
 		StandardServiceRegistry ssr = ssrb.build();
 		DialectFactory df = ssr.getService(DialectFactory.class);
-		Dialect dialectTarget = df.buildDialect(properties, null);
+		Dialect dialectTarget = df.buildDialect(transform(properties), null);
 		return targetColumn.getSqlType(
 				dialectTarget, 
 				((ConfigurationFacadeImpl)configuration).getMetadata());
@@ -96,4 +98,12 @@ public class ColumnFacadeImpl extends AbstractColumnFacade {
 		return value;
 	}
 	
+	private Map<String, Object> transform(Properties properties) {
+		Map<String, Object> result = new HashMap<String, Object>(properties.size());
+		for (Object key : properties.keySet()) {
+			result.put((String)key, properties.get(key));
+		}
+		return result;
+	}
+
 }

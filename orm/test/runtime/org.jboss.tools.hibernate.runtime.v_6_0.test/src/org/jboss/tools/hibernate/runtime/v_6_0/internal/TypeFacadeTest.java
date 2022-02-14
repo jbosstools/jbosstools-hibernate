@@ -48,7 +48,7 @@ public class TypeFacadeTest {
 		assertEquals(
 				TypeFacadeTest.class.getName(), 
 				typeFacade.toString(TypeFacadeTest.class));
-		ArrayType arrayType = new ArrayType(null, "foo", "bar", String.class);
+		ArrayType arrayType = new ArrayType("foo", "bar", String.class);
 		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, arrayType){};
 		assertNull(typeFacade.toString(new String[] { "foo", "bar" }));
 	}
@@ -59,7 +59,7 @@ public class TypeFacadeTest {
 		ClassType classType = new ClassType();
 		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, classType){};
 		assertEquals("class", typeFacade.getName());
-		ArrayType arrayType = new ArrayType(null, "foo", "bar", String.class);
+		ArrayType arrayType = new ArrayType("foo", "bar", String.class);
 		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, arrayType){};
 		assertEquals("[Ljava.lang.String;(foo)", typeFacade.getName());
 	}
@@ -76,7 +76,7 @@ public class TypeFacadeTest {
 				TypeFacadeTest.class, 
 				typeFacade.fromStringValue(TypeFacadeTest.class.getName()));
 		// next try type that is not string representable
-		ArrayType arrayType = new ArrayType(null, "foo", "bar", String.class);
+		ArrayType arrayType = new ArrayType("foo", "bar", String.class);
 		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, arrayType){};
 		assertNull(typeFacade.fromStringValue("just a random string"));
 	}
@@ -161,7 +161,7 @@ public class TypeFacadeTest {
 		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, classType){};
 		assertFalse(typeFacade.isCollectionType());
 		// next try a collection type
-		ArrayType arrayType = new ArrayType(null, null, null, String.class);
+		ArrayType arrayType = new ArrayType(null, null, String.class);
 		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, arrayType){};
 		assertTrue(typeFacade.isCollectionType());
 	}
@@ -172,7 +172,7 @@ public class TypeFacadeTest {
 		ClassType classType = new ClassType();
 		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, classType){};
 		assertEquals(Class.class.getName(), typeFacade.getReturnedClassName());
-		ArrayType arrayType = new ArrayType(null, null, null, String.class);
+		ArrayType arrayType = new ArrayType(null, null, String.class);
 		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, arrayType){};
 		assertEquals(String[].class.getName(), typeFacade.getReturnedClassName());
 		EntityType entityType = new ManyToOneType((TypeConfiguration)null, "org.foo.bar");
@@ -208,10 +208,10 @@ public class TypeFacadeTest {
 		ClassType classType = new ClassType();
 		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, classType){};
 		assertFalse(typeFacade.isArrayType());
-		BagType bagType = new BagType(null, null, null);
+		BagType bagType = new BagType(null, null);
 		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, bagType){};
 		assertFalse(typeFacade.isArrayType());
-		ArrayType arrayType = new ArrayType(null, null, null, String.class);
+		ArrayType arrayType = new ArrayType(null, null, String.class);
 		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, arrayType){};
 		assertTrue(typeFacade.isArrayType());
 	}
@@ -251,7 +251,7 @@ public class TypeFacadeTest {
 		ClassType classType = new ClassType();
 		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, classType){};
 		assertNull(typeFacade.getRole());
-		ArrayType arrayType = new ArrayType(null, "foo", null, String.class);
+		ArrayType arrayType = new ArrayType("foo", null, String.class);
 		typeFacade = new TypeFacadeImpl(FACADE_FACTORY, arrayType){};
 		assertEquals("foo", typeFacade.getRole());
 	}

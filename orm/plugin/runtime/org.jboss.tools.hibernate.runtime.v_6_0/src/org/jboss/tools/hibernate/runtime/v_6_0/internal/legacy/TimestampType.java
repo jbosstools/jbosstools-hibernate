@@ -5,7 +5,7 @@ import java.util.Date;
 
 import org.hibernate.type.AbstractSingleColumnStandardBasicType;
 import org.hibernate.type.descriptor.java.JavaType;
-import org.hibernate.type.descriptor.java.JdbcTimestampJavaTypeDescriptor;
+import org.hibernate.type.descriptor.java.JdbcTimestampJavaType;
 import org.hibernate.type.descriptor.jdbc.JdbcType;
 import org.hibernate.type.descriptor.jdbc.TimestampJdbcType;
 
@@ -14,7 +14,7 @@ public class TimestampType extends AbstractSingleColumnStandardBasicType<Date> {
 	public static final TimestampType INSTANCE = new TimestampType();
 
 	public TimestampType() {
-		super(TimestampJdbcType.INSTANCE, JdbcTimestampJavaTypeDescriptor.INSTANCE);
+		super(TimestampJdbcType.INSTANCE, JdbcTimestampJavaType.INSTANCE);
 	}
 
 	protected TimestampType(JdbcType jdbcType, JavaType<Date> javaTypeDescriptor) {

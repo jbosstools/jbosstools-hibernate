@@ -4,7 +4,7 @@ import org.hibernate.metamodel.model.convert.spi.BasicValueConverter;
 import org.hibernate.type.AbstractSingleColumnStandardBasicType;
 import org.hibernate.type.ConvertedBasicType;
 import org.hibernate.type.TrueFalseConverter;
-import org.hibernate.type.descriptor.java.BooleanJavaTypeDescriptor;
+import org.hibernate.type.descriptor.java.BooleanJavaType;
 import org.hibernate.type.descriptor.jdbc.CharJdbcType;
 
 public class TrueFalseType extends AbstractSingleColumnStandardBasicType<Boolean>
@@ -13,7 +13,7 @@ public class TrueFalseType extends AbstractSingleColumnStandardBasicType<Boolean
 	public static final TrueFalseType INSTANCE = new TrueFalseType();
 
 	public TrueFalseType() {
-		super(CharJdbcType.INSTANCE, new BooleanJavaTypeDescriptor('T', 'F'));
+		super(CharJdbcType.INSTANCE, new BooleanJavaType('T', 'F'));
 	}
 
 	@Override

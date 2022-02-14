@@ -57,7 +57,7 @@ public class ForeignKeyFacadeTest {
 		ArrayList<Column> list = new ArrayList<Column>();
 		Column column = new Column();
 		list.add(column);
-		foreignKey.addReferencedColumns(list.iterator());
+		foreignKey.addReferencedColumns(list);
 		assertFalse(foreignKeyFacade.isReferenceToPrimaryKey());
 	}
 	
@@ -68,7 +68,7 @@ public class ForeignKeyFacadeTest {
 		Column column = new Column();
 		ArrayList<Column> columns = new ArrayList<Column>();
 		columns.add(column);
-		foreignKey.addReferencedColumns(columns.iterator());
+		foreignKey.addReferencedColumns(columns);
 		// recreate facade to reinitialize the instance variables
 		foreignKeyFacade = new ForeignKeyFacadeImpl(FACADE_FACTORY, foreignKey);
 		list = foreignKeyFacade.getReferencedColumns();

@@ -1,7 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal.legacy;
 
 import org.hibernate.type.AbstractSingleColumnStandardBasicType;
-import org.hibernate.type.descriptor.java.ShortJavaTypeDescriptor;
+import org.hibernate.type.descriptor.java.ShortJavaType;
 import org.hibernate.type.descriptor.jdbc.SmallIntJdbcType;
 
 public class ShortType extends AbstractSingleColumnStandardBasicType<Short> {
@@ -11,7 +11,7 @@ public class ShortType extends AbstractSingleColumnStandardBasicType<Short> {
 	private static final Short ZERO = (short) 0;
 
 	public ShortType() {
-		super(SmallIntJdbcType.INSTANCE, ShortJavaTypeDescriptor.INSTANCE);
+		super(SmallIntJdbcType.INSTANCE, ShortJavaType.INSTANCE);
 	}
 
 	@Override
