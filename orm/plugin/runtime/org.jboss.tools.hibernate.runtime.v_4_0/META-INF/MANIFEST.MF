@@ -12,7 +12,7 @@ Require-Bundle: org.apache.commons.collections,
  org.jboss.tools.hibernate.runtime.common,
  org.jboss.tools.hibernate.runtime.spi,
  org.hibernate.eclipse
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: .,
  lib/commons-logging-1.1.1.jar,
  lib/hibernate-commons-annotations-4.0.1.Final.jar,
