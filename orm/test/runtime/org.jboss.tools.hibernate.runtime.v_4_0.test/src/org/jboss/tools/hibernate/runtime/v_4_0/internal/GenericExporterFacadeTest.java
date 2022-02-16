@@ -1,23 +1,18 @@
 package org.jboss.tools.hibernate.runtime.v_4_0.internal;
 
-import java.lang.reflect.Method;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
+import java.lang.reflect.Field;
 
 import org.hibernate.tool.hbm2x.GenericExporter;
 import org.jboss.tools.hibernate.runtime.common.AbstractGenericExporterFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-
-import javassist.util.proxy.MethodHandler;
-import javassist.util.proxy.ProxyFactory;
-import javassist.util.proxy.ProxyObject;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 
-//TODO JBIDE-28083: Hibernate Java 17 compability - Reenable test and investigate error
-@Ignore
 public class GenericExporterFacadeTest {
 
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
@@ -25,85 +20,55 @@ public class GenericExporterFacadeTest {
 	private IGenericExporter genericExporterFacade = null; 
 	private GenericExporter genericExporter = null;
 	
-	private String methodName = null;
-	private Object[] arguments = null;
-	
-	@Before
-	public void setUp() throws Exception {
-		ProxyFactory proxyFactory = new ProxyFactory();
-		proxyFactory.setSuperclass(GenericExporter.class);
-		Class<?> proxyClass = proxyFactory.createClass();
-		genericExporter = (GenericExporter)proxyClass.newInstance();
-		((ProxyObject)genericExporter).setHandler(new MethodHandler() {		
-			@Override
-			public Object invoke(
-					Object self, 
-					Method m, 
-					Method proceed, 
-					Object[] args) throws Throwable {
-				if (methodName == null) {
-					methodName = m.getName();
-				}
-				if (arguments == null) {
-					arguments = args;
-				}
-				return proceed.invoke(self, args);
-			}
-		});
+	@BeforeEach
+	public void beforeEach() {
+		genericExporter = new GenericExporter();
 		genericExporterFacade = new AbstractGenericExporterFacade(FACADE_FACTORY, genericExporter) {};
-		reset();
 	}
 	
 	@Test
-	public void testSetFilePattern() {
-		genericExporter.setFilePattern("barfoo");
-		Assert.assertEquals("barfoo", genericExporter.getFilePattern());
-		reset();
+	public void testSetFilePattern() throws Exception {
+		Field filePatternField = GenericExporter.class.getDeclaredField("filePattern");
+		filePatternField.setAccessible(true);
+		assertNotEquals("foobar", filePatternField.get(genericExporter));
 		genericExporterFacade.setFilePattern("foobar");
-		Assert.assertEquals("setFilePattern", methodName);
-		Assert.assertArrayEquals(new Object[] { "foobar" }, arguments);
-		Assert.assertEquals("foobar", genericExporter.getFilePattern());
+		assertEquals("foobar", filePatternField.get(genericExporter));
 	}
 	
 	@Test
-	public void testSetTemplate() {
-		genericExporter.setTemplateName("barfoo");
-		Assert.assertEquals("barfoo", genericExporter.getTemplateName());
-		reset();
-		genericExporterFacade.setTemplateName("foobar");
-		Assert.assertEquals("setTemplateName", methodName);
-		Assert.assertArrayEquals(new Object[] { "foobar" }, arguments);
-		Assert.assertEquals("foobar", genericExporter.getTemplateName());
+	public void testSetTemplate() throws Exception {
+		Field templateNameField = GenericExporter.class.getDeclaredField("templateName");
+		templateNameField.setAccessible(true);
+		assertNotEquals("barfoo", templateNameField.get(genericExporter));
+		genericExporterFacade.setTemplateName("barfoo");
+		assertEquals("barfoo", templateNameField.get(genericExporter));
 	}
 	
 	@Test
-	public void testSetForEach() {
+	public void testSetForEach() throws Exception {
+		Field forEachField = GenericExporter.class.getDeclaredField("forEach");
+		forEachField.setAccessible(true);
+		assertNotEquals("foobar", forEachField.get(genericExporter));
 		genericExporterFacade.setForEach("foobar");
-		Assert.assertEquals("setForEach", methodName);
-		Assert.assertArrayEquals(new Object[] { "foobar" }, arguments);
+		assertEquals("foobar", forEachField.get(genericExporter));
 	}
 	
 	@Test
-	public void testGetFilePattern() {
-		genericExporter.setFilePattern("foobar");
-		reset();
-		Assert.assertEquals("foobar", genericExporterFacade.getFilePattern());
-		Assert.assertEquals("getFilePattern", methodName);
-		Assert.assertArrayEquals(new Object[] {}, arguments);
+	public void testGetFilePattern() throws Exception {
+		Field filePatternField = GenericExporter.class.getDeclaredField("filePattern");
+		filePatternField.setAccessible(true);
+		assertNotEquals("foobar", genericExporterFacade.getFilePattern());
+		filePatternField.set(genericExporter, "foobar");
+		assertEquals("foobar", genericExporterFacade.getFilePattern());
 	}
 	
 	@Test
-	public void testGetTemplateName() {
-		genericExporter.setTemplateName("foobar");
-		reset();
-		Assert.assertEquals("foobar", genericExporterFacade.getTemplateName());
-		Assert.assertEquals("getTemplateName", methodName);
-		Assert.assertArrayEquals(new Object[] {}, arguments);
-	}
-	
-	private void reset() {
-		methodName = null;
-		arguments = null;
+	public void testGetTemplateName() throws Exception {
+		Field templateNameField = GenericExporter.class.getDeclaredField("templateName");
+		templateNameField.setAccessible(true);
+		assertNotEquals("foobar", genericExporterFacade.getTemplateName());
+		templateNameField.set(genericExporter, "foobar");
+		assertEquals("foobar", genericExporterFacade.getTemplateName());
 	}
 	
 }
