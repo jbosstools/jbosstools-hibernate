@@ -29,4 +29,9 @@ public class FacadeFactoryImpl extends AbstractFacadeFactory {
 		return new SpecialRootClassFacadeImpl(this, property);
 	}
 	
+	@Override
+	public IPersistentClass createPersistentClass(Object target) {
+		return new PersistentClassFacadeImpl(this, target);
+	}
+	
 }
