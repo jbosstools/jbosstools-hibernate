@@ -3,9 +3,8 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Hibernate Runtime 4.0 Tests
 Bundle-SymbolicName: org.jboss.tools.hibernate.runtime.v_4_0.test
 Bundle-Version: 5.4.16.qualifier
-Fragment-Host: org.jboss.tools.hibernate.runtime.v_4_0;bundle-version="5.0.0"
+Fragment-Host: org.jboss.tools.hibernate.runtime.v_4_0
 Bundle-RequiredExecutionEnvironment: JavaSE-11
-Require-Bundle: org.junit;bundle-version="4.12.0",
- org.junit.jupiter.api
+Require-Bundle: org.junit.jupiter.api
 Bundle-ClassPath: .,
  lib/h2-1.4.200.jar
