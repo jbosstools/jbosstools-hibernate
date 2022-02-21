@@ -20,7 +20,6 @@
 		<jboss-logging.version>3.1.0.CR2</jboss-logging.version>
 		<jboss-transaction-api_1.1_spec.version>1.0.0.Final</jboss-transaction-api_1.1_spec.version>
 		<javassist.version>3.12.1.GA</javassist.version>
-		<slf4j.version>1.5.8</slf4j.version>
 	</properties>
 
 	<build>
@@ -83,11 +82,6 @@
 							<groupId>javassist</groupId>
 							<artifactId>javassist</artifactId>
 							<version>${javassist.version}</version>
-						</artifactItem>
-						<artifactItem>
-							<groupId>org.slf4j</groupId>
-							<artifactId>slf4j-log4j12</artifactId>
-							<version>${slf4j.version}</version>
 						</artifactItem>
 					</artifactItems>
 					<skip>false</skip>
