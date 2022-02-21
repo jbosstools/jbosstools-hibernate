@@ -5,6 +5,7 @@ Bundle-SymbolicName: org.jboss.tools.hibernate.runtime.v_4_0;singleton:=true
 Bundle-Version: 5.4.16.qualifier
 Bundle-Localization: plugin
 Require-Bundle: org.apache.commons.collections,
+ org.apache.log4j,
  org.jboss.tools.hibernate.libs.antlr.v_2_7_7,
  org.jboss.tools.hibernate.libs.dom4j.v_1_6_1,
  org.jboss.tools.hibernate.libs.freemarker.v_2_3_23,
@@ -23,7 +24,6 @@ Bundle-ClassPath: .,
  lib/jboss-logging-3.1.0.CR2.jar,
  lib/jboss-transaction-api_1.1_spec-1.0.0.Final.jar,
  lib/javassist-3.12.1.GA.jar,
- lib/log4j-1.2.15.jar,
  lib/slf4j-api-1.5.8.jar,
  lib/slf4j-log4j12-1.5.8.jar
 Bundle-Vendor: Red Hat
