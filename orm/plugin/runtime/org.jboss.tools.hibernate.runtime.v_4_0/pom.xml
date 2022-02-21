@@ -18,7 +18,6 @@
 		<hibernate-jpa-2.0-api.version>1.0.1.Final</hibernate-jpa-2.0-api.version>
 		<hibernate-tools.version>4.0.1.Final</hibernate-tools.version>
 		<jboss-logging.version>3.1.0.CR2</jboss-logging.version>
-		<jboss-transaction-api_1.1_spec.version>1.0.0.Final</jboss-transaction-api_1.1_spec.version>
 	</properties>
 
 	<build>
@@ -71,11 +70,6 @@
 							<groupId>org.jboss.logging</groupId>
 							<artifactId>jboss-logging</artifactId>
 							<version>${jboss-logging.version}</version>
-						</artifactItem>
-						<artifactItem>
-							<groupId>org.jboss.spec.javax.transaction</groupId>
-							<artifactId>jboss-transaction-api_1.1_spec</artifactId>
-							<version>${jboss-transaction-api_1.1_spec.version}</version>
 						</artifactItem>
 					</artifactItems>
 					<skip>false</skip>
