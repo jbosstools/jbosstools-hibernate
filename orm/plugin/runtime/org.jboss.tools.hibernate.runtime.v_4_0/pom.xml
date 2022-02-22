@@ -12,7 +12,6 @@
 	<packaging>eclipse-plugin</packaging>
 
 	<properties>
-		<commons-logging.version>1.1.1</commons-logging.version>
 		<hibernate.version>4.0.1.Final</hibernate.version>
 		<hibernate-tools.version>4.0.1.Final</hibernate-tools.version>
 	</properties>
@@ -33,11 +32,6 @@
 				</executions>
 				<configuration>
 					<artifactItems>
-						<artifactItem>
-							<groupId>commons-logging</groupId>
-							<artifactId>commons-logging</artifactId>
-							<version>${commons-logging.version}</version>
-						</artifactItem>
 						<artifactItem>
 							<groupId>org.hibernate</groupId>
 							<artifactId>hibernate-core</artifactId>

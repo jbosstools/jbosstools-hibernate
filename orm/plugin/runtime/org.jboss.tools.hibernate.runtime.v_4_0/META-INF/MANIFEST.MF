@@ -5,6 +5,7 @@ Bundle-SymbolicName: org.jboss.tools.hibernate.runtime.v_4_0;singleton:=true
 Bundle-Version: 5.4.16.qualifier
 Bundle-Localization: plugin
 Require-Bundle: org.apache.commons.collections,
+ org.apache.commons.logging,
  org.apache.log4j,
  org.jboss.tools.hibernate.libs.antlr.v_2_7_7,
  org.jboss.tools.hibernate.libs.dom4j.v_1_6_1,
@@ -21,7 +22,6 @@ Require-Bundle: org.apache.commons.collections,
  org.slf4j.api
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: .,
- lib/commons-logging-1.1.1.jar,
  lib/hibernate-core-4.0.1.Final.jar,
  lib/hibernate-entitymanager-4.0.1.Final.jar,
  lib/hibernate-tools-4.0.1.Final.jar
