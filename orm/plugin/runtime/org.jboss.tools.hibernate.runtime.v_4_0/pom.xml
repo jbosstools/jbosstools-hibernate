@@ -13,7 +13,6 @@
 
 	<properties>
 		<hibernate.version>4.0.1.Final</hibernate.version>
-		<hibernate-tools.version>4.0.1.Final</hibernate-tools.version>
 	</properties>
 
 	<build>
@@ -45,7 +44,7 @@
 						<artifactItem>
 							<groupId>org.hibernate</groupId>
 							<artifactId>hibernate-tools</artifactId>
-							<version>${hibernate-tools.version}</version>
+							<version>${hibernate.version}</version>
 						</artifactItem>
 					</artifactItems>
 					<skip>false</skip>
