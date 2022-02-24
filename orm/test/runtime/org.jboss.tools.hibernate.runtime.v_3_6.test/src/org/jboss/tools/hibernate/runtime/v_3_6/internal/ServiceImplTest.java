@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.h2.Driver;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.mapping.Table;
@@ -18,6 +19,7 @@ import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IProgressListener;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class ServiceImplTest {
@@ -25,6 +27,11 @@ public class ServiceImplTest {
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 	
 	private ServiceImpl service = new ServiceImpl();
+
+	@BeforeClass
+	public static void beforeClass() throws Exception {
+		DriverManager.registerDriver(new Driver());
+	}
 
 	@Test
 	public void testNewAnnotationConfiguration() {
