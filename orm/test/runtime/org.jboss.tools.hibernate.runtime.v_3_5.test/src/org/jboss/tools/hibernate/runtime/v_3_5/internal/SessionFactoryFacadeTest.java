@@ -15,6 +15,7 @@ import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.v_3_5.internal.test.Foo;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class SessionFactoryFacadeTest {
@@ -33,6 +34,7 @@ public class SessionFactoryFacadeTest {
 		Assert.assertTrue(sessionFactory.isClosed());
 	}
 	
+	@Ignore
 	@Test
 	public void testGetAllClassMetadata() throws Exception {
 		Configuration configuration = new Configuration();
@@ -54,6 +56,7 @@ public class SessionFactoryFacadeTest {
 						"org.jboss.tools.hibernate.runtime.v_3_5.internal.test.Foo"));
 	}
 	
+	@Ignore
 	@Test
 	public void testGetAllCollectionMetadata() {
 		Configuration configuration = new Configuration();
@@ -87,6 +90,7 @@ public class SessionFactoryFacadeTest {
 		Assert.assertSame(sessionFactory, session.getSessionFactory());
 	}
 	
+	@Ignore
 	@Test
 	public void testGetClassMetadata() {
 		Configuration configuration = new Configuration();
@@ -106,6 +110,7 @@ public class SessionFactoryFacadeTest {
 					.getTarget());
 	}
 	
+	@Ignore
 	@Test
 	public void testGetCollectionMetadata() {
 		Configuration configuration = new Configuration();

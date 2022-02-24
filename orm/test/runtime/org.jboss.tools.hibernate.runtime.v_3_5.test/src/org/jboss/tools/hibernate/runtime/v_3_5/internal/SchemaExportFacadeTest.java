@@ -12,6 +12,7 @@ import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -51,6 +52,7 @@ public class SchemaExportFacadeTest {
 		configuration.addFile(fooFile);
 	}
 	
+	@Ignore
 	@Test
 	public void testCreate() throws Exception {
 		String urlString = "jdbc:h2:mem:create_test";
@@ -63,6 +65,7 @@ public class SchemaExportFacadeTest {
 		Assert.assertTrue(connection.getMetaData().getTables(null, null, "FOO", null).next());
 	}
 	
+	@Ignore
 	@Test
 	public void testGetExceptions() throws Throwable {
 		String urlString = "jdbc:h2:tcp://localhost/~/some_weird_unexistant_location";
