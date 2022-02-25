@@ -1,5 +1,9 @@
 package org.jboss.tools.hibernate.runtime.v_3_6.internal;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -7,8 +11,8 @@ import java.util.ArrayList;
 
 import org.hibernate.EntityMode;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.SessionFactoryImplementor;
-import org.hibernate.impl.SessionFactoryImpl;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
@@ -17,9 +21,8 @@ import org.hibernate.tuple.entity.EntityMetamodel;
 import org.hibernate.tuple.entity.EntityTuplizer;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 
 public class EntityMetamodelFacadeTest {
@@ -34,12 +37,30 @@ public class EntityMetamodelFacadeTest {
 	private String methodName = null;
 	private Object[] arguments = null;
 	
-	@SuppressWarnings("serial")
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
+		entityMetamodel = createFoobarModel();
+		entityMetamodelFacade = new EntityMetamodelFacadeImpl(FACADE_FACTORY, entityMetamodel);
+	}
+	
+	@Test
+	public void testGetTuplizerPropertyValue() {
+		assertSame(OBJECT, entityMetamodelFacade.getTuplizerPropertyValue(OBJECT, Integer.MAX_VALUE));
+		assertEquals("getPropertyValue", methodName);
+		assertArrayEquals(new Object[] { OBJECT,  Integer.MAX_VALUE }, arguments);
+	}
+	
+	@Test
+	public void testGetPropertyIndexOrNull() {
+		assertSame(INDEX, entityMetamodelFacade.getPropertyIndexOrNull("foobar"));
+		assertEquals("getPropertyIndexOrNull", methodName);
+		assertArrayEquals(arguments, new Object[] { "foobar" });
+	}
+	
+	@SuppressWarnings("serial")
+	private EntityMetamodel createFoobarModel() {
 		Configuration configuration = new Configuration();
-		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
-		SessionFactoryImplementor sfi = new SessionFactoryImpl(configuration, null, configuration.buildSettings(), null, null);
+		SessionFactoryImplementor sfi = (SessionFactoryImplementor)configuration.buildSessionFactory();
 		RootClass rc = new RootClass();
 		Table t = new Table("foobar");
 		rc.setTable(t);
@@ -54,7 +75,7 @@ public class EntityMetamodelFacadeTest {
 		sv.addColumn(c);
 		rc.setEntityName("foobar");
 		rc.setIdentifier(sv);
-		entityMetamodel = new EntityMetamodel(rc, sfi) {
+		return entityMetamodel = new EntityMetamodel(rc, sfi) {
 			@Override public EntityTuplizer getTuplizer(EntityMode entityMode) {
 				return (EntityTuplizer)Proxy.newProxyInstance(
 						FACADE_FACTORY.getClassLoader(), 
@@ -68,21 +89,6 @@ public class EntityMetamodelFacadeTest {
 			}
 			
 		};
-		entityMetamodelFacade = new EntityMetamodelFacadeImpl(FACADE_FACTORY, entityMetamodel);
-	}
-	
-	@Test
-	public void testGetTuplizerPropertyValue() {
-		Assert.assertSame(OBJECT, entityMetamodelFacade.getTuplizerPropertyValue(OBJECT, Integer.MAX_VALUE));
-		Assert.assertEquals("getPropertyValue", methodName);
-		Assert.assertArrayEquals(new Object[] { OBJECT,  Integer.MAX_VALUE }, arguments);
-	}
-	
-	@Test
-	public void testGetPropertyIndexOrNull() {
-		Assert.assertSame(INDEX, entityMetamodelFacade.getPropertyIndexOrNull("foobar"));
-		Assert.assertEquals("getPropertyIndexOrNull", methodName);
-		Assert.assertArrayEquals(arguments, new Object[] { "foobar" });
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
@@ -93,5 +99,7 @@ public class EntityMetamodelFacadeTest {
 			return OBJECT;
 		}
 	}
+	
+	public static class TestDialect extends Dialect {}
 	
 }
