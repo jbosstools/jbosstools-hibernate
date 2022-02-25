@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import org.hibernate.EntityMode;
 import org.hibernate.HibernateException;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.SessionFactoryImplementor;
 import org.hibernate.engine.SessionImplementor;
 import org.hibernate.mapping.Column;
@@ -221,7 +220,5 @@ public class ClassMetadataFacadeTest {
 	public class FooBar {
 		public int id = 1967;
 	}
-	
-	public static class TestDialect extends Dialect {}
 	
 }
