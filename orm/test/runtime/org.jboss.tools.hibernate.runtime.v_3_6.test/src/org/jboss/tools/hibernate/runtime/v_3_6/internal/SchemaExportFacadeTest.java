@@ -1,5 +1,8 @@
 package org.jboss.tools.hibernate.runtime.v_3_6.internal;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.File;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -10,13 +13,12 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.HibernateException;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 public class SchemaExportFacadeTest {
 
@@ -25,7 +27,7 @@ public class SchemaExportFacadeTest {
 			"		'-//Hibernate/Hibernate Mapping DTD 3.0//EN'" +
 			"		'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>" +
 			"<hibernate-mapping package='org.jboss.tools.hibernate.runtime.v_3_6.internal'>" +
-			"  <class name='ConfigurationFacadeTest$Foo' table='FOO'>" + 
+			"  <class name='SchemaExportFacadeTest$Foo' table='FOO'>" + 
 			"    <id name='fooId' column='ID'/>" +
 			"  </class>" +
 			"</hibernate-mapping>";
@@ -36,21 +38,20 @@ public class SchemaExportFacadeTest {
 	
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 	
-	@Rule
-	public TemporaryFolder temporaryFolder = new TemporaryFolder();
+	@TempDir
+	public File output = new File("output");
 	
 	private File fooFile;
 	private Configuration configuration;
 	
-	@BeforeClass
-	public static void beforeClass() throws Exception {
-		DriverManager.registerDriver(new Driver());
+	@BeforeAll
+	public static void beforeAll() throws Exception {
+		DriverManager.registerDriver(new Driver());		
 	}
 
-	@Before
+	@BeforeEach
 	public void before() throws Exception {
-		File folder = temporaryFolder.getRoot();
-		fooFile = new File(folder, "foo.hbm.xml");
+		fooFile = new File(output, "foo.hbm.xml");
 		PrintWriter fooWriter = new PrintWriter(fooFile);
 		fooWriter.write(FOO_HBM_XML_STRING);
 		fooWriter.close();
@@ -65,21 +66,22 @@ public class SchemaExportFacadeTest {
 		configuration.setProperty(Environment.URL, urlString);
 		ISchemaExport schemaExportFacade = FACADE_FACTORY
 				.createSchemaExport(new SchemaExport(configuration));
-		Assert.assertFalse(connection.getMetaData().getTables(null, null, "FOO", null).next());
+		assertFalse(connection.getMetaData().getTables(null, null, "FOO", null).next());
 		schemaExportFacade.create();
-		Assert.assertTrue(connection.getMetaData().getTables(null, null, "FOO", null).next());
+		assertTrue(connection.getMetaData().getTables(null, null, "FOO", null).next());
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testGetExceptions() throws Throwable {
-		String urlString = "jdbc:h2:tcp://localhost/~/some_weird_unexistant_location";
+		String urlString = "jdbc:h2:mem:create_test";
 		configuration.setProperty(Environment.URL, urlString);
 		SchemaExport schemaExport = new SchemaExport(configuration);
 		ISchemaExport schemaExportFacade = FACADE_FACTORY
 				.createSchemaExport(schemaExport);
-		Assert.assertTrue(schemaExportFacade.getExceptions().isEmpty());
-		schemaExport.create(false, true);
-		Assert.assertFalse(schemaExportFacade.getExceptions().isEmpty());
+		assertTrue(schemaExportFacade.getExceptions().isEmpty());
+		schemaExport.getExceptions().add(new HibernateException("blah"));
+		assertFalse(schemaExportFacade.getExceptions().isEmpty());
 	}
 
 }
