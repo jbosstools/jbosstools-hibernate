@@ -166,6 +166,7 @@ public class FacadeFactoryTest {
 	@Test
 	public void testCreateSchemaExport() {
 		Configuration configuration = new Configuration();
+		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
 		SchemaExport schemaExport = new SchemaExport(configuration);
 		ISchemaExport facade = facadeFactory.createSchemaExport(schemaExport);
 		assertSame(schemaExport, ((IFacade)facade).getTarget());		
@@ -257,6 +258,7 @@ public class FacadeFactoryTest {
 	@Test
 	public void testCreateEntityMetamodel() {
 		Configuration configuration = new Configuration();	
+		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
 		SessionFactoryImplementor sfi = (SessionFactoryImplementor)configuration.buildSessionFactory();
 		RootClass rc = new RootClass();
 		SimpleValue sv = new SimpleValue(configuration.createMappings());

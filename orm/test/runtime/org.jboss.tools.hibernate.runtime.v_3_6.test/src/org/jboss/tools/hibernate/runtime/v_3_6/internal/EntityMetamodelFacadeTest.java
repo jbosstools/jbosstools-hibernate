@@ -60,6 +60,7 @@ public class EntityMetamodelFacadeTest {
 	@SuppressWarnings("serial")
 	private EntityMetamodel createFoobarModel() {
 		Configuration configuration = new Configuration();
+		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
 		SessionFactoryImplementor sfi = (SessionFactoryImplementor)configuration.buildSessionFactory();
 		RootClass rc = new RootClass();
 		Table t = new Table("foobar");

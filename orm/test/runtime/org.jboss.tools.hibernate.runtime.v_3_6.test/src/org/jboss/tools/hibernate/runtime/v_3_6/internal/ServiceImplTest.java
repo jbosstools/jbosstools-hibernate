@@ -19,6 +19,7 @@ import java.util.Properties;
 import org.h2.Driver;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.DelegatingReverseEngineeringStrategy;
@@ -161,6 +162,7 @@ public class ServiceImplTest {
 	@Test
 	public void testNewSchemaExport() {
 		IConfiguration configuration = service.newDefaultConfiguration();
+		configuration.setProperty(Environment.DIALECT, TestDialect.class.getName());
 		ISchemaExport schemaExport = service.newSchemaExport(configuration);
 		assertNotNull(schemaExport);
 	}
@@ -207,6 +209,7 @@ public class ServiceImplTest {
 	@Test
 	public void testNewHQLQueryPlan() throws Exception {
 		IConfiguration configuration = service.newDefaultConfiguration();
+		configuration.setProperty(Environment.DIALECT, TestDialect.class.getName());
 		File testFile = File.createTempFile("test", "tmp");
 		testFile.deleteOnExit();
 		FileWriter fileWriter = new FileWriter(testFile);

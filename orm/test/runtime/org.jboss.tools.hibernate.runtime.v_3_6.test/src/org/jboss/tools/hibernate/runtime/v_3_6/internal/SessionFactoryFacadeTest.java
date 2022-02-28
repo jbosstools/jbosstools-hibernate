@@ -82,6 +82,7 @@ public class SessionFactoryFacadeTest {
 		fileWriter.write(TEST_HBM_XML_STRING);
 		fileWriter.close();
 		Configuration configuration = new Configuration();
+		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
 		configuration.addFile(hbmXmlFile);
 		configuration.configure(cfgXmlFile);
 		sessionFactoryTarget = configuration.buildSessionFactory();

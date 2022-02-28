@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import org.h2.Driver;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
+import org.hibernate.dialect.H2Dialect;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.HibernateException;
@@ -64,6 +65,7 @@ public class SchemaExportFacadeTest {
 		String urlString = "jdbc:h2:mem:create_test";
 		Connection connection = DriverManager.getConnection(urlString);
 		configuration.setProperty(Environment.URL, urlString);
+		configuration.setProperty(Environment.DIALECT, H2Dialect.class.getName());
 		ISchemaExport schemaExportFacade = FACADE_FACTORY
 				.createSchemaExport(new SchemaExport(configuration));
 		assertFalse(connection.getMetaData().getTables(null, null, "FOO", null).next());
@@ -76,6 +78,7 @@ public class SchemaExportFacadeTest {
 	public void testGetExceptions() throws Throwable {
 		String urlString = "jdbc:h2:mem:create_test";
 		configuration.setProperty(Environment.URL, urlString);
+		configuration.setProperty(Environment.DIALECT, H2Dialect.class.getName());
 		SchemaExport schemaExport = new SchemaExport(configuration);
 		ISchemaExport schemaExportFacade = FACADE_FACTORY
 				.createSchemaExport(schemaExport);

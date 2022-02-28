@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.Environment;
+import org.hibernate.dialect.H2Dialect;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
@@ -52,6 +54,7 @@ public class ColumnFacadeTest {
 		column.setSqlType("foobar");
 		assertEquals("foobar", columnFacade.getSqlType());
 		Configuration configuration = new Configuration();
+		configuration.setProperty(Environment.DIALECT, H2Dialect.class.getName());
 		SimpleValue value = new SimpleValue(configuration.createMappings(), new Table());
 		value.setTypeName("int");
 		column.setValue(value);

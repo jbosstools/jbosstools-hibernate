@@ -114,6 +114,7 @@ public class ConfigurationFacadeTest {
 	@BeforeEach
 	public void beforeEach() {
 		configuration = new Configuration();
+		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
 		configurationFacade = new AbstractConfigurationFacade(FACADE_FACTORY, configuration) {};
 	}	
 	

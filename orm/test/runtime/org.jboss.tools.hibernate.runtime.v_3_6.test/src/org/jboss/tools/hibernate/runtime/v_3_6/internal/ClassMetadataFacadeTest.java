@@ -33,6 +33,7 @@ import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.IType;
+import org.jboss.tools.hibernate.runtime.v_3_6.internal.SessionFactoryFacadeTest.TestDialect;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -129,6 +130,7 @@ public class ClassMetadataFacadeTest {
 	
 	private ClassMetadata setupFooBarPersister() {
 		Configuration configuration = new Configuration();
+		configuration.setProperty("hibernate.dialect", TestDialect.class.getName());
 		SessionFactoryImplementor sfi = (SessionFactoryImplementor)configuration.buildSessionFactory();
 		return new TestEntityPersister(createPersistentClass(configuration), sfi);
 	}
