@@ -420,7 +420,10 @@ public class ServiceImpl extends AbstractService {
 	public IPersistentClass newSingleTableSubclass(
 			IPersistentClass persistentClass) {
 		assert persistentClass instanceof IFacade;
-		return facadeFactory.createPersistentClass(new SingleTableSubclass((PersistentClass)((IFacade)persistentClass).getTarget()));
+		IPersistentClass result = facadeFactory.createPersistentClass(
+				new SingleTableSubclass((PersistentClass)((IFacade)persistentClass).getTarget()));
+		((AbstractPersistentClassFacade)result).setSuperClass(persistentClass);
+		return result;
 	}
 
 	@Override
