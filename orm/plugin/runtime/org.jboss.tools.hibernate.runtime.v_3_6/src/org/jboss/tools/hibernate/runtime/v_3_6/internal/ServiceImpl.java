@@ -58,6 +58,7 @@ import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.util.ReflectHelper;
 import org.hibernate.util.StringHelper;
+import org.jboss.tools.hibernate.runtime.common.AbstractPersistentClassFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractService;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
@@ -425,7 +426,10 @@ public class ServiceImpl extends AbstractService {
 	@Override
 	public IPersistentClass newJoinedSubclass(IPersistentClass persistentClass) {
 		assert persistentClass instanceof IFacade;
-		return facadeFactory.createPersistentClass(new JoinedSubclass((PersistentClass)((IFacade)persistentClass).getTarget()));
+		IPersistentClass result = facadeFactory.createPersistentClass(
+				new JoinedSubclass((PersistentClass)((IFacade)persistentClass).getTarget()));
+		((AbstractPersistentClassFacade)result).setSuperClass(persistentClass);
+		return result;
 	}
 
 	@Override
