@@ -1,5 +1,10 @@
 package org.jboss.tools.hibernate.runtime.v_3_6.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.lang.reflect.Field;
@@ -17,13 +22,9 @@ import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-//TODO JBIDE-28083: Hibernate Java 17 compability - Reenable test and investigate error
-@Ignore
 public class OverrideRepositoryFacadeTest {
 
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
@@ -40,8 +41,8 @@ public class OverrideRepositoryFacadeTest {
 	private IOverrideRepository overrideRepositoryFacade = null; 
 	private OverrideRepository overrideRepository;
 	
-	@Before
-	public void setUp() {
+	@BeforeEach
+	public void beforeEach() {
 		overrideRepository = new OverrideRepository();
 		overrideRepositoryFacade = new AbstractOverrideRepositoryFacade(
 				FACADE_FACTORY, 
@@ -61,8 +62,8 @@ public class OverrideRepositoryFacadeTest {
 		Object object = tablesField.get(overrideRepository);
 		List<?> tables = (List<?>)object;
 		Table table = (Table)tables.get(0);
-		Assert.assertNotNull(table);
-		Assert.assertEquals("FOO", table.getName());
+		assertNotNull(table);
+		assertEquals("FOO", table.getName());
 	}
 	
 	@Test
@@ -74,7 +75,7 @@ public class OverrideRepositoryFacadeTest {
 				(DelegatingReverseEngineeringStrategy)((IFacade)result).getTarget();
 		Field delegateField = DelegatingReverseEngineeringStrategy.class.getDeclaredField("delegate");
 		delegateField.setAccessible(true);
-		Assert.assertSame(res, delegateField.get(resultTarget));
+		assertSame(res, delegateField.get(resultTarget));
 	}
 	
 	@Test
@@ -84,10 +85,10 @@ public class OverrideRepositoryFacadeTest {
 		Field tableFiltersField = OverrideRepository.class.getDeclaredField("tableFilters");
 		tableFiltersField.setAccessible(true);
 		List<?> tableFilters = (List<?>)tableFiltersField.get(overrideRepository);
-		Assert.assertTrue(tableFilters.isEmpty());
+		assertTrue(tableFilters.isEmpty());
 		overrideRepositoryFacade.addTableFilter(tableFilterFacade);
 		tableFilters = (List<?>)tableFiltersField.get(overrideRepository);
-		Assert.assertSame(tableFilter, tableFilters.get(0));		
+		assertSame(tableFilter, tableFilters.get(0));		
 	}
 	
 }
