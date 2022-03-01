@@ -21,7 +21,6 @@
 		<hibernate-tools.version>3.6.0.Final</hibernate-tools.version>
 		<javassist.version>3.12.0.GA</javassist.version>
 		<jta.version>1.1</jta.version>
-		<slf4j.version>1.6.1</slf4j.version>
 	</properties>
 
 	<build>
@@ -89,16 +88,6 @@
 							<groupId>javax.transaction</groupId>
 							<artifactId>jta</artifactId>
 							<version>${jta.version}</version>
-						</artifactItem>
-						<artifactItem>
-							<groupId>org.slf4j</groupId>
-							<artifactId>slf4j-api</artifactId>
-							<version>${slf4j.version}</version>
-						</artifactItem>
-						<artifactItem>
-							<groupId>org.slf4j</groupId>
-							<artifactId>slf4j-log4j12</artifactId>
-							<version>${slf4j.version}</version>
 						</artifactItem>
 					</artifactItems>
 					<skip>false</skip>
