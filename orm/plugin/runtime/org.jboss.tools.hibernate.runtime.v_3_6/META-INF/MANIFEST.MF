@@ -25,6 +25,5 @@ Bundle-ClassPath: .,
  lib/javassist-3.12.0.GA.jar,
  lib/jta-1.1.jar,
  lib/log4j-1.2.15.jar,
- lib/slf4j-api-1.6.1.jar,
- lib/slf4j-log4j12-1.6.1.jar
+ lib/slf4j-api-1.6.1.jar
 Bundle-Vendor: Red Hat
