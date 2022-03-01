@@ -8,6 +8,7 @@ Require-Bundle: org.apache.commons.collections,
  org.jboss.tools.hibernate.libs.antlr.v_2_7_7,
  org.jboss.tools.hibernate.libs.dom4j.v_1_6_1,
  org.jboss.tools.hibernate.libs.freemarker.v_2_3_23,
+ org.jboss.tools.hibernate.libs.javassist.v_3_28,
  org.jboss.tools.hibernate.libs.jtidy.v_r8-20060801,
  org.jboss.tools.hibernate.libs.transaction-api.v_1_2,
  org.jboss.tools.hibernate.runtime.common,
@@ -23,6 +24,5 @@ Bundle-ClassPath: .,
  lib/hibernate-core-3.6.10.Final.jar,
  lib/hibernate-entitymanager-3.6.10.Final.jar,
  lib/hibernate-jpa-2.0-api-1.0.1.Final.jar,
- lib/hibernate-tools-3.6.0.Final.jar,
- lib/javassist-3.12.0.GA.jar
+ lib/hibernate-tools-3.6.0.Final.jar
 Bundle-Vendor: Red Hat
