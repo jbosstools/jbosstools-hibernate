@@ -12,7 +12,6 @@
 	<packaging>eclipse-plugin</packaging>
 
 	<properties>
-		<cglib.version>2.2</cglib.version>
 		<commons-logging.version>1.0.4</commons-logging.version>
 		<hibernate.version>3.6.10.Final</hibernate.version>
 		<hibernate-commons-annotations.version>3.2.0.Final</hibernate-commons-annotations.version>
@@ -35,11 +34,6 @@
 				</executions>
 				<configuration>
 					<artifactItems>
-						<artifactItem>
-							<groupId>cglib</groupId>
-							<artifactId>cglib</artifactId>
-							<version>${cglib.version}</version>
-						</artifactItem>
 						<artifactItem>
 							<groupId>commons-logging</groupId>
 							<artifactId>commons-logging</artifactId>
