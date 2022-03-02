@@ -12,7 +12,6 @@
 	<packaging>eclipse-plugin</packaging>
 
 	<properties>
-		<asm.version>3.1</asm.version>
 		<cglib.version>2.2</cglib.version>
 		<commons-logging.version>1.0.4</commons-logging.version>
 		<hibernate.version>3.6.10.Final</hibernate.version>
@@ -36,11 +35,6 @@
 				</executions>
 				<configuration>
 					<artifactItems>
-						<artifactItem>
-							<groupId>asm</groupId>
-							<artifactId>asm</artifactId>
-							<version>${asm.version}</version>
-						</artifactItem>
 						<artifactItem>
 							<groupId>cglib</groupId>
 							<artifactId>cglib</artifactId>
