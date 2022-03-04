@@ -72,6 +72,7 @@ import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class ServiceImplTest {
@@ -122,6 +123,8 @@ public class ServiceImplTest {
 		assertTrue(((IFacade)annotationConfiguration).getTarget() instanceof Configuration);
 	}
 
+	// TODO JBIDE-28358: reenable this test
+	@Disabled
 	@Test
 	public void testNewJpaConfiguration() throws Exception {
 		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
