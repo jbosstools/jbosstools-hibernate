@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import org.hibernate.EntityMode;
 import org.hibernate.HibernateException;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.Environment;
+import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.SessionFactoryImplementor;
 import org.hibernate.engine.SessionImplementor;
 import org.hibernate.mapping.Column;
@@ -39,6 +41,8 @@ import org.junit.jupiter.api.Test;
 public class ClassMetadataFacadeTest {
 
 	private static final FacadeFactoryImpl FACADE_FACTORY = new FacadeFactoryImpl();
+	
+	public static class TestDialect extends Dialect {}
 	
 	private ClassMetadata classMetadataTarget;
 	private IClassMetadata classMetadataFacade;
@@ -129,6 +133,7 @@ public class ClassMetadataFacadeTest {
 	
 	private ClassMetadata setupFooBarPersister() {
 		Configuration configuration = new Configuration();
+		configuration.setProperty(Environment.DIALECT, TestDialect.class.getName());
 		SessionFactoryImplementor sfi = (SessionFactoryImplementor)configuration.buildSessionFactory();
 		return new TestEntityPersister(createPersistentClass(configuration), sfi);
 	}
