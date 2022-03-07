@@ -1,79 +1,72 @@
 package org.jboss.tools.hibernate.runtime.v_3_5.internal;
 
-import java.lang.reflect.Method;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.jboss.tools.hibernate.runtime.common.AbstractArtifactCollectorFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.MethodInterceptor;
-import net.sf.cglib.proxy.MethodProxy;
-
-//TODO JBIDE-28083: Hibernate Java 17 compability - Reenable test and investigate error
-@Ignore
 public class ArtifactCollectorFacadeTest {
 	
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
-
-	private String methodName = null;
-	private Object[] arguments = null;
 	
-	private IArtifactCollector artifactCollector = null; 
+	private static final Set<String> FILE_TYPES = new HashSet<String>();
+	private static final File[] FILES = new File[] { new File("foobar") };
 	
-	@Before
-	public void setUp() {
-		Enhancer enhancer = new Enhancer();
-		enhancer.setSuperclass(ArtifactCollector.class);
-		enhancer.setCallback(new MethodInterceptor() {
-			@Override
-			public Object intercept(
-					Object obj, 
-					Method method, 
-					Object[] args, 
-					MethodProxy proxy) throws Throwable {
-				if (methodName == null) {
-					methodName = method.getName();
-				}
-				if (arguments == null) {
-					arguments = args;
-				}
-				return proxy.invokeSuper(obj, args);
-			}					
-		});
-		artifactCollector = new AbstractArtifactCollectorFacade(FACADE_FACTORY, enhancer.create()) {};
-		reset();
+	private IArtifactCollector artifactCollectorFacade = null;
+	private ArtifactCollector artifactCollectorTarget = null;
+		
+	@BeforeEach
+	public void beforeEach() {
+		artifactCollectorTarget = new TestArtifactCollector();
+		artifactCollectorFacade = new AbstractArtifactCollectorFacade(FACADE_FACTORY, artifactCollectorTarget) {};
 	}
-
+	
 	@Test
 	public void testGetFileTypes() {
-		Assert.assertNotNull(artifactCollector.getFileTypes());
-		Assert.assertEquals("getFileTypes", methodName);
-		Assert.assertArrayEquals(new Object[] {}, arguments);
-	}
-
-	@Test
-	public void testFormatFiles() {
-		artifactCollector.formatFiles();
-		Assert.assertEquals("formatFiles", methodName);
-		Assert.assertArrayEquals(new Object[] {}, arguments);
-	}
-
-	@Test
-	public void testGetFiles() {
-		Assert.assertNotNull(artifactCollector.getFiles("foobar"));
-		Assert.assertEquals("getFiles", methodName);
-		Assert.assertArrayEquals(new Object[] { "foobar" }, arguments);
-	}
-
-	private void reset() {
-		methodName = null;
-		arguments = null;
+		assertSame(FILE_TYPES, artifactCollectorFacade.getFileTypes());
 	}
 	
+	@Test
+	public void testFormatFiles() {
+		assertFalse(((TestArtifactCollector)artifactCollectorTarget).formatted);
+		artifactCollectorFacade.formatFiles();
+		assertTrue(((TestArtifactCollector)artifactCollectorTarget).formatted);
+	}
+	
+	@Test
+	public void testGetFiles() {
+		assertSame(FILES, artifactCollectorFacade.getFiles("foobar"));
+	}
+	
+	private class TestArtifactCollector extends ArtifactCollector {
+		
+		private boolean formatted = false;
+		
+		@Override
+		public Set<String> getFileTypes() {
+			return FILE_TYPES;
+		}
+		
+		@Override
+		public void formatFiles() {
+			formatted = true;
+		}
+		
+		@Override
+		public File[] getFiles(String str) {
+			return FILES;
+		}
+		
+	}
+
 }
