@@ -347,6 +347,7 @@ public class FacadeFactoryTest {
 		PersistentClass persistentClass = new RootClass();
 		IPersistentClass facade = facadeFactory.createPersistentClass(persistentClass);
 		assertSame(persistentClass, ((IFacade)facade).getTarget());
+		assertTrue(facade instanceof PersistentClassFacadeImpl);
 	}
 	
 	@Test
