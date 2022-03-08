@@ -5,6 +5,7 @@ Bundle-SymbolicName: org.jboss.tools.hibernate.runtime.v_3_5;singleton:=true
 Bundle-Version: 5.4.16.qualifier
 Bundle-Localization: plugin
 Require-Bundle: org.apache.commons.collections,
+ org.apache.commons.logging,
  org.jboss.tools.hibernate.libs.antlr.v_2_7_7,
  org.jboss.tools.hibernate.libs.dom4j.v_1_6_1,
  org.jboss.tools.hibernate.libs.freemarker.v_2_3_23,
@@ -21,7 +22,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: .,
  lib/asm-3.1.jar,
  lib/cglib-2.2.jar,
- lib/commons-logging-1.0.4.jar,
  lib/hibernate-annotations-3.5.6-Final.jar,
  lib/hibernate-core-3.5.6-Final.jar,
  lib/hibernate-entitymanager-3.5.6-Final.jar,

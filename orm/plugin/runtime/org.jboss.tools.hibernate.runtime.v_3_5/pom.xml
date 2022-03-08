@@ -14,7 +14,6 @@
 	<properties>
 		<asm.version>3.1</asm.version>
 		<cglib.version>2.2</cglib.version>
-		<commons-logging.version>1.0.4</commons-logging.version>
 		<hibernate.version>3.5.6-Final</hibernate.version>
 		<hibernate-tools.version>3.5.2.Final</hibernate-tools.version>
 	</properties>
@@ -44,11 +43,6 @@
 							<groupId>cglib</groupId>
 							<artifactId>cglib</artifactId>
 							<version>${cglib.version}</version>
-						</artifactItem>
-						<artifactItem>
-							<groupId>commons-logging</groupId>
-							<artifactId>commons-logging</artifactId>
-							<version>${commons-logging.version}</version>
 						</artifactItem>
 						<artifactItem>
 							<groupId>org.hibernate</groupId>
