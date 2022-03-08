@@ -26,6 +26,5 @@ Bundle-ClassPath: .,
  lib/hibernate-tools-3.5.2.Final.jar,
  lib/javassist-3.9.0.GA.jar,
  lib/jta-1.1.jar,
- lib/log4j-1.2.15.jar,
- lib/slf4j-api-1.5.8.jar
+ lib/log4j-1.2.15.jar
 Bundle-Vendor: Red Hat
