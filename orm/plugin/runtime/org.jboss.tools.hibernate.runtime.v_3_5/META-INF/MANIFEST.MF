@@ -25,6 +25,5 @@ Bundle-ClassPath: .,
  lib/hibernate-jpa-2.0-api-1.0.0.Final.jar,
  lib/hibernate-tools-3.5.2.Final.jar,
  lib/javassist-3.9.0.GA.jar,
- lib/jta-1.1.jar,
- lib/log4j-1.2.15.jar
+ lib/jta-1.1.jar
 Bundle-Vendor: Red Hat
