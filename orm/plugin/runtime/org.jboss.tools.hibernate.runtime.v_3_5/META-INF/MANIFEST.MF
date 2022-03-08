@@ -11,7 +11,8 @@ Require-Bundle: org.apache.commons.collections,
  org.jboss.tools.hibernate.libs.jtidy.v_r8-20060801,
  org.jboss.tools.hibernate.runtime.common,
  org.jboss.tools.hibernate.runtime.spi,
- org.hibernate.eclipse
+ org.hibernate.eclipse,
+ org.slf4j.api
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: .,
  lib/asm-3.1.jar,
@@ -26,6 +27,5 @@ Bundle-ClassPath: .,
  lib/javassist-3.9.0.GA.jar,
  lib/jta-1.1.jar,
  lib/log4j-1.2.15.jar,
- lib/slf4j-api-1.5.8.jar,
- lib/slf4j-log4j12-1.5.8.jar
+ lib/slf4j-api-1.5.8.jar
 Bundle-Vendor: Red Hat
