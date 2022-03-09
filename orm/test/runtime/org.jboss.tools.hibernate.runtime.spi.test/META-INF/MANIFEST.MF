@@ -4,5 +4,5 @@ Bundle-Name: Hibernate Service Plugin Tests
 Bundle-SymbolicName: org.jboss.tools.hibernate.runtime.spi.test;singleton:=true
 Bundle-Version: 5.4.16.qualifier
 Fragment-Host: org.jboss.tools.hibernate.runtime.spi
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.junit;bundle-version="4.11.0"
