@@ -1,5 +1,15 @@
 package org.jboss.tools.hibernate.runtime.spi;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
@@ -12,9 +22,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.osgi.service.prefs.Preferences;
 
 public class RuntimeServiceManagerTest {
@@ -23,7 +32,7 @@ public class RuntimeServiceManagerTest {
 	
 	private RuntimeServiceManager runtimeServiceManager = null;
 	
-	@Before
+	@BeforeEach
 	public void before() throws Exception {
 		Constructor<RuntimeServiceManager> constructor = 
 				RuntimeServiceManager.class.getDeclaredConstructor(new Class[] {});
@@ -36,19 +45,19 @@ public class RuntimeServiceManagerTest {
 		Field servicePreferencesField = RuntimeServiceManager.class.getDeclaredField("servicePreferences");
 		servicePreferencesField.setAccessible(true);
 		Preferences preferences = (Preferences)servicePreferencesField.get(runtimeServiceManager);
-		Assert.assertEquals("org.jboss.tools.hibernate.runtime.spi.services", preferences.name());
+		assertEquals("org.jboss.tools.hibernate.runtime.spi.services", preferences.name());
 		Field servicesMapField = RuntimeServiceManager.class.getDeclaredField("servicesMap");
 		servicesMapField.setAccessible(true);
-		Assert.assertNotNull(servicesMapField.get(runtimeServiceManager));
+		assertNotNull(servicesMapField.get(runtimeServiceManager));
 		Field allVersionsField = RuntimeServiceManager.class.getDeclaredField("allVersions");
 		allVersionsField.setAccessible(true);
-		Assert.assertNotNull(allVersionsField.get(runtimeServiceManager));
+		assertNotNull(allVersionsField.get(runtimeServiceManager));
 		Field enabledVersionsField = RuntimeServiceManager.class.getDeclaredField("enabledVersions");
 		enabledVersionsField.setAccessible(true);
-		Assert.assertNotNull(enabledVersionsField.get(runtimeServiceManager));
+		assertNotNull(enabledVersionsField.get(runtimeServiceManager));
 		Field initiallyEnabledVersionsField = RuntimeServiceManager.class.getDeclaredField("initiallyEnabledVersions");
 		initiallyEnabledVersionsField.setAccessible(true);
-		Assert.assertNotNull(initiallyEnabledVersionsField.get(runtimeServiceManager));
+		assertNotNull(initiallyEnabledVersionsField.get(runtimeServiceManager));
 	}
 
 	@Test
@@ -56,8 +65,8 @@ public class RuntimeServiceManagerTest {
 		Field instanceField = RuntimeServiceManager.class.getDeclaredField("INSTANCE");
 		instanceField.setAccessible(true);
 		Object instance = instanceField.get(null);
-		Assert.assertNotNull(instance);
-		Assert.assertSame(instance, RuntimeServiceManager.getInstance());
+		assertNotNull(instance);
+		assertSame(instance, RuntimeServiceManager.getInstance());
 	}
 	
 	@Test
@@ -73,7 +82,7 @@ public class RuntimeServiceManagerTest {
 		enabledVersionsField.set(
 				runtimeServiceManager, 
 				new HashSet<String> (Arrays.asList("foo", "baz")));
-		Assert.assertSame(fooService, runtimeServiceManager.getDefaultService());
+		assertSame(fooService, runtimeServiceManager.getDefaultService());
 	}
 	
 	@Test
@@ -82,8 +91,8 @@ public class RuntimeServiceManagerTest {
 		allVersionsField.setAccessible(true);
 		String[] allVersions = new String[] { "foo", "bar" };
 		allVersionsField.set(runtimeServiceManager, allVersions);
-		Assert.assertArrayEquals(allVersions, runtimeServiceManager.getAllVersions());
-		Assert.assertNotSame(allVersions, runtimeServiceManager.getAllVersions());
+		assertArrayEquals(allVersions, runtimeServiceManager.getAllVersions());
+		assertNotSame(allVersions, runtimeServiceManager.getAllVersions());
 	}
 	
 	@Test
@@ -93,7 +102,7 @@ public class RuntimeServiceManagerTest {
 		enabledVersionsField.set(
 				runtimeServiceManager, 
 				new HashSet<String> (Arrays.asList("foo", "bar")));
-		Assert.assertArrayEquals(new String[] {"bar", "foo" }, runtimeServiceManager.getEnabledVersions());
+		assertArrayEquals(new String[] {"bar", "foo" }, runtimeServiceManager.getEnabledVersions());
 	}
 	
 	@Test
@@ -107,22 +116,22 @@ public class RuntimeServiceManagerTest {
 		enabledVersionsField.set(
 				runtimeServiceManager, 
 				new HashSet<String> (Arrays.asList("foo", "bar")));
-		Assert.assertNull(preferences.get("default", null));
+		assertNull(preferences.get("default", null));
 		// first: trying to set a disabled runtime as the default should fail
 		try {
 			runtimeServiceManager.setDefaultVersion("baz");
-			Assert.fail();
+			fail();
 		} catch (Exception e) {
-			Assert.assertEquals(
+			assertEquals(
 					"Setting a disabled Hibernate runtime as the default is not allowed", 
 					e.getMessage());
 		}
 		// second: choosing an enabled runtime
-		Assert.assertNull(preferences.get("default", null));
+		assertNull(preferences.get("default", null));
 		runtimeServiceManager.setDefaultVersion("foo");
-		Assert.assertEquals("foo", preferences.get("default", null));
+		assertEquals("foo", preferences.get("default", null));
 		runtimeServiceManager.setDefaultVersion("bar");
-		Assert.assertEquals("bar", preferences.get("default", null));
+		assertEquals("bar", preferences.get("default", null));
 	}
 	
 	@Test
@@ -138,17 +147,17 @@ public class RuntimeServiceManagerTest {
 				new HashSet<String> (Arrays.asList("foo", "bar", "baz")));
 		// first: if a preference is found, take that one 
 		preferences.put("default", "baz");
-		Assert.assertEquals("baz", runtimeServiceManager.getDefaultVersion());
+		assertEquals("baz", runtimeServiceManager.getDefaultVersion());
 		// second: if there is no preference, take the alphabetically highest enabled version
 		preferences.remove("default");
-		Assert.assertEquals("foo", runtimeServiceManager.getDefaultVersion());
+		assertEquals("foo", runtimeServiceManager.getDefaultVersion());
 		// third: throw exception if no version is enabled
 		enabledVersionsField.set(runtimeServiceManager, new HashSet<String> ());
 		try {
 			runtimeServiceManager.getDefaultVersion();
-			Assert.fail();
+			fail();
 		} catch (Exception e) {
-			Assert.assertEquals("No Hibernate runtimes are enabled.", e.getMessage());
+			assertEquals("No Hibernate runtimes are enabled.", e.getMessage());
 		}
 	}
 	
@@ -162,19 +171,19 @@ public class RuntimeServiceManagerTest {
 		servicesMap.put("foo", fooService);
 		servicesMap.put("bar", barService);
 		servicesMapField.set(runtimeServiceManager, servicesMap);
-		Assert.assertSame(fooService, runtimeServiceManager.findService("foo"));
-		Assert.assertSame(barService, runtimeServiceManager.findService("bar"));
+		assertSame(fooService, runtimeServiceManager.findService("foo"));
+		assertSame(barService, runtimeServiceManager.findService("bar"));
 	}
 	
 	@Test
 	public void testIsServiceEnabled() throws Exception {
-		Assert.assertFalse(runtimeServiceManager.isServiceEnabled("foobar"));
+		assertFalse(runtimeServiceManager.isServiceEnabled("foobar"));
 		Field enabledVersionsField = RuntimeServiceManager.class.getDeclaredField("enabledVersions");
 		enabledVersionsField.setAccessible(true);
 		Set<String> enabledVersions = new HashSet<String>();
 		enabledVersions.add("foobar");
 		enabledVersionsField.set(runtimeServiceManager, enabledVersions);
-		Assert.assertTrue(runtimeServiceManager.isServiceEnabled("foobar"));
+		assertTrue(runtimeServiceManager.isServiceEnabled("foobar"));
 	}
 	
 	@Test
@@ -188,19 +197,19 @@ public class RuntimeServiceManagerTest {
 		Field preferencesField = RuntimeServiceManager.class.getDeclaredField("servicePreferences");
 		preferencesField.setAccessible(true);
 		preferencesField.set(runtimeServiceManager, preferences);
-		Assert.assertFalse(preferences.getBoolean("foobar", false));
-		Assert.assertFalse(enabledVersions.contains("foobar"));
+		assertFalse(preferences.getBoolean("foobar", false));
+		assertFalse(enabledVersions.contains("foobar"));
 		runtimeServiceManager.enableService("foobar", true);
-		Assert.assertTrue(preferences.getBoolean("foobar", false));
-		Assert.assertTrue(enabledVersions.contains("foobar"));
+		assertTrue(preferences.getBoolean("foobar", false));
+		assertTrue(enabledVersions.contains("foobar"));
 		runtimeServiceManager.enableService("foobar", false);
-		Assert.assertFalse(preferences.getBoolean("foobar", false));
-		Assert.assertFalse(enabledVersions.contains("foobar"));
+		assertFalse(preferences.getBoolean("foobar", false));
+		assertFalse(enabledVersions.contains("foobar"));
 		try {
 			runtimeServiceManager.enableService("zanzibar", false);
-			Assert.fail();
+			fail();
 		} catch (Exception e) {
-			Assert.assertEquals(
+			assertEquals(
 					"Disabling the default Hibernate runtime is not allowed", 
 					e.getMessage());
 		}
