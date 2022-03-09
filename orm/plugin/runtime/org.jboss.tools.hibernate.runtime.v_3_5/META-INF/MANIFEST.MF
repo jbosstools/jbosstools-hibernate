@@ -25,5 +25,5 @@ Bundle-ClassPath: .,
  lib/hibernate-annotations-3.5.6-Final.jar,
  lib/hibernate-core-3.5.6-Final.jar,
  lib/hibernate-entitymanager-3.5.6-Final.jar,
- lib/hibernate-tools-3.5.2.Final.jar
+ lib/hibernate-tools-3.5.3.Final.jar
 Bundle-Vendor: Red Hat
