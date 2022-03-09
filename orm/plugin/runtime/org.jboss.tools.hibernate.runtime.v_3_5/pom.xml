@@ -12,7 +12,6 @@
 	<packaging>eclipse-plugin</packaging>
 	
 	<properties>
-		<asm.version>3.1</asm.version>
 		<hibernate.version>3.5.6-Final</hibernate.version>
 		<hibernate-tools.version>3.5.3.Final</hibernate-tools.version>
 	</properties>
@@ -33,11 +32,6 @@
 				</executions>
 				<configuration>
 					<artifactItems>
-						<artifactItem>
-							<groupId>asm</groupId>
-							<artifactId>asm</artifactId>
-							<version>${asm.version}</version>
-						</artifactItem>
 						<artifactItem>
 							<groupId>org.hibernate</groupId>
 							<artifactId>hibernate-annotations</artifactId>

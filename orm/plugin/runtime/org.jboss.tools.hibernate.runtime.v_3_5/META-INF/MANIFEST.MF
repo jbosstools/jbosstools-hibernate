@@ -20,7 +20,6 @@ Require-Bundle: org.apache.commons.collections,
  org.slf4j.api
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: .,
- lib/asm-3.1.jar,
  lib/hibernate-annotations-3.5.6-Final.jar,
  lib/hibernate-core-3.5.6-Final.jar,
  lib/hibernate-entitymanager-3.5.6-Final.jar,
