@@ -1,7 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_6_0.internal.legacy;
 
 import org.hibernate.type.AbstractSingleColumnStandardBasicType;
-import org.hibernate.type.descriptor.java.FloatTypeDescriptor;
+import org.hibernate.type.descriptor.java.FloatJavaType;
 import org.hibernate.type.descriptor.jdbc.FloatJdbcType;
 
 public class FloatType extends AbstractSingleColumnStandardBasicType<Float> {
@@ -9,7 +9,7 @@ public class FloatType extends AbstractSingleColumnStandardBasicType<Float> {
 
 
 	public FloatType() {
-		super( FloatJdbcType.INSTANCE, FloatTypeDescriptor.INSTANCE );
+		super( FloatJdbcType.INSTANCE, FloatJavaType.INSTANCE );
 	}
 	@Override
 	public String getName() {
