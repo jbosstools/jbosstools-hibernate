@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Freemarker for JBoss Tools Hibernate
 Bundle-SymbolicName: org.jboss.tools.hibernate.libs.freemarker.v_2_3_23
-Bundle-Version: 5.4.16.qualifier
+Bundle-Version: 5.4.17.qualifier
 Bundle-Vendor: Red Hat
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: lib/freemarker-2.3.23.jar

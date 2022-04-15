@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: JAXB 3.0 implementation for JBoss Tools Hibernate
 Bundle-SymbolicName: org.jboss.tools.hibernate.libs.jaxb.v_3_0;singleton:=true
-Bundle-Version: 5.4.16.qualifier
+Bundle-Version: 5.4.17.qualifier
 Bundle-Vendor: Red Hat
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
