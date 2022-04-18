@@ -41,7 +41,7 @@ Export-Package: org.hibernate.eclipse.console.test.project,
 Bundle-Activator: org.hibernate.eclipse.jdt.ui.test.HibernateJDTuiTestPlugin
 Bundle-Vendor: %Bundle-Vendor.0
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: .,
  lib/cglib-nodep-2.1_3.jar,
  lib/hamcrest-core-1.1.jar,
