@@ -75,7 +75,7 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.tools.jst.web.ui,
  org.jboss.tools.maven.jdt
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Eclipse-BundleShape: jar
 Bundle-Localization: plugin
 Bundle-Vendor: Red Hat
