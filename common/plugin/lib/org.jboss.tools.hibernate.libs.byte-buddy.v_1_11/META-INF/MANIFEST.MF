@@ -4,7 +4,7 @@ Bundle-Name: Byte Buddy 1.11.x for JBoss Tools Hibernate
 Bundle-SymbolicName: org.jboss.tools.hibernate.libs.byte-buddy.v_1_11
 Bundle-Version: 5.4.17.qualifier
 Bundle-Vendor: Red Hat
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: lib/byte-buddy-1.11.14.jar
 Export-Package: net.bytebuddy,
  net.bytebuddy.agent.builder,
