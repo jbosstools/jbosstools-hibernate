@@ -4,7 +4,7 @@ Bundle-Name: Antlr4 Runtime for JBoss Tools Hibernate
 Bundle-SymbolicName: org.jboss.tools.hibernate.libs.antlr4-runtime.v_4_9
 Bundle-Version: 5.4.17.qualifier
 Bundle-Vendor: Red Hat
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: lib/antlr4-runtime-4.9.2.jar
 Export-Package: org.antlr.v4.runtime,
  org.antlr.v4.runtime.atn,
