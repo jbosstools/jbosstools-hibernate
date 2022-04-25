@@ -4,6 +4,6 @@ Bundle-Name: Transaction API for JBoss Tools Hibernate
 Bundle-SymbolicName: org.jboss.tools.hibernate.libs.transaction-api.v_1_2
 Bundle-Version: 5.4.17.qualifier
 Bundle-Vendor: Red Hat
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: lib/jboss-transaction-api_1.2_spec-1.1.1.Final.jar
 Export-Package: javax.transaction
