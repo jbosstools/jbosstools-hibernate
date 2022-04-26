@@ -4,6 +4,6 @@ Bundle-Name: Java Persistence API for JBoss Tools Hibernate
 Bundle-SymbolicName: org.jboss.tools.hibernate.libs.jandex.v_2_4
 Bundle-Version: 5.4.17.qualifier
 Bundle-Vendor: Red Hat
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: lib/jandex-2.4.0.Final.jar
 Export-Package: org.jboss.jandex
