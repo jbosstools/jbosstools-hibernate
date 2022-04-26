@@ -4,7 +4,7 @@ Bundle-Name: Activation API for JBoss Tools Hibernate
 Bundle-SymbolicName: org.jboss.tools.hibernate.libs.jaxb.v_2_3;singleton:=true
 Bundle-Version: 5.4.17.qualifier
 Bundle-Vendor: Red Hat
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: lib/jakarta.xml.bind-api-2.3.3.jar,
  lib/jaxb-osgi-2.3.5.jar
