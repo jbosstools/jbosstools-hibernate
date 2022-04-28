@@ -29,7 +29,7 @@ Require-Bundle:
  org.eclipse.wst.common.modulecore,
  org.eclipse.jst.common.project.facet.core
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Vendor: %Bundle-Vendor.0
 Export-Package: org.jboss.tools.hibernate.jpt.ui,
  org.jboss.tools.hibernate.jpt.ui.internal.platform,
