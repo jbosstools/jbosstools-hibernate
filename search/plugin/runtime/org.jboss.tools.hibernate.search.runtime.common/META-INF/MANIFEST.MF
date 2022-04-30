@@ -8,7 +8,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.jboss.tools.hibernate.search.runtime.spi;bundle-version="2.0.0",
  org.jboss.tools.hibernate.runtime.common;bundle-version="5.1.2",
  org.jboss.tools.hibernate.runtime.spi;bundle-version="5.1.2"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Export-Package: org.jboss.tools.hibernate.search.runtime.common
 Bundle-Activator: org.jboss.tools.hibernate.search.runtime.common.internal.HibernateSearchRuntimeCommon
