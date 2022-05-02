@@ -4,7 +4,7 @@ Bundle-Name: hibernate.search.runtime.v_4_0
 Bundle-SymbolicName: org.jboss.tools.hibernate.search.runtime.v_4_0;singleton:=true
 Bundle-Version: 5.4.17.qualifier
 Fragment-Host: org.jboss.tools.hibernate.runtime.v_4_0;bundle-version="5.1.2"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: .,
  lib/hibernate-search-engine-4.0.0.Final.jar,
  lib/hibernate-search-orm-4.0.0.Final.jar,
