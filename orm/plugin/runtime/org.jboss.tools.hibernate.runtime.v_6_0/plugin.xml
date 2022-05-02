@@ -5,7 +5,6 @@
          point="org.jboss.tools.hibernate.runtime.spi.services">
       <service
             class="org.jboss.tools.hibernate.runtime.v_6_0.internal.ServiceImpl"
-            disabled="true"
             name="%hibernate.version">
       </service>
    </extension>

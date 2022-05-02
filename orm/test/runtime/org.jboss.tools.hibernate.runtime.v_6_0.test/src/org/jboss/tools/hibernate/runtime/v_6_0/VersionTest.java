@@ -1,7 +1,10 @@
 package org.jboss.tools.hibernate.runtime.v_6_0;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
+import org.jboss.tools.hibernate.runtime.spi.RuntimeServiceManager;
+import org.jboss.tools.hibernate.runtime.v_6_0.internal.ServiceImpl;
 import org.junit.jupiter.api.Test;
 
 public class VersionTest {
@@ -16,4 +19,8 @@ public class VersionTest {
 		assertEquals("6.0.0.Final", org.hibernate.Version.getVersionString());
 	}
 
+	@Test 
+	public void testRuntimeVersion() {
+		assertSame(RuntimeServiceManager.getInstance().findService("6.0").getClass(), ServiceImpl.class);
+	}
 }
