@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.jboss.tools.hibernate.search.runtime.v_5_5;singleton:=t
 Bundle-Version: 5.4.17.qualifier
 Fragment-Host: org.jboss.tools.hibernate.runtime.v_5_0;bundle-version="5.1.2"
 Bundle-Vendor: bdshadow
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: .,
  lib/hibernate-search-orm-5.5.2.Final.jar,
  lib/hibernate-search-engine-5.5.2.Final.jar,
