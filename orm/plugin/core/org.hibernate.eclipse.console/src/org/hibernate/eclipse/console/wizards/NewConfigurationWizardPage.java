@@ -170,7 +170,7 @@ public class NewConfigurationWizardPage extends WizardPage {
         String[] versions = RuntimeServiceManager.getInstance().getEnabledVersions();
         Arrays.sort(versions, STRING_REVERSE_ALPHABETICAL);
         hibernateVersionCombo.setItems(versions);
-        hibernateVersionCombo.select(0);
+        hibernateVersionCombo.select(getIndexOfDefaultVersion(versions));
     
         label = new Label(container, SWT.NULL);
         label.setText(HibernateConsoleMessages.NewConfigurationWizardPage_session_factory_name);
@@ -291,6 +291,16 @@ public class NewConfigurationWizardPage extends WizardPage {
         setControl(sc);
         
         sc.pack();
+    }
+    
+    private int getIndexOfDefaultVersion(String[] versions) {
+    	String defaultVersion = RuntimeServiceManager.getInstance().getDefaultVersion();
+    	for (int i = 0; i < versions.length; i++) {
+    		if (defaultVersion.equals(versions[i])) {
+    			return i;
+    		}
+    	}
+    	return 0;
     }
 
 
