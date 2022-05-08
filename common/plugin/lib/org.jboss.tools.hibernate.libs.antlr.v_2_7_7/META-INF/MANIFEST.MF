@@ -4,7 +4,7 @@ Bundle-Name: Antlr for JBoss Tools Hibernate
 Bundle-SymbolicName: org.jboss.tools.hibernate.libs.antlr.v_2_7_7
 Bundle-Version: 5.4.17.qualifier
 Bundle-Vendor: Red Hat
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: lib/antlr-2.7.7.jar
 Export-Package: antlr,
  antlr.ASdebug,
