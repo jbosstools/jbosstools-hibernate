@@ -13,7 +13,7 @@
 	<packaging>eclipse-plugin</packaging>
 
 	<properties>
-		<jboss-logging.version>3.4.2.Final</jboss-logging.version>
+		<jboss-logging.version>3.4.3.Final</jboss-logging.version>
 	</properties>
 
 	<build>
