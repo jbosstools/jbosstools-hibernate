@@ -8,8 +8,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: .,
  lib/hibernate-core-5.4.33.jar,
  lib/hibernate-tools-5.4.33.Final.jar
-Require-Bundle: org.jboss.tools.hibernate.libs.activation.v_1_2_0,
- org.jboss.tools.hibernate.libs.antlr.v_2_7_7,
+Require-Bundle: org.jboss.tools.hibernate.libs.antlr.v_2_7_7,
  org.jboss.tools.hibernate.libs.byte-buddy.v_1_11,
  org.jboss.tools.hibernate.libs.classmate.v_1_5,
  org.jboss.tools.hibernate.libs.commons-collections4.v_4_4,
