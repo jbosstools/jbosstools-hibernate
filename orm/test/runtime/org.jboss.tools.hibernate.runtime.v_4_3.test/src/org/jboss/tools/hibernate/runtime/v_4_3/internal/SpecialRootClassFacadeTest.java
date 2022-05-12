@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_4_3.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -41,6 +42,7 @@ public class SpecialRootClassFacadeTest {
 		Component componentTarget = new Component(null, persistentClassTarget);
 		componentTarget.setOwner(persistentClassTarget);
 		componentTarget.setParentProperty("fooBar");
+		componentTarget.setComponentClassName("barFoo");
 		propertyTarget.setValue(componentTarget);
 		propertyTarget.setPersistentClass(persistentClassTarget);
 		IProperty propertyFacade = FACADE_FACTORY.createProperty(propertyTarget);
@@ -49,6 +51,7 @@ public class SpecialRootClassFacadeTest {
 		assertNotSame(propertyFacade, specialRootClassTarget);
 		assertTrue(specialRootClassTarget instanceof RootClass);
 		assertNotSame(specialRootClassTarget, persistentClassTarget);
+		assertEquals("barFoo", specialRootClassFacade.getEntityName());
 		Field propertyField = AbstractSpecialRootClassFacade.class.getDeclaredField("property");
 		propertyField.setAccessible(true);
 		assertSame(propertyField.get(specialRootClassFacade), propertyFacade);

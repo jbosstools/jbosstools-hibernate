@@ -16,6 +16,7 @@ public class SpecialRootClassFacadeImpl extends AbstractSpecialRootClassFacade {
 	public SpecialRootClassFacadeImpl(IFacadeFactory facadeFactory, IProperty property) {
 		super(facadeFactory, new RootClass(getMetadataBuildingContext(property)));
 		this.property = property;
+		generate();
 	}
 
 	private static MetadataBuildingContext getMetadataBuildingContext(IProperty property) {
