@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Antlr4 Runtime for JBoss Tools Hibernate
+Bundle-SymbolicName: org.jboss.tools.hibernate.libs.antlr4-runtime.v_4_10
+Bundle-Version: 5.4.17.qualifier
+Bundle-Vendor: Red Hat
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-ClassPath: lib/antlr4-runtime-4.10.jar
+Export-Package: org.antlr.v4.runtime,
+ org.antlr.v4.runtime.atn,
+ org.antlr.v4.runtime.dfa,
+ org.antlr.v4.runtime.misc,
+ org.antlr.v4.runtime.tree,
+ org.antlr.v4.runtime.tree.pattern,
+ org.antlr.v4.runtime.tree.xpath
