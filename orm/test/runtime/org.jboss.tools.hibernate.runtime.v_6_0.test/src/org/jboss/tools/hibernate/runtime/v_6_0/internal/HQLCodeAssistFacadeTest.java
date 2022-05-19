@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
+import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.ide.completion.IHQLCompletionRequestor;
 import org.jboss.tools.hibernate.runtime.common.AbstractHQLCodeAssistFacade;
@@ -27,9 +28,10 @@ public class HQLCodeAssistFacadeTest {
 	
 	@BeforeEach
 	public void beforeEach() {
-		hqlCodeAssistTarget = new org.hibernate.tool.ide.completion.IHQLCodeAssist() {			
+		hqlCodeAssistTarget = new HQLCodeAssist(null) {
 			@Override
 			public void codeComplete(String query, int currentOffset, IHQLCompletionRequestor handler) {
+				super.codeComplete(query, currentOffset, handler);
 				handler.accept(HQL_COMPLETION_PROPOSAL);
 			}
 		};
@@ -39,7 +41,7 @@ public class HQLCodeAssistFacadeTest {
 	@Test
 	public void testCodeComplete() {
 		assertNull(acceptedProposal);
-		hqlCodeAssistFacade.codeComplete("foo", Integer.MAX_VALUE, new TestHQLCompletionHandler());
+		hqlCodeAssistFacade.codeComplete("foo bar", 1, new TestHQLCompletionHandler());
 		assertNotNull(acceptedProposal);
 		assertSame(HQL_COMPLETION_PROPOSAL, ((IFacade)acceptedProposal).getTarget());
 	}
@@ -52,8 +54,6 @@ public class HQLCodeAssistFacadeTest {
 		}
 		@Override
 		public void completionFailure(String errorMessage) {
-			// TODO Auto-generated method stub
-			
 		}		
 	}
 	
