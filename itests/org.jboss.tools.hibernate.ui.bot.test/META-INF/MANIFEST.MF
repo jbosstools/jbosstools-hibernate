@@ -72,7 +72,6 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.tools.maven.hibernate,
  org.eclipse.datatools.connectivity.dbdefinition.genericJDBC,
  org.eclipse.jpt.jpa.ui,
- org.jboss.tools.jst.web.ui,
  org.jboss.tools.maven.jdt
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-11
