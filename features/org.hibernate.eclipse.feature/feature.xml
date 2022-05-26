@@ -240,12 +240,6 @@
          version="0.0.0"/>
 
    <plugin
-         id="org.jboss.tools.hibernate.libs.jaxb-core.v_2_3_0"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
          id="org.jboss.tools.hibernate.orm.ui"
          download-size="0"
          install-size="0"
