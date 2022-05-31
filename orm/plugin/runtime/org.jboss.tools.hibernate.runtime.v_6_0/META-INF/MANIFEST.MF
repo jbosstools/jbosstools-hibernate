@@ -7,10 +7,10 @@ Bundle-Version: 5.4.17.qualifier
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: .,
- lib/hibernate-ant-6.0.1.Final.jar,
- lib/hibernate-core-6.0.1.Final.jar,
- lib/hibernate-tools-orm-6.0.1.Final.jar,
- lib/hibernate-tools-utils-6.0.1.Final.jar
+ lib/hibernate-ant-6.0.2.Final.jar,
+ lib/hibernate-core-6.0.2.Final.jar,
+ lib/hibernate-tools-orm-6.0.2.Final.jar,
+ lib/hibernate-tools-utils-6.0.2.Final.jar
 Require-Bundle: org.jboss.tools.hibernate.libs.antlr4-runtime.v_4_10,
  org.jboss.tools.hibernate.libs.byte-buddy.v_1_11,
  org.jboss.tools.hibernate.libs.classmate.v_1_5,
