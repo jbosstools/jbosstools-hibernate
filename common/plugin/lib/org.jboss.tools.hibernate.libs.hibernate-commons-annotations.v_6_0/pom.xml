@@ -12,7 +12,7 @@
 	<packaging>eclipse-plugin</packaging>
 	
 	<properties>
-		<hibernate-commons-annotations.version>6.0.1.Final</hibernate-commons-annotations.version>
+		<hibernate-commons-annotations.version>6.0.2.Final</hibernate-commons-annotations.version>
 	</properties>
 	
 	<build>

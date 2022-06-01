@@ -5,8 +5,8 @@ Bundle-SymbolicName: org.jboss.tools.hibernate.libs.hibernate-commons-annotation
 Bundle-Version: 5.4.17.qualifier
 Bundle-Vendor: Red Hat
 Bundle-RequiredExecutionEnvironment: JavaSE-11
-Bundle-ClassPath: lib/hibernate-commons-annotations-6.0.1.Final.jar
 Export-Package: org.hibernate.annotations.common.annotationfactory,
  org.hibernate.annotations.common.reflection,
  org.hibernate.annotations.common.reflection.java,
  org.hibernate.annotations.common.reflection.java.generics
+Bundle-ClassPath: lib/hibernate-commons-annotations-6.0.2.Final.jar
