@@ -12,7 +12,7 @@
 	<packaging>eclipse-plugin</packaging>
 	
 	<properties>
-	    <antlr4-runtime.version>4.10</antlr4-runtime.version>
+	    <antlr4-runtime.version>4.10.1</antlr4-runtime.version>
 	</properties>
 	
 	<build>
