@@ -17,6 +17,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<module>org.jboss.tools.hibernate.libs.antlr4-runtime.v_4_10</module>
 		<module>org.jboss.tools.hibernate.libs.bsh.v_2_0_b4</module>
 		<module>org.jboss.tools.hibernate.libs.byte-buddy.v_1_11</module>
+		<module>org.jboss.tools.hibernate.libs.byte-buddy.v_1_12</module>
 		<module>org.jboss.tools.hibernate.libs.classmate.v_1_5</module>
 		<module>org.jboss.tools.hibernate.libs.commons-collections4.v_4_4</module>
 		<module>org.jboss.tools.hibernate.libs.dom4j.v_1_6_1</module>
