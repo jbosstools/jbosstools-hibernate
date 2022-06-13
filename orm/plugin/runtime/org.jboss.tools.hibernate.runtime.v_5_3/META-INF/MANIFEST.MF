@@ -10,7 +10,7 @@ Bundle-ClassPath: .,
  lib/hibernate-tools-5.3.26.Final.jar
 Require-Bundle: org.apache.commons.logging,
  org.jboss.tools.hibernate.libs.antlr.v_2_7_7,
- org.jboss.tools.hibernate.libs.byte-buddy.v_1_11,
+ org.jboss.tools.hibernate.libs.byte-buddy.v_1_12,
  org.jboss.tools.hibernate.libs.classmate.v_1_5,
  org.jboss.tools.hibernate.libs.commons-collections4.v_4_4,
  org.jboss.tools.hibernate.libs.dom4j.v_1_6_1,
