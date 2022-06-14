@@ -259,12 +259,6 @@
          version="0.0.0"/>
 
    <plugin
-         id="org.jboss.tools.hibernate.libs.byte-buddy.v_1_11"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
          id="org.jboss.tools.hibernate.libs.jaxb.v_2_3"
          download-size="0"
          install-size="0"
