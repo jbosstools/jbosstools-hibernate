@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Commons Collections4 for JBoss Tools Hibernate
 Bundle-SymbolicName: org.jboss.tools.hibernate.libs.commons-collections4.v_4_4
-Bundle-Version: 5.4.17.qualifier
+Bundle-Version: 5.4.18.qualifier
 Bundle-Vendor: Red Hat
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: lib/commons-collections4-4.4.jar

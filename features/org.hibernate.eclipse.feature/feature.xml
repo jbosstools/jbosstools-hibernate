@@ -2,7 +2,7 @@
 <feature
       id="org.hibernate.eclipse.feature"
       label="%featureName"
-      version="5.4.17.qualifier"
+      version="5.4.18.qualifier"
       provider-name="%providerName"
       plugin="org.hibernate.eclipse"
       license-feature="org.jboss.tools.foundation.license.feature"
