@@ -28,6 +28,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	    <module>org.jboss.tools.hibernate.runtime.v_5_5.test</module>
 	    <module>org.jboss.tools.hibernate.runtime.v_5_6.test</module>
 	    <module>org.jboss.tools.hibernate.runtime.v_6_0.test</module>
+	    <module>org.jboss.tools.hibernate.runtime.v_6_1.test</module>
 	</modules>
 	
 </project>
