@@ -1,7 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_6_1.internal;
 
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
@@ -44,12 +43,6 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	@Override
 	public ClassLoader getClassLoader() {
 		return FacadeFactoryImpl.class.getClassLoader();
-	}
-
-	@Override
-	public IArtifactCollector createArtifactCollector(Object target) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
