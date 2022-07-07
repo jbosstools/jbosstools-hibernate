@@ -44,12 +44,6 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	}
 
 	@Override
-	public IReverseEngineeringSettings createReverseEngineeringSettings(Object target) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public IReverseEngineeringStrategy createReverseEngineeringStrategy(Object target) {
 		// TODO Auto-generated method stub
 		return null;
