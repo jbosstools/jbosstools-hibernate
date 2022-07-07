@@ -25,7 +25,6 @@ import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 import org.jboss.tools.hibernate.runtime.spi.IQueryTranslator;
-import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
@@ -45,8 +44,7 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 
 	@Override
 	public IReverseEngineeringStrategy createReverseEngineeringStrategy(Object target) {
-		// TODO Auto-generated method stub
-		return null;
+		return new ReverseEngineeringStrategyFacadeImpl(this, target);
 	}
 
 	@Override
