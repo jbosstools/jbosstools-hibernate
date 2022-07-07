@@ -8,4 +8,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.jboss.tools.hibernate.runtime.common,
  org.jboss.tools.hibernate.runtime.spi
 Bundle-ClassPath: .,
+ lib/hibernate-core-6.1.0.Final.jar,
  lib/hibernate-tools-orm-6.1.0.Final.jar

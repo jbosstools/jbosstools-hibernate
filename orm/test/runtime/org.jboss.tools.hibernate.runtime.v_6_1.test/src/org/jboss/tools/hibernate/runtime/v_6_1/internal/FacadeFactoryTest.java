@@ -5,8 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 
 import org.hibernate.tool.api.export.ArtifactCollector;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
+import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
+import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -36,6 +38,13 @@ public class FacadeFactoryTest {
 		ArtifactCollector artifactCollector = new DefaultArtifactCollector();
 		IArtifactCollector facade = facadeFactory.createArtifactCollector(artifactCollector);
 		assertSame(artifactCollector, ((IFacade)facade).getTarget());
+	}
+	
+	@Test
+	public void testCreateCfg2HbmTool() {
+		Cfg2HbmTool cfg2HbmTool = new Cfg2HbmTool();
+		ICfg2HbmTool facade = facadeFactory.createCfg2HbmTool(cfg2HbmTool);
+		assertSame(cfg2HbmTool,  ((IFacade)facade).getTarget());
 	}
 	
 }

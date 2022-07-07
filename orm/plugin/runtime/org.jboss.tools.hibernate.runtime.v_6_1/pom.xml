@@ -36,6 +36,11 @@
 							<artifactId>hibernate-tools-orm</artifactId>
 							<version>${hibernate.version}</version>
 						</artifactItem>
+						<artifactItem>
+							<groupId>org.hibernate.orm</groupId>
+							<artifactId>hibernate-core</artifactId>
+							<version>${hibernate.version}</version>
+						</artifactItem>
 					</artifactItems>
 					<skip>false</skip>
 					<outputDirectory>${basedir}/lib</outputDirectory>
