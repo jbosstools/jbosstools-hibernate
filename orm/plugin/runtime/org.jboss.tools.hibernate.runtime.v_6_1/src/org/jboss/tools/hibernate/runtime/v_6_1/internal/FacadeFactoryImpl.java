@@ -63,8 +63,7 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 
 	@Override
 	public IQueryExporter createQueryExporter(Object target) {
-		// TODO Auto-generated method stub
-		return null;
+		return new QueryExporterFacadeImpl(this, target);
 	}
 
 	@Override
