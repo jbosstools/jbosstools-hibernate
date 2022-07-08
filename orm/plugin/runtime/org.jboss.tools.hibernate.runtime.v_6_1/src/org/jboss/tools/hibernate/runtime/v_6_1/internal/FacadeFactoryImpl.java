@@ -58,8 +58,7 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 
 	@Override
 	public IHbm2DDLExporter createHbm2DDLExporter(Object target) {
-		// TODO Auto-generated method stub
-		return null;
+		return new Hbm2DDLExporterFacadeImpl(this, target);
 	}
 
 	@Override
