@@ -9,6 +9,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.tool.api.export.ArtifactCollector;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.reveng.RevengSettings;
@@ -24,6 +25,7 @@ import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
+import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
@@ -151,6 +153,17 @@ public class FacadeFactoryTest {
 		IExporter facade = facadeFactory.createExporter(exporter);
 		assertTrue(facade instanceof ExporterFacadeImpl);
 		assertSame(exporter, ((IFacade)facade).getTarget());		
+	}
+	
+	@Test
+	public void testCreateClassMetadata() {
+		ClassMetadata classMetadata = (ClassMetadata)Proxy.newProxyInstance(
+				facadeFactory.getClassLoader(), 
+				new Class[] { ClassMetadata.class }, 
+				new TestInvocationHandler());
+		IClassMetadata facade = facadeFactory.createClassMetadata(classMetadata);
+		assertTrue(facade instanceof ClassMetadataFacadeImpl);
+		assertSame(classMetadata, ((IFacade)facade).getTarget());		
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {

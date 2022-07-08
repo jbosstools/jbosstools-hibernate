@@ -72,10 +72,9 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	
 	@Override
 	public IClassMetadata createClassMetadata(Object target) {
-		// TODO Auto-generated method stub
-		return null;
+		return new ClassMetadataFacadeImpl(this, target);
 	}
-
+	
 	@Override
 	public ICollectionMetadata createCollectionMetadata(Object target) {
 		// TODO Auto-generated method stub
