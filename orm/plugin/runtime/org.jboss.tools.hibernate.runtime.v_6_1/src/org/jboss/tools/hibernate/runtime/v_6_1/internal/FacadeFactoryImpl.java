@@ -17,7 +17,6 @@ import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
-import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
@@ -45,12 +44,6 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	@Override
 	public IReverseEngineeringStrategy createReverseEngineeringStrategy(Object target) {
 		return new ReverseEngineeringStrategyFacadeImpl(this, target);
-	}
-
-	@Override
-	public IOverrideRepository createOverrideRepository(Object target) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

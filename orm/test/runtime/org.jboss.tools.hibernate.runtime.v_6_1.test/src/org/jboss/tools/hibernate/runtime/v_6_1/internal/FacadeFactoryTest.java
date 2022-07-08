@@ -14,10 +14,12 @@ import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
+import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
+import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.junit.jupiter.api.BeforeEach;
@@ -81,6 +83,13 @@ public class FacadeFactoryTest {
 		IReverseEngineeringStrategy facade = facadeFactory.createReverseEngineeringStrategy(res);
 		assertTrue(facade instanceof ReverseEngineeringStrategyFacadeImpl);
 		assertSame(res, ((IFacade)facade).getTarget());		
+	}
+	
+	@Test
+	public void testCreateOverrideRepository() {
+		OverrideRepository overrideRepository = new OverrideRepository();
+		IOverrideRepository facade = facadeFactory.createOverrideRepository(overrideRepository);
+		assertSame(overrideRepository, ((IFacade)facade).getTarget());		
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
