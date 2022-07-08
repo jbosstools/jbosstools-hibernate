@@ -67,10 +67,9 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 
 	@Override
 	public IExporter createExporter(Object target) {
-		// TODO Auto-generated method stub
-		return null;
+		return new ExporterFacadeImpl(this, target);
 	}
-
+	
 	@Override
 	public IClassMetadata createClassMetadata(Object target) {
 		// TODO Auto-generated method stub
