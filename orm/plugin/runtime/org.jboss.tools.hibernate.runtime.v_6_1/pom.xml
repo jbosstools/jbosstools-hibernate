@@ -38,6 +38,11 @@
 						</artifactItem>
 						<artifactItem>
 							<groupId>org.hibernate.orm</groupId>
+							<artifactId>hibernate-ant</artifactId>
+							<version>${hibernate.version}</version>
+						</artifactItem>
+						<artifactItem>
+							<groupId>org.hibernate.orm</groupId>
 							<artifactId>hibernate-core</artifactId>
 							<version>${hibernate.version}</version>
 						</artifactItem>

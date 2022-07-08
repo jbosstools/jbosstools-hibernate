@@ -12,6 +12,7 @@ import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.tool.api.export.ArtifactCollector;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
+import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
@@ -22,6 +23,7 @@ import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
+import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -90,6 +92,14 @@ public class FacadeFactoryTest {
 		OverrideRepository overrideRepository = new OverrideRepository();
 		IOverrideRepository facade = facadeFactory.createOverrideRepository(overrideRepository);
 		assertSame(overrideRepository, ((IFacade)facade).getTarget());		
+	}
+	
+	@Test
+	public void testCreateSchemaExport() {
+		SchemaExport schemaExport = new SchemaExport();
+		ISchemaExport facade = facadeFactory.createSchemaExport(schemaExport);
+		assertTrue(facade instanceof SchemaExportFacadeImpl);
+		assertSame(schemaExport, ((IFacade)facade).getTarget());		
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
