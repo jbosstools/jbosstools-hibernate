@@ -13,6 +13,7 @@ import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.mapping.Column;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
+import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.tool.api.export.ArtifactCollector;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.reveng.RevengSettings;
@@ -33,6 +34,7 @@ import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
+import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
@@ -211,6 +213,18 @@ public class FacadeFactoryTest {
 		assertSame(query, ((IFacade)facade).getTarget());		
 	}
 	
+	@Test
+	public void testCreateEntityMetamodel() {
+		EntityPersister entityPersister = (EntityPersister)Proxy.newProxyInstance(
+				getClass().getClassLoader(), 
+				new Class[] { EntityPersister.class }, 
+				new TestInvocationHandler());
+		IEntityMetamodel entityMetamodel = facadeFactory.createEntityMetamodel(entityPersister);
+		assertTrue(entityMetamodel instanceof EntityMetamodelFacadeImpl);
+		assertSame(entityPersister, ((IFacade)entityMetamodel).getTarget());
+	}
+	
+
 	private class TestInvocationHandler implements InvocationHandler {
 		@Override
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
