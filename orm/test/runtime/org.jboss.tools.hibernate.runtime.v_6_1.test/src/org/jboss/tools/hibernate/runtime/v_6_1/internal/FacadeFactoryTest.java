@@ -32,6 +32,7 @@ import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.ICriteria;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
@@ -44,6 +45,8 @@ import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import jakarta.persistence.Query;
 
 public class FacadeFactoryTest {
 
@@ -195,6 +198,17 @@ public class FacadeFactoryTest {
 		IConfiguration facade = facadeFactory.createConfiguration(configuration);
 		assertTrue(facade instanceof ConfigurationFacadeImpl);
 		assertSame(configuration, ((IFacade)facade).getTarget());		
+	}
+	
+	@Test
+	public void testCreateCriteria() {
+		Query query = (Query)Proxy.newProxyInstance(
+				facadeFactory.getClassLoader(), 
+				new Class[] { Query.class }, 
+				new TestInvocationHandler());
+		ICriteria facade = facadeFactory.createCriteria(query);
+		assertTrue(facade instanceof CriteriaFacadeImpl);
+		assertSame(query, ((IFacade)facade).getTarget());		
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {

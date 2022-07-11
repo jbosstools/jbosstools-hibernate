@@ -80,8 +80,7 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 
 	@Override
 	public ICriteria createCriteria(Object target) {
-		// TODO Auto-generated method stub
-		return null;
+		return new CriteriaFacadeImpl(this, target);
 	}
 
 	@Override
