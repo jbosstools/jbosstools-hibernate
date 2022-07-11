@@ -110,12 +110,6 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	}
 
 	@Override
-	public IJoin createJoin(Object target) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public IPersistentClass createPersistentClass(Object target) {
 		// TODO Auto-generated method stub
 		return null;
