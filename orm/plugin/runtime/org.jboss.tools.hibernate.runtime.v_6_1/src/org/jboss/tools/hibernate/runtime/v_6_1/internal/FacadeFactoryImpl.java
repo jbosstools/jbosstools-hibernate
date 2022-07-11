@@ -97,8 +97,7 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 
 	@Override
 	public IForeignKey createForeignKey(Object target) {
-		// TODO Auto-generated method stub
-		return null;
+		return new ForeignKeyFacadeImpl(this, target);
 	}
 
 	@Override
