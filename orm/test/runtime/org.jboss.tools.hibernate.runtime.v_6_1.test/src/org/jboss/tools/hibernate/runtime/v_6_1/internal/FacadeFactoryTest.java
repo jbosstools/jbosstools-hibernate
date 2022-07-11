@@ -9,6 +9,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.mapping.Column;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.tool.api.export.ArtifactCollector;
@@ -28,6 +29,7 @@ import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
+import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
@@ -176,6 +178,13 @@ public class FacadeFactoryTest {
 				new TestInvocationHandler());
 		ICollectionMetadata facade = facadeFactory.createCollectionMetadata(collectionMetadata);
 		assertSame(collectionMetadata, ((IFacade)facade).getTarget());		
+	}
+	
+	@Test
+	public void testCreateColumn() {
+		Column column = new Column();
+		IColumn facade = facadeFactory.createColumn(column);
+		assertSame(column, ((IFacade)facade).getTarget());		
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
