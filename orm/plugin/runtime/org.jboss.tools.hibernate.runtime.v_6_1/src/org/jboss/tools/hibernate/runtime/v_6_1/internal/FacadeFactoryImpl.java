@@ -112,12 +112,6 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	}
 	
 	@Override
-	public IProperty createProperty(Object target) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public IQuery createQuery(Object target) {
 		// TODO Auto-generated method stub
 		return null;

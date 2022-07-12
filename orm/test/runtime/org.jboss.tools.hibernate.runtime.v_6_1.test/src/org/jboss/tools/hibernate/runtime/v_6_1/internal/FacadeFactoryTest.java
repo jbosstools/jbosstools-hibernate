@@ -15,6 +15,7 @@ import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Join;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
+import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
@@ -58,6 +59,7 @@ import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
+import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
@@ -311,6 +313,13 @@ public class FacadeFactoryTest {
 		PrimaryKey primaryKey = new PrimaryKey(null);
 		IPrimaryKey facade = facadeFactory.createPrimaryKey(primaryKey);
 		assertSame(primaryKey, ((IFacade)facade).getTarget());
+	}
+	
+	@Test
+	public void testCreateProperty() {
+		Property property = new Property();
+		IProperty facade = facadeFactory.createProperty(property);
+		assertSame(property, ((IFacade)facade).getTarget());
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
