@@ -124,10 +124,9 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 
 	@Override
 	public ISessionFactory createSessionFactory(Object target) {
-		// TODO Auto-generated method stub
-		return null;
+		return new SessionFactoryFacadeImpl(this, target);
 	}
-
+	
 	@Override
 	public ISession createSession(Object target) {
 		// TODO Auto-generated method stub

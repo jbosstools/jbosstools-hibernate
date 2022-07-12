@@ -8,6 +8,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.mapping.Column;
@@ -65,6 +66,7 @@ import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
+import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.DummyMetadataBuildingContext;
 import org.junit.jupiter.api.BeforeEach;
@@ -332,6 +334,17 @@ public class FacadeFactoryTest {
 		IQuery facade = facadeFactory.createQuery(query);
 		assertTrue(facade instanceof QueryFacadeImpl);
 		assertSame(query, ((IFacade)facade).getTarget());
+	}
+	
+	@Test
+	public void testCreateSessionFactory() {
+		SessionFactory sessionFactory = (SessionFactory)Proxy.newProxyInstance(
+				facadeFactory.getClassLoader(), 
+				new Class[] { SessionFactory.class }, 
+				new TestInvocationHandler());
+		ISessionFactory facade = facadeFactory.createSessionFactory(sessionFactory);
+		assertTrue(facade instanceof SessionFactoryFacadeImpl);
+		assertSame(sessionFactory, ((IFacade)facade).getTarget());
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
