@@ -13,7 +13,6 @@ import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
-import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
@@ -111,10 +110,9 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 
 	@Override
 	public IPersistentClass createPersistentClass(Object target) {
-		// TODO Auto-generated method stub
-		return null;
+		return new PersistentClassFacadeImpl(this, target);
 	}
-
+	
 	@Override
 	public IPOJOClass createPOJOClass(Object target) {
 		// TODO Auto-generated method stub
