@@ -11,6 +11,7 @@ Require-Bundle: org.jboss.tools.hibernate.libs.byte-buddy.v_1_12,
  org.jboss.tools.hibernate.libs.jakarta-transaction-api.v_2_0,
  org.jboss.tools.hibernate.libs.jakarta-xml-bind-api.v_3_0,
  org.jboss.tools.hibernate.libs.jboss-logging.v_3_4,
+ org.jboss.tools.hibernate.libs.hibernate-commons-annotations.v_6_0,
  org.jboss.tools.hibernate.runtime.common,
  org.jboss.tools.hibernate.runtime.spi
 Bundle-ClassPath: .,
