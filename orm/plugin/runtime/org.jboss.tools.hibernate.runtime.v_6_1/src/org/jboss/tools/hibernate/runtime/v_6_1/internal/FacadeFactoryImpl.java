@@ -14,7 +14,6 @@ import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
-import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
@@ -112,12 +111,6 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 		return new PersistentClassFacadeImpl(this, target);
 	}
 	
-	@Override
-	public IPrimaryKey createPrimaryKey(Object target) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	@Override
 	public IProperty createProperty(Object target) {
 		// TODO Auto-generated method stub
