@@ -384,6 +384,20 @@ public class FacadeFactoryTest {
 	}
 	
 	@Test
+	public void testCreateSpecialRootClass() {
+		Property target = new Property();
+		PersistentClass pc = new RootClass(DummyMetadataBuildingContext.INSTANCE);
+		target.setPersistentClass(pc);
+		IProperty property = facadeFactory.createProperty(target);
+		IPersistentClass specialRootClass = facadeFactory.createSpecialRootClass(property);
+		assertNotNull(specialRootClass);
+		Object object = ((IFacade)specialRootClass).getTarget();
+		assertTrue(specialRootClass instanceof SpecialRootClassFacadeImpl);
+		assertTrue(object instanceof RootClass);
+		assertSame(property, specialRootClass.getProperty());
+	}
+	
+	@Test
 	public void testCreateType() {
 		Type type = (Type)Proxy.newProxyInstance(
 				facadeFactory.getClassLoader(), 
