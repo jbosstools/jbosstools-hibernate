@@ -156,10 +156,4 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 		return null;
 	}
 
-	@Override
-	public IValue createValue(Object target) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
