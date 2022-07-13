@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_6_1.internal;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -73,6 +74,7 @@ import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.IType;
+import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.DummyMetadataBuildingContext;
 import org.junit.jupiter.api.BeforeEach;
@@ -362,6 +364,14 @@ public class FacadeFactoryTest {
 		ISession facade = facadeFactory.createSession(session);
 		assertTrue(facade instanceof SessionFacadeImpl);
 		assertSame(session, ((IFacade)facade).getTarget());
+	}
+	
+	@Test
+	public void testCreateTypeFactory() {
+		ITypeFactory facade = facadeFactory.createTypeFactory();
+		assertNotNull(facade);
+		assertTrue(facade instanceof TypeFactoryFacadeImpl);
+		assertNull(((IFacade)facade).getTarget());
 	}
 	
 	@Test
