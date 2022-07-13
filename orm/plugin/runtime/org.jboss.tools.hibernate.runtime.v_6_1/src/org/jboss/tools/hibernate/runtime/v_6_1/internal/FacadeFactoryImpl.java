@@ -25,7 +25,6 @@ import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 
@@ -152,8 +151,7 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 
 	@Override
 	public IType createType(Object target) {
-		// TODO Auto-generated method stub
-		return null;
+		return new TypeFacadeImpl(this, target);
 	}
 
 }
