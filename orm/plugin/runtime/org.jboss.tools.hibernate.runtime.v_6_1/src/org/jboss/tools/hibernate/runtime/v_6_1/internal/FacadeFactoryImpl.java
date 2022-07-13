@@ -138,12 +138,6 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	}
 
 	@Override
-	public ITable createTable(Object target) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public ITypeFactory createTypeFactory() {
 		return new TypeFactoryFacadeImpl(this, null);
 	}

@@ -20,6 +20,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
@@ -72,6 +73,7 @@ import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
@@ -372,6 +374,13 @@ public class FacadeFactoryTest {
 		assertNotNull(facade);
 		assertTrue(facade instanceof TypeFactoryFacadeImpl);
 		assertNull(((IFacade)facade).getTarget());
+	}
+	
+	@Test
+	public void testCreateTable() {
+		Table table = new Table();
+		ITable facade = facadeFactory.createTable(table);
+		assertSame(table, ((IFacade)facade).getTarget());
 	}
 	
 	@Test
