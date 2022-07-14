@@ -65,5 +65,15 @@ public class SpecialRootClassFacadeTest {
 		assertFalse(specialRootClassFacade.isInstanceOfSubclass());
 	}
 	
+	@Test
+	public void testGetProperty() throws Exception {
+		IProperty property = FACADE_FACTORY.createProperty(new Property());
+		Field field = AbstractSpecialRootClassFacade.class.getDeclaredField("property");
+		field.setAccessible(true);
+		assertNotSame(property, specialRootClassFacade.getProperty());
+		field.set(specialRootClassFacade, property);
+		assertSame(property, specialRootClassFacade.getProperty());
+	}
+	
 }
 
