@@ -9,4 +9,9 @@ public class ClassMetadataFacadeImpl extends AbstractClassMetadataFacade {
 		super(facadeFactory, target);
 	}
 
+	@Override
+	protected String getSessionImplementorClassName() {
+		return "org.hibernate.engine.spi.SharedSessionContractImplementor";
+	}
+
 }

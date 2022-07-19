@@ -3,6 +3,7 @@ package org.jboss.tools.hibernate.runtime.v_6_1.internal;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -39,6 +40,7 @@ import org.hibernate.persister.entity.SingleTableEntityPersister;
 import org.hibernate.persister.spi.PersisterCreationContext;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
+import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.legacy.StringType;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.MockConnectionProvider;
@@ -106,6 +108,17 @@ public class ClassMetadataFacadeTest {
 		assertFalse(classMetadataFacade.hasIdentifierProperty());
 		((TestEntityPersister)classMetadataTarget).hasIdentifierProperty = true;
 		assertTrue(classMetadataFacade.hasIdentifierProperty());
+	}
+	
+	@Test 
+	public void testGetIdentifier() {
+		assertNull(((TestEntityPersister)classMetadataTarget).session);
+		final SharedSessionContractImplementor sessionTarget = createSession();
+		ISession sessionFacade = FACADE_FACTORY.createSession(sessionTarget);
+		Object theObject = new Object();
+		Object anotherObject = classMetadataFacade.getIdentifier(theObject, sessionFacade);
+		assertSame(theObject, anotherObject);
+		assertSame(sessionTarget, ((TestEntityPersister)classMetadataTarget).session);
 	}
 	
 	private ClassMetadata setupFooBarPersister() {
