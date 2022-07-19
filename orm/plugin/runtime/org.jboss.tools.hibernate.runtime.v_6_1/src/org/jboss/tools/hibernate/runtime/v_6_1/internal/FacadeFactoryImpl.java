@@ -3,6 +3,7 @@ package org.jboss.tools.hibernate.runtime.v_6_1.internal;
 import org.hibernate.persister.entity.EntityPersister;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
+import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
@@ -67,6 +68,11 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 		return new ClassMetadataFacadeImpl(this, target);
 	}
 	
+	@Override
+	public IColumn createColumn(Object target) {
+		return new ColumnFacadeImpl(this, target);
+	}
+
 	@Override
 	public IConfiguration createConfiguration(Object target) {
 		return new ConfigurationFacadeImpl(this, target);
