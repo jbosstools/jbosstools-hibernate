@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.runtime.v_6_1.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -68,6 +69,11 @@ public class ClassMetadataFacadeTest {
 	@Test
 	public void testGetIdentifierPropertyName() {
 		assertEquals("foo", classMetadataFacade.getIdentifierPropertyName());
+	}
+	
+	@Test
+	public void testGetPropertyNames() {
+		assertSame(PROPERTY_NAMES, classMetadataFacade.getPropertyNames());
 	}
 	
 	private ClassMetadata setupFooBarPersister() {
