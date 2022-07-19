@@ -36,6 +36,8 @@ import org.hibernate.persister.entity.AbstractEntityPersister;
 import org.hibernate.persister.entity.SingleTableEntityPersister;
 import org.hibernate.persister.spi.PersisterCreationContext;
 import org.hibernate.type.Type;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
+import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.legacy.StringType;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.MockConnectionProvider;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.MockDialect;
@@ -75,6 +77,12 @@ public class ClassMetadataFacadeTest {
 	public void testGetPropertyNames() {
 		assertSame(PROPERTY_NAMES, classMetadataFacade.getPropertyNames());
 	}
+	
+	@Test
+	public void testGetPropertyTypes() {
+		IType[] typeFacades = classMetadataFacade.getPropertyTypes();
+		assertSame(TYPE_INSTANCE, ((IFacade)typeFacades[0]).getTarget());
+ 	}
 	
 	private ClassMetadata setupFooBarPersister() {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
