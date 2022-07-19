@@ -65,6 +65,11 @@ public class ClassMetadataFacadeTest {
 		assertEquals("foobar", classMetadataFacade.getEntityName());
 	}
 	
+	@Test
+	public void testGetIdentifierPropertyName() {
+		assertEquals("foo", classMetadataFacade.getIdentifierPropertyName());
+	}
+	
 	private ClassMetadata setupFooBarPersister() {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySetting(AvailableSettings.DIALECT, MockDialect.class.getName());
