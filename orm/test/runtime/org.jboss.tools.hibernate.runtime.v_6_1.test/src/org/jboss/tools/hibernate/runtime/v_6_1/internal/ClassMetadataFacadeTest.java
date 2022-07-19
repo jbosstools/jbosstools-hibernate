@@ -84,6 +84,11 @@ public class ClassMetadataFacadeTest {
 		assertSame(TYPE_INSTANCE, ((IFacade)typeFacades[0]).getTarget());
  	}
 	
+	@Test
+	public void testGetMappedClass() {
+		assertSame(FooBar.class, classMetadataFacade.getMappedClass());
+	}
+	
 	private ClassMetadata setupFooBarPersister() {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySetting(AvailableSettings.DIALECT, MockDialect.class.getName());
