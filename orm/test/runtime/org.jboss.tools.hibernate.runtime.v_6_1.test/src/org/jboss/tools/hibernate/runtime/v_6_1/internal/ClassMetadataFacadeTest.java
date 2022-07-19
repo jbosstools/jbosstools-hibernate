@@ -121,6 +121,22 @@ public class ClassMetadataFacadeTest {
 		assertSame(sessionTarget, ((TestEntityPersister)classMetadataTarget).session);
 	}
 	
+	@Test
+	public void testIsInstanceOfAbstractEntityPersister() {
+		assertTrue(classMetadataFacade.isInstanceOfAbstractEntityPersister());
+		classMetadataTarget = (ClassMetadata)Proxy.newProxyInstance(
+				getClass().getClassLoader(), 
+				new Class[] { ClassMetadata.class }, 
+				new InvocationHandler() {
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+						return null;
+					}
+				});	
+		classMetadataFacade = new ClassMetadataFacadeImpl(FACADE_FACTORY, classMetadataTarget);
+		assertFalse(classMetadataFacade.isInstanceOfAbstractEntityPersister());
+	}
+	
 	private ClassMetadata setupFooBarPersister() {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySetting(AvailableSettings.DIALECT, MockDialect.class.getName());
