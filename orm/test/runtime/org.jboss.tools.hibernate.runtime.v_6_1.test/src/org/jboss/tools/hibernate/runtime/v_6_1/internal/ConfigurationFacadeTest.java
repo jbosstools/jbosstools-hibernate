@@ -1,6 +1,8 @@
 package org.jboss.tools.hibernate.runtime.v_6_1.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.hibernate.cfg.Configuration;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
@@ -25,6 +27,13 @@ public class ConfigurationFacadeTest {
 	public void testInstance() {
 		assertNotNull(configuration);
 		assertNotNull(configurationFacade);
+	}
+
+	@Test
+	public void testGetProperty() {
+		assertNull(configurationFacade.getProperty("foo"));
+		configuration.setProperty("foo", "bar");
+		assertEquals("bar", configurationFacade.getProperty("foo"));
 	}
 
 }
