@@ -110,4 +110,12 @@ public class ConfigurationFacadeTest {
 		assertSame(namingStrategy, facade.namingStrategy);
 	}
 	
+	@Test
+	public void testGetProperties() {
+		Properties testProperties = new Properties();
+		assertNotSame(testProperties, configurationFacade.getProperties());
+		configuration.setProperties(testProperties);
+		assertSame(testProperties, configurationFacade.getProperties());
+	}
+	
 }
