@@ -20,6 +20,8 @@ import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.MetadataHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.helpers.DefaultHandler;
 
 public class ConfigurationFacadeTest {
 
@@ -86,6 +88,15 @@ public class ConfigurationFacadeTest {
 				configurationFacade, 
 				configurationFacade.setProperties(testProperties));
 		assertSame(testProperties, configuration.getProperties());
+	}
+	
+	@Test
+	public void testSetEntityResolver() {
+		EntityResolver testResolver = new DefaultHandler();
+		ConfigurationFacadeImpl facade = (ConfigurationFacadeImpl)configurationFacade;
+		assertNull(facade.entityResolver);
+		configurationFacade.setEntityResolver(testResolver);
+		assertSame(testResolver, facade.entityResolver);
 	}
 	
 }
