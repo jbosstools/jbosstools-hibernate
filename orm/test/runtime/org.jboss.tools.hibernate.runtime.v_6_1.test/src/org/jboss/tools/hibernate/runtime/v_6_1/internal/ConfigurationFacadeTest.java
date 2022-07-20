@@ -69,4 +69,11 @@ public class ConfigurationFacadeTest {
 		assertTrue(testFile.delete());
 	}
 	
+	@Test 
+	public void testSetProperty() {
+		assertNull(configuration.getProperty("foo"));
+		configurationFacade.setProperty("foo", "bar");
+		assertEquals("bar", configuration.getProperty("foo"));
+	}
+
 }
