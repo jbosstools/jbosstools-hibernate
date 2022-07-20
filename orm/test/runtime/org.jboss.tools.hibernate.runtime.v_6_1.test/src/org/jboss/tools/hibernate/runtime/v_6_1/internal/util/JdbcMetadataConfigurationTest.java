@@ -32,4 +32,13 @@ public class JdbcMetadataConfigurationTest {
 		assertSame(properties, jdbcMetadataConfiguration.getProperties());
 	}
 	
+	@Test
+	public void testSetProperties() {
+		Properties properties = new Properties();
+		assertNotNull(jdbcMetadataConfiguration.properties);
+		assertNotSame(properties,  jdbcMetadataConfiguration.getProperties());
+		jdbcMetadataConfiguration.setProperties(properties);
+		assertSame(properties, jdbcMetadataConfiguration.getProperties());
+	}
+	
 }
