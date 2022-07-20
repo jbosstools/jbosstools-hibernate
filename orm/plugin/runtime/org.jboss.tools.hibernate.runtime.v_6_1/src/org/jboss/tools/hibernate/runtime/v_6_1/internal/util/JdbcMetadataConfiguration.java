@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.runtime.v_6_1.internal.util;
 
 import java.util.Properties;
 
+import org.hibernate.boot.Metadata;
 import org.hibernate.tool.api.metadata.MetadataConstants;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 
@@ -9,6 +10,7 @@ public class JdbcMetadataConfiguration {
 
 	Properties properties = new Properties();
 	RevengStrategy revengStrategy;
+	Metadata metadata;
 
 	public Properties getProperties() {
 		return properties;
@@ -47,6 +49,10 @@ public class JdbcMetadataConfiguration {
 		properties.put(
 				MetadataConstants.PREFER_BASIC_COMPOSITE_IDS, 
 				Boolean.valueOf(preferBasicCompositeIds));
+	}
+
+	public Metadata getMetadata() {
+		return metadata;
 	}
 
 }
