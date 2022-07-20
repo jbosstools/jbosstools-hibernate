@@ -18,4 +18,8 @@ public class JdbcMetadataConfiguration {
 		return this.properties.get(key);
 	}
 	
+	public void setProperty(String key, String value) {
+		properties.put(key, value);
+	}
+
 }
