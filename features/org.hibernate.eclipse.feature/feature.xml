@@ -370,4 +370,10 @@
          version="0.0.0"
          unpack="false"/>
 
+   <plugin
+         id="org.jboss.tools.hibernate.libs.h2.v_2_1"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
 </feature>
