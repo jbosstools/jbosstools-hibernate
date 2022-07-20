@@ -118,4 +118,13 @@ public class ConfigurationFacadeTest {
 		assertSame(testProperties, configurationFacade.getProperties());
 	}
 	
+	@Test
+	public void testAddProperties() {
+		assertNull(configuration.getProperty("foo"));
+		Properties testProperties = new Properties();
+		testProperties.put("foo", "bar");
+		configurationFacade.addProperties(testProperties);
+		assertEquals("bar", configuration.getProperty("foo"));
+	}
+	
 }
