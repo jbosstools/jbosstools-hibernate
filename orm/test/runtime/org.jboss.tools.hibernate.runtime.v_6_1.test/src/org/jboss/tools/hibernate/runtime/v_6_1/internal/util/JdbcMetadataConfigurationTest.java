@@ -1,13 +1,16 @@
 package org.jboss.tools.hibernate.runtime.v_6_1.internal.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Properties;
 
+import org.hibernate.tool.api.metadata.MetadataConstants;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.junit.jupiter.api.BeforeEach;
@@ -82,6 +85,13 @@ public class JdbcMetadataConfigurationTest {
 		assertNull(jdbcMetadataConfiguration.revengStrategy);
 		jdbcMetadataConfiguration.setReverseEngineeringStrategy(strategy);
 		assertSame(strategy, jdbcMetadataConfiguration.revengStrategy);
+	}
+	
+	@Test
+	public void testPreferBasicCompositeIds() {
+		assertTrue(jdbcMetadataConfiguration.preferBasicCompositeIds());
+		jdbcMetadataConfiguration.properties.put(MetadataConstants.PREFER_BASIC_COMPOSITE_IDS, false);
+		assertFalse(jdbcMetadataConfiguration.preferBasicCompositeIds());
 	}
 	
 }
