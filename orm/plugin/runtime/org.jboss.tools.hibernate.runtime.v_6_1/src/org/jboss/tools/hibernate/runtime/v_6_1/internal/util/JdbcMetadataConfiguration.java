@@ -33,4 +33,8 @@ public class JdbcMetadataConfiguration {
 		return revengStrategy;
 	}
 
+	public void setReverseEngineeringStrategy(RevengStrategy strategy) {
+		this.revengStrategy = strategy;
+	}
+
 }
