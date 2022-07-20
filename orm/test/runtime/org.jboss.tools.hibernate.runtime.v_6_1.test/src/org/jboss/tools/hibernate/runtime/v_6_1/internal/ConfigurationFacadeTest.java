@@ -15,8 +15,10 @@ import java.util.Properties;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.DefaultNamingStrategy;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.MetadataHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -97,6 +99,15 @@ public class ConfigurationFacadeTest {
 		assertNull(facade.entityResolver);
 		configurationFacade.setEntityResolver(testResolver);
 		assertSame(testResolver, facade.entityResolver);
+	}
+	
+	@Test
+	public void testSetNamingStrategy() {
+		INamingStrategy namingStrategy = FACADE_FACTORY.createNamingStrategy(new DefaultNamingStrategy());
+		ConfigurationFacadeImpl facade = (ConfigurationFacadeImpl)configurationFacade;
+		assertNotSame(namingStrategy, facade.namingStrategy);
+		configurationFacade.setNamingStrategy(namingStrategy);
+		assertSame(namingStrategy, facade.namingStrategy);
 	}
 	
 }
