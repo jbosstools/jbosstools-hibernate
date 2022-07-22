@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Properties;
 
@@ -307,5 +308,14 @@ public class ConfigurationFacadeTest {
 				reverseEngineeringStrategy, 
 				configuration.getReverseEngineeringStrategy());
 	}
+	
+	@Test
+	public void testGetAddedClasses() {
+		ArrayList<IPersistentClass> list = new ArrayList<IPersistentClass>();
+		assertNotNull(((ConfigurationFacadeImpl)configurationFacade).getAddedClasses());
+		assertNotSame(((ConfigurationFacadeImpl)configurationFacade).getAddedClasses(), list);
+		((ConfigurationFacadeImpl)configurationFacade).addedClasses = list;
+		assertSame(((ConfigurationFacadeImpl)configurationFacade).getAddedClasses(), list);
+	} 
 	
 }

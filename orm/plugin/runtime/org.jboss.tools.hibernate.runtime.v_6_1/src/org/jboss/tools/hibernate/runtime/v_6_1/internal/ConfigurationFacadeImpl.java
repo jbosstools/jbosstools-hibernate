@@ -99,6 +99,10 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 		getMetadata();
 	}
 
+	public ArrayList<IPersistentClass> getAddedClasses() {
+		return addedClasses;
+	}
+	
 	@Override
 	public void addClass(IPersistentClass persistentClass) {
 		addedClasses.add(persistentClass);
