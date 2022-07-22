@@ -16,6 +16,7 @@ import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.jaxb.spi.Binding;
@@ -24,10 +25,12 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
+import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.DummyMetadataBuildingContext;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.MetadataHelper;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.MockConnectionProvider;
@@ -249,4 +252,14 @@ public class ConfigurationFacadeTest {
 		assertNotNull(((ConfigurationFacadeImpl)configurationFacade).metadata);
 	}
 
+	@Test
+	public void testBuildSessionFactory() throws Throwable {
+		ISessionFactory sessionFactoryFacade = 
+				configurationFacade.buildSessionFactory();
+		assertNotNull(sessionFactoryFacade);
+		Object sessionFactory = ((IFacade)sessionFactoryFacade).getTarget();
+		assertNotNull(sessionFactory);
+		assertTrue(sessionFactory instanceof SessionFactory);
+	}
+	
 }
