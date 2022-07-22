@@ -44,6 +44,13 @@ public class ConfigurationFacadeTest {
 			"  </class>" +
 			"</hibernate-mapping>";
 	
+	private static final String TEST_CFG_XML_STRING =
+			"<hibernate-configuration>" +
+			"  <session-factory name='bar'>" + 
+			"    <mapping resource='Foo.hbm.xml' />" +
+			"  </session-factory>" +
+			"</hibernate-configuration>";
+	
 	static class Foo {
 		public String id;
 	}
@@ -170,6 +177,30 @@ public class ConfigurationFacadeTest {
 		Metadata metadata = MetadataHelper.getMetadata(configuration);
 		assertNull(metadata.getEntityBinding(fooClassName));
 		configurationFacade.configure(document);
+		metadata = MetadataHelper.getMetadata(configuration);
+		assertNotNull(metadata.getEntityBinding(fooClassName));
+	}
+	
+	@Test
+	public void testConfigureFile() throws Exception {
+		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
+		File cfgXmlFile = new File(new File(url.toURI()), "foobarfile.cfg.xml");
+		cfgXmlFile.deleteOnExit();
+		FileWriter fileWriter = new FileWriter(cfgXmlFile);
+		fileWriter.write(TEST_CFG_XML_STRING);
+		fileWriter.close();
+		File hbmXmlFile = new File(new File(url.toURI()), "Foo.hbm.xml");
+		hbmXmlFile.deleteOnExit();
+		fileWriter = new FileWriter(hbmXmlFile);
+		fileWriter.write(TEST_HBM_XML_STRING);
+		fileWriter.close();
+		String fooClassName = 
+				"org.jboss.tools.hibernate.runtime.v_6_1.internal.ConfigurationFacadeTest$Foo";
+		configuration.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
+		configuration.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
+		Metadata metadata = MetadataHelper.getMetadata(configuration);
+		assertNull(metadata.getEntityBinding(fooClassName));
+		configurationFacade.configure(cfgXmlFile);
 		metadata = MetadataHelper.getMetadata(configuration);
 		assertNotNull(metadata.getEntityBinding(fooClassName));
 	}
