@@ -17,11 +17,14 @@ import javax.xml.transform.stream.StreamResult;
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
+import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.MetadataHelper;
 import org.w3c.dom.Document;
@@ -101,6 +104,14 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 		addedClasses.add(persistentClass);
 	}
 	
+	@Override
+	public void setReverseEngineeringStrategy(IReverseEngineeringStrategy res) {
+		if (getTarget() instanceof JdbcMetadataConfiguration) {
+			RevengStrategy revengStrategy = (RevengStrategy)((IFacade)res).getTarget();
+			((JdbcMetadataConfiguration)getTarget()).setReverseEngineeringStrategy(revengStrategy);
+		}
+	}
+
 	@Override
 	protected void initializeClassMappings() {
 		HashMap<String, IPersistentClass> classMappings = new HashMap<String, IPersistentClass>();
