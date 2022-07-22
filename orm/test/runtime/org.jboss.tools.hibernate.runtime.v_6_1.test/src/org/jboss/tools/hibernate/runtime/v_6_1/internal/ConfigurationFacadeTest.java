@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.util.Iterator;
 import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -260,6 +261,21 @@ public class ConfigurationFacadeTest {
 		Object sessionFactory = ((IFacade)sessionFactoryFacade).getTarget();
 		assertNotNull(sessionFactory);
 		assertTrue(sessionFactory instanceof SessionFactory);
+	}
+	
+	@Test
+	public void testGetClassMappings() {
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
+		assertFalse(configurationFacade.getClassMappings().hasNext());		
+		PersistentClass persistentClass = new RootClass(DummyMetadataBuildingContext.INSTANCE);
+		persistentClass.setEntityName("Foo");
+		IPersistentClass persistentClassFacade = 
+				FACADE_FACTORY.createPersistentClass(persistentClass);	
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
+		((ConfigurationFacadeImpl)configurationFacade).addedClasses.add(persistentClassFacade);
+		Iterator<IPersistentClass> iterator = configurationFacade.getClassMappings();
+		assertTrue(iterator.hasNext());
+		assertSame(iterator.next(), persistentClassFacade);		
 	}
 	
 }
