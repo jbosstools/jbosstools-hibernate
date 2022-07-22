@@ -115,4 +115,9 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 		setClassMappings(classMappings);
 	}
 
+	@Override
+	protected String getJDBCConfigurationClassName() {
+		return "org.jboss.tools.hibernate.runtime.v_6_1.internal.util.JdbcMetadataConfiguration";
+	}
+	
 }

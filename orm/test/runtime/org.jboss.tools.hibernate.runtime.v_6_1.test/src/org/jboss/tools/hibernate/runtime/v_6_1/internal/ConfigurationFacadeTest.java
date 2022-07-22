@@ -33,6 +33,7 @@ import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.DummyMetadataBuildingContext;
+import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.MetadataHelper;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.MockConnectionProvider;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.MockDialect;
@@ -276,6 +277,16 @@ public class ConfigurationFacadeTest {
 		Iterator<IPersistentClass> iterator = configurationFacade.getClassMappings();
 		assertTrue(iterator.hasNext());
 		assertSame(iterator.next(), persistentClassFacade);		
+	}
+	
+	@Test
+	public void testSetPreferBasicCompositeIds() {
+		JdbcMetadataConfiguration configuration = new JdbcMetadataConfiguration();
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
+		// the default is true
+		assertTrue(configuration.preferBasicCompositeIds());
+		configurationFacade.setPreferBasicCompositeIds(false);
+		assertFalse(configuration.preferBasicCompositeIds());
 	}
 	
 }
