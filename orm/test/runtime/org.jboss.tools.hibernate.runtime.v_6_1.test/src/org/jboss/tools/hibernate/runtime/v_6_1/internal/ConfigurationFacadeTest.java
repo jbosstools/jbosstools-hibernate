@@ -22,9 +22,13 @@ import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.RootClass;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
+import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
+import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.DummyMetadataBuildingContext;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.MetadataHelper;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.MockConnectionProvider;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.MockDialect;
@@ -225,6 +229,17 @@ public class ConfigurationFacadeTest {
 		configurationFacade.configure();
 		metadata = MetadataHelper.getMetadata(configuration);
 		assertNotNull(metadata.getEntityBinding(fooClassName));
+	}
+	
+	@Test
+	public void testAddClass() {
+		PersistentClass persistentClass = new RootClass(DummyMetadataBuildingContext.INSTANCE);
+		persistentClass.setEntityName("Foo");
+		IPersistentClass persistentClassFacade = 
+				FACADE_FACTORY.createPersistentClass(persistentClass);	
+		assertFalse(((ConfigurationFacadeImpl)configurationFacade).addedClasses.contains(persistentClassFacade));
+		configurationFacade.addClass(persistentClassFacade);
+		assertTrue(((ConfigurationFacadeImpl)configurationFacade).addedClasses.contains(persistentClassFacade));
 	}
 	
 }

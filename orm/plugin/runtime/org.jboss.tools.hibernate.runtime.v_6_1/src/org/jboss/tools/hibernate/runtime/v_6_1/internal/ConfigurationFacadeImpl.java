@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.ArrayList;
 
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -17,6 +18,7 @@ import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
+import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.MetadataHelper;
 import org.w3c.dom.Document;
@@ -27,6 +29,7 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	EntityResolver entityResolver = null;
 	INamingStrategy namingStrategy = null;
 	Metadata metadata;
+	ArrayList<IPersistentClass> addedClasses = new ArrayList<IPersistentClass>();
 
 	public ConfigurationFacadeImpl(IFacadeFactory facadeFactory, Object target) {
 		super(facadeFactory, target);
@@ -90,4 +93,9 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 		getMetadata();
 	}
 
+	@Override
+	public void addClass(IPersistentClass persistentClass) {
+		addedClasses.add(persistentClass);
+	}
+	
 }
