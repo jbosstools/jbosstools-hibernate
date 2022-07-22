@@ -9,30 +9,44 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.net.URL;
 import java.util.Properties;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.jaxb.spi.Binding;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.MetadataHelper;
+import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.MockConnectionProvider;
+import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.MockDialect;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.helpers.DefaultHandler;
 
 public class ConfigurationFacadeTest {
 
 	private static final String TEST_HBM_XML_STRING =
-			"<hibernate-mapping package='org.jboss.tools.hibernate.runtime.v_6_0.internal'>" +
+			"<hibernate-mapping package='org.jboss.tools.hibernate.runtime.v_6_1.internal'>" +
 			"  <class name='ConfigurationFacadeTest$Foo'>" + 
 			"    <id name='id'/>" +
 			"  </class>" +
 			"</hibernate-mapping>";
+	
+	static class Foo {
+		public String id;
+	}
 	
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 
@@ -42,6 +56,8 @@ public class ConfigurationFacadeTest {
 	@BeforeEach
 	public void beforeEach() {
 		configuration = new Configuration();
+		configuration.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
+		configuration.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
 		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
 	}	
 	
@@ -125,6 +141,37 @@ public class ConfigurationFacadeTest {
 		testProperties.put("foo", "bar");
 		configurationFacade.addProperties(testProperties);
 		assertEquals("bar", configuration.getProperty("foo"));
+	}
+	
+	@Test
+	public void testConfigureDocument() throws Exception {
+		Document document = DocumentBuilderFactory
+				.newInstance()
+				.newDocumentBuilder()
+				.newDocument();
+		Element hibernateConfiguration = document.createElement("hibernate-configuration");
+		document.appendChild(hibernateConfiguration);
+		Element sessionFactory = document.createElement("session-factory");
+		sessionFactory.setAttribute("name", "bar");
+		hibernateConfiguration.appendChild(sessionFactory);
+		Element mapping = document.createElement("mapping");
+		mapping.setAttribute("resource", "Foo.hbm.xml");
+		sessionFactory.appendChild(mapping);
+		
+		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
+		File hbmXmlFile = new File(new File(url.toURI()), "Foo.hbm.xml");
+		hbmXmlFile.deleteOnExit();
+		FileWriter fileWriter = new FileWriter(hbmXmlFile);
+		fileWriter.write(TEST_HBM_XML_STRING);
+		fileWriter.close();
+
+		String fooClassName = 
+				"org.jboss.tools.hibernate.runtime.v_6_1.internal.ConfigurationFacadeTest$Foo";
+		Metadata metadata = MetadataHelper.getMetadata(configuration);
+		assertNull(metadata.getEntityBinding(fooClassName));
+		configurationFacade.configure(document);
+		metadata = MetadataHelper.getMetadata(configuration);
+		assertNotNull(metadata.getEntityBinding(fooClassName));
 	}
 	
 }
