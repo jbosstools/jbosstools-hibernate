@@ -11,12 +11,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.util.Properties;
 
+import org.h2.Driver;
 import org.hibernate.boot.Metadata;
 import org.hibernate.tool.api.metadata.MetadataConstants;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -24,6 +29,11 @@ public class JdbcMetadataConfigurationTest {
 
 	private JdbcMetadataConfiguration jdbcMetadataConfiguration = null;
 	
+	@BeforeAll
+	public static void beforeAll() throws Exception {
+		DriverManager.registerDriver(new Driver());		
+	}
+
 	@BeforeEach
 	public void beforeEach() {
 		jdbcMetadataConfiguration = new JdbcMetadataConfiguration();
@@ -126,4 +136,19 @@ public class JdbcMetadataConfigurationTest {
 		assertSame(metadata, jdbcMetadataConfiguration.getMetadata());
 	}
 	
+	@Test
+	public void testReadFromJdbc() throws Exception {
+		Connection connection = DriverManager.getConnection("jdbc:h2:mem:test");
+		Statement statement = connection.createStatement();
+		statement.execute("CREATE TABLE FOO(id int primary key, bar varchar(255))");
+		jdbcMetadataConfiguration.properties.put("hibernate.connection.url", "jdbc:h2:mem:test");
+		jdbcMetadataConfiguration.revengStrategy = new DefaultStrategy();
+		assertNull(jdbcMetadataConfiguration.metadata);
+		jdbcMetadataConfiguration.readFromJdbc();
+		assertNotNull(jdbcMetadataConfiguration.metadata);
+		statement.execute("DROP TABLE FOO");
+		statement.close();
+		connection.close();
+	}
+
 }
