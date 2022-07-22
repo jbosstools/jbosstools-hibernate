@@ -242,4 +242,11 @@ public class ConfigurationFacadeTest {
 		assertTrue(((ConfigurationFacadeImpl)configurationFacade).addedClasses.contains(persistentClassFacade));
 	}
 	
+	@Test
+	public void testBuildMappings() {
+		assertNull(((ConfigurationFacadeImpl)configurationFacade).metadata);
+		configurationFacade.buildMappings();
+		assertNotNull(((ConfigurationFacadeImpl)configurationFacade).metadata);
+	}
+
 }
