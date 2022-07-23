@@ -15,12 +15,16 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.h2.Driver;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
@@ -30,6 +34,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -39,12 +44,14 @@ import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.DummyMetadataBuildingContext;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.MetadataHelper;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.MetadataHelperTest;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.MockConnectionProvider;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.MockDialect;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
@@ -73,6 +80,11 @@ public class ConfigurationFacadeTest {
 	}
 	
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
+
+	@BeforeAll
+	public static void beforeAll() throws Exception {
+		DriverManager.registerDriver(new Driver());		
+	}
 
 	private IConfiguration configurationFacade = null;
 	private Configuration configuration = null;
@@ -311,6 +323,26 @@ public class ConfigurationFacadeTest {
 		assertSame(
 				reverseEngineeringStrategy, 
 				configuration.getReverseEngineeringStrategy());
+	}
+	
+	@Test
+	public void testGetTableMappings() throws Exception {
+		Connection connection = DriverManager.getConnection("jdbc:h2:mem:test");
+		Statement statement = connection.createStatement();
+		statement.execute("CREATE TABLE FOO(id int primary key, bar varchar(255))");
+		JdbcMetadataConfiguration jdbcMdCfg = new JdbcMetadataConfiguration();
+		jdbcMdCfg.setProperty("hibernate.connection.url", "jdbc:h2:mem:test");
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, jdbcMdCfg);
+		Iterator<ITable> iterator = configurationFacade.getTableMappings();
+		assertFalse(iterator.hasNext());
+		jdbcMdCfg.readFromJdbc();
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, jdbcMdCfg);
+		iterator = configurationFacade.getTableMappings();
+		IFacade facade = (IFacade)iterator.next();
+		Table table = (Table)facade.getTarget();
+		assertEquals("FOO", table.getName());
+		statement.execute("DROP TABLE FOO");
+		connection.close();
 	}
 	
 	@Test
