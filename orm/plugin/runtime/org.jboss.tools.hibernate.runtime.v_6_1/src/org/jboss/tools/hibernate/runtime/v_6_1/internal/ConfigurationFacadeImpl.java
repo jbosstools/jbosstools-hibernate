@@ -52,6 +52,13 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	}
 	
 	@Override
+	public EntityResolver getEntityResolver() {
+		// This method is not supported anymore from Hibernate 5+
+		// Returning the cached EntityResolver for bookkeeping purposes
+		return this.entityResolver;
+	}
+	
+	@Override
 	public void setNamingStrategy(INamingStrategy namingStrategy) {
 		// The method Configuration.setNamingStrategy() is not supported 
 		// anymore from Hibernate 5+.

@@ -326,6 +326,15 @@ public class ConfigurationFacadeTest {
 	}
 	
 	@Test
+	public void testGetEntityResolver() {
+		EntityResolver testResolver = new DefaultHandler();
+		ConfigurationFacadeImpl facade = (ConfigurationFacadeImpl)configurationFacade;
+		assertNotSame(testResolver, configurationFacade.getEntityResolver());
+		facade.entityResolver = testResolver;
+		assertSame(testResolver, configurationFacade.getEntityResolver());
+	}
+	
+	@Test
 	public void testGetTableMappings() throws Exception {
 		Connection connection = DriverManager.getConnection("jdbc:h2:mem:test");
 		Statement statement = connection.createStatement();
