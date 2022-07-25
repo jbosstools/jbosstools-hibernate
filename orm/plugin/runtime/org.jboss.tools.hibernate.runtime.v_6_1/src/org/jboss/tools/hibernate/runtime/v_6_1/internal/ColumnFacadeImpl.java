@@ -59,6 +59,15 @@ public class ColumnFacadeImpl extends AbstractColumnFacade {
 		return DEFAULT_LENGTH;
 	}
 	
+	@Override
+	public int getPrecision() {
+		Integer precision = ((Column)getTarget()).getPrecision();
+		if (precision == null) {
+			return Integer.MIN_VALUE;
+		}
+		return precision.intValue();
+	}
+	
 	private Map<String, Object> transform(Properties properties) {
 		Map<String, Object> result = new HashMap<String, Object>(properties.size());
 		for (Object key : properties.keySet()) {

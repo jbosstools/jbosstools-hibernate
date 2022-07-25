@@ -85,6 +85,13 @@ public class ColumnFacadeTest {
 		assertEquals(ColumnFacadeImpl.DEFAULT_LENGTH, columnFacade.getDefaultLength());
 	}
 	
+	@Test
+	public void testGetPrecision() {
+		assertEquals(Integer.MIN_VALUE, columnFacade.getPrecision());
+		column.setPrecision(Integer.MAX_VALUE);
+		assertEquals(Integer.MAX_VALUE, columnFacade.getPrecision());
+	}
+	
 	private MetadataBuildingContext createMetadataBuildingContext() {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySetting(AvailableSettings.DIALECT, MockDialect.class.getName());
