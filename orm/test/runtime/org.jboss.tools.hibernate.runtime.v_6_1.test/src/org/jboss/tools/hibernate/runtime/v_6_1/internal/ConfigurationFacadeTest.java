@@ -326,6 +326,19 @@ public class ConfigurationFacadeTest {
 	}
 	
 	@Test
+	public void testGetClassMapping() {
+		PersistentClass persistentClass = new RootClass(DummyMetadataBuildingContext.INSTANCE);
+		persistentClass.setEntityName("Foo");
+		IPersistentClass persistentClassFacade = 
+				FACADE_FACTORY.createPersistentClass(persistentClass);	
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
+		assertNull(configurationFacade.getClassMapping("Foo"));
+		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
+		((ConfigurationFacadeImpl)configurationFacade).addedClasses.add(persistentClassFacade);
+		assertSame(configurationFacade.getClassMapping("Foo"), persistentClassFacade);
+	}
+	
+	@Test
 	public void testGetNamingStrategy() {
 		INamingStrategy strategy = FACADE_FACTORY.createNamingStrategy(new DefaultNamingStrategy());
 		ConfigurationFacadeImpl facade = (ConfigurationFacadeImpl)configurationFacade;
