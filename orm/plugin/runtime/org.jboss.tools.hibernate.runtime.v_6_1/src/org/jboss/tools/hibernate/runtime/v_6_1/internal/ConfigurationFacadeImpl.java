@@ -132,6 +132,12 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	}
 
 	@Override
+	public void readFromJDBC() {
+		if (getTarget() instanceof JdbcMetadataConfiguration) {
+			((JdbcMetadataConfiguration)getTarget()).readFromJdbc();
+		}
+	}
+	@Override
 	protected void initializeClassMappings() {
 		HashMap<String, IPersistentClass> classMappings = new HashMap<String, IPersistentClass>();
 		Iterator<PersistentClass> origin = getMetadata().getEntityBindings().iterator();
