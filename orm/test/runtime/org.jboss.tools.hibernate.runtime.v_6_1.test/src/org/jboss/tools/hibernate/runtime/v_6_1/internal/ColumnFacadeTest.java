@@ -6,8 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.hibernate.boot.internal.BootstrapContextImpl;
 import org.hibernate.boot.internal.InFlightMetadataCollectorImpl;
-import org.hibernate.boot.internal.MetadataBuildingContextRootImpl;
 import org.hibernate.boot.internal.MetadataBuilderImpl.MetadataBuildingOptionsImpl;
+import org.hibernate.boot.internal.MetadataBuildingContextRootImpl;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.spi.InFlightMetadataCollector;
@@ -78,6 +78,11 @@ public class ColumnFacadeTest {
 		assertEquals(Integer.MIN_VALUE, columnFacade.getLength());
 		column.setLength(Integer.MAX_VALUE);
 		assertEquals(Integer.MAX_VALUE, columnFacade.getLength());
+	}
+	
+	@Test
+	public void testGetDefaultLength() {
+		assertEquals(ColumnFacadeImpl.DEFAULT_LENGTH, columnFacade.getDefaultLength());
 	}
 	
 	private MetadataBuildingContext createMetadataBuildingContext() {

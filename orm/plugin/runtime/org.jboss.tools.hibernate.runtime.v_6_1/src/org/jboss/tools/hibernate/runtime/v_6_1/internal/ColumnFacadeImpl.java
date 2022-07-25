@@ -20,6 +20,8 @@ import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 
 public class ColumnFacadeImpl extends AbstractColumnFacade {
 
+	final static int DEFAULT_LENGTH = 255;
+
 	public ColumnFacadeImpl(IFacadeFactory facadeFactory, Object target) {
 		super(facadeFactory, target);
 	}
@@ -50,6 +52,11 @@ public class ColumnFacadeImpl extends AbstractColumnFacade {
 			return Integer.MIN_VALUE;
 		}
 		return length.intValue();
+	}
+	
+	@Override
+	public int getDefaultLength() {
+		return DEFAULT_LENGTH;
 	}
 	
 	private Map<String, Object> transform(Properties properties) {
