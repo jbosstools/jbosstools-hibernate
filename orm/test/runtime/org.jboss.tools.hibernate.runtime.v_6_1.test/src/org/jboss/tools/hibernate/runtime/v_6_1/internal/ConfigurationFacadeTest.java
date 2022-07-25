@@ -326,6 +326,15 @@ public class ConfigurationFacadeTest {
 	}
 	
 	@Test
+	public void testGetNamingStrategy() {
+		INamingStrategy strategy = FACADE_FACTORY.createNamingStrategy(new DefaultNamingStrategy());
+		ConfigurationFacadeImpl facade = (ConfigurationFacadeImpl)configurationFacade;
+		assertNull(facade.getNamingStrategy());
+		facade.namingStrategy = strategy;
+		assertSame(strategy, facade.getNamingStrategy());
+	}
+	
+	@Test
 	public void testGetEntityResolver() {
 		EntityResolver testResolver = new DefaultHandler();
 		ConfigurationFacadeImpl facade = (ConfigurationFacadeImpl)configurationFacade;
