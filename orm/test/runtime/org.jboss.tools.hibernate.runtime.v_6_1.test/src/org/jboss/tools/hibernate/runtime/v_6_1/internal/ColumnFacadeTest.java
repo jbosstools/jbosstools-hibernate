@@ -92,6 +92,11 @@ public class ColumnFacadeTest {
 		assertEquals(Integer.MAX_VALUE, columnFacade.getPrecision());
 	}
 	
+	@Test
+	public void testGetDefaultPrecision() {
+		assertEquals(ColumnFacadeImpl.DEFAULT_PRECISION, columnFacade.getDefaultPrecision());
+	}
+	
 	private MetadataBuildingContext createMetadataBuildingContext() {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySetting(AvailableSettings.DIALECT, MockDialect.class.getName());
