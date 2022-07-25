@@ -43,6 +43,15 @@ public class ColumnFacadeImpl extends AbstractColumnFacade {
 				metadata);
 	}
 	
+	@Override
+	public int getLength() {
+		Long length = ((Column)getTarget()).getLength();
+		if (length == null) {
+			return Integer.MIN_VALUE;
+		}
+		return length.intValue();
+	}
+	
 	private Map<String, Object> transform(Properties properties) {
 		Map<String, Object> result = new HashMap<String, Object>(properties.size());
 		for (Object key : properties.keySet()) {
