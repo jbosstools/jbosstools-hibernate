@@ -1,8 +1,10 @@
 package org.jboss.tools.hibernate.runtime.v_6_1.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.boot.internal.BootstrapContextImpl;
 import org.hibernate.boot.internal.InFlightMetadataCollectorImpl;
@@ -107,6 +109,14 @@ public class ColumnFacadeTest {
 	@Test
 	public void testGetDefaultScale() {
 		assertEquals(ColumnFacadeImpl.DEFAULT_SCALE, columnFacade.getDefaultScale());
+	}
+	
+	@Test
+	public void testIsNullable() {
+		column.setNullable(true);
+		assertTrue(columnFacade.isNullable());
+		column.setNullable(false);
+		assertFalse(columnFacade.isNullable());
 	}
 	
 	private MetadataBuildingContext createMetadataBuildingContext() {
