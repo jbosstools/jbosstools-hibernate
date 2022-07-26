@@ -74,6 +74,15 @@ public class ColumnFacadeImpl extends AbstractColumnFacade {
 		return DEFAULT_PRECISION;
 	}
 	
+	@Override
+	public int getScale() {
+		Integer scale = ((Column)getTarget()).getScale();
+		if (scale == null) {
+			return Integer.MIN_VALUE;
+		}
+		return scale.intValue();
+	}
+	
 	private Map<String, Object> transform(Properties properties) {
 		Map<String, Object> result = new HashMap<String, Object>(properties.size());
 		for (Object key : properties.keySet()) {
