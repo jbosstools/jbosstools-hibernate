@@ -142,6 +142,15 @@ public class ColumnFacadeTest {
 		assertNull(((ColumnFacadeImpl)columnFacade).value);
 	}
 	
+	@Test
+	public void testIsUnique() {
+		assertFalse(columnFacade.isUnique());
+		column.setUnique(true);
+		assertTrue(columnFacade.isUnique());
+		column.setUnique(false);
+		assertFalse(columnFacade.isUnique());
+	}
+	
 	private MetadataBuildingContext createMetadataBuildingContext() {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySetting(AvailableSettings.DIALECT, MockDialect.class.getName());
