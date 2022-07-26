@@ -4,7 +4,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 
 import org.hibernate.boot.internal.BootstrapContextImpl;
 import org.hibernate.boot.internal.InFlightMetadataCollectorImpl;
@@ -18,9 +23,12 @@ import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.Value;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.MockConnectionProvider;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.MockDialect;
 import org.junit.jupiter.api.BeforeEach;
@@ -119,6 +127,21 @@ public class ColumnFacadeTest {
 		assertFalse(columnFacade.isNullable());
 	}
 	
+	@Test
+	public void testGetValue() {
+		Value v = createValue();
+		assertNull(((ColumnFacadeImpl)columnFacade).value);
+		column.setValue(v);
+		IValue valueFacade = columnFacade.getValue();
+		assertSame(v, ((IFacade)valueFacade).getTarget());
+		assertSame(valueFacade, ((ColumnFacadeImpl)columnFacade).value);
+		((ColumnFacadeImpl)columnFacade).value = null;
+		column.setValue(null);
+		valueFacade = columnFacade.getValue();
+		assertNull(valueFacade);
+		assertNull(((ColumnFacadeImpl)columnFacade).value);
+	}
+	
 	private MetadataBuildingContext createMetadataBuildingContext() {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySetting(AvailableSettings.DIALECT, MockDialect.class.getName());
@@ -139,6 +162,19 @@ public class ColumnFacadeTest {
 						bootstrapContext, 
 						metadataBuildingOptions, 
 						inFlightMetadataCollector);
+	}
+	
+	private Value createValue() {
+		return (Value)Proxy.newProxyInstance(
+				getClass().getClassLoader(), 
+				new Class[] { Value.class }, 
+				new InvocationHandler() {		
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+						// TODO Auto-generated method stub
+						return null;
+					}
+		});
 	}
 	
 }

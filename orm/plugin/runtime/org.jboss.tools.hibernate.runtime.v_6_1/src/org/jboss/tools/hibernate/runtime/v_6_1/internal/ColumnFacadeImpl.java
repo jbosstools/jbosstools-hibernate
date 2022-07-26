@@ -12,17 +12,21 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.Value;
 import org.hibernate.type.spi.TypeConfiguration;
 import org.jboss.tools.hibernate.runtime.common.AbstractColumnFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public class ColumnFacadeImpl extends AbstractColumnFacade {
 
 	final static int DEFAULT_LENGTH = 255;
 	final static int DEFAULT_PRECISION = 19;
 	final static int DEFAULT_SCALE = 2;
+
+	IValue value = null;
 
 	public ColumnFacadeImpl(IFacadeFactory facadeFactory, Object target) {
 		super(facadeFactory, target);
@@ -87,6 +91,17 @@ public class ColumnFacadeImpl extends AbstractColumnFacade {
 	@Override
 	public int getDefaultScale() {
 		return DEFAULT_SCALE;
+	}
+	
+	@Override 
+	public IValue getValue() {
+		if (value == null) {
+			Value targetValue = ((Column)getTarget()).getValue();
+			if (targetValue != null) {
+				value = super.getValue();
+			}
+		}
+		return value;
 	}
 	
 	private Map<String, Object> transform(Properties properties) {
