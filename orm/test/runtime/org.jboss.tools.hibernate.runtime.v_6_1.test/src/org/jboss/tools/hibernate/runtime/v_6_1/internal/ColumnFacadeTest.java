@@ -104,6 +104,11 @@ public class ColumnFacadeTest {
 		assertEquals(Integer.MAX_VALUE, columnFacade.getScale());
 	}
 	
+	@Test
+	public void testGetDefaultScale() {
+		assertEquals(ColumnFacadeImpl.DEFAULT_SCALE, columnFacade.getDefaultScale());
+	}
+	
 	private MetadataBuildingContext createMetadataBuildingContext() {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySetting(AvailableSettings.DIALECT, MockDialect.class.getName());
