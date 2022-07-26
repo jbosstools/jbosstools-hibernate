@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.runtime.v_6_1.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.lang.reflect.InvocationHandler;
@@ -33,6 +34,13 @@ public class CriteriaFacadeTest {
 	@Test
 	public void testInstance() {
 		assertNotNull(criteriaFacade);
+	}
+	
+	@Test
+	public void testSetMaxResults() {
+		assertEquals(maxResults, Integer.MIN_VALUE);
+		criteriaFacade.setMaxResults(Integer.MAX_VALUE);
+		assertEquals(maxResults, Integer.MAX_VALUE);
 	}
 	
 	private Query createTestQuery() {
