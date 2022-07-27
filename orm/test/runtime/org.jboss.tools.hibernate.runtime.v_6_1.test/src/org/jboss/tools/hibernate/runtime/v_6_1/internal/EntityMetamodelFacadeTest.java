@@ -62,6 +62,12 @@ public class EntityMetamodelFacadeTest {
 		assertSame(PROPERTY_VALUE, entityMetamodelFacade.getTuplizerPropertyValue(null, 0));
 	}
 	
+	@Test
+	public void testGetPropertyIndexOrNull() {
+		assertSame(PROPERTY_INDEX, entityMetamodelFacade.getPropertyIndexOrNull("foo"));
+	}
+	
+	
 	private EntityPersister createFooBarPersister() {
 		return (EntityPersister)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 

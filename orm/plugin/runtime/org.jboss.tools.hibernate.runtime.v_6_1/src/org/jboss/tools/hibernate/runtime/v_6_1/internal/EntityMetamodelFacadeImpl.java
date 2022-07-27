@@ -15,4 +15,9 @@ public class EntityMetamodelFacadeImpl extends AbstractEntityMetamodelFacade {
 		return ((EntityPersister)getTarget()).getPropertyValue(entity, i);
 	}
 	
+	@Override
+	public Integer getPropertyIndexOrNull(String id) {
+		return ((EntityPersister)getTarget()).getEntityMetamodel().getPropertyIndexOrNull(id);
+	}
+	
 }
