@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_6_1.internal;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -54,6 +55,11 @@ public class EntityMetamodelFacadeTest {
 	@Test
 	public void testInstance() {
 		assertNotNull(entityMetamodelFacade);
+	}
+	
+	@Test
+	public void testGetTuplizerPropertyValue() {
+		assertSame(PROPERTY_VALUE, entityMetamodelFacade.getTuplizerPropertyValue(null, 0));
 	}
 	
 	private EntityPersister createFooBarPersister() {
