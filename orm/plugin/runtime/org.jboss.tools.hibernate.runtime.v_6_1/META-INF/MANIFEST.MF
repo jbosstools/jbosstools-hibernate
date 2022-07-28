@@ -8,6 +8,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.jboss.tools.hibernate.libs.antlr4-runtime.v_4_10,
  org.jboss.tools.hibernate.libs.byte-buddy.v_1_12,
  org.jboss.tools.hibernate.libs.classmate.v_1_5,
+ org.jboss.tools.hibernate.libs.freemarker.v_2_3,
  org.jboss.tools.hibernate.libs.jakarta-persistence-api.v_3_0,
  org.jboss.tools.hibernate.libs.jakarta-transaction-api.v_2_0,
  org.jboss.tools.hibernate.libs.jakarta-xml-bind-api.v_3_0,
