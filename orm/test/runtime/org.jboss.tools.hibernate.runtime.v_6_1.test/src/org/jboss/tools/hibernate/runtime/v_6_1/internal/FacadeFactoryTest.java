@@ -148,6 +148,7 @@ public class FacadeFactoryTest {
 	public void testCreateOverrideRepository() {
 		OverrideRepository overrideRepository = new OverrideRepository();
 		IOverrideRepository facade = facadeFactory.createOverrideRepository(overrideRepository);
+		assertTrue(facade instanceof OverrideRepositoryFacadeImpl);
 		assertSame(overrideRepository, ((IFacade)facade).getTarget());		
 	}
 	
