@@ -9,8 +9,6 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import jakarta.persistence.Query;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -84,6 +82,8 @@ import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.DummyMetadataBuildi
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import jakarta.persistence.Query;
+
 public class FacadeFactoryTest {
 
 	private FacadeFactoryImpl facadeFactory;
@@ -148,6 +148,7 @@ public class FacadeFactoryTest {
 	public void testCreateOverrideRepository() {
 		OverrideRepository overrideRepository = new OverrideRepository();
 		IOverrideRepository facade = facadeFactory.createOverrideRepository(overrideRepository);
+		assertTrue(facade instanceof OverrideRepositoryFacadeImpl);
 		assertSame(overrideRepository, ((IFacade)facade).getTarget());		
 	}
 	
