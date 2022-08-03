@@ -1,7 +1,11 @@
 package org.jboss.tools.hibernate.runtime.v_6_1.internal;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.hibernate.cfg.Configuration;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
+import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,4 +23,11 @@ public class ServiceImplTest {
 		assertNotNull(service);
 	}
 	
+	@Test
+	public void testNewAnnotationConfiguration() {
+		IConfiguration annotationConfiguration = service.newAnnotationConfiguration();
+		assertNotNull(annotationConfiguration);
+		assertTrue(((IFacade)annotationConfiguration).getTarget() instanceof Configuration);
+	}
+
 }
