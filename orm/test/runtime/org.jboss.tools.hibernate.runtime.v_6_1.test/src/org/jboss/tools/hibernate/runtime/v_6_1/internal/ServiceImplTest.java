@@ -43,4 +43,11 @@ public class ServiceImplTest {
 		
 	}
 	
+	@Test
+	public void testNewDefaultConfiguration() {
+		IConfiguration defaultConfiguration = service.newDefaultConfiguration();
+		assertNotNull(defaultConfiguration);
+		assertTrue(((IFacade)defaultConfiguration).getTarget() instanceof Configuration);
+	}
+
 }
