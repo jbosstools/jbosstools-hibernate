@@ -13,6 +13,7 @@ import org.hibernate.tool.api.export.ExporterConstants;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
+import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.JpaConfiguration;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.MockConnectionProvider;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.MockDialect;
@@ -72,6 +73,15 @@ public class ServiceImplTest {
 		assertSame(
 				((ConfigurationFacadeImpl)configuration).getMetadata(), 
 				hmee.getMetadata());
+	}
+	
+	@Test
+	public void testNewSchemaExport() {
+		IConfiguration configuration = service.newDefaultConfiguration();
+		configuration.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
+		configuration.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
+		ISchemaExport schemaExport = service.newSchemaExport(configuration);
+		assertNotNull(schemaExport);
 	}
 	
 }
