@@ -61,9 +61,13 @@ public class ServiceImpl extends AbstractService {
 	}
 
 	@Override
-	public IHibernateMappingExporter newHibernateMappingExporter(IConfiguration hcfg, File file) {
-		// TODO Auto-generated method stub
-		return null;
+	public IHibernateMappingExporter newHibernateMappingExporter(
+			IConfiguration hcfg, File file) {
+		return facadeFactory.createHibernateMappingExporter(
+				new HibernateMappingExporterExtension(
+						facadeFactory,
+						hcfg,
+						file));
 	}
 
 	@Override
