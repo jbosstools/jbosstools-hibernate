@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_6_1.internal;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.util.List;
 import java.util.Map;
@@ -139,8 +140,12 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public INamingStrategy newNamingStrategy(String strategyClassName) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			return facadeFactory.createNamingStrategy(
+					Class.forName(strategyClassName).getDeclaredConstructor().newInstance());
+		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+			return null;
+		}
 	}
 
 	@Override
