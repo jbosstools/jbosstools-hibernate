@@ -19,6 +19,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
@@ -283,8 +284,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IColumn newColumn(String string) {
-		// TODO Auto-generated method stub
-		return null;
+		return facadeFactory.createColumn(new Column(string));
 	}
 
 	@Override
