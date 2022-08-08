@@ -19,6 +19,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
+import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.export.Exporter;
@@ -275,8 +276,9 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public ITable newTable(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		Table target = new Table("jboss tools", name);
+		target.setPrimaryKey(new PrimaryKey(target));
+		return facadeFactory.createTable(target);
 	}
 
 	@Override
