@@ -30,6 +30,7 @@ import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
+import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.hibernate.tool.internal.reveng.RevengMetadataCollector;
 import org.hibernate.tool.internal.reveng.reader.DatabaseReader;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
@@ -263,8 +264,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public ICfg2HbmTool newCfg2HbmTool() {
-		// TODO Auto-generated method stub
-		return null;
+		return facadeFactory.createCfg2HbmTool(new Cfg2HbmTool());
 	}
 
 	@Override
