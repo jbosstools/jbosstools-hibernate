@@ -13,8 +13,8 @@ import java.util.Properties;
 
 import org.hibernate.boot.internal.BootstrapContextImpl;
 import org.hibernate.boot.internal.InFlightMetadataCollectorImpl;
-import org.hibernate.boot.internal.MetadataBuildingContextRootImpl;
 import org.hibernate.boot.internal.MetadataBuilderImpl.MetadataBuildingOptionsImpl;
+import org.hibernate.boot.internal.MetadataBuildingContextRootImpl;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.spi.MetadataBuildingContext;
@@ -26,6 +26,7 @@ import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfoSource;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
+import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
@@ -75,6 +76,7 @@ import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.ConfigurationMetadataDescriptor;
+import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.DummyMetadataBuildingContext;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.DummyMetadataDescriptor;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_6_1.internal.util.JpaConfiguration;
@@ -331,8 +333,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IValue newSimpleValue() {
-		// TODO Auto-generated method stub
-		return null;
+		return facadeFactory.createValue(new BasicValue(DummyMetadataBuildingContext.INSTANCE));
 	}
 
 	@Override
