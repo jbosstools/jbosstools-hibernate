@@ -10,6 +10,7 @@ import java.util.Properties;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
+import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
@@ -190,8 +191,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public String getReverseEngineeringStrategyClassName() {
-		// TODO Auto-generated method stub
-		return null;
+		return RevengStrategy.class.getName();
 	}
 
 	@Override
