@@ -18,6 +18,7 @@ import org.h2.Driver;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.mapping.Property;
 import org.hibernate.tool.api.export.ArtifactCollector;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
@@ -40,6 +41,7 @@ import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IProgressListener;
+import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
@@ -284,6 +286,15 @@ public class ServiceImplTest {
 		Object target = ((IFacade)cfg2HbmTool).getTarget();
 		assertNotNull(target);
 		assertTrue(target instanceof Cfg2HbmTool);
+	}
+	
+	@Test
+	public void testNewProperty() {
+		IProperty property = service.newProperty();
+		assertNotNull(property);
+		Object target = ((IFacade)property).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof Property);
 	}
 	
 	@Test
