@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_6_1.internal;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.util.List;
@@ -19,8 +20,10 @@ import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.jboss.tools.hibernate.runtime.common.AbstractService;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.Util;
+import org.jboss.tools.hibernate.runtime.spi.HibernateException;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
@@ -183,10 +186,14 @@ public class ServiceImpl extends AbstractService {
 	}
 
 	@Override
-	public IReverseEngineeringStrategy newReverseEngineeringStrategy(String strategyName,
+	public IReverseEngineeringStrategy newReverseEngineeringStrategy(
+			String strategyName,
 			IReverseEngineeringStrategy delegate) {
-		// TODO Auto-generated method stub
-		return null;
+		RevengStrategy delegateTarget = 
+				(RevengStrategy)((IFacade)delegate).getTarget();
+		Object target = 
+				newReverseEngineeringStrategy(strategyName, delegateTarget);
+		return facadeFactory.createReverseEngineeringStrategy(target);
 	}
 
 	@Override
@@ -344,4 +351,48 @@ public class ServiceImpl extends AbstractService {
 		return null;
 	}
 
+	private Object newReverseEngineeringStrategy(final String className, Object delegate) {
+        try {
+            Class<?> clazz = classForName(className);
+			Constructor<?> constructor = 
+					clazz.getConstructor(
+							new Class[] { RevengStrategy.class });
+            return constructor.newInstance(new Object[] { delegate });
+        }
+        catch (NoSuchMethodException e) {
+			try {
+				ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+				Class<?> clazz = null;
+				if ( contextClassLoader != null ) {
+					clazz = contextClassLoader.loadClass(className);
+				} else {
+					clazz = Class.forName( className );
+				}
+				if (clazz != null) {
+					return clazz.getDeclaredConstructor().newInstance();
+				} else {
+					throw new HibernateException("Class " + className + " could not be found.");
+				}
+			}
+			catch (Exception eq) {
+				throw new HibernateException(eq);
+			}
+		}
+        catch (Exception e) {
+			throw new HibernateException(e);
+		}
+    }
+
+	private Class<?> classForName(String name) throws ClassNotFoundException {
+		try {
+			ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+			if ( classLoader != null ) {
+				return classLoader.loadClass(name);
+			}
+		}
+		catch ( Throwable ignore ) {
+		}
+		return Class.forName( name );
+	}
+	
 }
