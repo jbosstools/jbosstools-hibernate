@@ -322,6 +322,13 @@ public class ServiceImplTest {
 	}
 	
 	@Test
+	public void testNewDialect() throws Exception {
+		Connection connection = DriverManager.getConnection("jdbc:h2:mem:");
+		String dialect = service.newDialect(new Properties(), connection);
+		assertEquals("org.hibernate.dialect.H2Dialect", dialect);
+	}
+
+	@Test
 	public void testGetReverseEngineeringStrategyClassName() {
 		assertEquals(
 				RevengStrategy.class.getName(), 
