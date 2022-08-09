@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.hibernate.Hibernate;
 import org.hibernate.boot.internal.BootstrapContextImpl;
 import org.hibernate.boot.internal.InFlightMetadataCollectorImpl;
 import org.hibernate.boot.internal.MetadataBuilderImpl.MetadataBuildingOptionsImpl;
@@ -454,9 +455,9 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public boolean isInitialized(Object object) {
-		// TODO Auto-generated method stub
-		return false;
+		return Hibernate.isInitialized(object);
 	}
+
 
 	@Override
 	public List<String> getJPAMappingFilePaths(String persistenceUnitName, EntityResolver entityResolver) {
