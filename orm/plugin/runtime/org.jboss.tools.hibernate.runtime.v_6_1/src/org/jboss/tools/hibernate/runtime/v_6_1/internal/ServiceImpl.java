@@ -43,6 +43,8 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
+import org.hibernate.proxy.HibernateProxy;
+import org.hibernate.proxy.LazyInitializer;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
@@ -467,8 +469,14 @@ public class ServiceImpl extends AbstractService {
 	
 	@Override
 	public Class<?> getClassWithoutInitializingProxy(Object reflectedObject) {
-		// TODO Auto-generated method stub
-		return null;
+		if (reflectedObject instanceof HibernateProxy) {
+			HibernateProxy proxy = (HibernateProxy) reflectedObject;
+			LazyInitializer li = proxy.getHibernateLazyInitializer();
+			return li.getPersistentClass();
+		}
+		else {
+			return (Class<?>) reflectedObject.getClass();
+		}
 	}
 
 	@Override
