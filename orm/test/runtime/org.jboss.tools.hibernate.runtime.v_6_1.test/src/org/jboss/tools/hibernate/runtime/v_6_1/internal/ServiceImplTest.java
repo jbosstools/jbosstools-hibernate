@@ -23,6 +23,7 @@ import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionPro
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.Map;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -408,6 +409,16 @@ public class ServiceImplTest {
 		Object target = ((IFacade)list).getTarget();
 		assertNotNull(target);
 		assertTrue(target instanceof org.hibernate.mapping.List);
+	}
+	
+	@Test
+	public void testNewMap() {
+		IPersistentClass persistentClass = service.newRootClass();
+		IValue map = service.newMap(persistentClass);
+		assertNotNull(map);
+		Object target = ((IFacade)map).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof Map);
 	}
 	
 	@Test
