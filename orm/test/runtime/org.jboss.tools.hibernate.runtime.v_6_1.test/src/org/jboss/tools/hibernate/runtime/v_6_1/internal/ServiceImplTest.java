@@ -369,6 +369,13 @@ public class ServiceImplTest {
 	}
 	
 	@Test
+	public void testGetCfgExporterClassName() {
+		assertEquals(
+				CfgExporter.class.getName(), 
+				service.getCfgExporterClassName());
+	}
+	
+	@Test
 	public void testSimpleValue() {
 		IValue simpleValue = service.newSimpleValue();
 		assertNotNull(simpleValue);

@@ -31,6 +31,8 @@ public interface IService {
 
 	IConfiguration newJDBCMetaDataConfiguration();
 	
+	IExporter createCfgExporter();
+	
 	IExporter createExporter(
 			String exporterClassName);
 	

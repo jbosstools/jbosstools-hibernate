@@ -483,6 +483,11 @@ public class ServiceImpl extends AbstractService {
 	public ClassLoader getClassLoader() {
 		return ServiceImpl.class.getClassLoader();
 	}
+	
+	@Override
+	protected String getCfgExporterClassName() {
+		return CfgExporter.class.getName();
+	}
 
 	private Object newReverseEngineeringStrategy(final String className, Object delegate) {
         try {
