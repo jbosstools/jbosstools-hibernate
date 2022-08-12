@@ -5,7 +5,7 @@
          point="org.jboss.tools.hibernate.runtime.spi.services">
       <service
             class="org.jboss.tools.hibernate.runtime.v_6_1.internal.ServiceImpl"
-            name="6.1">
+            name="%hibernate.version">
       </service>
    </extension>
 
