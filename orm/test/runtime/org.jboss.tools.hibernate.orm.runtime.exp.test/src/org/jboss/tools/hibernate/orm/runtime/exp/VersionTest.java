@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate.orm.runtime.exp.test;
+package org.jboss.tools.hibernate.orm.runtime.exp;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
