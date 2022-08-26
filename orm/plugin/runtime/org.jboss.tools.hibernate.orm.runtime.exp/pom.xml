@@ -13,6 +13,7 @@
 
 	<properties>
 		<hibernate.orm.version>6.1.2.Final</hibernate.orm.version>
+		<hibernate.tools.version>6.1.2.Final</hibernate.tools.version>
 	</properties>
 
 	<build>
@@ -31,6 +32,11 @@
 				</executions>
 				<configuration>
 					<artifactItems>
+						<artifactItem>
+							<groupId>org.hibernate.tool</groupId>
+							<artifactId>hibernate-tools-orm</artifactId>
+							<version>${hibernate.tools.version}</version>
+						</artifactItem>
 						<artifactItem>
 							<groupId>org.hibernate.orm</groupId>
 							<artifactId>hibernate-core</artifactId>

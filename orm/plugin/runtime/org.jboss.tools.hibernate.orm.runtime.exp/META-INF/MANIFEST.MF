@@ -7,4 +7,5 @@ Bundle-Version: 5.4.18.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: org.jboss.tools.hibernate.orm.runtime.exp
-Bundle-ClassPath: lib/hibernate-core-6.1.2.Final.jar
+Bundle-ClassPath: lib/hibernate-core-6.1.2.Final.jar,
+ lib/hibernate-tools-orm-6.1.2.Final.jar
