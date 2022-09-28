@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
@@ -43,7 +44,7 @@ public class SchemaExportFacadeTest {
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 	
 	@TempDir
-	public File output = new File("output");
+	private File tempDir;
 	
 	private File fooFile;
 	private Configuration configuration;
@@ -55,7 +56,8 @@ public class SchemaExportFacadeTest {
 
 	@BeforeEach
 	public void before() throws Exception {
-		fooFile = new File(output, "foo.hbm.xml");
+		tempDir = Files.createTempDirectory("temp").toFile();
+		fooFile = new File(tempDir, "foo.hbm.xml");
 		PrintWriter fooWriter = new PrintWriter(fooFile);
 		fooWriter.write(FOO_HBM_XML_STRING);
 		fooWriter.close();

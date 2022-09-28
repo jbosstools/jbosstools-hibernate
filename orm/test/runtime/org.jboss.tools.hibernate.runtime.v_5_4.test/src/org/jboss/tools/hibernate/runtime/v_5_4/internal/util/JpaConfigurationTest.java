@@ -13,6 +13,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
 import java.util.Properties;
 
 import javax.persistence.Entity;
@@ -46,10 +47,11 @@ public class JpaConfigurationTest {
 	private ClassLoader original = null;
 	
 	@TempDir
-	public File tempRoot = new File("temproot");
+	public File tempRoot;
 	
 	@BeforeEach
 	public void beforeEach() throws Exception {
+		tempRoot = Files.createTempDirectory("temp").toFile();
 		File metaInf = new File(tempRoot, "META-INF");
 		metaInf.mkdirs();
 		File persistenceXml = new File(metaInf, "persistence.xml");

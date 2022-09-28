@@ -10,6 +10,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -49,13 +50,14 @@ public class HibernateMappingExporterFacadeTest {
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 
 	@TempDir
-	public File outputDir = new File("output");
+	public File outputDir;
 	
 	private IHibernateMappingExporter hibernateMappingExporterFacade = null; 
 	private HibernateMappingExporterExtension hibernateMappingExporter = null;
 		
 	@BeforeEach
 	public void beforeEacy() throws Exception {
+		outputDir = Files.createTempDirectory("output").toFile();
 		hibernateMappingExporter = new HibernateMappingExporterExtension(FACADE_FACTORY, null, null);
 		hibernateMappingExporterFacade = 
 				new HibernateMappingExporterFacadeImpl(FACADE_FACTORY, hibernateMappingExporter);

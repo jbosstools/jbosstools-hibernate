@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.File;
 import java.io.FileWriter;
 import java.lang.reflect.Field;
+import java.nio.file.Files;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -62,13 +63,14 @@ public class SessionFactoryFacadeTest {
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
 	
 	@TempDir
-	public File tempDir = new File("tempDir");
+	public File tempDir;
 	
 	private SessionFactory sessionFactoryTarget = null;
 	private ISessionFactory sessionFactoryFacade = null;
 	
 	@BeforeEach
 	public void beforeEach() throws Exception {
+		tempDir = Files.createTempDirectory("temp").toFile();
 		File cfgXmlFile = new File(tempDir, "hibernate.cfg.xml");
 		FileWriter fileWriter = new FileWriter(cfgXmlFile);
 		fileWriter.write(TEST_CFG_XML_STRING);

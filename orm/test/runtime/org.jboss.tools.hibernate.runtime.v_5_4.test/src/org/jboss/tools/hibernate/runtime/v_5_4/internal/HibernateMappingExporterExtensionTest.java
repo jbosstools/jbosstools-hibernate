@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.nio.file.Files;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,10 +43,11 @@ public class HibernateMappingExporterExtensionTest {
 	private IConfiguration configurationFacade = null;
 	
 	@TempDir
-	public File tempDir = new File("temp");
+	private File tempDir;
 	
 	@BeforeEach
 	public void beforeEach() throws Exception {
+		tempDir = Files.createTempDirectory("tempDir").toFile();
 		configurationFacade = FACADE_FACTORY.createConfiguration(new Configuration());
 		hibernateMappingExporterExtension = 
 				new HibernateMappingExporterExtension(
