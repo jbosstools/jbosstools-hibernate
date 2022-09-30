@@ -38,6 +38,16 @@
 							<version>${hibernate.tools.version}</version>
 						</artifactItem>
 						<artifactItem>
+							<groupId>org.hibernate.tool</groupId>
+							<artifactId>hibernate-tools-utils</artifactId>
+							<version>${hibernate.tools.version}</version>
+						</artifactItem>
+						<artifactItem>
+							<groupId>org.hibernate.orm</groupId>
+							<artifactId>hibernate-ant</artifactId>
+							<version>${hibernate.orm.version}</version>
+						</artifactItem>
+						<artifactItem>
 							<groupId>org.hibernate.orm</groupId>
 							<artifactId>hibernate-core</artifactId>
 							<version>${hibernate.orm.version}</version>
