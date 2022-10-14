@@ -10,9 +10,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
+import org.hibernate.tool.orm.jbt.type.BigDecimalType;
 import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.Type;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.legacy.BigDecimalType;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.legacy.BigIntegerType;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.legacy.BooleanType;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.legacy.ByteType;
