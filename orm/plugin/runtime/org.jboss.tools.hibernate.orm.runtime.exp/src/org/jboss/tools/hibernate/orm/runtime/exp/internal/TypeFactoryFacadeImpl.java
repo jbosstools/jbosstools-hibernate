@@ -10,7 +10,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import org.hibernate.tool.orm.jbt.type.BigDecimalType;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.legacy.BigIntegerType;
+import org.hibernate.tool.orm.jbt.type.BigIntegerType;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.legacy.BooleanType;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.legacy.ByteType;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.legacy.CalendarDateType;
