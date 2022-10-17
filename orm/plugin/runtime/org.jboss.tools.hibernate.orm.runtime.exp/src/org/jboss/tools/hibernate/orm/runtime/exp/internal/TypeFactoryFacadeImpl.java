@@ -13,7 +13,7 @@ import org.hibernate.tool.orm.jbt.type.BigDecimalType;
 import org.hibernate.tool.orm.jbt.type.BigIntegerType;
 import org.hibernate.tool.orm.jbt.type.BooleanType;
 import org.hibernate.tool.orm.jbt.type.ByteType;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.legacy.CalendarDateType;
+import org.hibernate.tool.orm.jbt.type.CalendarDateType;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.legacy.CalendarType;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.legacy.CharacterType;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.legacy.ClassType;
