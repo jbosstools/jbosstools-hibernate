@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Hibernate 4.3 libraries
 Bundle-Vendor: Red Hat
 Bundle-SymbolicName: org.jboss.tools.hibernate.runtime.v_4_3;singleton:=true
-Bundle-Version: 5.4.18.qualifier
+Bundle-Version: 5.4.19.qualifier
 Bundle-Localization: plugin
 Require-Bundle: org.jboss.tools.hibernate.libs.antlr.v_2_7_7,
  org.jboss.tools.hibernate.libs.commons-collections4.v_4_4,

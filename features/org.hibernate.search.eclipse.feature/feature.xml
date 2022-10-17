@@ -2,7 +2,7 @@
 <feature
       id="org.hibernate.search.eclipse.feature"
       label="%featureName"
-      version="5.4.18.qualifier"
+      version="5.4.19.qualifier"
       provider-name="%providerName"
       plugin="org.jboss.tools.hibernate.search"
       license-feature="org.jboss.tools.foundation.license.feature"
