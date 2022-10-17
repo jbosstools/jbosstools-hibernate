@@ -15,7 +15,7 @@ import org.hibernate.tool.orm.jbt.type.BooleanType;
 import org.hibernate.tool.orm.jbt.type.ByteType;
 import org.hibernate.tool.orm.jbt.type.CalendarDateType;
 import org.hibernate.tool.orm.jbt.type.CalendarType;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.legacy.CharacterType;
+import org.hibernate.tool.orm.jbt.type.CharacterType;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.legacy.ClassType;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.legacy.CurrencyType;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.legacy.DateType;
