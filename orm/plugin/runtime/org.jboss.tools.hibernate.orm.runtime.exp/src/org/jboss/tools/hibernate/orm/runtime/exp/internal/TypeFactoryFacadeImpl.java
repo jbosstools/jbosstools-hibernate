@@ -19,7 +19,7 @@ import org.hibernate.tool.orm.jbt.type.CharacterType;
 import org.hibernate.tool.orm.jbt.type.ClassType;
 import org.hibernate.tool.orm.jbt.type.CurrencyType;
 import org.hibernate.tool.orm.jbt.type.DateType;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.legacy.DoubleType;
+import org.hibernate.tool.orm.jbt.type.DoubleType;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.legacy.FloatType;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.legacy.IntegerType;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.legacy.LocaleType;
