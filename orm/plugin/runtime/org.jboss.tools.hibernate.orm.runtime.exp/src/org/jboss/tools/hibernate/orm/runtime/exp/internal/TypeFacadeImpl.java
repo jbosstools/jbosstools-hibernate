@@ -1,8 +1,8 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
+import org.hibernate.tool.orm.jbt.type.IntegerType;
 import org.hibernate.type.BasicType;
 import org.hibernate.type.EntityType;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.legacy.IntegerType;
 import org.jboss.tools.hibernate.runtime.common.AbstractTypeFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 

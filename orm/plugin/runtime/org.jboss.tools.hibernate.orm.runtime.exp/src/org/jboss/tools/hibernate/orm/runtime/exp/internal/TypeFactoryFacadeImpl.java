@@ -21,7 +21,7 @@ import org.hibernate.tool.orm.jbt.type.CurrencyType;
 import org.hibernate.tool.orm.jbt.type.DateType;
 import org.hibernate.tool.orm.jbt.type.DoubleType;
 import org.hibernate.tool.orm.jbt.type.FloatType;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.legacy.IntegerType;
+import org.hibernate.tool.orm.jbt.type.IntegerType;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.legacy.LocaleType;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.legacy.LongType;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.legacy.ShortType;
