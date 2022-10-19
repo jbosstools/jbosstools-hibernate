@@ -23,7 +23,7 @@ import org.hibernate.tool.orm.jbt.type.DoubleType;
 import org.hibernate.tool.orm.jbt.type.FloatType;
 import org.hibernate.tool.orm.jbt.type.IntegerType;
 import org.hibernate.tool.orm.jbt.type.LocaleType;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.legacy.LongType;
+import org.hibernate.tool.orm.jbt.type.LongType;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.legacy.ShortType;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.legacy.StringType;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.legacy.TextType;
