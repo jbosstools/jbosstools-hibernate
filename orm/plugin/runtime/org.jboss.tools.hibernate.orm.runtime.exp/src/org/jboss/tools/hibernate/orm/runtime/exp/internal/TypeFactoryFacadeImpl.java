@@ -30,7 +30,7 @@ import org.hibernate.tool.orm.jbt.type.TextType;
 import org.hibernate.tool.orm.jbt.type.TimeType;
 import org.hibernate.tool.orm.jbt.type.TimeZoneType;
 import org.hibernate.tool.orm.jbt.type.TimestampType;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.legacy.TrueFalseType;
+import org.hibernate.tool.orm.jbt.type.TrueFalseType;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.legacy.YesNoType;
 import org.jboss.tools.hibernate.runtime.common.AbstractTypeFactoryFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
