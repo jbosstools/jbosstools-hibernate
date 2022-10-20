@@ -25,7 +25,7 @@ import org.hibernate.tool.orm.jbt.type.IntegerType;
 import org.hibernate.tool.orm.jbt.type.LocaleType;
 import org.hibernate.tool.orm.jbt.type.LongType;
 import org.hibernate.tool.orm.jbt.type.ShortType;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.legacy.StringType;
+import org.hibernate.tool.orm.jbt.type.StringType;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.legacy.TextType;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.legacy.TimeType;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.legacy.TimeZoneType;
