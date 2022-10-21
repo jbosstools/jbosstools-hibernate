@@ -16,16 +16,17 @@ import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.util.Properties;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 public class JpaConfigurationTest {
 	
