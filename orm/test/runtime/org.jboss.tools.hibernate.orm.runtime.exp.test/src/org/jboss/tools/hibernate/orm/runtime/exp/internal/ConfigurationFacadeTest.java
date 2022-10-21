@@ -37,12 +37,11 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
+import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.DummyMetadataBuildingContext;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.JdbcMetadataConfiguration;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.MetadataHelper;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.MetadataHelperTest;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
@@ -446,7 +445,7 @@ public class ConfigurationFacadeTest {
 	private static Metadata createMetadata() {
 		Metadata result = null;
 		result = (Metadata) Proxy.newProxyInstance(
-				MetadataHelperTest.class.getClassLoader(), 
+				ConfigurationFacadeTest.class.getClassLoader(), 
 				new Class[] { Metadata.class },  
 				new InvocationHandler() {				
 					@Override
