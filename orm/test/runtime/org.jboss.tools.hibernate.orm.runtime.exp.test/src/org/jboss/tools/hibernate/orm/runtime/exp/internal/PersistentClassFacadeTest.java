@@ -28,7 +28,7 @@ import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.DummyMetadataBuildingContext;
+import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.jboss.tools.hibernate.runtime.common.AbstractPersistentClassFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;

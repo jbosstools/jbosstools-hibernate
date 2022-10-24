@@ -7,7 +7,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.DummyMetadataBuildingContext;
+import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.jboss.tools.hibernate.runtime.common.AbstractCfg2HbmToolFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractPropertyFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
