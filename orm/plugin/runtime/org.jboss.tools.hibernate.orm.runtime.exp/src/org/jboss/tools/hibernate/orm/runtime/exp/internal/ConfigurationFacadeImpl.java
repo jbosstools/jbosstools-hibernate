@@ -20,8 +20,8 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengStrategy;
+import org.hibernate.tool.orm.jbt.util.JdbcMetadataConfiguration;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
@@ -167,7 +167,7 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 
 	@Override
 	protected String getJDBCConfigurationClassName() {
-		return "org.jboss.tools.hibernate.orm.runtime.exp.internal.util.JdbcMetadataConfiguration";
+		return "org.hibernate.tool.orm.jbt.util.JdbcMetadataConfiguration";
 	}
 	
 }

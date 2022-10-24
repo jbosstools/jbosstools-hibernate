@@ -1,0 +1,1 @@
+<hibernate-configuration>  <session-factory name='bar'>    <mapping resource='Foo.hbm.xml' />  </session-factory></hibernate-configuration>
