@@ -1,0 +1,18 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
+		version="2.0">
+
+	<persistence-unit name="test" transaction-type="RESOURCE_LOCAL">
+		<!--		<class>org.jboss.tools.hibernate.runtime.v_3_5.internal.ServiceImplTest.Farmer</class>-->
+		<class>Farmer</class>
+		<properties>
+			<!-- Configuring The Database Connection Details -->
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/jpaDemoDb" />
+			<property name="javax.persistence.jdbc.user" value="root" />
+			<property name="javax.persistence.jdbc.password" value="" />
+		</properties>
+	</persistence-unit>
+
+</persistence>

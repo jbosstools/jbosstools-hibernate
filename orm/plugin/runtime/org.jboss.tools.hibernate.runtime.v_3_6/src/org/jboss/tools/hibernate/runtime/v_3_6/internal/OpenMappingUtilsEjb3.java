@@ -62,7 +62,7 @@ public class OpenMappingUtilsEjb3 {
 			//ignore
 		}
 		if (xmls == null || !xmls.hasMoreElements()) {
-	    	return null;
+	    	return new ArrayList<String>();
 		}
 		final String IMPLEMENTATION_NAME = HibernatePersistence.class.getName();
 		List<String> res = null;

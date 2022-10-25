@@ -548,11 +548,18 @@ public class ServiceImplTest {
 	public void testIsInitialized() {
 		assertTrue(service.isInitialized(new Object()));
 	}
-	
-	// TODO JBIDE-28358: reenable this test
-	@Disabled
+
 	@Test
-	public void testGetJPAMappingFilePaths() {
+	public void testGetJPAMappingFilePaths() throws Exception {
+		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
+		File metaInfFolder = new File(new File(url.toURI()), "META-INF");
+		metaInfFolder.deleteOnExit();
+		metaInfFolder.mkdir();
+		File persistenceXmlFile = new File(metaInfFolder, "persistence.xml");
+		persistenceXmlFile.deleteOnExit();
+		FileWriter fileWriter = new FileWriter(persistenceXmlFile);
+		fileWriter.write(TEST_PERSISTENCE_XML_STRING);
+		fileWriter.close();
 		List<String> result = service.getJPAMappingFilePaths("test", null);
 		assertEquals(0, result.size());
 	}
