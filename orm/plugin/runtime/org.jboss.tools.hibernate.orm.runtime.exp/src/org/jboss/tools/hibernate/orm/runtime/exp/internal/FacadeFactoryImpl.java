@@ -1,7 +1,10 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
 import org.hibernate.persister.entity.EntityPersister;
+import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.jboss.tools.hibernate.runtime.common.AbstractArtifactCollectorFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
@@ -28,7 +31,14 @@ import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 
 public class FacadeFactoryImpl  extends AbstractFacadeFactory {
-
+	
+	private WrapperFactory wrapperFactory = new WrapperFactory();
+	
+	@Override
+	public IArtifactCollector createArtifactCollector(Object target) {
+		return new AbstractArtifactCollectorFacade(this, wrapperFactory.createArtifactCollectorWrapper()) {};
+	}
+	
 	@Override
 	public ClassLoader getClassLoader() {
 		return FacadeFactoryImpl.class.getClassLoader();

@@ -1,1 +1,0 @@
-<hibernate-mapping package='org.jboss.tools.hibernate.orm.runtime.exp.internal'>  <class name='ConfigurationFacadeTest$Foo'>    <id name='id'/>  </class></hibernate-mapping>

@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -107,9 +108,10 @@ public class FacadeFactoryTest {
 	
 	@Test
 	public void testCreateArtifactCollector() {
-		ArtifactCollector artifactCollector = new DefaultArtifactCollector();
-		IArtifactCollector facade = facadeFactory.createArtifactCollector(artifactCollector);
-		assertSame(artifactCollector, ((IFacade)facade).getTarget());
+		IArtifactCollector facade = facadeFactory.createArtifactCollector(null);
+		Object target = ((IFacade)facade).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof DefaultArtifactCollector);
 	}
 	
 	@Test
