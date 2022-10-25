@@ -14,16 +14,13 @@ import java.lang.reflect.Field;
 import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
-import org.hibernate.tool.api.export.ArtifactCollector;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
-import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tool.internal.export.ddl.DdlExporter;
 import org.hibernate.tool.internal.export.query.QueryExporter;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.ConfigurationMetadataDescriptor;
-import org.jboss.tools.hibernate.runtime.common.AbstractArtifactCollectorFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
@@ -74,13 +71,10 @@ public class ExporterFacadeTest {
 	
 	@Test
 	public void testSetArtifactCollector() {
-		ArtifactCollector artifactCollectorTarget = new DefaultArtifactCollector();
-		IArtifactCollector artifactCollectorFacade = 
-				new AbstractArtifactCollectorFacade(FACADE_FACTORY, artifactCollectorTarget) {};
+		assertNull(exporterTarget.getProperties().get(ExporterConstants.ARTIFACT_COLLECTOR));
+		IArtifactCollector artifactCollectorFacade = FACADE_FACTORY.createArtifactCollector(null);
 		exporterFacade.setArtifactCollector(artifactCollectorFacade);
-		assertSame(
-				exporterTarget.getProperties().get(ExporterConstants.ARTIFACT_COLLECTOR), 
-				artifactCollectorTarget);
+		assertNotNull(exporterTarget.getProperties().get(ExporterConstants.ARTIFACT_COLLECTOR));
 	}
 	
 	@Test
