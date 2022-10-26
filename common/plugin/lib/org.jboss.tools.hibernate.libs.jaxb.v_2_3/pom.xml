@@ -12,6 +12,7 @@
 	<packaging>eclipse-plugin</packaging>
 	
 	<properties>
+	    <activation.version>1.2.0</activation.version>
 	    <jaxb-api.version>2.3.3</jaxb-api.version>
 	    <jaxb-osgi.version>2.3.5</jaxb-osgi.version>
 	</properties>
@@ -32,6 +33,11 @@
 	            </executions>
 	            <configuration>
 	                <artifactItems>
+	                    <artifactItem>
+	                        <groupId>javax.activation</groupId>
+	                        <artifactId>javax.activation-api</artifactId>
+	                        <version>${activation.version}</version>
+	                    </artifactItem>
 						<artifactItem>
 							<groupId>jakarta.xml.bind</groupId>
 							<artifactId>jakarta.xml.bind-api</artifactId>

@@ -7,7 +7,8 @@ Bundle-Vendor: Red Hat
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: lib/jakarta.xml.bind-api-2.3.3.jar,
- lib/jaxb-osgi-2.3.5.jar
+ lib/jaxb-osgi-2.3.5.jar,
+ lib/javax.activation-api-1.2.0.jar
 Export-Package: com.sun.codemodel,
  com.sun.codemodel.fmt,
  com.sun.codemodel.util,
