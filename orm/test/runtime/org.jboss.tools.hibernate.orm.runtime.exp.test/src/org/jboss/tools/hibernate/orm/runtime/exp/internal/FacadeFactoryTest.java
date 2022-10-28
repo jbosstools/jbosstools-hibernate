@@ -116,9 +116,10 @@ public class FacadeFactoryTest {
 	
 	@Test
 	public void testCreateCfg2HbmTool() {
-		Cfg2HbmTool cfg2HbmTool = new Cfg2HbmTool();
-		ICfg2HbmTool facade = facadeFactory.createCfg2HbmTool(cfg2HbmTool);
-		assertSame(cfg2HbmTool,  ((IFacade)facade).getTarget());
+		ICfg2HbmTool facade = facadeFactory.createCfg2HbmTool(null);
+		Object target = ((IFacade)facade).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof Cfg2HbmTool);
 	}
 	
 	@Test
