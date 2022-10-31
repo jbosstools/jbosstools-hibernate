@@ -5,6 +5,7 @@ import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractArtifactCollectorFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractCfg2HbmToolFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
+import org.jboss.tools.hibernate.runtime.common.AbstractNamingStrategyFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
@@ -19,6 +20,7 @@ import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
+import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
@@ -44,6 +46,11 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	@Override
 	public ICfg2HbmTool createCfg2HbmTool(Object target) {
 		return new AbstractCfg2HbmToolFacade(this, wrapperFactory.createCfg2HbmWrapper()) {};
+	}
+	
+	@Override
+	public INamingStrategy createNamingStrategy(Object target) {
+		return new AbstractNamingStrategyFacade(this, wrapperFactory.createNamingStrategyWrapper()) {};
 	}
 	
 	@Override

@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -26,7 +25,6 @@ import org.hibernate.mapping.Value;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.persister.entity.EntityPersister;
-import org.hibernate.tool.api.export.ArtifactCollector;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
@@ -124,9 +122,10 @@ public class FacadeFactoryTest {
 	
 	@Test
 	public void testCreateNamingStrategy() {
-		DefaultNamingStrategy namingStrategy = new DefaultNamingStrategy();
-		INamingStrategy facade = facadeFactory.createNamingStrategy(namingStrategy);
-		assertSame(namingStrategy, ((IFacade)facade).getTarget());
+		INamingStrategy facade = facadeFactory.createNamingStrategy(null);
+		Object target = ((IFacade)facade).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof DefaultNamingStrategy);
 	}
 	
 	@Test
