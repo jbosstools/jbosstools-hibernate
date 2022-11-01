@@ -40,7 +40,7 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	
 	@Override
 	public IArtifactCollector createArtifactCollector(Object target) {
-		return new AbstractArtifactCollectorFacade(this, wrapperFactory.createArtifactCollectorWrapper()) {};
+		throw new RuntimeException("Should use class 'NewFacadeFactory'");
 	}
 	
 	@Override

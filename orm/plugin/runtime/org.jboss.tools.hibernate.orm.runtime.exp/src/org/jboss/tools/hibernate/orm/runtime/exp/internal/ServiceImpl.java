@@ -55,7 +55,6 @@ import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
-import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.hibernate.tool.internal.reveng.RevengMetadataCollector;
 import org.hibernate.tool.internal.reveng.reader.DatabaseReader;
@@ -68,6 +67,7 @@ import org.hibernate.tool.orm.jbt.util.JdbcMetadataConfiguration;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.JpaMappingFileHelper;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.ConfigurationMetadataDescriptor;
+import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractPersistentClassFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractService;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -103,6 +103,7 @@ public class ServiceImpl extends AbstractService {
 	private static final String HIBERNATE_VERSION = "6.1";
 	
 	private IFacadeFactory facadeFactory = new FacadeFactoryImpl();
+	private NewFacadeFactory newFacadeFactory = new NewFacadeFactory();
 
 	@Override
 	public IConfiguration newAnnotationConfiguration() {
@@ -176,7 +177,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IArtifactCollector newArtifactCollector() {
-		return facadeFactory.createArtifactCollector(new DefaultArtifactCollector());
+		return newFacadeFactory.createArtifactCollector();
 	}
 
 	@Override

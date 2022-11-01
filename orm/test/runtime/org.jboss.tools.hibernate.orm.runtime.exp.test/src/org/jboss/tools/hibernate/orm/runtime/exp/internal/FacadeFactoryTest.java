@@ -1,9 +1,11 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -79,6 +81,7 @@ import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import jakarta.persistence.Query;
@@ -106,10 +109,15 @@ public class FacadeFactoryTest {
 	
 	@Test
 	public void testCreateArtifactCollector() {
-		IArtifactCollector facade = facadeFactory.createArtifactCollector(null);
-		Object target = ((IFacade)facade).getTarget();
-		assertNotNull(target);
-		assertTrue(target instanceof DefaultArtifactCollector);
+		try {
+			IArtifactCollector facade = facadeFactory.createArtifactCollector(null);
+			Object target = ((IFacade)facade).getTarget();
+			assertNotNull(target);
+			assertTrue(target instanceof DefaultArtifactCollector);
+			fail();
+		} catch (Throwable t) {
+			assertEquals("Should use class 'NewFacadeFactory'", t.getMessage());
+		}
 	}
 	
 	@Test

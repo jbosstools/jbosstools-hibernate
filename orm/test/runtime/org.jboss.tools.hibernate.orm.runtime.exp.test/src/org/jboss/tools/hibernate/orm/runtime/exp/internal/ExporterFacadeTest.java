@@ -21,6 +21,7 @@ import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tool.internal.export.ddl.DdlExporter;
 import org.hibernate.tool.internal.export.query.QueryExporter;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.ConfigurationMetadataDescriptor;
+import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
@@ -32,6 +33,8 @@ import org.junit.jupiter.api.Test;
 public class ExporterFacadeTest {
 	
 	private static final FacadeFactoryImpl FACADE_FACTORY = new FacadeFactoryImpl();
+	
+	private static final NewFacadeFactory NEW_FACADE_FACTORY = new NewFacadeFactory();
 	
 	private Exporter exporterTarget = null;
 	private ExporterFacadeImpl exporterFacade = null;
@@ -72,7 +75,7 @@ public class ExporterFacadeTest {
 	@Test
 	public void testSetArtifactCollector() {
 		assertNull(exporterTarget.getProperties().get(ExporterConstants.ARTIFACT_COLLECTOR));
-		IArtifactCollector artifactCollectorFacade = FACADE_FACTORY.createArtifactCollector(null);
+		IArtifactCollector artifactCollectorFacade = NEW_FACADE_FACTORY.createArtifactCollector();
 		exporterFacade.setArtifactCollector(artifactCollectorFacade);
 		assertNotNull(exporterTarget.getProperties().get(ExporterConstants.ARTIFACT_COLLECTOR));
 	}
