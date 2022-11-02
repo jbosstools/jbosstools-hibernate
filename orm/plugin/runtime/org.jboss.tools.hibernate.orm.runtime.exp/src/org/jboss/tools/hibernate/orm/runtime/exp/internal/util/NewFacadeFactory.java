@@ -1,8 +1,6 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal.util;
 
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
-import org.jboss.tools.hibernate.runtime.common.AbstractArtifactCollectorFacade;
-import org.jboss.tools.hibernate.runtime.common.AbstractCfg2HbmToolFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractNamingStrategyFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
@@ -32,7 +30,9 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 	}
 	
 	public ICfg2HbmTool createCfg2HbmTool() {
-		return new AbstractCfg2HbmToolFacade(this, wrapperFactory.createCfg2HbmWrapper()) {};
+		return (ICfg2HbmTool)GenericFacadeFactory.createFacade(
+				ICfg2HbmTool.class,
+				wrapperFactory.createCfg2HbmWrapper());
 	}
 	
 	@Override
