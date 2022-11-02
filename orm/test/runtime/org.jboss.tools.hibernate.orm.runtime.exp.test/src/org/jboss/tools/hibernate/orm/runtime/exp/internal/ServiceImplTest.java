@@ -210,7 +210,15 @@ public class ServiceImplTest {
 		Object target = ((IFacade)namingStrategy).getTarget();
 		assertNotNull(target);
 		assertTrue(target instanceof DefaultNamingStrategy);
-		assertNull(service.newNamingStrategy("some unexistant class"));
+		namingStrategy = null;
+		assertNull(namingStrategy);
+		try {
+			namingStrategy = service.newNamingStrategy("some unexistant class");
+		} catch (Throwable t) {
+			assertTrue(t.getMessage().contains(
+					"java.lang.ClassNotFoundException: some unexistant class cannot be found"));
+		}
+		assertNull(namingStrategy);
 	}
 	
 	@Test

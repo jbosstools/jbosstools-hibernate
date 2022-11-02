@@ -4,8 +4,10 @@ import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractArtifactCollectorFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractCfg2HbmToolFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
+import org.jboss.tools.hibernate.runtime.common.AbstractNamingStrategyFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
+import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 
@@ -31,6 +33,14 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 		return new AbstractCfg2HbmToolFacade(this, wrapperFactory.createCfg2HbmWrapper()) {};
 	}
 	
+	@Override
+	public INamingStrategy createNamingStrategy(Object target) {
+		throw new RuntimeException("Use 'NewFacadeFactory#createNamingStrategy(String)");
+	}
+	
+	public INamingStrategy createNamingStrategy(String namingStrategyClassName) {
+		return new AbstractNamingStrategyFacade(this, wrapperFactory.createNamingStrategyWrapper(namingStrategyClassName)) {};
+	}
 
 	
 	

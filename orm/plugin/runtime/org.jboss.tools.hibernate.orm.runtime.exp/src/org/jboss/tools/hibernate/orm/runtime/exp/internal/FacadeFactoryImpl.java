@@ -48,7 +48,7 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	
 	@Override
 	public INamingStrategy createNamingStrategy(Object target) {
-		return new AbstractNamingStrategyFacade(this, wrapperFactory.createNamingStrategyWrapper()) {};
+		throw new RuntimeException("Should use class 'NewFacadeFactory'");
 	}
 	
 	@Override

@@ -31,7 +31,6 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
@@ -42,6 +41,7 @@ import org.hibernate.tool.orm.jbt.util.JdbcMetadataConfiguration;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
+import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
@@ -79,6 +79,7 @@ public class ConfigurationFacadeTest {
 	}
 	
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
+	private static final NewFacadeFactory NEW_FACADE_FACTORY = new NewFacadeFactory();
 
 	@BeforeAll
 	public static void beforeAll() throws Exception {
@@ -154,7 +155,7 @@ public class ConfigurationFacadeTest {
 	
 	@Test
 	public void testSetNamingStrategy() {
-		INamingStrategy namingStrategy = FACADE_FACTORY.createNamingStrategy(new DefaultNamingStrategy());
+		INamingStrategy namingStrategy = NEW_FACADE_FACTORY.createNamingStrategy((String)null);
 		ConfigurationFacadeImpl facade = (ConfigurationFacadeImpl)configurationFacade;
 		assertNotSame(namingStrategy, facade.namingStrategy);
 		configurationFacade.setNamingStrategy(namingStrategy);
@@ -362,7 +363,7 @@ public class ConfigurationFacadeTest {
 	
 	@Test
 	public void testGetNamingStrategy() {
-		INamingStrategy strategy = FACADE_FACTORY.createNamingStrategy(new DefaultNamingStrategy());
+		INamingStrategy strategy = NEW_FACADE_FACTORY.createNamingStrategy((String)null);
 		ConfigurationFacadeImpl facade = (ConfigurationFacadeImpl)configurationFacade;
 		assertNull(facade.getNamingStrategy());
 		facade.namingStrategy = strategy;
