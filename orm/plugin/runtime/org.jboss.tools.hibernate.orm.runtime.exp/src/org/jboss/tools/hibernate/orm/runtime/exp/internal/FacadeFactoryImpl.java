@@ -2,8 +2,6 @@ package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
 import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
-import org.jboss.tools.hibernate.runtime.common.AbstractArtifactCollectorFacade;
-import org.jboss.tools.hibernate.runtime.common.AbstractCfg2HbmToolFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractNamingStrategyFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
@@ -45,7 +43,7 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	
 	@Override
 	public ICfg2HbmTool createCfg2HbmTool(Object target) {
-		return new AbstractCfg2HbmToolFacade(this, wrapperFactory.createCfg2HbmWrapper()) {};
+		throw new RuntimeException("Should use class 'NewFacadeFactory'");
 	}
 	
 	@Override

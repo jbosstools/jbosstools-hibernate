@@ -122,10 +122,14 @@ public class FacadeFactoryTest {
 	
 	@Test
 	public void testCreateCfg2HbmTool() {
-		ICfg2HbmTool facade = facadeFactory.createCfg2HbmTool(null);
-		Object target = ((IFacade)facade).getTarget();
-		assertNotNull(target);
-		assertTrue(target instanceof Cfg2HbmTool);
+		try {
+			ICfg2HbmTool facade = facadeFactory.createCfg2HbmTool(null);
+			Object target = ((IFacade)facade).getTarget();
+			assertNotNull(target);
+			assertTrue(target instanceof Cfg2HbmTool);
+		} catch (Throwable t) {
+			assertEquals("Should use class 'NewFacadeFactory'", t.getMessage());
+		}
 	}
 	
 	@Test
