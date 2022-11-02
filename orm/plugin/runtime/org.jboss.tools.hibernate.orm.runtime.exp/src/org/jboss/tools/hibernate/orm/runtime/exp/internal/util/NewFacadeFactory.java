@@ -21,7 +21,9 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 	}
 	
 	public IArtifactCollector createArtifactCollector() {
-		return new AbstractArtifactCollectorFacade(this, wrapperFactory.createArtifactCollectorWrapper()) {};
+		return (IArtifactCollector)GenericFacadeFactory.createFacade(
+				IArtifactCollector.class, 
+				wrapperFactory.createArtifactCollectorWrapper());
 	}
 
 	@Override
