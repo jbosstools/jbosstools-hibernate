@@ -12,19 +12,7 @@ public class GenericFacadeFactory {
 		return (IFacade)Proxy.newProxyInstance(
 					GenericFacadeFactory.class.getClassLoader(), 
 					new Class[] { facadeClass, IFacade.class }, 
-					new InvocationHandler() {						
-						@Override
-						public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-							if ("getTarget".equals(method.getName())) {
-								return target;
-							} else {
-								Method targetMethod = target.getClass().getMethod(
-										method.getName(), 
-										constructArgumentClasses(args));
-								return targetMethod.invoke(target, args);
-							}
-						}
-					});
+					new FacadeInvocationHandler(target));
 	}
 	
 	private static Class<?>[] constructArgumentClasses(Object[] args) {
@@ -36,6 +24,29 @@ public class GenericFacadeFactory {
 			}
 		}
 		return result;
+	}
+	
+	
+	private static class FacadeInvocationHandler implements InvocationHandler {
+		
+		private Object target = null;
+		
+		private FacadeInvocationHandler(Object target) {
+			FacadeInvocationHandler.this.target = target;
+		}
+
+		@Override
+		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+			if ("getTarget".equals(method.getName())) {
+				return target;
+			} else {
+				Method targetMethod = target.getClass().getMethod(
+						method.getName(), 
+						constructArgumentClasses(args));
+				return targetMethod.invoke(target, args);
+			}
+		}
+		
 	}
 	
 
