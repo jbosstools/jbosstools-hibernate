@@ -213,10 +213,10 @@ public class ServiceImplTest {
 		namingStrategy = null;
 		assertNull(namingStrategy);
 		try {
-			namingStrategy = service.newNamingStrategy("some unexistant class");
+			namingStrategy = service.newNamingStrategy("some unexistent class");
 		} catch (Throwable t) {
 			assertTrue(t.getMessage().contains(
-					"java.lang.ClassNotFoundException: some unexistant class cannot be found"));
+					"Exception while looking up class 'some unexistent class'"));
 		}
 		assertNull(namingStrategy);
 	}
