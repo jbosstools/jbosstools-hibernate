@@ -41,7 +41,9 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 	}
 	
 	public INamingStrategy createNamingStrategy(String namingStrategyClassName) {
-		return new AbstractNamingStrategyFacade(this, wrapperFactory.createNamingStrategyWrapper(namingStrategyClassName)) {};
+		return (INamingStrategy)GenericFacadeFactory.createFacade(
+				INamingStrategy.class, 
+				wrapperFactory.createNamingStrategyWrapper(namingStrategyClassName));
 	}
 
 	
