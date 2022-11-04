@@ -62,7 +62,7 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	}
 
 	public IOverrideRepository createOverrideRepository(Object target) {
-		return new OverrideRepositoryFacadeImpl(this, target);
+		throw new RuntimeException("Should use class 'NewFacadeFactory'");
 	}
 	
 	@Override

@@ -2,10 +2,10 @@ package org.jboss.tools.hibernate.orm.runtime.exp.internal.util;
 
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
-import org.jboss.tools.hibernate.runtime.common.AbstractNamingStrategyFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
+import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 
@@ -44,6 +44,17 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 		return (INamingStrategy)GenericFacadeFactory.createFacade(
 				INamingStrategy.class, 
 				wrapperFactory.createNamingStrategyWrapper(namingStrategyClassName));
+	}
+	
+	@Override
+	public IOverrideRepository createOverrideRepository(Object target) {
+		throw new RuntimeException("Use 'NewFacadeFactory#createOverrideRepository()");		
+	}
+	
+	public IOverrideRepository createOverrideRepository() {
+		return (IOverrideRepository)GenericFacadeFactory.createFacade(
+				IOverrideRepository.class, 
+				wrapperFactory.createOverrideRepositoryWrapper());
 	}
 
 	

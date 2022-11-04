@@ -197,7 +197,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IOverrideRepository newOverrideRepository() {
-		return facadeFactory.createOverrideRepository(new OverrideRepository());
+		return newFacadeFactory.createOverrideRepository();
 	}
 
 	@Override

@@ -57,7 +57,6 @@ import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
-import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
@@ -144,10 +143,12 @@ public class FacadeFactoryTest {
 	
 	@Test
 	public void testCreateOverrideRepository() {
-		OverrideRepository overrideRepository = new OverrideRepository();
-		IOverrideRepository facade = FACADE_FACTORY.createOverrideRepository(overrideRepository);
-		assertTrue(facade instanceof OverrideRepositoryFacadeImpl);
-		assertSame(overrideRepository, ((IFacade)facade).getTarget());		
+		try {
+			FACADE_FACTORY.createOverrideRepository(new OverrideRepository());
+			fail();
+		} catch (Throwable t) {
+			assertEquals("Should use class 'NewFacadeFactory'", t.getMessage());			
+		}
 	}
 	
 	@Test
