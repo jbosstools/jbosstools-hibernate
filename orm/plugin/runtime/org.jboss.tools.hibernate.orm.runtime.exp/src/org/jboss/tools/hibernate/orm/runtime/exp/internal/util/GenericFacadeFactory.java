@@ -3,8 +3,12 @@ package org.jboss.tools.hibernate.orm.runtime.exp.internal.util;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.jboss.tools.hibernate.runtime.common.IFacade;
+import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 
 public class GenericFacadeFactory {
 	
@@ -20,6 +24,10 @@ public class GenericFacadeFactory {
 		if (args != null) {
 			result = new Class<?>[args.length];
 			for (int i = 0; i < args.length; i++) {
+				Class<?> argClass = args[i].getClass();
+				if (IFacade.class.isAssignableFrom(argClass)) {
+					argClass = ((IFacade)args[i]).getTarget().getClass();
+				}
 				result[i] = args[i].getClass();
 			}
 		}
@@ -37,17 +45,28 @@ public class GenericFacadeFactory {
 
 		@Override
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+			Object result = null;
 			if ("getTarget".equals(method.getName())) {
-				return target;
+				return result = target;
 			} else {
 				Method targetMethod = target.getClass().getMethod(
 						method.getName(), 
 						constructArgumentClasses(args));
-				return targetMethod.invoke(target, args);
+				result = targetMethod.invoke(target, args);
+				Class<?> returnedClass = method.getReturnType();
+				if (classesSet.contains(returnedClass)) {
+					result = createFacade(returnedClass, result);
+				} 
+				return result;
 			}
 		}
 		
 	}
+	
+	private static Set<Class<?>> classesSet = new HashSet<>(
+			Arrays.asList(new Class[] {
+					IReverseEngineeringStrategy.class
+			}));
 	
 
 }
