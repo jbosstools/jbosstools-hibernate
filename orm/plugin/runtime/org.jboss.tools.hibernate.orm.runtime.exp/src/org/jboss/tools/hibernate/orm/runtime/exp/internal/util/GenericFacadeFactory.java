@@ -28,11 +28,26 @@ public class GenericFacadeFactory {
 				if (IFacade.class.isAssignableFrom(argClass)) {
 					argClass = ((IFacade)args[i]).getTarget().getClass();
 				}
-				result[i] = args[i].getClass();
+				result[i] = argClass;
 			}
 		}
 		return result;
 	}
+	
+	private static Object[] unwrapFacades(Object[] args) {
+		Object[] result = null;
+		if (args != null) {
+			result = new Object[args.length];
+			for (int i = 0; i < args.length; i++) {
+				if (IFacade.class.isAssignableFrom(args[i].getClass())) {
+					result[i] = ((IFacade)args[i]).getTarget();
+				} else {
+					result[i] = args[i];
+				}
+			}
+		}
+		return result;
+ 	}
 	
 	
 	private static class FacadeInvocationHandler implements InvocationHandler {
@@ -49,18 +64,47 @@ public class GenericFacadeFactory {
 			if ("getTarget".equals(method.getName())) {
 				return result = target;
 			} else {
-				Method targetMethod = target.getClass().getMethod(
+				Method targetMethod = lookupMethod(
+						target.getClass(), 
 						method.getName(), 
 						constructArgumentClasses(args));
-				result = targetMethod.invoke(target, args);
-				Class<?> returnedClass = method.getReturnType();
-				if (classesSet.contains(returnedClass)) {
-					result = createFacade(returnedClass, result);
-				} 
-				return result;
+				if (targetMethod != null) {
+					result = targetMethod.invoke(target, unwrapFacades(args));
+					Class<?> returnedClass = method.getReturnType();
+					if (classesSet.contains(returnedClass)) {
+						result = createFacade(returnedClass, result);
+					} 
+				}
 			}
+			return result;
 		}
 		
+	}
+	
+	private static Method lookupMethod(Class<?> methodClass, String methodName, Class<?>[] argumentClasses) {
+		Method result = null;
+		Method[] methods = methodClass.getMethods();
+		for (Method candidate : methods) {
+			if (!methodName.equals(candidate.getName())) continue;
+			int parameterCount = candidate.getParameterCount();
+			if (argumentClasses == null && parameterCount == 0) {
+				result = candidate;
+				break;
+			}
+			else if (argumentClasses.length != parameterCount) {
+				continue;
+			}
+			result = candidate;		
+			Class<?>[] parameterTypes = candidate.getParameterTypes();
+			for (int i = 0; i < argumentClasses.length; i++) {
+				if (!parameterTypes[i].isAssignableFrom(argumentClasses[i])) {
+					result = null;
+					break;
+				}
+			}
+			if (result != null) break;
+		}
+		return result;
 	}
 	
 	private static Set<Class<?>> classesSet = new HashSet<>(
