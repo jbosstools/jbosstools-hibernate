@@ -108,6 +108,7 @@ public class PrimaryKeyFacadeTest {
 	@Test
 	public void testContainsColumn() {
 		Column columnTarget = new Column();
+		columnTarget.setName("foo");
 		IColumn columnFacade = FACADE_FACTORY.createColumn(columnTarget);
 		assertFalse(primaryKeyFacade.containsColumn(columnFacade));
 		primaryKeyTarget.addColumn(columnTarget);
