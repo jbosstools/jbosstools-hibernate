@@ -124,6 +124,7 @@ public class EntityMetamodelFacadeTest {
 			basicValue.setTypeName(Integer.class.getName());
 			rootClass.setIdentifier(basicValue);
 			rootClass.setOptimisticLockStyle(OptimisticLockStyle.NONE);
+			rootClass.setEntityName("foo");
 			return new FooBarMetamodel(rootClass, runtimeModelCreationContext);
 		}
 		

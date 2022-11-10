@@ -79,6 +79,7 @@ public class ForeignKeyFacadeTest {
 	@Test
 	public void testContainsColumn() {
 		Column column = new Column();
+		column.setName("foo");
 		IColumn columnFacade = FACADE_FACTORY.createColumn(column);
 		assertFalse(foreignKeyFacade.containsColumn(columnFacade));
 		foreignKey.addColumn(column);
