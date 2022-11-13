@@ -13,7 +13,7 @@
 
 	<properties>
 		<hibernate.orm.version>6.1.5.Final</hibernate.orm.version>
-		<hibernate.tools.version>6.1.5-SNAPSHOT</hibernate.tools.version>
+		<hibernate.tools.version>6.1.6-SNAPSHOT</hibernate.tools.version>
 	</properties>
 
 	<build>
