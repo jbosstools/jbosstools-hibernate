@@ -80,7 +80,7 @@ public class ConfigurationFacadeTest {
 	}
 	
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
-	private static final NewFacadeFactory NEW_FACADE_FACTORY = new NewFacadeFactory();
+	private static final NewFacadeFactory NEW_FACADE_FACTORY = NewFacadeFactory.INSTANCE;
 
 	@BeforeAll
 	public static void beforeAll() throws Exception {

@@ -22,7 +22,7 @@ public class NewFacadeFactoryTest {
 
 	@BeforeEach
 	public void beforeEach() throws Exception {
-		facadeFactory = new NewFacadeFactory();
+		facadeFactory = NewFacadeFactory.INSTANCE;
 	}
 	
 	@Test

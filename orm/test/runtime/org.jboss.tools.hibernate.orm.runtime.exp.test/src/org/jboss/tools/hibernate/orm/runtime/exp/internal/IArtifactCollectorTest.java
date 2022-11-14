@@ -37,7 +37,7 @@ public class IArtifactCollectorTest {
 	@SuppressWarnings("unchecked")
 	@BeforeEach
 	public void beforeEach() throws Exception {
-		facade = new NewFacadeFactory().createArtifactCollector();
+		facade = NewFacadeFactory.INSTANCE.createArtifactCollector();
 		target = ((IFacade)facade).getTarget();
 		Field filesField = target.getClass().getDeclaredField("files");
 		filesField.setAccessible(true);

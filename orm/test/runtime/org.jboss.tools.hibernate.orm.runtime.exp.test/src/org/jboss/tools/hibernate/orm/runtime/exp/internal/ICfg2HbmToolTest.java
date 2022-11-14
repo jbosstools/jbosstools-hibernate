@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 
 public class ICfg2HbmToolTest {
 
-	private static final NewFacadeFactory FACADE_FACTORY = new NewFacadeFactory();
+	private static final NewFacadeFactory FACADE_FACTORY = NewFacadeFactory.INSTANCE;
 
 	private ICfg2HbmTool facade = null;
 	

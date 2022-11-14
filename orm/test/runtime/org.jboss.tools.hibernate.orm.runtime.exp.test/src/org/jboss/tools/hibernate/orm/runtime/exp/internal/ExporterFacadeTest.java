@@ -34,7 +34,7 @@ public class ExporterFacadeTest {
 	
 	private static final FacadeFactoryImpl FACADE_FACTORY = new FacadeFactoryImpl();
 	
-	private static final NewFacadeFactory NEW_FACADE_FACTORY = new NewFacadeFactory();
+	private static final NewFacadeFactory NEW_FACADE_FACTORY = NewFacadeFactory.INSTANCE;
 	
 	private Exporter exporterTarget = null;
 	private ExporterFacadeImpl exporterFacade = null;

@@ -101,7 +101,7 @@ public class ServiceImpl extends AbstractService {
 	private static final String HIBERNATE_VERSION = "6.1";
 	
 	private IFacadeFactory facadeFactory = new FacadeFactoryImpl();
-	private NewFacadeFactory newFacadeFactory = new NewFacadeFactory();
+	private NewFacadeFactory newFacadeFactory = NewFacadeFactory.INSTANCE;
 
 	@Override
 	public IConfiguration newAnnotationConfiguration() {

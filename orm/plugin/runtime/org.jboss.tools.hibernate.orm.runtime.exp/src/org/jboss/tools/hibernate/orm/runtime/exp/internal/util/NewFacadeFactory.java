@@ -10,8 +10,12 @@ import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 
 public class NewFacadeFactory extends AbstractFacadeFactory {
+	
+	public static NewFacadeFactory INSTANCE = new NewFacadeFactory();
 
 	private WrapperFactory wrapperFactory = new WrapperFactory();
+	
+	private NewFacadeFactory() {}
 	
 	@Override
 	public IArtifactCollector createArtifactCollector(Object target) {
