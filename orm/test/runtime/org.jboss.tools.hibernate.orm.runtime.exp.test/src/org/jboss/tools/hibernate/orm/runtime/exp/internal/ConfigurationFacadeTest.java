@@ -31,6 +31,7 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
@@ -155,7 +156,7 @@ public class ConfigurationFacadeTest {
 	
 	@Test
 	public void testSetNamingStrategy() {
-		INamingStrategy namingStrategy = NEW_FACADE_FACTORY.createNamingStrategy((String)null);
+		INamingStrategy namingStrategy = NEW_FACADE_FACTORY.createNamingStrategy(DefaultNamingStrategy.class.getName());
 		ConfigurationFacadeImpl facade = (ConfigurationFacadeImpl)configurationFacade;
 		assertNotSame(namingStrategy, facade.namingStrategy);
 		configurationFacade.setNamingStrategy(namingStrategy);
@@ -363,7 +364,7 @@ public class ConfigurationFacadeTest {
 	
 	@Test
 	public void testGetNamingStrategy() {
-		INamingStrategy strategy = NEW_FACADE_FACTORY.createNamingStrategy((String)null);
+		INamingStrategy strategy = NEW_FACADE_FACTORY.createNamingStrategy(DefaultNamingStrategy.class.getName());
 		ConfigurationFacadeImpl facade = (ConfigurationFacadeImpl)configurationFacade;
 		assertNull(facade.getNamingStrategy());
 		facade.namingStrategy = strategy;

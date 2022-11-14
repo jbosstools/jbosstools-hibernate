@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
@@ -45,7 +46,7 @@ public class NewFacadeFactoryTest {
 		INamingStrategy facade = facadeFactory.createNamingStrategy(DefaultNamingStrategy.class.getName());
 		Object target = ((IFacade)facade).getTarget();
 		assertNotNull(target);
-		assertTrue(target instanceof DefaultNamingStrategy);
+		assertTrue(NamingStrategy.class.isAssignableFrom(target.getClass()));
 	}
 	
 	@Test
