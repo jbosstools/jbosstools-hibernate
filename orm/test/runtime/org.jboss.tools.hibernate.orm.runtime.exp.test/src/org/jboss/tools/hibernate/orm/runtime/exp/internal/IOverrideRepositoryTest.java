@@ -16,17 +16,17 @@ import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
+import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
-import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class OverrideRepositoryFacadeTest {
+public class IOverrideRepositoryTest {
 
-	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
+	private static final NewFacadeFactory FACADE_FACTORY = NewFacadeFactory.INSTANCE;
 	
 	private static final String HIBERNATE_REVERSE_ENGINEERING_XML =
 			"<?xml version='1.0' encoding='UTF-8'?>                                 "+
@@ -38,12 +38,12 @@ public class OverrideRepositoryFacadeTest {
 			"</hibernate-reverse-engineering>                                       ";
 
 	private IOverrideRepository overrideRepositoryFacade = null; 
-	private OverrideRepository overrideRepository;
+	private Object overrideRepository;
 	
 	@BeforeEach
 	public void setUp() {
-		overrideRepository = new OverrideRepository();
-		overrideRepositoryFacade = new OverrideRepositoryFacadeImpl(FACADE_FACTORY, overrideRepository);
+		overrideRepositoryFacade = FACADE_FACTORY.createOverrideRepository();
+		overrideRepository = ((IFacade)overrideRepositoryFacade).getTarget();
 	}
 	
 	@Test
