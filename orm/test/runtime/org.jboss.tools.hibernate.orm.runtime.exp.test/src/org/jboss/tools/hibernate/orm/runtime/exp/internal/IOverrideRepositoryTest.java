@@ -11,7 +11,6 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import org.hibernate.mapping.Table;
-import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
@@ -65,8 +64,8 @@ public class IOverrideRepositoryTest {
 	
 	@Test
 	public void testGetReverseEngineeringStrategy() throws Exception {
-		RevengStrategy res = new DefaultStrategy();
-		IReverseEngineeringStrategy resFacade = FACADE_FACTORY.createReverseEngineeringStrategy(res);
+		IReverseEngineeringStrategy resFacade = FACADE_FACTORY.createReverseEngineeringStrategy(DefaultStrategy.class.getName());
+		Object res = ((IFacade)resFacade).getTarget();
 		IReverseEngineeringStrategy result = overrideRepositoryFacade.getReverseEngineeringStrategy(resFacade);
 		DelegatingStrategy resultTarget = 
 				(DelegatingStrategy)((IFacade)result).getTarget();

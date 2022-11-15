@@ -1,18 +1,24 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal.util;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.lang.reflect.Field;
 
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
+import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
+import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
+import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -56,5 +62,24 @@ public class NewFacadeFactoryTest {
 		assertNotNull(target);
 		assertTrue(target instanceof OverrideRepository);
 	}
+	
+	@Test
+	public void testCreateRevengStrategy() throws Exception {
+		IReverseEngineeringStrategy facade = facadeFactory.createReverseEngineeringStrategy(null);
+		Object target = ((IFacade)facade).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof DefaultStrategy);
+		facade = null;
+		assertNull(facade);
+		facade = facadeFactory.createReverseEngineeringStrategy(TestRevengStrategy.class.getName());
+		target = ((IFacade)facade).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof DelegatingStrategy);
+		Field delegateField = DelegatingStrategy.class.getDeclaredField("delegate");
+		delegateField.setAccessible(true);
+		assertTrue(delegateField.get(target) instanceof TestRevengStrategy);
+	}
+	
+	public static class TestRevengStrategy extends DefaultStrategy {}
 	
 }

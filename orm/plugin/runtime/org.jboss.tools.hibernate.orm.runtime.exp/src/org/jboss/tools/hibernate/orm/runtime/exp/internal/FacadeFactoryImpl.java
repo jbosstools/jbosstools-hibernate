@@ -57,14 +57,15 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	}
 
 	@Override
-	public IReverseEngineeringStrategy createReverseEngineeringStrategy(Object target) {
-		return new ReverseEngineeringStrategyFacadeImpl(this, target);
-	}
-
 	public IOverrideRepository createOverrideRepository(Object target) {
 		throw new RuntimeException("Should use class 'NewFacadeFactory'");
 	}
 	
+	@Override
+	public IReverseEngineeringStrategy createReverseEngineeringStrategy(Object target) {
+		return new ReverseEngineeringStrategyFacadeImpl(this, target);
+	}
+
 	@Override
 	public ISchemaExport createSchemaExport(Object target) {
 		return new SchemaExportFacadeImpl(this, target);

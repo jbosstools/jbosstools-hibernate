@@ -8,6 +8,7 @@ import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
+import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 
 public class NewFacadeFactory extends AbstractFacadeFactory {
 	
@@ -61,7 +62,16 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 				wrapperFactory.createOverrideRepositoryWrapper());
 	}
 
+	@Override 
+	public IReverseEngineeringStrategy createReverseEngineeringStrategy(Object target) {
+		throw new RuntimeException("use 'NewFacadeFactory#createReverseEngineeringStrategy(String)");
+	}
 	
+	public IReverseEngineeringStrategy createReverseEngineeringStrategy(String revengStrategyClassName) {
+		return (IReverseEngineeringStrategy)GenericFacadeFactory.createFacade(
+				IReverseEngineeringStrategy.class, 
+				wrapperFactory.createReverseEngineeringStrategyWrapper(revengStrategyClassName));				
+	}
 	
 	@Override
 	public ClassLoader getClassLoader() {
