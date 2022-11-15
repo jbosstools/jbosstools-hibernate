@@ -3,24 +3,20 @@ package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.hibernate.cfg.DefaultNamingStrategy;
-import org.hibernate.cfg.NamingStrategy;
-import org.jboss.tools.hibernate.runtime.common.AbstractNamingStrategyFacade;
-import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
+import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class NamingStrategyFacadeTest {
+public class INamingStrategyTest {
 
-	private final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
-	
-	private NamingStrategy namingStrategyTarget = null;
+	private static final NewFacadeFactory FACADE_FACTORY = NewFacadeFactory.INSTANCE;
+
 	private INamingStrategy namingStrategyFacade = null;
 	
 	@BeforeEach
 	public void beforeEach() {
-		namingStrategyTarget = new TestNamingStrategy();
-		namingStrategyFacade = new AbstractNamingStrategyFacade(FACADE_FACTORY, namingStrategyTarget) {};
+		namingStrategyFacade = FACADE_FACTORY.createNamingStrategy(TestNamingStrategy.class.getName());
 	}
 	
 	@Test
@@ -64,7 +60,7 @@ public class NamingStrategyFacadeTest {
 		assertEquals(TestNamingStrategy.class.getName(), namingStrategyFacade.getStrategyClassName());
 	}
 	
-	private class TestNamingStrategy extends DefaultNamingStrategy {
+	public static class TestNamingStrategy extends DefaultNamingStrategy {
 		private static final long serialVersionUID = 1L;
 		@Override
 		public String collectionTableName(

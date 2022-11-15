@@ -104,6 +104,9 @@ public class GenericFacadeFactory {
 			}
 			if (result != null) break;
 		}
+		if (result != null) {
+			result.setAccessible(true);
+		}
 		return result;
 	}
 	
