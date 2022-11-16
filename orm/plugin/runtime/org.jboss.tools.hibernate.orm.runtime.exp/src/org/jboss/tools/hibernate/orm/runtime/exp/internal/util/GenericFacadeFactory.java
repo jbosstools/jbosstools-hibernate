@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.jboss.tools.hibernate.runtime.common.IFacade;
+import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 
 public class GenericFacadeFactory {
@@ -62,9 +63,9 @@ public class GenericFacadeFactory {
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 			Object result = null;
 			if ("getTarget".equals(method.getName())) {
-				return result = target;
+				result = target;
 			} else {
-				Method targetMethod = lookupMethod(
+				Method targetMethod = ReflectUtil.lookupMethod(
 						target.getClass(), 
 						method.getName(), 
 						constructArgumentClasses(args));
@@ -72,48 +73,22 @@ public class GenericFacadeFactory {
 					result = targetMethod.invoke(target, unwrapFacades(args));
 					Class<?> returnedClass = method.getReturnType();
 					if (classesSet.contains(returnedClass)) {
-						result = createFacade(returnedClass, result);
+						if (result == target) {
+							result = proxy;
+						} else {
+							result = createFacade(returnedClass, result);
+						}
 					} 
 				}
 			}
 			return result;
-		}
-		
-	}
-	
-	private static Method lookupMethod(Class<?> methodClass, String methodName, Class<?>[] argumentClasses) {
-		Method result = null;
-		Method[] methods = methodClass.getMethods();
-		for (Method candidate : methods) {
-			if (!methodName.equals(candidate.getName())) continue;
-			int parameterCount = candidate.getParameterCount();
-			if (argumentClasses == null && parameterCount == 0) {
-				result = candidate;
-				break;
-			}
-			else if (argumentClasses.length != parameterCount) {
-				continue;
-			}
-			result = candidate;		
-			Class<?>[] parameterTypes = candidate.getParameterTypes();
-			for (int i = 0; i < argumentClasses.length; i++) {
-				if (!parameterTypes[i].isAssignableFrom(argumentClasses[i])) {
-					result = null;
-					break;
-				}
-			}
-			if (result != null) break;
-		}
-		if (result != null) {
-			result.setAccessible(true);
-		}
-		return result;
+		}		
 	}
 	
 	private static Set<Class<?>> classesSet = new HashSet<>(
 			Arrays.asList(new Class[] {
-					IReverseEngineeringStrategy.class
+					IReverseEngineeringStrategy.class,
+					IReverseEngineeringSettings.class
 			}));
 	
-
 }
