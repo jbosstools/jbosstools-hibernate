@@ -5,8 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.lang.reflect.Field;
 
-import org.hibernate.tool.api.reveng.RevengSettings;
-import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.reveng.strategy.AbstractStrategy;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -21,10 +19,10 @@ public class IReverseEngineeringStrategyTest {
 	@Test
 	public void testSetSettings() throws Exception {
 		IReverseEngineeringStrategy revengStrategyFacade = FACADE_FACTORY.createReverseEngineeringStrategy();
-		RevengStrategy revengStrategyTarget = (RevengStrategy)((IFacade)revengStrategyFacade).getTarget();
-		RevengSettings revengSettingsTarget = new RevengSettings(revengStrategyTarget);
+		Object revengStrategyTarget = ((IFacade)revengStrategyFacade).getTarget();
 		IReverseEngineeringSettings revengSettingsFacade = 
-				FACADE_FACTORY.createReverseEngineeringSettings(revengSettingsTarget);
+				FACADE_FACTORY.createReverseEngineeringSettings(revengStrategyTarget);
+		Object revengSettingsTarget = ((IFacade)revengSettingsFacade).getTarget();
 		Field field = AbstractStrategy.class.getDeclaredField("settings");
 		field.setAccessible(true);
 		assertNotSame(field.get(revengStrategyTarget), revengSettingsTarget);
