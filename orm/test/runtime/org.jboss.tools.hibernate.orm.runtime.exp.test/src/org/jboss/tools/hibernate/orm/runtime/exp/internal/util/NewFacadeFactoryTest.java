@@ -1,13 +1,14 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal.util;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Field;
 
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
+import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
@@ -66,20 +67,26 @@ public class NewFacadeFactoryTest {
 	@Test
 	public void testCreateRevengStrategy() throws Exception {
 		IReverseEngineeringStrategy facade = facadeFactory.createReverseEngineeringStrategy();
-		Object target = ((IFacade)facade).getTarget();
-		assertNotNull(target);
-		assertTrue(target instanceof DefaultStrategy);
-		facade = null;
-		assertNull(facade);
-		facade = facadeFactory.createReverseEngineeringStrategy(TestRevengStrategy.class.getName());
-		target = ((IFacade)facade).getTarget();
-		assertNotNull(target);
-		assertTrue(target instanceof DelegatingStrategy);
+		Object firstTarget = ((IFacade)facade).getTarget();
+		assertNotNull(firstTarget);
+		assertTrue(firstTarget instanceof DefaultStrategy);
+		facade = facadeFactory.createReverseEngineeringStrategy(TestRevengStrategy.class.getName(), facade);
+		Object secondTarget = ((IFacade)facade).getTarget();
+		assertNotNull(secondTarget);
+		assertTrue(secondTarget instanceof DelegatingStrategy);
 		Field delegateField = DelegatingStrategy.class.getDeclaredField("delegate");
 		delegateField.setAccessible(true);
-		assertTrue(delegateField.get(target) instanceof TestRevengStrategy);
+		assertSame(delegateField.get(secondTarget), firstTarget);
+		facade = facadeFactory.createReverseEngineeringStrategy(DefaultStrategy.class.getName(), facade);
+		Object thirdTarget = ((IFacade)facade).getTarget();
+		assertNotNull(thirdTarget);
+		assertTrue(thirdTarget instanceof DefaultStrategy);
 	}
 	
-	public static class TestRevengStrategy extends DefaultStrategy {}
+	public static class TestRevengStrategy extends DelegatingStrategy {
+		public TestRevengStrategy(RevengStrategy delegate) {
+			super(delegate);
+		}
+	}
 	
 }

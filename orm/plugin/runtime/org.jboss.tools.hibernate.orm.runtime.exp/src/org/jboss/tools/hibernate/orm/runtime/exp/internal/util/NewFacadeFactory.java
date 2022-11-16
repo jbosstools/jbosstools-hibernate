@@ -74,12 +74,6 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 				wrapperFactory.createReverseEngineeringStrategyWrapper());				
 	}
 	
-	public IReverseEngineeringStrategy createReverseEngineeringStrategy(String className) {
-		return (IReverseEngineeringStrategy)GenericFacadeFactory.createFacade(
-				IReverseEngineeringStrategy.class, 
-				wrapperFactory.createReverseEngineeringStrategyWrapper(className));				
-	}
-	
 	public IReverseEngineeringStrategy createReverseEngineeringStrategy(
 			String className, 
 			IReverseEngineeringStrategy delegate) {

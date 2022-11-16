@@ -36,7 +36,6 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengStrategy;
-import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.JdbcMetadataConfiguration;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
@@ -315,7 +314,7 @@ public class ConfigurationFacadeTest {
 		JdbcMetadataConfiguration configuration = new JdbcMetadataConfiguration();
 		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
 		IReverseEngineeringStrategy strategyFacade = 
-				NEW_FACADE_FACTORY.createReverseEngineeringStrategy(DefaultStrategy.class.getName());
+				NEW_FACADE_FACTORY.createReverseEngineeringStrategy();
 		RevengStrategy reverseEngineeringStrategy = (RevengStrategy)((IFacade)strategyFacade).getTarget();
 		assertNotSame(
 				reverseEngineeringStrategy,
