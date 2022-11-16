@@ -5,25 +5,27 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.tool.api.reveng.RevengSettings;
-import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
-import org.jboss.tools.hibernate.runtime.common.AbstractReverseEngineeringSettingsFacade;
-import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
+import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
+import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class ReverseEngineeringSettingsFacadeTest {
 
-	private static IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
+	private static NewFacadeFactory FACADE_FACTORY = NewFacadeFactory.INSTANCE;
 	
 	private RevengSettings revengSettingsTarget = null;
 	private IReverseEngineeringSettings revengSettingsFacade = null;
 	
 	@BeforeEach
 	public void beforeEach() {
-		revengSettingsTarget = new RevengSettings(new DefaultStrategy());
-		revengSettingsFacade = 
-				new AbstractReverseEngineeringSettingsFacade(FACADE_FACTORY, revengSettingsTarget) {};		
+		IReverseEngineeringStrategy revengStrategyFacade = 
+				FACADE_FACTORY.createReverseEngineeringStrategy();
+		revengSettingsFacade = FACADE_FACTORY.createReverseEngineeringSettings(
+				((IFacade)revengStrategyFacade).getTarget());
+		revengSettingsTarget = (RevengSettings)((IFacade)revengSettingsFacade).getTarget();	
 	}
 	
 	@Test
