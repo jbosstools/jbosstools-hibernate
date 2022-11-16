@@ -12,7 +12,7 @@ import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class ReverseEngineeringSettingsFacadeTest {
+public class IReverseEngineeringSettingsTest {
 
 	private static NewFacadeFactory FACADE_FACTORY = NewFacadeFactory.INSTANCE;
 	
