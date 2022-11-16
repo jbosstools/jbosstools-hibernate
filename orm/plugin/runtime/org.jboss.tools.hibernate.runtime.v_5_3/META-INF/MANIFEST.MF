@@ -6,8 +6,8 @@ Bundle-Version: 5.4.19.qualifier
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: .,
- lib/hibernate-core-5.3.27.Final.jar,
- lib/hibernate-tools-5.3.27.Final.jar
+ lib/hibernate-core-5.3.28.Final.jar,
+ lib/hibernate-tools-5.3.28.Final.jar
 Require-Bundle: org.apache.commons.logging,
  org.jboss.tools.hibernate.libs.antlr.v_2_7_7,
  org.jboss.tools.hibernate.libs.byte-buddy.v_1_12,
