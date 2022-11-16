@@ -70,14 +70,14 @@ public class NewFacadeFactoryTest {
 		Object firstTarget = ((IFacade)facade).getTarget();
 		assertNotNull(firstTarget);
 		assertTrue(firstTarget instanceof DefaultStrategy);
-		facade = facadeFactory.createReverseEngineeringStrategy(TestRevengStrategy.class.getName(), facade);
+		facade = facadeFactory.createReverseEngineeringStrategy(TestRevengStrategy.class.getName(), firstTarget);
 		Object secondTarget = ((IFacade)facade).getTarget();
 		assertNotNull(secondTarget);
 		assertTrue(secondTarget instanceof DelegatingStrategy);
 		Field delegateField = DelegatingStrategy.class.getDeclaredField("delegate");
 		delegateField.setAccessible(true);
 		assertSame(delegateField.get(secondTarget), firstTarget);
-		facade = facadeFactory.createReverseEngineeringStrategy(DefaultStrategy.class.getName(), facade);
+		facade = facadeFactory.createReverseEngineeringStrategy(DefaultStrategy.class.getName(), secondTarget);
 		Object thirdTarget = ((IFacade)facade).getTarget();
 		assertNotNull(thirdTarget);
 		assertTrue(thirdTarget instanceof DefaultStrategy);

@@ -269,7 +269,9 @@ public class ServiceImpl extends AbstractService {
 	public IReverseEngineeringStrategy newReverseEngineeringStrategy(
 			String strategyName,
 			IReverseEngineeringStrategy delegate) {
-		return newFacadeFactory.createReverseEngineeringStrategy(strategyName, delegate);
+		return newFacadeFactory.createReverseEngineeringStrategy(
+				strategyName, 
+				((IFacade)delegate).getTarget());
 	}
 
 	@Override
