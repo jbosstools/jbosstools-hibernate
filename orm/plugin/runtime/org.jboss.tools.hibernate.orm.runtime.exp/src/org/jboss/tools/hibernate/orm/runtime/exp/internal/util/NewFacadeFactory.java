@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.orm.runtime.exp.internal.util;
 
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
@@ -67,10 +68,25 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 		throw new RuntimeException("use 'NewFacadeFactory#createReverseEngineeringStrategy(String)");
 	}
 	
-	public IReverseEngineeringStrategy createReverseEngineeringStrategy(String revengStrategyClassName) {
+	public IReverseEngineeringStrategy createReverseEngineeringStrategy() {
 		return (IReverseEngineeringStrategy)GenericFacadeFactory.createFacade(
 				IReverseEngineeringStrategy.class, 
-				wrapperFactory.createReverseEngineeringStrategyWrapper(revengStrategyClassName));				
+				wrapperFactory.createReverseEngineeringStrategyWrapper());				
+	}
+	
+	public IReverseEngineeringStrategy createReverseEngineeringStrategy(String className) {
+		return (IReverseEngineeringStrategy)GenericFacadeFactory.createFacade(
+				IReverseEngineeringStrategy.class, 
+				wrapperFactory.createReverseEngineeringStrategyWrapper(className));				
+	}
+	
+	public IReverseEngineeringStrategy createReverseEngineeringStrategy(
+			String className, 
+			IReverseEngineeringStrategy delegate) {
+		Object delegateTarget = ((IFacade)delegate).getTarget();
+		return (IReverseEngineeringStrategy)GenericFacadeFactory.createFacade(
+				IReverseEngineeringStrategy.class, 
+				wrapperFactory.createReverseEngineeringStrategyWrapper(className, delegateTarget));				
 	}
 	
 	@Override

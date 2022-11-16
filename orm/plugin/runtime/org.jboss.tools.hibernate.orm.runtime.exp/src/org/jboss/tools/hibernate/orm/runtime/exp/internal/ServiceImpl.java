@@ -1,7 +1,6 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
 import java.io.File;
-import java.lang.reflect.Constructor;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -56,8 +55,6 @@ import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.internal.reveng.RevengMetadataCollector;
 import org.hibernate.tool.internal.reveng.reader.DatabaseReader;
-import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
-import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataDescriptor;
@@ -216,8 +213,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IReverseEngineeringStrategy newDefaultReverseEngineeringStrategy() {
-		return facadeFactory.createReverseEngineeringStrategy(
-				new DefaultStrategy());
+		return newFacadeFactory.createReverseEngineeringStrategy();
 	}
 
 	@Override
@@ -273,11 +269,7 @@ public class ServiceImpl extends AbstractService {
 	public IReverseEngineeringStrategy newReverseEngineeringStrategy(
 			String strategyName,
 			IReverseEngineeringStrategy delegate) {
-		RevengStrategy delegateTarget = 
-				(RevengStrategy)((IFacade)delegate).getTarget();
-		Object target = 
-				newReverseEngineeringStrategy(strategyName, delegateTarget);
-		return facadeFactory.createReverseEngineeringStrategy(target);
+		return newFacadeFactory.createReverseEngineeringStrategy(strategyName, delegate);
 	}
 
 	@Override
@@ -483,50 +475,6 @@ public class ServiceImpl extends AbstractService {
 		return CfgExporter.class.getName();
 	}
 
-	private Object newReverseEngineeringStrategy(final String className, Object delegate) {
-        try {
-            Class<?> clazz = classForName(className);
-			Constructor<?> constructor = 
-					clazz.getConstructor(
-							new Class[] { RevengStrategy.class });
-            return constructor.newInstance(new Object[] { delegate });
-        }
-        catch (NoSuchMethodException e) {
-			try {
-				ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-				Class<?> clazz = null;
-				if ( contextClassLoader != null ) {
-					clazz = contextClassLoader.loadClass(className);
-				} else {
-					clazz = Class.forName( className );
-				}
-				if (clazz != null) {
-					return clazz.getDeclaredConstructor().newInstance();
-				} else {
-					throw new HibernateException("Class " + className + " could not be found.");
-				}
-			}
-			catch (Exception eq) {
-				throw new HibernateException(eq);
-			}
-		}
-        catch (Exception e) {
-			throw new HibernateException(e);
-		}
-    }
-
-	private Class<?> classForName(String name) throws ClassNotFoundException {
-		try {
-			ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-			if ( classLoader != null ) {
-				return classLoader.loadClass(name);
-			}
-		}
-		catch ( Throwable ignore ) {
-		}
-		return Class.forName( name );
-	}
-	
 	private ServiceRegistry buildServiceRegistry(Properties properties) {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySettings(properties);

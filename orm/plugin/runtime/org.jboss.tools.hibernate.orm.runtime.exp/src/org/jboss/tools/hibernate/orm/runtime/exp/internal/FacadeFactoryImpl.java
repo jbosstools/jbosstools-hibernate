@@ -1,9 +1,7 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
 import org.hibernate.persister.entity.EntityPersister;
-import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
-import org.jboss.tools.hibernate.runtime.common.AbstractNamingStrategyFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
@@ -34,8 +32,6 @@ import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 
 public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	
-	private WrapperFactory wrapperFactory = new WrapperFactory();
-	
 	@Override
 	public IArtifactCollector createArtifactCollector(Object target) {
 		throw new RuntimeException("Should use class 'NewFacadeFactory'");
@@ -52,18 +48,18 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	}
 	
 	@Override
-	public ClassLoader getClassLoader() {
-		return FacadeFactoryImpl.class.getClassLoader();
-	}
-
-	@Override
 	public IOverrideRepository createOverrideRepository(Object target) {
 		throw new RuntimeException("Should use class 'NewFacadeFactory'");
 	}
 	
 	@Override
 	public IReverseEngineeringStrategy createReverseEngineeringStrategy(Object target) {
-		return new ReverseEngineeringStrategyFacadeImpl(this, target);
+		throw new RuntimeException("Should use class 'NewFacadeFactory'");
+	}
+
+	@Override
+	public ClassLoader getClassLoader() {
+		return FacadeFactoryImpl.class.getClassLoader();
 	}
 
 	@Override

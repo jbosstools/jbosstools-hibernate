@@ -293,8 +293,7 @@ public class ServiceImplTest {
 		IReverseEngineeringStrategy defaultStrategy = 
 				service.newDefaultReverseEngineeringStrategy();
 		IReverseEngineeringStrategy newStrategy = 
-				service.newReverseEngineeringStrategy(
-						DefaultStrategy.class.getName(), 
+				service.newReverseEngineeringStrategy(DefaultStrategy.class.getName(), 
 						defaultStrategy);
 		assertNotNull(newStrategy);
 		Object target = ((IFacade)newStrategy).getTarget();

@@ -28,7 +28,6 @@ import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.reveng.RevengSettings;
-import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
@@ -64,7 +63,6 @@ import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
-import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
@@ -124,20 +122,19 @@ public class FacadeFactoryTest {
 	}
 	
 	@Test
-	public void testCreateReverseEngineeringSettings() {
-		RevengSettings res = new RevengSettings(null);
-		IReverseEngineeringSettings facade = FACADE_FACTORY.createReverseEngineeringSettings(res);
-		assertSame(res, ((IFacade)facade).getTarget());		
+	public void testCreateReverseEngineeringStrategy() {
+		try {
+			FACADE_FACTORY.createReverseEngineeringStrategy(null);
+			fail();
+		} catch (Throwable t) {
+			assertEquals("Should use class 'NewFacadeFactory'", t.getMessage());			
+		}
 	}
 	
 	@Test
-	public void testCreateReverseEngineeringStrategy() {
-		RevengStrategy res = (RevengStrategy)Proxy.newProxyInstance(
-				FACADE_FACTORY.getClassLoader(), 
-				new Class[] { RevengStrategy.class }, 
-				new TestInvocationHandler());
-		IReverseEngineeringStrategy facade = FACADE_FACTORY.createReverseEngineeringStrategy(res);
-		assertTrue(facade instanceof ReverseEngineeringStrategyFacadeImpl);
+	public void testCreateReverseEngineeringSettings() {
+		RevengSettings res = new RevengSettings(null);
+		IReverseEngineeringSettings facade = FACADE_FACTORY.createReverseEngineeringSettings(res);
 		assertSame(res, ((IFacade)facade).getTarget());		
 	}
 	

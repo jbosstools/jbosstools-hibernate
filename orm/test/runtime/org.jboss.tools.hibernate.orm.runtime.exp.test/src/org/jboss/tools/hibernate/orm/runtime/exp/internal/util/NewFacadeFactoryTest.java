@@ -65,7 +65,7 @@ public class NewFacadeFactoryTest {
 	
 	@Test
 	public void testCreateRevengStrategy() throws Exception {
-		IReverseEngineeringStrategy facade = facadeFactory.createReverseEngineeringStrategy(null);
+		IReverseEngineeringStrategy facade = facadeFactory.createReverseEngineeringStrategy();
 		Object target = ((IFacade)facade).getTarget();
 		assertNotNull(target);
 		assertTrue(target instanceof DefaultStrategy);

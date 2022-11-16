@@ -314,9 +314,9 @@ public class ConfigurationFacadeTest {
 	public void testSetReverseEngineeringStrategy() {
 		JdbcMetadataConfiguration configuration = new JdbcMetadataConfiguration();
 		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
-		RevengStrategy reverseEngineeringStrategy = new DefaultStrategy();
 		IReverseEngineeringStrategy strategyFacade = 
-				FACADE_FACTORY.createReverseEngineeringStrategy(reverseEngineeringStrategy);
+				NEW_FACADE_FACTORY.createReverseEngineeringStrategy(DefaultStrategy.class.getName());
+		RevengStrategy reverseEngineeringStrategy = (RevengStrategy)((IFacade)strategyFacade).getTarget();
 		assertNotSame(
 				reverseEngineeringStrategy,
 				configuration.getReverseEngineeringStrategy());
