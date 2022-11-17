@@ -17,12 +17,15 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.xml.sax.EntityResolver;
@@ -110,6 +113,19 @@ public class IConfigurationTest {
 		nativeConfigurationFacade.setEntityResolver(testResolver);
 		assertNotNull(entityResolverField.get(nativeConfigurationTarget));
 		assertSame(testResolver, entityResolverField.get(nativeConfigurationTarget));
+	}
+	
+	@Test
+	public void testSetNamingStrategy() throws Exception {
+		Field namingStrategyField = nativeConfigurationTarget.getClass().getDeclaredField("namingStrategy");
+		namingStrategyField.setAccessible(true);
+		INamingStrategy namingStrategyFacade = 
+				NEW_FACADE_FACTORY.createNamingStrategy(DefaultNamingStrategy.class.getName());
+		NamingStrategy namingStrategyTarget = (NamingStrategy)((IFacade)namingStrategyFacade).getTarget();
+		assertNull(namingStrategyField.get(nativeConfigurationTarget));
+		nativeConfigurationFacade.setNamingStrategy(namingStrategyFacade);
+		assertNotNull(namingStrategyField.get(nativeConfigurationTarget));
+		assertSame(namingStrategyField.get(nativeConfigurationTarget), namingStrategyTarget);
 	}
 	
 }
