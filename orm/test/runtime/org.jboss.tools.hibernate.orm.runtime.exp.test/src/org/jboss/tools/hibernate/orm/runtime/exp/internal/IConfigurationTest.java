@@ -79,4 +79,11 @@ public class IConfigurationTest {
 		assertTrue(testFile.delete());
 	}
 	
+	@Test 
+	public void testSetProperty() {
+		assertNull(nativeConfigurationTarget.getProperty("foo"));
+		nativeConfigurationFacade.setProperty("foo", "bar");
+		assertEquals("bar", nativeConfigurationTarget.getProperty("foo"));
+	}
+
 }
