@@ -3,12 +3,14 @@ package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.util.Properties;
 
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.jaxb.spi.Binding;
@@ -86,4 +88,14 @@ public class IConfigurationTest {
 		assertEquals("bar", nativeConfigurationTarget.getProperty("foo"));
 	}
 
+	@Test 
+	public void testSetProperties() {
+		Properties testProperties = new Properties();
+		assertNotSame(testProperties, nativeConfigurationTarget.getProperties());
+		assertSame(
+				nativeConfigurationFacade, 
+				nativeConfigurationFacade.setProperties(testProperties));
+		assertSame(testProperties, nativeConfigurationTarget.getProperties());
+	}
+	
 }
