@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Field;
 
+import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.tool.api.reveng.RevengSettings;
@@ -18,6 +19,7 @@ import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
+import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
@@ -95,6 +97,15 @@ public class NewFacadeFactoryTest {
 		assertNotNull(settingsTarget);
 		assertTrue(settingsTarget instanceof RevengSettings);
 		assertSame(strategyTarget, ((RevengSettings)settingsTarget).getRootStrategy());
+	}
+	
+	@Test
+	public void testCreateNativeConfiguration() {
+		IConfiguration nativeConfigurationFacade = facadeFactory.createNativeConfiguration();
+		assertNotNull(nativeConfigurationFacade);
+		Object nativeConfigurationTarget = ((IFacade)nativeConfigurationFacade).getTarget();
+		assertNotNull(nativeConfigurationTarget);
+		assertTrue(nativeConfigurationTarget instanceof Configuration);
 	}
 	
 	public static class TestRevengStrategy extends DelegatingStrategy {

@@ -4,6 +4,7 @@ import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
+import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -79,6 +80,12 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 				IReverseEngineeringSettings.class, 
 				wrapperFactory.createRevengSettingsWrapper(revengStrategy));
 				
+	}
+	
+	public IConfiguration createNativeConfiguration() {
+		return (IConfiguration)GenericFacadeFactory.createFacade(
+				IConfiguration.class, 
+				wrapperFactory.createNativeConfigurationWrapper());
 	}
  	
 	@Override
