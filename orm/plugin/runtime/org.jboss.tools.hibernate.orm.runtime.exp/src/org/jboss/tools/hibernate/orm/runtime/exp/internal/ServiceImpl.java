@@ -48,7 +48,6 @@ import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.reveng.RevengDialect;
 import org.hibernate.tool.api.reveng.RevengDialectFactory;
-import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
@@ -206,9 +205,7 @@ public class ServiceImpl extends AbstractService {
 	@Override
 	public IReverseEngineeringSettings newReverseEngineeringSettings(
 			IReverseEngineeringStrategy res) {
-		return facadeFactory.createReverseEngineeringSettings(
-				new RevengSettings(
-						(RevengStrategy)((IFacade)res).getTarget()));
+		return newFacadeFactory.createReverseEngineeringSettings(((IFacade)res).getTarget());
 	}
 
 	@Override

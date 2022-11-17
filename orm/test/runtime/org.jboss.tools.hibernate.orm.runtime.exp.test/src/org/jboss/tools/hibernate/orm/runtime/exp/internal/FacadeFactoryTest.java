@@ -27,7 +27,6 @@ import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.tool.api.export.Exporter;
-import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
@@ -62,7 +61,6 @@ import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
-import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
@@ -133,9 +131,12 @@ public class FacadeFactoryTest {
 	
 	@Test
 	public void testCreateReverseEngineeringSettings() {
-		RevengSettings res = new RevengSettings(null);
-		IReverseEngineeringSettings facade = FACADE_FACTORY.createReverseEngineeringSettings(res);
-		assertSame(res, ((IFacade)facade).getTarget());		
+		try {
+			FACADE_FACTORY.createReverseEngineeringStrategy(null);
+			fail();
+		} catch (Throwable t) {
+			assertEquals("Should use class 'NewFacadeFactory'", t.getMessage());			
+		}
 	}
 	
 	@Test
