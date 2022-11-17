@@ -8,6 +8,7 @@ import java.lang.reflect.Field;
 
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
+import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
@@ -19,6 +20,7 @@ import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
+import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -81,6 +83,18 @@ public class NewFacadeFactoryTest {
 		Object thirdTarget = ((IFacade)facade).getTarget();
 		assertNotNull(thirdTarget);
 		assertTrue(thirdTarget instanceof DefaultStrategy);
+	}
+	
+	@Test 
+	public void testCreateRevengSettings() {
+		IReverseEngineeringStrategy strategyFacade = facadeFactory.createReverseEngineeringStrategy();
+		Object strategyTarget = ((IFacade)strategyFacade).getTarget();
+		IReverseEngineeringSettings settingsFacade = facadeFactory.createReverseEngineeringSettings(strategyTarget);
+		assertNotNull(settingsFacade);
+		Object settingsTarget = ((IFacade)settingsFacade).getTarget();
+		assertNotNull(settingsTarget);
+		assertTrue(settingsTarget instanceof RevengSettings);
+		assertSame(strategyTarget, ((RevengSettings)settingsTarget).getRootStrategy());
 	}
 	
 	public static class TestRevengStrategy extends DelegatingStrategy {
