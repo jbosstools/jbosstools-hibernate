@@ -1,11 +1,20 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.File;
+import java.io.PrintWriter;
+
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
@@ -16,8 +25,19 @@ import org.junit.jupiter.api.Test;
 
 public class IConfigurationTest {
 
+	private static final String TEST_HBM_XML_STRING =
+			"<hibernate-mapping package='org.jboss.tools.hibernate.orm.runtime.exp.internal'>" +
+			"  <class name='IConfigurationTest$Foo'>" + 
+			"    <id name='id'/>" +
+			"  </class>" +
+			"</hibernate-mapping>";
+	
 	private static final NewFacadeFactory NEW_FACADE_FACTORY = NewFacadeFactory.INSTANCE;
 
+	static class Foo {
+		public String id;
+	}
+	
 	private IConfiguration nativeConfigurationFacade = null;
 	private Configuration nativeConfigurationTarget = null;
 
@@ -41,4 +61,22 @@ public class IConfigurationTest {
 		assertEquals("bar", nativeConfigurationFacade.getProperty("foo"));
 	}
 
+	
+	@Test
+	public void testAddFile() throws Exception {
+		File testFile = File.createTempFile("test", "hbm.xml");
+		PrintWriter printWriter = new PrintWriter(testFile);
+		printWriter.write(TEST_HBM_XML_STRING);
+		printWriter.close();
+		MetadataSources metadataSources = MetadataHelper.getMetadataSources(nativeConfigurationTarget);
+		assertTrue(metadataSources.getXmlBindings().isEmpty());
+		assertSame(
+				nativeConfigurationFacade,
+				nativeConfigurationFacade.addFile(testFile));
+		assertFalse(metadataSources.getXmlBindings().isEmpty());
+		Binding<?> binding = metadataSources.getXmlBindings().iterator().next();
+		assertEquals(testFile.getAbsolutePath(), binding.getOrigin().getName());
+		assertTrue(testFile.delete());
+	}
+	
 }

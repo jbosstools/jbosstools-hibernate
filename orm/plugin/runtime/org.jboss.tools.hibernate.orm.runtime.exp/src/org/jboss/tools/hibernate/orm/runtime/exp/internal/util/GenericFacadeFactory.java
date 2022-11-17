@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.jboss.tools.hibernate.runtime.common.IFacade;
+import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 
@@ -87,6 +88,7 @@ public class GenericFacadeFactory {
 	
 	private static Set<Class<?>> classesSet = new HashSet<>(
 			Arrays.asList(new Class[] {
+					IConfiguration.class,
 					IReverseEngineeringStrategy.class,
 					IReverseEngineeringSettings.class
 			}));
