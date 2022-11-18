@@ -128,4 +128,12 @@ public class IConfigurationTest {
 		assertSame(namingStrategyField.get(nativeConfigurationTarget), namingStrategyTarget);
 	}
 	
+	@Test
+	public void testGetProperties() {
+		Properties testProperties = new Properties();
+		assertNotSame(testProperties, nativeConfigurationFacade.getProperties());
+		nativeConfigurationTarget.setProperties(testProperties);
+		assertSame(testProperties, nativeConfigurationFacade.getProperties());
+	}
+	
 }
