@@ -136,4 +136,13 @@ public class IConfigurationTest {
 		assertSame(testProperties, nativeConfigurationFacade.getProperties());
 	}
 	
+	@Test
+	public void testAddProperties() {
+		assertNull(nativeConfigurationTarget.getProperty("foo"));
+		Properties testProperties = new Properties();
+		testProperties.put("foo", "bar");
+		nativeConfigurationFacade.addProperties(testProperties);
+		assertEquals("bar", nativeConfigurationTarget.getProperty("foo"));
+	}
+	
 }
