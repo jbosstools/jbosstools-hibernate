@@ -9,10 +9,15 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
+import java.net.URL;
 import java.util.Properties;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.cfg.AvailableSettings;
@@ -28,6 +33,8 @@ import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -143,6 +150,37 @@ public class IConfigurationTest {
 		testProperties.put("foo", "bar");
 		nativeConfigurationFacade.addProperties(testProperties);
 		assertEquals("bar", nativeConfigurationTarget.getProperty("foo"));
+	}
+	
+	@Test
+	public void testConfigureDocument() throws Exception {
+		Document document = DocumentBuilderFactory
+				.newInstance()
+				.newDocumentBuilder()
+				.newDocument();
+		Element hibernateConfiguration = document.createElement("hibernate-configuration");
+		document.appendChild(hibernateConfiguration);
+		Element sessionFactory = document.createElement("session-factory");
+		sessionFactory.setAttribute("name", "bar");
+		hibernateConfiguration.appendChild(sessionFactory);
+		Element mapping = document.createElement("mapping");
+		mapping.setAttribute("resource", "Foo.hbm.xml");
+		sessionFactory.appendChild(mapping);
+		
+		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
+		File hbmXmlFile = new File(new File(url.toURI()), "Foo.hbm.xml");
+		hbmXmlFile.deleteOnExit();
+		FileWriter fileWriter = new FileWriter(hbmXmlFile);
+		fileWriter.write(TEST_HBM_XML_STRING);
+		fileWriter.close();
+
+		String fooClassName = 
+				"org.jboss.tools.hibernate.orm.runtime.exp.internal.IConfigurationTest$Foo";
+		Metadata metadata = MetadataHelper.getMetadata(nativeConfigurationTarget);
+		assertNull(metadata.getEntityBinding(fooClassName));
+		nativeConfigurationFacade.configure(document);
+		metadata = MetadataHelper.getMetadata(nativeConfigurationTarget);
+		assertNotNull(metadata.getEntityBinding(fooClassName));
 	}
 	
 }
