@@ -25,7 +25,7 @@ public class ReflectUtil {
 				result = candidate;
 				break;
 			}
-			else if (argumentClasses.length != parameterCount) {
+			else if ((argumentClasses == null && parameterCount != 0) || argumentClasses.length != parameterCount) {
 				continue;
 			}
 			result = candidate;		
