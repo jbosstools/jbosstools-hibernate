@@ -212,4 +212,26 @@ public class IConfigurationTest {
 		assertNotNull(metadata.getEntityBinding(fooClassName));
 	}
 	
+	@Test
+	public void testConfigureDefault() throws Exception {
+		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
+		File cfgXmlFile = new File(new File(url.toURI()), "hibernate.cfg.xml");
+		cfgXmlFile.deleteOnExit();
+		FileWriter fileWriter = new FileWriter(cfgXmlFile);
+		fileWriter.write(TEST_CFG_XML_STRING);
+		fileWriter.close();
+		File hbmXmlFile = new File(new File(url.toURI()), "Foo.hbm.xml");
+		hbmXmlFile.deleteOnExit();
+		fileWriter = new FileWriter(hbmXmlFile);
+		fileWriter.write(TEST_HBM_XML_STRING);
+		fileWriter.close();
+		String fooClassName = 
+				"org.jboss.tools.hibernate.orm.runtime.exp.internal.IConfigurationTest$Foo";
+		Metadata metadata = MetadataHelper.getMetadata(nativeConfigurationTarget);
+		assertNull(metadata.getEntityBinding(fooClassName));
+		nativeConfigurationFacade.configure();
+		metadata = MetadataHelper.getMetadata(nativeConfigurationTarget);
+		assertNotNull(metadata.getEntityBinding(fooClassName));
+	}
+	
 }
