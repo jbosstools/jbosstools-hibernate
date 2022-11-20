@@ -24,6 +24,9 @@ import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
+import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.RootClass;
+import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
@@ -31,6 +34,7 @@ import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
+import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
@@ -230,6 +234,28 @@ public class IConfigurationTest {
 		Metadata metadata = MetadataHelper.getMetadata(nativeConfigurationTarget);
 		assertNull(metadata.getEntityBinding(fooClassName));
 		nativeConfigurationFacade.configure();
+		metadata = MetadataHelper.getMetadata(nativeConfigurationTarget);
+		assertNotNull(metadata.getEntityBinding(fooClassName));
+	}
+	
+	@Test
+	public void testAddClass() throws Exception {
+		String fooHbmXmlFilePath = "org/jboss/tools/hibernate/orm/runtime/exp/internal";
+		String fooHbmXmlFileName = "IConfigurationTest$Foo.hbm.xml";
+		String fooClassName = 
+				"org.jboss.tools.hibernate.orm.runtime.exp.internal.IConfigurationTest$Foo";
+		Metadata metadata = MetadataHelper.getMetadata(nativeConfigurationTarget);
+		assertNull(metadata.getEntityBinding(fooClassName));
+		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
+		File hbmXmlFileDir = new File(new File(url.toURI()),fooHbmXmlFilePath);
+		hbmXmlFileDir.deleteOnExit();
+		hbmXmlFileDir.mkdirs();
+		File hbmXmlFile = new File(hbmXmlFileDir, fooHbmXmlFileName);
+		hbmXmlFile.deleteOnExit();
+		FileWriter fileWriter = new FileWriter(hbmXmlFile);
+		fileWriter.write(TEST_HBM_XML_STRING);
+		fileWriter.close();
+		nativeConfigurationFacade.addClass(NEW_FACADE_FACTORY.createPersistentClass(Foo.class));
 		metadata = MetadataHelper.getMetadata(nativeConfigurationTarget);
 		assertNotNull(metadata.getEntityBinding(fooClassName));
 	}
