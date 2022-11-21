@@ -260,4 +260,13 @@ public class IConfigurationTest {
 		assertNotNull(metadata.getEntityBinding(fooClassName));
 	}
 	
+	@Test
+	public void testBuildMappings() throws Exception {
+		Field metadataField = nativeConfigurationTarget.getClass().getDeclaredField("metadata");
+		metadataField.setAccessible(true);
+		assertNull(metadataField.get(nativeConfigurationTarget));
+		nativeConfigurationFacade.buildMappings();
+		assertNotNull(metadataField.get(nativeConfigurationTarget));
+	}
+
 }
