@@ -17,6 +17,7 @@ import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.jaxb.spi.Binding;
@@ -35,6 +36,7 @@ import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
+import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
@@ -269,4 +271,14 @@ public class IConfigurationTest {
 		assertNotNull(metadataField.get(nativeConfigurationTarget));
 	}
 
+	@Test
+	public void testBuildSessionFactory() throws Throwable {
+		ISessionFactory sessionFactoryFacade = 
+				nativeConfigurationFacade.buildSessionFactory();
+		assertNotNull(sessionFactoryFacade);
+		Object sessionFactory = ((IFacade)sessionFactoryFacade).getTarget();
+		assertNotNull(sessionFactory);
+		assertTrue(sessionFactory instanceof SessionFactory);
+	}
+	
 }

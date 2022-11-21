@@ -11,6 +11,7 @@ import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
+import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 
 public class GenericFacadeFactory {
 	
@@ -90,7 +91,8 @@ public class GenericFacadeFactory {
 			Arrays.asList(new Class[] {
 					IConfiguration.class,
 					IReverseEngineeringStrategy.class,
-					IReverseEngineeringSettings.class
+					IReverseEngineeringSettings.class,
+					ISessionFactory.class
 			}));
 	
 }
