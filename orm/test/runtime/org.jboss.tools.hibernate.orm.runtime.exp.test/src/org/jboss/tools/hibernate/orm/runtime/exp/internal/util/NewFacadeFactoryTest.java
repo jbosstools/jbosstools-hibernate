@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Field;
 
-import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.tool.api.reveng.RevengSettings;
@@ -16,6 +15,8 @@ import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
+import org.hibernate.tool.orm.jbt.util.JdbcMetadataConfiguration;
+import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
@@ -105,7 +106,16 @@ public class NewFacadeFactoryTest {
 		assertNotNull(nativeConfigurationFacade);
 		Object nativeConfigurationTarget = ((IFacade)nativeConfigurationFacade).getTarget();
 		assertNotNull(nativeConfigurationTarget);
-		assertTrue(nativeConfigurationTarget instanceof Configuration);
+		assertTrue(nativeConfigurationTarget instanceof NativeConfiguration);
+	}
+	
+	@Test
+	public void testCreateRevengConfiguration() {
+		IConfiguration revengConfigurationFacade = facadeFactory.createRevengConfiguration();
+		assertNotNull(revengConfigurationFacade);
+		Object revengConfigurationTarget = ((IFacade)revengConfigurationFacade).getTarget();
+		assertNotNull(revengConfigurationTarget);
+		assertTrue(revengConfigurationTarget instanceof JdbcMetadataConfiguration);
 	}
 	
 	public static class TestRevengStrategy extends DelegatingStrategy {
