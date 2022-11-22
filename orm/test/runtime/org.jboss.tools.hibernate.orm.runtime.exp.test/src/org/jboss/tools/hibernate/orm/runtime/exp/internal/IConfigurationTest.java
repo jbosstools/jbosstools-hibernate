@@ -30,6 +30,7 @@ import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
+import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
@@ -66,12 +67,12 @@ public class IConfigurationTest {
 	}
 	
 	private IConfiguration nativeConfigurationFacade = null;
-	private Configuration nativeConfigurationTarget = null;
+	private NativeConfiguration nativeConfigurationTarget = null;
 
 	@BeforeEach
 	public void beforeEach() {
 		nativeConfigurationFacade = NEW_FACADE_FACTORY.createNativeConfiguration();
-		nativeConfigurationTarget = (Configuration)((IFacade)nativeConfigurationFacade).getTarget();
+		nativeConfigurationTarget = (NativeConfiguration)((IFacade)nativeConfigurationFacade).getTarget();
 		nativeConfigurationTarget.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
 		nativeConfigurationTarget.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
 	}	
@@ -300,6 +301,18 @@ public class IConfigurationTest {
 		assertTrue(classMappings.hasNext());
 		IPersistentClass fooClassFacade = classMappings.next();
 		assertSame(fooClassFacade.getEntityName(), fooClassName);
+	}
+	
+	@Test
+	public void testGetNamingStrategy() {
+		NamingStrategy namingStrategy = new DefaultNamingStrategy();
+		assertNull(nativeConfigurationFacade.getNamingStrategy());
+		nativeConfigurationTarget.setNamingStrategy(namingStrategy);
+		INamingStrategy namingStrategyFacade = nativeConfigurationFacade.getNamingStrategy();
+		assertNotNull(namingStrategyFacade);
+		Object namingStrategyTarget = ((IFacade)namingStrategyFacade).getTarget();
+		assertSame(namingStrategyTarget, namingStrategy);
+		
 	}
 	
 }

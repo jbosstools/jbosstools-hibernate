@@ -12,6 +12,7 @@ import java.util.Set;
 
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
@@ -61,19 +62,21 @@ public class GenericFacadeFactory {
 						constructArgumentClasses(args));
 				if (targetMethod != null) {
 					result = targetMethod.invoke(target, unwrapFacades(args));
-					Class<?> returnedClass = method.getReturnType();
-					if (Iterator.class.isAssignableFrom(returnedClass) ) {
-						result = createIteratorResult(
-								(Iterator<?>)result, 
-								determineActualIteratorParameterType(method.getGenericReturnType()));
-					}
-					else if (classesSet.contains(returnedClass)) {
-						if (result == target) {
-							result = proxy;
-						} else {
-							result = createFacade(returnedClass, result);
+					if (result != null) {
+						Class<?> returnedClass = method.getReturnType();
+						if (Iterator.class.isAssignableFrom(returnedClass) ) {
+							result = createIteratorResult(
+									(Iterator<?>)result, 
+									determineActualIteratorParameterType(method.getGenericReturnType()));
 						}
-					} 
+						else if (classesSet.contains(returnedClass)) {
+							if (result == target) {
+								result = proxy;
+							} else {
+								result = createFacade(returnedClass, result);
+							}
+						} 
+					}
 				}
 			}
 			return result;
@@ -125,6 +128,7 @@ public class GenericFacadeFactory {
 	private static Set<Class<?>> classesSet = new HashSet<>(
 			Arrays.asList(new Class[] {
 					IConfiguration.class,
+					INamingStrategy.class,
 					IPersistentClass.class,
 					IReverseEngineeringStrategy.class,
 					IReverseEngineeringSettings.class,
