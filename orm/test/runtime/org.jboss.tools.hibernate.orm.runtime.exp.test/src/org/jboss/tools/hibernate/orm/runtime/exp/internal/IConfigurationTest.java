@@ -25,6 +25,7 @@ import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
+import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
@@ -35,6 +36,7 @@ import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
+import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -311,6 +313,23 @@ public class IConfigurationTest {
 		assertTrue(revengConfigurationTarget.preferBasicCompositeIds());
 		revengConfigurationFacade.setPreferBasicCompositeIds(false);
 		assertFalse(revengConfigurationTarget.preferBasicCompositeIds());
+	}
+	
+	@Test
+	public void testSetReverseEngineeringStrategy() {
+		IConfiguration revengConfigurationFacade = NEW_FACADE_FACTORY.createRevengConfiguration();
+		RevengConfiguration revengConfigurationTarget = 
+				(RevengConfiguration)((IFacade)revengConfigurationFacade).getTarget();
+		IReverseEngineeringStrategy strategyFacade = 
+				NEW_FACADE_FACTORY.createReverseEngineeringStrategy();
+		RevengStrategy reverseEngineeringStrategy = (RevengStrategy)((IFacade)strategyFacade).getTarget();
+		assertNotSame(
+				reverseEngineeringStrategy,
+				revengConfigurationTarget.getReverseEngineeringStrategy());
+		revengConfigurationFacade.setReverseEngineeringStrategy(strategyFacade);
+		assertSame(
+				reverseEngineeringStrategy, 
+				revengConfigurationTarget.getReverseEngineeringStrategy());
 	}
 	
 	@Test
