@@ -20,8 +20,8 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengStrategy;
-import org.hibernate.tool.orm.jbt.util.JdbcMetadataConfiguration;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
+import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.jboss.tools.hibernate.runtime.common.AbstractConfigurationFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
@@ -102,8 +102,8 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 			Object target = getTarget();
 			if (target instanceof Configuration) { 
 				metadata = MetadataHelper.getMetadata((Configuration)target);
-			} else if (target instanceof JdbcMetadataConfiguration) {
-				metadata = ((JdbcMetadataConfiguration)target).getMetadata();
+			} else if (target instanceof RevengConfiguration) {
+				metadata = ((RevengConfiguration)target).getMetadata();
 			}
 		}
 		return metadata;
@@ -125,16 +125,16 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	
 	@Override
 	public void setReverseEngineeringStrategy(IReverseEngineeringStrategy res) {
-		if (getTarget() instanceof JdbcMetadataConfiguration) {
+		if (getTarget() instanceof RevengConfiguration) {
 			RevengStrategy revengStrategy = (RevengStrategy)((IFacade)res).getTarget();
-			((JdbcMetadataConfiguration)getTarget()).setReverseEngineeringStrategy(revengStrategy);
+			((RevengConfiguration)getTarget()).setReverseEngineeringStrategy(revengStrategy);
 		}
 	}
 
 	@Override
 	public void readFromJDBC() {
-		if (getTarget() instanceof JdbcMetadataConfiguration) {
-			((JdbcMetadataConfiguration)getTarget()).readFromJdbc();
+		if (getTarget() instanceof RevengConfiguration) {
+			((RevengConfiguration)getTarget()).readFromJdbc();
 		}
 	}
 	@Override
@@ -167,7 +167,7 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 
 	@Override
 	protected String getJDBCConfigurationClassName() {
-		return "org.hibernate.tool.orm.jbt.util.JdbcMetadataConfiguration";
+		return "org.hibernate.tool.orm.jbt.util.RevengConfiguration";
 	}
 	
 }

@@ -37,10 +37,10 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
-import org.hibernate.tool.orm.jbt.util.JdbcMetadataConfiguration;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
+import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
@@ -301,7 +301,7 @@ public class ConfigurationFacadeTest {
 	
 	@Test
 	public void testSetPreferBasicCompositeIds() {
-		JdbcMetadataConfiguration configuration = new JdbcMetadataConfiguration();
+		RevengConfiguration configuration = new RevengConfiguration();
 		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
 		// the default is true
 		assertTrue(configuration.preferBasicCompositeIds());
@@ -311,7 +311,7 @@ public class ConfigurationFacadeTest {
 	
 	@Test
 	public void testSetReverseEngineeringStrategy() {
-		JdbcMetadataConfiguration configuration = new JdbcMetadataConfiguration();
+		RevengConfiguration configuration = new RevengConfiguration();
 		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configuration);
 		IReverseEngineeringStrategy strategyFacade = 
 				NEW_FACADE_FACTORY.createReverseEngineeringStrategy();
@@ -330,12 +330,12 @@ public class ConfigurationFacadeTest {
 		Connection connection = DriverManager.getConnection("jdbc:h2:mem:test");
 		Statement statement = connection.createStatement();
 		statement.execute("CREATE TABLE FOO(id int primary key, bar varchar(255))");
-		JdbcMetadataConfiguration jdbcMdCfg = new JdbcMetadataConfiguration();
+		RevengConfiguration jdbcMdCfg = new RevengConfiguration();
 		jdbcMdCfg.setProperty("hibernate.connection.url", "jdbc:h2:mem:test");
 		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, jdbcMdCfg);
 		Metadata metadata = jdbcMdCfg.getMetadata();
 		assertNull(metadata);
-		jdbcMdCfg = new JdbcMetadataConfiguration();
+		jdbcMdCfg = new RevengConfiguration();
 		jdbcMdCfg.setProperty("hibernate.connection.url", "jdbc:h2:mem:test");
 		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, jdbcMdCfg);
 		configurationFacade.readFromJDBC();
@@ -384,7 +384,7 @@ public class ConfigurationFacadeTest {
 		Connection connection = DriverManager.getConnection("jdbc:h2:mem:test");
 		Statement statement = connection.createStatement();
 		statement.execute("CREATE TABLE FOO(id int primary key, bar varchar(255))");
-		JdbcMetadataConfiguration jdbcMdCfg = new JdbcMetadataConfiguration();
+		RevengConfiguration jdbcMdCfg = new RevengConfiguration();
 		jdbcMdCfg.setProperty("hibernate.connection.url", "jdbc:h2:mem:test");
 		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, jdbcMdCfg);
 		Iterator<ITable> iterator = configurationFacade.getTableMappings();
@@ -436,7 +436,7 @@ public class ConfigurationFacadeTest {
 		}
 	}
 	
-	private static class JdbcMetadataTestConfiguration extends JdbcMetadataConfiguration {
+	private static class JdbcMetadataTestConfiguration extends RevengConfiguration {
 		static Metadata METADATA = createMetadata();
 		public Metadata getMetadata() {
 			return METADATA;

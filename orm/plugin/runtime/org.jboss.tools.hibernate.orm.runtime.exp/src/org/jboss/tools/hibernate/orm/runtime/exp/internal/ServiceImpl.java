@@ -57,9 +57,9 @@ import org.hibernate.tool.internal.reveng.reader.DatabaseReader;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataDescriptor;
-import org.hibernate.tool.orm.jbt.util.JdbcMetadataConfiguration;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.JpaMappingFileHelper;
+import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.ConfigurationMetadataDescriptor;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractPersistentClassFacade;
@@ -149,7 +149,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IConfiguration newJDBCMetaDataConfiguration() {
-		return facadeFactory.createConfiguration(new JdbcMetadataConfiguration());
+		return facadeFactory.createConfiguration(new RevengConfiguration());
 	}
 
 	@Override

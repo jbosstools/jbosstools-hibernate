@@ -15,8 +15,8 @@ import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
-import org.hibernate.tool.orm.jbt.util.JdbcMetadataConfiguration;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
+import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
@@ -115,7 +115,7 @@ public class NewFacadeFactoryTest {
 		assertNotNull(revengConfigurationFacade);
 		Object revengConfigurationTarget = ((IFacade)revengConfigurationFacade).getTarget();
 		assertNotNull(revengConfigurationTarget);
-		assertTrue(revengConfigurationTarget instanceof JdbcMetadataConfiguration);
+		assertTrue(revengConfigurationTarget instanceof RevengConfiguration);
 	}
 	
 	public static class TestRevengStrategy extends DelegatingStrategy {
