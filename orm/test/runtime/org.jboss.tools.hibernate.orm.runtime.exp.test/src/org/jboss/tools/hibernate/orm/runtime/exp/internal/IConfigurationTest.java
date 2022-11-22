@@ -303,6 +303,17 @@ public class IConfigurationTest {
 	}
 	
 	@Test
+	public void testSetPreferBasicCompositeIds() {
+		IConfiguration revengConfigurationFacade = NEW_FACADE_FACTORY.createRevengConfiguration();
+		RevengConfiguration revengConfigurationTarget = 
+				(RevengConfiguration)((IFacade)revengConfigurationFacade).getTarget();
+		// the default is true
+		assertTrue(revengConfigurationTarget.preferBasicCompositeIds());
+		revengConfigurationFacade.setPreferBasicCompositeIds(false);
+		assertFalse(revengConfigurationTarget.preferBasicCompositeIds());
+	}
+	
+	@Test
 	public void testGetNamingStrategy() {
 		NamingStrategy namingStrategy = new DefaultNamingStrategy();
 		assertNull(nativeConfigurationFacade.getNamingStrategy());
