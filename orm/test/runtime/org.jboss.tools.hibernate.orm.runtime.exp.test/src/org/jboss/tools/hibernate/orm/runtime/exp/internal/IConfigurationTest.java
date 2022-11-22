@@ -13,11 +13,15 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.util.Iterator;
 import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.h2.Driver;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
@@ -25,6 +29,7 @@ import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
@@ -38,6 +43,7 @@ import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
@@ -67,6 +73,11 @@ public class IConfigurationTest {
 		public String id;
 	}
 	
+	@BeforeAll
+	public static void beforeAll() throws Exception {
+		DriverManager.registerDriver(new Driver());		
+	}
+
 	private IConfiguration nativeConfigurationFacade = null;
 	private NativeConfiguration nativeConfigurationTarget = null;
 
@@ -332,6 +343,27 @@ public class IConfigurationTest {
 				revengConfigurationTarget.getReverseEngineeringStrategy());
 	}
 	
+	@Test
+	public void testReadFromJDBC() throws Exception {
+		Connection connection = DriverManager.getConnection("jdbc:h2:mem:test");
+		Statement statement = connection.createStatement();
+		statement.execute("CREATE TABLE FOO(id int primary key, bar varchar(255))");
+		IConfiguration revengConfigurationFacade = NEW_FACADE_FACTORY.createRevengConfiguration();
+		RevengConfiguration revengConfigurationTarget = 
+				(RevengConfiguration)((IFacade)revengConfigurationFacade).getTarget();
+		revengConfigurationTarget.setProperty("hibernate.connection.url", "jdbc:h2:mem:test");
+		Metadata metadata = revengConfigurationTarget.getMetadata();
+		assertNull(metadata);
+		revengConfigurationFacade.readFromJDBC();
+		metadata = revengConfigurationTarget.getMetadata();
+		Iterator<PersistentClass> iterator = metadata.getEntityBindings().iterator();
+		PersistentClass persistentClass = iterator.next();
+		assertEquals("Foo", persistentClass.getClassName());
+		statement.execute("DROP TABLE FOO");
+		statement.close();
+		connection.close();
+	}
+
 	@Test
 	public void testGetNamingStrategy() {
 		NamingStrategy namingStrategy = new DefaultNamingStrategy();
