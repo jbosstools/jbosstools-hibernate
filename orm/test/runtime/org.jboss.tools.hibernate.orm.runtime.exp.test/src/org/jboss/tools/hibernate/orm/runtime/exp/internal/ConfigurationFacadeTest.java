@@ -389,7 +389,7 @@ public class ConfigurationFacadeTest {
 		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, jdbcMdCfg);
 		Iterator<ITable> iterator = configurationFacade.getTableMappings();
 		assertFalse(iterator.hasNext());
-		jdbcMdCfg.readFromJdbc();
+		jdbcMdCfg.readFromJDBC();
 		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, jdbcMdCfg);
 		iterator = configurationFacade.getTableMappings();
 		IFacade facade = (IFacade)iterator.next();

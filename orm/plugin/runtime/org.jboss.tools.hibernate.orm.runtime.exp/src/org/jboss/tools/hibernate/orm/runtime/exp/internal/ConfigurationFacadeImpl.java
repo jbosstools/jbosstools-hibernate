@@ -134,7 +134,7 @@ public class ConfigurationFacadeImpl extends AbstractConfigurationFacade {
 	@Override
 	public void readFromJDBC() {
 		if (getTarget() instanceof RevengConfiguration) {
-			((RevengConfiguration)getTarget()).readFromJdbc();
+			((RevengConfiguration)getTarget()).readFromJDBC();
 		}
 	}
 	@Override
