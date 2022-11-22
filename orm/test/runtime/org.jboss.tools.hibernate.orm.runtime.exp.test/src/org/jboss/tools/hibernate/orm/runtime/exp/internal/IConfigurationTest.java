@@ -12,7 +12,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.net.URL;
+import java.util.Iterator;
 import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -32,6 +34,7 @@ import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
+import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -275,6 +278,28 @@ public class IConfigurationTest {
 		Object sessionFactory = ((IFacade)sessionFactoryFacade).getTarget();
 		assertNotNull(sessionFactory);
 		assertTrue(sessionFactory instanceof SessionFactory);
+	}
+	
+	@Test
+	public void testGetClassMappings() throws Exception {
+		String fooHbmXmlFilePath = "org/jboss/tools/hibernate/orm/runtime/exp/internal";
+		String fooHbmXmlFileName = "IConfigurationTest$Foo.hbm.xml";
+		String fooClassName = 
+				"org.jboss.tools.hibernate.orm.runtime.exp.internal.IConfigurationTest$Foo";
+		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
+		File hbmXmlFileDir = new File(new File(url.toURI()),fooHbmXmlFilePath);
+		hbmXmlFileDir.deleteOnExit();
+		hbmXmlFileDir.mkdirs();
+		File hbmXmlFile = new File(hbmXmlFileDir, fooHbmXmlFileName);
+		hbmXmlFile.deleteOnExit();
+		FileWriter fileWriter = new FileWriter(hbmXmlFile);
+		fileWriter.write(TEST_HBM_XML_STRING);
+		fileWriter.close();
+		nativeConfigurationTarget.addClass(Foo.class);
+		Iterator<IPersistentClass> classMappings = nativeConfigurationFacade.getClassMappings();
+		assertTrue(classMappings.hasNext());
+		IPersistentClass fooClassFacade = classMappings.next();
+		assertSame(fooClassFacade.getEntityName(), fooClassName);
 	}
 	
 }
