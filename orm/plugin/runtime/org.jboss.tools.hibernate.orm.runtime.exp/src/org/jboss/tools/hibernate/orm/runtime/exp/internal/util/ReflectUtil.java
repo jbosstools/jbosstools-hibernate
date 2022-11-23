@@ -25,15 +25,40 @@ public class ReflectUtil {
 				result = candidate;
 				break;
 			}
-			else if ((argumentClasses == null && parameterCount != 0) || argumentClasses.length != parameterCount) {
+			else if (argumentClasses == null && parameterCount != 1) {
+				continue;
+			} 
+			else if (argumentClasses == null && parameterCount == 1) {
+				Class<?>[] parameterTypes = candidate.getParameterTypes();
+				if (parameterTypes[0].isArray()) {
+					result = candidate;
+					break;
+				}
 				continue;
 			}
 			result = candidate;		
-			Class<?>[] parameterTypes = candidate.getParameterTypes();
-			for (int i = 0; i < argumentClasses.length; i++) {
-				if (!isAssignableTo(argumentClasses[i], parameterTypes[i])) {
-					result = null;
-					break;
+			if (parameterCount > 0) {
+				Class<?>[] parameterTypes = candidate.getParameterTypes();
+				for (int i = 0; i < parameterTypes.length - 1; i++) {
+					if (!isAssignableTo(argumentClasses[i], parameterTypes[i])) {
+						result = null;
+						break;
+					}
+				}
+				if (parameterTypes[parameterTypes.length - 1].isArray()) {
+					Class<?> componentType = parameterTypes[parameterTypes.length - 1].getComponentType();
+					for (int i = parameterTypes.length - 1; i < argumentClasses.length; i++) {
+						if (!isAssignableTo(argumentClasses[i], componentType)) {
+							result = null;
+							break;
+						}
+					}
+				} else {
+					if (!isAssignableTo(
+							argumentClasses[parameterTypes.length - 1], 
+							parameterTypes[parameterTypes.length - 1])) {
+						result = null;
+					}
 				}
 			}
 			if (result != null) break;
@@ -43,6 +68,31 @@ public class ReflectUtil {
 		}
 		return result;
 	}
+	
+	public static Object invokeMethod(Method method, Object object, Object[] args) throws Exception {
+		int parameterCount = method.getParameterCount();
+		int argumentCount = args == null ? 0 : args.length;
+		Object[] arguments = new Object[parameterCount];
+		if (parameterCount > 0) {
+			for (int i = 0; i < parameterCount - 1; i++) {
+				arguments[i] = args[i];
+			}
+			if (method.getParameters()[parameterCount - 1].isVarArgs()) {
+		 		if (parameterCount < argumentCount) {
+		 			Object[] varArgs = new Object[argumentCount - parameterCount];
+		 			for (int i = 0; i < varArgs.length; i++) {
+		 				varArgs[i] = args[parameterCount - 1 + i];
+		 			}
+		 			arguments[parameterCount - 1] = varArgs;
+		 		} else if (parameterCount == argumentCount + 1) {
+		 			arguments[parameterCount - 1] = new Object[] {};
+		 		}
+			} else {
+				arguments[parameterCount - 1] = args[parameterCount - 1];
+			}
+		}
+		return method.invoke(object, arguments);
+ 	}
 	
     private static boolean isPrimitiveWrapperOf(Class<?> targetClass, Class<?> primitive) {
         if (!primitive.isPrimitive()) {

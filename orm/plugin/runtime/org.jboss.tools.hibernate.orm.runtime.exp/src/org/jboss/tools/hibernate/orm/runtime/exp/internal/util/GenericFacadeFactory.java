@@ -49,7 +49,7 @@ public class GenericFacadeFactory {
 						argumentClasses);
 				if (targetMethod != null) {
 					try {
-						result = targetMethod.invoke(target, unwrapFacades(args));
+						result = ReflectUtil.invokeMethod(targetMethod, target, unwrapFacades(args));
 					} catch (InvocationTargetException e) {
 						throw e.getCause();
 					}
