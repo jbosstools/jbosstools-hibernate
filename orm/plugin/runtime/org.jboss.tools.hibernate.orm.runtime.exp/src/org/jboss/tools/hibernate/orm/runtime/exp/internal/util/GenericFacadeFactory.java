@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal.util;
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
@@ -61,7 +62,11 @@ public class GenericFacadeFactory {
 						method.getName(), 
 						constructArgumentClasses(args));
 				if (targetMethod != null) {
-					result = targetMethod.invoke(target, unwrapFacades(args));
+					try {
+						result = targetMethod.invoke(target, unwrapFacades(args));
+					} catch (InvocationTargetException e) {
+						throw e.getCause();
+					}
 					if (result != null) {
 						Class<?> returnedClass = method.getReturnType();
 						if (Iterator.class.isAssignableFrom(returnedClass) ) {
