@@ -80,6 +80,8 @@ public class IConfigurationTest {
 
 	private IConfiguration nativeConfigurationFacade = null;
 	private NativeConfiguration nativeConfigurationTarget = null;
+	private IConfiguration revengConfigurationFacade = null;
+	private RevengConfiguration revengConfigurationTarget = null;
 
 	@BeforeEach
 	public void beforeEach() {
@@ -87,6 +89,8 @@ public class IConfigurationTest {
 		nativeConfigurationTarget = (NativeConfiguration)((IFacade)nativeConfigurationFacade).getTarget();
 		nativeConfigurationTarget.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
 		nativeConfigurationTarget.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
+		revengConfigurationFacade = NEW_FACADE_FACTORY.createRevengConfiguration();
+		revengConfigurationTarget = (RevengConfiguration)((IFacade)revengConfigurationFacade).getTarget();
 	}	
 	
 	@Test
@@ -295,6 +299,7 @@ public class IConfigurationTest {
 	
 	@Test
 	public void testGetClassMappings() throws Exception {
+		// For native configuration
 		String fooHbmXmlFilePath = "org/jboss/tools/hibernate/orm/runtime/exp/internal";
 		String fooHbmXmlFileName = "IConfigurationTest$Foo.hbm.xml";
 		String fooClassName = 
@@ -313,13 +318,27 @@ public class IConfigurationTest {
 		assertTrue(classMappings.hasNext());
 		IPersistentClass fooClassFacade = classMappings.next();
 		assertSame(fooClassFacade.getEntityName(), fooClassName);
+		// For reveng configuration
+		Connection connection = DriverManager.getConnection("jdbc:h2:mem:test");
+		Statement statement = connection.createStatement();
+		statement.execute("CREATE TABLE FOO(id int primary key, bar varchar(255))");
+		revengConfigurationTarget.setProperty("hibernate.connection.url", "jdbc:h2:mem:test");
+		classMappings = revengConfigurationFacade.getClassMappings();
+		assertNotNull(classMappings);
+		assertFalse(classMappings.hasNext());
+		revengConfigurationTarget.readFromJDBC();
+		classMappings = revengConfigurationFacade.getClassMappings();
+		assertNotNull(classMappings);
+		assertTrue(classMappings.hasNext());
+		fooClassFacade = classMappings.next();
+		assertEquals(fooClassFacade.getEntityName(), "Foo");
+		statement.execute("DROP TABLE FOO");
+		statement.close();
+		connection.close();
 	}
 	
 	@Test
 	public void testSetPreferBasicCompositeIds() {
-		IConfiguration revengConfigurationFacade = NEW_FACADE_FACTORY.createRevengConfiguration();
-		RevengConfiguration revengConfigurationTarget = 
-				(RevengConfiguration)((IFacade)revengConfigurationFacade).getTarget();
 		// the default is true
 		assertTrue(revengConfigurationTarget.preferBasicCompositeIds());
 		revengConfigurationFacade.setPreferBasicCompositeIds(false);
@@ -328,9 +347,6 @@ public class IConfigurationTest {
 	
 	@Test
 	public void testSetReverseEngineeringStrategy() {
-		IConfiguration revengConfigurationFacade = NEW_FACADE_FACTORY.createRevengConfiguration();
-		RevengConfiguration revengConfigurationTarget = 
-				(RevengConfiguration)((IFacade)revengConfigurationFacade).getTarget();
 		IReverseEngineeringStrategy strategyFacade = 
 				NEW_FACADE_FACTORY.createReverseEngineeringStrategy();
 		RevengStrategy reverseEngineeringStrategy = (RevengStrategy)((IFacade)strategyFacade).getTarget();
@@ -348,9 +364,6 @@ public class IConfigurationTest {
 		Connection connection = DriverManager.getConnection("jdbc:h2:mem:test");
 		Statement statement = connection.createStatement();
 		statement.execute("CREATE TABLE FOO(id int primary key, bar varchar(255))");
-		IConfiguration revengConfigurationFacade = NEW_FACADE_FACTORY.createRevengConfiguration();
-		RevengConfiguration revengConfigurationTarget = 
-				(RevengConfiguration)((IFacade)revengConfigurationFacade).getTarget();
 		revengConfigurationTarget.setProperty("hibernate.connection.url", "jdbc:h2:mem:test");
 		Metadata metadata = revengConfigurationTarget.getMetadata();
 		assertNull(metadata);
