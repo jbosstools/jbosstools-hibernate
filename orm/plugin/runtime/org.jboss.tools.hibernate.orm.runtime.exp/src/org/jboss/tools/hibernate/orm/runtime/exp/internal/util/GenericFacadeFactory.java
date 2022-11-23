@@ -28,21 +28,6 @@ public class GenericFacadeFactory {
 					new FacadeInvocationHandler(facadeClass, target));
 	}
 	
-	private static Class<?>[] constructArgumentClasses(Object[] args) {
-		Class<?>[] result = null;
-		if (args != null) {
-			result = new Class<?>[args.length];
-			for (int i = 0; i < args.length; i++) {
-				Class<?> argClass = args[i].getClass();
-				if (IFacade.class.isAssignableFrom(argClass)) {
-					argClass = ((IFacade)args[i]).getTarget().getClass();
-				}
-				result[i] = argClass;
-			}
-		}
-		return result;
-	}
-	
 	private static class FacadeInvocationHandler implements InvocationHandler {
 		
 		private Object target = null;
@@ -57,10 +42,11 @@ public class GenericFacadeFactory {
 			if ("getTarget".equals(method.getName())) {
 				result = target;
 			} else {
+				Class<?>[] argumentClasses = argumentClasses(args);
 				Method targetMethod = ReflectUtil.lookupMethod(
 						target.getClass(), 
 						method.getName(), 
-						constructArgumentClasses(args));
+						argumentClasses);
 				if (targetMethod != null) {
 					try {
 						result = targetMethod.invoke(target, unwrapFacades(args));
@@ -82,6 +68,14 @@ public class GenericFacadeFactory {
 							}
 						} 
 					}
+				} else {
+					throw new RuntimeException(
+							"Method '" + 
+							target.getClass().getName() + "#" +
+							method.getName() + 
+							parameterTypes(argumentClasses) +
+							" cannot be found.");
+							
 				}
 			}
 			return result;
@@ -129,6 +123,33 @@ public class GenericFacadeFactory {
 			
 		};		
 	}	
+	
+	private static Class<?>[] argumentClasses(Object[] args) {
+		Class<?>[] result = null;
+		if (args != null) {
+			result = new Class<?>[args.length];
+			for (int i = 0; i < args.length; i++) {
+				Class<?> argClass = args[i].getClass();
+				if (IFacade.class.isAssignableFrom(argClass)) {
+					argClass = ((IFacade)args[i]).getTarget().getClass();
+				}
+				result[i] = argClass;
+			}
+		}
+		return result;
+	}
+	
+	private static String parameterTypes(Class<?>[] classes) {
+		StringBuffer sb = new StringBuffer("(");
+		for (Class<?> c : classes) {
+			sb.append(c.getSimpleName()).append(",");
+		}
+		if (sb.charAt(sb.length() - 1) == ',') {
+			sb.deleteCharAt(sb.length() - 1);
+		}
+		sb.append(")");
+		return sb.toString();
+	}
 	
 	private static Set<Class<?>> classesSet = new HashSet<>(
 			Arrays.asList(new Class[] {

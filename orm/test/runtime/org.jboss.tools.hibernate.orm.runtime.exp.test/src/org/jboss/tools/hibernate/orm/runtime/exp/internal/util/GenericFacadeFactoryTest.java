@@ -1,9 +1,11 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal.util;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +24,15 @@ public class GenericFacadeFactoryTest {
 		assertSame(list, ((IFacade)listFacade).getTarget());
 		list.add("foo");
 		assertFalse(listFacade.isEmpty());
+	}
+	
+	@Test
+	public void testParameterTypes() throws Exception {
+		Object argumentTypes = new Class<?>[] { String.class, Integer.class, GenericFacadeFactory.class };
+		Method m = GenericFacadeFactory.class.getDeclaredMethod("parameterTypes",argumentTypes.getClass());
+		m.setAccessible(true);
+		String str = (String)m.invoke(null, argumentTypes);
+		assertEquals("(String,Integer,GenericFacadeFactory)", str);
 	}
 
 }
