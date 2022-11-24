@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -96,13 +97,19 @@ public class IConfigurationTest {
 	@Test
 	public void testInstance() {
 		assertNotNull(nativeConfigurationFacade);
+		assertNotNull(revengConfigurationFacade);
 	}
 
 	@Test
 	public void testGetProperty() {
+		// For native configuration
 		assertNull(nativeConfigurationFacade.getProperty("foo"));
 		nativeConfigurationTarget.setProperty("foo", "bar");
 		assertEquals("bar", nativeConfigurationFacade.getProperty("foo"));
+		// For reveng configuration
+		assertNull(revengConfigurationFacade.getProperty("foo"));
+		revengConfigurationTarget.setProperty("foo", "bar");
+		assertEquals("bar", revengConfigurationFacade.getProperty("foo"));
 	}
 
 	
@@ -112,6 +119,8 @@ public class IConfigurationTest {
 		PrintWriter printWriter = new PrintWriter(testFile);
 		printWriter.write(TEST_HBM_XML_STRING);
 		printWriter.close();
+		testFile.deleteOnExit();
+		// For native configuration
 		MetadataSources metadataSources = MetadataHelper.getMetadataSources(nativeConfigurationTarget);
 		assertTrue(metadataSources.getXmlBindings().isEmpty());
 		assertSame(
@@ -120,65 +129,115 @@ public class IConfigurationTest {
 		assertFalse(metadataSources.getXmlBindings().isEmpty());
 		Binding<?> binding = metadataSources.getXmlBindings().iterator().next();
 		assertEquals(testFile.getAbsolutePath(), binding.getOrigin().getName());
-		assertTrue(testFile.delete());
+		// For reveng configuration
+		try {
+			revengConfigurationFacade.addFile(testFile);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'addFile' should not be called on instances of " + RevengConfiguration.class.getName());
+		}
 	}
 	
 	@Test 
 	public void testSetProperty() {
+		// For native configuration
 		assertNull(nativeConfigurationTarget.getProperty("foo"));
 		nativeConfigurationFacade.setProperty("foo", "bar");
 		assertEquals("bar", nativeConfigurationTarget.getProperty("foo"));
+		// For reveng configuration
+		assertNull(revengConfigurationTarget.getProperty("foo"));
+		revengConfigurationFacade.setProperty("foo", "bar");
+		assertEquals("bar", revengConfigurationTarget.getProperty("foo"));
 	}
 
 	@Test 
 	public void testSetProperties() {
 		Properties testProperties = new Properties();
+		// For native configuration
 		assertNotSame(testProperties, nativeConfigurationTarget.getProperties());
 		assertSame(
 				nativeConfigurationFacade, 
 				nativeConfigurationFacade.setProperties(testProperties));
 		assertSame(testProperties, nativeConfigurationTarget.getProperties());
+		// For reveng configuration
+		assertNotSame(testProperties, revengConfigurationTarget.getProperties());
+		assertSame(
+				revengConfigurationFacade, 
+				revengConfigurationFacade.setProperties(testProperties));
+		assertSame(testProperties, revengConfigurationTarget.getProperties());
 	}
 	
 	@Test
 	public void testSetEntityResolver() throws Exception {
 		EntityResolver testResolver = new DefaultHandler();
+		// For native configuration
 		Field entityResolverField = nativeConfigurationTarget.getClass().getDeclaredField("entityResolver");
 		entityResolverField.setAccessible(true);
 		assertNull(entityResolverField.get(nativeConfigurationTarget));
 		nativeConfigurationFacade.setEntityResolver(testResolver);
 		assertNotNull(entityResolverField.get(nativeConfigurationTarget));
 		assertSame(testResolver, entityResolverField.get(nativeConfigurationTarget));
+		// For reveng configuration
+		try {
+			revengConfigurationFacade.setEntityResolver(testResolver);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'setEntityResolver' should not be called on instances of " + RevengConfiguration.class.getName());
+		}
 	}
 	
 	@Test
 	public void testSetNamingStrategy() throws Exception {
-		Field namingStrategyField = nativeConfigurationTarget.getClass().getDeclaredField("namingStrategy");
-		namingStrategyField.setAccessible(true);
 		INamingStrategy namingStrategyFacade = 
 				NEW_FACADE_FACTORY.createNamingStrategy(DefaultNamingStrategy.class.getName());
+		// For native configuration
+		Field namingStrategyField = nativeConfigurationTarget.getClass().getDeclaredField("namingStrategy");
+		namingStrategyField.setAccessible(true);
 		NamingStrategy namingStrategyTarget = (NamingStrategy)((IFacade)namingStrategyFacade).getTarget();
 		assertNull(namingStrategyField.get(nativeConfigurationTarget));
 		nativeConfigurationFacade.setNamingStrategy(namingStrategyFacade);
 		assertNotNull(namingStrategyField.get(nativeConfigurationTarget));
 		assertSame(namingStrategyField.get(nativeConfigurationTarget), namingStrategyTarget);
+		// For reveng configuration
+		try {
+			revengConfigurationFacade.setNamingStrategy(namingStrategyFacade);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'setNamingStrategy' should not be called on instances of " + RevengConfiguration.class.getName());
+		}
 	}
 	
 	@Test
 	public void testGetProperties() {
 		Properties testProperties = new Properties();
+		// For native configuration
 		assertNotSame(testProperties, nativeConfigurationFacade.getProperties());
 		nativeConfigurationTarget.setProperties(testProperties);
 		assertSame(testProperties, nativeConfigurationFacade.getProperties());
+		// For reveng configuration
+		assertNotSame(testProperties, revengConfigurationFacade.getProperties());
+		revengConfigurationTarget.setProperties(testProperties);
+		assertSame(testProperties, revengConfigurationFacade.getProperties());
 	}
 	
 	@Test
 	public void testAddProperties() {
-		assertNull(nativeConfigurationTarget.getProperty("foo"));
 		Properties testProperties = new Properties();
 		testProperties.put("foo", "bar");
+		// For native configuration
+		assertNull(nativeConfigurationTarget.getProperty("foo"));
 		nativeConfigurationFacade.addProperties(testProperties);
 		assertEquals("bar", nativeConfigurationTarget.getProperty("foo"));
+		// For reveng configuration
+		assertNull(revengConfigurationTarget.getProperty("foo"));
+		revengConfigurationFacade.addProperties(testProperties);
+		assertEquals("bar", revengConfigurationTarget.getProperty("foo"));
 	}
 	
 	@Test
@@ -203,6 +262,7 @@ public class IConfigurationTest {
 		fileWriter.write(TEST_HBM_XML_STRING);
 		fileWriter.close();
 		
+		// For native configuration
 		String fooClassName = 
 				"org.jboss.tools.hibernate.orm.runtime.exp.internal.IConfigurationTest$Foo";
 		Metadata metadata = MetadataHelper.getMetadata(nativeConfigurationTarget);
@@ -210,21 +270,30 @@ public class IConfigurationTest {
 		nativeConfigurationFacade.configure(document);
 		metadata = MetadataHelper.getMetadata(nativeConfigurationTarget);
 		assertNotNull(metadata.getEntityBinding(fooClassName));
+		// For reveng configuration
+		try {
+			revengConfigurationFacade.configure(document);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'configure' should not be called on instances of " + RevengConfiguration.class.getName());
+		}
 	}
 	
 	@Test
 	public void testConfigureFile() throws Exception {
+		// For native configuration
 		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
 		File cfgXmlFile = new File(new File(url.toURI()), "foobarfile.cfg.xml");
-		cfgXmlFile.deleteOnExit();
 		FileWriter fileWriter = new FileWriter(cfgXmlFile);
 		fileWriter.write(TEST_CFG_XML_STRING);
 		fileWriter.close();
 		File hbmXmlFile = new File(new File(url.toURI()), "Foo.hbm.xml");
-		hbmXmlFile.deleteOnExit();
 		fileWriter = new FileWriter(hbmXmlFile);
 		fileWriter.write(TEST_HBM_XML_STRING);
 		fileWriter.close();
+
 		String fooClassName = 
 				"org.jboss.tools.hibernate.orm.runtime.exp.internal.IConfigurationTest$Foo";
 		Metadata metadata = MetadataHelper.getMetadata(nativeConfigurationTarget);
@@ -232,6 +301,18 @@ public class IConfigurationTest {
 		nativeConfigurationFacade.configure(cfgXmlFile);
 		metadata = MetadataHelper.getMetadata(nativeConfigurationTarget);
 		assertNotNull(metadata.getEntityBinding(fooClassName));
+		assertTrue(cfgXmlFile.delete());
+		assertTrue(hbmXmlFile.delete());
+
+		// For reveng configuration
+		try {
+			revengConfigurationFacade.configure(cfgXmlFile);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'configure' should not be called on instances of " + RevengConfiguration.class.getName());
+		}
 	}
 	
 	@Test
@@ -247,6 +328,8 @@ public class IConfigurationTest {
 		fileWriter = new FileWriter(hbmXmlFile);
 		fileWriter.write(TEST_HBM_XML_STRING);
 		fileWriter.close();
+		
+		// For native configuration
 		String fooClassName = 
 				"org.jboss.tools.hibernate.orm.runtime.exp.internal.IConfigurationTest$Foo";
 		Metadata metadata = MetadataHelper.getMetadata(nativeConfigurationTarget);
@@ -254,6 +337,16 @@ public class IConfigurationTest {
 		nativeConfigurationFacade.configure();
 		metadata = MetadataHelper.getMetadata(nativeConfigurationTarget);
 		assertNotNull(metadata.getEntityBinding(fooClassName));
+		// For reveng configuration
+		try {
+			revengConfigurationFacade.configure();
+			fail();
+		} catch (RuntimeException e) {
+			e.printStackTrace();
+			assertEquals(
+					e.getMessage(),
+					"Method 'configure' should not be called on instances of " + RevengConfiguration.class.getName());
+		}
 	}
 	
 	@Test
@@ -262,8 +355,6 @@ public class IConfigurationTest {
 		String fooHbmXmlFileName = "IConfigurationTest$Foo.hbm.xml";
 		String fooClassName = 
 				"org.jboss.tools.hibernate.orm.runtime.exp.internal.IConfigurationTest$Foo";
-		Metadata metadata = MetadataHelper.getMetadata(nativeConfigurationTarget);
-		assertNull(metadata.getEntityBinding(fooClassName));
 		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
 		File hbmXmlFileDir = new File(new File(url.toURI()),fooHbmXmlFilePath);
 		hbmXmlFileDir.deleteOnExit();
@@ -273,28 +364,61 @@ public class IConfigurationTest {
 		FileWriter fileWriter = new FileWriter(hbmXmlFile);
 		fileWriter.write(TEST_HBM_XML_STRING);
 		fileWriter.close();
+
+		// For native configuration		
+		Metadata metadata = MetadataHelper.getMetadata(nativeConfigurationTarget);
+		assertNull(metadata.getEntityBinding(fooClassName));
 		nativeConfigurationFacade.addClass(NEW_FACADE_FACTORY.createPersistentClass(Foo.class));
 		metadata = MetadataHelper.getMetadata(nativeConfigurationTarget);
 		assertNotNull(metadata.getEntityBinding(fooClassName));
+		// For reveng configuration
+		try {
+			revengConfigurationFacade.addClass(NEW_FACADE_FACTORY.createPersistentClass(Foo.class));
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'addClass' should not be called on instances of " + RevengConfiguration.class.getName());
+		}
 	}
 	
 	@Test
 	public void testBuildMappings() throws Exception {
+		// For native configuration
 		Field metadataField = nativeConfigurationTarget.getClass().getDeclaredField("metadata");
 		metadataField.setAccessible(true);
 		assertNull(metadataField.get(nativeConfigurationTarget));
 		nativeConfigurationFacade.buildMappings();
 		assertNotNull(metadataField.get(nativeConfigurationTarget));
+		// For reveng configuration
+		try {
+			revengConfigurationFacade.buildMappings();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'buildMappings' should not be called on instances of " + RevengConfiguration.class.getName());
+		}
 	}
 
 	@Test
 	public void testBuildSessionFactory() throws Throwable {
+		// For native configuration
 		ISessionFactory sessionFactoryFacade = 
 				nativeConfigurationFacade.buildSessionFactory();
 		assertNotNull(sessionFactoryFacade);
 		Object sessionFactory = ((IFacade)sessionFactoryFacade).getTarget();
 		assertNotNull(sessionFactory);
 		assertTrue(sessionFactory instanceof SessionFactory);
+		// For reveng configuration 
+		try {
+			revengConfigurationFacade.buildSessionFactory();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'buildSessionFactory' should not be called on instances of " + RevengConfiguration.class.getName());
+		}
 	}
 	
 	@Test
@@ -339,6 +463,16 @@ public class IConfigurationTest {
 	
 	@Test
 	public void testSetPreferBasicCompositeIds() {
+		// For native configuration 
+		try {
+			nativeConfigurationFacade.setPreferBasicCompositeIds(false);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'setPreferBasicCompositeIds' should not be called on instances of " + NativeConfiguration.class.getName());
+		}
+		// For reveng configuration
 		// the default is true
 		assertTrue(revengConfigurationTarget.preferBasicCompositeIds());
 		revengConfigurationFacade.setPreferBasicCompositeIds(false);
@@ -350,6 +484,16 @@ public class IConfigurationTest {
 		IReverseEngineeringStrategy strategyFacade = 
 				NEW_FACADE_FACTORY.createReverseEngineeringStrategy();
 		RevengStrategy reverseEngineeringStrategy = (RevengStrategy)((IFacade)strategyFacade).getTarget();
+		// For native configuration 
+		try {
+			nativeConfigurationFacade.setReverseEngineeringStrategy(strategyFacade);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'setReverseEngineeringStrategy' should not be called on instances of " + NativeConfiguration.class.getName());
+		}
+		// For reveng configuration
 		assertNotSame(
 				reverseEngineeringStrategy,
 				revengConfigurationTarget.getReverseEngineeringStrategy());
@@ -361,6 +505,16 @@ public class IConfigurationTest {
 	
 	@Test
 	public void testReadFromJDBC() throws Exception {
+		// For native configuration 
+		try {
+			nativeConfigurationFacade.readFromJDBC();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'readFromJDBC' should not be called on instances of " + NativeConfiguration.class.getName());
+		}
+		// For reveng configuration
 		Connection connection = DriverManager.getConnection("jdbc:h2:mem:test");
 		Statement statement = connection.createStatement();
 		statement.execute("CREATE TABLE FOO(id int primary key, bar varchar(255))");
@@ -379,6 +533,7 @@ public class IConfigurationTest {
 
 	@Test
 	public void testGetNamingStrategy() {
+		// For native configuration 
 		NamingStrategy namingStrategy = new DefaultNamingStrategy();
 		assertNull(nativeConfigurationFacade.getNamingStrategy());
 		nativeConfigurationTarget.setNamingStrategy(namingStrategy);
@@ -386,7 +541,15 @@ public class IConfigurationTest {
 		assertNotNull(namingStrategyFacade);
 		Object namingStrategyTarget = ((IFacade)namingStrategyFacade).getTarget();
 		assertSame(namingStrategyTarget, namingStrategy);
-		
+		// For reveng configuration 
+		try {
+			revengConfigurationFacade.getNamingStrategy();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'getNamingStrategy' should not be called on instances of " + RevengConfiguration.class.getName());
+		}
 	}
 	
 }
