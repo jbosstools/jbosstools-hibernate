@@ -552,4 +552,24 @@ public class IConfigurationTest {
 		}
 	}
 	
+	@Test
+	public void testGetEntityResolver() throws Exception {
+		// For native configuration
+		Field entityResolverField = nativeConfigurationTarget.getClass().getDeclaredField("entityResolver");
+		entityResolverField.setAccessible(true);
+		EntityResolver testResolver = new DefaultHandler();
+		assertNotSame(testResolver, nativeConfigurationFacade.getEntityResolver());
+		entityResolverField.set(nativeConfigurationTarget, testResolver);
+		assertSame(testResolver, nativeConfigurationFacade.getEntityResolver());
+		// For reveng configuration 
+		try {
+			revengConfigurationFacade.getEntityResolver();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'getEntityResolver' should not be called on instances of " + RevengConfiguration.class.getName());
+		}
+	}
+	
 }
