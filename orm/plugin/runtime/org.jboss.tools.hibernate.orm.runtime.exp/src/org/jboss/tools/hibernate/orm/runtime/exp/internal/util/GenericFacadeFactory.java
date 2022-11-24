@@ -125,7 +125,7 @@ public class GenericFacadeFactory {
 	}	
 	
 	private static Class<?>[] argumentClasses(Object[] args) {
-		Class<?>[] result = null;
+		Class<?>[] result = new Class<?>[0];
 		if (args != null) {
 			result = new Class<?>[args.length];
 			for (int i = 0; i < args.length; i++) {
