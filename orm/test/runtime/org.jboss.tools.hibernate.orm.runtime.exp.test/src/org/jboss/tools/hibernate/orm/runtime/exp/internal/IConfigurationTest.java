@@ -530,6 +530,41 @@ public class IConfigurationTest {
 		statement.close();
 		connection.close();
 	}
+	
+	@Test
+	public void testGetClassMapping() throws Exception {
+		// For native configuration
+		String fooHbmXmlFilePath = "org/jboss/tools/hibernate/orm/runtime/exp/internal";
+		String fooHbmXmlFileName = "IConfigurationTest$Foo.hbm.xml";
+		String fooClassName = 
+				"org.jboss.tools.hibernate.orm.runtime.exp.internal.IConfigurationTest$Foo";
+		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
+		File hbmXmlFileDir = new File(new File(url.toURI()),fooHbmXmlFilePath);
+		hbmXmlFileDir.deleteOnExit();
+		hbmXmlFileDir.mkdirs();
+		File hbmXmlFile = new File(hbmXmlFileDir, fooHbmXmlFileName);
+		hbmXmlFile.deleteOnExit();
+		FileWriter fileWriter = new FileWriter(hbmXmlFile);
+		fileWriter.write(TEST_HBM_XML_STRING);
+		fileWriter.close();
+		Field metadataField = nativeConfigurationTarget.getClass().getDeclaredField("metadata");
+		metadataField.setAccessible(true);
+		assertNull(nativeConfigurationFacade.getClassMapping("Foo"));
+		metadataField.set(nativeConfigurationTarget, null);
+		nativeConfigurationTarget.addClass(Foo.class);
+		assertNotNull(nativeConfigurationFacade.getClassMapping(fooClassName));
+		// For reveng configuration
+		assertNull(revengConfigurationFacade.getClassMapping("Foo"));
+		Connection connection = DriverManager.getConnection("jdbc:h2:mem:test");
+		Statement statement = connection.createStatement();
+		statement.execute("CREATE TABLE FOO(id int primary key, bar varchar(255))");
+		revengConfigurationTarget.setProperty("hibernate.connection.url", "jdbc:h2:mem:test");
+		revengConfigurationTarget.readFromJDBC();
+		assertNotNull(revengConfigurationFacade.getClassMapping("Foo"));
+		statement.execute("DROP TABLE FOO");
+		statement.close();
+		connection.close();
+	}
 
 	@Test
 	public void testGetNamingStrategy() {
