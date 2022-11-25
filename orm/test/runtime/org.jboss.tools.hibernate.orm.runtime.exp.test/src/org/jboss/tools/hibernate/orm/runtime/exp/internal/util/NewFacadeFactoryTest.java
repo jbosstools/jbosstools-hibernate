@@ -15,6 +15,7 @@ import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
+import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -116,6 +117,15 @@ public class NewFacadeFactoryTest {
 		Object revengConfigurationTarget = ((IFacade)revengConfigurationFacade).getTarget();
 		assertNotNull(revengConfigurationTarget);
 		assertTrue(revengConfigurationTarget instanceof RevengConfiguration);
+	}
+	
+	@Test
+	public void testCreateJpaConfiguration() {
+		IConfiguration jpaConfigurationFacade = facadeFactory.createJpaConfiguration(null, null);
+		assertNotNull(jpaConfigurationFacade);
+		Object jpaConfigurationTarget = ((IFacade)jpaConfigurationFacade).getTarget();
+		assertNotNull(jpaConfigurationTarget);
+		assertTrue(jpaConfigurationTarget instanceof JpaConfiguration);
 	}
 	
 	public static class TestRevengStrategy extends DelegatingStrategy {

@@ -1,5 +1,7 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal.util;
 
+import java.util.Properties;
+
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
@@ -92,6 +94,12 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 		return (IConfiguration)GenericFacadeFactory.createFacade(
 				IConfiguration.class, 
 				wrapperFactory.createRevengConfigurationWrapper());
+	}
+ 	
+	public IConfiguration createJpaConfiguration(String persistenceUnit, Properties properties) {
+		return (IConfiguration)GenericFacadeFactory.createFacade(
+				IConfiguration.class, 
+				wrapperFactory.createJpaConfigurationWrapper(persistenceUnit, properties));
 	}
  	
 	@Override
