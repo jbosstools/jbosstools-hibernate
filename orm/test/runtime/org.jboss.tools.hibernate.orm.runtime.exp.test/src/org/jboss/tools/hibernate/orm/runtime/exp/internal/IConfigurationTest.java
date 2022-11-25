@@ -44,6 +44,7 @@ import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -605,6 +606,44 @@ public class IConfigurationTest {
 					e.getMessage(),
 					"Method 'getEntityResolver' should not be called on instances of " + RevengConfiguration.class.getName());
 		}
+	}
+	
+	@Test
+	public void testGetTableMappings() throws Exception {
+		// For native configuration
+		String fooHbmXmlFilePath = "org/jboss/tools/hibernate/orm/runtime/exp/internal";
+		String fooHbmXmlFileName = "IConfigurationTest$Foo.hbm.xml";
+		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
+		File hbmXmlFileDir = new File(new File(url.toURI()),fooHbmXmlFilePath);
+		hbmXmlFileDir.deleteOnExit();
+		hbmXmlFileDir.mkdirs();
+		File hbmXmlFile = new File(hbmXmlFileDir, fooHbmXmlFileName);
+		hbmXmlFile.deleteOnExit();
+		FileWriter fileWriter = new FileWriter(hbmXmlFile);
+		fileWriter.write(TEST_HBM_XML_STRING);
+		fileWriter.close();
+		nativeConfigurationTarget.addClass(Foo.class);
+		Iterator<ITable> tableMappings = nativeConfigurationFacade.getTableMappings();
+		assertTrue(tableMappings.hasNext());
+		ITable fooTableFacade = tableMappings.next();
+		assertEquals(fooTableFacade.getName(), "IConfigurationTest$Foo");
+		// For reveng configuration
+		Connection connection = DriverManager.getConnection("jdbc:h2:mem:test");
+		Statement statement = connection.createStatement();
+		statement.execute("CREATE TABLE FOO(id int primary key, bar varchar(255))");
+		revengConfigurationTarget.setProperty("hibernate.connection.url", "jdbc:h2:mem:test");
+		tableMappings = revengConfigurationFacade.getTableMappings();
+		assertNotNull(tableMappings);
+		assertFalse(tableMappings.hasNext());
+		revengConfigurationTarget.readFromJDBC();
+		tableMappings = revengConfigurationFacade.getTableMappings();
+		assertNotNull(tableMappings);
+		assertTrue(tableMappings.hasNext());
+		fooTableFacade = tableMappings.next();
+		assertEquals(fooTableFacade.getName(), "FOO");
+		statement.execute("DROP TABLE FOO");
+		statement.close();
+		connection.close();
 	}
 	
 }

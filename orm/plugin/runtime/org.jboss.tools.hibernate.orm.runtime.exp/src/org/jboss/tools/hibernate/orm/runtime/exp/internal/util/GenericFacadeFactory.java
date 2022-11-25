@@ -18,6 +18,7 @@ import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
 
 public class GenericFacadeFactory {
 	
@@ -158,7 +159,8 @@ public class GenericFacadeFactory {
 					IPersistentClass.class,
 					IReverseEngineeringStrategy.class,
 					IReverseEngineeringSettings.class,
-					ISessionFactory.class
+					ISessionFactory.class,
+					ITable.class
 			}));
 	
 }
