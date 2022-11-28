@@ -398,6 +398,9 @@ public class IConfigurationTest {
 				"org.jboss.tools.hibernate.orm.runtime.exp.internal.IConfigurationTest$Foo";
 		Metadata metadata = MetadataHelper.getMetadata(nativeConfigurationTarget);
 		assertNull(metadata.getEntityBinding(fooClassName));
+		Field metadataField = NativeConfiguration.class.getDeclaredField("metadata");
+		metadataField.setAccessible(true);
+		metadataField.set(nativeConfigurationTarget, null);
 		nativeConfigurationFacade.configure(cfgXmlFile);
 		metadata = MetadataHelper.getMetadata(nativeConfigurationTarget);
 		assertNotNull(metadata.getEntityBinding(fooClassName));
@@ -443,6 +446,9 @@ public class IConfigurationTest {
 				"org.jboss.tools.hibernate.orm.runtime.exp.internal.IConfigurationTest$Foo";
 		Metadata metadata = MetadataHelper.getMetadata(nativeConfigurationTarget);
 		assertNull(metadata.getEntityBinding(fooClassName));
+		Field metadataField = NativeConfiguration.class.getDeclaredField("metadata");
+		metadataField.setAccessible(true);
+		metadataField.set(nativeConfigurationTarget, null);
 		nativeConfigurationFacade.configure();
 		metadata = MetadataHelper.getMetadata(nativeConfigurationTarget);
 		assertNotNull(metadata.getEntityBinding(fooClassName));
@@ -486,6 +492,9 @@ public class IConfigurationTest {
 		// For native configuration		
 		Metadata metadata = MetadataHelper.getMetadata(nativeConfigurationTarget);
 		assertNull(metadata.getEntityBinding(fooClassName));
+		Field metadataField = NativeConfiguration.class.getDeclaredField("metadata");
+		metadataField.setAccessible(true);
+		metadataField.set(nativeConfigurationTarget, null);
 		nativeConfigurationFacade.addClass(NEW_FACADE_FACTORY.createPersistentClass(Foo.class));
 		metadata = MetadataHelper.getMetadata(nativeConfigurationTarget);
 		assertNotNull(metadata.getEntityBinding(fooClassName));

@@ -19,7 +19,7 @@ public class HibernateMappingExporterExtension extends HbmExporter {
 		this.facadeFactory = facadeFactory;
 		getProperties().put(
 				METADATA_DESCRIPTOR, 
-				new ConfigurationMetadataDescriptor((ConfigurationFacadeImpl)cfg));
+				new ConfigurationMetadataDescriptor((IConfiguration)cfg));
 		if (file != null) {
 			getProperties().put(OUTPUT_FILE_NAME, file);
 		}

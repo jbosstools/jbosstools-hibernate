@@ -59,6 +59,7 @@ import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.JpaMappingFileHelper;
+import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.ConfigurationMetadataDescriptor;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
@@ -116,7 +117,7 @@ public class ServiceImpl extends AbstractService {
 	@Override
 	public IConfiguration newDefaultConfiguration() {
 		getUsageTracker().trackNewConfigurationEvent(HIBERNATE_VERSION);
-		return facadeFactory.createConfiguration(new Configuration());
+		return newFacadeFactory.createNativeConfiguration();
 	}
 
 	@Override
@@ -140,9 +141,9 @@ public class ServiceImpl extends AbstractService {
 	@Override
 	public IHQLCodeAssist newHQLCodeAssist(IConfiguration hcfg) {
 		IHQLCodeAssist result = null;
-		if (hcfg instanceof ConfigurationFacadeImpl) {
+		if (hcfg instanceof IConfiguration) {
 			result = facadeFactory.createHQLCodeAssist(
-					new HQLCodeAssist(((ConfigurationFacadeImpl)hcfg).getMetadata()));
+					new HQLCodeAssist(MetadataHelper.getMetadata((Configuration)((IFacade)hcfg).getTarget())));
 		}
 		return result;
 	}
@@ -164,7 +165,7 @@ public class ServiceImpl extends AbstractService {
 		} else {
 			exporter.getProperties().put(
 					ExporterConstants.METADATA_DESCRIPTOR,
-					new ConfigurationMetadataDescriptor((ConfigurationFacadeImpl)newDefaultConfiguration()));
+					new ConfigurationMetadataDescriptor(newDefaultConfiguration()));
 		}
 		return facadeFactory.createExporter(exporter);
 	}

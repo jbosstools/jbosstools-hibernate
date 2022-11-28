@@ -49,6 +49,7 @@ import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
+import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
@@ -133,7 +134,7 @@ public class ServiceImplTest {
 				(HibernateMappingExporterExtension)((IFacade)hibernateMappingExporter).getTarget();
 		assertSame(file, hmee.getProperties().get(ExporterConstants.OUTPUT_FILE_NAME));
 		assertSame(
-				((ConfigurationFacadeImpl)configuration).getMetadata(), 
+				MetadataHelper.getMetadata((Configuration)((IFacade)configuration).getTarget()),
 				hmee.getMetadata());
 	}
 	

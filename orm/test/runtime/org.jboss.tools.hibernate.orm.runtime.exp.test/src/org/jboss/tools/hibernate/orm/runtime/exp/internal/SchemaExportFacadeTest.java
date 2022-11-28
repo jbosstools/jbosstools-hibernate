@@ -14,16 +14,21 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.hibernate.tool.schema.TargetType;
+import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class SchemaExportFacadeTest {
 	
 	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
+	private static final NewFacadeFactory NEW_FACADE_FACTORY = NewFacadeFactory.INSTANCE;
 
 	
 	private SchemaExportFacadeImpl schemaExportFacade = null;
@@ -44,13 +49,13 @@ public class SchemaExportFacadeTest {
 	
 	@Test
 	public void testSetConfiguration() {
-		Configuration configurationTarget = new Configuration();
+		IConfiguration configurationFacade = NEW_FACADE_FACTORY.createNativeConfiguration();
+		Configuration configurationTarget = (Configuration)((IFacade)configurationFacade).getTarget();
 		configurationTarget.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
 		configurationTarget.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
-		ConfigurationFacadeImpl configuration = new ConfigurationFacadeImpl(FACADE_FACTORY, configurationTarget);
-		Metadata metadata = configuration.getMetadata();
+		Metadata metadata = MetadataHelper.getMetadata(configurationTarget);
 		assertNull(schemaExportFacade.metadata);
-		schemaExportFacade.setConfiguration(configuration);
+		schemaExportFacade.setConfiguration(configurationFacade);
 		assertSame(metadata, schemaExportFacade.metadata);
 	}
 	
