@@ -150,7 +150,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IConfiguration newJDBCMetaDataConfiguration() {
-		return facadeFactory.createConfiguration(new RevengConfiguration());
+		return newFacadeFactory.createRevengConfiguration();
 	}
 
 	@Override
