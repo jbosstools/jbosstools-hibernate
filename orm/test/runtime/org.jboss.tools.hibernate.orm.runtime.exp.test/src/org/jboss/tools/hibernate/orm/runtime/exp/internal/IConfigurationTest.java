@@ -14,6 +14,8 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.net.URL;
+import java.net.URLClassLoader;
+import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -32,6 +34,7 @@ import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.api.reveng.RevengStrategy;
+import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
@@ -45,13 +48,18 @@ import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.helpers.DefaultHandler;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 public class IConfigurationTest {
 
@@ -69,36 +77,69 @@ public class IConfigurationTest {
 			"  </session-factory>" +
 			"</hibernate-configuration>";
 	
+	private static final String PERSISTENCE_XML = 
+			"<persistence version='2.2'" +
+	        "  xmlns='http://xmlns.jcp.org/xml/ns/persistence'" +
+		    "  xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'" +
+	        "  xsi:schemaLocation='http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd'>" +
+	        "  <persistence-unit name='foobar'>" +
+	        "    <class>"+ FooBar.class.getName()  +"</class>" +
+	        "    <properties>" +
+	        "      <property name='" + AvailableSettings.DIALECT + "' value='" + MockDialect.class.getName() + "'/>" +
+	        "      <property name='" + AvailableSettings.CONNECTION_PROVIDER + "' value='" + MockConnectionProvider.class.getName() + "'/>" +
+	        "      <property name='foo' value='bar'/>" +
+	        "    </properties>" +
+	        "  </persistence-unit>" +
+			"</persistence>";
+	
 	private static final NewFacadeFactory NEW_FACADE_FACTORY = NewFacadeFactory.INSTANCE;
 
 	static class Foo {
 		public String id;
 	}
 	
+	@Entity public class FooBar {
+		@Id public int id;
+	}
+
 	@BeforeAll
 	public static void beforeAll() throws Exception {
 		DriverManager.registerDriver(new Driver());		
 	}
 
+	private ClassLoader original = null;
+	
+	@TempDir
+	public File tempRoot;
+	
 	private IConfiguration nativeConfigurationFacade = null;
 	private NativeConfiguration nativeConfigurationTarget = null;
 	private IConfiguration revengConfigurationFacade = null;
 	private RevengConfiguration revengConfigurationTarget = null;
+	private IConfiguration jpaConfigurationFacade = null;
+	private JpaConfiguration jpaConfigurationTarget = null;
 
 	@BeforeEach
-	public void beforeEach() {
-		nativeConfigurationFacade = NEW_FACADE_FACTORY.createNativeConfiguration();
-		nativeConfigurationTarget = (NativeConfiguration)((IFacade)nativeConfigurationFacade).getTarget();
-		nativeConfigurationTarget.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
-		nativeConfigurationTarget.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
-		revengConfigurationFacade = NEW_FACADE_FACTORY.createRevengConfiguration();
-		revengConfigurationTarget = (RevengConfiguration)((IFacade)revengConfigurationFacade).getTarget();
+	public void beforeEach() throws Exception {
+		tempRoot = Files.createTempDirectory("temp").toFile();
+		createPersistenceXml();
+		swapClassLoader();
+		initializeFacadesAndTargets();
 	}	
+	
+	@AfterEach
+	public void afterEach() {
+		Thread.currentThread().setContextClassLoader(original);
+	}
 	
 	@Test
 	public void testInstance() {
 		assertNotNull(nativeConfigurationFacade);
+		assertNotNull(nativeConfigurationTarget);
 		assertNotNull(revengConfigurationFacade);
+		assertNotNull(revengConfigurationTarget);
+		assertNotNull(jpaConfigurationFacade);
+		assertNotNull(jpaConfigurationTarget);
 	}
 
 	@Test
@@ -111,6 +152,10 @@ public class IConfigurationTest {
 		assertNull(revengConfigurationFacade.getProperty("foo"));
 		revengConfigurationTarget.setProperty("foo", "bar");
 		assertEquals("bar", revengConfigurationFacade.getProperty("foo"));
+		// For jpa configuration
+		assertNull(jpaConfigurationFacade.getProperty("foo"));
+		jpaConfigurationTarget.setProperty("foo", "bar");
+		assertEquals("bar", jpaConfigurationFacade.getProperty("foo"));
 	}
 
 	
@@ -139,6 +184,15 @@ public class IConfigurationTest {
 					e.getMessage(),
 					"Method 'addFile' should not be called on instances of " + RevengConfiguration.class.getName());
 		}
+		// For jpa configuration
+		try {
+			jpaConfigurationFacade.addFile(testFile);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'addFile' should not be called on instances of " + JpaConfiguration.class.getName());
+		}
 	}
 	
 	@Test 
@@ -151,6 +205,10 @@ public class IConfigurationTest {
 		assertNull(revengConfigurationTarget.getProperty("foo"));
 		revengConfigurationFacade.setProperty("foo", "bar");
 		assertEquals("bar", revengConfigurationTarget.getProperty("foo"));
+		// For jpa configuration
+		assertNull(jpaConfigurationTarget.getProperty("foo"));
+		jpaConfigurationFacade.setProperty("foo", "bar");
+		assertEquals("bar", jpaConfigurationTarget.getProperty("foo"));
 	}
 
 	@Test 
@@ -168,6 +226,12 @@ public class IConfigurationTest {
 				revengConfigurationFacade, 
 				revengConfigurationFacade.setProperties(testProperties));
 		assertSame(testProperties, revengConfigurationTarget.getProperties());
+		// For jpa configuration
+		assertNotSame(testProperties, jpaConfigurationTarget.getProperties());
+		assertSame(
+				jpaConfigurationFacade, 
+				jpaConfigurationFacade.setProperties(testProperties));
+		assertSame(testProperties, jpaConfigurationTarget.getProperties());
 	}
 	
 	@Test
@@ -188,6 +252,15 @@ public class IConfigurationTest {
 			assertEquals(
 					e.getMessage(),
 					"Method 'setEntityResolver' should not be called on instances of " + RevengConfiguration.class.getName());
+		}
+		// For jpa configuration
+		try {
+			jpaConfigurationFacade.setEntityResolver(testResolver);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'setEntityResolver' should not be called on instances of " + JpaConfiguration.class.getName());
 		}
 	}
 	
@@ -212,6 +285,15 @@ public class IConfigurationTest {
 					e.getMessage(),
 					"Method 'setNamingStrategy' should not be called on instances of " + RevengConfiguration.class.getName());
 		}
+		// For jpa configuration
+		try {
+			jpaConfigurationFacade.setNamingStrategy(namingStrategyFacade);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'setNamingStrategy' should not be called on instances of " + JpaConfiguration.class.getName());
+		}
 	}
 	
 	@Test
@@ -225,6 +307,10 @@ public class IConfigurationTest {
 		assertNotSame(testProperties, revengConfigurationFacade.getProperties());
 		revengConfigurationTarget.setProperties(testProperties);
 		assertSame(testProperties, revengConfigurationFacade.getProperties());
+		// For jpa configuration
+		assertNotSame(testProperties, jpaConfigurationFacade.getProperties());
+		jpaConfigurationTarget.setProperties(testProperties);
+		assertSame(testProperties, jpaConfigurationFacade.getProperties());
 	}
 	
 	@Test
@@ -239,6 +325,10 @@ public class IConfigurationTest {
 		assertNull(revengConfigurationTarget.getProperty("foo"));
 		revengConfigurationFacade.addProperties(testProperties);
 		assertEquals("bar", revengConfigurationTarget.getProperty("foo"));
+		// For jpa configuration
+		assertNull(jpaConfigurationTarget.getProperty("foo"));
+		jpaConfigurationFacade.addProperties(testProperties);
+		assertEquals("bar", jpaConfigurationTarget.getProperty("foo"));
 	}
 	
 	@Test
@@ -280,6 +370,15 @@ public class IConfigurationTest {
 					e.getMessage(),
 					"Method 'configure' should not be called on instances of " + RevengConfiguration.class.getName());
 		}
+		// For jpa configuration
+		try {
+			jpaConfigurationFacade.configure(document);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'configure' should not be called on instances of " + JpaConfiguration.class.getName());
+		}
 	}
 	
 	@Test
@@ -313,6 +412,15 @@ public class IConfigurationTest {
 			assertEquals(
 					e.getMessage(),
 					"Method 'configure' should not be called on instances of " + RevengConfiguration.class.getName());
+		}
+		// For jpa configuration
+		try {
+			jpaConfigurationFacade.configure(cfgXmlFile);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'configure' should not be called on instances of " + JpaConfiguration.class.getName());
 		}
 	}
 	
@@ -348,6 +456,15 @@ public class IConfigurationTest {
 					e.getMessage(),
 					"Method 'configure' should not be called on instances of " + RevengConfiguration.class.getName());
 		}
+		// For jpa configuration
+		try {
+			jpaConfigurationFacade.configure();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'configure' should not be called on instances of " + JpaConfiguration.class.getName());
+		}
 	}
 	
 	@Test
@@ -381,6 +498,15 @@ public class IConfigurationTest {
 					e.getMessage(),
 					"Method 'addClass' should not be called on instances of " + RevengConfiguration.class.getName());
 		}
+		// For jpa configuration
+		try {
+			jpaConfigurationFacade.addClass(NEW_FACADE_FACTORY.createPersistentClass(Foo.class));
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'addClass' should not be called on instances of " + JpaConfiguration.class.getName());
+		}
 	}
 	
 	@Test
@@ -400,6 +526,12 @@ public class IConfigurationTest {
 					e.getMessage(),
 					"Method 'buildMappings' should not be called on instances of " + RevengConfiguration.class.getName());
 		}
+		// For jpa configuration
+		metadataField = jpaConfigurationTarget.getClass().getDeclaredField("metadata");
+		metadataField.setAccessible(true);
+		assertNull(metadataField.get(jpaConfigurationTarget));
+		jpaConfigurationFacade.buildMappings();
+		assertNotNull(metadataField.get(jpaConfigurationTarget));
 	}
 
 	@Test
@@ -411,6 +543,10 @@ public class IConfigurationTest {
 		Object sessionFactory = ((IFacade)sessionFactoryFacade).getTarget();
 		assertNotNull(sessionFactory);
 		assertTrue(sessionFactory instanceof SessionFactory);
+		sessionFactoryFacade = null;
+		assertNull(sessionFactoryFacade);
+		sessionFactory = null;
+		assertNull(sessionFactory);
 		// For reveng configuration 
 		try {
 			revengConfigurationFacade.buildSessionFactory();
@@ -420,6 +556,12 @@ public class IConfigurationTest {
 					e.getMessage(),
 					"Method 'buildSessionFactory' should not be called on instances of " + RevengConfiguration.class.getName());
 		}
+		// For jpa configuration
+		sessionFactoryFacade = jpaConfigurationFacade.buildSessionFactory();
+		assertNotNull(sessionFactoryFacade);
+		sessionFactory = ((IFacade)sessionFactoryFacade).getTarget();
+		assertNotNull(sessionFactory);
+		assertTrue(sessionFactory instanceof SessionFactory);
 	}
 	
 	@Test
@@ -443,6 +585,8 @@ public class IConfigurationTest {
 		assertTrue(classMappings.hasNext());
 		IPersistentClass fooClassFacade = classMappings.next();
 		assertSame(fooClassFacade.getEntityName(), fooClassName);
+		classMappings = null;
+		assertNull(classMappings);
 		// For reveng configuration
 		Connection connection = DriverManager.getConnection("jdbc:h2:mem:test");
 		Statement statement = connection.createStatement();
@@ -460,6 +604,14 @@ public class IConfigurationTest {
 		statement.execute("DROP TABLE FOO");
 		statement.close();
 		connection.close();
+		classMappings = null;
+		assertNull(classMappings);
+		// For jpa configuration
+		classMappings = jpaConfigurationFacade.getClassMappings();
+		assertNotNull(classMappings);
+		assertTrue(classMappings.hasNext());
+		fooClassFacade = classMappings.next();
+		assertEquals(fooClassFacade.getEntityName(), FooBar.class.getName());
 	}
 	
 	@Test
@@ -478,6 +630,15 @@ public class IConfigurationTest {
 		assertTrue(revengConfigurationTarget.preferBasicCompositeIds());
 		revengConfigurationFacade.setPreferBasicCompositeIds(false);
 		assertFalse(revengConfigurationTarget.preferBasicCompositeIds());
+		// For jpa configuration 
+		try {
+			jpaConfigurationFacade.setPreferBasicCompositeIds(false);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'setPreferBasicCompositeIds' should not be called on instances of " + JpaConfiguration.class.getName());
+		}
 	}
 	
 	@Test
@@ -502,6 +663,15 @@ public class IConfigurationTest {
 		assertSame(
 				reverseEngineeringStrategy, 
 				revengConfigurationTarget.getReverseEngineeringStrategy());
+		// For jpa configuration
+		try {
+			jpaConfigurationFacade.setReverseEngineeringStrategy(strategyFacade);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'setReverseEngineeringStrategy' should not be called on instances of " + JpaConfiguration.class.getName());
+		}
 	}
 	
 	@Test
@@ -530,6 +700,15 @@ public class IConfigurationTest {
 		statement.execute("DROP TABLE FOO");
 		statement.close();
 		connection.close();
+		// For jpa configuration
+		try {
+			jpaConfigurationFacade.readFromJDBC();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'readFromJDBC' should not be called on instances of " + JpaConfiguration.class.getName());
+		}
 	}
 	
 	@Test
@@ -565,6 +744,9 @@ public class IConfigurationTest {
 		statement.execute("DROP TABLE FOO");
 		statement.close();
 		connection.close();
+		// For jpa configuration
+		assertNull(jpaConfigurationFacade.getClassMapping("Bar"));
+		assertNotNull(jpaConfigurationFacade.getClassMapping(FooBar.class.getName()));
 	}
 
 	@Test
@@ -586,6 +768,16 @@ public class IConfigurationTest {
 					e.getMessage(),
 					"Method 'getNamingStrategy' should not be called on instances of " + RevengConfiguration.class.getName());
 		}
+		// For jpa configuration
+		try {
+			jpaConfigurationFacade.getNamingStrategy();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'getNamingStrategy' should not be called on instances of " + JpaConfiguration.class.getName());
+		}
+		
 	}
 	
 	@Test
@@ -605,6 +797,15 @@ public class IConfigurationTest {
 			assertEquals(
 					e.getMessage(),
 					"Method 'getEntityResolver' should not be called on instances of " + RevengConfiguration.class.getName());
+		}
+		// For jpa configuration 
+		try {
+			jpaConfigurationFacade.getEntityResolver();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'getEntityResolver' should not be called on instances of " + JpaConfiguration.class.getName());
 		}
 	}
 	
@@ -627,6 +828,10 @@ public class IConfigurationTest {
 		assertTrue(tableMappings.hasNext());
 		ITable fooTableFacade = tableMappings.next();
 		assertEquals(fooTableFacade.getName(), "IConfigurationTest$Foo");
+		tableMappings = null;
+		assertNull(tableMappings);
+		fooTableFacade = null;
+		assertNull(fooTableFacade);
 		// For reveng configuration
 		Connection connection = DriverManager.getConnection("jdbc:h2:mem:test");
 		Statement statement = connection.createStatement();
@@ -644,6 +849,45 @@ public class IConfigurationTest {
 		statement.execute("DROP TABLE FOO");
 		statement.close();
 		connection.close();
+		tableMappings = null;
+		assertNull(tableMappings);
+		fooTableFacade = null;
+		assertNull(fooTableFacade);
+		// For jpa configuration
+		tableMappings = jpaConfigurationFacade.getTableMappings();
+		assertNotNull(tableMappings);
+		assertTrue(tableMappings.hasNext());
+		fooTableFacade = tableMappings.next();
+		assertEquals(fooTableFacade.getName(), "IConfigurationTest$FooBar");
+	}
+	
+	private void createPersistenceXml() throws Exception {
+		File metaInf = new File(tempRoot, "META-INF");
+		metaInf.mkdirs();
+		File persistenceXml = new File(metaInf, "persistence.xml");
+		persistenceXml.createNewFile();
+		FileWriter fileWriter = new FileWriter(persistenceXml);
+		fileWriter.write(PERSISTENCE_XML);
+		fileWriter.close();
+	}
+	
+	private void swapClassLoader() throws Exception {
+		original = Thread.currentThread().getContextClassLoader();
+		ClassLoader urlCl = URLClassLoader.newInstance(
+				new URL[] { new URL(tempRoot.toURI().toURL().toString())} , 
+				original);
+		Thread.currentThread().setContextClassLoader(urlCl);
+	}
+	
+	private void initializeFacadesAndTargets() {
+		nativeConfigurationFacade = NEW_FACADE_FACTORY.createNativeConfiguration();
+		nativeConfigurationTarget = (NativeConfiguration)((IFacade)nativeConfigurationFacade).getTarget();
+		nativeConfigurationTarget.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
+		nativeConfigurationTarget.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
+		revengConfigurationFacade = NEW_FACADE_FACTORY.createRevengConfiguration();
+		revengConfigurationTarget = (RevengConfiguration)((IFacade)revengConfigurationFacade).getTarget();
+		jpaConfigurationFacade = NEW_FACADE_FACTORY.createJpaConfiguration("foobar", null);
+		jpaConfigurationTarget = (JpaConfiguration)((IFacade)jpaConfigurationFacade).getTarget();	
 	}
 	
 }
