@@ -110,8 +110,7 @@ public class ServiceImpl extends AbstractService {
 			String entityResolver, 
 			String persistenceUnit,
 			Map<Object, Object> overrides) {
-		return facadeFactory.createConfiguration(
-				new JpaConfiguration(persistenceUnit, overrides));
+		return newFacadeFactory.createJpaConfiguration(persistenceUnit, overrides);
 	}
 
 	@Override

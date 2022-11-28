@@ -1,6 +1,6 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal.util;
 
-import java.util.Properties;
+import java.util.Map;
 
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
@@ -96,7 +96,7 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 				wrapperFactory.createRevengConfigurationWrapper());
 	}
  	
-	public IConfiguration createJpaConfiguration(String persistenceUnit, Properties properties) {
+	public IConfiguration createJpaConfiguration(String persistenceUnit, Map<?,?> properties) {
 		return (IConfiguration)GenericFacadeFactory.createFacade(
 				IConfiguration.class, 
 				wrapperFactory.createJpaConfigurationWrapper(persistenceUnit, properties));
