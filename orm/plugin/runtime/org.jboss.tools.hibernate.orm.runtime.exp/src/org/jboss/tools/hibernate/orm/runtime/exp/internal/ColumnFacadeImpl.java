@@ -13,6 +13,7 @@ import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Value;
+import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.type.spi.TypeConfiguration;
 import org.jboss.tools.hibernate.runtime.common.AbstractColumnFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -42,8 +43,8 @@ public class ColumnFacadeImpl extends AbstractColumnFacade {
 		ssrb.applySettings(properties);
 		StandardServiceRegistry ssr = ssrb.build();
 		DialectFactory df = ssr.getService(DialectFactory.class);
-		Dialect dialectTarget = df.buildDialect(transform(properties), null);
-		Metadata metadata = ((ConfigurationFacadeImpl)configuration).getMetadata();
+		Dialect dialectTarget = df.buildDialect(transform(properties), null);		
+		Metadata metadata = MetadataHelper.getMetadata(configurationTarget);
 		TypeConfiguration tc = ((MetadataImpl)metadata).getTypeConfiguration();
 		return targetColumn.getSqlType(
 				tc,
