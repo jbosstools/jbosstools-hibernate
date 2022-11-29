@@ -18,9 +18,11 @@ import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
+import org.hibernate.tool.orm.jbt.wrp.ColumnWrapper;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
+import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
@@ -126,6 +128,15 @@ public class NewFacadeFactoryTest {
 		Object jpaConfigurationTarget = ((IFacade)jpaConfigurationFacade).getTarget();
 		assertNotNull(jpaConfigurationTarget);
 		assertTrue(jpaConfigurationTarget instanceof JpaConfiguration);
+	}
+	
+	@Test
+	public void testCreateColumn() {
+		IColumn columnFacade = facadeFactory.createColumn();
+		assertNotNull(columnFacade);
+		Object columnTarget = ((IFacade)columnFacade).getTarget();
+		assertNotNull(columnTarget);
+		assertTrue(columnTarget instanceof ColumnWrapper);
 	}
 	
 	public static class TestRevengStrategy extends DelegatingStrategy {

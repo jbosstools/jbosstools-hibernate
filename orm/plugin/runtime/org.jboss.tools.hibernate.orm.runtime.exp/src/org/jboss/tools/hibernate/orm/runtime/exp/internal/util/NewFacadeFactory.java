@@ -6,6 +6,7 @@ import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
+import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
@@ -84,6 +85,12 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 				
 	}
 	
+	public IColumn createColumn() {
+		return (IColumn)GenericFacadeFactory.createFacade(
+				IColumn.class, 
+				wrapperFactory.createColumnWrapper());
+	}
+
 	public IConfiguration createNativeConfiguration() {
 		return (IConfiguration)GenericFacadeFactory.createFacade(
 				IConfiguration.class, 
@@ -101,7 +108,7 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 				IConfiguration.class, 
 				wrapperFactory.createJpaConfigurationWrapper(persistenceUnit, properties));
 	}
-
+	
 	@Override
 	public ClassLoader getClassLoader() {
 		return INSTANCE.getClass().getClassLoader();
