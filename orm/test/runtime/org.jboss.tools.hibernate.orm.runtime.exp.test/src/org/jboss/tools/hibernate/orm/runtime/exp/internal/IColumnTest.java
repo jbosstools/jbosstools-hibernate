@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -14,6 +15,7 @@ import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.type.IntegerType;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
+import org.hibernate.tool.orm.jbt.wrp.ColumnWrapper;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
@@ -26,45 +28,57 @@ public class IColumnTest {
 	private static final NewFacadeFactory FACADE_FACTORY = NewFacadeFactory.INSTANCE;
 	
 	private IColumn columnFacade = null; 
-	private Column columnTarget = null;
+	private ColumnWrapper columnTarget = null;
+	private Column wrappedColumn = null;
 	
 	@BeforeEach
-	public void beforeEach() {
+	public void beforeEach() throws Exception {
 		columnFacade = FACADE_FACTORY.createColumn();
-		columnTarget = (Column)((IFacade)columnFacade).getTarget();
+		columnTarget = (ColumnWrapper)((IFacade)columnFacade).getTarget();
+		Field columnField = ColumnWrapper.class.getDeclaredField("wrappedColumn");
+		columnField.setAccessible(true);
+		wrappedColumn = (Column)columnField.get(columnTarget);
 	}
 	
 	@Test
 	public void testInstance() {
 		assertNotNull(columnFacade);
 		assertNotNull(columnTarget);
+		assertNotNull(wrappedColumn);
 	}
 	
 	@Test
 	public void testGetName() {
 		assertNull(columnFacade.getName());
-		columnTarget.setName("foobar");
+		wrappedColumn.setName("foobar");
 		assertEquals("foobar", columnFacade.getName());
 	}
 	
 	@Test
 	public void testGetSqlTypeCode() {
 		assertNull(columnFacade.getSqlTypeCode());
-		columnTarget.setSqlTypeCode(Integer.MAX_VALUE);
+		wrappedColumn.setSqlTypeCode(Integer.MAX_VALUE);
 		assertEquals(Integer.MAX_VALUE, columnFacade.getSqlTypeCode().intValue());
 	}
 
 	@Test
 	public void testGetSqlType() {
 		assertNull(columnFacade.getSqlType());
-		columnTarget.setSqlType("foobar");
+		wrappedColumn.setSqlType("foobar");
 		assertEquals("foobar", columnFacade.getSqlType());
 		IConfiguration configurationFacade = FACADE_FACTORY.createNativeConfiguration();
 		configurationFacade.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
 		configurationFacade.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
-		columnTarget.setValue(createIntegerTypeValue());
-		columnTarget.setSqlType(null);
+		wrappedColumn.setValue(createIntegerTypeValue());
+		wrappedColumn.setSqlType(null);
 		assertEquals("integer", columnFacade.getSqlType(configurationFacade));
+	}
+	
+	@Test
+	public void testGetLength() {
+		assertEquals(Integer.MIN_VALUE, columnFacade.getLength());
+		wrappedColumn.setLength(Integer.MAX_VALUE);
+		assertEquals(Integer.MAX_VALUE, columnFacade.getLength());
 	}
 	
 	private Value createIntegerTypeValue() {
