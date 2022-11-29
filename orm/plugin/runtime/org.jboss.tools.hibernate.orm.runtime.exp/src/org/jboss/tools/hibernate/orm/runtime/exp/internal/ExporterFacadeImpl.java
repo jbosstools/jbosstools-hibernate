@@ -22,7 +22,7 @@ public class ExporterFacadeImpl extends AbstractExporterFacade {
 		setCustomProperties(configuration.getProperties());
 		((Exporter)getTarget()).getProperties().put(
 				ExporterConstants.METADATA_DESCRIPTOR, 
-				new ConfigurationMetadataDescriptor((ConfigurationFacadeImpl)configuration));
+				new ConfigurationMetadataDescriptor(configuration));
 	}
 	
 	@Override

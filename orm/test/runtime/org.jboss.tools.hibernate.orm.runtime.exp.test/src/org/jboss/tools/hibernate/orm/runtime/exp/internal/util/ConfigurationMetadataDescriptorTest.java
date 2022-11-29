@@ -42,7 +42,6 @@ public class ConfigurationMetadataDescriptorTest {
 	public void beforeEach() {
 		configurationFacade = FACADE_FACTORY.createNativeConfiguration();
 		configurationTarget = (Configuration)((IFacade)configurationFacade).getTarget();
-		configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configurationTarget);
 		configurationMetadataDescriptor = new ConfigurationMetadataDescriptor(configurationFacade);
 	}
 	

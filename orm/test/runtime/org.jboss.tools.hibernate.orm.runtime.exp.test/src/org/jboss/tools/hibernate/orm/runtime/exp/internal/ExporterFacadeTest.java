@@ -13,7 +13,6 @@ import java.io.Writer;
 import java.lang.reflect.Field;
 import java.util.Properties;
 
-import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
@@ -24,6 +23,7 @@ import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.ConfigurationMeta
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
+import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
@@ -32,9 +32,7 @@ import org.junit.jupiter.api.Test;
 
 public class ExporterFacadeTest {
 	
-	private static final FacadeFactoryImpl FACADE_FACTORY = new FacadeFactoryImpl();
-	
-	private static final NewFacadeFactory NEW_FACADE_FACTORY = NewFacadeFactory.INSTANCE;
+	private static final NewFacadeFactory FACADE_FACTORY = NewFacadeFactory.INSTANCE;
 	
 	private Exporter exporterTarget = null;
 	private ExporterFacadeImpl exporterFacade = null;
@@ -55,9 +53,8 @@ public class ExporterFacadeTest {
 		exporterTarget = new CfgExporter();
 		exporterFacade = new ExporterFacadeImpl(FACADE_FACTORY, exporterTarget);
 		Properties properties = new Properties();
-		Configuration configurationTarget = new Configuration();
-		configurationTarget.setProperties(properties);
-		ConfigurationFacadeImpl configurationFacade = new ConfigurationFacadeImpl(FACADE_FACTORY, configurationTarget);
+		IConfiguration configurationFacade = FACADE_FACTORY.createNativeConfiguration();
+		configurationFacade.setProperties(properties);
 		exporterFacade.setConfiguration(configurationFacade);	
 		assertSame(properties, ((CfgExporter)exporterTarget).getCustomProperties());
 		Object object = exporterTarget.getProperties().get(ExporterConstants.METADATA_DESCRIPTOR);
@@ -68,14 +65,14 @@ public class ExporterFacadeTest {
 		field.setAccessible(true);
 		object = field.get(configurationMetadataDescriptor);
 		assertNotNull(object);
-		assertTrue(object instanceof ConfigurationFacadeImpl);
+		assertTrue(object instanceof IConfiguration);
 		assertSame(object, configurationFacade);
 	}
 	
 	@Test
 	public void testSetArtifactCollector() {
 		assertNull(exporterTarget.getProperties().get(ExporterConstants.ARTIFACT_COLLECTOR));
-		IArtifactCollector artifactCollectorFacade = NEW_FACADE_FACTORY.createArtifactCollector();
+		IArtifactCollector artifactCollectorFacade = FACADE_FACTORY.createArtifactCollector();
 		exporterFacade.setArtifactCollector(artifactCollectorFacade);
 		assertNotNull(exporterTarget.getProperties().get(ExporterConstants.ARTIFACT_COLLECTOR));
 	}
