@@ -64,6 +64,11 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	}
 
 	@Override
+	public IConfiguration createConfiguration(Object target) {
+		throw new RuntimeException("Should use class 'NewFacadeFactory'");
+	}
+
+	@Override
 	public ClassLoader getClassLoader() {
 		return FacadeFactoryImpl.class.getClassLoader();
 	}
@@ -101,11 +106,6 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	@Override
 	public IColumn createColumn(Object target) {
 		return new ColumnFacadeImpl(this, target);
-	}
-
-	@Override
-	public IConfiguration createConfiguration(Object target) {
-		return new ConfigurationFacadeImpl(this, target);
 	}
 
 	@Override

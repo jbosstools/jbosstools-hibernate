@@ -150,6 +150,16 @@ public class FacadeFactoryTest {
 	}
 	
 	@Test
+	public void testCreateConfiguration() {
+		try {
+			FACADE_FACTORY.createConfiguration(new Configuration());
+			fail();
+		} catch (Throwable t) {
+			assertEquals("Should use class 'NewFacadeFactory'", t.getMessage());			
+		}
+	}
+	
+	@Test
 	public void testCreateSchemaExport() {
 		SchemaExport schemaExport = new SchemaExport();
 		ISchemaExport facade = FACADE_FACTORY.createSchemaExport(schemaExport);
@@ -225,14 +235,6 @@ public class FacadeFactoryTest {
 		IColumn facade = FACADE_FACTORY.createColumn(column);
 		assertTrue(facade instanceof ColumnFacadeImpl);
 		assertSame(column, ((IFacade)facade).getTarget());		
-	}
-	
-	@Test
-	public void testCreateConfiguration() {
-		Configuration configuration = new Configuration();
-		IConfiguration facade = FACADE_FACTORY.createConfiguration(configuration);
-		assertTrue(facade instanceof ConfigurationFacadeImpl);
-		assertSame(configuration, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
