@@ -37,4 +37,11 @@ public class IColumnTest {
 		assertEquals("foobar", columnFacade.getName());
 	}
 	
+	@Test
+	public void testGetSqlTypeCode() {
+		assertNull(columnFacade.getSqlTypeCode());
+		columnTarget.setSqlTypeCode(Integer.MAX_VALUE);
+		assertEquals(Integer.MAX_VALUE, columnFacade.getSqlTypeCode().intValue());
+	}
+
 }
