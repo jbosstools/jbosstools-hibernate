@@ -1,6 +1,8 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.hibernate.mapping.Column;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
@@ -26,6 +28,13 @@ public class IColumnTest {
 	public void testInstance() {
 		assertNotNull(columnFacade);
 		assertNotNull(columnTarget);
+	}
+	
+	@Test
+	public void testGetName() {
+		assertNull(columnFacade.getName());
+		columnTarget.setName("foobar");
+		assertEquals("foobar", columnFacade.getName());
 	}
 	
 }
