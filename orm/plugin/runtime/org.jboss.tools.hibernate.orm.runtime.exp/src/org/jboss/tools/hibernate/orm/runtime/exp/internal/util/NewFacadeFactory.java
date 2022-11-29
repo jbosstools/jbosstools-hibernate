@@ -101,11 +101,10 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 				IConfiguration.class, 
 				wrapperFactory.createJpaConfigurationWrapper(persistenceUnit, properties));
 	}
- 	
+
 	@Override
 	public ClassLoader getClassLoader() {
-		// TODO Auto-generated method stub
-		return null;
+		return INSTANCE.getClass().getClassLoader();
 	}
 
 	@Override
@@ -113,5 +112,5 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+ 	
 }
