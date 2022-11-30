@@ -141,6 +141,15 @@ public class IColumnTest {
 		assertNull(valueFacade);
 	}
 	
+	@Test
+	public void testIsUnique() {
+		assertFalse(columnFacade.isUnique());
+		wrappedColumn.setUnique(true);
+		assertTrue(columnFacade.isUnique());
+		wrappedColumn.setUnique(false);
+		assertFalse(columnFacade.isUnique());
+	}
+	
 	private Value createValue() {
 		return (Value)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
