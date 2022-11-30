@@ -81,6 +81,13 @@ public class IColumnTest {
 		assertEquals(Integer.MAX_VALUE, columnFacade.getLength());
 	}
 	
+	@Test
+	public void testGetDefaultLength() throws Exception {
+		Field defaultLengthField = ColumnWrapper.class.getDeclaredField("DEFAULT_LENGTH");
+		defaultLengthField.setAccessible(true);
+		assertEquals(defaultLengthField.get(null), columnFacade.getDefaultLength());
+	}
+	
 	private Value createIntegerTypeValue() {
 		return (Value)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
