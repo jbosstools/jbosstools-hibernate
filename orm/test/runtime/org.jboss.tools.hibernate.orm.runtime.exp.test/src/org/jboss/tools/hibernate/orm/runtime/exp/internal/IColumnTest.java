@@ -102,6 +102,13 @@ public class IColumnTest {
 		assertEquals(defaultPrecisionField.get(null), columnFacade.getDefaultPrecision());
 	}
 	
+	@Test
+	public void testGetScale() {
+		assertEquals(Integer.MIN_VALUE, columnFacade.getScale());
+		wrappedColumn.setScale(Integer.MAX_VALUE);
+		assertEquals(Integer.MAX_VALUE, columnFacade.getScale());
+	}
+	
 	private Value createIntegerTypeValue() {
 		return (Value)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
