@@ -109,6 +109,13 @@ public class IColumnTest {
 		assertEquals(Integer.MAX_VALUE, columnFacade.getScale());
 	}
 	
+	@Test
+	public void testGetDefaultScale() throws Exception {
+		Field defaultScaleField = ColumnWrapper.class.getDeclaredField("DEFAULT_SCALE");
+		defaultScaleField.setAccessible(true);
+		assertEquals(defaultScaleField.get(null), columnFacade.getDefaultScale());
+	}
+	
 	private Value createIntegerTypeValue() {
 		return (Value)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
