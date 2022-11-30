@@ -132,7 +132,7 @@ public class NewFacadeFactoryTest {
 	
 	@Test
 	public void testCreateColumn() {
-		IColumn columnFacade = facadeFactory.createColumn();
+		IColumn columnFacade = facadeFactory.createColumn(null);
 		assertNotNull(columnFacade);
 		Object columnTarget = ((IFacade)columnFacade).getTarget();
 		assertNotNull(columnTarget);

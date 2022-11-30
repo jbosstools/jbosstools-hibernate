@@ -37,7 +37,7 @@ public class IColumnTest {
 	
 	@BeforeEach
 	public void beforeEach() throws Exception {
-		columnFacade = FACADE_FACTORY.createColumn();
+		columnFacade = FACADE_FACTORY.createColumn(null);
 		columnTarget = (ColumnWrapper)((IFacade)columnFacade).getTarget();
 		Field columnField = ColumnWrapper.class.getDeclaredField("wrappedColumn");
 		columnField.setAccessible(true);

@@ -85,10 +85,10 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 				
 	}
 	
-	public IColumn createColumn() {
+	public IColumn createColumn(String name) {
 		return (IColumn)GenericFacadeFactory.createFacade(
 				IColumn.class, 
-				wrapperFactory.createColumnWrapper());
+				wrapperFactory.createColumnWrapper(name));
 	}
 
 	public IConfiguration createNativeConfiguration() {
