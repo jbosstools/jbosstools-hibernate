@@ -52,12 +52,12 @@ public class ColumnFacadeImpl extends AbstractColumnFacade {
 	}
 	
 	@Override
-	public int getLength() {
+	public long getLength() {
 		Long length = ((Column)getTarget()).getLength();
 		if (length == null) {
 			return Integer.MIN_VALUE;
 		}
-		return length.intValue();
+		return length.longValue();
 	}
 	
 	@Override

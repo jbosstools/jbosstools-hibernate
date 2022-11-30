@@ -5,7 +5,7 @@ public interface IColumn {
 	String getName();
 	Integer getSqlTypeCode();
 	String getSqlType();
-	int getLength();
+	long getLength();
 	int getDefaultLength();
 	int getPrecision();
 	int getDefaultPrecision();

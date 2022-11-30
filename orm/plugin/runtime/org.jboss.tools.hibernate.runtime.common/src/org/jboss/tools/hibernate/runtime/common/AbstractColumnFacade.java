@@ -46,7 +46,7 @@ implements IColumn {
 	}
 
 	@Override
-	public int getLength() {
+	public long getLength() {
 		return (Integer)Util.invokeMethod(
 				getTarget(), 
 				"getLength", 
