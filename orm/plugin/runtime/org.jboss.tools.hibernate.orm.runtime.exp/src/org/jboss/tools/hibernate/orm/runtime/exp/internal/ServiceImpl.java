@@ -28,7 +28,6 @@ import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.BasicValue;
-import org.hibernate.mapping.Column;
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
@@ -57,10 +56,8 @@ import org.hibernate.tool.internal.reveng.reader.DatabaseReader;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataDescriptor;
-import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.JpaMappingFileHelper;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
-import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.ConfigurationMetadataDescriptor;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractPersistentClassFacade;
@@ -295,7 +292,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IColumn newColumn(String string) {
-		return facadeFactory.createColumn(new Column(string));
+		return newFacadeFactory.createColumn(string);
 	}
 
 	@Override

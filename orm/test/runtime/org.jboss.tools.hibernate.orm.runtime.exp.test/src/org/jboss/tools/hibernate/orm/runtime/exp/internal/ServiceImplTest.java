@@ -23,7 +23,6 @@ import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
-import org.hibernate.mapping.Column;
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
@@ -53,6 +52,7 @@ import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
+import org.hibernate.tool.orm.jbt.wrp.ColumnWrapper;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
@@ -343,8 +343,8 @@ public class ServiceImplTest {
 		assertNotNull(column);
 		Object target = ((IFacade)column).getTarget();
 		assertNotNull(target);
-		assertTrue(target instanceof Column);
-		assertEquals("foo", ((Column)target).getName());
+		assertTrue(target instanceof ColumnWrapper);
+		assertEquals("foo", ((ColumnWrapper)target).getName());
 	}
 	
 	@Test
