@@ -1,8 +1,10 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
@@ -114,6 +116,14 @@ public class IColumnTest {
 		Field defaultScaleField = ColumnWrapper.class.getDeclaredField("DEFAULT_SCALE");
 		defaultScaleField.setAccessible(true);
 		assertEquals(defaultScaleField.get(null), columnFacade.getDefaultScale());
+	}
+	
+	@Test
+	public void testIsNullable() {
+		wrappedColumn.setNullable(true);
+		assertTrue(columnFacade.isNullable());
+		wrappedColumn.setNullable(false);
+		assertFalse(columnFacade.isNullable());
 	}
 	
 	private Value createIntegerTypeValue() {
