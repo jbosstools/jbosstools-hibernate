@@ -150,6 +150,13 @@ public class IColumnTest {
 		assertFalse(columnFacade.isUnique());
 	}
 	
+	@Test
+	public void testSetSqlType() {
+		assertNull(wrappedColumn.getSqlType());
+		columnFacade.setSqlType("blah");
+		assertEquals("blah", wrappedColumn.getSqlType());
+	}
+	
 	private Value createValue() {
 		return (Value)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
