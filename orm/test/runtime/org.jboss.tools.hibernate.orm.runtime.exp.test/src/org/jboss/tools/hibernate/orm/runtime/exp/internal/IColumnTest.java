@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Field;
@@ -22,6 +23,7 @@ import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -71,7 +73,7 @@ public class IColumnTest {
 		IConfiguration configurationFacade = FACADE_FACTORY.createNativeConfiguration();
 		configurationFacade.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
 		configurationFacade.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
-		wrappedColumn.setValue(createIntegerTypeValue());
+		wrappedColumn.setValue(createValue());
 		wrappedColumn.setSqlType(null);
 		assertEquals("integer", columnFacade.getSqlType(configurationFacade));
 	}
@@ -126,7 +128,20 @@ public class IColumnTest {
 		assertFalse(columnFacade.isNullable());
 	}
 	
-	private Value createIntegerTypeValue() {
+	@Test
+	public void testGetValue() {
+		Value v = createValue();
+		assertNull(columnFacade.getValue());
+		wrappedColumn.setValue(v);
+		IValue valueFacade = columnFacade.getValue();
+		assertNotNull(valueFacade);
+		assertSame(v, ((IFacade)valueFacade).getTarget());
+		wrappedColumn.setValue(null);
+		valueFacade = columnFacade.getValue();
+		assertNull(valueFacade);
+	}
+	
+	private Value createValue() {
 		return (Value)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
 				new Class[] { Value.class }, 
