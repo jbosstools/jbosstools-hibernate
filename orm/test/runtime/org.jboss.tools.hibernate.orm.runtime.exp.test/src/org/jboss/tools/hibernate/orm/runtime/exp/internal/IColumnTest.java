@@ -95,6 +95,13 @@ public class IColumnTest {
 		assertEquals(Integer.MAX_VALUE, columnFacade.getPrecision());
 	}
 	
+	@Test
+	public void testGetDefaultPrecision() throws Exception {
+		Field defaultPrecisionField = ColumnWrapper.class.getDeclaredField("DEFAULT_PRECISION");
+		defaultPrecisionField.setAccessible(true);
+		assertEquals(defaultPrecisionField.get(null), columnFacade.getDefaultPrecision());
+	}
+	
 	private Value createIntegerTypeValue() {
 		return (Value)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
