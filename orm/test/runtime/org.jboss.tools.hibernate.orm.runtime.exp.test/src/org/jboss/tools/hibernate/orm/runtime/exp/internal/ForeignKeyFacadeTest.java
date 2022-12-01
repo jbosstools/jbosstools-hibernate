@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -13,7 +12,6 @@ import java.util.List;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
-import org.hibernate.tool.orm.jbt.wrp.ColumnWrapper;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
@@ -81,10 +79,7 @@ public class ForeignKeyFacadeTest {
 	@Test
 	public void testContainsColumn() throws Exception {
 		IColumn columnFacade = FACADE_FACTORY.createColumn("foo");
-		ColumnWrapper columnWrapper = (ColumnWrapper)((IFacade)columnFacade).getTarget();
-		Field field = ColumnWrapper.class.getDeclaredField("wrappedColumn");
-		field.setAccessible(true);
-		Column column = (Column)field.get(columnWrapper);
+		Column column = (Column)((IFacade)columnFacade).getTarget();
 		assertFalse(foreignKeyFacade.containsColumn(columnFacade));
 		foreignKey.addColumn(column);
 		assertTrue(foreignKeyFacade.containsColumn(columnFacade));

@@ -13,7 +13,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.type.IntegerType;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
@@ -33,55 +32,50 @@ public class IColumnTest {
 	
 	private IColumn columnFacade = null; 
 	private ColumnWrapper columnTarget = null;
-	private Column wrappedColumn = null;
 	
 	@BeforeEach
 	public void beforeEach() throws Exception {
 		columnFacade = FACADE_FACTORY.createColumn(null);
 		columnTarget = (ColumnWrapper)((IFacade)columnFacade).getTarget();
-		Field columnField = ColumnWrapper.class.getDeclaredField("wrappedColumn");
-		columnField.setAccessible(true);
-		wrappedColumn = (Column)columnField.get(columnTarget);
 	}
 	
 	@Test
 	public void testInstance() {
 		assertNotNull(columnFacade);
 		assertNotNull(columnTarget);
-		assertNotNull(wrappedColumn);
 	}
 	
 	@Test
 	public void testGetName() {
 		assertNull(columnFacade.getName());
-		wrappedColumn.setName("foobar");
+		columnTarget.setName("foobar");
 		assertEquals("foobar", columnFacade.getName());
 	}
 	
 	@Test
 	public void testGetSqlTypeCode() {
 		assertNull(columnFacade.getSqlTypeCode());
-		wrappedColumn.setSqlTypeCode(Integer.MAX_VALUE);
+		columnTarget.setSqlTypeCode(Integer.MAX_VALUE);
 		assertEquals(Integer.MAX_VALUE, columnFacade.getSqlTypeCode().intValue());
 	}
 
 	@Test
 	public void testGetSqlType() {
 		assertNull(columnFacade.getSqlType());
-		wrappedColumn.setSqlType("foobar");
+		columnTarget.setSqlType("foobar");
 		assertEquals("foobar", columnFacade.getSqlType());
 		IConfiguration configurationFacade = FACADE_FACTORY.createNativeConfiguration();
 		configurationFacade.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
 		configurationFacade.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
-		wrappedColumn.setValue(createValue());
-		wrappedColumn.setSqlType(null);
+		columnTarget.setValue(createValue());
+		columnTarget.setSqlType(null);
 		assertEquals("integer", columnFacade.getSqlType(configurationFacade));
 	}
 	
 	@Test
 	public void testGetLength() {
 		assertEquals(Integer.MIN_VALUE, columnFacade.getLength());
-		wrappedColumn.setLength(Integer.MAX_VALUE);
+		columnTarget.setLength(Integer.MAX_VALUE);
 		assertEquals(Integer.MAX_VALUE, columnFacade.getLength());
 	}
 	
@@ -95,7 +89,7 @@ public class IColumnTest {
 	@Test
 	public void testGetPrecision() {
 		assertEquals(Integer.MIN_VALUE, columnFacade.getPrecision());
-		wrappedColumn.setPrecision(Integer.MAX_VALUE);
+		columnTarget.setPrecision(Integer.MAX_VALUE);
 		assertEquals(Integer.MAX_VALUE, columnFacade.getPrecision());
 	}
 	
@@ -109,7 +103,7 @@ public class IColumnTest {
 	@Test
 	public void testGetScale() {
 		assertEquals(Integer.MIN_VALUE, columnFacade.getScale());
-		wrappedColumn.setScale(Integer.MAX_VALUE);
+		columnTarget.setScale(Integer.MAX_VALUE);
 		assertEquals(Integer.MAX_VALUE, columnFacade.getScale());
 	}
 	
@@ -122,9 +116,9 @@ public class IColumnTest {
 	
 	@Test
 	public void testIsNullable() {
-		wrappedColumn.setNullable(true);
+		columnTarget.setNullable(true);
 		assertTrue(columnFacade.isNullable());
-		wrappedColumn.setNullable(false);
+		columnTarget.setNullable(false);
 		assertFalse(columnFacade.isNullable());
 	}
 	
@@ -132,11 +126,11 @@ public class IColumnTest {
 	public void testGetValue() {
 		Value v = createValue();
 		assertNull(columnFacade.getValue());
-		wrappedColumn.setValue(v);
+		columnTarget.setValue(v);
 		IValue valueFacade = columnFacade.getValue();
 		assertNotNull(valueFacade);
 		assertSame(v, ((IFacade)valueFacade).getTarget());
-		wrappedColumn.setValue(null);
+		columnTarget.setValue(null);
 		valueFacade = columnFacade.getValue();
 		assertNull(valueFacade);
 	}
@@ -144,17 +138,17 @@ public class IColumnTest {
 	@Test
 	public void testIsUnique() {
 		assertFalse(columnFacade.isUnique());
-		wrappedColumn.setUnique(true);
+		columnTarget.setUnique(true);
 		assertTrue(columnFacade.isUnique());
-		wrappedColumn.setUnique(false);
+		columnTarget.setUnique(false);
 		assertFalse(columnFacade.isUnique());
 	}
 	
 	@Test
 	public void testSetSqlType() {
-		assertNull(wrappedColumn.getSqlType());
+		assertNull(columnTarget.getSqlType());
 		columnFacade.setSqlType("blah");
-		assertEquals("blah", wrappedColumn.getSqlType());
+		assertEquals("blah", columnTarget.getSqlType());
 	}
 	
 	private Value createValue() {
