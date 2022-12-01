@@ -16,7 +16,6 @@ import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
-import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -79,6 +78,13 @@ public class ISessionFactoryTest {
 	public void testConstruction() {
 		assertNotNull(sessionFactoryFacade);
 		assertNotNull(sessionFactoryTarget);
+	}
+	
+	@Test
+	public void testClose() {
+		assertFalse(sessionFactoryTarget.isClosed());
+		sessionFactoryFacade.close();
+		assertTrue(sessionFactoryTarget.isClosed());
 	}
 	
 }
