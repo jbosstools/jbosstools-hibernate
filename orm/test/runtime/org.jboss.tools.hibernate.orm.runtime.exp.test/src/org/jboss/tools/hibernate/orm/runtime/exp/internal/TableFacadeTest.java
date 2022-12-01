@@ -15,9 +15,9 @@ import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
+import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractTableFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
-import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 
 public class TableFacadeTest {
 
-	private static IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
+	private static NewFacadeFactory FACADE_FACTORY = NewFacadeFactory.INSTANCE;
 	
 	@Test
 	public void testGetName() {
@@ -41,11 +41,11 @@ public class TableFacadeTest {
 	public void testAddColumn() {
 		Table table = new Table();
 		ITable tableFacade = new AbstractTableFacade(FACADE_FACTORY, table) {};
-		Column column = new Column("foo");
-		IColumn columnFacade = FACADE_FACTORY.createColumn(column);
-		assertNull(table.getColumn(column));
+		IColumn columnFacade = FACADE_FACTORY.createColumn("foo");
+		Column columnTarget = (Column)((IFacade)columnFacade).getTarget();
+		assertNull(table.getColumn(columnTarget));
 		tableFacade.addColumn(columnFacade);
-		assertSame(column, table.getColumn(column));
+		assertSame(columnTarget, table.getColumn(columnTarget));
 	}
 	
 	@Test

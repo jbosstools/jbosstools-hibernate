@@ -16,6 +16,7 @@ import java.util.List;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
+import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractPrimaryKeyFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
@@ -27,7 +28,7 @@ import org.junit.jupiter.api.Test;
 
 public class PrimaryKeyFacadeTest {
 
-	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
+	private static final NewFacadeFactory FACADE_FACTORY = NewFacadeFactory.INSTANCE;
 	
 	private IPrimaryKey primaryKeyFacade = null; 
 	private PrimaryKey primaryKeyTarget = null;
@@ -44,8 +45,8 @@ public class PrimaryKeyFacadeTest {
 		field.setAccessible(true);
 		assertNull(field.get(primaryKeyFacade));
 		field.set(primaryKeyFacade, Collections.emptyList());
-		Column columnTarget = new Column();
-		IColumn columnFacade = FACADE_FACTORY.createColumn(columnTarget);
+		IColumn columnFacade = FACADE_FACTORY.createColumn("foo");
+		Column columnTarget = (Column)((IFacade)columnFacade).getTarget();
 		assertTrue(primaryKeyTarget.getColumns().isEmpty());
 		primaryKeyFacade.addColumn(columnFacade);
 		assertEquals(1, primaryKeyTarget.getColumns().size());
@@ -107,10 +108,9 @@ public class PrimaryKeyFacadeTest {
 	
 	@Test
 	public void testContainsColumn() {
-		Column columnTarget = new Column();
-		columnTarget.setName("foo");
-		IColumn columnFacade = FACADE_FACTORY.createColumn(columnTarget);
+		IColumn columnFacade = FACADE_FACTORY.createColumn("foo");
 		assertFalse(primaryKeyFacade.containsColumn(columnFacade));
+		Column columnTarget = (Column)((IFacade)columnFacade).getTarget();
 		primaryKeyTarget.addColumn(columnTarget);
 		assertTrue(primaryKeyFacade.containsColumn(columnFacade));
 	}

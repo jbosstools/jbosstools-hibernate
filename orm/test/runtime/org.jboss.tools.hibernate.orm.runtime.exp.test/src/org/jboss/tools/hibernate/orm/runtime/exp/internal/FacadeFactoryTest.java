@@ -42,8 +42,6 @@ import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
-import org.jboss.tools.hibernate.runtime.spi.IColumn;
-import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
 import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
@@ -160,6 +158,16 @@ public class FacadeFactoryTest {
 	}
 	
 	@Test
+	public void testCreateColumn() {
+		try {
+			FACADE_FACTORY.createColumn(new Column());
+			fail();
+		} catch (Throwable t) {
+			assertEquals("Should use class 'NewFacadeFactory'", t.getMessage());			
+		}
+	}
+	
+	@Test
 	public void testCreateSchemaExport() {
 		SchemaExport schemaExport = new SchemaExport();
 		ISchemaExport facade = FACADE_FACTORY.createSchemaExport(schemaExport);
@@ -227,14 +235,6 @@ public class FacadeFactoryTest {
 				new TestInvocationHandler());
 		ICollectionMetadata facade = FACADE_FACTORY.createCollectionMetadata(collectionMetadata);
 		assertSame(collectionMetadata, ((IFacade)facade).getTarget());		
-	}
-	
-	@Test
-	public void testCreateColumn() {
-		Column column = new Column();
-		IColumn facade = FACADE_FACTORY.createColumn(column);
-		assertTrue(facade instanceof ColumnFacadeImpl);
-		assertSame(column, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test

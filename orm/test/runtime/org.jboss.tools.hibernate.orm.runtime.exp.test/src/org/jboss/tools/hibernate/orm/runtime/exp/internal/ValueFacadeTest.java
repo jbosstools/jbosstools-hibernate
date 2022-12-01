@@ -36,9 +36,9 @@ import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
+import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractValueFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
-import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
@@ -50,7 +50,7 @@ import org.junit.jupiter.api.Test;
 
 public class ValueFacadeTest {
 
-	private static IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
+	private static NewFacadeFactory FACADE_FACTORY = NewFacadeFactory.INSTANCE;
 	
 	private Value valueTarget = null;
 	private IValue valueFacade = null;
@@ -457,8 +457,8 @@ public class ValueFacadeTest {
 		valueFacade = new AbstractValueFacade(FACADE_FACTORY, simpleValueTarget) {};
 		Iterator<?> columnIterator = simpleValueTarget.getColumnIterator();
 		assertFalse(columnIterator.hasNext());
-		Column columnTarget = new Column();
-		IColumn columnFacade = FACADE_FACTORY.createColumn(columnTarget);
+		IColumn columnFacade = FACADE_FACTORY.createColumn("foo");
+		Column columnTarget = (Column)((IFacade)columnFacade).getTarget();
 		valueFacade.addColumn(columnFacade);
 		columnIterator = simpleValueTarget.getColumnIterator();
 		assertTrue(columnIterator.hasNext());
