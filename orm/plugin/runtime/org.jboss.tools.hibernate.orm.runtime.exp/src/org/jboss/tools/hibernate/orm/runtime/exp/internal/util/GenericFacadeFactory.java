@@ -9,6 +9,7 @@ import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -62,6 +63,11 @@ public class GenericFacadeFactory {
 									(Iterator<?>)result, 
 									determineActualIteratorParameterType(method.getGenericReturnType()));
 						}
+						else if (Map.class.isAssignableFrom(returnedClass)) {
+							result = createMapResult(
+									(Map<?,?>)result,
+									determineActualMapParameterTypes(method.getGenericReturnType()));
+						}
 						else if (classesSet.contains(returnedClass)) {
 							if (result == target) {
 								result = proxy;
@@ -94,6 +100,16 @@ public class GenericFacadeFactory {
 		return result;
 	}
 	
+	private static Class<?>[] determineActualMapParameterTypes(Type type) {
+		Class<?>[] result = new Class[] { Object.class, Object.class };
+		if (type instanceof ParameterizedType) {
+			ParameterizedType parameterizedType = (ParameterizedType)type;
+			result[0] = (Class<?>)parameterizedType.getActualTypeArguments()[0];
+			result[1] = (Class<?>)parameterizedType.getActualTypeArguments()[1];
+		}
+		return result;
+	}
+ 	
 	private static Object[] unwrapFacades(Object[] args) {
 		Object[] result = null;
 		if (args != null) {
@@ -125,6 +141,16 @@ public class GenericFacadeFactory {
 			
 		};		
 	}	
+	
+	private static Map<?, ?> createMapResult(Map<?, ?> map, Class<?>[] actualType) {
+		Map<Object, Object> result = (Map<Object, Object>)map;
+		if  (classesSet.contains(actualType[1])) {
+			for (Object key : map.keySet()) {
+				result.put(key, createFacade(actualType[1], result));
+			}
+		}
+		return result;
+	}
 	
 	private static Class<?>[] argumentClasses(Object[] args) {
 		Class<?>[] result = new Class<?>[0];
