@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -8,6 +9,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Files;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.hibernate.SessionFactory;
@@ -16,6 +18,7 @@ import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
+import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,7 +37,7 @@ public class ISessionFactoryTest {
 	
 	private static final String TEST_HBM_XML_STRING =
 			"<hibernate-mapping package='org.jboss.tools.hibernate.orm.runtime.exp.internal'>" +
-			"  <class name='SessionFactoryFacadeTest$Foo'>" + 
+			"  <class name='ISessionFactoryTest$Foo'>" + 
 			"    <id name='id' access='field' />" +
 			"    <set name='bars' access='field' >" +
 			"      <key column='barId' />" +
@@ -85,6 +88,13 @@ public class ISessionFactoryTest {
 		assertFalse(sessionFactoryTarget.isClosed());
 		sessionFactoryFacade.close();
 		assertTrue(sessionFactoryTarget.isClosed());
+	}
+	
+	@Test
+	public void testGetAllClassMetadata() throws Exception {
+		Map<String, IClassMetadata> allClassMetadata = sessionFactoryFacade.getAllClassMetadata();
+		assertEquals(1, allClassMetadata.size());
+		assertNotNull(allClassMetadata.get(Foo.class.getName()));
 	}
 	
 }
