@@ -21,6 +21,7 @@ import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -103,6 +104,13 @@ public class ISessionFactoryTest {
 		Map<String, ICollectionMetadata> allCollectionMetadata = sessionFactoryFacade.getAllCollectionMetadata();
 		assertEquals(1, allCollectionMetadata.size());
 		assertNotNull(allCollectionMetadata.get(Foo.class.getName() + ".bars"));
+	}
+	
+	@Test
+	public void testOpenSession() throws Exception {
+		ISession sessionFacade = sessionFactoryFacade.openSession();
+		assertNotNull(sessionFacade);
+		assertTrue(sessionFacade instanceof ISession);
 	}
 	
 }
