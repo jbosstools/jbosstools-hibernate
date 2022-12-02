@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.util.HashSet;
 import java.util.Map;
@@ -18,9 +17,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.SessionFactoryFacadeTest.Foo;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
-import org.jboss.tools.hibernate.runtime.common.AbstractSessionFactoryFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
