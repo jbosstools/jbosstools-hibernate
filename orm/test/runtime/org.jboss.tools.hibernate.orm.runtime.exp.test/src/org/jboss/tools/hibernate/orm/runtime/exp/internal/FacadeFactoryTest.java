@@ -168,6 +168,16 @@ public class FacadeFactoryTest {
 	}
 	
 	@Test
+	public void testCreateSessionFactory() {
+		try {
+			FACADE_FACTORY.createSessionFactory(null);
+			fail();
+		} catch (Throwable t) {
+			assertEquals("Should use class 'NewFacadeFactory'", t.getMessage());			
+		}
+	}
+	
+	@Test
 	public void testCreateSchemaExport() {
 		SchemaExport schemaExport = new SchemaExport();
 		ISchemaExport facade = FACADE_FACTORY.createSchemaExport(schemaExport);
@@ -345,17 +355,6 @@ public class FacadeFactoryTest {
 		IQuery facade = FACADE_FACTORY.createQuery(query);
 		assertTrue(facade instanceof QueryFacadeImpl);
 		assertSame(query, ((IFacade)facade).getTarget());
-	}
-	
-	@Test
-	public void testCreateSessionFactory() {
-		SessionFactory sessionFactory = (SessionFactory)Proxy.newProxyInstance(
-				FACADE_FACTORY.getClassLoader(), 
-				new Class[] { SessionFactory.class }, 
-				new TestInvocationHandler());
-		ISessionFactory facade = FACADE_FACTORY.createSessionFactory(sessionFactory);
-		assertTrue(facade instanceof SessionFactoryFacadeImpl);
-		assertSame(sessionFactory, ((IFacade)facade).getTarget());
 	}
 	
 	@Test

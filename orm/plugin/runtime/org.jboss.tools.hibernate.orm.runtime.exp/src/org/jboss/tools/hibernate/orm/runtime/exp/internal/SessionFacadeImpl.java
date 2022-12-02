@@ -1,9 +1,12 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
 import org.hibernate.Session;
+import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractSessionFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
+import org.jboss.tools.hibernate.runtime.common.Util;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
+import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 
 import jakarta.persistence.Query;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -38,6 +41,22 @@ public class SessionFacadeImpl extends AbstractSessionFacade {
 		criteriaQuery.select(root);
 		Query query = ((Session)getTarget()).createQuery(criteriaQuery);
 		return getFacadeFactory().createCriteria(query);		
+	}
+
+	@Override
+	public ISessionFactory getSessionFactory() {
+		if (targetFactory == null) {
+			Object targetSessionFactory = Util.invokeMethod(
+					getTarget(), 
+					"getSessionFactory", 
+					new Class[] {}, 
+					new Object[] {});
+			if (targetSessionFactory != null) {
+				targetFactory = (ISessionFactory)GenericFacadeFactory
+						.createFacade(ISessionFactory.class, targetSessionFactory);
+			}
+		}
+		return targetFactory;
 	}
 
 }

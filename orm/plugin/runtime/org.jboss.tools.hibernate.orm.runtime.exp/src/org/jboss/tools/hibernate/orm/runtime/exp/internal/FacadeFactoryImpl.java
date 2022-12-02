@@ -74,6 +74,11 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	}
 
 	@Override
+	public ISessionFactory createSessionFactory(Object target) {
+		throw new RuntimeException("Should use class 'NewFacadeFactory'");
+	}
+	
+	@Override
 	public ClassLoader getClassLoader() {
 		return FacadeFactoryImpl.class.getClassLoader();
 	}
@@ -156,11 +161,6 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 		return null;
 	}
 
-	@Override
-	public ISessionFactory createSessionFactory(Object target) {
-		return new SessionFactoryFacadeImpl(this, target);
-	}
-	
 	@Override
 	public ISession createSession(Object target) {
 		return new SessionFacadeImpl(this, target);
