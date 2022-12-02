@@ -14,6 +14,7 @@ import java.util.Set;
 
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
+import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -184,6 +185,7 @@ public class GenericFacadeFactory {
 	private static Set<Class<?>> classesSet = new HashSet<>(
 			Arrays.asList(new Class[] {
 					IClassMetadata.class,
+					ICollectionMetadata.class,
 					IConfiguration.class,
 					INamingStrategy.class,
 					IPersistentClass.class,
