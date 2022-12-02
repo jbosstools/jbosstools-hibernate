@@ -19,6 +19,7 @@ import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
+import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -95,6 +96,13 @@ public class ISessionFactoryTest {
 		Map<String, IClassMetadata> allClassMetadata = sessionFactoryFacade.getAllClassMetadata();
 		assertEquals(1, allClassMetadata.size());
 		assertNotNull(allClassMetadata.get(Foo.class.getName()));
+	}
+	
+	@Test
+	public void testGetAllCollectionMetadata() throws Exception {
+		Map<String, ICollectionMetadata> allCollectionMetadata = sessionFactoryFacade.getAllCollectionMetadata();
+		assertEquals(1, allCollectionMetadata.size());
+		assertNotNull(allCollectionMetadata.get(Foo.class.getName() + ".bars"));
 	}
 	
 }
