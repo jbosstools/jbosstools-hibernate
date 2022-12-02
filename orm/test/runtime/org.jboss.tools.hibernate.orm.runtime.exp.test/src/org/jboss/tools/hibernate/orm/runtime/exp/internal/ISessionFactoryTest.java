@@ -3,6 +3,7 @@ package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
@@ -16,6 +17,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
+import org.jboss.tools.hibernate.orm.runtime.exp.internal.SessionFactoryFacadeTest.Foo;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
@@ -111,6 +113,14 @@ public class ISessionFactoryTest {
 		ISession sessionFacade = sessionFactoryFacade.openSession();
 		assertNotNull(sessionFacade);
 		assertTrue(sessionFacade instanceof ISession);
+	}
+	
+	@Test
+	public void testGetClassMetadata() throws Exception {
+		assertNull(sessionFactoryFacade.getClassMetadata("foo"));
+		assertNotNull(sessionFactoryFacade.getClassMetadata(Foo.class.getName()));
+		assertNull(sessionFactoryFacade.getClassMetadata(Object.class));
+		assertNotNull(sessionFactoryFacade.getClassMetadata(Foo.class));
 	}
 	
 }
