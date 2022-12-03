@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
@@ -78,6 +79,11 @@ public class IClassMetadataTest {
 	public void testConstruction() {
 		assertNotNull(classMetadataTarget);
 		assertNotNull(classMetadataFacade);
+	}
+	
+	@Test
+	public void testGetEntityName() {
+		assertEquals(Foo.class.getName(), classMetadataFacade.getEntityName());
 	}
 	
 }
