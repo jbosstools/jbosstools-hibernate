@@ -116,4 +116,9 @@ public class IClassMetadataTest {
 		assertSame(Foo.class, classMetadataFacade.getMappedClass());
 	}
 	
+	@Test
+	public void testGetIdentifierType() {
+		assertSame("string", classMetadataFacade.getIdentifierType().getName());
+	}
+	
 }
