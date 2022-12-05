@@ -86,4 +86,9 @@ public class IClassMetadataTest {
 		assertEquals(Foo.class.getName(), classMetadataFacade.getEntityName());
 	}
 	
+	@Test
+	public void testGetIdentifierPropertyName() {
+		assertEquals("id", classMetadataFacade.getIdentifierPropertyName());
+	}
+	
 }
