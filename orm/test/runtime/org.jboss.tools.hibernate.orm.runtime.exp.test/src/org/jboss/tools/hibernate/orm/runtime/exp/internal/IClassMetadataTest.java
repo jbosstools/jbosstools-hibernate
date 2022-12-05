@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -89,6 +90,13 @@ public class IClassMetadataTest {
 	@Test
 	public void testGetIdentifierPropertyName() {
 		assertEquals("id", classMetadataFacade.getIdentifierPropertyName());
+	}
+	
+	@Test
+	public void testGetPropertyNames() {
+		String[] propertyNames = classMetadataFacade.getPropertyNames();
+ 		assertEquals(1, propertyNames.length);
+ 		assertEquals("bars", propertyNames[0]);
 	}
 	
 }
