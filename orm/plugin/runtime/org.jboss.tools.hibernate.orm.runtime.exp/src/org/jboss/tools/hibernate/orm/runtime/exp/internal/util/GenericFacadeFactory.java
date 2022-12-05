@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal.util;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -23,6 +24,7 @@ import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
+import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public class GenericFacadeFactory {
@@ -61,15 +63,24 @@ public class GenericFacadeFactory {
 					}
 					if (result != null) {
 						Class<?> returnedClass = method.getReturnType();
-						if (Iterator.class.isAssignableFrom(returnedClass) ) {
-							result = createIteratorResult(
-									(Iterator<?>)result, 
-									determineActualIteratorParameterType(method.getGenericReturnType()));
+						Type genericReturnType = method.getGenericReturnType();
+						if (genericReturnType != null && genericReturnType instanceof ParameterizedType) {
+							if (Iterator.class.isAssignableFrom(returnedClass) ) {
+								result = createIteratorResult(
+										(Iterator<?>)result, 
+										(ParameterizedType)genericReturnType);
+							}
+							else if (Map.class.isAssignableFrom(returnedClass)) {
+								result = createMapResult(
+										(Map<?,?>)result,
+										(ParameterizedType)genericReturnType);
+							}
 						}
-						else if (Map.class.isAssignableFrom(returnedClass)) {
-							result = createMapResult(
-									(Map<?,?>)result,
-									determineActualMapParameterTypes(method.getGenericReturnType()));
+						else if (returnedClass.isArray() && classesSet.contains(returnedClass.getComponentType())) {
+							result = createArrayResult(
+									(Object[])result,
+									returnedClass.getComponentType());
+
 						}
 						else if (classesSet.contains(returnedClass)) {
 							if (result == target) {
@@ -94,25 +105,6 @@ public class GenericFacadeFactory {
 		
 	}
 	
-	private static Class<?> determineActualIteratorParameterType(Type type) {
-		Class<?> result = Object.class;
-		if (type instanceof ParameterizedType) {
-			ParameterizedType parameterizedType = (ParameterizedType)type;
-			result = (Class<?>) parameterizedType.getActualTypeArguments()[0];
-		}
-		return result;
-	}
-	
-	private static Class<?>[] determineActualMapParameterTypes(Type type) {
-		Class<?>[] result = new Class[] { Object.class, Object.class };
-		if (type instanceof ParameterizedType) {
-			ParameterizedType parameterizedType = (ParameterizedType)type;
-			result[0] = (Class<?>)parameterizedType.getActualTypeArguments()[0];
-			result[1] = (Class<?>)parameterizedType.getActualTypeArguments()[1];
-		}
-		return result;
-	}
- 	
 	private static Object[] unwrapFacades(Object[] args) {
 		Object[] result = null;
 		if (args != null) {
@@ -128,7 +120,8 @@ public class GenericFacadeFactory {
 		return result;
  	}
 	
-	private static Iterator<?> createIteratorResult(Iterator<?> targetIterator, Class<?> actualType) {
+	private static Iterator<?> createIteratorResult(Iterator<?> targetIterator, ParameterizedType parameterizedType) {
+		Class<?> actualType = (Class<?>)parameterizedType.getActualTypeArguments()[0];
 		boolean actualTypeIsFacade = classesSet.contains(actualType);
 		return new Iterator<Object>() {
 			@Override
@@ -145,12 +138,21 @@ public class GenericFacadeFactory {
 		};		
 	}	
 	
-	private static Map<?, ?> createMapResult(Map<?, ?> map, Class<?>[] actualType) {
+	private static Map<?, ?> createMapResult(Map<?, ?> map, ParameterizedType parameterizedType) {
 		Map<Object, Object> result = (Map<Object, Object>)map;
-		if  (classesSet.contains(actualType[1])) {
+		Class<?> actualValueType = (Class<?>)parameterizedType.getActualTypeArguments()[1];
+		if  (classesSet.contains(actualValueType)) {
 			for (Object key : map.keySet()) {
-				result.put(key, createFacade(actualType[1], result));
+				result.put(key, createFacade(actualValueType, result));
 			}
+		}
+		return result;
+	}
+	
+	private static <T> T[] createArrayResult(Object[] array, Class<?> actualType) {
+		T[] result = (T[])Array.newInstance(actualType, array.length);
+		for (int i = 0; i < array.length; i++) {
+			result[i] = (T)createFacade(actualType, array[i]);
 		}
 		return result;
 	}
@@ -194,6 +196,7 @@ public class GenericFacadeFactory {
 					ISession.class,
 					ISessionFactory.class,
 					ITable.class,
+					IType.class,
 					IValue.class
 			}));
 	
