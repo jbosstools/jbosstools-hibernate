@@ -147,4 +147,9 @@ public class IClassMetadataTest {
 		assertSame("bar", identifier);
 	}
 	
+	@Test
+	public void testIsInstanceOfAbstractEntityPersister() {
+		assertTrue(classMetadataFacade.isInstanceOfAbstractEntityPersister());
+	}
+	
 }
