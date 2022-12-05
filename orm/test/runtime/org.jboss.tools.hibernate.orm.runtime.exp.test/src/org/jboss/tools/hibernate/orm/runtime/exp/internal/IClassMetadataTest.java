@@ -20,6 +20,7 @@ import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.junit.jupiter.api.BeforeEach;
@@ -60,6 +61,8 @@ public class IClassMetadataTest {
 	private EntityPersister classMetadataTarget = null;
 	private IClassMetadata classMetadataFacade = null;
 	
+	private ISessionFactory sessionFactoryFacade = null;
+	
 	@BeforeEach
 	public void beforeEach() throws Exception {
 		tempDir = Files.createTempDirectory("temp").toFile();
@@ -74,7 +77,7 @@ public class IClassMetadataTest {
 		IConfiguration configuration = FACADE_FACTORY.createNativeConfiguration();
 		configuration.addFile(hbmXmlFile);
 		configuration.configure(cfgXmlFile);
-		ISessionFactory sessionFactoryFacade = configuration.buildSessionFactory();
+		sessionFactoryFacade = configuration.buildSessionFactory();
 		classMetadataFacade = sessionFactoryFacade.getClassMetadata(Foo.class.getName());
 		classMetadataTarget = (EntityPersister)((IFacade)classMetadataFacade).getTarget();
 	}
@@ -133,6 +136,15 @@ public class IClassMetadataTest {
 	@Test
 	public void testHasIdentifierProperty() {
 		assertTrue(classMetadataFacade.hasIdentifierProperty());
+	}
+	
+	@Test 
+	public void testGetIdentifier() {
+		ISession sessionFacade = sessionFactoryFacade.openSession();
+		Foo foo = new Foo();
+		foo.id = "bar";
+		Object identifier = classMetadataFacade.getIdentifier(foo, sessionFacade);
+		assertSame("bar", identifier);
 	}
 	
 }
