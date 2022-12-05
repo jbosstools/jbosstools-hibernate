@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Files;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -129,6 +128,11 @@ public class IClassMetadataTest {
 		Set<String> foobarSet = new HashSet<String>(Arrays.asList("foo", "bar"));
 		foo.bars = foobarSet;
 		assertSame(foobarSet, classMetadataFacade.getPropertyValue(foo, "bars"));
+	}
+	
+	@Test
+	public void testHasIdentifierProperty() {
+		assertTrue(classMetadataFacade.hasIdentifierProperty());
 	}
 	
 }
