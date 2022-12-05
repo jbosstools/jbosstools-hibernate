@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Files;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -119,6 +121,14 @@ public class IClassMetadataTest {
 	@Test
 	public void testGetIdentifierType() {
 		assertSame("string", classMetadataFacade.getIdentifierType().getName());
+	}
+	
+	@Test
+	public void testGetPropertyValue() {
+		Foo foo = new Foo();
+		Set<String> foobarSet = new HashSet<String>(Arrays.asList("foo", "bar"));
+		foo.bars = foobarSet;
+		assertSame(foobarSet, classMetadataFacade.getPropertyValue(foo, "bars"));
 	}
 	
 }
