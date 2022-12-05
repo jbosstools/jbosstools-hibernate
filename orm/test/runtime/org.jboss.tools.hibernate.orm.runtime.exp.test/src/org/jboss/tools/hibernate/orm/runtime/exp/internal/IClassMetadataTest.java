@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
@@ -109,5 +110,10 @@ public class IClassMetadataTest {
 				"org.jboss.tools.hibernate.orm.runtime.exp.internal.IClassMetadataTest$Foo.bars",
 				typeFacades[0].getRole());
  	}
+	
+	@Test
+	public void testGetMappedClass() {
+		assertSame(Foo.class, classMetadataFacade.getMappedClass());
+	}
 	
 }
