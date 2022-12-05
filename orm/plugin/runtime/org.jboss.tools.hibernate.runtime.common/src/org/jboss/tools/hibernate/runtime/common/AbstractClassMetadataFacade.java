@@ -134,6 +134,16 @@ implements IClassMetadata {
 				new Object[] {});
 	}
 
+	@Override
+	public Integer getPropertyIndexOrNull(String id) {
+		return null;
+	}
+	
+	@Override
+	public Object getTuplizerPropertyValue(Object entity, int i) {
+		return null;
+	}
+	
 	protected Class<?> getSessionImplementorClass() {
 		return Util.getClass(getSessionImplementorClassName(), getFacadeFactoryClassLoader());
 	}
