@@ -2,7 +2,7 @@ package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -19,6 +19,7 @@ import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
+import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -98,5 +99,15 @@ public class IClassMetadataTest {
  		assertEquals(1, propertyNames.length);
  		assertEquals("bars", propertyNames[0]);
 	}
+	
+	@Test
+	public void testGetPropertyTypes() {
+		IType[] typeFacades = classMetadataFacade.getPropertyTypes();
+		assertEquals(1, typeFacades.length);
+		assertTrue(typeFacades[0].isCollectionType());
+		assertEquals(
+				"org.jboss.tools.hibernate.orm.runtime.exp.internal.IClassMetadataTest$Foo.bars",
+				typeFacades[0].getRole());
+ 	}
 	
 }
