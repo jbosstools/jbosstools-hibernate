@@ -30,7 +30,6 @@ import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
-import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 
 
@@ -119,14 +118,9 @@ public class EntityPropertySource implements IPropertySource2
 				propertyValue = classMetadata.getPropertyValue(reflectedObject, (String)id);
 			} catch (RuntimeException he) {
 				propertyValue = HibernateConsoleMessages.EntityPropertySource_unable_to_resolve_property;
-				if (classMetadata.isInstanceOfAbstractEntityPersister()) {
-					IEntityMetamodel emm = classMetadata.getEntityMetamodel();
-					if (emm != null) {
-						Integer idx = emm.getPropertyIndexOrNull((String)id);
-						if (idx != null) {
-							propertyValue = emm.getTuplizerPropertyValue(reflectedObject, idx);
-						}
-					}
+				Integer idx = classMetadata.getPropertyIndexOrNull((String)id);
+				if (idx != null) {
+					propertyValue = classMetadata.getTuplizerPropertyValue(reflectedObject, idx);
 				}
 			}
 		}
