@@ -29,6 +29,7 @@ import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
@@ -139,6 +140,17 @@ public class ClassMetadataFacadeTest {
 		assertEquals("foobar", entityMetamodelTarget.getName());
 	}
 
+	@Test
+	public void testGetTuplizerPropertyValue() {
+		assertEquals(0, classMetadataFacade.getTuplizerPropertyValue(new FooBar(), 0));
+	}
+	
+	@Test
+	public void testGetPropertyIndexOrNull() {
+		assertSame(0, classMetadataFacade.getPropertyIndexOrNull("bar"));
+	}
+	
+	
 	private ClassMetadata setupFooBarPersister() {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySetting(AvailableSettings.DIALECT, MockDialect.class.getName());
@@ -194,6 +206,10 @@ public class ClassMetadataFacadeTest {
 		rc.setIdentifier(sv);
 		rc.setClassName(FooBar.class.getName());
 		rc.setOptimisticLockStyle(OptimisticLockStyle.NONE);
+		Property p = new Property();
+		p.setName("bar");
+		p.setValue(sv);
+		rc.addProperty(p);
 		return rc;
 	}
 	
@@ -289,6 +305,10 @@ public class ClassMetadataFacadeTest {
 	
 	public class FooBar {
 		public int id = 1967;
+		public int getBar() {
+			return 0;
+		}
+		public void setBar(int b) {}
 	}
 	
 }
