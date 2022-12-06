@@ -136,14 +136,53 @@ implements IClassMetadata {
 
 	@Override
 	public Integer getPropertyIndexOrNull(String id) {
-		return null;
+		Integer result = null;
+		Object entityMetamodel = null;
+		if (isInstanceOfAbstractEntityPersister()) {
+			entityMetamodel = Util.invokeMethod(
+				getTarget(), 
+				"getEntityMetamodel", 
+				new Class[] {}, 
+				new Object[] {});
+		}
+		if (entityMetamodel != null) {
+			result = (Integer)Util.invokeMethod(
+					entityMetamodel, 
+					"getPropertyIndexOrNull", 
+					new Class[] { String.class }, 
+					new Object[] { id });
+		} 
+		return result;
 	}
 	
 	@Override
 	public Object getTuplizerPropertyValue(Object entity, int i) {
-		return null;
+		Object result = null;
+		Object entityMetamodel = null;
+		if (isInstanceOfAbstractEntityPersister()) {
+			entityMetamodel = Util.invokeMethod(
+				getTarget(), 
+				"getEntityMetamodel", 
+				new Class[] {}, 
+				new Object[] {});
+		}
+		if (entityMetamodel != null) {
+			Object targetTuplizer = Util.invokeMethod(
+					entityMetamodel, 
+					"getTuplizer", 
+					new Class[] {}, 
+					new Object[] {});
+			if (targetTuplizer != null) {
+				result = Util.invokeMethod(
+						targetTuplizer, 
+						"getPropertyValue", 
+						new Class[] { Object.class,  int.class }, 
+						new Object[] { entity, i });
+			}
+		}
+		return result;
 	}
-	
+
 	protected Class<?> getSessionImplementorClass() {
 		return Util.getClass(getSessionImplementorClassName(), getFacadeFactoryClassLoader());
 	}
