@@ -20,6 +20,7 @@ import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
@@ -130,6 +131,16 @@ public class ClassMetadataFacadeTest {
 		assertEquals("foobar", entityMetamodelTarget.getName());
 	}
 	
+	@Test
+	public void testGetTuplizerPropertyValue() {
+		assertEquals(0, classMetadataFacade.getTuplizerPropertyValue(new FooBar(), 0));
+	}
+	
+	@Test
+	public void testGetPropertyIndexOrNull() {
+		assertSame(0, classMetadataFacade.getPropertyIndexOrNull("bar"));
+	}
+	
 	private ClassMetadata setupFooBarPersister() {
 		Configuration configuration = new Configuration();
 		configuration.setProperty(AvailableSettings.DIALECT, TestDialect.class.getName());
@@ -153,9 +164,14 @@ public class ClassMetadataFacadeTest {
 		sv.setNullValue("null");
 		sv.setTypeName(Integer.class.getName());
 		sv.addColumn(c);
+		sv.setTable(t);
 		rc.setEntityName("foobar");
 		rc.setIdentifier(sv);
 		rc.setClassName(FooBar.class.getName());
+		Property p = new Property();
+		p.setName("bar");
+		p.setValue(sv);
+		rc.addProperty(p);
 		return rc;
 	}
 	
@@ -226,6 +242,10 @@ public class ClassMetadataFacadeTest {
 	
 	public class FooBar {
 		public int id = 1967;
+		public int getBar() {
+			return 0;
+		}
+		public void setBar(int b) {}
 	}
 	
 	public static class TestDialect extends Dialect {}
