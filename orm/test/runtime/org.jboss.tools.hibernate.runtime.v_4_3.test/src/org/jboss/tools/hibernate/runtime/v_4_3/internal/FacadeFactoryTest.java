@@ -16,7 +16,6 @@ import org.hibernate.Filter;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
@@ -27,7 +26,6 @@ import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.dialect.Dialect;
-import org.hibernate.engine.OptimisticLockStyle;
 import org.hibernate.engine.query.spi.HQLQueryPlan;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.hql.spi.QueryTranslator;
@@ -55,7 +53,6 @@ import org.hibernate.tool.hbm2x.QueryExporter;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
-import org.hibernate.tuple.entity.EntityMetamodel;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
@@ -65,7 +62,6 @@ import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
-import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
@@ -257,26 +253,6 @@ public class FacadeFactoryTest {
 				new TestInvocationHandler());
 		ICriteria facade = facadeFactory.createCriteria(criteria);
 		assertSame(criteria, ((IFacade)facade).getTarget());		
-	}
-	
-	@Test
-	public void testCreateEntityMetamodel() {
-		Configuration configuration = new Configuration();	
-		final StandardServiceRegistryBuilder standardServiceRegistryBuilder = 
-				new StandardServiceRegistryBuilder();
-		standardServiceRegistryBuilder.applySetting(AvailableSettings.DIALECT, TestDialect.class.getName());
-		final StandardServiceRegistry serviceRegistry = 
-				standardServiceRegistryBuilder.build();
-		SessionFactoryImplementor sfi = (SessionFactoryImplementor)configuration.buildSessionFactory(serviceRegistry);
-		RootClass rc = new RootClass();
-		SimpleValue sv = new SimpleValue(configuration.createMappings());
-		sv.setNullValue("null");
-		sv.setTypeName(Integer.class.getName());
-		rc.setIdentifier(sv);
-		rc.setOptimisticLockStyle(OptimisticLockStyle.NONE);
-		EntityMetamodel entityMetamodel = new EntityMetamodel(rc, null, sfi);
-		IEntityMetamodel facade = facadeFactory.createEntityMetamodel(entityMetamodel);
-		assertSame(entityMetamodel, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
