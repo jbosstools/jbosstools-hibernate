@@ -7,7 +7,6 @@ import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
-import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
@@ -113,11 +112,6 @@ public abstract class AbstractFacadeFactory implements IFacadeFactory {
 		return new AbstractCriteriaFacade(this, target) {};
 	}
 
-	@Override
-	public IEntityMetamodel createEntityMetamodel(Object target) {
-		return new AbstractEntityMetamodelFacade(this, target) {};
-	}
-	
 	@Override
 	public IEnvironment createEnvironment() {
 		return new AbstractEnvironmentFacade(this, null) {};

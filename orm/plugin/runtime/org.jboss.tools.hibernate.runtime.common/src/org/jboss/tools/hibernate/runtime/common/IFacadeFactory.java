@@ -7,7 +7,6 @@ import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
-import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
@@ -58,7 +57,6 @@ public interface IFacadeFactory {
 	IColumn createColumn(Object target);
 	IConfiguration createConfiguration(Object target);
 	ICriteria createCriteria(Object target);
-	IEntityMetamodel createEntityMetamodel(Object target);
 	IEnvironment createEnvironment();
 	IForeignKey createForeignKey(Object target);
 	IHibernateMappingExporter createHibernateMappingExporter(Object target);
