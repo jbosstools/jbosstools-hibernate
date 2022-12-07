@@ -1,13 +1,10 @@
 package org.jboss.tools.hibernate.runtime.v_6_1.internal;
 
-import org.hibernate.persister.entity.EntityPersister;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
-import org.jboss.tools.hibernate.runtime.common.AbstractOverrideRepositoryFacade;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
-import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
@@ -87,12 +84,6 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	@Override
 	public ICriteria createCriteria(Object target) {
 		return new CriteriaFacadeImpl(this, target);
-	}
-
-	@Override
-	public IEntityMetamodel createEntityMetamodel(Object target) {
-		assert target instanceof EntityPersister;
-		return new EntityMetamodelFacadeImpl(this, target);
 	}
 
 	@Override
