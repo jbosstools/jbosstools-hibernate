@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.jboss.tools.hibernate.runtime.spi.HibernateException;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
-import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 
@@ -96,21 +95,6 @@ implements IClassMetadata {
 		return getAbstractEntityPersisterClass().isAssignableFrom(getTarget().getClass());
 	}
 	
-	@Override
-	public IEntityMetamodel getEntityMetamodel() {
-		Object entityMetamodel = null;
-		if (isInstanceOfAbstractEntityPersister()) {
-			entityMetamodel = Util.invokeMethod(
-				getTarget(), 
-				"getEntityMetamodel", 
-				new Class[] {}, 
-				new Object[] {});
-		}
-		return entityMetamodel != null ? 
-				getFacadeFactory().createEntityMetamodel(entityMetamodel) : 
-					null;
-	}
-
 	@Override
 	public Object getIdentifier(Object object, ISession session) {
 		Object sessionImplementor = Util.invokeMethod(

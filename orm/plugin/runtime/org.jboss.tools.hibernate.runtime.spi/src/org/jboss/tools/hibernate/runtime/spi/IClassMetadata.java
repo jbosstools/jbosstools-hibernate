@@ -13,7 +13,6 @@ public interface IClassMetadata {
 	boolean hasIdentifierProperty();
 	Object getIdentifier(Object object, ISession implementor);
 	boolean isInstanceOfAbstractEntityPersister();
-	IEntityMetamodel getEntityMetamodel();
 	Integer getPropertyIndexOrNull(String id);
 	Object getTuplizerPropertyValue(Object entity, int i);
 
