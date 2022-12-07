@@ -12,7 +12,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
@@ -25,7 +24,6 @@ import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
-import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
@@ -43,7 +41,6 @@ import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
-import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
@@ -61,7 +58,6 @@ import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
-import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.IType;
@@ -258,18 +254,6 @@ public class FacadeFactoryTest {
 		assertSame(query, ((IFacade)facade).getTarget());		
 	}
 	
-	@Test
-	public void testCreateEntityMetamodel() {
-		EntityPersister entityPersister = (EntityPersister)Proxy.newProxyInstance(
-				getClass().getClassLoader(), 
-				new Class[] { EntityPersister.class }, 
-				new TestInvocationHandler());
-		IEntityMetamodel entityMetamodel = FACADE_FACTORY.createEntityMetamodel(entityPersister);
-		assertTrue(entityMetamodel instanceof EntityMetamodelFacadeImpl);
-		assertSame(entityPersister, ((IFacade)entityMetamodel).getTarget());
-	}
-	
-
 	@Test
 	public void testCreateEnvironment() {
 		IEnvironment environment = FACADE_FACTORY.createEnvironment();
