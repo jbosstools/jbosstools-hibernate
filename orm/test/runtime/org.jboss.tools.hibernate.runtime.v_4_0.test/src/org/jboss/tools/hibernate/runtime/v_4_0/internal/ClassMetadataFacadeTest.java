@@ -28,13 +28,11 @@ import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.persister.entity.SingleTableEntityPersister;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
-import org.hibernate.tuple.entity.EntityMetamodel;
 import org.hibernate.type.StringType;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.AbstractClassMetadataFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
-import org.jboss.tools.hibernate.runtime.spi.IEntityMetamodel;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.junit.jupiter.api.BeforeEach;
@@ -122,13 +120,6 @@ public class ClassMetadataFacadeTest {
 				});	
 		classMetadataFacade = new AbstractClassMetadataFacade(FACADE_FACTORY, classMetadataTarget) {};
 		assertFalse(classMetadataFacade.isInstanceOfAbstractEntityPersister());
-	}
-	
-	@Test
-	public void testGetEntityMetamodel() {
-		IEntityMetamodel entityMetamodel = classMetadataFacade.getEntityMetamodel();
-		EntityMetamodel entityMetamodelTarget = (EntityMetamodel)((IFacade)entityMetamodel).getTarget();
-		assertEquals("foobar", entityMetamodelTarget.getName());
 	}
 	
 	@Test
