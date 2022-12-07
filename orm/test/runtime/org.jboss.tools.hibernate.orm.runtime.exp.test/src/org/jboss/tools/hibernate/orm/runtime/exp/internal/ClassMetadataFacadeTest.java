@@ -140,12 +140,6 @@ public class ClassMetadataFacadeTest {
 	}
 	
 	@Test
-	public void testGetEntityMetamodel() {
-		IEntityMetamodel entityMetamodel = classMetadataFacade.getEntityMetamodel();
-		assertSame(classMetadataTarget, ((IFacade)entityMetamodel).getTarget());
-	}
-
-	@Test
 	public void testGetTuplizerPropertyValue() {
 		assertSame(PROPERTY_VALUE, classMetadataFacade.getTuplizerPropertyValue(null, 0));
 	}
