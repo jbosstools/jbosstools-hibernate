@@ -161,4 +161,11 @@ public class IClassMetadataTest {
 		assertSame(bars, classMetadataFacade.getTuplizerPropertyValue(foo, 0));
 	}
 	
+	@Test
+	public void testGetPropertyIndexOrNull() {
+		assertSame(0, classMetadataFacade.getPropertyIndexOrNull("bars"));
+		assertNull(classMetadataFacade.getPropertyIndexOrNull("foo"));
+	}
+	
+	
 }
