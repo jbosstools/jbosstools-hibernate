@@ -4,6 +4,7 @@ import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
+import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
@@ -78,6 +79,11 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	
 	@Override
 	public IClassMetadata createClassMetadata(Object target) {
+		throw new RuntimeException("Should use class 'NewFacadeFactory'");
+	}
+	
+	@Override
+	public ICollectionMetadata createCollectionMetadata(Object target) {
 		throw new RuntimeException("Should use class 'NewFacadeFactory'");
 	}
 	
