@@ -162,6 +162,7 @@ public class GenericFacadeFactory {
 		if (args != null) {
 			result = new Class<?>[args.length];
 			for (int i = 0; i < args.length; i++) {
+				if ((args[i] == null)) continue;
 				Class<?> argClass = args[i].getClass();
 				if (IFacade.class.isAssignableFrom(argClass)) {
 					argClass = ((IFacade)args[i]).getTarget().getClass();
@@ -175,7 +176,7 @@ public class GenericFacadeFactory {
 	private static String parameterTypes(Class<?>[] classes) {
 		StringBuffer sb = new StringBuffer("(");
 		for (Class<?> c : classes) {
-			sb.append(c.getSimpleName()).append(",");
+			sb.append(c == null ? c : c.getSimpleName()).append(",");
 		}
 		if (sb.charAt(sb.length() - 1) == ',') {
 			sb.deleteCharAt(sb.length() - 1);
