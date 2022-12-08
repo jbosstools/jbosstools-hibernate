@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -150,6 +151,14 @@ public class IClassMetadataTest {
 	@Test
 	public void testIsInstanceOfAbstractEntityPersister() {
 		assertTrue(classMetadataFacade.isInstanceOfAbstractEntityPersister());
+	}
+	
+	@Test
+	public void testGetTuplizerPropertyValue() {
+		Foo foo = new Foo();
+		Set<String> bars = Set.of("foo", "bar");
+		foo.bars = bars;
+		assertSame(bars, classMetadataFacade.getTuplizerPropertyValue(foo, 0));
 	}
 	
 }
