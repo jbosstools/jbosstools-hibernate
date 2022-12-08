@@ -22,7 +22,6 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
-import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
@@ -38,7 +37,6 @@ import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
-import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
@@ -174,6 +172,16 @@ public class FacadeFactoryTest {
 	}
 	
 	@Test
+	public void testCreateClassMetadata() {
+		try {
+			FACADE_FACTORY.createClassMetadata(null);
+			fail();
+		} catch (Throwable t) {
+			assertEquals("Should use class 'NewFacadeFactory'", t.getMessage());			
+		}
+	}
+	
+	@Test
 	public void testCreateSchemaExport() {
 		SchemaExport schemaExport = new SchemaExport();
 		ISchemaExport facade = FACADE_FACTORY.createSchemaExport(schemaExport);
@@ -220,17 +228,6 @@ public class FacadeFactoryTest {
 		IExporter facade = FACADE_FACTORY.createExporter(exporter);
 		assertTrue(facade instanceof ExporterFacadeImpl);
 		assertSame(exporter, ((IFacade)facade).getTarget());		
-	}
-	
-	@Test
-	public void testCreateClassMetadata() {
-		ClassMetadata classMetadata = (ClassMetadata)Proxy.newProxyInstance(
-				FACADE_FACTORY.getClassLoader(), 
-				new Class[] { ClassMetadata.class }, 
-				new TestInvocationHandler());
-		IClassMetadata facade = FACADE_FACTORY.createClassMetadata(classMetadata);
-		assertTrue(facade instanceof ClassMetadataFacadeImpl);
-		assertSame(classMetadata, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
