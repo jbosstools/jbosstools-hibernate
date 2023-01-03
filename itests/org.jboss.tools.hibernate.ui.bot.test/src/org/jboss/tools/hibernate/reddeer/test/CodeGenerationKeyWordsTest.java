@@ -62,12 +62,11 @@ public class CodeGenerationKeyWordsTest extends HibernateRedDeerTest {
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][] {
         		{"mvn-hibernate43","4.3"},
-        		{"mvn-hibernate50","5.0"},
-        		{"mvn-hibernate51","5.1"},
-        		{"mvn-hibernate52","5.2"},
-        		{"mvn-hibernate53","5.3"},
         		{"mvn-hibernate54","5.4"},
         		{"mvn-hibernate55","5.5"},
+        		{"mvn-hibernate55","5.6"},
+        		{"mvn-hibernate55","6.0"},
+        		{"mvn-hibernate55","6.1"},
            });
     }
     

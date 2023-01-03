@@ -40,7 +40,7 @@ public class JBossDatasourceTest extends HibernateRedDeerTest {
 	
 	
 	//TODO use latest version
-	public static final String PRJ = "mvn-hibernate35";
+	public static final String PRJ = "mvn-hibernate61";
 
     @InjectRequirement
     DatabaseRequirement dbRequirement;

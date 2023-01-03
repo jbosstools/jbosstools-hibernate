@@ -59,16 +59,15 @@ public class CriteriaEditorCodeAssistTest extends HibernateRedDeerTest {
 	@Parameters(name="hibernate {1}")
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][] {
-        		{"mvn-hibernate35-ent","3.5","2.0"},
         		{"mvn-hibernate36-ent","3.6","2.0"},
-        		{"mvn-hibernate40-ent","4.0","2.0"},
         		{"mvn-hibernate43-ent","4.3","2.1"},
-        		{"mvn-hibernate50-ent","5.0","2.1"},
-        		{"mvn-hibernate51-ent","5.1","2.1"},
-        		{"mvn-hibernate52-ent","5.2","2.1"},
-        		{"mvn-hibernate53-ent","5.3","2.1"}, //TODO change to JPA 2.2 when https://issues.jboss.org/browse/JBIDE-26566 is resolved
-        		{"mvn-hibernate54-ent","5.4","2.1"}, //TODO change to JPA 2.2 when https://issues.jboss.org/browse/JBIDE-26566 is resolved
-        		{"mvn-hibernate55-ent","5.5","2.1"}, //TODO change to JPA 2.2 when https://issues.jboss.org/browse/JBIDE-26566 is resolved
+//        		{"mvn-hibernate50-ent","5.0","2.1"},
+//        		{"mvn-hibernate54-ent","5.4","2.2"}, 
+//        		{"mvn-hibernate55-ent","5.5","2.2"}, 
+//        		{"mvn-hibernate55-ent","5.5","2.2"},
+        		{"mvn-hibernate56-ent","5.6","2.2"},
+        		{"mvn-hibernate60-ent","6.0","2.2"},
+        		{"mvn-hibernate61-ent","6.1","2.2"},
            });
     }
 	

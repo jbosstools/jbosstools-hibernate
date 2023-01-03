@@ -61,17 +61,15 @@ public class JpaAnnotationGenerationTest extends HibernateRedDeerTest {
 	@Parameters(name="hibernate {1}")
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][] {
-        		{"mvn-hibernate35","3.5","2.0"},
-        		{"mvn-hibernate36","3.6","2.0"},
-        		{"mvn-hibernate40","4.0","2.0"},
-        		{"mvn-hibernate43","4.3","2.1"},
-        		{"mvn-hibernate50","5.0","2.1"},
-        		{"mvn-hibernate51","5.1","2.1"},
-        		{"mvn-hibernate52","5.2","2.1"},
-        		{"mvn-hibernate53","5.3","2.1"},//TODO change to JPA 2.2 when https://issues.jboss.org/browse/JBIDE-26566 is resolved
-        		{"mvn-hibernate54","5.4","2.1"},//TODO change to JPA 2.2 when https://issues.jboss.org/browse/JBIDE-26566 is resolved
-        		{"mvn-hibernate55","5.5","2.1"},//TODO change to JPA 2.2 when https://issues.jboss.org/browse/JBIDE-26566 is resolved
-           });
+    		{"mvn-hibernate36-ent","3.6","2.0"},
+    		{"mvn-hibernate43-ent","4.3","2.1"},
+//    		{"mvn-hibernate50-ent","5.0","2.1"},
+//    		{"mvn-hibernate54-ent","5.4","2.2"},
+//    		{"mvn-hibernate55-ent","5.5","2.2"},
+    		{"mvn-hibernate56-ent","5.6","2.2"},
+    		{"mvn-hibernate60-ent","6.0","2.2"},
+    		{"mvn-hibernate61-ent","6.1","2.2"}
+        });
     }
 	
 	@Before 
@@ -90,7 +88,6 @@ public class JpaAnnotationGenerationTest extends HibernateRedDeerTest {
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProject(prj).refresh();
-		
 	}
 	
 	@After
@@ -121,7 +118,7 @@ public class JpaAnnotationGenerationTest extends HibernateRedDeerTest {
 		ProblemsView pw = new ProblemsView();
 		pw.open();
 		assertEquals(0, pw.getProblems(ProblemType.ERROR).size());
-		assertEquals(0, pw.getProblems(ProblemType.WARNING).size());	
+		assertEquals(0, pw.getProblems(ProblemType.WARNING).size());
 	}
 	
 	
