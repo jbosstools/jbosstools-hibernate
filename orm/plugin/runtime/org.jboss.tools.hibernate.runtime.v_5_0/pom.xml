@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.jboss.tools.hibernatetools.orm.plugin</groupId>
 		<artifactId>runtime</artifactId>
-		<version>5.4.19-SNAPSHOT</version>
+		<version>5.4.20-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.hibernatetools.orm.plugin.runtime</groupId>
 	<artifactId>org.jboss.tools.hibernate.runtime.v_5_0</artifactId> 

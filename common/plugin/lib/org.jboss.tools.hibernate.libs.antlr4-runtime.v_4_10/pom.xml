@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.jboss.tools.hibernatetools.common.plugin</groupId>
 		<artifactId>lib</artifactId>
-		<version>5.4.19-SNAPSHOT</version>
+		<version>5.4.20-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.hibernatetools.common.plugin.lib</groupId>
 	<artifactId>org.jboss.tools.hibernate.libs.antlr4-runtime.v_4_10</artifactId> 

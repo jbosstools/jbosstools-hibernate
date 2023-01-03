@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Hibernate 5.6 libraries
 Automatic-Module-Name: org.jboss.tools.hibernate.runtime.v.5.6
 Bundle-SymbolicName: org.jboss.tools.hibernate.runtime.v_5_6;singleton:=true
-Bundle-Version: 5.4.19.qualifier
+Bundle-Version: 5.4.20.qualifier
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: .,

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Hibernate Search Plugin Test
 Bundle-SymbolicName: org.jboss.tools.hibernate.search.test;singleton:=true
-Bundle-Version: 5.4.19.qualifier
+Bundle-Version: 5.4.20.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.junit;bundle-version="4.12.0",
  org.hibernate.eclipse,

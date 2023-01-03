@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Antlr for JBoss Tools Hibernate
 Bundle-SymbolicName: org.jboss.tools.hibernate.libs.antlr.v_2_7_7
-Bundle-Version: 5.4.19.qualifier
+Bundle-Version: 5.4.20.qualifier
 Bundle-Vendor: Red Hat
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: lib/antlr-2.7.7.jar

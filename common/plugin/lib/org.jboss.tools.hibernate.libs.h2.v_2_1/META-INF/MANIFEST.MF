@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: H2 Database 2.1.x for JBoss Tools Hibernate
 Bundle-SymbolicName: org.jboss.tools.hibernate.libs.h2.v_2_1
-Bundle-Version: 5.4.19.qualifier
+Bundle-Version: 5.4.20.qualifier
 Bundle-Vendor: Red Hat
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: lib/h2-2.1.214.jar

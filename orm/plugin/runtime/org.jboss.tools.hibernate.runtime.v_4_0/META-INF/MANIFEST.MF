@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Hibernate 4.0 libraries
 Bundle-SymbolicName: org.jboss.tools.hibernate.runtime.v_4_0;singleton:=true
-Bundle-Version: 5.4.19.qualifier
+Bundle-Version: 5.4.20.qualifier
 Bundle-Localization: plugin
 Require-Bundle: org.apache.commons.collections,
  org.apache.commons.logging,

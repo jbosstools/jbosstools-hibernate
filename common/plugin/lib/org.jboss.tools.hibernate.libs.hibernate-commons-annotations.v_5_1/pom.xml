@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.jboss.tools.hibernatetools.common.plugin</groupId>
 		<artifactId>lib</artifactId>
-		<version>5.4.19-SNAPSHOT</version>
+		<version>5.4.20-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.hibernatetools.common.plugin.lib</groupId>
 	<artifactId>org.jboss.tools.hibernate.libs.hibernate-commons-annotations.v_5_1</artifactId> 

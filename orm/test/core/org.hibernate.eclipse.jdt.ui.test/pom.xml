@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.jboss.tools.hibernatetools.orm.test</groupId>
 		<artifactId>core</artifactId>
-		<version>5.4.19-SNAPSHOT</version>
+		<version>5.4.20-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.hibernatetools.orm.test.core</groupId>
 	<artifactId>org.hibernate.eclipse.jdt.ui.test</artifactId> 
