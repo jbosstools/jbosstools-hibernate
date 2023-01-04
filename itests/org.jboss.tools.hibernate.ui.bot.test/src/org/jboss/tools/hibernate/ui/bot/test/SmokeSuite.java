@@ -29,18 +29,18 @@ import org.junit.runners.Suite;
 @RunWith(RedDeerSuite.class)
 @Suite.SuiteClasses({
 
-//	CodeGenerationConfigurationTest.class, // pass
-//	ConnectionProfileTest.class, // pass
-//	ConsoleConfigurationFileTest.class, // pass
-//	ConsoleConfigurationTest.class, // pass
-//	CreateJPAProjectTest.class, // pass
+	CodeGenerationConfigurationTest.class,
+	ConnectionProfileTest.class,
+	ConsoleConfigurationFileTest.class,
+	ConsoleConfigurationTest.class,
+	CreateJPAProjectTest.class,
 	CriteriaEditorTest.class,
-//	HibernateUIPartsTest.class,
+	HibernateUIPartsTest.class,
 	HQLEditorTest.class,
-//	JpaAnnotationGenerationTest.class,
-//	JPAEntityGenerationTest.class,
-//	JPAFacetTest.class,
-//	JPAUIPartsTest.class
+	JpaAnnotationGenerationTest.class,
+	JPAEntityGenerationTest.class,
+	JPAFacetTest.class,
+	JPAUIPartsTest.class
 })
 public class SmokeSuite {
 

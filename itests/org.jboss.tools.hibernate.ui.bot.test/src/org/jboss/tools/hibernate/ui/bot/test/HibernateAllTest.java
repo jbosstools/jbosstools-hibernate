@@ -54,7 +54,6 @@ import org.junit.runners.Suite;
 	JPADetailsViewTest.class, // pass
 	HibernateUIPartsTest.class, // pass
 	JPAEntityGenerationTest.class, // pass
-	
 	JPAFacetTest.class, // pass
 	JPAUIPartsTest.class, // pass
 	HQLEditorTest.class, // check 60, 61

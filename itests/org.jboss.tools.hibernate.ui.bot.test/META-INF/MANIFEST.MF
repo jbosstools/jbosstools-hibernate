@@ -27,6 +27,7 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.tools.hibernate.libs.dom4j.v_1_6_1,
  org.jboss.tools.hibernate.libs.freemarker.v_2_3,
  org.jboss.tools.hibernate.libs.jtidy.v_r8-20060801,
+ org.jboss.tools.hibernate.orm.ui,
  org.jboss.tools.hibernate.runtime.common,
  org.jboss.tools.hibernate.runtime.spi,
  org.jboss.tools.hibernate.runtime.v_3_5,
@@ -39,6 +40,9 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.tools.hibernate.runtime.v_5_3,
  org.jboss.tools.hibernate.runtime.v_5_4,
  org.jboss.tools.hibernate.runtime.v_5_5,
+ org.jboss.tools.hibernate.runtime.v_5_6,
+ org.jboss.tools.hibernate.runtime.v_6_0,
+ org.jboss.tools.hibernate.runtime.v_6_1,
  org.jboss.tools.hibernate.ui,
  org.jboss.tools.hibernate.xml,
  org.jboss.tools.hibernate.xml.ui,
@@ -65,7 +69,8 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.tools.maven.hibernate,
  org.eclipse.datatools.connectivity.dbdefinition.genericJDBC,
  org.eclipse.jpt.jpa.ui,
- org.jboss.tools.maven.jdt
+ org.jboss.tools.maven.jdt,
+ org.jboss.tools.jst.web.ui
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Eclipse-BundleShape: jar

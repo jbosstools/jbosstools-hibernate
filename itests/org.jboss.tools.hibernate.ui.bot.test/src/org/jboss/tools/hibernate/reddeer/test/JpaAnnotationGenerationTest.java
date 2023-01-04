@@ -63,9 +63,6 @@ public class JpaAnnotationGenerationTest extends HibernateRedDeerTest {
         return Arrays.asList(new Object[][] {
     		{"mvn-hibernate36-ent","3.6","2.0"},
     		{"mvn-hibernate43-ent","4.3","2.1"},
-//    		{"mvn-hibernate50-ent","5.0","2.1"},
-//    		{"mvn-hibernate54-ent","5.4","2.2"},
-//    		{"mvn-hibernate55-ent","5.5","2.2"},
     		{"mvn-hibernate56-ent","5.6","2.2"},
     		{"mvn-hibernate60-ent","6.0","2.2"},
     		{"mvn-hibernate61-ent","6.1","2.2"}

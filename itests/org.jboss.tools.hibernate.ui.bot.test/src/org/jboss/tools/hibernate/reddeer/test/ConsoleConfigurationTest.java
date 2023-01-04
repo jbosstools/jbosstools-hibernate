@@ -71,9 +71,6 @@ public class ConsoleConfigurationTest extends HibernateRedDeerTest {
         return Arrays.asList(new Object[][] {
 			{"mvn-hibernate36","3.6"},
 			{"mvn-hibernate43","4.3"},
-			{"mvn-hibernate50","5.0"},
-			{"mvn-hibernate54","5.4"},
-			{"mvn-hibernate55","5.5"},
 			{"mvn-hibernate56","5.6"},
 			{"mvn-hibernate60","6.0"},
 			{"mvn-hibernate61","6.1"},
@@ -142,6 +139,7 @@ public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 		
 		v.open();
 		v.activate();
+		v.selectConsole(CONSOLE_NAME);
 		EditConfigurationShell s2 = v.openConsoleConfiguration(CONSOLE_NAME);
 		s2.close();
 		

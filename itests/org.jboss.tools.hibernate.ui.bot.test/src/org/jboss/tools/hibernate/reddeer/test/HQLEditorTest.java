@@ -59,9 +59,6 @@ public class HQLEditorTest extends HibernateRedDeerTest {
         return Arrays.asList(new Object[][] {
     		{"mvn-hibernate36-ent","3.6","2.0"},
     		{"mvn-hibernate43-ent","4.3","2.1"},
-//    		{"mvn-hibernate50-ent","5.0","2.1"},//TODO change to JPA 2.2 when https://issues.jboss.org/browse/JBIDE-26566 is resolved
-//    		{"mvn-hibernate54-ent","5.4","2.2"},//TODO change to JPA 2.2 when https://issues.jboss.org/browse/JBIDE-26566 is resolved
-//    		{"mvn-hibernate55-ent","5.5","2.2"},//TODO change to JPA 2.2 when https://issues.jboss.org/browse/JBIDE-26566 is resolved
     		{"mvn-hibernate56-ent","5.6","2.2"},
     		{"mvn-hibernate60-ent","6.0","2.2"},
     		{"mvn-hibernate61-ent","6.1","2.2"}
@@ -105,7 +102,7 @@ public class HQLEditorTest extends HibernateRedDeerTest {
 		v.open();
 		v.activate();
 		v.selectConsole(prj);
-		new ContextMenuItem("HQL Editor").select();
+		new ContextMenuItem(v.getConsole(prj), "HQL Editor").select();
 				
 		HQLEditor hqlEditor = new HQLEditor(prj);
 		hqlEditor.setText("from Actor");

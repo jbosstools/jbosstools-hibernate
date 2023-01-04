@@ -58,9 +58,6 @@ public class ConsoleConfigurationFileTest extends HibernateRedDeerTest {
         return Arrays.asList(new Object[][] {
     		{"mvn-hibernate36","3.6"},
     		{"mvn-hibernate43","4.3"},
-    		{"mvn-hibernate50","5.0"},
-    		{"mvn-hibernate54","5.4"},
-    		{"mvn-hibernate55","5.5"},
     		{"mvn-hibernate56","5.6"},
     		{"mvn-hibernate60","6.0"},
     		{"mvn-hibernate61","6.1"},

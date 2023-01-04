@@ -25,6 +25,7 @@ import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.eclipse.core.resources.DefaultProject;
+import org.eclipse.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
 import org.eclipse.reddeer.eclipse.m2e.core.ui.wizard.MavenImportWizard;
 import org.eclipse.reddeer.eclipse.ui.dialogs.PropertyDialog;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
@@ -40,7 +41,6 @@ import org.eclipse.reddeer.swt.api.TreeItem;
 import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
-import org.eclipse.reddeer.swt.impl.menu.ShellMenu;
 import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
@@ -164,7 +164,7 @@ public class HibernateRedDeerTest {
 			new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 			
 			// Set Java 17 as default facet for the testing project
-			ProjectExplorer pe = new ProjectExplorer();
+			PackageExplorerPart pe = new PackageExplorerPart();
 			pe.open();
 			DefaultProject project = pe.getProject(prjName);
 			PropertyDialog dialog = project.openProperties();
@@ -191,6 +191,11 @@ public class HibernateRedDeerTest {
 		deleteHibernateConfigurations();
 		CleanWorkspaceRequirement req = new CleanWorkspaceRequirement();
 		req.fulfill();
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		if (pe.getProjects().size() > 0) {
+			pe.deleteAllProjects(true);
+		}
 		deleteHibernateConfigurations();
 		//windows is not able to delete sometimes due to locked files
 	}
