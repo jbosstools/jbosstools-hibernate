@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion> 
+	<parent>
+		<groupId>org.jboss.tools.hibernatetools.orm.plugin</groupId>
+		<artifactId>runtime</artifactId>
+		<version>5.4.20-SNAPSHOT</version>
+	</parent>
+	<groupId>org.jboss.tools.hibernatetools.orm.plugin.runtime</groupId>
+	<artifactId>org.jboss.tools.hibernate.runtime.v_6_2</artifactId> 
+	
+	<packaging>eclipse-plugin</packaging>
+
+	<properties>
+		<hibernate.version>6.2.0.CR1</hibernate.version>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>get-libs</id>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<phase>generate-resources</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<artifactItems>
+						<artifactItem>
+							<groupId>org.hibernate.tool</groupId>
+							<artifactId>hibernate-tools-orm</artifactId>
+							<version>${hibernate.version}</version>
+						</artifactItem>
+						<artifactItem>
+							<groupId>org.hibernate.tool</groupId>
+							<artifactId>hibernate-tools-utils</artifactId>
+							<version>${hibernate.version}</version>
+						</artifactItem>
+						<artifactItem>
+							<groupId>org.hibernate.orm</groupId>
+							<artifactId>hibernate-ant</artifactId>
+							<version>${hibernate.version}</version>
+						</artifactItem>
+						<artifactItem>
+							<groupId>org.hibernate.orm</groupId>
+							<artifactId>hibernate-core</artifactId>
+							<version>${hibernate.version}</version>
+						</artifactItem>
+					</artifactItems>
+					<skip>false</skip>
+					<outputDirectory>${basedir}/lib</outputDirectory>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>${basedir}/lib</directory>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
