@@ -1,8 +1,0 @@
-Manifest-Version: 1.0
-Automatic-Module-Name: org.jboss.tools.hibernate.runtime.v.6.2
-Bundle-ManifestVersion: 2
-Bundle-Name: Hibernate 6.2 libraries
-Bundle-SymbolicName: org.jboss.tools.hibernate.runtime.v_6_2;singleton:=true
-Bundle-Version: 5.4.20.qualifier
-Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-11
