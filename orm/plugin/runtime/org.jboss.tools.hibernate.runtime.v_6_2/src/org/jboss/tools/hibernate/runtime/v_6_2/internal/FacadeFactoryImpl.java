@@ -7,13 +7,12 @@ import org.jboss.tools.hibernate.runtime.spi.IProperty;
 public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 
 	@Override
-	public IPersistentClass createSpecialRootClass(IProperty arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public ClassLoader getClassLoader() {
+		return FacadeFactoryImpl.class.getClassLoader();
 	}
 
 	@Override
-	public ClassLoader getClassLoader() {
+	public IPersistentClass createSpecialRootClass(IProperty arg0) {
 		// TODO Auto-generated method stub
 		return null;
 	}
