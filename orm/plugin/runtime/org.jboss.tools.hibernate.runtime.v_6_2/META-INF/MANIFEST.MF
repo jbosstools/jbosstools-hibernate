@@ -6,4 +6,8 @@ Bundle-SymbolicName: org.jboss.tools.hibernate.runtime.v_6_2;singleton:=true
 Bundle-Version: 5.4.20.qualifier
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-11
-Bundle-ClassPath: .
+Bundle-ClassPath: .,
+ lib/hibernate-ant-6.2.0.CR1.jar,
+ lib/hibernate-core-6.2.0.CR1.jar,
+ lib/hibernate-tools-orm-6.2.0.CR1.jar,
+ lib/hibernate-tools-utils-6.2.0.CR1.jar
