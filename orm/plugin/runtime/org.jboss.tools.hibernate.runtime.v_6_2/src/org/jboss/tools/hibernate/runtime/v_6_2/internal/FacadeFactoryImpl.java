@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_6_2.internal;
 
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
@@ -50,6 +51,11 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	@Override
 	public IExporter createExporter(Object target) {
 		return new ExporterFacadeImpl(this, target);
+	}
+	
+	@Override
+	public IClassMetadata createClassMetadata(Object target) {
+		return new ClassMetadataFacadeImpl(this, target);
 	}
 	
 	@Override
