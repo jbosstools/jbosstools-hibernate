@@ -5,6 +5,7 @@ import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
+import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 
 public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 
@@ -20,6 +21,11 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 
 	public IOverrideRepository createOverrideRepository(Object target) {
 		return new OverrideRepositoryFacadeImpl(this, target);
+	}
+	
+	@Override
+	public ISchemaExport createSchemaExport(Object target) {
+		return new SchemaExportFacadeImpl(this, target);
 	}
 	
 	@Override
