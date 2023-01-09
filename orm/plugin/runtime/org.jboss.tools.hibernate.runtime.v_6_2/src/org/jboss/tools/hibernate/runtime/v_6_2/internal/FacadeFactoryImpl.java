@@ -6,6 +6,7 @@ import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
+import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 
@@ -38,6 +39,11 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	@Override
 	public IHbm2DDLExporter createHbm2DDLExporter(Object target) {
 		return new Hbm2DDLExporterFacadeImpl(this, target);
+	}
+
+	@Override
+	public IQueryExporter createQueryExporter(Object target) {
+		return new QueryExporterFacadeImpl(this, target);
 	}
 
 	@Override
