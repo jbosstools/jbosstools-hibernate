@@ -19,6 +19,7 @@ import org.hibernate.tool.internal.export.ddl.DdlExporter;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.hibernate.tool.internal.export.query.QueryExporter;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
+import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
@@ -30,6 +31,7 @@ import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
+import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -131,6 +133,13 @@ public class FacadeFactoryTest {
 		IQueryExporter facade = facadeFactory.createQueryExporter(queryExporter);
 		assertTrue(facade instanceof QueryExporterFacadeImpl);
 		assertSame(queryExporter, ((IFacade)facade).getTarget());		
+	}
+	
+	@Test
+	public void testCreateTableFilter() {
+		TableFilter tableFilter = new TableFilter();
+		ITableFilter facade = facadeFactory.createTableFilter(tableFilter);
+		assertSame(tableFilter, ((IFacade)facade).getTarget());		
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
