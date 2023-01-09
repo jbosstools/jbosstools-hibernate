@@ -15,12 +15,14 @@ import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.common.GenericExporter;
+import org.hibernate.tool.internal.export.ddl.DdlExporter;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
+import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
@@ -111,6 +113,14 @@ public class FacadeFactoryTest {
 		IGenericExporter facade = facadeFactory.createGenericExporter(genericExporter);
 		assertTrue(facade instanceof GenericExporterFacadeImpl);
 		assertSame(genericExporter, ((IFacade)facade).getTarget());		
+	}
+	
+	@Test
+	public void testCreateHbm2DDLExporter() {
+		DdlExporter ddlExporter = new DdlExporter();
+		IHbm2DDLExporter facade = facadeFactory.createHbm2DDLExporter(ddlExporter);
+		assertTrue(facade instanceof Hbm2DDLExporterFacadeImpl);
+		assertSame(ddlExporter, ((IFacade)facade).getTarget());		
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {

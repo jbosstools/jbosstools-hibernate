@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.runtime.v_6_2.internal;
 
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
+import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
@@ -32,6 +33,11 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	@Override
 	public IGenericExporter createGenericExporter(Object target) {
 		return new GenericExporterFacadeImpl(this, target);
+	}
+
+	@Override
+	public IHbm2DDLExporter createHbm2DDLExporter(Object target) {
+		return new Hbm2DDLExporterFacadeImpl(this, target);
 	}
 
 	@Override
