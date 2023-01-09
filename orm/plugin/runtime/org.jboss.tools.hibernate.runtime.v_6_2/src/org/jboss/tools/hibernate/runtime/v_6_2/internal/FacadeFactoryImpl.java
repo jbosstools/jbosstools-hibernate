@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.runtime.v_6_2.internal;
 
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
@@ -28,6 +29,11 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 		return new SchemaExportFacadeImpl(this, target);
 	}
 	
+	@Override
+	public IGenericExporter createGenericExporter(Object target) {
+		return new GenericExporterFacadeImpl(this, target);
+	}
+
 	@Override
 	public IPersistentClass createSpecialRootClass(IProperty arg0) {
 		// TODO Auto-generated method stub

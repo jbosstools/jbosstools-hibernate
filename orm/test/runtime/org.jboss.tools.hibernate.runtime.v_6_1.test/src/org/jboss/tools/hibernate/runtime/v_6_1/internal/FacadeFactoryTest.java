@@ -162,6 +162,7 @@ public class FacadeFactoryTest {
 	public void testCreateGenericExporter() {
 		GenericExporter genericExporter = new GenericExporter();
 		IGenericExporter facade = facadeFactory.createGenericExporter(genericExporter);
+		assertTrue(facade instanceof GenericExporterFacadeImpl);
 		assertSame(genericExporter, ((IFacade)facade).getTarget());		
 	}
 	
