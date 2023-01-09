@@ -3,6 +3,7 @@ package org.jboss.tools.hibernate.runtime.v_6_2.internal;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
+import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
@@ -62,6 +63,11 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	@Override
 	public IColumn createColumn(Object target) {
 		return new ColumnFacadeImpl(this, target);
+	}
+
+	@Override
+	public IConfiguration createConfiguration(Object target) {
+		return new ConfigurationFacadeImpl(this, target);
 	}
 
 	@Override
