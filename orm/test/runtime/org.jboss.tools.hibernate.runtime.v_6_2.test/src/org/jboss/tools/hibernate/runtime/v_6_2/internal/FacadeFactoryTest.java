@@ -20,6 +20,7 @@ import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
+import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tool.internal.export.ddl.DdlExporter;
@@ -41,6 +42,7 @@ import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
+import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
@@ -250,6 +252,13 @@ public class FacadeFactoryTest {
 		IHQLCodeAssist facade = facadeFactory.createHQLCodeAssist(hqlCodeAssist);
 		assertSame(hqlCodeAssist, ((IFacade)facade).getTarget());		
 	}
+	
+	@Test
+	public void testCreateHQLCompletionProposal() {
+		HQLCompletionProposal hqlCompletionProposal = new HQLCompletionProposal(0, 0);
+		IHQLCompletionProposal facade = facadeFactory.createHQLCompletionProposal(hqlCompletionProposal);
+		assertSame(hqlCompletionProposal, ((IFacade)facade).getTarget());		
+	}	
 	
 	private class TestInvocationHandler implements InvocationHandler {
 		@Override
