@@ -11,6 +11,7 @@ import java.lang.reflect.Proxy;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.ForeignKey;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.tool.api.export.ArtifactCollector;
@@ -35,6 +36,7 @@ import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
+import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
@@ -220,6 +222,14 @@ public class FacadeFactoryTest {
 		IEnvironment environment = facadeFactory.createEnvironment();
 		assertNotNull(environment);
 		assertTrue(environment instanceof EnvironmentFacadeImpl);
+	}
+	
+	@Test
+	public void testCreateForeignKey() {
+		ForeignKey foreignKey = new ForeignKey();
+		IForeignKey facade = facadeFactory.createForeignKey(foreignKey);
+		assertSame(foreignKey, ((IFacade)facade).getTarget());	
+		assertTrue(facade instanceof ForeignKeyFacadeImpl);
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
