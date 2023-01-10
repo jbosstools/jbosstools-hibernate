@@ -12,6 +12,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
+import org.hibernate.mapping.Join;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.tool.api.export.ArtifactCollector;
@@ -45,6 +46,7 @@ import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
+import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
@@ -259,6 +261,13 @@ public class FacadeFactoryTest {
 		IHQLCompletionProposal facade = facadeFactory.createHQLCompletionProposal(hqlCompletionProposal);
 		assertSame(hqlCompletionProposal, ((IFacade)facade).getTarget());		
 	}	
+	
+	@Test
+	public void testCreateJoin() {
+		Join join = new Join();
+		IJoin facade = facadeFactory.createJoin(join);
+		assertSame(join, ((IFacade)facade).getTarget());		
+	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
 		@Override
