@@ -6,7 +6,8 @@ Bundle-SymbolicName: org.jboss.tools.hibernate.runtime.v_6_2;singleton:=true
 Bundle-Version: 5.4.20.qualifier
 Require-Bundle: org.jboss.tools.hibernate.libs.byte-buddy.v_1_12,
  org.jboss.tools.hibernate.libs.classmate.v_1_5,
- org.jboss.tools.hibernate.libs.jakarta-persistence-api.v_3_0,
+ org.jboss.tools.hibernate.libs.hibernate-commons-annotations.v_6_0,
+ org.jboss.tools.hibernate.libs.jakarta-persistence-api.v_3_1,
  org.jboss.tools.hibernate.libs.jakarta-transaction-api.v_2_0,
  org.jboss.tools.hibernate.libs.jakarta-xml-bind-api.v_3_0,
  org.jboss.tools.hibernate.libs.jboss-logging.v_3_4,
