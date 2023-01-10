@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Jakarta Persistence API for JBoss Tools Hibernate
+Bundle-SymbolicName: org.jboss.tools.hibernate.libs.jakarta-persistence-api.v_3_1
+Bundle-Version: 5.4.20.qualifier
+Bundle-Vendor: Red Hat
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-ClassPath: lib/jakarta.persistence-api-3.1.0.jar
+Export-Package: jakarta.persistence,
+ jakarta.persistence.criteria,
+ jakarta.persistence.metamodel,
+ jakarta.persistence.spi
