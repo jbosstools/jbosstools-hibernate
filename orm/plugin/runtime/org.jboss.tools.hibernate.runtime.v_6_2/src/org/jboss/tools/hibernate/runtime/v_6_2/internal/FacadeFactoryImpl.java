@@ -10,6 +10,7 @@ import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
+import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
@@ -86,6 +87,11 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	@Override
 	public IForeignKey createForeignKey(Object target) {
 		return new ForeignKeyFacadeImpl(this, target);
+	}
+
+	@Override
+	public IHibernateMappingExporter createHibernateMappingExporter(Object target) {
+		return new HibernateMappingExporterFacadeImpl(this, target);
 	}
 
 	@Override
