@@ -13,6 +13,8 @@ import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Join;
+import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.RootClass;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.tool.api.export.ArtifactCollector;
@@ -49,11 +51,13 @@ import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
+import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
+import org.jboss.tools.hibernate.runtime.v_6_2.internal.util.DummyMetadataBuildingContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -267,6 +271,14 @@ public class FacadeFactoryTest {
 		Join join = new Join();
 		IJoin facade = facadeFactory.createJoin(join);
 		assertSame(join, ((IFacade)facade).getTarget());		
+	}
+	
+	@Test
+	public void testCreatePersistentClass() {
+		PersistentClass persistentClass = new RootClass(DummyMetadataBuildingContext.INSTANCE);
+		IPersistentClass facade = facadeFactory.createPersistentClass(persistentClass);
+		assertTrue(facade instanceof PersistentClassFacadeImpl);
+		assertSame(persistentClass, ((IFacade)facade).getTarget());
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {

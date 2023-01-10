@@ -95,6 +95,11 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	}
 
 	@Override
+	public IPersistentClass createPersistentClass(Object target) {
+		return new PersistentClassFacadeImpl(this, target);
+	}
+	
+	@Override
 	public IPersistentClass createSpecialRootClass(IProperty arg0) {
 		// TODO Auto-generated method stub
 		return null;
