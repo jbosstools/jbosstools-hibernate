@@ -4,6 +4,7 @@ import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.ICriteria;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
@@ -68,6 +69,11 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	@Override
 	public IConfiguration createConfiguration(Object target) {
 		return new ConfigurationFacadeImpl(this, target);
+	}
+
+	@Override
+	public ICriteria createCriteria(Object target) {
+		return new CriteriaFacadeImpl(this, target);
 	}
 
 	@Override
