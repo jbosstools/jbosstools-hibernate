@@ -18,6 +18,7 @@ import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
+import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 
 public class FacadeFactoryImpl  extends AbstractFacadeFactory {
@@ -111,6 +112,11 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 		return new SessionFactoryFacadeImpl(this, target);
 	}
 	
+	@Override
+	public ISession createSession(Object target) {
+		return new SessionFacadeImpl(this, target);
+	}
+
 	@Override
 	public IPersistentClass createSpecialRootClass(IProperty arg0) {
 		// TODO Auto-generated method stub
