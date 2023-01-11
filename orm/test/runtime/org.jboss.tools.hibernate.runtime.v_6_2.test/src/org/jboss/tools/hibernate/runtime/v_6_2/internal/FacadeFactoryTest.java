@@ -18,6 +18,7 @@ import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Join;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
+import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.metadata.ClassMetadata;
@@ -60,6 +61,7 @@ import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
+import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
@@ -357,6 +359,20 @@ public class FacadeFactoryTest {
 		Table table = new Table();
 		ITable facade = facadeFactory.createTable(table);
 		assertSame(table, ((IFacade)facade).getTarget());
+	}
+	
+	@Test
+	public void testCreateSpecialRootClass() {
+		Property target = new Property();
+		PersistentClass pc = new RootClass(DummyMetadataBuildingContext.INSTANCE);
+		target.setPersistentClass(pc);
+		IProperty property = facadeFactory.createProperty(target);
+		IPersistentClass specialRootClass = facadeFactory.createSpecialRootClass(property);
+		assertNotNull(specialRootClass);
+		Object object = ((IFacade)specialRootClass).getTarget();
+		assertTrue(specialRootClass instanceof SpecialRootClassFacadeImpl);
+		assertTrue(object instanceof RootClass);
+		assertSame(property, specialRootClass.getProperty());
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
