@@ -39,6 +39,7 @@ import org.hibernate.tool.internal.export.java.POJOClass;
 import org.hibernate.tool.internal.export.query.QueryExporter;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
+import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
@@ -71,6 +72,7 @@ import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
+import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.v_6_2.internal.util.DummyMetadataBuildingContext;
 import org.junit.jupiter.api.BeforeEach;
@@ -373,6 +375,17 @@ public class FacadeFactoryTest {
 		assertTrue(specialRootClass instanceof SpecialRootClassFacadeImpl);
 		assertTrue(object instanceof RootClass);
 		assertSame(property, specialRootClass.getProperty());
+	}
+	
+	@Test
+	public void testCreateType() {
+		Type type = (Type)Proxy.newProxyInstance(
+				facadeFactory.getClassLoader(), 
+				new Class[] { Type.class }, 
+				new TestInvocationHandler());
+		IType facade = facadeFactory.createType(type);
+		assertTrue(facade instanceof TypeFacadeImpl);
+		assertSame(type, ((IFacade)facade).getTarget());
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {

@@ -20,6 +20,7 @@ import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
+import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 
 public class FacadeFactoryImpl  extends AbstractFacadeFactory {
@@ -128,4 +129,9 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 		return new SpecialRootClassFacadeImpl(this, property);
 	}
 	
+	@Override
+	public IType createType(Object target) {
+		return new TypeFacadeImpl(this, target);
+	}
+
 }
