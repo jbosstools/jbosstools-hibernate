@@ -21,6 +21,7 @@ import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
+import org.hibernate.mapping.Value;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.tool.api.export.ArtifactCollector;
@@ -74,6 +75,7 @@ import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_6_2.internal.util.DummyMetadataBuildingContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -393,6 +395,16 @@ public class FacadeFactoryTest {
 		IType facade = facadeFactory.createType(type);
 		assertTrue(facade instanceof TypeFacadeImpl);
 		assertSame(type, ((IFacade)facade).getTarget());
+	}
+	
+	@Test
+	public void testCreateValue() {
+		Value value = (Value)Proxy.newProxyInstance(
+				facadeFactory.getClassLoader(), 
+				new Class[] { Value.class }, 
+				new TestInvocationHandler());
+		IValue facade = facadeFactory.createValue(value);
+		assertSame(value, ((IFacade)facade).getTarget());
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
