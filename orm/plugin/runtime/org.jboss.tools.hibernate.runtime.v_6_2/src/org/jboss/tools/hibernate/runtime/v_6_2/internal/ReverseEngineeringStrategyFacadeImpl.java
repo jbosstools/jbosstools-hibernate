@@ -9,4 +9,8 @@ public class ReverseEngineeringStrategyFacadeImpl extends AbstractReverseEnginee
 		super(facadeFactory, target);
 	}
 
+	protected String getReverseEngineeringSettingsClassName() {
+		return "org.hibernate.tool.api.reveng.RevengSettings";
+	}
+
 }
