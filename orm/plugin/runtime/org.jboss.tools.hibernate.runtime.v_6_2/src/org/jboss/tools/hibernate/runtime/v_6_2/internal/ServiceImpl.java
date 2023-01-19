@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.hibernate.cfg.Configuration;
 import org.jboss.tools.hibernate.runtime.common.AbstractService;
+import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
@@ -32,6 +34,10 @@ import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.xml.sax.EntityResolver;
 
 public class ServiceImpl extends AbstractService {
+
+	private static final String HIBERNATE_VERSION = "6.2";
+
+	private IFacadeFactory facadeFactory = new FacadeFactoryImpl();
 
 	@Override
 	public Map<String, List<ITable>> collectDatabaseTables(Properties arg0, IReverseEngineeringStrategy arg1,
@@ -126,8 +132,8 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IConfiguration newDefaultConfiguration() {
-		// TODO Auto-generated method stub
-		return null;
+		getUsageTracker().trackNewConfigurationEvent(HIBERNATE_VERSION);
+		return facadeFactory.createConfiguration(new Configuration());
 	}
 
 	@Override
