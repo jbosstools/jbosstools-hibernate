@@ -96,8 +96,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IConfiguration newAnnotationConfiguration() {
-		// TODO Auto-generated method stub
-		return null;
+		return newDefaultConfiguration();
 	}
 
 	@Override
