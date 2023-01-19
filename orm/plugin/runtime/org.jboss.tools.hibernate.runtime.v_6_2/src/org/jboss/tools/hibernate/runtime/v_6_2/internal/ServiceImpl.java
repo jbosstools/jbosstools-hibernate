@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
+import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.jboss.tools.hibernate.runtime.common.AbstractService;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
@@ -260,9 +261,11 @@ public class ServiceImpl extends AbstractService {
 	}
 
 	@Override
-	public ISchemaExport newSchemaExport(IConfiguration arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public ISchemaExport newSchemaExport(IConfiguration hcfg) {
+		SchemaExportFacadeImpl result = 
+			(SchemaExportFacadeImpl)facadeFactory.createSchemaExport(new SchemaExport());
+		result.setConfiguration(hcfg);
+		return result;
 	}
 
 	@Override
