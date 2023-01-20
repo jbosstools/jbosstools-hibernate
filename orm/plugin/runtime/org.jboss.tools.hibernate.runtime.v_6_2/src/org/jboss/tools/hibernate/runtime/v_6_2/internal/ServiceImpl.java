@@ -33,6 +33,7 @@ import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
+import org.jboss.tools.hibernate.runtime.v_6_2.internal.util.JdbcMetadataConfiguration;
 import org.xml.sax.EntityResolver;
 
 public class ServiceImpl extends AbstractService {
@@ -177,8 +178,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IConfiguration newJDBCMetaDataConfiguration() {
-		// TODO Auto-generated method stub
-		return null;
+		return facadeFactory.createConfiguration(new JdbcMetadataConfiguration());
 	}
 
 	@Override
