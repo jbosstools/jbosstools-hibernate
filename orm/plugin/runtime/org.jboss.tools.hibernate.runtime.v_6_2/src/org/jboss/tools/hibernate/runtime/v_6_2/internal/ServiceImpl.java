@@ -8,6 +8,7 @@ import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.common.AbstractService;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
@@ -149,9 +150,13 @@ public class ServiceImpl extends AbstractService {
 	}
 
 	@Override
-	public IHQLCodeAssist newHQLCodeAssist(IConfiguration arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public IHQLCodeAssist newHQLCodeAssist(IConfiguration hcfg) {
+		IHQLCodeAssist result = null;
+		if (hcfg instanceof ConfigurationFacadeImpl) {
+			result = facadeFactory.createHQLCodeAssist(
+					new HQLCodeAssist(((ConfigurationFacadeImpl)hcfg).getMetadata()));
+		}
+		return result;
 	}
 
 	@Override
