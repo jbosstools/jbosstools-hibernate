@@ -328,8 +328,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public ITypeFactory newTypeFactory() {
-		// TODO Auto-generated method stub
-		return null;
+		return facadeFactory.createTypeFactory();
 	}
 
 }
