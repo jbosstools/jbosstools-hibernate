@@ -431,6 +431,11 @@ public class ServiceImpl extends AbstractService {
 		return facadeFactory.createTypeFactory();
 	}
 
+	@Override
+	protected String getCfgExporterClassName() {
+		return CfgExporter.class.getName();
+	}
+
 	private Object newReverseEngineeringStrategy(final String className, Object delegate) {
         try {
             Class<?> clazz = classForName(className);

@@ -342,4 +342,11 @@ public class ServiceImplTest {
 				service.getReverseEngineeringStrategyClassName());
 	}
 	
+	@Test
+	public void testGetCfgExporterClassName() {
+		assertEquals(
+				CfgExporter.class.getName(), 
+				service.getCfgExporterClassName());
+	}
+	
 }
