@@ -16,6 +16,7 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: org.jboss.tools.hibernate.reddeer,
  org.jboss.tools.hibernate.reddeer.codegen,
+ org.jboss.tools.hibernate.reddeer.common.project.properties,
  org.jboss.tools.hibernate.reddeer.condition,
  org.jboss.tools.hibernate.reddeer.console,
  org.jboss.tools.hibernate.reddeer.console.views,

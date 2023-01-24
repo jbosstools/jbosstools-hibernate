@@ -19,6 +19,7 @@ import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
@@ -82,7 +83,14 @@ public class ReverseEngineeringEditor extends DefaultEditor {
 	public void selectAllTables(String databaseName) {
 		activateTableAndColumnsTab();
 		new PushButton(this, "Add...").click();
-		Shell s= new DefaultShell("Add Tables & Columns");
+		ShellIsAvailable selectConsoleConfig = new ShellIsAvailable("Select a console configuration");
+		new WaitUntil(selectConsoleConfig, TimePeriod.MEDIUM, false);
+		if (selectConsoleConfig.getResult() != null) {
+			new DefaultShell(selectConsoleConfig.getResult());
+			new PushButton("OK").click();
+			new WaitUntil(selectConsoleConfig, TimePeriod.MEDIUM, false);
+		}
+		Shell s = new DefaultShell("Add Tables & Columns");
 		DefaultTree dbTree = new DefaultTree(s);
 		new WaitUntil(new TreeHasChildren(dbTree));
 		new WaitUntil(new TreeContainsItem(dbTree, databaseName));

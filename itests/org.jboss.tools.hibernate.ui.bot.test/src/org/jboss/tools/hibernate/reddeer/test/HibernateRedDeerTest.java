@@ -12,13 +12,25 @@ package org.jboss.tools.hibernate.reddeer.test;
 
 import static org.junit.Assert.fail;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Map;
+
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
-import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
-import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
+import org.eclipse.reddeer.eclipse.core.resources.DefaultProject;
+import org.eclipse.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
 import org.eclipse.reddeer.eclipse.m2e.core.ui.wizard.MavenImportWizard;
+import org.eclipse.reddeer.eclipse.ui.dialogs.PropertyDialog;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.eclipse.ui.views.properties.PropertySheet;
+import org.eclipse.reddeer.eclipse.wst.common.project.facet.ui.FacetsPropertyPage;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.eclipse.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement;
@@ -29,9 +41,13 @@ import org.eclipse.reddeer.swt.api.TreeItem;
 import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.jboss.tools.hibernate.reddeer.common.project.properties.ResourcePropertyPage;
 import org.jboss.tools.hibernate.reddeer.console.views.KnownConfigurationsView;
 import org.jboss.tools.hibernate.reddeer.preference.HibernatePreferencePage;
 import org.jboss.tools.hibernate.ui.bot.test.Activator;
@@ -41,17 +57,8 @@ import org.jboss.tools.hibernate.ui.bot.test.factory.ConnectionProfileFactory;
 import org.jboss.tools.hibernate.ui.bot.test.factory.DriverDefinitionFactory;
 import org.jboss.tools.hibernate.ui.bot.test.factory.HibernateToolsFactory;
 import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Before;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.util.Map;
-import java.nio.file.FileVisitResult;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import org.junit.BeforeClass;
 
 @AutoBuilding(value=false,cleanup=false)
 public class HibernateRedDeerTest {
@@ -77,6 +84,12 @@ public class HibernateRedDeerTest {
 		preferenceDialog.select(hibernatePreferencePage);
 		hibernatePreferencePage.enableAllRuntimes();
 		preferenceDialog.ok();
+		
+		// Make projects to build automatically
+		ShellMenuItem item = new ShellMenuItem("Project", "Build Automatically");
+		if (!item.isEnabled()) {
+			item.select();
+		}
 	}
 	
 	@Before
@@ -88,6 +101,11 @@ public class HibernateRedDeerTest {
 	@AfterClass
 	public static void afterClass() {
 		DatabaseUtils.stopSakilaDB();
+		// Disable projects to build automatically
+		ShellMenuItem item = new ShellMenuItem("Project", "Build Automatically");
+		if (item.isEnabled()) {
+			item.select();
+		}
 		deleteAllProjects();
 		//Close all shells if test fails (could interfere next tests)
 		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
@@ -145,6 +163,24 @@ public class HibernateRedDeerTest {
 			new WaitUntil(new JobIsRunning(), TimePeriod.DEFAULT, false);
 			new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 			
+			// Set Java 17 as default facet for the testing project
+			PackageExplorerPart pe = new PackageExplorerPart();
+			pe.open();
+			DefaultProject project = pe.getProject(prjName);
+			PropertyDialog dialog = project.openProperties();
+			FacetsPropertyPage fp = new FacetsPropertyPage(dialog);
+			dialog.select(fp);
+			fp.selectVersion("Java", "17");
+			fp.apply();
+			
+			// Set Default encoding to get rid of warning in problems view
+			ResourcePropertyPage resource = new ResourcePropertyPage(dialog);
+			dialog.select(resource);
+			resource.setOtherEncoding("UTF-8");
+			resource.apply();
+			dialog.ok();
+			
+			
 		} catch (IOException e) {
 			fail("Unable to find pom "+prjName);
 		}
@@ -155,6 +191,11 @@ public class HibernateRedDeerTest {
 		deleteHibernateConfigurations();
 		CleanWorkspaceRequirement req = new CleanWorkspaceRequirement();
 		req.fulfill();
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		if (pe.getProjects().size() > 0) {
+			pe.deleteAllProjects(true);
+		}
 		deleteHibernateConfigurations();
 		//windows is not able to delete sometimes due to locked files
 	}
