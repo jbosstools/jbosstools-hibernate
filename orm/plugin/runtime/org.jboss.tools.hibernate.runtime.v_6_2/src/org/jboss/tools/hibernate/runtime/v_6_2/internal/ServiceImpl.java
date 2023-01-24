@@ -170,8 +170,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IEnvironment getEnvironment() {
-		// TODO Auto-generated method stub
-		return null;
+		return facadeFactory.createEnvironment();
 	}
 
 	@Override
