@@ -18,6 +18,7 @@ import org.h2.Driver;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.export.ArtifactCollector;
@@ -34,6 +35,7 @@ import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
+import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
@@ -294,6 +296,16 @@ public class ServiceImplTest {
 		assertTrue(target instanceof Table);
 		assertEquals("foo", ((Table)target).getName());
 		assertNotNull(((Table)target).getPrimaryKey());
+	}
+	
+	@Test
+	public void testNewColumn() {
+		IColumn column = service.newColumn("foo");
+		assertNotNull(column);
+		Object target = ((IFacade)column).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof Column);
+		assertEquals("foo", ((Column)target).getName());
 	}
 	
 }
