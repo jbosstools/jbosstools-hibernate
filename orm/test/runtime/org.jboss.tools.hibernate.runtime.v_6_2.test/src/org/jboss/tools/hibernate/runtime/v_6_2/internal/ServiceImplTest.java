@@ -18,6 +18,7 @@ import org.h2.Driver;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
@@ -315,4 +316,11 @@ public class ServiceImplTest {
 		assertEquals("org.hibernate.dialect.H2Dialect", dialect);
 	}
 
+	@Test
+	public void testGetDriverManagerManagerConnectionProviderClass() {
+		assertSame(
+				DriverManagerConnectionProviderImpl.class, 
+				service.getDriverManagerConnectionProviderClass());
+	}
+	
 }
