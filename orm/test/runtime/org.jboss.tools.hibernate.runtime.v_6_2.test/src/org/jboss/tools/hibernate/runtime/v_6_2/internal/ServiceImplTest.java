@@ -404,4 +404,14 @@ public class ServiceImplTest {
 		assertTrue(target instanceof Bag);
 	}
 	
+	@Test
+	public void testNewList() {
+		IPersistentClass persistentClass = service.newRootClass();
+		IValue list = service.newList(persistentClass);
+		assertNotNull(list);
+		Object target = ((IFacade)list).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof org.hibernate.mapping.List);
+	}
+	
 }

@@ -313,9 +313,11 @@ public class ServiceImpl extends AbstractService {
 	}
 
 	@Override
-	public IValue newList(IPersistentClass arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public IValue newList(IPersistentClass persistentClass) {
+		return facadeFactory.createValue(
+				new org.hibernate.mapping.List(
+						DummyMetadataBuildingContext.INSTANCE, 
+						(PersistentClass)((IFacade)persistentClass).getTarget()));
 	}
 
 	@Override
