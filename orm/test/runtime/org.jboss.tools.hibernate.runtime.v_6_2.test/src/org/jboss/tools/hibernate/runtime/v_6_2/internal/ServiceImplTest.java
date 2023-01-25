@@ -22,6 +22,7 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Property;
+import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.export.ArtifactCollector;
 import org.hibernate.tool.api.export.ExporterConstants;
@@ -54,6 +55,7 @@ import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_6_2.internal.util.JdbcMetadataConfiguration;
 import org.jboss.tools.hibernate.runtime.v_6_2.internal.util.MockConnectionProvider;
 import org.jboss.tools.hibernate.runtime.v_6_2.internal.util.MockDialect;
@@ -347,6 +349,15 @@ public class ServiceImplTest {
 		assertEquals(
 				CfgExporter.class.getName(), 
 				service.getCfgExporterClassName());
+	}
+	
+	@Test
+	public void testSimpleValue() {
+		IValue simpleValue = service.newSimpleValue();
+		assertNotNull(simpleValue);
+		Object target = ((IFacade)simpleValue).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof SimpleValue);
 	}
 	
 }
