@@ -26,6 +26,7 @@ import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfoSource;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
+import org.hibernate.mapping.Array;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PersistentClass;
@@ -201,9 +202,11 @@ public class ServiceImpl extends AbstractService {
 	}
 
 	@Override
-	public IValue newArray(IPersistentClass arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public IValue newArray(IPersistentClass persistentClass) {
+		return facadeFactory.createValue(
+				new Array(
+						DummyMetadataBuildingContext.INSTANCE, 
+						(PersistentClass)((IFacade)persistentClass).getTarget()));
 	}
 
 	@Override
