@@ -27,6 +27,7 @@ import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfoSource;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.mapping.Array;
+import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PersistentClass;
@@ -215,11 +216,13 @@ public class ServiceImpl extends AbstractService {
 	}
 
 	@Override
-	public IValue newBag(IPersistentClass arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public IValue newBag(IPersistentClass persistentClass) {
+		return facadeFactory.createValue(
+				new Bag(
+						DummyMetadataBuildingContext.INSTANCE, 
+						(PersistentClass)((IFacade)persistentClass).getTarget()));
 	}
-
+	
 	@Override
 	public ICfg2HbmTool newCfg2HbmTool() {
 		return facadeFactory.createCfg2HbmTool(new Cfg2HbmTool());
