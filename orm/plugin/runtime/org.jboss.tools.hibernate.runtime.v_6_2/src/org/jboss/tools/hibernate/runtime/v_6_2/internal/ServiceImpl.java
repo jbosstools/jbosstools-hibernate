@@ -449,9 +449,8 @@ public class ServiceImpl extends AbstractService {
 	}
 
 	@Override
-	public IPersistentClass newSpecialRootClass(IProperty arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public IPersistentClass newSpecialRootClass(IProperty ormElement) {
+		return facadeFactory.createSpecialRootClass(ormElement);
 	}
 
 	@Override
