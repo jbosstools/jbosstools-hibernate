@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.hibernate.Hibernate;
 import org.hibernate.boot.internal.BootstrapContextImpl;
 import org.hibernate.boot.internal.InFlightMetadataCollectorImpl;
 import org.hibernate.boot.internal.MetadataBuilderImpl.MetadataBuildingOptionsImpl;
@@ -199,9 +200,8 @@ public class ServiceImpl extends AbstractService {
 	}
 
 	@Override
-	public boolean isInitialized(Object arg0) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isInitialized(Object object) {
+		return Hibernate.isInitialized(object);
 	}
 
 	@Override

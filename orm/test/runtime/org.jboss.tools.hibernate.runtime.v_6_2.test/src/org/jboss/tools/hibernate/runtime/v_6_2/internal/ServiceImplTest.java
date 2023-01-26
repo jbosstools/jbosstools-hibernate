@@ -512,4 +512,9 @@ public class ServiceImplTest {
 		assertSame(property, specialRootClass.getProperty());
 	}
 	
+	@Test
+	public void testIsInitialized() {
+		assertTrue(service.isInitialized(new Object()));
+	}
+	
 }
