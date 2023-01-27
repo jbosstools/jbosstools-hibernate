@@ -92,6 +92,7 @@ import org.jboss.tools.hibernate.runtime.v_6_2.internal.util.ConfigurationMetada
 import org.jboss.tools.hibernate.runtime.v_6_2.internal.util.DummyMetadataBuildingContext;
 import org.jboss.tools.hibernate.runtime.v_6_2.internal.util.DummyMetadataDescriptor;
 import org.jboss.tools.hibernate.runtime.v_6_2.internal.util.JdbcMetadataConfiguration;
+import org.jboss.tools.hibernate.runtime.v_6_2.internal.util.JpaConfiguration;
 import org.jboss.tools.hibernate.runtime.v_6_2.internal.util.JpaMappingFileHelper;
 import org.xml.sax.EntityResolver;
 
@@ -319,9 +320,12 @@ public class ServiceImpl extends AbstractService {
 	}
 
 	@Override
-	public IConfiguration newJpaConfiguration(String arg0, String arg1, Map<Object, Object> arg2) {
-		// TODO Auto-generated method stub
-		return null;
+	public IConfiguration newJpaConfiguration(
+			String entityResolver, 
+			String persistenceUnit,
+			Map<Object, Object> overrides) {
+		return facadeFactory.createConfiguration(
+				new JpaConfiguration(persistenceUnit, overrides));
 	}
 
 	@Override

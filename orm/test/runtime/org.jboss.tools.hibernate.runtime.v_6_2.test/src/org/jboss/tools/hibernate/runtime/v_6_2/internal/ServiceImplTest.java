@@ -69,6 +69,7 @@ import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.jboss.tools.hibernate.runtime.v_6_2.internal.util.JdbcMetadataConfiguration;
+import org.jboss.tools.hibernate.runtime.v_6_2.internal.util.JpaConfiguration;
 import org.jboss.tools.hibernate.runtime.v_6_2.internal.util.MockConnectionProvider;
 import org.jboss.tools.hibernate.runtime.v_6_2.internal.util.MockDialect;
 import org.junit.jupiter.api.BeforeAll;
@@ -108,6 +109,17 @@ public class ServiceImplTest {
 		assertTrue(((IFacade)annotationConfiguration).getTarget() instanceof Configuration);
 	}
 
+	@Test
+	public void testNewJpaConfiguration() {
+		IConfiguration jpaConfiguration = service.newJpaConfiguration(null, "test", null);
+		assertNotNull(jpaConfiguration);
+		Object target = ((IFacade)jpaConfiguration).getTarget();
+		assertNotNull(target);
+		assertTrue(target instanceof JpaConfiguration);
+		assertEquals("test", ((JpaConfiguration)target).getPersistenceUnit());
+		
+	}
+	
 	@Test
 	public void testNewHibernateMappingExporter() {
 		IConfiguration configuration = service.newDefaultConfiguration();
