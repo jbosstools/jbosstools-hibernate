@@ -517,4 +517,10 @@ public class ServiceImplTest {
 		assertTrue(service.isInitialized(new Object()));
 	}
 	
+	@Test
+	public void testGetJPAMappingFilePaths() {
+		List<String> result = service.getJPAMappingFilePaths("test", null);
+		assertEquals(0, result.size());
+	}
+	
 }
