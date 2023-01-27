@@ -9,4 +9,4 @@ Export-Package: org.hibernate.annotations.common.annotationfactory,
  org.hibernate.annotations.common.reflection,
  org.hibernate.annotations.common.reflection.java,
  org.hibernate.annotations.common.reflection.java.generics
-Bundle-ClassPath: lib/hibernate-commons-annotations-6.0.2.Final.jar
+Bundle-ClassPath: lib/hibernate-commons-annotations-6.0.5.Final.jar
