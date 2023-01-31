@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
@@ -32,7 +33,7 @@ public class ISessionTest {
 	
 	private static final String TEST_HBM_XML_STRING =
 			"<hibernate-mapping package='org.jboss.tools.hibernate.orm.runtime.exp.internal'>" +
-			"  <class name='ISessionFactoryTest$Foo'>" + 
+			"  <class name='ISessionTest$Foo'>" + 
 			"    <id name='id' access='field' />" +
 			"    <set name='bars' access='field' >" +
 			"      <key column='barId' />" +
@@ -76,6 +77,14 @@ public class ISessionTest {
 	public void testConstruction() {
 		assertNotNull(sessionFacade);
 		assertNotNull(sessionTarget);
+	}
+	
+	@Test
+	public void testGetEntityName() {
+		Foo foo = new Foo();
+		foo.id = "bar";
+		sessionTarget.persist(foo);
+		assertEquals(Foo.class.getName(), sessionFacade.getEntityName(foo));
 	}
 	
 }
