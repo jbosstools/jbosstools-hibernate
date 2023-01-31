@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.jboss.tools.hibernatetools.orm.plugin</groupId>
 		<artifactId>runtime</artifactId>
-		<version>5.4.19-SNAPSHOT</version>
+		<version>5.4.20-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.hibernatetools.orm.plugin.runtime</groupId>
 	<artifactId>org.jboss.tools.hibernate.orm.runtime.exp</artifactId> 
@@ -12,8 +12,8 @@
 	<packaging>eclipse-plugin</packaging>
 
 	<properties>
-		<hibernate.orm.version>6.1.5.Final</hibernate.orm.version>
-		<hibernate.tools.version>6.1.6-SNAPSHOT</hibernate.tools.version>
+		<hibernate.orm.version>6.2.0.CR1</hibernate.orm.version>
+		<hibernate.tools.version>6.2.0-SNAPSHOT</hibernate.tools.version>
 	</properties>
 
 	<build>
@@ -106,5 +106,4 @@
 		</plugins>
 	</build>
 
-<version>5.4.19-SNAPSHOT</version>
 </project>
