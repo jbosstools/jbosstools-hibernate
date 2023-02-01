@@ -3,21 +3,24 @@ package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.lang.reflect.Proxy;
 import java.nio.file.Files;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.hibernate.Session;
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.query.Query;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -99,6 +102,14 @@ public class ISessionTest {
 		assertSame(
 				((IFacade)sessionFactoryFacade).getTarget(), 
 				((IFacade)sessionFacade.getSessionFactory()).getTarget());
+	}
+	
+	@Test
+	public void testCreateQuery() {
+		IQuery queryFacade = sessionFacade.createQuery("from " + Foo.class.getName());
+		assertNotNull(queryFacade);
+		assertTrue(Proxy.isProxyClass(queryFacade.getClass()));
+		assertTrue(((IFacade)queryFacade).getTarget() instanceof Query<?>);
 	}
 	
 	
