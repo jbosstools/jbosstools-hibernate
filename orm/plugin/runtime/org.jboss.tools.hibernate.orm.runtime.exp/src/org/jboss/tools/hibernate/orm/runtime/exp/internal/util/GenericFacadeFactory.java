@@ -49,6 +49,8 @@ public class GenericFacadeFactory {
 			Object result = null;
 			if ("getTarget".equals(method.getName())) {
 				result = target;
+			} else if ("equals".equals(method.getName())) {
+				return isEqual(proxy, args);
 			} else {
 				Class<?>[] argumentClasses = argumentClasses(args);
 				Method targetMethod = ReflectUtil.lookupMethod(
@@ -103,6 +105,17 @@ public class GenericFacadeFactory {
 			return result;
 		}
 		
+	}
+	
+	private static boolean isEqual(Object proxy, Object[] args) {
+		if (args.length != 1) return false;
+		if (!Proxy.isProxyClass(args[0].getClass())) return false;
+		InvocationHandler right = Proxy.getInvocationHandler(args[0]);
+		if (!(right instanceof FacadeInvocationHandler)) return false;
+		InvocationHandler left = Proxy.getInvocationHandler(proxy);
+		Object leftTarget = ((FacadeInvocationHandler)left).target;
+		Object rightTarget = ((FacadeInvocationHandler)right).target;
+		return leftTarget.equals(rightTarget);
 	}
 	
 	private static Object[] unwrapFacades(Object[] args) {

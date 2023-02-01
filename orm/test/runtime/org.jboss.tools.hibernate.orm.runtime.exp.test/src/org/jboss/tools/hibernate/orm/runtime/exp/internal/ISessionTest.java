@@ -95,6 +95,7 @@ public class ISessionTest {
 	
 	@Test
 	public void testGetSessionFactory() {		
+		assertEquals(sessionFactoryFacade, sessionFacade.getSessionFactory());
 		assertSame(
 				((IFacade)sessionFactoryFacade).getTarget(), 
 				((IFacade)sessionFacade.getSessionFactory()).getTarget());
