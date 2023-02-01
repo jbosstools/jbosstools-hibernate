@@ -127,4 +127,15 @@ public class ISessionTest {
 		assertFalse(sessionTarget.isOpen());
 	}
 	
+	@Test
+	public void testContains() {
+		Foo first = new Foo();
+		first.id = "1";
+		sessionTarget.persist(first);
+		Foo second = new Foo();
+		assertTrue(sessionFacade.contains(first));
+		assertFalse(sessionFacade.contains(second));
+		assertFalse(sessionFacade.contains("blah"));
+	}
+	
 }
