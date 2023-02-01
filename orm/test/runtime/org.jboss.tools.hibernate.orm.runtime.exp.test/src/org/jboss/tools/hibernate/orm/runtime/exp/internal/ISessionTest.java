@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -13,10 +14,12 @@ import org.hibernate.Session;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
+import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
+import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -55,6 +58,8 @@ public class ISessionTest {
 	private Session sessionTarget = null;
 	private ISession sessionFacade = null;
 	
+	private ISessionFactory sessionFactoryFacade = null;
+	
 	@BeforeEach
 	public void beforeEach() throws Exception {
 		tempDir = Files.createTempDirectory("temp").toFile();
@@ -69,7 +74,8 @@ public class ISessionTest {
 		IConfiguration configuration = FACADE_FACTORY.createNativeConfiguration();
 		configuration.addFile(hbmXmlFile);
 		configuration.configure(cfgXmlFile);
-		sessionFacade = configuration.buildSessionFactory().openSession();
+		sessionFactoryFacade = configuration.buildSessionFactory();
+		sessionFacade = sessionFactoryFacade.openSession();
 		sessionTarget = (Session)((IFacade)sessionFacade).getTarget();
 	}
 	
@@ -86,5 +92,13 @@ public class ISessionTest {
 		sessionTarget.persist(foo);
 		assertEquals(Foo.class.getName(), sessionFacade.getEntityName(foo));
 	}
+	
+	@Test
+	public void testGetSessionFactory() {		
+		assertSame(
+				((IFacade)sessionFactoryFacade).getTarget(), 
+				((IFacade)sessionFacade.getSessionFactory()).getTarget());
+	}
+	
 	
 }
