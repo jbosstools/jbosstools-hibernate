@@ -21,6 +21,7 @@ import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.ICriteria;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
@@ -138,4 +139,11 @@ public class ISessionTest {
 		assertFalse(sessionFacade.contains("blah"));
 	}
 	
+	@Test
+	public void testCreateCriteria() {
+		ICriteria criteria = sessionFacade.createCriteria(Foo.class);
+		assertNotNull(criteria);
+		assertTrue(((IFacade)criteria).getTarget() instanceof jakarta.persistence.Query);
+	}
+
 }
