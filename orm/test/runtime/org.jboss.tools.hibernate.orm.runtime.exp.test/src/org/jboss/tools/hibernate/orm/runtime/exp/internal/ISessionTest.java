@@ -120,5 +120,11 @@ public class ISessionTest {
 		assertFalse(sessionFacade.isOpen());
 	}
 	
+	@Test
+	public void testClose() {
+		assertTrue(sessionTarget.isOpen());
+		sessionFacade.close();
+		assertFalse(sessionTarget.isOpen());
+	}
 	
 }
