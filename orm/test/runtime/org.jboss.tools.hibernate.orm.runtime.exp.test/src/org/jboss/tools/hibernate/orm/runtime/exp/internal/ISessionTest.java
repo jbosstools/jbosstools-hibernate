@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -110,6 +111,13 @@ public class ISessionTest {
 		assertNotNull(queryFacade);
 		assertTrue(Proxy.isProxyClass(queryFacade.getClass()));
 		assertTrue(((IFacade)queryFacade).getTarget() instanceof Query<?>);
+	}
+	
+	@Test
+	public void testIsOpen() {
+		assertTrue(sessionFacade.isOpen());
+		sessionTarget.close();
+		assertFalse(sessionFacade.isOpen());
 	}
 	
 	
