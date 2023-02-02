@@ -11,7 +11,6 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import org.hibernate.Session;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
@@ -53,7 +52,6 @@ import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
-import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.IType;
@@ -186,6 +184,16 @@ public class FacadeFactoryTest {
 			fail();
 		} catch (Throwable t) {
 			assertEquals("Should use class 'NewFacadeFactory'", t.getMessage());			
+		}
+	}
+	
+	@Test
+	public void testCreateSession() {
+		try {
+			FACADE_FACTORY.createSession(null);
+			fail();
+		} catch (Throwable t) {
+			assertEquals("Should use class 'NewFacadeFactory'", t.getMessage());
 		}
 	}
 	
@@ -334,17 +342,6 @@ public class FacadeFactoryTest {
 		IQuery facade = FACADE_FACTORY.createQuery(query);
 		assertTrue(facade instanceof QueryFacadeImpl);
 		assertSame(query, ((IFacade)facade).getTarget());
-	}
-	
-	@Test
-	public void testCreateSession() {
-		Session session = (Session)Proxy.newProxyInstance(
-				FACADE_FACTORY.getClassLoader(), 
-				new Class[] { Session.class }, 
-				new TestInvocationHandler());
-		ISession facade = FACADE_FACTORY.createSession(session);
-		assertTrue(facade instanceof SessionFacadeImpl);
-		assertSame(session, ((IFacade)facade).getTarget());
 	}
 	
 	@Test
