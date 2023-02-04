@@ -1,5 +1,7 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
@@ -81,6 +83,13 @@ public class ICriteriaTest {
 	public void testConstruction() {
 		assertNotNull(criteriaFacade);
 		assertNotNull(criteriaTarget);
+	}
+	
+	@Test
+	public void testSetMaxResults() {
+		assertNotEquals(1, criteriaTarget.getMaxResults());
+		criteriaFacade.setMaxResults(1);
+		assertEquals(1, criteriaTarget.getMaxResults());
 	}
 	
 }
