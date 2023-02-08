@@ -12,20 +12,28 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.Map;
 
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.internal.BootstrapContextImpl;
 import org.hibernate.boot.internal.InFlightMetadataCollectorImpl;
 import org.hibernate.boot.internal.MetadataBuilderImpl.MetadataBuildingOptionsImpl;
 import org.hibernate.boot.internal.MetadataBuildingContextRootImpl;
+import org.hibernate.boot.internal.SessionFactoryOptionsBuilder;
+import org.hibernate.boot.model.relational.SqlStringGenerationContext;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.spi.BootstrapContext;
 import org.hibernate.boot.spi.InFlightMetadataCollector;
 import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.boot.spi.MetadataImplementor;
+import org.hibernate.boot.spi.SessionFactoryOptions;
+import org.hibernate.cache.spi.CacheImplementor;
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.dialect.Dialect;
+import org.hibernate.dialect.H2Dialect;
 import org.hibernate.engine.OptimisticLockStyle;
+import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.engine.spi.SessionFactoryDelegatingImpl;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.engine.spi.SessionImplementor;
@@ -39,11 +47,12 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.metadata.ClassMetadata;
-import org.hibernate.metamodel.MappingMetamodel;
+import org.hibernate.metamodel.spi.MappingMetamodelImplementor;
 import org.hibernate.metamodel.spi.RuntimeModelCreationContext;
 import org.hibernate.persister.entity.AbstractEntityPersister;
 import org.hibernate.persister.entity.SingleTableEntityPersister;
-import org.hibernate.persister.spi.PersisterCreationContext;
+import org.hibernate.query.sqm.function.SqmFunctionRegistry;
+import org.hibernate.service.ServiceRegistry;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
@@ -183,11 +192,12 @@ public class ClassMetadataFacadeTest {
 		return result;
 	}
 	
-	private PersisterCreationContext createPersisterCreationContext(
-			StandardServiceRegistry serviceRegisty,
+	private RuntimeModelCreationContext createPersisterCreationContext(
+			StandardServiceRegistry serviceRegistry,
 			BootstrapContext bootstrapContext) {
-		MetadataSources metadataSources = new MetadataSources(serviceRegisty);
+		MetadataSources metadataSources = new MetadataSources(serviceRegistry);
 		return new TestCreationContext(
+				serviceRegistry,
 				bootstrapContext, 
 				(MetadataImplementor)metadataSources.buildMetadata());
 	}
@@ -217,19 +227,24 @@ public class ClassMetadataFacadeTest {
 		return rc;
 	}
 	
-	private class TestCreationContext implements PersisterCreationContext, RuntimeModelCreationContext {
+	private class TestCreationContext implements RuntimeModelCreationContext {
 		
+		private final ServiceRegistry serviceRegistry;
 		private final BootstrapContext bootstrapContext;
 		private final MetadataImplementor metadataImplementor;
 		private final SessionFactoryImplementor sessionFactoryImplementor;
+		private final SessionFactoryOptions sessionFactoryOptions;
 		
 		TestCreationContext(
+				StandardServiceRegistry serviceRegistry,
 				BootstrapContext bootstrapContext,
 				MetadataImplementor metadataImplementor) {
+			this.serviceRegistry = serviceRegistry;
 			this.bootstrapContext = bootstrapContext;
 			this.metadataImplementor = metadataImplementor;
 			this.sessionFactoryImplementor = new TestSessionFactory(
 					(SessionFactoryImplementor)metadataImplementor.buildSessionFactory());
+			this.sessionFactoryOptions = new SessionFactoryOptionsBuilder(serviceRegistry, bootstrapContext).buildOptions();
 		}
 
 		@Override
@@ -238,7 +253,7 @@ public class ClassMetadataFacadeTest {
 		}
 
 		@Override
-		public MappingMetamodel getDomainModel() {
+		public MappingMetamodelImplementor getDomainModel() {
 			return null;
 		}
 
@@ -256,6 +271,51 @@ public class ClassMetadataFacadeTest {
 		public MetadataImplementor getMetadata() {
 			return metadataImplementor;
 		}
+
+		@Override
+		public CacheImplementor getCache() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public Dialect getDialect() {
+			return new H2Dialect();
+		}
+
+		@Override
+		public SqmFunctionRegistry getFunctionRegistry() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public JdbcServices getJdbcServices() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public ServiceRegistry getServiceRegistry() {
+			return serviceRegistry;
+		}
+
+		@Override
+		public SessionFactoryOptions getSessionFactoryOptions() {
+			return sessionFactoryOptions;
+		}
+
+		@Override
+		public Map<String, Object> getSettings() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public SqlStringGenerationContext getSqlStringGenerationContext() {
+			// TODO Auto-generated method stub
+			return null;
+		}
 		
 	}
 	
@@ -272,7 +332,7 @@ public class ClassMetadataFacadeTest {
 		
 		public TestEntityPersister(
 				PersistentClass persistentClass, 
-				PersisterCreationContext creationContext) {
+				RuntimeModelCreationContext creationContext) {
 			super(persistentClass, null, null, creationContext);
 		}
 		

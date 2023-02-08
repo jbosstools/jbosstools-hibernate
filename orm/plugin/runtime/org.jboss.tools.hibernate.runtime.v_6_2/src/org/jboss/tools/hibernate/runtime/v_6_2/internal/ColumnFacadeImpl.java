@@ -5,15 +5,10 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.hibernate.boot.Metadata;
-import org.hibernate.boot.internal.MetadataImpl;
-import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.dialect.Dialect;
-import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Value;
-import org.hibernate.type.spi.TypeConfiguration;
 import org.jboss.tools.hibernate.runtime.common.AbstractColumnFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
@@ -40,15 +35,8 @@ public class ColumnFacadeImpl extends AbstractColumnFacade {
 		Properties properties = configurationTarget.getProperties();
 		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
 		ssrb.applySettings(properties);
-		StandardServiceRegistry ssr = ssrb.build();
-		DialectFactory df = ssr.getService(DialectFactory.class);
-		Dialect dialectTarget = df.buildDialect(transform(properties), null);
 		Metadata metadata = ((ConfigurationFacadeImpl)configuration).getMetadata();
-		TypeConfiguration tc = ((MetadataImpl)metadata).getTypeConfiguration();
-		return targetColumn.getSqlType(
-				tc,
-				dialectTarget, 
-				metadata);
+		return targetColumn.getSqlType(metadata);
 	}
 	
 	@Override

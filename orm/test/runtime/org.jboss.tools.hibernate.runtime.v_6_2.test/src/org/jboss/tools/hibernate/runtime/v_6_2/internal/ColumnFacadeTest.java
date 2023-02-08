@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -68,7 +69,7 @@ public class ColumnFacadeTest {
 	}
 
 	@Test
-	public void testGetSqlType() {
+	public void testGetSqlType() throws Exception {
 		assertNull(columnFacade.getSqlType());
 		column.setSqlType("foobar");
 		assertEquals("foobar", columnFacade.getSqlType());
@@ -79,7 +80,9 @@ public class ColumnFacadeTest {
 		value.setTypeName("int");
 		column.setValue(value);
 		IConfiguration configurationFacade = FACADE_FACTORY.createConfiguration(configuration);
-		column.setSqlType(null);
+		Field sqlTypeNameField = Column.class.getDeclaredField("sqlTypeName"); 
+		sqlTypeNameField.setAccessible(true);
+		sqlTypeNameField.set(column, null);
 		assertEquals("integer", columnFacade.getSqlType(configurationFacade));
 	}
 	
