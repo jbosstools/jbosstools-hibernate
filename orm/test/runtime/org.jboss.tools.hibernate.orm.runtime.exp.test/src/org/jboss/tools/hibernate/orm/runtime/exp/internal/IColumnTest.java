@@ -61,14 +61,17 @@ public class IColumnTest {
 
 	@Test
 	public void testGetSqlType() {
+		// IColumn#getSqlType()
 		assertNull(columnFacade.getSqlType());
 		columnTarget.setSqlType("foobar");
 		assertEquals("foobar", columnFacade.getSqlType());
+		// IColumn#getSqlType(IConfiguration)
+		columnFacade = FACADE_FACTORY.createColumn(null);
+		columnTarget = (ColumnWrapper)((IFacade)columnFacade).getTarget();
+		columnTarget.setValue(createValue());
 		IConfiguration configurationFacade = FACADE_FACTORY.createNativeConfiguration();
 		configurationFacade.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
 		configurationFacade.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
-		columnTarget.setValue(createValue());
-		columnTarget.setSqlType(null);
 		assertEquals("integer", columnFacade.getSqlType(configurationFacade));
 	}
 	
