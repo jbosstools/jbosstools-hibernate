@@ -93,6 +93,11 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	}
 
 	@Override
+	public ICriteria createCriteria(Object target) {
+		throw new RuntimeException("Should use class 'NewFacadeFactory'");
+	}
+
+	@Override
 	public ClassLoader getClassLoader() {
 		return FacadeFactoryImpl.class.getClassLoader();
 	}
@@ -122,11 +127,6 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 		return new ExporterFacadeImpl(this, target);
 	}
 	
-	@Override
-	public ICriteria createCriteria(Object target) {
-		return new CriteriaFacadeImpl(this, target);
-	}
-
 	@Override
 	public IEnvironment createEnvironment() {
 		return new EnvironmentFacadeImpl(this);

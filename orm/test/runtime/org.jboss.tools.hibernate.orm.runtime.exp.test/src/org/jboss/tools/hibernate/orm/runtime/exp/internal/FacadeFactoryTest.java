@@ -35,7 +35,6 @@ import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
-import org.jboss.tools.hibernate.runtime.spi.ICriteria;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
@@ -198,6 +197,16 @@ public class FacadeFactoryTest {
 	}
 	
 	@Test
+	public void testCreateCriteria() {
+		try {
+			FACADE_FACTORY.createCriteria(null);
+			fail();
+		} catch (Throwable t) {
+			assertEquals("Should use class 'NewFacadeFactory'", t.getMessage());
+		}
+	}
+	
+	@Test
 	public void testCreateSchemaExport() {
 		SchemaExport schemaExport = new SchemaExport();
 		ISchemaExport facade = FACADE_FACTORY.createSchemaExport(schemaExport);
@@ -244,17 +253,6 @@ public class FacadeFactoryTest {
 		IExporter facade = FACADE_FACTORY.createExporter(exporter);
 		assertTrue(facade instanceof ExporterFacadeImpl);
 		assertSame(exporter, ((IFacade)facade).getTarget());		
-	}
-	
-	@Test
-	public void testCreateCriteria() {
-		Query query = (Query)Proxy.newProxyInstance(
-				FACADE_FACTORY.getClassLoader(), 
-				new Class[] { Query.class }, 
-				new TestInvocationHandler());
-		ICriteria facade = FACADE_FACTORY.createCriteria(query);
-		assertTrue(facade instanceof CriteriaFacadeImpl);
-		assertSame(query, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
