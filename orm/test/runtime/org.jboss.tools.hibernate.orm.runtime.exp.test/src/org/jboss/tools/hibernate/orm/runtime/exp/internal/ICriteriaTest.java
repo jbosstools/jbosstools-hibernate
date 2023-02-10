@@ -3,11 +3,18 @@ package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.hibernate.cfg.AvailableSettings;
@@ -90,6 +97,33 @@ public class ICriteriaTest {
 		assertNotEquals(1, criteriaTarget.getMaxResults());
 		criteriaFacade.setMaxResults(1);
 		assertEquals(1, criteriaTarget.getMaxResults());
+	}
+	
+	@Test
+	public void testList() throws Exception {
+		final List<String> list = Arrays.asList("foo", "bar");
+		Class<?> criteriaExtensionClass = Class.forName(
+				"org.hibernate.tool.orm.jbt.wrp.CriteriaWrapperFactory$CriteriaExtension");
+		Query query = (Query)Proxy.newProxyInstance(
+				getClass().getClassLoader(),
+				new Class[] { criteriaExtensionClass }, 
+				new InvocationHandler() {					
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+						if ("getResultList".equals(method.getName())) {
+							return list;
+						}
+						return null;
+					}
+				});
+		InvocationHandler invocationHandler = Proxy.getInvocationHandler(criteriaTarget);
+		Field targetField = invocationHandler.getClass().getDeclaredField("target");
+		targetField.setAccessible(true);
+		targetField.set(invocationHandler, query);
+		List<?> l1 = criteriaTarget.getResultList();
+		assertSame(l1, list);
+		List<?> l2 = criteriaFacade.list();
+		assertSame(l1, l2);
 	}
 	
 }
