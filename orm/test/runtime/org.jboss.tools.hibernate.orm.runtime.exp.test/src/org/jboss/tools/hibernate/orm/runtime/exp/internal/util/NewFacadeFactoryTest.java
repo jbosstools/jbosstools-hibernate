@@ -8,6 +8,7 @@ import java.lang.reflect.Field;
 
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
+import org.hibernate.mapping.RootClass;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
@@ -26,6 +27,7 @@ import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
+import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.junit.jupiter.api.BeforeEach;
@@ -137,6 +139,15 @@ public class NewFacadeFactoryTest {
 		Object columnTarget = ((IFacade)columnFacade).getTarget();
 		assertNotNull(columnTarget);
 		assertTrue(columnTarget instanceof ColumnWrapper);
+	}
+	
+	@Test
+	public void testCreateRootClass() {
+		IPersistentClass rootClassFacade = facadeFactory.createRootClass();
+		assertNotNull(rootClassFacade);
+		Object rootClassTarget = ((IFacade)rootClassFacade).getTarget();
+		assertNotNull(rootClassTarget);
+		assertTrue(rootClassTarget instanceof RootClass);
 	}
 	
 	public static class TestRevengStrategy extends DelegatingStrategy {
