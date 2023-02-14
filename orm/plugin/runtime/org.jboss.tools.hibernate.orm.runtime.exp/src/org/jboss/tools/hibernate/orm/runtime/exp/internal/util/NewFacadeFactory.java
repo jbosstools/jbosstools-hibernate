@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
+import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
@@ -115,6 +116,12 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 				wrapperFactory.createRootClassWrapper());
 	}	
 	
+	public IPersistentClass createSingleTableSubclass(IPersistentClass persistentClass) {
+		return (IPersistentClass)GenericFacadeFactory.createFacade(
+				IPersistentClass.class, 
+				wrapperFactory.createSingleTableSubClassWrapper(((IFacade)persistentClass).getTarget()));
+	}
+
 	@Override
 	public ClassLoader getClassLoader() {
 		return INSTANCE.getClass().getClassLoader();

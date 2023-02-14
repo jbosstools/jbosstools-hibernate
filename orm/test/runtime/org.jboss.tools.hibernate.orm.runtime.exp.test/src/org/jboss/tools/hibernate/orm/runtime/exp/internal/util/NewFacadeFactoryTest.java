@@ -9,6 +9,7 @@ import java.lang.reflect.Field;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.Subclass;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
@@ -148,6 +149,18 @@ public class NewFacadeFactoryTest {
 		Object rootClassTarget = ((IFacade)rootClassFacade).getTarget();
 		assertNotNull(rootClassTarget);
 		assertTrue(rootClassTarget instanceof RootClass);
+	}
+	
+	@Test
+	public void testCreateSingleTableSubclass() {
+		IPersistentClass rootClassFacade = facadeFactory.createRootClass();
+		Object rootClassTarget = ((IFacade)rootClassFacade).getTarget();
+		IPersistentClass singleTableSubclassFacade = 
+				facadeFactory.createSingleTableSubclass(rootClassFacade);
+		Object singleTableSubclassTarget = ((IFacade)singleTableSubclassFacade).getTarget();
+		assertNotNull(singleTableSubclassTarget);
+		assertTrue(singleTableSubclassTarget instanceof Subclass);
+		assertSame(((Subclass)singleTableSubclassTarget).getRootClass(), rootClassTarget);
 	}
 	
 	public static class TestRevengStrategy extends DelegatingStrategy {
