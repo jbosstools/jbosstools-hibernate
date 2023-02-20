@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapper;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
@@ -33,7 +34,8 @@ public class IPersistentClassTest {
 		PersistentClassWrapper rootClassWrapper = (PersistentClassWrapper)((IFacade)rootClassFacade).getTarget();
 		rootClassTarget = rootClassWrapper.getWrappedObject();
 		singleTableSubclassFacade = FACADE_FACTORY.createSingleTableSubclass(rootClassFacade);
-		singleTableSubclassTarget = (PersistentClass)((IFacade)singleTableSubclassFacade).getTarget();
+		PersistentClassWrapper singleTableSubclassWrapper = (PersistentClassWrapper)((IFacade)singleTableSubclassFacade).getTarget();
+		singleTableSubclassTarget = singleTableSubclassWrapper.getWrappedObject();
 		joinedTableSubclassFacade = FACADE_FACTORY.createJoinedTableSubclass(rootClassFacade);
 		joinedTableSubclassTarget = (PersistentClass)((IFacade)joinedTableSubclassFacade).getTarget();
 	}
@@ -45,7 +47,7 @@ public class IPersistentClassTest {
 		assertTrue(rootClassTarget instanceof RootClass);
 		assertNotNull(singleTableSubclassFacade);
 		assertNotNull(singleTableSubclassTarget);
-		assertTrue(singleTableSubclassTarget instanceof Subclass);
+		assertTrue(singleTableSubclassTarget instanceof SingleTableSubclass);
 		assertSame(rootClassTarget, singleTableSubclassTarget.getRootClass());
 		assertNotNull(joinedTableSubclassFacade);
 		assertNotNull(joinedTableSubclassTarget);
@@ -59,7 +61,7 @@ public class IPersistentClassTest {
 		assertNotEquals("Foo", singleTableSubclassFacade.getClassName());
 		assertNotEquals("Foo", joinedTableSubclassTarget.getClassName());
 		rootClassTarget.setClassName("Foo");
-		singleTableSubclassFacade.setClassName("Foo");
+		singleTableSubclassTarget.setClassName("Foo");
 		joinedTableSubclassTarget.setClassName("Foo");
 		assertEquals("Foo", rootClassFacade.getClassName());
 		assertEquals("Foo", singleTableSubclassFacade.getClassName());

@@ -10,6 +10,7 @@ import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
@@ -148,10 +149,10 @@ public class NewFacadeFactoryTest {
 	public void testCreateRootClass() {
 		IPersistentClass rootClassFacade = facadeFactory.createRootClass();
 		assertNotNull(rootClassFacade);
-		Object rootClassTarget = ((IFacade)rootClassFacade).getTarget();
-		assertNotNull(rootClassTarget);
-		assertTrue(rootClassTarget instanceof PersistentClassWrapper);
-		assertTrue(((PersistentClassWrapper)rootClassTarget).getWrappedObject() instanceof RootClass);
+		Object rootClassWrapper = ((IFacade)rootClassFacade).getTarget();
+		assertNotNull(rootClassWrapper);
+		assertTrue(rootClassWrapper instanceof PersistentClassWrapper);
+		assertTrue(((PersistentClassWrapper)rootClassWrapper).getWrappedObject() instanceof RootClass);
 	}
 	
 	@Test
@@ -160,11 +161,13 @@ public class NewFacadeFactoryTest {
 		Object rootClassTarget = ((IFacade)rootClassFacade).getTarget();
 		IPersistentClass singleTableSubclassFacade = 
 				facadeFactory.createSingleTableSubclass(rootClassFacade);
-		Object singleTableSubclassTarget = ((IFacade)singleTableSubclassFacade).getTarget();
-		assertNotNull(singleTableSubclassTarget);
-		assertTrue(singleTableSubclassTarget instanceof Subclass);
+		Object singleTableSubclassWrapper = ((IFacade)singleTableSubclassFacade).getTarget();
+		assertNotNull(singleTableSubclassWrapper);
+		assertTrue(singleTableSubclassWrapper instanceof PersistentClassWrapper);
+		Object singleTableSubclassTarget = ((PersistentClassWrapper)singleTableSubclassWrapper).getWrappedObject();
+		assertTrue(singleTableSubclassTarget instanceof SingleTableSubclass);
 		assertSame(
-				((Subclass)singleTableSubclassTarget).getRootClass(), 
+				((SingleTableSubclass)singleTableSubclassTarget).getRootClass(), 
 				((PersistentClassWrapper)rootClassTarget).getWrappedObject());
 	}
 	
