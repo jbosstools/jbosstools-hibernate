@@ -44,15 +44,21 @@ public class IPersistentClassTest {
 	@Test
 	public void testGetClassName() {
 		assertNotEquals("Foo", rootClassFacade.getClassName());
+		assertNotEquals("Foo", singleTableSubclassFacade.getClassName());
 		rootClassTarget.setClassName("Foo");
+		singleTableSubclassFacade.setClassName("Foo");
 		assertEquals("Foo", rootClassFacade.getClassName());
+		assertEquals("Foo", singleTableSubclassFacade.getClassName());
 	}
 	
 	@Test
 	public void testGetEntityName() {
 		assertNotEquals("Foo", rootClassFacade.getEntityName());
+		assertNotEquals("Foo", singleTableSubclassTarget.getEntityName());
 		rootClassTarget.setEntityName("Foo");
+		singleTableSubclassTarget.setEntityName("Foo");
 		assertEquals("Foo", rootClassFacade.getEntityName());
+		assertEquals("Foo", singleTableSubclassTarget.getEntityName());
 	}
 	
 }
