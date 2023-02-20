@@ -3,6 +3,7 @@ package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.mapping.PersistentClass;
@@ -22,6 +23,8 @@ public class IPersistentClassTest {
 	private PersistentClass rootClassTarget = null;
 	private IPersistentClass singleTableSubclassFacade = null;
 	private PersistentClass singleTableSubclassTarget = null;
+	private IPersistentClass joinedTableSubclassFacade = null;
+	private PersistentClass joinedTableSubclassTarget = null;
 	
 	@BeforeEach
 	public void setUp() {
@@ -29,6 +32,8 @@ public class IPersistentClassTest {
 		rootClassTarget = (PersistentClass)((IFacade)rootClassFacade).getTarget();
 		singleTableSubclassFacade = FACADE_FACTORY.createSingleTableSubclass(rootClassFacade);
 		singleTableSubclassTarget = (PersistentClass)((IFacade)singleTableSubclassFacade).getTarget();
+		joinedTableSubclassFacade = FACADE_FACTORY.createJoinedTableSubclass(rootClassFacade);
+		joinedTableSubclassTarget = (PersistentClass)((IFacade)joinedTableSubclassFacade).getTarget();
 	}
 	
 	@Test
@@ -39,26 +44,37 @@ public class IPersistentClassTest {
 		assertNotNull(singleTableSubclassFacade);
 		assertNotNull(singleTableSubclassTarget);
 		assertTrue(singleTableSubclassTarget instanceof Subclass);
+		assertSame(rootClassTarget, singleTableSubclassTarget.getRootClass());
+		assertNotNull(joinedTableSubclassFacade);
+		assertNotNull(joinedTableSubclassTarget);
+		assertTrue(joinedTableSubclassTarget instanceof Subclass);
+		assertSame(rootClassTarget, joinedTableSubclassTarget.getRootClass());
 	}
 	
 	@Test
 	public void testGetClassName() {
 		assertNotEquals("Foo", rootClassFacade.getClassName());
 		assertNotEquals("Foo", singleTableSubclassFacade.getClassName());
+		assertNotEquals("Foo", joinedTableSubclassTarget.getClassName());
 		rootClassTarget.setClassName("Foo");
 		singleTableSubclassFacade.setClassName("Foo");
+		joinedTableSubclassTarget.setClassName("Foo");
 		assertEquals("Foo", rootClassFacade.getClassName());
 		assertEquals("Foo", singleTableSubclassFacade.getClassName());
+		assertEquals("Foo", joinedTableSubclassTarget.getClassName());
 	}
 	
 	@Test
 	public void testGetEntityName() {
 		assertNotEquals("Foo", rootClassFacade.getEntityName());
 		assertNotEquals("Foo", singleTableSubclassTarget.getEntityName());
+		assertNotEquals("Foo", joinedTableSubclassTarget.getEntityName());
 		rootClassTarget.setEntityName("Foo");
 		singleTableSubclassTarget.setEntityName("Foo");
+		joinedTableSubclassTarget.setEntityName("Foo");
 		assertEquals("Foo", rootClassFacade.getEntityName());
 		assertEquals("Foo", singleTableSubclassTarget.getEntityName());
+		assertEquals("Foo", joinedTableSubclassTarget.getEntityName());
 	}
 	
 }
