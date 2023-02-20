@@ -22,6 +22,7 @@ import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.hibernate.tool.orm.jbt.wrp.ColumnWrapper;
+import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapper;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
@@ -149,7 +150,8 @@ public class NewFacadeFactoryTest {
 		assertNotNull(rootClassFacade);
 		Object rootClassTarget = ((IFacade)rootClassFacade).getTarget();
 		assertNotNull(rootClassTarget);
-		assertTrue(rootClassTarget instanceof RootClass);
+		assertTrue(rootClassTarget instanceof PersistentClassWrapper);
+		assertTrue(((PersistentClassWrapper)rootClassTarget).getWrappedObject() instanceof RootClass);
 	}
 	
 	@Test
@@ -161,7 +163,9 @@ public class NewFacadeFactoryTest {
 		Object singleTableSubclassTarget = ((IFacade)singleTableSubclassFacade).getTarget();
 		assertNotNull(singleTableSubclassTarget);
 		assertTrue(singleTableSubclassTarget instanceof Subclass);
-		assertSame(((Subclass)singleTableSubclassTarget).getRootClass(), rootClassTarget);
+		assertSame(
+				((Subclass)singleTableSubclassTarget).getRootClass(), 
+				((PersistentClassWrapper)rootClassTarget).getWrappedObject());
 	}
 	
 	@Test
@@ -173,7 +177,9 @@ public class NewFacadeFactoryTest {
 		Object joinedTableSubclassTarget = ((IFacade)joinedTableSubclassFacade).getTarget();
 		assertNotNull(joinedTableSubclassTarget);
 		assertTrue(joinedTableSubclassTarget instanceof JoinedSubclass);
-		assertSame(((Subclass)joinedTableSubclassTarget).getRootClass(), rootClassTarget);
+		assertSame(
+				((Subclass)joinedTableSubclassTarget).getRootClass(), 
+				((PersistentClassWrapper)rootClassTarget).getWrappedObject());
 	}
 	
 	public static class TestRevengStrategy extends DelegatingStrategy {

@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
+import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapper;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -29,7 +30,8 @@ public class IPersistentClassTest {
 	@BeforeEach
 	public void setUp() {
 		rootClassFacade = FACADE_FACTORY.createRootClass();
-		rootClassTarget = (PersistentClass)((IFacade)rootClassFacade).getTarget();
+		PersistentClassWrapper rootClassWrapper = (PersistentClassWrapper)((IFacade)rootClassFacade).getTarget();
+		rootClassTarget = rootClassWrapper.getWrappedObject();
 		singleTableSubclassFacade = FACADE_FACTORY.createSingleTableSubclass(rootClassFacade);
 		singleTableSubclassTarget = (PersistentClass)((IFacade)singleTableSubclassFacade).getTarget();
 		joinedTableSubclassFacade = FACADE_FACTORY.createJoinedTableSubclass(rootClassFacade);
