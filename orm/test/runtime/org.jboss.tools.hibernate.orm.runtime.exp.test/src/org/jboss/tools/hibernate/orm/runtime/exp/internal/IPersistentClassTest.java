@@ -152,4 +152,11 @@ public class IPersistentClassTest {
 		assertSame(propertyTarget, ((IFacade)propertyFacade).getTarget());
 	}
 	
+	@Test
+	public void testGetSuperClass() {
+		assertNull(rootClassFacade.getSuperclass());
+		assertSame(rootClassTarget, ((IFacade)singleTableSubclassFacade.getSuperclass()).getTarget());
+		assertSame(rootClassTarget, ((IFacade)joinedSubclassFacade.getSuperclass()).getTarget());
+	}
+	
 }
