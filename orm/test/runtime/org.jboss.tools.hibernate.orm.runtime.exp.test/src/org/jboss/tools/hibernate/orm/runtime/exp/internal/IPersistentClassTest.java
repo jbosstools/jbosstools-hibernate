@@ -11,6 +11,7 @@ import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
+import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapper;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -88,6 +89,13 @@ public class IPersistentClassTest {
 		assertTrue(rootClassFacade.isAssignableToRootClass());
 		assertFalse(singleTableSubclassFacade.isAssignableToRootClass());
 		assertFalse(joinedSubclassFacade.isAssignableToRootClass());
+	}
+	
+	@Test
+	public void testIsRootClass() {
+		assertTrue(rootClassFacade.isRootClass());
+		assertFalse(singleTableSubclassFacade.isRootClass());
+		assertFalse(joinedSubclassFacade.isRootClass());
 	}
 	
 }
