@@ -110,4 +110,13 @@ public class IPersistentClassTest {
 		assertSame(propertyTarget, ((IFacade)propertyFacade).getTarget());
 	}
 	
+	@Test
+	public void testHasIdentifierProperty() {
+		assertFalse(rootClassFacade.hasIdentifierProperty());
+		((RootClass)rootClassTarget).setIdentifierProperty(new Property());
+		assertTrue(rootClassFacade.hasIdentifierProperty());
+	}
+	
+	
+	
 }
