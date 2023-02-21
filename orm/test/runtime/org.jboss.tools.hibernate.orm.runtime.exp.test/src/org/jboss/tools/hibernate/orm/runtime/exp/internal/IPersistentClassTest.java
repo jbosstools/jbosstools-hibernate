@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Iterator;
+
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
@@ -138,6 +140,16 @@ public class IPersistentClassTest {
 		assertSame(((IFacade)joinedSubclassFacade.getRootClass()).getTarget(), rootClassTarget);
 	}
 	
-	
+	@Test
+	public void testGetPropertyClosureIterator() {
+		Iterator<IProperty> propertyClosureIterator = rootClassFacade.getPropertyClosureIterator();
+		assertFalse(propertyClosureIterator.hasNext());
+		Property propertyTarget = new Property();
+		rootClassTarget.addProperty(propertyTarget);
+		propertyClosureIterator = rootClassFacade.getPropertyClosureIterator();
+		assertTrue(propertyClosureIterator.hasNext());
+		IProperty propertyFacade = propertyClosureIterator.next();
+		assertSame(propertyTarget, ((IFacade)propertyFacade).getTarget());
+	}
 	
 }
