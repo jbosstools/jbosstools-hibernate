@@ -4,18 +4,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
-import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapper;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
+import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -96,6 +98,16 @@ public class IPersistentClassTest {
 		assertTrue(rootClassFacade.isRootClass());
 		assertFalse(singleTableSubclassFacade.isRootClass());
 		assertFalse(joinedSubclassFacade.isRootClass());
+	}
+	
+	@Test
+	public void testGetIdentifierProperty() throws Exception {
+		assertNull(rootClassFacade.getIdentifierProperty());
+		Property propertyTarget = new Property();
+		((RootClass)rootClassTarget).setIdentifierProperty(propertyTarget);
+		IProperty propertyFacade = rootClassFacade.getIdentifierProperty();
+		assertNotNull(propertyFacade);
+		assertSame(propertyTarget, ((IFacade)propertyFacade).getTarget());
 	}
 	
 }
