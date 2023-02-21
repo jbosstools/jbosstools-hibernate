@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -80,6 +81,13 @@ public class IPersistentClassTest {
 		assertEquals("Foo", rootClassFacade.getEntityName());
 		assertEquals("Foo", singleTableSubclassTarget.getEntityName());
 		assertEquals("Foo", joinedSubclassTarget.getEntityName());
+	}
+	
+	@Test
+	public void testIsAssignableToRootClass() {
+		assertTrue(rootClassFacade.isAssignableToRootClass());
+		assertFalse(singleTableSubclassFacade.isAssignableToRootClass());
+		assertFalse(joinedSubclassFacade.isAssignableToRootClass());
 	}
 	
 }
