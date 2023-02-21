@@ -159,4 +159,16 @@ public class IPersistentClassTest {
 		assertSame(rootClassTarget, ((IFacade)joinedSubclassFacade.getSuperclass()).getTarget());
 	}
 	
+	@Test
+	public void testGetPropertyIterator() {
+		Iterator<IProperty> propertyIterator = rootClassFacade.getPropertyIterator();
+		assertFalse(propertyIterator.hasNext());
+		Property propertyTarget = new Property();
+		rootClassTarget.addProperty(propertyTarget);
+		propertyIterator = rootClassFacade.getPropertyIterator();
+		assertTrue(propertyIterator.hasNext());
+		IProperty propertyFacade = propertyIterator.next();
+		assertSame(propertyTarget, ((IFacade)propertyFacade).getTarget());
+	}
+	
 }
