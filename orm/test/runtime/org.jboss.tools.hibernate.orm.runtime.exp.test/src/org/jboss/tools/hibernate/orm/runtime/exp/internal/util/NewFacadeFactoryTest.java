@@ -11,7 +11,6 @@ import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
-import org.hibernate.mapping.Subclass;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
@@ -177,11 +176,13 @@ public class NewFacadeFactoryTest {
 		Object rootClassTarget = ((IFacade)rootClassFacade).getTarget();
 		IPersistentClass joinedTableSubclassFacade = 
 				facadeFactory.createJoinedTableSubclass(rootClassFacade);
-		Object joinedTableSubclassTarget = ((IFacade)joinedTableSubclassFacade).getTarget();
-		assertNotNull(joinedTableSubclassTarget);
+		Object joinedTableSubclassWrapper = ((IFacade)joinedTableSubclassFacade).getTarget();
+		assertNotNull(joinedTableSubclassWrapper);
+		assertTrue(joinedTableSubclassWrapper instanceof PersistentClassWrapper);
+		Object joinedTableSubclassTarget = ((PersistentClassWrapper)joinedTableSubclassWrapper).getWrappedObject();
 		assertTrue(joinedTableSubclassTarget instanceof JoinedSubclass);
 		assertSame(
-				((Subclass)joinedTableSubclassTarget).getRootClass(), 
+				((JoinedSubclass)joinedTableSubclassTarget).getRootClass(), 
 				((PersistentClassWrapper)rootClassTarget).getWrappedObject());
 	}
 	
