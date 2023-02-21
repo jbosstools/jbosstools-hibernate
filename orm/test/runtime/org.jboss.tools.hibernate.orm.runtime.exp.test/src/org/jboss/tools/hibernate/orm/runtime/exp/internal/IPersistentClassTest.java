@@ -131,6 +131,13 @@ public class IPersistentClassTest {
 		assertTrue(joinedSubclassFacade.isInstanceOfSubclass());
 	}
 	
+	@Test
+	public void testGetRootClass() {
+		assertSame(((IFacade)rootClassFacade.getRootClass()).getTarget(), rootClassTarget);
+		assertSame(((IFacade)singleTableSubclassFacade.getRootClass()).getTarget(), rootClassTarget);
+		assertSame(((IFacade)joinedSubclassFacade.getRootClass()).getTarget(), rootClassTarget);
+	}
+	
 	
 	
 }
