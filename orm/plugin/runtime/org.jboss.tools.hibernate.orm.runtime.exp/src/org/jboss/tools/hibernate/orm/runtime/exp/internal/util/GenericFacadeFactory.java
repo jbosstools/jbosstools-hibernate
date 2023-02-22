@@ -18,6 +18,7 @@ import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
+import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
@@ -207,6 +208,7 @@ public class GenericFacadeFactory {
 					ICollectionMetadata.class,
 					IConfiguration.class,
 					ICriteria.class,
+					IJoin.class,
 					INamingStrategy.class,
 					IPersistentClass.class,
 					IProperty.class,

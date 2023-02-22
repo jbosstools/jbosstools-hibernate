@@ -14,6 +14,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Iterator;
 
+import org.hibernate.mapping.Join;
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PersistentClass;
@@ -25,6 +26,7 @@ import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapper;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
+import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
@@ -239,6 +241,16 @@ public class IPersistentClassTest {
 		((RootClass)rootClassTarget).setIdentifier(valueTarget);
 		IValue valueFacade = rootClassFacade.getIdentifier();
 		assertSame(valueTarget, ((IFacade)valueFacade).getTarget());
+	}
+	
+	@Test
+	public void testGetJoinIterator() {
+		assertFalse(rootClassFacade.getJoinIterator().hasNext());
+		Join joinTarget = new Join();
+		rootClassTarget.addJoin(joinTarget);
+		Iterator<IJoin> joinIterator = rootClassFacade.getJoinIterator();
+		IJoin joinFacade = joinIterator.next();
+		assertSame(((IFacade)joinFacade).getTarget(), joinTarget);
 	}
 	
 	private KeyValue createValue() {
