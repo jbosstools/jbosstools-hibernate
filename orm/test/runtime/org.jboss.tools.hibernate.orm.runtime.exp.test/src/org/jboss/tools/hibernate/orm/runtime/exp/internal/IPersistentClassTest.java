@@ -283,6 +283,15 @@ public class IPersistentClassTest {
 		assertEquals("foo", rootClassTarget.getDiscriminatorValue());
 	}
 	
+	@Test
+	public void testSetAbstract() {
+		assertNull(rootClassTarget.isAbstract());
+		rootClassFacade.setAbstract(true);
+		assertTrue(rootClassTarget.isAbstract());
+		rootClassFacade.setAbstract(false);
+		assertFalse(rootClassTarget.isAbstract());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
