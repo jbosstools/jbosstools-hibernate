@@ -264,9 +264,16 @@ public class IPersistentClassTest {
 	
 	@Test
 	public void testSetClassName() {
-		assertNull(rootClassFacade.getClassName());
+		assertNull(rootClassTarget.getClassName());
 		rootClassFacade.setClassName("foo");
-		assertEquals("foo", rootClassFacade.getClassName());
+		assertEquals("foo", rootClassTarget.getClassName());
+	}
+	
+	@Test
+	public void testSetEntityName() {
+		assertNull(rootClassTarget.getEntityName());
+		rootClassFacade.setEntityName("foo");
+		assertEquals("foo", rootClassTarget.getEntityName());
 	}
 	
 	private KeyValue createValue() {
