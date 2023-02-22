@@ -112,7 +112,7 @@ public class IPersistentClassTest {
 	}
 	
 	@Test
-	public void testGetIdentifierProperty() throws Exception {
+	public void testGetIdentifierProperty() {
 		assertNull(rootClassFacade.getIdentifierProperty());
 		Property propertyTarget = new Property();
 		((RootClass)rootClassTarget).setIdentifierProperty(propertyTarget);
@@ -206,7 +206,7 @@ public class IPersistentClassTest {
 	}
 	
 	@Test
-	public void testGetTable() throws Exception {
+	public void testGetTable() {
 		assertNull(rootClassFacade.getTable());
 		Table tableTarget = new Table("test");
 		((RootClass)rootClassTarget).setTable(tableTarget);
@@ -224,11 +224,20 @@ public class IPersistentClassTest {
 	}
 	
 	@Test
-	public void testGetDiscriminator() throws Exception {
+	public void testGetDiscriminator() {
 		assertNull(rootClassFacade.getDiscriminator());
 		Value valueTarget = createValue();
 		((RootClass)rootClassTarget).setDiscriminator(valueTarget);
 		IValue valueFacade = rootClassFacade.getDiscriminator();
+		assertSame(valueTarget, ((IFacade)valueFacade).getTarget());
+	}
+	
+	@Test
+	public void testGetIdentifier() {
+		assertNull(rootClassFacade.getIdentifier());
+		KeyValue valueTarget = createValue();
+		((RootClass)rootClassTarget).setIdentifier(valueTarget);
+		IValue valueFacade = rootClassFacade.getIdentifier();
 		assertSame(valueTarget, ((IFacade)valueFacade).getTarget());
 	}
 	
