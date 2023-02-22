@@ -253,6 +253,15 @@ public class IPersistentClassTest {
 		assertSame(((IFacade)joinFacade).getTarget(), joinTarget);
 	}
 	
+	@Test
+	public void testGetVersion() {
+		assertNull(rootClassFacade.getVersion());
+		Property versionTarget = new Property();
+		((RootClass)rootClassTarget).setVersion(versionTarget);
+		IProperty propertyFacade = rootClassFacade.getVersion();
+		assertSame(versionTarget, ((IFacade)propertyFacade).getTarget());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
