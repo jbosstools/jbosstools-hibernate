@@ -276,6 +276,13 @@ public class IPersistentClassTest {
 		assertEquals("foo", rootClassTarget.getEntityName());
 	}
 	
+	@Test
+	public void testSetDiscriminatorValue() {
+		assertNull(rootClassTarget.getDiscriminatorValue());
+		rootClassFacade.setDiscriminatorValue("foo");
+		assertEquals("foo", rootClassTarget.getDiscriminatorValue());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
