@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Iterator;
 
@@ -169,6 +170,31 @@ public class IPersistentClassTest {
 		assertTrue(propertyIterator.hasNext());
 		IProperty propertyFacade = propertyIterator.next();
 		assertSame(propertyTarget, ((IFacade)propertyFacade).getTarget());
+	}
+	
+	@Test
+	public void testGetProperty() {
+		try {
+			rootClassFacade.getProperty("foo");
+			fail();
+		} catch (Throwable t) {
+			assertEquals(
+					"property [foo] not found on entity [null]", 
+					t.getMessage());
+		}
+		Property propertyTarget = new Property();
+		propertyTarget.setName("foo");
+		rootClassTarget.addProperty(propertyTarget);
+		IProperty propertyFacade = rootClassFacade.getProperty("foo");
+		assertSame(propertyTarget, ((IFacade)propertyFacade).getTarget());
+		try {
+			rootClassFacade.getProperty();
+			fail();
+		} catch (Throwable t) {
+			assertEquals(
+					"getProperty() is only allowed on SpecialRootClass", 
+					t.getMessage());
+		}
 	}
 	
 }
