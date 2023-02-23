@@ -1,5 +1,7 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -42,6 +44,13 @@ public class IPropertyTest {
 		IValue valueFacade = propertyFacade.getValue();
 		assertNotNull(valueFacade);
 		assertSame(valueTarget, ((IFacade)valueFacade).getTarget());
+	}
+	
+	@Test
+	public void testSetName() {
+		assertNotEquals("foo", propertyTarget.getName());
+		propertyFacade.setName("foo");
+		assertEquals("foo", propertyTarget.getName());
 	}
 	
 	private Value createValue() {
