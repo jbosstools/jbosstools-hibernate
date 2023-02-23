@@ -12,8 +12,10 @@ import java.lang.reflect.Proxy;
 
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Value;
+import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapper;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
+import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,6 +53,16 @@ public class IPropertyTest {
 		assertNotEquals("foo", propertyTarget.getName());
 		propertyFacade.setName("foo");
 		assertEquals("foo", propertyTarget.getName());
+	}
+	
+	@Test
+	public void testSetPersistentClass() {
+		assertNull(propertyTarget.getPersistentClass());
+		IPersistentClass persistentClassFacade = NewFacadeFactory.INSTANCE.createRootClass();
+		PersistentClassWrapper persistentClassTarget = 
+				(PersistentClassWrapper)((IFacade)persistentClassFacade).getTarget();
+		propertyFacade.setPersistentClass(persistentClassFacade);
+		assertSame(persistentClassTarget.getWrappedObject(), propertyTarget.getPersistentClass());
 	}
 	
 	private Value createValue() {
