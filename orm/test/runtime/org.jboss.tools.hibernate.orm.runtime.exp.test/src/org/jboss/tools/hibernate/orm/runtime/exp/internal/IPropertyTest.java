@@ -1,17 +1,23 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import org.hibernate.mapping.Component;
 import org.hibernate.mapping.Property;
+import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
+import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapper;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -63,6 +69,18 @@ public class IPropertyTest {
 				(PersistentClassWrapper)((IFacade)persistentClassFacade).getTarget();
 		propertyFacade.setPersistentClass(persistentClassFacade);
 		assertSame(persistentClassTarget.getWrappedObject(), propertyTarget.getPersistentClass());
+	}
+	
+	@Test
+	public void testIsComposite() {
+		propertyTarget.setValue(createValue());
+		assertFalse(propertyFacade.isComposite());
+		Component component = new Component(
+				DummyMetadataBuildingContext.INSTANCE, 
+				new Table(""), 
+				new RootClass(DummyMetadataBuildingContext.INSTANCE));
+		propertyTarget.setValue(component);
+		assertTrue(propertyFacade.isComposite());
 	}
 	
 	private Value createValue() {
