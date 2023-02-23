@@ -9,6 +9,7 @@ import java.lang.reflect.Field;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.JoinedSubclass;
+import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.tool.api.reveng.RevengSettings;
@@ -31,6 +32,7 @@ import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
+import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.junit.jupiter.api.BeforeEach;
@@ -184,6 +186,15 @@ public class NewFacadeFactoryTest {
 		assertSame(
 				((JoinedSubclass)joinedTableSubclassTarget).getRootClass(), 
 				((PersistentClassWrapper)rootClassTarget).getWrappedObject());
+	}
+	
+	@Test
+	public void testCreateProperty() {
+		IProperty propertyFacade = facadeFactory.createProperty();
+		assertNotNull(propertyFacade);
+		Object propertyTarget = ((IFacade)propertyFacade).getTarget();
+		assertNotNull(propertyTarget);
+		assertTrue(propertyTarget instanceof Property);
 	}
 	
 	public static class TestRevengStrategy extends DelegatingStrategy {

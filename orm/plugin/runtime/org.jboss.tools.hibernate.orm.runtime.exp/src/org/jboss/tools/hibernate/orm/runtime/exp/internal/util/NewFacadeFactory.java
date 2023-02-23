@@ -127,6 +127,12 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 				IPersistentClass.class, 
 				wrapperFactory.createJoinedTableSubClassWrapper(((IFacade)persistentClass).getTarget()));
 	}
+	
+	public IProperty createProperty() {
+		return (IProperty)GenericFacadeFactory.createFacade(
+				IProperty.class, 
+				wrapperFactory.createPropertyWrapper());
+	}
 
 	@Override
 	public ClassLoader getClassLoader() {
