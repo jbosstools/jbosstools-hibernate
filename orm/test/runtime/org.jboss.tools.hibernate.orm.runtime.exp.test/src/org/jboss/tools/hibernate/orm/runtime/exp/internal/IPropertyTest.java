@@ -83,6 +83,13 @@ public class IPropertyTest {
 		assertTrue(propertyFacade.isComposite());
 	}
 	
+	@Test
+	public void testGetPropetyAccessorName() {
+		assertNotEquals("foo", propertyFacade.getPropertyAccessorName());
+		propertyTarget.setPropertyAccessorName("foo");
+		assertEquals("foo", propertyFacade.getPropertyAccessorName());
+	}
+	
 	private Value createValue() {
 		return (Value)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
