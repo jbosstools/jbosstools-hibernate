@@ -102,11 +102,6 @@ implements IProperty {
 	}
 
 	@Override
-	public boolean classIsPropertyClass() {
-		return getTarget().getClass() == getPropertyClass();
-	}
-
-	@Override
 	public IType getType() {
 		if (type == null) {
 			Object targetType = Util.invokeMethod(

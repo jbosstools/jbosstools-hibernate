@@ -9,7 +9,6 @@ public interface IProperty {
 	boolean isComposite();
 	String getPropertyAccessorName();
 	String getName();
-	boolean classIsPropertyClass();
 	IType getType();
 	void setValue(IValue value);
 	void setPropertyAccessorName(String string);

@@ -189,14 +189,14 @@ public class AnnotationsMappingTestHelper {
 			openTestForPackage(persClass, consCFG, packageName);
 			Object[] props =  pcWorkbenchAdapter.getChildren(persClass);
 			for (int j = 0; j < props.length; j++) {
-				if (!(props[j] instanceof IProperty && ((IProperty)props[j]).classIsPropertyClass())) {
+				if (!(props[j] instanceof IProperty)) {
 					continue;
 				}
 				openTestForPackage(props[j], consCFG, packageName);
 				Object[] compProperties = propertyWorkbenchAdapter.getChildren(props[j]);
 				for (int k = 0; k < compProperties.length; k++) {
 					//test Composite properties
-					if (!(compProperties[k] instanceof IProperty && ((IProperty)props[j]).classIsPropertyClass())) {
+					if (!(compProperties[k] instanceof IProperty)) {
 						continue;
 					}
 					final IProperty prop = (IProperty)compProperties[k];
@@ -222,7 +222,7 @@ public class AnnotationsMappingTestHelper {
 			openTest(persClass, consCFG, fullyQualifiedName);
 			Object[] fields = pcWorkbenchAdapter.getChildren(persClass);
 			for (int j = 0; j < fields.length; j++) {
-				if (!(fields[j] instanceof IProperty && ((IProperty)fields[j]).classIsPropertyClass())) {
+				if (!(fields[j] instanceof IProperty)) {
 					continue;
 				}
 				fullyQualifiedName = persClass.getClassName();
@@ -234,7 +234,7 @@ public class AnnotationsMappingTestHelper {
 
 					Object[] compProperties = propertyWorkbenchAdapter.getChildren(fields[j]);
 					for (int k = 0; k < compProperties.length; k++) {
-						if (!(compProperties[k] instanceof IProperty && ((IProperty)compProperties[k]).classIsPropertyClass())) {
+						if (!(compProperties[k] instanceof IProperty)) {
 							continue;
 						}
 						//test Composite properties

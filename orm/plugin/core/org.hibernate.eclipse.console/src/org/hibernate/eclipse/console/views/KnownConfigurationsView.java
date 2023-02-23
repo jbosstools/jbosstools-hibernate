@@ -202,7 +202,7 @@ public class KnownConfigurationsView extends ViewPart {
 					TreePath path = paths[0];
 					Object last = path.getLastSegment();
 					ConsoleConfiguration consoleConfig = (ConsoleConfiguration)(path.getSegment(0));
-					if (last instanceof IPersistentClass || (last instanceof IProperty && ((IProperty)last).classIsPropertyClass())){
+					if (last instanceof IPersistentClass ||(last instanceof IProperty )){
 						try {
 							OpenMappingAction.run(consoleConfig, path);
 						} catch (PartInitException e) {

@@ -122,12 +122,6 @@ public class PropertyFacadeTest {
 	}
 	
 	@Test
-	public void testClassIsPropertyClass() {
-		assertTrue(propertyFacade.classIsPropertyClass());
-		assertFalse((new AbstractPropertyFacade(FACADE_FACTORY, new Object()) {}).classIsPropertyClass());
-	}
-	
-	@Test
 	public void testGetType() throws Exception {
 		Field field = AbstractPropertyFacade.class.getDeclaredField("type");
 		field.setAccessible(true);

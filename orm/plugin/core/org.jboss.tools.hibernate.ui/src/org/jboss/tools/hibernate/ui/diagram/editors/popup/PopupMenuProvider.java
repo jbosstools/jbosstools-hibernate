@@ -88,7 +88,7 @@ public class PopupMenuProvider extends ContextMenuProvider {
 			if (selectedShape != null && selection.size() == 1) {
 				Object first = selectedShape.getOrmElement();
 				if (first instanceof IPersistentClass
-						|| (first instanceof IProperty && ((IProperty)first).classIsPropertyClass())
+						|| first instanceof IProperty 
 						|| first instanceof ITable
 						|| first instanceof IColumn) {
 					action = getActionRegistry().getAction(OpenSourceAction.ACTION_ID);

@@ -89,7 +89,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 	 */
 	public static IEditorPart run(ConsoleConfiguration consoleConfig, TreePath path) 
 			throws PartInitException, JavaModelException, FileNotFoundException {
-		boolean isPropertySel = (path.getLastSegment() instanceof IProperty && ((IProperty)path.getLastSegment()).classIsPropertyClass());
+		boolean isPropertySel = path.getLastSegment() instanceof IProperty;
 		if (isPropertySel) {
 			IProperty propertySel = (IProperty)path.getLastSegment();
 			IPersistentClass persClass = propertySel.getPersistentClass();

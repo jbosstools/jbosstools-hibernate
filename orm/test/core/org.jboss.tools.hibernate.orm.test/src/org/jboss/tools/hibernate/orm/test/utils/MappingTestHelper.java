@@ -148,14 +148,14 @@ public class MappingTestHelper {
 			openTest(persClass, consCFG);
 			Object[] props =  pcWorkbenchAdapter.getChildren(persClass);
 			for (int j = 0; j < props.length; j++) {
-				if (!(props[j] instanceof IProperty && ((IProperty)props[j]).classIsPropertyClass())) {
+				if (!(props[j] instanceof IProperty)) {
 					continue;
 				}
 				openTest(props[j], consCFG);
 				Object[] compProperties = propertyWorkbenchAdapter.getChildren(props[j]);
 				for (int k = 0; k < compProperties.length; k++) {
 					//test Composite properties
-					if (!(compProperties[k] instanceof IProperty && ((IProperty)props[j]).classIsPropertyClass())) {
+					if (!(compProperties[k] instanceof IProperty)) {
 						continue;
 					}
 					final IProperty prop = (IProperty)compProperties[k];
@@ -181,7 +181,7 @@ public class MappingTestHelper {
 			openTest(persClass, consCFG, fullyQualifiedName);
 			Object[] fields = pcWorkbenchAdapter.getChildren(persClass);
 			for (int j = 0; j < fields.length; j++) {
-				if (!(fields[j] instanceof IProperty && ((IProperty)fields[j]).classIsPropertyClass())) {
+				if (!(fields[j] instanceof IProperty)) {
 					continue;
 				}
 				fullyQualifiedName = persClass.getClassName();
@@ -193,7 +193,7 @@ public class MappingTestHelper {
 
 					Object[] compProperties = propertyWorkbenchAdapter.getChildren(fields[j]);
 					for (int k = 0; k < compProperties.length; k++) {
-						if (!(compProperties[k] instanceof IProperty && ((IProperty)compProperties[k]).classIsPropertyClass())) {
+						if (!(compProperties[k] instanceof IProperty)) {
 							continue;
 						}
 						//test Composite properties
