@@ -193,4 +193,12 @@ public class IPropertyTest {
 		assertEquals("foo", propertyFacade.getCascade());
 	}
 	
+	@Test
+	public void testIsLazy() {
+		propertyTarget.setLazy(true);
+		assertTrue(propertyFacade.isLazy());
+		propertyTarget.setLazy(false);
+		assertFalse(propertyFacade.isLazy());
+	}
+	
 }
