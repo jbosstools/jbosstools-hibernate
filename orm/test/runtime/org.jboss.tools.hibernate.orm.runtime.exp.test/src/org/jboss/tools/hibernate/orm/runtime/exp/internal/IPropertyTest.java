@@ -142,4 +142,12 @@ public class IPropertyTest {
 		assertTrue(propertyFacade.isBackRef());
 	}
 	
+	@Test
+	public void testIsSelectable() {
+		propertyTarget.setSelectable(true);
+		assertTrue(propertyFacade.isSelectable());
+		propertyTarget.setSelectable(false);
+		assertFalse(propertyFacade.isSelectable());
+	}
+	
 }
