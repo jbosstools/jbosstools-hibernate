@@ -104,4 +104,13 @@ public class IPropertyTest {
 		assertEquals("integer", typeFacade.getName());
 	}
 	
+	@Test
+	public void testSetValue() {
+		assertNull(propertyTarget.getValue());	
+		BasicValue valueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		IValue valueFacade = NewFacadeFactory.INSTANCE.createValue(valueTarget);
+		propertyFacade.setValue(valueFacade);
+		assertSame(valueTarget, propertyTarget.getValue());
+	}
+	
 }
