@@ -186,4 +186,11 @@ public class IPropertyTest {
 		assertTrue(propertyFacade.isUpdateable());
 	}
 	
+	@Test
+	public void testGetCascade() {
+		assertNotEquals("foo", propertyFacade.getCascade());
+		propertyTarget.setCascade("foo");
+		assertEquals("foo", propertyFacade.getCascade());
+	}
+	
 }
