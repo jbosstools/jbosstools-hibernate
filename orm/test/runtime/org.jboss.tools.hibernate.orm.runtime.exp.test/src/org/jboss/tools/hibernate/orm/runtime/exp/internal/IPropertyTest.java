@@ -8,10 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-
+import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -23,6 +20,7 @@ import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
+import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,7 +45,7 @@ public class IPropertyTest {
 	@Test
 	public void testGetValue() {
 		assertNull(propertyFacade.getValue());
-		Value valueTarget = createValue();
+		Value valueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
 		propertyTarget.setValue(valueTarget);
 		IValue valueFacade = propertyFacade.getValue();
 		assertNotNull(valueFacade);
@@ -73,7 +71,7 @@ public class IPropertyTest {
 	
 	@Test
 	public void testIsComposite() {
-		propertyTarget.setValue(createValue());
+		propertyTarget.setValue(new BasicValue(DummyMetadataBuildingContext.INSTANCE));
 		assertFalse(propertyFacade.isComposite());
 		Component component = new Component(
 				DummyMetadataBuildingContext.INSTANCE, 
@@ -97,15 +95,13 @@ public class IPropertyTest {
 		assertEquals("foo", propertyFacade.getName());
 	}
 	
-	private Value createValue() {
-		return (Value)Proxy.newProxyInstance(
-				getClass().getClassLoader(), 
-				new Class[] { Value.class }, 
-				new InvocationHandler() {	
-					@Override
-					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-						return null;
-					}
-		});
+	@Test
+	public void testGetType() {
+		BasicValue v = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		v.setTypeName("int");
+		propertyTarget.setValue(v);
+		IType typeFacade = propertyFacade.getType();
+		assertEquals("integer", typeFacade.getName());
 	}
+	
 }
