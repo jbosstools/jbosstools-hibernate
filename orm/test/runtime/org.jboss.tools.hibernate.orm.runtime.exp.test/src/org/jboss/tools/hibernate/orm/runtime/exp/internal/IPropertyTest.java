@@ -14,6 +14,7 @@ import java.lang.reflect.Proxy;
 
 import org.hibernate.mapping.Backref;
 import org.hibernate.mapping.BasicValue;
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -148,6 +149,19 @@ public class IPropertyTest {
 		assertTrue(propertyFacade.isSelectable());
 		propertyTarget.setSelectable(false);
 		assertFalse(propertyFacade.isSelectable());
+	}
+	
+	@Test
+	public void testIsUpdateable() {
+		BasicValue v = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		v.setTable(new Table(""));
+		Column c = new Column();
+		v.addColumn(c);
+		propertyTarget.setValue(v);
+		propertyTarget.setUpdateable(false);
+		assertFalse(propertyFacade.isUpdateable());
+		propertyTarget.setUpdateable(true);
+		assertTrue(propertyFacade.isUpdateable());
 	}
 	
 }
