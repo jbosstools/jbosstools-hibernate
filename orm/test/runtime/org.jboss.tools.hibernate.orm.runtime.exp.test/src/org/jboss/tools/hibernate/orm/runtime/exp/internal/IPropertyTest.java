@@ -201,4 +201,13 @@ public class IPropertyTest {
 		assertFalse(propertyFacade.isLazy());
 	}
 	
+	@Test
+	public void testIsOptional() {
+		propertyTarget.setValue(new BasicValue(DummyMetadataBuildingContext.INSTANCE));
+		propertyTarget.setOptional(true);
+		assertTrue(propertyFacade.isOptional());
+		propertyTarget.setOptional(false);
+		assertFalse(propertyFacade.isOptional());
+	}
+	
 }
