@@ -8,6 +8,11 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Proxy;
+
+import org.hibernate.mapping.Backref;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.Property;
@@ -125,6 +130,16 @@ public class IPropertyTest {
 		assertNotEquals("foo", propertyTarget.getCascade());
 		propertyFacade.setCascade("foo");
 		assertEquals("foo", propertyTarget.getCascade());
+	}
+	
+	@Test
+	public void testIsBackRef() throws Exception {
+		assertFalse(propertyFacade.isBackRef());
+		InvocationHandler invocationHandler = Proxy.getInvocationHandler(propertyFacade);
+		Field targetField = invocationHandler.getClass().getDeclaredField("target");
+		targetField.setAccessible(true);
+		targetField.set(invocationHandler, new Backref());
+		assertTrue(propertyFacade.isBackRef());
 	}
 	
 }
