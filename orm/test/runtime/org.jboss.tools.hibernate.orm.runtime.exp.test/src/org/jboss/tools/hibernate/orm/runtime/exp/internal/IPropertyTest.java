@@ -120,4 +120,11 @@ public class IPropertyTest {
 		assertEquals("foo", propertyTarget.getPropertyAccessorName());
 	}
 	
+	@Test
+	public void testSetCascade() {
+		assertNotEquals("foo", propertyTarget.getCascade());
+		propertyFacade.setCascade("foo");
+		assertEquals("foo", propertyTarget.getCascade());
+	}
+	
 }
