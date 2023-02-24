@@ -152,6 +152,19 @@ public class IPropertyTest {
 	}
 	
 	@Test
+	public void testIsInsertable() {
+		BasicValue v = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		v.setTable(new Table(""));
+		Column c = new Column();
+		v.addColumn(c);
+		propertyTarget.setValue(v);
+		propertyTarget.setInsertable(true);
+		assertTrue(propertyFacade.isInsertable());
+		propertyTarget.setInsertable(false);
+		assertFalse(propertyFacade.isInsertable());
+	}
+	
+	@Test
 	public void testIsUpdateable() {
 		BasicValue v = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
 		v.setTable(new Table(""));
