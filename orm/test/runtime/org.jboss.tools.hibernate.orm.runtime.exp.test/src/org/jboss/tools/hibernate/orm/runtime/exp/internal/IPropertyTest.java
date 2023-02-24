@@ -76,6 +76,15 @@ public class IPropertyTest {
 	}
 	
 	@Test
+	public void testGetPersistentClass() {
+		RootClass persistentClassTarget = new RootClass(DummyMetadataBuildingContext.INSTANCE);
+		assertNull(propertyFacade.getPersistentClass());
+		propertyTarget.setPersistentClass(persistentClassTarget);
+		IPersistentClass persistentClassFacade = propertyFacade.getPersistentClass();
+		assertSame(persistentClassTarget, ((IFacade)persistentClassFacade).getTarget());
+	}
+	
+	@Test
 	public void testIsComposite() {
 		propertyTarget.setValue(new BasicValue(DummyMetadataBuildingContext.INSTANCE));
 		assertFalse(propertyFacade.isComposite());
