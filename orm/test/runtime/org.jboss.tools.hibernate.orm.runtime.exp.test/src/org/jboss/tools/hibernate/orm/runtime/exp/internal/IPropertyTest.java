@@ -210,4 +210,12 @@ public class IPropertyTest {
 		assertFalse(propertyFacade.isOptional());
 	}
 	
+	@Test
+	public void testIsNaturalIdentifier() {
+		propertyTarget.setNaturalIdentifier(true);
+		assertTrue(propertyFacade.isNaturalIdentifier());
+		propertyTarget.setNaturalIdentifier(false);
+		assertFalse(propertyFacade.isNaturalIdentifier());
+	}
+	
 }
