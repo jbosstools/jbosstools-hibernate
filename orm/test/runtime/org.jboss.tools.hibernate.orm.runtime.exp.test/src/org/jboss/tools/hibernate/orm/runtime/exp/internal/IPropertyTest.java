@@ -113,4 +113,11 @@ public class IPropertyTest {
 		assertSame(valueTarget, propertyTarget.getValue());
 	}
 	
+	@Test
+	public void testSetPropertyAccessorName() {
+		assertNotEquals("foo", propertyTarget.getPropertyAccessorName());
+		propertyFacade.setPropertyAccessorName("foo");
+		assertEquals("foo", propertyTarget.getPropertyAccessorName());
+	}
+	
 }
