@@ -280,7 +280,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IProperty newProperty() {
-		return facadeFactory.createProperty(new Property());
+		return newFacadeFactory.createProperty();
 	}
 
 	@Override
