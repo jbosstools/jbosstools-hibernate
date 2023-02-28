@@ -128,6 +128,13 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 				wrapperFactory.createJoinedTableSubClassWrapper(((IFacade)persistentClass).getTarget()));
 	}
 	
+	@Override
+	public IPersistentClass createSpecialRootClass(IProperty property) {
+		return (IPersistentClass)GenericFacadeFactory.createFacade(
+				IPersistentClass.class, 
+				wrapperFactory.createSpecialRootClassWrapper(((IFacade)property).getTarget()));
+	}
+
 	public IProperty createProperty() {
 		return (IProperty)GenericFacadeFactory.createFacade(
 				IProperty.class, 
@@ -137,12 +144,6 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 	@Override
 	public ClassLoader getClassLoader() {
 		return INSTANCE.getClass().getClassLoader();
-	}
-
-	@Override
-	public IPersistentClass createSpecialRootClass(IProperty property) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

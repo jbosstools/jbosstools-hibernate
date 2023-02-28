@@ -22,6 +22,7 @@ import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
+import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 import org.hibernate.tool.orm.jbt.wrp.ColumnWrapper;
 import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapper;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -186,6 +187,20 @@ public class NewFacadeFactoryTest {
 		assertSame(
 				((JoinedSubclass)joinedTableSubclassTarget).getRootClass(), 
 				((PersistentClassWrapper)rootClassTarget).getWrappedObject());
+	}
+	
+	@Test
+	public void testCreateSpecialRootClass() {
+		IProperty propertyFacade = facadeFactory.createProperty();
+		IPersistentClass specialRootClassFacade = facadeFactory.createSpecialRootClass(propertyFacade);
+		Object specialRootClassWrapper = ((IFacade)specialRootClassFacade).getTarget();
+		assertNotNull(specialRootClassWrapper);
+		assertTrue(specialRootClassWrapper instanceof PersistentClassWrapper);
+		Object specialRootClassTarget = ((PersistentClassWrapper)specialRootClassWrapper).getWrappedObject();
+		assertTrue(specialRootClassTarget instanceof SpecialRootClass);
+		assertSame(
+				((SpecialRootClass)specialRootClassTarget).getProperty(), 
+				((IFacade)propertyFacade).getTarget());
 	}
 	
 	@Test
