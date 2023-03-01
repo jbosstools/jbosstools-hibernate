@@ -620,6 +620,29 @@ public class IPersistentClassTest {
 		assertFalse(specialRootClassFacade.isInstanceOfJoinedSubclass());
 	}
 	
+	@Test
+	public void testSetTable() {
+		Table tableTarget = new Table("");
+		ITable tableFacade = FACADE_FACTORY.createTable(tableTarget);
+		assertNull(rootClassTarget.getTable());
+		assertNull(singleTableSubclassTarget.getTable());
+		rootClassFacade.setTable(tableFacade);
+		assertSame(tableTarget, rootClassTarget.getTable());
+		assertSame(tableTarget, singleTableSubclassTarget.getTable());
+		try {
+			singleTableSubclassFacade.setTable(tableFacade);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(e.getMessage(), "Method 'setTable' cannot be called for SingleTableSubclass");
+		}
+		assertNull(joinedSubclassTarget.getTable());
+		joinedSubclassFacade.setTable(tableFacade);
+		assertSame(tableTarget, joinedSubclassTarget.getTable());
+		assertNull(specialRootClassTarget.getTable());
+		specialRootClassFacade.setTable(tableFacade);
+		assertSame(tableTarget, specialRootClassTarget.getTable());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
