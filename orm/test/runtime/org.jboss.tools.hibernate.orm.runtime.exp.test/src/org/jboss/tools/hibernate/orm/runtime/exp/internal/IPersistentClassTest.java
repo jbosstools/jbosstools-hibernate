@@ -643,6 +643,23 @@ public class IPersistentClassTest {
 		assertSame(tableTarget, specialRootClassTarget.getTable());
 	}
 	
+	@Test
+	public void testSetKey() {
+		Value valueTarget = createValue();
+		IValue valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		assertNull(rootClassTarget.getKey());
+		assertNull(singleTableSubclassTarget.getKey());
+		rootClassFacade.setKey(valueFacade);
+		assertSame(valueTarget, rootClassTarget.getKey());
+		assertSame(valueTarget, singleTableSubclassTarget.getKey());
+		assertNull(joinedSubclassTarget.getKey());
+		joinedSubclassFacade.setKey(valueFacade);
+		assertSame(valueTarget, joinedSubclassTarget.getKey());
+		assertNull(specialRootClassTarget.getKey());
+		specialRootClassFacade.setKey(valueFacade);
+		assertSame(valueTarget, specialRootClassTarget.getKey());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
