@@ -24,7 +24,6 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
-import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapper;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
@@ -658,6 +657,14 @@ public class IPersistentClassTest {
 		assertNull(specialRootClassTarget.getKey());
 		specialRootClassFacade.setKey(valueFacade);
 		assertSame(valueTarget, specialRootClassTarget.getKey());
+	}
+	
+	@Test
+	public void testIsInstanceOfSpecialRootClass() {
+		assertFalse(rootClassFacade.isInstanceOfSpecialRootClass());
+		assertFalse(singleTableSubclassFacade.isInstanceOfSpecialRootClass());
+		assertFalse(joinedSubclassFacade.isInstanceOfSpecialRootClass());
+		assertTrue(specialRootClassFacade.isInstanceOfSpecialRootClass());
 	}
 	
 	private KeyValue createValue() {
