@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -29,6 +30,7 @@ import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapper;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
+import org.jboss.tools.hibernate.runtime.common.AbstractPersistentClassFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -702,6 +704,30 @@ public class IPersistentClassTest {
 		IProperty parentProperty = specialRootClassFacade.getParentProperty();
 		assertNotNull(parentProperty);
 		assertEquals("foo", parentProperty.getName());
+	}
+	
+	@Test
+	public void testSetIdentifierProperty() {
+		IProperty propertyFacade = FACADE_FACTORY.createProperty();
+		Property propertyTarget = (Property)((IFacade)propertyFacade).getTarget();
+		assertNull(rootClassTarget.getIdentifierProperty());
+		rootClassFacade.setIdentifierProperty(propertyFacade);
+		assertSame(propertyTarget, rootClassTarget.getIdentifierProperty());
+		assertNull(specialRootClassTarget.getIdentifierProperty());
+		specialRootClassFacade.setIdentifierProperty(propertyFacade);
+		assertSame(propertyTarget, specialRootClassTarget.getIdentifierProperty());
+		try {
+			singleTableSubclassFacade.setIdentifierProperty(propertyFacade);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals("setIdentifierProperty is only allowed on RootClass instances", e.getMessage());
+		}
+		try {
+			joinedSubclassFacade.setIdentifierProperty(propertyFacade);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals("setIdentifierProperty is only allowed on RootClass instances", e.getMessage());
+		}
 	}
 	
 	private KeyValue createValue() {
