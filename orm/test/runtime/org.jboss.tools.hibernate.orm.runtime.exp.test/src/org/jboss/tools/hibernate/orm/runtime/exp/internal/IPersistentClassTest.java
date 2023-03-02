@@ -15,6 +15,7 @@ import java.lang.reflect.Proxy;
 import java.util.Iterator;
 
 import org.hibernate.MappingException;
+import org.hibernate.mapping.Component;
 import org.hibernate.mapping.Join;
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.KeyValue;
@@ -24,6 +25,7 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
+import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapper;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
@@ -665,6 +667,41 @@ public class IPersistentClassTest {
 		assertFalse(singleTableSubclassFacade.isInstanceOfSpecialRootClass());
 		assertFalse(joinedSubclassFacade.isInstanceOfSpecialRootClass());
 		assertTrue(specialRootClassFacade.isInstanceOfSpecialRootClass());
+	}
+	
+	@Test
+	public void testGetParentProperty() {
+		try {
+			rootClassFacade.getParentProperty();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals("getParentProperty() is only allowed on SpecialRootClass", e.getMessage());
+		}
+		try {
+			singleTableSubclassFacade.getParentProperty();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals("getParentProperty() is only allowed on SpecialRootClass", e.getMessage());
+		}
+		try {
+			joinedSubclassFacade.getParentProperty();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals("getParentProperty() is only allowed on SpecialRootClass", e.getMessage());
+		}
+		assertNull(specialRootClassFacade.getParentProperty());
+		Component component = new Component(
+				DummyMetadataBuildingContext.INSTANCE, 
+				rootClassTarget);
+		component.setParentProperty("foo");
+		IValue componentFacade = FACADE_FACTORY.createValue(component);
+		IProperty propertyFacade = FACADE_FACTORY.createProperty();
+		propertyFacade.setValue(componentFacade);
+		propertyFacade.setPersistentClass(rootClassFacade);
+		specialRootClassFacade = FACADE_FACTORY.createSpecialRootClass(propertyFacade);
+		IProperty parentProperty = specialRootClassFacade.getParentProperty();
+		assertNotNull(parentProperty);
+		assertEquals("foo", parentProperty.getName());
 	}
 	
 	private KeyValue createValue() {
