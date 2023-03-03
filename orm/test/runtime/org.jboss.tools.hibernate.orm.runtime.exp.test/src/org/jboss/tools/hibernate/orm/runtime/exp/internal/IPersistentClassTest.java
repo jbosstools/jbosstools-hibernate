@@ -648,19 +648,32 @@ public class IPersistentClassTest {
 	
 	@Test
 	public void testSetKey() {
-		Value valueTarget = createValue();
-		IValue valueFacade = FACADE_FACTORY.createValue(valueTarget);
 		assertNull(rootClassTarget.getKey());
 		assertNull(singleTableSubclassTarget.getKey());
-		rootClassFacade.setKey(valueFacade);
-		assertSame(valueTarget, rootClassTarget.getKey());
-		assertSame(valueTarget, singleTableSubclassTarget.getKey());
 		assertNull(joinedSubclassTarget.getKey());
+		assertNull(specialRootClassTarget.getKey());
+		Value valueTarget = createValue();
+		IValue valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		try {
+			rootClassFacade.setKey(valueFacade);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals("setKey(KeyValue) is only allowed on JoinedSubclass", e.getMessage());
+		}
+		try {
+			singleTableSubclassFacade.setKey(valueFacade);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals("setKey(KeyValue) is only allowed on JoinedSubclass", e.getMessage());
+		}
 		joinedSubclassFacade.setKey(valueFacade);
 		assertSame(valueTarget, joinedSubclassTarget.getKey());
-		assertNull(specialRootClassTarget.getKey());
-		specialRootClassFacade.setKey(valueFacade);
-		assertSame(valueTarget, specialRootClassTarget.getKey());
+		try {
+			specialRootClassFacade.setKey(valueFacade);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals("setKey(KeyValue) is only allowed on JoinedSubclass", e.getMessage());
+		}
 	}
 	
 	@Test
@@ -720,13 +733,13 @@ public class IPersistentClassTest {
 			singleTableSubclassFacade.setIdentifierProperty(propertyFacade);
 			fail();
 		} catch (RuntimeException e) {
-			assertEquals("setIdentifierProperty is only allowed on RootClass instances", e.getMessage());
+			assertEquals("setIdentifierProperty(Property) is only allowed on RootClass instances", e.getMessage());
 		}
 		try {
 			joinedSubclassFacade.setIdentifierProperty(propertyFacade);
 			fail();
 		} catch (RuntimeException e) {
-			assertEquals("setIdentifierProperty is only allowed on RootClass instances", e.getMessage());
+			assertEquals("setIdentifierProperty(Property) is only allowed on RootClass instances", e.getMessage());
 		}
 	}
 	
