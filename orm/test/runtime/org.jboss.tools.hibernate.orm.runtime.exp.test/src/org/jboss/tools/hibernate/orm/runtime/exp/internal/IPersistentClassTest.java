@@ -769,6 +769,35 @@ public class IPersistentClassTest {
 		assertSame(valueTarget, specialRootClassTarget.getIdentifier());
 	}
 	
+	@Test
+	public void testSetDiscriminator() throws Exception {
+		Value valueTarget = createValue();
+		IValue valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		assertNull(rootClassTarget.getDiscriminator());
+		assertNull(singleTableSubclassTarget.getDiscriminator());
+		assertNull(joinedSubclassTarget.getDiscriminator());
+		assertNull(specialRootClassTarget.getDiscriminator());
+		rootClassFacade.setDiscriminator(valueFacade);
+		assertSame(valueTarget, rootClassTarget.getDiscriminator());
+		assertSame(valueTarget, singleTableSubclassTarget.getDiscriminator());
+		assertSame(valueTarget, joinedSubclassTarget.getDiscriminator());
+		try {
+			singleTableSubclassFacade.setDiscriminator(valueFacade);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals("Method 'setDiscriminator(Value)' can only be called on RootClass instances", e.getMessage());
+		}
+		try {
+			joinedSubclassFacade.setDiscriminator(valueFacade);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals("Method 'setDiscriminator(Value)' can only be called on RootClass instances", e.getMessage());
+		}
+		assertNull(specialRootClassTarget.getDiscriminator());
+		specialRootClassFacade.setDiscriminator(valueFacade);
+		assertSame(valueTarget, specialRootClassTarget.getDiscriminator());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
