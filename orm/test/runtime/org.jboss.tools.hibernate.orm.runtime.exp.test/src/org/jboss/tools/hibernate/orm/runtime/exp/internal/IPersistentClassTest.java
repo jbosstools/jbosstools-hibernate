@@ -9,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -30,7 +29,6 @@ import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapper;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
-import org.jboss.tools.hibernate.runtime.common.AbstractPersistentClassFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -741,6 +739,34 @@ public class IPersistentClassTest {
 		} catch (RuntimeException e) {
 			assertEquals("setIdentifierProperty(Property) is only allowed on RootClass instances", e.getMessage());
 		}
+	}
+	
+	@Test
+	public void testSetIdentifier() {
+		Value valueTarget = createValue();
+		IValue valueFacade = FACADE_FACTORY.createValue(valueTarget);
+		assertNull(rootClassTarget.getIdentifier());
+		assertNull(singleTableSubclassTarget.getIdentifier());
+		assertNull(joinedSubclassTarget.getIdentifier());
+		rootClassFacade.setIdentifier(valueFacade);
+		assertSame(valueTarget, rootClassTarget.getIdentifier());
+		assertSame(valueTarget, singleTableSubclassTarget.getIdentifier());
+		assertSame(valueTarget, joinedSubclassTarget.getIdentifier());
+		try {
+			singleTableSubclassFacade.setIdentifier(valueFacade);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals("Method 'setIdentifier(KeyValue)' can only be called on RootClass instances", e.getMessage());
+		}
+		try {
+			joinedSubclassFacade.setIdentifier(valueFacade);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals("Method 'setIdentifier(KeyValue)' can only be called on RootClass instances", e.getMessage());
+		}
+		assertNull(specialRootClassTarget.getIdentifier());
+		specialRootClassFacade.setIdentifier(valueFacade);
+		assertSame(valueTarget, specialRootClassTarget.getIdentifier());
 	}
 	
 	private KeyValue createValue() {
