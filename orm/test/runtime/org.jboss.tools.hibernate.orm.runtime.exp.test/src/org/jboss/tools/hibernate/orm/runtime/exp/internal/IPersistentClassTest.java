@@ -634,7 +634,7 @@ public class IPersistentClassTest {
 			singleTableSubclassFacade.setTable(tableFacade);
 			fail();
 		} catch (RuntimeException e) {
-			assertEquals(e.getMessage(), "Method 'setTable' cannot be called for SingleTableSubclass");
+			assertEquals(e.getMessage(), "Method 'setTable(Table)' is not supported.");
 		}
 		assertNull(joinedSubclassTarget.getTable());
 		joinedSubclassFacade.setTable(tableFacade);
