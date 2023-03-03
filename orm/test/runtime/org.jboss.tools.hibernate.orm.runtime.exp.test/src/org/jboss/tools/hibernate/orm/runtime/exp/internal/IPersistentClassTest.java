@@ -798,6 +798,22 @@ public class IPersistentClassTest {
 		assertSame(valueTarget, specialRootClassTarget.getDiscriminator());
 	}
 	
+	@Test
+	public void testSetProxyInterfaceName() {
+		assertNull(rootClassTarget.getProxyInterfaceName());
+		rootClassFacade.setProxyInterfaceName("foo");
+		assertEquals("foo", rootClassTarget.getProxyInterfaceName());
+		assertNull(singleTableSubclassTarget.getProxyInterfaceName());
+		singleTableSubclassFacade.setProxyInterfaceName("bar");
+		assertEquals("bar", singleTableSubclassTarget.getProxyInterfaceName());
+		assertNull(joinedSubclassTarget.getProxyInterfaceName());
+		joinedSubclassFacade.setProxyInterfaceName("oof");
+		assertEquals("oof", joinedSubclassTarget.getProxyInterfaceName());
+		assertNull(specialRootClassTarget.getProxyInterfaceName());
+		specialRootClassFacade.setProxyInterfaceName("rab");
+		assertEquals("rab", specialRootClassTarget.getProxyInterfaceName());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
