@@ -814,6 +814,26 @@ public class IPersistentClassTest {
 		assertEquals("rab", specialRootClassTarget.getProxyInterfaceName());
 	}
 	
+	@Test
+	public void testSetLazy() {
+		rootClassFacade.setLazy(true);
+		assertTrue(rootClassTarget.isLazy());
+		rootClassFacade.setLazy(false);
+		assertFalse(rootClassTarget.isLazy());
+		singleTableSubclassFacade.setLazy(true);
+		assertTrue(singleTableSubclassTarget.isLazy());
+		singleTableSubclassFacade.setLazy(false);
+		assertFalse(singleTableSubclassTarget.isLazy());
+		joinedSubclassFacade.setLazy(true);
+		assertTrue(joinedSubclassTarget.isLazy());
+		joinedSubclassFacade.setLazy(false);
+		assertFalse(joinedSubclassTarget.isLazy());
+		specialRootClassFacade.setLazy(true);
+		assertTrue(specialRootClassTarget.isLazy());
+		specialRootClassFacade.setLazy(false);
+		assertFalse(specialRootClassTarget.isLazy());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
