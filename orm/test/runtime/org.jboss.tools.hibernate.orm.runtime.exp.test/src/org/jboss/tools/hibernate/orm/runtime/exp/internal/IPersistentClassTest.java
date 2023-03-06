@@ -29,7 +29,6 @@ import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapper;
-import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
@@ -910,6 +909,26 @@ public class IPersistentClassTest {
 		assertFalse(specialRootClassFacade.isCustomInsertCallable());
 		specialRootClassTarget.setCustomSQLInsert("bar", true, null);
 		assertTrue(specialRootClassFacade.isCustomInsertCallable());
+	}
+	
+	@Test
+	public void testIsCustomUpdateCallable() {
+		rootClassTarget.setCustomSQLUpdate("foo", false, null);
+		assertFalse(rootClassFacade.isCustomUpdateCallable());
+		rootClassTarget.setCustomSQLUpdate("bar", true, null);
+		assertTrue(rootClassFacade.isCustomUpdateCallable());
+		singleTableSubclassTarget.setCustomSQLUpdate("foo", false, null);
+		assertFalse(singleTableSubclassFacade.isCustomUpdateCallable());
+		singleTableSubclassTarget.setCustomSQLUpdate("bar", true, null);
+		assertTrue(singleTableSubclassFacade.isCustomUpdateCallable());
+		joinedSubclassTarget.setCustomSQLUpdate("foo", false, null);
+		assertFalse(joinedSubclassFacade.isCustomUpdateCallable());
+		joinedSubclassTarget.setCustomSQLUpdate("bar", true, null);
+		assertTrue(joinedSubclassFacade.isCustomUpdateCallable());
+		specialRootClassTarget.setCustomSQLUpdate("foo", false, null);
+		assertFalse(specialRootClassFacade.isCustomUpdateCallable());
+		specialRootClassTarget.setCustomSQLUpdate("bar", true, null);
+		assertTrue(specialRootClassFacade.isCustomUpdateCallable());
 	}
 	
 	private KeyValue createValue() {
