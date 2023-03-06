@@ -892,6 +892,26 @@ public class IPersistentClassTest {
 		assertTrue(specialRootClassFacade.isCustomDeleteCallable());
 	}
 	
+	@Test
+	public void testIsCustomInsertCallable() {
+		rootClassTarget.setCustomSQLInsert("bar", false, null);
+		assertFalse(rootClassFacade.isCustomInsertCallable());
+		rootClassTarget.setCustomSQLInsert("foo", true, null);
+		assertTrue(rootClassFacade.isCustomInsertCallable());
+		singleTableSubclassTarget.setCustomSQLInsert("foo", false, null);
+		assertFalse(singleTableSubclassFacade.isCustomInsertCallable());
+		singleTableSubclassTarget.setCustomSQLInsert("bar", true, null);
+		assertTrue(singleTableSubclassFacade.isCustomInsertCallable());
+		joinedSubclassTarget.setCustomSQLInsert("foo", false, null);
+		assertFalse(joinedSubclassFacade.isCustomInsertCallable());
+		joinedSubclassTarget.setCustomSQLInsert("bar", true, null);
+		assertTrue(joinedSubclassFacade.isCustomInsertCallable());
+		specialRootClassTarget.setCustomSQLInsert("foo", false, null);
+		assertFalse(specialRootClassFacade.isCustomInsertCallable());
+		specialRootClassTarget.setCustomSQLInsert("bar", true, null);
+		assertTrue(specialRootClassFacade.isCustomInsertCallable());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
