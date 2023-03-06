@@ -872,6 +872,26 @@ public class IPersistentClassTest {
 		assertSame(fourthSubclass, ((IFacade)subclassIterator.next()).getTarget());
 	}
 	
+	@Test
+	public void testIsCustomDeleteCallable() {
+		rootClassTarget.setCustomSQLDelete("foo", false, null);
+		assertFalse(rootClassFacade.isCustomDeleteCallable());
+		rootClassTarget.setCustomSQLDelete("bar", true, null);
+		assertTrue(rootClassFacade.isCustomDeleteCallable());
+		singleTableSubclassTarget.setCustomSQLDelete("foo", false, null);
+		assertFalse(singleTableSubclassFacade.isCustomDeleteCallable());
+		singleTableSubclassTarget.setCustomSQLDelete("bar", true, null);
+		assertTrue(singleTableSubclassFacade.isCustomDeleteCallable());
+		joinedSubclassTarget.setCustomSQLDelete("foo", false, null);
+		assertFalse(joinedSubclassFacade.isCustomDeleteCallable());
+		joinedSubclassTarget.setCustomSQLDelete("bar", true, null);
+		assertTrue(joinedSubclassFacade.isCustomDeleteCallable());
+		specialRootClassTarget.setCustomSQLDelete("foo", false, null);
+		assertFalse(specialRootClassFacade.isCustomDeleteCallable());
+		specialRootClassTarget.setCustomSQLDelete("bar", true, null);
+		assertTrue(specialRootClassFacade.isCustomDeleteCallable());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
