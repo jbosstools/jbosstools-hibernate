@@ -966,6 +966,26 @@ public class IPersistentClassTest {
 		assertTrue(specialRootClassFacade.isDiscriminatorValueNotNull());
 	}
 	
+	@Test
+	public void testIsDiscriminatorValueNull() {
+		rootClassTarget.setDiscriminatorValue("not null");
+		assertFalse(rootClassFacade.isDiscriminatorValueNull());
+		rootClassTarget.setDiscriminatorValue("null");
+		assertTrue(rootClassFacade.isDiscriminatorValueNull());
+		singleTableSubclassTarget.setDiscriminatorValue("not null");
+		assertFalse(singleTableSubclassFacade.isDiscriminatorValueNull());
+		singleTableSubclassTarget.setDiscriminatorValue("null");
+		assertTrue(singleTableSubclassFacade.isDiscriminatorValueNull());
+		joinedSubclassTarget.setDiscriminatorValue("not null");
+		assertFalse(joinedSubclassFacade.isDiscriminatorValueNull());
+		joinedSubclassTarget.setDiscriminatorValue("null");
+		assertTrue(joinedSubclassFacade.isDiscriminatorValueNull());
+		specialRootClassTarget.setDiscriminatorValue("not null");
+		assertFalse(specialRootClassFacade.isDiscriminatorValueNull());
+		specialRootClassTarget.setDiscriminatorValue("null");
+		assertTrue(specialRootClassFacade.isDiscriminatorValueNull());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
