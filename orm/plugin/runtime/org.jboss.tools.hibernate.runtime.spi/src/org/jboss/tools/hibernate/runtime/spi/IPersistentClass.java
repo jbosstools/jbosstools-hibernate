@@ -39,7 +39,7 @@ public interface IPersistentClass {
 	void setDiscriminator(IValue discr);
 	void setProxyInterfaceName(String interfaceName);
 	void setLazy(boolean b);
-	Iterator<?> getSubclassIterator();
+	Iterator<IPersistentClass> getSubclassIterator();
 	boolean isCustomDeleteCallable();
 	boolean isCustomInsertCallable();
 	boolean isCustomUpdateCallable();
