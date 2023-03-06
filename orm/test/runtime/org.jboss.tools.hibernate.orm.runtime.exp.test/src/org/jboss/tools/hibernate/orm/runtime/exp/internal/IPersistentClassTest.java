@@ -931,6 +931,21 @@ public class IPersistentClassTest {
 		assertTrue(specialRootClassFacade.isCustomUpdateCallable());
 	}
 	
+	@Test
+	public void testIsDiscriminatorValueInsertable() {
+		assertTrue(rootClassFacade.isDiscriminatorInsertable());
+		assertTrue(singleTableSubclassFacade.isDiscriminatorInsertable());
+		assertTrue(joinedSubclassFacade.isDiscriminatorInsertable());
+		assertTrue(specialRootClassFacade.isDiscriminatorInsertable());		
+		((RootClass)rootClassTarget).setDiscriminatorInsertable(false);
+		assertFalse(rootClassFacade.isDiscriminatorInsertable());
+		assertFalse(singleTableSubclassFacade.isDiscriminatorInsertable());
+		assertFalse(joinedSubclassFacade.isDiscriminatorInsertable());
+		assertTrue(specialRootClassFacade.isDiscriminatorInsertable());		
+		((RootClass)specialRootClassTarget).setDiscriminatorInsertable(false);
+		assertFalse(specialRootClassFacade.isDiscriminatorInsertable());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
