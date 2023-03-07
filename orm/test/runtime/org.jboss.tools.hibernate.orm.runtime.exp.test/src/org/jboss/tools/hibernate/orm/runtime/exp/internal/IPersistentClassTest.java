@@ -1052,6 +1052,30 @@ public class IPersistentClassTest {
 		assertFalse(specialRootClassFacade.isLazy());
 	}
 	
+	@Test
+	public void testIsLazyPropertiesCacheable() {
+		((RootClass)rootClassTarget).setLazyPropertiesCacheable(true);
+		assertTrue(rootClassFacade.isLazyPropertiesCacheable());
+		((RootClass)rootClassTarget).setLazyPropertiesCacheable(false);
+		assertFalse(rootClassFacade.isLazyPropertiesCacheable());
+		((RootClass)specialRootClassTarget).setLazyPropertiesCacheable(true);
+		assertTrue(specialRootClassFacade.isLazyPropertiesCacheable());
+		((RootClass)specialRootClassTarget).setLazyPropertiesCacheable(false);
+		assertFalse(specialRootClassFacade.isLazyPropertiesCacheable());
+		try {
+			singleTableSubclassFacade.isLazyPropertiesCacheable();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals("Method 'isLazyPropertiesCacheable()' can only be called on RootClass instances", e.getMessage());
+		}
+		try {
+			joinedSubclassFacade.isLazyPropertiesCacheable();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals("Method 'isLazyPropertiesCacheable()' can only be called on RootClass instances", e.getMessage());
+		}
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
