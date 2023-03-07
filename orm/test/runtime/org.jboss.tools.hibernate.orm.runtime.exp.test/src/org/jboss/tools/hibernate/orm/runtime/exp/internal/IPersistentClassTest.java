@@ -986,6 +986,20 @@ public class IPersistentClassTest {
 		assertTrue(specialRootClassFacade.isDiscriminatorValueNull());
 	}
 	
+	@Test
+	public void testIsForceDiscriminator() {
+		assertFalse(rootClassFacade.isForceDiscriminator());
+		assertFalse(singleTableSubclassFacade.isForceDiscriminator());
+		assertFalse(joinedSubclassFacade.isForceDiscriminator());
+		((RootClass)rootClassTarget).setForceDiscriminator(true);
+		assertTrue(rootClassFacade.isForceDiscriminator());
+		assertTrue(singleTableSubclassFacade.isForceDiscriminator());
+		assertTrue(joinedSubclassFacade.isForceDiscriminator());
+		assertFalse(specialRootClassFacade.isForceDiscriminator());
+		((RootClass)specialRootClassTarget).setForceDiscriminator(true);
+		assertTrue(specialRootClassFacade.isForceDiscriminator());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
