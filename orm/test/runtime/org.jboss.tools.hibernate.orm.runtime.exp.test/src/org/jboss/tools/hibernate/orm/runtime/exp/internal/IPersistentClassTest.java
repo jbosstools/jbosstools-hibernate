@@ -1150,6 +1150,22 @@ public class IPersistentClassTest {
 		assertEquals("bar", specialRootClassFacade.getCacheConcurrencyStrategy());
 	}
 	
+	@Test
+	public void testGetCustomSQLDelete() {
+		assertNull(rootClassFacade.getCustomSQLDelete());
+		rootClassTarget.setCustomSQLDelete("foo", false, null);
+		assertEquals("foo", rootClassFacade.getCustomSQLDelete());
+		assertNull(singleTableSubclassFacade.getCustomSQLDelete());
+		singleTableSubclassTarget.setCustomSQLDelete("bar", false, null);
+		assertEquals("bar", singleTableSubclassFacade.getCustomSQLDelete());
+		assertNull(joinedSubclassFacade.getCustomSQLDelete());
+		joinedSubclassTarget.setCustomSQLDelete("oof", false, null);
+		assertEquals("oof", joinedSubclassFacade.getCustomSQLDelete());
+		assertNull(specialRootClassFacade.getCustomSQLDelete());
+		specialRootClassTarget.setCustomSQLDelete("rab", false, null);
+		assertEquals("rab", specialRootClassFacade.getCustomSQLDelete());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
