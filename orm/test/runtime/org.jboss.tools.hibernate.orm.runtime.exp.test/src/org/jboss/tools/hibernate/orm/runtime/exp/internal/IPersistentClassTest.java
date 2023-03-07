@@ -1014,6 +1014,14 @@ public class IPersistentClassTest {
 		assertTrue(specialRootClassFacade.isForceDiscriminator());
 	}
 	
+	@Test
+	public void testIsInherited() {
+		assertFalse(rootClassFacade.isInherited());
+		assertTrue(singleTableSubclassFacade.isInherited());
+		assertTrue(joinedSubclassFacade.isInherited());
+		assertFalse(specialRootClassFacade.isInherited());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
