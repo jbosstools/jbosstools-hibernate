@@ -1136,6 +1136,20 @@ public class IPersistentClassTest {
 		assertEquals(Integer.MIN_VALUE, specialRootClassFacade.getBatchSize());
 	}
 	
+	@Test
+	public void testGetCacheConcurrencyStrategy() {
+		assertNull(rootClassFacade.getCacheConcurrencyStrategy());
+		assertNull(singleTableSubclassFacade.getCacheConcurrencyStrategy());
+		assertNull(joinedSubclassFacade.getCacheConcurrencyStrategy());
+		((RootClass)rootClassTarget).setCacheConcurrencyStrategy("foo");
+		assertEquals("foo", rootClassFacade.getCacheConcurrencyStrategy());
+		assertEquals("foo", singleTableSubclassFacade.getCacheConcurrencyStrategy());
+		assertEquals("foo", joinedSubclassFacade.getCacheConcurrencyStrategy());
+		assertNull(specialRootClassFacade.getCacheConcurrencyStrategy());
+		((RootClass)specialRootClassTarget).setCacheConcurrencyStrategy("bar");
+		assertEquals("bar", specialRootClassFacade.getCacheConcurrencyStrategy());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
