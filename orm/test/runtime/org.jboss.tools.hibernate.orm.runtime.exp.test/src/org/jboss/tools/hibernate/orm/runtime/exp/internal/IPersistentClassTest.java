@@ -1076,6 +1076,20 @@ public class IPersistentClassTest {
 		}
 	}
 	
+	@Test
+	public void testIsMutable() {
+		assertTrue(rootClassFacade.isMutable());
+		assertTrue(singleTableSubclassFacade.isMutable());
+		assertTrue(joinedSubclassFacade.isMutable());
+		((RootClass)rootClassTarget).setMutable(false);
+		assertFalse(rootClassFacade.isMutable());
+		assertFalse(singleTableSubclassFacade.isMutable());
+		assertFalse(joinedSubclassFacade.isMutable());
+		assertTrue(specialRootClassFacade.isMutable());
+		((RootClass)specialRootClassTarget).setMutable(false);
+		assertFalse(specialRootClassFacade.isMutable());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
