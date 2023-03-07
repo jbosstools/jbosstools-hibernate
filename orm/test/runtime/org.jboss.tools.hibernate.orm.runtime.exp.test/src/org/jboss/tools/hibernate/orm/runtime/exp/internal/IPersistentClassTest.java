@@ -1022,6 +1022,16 @@ public class IPersistentClassTest {
 		assertFalse(specialRootClassFacade.isInherited());
 	}
 	
+	@Test
+	public void testIsJoinedSubclass() {
+		((RootClass)rootClassTarget).setTable(new Table("foo"));
+		((JoinedSubclass)joinedSubclassTarget).setTable(new Table("bar"));
+		assertFalse(rootClassFacade.isJoinedSubclass());
+		assertFalse(singleTableSubclassFacade.isJoinedSubclass());
+		assertTrue(joinedSubclassFacade.isJoinedSubclass());
+		assertFalse(specialRootClassFacade.isJoinedSubclass());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
