@@ -1198,6 +1198,22 @@ public class IPersistentClassTest {
 		assertEquals("rab", specialRootClassFacade.getCustomSQLUpdate());
 	}
 	
+	@Test
+	public void testGetDiscriminatorValue() {
+		assertNull(rootClassFacade.getDiscriminatorValue());
+		rootClassTarget.setDiscriminatorValue("foo");
+		assertEquals("foo", rootClassFacade.getDiscriminatorValue());
+		assertNull(singleTableSubclassFacade.getDiscriminatorValue());
+		singleTableSubclassTarget.setDiscriminatorValue("bar");
+		assertEquals("bar", singleTableSubclassFacade.getDiscriminatorValue());
+		assertNull(joinedSubclassFacade.getDiscriminatorValue());
+		joinedSubclassTarget.setDiscriminatorValue("oof");
+		assertEquals("oof", joinedSubclassFacade.getDiscriminatorValue());
+		assertNull(specialRootClassFacade.getDiscriminatorValue());
+		specialRootClassTarget.setDiscriminatorValue("rab");
+		assertEquals("rab", specialRootClassFacade.getDiscriminatorValue());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
