@@ -1166,6 +1166,22 @@ public class IPersistentClassTest {
 		assertEquals("rab", specialRootClassFacade.getCustomSQLDelete());
 	}
 	
+	@Test
+	public void testGetCustomSQLInsert() {
+		assertNull(rootClassFacade.getCustomSQLInsert());
+		rootClassTarget.setCustomSQLInsert("foo", false, null);
+		assertEquals("foo", rootClassFacade.getCustomSQLInsert());
+		assertNull(singleTableSubclassFacade.getCustomSQLInsert());
+		singleTableSubclassTarget.setCustomSQLInsert("bar", false, null);
+		assertEquals("bar", singleTableSubclassFacade.getCustomSQLInsert());
+		assertNull(joinedSubclassFacade.getCustomSQLInsert());
+		joinedSubclassTarget.setCustomSQLInsert("oof", false, null);
+		assertEquals("oof", joinedSubclassFacade.getCustomSQLInsert());
+		assertNull(specialRootClassFacade.getCustomSQLInsert());
+		specialRootClassTarget.setCustomSQLInsert("rab", false, null);
+		assertEquals("rab", specialRootClassFacade.getCustomSQLInsert());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
