@@ -1102,6 +1102,20 @@ public class IPersistentClassTest {
 		assertTrue(specialRootClassFacade.isPolymorphic());
 	}
 	
+	@Test
+	public void testIsVersioned() {
+		assertFalse(rootClassFacade.isVersioned());
+		assertFalse(singleTableSubclassFacade.isVersioned());
+		assertFalse(joinedSubclassFacade.isVersioned());
+		((RootClass)rootClassTarget).setVersion(new Property());
+		assertTrue(rootClassFacade.isVersioned());
+		assertTrue(singleTableSubclassFacade.isVersioned());
+		assertTrue(joinedSubclassFacade.isVersioned());
+		assertFalse(specialRootClassFacade.isVersioned());
+		((RootClass)specialRootClassTarget).setVersion(new Property());
+		assertTrue(specialRootClassFacade.isVersioned());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
