@@ -1032,6 +1032,26 @@ public class IPersistentClassTest {
 		assertFalse(specialRootClassFacade.isJoinedSubclass());
 	}
 	
+	@Test
+	public void testIsLazy() {
+		rootClassTarget.setLazy(true);
+		assertTrue(rootClassFacade.isLazy());
+		rootClassTarget.setLazy(false);
+		assertFalse(rootClassFacade.isLazy());
+		singleTableSubclassTarget.setLazy(true);
+		assertTrue(singleTableSubclassFacade.isLazy());
+		singleTableSubclassTarget.setLazy(false);
+		assertFalse(singleTableSubclassFacade.isLazy());
+		joinedSubclassTarget.setLazy(true);
+		assertTrue(joinedSubclassFacade.isLazy());
+		joinedSubclassTarget.setLazy(false);
+		assertFalse(joinedSubclassFacade.isLazy());
+		specialRootClassTarget.setLazy(true);
+		assertTrue(specialRootClassFacade.isLazy());
+		specialRootClassTarget.setLazy(false);
+		assertFalse(specialRootClassFacade.isLazy());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
