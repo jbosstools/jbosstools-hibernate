@@ -1090,6 +1090,18 @@ public class IPersistentClassTest {
 		assertFalse(specialRootClassFacade.isMutable());
 	}
 	
+	@Test
+	public void testIsPolymorphic() {
+		assertFalse(rootClassFacade.isPolymorphic());
+		assertTrue(singleTableSubclassFacade.isPolymorphic());
+		assertTrue(joinedSubclassFacade.isPolymorphic());
+		assertFalse(specialRootClassFacade.isPolymorphic());
+		((RootClass)rootClassTarget).setPolymorphic(true);
+		assertTrue(rootClassFacade.isPolymorphic());
+		((RootClass)specialRootClassTarget).setPolymorphic(true);
+		assertTrue(specialRootClassFacade.isPolymorphic());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
