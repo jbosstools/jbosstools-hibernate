@@ -1116,6 +1116,26 @@ public class IPersistentClassTest {
 		assertTrue(specialRootClassFacade.isVersioned());
 	}
 	
+	@Test
+	public void testGetBatchSize() {
+		rootClassTarget.setBatchSize(Integer.MAX_VALUE);
+		assertEquals(Integer.MAX_VALUE, rootClassFacade.getBatchSize());
+		rootClassTarget.setBatchSize(Integer.MIN_VALUE);
+		assertEquals(Integer.MIN_VALUE, rootClassFacade.getBatchSize());
+		singleTableSubclassTarget.setBatchSize(Integer.MAX_VALUE);
+		assertEquals(Integer.MAX_VALUE, singleTableSubclassFacade.getBatchSize());
+		singleTableSubclassTarget.setBatchSize(Integer.MIN_VALUE);
+		assertEquals(Integer.MIN_VALUE, singleTableSubclassFacade.getBatchSize());
+		joinedSubclassTarget.setBatchSize(Integer.MAX_VALUE);
+		assertEquals(Integer.MAX_VALUE, joinedSubclassFacade.getBatchSize());
+		joinedSubclassTarget.setBatchSize(Integer.MIN_VALUE);
+		assertEquals(Integer.MIN_VALUE, joinedSubclassFacade.getBatchSize());
+		specialRootClassTarget.setBatchSize(Integer.MAX_VALUE);
+		assertEquals(Integer.MAX_VALUE, specialRootClassFacade.getBatchSize());
+		specialRootClassTarget.setBatchSize(Integer.MIN_VALUE);
+		assertEquals(Integer.MIN_VALUE, specialRootClassFacade.getBatchSize());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
