@@ -502,16 +502,17 @@ public class ServiceImplTest {
 	
 	@Test
 	public void testNewJoinedSubclass() {
-		IPersistentClass persistentClass = service.newRootClass();
+		IPersistentClass persistentClass = NewFacadeFactory.INSTANCE.createRootClass();
 		IPersistentClass joinedSubclass = service.newJoinedSubclass(persistentClass);
 		assertNotNull(joinedSubclass);
 		Object target = ((IFacade)joinedSubclass).getTarget();
 		assertNotNull(target);
-		assertTrue(target instanceof JoinedSubclass);
-		assertSame(persistentClass, joinedSubclass.getSuperclass());
+		assertTrue(target instanceof Wrapper);
+		assertTrue(((Wrapper)target).getWrappedObject() instanceof JoinedSubclass);
+		assertEquals(persistentClass, joinedSubclass.getSuperclass());
 		assertSame(
-				((IFacade)persistentClass).getTarget(), 
-				((JoinedSubclass)target).getSuperclass());
+				((Wrapper)((IFacade)persistentClass).getTarget()).getWrappedObject(), 
+				((JoinedSubclass)((Wrapper)target).getWrappedObject()).getSuperclass());
 	}
 	
 	@Test

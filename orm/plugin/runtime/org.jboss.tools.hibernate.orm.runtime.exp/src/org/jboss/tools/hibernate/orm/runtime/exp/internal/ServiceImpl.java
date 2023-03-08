@@ -28,7 +28,6 @@ import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.BasicValue;
-import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
@@ -58,7 +57,6 @@ import org.hibernate.tool.orm.jbt.util.JpaMappingFileHelper;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.ConfigurationMetadataDescriptor;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
-import org.jboss.tools.hibernate.runtime.common.AbstractPersistentClassFacade;
 import org.jboss.tools.hibernate.runtime.common.AbstractService;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
@@ -412,13 +410,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IPersistentClass newJoinedSubclass(IPersistentClass persistentClass) {
-		assert persistentClass instanceof IFacade;
-		IPersistentClass result = facadeFactory.createPersistentClass(
-				new JoinedSubclass(
-						(PersistentClass)((IFacade)persistentClass).getTarget(),
-						DummyMetadataBuildingContext.INSTANCE));
-		((AbstractPersistentClassFacade)result).setSuperClass(persistentClass);
-		return result;
+		return newFacadeFactory.createJoinedTableSubclass(persistentClass);
 	}
 
 	@Override
