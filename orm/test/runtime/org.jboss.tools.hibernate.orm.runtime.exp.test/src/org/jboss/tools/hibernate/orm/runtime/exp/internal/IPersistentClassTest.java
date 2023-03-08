@@ -1241,6 +1241,20 @@ public class IPersistentClassTest {
 		assertEquals(0, specialRootClassFacade.getOptimisticLockMode());
 	}
 	
+	@Test
+	public void testGetWhere() {
+		assertNull(rootClassFacade.getWhere());
+		assertNull(singleTableSubclassFacade.getWhere());
+		assertNull(joinedSubclassFacade.getWhere());
+		((RootClass)rootClassTarget).setWhere("foo");
+		assertEquals("foo", rootClassFacade.getWhere());
+		assertEquals("foo", singleTableSubclassFacade.getWhere());
+		assertEquals("foo", joinedSubclassFacade.getWhere());
+		assertNull(specialRootClassFacade.getWhere());
+		((RootClass)specialRootClassTarget).setWhere("bar");
+		assertEquals("bar", specialRootClassFacade.getWhere());
+}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
