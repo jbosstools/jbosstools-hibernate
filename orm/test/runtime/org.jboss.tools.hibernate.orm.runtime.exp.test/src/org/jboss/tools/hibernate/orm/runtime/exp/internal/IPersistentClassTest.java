@@ -1214,6 +1214,22 @@ public class IPersistentClassTest {
 		assertEquals("rab", specialRootClassFacade.getDiscriminatorValue());
 	}
 	
+	@Test
+	public void testGetLoaderName() {
+		assertNull(rootClassFacade.getLoaderName());
+		rootClassTarget.setLoaderName("foo");
+		assertEquals("foo", rootClassFacade.getLoaderName());
+		assertNull(singleTableSubclassFacade.getLoaderName());
+		singleTableSubclassTarget.setLoaderName("bar");
+		assertEquals("bar", singleTableSubclassFacade.getLoaderName());
+		assertNull(joinedSubclassFacade.getLoaderName());
+		joinedSubclassTarget.setLoaderName("oof");
+		assertEquals("oof", joinedSubclassFacade.getLoaderName());
+		assertNull(specialRootClassFacade.getLoaderName());
+		specialRootClassTarget.setLoaderName("rab");
+		assertEquals("rab", specialRootClassFacade.getLoaderName());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
