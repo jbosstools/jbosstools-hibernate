@@ -207,6 +207,16 @@ public class FacadeFactoryTest {
 	}
 	
 	@Test
+	public void testCreateSpecialRootClass() {
+		try {
+			FACADE_FACTORY.createSpecialRootClass(null);
+			fail();
+		} catch (Throwable t) {
+			assertEquals("Should use class 'NewFacadeFactory'", t.getMessage());
+		}
+	}
+	
+	@Test
 	public void testCreateSchemaExport() {
 		SchemaExport schemaExport = new SchemaExport();
 		ISchemaExport facade = FACADE_FACTORY.createSchemaExport(schemaExport);
@@ -355,20 +365,6 @@ public class FacadeFactoryTest {
 		Table table = new Table();
 		ITable facade = FACADE_FACTORY.createTable(table);
 		assertSame(table, ((IFacade)facade).getTarget());
-	}
-	
-	@Test
-	public void testCreateSpecialRootClass() {
-		Property target = new Property();
-		PersistentClass pc = new RootClass(DummyMetadataBuildingContext.INSTANCE);
-		target.setPersistentClass(pc);
-		IProperty property = FACADE_FACTORY.createProperty(target);
-		IPersistentClass specialRootClass = FACADE_FACTORY.createSpecialRootClass(property);
-		assertNotNull(specialRootClass);
-		Object object = ((IFacade)specialRootClass).getTarget();
-		assertTrue(specialRootClass instanceof SpecialRootClassFacadeImpl);
-		assertTrue(object instanceof RootClass);
-		assertSame(property, specialRootClass.getProperty());
 	}
 	
 	@Test

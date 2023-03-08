@@ -98,6 +98,11 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	}
 
 	@Override
+	public IPersistentClass createSpecialRootClass(IProperty property) {
+		throw new RuntimeException("Should use class 'NewFacadeFactory'");
+	}
+	
+	@Override
 	public ClassLoader getClassLoader() {
 		return FacadeFactoryImpl.class.getClassLoader();
 	}
@@ -164,11 +169,6 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 		return null;
 	}
 
-	@Override
-	public IPersistentClass createSpecialRootClass(IProperty property) {
-		return new SpecialRootClassFacadeImpl(this, property);
-	}
-	
 	@Override
 	public ITypeFactory createTypeFactory() {
 		return new TypeFactoryFacadeImpl(this, null);
