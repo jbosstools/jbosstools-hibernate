@@ -35,10 +35,8 @@ import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.PrimitiveArray;
-import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Set;
-import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.proxy.HibernateProxy;
 import org.hibernate.proxy.LazyInitializer;
@@ -409,12 +407,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IPersistentClass newSingleTableSubclass(IPersistentClass persistentClass) {
-		IPersistentClass result = facadeFactory.createPersistentClass(
-				new SingleTableSubclass(
-						(PersistentClass)((IFacade)persistentClass).getTarget(),
-						DummyMetadataBuildingContext.INSTANCE));
-		((AbstractPersistentClassFacade)result).setSuperClass(persistentClass);
-		return result;
+		return newFacadeFactory.createSingleTableSubclass(persistentClass);
 	}
 
 	@Override

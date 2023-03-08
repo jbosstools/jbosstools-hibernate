@@ -53,6 +53,8 @@ import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.hibernate.tool.orm.jbt.wrp.ColumnWrapper;
+import org.hibernate.tool.orm.jbt.wrp.Wrapper;
+import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
@@ -485,16 +487,17 @@ public class ServiceImplTest {
 	
 	@Test
 	public void testNewSingleTableSubclass() {
-		IPersistentClass persistentClass = service.newRootClass();
+		IPersistentClass persistentClass = NewFacadeFactory.INSTANCE.createRootClass();
 		IPersistentClass singleTableSublass = service.newSingleTableSubclass(persistentClass);
 		assertNotNull(singleTableSublass);
 		Object target = ((IFacade)singleTableSublass).getTarget();
 		assertNotNull(target);
-		assertTrue(target instanceof SingleTableSubclass);
-		assertSame(persistentClass, singleTableSublass.getSuperclass());
+		assertTrue(target instanceof Wrapper);
+		assertTrue(((Wrapper)target).getWrappedObject() instanceof SingleTableSubclass);
+		assertEquals(persistentClass, singleTableSublass.getSuperclass());
 		assertSame(
-				((IFacade)persistentClass).getTarget(), 
-				((SingleTableSubclass)target).getSuperclass());
+				((Wrapper)((IFacade)persistentClass).getTarget()).getWrappedObject(), 
+				((SingleTableSubclass)((Wrapper)target).getWrappedObject()).getSuperclass());
 	}
 	
 	@Test
