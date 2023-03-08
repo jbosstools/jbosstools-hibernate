@@ -34,7 +34,6 @@ import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.PrimitiveArray;
-import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.Table;
 import org.hibernate.proxy.HibernateProxy;
@@ -55,6 +54,7 @@ import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.util.JpaMappingFileHelper;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
+import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.ConfigurationMetadataDescriptor;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractService;
@@ -335,7 +335,7 @@ public class ServiceImpl extends AbstractService {
 		return facadeFactory.createValue(
 				new PrimitiveArray(
 						DummyMetadataBuildingContext.INSTANCE, 
-						(PersistentClass)((IFacade)persistentClass).getTarget()));
+						(PersistentClass)((Wrapper)((IFacade)persistentClass).getTarget()).getWrappedObject()));
 	}
 
 	@Override
@@ -343,7 +343,7 @@ public class ServiceImpl extends AbstractService {
 		return facadeFactory.createValue(
 				new Array(
 						DummyMetadataBuildingContext.INSTANCE, 
-						(PersistentClass)((IFacade)persistentClass).getTarget()));
+						(PersistentClass)((Wrapper)((IFacade)persistentClass).getTarget()).getWrappedObject()));
 	}
 
 	@Override
@@ -351,7 +351,7 @@ public class ServiceImpl extends AbstractService {
 		return facadeFactory.createValue(
 				new Bag(
 						DummyMetadataBuildingContext.INSTANCE, 
-						(PersistentClass)((IFacade)persistentClass).getTarget()));
+						(PersistentClass)((Wrapper)((IFacade)persistentClass).getTarget()).getWrappedObject()));
 	}
 	
 	@Override
@@ -359,7 +359,7 @@ public class ServiceImpl extends AbstractService {
 		return facadeFactory.createValue(
 				new org.hibernate.mapping.List(
 						DummyMetadataBuildingContext.INSTANCE, 
-						(PersistentClass)((IFacade)persistentClass).getTarget()));
+						(PersistentClass)((Wrapper)((IFacade)persistentClass).getTarget()).getWrappedObject()));
 	}
 
 	@Override
@@ -367,7 +367,7 @@ public class ServiceImpl extends AbstractService {
 		return facadeFactory.createValue(
 				new org.hibernate.mapping.Map(
 						DummyMetadataBuildingContext.INSTANCE, 
-						(PersistentClass)((IFacade)persistentClass).getTarget()));
+						(PersistentClass)((Wrapper)((IFacade)persistentClass).getTarget()).getWrappedObject()));
 	}
 
 	@Override
@@ -375,7 +375,7 @@ public class ServiceImpl extends AbstractService {
 		return facadeFactory.createValue(
 				new Set(
 						DummyMetadataBuildingContext.INSTANCE, 
-						(PersistentClass)((IFacade)persistentClass).getTarget()));
+						(PersistentClass)((Wrapper)((IFacade)persistentClass).getTarget()).getWrappedObject()));
 	}
 
 	@Override
@@ -391,7 +391,7 @@ public class ServiceImpl extends AbstractService {
 		return facadeFactory.createValue(
 				new OneToMany(
 						DummyMetadataBuildingContext.INSTANCE, 
-						(PersistentClass)((IFacade)persistentClass).getTarget()));
+						(PersistentClass)((Wrapper)((IFacade)persistentClass).getTarget()).getWrappedObject()));
 	}
 
 	@Override
@@ -399,8 +399,8 @@ public class ServiceImpl extends AbstractService {
 		return facadeFactory.createValue(
 				new OneToOne(
 						DummyMetadataBuildingContext.INSTANCE, 
-						((PersistentClass)((IFacade)persistentClass).getTarget()).getTable(), 
-						(PersistentClass)((IFacade)persistentClass).getTarget()));
+						((PersistentClass)((Wrapper)((IFacade)persistentClass).getTarget()).getWrappedObject()).getTable(), 
+						(PersistentClass)((Wrapper)((IFacade)persistentClass).getTarget()).getWrappedObject()));
 	}
 
 	@Override
@@ -420,7 +420,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IPersistentClass newRootClass() {
-		return facadeFactory.createPersistentClass(new RootClass(DummyMetadataBuildingContext.INSTANCE));
+		return newFacadeFactory.createRootClass();
 	}
 
 	@Override

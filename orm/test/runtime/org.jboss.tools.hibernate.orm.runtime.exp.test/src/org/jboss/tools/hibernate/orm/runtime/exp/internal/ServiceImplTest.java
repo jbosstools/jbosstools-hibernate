@@ -534,7 +534,8 @@ public class ServiceImplTest {
 		assertNotNull(rootClass);
 		Object target = ((IFacade)rootClass).getTarget();
 		assertNotNull(target);
-		assertTrue(target instanceof RootClass);
+		assertTrue(target instanceof Wrapper);
+		assertTrue(((Wrapper)target).getWrappedObject() instanceof RootClass);
 	}
 	
 	@Test
