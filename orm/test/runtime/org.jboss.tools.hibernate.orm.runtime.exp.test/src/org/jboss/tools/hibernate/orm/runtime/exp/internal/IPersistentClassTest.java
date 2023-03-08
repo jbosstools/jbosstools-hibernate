@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -31,6 +32,7 @@ import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapper;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
+import org.jboss.tools.hibernate.runtime.common.AbstractPersistentClassFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -1254,6 +1256,21 @@ public class IPersistentClassTest {
 		((RootClass)specialRootClassTarget).setWhere("bar");
 		assertEquals("bar", specialRootClassFacade.getWhere());
 }
+	
+	@Test
+	public void testGetRootTable() throws Exception {
+		Table tableTarget = new Table("");
+		assertNull(rootClassFacade.getRootTable());
+		assertNull(singleTableSubclassFacade.getRootTable());
+		assertNull(joinedSubclassFacade.getRootTable());
+		((RootClass)rootClassTarget).setTable(tableTarget);
+		assertSame(tableTarget, ((IFacade)rootClassFacade.getRootTable()).getTarget());
+		assertSame(tableTarget, ((IFacade)singleTableSubclassFacade.getRootTable()).getTarget());
+		assertSame(tableTarget, ((IFacade)joinedSubclassFacade.getRootTable()).getTarget());
+		assertNull(specialRootClassFacade.getRootTable());
+		((RootClass)specialRootClassTarget).setTable(tableTarget);
+		assertSame(tableTarget, ((IFacade)specialRootClassFacade.getRootTable()).getTarget());
+	}
 	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
