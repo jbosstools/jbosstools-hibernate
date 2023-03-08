@@ -52,6 +52,7 @@ import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
+import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 import org.hibernate.tool.orm.jbt.wrp.ColumnWrapper;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
@@ -524,8 +525,9 @@ public class ServiceImplTest {
 		assertNotNull(specialRootClass);
 		Object target = ((IFacade)specialRootClass).getTarget();
 		assertNotNull(target);
-		assertTrue(target instanceof RootClass);
-		assertSame(property, specialRootClass.getProperty());
+		assertTrue(target instanceof Wrapper);
+		assertTrue(((Wrapper)target).getWrappedObject() instanceof SpecialRootClass);
+		assertEquals(property, specialRootClass.getProperty());
 	}
 	
 	@Test

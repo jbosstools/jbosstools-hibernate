@@ -415,7 +415,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IPersistentClass newSpecialRootClass(IProperty ormElement) {
-		return facadeFactory.createSpecialRootClass(ormElement);
+		return newFacadeFactory.createSpecialRootClass(ormElement);
 	}
 
 	@Override
