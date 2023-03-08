@@ -15,10 +15,8 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Join;
-import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.api.export.Exporter;
@@ -32,7 +30,6 @@ import org.hibernate.tool.internal.export.java.POJOClass;
 import org.hibernate.tool.internal.export.query.QueryExporter;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
-import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
@@ -45,7 +42,6 @@ import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
-import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
@@ -217,6 +213,16 @@ public class FacadeFactoryTest {
 	}
 	
 	@Test
+	public void testCreatePersistentClass() {
+		try {
+			FACADE_FACTORY.createPersistentClass(null);
+			fail();
+		} catch (Throwable t) {
+			assertEquals("Should use class 'NewFacadeFactory'", t.getMessage());
+		}
+	}
+	
+	@Test
 	public void testCreateSchemaExport() {
 		SchemaExport schemaExport = new SchemaExport();
 		ISchemaExport facade = FACADE_FACTORY.createSchemaExport(schemaExport);
@@ -307,14 +313,6 @@ public class FacadeFactoryTest {
 		Join join = new Join();
 		IJoin facade = FACADE_FACTORY.createJoin(join);
 		assertSame(join, ((IFacade)facade).getTarget());		
-	}
-	
-	@Test
-	public void testCreatePersistentClass() {
-		PersistentClass persistentClass = new RootClass(DummyMetadataBuildingContext.INSTANCE);
-		IPersistentClass facade = FACADE_FACTORY.createPersistentClass(persistentClass);
-		assertTrue(facade instanceof PersistentClassFacadeImpl);
-		assertSame(persistentClass, ((IFacade)facade).getTarget());
 	}
 	
 	@Test

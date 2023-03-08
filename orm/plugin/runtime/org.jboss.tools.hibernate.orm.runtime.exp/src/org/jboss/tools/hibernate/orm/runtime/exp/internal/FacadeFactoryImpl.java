@@ -103,6 +103,11 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	}
 	
 	@Override
+	public IPersistentClass createPersistentClass(Object target) {
+		throw new RuntimeException("Should use class 'NewFacadeFactory'");
+	}
+	
+	@Override
 	public ClassLoader getClassLoader() {
 		return FacadeFactoryImpl.class.getClassLoader();
 	}
@@ -153,11 +158,6 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 		return null;
 	}
 
-	@Override
-	public IPersistentClass createPersistentClass(Object target) {
-		return new PersistentClassFacadeImpl(this, target);
-	}
-	
 	@Override
 	public IQuery createQuery(Object target) {
 		return new QueryFacadeImpl(this, target);
