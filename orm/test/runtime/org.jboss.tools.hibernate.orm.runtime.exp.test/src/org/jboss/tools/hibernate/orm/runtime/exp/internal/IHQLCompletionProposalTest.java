@@ -19,7 +19,7 @@ public class IHQLCompletionProposalTest {
 	
 	@BeforeEach
 	public void beforeEach() {
-		hqlCompletionProposalTarget = new HQLCompletionProposal(0, 0);
+		hqlCompletionProposalTarget = new HQLCompletionProposal(HQLCompletionProposal.PROPERTY, Integer.MAX_VALUE);
 		hqlCompletionProposalFacade = 
 				NewFacadeFactory.INSTANCE.createHQLCompletionProposal(hqlCompletionProposalTarget);
 	}
@@ -57,6 +57,13 @@ public class IHQLCompletionProposalTest {
 		assertNotEquals("foo", hqlCompletionProposalFacade.getSimpleName());
 		hqlCompletionProposalTarget.setSimpleName("foo");
 		assertEquals("foo", hqlCompletionProposalFacade.getSimpleName());
+	}
+	
+	@Test
+	public void testGetCompletionKind() {
+		assertEquals(HQLCompletionProposal.PROPERTY, hqlCompletionProposalFacade.getCompletionKind());
+		hqlCompletionProposalTarget.setCompletionKind(HQLCompletionProposal.KEYWORD);
+		assertEquals(HQLCompletionProposal.KEYWORD, hqlCompletionProposalFacade.getCompletionKind());
 	}
 	
 }
