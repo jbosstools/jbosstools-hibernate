@@ -14,6 +14,7 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
+import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
@@ -30,6 +31,7 @@ import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -210,6 +212,15 @@ public class NewFacadeFactoryTest {
 		Object propertyTarget = ((IFacade)propertyFacade).getTarget();
 		assertNotNull(propertyTarget);
 		assertTrue(propertyTarget instanceof Property);
+	}
+	
+	@Test
+	public void testCreateHQLCompletionProposal() {
+		HQLCompletionProposal hqlCompletionProposalTarget = new HQLCompletionProposal(0, 0);
+		IHQLCompletionProposal hqlCompletionProposalFacade = 
+				facadeFactory.createHQLCompletionProposal(hqlCompletionProposalTarget);
+		assertNotNull(hqlCompletionProposalFacade);
+		assertSame(((IFacade)hqlCompletionProposalFacade).getTarget(), hqlCompletionProposalTarget);
 	}
 	
 	public static class TestRevengStrategy extends DelegatingStrategy {
