@@ -14,7 +14,6 @@ import java.lang.reflect.Proxy;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
-import org.hibernate.mapping.Join;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
@@ -40,7 +39,6 @@ import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
-import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
@@ -223,6 +221,16 @@ public class FacadeFactoryTest {
 	}
 	
 	@Test
+	public void testCreateJoin() {
+		try {
+			FACADE_FACTORY.createJoin(null);
+			fail();
+		} catch (Throwable t) {
+			assertEquals("Should use class 'NewFacadeFactory'", t.getMessage());
+		}
+	}
+	
+	@Test
 	public void testCreateSchemaExport() {
 		SchemaExport schemaExport = new SchemaExport();
 		ISchemaExport facade = FACADE_FACTORY.createSchemaExport(schemaExport);
@@ -307,13 +315,6 @@ public class FacadeFactoryTest {
 		IHQLCompletionProposal facade = FACADE_FACTORY.createHQLCompletionProposal(hqlCompletionProposal);
 		assertSame(hqlCompletionProposal, ((IFacade)facade).getTarget());		
 	}	
-	
-	@Test
-	public void testCreateJoin() {
-		Join join = new Join();
-		IJoin facade = FACADE_FACTORY.createJoin(join);
-		assertSame(join, ((IFacade)facade).getTarget());		
-	}
 	
 	@Test
 	public void testCreatePOJOClass() {

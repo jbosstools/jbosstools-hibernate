@@ -15,6 +15,7 @@ import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
+import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -104,6 +105,11 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	
 	@Override
 	public IPersistentClass createPersistentClass(Object target) {
+		throw new RuntimeException("Should use class 'NewFacadeFactory'");
+	}
+	
+	@Override
+	public IJoin createJoin(Object target) {
 		throw new RuntimeException("Should use class 'NewFacadeFactory'");
 	}
 	
