@@ -38,4 +38,11 @@ public class IHQLCompletionProposalTest {
 		assertEquals("foo", hqlCompletionProposalFacade.getCompletion());
 	}
 	
+	@Test
+	public void testGetReplaceStart() {
+		assertNotEquals(Integer.MAX_VALUE, hqlCompletionProposalFacade.getReplaceStart());
+		hqlCompletionProposalTarget.setReplaceStart(Integer.MAX_VALUE);
+		assertEquals(Integer.MAX_VALUE, hqlCompletionProposalFacade.getReplaceStart());
+	}
+	
 }
