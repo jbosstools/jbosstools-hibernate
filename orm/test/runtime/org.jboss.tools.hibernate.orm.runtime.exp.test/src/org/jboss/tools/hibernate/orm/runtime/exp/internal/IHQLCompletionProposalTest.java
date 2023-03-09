@@ -45,4 +45,11 @@ public class IHQLCompletionProposalTest {
 		assertEquals(Integer.MAX_VALUE, hqlCompletionProposalFacade.getReplaceStart());
 	}
 	
+	@Test
+	public void testGetReplaceEnd() {
+		assertNotEquals(Integer.MIN_VALUE, hqlCompletionProposalFacade.getReplaceEnd());
+		hqlCompletionProposalTarget.setReplaceEnd(Integer.MIN_VALUE);
+		assertEquals(Integer.MIN_VALUE, hqlCompletionProposalFacade.getReplaceEnd());
+	}
+	
 }
