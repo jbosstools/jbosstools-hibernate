@@ -3,8 +3,10 @@ package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
+import org.hibernate.mapping.Property;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -78,6 +80,14 @@ public class IHQLCompletionProposalTest {
 		assertNotEquals("foo", hqlCompletionProposalFacade.getShortEntityName());
 		hqlCompletionProposalTarget.setShortEntityName("foo");
 		assertEquals("foo", hqlCompletionProposalFacade.getShortEntityName());
+	}
+	
+	@Test
+	public void testGetProperty() {
+		Property propertyTarget = new Property();
+		assertNull(hqlCompletionProposalFacade.getProperty());
+		hqlCompletionProposalTarget.setProperty(propertyTarget);
+		assertSame(propertyTarget, ((IFacade)hqlCompletionProposalFacade.getProperty()).getTarget());
 	}
 	
 }
