@@ -52,4 +52,11 @@ public class IHQLCompletionProposalTest {
 		assertEquals(Integer.MIN_VALUE, hqlCompletionProposalFacade.getReplaceEnd());
 	}
 	
+	@Test
+	public void testGetSimpleName() {
+		assertNotEquals("foo", hqlCompletionProposalFacade.getSimpleName());
+		hqlCompletionProposalTarget.setSimpleName("foo");
+		assertEquals("foo", hqlCompletionProposalFacade.getSimpleName());
+	}
+	
 }
