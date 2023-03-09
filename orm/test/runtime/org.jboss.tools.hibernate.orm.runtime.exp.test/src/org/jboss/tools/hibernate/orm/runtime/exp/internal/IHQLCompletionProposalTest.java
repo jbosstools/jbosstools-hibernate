@@ -1,5 +1,7 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
@@ -29,4 +31,11 @@ public class IHQLCompletionProposalTest {
 		assertSame(hqlCompletionProposalTarget, ((IFacade)hqlCompletionProposalFacade).getTarget());
 	}
 
+	@Test
+	public void testGetCompletion() {
+		assertNotEquals("foo", hqlCompletionProposalFacade.getCompletion());
+		hqlCompletionProposalTarget.setCompletion("foo");
+		assertEquals("foo", hqlCompletionProposalFacade.getCompletion());
+	}
+	
 }
