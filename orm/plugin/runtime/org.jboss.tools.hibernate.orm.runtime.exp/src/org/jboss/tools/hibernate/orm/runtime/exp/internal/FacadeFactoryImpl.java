@@ -119,6 +119,11 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 		throw new RuntimeException("Should use class 'NewFacadeFactory'");
 	}
 
+	@Override 
+	public IProperty createProperty(Object target) {
+		throw new RuntimeException("Should use class 'NewFacadeFactory'");
+	}
+
 	@Override
 	public ClassLoader getClassLoader() {
 		return FacadeFactoryImpl.class.getClassLoader();

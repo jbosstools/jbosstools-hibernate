@@ -15,7 +15,6 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.PrimaryKey;
-import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.api.export.Exporter;
@@ -39,7 +38,6 @@ import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
-import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
@@ -239,6 +237,16 @@ public class FacadeFactoryTest {
 	}	
 	
 	@Test
+	public void testCreateProperty() {
+		try {
+			FACADE_FACTORY.createProperty(null);
+			fail();
+		} catch (Throwable t) {
+			assertEquals("Should use class 'NewFacadeFactory'", t.getMessage());
+		}
+	}
+	
+	@Test
 	public void testCreateSchemaExport() {
 		SchemaExport schemaExport = new SchemaExport();
 		ISchemaExport facade = FACADE_FACTORY.createSchemaExport(schemaExport);
@@ -332,13 +340,6 @@ public class FacadeFactoryTest {
 		PrimaryKey primaryKey = new PrimaryKey(null);
 		IPrimaryKey facade = FACADE_FACTORY.createPrimaryKey(primaryKey);
 		assertSame(primaryKey, ((IFacade)facade).getTarget());
-	}
-	
-	@Test
-	public void testCreateProperty() {
-		Property property = new Property();
-		IProperty facade = FACADE_FACTORY.createProperty(property);
-		assertSame(property, ((IFacade)facade).getTarget());
 	}
 	
 	@Test
