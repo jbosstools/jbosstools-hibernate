@@ -104,4 +104,9 @@ public class IHQLCompletionProposalTest {
 		assertSame(HQLCompletionProposal.ENTITY_NAME, hqlCompletionProposalFacade.entityNameKind());
 	}
 	
+	@Test
+	public void testPropertyKind() {
+		assertSame(HQLCompletionProposal.PROPERTY, hqlCompletionProposalFacade.propertyKind());
+	}
+	
 }
