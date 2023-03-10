@@ -12,6 +12,7 @@ import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
+import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.spi.IHQLQueryPlan;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
@@ -113,6 +114,11 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 		throw new RuntimeException("Should use class 'NewFacadeFactory'");
 	}
 	
+	@Override 
+	public IHQLCompletionProposal createHQLCompletionProposal(Object target) {
+		throw new RuntimeException("Should use class 'NewFacadeFactory'");
+	}
+
 	@Override
 	public ClassLoader getClassLoader() {
 		return FacadeFactoryImpl.class.getClassLoader();

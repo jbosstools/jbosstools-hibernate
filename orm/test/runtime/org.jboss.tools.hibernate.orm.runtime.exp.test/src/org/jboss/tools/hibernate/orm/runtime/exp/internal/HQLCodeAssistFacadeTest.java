@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.ide.completion.IHQLCompletionRequestor;
+import org.hibernate.tool.orm.jbt.wrp.Wrapper;
+import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractHQLCodeAssistFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
@@ -18,7 +20,7 @@ import org.junit.jupiter.api.Test;
 
 public class HQLCodeAssistFacadeTest {
 
-	private static final IFacadeFactory FACADE_FACTORY = new FacadeFactoryImpl();
+	private static final IFacadeFactory FACADE_FACTORY = NewFacadeFactory.INSTANCE;
 	private static final HQLCompletionProposal HQL_COMPLETION_PROPOSAL = new HQLCompletionProposal(0, 0);
 
 	private IHQLCodeAssist hqlCodeAssistFacade = null;
@@ -43,7 +45,7 @@ public class HQLCodeAssistFacadeTest {
 		assertNull(acceptedProposal);
 		hqlCodeAssistFacade.codeComplete("foo bar", 1, new TestHQLCompletionHandler());
 		assertNotNull(acceptedProposal);
-		assertSame(HQL_COMPLETION_PROPOSAL, ((IFacade)acceptedProposal).getTarget());
+		assertSame(HQL_COMPLETION_PROPOSAL, ((Wrapper)((IFacade)acceptedProposal).getTarget()).getWrappedObject());
 	}
 	
 	private class TestHQLCompletionHandler implements IHQLCompletionHandler {
