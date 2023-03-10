@@ -26,6 +26,7 @@ import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 import org.hibernate.tool.orm.jbt.wrp.ColumnWrapper;
 import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapper;
+import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
@@ -220,7 +221,9 @@ public class NewFacadeFactoryTest {
 		IHQLCompletionProposal hqlCompletionProposalFacade = 
 				facadeFactory.createHQLCompletionProposal(hqlCompletionProposalTarget);
 		assertNotNull(hqlCompletionProposalFacade);
-		assertSame(((IFacade)hqlCompletionProposalFacade).getTarget(), hqlCompletionProposalTarget);
+		Object hqlCompletionProposalWrapper = ((IFacade)hqlCompletionProposalFacade).getTarget();
+		assertTrue(hqlCompletionProposalWrapper instanceof Wrapper);
+		assertSame(((Wrapper)hqlCompletionProposalWrapper).getWrappedObject(), hqlCompletionProposalTarget);
 	}
 	
 	public static class TestRevengStrategy extends DelegatingStrategy {

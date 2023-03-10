@@ -5,9 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.mapping.Property;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
+import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
@@ -30,7 +32,9 @@ public class IHQLCompletionProposalTest {
 	public void testConstruction() {
 		assertNotNull(hqlCompletionProposalTarget);
 		assertNotNull(hqlCompletionProposalFacade);
-		assertSame(hqlCompletionProposalTarget, ((IFacade)hqlCompletionProposalFacade).getTarget());
+		Object hqlCompletionProposalWrapper = ((IFacade)hqlCompletionProposalFacade).getTarget();
+		assertTrue(hqlCompletionProposalWrapper instanceof Wrapper);
+		assertSame(hqlCompletionProposalTarget, ((Wrapper)hqlCompletionProposalWrapper).getWrappedObject());
 	}
 
 	@Test

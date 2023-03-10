@@ -146,7 +146,7 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 	public IHQLCompletionProposal createHQLCompletionProposal(Object target) {
 		return (IHQLCompletionProposal)GenericFacadeFactory.createFacade(
 				IHQLCompletionProposal.class, 
-				target);
+				wrapperFactory.createHqlCompletionProposalWrapper(target));
 	}
 
 	@Override
