@@ -25,7 +25,6 @@ import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfoSource;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
-import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.ManyToOne;
@@ -340,10 +339,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IValue newArray(IPersistentClass persistentClass) {
-		return facadeFactory.createValue(
-				new Array(
-						DummyMetadataBuildingContext.INSTANCE, 
-						(PersistentClass)((Wrapper)((IFacade)persistentClass).getTarget()).getWrappedObject()));
+		return newFacadeFactory.createArray(persistentClass);
 	}
 
 	@Override

@@ -16,6 +16,7 @@ import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
+import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public class NewFacadeFactory extends AbstractFacadeFactory {
 	
@@ -147,6 +148,12 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 		return (IHQLCompletionProposal)GenericFacadeFactory.createFacade(
 				IHQLCompletionProposal.class, 
 				wrapperFactory.createHqlCompletionProposalWrapper(target));
+	}
+	
+	public IValue createArray(IPersistentClass persistentClass) {
+		return (IValue)GenericFacadeFactory.createFacade(
+				IValue.class, 
+				wrapperFactory.createArrayWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
 	@Override

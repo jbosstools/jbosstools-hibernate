@@ -8,7 +8,9 @@ import java.lang.reflect.Field;
 
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
+import org.hibernate.mapping.Array;
 import org.hibernate.mapping.JoinedSubclass;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
@@ -39,6 +41,7 @@ import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
+import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -224,6 +227,18 @@ public class NewFacadeFactoryTest {
 		Object hqlCompletionProposalWrapper = ((IFacade)hqlCompletionProposalFacade).getTarget();
 		assertTrue(hqlCompletionProposalWrapper instanceof Wrapper);
 		assertSame(((Wrapper)hqlCompletionProposalWrapper).getWrappedObject(), hqlCompletionProposalTarget);
+	}
+	
+	@Test
+	public void testCreateArray() {
+		IPersistentClass rootClassFacade = facadeFactory.createRootClass();
+		PersistentClass rootClass = (PersistentClass)((Wrapper)((IFacade)rootClassFacade).getTarget()).getWrappedObject();
+		IValue arrayFacade = 
+				facadeFactory.createArray(rootClassFacade);
+		Object arrayWrapper = ((IFacade)arrayFacade).getTarget();
+		assertNotNull(arrayFacade);
+		assertTrue(arrayWrapper instanceof Array);
+		assertSame(rootClass, ((Array)arrayWrapper).getOwner());
 	}
 	
 	public static class TestRevengStrategy extends DelegatingStrategy {
