@@ -169,7 +169,7 @@ public class GenericFacadeFactory {
 		Class<?> actualValueType = (Class<?>)parameterizedType.getActualTypeArguments()[1];
 		if  (classesSet.contains(actualValueType)) {
 			for (Object key : map.keySet()) {
-				result.put(key, createFacade(actualValueType, result));
+				result.put(key, createFacade(actualValueType, result.get(key)));
 			}
 		}
 		return result;
