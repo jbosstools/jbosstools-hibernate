@@ -156,6 +156,12 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 				wrapperFactory.createArrayWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
+	public IValue createBag(IPersistentClass persistentClass) {
+		return (IValue)GenericFacadeFactory.createFacade(
+				IValue.class, 
+				wrapperFactory.createBagWrapper(((IFacade)persistentClass).getTarget()));
+	}
+
 	@Override
 	public ClassLoader getClassLoader() {
 		return INSTANCE.getClass().getClassLoader();

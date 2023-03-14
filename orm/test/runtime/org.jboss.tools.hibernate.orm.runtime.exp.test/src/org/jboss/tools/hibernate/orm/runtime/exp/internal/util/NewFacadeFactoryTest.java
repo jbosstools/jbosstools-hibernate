@@ -9,6 +9,7 @@ import java.lang.reflect.Field;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.Array;
+import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
@@ -239,6 +240,18 @@ public class NewFacadeFactoryTest {
 		assertNotNull(arrayFacade);
 		assertTrue(arrayWrapper instanceof Array);
 		assertSame(rootClass, ((Array)arrayWrapper).getOwner());
+	}
+	
+	@Test
+	public void testCreateBag() {
+		IPersistentClass rootClassFacade = facadeFactory.createRootClass();
+		PersistentClass rootClass = (PersistentClass)((Wrapper)((IFacade)rootClassFacade).getTarget()).getWrappedObject();
+		IValue bagFacade = 
+				facadeFactory.createBag(rootClassFacade);
+		Object bagWrapper = ((IFacade)bagFacade).getTarget();
+		assertNotNull(bagFacade);
+		assertTrue(bagWrapper instanceof Bag);
+		assertSame(rootClass, ((Bag)bagWrapper).getOwner());
 	}
 	
 	public static class TestRevengStrategy extends DelegatingStrategy {
