@@ -11,6 +11,7 @@ import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.JoinedSubclass;
+import org.hibernate.mapping.List;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -252,6 +253,18 @@ public class NewFacadeFactoryTest {
 		assertNotNull(bagFacade);
 		assertTrue(bagWrapper instanceof Bag);
 		assertSame(rootClass, ((Bag)bagWrapper).getOwner());
+	}
+	
+	@Test
+	public void testCreateList() {
+		IPersistentClass rootClassFacade = facadeFactory.createRootClass();
+		PersistentClass rootClass = (PersistentClass)((Wrapper)((IFacade)rootClassFacade).getTarget()).getWrappedObject();
+		IValue listFacade = 
+				facadeFactory.createList(rootClassFacade);
+		Object listWrapper = ((IFacade)listFacade).getTarget();
+		assertNotNull(listFacade);
+		assertTrue(listWrapper instanceof List);
+		assertSame(rootClass, ((List)listWrapper).getOwner());
 	}
 	
 	public static class TestRevengStrategy extends DelegatingStrategy {

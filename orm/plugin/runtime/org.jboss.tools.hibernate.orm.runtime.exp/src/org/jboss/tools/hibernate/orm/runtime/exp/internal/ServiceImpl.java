@@ -348,10 +348,7 @@ public class ServiceImpl extends AbstractService {
 	
 	@Override
 	public IValue newList(IPersistentClass persistentClass) {
-		return facadeFactory.createValue(
-				new org.hibernate.mapping.List(
-						DummyMetadataBuildingContext.INSTANCE, 
-						(PersistentClass)((Wrapper)((IFacade)persistentClass).getTarget()).getWrappedObject()));
+		return newFacadeFactory.createList(persistentClass);
 	}
 
 	@Override
