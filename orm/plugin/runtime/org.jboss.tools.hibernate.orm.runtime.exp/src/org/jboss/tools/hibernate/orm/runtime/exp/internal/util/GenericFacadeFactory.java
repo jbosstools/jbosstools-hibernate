@@ -10,6 +10,7 @@ import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -166,10 +167,32 @@ public class GenericFacadeFactory {
 	
 	private static Map<?, ?> createMapResult(Map<?, ?> map, ParameterizedType parameterizedType) {
 		Map<Object, Object> result = (Map<Object, Object>)map;
-		Class<?> actualValueType = (Class<?>)parameterizedType.getActualTypeArguments()[1];
-		if  (classesSet.contains(actualValueType)) {
+		Type actualValueType = parameterizedType.getActualTypeArguments()[1];
+		if (actualValueType instanceof ParameterizedType && 
+				List.class.isAssignableFrom((Class<?>)((ParameterizedType)actualValueType).getRawType())) {
 			for (Object key : map.keySet()) {
-				result.put(key, createFacade(actualValueType, result.get(key)));
+				result.put(key, createListResult(
+						(List<?>)map.get(key), 
+						(ParameterizedType)actualValueType));
+			}
+			
+		} else {
+			Class<?> actualValueClass = (Class<?>)parameterizedType.getActualTypeArguments()[1];
+			if  (classesSet.contains(actualValueClass)) {
+				for (Object key : map.keySet()) {
+					result.put(key, createFacade(actualValueClass, result.get(key)));
+				}
+			}
+		}
+		return result;
+	}
+	
+	private static List<?> createListResult(List<?> list, ParameterizedType parameterizedType) {
+		List<Object> result = (List<Object>)list;
+		Class<?> actualValueClass = (Class<?>)parameterizedType.getActualTypeArguments()[0];
+		if (classesSet.contains(actualValueClass)) {
+			for (int i = 0; i < result.size(); i++) {
+				result.set(i, createFacade(actualValueClass, result.get(i)));
 			}
 		}
 		return result;
