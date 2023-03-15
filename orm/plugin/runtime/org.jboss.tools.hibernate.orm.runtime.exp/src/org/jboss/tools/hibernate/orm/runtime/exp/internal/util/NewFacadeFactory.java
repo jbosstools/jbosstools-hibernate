@@ -1,8 +1,10 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal.util;
 
 import java.util.Map;
+import java.util.Properties;
 
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.jboss.tools.hibernate.orm.runtime.exp.internal.IDatabaseReader;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
@@ -166,6 +168,16 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 		return (IValue)GenericFacadeFactory.createFacade(
 				IValue.class, 
 				wrapperFactory.createListWrapper(((IFacade)persistentClass).getTarget()));
+	}
+
+	public IDatabaseReader createDatabaseReader(
+			Properties properties, 
+			IReverseEngineeringStrategy strategy) {
+		return (IDatabaseReader)GenericFacadeFactory.createFacade(
+				IDatabaseReader.class, 
+				wrapperFactory.createDatabaseReaderWrapper(
+						properties,
+						((IFacade)strategy).getTarget()));
 	}
 
 	@Override

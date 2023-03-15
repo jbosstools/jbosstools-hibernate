@@ -3,20 +3,13 @@ package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
 import org.hibernate.Hibernate;
-import org.hibernate.boot.internal.BootstrapContextImpl;
-import org.hibernate.boot.internal.InFlightMetadataCollectorImpl;
-import org.hibernate.boot.internal.MetadataBuilderImpl.MetadataBuildingOptionsImpl;
-import org.hibernate.boot.internal.MetadataBuildingContextRootImpl;
-import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
@@ -24,7 +17,6 @@ import org.hibernate.engine.jdbc.dialect.spi.DatabaseMetaDataDialectResolutionIn
 import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfoSource;
-import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
@@ -39,14 +31,10 @@ import org.hibernate.proxy.LazyInitializer;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
-import org.hibernate.tool.api.reveng.RevengDialect;
-import org.hibernate.tool.api.reveng.RevengDialectFactory;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
-import org.hibernate.tool.internal.reveng.RevengMetadataCollector;
-import org.hibernate.tool.internal.reveng.reader.DatabaseReader;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataDescriptor;
@@ -203,56 +191,17 @@ public class ServiceImpl extends AbstractService {
 	public IReverseEngineeringStrategy newDefaultReverseEngineeringStrategy() {
 		return newFacadeFactory.createReverseEngineeringStrategy();
 	}
-
+	
 	@Override
 	public Map<String, List<ITable>> collectDatabaseTables(
 			Properties properties, 
 			IReverseEngineeringStrategy strategy,
 			final IProgressListener progressListener) {
-		StandardServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
-				.applySettings(properties)
-				.build();
-		MetadataBuildingOptionsImpl metadataBuildingOptions = 
-				new MetadataBuildingOptionsImpl(serviceRegistry);	
-		BootstrapContextImpl bootstrapContext = new BootstrapContextImpl(
-				serviceRegistry, 
-				metadataBuildingOptions);
-		metadataBuildingOptions.setBootstrapContext(bootstrapContext);
-		InFlightMetadataCollectorImpl metadataCollector = new InFlightMetadataCollectorImpl(
-				bootstrapContext,
-				metadataBuildingOptions);
-		RevengDialect mdd = RevengDialectFactory
-				.createMetaDataDialect(
-						serviceRegistry.getService(JdbcServices.class).getDialect(), 
-						properties );
-		RevengStrategy revengStrategy = (RevengStrategy)((IFacade)strategy).getTarget();
-	    DatabaseReader reader = DatabaseReader.create(properties,revengStrategy,mdd, serviceRegistry);
-	    MetadataBuildingContext metadataBuildingContext = new MetadataBuildingContextRootImpl("JBoss Tools", bootstrapContext, metadataBuildingOptions, metadataCollector);
-	    RevengMetadataCollector revengMetadataCollector = new RevengMetadataCollector(metadataBuildingContext);
-		reader.readDatabaseSchema(revengMetadataCollector);
-		Map<String, List<ITable>> result = new HashMap<String, List<ITable>>();
-		for (Table table : revengMetadataCollector.getTables()) {
-			String qualifier = "";
-			if (table.getCatalog() != null) {
-				qualifier += table.getCatalog();
-			}
-			if (table.getSchema() != null) {
-				if (!"".equals(qualifier)) {
-					qualifier += ".";
-				}
-				qualifier += table.getSchema();
-			}
-			List<ITable> list = result.get(qualifier);
-			if (list == null) {
-				list = new ArrayList<ITable>();
-				result.put(qualifier, list);
-			}
-			list.add(facadeFactory.createTable(table));
-		}
-		
-		return result;
+		return newFacadeFactory
+				.createDatabaseReader(properties, strategy)
+				.collectDatabaseTables();
 	}
-	
+
 	@Override
 	public IReverseEngineeringStrategy newReverseEngineeringStrategy(
 			String strategyName,
