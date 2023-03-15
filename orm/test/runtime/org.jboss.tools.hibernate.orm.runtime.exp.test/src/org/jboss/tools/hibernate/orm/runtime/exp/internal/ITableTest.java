@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.hibernate.mapping.Table;
@@ -27,4 +28,11 @@ public class ITableTest {
 	}
 	
 
+	@Test
+	public void testGetName() {
+		assertEquals("foo", tableFacade.getName());
+		tableTarget.setName("bar");
+		assertEquals("bar", tableFacade.getName());
+	}
+	
 }
