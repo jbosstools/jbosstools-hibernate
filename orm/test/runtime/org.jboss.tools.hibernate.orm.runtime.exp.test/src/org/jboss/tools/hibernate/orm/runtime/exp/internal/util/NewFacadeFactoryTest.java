@@ -18,6 +18,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
+import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
@@ -46,6 +47,7 @@ import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -283,6 +285,18 @@ public class NewFacadeFactoryTest {
 		assertEquals(
 				"org.hibernate.tool.orm.jbt.wrp.DatabaseReaderWrapperFactory$DatabaseReaderWrapperImpl",
 				databaseReaderWrapper.getClass().getName());
+	}
+	
+	@Test
+	public void testCreateTable() {
+		ITable tableFacade = facadeFactory.createTable("foo");
+		assertNotNull(tableFacade);
+		Object tableWrapper = ((IFacade)tableFacade).getTarget();
+		assertNotNull(tableWrapper);
+		assertTrue(tableWrapper instanceof Table);
+		Table tableTarget = (Table)tableWrapper;
+		assertEquals("foo", tableTarget.getName());
+		assertSame(tableTarget, tableTarget.getPrimaryKey().getTable());
 	}
 	
 	public static class TestRevengStrategy extends DelegatingStrategy {

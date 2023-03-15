@@ -18,6 +18,7 @@ import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public class NewFacadeFactory extends AbstractFacadeFactory {
@@ -178,6 +179,12 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 				wrapperFactory.createDatabaseReaderWrapper(
 						properties,
 						((IFacade)strategy).getTarget()));
+	}
+	
+	public ITable createTable(String name) {
+		return (ITable)GenericFacadeFactory.createFacade(
+				ITable.class, 
+				wrapperFactory.createTableWrapper(name));
 	}
 
 	@Override
