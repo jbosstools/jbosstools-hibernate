@@ -11,14 +11,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 
+import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
+import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -85,7 +89,6 @@ public class ITableTest {
 		Iterator<IColumn> columnIterator = tableFacade.getColumnIterator();
 		assertFalse(columnIterator.hasNext());
 		IColumn columnFacade1 = NewFacadeFactory.INSTANCE.createColumn("bar");
-		Object columnTarget = ((IFacade)columnFacade1).getTarget();
 		tableFacade.addColumn(columnFacade1);
 		columnIterator = tableFacade.getColumnIterator();
 		IColumn columnFacade2 = columnIterator.next();
@@ -152,6 +155,16 @@ public class ITableTest {
 		assertFalse(tableFacade.isPhysicalTable());	
 		tableTarget.setSubselect(null);
 		assertTrue(tableFacade.isPhysicalTable());
+	}
+	
+	@Test
+	public void testGetIdentifierValue() {
+		IValue valueFacade = tableFacade.getIdentifierValue();
+		assertNull(valueFacade);
+		KeyValue value = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		tableTarget.setIdentifierValue(value);
+		valueFacade = tableFacade.getIdentifierValue();
+		assertSame(value, ((IFacade)valueFacade).getTarget());
 	}
 	
 }
