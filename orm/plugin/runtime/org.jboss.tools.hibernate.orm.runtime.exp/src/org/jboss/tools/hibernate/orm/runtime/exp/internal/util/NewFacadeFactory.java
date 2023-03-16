@@ -171,6 +171,12 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 				wrapperFactory.createListWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
+	public IValue createManyToOne(ITable tableFacade) {
+		return (IValue)GenericFacadeFactory.createFacade(
+				IValue.class, 
+				wrapperFactory.createManyToOneWrapper(((IFacade)tableFacade).getTarget()));
+	}
+
 	public IDatabaseReader createDatabaseReader(
 			Properties properties, 
 			IReverseEngineeringStrategy strategy) {
