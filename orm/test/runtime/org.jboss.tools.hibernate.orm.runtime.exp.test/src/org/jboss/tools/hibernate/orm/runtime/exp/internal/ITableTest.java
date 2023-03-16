@@ -55,4 +55,11 @@ public class ITableTest {
 		assertEquals("foo", tableFacade.getCatalog());
 	}
 	
+	@Test
+	public void testGetSchema() {
+		assertNull(tableFacade.getSchema());
+		tableTarget.setSchema("foo");
+		assertEquals("foo", tableFacade.getSchema());
+	}
+	
 }
