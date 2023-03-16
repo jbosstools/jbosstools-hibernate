@@ -1,10 +1,13 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+
+import java.util.Iterator;
 
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
@@ -73,6 +76,18 @@ public class ITableTest {
 		tableTarget.setPrimaryKey(primaryKeyTarget);
 		primaryKeyFacade = tableFacade.getPrimaryKey();
 		assertSame(primaryKeyTarget, ((IFacade)primaryKeyFacade).getTarget());
+	}
+	
+	@Test
+	public void testGetColumnIterator() {
+		Iterator<IColumn> columnIterator = tableFacade.getColumnIterator();
+		assertFalse(columnIterator.hasNext());
+		IColumn columnFacade1 = NewFacadeFactory.INSTANCE.createColumn("bar");
+		Object columnTarget = ((IFacade)columnFacade1).getTarget();
+		tableFacade.addColumn(columnFacade1);
+		columnIterator = tableFacade.getColumnIterator();
+		IColumn columnFacade2 = columnIterator.next();
+		assertEquals(columnFacade1, columnFacade2);
 	}
 	
 }

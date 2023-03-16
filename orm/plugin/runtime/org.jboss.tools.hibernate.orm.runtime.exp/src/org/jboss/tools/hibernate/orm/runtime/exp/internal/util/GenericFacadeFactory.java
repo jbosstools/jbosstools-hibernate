@@ -18,6 +18,7 @@ import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
+import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
@@ -246,6 +247,7 @@ public class GenericFacadeFactory {
 			Arrays.asList(new Class[] {
 					IClassMetadata.class,
 					ICollectionMetadata.class,
+					IColumn.class,
 					IConfiguration.class,
 					ICriteria.class,
 					IJoin.class,
