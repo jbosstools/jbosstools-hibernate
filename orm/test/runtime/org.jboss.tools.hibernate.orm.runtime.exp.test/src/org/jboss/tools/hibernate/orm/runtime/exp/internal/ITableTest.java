@@ -146,4 +146,12 @@ public class ITableTest {
 		assertTrue(tableFacade.isAbstractUnionTable());
 	}
 	
+	@Test
+	public void testIsPhysicalTable() {
+		tableTarget.setSubselect("foo");
+		assertFalse(tableFacade.isPhysicalTable());	
+		tableTarget.setSubselect(null);
+		assertTrue(tableFacade.isPhysicalTable());
+	}
+	
 }
