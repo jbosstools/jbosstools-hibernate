@@ -124,4 +124,12 @@ public class ITableTest {
 		assertTrue(tableFacade.hasDenormalizedTables());
 	}
 	
+	@Test
+	public void testIsAbstract() {
+		tableTarget.setAbstract(true);
+		assertTrue(tableFacade.isAbstract());		
+		tableTarget.setAbstract(false);
+		assertFalse(tableFacade.isAbstract());		
+	}
+	
 }
