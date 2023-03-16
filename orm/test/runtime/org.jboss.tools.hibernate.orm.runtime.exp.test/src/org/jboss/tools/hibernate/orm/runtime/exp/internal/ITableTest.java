@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
-import org.jboss.tools.hibernate.runtime.common.AbstractTableFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
@@ -47,6 +46,13 @@ public class ITableTest {
 		assertNull(tableTarget.getColumn(columnTarget));
 		tableFacade.addColumn(columnFacade);
 		assertSame(columnTarget, tableTarget.getColumn(columnTarget));
+	}
+	
+	@Test
+	public void testGetCatalog() {
+		assertNull(tableFacade.getCatalog());
+		tableTarget.setCatalog("foo");
+		assertEquals("foo", tableFacade.getCatalog());
 	}
 	
 }
