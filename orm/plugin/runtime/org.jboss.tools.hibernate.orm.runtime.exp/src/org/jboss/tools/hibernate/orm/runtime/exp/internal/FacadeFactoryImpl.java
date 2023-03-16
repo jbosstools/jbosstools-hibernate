@@ -29,6 +29,7 @@ import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 
@@ -121,6 +122,11 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 
 	@Override 
 	public IProperty createProperty(Object target) {
+		throw new RuntimeException("Should use class 'NewFacadeFactory'");
+	}
+
+	@Override 
+	public ITable createTable(Object target) {
 		throw new RuntimeException("Should use class 'NewFacadeFactory'");
 	}
 

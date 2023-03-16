@@ -247,6 +247,16 @@ public class FacadeFactoryTest {
 	}
 	
 	@Test
+	public void testCreateTable() {
+		try {
+			FACADE_FACTORY.createTable(null);
+			fail();
+		} catch (Throwable t) {
+			assertEquals("Should use class 'NewFacadeFactory'", t.getMessage());
+		}
+	}
+	
+	@Test
 	public void testCreateSchemaExport() {
 		SchemaExport schemaExport = new SchemaExport();
 		ISchemaExport facade = FACADE_FACTORY.createSchemaExport(schemaExport);
@@ -359,13 +369,6 @@ public class FacadeFactoryTest {
 		assertNotNull(facade);
 		assertTrue(facade instanceof TypeFactoryFacadeImpl);
 		assertNull(((IFacade)facade).getTarget());
-	}
-	
-	@Test
-	public void testCreateTable() {
-		Table table = new Table();
-		ITable facade = FACADE_FACTORY.createTable(table);
-		assertSame(table, ((IFacade)facade).getTarget());
 	}
 	
 	@Test
