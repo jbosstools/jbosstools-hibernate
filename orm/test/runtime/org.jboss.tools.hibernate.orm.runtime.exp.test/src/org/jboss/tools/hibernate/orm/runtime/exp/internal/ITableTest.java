@@ -97,4 +97,11 @@ public class ITableTest {
 		assertEquals("foo", tableFacade.getComment());
 	}
 	
+	@Test
+	public void testGetRowId() {
+		assertNull(tableFacade.getRowId());
+		tableTarget.setRowId("foo");
+		assertEquals("foo", tableFacade.getRowId());
+	}
+	
 }
