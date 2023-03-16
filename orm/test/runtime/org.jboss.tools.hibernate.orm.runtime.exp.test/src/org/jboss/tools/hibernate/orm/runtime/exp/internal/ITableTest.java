@@ -90,4 +90,11 @@ public class ITableTest {
 		assertEquals(columnFacade1, columnFacade2);
 	}
 	
+	@Test
+	public void testGetComment() {
+		assertNull(tableFacade.getComment());
+		tableTarget.setComment("foo");
+		assertEquals("foo", tableFacade.getComment());
+	}
+	
 }
