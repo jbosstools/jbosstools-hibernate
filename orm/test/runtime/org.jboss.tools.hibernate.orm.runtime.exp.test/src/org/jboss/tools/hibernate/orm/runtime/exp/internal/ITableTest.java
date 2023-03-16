@@ -132,4 +132,18 @@ public class ITableTest {
 		assertFalse(tableFacade.isAbstract());		
 	}
 	
+	@Test
+	public void testIsAbstractUnionTable() throws Exception {
+		tableTarget.setAbstract(false);
+		assertFalse(tableFacade.isAbstractUnionTable());	
+		tableTarget.setAbstract(true);
+		assertFalse(tableFacade.isAbstractUnionTable());	
+		Method method = Table.class.getDeclaredMethod(
+				"setHasDenormalizedTables", 
+				new Class[] { });
+		method.setAccessible(true);
+		method.invoke(tableTarget, new Object[] { });
+		assertTrue(tableFacade.isAbstractUnionTable());
+	}
+	
 }
