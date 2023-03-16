@@ -104,4 +104,11 @@ public class ITableTest {
 		assertEquals("foo", tableFacade.getRowId());
 	}
 	
+	@Test
+	public void testGetSubselect() {
+		assertNull(tableFacade.getSubselect());		
+		tableTarget.setSubselect("foo");
+		assertEquals("foo", tableFacade.getSubselect());
+	}
+	
 }
