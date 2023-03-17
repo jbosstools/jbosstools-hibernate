@@ -18,14 +18,11 @@ import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfoSource;
 import org.hibernate.mapping.BasicValue;
-import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Set;
-import org.hibernate.mapping.Table;
 import org.hibernate.proxy.HibernateProxy;
 import org.hibernate.proxy.LazyInitializer;
 import org.hibernate.service.ServiceRegistry;
@@ -300,10 +297,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IValue newMap(IPersistentClass persistentClass) {
-		return facadeFactory.createValue(
-				new org.hibernate.mapping.Map(
-						DummyMetadataBuildingContext.INSTANCE, 
-						(PersistentClass)((Wrapper)((IFacade)persistentClass).getTarget()).getWrappedObject()));
+		return newFacadeFactory.createMap(persistentClass);
 	}
 
 	@Override
