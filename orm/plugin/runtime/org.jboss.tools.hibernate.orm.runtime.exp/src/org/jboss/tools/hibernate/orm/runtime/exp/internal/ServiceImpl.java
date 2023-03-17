@@ -316,10 +316,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IValue newManyToOne(ITable table) {
-		return facadeFactory.createValue(
-				new ManyToOne(
-						DummyMetadataBuildingContext.INSTANCE, 
-						(Table)((IFacade)table).getTarget()));
+		return newFacadeFactory.createManyToOne(table);
 	}
 
 	@Override
