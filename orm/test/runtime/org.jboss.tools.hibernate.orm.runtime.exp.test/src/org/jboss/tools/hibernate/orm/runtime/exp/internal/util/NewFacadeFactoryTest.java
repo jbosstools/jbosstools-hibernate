@@ -15,6 +15,7 @@ import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
+import org.hibernate.mapping.Map;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -310,6 +311,18 @@ public class NewFacadeFactoryTest {
 		assertNotNull(manyToOneTarget);
 		assertTrue(manyToOneTarget instanceof ManyToOne);
 		assertSame(((ManyToOne)manyToOneTarget).getTable(), tableTarget);
+	}
+	
+	@Test
+	public void testCreateMap() {
+		IPersistentClass rootClassFacade = facadeFactory.createRootClass();
+		PersistentClass rootClass = (PersistentClass)((Wrapper)((IFacade)rootClassFacade).getTarget()).getWrappedObject();
+		IValue mapFacade = 
+				facadeFactory.createMap(rootClassFacade);
+		Object mapWrapper = ((IFacade)mapFacade).getTarget();
+		assertNotNull(mapFacade);
+		assertTrue(mapWrapper instanceof Map);
+		assertSame(rootClass, ((Map)mapWrapper).getOwner());
 	}
 	
 	public static class TestRevengStrategy extends DelegatingStrategy {

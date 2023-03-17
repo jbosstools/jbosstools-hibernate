@@ -177,6 +177,12 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 				wrapperFactory.createManyToOneWrapper(((IFacade)tableFacade).getTarget()));
 	}
 
+	public IValue createMap(IPersistentClass rootClassFacade) {
+		return (IValue)GenericFacadeFactory.createFacade(
+				IValue.class, 
+				wrapperFactory.createMapWrapper(((IFacade)rootClassFacade).getTarget()));
+	}
+
 	public IDatabaseReader createDatabaseReader(
 			Properties properties, 
 			IReverseEngineeringStrategy strategy) {
