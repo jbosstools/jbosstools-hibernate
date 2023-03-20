@@ -18,7 +18,6 @@ import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfoSource;
 import org.hibernate.mapping.BasicValue;
-import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Set;
@@ -319,11 +318,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IValue newOneToOne(IPersistentClass persistentClass) {
-		return facadeFactory.createValue(
-				new OneToOne(
-						DummyMetadataBuildingContext.INSTANCE, 
-						((PersistentClass)((Wrapper)((IFacade)persistentClass).getTarget()).getWrappedObject()).getTable(), 
-						(PersistentClass)((Wrapper)((IFacade)persistentClass).getTarget()).getWrappedObject()));
+		return newFacadeFactory.createOneToOne(persistentClass);
 	}
 
 	@Override
