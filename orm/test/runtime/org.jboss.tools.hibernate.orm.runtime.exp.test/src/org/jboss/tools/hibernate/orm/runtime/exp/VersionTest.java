@@ -8,7 +8,7 @@ public class VersionTest {
 	
 	@Test 
 	public void testCoreVersion() {
-		assertEquals("6.2.0.CR3", org.hibernate.Version.getVersionString());
+		assertEquals("6.2.0.CR4", org.hibernate.Version.getVersionString());
 	}
 
 	@Test
