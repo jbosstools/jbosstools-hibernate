@@ -19,7 +19,6 @@ import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfoSource;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Set;
 import org.hibernate.proxy.HibernateProxy;
 import org.hibernate.proxy.LazyInitializer;
@@ -272,10 +271,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IValue newPrimitiveArray(IPersistentClass persistentClass) {
-		return facadeFactory.createValue(
-				new PrimitiveArray(
-						DummyMetadataBuildingContext.INSTANCE, 
-						(PersistentClass)((Wrapper)((IFacade)persistentClass).getTarget()).getWrappedObject()));
+		return newFacadeFactory.createPrimitiveArray(persistentClass);
 	}
 
 	@Override
