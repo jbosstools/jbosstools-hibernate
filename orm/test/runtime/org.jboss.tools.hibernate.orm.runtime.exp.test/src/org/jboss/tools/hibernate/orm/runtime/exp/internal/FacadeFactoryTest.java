@@ -15,8 +15,6 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.PrimaryKey;
-import org.hibernate.mapping.Table;
-import org.hibernate.mapping.Value;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
@@ -41,11 +39,9 @@ import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
-import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
-import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.junit.jupiter.api.Test;
 
 import jakarta.persistence.Query;
@@ -257,6 +253,16 @@ public class FacadeFactoryTest {
 	}
 	
 	@Test
+	public void testCreateValue() {
+		try {
+			FACADE_FACTORY.createValue(null);
+			fail();
+		} catch (Throwable t) {
+			assertEquals("Should use class 'NewFacadeFactory'", t.getMessage());
+		}
+	}
+	
+	@Test
 	public void testCreateSchemaExport() {
 		SchemaExport schemaExport = new SchemaExport();
 		ISchemaExport facade = FACADE_FACTORY.createSchemaExport(schemaExport);
@@ -380,16 +386,6 @@ public class FacadeFactoryTest {
 		IType facade = FACADE_FACTORY.createType(type);
 		assertTrue(facade instanceof TypeFacadeImpl);
 		assertSame(type, ((IFacade)facade).getTarget());
-	}
-	
-	@Test
-	public void testCreateValue() {
-		Value value = (Value)Proxy.newProxyInstance(
-				FACADE_FACTORY.getClassLoader(), 
-				new Class[] { Value.class }, 
-				new TestInvocationHandler());
-		IValue facade = FACADE_FACTORY.createValue(value);
-		assertSame(value, ((IFacade)facade).getTarget());
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {

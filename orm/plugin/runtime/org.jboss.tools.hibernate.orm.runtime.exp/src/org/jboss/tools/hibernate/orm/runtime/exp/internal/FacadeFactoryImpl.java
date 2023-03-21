@@ -32,6 +32,7 @@ import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	
@@ -127,6 +128,11 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 
 	@Override 
 	public ITable createTable(Object target) {
+		throw new RuntimeException("Should use class 'NewFacadeFactory'");
+	}
+
+	@Override 
+	public IValue createValue(Object target) {
 		throw new RuntimeException("Should use class 'NewFacadeFactory'");
 	}
 
