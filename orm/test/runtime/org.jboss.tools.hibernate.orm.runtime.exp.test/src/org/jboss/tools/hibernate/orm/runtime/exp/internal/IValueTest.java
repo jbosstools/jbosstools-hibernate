@@ -4,7 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.hibernate.mapping.BasicValue;
+import org.hibernate.mapping.Set;
+import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
+import org.jboss.tools.hibernate.runtime.common.AbstractValueFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
@@ -100,6 +104,20 @@ public class IValueTest {
 		assertFalse(primitiveArrayValueFacade.isSimpleValue());
 		assertFalse(setValueFacade.isSimpleValue());
 		assertTrue(simpleValueFacade.isSimpleValue());
+	}
+
+	@Test
+	public void testIsCollection() {
+		assertTrue(arrayValueFacade.isCollection());
+		assertTrue(bagValueFacade.isCollection());
+		assertTrue(listValueFacade.isCollection());
+		assertFalse(manyToOneValueFacade.isCollection());
+		assertTrue(mapValueFacade.isCollection());
+		assertFalse(oneToManyValueFacade.isCollection());
+		assertFalse(oneToOneValueFacade.isCollection());
+		assertTrue(primitiveArrayValueFacade.isCollection());
+		assertTrue(setValueFacade.isCollection());
+		assertFalse(simpleValueFacade.isCollection());
 	}
 
 }
