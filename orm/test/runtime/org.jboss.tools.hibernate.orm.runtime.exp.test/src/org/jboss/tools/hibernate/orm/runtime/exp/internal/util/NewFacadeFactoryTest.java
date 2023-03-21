@@ -23,6 +23,7 @@ import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Set;
+import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengSettings;
@@ -381,6 +382,14 @@ public class NewFacadeFactoryTest {
 		assertNotNull(setFacade);
 		assertTrue(setWrapper instanceof Set);
 		assertSame(rootClass, ((Set)setWrapper).getOwner());
+	}
+	
+	@Test
+	public void testCreateSimpleValue() {
+		IValue simpleValueFacade = facadeFactory.createSimpleValue();
+		Object simpleValueWrapper = ((IFacade)simpleValueFacade).getTarget();
+		assertNotNull(simpleValueFacade);
+		assertTrue(simpleValueWrapper instanceof SimpleValue);
 	}
 	
 	public static class TestRevengStrategy extends DelegatingStrategy {
