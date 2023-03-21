@@ -211,6 +211,12 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 				wrapperFactory.createTableWrapper(name));
 	}
 
+	public IValue createPrimitiveArray(IPersistentClass persistentClass) {
+		return (IValue)GenericFacadeFactory.createFacade(
+				IValue.class, 
+				wrapperFactory.createPrimitiveArrayWrapper(((IFacade)persistentClass).getTarget()));
+	}
+
 	@Override
 	public ClassLoader getClassLoader() {
 		return INSTANCE.getClass().getClassLoader();

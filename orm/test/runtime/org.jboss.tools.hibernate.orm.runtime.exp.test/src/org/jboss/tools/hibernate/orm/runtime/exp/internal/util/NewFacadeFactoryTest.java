@@ -19,6 +19,7 @@ import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
@@ -355,6 +356,18 @@ public class NewFacadeFactoryTest {
 		assertTrue(oneToOneWrapper instanceof OneToOne);
 		assertSame("bar", ((OneToOne)oneToOneWrapper).getEntityName());
 		assertSame(table, ((OneToOne)oneToOneWrapper).getTable());
+	}
+	
+	@Test
+	public void testCreatePrimitiveArray() {
+		IPersistentClass rootClassFacade = facadeFactory.createRootClass();
+		PersistentClass rootClass = (PersistentClass)((Wrapper)((IFacade)rootClassFacade).getTarget()).getWrappedObject();
+		IValue primitiveArrayFacade = 
+				facadeFactory.createPrimitiveArray(rootClassFacade);
+		Object arrayWrapper = ((IFacade)primitiveArrayFacade).getTarget();
+		assertNotNull(primitiveArrayFacade);
+		assertTrue(arrayWrapper instanceof PrimitiveArray);
+		assertSame(rootClass, ((PrimitiveArray)arrayWrapper).getOwner());
 	}
 	
 	public static class TestRevengStrategy extends DelegatingStrategy {
