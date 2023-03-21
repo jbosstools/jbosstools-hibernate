@@ -22,6 +22,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengSettings;
@@ -368,6 +369,18 @@ public class NewFacadeFactoryTest {
 		assertNotNull(primitiveArrayFacade);
 		assertTrue(arrayWrapper instanceof PrimitiveArray);
 		assertSame(rootClass, ((PrimitiveArray)arrayWrapper).getOwner());
+	}
+	
+	@Test
+	public void testCreateSet() {
+		IPersistentClass rootClassFacade = facadeFactory.createRootClass();
+		PersistentClass rootClass = (PersistentClass)((Wrapper)((IFacade)rootClassFacade).getTarget()).getWrappedObject();
+		IValue setFacade = 
+				facadeFactory.createSet(rootClassFacade);
+		Object setWrapper = ((IFacade)setFacade).getTarget();
+		assertNotNull(setFacade);
+		assertTrue(setWrapper instanceof Set);
+		assertSame(rootClass, ((Set)setWrapper).getOwner());
 	}
 	
 	public static class TestRevengStrategy extends DelegatingStrategy {

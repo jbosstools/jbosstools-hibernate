@@ -217,6 +217,12 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 				wrapperFactory.createPrimitiveArrayWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
+	public IValue createSet(IPersistentClass persistentClass) {
+		return (IValue)GenericFacadeFactory.createFacade(
+				IValue.class, 
+				wrapperFactory.createSetWrapper(((IFacade)persistentClass).getTarget()));
+	}
+
 	@Override
 	public ClassLoader getClassLoader() {
 		return INSTANCE.getClass().getClassLoader();
