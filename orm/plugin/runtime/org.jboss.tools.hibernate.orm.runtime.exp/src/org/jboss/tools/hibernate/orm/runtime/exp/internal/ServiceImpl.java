@@ -296,10 +296,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IValue newSet(IPersistentClass persistentClass) {
-		return facadeFactory.createValue(
-				new Set(
-						DummyMetadataBuildingContext.INSTANCE, 
-						(PersistentClass)((Wrapper)((IFacade)persistentClass).getTarget()).getWrappedObject()));
+		return newFacadeFactory.createSet(persistentClass);
 	}
 
 	@Override
