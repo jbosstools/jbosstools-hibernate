@@ -1,6 +1,8 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -84,6 +86,20 @@ public class IValueTest {
 		assertNotNull(setValueTarget);
 		assertNotNull(simpleValueFacade);
 		assertNotNull(simpleValueTarget);
+	}
+
+	@Test
+	public void testIsSimpleValue() {
+		assertFalse(arrayValueFacade.isSimpleValue());
+		assertFalse(bagValueFacade.isSimpleValue());
+		assertFalse(listValueFacade.isSimpleValue());
+		assertTrue(manyToOneValueFacade.isSimpleValue());
+		assertFalse(mapValueFacade.isSimpleValue());
+		assertFalse(oneToManyValueFacade.isSimpleValue());
+		assertTrue(oneToOneValueFacade.isSimpleValue());
+		assertFalse(primitiveArrayValueFacade.isSimpleValue());
+		assertFalse(setValueFacade.isSimpleValue());
+		assertTrue(simpleValueFacade.isSimpleValue());
 	}
 
 }
