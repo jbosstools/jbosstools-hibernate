@@ -6,14 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Collection;
-import org.hibernate.mapping.ManyToOne;
-import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.Value;
-import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
-import org.jboss.tools.hibernate.runtime.common.AbstractValueFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
@@ -177,6 +172,20 @@ public class IValueTest {
 		assertFalse(primitiveArrayValueFacade.isManyToOne());
 		assertFalse(setValueFacade.isManyToOne());
 		assertFalse(simpleValueFacade.isManyToOne());
+	}
+
+	@Test 
+	public void testIsOneToOne() {
+		assertFalse(arrayValueFacade.isOneToOne());
+		assertFalse(bagValueFacade.isOneToOne());
+		assertFalse(listValueFacade.isOneToOne());
+		assertFalse(manyToOneValueFacade.isOneToOne());
+		assertFalse(mapValueFacade.isOneToOne());
+		assertFalse(oneToManyValueFacade.isOneToOne());
+		assertTrue(oneToOneValueFacade.isOneToOne());
+		assertFalse(primitiveArrayValueFacade.isOneToOne());
+		assertFalse(setValueFacade.isOneToOne());
+		assertFalse(simpleValueFacade.isOneToOne());
 	}
 
 	
