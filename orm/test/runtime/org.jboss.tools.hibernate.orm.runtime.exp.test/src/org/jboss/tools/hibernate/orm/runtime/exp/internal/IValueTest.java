@@ -188,6 +188,20 @@ public class IValueTest {
 		assertFalse(simpleValueFacade.isOneToOne());
 	}
 
+	@Test 
+	public void testIsMap() {
+		assertFalse(arrayValueFacade.isMap());
+		assertFalse(bagValueFacade.isMap());
+		assertFalse(listValueFacade.isMap());
+		assertFalse(manyToOneValueFacade.isMap());
+		assertTrue(mapValueFacade.isMap());
+		assertFalse(oneToManyValueFacade.isMap());
+		assertFalse(oneToOneValueFacade.isMap());
+		assertFalse(primitiveArrayValueFacade.isMap());
+		assertFalse(setValueFacade.isMap());
+		assertFalse(simpleValueFacade.isMap());
+	}
+
 	
 	
 	
