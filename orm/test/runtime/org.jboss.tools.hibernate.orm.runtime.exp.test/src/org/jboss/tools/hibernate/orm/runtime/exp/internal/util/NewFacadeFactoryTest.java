@@ -12,6 +12,7 @@ import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
+import org.hibernate.mapping.Component;
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
@@ -390,6 +391,17 @@ public class NewFacadeFactoryTest {
 		Object simpleValueWrapper = ((IFacade)simpleValueFacade).getTarget();
 		assertNotNull(simpleValueFacade);
 		assertTrue(simpleValueWrapper instanceof SimpleValue);
+	}
+	
+	@Test
+	public void testCreateComponentValue() {
+		IPersistentClass rootClassFacade = facadeFactory.createRootClass();
+		PersistentClass rootClass = (PersistentClass)((Wrapper)((IFacade)rootClassFacade).getTarget()).getWrappedObject();
+		IValue componentFacade = facadeFactory.createComponent(rootClassFacade);
+		Object componentWrapper = ((IFacade)componentFacade).getTarget();
+		assertNotNull(componentFacade);
+		assertTrue(componentWrapper instanceof Component);
+		assertSame(rootClass, ((Component)componentWrapper).getOwner());
 	}
 	
 	public static class TestRevengStrategy extends DelegatingStrategy {
