@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Collection;
+import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
@@ -164,6 +165,20 @@ public class IValueTest {
 		assertFalse(simpleValueFacade.isOneToMany());
 	}
 	
+	@Test 
+	public void testIsManyToOne() {
+		assertFalse(arrayValueFacade.isManyToOne());
+		assertFalse(bagValueFacade.isManyToOne());
+		assertFalse(listValueFacade.isManyToOne());
+		assertTrue(manyToOneValueFacade.isManyToOne());
+		assertFalse(mapValueFacade.isManyToOne());
+		assertFalse(oneToManyValueFacade.isManyToOne());
+		assertFalse(oneToOneValueFacade.isManyToOne());
+		assertFalse(primitiveArrayValueFacade.isManyToOne());
+		assertFalse(setValueFacade.isManyToOne());
+		assertFalse(simpleValueFacade.isManyToOne());
+	}
+
 	
 	
 	
