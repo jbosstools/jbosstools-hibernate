@@ -2,13 +2,13 @@ package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.hibernate.mapping.BasicValue;
-import org.hibernate.mapping.Set;
-import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
+import org.hibernate.mapping.Collection;
+import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
-import org.jboss.tools.hibernate.runtime.common.AbstractValueFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
@@ -19,25 +19,25 @@ import org.junit.jupiter.api.Test;
 public class IValueTest {
 	
 	private IValue arrayValueFacade = null;
-	private Object arrayValueTarget = null;
+	private Value arrayValueTarget = null;
 	private IValue bagValueFacade = null;
-	private Object bagValueTarget = null;
+	private Value bagValueTarget = null;
 	private IValue listValueFacade = null;
-	private Object listValueTarget = null;
+	private Value listValueTarget = null;
 	private IValue manyToOneValueFacade = null;
-	private Object manyToOneValueTarget = null;
+	private Value manyToOneValueTarget = null;
 	private IValue mapValueFacade = null;
-	private Object mapValueTarget = null;
+	private Value mapValueTarget = null;
 	private IValue oneToManyValueFacade = null;
-	private Object oneToManyValueTarget = null;
+	private Value oneToManyValueTarget = null;
 	private IValue oneToOneValueFacade = null;
-	private Object oneToOneValueTarget = null;
+	private Value oneToOneValueTarget = null;
 	private IValue primitiveArrayValueFacade = null;
-	private Object primitiveArrayValueTarget = null;
+	private Value primitiveArrayValueTarget = null;
 	private IValue setValueFacade = null;
-	private Object setValueTarget = null;
+	private Value setValueTarget = null;
 	private IValue simpleValueFacade = null;
-	private Object simpleValueTarget = null;
+	private Value simpleValueTarget = null;
 	
 	private IPersistentClass persistentClassFacade = null;
 	private ITable tableFacade = null;
@@ -47,25 +47,25 @@ public class IValueTest {
 		persistentClassFacade = NewFacadeFactory.INSTANCE.createRootClass();
 		tableFacade = NewFacadeFactory.INSTANCE.createTable("foo");
 		arrayValueFacade = NewFacadeFactory.INSTANCE.createArray(persistentClassFacade);
-		arrayValueTarget = ((IFacade)arrayValueFacade).getTarget();
+		arrayValueTarget = (Value)((IFacade)arrayValueFacade).getTarget();
 		bagValueFacade = NewFacadeFactory.INSTANCE.createBag(persistentClassFacade);
-		bagValueTarget = ((IFacade)bagValueFacade).getTarget();
+		bagValueTarget = (Value)((IFacade)bagValueFacade).getTarget();
 		listValueFacade = NewFacadeFactory.INSTANCE.createList(persistentClassFacade);
-		listValueTarget = ((IFacade)listValueFacade).getTarget();
+		listValueTarget = (Value)((IFacade)listValueFacade).getTarget();
 		manyToOneValueFacade = NewFacadeFactory.INSTANCE.createManyToOne(tableFacade);
-		manyToOneValueTarget = ((IFacade)manyToOneValueFacade).getTarget();
+		manyToOneValueTarget = (Value)((IFacade)manyToOneValueFacade).getTarget();
 		mapValueFacade = NewFacadeFactory.INSTANCE.createMap(persistentClassFacade);
-		mapValueTarget = ((IFacade)mapValueFacade).getTarget();
+		mapValueTarget = (Value)((IFacade)mapValueFacade).getTarget();
 		oneToManyValueFacade = NewFacadeFactory.INSTANCE.createOneToMany(persistentClassFacade);
-		oneToManyValueTarget = ((IFacade)oneToManyValueFacade).getTarget();
+		oneToManyValueTarget = (Value)((IFacade)oneToManyValueFacade).getTarget();
 		oneToOneValueFacade = NewFacadeFactory.INSTANCE.createOneToOne(persistentClassFacade);
-		oneToOneValueTarget = ((IFacade)oneToOneValueFacade).getTarget();
+		oneToOneValueTarget = (Value)((IFacade)oneToOneValueFacade).getTarget();
 		primitiveArrayValueFacade = NewFacadeFactory.INSTANCE.createPrimitiveArray(persistentClassFacade);
-		primitiveArrayValueTarget = ((IFacade)primitiveArrayValueFacade).getTarget();
+		primitiveArrayValueTarget = (Value)((IFacade)primitiveArrayValueFacade).getTarget();
 		setValueFacade = NewFacadeFactory.INSTANCE.createSet(persistentClassFacade);
-		setValueTarget = ((IFacade)setValueFacade).getTarget();
+		setValueTarget = (Value)((IFacade)setValueFacade).getTarget();
 		simpleValueFacade = NewFacadeFactory.INSTANCE.createSimpleValue();
-		simpleValueTarget = ((IFacade)simpleValueFacade).getTarget();
+		simpleValueTarget = (Value)((IFacade)simpleValueFacade).getTarget();
 	}
 	
 	@Test
@@ -118,6 +118,35 @@ public class IValueTest {
 		assertTrue(primitiveArrayValueFacade.isCollection());
 		assertTrue(setValueFacade.isCollection());
 		assertFalse(simpleValueFacade.isCollection());
+	}
+	
+	
+	
+
+	@Test
+	public void testGetElement() {
+		assertNull(arrayValueFacade.getElement());
+		((Collection)arrayValueTarget).setElement(simpleValueTarget);
+		assertSame(simpleValueTarget, ((IFacade)arrayValueFacade.getElement()).getTarget());
+		assertNull(bagValueFacade.getElement());
+		((Collection)bagValueTarget).setElement(simpleValueTarget);
+		assertSame(simpleValueTarget, ((IFacade)bagValueFacade.getElement()).getTarget());
+		assertNull(listValueFacade.getElement());
+		((Collection)listValueTarget).setElement(simpleValueTarget);
+		assertSame(simpleValueTarget, ((IFacade)listValueFacade.getElement()).getTarget());
+		assertNull(manyToOneValueFacade.getElement());
+		assertNull(mapValueFacade.getElement());
+		((Collection)mapValueTarget).setElement(simpleValueTarget);
+		assertSame(simpleValueTarget, ((IFacade)mapValueFacade.getElement()).getTarget());
+		assertNull(oneToManyValueFacade.getElement());
+		assertNull(oneToOneValueFacade.getElement());
+		assertNull(primitiveArrayValueFacade.getElement());
+		((Collection)primitiveArrayValueTarget).setElement(simpleValueTarget);
+		assertSame(simpleValueTarget, ((IFacade)primitiveArrayValueFacade.getElement()).getTarget());
+		assertNull(setValueFacade.getElement());
+		((Collection)setValueTarget).setElement(simpleValueTarget);
+		assertSame(simpleValueTarget, ((IFacade)setValueFacade.getElement()).getTarget());
+		assertNull(simpleValueFacade.getElement());
 	}
 
 }
