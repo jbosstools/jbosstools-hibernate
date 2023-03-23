@@ -131,7 +131,7 @@ public class GenericFacadeFactory {
 		if (args != null) {
 			result = new Object[args.length];
 			for (int i = 0; i < args.length; i++) {
-				if (IFacade.class.isAssignableFrom(args[i].getClass())) {
+				if (args[i] != null && IFacade.class.isAssignableFrom(args[i].getClass())) {
 					Object target = ((IFacade)args[i]).getTarget();
 					Class<?> targetClass = target.getClass();
 					if (Proxy.isProxyClass(targetClass)) {

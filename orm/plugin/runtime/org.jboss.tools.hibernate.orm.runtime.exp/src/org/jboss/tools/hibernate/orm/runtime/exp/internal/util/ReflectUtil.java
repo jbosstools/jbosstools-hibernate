@@ -58,7 +58,7 @@ public class ReflectUtil {
     }
 
     private static boolean isAssignableTo(Class<?> from, Class<?> to) {
-        if (to.isAssignableFrom(from)) {
+        if (from == null || to.isAssignableFrom(from)) {
             return true;
         }
         if (from.isPrimitive()) {
