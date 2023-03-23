@@ -8,6 +8,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Component;
+import org.hibernate.mapping.ManyToOne;
+import org.hibernate.mapping.SimpleValue;
+import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -44,11 +47,13 @@ public class IValueTest {
 	
 	private IPersistentClass persistentClassFacade = null;
 	private ITable tableFacade = null;
+	private Table tableTarget = null;
 	
 	@BeforeEach 
 	public void beforeEach() {
 		persistentClassFacade = NewFacadeFactory.INSTANCE.createRootClass();
 		tableFacade = NewFacadeFactory.INSTANCE.createTable("foo");
+		tableTarget = (Table)((IFacade)tableFacade).getTarget();
 		arrayValueFacade = NewFacadeFactory.INSTANCE.createArray(persistentClassFacade);
 		arrayValueTarget = (Value)((IFacade)arrayValueFacade).getTarget();
 		bagValueFacade = NewFacadeFactory.INSTANCE.createBag(persistentClassFacade);
@@ -246,6 +251,54 @@ public class IValueTest {
 		assertFalse(setValueFacade.isToOne());
 		assertFalse(simpleValueFacade.isToOne());
 		assertFalse(componentValueFacade.isToOne());
+	}
+	
+	@Test
+	public void testGetTable() {
+		persistentClassFacade.setTable(null);
+		assertNull(arrayValueFacade.getTable());
+		persistentClassFacade.setTable(tableFacade);
+		assertSame(tableTarget, ((IFacade)arrayValueFacade.getTable()).getTarget());
+		persistentClassFacade.setTable(null);
+		assertNull(bagValueFacade.getTable());
+		persistentClassFacade.setTable(tableFacade);
+		assertSame(tableTarget, ((IFacade)bagValueFacade.getTable()).getTarget());
+		persistentClassFacade.setTable(null);
+		assertNull(listValueFacade.getTable());
+		persistentClassFacade.setTable(tableFacade);
+		assertSame(tableTarget, ((IFacade)listValueFacade.getTable()).getTarget());
+		((ManyToOne)manyToOneValueTarget).setTable(null);
+		assertNull(manyToOneValueFacade.getTable());
+		((ManyToOne)manyToOneValueTarget).setTable(tableTarget);
+		assertSame(tableTarget, ((IFacade)manyToOneValueFacade.getTable()).getTarget());
+		persistentClassFacade.setTable(null);
+		assertNull(mapValueFacade.getTable());
+		persistentClassFacade.setTable(tableFacade);
+		assertSame(tableTarget, ((IFacade)mapValueFacade.getTable()).getTarget());
+		assertNull(oneToManyValueFacade.getTable());
+		persistentClassFacade.setTable(tableFacade);
+		oneToManyValueFacade = NewFacadeFactory.INSTANCE.createOneToMany(persistentClassFacade);
+		assertSame(tableTarget, ((IFacade)oneToManyValueFacade.getTable()).getTarget());
+		assertNull(oneToOneValueFacade.getTable());
+		persistentClassFacade.setTable(tableFacade);
+		oneToOneValueFacade = NewFacadeFactory.INSTANCE.createOneToOne(persistentClassFacade);
+		assertSame(tableTarget, ((IFacade)oneToOneValueFacade.getTable()).getTarget());
+		persistentClassFacade.setTable(null);
+		assertNull(primitiveArrayValueFacade.getTable());
+		persistentClassFacade.setTable(tableFacade);
+		assertSame(tableTarget, ((IFacade)primitiveArrayValueFacade.getTable()).getTarget());
+		persistentClassFacade.setTable(null);
+		assertNull(setValueFacade.getTable());
+		persistentClassFacade.setTable(tableFacade);
+		assertSame(tableTarget, ((IFacade)setValueFacade.getTable()).getTarget());
+		((SimpleValue)simpleValueTarget).setTable(null);
+		assertNull(simpleValueFacade.getTable());
+		((SimpleValue)simpleValueTarget).setTable(tableTarget);
+		assertSame(tableTarget, ((IFacade)simpleValueFacade.getTable()).getTarget());
+		((Component)componentValueTarget).setTable(null);
+		assertNull(componentValueFacade.getTable());
+		((Component)componentValueTarget).setTable(tableTarget);
+		assertSame(tableTarget, ((IFacade)componentValueFacade.getTable()).getTarget());
 	}
 
 	
