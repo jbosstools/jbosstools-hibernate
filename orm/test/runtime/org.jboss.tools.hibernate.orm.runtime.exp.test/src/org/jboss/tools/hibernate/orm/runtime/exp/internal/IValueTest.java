@@ -12,10 +12,21 @@ import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
+import org.hibernate.type.ArrayType;
+import org.hibernate.type.BagType;
+import org.hibernate.type.BasicType;
+import org.hibernate.type.ComponentType;
+import org.hibernate.type.ListType;
+import org.hibernate.type.ManyToOneType;
+import org.hibernate.type.MapType;
+import org.hibernate.type.OneToOneType;
+import org.hibernate.type.SetType;
+import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
+import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -301,6 +312,41 @@ public class IValueTest {
 		assertSame(tableTarget, ((IFacade)componentValueFacade.getTable()).getTarget());
 	}
 
+	@Test
+	public void testGetType() {
+		((SimpleValue)simpleValueTarget).setTypeName("java.lang.Integer");
+		IType typeFacade = simpleValueFacade.getType();
+		assertTrue((Type)((IFacade)typeFacade).getTarget() instanceof BasicType);
+		((Collection)arrayValueTarget).setElement(simpleValueTarget);
+		typeFacade = arrayValueFacade.getType();
+		assertTrue((Type)((IFacade)typeFacade).getTarget() instanceof ArrayType);
+		((Collection)bagValueTarget).setElement(simpleValueTarget);
+		typeFacade = bagValueFacade.getType();
+		assertTrue((Type)((IFacade)typeFacade).getTarget() instanceof BagType);
+		((Collection)listValueTarget).setElement(simpleValueTarget);
+		typeFacade = listValueFacade.getType();
+		assertTrue((Type)((IFacade)typeFacade).getTarget() instanceof ListType);
+		typeFacade = manyToOneValueFacade.getType();
+		assertTrue((Type)((IFacade)typeFacade).getTarget() instanceof ManyToOneType);
+		((Collection)mapValueTarget).setElement(simpleValueTarget);
+		typeFacade = mapValueFacade.getType();
+		assertTrue((Type)((IFacade)typeFacade).getTarget() instanceof MapType);
+		typeFacade = oneToManyValueFacade.getType();
+		assertTrue((Type)((IFacade)typeFacade).getTarget() instanceof ManyToOneType);
+		typeFacade = oneToOneValueFacade.getType();
+		assertTrue((Type)((IFacade)typeFacade).getTarget() instanceof OneToOneType);
+		((Collection)primitiveArrayValueTarget).setElement(simpleValueTarget);
+		typeFacade = primitiveArrayValueFacade.getType();
+		assertTrue((Type)((IFacade)typeFacade).getTarget() instanceof ArrayType);
+		((Collection)setValueTarget).setElement(simpleValueTarget);
+		typeFacade = setValueFacade.getType();
+		assertTrue((Type)((IFacade)typeFacade).getTarget() instanceof SetType);
+		((Component)componentValueTarget).setComponentClassName("java.lang.String");
+		typeFacade = componentValueFacade.getType();
+		assertTrue((Type)((IFacade)typeFacade).getTarget() instanceof ComponentType);
+	}
+	
+	
 	
 	
 	
