@@ -38,6 +38,8 @@ public class IValueTest {
 	private Value setValueTarget = null;
 	private IValue simpleValueFacade = null;
 	private Value simpleValueTarget = null;
+	private IValue componentValueFacade = null;
+	private Value componentValueTarget = null;
 	
 	private IPersistentClass persistentClassFacade = null;
 	private ITable tableFacade = null;
@@ -66,6 +68,8 @@ public class IValueTest {
 		setValueTarget = (Value)((IFacade)setValueFacade).getTarget();
 		simpleValueFacade = NewFacadeFactory.INSTANCE.createSimpleValue();
 		simpleValueTarget = (Value)((IFacade)simpleValueFacade).getTarget();
+		componentValueFacade = NewFacadeFactory.INSTANCE.createComponent(persistentClassFacade);
+		componentValueTarget = (Value)((IFacade)componentValueFacade).getTarget();
 	}
 	
 	@Test
@@ -90,6 +94,8 @@ public class IValueTest {
 		assertNotNull(setValueTarget);
 		assertNotNull(simpleValueFacade);
 		assertNotNull(simpleValueTarget);
+		assertNotNull(componentValueFacade);
+		assertNotNull(componentValueTarget);
 	}
 
 	@Test
@@ -104,6 +110,7 @@ public class IValueTest {
 		assertFalse(primitiveArrayValueFacade.isSimpleValue());
 		assertFalse(setValueFacade.isSimpleValue());
 		assertTrue(simpleValueFacade.isSimpleValue());
+		assertTrue(componentValueFacade.isSimpleValue());
 	}
 
 	@Test
@@ -118,6 +125,7 @@ public class IValueTest {
 		assertTrue(primitiveArrayValueFacade.isCollection());
 		assertTrue(setValueFacade.isCollection());
 		assertFalse(simpleValueFacade.isCollection());
+		assertFalse(componentValueFacade.isCollection());
 	}
 	
 	@Test
@@ -144,6 +152,7 @@ public class IValueTest {
 		((Collection)setValueTarget).setElement(simpleValueTarget);
 		assertSame(simpleValueTarget, ((IFacade)setValueFacade.getCollectionElement()).getTarget());
 		assertNull(simpleValueFacade.getCollectionElement());
+		assertNull(componentValueFacade.getCollectionElement());
 	}
 	
 	@Test 
@@ -158,6 +167,7 @@ public class IValueTest {
 		assertFalse(primitiveArrayValueFacade.isOneToMany());
 		assertFalse(setValueFacade.isOneToMany());
 		assertFalse(simpleValueFacade.isOneToMany());
+		assertFalse(componentValueFacade.isOneToMany());
 	}
 	
 	@Test 
@@ -172,6 +182,7 @@ public class IValueTest {
 		assertFalse(primitiveArrayValueFacade.isManyToOne());
 		assertFalse(setValueFacade.isManyToOne());
 		assertFalse(simpleValueFacade.isManyToOne());
+		assertFalse(componentValueFacade.isManyToOne());
 	}
 
 	@Test 
@@ -186,6 +197,7 @@ public class IValueTest {
 		assertFalse(primitiveArrayValueFacade.isOneToOne());
 		assertFalse(setValueFacade.isOneToOne());
 		assertFalse(simpleValueFacade.isOneToOne());
+		assertFalse(componentValueFacade.isOneToOne());
 	}
 
 	@Test 
@@ -200,9 +212,9 @@ public class IValueTest {
 		assertFalse(primitiveArrayValueFacade.isMap());
 		assertFalse(setValueFacade.isMap());
 		assertFalse(simpleValueFacade.isMap());
+		assertFalse(componentValueFacade.isMap());
 	}
 
-	
 	
 	
 	
@@ -234,6 +246,9 @@ public class IValueTest {
 		((Collection)setValueTarget).setElement(simpleValueTarget);
 		assertSame(simpleValueTarget, ((IFacade)setValueFacade.getElement()).getTarget());
 		assertNull(simpleValueFacade.getElement());
+		assertNull(componentValueFacade.getElement());
 	}
+	
+	
 
 }
