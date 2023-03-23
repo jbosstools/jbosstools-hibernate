@@ -233,6 +233,21 @@ public class IValueTest {
 		assertTrue(componentValueFacade.isEmbedded());
 	}
 
+	@Test
+	public void testIsToOne() {
+		assertFalse(arrayValueFacade.isToOne());
+		assertFalse(bagValueFacade.isToOne());
+		assertFalse(listValueFacade.isToOne());
+		assertTrue(manyToOneValueFacade.isToOne());
+		assertFalse(mapValueFacade.isToOne());
+		assertFalse(oneToManyValueFacade.isToOne());
+		assertTrue(oneToOneValueFacade.isToOne());
+		assertFalse(primitiveArrayValueFacade.isToOne());
+		assertFalse(setValueFacade.isToOne());
+		assertFalse(simpleValueFacade.isToOne());
+		assertFalse(componentValueFacade.isToOne());
+	}
+
 	
 	
 	
