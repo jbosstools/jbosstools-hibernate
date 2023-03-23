@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.mapping.Collection;
+import org.hibernate.mapping.Component;
 import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -215,6 +216,24 @@ public class IValueTest {
 		assertFalse(componentValueFacade.isMap());
 	}
 
+	@Test 
+	public void testIsEmbedded() {
+		assertFalse(arrayValueFacade.isEmbedded());
+		assertFalse(bagValueFacade.isEmbedded());
+		assertFalse(listValueFacade.isEmbedded());
+		assertFalse(manyToOneValueFacade.isEmbedded());
+		assertFalse(mapValueFacade.isEmbedded());
+		assertFalse(oneToManyValueFacade.isEmbedded());
+		assertFalse(oneToOneValueFacade.isEmbedded());
+		assertFalse(primitiveArrayValueFacade.isEmbedded());
+		assertFalse(setValueFacade.isEmbedded());
+		assertFalse(simpleValueFacade.isEmbedded());
+		assertFalse(componentValueFacade.isEmbedded());
+		((Component)componentValueTarget).setEmbedded(true);
+		assertTrue(componentValueFacade.isEmbedded());
+	}
+
+	
 	
 	
 	
