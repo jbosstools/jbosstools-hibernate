@@ -346,7 +346,42 @@ public class IValueTest {
 		assertTrue((Type)((IFacade)typeFacade).getTarget() instanceof ComponentType);
 	}
 	
-	
+	@Test
+	public void testSetElement() {
+		assertNull(((Collection)arrayValueTarget).getElement());
+		arrayValueFacade.setElement(simpleValueFacade);
+		assertSame(simpleValueTarget, ((Collection)arrayValueTarget).getElement());
+		assertNull(((Collection)bagValueTarget).getElement());
+		bagValueFacade.setElement(simpleValueFacade);
+		assertSame(simpleValueTarget, ((Collection)bagValueTarget).getElement());
+		assertNull(((Collection)listValueTarget).getElement());
+		listValueFacade.setElement(simpleValueFacade);
+		assertSame(simpleValueTarget, ((Collection)listValueTarget).getElement());
+		assertNull(manyToOneValueFacade.getElement());
+		manyToOneValueFacade.setElement(simpleValueFacade);
+		assertNull(manyToOneValueFacade.getElement());
+		assertNull(((Collection)mapValueTarget).getElement());
+		mapValueFacade.setElement(simpleValueFacade);
+		assertSame(simpleValueTarget, ((Collection)mapValueTarget).getElement());
+		assertNull(oneToManyValueFacade.getElement());
+		oneToManyValueFacade.setElement(simpleValueFacade);
+		assertNull(oneToManyValueFacade.getElement());
+		assertNull(oneToOneValueFacade.getElement());
+		oneToOneValueFacade.setElement(simpleValueFacade);
+		assertNull(oneToOneValueFacade.getElement());
+		assertNull(((Collection)primitiveArrayValueTarget).getElement());
+		primitiveArrayValueFacade.setElement(simpleValueFacade);
+		assertSame(simpleValueTarget, ((Collection)primitiveArrayValueTarget).getElement());
+		assertNull(((Collection)setValueTarget).getElement());
+		setValueFacade.setElement(simpleValueFacade);
+		assertSame(simpleValueTarget, ((Collection)setValueTarget).getElement());
+		assertNull(simpleValueFacade.getElement());
+		simpleValueFacade.setElement(arrayValueFacade);
+		assertNull(simpleValueFacade.getElement());
+		assertNull(componentValueFacade.getElement());
+		componentValueFacade.setElement(arrayValueFacade);
+		assertNull(componentValueFacade.getElement());
+	}
 	
 	
 	
