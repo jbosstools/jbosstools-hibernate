@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Component;
+import org.hibernate.mapping.IndexedCollection;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
@@ -471,6 +472,7 @@ public class IValueTest {
 		assertFalse(simpleValueFacade.isList());
 		assertFalse(componentValueFacade.isList());
 	}
+	
 
 
 	
@@ -503,6 +505,33 @@ public class IValueTest {
 		assertSame(tableTarget, ((IFacade)setValueFacade.getCollectionTable()).getTarget());
 		assertNull(simpleValueFacade.getCollectionTable());
 		assertNull(componentValueFacade.getCollectionTable());
+	}
+	
+	
+	
+	
+	
+	@Test
+	public void testGetIndex() {
+		assertNull(arrayValueFacade.getIndex());
+		((IndexedCollection)arrayValueTarget).setIndex(simpleValueTarget);
+		assertSame(simpleValueTarget, ((IFacade)arrayValueFacade.getIndex()).getTarget());
+		assertNull(bagValueFacade.getIndex());
+		assertNull(listValueFacade.getIndex());
+		((IndexedCollection)listValueTarget).setIndex(simpleValueTarget);
+		assertSame(simpleValueTarget, ((IFacade)listValueFacade.getIndex()).getTarget());
+		assertNull(manyToOneValueFacade.getIndex());
+		assertNull(mapValueFacade.getIndex());
+		((IndexedCollection)mapValueTarget).setIndex(simpleValueTarget);
+		assertSame(simpleValueTarget, ((IFacade)mapValueFacade.getIndex()).getTarget());
+		assertNull(oneToManyValueFacade.getIndex());
+		assertNull(oneToOneValueFacade.getIndex());
+		assertNull(primitiveArrayValueFacade.getIndex());
+		((IndexedCollection)primitiveArrayValueTarget).setIndex(simpleValueTarget);
+		assertSame(simpleValueTarget, ((IFacade)primitiveArrayValueFacade.getIndex()).getTarget());
+		assertNull(setValueFacade.getIndex());
+		assertNull(simpleValueFacade.getIndex());
+		assertNull(componentValueFacade.getIndex());
 	}
 	
 	
