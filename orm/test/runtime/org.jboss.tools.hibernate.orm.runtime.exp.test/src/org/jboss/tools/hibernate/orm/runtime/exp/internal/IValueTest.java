@@ -457,6 +457,22 @@ public class IValueTest {
 		assertSame(tableTarget, componentValueTarget.getTable());
 	}
 	
+	@Test 
+	public void testIsList() {
+		assertTrue(arrayValueFacade.isList());
+		assertFalse(bagValueFacade.isList());
+		assertTrue(listValueFacade.isList());
+		assertFalse(manyToOneValueFacade.isList());
+		assertFalse(mapValueFacade.isList());
+		assertFalse(oneToManyValueFacade.isList());
+		assertFalse(oneToOneValueFacade.isList());
+		assertTrue(primitiveArrayValueFacade.isList());
+		assertFalse(setValueFacade.isList());
+		assertFalse(simpleValueFacade.isList());
+		assertFalse(componentValueFacade.isList());
+	}
+
+
 	
 	
 	
