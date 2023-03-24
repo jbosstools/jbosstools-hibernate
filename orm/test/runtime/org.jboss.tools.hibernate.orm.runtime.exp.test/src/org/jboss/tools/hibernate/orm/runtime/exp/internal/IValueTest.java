@@ -420,6 +420,43 @@ public class IValueTest {
 		assertNull(componentValueFacade.getCollectionTable());
 	}
 	
+	@Test
+	public void testSetTable() {
+		assertNull(arrayValueTarget.getTable());
+		arrayValueFacade.setTable(tableFacade);
+		assertNull(arrayValueTarget.getTable());
+		assertNull(bagValueTarget.getTable());
+		bagValueFacade.setTable(tableFacade);
+		assertNull(bagValueTarget.getTable());
+		assertNull(listValueTarget.getTable());
+		listValueFacade.setTable(tableFacade);
+		assertNull(listValueTarget.getTable());
+		assertSame(tableTarget, manyToOneValueTarget.getTable());
+		manyToOneValueFacade.setTable(null);
+		assertNull(manyToOneValueTarget.getTable());
+		assertNull(mapValueTarget.getTable());
+		mapValueFacade.setTable(tableFacade);
+		assertNull(mapValueTarget.getTable());
+		assertNull(oneToManyValueTarget.getTable());
+		oneToManyValueFacade.setTable(tableFacade);
+		assertNull(oneToManyValueTarget.getTable());
+		assertNull(oneToOneValueTarget.getTable());
+		oneToOneValueFacade.setTable(tableFacade);
+		assertSame(tableTarget, oneToOneValueTarget.getTable());
+		assertNull(primitiveArrayValueTarget.getTable());
+		primitiveArrayValueFacade.setTable(tableFacade);
+		assertNull(primitiveArrayValueTarget.getTable());
+		assertNull(setValueTarget.getTable());
+		setValueFacade.setTable(tableFacade);
+		assertNull(setValueTarget.getTable());
+		assertNull(simpleValueTarget.getTable());
+		simpleValueFacade.setTable(tableFacade);
+		assertSame(tableTarget, simpleValueTarget.getTable());
+		assertNull(componentValueTarget.getTable());
+		componentValueFacade.setTable(tableFacade);
+		assertSame(tableTarget, componentValueTarget.getTable());
+	}
+	
 	
 	
 	
