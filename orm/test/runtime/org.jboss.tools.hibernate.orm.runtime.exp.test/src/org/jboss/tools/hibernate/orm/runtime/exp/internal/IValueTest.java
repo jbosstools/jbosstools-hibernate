@@ -383,6 +383,43 @@ public class IValueTest {
 		assertNull(componentValueFacade.getElement());
 	}
 	
+	@Test
+	public void testSetCollectionTable() {
+		assertNull(((Collection)arrayValueTarget).getCollectionTable());
+		arrayValueFacade.setCollectionTable(tableFacade);
+		assertSame(tableTarget, ((Collection)arrayValueTarget).getCollectionTable());
+		assertNull(((Collection)bagValueTarget).getCollectionTable());
+		bagValueFacade.setCollectionTable(tableFacade);
+		assertSame(tableTarget, ((Collection)bagValueTarget).getCollectionTable());
+		assertNull(((Collection)listValueTarget).getCollectionTable());
+		listValueFacade.setCollectionTable(tableFacade);
+		assertSame(tableTarget, ((Collection)listValueTarget).getCollectionTable());
+		assertNull(manyToOneValueFacade.getCollectionTable());
+		manyToOneValueFacade.setCollectionTable(tableFacade);
+		assertNull(manyToOneValueFacade.getElement());
+		assertNull(((Collection)mapValueTarget).getCollectionTable());
+		mapValueFacade.setCollectionTable(tableFacade);
+		assertSame(tableTarget, ((Collection)mapValueTarget).getCollectionTable());
+		assertNull(oneToManyValueFacade.getCollectionTable());
+		oneToManyValueFacade.setCollectionTable(tableFacade);
+		assertNull(oneToManyValueFacade.getCollectionTable());
+		assertNull(oneToOneValueFacade.getCollectionTable());
+		oneToOneValueFacade.setCollectionTable(tableFacade);
+		assertNull(oneToOneValueFacade.getCollectionTable());
+		assertNull(((Collection)primitiveArrayValueTarget).getCollectionTable());
+		primitiveArrayValueFacade.setCollectionTable(tableFacade);
+		assertSame(tableTarget, ((Collection)primitiveArrayValueTarget).getCollectionTable());
+		assertNull(((Collection)setValueTarget).getCollectionTable());
+		setValueFacade.setCollectionTable(tableFacade);
+		assertSame(tableTarget, ((Collection)setValueTarget).getCollectionTable());
+		assertNull(simpleValueFacade.getCollectionTable());
+		simpleValueFacade.setCollectionTable(tableFacade);
+		assertNull(simpleValueFacade.getCollectionTable());
+		assertNull(componentValueFacade.getCollectionTable());
+		componentValueFacade.setCollectionTable(tableFacade);
+		assertNull(componentValueFacade.getCollectionTable());
+	}
+	
 	
 	
 	
