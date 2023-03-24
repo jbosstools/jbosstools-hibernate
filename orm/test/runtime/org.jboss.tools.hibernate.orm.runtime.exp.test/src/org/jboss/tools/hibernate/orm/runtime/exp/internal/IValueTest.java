@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -505,6 +506,8 @@ public class IValueTest {
 	}
 	
 
+	
+
 
 	
 	
@@ -564,6 +567,46 @@ public class IValueTest {
 		assertNull(simpleValueFacade.getIndex());
 		assertNull(componentValueFacade.getIndex());
 	}
+	
+	
+	
+	
+	
+	@Test
+	public void testGetTypeName() {
+		assertNull(arrayValueFacade.getTypeName());
+		((Collection)arrayValueTarget).setTypeName("foobar");
+		assertEquals("foobar", arrayValueFacade.getTypeName());
+		assertNull(bagValueFacade.getTypeName());
+		((Collection)bagValueTarget).setTypeName("foobar");
+		assertEquals("foobar", bagValueFacade.getTypeName());
+		assertNull(listValueFacade.getTypeName());
+		((Collection)listValueTarget).setTypeName("foobar");
+		assertEquals("foobar", listValueFacade.getTypeName());
+		assertNull(manyToOneValueFacade.getTypeName());
+		((SimpleValue)manyToOneValueTarget).setTypeName("foobar");
+		assertEquals("foobar", manyToOneValueFacade.getTypeName());
+		assertNull(mapValueFacade.getTypeName());
+		((Collection)mapValueTarget).setTypeName("foobar");
+		assertEquals("foobar", mapValueFacade.getTypeName());
+		assertNull(oneToManyValueFacade.getTypeName());
+		assertNull(oneToOneValueFacade.getTypeName());
+		((SimpleValue)oneToOneValueTarget).setTypeName("foobar");
+		assertEquals("foobar", oneToOneValueFacade.getTypeName());
+		assertNull(primitiveArrayValueFacade.getTypeName());
+		((Collection)primitiveArrayValueTarget).setTypeName("foobar");
+		assertEquals("foobar", primitiveArrayValueFacade.getTypeName());
+		assertNull(setValueFacade.getTypeName());
+		((Collection)setValueTarget).setTypeName("foobar");
+		assertEquals("foobar", setValueFacade.getTypeName());
+		assertNull(simpleValueFacade.getTypeName());
+		((SimpleValue)simpleValueTarget).setTypeName("foobar");
+		assertEquals("foobar", simpleValueFacade.getTypeName());
+		assertNull(componentValueFacade.getTypeName());
+		((SimpleValue)componentValueTarget).setTypeName("foobar");
+		assertEquals("foobar", componentValueFacade.getTypeName());
+	}
+	
 	
 	
 	
