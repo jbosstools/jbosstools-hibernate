@@ -473,6 +473,37 @@ public class IValueTest {
 		assertFalse(componentValueFacade.isList());
 	}
 	
+	@Test
+	public void testSetIndex() {
+		assertNull(((IndexedCollection)arrayValueTarget).getIndex());
+		arrayValueFacade.setIndex(simpleValueFacade);
+		assertSame(simpleValueTarget, ((IndexedCollection)arrayValueTarget).getIndex());
+		assertNull(bagValueFacade.getIndex());
+		bagValueFacade.setIndex(simpleValueFacade);
+		assertNull(bagValueFacade.getIndex());
+		assertNull(((IndexedCollection)listValueTarget).getIndex());
+		listValueFacade.setIndex(simpleValueFacade);
+		assertSame(simpleValueTarget, ((IndexedCollection)listValueTarget).getIndex());
+		assertNull(oneToManyValueFacade.getIndex());
+		oneToManyValueFacade.setIndex(simpleValueFacade);
+		assertNull(oneToManyValueFacade.getIndex());
+		assertNull(oneToOneValueFacade.getIndex());
+		oneToOneValueFacade.setIndex(simpleValueFacade);
+		assertNull(oneToOneValueFacade.getIndex());
+		assertNull(((IndexedCollection)primitiveArrayValueTarget).getIndex());
+		primitiveArrayValueFacade.setIndex(simpleValueFacade);
+		assertSame(simpleValueTarget, ((IndexedCollection)primitiveArrayValueTarget).getIndex());
+		assertNull(setValueFacade.getIndex());
+		setValueFacade.setIndex(simpleValueFacade);
+		assertNull(setValueFacade.getIndex());
+		assertNull(simpleValueFacade.getIndex());
+		simpleValueFacade.setIndex(simpleValueFacade);
+		assertNull(simpleValueFacade.getIndex());
+		assertNull(componentValueFacade.getIndex());
+		componentValueFacade.setIndex(simpleValueFacade);
+		assertNull(componentValueFacade.getIndex());
+	}
+	
 
 
 	
