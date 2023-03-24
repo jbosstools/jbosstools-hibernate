@@ -388,6 +388,36 @@ public class IValueTest {
 	
 	
 	
+	@Test
+	public void testGetCollectionTable() {
+		assertNull(arrayValueFacade.getCollectionTable());
+		((Collection)arrayValueTarget).setCollectionTable(tableTarget);
+		assertSame(tableTarget, ((IFacade)arrayValueFacade.getCollectionTable()).getTarget());
+		assertNull(bagValueFacade.getCollectionTable());
+		((Collection)bagValueTarget).setCollectionTable(tableTarget);
+		assertSame(tableTarget, ((IFacade)bagValueFacade.getCollectionTable()).getTarget());
+		assertNull(listValueFacade.getCollectionTable());
+		((Collection)listValueTarget).setCollectionTable(tableTarget);
+		assertSame(tableTarget, ((IFacade)listValueFacade.getCollectionTable()).getTarget());
+		assertNull(manyToOneValueFacade.getCollectionTable());
+		assertNull(mapValueFacade.getCollectionTable());
+		((Collection)mapValueTarget).setCollectionTable(tableTarget);
+		assertSame(tableTarget, ((IFacade)mapValueFacade.getCollectionTable()).getTarget());
+		assertNull(oneToManyValueFacade.getCollectionTable());
+		assertNull(oneToOneValueFacade.getCollectionTable());
+		assertNull(primitiveArrayValueFacade.getCollectionTable());
+		((Collection)primitiveArrayValueTarget).setCollectionTable(tableTarget);
+		assertSame(tableTarget, ((IFacade)primitiveArrayValueFacade.getCollectionTable()).getTarget());
+		assertNull(setValueFacade.getCollectionTable());
+		((Collection)setValueTarget).setCollectionTable(tableTarget);
+		assertSame(tableTarget, ((IFacade)setValueFacade.getCollectionTable()).getTarget());
+		assertNull(simpleValueFacade.getCollectionTable());
+		assertNull(componentValueFacade.getCollectionTable());
+	}
+	
+	
+	
+	
 	
 
 	@Test
