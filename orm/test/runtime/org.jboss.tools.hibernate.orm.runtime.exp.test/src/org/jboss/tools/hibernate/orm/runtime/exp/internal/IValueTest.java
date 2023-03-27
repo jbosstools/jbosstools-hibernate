@@ -15,6 +15,7 @@ import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.IndexedCollection;
+import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
@@ -694,11 +695,6 @@ public class IValueTest {
 		((Component)componentValueTarget).setTypeName("foo");
 		assertTrue(componentValueFacade.isTypeSpecified());
 	}
-
-	
-	
-	
-	
 	
 	@Test
 	public void testGetCollectionTable() {
@@ -726,6 +722,54 @@ public class IValueTest {
 		assertNull(simpleValueFacade.getCollectionTable());
 		assertNull(componentValueFacade.getCollectionTable());
 	}
+	
+	@Test
+	public void testGetKey() {
+		assertNull(arrayValueFacade.getKey());
+		((Collection)arrayValueTarget).setKey((KeyValue)simpleValueTarget);
+		assertSame(simpleValueTarget, ((IFacade)arrayValueFacade.getKey()).getTarget());
+		assertNull(bagValueFacade.getKey());
+		((Collection)bagValueTarget).setKey((KeyValue)simpleValueTarget);
+		assertSame(simpleValueTarget, ((IFacade)bagValueFacade.getKey()).getTarget());
+		assertNull(listValueFacade.getKey());
+		((Collection)listValueTarget).setKey((KeyValue)simpleValueTarget);
+		assertSame(simpleValueTarget, ((IFacade)listValueFacade.getKey()).getTarget());
+		assertNull(mapValueFacade.getKey());
+		((Collection)mapValueTarget).setKey((KeyValue)simpleValueTarget);
+		assertSame(simpleValueTarget, ((IFacade)mapValueFacade.getKey()).getTarget());
+		assertNull(primitiveArrayValueFacade.getKey());
+		((Collection)primitiveArrayValueTarget).setKey((KeyValue)simpleValueTarget);
+		assertSame(simpleValueTarget, ((IFacade)primitiveArrayValueFacade.getKey()).getTarget());
+		assertNull(setValueFacade.getKey());
+		((Collection)setValueTarget).setKey((KeyValue)simpleValueTarget);
+		assertSame(simpleValueTarget, ((IFacade)setValueFacade.getKey()).getTarget());
+		try {
+			simpleValueFacade.getKey();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getKey()'"));
+		}
+		try {
+			manyToOneValueFacade.getKey();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getKey()'"));
+		}
+		try {
+			oneToOneValueFacade.getKey();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getKey()'"));
+		}
+		try {
+			componentValueFacade.getKey();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getKey()'"));
+		}
+	}
+	
+	
 	
 	
 	
