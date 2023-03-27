@@ -485,6 +485,12 @@ public class IValueTest {
 		assertNull(((IndexedCollection)listValueTarget).getIndex());
 		listValueFacade.setIndex(simpleValueFacade);
 		assertSame(simpleValueTarget, ((IndexedCollection)listValueTarget).getIndex());
+		assertNull(manyToOneValueFacade.getIndex());
+		manyToOneValueFacade.setIndex(simpleValueFacade);
+		assertNull(manyToOneValueFacade.getIndex());
+		assertNull(((IndexedCollection)mapValueTarget).getIndex());
+		mapValueFacade.setIndex(simpleValueFacade);
+		assertSame(simpleValueTarget, ((IndexedCollection)mapValueTarget).getIndex());
 		assertNull(oneToManyValueFacade.getIndex());
 		oneToManyValueFacade.setIndex(simpleValueFacade);
 		assertNull(oneToManyValueFacade.getIndex());
@@ -505,7 +511,42 @@ public class IValueTest {
 		assertNull(componentValueFacade.getIndex());
 	}
 	
-
+	@Test
+	public void testSetTypeName() {
+		assertNull(((Collection)arrayValueTarget).getTypeName());
+		arrayValueFacade.setTypeName("foobar");
+		assertEquals("foobar", ((Collection)arrayValueTarget).getTypeName());
+		assertNull(((Collection)bagValueTarget).getTypeName());
+		bagValueFacade.setTypeName("foobar");
+		assertEquals("foobar", ((Collection)bagValueTarget).getTypeName());
+		assertNull(((Collection)listValueTarget).getTypeName());
+		listValueFacade.setTypeName("foobar");
+		assertEquals("foobar", ((Collection)listValueTarget).getTypeName());
+		assertNull(((SimpleValue)manyToOneValueTarget).getTypeName());
+		manyToOneValueFacade.setTypeName("foobar");
+		assertEquals("foobar", ((SimpleValue)manyToOneValueTarget).getTypeName());
+		assertNull(((Collection)mapValueTarget).getTypeName());
+		mapValueFacade.setTypeName("foobar");
+		assertEquals("foobar", ((Collection)mapValueTarget).getTypeName());
+		assertNull(oneToManyValueFacade.getTypeName());
+		oneToManyValueFacade.setTypeName("foobar");
+		assertNull(oneToManyValueFacade.getTypeName());
+		assertNull(((SimpleValue)oneToOneValueTarget).getTypeName());
+		oneToOneValueFacade.setTypeName("foobar");
+		assertEquals("foobar", ((SimpleValue)oneToOneValueTarget).getTypeName());
+		assertNull(((Collection)primitiveArrayValueTarget).getTypeName());
+		primitiveArrayValueFacade.setTypeName("foobar");
+		assertEquals("foobar", ((Collection)primitiveArrayValueTarget).getTypeName());
+		assertNull(((Collection)setValueTarget).getTypeName());
+		setValueFacade.setTypeName("foobar");
+		assertEquals("foobar", ((Collection)setValueTarget).getTypeName());
+		assertNull(((SimpleValue)simpleValueTarget).getTypeName());
+		simpleValueFacade.setTypeName("foobar");
+		assertEquals("foobar", ((SimpleValue)simpleValueTarget).getTypeName());
+		assertNull(((SimpleValue)componentValueTarget).getTypeName());
+		componentValueFacade.setTypeName("foobar");
+		assertEquals("foobar", ((SimpleValue)componentValueTarget).getTypeName());
+	}
 	
 
 
