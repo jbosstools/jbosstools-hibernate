@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Iterator;
 
@@ -630,6 +631,68 @@ public class IValueTest {
 		columnFacade = columnIterator.next();
 		assertFalse(columnIterator.hasNext());
 		assertSame(((IFacade)columnFacade).getTarget(), columnTarget);
+	}
+	
+	@Test
+	public void testIsTypeSpecified() {
+		try {
+			arrayValueFacade.isTypeSpecified();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'isTypeSpecified()'"));
+		}
+		try {
+			bagValueFacade.isTypeSpecified();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'isTypeSpecified()'"));
+		}
+		try {
+			listValueFacade.isTypeSpecified();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'isTypeSpecified()'"));
+		}
+		try {
+			mapValueFacade.isTypeSpecified();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'isTypeSpecified()'"));
+		}
+		try {
+			oneToManyValueFacade.isTypeSpecified();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'isTypeSpecified()'"));
+		}
+		try {
+			primitiveArrayValueFacade.isTypeSpecified();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'isTypeSpecified()'"));
+		}
+		try {
+			setValueFacade.isTypeSpecified();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'isTypeSpecified()'"));
+		}
+		assertFalse(manyToOneValueFacade.isTypeSpecified());
+		((ManyToOne)manyToOneValueTarget).setTypeName("foo");
+		assertFalse(manyToOneValueFacade.isTypeSpecified());
+		((ManyToOne)manyToOneValueTarget).setReferencedEntityName("foo");
+		assertTrue(manyToOneValueFacade.isTypeSpecified());
+		assertFalse(oneToOneValueFacade.isTypeSpecified());
+		((OneToOne)oneToOneValueTarget).setTypeName("foo");
+		assertFalse(oneToOneValueFacade.isTypeSpecified());
+		((OneToOne)oneToOneValueTarget).setReferencedEntityName("foo");
+		assertTrue(manyToOneValueFacade.isTypeSpecified());
+		assertFalse(simpleValueFacade.isTypeSpecified());
+		((SimpleValue)simpleValueTarget).setTypeName("foo");
+		assertTrue(simpleValueFacade.isTypeSpecified());
+		assertFalse(componentValueFacade.isTypeSpecified());
+		((Component)componentValueTarget).setTypeName("foo");
+		assertTrue(componentValueFacade.isTypeSpecified());
 	}
 
 	
