@@ -7,13 +7,22 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Iterator;
+
+import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Collection;
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.IndexedCollection;
 import org.hibernate.mapping.ManyToOne;
+import org.hibernate.mapping.OneToMany;
+import org.hibernate.mapping.OneToOne;
+import org.hibernate.mapping.Property;
+import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
+import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.type.ArrayType;
 import org.hibernate.type.BagType;
 import org.hibernate.type.BasicType;
@@ -26,6 +35,7 @@ import org.hibernate.type.SetType;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
+import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
@@ -565,7 +575,62 @@ public class IValueTest {
 		assertEquals("foobar", componentValueFacade.getComponentClassName());
 	}
 	
-
+	@Test
+	public void testGetColumnIterator() {
+		Iterator<IColumn> columnIterator = null;
+		IColumn columnFacade = null;
+		Column columnTarget = new Column("foo");
+		// collection values have no columns
+		assertFalse(arrayValueFacade.getColumnIterator().hasNext());
+		assertFalse(bagValueFacade.getColumnIterator().hasNext());
+		assertFalse(listValueFacade.getColumnIterator().hasNext());
+		assertFalse(mapValueFacade.getColumnIterator().hasNext());
+		assertFalse(primitiveArrayValueFacade.getColumnIterator().hasNext());
+		assertFalse(setValueFacade.getColumnIterator().hasNext());
+		// one to many value columns are the ones of the associated class
+		RootClass pc = new RootClass(DummyMetadataBuildingContext.INSTANCE);
+		BasicValue kv = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		kv.setTable(new Table(""));
+		pc.setIdentifier(kv);
+		((OneToMany)oneToManyValueTarget).setAssociatedClass(pc);
+		assertFalse(oneToManyValueFacade.getColumnIterator().hasNext());
+		kv.addColumn(columnTarget);
+		columnIterator = oneToManyValueFacade.getColumnIterator();
+		columnFacade = columnIterator.next();
+		assertFalse(columnIterator.hasNext());
+		assertSame(((IFacade)columnFacade).getTarget(), columnTarget);
+		// simple value case
+		((SimpleValue)simpleValueTarget).setTable(new Table(""));
+		assertFalse(simpleValueFacade.getColumnIterator().hasNext());
+		((SimpleValue)simpleValueTarget).addColumn(columnTarget);
+		columnIterator = simpleValueFacade.getColumnIterator();
+		columnFacade = columnIterator.next();
+		assertFalse(columnIterator.hasNext());
+		assertSame(((IFacade)columnFacade).getTarget(), columnTarget);
+		// component value case
+		assertFalse(componentValueFacade.getColumnIterator().hasNext());
+		Property p = new Property();
+		p.setValue(kv);
+		((Component)componentValueTarget).addProperty(p);
+		columnIterator = componentValueFacade.getColumnIterator();
+		columnFacade = columnIterator.next();
+		assertFalse(columnIterator.hasNext());
+		assertSame(((IFacade)columnFacade).getTarget(), columnTarget);
+		// many to one value
+		assertFalse(manyToOneValueFacade.getColumnIterator().hasNext());
+		((ManyToOne)manyToOneValueTarget).addColumn(columnTarget);
+		columnIterator = manyToOneValueFacade.getColumnIterator();
+		columnFacade = columnIterator.next();
+		assertFalse(columnIterator.hasNext());
+		assertSame(((IFacade)columnFacade).getTarget(), columnTarget);
+		// one to one value
+		assertFalse(oneToOneValueFacade.getColumnIterator().hasNext());
+		((OneToOne)oneToOneValueTarget).addColumn(columnTarget);
+		columnIterator = oneToOneValueFacade.getColumnIterator();
+		columnFacade = columnIterator.next();
+		assertFalse(columnIterator.hasNext());
+		assertSame(((IFacade)columnFacade).getTarget(), columnTarget);
+	}
 
 	
 	
