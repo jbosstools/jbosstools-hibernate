@@ -548,6 +548,23 @@ public class IValueTest {
 		assertEquals("foobar", ((SimpleValue)componentValueTarget).getTypeName());
 	}
 	
+	@Test
+	public void testGetComponentClassName() {
+		assertNull(arrayValueFacade.getComponentClassName());
+		assertNull(bagValueFacade.getComponentClassName());
+		assertNull(listValueFacade.getComponentClassName());
+		assertNull(manyToOneValueFacade.getComponentClassName());
+		assertNull(mapValueFacade.getComponentClassName());
+		assertNull(oneToManyValueFacade.getComponentClassName());
+		assertNull(oneToOneValueFacade.getComponentClassName());
+		assertNull(primitiveArrayValueFacade.getComponentClassName());
+		assertNull(setValueFacade.getComponentClassName());
+		assertNull(simpleValueFacade.getComponentClassName());
+		assertNull(componentValueFacade.getComponentClassName());
+		((Component)componentValueTarget).setComponentClassName("foobar");
+		assertEquals("foobar", componentValueFacade.getComponentClassName());
+	}
+	
 
 
 	
