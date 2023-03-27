@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Iterator;
 
+import org.hibernate.mapping.Array;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
@@ -19,6 +20,7 @@ import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
+import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
@@ -769,12 +771,6 @@ public class IValueTest {
 		}
 	}
 	
-	
-	
-	
-	
-	
-	
 	@Test
 	public void testGetIndex() {
 		assertNull(arrayValueFacade.getIndex());
@@ -798,7 +794,70 @@ public class IValueTest {
 		assertNull(componentValueFacade.getIndex());
 	}
 	
-	
+	@Test
+	public void testGetElementClassName() {
+		// only supported by array values
+		assertNull(arrayValueFacade.getElementClassName());
+		((Array)arrayValueTarget).setElementClassName("foo");
+		assertEquals("foo", arrayValueFacade.getElementClassName());
+		assertNull(primitiveArrayValueFacade.getElementClassName());
+		((PrimitiveArray)primitiveArrayValueTarget).setElementClassName("foo");
+		assertEquals("foo", primitiveArrayValueFacade.getElementClassName());
+		try {
+			bagValueFacade.getElementClassName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getElementClassName()'"));
+		}
+		try {
+			listValueFacade.getElementClassName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getElementClassName()'"));
+		}
+		try {
+			setValueFacade.getElementClassName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getElementClassName()'"));
+		}
+		try {
+			mapValueFacade.getElementClassName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getElementClassName()'"));
+		}
+		try {
+			simpleValueFacade.getElementClassName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getElementClassName()'"));
+		}
+		try {
+			manyToOneValueFacade.getElementClassName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getElementClassName()'"));
+		}
+		try {
+			oneToOneValueFacade.getElementClassName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getElementClassName()'"));
+		}
+		try {
+			oneToManyValueFacade.getElementClassName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getElementClassName()'"));
+		}
+		try {
+			componentValueFacade.getElementClassName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getElementClassName()'"));
+		}
+	}
 	
 	
 	
