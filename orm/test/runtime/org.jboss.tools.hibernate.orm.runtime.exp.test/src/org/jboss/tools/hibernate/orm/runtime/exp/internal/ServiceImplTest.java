@@ -391,9 +391,10 @@ public class ServiceImplTest {
 	public void testSimpleValue() {
 		IValue simpleValue = service.newSimpleValue();
 		assertNotNull(simpleValue);
-		Object target = ((IFacade)simpleValue).getTarget();
-		assertNotNull(target);
-		assertTrue(target instanceof SimpleValue);
+		Object simpleValueWrapper = ((IFacade)simpleValue).getTarget();
+		assertNotNull(simpleValueWrapper);
+		assertTrue(simpleValueWrapper instanceof Wrapper);
+		assertTrue(((Wrapper)simpleValueWrapper).getWrappedObject() instanceof SimpleValue);
 	}
 	
 	@Test

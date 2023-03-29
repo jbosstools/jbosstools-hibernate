@@ -408,8 +408,10 @@ public class NewFacadeFactoryTest {
 	public void testCreateSimpleValue() {
 		IValue simpleValueFacade = facadeFactory.createSimpleValue();
 		Object simpleValueWrapper = ((IFacade)simpleValueFacade).getTarget();
-		assertNotNull(simpleValueFacade);
-		assertTrue(simpleValueWrapper instanceof SimpleValue);
+		assertNotNull(simpleValueWrapper);
+		assertTrue(simpleValueWrapper instanceof Wrapper);
+		Object wrappedSimpleValue = ((Wrapper)simpleValueWrapper).getWrappedObject();
+		assertTrue(wrappedSimpleValue instanceof SimpleValue);
 	}
 	
 	@Test
