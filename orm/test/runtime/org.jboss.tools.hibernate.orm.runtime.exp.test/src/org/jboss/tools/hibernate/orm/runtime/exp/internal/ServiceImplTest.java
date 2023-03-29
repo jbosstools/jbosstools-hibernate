@@ -431,11 +431,12 @@ public class ServiceImplTest {
 	@Test
 	public void testNewList() {
 		IPersistentClass persistentClass = service.newRootClass();
-		IValue list = service.newList(persistentClass);
-		assertNotNull(list);
-		Object target = ((IFacade)list).getTarget();
-		assertNotNull(target);
-		assertTrue(target instanceof org.hibernate.mapping.List);
+		IValue listFacade = service.newList(persistentClass);
+		assertNotNull(listFacade);
+		Object listWrapper = ((IFacade)listFacade).getTarget();
+		assertNotNull(listWrapper);
+		assertTrue(listWrapper instanceof Wrapper);
+		assertTrue(((Wrapper)listWrapper).getWrappedObject() instanceof org.hibernate.mapping.List);
 	}
 	
 	@Test

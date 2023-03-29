@@ -280,9 +280,11 @@ public class NewFacadeFactoryTest {
 		IValue listFacade = 
 				facadeFactory.createList(rootClassFacade);
 		Object listWrapper = ((IFacade)listFacade).getTarget();
-		assertNotNull(listFacade);
-		assertTrue(listWrapper instanceof List);
-		assertSame(rootClass, ((List)listWrapper).getOwner());
+		assertNotNull(listWrapper);
+		assertTrue(listWrapper instanceof Wrapper);
+		Object wrappedList = ((Wrapper)listWrapper).getWrappedObject();
+		assertTrue(wrappedList instanceof List);
+		assertSame(rootClass, ((List)wrappedList).getOwner());
 	}
 	
 	@Test
