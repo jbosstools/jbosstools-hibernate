@@ -382,10 +382,12 @@ public class NewFacadeFactoryTest {
 		PersistentClass rootClass = (PersistentClass)((Wrapper)((IFacade)rootClassFacade).getTarget()).getWrappedObject();
 		IValue primitiveArrayFacade = 
 				facadeFactory.createPrimitiveArray(rootClassFacade);
-		Object arrayWrapper = ((IFacade)primitiveArrayFacade).getTarget();
-		assertNotNull(primitiveArrayFacade);
-		assertTrue(arrayWrapper instanceof PrimitiveArray);
-		assertSame(rootClass, ((PrimitiveArray)arrayWrapper).getOwner());
+		Object primitiveArrayWrapper = ((IFacade)primitiveArrayFacade).getTarget();
+		assertNotNull(primitiveArrayWrapper);
+		assertTrue(primitiveArrayWrapper instanceof Wrapper);
+		Object wrappedPrimitiveArray = ((Wrapper)primitiveArrayWrapper).getWrappedObject();
+		assertTrue(wrappedPrimitiveArray instanceof PrimitiveArray);
+		assertSame(rootClass, ((PrimitiveArray)wrappedPrimitiveArray).getOwner());
 	}
 	
 	@Test

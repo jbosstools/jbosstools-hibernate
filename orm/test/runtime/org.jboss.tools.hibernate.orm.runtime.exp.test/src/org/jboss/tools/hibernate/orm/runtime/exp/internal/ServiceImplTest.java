@@ -401,9 +401,10 @@ public class ServiceImplTest {
 		IPersistentClass persistentClass = service.newRootClass();
 		IValue primitiveArray = service.newPrimitiveArray(persistentClass);
 		assertNotNull(primitiveArray);
-		Object target = ((IFacade)primitiveArray).getTarget();
-		assertNotNull(target);
-		assertTrue(target instanceof PrimitiveArray);
+		Object primitiveArrayWrapper = ((IFacade)primitiveArray).getTarget();
+		assertNotNull(primitiveArrayWrapper);
+		assertTrue(primitiveArrayWrapper instanceof Wrapper);
+		assertTrue(((Wrapper)primitiveArrayWrapper).getWrappedObject() instanceof PrimitiveArray);
 	}
 	
 	@Test
