@@ -351,9 +351,11 @@ public class NewFacadeFactoryTest {
 		IValue oneToManyFacade = 
 				facadeFactory.createOneToMany(rootClassFacade);
 		Object oneToManyWrapper = ((IFacade)oneToManyFacade).getTarget();
-		assertNotNull(oneToManyFacade);
-		assertTrue(oneToManyWrapper instanceof OneToMany);
-		assertSame(table, ((OneToMany)oneToManyWrapper).getTable());
+		assertNotNull(oneToManyWrapper);
+		assertTrue(oneToManyWrapper instanceof Wrapper);
+		Object wrappedOneToMany = ((Wrapper)oneToManyWrapper).getWrappedObject();
+		assertTrue(wrappedOneToMany instanceof OneToMany);
+		assertSame(table, ((OneToMany)wrappedOneToMany).getTable());
 	}
 	
 	@Test

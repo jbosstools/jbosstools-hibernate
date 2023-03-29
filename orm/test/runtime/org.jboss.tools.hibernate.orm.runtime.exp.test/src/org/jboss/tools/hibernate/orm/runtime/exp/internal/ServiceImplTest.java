@@ -476,9 +476,10 @@ public class ServiceImplTest {
 		IPersistentClass persistentClass = service.newRootClass();
 		IValue oneToMany = service.newOneToMany(persistentClass);
 		assertNotNull(oneToMany);
-		Object target = ((IFacade)oneToMany).getTarget();
-		assertNotNull(target);
-		assertTrue(target instanceof OneToMany);
+		Object oneToManyWrapper = ((IFacade)oneToMany).getTarget();
+		assertNotNull(oneToManyWrapper);
+		assertTrue(oneToManyWrapper instanceof Wrapper);
+		assertTrue(((Wrapper)oneToManyWrapper).getWrappedObject() instanceof OneToMany);
 	}
 	
 	@Test
