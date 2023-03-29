@@ -464,9 +464,10 @@ public class ServiceImplTest {
 		ITable table = service.newTable("foo");
 		IValue manyToOne = service.newManyToOne(table);
 		assertNotNull(manyToOne);
-		Object target = ((IFacade)manyToOne).getTarget();
-		assertNotNull(target);
-		assertTrue(target instanceof ManyToOne);
+		Object manyToOneWrapper = ((IFacade)manyToOne).getTarget();
+		assertNotNull(manyToOneWrapper);
+		assertTrue(manyToOneWrapper instanceof Wrapper);
+		assertTrue(((Wrapper)manyToOneWrapper).getWrappedObject() instanceof ManyToOne);
 	}
 	
 	@Test

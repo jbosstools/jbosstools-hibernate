@@ -320,10 +320,12 @@ public class NewFacadeFactoryTest {
 		Object tableTarget = ((IFacade)tableFacade).getTarget();
 		IValue manyToOneFacade = facadeFactory.createManyToOne(tableFacade);
 		assertNotNull(manyToOneFacade);
-		Object manyToOneTarget = ((IFacade)manyToOneFacade).getTarget();
-		assertNotNull(manyToOneTarget);
-		assertTrue(manyToOneTarget instanceof ManyToOne);
-		assertSame(((ManyToOne)manyToOneTarget).getTable(), tableTarget);
+		Object manyToOneWrapper = ((IFacade)manyToOneFacade).getTarget();
+		assertNotNull(manyToOneWrapper);
+		assertTrue(manyToOneWrapper instanceof Wrapper);
+		Object wrappedManyToOne = ((Wrapper)manyToOneWrapper).getWrappedObject();
+		assertTrue(wrappedManyToOne instanceof ManyToOne);
+		assertSame(((ManyToOne)wrappedManyToOne).getTable(), tableTarget);
 	}
 	
 	@Test
