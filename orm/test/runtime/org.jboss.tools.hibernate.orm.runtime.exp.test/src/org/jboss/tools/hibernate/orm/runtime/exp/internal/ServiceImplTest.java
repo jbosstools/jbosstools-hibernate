@@ -420,11 +420,12 @@ public class ServiceImplTest {
 	@Test
 	public void testNewBag() {
 		IPersistentClass persistentClass = service.newRootClass();
-		IValue bag = service.newBag(persistentClass);
-		assertNotNull(bag);
-		Object target = ((IFacade)bag).getTarget();
-		assertNotNull(target);
-		assertTrue(target instanceof Bag);
+		IValue bagFacade = service.newBag(persistentClass);
+		assertNotNull(bagFacade);
+		Object bagWrapper = ((IFacade)bagFacade).getTarget();
+		assertNotNull(bagWrapper);
+		assertTrue(bagWrapper instanceof Wrapper);
+		assertTrue(((Wrapper)bagWrapper).getWrappedObject() instanceof Bag);
 	}
 	
 	@Test

@@ -266,9 +266,11 @@ public class NewFacadeFactoryTest {
 		IValue bagFacade = 
 				facadeFactory.createBag(rootClassFacade);
 		Object bagWrapper = ((IFacade)bagFacade).getTarget();
-		assertNotNull(bagFacade);
-		assertTrue(bagWrapper instanceof Bag);
-		assertSame(rootClass, ((Bag)bagWrapper).getOwner());
+		assertNotNull(bagWrapper);
+		assertTrue(bagWrapper instanceof Wrapper);
+		Object wrappedBag = ((Wrapper)bagWrapper).getWrappedObject();
+		assertTrue(wrappedBag instanceof Bag);
+		assertSame(rootClass, ((Bag)wrappedBag).getOwner());
 	}
 	
 	@Test
