@@ -444,9 +444,10 @@ public class ServiceImplTest {
 		IPersistentClass persistentClass = service.newRootClass();
 		IValue map = service.newMap(persistentClass);
 		assertNotNull(map);
-		Object target = ((IFacade)map).getTarget();
-		assertNotNull(target);
-		assertTrue(target instanceof Map);
+		Object mapWrapper = ((IFacade)map).getTarget();
+		assertNotNull(mapWrapper);
+		assertTrue(mapWrapper instanceof Wrapper);
+		assertTrue(((Wrapper)mapWrapper).getWrappedObject() instanceof Map);
 	}
 	
 	@Test

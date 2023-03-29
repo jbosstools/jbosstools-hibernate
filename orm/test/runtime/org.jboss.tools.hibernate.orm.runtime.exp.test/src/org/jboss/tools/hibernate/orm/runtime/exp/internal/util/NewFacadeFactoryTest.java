@@ -335,9 +335,11 @@ public class NewFacadeFactoryTest {
 		IValue mapFacade = 
 				facadeFactory.createMap(rootClassFacade);
 		Object mapWrapper = ((IFacade)mapFacade).getTarget();
-		assertNotNull(mapFacade);
-		assertTrue(mapWrapper instanceof Map);
-		assertSame(rootClass, ((Map)mapWrapper).getOwner());
+		assertNotNull(mapWrapper);
+		assertTrue(mapWrapper instanceof Wrapper);
+		Object wrappedMap = ((Wrapper)mapWrapper).getWrappedObject();
+		assertTrue(wrappedMap instanceof Map);
+		assertSame(rootClass, ((Map)wrappedMap).getOwner());
 	}
 	
 	@Test
