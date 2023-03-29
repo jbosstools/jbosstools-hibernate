@@ -456,9 +456,10 @@ public class ServiceImplTest {
 		IPersistentClass persistentClass = service.newRootClass();
 		IValue set = service.newSet(persistentClass);
 		assertNotNull(set);
-		Object target = ((IFacade)set).getTarget();
-		assertNotNull(target);
-		assertTrue(target instanceof Set);
+		Object setWrapper = ((IFacade)set).getTarget();
+		assertNotNull(setWrapper);
+		assertTrue(setWrapper instanceof Wrapper);
+		assertTrue(((Wrapper)setWrapper).getWrappedObject() instanceof Set);
 	}
 	
 	@Test

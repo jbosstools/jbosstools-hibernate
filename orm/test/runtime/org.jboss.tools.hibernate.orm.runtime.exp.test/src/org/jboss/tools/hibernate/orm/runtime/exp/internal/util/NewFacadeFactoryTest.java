@@ -397,9 +397,11 @@ public class NewFacadeFactoryTest {
 		IValue setFacade = 
 				facadeFactory.createSet(rootClassFacade);
 		Object setWrapper = ((IFacade)setFacade).getTarget();
-		assertNotNull(setFacade);
-		assertTrue(setWrapper instanceof Set);
-		assertSame(rootClass, ((Set)setWrapper).getOwner());
+		assertNotNull(setWrapper);
+		assertTrue(setWrapper instanceof Wrapper);
+		Object wrappedSet = ((Wrapper)setWrapper).getWrappedObject();
+		assertTrue(wrappedSet instanceof Set);
+		assertSame(rootClass, ((Set)wrappedSet).getOwner());
 	}
 	
 	@Test
