@@ -487,9 +487,10 @@ public class ServiceImplTest {
 		IPersistentClass persistentClass = service.newRootClass();
 		IValue oneToOne = service.newOneToOne(persistentClass);
 		assertNotNull(oneToOne);
-		Object target = ((IFacade)oneToOne).getTarget();
-		assertNotNull(target);
-		assertTrue(target instanceof OneToOne);
+		Object oneToOneWrapper = ((IFacade)oneToOne).getTarget();
+		assertNotNull(oneToOneWrapper);
+		assertTrue(oneToOneWrapper instanceof Wrapper);
+		assertTrue(((Wrapper)oneToOneWrapper).getWrappedObject() instanceof OneToOne);
 	}
 	
 	@Test

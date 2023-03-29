@@ -368,10 +368,12 @@ public class NewFacadeFactoryTest {
 		IValue oneToOneFacade = 
 				facadeFactory.createOneToOne(rootClassFacade);
 		Object oneToOneWrapper = ((IFacade)oneToOneFacade).getTarget();
-		assertNotNull(oneToOneFacade);
-		assertTrue(oneToOneWrapper instanceof OneToOne);
-		assertSame("bar", ((OneToOne)oneToOneWrapper).getEntityName());
-		assertSame(table, ((OneToOne)oneToOneWrapper).getTable());
+		assertNotNull(oneToOneWrapper);
+		assertTrue(oneToOneWrapper instanceof Wrapper);
+		Object wrappedOneToOne = ((Wrapper)oneToOneWrapper).getWrappedObject();
+		assertTrue(wrappedOneToOne instanceof OneToOne);
+		assertSame("bar", ((OneToOne)wrappedOneToOne).getEntityName());
+		assertSame(table, ((OneToOne)wrappedOneToOne).getTable());
 	}
 	
 	@Test
