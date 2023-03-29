@@ -409,11 +409,12 @@ public class ServiceImplTest {
 	@Test
 	public void testNewArray() {
 		IPersistentClass persistentClass = service.newRootClass();
-		IValue array = service.newArray(persistentClass);
-		assertNotNull(array);
-		Object target = ((IFacade)array).getTarget();
-		assertNotNull(target);
-		assertTrue(target instanceof Array);
+		IValue arrayFacade = service.newArray(persistentClass);
+		assertNotNull(arrayFacade);
+		Object arrayWrapper = ((IFacade)arrayFacade).getTarget();
+		assertNotNull(arrayWrapper);
+		assertTrue(arrayWrapper instanceof Wrapper);
+		assertTrue(((Wrapper)arrayWrapper).getWrappedObject() instanceof Array);
 	}
 	
 	@Test

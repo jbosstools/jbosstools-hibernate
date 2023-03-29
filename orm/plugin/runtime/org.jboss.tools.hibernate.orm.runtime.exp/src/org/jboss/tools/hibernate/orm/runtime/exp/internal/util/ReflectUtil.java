@@ -25,7 +25,7 @@ public class ReflectUtil {
 				argumentClasses);
 	}
 	
-	public static Object invokeMethod(Method method, Object object, Object[] args) throws Exception {
+	public static Object invokeMethod(Method method, Object object, Object[] args) throws Throwable {
 		int parameterCount = method.getParameterCount();
 		int argumentCount = args == null ? 0 : args.length;
 		Object[] arguments = new Object[parameterCount];
@@ -46,7 +46,7 @@ public class ReflectUtil {
 			} else {
 				arguments[parameterCount - 1] = args[parameterCount - 1];
 			}
-		}
+		} 
 		return method.invoke(object, arguments);
  	}
 	

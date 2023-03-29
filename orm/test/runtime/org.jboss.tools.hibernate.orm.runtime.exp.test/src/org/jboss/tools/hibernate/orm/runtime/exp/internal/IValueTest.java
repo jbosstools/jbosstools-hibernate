@@ -27,6 +27,8 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
+import org.hibernate.tool.orm.jbt.wrp.ValueWrapperFactory;
+import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.hibernate.type.ArrayType;
 import org.hibernate.type.BagType;
 import org.hibernate.type.BasicType;
@@ -82,27 +84,27 @@ public class IValueTest {
 		tableFacade = NewFacadeFactory.INSTANCE.createTable("foo");
 		tableTarget = (Table)((IFacade)tableFacade).getTarget();
 		arrayValueFacade = NewFacadeFactory.INSTANCE.createArray(persistentClassFacade);
-		arrayValueTarget = (Value)((IFacade)arrayValueFacade).getTarget();
+		arrayValueTarget = (Value)((Wrapper)((IFacade)arrayValueFacade).getTarget()).getWrappedObject();
 		bagValueFacade = NewFacadeFactory.INSTANCE.createBag(persistentClassFacade);
-		bagValueTarget = (Value)((IFacade)bagValueFacade).getTarget();
+		bagValueTarget = (Value)((Wrapper)((IFacade)bagValueFacade).getTarget()).getWrappedObject();
 		listValueFacade = NewFacadeFactory.INSTANCE.createList(persistentClassFacade);
-		listValueTarget = (Value)((IFacade)listValueFacade).getTarget();
+		listValueTarget = (Value)((Wrapper)((IFacade)listValueFacade).getTarget()).getWrappedObject();
 		manyToOneValueFacade = NewFacadeFactory.INSTANCE.createManyToOne(tableFacade);
-		manyToOneValueTarget = (Value)((IFacade)manyToOneValueFacade).getTarget();
+		manyToOneValueTarget = (Value)((Wrapper)((IFacade)manyToOneValueFacade).getTarget()).getWrappedObject();
 		mapValueFacade = NewFacadeFactory.INSTANCE.createMap(persistentClassFacade);
-		mapValueTarget = (Value)((IFacade)mapValueFacade).getTarget();
+		mapValueTarget = (Value)((Wrapper)((IFacade)mapValueFacade).getTarget()).getWrappedObject();
 		oneToManyValueFacade = NewFacadeFactory.INSTANCE.createOneToMany(persistentClassFacade);
-		oneToManyValueTarget = (Value)((IFacade)oneToManyValueFacade).getTarget();
+		oneToManyValueTarget = (Value)((Wrapper)((IFacade)oneToManyValueFacade).getTarget()).getWrappedObject();
 		oneToOneValueFacade = NewFacadeFactory.INSTANCE.createOneToOne(persistentClassFacade);
-		oneToOneValueTarget = (Value)((IFacade)oneToOneValueFacade).getTarget();
+		oneToOneValueTarget = (Value)((Wrapper)((IFacade)oneToOneValueFacade).getTarget()).getWrappedObject();
 		primitiveArrayValueFacade = NewFacadeFactory.INSTANCE.createPrimitiveArray(persistentClassFacade);
-		primitiveArrayValueTarget = (Value)((IFacade)primitiveArrayValueFacade).getTarget();
+		primitiveArrayValueTarget = (Value)((Wrapper)((IFacade)primitiveArrayValueFacade).getTarget()).getWrappedObject();
 		setValueFacade = NewFacadeFactory.INSTANCE.createSet(persistentClassFacade);
-		setValueTarget = (Value)((IFacade)setValueFacade).getTarget();
+		setValueTarget = (Value)((Wrapper)((IFacade)setValueFacade).getTarget()).getWrappedObject();
 		simpleValueFacade = NewFacadeFactory.INSTANCE.createSimpleValue();
-		simpleValueTarget = (Value)((IFacade)simpleValueFacade).getTarget();
+		simpleValueTarget = (Value)((Wrapper)((IFacade)simpleValueFacade).getTarget()).getWrappedObject();
 		componentValueFacade = NewFacadeFactory.INSTANCE.createComponent(persistentClassFacade);
-		componentValueTarget = (Value)((IFacade)componentValueFacade).getTarget();
+		componentValueTarget = (Value)((Wrapper)((IFacade)componentValueFacade).getTarget()).getWrappedObject();
 	}
 	
 	@Test
@@ -858,9 +860,7 @@ public class IValueTest {
 			assertTrue(e.getMessage().contains("does not support 'getElementClassName()'"));
 		}
 	}
-	
-	
-	
+		
 	@Test
 	public void testGetTypeName() {
 		assertNull(arrayValueFacade.getTypeName());
@@ -896,12 +896,6 @@ public class IValueTest {
 		assertEquals("foobar", componentValueFacade.getTypeName());
 	}
 	
-	
-	
-	
-	
-	
-
 	@Test
 	public void testGetElement() {
 		assertNull(arrayValueFacade.getElement());

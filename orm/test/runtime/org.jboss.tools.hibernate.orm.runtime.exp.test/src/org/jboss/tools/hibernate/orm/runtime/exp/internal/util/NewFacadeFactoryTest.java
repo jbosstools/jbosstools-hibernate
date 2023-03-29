@@ -251,9 +251,12 @@ public class NewFacadeFactoryTest {
 		IValue arrayFacade = 
 				facadeFactory.createArray(rootClassFacade);
 		Object arrayWrapper = ((IFacade)arrayFacade).getTarget();
-		assertNotNull(arrayFacade);
-		assertTrue(arrayWrapper instanceof Array);
-		assertSame(rootClass, ((Array)arrayWrapper).getOwner());
+		assertNotNull(arrayWrapper);
+		assertTrue(arrayWrapper instanceof Wrapper);
+		Object wrappedArray = ((Wrapper)arrayWrapper).getWrappedObject();
+		assertNotNull(wrappedArray);
+		assertTrue(wrappedArray instanceof Array);
+		assertSame(rootClass, ((Array)wrappedArray).getOwner());
 	}
 	
 	@Test
