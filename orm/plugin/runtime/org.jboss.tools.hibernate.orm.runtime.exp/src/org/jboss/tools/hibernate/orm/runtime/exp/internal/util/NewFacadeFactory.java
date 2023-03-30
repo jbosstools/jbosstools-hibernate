@@ -25,8 +25,6 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 	
 	public static NewFacadeFactory INSTANCE = new NewFacadeFactory();
 
-	private WrapperFactory wrapperFactory = new WrapperFactory();
-	
 	private NewFacadeFactory() {}
 	
 	@Override
@@ -37,7 +35,7 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 	public IArtifactCollector createArtifactCollector() {
 		return (IArtifactCollector)GenericFacadeFactory.createFacade(
 				IArtifactCollector.class, 
-				wrapperFactory.createArtifactCollectorWrapper());
+				WrapperFactory.createArtifactCollectorWrapper());
 	}
 
 	@Override
@@ -48,7 +46,7 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 	public ICfg2HbmTool createCfg2HbmTool() {
 		return (ICfg2HbmTool)GenericFacadeFactory.createFacade(
 				ICfg2HbmTool.class,
-				wrapperFactory.createCfg2HbmWrapper());
+				WrapperFactory.createCfg2HbmWrapper());
 	}
 	
 	@Override
@@ -59,7 +57,7 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 	public INamingStrategy createNamingStrategy(String namingStrategyClassName) {
 		return (INamingStrategy)GenericFacadeFactory.createFacade(
 				INamingStrategy.class, 
-				wrapperFactory.createNamingStrategyWrapper(namingStrategyClassName));
+				WrapperFactory.createNamingStrategyWrapper(namingStrategyClassName));
 	}
 	
 	@Override
@@ -70,7 +68,7 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 	public IOverrideRepository createOverrideRepository() {
 		return (IOverrideRepository)GenericFacadeFactory.createFacade(
 				IOverrideRepository.class, 
-				wrapperFactory.createOverrideRepositoryWrapper());
+				WrapperFactory.createOverrideRepositoryWrapper());
 	}
 
 	@Override 
@@ -81,118 +79,118 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 	public IReverseEngineeringStrategy createReverseEngineeringStrategy(Object...objects) {
 		return (IReverseEngineeringStrategy)GenericFacadeFactory.createFacade(
 				IReverseEngineeringStrategy.class, 
-				wrapperFactory.createRevengStrategyWrapper(objects));				
+				WrapperFactory.createRevengStrategyWrapper(objects));				
 	}
 	
 	public IReverseEngineeringSettings createReverseEngineeringSettings(Object revengStrategy) {
 		return (IReverseEngineeringSettings)GenericFacadeFactory.createFacade(
 				IReverseEngineeringSettings.class, 
-				wrapperFactory.createRevengSettingsWrapper(revengStrategy));
+				WrapperFactory.createRevengSettingsWrapper(revengStrategy));
 				
 	}
 	
 	public IColumn createColumn(String name) {
 		return (IColumn)GenericFacadeFactory.createFacade(
 				IColumn.class, 
-				wrapperFactory.createColumnWrapper(name));
+				WrapperFactory.createColumnWrapper(name));
 	}
 
 	public IConfiguration createNativeConfiguration() {
 		return (IConfiguration)GenericFacadeFactory.createFacade(
 				IConfiguration.class, 
-				wrapperFactory.createNativeConfigurationWrapper());
+				WrapperFactory.createNativeConfigurationWrapper());
 	}
 	
 	public IConfiguration createRevengConfiguration() {
 		return (IConfiguration)GenericFacadeFactory.createFacade(
 				IConfiguration.class, 
-				wrapperFactory.createRevengConfigurationWrapper());
+				WrapperFactory.createRevengConfigurationWrapper());
 	}
  	
 	public IConfiguration createJpaConfiguration(String persistenceUnit, Map<?,?> properties) {
 		return (IConfiguration)GenericFacadeFactory.createFacade(
 				IConfiguration.class, 
-				wrapperFactory.createJpaConfigurationWrapper(persistenceUnit, properties));
+				WrapperFactory.createJpaConfigurationWrapper(persistenceUnit, properties));
 	}
 	
 	public IPersistentClass createRootClass() {
 		return (IPersistentClass)GenericFacadeFactory.createFacade(
 				IPersistentClass.class, 
-				wrapperFactory.createRootClassWrapper());
+				WrapperFactory.createRootClassWrapper());
 	}	
 	
 	public IPersistentClass createSingleTableSubclass(IPersistentClass persistentClass) {
 		return (IPersistentClass)GenericFacadeFactory.createFacade(
 				IPersistentClass.class, 
-				wrapperFactory.createSingleTableSubClassWrapper(((IFacade)persistentClass).getTarget()));
+				WrapperFactory.createSingleTableSubClassWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
 	public IPersistentClass createJoinedTableSubclass(IPersistentClass persistentClass) {
 		return (IPersistentClass)GenericFacadeFactory.createFacade(
 				IPersistentClass.class, 
-				wrapperFactory.createJoinedTableSubClassWrapper(((IFacade)persistentClass).getTarget()));
+				WrapperFactory.createJoinedTableSubClassWrapper(((IFacade)persistentClass).getTarget()));
 	}
 	
 	@Override
 	public IPersistentClass createSpecialRootClass(IProperty property) {
 		return (IPersistentClass)GenericFacadeFactory.createFacade(
 				IPersistentClass.class, 
-				wrapperFactory.createSpecialRootClassWrapper(((IFacade)property).getTarget()));
+				WrapperFactory.createSpecialRootClassWrapper(((IFacade)property).getTarget()));
 	}
 
 	public IProperty createProperty() {
 		return (IProperty)GenericFacadeFactory.createFacade(
 				IProperty.class, 
-				wrapperFactory.createPropertyWrapper());
+				WrapperFactory.createPropertyWrapper());
 	}
 	
 	@Override 
 	public IHQLCompletionProposal createHQLCompletionProposal(Object target) {
 		return (IHQLCompletionProposal)GenericFacadeFactory.createFacade(
 				IHQLCompletionProposal.class, 
-				wrapperFactory.createHqlCompletionProposalWrapper(target));
+				WrapperFactory.createHqlCompletionProposalWrapper(target));
 	}
 	
 	public IValue createArray(IPersistentClass persistentClass) {
 		return (IValue)GenericFacadeFactory.createFacade(
 				IValue.class, 
-				wrapperFactory.createArrayWrapper(((IFacade)persistentClass).getTarget()));
+				WrapperFactory.createArrayWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
 	public IValue createBag(IPersistentClass persistentClass) {
 		return (IValue)GenericFacadeFactory.createFacade(
 				IValue.class, 
-				wrapperFactory.createBagWrapper(((IFacade)persistentClass).getTarget()));
+				WrapperFactory.createBagWrapper(((IFacade)persistentClass).getTarget()));
 	}
 	
 	public IValue createList(IPersistentClass persistentClass) {
 		return (IValue)GenericFacadeFactory.createFacade(
 				IValue.class, 
-				wrapperFactory.createListWrapper(((IFacade)persistentClass).getTarget()));
+				WrapperFactory.createListWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
 	public IValue createManyToOne(ITable tableFacade) {
 		return (IValue)GenericFacadeFactory.createFacade(
 				IValue.class, 
-				wrapperFactory.createManyToOneWrapper(((IFacade)tableFacade).getTarget()));
+				WrapperFactory.createManyToOneWrapper(((IFacade)tableFacade).getTarget()));
 	}
 
 	public IValue createMap(IPersistentClass persistentClass) {
 		return (IValue)GenericFacadeFactory.createFacade(
 				IValue.class, 
-				wrapperFactory.createMapWrapper(((IFacade)persistentClass).getTarget()));
+				WrapperFactory.createMapWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
 	public IValue createOneToMany(IPersistentClass persistentClass) {
 		return (IValue)GenericFacadeFactory.createFacade(
 				IValue.class, 
-				wrapperFactory.createOneToManyWrapper(((IFacade)persistentClass).getTarget()));
+				WrapperFactory.createOneToManyWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
 	public IValue createOneToOne(IPersistentClass persistentClass) {
 		return (IValue)GenericFacadeFactory.createFacade(
 				IValue.class, 
-				wrapperFactory.createOneToOneWrapper(((IFacade)persistentClass).getTarget()));
+				WrapperFactory.createOneToOneWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
 	public IDatabaseReader createDatabaseReader(
@@ -200,7 +198,7 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 			IReverseEngineeringStrategy strategy) {
 		return (IDatabaseReader)GenericFacadeFactory.createFacade(
 				IDatabaseReader.class, 
-				wrapperFactory.createDatabaseReaderWrapper(
+				WrapperFactory.createDatabaseReaderWrapper(
 						properties,
 						((IFacade)strategy).getTarget()));
 	}
@@ -208,31 +206,31 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 	public ITable createTable(String name) {
 		return (ITable)GenericFacadeFactory.createFacade(
 				ITable.class, 
-				wrapperFactory.createTableWrapper(name));
+				WrapperFactory.createTableWrapper(name));
 	}
 
 	public IValue createPrimitiveArray(IPersistentClass persistentClass) {
 		return (IValue)GenericFacadeFactory.createFacade(
 				IValue.class, 
-				wrapperFactory.createPrimitiveArrayWrapper(((IFacade)persistentClass).getTarget()));
+				WrapperFactory.createPrimitiveArrayWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
 	public IValue createSet(IPersistentClass persistentClass) {
 		return (IValue)GenericFacadeFactory.createFacade(
 				IValue.class, 
-				wrapperFactory.createSetWrapper(((IFacade)persistentClass).getTarget()));
+				WrapperFactory.createSetWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
 	public IValue createSimpleValue() {
 		return (IValue)GenericFacadeFactory.createFacade(
 				IValue.class, 
-				wrapperFactory.createSimpleValueWrapper());
+				WrapperFactory.createSimpleValueWrapper());
 	}
 
 	public IValue createComponent(IPersistentClass persistentClass) {
 		return (IValue)GenericFacadeFactory.createFacade(
 				IValue.class, 
-				wrapperFactory.createComponentWrapper(((IFacade)persistentClass).getTarget()));
+				WrapperFactory.createComponentWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
 	@Override

@@ -27,7 +27,6 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
-import org.hibernate.tool.orm.jbt.wrp.ValueWrapperFactory;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.hibernate.type.ArrayType;
 import org.hibernate.type.BagType;
