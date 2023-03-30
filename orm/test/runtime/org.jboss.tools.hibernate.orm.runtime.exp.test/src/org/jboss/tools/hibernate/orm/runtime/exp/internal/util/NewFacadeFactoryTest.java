@@ -420,9 +420,11 @@ public class NewFacadeFactoryTest {
 		PersistentClass rootClass = (PersistentClass)((Wrapper)((IFacade)rootClassFacade).getTarget()).getWrappedObject();
 		IValue componentFacade = facadeFactory.createComponent(rootClassFacade);
 		Object componentWrapper = ((IFacade)componentFacade).getTarget();
-		assertNotNull(componentFacade);
-		assertTrue(componentWrapper instanceof Component);
-		assertSame(rootClass, ((Component)componentWrapper).getOwner());
+		assertNotNull(componentWrapper);
+		assertTrue(componentWrapper instanceof Wrapper);
+		Object wrappedComponent = ((Wrapper)componentWrapper).getWrappedObject();
+		assertTrue(wrappedComponent instanceof Component);
+		assertSame(rootClass, ((Component)wrappedComponent).getOwner());
 	}
 	
 	public static class TestRevengStrategy extends DelegatingStrategy {
