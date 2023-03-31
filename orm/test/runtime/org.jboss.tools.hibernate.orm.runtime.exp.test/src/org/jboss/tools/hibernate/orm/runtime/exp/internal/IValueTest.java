@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Iterator;
 
+import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Collection;
@@ -30,6 +31,7 @@ import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.hibernate.type.AnyType;
 import org.hibernate.type.ArrayType;
 import org.hibernate.type.BagType;
 import org.hibernate.type.BasicType;
@@ -76,6 +78,8 @@ public class IValueTest {
 	private Value componentValueTarget = null;
 	private IValue dependantValueFacade = null;
 	private Value dependantValueTarget = null;
+	private IValue anyValueFacade = null;
+	private Value anyValueTarget = null;
 	
 	private IPersistentClass persistentClassFacade = null;
 	private ITable tableFacade = null;
@@ -153,6 +157,11 @@ public class IValueTest {
 				IValue.class, 
 				WrapperFactory.createDependantValueWrapper(tableTarget, ((IFacade)simpleValueFacade).getTarget()));
 		dependantValueTarget = (Value)((Wrapper)((IFacade)dependantValueFacade).getTarget()).getWrappedObject();
+		
+		anyValueFacade = (IValue)GenericFacadeFactory.createFacade(
+				IValue.class, 
+				WrapperFactory.createAnyValueWrapper(tableTarget));
+		anyValueTarget = (Value)((Wrapper)((IFacade)anyValueFacade).getTarget()).getWrappedObject();
 	}
 	
 	@Test
@@ -181,6 +190,8 @@ public class IValueTest {
 		assertNotNull(componentValueTarget);
 		assertNotNull(dependantValueFacade);
 		assertNotNull(dependantValueTarget);
+		assertNotNull(anyValueFacade);
+		assertNotNull(anyValueTarget);
 	}
 
 	@Test
@@ -197,6 +208,7 @@ public class IValueTest {
 		assertTrue(simpleValueFacade.isSimpleValue());
 		assertTrue(componentValueFacade.isSimpleValue());
 		assertTrue(dependantValueFacade.isSimpleValue());
+		assertTrue(anyValueFacade.isSimpleValue());
 	}
 
 	@Test
@@ -213,6 +225,7 @@ public class IValueTest {
 		assertFalse(simpleValueFacade.isCollection());
 		assertFalse(componentValueFacade.isCollection());
 		assertFalse(dependantValueFacade.isCollection());
+		assertFalse(anyValueFacade.isCollection());
 	}
 	
 	@Test
@@ -241,6 +254,7 @@ public class IValueTest {
 		assertNull(simpleValueFacade.getCollectionElement());
 		assertNull(componentValueFacade.getCollectionElement());
 		assertNull(dependantValueFacade.getCollectionElement());
+		assertNull(anyValueFacade.getCollectionElement());
 	}
 	
 	@Test 
@@ -257,6 +271,7 @@ public class IValueTest {
 		assertFalse(simpleValueFacade.isOneToMany());
 		assertFalse(componentValueFacade.isOneToMany());
 		assertFalse(dependantValueFacade.isOneToMany());
+		assertFalse(anyValueFacade.isOneToMany());
 	}
 	
 	@Test 
@@ -273,6 +288,7 @@ public class IValueTest {
 		assertFalse(simpleValueFacade.isManyToOne());
 		assertFalse(componentValueFacade.isManyToOne());
 		assertFalse(dependantValueFacade.isManyToOne());
+		assertFalse(anyValueFacade.isManyToOne());
 	}
 
 	@Test 
@@ -289,6 +305,7 @@ public class IValueTest {
 		assertFalse(simpleValueFacade.isOneToOne());
 		assertFalse(componentValueFacade.isOneToOne());
 		assertFalse(dependantValueFacade.isOneToOne());
+		assertFalse(anyValueFacade.isOneToOne());
 	}
 
 	@Test 
@@ -305,6 +322,7 @@ public class IValueTest {
 		assertFalse(simpleValueFacade.isMap());
 		assertFalse(componentValueFacade.isMap());
 		assertFalse(dependantValueFacade.isMap());
+		assertFalse(anyValueFacade.isMap());
 	}
 
 	@Test 
@@ -323,6 +341,7 @@ public class IValueTest {
 		((Component)componentValueTarget).setEmbedded(true);
 		assertTrue(componentValueFacade.isEmbedded());
 		assertFalse(dependantValueFacade.isEmbedded());
+		assertFalse(anyValueFacade.isEmbedded());
 	}
 
 	@Test
@@ -339,6 +358,7 @@ public class IValueTest {
 		assertFalse(simpleValueFacade.isToOne());
 		assertFalse(componentValueFacade.isToOne());
 		assertFalse(dependantValueFacade.isToOne());
+		assertFalse(anyValueFacade.isToOne());
 	}
 	
 	@Test
@@ -395,6 +415,9 @@ public class IValueTest {
 		assertNull(dependantValueFacade.getTable());
 		((SimpleValue)dependantValueTarget).setTable(tableTarget);
 		assertSame(tableTarget, ((IFacade)dependantValueFacade.getTable()).getTarget());
+		assertSame(tableTarget, ((IFacade)anyValueFacade.getTable()).getTarget());
+		((Any)anyValueTarget).setTable(null);
+		assertNull(anyValueFacade.getTable());
 	}
 
 	@Test
@@ -431,6 +454,9 @@ public class IValueTest {
 		assertTrue((Type)((IFacade)typeFacade).getTarget() instanceof ComponentType);
 		typeFacade = dependantValueFacade.getType();
 		assertTrue((Type)((IFacade)typeFacade).getTarget() instanceof BasicType);
+		((Any)anyValueTarget).setIdentifierType("java.lang.Integer");
+		typeFacade = anyValueFacade.getType();
+		assertTrue((Type)((IFacade)typeFacade).getTarget() instanceof AnyType);
 	}
 	
 	@Test
@@ -471,7 +497,9 @@ public class IValueTest {
 		assertNull(dependantValueFacade.getElement());
 		dependantValueFacade.setElement(arrayValueFacade);
 		assertNull(dependantValueFacade.getElement());
-		
+		assertNull(anyValueFacade.getElement());
+		anyValueFacade.setElement(simpleValueFacade);
+		assertNull(anyValueFacade.getElement());
 	}
 	
 	@Test
@@ -512,6 +540,9 @@ public class IValueTest {
 		assertNull(dependantValueFacade.getCollectionTable());
 		dependantValueFacade.setCollectionTable(tableFacade);
 		assertNull(dependantValueFacade.getCollectionTable());
+		assertNull(anyValueFacade.getCollectionTable());
+		anyValueFacade.setCollectionTable(tableFacade);
+		assertNull(anyValueFacade.getCollectionTable());
 	}
 	
 	@Test
@@ -552,6 +583,9 @@ public class IValueTest {
 		assertSame(tableTarget, dependantValueTarget.getTable());
 		dependantValueFacade.setTable(null);
 		assertNull(dependantValueTarget.getTable());
+		assertSame(tableTarget, anyValueTarget.getTable());
+		anyValueFacade.setTable(null);
+		assertNull(anyValueFacade.getTable());
 	}
 	
 	@Test 
@@ -568,6 +602,7 @@ public class IValueTest {
 		assertFalse(simpleValueFacade.isList());
 		assertFalse(componentValueFacade.isList());
 		assertFalse(dependantValueFacade.isList());
+		assertFalse(anyValueFacade.isList());
 	}
 	
 	@Test
@@ -608,6 +643,9 @@ public class IValueTest {
 		assertNull(dependantValueFacade.getIndex());
 		dependantValueFacade.setIndex(simpleValueFacade);
 		assertNull(dependantValueFacade.getIndex());
+		assertNull(anyValueFacade.getIndex());
+		anyValueFacade.setIndex(simpleValueFacade);
+		assertNull(anyValueFacade.getIndex());
 	}
 	
 	@Test
@@ -648,6 +686,9 @@ public class IValueTest {
 		assertNull(((SimpleValue)dependantValueTarget).getTypeName());
 		dependantValueFacade.setTypeName("foobar");
 		assertEquals("foobar", ((SimpleValue)dependantValueTarget).getTypeName());
+		assertNull(((SimpleValue)anyValueTarget).getTypeName());
+		anyValueFacade.setTypeName("foobar");
+		assertEquals("foobar", ((SimpleValue)anyValueTarget).getTypeName());
 	}
 	
 	@Test
@@ -666,6 +707,7 @@ public class IValueTest {
 		((Component)componentValueTarget).setComponentClassName("foobar");
 		assertEquals("foobar", componentValueFacade.getComponentClassName());
 		assertNull(dependantValueFacade.getComponentClassName());
+		assertNull(anyValueFacade.getComponentClassName());
 	}
 	
 	@Test
@@ -728,6 +770,14 @@ public class IValueTest {
 		assertFalse(dependantValueFacade.getColumnIterator().hasNext());
 		((DependantValue)dependantValueTarget).addColumn(columnTarget);
 		columnIterator = dependantValueFacade.getColumnIterator();
+		columnFacade = columnIterator.next();
+		assertFalse(columnIterator.hasNext());
+		assertSame(((IFacade)columnFacade).getTarget(), columnTarget);
+		// any value case
+		((Any)anyValueTarget).setTable(new Table(""));
+		assertFalse(anyValueFacade.getColumnIterator().hasNext());
+		((Any)anyValueTarget).addColumn(columnTarget);
+		columnIterator = anyValueFacade.getColumnIterator();
 		columnFacade = columnIterator.next();
 		assertFalse(columnIterator.hasNext());
 		assertSame(((IFacade)columnFacade).getTarget(), columnTarget);
@@ -794,8 +844,11 @@ public class IValueTest {
 		((Component)componentValueTarget).setTypeName("foo");
 		assertTrue(componentValueFacade.isTypeSpecified());
 		assertFalse(dependantValueFacade.isTypeSpecified());
-		((Component)componentValueTarget).setTypeName("foo");
-		assertTrue(componentValueFacade.isTypeSpecified());
+		((DependantValue)dependantValueTarget).setTypeName("foo");
+		assertTrue(dependantValueFacade.isTypeSpecified());
+		assertFalse(anyValueFacade.isTypeSpecified());
+		((Any)anyValueTarget).setTypeName("foo");
+		assertTrue(anyValueFacade.isTypeSpecified());
 	}
 	
 	@Test
@@ -824,6 +877,7 @@ public class IValueTest {
 		assertNull(simpleValueFacade.getCollectionTable());
 		assertNull(componentValueFacade.getCollectionTable());
 		assertNull(dependantValueFacade.getCollectionTable());
+		assertNull(anyValueFacade.getCollectionTable());
 	}
 	
 	@Test
@@ -876,6 +930,12 @@ public class IValueTest {
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'getKey()'"));
 		}
+		try {
+			anyValueFacade.getKey();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getKey()'"));
+		}
 	}
 	
 	@Test
@@ -899,6 +959,8 @@ public class IValueTest {
 		assertNull(setValueFacade.getIndex());
 		assertNull(simpleValueFacade.getIndex());
 		assertNull(componentValueFacade.getIndex());
+		assertNull(dependantValueFacade.getIndex());
+		assertNull(anyValueFacade.getIndex());
 	}
 	
 	@Test
@@ -964,6 +1026,18 @@ public class IValueTest {
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'getElementClassName()'"));
 		}
+		try {
+			dependantValueFacade.getElementClassName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getElementClassName()'"));
+		}
+		try {
+			anyValueFacade.getElementClassName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getElementClassName()'"));
+		}
 	}
 		
 	@Test
@@ -1002,6 +1076,9 @@ public class IValueTest {
 		assertNull(dependantValueFacade.getTypeName());
 		((SimpleValue)dependantValueTarget).setTypeName("foobar");
 		assertEquals("foobar", dependantValueFacade.getTypeName());
+		assertNull(anyValueFacade.getTypeName());
+		((SimpleValue)anyValueTarget).setTypeName("foobar");
+		assertEquals("foobar", dependantValueFacade.getTypeName());
 	}
 	
 	@Test
@@ -1030,6 +1107,7 @@ public class IValueTest {
 		assertNull(simpleValueFacade.getElement());
 		assertNull(componentValueFacade.getElement());
 		assertNull(dependantValueFacade.getElement());
+		assertNull(anyValueFacade.getElement());
 	}
 	
 	@Test
@@ -1046,6 +1124,7 @@ public class IValueTest {
 		assertFalse(simpleValueFacade.isDependantValue());
 		assertFalse(componentValueFacade.isDependantValue());
 		assertTrue(dependantValueFacade.isDependantValue());
+		assertFalse(anyValueFacade.isDependantValue());
 	}
 	
 
