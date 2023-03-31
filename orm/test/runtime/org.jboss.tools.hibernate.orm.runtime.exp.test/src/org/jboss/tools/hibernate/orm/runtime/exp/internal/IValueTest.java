@@ -1272,5 +1272,22 @@ public class IValueTest {
 		assertFalse(identifierBagValueFacade.isArray());
 	}
 		
+	@Test
+	public void testIsIdentifierBag() {
+		assertFalse(arrayValueFacade.isIdentifierBag());
+		assertFalse(bagValueFacade.isIdentifierBag());
+		assertFalse(listValueFacade.isIdentifierBag());
+		assertFalse(manyToOneValueFacade.isIdentifierBag());
+		assertFalse(mapValueFacade.isIdentifierBag());
+		assertFalse(oneToManyValueFacade.isIdentifierBag());
+		assertFalse(oneToOneValueFacade.isIdentifierBag());
+		assertFalse(primitiveArrayValueFacade.isIdentifierBag());
+		assertFalse(setValueFacade.isIdentifierBag());
+		assertFalse(simpleValueFacade.isIdentifierBag());
+		assertFalse(componentValueFacade.isIdentifierBag());
+		assertFalse(dependantValueFacade.isIdentifierBag());
+		assertFalse(anyValueFacade.isIdentifierBag());
+		assertTrue(identifierBagValueFacade.isIdentifierBag());
+	}
 	
 }
