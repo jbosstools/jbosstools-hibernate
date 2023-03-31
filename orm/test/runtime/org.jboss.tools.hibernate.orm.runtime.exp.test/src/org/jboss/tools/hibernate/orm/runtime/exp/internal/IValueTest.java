@@ -1387,6 +1387,93 @@ public class IValueTest {
 		}
 	}
 
+	@Test
+	public void testGetEntityName() {
+		try {
+			arrayValueFacade.getEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getEntityName()'"));
+		}
+		try {
+			bagValueFacade.getEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getEntityName()'"));
+		}
+		try {
+			listValueFacade.getEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getEntityName()'"));
+		}
+		try {
+			manyToOneValueFacade.getEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getEntityName()'"));
+		}
+		try {
+			mapValueFacade.getEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getEntityName()'"));
+		}
+		try {
+			oneToManyValueFacade.getEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getEntityName()'"));
+		}
+		assertNull(oneToOneValueFacade.getEntityName());
+		persistentClassFacade.setEntityName("foobar");
+		oneToOneValueFacade = (IValue)GenericFacadeFactory.createFacade(
+				IValue.class, 
+				WrapperFactory.createOneToOneWrapper(((IFacade)persistentClassFacade).getTarget()));
+		assertEquals("foobar", oneToOneValueFacade.getEntityName());
+		try {
+			primitiveArrayValueFacade.getEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getEntityName()'"));
+		}
+		try {
+			setValueFacade.getEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getEntityName()'"));
+		}
+		try {
+			simpleValueFacade.getEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getEntityName()'"));
+		}
+		try {
+			componentValueFacade.getEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getEntityName()'"));
+		}
+		try {
+			dependantValueFacade.getEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getEntityName()'"));
+		}
+		try {
+			anyValueFacade.getEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getEntityName()'"));
+		}
+		try {
+			identifierBagValueFacade.getEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getEntityName()'"));
+		}
+	}
 	
 	
 }
