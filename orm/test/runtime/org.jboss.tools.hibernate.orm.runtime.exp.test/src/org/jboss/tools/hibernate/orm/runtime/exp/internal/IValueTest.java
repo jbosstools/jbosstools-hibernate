@@ -322,7 +322,7 @@ public class IValueTest {
 		assertFalse(componentValueFacade.isEmbedded());
 		((Component)componentValueTarget).setEmbedded(true);
 		assertTrue(componentValueFacade.isEmbedded());
-		assertFalse(dependantValueFacade.isDependantValue());
+		assertFalse(dependantValueFacade.isEmbedded());
 	}
 
 	@Test
@@ -1032,6 +1032,21 @@ public class IValueTest {
 		assertNull(dependantValueFacade.getElement());
 	}
 	
+	@Test
+	public void testIsDependantValue() {
+		assertFalse(arrayValueFacade.isDependantValue());
+		assertFalse(bagValueFacade.isDependantValue());
+		assertFalse(listValueFacade.isDependantValue());
+		assertFalse(manyToOneValueFacade.isDependantValue());
+		assertFalse(mapValueFacade.isDependantValue());
+		assertFalse(oneToManyValueFacade.isDependantValue());
+		assertFalse(oneToOneValueFacade.isDependantValue());
+		assertFalse(primitiveArrayValueFacade.isDependantValue());
+		assertFalse(setValueFacade.isDependantValue());
+		assertFalse(simpleValueFacade.isDependantValue());
+		assertFalse(componentValueFacade.isDependantValue());
+		assertTrue(dependantValueFacade.isDependantValue());
+	}
 	
 
 }
