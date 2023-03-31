@@ -1144,4 +1144,21 @@ public class IValueTest {
 		assertTrue(anyValueFacade.isAny());
 	}
 	
+	@Test
+	public void testIsSet() {
+		assertFalse(arrayValueFacade.isSet());
+		assertFalse(bagValueFacade.isSet());
+		assertFalse(listValueFacade.isSet());
+		assertFalse(manyToOneValueFacade.isSet());
+		assertFalse(mapValueFacade.isSet());
+		assertFalse(oneToManyValueFacade.isSet());
+		assertFalse(oneToOneValueFacade.isSet());
+		assertFalse(primitiveArrayValueFacade.isSet());
+		assertTrue(setValueFacade.isSet());
+		assertFalse(simpleValueFacade.isSet());
+		assertFalse(componentValueFacade.isSet());
+		assertFalse(dependantValueFacade.isSet());
+		assertFalse(anyValueFacade.isSet());
+	}
+	
 }
