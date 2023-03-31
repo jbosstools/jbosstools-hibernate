@@ -1127,5 +1127,21 @@ public class IValueTest {
 		assertFalse(anyValueFacade.isDependantValue());
 	}
 	
-
+	@Test
+	public void testIsAny() {
+		assertFalse(arrayValueFacade.isAny());
+		assertFalse(bagValueFacade.isAny());
+		assertFalse(listValueFacade.isAny());
+		assertFalse(manyToOneValueFacade.isAny());
+		assertFalse(mapValueFacade.isAny());
+		assertFalse(oneToManyValueFacade.isAny());
+		assertFalse(oneToOneValueFacade.isAny());
+		assertFalse(primitiveArrayValueFacade.isAny());
+		assertFalse(setValueFacade.isAny());
+		assertFalse(simpleValueFacade.isAny());
+		assertFalse(componentValueFacade.isAny());
+		assertFalse(dependantValueFacade.isAny());
+		assertTrue(anyValueFacade.isAny());
+	}
+	
 }
