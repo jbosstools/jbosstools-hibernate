@@ -1307,6 +1307,86 @@ public class IValueTest {
 		assertFalse(anyValueFacade.isBag());
 		assertFalse(identifierBagValueFacade.isBag());
 	}
-		
+
+	@Test
+	public void testGetReferencedEntityName() {
+		try {
+			arrayValueFacade.getReferencedEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getReferencedEntityName()'"));
+		}
+		try {
+			bagValueFacade.getReferencedEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getReferencedEntityName()'"));
+		}
+		try {
+			listValueFacade.getReferencedEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getReferencedEntityName()'"));
+		}
+		assertNull(manyToOneValueFacade.getReferencedEntityName());
+		((ManyToOne)manyToOneValueTarget).setReferencedEntityName("foobar");
+		assertEquals("foobar", manyToOneValueFacade.getReferencedEntityName());
+		try {
+			mapValueFacade.getReferencedEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getReferencedEntityName()'"));
+		}
+		assertNull(oneToManyValueFacade.getReferencedEntityName());
+		((OneToMany)oneToManyValueTarget).setReferencedEntityName("foobar");
+		assertEquals("foobar", oneToManyValueFacade.getReferencedEntityName());
+		assertNull(oneToOneValueFacade.getReferencedEntityName());
+		((OneToOne)oneToOneValueTarget).setReferencedEntityName("foobar");
+		assertEquals("foobar", oneToOneValueFacade.getReferencedEntityName());
+		try {
+			primitiveArrayValueFacade.getReferencedEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getReferencedEntityName()'"));
+		}
+		try {
+			setValueFacade.getReferencedEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getReferencedEntityName()'"));
+		}
+		try {
+			simpleValueFacade.getReferencedEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getReferencedEntityName()'"));
+		}
+		try {
+			componentValueFacade.getReferencedEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getReferencedEntityName()'"));
+		}
+		try {
+			dependantValueFacade.getReferencedEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getReferencedEntityName()'"));
+		}
+		try {
+			anyValueFacade.getReferencedEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getReferencedEntityName()'"));
+		}
+		try {
+			identifierBagValueFacade.getReferencedEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getReferencedEntityName()'"));
+		}
+	}
+
+	
 	
 }
