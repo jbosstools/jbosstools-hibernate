@@ -1157,38 +1157,6 @@ public class IValueTest {
 	}
 	
 	@Test
-	public void testGetElement() {
-		assertNull(arrayValueFacade.getElement());
-		((Collection)arrayValueTarget).setElement(simpleValueTarget);
-		assertSame(simpleValueTarget, ((IFacade)arrayValueFacade.getElement()).getTarget());
-		assertNull(bagValueFacade.getElement());
-		((Collection)bagValueTarget).setElement(simpleValueTarget);
-		assertSame(simpleValueTarget, ((IFacade)bagValueFacade.getElement()).getTarget());
-		assertNull(listValueFacade.getElement());
-		((Collection)listValueTarget).setElement(simpleValueTarget);
-		assertSame(simpleValueTarget, ((IFacade)listValueFacade.getElement()).getTarget());
-		assertNull(manyToOneValueFacade.getElement());
-		assertNull(mapValueFacade.getElement());
-		((Collection)mapValueTarget).setElement(simpleValueTarget);
-		assertSame(simpleValueTarget, ((IFacade)mapValueFacade.getElement()).getTarget());
-		assertNull(oneToManyValueFacade.getElement());
-		assertNull(oneToOneValueFacade.getElement());
-		assertNull(primitiveArrayValueFacade.getElement());
-		((Collection)primitiveArrayValueTarget).setElement(simpleValueTarget);
-		assertSame(simpleValueTarget, ((IFacade)primitiveArrayValueFacade.getElement()).getTarget());
-		assertNull(setValueFacade.getElement());
-		((Collection)setValueTarget).setElement(simpleValueTarget);
-		assertSame(simpleValueTarget, ((IFacade)setValueFacade.getElement()).getTarget());
-		assertNull(simpleValueFacade.getElement());
-		assertNull(componentValueFacade.getElement());
-		assertNull(dependantValueFacade.getElement());
-		assertNull(anyValueFacade.getElement());
-		assertNull(identifierBagValueFacade.getElement());
-		((Collection)identifierBagValueTarget).setElement(simpleValueTarget);
-		assertSame(simpleValueTarget, ((IFacade)identifierBagValueFacade.getElement()).getTarget());
-	}
-	
-	@Test
 	public void testIsDependantValue() {
 		assertFalse(arrayValueFacade.isDependantValue());
 		assertFalse(bagValueFacade.isDependantValue());
@@ -1816,6 +1784,117 @@ public class IValueTest {
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'getOwner()'"));
+		}
+	}
+	
+	@Test
+	public void testGetElement() {
+		assertNull(arrayValueFacade.getElement());
+		((Collection)arrayValueTarget).setElement(simpleValueTarget);
+		assertSame(simpleValueTarget, ((IFacade)arrayValueFacade.getElement()).getTarget());
+		assertNull(bagValueFacade.getElement());
+		((Collection)bagValueTarget).setElement(simpleValueTarget);
+		assertSame(simpleValueTarget, ((IFacade)bagValueFacade.getElement()).getTarget());
+		assertNull(listValueFacade.getElement());
+		((Collection)listValueTarget).setElement(simpleValueTarget);
+		assertSame(simpleValueTarget, ((IFacade)listValueFacade.getElement()).getTarget());
+		assertNull(manyToOneValueFacade.getElement());
+		assertNull(mapValueFacade.getElement());
+		((Collection)mapValueTarget).setElement(simpleValueTarget);
+		assertSame(simpleValueTarget, ((IFacade)mapValueFacade.getElement()).getTarget());
+		assertNull(oneToManyValueFacade.getElement());
+		assertNull(oneToOneValueFacade.getElement());
+		assertNull(primitiveArrayValueFacade.getElement());
+		((Collection)primitiveArrayValueTarget).setElement(simpleValueTarget);
+		assertSame(simpleValueTarget, ((IFacade)primitiveArrayValueFacade.getElement()).getTarget());
+		assertNull(setValueFacade.getElement());
+		((Collection)setValueTarget).setElement(simpleValueTarget);
+		assertSame(simpleValueTarget, ((IFacade)setValueFacade.getElement()).getTarget());
+		assertNull(simpleValueFacade.getElement());
+		assertNull(componentValueFacade.getElement());
+		assertNull(dependantValueFacade.getElement());
+		assertNull(anyValueFacade.getElement());
+		assertNull(identifierBagValueFacade.getElement());
+		((Collection)identifierBagValueTarget).setElement(simpleValueTarget);
+		assertSame(simpleValueTarget, ((IFacade)identifierBagValueFacade.getElement()).getTarget());
+	}
+	
+	@Test
+	public void testGetParentProperty() {
+		assertNull(componentValueFacade.getParentProperty());
+		((Component)componentValueTarget).setParentProperty("foo");
+		assertEquals("foo", componentValueFacade.getParentProperty());
+		try {
+			arrayValueFacade.getParentProperty();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getParentProperty()'"));
+		}
+		try {
+			bagValueFacade.getParentProperty();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getParentProperty()'"));
+		}
+		try {
+			listValueFacade.getParentProperty();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getParentProperty()'"));
+		}
+		try {
+			manyToOneValueFacade.getParentProperty();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getParentProperty()'"));
+		}
+		try {
+			mapValueFacade.getParentProperty();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getParentProperty()'"));
+		}
+		try {
+			oneToManyValueFacade.getParentProperty();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getParentProperty()'"));
+		}
+		try {
+			primitiveArrayValueFacade.getParentProperty();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getParentProperty()'"));
+		}
+		try {
+			setValueFacade.getParentProperty();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getParentProperty()'"));
+		}
+		try {
+			simpleValueFacade.getParentProperty();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getParentProperty()'"));
+		}
+		try {
+			dependantValueFacade.getParentProperty();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getParentProperty()'"));
+		}
+		try {
+			anyValueFacade.getParentProperty();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getParentProperty()'"));
+		}
+		try {
+			identifierBagValueFacade.getParentProperty();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getParentProperty()'"));
 		}
 	}
 	
