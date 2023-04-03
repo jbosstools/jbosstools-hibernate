@@ -1287,6 +1287,15 @@ public class IValueTest {
 
 	@Test
 	public void testGetReferencedEntityName() {
+		assertNull(manyToOneValueFacade.getReferencedEntityName());
+		((ManyToOne)manyToOneValueTarget).setReferencedEntityName("foobar");
+		assertEquals("foobar", manyToOneValueFacade.getReferencedEntityName());
+		assertNull(oneToManyValueFacade.getReferencedEntityName());
+		((OneToMany)oneToManyValueTarget).setReferencedEntityName("foobar");
+		assertEquals("foobar", oneToManyValueFacade.getReferencedEntityName());
+		assertNull(oneToOneValueFacade.getReferencedEntityName());
+		((OneToOne)oneToOneValueTarget).setReferencedEntityName("foobar");
+		assertEquals("foobar", oneToOneValueFacade.getReferencedEntityName());
 		try {
 			arrayValueFacade.getReferencedEntityName();
 			fail();
@@ -1305,21 +1314,12 @@ public class IValueTest {
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'getReferencedEntityName()'"));
 		}
-		assertNull(manyToOneValueFacade.getReferencedEntityName());
-		((ManyToOne)manyToOneValueTarget).setReferencedEntityName("foobar");
-		assertEquals("foobar", manyToOneValueFacade.getReferencedEntityName());
 		try {
 			mapValueFacade.getReferencedEntityName();
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'getReferencedEntityName()'"));
 		}
-		assertNull(oneToManyValueFacade.getReferencedEntityName());
-		((OneToMany)oneToManyValueTarget).setReferencedEntityName("foobar");
-		assertEquals("foobar", oneToManyValueFacade.getReferencedEntityName());
-		assertNull(oneToOneValueFacade.getReferencedEntityName());
-		((OneToOne)oneToOneValueTarget).setReferencedEntityName("foobar");
-		assertEquals("foobar", oneToOneValueFacade.getReferencedEntityName());
 		try {
 			primitiveArrayValueFacade.getReferencedEntityName();
 			fail();
@@ -2401,6 +2401,85 @@ public class IValueTest {
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'setRole(String)'"));
+		}
+	}
+	
+	@Test
+	public void testSetReferencedEntityName() {
+		assertNull(((ManyToOne)manyToOneValueTarget).getReferencedEntityName());
+		manyToOneValueFacade.setReferencedEntityName("foobar");
+		assertEquals("foobar", ((ManyToOne)manyToOneValueTarget).getReferencedEntityName());
+		assertNull(((OneToMany)oneToManyValueTarget).getReferencedEntityName());
+		oneToManyValueFacade.setReferencedEntityName("foobar");
+		assertEquals("foobar", ((OneToMany)oneToManyValueTarget).getReferencedEntityName());
+		assertNull(((OneToOne)oneToOneValueTarget).getReferencedEntityName());
+		oneToOneValueFacade.setReferencedEntityName("foobar");
+		assertEquals("foobar", ((OneToOne)oneToOneValueTarget).getReferencedEntityName());
+		try {
+			arrayValueFacade.setReferencedEntityName("foobar");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setReferencedEntityName(String)'"));
+		}
+		try {
+			bagValueFacade.setReferencedEntityName("foobar");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setReferencedEntityName(String)'"));
+		}
+		try {
+			listValueFacade.setReferencedEntityName("foobar");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setReferencedEntityName(String)'"));
+		}
+		try {
+			mapValueFacade.setReferencedEntityName("foobar");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setReferencedEntityName(String)'"));
+		}
+		try {
+			primitiveArrayValueFacade.setReferencedEntityName("foobar");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setReferencedEntityName(String)'"));
+		}
+		try {
+			setValueFacade.setReferencedEntityName("foobar");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setReferencedEntityName(String)'"));
+		}
+		try {
+			simpleValueFacade.setReferencedEntityName("foobar");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setReferencedEntityName(String)'"));
+		}
+		try {
+			componentValueFacade.setReferencedEntityName("foobar");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setReferencedEntityName(String)'"));
+		}
+		try {
+			dependantValueFacade.setReferencedEntityName("foobar");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setReferencedEntityName(String)'"));
+		}
+		try {
+			anyValueFacade.setReferencedEntityName("foobar");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setReferencedEntityName(String)'"));
+		}
+		try {
+			identifierBagValueFacade.setReferencedEntityName("foobar");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setReferencedEntityName(String)'"));
 		}
 	}
 	
