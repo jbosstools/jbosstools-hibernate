@@ -23,6 +23,7 @@ import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -30,6 +31,7 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
+import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.hibernate.type.AnyType;
@@ -87,6 +89,7 @@ public class IValueTest {
 	private Value identifierBagValueTarget = null;
 	
 	private IPersistentClass persistentClassFacade = null;
+	private PersistentClass persistentClassTarget = null;
 	private ITable tableFacade = null;
 	private Table tableTarget = null;
 	
@@ -97,6 +100,7 @@ public class IValueTest {
 				IPersistentClass.
 				class, WrapperFactory.createRootClassWrapper());
 		Object persistentClassWrapper = ((IFacade)persistentClassFacade).getTarget();
+		persistentClassTarget = ((PersistentClassWrapper)persistentClassWrapper).getWrappedObject();
 		
 		tableFacade = (ITable)GenericFacadeFactory.createFacade(
 				ITable.class, 
@@ -1767,5 +1771,52 @@ public class IValueTest {
 		}
 	}
 	
+	@Test
+	public void testGetOwner() {
+		assertSame(persistentClassTarget, ((IFacade)arrayValueFacade.getOwner()).getTarget());
+		assertSame(persistentClassTarget, ((IFacade)bagValueFacade.getOwner()).getTarget());
+		assertSame(persistentClassTarget, ((IFacade)listValueFacade.getOwner()).getTarget());
+		assertSame(persistentClassTarget, ((IFacade)mapValueFacade.getOwner()).getTarget());
+		assertSame(persistentClassTarget, ((IFacade)primitiveArrayValueFacade.getOwner()).getTarget());
+		assertSame(persistentClassTarget, ((IFacade)setValueFacade.getOwner()).getTarget());
+		assertSame(persistentClassTarget, ((IFacade)identifierBagValueFacade.getOwner()).getTarget());
+		assertSame(persistentClassTarget, ((IFacade)componentValueFacade.getOwner()).getTarget());
+		try {
+			manyToOneValueFacade.getOwner();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getOwner()'"));
+		}
+		try {
+			oneToManyValueFacade.getOwner();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getOwner()'"));
+		}
+		try {
+			oneToOneValueFacade.getOwner();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getOwner()'"));
+		}
+		try {
+			simpleValueFacade.getOwner();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getOwner()'"));
+		}
+		try {
+			dependantValueFacade.getOwner();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getOwner()'"));
+		}
+		try {
+			anyValueFacade.getOwner();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getOwner()'"));
+		}
+	}
 	
 }
