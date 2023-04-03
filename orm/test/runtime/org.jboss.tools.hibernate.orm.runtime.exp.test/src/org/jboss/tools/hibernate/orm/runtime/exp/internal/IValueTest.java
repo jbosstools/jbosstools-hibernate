@@ -2337,4 +2337,71 @@ public class IValueTest {
 		}
 	}
 	
+	@Test
+	public void testSetRole() {
+		assertNull(((Collection)arrayValueTarget).getRole());
+		arrayValueFacade.setRole("foo");
+		assertEquals("foo", ((Collection)arrayValueTarget).getRole());
+		assertNull(((Collection)bagValueTarget).getRole());
+		bagValueFacade.setRole("foo");
+		assertEquals("foo", ((Collection)bagValueTarget).getRole());
+		assertNull(((Collection)listValueTarget).getRole());
+		listValueFacade.setRole("foo");
+		assertEquals("foo", ((Collection)listValueTarget).getRole());
+		assertNull(((Collection)mapValueTarget).getRole());
+		mapValueFacade.setRole("foo");
+		assertEquals("foo", ((Collection)mapValueTarget).getRole());
+		assertNull(((Collection)primitiveArrayValueTarget).getRole());
+		primitiveArrayValueFacade.setRole("foo");
+		assertEquals("foo", ((Collection)primitiveArrayValueTarget).getRole());
+		assertNull(((Collection)setValueTarget).getRole());
+		setValueFacade.setRole("foo");
+		assertEquals("foo", ((Collection)setValueTarget).getRole());
+		assertNull(((Collection)identifierBagValueTarget).getRole());
+		identifierBagValueFacade.setRole("foo");
+		assertEquals("foo", ((Collection)identifierBagValueTarget).getRole());
+		try {
+			manyToOneValueFacade.setRole("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setRole(String)'"));
+		}
+		try {
+			oneToManyValueFacade.setRole("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setRole(String)'"));
+		}
+		try {
+			oneToOneValueFacade.setRole("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setRole(String)'"));
+		}
+		try {
+			simpleValueFacade.setRole("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setRole(String)'"));
+		}
+		try {
+			componentValueFacade.setRole("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setRole(String)'"));
+		}
+		try {
+			dependantValueFacade.setRole("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setRole(String)'"));
+		}
+		try {
+			anyValueFacade.setRole("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setRole(String)'"));
+		}
+	}
+	
 }
