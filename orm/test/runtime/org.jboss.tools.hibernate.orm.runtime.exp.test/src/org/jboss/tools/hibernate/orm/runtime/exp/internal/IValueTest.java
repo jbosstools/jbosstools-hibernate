@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -11,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.util.Iterator;
 import java.util.Properties;
 
+import org.hibernate.FetchMode;
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.BasicValue;
@@ -1849,6 +1851,12 @@ public class IValueTest {
 			assertTrue(e.getMessage().contains("does not support 'getParentProperty()'"));
 		}
 		try {
+			oneToOneValueFacade.getParentProperty();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getParentProperty()'"));
+		}
+		try {
 			mapValueFacade.getParentProperty();
 			fail();
 		} catch (UnsupportedOperationException e) {
@@ -2044,6 +2052,67 @@ public class IValueTest {
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'setKey(KeyValue)'"));
+		}
+	}
+	
+	@Test
+	public void testSetFetchModeJoin() {
+		assertNotEquals(FetchMode.JOIN, arrayValueTarget.getFetchMode());
+		arrayValueFacade.setFetchModeJoin();
+		assertEquals(FetchMode.JOIN, arrayValueTarget.getFetchMode());
+		assertNotEquals(FetchMode.JOIN, bagValueTarget.getFetchMode());
+		bagValueFacade.setFetchModeJoin();
+		assertEquals(FetchMode.JOIN, bagValueTarget.getFetchMode());
+		assertNotEquals(FetchMode.JOIN, listValueTarget.getFetchMode());
+		listValueFacade.setFetchModeJoin();
+		assertEquals(FetchMode.JOIN, listValueTarget.getFetchMode());
+		assertNotEquals(FetchMode.JOIN, manyToOneValueTarget.getFetchMode());
+		manyToOneValueFacade.setFetchModeJoin();
+		assertEquals(FetchMode.JOIN, manyToOneValueTarget.getFetchMode());
+		assertNotEquals(FetchMode.JOIN, oneToOneValueTarget.getFetchMode());
+		oneToOneValueFacade.setFetchModeJoin();
+		assertEquals(FetchMode.JOIN, oneToOneValueTarget.getFetchMode());
+		assertNotEquals(FetchMode.JOIN, mapValueTarget.getFetchMode());
+		mapValueFacade.setFetchModeJoin();
+		assertEquals(FetchMode.JOIN, mapValueTarget.getFetchMode());
+		assertNotEquals(FetchMode.JOIN, primitiveArrayValueTarget.getFetchMode());
+		primitiveArrayValueFacade.setFetchModeJoin();
+		assertEquals(FetchMode.JOIN, primitiveArrayValueTarget.getFetchMode());
+		assertNotEquals(FetchMode.JOIN, setValueTarget.getFetchMode());
+		setValueFacade.setFetchModeJoin();
+		assertEquals(FetchMode.JOIN, setValueTarget.getFetchMode());
+		assertNotEquals(FetchMode.JOIN, identifierBagValueTarget.getFetchMode());
+		identifierBagValueFacade.setFetchModeJoin();
+		assertEquals(FetchMode.JOIN, identifierBagValueTarget.getFetchMode());
+		try {
+			oneToManyValueFacade.setFetchModeJoin();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setFetchModeJoin()'"));
+		}
+		try {
+			simpleValueFacade.setFetchModeJoin();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setFetchModeJoin()'"));
+		}
+		try {
+			componentValueFacade.setFetchModeJoin();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setFetchModeJoin()'"));
+		}
+		try {
+			dependantValueFacade.setFetchModeJoin();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setFetchModeJoin()'"));
+		}
+		try {
+			anyValueFacade.setFetchModeJoin();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setFetchModeJoin()'"));
 		}
 	}
 	
