@@ -2116,4 +2116,71 @@ public class IValueTest {
 		}
 	}
 	
+	@Test
+	public void testIsInverse() {
+		assertFalse(arrayValueFacade.isInverse());
+		((Collection)arrayValueTarget).setInverse(true);
+		assertTrue(arrayValueFacade.isInverse());
+		assertFalse(bagValueFacade.isInverse());
+		((Collection)bagValueTarget).setInverse(true);
+		assertTrue(bagValueFacade.isInverse());
+		assertFalse(listValueFacade.isInverse());
+		((Collection)listValueTarget).setInverse(true);
+		assertTrue(listValueFacade.isInverse());
+		assertFalse(mapValueFacade.isInverse());
+		((Collection)mapValueTarget).setInverse(true);
+		assertTrue(mapValueFacade.isInverse());
+		assertFalse(setValueFacade.isInverse());
+		((Collection)setValueTarget).setInverse(true);
+		assertTrue(setValueFacade.isInverse());
+		assertFalse(identifierBagValueFacade.isInverse());
+		((Collection)identifierBagValueTarget).setInverse(true);
+		assertTrue(identifierBagValueFacade.isInverse());
+		assertFalse(primitiveArrayValueFacade.isInverse());
+		((Collection)primitiveArrayValueTarget).setInverse(true);
+		assertTrue(primitiveArrayValueFacade.isInverse());
+		try {
+			manyToOneValueFacade.isInverse();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'isInverse()'"));
+		}
+		try {
+			oneToManyValueFacade.isInverse();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'isInverse()'"));
+		}
+		try {
+			oneToOneValueFacade.isInverse();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'isInverse()'"));
+		}
+		try {
+			simpleValueFacade.isInverse();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'isInverse()'"));
+		}
+		try {
+			componentValueFacade.isInverse();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'isInverse()'"));
+		}
+		try {
+			anyValueFacade.isInverse();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'isInverse()'"));
+		}
+		try {
+			dependantValueFacade.isInverse();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'isInverse()'"));
+		}
+	}
+	
 }
