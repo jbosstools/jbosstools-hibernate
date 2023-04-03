@@ -47,6 +47,7 @@ import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFact
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
+import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
@@ -1472,6 +1473,98 @@ public class IValueTest {
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'getEntityName()'"));
+		}
+	}
+	
+	@Test
+	public void testGetPropertyIterator() {
+		// only the component values have properties
+		Iterator<IProperty> propertyIterator = componentValueFacade.getPropertyIterator();
+		assertFalse(propertyIterator.hasNext());
+		Property propertyTarget = new Property();
+		((Component)componentValueTarget).addProperty(propertyTarget);
+		propertyIterator = componentValueFacade.getPropertyIterator();
+		IProperty propertyFacade = propertyIterator.next();
+		assertFalse(propertyIterator.hasNext());
+		assertSame(propertyTarget, ((IFacade)propertyFacade).getTarget());
+		// other values do not support 'getPropertyIterator()'
+		try {
+			arrayValueFacade.getPropertyIterator();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getPropertyIterator()'"));
+		}
+		try {
+			bagValueFacade.getPropertyIterator();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getPropertyIterator()'"));
+		}
+		try {
+			listValueFacade.getPropertyIterator();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getPropertyIterator()'"));
+		}
+		try {
+			manyToOneValueFacade.getPropertyIterator();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getPropertyIterator()'"));
+		}
+		try {
+			mapValueFacade.getPropertyIterator();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getPropertyIterator()'"));
+		}
+		try {
+			oneToManyValueFacade.getPropertyIterator();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getPropertyIterator()'"));
+		}
+		try {
+			oneToOneValueFacade.getPropertyIterator();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getPropertyIterator()'"));
+		}
+		try {
+			primitiveArrayValueFacade.getPropertyIterator();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getPropertyIterator()'"));
+		}
+		try {
+			setValueFacade.getPropertyIterator();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getPropertyIterator()'"));
+		}
+		try {
+			simpleValueFacade.getPropertyIterator();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getPropertyIterator()'"));
+		}
+		try {
+			dependantValueFacade.getPropertyIterator();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getPropertyIterator()'"));
+		}
+		try {
+			anyValueFacade.getPropertyIterator();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getPropertyIterator()'"));
+		}
+		try {
+			identifierBagValueFacade.getPropertyIterator();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getPropertyIterator()'"));
 		}
 	}
 	
