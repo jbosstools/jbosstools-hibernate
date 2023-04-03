@@ -1568,5 +1568,83 @@ public class IValueTest {
 		}
 	}
 	
+	@Test
+	public void testAddColumn() {
+		IColumn columnFacade = (IColumn)GenericFacadeFactory.createFacade(
+				IColumn.class, 
+				WrapperFactory.createColumnWrapper("foo"));
+		Column columnTarget = (Column)((IFacade)columnFacade).getTarget();
+		assertFalse(manyToOneValueTarget.getColumns().contains(columnTarget));
+		manyToOneValueFacade.addColumn(columnFacade);
+		assertTrue(manyToOneValueTarget.getColumns().contains(columnTarget));
+		assertFalse(oneToOneValueTarget.getColumns().contains(columnTarget));
+		oneToOneValueFacade.addColumn(columnFacade);
+		assertTrue(oneToOneValueTarget.getColumns().contains(columnTarget));
+		((BasicValue)simpleValueTarget).setTable(tableTarget);
+		assertFalse(simpleValueTarget.getColumns().contains(columnTarget));
+		simpleValueFacade.addColumn(columnFacade);
+		assertTrue(simpleValueTarget.getColumns().contains(columnTarget));
+		assertFalse(dependantValueTarget.getColumns().contains(columnTarget));
+		dependantValueFacade.addColumn(columnFacade);
+		assertTrue(dependantValueTarget.getColumns().contains(columnTarget));
+		assertFalse(anyValueTarget.getColumns().contains(columnTarget));
+		anyValueFacade.addColumn(columnFacade);
+		assertTrue(anyValueTarget.getColumns().contains(columnTarget));
+		try {
+			arrayValueFacade.addColumn(columnFacade);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'addColumn(Column)'"));
+		}
+		try {
+			bagValueFacade.addColumn(columnFacade);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'addColumn(Column)'"));
+		}
+		try {
+			listValueFacade.addColumn(columnFacade);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'addColumn(Column)'"));
+		}
+		try {
+			mapValueFacade.addColumn(columnFacade);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'addColumn(Column)'"));
+		}
+		try {
+			oneToManyValueFacade.addColumn(columnFacade);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'addColumn(Column)'"));
+		}
+		try {
+			primitiveArrayValueFacade.addColumn(columnFacade);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'addColumn(Column)'"));
+		}
+		try {
+			setValueFacade.addColumn(columnFacade);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'addColumn(Column)'"));
+		}
+		try {
+			componentValueFacade.addColumn(columnFacade);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("Cant add a column to a component"));
+		}
+		try {
+			identifierBagValueFacade.addColumn(columnFacade);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'addColumn(Column)'"));
+		}
+	}
+	
 	
 }
