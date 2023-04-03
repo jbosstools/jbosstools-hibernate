@@ -1980,4 +1980,71 @@ public class IValueTest {
 		}
 	}
 	
+	@Test
+	public void testSetKey() {
+		assertNull(((Collection)arrayValueTarget).getKey());
+		arrayValueFacade.setKey(simpleValueFacade);
+		assertSame(simpleValueTarget, ((Collection)arrayValueTarget).getKey());
+		assertNull(((Collection)bagValueTarget).getKey());
+		bagValueFacade.setKey(simpleValueFacade);
+		assertSame(simpleValueTarget, ((Collection)bagValueTarget).getKey());
+		assertNull(((Collection)listValueTarget).getKey());
+		listValueFacade.setKey(simpleValueFacade);
+		assertSame(simpleValueTarget, ((Collection)listValueTarget).getKey());
+		assertNull(((Collection)mapValueTarget).getKey());
+		mapValueFacade.setKey(simpleValueFacade);
+		assertSame(simpleValueTarget, ((Collection)mapValueTarget).getKey());
+		assertNull(((Collection)primitiveArrayValueTarget).getKey());
+		primitiveArrayValueFacade.setKey(simpleValueFacade);
+		assertSame(simpleValueTarget, ((Collection)primitiveArrayValueTarget).getKey());
+		assertNull(((Collection)setValueTarget).getKey());
+		setValueFacade.setKey(simpleValueFacade);
+		assertSame(simpleValueTarget, ((Collection)setValueTarget).getKey());
+		assertNull(((Collection)identifierBagValueTarget).getKey());
+		identifierBagValueFacade.setKey(simpleValueFacade);
+		assertSame(simpleValueTarget, ((Collection)identifierBagValueTarget).getKey());
+		try {
+			manyToOneValueFacade.setKey(simpleValueFacade);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setKey(KeyValue)'"));
+		}
+		try {
+			oneToManyValueFacade.setKey(simpleValueFacade);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setKey(KeyValue)'"));
+		}
+		try {
+			oneToOneValueFacade.setKey(simpleValueFacade);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setKey(KeyValue)'"));
+		}
+		try {
+			simpleValueFacade.setKey(simpleValueFacade);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setKey(KeyValue)'"));
+		}
+		try {
+			componentValueFacade.setKey(simpleValueFacade);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setKey(KeyValue)'"));
+		}
+		try {
+			dependantValueFacade.setKey(simpleValueFacade);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setKey(KeyValue)'"));
+		}
+		try {
+			anyValueFacade.setKey(simpleValueFacade);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setKey(KeyValue)'"));
+		}
+	}
+	
 }
