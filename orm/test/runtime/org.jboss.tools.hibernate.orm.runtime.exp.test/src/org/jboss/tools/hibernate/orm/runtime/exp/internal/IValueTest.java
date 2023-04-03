@@ -2183,4 +2183,89 @@ public class IValueTest {
 		}
 	}
 	
+	@Test
+	public void testGetAssociatedClass() {
+		try {
+			arrayValueFacade.getAssociatedClass();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getAssociatedClass()'"));
+		}
+		try {
+			bagValueFacade.getAssociatedClass();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getAssociatedClass()'"));
+		}
+		try {
+			listValueFacade.getAssociatedClass();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getAssociatedClass()'"));
+		}
+		try {
+			setValueFacade.getAssociatedClass();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getAssociatedClass()'"));
+		}
+		try {
+			primitiveArrayValueFacade.getAssociatedClass();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getAssociatedClass()'"));
+		}
+		try {
+			mapValueFacade.getAssociatedClass();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getAssociatedClass()'"));
+		}
+		try {
+			identifierBagValueFacade.getAssociatedClass();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getAssociatedClass()'"));
+		}
+		try {
+			manyToOneValueFacade.getAssociatedClass();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getAssociatedClass()'"));
+		}
+		try {
+			oneToOneValueFacade.getAssociatedClass();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getAssociatedClass()'"));
+		}
+		try {
+			simpleValueFacade.getAssociatedClass();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getAssociatedClass()'"));
+		}
+		try {
+			componentValueFacade.getAssociatedClass();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getAssociatedClass()'"));
+		}
+		try {
+			anyValueFacade.getAssociatedClass();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getAssociatedClass()'"));
+		}
+		try {
+			dependantValueFacade.getAssociatedClass();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getAssociatedClass()'"));
+		}
+		assertNull(oneToManyValueFacade.getAssociatedClass());
+		((OneToMany)oneToManyValueTarget).setAssociatedClass(persistentClassTarget);
+		assertSame(persistentClassTarget, ((IFacade)oneToManyValueFacade.getAssociatedClass()).getTarget());
+	}
+	
 }
