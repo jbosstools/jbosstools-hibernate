@@ -20,6 +20,7 @@ import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
+import org.hibernate.mapping.Fetchable;
 import org.hibernate.mapping.IndexedCollection;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.ManyToOne;
@@ -2266,6 +2267,74 @@ public class IValueTest {
 		assertNull(oneToManyValueFacade.getAssociatedClass());
 		((OneToMany)oneToManyValueTarget).setAssociatedClass(persistentClassTarget);
 		assertSame(persistentClassTarget, ((IFacade)oneToManyValueFacade.getAssociatedClass()).getTarget());
+	}
+	
+	@Test
+	public void testSetLazy() {
+		arrayValueFacade.setLazy(true);
+		assertTrue(((Fetchable)arrayValueTarget).isLazy());
+		arrayValueFacade.setLazy(false);
+		assertFalse(((Fetchable)arrayValueTarget).isLazy());
+		bagValueFacade.setLazy(true);
+		assertTrue(((Fetchable)bagValueTarget).isLazy());
+		bagValueFacade.setLazy(false);
+		assertFalse(((Fetchable)bagValueTarget).isLazy());
+		listValueFacade.setLazy(true);
+		assertTrue(((Fetchable)listValueTarget).isLazy());
+		listValueFacade.setLazy(false);
+		assertFalse(((Fetchable)listValueTarget).isLazy());
+		primitiveArrayValueFacade.setLazy(true);
+		assertTrue(((Fetchable)primitiveArrayValueTarget).isLazy());
+		primitiveArrayValueFacade.setLazy(false);
+		assertFalse(((Fetchable)primitiveArrayValueTarget).isLazy());
+		setValueFacade.setLazy(true);
+		assertTrue(((Fetchable)setValueTarget).isLazy());
+		setValueFacade.setLazy(false);
+		assertFalse(((Fetchable)setValueTarget).isLazy());
+		mapValueFacade.setLazy(true);
+		assertTrue(((Fetchable)mapValueTarget).isLazy());
+		mapValueFacade.setLazy(false);
+		assertFalse(((Fetchable)mapValueTarget).isLazy());
+		identifierBagValueFacade.setLazy(true);
+		assertTrue(((Fetchable)identifierBagValueTarget).isLazy());
+		identifierBagValueFacade.setLazy(false);
+		assertFalse(((Fetchable)identifierBagValueTarget).isLazy());
+		anyValueFacade.setLazy(true);
+		assertTrue(((Any)anyValueTarget).isLazy());
+		anyValueFacade.setLazy(false);
+		assertFalse(((Any)anyValueTarget).isLazy());
+		manyToOneValueFacade.setLazy(true);
+		assertTrue(((Fetchable)manyToOneValueTarget).isLazy());
+		manyToOneValueFacade.setLazy(false);
+		assertFalse(((Fetchable)manyToOneValueTarget).isLazy());
+		oneToOneValueFacade.setLazy(true);
+		assertTrue(((Fetchable)oneToOneValueTarget).isLazy());
+		oneToOneValueFacade.setLazy(false);
+		assertFalse(((Fetchable)oneToOneValueTarget).isLazy());
+		try {
+			simpleValueFacade.setLazy(true);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setLazy(boolean)'"));
+		}
+		try {
+			componentValueFacade.setLazy(true);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setLazy(boolean)'"));
+		}
+		try {
+			dependantValueFacade.setLazy(true);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setLazy(boolean)'"));
+		}
+		try {
+			oneToManyValueFacade.setLazy(true);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setLazy(boolean)'"));
+		}
 	}
 	
 }
