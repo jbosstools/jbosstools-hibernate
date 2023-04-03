@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Iterator;
+import java.util.Properties;
 
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
@@ -1643,6 +1644,56 @@ public class IValueTest {
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'addColumn(Column)'"));
+		}
+	}
+	
+	@Test
+	public void testSetTypeParameters() {
+		Properties properties = new Properties();
+		assertNull(((Collection)arrayValueTarget).getTypeParameters());
+		arrayValueFacade.setTypeParameters(properties);
+		assertSame(((Collection)arrayValueTarget).getTypeParameters(), properties);
+		assertNull(((Collection)bagValueTarget).getTypeParameters());
+		bagValueFacade.setTypeParameters(properties);
+		assertSame(((Collection)bagValueTarget).getTypeParameters(), properties);
+		assertNull(((Collection)listValueTarget).getTypeParameters());
+		listValueFacade.setTypeParameters(properties);
+		assertSame(((Collection)listValueTarget).getTypeParameters(), properties);
+		assertNull(((SimpleValue)manyToOneValueTarget).getTypeParameters());
+		manyToOneValueFacade.setTypeParameters(properties);
+		assertSame(((SimpleValue)manyToOneValueTarget).getTypeParameters(), properties);
+		assertNull(((Collection)mapValueTarget).getTypeParameters());
+		mapValueFacade.setTypeParameters(properties);
+		assertSame(((Collection)mapValueTarget).getTypeParameters(), properties);
+		assertNull(((SimpleValue)oneToOneValueTarget).getTypeParameters());
+		oneToOneValueFacade.setTypeParameters(properties);
+		assertSame(((SimpleValue)oneToOneValueTarget).getTypeParameters(), properties);
+		assertNull(((Collection)primitiveArrayValueTarget).getTypeParameters());
+		primitiveArrayValueFacade.setTypeParameters(properties);
+		assertSame(((Collection)primitiveArrayValueTarget).getTypeParameters(), properties);
+		assertNull(((Collection)setValueTarget).getTypeParameters());
+		setValueFacade.setTypeParameters(properties);
+		assertSame(((Collection)setValueTarget).getTypeParameters(), properties);
+		assertNull(((SimpleValue)simpleValueTarget).getTypeParameters());
+		simpleValueFacade.setTypeParameters(properties);
+		assertSame(((SimpleValue)simpleValueTarget).getTypeParameters(), properties);
+		assertNull(((SimpleValue)componentValueTarget).getTypeParameters());
+		componentValueFacade.setTypeParameters(properties);
+		assertSame(((SimpleValue)componentValueTarget).getTypeParameters(), properties);
+		assertNull(((SimpleValue)dependantValueTarget).getTypeParameters());
+		dependantValueFacade.setTypeParameters(properties);
+		assertSame(((SimpleValue)dependantValueTarget).getTypeParameters(), properties);
+		assertNull(((SimpleValue)anyValueTarget).getTypeParameters());
+		anyValueFacade.setTypeParameters(properties);
+		assertSame(((SimpleValue)anyValueTarget).getTypeParameters(), properties);
+		assertNull(((Collection)identifierBagValueTarget).getTypeParameters());
+		identifierBagValueFacade.setTypeParameters(properties);
+		assertSame(((Collection)identifierBagValueTarget).getTypeParameters(), properties);
+		try {
+			oneToManyValueFacade.setTypeParameters(properties);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setTypeParameters(Properties)'"));
 		}
 	}
 	
