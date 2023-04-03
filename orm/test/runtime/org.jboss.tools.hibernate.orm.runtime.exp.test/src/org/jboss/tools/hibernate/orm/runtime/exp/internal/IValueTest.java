@@ -1898,4 +1898,86 @@ public class IValueTest {
 		}
 	}
 	
+	@Test
+	public void testSetElementClassName() {
+		assertNull(((Array)arrayValueTarget).getElementClassName());
+		arrayValueFacade.setElementClassName("foo");
+		assertEquals("foo", ((Array)arrayValueTarget).getElementClassName());
+		assertNull(((Array)primitiveArrayValueTarget).getElementClassName());
+		primitiveArrayValueFacade.setElementClassName("foo");
+		assertEquals("foo", ((Array)primitiveArrayValueTarget).getElementClassName());
+		try {
+			bagValueFacade.setElementClassName("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setElementClassName(String)'"));
+		}
+		try {
+			listValueFacade.setElementClassName("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setElementClassName(String)'"));
+		}
+		try {
+			manyToOneValueFacade.setElementClassName("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setElementClassName(String)'"));
+		}
+		try {
+			mapValueFacade.setElementClassName("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setElementClassName(String)'"));
+		}
+		try {
+			oneToManyValueFacade.setElementClassName("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setElementClassName(String)'"));
+		}
+		try {
+			oneToOneValueFacade.setElementClassName("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setElementClassName(String)'"));
+		}
+		try {
+			setValueFacade.setElementClassName("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setElementClassName(String)'"));
+		}
+		try {
+			simpleValueFacade.setElementClassName("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setElementClassName(String)'"));
+		}
+		try {
+			componentValueFacade.setElementClassName("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setElementClassName(String)'"));
+		}
+		try {
+			dependantValueFacade.setElementClassName("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setElementClassName(String)'"));
+		}
+		try {
+			anyValueFacade.setElementClassName("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setElementClassName(String)'"));
+		}
+		try {
+			identifierBagValueFacade.setElementClassName("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setElementClassName(String)'"));
+		}
+	}
+	
 }
