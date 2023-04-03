@@ -1697,5 +1697,75 @@ public class IValueTest {
 		}
 	}
 	
+	@Test
+	public void testGetForeignKeyName() {
+		assertNull(manyToOneValueFacade.getForeignKeyName());
+		((SimpleValue)manyToOneValueTarget).setForeignKeyName("foo");
+		assertEquals("foo", manyToOneValueFacade.getForeignKeyName());
+		assertNull(oneToOneValueFacade.getForeignKeyName());
+		((SimpleValue)oneToOneValueTarget).setForeignKeyName("foo");
+		assertEquals("foo", oneToOneValueFacade.getForeignKeyName());
+		assertNull(simpleValueFacade.getForeignKeyName());
+		((SimpleValue)simpleValueTarget).setForeignKeyName("foo");
+		assertEquals("foo", simpleValueFacade.getForeignKeyName());
+		assertNull(componentValueFacade.getForeignKeyName());
+		((SimpleValue)componentValueTarget).setForeignKeyName("foo");
+		assertEquals("foo", componentValueFacade.getForeignKeyName());
+		assertNull(dependantValueFacade.getForeignKeyName());
+		((SimpleValue)dependantValueTarget).setForeignKeyName("foo");
+		assertEquals("foo", dependantValueFacade.getForeignKeyName());
+		assertNull(anyValueFacade.getForeignKeyName());
+		((SimpleValue)anyValueTarget).setForeignKeyName("foo");
+		assertEquals("foo", anyValueFacade.getForeignKeyName());
+		try {
+			arrayValueFacade.getForeignKeyName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getForeignKeyName()'"));
+		}
+		try {
+			bagValueFacade.getForeignKeyName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getForeignKeyName()'"));
+		}
+		try {
+			listValueFacade.getForeignKeyName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getForeignKeyName()'"));
+		}
+		try {
+			mapValueFacade.getForeignKeyName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getForeignKeyName()'"));
+		}
+		try {
+			oneToManyValueFacade.getForeignKeyName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getForeignKeyName()'"));
+		}
+		try {
+			primitiveArrayValueFacade.getForeignKeyName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getForeignKeyName()'"));
+		}
+		try {
+			setValueFacade.getForeignKeyName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getForeignKeyName()'"));
+		}
+		try {
+			identifierBagValueFacade.getForeignKeyName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getForeignKeyName()'"));
+		}
+	}
+	
 	
 }
