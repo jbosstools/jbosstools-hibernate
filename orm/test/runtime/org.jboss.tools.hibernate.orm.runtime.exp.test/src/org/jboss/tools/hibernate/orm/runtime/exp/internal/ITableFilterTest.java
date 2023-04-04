@@ -46,4 +46,11 @@ public class ITableFilterTest {
 		assertEquals("foo", tableFilterTarget.getMatchCatalog());
 	}
 		
+	@Test
+	public void testSetMatchSchema() {
+		assertNotEquals("foo", tableFilterTarget.getMatchSchema());
+		tableFilterFacade.setMatchSchema("foo");
+		assertEquals("foo", tableFilterTarget.getMatchSchema());
+	}
+		
 }
