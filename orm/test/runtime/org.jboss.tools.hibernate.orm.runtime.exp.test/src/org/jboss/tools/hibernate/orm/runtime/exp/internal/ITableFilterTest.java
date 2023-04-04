@@ -1,6 +1,8 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
@@ -28,4 +30,11 @@ public class ITableFilterTest {
 		assertNotNull(tableFilterFacade);
 	}
 
+	@Test
+	public void testSetExclude() {
+		assertNull(tableFilterTarget.getExclude());
+		tableFilterFacade.setExclude(true);
+		assertTrue(tableFilterTarget.getExclude());
+	}
+	
 }
