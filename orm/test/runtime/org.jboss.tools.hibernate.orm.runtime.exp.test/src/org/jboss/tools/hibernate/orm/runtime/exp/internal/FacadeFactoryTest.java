@@ -263,6 +263,16 @@ public class FacadeFactoryTest {
 	}
 	
 	@Test
+	public void testCreateTableFilter() {
+		try {
+			FACADE_FACTORY.createTableFilter(null);
+			fail();
+		} catch (Throwable t) {
+			assertEquals("Should use class 'NewFacadeFactory'", t.getMessage());
+		}
+	}
+	
+	@Test
 	public void testCreateSchemaExport() {
 		SchemaExport schemaExport = new SchemaExport();
 		ISchemaExport facade = FACADE_FACTORY.createSchemaExport(schemaExport);
@@ -291,13 +301,6 @@ public class FacadeFactoryTest {
 		IQueryExporter facade = FACADE_FACTORY.createQueryExporter(queryExporter);
 		assertTrue(facade instanceof QueryExporterFacadeImpl);
 		assertSame(queryExporter, ((IFacade)facade).getTarget());		
-	}
-	
-	@Test
-	public void testCreateTableFilter() {
-		TableFilter tableFilter = new TableFilter();
-		ITableFilter facade = FACADE_FACTORY.createTableFilter(tableFilter);
-		assertSame(tableFilter, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test
