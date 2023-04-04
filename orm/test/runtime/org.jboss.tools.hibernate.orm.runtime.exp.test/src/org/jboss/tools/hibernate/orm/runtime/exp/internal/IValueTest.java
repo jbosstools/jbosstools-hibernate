@@ -353,6 +353,24 @@ public class IValueTest {
 		assertFalse(anyValueFacade.isMap());
 		assertFalse(identifierBagValueFacade.isMap());
 	}
+	
+	@Test
+	public void testIsComponent() {
+		assertFalse(arrayValueFacade.isComponent());
+		assertFalse(bagValueFacade.isComponent());
+		assertFalse(listValueFacade.isComponent());
+		assertFalse(manyToOneValueFacade.isComponent());
+		assertFalse(mapValueFacade.isComponent());
+		assertFalse(oneToManyValueFacade.isComponent());
+		assertFalse(oneToOneValueFacade.isComponent());
+		assertFalse(primitiveArrayValueFacade.isComponent());
+		assertFalse(setValueFacade.isComponent());
+		assertFalse(simpleValueFacade.isComponent());
+		assertTrue(componentValueFacade.isComponent());
+		assertFalse(dependantValueFacade.isComponent());
+		assertFalse(anyValueFacade.isComponent());
+		assertFalse(identifierBagValueFacade.isComponent());
+	}
 
 	@Test 
 	public void testIsEmbedded() {
