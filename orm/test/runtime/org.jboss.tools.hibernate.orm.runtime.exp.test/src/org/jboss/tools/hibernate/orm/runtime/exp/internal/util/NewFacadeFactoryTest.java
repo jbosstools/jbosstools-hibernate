@@ -35,6 +35,7 @@ import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
+import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
@@ -56,6 +57,7 @@ import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
+import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -425,6 +427,13 @@ public class NewFacadeFactoryTest {
 		Object wrappedComponent = ((Wrapper)componentWrapper).getWrappedObject();
 		assertTrue(wrappedComponent instanceof Component);
 		assertSame(rootClass, ((Component)wrappedComponent).getOwner());
+	}
+	
+	@Test
+	public void testCreateTableFilter() {
+		ITableFilter tableFilterFacade = facadeFactory.createTableFilter();
+		Object tableFilterWrapper = ((IFacade)tableFilterFacade).getTarget();
+		assertTrue(tableFilterWrapper instanceof TableFilter);
 	}
 	
 	public static class TestRevengStrategy extends DelegatingStrategy {
