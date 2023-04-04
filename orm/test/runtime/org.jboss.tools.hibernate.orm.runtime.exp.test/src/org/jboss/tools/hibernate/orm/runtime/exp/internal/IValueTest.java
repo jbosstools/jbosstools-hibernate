@@ -2483,4 +2483,89 @@ public class IValueTest {
 		}
 	}
 	
+	@Test
+	public void testSetAssociatedClass() {
+		try {
+			arrayValueFacade.setAssociatedClass(persistentClassFacade);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
+		}
+		try {
+			bagValueFacade.setAssociatedClass(persistentClassFacade);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
+		}
+		try {
+			listValueFacade.setAssociatedClass(persistentClassFacade);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
+		}
+		try {
+			setValueFacade.setAssociatedClass(persistentClassFacade);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
+		}
+		try {
+			primitiveArrayValueFacade.setAssociatedClass(persistentClassFacade);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
+		}
+		try {
+			mapValueFacade.setAssociatedClass(persistentClassFacade);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
+		}
+		try {
+			identifierBagValueFacade.setAssociatedClass(persistentClassFacade);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
+		}
+		try {
+			manyToOneValueFacade.setAssociatedClass(persistentClassFacade);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
+		}
+		try {
+			oneToOneValueFacade.setAssociatedClass(persistentClassFacade);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
+		}
+		try {
+			simpleValueFacade.setAssociatedClass(persistentClassFacade);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
+		}
+		try {
+			componentValueFacade.setAssociatedClass(persistentClassFacade);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
+		}
+		try {
+			anyValueFacade.setAssociatedClass(persistentClassFacade);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
+		}
+		try {
+			dependantValueFacade.setAssociatedClass(persistentClassFacade);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
+		}
+		assertNull(((OneToMany)oneToManyValueTarget).getAssociatedClass());
+		oneToManyValueFacade.setAssociatedClass(persistentClassFacade);
+		assertSame(persistentClassTarget, ((OneToMany)oneToManyValueTarget).getAssociatedClass());
+	}
+	
 }
