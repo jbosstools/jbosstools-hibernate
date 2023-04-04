@@ -26,7 +26,6 @@ import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
-import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.util.JpaMappingFileHelper;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
@@ -166,7 +165,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public ITableFilter newTableFilter() {
-		return facadeFactory.createTableFilter(new TableFilter());
+		return newFacadeFactory.createTableFilter();
 	}
 
 
