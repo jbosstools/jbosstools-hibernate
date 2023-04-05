@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 import org.hibernate.tool.orm.jbt.type.BooleanType;
+import org.hibernate.tool.orm.jbt.type.ByteType;
 import org.hibernate.tool.orm.jbt.type.TypeFactory;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
@@ -34,6 +35,12 @@ public class ITypeFactoryTest {
 	public void testGetBooleanType() {
 		IType typeFacade = typeFactoryFacade.getBooleanType();
 		assertSame(BooleanType.INSTANCE, ((IFacade)typeFacade).getTarget());
+	}
+	
+	@Test
+	public void testGetByteType() {
+		IType typeFacade = typeFactoryFacade.getByteType();
+		assertSame(ByteType.INSTANCE, ((IFacade)typeFacade).getTarget());
 	}
 	
 }
