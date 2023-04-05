@@ -74,4 +74,11 @@ public class ITableFilterTest {
 		assertEquals("foo", tableFilterFacade.getMatchCatalog());
 	}
 		
+	@Test
+	public void testGetMatchSchema() {
+		assertNotEquals("foo", tableFilterFacade.getMatchSchema());
+		tableFilterTarget.setMatchSchema("foo");
+		assertEquals("foo", tableFilterFacade.getMatchSchema());
+	}
+		
 }
