@@ -3,10 +3,12 @@ package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
+import org.hibernate.tool.orm.jbt.type.BooleanType;
 import org.hibernate.tool.orm.jbt.type.TypeFactory;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
+import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,6 +28,12 @@ public class ITypeFactoryTest {
 	public void testConstruction() {
 		assertNotNull(typeFactoryFacade);
 		assertSame(TypeFactory.INSTANCE, ((IFacade)typeFactoryFacade).getTarget());
+	}
+	
+	@Test
+	public void testGetBooleanType() {
+		IType typeFacade = typeFactoryFacade.getBooleanType();
+		assertSame(BooleanType.INSTANCE, ((IFacade)typeFacade).getTarget());
 	}
 	
 }
