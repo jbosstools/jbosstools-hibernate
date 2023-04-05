@@ -60,4 +60,11 @@ public class ITableFilterTest {
 		assertEquals("foo", tableFilterTarget.getMatchName());
 	}
 		
+	@Test
+	public void testGetExclude() {
+		assertNull(tableFilterFacade.getExclude());
+		tableFilterTarget.setExclude(true);
+		assertTrue(tableFilterFacade.getExclude());
+	}
+		
 }
