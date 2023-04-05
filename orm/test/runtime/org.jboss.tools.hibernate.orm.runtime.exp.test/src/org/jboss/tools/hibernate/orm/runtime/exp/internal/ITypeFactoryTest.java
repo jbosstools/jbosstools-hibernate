@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import org.hibernate.tool.orm.jbt.type.BigIntegerType;
 import org.hibernate.tool.orm.jbt.type.BooleanType;
 import org.hibernate.tool.orm.jbt.type.ByteType;
+import org.hibernate.tool.orm.jbt.type.CalendarDateType;
 import org.hibernate.tool.orm.jbt.type.CalendarType;
 import org.hibernate.tool.orm.jbt.type.ShortType;
 import org.hibernate.tool.orm.jbt.type.TypeFactory;
@@ -62,6 +63,12 @@ public class ITypeFactoryTest {
 	public void testGetCalendarType() {
 		IType typeFacade = typeFactoryFacade.getCalendarType();
 		assertSame(CalendarType.INSTANCE, ((IFacade)typeFacade).getTarget());
+	}
+	
+	@Test
+	public void testGetCalendarDateType() {
+		IType typeFacade = typeFactoryFacade.getCalendarDateType();
+		assertSame(CalendarDateType.INSTANCE, ((IFacade)typeFacade).getTarget());
 	}
 	
 }
