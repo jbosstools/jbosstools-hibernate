@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import org.hibernate.tool.orm.jbt.type.BigIntegerType;
 import org.hibernate.tool.orm.jbt.type.BooleanType;
 import org.hibernate.tool.orm.jbt.type.ByteType;
+import org.hibernate.tool.orm.jbt.type.CalendarType;
 import org.hibernate.tool.orm.jbt.type.ShortType;
 import org.hibernate.tool.orm.jbt.type.TypeFactory;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
@@ -55,6 +56,12 @@ public class ITypeFactoryTest {
 	public void testGetShortType() {
 		IType typeFacade = typeFactoryFacade.getShortType();
 		assertSame(ShortType.INSTANCE, ((IFacade)typeFacade).getTarget());
+	}
+	
+	@Test
+	public void testGetCalendarType() {
+		IType typeFacade = typeFactoryFacade.getCalendarType();
+		assertSame(CalendarType.INSTANCE, ((IFacade)typeFacade).getTarget());
 	}
 	
 }
