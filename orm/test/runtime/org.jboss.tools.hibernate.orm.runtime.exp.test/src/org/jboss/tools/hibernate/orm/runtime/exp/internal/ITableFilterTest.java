@@ -53,4 +53,11 @@ public class ITableFilterTest {
 		assertEquals("foo", tableFilterTarget.getMatchSchema());
 	}
 		
+	@Test
+	public void testSetMatchName() {
+		assertNotEquals("foo", tableFilterTarget.getMatchName());
+		tableFilterFacade.setMatchName("foo");
+		assertEquals("foo", tableFilterTarget.getMatchName());
+	}
+		
 }
