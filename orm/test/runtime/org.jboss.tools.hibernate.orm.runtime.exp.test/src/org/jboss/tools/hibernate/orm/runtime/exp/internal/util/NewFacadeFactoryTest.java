@@ -36,6 +36,7 @@ import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
+import org.hibernate.tool.orm.jbt.type.TypeFactory;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
@@ -58,6 +59,7 @@ import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
+import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -434,6 +436,12 @@ public class NewFacadeFactoryTest {
 		ITableFilter tableFilterFacade = facadeFactory.createTableFilter();
 		Object tableFilterWrapper = ((IFacade)tableFilterFacade).getTarget();
 		assertTrue(tableFilterWrapper instanceof TableFilter);
+	}
+	
+	@Test
+	public void testCreateTypeFactoryFacade() {
+		ITypeFactory typeFactoryFacade = facadeFactory.createTypeFactory();
+		assertSame(TypeFactory.INSTANCE, ((IFacade)typeFactoryFacade).getTarget());
 	}
 	
 	public static class TestRevengStrategy extends DelegatingStrategy {

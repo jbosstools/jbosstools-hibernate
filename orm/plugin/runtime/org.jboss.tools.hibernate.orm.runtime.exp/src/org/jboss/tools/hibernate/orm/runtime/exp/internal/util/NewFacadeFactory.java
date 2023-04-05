@@ -20,6 +20,7 @@ import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
+import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IValue;
 
 public class NewFacadeFactory extends AbstractFacadeFactory {
@@ -238,6 +239,12 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 		return (ITableFilter)GenericFacadeFactory.createFacade(
 				ITableFilter.class, 
 				WrapperFactory.createTableFilterWrapper());
+	}
+	
+	public ITypeFactory createTypeFactory() {
+		return (ITypeFactory)GenericFacadeFactory.createFacade(
+				ITypeFactory.class, 
+				WrapperFactory.createTypeFactoryWrapper());
 	}
 
 	@Override
