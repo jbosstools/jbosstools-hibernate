@@ -8,6 +8,7 @@ import org.hibernate.tool.orm.jbt.type.BooleanType;
 import org.hibernate.tool.orm.jbt.type.ByteType;
 import org.hibernate.tool.orm.jbt.type.CalendarDateType;
 import org.hibernate.tool.orm.jbt.type.CalendarType;
+import org.hibernate.tool.orm.jbt.type.IntegerType;
 import org.hibernate.tool.orm.jbt.type.ShortType;
 import org.hibernate.tool.orm.jbt.type.TypeFactory;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
@@ -69,6 +70,12 @@ public class ITypeFactoryTest {
 	public void testGetCalendarDateType() {
 		IType typeFacade = typeFactoryFacade.getCalendarDateType();
 		assertSame(CalendarDateType.INSTANCE, ((IFacade)typeFacade).getTarget());
+	}
+	
+	@Test
+	public void testGetIntegerType() {
+		IType typeFacade = typeFactoryFacade.getIntegerType();
+		assertSame(IntegerType.INSTANCE, ((IFacade)typeFacade).getTarget());
 	}
 	
 }
