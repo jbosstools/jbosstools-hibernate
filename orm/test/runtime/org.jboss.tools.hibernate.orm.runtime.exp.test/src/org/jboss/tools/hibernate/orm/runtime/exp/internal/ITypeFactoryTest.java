@@ -13,6 +13,7 @@ import org.hibernate.tool.orm.jbt.type.CharacterType;
 import org.hibernate.tool.orm.jbt.type.ClassType;
 import org.hibernate.tool.orm.jbt.type.CurrencyType;
 import org.hibernate.tool.orm.jbt.type.DateType;
+import org.hibernate.tool.orm.jbt.type.DoubleType;
 import org.hibernate.tool.orm.jbt.type.IntegerType;
 import org.hibernate.tool.orm.jbt.type.ShortType;
 import org.hibernate.tool.orm.jbt.type.TypeFactory;
@@ -111,6 +112,12 @@ public class ITypeFactoryTest {
 	public void testGetDateType() {
 		IType typeFacade = typeFactoryFacade.getDateType();
 		assertSame(DateType.INSTANCE, ((IFacade)typeFacade).getTarget());
+	}
+	
+	@Test
+	public void testGetDoubleType() {
+		IType typeFacade = typeFactoryFacade.getDoubleType();
+		assertSame(DoubleType.INSTANCE, ((IFacade)typeFacade).getTarget());
 	}
 	
 }
