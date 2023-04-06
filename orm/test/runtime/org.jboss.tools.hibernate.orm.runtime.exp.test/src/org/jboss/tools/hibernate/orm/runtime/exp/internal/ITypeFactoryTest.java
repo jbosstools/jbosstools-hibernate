@@ -11,6 +11,7 @@ import org.hibernate.tool.orm.jbt.type.CalendarDateType;
 import org.hibernate.tool.orm.jbt.type.CalendarType;
 import org.hibernate.tool.orm.jbt.type.CharacterType;
 import org.hibernate.tool.orm.jbt.type.ClassType;
+import org.hibernate.tool.orm.jbt.type.CurrencyType;
 import org.hibernate.tool.orm.jbt.type.IntegerType;
 import org.hibernate.tool.orm.jbt.type.ShortType;
 import org.hibernate.tool.orm.jbt.type.TypeFactory;
@@ -97,6 +98,12 @@ public class ITypeFactoryTest {
 	public void testGetClassType() {
 		IType typeFacade = typeFactoryFacade.getClassType();
 		assertSame(ClassType.INSTANCE, ((IFacade)typeFacade).getTarget());
+	}
+	
+	@Test
+	public void testGetCurrencyType() {
+		IType typeFacade = typeFactoryFacade.getCurrencyType();
+		assertSame(CurrencyType.INSTANCE, ((IFacade)typeFacade).getTarget());
 	}
 	
 }
