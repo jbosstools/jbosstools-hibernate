@@ -3,6 +3,7 @@ package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
+import org.hibernate.tool.orm.jbt.type.BigDecimalType;
 import org.hibernate.tool.orm.jbt.type.BigIntegerType;
 import org.hibernate.tool.orm.jbt.type.BooleanType;
 import org.hibernate.tool.orm.jbt.type.ByteType;
@@ -76,6 +77,12 @@ public class ITypeFactoryTest {
 	public void testGetIntegerType() {
 		IType typeFacade = typeFactoryFacade.getIntegerType();
 		assertSame(IntegerType.INSTANCE, ((IFacade)typeFacade).getTarget());
+	}
+	
+	@Test
+	public void testGetBigDecimalType() {
+		IType typeFacade = typeFactoryFacade.getBigDecimalType();
+		assertSame( BigDecimalType.INSTANCE, ((IFacade)typeFacade).getTarget());
 	}
 	
 }
