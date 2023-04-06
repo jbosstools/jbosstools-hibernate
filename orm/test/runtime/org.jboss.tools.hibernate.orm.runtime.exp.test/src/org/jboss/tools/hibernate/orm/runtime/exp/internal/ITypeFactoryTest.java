@@ -9,6 +9,7 @@ import org.hibernate.tool.orm.jbt.type.BooleanType;
 import org.hibernate.tool.orm.jbt.type.ByteType;
 import org.hibernate.tool.orm.jbt.type.CalendarDateType;
 import org.hibernate.tool.orm.jbt.type.CalendarType;
+import org.hibernate.tool.orm.jbt.type.CharacterType;
 import org.hibernate.tool.orm.jbt.type.IntegerType;
 import org.hibernate.tool.orm.jbt.type.ShortType;
 import org.hibernate.tool.orm.jbt.type.TypeFactory;
@@ -83,6 +84,12 @@ public class ITypeFactoryTest {
 	public void testGetBigDecimalType() {
 		IType typeFacade = typeFactoryFacade.getBigDecimalType();
 		assertSame( BigDecimalType.INSTANCE, ((IFacade)typeFacade).getTarget());
+	}
+	
+	@Test
+	public void testGetCharacterType() {
+		IType typeFacade = typeFactoryFacade.getCharacterType();
+		assertSame(CharacterType.INSTANCE, ((IFacade)typeFacade).getTarget());
 	}
 	
 }
