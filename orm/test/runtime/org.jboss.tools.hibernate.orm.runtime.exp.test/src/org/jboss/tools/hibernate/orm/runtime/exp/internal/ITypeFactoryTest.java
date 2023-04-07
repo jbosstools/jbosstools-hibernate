@@ -17,6 +17,7 @@ import org.hibernate.tool.orm.jbt.type.DoubleType;
 import org.hibernate.tool.orm.jbt.type.FloatType;
 import org.hibernate.tool.orm.jbt.type.IntegerType;
 import org.hibernate.tool.orm.jbt.type.LocaleType;
+import org.hibernate.tool.orm.jbt.type.LongType;
 import org.hibernate.tool.orm.jbt.type.ShortType;
 import org.hibernate.tool.orm.jbt.type.TypeFactory;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
@@ -132,6 +133,12 @@ public class ITypeFactoryTest {
 	public void testGetLocaleType() {
 		IType typeFacade = typeFactoryFacade.getLocaleType();
 		assertSame(LocaleType.INSTANCE, ((IFacade)typeFacade).getTarget());
+	}
+	
+	@Test
+	public void testGetLongType() {
+		IType typeFacade = typeFactoryFacade.getLongType();
+		assertSame(LongType.INSTANCE, ((IFacade)typeFacade).getTarget());
 	}
 	
 }
