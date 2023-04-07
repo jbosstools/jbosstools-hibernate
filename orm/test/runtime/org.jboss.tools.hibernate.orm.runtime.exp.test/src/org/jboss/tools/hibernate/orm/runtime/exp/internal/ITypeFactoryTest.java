@@ -173,4 +173,9 @@ public class ITypeFactoryTest {
 		assertSame(TypeFactory.STRING_TYPE, ((IFacade)typeFacade).getTarget());
 	}
 
+	@Test
+	public void testGetBasicType() {
+		IType typeFacade = typeFactoryFacade.getBasicType(String.class.getName());
+		assertSame(TypeFactory.STRING_TYPE, ((IFacade)typeFacade).getTarget());
+	}
 }
