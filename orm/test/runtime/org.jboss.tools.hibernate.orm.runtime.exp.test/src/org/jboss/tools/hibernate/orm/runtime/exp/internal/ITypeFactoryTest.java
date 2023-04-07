@@ -21,6 +21,7 @@ import org.hibernate.tool.orm.jbt.type.LongType;
 import org.hibernate.tool.orm.jbt.type.ShortType;
 import org.hibernate.tool.orm.jbt.type.StringType;
 import org.hibernate.tool.orm.jbt.type.TextType;
+import org.hibernate.tool.orm.jbt.type.TimeType;
 import org.hibernate.tool.orm.jbt.type.TypeFactory;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
@@ -153,6 +154,12 @@ public class ITypeFactoryTest {
 	public void testGetTextType() {
 		IType typeFacade = typeFactoryFacade.getTextType();
 		assertSame(TextType.INSTANCE, ((IFacade)typeFacade).getTarget());
+	}
+	
+	@Test
+	public void testGetTimeType() {
+		IType typeFacade = typeFactoryFacade.getTimeType();
+		assertSame(TimeType.INSTANCE, ((IFacade)typeFacade).getTarget());
 	}
 	
 }
