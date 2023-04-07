@@ -26,6 +26,7 @@ import org.hibernate.tool.orm.jbt.type.TimeZoneType;
 import org.hibernate.tool.orm.jbt.type.TimestampType;
 import org.hibernate.tool.orm.jbt.type.TrueFalseType;
 import org.hibernate.tool.orm.jbt.type.TypeFactory;
+import org.hibernate.tool.orm.jbt.type.YesNoType;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -181,6 +182,12 @@ public class ITypeFactoryTest {
 	public void testGetTrueFalseType() {
 		IType typeFacade = typeFactoryFacade.getTrueFalseType();
 		assertSame(TrueFalseType.INSTANCE, ((IFacade)typeFacade).getTarget());
+	}
+	
+	@Test
+	public void testGetYesNoType() {
+		IType typeFacade = typeFactoryFacade.getYesNoType();
+		assertSame(YesNoType.INSTANCE, ((IFacade)typeFacade).getTarget());
 	}
 	
 }
