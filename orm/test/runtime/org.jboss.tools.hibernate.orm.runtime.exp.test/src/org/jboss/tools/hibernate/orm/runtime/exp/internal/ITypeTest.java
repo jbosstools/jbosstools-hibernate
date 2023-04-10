@@ -5,12 +5,27 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.tool.orm.jbt.type.ClassType;
 import org.hibernate.tool.orm.jbt.wrp.TypeWrapperFactory;
+import org.hibernate.type.AnyType;
 import org.hibernate.type.ArrayType;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.junit.jupiter.api.Test;
 
 public class ITypeTest {
+	
+	@Test
+	public void testIsAnyType() {
+		// first try type that is not a any type
+		IType classTypeFacade = (IType)GenericFacadeFactory.createFacade(
+				IType.class, 
+				TypeWrapperFactory.createTypeWrapper(new ClassType()));
+		assertFalse(classTypeFacade.isAnyType());
+		// next try a any type
+		IType arrayTypeFacade = (IType)GenericFacadeFactory.createFacade(
+				IType.class, 
+				TypeWrapperFactory.createTypeWrapper(new AnyType(null, null, null, true)));
+		assertTrue(arrayTypeFacade.isAnyType());
+	}
 	
 	@Test
 	public void testIsCollectionType() {
