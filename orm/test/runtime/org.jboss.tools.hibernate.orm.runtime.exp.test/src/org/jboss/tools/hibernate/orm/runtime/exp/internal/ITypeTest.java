@@ -51,6 +51,26 @@ public class ITypeTest {
 	}
 	
 	@Test
+	public void testFromStringValue() {
+		IType classTypeFacade = (IType)GenericFacadeFactory.createFacade(
+				IType.class, 
+				TypeWrapperFactory.createTypeWrapper(new ClassType()));
+		assertEquals(
+				TypeFacadeTest.class, 
+				classTypeFacade.fromStringValue(TypeFacadeTest.class.getName()));
+		// next try type that is not string representable
+		try {
+			IType arrayTypeFacade = (IType)GenericFacadeFactory.createFacade(
+					IType.class, 
+					TypeWrapperFactory.createTypeWrapper(new ArrayType("foo", "bar", String.class)));
+			arrayTypeFacade.fromStringValue("just a random string");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'toString(Object)'"));
+		}
+	}
+	
+	@Test
 	public void testIsAnyType() {
 		// first try type that is not a any type
 		IType classTypeFacade = (IType)GenericFacadeFactory.createFacade(
