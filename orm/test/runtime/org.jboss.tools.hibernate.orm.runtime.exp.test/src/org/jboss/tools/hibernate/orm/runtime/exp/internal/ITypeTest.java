@@ -10,6 +10,7 @@ import org.hibernate.tool.orm.jbt.wrp.TypeWrapperFactory;
 import org.hibernate.type.AnyType;
 import org.hibernate.type.ArrayType;
 import org.hibernate.type.ManyToOneType;
+import org.hibernate.type.OneToOneType;
 import org.hibernate.type.spi.TypeConfiguration;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
@@ -85,6 +86,32 @@ public class ITypeTest {
 				IType.class, 
 				TypeWrapperFactory.createTypeWrapper(new ManyToOneType((TypeConfiguration)null, null)));
 		assertTrue(entityTypeFacade.isEntityType());
+	}
+	
+	@Test
+	public void testIsOneToOne() {
+		// first try type that is not a one to one type
+		try {
+			IType classTypeFacade = (IType)GenericFacadeFactory.createFacade(
+					IType.class, 
+					TypeWrapperFactory.createTypeWrapper(new ClassType()));
+			classTypeFacade.isOneToOne();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'isOneToOne()'"));
+		}
+		// next try another type that is not a one to one type
+		IType entityTypeFacade = (IType)GenericFacadeFactory.createFacade(
+				IType.class, 
+				TypeWrapperFactory.createTypeWrapper(new ManyToOneType((TypeConfiguration)null, null)));
+		assertFalse(entityTypeFacade.isOneToOne());
+		// finally try a type that is a one to one type
+		IType oneToOneTypeFacade = (IType)GenericFacadeFactory.createFacade(
+				IType.class, 
+				TypeWrapperFactory.createTypeWrapper(
+						new OneToOneType(
+								null, null, null, false, null, false, false, null, null, false)));
+		assertTrue(oneToOneTypeFacade.isOneToOne());
 	}
 	
 	@Test
