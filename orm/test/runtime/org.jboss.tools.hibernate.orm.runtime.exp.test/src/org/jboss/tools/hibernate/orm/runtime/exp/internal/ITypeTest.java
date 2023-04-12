@@ -37,6 +37,20 @@ public class ITypeTest {
 	}
 	
 	@Test
+	public void testGetName() {
+		// first try a class type
+		IType classTypeFacade = (IType)GenericFacadeFactory.createFacade(
+				IType.class, 
+				TypeWrapperFactory.createTypeWrapper(new ClassType()));
+		assertEquals("class", classTypeFacade.getName());
+		// next try a array type
+		IType arrayTypeFacade = (IType)GenericFacadeFactory.createFacade(
+				IType.class, 
+				TypeWrapperFactory.createTypeWrapper(new ArrayType("foo", "bar", String.class)));
+		assertEquals("[Ljava.lang.String;(foo)", arrayTypeFacade.getName());
+	}
+	
+	@Test
 	public void testIsAnyType() {
 		// first try type that is not a any type
 		IType classTypeFacade = (IType)GenericFacadeFactory.createFacade(
