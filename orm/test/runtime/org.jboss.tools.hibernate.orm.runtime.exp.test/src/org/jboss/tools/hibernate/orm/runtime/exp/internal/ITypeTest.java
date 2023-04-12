@@ -9,6 +9,8 @@ import org.hibernate.tool.orm.jbt.type.ClassType;
 import org.hibernate.tool.orm.jbt.wrp.TypeWrapperFactory;
 import org.hibernate.type.AnyType;
 import org.hibernate.type.ArrayType;
+import org.hibernate.type.ManyToOneType;
+import org.hibernate.type.spi.TypeConfiguration;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.junit.jupiter.api.Test;
@@ -52,6 +54,7 @@ public class ITypeTest {
 	
 	@Test
 	public void testFromStringValue() {
+		// first try type that is string representable
 		IType classTypeFacade = (IType)GenericFacadeFactory.createFacade(
 				IType.class, 
 				TypeWrapperFactory.createTypeWrapper(new ClassType()));
@@ -66,8 +69,22 @@ public class ITypeTest {
 			arrayTypeFacade.fromStringValue("just a random string");
 			fail();
 		} catch (UnsupportedOperationException e) {
-			assertTrue(e.getMessage().contains("does not support 'toString(Object)'"));
+			assertTrue(e.getMessage().contains("does not support 'fromStringValue(Object)'"));
 		}
+	}
+	
+	@Test
+	public void testIsEntityType() {
+		// first try type that is not an entity type
+		IType classTypeFacade = (IType)GenericFacadeFactory.createFacade(
+				IType.class, 
+				TypeWrapperFactory.createTypeWrapper(new ClassType()));
+		assertFalse(classTypeFacade.isEntityType());
+		// next try type that is an entity type
+		IType entityTypeFacade = (IType)GenericFacadeFactory.createFacade(
+				IType.class, 
+				TypeWrapperFactory.createTypeWrapper(new ManyToOneType((TypeConfiguration)null, null)));
+		assertTrue(entityTypeFacade.isEntityType());
 	}
 	
 	@Test
