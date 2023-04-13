@@ -11,6 +11,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.tool.orm.jbt.type.ClassType;
 import org.hibernate.tool.orm.jbt.type.IntegerType;
+import org.hibernate.tool.orm.jbt.type.StringType;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.wrp.TypeWrapperFactory;
 import org.hibernate.type.AnyType;
@@ -250,6 +251,24 @@ public class ITypeTest {
 		assertTrue(arrayTypeFacade.isArrayType());
 	}
 	
+	@Test
+	public void testIsInstanceOfPrimitiveType() {
+		// first try a class type
+		IType classTypeFacade = (IType)GenericFacadeFactory.createFacade(
+				IType.class, 
+				TypeWrapperFactory.createTypeWrapper(new ClassType()));
+		assertFalse(classTypeFacade.isInstanceOfPrimitiveType());
+		// next try a string type
+		IType stringTypeFacade = (IType)GenericFacadeFactory.createFacade(
+				IType.class, 
+				TypeWrapperFactory.createTypeWrapper(new StringType()));
+		assertFalse(stringTypeFacade.isInstanceOfPrimitiveType());
+		// finally try a integer type 
+		IType integerTypeFacade = (IType)GenericFacadeFactory.createFacade(
+				IType.class, 
+				TypeWrapperFactory.createTypeWrapper(new IntegerType()));
+		assertTrue(integerTypeFacade.isInstanceOfPrimitiveType());
+	}
 	
 	public static class OrgFooBar {}
 
