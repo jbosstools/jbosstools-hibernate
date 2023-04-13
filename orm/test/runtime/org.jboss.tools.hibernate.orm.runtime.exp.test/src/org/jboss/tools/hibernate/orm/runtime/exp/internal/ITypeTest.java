@@ -195,6 +195,27 @@ public class ITypeTest {
 		assertEquals(OrgFooBar.class.getName(), manyToOneTypeFacade.getReturnedClassName());
 	}
 	
+	@Test
+	public void testGetAssociatedEntityName() {
+		// first try a class type
+		try {
+			IType classTypeFacade = (IType)GenericFacadeFactory.createFacade(
+					IType.class, 
+					TypeWrapperFactory.createTypeWrapper(new ClassType()));
+			classTypeFacade.getAssociatedEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getAssociatedEntityName()'"));
+		}
+		// next try a many to one type 
+		IType manyToOneTypeFacade = (IType)GenericFacadeFactory.createFacade(
+				IType.class, 
+				TypeWrapperFactory.createTypeWrapper(
+						new ManyToOneType((TypeConfiguration)null, "foo")));
+		assertEquals("foo", manyToOneTypeFacade.getAssociatedEntityName());
+	}
+	
 	
 	public static class OrgFooBar {}
+
 }
