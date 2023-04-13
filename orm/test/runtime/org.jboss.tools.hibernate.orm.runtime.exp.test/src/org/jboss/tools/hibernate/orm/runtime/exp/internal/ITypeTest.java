@@ -15,6 +15,7 @@ import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.wrp.TypeWrapperFactory;
 import org.hibernate.type.AnyType;
 import org.hibernate.type.ArrayType;
+import org.hibernate.type.BagType;
 import org.hibernate.type.ComponentType;
 import org.hibernate.type.ManyToOneType;
 import org.hibernate.type.OneToOneType;
@@ -32,8 +33,8 @@ public class ITypeTest {
 				IType.class, 
 				TypeWrapperFactory.createTypeWrapper(new ClassType()));
 		assertEquals(
-				TypeFacadeTest.class.getName(), 
-				classTypeFacade.toString(TypeFacadeTest.class));
+				ITypeTest.class.getName(), 
+				classTypeFacade.toString(ITypeTest.class));
 		// next try a type that cannot be represented by a string
 		try {
 			IType arrayTypeFacade = (IType)GenericFacadeFactory.createFacade(
@@ -67,8 +68,8 @@ public class ITypeTest {
 				IType.class, 
 				TypeWrapperFactory.createTypeWrapper(new ClassType()));
 		assertEquals(
-				TypeFacadeTest.class, 
-				classTypeFacade.fromStringValue(TypeFacadeTest.class.getName()));
+				ITypeTest.class, 
+				classTypeFacade.fromStringValue(ITypeTest.class.getName()));
 		// next try type that is not string representable
 		try {
 			IType arrayTypeFacade = (IType)GenericFacadeFactory.createFacade(
@@ -228,6 +229,25 @@ public class ITypeTest {
 				IType.class, 
 				TypeWrapperFactory.createTypeWrapper(new IntegerType()));
 		assertTrue(integerTypeFacade.isIntegerType());
+	}
+	
+	@Test
+	public void testIsArrayType() {
+		// first try a class type
+		IType classTypeFacade = (IType)GenericFacadeFactory.createFacade(
+				IType.class, 
+				TypeWrapperFactory.createTypeWrapper(new ClassType()));
+		assertFalse(classTypeFacade.isArrayType());
+		// next try a bag type
+		IType bagTypeFacade = (IType)GenericFacadeFactory.createFacade(
+				IType.class, 
+				TypeWrapperFactory.createTypeWrapper(new BagType(null, null)));
+		assertFalse(bagTypeFacade.isArrayType());
+		// finally try a array type
+		IType arrayTypeFacade = (IType)GenericFacadeFactory.createFacade(
+				IType.class, 
+				TypeWrapperFactory.createTypeWrapper(new ArrayType(null, null, String.class)));
+		assertTrue(arrayTypeFacade.isArrayType());
 	}
 	
 	
