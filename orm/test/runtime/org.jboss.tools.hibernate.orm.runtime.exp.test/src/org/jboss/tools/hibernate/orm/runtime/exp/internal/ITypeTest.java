@@ -288,6 +288,24 @@ public class ITypeTest {
 		assertEquals(int.class, integerTypeFacade.getPrimitiveClass());
 	}
 
+	@Test
+	public void testGetRole() {
+		// first try a class type
+		try {
+			IType classTypeFacade = (IType)GenericFacadeFactory.createFacade(
+					IType.class, 
+					TypeWrapperFactory.createTypeWrapper(new ClassType()));
+			classTypeFacade.getRole();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getRole()'"));
+		}
+		// finally try a array type
+		IType arrayTypeFacade = (IType)GenericFacadeFactory.createFacade(
+				IType.class, 
+				TypeWrapperFactory.createTypeWrapper(new ArrayType("foo", null, String.class)));
+		assertEquals("foo", arrayTypeFacade.getRole());
+	}
+	
 	public static class OrgFooBar {}
 
 }
