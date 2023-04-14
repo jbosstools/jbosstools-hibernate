@@ -270,6 +270,24 @@ public class ITypeTest {
 		assertTrue(integerTypeFacade.isInstanceOfPrimitiveType());
 	}
 	
+	@Test
+	public void testGetPrimitiveClass() {
+		// first try a class type
+		try {
+			IType classTypeFacade = (IType)GenericFacadeFactory.createFacade(
+					IType.class, 
+					TypeWrapperFactory.createTypeWrapper(new ClassType()));
+			classTypeFacade.getPrimitiveClass();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getPrimitiveClass()'"));
+		}
+		// next try a integer type 
+		IType integerTypeFacade = (IType)GenericFacadeFactory.createFacade(
+				IType.class, 
+				TypeWrapperFactory.createTypeWrapper(new IntegerType()));
+		assertEquals(int.class, integerTypeFacade.getPrimitiveClass());
+	}
+
 	public static class OrgFooBar {}
 
 }
