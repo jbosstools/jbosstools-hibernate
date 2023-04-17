@@ -1,10 +1,13 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
-import org.hibernate.tool.orm.jbt.type.TypeFactory;
+import org.hibernate.tool.orm.jbt.wrp.TypeFactoryWrapper;
+import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IType;
@@ -26,156 +29,181 @@ public class ITypeFactoryTest {
 	@Test
 	public void testConstruction() {
 		assertNotNull(typeFactoryFacade);
-		assertSame(TypeFactory.INSTANCE, ((IFacade)typeFactoryFacade).getTarget());
+		assertSame(TypeFactoryWrapper.INSTANCE, ((IFacade)typeFactoryFacade).getTarget());
 	}
 	
 	@Test
 	public void testGetBooleanType() {
 		IType typeFacade = typeFactoryFacade.getBooleanType();
-		assertSame(TypeFactory.BOOLEAN_TYPE, ((IFacade)typeFacade).getTarget());
+		Type typeTarget = (Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject();
+		assertEquals("boolean", typeTarget.getName());
 	}
 	
 	@Test
 	public void testGetByteType() {
 		IType typeFacade = typeFactoryFacade.getByteType();
-		assertSame(TypeFactory.BYTE_TYPE, ((IFacade)typeFacade).getTarget());
+		Type typeTarget = (Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject();
+		assertEquals("byte", typeTarget.getName());
 	}
 	
 	@Test
 	public void testGetBigIntegerType() {
 		IType typeFacade = typeFactoryFacade.getBigIntegerType();
-		assertSame(TypeFactory.BIG_INTEGER_TYPE, ((IFacade)typeFacade).getTarget());
+		Type typeTarget = (Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject();
+		assertEquals("big_integer", typeTarget.getName());
 	}
 	
 	@Test
 	public void testGetShortType() {
 		IType typeFacade = typeFactoryFacade.getShortType();
-		assertSame(TypeFactory.SHORT_TYPE, ((IFacade)typeFacade).getTarget());
+		Type typeTarget = (Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject();
+		assertEquals("short", typeTarget.getName());
 	}
 	
 	@Test
 	public void testGetCalendarType() {
 		IType typeFacade = typeFactoryFacade.getCalendarType();
-		assertSame(TypeFactory.CALENDAR_TYPE, ((IFacade)typeFacade).getTarget());
+		Type typeTarget = (Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject();
+		assertEquals("calendar", typeTarget.getName());
 	}
 	
 	@Test
 	public void testGetCalendarDateType() {
 		IType typeFacade = typeFactoryFacade.getCalendarDateType();
-		assertSame(TypeFactory.CALENDAR_DATE_TYPE, ((IFacade)typeFacade).getTarget());
+		Type typeTarget = (Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject();
+		assertEquals("calendar_date", typeTarget.getName());
 	}
 	
 	@Test
 	public void testGetIntegerType() {
 		IType typeFacade = typeFactoryFacade.getIntegerType();
-		assertSame(TypeFactory.INTEGER_TYPE, ((IFacade)typeFacade).getTarget());
+		Type typeTarget = (Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject();
+		assertEquals("integer", typeTarget.getName());
 	}
 	
 	@Test
 	public void testGetBigDecimalType() {
 		IType typeFacade = typeFactoryFacade.getBigDecimalType();
-		assertSame(TypeFactory.BIG_DECIMAL_TYPE, ((IFacade)typeFacade).getTarget());
+		Type typeTarget = (Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject();
+		assertEquals("big_decimal", typeTarget.getName());
 	}
 	
 	@Test
 	public void testGetCharacterType() {
 		IType typeFacade = typeFactoryFacade.getCharacterType();
-		assertSame(TypeFactory.CHARACTER_TYPE, ((IFacade)typeFacade).getTarget());
+		Type typeTarget = (Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject();
+		assertEquals("character", typeTarget.getName());
 	}
 	
 	@Test
 	public void testGetClassType() {
 		IType typeFacade = typeFactoryFacade.getClassType();
-		assertSame(TypeFactory.CLASS_TYPE, ((IFacade)typeFacade).getTarget());
+		Type typeTarget = (Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject();
+		assertEquals("class", typeTarget.getName());
 	}
 	
 	@Test
 	public void testGetCurrencyType() {
 		IType typeFacade = typeFactoryFacade.getCurrencyType();
-		assertSame(TypeFactory.CURRENCY_TYPE, ((IFacade)typeFacade).getTarget());
+		Type typeTarget = (Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject();
+		assertEquals("currency", typeTarget.getName());
 	}
 	
 	@Test
 	public void testGetDateType() {
 		IType typeFacade = typeFactoryFacade.getDateType();
-		assertSame(TypeFactory.DATE_TYPE, ((IFacade)typeFacade).getTarget());
+		Type typeTarget = (Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject();
+		assertEquals("date", typeTarget.getName());
 	}
 	
 	@Test
 	public void testGetDoubleType() {
 		IType typeFacade = typeFactoryFacade.getDoubleType();
-		assertSame(TypeFactory.DOUBLE_TYPE, ((IFacade)typeFacade).getTarget());
+		Type typeTarget = (Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject();
+		assertEquals("double", typeTarget.getName());
 	}
 	
 	@Test
 	public void testGetFloatType() {
 		IType typeFacade = typeFactoryFacade.getFloatType();
-		assertSame(TypeFactory.FLOAT_TYPE, ((IFacade)typeFacade).getTarget());
+		Type typeTarget = (Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject();
+		assertEquals("float", typeTarget.getName());
 	}
 	
 	@Test
 	public void testGetLocaleType() {
 		IType typeFacade = typeFactoryFacade.getLocaleType();
-		assertSame(TypeFactory.LOCALE_TYPE, ((IFacade)typeFacade).getTarget());
+		Type typeTarget = (Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject();
+		assertEquals("locale", typeTarget.getName());
 	}
 	
 	@Test
 	public void testGetLongType() {
 		IType typeFacade = typeFactoryFacade.getLongType();
-		assertSame(TypeFactory.LONG_TYPE, ((IFacade)typeFacade).getTarget());
+		Type typeTarget = (Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject();
+		assertEquals("long", typeTarget.getName());
 	}
 	
 	@Test
 	public void testGetStringType() {
 		IType typeFacade = typeFactoryFacade.getStringType();
-		assertSame(TypeFactory.STRING_TYPE, ((IFacade)typeFacade).getTarget());
+		Type typeTarget = (Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject();
+		assertEquals("string", typeTarget.getName());
 	}
 	
 	@Test
 	public void testGetTextType() {
 		IType typeFacade = typeFactoryFacade.getTextType();
-		assertSame(TypeFactory.TEXT_TYPE, ((IFacade)typeFacade).getTarget());
+		Type typeTarget = (Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject();
+		assertEquals("text", typeTarget.getName());
 	}
 	
 	@Test
 	public void testGetTimeType() {
 		IType typeFacade = typeFactoryFacade.getTimeType();
-		assertSame(TypeFactory.TIME_TYPE, ((IFacade)typeFacade).getTarget());
+		Type typeTarget = (Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject();
+		assertEquals("time", typeTarget.getName());
 	}
 	
 	@Test
 	public void testGetTimestampType() {
 		IType typeFacade = typeFactoryFacade.getTimestampType();
-		assertSame(TypeFactory.TIMESTAMP_TYPE, ((IFacade)typeFacade).getTarget());
+		Type typeTarget = (Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject();
+		assertEquals("timestamp", typeTarget.getName());
 	}
 	
 	@Test
 	public void testGetTimezoneType() {
 		IType typeFacade = typeFactoryFacade.getTimezoneType();
-		assertSame(TypeFactory.TIMEZONE_TYPE, ((IFacade)typeFacade).getTarget());
+		Type typeTarget = (Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject();
+		assertEquals("timezone", typeTarget.getName());
 	}
 	
 	@Test
 	public void testGetTrueFalseType() {
 		IType typeFacade = typeFactoryFacade.getTrueFalseType();
-		assertSame(TypeFactory.TRUE_FALSE_TYPE, ((IFacade)typeFacade).getTarget());
+		Type typeTarget = (Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject();
+		assertEquals("true_false", typeTarget.getName());
 	}
 	
 	@Test
 	public void testGetYesNoType() {
 		IType typeFacade = typeFactoryFacade.getYesNoType();
-		assertSame(TypeFactory.YES_NO_TYPE, ((IFacade)typeFacade).getTarget());
+		Type typeTarget = (Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject();
+		assertEquals("yes_no", typeTarget.getName());
 	}
 	
 	@Test
 	public void testGetNamedType() {
 		IType typeFacade = typeFactoryFacade.getNamedType(String.class.getName());
-		assertSame(TypeFactory.STRING_TYPE, ((IFacade)typeFacade).getTarget());
+		Type typeTarget = (Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject();
+		assertEquals("string", typeTarget.getName());
 	}
 
 	@Test
 	public void testGetBasicType() {
 		IType typeFacade = typeFactoryFacade.getBasicType(String.class.getName());
-		assertSame(TypeFactory.STRING_TYPE, ((IFacade)typeFacade).getTarget());
+		Type typeTarget = (Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject();
+		assertEquals("string", typeTarget.getName());
 	}
 }

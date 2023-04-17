@@ -36,13 +36,13 @@ import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
-import org.hibernate.tool.orm.jbt.type.TypeFactory;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 import org.hibernate.tool.orm.jbt.wrp.ColumnWrapper;
 import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapper;
+import org.hibernate.tool.orm.jbt.wrp.TypeFactoryWrapper;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.IDatabaseReader;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -441,7 +441,7 @@ public class NewFacadeFactoryTest {
 	@Test
 	public void testCreateTypeFactoryFacade() {
 		ITypeFactory typeFactoryFacade = facadeFactory.createTypeFactory();
-		assertSame(TypeFactory.INSTANCE, ((IFacade)typeFactoryFacade).getTarget());
+		assertSame(TypeFactoryWrapper.INSTANCE, ((IFacade)typeFactoryFacade).getTarget());
 	}
 	
 	public static class TestRevengStrategy extends DelegatingStrategy {
