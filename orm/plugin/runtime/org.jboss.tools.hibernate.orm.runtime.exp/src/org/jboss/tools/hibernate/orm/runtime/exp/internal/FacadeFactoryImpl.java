@@ -153,6 +153,11 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	}
 
 	@Override
+	public IForeignKey createForeignKey(Object target) {
+		throw new RuntimeException("Should use class 'NewFacadeFactory'");
+	}
+
+	@Override
 	public ClassLoader getClassLoader() {
 		return FacadeFactoryImpl.class.getClassLoader();
 	}
@@ -185,11 +190,6 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	@Override
 	public IEnvironment createEnvironment() {
 		return new EnvironmentFacadeImpl(this);
-	}
-
-	@Override
-	public IForeignKey createForeignKey(Object target) {
-		return new ForeignKeyFacadeImpl(this, target);
 	}
 
 	@Override

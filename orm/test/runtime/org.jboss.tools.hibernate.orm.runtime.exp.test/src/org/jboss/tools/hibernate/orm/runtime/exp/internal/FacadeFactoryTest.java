@@ -12,7 +12,6 @@ import java.lang.reflect.Proxy;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Column;
-import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
@@ -26,7 +25,6 @@ import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
-import org.jboss.tools.hibernate.runtime.spi.IForeignKey;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
@@ -287,6 +285,16 @@ public class FacadeFactoryTest {
 	}
 	
 	@Test
+	public void testCreateForeignKey() {
+		try {
+			FACADE_FACTORY.createForeignKey(null);
+			fail();
+		} catch (Throwable t) {
+			assertEquals("Should use class 'NewFacadeFactory'", t.getMessage());
+		}
+	}
+	
+	@Test
 	public void testCreateSchemaExport() {
 		SchemaExport schemaExport = new SchemaExport();
 		ISchemaExport facade = FACADE_FACTORY.createSchemaExport(schemaExport);
@@ -333,14 +341,6 @@ public class FacadeFactoryTest {
 		IEnvironment environment = FACADE_FACTORY.createEnvironment();
 		assertNotNull(environment);
 		assertTrue(environment instanceof EnvironmentFacadeImpl);
-	}
-	
-	@Test
-	public void testCreateForeignKey() {
-		ForeignKey foreignKey = new ForeignKey();
-		IForeignKey facade = FACADE_FACTORY.createForeignKey(foreignKey);
-		assertSame(foreignKey, ((IFacade)facade).getTarget());	
-		assertTrue(facade instanceof ForeignKeyFacadeImpl);
 	}
 	
 	@Test
