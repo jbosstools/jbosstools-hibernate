@@ -2,7 +2,6 @@ package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -24,8 +23,6 @@ import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tool.internal.export.java.POJOClass;
 import org.hibernate.tool.internal.export.query.QueryExporter;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
-import org.hibernate.tool.internal.reveng.strategy.TableFilter;
-import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
@@ -39,9 +36,6 @@ import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
-import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
-import org.jboss.tools.hibernate.runtime.spi.IType;
-import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
 import org.junit.jupiter.api.Test;
 
 import jakarta.persistence.Query;
@@ -283,6 +277,16 @@ public class FacadeFactoryTest {
 	}
 	
 	@Test
+	public void testCreateType() {
+		try {
+			FACADE_FACTORY.createType(null);
+			fail();
+		} catch (Throwable t) {
+			assertEquals("Should use class 'NewFacadeFactory'", t.getMessage());
+		}
+	}
+	
+	@Test
 	public void testCreateSchemaExport() {
 		SchemaExport schemaExport = new SchemaExport();
 		ISchemaExport facade = FACADE_FACTORY.createSchemaExport(schemaExport);
@@ -380,17 +384,6 @@ public class FacadeFactoryTest {
 		IQuery facade = FACADE_FACTORY.createQuery(query);
 		assertTrue(facade instanceof QueryFacadeImpl);
 		assertSame(query, ((IFacade)facade).getTarget());
-	}
-	
-	@Test
-	public void testCreateType() {
-		Type type = (Type)Proxy.newProxyInstance(
-				FACADE_FACTORY.getClassLoader(), 
-				new Class[] { Type.class }, 
-				new TestInvocationHandler());
-		IType facade = FACADE_FACTORY.createType(type);
-		assertTrue(facade instanceof TypeFacadeImpl);
-		assertSame(type, ((IFacade)facade).getTarget());
 	}
 	
 	private class TestInvocationHandler implements InvocationHandler {
