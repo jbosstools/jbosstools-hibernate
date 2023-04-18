@@ -273,6 +273,16 @@ public class FacadeFactoryTest {
 	}
 	
 	@Test
+	public void testCreateTypeFactory() {
+		try {
+			FACADE_FACTORY.createTypeFactory();
+			fail();
+		} catch (Throwable t) {
+			assertEquals("Should use class 'NewFacadeFactory'", t.getMessage());
+		}
+	}
+	
+	@Test
 	public void testCreateSchemaExport() {
 		SchemaExport schemaExport = new SchemaExport();
 		ISchemaExport facade = FACADE_FACTORY.createSchemaExport(schemaExport);
@@ -370,14 +380,6 @@ public class FacadeFactoryTest {
 		IQuery facade = FACADE_FACTORY.createQuery(query);
 		assertTrue(facade instanceof QueryFacadeImpl);
 		assertSame(query, ((IFacade)facade).getTarget());
-	}
-	
-	@Test
-	public void testCreateTypeFactory() {
-		ITypeFactory facade = FACADE_FACTORY.createTypeFactory();
-		assertNotNull(facade);
-		assertTrue(facade instanceof TypeFactoryFacadeImpl);
-		assertNull(((IFacade)facade).getTarget());
 	}
 	
 	@Test

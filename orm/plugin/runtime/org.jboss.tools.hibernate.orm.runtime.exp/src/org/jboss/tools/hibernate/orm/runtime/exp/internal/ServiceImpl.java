@@ -149,8 +149,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public ITypeFactory newTypeFactory() {
-		// target for ITypeFactory is a dummy Object
-		return facadeFactory.createTypeFactory();
+		return newFacadeFactory.createTypeFactory();
 	}
 
 	@Override
