@@ -8,6 +8,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -59,6 +60,8 @@ public class GenericFacadeFactory {
 				result = target;
 			} else if ("equals".equals(method.getName())) {
 				return isEqual(proxy, args);
+			} else if ("hashCode".equals(method.getName())) {
+				return target.hashCode();
 			} else {
 				Class<?>[] argumentClasses = argumentClasses(args);
 				Method targetMethod = ReflectUtil.lookupMethod(
@@ -123,7 +126,7 @@ public class GenericFacadeFactory {
 		InvocationHandler left = Proxy.getInvocationHandler(proxy);
 		Object leftTarget = ((FacadeInvocationHandler)left).target;
 		Object rightTarget = ((FacadeInvocationHandler)right).target;
-		return leftTarget.equals(rightTarget);
+		return leftTarget == rightTarget || leftTarget.equals(rightTarget);
 	}
 	
 	private static Object[] unwrapFacades(Object[] args) {
@@ -170,6 +173,7 @@ public class GenericFacadeFactory {
 	private static Map<?, ?> createMapResult(Map<?, ?> map, ParameterizedType parameterizedType) {
 		Map<Object, Object> result = (Map<Object, Object>)map;
 		Type actualValueType = parameterizedType.getActualTypeArguments()[1];
+		Type actualKeyType = parameterizedType.getActualTypeArguments()[0];
 		if (actualValueType instanceof ParameterizedType && 
 				List.class.isAssignableFrom((Class<?>)((ParameterizedType)actualValueType).getRawType())) {
 			for (Object key : map.keySet()) {
@@ -178,6 +182,11 @@ public class GenericFacadeFactory {
 						(ParameterizedType)actualValueType));
 			}
 			
+		} else if (classesSet.contains(actualKeyType)) {
+			result = new HashMap<>(map.size());
+			for (Object key : map.keySet()) {
+				result.put(createFacade((Class<?>)actualKeyType, key), map.get(key));
+			}
 		} else {
 			Class<?> actualValueClass = (Class<?>)parameterizedType.getActualTypeArguments()[1];
 			if  (classesSet.contains(actualValueClass)) {
