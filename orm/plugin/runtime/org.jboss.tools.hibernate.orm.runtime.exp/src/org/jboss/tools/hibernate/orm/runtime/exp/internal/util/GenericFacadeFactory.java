@@ -87,6 +87,12 @@ public class GenericFacadeFactory {
 								result = createMapResult(
 										(Map<?,?>)result,
 										(ParameterizedType)genericReturnType);
+							} 
+							else if (List.class.isAssignableFrom(returnedClass)) {
+								result = createListResult(
+										(List<?>)result,
+										(ParameterizedType)genericReturnType);
+										
 							}
 						}
 						else if (returnedClass.isArray() && classesSet.contains(returnedClass.getComponentType())) {
