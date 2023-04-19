@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -7,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
@@ -67,6 +69,19 @@ public class IForeignKeyTest {
 		list.add(column);
 		foreignKeyTarget.addReferencedColumns(list);
 		assertFalse(foreignKeyFacade.isReferenceToPrimaryKey());
+	}
+	
+	@Test
+	public void testGetReferencedColumns() {
+		List<IColumn> list = foreignKeyFacade.getReferencedColumns();
+		assertTrue(list.isEmpty());		
+		Column column = new Column();
+		ArrayList<Column> columns = new ArrayList<Column>();
+		columns.add(column);
+		foreignKeyTarget.addReferencedColumns(columns);
+		list = foreignKeyFacade.getReferencedColumns();
+		assertEquals(1, list.size());
+		assertSame(column, ((IFacade)list.get(0)).getTarget());
 	}
 	
 }
