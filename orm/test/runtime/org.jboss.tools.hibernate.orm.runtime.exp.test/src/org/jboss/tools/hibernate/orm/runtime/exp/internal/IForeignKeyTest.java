@@ -13,6 +13,7 @@ import java.util.List;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.orm.jbt.wrp.ColumnWrapper;
 import org.hibernate.tool.orm.jbt.wrp.ForeignKeyWrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -82,6 +83,15 @@ public class IForeignKeyTest {
 		list = foreignKeyFacade.getReferencedColumns();
 		assertEquals(1, list.size());
 		assertSame(column, ((IFacade)list.get(0)).getTarget());
+	}
+	
+	@Test
+	public void testContainsColumn() throws Exception {
+		Column columnTarget = new ColumnWrapper("foo");
+		IColumn columnFacade = (IColumn)GenericFacadeFactory.createFacade(IColumn.class, columnTarget);
+		assertFalse(foreignKeyFacade.containsColumn(columnFacade));
+		foreignKeyTarget.addColumn(columnTarget);
+		assertTrue(foreignKeyFacade.containsColumn(columnFacade));
 	}
 	
 }
