@@ -206,10 +206,10 @@ public class GenericFacadeFactory {
 	
 	private static List<?> createListResult(List<?> list, ParameterizedType parameterizedType) {
 		List<Object> result = (List<Object>)list;
-		Class<?> actualValueClass = (Class<?>)parameterizedType.getActualTypeArguments()[0];
-		if (classesSet.contains(actualValueClass)) {
+		Type actualValueType = parameterizedType.getActualTypeArguments()[0];
+		if (classesSet.contains(actualValueType)) {
 			for (int i = 0; i < result.size(); i++) {
-				result.set(i, createFacade(actualValueClass, result.get(i)));
+				result.set(i, createFacade((Class<?>)actualValueType, result.get(i)));
 			}
 		}
 		return result;
