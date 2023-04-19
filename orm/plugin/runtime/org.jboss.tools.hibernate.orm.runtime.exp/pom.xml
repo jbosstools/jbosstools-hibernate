@@ -12,8 +12,8 @@
 	<packaging>eclipse-plugin</packaging>
 
 	<properties>
-		<hibernate.orm.version>6.2.0.Final</hibernate.orm.version>
-		<hibernate.tools.version>6.2.1-SNAPSHOT</hibernate.tools.version>
+		<hibernate.orm.version>6.2.1.Final</hibernate.orm.version>
+		<hibernate.tools.version>6.2.2-SNAPSHOT</hibernate.tools.version>
 	</properties>
 
 	<build>
