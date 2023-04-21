@@ -2,12 +2,11 @@ package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 import org.hibernate.mapping.Column;
@@ -15,10 +14,10 @@ import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.orm.jbt.wrp.ColumnWrapper;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
-import org.jboss.tools.hibernate.runtime.common.AbstractPrimaryKeyFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
+import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -82,6 +81,14 @@ public class IPrimaryKeyTest {
 		IColumn columnFacade = primaryKeyFacade.getColumn(0);
 		assertNotNull(columnFacade);
 		assertSame(columnTarget, ((IFacade)columnFacade).getTarget());
+	}
+	
+	@Test
+	public void testGetTable() throws Exception {
+		Table tableTarget = new Table("foo");
+		assertNotSame(tableTarget, (Table)((IFacade)primaryKeyFacade.getTable()).getTarget());
+		primaryKeyTarget.setTable(tableTarget);
+		assertSame(tableTarget, (Table)((IFacade)primaryKeyFacade.getTable()).getTarget());
 	}
 	
 }
