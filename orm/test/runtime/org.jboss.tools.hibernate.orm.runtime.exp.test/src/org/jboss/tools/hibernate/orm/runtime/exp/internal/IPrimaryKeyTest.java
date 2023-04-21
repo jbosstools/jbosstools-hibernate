@@ -1,10 +1,16 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.orm.jbt.wrp.ColumnWrapper;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
+import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,4 +34,14 @@ public class IPrimaryKeyTest {
 		assertNotNull(primaryKeyTarget);
 	}
 
+	@Test
+	public void testAddColumn() throws Exception {
+		Column columnTarget = new ColumnWrapper("foo");
+		IColumn columnFacade = (IColumn)GenericFacadeFactory.createFacade(IColumn.class, columnTarget);
+		assertTrue(primaryKeyTarget.getColumns().isEmpty());
+		primaryKeyFacade.addColumn(columnFacade);
+		assertEquals(1, primaryKeyTarget.getColumns().size());
+		assertSame(columnTarget, primaryKeyTarget.getColumns().get(0));
+	}
+	
 }
