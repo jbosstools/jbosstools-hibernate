@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -17,7 +18,6 @@ import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFact
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
-import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -89,6 +89,15 @@ public class IPrimaryKeyTest {
 		assertNotSame(tableTarget, (Table)((IFacade)primaryKeyFacade.getTable()).getTarget());
 		primaryKeyTarget.setTable(tableTarget);
 		assertSame(tableTarget, (Table)((IFacade)primaryKeyFacade.getTable()).getTarget());
+	}
+	
+	@Test
+	public void testContainsColumn() {
+		Column columnTarget = new ColumnWrapper("foo");
+		IColumn columnFacade = (IColumn)GenericFacadeFactory.createFacade(IColumn.class, columnTarget);
+		assertFalse(primaryKeyFacade.containsColumn(columnFacade));
+		primaryKeyTarget.addColumn(columnTarget);
+		assertTrue(primaryKeyFacade.containsColumn(columnFacade));
 	}
 	
 }
