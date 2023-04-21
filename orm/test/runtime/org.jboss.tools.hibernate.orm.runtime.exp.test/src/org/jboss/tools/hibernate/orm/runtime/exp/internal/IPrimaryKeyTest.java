@@ -44,4 +44,11 @@ public class IPrimaryKeyTest {
 		assertSame(columnTarget, primaryKeyTarget.getColumns().get(0));
 	}
 	
+	@Test
+	public void testGetColumnSpan() {
+		assertEquals(0, primaryKeyFacade.getColumnSpan());
+		primaryKeyTarget.addColumn(new Column());
+		assertEquals(1, primaryKeyFacade.getColumnSpan());
+	}
+	
 }
