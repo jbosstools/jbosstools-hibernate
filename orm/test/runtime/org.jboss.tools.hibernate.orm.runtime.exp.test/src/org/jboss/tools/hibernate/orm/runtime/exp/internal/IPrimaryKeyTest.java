@@ -2,9 +2,12 @@ package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 import org.hibernate.mapping.Column;
@@ -12,6 +15,7 @@ import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.orm.jbt.wrp.ColumnWrapper;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
+import org.jboss.tools.hibernate.runtime.common.AbstractPrimaryKeyFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
@@ -63,6 +67,21 @@ public class IPrimaryKeyTest {
 		assertNotNull(columnFacades);
 		assertEquals(1, columnFacades.size());
 		assertSame(columnTarget, ((IFacade)columnFacades.get(0)).getTarget());
+	}
+	
+	@Test
+	public void testGetColumn() throws Exception {
+		try {
+			primaryKeyFacade.getColumn(0);
+			fail();
+		} catch (IndexOutOfBoundsException e) {
+			assertTrue(e.getMessage().contains("Index 0 out of bounds for length 0"));
+		}
+		Column columnTarget = new Column();
+		primaryKeyTarget.addColumn(columnTarget);
+		IColumn columnFacade = primaryKeyFacade.getColumn(0);
+		assertNotNull(columnFacade);
+		assertSame(columnTarget, ((IFacade)columnFacade).getTarget());
 	}
 	
 }
