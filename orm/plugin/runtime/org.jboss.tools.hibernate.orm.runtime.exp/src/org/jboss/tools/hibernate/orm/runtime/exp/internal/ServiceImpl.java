@@ -26,10 +26,10 @@ import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
+import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.util.JpaMappingFileHelper;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.ConfigurationMetadataDescriptor;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractService;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -131,7 +131,7 @@ public class ServiceImpl extends AbstractService {
 		} else {
 			exporter.getProperties().put(
 					ExporterConstants.METADATA_DESCRIPTOR,
-					new ConfigurationMetadataDescriptor(newDefaultConfiguration()));
+					new ConfigurationMetadataDescriptor((Configuration)((IFacade)newDefaultConfiguration()).getTarget()));
 		}
 		return facadeFactory.createExporter(exporter);
 	}

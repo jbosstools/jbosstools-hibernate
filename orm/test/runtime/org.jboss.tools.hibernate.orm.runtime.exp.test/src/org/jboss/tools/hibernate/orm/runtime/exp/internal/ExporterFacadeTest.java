@@ -13,13 +13,14 @@ import java.io.Writer;
 import java.lang.reflect.Field;
 import java.util.Properties;
 
+import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tool.internal.export.ddl.DdlExporter;
 import org.hibernate.tool.internal.export.query.QueryExporter;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.ConfigurationMetadataDescriptor;
+import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
@@ -61,12 +62,12 @@ public class ExporterFacadeTest {
 		assertNotNull(object);
 		assertTrue(object instanceof ConfigurationMetadataDescriptor);
 		ConfigurationMetadataDescriptor configurationMetadataDescriptor = (ConfigurationMetadataDescriptor)object;
-		Field field = ConfigurationMetadataDescriptor.class.getDeclaredField("configurationFacade");
+		Field field = ConfigurationMetadataDescriptor.class.getDeclaredField("configuration");
 		field.setAccessible(true);
 		object = field.get(configurationMetadataDescriptor);
 		assertNotNull(object);
-		assertTrue(object instanceof IConfiguration);
-		assertSame(object, configurationFacade);
+		assertTrue(object instanceof Configuration);
+		assertSame(object, ((IFacade)configurationFacade).getTarget());
 	}
 	
 	@Test

@@ -2,9 +2,10 @@ package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
 import java.io.File;
 
+import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.ConfigurationMetadataDescriptor;
+import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 import org.jboss.tools.hibernate.runtime.common.AbstractExporterFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
@@ -22,7 +23,7 @@ public class ExporterFacadeImpl extends AbstractExporterFacade {
 		setCustomProperties(configuration.getProperties());
 		((Exporter)getTarget()).getProperties().put(
 				ExporterConstants.METADATA_DESCRIPTOR, 
-				new ConfigurationMetadataDescriptor(configuration));
+				new ConfigurationMetadataDescriptor((Configuration)((IFacade)configuration).getTarget()));
 	}
 	
 	@Override

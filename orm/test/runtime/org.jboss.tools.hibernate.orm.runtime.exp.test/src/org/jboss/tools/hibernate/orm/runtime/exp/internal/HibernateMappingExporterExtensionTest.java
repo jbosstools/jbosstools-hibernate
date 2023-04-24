@@ -26,6 +26,7 @@ import org.hibernate.tool.internal.export.java.Cfg2JavaTool;
 import org.hibernate.tool.internal.export.java.EntityPOJOClass;
 import org.hibernate.tool.internal.export.java.POJOClass;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
+import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
@@ -42,7 +43,10 @@ public class HibernateMappingExporterExtensionTest {
 
 	@BeforeEach
 	public void beforeEach() throws Exception {
-		hibernateMappingExporterExtension = new HibernateMappingExporterExtension(FACADE_FACTORY, null, null);
+		hibernateMappingExporterExtension = new HibernateMappingExporterExtension(
+				FACADE_FACTORY, 
+				NewFacadeFactory.INSTANCE.createNativeConfiguration(), 
+				null);
 	}
 	
 	@Test
