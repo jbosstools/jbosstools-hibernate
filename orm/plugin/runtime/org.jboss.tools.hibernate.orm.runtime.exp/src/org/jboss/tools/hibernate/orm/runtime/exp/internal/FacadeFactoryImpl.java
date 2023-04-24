@@ -20,6 +20,7 @@ import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
+import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
@@ -154,6 +155,11 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 
 	@Override
 	public IForeignKey createForeignKey(Object target) {
+		throw new RuntimeException("Should use class 'NewFacadeFactory'");
+	}
+
+	@Override
+	public IPrimaryKey createPrimaryKey(Object target) {
 		throw new RuntimeException("Should use class 'NewFacadeFactory'");
 	}
 
