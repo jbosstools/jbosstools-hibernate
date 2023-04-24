@@ -8,12 +8,14 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.orm.jbt.wrp.ColumnWrapper;
+import org.hibernate.tool.orm.jbt.wrp.PrimaryKeyWrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
@@ -31,7 +33,7 @@ public class IPrimaryKeyTest {
 		primaryKeyTarget = new PrimaryKey(new Table(""));
 		primaryKeyFacade = (IPrimaryKey)GenericFacadeFactory.createFacade(
 				IPrimaryKey.class, 
-				primaryKeyTarget);
+				PrimaryKeyWrapperFactory.createForeinKeyWrapper(primaryKeyTarget));
 	}
 	
 	@Test
@@ -98,6 +100,16 @@ public class IPrimaryKeyTest {
 		assertFalse(primaryKeyFacade.containsColumn(columnFacade));
 		primaryKeyTarget.addColumn(columnTarget);
 		assertTrue(primaryKeyFacade.containsColumn(columnFacade));
+	}
+	
+	@Test
+	public void testColumnIterator() throws Exception {
+		assertFalse(primaryKeyFacade.columnIterator().hasNext());
+		Column columnTarget = new Column();
+		primaryKeyTarget.addColumn(columnTarget);
+		Iterator<IColumn> columnIterator = primaryKeyFacade.columnIterator();
+		assertTrue(columnIterator.hasNext());
+		assertSame(columnTarget, ((IFacade)columnIterator.next()).getTarget());
 	}
 	
 }
