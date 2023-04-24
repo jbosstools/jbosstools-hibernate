@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.hibernate.mapping.PersistentClass;
@@ -21,6 +22,7 @@ public class IPojoClassTest {
 	@BeforeEach 
 	public void beforeEach() {
 		PersistentClass pc = new RootClass(DummyMetadataBuildingContext.INSTANCE);
+		pc.setClassName("foo.bar");
 		pojoClassTarget = new EntityPOJOClass(pc, new Cfg2JavaTool());
 		pojoClassFacade = (IPOJOClass)GenericFacadeFactory.createFacade(IPOJOClass.class, pojoClassTarget);
 	}
@@ -29,6 +31,11 @@ public class IPojoClassTest {
 	public void testConstruction() {
 		assertNotNull(pojoClassTarget);
 		assertNotNull(pojoClassFacade);
+	}
+	
+	@Test
+	public void testGetQualifiedDeclarationName() {
+		assertEquals("foo.bar", pojoClassFacade.getQualifiedDeclarationName());
 	}
 
 }
