@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -110,6 +111,13 @@ public class IPrimaryKeyTest {
 		Iterator<IColumn> columnIterator = primaryKeyFacade.columnIterator();
 		assertTrue(columnIterator.hasNext());
 		assertSame(columnTarget, ((IFacade)columnIterator.next()).getTarget());
+	}
+	
+	@Test
+	public void testGetName() {
+		assertNotEquals("foo", primaryKeyFacade.getName());
+		primaryKeyTarget.setName("foo");
+		assertEquals("foo", primaryKeyFacade.getName());
 	}
 	
 }
