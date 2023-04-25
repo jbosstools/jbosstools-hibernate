@@ -678,6 +678,7 @@ class TypeVisitor extends ASTVisitor{
 	
 	private IValue buildSimpleValue(String typeName){
 		IValue sValue = service.newSimpleValue();
+		sValue.setTable(service.newTable(""));
 		sValue.addColumn(service.newColumn(varName.toUpperCase()));
 		sValue.setTypeName(typeName);
 		return sValue;
@@ -702,6 +703,7 @@ class TypeVisitor extends ASTVisitor{
 
 		IValue key = service.newSimpleValue();
 		key.setTypeName("string");//$NON-NLS-1$
+		key.setTable(service.newTable(""));
 		if (StringHelper.isNotEmpty(entityInfo.getPrimaryIdName())){
 			key.addColumn(service.newColumn(entityInfo.getPrimaryIdName().toUpperCase()));
 		}
