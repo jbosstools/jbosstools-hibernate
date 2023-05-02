@@ -45,4 +45,9 @@ public class IEnvironmentTest {
 		assertEquals("hibernate.dialect", environmentFacade.getDialect());
 	}
 	
+	@Test
+	public void testGetDataSource() {
+		assertEquals("hibernate.connection.datasource", environmentFacade.getDataSource());
+	}
+	
 }
