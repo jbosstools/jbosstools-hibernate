@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
@@ -24,4 +25,9 @@ public class IEnvironmentTest {
 		assertNotNull(environmentFacade);
 	}
 
+	@Test
+	public void testGetTransactionManagerStrategy() {
+		assertEquals("hibernate.transaction.coordinator_class", environmentFacade.getTransactionManagerStrategy());
+	}
+	
 }
