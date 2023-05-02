@@ -50,4 +50,9 @@ public class IEnvironmentTest {
 		assertEquals("hibernate.connection.datasource", environmentFacade.getDataSource());
 	}
 	
+	@Test
+	public void testGetConnectionProvider() {
+		assertEquals("hibernate.connection.provider_class", environmentFacade.getConnectionProvider());
+	}
+	
 }
