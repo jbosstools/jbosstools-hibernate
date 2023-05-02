@@ -164,6 +164,11 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	}
 
 	@Override
+	public IEnvironment createEnvironment() {
+		throw new RuntimeException("Should use class 'NewFacadeFactory'");
+	}
+
+	@Override
 	public ClassLoader getClassLoader() {
 		return FacadeFactoryImpl.class.getClassLoader();
 	}
@@ -193,11 +198,6 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 		return new ExporterFacadeImpl(this, target);
 	}
 	
-	@Override
-	public IEnvironment createEnvironment() {
-		return new EnvironmentFacadeImpl(this);
-	}
-
 	@Override
 	public IHibernateMappingExporter createHibernateMappingExporter(Object target) {
 		return new HibernateMappingExporterFacadeImpl(this, target);

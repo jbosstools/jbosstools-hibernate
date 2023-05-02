@@ -22,7 +22,6 @@ import org.hibernate.tool.internal.export.java.POJOClass;
 import org.hibernate.tool.internal.export.query.QueryExporter;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
-import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
@@ -303,6 +302,16 @@ public class FacadeFactoryTest {
 	}
 	
 	@Test
+	public void testCreateEnvironment() {
+		try {
+			FACADE_FACTORY.createEnvironment();
+			fail();
+		} catch (Throwable t) {
+			assertEquals("Should use class 'NewFacadeFactory'", t.getMessage());
+		}
+	}
+	
+	@Test
 	public void testCreateSchemaExport() {
 		SchemaExport schemaExport = new SchemaExport();
 		ISchemaExport facade = FACADE_FACTORY.createSchemaExport(schemaExport);
@@ -342,13 +351,6 @@ public class FacadeFactoryTest {
 		IExporter facade = FACADE_FACTORY.createExporter(exporter);
 		assertTrue(facade instanceof ExporterFacadeImpl);
 		assertSame(exporter, ((IFacade)facade).getTarget());		
-	}
-	
-	@Test
-	public void testCreateEnvironment() {
-		IEnvironment environment = FACADE_FACTORY.createEnvironment();
-		assertNotNull(environment);
-		assertTrue(environment instanceof EnvironmentFacadeImpl);
 	}
 	
 	@Test
