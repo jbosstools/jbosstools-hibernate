@@ -80,4 +80,9 @@ public class IEnvironmentTest {
 		assertEquals("hibernate.default_catalog", environmentFacade.getDefaultCatalog());
 	}
 	
+	@Test
+	public void testGetDefaultSchema() {
+		assertEquals("hibernate.default_schema", environmentFacade.getDefaultSchema());
+	}
+	
 }
