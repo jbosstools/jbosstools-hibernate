@@ -70,4 +70,9 @@ public class IEnvironmentTest {
 		assertEquals("hibernate.connection.password", environmentFacade.getPass());
 	}
 	
+	@Test
+	public void testGetSessionFactoryName() {
+		assertEquals("hibernate.session_factory_name", environmentFacade.getSessionFactoryName());
+	}
+	
 }
