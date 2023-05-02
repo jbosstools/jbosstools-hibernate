@@ -75,4 +75,9 @@ public class IEnvironmentTest {
 		assertEquals("hibernate.session_factory_name", environmentFacade.getSessionFactoryName());
 	}
 	
+	@Test
+	public void testGetDefaultCatalog() {
+		assertEquals("hibernate.default_catalog", environmentFacade.getDefaultCatalog());
+	}
+	
 }
