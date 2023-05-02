@@ -35,4 +35,9 @@ public class IEnvironmentTest {
 		assertEquals("hibernate.connection.driver_class", environmentFacade.getDriver());
 	}
 	
+	@Test
+	public void testGetHBM2DDLAuto() {
+		assertEquals("hibernate.hbm2ddl.auto", environmentFacade.getHBM2DDLAuto());
+	}
+	
 }
