@@ -40,4 +40,9 @@ public class IEnvironmentTest {
 		assertEquals("hibernate.hbm2ddl.auto", environmentFacade.getHBM2DDLAuto());
 	}
 	
+	@Test
+	public void testGetDialect() {
+		assertEquals("hibernate.dialect", environmentFacade.getDialect());
+	}
+	
 }
