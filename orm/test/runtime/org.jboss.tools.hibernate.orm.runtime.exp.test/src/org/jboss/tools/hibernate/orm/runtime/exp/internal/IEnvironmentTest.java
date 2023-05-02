@@ -60,4 +60,9 @@ public class IEnvironmentTest {
 		assertEquals("hibernate.connection.url", environmentFacade.getURL());
 	}
 	
+	@Test
+	public void testGetUser() {
+		assertEquals("hibernate.connection.username", environmentFacade.getUser());
+	}
+	
 }
