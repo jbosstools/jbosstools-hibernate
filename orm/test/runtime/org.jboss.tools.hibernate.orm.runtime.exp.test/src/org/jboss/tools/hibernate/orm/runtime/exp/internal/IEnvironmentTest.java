@@ -55,4 +55,9 @@ public class IEnvironmentTest {
 		assertEquals("hibernate.connection.provider_class", environmentFacade.getConnectionProvider());
 	}
 	
+	@Test
+	public void testGetURL() {
+		assertEquals("hibernate.connection.url", environmentFacade.getURL());
+	}
+	
 }
