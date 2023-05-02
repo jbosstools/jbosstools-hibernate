@@ -41,6 +41,7 @@ import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 import org.hibernate.tool.orm.jbt.wrp.ColumnWrapper;
+import org.hibernate.tool.orm.jbt.wrp.EnvironmentWrapper;
 import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.wrp.TypeFactoryWrapper;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
@@ -50,6 +51,7 @@ import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
@@ -439,9 +441,17 @@ public class NewFacadeFactoryTest {
 	}
 	
 	@Test
-	public void testCreateTypeFactoryFacade() {
+	public void testCreateTypeFactory() {
 		ITypeFactory typeFactoryFacade = facadeFactory.createTypeFactory();
 		assertSame(TypeFactoryWrapper.INSTANCE, ((IFacade)typeFactoryFacade).getTarget());
+	}
+	
+	@Test
+	public void testCreateEnvironment() {
+		IEnvironment environmentFacade = facadeFactory.createEnvironment();
+		assertNotNull(environmentFacade);
+		Object environmentWrapper = ((IFacade)environmentFacade).getTarget();
+		assertTrue(environmentWrapper instanceof EnvironmentWrapper);
 	}
 	
 	public static class TestRevengStrategy extends DelegatingStrategy {

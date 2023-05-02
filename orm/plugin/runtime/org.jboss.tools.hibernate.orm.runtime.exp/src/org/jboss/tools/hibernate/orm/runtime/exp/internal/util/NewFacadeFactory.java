@@ -11,6 +11,7 @@ import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
+import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
@@ -245,6 +246,12 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 		return (ITypeFactory)GenericFacadeFactory.createFacade(
 				ITypeFactory.class, 
 				WrapperFactory.createTypeFactoryWrapper());
+	}
+	
+	public IEnvironment createEnvironment() {
+		return (IEnvironment)GenericFacadeFactory.createFacade(
+				IEnvironment.class, 
+				WrapperFactory.createEnvironmentWrapper());
 	}
 
 	@Override
