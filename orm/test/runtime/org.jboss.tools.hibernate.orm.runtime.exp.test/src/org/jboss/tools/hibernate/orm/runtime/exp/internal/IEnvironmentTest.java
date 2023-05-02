@@ -65,4 +65,9 @@ public class IEnvironmentTest {
 		assertEquals("hibernate.connection.username", environmentFacade.getUser());
 	}
 	
+	@Test
+	public void testGetPass() {
+		assertEquals("hibernate.connection.password", environmentFacade.getPass());
+	}
+	
 }
