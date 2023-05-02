@@ -2,7 +2,9 @@ package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
+import org.hibernate.cfg.Environment;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
@@ -83,6 +85,11 @@ public class IEnvironmentTest {
 	@Test
 	public void testGetDefaultSchema() {
 		assertEquals("hibernate.default_schema", environmentFacade.getDefaultSchema());
+	}
+	
+	@Test
+	public void testGetWrappedClass() {
+		assertSame(Environment.class, environmentFacade.getWrappedClass());
 	}
 	
 }
