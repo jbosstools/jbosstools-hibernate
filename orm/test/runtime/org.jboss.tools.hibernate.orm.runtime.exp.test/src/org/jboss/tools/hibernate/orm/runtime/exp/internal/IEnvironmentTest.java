@@ -30,4 +30,9 @@ public class IEnvironmentTest {
 		assertEquals("hibernate.transaction.coordinator_class", environmentFacade.getTransactionManagerStrategy());
 	}
 	
+	@Test
+	public void testGetDriver() {
+		assertEquals("hibernate.connection.driver_class", environmentFacade.getDriver());
+	}
+	
 }
