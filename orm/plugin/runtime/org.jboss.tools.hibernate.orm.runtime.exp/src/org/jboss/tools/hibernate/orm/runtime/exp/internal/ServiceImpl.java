@@ -23,7 +23,6 @@ import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.reveng.RevengStrategy;
-import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
@@ -98,10 +97,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public ISchemaExport newSchemaExport(IConfiguration hcfg) {
-		SchemaExportFacadeImpl result = 
-			(SchemaExportFacadeImpl)facadeFactory.createSchemaExport(new SchemaExport());
-		result.setConfiguration(hcfg);
-		return result;
+		return newFacadeFactory.createSchemaExport(hcfg);
 	}
 
 	@Override
