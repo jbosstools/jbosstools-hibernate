@@ -2,13 +2,17 @@ package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.lang.reflect.Field;
 import java.util.EnumSet;
+import java.util.List;
 
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
+import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.hibernate.tool.orm.jbt.wrp.SchemaExportWrapper;
@@ -45,6 +49,20 @@ public class ISchemaExportTest {
 		assertFalse(schemaExportTarget.created);
 		schemaExportFacade.create();
 		assertTrue(schemaExportTarget.created);
+	}
+	
+	@Test
+	public void testGetExceptions() throws Exception {
+		Field exceptionsField = SchemaExport.class.getDeclaredField("exceptions");
+		exceptionsField.setAccessible(true);
+		@SuppressWarnings("unchecked")
+		List<Throwable> exceptionList = (List<Throwable>)exceptionsField.get(schemaExportTarget);
+		assertTrue(exceptionList.isEmpty());
+		Throwable t = new RuntimeException("foobar");
+		exceptionList.add(t);
+		List<Throwable> list = schemaExportFacade.getExceptions();
+		assertSame(list, exceptionList);
+		assertTrue(list.contains(t));
 	}
 	
 	private class TestSchemaExport extends SchemaExportWrapper {
