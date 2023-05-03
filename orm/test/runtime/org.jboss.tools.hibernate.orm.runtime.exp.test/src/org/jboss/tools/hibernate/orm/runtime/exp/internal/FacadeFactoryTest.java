@@ -13,7 +13,6 @@ import java.lang.reflect.Proxy;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Column;
 import org.hibernate.tool.api.export.Exporter;
-import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tool.internal.export.ddl.DdlExporter;
@@ -30,7 +29,6 @@ import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
-import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.junit.jupiter.api.Test;
 
 import jakarta.persistence.Query;
@@ -313,10 +311,12 @@ public class FacadeFactoryTest {
 	
 	@Test
 	public void testCreateSchemaExport() {
-		SchemaExport schemaExport = new SchemaExport();
-		ISchemaExport facade = FACADE_FACTORY.createSchemaExport(schemaExport);
-		assertTrue(facade instanceof SchemaExportFacadeImpl);
-		assertSame(schemaExport, ((IFacade)facade).getTarget());		
+		try {
+			FACADE_FACTORY.createSchemaExport(null);
+			fail();
+		} catch (Throwable t) {
+			assertEquals("Should use class 'NewFacadeFactory'", t.getMessage());
+		}
 	}
 	
 	@Test

@@ -169,15 +169,15 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	}
 
 	@Override
+	public ISchemaExport createSchemaExport(Object target) {
+		throw new RuntimeException("Should use class 'NewFacadeFactory'");
+	}
+	
+	@Override
 	public ClassLoader getClassLoader() {
 		return FacadeFactoryImpl.class.getClassLoader();
 	}
 
-	@Override
-	public ISchemaExport createSchemaExport(Object target) {
-		return new SchemaExportFacadeImpl(this, target);
-	}
-	
 	@Override
 	public IGenericExporter createGenericExporter(Object target) {
 		return new GenericExporterFacadeImpl(this, target);
