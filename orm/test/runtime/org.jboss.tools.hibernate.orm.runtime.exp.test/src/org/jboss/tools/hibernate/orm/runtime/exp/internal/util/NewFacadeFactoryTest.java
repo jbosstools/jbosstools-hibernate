@@ -43,6 +43,7 @@ import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 import org.hibernate.tool.orm.jbt.wrp.ColumnWrapper;
 import org.hibernate.tool.orm.jbt.wrp.EnvironmentWrapper;
 import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapper;
+import org.hibernate.tool.orm.jbt.wrp.SchemaExportWrapper;
 import org.hibernate.tool.orm.jbt.wrp.TypeFactoryWrapper;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.IDatabaseReader;
@@ -59,6 +60,7 @@ import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
+import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
 import org.jboss.tools.hibernate.runtime.spi.ITypeFactory;
@@ -452,6 +454,14 @@ public class NewFacadeFactoryTest {
 		assertNotNull(environmentFacade);
 		Object environmentWrapper = ((IFacade)environmentFacade).getTarget();
 		assertTrue(environmentWrapper instanceof EnvironmentWrapper);
+	}
+	
+	@Test
+	public void testCreateSchemaExport() {
+		IConfiguration configurationFacade = facadeFactory.createNativeConfiguration();
+		ISchemaExport schemaExportFacade = facadeFactory.createSchemaExport(configurationFacade);
+		Object schemaExportWrapper = ((IFacade)schemaExportFacade).getTarget();
+		assertTrue(schemaExportWrapper instanceof SchemaExportWrapper);
 	}
 	
 	public static class TestRevengStrategy extends DelegatingStrategy {
