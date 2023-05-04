@@ -174,6 +174,11 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	}
 	
 	@Override
+	public IQueryTranslator createQueryTranslator(Object target) {
+		throw new RuntimeException("Should use class 'NewFacadeFactory'");
+	}
+
+	@Override
 	public ClassLoader getClassLoader() {
 		return FacadeFactoryImpl.class.getClassLoader();
 	}
@@ -214,10 +219,4 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 		return new QueryFacadeImpl(this, target);
 	}
 	
-	@Override
-	public IQueryTranslator createQueryTranslator(Object target) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
