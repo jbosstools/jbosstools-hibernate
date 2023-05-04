@@ -244,37 +244,9 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 		private IExportPOJODelegate delegate = new IExportPOJODelegate() {			
 			@Override public void exportPOJO(Map<Object, Object> map, IPOJOClass pojoClass) {
 				File outputdir4FileOld = target.getOutputDirectory();
-				File outputdir4FileNew = outputdir4FileOld;
-				String fullyQualifiedName = pojoClass.getQualifiedDeclarationName();
-				ICompilationUnit icu = Utils.findCompilationUnit(proj, fullyQualifiedName);
-				if (icu != null) {
-					IResource resource = null;
-					try {
-						resource = icu.getCorrespondingResource();
-					} catch (JavaModelException e) {
-						//ignore
-					}
-					String[] aFQName = fullyQualifiedName.split("\\."); //$NON-NLS-1$
-					int n = aFQName.length - 1;
-					for ( ; n >= 0 && resource != null; n--) {
-						if (n == 0 && aFQName[n].length() == 0) {
-							// handle the (default package) case
-							break;
-						}
-						resource = resource.getParent();
-					}
-					if (resource != null) {
-						final IPath projPath = proj.getResource().getLocation();
-						IPath place2Gen = previewPage.getRootPlace2Gen().append(proj.getElementName());
-						IPath tmpPath = resource.getLocation();
-						tmpPath = tmpPath.makeRelativeTo(projPath);
-						place2Gen = place2Gen.append(tmpPath);
-						outputdir4FileNew = place2Gen.toFile();
-					}
-				}
-				if (!outputdir4FileNew.exists()) {
-					outputdir4FileNew.mkdirs();
-				}
+				File outputdir4FileNew = createNewOutputDir4File(
+						pojoClass.getQualifiedDeclarationName(), 
+						outputdir4FileOld);
 				target.setOutputDirectory(outputdir4FileNew);
 				target.exportPOJO(map, pojoClass);
 				target.setOutputDirectory(outputdir4FileOld);
@@ -288,6 +260,39 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 	    }
 		public void start() {
 			target.start();
+		}
+		private File createNewOutputDir4File(String fullyQualifiedName, File oldOutputDir4File) {
+			File result = oldOutputDir4File;
+			ICompilationUnit icu = Utils.findCompilationUnit(proj, fullyQualifiedName);
+			if (icu != null) {
+				IResource resource = null;
+				try {
+					resource = icu.getCorrespondingResource();
+				} catch (JavaModelException e) {
+					//ignore
+				}
+				String[] aFQName = fullyQualifiedName.split("\\."); //$NON-NLS-1$
+				int n = aFQName.length - 1;
+				for ( ; n >= 0 && resource != null; n--) {
+					if (n == 0 && aFQName[n].length() == 0) {
+						// handle the (default package) case
+						break;
+					}
+					resource = resource.getParent();
+				}
+				if (resource != null) {
+					final IPath projPath = proj.getResource().getLocation();
+					IPath place2Gen = previewPage.getRootPlace2Gen().append(proj.getElementName());
+					IPath tmpPath = resource.getLocation();
+					tmpPath = tmpPath.makeRelativeTo(projPath);
+					place2Gen = place2Gen.append(tmpPath);
+					result = place2Gen.toFile();
+				}
+			}
+			if (!result.exists()) {
+				result.mkdirs();
+			}
+			return result;
 		}
 	}
 
