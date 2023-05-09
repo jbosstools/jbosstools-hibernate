@@ -246,10 +246,11 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 				exportPojo(map, pojoClass);
 			}
 			@Override public void exportPojo(Map<Object, Object> map, Object pojoClass) {
+				exportPojo(map, pojoClass, ((IPOJOClass)pojoClass).getQualifiedDeclarationName());
+			}
+			@Override public void exportPojo(Map<Object, Object> map, Object pojoClass, String fullyQualifiedName) {
 				File outputdir4FileOld = target.getOutputDirectory();
-				File outputdir4FileNew = createNewOutputDir4File(
-						((IPOJOClass)pojoClass).getQualifiedDeclarationName(), 
-						outputdir4FileOld);
+				File outputdir4FileNew = createNewOutputDir4File(fullyQualifiedName, outputdir4FileOld);
 				target.setOutputDirectory(outputdir4FileNew);
 				target.exportPOJO(map, pojoClass);
 				target.setOutputDirectory(outputdir4FileOld);
