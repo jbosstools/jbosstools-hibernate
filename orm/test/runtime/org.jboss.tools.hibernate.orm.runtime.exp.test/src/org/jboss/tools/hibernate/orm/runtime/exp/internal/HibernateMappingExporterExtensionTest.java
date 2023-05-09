@@ -30,7 +30,6 @@ import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
-import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,7 +54,7 @@ public class HibernateMappingExporterExtensionTest {
 		delegateField.setAccessible(true);
 		IExportPOJODelegate exportPojoDelegate = new IExportPOJODelegate() {			
 			@Override
-			public void exportPOJO(Map<Object, Object> map, IPOJOClass pojoClass) { }
+			public void exportPojo(Map<Object, Object> map, Object pojoClass) { }
 		};
 		assertNull(delegateField.get(hibernateMappingExporterExtension));
 		hibernateMappingExporterExtension.setDelegate(exportPojoDelegate);
@@ -114,7 +113,7 @@ public class HibernateMappingExporterExtensionTest {
 		final HashMap<Object, Object> arguments = new HashMap<Object, Object>();
 		IExportPOJODelegate exportPojoDelegate = new IExportPOJODelegate() {			
 			@Override
-			public void exportPOJO(Map<Object, Object> map, IPOJOClass pojoClass) {
+			public void exportPojo(Map<Object, Object> map, Object pojoClass) { 
 				arguments.put("map", map);
 				arguments.put("pojoClass", pojoClass);
 			}

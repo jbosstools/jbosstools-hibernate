@@ -71,7 +71,7 @@ public class HibernateMappingExporterExtensionTest {
 		delegateField.setAccessible(true);
 		IExportPOJODelegate exportPojoDelegate = new IExportPOJODelegate() {			
 			@Override
-			public void exportPOJO(Map<Object, Object> map, IPOJOClass pojoClass) { }
+			public void exportPojo(Map<Object, Object> map, Object pojoClass) { }
 		};
 		assertNull(delegateField.get(hibernateMappingExporterExtension));
 		hibernateMappingExporterExtension.setDelegate(exportPojoDelegate);
@@ -126,7 +126,7 @@ public class HibernateMappingExporterExtensionTest {
 		final HashMap<Object, Object> arguments = new HashMap<Object, Object>();
 		IExportPOJODelegate exportPojoDelegate = new IExportPOJODelegate() {			
 			@Override
-			public void exportPOJO(Map<Object, Object> map, IPOJOClass pojoClass) {
+			public void exportPojo(Map<Object, Object> map, Object pojoClass) { 
 				arguments.put("map", map);
 				arguments.put("pojoClass", pojoClass);
 			}

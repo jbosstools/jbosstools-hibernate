@@ -43,7 +43,7 @@ extends HibernateMappingExporter {
 		if (delegateExporter == null) {
 			super.exportPOJO(map, pojoClass);
 		} else {
-			delegateExporter.exportPOJO(
+			delegateExporter.exportPojo(
 					(Map<Object, Object>)map, 
 					facadeFactory.createPOJOClass(pojoClass));
 		}
