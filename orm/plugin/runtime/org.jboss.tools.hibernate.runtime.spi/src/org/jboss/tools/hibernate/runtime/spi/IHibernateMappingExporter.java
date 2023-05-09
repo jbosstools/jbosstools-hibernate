@@ -8,7 +8,7 @@ public interface IHibernateMappingExporter {
 	void start();
 	File getOutputDirectory();
 	void setOutputDirectory(File directory);
-	void exportPOJO(Map<Object, Object> map, IPOJOClass pojoClass);
+	void exportPOJO(Map<Object, Object> map, Object pojoClass);
 	void setExportPOJODelegate(IExportPOJODelegate delegate);
 
 }

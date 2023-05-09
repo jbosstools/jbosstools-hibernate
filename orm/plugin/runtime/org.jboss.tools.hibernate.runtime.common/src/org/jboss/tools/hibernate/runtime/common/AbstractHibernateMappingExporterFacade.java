@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
-import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 
 public abstract class AbstractHibernateMappingExporterFacade 
 extends AbstractFacade 
@@ -45,7 +44,9 @@ implements IHibernateMappingExporter {
 	}
 
 	@Override
-	public void exportPOJO(Map<Object, Object> map, IPOJOClass pojoClass) {
+	public void exportPOJO(Map<Object, Object> map, Object pojoClass) {
+		// pojoClass should be a IFacade instance
+		assert pojoClass instanceof IFacade;
 		Object pojoClassTarget = Util.invokeMethod(
 				pojoClass, 
 				"getTarget", 
