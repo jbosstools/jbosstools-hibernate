@@ -132,7 +132,7 @@ public class HibernateMappingExporterFacadeTest {
 	@Test
 	public void testExportPOJO() throws Exception {
 		RootClass persistentClass = new RootClass(DummyMetadataBuildingContext.INSTANCE);
-		Table rootTable = new Table();
+		Table rootTable = new Table("");
 		rootTable.setName("FOO");
 		persistentClass.setTable(rootTable);
 		persistentClass.setEntityName("Foo");
