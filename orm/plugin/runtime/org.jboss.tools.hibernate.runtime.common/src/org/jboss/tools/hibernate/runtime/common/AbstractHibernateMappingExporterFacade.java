@@ -45,13 +45,14 @@ implements IHibernateMappingExporter {
 
 	@Override
 	public void exportPOJO(Map<Object, Object> map, Object pojoClass) {
-		// pojoClass should be a IFacade instance
-		assert pojoClass instanceof IFacade;
-		Object pojoClassTarget = Util.invokeMethod(
+		Object pojoClassTarget = pojoClass;
+		if (pojoClass instanceof IFacade) {
+			pojoClassTarget = Util.invokeMethod(
 				pojoClass, 
 				"getTarget", 
 				new Class[] {}, 
 				new Object[] {});
+		}
 		Util.invokeMethod(
 				getTarget(), 
 				"superExportPOJO", 
