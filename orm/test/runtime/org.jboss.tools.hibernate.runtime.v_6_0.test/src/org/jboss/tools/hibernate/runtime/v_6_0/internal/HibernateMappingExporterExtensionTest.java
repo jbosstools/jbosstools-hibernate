@@ -25,7 +25,6 @@ import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.hibernate.tool.internal.export.java.Cfg2JavaTool;
 import org.hibernate.tool.internal.export.java.EntityPOJOClass;
 import org.hibernate.tool.internal.export.java.POJOClass;
-import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
 import org.jboss.tools.hibernate.runtime.v_6_0.internal.util.DummyMetadataBuildingContext;
@@ -124,7 +123,7 @@ public class HibernateMappingExporterExtensionTest {
 		hibernateMappingExporterExtension.exportPOJO(additionalContext, pojoClass);
 		assertTrue(hbmXmlFiles.length == 0);
 		assertSame(additionalContext, arguments.get("map"));
-		assertSame(pojoClass, ((IFacade)arguments.get("pojoClass")).getTarget());
+		assertSame(pojoClass, arguments.get("pojoClass"));
 	}
 	
 	@AfterEach
