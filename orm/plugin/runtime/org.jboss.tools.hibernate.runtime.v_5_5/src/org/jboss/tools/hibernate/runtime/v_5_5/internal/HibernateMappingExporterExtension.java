@@ -12,11 +12,9 @@ import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.ConfigurationMetada
 
 public class HibernateMappingExporterExtension extends HibernateMappingExporter {
 
-	private IFacadeFactory facadeFactory;
 	private IExportPOJODelegate delegateExporter;
 
 	public HibernateMappingExporterExtension(IFacadeFactory facadeFactory, IConfiguration cfg, File file) {
-		this.facadeFactory = facadeFactory;
 		setMetadataDescriptor(new ConfigurationMetadataDescriptor(cfg));
 		setOutputDirectory(file);
 	}
@@ -37,7 +35,7 @@ public class HibernateMappingExporterExtension extends HibernateMappingExporter 
 		} else {
 			delegateExporter.exportPojo(
 					(Map<Object, Object>)map, 
-					facadeFactory.createPOJOClass(pojoClass));
+					pojoClass);
 		}
 	}
 	
