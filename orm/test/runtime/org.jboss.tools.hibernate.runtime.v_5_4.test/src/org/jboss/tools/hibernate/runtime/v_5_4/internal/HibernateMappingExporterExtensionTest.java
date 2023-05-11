@@ -25,11 +25,9 @@ import org.hibernate.tool.hbm2x.Cfg2JavaTool;
 import org.hibernate.tool.hbm2x.TemplateHelper;
 import org.hibernate.tool.hbm2x.pojo.EntityPOJOClass;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
-import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
-import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.v_5_4.internal.util.ConfigurationMetadataDescriptor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -58,9 +56,6 @@ public class HibernateMappingExporterExtensionTest {
 	
 	@Test
 	public void testConstruction() throws Exception {
-		Field facadeFactoryField = HibernateMappingExporterExtension.class.getDeclaredField("facadeFactory");
-		facadeFactoryField.setAccessible(true);
-		assertSame(FACADE_FACTORY, facadeFactoryField.get(hibernateMappingExporterExtension));
 		Field metadataDescriptorField = AbstractExporter.class.getDeclaredField("metadataDescriptor");
 		metadataDescriptorField.setAccessible(true);
 		ConfigurationMetadataDescriptor cmdd = (ConfigurationMetadataDescriptor)metadataDescriptorField.get(hibernateMappingExporterExtension);
@@ -148,7 +143,7 @@ public class HibernateMappingExporterExtensionTest {
 		hibernateMappingExporterExtension.exportPOJO(additionalContext, pojoClass);
 		assertTrue(hbmXmlFiles.length == 0);
 		assertSame(additionalContext, arguments.get("map"));
-		assertSame(pojoClass, ((IFacade)arguments.get("pojoClass")).getTarget());
+		assertSame(pojoClass, arguments.get("pojoClass"));
 	}
 	
 	private POJOClass createPojoClass() {
