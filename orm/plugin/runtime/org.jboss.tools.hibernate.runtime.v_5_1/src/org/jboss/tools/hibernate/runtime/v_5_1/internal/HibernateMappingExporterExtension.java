@@ -22,11 +22,9 @@ public class HibernateMappingExporterExtension
 extends HibernateMappingExporter {
 	
 	private IExportPOJODelegate delegateExporter;
-	private IFacadeFactory facadeFactory;
 	
 	public HibernateMappingExporterExtension(IFacadeFactory facadeFactory, IConfiguration  cfg, File file) {
 		super((Configuration)((IFacade)cfg).getTarget(), file);
-		this.facadeFactory = facadeFactory;
 		createMetadata(cfg);
 	}
 	
@@ -45,7 +43,7 @@ extends HibernateMappingExporter {
 		} else {
 			delegateExporter.exportPojo(
 					(Map<Object, Object>)map, 
-					facadeFactory.createPOJOClass(pojoClass));
+					pojoClass);
 		}
 	}
 	void createMetadata(IConfiguration cfg) {
