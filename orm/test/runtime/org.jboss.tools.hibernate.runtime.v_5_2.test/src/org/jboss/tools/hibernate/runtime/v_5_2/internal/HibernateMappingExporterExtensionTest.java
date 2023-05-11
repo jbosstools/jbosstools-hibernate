@@ -63,9 +63,6 @@ public class HibernateMappingExporterExtensionTest {
 	
 	@Test
 	public void testConstruction() throws Exception {
-		Field facadeFactoryField = HibernateMappingExporterExtension.class.getDeclaredField("facadeFactory");
-		facadeFactoryField.setAccessible(true);
-		assertSame(FACADE_FACTORY, facadeFactoryField.get(hibernateMappingExporterExtension));
 		Metadata metadata = ((ConfigurationFacadeImpl)configurationFacade).getMetadata();
 		Field metadataField = AbstractExporter.class.getDeclaredField("metadata");
 		metadataField.setAccessible(true);
@@ -152,7 +149,7 @@ public class HibernateMappingExporterExtensionTest {
 		hibernateMappingExporterExtension.exportPOJO(additionalContext, pojoClass);
 		assertTrue(hbmXmlFiles.length == 0);
 		assertSame(additionalContext, arguments.get("map"));
-		assertSame(pojoClass, ((IFacade)arguments.get("pojoClass")).getTarget());
+		assertSame(pojoClass, arguments.get("pojoClass"));
 	}
 	
 	private POJOClass createPojoClass() {
