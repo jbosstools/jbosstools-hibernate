@@ -26,7 +26,6 @@ import org.hibernate.tool.hbm2x.Cfg2JavaTool;
 import org.hibernate.tool.hbm2x.TemplateHelper;
 import org.hibernate.tool.hbm2x.pojo.EntityPOJOClass;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
-import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
@@ -98,7 +97,7 @@ public class HibernateMappingExporterFacadeTest {
 					m.put((String)key, map.get(key));
 				}
 				hibernateMappingExporter.superExportPOJO(
-					m,(POJOClass)((IFacade)pojoClass).getTarget());
+					m,(POJOClass)pojoClass);
 			}
 		};
 		Field delegateField = HibernateMappingExporterExtension.class.getDeclaredField("delegateExporter");
