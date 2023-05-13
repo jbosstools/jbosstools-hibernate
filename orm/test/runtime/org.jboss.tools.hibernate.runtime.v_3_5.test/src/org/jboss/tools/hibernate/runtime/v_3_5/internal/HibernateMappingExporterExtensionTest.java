@@ -29,7 +29,6 @@ import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
-import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -58,9 +57,6 @@ public class HibernateMappingExporterExtensionTest {
 	
 	@Test
 	public void testConstruction() throws Exception {
-		Field facadeFactoryField = HibernateMappingExporterExtension.class.getDeclaredField("facadeFactory");
-		facadeFactoryField.setAccessible(true);
-		assertSame(FACADE_FACTORY, facadeFactoryField.get(hibernateMappingExporterExtension));
 		assertSame(((IFacade)configurationFacade).getTarget(), hibernateMappingExporterExtension.getConfiguration());
 		assertSame(tempDir, hibernateMappingExporterExtension.getOutputDirectory());
 	}
@@ -141,7 +137,7 @@ public class HibernateMappingExporterExtensionTest {
 		hibernateMappingExporterExtension.exportPOJO(additionalContext, pojoClass);
 		assertTrue(hbmXmlFiles.length == 0);
 		assertSame(additionalContext, arguments.get("map"));
-		assertSame(pojoClass, ((IFacade)arguments.get("pojoClass")).getTarget());
+		assertSame(pojoClass, arguments.get("pojoClass"));
 	}
 	
 	private POJOClass createPojoClass() {
