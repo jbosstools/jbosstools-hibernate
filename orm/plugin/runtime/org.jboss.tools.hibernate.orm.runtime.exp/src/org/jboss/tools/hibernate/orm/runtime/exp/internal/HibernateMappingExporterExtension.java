@@ -15,10 +15,8 @@ import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
 public class HibernateMappingExporterExtension extends HbmExporter {
 	
 	private IExportPOJODelegate delegateExporter;
-	private IFacadeFactory facadeFactory;
 
 	public HibernateMappingExporterExtension(IFacadeFactory facadeFactory, IConfiguration cfg, File file) {
-		this.facadeFactory = facadeFactory;
 		getProperties().put(
 				METADATA_DESCRIPTOR, 
 				new ConfigurationMetadataDescriptor((Configuration)((IFacade)cfg).getTarget()));
@@ -43,7 +41,7 @@ public class HibernateMappingExporterExtension extends HbmExporter {
 		} else {
 			delegateExporter.exportPojo(
 					(Map<Object, Object>)map, 
-					facadeFactory.createPOJOClass(pojoClass));
+					pojoClass);
 		}
 	}
 }

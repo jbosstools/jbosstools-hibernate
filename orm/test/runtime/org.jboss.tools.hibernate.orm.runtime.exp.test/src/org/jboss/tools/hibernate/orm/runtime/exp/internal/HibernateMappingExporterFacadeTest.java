@@ -37,7 +37,6 @@ import org.hibernate.tool.internal.export.java.EntityPOJOClass;
 import org.hibernate.tool.internal.export.java.POJOClass;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
-import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
@@ -92,7 +91,7 @@ public class HibernateMappingExporterFacadeTest {
 					m.put((String)key, map.get(key));
 				}
 				hibernateMappingExporter.superExportPOJO(
-					m,(POJOClass)((IFacade)pojoClass).getTarget());
+					m,(POJOClass)pojoClass);
 			}
 		};
 		Field delegateField = HibernateMappingExporterExtension.class.getDeclaredField("delegateExporter");
@@ -137,7 +136,7 @@ public class HibernateMappingExporterFacadeTest {
 	@Test
 	public void testExportPOJO() throws Exception {
 		RootClass persistentClass = new RootClass(DummyMetadataBuildingContext.INSTANCE);
-		Table rootTable = new Table();
+		Table rootTable = new Table("");
 		rootTable.setName("FOO");
 		persistentClass.setTable(rootTable);
 		persistentClass.setEntityName("Foo");

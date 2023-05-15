@@ -22,7 +22,7 @@ public class IPojoClassTest {
 	@BeforeEach 
 	public void beforeEach() {
 		PersistentClass pc = new RootClass(DummyMetadataBuildingContext.INSTANCE);
-		pc.setClassName("foo.bar");
+		pc.setClassName("bar");
 		pojoClassTarget = new EntityPOJOClass(pc, new Cfg2JavaTool());
 		pojoClassFacade = (IPOJOClass)GenericFacadeFactory.createFacade(IPOJOClass.class, pojoClassTarget);
 	}
@@ -35,7 +35,7 @@ public class IPojoClassTest {
 	
 	@Test
 	public void testGetQualifiedDeclarationName() {
-		assertEquals("foo.bar", pojoClassFacade.getQualifiedDeclarationName());
+		assertEquals("bar", pojoClassFacade.getQualifiedDeclarationName());
 	}
 
 }

@@ -27,7 +27,6 @@ import org.hibernate.tool.internal.export.java.EntityPOJOClass;
 import org.hibernate.tool.internal.export.java.POJOClass;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
-import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
 import org.junit.jupiter.api.AfterEach;
@@ -128,7 +127,7 @@ public class HibernateMappingExporterExtensionTest {
 		hibernateMappingExporterExtension.exportPOJO(additionalContext, pojoClass);
 		assertTrue(hbmXmlFiles.length == 0);
 		assertSame(additionalContext, arguments.get("map"));
-		assertSame(pojoClass, ((IFacade)arguments.get("pojoClass")).getTarget());
+		assertSame(pojoClass, arguments.get("pojoClass"));
 	}
 	
 	@AfterEach
@@ -139,7 +138,7 @@ public class HibernateMappingExporterExtensionTest {
 		
 	private POJOClass createPojoClass() {
 		RootClass persistentClass = new RootClass(DummyMetadataBuildingContext.INSTANCE);
-		Table rootTable = new Table();
+		Table rootTable = new Table("");
 		rootTable.setName("table");
 		persistentClass.setTable(rootTable);
 		persistentClass.setEntityName("Bar");
