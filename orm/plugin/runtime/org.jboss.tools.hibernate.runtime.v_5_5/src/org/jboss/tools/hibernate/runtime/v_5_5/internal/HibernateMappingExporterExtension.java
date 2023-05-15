@@ -35,7 +35,8 @@ public class HibernateMappingExporterExtension extends HibernateMappingExporter 
 		} else {
 			delegateExporter.exportPojo(
 					(Map<Object, Object>)map, 
-					pojoClass);
+					pojoClass,
+					pojoClass.getQualifiedDeclarationName());
 		}
 	}
 	

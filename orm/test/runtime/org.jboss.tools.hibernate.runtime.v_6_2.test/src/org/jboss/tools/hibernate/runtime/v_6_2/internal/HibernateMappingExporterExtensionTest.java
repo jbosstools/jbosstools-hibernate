@@ -49,7 +49,7 @@ public class HibernateMappingExporterExtensionTest {
 		delegateField.setAccessible(true);
 		IExportPOJODelegate exportPojoDelegate = new IExportPOJODelegate() {			
 			@Override
-			public void exportPojo(Map<Object, Object> map, Object pojoClass) { }
+			public void exportPojo(Map<Object, Object> map, Object pojoClass, String qualifiedDeclarationName) { }
 		};
 		assertNull(delegateField.get(hibernateMappingExporterExtension));
 		hibernateMappingExporterExtension.setDelegate(exportPojoDelegate);
@@ -108,7 +108,7 @@ public class HibernateMappingExporterExtensionTest {
 		final HashMap<Object, Object> arguments = new HashMap<Object, Object>();
 		IExportPOJODelegate exportPojoDelegate = new IExportPOJODelegate() {			
 			@Override
-			public void exportPojo(Map<Object, Object> map, Object pojoClass) {
+			public void exportPojo(Map<Object, Object> map, Object pojoClass, String qualifiedDeclarationName) {
 				arguments.put("map", map);
 				arguments.put("pojoClass", pojoClass);
 			}
@@ -134,7 +134,7 @@ public class HibernateMappingExporterExtensionTest {
 		
 	private POJOClass createPojoClass() {
 		RootClass persistentClass = new RootClass(DummyMetadataBuildingContext.INSTANCE);
-		Table rootTable = new Table();
+		Table rootTable = new Table("");
 		rootTable.setName("table");
 		persistentClass.setTable(rootTable);
 		persistentClass.setEntityName("Bar");

@@ -84,7 +84,7 @@ public class HibernateMappingExporterFacadeTest {
 		assertTrue(dummyDir.exists());
 		IExportPOJODelegate delegate = new IExportPOJODelegate() {			
 			@Override
-			public void exportPojo(Map<Object, Object> map, Object pojoClass) { 
+			public void exportPojo(Map<Object, Object> map, Object pojoClass, String qualifiedDeclarationName) { 
 				assertTrue(dummyDir.delete());
 				Map<String, Object> m = new HashMap<>();
 				for (Object key : map.keySet()) {
@@ -124,7 +124,7 @@ public class HibernateMappingExporterFacadeTest {
 	public void testSetExportPOJODelegate() throws Exception {
 		IExportPOJODelegate delegate = new IExportPOJODelegate() {			
 			@Override
-			public void exportPojo(Map<Object, Object> map, Object pojoClass) { }
+			public void exportPojo(Map<Object, Object> map, Object pojoClass, String qualifiedDeclarationName) { }
 		};
 		Field delegateField = HibernateMappingExporterExtension.class.getDeclaredField("delegateExporter");
 		delegateField.setAccessible(true);

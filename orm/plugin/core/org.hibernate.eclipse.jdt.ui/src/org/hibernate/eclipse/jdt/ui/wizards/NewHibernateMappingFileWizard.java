@@ -75,7 +75,6 @@ import org.hibernate.eclipse.nature.HibernateNature;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
-import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.spi.IService;
 import org.jboss.tools.hibernate.runtime.spi.RuntimeServiceManager;
 
@@ -242,9 +241,6 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 	protected class HibernateMappingExporterWrapper { 
 		protected IJavaProject proj;
 		private IExportPOJODelegate delegate = new IExportPOJODelegate() {	
-			@Override public void exportPojo(Map<Object, Object> map, Object pojoClass) {
-				exportPojo(map, pojoClass, ((IPOJOClass)pojoClass).getQualifiedDeclarationName());
-			}
 			@Override public void exportPojo(Map<Object, Object> map, Object pojoClass, String fullyQualifiedName) {
 				File outputdir4FileOld = target.getOutputDirectory();
 				File outputdir4FileNew = createNewOutputDir4File(fullyQualifiedName, outputdir4FileOld);
