@@ -37,7 +37,6 @@ import org.jboss.tools.hibernate.runtime.common.AbstractHibernateMappingExporter
 import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IExportPOJODelegate;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
-import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.v_5_5.internal.util.DummyMetadataBuildingContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -142,9 +141,7 @@ public class HibernateMappingExporterFacadeTest {
 		persistentClass.setTable(rootTable);
 		persistentClass.setEntityName("Foo");
 		persistentClass.setClassName("Foo");
-		IPOJOClass pojoClass = 
-				FACADE_FACTORY.createPOJOClass(
-						new EntityPOJOClass(persistentClass, new Cfg2JavaTool()));		
+		Object pojoClass = new EntityPOJOClass(persistentClass, new Cfg2JavaTool());	
 		Map<Object, Object> additionalContext = new HashMap<Object, Object>();
 		Cfg2HbmTool c2h = new Cfg2HbmTool();
 		additionalContext.put("date", new Date().toString());
