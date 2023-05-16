@@ -19,7 +19,6 @@ import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
-import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
@@ -142,11 +141,6 @@ public abstract class AbstractFacadeFactory implements IFacadeFactory {
 		return new AbstractQueryFacade(this, target) {};
 	}
 	
-	@Override
-	public IPOJOClass createPOJOClass(Object target) {
-		return new AbstractPOJOClassFacade(this, target) {};
-	}
-
 	@Override
 	public IQueryTranslator createQueryTranslator(Object target) {
 		return new AbstractQueryTranslatorFacade(this, target) {};

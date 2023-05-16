@@ -19,7 +19,6 @@ import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
-import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
@@ -65,7 +64,6 @@ public interface IFacadeFactory {
 	IHQLQueryPlan createHQLQueryPlan(Object target);
 	IJoin createJoin(Object target);
 	IPersistentClass createPersistentClass(Object target);
-	IPOJOClass createPOJOClass(Object target);
 	IPrimaryKey createPrimaryKey(Object target);
 	IProperty createProperty(Object target);
 	IQuery createQuery(Object target);
