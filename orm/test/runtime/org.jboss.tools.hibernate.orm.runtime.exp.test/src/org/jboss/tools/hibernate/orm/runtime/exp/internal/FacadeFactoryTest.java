@@ -17,7 +17,6 @@ import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tool.internal.export.ddl.DdlExporter;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
-import org.hibernate.tool.internal.export.java.POJOClass;
 import org.hibernate.tool.internal.export.query.QueryExporter;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -26,7 +25,6 @@ import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
-import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 import org.junit.jupiter.api.Test;
@@ -366,16 +364,6 @@ public class FacadeFactoryTest {
 		HQLCodeAssist hqlCodeAssist = new HQLCodeAssist(null);
 		IHQLCodeAssist facade = FACADE_FACTORY.createHQLCodeAssist(hqlCodeAssist);
 		assertSame(hqlCodeAssist, ((IFacade)facade).getTarget());		
-	}
-	
-	@Test
-	public void testCreatePOJOClass() {
-		POJOClass pojoClass = (POJOClass)Proxy.newProxyInstance(
-				FACADE_FACTORY.getClassLoader(), 
-				new Class[] { POJOClass.class }, 
-				new TestInvocationHandler());
-		IPOJOClass facade = FACADE_FACTORY.createPOJOClass(pojoClass);
-		assertSame(pojoClass, ((IFacade)facade).getTarget());
 	}
 	
 	@Test

@@ -47,7 +47,6 @@ import org.hibernate.tool.hbm2x.GenericExporter;
 import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.QueryExporter;
-import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.type.Type;
@@ -72,7 +71,6 @@ import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
-import org.jboss.tools.hibernate.runtime.spi.IPOJOClass;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
@@ -329,16 +327,6 @@ public class FacadeFactoryTest {
 		IPersistentClass facade = facadeFactory.createPersistentClass(persistentClass);
 		assertSame(persistentClass, ((IFacade)facade).getTarget());
 		assertTrue(facade instanceof PersistentClassFacadeImpl);
-	}
-	
-	@Test
-	public void testCreatePOJOClass() {
-		POJOClass pojoClass = (POJOClass)Proxy.newProxyInstance(
-				facadeFactory.getClassLoader(), 
-				new Class[] { POJOClass.class }, 
-				new TestInvocationHandler());
-		IPOJOClass facade = facadeFactory.createPOJOClass(pojoClass);
-		assertSame(pojoClass, ((IFacade)facade).getTarget());
 	}
 	
 	@Test
