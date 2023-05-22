@@ -2,6 +2,8 @@ package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -113,6 +115,14 @@ public class IHibernateMappingExporterTest {
 			properties.put(Environment.DIALECT, "org.hibernate.dialect.H2Dialect");
 			return properties;
 		}	
+	}
+	
+	@Test
+	public void testGetOutputDirectory() {
+		assertNull(hbmExporterFacade.getOutputDirectory());
+		File file = new File("testGetOutputDirectory");
+		hbmExporterTarget.getProperties().put(ExporterConstants.DESTINATION_FOLDER, file);
+		assertSame(file, hbmExporterFacade.getOutputDirectory());
 	}
 	
 	private static class TestInvocationHandler implements InvocationHandler {
