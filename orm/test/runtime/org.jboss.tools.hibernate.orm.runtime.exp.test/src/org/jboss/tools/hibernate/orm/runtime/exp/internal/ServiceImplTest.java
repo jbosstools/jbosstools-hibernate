@@ -42,6 +42,7 @@ import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
+import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tool.internal.export.java.JavaExporter;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
@@ -133,8 +134,8 @@ public class ServiceImplTest {
 		File file = new File("");
 		IHibernateMappingExporter hibernateMappingExporter = 
 				service.newHibernateMappingExporter(configuration, file);
-		HibernateMappingExporterExtension hmee = 
-				(HibernateMappingExporterExtension)((IFacade)hibernateMappingExporter).getTarget();
+		HbmExporter hmee = 
+				(HbmExporter)((IFacade)hibernateMappingExporter).getTarget();
 		assertSame(file, hmee.getProperties().get(ExporterConstants.OUTPUT_FILE_NAME));
 		assertSame(
 				MetadataHelper.getMetadata((Configuration)((IFacade)configuration).getTarget()),

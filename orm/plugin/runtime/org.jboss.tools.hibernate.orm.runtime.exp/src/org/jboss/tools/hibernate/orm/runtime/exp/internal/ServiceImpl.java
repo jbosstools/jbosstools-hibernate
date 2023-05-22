@@ -88,11 +88,7 @@ public class ServiceImpl extends AbstractService {
 	@Override
 	public IHibernateMappingExporter newHibernateMappingExporter(
 			IConfiguration hcfg, File file) {
-		return facadeFactory.createHibernateMappingExporter(
-				new HibernateMappingExporterExtension(
-						facadeFactory,
-						hcfg,
-						file));
+		return newFacadeFactory.createHibernateMappingExporter(hcfg, file);
 	}
 
 	@Override
