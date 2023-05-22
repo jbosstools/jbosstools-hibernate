@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal.util;
 
+import java.io.File;
 import java.util.Map;
 import java.util.Properties;
 
@@ -13,6 +14,7 @@ import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
+import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -259,6 +261,13 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 		return (ISchemaExport)GenericFacadeFactory.createFacade(
 				ISchemaExport.class, 
 				WrapperFactory.createSchemaExport(((IFacade)configuration).getTarget()));
+	}
+	
+	public IHibernateMappingExporter createHibernateMappingExporter(
+			IConfiguration configuration, File file) {
+		return (IHibernateMappingExporter)GenericFacadeFactory.createFacade(
+				IHibernateMappingExporter.class, 
+				WrapperFactory.createHbmExporterWrapper(((IFacade)configuration).getTarget(), file));
 	}
 
 	@Override

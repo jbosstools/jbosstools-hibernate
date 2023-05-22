@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Properties;
 
@@ -27,6 +28,7 @@ import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
@@ -42,6 +44,7 @@ import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 import org.hibernate.tool.orm.jbt.wrp.ColumnWrapper;
 import org.hibernate.tool.orm.jbt.wrp.EnvironmentWrapper;
+import org.hibernate.tool.orm.jbt.wrp.HbmExporterWrapper;
 import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.wrp.SchemaExportWrapper;
 import org.hibernate.tool.orm.jbt.wrp.TypeFactoryWrapper;
@@ -54,6 +57,7 @@ import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
+import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -462,6 +466,20 @@ public class NewFacadeFactoryTest {
 		ISchemaExport schemaExportFacade = facadeFactory.createSchemaExport(configurationFacade);
 		Object schemaExportWrapper = ((IFacade)schemaExportFacade).getTarget();
 		assertTrue(schemaExportWrapper instanceof SchemaExportWrapper);
+	}
+	
+	@Test
+	public void testCreateHibernateMappingExporter() {
+		File file = new File("foo");
+		IConfiguration configurationFacade = facadeFactory.createNativeConfiguration();
+		IHibernateMappingExporter hibernateMappingExporterFacade = 
+				facadeFactory.createHibernateMappingExporter(configurationFacade, file);
+		Object hibernateMappingExporterWrapper = ((IFacade)hibernateMappingExporterFacade).getTarget();
+		assertTrue(hibernateMappingExporterWrapper instanceof HbmExporterWrapper);
+		assertSame(
+				((HbmExporterWrapper)hibernateMappingExporterWrapper)
+					.getProperties().get(ExporterConstants.OUTPUT_FILE_NAME),
+				file);
 	}
 	
 	public static class TestRevengStrategy extends DelegatingStrategy {
