@@ -101,22 +101,6 @@ public class IHibernateMappingExporterTest {
 		assertTrue(delegateHasExported);
 	}
 	
-	private static class TestMetadataDescriptor implements MetadataDescriptor {
-		@Override
-		public Metadata createMetadata() {
-			return (Metadata)Proxy.newProxyInstance(
-					getClass().getClassLoader(), 
-					new Class<?>[] { Metadata.class }, 
-					new TestInvocationHandler());
-		}
-		@Override
-		public Properties getProperties() {
-			Properties properties = new Properties();
-			properties.put(Environment.DIALECT, "org.hibernate.dialect.H2Dialect");
-			return properties;
-		}	
-	}
-	
 	@Test
 	public void testGetOutputDirectory() {
 		assertNull(hbmExporterFacade.getOutputDirectory());
@@ -131,6 +115,35 @@ public class IHibernateMappingExporterTest {
 		File file = new File("testSetOutputDirectory");
 		hbmExporterFacade.setOutputDirectory(file);
 		assertSame(file, hbmExporterTarget.getProperties().get(ExporterConstants.DESTINATION_FOLDER));
+	}
+	
+	@Test
+	public void testSetExportPOJODelegate() throws Exception {
+		IExportPOJODelegate delegate = new IExportPOJODelegate() {			
+			@Override
+			public void exportPojo(Map<Object, Object> map, Object pojoClass, String qualifiedDeclarationName) { }
+		};
+		Field delegateField = HbmExporterWrapper.class.getDeclaredField("delegateExporter");
+		delegateField.setAccessible(true);
+		assertNull(delegateField.get(hbmExporterTarget));
+		hbmExporterFacade.setExportPOJODelegate(delegate);
+		assertSame(delegate, delegateField.get(hbmExporterTarget));
+	}
+	
+	private static class TestMetadataDescriptor implements MetadataDescriptor {
+		@Override
+		public Metadata createMetadata() {
+			return (Metadata)Proxy.newProxyInstance(
+					getClass().getClassLoader(), 
+					new Class<?>[] { Metadata.class }, 
+					new TestInvocationHandler());
+		}
+		@Override
+		public Properties getProperties() {
+			Properties properties = new Properties();
+			properties.put(Environment.DIALECT, "org.hibernate.dialect.H2Dialect");
+			return properties;
+		}	
 	}
 	
 	private static class TestInvocationHandler implements InvocationHandler {
