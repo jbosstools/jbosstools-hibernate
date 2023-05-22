@@ -1,5 +1,6 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -9,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.Writer;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -16,6 +18,7 @@ import java.lang.reflect.Proxy;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
@@ -30,7 +33,12 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
+import org.hibernate.tool.internal.export.common.AbstractExporter;
+import org.hibernate.tool.internal.export.common.TemplateHelper;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
+import org.hibernate.tool.internal.export.java.Cfg2JavaTool;
+import org.hibernate.tool.internal.export.java.EntityPOJOClass;
+import org.hibernate.tool.internal.export.java.POJOClass;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.wrp.HbmExporterWrapper;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
@@ -50,6 +58,7 @@ public class IHibernateMappingExporterTest {
 	private HbmExporter hbmExporterTarget = null;
 	
 	private boolean delegateHasExported = false;
+	private boolean templateProcessed = false;
 	
 	@BeforeEach
 	public void beforeEach() throws Exception {
@@ -128,6 +137,49 @@ public class IHibernateMappingExporterTest {
 		assertNull(delegateField.get(hbmExporterTarget));
 		hbmExporterFacade.setExportPOJODelegate(delegate);
 		assertSame(delegate, delegateField.get(hbmExporterTarget));
+	}
+	
+	@Test
+	public void testExportPOJO() throws Exception {
+		// first without a delegate exporter
+		Map<Object, Object> context = new HashMap<>();
+		PersistentClass pc = new RootClass(DummyMetadataBuildingContext.INSTANCE);
+		pc.setEntityName("foo");
+		pc.setClassName("foo");
+		POJOClass pojoClass = new EntityPOJOClass(pc, new Cfg2JavaTool());
+		TemplateHelper templateHelper = new TemplateHelper() {
+		    public void processTemplate(String templateName, Writer output, String rootContext) {
+		    	templateProcessed = true;
+		    }
+		};
+		templateHelper.init(null, new String[] {});
+		Field templateHelperField = AbstractExporter.class.getDeclaredField("vh");
+		templateHelperField.setAccessible(true);
+		templateHelperField.set(hbmExporterTarget, templateHelper);
+		assertFalse(templateProcessed);
+		assertFalse(delegateHasExported);
+		hbmExporterFacade.exportPOJO(context, pojoClass);
+		assertTrue(templateProcessed);
+		assertFalse(delegateHasExported);
+		// now with a delegate exporter
+		templateProcessed = false;
+		Object delegate = new Object() {
+			@SuppressWarnings("unused")
+			private void exportPojo(Map<Object, Object> map, Object object, String string) {
+				assertSame(map, context);
+				assertSame(object, pojoClass);
+				assertEquals(string, pojoClass.getQualifiedDeclarationName());
+				delegateHasExported = true;
+			}
+		};
+		Field delegateField = HbmExporterWrapper.class.getDeclaredField("delegateExporter");
+		delegateField.setAccessible(true);
+		delegateField.set(hbmExporterTarget, delegate);
+		assertFalse(templateProcessed);
+		assertFalse(delegateHasExported);
+		hbmExporterFacade.exportPOJO(context, pojoClass);
+		assertFalse(templateProcessed);
+		assertTrue(delegateHasExported);
 	}
 	
 	private static class TestMetadataDescriptor implements MetadataDescriptor {
