@@ -16,7 +16,6 @@ import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tool.internal.export.ddl.DdlExporter;
-import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tool.internal.export.query.QueryExporter;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -24,7 +23,6 @@ import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
-import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 import org.junit.jupiter.api.Test;
@@ -318,6 +316,16 @@ public class FacadeFactoryTest {
 	}
 	
 	@Test
+	public void testCreateHibernateMappingExporter() {
+		try {
+			FACADE_FACTORY.createHibernateMappingExporter(null);
+			fail();
+		} catch (Throwable t) {
+			assertEquals("Should use class 'NewFacadeFactory'", t.getMessage());
+		}
+	}
+	
+	@Test
 	public void testCreateGenericExporter() {
 		GenericExporter genericExporter = new GenericExporter();
 		IGenericExporter facade = FACADE_FACTORY.createGenericExporter(genericExporter);
@@ -349,14 +357,6 @@ public class FacadeFactoryTest {
 		IExporter facade = FACADE_FACTORY.createExporter(exporter);
 		assertTrue(facade instanceof ExporterFacadeImpl);
 		assertSame(exporter, ((IFacade)facade).getTarget());		
-	}
-	
-	@Test
-	public void testCreateHibernateMappingExporter() {
-		HbmExporter hibernateMappingExporter = new HbmExporter();
-		IHibernateMappingExporter facade = FACADE_FACTORY.createHibernateMappingExporter(hibernateMappingExporter);
-		assertSame(hibernateMappingExporter, ((IFacade)facade).getTarget());	
-		assertTrue(facade instanceof HibernateMappingExporterFacadeImpl);
 	}
 	
 	@Test
