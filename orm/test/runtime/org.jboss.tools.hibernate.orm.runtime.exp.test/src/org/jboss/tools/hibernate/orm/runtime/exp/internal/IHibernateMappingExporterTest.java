@@ -125,6 +125,14 @@ public class IHibernateMappingExporterTest {
 		assertSame(file, hbmExporterFacade.getOutputDirectory());
 	}
 	
+	@Test
+	public void testSetOutputDirectory() {
+		assertNull(hbmExporterTarget.getProperties().get(ExporterConstants.DESTINATION_FOLDER));
+		File file = new File("testSetOutputDirectory");
+		hbmExporterFacade.setOutputDirectory(file);
+		assertSame(file, hbmExporterTarget.getProperties().get(ExporterConstants.DESTINATION_FOLDER));
+	}
+	
 	private static class TestInvocationHandler implements InvocationHandler {
 		private ArrayList<PersistentClass> entities = new ArrayList<PersistentClass>();
 		private ArrayList<Table> tables = new ArrayList<Table>();
