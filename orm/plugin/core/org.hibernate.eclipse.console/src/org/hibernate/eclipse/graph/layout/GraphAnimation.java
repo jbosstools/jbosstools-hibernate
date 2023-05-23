@@ -139,17 +139,16 @@ public class GraphAnimation
 		return true;
 	}
 
-	@SuppressWarnings("unchecked")
 	public static boolean playbackState(IFigure container)
 	{
 		if (!PLAYBACK)
 			return false;
 
-		List<IFigure> children = container.getChildren();
+		List<?> children = container.getChildren();
 		Rectangle rect1, rect2;
 		for (int i = 0; i < children.size(); i++)
 		{
-			IFigure child = children.get(i);
+			IFigure child = (IFigure)children.get(i);
 			rect1 = (Rectangle) initialStates.get(child);
 			rect2 = (Rectangle) finalStates.get(child);
 			if (rect2 == null)
@@ -274,17 +273,16 @@ public class GraphAnimation
 			initialStates.put(connection, points);
 	}
 
-	@SuppressWarnings("unchecked")
 	public static void recordInitialState(IFigure container)
 	{
 		if (!RECORDING)
 			return;
 
-		List<IFigure> children = container.getChildren();
+		List<?> children = container.getChildren();
 		IFigure child;
 		for (int i = 0; i < children.size(); i++)
 		{
-			child = children.get(i);
+			child = (IFigure)children.get(i);
 			initialStates.put(child, child.getBounds().getCopy());
 		}
 	}

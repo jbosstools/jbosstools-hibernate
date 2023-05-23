@@ -25,11 +25,10 @@ public class GEFRootEditPart extends ScalableFreeformRootEditPart {
 		super();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void setToFront(AbstractConnectionEditPart editpart) {
 		ConnectionLayer layer = (ConnectionLayer)getLayer(LayerConstants.CONNECTION_LAYER);
 		IFigure fig = editpart.getFigure();
-		layer.getChildren().remove(fig);
-		layer.getChildren().add(fig);
+		layer.remove(fig);
+		layer.add(fig);
 	}
 }
