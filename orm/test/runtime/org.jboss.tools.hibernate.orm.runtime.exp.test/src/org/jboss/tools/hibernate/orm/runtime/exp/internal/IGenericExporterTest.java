@@ -39,4 +39,11 @@ public class IGenericExporterTest {
 		assertEquals("foobar", genericExporterTarget.getProperties().get(ExporterConstants.FILE_PATTERN));
 	}
 	
+	@Test
+	public void testSetTemplate() {
+		assertNull(genericExporterTarget.getProperties().get(ExporterConstants.TEMPLATE_NAME));
+		genericExporterFacade.setTemplateName("barfoo");
+		assertEquals("barfoo", genericExporterTarget.getProperties().get(ExporterConstants.TEMPLATE_NAME));
+	}
+	
 }
