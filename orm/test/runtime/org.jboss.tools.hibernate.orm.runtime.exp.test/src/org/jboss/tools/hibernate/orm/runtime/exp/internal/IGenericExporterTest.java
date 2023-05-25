@@ -46,4 +46,11 @@ public class IGenericExporterTest {
 		assertEquals("barfoo", genericExporterTarget.getProperties().get(ExporterConstants.TEMPLATE_NAME));
 	}
 	
+	@Test
+	public void testSetForEach() {
+		assertNull(genericExporterTarget.getProperties().get(ExporterConstants.FOR_EACH));
+		genericExporterFacade.setForEach("foobar");
+		assertEquals("foobar", genericExporterTarget.getProperties().get(ExporterConstants.FOR_EACH));
+	}
+	
 }
