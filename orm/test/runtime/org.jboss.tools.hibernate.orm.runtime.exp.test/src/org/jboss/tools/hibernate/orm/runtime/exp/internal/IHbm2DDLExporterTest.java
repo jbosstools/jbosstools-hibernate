@@ -1,12 +1,16 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Field;
 import java.util.Properties;
 
+import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.common.AbstractExporter;
 import org.hibernate.tool.internal.export.ddl.DdlExporter;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
@@ -43,6 +47,15 @@ public class IHbm2DDLExporterTest {
 		assertNotSame(properties, ddlExporterFacade.getProperties());
 		propertiesField.set(ddlExporterTarget, properties);
 		assertSame(properties, ddlExporterFacade.getProperties());
+	}
+
+	@Test
+	public void testSetExport() {
+		assertNull(ddlExporterTarget.getProperties().get(ExporterConstants.EXPORT_TO_DATABASE));
+		ddlExporterFacade.setExport(false);
+		assertFalse((Boolean)ddlExporterTarget.getProperties().get(ExporterConstants.EXPORT_TO_DATABASE));
+		ddlExporterFacade.setExport(true);
+		assertTrue((Boolean)ddlExporterTarget.getProperties().get(ExporterConstants.EXPORT_TO_DATABASE));
 	}
 
 }
