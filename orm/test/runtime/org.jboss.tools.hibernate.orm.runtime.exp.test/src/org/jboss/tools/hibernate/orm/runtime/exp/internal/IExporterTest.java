@@ -1,6 +1,8 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -17,6 +19,7 @@ import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
+import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.junit.jupiter.api.BeforeEach;
@@ -59,6 +62,15 @@ public class IExporterTest {
 		assertNotNull(object);
 		assertTrue(object instanceof Configuration);
 		assertSame(object, ((IFacade)configurationFacade).getTarget());
+	}
+	
+	@Test
+	public void testSetArtifactCollector() {
+		IArtifactCollector artifactCollectorFacade = NewFacadeFactory.INSTANCE.createArtifactCollector();
+		Object artifactCollectorTarget = ((IFacade)artifactCollectorFacade).getTarget();
+		assertNotSame(artifactCollectorTarget, exporterTarget.getProperties().get(ExporterConstants.ARTIFACT_COLLECTOR));
+		exporterFacade.setArtifactCollector(artifactCollectorFacade);
+		assertSame(artifactCollectorTarget, exporterTarget.getProperties().get(ExporterConstants.ARTIFACT_COLLECTOR));
 	}
 	
 }
