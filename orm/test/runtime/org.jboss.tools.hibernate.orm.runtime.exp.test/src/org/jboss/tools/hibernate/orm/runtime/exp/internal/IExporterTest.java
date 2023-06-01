@@ -2,10 +2,10 @@ package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Properties;
 
@@ -71,6 +71,14 @@ public class IExporterTest {
 		assertNotSame(artifactCollectorTarget, exporterTarget.getProperties().get(ExporterConstants.ARTIFACT_COLLECTOR));
 		exporterFacade.setArtifactCollector(artifactCollectorFacade);
 		assertSame(artifactCollectorTarget, exporterTarget.getProperties().get(ExporterConstants.ARTIFACT_COLLECTOR));
+	}
+	
+	@Test
+	public void testSetOutputDirectory() {
+		File file = new File("");
+		assertNotSame(file, exporterTarget.getProperties().get(ExporterConstants.DESTINATION_FOLDER));		
+		exporterFacade.setOutputDirectory(file);
+		assertSame(file, exporterTarget.getProperties().get(ExporterConstants.DESTINATION_FOLDER));		
 	}
 	
 }
