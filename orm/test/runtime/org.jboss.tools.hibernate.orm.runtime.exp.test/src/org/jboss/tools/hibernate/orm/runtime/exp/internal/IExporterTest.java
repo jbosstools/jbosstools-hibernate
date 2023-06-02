@@ -81,4 +81,12 @@ public class IExporterTest {
 		assertSame(file, exporterTarget.getProperties().get(ExporterConstants.DESTINATION_FOLDER));		
 	}
 	
+	@Test
+	public void testSetTemplatePath() {
+		String[] templatePath = new String[] {};
+		assertNotSame(templatePath, exporterTarget.getProperties().get(ExporterConstants.TEMPLATE_PATH));		
+		exporterFacade.setTemplatePath(templatePath);
+		assertSame(templatePath, exporterTarget.getProperties().get(ExporterConstants.TEMPLATE_PATH));		
+	}
+	
 }
