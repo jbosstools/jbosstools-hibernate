@@ -118,6 +118,17 @@ public class IExporterTest {
 		assertTrue(((TestExporter)exporterTarget).started);
 	}
 	
+	@Test
+	public void testGetProperties() throws Exception {
+		Field propertiesField = AbstractExporter.class.getDeclaredField("properties");
+		propertiesField.setAccessible(true);
+		Properties properties = new Properties();
+		assertNotNull(exporterFacade.getProperties());
+		assertNotSame(properties, exporterFacade.getProperties());
+		propertiesField.set(exporterTarget, properties);
+		assertSame(properties, exporterFacade.getProperties());
+	}
+	
 	public static class TestExporter extends AbstractExporter {
 		private boolean started = false;
 		@Override protected void doStart() {}
