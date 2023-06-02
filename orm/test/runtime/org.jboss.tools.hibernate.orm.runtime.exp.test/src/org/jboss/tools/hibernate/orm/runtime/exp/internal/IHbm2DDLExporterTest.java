@@ -13,6 +13,7 @@ import java.util.Properties;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.common.AbstractExporter;
 import org.hibernate.tool.internal.export.ddl.DdlExporter;
+import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -30,7 +31,8 @@ public class IHbm2DDLExporterTest {
 		ddlExporterFacade = (IHbm2DDLExporter)GenericFacadeFactory.createFacade(
 				IHbm2DDLExporter.class, 
 				WrapperFactory.createDdlExporterWrapper());
-		ddlExporterTarget = (DdlExporter)((IFacade)ddlExporterFacade).getTarget();
+		Object ddlExporterWrapper = ((IFacade)ddlExporterFacade).getTarget();
+		ddlExporterTarget = (DdlExporter)((Wrapper)ddlExporterWrapper).getWrappedObject();
 	}
 	
 	@Test
