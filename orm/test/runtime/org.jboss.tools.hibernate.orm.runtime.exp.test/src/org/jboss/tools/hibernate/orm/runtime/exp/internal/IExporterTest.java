@@ -1,7 +1,9 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -13,6 +15,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
+import org.hibernate.tool.internal.export.common.AbstractExporter;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
@@ -34,7 +37,7 @@ public class IExporterTest {
 	public void beforeEach() {
 		exporterFacade = (IExporter)GenericFacadeFactory.createFacade(
 				IExporter.class, 
-				WrapperFactory.createExporterWrapper(CfgExporter.class.getName()));
+				WrapperFactory.createExporterWrapper(TestExporter.class.getName()));
 		Object exporterWrapper = ((IFacade)exporterFacade).getTarget();
 		exporterTarget = (Exporter)((Wrapper)exporterWrapper).getWrappedObject();
 	}
@@ -47,22 +50,41 @@ public class IExporterTest {
 
 	@Test
 	public void testSetConfiguration() throws Exception {
+		Object metadataDescriptor = null;
+		Object configuration = null;
+		Field field = ConfigurationMetadataDescriptor.class.getDeclaredField("configuration");
+		field.setAccessible(true);
 		Properties properties = new Properties();
 		IConfiguration configurationFacade = NewFacadeFactory.INSTANCE.createNativeConfiguration();
 		configurationFacade.setProperties(properties);
+		// First use the TestExporter 
+		assertNull(exporterTarget.getProperties().get(ExporterConstants.METADATA_DESCRIPTOR));
+		exporterFacade.setConfiguration(configurationFacade);	
+		metadataDescriptor = exporterTarget.getProperties().get(ExporterConstants.METADATA_DESCRIPTOR);
+		assertNotNull(metadataDescriptor);
+		assertTrue(metadataDescriptor instanceof ConfigurationMetadataDescriptor);
+		configuration = field.get(metadataDescriptor);
+		assertNotNull(configuration);
+		assertTrue(configuration instanceof Configuration);
+		assertSame(configuration, ((IFacade)configurationFacade).getTarget());
+		// Now test with a CfgExporter
+		exporterFacade = (IExporter)GenericFacadeFactory.createFacade(
+				IExporter.class, 
+				WrapperFactory.createExporterWrapper(CfgExporter.class.getName()));
+		Object exporterWrapper = ((IFacade)exporterFacade).getTarget();
+		exporterTarget = (Exporter)((Wrapper)exporterWrapper).getWrappedObject();
+		assertNotSame(properties, ((CfgExporter)exporterTarget).getCustomProperties());
+		assertNull(exporterTarget.getProperties().get(ExporterConstants.METADATA_DESCRIPTOR));
 		exporterFacade.setConfiguration(configurationFacade);	
 		assertSame(properties, ((CfgExporter)exporterTarget).getCustomProperties());
-		Object object = exporterTarget.getProperties().get(ExporterConstants.METADATA_DESCRIPTOR);
-		assertNotNull(object);
-		assertTrue(object instanceof ConfigurationMetadataDescriptor);
-		ConfigurationMetadataDescriptor configurationMetadataDescriptor = (ConfigurationMetadataDescriptor)object;
-		Field field = ConfigurationMetadataDescriptor.class.getDeclaredField("configuration");
-		field.setAccessible(true);
-		object = field.get(configurationMetadataDescriptor);
-		assertNotNull(object);
-		assertTrue(object instanceof Configuration);
-		assertSame(object, ((IFacade)configurationFacade).getTarget());
-	}
+		metadataDescriptor = exporterTarget.getProperties().get(ExporterConstants.METADATA_DESCRIPTOR);
+		assertNotNull(metadataDescriptor);
+		assertTrue(metadataDescriptor instanceof ConfigurationMetadataDescriptor);
+		configuration = field.get(metadataDescriptor);
+		assertNotNull(configuration);
+		assertTrue(configuration instanceof Configuration);
+		assertSame(configuration, ((IFacade)configurationFacade).getTarget());
+}
 	
 	@Test
 	public void testSetArtifactCollector() {
@@ -87,6 +109,19 @@ public class IExporterTest {
 		assertNotSame(templatePath, exporterTarget.getProperties().get(ExporterConstants.TEMPLATE_PATH));		
 		exporterFacade.setTemplatePath(templatePath);
 		assertSame(templatePath, exporterTarget.getProperties().get(ExporterConstants.TEMPLATE_PATH));		
+	}
+	
+	@Test
+	public void testStart() throws Exception {
+		assertFalse(((TestExporter)exporterTarget).started);
+		exporterFacade.start();
+		assertTrue(((TestExporter)exporterTarget).started);
+	}
+	
+	public static class TestExporter extends AbstractExporter {
+		private boolean started = false;
+		@Override protected void doStart() {}
+		@Override public void start() { started = true; }		
 	}
 	
 }
