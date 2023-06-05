@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.query.QueryExporter;
+import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -26,7 +27,8 @@ public class IQueryExporterTest {
 	@BeforeEach
 	public void beforeEach() {
 		queryExporterFacade = (IQueryExporter)GenericFacadeFactory.createFacade(IQueryExporter.class, WrapperFactory.createQueryExporterWrapper());
-		queryExporterTarget = (QueryExporter)((IFacade)queryExporterFacade).getTarget();
+		Object queryExporterWrapper = ((IFacade)queryExporterFacade).getTarget();
+		queryExporterTarget = (QueryExporter)((Wrapper)queryExporterWrapper).getWrappedObject();
 	}
 	
 	@Test
