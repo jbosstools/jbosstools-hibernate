@@ -17,6 +17,7 @@ import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.internal.export.common.AbstractExporter;
 import org.hibernate.tool.internal.export.common.GenericExporter;
+import org.hibernate.tool.internal.export.ddl.DdlExporter;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
@@ -27,6 +28,7 @@ import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
+import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -146,6 +148,23 @@ public class IExporterTest {
 		Object genericExporterWrapper = ((IFacade)genericExporterFacade).getTarget();
 		Object genericExporterTarget = ((Wrapper)genericExporterWrapper).getWrappedObject();
 		assertSame(exporterTarget, genericExporterTarget);
+	}
+	
+	@Test
+	public void testGetHbm2DDLExporter() {
+		// TestExporter should not return a Hbm2DDLExporterFacade instance
+		assertNull(exporterFacade.getHbm2DDLExporter());
+		// try now with a DdlExporter
+		exporterFacade = (IExporter)GenericFacadeFactory.createFacade(
+				IExporter.class, 
+				WrapperFactory.createExporterWrapper(DdlExporter.class.getName()));
+		IHbm2DDLExporter hbm2DDLExporterFacade = exporterFacade.getHbm2DDLExporter();
+		assertNotNull(hbm2DDLExporterFacade);
+		Object exporterWrapper = ((IFacade)exporterFacade).getTarget();
+		exporterTarget = (Exporter)((Wrapper)exporterWrapper).getWrappedObject();
+		Object hbm2DDLExporterWrapper = ((IFacade)hbm2DDLExporterFacade).getTarget();
+		Object hbm2DDLExporterTarget = ((Wrapper)hbm2DDLExporterWrapper).getWrappedObject();
+		assertSame(exporterTarget, hbm2DDLExporterTarget);
 	}
 	
 	public static class TestExporter extends AbstractExporter {
