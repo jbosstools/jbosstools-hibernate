@@ -23,6 +23,7 @@ import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.ICriteria;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
+import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -267,6 +268,7 @@ public class GenericFacadeFactory {
 					IConfiguration.class,
 					ICriteria.class,
 					IGenericExporter.class,
+					IHbm2DDLExporter.class,
 					IJoin.class,
 					INamingStrategy.class,
 					IPersistentClass.class,
