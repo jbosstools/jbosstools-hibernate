@@ -28,11 +28,13 @@ import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
+import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
@@ -56,6 +58,7 @@ import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
+import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
@@ -480,6 +483,17 @@ public class NewFacadeFactoryTest {
 				((HbmExporterWrapper)hibernateMappingExporterWrapper)
 					.getProperties().get(ExporterConstants.OUTPUT_FILE_NAME),
 				file);
+	}
+	
+	@Test
+	public void testCreateExporter() {
+		IExporter exporterFacade = facadeFactory.createExporter(GenericExporter.class.getName());
+		assertNotNull(exporterFacade);
+		Object exporterWrapper = ((IFacade)exporterFacade).getTarget();
+		assertNotNull(exporterWrapper);
+		Exporter wrappedExporter = (Exporter)((Wrapper)exporterWrapper).getWrappedObject();
+		assertNotNull(wrappedExporter);
+		assertTrue(wrappedExporter instanceof GenericExporter);
 	}
 	
 	public static class TestRevengStrategy extends DelegatingStrategy {
