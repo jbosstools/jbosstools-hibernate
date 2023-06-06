@@ -20,6 +20,7 @@ import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tool.internal.export.ddl.DdlExporter;
 import org.hibernate.tool.internal.export.query.QueryExporter;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
+import org.hibernate.tool.orm.jbt.util.DummyMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
@@ -64,7 +65,13 @@ public class IExporterTest {
 		IConfiguration configurationFacade = NewFacadeFactory.INSTANCE.createNativeConfiguration();
 		configurationFacade.setProperties(properties);
 		// First use the TestExporter 
-		assertNull(exporterTarget.getProperties().get(ExporterConstants.METADATA_DESCRIPTOR));
+		metadataDescriptor = exporterTarget.getProperties().get(ExporterConstants.METADATA_DESCRIPTOR);
+		assertNotNull(metadataDescriptor);
+		assertTrue(metadataDescriptor instanceof ConfigurationMetadataDescriptor);
+		configuration = field.get(metadataDescriptor);
+		assertNotNull(configuration);
+		assertTrue(configuration instanceof Configuration);
+		assertNotSame(configuration, ((IFacade)configurationFacade).getTarget());
 		exporterFacade.setConfiguration(configurationFacade);	
 		metadataDescriptor = exporterTarget.getProperties().get(ExporterConstants.METADATA_DESCRIPTOR);
 		assertNotNull(metadataDescriptor);
@@ -80,7 +87,9 @@ public class IExporterTest {
 		Object exporterWrapper = ((IFacade)exporterFacade).getTarget();
 		exporterTarget = (Exporter)((Wrapper)exporterWrapper).getWrappedObject();
 		assertNotSame(properties, ((CfgExporter)exporterTarget).getCustomProperties());
-		assertNull(exporterTarget.getProperties().get(ExporterConstants.METADATA_DESCRIPTOR));
+		metadataDescriptor = exporterTarget.getProperties().get(ExporterConstants.METADATA_DESCRIPTOR);
+		assertNotNull(metadataDescriptor);
+		assertTrue(metadataDescriptor instanceof DummyMetadataDescriptor);
 		exporterFacade.setConfiguration(configurationFacade);	
 		assertSame(properties, ((CfgExporter)exporterTarget).getCustomProperties());
 		metadataDescriptor = exporterTarget.getProperties().get(ExporterConstants.METADATA_DESCRIPTOR);
