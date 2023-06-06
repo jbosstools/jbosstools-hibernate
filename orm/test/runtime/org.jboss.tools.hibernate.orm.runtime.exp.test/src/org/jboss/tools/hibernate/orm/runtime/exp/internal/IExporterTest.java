@@ -18,6 +18,7 @@ import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.internal.export.common.AbstractExporter;
 import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tool.internal.export.ddl.DdlExporter;
+import org.hibernate.tool.internal.export.query.QueryExporter;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
@@ -29,6 +30,7 @@ import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
+import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -165,6 +167,23 @@ public class IExporterTest {
 		Object hbm2DDLExporterWrapper = ((IFacade)hbm2DDLExporterFacade).getTarget();
 		Object hbm2DDLExporterTarget = ((Wrapper)hbm2DDLExporterWrapper).getWrappedObject();
 		assertSame(exporterTarget, hbm2DDLExporterTarget);
+	}
+	
+	@Test
+	public void testGetQueryExporter() {
+		// TestExporter should not return a Hbm2DDLExporterFacade instance
+		assertNull(exporterFacade.getQueryExporter());
+		// try now with a QueryExporter
+		exporterFacade = (IExporter)GenericFacadeFactory.createFacade(
+				IExporter.class, 
+				WrapperFactory.createExporterWrapper(QueryExporter.class.getName()));
+		IQueryExporter queryExporterFacade = exporterFacade.getQueryExporter();
+		assertNotNull(queryExporterFacade);
+		Object exporterWrapper = ((IFacade)exporterFacade).getTarget();
+		exporterTarget = (Exporter)((Wrapper)exporterWrapper).getWrappedObject();
+		Object queryExporterWrapper = ((IFacade)queryExporterFacade).getTarget();
+		Object queryExporterTarget = ((Wrapper)queryExporterWrapper).getWrappedObject();
+		assertSame(exporterTarget, queryExporterTarget);
 	}
 	
 	public static class TestExporter extends AbstractExporter {
