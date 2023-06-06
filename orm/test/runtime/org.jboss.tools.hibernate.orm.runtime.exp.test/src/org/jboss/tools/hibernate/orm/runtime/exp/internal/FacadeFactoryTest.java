@@ -326,6 +326,16 @@ public class FacadeFactoryTest {
 	}
 	
 	@Test
+	public void testCreateExporter() {
+		try {
+			FACADE_FACTORY.createExporter(null);
+			fail();
+		} catch (Throwable t) {
+			assertEquals("Should use class 'NewFacadeFactory'", t.getMessage());
+		}
+	}
+	
+	@Test
 	public void testCreateGenericExporter() {
 		GenericExporter genericExporter = new GenericExporter();
 		IGenericExporter facade = FACADE_FACTORY.createGenericExporter(genericExporter);
@@ -346,17 +356,6 @@ public class FacadeFactoryTest {
 		IQueryExporter facade = FACADE_FACTORY.createQueryExporter(queryExporter);
 		assertTrue(facade instanceof QueryExporterFacadeImpl);
 		assertSame(queryExporter, ((IFacade)facade).getTarget());		
-	}
-	
-	@Test
-	public void testCreateExporter() {
-		Exporter exporter = (Exporter)Proxy.newProxyInstance(
-				FACADE_FACTORY.getClassLoader(), 
-				new Class[] { Exporter.class }, 
-				new TestInvocationHandler());
-		IExporter facade = FACADE_FACTORY.createExporter(exporter);
-		assertTrue(facade instanceof ExporterFacadeImpl);
-		assertSame(exporter, ((IFacade)facade).getTarget());		
 	}
 	
 	@Test

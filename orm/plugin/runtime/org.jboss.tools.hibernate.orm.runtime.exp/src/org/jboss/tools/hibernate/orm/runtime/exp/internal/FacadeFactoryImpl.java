@@ -184,6 +184,11 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	}
 
 	@Override
+	public IExporter createExporter(Object target) {
+		throw new RuntimeException("Should use class 'NewFacadeFactory'");
+	}
+	
+	@Override
 	public ClassLoader getClassLoader() {
 		return FacadeFactoryImpl.class.getClassLoader();
 	}
@@ -203,11 +208,6 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 		return new QueryExporterFacadeImpl(this, target);
 	}
 
-	@Override
-	public IExporter createExporter(Object target) {
-		return new ExporterFacadeImpl(this, target);
-	}
-	
 	@Override
 	public IHQLQueryPlan createHQLQueryPlan(Object target) {
 		// TODO Auto-generated method stub
