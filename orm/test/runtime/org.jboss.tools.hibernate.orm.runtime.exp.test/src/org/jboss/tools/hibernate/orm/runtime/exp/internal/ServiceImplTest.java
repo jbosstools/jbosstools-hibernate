@@ -36,6 +36,7 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.export.ArtifactCollector;
+import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.reveng.RevengSettings;
@@ -173,21 +174,23 @@ public class ServiceImplTest {
 	public void testCreateExporter() {
 		IExporter exporter = service.createExporter(JavaExporter.class.getName());
 		assertNotNull(exporter);
-		Object target = ((IFacade)exporter).getTarget();
-		assertNotNull(target);
-		assertTrue(target instanceof JavaExporter);
+		Object exporterWrapper = ((IFacade)exporter).getTarget();
+		assertNotNull(exporterWrapper);
+		Exporter wrappedExporter = (Exporter)((Wrapper)exporterWrapper).getWrappedObject();
+		assertTrue(wrappedExporter instanceof JavaExporter);
 		MetadataDescriptor metadataDescriptor = 
-				(MetadataDescriptor)((JavaExporter)target)
+				(MetadataDescriptor)((JavaExporter)wrappedExporter)
 					.getProperties()
 					.get(ExporterConstants.METADATA_DESCRIPTOR);
 		assertNotNull(metadataDescriptor.getProperties()); // Normal metadata descriptor
 		exporter = service.createExporter(CfgExporter.class.getName());
 		assertNotNull(exporter);
-		target = ((IFacade)exporter).getTarget();
-		assertNotNull(target);
-		assertTrue(target instanceof CfgExporter);
+		exporterWrapper = ((IFacade)exporter).getTarget();
+		assertNotNull(exporterWrapper);
+		wrappedExporter = (Exporter)((Wrapper)exporterWrapper).getWrappedObject();
+		assertTrue(wrappedExporter instanceof CfgExporter);
 		metadataDescriptor = 
-				(MetadataDescriptor)((CfgExporter)target)
+				(MetadataDescriptor)((CfgExporter)wrappedExporter)
 					.getProperties()
 					.get(ExporterConstants.METADATA_DESCRIPTOR);
 		assertNull(metadataDescriptor.getProperties()); // Dummy metadata descriptor

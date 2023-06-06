@@ -113,19 +113,7 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IExporter createExporter(String exporterClassName) {
-		Exporter exporter = (Exporter)Util.getInstance(
-				exporterClassName, 
-				facadeFactory.getClassLoader());
-		if (CfgExporter.class.isAssignableFrom(exporter.getClass())) {
-			exporter.getProperties().put(
-					ExporterConstants.METADATA_DESCRIPTOR, 
-					new DummyMetadataDescriptor());
-		} else {
-			exporter.getProperties().put(
-					ExporterConstants.METADATA_DESCRIPTOR,
-					new ConfigurationMetadataDescriptor((Configuration)((IFacade)newDefaultConfiguration()).getTarget()));
-		}
-		return facadeFactory.createExporter(exporter);
+		return newFacadeFactory.createExporter(exporterClassName);
 	}
 
 	@Override
