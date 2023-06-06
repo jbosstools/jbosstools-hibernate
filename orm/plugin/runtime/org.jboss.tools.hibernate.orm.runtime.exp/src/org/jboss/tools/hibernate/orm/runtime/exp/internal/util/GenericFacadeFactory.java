@@ -30,6 +30,7 @@ import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IPrimaryKey;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
+import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISession;
@@ -275,6 +276,7 @@ public class GenericFacadeFactory {
 					IPrimaryKey.class,
 					IProperty.class,
 					IQuery.class,
+					IQueryExporter.class,
 					IReverseEngineeringStrategy.class,
 					IReverseEngineeringSettings.class,
 					ISession.class,
