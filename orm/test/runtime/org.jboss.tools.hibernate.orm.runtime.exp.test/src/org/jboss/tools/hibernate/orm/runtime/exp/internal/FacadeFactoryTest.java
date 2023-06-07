@@ -13,12 +13,10 @@ import java.lang.reflect.Proxy;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Column;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
-import org.hibernate.tool.internal.export.ddl.DdlExporter;
 import org.hibernate.tool.internal.export.query.QueryExporter;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
-import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 import org.junit.jupiter.api.Test;
@@ -343,10 +341,12 @@ public class FacadeFactoryTest {
 	
 	@Test
 	public void testCreateHbm2DDLExporter() {
-		DdlExporter ddlExporter = new DdlExporter();
-		IHbm2DDLExporter facade = FACADE_FACTORY.createHbm2DDLExporter(ddlExporter);
-		assertTrue(facade instanceof Hbm2DDLExporterFacadeImpl);
-		assertSame(ddlExporter, ((IFacade)facade).getTarget());		
+		try {
+			FACADE_FACTORY.createHbm2DDLExporter(null);
+			fail();
+		} catch (Throwable t) {
+			assertEquals("Should use class 'NewFacadeFactory'", t.getMessage());
+		}
 	}
 	
 	@Test

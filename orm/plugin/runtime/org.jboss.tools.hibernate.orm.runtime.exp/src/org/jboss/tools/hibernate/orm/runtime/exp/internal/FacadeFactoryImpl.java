@@ -194,13 +194,13 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	}
 
 	@Override
-	public ClassLoader getClassLoader() {
-		return FacadeFactoryImpl.class.getClassLoader();
+	public IHbm2DDLExporter createHbm2DDLExporter(Object target) {
+		throw new RuntimeException("Should use class 'NewFacadeFactory'");
 	}
 
 	@Override
-	public IHbm2DDLExporter createHbm2DDLExporter(Object target) {
-		return new Hbm2DDLExporterFacadeImpl(this, target);
+	public ClassLoader getClassLoader() {
+		return FacadeFactoryImpl.class.getClassLoader();
 	}
 
 	@Override
