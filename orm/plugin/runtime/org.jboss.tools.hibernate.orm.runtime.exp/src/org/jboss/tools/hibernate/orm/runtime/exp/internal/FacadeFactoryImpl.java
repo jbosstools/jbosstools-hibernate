@@ -189,13 +189,13 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	}
 	
 	@Override
-	public ClassLoader getClassLoader() {
-		return FacadeFactoryImpl.class.getClassLoader();
+	public IGenericExporter createGenericExporter(Object target) {
+		throw new RuntimeException("Should use class 'NewFacadeFactory'");
 	}
 
 	@Override
-	public IGenericExporter createGenericExporter(Object target) {
-		return new GenericExporterFacadeImpl(this, target);
+	public ClassLoader getClassLoader() {
+		return FacadeFactoryImpl.class.getClassLoader();
 	}
 
 	@Override

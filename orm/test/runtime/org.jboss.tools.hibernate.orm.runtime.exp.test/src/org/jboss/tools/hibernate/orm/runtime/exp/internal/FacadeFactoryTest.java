@@ -12,15 +12,11 @@ import java.lang.reflect.Proxy;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Column;
-import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
-import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tool.internal.export.ddl.DdlExporter;
 import org.hibernate.tool.internal.export.query.QueryExporter;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
-import org.jboss.tools.hibernate.runtime.spi.IExporter;
-import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHbm2DDLExporter;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
@@ -337,9 +333,12 @@ public class FacadeFactoryTest {
 	
 	@Test
 	public void testCreateGenericExporter() {
-		GenericExporter genericExporter = new GenericExporter();
-		IGenericExporter facade = FACADE_FACTORY.createGenericExporter(genericExporter);
-		assertSame(genericExporter, ((IFacade)facade).getTarget());		
+		try {
+			FACADE_FACTORY.createGenericExporter(null);
+			fail();
+		} catch (Throwable t) {
+			assertEquals("Should use class 'NewFacadeFactory'", t.getMessage());
+		}
 	}
 	
 	@Test
