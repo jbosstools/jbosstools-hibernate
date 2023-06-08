@@ -13,12 +13,10 @@ import java.lang.reflect.Proxy;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Column;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
-import org.hibernate.tool.internal.export.query.QueryExporter;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
-import org.jboss.tools.hibernate.runtime.spi.IQueryExporter;
 import org.junit.jupiter.api.Test;
 
 import jakarta.persistence.Query;
@@ -351,10 +349,12 @@ public class FacadeFactoryTest {
 	
 	@Test
 	public void testCreateQueryExporter() {
-		QueryExporter queryExporter = new QueryExporter();
-		IQueryExporter facade = FACADE_FACTORY.createQueryExporter(queryExporter);
-		assertTrue(facade instanceof QueryExporterFacadeImpl);
-		assertSame(queryExporter, ((IFacade)facade).getTarget());		
+		try {
+			FACADE_FACTORY.createQueryExporter(null);
+			fail();
+		} catch (Throwable t) {
+			assertEquals("Should use class 'NewFacadeFactory'", t.getMessage());
+		}
 	}
 	
 	@Test

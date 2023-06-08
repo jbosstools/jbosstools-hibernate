@@ -199,13 +199,13 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	}
 
 	@Override
-	public ClassLoader getClassLoader() {
-		return FacadeFactoryImpl.class.getClassLoader();
+	public IQueryExporter createQueryExporter(Object target) {
+		throw new RuntimeException("Should use class 'NewFacadeFactory'");
 	}
 
 	@Override
-	public IQueryExporter createQueryExporter(Object target) {
-		return new QueryExporterFacadeImpl(this, target);
+	public ClassLoader getClassLoader() {
+		return FacadeFactoryImpl.class.getClassLoader();
 	}
 
 	@Override
