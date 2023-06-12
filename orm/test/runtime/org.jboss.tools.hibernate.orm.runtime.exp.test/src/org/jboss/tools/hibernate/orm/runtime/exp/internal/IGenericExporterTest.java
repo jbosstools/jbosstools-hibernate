@@ -6,8 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.common.GenericExporter;
+import org.hibernate.tool.orm.jbt.wrp.GenericExporterWrapperFactory;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
-import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IGenericExporter;
@@ -23,7 +23,7 @@ public class IGenericExporterTest {
 	public void beforeEach() {
 		genericExporterFacade = (IGenericExporter)GenericFacadeFactory.createFacade(
 				IGenericExporter.class, 
-				WrapperFactory.createGenericExporterWrapper());
+				GenericExporterWrapperFactory.create(new GenericExporter()));
 		Object genericExporterWrapper = ((IFacade)genericExporterFacade).getTarget();
 		genericExporterTarget = (GenericExporter)((Wrapper)genericExporterWrapper).getWrappedObject();
 	}
