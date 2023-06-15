@@ -47,11 +47,13 @@ import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 import org.hibernate.tool.orm.jbt.wrp.ColumnWrapper;
 import org.hibernate.tool.orm.jbt.wrp.EnvironmentWrapper;
 import org.hibernate.tool.orm.jbt.wrp.HbmExporterWrapper;
+import org.hibernate.tool.orm.jbt.wrp.HqlCodeAssistWrapper;
 import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.wrp.SchemaExportWrapper;
 import org.hibernate.tool.orm.jbt.wrp.TypeFactoryWrapper;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.IDatabaseReader;
+import org.jboss.tools.hibernate.orm.runtime.exp.internal.IHQLCompletionHandlerTest.TestHqlCompletionProposal;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
@@ -59,6 +61,7 @@ import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
+import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
@@ -494,6 +497,17 @@ public class NewFacadeFactoryTest {
 		Exporter wrappedExporter = (Exporter)((Wrapper)exporterWrapper).getWrappedObject();
 		assertNotNull(wrappedExporter);
 		assertTrue(wrappedExporter instanceof GenericExporter);
+	}
+	
+	@Test
+	public void testCreateHqlCodeAssist() {
+		IConfiguration configuration = facadeFactory.createNativeConfiguration();
+		configuration.setProperty("hibernate.connection.url", "jdbc:h2:mem:test");
+		IHQLCodeAssist hqlCodeAssistFacade = facadeFactory.createHQLCodeAssist(configuration);
+		assertNotNull(hqlCodeAssistFacade);
+		Object hqlCodeAssistWrapper = ((IFacade)hqlCodeAssistFacade).getTarget();
+		assertNotNull(hqlCodeAssistWrapper);
+		assertTrue(hqlCodeAssistWrapper instanceof HqlCodeAssistWrapper);
 	}
 	
 	public static class TestRevengStrategy extends DelegatingStrategy {

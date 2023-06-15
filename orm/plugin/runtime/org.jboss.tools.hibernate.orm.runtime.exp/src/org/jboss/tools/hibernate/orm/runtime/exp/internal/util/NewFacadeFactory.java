@@ -14,6 +14,7 @@ import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
+import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
@@ -275,6 +276,12 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 		return (IExporter)GenericFacadeFactory.createFacade(
 				IExporter.class, 
 				WrapperFactory.createExporterWrapper(exporterClassName));
+	}
+	
+	public IHQLCodeAssist createHQLCodeAssist(IConfiguration configuration) {
+		return (IHQLCodeAssist)GenericFacadeFactory.createFacade(
+				IHQLCodeAssist.class, 
+				WrapperFactory.createHqlCodeAssistWrapper(((IFacade)configuration).getTarget()));
 	}
 
 	@Override
