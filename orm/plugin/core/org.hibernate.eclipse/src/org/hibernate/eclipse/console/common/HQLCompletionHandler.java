@@ -6,7 +6,6 @@ import java.util.List;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.swt.graphics.Image;
 import org.hibernate.console.ImageConstants;
-import org.hibernate.eclipse.console.common.CompletionProposal;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.console.workbench.HibernateWorkbenchHelper;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionHandler;
