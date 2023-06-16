@@ -100,8 +100,7 @@ public class ServiceImpl extends AbstractService {
 	public IHQLCodeAssist newHQLCodeAssist(IConfiguration hcfg) {
 		IHQLCodeAssist result = null;
 		if (hcfg instanceof IConfiguration) {
-			result = facadeFactory.createHQLCodeAssist(
-					new HQLCodeAssist(MetadataHelper.getMetadata((Configuration)((IFacade)hcfg).getTarget())));
+			result = newFacadeFactory.createHQLCodeAssist(hcfg);
 		}
 		return result;
 	}
