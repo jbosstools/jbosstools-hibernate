@@ -12,10 +12,8 @@ import java.lang.reflect.Proxy;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Column;
-import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
-import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.junit.jupiter.api.Test;
 
@@ -359,9 +357,12 @@ public class FacadeFactoryTest {
 	
 	@Test
 	public void testCreateHQLCodeAssist() {
-		HQLCodeAssist hqlCodeAssist = new HQLCodeAssist(null);
-		IHQLCodeAssist facade = FACADE_FACTORY.createHQLCodeAssist(hqlCodeAssist);
-		assertSame(hqlCodeAssist, ((IFacade)facade).getTarget());		
+		try {
+			FACADE_FACTORY.createHQLCodeAssist(null);
+			fail();
+		} catch (Throwable t) {
+			assertEquals("Should use class 'NewFacadeFactory'", t.getMessage());
+		}
 	}
 	
 	@Test
