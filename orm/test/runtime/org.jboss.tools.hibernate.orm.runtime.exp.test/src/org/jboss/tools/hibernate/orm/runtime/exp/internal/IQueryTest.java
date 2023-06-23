@@ -1,7 +1,6 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -14,7 +13,6 @@ import java.sql.Statement;
 import java.util.List;
 
 import org.h2.Driver;
-import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -96,6 +94,14 @@ public class IQueryTest {
 		Foo foo = (Foo)obj;
 		assertEquals(1, foo.id);
 		assertEquals("bars", foo.bars);
+	}
+	
+	@Test
+	public void testSetMaxResults() {
+		queryFacade.setMaxResults(1);
+		assertEquals(1, queryTarget.getMaxResults());
+		queryFacade.setMaxResults(Integer.MAX_VALUE);
+		assertEquals(Integer.MAX_VALUE, queryTarget.getMaxResults());
 	}
 	
 	private Connection connection = null;
