@@ -13,10 +13,12 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
+import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
@@ -112,6 +114,8 @@ public class ISessionFactoryTest {
 		ISession sessionFacade = sessionFactoryFacade.openSession();
 		assertNotNull(sessionFacade);
 		assertTrue(sessionFacade instanceof ISession);
+		Wrapper sessionWrapper = (Wrapper)((IFacade)sessionFacade).getTarget();
+		assertTrue(sessionWrapper.getWrappedObject() instanceof Session);
 	}
 	
 	@Test

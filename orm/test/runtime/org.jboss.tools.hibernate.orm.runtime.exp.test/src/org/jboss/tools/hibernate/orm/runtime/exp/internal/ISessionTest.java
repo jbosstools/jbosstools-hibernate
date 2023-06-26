@@ -18,6 +18,7 @@ import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.query.Query;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
+import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
@@ -111,7 +112,9 @@ public class ISessionTest {
 		IQuery queryFacade = sessionFacade.createQuery("from " + Foo.class.getName());
 		assertNotNull(queryFacade);
 		assertTrue(Proxy.isProxyClass(queryFacade.getClass()));
-		assertTrue(((IFacade)queryFacade).getTarget() instanceof Query<?>);
+		Object queryTarget = ((IFacade)queryFacade).getTarget();
+		assertTrue(queryTarget instanceof Query<?>);
+		assertTrue(queryTarget instanceof Wrapper);
 	}
 	
 	@Test
