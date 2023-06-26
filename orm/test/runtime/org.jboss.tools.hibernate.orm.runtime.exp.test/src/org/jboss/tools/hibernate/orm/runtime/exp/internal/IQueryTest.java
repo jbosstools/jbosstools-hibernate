@@ -1,24 +1,34 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.util.Arrays;
 import java.util.List;
 
 import org.h2.Driver;
 import org.hibernate.query.Query;
+import org.hibernate.query.spi.QueryParameterBinding;
+import org.hibernate.query.sqm.internal.QuerySqmImpl;
+import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
+import org.jboss.tools.hibernate.runtime.spi.ISession;
 import org.jboss.tools.hibernate.runtime.spi.ISessionFactory;
+import org.jboss.tools.hibernate.runtime.spi.IType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,6 +59,16 @@ public class IQueryTest {
 	
 	private static final NewFacadeFactory FACADE_FACTORY = NewFacadeFactory.INSTANCE;
 	
+	private static final IType DUMMY_TYPE = (IType)Proxy.newProxyInstance(
+			IQueryTest.class.getClassLoader(), 
+			new Class[] { IType.class }, 
+			new InvocationHandler() {			
+				@Override
+				public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+					return null;
+				}
+			});
+	
 	@BeforeAll
 	public static void beforeAll() throws Exception {
 		DriverManager.registerDriver(new Driver());		
@@ -57,18 +77,27 @@ public class IQueryTest {
 	@TempDir
 	public File tempDir;
 	
-	private IQuery queryFacade = null;
-	private Query<?> queryTarget = null;
+	private IQuery simpleQueryFacade = null;
+	private Query<?> simpleQueryTarget = null;
+	
+	private IQuery parameterizedQueryFacade = null;
+	private Query<?> parameterizedQueryTarget = null;
 	
 	private ISessionFactory sessionFactoryFacade = null;
-	
+	private Connection connection = null;
+	private Statement statement = null;
+		
 	@BeforeEach
 	public void beforeEach() throws Exception {
 		tempDir = Files.createTempDirectory("temp").toFile();
 		createDatabase();
 		createSessionFactoryFacade();
-		queryFacade = sessionFactoryFacade.openSession().createQuery("from " + Foo.class.getName());
-		queryTarget = (Query<?>)((IFacade)queryFacade).getTarget();
+		ISession sessionFacade = sessionFactoryFacade.openSession();
+		simpleQueryFacade = sessionFacade.createQuery("from " + Foo.class.getName());
+		simpleQueryTarget = (Query<?>)((IFacade)simpleQueryFacade).getTarget();
+		parameterizedQueryFacade = sessionFacade.createQuery(
+				"from " + Foo.class.getName() + " where id = :foo");
+		parameterizedQueryTarget = (Query<?>)((IFacade)parameterizedQueryFacade).getTarget();
 	}
 	
 	@AfterEach
@@ -78,16 +107,20 @@ public class IQueryTest {
 	
 	@Test
 	public void testConstruction() {
-		assertNotNull(queryFacade);
-		assertNotNull(queryTarget);
+		assertNotNull(simpleQueryFacade);
+		assertNotNull(simpleQueryTarget);
+		assertTrue(simpleQueryTarget instanceof Wrapper);
+		assertNotNull(parameterizedQueryFacade);
+		assertNotNull(parameterizedQueryTarget);
+		assertTrue(parameterizedQueryTarget instanceof Wrapper);
 	}
 	
 	@Test
 	public void testList() throws Exception {
-		List<Object> result = queryFacade.list();
+		List<Object> result = simpleQueryFacade.list();
 		assertTrue(result.isEmpty());
 		statement.execute("INSERT INTO FOO VALUES(1, 'bars')");
-		result = queryFacade.list();
+		result = simpleQueryFacade.list();
 		assertEquals(1, result.size());
 		Object obj = result.get(0);
 		assertTrue(obj instanceof Foo);
@@ -98,14 +131,22 @@ public class IQueryTest {
 	
 	@Test
 	public void testSetMaxResults() {
-		queryFacade.setMaxResults(1);
-		assertEquals(1, queryTarget.getMaxResults());
-		queryFacade.setMaxResults(Integer.MAX_VALUE);
-		assertEquals(Integer.MAX_VALUE, queryTarget.getMaxResults());
+		simpleQueryFacade.setMaxResults(1);
+		assertEquals(1, simpleQueryTarget.getMaxResults());
+		simpleQueryFacade.setMaxResults(Integer.MAX_VALUE);
+		assertEquals(Integer.MAX_VALUE, simpleQueryTarget.getMaxResults());
 	}
 	
-	private Connection connection = null;
-	private Statement statement = null;
+	@Test
+	public void testSetParameterList() {
+		QueryParameterBinding<?> binding = 
+				((QuerySqmImpl<?>)((Wrapper)parameterizedQueryTarget).getWrappedObject())
+				.getParameterBindings()
+				.getBinding("foo");
+		assertFalse(binding.isBound());
+		parameterizedQueryFacade.setParameterList("foo", Arrays.asList(1), DUMMY_TYPE);
+		assertTrue(binding.isBound());
+	}
 	
 	private void createDatabase() throws Exception {
 		connection = DriverManager.getConnection("jdbc:h2:mem:test");
