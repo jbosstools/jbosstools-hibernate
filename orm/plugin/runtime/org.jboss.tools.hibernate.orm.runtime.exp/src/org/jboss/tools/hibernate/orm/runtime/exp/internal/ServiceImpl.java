@@ -10,7 +10,6 @@ import java.util.Properties;
 
 import org.hibernate.Hibernate;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.engine.jdbc.dialect.spi.DatabaseMetaDataDialectResolutionInfoAdapter;
@@ -20,20 +19,12 @@ import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfoSource;
 import org.hibernate.proxy.HibernateProxy;
 import org.hibernate.proxy.LazyInitializer;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.tool.api.export.Exporter;
-import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.reveng.RevengStrategy;
-import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
-import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
-import org.hibernate.tool.orm.jbt.util.DummyMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.util.JpaMappingFileHelper;
-import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractService;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
-import org.jboss.tools.hibernate.runtime.common.IFacadeFactory;
-import org.jboss.tools.hibernate.runtime.common.Util;
 import org.jboss.tools.hibernate.runtime.spi.HibernateException;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
@@ -63,7 +54,6 @@ public class ServiceImpl extends AbstractService {
 
 	private static final String HIBERNATE_VERSION = "6.1";
 	
-	private IFacadeFactory facadeFactory = new FacadeFactoryImpl();
 	private NewFacadeFactory newFacadeFactory = NewFacadeFactory.INSTANCE;
 
 	@Override
