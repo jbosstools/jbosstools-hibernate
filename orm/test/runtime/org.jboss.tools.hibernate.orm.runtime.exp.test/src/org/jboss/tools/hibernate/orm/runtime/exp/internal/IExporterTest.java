@@ -195,10 +195,32 @@ public class IExporterTest {
 		assertSame(exporterTarget, queryExporterTarget);
 	}
 	
+	@Test
+	public void testSetCustomProperties() {
+		Properties properties = new Properties();
+		// 'setCustomProperties()' should not be called on other exporters than CfgExporter
+		assertNull(((TestExporter)exporterTarget).props);
+		exporterFacade.setCustomProperties(null);
+		assertNull(((TestExporter)exporterTarget).props);
+		// try now with CfgExporter 
+		exporterFacade = (IExporter)GenericFacadeFactory.createFacade(
+				IExporter.class, 
+				WrapperFactory.createExporterWrapper(CfgExporter.class.getName()));
+		Object exporterWrapper = ((IFacade)exporterFacade).getTarget();
+		exporterTarget = (Exporter)((Wrapper)exporterWrapper).getWrappedObject();
+		assertNotSame(properties, ((CfgExporter)exporterTarget).getCustomProperties());
+		exporterFacade.setCustomProperties(properties);
+		assertSame(properties, ((CfgExporter)exporterTarget).getCustomProperties());
+	}
+	
 	public static class TestExporter extends AbstractExporter {
 		private boolean started = false;
+		private Properties props = null;
 		@Override protected void doStart() {}
-		@Override public void start() { started = true; }		
+		@Override public void start() { started = true; }
+		public void setCustomProperties(Properties p) {
+			props = p;
+		}
 	}
 	
 }
