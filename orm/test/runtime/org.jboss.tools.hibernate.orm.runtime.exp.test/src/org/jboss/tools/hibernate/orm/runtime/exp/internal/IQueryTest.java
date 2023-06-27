@@ -148,6 +148,17 @@ public class IQueryTest {
 		assertTrue(binding.isBound());
 	}
 	
+	@Test
+	public void testSetParameter() {
+		QueryParameterBinding<?> binding = 
+				((QuerySqmImpl<?>)((Wrapper)parameterizedQueryTarget).getWrappedObject())
+				.getParameterBindings()
+				.getBinding("foo");
+		assertFalse(binding.isBound());
+		parameterizedQueryFacade.setParameter("foo", 1, DUMMY_TYPE);
+		assertTrue(binding.isBound());
+	}
+	
 	private void createDatabase() throws Exception {
 		connection = DriverManager.getConnection("jdbc:h2:mem:test");
 		statement = connection.createStatement();
