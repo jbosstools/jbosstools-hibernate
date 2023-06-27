@@ -181,6 +181,13 @@ public class IQueryTest {
 		assertEquals(1, binding.getBindValue());
 	}
 	
+	@Test
+	public void testGetReturnAliases() {
+		String[] returnAliases = simpleQueryFacade.getReturnAliases();
+		assertNotNull(returnAliases);
+		assertEquals(0, returnAliases.length);
+	}
+	
 	private void createDatabase() throws Exception {
 		connection = DriverManager.getConnection("jdbc:h2:mem:test");
 		statement = connection.createStatement();
