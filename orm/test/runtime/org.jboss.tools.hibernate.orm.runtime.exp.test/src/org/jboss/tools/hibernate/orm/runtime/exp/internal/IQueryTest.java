@@ -188,6 +188,13 @@ public class IQueryTest {
 		assertEquals(0, returnAliases.length);
 	}
 	
+	@Test
+	public void testGetReturnTypes() {
+		IType[] returnTypes = simpleQueryFacade.getReturnTypes();
+		assertNotNull(returnTypes);
+		assertEquals(0, returnTypes.length);
+	}
+	
 	private void createDatabase() throws Exception {
 		connection = DriverManager.getConnection("jdbc:h2:mem:test");
 		statement = connection.createStatement();
