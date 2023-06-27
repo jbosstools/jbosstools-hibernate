@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
+import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.util.Properties;
 
@@ -200,7 +201,7 @@ public class IExporterTest {
 		Properties properties = new Properties();
 		// 'setCustomProperties()' should not be called on other exporters than CfgExporter
 		assertNull(((TestExporter)exporterTarget).props);
-		exporterFacade.setCustomProperties(null);
+		exporterFacade.setCustomProperties(properties);
 		assertNull(((TestExporter)exporterTarget).props);
 		// try now with CfgExporter 
 		exporterFacade = (IExporter)GenericFacadeFactory.createFacade(
@@ -213,14 +214,34 @@ public class IExporterTest {
 		assertSame(properties, ((CfgExporter)exporterTarget).getCustomProperties());
 	}
 	
+	@Test
+	public void testSetOutput() {
+		StringWriter stringWriter = new StringWriter();
+		// 'setCustomProperties()' should not be called on other exporters than CfgExporter
+		assertNull(((TestExporter)exporterTarget).output);
+		exporterFacade.setOutput(stringWriter);
+		assertNull(((TestExporter)exporterTarget).output);
+		// try now with CfgExporter 
+		exporterFacade = (IExporter)GenericFacadeFactory.createFacade(
+				IExporter.class, 
+				WrapperFactory.createExporterWrapper(CfgExporter.class.getName()));
+		Object exporterWrapper = ((IFacade)exporterFacade).getTarget();
+		exporterTarget = (Exporter)((Wrapper)exporterWrapper).getWrappedObject();
+		assertNotSame(stringWriter, ((CfgExporter)exporterTarget).getOutput());
+		exporterFacade.setOutput(stringWriter);
+		assertSame(stringWriter, ((CfgExporter)exporterTarget).getOutput());
+	}
+	
 	public static class TestExporter extends AbstractExporter {
 		private boolean started = false;
 		private Properties props = null;
+		private StringWriter output = null;
 		@Override protected void doStart() {}
 		@Override public void start() { started = true; }
 		public void setCustomProperties(Properties p) {
 			props = p;
 		}
+		
 	}
 	
 }
