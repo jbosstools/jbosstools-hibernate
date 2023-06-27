@@ -80,8 +80,11 @@ public class IQueryTest {
 	private IQuery simpleQueryFacade = null;
 	private Query<?> simpleQueryTarget = null;
 	
-	private IQuery parameterizedQueryFacade = null;
-	private Query<?> parameterizedQueryTarget = null;
+	private IQuery namedParameterizedQueryFacade = null;
+	private Query<?> namedParameterizedQueryTarget = null;
+	
+	private IQuery positionalParameterizedQueryFacade = null;
+	private Query<?> positionalParameterizedQueryTarget = null;
 	
 	private ISessionFactory sessionFactoryFacade = null;
 	private Connection connection = null;
@@ -95,9 +98,12 @@ public class IQueryTest {
 		ISession sessionFacade = sessionFactoryFacade.openSession();
 		simpleQueryFacade = sessionFacade.createQuery("from " + Foo.class.getName());
 		simpleQueryTarget = (Query<?>)((IFacade)simpleQueryFacade).getTarget();
-		parameterizedQueryFacade = sessionFacade.createQuery(
+		namedParameterizedQueryFacade = sessionFacade.createQuery(
 				"from " + Foo.class.getName() + " where id = :foo");
-		parameterizedQueryTarget = (Query<?>)((IFacade)parameterizedQueryFacade).getTarget();
+		namedParameterizedQueryTarget = (Query<?>)((IFacade)namedParameterizedQueryFacade).getTarget();
+		positionalParameterizedQueryFacade = sessionFacade.createQuery(
+				"from " + Foo.class.getName() + " where id = ?1");
+		positionalParameterizedQueryTarget = (Query<?>)((IFacade)positionalParameterizedQueryFacade).getTarget();
 	}
 	
 	@AfterEach
@@ -110,9 +116,12 @@ public class IQueryTest {
 		assertNotNull(simpleQueryFacade);
 		assertNotNull(simpleQueryTarget);
 		assertTrue(simpleQueryTarget instanceof Wrapper);
-		assertNotNull(parameterizedQueryFacade);
-		assertNotNull(parameterizedQueryTarget);
-		assertTrue(parameterizedQueryTarget instanceof Wrapper);
+		assertNotNull(namedParameterizedQueryFacade);
+		assertNotNull(namedParameterizedQueryTarget);
+		assertTrue(namedParameterizedQueryTarget instanceof Wrapper);
+		assertNotNull(positionalParameterizedQueryFacade);
+		assertNotNull(positionalParameterizedQueryTarget);
+		assertTrue(positionalParameterizedQueryTarget instanceof Wrapper);
 	}
 	
 	@Test
@@ -140,23 +149,36 @@ public class IQueryTest {
 	@Test
 	public void testSetParameterList() {
 		QueryParameterBinding<?> binding = 
-				((QuerySqmImpl<?>)((Wrapper)parameterizedQueryTarget).getWrappedObject())
+				((QuerySqmImpl<?>)((Wrapper)namedParameterizedQueryTarget).getWrappedObject())
 				.getParameterBindings()
 				.getBinding("foo");
 		assertFalse(binding.isBound());
-		parameterizedQueryFacade.setParameterList("foo", Arrays.asList(1), DUMMY_TYPE);
+		namedParameterizedQueryFacade.setParameterList("foo", Arrays.asList(1), DUMMY_TYPE);
 		assertTrue(binding.isBound());
 	}
 	
 	@Test
-	public void testSetParameter() {
+	public void testSetNamedParameter() {
 		QueryParameterBinding<?> binding = 
-				((QuerySqmImpl<?>)((Wrapper)parameterizedQueryTarget).getWrappedObject())
+				((QuerySqmImpl<?>)((Wrapper)namedParameterizedQueryTarget).getWrappedObject())
 				.getParameterBindings()
 				.getBinding("foo");
 		assertFalse(binding.isBound());
-		parameterizedQueryFacade.setParameter("foo", 1, DUMMY_TYPE);
+		namedParameterizedQueryFacade.setParameter("foo", 1, DUMMY_TYPE);
 		assertTrue(binding.isBound());
+		assertEquals(1, binding.getBindValue());
+	}
+	
+	@Test
+	public void testSetPositionalParameter() {
+		QueryParameterBinding<?> binding = 
+				((QuerySqmImpl<?>)((Wrapper)positionalParameterizedQueryTarget).getWrappedObject())
+				.getParameterBindings()
+				.getBinding(1);
+		assertFalse(binding.isBound());
+		positionalParameterizedQueryFacade.setParameter(1, 1, DUMMY_TYPE);
+		assertTrue(binding.isBound());
+		assertEquals(1, binding.getBindValue());
 	}
 	
 	private void createDatabase() throws Exception {
