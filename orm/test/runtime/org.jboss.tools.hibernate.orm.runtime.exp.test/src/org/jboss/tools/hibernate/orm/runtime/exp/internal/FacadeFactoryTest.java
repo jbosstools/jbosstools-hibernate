@@ -3,21 +3,12 @@ package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
-
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Column;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
-import org.jboss.tools.hibernate.runtime.common.IFacade;
-import org.jboss.tools.hibernate.runtime.spi.IQuery;
 import org.junit.jupiter.api.Test;
-
-import jakarta.persistence.Query;
 
 public class FacadeFactoryTest {
 
@@ -367,20 +358,12 @@ public class FacadeFactoryTest {
 	
 	@Test
 	public void testCreateQuery() {
-		Query query = (Query)Proxy.newProxyInstance(
-				FACADE_FACTORY.getClassLoader(), 
-				new Class[] { Query.class }, 
-				new TestInvocationHandler());
-		IQuery facade = FACADE_FACTORY.createQuery(query);
-		assertTrue(facade instanceof QueryFacadeImpl);
-		assertSame(query, ((IFacade)facade).getTarget());
-	}
-	
-	private class TestInvocationHandler implements InvocationHandler {
-		@Override
-		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-			return null;
-		}	
+		try {
+			FACADE_FACTORY.createQuery(null);
+			fail();
+		} catch (Throwable t) {
+			assertEquals("Should use class 'NewFacadeFactory'", t.getMessage());
+		}
 	}
 	
 }

@@ -210,6 +210,11 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 	}
 
 	@Override
+	public IQuery createQuery(Object target) {
+		throw new RuntimeException("Should use class 'NewFacadeFactory'");
+	}
+	
+	@Override
 	public ClassLoader getClassLoader() {
 		return FacadeFactoryImpl.class.getClassLoader();
 	}
@@ -220,9 +225,4 @@ public class FacadeFactoryImpl  extends AbstractFacadeFactory {
 		return null;
 	}
 
-	@Override
-	public IQuery createQuery(Object target) {
-		return new QueryFacadeImpl(this, target);
-	}
-	
 }
