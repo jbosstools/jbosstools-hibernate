@@ -527,14 +527,13 @@ public class IConfigurationTest {
 		nativeConfigurationFacade.buildMappings();
 		assertNotNull(metadataField.get(nativeConfigurationTarget));
 		// For reveng configuration
-		try {
-			revengConfigurationFacade.buildMappings();
-			fail();
-		} catch (RuntimeException e) {
-			assertEquals(
-					e.getMessage(),
-					"Method 'buildMappings' should not be called on instances of " + RevengConfiguration.class.getName());
-		}
+		metadataField = revengConfigurationTarget.getClass().getDeclaredField("metadata");
+		metadataField.setAccessible(true);
+		revengConfigurationTarget.setProperty("hibernate.connection.url", "jdbc:h2:mem:test");
+		revengConfigurationTarget.setProperty("hibernate.default_schema", "PUBLIC");
+		assertNull(metadataField.get(revengConfigurationTarget));
+		revengConfigurationFacade.buildMappings();
+		assertNotNull(metadataField.get(revengConfigurationTarget));
 		// For jpa configuration
 		metadataField = jpaConfigurationTarget.getClass().getDeclaredField("metadata");
 		metadataField.setAccessible(true);
