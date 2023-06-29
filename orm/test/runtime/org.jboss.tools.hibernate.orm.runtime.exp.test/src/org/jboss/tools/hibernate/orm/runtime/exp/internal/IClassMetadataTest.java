@@ -17,6 +17,9 @@ import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
+import org.hibernate.tool.orm.jbt.wrp.Wrapper;
+import org.hibernate.type.CollectionType;
+import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
@@ -110,10 +113,16 @@ public class IClassMetadataTest {
 	public void testGetPropertyTypes() {
 		IType[] typeFacades = classMetadataFacade.getPropertyTypes();
 		assertEquals(1, typeFacades.length);
-		assertTrue(typeFacades[0].isCollectionType());
+		IType typeFacade = typeFacades[0];
+		assertTrue(typeFacade instanceof IFacade);
+		Object typeWrapper = ((IFacade)typeFacade).getTarget();
+		assertTrue(typeWrapper instanceof Wrapper);
+		Object wrappedType = ((Wrapper)typeWrapper).getWrappedObject();
+		assertTrue(wrappedType instanceof Type);
+		assertTrue(((Type)wrappedType).isCollectionType());
 		assertEquals(
 				"org.jboss.tools.hibernate.orm.runtime.exp.internal.IClassMetadataTest$Foo.bars",
-				typeFacades[0].getRole());
+				((CollectionType)wrappedType).getRole());
  	}
 	
 	@Test
