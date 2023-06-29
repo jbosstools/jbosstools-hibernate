@@ -17,9 +17,11 @@ import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
+import org.hibernate.tool.orm.jbt.wrp.TypeWrapperFactory;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.hibernate.type.CollectionType;
 import org.hibernate.type.Type;
+import org.hibernate.type.internal.NamedBasicTypeImpl;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
@@ -132,7 +134,16 @@ public class IClassMetadataTest {
 	
 	@Test
 	public void testGetIdentifierType() {
-		assertSame("string", classMetadataFacade.getIdentifierType().getName());
+		IType typeFacade = classMetadataFacade.getIdentifierType();
+		assertNotNull(typeFacade);
+		assertTrue(typeFacade instanceof IFacade);
+		Object typeWrapper = ((IFacade)typeFacade).getTarget();
+		assertNotNull(typeWrapper);
+		assertTrue(typeWrapper instanceof Wrapper);
+		Object wrappedType = ((Wrapper)typeWrapper).getWrappedObject();
+		assertNotNull(wrappedType);
+		assertTrue(wrappedType instanceof NamedBasicTypeImpl);
+		assertSame("string", ((NamedBasicTypeImpl<?>)wrappedType).getName());
 	}
 	
 	@Test
