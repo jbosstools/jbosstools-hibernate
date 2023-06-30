@@ -9,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -31,8 +30,9 @@ import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapper;
+import org.hibernate.tool.orm.jbt.wrp.Wrapper;
+import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
-import org.jboss.tools.hibernate.runtime.common.AbstractPersistentClassFacade;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -400,18 +400,26 @@ public class IPersistentClassTest {
 		assertNull(rootClassFacade.getDiscriminator());
 		assertNull(singleTableSubclassFacade.getDiscriminator());
 		assertNull(joinedSubclassFacade.getDiscriminator());
-		Value valueTarget = createValue();
-		((RootClass)rootClassTarget).setDiscriminator(valueTarget);
+		Value v = createValue();
+		((RootClass)rootClassTarget).setDiscriminator(v);
 		IValue valueFacade = rootClassFacade.getDiscriminator();
-		assertSame(valueTarget, ((IFacade)valueFacade).getTarget());
+		Object valueWrapper = ((IFacade)valueFacade).getTarget();
+		assertTrue(valueWrapper instanceof Wrapper);
+		assertSame(v, ((Wrapper)valueWrapper).getWrappedObject());
 		valueFacade = singleTableSubclassFacade.getDiscriminator();
-		assertSame(valueTarget, ((IFacade)valueFacade).getTarget());
+		valueWrapper = ((IFacade)valueFacade).getTarget();
+		assertTrue(valueWrapper instanceof Wrapper);
+		assertSame(v, ((Wrapper)valueWrapper).getWrappedObject());
 		valueFacade = joinedSubclassFacade.getDiscriminator();
-		assertSame(valueTarget, ((IFacade)valueFacade).getTarget());
+		valueWrapper = ((IFacade)valueFacade).getTarget();
+		assertTrue(valueWrapper instanceof Wrapper);
+		assertSame(v, ((Wrapper)valueWrapper).getWrappedObject());
 		assertNull(specialRootClassFacade.getDiscriminator());
-		((RootClass)specialRootClassTarget).setDiscriminator(valueTarget);
+		((RootClass)specialRootClassTarget).setDiscriminator(v);
 		valueFacade = specialRootClassFacade.getDiscriminator();
-		assertSame(valueTarget, ((IFacade)valueFacade).getTarget());
+		valueWrapper = ((IFacade)valueFacade).getTarget();
+		assertTrue(valueWrapper instanceof Wrapper);
+		assertSame(v, ((Wrapper)valueWrapper).getWrappedObject());
 	}
 	
 	@Test
@@ -422,15 +430,15 @@ public class IPersistentClassTest {
 		KeyValue valueTarget = createValue();
 		((RootClass)rootClassTarget).setIdentifier(valueTarget);
 		IValue valueFacade = rootClassFacade.getIdentifier();
-		assertSame(valueTarget, ((IFacade)valueFacade).getTarget());
+		assertSame(valueTarget, ((Wrapper)((IFacade)valueFacade).getTarget()).getWrappedObject());
 		valueFacade = singleTableSubclassFacade.getIdentifier();
-		assertSame(valueTarget, ((IFacade)valueFacade).getTarget());
+		assertSame(valueTarget, ((Wrapper)((IFacade)valueFacade).getTarget()).getWrappedObject());
 		valueFacade = joinedSubclassFacade.getIdentifier();
-		assertSame(valueTarget, ((IFacade)valueFacade).getTarget());
+		assertSame(valueTarget, ((Wrapper)((IFacade)valueFacade).getTarget()).getWrappedObject());
 		assertNull(specialRootClassFacade.getIdentifier());
 		((RootClass)specialRootClassTarget).setIdentifier(valueTarget);
 		valueFacade = specialRootClassFacade.getIdentifier();
-		assertSame(valueTarget, ((IFacade)valueFacade).getTarget());
+		assertSame(valueTarget, ((Wrapper)((IFacade)valueFacade).getTarget()).getWrappedObject());
 	}
 	
 	@Test
@@ -753,9 +761,9 @@ public class IPersistentClassTest {
 		assertNull(singleTableSubclassTarget.getIdentifier());
 		assertNull(joinedSubclassTarget.getIdentifier());
 		rootClassFacade.setIdentifier(valueFacade);
-		assertSame(valueTarget, rootClassTarget.getIdentifier());
-		assertSame(valueTarget, singleTableSubclassTarget.getIdentifier());
-		assertSame(valueTarget, joinedSubclassTarget.getIdentifier());
+		assertSame(valueTarget, ((Wrapper)rootClassTarget.getIdentifier()).getWrappedObject());
+		assertSame(valueTarget, ((Wrapper)singleTableSubclassTarget.getIdentifier()).getWrappedObject());
+		assertSame(valueTarget, ((Wrapper)joinedSubclassTarget.getIdentifier()).getWrappedObject());
 		try {
 			singleTableSubclassFacade.setIdentifier(valueFacade);
 			fail();
@@ -770,7 +778,7 @@ public class IPersistentClassTest {
 		}
 		assertNull(specialRootClassTarget.getIdentifier());
 		specialRootClassFacade.setIdentifier(valueFacade);
-		assertSame(valueTarget, specialRootClassTarget.getIdentifier());
+		assertSame(valueTarget, ((Wrapper)specialRootClassTarget.getIdentifier()).getWrappedObject());
 	}
 	
 	@Test
@@ -782,9 +790,9 @@ public class IPersistentClassTest {
 		assertNull(joinedSubclassTarget.getDiscriminator());
 		assertNull(specialRootClassTarget.getDiscriminator());
 		rootClassFacade.setDiscriminator(valueFacade);
-		assertSame(valueTarget, rootClassTarget.getDiscriminator());
-		assertSame(valueTarget, singleTableSubclassTarget.getDiscriminator());
-		assertSame(valueTarget, joinedSubclassTarget.getDiscriminator());
+		assertSame(valueTarget, ((Wrapper)rootClassTarget.getDiscriminator()).getWrappedObject());
+		assertSame(valueTarget, ((Wrapper)singleTableSubclassTarget.getDiscriminator()).getWrappedObject());
+		assertSame(valueTarget, ((Wrapper)joinedSubclassTarget.getDiscriminator()).getWrappedObject());
 		try {
 			singleTableSubclassFacade.setDiscriminator(valueFacade);
 			fail();
@@ -799,7 +807,7 @@ public class IPersistentClassTest {
 		}
 		assertNull(specialRootClassTarget.getDiscriminator());
 		specialRootClassFacade.setDiscriminator(valueFacade);
-		assertSame(valueTarget, specialRootClassTarget.getDiscriminator());
+		assertSame(valueTarget, ((Wrapper)specialRootClassTarget.getDiscriminator()).getWrappedObject());
 	}
 	
 	@Test
