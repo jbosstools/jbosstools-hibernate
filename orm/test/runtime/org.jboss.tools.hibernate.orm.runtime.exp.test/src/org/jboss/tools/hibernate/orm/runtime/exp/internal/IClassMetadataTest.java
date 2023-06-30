@@ -17,7 +17,6 @@ import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
-import org.hibernate.tool.orm.jbt.wrp.TypeWrapperFactory;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.hibernate.type.CollectionType;
 import org.hibernate.type.Type;
