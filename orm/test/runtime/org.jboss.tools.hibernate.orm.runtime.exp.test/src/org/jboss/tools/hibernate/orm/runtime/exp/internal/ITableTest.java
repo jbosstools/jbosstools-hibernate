@@ -17,6 +17,7 @@ import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
+import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
@@ -164,7 +165,7 @@ public class ITableTest {
 		KeyValue value = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
 		tableTarget.setIdentifierValue(value);
 		valueFacade = tableFacade.getIdentifierValue();
-		assertSame(value, ((IFacade)valueFacade).getTarget());
+		assertSame(value, ((Wrapper)((IFacade)valueFacade).getTarget()).getWrappedObject());
 	}
 	
 }
