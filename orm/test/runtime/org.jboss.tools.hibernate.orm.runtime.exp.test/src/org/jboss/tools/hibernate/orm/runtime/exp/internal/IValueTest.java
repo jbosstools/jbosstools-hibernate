@@ -967,25 +967,25 @@ public class IValueTest {
 	public void testGetKey() {
 		assertNull(arrayValueFacade.getKey());
 		((Collection)arrayValueTarget).setKey((KeyValue)simpleValueTarget);
-		assertSame(simpleValueTarget, ((IFacade)arrayValueFacade.getKey()).getTarget());
+		assertSame(simpleValueTarget, ((Wrapper)((IFacade)arrayValueFacade.getKey()).getTarget()).getWrappedObject());
 		assertNull(bagValueFacade.getKey());
 		((Collection)bagValueTarget).setKey((KeyValue)simpleValueTarget);
-		assertSame(simpleValueTarget, ((IFacade)bagValueFacade.getKey()).getTarget());
+		assertSame(simpleValueTarget, ((Wrapper)((IFacade)bagValueFacade.getKey()).getTarget()).getWrappedObject());
 		assertNull(listValueFacade.getKey());
 		((Collection)listValueTarget).setKey((KeyValue)simpleValueTarget);
-		assertSame(simpleValueTarget, ((IFacade)listValueFacade.getKey()).getTarget());
+		assertSame(simpleValueTarget, ((Wrapper)((IFacade)listValueFacade.getKey()).getTarget()).getWrappedObject());
 		assertNull(mapValueFacade.getKey());
 		((Collection)mapValueTarget).setKey((KeyValue)simpleValueTarget);
-		assertSame(simpleValueTarget, ((IFacade)mapValueFacade.getKey()).getTarget());
+		assertSame(simpleValueTarget, ((Wrapper)((IFacade)mapValueFacade.getKey()).getTarget()).getWrappedObject());
 		assertNull(primitiveArrayValueFacade.getKey());
 		((Collection)primitiveArrayValueTarget).setKey((KeyValue)simpleValueTarget);
-		assertSame(simpleValueTarget, ((IFacade)primitiveArrayValueFacade.getKey()).getTarget());
+		assertSame(simpleValueTarget, ((Wrapper)((IFacade)primitiveArrayValueFacade.getKey()).getTarget()).getWrappedObject());
 		assertNull(setValueFacade.getKey());
 		((Collection)setValueTarget).setKey((KeyValue)simpleValueTarget);
-		assertSame(simpleValueTarget, ((IFacade)setValueFacade.getKey()).getTarget());
+		assertSame(simpleValueTarget, ((Wrapper)((IFacade)setValueFacade.getKey()).getTarget()).getWrappedObject());
 		assertNull(identifierBagValueFacade.getKey());
 		((Collection)identifierBagValueTarget).setKey((KeyValue)simpleValueTarget);
-		assertSame(simpleValueTarget, ((IFacade)identifierBagValueFacade.getKey()).getTarget());
+		assertSame(simpleValueTarget, ((Wrapper)((IFacade)identifierBagValueFacade.getKey()).getTarget()).getWrappedObject());
 		try {
 			simpleValueFacade.getKey();
 			fail();
