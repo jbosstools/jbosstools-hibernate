@@ -254,32 +254,32 @@ public class IValueTest {
 	public void testGetCollectionElement() {
 		assertNull(arrayValueFacade.getCollectionElement());
 		((Collection)arrayValueTarget).setElement(simpleValueTarget);
-		assertSame(simpleValueTarget, ((IFacade)arrayValueFacade.getCollectionElement()).getTarget());
+		assertSame(simpleValueTarget, ((Wrapper)((IFacade)arrayValueFacade.getCollectionElement()).getTarget()).getWrappedObject());
 		assertNull(bagValueFacade.getCollectionElement());
 		((Collection)bagValueTarget).setElement(simpleValueTarget);
-		assertSame(simpleValueTarget, ((IFacade)bagValueFacade.getCollectionElement()).getTarget());
+		assertSame(simpleValueTarget, ((Wrapper)((IFacade)bagValueFacade.getCollectionElement()).getTarget()).getWrappedObject());
 		assertNull(listValueFacade.getCollectionElement());
 		((Collection)listValueTarget).setElement(simpleValueTarget);
-		assertSame(simpleValueTarget, ((IFacade)listValueFacade.getCollectionElement()).getTarget());
+		assertSame(simpleValueTarget, ((Wrapper)((IFacade)listValueFacade.getCollectionElement()).getTarget()).getWrappedObject());
 		assertNull(manyToOneValueFacade.getCollectionElement());
 		assertNull(mapValueFacade.getCollectionElement());
 		((Collection)mapValueTarget).setElement(simpleValueTarget);
-		assertSame(simpleValueTarget, ((IFacade)mapValueFacade.getCollectionElement()).getTarget());
+		assertSame(simpleValueTarget, ((Wrapper)((IFacade)mapValueFacade.getCollectionElement()).getTarget()).getWrappedObject());
 		assertNull(oneToManyValueFacade.getCollectionElement());
 		assertNull(oneToOneValueFacade.getCollectionElement());
 		assertNull(primitiveArrayValueFacade.getCollectionElement());
 		((Collection)primitiveArrayValueTarget).setElement(simpleValueTarget);
-		assertSame(simpleValueTarget, ((IFacade)primitiveArrayValueFacade.getCollectionElement()).getTarget());
+		assertSame(simpleValueTarget, ((Wrapper)((IFacade)primitiveArrayValueFacade.getCollectionElement()).getTarget()).getWrappedObject());
 		assertNull(setValueFacade.getCollectionElement());
 		((Collection)setValueTarget).setElement(simpleValueTarget);
-		assertSame(simpleValueTarget, ((IFacade)setValueFacade.getCollectionElement()).getTarget());
+		assertSame(simpleValueTarget, ((Wrapper)((IFacade)setValueFacade.getCollectionElement()).getTarget()).getWrappedObject());
 		assertNull(simpleValueFacade.getCollectionElement());
 		assertNull(componentValueFacade.getCollectionElement());
 		assertNull(dependantValueFacade.getCollectionElement());
 		assertNull(anyValueFacade.getCollectionElement());
 		assertNull(identifierBagValueFacade.getCollectionElement());
 		((Collection)identifierBagValueTarget).setElement(simpleValueTarget);
-		assertSame(simpleValueTarget, ((IFacade)identifierBagValueFacade.getCollectionElement()).getTarget());
+		assertSame(simpleValueTarget, ((Wrapper)((IFacade)identifierBagValueFacade.getCollectionElement()).getTarget()).getWrappedObject());
 	}
 	
 	@Test 
