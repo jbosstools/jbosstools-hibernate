@@ -238,7 +238,7 @@ public class NewFacadeFactoryTest {
 		assertTrue(specialRootClassTarget instanceof SpecialRootClass);
 		assertSame(
 				((SpecialRootClass)specialRootClassTarget).getProperty(), 
-				((Wrapper)((IFacade)propertyFacade).getTarget()).getWrappedObject());
+				((IFacade)propertyFacade).getTarget());
 	}
 	
 	@Test

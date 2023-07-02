@@ -92,7 +92,7 @@ public class IPersistentClassTest {
 		assertNotNull(specialRootClassFacade);
 		assertNotNull(specialRootClassTarget);
 		assertTrue(specialRootClassTarget instanceof SpecialRootClass);
-		assertSame(propertyTarget, ((SpecialRootClass)specialRootClassTarget).getProperty());
+		assertSame(propertyTarget, ((Wrapper)((SpecialRootClass)specialRootClassTarget).getProperty()).getWrappedObject());
 	}
 	
 	@Test
@@ -348,7 +348,7 @@ public class IPersistentClassTest {
 					t.getMessage());
 		}
 		propertyFacade = specialRootClassFacade.getProperty();
-		assertSame(propertyTarget, ((IFacade)propertyFacade).getTarget());
+		assertSame(propertyTarget, ((Wrapper)((IFacade)propertyFacade).getTarget()).getWrappedObject());
 	}
 	
 	@Test
