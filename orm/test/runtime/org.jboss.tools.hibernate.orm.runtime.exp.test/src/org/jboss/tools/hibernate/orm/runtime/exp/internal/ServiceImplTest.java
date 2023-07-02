@@ -326,11 +326,14 @@ public class ServiceImplTest {
 	
 	@Test
 	public void testNewProperty() {
-		IProperty property = service.newProperty();
-		assertNotNull(property);
-		Object target = ((IFacade)property).getTarget();
-		assertNotNull(target);
-		assertTrue(target instanceof Property);
+		IProperty propertyFacade = service.newProperty();
+		assertNotNull(propertyFacade);
+		Object propertyWrapper = ((IFacade)propertyFacade).getTarget();
+		assertNotNull(propertyWrapper);
+		assertTrue(propertyWrapper instanceof Wrapper);
+		Object propertyTarget = ((Wrapper)propertyWrapper).getWrappedObject();
+		assertNotNull(propertyWrapper);
+		assertTrue(propertyTarget instanceof Property);
 	}
 	
 	@Test

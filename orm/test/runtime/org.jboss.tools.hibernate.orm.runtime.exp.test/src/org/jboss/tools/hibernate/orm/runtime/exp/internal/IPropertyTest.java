@@ -23,6 +23,7 @@ import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
+import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -40,7 +41,8 @@ public class IPropertyTest {
 	@BeforeEach
 	public void beforeEach() {
 		propertyFacade = NewFacadeFactory.INSTANCE.createProperty();
-		propertyTarget = (Property)((IFacade)propertyFacade).getTarget();
+		Wrapper propertyWrapper = (Wrapper)((IFacade)propertyFacade).getTarget();
+		propertyTarget = (Property)propertyWrapper.getWrappedObject();
 	}
 	
 	@Test
@@ -78,11 +80,11 @@ public class IPropertyTest {
 	
 	@Test
 	public void testGetPersistentClass() {
-		RootClass persistentClassTarget = new RootClass(DummyMetadataBuildingContext.INSTANCE);
+		RootClass persistentClassTarget = (RootClass)((Wrapper)WrapperFactory.createRootClassWrapper()).getWrappedObject();
 		assertNull(propertyFacade.getPersistentClass());
 		propertyTarget.setPersistentClass(persistentClassTarget);
 		IPersistentClass persistentClassFacade = propertyFacade.getPersistentClass();
-		assertSame(persistentClassTarget, ((IFacade)persistentClassFacade).getTarget());
+		assertSame(persistentClassTarget, ((Wrapper)((IFacade)persistentClassFacade).getTarget()).getWrappedObject());
 	}
 	
 	@Test
@@ -126,7 +128,7 @@ public class IPropertyTest {
 		BasicValue valueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
 		IValue valueFacade = NewFacadeFactory.INSTANCE.createValue(valueTarget);
 		propertyFacade.setValue(valueFacade);
-		assertSame(valueTarget, ((Wrapper)propertyTarget.getValue()).getWrappedObject());
+		assertSame(valueTarget, propertyTarget.getValue());
 	}
 	
 	@Test

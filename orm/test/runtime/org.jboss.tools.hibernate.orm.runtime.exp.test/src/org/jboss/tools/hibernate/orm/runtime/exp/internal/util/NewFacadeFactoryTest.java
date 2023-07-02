@@ -53,7 +53,6 @@ import org.hibernate.tool.orm.jbt.wrp.SchemaExportWrapper;
 import org.hibernate.tool.orm.jbt.wrp.TypeFactoryWrapper;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.IDatabaseReader;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.IHQLCompletionHandlerTest.TestHqlCompletionProposal;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
@@ -239,14 +238,17 @@ public class NewFacadeFactoryTest {
 		assertTrue(specialRootClassTarget instanceof SpecialRootClass);
 		assertSame(
 				((SpecialRootClass)specialRootClassTarget).getProperty(), 
-				((IFacade)propertyFacade).getTarget());
+				((Wrapper)((IFacade)propertyFacade).getTarget()).getWrappedObject());
 	}
 	
 	@Test
 	public void testCreateProperty() {
 		IProperty propertyFacade = facadeFactory.createProperty();
 		assertNotNull(propertyFacade);
-		Object propertyTarget = ((IFacade)propertyFacade).getTarget();
+		Object propertyWrapper = ((IFacade)propertyFacade).getTarget();
+		assertNotNull(propertyWrapper);
+		assertTrue(propertyWrapper instanceof Wrapper);
+		Object propertyTarget = ((Wrapper)propertyWrapper).getWrappedObject();
 		assertNotNull(propertyTarget);
 		assertTrue(propertyTarget instanceof Property);
 	}

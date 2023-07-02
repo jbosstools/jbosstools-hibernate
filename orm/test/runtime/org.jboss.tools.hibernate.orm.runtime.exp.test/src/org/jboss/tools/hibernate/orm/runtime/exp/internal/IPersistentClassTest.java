@@ -31,7 +31,6 @@ import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
-import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
@@ -70,7 +69,8 @@ public class IPersistentClassTest {
 		PersistentClassWrapper joinedSubclassWrapper = (PersistentClassWrapper)((IFacade)joinedSubclassFacade).getTarget();
 		joinedSubclassTarget = joinedSubclassWrapper.getWrappedObject();
 		propertyFacade = FACADE_FACTORY.createProperty();
-		propertyTarget = (Property)((IFacade)propertyFacade).getTarget();
+		Wrapper propertyWrapper = (Wrapper)((IFacade)propertyFacade).getTarget();
+		propertyTarget = (Property)propertyWrapper.getWrappedObject();
 		specialRootClassFacade = FACADE_FACTORY.createSpecialRootClass(propertyFacade);
 		PersistentClassWrapper specialRootClassWrapper = (PersistentClassWrapper)((IFacade)specialRootClassFacade).getTarget();
 		specialRootClassTarget = specialRootClassWrapper.getWrappedObject();
@@ -560,10 +560,10 @@ public class IPersistentClassTest {
 	@Test
 	public void testAddProperty() {
 		IProperty firstPropertyFacade = FACADE_FACTORY.createProperty();
-		Property firstPropertyTarget = (Property)((IFacade)firstPropertyFacade).getTarget();
+		Property firstPropertyTarget = (Property)((Wrapper)((IFacade)firstPropertyFacade).getTarget()).getWrappedObject();
 		firstPropertyTarget.setName("foo");
 		IProperty secondPropertyFacade = FACADE_FACTORY.createProperty();
-		Property secondPropertyTarget = (Property)((IFacade)secondPropertyFacade).getTarget();
+		Property secondPropertyTarget = (Property)((Wrapper)((IFacade)secondPropertyFacade).getTarget()).getWrappedObject();
 		secondPropertyTarget.setName("bar");
 		try {
 			rootClassTarget.getProperty("foo");
@@ -732,7 +732,7 @@ public class IPersistentClassTest {
 	@Test
 	public void testSetIdentifierProperty() {
 		IProperty propertyFacade = FACADE_FACTORY.createProperty();
-		Property propertyTarget = (Property)((IFacade)propertyFacade).getTarget();
+		Property propertyTarget = (Property)((Wrapper)((IFacade)propertyFacade).getTarget()).getWrappedObject();
 		assertNull(rootClassTarget.getIdentifierProperty());
 		rootClassFacade.setIdentifierProperty(propertyFacade);
 		assertSame(propertyTarget, rootClassTarget.getIdentifierProperty());
