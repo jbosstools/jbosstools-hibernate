@@ -17,6 +17,7 @@ import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
+import org.hibernate.tool.orm.jbt.wrp.ColumnWrapper;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -56,7 +57,7 @@ public class ITableTest {
 	@Test
 	public void testAddColumn() {
 		IColumn columnFacade = NewFacadeFactory.INSTANCE.createColumn("foo");
-		Column columnTarget = (Column)((IFacade)columnFacade).getTarget();
+		Column columnTarget = ((ColumnWrapper)((IFacade)columnFacade).getTarget()).getWrappedObject();
 		assertNull(tableTarget.getColumn(columnTarget));
 		tableFacade.addColumn(columnFacade);
 		assertSame(columnTarget, tableTarget.getColumn(columnTarget));
@@ -83,7 +84,7 @@ public class ITableTest {
 		assertNotSame(primaryKeyTarget, ((IFacade)primaryKeyFacade).getTarget());
 		tableTarget.setPrimaryKey(primaryKeyTarget);
 		primaryKeyFacade = tableFacade.getPrimaryKey();
-		assertSame(primaryKeyTarget, ((IFacade)primaryKeyFacade).getTarget());
+		assertSame(primaryKeyTarget, ((Wrapper)((IFacade)primaryKeyFacade).getTarget()).getWrappedObject());
 	}
 	
 	@Test

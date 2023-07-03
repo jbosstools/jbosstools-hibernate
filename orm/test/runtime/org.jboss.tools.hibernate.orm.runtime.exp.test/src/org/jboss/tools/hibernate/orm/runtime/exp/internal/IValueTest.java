@@ -477,42 +477,42 @@ public class IValueTest {
 	public void testGetType() {
 		((SimpleValue)simpleValueTarget).setTypeName("java.lang.Integer");
 		IType typeFacade = simpleValueFacade.getType();
-		assertTrue((Type)((IFacade)typeFacade).getTarget() instanceof BasicType);
+		assertTrue((Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject() instanceof BasicType);
 		((Collection)arrayValueTarget).setElement(simpleValueTarget);
 		typeFacade = arrayValueFacade.getType();
-		assertTrue((Type)((IFacade)typeFacade).getTarget() instanceof ArrayType);
+		assertTrue((Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject() instanceof ArrayType);
 		((Collection)bagValueTarget).setElement(simpleValueTarget);
 		typeFacade = bagValueFacade.getType();
-		assertTrue((Type)((IFacade)typeFacade).getTarget() instanceof BagType);
+		assertTrue((Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject() instanceof BagType);
 		((Collection)listValueTarget).setElement(simpleValueTarget);
 		typeFacade = listValueFacade.getType();
-		assertTrue((Type)((IFacade)typeFacade).getTarget() instanceof ListType);
+		assertTrue((Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject() instanceof ListType);
 		typeFacade = manyToOneValueFacade.getType();
-		assertTrue((Type)((IFacade)typeFacade).getTarget() instanceof ManyToOneType);
+		assertTrue((Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject() instanceof ManyToOneType);
 		((Collection)mapValueTarget).setElement(simpleValueTarget);
 		typeFacade = mapValueFacade.getType();
-		assertTrue((Type)((IFacade)typeFacade).getTarget() instanceof MapType);
+		assertTrue((Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject() instanceof MapType);
 		typeFacade = oneToManyValueFacade.getType();
-		assertTrue((Type)((IFacade)typeFacade).getTarget() instanceof ManyToOneType);
+		assertTrue((Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject() instanceof ManyToOneType);
 		typeFacade = oneToOneValueFacade.getType();
-		assertTrue((Type)((IFacade)typeFacade).getTarget() instanceof OneToOneType);
+		assertTrue((Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject() instanceof OneToOneType);
 		((Collection)primitiveArrayValueTarget).setElement(simpleValueTarget);
 		typeFacade = primitiveArrayValueFacade.getType();
-		assertTrue((Type)((IFacade)typeFacade).getTarget() instanceof ArrayType);
+		assertTrue((Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject() instanceof ArrayType);
 		((Collection)setValueTarget).setElement(simpleValueTarget);
 		typeFacade = setValueFacade.getType();
-		assertTrue((Type)((IFacade)typeFacade).getTarget() instanceof SetType);
+		assertTrue((Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject() instanceof SetType);
 		((Component)componentValueTarget).setComponentClassName("java.lang.String");
 		typeFacade = componentValueFacade.getType();
-		assertTrue((Type)((IFacade)typeFacade).getTarget() instanceof ComponentType);
+		assertTrue((Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject() instanceof ComponentType);
 		typeFacade = dependantValueFacade.getType();
-		assertTrue((Type)((IFacade)typeFacade).getTarget() instanceof BasicType);
+		assertTrue((Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject() instanceof BasicType);
 		((Any)anyValueTarget).setIdentifierType("java.lang.Integer");
 		typeFacade = anyValueFacade.getType();
-		assertTrue((Type)((IFacade)typeFacade).getTarget() instanceof AnyType);
+		assertTrue((Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject() instanceof AnyType);
 		((Collection)identifierBagValueTarget).setElement(simpleValueTarget);
 		typeFacade = identifierBagValueFacade.getType();
-		assertTrue((Type)((IFacade)typeFacade).getTarget() instanceof IdentifierBagType);
+		assertTrue((Type)((Wrapper)((IFacade)typeFacade).getTarget()).getWrappedObject() instanceof IdentifierBagType);
 	}
 	
 	@Test
@@ -1567,7 +1567,7 @@ public class IValueTest {
 		IColumn columnFacade = (IColumn)GenericFacadeFactory.createFacade(
 				IColumn.class, 
 				WrapperFactory.createColumnWrapper("foo"));
-		Column columnTarget = (Column)((IFacade)columnFacade).getTarget();
+		Column columnTarget = (Column)((Wrapper)((IFacade)columnFacade).getTarget()).getWrappedObject();
 		assertFalse(manyToOneValueTarget.getColumns().contains(columnTarget));
 		manyToOneValueFacade.addColumn(columnFacade);
 		assertTrue(manyToOneValueTarget.getColumns().contains(columnTarget));

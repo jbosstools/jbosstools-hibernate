@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -201,15 +202,10 @@ public class ITypeTest {
 	@Test
 	public void testGetAssociatedEntityName() {
 		// first try a class type
-		try {
-			IType classTypeFacade = (IType)GenericFacadeFactory.createFacade(
-					IType.class, 
-					TypeWrapperFactory.createTypeWrapper(new ClassType()));
-			classTypeFacade.getAssociatedEntityName();
-			fail();
-		} catch (UnsupportedOperationException e) {
-			assertTrue(e.getMessage().contains("does not support 'getAssociatedEntityName()'"));
-		}
+		IType classTypeFacade = (IType)GenericFacadeFactory.createFacade(
+				IType.class, 
+				TypeWrapperFactory.createTypeWrapper(new ClassType()));
+		assertNull(classTypeFacade.getAssociatedEntityName());
 		// next try a many to one type 
 		IType manyToOneTypeFacade = (IType)GenericFacadeFactory.createFacade(
 				IType.class, 

@@ -15,7 +15,7 @@ import java.util.List;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
-import org.hibernate.tool.orm.jbt.wrp.ColumnWrapper;
+import org.hibernate.tool.orm.jbt.wrp.DelegatingColumnWrapperImpl;
 import org.hibernate.tool.orm.jbt.wrp.PrimaryKeyWrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -45,8 +45,10 @@ public class IPrimaryKeyTest {
 
 	@Test
 	public void testAddColumn() throws Exception {
-		Column columnTarget = new ColumnWrapper("foo");
-		IColumn columnFacade = (IColumn)GenericFacadeFactory.createFacade(IColumn.class, columnTarget);
+		Column columnTarget = new Column("foo");
+		IColumn columnFacade = (IColumn)GenericFacadeFactory.createFacade(
+				IColumn.class, 
+				new DelegatingColumnWrapperImpl(columnTarget));
 		assertTrue(primaryKeyTarget.getColumns().isEmpty());
 		primaryKeyFacade.addColumn(columnFacade);
 		assertEquals(1, primaryKeyTarget.getColumns().size());
@@ -62,7 +64,7 @@ public class IPrimaryKeyTest {
 	
 	@Test
 	public void testGetColumns() throws Exception {
-		Column columnTarget = new ColumnWrapper("foo");
+		Column columnTarget = new Column("foo");
 		assertTrue(primaryKeyFacade.getColumns().isEmpty());
 		primaryKeyTarget.addColumn(columnTarget);
 		List<IColumn> columnFacades = primaryKeyFacade.getColumns();
@@ -96,8 +98,10 @@ public class IPrimaryKeyTest {
 	
 	@Test
 	public void testContainsColumn() {
-		Column columnTarget = new ColumnWrapper("foo");
-		IColumn columnFacade = (IColumn)GenericFacadeFactory.createFacade(IColumn.class, columnTarget);
+		Column columnTarget = new Column("foo");
+		IColumn columnFacade = (IColumn)GenericFacadeFactory.createFacade(
+				IColumn.class, 
+				new DelegatingColumnWrapperImpl(columnTarget));
 		assertFalse(primaryKeyFacade.containsColumn(columnFacade));
 		primaryKeyTarget.addColumn(columnTarget);
 		assertTrue(primaryKeyFacade.containsColumn(columnFacade));

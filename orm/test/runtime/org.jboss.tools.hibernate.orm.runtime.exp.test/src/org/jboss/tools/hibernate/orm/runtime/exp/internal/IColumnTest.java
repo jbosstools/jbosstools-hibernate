@@ -13,11 +13,13 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.type.IntegerType;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.hibernate.tool.orm.jbt.wrp.ColumnWrapper;
+import org.hibernate.tool.orm.jbt.wrp.DelegatingColumnWrapperImpl;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -32,12 +34,12 @@ public class IColumnTest {
 	private static final NewFacadeFactory FACADE_FACTORY = NewFacadeFactory.INSTANCE;
 	
 	private IColumn columnFacade = null; 
-	private ColumnWrapper columnTarget = null;
+	private Column columnTarget = null;
 	
 	@BeforeEach
 	public void beforeEach() throws Exception {
 		columnFacade = FACADE_FACTORY.createColumn(null);
-		columnTarget = (ColumnWrapper)((IFacade)columnFacade).getTarget();
+		columnTarget = ((ColumnWrapper)((IFacade)columnFacade).getTarget()).getWrappedObject();
 	}
 	
 	@Test
@@ -68,7 +70,7 @@ public class IColumnTest {
 		assertEquals("foobar", columnFacade.getSqlType());
 		// IColumn#getSqlType(IConfiguration)
 		columnFacade = FACADE_FACTORY.createColumn(null);
-		columnTarget = (ColumnWrapper)((IFacade)columnFacade).getTarget();
+		columnTarget = ((ColumnWrapper)((IFacade)columnFacade).getTarget()).getWrappedObject();
 		columnTarget.setValue(createValue());
 		IConfiguration configurationFacade = FACADE_FACTORY.createNativeConfiguration();
 		configurationFacade.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
@@ -85,7 +87,7 @@ public class IColumnTest {
 	
 	@Test
 	public void testGetDefaultLength() throws Exception {
-		Field defaultLengthField = ColumnWrapper.class.getDeclaredField("DEFAULT_LENGTH");
+		Field defaultLengthField = DelegatingColumnWrapperImpl.class.getDeclaredField("DEFAULT_LENGTH");
 		defaultLengthField.setAccessible(true);
 		assertEquals(defaultLengthField.get(null), columnFacade.getDefaultLength());
 	}
@@ -99,7 +101,7 @@ public class IColumnTest {
 	
 	@Test
 	public void testGetDefaultPrecision() throws Exception {
-		Field defaultPrecisionField = ColumnWrapper.class.getDeclaredField("DEFAULT_PRECISION");
+		Field defaultPrecisionField = DelegatingColumnWrapperImpl.class.getDeclaredField("DEFAULT_PRECISION");
 		defaultPrecisionField.setAccessible(true);
 		assertEquals(defaultPrecisionField.get(null), columnFacade.getDefaultPrecision());
 	}
@@ -113,7 +115,7 @@ public class IColumnTest {
 	
 	@Test
 	public void testGetDefaultScale() throws Exception {
-		Field defaultScaleField = ColumnWrapper.class.getDeclaredField("DEFAULT_SCALE");
+		Field defaultScaleField = DelegatingColumnWrapperImpl.class.getDeclaredField("DEFAULT_SCALE");
 		defaultScaleField.setAccessible(true);
 		assertEquals(defaultScaleField.get(null), columnFacade.getDefaultScale());
 	}

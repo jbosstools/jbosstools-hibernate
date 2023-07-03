@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.orm.runtime.exp.internal.util;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
