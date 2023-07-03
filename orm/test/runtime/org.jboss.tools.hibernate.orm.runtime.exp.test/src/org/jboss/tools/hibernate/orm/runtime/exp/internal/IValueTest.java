@@ -1480,7 +1480,7 @@ public class IValueTest {
 		propertyIterator = componentValueFacade.getPropertyIterator();
 		IProperty propertyFacade = propertyIterator.next();
 		assertFalse(propertyIterator.hasNext());
-		assertSame(propertyTarget, ((IFacade)propertyFacade).getTarget());
+		assertSame(propertyTarget, ((Wrapper)((IFacade)propertyFacade).getTarget()).getWrappedObject());
 		// other values do not support 'getPropertyIterator()'
 		try {
 			arrayValueFacade.getPropertyIterator();
