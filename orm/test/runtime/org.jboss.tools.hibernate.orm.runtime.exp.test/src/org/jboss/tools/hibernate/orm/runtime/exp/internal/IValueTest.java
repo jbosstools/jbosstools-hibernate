@@ -415,15 +415,15 @@ public class IValueTest {
 		persistentClassFacade.setTable(null);
 		assertNull(arrayValueFacade.getTable());
 		persistentClassFacade.setTable(tableFacade);
-		assertSame(tableTarget, ((IFacade)arrayValueFacade.getTable()).getTarget());
+		assertSame(((Wrapper)tableTarget).getWrappedObject(), ((IFacade)arrayValueFacade.getTable()).getTarget());
 		persistentClassFacade.setTable(null);
 		assertNull(bagValueFacade.getTable());
 		persistentClassFacade.setTable(tableFacade);
-		assertSame(tableTarget, ((IFacade)bagValueFacade.getTable()).getTarget());
+		assertSame(((Wrapper)tableTarget).getWrappedObject(), ((IFacade)bagValueFacade.getTable()).getTarget());
 		persistentClassFacade.setTable(null);
 		assertNull(listValueFacade.getTable());
 		persistentClassFacade.setTable(tableFacade);
-		assertSame(tableTarget, ((IFacade)listValueFacade.getTable()).getTarget());
+		assertSame(((Wrapper)tableTarget).getWrappedObject(), ((IFacade)listValueFacade.getTable()).getTarget());
 		((ManyToOne)manyToOneValueTarget).setTable(null);
 		assertNull(manyToOneValueFacade.getTable());
 		((ManyToOne)manyToOneValueTarget).setTable(tableTarget);
@@ -431,27 +431,27 @@ public class IValueTest {
 		persistentClassFacade.setTable(null);
 		assertNull(mapValueFacade.getTable());
 		persistentClassFacade.setTable(tableFacade);
-		assertSame(tableTarget, ((IFacade)mapValueFacade.getTable()).getTarget());
+		assertSame(((Wrapper)tableTarget).getWrappedObject(), ((IFacade)mapValueFacade.getTable()).getTarget());
 		assertNull(oneToManyValueFacade.getTable());
 		persistentClassFacade.setTable(tableFacade);
 		oneToManyValueFacade = (IValue)GenericFacadeFactory.createFacade(
 				IValue.class, 
 				WrapperFactory.createOneToManyWrapper(((IFacade)persistentClassFacade).getTarget()));
-		assertSame(tableTarget, ((IFacade)oneToManyValueFacade.getTable()).getTarget());
+		assertSame(((Wrapper)tableTarget).getWrappedObject(), ((IFacade)oneToManyValueFacade.getTable()).getTarget());
 		assertNull(oneToOneValueFacade.getTable());
 		persistentClassFacade.setTable(tableFacade);
 		oneToOneValueFacade = (IValue)GenericFacadeFactory.createFacade(
 				IValue.class, 
 				WrapperFactory.createOneToOneWrapper(((IFacade)persistentClassFacade).getTarget()));
-		assertSame(tableTarget, ((IFacade)oneToOneValueFacade.getTable()).getTarget());
+		assertSame(((Wrapper)tableTarget).getWrappedObject(), ((IFacade)oneToOneValueFacade.getTable()).getTarget());
 		persistentClassFacade.setTable(null);
 		assertNull(primitiveArrayValueFacade.getTable());
 		persistentClassFacade.setTable(tableFacade);
-		assertSame(tableTarget, ((IFacade)primitiveArrayValueFacade.getTable()).getTarget());
+		assertSame(((Wrapper)tableTarget).getWrappedObject(), ((IFacade)primitiveArrayValueFacade.getTable()).getTarget());
 		persistentClassFacade.setTable(null);
 		assertNull(setValueFacade.getTable());
 		persistentClassFacade.setTable(tableFacade);
-		assertSame(tableTarget, ((IFacade)setValueFacade.getTable()).getTarget());
+		assertSame(((Wrapper)tableTarget).getWrappedObject(), ((IFacade)setValueFacade.getTable()).getTarget());
 		((SimpleValue)simpleValueTarget).setTable(null);
 		assertNull(simpleValueFacade.getTable());
 		((SimpleValue)simpleValueTarget).setTable(tableTarget);
@@ -470,7 +470,7 @@ public class IValueTest {
 		persistentClassFacade.setTable(null);
 		assertNull(identifierBagValueFacade.getTable());
 		persistentClassFacade.setTable(tableFacade);
-		assertSame(tableTarget, ((IFacade)identifierBagValueFacade.getTable()).getTarget());
+		assertSame(((Wrapper)tableTarget).getWrappedObject(), ((IFacade)identifierBagValueFacade.getTable()).getTarget());
 	}
 
 	@Test
@@ -565,19 +565,19 @@ public class IValueTest {
 	public void testSetCollectionTable() {
 		assertNull(((Collection)arrayValueTarget).getCollectionTable());
 		arrayValueFacade.setCollectionTable(tableFacade);
-		assertSame(tableTarget, ((Collection)arrayValueTarget).getCollectionTable());
+		assertSame(((Wrapper)tableTarget).getWrappedObject(), ((Collection)arrayValueTarget).getCollectionTable());
 		assertNull(((Collection)bagValueTarget).getCollectionTable());
 		bagValueFacade.setCollectionTable(tableFacade);
-		assertSame(tableTarget, ((Collection)bagValueTarget).getCollectionTable());
+		assertSame(((Wrapper)tableTarget).getWrappedObject(), ((Collection)bagValueTarget).getCollectionTable());
 		assertNull(((Collection)listValueTarget).getCollectionTable());
 		listValueFacade.setCollectionTable(tableFacade);
-		assertSame(tableTarget, ((Collection)listValueTarget).getCollectionTable());
+		assertSame(((Wrapper)tableTarget).getWrappedObject(), ((Collection)listValueTarget).getCollectionTable());
 		assertNull(manyToOneValueFacade.getCollectionTable());
 		manyToOneValueFacade.setCollectionTable(tableFacade);
 		assertNull(manyToOneValueFacade.getElement());
 		assertNull(((Collection)mapValueTarget).getCollectionTable());
 		mapValueFacade.setCollectionTable(tableFacade);
-		assertSame(tableTarget, ((Collection)mapValueTarget).getCollectionTable());
+		assertSame(((Wrapper)tableTarget).getWrappedObject(), ((Collection)mapValueTarget).getCollectionTable());
 		assertNull(oneToManyValueFacade.getCollectionTable());
 		oneToManyValueFacade.setCollectionTable(tableFacade);
 		assertNull(oneToManyValueFacade.getCollectionTable());
@@ -586,10 +586,10 @@ public class IValueTest {
 		assertNull(oneToOneValueFacade.getCollectionTable());
 		assertNull(((Collection)primitiveArrayValueTarget).getCollectionTable());
 		primitiveArrayValueFacade.setCollectionTable(tableFacade);
-		assertSame(tableTarget, ((Collection)primitiveArrayValueTarget).getCollectionTable());
+		assertSame(((Wrapper)tableTarget).getWrappedObject(), ((Collection)primitiveArrayValueTarget).getCollectionTable());
 		assertNull(((Collection)setValueTarget).getCollectionTable());
 		setValueFacade.setCollectionTable(tableFacade);
-		assertSame(tableTarget, ((Collection)setValueTarget).getCollectionTable());
+		assertSame(((Wrapper)tableTarget).getWrappedObject(), ((Collection)setValueTarget).getCollectionTable());
 		assertNull(simpleValueFacade.getCollectionTable());
 		simpleValueFacade.setCollectionTable(tableFacade);
 		assertNull(simpleValueFacade.getCollectionTable());
@@ -604,7 +604,7 @@ public class IValueTest {
 		assertNull(anyValueFacade.getCollectionTable());
 		assertNull(((Collection)identifierBagValueTarget).getCollectionTable());
 		identifierBagValueFacade.setCollectionTable(tableFacade);
-		assertSame(tableTarget, ((Collection)identifierBagValueTarget).getCollectionTable());
+		assertSame(((Wrapper)tableTarget).getWrappedObject(), ((Collection)identifierBagValueTarget).getCollectionTable());
 	}
 	
 	@Test
@@ -629,7 +629,7 @@ public class IValueTest {
 		assertNull(oneToManyValueTarget.getTable());
 		assertNull(oneToOneValueTarget.getTable());
 		oneToOneValueFacade.setTable(tableFacade);
-		assertSame(tableTarget, oneToOneValueTarget.getTable());
+		assertSame(((Wrapper)tableTarget).getWrappedObject(), oneToOneValueTarget.getTable());
 		assertNull(primitiveArrayValueTarget.getTable());
 		primitiveArrayValueFacade.setTable(tableFacade);
 		assertNull(primitiveArrayValueTarget.getTable());
@@ -638,10 +638,10 @@ public class IValueTest {
 		assertNull(setValueTarget.getTable());
 		assertNull(simpleValueTarget.getTable());
 		simpleValueFacade.setTable(tableFacade);
-		assertSame(tableTarget, simpleValueTarget.getTable());
+		assertSame(((Wrapper)tableTarget).getWrappedObject(), simpleValueTarget.getTable());
 		assertNull(componentValueTarget.getTable());
 		componentValueFacade.setTable(tableFacade);
-		assertSame(tableTarget, componentValueTarget.getTable());
+		assertSame(((Wrapper)tableTarget).getWrappedObject(), componentValueTarget.getTable());
 		assertSame(tableTarget, dependantValueTarget.getTable());
 		dependantValueFacade.setTable(null);
 		assertNull(dependantValueTarget.getTable());
@@ -2284,7 +2284,7 @@ public class IValueTest {
 		}
 		assertNull(oneToManyValueFacade.getAssociatedClass());
 		((OneToMany)oneToManyValueTarget).setAssociatedClass(persistentClassTarget);
-		assertSame(persistentClassTarget, ((IFacade)oneToManyValueFacade.getAssociatedClass()).getTarget());
+		assertSame(persistentClassTarget, ((Wrapper)((IFacade)oneToManyValueFacade.getAssociatedClass()).getTarget()).getWrappedObject());
 	}
 	
 	@Test

@@ -35,7 +35,8 @@ public class ITableTest {
 	@BeforeEach
 	public void beforeEach() {
 		tableFacade = NewFacadeFactory.INSTANCE.createTable("foo");
-		tableTarget = (Table)((IFacade)tableFacade).getTarget();
+		Wrapper tableWrapper = (Wrapper)((IFacade)tableFacade).getTarget();
+		tableTarget = (Table)tableWrapper.getWrappedObject();
 	}
 	
 	@Test

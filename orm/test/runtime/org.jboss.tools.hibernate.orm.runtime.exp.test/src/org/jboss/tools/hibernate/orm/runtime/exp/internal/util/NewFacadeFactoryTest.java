@@ -331,7 +331,7 @@ public class NewFacadeFactoryTest {
 		assertTrue(tableWrapper instanceof Table);
 		Table tableTarget = (Table)tableWrapper;
 		assertEquals("foo", tableTarget.getName());
-		assertSame(tableTarget, tableTarget.getPrimaryKey().getTable());
+		assertSame(((Wrapper)tableTarget).getWrappedObject(), tableTarget.getPrimaryKey().getTable());
 	}
 	
 	@Test
