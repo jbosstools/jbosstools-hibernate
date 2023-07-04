@@ -232,7 +232,7 @@ public class IPersistentClassTest {
 		propertyClosureIterator = specialRootClassFacade.getPropertyClosureIterator();
 		assertTrue(propertyClosureIterator.hasNext());
 		propertyFacade = propertyClosureIterator.next();
-		assertSame(propertyTarget, ((IFacade)propertyFacade).getTarget());
+		assertSame(propertyTarget, ((Wrapper)((IFacade)propertyFacade).getTarget()).getWrappedObject());
 	}
 	
 	@Test
@@ -275,7 +275,7 @@ public class IPersistentClassTest {
 		propertyIterator = specialRootClassFacade.getPropertyIterator();
 		assertTrue(propertyIterator.hasNext());
 		propertyFacade = propertyIterator.next();
-		assertSame(propertyTarget, ((IFacade)propertyFacade).getTarget());
+		assertSame(propertyTarget, ((Wrapper)((IFacade)propertyFacade).getTarget()).getWrappedObject());
 	}
 	
 	@Test

@@ -544,7 +544,9 @@ public class ServiceImplTest {
 		assertNotNull(target);
 		assertTrue(target instanceof Wrapper);
 		assertTrue(((Wrapper)target).getWrappedObject() instanceof SpecialRootClass);
-		assertEquals(property, specialRootClass.getProperty());
+		assertEquals(
+				((Wrapper)((IFacade)property).getTarget()).getWrappedObject(), 
+				((Wrapper)((IFacade)specialRootClass.getProperty()).getTarget()).getWrappedObject());
 	}
 	
 	@Test
