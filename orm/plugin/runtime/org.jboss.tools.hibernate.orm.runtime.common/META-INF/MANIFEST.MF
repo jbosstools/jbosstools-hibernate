@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Hibernate Runtime Common Utilities
+Bundle-Vendor: Red Hat
+Bundle-SymbolicName: org.jboss.tools.hibernate.orm.runtime.common;singleton:=true
+Bundle-Version: 5.4.22.qualifier
+Bundle-Localization: plugin
+Bundle-RequiredExecutionEnvironment: JavaSE-11
