@@ -9,6 +9,7 @@
    <feature id="org.hibernate.eclipse.feature.source"><category name="jbosstools-hibernate"/></feature>
    <feature id="org.hibernate.eclipse.test.feature.source"><category name="jbosstools-hibernate"/></feature>
    <feature id="org.jboss.tools.hibernate.search.test.feature"><category name="jbosstools-hibernate"/></feature>
+   <feature id="org.jboss.tools.hibernate.orm.runtime.feature"><category name="jbosstools-hibernate"/></feature>
    <category-def name="jbosstools-hibernate" label="JBoss Tools hibernatetools Nightly Build Update Site">
       <description>
          JBoss Tools hibernatetools Nightly Build Update Site: contains all features in this build.
