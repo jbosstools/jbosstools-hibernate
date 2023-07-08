@@ -7,7 +7,8 @@ Bundle-Version: 5.4.22.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.10.0",
  org.jboss.tools.hibernate.runtime.spi;bundle-version="5.0.0",
- org.jboss.tools.usage;bundle-version="2.1.0"
+ org.jboss.tools.usage;bundle-version="2.1.0",
+ org.jboss.tools.hibernate.orm.runtime.common
 Bundle-ActivationPolicy: lazy
 Export-Package: org.jboss.tools.hibernate.runtime.common
 Bundle-Activator: org.jboss.tools.hibernate.runtime.common.internal.HibernateRuntimeCommon
