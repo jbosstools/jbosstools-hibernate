@@ -22,6 +22,8 @@ import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.orm.jbt.util.JpaMappingFileHelper;
+import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractService;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
@@ -153,8 +155,11 @@ public class ServiceImpl extends AbstractService {
 			Properties properties, 
 			IReverseEngineeringStrategy strategy,
 			final IProgressListener progressListener) {
-		return newFacadeFactory
-				.createDatabaseReader(properties, strategy)
+		return ((IDatabaseReader)GenericFacadeFactory.createFacade(
+				IDatabaseReader.class, 
+				WrapperFactory.createDatabaseReaderWrapper(
+						properties,
+						((IFacade)strategy).getTarget())))
 				.collectDatabaseTables();
 	}
 
