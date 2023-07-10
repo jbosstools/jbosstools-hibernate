@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate.orm.runtime.exp.internal.util;
+package org.jboss.tools.hibernate.orm.runtime.common;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;

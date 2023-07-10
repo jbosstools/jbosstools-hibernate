@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
+import org.jboss.tools.hibernate.orm.runtime.common.ReflectUtil;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
 import org.jboss.tools.hibernate.runtime.spi.ICollectionMetadata;
