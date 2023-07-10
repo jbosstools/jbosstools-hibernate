@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.lang.reflect.Field;
-import java.util.Properties;
 
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
@@ -52,7 +51,6 @@ import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.wrp.SchemaExportWrapper;
 import org.hibernate.tool.orm.jbt.wrp.TypeFactoryWrapper;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.IDatabaseReader;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
@@ -305,21 +303,6 @@ public class NewFacadeFactoryTest {
 		Object wrappedList = ((Wrapper)listWrapper).getWrappedObject();
 		assertTrue(wrappedList instanceof List);
 		assertSame(rootClass, ((List)wrappedList).getOwner());
-	}
-	
-	@Test
-	public void testCreateDatabaseReader() {
-		Properties properties = new Properties();
-		properties.put("hibernate.connection.url", "jdbc:h2:mem:test");
-		IReverseEngineeringStrategy revengStrategyFacade = 
-				facadeFactory.createReverseEngineeringStrategy();
-		IDatabaseReader databaseReaderFacade = 
-				facadeFactory.createDatabaseReader(properties, revengStrategyFacade);
-		assertNotNull(databaseReaderFacade);
-		Object databaseReaderWrapper = ((IFacade)databaseReaderFacade).getTarget();
-		assertEquals(
-				"org.hibernate.tool.orm.jbt.wrp.DatabaseReaderWrapperFactory$DatabaseReaderWrapperImpl",
-				databaseReaderWrapper.getClass().getName());
 	}
 	
 	@Test

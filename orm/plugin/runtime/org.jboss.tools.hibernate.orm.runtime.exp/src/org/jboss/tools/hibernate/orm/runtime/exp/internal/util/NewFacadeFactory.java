@@ -2,10 +2,8 @@ package org.jboss.tools.hibernate.orm.runtime.exp.internal.util;
 
 import java.io.File;
 import java.util.Map;
-import java.util.Properties;
 
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.IDatabaseReader;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
@@ -201,16 +199,6 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 				WrapperFactory.createOneToOneWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
-	public IDatabaseReader createDatabaseReader(
-			Properties properties, 
-			IReverseEngineeringStrategy strategy) {
-		return (IDatabaseReader)GenericFacadeFactory.createFacade(
-				IDatabaseReader.class, 
-				WrapperFactory.createDatabaseReaderWrapper(
-						properties,
-						((IFacade)strategy).getTarget()));
-	}
-	
 	public ITable createTable(String name) {
 		return (ITable)GenericFacadeFactory.createFacade(
 				ITable.class, 
