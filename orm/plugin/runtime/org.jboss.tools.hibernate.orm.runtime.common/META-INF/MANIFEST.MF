@@ -7,3 +7,4 @@ Bundle-Version: 5.4.22.qualifier
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: org.jboss.tools.hibernate.orm.runtime.common
+Require-Bundle: org.jboss.tools.hibernate.runtime.spi
