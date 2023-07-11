@@ -26,7 +26,6 @@ import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
-import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.internal.export.common.GenericExporter;
@@ -44,7 +43,6 @@ import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.wrp.SchemaExportWrapper;
 import org.hibernate.tool.orm.jbt.wrp.TypeFactoryWrapper;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
-import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IColumn;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
@@ -55,8 +53,6 @@ import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
-import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
-import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
@@ -72,20 +68,6 @@ public class NewFacadeFactoryTest {
 	@BeforeEach
 	public void beforeEach() throws Exception {
 		facadeFactory = NewFacadeFactory.INSTANCE;
-	}
-	
-	@Test 
-	public void testCreateRevengSettings() {
-		IReverseEngineeringStrategy strategyFacade = (IReverseEngineeringStrategy)GenericFacadeFactory.createFacade(
-				IReverseEngineeringStrategy.class, 
-				WrapperFactory.createRevengStrategyWrapper());
-		Object strategyTarget = ((IFacade)strategyFacade).getTarget();
-		IReverseEngineeringSettings settingsFacade = facadeFactory.createReverseEngineeringSettings(strategyTarget);
-		assertNotNull(settingsFacade);
-		Object settingsTarget = ((IFacade)settingsFacade).getTarget();
-		assertNotNull(settingsTarget);
-		assertTrue(settingsTarget instanceof RevengSettings);
-		assertSame(strategyTarget, ((RevengSettings)settingsTarget).getRootStrategy());
 	}
 	
 	@Test

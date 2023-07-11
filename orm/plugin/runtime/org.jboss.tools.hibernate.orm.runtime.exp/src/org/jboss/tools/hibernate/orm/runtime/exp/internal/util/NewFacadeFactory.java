@@ -19,7 +19,6 @@ import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
 import org.jboss.tools.hibernate.runtime.spi.IProperty;
-import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringStrategy;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
@@ -58,12 +57,6 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 		throw new RuntimeException("use 'NewFacadeFactory#createReverseEngineeringStrategy(String)");
 	}
 	
-	public IReverseEngineeringSettings createReverseEngineeringSettings(Object revengStrategy) {
-		return (IReverseEngineeringSettings)GenericFacadeFactory.createFacade(
-				IReverseEngineeringSettings.class, 
-				WrapperFactory.createRevengSettingsWrapper(revengStrategy));
-				
-	}
 	
 	public IColumn createColumn(String name) {
 		return (IColumn)GenericFacadeFactory.createFacade(

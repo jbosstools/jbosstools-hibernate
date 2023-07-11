@@ -27,8 +27,9 @@ public class IReverseEngineeringSettingsTest {
 				(IReverseEngineeringStrategy)GenericFacadeFactory.createFacade(
 						IReverseEngineeringStrategy.class, 
 						WrapperFactory.createRevengStrategyWrapper());
-		revengSettingsFacade = FACADE_FACTORY.createReverseEngineeringSettings(
-				((IFacade)revengStrategyFacade).getTarget());
+		revengSettingsFacade = (IReverseEngineeringSettings)GenericFacadeFactory.createFacade(
+				IReverseEngineeringSettings.class, 
+				WrapperFactory.createRevengSettingsWrapper(((IFacade)revengStrategyFacade).getTarget()));
 		revengSettingsTarget = (RevengSettings)((IFacade)revengSettingsFacade).getTarget();	
 	}
 	

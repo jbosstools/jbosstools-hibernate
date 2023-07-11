@@ -148,7 +148,9 @@ public class ServiceImpl extends AbstractService {
 	@Override
 	public IReverseEngineeringSettings newReverseEngineeringSettings(
 			IReverseEngineeringStrategy res) {
-		return newFacadeFactory.createReverseEngineeringSettings(((IFacade)res).getTarget());
+		return (IReverseEngineeringSettings)GenericFacadeFactory.createFacade(
+				IReverseEngineeringSettings.class, 
+				WrapperFactory.createRevengSettingsWrapper(((IFacade)res).getTarget()));
 	}
 
 	@Override
