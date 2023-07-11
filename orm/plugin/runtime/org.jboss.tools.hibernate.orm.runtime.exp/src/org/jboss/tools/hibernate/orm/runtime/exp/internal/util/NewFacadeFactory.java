@@ -56,12 +56,6 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 	}
 	
 	
-	public IPersistentClass createRootClass() {
-		return (IPersistentClass)GenericFacadeFactory.createFacade(
-				IPersistentClass.class, 
-				WrapperFactory.createRootClassWrapper());
-	}	
-	
 	public IPersistentClass createSingleTableSubclass(IPersistentClass persistentClass) {
 		return (IPersistentClass)GenericFacadeFactory.createFacade(
 				IPersistentClass.class, 

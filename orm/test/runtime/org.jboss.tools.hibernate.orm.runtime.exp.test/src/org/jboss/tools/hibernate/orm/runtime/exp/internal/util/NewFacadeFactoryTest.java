@@ -67,18 +67,10 @@ public class NewFacadeFactoryTest {
 	}
 	
 	@Test
-	public void testCreateRootClass() {
-		IPersistentClass rootClassFacade = facadeFactory.createRootClass();
-		assertNotNull(rootClassFacade);
-		Object rootClassWrapper = ((IFacade)rootClassFacade).getTarget();
-		assertNotNull(rootClassWrapper);
-		assertTrue(rootClassWrapper instanceof PersistentClassWrapper);
-		assertTrue(((PersistentClassWrapper)rootClassWrapper).getWrappedObject() instanceof RootClass);
-	}
-	
-	@Test
 	public void testCreateSingleTableSubclass() {
-		IPersistentClass rootClassFacade = facadeFactory.createRootClass();
+		IPersistentClass rootClassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(
+				IPersistentClass.class, 
+				WrapperFactory.createRootClassWrapper());
 		Object rootClassTarget = ((IFacade)rootClassFacade).getTarget();
 		IPersistentClass singleTableSubclassFacade = 
 				facadeFactory.createSingleTableSubclass(rootClassFacade);
@@ -94,7 +86,9 @@ public class NewFacadeFactoryTest {
 	
 	@Test
 	public void testCreateJoinedTableSubclass() {
-		IPersistentClass rootClassFacade = facadeFactory.createRootClass();
+		IPersistentClass rootClassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(
+				IPersistentClass.class, 
+				WrapperFactory.createRootClassWrapper());
 		Object rootClassTarget = ((IFacade)rootClassFacade).getTarget();
 		IPersistentClass joinedTableSubclassFacade = 
 				facadeFactory.createJoinedTableSubclass(rootClassFacade);
@@ -147,7 +141,9 @@ public class NewFacadeFactoryTest {
 	
 	@Test
 	public void testCreateArray() {
-		IPersistentClass rootClassFacade = facadeFactory.createRootClass();
+		IPersistentClass rootClassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(
+				IPersistentClass.class, 
+				WrapperFactory.createRootClassWrapper());
 		PersistentClass rootClass = (PersistentClass)((Wrapper)((IFacade)rootClassFacade).getTarget()).getWrappedObject();
 		IValue arrayFacade = 
 				facadeFactory.createArray(rootClassFacade);
@@ -162,7 +158,9 @@ public class NewFacadeFactoryTest {
 	
 	@Test
 	public void testCreateBag() {
-		IPersistentClass rootClassFacade = facadeFactory.createRootClass();
+		IPersistentClass rootClassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(
+				IPersistentClass.class, 
+				WrapperFactory.createRootClassWrapper());
 		PersistentClass rootClass = (PersistentClass)((Wrapper)((IFacade)rootClassFacade).getTarget()).getWrappedObject();
 		IValue bagFacade = 
 				facadeFactory.createBag(rootClassFacade);
@@ -176,7 +174,9 @@ public class NewFacadeFactoryTest {
 	
 	@Test
 	public void testCreateList() {
-		IPersistentClass rootClassFacade = facadeFactory.createRootClass();
+		IPersistentClass rootClassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(
+				IPersistentClass.class, 
+				WrapperFactory.createRootClassWrapper());
 		PersistentClass rootClass = (PersistentClass)((Wrapper)((IFacade)rootClassFacade).getTarget()).getWrappedObject();
 		IValue listFacade = 
 				facadeFactory.createList(rootClassFacade);
@@ -216,7 +216,9 @@ public class NewFacadeFactoryTest {
 	
 	@Test
 	public void testCreateMap() {
-		IPersistentClass rootClassFacade = facadeFactory.createRootClass();
+		IPersistentClass rootClassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(
+				IPersistentClass.class, 
+				WrapperFactory.createRootClassWrapper());
 		PersistentClass rootClass = (PersistentClass)((Wrapper)((IFacade)rootClassFacade).getTarget()).getWrappedObject();
 		IValue mapFacade = 
 				facadeFactory.createMap(rootClassFacade);
@@ -230,7 +232,9 @@ public class NewFacadeFactoryTest {
 	
 	@Test
 	public void testCreateOneToMany() {
-		IPersistentClass rootClassFacade = facadeFactory.createRootClass();
+		IPersistentClass rootClassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(
+				IPersistentClass.class, 
+				WrapperFactory.createRootClassWrapper());
 		PersistentClass rootClass = (PersistentClass)((Wrapper)((IFacade)rootClassFacade).getTarget()).getWrappedObject();
 		Table table = new Table("", "foo");
 		((RootClass)rootClass).setTable(table);
@@ -246,7 +250,9 @@ public class NewFacadeFactoryTest {
 	
 	@Test
 	public void testCreateOneToOne() {
-		IPersistentClass rootClassFacade = facadeFactory.createRootClass();
+		IPersistentClass rootClassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(
+				IPersistentClass.class, 
+				WrapperFactory.createRootClassWrapper());
 		PersistentClass rootClass = (PersistentClass)((Wrapper)((IFacade)rootClassFacade).getTarget()).getWrappedObject();
 		Table table = new Table("", "foo");
 		((RootClass)rootClass).setTable(table);
@@ -264,7 +270,9 @@ public class NewFacadeFactoryTest {
 	
 	@Test
 	public void testCreatePrimitiveArray() {
-		IPersistentClass rootClassFacade = facadeFactory.createRootClass();
+		IPersistentClass rootClassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(
+				IPersistentClass.class, 
+				WrapperFactory.createRootClassWrapper());
 		PersistentClass rootClass = (PersistentClass)((Wrapper)((IFacade)rootClassFacade).getTarget()).getWrappedObject();
 		IValue primitiveArrayFacade = 
 				facadeFactory.createPrimitiveArray(rootClassFacade);
@@ -278,7 +286,9 @@ public class NewFacadeFactoryTest {
 	
 	@Test
 	public void testCreateSet() {
-		IPersistentClass rootClassFacade = facadeFactory.createRootClass();
+		IPersistentClass rootClassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(
+				IPersistentClass.class, 
+				WrapperFactory.createRootClassWrapper());
 		PersistentClass rootClass = (PersistentClass)((Wrapper)((IFacade)rootClassFacade).getTarget()).getWrappedObject();
 		IValue setFacade = 
 				facadeFactory.createSet(rootClassFacade);
@@ -302,7 +312,9 @@ public class NewFacadeFactoryTest {
 	
 	@Test
 	public void testCreateComponentValue() {
-		IPersistentClass rootClassFacade = facadeFactory.createRootClass();
+		IPersistentClass rootClassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(
+				IPersistentClass.class, 
+				WrapperFactory.createRootClassWrapper());
 		PersistentClass rootClass = (PersistentClass)((Wrapper)((IFacade)rootClassFacade).getTarget()).getWrappedObject();
 		IValue componentFacade = facadeFactory.createComponent(rootClassFacade);
 		Object componentWrapper = ((IFacade)componentFacade).getTarget();

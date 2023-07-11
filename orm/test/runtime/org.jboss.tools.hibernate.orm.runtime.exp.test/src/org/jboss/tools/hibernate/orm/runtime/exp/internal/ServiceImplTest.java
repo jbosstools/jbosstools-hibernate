@@ -57,7 +57,8 @@ import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 import org.hibernate.tool.orm.jbt.wrp.ColumnWrapper;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
+import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.ICfg2HbmTool;
@@ -505,7 +506,9 @@ public class ServiceImplTest {
 	
 	@Test
 	public void testNewSingleTableSubclass() {
-		IPersistentClass persistentClass = NewFacadeFactory.INSTANCE.createRootClass();
+		IPersistentClass persistentClass =(IPersistentClass)GenericFacadeFactory.createFacade(
+				IPersistentClass.class, 
+				WrapperFactory.createRootClassWrapper());
 		IPersistentClass singleTableSublass = service.newSingleTableSubclass(persistentClass);
 		assertNotNull(singleTableSublass);
 		Object target = ((IFacade)singleTableSublass).getTarget();
@@ -520,7 +523,9 @@ public class ServiceImplTest {
 	
 	@Test
 	public void testNewJoinedSubclass() {
-		IPersistentClass persistentClass = NewFacadeFactory.INSTANCE.createRootClass();
+		IPersistentClass persistentClass = (IPersistentClass)GenericFacadeFactory.createFacade(
+				IPersistentClass.class, 
+				WrapperFactory.createRootClassWrapper());
 		IPersistentClass joinedSubclass = service.newJoinedSubclass(persistentClass);
 		assertNotNull(joinedSubclass);
 		Object target = ((IFacade)joinedSubclass).getTarget();

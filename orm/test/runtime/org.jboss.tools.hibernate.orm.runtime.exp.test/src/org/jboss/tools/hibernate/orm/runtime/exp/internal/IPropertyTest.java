@@ -24,6 +24,7 @@ import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -71,7 +72,9 @@ public class IPropertyTest {
 	@Test
 	public void testSetPersistentClass() {
 		assertNull(propertyTarget.getPersistentClass());
-		IPersistentClass persistentClassFacade = NewFacadeFactory.INSTANCE.createRootClass();
+		IPersistentClass persistentClassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(
+				IPersistentClass.class, 
+				WrapperFactory.createRootClassWrapper());
 		PersistentClassWrapper persistentClassTarget = 
 				(PersistentClassWrapper)((IFacade)persistentClassFacade).getTarget();
 		propertyFacade.setPersistentClass(persistentClassFacade);

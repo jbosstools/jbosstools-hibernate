@@ -11,7 +11,8 @@ import org.hibernate.mapping.Join;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
+import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
@@ -26,7 +27,9 @@ public class IJoinTest {
 	
 	@BeforeEach
 	public void beforeEach() {
-		IPersistentClass persistentClassFacade = NewFacadeFactory.INSTANCE.createRootClass();
+		IPersistentClass persistentClassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(
+				IPersistentClass.class, 
+				WrapperFactory.createRootClassWrapper());
 		PersistentClass persistentClassTarget = 
 				(PersistentClass)((Wrapper)((IFacade)persistentClassFacade).getTarget()).getWrappedObject();
 		joinTarget = new Join();

@@ -31,6 +31,8 @@ import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
+import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IJoin;
@@ -58,8 +60,10 @@ public class IPersistentClassTest {
 	private Property propertyTarget = null;
 	
 	@BeforeEach
-	public void setUp() {
-		rootClassFacade = FACADE_FACTORY.createRootClass();
+	public void beforeEach() {
+		rootClassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(
+				IPersistentClass.class, 
+				WrapperFactory.createRootClassWrapper());
 		PersistentClassWrapper rootClassWrapper = (PersistentClassWrapper)((IFacade)rootClassFacade).getTarget();
 		rootClassTarget = rootClassWrapper.getWrappedObject();
 		singleTableSubclassFacade = FACADE_FACTORY.createSingleTableSubclass(rootClassFacade);

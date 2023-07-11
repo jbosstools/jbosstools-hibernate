@@ -318,7 +318,9 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IPersistentClass newRootClass() {
-		return newFacadeFactory.createRootClass();
+		return (IPersistentClass)GenericFacadeFactory.createFacade(
+				IPersistentClass.class, 
+				WrapperFactory.createRootClassWrapper());
 	}
 
 	@Override
