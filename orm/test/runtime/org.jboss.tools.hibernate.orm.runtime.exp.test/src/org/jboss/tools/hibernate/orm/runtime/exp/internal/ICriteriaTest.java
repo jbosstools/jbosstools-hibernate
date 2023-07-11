@@ -20,6 +20,8 @@ import java.util.Set;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
+import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
@@ -58,8 +60,6 @@ public class ICriteriaTest {
 		public Set<String> bars = new HashSet<String>();
 	}
 	
-	private static final NewFacadeFactory FACADE_FACTORY = NewFacadeFactory.INSTANCE;
-	
 	@TempDir
 	public File tempDir;
 	
@@ -77,7 +77,9 @@ public class ICriteriaTest {
 		fileWriter = new FileWriter(hbmXmlFile);
 		fileWriter.write(TEST_HBM_XML_STRING);
 		fileWriter.close();
-		IConfiguration configuration = FACADE_FACTORY.createNativeConfiguration();
+		IConfiguration configuration = (IConfiguration)GenericFacadeFactory.createFacade(
+				IConfiguration.class, 
+				WrapperFactory.createNativeConfigurationWrapper());
 		configuration.addFile(hbmXmlFile);
 		configuration.configure(cfgXmlFile);
 		ISessionFactory sessionFactoryFacade = configuration.buildSessionFactory();

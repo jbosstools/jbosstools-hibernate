@@ -25,7 +25,6 @@ import org.hibernate.tool.orm.jbt.util.DummyMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IArtifactCollector;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
@@ -63,7 +62,9 @@ public class IExporterTest {
 		Field field = ConfigurationMetadataDescriptor.class.getDeclaredField("configuration");
 		field.setAccessible(true);
 		Properties properties = new Properties();
-		IConfiguration configurationFacade = NewFacadeFactory.INSTANCE.createNativeConfiguration();
+		IConfiguration configurationFacade = (IConfiguration)GenericFacadeFactory.createFacade(
+				IConfiguration.class, 
+				WrapperFactory.createNativeConfigurationWrapper());
 		configurationFacade.setProperties(properties);
 		// First use the TestExporter 
 		metadataDescriptor = exporterTarget.getProperties().get(ExporterConstants.METADATA_DESCRIPTOR);

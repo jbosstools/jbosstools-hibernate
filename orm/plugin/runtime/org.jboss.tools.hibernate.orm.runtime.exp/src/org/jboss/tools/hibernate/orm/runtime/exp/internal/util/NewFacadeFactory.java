@@ -57,12 +57,6 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 	}
 	
 	
-	public IConfiguration createNativeConfiguration() {
-		return (IConfiguration)GenericFacadeFactory.createFacade(
-				IConfiguration.class, 
-				WrapperFactory.createNativeConfigurationWrapper());
-	}
-	
 	public IConfiguration createRevengConfiguration() {
 		return (IConfiguration)GenericFacadeFactory.createFacade(
 				IConfiguration.class, 

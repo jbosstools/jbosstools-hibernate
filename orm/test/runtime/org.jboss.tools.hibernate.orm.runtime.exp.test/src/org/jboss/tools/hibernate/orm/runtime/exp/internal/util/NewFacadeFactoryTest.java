@@ -32,7 +32,6 @@ import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
-import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 import org.hibernate.tool.orm.jbt.wrp.EnvironmentWrapper;
@@ -42,6 +41,7 @@ import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.wrp.SchemaExportWrapper;
 import org.hibernate.tool.orm.jbt.wrp.TypeFactoryWrapper;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
+import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
@@ -66,15 +66,6 @@ public class NewFacadeFactoryTest {
 	@BeforeEach
 	public void beforeEach() throws Exception {
 		facadeFactory = NewFacadeFactory.INSTANCE;
-	}
-	
-	@Test
-	public void testCreateNativeConfiguration() {
-		IConfiguration nativeConfigurationFacade = facadeFactory.createNativeConfiguration();
-		assertNotNull(nativeConfigurationFacade);
-		Object nativeConfigurationTarget = ((IFacade)nativeConfigurationFacade).getTarget();
-		assertNotNull(nativeConfigurationTarget);
-		assertTrue(nativeConfigurationTarget instanceof NativeConfiguration);
 	}
 	
 	@Test
@@ -365,7 +356,9 @@ public class NewFacadeFactoryTest {
 	
 	@Test
 	public void testCreateSchemaExport() {
-		IConfiguration configurationFacade = facadeFactory.createNativeConfiguration();
+		IConfiguration configurationFacade = (IConfiguration)GenericFacadeFactory.createFacade(
+				IConfiguration.class, 
+				WrapperFactory.createNativeConfigurationWrapper());
 		ISchemaExport schemaExportFacade = facadeFactory.createSchemaExport(configurationFacade);
 		Object schemaExportWrapper = ((IFacade)schemaExportFacade).getTarget();
 		assertTrue(schemaExportWrapper instanceof SchemaExportWrapper);
@@ -374,7 +367,9 @@ public class NewFacadeFactoryTest {
 	@Test
 	public void testCreateHibernateMappingExporter() {
 		File file = new File("foo");
-		IConfiguration configurationFacade = facadeFactory.createNativeConfiguration();
+		IConfiguration configurationFacade = (IConfiguration)GenericFacadeFactory.createFacade(
+				IConfiguration.class, 
+				WrapperFactory.createNativeConfigurationWrapper());
 		IHibernateMappingExporter hibernateMappingExporterFacade = 
 				facadeFactory.createHibernateMappingExporter(configurationFacade, file);
 		Object hibernateMappingExporterWrapper = ((IFacade)hibernateMappingExporterFacade).getTarget();
@@ -398,7 +393,9 @@ public class NewFacadeFactoryTest {
 	
 	@Test
 	public void testCreateHqlCodeAssist() {
-		IConfiguration configuration = facadeFactory.createNativeConfiguration();
+		IConfiguration configuration = (IConfiguration)GenericFacadeFactory.createFacade(
+				IConfiguration.class, 
+				WrapperFactory.createNativeConfigurationWrapper());
 		configuration.setProperty("hibernate.connection.url", "jdbc:h2:mem:test");
 		IHQLCodeAssist hqlCodeAssistFacade = facadeFactory.createHQLCodeAssist(configuration);
 		assertNotNull(hqlCodeAssistFacade);

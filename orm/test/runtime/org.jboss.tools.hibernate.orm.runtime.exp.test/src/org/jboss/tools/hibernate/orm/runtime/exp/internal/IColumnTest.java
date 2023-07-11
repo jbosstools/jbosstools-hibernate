@@ -78,7 +78,9 @@ public class IColumnTest {
 				WrapperFactory.createColumnWrapper(null));
 		columnTarget = ((ColumnWrapper)((IFacade)columnFacade).getTarget()).getWrappedObject();
 		columnTarget.setValue(createValue());
-		IConfiguration configurationFacade = FACADE_FACTORY.createNativeConfiguration();
+		IConfiguration configurationFacade = (IConfiguration)GenericFacadeFactory.createFacade(
+				IConfiguration.class, 
+				WrapperFactory.createNativeConfigurationWrapper());
 		configurationFacade.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
 		configurationFacade.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
 		assertEquals("integer", columnFacade.getSqlType(configurationFacade));

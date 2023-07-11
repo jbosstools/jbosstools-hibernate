@@ -18,9 +18,11 @@ import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
+import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.hibernate.type.CollectionType;
 import org.hibernate.type.Type;
 import org.hibernate.type.internal.NamedBasicTypeImpl;
+import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IClassMetadata;
@@ -79,7 +81,9 @@ public class IClassMetadataTest {
 		fileWriter = new FileWriter(hbmXmlFile);
 		fileWriter.write(TEST_HBM_XML_STRING);
 		fileWriter.close();
-		IConfiguration configuration = FACADE_FACTORY.createNativeConfiguration();
+		IConfiguration configuration = (IConfiguration)GenericFacadeFactory.createFacade(
+				IConfiguration.class, 
+				WrapperFactory.createNativeConfigurationWrapper());
 		configuration.addFile(hbmXmlFile);
 		configuration.configure(cfgXmlFile);
 		sessionFactoryFacade = configuration.buildSessionFactory();

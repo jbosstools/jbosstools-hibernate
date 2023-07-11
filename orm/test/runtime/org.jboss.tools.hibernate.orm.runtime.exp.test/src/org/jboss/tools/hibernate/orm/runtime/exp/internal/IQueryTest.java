@@ -22,7 +22,8 @@ import org.hibernate.query.Query;
 import org.hibernate.query.spi.QueryParameterBinding;
 import org.hibernate.query.sqm.internal.QuerySqmImpl;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
+import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IQuery;
@@ -56,8 +57,6 @@ public class IQueryTest {
 		public int id;
 		public String bars;
 	}
-	
-	private static final NewFacadeFactory FACADE_FACTORY = NewFacadeFactory.INSTANCE;
 	
 	private static final IType DUMMY_TYPE = (IType)Proxy.newProxyInstance(
 			IQueryTest.class.getClassLoader(), 
@@ -210,7 +209,9 @@ public class IQueryTest {
 		fileWriter = new FileWriter(hbmXmlFile);
 		fileWriter.write(TEST_HBM_XML_STRING);
 		fileWriter.close();
-		IConfiguration configuration = FACADE_FACTORY.createNativeConfiguration();
+		IConfiguration configuration = (IConfiguration)GenericFacadeFactory.createFacade(
+				IConfiguration.class, 
+				WrapperFactory.createNativeConfigurationWrapper());
 		configuration.addFile(hbmXmlFile);
 		configuration.configure(cfgXmlFile);
 		sessionFactoryFacade = configuration.buildSessionFactory();

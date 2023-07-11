@@ -893,7 +893,9 @@ public class IConfigurationTest {
 	}
 	
 	private void initializeFacadesAndTargets() {
-		nativeConfigurationFacade = NEW_FACADE_FACTORY.createNativeConfiguration();
+		nativeConfigurationFacade = (IConfiguration)GenericFacadeFactory.createFacade(
+				IConfiguration.class, 
+				WrapperFactory.createNativeConfigurationWrapper());
 		nativeConfigurationTarget = (NativeConfiguration)((IFacade)nativeConfigurationFacade).getTarget();
 		nativeConfigurationTarget.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
 		nativeConfigurationTarget.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());

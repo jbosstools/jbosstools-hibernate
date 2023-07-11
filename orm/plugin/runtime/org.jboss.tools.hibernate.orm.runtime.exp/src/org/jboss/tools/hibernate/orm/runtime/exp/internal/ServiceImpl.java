@@ -74,7 +74,9 @@ public class ServiceImpl extends AbstractService {
 	@Override
 	public IConfiguration newDefaultConfiguration() {
 		getUsageTracker().trackNewConfigurationEvent(HIBERNATE_VERSION);
-		return newFacadeFactory.createNativeConfiguration();
+		return (IConfiguration)GenericFacadeFactory.createFacade(
+				IConfiguration.class, 
+				WrapperFactory.createNativeConfigurationWrapper());
 	}
 
 	@Override
