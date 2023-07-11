@@ -14,6 +14,8 @@ import org.hibernate.mapping.Table;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
+import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
@@ -39,8 +41,10 @@ public class IOverrideRepositoryTest {
 	private Object overrideRepository;
 	
 	@BeforeEach
-	public void setUp() {
-		overrideRepositoryFacade = FACADE_FACTORY.createOverrideRepository();
+	public void beforeEach() {
+		overrideRepositoryFacade = (IOverrideRepository)GenericFacadeFactory.createFacade(
+				IOverrideRepository.class, 
+				WrapperFactory.createOverrideRepositoryWrapper());
 		overrideRepository = ((IFacade)overrideRepositoryFacade).getTarget();
 	}
 	

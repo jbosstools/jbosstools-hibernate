@@ -53,12 +53,6 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 		throw new RuntimeException("Use 'NewFacadeFactory#createOverrideRepository()");		
 	}
 	
-	public IOverrideRepository createOverrideRepository() {
-		return (IOverrideRepository)GenericFacadeFactory.createFacade(
-				IOverrideRepository.class, 
-				WrapperFactory.createOverrideRepositoryWrapper());
-	}
-
 	@Override 
 	public IReverseEngineeringStrategy createReverseEngineeringStrategy(Object target) {
 		throw new RuntimeException("use 'NewFacadeFactory#createReverseEngineeringStrategy(String)");

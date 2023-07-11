@@ -134,7 +134,9 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IOverrideRepository newOverrideRepository() {
-		return newFacadeFactory.createOverrideRepository();
+		return (IOverrideRepository)GenericFacadeFactory.createFacade(
+				IOverrideRepository.class, 
+				WrapperFactory.createOverrideRepositoryWrapper());
 	}
 
 	@Override
