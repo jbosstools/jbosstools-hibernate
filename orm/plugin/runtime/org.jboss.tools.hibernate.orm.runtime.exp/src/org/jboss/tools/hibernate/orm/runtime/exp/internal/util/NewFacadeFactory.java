@@ -11,7 +11,6 @@ import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
-import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.jboss.tools.hibernate.runtime.spi.IOverrideRepository;
@@ -60,13 +59,6 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 		return null;
 	}
 
-	@Override 
-	public IHQLCompletionProposal createHQLCompletionProposal(Object target) {
-		return (IHQLCompletionProposal)GenericFacadeFactory.createFacade(
-				IHQLCompletionProposal.class, 
-				WrapperFactory.createHqlCompletionProposalWrapper(target));
-	}
-	
 	public IValue createArray(IPersistentClass persistentClass) {
 		return (IValue)GenericFacadeFactory.createFacade(
 				IValue.class, 

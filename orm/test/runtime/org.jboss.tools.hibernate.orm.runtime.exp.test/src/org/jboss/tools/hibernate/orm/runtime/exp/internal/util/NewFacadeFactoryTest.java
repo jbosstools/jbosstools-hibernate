@@ -17,7 +17,6 @@ import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimitiveArray;
-import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
@@ -25,7 +24,6 @@ import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.reveng.RevengStrategy;
-import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
@@ -41,10 +39,8 @@ import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
 import org.jboss.tools.hibernate.runtime.spi.IEnvironment;
 import org.jboss.tools.hibernate.runtime.spi.IExporter;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCodeAssist;
-import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.jboss.tools.hibernate.runtime.spi.IHibernateMappingExporter;
 import org.jboss.tools.hibernate.runtime.spi.IPersistentClass;
-import org.jboss.tools.hibernate.runtime.spi.IProperty;
 import org.jboss.tools.hibernate.runtime.spi.ISchemaExport;
 import org.jboss.tools.hibernate.runtime.spi.ITable;
 import org.jboss.tools.hibernate.runtime.spi.ITableFilter;
@@ -62,17 +58,6 @@ public class NewFacadeFactoryTest {
 		facadeFactory = NewFacadeFactory.INSTANCE;
 	}
 		
-	@Test
-	public void testCreateHQLCompletionProposal() {
-		HQLCompletionProposal hqlCompletionProposalTarget = new HQLCompletionProposal(0, 0);
-		IHQLCompletionProposal hqlCompletionProposalFacade = 
-				facadeFactory.createHQLCompletionProposal(hqlCompletionProposalTarget);
-		assertNotNull(hqlCompletionProposalFacade);
-		Object hqlCompletionProposalWrapper = ((IFacade)hqlCompletionProposalFacade).getTarget();
-		assertTrue(hqlCompletionProposalWrapper instanceof Wrapper);
-		assertSame(((Wrapper)hqlCompletionProposalWrapper).getWrappedObject(), hqlCompletionProposalTarget);
-	}
-	
 	@Test
 	public void testCreateArray() {
 		IPersistentClass rootClassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(

@@ -10,7 +10,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.hibernate.mapping.Property;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
-import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
+import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,8 +25,9 @@ public class IHQLCompletionProposalTest {
 	@BeforeEach
 	public void beforeEach() {
 		hqlCompletionProposalTarget = new HQLCompletionProposal(HQLCompletionProposal.PROPERTY, Integer.MAX_VALUE);
-		hqlCompletionProposalFacade = 
-				NewFacadeFactory.INSTANCE.createHQLCompletionProposal(hqlCompletionProposalTarget);
+		hqlCompletionProposalFacade = (IHQLCompletionProposal)GenericFacadeFactory.createFacade(
+				IHQLCompletionProposal.class, 
+				WrapperFactory.createHqlCompletionProposalWrapper(hqlCompletionProposalTarget));;
 	}
 	
 	@Test
