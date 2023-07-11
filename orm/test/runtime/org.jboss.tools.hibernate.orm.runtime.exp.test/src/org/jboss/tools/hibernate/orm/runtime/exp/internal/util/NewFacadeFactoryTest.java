@@ -81,14 +81,6 @@ public class NewFacadeFactoryTest {
 	}
 	
 	@Test
-	public void testCreateNamingStrategy() {
-		INamingStrategy facade = facadeFactory.createNamingStrategy(DefaultNamingStrategy.class.getName());
-		Object target = ((IFacade)facade).getTarget();
-		assertNotNull(target);
-		assertTrue(NamingStrategy.class.isAssignableFrom(target.getClass()));
-	}
-	
-	@Test
 	public void testCreateOverrideRepository() {
 		IOverrideRepository facade = facadeFactory.createOverrideRepository();
 		Object target = ((IFacade)facade).getTarget();

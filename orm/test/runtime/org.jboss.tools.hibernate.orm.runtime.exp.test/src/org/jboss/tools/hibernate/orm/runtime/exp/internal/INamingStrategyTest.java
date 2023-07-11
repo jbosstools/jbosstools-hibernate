@@ -3,6 +3,8 @@ package org.jboss.tools.hibernate.orm.runtime.exp.internal;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.INamingStrategy;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +18,9 @@ public class INamingStrategyTest {
 	
 	@BeforeEach
 	public void beforeEach() {
-		namingStrategyFacade = FACADE_FACTORY.createNamingStrategy(TestNamingStrategy.class.getName());
+		namingStrategyFacade = (INamingStrategy)GenericFacadeFactory.createFacade(
+				INamingStrategy.class, 
+				WrapperFactory.createNamingStrategyWrapper(TestNamingStrategy.class.getName()));
 	}
 	
 	@Test

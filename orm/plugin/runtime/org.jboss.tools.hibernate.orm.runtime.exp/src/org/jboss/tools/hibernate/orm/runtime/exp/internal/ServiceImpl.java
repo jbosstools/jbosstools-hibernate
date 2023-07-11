@@ -127,7 +127,9 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public INamingStrategy newNamingStrategy(String strategyClassName) {
-		return newFacadeFactory.createNamingStrategy(strategyClassName);
+		return (INamingStrategy)GenericFacadeFactory.createFacade(
+				INamingStrategy.class, 
+				WrapperFactory.createNamingStrategyWrapper(strategyClassName));
 	}
 
 	@Override

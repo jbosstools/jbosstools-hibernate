@@ -40,6 +40,8 @@ import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
+import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IConfiguration;
@@ -266,8 +268,9 @@ public class IConfigurationTest {
 	
 	@Test
 	public void testSetNamingStrategy() throws Exception {
-		INamingStrategy namingStrategyFacade = 
-				NEW_FACADE_FACTORY.createNamingStrategy(DefaultNamingStrategy.class.getName());
+		INamingStrategy namingStrategyFacade = (INamingStrategy)GenericFacadeFactory.createFacade(
+				INamingStrategy.class, 
+				WrapperFactory.createNamingStrategyWrapper(DefaultNamingStrategy.class.getName()));
 		// For native configuration
 		Field namingStrategyField = nativeConfigurationTarget.getClass().getDeclaredField("namingStrategy");
 		namingStrategyField.setAccessible(true);

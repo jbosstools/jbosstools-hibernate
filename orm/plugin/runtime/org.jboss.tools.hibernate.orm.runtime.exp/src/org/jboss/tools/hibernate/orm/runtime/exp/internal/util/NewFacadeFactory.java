@@ -48,12 +48,6 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 		throw new RuntimeException("Use 'NewFacadeFactory#createNamingStrategy(String)");
 	}
 	
-	public INamingStrategy createNamingStrategy(String namingStrategyClassName) {
-		return (INamingStrategy)GenericFacadeFactory.createFacade(
-				INamingStrategy.class, 
-				WrapperFactory.createNamingStrategyWrapper(namingStrategyClassName));
-	}
-	
 	@Override
 	public IOverrideRepository createOverrideRepository(Object target) {
 		throw new RuntimeException("Use 'NewFacadeFactory#createOverrideRepository()");		
