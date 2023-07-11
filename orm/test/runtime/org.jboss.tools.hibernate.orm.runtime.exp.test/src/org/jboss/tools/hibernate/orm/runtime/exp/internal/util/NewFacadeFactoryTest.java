@@ -63,18 +63,6 @@ public class NewFacadeFactoryTest {
 	}
 		
 	@Test
-	public void testCreateProperty() {
-		IProperty propertyFacade = facadeFactory.createProperty();
-		assertNotNull(propertyFacade);
-		Object propertyWrapper = ((IFacade)propertyFacade).getTarget();
-		assertNotNull(propertyWrapper);
-		assertTrue(propertyWrapper instanceof Wrapper);
-		Object propertyTarget = ((Wrapper)propertyWrapper).getWrappedObject();
-		assertNotNull(propertyTarget);
-		assertTrue(propertyTarget instanceof Property);
-	}
-	
-	@Test
 	public void testCreateHQLCompletionProposal() {
 		HQLCompletionProposal hqlCompletionProposalTarget = new HQLCompletionProposal(0, 0);
 		IHQLCompletionProposal hqlCompletionProposalFacade = 

@@ -41,7 +41,9 @@ public class IPropertyTest {
 	
 	@BeforeEach
 	public void beforeEach() {
-		propertyFacade = NewFacadeFactory.INSTANCE.createProperty();
+		propertyFacade = (IProperty)GenericFacadeFactory.createFacade(
+				IProperty.class, 
+				WrapperFactory.createPropertyWrapper());
 		Wrapper propertyWrapper = (Wrapper)((IFacade)propertyFacade).getTarget();
 		propertyTarget = (Property)propertyWrapper.getWrappedObject();
 	}

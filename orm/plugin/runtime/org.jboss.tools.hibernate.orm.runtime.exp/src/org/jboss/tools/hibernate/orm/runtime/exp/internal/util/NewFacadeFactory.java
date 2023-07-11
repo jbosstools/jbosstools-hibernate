@@ -60,12 +60,6 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 		return null;
 	}
 
-	public IProperty createProperty() {
-		return (IProperty)GenericFacadeFactory.createFacade(
-				IProperty.class, 
-				WrapperFactory.createPropertyWrapper());
-	}
-	
 	@Override 
 	public IHQLCompletionProposal createHQLCompletionProposal(Object target) {
 		return (IHQLCompletionProposal)GenericFacadeFactory.createFacade(

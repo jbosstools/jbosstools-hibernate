@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionHandler;
 import org.jboss.tools.hibernate.runtime.spi.IHQLCompletionProposal;
@@ -97,7 +99,11 @@ public class IHQLCompletionHandlerTest {
 		public int getCompletionKind() { return Integer.MAX_VALUE; }
 		public String getEntityName() { return "foobar"; }
 		public String getShortEntityName() { return "foobar"; }
-		public IProperty getProperty() { return NewFacadeFactory.INSTANCE.createProperty(); }
+		public IProperty getProperty() { 
+			return (IProperty)GenericFacadeFactory.createFacade(
+				IProperty.class, 
+				WrapperFactory.createPropertyWrapper()); 
+		}
 		
 		public int aliasRefKind() { return Integer.MAX_VALUE; }
 		public int entityNameKind() { return Integer.MAX_VALUE; }
