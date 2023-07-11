@@ -57,9 +57,7 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 	
 	@Override
 	public IPersistentClass createSpecialRootClass(IProperty property) {
-		return (IPersistentClass)GenericFacadeFactory.createFacade(
-				IPersistentClass.class, 
-				WrapperFactory.createSpecialRootClassWrapper(((IFacade)property).getTarget()));
+		return null;
 	}
 
 	public IProperty createProperty() {

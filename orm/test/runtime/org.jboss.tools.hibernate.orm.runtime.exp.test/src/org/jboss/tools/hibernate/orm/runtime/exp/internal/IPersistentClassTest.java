@@ -79,7 +79,9 @@ public class IPersistentClassTest {
 		propertyFacade = FACADE_FACTORY.createProperty();
 		Wrapper propertyWrapper = (Wrapper)((IFacade)propertyFacade).getTarget();
 		propertyTarget = (Property)propertyWrapper.getWrappedObject();
-		specialRootClassFacade = FACADE_FACTORY.createSpecialRootClass(propertyFacade);
+		specialRootClassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(
+				IPersistentClass.class, 
+				WrapperFactory.createSpecialRootClassWrapper(propertyWrapper));
 		PersistentClassWrapper specialRootClassWrapper = (PersistentClassWrapper)((IFacade)specialRootClassFacade).getTarget();
 		specialRootClassTarget = specialRootClassWrapper.getWrappedObject();
 	}
@@ -731,7 +733,9 @@ public class IPersistentClassTest {
 		IProperty propertyFacade = FACADE_FACTORY.createProperty();
 		propertyFacade.setValue(componentFacade);
 		propertyFacade.setPersistentClass(rootClassFacade);
-		specialRootClassFacade = FACADE_FACTORY.createSpecialRootClass(propertyFacade);
+		specialRootClassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(
+				IPersistentClass.class, 
+				WrapperFactory.createSpecialRootClassWrapper(((IFacade)propertyFacade).getTarget()));
 		IProperty parentProperty = specialRootClassFacade.getParentProperty();
 		assertNotNull(parentProperty);
 		assertEquals("foo", parentProperty.getName());

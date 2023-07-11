@@ -29,11 +29,9 @@ import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
-import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 import org.hibernate.tool.orm.jbt.wrp.EnvironmentWrapper;
 import org.hibernate.tool.orm.jbt.wrp.HbmExporterWrapper;
 import org.hibernate.tool.orm.jbt.wrp.HqlCodeAssistWrapper;
-import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.wrp.SchemaExportWrapper;
 import org.hibernate.tool.orm.jbt.wrp.TypeFactoryWrapper;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
@@ -64,20 +62,6 @@ public class NewFacadeFactoryTest {
 		facadeFactory = NewFacadeFactory.INSTANCE;
 	}
 		
-	@Test
-	public void testCreateSpecialRootClass() {
-		IProperty propertyFacade = facadeFactory.createProperty();
-		IPersistentClass specialRootClassFacade = facadeFactory.createSpecialRootClass(propertyFacade);
-		Object specialRootClassWrapper = ((IFacade)specialRootClassFacade).getTarget();
-		assertNotNull(specialRootClassWrapper);
-		assertTrue(specialRootClassWrapper instanceof PersistentClassWrapper);
-		Object specialRootClassTarget = ((PersistentClassWrapper)specialRootClassWrapper).getWrappedObject();
-		assertTrue(specialRootClassTarget instanceof SpecialRootClass);
-		assertSame(
-				((Wrapper)((SpecialRootClass)specialRootClassTarget).getProperty()).getWrappedObject(), 
-				((Wrapper)((IFacade)propertyFacade).getTarget()).getWrappedObject());
-	}
-	
 	@Test
 	public void testCreateProperty() {
 		IProperty propertyFacade = facadeFactory.createProperty();
