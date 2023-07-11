@@ -67,7 +67,9 @@ public class IOverrideRepositoryTest {
 	
 	@Test
 	public void testGetReverseEngineeringStrategy() throws Exception {
-		IReverseEngineeringStrategy resFacade = FACADE_FACTORY.createReverseEngineeringStrategy();
+		IReverseEngineeringStrategy resFacade = (IReverseEngineeringStrategy)GenericFacadeFactory.createFacade(
+				IReverseEngineeringStrategy.class, 
+				WrapperFactory.createRevengStrategyWrapper());
 		Object res = ((IFacade)resFacade).getTarget();
 		IReverseEngineeringStrategy result = overrideRepositoryFacade.getReverseEngineeringStrategy(resFacade);
 		DelegatingStrategy resultTarget = 

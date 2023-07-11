@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import java.lang.reflect.Field;
 
 import org.hibernate.tool.internal.reveng.strategy.AbstractStrategy;
+import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
+import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.GenericFacadeFactory;
 import org.jboss.tools.hibernate.orm.runtime.exp.internal.util.NewFacadeFactory;
 import org.jboss.tools.hibernate.runtime.common.IFacade;
 import org.jboss.tools.hibernate.runtime.spi.IReverseEngineeringSettings;
@@ -18,7 +20,9 @@ public class IReverseEngineeringStrategyTest {
 	
 	@Test
 	public void testSetSettings() throws Exception {
-		IReverseEngineeringStrategy revengStrategyFacade = FACADE_FACTORY.createReverseEngineeringStrategy();
+		IReverseEngineeringStrategy revengStrategyFacade = (IReverseEngineeringStrategy)GenericFacadeFactory.createFacade(
+				IReverseEngineeringStrategy.class, 
+				WrapperFactory.createRevengStrategyWrapper());
 		Object revengStrategyTarget = ((IFacade)revengStrategyFacade).getTarget();
 		IReverseEngineeringSettings revengSettingsFacade = 
 				FACADE_FACTORY.createReverseEngineeringSettings(revengStrategyTarget);

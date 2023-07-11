@@ -153,7 +153,9 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IReverseEngineeringStrategy newDefaultReverseEngineeringStrategy() {
-		return newFacadeFactory.createReverseEngineeringStrategy();
+		return (IReverseEngineeringStrategy)GenericFacadeFactory.createFacade(
+				IReverseEngineeringStrategy.class, 
+				WrapperFactory.createRevengStrategyWrapper());
 	}
 	
 	@Override
@@ -173,9 +175,9 @@ public class ServiceImpl extends AbstractService {
 	public IReverseEngineeringStrategy newReverseEngineeringStrategy(
 			String strategyName,
 			IReverseEngineeringStrategy delegate) {
-		return newFacadeFactory.createReverseEngineeringStrategy(
-				strategyName, 
-				((IFacade)delegate).getTarget());
+		return (IReverseEngineeringStrategy)GenericFacadeFactory.createFacade(
+				IReverseEngineeringStrategy.class, 
+				WrapperFactory.createRevengStrategyWrapper(strategyName, delegate));
 	}
 
 	@Override

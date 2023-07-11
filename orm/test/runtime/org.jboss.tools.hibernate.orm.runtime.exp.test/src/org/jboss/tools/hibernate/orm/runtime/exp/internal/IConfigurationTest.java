@@ -655,7 +655,9 @@ public class IConfigurationTest {
 	@Test
 	public void testSetReverseEngineeringStrategy() {
 		IReverseEngineeringStrategy strategyFacade = 
-				NEW_FACADE_FACTORY.createReverseEngineeringStrategy();
+				(IReverseEngineeringStrategy)GenericFacadeFactory.createFacade(
+						IReverseEngineeringStrategy.class, 
+						WrapperFactory.createRevengStrategyWrapper());
 		RevengStrategy reverseEngineeringStrategy = (RevengStrategy)((IFacade)strategyFacade).getTarget();
 		// For native configuration 
 		try {

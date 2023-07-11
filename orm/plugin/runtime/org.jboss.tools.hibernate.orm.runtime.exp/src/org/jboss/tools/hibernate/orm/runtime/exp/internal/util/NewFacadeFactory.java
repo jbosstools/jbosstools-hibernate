@@ -58,12 +58,6 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 		throw new RuntimeException("use 'NewFacadeFactory#createReverseEngineeringStrategy(String)");
 	}
 	
-	public IReverseEngineeringStrategy createReverseEngineeringStrategy(Object...objects) {
-		return (IReverseEngineeringStrategy)GenericFacadeFactory.createFacade(
-				IReverseEngineeringStrategy.class, 
-				WrapperFactory.createRevengStrategyWrapper(objects));				
-	}
-	
 	public IReverseEngineeringSettings createReverseEngineeringSettings(Object revengStrategy) {
 		return (IReverseEngineeringSettings)GenericFacadeFactory.createFacade(
 				IReverseEngineeringSettings.class, 
