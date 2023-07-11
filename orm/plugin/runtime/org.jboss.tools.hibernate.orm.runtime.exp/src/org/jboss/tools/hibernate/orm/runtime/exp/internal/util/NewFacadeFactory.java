@@ -57,12 +57,6 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 	}
 	
 	
-	public IConfiguration createRevengConfiguration() {
-		return (IConfiguration)GenericFacadeFactory.createFacade(
-				IConfiguration.class, 
-				WrapperFactory.createRevengConfigurationWrapper());
-	}
- 	
 	public IConfiguration createJpaConfiguration(String persistenceUnit, Map<?,?> properties) {
 		return (IConfiguration)GenericFacadeFactory.createFacade(
 				IConfiguration.class, 

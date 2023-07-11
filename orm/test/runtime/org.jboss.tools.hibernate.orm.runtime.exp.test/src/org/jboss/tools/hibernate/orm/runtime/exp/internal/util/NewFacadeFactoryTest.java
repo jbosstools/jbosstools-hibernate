@@ -32,7 +32,6 @@ import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
-import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 import org.hibernate.tool.orm.jbt.wrp.EnvironmentWrapper;
 import org.hibernate.tool.orm.jbt.wrp.HbmExporterWrapper;
@@ -66,15 +65,6 @@ public class NewFacadeFactoryTest {
 	@BeforeEach
 	public void beforeEach() throws Exception {
 		facadeFactory = NewFacadeFactory.INSTANCE;
-	}
-	
-	@Test
-	public void testCreateRevengConfiguration() {
-		IConfiguration revengConfigurationFacade = facadeFactory.createRevengConfiguration();
-		assertNotNull(revengConfigurationFacade);
-		Object revengConfigurationTarget = ((IFacade)revengConfigurationFacade).getTarget();
-		assertNotNull(revengConfigurationTarget);
-		assertTrue(revengConfigurationTarget instanceof RevengConfiguration);
 	}
 	
 	@Test

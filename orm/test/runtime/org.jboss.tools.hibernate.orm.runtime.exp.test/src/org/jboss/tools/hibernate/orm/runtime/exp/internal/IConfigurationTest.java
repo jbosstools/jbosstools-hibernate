@@ -899,7 +899,9 @@ public class IConfigurationTest {
 		nativeConfigurationTarget = (NativeConfiguration)((IFacade)nativeConfigurationFacade).getTarget();
 		nativeConfigurationTarget.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
 		nativeConfigurationTarget.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
-		revengConfigurationFacade = NEW_FACADE_FACTORY.createRevengConfiguration();
+		revengConfigurationFacade = (IConfiguration)GenericFacadeFactory.createFacade(
+				IConfiguration.class, 
+				WrapperFactory.createRevengConfigurationWrapper());
 		revengConfigurationTarget = (RevengConfiguration)((IFacade)revengConfigurationFacade).getTarget();
 		jpaConfigurationFacade = NEW_FACADE_FACTORY.createJpaConfiguration("foobar", null);
 		jpaConfigurationTarget = (JpaConfiguration)((IFacade)jpaConfigurationFacade).getTarget();	

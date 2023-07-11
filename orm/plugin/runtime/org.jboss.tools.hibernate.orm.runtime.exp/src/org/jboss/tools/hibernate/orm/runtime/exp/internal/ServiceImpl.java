@@ -101,7 +101,9 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IConfiguration newJDBCMetaDataConfiguration() {
-		return newFacadeFactory.createRevengConfiguration();
+		return (IConfiguration)GenericFacadeFactory.createFacade(
+				IConfiguration.class, 
+				WrapperFactory.createRevengConfigurationWrapper());
 	}
 
 	@Override
