@@ -31,7 +31,6 @@ import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
-import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 import org.hibernate.tool.orm.jbt.wrp.EnvironmentWrapper;
 import org.hibernate.tool.orm.jbt.wrp.HbmExporterWrapper;
@@ -65,15 +64,6 @@ public class NewFacadeFactoryTest {
 	@BeforeEach
 	public void beforeEach() throws Exception {
 		facadeFactory = NewFacadeFactory.INSTANCE;
-	}
-	
-	@Test
-	public void testCreateJpaConfiguration() {
-		IConfiguration jpaConfigurationFacade = facadeFactory.createJpaConfiguration(null, null);
-		assertNotNull(jpaConfigurationFacade);
-		Object jpaConfigurationTarget = ((IFacade)jpaConfigurationFacade).getTarget();
-		assertNotNull(jpaConfigurationTarget);
-		assertTrue(jpaConfigurationTarget instanceof JpaConfiguration);
 	}
 	
 	@Test

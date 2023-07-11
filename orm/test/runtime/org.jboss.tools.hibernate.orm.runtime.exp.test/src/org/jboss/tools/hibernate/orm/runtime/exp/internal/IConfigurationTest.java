@@ -903,7 +903,9 @@ public class IConfigurationTest {
 				IConfiguration.class, 
 				WrapperFactory.createRevengConfigurationWrapper());
 		revengConfigurationTarget = (RevengConfiguration)((IFacade)revengConfigurationFacade).getTarget();
-		jpaConfigurationFacade = NEW_FACADE_FACTORY.createJpaConfiguration("foobar", null);
+		jpaConfigurationFacade = (IConfiguration)GenericFacadeFactory.createFacade(
+				IConfiguration.class, 
+				WrapperFactory.createJpaConfigurationWrapper("foobar", null));
 		jpaConfigurationTarget = (JpaConfiguration)((IFacade)jpaConfigurationFacade).getTarget();	
 	}
 	

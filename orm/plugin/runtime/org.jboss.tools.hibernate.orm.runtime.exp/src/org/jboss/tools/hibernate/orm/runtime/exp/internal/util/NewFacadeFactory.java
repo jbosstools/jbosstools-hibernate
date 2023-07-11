@@ -1,7 +1,6 @@
 package org.jboss.tools.hibernate.orm.runtime.exp.internal.util;
 
 import java.io.File;
-import java.util.Map;
 
 import org.hibernate.tool.orm.jbt.wrp.WrapperFactory;
 import org.jboss.tools.hibernate.runtime.common.AbstractFacadeFactory;
@@ -56,12 +55,6 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 		throw new RuntimeException("use 'NewFacadeFactory#createReverseEngineeringStrategy(String)");
 	}
 	
-	
-	public IConfiguration createJpaConfiguration(String persistenceUnit, Map<?,?> properties) {
-		return (IConfiguration)GenericFacadeFactory.createFacade(
-				IConfiguration.class, 
-				WrapperFactory.createJpaConfigurationWrapper(persistenceUnit, properties));
-	}
 	
 	public IPersistentClass createRootClass() {
 		return (IPersistentClass)GenericFacadeFactory.createFacade(
