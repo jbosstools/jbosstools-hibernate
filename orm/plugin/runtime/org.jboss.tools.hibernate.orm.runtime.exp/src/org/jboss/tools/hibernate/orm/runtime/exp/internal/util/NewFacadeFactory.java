@@ -55,13 +55,6 @@ public class NewFacadeFactory extends AbstractFacadeFactory {
 		throw new RuntimeException("use 'NewFacadeFactory#createReverseEngineeringStrategy(String)");
 	}
 	
-	
-	public IPersistentClass createJoinedTableSubclass(IPersistentClass persistentClass) {
-		return (IPersistentClass)GenericFacadeFactory.createFacade(
-				IPersistentClass.class, 
-				WrapperFactory.createJoinedTableSubClassWrapper(((IFacade)persistentClass).getTarget()));
-	}
-	
 	@Override
 	public IPersistentClass createSpecialRootClass(IProperty property) {
 		return (IPersistentClass)GenericFacadeFactory.createFacade(

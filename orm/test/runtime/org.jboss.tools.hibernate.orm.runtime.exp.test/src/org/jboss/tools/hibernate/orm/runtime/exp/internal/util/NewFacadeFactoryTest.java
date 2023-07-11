@@ -10,7 +10,6 @@ import java.io.File;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.Component;
-import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
@@ -65,24 +64,6 @@ public class NewFacadeFactoryTest {
 		facadeFactory = NewFacadeFactory.INSTANCE;
 	}
 		
-	@Test
-	public void testCreateJoinedTableSubclass() {
-		IPersistentClass rootClassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(
-				IPersistentClass.class, 
-				WrapperFactory.createRootClassWrapper());
-		Object rootClassTarget = ((IFacade)rootClassFacade).getTarget();
-		IPersistentClass joinedTableSubclassFacade = 
-				facadeFactory.createJoinedTableSubclass(rootClassFacade);
-		Object joinedTableSubclassWrapper = ((IFacade)joinedTableSubclassFacade).getTarget();
-		assertNotNull(joinedTableSubclassWrapper);
-		assertTrue(joinedTableSubclassWrapper instanceof PersistentClassWrapper);
-		Object joinedTableSubclassTarget = ((PersistentClassWrapper)joinedTableSubclassWrapper).getWrappedObject();
-		assertTrue(joinedTableSubclassTarget instanceof JoinedSubclass);
-		assertSame(
-				((JoinedSubclass)joinedTableSubclassTarget).getRootClass(), 
-				((PersistentClassWrapper)rootClassTarget).getWrappedObject());
-	}
-	
 	@Test
 	public void testCreateSpecialRootClass() {
 		IProperty propertyFacade = facadeFactory.createProperty();

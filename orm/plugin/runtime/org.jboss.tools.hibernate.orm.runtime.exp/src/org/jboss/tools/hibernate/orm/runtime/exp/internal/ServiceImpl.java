@@ -310,7 +310,9 @@ public class ServiceImpl extends AbstractService {
 
 	@Override
 	public IPersistentClass newJoinedSubclass(IPersistentClass persistentClass) {
-		return newFacadeFactory.createJoinedTableSubclass(persistentClass);
+		return (IPersistentClass)GenericFacadeFactory.createFacade(
+				IPersistentClass.class, 
+				WrapperFactory.createJoinedTableSubClassWrapper(((IFacade)persistentClass).getTarget()));
 	}
 
 	@Override
