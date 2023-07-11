@@ -66,7 +66,9 @@ public class IPersistentClassTest {
 				WrapperFactory.createRootClassWrapper());
 		PersistentClassWrapper rootClassWrapper = (PersistentClassWrapper)((IFacade)rootClassFacade).getTarget();
 		rootClassTarget = rootClassWrapper.getWrappedObject();
-		singleTableSubclassFacade = FACADE_FACTORY.createSingleTableSubclass(rootClassFacade);
+		singleTableSubclassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(
+				IPersistentClass.class, 
+				WrapperFactory.createSingleTableSubClassWrapper(rootClassTarget));
 		PersistentClassWrapper singleTableSubclassWrapper = (PersistentClassWrapper)((IFacade)singleTableSubclassFacade).getTarget();
 		singleTableSubclassTarget = singleTableSubclassWrapper.getWrappedObject();
 		joinedSubclassFacade = FACADE_FACTORY.createJoinedTableSubclass(rootClassFacade);

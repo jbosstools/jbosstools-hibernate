@@ -22,7 +22,6 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
-import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
@@ -65,25 +64,7 @@ public class NewFacadeFactoryTest {
 	public void beforeEach() throws Exception {
 		facadeFactory = NewFacadeFactory.INSTANCE;
 	}
-	
-	@Test
-	public void testCreateSingleTableSubclass() {
-		IPersistentClass rootClassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(
-				IPersistentClass.class, 
-				WrapperFactory.createRootClassWrapper());
-		Object rootClassTarget = ((IFacade)rootClassFacade).getTarget();
-		IPersistentClass singleTableSubclassFacade = 
-				facadeFactory.createSingleTableSubclass(rootClassFacade);
-		Object singleTableSubclassWrapper = ((IFacade)singleTableSubclassFacade).getTarget();
-		assertNotNull(singleTableSubclassWrapper);
-		assertTrue(singleTableSubclassWrapper instanceof PersistentClassWrapper);
-		Object singleTableSubclassTarget = ((PersistentClassWrapper)singleTableSubclassWrapper).getWrappedObject();
-		assertTrue(singleTableSubclassTarget instanceof SingleTableSubclass);
-		assertSame(
-				((SingleTableSubclass)singleTableSubclassTarget).getRootClass(), 
-				((PersistentClassWrapper)rootClassTarget).getWrappedObject());
-	}
-	
+		
 	@Test
 	public void testCreateJoinedTableSubclass() {
 		IPersistentClass rootClassFacade = (IPersistentClass)GenericFacadeFactory.createFacade(
